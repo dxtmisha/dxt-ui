@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isNull - Проверка на null или undefined'/>
+
+# `isNull`
+
+Конкретная и строгая проверка значения на соответствие исключительно `null` или `undefined`. 
+
+В отличие от обычной проверки `!value` (где строка `''`, число `0` и булево `false` также приведут к прохождению условия), эта функция отфильтрует все ложные (falsy) значения и оставит только те, которые фактически не определены.
+
+**Параметры:**
+- `value: T` — Любое проверяемое значение.
+
+**Возвращает:**
+`boolean` — Вернет `true`, если переменная равна `null` либо `undefined`. Функция также выступает как type guard TypeScript, сужающий тип переменной до `Undefined` (`null | undefined`).
+
+```typescript
+import { isNull } from '@dxtmisha/functional-basic'
+
+console.log(isNull(null)) // true
+console.log(isNull(undefined)) // true
+
+// Другие falsy значения возвращают false
+console.log(isNull(0)) // false
+console.log(isNull('')) // false
+console.log(isNull(false)) // false
+```

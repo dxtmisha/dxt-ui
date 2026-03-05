@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/copyObjectLite - Shallow copy an object'/>
+
+# `copyObjectLite`
+
+Creates a shallow copy of a simple object using `Object.assign`. It can optionally merge additional properties from the second argument `source`.
+
+> Because this is a shallow copy, nested objects and arrays will be copied by reference, not by value.
+
+**Parameters:**
+- `value: T` — The object to be copied.
+- `source?: any` — Additional properties to merge with the base `value`. Properties from `source` will overwrite those from `value` if their keys match.
+
+**Returns:**
+`R` (defaults to `T`) — A new shallow copy of the object.
+
+```typescript
+import { copyObjectLite } from '@dxtmisha/functional-basic'
+
+const original = { a: 1, b: { c: 2 } }
+
+// Simple shallow copy
+const copy = copyObjectLite(original)
+console.log(copy.b === original.b) // true (references the same nested object)
+
+// Copy with additional properties merged
+const merged = copyObjectLite(original, { a: 10, d: 4 })
+console.log(merged) // { a: 10, b: { c: 2 }, d: 4 }
+```

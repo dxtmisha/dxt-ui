@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getItemByPath - Access deeply nested properties'/>
+
+# `getItemByPath`
+
+A utility that safely retrieves a value from a deeply nested object using a path string with dot (`.`) separated keys. If the property or any intermediate segment is not found, the function gracefully returns `undefined` (preventing *Cannot read properties of undefined* errors).
+
+**Note:** The function allows specifying a generic return type `R` (which defaults to `string`). It supports accessing array items by using a stringified index in the path (e.g., `"list.0.name"`).
+
+**Parameters:**
+- `item: T` — The target object or array to inspect.
+- `path: string` — The dot-separated property path (e.g., `"user.address.city"` or `"list.1.id"`).
+
+**Returns:**
+`R | undefined` — The value of the requested property (of type `R`), or `undefined` if any segment in the path is missing.
+
+```typescript
+import { getItemByPath } from '@dxtmisha/functional-basic'
+
+const data = {
+  profile: {
+    details: {
+      bio: 'UI Developer'
+    }
+  },
+  roles: ['admin', 'manager']
+}
+
+// Successful retrieval
+console.log(getItemByPath(data, 'profile.details.bio')) // 'UI Developer'
+
+// Accessing an array via a string index
+console.log(getItemByPath(data, 'roles.0')) // 'admin'
+
+// Safely failing on nonexistent paths
+console.log(getItemByPath(data, 'profile.missing.key')) // undefined
+```

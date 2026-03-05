@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getMouseClient - Получение координат X и Y события'/>
+
+# `getMouseClient`
+
+Извлекает X и Y координаты указателя (мыши или пальца) относительно видимой области окна браузера (viewport) из объекта события. 
+
+Функция обрабатывает как обычные события мыши (`MouseEvent`), так и события касания (`TouchEvent`), обеспечивая единый интерфейс (возвращает объект типа `ImageCoordinator` со свойствами `x` и `y`). Это полезно при создании drag-and-drop интерфейсов, слайдеров и других интерактивных элементов, работающих на разных устройствах.
+
+**Параметры:**
+- `event: MouseEvent & TouchEvent` — Объект события (`mousemove`, `touchmove`, `click` и т.д.).
+
+**Возвращает:**
+`ImageCoordinator` — Объект, содержащий свойства `x` и `y` (координаты). Если координаты не найдены в событии, возвращается `{ x: 0, y: 0 }`.
+
+```typescript
+import { getMouseClient } from '@dxtmisha/functional-basic'
+
+document.addEventListener('mousemove', (event) => {
+  const coords = getMouseClient(event)
+  console.log(`Курсор сейчас на X: ${coords.x}, Y: ${coords.y}`)
+})
+
+document.addEventListener('touchmove', (event) => {
+  const coords = getMouseClient(event)
+  console.log(`Палец сейчас на X: ${coords.x}, Y: ${coords.y}`)
+})
+```

@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/encodeAttribute - Encode characters for attributes'/>
+
+# `encodeAttribute`
+
+Encodes special characters in a string (`&`, `<`, `>`, `"`, `'`) into their corresponding HTML entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`). This is essential for safely inserting user or dynamic text into HTML attributes to prevent XSS attacks.
+
+Additionally, the function trims whitespace from the edges of the string using the `.trim()` method.
+
+**Parameters:**
+- `text: string` — The string to encode.
+
+**Returns:**
+`string` — The encoded string, trimmed of extra edge whitespace.
+
+```typescript
+import { encodeAttribute } from '@dxtmisha/functional-basic'
+
+const unsafeInput = ' <script>alert("XSS")</script> '
+const safeAttr = encodeAttribute(unsafeInput)
+
+console.log(safeAttr)
+// '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+```

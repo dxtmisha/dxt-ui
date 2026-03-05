@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getElement - Retrieve an HTML Element'/>
+
+# `getElement`
+
+Returns an `Element` (HTML node) from the document. The utility accepts a CSS selector string, a `Window` object, or an existing `Element`, and returns the corresponding DOM node if executed in a browser environment. In non-DOM environments (e.g., SSR), it returns `undefined`.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — A CSS selector (e.g., `'.btn'`), the `Window` object, or an existing `Element` node.
+
+**Returns:**
+`R | undefined` — The found or provided DOM node, or `document.body` if `Window` was passed. Returns `undefined` if the element is not found or the DOM is unavailable.
+
+```typescript
+import { getElement } from '@dxtmisha/functional-basic'
+
+// Search by selector
+const btn = getElement('.submit-btn')
+
+// Passing an existing element
+const sameBtn = getElement(btn)
+
+// Passing Window will return document.body
+const body = getElement(window)
+```

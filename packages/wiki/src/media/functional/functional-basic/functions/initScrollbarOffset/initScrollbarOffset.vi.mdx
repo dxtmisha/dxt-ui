@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/initScrollbarOffset - Tạo biến căn lề kích thước thanh cuộn'/>
+
+# `initScrollbarOffset`
+
+Một tiện ích bất đồng bộ giúp tính toán và đo chính xác chiều rộng mặc định cho thanh cuộn (scrollbar) từ trình duyệt hệ thống; ngay sau đó tự động lưu kết quả này (quy theo đơn vị pixels) thông qua một biến CSS toàn cục `--sys-scrollbar-offset` và đính lên phía trên thẻ gốc `<body>`.
+
+Con số thiết thực từ độ rộng phần cuốn này được chứng minh là thiết yếu cực độ tại các cấu thành như thẻ modal pop-up, lớp lót chặn che màn hình, hỗ trợ giảm hẳn đi triệu chứng cấu trúc trang giật bắn không mong muốn.
+
+Chức năng chính phối hợp trực tiếp kèm thư viện class rẽ hướng `ScrollbarWidth` phụ đính bên cấu trúc hệ điều hành gói functional.
+
+**Tham số:**
+Kiến trúc này hoạt động hoàn toàn độc lập và không chứa những thuộc tính tuỳ chỉnh nào cả.
+
+**Trả về:**
+Luồng bất đồng bộ kích thích trả biến `Promise<void>` ghi nhớ điểm đổi CSS bên thẻ nền DOM layout.
+
+```typescript
+import { initScrollbarOffset } from '@dxtmisha/functional-basic'
+
+// Phát lệnh định vị ngay trong lúc khởi tạo dữ liệu khởi động app
+await initScrollbarOffset()
+
+// Gọi CSS sau này tuỳ biến:
+// body[data-scroll-locked] { padding-right: var(--sys-scrollbar-offset, 0px); }
+```

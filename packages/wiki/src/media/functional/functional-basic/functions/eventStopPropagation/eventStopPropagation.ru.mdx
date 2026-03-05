@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/eventStopPropagation - Остановка всплытия события'/>
+
+# `eventStopPropagation`
+
+Останавливает дальнейшее распространение события в DOM-дереве (всплытие / перехват) и отменяет стандартное действие браузера по умолчанию.
+
+Функция является удобной обёрткой над вызовами `event.preventDefault()` и `event.stopPropagation()`.
+
+**Параметры:**
+- `event: Event` — Экземпляр события DOM, который необходимо остановить.
+
+**Возвращает:**
+`void`
+
+```typescript
+import { eventStopPropagation } from '@dxtmisha/functional-basic'
+
+const link = document.createElement('a')
+link.href = 'https://example.com'
+link.onclick = (e) => {
+  // Отменит переход по ссылке и остановит всплытие клика к родителям
+  eventStopPropagation(e)
+  console.log('Клик перехвачен!')
+}
+```

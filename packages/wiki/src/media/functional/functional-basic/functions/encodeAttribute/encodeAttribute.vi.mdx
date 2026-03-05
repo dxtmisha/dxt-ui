@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/encodeAttribute - Mã hóa ký tự cho thuộc tính'/>
+
+# `encodeAttribute`
+
+Mã hóa các ký tự đặc biệt trong chuỗi (`&`, `<`, `>`, `"`, `'`) thành các thực thể HTML tương ứng (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`). Điều này là cần thiết để chèn văn bản người dùng hoặc văn bản động vào thuộc tính HTML một cách an toàn nhằm phòng chống tấn công XSS.
+
+Hơn nữa, hàm cũng loại bỏ các khoảng trắng ở hai đầu chuỗi bằng phương thức `.trim()`.
+
+**Tham số:**
+- `text: string` — Chuỗi cần được mã hóa.
+
+**Trả về:**
+`string` — Chuỗi đã được mã hóa và xóa khoảng trắng dư thừa ở hai đầu.
+
+```typescript
+import { encodeAttribute } from '@dxtmisha/functional-basic'
+
+const unsafeInput = ' <script>alert("XSS")</script> '
+const safeAttr = encodeAttribute(unsafeInput)
+
+console.log(safeAttr)
+// '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+```

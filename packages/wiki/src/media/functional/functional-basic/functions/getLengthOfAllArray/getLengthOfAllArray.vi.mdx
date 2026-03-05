@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getLengthOfAllArray - Độ dài của tất cả phần tử trong mảng'/>
+
+# `getLengthOfAllArray`
+
+Tạo và trả về một mảng mới chỉ bao gồm độ dài (thuộc tính `.length`) của tất cả các phần tử trong mảng chuỗi được cung cấp.
+
+**Tham số:**
+- `value: ObjectOrArray<string>` — Mảng chuỗi đầu vào. Nếu truyền vào một chuỗi đơn, hàm sẽ xử lý nó như một mảng chứa một phần tử.
+
+**Trả về:**
+`number[]` — Một mảng các số, trong đó mỗi số tương ứng với độ dài của chuỗi trong mảng nguồn ở cùng vị trí đó.
+
+```typescript
+import { getLengthOfAllArray } from '@dxtmisha/functional-basic'
+
+const data = ['đỏ', 'xanh dương', 'xanh lá']
+const lengths = getLengthOfAllArray(data)
+
+console.log(lengths) // [2, 10, 7]
+```

@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isDomRuntime - Xác định ngữ cảnh chạy trên trình duyệt'/>
+
+# `isDomRuntime`
+
+Xác định xem mã hiện được thực thi có nằm trong bối cảnh chạy của một trình duyệt web (browser) hay không.
+
+Hoạt động kiểm tra này nhắm đến sự tồn tại của đối tượng toàn cục `window` cũng như thuộc tính song song `window.document`. Tích hợp giải pháp này là cách thức thông dụng để đảm bảo hệ thống gọi các hàm thực thi DOM-API riêng biệt (như điều chỉnh thanh kéo trượt, bắt sự kiện, điều hướng thẻ Element) sẽ không tạo lỗi sập quá trình (crash) đối với kịch bản Kết xuất Phía máy chủ (Server-Side Rendering — SSR) hay trên các bộ lọc Node.js đóng gói.
+
+**Tham số:**
+Cấu trúc lập trình này vận hành hoàn toàn không cần cấp ghép tham số.
+
+**Trả về:**
+`boolean` — Nhận `true` nếu đoạn mã thi công trong trình duyệt (có biểu thị đối tượng `window` và `document`). Nó chuyển lại `false` nếu kích chạy ở mạn máy chủ (ví dụ quy trình của Node.js hay xây dựng tĩnh — static generation).
+
+```typescript
+import { isDomRuntime } from '@dxtmisha/functional-basic'
+
+if (isDomRuntime()) {
+  // Tương tác cực kì an toàn đến cửa sổ window.localStorage hay hàm DOM
+  window.localStorage.setItem('visited', 'yes')
+  document.body.classList.add('client-rendered')
+} else {
+  // Xử lý dữ liệu định tuyến logic dành riêng cho máy chủ (SSR)
+  console.log('Rendering on server...')
+}
+```

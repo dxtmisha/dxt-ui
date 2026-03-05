@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/goScrollTo - Cuộn vùng chứa đến phần tử'/>
+
+# `goScrollTo`
+
+Thực thi hiệu ứng cuộn bên trong một phần tử vùng chứa (container) để đảm bảo rằng mục tiêu bên trong rơi vào vùng dễ nhìn. Hàm thực hiện trích xuất `getBoundingClientRect` từ cả hai thành phần và kích hoạt phương thức `scrollBy` để di chuyển khoảng bù trục toạ độ cho phù hợp.
+
+Khác với `goScrollSmooth` (cuộn cửa sổ màn hình hoặc uỷ thác cho `scrollIntoView`), `goScrollTo` chủ động canh chỉnh lề thao tác trong không gian đo lường tĩnh của hộp chứa rõ ràng được cấp vào.
+
+**Tham số:**
+- `element: HTMLElement | undefined` — Phần tử vùng chứa đóng cuộn với con lăn.
+- `elementTo: HTMLElement | undefined` — Mục tiêu nằm phía trong (đích nhắm) cần quan sát được.
+- `behavior: ScrollBehavior` — (Tùy chọn) Chỉnh sửa loại chuỗi ảnh chuyển động, mặc định cho hiệu ứng mượt `'smooth'`.
+
+**Trả về:**
+Tuỳ biến việc thay đổi thanh cuộn ngay trong trang hiện tại với giá trị đầu ra rỗng (`void`).
+
+```typescript
+import { goScrollTo } from '@dxtmisha/functional-basic'
+
+const list = document.getElementById('item-list')
+const targetItem = document.getElementById('item-42')
+
+// Cuộn êm ái qua bảng danh sách cho đến item 42
+goScrollTo(list, targetItem)
+```

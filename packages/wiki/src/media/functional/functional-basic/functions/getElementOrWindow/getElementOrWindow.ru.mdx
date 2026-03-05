@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getElementOrWindow - Получение элемента или объекта window'/>
+
+# `getElementOrWindow`
+
+Эта утилита аналогична `getElement`, но с одним существенным отличием: если в качестве аргумента передан глобальный объект `window`, функция вернёт именно его. `getElement` в такой же ситуации возвращает `document.body`. 
+
+Если передана строка или другой элемент, функция действует как стандартный `getElement`.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — Селектор для поиска, элемент `Element` или объект `Window`.
+
+**Возвращает:**
+`E | undefined` — Найденный элемент, изначальный переданный элемент, сам объект `window` (если он был передан), или `undefined` если ничего не найдено.
+
+```typescript
+import { getElementOrWindow } from '@dxtmisha/functional-basic'
+
+// Передача Window вернет Window (для сравнения getElement вернул бы document.body)
+const win = getElementOrWindow(window)
+
+// Обычный поиск по селектору
+const btn = getElementOrWindow('.submit-btn')
+```

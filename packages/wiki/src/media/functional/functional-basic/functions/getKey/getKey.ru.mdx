@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getKey - Получение кода нажатой клавиши'/>
+
+# `getKey`
+
+Возвращает код или имя клавиши, которая была нажата, на основе объекта `KeyboardEvent`. Эта утилита стандартизирует способ извлечения ключа, безопасно пытаясь получить значения свойств в следующем порядке приоритета: `event.key` → `event.code` → строковое значение `event.keyCode`. Если ничего не найдено, возвращает `undefined`.
+
+**Параметры:**
+- `event: KeyboardEvent` — Событие клавиатуры (возникающее при `keydown`, `keyup` или `keypress`).
+
+**Возвращает:**
+`string` — Название или код нажатой клавиши (например, `'Enter'`, `'Escape'`, `'A'`).
+
+```typescript
+import { getKey } from '@dxtmisha/functional-basic'
+
+document.addEventListener('keydown', (e) => {
+  const keyName = getKey(e)
+  
+  if (keyName === 'Escape') {
+    console.log('Пользователь нажал Escape! Закрываем меню.')
+  }
+})
+```

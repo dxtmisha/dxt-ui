@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getExp - Tạo cấu trúc RegExp với chuỗi đã đánh dấu (escaped)'/>
+
+# `getExp`
+
+Tiện ích này tạo ra một đối tượng `RegExp` từ một chuỗi mẫu bằng cách thực hiện "thoát" (escape) tất cả các ký tự đặc biệt của biểu thức chính quy bên trong chuỗi đó (chẳng hạn như `.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\`).
+
+Điều này rất cần thiết khi chuỗi tìm kiếm đến từ người dùng hoặc chứa các ký tự có thể phá vỡ một biểu thức chính quy. Hàm cho phép bạn chỉ định các cờ (flags) cho `RegExp` cũng như một chuỗi mẫu nơi đoạn văn bản đã "escape" sẽ thay thế token `:value`.
+
+**Tham số:**
+- `value: string` — Chuỗi đích cần escape.
+- `flags?: string` — (tuỳ chọn) Các cờ cấu hình (ví dụ: `'ig'`). Mặc định là `'ig'` (không phân biệt chữ hoa/thường và tìm toàn cục).
+- `pattern?: string` — (tuỳ chọn) Chuỗi mẫu biểu thức chính quy. Mặc định chỉ là `':value'`.
+
+**Trả về:**
+`RegExp` — Đối tượng biểu thức chính quy.
+
+```typescript
+import { getExp } from '@dxtmisha/functional-basic'
+
+// Tìm kiếm cơ bản
+const rx1 = getExp('user.name')
+console.log(rx1) // /user\.name/gi  (dấu chấm đã được escape)
+
+// Tìm kiếm với cờ và chuỗi mẫu tuỳ chỉnh (ví dụ: "bắt đầu bằng")
+const rx2 = getExp('query[1]', 'i', '^:value.*')
+console.log(rx2) // /^query\[1\].*/i
+```

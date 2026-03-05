@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getLengthOfAllArray - Длины всех элементов массива'/>
+
+# `getLengthOfAllArray`
+
+Создает и возвращает новый массив, состоящий из длин (свойство `.length`) всех элементов переданного массива строк. 
+
+**Параметры:**
+- `value: ObjectOrArray<string>` — Входной массив строк. Если передана одиночная строка, она будет обработана как массив из одного элемента.
+
+**Возвращает:**
+`number[]` — Массив чисел, где каждое число соответствует длине строки исходного массива на той же позиции.
+
+```typescript
+import { getLengthOfAllArray } from '@dxtmisha/functional-basic'
+
+const data = ['красный', 'синий', 'зеленый']
+const lengths = getLengthOfAllArray(data)
+
+console.log(lengths) // [7, 5, 7]
+```

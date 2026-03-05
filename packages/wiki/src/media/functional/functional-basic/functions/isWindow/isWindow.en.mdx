@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isWindow - Check if object is Window'/>
+
+# `isWindow`
+
+A precise utility built specifically to authorize whether an inserted payload organically represents the global browser `window` object.
+
+The blueprint relies initially on routing logic through `isDomRuntime()` ensuring smooth validation devoid of crashes if mistakenly fired in disconnected Server-Side Render (SSR) arenas. Once confirmed safe inside a browser space, it triggers a stringent equality checkpoint comparing the payload straightforwardly directly against the overarching global `window` instance.
+
+**Parameters:**
+- `element: E` — An active hook, DOM Node, or variable queued up for matching against.
+
+**Returns:**
+`boolean` — Translates strictly into `true` only when actively engaged under a browser umbrella and the selected element identically matches the base `window` object. Operates effectively as a Type Guard filtering down boundaries narrowing accurately toward `Window`.
+
+```typescript
+import { isWindow } from '@dxtmisha/functional-basic'
+
+// Spot on validation
+console.log(isWindow(window)) // true
+console.log(isWindow(globalThis.window)) // true
+
+// Conflicting DOM elements returning negated
+console.log(isWindow(document)) // false
+console.log(isWindow(document.body)) // false
+console.log(isWindow({})) // false
+```

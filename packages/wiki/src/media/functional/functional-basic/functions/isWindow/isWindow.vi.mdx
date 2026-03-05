@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isWindow - Kiểm tra thực thể Window'/>
+
+# `isWindow`
+
+Loại hình hệ mã thiết kế đặc trị dành cho công cuộc xác minh trực thuộc xem biến tham số đẩy vào có đích thị nhắm trúng đối tượng bản chất chủ đề toàn cục trình duyệt `window` hay không.
+
+Phác đồ sẽ đi đường vòng chạy qua quy định môi trường `isDomRuntime()` thu nhặt đảm bảo tiến trình ko bị tai biến ngắt mạch sập mạng nếu lỡ sơ suất ngóc đầu trên chốn kết xuất máy chủ Server-Side (SSR). Sau khi được bật đèn thẻ xanh, nó thẳng tay cắm cân đo `===` gắt gao giữa thứ bạn mới chèn nộp kề sát với chóp bu toàn cục `window` mặc định.
+
+**Tham số:**
+- `element: E` — Mọi đối thủ nút Node hay thứ tạp pí lù gì đem ra để thi thố khớp lệnh.
+
+**Trả về:**
+`boolean` — Trả thù lao báo giá chốt `true` đặc quyền dành duy cho ứng viên nào tham chiếu sống sót hoàn hảo trong trình duyệt và y xì là cụ tổ đối tượng `window`. Đặc công đóng ấn hàm Type Guard (bảo bộ định danh gốc) thu mình ép xác cho cái kiểu kia vỏn vẹn trong áo choàng `Window`.
+
+```typescript
+import { isWindow } from '@dxtmisha/functional-basic'
+
+// Đặc cách điểm vinh quang
+console.log(isWindow(window)) // true
+console.log(isWindow(globalThis.window)) // true
+
+// Khối lượng tạp dân xô bồ DOM bị dập vùi false
+console.log(isWindow(document)) // false
+console.log(isWindow(document.body)) // false
+console.log(isWindow({})) // false
+```

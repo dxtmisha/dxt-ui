@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getElement - Truy xuất phần tử HTML'/>
+
+# `getElement`
+
+Trả về một `Element` (nút HTML) từ tài liệu. Tiện ích này nhận vào một chuỗi bộ chọn CSS, đối tượng `Window` hoặc một `Element` có sẵn và trả về nút DOM tương ứng nếu được thực thi trong môi trường trình duyệt. Trong các môi trường không có DOM (ví dụ: SSR), nó trả về `undefined`.
+
+**Tham số:**
+- `element?: ElementOrString<E>` — Bộ chọn CSS (ví dụ: `'.btn'`), đối tượng `Window`, hoặc một nút `Element` đã có.
+
+**Trả về:**
+`R | undefined` — Nút DOM được tìm thấy hoặc được cung cấp, hoặc `document.body` nếu truyền vào là `Window`. Trả về `undefined` nếu không tìm thấy phần tử hoặc môi trường DOM không khả dụng.
+
+```typescript
+import { getElement } from '@dxtmisha/functional-basic'
+
+// Tìm kiếm theo bộ chọn CSS
+const btn = getElement('.submit-btn')
+
+// Truyền vào một phần tử đã có sẵn
+const sameBtn = getElement(btn)
+
+// Truyền vào Window sẽ trả về document.body
+const body = getElement(window)
+```

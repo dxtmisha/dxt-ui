@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isIntegerBetween - Проверка вхождения в целочисленный интервал'/>
+
+# `isIntegerBetween`
+
+Проверяет, находится ли заданное число в пределах определенного целочисленного интервала. 
+
+Интервал определяется путем округления в меньшую сторону базового значения (`between`). Функция вернет истину, если проверяемое число больше или равно нижней границе (целому числу), но строго меньше следующего целого числа. 
+
+Формула: `floor(between) <= value < floor(between) + 1`
+
+**Параметры:**
+- `value: number` — Проверяемое число.
+- `between: number` — Базовое число, определяющее интервал после округления вниз.
+
+**Возвращает:**
+`boolean` — `true`, если число находится в заданном целочисленном диапазоне.
+
+```typescript
+import { isIntegerBetween } from '@dxtmisha/functional-basic'
+
+// Интервал [5, 6)
+console.log(isIntegerBetween(5.2, 5.8)) // true (Math.floor(5.8) = 5)
+console.log(isIntegerBetween(5.99, 5))  // true
+console.log(isIntegerBetween(6, 5))     // false
+```

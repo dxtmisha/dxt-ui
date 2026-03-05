@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/encodeAttribute - Кодирование символов для атрибутов'/>
+
+# `encodeAttribute`
+
+Кодирует специальные символы в строке (`&`, `<`, `>`, `"`, `'`) в соответствующие HTML-сущности (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`). Это необходимо для безопасной вставки пользовательского или динамического текста в HTML-атрибуты для предотвращения XSS-атак.
+
+Кроме того, функция удаляет пробельные символы по краям строки с помощью метода `.trim()`.
+
+**Параметры:**
+- `text: string` — Строка, которую необходимо закодировать.
+
+**Возвращает:**
+`string` — Закодированная и очищенная от лишних пробелов по краям строка.
+
+```typescript
+import { encodeAttribute } from '@dxtmisha/functional-basic'
+
+const unsafeInput = ' <script>alert("XSS")</script> '
+const safeAttr = encodeAttribute(unsafeInput)
+
+console.log(safeAttr)
+// '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+```

@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isString - Check if value is a string'/>
+
+# `isString`
+
+A fundamental yet highly reliable utility to assert whether the provided element constitutes a string type.
+
+This resource leans on the standard native evaluation `typeof value === 'string'` to verify the intrinsic nature of the variable. By strictly enforcing this check, it instinctively filters out extraneous data dimensions including numbers, logic booleans, arrays, complex objects, and undefined traces.
+
+**Parameters:**
+- `value: T` — The generic input material submitted for type verification.
+
+**Returns:**
+`boolean` — Emits `true` if the evaluated target inherently functions as a string primitive. Spits out `false` in every opposing scenario. Further establishes itself as a strict TypeScript type guard, proactively confining the subsequent variable type specifically down to `string`.
+
+```typescript
+import { isString } from '@dxtmisha/functional-basic'
+
+console.log(isString('Hello, World!')) // true
+console.log(isString('')) // true (empty strings are inherently valid strings)
+
+// Filtering out dissenting types
+console.log(isString(123)) // false
+console.log(isString(null)) // false
+console.log(isString({})) // false
+```

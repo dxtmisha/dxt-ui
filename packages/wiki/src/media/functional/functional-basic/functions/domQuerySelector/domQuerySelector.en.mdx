@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/domQuerySelector - Select a DOM element'/>
+
+# `domQuerySelector`
+
+Finds and returns the first HTML element that matches the specified CSS selector.
+
+The function checks for the presence of a browser (DOM) environment using `isDomRuntime()`. If the code is executing on the server (SSR) or the DOM is not available, the function safely returns `undefined`.
+
+**Parameters:**
+- `selectors: string` — A string containing one or more CSS selectors to match against.
+
+**Returns:**
+`E | undefined` — The first matched element, or `undefined` if no matches are found or the DOM is unavailable.
+
+```typescript
+import { domQuerySelector } from '@dxtmisha/functional-basic'
+
+// Find by class
+const btn = domQuerySelector('.submit-button')
+
+// Find by ID
+const header = domQuerySelector('#main-header')
+
+if (btn) {
+  btn.textContent = 'Submit'
+}
+```

@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/intersectKey - Intersect objects by keys'/>
+
+# `intersectKey`
+
+Analyzes two objects (or arrays) and returns a new object containing only the properties from the first object whose keys also exist in the second object. The values for the resulting object are extracted from the primary object (`data`).
+
+This function is highly useful for filtering payload data against an allowed schema footprint or synchronizing partial models.
+
+**Parameters:**
+- `data: T` — The primary source object that supplies the final values.
+- `comparison: C` — The reference object whose keys are used strictly for existence checks.
+
+**Returns:**
+`Record<KT & KC, T[KT]>` — A newly constructed object containing only intersecting properties. If arguments are missing or not objects, it returns an empty object `{}`.
+
+```typescript
+import { intersectKey } from '@dxtmisha/functional-basic'
+
+const inputData = { id: 1, name: 'John', age: 30, _internalToken: 'xyz' }
+const allowedSchema = { id: null, name: null, role: null }
+
+// Returns only the keys from inputData that are present in allowedSchema
+const result = intersectKey(inputData, allowedSchema)
+console.log(result) // { id: 1, name: 'John' }
+```

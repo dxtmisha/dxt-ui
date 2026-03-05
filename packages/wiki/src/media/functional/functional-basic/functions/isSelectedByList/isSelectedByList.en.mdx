@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isSelectedByList - Check selection across a list'/>
+
+# `isSelectedByList`
+
+An advanced utility explicitly extending the boundaries of the elementary `isSelected` functionality. It serves precisely to evaluate whether **all underlying elements** within a submitted list array (`values`) effectively align with the outlined verification goal (`selected`).
+
+If presented with a solitary value instead of an array collection, the program seamlessly delegates the heavy routing straight back to `isSelected`. Yet, if a mapped array array enters the fray (`values`), the software executes a holistic `.every()` iterator technique to solidly assure that **each discrete component** independently triumphs over the isolated `isSelected(item, selected)` test parameter.
+
+**Parameters:**
+- `values: T | T[]` — The single payload or a bundled array array collection mandating cross-checking.
+- `selected: T | T[]` — The target anchor point criteria (could be a string, numeral, or a mapped payload collection representing allowed terms).
+
+**Returns:**
+`boolean` — Commits to returning `true` exclusively when completely all distributed variables simultaneously conquer the testing perimeter hurdle.
+
+```typescript
+import { isSelectedByList } from '@dxtmisha/functional-basic'
+
+// Blanket success spanning the full bulk mapped uniformly against one specific key
+console.log(isSelectedByList(['apple', 'apple'], 'apple')) // true
+
+// Overwhelming validation granted since every item from values nests safely inside the selected pool bounds
+console.log(isSelectedByList(['apple', 'cherry'], ['banana', 'apple', 'cherry'])) // true
+
+// Failure detected. 'date' is absent from the permissions block (selected array). Outputs false through .every() mechanics. 
+console.log(isSelectedByList(['apple', 'date'], ['banana', 'apple', 'cherry'])) // false
+
+// Upon dropping a single index, inherently collapses into acting purely like isSelected
+console.log(isSelectedByList('apple', 'apple')) // true
+```

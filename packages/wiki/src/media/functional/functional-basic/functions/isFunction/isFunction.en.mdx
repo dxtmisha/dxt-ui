@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isFunction - Check if value is a function'/>
+
+# `isFunction`
+
+Determines whether the provided value is an executable function (including arrow functions, asynchronous functions, and generator functions).
+
+The check operates primarily via the `instanceof Function` operator, with a fallback safety check against `typeof callback === 'function'`.
+
+**Parameters:**
+- `callback: T` — The variable to be tested.
+
+**Returns:**
+`boolean` — Yields `true` when the argument is a valid function, returning `false` otherwise. Functions as a dedicated TypeScript type guard narrowing the type specifically down to `FunctionArgs<any, any>`.
+
+```typescript
+import { isFunction } from '@dxtmisha/functional-basic'
+
+const myLogger = () => console.log('Hi!')
+
+console.log(isFunction(myLogger)) // true
+console.log(isFunction({ myLogger })) // false
+console.log(isFunction('myLogger')) // false
+```

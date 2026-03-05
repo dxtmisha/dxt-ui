@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/frame - Cyclic requestAnimationFrame'/>
+
+# `frame`
+
+A utility that cyclically calls `requestAnimationFrame` to perform frame-by-frame animation in the browser.
+
+It's useful for creating smooth animations because the browser automatically optimizes the frame rate (typically 60 FPS) and pauses the animation when the tab is inactive. In non-DOM environments (such as SSR), `requestAnimationFrame` is not used, and the function executes the callback synchronously to prevent crashing.
+
+**Parameters:**
+- `callback: () => void` — The function to call when it's time to update your animation for the repaint.
+- `next?: () => boolean` — A condition function. If it returns `true`, the animation loop continues. If `false`, the loop stops.
+- `end?: () => void` — A callback function that is executed once the animation loop ends (when `next` returns `false`).
+
+**Returns:**
+`void`
+
+```typescript
+import { frame } from '@dxtmisha/functional-basic'
+
+const element = document.getElementById('box')
+let position = 0
+
+// Animation: slide the box 1px per frame until position reaches 100
+frame(
+  // callback (update frame)
+  () => {
+    position += 1
+    if (element) {
+      element.style.transform = `translateX(${position}px)`
+    }
+  },
+  // next (should we continue?)
+  () => position < 100,
+  // end (when finished)
+  () => console.log('Animation complete!')
+)
+```

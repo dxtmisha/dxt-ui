@@ -1,0 +1,29 @@
+import { describe, it, expect } from 'vitest'
+import { encodeAttribute } from '../encodeAttribute'
+
+describe('encodeAttribute', () => {
+  it('should encode ampersands', () => {
+    expect(encodeAttribute('foo & bar')).toBe('foo &amp; bar')
+  })
+
+  it('should encode less-than and greater-than signs', () => {
+    expect(encodeAttribute('<script>alert("test")</script>'))
+      .toBe('&lt;script&gt;alert(&quot;test&quot;)&lt;/script&gt;')
+  })
+
+  it('should encode double and single quotes', () => {
+    expect(encodeAttribute('He said "it\'s fine"')).toBe('He said &quot;it&#39;s fine&quot;')
+  })
+
+  it('should trim whitespace from the ends', () => {
+    expect(encodeAttribute('  \t hello world \n ')).toBe('hello world')
+  })
+
+  it('should handle strings without any special characters safely', () => {
+    expect(encodeAttribute('Regular text')).toBe('Regular text')
+  })
+
+  it('should handle an empty string', () => {
+    expect(encodeAttribute('')).toBe('')
+  })
+})

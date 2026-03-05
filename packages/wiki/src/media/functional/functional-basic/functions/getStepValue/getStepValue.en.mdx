@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getStepValue - Calculate absolute step value'/>
+
+# `getStepValue`
+
+Calculates the absolute value of one percent (`1%`) of the total range (the difference between the minimum and maximum values). This function is useful for determining by how much a slider's or a progress bar's coordinate should be updated when shifted by 1%.
+
+**Parameters:**
+- `min: number | undefined` — The minimum value of the range. If `undefined` is passed, `0` is used.
+- `max: number` — The maximum value of the range.
+
+**Returns:**
+`number` — The value representing 1% of the range's length. If the maximum value is less than or equal to the minimum, it returns `0`.
+
+```typescript
+import { getStepValue } from '@dxtmisha/functional-basic'
+
+// Range from 0 to 500, so 1% corresponds to 5 units
+console.log(getStepValue(0, 500)) // 5
+
+// Range from 50 to 150 (difference 100), 1% is 1 unit
+console.log(getStepValue(50, 150)) // 1
+```

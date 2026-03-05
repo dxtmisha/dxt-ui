@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getStepPercent - Tính toán phần trăm của một bước'/>
+
+# `getStepPercent`
+
+Tính toán xem phần trăm của toàn bộ phạm vi (tính từ giá trị nhỏ nhất đến giá trị lớn nhất) tương ứng với độ dài của một đơn vị (hoặc một bước = 1). Hàm này rất hữu ích khi thiết lập vị trí các thành phần của thanh trượt (slider) hoặc thanh tiến trình tính theo phần trăm.
+
+**Tham số:**
+- `min: number | undefined` — Giá trị tối thiểu của khoảng. Nếu truyền `undefined`, nó sẽ dùng `0`.
+- `max: number` — Giá trị tối đa của khoảng.
+
+**Trả về:**
+`number` — Phần trăm (từ 0 đến 100) mà một bước chiếm. Nếu giá trị tối đa nhỏ hơn hoặc bằng giá trị tối thiểu, hàm sẽ trả về `0`.
+
+```typescript
+import { getStepPercent } from '@dxtmisha/functional-basic'
+
+// Phạm vi từ 0 tới 200, vậy 1 bước sẽ bằng 0.5%
+console.log(getStepPercent(0, 200)) // 0.5
+
+// Phạm vi từ 50 tới 150 (chênh lệch 100), bước là 1%
+console.log(getStepPercent(50, 150)) // 1
+```

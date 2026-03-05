@@ -7,7 +7,10 @@ import { isObjectNotArray } from './isObjectNotArray'
  * @param item object for work/ объект для работы
  * @param path data path/ путь к данным
  */
-export function getItemByPath<T extends Record<string, any>>(item: T, path: string): string {
+export function getItemByPath<
+  T extends Record<string, any>,
+  R = string
+>(item: T, path: string): R | undefined {
   const paths = path.split('.', 2)
   const column = paths[0]
 
@@ -20,5 +23,5 @@ export function getItemByPath<T extends Record<string, any>>(item: T, path: stri
     return getItemByPath(item[column], paths[1])
   }
 
-  return (column && item?.[column]) ?? ''
+  return (column && item?.[column]) ?? undefined
 }

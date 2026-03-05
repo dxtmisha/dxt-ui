@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isFilled - Check if a value is filled'/>
+
+# `isFilled`
+
+A versatile utility for confirming whether a given variable is meaningfully "filled" with data. This function intelligently inspects an array of types including numbers, strings, booleans, arrays, and standard objects to evaluate emptiness beyond basic JavaScript falsiness.
+
+Unlike the generic truthy check (`if (value)`), `isFilled`:
+- Resolves arrays as empty (`false`) if their `.length` equals 0.
+- Assesses objects as empty (`false`) when all of their mapped values strictly result to `null`.
+- Flags definitive string placeholders like `'undefined'`, `'null'`, `'false'`, `'[]'` as entirely empty.
+- Out of the box, treats the string `'0'` as empty, although this is modularly configurable via the secondary `zeroTrue` prop.
+
+**Parameters:**
+- `value: T` — The targeted input value of any type anticipating validation.
+- `zeroTrue: boolean` — (Optional) When flagged as `true`, interprets the explicit string `'0'` as meaningfully filled (returns `true`), avoiding its traditional falsy deduction.
+
+**Returns:**
+`boolean` (`value is Exclude<T, EmptyValue>`) — Emits `true` if the variable is populated, or `false` when empty. This acts as a TypeScript type guard narrowing out `EmptyValue` definitions.
+
+```typescript
+import { isFilled } from '@dxtmisha/functional-basic'
+
+console.log(isFilled('Some text')) // true
+console.log(isFilled(100)) // true
+console.log(isFilled([1, 2, 3])) // true
+console.log(isFilled({ data: 'ok' })) // true
+
+// Scenarios evaluated as empty
+console.log(isFilled('')) // false
+console.log(isFilled([])) // false
+console.log(isFilled({ a: null })) // false
+console.log(isFilled('null')) // false
+console.log(isFilled('0')) // false
+
+// Applying zeroTrue override
+console.log(isFilled('0', true)) // true
+```

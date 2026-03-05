@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/copyObjectLite - Sao chép nông đối tượng'/>
+
+# `copyObjectLite`
+
+Tạo một bản sao nông (shallow copy) của một đối tượng đơn giản bằng cách sử dụng `Object.assign`. Nó có thể tùy chọn hợp nhất các thuộc tính bổ sung từ đối số thứ hai `source`.
+
+> Vì đây là sao chép nông, các đối tượng và mảng lồng nhau sẽ được sao chép theo tham chiếu (reference), chứ không phải theo giá trị.
+
+**Tham số:**
+- `value: T` — Đối tượng cần sao chép.
+- `source?: any` — Các thuộc tính bổ sung để hợp nhất với đối tượng `value`. Các thuộc tính từ `source` sẽ ghi đè các thuộc tính từ `value` nếu chúng có cùng khóa (key).
+
+**Trả về:**
+`R` (mặc định là `T`) — Bản sao nông mới của đối tượng.
+
+```typescript
+import { copyObjectLite } from '@dxtmisha/functional-basic'
+
+const original = { a: 1, b: { c: 2 } }
+
+// Sao chép nông đợn giản
+const copy = copyObjectLite(original)
+console.log(copy.b === original.b) // true (tham chiếu đến cùng một đối tượng lồng nhau)
+
+// Sao chép với các thuộc tính hợp nhất bổ sung
+const merged = copyObjectLite(original, { a: 10, d: 4 })
+console.log(merged) // { a: 10, b: { c: 2 }, d: 4 }
+```

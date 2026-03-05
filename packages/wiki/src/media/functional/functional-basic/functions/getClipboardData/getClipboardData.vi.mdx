@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getClipboardData - Lấy dữ liệu từ khay nhớ tạm'/>
+
+# `getClipboardData`
+
+Trích xuất bất đồng bộ văn bản từ khay nhớ tạm (clipboard).
+
+Hàm này chủ yếu cố gắng lấy dữ liệu văn bản từ sự kiện `ClipboardEvent` được cung cấp (ví dụ: khi xử lý sự kiện `paste`). Nếu sự kiện không được cung cấp hoặc không chứa dữ liệu, nó sẽ chuyển sang cách đọc trực tiếp từ khay nhớ tạm hệ thống bằng `navigator.clipboard.readText()`.
+
+> Lưu ý: Việc sử dụng `navigator.clipboard.readText()` yêu cầu ngữ cảnh an toàn (HTTPS) và có thể yêu cầu người dùng cấp quyền đọc khay nhớ tạm rõ ràng trong một số trình duyệt.
+
+**Tham số:**
+- `event?: ClipboardEvent` — Sự kiện khay nhớ tạm (tùy chọn) phát sinh trong quá trình cắt, sao chép hoặc dán.
+
+**Trả về:**
+`Promise<string>` — Một promise hoạt động và giải quyết/trả về chuỗi nội dung của khay nhớ tạm, hoặc trả về một chuỗi rỗng nếu truy xuất thất bại.
+
+```typescript
+import { getClipboardData } from '@dxtmisha/functional-basic'
+
+// Sử dụng trực tiếp
+document.querySelector('#paste-btn')?.addEventListener('click', async () => {
+  const text = await getClipboardData()
+  console.log('Đoạn văn trong khay nhớ:', text)
+})
+
+// Sử dụng trong trình xử lý sự kiện 'paste'
+document.addEventListener('paste', async (event) => {
+  const text = await getClipboardData(event)
+  console.log('Đoạn văn vừa dán:', text)
+})
+```

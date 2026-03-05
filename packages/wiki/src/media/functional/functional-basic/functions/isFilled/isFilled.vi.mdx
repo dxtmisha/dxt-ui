@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isFilled - Kiểm tra dữ liệu được điền'/>
+
+# `isFilled`
+
+Là một tiện ích đa năng để xét duyệt xem giá trị truyền vào có đang được lấp "đầy" dữ liệu cụ thể hay không. Cơ chế hàm này vận dụng thông minh các cách xử lý qua nhiều kiểu dữ liệu từ chuỗi ký tự, chữ số, kiểu quyết định, danh sách mảng cho tới khái niệm đối tượng nhằm giám định độ "trống" hiệu quả hơn việc xác nhận giá trị đúng/sai mặc định rập khuôn của JavaScript.
+
+Khác với hàm xét nhánh điều kiện truthy (`if (value)`), `isFilled` sở hữu những ngoại lệ:
+- Quét các mảng (array) trả kết quả trống rỗng (`false`) nếu tham số `.length` của nó hiển thị bằng 0.
+- Xét diện đối tượng (object) là trống (`false`) khi tất cả các định danh nội trú bị gán ngược bằng `null`.
+- Tách bóc các thẻ định nghĩa ảo cấu tạo bằng lớp màng kiểu string ví dụ như `'undefined'`, `'null'`, `'false'`, `'[]'` và coi nó đều là trống.
+- Kể cả chuỗi `'0'` mặc định coi là rỗng hụt trừ khi có cấu hình thông báo ngoại lệ lọt qua nhờ tham số `zeroTrue`.
+
+**Tham số:**
+- `value: T` — Mẫu giá trị bất kỳ được truyền đến để chèn thử nghiệm rà soát.
+- `zeroTrue: boolean` — (Tùy chọn) Nếu được áp bằng `true`, giá trị chuỗi `'0'` đó sẽ đột nhiên vượt cấp được hệ thống thâu nhận là có chữa dữ liệu (hoàn trả `true`).
+
+**Trả về:**
+`boolean` (`value is Exclude<T, EmptyValue>`) — Kết suất gởi trả về `true` chừng nào mẫu số đang có mang dữ liệu thông tin, hoặc `false` nếu trắng tinh. Cánh cổng hàm hoạt động song song chức năng khóa loại chặt kiểu TypeScript `EmptyValue`.
+
+```typescript
+import { isFilled } from '@dxtmisha/functional-basic'
+
+console.log(isFilled('Một văn bản')) // true
+console.log(isFilled(100)) // true
+console.log(isFilled([1, 2, 3])) // true
+console.log(isFilled({ data: 'ok' })) // true
+
+// Tình huống giá trị cạn hụt
+console.log(isFilled('')) // false
+console.log(isFilled([])) // false
+console.log(isFilled({ a: null })) // false
+console.log(isFilled('null')) // false
+console.log(isFilled('0')) // false
+
+// Ứng dụng ngoại lệ zeroTrue
+console.log(isFilled('0', true)) // true
+```

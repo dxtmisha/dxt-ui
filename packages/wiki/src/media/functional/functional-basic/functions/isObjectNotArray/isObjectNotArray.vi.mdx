@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isObjectNotArray - Phân định đối tượng loại trừ mảng'/>
+
+# `isObjectNotArray`
+
+Kích chạy quá trình bảo tra chuyên sâu triệt để, củng cố rằng mẫu thử nghiệm là một khối đối tượng đặc sệt kiểu dáng mộc cổ điển `{}` (Mẫu Record) mà lại đồng thời **tuyệt đối không đội lốt mảng (array) trá hình**.
+
+Chịu lệ thuộc vào gốc rễ cốt lõi Javascript khi mà chức năng `isObject` nền móng lại bao dung cấp quyền `true` bừa bãi cho cả các khung mảng lưới, tính năng điều giải này khắc phục hẳn lỗ thủng logic cực đoan trên. Mồi lửa châm ngòi qua dòng chắp vá đan xen giữa khuôn luật gốc `isObject(value)` kết bè mảng cùng vòng lưới xét nghiệm thắt chặt an ninh `!Array.isArray(value)`. Nhờ vậy, chuỗi mảng hoàn toàn dứt điểm bị phong sát ngoài cổng.
+
+**Tham số:**
+- `value: T` — Thông thể truyền vào cần quét độ định danh.
+
+**Trả về:**
+`boolean` — Nhấc lên rào tín phát `true` thu hẹp trên cục diện độc nhất dành cho đối tượng chính cống thuần tuý dạng `{ key: 'value' }`. Phạt cờ văng thông điệp `false` khi chống cự với các thể loại mảng `[]`, bóng ma null, kịch bản hàm chạy functions hay đơn thuần bao vật liệu mạt vụn primitives. Tỏa sáng qua chức tước khiên giáp Type Guard tước bỏ tàn độc tất cả các khả năng liên can null/undefined hay vũng nước mảng.
+
+```typescript
+import { isObjectNotArray } from '@dxtmisha/functional-basic'
+
+// Kịch bản gật đầu thành công chót lọt
+console.log(isObjectNotArray({ id: 1, name: 'Test' })) // true
+
+// Góc khuất được càn quét an toàn lảng tránh
+console.log(isObjectNotArray([1, 2, 3])) // false (Hàng đạo cụ kiểm tra mảng chối bỏ array không nề hà!)
+console.log(isObjectNotArray(null)) // false
+console.log(isObjectNotArray('string')) // false
+```

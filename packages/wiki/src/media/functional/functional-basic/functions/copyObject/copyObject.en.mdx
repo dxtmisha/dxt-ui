@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/copyObject - Copy an object'/>
+
+# `copyObject`
+
+Creates a deep copy of a simple object using `JSON.parse(JSON.stringify(value))`.
+
+> Note that this method is only suitable for simple objects and arrays containing serializable data. It will not copy methods (functions), `undefined` values, or symbols, and it cannot handle circular references.
+
+**Parameters:**
+- `value: T` — The object or value to be copied.
+
+**Returns:**
+`T` — A new copy of the object.
+
+```typescript
+import { copyObject } from '@dxtmisha/functional-basic'
+
+const original = { name: 'John', details: { age: 30 } }
+const copy = copyObject(original)
+
+copy.details.age = 31
+
+console.log(original.details.age) // 30 (the original object did not change)
+console.log(copy.details.age) // 31
+```

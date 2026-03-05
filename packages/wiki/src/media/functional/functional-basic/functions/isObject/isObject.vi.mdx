@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isObject - Khảo sát bản chất đối tượng'/>
+
+# `isObject`
+
+Công cụ tiện nghi cấp cơ sở rèn đúc chuyên cho nhu cầu tra soát nhanh gọn và an toàn để chốt chắc chắn một biến truyền vào có thực thể thuộc dòng tộc đối tượng object thuần hay không.
+
+Vì đặc thù lạ lùng của mã JavaScript, câu lệnh `typeof null` luôn giở mặt báo ra chữ `'object'`, đây vốn dĩ luôn là nguyên nhân chôn giấu bao rủi ro trục trặc mờ ám. Vượt qua yếu huyệt này, hàm kiểm tra bật lên màng bảo mật rà quét truthy gắt gao (`Boolean(value)`) nhằm triệt tiêu thẳng cánh cái nhãn `null` dối trá và sau đó bắt đầu điều tra tính xác định object nguyên nghĩa. Xin chú ý cặn kẽ vì các mảng (`[]`) rễ gốc trong Javascript mặc định coi là một dạng đối tượng phái sinh nên thử nghiệm lên tính năng này thì vẫn vạch ra `true`.
+
+**Tham số:**
+- `value: T` — Giá trị đưa tới thực nghiệm khảo lược thông số.
+
+**Trả về:**
+`boolean` — Phát nhượng hồi thư `true` nếu thể xác định đúng khớp đối tượng hoặc mảng liên kết (arrays). Đáp số lại chỉ toàn `false` văng vào mặt nhóm tham số kiểu vô ngã `null`, đơn nguyên primitives, hay khối định luật functions. Cùng vận hành làm bức thành rào cản Type Guard khoanh thu vùng định loại xuống `Record<any, any>`.
+
+```typescript
+import { isObject } from '@dxtmisha/functional-basic'
+
+console.log(isObject({ id: 1 })) // true
+console.log(isObject([1, 2, 3])) // true (Các mảng danh sách đều có chung bản chất là đối tượng ẩn sau Javascript!)
+
+// Thanh trừng triệt để ma trận cạm bẫy JS
+console.log(isObject(null)) // false
+console.log(isObject(100)) // false
+console.log(isObject('string')) // false
+```

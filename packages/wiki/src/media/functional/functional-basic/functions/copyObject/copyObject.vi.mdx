@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/copyObject - Sao chép đối tượng'/>
+
+# `copyObject`
+
+Tạo một bản sao sâu (deep copy) của một đối tượng đơn giản bằng cách sử dụng `JSON.parse(JSON.stringify(value))`.
+
+> Lưu ý rằng phương thức này chỉ phù hợp với các đối tượng dạng thuần đơn giản và mảng chứa dữ liệu có thể tuần tự hóa. Nó sẽ không sao chép các phương thức (hàm), giá trị `undefined`, symbols, và không thể xử lý các tham chiếu vòng (circular references).
+
+**Tham số:**
+- `value: T` — Đối tượng hoặc giá trị cần sao chép.
+
+**Trả về:**
+`T` — Bản sao mới của đối tượng.
+
+```typescript
+import { copyObject } from '@dxtmisha/functional-basic'
+
+const original = { name: 'John', details: { age: 30 } }
+const copy = copyObject(original)
+
+copy.details.age = 31
+
+console.log(original.details.age) // 30 (đối tượng gốc không bị thay đổi)
+console.log(copy.details.age) // 31
+```

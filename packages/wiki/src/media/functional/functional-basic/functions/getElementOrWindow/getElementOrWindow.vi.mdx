@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getElementOrWindow - Truy xuất Element hoặc Window'/>
+
+# `getElementOrWindow`
+
+Tiện ích này tương tự như `getElement`, nhưng có một điểm khác biệt đáng kể: nếu đối tượng toàn cục `window` được truyền vào dưới dạng một tham số, hàm sẽ trả về chính xác đối tượng đó. (Trái ngược với `getElement`, khi `getElement` sẽ trả về `document.body`).
+
+Nếu truyền vào một chuỗi hoặc một phần tử khác, hàm sẽ hoạt động giống hệt như tiện ích `getElement` tiêu chuẩn.
+
+**Tham số:**
+- `element?: ElementOrString<E>` — Một bộ chọn để tìm kiếm, một nút `Element`, hoặc đối tượng `Window`.
+
+**Trả về:**
+`E | undefined` — Phần tử được tìm thấy, phần tử được truyền vào ban đầu, bản thân đối tượng `window` (nếu đối tượng này được truyền vào), hoặc `undefined` nếu không có phần tử nào khớp.
+
+```typescript
+import { getElementOrWindow } from '@dxtmisha/functional-basic'
+
+// Việc truyền vào Window sẽ trả về Window (ngược lại, getElement sẽ trả về document.body)
+const win = getElementOrWindow(window)
+
+// Tìm kiếm bình thường bằng bộ chọn
+const btn = getElementOrWindow('.submit-btn')
+```

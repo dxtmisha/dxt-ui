@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getElementId - Lấy hoặc gán ID phần tử'/>
+
+# `getElementId`
+
+Trả về `id` của một phần tử DOM được chỉ định. Nếu phần tử tồn tại nhưng không có thuộc tính `id`, hàm sẽ tự động tạo một mã định danh duy nhất, gán nó cho phần tử và trả về mã đó.
+
+Ngoài ra, hàm cho phép đính kèm một bộ chọn CSS vào chuỗi trả về, để bạn có thể sử dụng ngay kết quả dưới dạng một bộ chọn kết hợp (ví dụ: `"#id-123456 .child-class"`).
+
+**Tham số:**
+- `element?: ElementOrString<E>` — Phần tử DOM hoặc chuỗi chọn để lấy ID.
+- `selector?: string` — Chuỗi tùy chọn sẽ được gắn vào giá trị ID trả về (chẳng hạn như các lớp giả hoặc bộ chọn phần tử con).
+
+**Trả về:**
+`string` — Chuỗi ID của phần tử, hoặc một chuỗi ID mới được tạo ra nếu không tìm thấy phần tử.
+
+```typescript
+import { getElementId } from '@dxtmisha/functional-basic'
+
+// Phần tử ban đầu không có ID
+const div = document.createElement('div')
+console.log(div.id) // ''
+
+const id = getElementId(div)
+console.log(id) // Ví dụ: 'id-123456'
+console.log(div.id) // 'id-123456' (tự động được gán)
+
+// Sử dụng bộ chọn bổ sung
+const selector = getElementId(div, ' > span.active')
+console.log(selector) // '#id-123456 > span.active'
+```

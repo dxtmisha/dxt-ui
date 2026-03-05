@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isNull - Check for null or undefined'/>
+
+# `isNull`
+
+An explicit, stringent utility focused entirely on confirming if a presented variable strictly equals either `null` or `undefined`.
+
+Distinguished from a conventional negative falsy check like `!value` (which intercepts valid zeroes `0`, vacuous strings `''`, and `false` toggles), this function deliberately sidesteps those values, honing in flawlessly on absent definitions.
+
+**Parameters:**
+- `value: T` — Any inclusive subject variable requested to be verified.
+
+**Returns:**
+`boolean` — Returns `true` uniformly whenever confronted with a raw `null` or an isolated `undefined` marker. It likewise fulfills the responsibility as a TypeScript type guard, securely minimizing the scope to `Undefined` (`null | undefined`).
+
+```typescript
+import { isNull } from '@dxtmisha/functional-basic'
+
+console.log(isNull(null)) // true
+console.log(isNull(undefined)) // true
+
+// Routine falsy traps revert as false logically
+console.log(isNull(0)) // false
+console.log(isNull('')) // false
+console.log(isNull(false)) // false
+```

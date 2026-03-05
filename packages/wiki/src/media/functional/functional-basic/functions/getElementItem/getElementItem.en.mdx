@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getElementItem - Retrieve element property value'/>
+
+# `getElementItem`
+
+Returns the value of a specific property from an HTML element (e.g., `id`, `className`, or any custom property if it's defined as a key on the element type). The utility uses `getElement` to find the node, and if the element is not found or lacks the specified property, it returns `defaultValue` (which defaults to `undefined`).
+
+**Parameters:**
+- `element: ElementOrString<T>` — A selector string or an existing DOM element.
+- `index: K | string` — The property name (key) of the element whose value is required.
+- `defaultValue?: D` — A fallback value returned if the property is not found.
+
+**Returns:**
+`T[K] | D | undefined` — The value of the requested property or the `defaultValue`.
+
+```typescript
+import { getElementItem } from '@dxtmisha/functional-basic'
+
+const input = document.createElement('input')
+input.type = 'text'
+input.id = 'my-input'
+
+// Getting the ID
+const elementId = getElementItem(input, 'id') 
+console.log(elementId) // 'my-input'
+
+// If the property is missing and we provide a fallback
+const testValue = getElementItem('.non-existent', 'id', 'fallback-id')
+console.log(testValue) // 'fallback-id'
+```

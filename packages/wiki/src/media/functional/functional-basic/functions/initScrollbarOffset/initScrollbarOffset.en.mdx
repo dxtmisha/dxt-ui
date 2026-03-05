@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/initScrollbarOffset - Initialize scrollbar offset'/>
+
+# `initScrollbarOffset`
+
+An asynchronous utility configured to calculate the underlying system width of the browser's scrollbar, safely rendering the result (in pixels) securely via the globally attached CSS custom variable named `--sys-scrollbar-offset` appended dynamically onto `<body>`.
+
+Dedicating precise numbers for system scrollbar sizing is an imperative design layer for constructing elegant modal overlays, flyouts, and body-scrolling locks without the page layout aggressively jumping back and forth. Resolving this size limits layout shift jitter.
+
+The function closely synchronizes with the `ScrollbarWidth` logic mapping internal to this package for the execution heavy-lifting.
+
+**Parameters:**
+This functionality operates without requiring any defined parameters.
+
+**Returns:**
+An asynchronous callback evaluating to `Promise<void>`, invoking the side-effect DOM-var injections exclusively.
+
+```typescript
+import { initScrollbarOffset } from '@dxtmisha/functional-basic'
+
+// Triggers sizing capture on app startup
+await initScrollbarOffset()
+
+// Utilize styling later implicitly:
+// body[data-scroll-locked] { padding-right: var(--sys-scrollbar-offset, 0px); }
+```

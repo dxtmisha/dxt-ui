@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/goScrollSmooth - Smooth scrolling to element'/>
+
+# `goScrollSmooth`
+
+Provides a smooth scrolling experience navigating the browser window or container to the designated element.
+
+The function first verifies whether the target element supports the native `scrollIntoView` method. If it does, and no `shift` (offset) parameter is given, it relies on the browser's native implementation. Conversely, when a `shift` is required (for instance, to clear a fixed header), the function calculates the offset using `getBoundingClientRect` and delegates the scrolling to `window.scrollTo`.
+
+**Parameters:**
+- `element: E` — The target element (`HTMLElement`) to scroll to.
+- `options: ScrollIntoViewOptions` — (Optional) Configuration options forwarded to `scrollIntoView` (e.g., `behavior`, `block`, `inline`).
+- `shift: number` — (Optional) Top margin offset (in pixels) applied to prevent the targeted element from being obscured by sticky/fixed navigation components. Defaults to `0`.
+
+**Returns:**
+The function does not return a value (`void`).
+
+```typescript
+import { goScrollSmooth } from '@dxtmisha/functional-basic'
+
+const section = document.getElementById('contact-us')
+
+// Standard smooth scroll to element execution
+goScrollSmooth(section)
+
+// Scroll resolving a 60px shift (safeguarding past a fixed header)
+goScrollSmooth(section, { behavior: 'smooth' }, 60)
+```

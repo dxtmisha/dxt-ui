@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getMaxLengthAllArray - Chiều dài lớn nhất trong mảng'/>
+
+# `getMaxLengthAllArray`
+
+Một tiện ích tìm chuỗi dài nhất trong mảng đã cung cấp và trả về độ dài của nó (dưới dạng một số). Hàm sử dụng hàm dựng sẵn `Math.max` kết hợp với `getLengthOfAllArray`.
+
+**Tham số:**
+- `data: ObjectOrArray<string>` — Mảng chuỗi đầu vào.
+
+**Trả về:**
+`number` — Độ dài của chuỗi dài nhất trong mảng. Nếu truyền vào mảng rỗng, hàm sẽ trả về `-Infinity`.
+
+```typescript
+import { getMaxLengthAllArray } from '@dxtmisha/functional-basic'
+
+const phrases = ['Xin chào', 'Chào buổi sáng', 'Chào']
+const maxLength = getMaxLengthAllArray(phrases)
+
+console.log(maxLength) // 13 ("Chào buổi sáng")
+```

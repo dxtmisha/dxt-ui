@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isDomRuntime - Проверка выполнения в браузере'/>
+
+# `isDomRuntime`
+
+Определяет, выполняется ли текущий код в среде браузера. 
+
+Проверка осуществляется путем анализа наличия глобального объекта `window` и его свойства `window.document`. Это стандартный способ гарантировать, что вызовы специфичных для DOM API функций (например, работа со скроллом, событиями, элементами) не вызовут ошибок при серверном рендеринге (SSR) или в среде Node.js.
+
+**Параметры:**
+Функция не принимает аргументов.
+
+**Возвращает:**
+`boolean` — `true`, если код выполняется в браузере (где `window` и `document` существуют). `false` — если код выполняется в серверной среде (например, Node.js или во время сборки статики).
+
+```typescript
+import { isDomRuntime } from '@dxtmisha/functional-basic'
+
+if (isDomRuntime()) {
+  // Безопасно обращаемся к window.localStorage или DOM
+  window.localStorage.setItem('visited', 'yes')
+  document.body.classList.add('client-rendered')
+} else {
+  // Логика для серверного окружения (SSR)
+  console.log('Rendering on server...')
+}
+```

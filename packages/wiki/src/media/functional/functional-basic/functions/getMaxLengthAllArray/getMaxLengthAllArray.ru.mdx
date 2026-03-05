@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getMaxLengthAllArray - Максимальная длина в массиве'/>
+
+# `getMaxLengthAllArray`
+
+Утилита, которая находит самую длинную строку в предоставленном массиве и возвращает её длину (число). Функция использует встроенный `Math.max` в сочетании с `getLengthOfAllArray`.
+
+**Параметры:**
+- `data: ObjectOrArray<string>` — Входной массив строк.
+
+**Возвращает:**
+`number` — Длина самой длинной строки массива. Если передан пустой массив, вернется `-Infinity`.
+
+```typescript
+import { getMaxLengthAllArray } from '@dxtmisha/functional-basic'
+
+const phrases = ['Привет', 'Доброе утро', 'Здравствуйте']
+const maxLength = getMaxLengthAllArray(phrases)
+
+console.log(maxLength) // 12 ("Здравствуйте")
+```

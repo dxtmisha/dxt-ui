@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getObjectOrNone - Гарантированный возврат объекта'/>
+
+# `getObjectOrNone`
+
+Простая утилита, которая проверяет, является ли переданное значение «настоящим» объектом (не `null`, не массивом, не примитивом), и возвращает его. Если переданный аргумент не объект, возвращается новый пустой объект `{}`. Функция полезна для безопасной инициализации или передачи параметров.
+
+**Параметры:**
+- `value: T` — Любое значение, которое предполагается быть объектом.
+
+**Возвращает:**
+`T & Record<string, any>` — Исходный объект, либо пустой объект `{}`, если исходное значение не прошло проверку.
+
+```typescript
+import { getObjectOrNone } from '@dxtmisha/functional-basic'
+
+// Успешный возврат объекта
+console.log(getObjectOrNone({ name: 'Admin' })) // { name: 'Admin' }
+
+// Массив — не подходящий тип объекта, вернется {}
+console.log(getObjectOrNone([1, 2, 3])) // {}
+
+// Примитивы и null возвращают {}
+console.log(getObjectOrNone(null)) // {}
+console.log(getObjectOrNone('строка')) // {}
+```

@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isFunction - Kiểm tra kiểu hàm'/>
+
+# `isFunction`
+
+Trực tiếp định hình xem thông số truyền tải có phải là một chức năng khả thi chạy dạng hàm/function hay không (bao hàm luôn cả hàm mũi tên arrow function, hàm bất đồng bộ async function, và cả chức năng sinh generator function).
+
+Cuộc điều kiểm này tuân lệnh vận hành dưới phép kiểm tra chuyên biệt `instanceof Function`, hỗ trợ cùng phương pháp hậu bị truyền thống `typeof callback === 'function'`.
+
+**Tham số:**
+- `callback: T` — Biến cần được định chuẩn.
+
+**Trả về:**
+`boolean` — Hồi báo kết quả `true` chỉ khi thông số truyền đúng thật là định dạng một hàm. Đóng luôn vai trò rào chắn kiểu bảo hộ TypeScript nhằm rẽ gọn biến xuống riêng diện mạo `FunctionArgs<any, any>`.
+
+```typescript
+import { isFunction } from '@dxtmisha/functional-basic'
+
+const myLogger = () => console.log('Hi!')
+
+console.log(isFunction(myLogger)) // true
+console.log(isFunction({ myLogger })) // false
+console.log(isFunction('myLogger')) // false
+```

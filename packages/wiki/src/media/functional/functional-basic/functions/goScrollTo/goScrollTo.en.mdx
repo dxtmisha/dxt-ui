@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/goScrollTo - Scroll container to element'/>
+
+# `goScrollTo`
+
+Executes scrolling within a defined container element to ensure that the designated child target element falls into the visible area. The function retrieves the bounding client rects (`getBoundingClientRect`) of both elements and engages the `scrollBy` method based on relative coordinate offsets.
+
+Unlike `goScrollSmooth` (which scrolls the general window or delegates to `scrollIntoView`), `goScrollTo` operates through deliberate margins calculating exact inner distances within an explicitly provided container framework.
+
+**Parameters:**
+- `element: HTMLElement | undefined` — The parent scroll container element.
+- `elementTo: HTMLElement | undefined` — The targeted goal element (normally nestled within the container parent) needing focus.
+- `behavior: ScrollBehavior` — (Optional) Adjusts the scroll animation style, defers to `'smooth'` automatically.
+
+**Returns:**
+Commits the side-effect scroll adjustment safely returning `void`.
+
+```typescript
+import { goScrollTo } from '@dxtmisha/functional-basic'
+
+const list = document.getElementById('item-list')
+const targetItem = document.getElementById('item-42')
+
+// Safely animates scrolling across the list down to item 42
+goScrollTo(list, targetItem)
+```

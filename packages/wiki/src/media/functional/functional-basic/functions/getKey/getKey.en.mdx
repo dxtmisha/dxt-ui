@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getKey - Get pressed key code'/>
+
+# `getKey`
+
+Returns the code or name of the key that was pressed, based on the `KeyboardEvent` object. This utility normalizes retrieving the key identifier by safely attempting properties in the following priority order: `event.key` → `event.code` → stringified `event.keyCode`. If all fail, it returns `undefined`.
+
+**Parameters:**
+- `event: KeyboardEvent` — The keyboard event object (triggered by `keydown`, `keyup`, or `keypress`).
+
+**Returns:**
+`string` — The name or code of the pressed key (e.g., `'Enter'`, `'Escape'`, `'A'`).
+
+```typescript
+import { getKey } from '@dxtmisha/functional-basic'
+
+document.addEventListener('keydown', (e) => {
+  const keyName = getKey(e)
+  
+  if (keyName === 'Escape') {
+    console.log('User pressed Escape! Closing menu.')
+  }
+})
+```

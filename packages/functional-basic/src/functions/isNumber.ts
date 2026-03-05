@@ -9,7 +9,7 @@ export function isNumber(value: any): boolean {
     case 'number':
       return true
     case 'string':
-      return Boolean(value.match(/^[0-9]+$/))
+      return Boolean(value.match(/^-?[0-9]+(\.[0-9]+)?$/))
     default:
       return false
   }

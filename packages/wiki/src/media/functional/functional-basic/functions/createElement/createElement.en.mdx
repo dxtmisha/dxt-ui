@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/createElement - Create an HTML element'/>
+
+# `createElement`
+
+In a browser environment, creates a new HTML element with the specified tag name and inserts it into the DOM tree.
+
+The function relies on `isDomRuntime()` to verify the presence of a DOM environment. If the code executes outside the browser (e.g., during SSR on the server), the function will return `undefined`.
+
+**Parameters:**
+- `parentElement?: HTMLElement` — The parent element into which the new node will be inserted.
+- `tagName: string = 'div'` — A string specifying the type of element to create (defaults to `'div'`).
+- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — An object containing attributes and properties for the element (e.g., `id`, `className`, event listeners), or a callback function for custom processing of the element.
+- `referenceElement?: HTMLElement` — The node before which the new `element` is inserted. If omitted (or `null`), the element is appended as the last child of the parent (`appendChild`).
+
+**Returns:**
+`T | undefined` — The created HTML element, or `undefined` if the DOM is not available.
+
+```typescript
+import { createElement } from '@dxtmisha/functional-basic'
+
+const container = document.getElementById('app')
+
+// Creating an element with a properties object
+const btn = createElement(container, 'button', {
+  className: 'primary-btn',
+  textContent: 'Click me',
+  onclick: () => alert('Clicked!')
+})
+
+// Custom configuration via callback function
+createElement(container, 'span', (el) => {
+  el.style.color = 'red'
+  el.dataset.customId = '123'
+  el.textContent = 'Error text'
+})
+```

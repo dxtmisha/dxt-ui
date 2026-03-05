@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/executePromise - Execute Promise or function'/>
+
+# `executePromise`
+
+A utility that safely executes a function and/or awaits the resolution of an asynchronous result (Promise).
+
+Under the hood, it uses the `executeFunction` utility. If passed a function returning a Promise, `executePromise` executes it and waits for the `Promise` to resolve. If a synchronous value or a regular function returning a synchronous value is passed, the utility immediately returns that result.
+
+**Parameters:**
+- `callback: (() => Promise<T>) | (() => T) | T` — A value, a `Promise`, or a function capable of returning a `Promise` or a plain value.
+
+**Returns:**
+`Promise<T>` — A promise resolving to the provided or computed value.
+
+```typescript
+import { executePromise } from '@dxtmisha/functional-basic'
+
+// With an async function
+const fetchData = async () => {
+  return await fetch('/api/data').then(res => res.json())
+}
+const result1 = await executePromise(fetchData)
+
+// With a synchronous function
+const staticData = () => 'Sync data'
+const result2 = await executePromise(staticData)
+
+// With a static value
+const result3 = await executePromise('Data')
+```

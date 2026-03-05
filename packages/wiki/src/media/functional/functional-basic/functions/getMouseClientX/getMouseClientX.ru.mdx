@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getMouseClientX - Получение координаты X события'/>
+
+# `getMouseClientX`
+
+Извлекает X-координату (по горизонтали) указателя (мыши или пальца) относительно видимой области окна браузера (viewport) из объекта события. 
+
+Функция обрабатывает как обычные события мыши (`MouseEvent`), так и события касания (`TouchEvent`), отдавая приоритет свойству `clientX`. Если `clientX` не найден в самом событии, производится поиск в массивах касаний `targetTouches` и `touches`.
+
+**Параметры:**
+- `event: MouseEvent & TouchEvent` — Объект события (`mousemove`, `touchmove`, `click` и т.д.).
+
+**Возвращает:**
+`number` — X координата курсора/касания. В случае её отсутствия возвращается `0`.
+
+```typescript
+import { getMouseClientX } from '@dxtmisha/functional-basic'
+
+document.addEventListener('click', (event) => {
+  const x = getMouseClientX(event)
+  console.log(`Пользователь кликнул на расстоянии ${x}px от левого края окна`)
+})
+```

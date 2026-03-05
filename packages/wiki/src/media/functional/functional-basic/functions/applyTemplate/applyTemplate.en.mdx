@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/applyTemplate - Applying a template to text'/>
+
+# `applyTemplate`
+
+Applies a template to text, replacing markers (keys) with values from the provided object or array.
+
+The function supports two types of templates:
+1. **Positional markers (`%d`, `%e`, `%f`, etc.)** — replaced sequentially by values from the provided array (or object).
+2. **Named markers in square or curly brackets (`[key]` or `{key}`)** — replaced by the corresponding values from the replacement object.
+   It also supports paired tags like `[key]content[/key]` or `{key}content{/key}`. When used, the function wraps the content between the tags by replacing the `[content]` or `{content}` placeholder inside the provided value.
+
+**Parameters:**
+- `text: string` — The original text containing template markers.
+- `replacement: Record<string, string | number> | string[]` — An object or array containing values for substitution. Defaults to `{}`.
+
+**Returns:**
+`string` — The text with substituted values.
+
+```typescript
+import { applyTemplate } from '@dxtmisha/functional-basic'
+
+// Positional markers
+console.log(applyTemplate('Hello, %d %e!', ['John', 'Doe'])) // 'Hello, John Doe!'
+
+// Named markers
+console.log(applyTemplate('Hello, [name]!', { name: 'John' })) // 'Hello, John!'
+console.log(applyTemplate('Hello, {name}!', { name: 'John' })) // 'Hello, John!'
+
+// Wrapped tags with content substitution
+console.log(applyTemplate('Click [link]here[/link]', { link: '<a href="#">[content]</a>' }))
+console.log(applyTemplate('Click {link}here{/link}', { link: '<a href="#">{content}</a>' }))
+// 'Click <a href="#">here</a>'
+```

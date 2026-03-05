@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/blobToBase64 - Chuyển đổi Blob thành Base64'/>
+
+# `blobToBase64`
+
+Chuyển đổi bất đồng bộ một đối tượng `Blob` thành chuỗi `Base64` bằng cách sử dụng `FileReader`.
+
+Hàm này rất hữu ích để chuẩn bị tệp hoặc hình ảnh trước khi gửi đến máy chủ, hoặc để hiển thị trực tiếp trên trình duyệt thông qua Data URL (ví dụ: trong thẻ `<img>`).
+
+**Tham số:**
+- `blob: Blob` — Đối tượng `Blob` (hoặc `File`) cần chuyển đổi.
+
+**Trả về:**
+`Promise<string | ArrayBuffer | null>` — Trả về một promise sẽ được hoàn thành với chuỗi Base64 (Data URL) hoặc bị từ chối với một lỗi nếu việc đọc tệp thất bại.
+
+```typescript
+import { blobToBase64 } from '@dxtmisha/functional-basic'
+
+async function uploadFile(file: File) {
+  try {
+    const base64String = await blobToBase64(file)
+    console.log(base64String) // 'data:image/png;base64,iVBORw0KGgo...'
+  } catch (error) {
+    console.error('Lỗi khi đọc tệp', error)
+  }
+}
+```

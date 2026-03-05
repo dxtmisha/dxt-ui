@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/executePromise - Thực thi Promise hoặc hàm'/>
+
+# `executePromise`
+
+Một tiện ích thực thi an toàn một hàm và/hoặc chờ đợi kết quả bất đồng bộ (Promise) được hoàn thành.
+
+Bản chất bên trong, nó sử dụng tiện ích `executeFunction`. Nếu truyền vào một hàm trả về một Promise, `executePromise` sẽ thực thi hàm đó và đợi `Promise` hoàn thành. Nếu truyền vào một giá trị đồng bộ hoặc một hàm thông thường trả về giá trị đồng bộ, tiện ích sẽ trả về ngay kết quả đó.
+
+**Tham số:**
+- `callback: (() => Promise<T>) | (() => T) | T` — Một giá trị, một `Promise`, hoặc một hàm có thể trả về một `Promise` hoặc một giá trị thông thường.
+
+**Trả về:**
+`Promise<T>` — Một promise sẽ được hoàn thành với giá trị được cung cấp hoặc được tính toán.
+
+```typescript
+import { executePromise } from '@dxtmisha/functional-basic'
+
+// Với hàm async
+const fetchData = async () => {
+  return await fetch('/api/data').then(res => res.json())
+}
+const result1 = await executePromise(fetchData)
+
+// Với hàm đồng bộ
+const staticData = () => 'Dữ liệu đồng bộ'
+const result2 = await executePromise(staticData)
+
+// Với giá trị tĩnh
+const result3 = await executePromise('Dữ liệu')
+```

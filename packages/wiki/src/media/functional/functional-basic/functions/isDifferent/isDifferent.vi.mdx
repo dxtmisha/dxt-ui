@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isDifferent - Kiểm tra sự khác biệt của đối tượng'/>
+
+# `isDifferent`
+
+Tiến hành đánh giá xem hai đối tượng được cung cấp có khác biệt với nhau hay không.
+
+Hàm hoạt động thông qua việc so sánh đếm tổng số lượng khóa (thuộc tính) trong mỗi đối tượng. Khi mà số lượng khóa trên cả hai khớp nhau, hàm sẽ tiếp nối chạy một chuỗi theo dõi nghiêm ngặt giá trị trong các khóa thông qua vòng lặp tiện ích nội bộ `forEach` để biết chính xác có lệch lạc số liệu hay không.
+
+**Tham số:**
+- `value: ObjectItem<T>` — Đối tượng chính (dữ liệu mới) được đem ra làm chủ thể xác nhận.
+- `old: ObjectItem<T>` — Đối tượng tham chiếu (yếu tố lấy dữ liệu cũ).
+
+**Trả về:**
+`boolean` — Trả về `true` nếu tìm ra sự sai khác giữa hai mẫu phân tích đối tượng (có thể ở lượng phân bổ khóa hoặc có thuộc tính khác xa với cấu trúc của mẫu bên cạnh), hoặc `false` nếu chúng đồng nhất chuẩn mực hoàn toàn.
+
+```typescript
+import { isDifferent } from '@dxtmisha/functional-basic'
+
+const oldState = { id: 1, active: false }
+const newState = { id: 1, active: true }
+
+// Đối tượng khác biệt tại trường phân tích `active`
+console.log(isDifferent(newState, oldState)) // true
+
+const sameState = { id: 1, active: false }
+
+// Mẫu đối tượng giống y hệt ở tất cả thông số
+console.log(isDifferent(sameState, oldState)) // false
+```

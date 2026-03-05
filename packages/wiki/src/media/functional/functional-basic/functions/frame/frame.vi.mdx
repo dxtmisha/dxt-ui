@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/frame - Vòng lặp requestAnimationFrame'/>
+
+# `frame`
+
+Tiện ích này sẽ gọi vòng lặp `requestAnimationFrame` để thực hiện hoạt ảnh theo từng khung hình (frame-by-frame) trong trình duyệt.
+
+Trình duyệt tự động tối ưu hóa tốc độ khung hình (thường là 60 FPS) và dừng hoạt ảnh khi tab không hoạt động, giúp hiển thị mượt mà. Trong các môi trường không có DOM (chẳng hạn như SSR), `requestAnimationFrame` sẽ không được sử dụng và hàm chỉ thực thi lệnh callback một lần đồng bộ.
+
+**Tham số:**
+- `callback: () => void` — Hàm được gọi khi đến thời điểm cập nhật hoạt ảnh cho lần vẽ lại tiếp theo.
+- `next?: () => boolean` — Hàm điều kiện. Nếu trả về `true`, vòng lặp hoạt ảnh tiếp tục. Nếu trả về `false`, vòng lặp dừng lại.
+- `end?: () => void` — Hàm được thực thi một lần khi vòng lặp hoạt ảnh dừng lại (nghĩa là `next` trả về false).
+
+**Trả về:**
+`void`
+
+```typescript
+import { frame } from '@dxtmisha/functional-basic'
+
+const element = document.getElementById('box')
+let position = 0
+
+// Hoạt ảnh: di chuyển khối 1px mỗi khung hình cho đến khi đến vị trí 100
+frame(
+  // callback (cập nhật khung hình)
+  () => {
+    position += 1
+    if (element) {
+      element.style.transform = `translateX(${position}px)`
+    }
+  },
+  // next (tiếp tục?)
+  () => position < 100,
+  // end (kết thúc)
+  () => console.log('Hoạt ảnh đã hoàn thành!')
+)
+```

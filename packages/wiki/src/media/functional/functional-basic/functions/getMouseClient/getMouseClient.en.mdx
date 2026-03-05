@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getMouseClient - Get X and Y coordinates of an event'/>
+
+# `getMouseClient`
+
+Extracts the X and Y coordinates of the pointer (mouse or touch) relative to the visible area of the browser window (viewport) from the event object.
+
+The function handles both standard mouse events (`MouseEvent`) and touch events (`TouchEvent`), providing a unified interface (returning an `ImageCoordinator` object containing `x` and `y` properties). This is especially useful when creating drag-and-drop interfaces, sliders, and other interactive elements meant to work across different devices.
+
+**Parameters:**
+- `event: MouseEvent & TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
+
+**Returns:**
+`ImageCoordinator` — An object containing `x` and `y` coordinate properties. If coordinates are not found in the event, it defaults to `{ x: 0, y: 0 }`.
+
+```typescript
+import { getMouseClient } from '@dxtmisha/functional-basic'
+
+document.addEventListener('mousemove', (event) => {
+  const coords = getMouseClient(event)
+  console.log(`Cursor is currently at X: ${coords.x}, Y: ${coords.y}`)
+})
+
+document.addEventListener('touchmove', (event) => {
+  const coords = getMouseClient(event)
+  console.log(`Touch is currently at X: ${coords.x}, Y: ${coords.y}`)
+})
+```

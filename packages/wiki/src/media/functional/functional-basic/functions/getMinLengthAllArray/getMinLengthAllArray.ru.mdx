@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getMinLengthAllArray - Минимальная длина в массиве'/>
+
+# `getMinLengthAllArray`
+
+Утилита, которая находит самую короткую строку в предоставленном массиве и возвращает её длину (число). Функция использует встроенный `Math.min` в сочетании с `getLengthOfAllArray`.
+
+**Параметры:**
+- `data: ObjectOrArray<string>` — Входной массив строк.
+
+**Возвращает:**
+`number` — Длина самой короткой строки массива. Если передан пустой массив, вернется `Infinity`.
+
+```typescript
+import { getMinLengthAllArray } from '@dxtmisha/functional-basic'
+
+const words = ['компьютер', 'код', 'программирование']
+const minLength = getMinLengthAllArray(words)
+
+console.log(minLength) // 3 ("код")
+```

@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isFunction - Проверка на функцию'/>
+
+# `isFunction`
+
+Определяет, является ли переданное значение исполняемой функцией (включая стрелочные, асинхронные функции и функции-генераторы).
+
+Проверка осуществляется с использованием оператора `instanceof Function`, а также запасной проверки `typeof callback === 'function'`.
+
+**Параметры:**
+- `callback: T` — Значение для проверки.
+
+**Возвращает:**
+`boolean` — Вернет `true`, если аргумент является функцией, и `false` в противном случае. Также работает как защитник типа (type guard), сужая тип до `FunctionArgs<any, any>`.
+
+```typescript
+import { isFunction } from '@dxtmisha/functional-basic'
+
+const myLogger = () => console.log('Hi!')
+
+console.log(isFunction(myLogger)) // true
+console.log(isFunction({ myLogger })) // false
+console.log(isFunction('myLogger')) // false
+```

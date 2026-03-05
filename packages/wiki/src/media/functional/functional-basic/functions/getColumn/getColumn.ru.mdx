@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getColumn - Извлечение колонки данных'/>
+
+# `getColumn`
+
+Утилита, которая проходит по массиву объектов и возвращает новый массив, состоящий только из значений указанного ключа (свойства) каждого объекта. По сути, это типизированный аналог `Array.prototype.map(item => item[key])`.
+
+**Параметры:**
+- `array: ObjectOrArray<T>` — Массив (или объект, работающий как словарь), содержащий элементы типа `T`.
+- `column: K` — Ключ (имя свойства), значения которого нужно извлечь.
+
+**Возвращает:**
+`(T[K] | undefined)[]` — Массив значений запрошенного свойства `column`. Если свойство отсутствует у некоторых элементов, на их месте будет `undefined`.
+
+```typescript
+import { getColumn } from '@dxtmisha/functional-basic'
+
+const users = [
+  { id: 1, name: 'Анна', role: 'admin' },
+  { id: 2, name: 'Иван', role: 'user' },
+  { id: 3, name: 'Мария', role: 'user' }
+]
+
+const names = getColumn(users, 'name')
+console.log(names) // ['Анна', 'Иван', 'Мария']
+
+const ids = getColumn(users, 'id')
+console.log(ids) // [1, 2, 3]
+```

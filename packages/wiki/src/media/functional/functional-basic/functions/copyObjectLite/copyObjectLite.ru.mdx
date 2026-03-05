@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/copyObjectLite - Поверхностное копирование объекта'/>
+
+# `copyObjectLite`
+
+Создает новую поверхностную (shallow) копию простого объекта, используя `Object.assign`. Опционально может применять к результату дополнительные свойства из второго аргумента `source`.
+
+> Поскольку это поверхностное копирование, вложенные объекты и массивы будут скопированы по ссылке, а не по значению.
+
+**Параметры:**
+- `value: T` — Объект, который необходимо скопировать.
+- `source?: any` — Дополнительные свойства для слияния с основным объектом `value`. Значения из `source` перезапишут значения из `value`, если ключи совпадают.
+
+**Возвращает:**
+`R` (по умолчанию `T`) — Новая поверхностная копия объекта.
+
+```typescript
+import { copyObjectLite } from '@dxtmisha/functional-basic'
+
+const original = { a: 1, b: { c: 2 } }
+
+// Простое копирование
+const copy = copyObjectLite(original)
+console.log(copy.b === original.b) // true (ссылка на один и тот же вложенный объект)
+
+// Копирование с дополнительными свойствами
+const merged = copyObjectLite(original, { a: 10, d: 4 })
+console.log(merged) // { a: 10, b: { c: 2 }, d: 4 }
+```

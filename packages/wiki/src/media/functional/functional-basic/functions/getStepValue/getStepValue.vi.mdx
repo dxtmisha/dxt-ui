@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getStepValue - Tính toán giá trị bước tuyệt đối'/>
+
+# `getStepValue`
+
+Tính toán giá trị tuyệt đối của một phần trăm (`1%`) dựa trên toàn bộ phạm vi (sự khác biệt giữa giá trị lớn nhất và nhỏ nhất). Hàm này rất hữu ích để xác định giá trị của thanh trượt hoặc thanh quy trình sẽ thay đổi bao nhiêu đơn vị khi người dùng kéo thay đổi 1%.
+
+**Tham số:**
+- `min: number | undefined` — Giá trị tối thiểu của khoảng. Nếu truyền `undefined`, nó sẽ dùng `0`.
+- `max: number` — Giá trị tối đa của khoảng.
+
+**Trả về:**
+`number` — Giá trị đại diện cho 1% sự chênh lệch mốc độ dài. Nếu giá trị tối đa nhỏ hơn hoặc bằng giá trị tối thiểu, hàm sẽ trả về `0`.
+
+```typescript
+import { getStepValue } from '@dxtmisha/functional-basic'
+
+// Phạm vi từ 0 tới 500, vậy 1% tương ứng là 5 đơn vị
+console.log(getStepValue(0, 500)) // 5
+
+// Phạm vi từ 50 tới 150 (chênh lệch 100), 1% là 1 đơn vị
+console.log(getStepValue(50, 150)) // 1
+```

@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getElement - Получение HTML-элемента'/>
+
+# `getElement`
+
+Возвращает `Element` (HTML-узел) документа. Утилита принимает на вход строку-селектор, объект `Window` или готовый `Element` и возвращает соответствующий DOM-узел, если выполнение происходит в браузере. В средах без DOM (например, SSR) возвращает `undefined`.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — CSS-селектор (например, `'.btn'`), объект `Window` или уже существующий узел `Element`.
+
+**Возвращает:**
+`R | undefined` — найденный или переданный DOM-узел, либо `document.body` если был передан `Window`. Возвращает `undefined`, если элемент не найден или DOM недоступен.
+
+```typescript
+import { getElement } from '@dxtmisha/functional-basic'
+
+// Поиск по селектору
+const btn = getElement('.submit-btn')
+
+// Передача существующего элемента
+const sameBtn = getElement(btn)
+
+// Передача Window вернет document.body
+const body = getElement(window)
+```

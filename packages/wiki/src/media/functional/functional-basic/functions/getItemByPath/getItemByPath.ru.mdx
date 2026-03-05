@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getItemByPath - Доступ к вложенному свойству'/>
+
+# `getItemByPath`
+
+Утилита, которая безопасно извлекает значение из глубоко вложенного объекта, используя строку с путем, где уровни вложенности разделены точкой (`.`). Если свойство на любом из этапов не найдено, функция изящно вернёт `undefined` (избегая ошибки *Cannot read properties of undefined*).
+
+**Примечание:** Функция позволяет передать обобщенный тип возвращаемого значения `R` (по умолчанию `string`). При доступе к массиву в качестве ключа можно указывать строковый индекс (`"list.0.name"`).
+
+**Параметры:**
+- `item: T` — Целевой объект или массив, в котором осуществляется поиск.
+- `path: string` — Путь к свойству, разделенный точками (например, `"user.address.city"` или `"list.1.id"`).
+
+**Возвращает:**
+`R | undefined` — Значение целевого свойства (типа `R`), либо `undefined`, если свойство или промежуточный шаг отсутствует.
+
+```typescript
+import { getItemByPath } from '@dxtmisha/functional-basic'
+
+const data = {
+  profile: {
+    details: {
+      bio: 'Разработчик интерфейсов'
+    }
+  },
+  roles: ['admin', 'manager']
+}
+
+// Успешный доступ
+console.log(getItemByPath(data, 'profile.details.bio')) // 'Разработчик интерфейсов'
+
+// Доступ к массиву по индексу (написанному строкой)
+console.log(getItemByPath(data, 'roles.0')) // 'admin'
+
+// Безопасное падение на несуществующее свойство
+console.log(getItemByPath(data, 'profile.missing.key')) // undefined
+```

@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/domQuerySelector - Выбор элемента в DOM'/>
+
+# `domQuerySelector`
+
+Ищет и возвращает первый HTML-элемент, соответствующий указанному CSS-селектору.
+
+Функция проверяет наличие браузерного (DOM) окружения с помощью `isDomRuntime()`. Если код выполняется на сервере (SSR) или DOM недоступен, функция безопасно вернёт `undefined`.
+
+**Параметры:**
+- `selectors: string` — Строка с одним или несколькими CSS-селекторами для поиска.
+
+**Возвращает:**
+`E | undefined` — Первый найденный элемент, или `undefined`, если совпадений нет либо DOM недоступен.
+
+```typescript
+import { domQuerySelector } from '@dxtmisha/functional-basic'
+
+// Поиск по классу
+const btn = domQuerySelector('.submit-button')
+
+// Поиск по ID
+const header = domQuerySelector('#main-header')
+
+if (btn) {
+  btn.textContent = 'Отправить'
+}
+```

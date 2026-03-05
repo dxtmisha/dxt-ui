@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isDomData - Check environment for Data URL'/>
+
+# `isDomData`
+
+A straightforward utility that verifies whether the current execution context operates within a location (`location.href`) prefixed by the `data:` schema constraint. This proves highly useful for isolating environments running inline scripts via data-URIs or rendering distinct sandboxes (like specific `iframes`).
+
+**Parameters:**
+This function does not accept any arguments.
+
+**Returns:**
+`boolean` — Returns `true` if the global document's URL originates from `data:`, yielding `false` in any other scenario.
+
+```typescript
+import { isDomData } from '@dxtmisha/functional-basic'
+
+// Executing code natively on 'https://example.com'
+console.log(isDomData()) // false
+
+// Executing script bundled inside a 'data:text/html,...' instance
+console.log(isDomData()) // true
+```

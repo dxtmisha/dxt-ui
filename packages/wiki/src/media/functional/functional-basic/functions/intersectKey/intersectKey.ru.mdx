@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/intersectKey - Пересечение объектов по ключам'/>
+
+# `intersectKey`
+
+Анализирует два объекта (или массива) и возвращает новый объект, содержащий только те свойства из первого объекта, ключи которых присутствуют и во втором объекте. Значения для результирующего объекта берутся из исходного объекта (`data`).
+
+Функция полезна для фильтрации данных по разрешенному списку свойств или для синхронизации моделей.
+
+**Параметры:**
+- `data: T` — Основной объект, из которого будут браться значения.
+- `comparison: C` — Объект, список ключей которого используется для проверки наличия.
+
+**Возвращает:**
+`Record<KT & KC, T[KT]>` — Новый объект, в который скопированы только пересекающиеся свойства. Если аргументы не переданы или не являются объектами, вернет пустой объект `{}`.
+
+```typescript
+import { intersectKey } from '@dxtmisha/functional-basic'
+
+const inputData = { id: 1, name: 'John', age: 30, _internalToken: 'xyz' }
+const allowedSchema = { id: null, name: null, role: null }
+
+// Возвратит только ключи из inputData, которые есть в allowedSchema
+const result = intersectKey(inputData, allowedSchema)
+console.log(result) // { id: 1, name: 'John' }
+```

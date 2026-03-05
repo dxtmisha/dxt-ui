@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isSelected - Check if a value is selected'/>
+
+# `isSelected`
+
+A multi-purpose utility dedicated to verifying if a particular reference value matches the desired selection criteria. This function accommodates multiple dynamic comparison strategies based heavily on the architectural structure of the `selected` argument:
+
+1. **Prohibit Nuances:** If the incoming test variable (`value`) manifests as `null` or `undefined`, the function safely terminates with a flat `false`.
+2. **Array Validations:** In instances where the `selected` payload arrives configured as an array `[]`, the algorithm utilizes `.includes(value)` to search the array for a direct hit.
+3. **Smart Numeric Casting:** If both target variables theoretically align as numbers (determined via the `isNumber()` sub-function), the engine actively homogenizes them parsing them strictly to digit comparisons irrespective of their exact string origins (e.g., `'5'` translates safely into matching pure integer `5`).
+4. **Failsafe Comparison:** Absent any of the conditions outlined above, it retreats to standard strict equality `value === selected` matching.
+
+**Parameters:**
+- `value: T` — The active element or context payload waiting for confirmation.
+- `selected: T | T[] | S` — The benchmark reference acting as the target check marker; this could seamlessly be a sole primitive or a broader array array list.
+
+**Returns:**
+`boolean` — Renders `true` assuming the initial argument perfectly corresponds to the requested target data boundary, projecting `false` otherwise.
+
+```typescript
+import { isSelected } from '@dxtmisha/functional-basic'
+
+// Standard discrete checks
+console.log(isSelected('apple', 'apple')) // true
+console.log(isSelected('apple', 'banana')) // false
+
+// Validating inclusion against a data array collection
+console.log(isSelected(2, [1, 2, 3])) // true
+console.log(isSelected('dog', ['cat', 'mouse'])) // false
+
+// Intelligent Cross-type Casted Number matching (string against raw ints)
+console.log(isSelected('5', 5)) // true
+
+// Safety checks
+console.log(isSelected(null, 1)) // false
+```

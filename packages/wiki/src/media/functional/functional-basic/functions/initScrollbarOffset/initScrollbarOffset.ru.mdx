@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/initScrollbarOffset - Инициализация отступа скроллбара'/>
+
+# `initScrollbarOffset`
+
+Асинхронная утилита, которая вычисляет системную ширину полосы прокрутки браузера и записывает это значение (в пикселях) как глобальную CSS-переменную `--sys-scrollbar-offset` в тег `<body>`.
+
+Знание ширины скроллбара критически важно при реализации модальных окон, всплывающих панелей или фиксации слоя страницы `body`, чтобы избежать нежелательного сдвига контента во время скрытия нативной полосы прокрутки.
+
+Функция интегрирована с классом `ScrollbarWidth` из этого пакета, который и производит фактический расчет.
+
+**Параметры:**
+Функция не принимает аргументов.
+
+**Возвращает:**
+Асинхронное `Promise<void>`, выполняющее побочный эффект установки CSS-переменной.
+
+```typescript
+import { initScrollbarOffset } from '@dxtmisha/functional-basic'
+
+// Инициализация при загрузке приложения
+await initScrollbarOffset()
+
+// Теперь в CSS доступен размер скроллбара
+// body[data-scroll-locked] { padding-right: var(--sys-scrollbar-offset, 0px); }
+```

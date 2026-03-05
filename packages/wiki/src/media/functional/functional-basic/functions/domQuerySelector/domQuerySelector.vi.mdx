@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/domQuerySelector - Chọn phần tử DOM'/>
+
+# `domQuerySelector`
+
+Tìm và trả về phần tử HTML đầu tiên khớp với bộ chọn (selector) CSS được chỉ định.
+
+Hàm kiểm tra sự hiện diện của môi trường trình duyệt (DOM) bằng `isDomRuntime()`. Nếu mã đang chạy trên máy chủ (SSR) hoặc DOM không khả dụng, hàm sẽ trả về `undefined` một cách an toàn.
+
+**Tham số:**
+- `selectors: string` — Chuỗi chứa một hoặc nhiều bộ chọn CSS để tìm kiếm.
+
+**Trả về:**
+`E | undefined` — Phần tử đầu tiên được tìm thấy, hoặc `undefined` nếu không có phần tử nào khớp hoặc DOM không khả dụng.
+
+```typescript
+import { domQuerySelector } from '@dxtmisha/functional-basic'
+
+// Tìm theo class
+const btn = domQuerySelector('.submit-button')
+
+// Tìm theo ID
+const header = domQuerySelector('#main-header')
+
+if (btn) {
+  btn.textContent = 'Gửi'
+}
+```

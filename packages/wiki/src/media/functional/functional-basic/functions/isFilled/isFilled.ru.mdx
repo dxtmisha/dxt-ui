@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isFilled - Проверка заполненности'/>
+
+# `isFilled`
+
+Универсальная утилита для проверки того, «заполнено» ли переданное значение. Функция умеет корректно обрабатывать различные типы данных: числа, строки, булевы значения, массивы и объекты.
+
+В отличие от стандартной проверки на truthy/falsy значения (`if (value)`), функция дополнительно:
+- Считает массивы пустыми (`false`), если их длина равна 0.
+- Считает объекты пустыми (`false`), если все их значения равны `null`.
+- Распознает специальные строковые паттерны, такие как `'undefined'`, `'null'`, `'false'`, `'[]'` и по умолчанию считает их пустыми (`false`).
+- Позволяет настроить поведение для строкового значения `'0'` через аргумент `zeroTrue`.
+
+**Параметры:**
+- `value: T` — Входное значение любого типа для проверки.
+- `zeroTrue: boolean` — (Необязательно) Если передано `true`, строковое значение `'0'` будет считаться заполненным (вернет `true`), а не пустым.
+
+**Возвращает:**
+`boolean` (`value is Exclude<T, EmptyValue>`) — Возвращает `true`, если поле имеет значимое заполнение, и `false`, если данных нет. Успешная проверка сужает (type guard) тип значения, исключая пустые типы (EmptyValue).
+
+```typescript
+import { isFilled } from '@dxtmisha/functional-basic'
+
+console.log(isFilled('Текст')) // true
+console.log(isFilled(100)) // true
+console.log(isFilled([1, 2, 3])) // true
+console.log(isFilled({ data: 'ok' })) // true
+
+// Примеры пустых значений
+console.log(isFilled('')) // false
+console.log(isFilled([])) // false
+console.log(isFilled({ a: null })) // false
+console.log(isFilled('null')) // false
+console.log(isFilled('0')) // false
+
+// Использование zeroTrue
+console.log(isFilled('0', true)) // true
+```

@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getExp - Create a RegExp with escaped string'/>
+
+# `getExp`
+
+A utility that creates a `RegExp` object from a template string by first escaping all special regular expression characters within it (such as `.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\`).
+
+This is essential when the search string comes from user input or contains characters that could break a regular expression. The function allows you to specify the regex flags and a pattern string where the escaped text will replace the `:value` token.
+
+**Parameters:**
+- `value: string` — The target string to be escaped and matched.
+- `flags?: string` — (optional) Regular expression flags (e.g., `'ig'`). Defaults to `'ig'` (case-insensitive and global search).
+- `pattern?: string` — (optional) The regular expression template string. Defaults to just `':value'`.
+
+**Returns:**
+`RegExp` — The constructed regular expression object.
+
+```typescript
+import { getExp } from '@dxtmisha/functional-basic'
+
+// Basic search
+const rx1 = getExp('user.name')
+console.log(rx1) // /user\.name/gi  (dot is escaped)
+
+// Search with a custom flag and pattern (e.g., "starts with")
+const rx2 = getExp('query[1]', 'i', '^:value.*')
+console.log(rx2) // /^query\[1\].*/i
+```

@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/domQuerySelectorAll - Select DOM elements'/>
+
+# `domQuerySelectorAll`
+
+Finds and returns a list of all HTML elements that match the specified CSS selectors. The returned result is a static (non-live) `NodeList`.
+
+The function checks for the presence of a browser (DOM) environment via `isDomRuntime()`. If executed on the server or in an environment without a DOM, it returns `undefined`.
+
+**Parameters:**
+- `selectors: string` — A string containing one or more selectors to search for.
+
+**Returns:**
+`NodeListOf<E> | undefined` — A collection of matching elements (which could be an empty list if no matches are found), or `undefined` if the DOM is unavailable.
+
+```typescript
+import { domQuerySelectorAll } from '@dxtmisha/functional-basic'
+
+// Find all elements with a specific class
+const items = domQuerySelectorAll('.list-item')
+
+if (items) {
+  items.forEach(item => {
+    item.classList.add('active')
+  })
+}
+```

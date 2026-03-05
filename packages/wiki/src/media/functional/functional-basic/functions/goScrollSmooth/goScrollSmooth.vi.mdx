@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/goScrollSmooth - Cuộn mượt đến phần tử'/>
+
+# `goScrollSmooth`
+
+Cung cấp trải nghiệm cuộn mượt mà (smooth scrolling) đưa vùng nhìn của cửa sổ trình duyệt hoặc vùng chứa (container) đến vị trí của một phần tử được chỉ định.
+
+Hàm trước tiên sẽ xác minh khả năng hỗ trợ phương thức `scrollIntoView` mặc định của phần tử muốn nhắm tới. Nếu được hỗ trợ và không có tham số khoảng bù định vị `shift`, hàm sử dụng phương thức native đó. Mặt khác, khi yêu cầu `shift` (ví dụ, để trừ đi chiều cao của một thanh menu cố định (fixed header) bị đè lên element), hàm sẽ tự động đo lường độ dời bằng `getBoundingClientRect` và điều khiển thanh cuộn bằng `window.scrollTo`.
+
+**Tham số:**
+- `element: E` — Phần tử (`HTMLElement`) cần cuộn tới.
+- `options: ScrollIntoViewOptions` — (Tùy chọn) Các tham số định cấu hình chuyển tiếp cho `scrollIntoView` (ví dụ: `behavior`, `block`, `inline`).
+- `shift: number` — (Tùy chọn) Giá trị điểm bù lề trên (theo pixel) giúp phần tử tránh bị che khuất bởi các thanh điều hướng được cố định. Mặc định là `0`.
+
+**Trả về:**
+Hàm này không có giá trị trả về (`void`).
+
+```typescript
+import { goScrollSmooth } from '@dxtmisha/functional-basic'
+
+const section = document.getElementById('contact-us')
+
+// Tiến hành cuộn mượt mặc định tới phần tử
+goScrollSmooth(section)
+
+// Cuộn có bổ sung khoảng dãn vùng bù đắp 60px (trừ đi thanh header fixed ở trên)
+goScrollSmooth(section, { behavior: 'smooth' }, 60)
+```

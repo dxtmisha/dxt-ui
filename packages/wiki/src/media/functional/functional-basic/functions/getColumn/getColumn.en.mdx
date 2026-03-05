@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getColumn - Extract a data column'/>
+
+# `getColumn`
+
+A utility that iterates over an array of objects and returns a new array consisting only of the values from a specific key (property) of each object. Essentially, this is a strongly-typed equivalent of `Array.prototype.map(item => item[key])`.
+
+**Parameters:**
+- `array: ObjectOrArray<T>` — An array (or a dictionary object) containing items of type `T`.
+- `column: K` — The key (property name) whose values you wish to extract.
+
+**Returns:**
+`(T[K] | undefined)[]` — An array containing the values of the requested `column`. If the property is missing in some items, `undefined` will be present in those positions.
+
+```typescript
+import { getColumn } from '@dxtmisha/functional-basic'
+
+const users = [
+  { id: 1, name: 'Anna', role: 'admin' },
+  { id: 2, name: 'Ivan', role: 'user' },
+  { id: 3, name: 'Maria', role: 'user' }
+]
+
+const names = getColumn(users, 'name')
+console.log(names) // ['Anna', 'Ivan', 'Maria']
+
+const ids = getColumn(users, 'id')
+console.log(ids) // [1, 2, 3]
+```

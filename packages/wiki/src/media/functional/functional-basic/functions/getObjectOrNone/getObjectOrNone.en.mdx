@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getObjectOrNone - Safe object return'/>
+
+# `getObjectOrNone`
+
+A simple utility that checks whether the passed value is an actual object (not `null`, not an array, not a primitive) and returns it. If the passed argument is not a plain object, a new empty object `{}` is returned. This function is useful for safe variable initialization or parameter assignments.
+
+**Parameters:**
+- `value: T` — Any value, usually expected to be an object.
+
+**Returns:**
+`T & Record<string, any>` — The original object if the check passes; otherwise, an empty object `{}`.
+
+```typescript
+import { getObjectOrNone } from '@dxtmisha/functional-basic'
+
+// Successful object return
+console.log(getObjectOrNone({ name: 'Admin' })) // { name: 'Admin' }
+
+// Arrays are not considered plain objects, returns {}
+console.log(getObjectOrNone([1, 2, 3])) // {}
+
+// Primitives and null return {}
+console.log(getObjectOrNone(null)) // {}
+console.log(getObjectOrNone('a string')) // {}
+```

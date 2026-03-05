@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useApiDelete - DELETE Request Execution'/>
+
+# `useApiDelete`
+
+Returns an object with a loading state and a `send` method for executing API `DELETE` requests.
+
+**Parameters:**
+- `path?: RefOrNormal<string | undefined>` — Path to the API endpoint (can be reactive).
+- `action?: (data: Return | undefined) => Promise<void> | void` — Callback action to perform after the request completes successfully.
+- `transformation?: (data: T) => Return` — Function to transform the response data before it is returned or passed to the `action`.
+- `toData: boolean = true` — Whether to extract the `data` field from the response.
+- `options?: ApiOptions` — Additional request options (`ApiFetch` object parameter).
+
+**Returns:**
+An object with the following properties:
+- `loading` — Reactive loading state (`true` while waiting for the response).
+- `send(request?: Request): Promise<Return | undefined>` — Asynchronous method to send the request. Handles loading state toggling, applies transformation, executes your `action` callback, and safely catches errors.
+
+```typescript
+import { useApiDelete } from '@dxtmisha/functional'
+
+const { loading, send } = useApiDelete(
+  '/api/delete',
+  (data) => console.log('Action complete:', data),
+  (raw) => ({ ...raw, processed: true }),
+  true,
+  { cache: false }
+)
+
+const handleDelete = async () => {
+  const result = await send({ id: 1 })
+  console.log('Final Result:', result)
+}
+```

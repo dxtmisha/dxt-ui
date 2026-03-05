@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getObjectOrNone - Đảm bảo trả về một đối tượng'/>
+
+# `getObjectOrNone`
+
+Một tiện ích đơn giản kiểm tra xem giá trị được cung cấp có phải là một đối tượng thực tế (không phải `null`, không phải mảng, không phải kiểu nguyên thủy) hay không và trả về chính nó. Nếu đối số không phải là một đối tượng, hàm sẽ trả về một đối tượng rỗng `{}`. Việc này rất hữu ích trong việc đảm bảo an toàn khi khởi tạo hoặc truyền tham số.
+
+**Tham số:**
+- `value: T` — Bất kỳ giá trị nào, thường mong đợi đây là một đối tượng.
+
+**Trả về:**
+`T & Record<string, any>` — Chính đối tượng ban đầu nếu kiểu dữ liệu đúng; ngược lại, trả về đối tượng rỗng `{}`.
+
+```typescript
+import { getObjectOrNone } from '@dxtmisha/functional-basic'
+
+// Trả về đối tượng thành công
+console.log(getObjectOrNone({ name: 'Admin' })) // { name: 'Admin' }
+
+// Mảng không được coi là plain object, trả về {}
+console.log(getObjectOrNone([1, 2, 3])) // {}
+
+// Các kiểu thông thường và null sẽ trả về {}
+console.log(getObjectOrNone(null)) // {}
+console.log(getObjectOrNone('a string')) // {}
+```

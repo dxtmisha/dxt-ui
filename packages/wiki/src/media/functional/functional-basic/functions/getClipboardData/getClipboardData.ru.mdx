@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getClipboardData - Получение данных из буфера обмена'/>
+
+# `getClipboardData`
+
+Асинхронно извлекает текст из буфера обмена.
+
+Эта функция в первую очередь пытается получить текстовые данные из переданного события `ClipboardEvent` (например, при обработке события `paste`). Если событие не передано или в нём нет данных, функция производит чтение (возврат ответа в виде текста) напрямую из системного буфера обмена через `navigator.clipboard.readText()`.
+
+> Примечание: Использование `navigator.clipboard.readText()` требует безопасного (HTTPS) контекста и может потребовать от пользователя разрешения на чтение буфера обмена в некоторых браузерах.
+
+**Параметры:**
+- `event?: ClipboardEvent` — Событие буфера обмена (опционально), возникающее при действиях cut (вырезать), copy (копировать), paste (вставить).
+
+**Возвращает:**
+`Promise<string>` — Возвращает промис со строкой текста из буфера обмена, либо пустую строку в случае неудачи.
+
+```typescript
+import { getClipboardData } from '@dxtmisha/functional-basic'
+
+// Использование напрямую
+document.querySelector('#paste-btn')?.addEventListener('click', async () => {
+  const text = await getClipboardData()
+  console.log('Текст из буфера:', text)
+})
+
+// Использование в обработчике события 'paste'
+document.addEventListener('paste', async (event) => {
+  const text = await getClipboardData(event)
+  console.log('Вставлен текст:', text)
+})
+```

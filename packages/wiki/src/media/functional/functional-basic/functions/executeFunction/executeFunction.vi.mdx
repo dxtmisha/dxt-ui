@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/executeFunction - Thực thi hàm hoặc trả về giá trị'/>
+
+# `executeFunction`
+
+Tiện ích kiểm tra đối số được cung cấp. Nếu đối số đó là một hàm, nó sẽ thực thi hàm và trả về kết quả của hàm đó. Trong trường hợp ngược lại, nó đơn giản trả về đối số đầu vào (giữ nguyên).
+
+Điều này rất hữu ích cho các tham số có thể linh hoạt chấp nhận một giá trị tĩnh hoặc một hàm tính toán giá trị đó theo yêu cầu (ví dụ như khởi tạo chậm/lazy evaluation hoặc giá trị mặc định động).
+
+**Tham số:**
+- `callback: T | FunctionArgs<any, T>` — Giá trị của bất kỳ loại nào, hoặc một hàm trả về giá trị kiểu `T`.
+
+**Trả về:**
+`T` — Kết quả của việc thực thi hàm hoặc chính giá trị ban đầu.
+
+```typescript
+import { executeFunction } from '@dxtmisha/functional-basic'
+
+// Truyền một giá trị tĩnh
+console.log(executeFunction('Xin chào')) // 'Xin chào'
+
+// Truyền một hàm
+const lazyValue = () => {
+  return 'Được tải lazy'
+}
+console.log(executeFunction(lazyValue)) // 'Được tải lazy'
+```

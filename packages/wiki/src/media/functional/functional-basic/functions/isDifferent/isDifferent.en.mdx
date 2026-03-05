@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isDifferent - Check for object differences'/>
+
+# `isDifferent`
+
+Performs an assessment to determine if two provided objects differ from each other. 
+
+The function operates by initially comparing the total number of keys (properties) in each object. If those values match, it proceeds to execute a rigid value comparison of those keys through the internal `forEach` utility loop.
+
+**Parameters:**
+- `value: ObjectItem<T>` — The current (new) object or data entity being evaluated.
+- `old: ObjectItem<T>` — The previous (old) reference object to compare against.
+
+**Returns:**
+`boolean` — Returns `true` if there are any differences detected between the objects (either by property count mismatch or strict value inequality), or `false` if they are entirely identical.
+
+```typescript
+import { isDifferent } from '@dxtmisha/functional-basic'
+
+const oldState = { id: 1, active: false }
+const newState = { id: 1, active: true }
+
+// Objects differ in the `active` property
+console.log(isDifferent(newState, oldState)) // true
+
+const sameState = { id: 1, active: false }
+
+// Objects are completely identical
+console.log(isDifferent(sameState, oldState)) // false
+```

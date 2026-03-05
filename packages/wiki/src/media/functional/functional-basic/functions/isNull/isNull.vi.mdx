@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isNull - Kiểm định null hoặc undefined'/>
+
+# `isNull`
+
+Một chiêu thức thẩm định hết mực khắt khe, duy chỉ theo dấu nhắm thẳng vào duy nhất hai định mục đó là thông số `null` hoặc `undefined`.
+
+Thoát ly hẳn hoàn toàn ra khỏi cách phủ định falsy phổ cập đi kèm như kiểu `!value` (có thể vô tình bắt nhầm cả con số `0`, dải xâu chuỗi rỗng thênh thang `''`, hay ngay cả boolean lật ngược `false`), hàm logic đơn độc này sẽ nhẹ nhàng lánh sang mọi thứ tạp nham đó và chiếu thẳng cốt lỗi vào một vùng không chứa bất kì cái gì cả.
+
+**Tham số:**
+- `value: T` — Giá trị bất luận loại nào được bệ lên bàn mổ soi thử độ tồn tại.
+
+**Trả về:**
+`boolean` — Gõ thông điệp `true` bất cứ kì khoảnh khắc nào đối diện bằng nhãn trúng tâm phác hoạ `null` hay mã `undefined`. Trợ thủ siêu phàm này cùng đút túi chức năng bộ bảo vệ type guard TypeScript để cắt chặt giới hạn ép khuôn theo cấu kiện `Undefined` (`null | undefined`).
+
+```typescript
+import { isNull } from '@dxtmisha/functional-basic'
+
+console.log(isNull(null)) // true
+console.log(isNull(undefined)) // true
+
+// Cạm bẫy giá trị falsy khác vẫn ra kết quả false
+console.log(isNull(0)) // false
+console.log(isNull('')) // false
+console.log(isNull(false)) // false
+```

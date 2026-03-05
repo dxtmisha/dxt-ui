@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/domQuerySelectorAll - Выбор элементов в DOM'/>
+
+# `domQuerySelectorAll`
+
+Ищет и возвращает список всех HTML-элементов, соответствующих указанным CSS-селекторам. Возвращаемый результат представляет собой статический (не живой) `NodeList`.
+
+Функция проверяет наличие браузерного (DOM) окружения посредством вызова `isDomRuntime()`. На сервере или в среде без DOM возвращается `undefined`.
+
+**Параметры:**
+- `selectors: string` — Строка, содержащая один или несколько селекторов для поиска.
+
+**Возвращает:**
+`NodeListOf<E> | undefined` — Коллекцию найденных элементов (может быть пустой, если ничего не найдено), либо `undefined`, если DOM недоступен.
+
+```typescript
+import { domQuerySelectorAll } from '@dxtmisha/functional-basic'
+
+// Поиск всех элементов с определенным классом
+const items = domQuerySelectorAll('.list-item')
+
+if (items) {
+  items.forEach(item => {
+    item.classList.add('active')
+  })
+}
+```

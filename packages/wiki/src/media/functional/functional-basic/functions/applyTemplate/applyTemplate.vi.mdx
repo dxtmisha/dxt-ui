@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/applyTemplate - Áp dụng mẫu vào văn bản'/>
+
+# `applyTemplate`
+
+Áp dụng một mẫu vào văn bản, thay thế các điểm đánh dấu (khóa) bằng các giá trị từ đối tượng hoặc mảng được cung cấp.
+
+Hàm hỗ trợ hai loại mẫu:
+1. **Điểm đánh dấu theo vị trí (`%d`, `%e`, `%f`, v.v.)** — được thay thế tuần tự bằng các giá trị từ mảng (hoặc đối tượng) truyền vào.
+2. **Điểm đánh dấu theo tên trong dấu ngoặc vuông hoặc ngoặc nhọn (`[key]` hoặc `{key}`)** — được thay thế bằng các giá trị tương ứng từ đối tượng truyền vào.
+   Nó cũng hỗ trợ các thẻ theo cặp như `[key]nội dung[/key]` hoặc `{key}nội dung{/key}`. Khi sử dụng, hàm sẽ bao bọc nội dung giữa các thẻ bằng cách thay thế chuỗi `[content]` hoặc `{content}` bên trong giá trị được cung cấp.
+
+**Tham số:**
+- `text: string` — Văn bản gốc chứa các điểm đánh dấu mẫu.
+- `replacement: Record<string, string | number> | string[]` — Một đối tượng hoặc mảng chứa các giá trị để thay thế. Mặc định là `{}`.
+
+**Trả về:**
+`string` — Văn bản với các giá trị đã được thay thế.
+
+```typescript
+import { applyTemplate } from '@dxtmisha/functional-basic'
+
+// Đánh dấu theo vị trí
+console.log(applyTemplate('Xin chào, %d %e!', ['John', 'Doe'])) // 'Xin chào, John Doe!'
+
+// Đánh dấu theo tên
+console.log(applyTemplate('Xin chào, [name]!', { name: 'John' })) // 'Xin chào, John!'
+console.log(applyTemplate('Xin chào, {name}!', { name: 'John' })) // 'Xin chào, John!'
+
+// Thẻ bao bọc với nội dung bị thay thế
+console.log(applyTemplate('Nhấp vào [link]đây[/link]', { link: '<a href="#">[content]</a>' }))
+console.log(applyTemplate('Nhấp vào {link}đây{/link}', { link: '<a href="#">{content}</a>' }))
+// 'Nhấp vào <a href="#">đây</a>'
+```

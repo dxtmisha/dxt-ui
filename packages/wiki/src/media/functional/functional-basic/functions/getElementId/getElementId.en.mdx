@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getElementId - Get or assign element ID'/>
+
+# `getElementId`
+
+Returns the `id` of a specified DOM element. If the element exists but does not have an `id` attribute, the function will automatically generate a unique identifier, assign it to the element, and return it.
+
+Additionally, the function allows appending a CSS selector to the returned string, so you can immediately use the result as a compound selector (e.g., `"#id-123456 .child-class"`).
+
+**Parameters:**
+- `element?: ElementOrString<E>` — A DOM element or selector from which to obtain the ID.
+- `selector?: string` — An optional string that will be appended to the returned ID (like pseudo-classes or descendant selectors).
+
+**Returns:**
+`string` — The element's ID string, or a newly generated ID string if the element is not found.
+
+```typescript
+import { getElementId } from '@dxtmisha/functional-basic'
+
+// Element has no ID
+const div = document.createElement('div')
+console.log(div.id) // ''
+
+const id = getElementId(div)
+console.log(id) // For example: 'id-123456'
+console.log(div.id) // 'id-123456' (assigned automatically)
+
+// Using an additional selector
+const selector = getElementId(div, ' > span.active')
+console.log(selector) // '#id-123456 > span.active'
+```

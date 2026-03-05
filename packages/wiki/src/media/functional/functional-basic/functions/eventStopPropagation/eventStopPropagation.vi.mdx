@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/eventStopPropagation - Dừng lan truyền sự kiện'/>
+
+# `eventStopPropagation`
+
+Dừng việc lan truyền tiếp theo của một sự kiện trong cây DOM (giai đoạn nổi lên / bắt giữ) và hủy bỏ hành động mặc định của trình duyệt.
+
+Hàm này là một trình bao bọc (wrapper) tiện lợi gọi cả hai phương thức `event.preventDefault()` và `event.stopPropagation()`.
+
+**Tham số:**
+- `event: Event` — Phiên bản sự kiện DOM cần dừng.
+
+**Trả về:**
+`void`
+
+```typescript
+import { eventStopPropagation } from '@dxtmisha/functional-basic'
+
+const link = document.createElement('a')
+link.href = 'https://example.com'
+link.onclick = (e) => {
+  // Sẽ hủy bỏ việc điều hướng đến liên kết và ngăn chặn cú nhấp chuột lan truyền lên các phần tử cha
+  eventStopPropagation(e)
+  console.log('Cú nhấp chuột bị chặn!')
+}
+```

@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/createElement - Tạo phần tử HTML'/>
+
+# `createElement`
+
+Trong môi trường trình duyệt, tạo một phần tử HTML mới với thẻ được chỉ định và chèn nó vào cây DOM.
+
+Hàm này kiểm tra sự tồn tại của môi trường DOM thông qua `isDomRuntime()`. Nếu mã không chạy trong trình duyệt (ví dụ: trên máy chủ trong quá trình SSR), hàm sẽ trả về `undefined`.
+
+**Tham số:**
+- `parentElement?: HTMLElement` — Phần tử mẹ sẽ chứa nút DOM mới.
+- `tagName: string = 'div'` — Chuỗi xác định loại phần tử sẽ được tạo (mặc định là `'div'`).
+- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — Một đối tượng chứa các thuộc tính cho phần tử (ví dụ: `id`, `className`, trình xử lý sự kiện), hoặc một hàm callback để tùy chỉnh cấu hình cho phần tử.
+- `referenceElement?: HTMLElement` — Phần tử mà phía trước nó sẽ chèn phần tử mới. Nếu không được đặt (hoặc truyền `null`), phần tử sẽ được chèn vào cuối các nút con của thẻ mẹ (`appendChild`).
+
+**Trả về:**
+`T | undefined` — Phần tử HTML đã được tạo, hoặc `undefined` nếu môi trường DOM không khả dụng.
+
+```typescript
+import { createElement } from '@dxtmisha/functional-basic'
+
+const container = document.getElementById('app')
+
+// Tạo phần tử với đối tượng thuộc tính
+const btn = createElement(container, 'button', {
+  className: 'primary-btn',
+  textContent: 'Nhấn vào tôi',
+  onclick: () => alert('Đã nhấn!')
+})
+
+// Cấu hình tùy chỉnh thông qua hàm
+createElement(container, 'span', (el) => {
+  el.style.color = 'red'
+  el.dataset.customId = '123'
+  el.textContent = 'Văn bản lỗi'
+})
+```

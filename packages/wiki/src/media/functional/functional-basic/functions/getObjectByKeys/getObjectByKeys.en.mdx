@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getObjectByKeys - Object by key list'/>
+
+# `getObjectByKeys`
+
+Creates and returns a new object containing only the properties corresponding to the specified keys from the source object. Properties that do not exist or have a value strictly equal to `undefined` are ignored during copying.
+
+**Parameters:**
+- `data: Record<string, any>` — The source object containing the initial data.
+- `keys: string[]` — An array of string keys to extract from the source.
+
+**Returns:**
+`Record<string, any>` — A new object containing only the successfully extracted properties. If a property is `undefined` in the source, it will not be included in the result.
+
+```typescript
+import { getObjectByKeys } from '@dxtmisha/functional-basic'
+
+const user = {
+  id: 1,
+  name: 'Ivan',
+  role: 'admin',
+  age: undefined, // undefined values are skipped
+  active: true
+}
+
+const result = getObjectByKeys(user, ['id', 'name', 'age', 'token'])
+console.log(result) // { id: 1, name: 'Ivan' }
+```

@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getMouseClientX - Get X coordinate of an event'/>
+
+# `getMouseClientX`
+
+Extracts the X coordinate (horizontal position) of the pointer (mouse or touch) relative to the visible area of the browser window (viewport) from the event object.
+
+The function processes both standard mouse events (`MouseEvent`) and touch events (`TouchEvent`), giving priority to the `clientX` property. If `clientX` is not found directly on the event, it searches within the `targetTouches` and `touches` arrays.
+
+**Parameters:**
+- `event: MouseEvent & TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
+
+**Returns:**
+`number` — The X coordinate of the cursor/touch. If not found, it returns `0`.
+
+```typescript
+import { getMouseClientX } from '@dxtmisha/functional-basic'
+
+document.addEventListener('click', (event) => {
+  const x = getMouseClientX(event)
+  console.log(`The user clicked ${x}px away from the left edge of the window`)
+})
+```

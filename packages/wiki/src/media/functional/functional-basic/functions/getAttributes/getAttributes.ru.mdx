@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getAttributes - Получение атрибутов элемента'/>
+
+# `getAttributes`
+
+Извлекает все HTML-атрибуты указанного DOM-элемента (или элемента, найденного по селектору) и возвращает их в виде простого объекта (ключ-значение).
+
+Функция использует `getElement` для поиска целевого узла. Если элемент не найден или передан пустой аргумент, возвращается пустой объект `{}`.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — DOM-элемент, объект Window, либо строка с CSS-селектором для его поиска.
+
+**Возвращает:**
+`Record<string, string | undefined>` — Объект, где ключами являются названия атрибутов (например, `id`, `class`, `data-value`), а значениями — их содержимое.
+
+```typescript
+import { getAttributes } from '@dxtmisha/functional-basic'
+
+// У нас есть элемент: <div id="app" class="container" data-theme="dark"></div>
+
+const attrs = getAttributes('#app')
+console.log(attrs)
+/*
+{
+  id: 'app',
+  class: 'container',
+  'data-theme': 'dark'
+}
+*/
+```

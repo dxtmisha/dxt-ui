@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getElementOrWindow - Retrieve Element or Window'/>
+
+# `getElementOrWindow`
+
+This utility is similar to `getElement`, but with one significant difference: if the global `window` object is passed as an argument, the function returns it exactly. `getElement` in the same scenario would return `document.body`.
+
+If a string or another element is passed, the function behaves exactly like the standard `getElement` utility.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — A selector to search for, an `Element` node, or the `Window` object.
+
+**Returns:**
+`E | undefined` — The located element, the originally passed element, the `window` object (if it was passed), or `undefined` if nothing matched.
+
+```typescript
+import { getElementOrWindow } from '@dxtmisha/functional-basic'
+
+// Passing Window returns Window (by contrast, getElement would return document.body)
+const win = getElementOrWindow(window)
+
+// Normal search by selector
+const btn = getElementOrWindow('.submit-btn')
+```

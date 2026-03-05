@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getElementImage - Get image element'/>
+
+# `getElementImage`
+
+Used to safely retrieve an `HTMLImageElement` node. If a string (an image URL) is passed as input, the function automatically creates an `<img>` tag and assigns the URL to its `src` attribute. If an `HTMLImageElement` object is already passed, it simply returns it unchanged.
+
+**Parameters:**
+- `image: HTMLImageElement | string` — An image element or a string source (URL).
+
+**Returns:**
+`HTMLImageElement | undefined` — A ready-to-use `<img>` tag, or `undefined` if the environment does not allow its creation (e.g., no DOM).
+
+```typescript
+import { getElementImage } from '@dxtmisha/functional-basic'
+
+// Passing a string URL
+const img1 = getElementImage('/path/to/image.png')
+console.log(img1 instanceof HTMLImageElement) // true
+console.log(img1?.src) // 'http://.../path/to/image.png'
+
+// Passing an existing img tag
+const existingImg = document.createElement('img')
+const img2 = getElementImage(existingImg)
+console.log(img1 === existingImg) // true
+```

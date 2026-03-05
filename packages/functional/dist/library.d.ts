@@ -1,3 +1,4 @@
+import { ApiData } from '@dxtmisha/functional-basic';
 import { ApiFetch } from '@dxtmisha/functional-basic';
 import { ApiMethodItem } from '@dxtmisha/functional-basic';
 import { ComputedGetter } from 'vue';
@@ -35,7 +36,8 @@ import { Undefined } from '@dxtmisha/functional-basic';
 import { VNode } from 'vue';
 import { VNodeArrayChildren } from 'vue';
 
-declare type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
+/** Options for api requests/ Опции для запросов api */
+export declare type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 
 declare type BroadcastValueItem<T> = T | string | undefined;
 
@@ -1042,6 +1044,14 @@ export declare const getComputedAsync: <T, I = undefined>(callback: () => Promis
 export declare function getIndexForRender<T extends ItemList>(name: string, props?: T, index?: string): string;
 
 /**
+ * Get request options.
+ *
+ * Возвращает опции запроса.
+ * @param options options / параметры
+ */
+export declare const getOptions: (options?: ApiOptions) => RefOrNormal<ApiFetch>;
+
+/**
  * You return the values of the ref variable or the variable itself if it is not reactive.
  *
  * Возвращаешь значения ref переменной или саму переменную, если она не реактивная.
@@ -1582,6 +1592,12 @@ export declare class ScrollbarWidthRef {
     readonly is: ComputedRef<boolean>;
 }
 
+/**
+ * Defines global conditions for the API request.
+ *
+ * Определяет глобальные условия для API запроса.
+ * @param conditions conditions for executing the request/ условия выполнения запроса
+ */
 export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
 
 /**
@@ -1637,12 +1653,46 @@ export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
 /** Utility type to convert union types to intersection types/ Утилитарный тип для преобразования объединенных типов в пересеченные */
 export declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
+export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
+};
+
+export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
+};
+
+export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
+};
+
+export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
+};
+
+/**
+ * Use api ref return type.
+ *
+ * Тип возвращаемого значения для useApiRef.
+ */
 export declare interface UseApiRef<R> {
-    data: Ref<R | undefined>;
+    /** Loaded data / Загруженные данные */
+    data: Ref<ApiData<R> | undefined>;
+    /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
     isStarting: ComputedRef<boolean>;
+    /** Request load flag / Флаг загрузки запроса */
     loading: ComputedRef<boolean>;
+    /** Active reading flag / Флаг активного чтения */
     reading: ComputedRef<boolean>;
+    /** Default reset / Сброс по умолчанию */
     reset(): Promise<void>;
+    /** Stop request / Остановка запроса */
+    stop(): void;
+    /** Abort request / Отмена запроса */
+    abort(): void;
 }
 
 /**
@@ -1656,7 +1706,31 @@ export declare interface UseApiRef<R> {
  * @param transformation transforms the received request/ преобразовывает полученный запрос
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
  */
-export declare function useApiRef<R, T = any>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => R, unmounted?: boolean): UseApiRef<R>;
+export declare function useApiRef<R, T = any>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean): UseApiRef<R>;
+
+/**
+ * Use api request.
+ *
+ * Использование запроса api.
+ * @param path Path to the API endpoint / Путь к endpoint API
+ * @param method HTTP method / HTTP метод
+ * @param action Action to perform after the request / Действие, выполняемое после запроса
+ * @param transformation Transformation function / Функция трансформации
+ * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
+ * @param options Additional request options / Дополнительные опции запроса
+ * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
+ */
+export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, method?: ApiMethodItem, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+    loading: Ref<boolean, boolean>;
+    /**
+     * Send request.
+     *
+     * Отправка запроса.
+     * @param request Request data / Данные запроса
+     * @returns Response data / Данные ответа
+     */
+    send(request?: Request): Promise<Return | undefined>;
+};
 
 /**
  * Creates a reactive variable to manage data between browser tabs.

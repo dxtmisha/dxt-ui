@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getRandomText - Generate random text'/>
+
+# `getRandomText`
+
+Generates a string consisting of a random number of "words". A word is defined as a sequence of identical symbols of a specific length. This function is useful for populating UI layouts with placeholder text that mimics the structure of real text without carrying any meaning or language constraints.
+
+It relies on the `random` (for choosing random numbers) and `strFill` (for repeating the symbol) utility functions.
+
+**Parameters:**
+- `min: number` — Minimum number of words in the resulting string.
+- `max: number` — Maximum number of words in the resulting string.
+- `symbol: string` — (Optional) The character used to construct the generated words. Defaults to `#`.
+- `lengthMin: number` — (Optional) Minimum length of a single word. Defaults to `2`.
+- `lengthMax: number` — (Optional) Maximum length of a single word. Defaults to `12`.
+
+**Returns:**
+`string` — A string of space-separated generated words.
+
+```typescript
+import { getRandomText } from '@dxtmisha/functional-basic'
+
+// Generate between 2 and 5 words made of '#' symbols
+// Length of each word ranges from 2 to 12 chars
+console.log(getRandomText(2, 5)) // '#### ## #######'
+
+// Exact number of words (3) with a specific symbol ('*')
+// Word lengths are strictly 5 chars
+console.log(getRandomText(3, 3, '*', 5, 5)) // '***** ***** *****'
+```

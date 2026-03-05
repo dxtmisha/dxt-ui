@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getElementId - Получение или назначение ID элемента'/>
+
+# `getElementId`
+
+Возвращает `id` указанного DOM-элемента. Если элемент существует, но у него нет атрибута `id`, функция автоматически сгенерирует уникальный идентификатор, назначит его элементу и вернет.
+
+Также функция позволяет опционально добавить CSS-селектор к возвращаемой строке, чтобы сразу использовать результат как готовый составной селектор (например, `"#id-123456 .child-class"`).
+
+**Параметры:**
+- `element?: ElementOrString<E>` — DOM-элемент или селектор, для которого нужно получить/назначить ID.
+- `selector?: string` — Опциональная строка, которая будет добавлена к возвращаемому значению (например, псевдоклассы или селекторы потомков).
+
+**Возвращает:**
+`string` — Строка с ID элемента, либо строка сгенерированного ID, если элемент не найден.
+
+```typescript
+import { getElementId } from '@dxtmisha/functional-basic'
+
+// У элемента нет ID
+const div = document.createElement('div')
+console.log(div.id) // ''
+
+const id = getElementId(div)
+console.log(id) // Например: 'id-123456'
+console.log(div.id) // 'id-123456' (назначился автоматически)
+
+// Использование дополнительного селектора
+const selector = getElementId(div, ' > span.active')
+console.log(selector) // '#id-123456 > span.active'
+```

@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/goScrollSmooth - Плавный скролл к элементу'/>
+
+# `goScrollSmooth`
+
+Обеспечивает плавную прокрутку (скролл) окна браузера или контейнера к указанному элементу. 
+
+Функция сначала проверяет наличие поддержки метода `scrollIntoView` у целевого элемента. При его наличии и отсутствии параметра `shift` (смещение) функция использует нативный метод. В противном случае, если требуется смещение `shift` (например, для фиксированной шапки), функция вычисляет `getBoundingClientRect` и использует `window.scrollTo`.
+
+**Параметры:**
+- `element: E` — Целевой элемент (`HTMLElement`), до которого нужно прокрутить страницу.
+- `options: ScrollIntoViewOptions` — (Необязательно) Параметры прокрутки, передаваемые в `scrollIntoView` (например, `behavior`, `block`, `inline`).
+- `shift: number` — (Необязательно) Значение отступа (в пикселях) сверху от целевого элемента до верха окна. Полезно для избежания перекрытия элемента фиксированным меню навигации. По умолчанию `0`.
+
+**Возвращает:**
+Функция ничего не возвращает (`void`).
+
+```typescript
+import { goScrollSmooth } from '@dxtmisha/functional-basic'
+
+const section = document.getElementById('contact-us')
+
+// Простая плавная прокрутка к элементу
+goScrollSmooth(section)
+
+// Прокрутка со смещением 60px (учитывая фиксированную шапку)
+goScrollSmooth(section, { behavior: 'smooth' }, 60)
+```

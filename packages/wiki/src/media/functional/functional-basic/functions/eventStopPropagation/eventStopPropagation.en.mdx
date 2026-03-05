@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/eventStopPropagation - Stop event propagation'/>
+
+# `eventStopPropagation`
+
+Stops the further propagation of an event in the DOM tree (bubbling / capturing) and cancels the browser's default default action.
+
+The function is a convenient wrapper around calling both `event.preventDefault()` and `event.stopPropagation()`.
+
+**Parameters:**
+- `event: Event` — The DOM event instance to stop.
+
+**Returns:**
+`void`
+
+```typescript
+import { eventStopPropagation } from '@dxtmisha/functional-basic'
+
+const link = document.createElement('a')
+link.href = 'https://example.com'
+link.onclick = (e) => {
+  // Will cancel the navigation to the link and stop the click from bubbling to parents
+  eventStopPropagation(e)
+  console.log('Click intercepted!')
+}
+```

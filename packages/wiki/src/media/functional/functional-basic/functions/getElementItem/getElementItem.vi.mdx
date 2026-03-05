@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getElementItem - Lấy giá trị thuộc tính phần tử'/>
+
+# `getElementItem`
+
+Trả về giá trị của một thuộc tính cụ thể từ một phần tử HTML (ví dụ: `id`, `className`, hoặc bất kỳ thuộc tính tùy chỉnh nào nếu nó được khai báo là khóa của kiểu phần tử đó). Tiện ích sử dụng `getElement` để tìm nút, và nếu không tìm thấy phần tử hoặc phân tử không có thuộc tính được chỉ định, tiện ích sẽ trả về `defaultValue` (mặc định là `undefined`).
+
+**Tham số:**
+- `element: ElementOrString<T>` — Một chuỗi bộ chọn CSS hoặc một phần tử DOM có sẵn.
+- `index: K | string` — Tên thuộc tính (khóa) của phần tử có giá trị đang được yêu cầu.
+- `defaultValue?: D` — Giá trị dự phòng sẽ được trả về nếu không tìm thấy thuộc tính.
+
+**Trả về:**
+`T[K] | D | undefined` — Giá trị của thuộc tính được yêu cầu hoặc `defaultValue`.
+
+```typescript
+import { getElementItem } from '@dxtmisha/functional-basic'
+
+const input = document.createElement('input')
+input.type = 'text'
+input.id = 'my-input'
+
+// Lấy ID
+const elementId = getElementItem(input, 'id') 
+console.log(elementId) // 'my-input'
+
+// Nếu thiếu thuộc tính và chúng ta cung cấp một fallback
+const testValue = getElementItem('.non-existent', 'id', 'fallback-id')
+console.log(testValue) // 'fallback-id'
+```

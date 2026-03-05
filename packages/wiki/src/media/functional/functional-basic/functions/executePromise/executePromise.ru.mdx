@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/executePromise - Выполнение Promise или функции'/>
+
+# `executePromise`
+
+Утилита, которая безопасно выполняет функцию и/или дожидается разрешения асинхронного результата (Promise).
+
+Внутри используется функция `executeFunction`. Если передан аргумент в виде функции возвращающей промис, `executePromise` выполнит эту функцию и дождётся выполнения `Promise`. Если будет передано синхронное значение или обычная функция, возвращающая синхронное значение, утилита сразу вернёт этот результат.
+
+**Параметры:**
+- `callback: (() => Promise<T>) | (() => T) | T` — Значение, `Promise` или функция, способная вернуть `Promise` или обычное значение.
+
+**Возвращает:**
+`Promise<T>` — Промис, разрешающийся в переданное или вычисленное значение.
+
+```typescript
+import { executePromise } from '@dxtmisha/functional-basic'
+
+// С асинхронной функцией
+const fetchData = async () => {
+  return await fetch('/api/data').then(res => res.json())
+}
+const result1 = await executePromise(fetchData)
+
+// С обычной функцией
+const staticData = () => 'Синхронные данные'
+const result2 = await executePromise(staticData)
+
+// Со статическим значением
+const result3 = await executePromise('Данные')
+```

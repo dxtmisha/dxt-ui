@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getRequestString - Build query string'/>
+
+# `getRequestString`
+
+Transforms a dictionary object into a URL-style formatted string (by default, a query string for GET parameters) where keys and values are joined by designated delimiters. Before string construction, all values are cast to strings, trimmed of whitespace, and passed through `encodeURIComponent` to ensure safe URL transmission. Keys are sorted alphabetically.
+
+**Parameters:**
+- `request: Record<string, any>` — The data object to convert.
+- `sign: string` — (Optional) The character linking a key to its value. Defaults to `=`.
+- `separator: string` — (Optional) The character separating pairs. Defaults to `&`.
+
+**Returns:**
+`string` — A formatted and sorted string.
+
+```typescript
+import { getRequestString } from '@dxtmisha/functional-basic'
+
+const params = {
+  sort: 'desc',
+  page: 2,
+  search: 'comfortable chair'
+}
+
+console.log(getRequestString(params)) 
+// 'page=2&search=comfortable%20chair&sort=desc'
+```

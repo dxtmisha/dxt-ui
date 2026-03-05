@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getAttributes - Get element attributes'/>
+
+# `getAttributes`
+
+Extracts all HTML attributes of a specified DOM element (or an element found by a CSS selector) and returns them as a simple key-value object.
+
+The function uses `getElement` to find the target node. If the element is not found or an empty argument is passed, it returns an empty object `{}`.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — A DOM element, Window object, or a CSS selector string to find it.
+
+**Returns:**
+`Record<string, string | undefined>` — An object where the keys are attribute names (e.g., `id`, `class`, `data-value`), and the values are their contents.
+
+```typescript
+import { getAttributes } from '@dxtmisha/functional-basic'
+
+// We have an element: <div id="app" class="container" data-theme="dark"></div>
+
+const attrs = getAttributes('#app')
+console.log(attrs)
+/*
+{
+  id: 'app',
+  class: 'container',
+  'data-theme': 'dark'
+}
+*/
+```

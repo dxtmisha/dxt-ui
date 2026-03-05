@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/anyToString - Chuyển đổi một giá trị thành chuỗi'/>
+
+# `anyToString`
+
+Chuyển đổi một giá trị thành chuỗi.
+- Chuỗi sẽ được loại bỏ khoảng trắng ở 2 đầu.
+- Mảng không chứa các đối tượng (objects) được nối lại bằng dấu phẩy.
+- Đối tượng (objects) hoặc mảng chứa các đối tượng sẽ được chuyển đổi thành chuỗi JSON.
+- Giá trị Boolean `true` chuyển thành `'1'`, còn `false` chuyển thành `'0'`.
+- Đối với `null` hoặc `undefined`, trả về chuỗi rỗng `''`.
+- Trong các trường hợp khác, kết quả của phương thức `toString()` sẽ được trả về.
+
+**Tham số:**
+- `value: V` — Giá trị cần chuyển đổi.
+
+**Trả về:**
+`string` — Biểu diễn chuỗi của giá trị.
+
+```typescript
+import { anyToString } from '@dxtmisha/functional-basic'
+
+console.log(anyToString(' test ')) // 'test'
+console.log(anyToString([1, 2, 3])) // '1,2,3'
+console.log(anyToString({ a: 1 })) // '{"a":1}'
+console.log(anyToString(true)) // '1'
+console.log(anyToString(false)) // '0'
+console.log(anyToString(null)) // ''
+```

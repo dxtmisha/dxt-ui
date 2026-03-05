@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isIntegerBetween - Check value within integer bounds'/>
+
+# `isIntegerBetween`
+
+Inspects whether a targeted float or integer actively rests within a specifically demarcated integer interval bounds.
+
+The threshold is established by flooring the foundational `between` input parameter. The function secures a true match exactly when the checking measurement is comprehensively greater than or equal to the grounded lower boundary, whilst being strictly inferior to the successive integer step.
+
+Formula representation: `floor(between) <= value < floor(between) + 1`
+
+**Parameters:**
+- `value: number` — The comparative number undergoing the test.
+- `between: number` — The base origin dictating the interval bounds via mathematical floor rounding.
+
+**Returns:**
+`boolean` — Evaluates to `true` whenever the measurement comfortably exists within the outlined mathematical floor span.
+
+```typescript
+import { isIntegerBetween } from '@dxtmisha/functional-basic'
+
+// Formed Interval: [5, 6)
+console.log(isIntegerBetween(5.2, 5.8)) // true (Math.floor(5.8) = 5)
+console.log(isIntegerBetween(5.99, 5))  // true
+console.log(isIntegerBetween(6, 5))     // false
+```

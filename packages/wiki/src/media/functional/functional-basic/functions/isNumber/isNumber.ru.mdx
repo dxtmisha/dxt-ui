@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isNumber - Проверка на число'/>
+
+# `isNumber`
+
+Универсальная утилита для проверки, может ли переданное значение квалифицироваться как число. 
+
+Она корректно распознает как классический тип числа `typeof value === 'number'` (включая особые случаи, такие как `NaN` или отрицательные значения), так и строковые представления чисел, убедившись с помощью регулярного выражения `regex`, что переданная строка содержит корректный числовой формат (включая целые, отрицательные и дробные числа).
+
+**Параметры:**
+- `value: any` — Любое тестируемое значение.
+
+**Возвращает:**
+`boolean` — Вернет `true`, если объект данных относится к математическим числам либо если строка состоит только из цифр. В противном случае вернет `false`.
+
+```typescript
+import { isNumber } from '@dxtmisha/functional-basic'
+
+console.log(isNumber(150)) // true
+console.log(isNumber(3.14)) // true
+console.log(isNumber('720')) // true (Строка, содержащая только цифры)
+
+console.log(isNumber('-50')) // true (Отрицательные числа поддерживаются)
+console.log(isNumber('3.14')) // true (Дробные числа тоже)
+console.log(isNumber('15a')) // false (Содержит букву)
+console.log(isNumber(null)) // false
+```

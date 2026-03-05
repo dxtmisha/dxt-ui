@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isDomRuntime - Check for browser runtime'/>
+
+# `isDomRuntime`
+
+Determines whether the current code is being executed within a browser environment.
+
+This check asserts the availability of the global `window` object alongside its `window.document` property. Utilizing this utility is a standard approach to guarantee that DOM-specific API invocations (like scroll adjustments, event listeners, or element querying) will not trigger crash errors during Server-Side Rendering (SSR) phases or within isolated Node.js environments.
+
+**Parameters:**
+This functionality operates without requiring any defined parameters.
+
+**Returns:**
+`boolean` — Returns `true` if the code runs in the browser (where `window` and `document` are present). It produces `false` if executed on the server side (such as Node.js instances or static generation builds).
+
+```typescript
+import { isDomRuntime } from '@dxtmisha/functional-basic'
+
+if (isDomRuntime()) {
+  // Safely interface with window.localStorage or the DOM
+  window.localStorage.setItem('visited', 'yes')
+  document.body.classList.add('client-rendered')
+} else {
+  // Manage server-side (SSR) routing and data logic
+  console.log('Rendering on server...')
+}
+```

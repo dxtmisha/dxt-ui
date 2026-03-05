@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getElementImage - Lấy phần tử hình ảnh'/>
+
+# `getElementImage`
+
+Dùng để lấy nút `HTMLImageElement` một cách an toàn. Nếu truyền vào một chuỗi (đường dẫn URL), hàm sẽ tự động tạo thẻ `<img>` và gán chuỗi đó cho thuộc tính `src`. Nếu giá trị truyền vào đã là một đối tượng `HTMLImageElement`, hàm chỉ cần trả về đối tượng đó giữ nguyên.
+
+**Tham số:**
+- `image: HTMLImageElement | string` — Phần tử hình ảnh hoặc một nguồn chuỗi (URL).
+
+**Trả về:**
+`HTMLImageElement | undefined` — Một thẻ `<img>` đã sẵn sàng để sử dụng, hoặc `undefined` nếu môi trường không cho phép tạo (ví dụ: không có DOM).
+
+```typescript
+import { getElementImage } from '@dxtmisha/functional-basic'
+
+// Truyền vào đường dẫn chuỗi (URL)
+const img1 = getElementImage('/path/to/image.png')
+console.log(img1 instanceof HTMLImageElement) // true
+console.log(img1?.src) // 'http://.../path/to/image.png'
+
+// Truyền vào thẻ img có sẵn
+const existingImg = document.createElement('img')
+const img2 = getElementImage(existingImg)
+console.log(img1 === existingImg) // true
+```

@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getMouseClient - Lấy tọa độ X và Y của sự kiện'/>
+
+# `getMouseClient`
+
+Trích xuất tọa độ X và Y của con trỏ (chuột hoặc cảm ứng) tương đối với vùng nhìn thấy của cửa sổ trình duyệt (viewport) từ đối tượng sự kiện.
+
+Hàm này xử lý cả các sự kiện chuột tiêu chuẩn (`MouseEvent`) và các sự kiện chạm (`TouchEvent`), cung cấp một giao diện thống nhất (trả về một đối tượng `ImageCoordinator` chứa các thuộc tính `x` và `y`). Điều này đặc biệt hữu ích khi tạo giao diện kéo và thả (drag-and-drop), thanh trượt hoặc các phần tử tương tác khác có thể hoạt động trên nhiều loại thiết bị.
+
+**Tham số:**
+- `event: MouseEvent & TouchEvent` — Đối tượng sự kiện (`mousemove`, `touchmove`, `click`, v.v.).
+
+**Trả về:**
+`ImageCoordinator` — Một đối tượng chứa thuộc tính tọa độ `x` và `y`. Nếu không tìm thấy các tọa độ trong sự kiện, hàm mặc định trả về `{ x: 0, y: 0 }`.
+
+```typescript
+import { getMouseClient } from '@dxtmisha/functional-basic'
+
+document.addEventListener('mousemove', (event) => {
+  const coords = getMouseClient(event)
+  console.log(`Con trỏ hiện đang ở X: ${coords.x}, Y: ${coords.y}`)
+})
+
+document.addEventListener('touchmove', (event) => {
+  const coords = getMouseClient(event)
+  console.log(`Vị trí chạm hiện đang ở X: ${coords.x}, Y: ${coords.y}`)
+})
+```

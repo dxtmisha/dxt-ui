@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/goScrollTo - Скролл контейнера к элементу'/>
+
+# `goScrollTo`
+
+Выполняет прокрутку указанного элемента-контейнера так, чтобы целевой элемент (находящийся внутри) стал видимым. Функция вычисляет координаты (`getBoundingClientRect`) контейнера и целевого элемента, а затем применяет метод `scrollBy` на нужную величину отступа.
+
+В отличие от `goScrollSmooth` (которая скроллит текущее окно или оперирует `scrollIntoView`), `goScrollTo` работает через явные относительные отступы от краев заданного контейнера.
+
+**Параметры:**
+- `element: HTMLElement | undefined` — Корневой элемент-контейнер со скроллом.
+- `elementTo: HTMLElement | undefined` — Целевой элемент (обычно внутри контейнера), к которому необходимо прокрутить.
+- `behavior: ScrollBehavior` — (Необязательно) Стиль прокрутки, по умолчанию `'smooth'`.
+
+**Возвращает:**
+Осуществляет побочный эффект прокрутки и возвращает `void`.
+
+```typescript
+import { goScrollTo } from '@dxtmisha/functional-basic'
+
+const list = document.getElementById('item-list')
+const targetItem = document.getElementById('item-42')
+
+// Применяем плавную прокрутку списка к 42-му элементу
+goScrollTo(list, targetItem)
+```

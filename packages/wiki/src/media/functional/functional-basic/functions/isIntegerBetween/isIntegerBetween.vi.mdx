@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isIntegerBetween - Kiểm tra lọt khe số nguyên'/>
+
+# `isIntegerBetween`
+
+Rà soát cẩn thận xem một con số cụ thể có đang lọt lỏm ngay bên trong lằn ranh phân cách thuộc một phạm vi số nguyên đã được xác lập hay không.
+
+Biên độ rào chắn sẽ được cắm mốc bằng cách làm tròn xuống trị số trung tâm (`between`). Hàm chỉ xác thực thành công khi con số đưa vào đem ra đọ kiếm có độ lớn hơn hoặc bằng mức sàn giới hạn dưới, đồng thời buộc phải mang trị số vĩnh viễn nhỏ hơn mốc số nguyên nối tiếp ngay ngay liền kề sau đó.
+
+Tóm tắt công thức toán học: `floor(between) <= value < floor(between) + 1`
+
+**Tham số:**
+- `value: number` — Trị giá được điền lên để kiểm thử.
+- `between: number` — Con số chủ đạo để ấn định khoanh vùng phạm vi (qua áp dụng thuật toán làm tròn xuống).
+
+**Trả về:**
+`boolean` — Tín hiệu trả về `true` miễn sao trị số nằm gọn trong khoảng không gian vòng đệm số lượng đã khoanh vùng.
+
+```typescript
+import { isIntegerBetween } from '@dxtmisha/functional-basic'
+
+// Không gian kẹp: [5, 6)
+console.log(isIntegerBetween(5.2, 5.8)) // true (Math.floor(5.8) = 5)
+console.log(isIntegerBetween(5.99, 5))  // true
+console.log(isIntegerBetween(6, 5))     // false
+```

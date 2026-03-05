@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isNumber - Check if value is a number'/>
+
+# `isNumber`
+
+A versatile utility engineered to ascertain if an incoming argument acts effectively as a valid numerical entity.
+
+This evaluation effortlessly handles the native numeric typing (`typeof value === 'number'`), meaning it natively clears primitive numbers (inclusive of unique types like `NaN`). Simultaneously, it expands validation to test strings by running a robust RegEx check ensuring that the entirety of the string constitutes a valid numeric format (including negative values and fractional decimals).
+
+**Parameters:**
+- `value: any` — The arbitrary data item to screen.
+
+**Returns:**
+`boolean` — Emits `true` if the subject naturally belongs to the quantitative number type or if it's a completely digital string structure. Displays `false` in every alternative state.
+
+```typescript
+import { isNumber } from '@dxtmisha/functional-basic'
+
+console.log(isNumber(150)) // true
+console.log(isNumber(3.14)) // true
+console.log(isNumber('720')) // true (Numeric String allowed natively)
+
+console.log(isNumber('-50')) // true (Negative numbers are supported)
+console.log(isNumber('3.14')) // true (Decimals are allowed too)
+console.log(isNumber('15a')) // false (Fails due to alphanumeric content)
+console.log(isNumber(null)) // false
+```

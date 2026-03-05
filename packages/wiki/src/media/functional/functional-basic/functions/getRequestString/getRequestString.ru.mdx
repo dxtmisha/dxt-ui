@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getRequestString - Формирование строки запроса'/>
+
+# `getRequestString`
+
+Преобразует объект словаря в URL-формат (по умолчанию строку запроса для GET-параметров), где ключи и значения объединяются заданными разделителями. Перед формированием строки все значения приводятся к строке, очищаются от пробелов по краям и пропускаются через `encodeURIComponent` для безопасной передачи через URL. Ключи сортируются в алфавитном порядке.
+
+**Параметры:**
+- `request: Record<string, any>` — Объект с данными для преобразования.
+- `sign: string` — (Необязательно) Символ соединения между ключом и значением. По умолчанию `=`.
+- `separator: string` — (Необязательно) Разделитель между парами. По умолчанию `&`.
+
+**Возвращает:**
+`string` — Отформатированная и отсортированная строка.
+
+```typescript
+import { getRequestString } from '@dxtmisha/functional-basic'
+
+const params = {
+  sort: 'desc',
+  page: 2,
+  search: 'удобный стул'
+}
+
+console.log(getRequestString(params)) 
+// 'page=2&search=%D1%83%D0%B4%D0%BE%D0%B1%D0%BD%D1%8B%D0%B9%20%D1%81%D1%82%D1%83%D0%BB&sort=desc'
+```

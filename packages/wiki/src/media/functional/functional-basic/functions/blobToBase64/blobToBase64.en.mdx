@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/blobToBase64 - Convert Blob to Base64'/>
+
+# `blobToBase64`
+
+Asynchronously converts a `Blob` object into a `Base64` string using `FileReader`.
+
+This is particularly useful for preparing files or images to be sent to a server, or to display them directly in the browser via a Data URL (e.g., in an `<img>` tag).
+
+**Parameters:**
+- `blob: Blob` — The `Blob` (or `File`) object to convert.
+
+**Returns:**
+`Promise<string | ArrayBuffer | null>` — Returns a promise that resolves with the Base64 string (Data URL) or rejects with an error if reading fails.
+
+```typescript
+import { blobToBase64 } from '@dxtmisha/functional-basic'
+
+async function uploadFile(file: File) {
+  try {
+    const base64String = await blobToBase64(file)
+    console.log(base64String) // 'data:image/png;base64,iVBORw0KGgo...'
+  } catch (error) {
+    console.error('Error reading the file', error)
+  }
+}
+```

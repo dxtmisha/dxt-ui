@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isDomData - Проверка среды на Data URL'/>
+
+# `isDomData`
+
+Утилита, проверяющая, выполняется ли текущий код в среде, где URL-адрес (`location.href`) начинается со схемы `data:`. Это часто бывает полезно для определения специфичных контекстов исполнения, таких как встроенные скрипты в data-URI или песочницы (iframes).
+
+**Параметры:**
+Функция не принимает аргументов.
+
+**Возвращает:**
+`boolean` — Вернет `true`, если глобальный URL-адрес документа начинается с `data:`, и `false` в противном случае.
+
+```typescript
+import { isDomData } from '@dxtmisha/functional-basic'
+
+// Если код выполняется на странице 'https://example.com'
+console.log(isDomData()) // false
+
+// Если код встроен или запущен через 'data:text/html,...'
+console.log(isDomData()) // true
+```

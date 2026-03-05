@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/createElement - Создание HTML-элемента'/>
+
+# `createElement`
+
+В браузерном окружении создаёт новый HTML-элемент с указанным тегом и вставляет его в DOM-дерево.
+
+Функция проверяет наличие DOM-окружения с помощью `isDomRuntime()`. Если код выполняется не в браузере (например, на сервере во время SSR), функция вернёт `undefined`.
+
+**Параметры:**
+- `parentElement?: HTMLElement` — Родительский элемент, в который будет вставлен новый узел.
+- `tagName: string = 'div'` — Строка, определяющая тип создаваемого элемента (по умолчанию `'div'`).
+- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — Объект с атрибутами и свойствами для элемента (например, `id`, `className`, обработчики событий), или функция-колбэк для тонкой настройки элемента.
+- `referenceElement?: HTMLElement` — Элемент, перед которым будет вставлен новый `element`. Если не передан (или равен `null`), элемент будет добавлен в конец дочерних узлов родителя (`appendChild`).
+
+**Возвращает:**
+`T | undefined` — Созданный HTML-элемент, или `undefined`, если DOM недоступен.
+
+```typescript
+import { createElement } from '@dxtmisha/functional-basic'
+
+const container = document.getElementById('app')
+
+// Создание элемента с атрибутами
+const btn = createElement(container, 'button', {
+  className: 'primary-btn',
+  textContent: 'Нажми меня',
+  onclick: () => alert('Клик!')
+})
+
+// Тонкая настройка через функцию
+createElement(container, 'span', (el) => {
+  el.style.color = 'red'
+  el.dataset.customId = '123'
+  el.textContent = 'Текст с ошибкой'
+})
+```

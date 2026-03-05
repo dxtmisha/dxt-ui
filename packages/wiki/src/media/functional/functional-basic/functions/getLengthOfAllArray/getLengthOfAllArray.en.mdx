@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getLengthOfAllArray - Lengths of all array elements'/>
+
+# `getLengthOfAllArray`
+
+Creates and returns a new array consisting of the lengths (the `.length` property) of all elements in the provided array of strings.
+
+**Parameters:**
+- `value: ObjectOrArray<string>` — The input array of strings. If a single string is passed, it acts as an array with one element.
+
+**Returns:**
+`number[]` — An array of numbers where each number corresponds to the length of the string in the source array at that same position.
+
+```typescript
+import { getLengthOfAllArray } from '@dxtmisha/functional-basic'
+
+const data = ['red', 'blue', 'green']
+const lengths = getLengthOfAllArray(data)
+
+console.log(lengths) // [3, 4, 5]
+```

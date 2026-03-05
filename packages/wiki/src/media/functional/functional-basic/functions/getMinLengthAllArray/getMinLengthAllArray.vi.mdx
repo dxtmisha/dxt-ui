@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getMinLengthAllArray - Chiều dài ngắn nhất trong mảng'/>
+
+# `getMinLengthAllArray`
+
+Một tiện ích tìm chuỗi ngắn nhất trong mảng đã cung cấp và trả về độ dài của nó (dưới dạng một số). Hàm sử dụng hàm dựng sẵn `Math.min` kết hợp với `getLengthOfAllArray`.
+
+**Tham số:**
+- `data: ObjectOrArray<string>` — Mảng chuỗi đầu vào.
+
+**Trả về:**
+`number` — Độ dài của chuỗi ngắn nhất trong mảng. Nếu truyền vào mảng rỗng, hàm sẽ trả về `Infinity`.
+
+```typescript
+import { getMinLengthAllArray } from '@dxtmisha/functional-basic'
+
+const words = ['máy tính', 'mã', 'lập trình']
+const minLength = getMinLengthAllArray(words)
+
+console.log(minLength) // 2 ("mã")
+```

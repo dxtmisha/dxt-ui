@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useApiDelete - Выполнение DELETE-запросов'/>
+
+# `useApiDelete`
+
+Возвращает объект с состоянием загрузки и методом `send` для выполнения `DELETE`-запросов к API.
+
+**Параметры:**
+- `path?: RefOrNormal<string | undefined>` — Путь к endpoint API (может быть реактивным).
+- `action?: (data: Return | undefined) => Promise<void> | void` — Действие (коллбэк), выполняемое после успешного завершения запроса.
+- `transformation?: (data: T) => Return` — Функция трансформации ответа от сервера перед возвращением или передачей в `action`.
+- `toData: boolean = true` — Извлекать ли поле `data` из ответа.
+- `options?: ApiOptions` — Дополнительные опции запроса (объект параметров `ApiFetch`).
+
+**Возвращает:**
+Объект со следующими свойствами:
+- `loading` — Реактивное состояние загрузки (`true` пока идет ожидание ответа).
+- `send(request?: Request): Promise<Return | undefined>` — Асинхронный метод для отправки запроса. Он управляет состоянием загрузки, применяет трансформацию, выполняет коллбэк `action` и безопасно перехватывает ошибки.
+
+```typescript
+import { useApiDelete } from '@dxtmisha/functional'
+
+const { loading, send } = useApiDelete(
+  '/api/delete',
+  (data) => console.log('Действие завершено:', data),
+  (raw) => ({ ...raw, processed: true }),
+  true,
+  { cache: false }
+)
+
+const handleDelete = async () => {
+  const result = await send({ id: 1 })
+  console.log('Итоговый результат:', result)
+}
+```

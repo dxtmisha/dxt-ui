@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/anyToString - Conversion of a value to a string'/>
+
+# `anyToString`
+
+Converts a value to its string representation.
+- Strings are trimmed.
+- Arrays that do not contain any objects are joined with commas.
+- Objects and arrays containing objects are converted to a JSON string.
+- Boolean `true` is converted to `'1'`, and `false` is converted to `'0'`.
+- For `null` or `undefined`, it returns an empty string `''`.
+- For other scenarios, the result of the `toString()` method is returned.
+
+**Parameters:**
+- `value: V` — Values for conversion.
+
+**Returns:**
+`string` — The string representation of the provided value.
+
+```typescript
+import { anyToString } from '@dxtmisha/functional-basic'
+
+console.log(anyToString(' test ')) // 'test'
+console.log(anyToString([1, 2, 3])) // '1,2,3'
+console.log(anyToString({ a: 1 })) // '{"a":1}'
+console.log(anyToString(true)) // '1'
+console.log(anyToString(false)) // '0'
+console.log(anyToString(null)) // ''
+```

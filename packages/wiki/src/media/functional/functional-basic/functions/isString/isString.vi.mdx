@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isString - Kiểm tra dữ liệu chuỗi ký tự'/>
+
+# `isString`
+
+Tác vụ rà quét cơ bản nhưng không kém phần vững vàng nhằm phán định mức độ xác thực một hạt giống dữ liệu có mang kết cấu chuỗi ký tự (string) hay không.
+
+Khối mã này tựa vào bài toán kiểm tra cốt lõi tiêu chuẩn `typeof value === 'string'` đảm bảo không có bất kỳ kẽ hở nào khi khẳng định căn cước của thành phần thông số là chữ nguyên mẫu primitive string. Màn chắn an ninh tuyệt hảo giúp thanh trừng trơn tru tất cả mọi chủng loại lai vãng khác ngoài string, đá bay cả con số, luận lý boolean, cho đến mảng mớ hỗn độn như object và cặn dư undefined.
+
+**Tham số:**
+- `value: T` — Dữ liệu mang thể chất lung tung bất kỳ chờ được giám duyệt.
+
+**Trả về:**
+`boolean` — Trả tay chốt `true` liền nếu cục dữ liệu thuộc đích thị tộc đường lối string. Hiện `false` ở mọi kịch bản ngược ngạo lại. Nó cũng đính kèm vinh dự mang băng gạc cộp mác lớp Type Guard cho TypeScript khoanh phễu đặc trị kiểu cách lại chỉ còn `string`.
+
+```typescript
+import { isString } from '@dxtmisha/functional-basic'
+
+console.log(isString('Chào thế giới!')) // true
+console.log(isString('')) // true (chuỗi rỗng tinh cũng là chuỗi)
+
+// Hất cẳng dị thường
+console.log(isString(123)) // false
+console.log(isString(null)) // false
+console.log(isString({})) // false
+```

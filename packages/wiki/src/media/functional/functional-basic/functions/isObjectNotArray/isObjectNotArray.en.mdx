@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isObjectNotArray - Strict object verification'/>
+
+# `isObjectNotArray`
+
+Executes an advanced screening operation directly ensuring the tested item constitutes a textbook plain object structure `{}` (Record) while being **assuredly devoid of any array traits**.
+
+Following the intrinsic principle that the elementary `isObject` utility registers `true` inherently when probing arrays (due to JavaScript's rudimentary heritage), this precise function rectifies that quirk. By fusing foundational `isObject(value)` authentication mechanics with a robust `!Array.isArray(value)` safeguard mechanism, arrays are systematically disqualified.
+
+**Parameters:**
+- `value: T` — Any element waiting for inspection.
+
+**Returns:**
+`boolean` — Generates `true` solely corresponding to authentic objects structured as `{ key: 'value' }`. Yields `false` automatically when combating arrays `[]`, elusive nulls, functional instances, or standard primitive values. Employs reliable type guarding capabilities that carefully extract the pure Object Record architecture while discarding intersecting null, undefined or array overlaps.
+
+```typescript
+import { isObjectNotArray } from '@dxtmisha/functional-basic'
+
+// Successful validation boundaries
+console.log(isObjectNotArray({ id: 1, name: 'Test' })) // true
+
+// Scenarios safely bypassed without tripping false positives
+console.log(isObjectNotArray([1, 2, 3])) // false (Array defense shield actively rejects arrays!)
+console.log(isObjectNotArray(null)) // false
+console.log(isObjectNotArray('string')) // false
+```

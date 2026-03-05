@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isWindow - Проверка объекта Window'/>
+
+# `isWindow`
+
+Утилита, предназначенная для проверки того, является ли переданный элемент или переменная глобальным объектом браузера `window`.
+
+Функция сначала проводит проверку `isDomRuntime()`, чтобы убедиться, что код вообще запущен в браузере и объект `window` доступен (для предотвращения ошибок в серверной среде SSR). Затем выполняется прямое сравнение переданного аргумента с глобальным объектом `window`.
+
+**Параметры:**
+- `element: E` — Любой элемент, узел или переменная для сопоставления.
+
+**Возвращает:**
+`boolean` — Вернет `true`, если код выполняется в браузере и переданный элемент строго равен объекту `window`. Служит тайпгардом (type guard), сужающим тип проверяемого значения до `Window`.
+
+```typescript
+import { isWindow } from '@dxtmisha/functional-basic'
+
+// Успешная валидация
+console.log(isWindow(window)) // true
+console.log(isWindow(globalThis.window)) // true
+
+// Типичные DOM узлы и другие значения
+console.log(isWindow(document)) // false
+console.log(isWindow(document.body)) // false
+console.log(isWindow({})) // false
+```

@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getRandomText - Tạo văn bản ngẫu nhiên'/>
+
+# `getRandomText`
+
+Tạo một chuỗi bao gồm số lượng ngẫu nhiên các "từ". Từ ở đây là một chuỗi liên tiếp các ký tự giống nhau với độ dài cụ thể. Hàm này hữu ích trong việc làm dữ liệu giả (placeholder) cho giao diện, nó mô phỏng cách dàn trang chữ thật mà không bị ảnh hưởng bởi ngữ nghĩa hoặc rào cản ngôn ngữ.
+
+Hàm này được xây dựng dựa trên các tiện ích `random` (để lấy ngẫu nhiên các giá trị số) và `strFill` (để lặp ký tự theo độ dài thành một từ).
+
+**Tham số:**
+- `min: number` — Số lượng từ tối thiểu của chuỗi trả về.
+- `max: number` — Số lượng từ tối đa của chuỗi trả về.
+- `symbol: string` — (Tùy chọn) Ký tự sẽ được dùng để tạo thành chữ. Mặc định là `#`.
+- `lengthMin: number` — (Tùy chọn) Chiều dài tối thiểu một từ. Mặc định là `2`.
+- `lengthMax: number` — (Tùy chọn) Chiều dài tối đa của một từ. Mặc định là `12`.
+
+**Trả về:**
+`string` — Một chuỗi được tạo bằng các từ cách nhau bởi khoảng trắng.
+
+```typescript
+import { getRandomText } from '@dxtmisha/functional-basic'
+
+// Tạo ra từ 2 tới 5 từ bằng ký tự '#'
+// Độ dài mỗi từ trong khoảng 2 tới 12 ký tự
+console.log(getRandomText(2, 5)) // '#### ## #######'
+
+// Số lượng từ cố định (3) với một ký tự cụ thể ('*')
+// Độ dài từ khóa cứng là 5 ký tự
+console.log(getRandomText(3, 3, '*', 5, 5)) // '***** ***** *****'
+```

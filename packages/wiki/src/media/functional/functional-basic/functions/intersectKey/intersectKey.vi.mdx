@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/intersectKey - Giao thoa đối tượng theo khóa'/>
+
+# `intersectKey`
+
+Phân tích hai đối tượng (hoặc cả mảng) và trả về một đối tượng mới chỉ chứa những thuộc tính từ đối tượng thứ nhất có khóa (key) cũng được tìm thấy bên trong đối tượng thứ hai. Các giá trị kết quả được lấy trực tiếp từ đối tượng nguồn ban đầu (`data`).
+
+Hàm này rất hiệu quả trong việc hỗ trợ lọc bỏ các trường dư thừa từ payload khi tra soát chéo với một cấu trúc object mẫu an toàn.
+
+**Tham số:**
+- `data: T` — Đối tượng dữ liệu chính cung cấp các giá trị thật.
+- `comparison: C` — Đối tượng dùng để tham chiếu, các khóa của nó sẽ là tiêu chuẩn kiểm tra tồn tại.
+
+**Trả về:**
+`Record<KT & KC, T[KT]>` — Một đối tượng hoàn toàn mới chứa các khóa giao nhau. Nếu thiếu tham số hoặc các tham số không phải là kiểu cấu trúc đối tượng, hàm sẽ trả về một object rỗng `{}`.
+
+```typescript
+import { intersectKey } from '@dxtmisha/functional-basic'
+
+const inputData = { id: 1, name: 'John', age: 30, _internalToken: 'xyz' }
+const allowedSchema = { id: null, name: null, role: null }
+
+// Chỉ giữ lại những trường từ inputData mà xuất hiện trong allowedSchema
+const result = intersectKey(inputData, allowedSchema)
+console.log(result) // { id: 1, name: 'John' }
+```

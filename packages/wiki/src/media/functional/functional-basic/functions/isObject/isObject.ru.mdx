@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isObject - Проверка на объект'/>
+
+# `isObject`
+
+Базовая утилита, предназначенная для быстрой и безопасной проверки того, является ли значение истинно объектом.
+
+В JavaScript определение типов работает с нюансами: оператор `typeof null` возвращает строку `'object'`, что зачастую ведет к скрытым ошибкам. Эта функция обходит эту проблему, предварительно проверяя значение на truthiness (`Boolean(value)`), чтобы навсегда отсечь `null` и другие ложные идентификаторы, после чего проводит строгую проверку типа. Обратите внимание, что массивы (`[]`) в JavaScript также являются объектами и поэтому дадут результат `true`.
+
+**Параметры:**
+- `value: T` — Проверяемое значение.
+
+**Возвращает:**
+`boolean` — Вернет `true`, когда значение является экземпляром объекта (в том числе массивом). Вернет `false` для любых примитивов, `null`, `undefined` и функций. Выступает в качестве защитника типа (type guard), сужая тип до `Record<any, any>`.
+
+```typescript
+import { isObject } from '@dxtmisha/functional-basic'
+
+console.log(isObject({ id: 1 })) // true
+console.log(isObject([1, 2, 3])) // true (Массивы в JS - это технически объекты!)
+
+// Строгая проверка исключает сюрпризы JS
+console.log(isObject(null)) // false
+console.log(isObject(100)) // false
+console.log(isObject('string')) // false
+```

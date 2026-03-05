@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getColumn - Trích xuất một cột dữ liệu'/>
+
+# `getColumn`
+
+Một tiện ích lặp qua mảng các đối tượng và trả về một mảng mới chỉ bao gồm các giá trị từ một khóa (thuộc tính) cụ thể của mỗi đối tượng. Về cơ bản, điều này tương đương với cú pháp `Array.prototype.map(item => item[key])` nhưng được định kiểu tĩnh chặt chẽ.
+
+**Tham số:**
+- `array: ObjectOrArray<T>` — Một mảng (hoặc một đối tượng từ điển) chứa các phần tử kiểu `T`.
+- `column: K` — Khóa (tên thuộc tính) có các giá trị mà bạn muốn trích xuất.
+
+**Trả về:**
+`(T[K] | undefined)[]` — Một mảng chứa các giá trị của `column` được yêu cầu. Nếu một phần tử không có thuộc tính này, giá trị tại vị trí đó sẽ là `undefined`.
+
+```typescript
+import { getColumn } from '@dxtmisha/functional-basic'
+
+const users = [
+  { id: 1, name: 'Anna', role: 'admin' },
+  { id: 2, name: 'Ivan', role: 'user' },
+  { id: 3, name: 'Maria', role: 'user' }
+]
+
+const names = getColumn(users, 'name')
+console.log(names) // ['Anna', 'Ivan', 'Maria']
+
+const ids = getColumn(users, 'id')
+console.log(ids) // [1, 2, 3]
+```

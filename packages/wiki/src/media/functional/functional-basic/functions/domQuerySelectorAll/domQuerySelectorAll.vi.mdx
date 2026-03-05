@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/domQuerySelectorAll - Chọn các phần tử DOM'/>
+
+# `domQuerySelectorAll`
+
+Tìm và trả về một danh sách tất cả các phần tử HTML khớp với bộ chọn CSS được chỉ định. Kết quả trả về là một `NodeList` tĩnh (không tự động cập nhật).
+
+Hàm kiểm tra sự tồn tại của môi trường trình duyệt (DOM) thông qua `isDomRuntime()`. Nếu được thực thi trên máy chủ hoặc môi trường không có DOM, hàm sẽ trả về `undefined`.
+
+**Tham số:**
+- `selectors: string` — Một chuỗi chứa một hoặc nhiều bộ chọn để tìm kiếm.
+
+**Trả về:**
+`NodeListOf<E> | undefined` — Một tập hợp các phần tử khớp (có thể là một mảng rỗng nếu không tìm thấy), hoặc `undefined` nếu không có quyền truy cập DOM.
+
+```typescript
+import { domQuerySelectorAll } from '@dxtmisha/functional-basic'
+
+// Tìm tất cả phần tử có class nhất định
+const items = domQuerySelectorAll('.list-item')
+
+if (items) {
+  items.forEach(item => {
+    item.classList.add('active')
+  })
+}
+```

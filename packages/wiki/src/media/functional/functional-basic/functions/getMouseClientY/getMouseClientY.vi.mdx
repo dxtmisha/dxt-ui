@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getMouseClientY - Lấy tọa độ Y của sự kiện'/>
+
+# `getMouseClientY`
+
+Trích xuất tọa độ Y (vị trí dọc) của con trỏ (chuột hoặc cảm ứng) tương đối với vùng nhìn thấy của cửa sổ trình duyệt (viewport) từ đối tượng sự kiện.
+
+Hàm này xử lý cả các sự kiện chuột tiêu chuẩn (`MouseEvent`) và các sự kiện chạm (`TouchEvent`), ưu tiên thuộc tính `clientY`. Nếu `clientY` không được tìm thấy trực tiếp trên sự kiện, nó sẽ tiếp tục tìm kiếm bên trong các mảng `targetTouches` và `touches`.
+
+**Tham số:**
+- `event: MouseEvent & TouchEvent` — Đối tượng sự kiện (`mousemove`, `touchmove`, `click`, v.v.).
+
+**Trả về:**
+`number` — Tọa độ Y của con trỏ/điểm chạm. Nếu không tìm thấy, nó sẽ trả về `0`.
+
+```typescript
+import { getMouseClientY } from '@dxtmisha/functional-basic'
+
+document.addEventListener('click', (event) => {
+  const y = getMouseClientY(event)
+  console.log(`Người dùng đã nhấp vào vị trí cách mép trên cửa sổ ${y}px`)
+})
+```

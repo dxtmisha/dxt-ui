@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/executeFunction - Execute function or return value'/>
+
+# `executeFunction`
+
+A utility that checks the provided argument. If the argument is a function, it executes the function and returns its result. Otherwise, it simply returns the provided argument as is.
+
+This is extremely useful for handling arguments that can flexibly be either a static value or a function that calculates the value on demand (such as lazy evaluation or dynamic defaults).
+
+**Parameters:**
+- `callback: T | FunctionArgs<any, T>` — A value of any type, or a function that returns a value of type `T`.
+
+**Returns:**
+`T` — The result of the function execution, or the raw value provided.
+
+```typescript
+import { executeFunction } from '@dxtmisha/functional-basic'
+
+// Passing a static value
+console.log(executeFunction('Hello')) // 'Hello'
+
+// Passing a function
+const lazyValue = () => {
+  return 'Loaded lazily'
+}
+console.log(executeFunction(lazyValue)) // 'Loaded lazily'
+```

@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isDomData - Xác minh môi trường URL dữ liệu'/>
+
+# `isDomData`
+
+Một tiện ích đơn giản thực hiện công việc xác minh xem bối cảnh thực thi mã hiện thời có được hoạt động trên một đường dẫn (`location.href`) gắn theo tiền tố `data:` hay không. Hàm này thực sự hữu ích nhằm cô lập các khung lập trình có sử dụng luồng dữ liệu liên quan đến mã inline qua data URI hoặc trên các khu vực hộp cát (sandbox) riêng biệt như `iframe`.
+
+**Tham số:**
+Hàm này không tiếp nhận bất kỳ đối số nào.
+
+**Trả về:**
+`boolean` — Trả về `true` nếu nguồn dẫu nối URL toàn cục của tài liệu (document) bắt đầu bằng nhãn `data:`, và lấy giá trị `false` đối với những trường hợp khác.
+
+```typescript
+import { isDomData } from '@dxtmisha/functional-basic'
+
+// Nếu mã thực thi độc lập trên trang thuần 'https://example.com'
+console.log(isDomData()) // false
+
+// Nếu mã phân mảnh trên khối đóng gói 'data:text/html,...'
+console.log(isDomData()) // true
+```

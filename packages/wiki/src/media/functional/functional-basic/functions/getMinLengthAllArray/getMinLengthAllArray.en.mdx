@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getMinLengthAllArray - Minimum length in array'/>
+
+# `getMinLengthAllArray`
+
+A utility that finds the shortest string in the provided array and returns its length (as a number). The function uses built-in `Math.min` combined with `getLengthOfAllArray`.
+
+**Parameters:**
+- `data: ObjectOrArray<string>` — The input array of strings.
+
+**Returns:**
+`number` — The length of the shortest string in the array. If an empty array is passed, it returns `Infinity`.
+
+```typescript
+import { getMinLengthAllArray } from '@dxtmisha/functional-basic'
+
+const words = ['computer', 'code', 'programming']
+const minLength = getMinLengthAllArray(words)
+
+console.log(minLength) // 4 ("code")
+```

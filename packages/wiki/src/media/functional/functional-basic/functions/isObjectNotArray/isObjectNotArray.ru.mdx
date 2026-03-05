@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isObjectNotArray - Проверка на строгий объект'/>
+
+# `isObjectNotArray`
+
+Выполняет расширенную проверку значения, чтобы убедиться, что оно является классическим объектом `{}` (Record) и при этом **гарантированно не является массивом**.
+
+Поскольку функция базовая утилита `isObject` возвращает `true` даже для массивов (согласно специфике типов JavaScript), данная функция решает эту проблему, комбинируя оригинальную логику `isObject(value)` со строгой проверкой `!Array.isArray(value)`. 
+
+**Параметры:**
+- `value: T` — Проверяемое значение.
+
+**Возвращает:**
+`boolean` — Вернет `true` исключительно для истинных объектов `{ key: 'value' }`. Вернет `false` для массивов `[]`, null, функций и всех примитивных типов данных. Выступает в качестве защитника типа (type guard), извлекая тип формы объекта и исключая возможные массивы или пустые значения (null/undefined).
+
+```typescript
+import { isObjectNotArray } from '@dxtmisha/functional-basic'
+
+// Успешная валидация
+console.log(isObjectNotArray({ id: 1, name: 'Test' })) // true
+
+// Типичные сценарии, где функция отфильтрует "ненужные" объекты
+console.log(isObjectNotArray([1, 2, 3])) // false (Защита от массивов работает!)
+console.log(isObjectNotArray(null)) // false
+console.log(isObjectNotArray('string')) // false
+```

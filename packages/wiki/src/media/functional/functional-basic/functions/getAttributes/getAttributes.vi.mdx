@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getAttributes - Lấy thuộc tính phần tử'/>
+
+# `getAttributes`
+
+Trích xuất tất cả các thuộc tính HTML của một phần tử DOM được chỉ định (hoặc phần tử được tìm thấy bằng bộ chọn CSS) và trả về chúng dưới dạng một đối tượng khóa-giá trị (key-value) đơn giản.
+
+Hàm sử dụng `getElement` để tìm nút đích. Nếu phần tử không được tìm thấy hoặc đối số trống được truyền vào, nó sẽ trả về một đối tượng rỗng `{}`.
+
+**Tham số:**
+- `element?: ElementOrString<E>` — Một phần tử DOM, đối tượng Window, hoặc một chuỗi CSS selector để tìm kiếm phần tử đó.
+
+**Trả về:**
+`Record<string, string | undefined>` — Một đối tượng trong đó khóa là tên thuộc tính (ví dụ: `id`, `class`, `data-value`), và giá trị là nội dung của chúng.
+
+```typescript
+import { getAttributes } from '@dxtmisha/functional-basic'
+
+// Giả sử có phần tử: <div id="app" class="container" data-theme="dark"></div>
+
+const attrs = getAttributes('#app')
+console.log(attrs)
+/*
+{
+  id: 'app',
+  class: 'container',
+  'data-theme': 'dark'
+}
+*/
+```

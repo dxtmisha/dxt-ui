@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getElementItem - Получение значения свойства элемента'/>
+
+# `getElementItem`
+
+Возвращает значение определенного свойства из HTML-элемента (например, `id`, `className`, пользовательское свойство, если оно определено как ключ объекта типа элемента). Утилита использует `getElement` для поиска узла, и если элемент не найден или у него нет указанного свойства, возвращает `defaultValue` (которое по умолчанию равно `undefined`).
+
+**Параметры:**
+- `element: ElementOrString<T>` — Строка селектора или готовый DOM-элемент.
+- `index: K | string` — Имя свойства элемента (ключ), значение которого требуется получить.
+- `defaultValue?: D` — Значение по умолчанию, возвращаемое, если свойство не найдено.
+
+**Возвращает:**
+`T[K] | D | undefined` — Значение запрашиваемого свойства или `defaultValue`.
+
+```typescript
+import { getElementItem } from '@dxtmisha/functional-basic'
+
+const input = document.createElement('input')
+input.type = 'text'
+input.id = 'my-input'
+
+// Получение ID
+const elementId = getElementItem(input, 'id') 
+console.log(elementId) // 'my-input'
+
+// Если свойство отсутствует и мы передаем fallback
+const testValue = getElementItem('.non-existent', 'id', 'fallback-id')
+console.log(testValue) // 'fallback-id'
+```

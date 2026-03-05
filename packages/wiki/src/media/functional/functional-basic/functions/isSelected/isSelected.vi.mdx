@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isSelected - Kiểm tra dữ liệu được lựa chọn'/>
+
+# `isSelected`
+
+Một hệ thống tiện ích chuyên dùng đa nhiệm có trách nhiệm tra cứu cẩn thận xem một giá trị đã cấp xuất hiện có chuẩn xác trùng khớp với tiêu chí lựa chọn (`selected`) đã đặt ra hay không. Hàm này liên hoạt thông minh chạy nhiều sách lược giám kiểm phụ thuộc chủ yếu vào thể trạng định danh tham số gốc rễ của đích đến:
+
+1. **Kháng cự chống độc:** Nếu mồi thử thách (`value`) trống rỗng mang mã `null` hoặc `undefined`, bộ hàm lập tức đóng băng chốt hạ đáp số gãy gọn `false`.
+2. **So sánh nhóm mảng:** Trong bối cảnh thông số đầu đạn `selected` rải thảm là tập hợp danh sách mảng `[]`, luồng điện sẽ tự động khởi tạo lệnh chà xát `.includes(value)` bới tung mảng để kiếm mồi nhắm trùng gốc.
+3. **Độ chính xác chuyển hóa chữ số:** Trong trường điện từ khi mà cả đối phương kiểm và mẫu vật (`value` lẫn `selected`) gián tiếp hội tủ đủ yếu tố đặc thù để ép làm cấu trúc con số thuần (được bảo vệ thông qua hàm `isNumber()`), kịch bản script sẽ tự gọt rũa vỏ bọc String và đồng hoá chúng làm bản mô phỏng Số chuẩn mực (VD: gỡ rối `'5'` trở nên đồng dạng tuyệt đối cùng số `5` chân phương).
+4. **Chốt hẻm sau cùng:** Bế tắc trước vạn rào kẽm trên, máy chủ ép buộc trả về hình thái soi rọi trực tiếp đối chiếu qua cân bằng `value === selected`.
+
+**Tham số:**
+- `value: T` — Mục đơn giá trị cốt lõi đệ lên đợi xác thực ngắm bắn.
+- `selected: T | T[] | S` — Tấm bia đỡ đạn đóng vai nguyên lý so sánh chủ lực để đối thoại. Dữ kiện có thể nằm ngửa ở dạng đơn lẻ hoặc gói gọn thành băng đạn danh sách liên hồi (mảng array).
+
+**Trả về:**
+`boolean` — In dấu ra `true` nương theo điều kiện dữ kiện đầu vào đồng loã trót lọt với chốt đích cài cắm, nảy số `false` trái ngang.
+
+```typescript
+import { isSelected } from '@dxtmisha/functional-basic'
+
+// Quét đối chất cô lập 
+console.log(isSelected('apple', 'apple')) // true
+console.log(isSelected('apple', 'banana')) // false
+
+// Nã đạn đọ đối sánh với vòng lặp băng đạn nhóm Mảng
+console.log(isSelected(2, [1, 2, 3])) // true
+console.log(isSelected('dog', ['cat', 'mouse'])) // false
+
+// Bản kiểm siêu thông minh gỡ lớp vỏ dạng chữ hoá đổi về số (string vs number)
+console.log(isSelected('5', 5)) // true
+
+// Sâu bùn hố bom
+console.log(isSelected(null, 1)) // false
+```

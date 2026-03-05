@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isString - Проверка на строку'/>
+
+# `isString`
+
+Базовая, но надежная утилита для проверки того, является ли переданное значение строкой.
+
+Инструмент опирается на стандартную проверку `typeof value === 'string'`, гарантируя, что значение относится к строковому примитиву. Это эффективно отфильтровывает все остальные типы данных: числа, булевы значения, объекты, массивы и значения типа null/undefined.
+
+**Параметры:**
+- `value: T` — Любое значение, чей тип необходимо проверить.
+
+**Возвращает:**
+`boolean` — Вернет `true`, если проверяемое значение — строка. Вернет `false` для любых других типов. Функция также служит защитником типа (type guard), явно сужая область переменной до типа `string`.
+
+```typescript
+import { isString } from '@dxtmisha/functional-basic'
+
+console.log(isString('Привет, мир!')) // true
+console.log(isString('')) // true (пустая строка — это тоже строка)
+
+// Отсеивание нерелевантных типов
+console.log(isString(123)) // false
+console.log(isString(null)) // false
+console.log(isString({})) // false
+```
