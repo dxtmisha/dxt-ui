@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/resizeImageByMax - Изменение размера изображения по максимальной стороне'/>
+
+# `resizeImageByMax`
+
+Изменяет размер изображения пропорционально, чтобы оно вписывалось в заданные ограничения максимального размера (по ширине, высоте или автоматически по большей стороне). Возвращает Data URL с уменьшенным изображением в формате Base64. 
+
+Функция полезна для сжатия изображений на лету перед их отправкой на сервер.
+
+**Параметры:**
+- `image: HTMLImageElement | string` — Элемент изображения или URL-адрес.
+- `maxSize: number` — Максимальный допустимый размер в пикселях (для ширины или высоты).
+- `type: ResizeImageByMaxType` — Стратегия масштабирования: `'auto'`, `'width'`, или `'height'`. По умолчанию `'auto'`.
+- `typeData?: string` — Опциональный MIME-тип для результирующего Data URL (например, `'image/jpeg'`). По умолчанию `'image/png'`.
+
+**Возвращает:**
+`string | undefined` — Строка Data URL с изображением нового размера, или `undefined`, если изображение невозможно обработать или оно меньше/равно `maxSize`.
+
+```typescript
+import { resizeImageByMax } from '@dxtmisha/functional-basic'
+
+const imgElement = document.querySelector('img')
+const resizedDataUrl = resizeImageByMax(imgElement, 800)
+
+console.log(resizedDataUrl) 
+// 'data:image/png;base64,iVBORw0KGgo...'
+```

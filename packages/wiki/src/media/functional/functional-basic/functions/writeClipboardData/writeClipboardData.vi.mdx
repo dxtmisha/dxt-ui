@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/writeClipboardData - Ghi văn bản vào bộ nhớ tạm (clipboard)'/>
+
+# `writeClipboardData`
+
+Ghi một chuỗi văn bản vào bộ nhớ tạm của người dùng. Hàm sử dụng `navigator.clipboard API` hiện đại và sẽ chuyển sang sử dụng `document.execCommand` nếu API trên không khả dụng.
+
+**Tham số:**
+- `text: string` — Văn bản cần ghi.
+
+**Trả về:**
+`Promise<void>` — Một promise sẽ hoàn thành sau khi ghi thành công.
+
+```typescript
+import { writeClipboardData } from '@dxtmisha/functional-basic'
+
+await writeClipboardData('Văn bản đã sao chép')
+```

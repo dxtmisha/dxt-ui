@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/secondToTime - Convert seconds to a time string'/>
+
+# `secondToTime`
+
+Converts a given number of seconds into a time format string `MM:SS`.
+
+If the value of seconds is less than or equal to zero, or is not provided, the default value `00:00` is returned.
+
+**Parameters:**
+- `second: number | string | undefined` — The total number of seconds (both numbers and string representations of numbers are supported).
+
+**Returns:**
+`string` — A formatted string with minutes and seconds (e.g., `12:34`).
+
+```typescript
+import { secondToTime } from '@dxtmisha/functional-basic'
+
+console.log(secondToTime(125)) // '02:05'
+console.log(secondToTime('65')) // '01:05'
+console.log(secondToTime()) // '00:00'
+```

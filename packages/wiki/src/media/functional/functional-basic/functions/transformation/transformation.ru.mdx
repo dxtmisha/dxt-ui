@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/transformation - Преобразование строки в тип данных'/>
+
+# `transformation`
+
+Преобразует строковое значение в соответствующий ему тип данных (логический, числовой, объектный или `null`/`undefined`). Если включен флаг `isFunction`, проверяет наличие функции с таким именем в глобальном объекте `window`.
+
+**Параметры:**
+- `value: any` — Значение для преобразования.
+- `isFunction: boolean` — Флаг поиска функции в `window` (по умолчанию `false`).
+
+**Возвращает:**
+`any` — Преобразованное значение.
+
+```typescript
+import { transformation } from '@dxtmisha/functional-basic'
+
+console.log(transformation('true')) // true
+console.log(transformation('12.5')) // 12.5
+console.log(transformation('{"a":1}')) // { a: 1 }
+console.log(transformation('null')) // null
+```

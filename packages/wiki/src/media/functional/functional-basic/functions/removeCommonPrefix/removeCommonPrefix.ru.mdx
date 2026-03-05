@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/removeCommonPrefix - Удаление общего префикса'/>
+
+# `removeCommonPrefix`
+
+Удаляет общий префикс из начала основной строки. Если основная строка начинается с указанного префикса, функция обрезает его и возвращает строку без пробелов по краям.
+
+**Параметры:**
+- `mainStr: string` — Основная строка.
+- `prefix: string` — Строка префикса для удаления.
+
+**Возвращает:**
+`string` — Новая строка без префикса и лишних пробелов по краям.
+
+```typescript
+import { removeCommonPrefix } from '@dxtmisha/functional-basic'
+
+console.log(removeCommonPrefix('Привет, мир!', 'Привет, ')) // 'мир!'
+console.log(removeCommonPrefix('user_name', 'user_')) // 'name'
+```

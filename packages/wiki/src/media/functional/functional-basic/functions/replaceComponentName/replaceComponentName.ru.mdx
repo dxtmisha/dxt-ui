@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/replaceComponentName - Замена имени компонента в тексте'/>
+
+# `replaceComponentName`
+
+Заменяет HTML-теги определенного компонента в текстовой строке на новые. Выполняет поиск открывающих (`<name`) и закрывающих (`</name`) тегов без учета регистра и заменяет их на `componentName`.
+
+**Параметры:**
+- `text: string | undefined` — Исходный текст.
+- `name: string` — Имя компонента, которое нужно заменить.
+- `componentName: string` — Новое имя компонента.
+
+**Возвращает:**
+`string | undefined` — Измененный текст с новыми тегами или `undefined`, если исходный текст не был передан.
+
+```typescript
+import { replaceComponentName } from '@dxtmisha/functional-basic'
+
+const template = '<Button>Нажми меня</Button>'
+console.log(replaceComponentName(template, 'Button', 'AppButton')) 
+// '<AppButton>Нажми меня</AppButton>'
+```

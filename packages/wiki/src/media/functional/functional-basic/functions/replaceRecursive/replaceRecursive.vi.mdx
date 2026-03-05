@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/replaceRecursive - Hợp nhất đệ quy các đối tượng hoặc mảng'/>
+
+# `replaceRecursive`
+
+Thực hiện hợp nhất sâu (đệ quy) một đối tượng hoặc mảng đích với dữ liệu từ một đối tượng/mảng thay thế. Nếu tham số `isMerge` được bật, các mảng sẽ được nối lại với nhau và loại bỏ các phần tử trùng lặp; nếu không, các mảng từ đối tượng thay thế sẽ ghi đè lên các mảng ban đầu.
+
+**Tham số:**
+- `array: ObjectItem<I>` — Mảng hoặc đối tượng ban đầu mà các phần tử sẽ được thay thế/hợp nhất.
+- `replacement?: ObjectOrArray<I>` — Mảng hoặc đối tượng chứa các phần tử được sử dụng để thay thế.
+- `isMerge: boolean` — Cờ để hợp nhất các mảng cùng tên (mặc định là `true`). Nếu là `false`, các phần tử đơn giản sẽ bị ghi đè.
+
+**Trả về:**
+`ObjectItem<I>` — Một đối tượng hoặc mảng mới là kết quả của việc hợp nhất. Đối tượng ban đầu không bị biến đổi (mutate).
+
+```typescript
+import { replaceRecursive } from '@dxtmisha/functional-basic'
+
+const target = { a: [1, 2], b: { x: 1 } }
+const source = { a: [2, 3], b: { y: 2 } }
+
+console.log(replaceRecursive(target, source)) 
+// { a: [1, 2, 3], b: { x: 1, y: 2 } }
+
+console.log(replaceRecursive(target, source, false)) 
+// { a: [2, 3], b: { x: 1, y: 2 } }
+```

@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toCamelCase - Chuyển đổi chuỗi sang camelCase'/>
+
+# `toCamelCase`
+
+Chuyển đổi một chuỗi văn bản sang định dạng `camelCase`. Hàm loại bỏ các ký tự đặc biệt, thay thế khoảng trắng bằng dấu gạch ngang, chuyển đổi các chữ cái sau dấu gạch ngang thành chữ hoa và đảm bảo chữ cái đầu tiên của toàn bộ chuỗi là chữ thường.
+
+**Tham số:**
+- `value: string` — Chuỗi gốc cần chuyển đổi.
+
+**Trả về:**
+`string` — Chuỗi định dạng `camelCase`.
+
+```typescript
+import { toCamelCase } from '@dxtmisha/functional-basic'
+
+console.log(toCamelCase('Hello World')) // 'helloWorld'
+console.log(toCamelCase('user-profile-data')) // 'userProfileData'
+console.log(toCamelCase('Some_Special@String')) // 'someSpecialString'
+```

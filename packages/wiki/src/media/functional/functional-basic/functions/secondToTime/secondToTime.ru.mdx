@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/secondToTime - Преобразование секунд в строку времени'/>
+
+# `secondToTime`
+
+Преобразует переданное количество секунд в строку формата времени `MM:SS`. 
+
+Если значение секунд меньше или равно нулю, или оно не было передано, возвращается значение по умолчанию `00:00`.
+
+**Параметры:**
+- `second: number | string | undefined` — Общее количество секунд (поддерживаются числа и строковые представления чисел).
+
+**Возвращает:**
+`string` — Отформатированная строка с минутами и секундами (например, `12:34`).
+
+```typescript
+import { secondToTime } from '@dxtmisha/functional-basic'
+
+console.log(secondToTime(125)) // '02:05'
+console.log(secondToTime('65')) // '01:05'
+console.log(secondToTime()) // '00:00'
+```

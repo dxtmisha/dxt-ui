@@ -4,13 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `anyToString`
 
-Converts a value to its string representation.
-- Strings are trimmed.
-- Arrays that do not contain any objects are joined with commas.
-- Objects and arrays containing objects are converted to a JSON string.
-- Boolean `true` is converted to `'1'`, and `false` is converted to `'0'`.
-- For `null` or `undefined`, it returns an empty string `''`.
-- For other scenarios, the result of the `toString()` method is returned.
+A utility that safely converts any input data into a string type.
+
+This is useful when outputting data to the interface when the variable type (object, array, boolean, or null) is not known in advance.
 
 **Parameters:**
 - `value: V` — Values for conversion.

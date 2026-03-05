@@ -32,7 +32,7 @@ describe('isFilled', () => {
     expect(isFilled(0)).toBe(false)
     expect(isFilled(1)).toBe(true)
     expect(isFilled(-1)).toBe(true)
-    expect(isFilled(NaN)).toBe(true) // Technically truthy by function's basic check logic if it bypassed `if (value)`, but `if (NaN)` is false. So `isFilled(NaN)` is false.
+    expect(isFilled(NaN)).toBe(false)
   })
 
   it('should be false for NaN (since NaN is falsy)', () => {

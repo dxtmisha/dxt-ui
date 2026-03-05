@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toPercent - Вычисление процента от значения'/>
+
+# `toPercent`
+
+Вычисляет долю текущего значения относительно максимального. Возвращает число в диапазоне от 0 до 1.
+
+**Параметры:**
+- `maxValue: number` — Максимально возможное значение (100%).
+- `value: number` — Текущее значение.
+
+**Возвращает:**
+`number` — Результат в виде десятичной дроби (например, `0.5` для 50%).
+
+```typescript
+import { toPercent } from '@dxtmisha/functional-basic'
+
+console.log(toPercent(200, 100)) // 0.5
+console.log(toPercent(100, 25)) // 0.25
+```

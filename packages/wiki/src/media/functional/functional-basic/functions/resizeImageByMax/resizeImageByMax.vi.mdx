@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/resizeImageByMax - Thay đổi kích thước hình ảnh theo cạnh tối đa'/>
+
+# `resizeImageByMax`
+
+Thay đổi kích thước hình ảnh theo tỷ lệ để vừa với giới hạn kích thước tối đa được chỉ định (theo chiều rộng, chiều cao hoặc tự động theo cạnh lớn nhất). Trả về Chuỗi Data URL được mã hóa Base64 của hình ảnh đã thu nhỏ.
+
+Hàm này hữu ích để nén hình ảnh trực tiếp (on the fly) trước khi tải lên máy chủ.
+
+**Tham số:**
+- `image: HTMLImageElement | string` — Phần tử hình ảnh hoặc đường dẫn URL.
+- `maxSize: number` — Kích thước pixel tối đa cho phép (đối với chiều rộng hoặc chiều cao).
+- `type: ResizeImageByMaxType` — Chiến lược mở rộng/thu nhỏ: `'auto'`, `'width'`, hoặc `'height'`. Mặc định là `'auto'`.
+- `typeData?: string` — Loại MIME tùy chọn cho chuỗi Data URL trả về (ví dụ, `'image/jpeg'`). Mặc định là `'image/png'`.
+
+**Trả về:**
+`string | undefined` — Một chuỗi Data URL chứa hình ảnh đã thay đổi kích thước hoặc `undefined` nếu hình ảnh không thể được xử lý hoặc kích thước của nó đã nhỏ hơn/bằng `maxSize`.
+
+```typescript
+import { resizeImageByMax } from '@dxtmisha/functional-basic'
+
+const imgElement = document.querySelector('img')
+const resizedDataUrl = resizeImageByMax(imgElement, 800)
+
+console.log(resizedDataUrl) 
+// 'data:image/png;base64,iVBORw0KGgo...'
+```

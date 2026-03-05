@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/uniqueArray - Удаление дубликатов из массива'/>
+
+# `uniqueArray`
+
+Создает новый массив, содержащий только уникальные элементы из исходного массива.
+
+**Параметры:**
+- `value: T[]` — Исходный массив.
+
+**Возвращает:**
+`T[]` — Новый массив без дубликатов.
+
+```typescript
+import { uniqueArray } from '@dxtmisha/functional-basic'
+
+const list = [1, 2, 2, 3, 1]
+console.log(uniqueArray(list)) // [1, 2, 3]
+```

@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/random - Tạo số ngẫu nhiên'/>
+
+# `random`
+
+Tạo và trả về một số nguyên ngẫu nhiên trong phạm vi được chỉ định từ `min` đến `max` (bao gồm cả hai giá trị).
+
+**Tham số:**
+- `min: number` — Giá trị nhỏ nhất có thể.
+- `max: number` — Giá trị lớn nhất có thể.
+
+**Trả về:**
+`number` — Một số nguyên ngẫu nhiên.
+
+```typescript
+import { random } from '@dxtmisha/functional-basic'
+
+console.log(random(1, 10)) // ví dụ: 7
+console.log(random(50, 100)) // ví dụ: 84
+```

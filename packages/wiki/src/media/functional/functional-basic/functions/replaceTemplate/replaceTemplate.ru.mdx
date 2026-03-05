@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/replaceTemplate - Подстановка значений в строку шаблона'/>
+
+# `replaceTemplate`
+
+Ищет в исходной строке маркеры вида `[pattern]` и заменяет их на значения из переданного объекта. Если значением маркера является функция, она автоматически вызывается, и в строку подставляется результат ее выполнения.
+
+**Параметры:**
+- `value: string` — Строка шаблона с маркерами (например, `[name]`).
+- `replaces: Record<string, string | FunctionReturn<string>>` — Объект с данными для замены, где ключ — имя маркера внутри скобок, а значение — строка или функция, возвращающая строку.
+
+**Возвращает:**
+`string` — Новая строка с подставленными значениями.
+
+```typescript
+import { replaceTemplate } from '@dxtmisha/functional-basic'
+
+const template = 'Привет, [name]! Твой баланс: [balance].'
+const data = {
+  name: 'Иван',
+  balance: () => '100$' // Функция вычисляется при подстановке
+}
+
+console.log(replaceTemplate(template, data)) 
+// 'Привет, Иван! Твой баланс: 100$.'
+```

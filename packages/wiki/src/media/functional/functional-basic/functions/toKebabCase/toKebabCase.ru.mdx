@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toKebabCase - Преобразование строки в kebab-case'/>
+
+# `toKebabCase`
+
+Преобразует текстовую строку в формат `kebab-case`. Функция приводит все буквы к нижнему регистру и заменяет пробелы, спецсимволы и переходы между регистрами (CamelCase) на дефисы.
+
+**Параметры:**
+- `value: string` — Исходная строка для преобразования.
+
+**Возвращает:**
+`string` — Строка в формате `kebab-case`.
+
+```typescript
+import { toKebabCase } from '@dxtmisha/functional-basic'
+
+console.log(toKebabCase('Hello World')) // 'hello-world'
+console.log(toKebabCase('userProfileData')) // 'user-profile-data'
+console.log(toKebabCase('Some_Special@String')) // 'some-special-string'
+```

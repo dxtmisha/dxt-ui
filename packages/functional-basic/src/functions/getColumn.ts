@@ -14,5 +14,5 @@ export function getColumn<T, K extends keyof T>(
   array: ObjectOrArray<T>,
   column: K
 ): (T[K] | undefined)[] {
-  return forEach<T, T[K] | undefined>(array, item => item?.[column])
+  return forEach<T, T[K] | undefined>(array, item => item?.[column], true)
 }

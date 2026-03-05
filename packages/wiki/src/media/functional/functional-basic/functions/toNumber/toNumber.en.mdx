@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toNumber - Converting a value to a number'/>
+
+# `toNumber`
+
+Extracts a numeric value from a string or a number. The function removes extra characters and correctly handles various thousands and decimal separators (spaces, commas, periods).
+
+**Parameters:**
+- `value?: T` — The input value (a string or a number).
+
+**Returns:**
+`number` — The transformed float number. If the value is empty or invalid, `0` is returned.
+
+```typescript
+import { toNumber } from '@dxtmisha/functional-basic'
+
+console.log(toNumber('1 250,50')) // 1250.5
+console.log(toNumber('1,000,000.99')) // 1000000.99
+console.log(toNumber('abc-12.5')) // 12.5
+```

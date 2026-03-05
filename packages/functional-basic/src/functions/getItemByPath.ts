@@ -1,4 +1,6 @@
-import { isObjectNotArray } from './isObjectNotArray'
+import { isFilled } from './isFilled'
+import { isObject } from './isObject'
+import { strSplit } from './strSplit'
 
 /**
  * Returns data by their path.
@@ -11,17 +13,21 @@ export function getItemByPath<
   T extends Record<string, any>,
   R = string
 >(item: T, path: string): R | undefined {
-  const paths = path.split('.', 2)
+  if (!isFilled(path)) {
+    return undefined
+  }
+
+  const paths = strSplit(path, '.', 2)
   const column = paths[0]
 
   if (
     column
     && item?.[column]
-    && isObjectNotArray(item[column])
+    && isObject(item[column])
     && paths?.[1]
   ) {
     return getItemByPath(item[column], paths[1])
   }
 
-  return (column && item?.[column]) ?? undefined
+  return (isFilled(column) && item?.[column]) ?? undefined
 }

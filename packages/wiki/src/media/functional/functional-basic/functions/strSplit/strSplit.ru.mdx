@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/strSplit - Разделение строки с поддержкой лимита (PHP style)'/>
+
+# `strSplit`
+
+Разделяет строку на массив подстрок по указанному разделителю. В отличие от стандартного `String.prototype.split`, при указании лимита оставшаяся часть строки сохраняется в последнем элементе массива (аналогично функции `explode` в PHP).
+
+**Параметры:**
+- `value: number | string` — Исходное значение.
+- `separator: string` — Разделитель.
+- `limit?: number` — Максимальное количество элементов. Если элементов больше лимита, последний элемент будет содержать весь остаток строки.
+
+**Возвращает:**
+`string[]` — Массив подстрок.
+
+```typescript
+import { strSplit } from '@dxtmisha/functional-basic'
+
+// Без лимита
+strSplit('a.b.c.d', '.') // ['a', 'b', 'c', 'd']
+
+// С лимитом 2
+strSplit('a.b.c.d', '.', 2) // ['a', 'b.c.d']
+
+// С числом в качестве значения
+strSplit(123.456, '.') // ['123', '456']
+```

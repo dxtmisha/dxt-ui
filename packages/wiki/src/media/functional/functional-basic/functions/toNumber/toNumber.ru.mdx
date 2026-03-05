@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toNumber - Преобразование значения в число'/>
+
+# `toNumber`
+
+Извлекает числовое значение из строки или числа. Функция удаляет лишние символы и корректно обрабатывает различные разделители тысяч и дробной части (пробелы, запятые, точки).
+
+**Параметры:**
+- `value?: T` — Входное значение (строка или число).
+
+**Возвращает:**
+`number` — Преобразованное число типа float. Если значение пустое или невалидное, возвращается `0`.
+
+```typescript
+import { toNumber } from '@dxtmisha/functional-basic'
+
+console.log(toNumber('1 250,50')) // 1250.5
+console.log(toNumber('1,000,000.99')) // 1000000.99
+console.log(toNumber('abc-12.5')) // 12.5
+```

@@ -4,13 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `anyToString`
 
-Chuyển đổi một giá trị thành chuỗi.
-- Chuỗi sẽ được loại bỏ khoảng trắng ở 2 đầu.
-- Mảng không chứa các đối tượng (objects) được nối lại bằng dấu phẩy.
-- Đối tượng (objects) hoặc mảng chứa các đối tượng sẽ được chuyển đổi thành chuỗi JSON.
-- Giá trị Boolean `true` chuyển thành `'1'`, còn `false` chuyển thành `'0'`.
-- Đối với `null` hoặc `undefined`, trả về chuỗi rỗng `''`.
-- Trong các trường hợp khác, kết quả của phương thức `toString()` sẽ được trả về.
+Một tiện ích chuyển đổi an toàn bất kỳ dữ liệu đầu vào nào thành kiểu chuỗi.
+
+Điều này rất hữu ích khi xuất dữ liệu ra giao diện mà không biết trước kiểu của biến (đối tượng, mảng, boolean hoặc null).
 
 **Tham số:**
 - `value: V` — Giá trị cần chuyển đổi.

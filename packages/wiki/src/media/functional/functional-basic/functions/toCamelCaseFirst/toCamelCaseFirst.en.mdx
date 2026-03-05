@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toCamelCaseFirst - Converting a string to CamelCase with a capital letter'/>
+
+# `toCamelCaseFirst`
+
+Converts a text string to `CamelCase` format (PascalCase), where the first letter of the string is always capitalized. Internally uses `toCamelCase` to handle delimiters and special characters.
+
+**Parameters:**
+- `value: string` — The original string to convert.
+
+**Returns:**
+`string` — The string in `CamelCase` format with the first letter capitalized.
+
+```typescript
+import { toCamelCaseFirst } from '@dxtmisha/functional-basic'
+
+console.log(toCamelCaseFirst('hello world')) // 'HelloWorld'
+console.log(toCamelCaseFirst('user-name')) // 'UserName'
+```

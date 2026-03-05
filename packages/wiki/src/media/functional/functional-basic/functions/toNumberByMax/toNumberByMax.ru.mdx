@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toNumberByMax - Преобразование в число с ограничением максимума'/>
+
+# `toNumberByMax`
+
+Преобразует входное значение в число и, если оно превышает указанный максимум, возвращает строку с символом `+` в конце. Опционально выполняет локализованное форматирование результата.
+
+**Параметры:**
+- `value: string | number` — Входное значение.
+- `max?: string | number` — Максимально допустимое значение.
+- `formatting?: boolean` — Флаг включения форматирования через `GeoIntl`.
+- `language?: string` — Код языка для форматирования (например, `'ru-RU'`).
+
+**Возвращает:**
+`string | number` — Отформатированная строка (например, `'99+'`) или число.
+
+```typescript
+import { toNumberByMax } from '@dxtmisha/functional-basic'
+
+console.log(toNumberByMax(150, 99)) // '99+'
+console.log(toNumberByMax(50, 99)) // 50
+console.log(toNumberByMax(1000, 500, true, 'ru-RU')) // '500+'
+```

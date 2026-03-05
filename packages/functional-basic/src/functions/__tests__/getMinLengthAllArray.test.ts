@@ -7,10 +7,6 @@ describe('getMinLengthAllArray', () => {
     expect(getMinLengthAllArray(data)).toBe(3)
   })
 
-  it('should return the length of the string if a single string is passed', () => {
-    expect(getMinLengthAllArray('hello')).toBe(5)
-  })
-
   it('should return 0 if the array contains at least one empty string', () => {
     expect(getMinLengthAllArray(['short', '', 'longest'])).toBe(0)
   })

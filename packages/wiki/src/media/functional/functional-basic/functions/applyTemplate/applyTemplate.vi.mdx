@@ -4,12 +4,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `applyTemplate`
 
-Áp dụng một mẫu vào văn bản, thay thế các điểm đánh dấu (khóa) bằng các giá trị từ đối tượng hoặc mảng được cung cấp.
+Một tiện ích tạo văn bản động dựa trên các mẫu. Điều này hữu ích cho các tác vụ đa ngôn ngữ (i18n), tạo thông báo hệ thống hoặc chèn dữ liệu người dùng vào các hằng số chuỗi.
 
-Hàm hỗ trợ hai loại mẫu:
-1. **Điểm đánh dấu theo vị trí (`%d`, `%e`, `%f`, v.v.)** — được thay thế tuần tự bằng các giá trị từ mảng (hoặc đối tượng) truyền vào.
-2. **Điểm đánh dấu theo tên trong dấu ngoặc vuông hoặc ngoặc nhọn (`[key]` hoặc `{key}`)** — được thay thế bằng các giá trị tương ứng từ đối tượng truyền vào.
-   Nó cũng hỗ trợ các thẻ theo cặp như `[key]nội dung[/key]` hoặc `{key}nội dung{/key}`. Khi sử dụng, hàm sẽ bao bọc nội dung giữa các thẻ bằng cách thay thế chuỗi `[content]` hoặc `{content}` bên trong giá trị được cung cấp.
+Hàm này hỗ trợ:
+- Các điểm đánh dấu theo vị trí (`%d`, `%e`, v.v.) để thay thế các giá trị từ một mảng theo thứ tự.
+- Các điểm đánh dấu theo tên (`[key]`, `{key}`) để thay thế các giá trị từ một đối tượng thông qua khóa.
+- Thẻ theo cặp (`[key]nội dung[/key]`, `{key}nội dung{/key}`) để bao bọc nội dung trong các thẻ HTML hoặc cấu trúc khác (từ `[content]` bên trong giá trị truyền vào sẽ được thay thế bởi nội dung của thẻ).
 
 **Tham số:**
 - `text: string` — Văn bản gốc chứa các điểm đánh dấu mẫu.

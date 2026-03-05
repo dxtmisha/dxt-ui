@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/uint8ArrayToBase64 - Converting Uint8Array to Base64'/>
+
+# `uint8ArrayToBase64`
+
+Converts a `Uint8Array` of binary data into a Base64 encoded string. Supports both browser environments (via `btoa`) and Node.js environments (via `Buffer`).
+
+**Parameters:**
+- `bytes: Uint8Array` — The binary data.
+
+**Returns:**
+`string` — The Base64 encoded string.
+
+```typescript
+import { uint8ArrayToBase64 } from '@dxtmisha/functional-basic'
+
+const data = new Uint8Array([72, 101, 108, 108, 111])
+console.log(uint8ArrayToBase64(data)) // 'SGVsbG8='
+```

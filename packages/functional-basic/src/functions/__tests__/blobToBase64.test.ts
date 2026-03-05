@@ -1,4 +1,7 @@
 import { describe, it, expect } from 'vitest'
+/**
+ * @vitest-environment jsdom
+ */
 import { blobToBase64 } from '../blobToBase64'
 
 describe('blobToBase64', () => {

@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/writeClipboardData - Запись текста в буфер обмена'/>
+
+# `writeClipboardData`
+
+Записывает текстовую строку в буфер обмена пользователя. Использует современный `navigator.clipboard API`, а при его недоступности переключается на `document.execCommand`.
+
+**Параметры:**
+- `text: string` — Текст для записи.
+
+**Возвращает:**
+`Promise<void>` — Промис, который завершается после успешной записи.
+
+```typescript
+import { writeClipboardData } from '@dxtmisha/functional-basic'
+
+await writeClipboardData('Скопированный текст')
+```

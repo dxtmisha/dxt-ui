@@ -9,6 +9,8 @@ import { isObject } from './isObject'
  * @param data object for iteration/ объект для перебора
  * @param callback a function to execute for each element in the array/
  * функция, которая будет вызвана для каждого элемента
+ * @param saveUndefined if true, the function will return an array with undefined values/
+ * если true, функция вернет массив с undefined значениями
  */
 export function forEach<
   T,
@@ -17,7 +19,8 @@ export function forEach<
   K = D extends T[] ? number : string
 >(
   data: D & (T[] | Record<string, T> | Map<string, T>),
-  callback: (item: T, key: K, dataMain: typeof data) => R
+  callback: (item: T, key: K, dataMain: typeof data) => R,
+  saveUndefined?: boolean
 ): R[] {
   if (isObject(data)) {
     const returnData: R[] = []
@@ -30,6 +33,10 @@ export function forEach<
       Object.entries(data).forEach(
         ([key, item]) => returnData.push(callback(item, key as K, data))
       )
+    }
+
+    if (saveUndefined) {
+      return returnData
     }
 
     return returnData.filter((item: R | undefined) => item !== undefined)

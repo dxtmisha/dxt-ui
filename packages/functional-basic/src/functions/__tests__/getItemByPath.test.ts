@@ -9,6 +9,7 @@ describe('getItemByPath', () => {
 
   it('should retrieve a nested property using dot notation', () => {
     const obj = { nested: { deep: { id: '777' } } }
+    console.log('getItemByPath(obj, \'nested.deep.id\')', getItemByPath(obj, 'nested.deep.id'))
     expect(getItemByPath(obj, 'nested.deep.id')).toBe('777')
   })
 
@@ -28,7 +29,8 @@ describe('getItemByPath', () => {
   })
 
   it('should handle empty paths gracefully', () => {
-    const obj = { key: 'val' }
+    const obj = { key: 'val', list: { name: 'first' } }
     expect(getItemByPath(obj, '')).toBeUndefined()
+    expect(getItemByPath(obj, 'list.test')).toBeUndefined()
   })
 })

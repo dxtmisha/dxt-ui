@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toPercentBy100 - Converting a value to percentages (0 to 100)'/>
+
+# `toPercentBy100`
+
+Calculates the percentage of the current number relative to the maximum in a standard format (0 to 100).
+
+**Parameters:**
+- `maxValue: number` — The maximum possible value.
+- `value: number` — The current value.
+
+**Returns:**
+`number` — The numeric percentage value.
+
+```typescript
+import { toPercentBy100 } from '@dxtmisha/functional-basic'
+
+console.log(toPercentBy100(200, 100)) // 50
+console.log(toPercentBy100(1000, 10)) // 1
+```

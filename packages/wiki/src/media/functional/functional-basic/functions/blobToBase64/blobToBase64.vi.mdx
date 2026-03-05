@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `blobToBase64`
 
-Chuyển đổi bất đồng bộ một đối tượng `Blob` thành chuỗi `Base64` bằng cách sử dụng `FileReader`.
+Hàm chuyển đổi bất đồng bộ các đối tượng `Blob` hoặc `File` thành chuỗi kiểu Base64 (Data URL).
 
-Hàm này rất hữu ích để chuẩn bị tệp hoặc hình ảnh trước khi gửi đến máy chủ, hoặc để hiển thị trực tiếp trên trình duyệt thông qua Data URL (ví dụ: trong thẻ `<img>`).
+Điều này hữu ích khi chuẩn bị các tệp cục bộ (ví dụ: hình ảnh do người dùng tải lên) để xem trước trực tiếp trên trình duyệt hoặc gửi dạng chuỗi văn bản lên máy chủ.
 
 **Tham số:**
 - `blob: Blob` — Đối tượng `Blob` (hoặc `File`) cần chuyển đổi.

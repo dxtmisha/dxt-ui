@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toKebabCase - Chuyển đổi chuỗi sang kebab-case'/>
+
+# `toKebabCase`
+
+Chuyển đổi một chuỗi văn bản sang định dạng `kebab-case`. Hàm chuyển đổi tất cả các chữ cái thành chữ thường và thay thế các khoảng trắng, ký tự đặc biệt và các chuyển đổi kiểu chữ (CamelCase) bằng dấu gạch ngang.
+
+**Tham số:**
+- `value: string` — Chuỗi gốc cần chuyển đổi.
+
+**Trả về:**
+`string` — Chuỗi định dạng `kebab-case`.
+
+```typescript
+import { toKebabCase } from '@dxtmisha/functional-basic'
+
+console.log(toKebabCase('Hello World')) // 'hello-world'
+console.log(toKebabCase('userProfileData')) // 'user-profile-data'
+console.log(toKebabCase('Some_Special@String')) // 'some-special-string'
+```

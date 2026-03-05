@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/strSplit - Splitting a string with limit support (PHP style)'/>
+
+# `strSplit`
+
+Splits a string into an array of substrings using a specified separator. Unlike the standard `String.prototype.split`, when a limit is specified, the remainder of the string is preserved in the last element of the array (similar to the `explode` function in PHP).
+
+**Parameters:**
+- `value: number | string` — The original value.
+- `separator: string` — The separator.
+- `limit?: number` — The maximum number of elements. If there are more elements than the limit, the last element will contain the entire remainder of the string.
+
+**Returns:**
+`string[]` — An array of substrings.
+
+```typescript
+import { strSplit } from '@dxtmisha/functional-basic'
+
+// Without limit
+strSplit('a.b.c.d', '.') // ['a', 'b', 'c', 'd']
+
+// With limit 2
+strSplit('a.b.c.d', '.', 2) // ['a', 'b.c.d']
+
+// With a number as the value
+strSplit(123.456, '.') // ['123', '456']
+```

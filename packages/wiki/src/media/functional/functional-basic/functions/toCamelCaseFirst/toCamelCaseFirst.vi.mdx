@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toCamelCaseFirst - Chuyển đổi chuỗi sang CamelCase với chữ cái đầu viết hoa'/>
+
+# `toCamelCaseFirst`
+
+Chuyển đổi một chuỗi văn bản sang định dạng `CamelCase` (PascalCase), trong đó chữ cái đầu tiên của chuỗi luôn được viết hoa. Hàm sử dụng nội bộ `toCamelCase` để xử lý các dấu phân cách và ký tự đặc biệt.
+
+**Tham số:**
+- `value: string` — Chuỗi gốc cần chuyển đổi.
+
+**Trả về:**
+`string` — Chuỗi định dạng `CamelCase` với chữ cái đầu tiên được viết hoa.
+
+```typescript
+import { toCamelCaseFirst } from '@dxtmisha/functional-basic'
+
+console.log(toCamelCaseFirst('hello world')) // 'HelloWorld'
+console.log(toCamelCaseFirst('user-name')) // 'UserName'
+```

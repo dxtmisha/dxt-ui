@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/splice - Sao chép và hợp nhất các thuộc tính vào đối tượng'/>
+
+# `splice`
+
+Sao chép và hợp nhất đệ quy các thuộc tính từ một đối tượng vào một đối tượng khác. Hỗ trợ chèn các thuộc tính mới bắt đầu từ một khóa hoặc chỉ số cụ thể.
+
+**Tham số:**
+- `array: ObjectItem<I>` — Đối tượng hoặc mảng mục tiêu.
+- `replacement?: ObjectItem<I> | I` — Đối tượng nguồn chứa dữ liệu mới.
+- `indexStart?: string` — Khóa hoặc giá trị phần tử mà từ đó quá trình chèn sẽ bắt đầu.
+
+**Trả về:**
+`ObjectItem<I>` — Một đối tượng hoặc mảng mới với các thay đổi đã được áp dụng.
+
+```typescript
+import { splice } from '@dxtmisha/functional-basic'
+
+const target = { first: 1, last: 3 }
+const source = { second: 2 }
+
+// Chèn đơn giản
+console.log(splice(target, source)) // { first: 1, last: 3, second: 2 }
+
+// Chèn sau một khóa cụ thể
+console.log(splice(target, source, 'first')) // { first: 1, second: 2, last: 3 }
+```

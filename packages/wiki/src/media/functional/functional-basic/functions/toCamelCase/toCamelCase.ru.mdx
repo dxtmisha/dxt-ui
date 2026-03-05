@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toCamelCase - Преобразование строки в camelCase'/>
+
+# `toCamelCase`
+
+Преобразует текстовую строку в формат `camelCase`. Функция удаляет спецсимволы, заменяет пробелы на дефисы, приводит буквы после дефисов к верхнему регистру и гарантирует, что первая буква всей строки будет строчной.
+
+**Параметры:**
+- `value: string` — Исходная строка для преобразования.
+
+**Возвращает:**
+`string` — Строка в формате `camelCase`.
+
+```typescript
+import { toCamelCase } from '@dxtmisha/functional-basic'
+
+console.log(toCamelCase('Hello World')) // 'helloWorld'
+console.log(toCamelCase('user-profile-data')) // 'userProfileData'
+console.log(toCamelCase('Some_Special@String')) // 'someSpecialString'
+```

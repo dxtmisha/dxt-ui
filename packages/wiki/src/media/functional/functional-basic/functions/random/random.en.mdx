@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/random - Generate a random number'/>
+
+# `random`
+
+Generates and returns a random integer within a specified range from `min` to `max` inclusive.
+
+**Parameters:**
+- `min: number` — The lowest possible value.
+- `max: number` — The highest possible value.
+
+**Returns:**
+`number` — A random integer.
+
+```typescript
+import { random } from '@dxtmisha/functional-basic'
+
+console.log(random(1, 10)) // e.g., 7
+console.log(random(50, 100)) // e.g., 84
+```

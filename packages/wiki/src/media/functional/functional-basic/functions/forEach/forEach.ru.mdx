@@ -9,6 +9,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 **Параметры:**
 - `data: D` — объект для перебора.
 - `callback: (item: T, key: K, dataMain: typeof data) => R` — функция, которая будет вызвана для каждого элемента.
+- `saveUndefined?: boolean` — если `true`, функция вернет массив, включая `undefined` значения (по умолчанию фильтруются).
 
 **Возвращает:**
 `R[]` — массив с результатами выполнения функции.
@@ -17,6 +18,10 @@ import { Meta } from '@storybook/addon-docs/blocks'
 import { forEach } from '@dxtmisha/functional-basic'
 
 const data = [1, 2, 3]
-const result = forEach(data, (item) => item * 2)
-console.log(result) // [2, 4, 6]
+
+// По умолчанию undefined фильтруются
+forEach(data, (item) => item % 2 === 0 ? item : undefined) // [2]
+
+// С сохранением undefined
+forEach(data, (item) => item % 2 === 0 ? item : undefined, true) // [undefined, 2, undefined]
 ```

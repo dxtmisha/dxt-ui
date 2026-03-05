@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `copyObject`
 
-Creates a deep copy of a simple object using `JSON.parse(JSON.stringify(value))`.
+Creates a deep copy of objects and arrays containing basic data types.
 
-> Note that this method is only suitable for simple objects and arrays containing serializable data. It will not copy methods (functions), `undefined` values, or symbols, and it cannot handle circular references.
+This is useful when you need to avoid mutating the original state. Keep in mind that it does not copy functions, symbols, or `undefined` values, and it cannot handle circular references (under the hood it uses `JSON.parse(JSON.stringify(value))`).
 
 **Parameters:**
 - `value: T` — The object or value to be copied.

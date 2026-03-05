@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toNumber - Chuyển đổi giá trị sang kiểu số'/>
+
+# `toNumber`
+
+Trích xuất giá trị số từ một chuỗi hoặc một số. Hàm loại bỏ các ký tự thừa và xử lý chính xác các ký hiệu phân cách phần nghìn và phần thập phân khác nhau (khoảng trắng, dấu phẩy, dấu chấm).
+
+**Tham số:**
+- `value?: T` — Giá trị đầu vào (chuỗi hoặc số).
+
+**Trả về:**
+`number` — Số thực (float) sau khi chuyển đổi. Nếu giá trị trống hoặc không hợp lệ, hàm trả về `0`.
+
+```typescript
+import { toNumber } from '@dxtmisha/functional-basic'
+
+console.log(toNumber('1 250,50')) // 1250.5
+console.log(toNumber('1,000,000.99')) // 1000000.99
+console.log(toNumber('abc-12.5')) // 12.5
+```

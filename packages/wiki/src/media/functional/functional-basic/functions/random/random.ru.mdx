@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/random - Генерация случайного числа'/>
+
+# `random`
+
+Генерирует и возвращает случайное целое число в заданном диапазоне от `min` до `max` (включительно).
+
+**Параметры:**
+- `min: number` — Наименьшее возможное значение.
+- `max: number` — Наибольшее возможное значение.
+
+**Возвращает:**
+`number` — Случайное целое число.
+
+```typescript
+import { random } from '@dxtmisha/functional-basic'
+
+console.log(random(1, 10)) // например, 7
+console.log(random(50, 100)) // например, 84
+```

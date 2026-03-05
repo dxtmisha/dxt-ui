@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/transformation - Chuyển đổi chuỗi sang kiểu dữ liệu tương ứng'/>
+
+# `transformation`
+
+Chuyển đổi một giá trị chuỗi thành kiểu dữ liệu tương ứng (boolean, số, đối tượng hoặc `null`/`undefined`). Nếu cờ `isFunction` được bật, hàm sẽ kiểm tra sự tồn tại của một hàm có tên đó trong đối tượng toàn cục `window`.
+
+**Tham số:**
+- `value: any` — Giá trị cần chuyển đổi.
+- `isFunction: boolean` — Cờ tìm kiếm hàm trong `window` (mặc định là `false`).
+
+**Trả về:**
+`any` — Giá trị đã được chuyển đổi.
+
+```typescript
+import { transformation } from '@dxtmisha/functional-basic'
+
+console.log(transformation('true')) // true
+console.log(transformation('12.5')) // 12.5
+console.log(transformation('{"a":1}')) // { a: 1 }
+console.log(transformation('null')) // null
+```

@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/setElementItem - Изменение значения элемента по ключу'/>
+
+# `setElementItem`
+
+Изменяет значение свойства или атрибута DOM-элемента, найденного по селектору или переданного напрямую. Если свойство является объектом, выполняется слияние с новыми данными.
+
+**Параметры:**
+- `element: ElementOrString<E>` — Элемент, объект `window` или CSS-селектор.
+- `index: K` — Ключ свойства или имя атрибута.
+- `value: V | Record<string, V>` — Новое значение или объект для слияния.
+
+**Возвращает:**
+`E | undefined` — Модифицированный элемент или `undefined`, если элемент не найден.
+
+```typescript
+import { setElementItem } from '@dxtmisha/functional-basic'
+
+// Изменение текстового содержимого
+setElementItem('#my-div', 'textContent', 'Новый текст')
+
+// Слияние стилей
+setElementItem(document.body, 'style', { backgroundColor: 'red', color: 'white' })
+
+// Установка атрибута (если свойства нет в объекте)
+setElementItem('input', 'placeholder', 'Введите данные...')
+```

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/uniqueArray - Loại bỏ các phần tử trùng lặp khỏi mảng'/>
+
+# `uniqueArray`
+
+Tạo một mảng mới chỉ chứa các phần tử duy nhất từ mảng gốc.
+
+**Tham số:**
+- `value: T[]` — Mảng đầu vào.
+
+**Trả về:**
+`T[]` — Một mảng mới không chứa dữ liệu trùng lặp.
+
+```typescript
+import { uniqueArray } from '@dxtmisha/functional-basic'
+
+const list = [1, 2, 2, 3, 1]
+console.log(uniqueArray(list)) // [1, 2, 3]
+```

@@ -9,6 +9,7 @@ The function performs the specified function once for each element in the object
 **Parameters:**
 - `data: D` — object for iteration.
 - `callback: (item: T, key: K, dataMain: typeof data) => R` — a function to execute for each element in the array.
+- `saveUndefined?: boolean` — if `true`, the function returns an array including `undefined` values (filtered by default).
 
 **Returns:**
 `R[]` — an array with the results of executing the function.
@@ -17,6 +18,10 @@ The function performs the specified function once for each element in the object
 import { forEach } from '@dxtmisha/functional-basic'
 
 const data = [1, 2, 3]
-const result = forEach(data, (item) => item * 2)
-console.log(result) // [2, 4, 6]
+
+// Undefined values are filtered by default
+forEach(data, (item) => item % 2 === 0 ? item : undefined) // [2]
+
+// With saveUndefined: true
+forEach(data, (item) => item % 2 === 0 ? item : undefined, true) // [undefined, 2, undefined]
 ```

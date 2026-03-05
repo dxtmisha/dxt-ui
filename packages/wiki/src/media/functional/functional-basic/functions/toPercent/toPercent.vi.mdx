@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toPercent - Tính tỷ lệ phần trăm từ một giá trị'/>
+
+# `toPercent`
+
+Tính toán tỷ lệ của giá trị hiện tại so với giá trị tối đa. Trả về một số trong phạm vi từ 0 đến 1.
+
+**Tham số:**
+- `maxValue: number` — Giá trị tối đa có thể (100%).
+- `value: number` — Giá trị hiện tại.
+
+**Trả về:**
+`number` — Kết quả dưới dạng phân số thập phân (ví dụ: `0.5` cho 50%).
+
+```typescript
+import { toPercent } from '@dxtmisha/functional-basic'
+
+console.log(toPercent(200, 100)) // 0.5
+console.log(toPercent(100, 25)) // 0.25
+```

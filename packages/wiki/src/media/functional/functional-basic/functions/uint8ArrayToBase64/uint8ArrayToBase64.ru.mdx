@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/uint8ArrayToBase64 - Преобразование Uint8Array в Base64'/>
+
+# `uint8ArrayToBase64`
+
+Преобразует массив бинарных данных `Uint8Array` в строку в кодировке Base64. Поддерживает работу как в браузере (через `btoa`), так и в среде Node.js (через `Buffer`).
+
+**Параметры:**
+- `bytes: Uint8Array` — Бинарные данные.
+
+**Возвращает:**
+`string` — Строка в формате Base64.
+
+```typescript
+import { uint8ArrayToBase64 } from '@dxtmisha/functional-basic'
+
+const data = new Uint8Array([72, 101, 108, 108, 111])
+console.log(uint8ArrayToBase64(data)) // 'SGVsbG8='
+```

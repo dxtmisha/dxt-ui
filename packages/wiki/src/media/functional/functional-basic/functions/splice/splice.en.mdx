@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/splice - Copying and merging properties into an object'/>
+
+# `splice`
+
+Copies and recursively merges properties from one object into another. Supports inserting new properties starting from a specific key or index.
+
+**Parameters:**
+- `array: ObjectItem<I>` — The target object or array.
+- `replacement?: ObjectItem<I> | I` — The source object containing new data.
+- `indexStart?: string` — The key or element value from which the insertion will begin.
+
+**Returns:**
+`ObjectItem<I>` — A new object or array with the changes applied.
+
+```typescript
+import { splice } from '@dxtmisha/functional-basic'
+
+const target = { first: 1, last: 3 }
+const source = { second: 2 }
+
+// Simple insertion
+console.log(splice(target, source)) // { first: 1, last: 3, second: 2 }
+
+// Insertion after a specific key
+console.log(splice(target, source, 'first')) // { first: 1, second: 2, last: 3 }
+```

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toCamelCaseFirst - Преобразование строки в CamelCase с заглавной буквы'/>
+
+# `toCamelCaseFirst`
+
+Преобразует текстовую строку в формат `CamelCase` (PascalCase), где первая буква строки всегда является заглавной. Внутри использует `toCamelCase` для обработки разделителей и спецсимволов.
+
+**Параметры:**
+- `value: string` — Исходная строка для преобразования.
+
+**Возвращает:**
+`string` — Строка в формате `CamelCase` с заглавной первой буквой.
+
+```typescript
+import { toCamelCaseFirst } from '@dxtmisha/functional-basic'
+
+console.log(toCamelCaseFirst('hello world')) // 'HelloWorld'
+console.log(toCamelCaseFirst('user-name')) // 'UserName'
+```

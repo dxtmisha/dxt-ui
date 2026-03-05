@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/replaceRecursive - Recursive merge of objects or arrays'/>
+
+# `replaceRecursive`
+
+Performs a deep (recursive) merge of the target object or array with data from a replacement object/array. If the `isMerge` parameter is enabled, arrays are concatenated with duplicates removed; otherwise, arrays from the replacement overwrite the original ones.
+
+**Parameters:**
+- `array: ObjectItem<I>` — The target array or object whose elements will be replaced/merged.
+- `replacement?: ObjectOrArray<I>` — Arrays or objects from which elements will be extracted for replacement.
+- `isMerge: boolean` — Flag to merge arrays of the same name (defaults to `true`). If `false`, elements are simply overwritten.
+
+**Returns:**
+`ObjectItem<I>` — A new object or array that is the result of the merge. The original object is not mutated.
+
+```typescript
+import { replaceRecursive } from '@dxtmisha/functional-basic'
+
+const target = { a: [1, 2], b: { x: 1 } }
+const source = { a: [2, 3], b: { y: 2 } }
+
+console.log(replaceRecursive(target, source)) 
+// { a: [1, 2, 3], b: { x: 1, y: 2 } }
+
+console.log(replaceRecursive(target, source, false)) 
+// { a: [2, 3], b: { x: 1, y: 2 } }
+```

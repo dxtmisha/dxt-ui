@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/setElementItem - Thay đổi giá trị phần tử theo khóa'/>
+
+# `setElementItem`
+
+Thay đổi giá trị của một thuộc tính hoặc attribute của phần tử DOM được xác định bởi bộ chọn (selector) hoặc được truyền trực tiếp. Nếu thuộc tính là một đối tượng, hàm sẽ thực hiện hợp nhất với dữ liệu mới.
+
+**Tham số:**
+- `element: ElementOrString<E>` — Phần tử mục tiêu, đối tượng `window` hoặc bộ chọn CSS.
+- `index: K` — Khóa thuộc tính hoặc tên attribute.
+- `value: V | Record<string, V>` — Giá trị mới hoặc một đối tượng để hợp nhất.
+
+**Trả về:**
+`E | undefined` — Phần tử đã được sửa đổi, hoặc `undefined` nếu không tìm thấy.
+
+```typescript
+import { setElementItem } from '@dxtmisha/functional-basic'
+
+// Thay đổi nội dung văn bản
+setElementItem('#my-div', 'textContent', 'Văn bản mới')
+
+// Hợp nhất các kiểu (styles)
+setElementItem(document.body, 'style', { backgroundColor: 'red', color: 'white' })
+
+// Thiết lập attribute (nếu thuộc tính không tồn tại trong đối tượng)
+setElementItem('input', 'placeholder', 'Nhập dữ liệu...')
+```

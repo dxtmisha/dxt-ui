@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `copyObject`
 
-Tạo một bản sao sâu (deep copy) của một đối tượng đơn giản bằng cách sử dụng `JSON.parse(JSON.stringify(value))`.
+Tạo bản sao sâu (deep copy) của các đối tượng và mảng chứa các kiểu dữ liệu cơ bản.
 
-> Lưu ý rằng phương thức này chỉ phù hợp với các đối tượng dạng thuần đơn giản và mảng chứa dữ liệu có thể tuần tự hóa. Nó sẽ không sao chép các phương thức (hàm), giá trị `undefined`, symbols, và không thể xử lý các tham chiếu vòng (circular references).
+Điều này hữu ích khi bạn cần tránh thay đổi trực tiếp dữ liệu (mutate) của trạng thái ban đầu. Hãy nhớ rằng nó không sao chép các hàm, ký hiệu symbols, giá trị `undefined` và không thể xử lý các tham chiếu vòng (circular references) (do tiện ích sử dụng `JSON.parse(JSON.stringify(value))`).
 
 **Tham số:**
 - `value: T` — Đối tượng hoặc giá trị cần sao chép.

@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/strSplit - Chia chuỗi hỗ trợ giới hạn (phong cách PHP)'/>
+
+# `strSplit`
+
+Chia một chuỗi thành một mảng các chuỗi con bằng cách sử dụng dấu phân cách được chỉ định. Khác với `String.prototype.split` tiêu chuẩn, khi chỉ định giới hạn (limit), phần còn lại của chuỗi sẽ được giữ lại trong phần tử cuối cùng của mảng (tương tự như hàm `explode` trong PHP).
+
+**Tham số:**
+- `value: number | string` — Giá trị gốc.
+- `separator: string` — Dấu phân cách.
+- `limit?: number` — Số lượng phần tử tối đa. Nếu có nhiều phần tử hơn giới hạn, phần tử cuối cùng sẽ chứa toàn bộ phần còn lại của chuỗi.
+
+**Trả về:**
+`string[]` — Một mảng các chuỗi con.
+
+```typescript
+import { strSplit } from '@dxtmisha/functional-basic'
+
+// Không có giới hạn
+strSplit('a.b.c.d', '.') // ['a', 'b', 'c', 'd']
+
+// Với giới hạn 2
+strSplit('a.b.c.d', '.', 2) // ['a', 'b.c.d']
+
+// Với giá trị là số
+strSplit(123.456, '.') // ['123', '456']
+```

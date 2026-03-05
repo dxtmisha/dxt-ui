@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/secondToTime - Chuyển đổi giây sang chuỗi thời gian'/>
+
+# `secondToTime`
+
+Chuyển đổi số giây được cung cấp thành chuỗi định dạng thời gian `MM:SS`.
+
+Nếu giá trị số giây nhỏ hơn hoặc bằng 0, hoặc không được cung cấp, hàm sẽ trả về giá trị mặc định là `00:00`.
+
+**Tham số:**
+- `second: number | string | undefined` — Tổng số giây (hỗ trợ cả kiểu số nguyên và kiểu chuỗi biểu diễn số).
+
+**Trả về:**
+`string` — Một chuỗi được định dạng với số phút và số giây tương ứng (ví dụ: `12:34`).
+
+```typescript
+import { secondToTime } from '@dxtmisha/functional-basic'
+
+console.log(secondToTime(125)) // '02:05'
+console.log(secondToTime('65')) // '01:05'
+console.log(secondToTime()) // '00:00'
+```

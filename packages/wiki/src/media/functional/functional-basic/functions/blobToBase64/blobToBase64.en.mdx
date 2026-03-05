@@ -4,9 +4,9 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `blobToBase64`
 
-Asynchronously converts a `Blob` object into a `Base64` string using `FileReader`.
+Asynchronously converts `Blob` or `File` objects into a Base64 string (Data URL).
 
-This is particularly useful for preparing files or images to be sent to a server, or to display them directly in the browser via a Data URL (e.g., in an `<img>` tag).
+This is useful when preparing local files (e.g., user-uploaded images) for in-browser previews or for sending to the server in string format.
 
 **Parameters:**
 - `blob: Blob` — The `Blob` (or `File`) object to convert.

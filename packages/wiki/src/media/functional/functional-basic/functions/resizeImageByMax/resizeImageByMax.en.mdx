@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/resizeImageByMax - Resize image by maximum dimension'/>
+
+# `resizeImageByMax`
+
+Proportionally resizes an image to fit within the specified maximum size constraints (by width, height, or automatically by the longest side). Returns a Base64-encoded Data URL of the scaled image.
+
+This function is useful for compressing images on the fly before uploading to a server.
+
+**Parameters:**
+- `image: HTMLImageElement | string` — The image element or URL.
+- `maxSize: number` — The maximum allowed size in pixels (for width or height).
+- `type: ResizeImageByMaxType` — The scaling strategy: `'auto'`, `'width'`, or `'height'`. Defaults to `'auto'`.
+- `typeData?: string` — Optional MIME type for the resulting Data URL (e.g., `'image/jpeg'`). Defaults to `'image/png'`.
+
+**Returns:**
+`string | undefined` — A Data URL string containing the resized image, or `undefined` if the image could not be processed or is already smaller than or equal to `maxSize`.
+
+```typescript
+import { resizeImageByMax } from '@dxtmisha/functional-basic'
+
+const imgElement = document.querySelector('img')
+const resizedDataUrl = resizeImageByMax(imgElement, 800)
+
+console.log(resizedDataUrl) 
+// 'data:image/png;base64,iVBORw0KGgo...'
+```

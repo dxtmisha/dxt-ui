@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toNumberByMax - Converting to a number with a maximum limit'/>
+
+# `toNumberByMax`
+
+Converts the input value to a number and, if it exceeds the specified maximum, returns a string with a `+` symbol at the end. Optionally performs localized formatting of the result.
+
+**Parameters:**
+- `value: string | number` — The input value.
+- `max?: string | number` — The maximum allowed value.
+- `formatting?: boolean` — Flag to enable formatting via `GeoIntl`.
+- `language?: string` — Language code for formatting (e.g., `'en-US'`).
+
+**Returns:**
+`string | number` — A formatted string (e.g., `'99+'`) or a number.
+
+```typescript
+import { toNumberByMax } from '@dxtmisha/functional-basic'
+
+console.log(toNumberByMax(150, 99)) // '99+'
+console.log(toNumberByMax(50, 99)) // 50
+console.log(toNumberByMax(1000, 500, true, 'en-US')) // '500+'
+```

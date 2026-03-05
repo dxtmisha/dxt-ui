@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/transformation - Transforming a string into a data type'/>
+
+# `transformation`
+
+Transforms a string value into its corresponding data type (boolean, numeric, object, or `null`/`undefined`). If the `isFunction` flag is enabled, it checks for a function with that name in the global `window` object.
+
+**Parameters:**
+- `value: any` — The value to transform.
+- `isFunction: boolean` — Flag to search for a function in `window` (defaults to `false`).
+
+**Returns:**
+`any` — The transformed value.
+
+```typescript
+import { transformation } from '@dxtmisha/functional-basic'
+
+console.log(transformation('true')) // true
+console.log(transformation('12.5')) // 12.5
+console.log(transformation('{"a":1}')) // { a: 1 }
+console.log(transformation('null')) // null
+```

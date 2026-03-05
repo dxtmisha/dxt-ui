@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toCamelCase - Converting a string to camelCase'/>
+
+# `toCamelCase`
+
+Converts a text string to `camelCase` format. The function removes special characters, replaces spaces with dashes, converts letters after dashes to uppercase, and ensures that the first letter of the entire string is lowercase.
+
+**Parameters:**
+- `value: string` — The original string to convert.
+
+**Returns:**
+`string` — The string in `camelCase` format.
+
+```typescript
+import { toCamelCase } from '@dxtmisha/functional-basic'
+
+console.log(toCamelCase('Hello World')) // 'helloWorld'
+console.log(toCamelCase('user-profile-data')) // 'userProfileData'
+console.log(toCamelCase('Some_Special@String')) // 'someSpecialString'
+```

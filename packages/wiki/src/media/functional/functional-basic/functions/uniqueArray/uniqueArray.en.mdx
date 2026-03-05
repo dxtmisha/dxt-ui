@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/uniqueArray - Removing duplicates from an array'/>
+
+# `uniqueArray`
+
+Creates a new array containing only unique elements from the original array.
+
+**Parameters:**
+- `value: T[]` — The input array.
+
+**Returns:**
+`T[]` — A new array without duplicates.
+
+```typescript
+import { uniqueArray } from '@dxtmisha/functional-basic'
+
+const list = [1, 2, 2, 3, 1]
+console.log(uniqueArray(list)) // [1, 2, 3]
+```

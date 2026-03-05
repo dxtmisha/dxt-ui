@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toPercentBy100 - Преобразование значения в проценты (от 0 до 100)'/>
+
+# `toPercentBy100`
+
+Вычисляет процентное значение текущего числа относительно максимального в классическом формате (от 0 до 100).
+
+**Параметры:**
+- `maxValue: number` — Максимально возможное значение.
+- `value: number` — Текущее значение.
+
+**Возвращает:**
+`number` — Числовое значение процента.
+
+```typescript
+import { toPercentBy100 } from '@dxtmisha/functional-basic'
+
+console.log(toPercentBy100(200, 100)) // 50
+console.log(toPercentBy100(1000, 10)) // 1
+```

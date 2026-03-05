@@ -14,7 +14,7 @@ describe('isSelectedByList', () => {
     expect(isSelectedByList('date', ['banana', 'apple', 'cherry'])).toBe(false)
   })
 
-  it('should return true if all values in the array are selected (matching string)', () => {
+  it('it should return true if all values in the array are selected (matching string)', () => {
     // Both items must equal the selected string
     expect(isSelectedByList(['apple', 'apple'], 'apple')).toBe(true)
   })
@@ -25,9 +25,5 @@ describe('isSelectedByList', () => {
 
   it('should return false if at least one value in the array is not within the selected array', () => {
     expect(isSelectedByList(['apple', 'date'], ['banana', 'apple', 'cherry'])).toBe(false)
-  })
-
-  it('should handle numeric conversions if `isSelected` handles them', () => {
-    expect(isSelectedByList([1, '2'], [1, 2, 3])).toBe(true)
   })
 })

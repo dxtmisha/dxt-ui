@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toPercent - Calculating percentage from a value'/>
+
+# `toPercent`
+
+Calculates the proportion of the current value relative to the maximum. Returns a number in the range from 0 to 1.
+
+**Parameters:**
+- `maxValue: number` — The maximum possible value (100%).
+- `value: number` — The current value.
+
+**Returns:**
+`number` — The result as a decimal fraction (e.g., `0.5` for 50%).
+
+```typescript
+import { toPercent } from '@dxtmisha/functional-basic'
+
+console.log(toPercent(200, 100)) // 0.5
+console.log(toPercent(100, 25)) // 0.25
+```

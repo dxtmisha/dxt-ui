@@ -30,13 +30,19 @@ describe('forEach', () => {
   })
 
   it('should return an empty array if data is not an object', () => {
-    const result = forEach(null as any, () => {})
+    const result = forEach(null as any, () => { })
     expect(result).toEqual([])
   })
 
-  it('should filter out undefined results', () => {
+  it('should filter out undefined results by default', () => {
     const data = [1, 2, 3]
-    const result = forEach(data, item => item % 2 === 0 ? item : undefined)
+    const result = forEach(data, item => (item % 2 === 0 ? item : undefined))
     expect(result).toEqual([2])
+  })
+
+  it('should include undefined results if saveUndefined is true', () => {
+    const data = [1, 2, 3]
+    const result = forEach(data, item => (item % 2 === 0 ? item : undefined), true)
+    expect(result).toEqual([undefined, 2, undefined])
   })
 })

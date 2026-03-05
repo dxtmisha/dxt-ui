@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/replaceComponentName - Thay thế tên thành phần trong văn bản'/>
+
+# `replaceComponentName`
+
+Thay thế các thẻ HTML của một thành phần (component) cụ thể trong chuỗi văn bản bằng các thẻ mới. Hàm tìm kiếm các thẻ mở (`<name`) và thẻ đóng (`</name`) không phân biệt chữ hoa chữ thường và thay thế chúng bằng `componentName`.
+
+**Tham số:**
+- `text: string | undefined` — Văn bản gốc.
+- `name: string` — Tên thành phần cần thay thế.
+- `componentName: string` — Tên thành phần mới.
+
+**Trả về:**
+`string | undefined` — Văn bản đã thay đổi với các thẻ mới hoặc `undefined` nếu không có văn bản gốc được cung cấp.
+
+```typescript
+import { replaceComponentName } from '@dxtmisha/functional-basic'
+
+const template = '<Button>Nhấp vào tôi</Button>'
+console.log(replaceComponentName(template, 'Button', 'AppButton')) 
+// '<AppButton>Nhấp vào tôi</AppButton>'
+```

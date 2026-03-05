@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/splice - Копирование и слияние свойств в объект'/>
+
+# `splice`
+
+Выполняет копирование и рекурсивное слияние свойств из одного объекта в другой. Поддерживает вставку новых свойств начиная с определенного ключа или индекса.
+
+**Параметры:**
+- `array: ObjectItem<I>` — Целевой объект или массив.
+- `replacement?: ObjectItem<I> | I` — Исходный объект с новыми данными.
+- `indexStart?: string` — Ключ или значение элемента, начиная с которого будет выполнена вставка.
+
+**Возвращает:**
+`ObjectItem<I>` — Новый объект или массив с примененными изменениями.
+
+```typescript
+import { splice } from '@dxtmisha/functional-basic'
+
+const target = { first: 1, last: 3 }
+const source = { second: 2 }
+
+// Простая вставка
+console.log(splice(target, source)) // { first: 1, last: 3, second: 2 }
+
+// Вставка после определенного ключа
+console.log(splice(target, source, 'first')) // { first: 1, second: 2, last: 3 }
+```

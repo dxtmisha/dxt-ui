@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toPercentBy100 - Chuyển đổi giá trị sang phần trăm (0 đến 100)'/>
+
+# `toPercentBy100`
+
+Tính toán giá trị phần trăm của số hiện tại so với giá trị tối đa theo định dạng tiêu chuẩn (từ 0 đến 100).
+
+**Tham số:**
+- `maxValue: number` — Giá trị tối đa có thể.
+- `value: number` — Giá trị hiện tại.
+
+**Trả về:**
+`number` — Giá trị số phần trăm.
+
+```typescript
+import { toPercentBy100 } from '@dxtmisha/functional-basic'
+
+console.log(toPercentBy100(200, 100)) // 50
+console.log(toPercentBy100(1000, 10)) // 1
+```

@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/replaceTemplate - Thay thế giá trị vào chuỗi mẫu'/>
+
+# `replaceTemplate`
+
+Tìm kiếm các điểm đánh dấu có dạng `[pattern]` trong chuỗi gốc và thay thế chúng bằng các giá trị tương ứng từ đối tượng được cung cấp. Nếu giá trị của điểm đánh dấu là một hàm, hàm đó sẽ tự động được gọi và kết quả của nó sẽ được chèn vào chuỗi.
+
+**Tham số:**
+- `value: string` — Chuỗi mẫu chứa các điểm đánh dấu (ví dụ: `[name]`).
+- `replaces: Record<string, string | FunctionReturn<string>>` — Một đối tượng chứa dữ liệu thay thế, trong đó khóa là tên của điểm đánh dấu bên trong ngoặc vuông, và giá trị là một chuỗi hoặc một hàm trả về chuỗi.
+
+**Trả về:**
+`string` — Một chuỗi mới với các giá trị đã được thay thế.
+
+```typescript
+import { replaceTemplate } from '@dxtmisha/functional-basic'
+
+const template = 'Xin chào, [name]! Số dư của bạn: [balance].'
+const data = {
+  name: 'John',
+  balance: () => '$100' // Hàm được thực thi trong quá trình thay thế
+}
+
+console.log(replaceTemplate(template, data)) 
+// 'Xin chào, John! Số dư của bạn: $100.'
+```

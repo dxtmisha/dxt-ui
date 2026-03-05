@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/setElementItem - Modifying an element value by key'/>
+
+# `setElementItem`
+
+Modifies the property or attribute value of a DOM element identified by a selector or passed directly. If the property is an object, it performs a merge with the new data.
+
+**Parameters:**
+- `element: ElementOrString<E>` — The target element, `window` object, or CSS selector.
+- `index: K` — The property key or attribute name.
+- `value: V | Record<string, V>` — The new value or an object for merging.
+
+**Returns:**
+`E | undefined` — The modified element, or `undefined` if not found.
+
+```typescript
+import { setElementItem } from '@dxtmisha/functional-basic'
+
+// Modifying text content
+setElementItem('#my-div', 'textContent', 'New text')
+
+// Merging styles
+setElementItem(document.body, 'style', { backgroundColor: 'red', color: 'white' })
+
+// Setting an attribute (if the property does not exist on the object)
+setElementItem('input', 'placeholder', 'Enter data...')
+```
