@@ -10,7 +10,7 @@ describe('isWindow', () => {
   })
 
   it('should return true if the element is exactly the global window object', () => {
-    expect(isWindow(global.window)).toBe(true)
+    expect(isWindow(window)).toBe(true)
   })
 
   it('should return false if the element is not the window object', () => {
@@ -23,6 +23,6 @@ describe('isWindow', () => {
 
   it('should return false if not in a DOM runtime environment', () => {
     vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(false)
-    expect(isWindow(global.window)).toBe(false)
+    expect(isWindow(window)).toBe(false)
   })
 })

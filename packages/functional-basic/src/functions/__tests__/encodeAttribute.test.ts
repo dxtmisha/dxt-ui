@@ -6,7 +6,7 @@ describe('encodeAttribute', () => {
     expect(encodeAttribute('foo & bar')).toBe('foo &amp; bar')
   })
 
-  it('should encode less-than and greater-than signs', () => {
+  it('should encode fewer-than and greater-than signs', () => {
     expect(encodeAttribute('<script>alert("test")</script>'))
       .toBe('&lt;script&gt;alert(&quot;test&quot;)&lt;/script&gt;')
   })

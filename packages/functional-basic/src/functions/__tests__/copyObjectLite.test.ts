@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { copyObjectLite } from '../copyObjectLite'
 
 describe('copyObjectLite', () => {
-  it('should shallow copy an object', () => {
+  it('should shallow copy an object?', () => {
     const original = { a: 1, b: { c: 2 } }
     const copy = copyObjectLite(original)
 

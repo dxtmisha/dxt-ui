@@ -660,8 +660,8 @@ export declare type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
  * Applies a template to the text, replacing keys with values from the replacement object
  *
  * Применяет шаблон к тексту, заменяя ключи на значения из объекта замены
- * @param text text with a template containing keys in square brackets, for example "[key]"/
- * текст с шаблоном, содержащим ключи в квадратных скобках, например "[key]"
+ * @param text text with a template containing keys in square or curly brackets, for example "[key]" or "{key}"/
+ * текст с шаблоном, содержащим ключи в квадратных или фигурных скобках, например "[key]" или "{key}"
  * @param replacement an object containing key-value pairs for replacement/
  * объект, содержащий пары ключ-значение для замены
  */
@@ -1817,8 +1817,10 @@ export declare function executePromise<T>(callback: (() => Promise<T>) | (() => 
  * @param data object for iteration/ объект для перебора
  * @param callback a function to execute for each element in the array/
  * функция, которая будет вызвана для каждого элемента
+ * @param saveUndefined if true, the function will return an array with undefined values/
+ * если true, функция вернет массив с undefined значениями
  */
-export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> = T[] | Record<string, T> | Map<string, T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T>), callback: (item: T, key: K, dataMain: typeof data) => R): R[];
+export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> = T[] | Record<string, T> | Map<string, T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];
 
 /**
  * Cyclically calls requestAnimationFrame until next returns true
@@ -2673,7 +2675,7 @@ export declare function getExp(value: string, flags?: string, pattern?: string):
  * @param item object for work/ объект для работы
  * @param path data path/ путь к данным
  */
-export declare function getItemByPath<T extends Record<string, any>>(item: T, path: string): string;
+export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
 
 /**
  * Returns the pressed key.
@@ -4537,6 +4539,18 @@ export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem
  * @param count length of the string/ длина строки
  */
 export declare function strFill(value: string, count: number): string;
+
+/**
+ * Splits a string by a separator, limited to a certain number of elements.
+ * If a limit is specified, the last element will contain the remainder of the string.
+ *
+ * Разделяет строку по разделителю, ограничивая количество элементов.
+ * Если указан лимит, последний элемент будет содержать остаток строки.
+ * @param value input value/ входное значение
+ * @param separator separator/ разделитель
+ * @param limit limit/ лимит
+ */
+export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
 
 /**
  * Преобразует значение в массив.

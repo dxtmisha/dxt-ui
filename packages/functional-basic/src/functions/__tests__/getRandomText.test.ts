@@ -1,9 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { getRandomText } from '../getRandomText'
-import { random } from '../random'
 
 // Mock the random utility to ensure predictable behavior for testing
-import * as randomModule from '../random'
 
 describe('getRandomText', () => {
   it('should return a string of words joined by spaces', () => {
