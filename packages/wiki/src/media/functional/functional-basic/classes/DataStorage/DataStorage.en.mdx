@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/DataStorage - Local and Session Storage Wrapper'/>
+
+# DataStorage Class
+
+A versatile class for interacting with the browser's `localStorage` and `sessionStorage`. It features built-in prefixes, cache expiration, memory caching for active instances, and automatic JSON serialization.
+
+## Key Features
+
+- **Automatic Serialization** — seamlessly handles JSON parsing and stringifying for stored configurations and objects.
+- **Time-based Caching** — allows saving objects with timestamps and respects age constraints during data retrieval.
+- **Prefix Management** — supports global and instance-specific prefixes to isolate and group keys within `localStorage`.
+- **Memory Efficiency** — creates singletons for identical keys, avoiding duplicate reads from disk.
+
+## Global Settings
+
+- `setPrefix(newPrefix: string): void` (static) — Changes the global prefix applied to new instances attempting to use `localStorage`. The default prefix is `ui-storage`.
+
+## Data Management
+
+### `get`
+
+Retrieves the currently saved structured configuration.
+
+**Parameters:**
+- `defaultValue?: T | (() => T)` — a fallback value to return if the storage is empty.
+- `cache?: number` — maximum allowed age (in seconds). If the data is older, it behaves as if nothing was stored.
+
+**Returns:** `T | undefined` — the stored value or `undefined`.
+
+```javascript
+// Get data, falling back to an empty object if not found
+const currentSettings = settings.get({})
+
+// Get data only if it was saved within the last 60 seconds
+const cachedItem = settings.get(undefined, 60)
+```
+
+### `set`
+
+Sets or updates the value in the storage mechanism.
+
+**Parameters:**
+- `value?: T | (() => T)` — the value to save. Passing `undefined` will delete the item from storage.
+
+**Returns:** `T | undefined` — the stored value.
+
+```javascript
+settings.set({ theme: 'dark', notifications: true })
+```
+
+## Additional Methods
+
+- `remove(): this` — Clears the corresponding key actively from the `localStorage` or `sessionStorage` environments, and immediately unsets the existing memory instance.
+- `update(): this` — Forces the memory instance to synchronize tightly with the current raw data inside the physical Storage APIs.

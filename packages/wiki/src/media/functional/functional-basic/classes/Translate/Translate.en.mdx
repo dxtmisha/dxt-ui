@@ -4,323 +4,76 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Translate Class
 
-Static class for managing translations and localized text. Provides methods for fetching, caching, and displaying translated content with template replacement support and automatic locale detection.
+A static utility class for managing translations and localized text. It provides powerful tools for retrieving, caching, and displaying content with template support, automatic locale detection, and batch request loading for optimized performance.
 
 ## Key Features
 
-- **Translation fetching** — retrieves translations from server API
-- **Text caching** — intelligent caching system with batch requests
-- **Template replacement** — supports placeholder replacement in translations
-- **Locale awareness** — automatically uses the current geographic locale
-- **Batch processing** — groups multiple translation requests for efficiency
-- **Sync and async modes** — both synchronous and asynchronous text retrieval
-- **List operations** — fetch multiple translations in a single call
-- **Dynamic loading** — loads translations on demand
+- **Batch Loading** — Intelligently groups translation requests, sending them as a single pack 160ms after being queued.
+- **Flexible Templates** — Supports parameter replacement in text using both indices (`[0]`) and named keys (`{key}`).
+- **Sync and Async Access** — Methods for instant text retrieval from cache (`getSync`) or guaranteed server loading (`get`).
+- **Smart Cache** — Stores translations scoped to the current locale and supports fallbacks (language-country → language → global).
+- **Local Development** — The `addNormalOrSync` mode automatically switches between mocks and real requests based on the environment.
 
-## Basic Usage
+## Initialization
 
-### `get`
-
-Asynchronously retrieves translation text by code with optional template replacement.
-
-**Parameters:**
-- `name: string` — translation code
-- `replacement?: string[] | Record<string, string | number>` — values for template replacement (optional)
-
-**Returns:** `Promise<string>` — translated text
+The class is static and does not require instantiation. The primary configuration consists of setting the API URL.
 
 ```javascript
-import { Translate } from '@dxtmisha/functional'
+import { Translate } from '@dxtmisha/functional-basic'
 
-// Basic translation
-const text = await Translate.get('welcome.message')
-// Returns: "Welcome to our application"
+// Configure API URL for requests
+Translate.setUrl('/api/v1/translate')
 
-// With array replacement
-const greeting = await Translate.get('hello.user', ['John'])
-// Template: "Hello, [0]!" → Returns: "Hello, John!"
-
-// With object replacement
-const message = await Translate.get('items.count', { count: 5, type: 'products' })
-// Template: "You have [count] [type]" → Returns: "You have 5 products"
+// Preload necessary texts
+await Translate.add(['welcome', 'auth.login', 'errors.required'])
 ```
 
-### `getSync`
+## Methods
 
-Synchronously retrieves translation text (returns from cache or fallback).
+### Translation Retrieval
 
-**Parameters:**
-- `name: string` — translation code
-- `first?: boolean` — if false, returns empty string when text not found (default: false)
-- `replacement?: string[] | Record<string, string | number>` — values for template replacement (optional)
+- `async get(name: string, replacement?: any): Promise<string>` — Asynchronously retrieves text. If not in cache and not on localhost, it attempts to load it from the server.
+- `getSync(name: string, first?: boolean, replacement?: any): string` — Returns text from the cache. If `first` is `true`, returns a space ` ` if the text is missing; otherwise, returns the code `name` itself.
+- `async getList(names: TranslateCode[]): Promise<TranslateList>` — Retrieves an object with a group of translations (asynchronous).
+- `getListSync(names: TranslateCode[], first?: boolean): TranslateList` — Retrieves an object with a group of translations from the cache (synchronous).
 
-**Returns:** `string` — translated text or fallback
+### Data Management
 
-```javascript
-// Get cached translation
-const text = Translate.getSync('button.save')
-// Returns: "Save" (from cache) or "button.save" (fallback)
+- `async add(names: string | string[]): Promise<void>` — Adds codes to the loading queue. Requests are batched to minimize network load.
+- `addSync(data: Record<string, string>): void` — Directly adds translated strings to the cache.
+- `async addNormalOrSync(data: Record<string, string>): Promise<void>` — Intelligent addition: behaves as `addSync` on localhost, and as `add` otherwise.
+- `addSyncByLocation(data: Record<string, Record<string, string>>): void` — Bulk-adds texts tied to specific locales.
 
-// Return an empty string if not found
-const empty = Translate.getSync('missing.key', false)
-// Returns: "" if not in cache
+### Configuration
 
-// With replacement
-const message = Translate.getSync('welcome.user', true, ['Alice'])
-// Returns: "Welcome, Alice!" or fallback
-```
-
-## Batch Operations
-
-### `getList`
-
-Asynchronously retrieves multiple translations as an object.
-
-**Parameters:**
-- `names: TranslateCode[]` — array of translation codes or [code, ...replacements] arrays
-
-**Returns:** `Promise<TranslateList<T>>` — object with code-text pairs
-
-```javascript
-// Simple list
-const texts = await Translate.getList(['save', 'cancel', 'submit'])
-// Returns: { save: "Save", cancel: "Cancel", submit: "Submit" }
-
-// With replacements
-const messages = await Translate.getList([
-  'welcome.user',
-  ['items.count', '5', 'books'],
-  'goodbye.message'
-])
-// Returns object with processed templates
-```
-
-### `getListSync`
-
-Synchronously retrieves multiple translations from a cache.
-
-**Parameters:**
-- `names: TranslateCode[]` — array of translation codes
-- `first?: boolean` — fallback behavior when text not found (default: false)
-
-**Returns:** `TranslateList<T>` — object with code-text pairs
-
-```javascript
-// Get cached translations
-const texts = Translate.getListSync(['save', 'cancel', 'delete'])
-// Returns: { save: "Save", cancel: "Cancel", delete: "Delete" }
-
-// With fallback behavior
-const empty = Translate.getListSync(['missing.key'], false)
-// Returns: { 'missing.key': '' }
-```
-
-## Data Management
-
-### `add`
-
-Adds translation codes to the loading queue for batch fetching.
-
-**Parameters:**
-- `names: string | string[]` — translation code(s) to load
-
-**Returns:** `Promise<void>` — resolves when translations are loaded
-
-```javascript
-// Add a single translation
-await Translate.add('new.message')
-
-// Add multiple translations
-await Translate.add(['header.title', 'footer.copyright', 'menu.items'])
-
-// Automatic batching (requests are grouped within 160ms)
-Translate.add('text1') // Queued
-Translate.add('text2') // Queued
-Translate.add('text3') // All sent in a single request
-```
-
-### `addSync`
-
-Directly adds translations to the cache (for development/testing).
-
-**Parameters:**
-- `data: Record<string, string>` — key-value pairs of translations
-
-```javascript
-// Add translations directly
-Translate.addSync({
-  'welcome.message': 'Welcome to our app',
-  'button.save': 'Save Changes',
-  'error.required': 'This field is required'
-})
-
-// Translations available immediately
-const text = Translate.getSync('welcome.message') // "Welcome to our app"
-```
-
-### `addNormalOrSync`
-
-Intelligently adds translations based on the environment (API call vs. direct).
-
-**Parameters:**
-- `data: Record<string, string>` — translation data
-
-**Returns:** `Promise<void>` — resolves when added
-
-```javascript
-// Automatically chooses a method based on Api.isLocalhost()
-await Translate.addNormalOrSync({
-  'app.title': 'My Application',
-  'nav.home': 'Home',
-  'nav.about': 'About'
-})
-// Development: adds directly to cache
-// Production: queues for API request
-```
-
-### `addSyncByLocation`
-
-Synchronously adds translations grouped by location (locale) directly to the cache.
-
-**Parameters:**
-- `data: Record<string, Record<string, string>>` — list of texts by location
-
-```javascript
-// Add translations for different locations
-Translate.addSyncByLocation({
-  'en-US': {
-    'app.title': 'My Application',
-    'button.save': 'Save'
-  },
-  'ru-RU': {
-    'app.title': 'Мое Приложение',
-    'button.save': 'Сохранить'
-  }
-})
-```
-
-## Configuration
-
-### `setUrl`
-
-Changes the API endpoint for translation requests.
-
-**Parameters:**
-- `url: string` — API endpoint path
-
-**Returns:** `Translate` — class reference for chaining
-
-```javascript
-// Change translation API endpoint
-Translate.setUrl('/api/v2/translations')
-
-// Chaining
-Translate.setUrl('/custom/translate').setPropsName('translations')
-```
-
-### `setPropsName`
-
-Changes the request parameter name for translation codes.
-
-**Parameters:**
-- `name: string` — parameter name for API requests
-
-**Returns:** `Translate` — class reference for chaining
-
-```javascript
-// Change request parameter name
-Translate.setPropsName('codes')
-
-// API request will use: { codes: ['text1', 'text2'] }
-// Instead of default: { list: ['text1', 'text2'] }
-```
+- `setUrl(url: string): Translate` — Sets the API path for loading translations.
+- `setPropsName(name: string): Translate` — Sets the property name in the request body (default is `list`).
 
 ## Examples
 
-### Basic Translation Setup
-
+### Working with Templates
 ```javascript
-import { Translate } from '@dxtmisha/functional'
-
-// Configure translation endpoint
-Translate.setUrl('/api/translations')
-
-// Load initial translations
-await Translate.add(['app.title', 'nav.menu', 'footer.copyright'])
-
-// Use translations
-const title = await Translate.get('app.title')
-document.title = title
+// In database: "Hello, [0]! You have {count} notifications."
+const text = await Translate.get('user.notifications', ['John', { count: 5 }])
+// Result: "Hello, John! You have 5 notifications."
 ```
 
-### Form Validation Messages
-
+### Synchronous Usage in Components
 ```javascript
-// Load validation messages
-const validationTexts = await Translate.getList([
-  'validation.required',
-  'validation.email',
-  ['validation.minLength', '8'], // With replacement
-  'validation.password'
+// First, load everything needed (e.g., during app initialization)
+await Translate.add(['btn.save', 'btn.cancel'])
+
+// Inside a component, use synchronously to avoid excessive await usage
+const label = Translate.getSync('btn.save')
+```
+
+### Bulk List Retrieval
+```javascript
+const labels = await Translate.getList([
+  'home.title',
+  ['home.welcome', 'Guest'], // with immediate template replacement
+  'home.footer'
 ])
 
-// Use in validation
-if (!email) {
-  showError(validationTexts['validation.required'])
-}
-if (password.length < 8) {
-  showError(validationTexts['validation.minLength']) // "Minimum 8 characters"
-}
-```
-
-### Dynamic Content Loading
-
-```javascript
-// Component initialization
-class MyComponent {
-  async loadTexts() {
-    // Add necessary translations to the queue
-    await Translate.add([
-      'component.title',
-      'component.description',
-      'button.action'
-    ])
-
-    // Update UI
-    this.updateTexts()
-  }
-
-  updateTexts() {
-    // Get cached translations immediately
-    this.title = Translate.getSync('component.title')
-    this.description = Translate.getSync('component.description')
-    this.buttonText = Translate.getSync('button.action')
-  }
-}
-```
-
-### Template Replacement Examples
-
-```javascript
-// Array-based replacement
-const welcome = await Translate.get('welcome.user', ['John', 'Doe'])
-// Template: "Welcome, [0] [1]!" → "Welcome, John Doe!"
-
-// Object-based replacement
-const notification = await Translate.get('notification.message', {
-  user: 'Alice',
-  count: 3,
-  item: 'messages'
-})
-// Template: "Hi [user], you have [count] new [item]"
-// Result: "Hi Alice, you have 3 new messages"
-
-// Complex template
-const status = await Translate.get('order.status', {
-  id: '#12345',
-  status: 'shipped',
-  date: '2024-01-15'
-})
-// Template: "Order [id] is [status] on [date]"
-// Result: "Order #12345 is shipped on 2024-01-15"
+console.log(labels['home.welcome']) // "Welcome, Guest!"
 ```

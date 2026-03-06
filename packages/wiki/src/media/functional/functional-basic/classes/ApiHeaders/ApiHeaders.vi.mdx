@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiHeaders - Tiêu đề yêu cầu API'/>
+
+# Lớp ApiHeaders
+
+Một lớp để quản lý và gộp các tiêu đề (headers) yêu cầu HTTP. Nó xử lý các tiêu đề mặc định cho toàn bộ ứng dụng, tiêu đề tùy chỉnh cho các yêu cầu cụ thể và việc tự động gán `Content-Type`.
+
+## Các tính năng chính
+
+- **Tiêu đề mặc định** — thiết lập các tiêu đề chung một lần duy nhất, ví dụ như `Authorization` hoặc `X-App-Version`.
+- **Content-Type Động** — tự động quản lý tiêu đề `Content-Type` (mặc định là `application/json;charset=UTF-8`).
+- **Gộp an toàn** — gộp nhiều nguồn tiêu đề khác nhau mà không làm thay đổi các đối tượng gốc.
+- **Xác thực đầu vào** — đảm bảo chỉ các đối tượng hợp lệ mới được xử lý dưới dạng tiêu đề.
+
+## Khởi tạo
+
+```javascript
+import { ApiHeaders } from '@dxtmisha/functional'
+
+const apiHeaders = new ApiHeaders()
+apiHeaders.set({ 'X-App-Platform': 'web' })
+```
+
+## Các phương thức
+
+- `get(value?: Record<string, string> | null, type = 'application/json;charset=UTF-8'): Record<string, string> | undefined` — Giao thoa tiêu đề mặc định với những tiêu đề tùy chỉnh được truyền vào và tiêm `Content-Type`.
+- `set(headers: Record<string, string>): this` — Thiết lập hoặc cập nhật mảng đối tượng tiêu đề mặc định.

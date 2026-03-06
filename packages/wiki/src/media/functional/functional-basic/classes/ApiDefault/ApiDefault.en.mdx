@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiDefault - Default API Request Data'/>
+
+# ApiDefault Class
+
+A class for managing default data for API requests. It allows setting base parameters that should be included in every request, supporting both standard objects and `FormData`.
+
+## Key Features
+
+- **Centralized Defaults** — define common parameters (like tokens or locale) once for all API calls.
+- **Support for Multiple Formats** — works seamlessly with both plain JavaScript objects and `FormData`.
+- **Intelligent Merging** — merges defaults with request-specific data, prioritizing the actual request data if keys overlap.
+- **Easy Checks** — simple methods to check if any default data is currently set.
+
+## Initialization
+
+Normally, this class is used internally by an API management system, but it can be used independently.
+
+```javascript
+import { ApiDefault } from '@dxtmisha/functional'
+
+const apiDefault = new ApiDefault()
+apiDefault.set({ lang: 'en', version: 'v1' })
+
+if (apiDefault.is()) {
+  console.log('Defaults are ready')
+}
+
+// With Object
+const merged = apiDefault.request({ user_id: 5 })
+// Result: { lang: 'en', version: 'v1', user_id: 5 }
+
+// With FormData
+const fd = new FormData()
+fd.append('file', myFile)
+apiDefault.request(fd)
+// Result: fd now also contains 'lang' and 'version' if they weren't already there
+```
+
+## Methods
+
+- `is(): boolean` — Checks if any default data has been set.
+- `get(): ApiDefaultValue` — Returns the current default data.
+- `request(request: ApiFetch['request']): ApiFetch['request']` — Merges the stored default data into a provided request object or `FormData` instance.
+- `set(request: ApiDefaultValue)` — Sets the default data object for requests.
+
+

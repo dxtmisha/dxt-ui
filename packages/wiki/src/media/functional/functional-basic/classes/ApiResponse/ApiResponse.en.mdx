@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiResponse - API Request Emulation'/>
+
+# ApiResponse Class
+
+A manager class for intercepting, caching, and emulating API responses. It allows you to intercept outgoing API requests and return predefined mock data instead of triggering actual physical network traffic. Crucial during early UI development, automated unit testing, or offline development environments.
+
+## Key Features
+
+- **Request Interception** — matches outbound requests intelligently based on target route, HTTP method, and payload object.
+- **Dynamic Capabilities** — supports static predefined fallback objects or executes dynamic callback logic capable of interpreting request query context.
+- **Network Lag Simulation** — built-in system specifically tailored for simulating actual latency ping scenarios (randomized offset timers).
+- **Developer Mode** — prints useful debug information in browser consoles showing which payload mapped directly to a specific fallback mock point.
+
+## Initialization
+
+Requires providing an actively running `ApiDefault` environment manager structure constructor object for correctly extracting baseline payload dependencies.
+
+```javascript
+import { ApiResponse, ApiDefault } from '@dxtmisha/functional'
+
+const apiDefault = new ApiDefault()
+const apiResponse = new ApiResponse(apiDefault)
+```
+
+## Methods
+
+- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Synchronously checks for a global matching cached mock request and returns its configuration.
+- `getList(): (ApiResponseItem & Record<string, any>)[]` — Returns a flat list of all currently registered emulator mock configurations.
+- `add(response: ApiResponseItem | ApiResponseItem[]): this` — Connects routing pathways and attaches fallback mock-response objects to the local registry.
+- `setDevMode(devMode: boolean): this` — Sets the development output log mode on/off natively.
+- `emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>` — Core engine loop validating configurations and executing matched routing latency mock responses recursively.

@@ -104,7 +104,11 @@ export class DataStorage<T> {
    * Удаление данных из хранилища.
    */
   remove(): this {
+    this.value = undefined
+    this.age = undefined
+
     this.getMethod()?.removeItem(this.getIndex())
+
     return this
   }
 

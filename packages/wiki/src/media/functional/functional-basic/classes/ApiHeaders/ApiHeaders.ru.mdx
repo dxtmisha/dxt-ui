@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/ApiHeaders - Заголовки API-запросов'/>
+
+# Класс ApiHeaders
+
+Класс для управления и слияния заголовков HTTP-запросов. Он обрабатывает заголовки по умолчанию, пользовательские заголовки для конкретных запросов и автоматическое назначение `Content-Type`.
+
+## Ключевые особенности
+
+- **Заголовки по умолчанию** — установите глобальные заголовки, такие как `Authorization` или `X-App-Version`, один раз.
+- **Динамический Content-Type** — автоматически управляет заголовком `Content-Type` (по умолчанию `application/json;charset=UTF-8`).
+- **Безопасное слияние** — объединяет несколько источников заголовков без изменения исходных объектов.
+- **Валидация ввода** — гарантирует, что для заголовков используются только допустимые объекты.
+
+## Инициализация
+
+```javascript
+import { ApiHeaders } from '@dxtmisha/functional'
+
+const apiHeaders = new ApiHeaders()
+apiHeaders.set({ 'X-App-Platform': 'web' })
+```
+
+## Методы
+
+- `get(value?: Record<string, string> | null, type = 'application/json;charset=UTF-8'): Record<string, string> | undefined` — Объединяет заголовки по умолчанию с пользовательскими и добавляет `Content-Type`.
+- `set(headers: Record<string, string>): this` — Устанавливает или обновляет заголовки по умолчанию.

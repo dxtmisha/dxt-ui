@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiStatus - API Status Management'/>
+
+# ApiStatus Class
+
+A class dedicated to tracking and managing the state of an API request. It securely holds the current HTTP status, error messages, and the parsed response body, allowing applications to react to real-time changes utilizing state abstractions.
+
+## Key Features
+
+- **Centralized State** — holds everything related to the result of an API call: HTTP status, custom texts, raw response data, and generated messages.
+- **Chainable API** — setters return `this`, allowing multiple state changes to be chained elegantly.
+- **Automatic Message Extraction** — intelligently attempts to parse and pull human-readable `message` fields directly from structured server responses.
+
+## Initialization
+
+```javascript
+import { ApiStatus } from '@dxtmisha/functional'
+
+const apiStatus = new ApiStatus()
+```
+
+## Methods
+
+### Value Retrieval Methods
+- `get(): ApiStatusItem` — Returns the complete status data object of the last response.
+- `getStatus(): number | undefined` — Returns the HTTP status code (e.g., `200`, `404`).
+- `getStatusText(): string | undefined` — Returns the status text message string (e.g., `"OK"`, `"Not Found"`).
+- `getStatusType(): ApiStatusType | undefined` — Returns the last status validation type.
+- `getError(): string | undefined` — Returns the explicitly recorded error message.
+- `getResponse<T>(): T | undefined` — Returns the raw data payload from the last successful request.
+- `getMessage(): string` — Returns the server message pulled from a successful response.
+
+### Value Setting Methods
+- `set(data: ApiStatusItem): this` — Sets multiple status fields at once.
+- `setStatus(status?: number, statusText?: string): this` — Sets the HTTP status code and an optional text explanation.
+- `setError(error?: string): this` — Records an error message string when a request fails or is rejected.
+- `setLastResponse(response?: any): this` — Records a server response completely and optionally updates related statuses (like extraction of `.message`).
+- `setLastStatus(status?: ApiStatusType): this` — Sets the final custom API status type.
+- `setLastMessage(message?: string): this` — Forcibly overrides or explicitly records a message.

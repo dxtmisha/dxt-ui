@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/ApiPreparation - Подготовка API запросов'/>
+
+# Класс ApiPreparation
+
+Класс, специально разработанный для обработки задач и побочных эффектов непосредственно до и после выполнения API-запроса. Представляет собой хуки (`callback` и `callbackEnd`) для перехвата запросов, выполнения манипуляций или запуска глобальной логики, такой как индикаторы загрузки.
+
+## Ключевые особенности
+
+- **Выполнение перед запросом** — хук в жизненном цикле API непосредственно перед фактическим вызовом `fetch`.
+- **Анализ после запроса** — выполнение логики сразу после завершения запроса с доступом к объекту `Response` и конфигурации исходного запроса.
+- **Контроль параллелизма** — гарантирует корректное разрешение перекрывающихся хуков без конфликтов.
+- **Внедрение данных** — хуки после запроса могут возвращать данные или флаг `reset`, которые могут повлиять на общую обработку ответа API.
+
+## Инициализация
+
+```javascript
+import { ApiPreparation } from '@dxtmisha/functional'
+
+const preparation = new ApiPreparation()
+```
+
+## Методы
+
+- `make(active: boolean, apiFetch: ApiFetch): Promise<void>` — Выполняет логику подготовки перед выполнением запроса.
+- `makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>` — Выполняет анализ после завершения запроса.
+- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Устанавливает колбэк, который запускается перед запросом.
+- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Устанавливает колбэк, который запускается после завершения запроса.

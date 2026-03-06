@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/CookieBlock - Quản lý Cấp Quyền Cookie'/>
+
+# Lớp CookieBlock
+
+Lớp tiện ích static dùng để định nghĩa quy luật truy cập ("kill switch" hoặc cầu dao tổng) nhắm thẳng vào quá trình hệ thống có cho phép chỉnh/sửa nội dung DOM cookie trên website hay không. Bằng cách thiết lập chuẩn khoá chặn (boolean logic), các node class lớn hơn (ví dụ Class gốc `Cookie`) sẽ liên tục móc và lắng nghe lệnh này trước khi tiến hành bước in/thực thi ghi data vào `document.cookie`.
+
+## Các tính năng chính
+
+- **Chấp Nhận Quy Trình Định Mức Chung (Global Truth)** — cổng tuỳ chỉnh/kiểm soát chung đối với quá trình lưu tạo/in cookie dọc toàn bộ mã lệnh ứng dụng.
+- **Chuẩn Cấu Hình Quyền Riêng Tư Đặc thù (Privacy Compliance)** — một mẫu logic tuyệt vời dùng lập trình những phần banner xác nhận "Cookie Consent" (Xin quyền nạp Tracking). Người code chỉ việc nối logic nút bật class thành giá trị `true` đến chừng nào user chốt chấp nhận quy tắc lấy thông tin ở nút 'Đồng Ý'.
+- **Class Truy Vấn Cải Biên (DataStorage Backed)** — vận hành chuẩn dữ liệu `DataStorage` qua cấp độ trừu tượng để việc chặn ghi được tối ưu thông lượng trong background, gia tăng tính tin cậy.
+
+
+Tất cả là lớp static nên bạn chạy lệnh trượt và trỏ trực tiếp bằng dấu chấm (`.`).
+
+## Quản lý quyền truy cập
+
+### `get`
+
+`get()` trả về 100% chuẩn cấu trúc kiểu nhị phân boolean.
+
+**Trả về:** `boolean` — `true` nếu trình kiểm duyệt khóa chức năng tạo cookie.
+
+```javascript
+if (CookieBlock.get()) {
+  console.log('Quá trình nạp DOM/ghi chép Cookie đang khoá do cài đặt phía user chưa cho quyền truy cập.')
+}
+```
+
+### `set`
+
+Truy vấn tham số boolean qua `set()` để class hiểu website/app được hay không thể được viết biến cache cookie nữa.
+
+**Tham số:**
+- `value: boolean` — `true` đồng nghĩa chặn toàn bộ biến muốn viết cookie ra ngoài trỏ lên web, `false` hệ thống lại bật tắt mượt mà bình thường.
+
+```javascript
+import { CookieBlock } from '@dxtmisha/functional'
+
+// Lệnh chặn khẩn cấp toàn bộ dữ liệu ghi DOM cookie
+CookieBlock.set(true)
+
+// Dỡ bỏ cảnh bảo / Cấp quyền DOM in cookie (Cấu hình chuẩn của object mới)
+CookieBlock.set(false)
+```
+
+## Phương Phức Logic Khi Mắc Nối Với Lớp `Cookie`
+
+Nhân/Bộ cấu trúc tổng của class `Cookie` được code giám sát nghiêm ngặt mọi lệnh do luồng chặn phát đi. Lúc biến nhị phân `CookieBlock.get()` bị chốt ở mode `true`:
+
+1.  Ở nội bộ luồng mã, quá trình chạy vẫn ngầm hiểu là hệ thống gọi app bằng node lưu biến `cookieInstance.set('value')`.
+2.  Tiến trình instance trực thuộc `Cookie` kích hoạt việc in giá trị cập nhật/ghi đè thay thế nằm vào hàng đợi của *cơ sở memory ảo* (internal memory).
+3.  Tuyệt nhiên tại chính node instance của `Cookie` **hệ thống tự phát sinh quyền bác bỏ im lặng (silently refuse)** đối với hàm ghi biến tĩnh `document.cookie = ...` tại nhánh DOM ảo lẫn DOM thật.
+
+Luồng giao thức 3 buớc phía trên đáp ứng hoàn hảo hai tiêu chí tối thượng trong quy chuẩn kỹ thuật: Giúp DOM website không bị bóp băng thông khi chạy lỗi code lấy lệnh từ hệ memory chưa cấp dữ liệu (ngăn văng bug), cũng như giữ thiết lập tôn trọng chính sách truy vấn riêng tư bảo mật đĩa cứng phía Browser theo chuẩn Âu/Mỹ.

@@ -1,0 +1,193 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/Datetime - Утилита для Даты и Времени'/>
+
+# Класс Datetime
+
+Универсальная обертка вокруг нативного объекта JavaScript `Date`, предназначенная для упрощения работы с датами и временем. Она объединяет возможности форматирования, вычислений (перемещение по датам) и клонирования, опираясь на настройки локализации `Geo` и `GeoIntl`.
+
+## Ключевые особенности
+
+- **Упрощенное управление** — интуитивно понятные методы для навигации по датам (переход к началу месяца, инкремент дней и т.д.).
+- **Локализация "из коробки"** — автоматическая работа с часовыми поясами и форматами согласно настройкам `Geo`.
+- **Цепочка вызовов (Chaining)** — большинство методов возвращают `this`, что позволяет создавать сложные манипуляции в одну строку.
+- **Поддержка различных типов** — конструктор и методы принимают строки (ISO), числа (timestamp) или объекты `Date`.
+- **Умное клонирование** — легкое создание новых экземпляров на основе текущих со сдвигом во времени.
+
+## Инициализация
+
+Создает новый экземпляр `Datetime`. Если параметры не переданы, используется текущее время и локаль по умолчанию.
+
+**Параметры:**
+- `date?: NumberOrStringOrDate` — дата для инициализации (ISO строка, timestamp или объект `Date`).
+- `type: GeoDate = 'date'` — формат вывода по умолчанию.
+- `code: string = Geo.getLocation()` — код локали (например, 'ru-RU').
+
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// Текущее время
+const now = new Datetime()
+
+// Конкретная дата
+const dt = new Datetime('2024-03-15', 'datetime', 'ru-RU')
+
+// Из timestamp
+const fromTs = new Datetime(1710460800000)
+```
+
+## Методы
+
+### Общая информация
+
+- `getIntl(): GeoIntl` — Возвращает объект `GeoIntl` для работы с форматированием.
+- `getDate(): Date` — Возвращает оригинальный нативный объект `Date`.
+- `getType(): string` — Возвращает установленный тип вывода (`date`, `datetime` и т.д.).
+- `getHoursType(): GeoHours` — Определяет формат часов (12 или 24) для текущей локали.
+- `getHour24(): boolean` — Возвращает текущую настройку отображения 24-часового формата.
+- `getTimeZoneOffset(): number` — Возвращает смещение часового пояса в минутах.
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Возвращает часовой пояс (поддерживает стили `minute`, `hour`, `RFC`).
+- `getFirstDayCode(): GeoFirstDay` — Возвращает код первого дня недели (0 для воскресенья, 1 для понедельника, 6 для субботы).
+
+### Получение значений
+
+- `getYear(): number` — Возвращает полный год.
+- `getMonth(): number` — Возвращает месяц (человекочитаемый, от 1 до 12).
+- `getDay(): number` — Возвращает число месяца (1-31).
+- `getHour(): number` — Возвращает часы.
+- `getMinute(): number` — Возвращает минуты.
+- `getSecond(): number` — Возвращает секунды.
+- `getMaxDay(): number` — Возвращает количество дней в текущем месяце.
+
+### Установка значений
+
+Позволяют точечно изменять компоненты даты. Методы (кроме `setCode` и `setWatch`) инициируют вызов `watch` колбэка.
+
+- `setDate(value: NumberOrStringOrDate): this` — Полностью перезаписывает дату.
+- `setType(value: GeoDate): this` — Устанавливает тип вывода.
+- `setHour24(value: boolean): this` — Включает/выключает 24-часовой формат.
+- `setCode(code: string): this` — Меняет код локали.
+- `setWatch(watch: Function): this` — Устанавливает функцию обратного вызова при изменении данных.
+- `setYear(value: number): this` — Устанавливает год.
+- `setMonth(value: number): this` — Устанавливает месяц (1-12).
+- `setDay(value: number): this` — Устанавливает число месяца.
+- `setHour(value: number): this` — Устанавливает часы.
+- `setMinute(value: number): this` — Устанавливает минуты.
+- `setSecond(value: number): this` — Устанавливает секунды.
+
+### Навигация (Перемещение)
+
+Изменяют текущий объект `Datetime`.
+
+- `moveByYear(value: number): this` — Смещение на указанное количество лет.
+- `moveByMonth(value: number): this` — Смещение на количество месяцев.
+- `moveByDay(value: number): this` — Смещение на количество дней.
+- `moveByHour(value: number): this` — Смещение на количество часов.
+- `moveByMinute(value: number): this` — Смещение на количество минут.
+- `moveBySecond(value: number): this` — Смещение на количество секунд.
+- `moveMonthFirst(): this` — Переход к январю текущего года.
+- `moveMonthLast(): this` — Переход к декабрю текущего года.
+- `moveMonthNext(): this` — Переход к первому числу следующего месяца.
+- `moveMonthPrevious(): this` — Переход к первому числу предыдущего месяца.
+- `moveWeekdayFirst(): this` — Переход к первому дню текущей недели.
+- `moveWeekdayLast(): this` — Переход к последнему дню текущей недели.
+- `moveWeekdayFirstByMonth(): this` — Переход к первому дню первой недели месяца.
+- `moveWeekdayLastByMonth(): this` — Переход к первому дню первой полной недели следующего месяца.
+- `moveWeekdayNext(): this` — Смещение на одну неделю вперед.
+- `moveWeekdayPrevious(): this` — Смещение на одну неделю назад.
+- `moveDayFirst(): this` — Переход к первому числу текущего месяца.
+- `moveDayLast(): this` — Переход к последнему числу текущего месяца.
+- `moveDayNext(): this` — Смещение на один день вперед.
+- `moveDayPrevious(): this` — Смещение на один день назад.
+
+### Клонирование
+
+Создают копии данных.
+
+- `clone(): Date` — Создает независимую копию нативного объекта `Date`.
+- `cloneClass(): Datetime` — Создает копию текущего экземпляра `Datetime`.
+- `cloneMonthFirst(): Datetime` — Копия с переходом к январю.
+- `cloneMonthLast(): Datetime` — Копия с переходом к декабрю.
+- `cloneMonthNext(): Datetime` — Копия с переходом к следующему месяцу.
+- `cloneMonthPrevious(): Datetime` — Копия с переходом к предыдущему месяцу.
+- `cloneWeekdayFirst(): Datetime` — Копия, установленная на начало текущей недели.
+- `cloneWeekdayLast(): Datetime` — Копия, установленная на конец текущей недели.
+- `cloneWeekdayFirstByMonth(): Datetime` — Копия на начало первой недели месяца.
+- `cloneWeekdayLastByMonth(): Datetime` — Копия на начало последней недели месяца.
+- `cloneWeekdayNext(): Datetime` — Копия со сдвигом на неделю вперед.
+- `cloneWeekdayPrevious(): Datetime` — Копия со сдвигом на неделю назад.
+- `cloneDayFirst(): Datetime` — Копия на первое число текущего месяца.
+- `cloneDayLast(): Datetime` — Копия на последнее число текущего месяца.
+- `cloneDayNext(): Datetime` — Копия со сдвигом на один день вперед.
+- `cloneDayPrevious(): Datetime` — Копия со сдвигом на один день назад.
+
+## Форматирование и вывод
+
+### `locale`
+
+Основной метод для получения локализованной строки.
+
+**Параметры:**
+- `type?: GeoDate` — формат вывода (по умолчанию берется из настроек экземпляра).
+- `styleOptions?: Intl.DateTimeFormatOptions` — переопределение настроек отображения (например, стиль месяца).
+
+**Возвращает:** `string` — текстовое представление даты.
+
+```javascript
+const dt = new Datetime('2024-03-15')
+dt.locale('full') // "15 марта 2024 г."
+dt.locale('date', { month: 'short' }) // "15 мар. 2024 г."
+```
+
+**Дополнительные методы форматирования:**
+- `localeYear(style?: 'numeric' | '2-digit'): string`
+- `localeMonth(style?: 'long' | 'short' | 'narrow' | 'numeric' | '2-digit'): string`
+- `localeDay(style?: 'numeric' | '2-digit'): string`
+- `localeHour(style?: 'numeric' | '2-digit'): string`
+- `localeMinute(style?: 'numeric' | '2-digit'): string`
+- `localeSecond(style?: 'numeric' | '2-digit'): string`
+
+### `standard`
+
+Возвращает дату в формате ISO 8601 (YYYY-MM-DDTHH:mm:ss±HH:mm).
+
+**Параметры:**
+- `timeZone: boolean = true` — добавлять ли информацию о часовом поясе.
+
+```javascript
+dt.standard() // "2024-03-15T00:00:00+03:00"
+dt.standard(false) // "2024-03-15T00:00:00"
+```
+
+## Примеры использования
+
+### Работа с интервалами и навигацией
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// Получаем последний день текущего месяца
+const lastDay = new Datetime().moveDayLast().getDay()
+
+// Создаем календарную сетку (находим понедельник первой недели месяца)
+const startOfCalendar = new Datetime().moveWeekdayFirstByMonth()
+
+// Вычисляем дату через неделю в это же время
+const nextWeek = new Datetime().moveByDay(7).locale('datetime')
+```
+
+### Форматирование и локали
+```javascript
+const event = new Datetime('2024-12-31T23:59:59')
+
+// Английская локаль
+event.setCode('en-US')
+console.log(event.locale('full')) // "Tuesday, December 31, 2024"
+
+// Вьетнамская локаль
+event.setCode('vi-VN')
+console.log(event.locale('full')) // "Thứ Ba, 31 tháng 12, 2024"
+
+// Вывод только времени
+console.log(event.locale('time')) // "23:59:59"
+```
+

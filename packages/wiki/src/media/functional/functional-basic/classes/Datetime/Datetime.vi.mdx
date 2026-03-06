@@ -1,0 +1,192 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Datetime - Tiện ích Ngày & Giờ'/>
+
+# Lớp Datetime
+
+Một bộ khung lớp bao quanh đối tượng `Date` nguyên bản của JavaScript, được thiết kế để đơn giản hóa việc làm việc với ngày tháng và thời gian. Nó kết hợp các khả năng định dạng, tính toán (điều hướng ngày tháng) và sao chép, dựa trên các thiết lập địa phương hóa của `Geo` и `GeoIntl`.
+
+## Tính năng chính
+
+- **Quản lý đơn giản** — các phương thức trực quan để điều hướng ngày tháng (chuyển đến đầu tháng, tăng thêm ngày, v.v.).
+- **Địa phương hóa tích hợp** — tự động xử lý các múi giờ và định dạng theo thiết lập `Geo`.
+- **Chuỗi lệnh (Chaining)** — hầu hết các phương thức đều trả về `this`, cho phép thực hiện các thao tác phức tạp trong một dòng duy nhất.
+- **Hỗ trợ nhiều kiểu dữ liệu** — hàm khởi tạo và các phương thức chấp nhận chuỗi (ISO), số (timestamp) hoặc đối tượng `Date`.
+- **Sao chép thông minh** — dễ dàng tạo các thực thể mới dựa trên các thực thể hiện có với các thay đổi về thời gian.
+
+## Khởi tạo
+
+Tạo một thực thể `Datetime` mới. Nếu không có tham số nào được truyền vào, thời gian hiện tại và địa phương mặc định sẽ được sử dụng.
+
+**Tham số:**
+- `date?: NumberOrStringOrDate` — ngày để khởi tạo (chuỗi ISO, timestamp hoặc đối tượng `Date`).
+- `type: GeoDate = 'date'` — định dạng đầu ra mặc định.
+- `code: string = Geo.getLocation()` — mã địa phương (ví dụ: 'vi-VN').
+
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// Thời gian hiện tại
+const now = new Datetime()
+
+// Ngày cụ thể
+const dt = new Datetime('2024-03-15', 'datetime', 'vi-VN')
+
+// Từ timestamp
+const fromTs = new Datetime(1710460800000)
+```
+
+## Phương thức
+
+### Thông tin chung
+
+- `getIntl(): GeoIntl` — Trả về đối tượng `GeoIntl` để làm việc với định dạng.
+- `getDate(): Date` — Trả về đối tượng `Date` nguyên bản.
+- `getType(): string` — Trả về kiểu đầu ra đã thiết lập (`date`, `datetime`, v.v.).
+- `getHoursType(): GeoHours` — Xác định định dạng giờ (12 hoặc 24) cho địa phương hiện tại.
+- `getHour24(): boolean` — Trả về thiết lập hiện tại cho việc hiển thị định dạng 24 giờ.
+- `getTimeZoneOffset(): number` — Trả về độ lệch múi giờ tính bằng phút.
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Trả về múi giờ (hỗ trợ các kiểu `minute`, `hour`, `RFC`).
+- `getFirstDayCode(): GeoFirstDay` — Trả về mã cho ngày đầu tiên của tuần (0 cho Chủ Nhật, 1 cho Thứ Hai, 6 cho Thứ Bảy).
+
+### Lấy giá trị
+
+- `getYear(): number` — Trả về năm đầy đủ.
+- `getMonth(): number` — Trả về tháng (dễ đọc, từ 1 đến 12).
+- `getDay(): number` — Trả về ngày trong tháng (1-31).
+- `getHour(): number` — Trả về giờ.
+- `getMinute(): number` — Trả về phút.
+- `getSecond(): number` — Trả về giây.
+- `getMaxDay(): number` — Trả về số ngày trong tháng hiện tại.
+
+### Thiết lập giá trị
+
+Cho phép thay đổi chính xác các thành phần của ngày tháng. Các phương thức (ngoại trừ `setCode` và `setWatch`) sẽ kích hoạt hàm gọi lại `watch`.
+
+- `setDate(value: NumberOrStringOrDate): this` — Ghi đè hoàn toàn ngày tháng.
+- `setType(value: GeoDate): this` — Thiết lập kiểu đầu ra.
+- `setHour24(value: boolean): this` — Bật/tắt định dạng 24 giờ.
+- `setCode(code: string): this` — Thay đổi mã địa phương.
+- `setWatch(watch: Function): this` — Thiết lập hàm gọi lại cho các thay đổi dữ liệu.
+- `setYear(value: number): this` — Thiết lập năm.
+- `setMonth(value: number): this` — Thiết lập tháng (1-12).
+- `setDay(value: number): this` — Thiết lập ngày trong tháng.
+- `setHour(value: number): this` — Thiết lập giờ.
+- `setMinute(value: number): this` — Thiết lập phút.
+- `setSecond(value: number): this` — Thiết lập giây.
+
+### Điều hướng (Di chuyển)
+
+Thay đổi đối tượng `Datetime` hiện tại.
+
+- `moveByYear(value: number): this` — Dịch chuyển theo số năm đã chỉ định.
+- `moveByMonth(value: number): this` — Dịch chuyển theo số tháng.
+- `moveByDay(value: number): this` — Dịch chuyển theo số ngày.
+- `moveByHour(value: number): this` — Dịch chuyển theo số giờ.
+- `moveByMinute(value: number): this` — Dịch chuyển theo số phút.
+- `moveBySecond(value: number): this` — Dịch chuyển theo số giây.
+- `moveMonthFirst(): this` — Chuyển đến tháng 1 của năm hiện tại.
+- `moveMonthLast(): this` — Chuyển đến tháng 12 của năm hiện tại.
+- `moveMonthNext(): this` — Chuyển đến ngày đầu tiên của tháng tiếp theo.
+- `moveMonthPrevious(): this` — Chuyển đến ngày đầu tiên của tháng trước.
+- `moveWeekdayFirst(): this` — Chuyển đến ngày đầu tiên của tuần hiện tại.
+- `moveWeekdayLast(): this` — Chuyển đến ngày cuối cùng của tuần hiện tại.
+- `moveWeekdayFirstByMonth(): this` — Chuyển đến ngày đầu tiên của tuần đầu tiên trong tháng.
+- `moveWeekdayLastByMonth(): this` — Chuyển đến ngày đầu tiên của tuần đầy đủ đầu tiên của tháng tiếp theo.
+- `moveWeekdayNext(): this` — Dịch chuyển một tuần về phía trước.
+- `moveWeekdayPrevious(): this` — Dịch chuyển một tuần về phía sau.
+- `moveDayFirst(): this` — Chuyển đến ngày đầu tiên của tháng hiện tại.
+- `moveDayLast(): this` — Chuyển đến ngày cuối cùng của tháng hiện tại.
+- `moveDayNext(): this` — Dịch chuyển một ngày về phía trước.
+- `moveDayPrevious(): this` — Dịch chuyển một ngày về phía sau.
+
+### Sao chép
+
+Tạo bản sao của dữ liệu.
+
+- `clone(): Date` — Tạo một bản sao độc lập của đối tượng `Date` nguyên bản.
+- `cloneClass(): Datetime` — Tạo một bản sao của thực thể `Datetime` hiện tại.
+- `cloneMonthFirst(): Datetime` — Sao chép với việc chuyển đến tháng 1.
+- `cloneMonthLast(): Datetime` — Sao chép với việc chuyển đến tháng 12.
+- `cloneMonthNext(): Datetime` — Sao chép với việc chuyển sang tháng tiếp theo.
+- `cloneMonthPrevious(): Datetime` — Sao chép with việc chuyển sang tháng trước.
+- `cloneWeekdayFirst(): Datetime` — Sao chép được thiết lập vào đầu tuần hiện tại.
+- `cloneWeekdayLast(): Datetime` — Sao chép được thiết lập vào cuối tuần hiện tại.
+- `cloneWeekdayFirstByMonth(): Datetime` — Sao chép đến đầu tuần đầu tiên của tháng.
+- `cloneWeekdayLastByMonth(): Datetime` — Sao chép đến đầu tuần cuối cùng của tháng.
+- `cloneWeekdayNext(): Datetime` — Sao chép với việc dịch chuyển một tuần về phía trước.
+- `cloneWeekdayPrevious(): Datetime` — Sao chép với việc dịch chuyển một tuần về phía sau.
+- `cloneDayFirst(): Datetime` — Sao chép đến ngày đầu tiên của tháng hiện tại.
+- `cloneDayLast(): Datetime` — Sao chép đến ngày cuối cùng của tháng hiện tại.
+- `cloneDayNext(): Datetime` — Sao chép với việc dịch chuyển một ngày về phía trước.
+- `cloneDayPrevious(): Datetime` — Sao chép với việc dịch chuyển một ngày về phía sau.
+
+## Định dạng và Đầu ra
+
+### `locale`
+
+Phương thức chính để lấy chuỗi đã được địa phương hóa.
+
+**Tham số:**
+- `type?: GeoDate` — định dạng đầu ra (mặc định được lấy từ thiết lập thực thể).
+- `styleOptions?: Intl.DateTimeFormatOptions` — ghi đè các thiết lập hiển thị (ví dụ: kiểu tháng).
+
+**Trả về:** `string` — biểu diễn văn bản của ngày tháng.
+
+```javascript
+const dt = new Datetime('2024-03-15')
+dt.locale('full') // ví dụ: "15 tháng 3, 2024"
+dt.locale('date', { month: 'short' }) // ví dụ: "15 thg 3, 2024"
+```
+
+**Các phương thức định dạng bổ sung:**
+- `localeYear(style?: 'numeric' | '2-digit'): string`
+- `localeMonth(style?: 'long' | 'short' | 'narrow' | 'numeric' | '2-digit'): string`
+- `localeDay(style?: 'numeric' | '2-digit'): string`
+- `localeHour(style?: 'numeric' | '2-digit'): string`
+- `localeMinute(style?: 'numeric' | '2-digit'): string`
+- `localeSecond(style?: 'numeric' | '2-digit'): string`
+
+### `standard`
+
+Trả về ngày ở định dạng ISO 8601 (YYYY-MM-DDTHH:mm:ss±HH:mm).
+
+**Tham số:**
+- `timeZone: boolean = true` — có thêm thông tin múi giờ hay không.
+
+```javascript
+dt.standard() // "2024-03-15T00:00:00+03:00"
+dt.standard(false) // "2024-03-15T00:00:00"
+```
+
+## Ví dụ sử dụng
+
+### Làm việc với Khoảng thời gian và Điều hướng
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// Lấy ngày cuối cùng của tháng hiện tại
+const lastDay = new Datetime().moveDayLast().getDay()
+
+// Tạo lưới lịch (tìm Thứ Hai của tuần đầu tiên trong tháng)
+const startOfCalendar = new Datetime().moveWeekdayFirstByMonth()
+
+// Tính toán một ngày trong một tuần vào cùng thời điểm
+const nextWeek = new Datetime().moveByDay(7).locale('datetime')
+```
+
+### Định dạng và Địa phương
+```javascript
+const event = new Datetime('2024-12-31T23:59:59')
+
+// Địa phương tiếng Anh
+event.setCode('en-US')
+console.log(event.locale('full')) // "Tuesday, December 31, 2024"
+
+// Địa phương tiếng Việt
+event.setCode('vi-VN')
+console.log(event.locale('full')) // "Thứ Ba, 31 tháng 12, 2024"
+
+// Chỉ xuất thời gian
+console.log(event.locale('time')) // "23:59:59"
+```

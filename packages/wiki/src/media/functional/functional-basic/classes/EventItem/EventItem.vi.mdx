@@ -1,0 +1,100 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/EventItem - Quản lý Sự kiện Nâng cao'/>
+
+# Lớp EventItem
+
+Một bộ khung (wrapper) mạnh mẽ để quản lý các trình lắng nghe sự kiện (event listeners) trên các phần tử DOM hoặc đối tượng `window`. Lớp này đơn giản hóa vòng đời của sự kiện (thêm, xóa, bật/tắt), hỗ trợ kiểm tra sự tồn tại của phần tử trong DOM và cung cấp các tối ưu hóa tích hợp cho các sự kiện nặng như `resize` và `scroll`.
+
+## Tính năng chính
+
+- **Quản lý vòng đời** — các phương thức `start`, `stop`, `toggle` và `reset` tiện lợi để kiểm soát chính xác việc lắng nghe sự kiện.
+- **An toàn DOM** — tự động kiểm tra `isInDom` trước khi thực hiện trình xử lý (có thể cấu hình phần tử kiểm soát).
+- **Hỗ trợ ResizeObserver** — xử lý tích hợp sự kiện `resize` cho bất kỳ phần tử HTML nào bằng API hiện đại.
+- **Tối ưu hóa cuộn** — loại sự kiện đặc biệt `scroll-sync` sử dụng `requestAnimationFrame` để đạt hiệu suất cao.
+- **Chuỗi lệnh và linh hoạt** — hỗ trợ chuỗi lệnh (chaining) và thay đổi động mục tiêu, loại hoặc trình xử lý sự kiện.
+- **Dữ liệu tùy chỉnh** — khả năng truyền và phát tán dữ liệu tùy chỉnh thông qua `CustomEvent`.
+
+## Khởi tạo
+
+Tạo một thực thể `EventItem` mới. Để kích hoạt việc lắng nghe, phương thức `start()` phải được gọi.
+
+**Tham số:**
+- `elementSelector?: ElementOrString` — phần tử mục tiêu hoặc bộ chọn (selector).
+- `type: string | string[] = 'click'` — loại sự kiện hoặc mảng các loại sự kiện.
+- `listener?: Function` — hàm xử lý (callback).
+- `options?: EventOptions` — đối tượng cấu hình (`passive`, `once`, `capture`).
+- `detail?: Record<string, any>` — dữ liệu tùy chỉnh cho sự kiện.
+
+```javascript
+import { EventItem } from '@dxtmisha/functional-basic'
+
+const btn = document.querySelector('.my-button')
+const myEvent = new EventItem(btn, 'click', (e) => {
+  console.log('Đã nhấn!', e)
+})
+
+myEvent.start()
+```
+
+## Phương thức
+
+### Thông tin
+
+- `isActive(): boolean` — Kiểm tra xem việc lắng nghe sự kiện có đang hoạt động hay không.
+- `getElement(): E | undefined` — Trả về phần tử mục tiêu hiện tại.
+
+### Cấu hình (Setters)
+
+Tất cả các phương thức trong nhóm này đều hỗ trợ chuỗi lệnh và tự động gọi `reset()` nếu sự kiện đang hoạt động.
+
+- `setElement(elementSelector?: ElementOrString): this` — Thay đổi phần tử mục tiêu.
+- `setElementControl(elementSelector?: ElementOrString): this` — Thiết lập phần tử kiểm soát (nếu thiếu trong DOM, sự kiện sẽ không kích hoạt).
+- `setType(type: string | string[]): this` — Thay đổi loại sự kiện.
+- `setListener(listener: Function): this` — Thay đổi hàm xử lý.
+- `setOptions(options?: EventOptions): this` — Thay đổi các tùy chọn của trình lắng nghe.
+- `setDetail(detail?: D): this` — Thay đổi dữ liệu tùy chỉnh của sự kiện.
+
+### Điều khiển
+
+- `start(): this` — Bắt đầu lắng nghe các sự kiện.
+- `stop(): this` — Dừng lắng nghe các sự kiện.
+- `toggle(activity: boolean): this` — Bật hoặc tắt việc lắng nghe dựa trên cờ hiệu.
+- `reset(): this` — Khởi động lại sự kiện (hữu ích sau khi thay đổi cài đặt).
+- `dispatch(detail?: D): this` — Kích hoạt sự kiện trên phần tử mục tiêu với việc truyền dữ liệu.
+
+## Các sự kiện đặc biệt
+
+### `resize`
+Nếu loại sự kiện được đặt là `resize`, lớp sẽ tự động sử dụng `ResizeObserver` để theo dõi các thay đổi kích thước của phần tử (ngay cả khi đó không phải là `window`).
+
+### `scroll-sync`
+Một loại đặc biệt để tối ưu hóa việc cuộn. Nó sử dụng `requestAnimationFrame` nội bộ, ngăn chặn các cuộc gọi trình xử lý dư thừa và cải thiện hiệu suất.
+
+## Ví dụ
+
+### Chuyển đổi phần tử động
+```javascript
+const tracker = new EventItem('.item-1', 'mousemove', (e) => {
+  console.log('Tọa độ:', e.clientX)
+})
+
+tracker.start()
+
+// ... sau đó chuyển sang phần tử khác
+tracker.setElement('.item-2')
+```
+
+### Sử dụng CustomEvent với Dữ liệu
+```javascript
+const emitter = new EventItem(window, 'my-custom-event')
+
+emitter.setListener((e, detail) => {
+  console.log('Dữ liệu nhận được:', e.detail) // dữ liệu từ CustomEvent
+})
+
+emitter.start()
+
+// Phát tán sự kiện
+emitter.dispatch({ userId: 123, action: 'refresh' })
+```

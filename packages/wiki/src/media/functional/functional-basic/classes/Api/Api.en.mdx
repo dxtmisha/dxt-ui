@@ -18,25 +18,92 @@ It includes tight integration with dependency classes: `ApiStatus`, `ApiResponse
 - **Automatic Parsing** — converting the request body into JSON/FormData and automatically extracting data from JSON responses
 - **Geolocation** — automatic substitution of `{locale}`, `{country}`, `{language}` placeholders into request paths
 
+## API Calling Methods
+
+### `request`
+
+Core executor sequence method managing pure physical network fetch pipelines. Should a solitary string serve as param context, default `GET` assumptions trigger automatically.
+In case of network failures (e.g., 500 status), the method explicitly throws an exception (`throw e`), allowing errors to be natively intercepted in `try/catch`. If the server returns a JSON object, the system automatically injects a `statusObject` field (instance of request status) to the returned payload.
+
+**Parameters:**
+- `pathRequest: string | ApiFetch` — destination path matching format or root configuration structure object.
+
+**Returns:** `Promise<ApiData<T>>` — decoded endpoint structural response formatted interface (including `data`, `statusObject`, etc., when returning an object payload).
+
+### `get`
+
+Dispatches a basic query through HTTP `GET` methodologies natively optimizing inputs payload onto string search parameters formats automatically.
+
+**Parameters:**
+- `request: ApiFetch` — fetch execution configuration property mapping (`path`, `request` body, and so on).
+
+**Returns:** `Promise<T>`
+
+### `post`
+
+Transfers query packets across standard REST/GraphQL pipelines formatted onto the HTTP `POST` specification.
+
+**Parameters:**
+- `request: ApiFetch` — parameters interface structure container including URL pointing directives.
+
+**Returns:** `Promise<T>`
+
+### `put`
+
+Directs object modifications over target remote points using typical system environment HTTP `PUT`.
+
+**Parameters:**
+- `request: ApiFetch` — query options mapped against backend routing.
+
+**Returns:** `Promise<T>`
+
+### `delete`
+
+Forwards structural clearance/purge request using classic URL targeted HTTP `DELETE`.
+
+**Parameters:**
+- `request: ApiFetch` — arguments package structure wrapper.
+
+**Returns:** `Promise<T>`
+
 ## Instance Retrieval Methods
 
-### `isLocalhost`
+- `isLocalhost(): boolean` — Returns `true` if the code is running on a local development server.
+- `getStatus(): ApiStatus` — Returns the `ApiStatus` manager for tracking the state, errors, and complete response object of the last network request.
+- `getResponse(): ApiResponse` — Returns the responses/emulation manager `ApiResponse` for controlling mock-responses.
 
-Determines if the code is running on a local development server (returns `true` if `location.hostname === 'localhost'`).
+## Configuration Methods
 
-**Returns:** `boolean`
+Methods to configure the API (support chaining, returning the `Api` class):
+- `setHeaders(headers: Record<string, string>): Api` — Applies universal headers injected automatically toward outbound fetch activities.
+- `setRequestDefault(request: Record<string, any>): Api` — Forces parameters recursively sent to network traffic streams.
+- `setUrl(url: string): Api` — Overwrites generic target URL configurations prefix points.
+- `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api` — Connects a custom hook function actively running just _before_ execution trigger occurs.
+- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api` — Sets the hook triggered exactly _after_ network response returns.
 
-### `getStatus`
+## Request Preparation Methods
 
-Returns the `ApiStatus` manager for tracking the state, errors, and complete response object of the last network request.
+- `getUrl(path: string, api?: boolean): string` — Generates the full target URL referencing the script, handling dynamic geography variables.
+- `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Creates data to be passed into the request physical body.
+- `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Forms query parameters specifically for HTTP arguments assigned into the URL directly used when sending `GET` queries.
 
-**Returns:** `ApiStatus`
+## Request Cancellation (AbortController)
 
-### `getResponse`
+The API supports out-of-the-box request cancellation. Pass an instance of `AbortController` into the `controller` field of the `ApiFetch` configuration.
 
-Returns the responses/emulation manager `ApiResponse` for controlling mock-responses (highly useful when developing offline or before the API is ready).
+```javascript
+const controller = new AbortController()
 
-**Returns:** `ApiResponse`
+// Dispatch the request
+Api.get({ path: 'users', controller }).catch(e => {
+  if (e.name === 'AbortError') {
+    console.log('Request was cancelled by the user')
+  }
+})
+
+// Cancel the request later (e.g., when the component unmounts)
+controller.abort()
+```
 
 ## Response Emulation (ApiResponse)
 
@@ -96,154 +163,6 @@ const profile = await Api.get({ path: 'users/profile' })
 - The emulator intercepts requests **before** the actual `fetch` call is made.
 - If the emulator finds no matching registered mock (due to `path`, `method`, or `request` mismatch), the `Api` class automatically falls back to executing a real physical network request to the remote server.
 - You can conditionally disable a specific mock by providing a callback to the `disable: () => true` field. The `add` engine will ignore it.
-
-## Request Preparation Methods
-
-### `getUrl`
-
-Generates the full target URL referencing the script, handling dynamic geography variables: `{locale}`, `{country}`, `{language}`.
-
-**Parameters:**
-- `path: string` — the path to the script/endpoint.
-- `api?: boolean` — (Default: `true`) Determines whether to prepend the global API base path.
-
-**Returns:** `string` — fully constructed path url
-
-### `getBody`
-
-Creates data to be passed into the request physical body (not used for `GET`). Capable of processing normal Objects into raw JSON strings or maintaining `FormData` format depending on the content.
-
-**Parameters:**
-- `request?: ApiFetch['request']` — parameters passed into the fetch operation.
-- `method?: string` — current HTTP method (defaults to `ApiMethodItem.get`).
-
-**Returns:** `string | FormData | undefined`
-
-### `getBodyForGet`
-
-Forms query parameters specifically for HTTP arguments assigned into the URL directly used when sending `GET` queries.
-
-**Parameters:**
-- `request: ApiFetch['request']` — query object.
-- `path?: string` — original url path routing.
-- `method?: string` — current HTTP method.
-
-**Returns:** `string` — safely formatted search URL params snippet matching `?key=value&key2=val2` structures.
-
-## Configuration Methods
-
-All configuration modifiers natively feature chaining capability by returning context references.
-
-### `setHeaders`
-
-Applies universal headers (e.g., authentication tokens) injected automatically toward outbound fetch activities.
-
-**Parameters:**
-- `headers: Record<string, string>` — standard key:value hashmap object.
-
-**Returns:** `Api`
-
-### `setRequestDefault`
-
-Forces parameters recursively sent to network traffic streams (in bodies or query params depending on verbs).
-
-**Parameters:**
-- `request: Record<string, any>` — unified request injection rules.
-
-**Returns:** `Api`
-
-### `setUrl`
-
-Overwrites generic target URL configurations prefix points (default evaluates to \`/api/\`).
-
-**Parameters:**
-- `url: string` — universal environment domain base mapping URL schema.
-
-**Returns:** `Api`
-
-### `setPreparation`
-
-Connects a custom hook function actively running just _before_ execution trigger occurs; greatly serves full-page overlays generation or configuration modification.
-
-**Parameters:**
-- `callback: (apiFetch: ApiFetch) => Promise<void>` — async function trigger block. Receives the configuration of the current request.
-
-**Returns:** `Api`
-
-### `setEnd`
-
-Sets the hook triggered exactly _after_ network response returns. Answering with `{ reset: true }` gracefully discards the parsing sequence and fires the network stream repeatedly.
-
-**Parameters:**
-- `callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — server response handling block. Receives both the response and the original request options.
-
-**Returns:** `Api`
-
-## Request Cancellation (AbortController)
-
-The API supports out-of-the-box request cancellation. Pass an instance of `AbortController` into the `controller` field of the `ApiFetch` configuration.
-
-```javascript
-const controller = new AbortController()
-
-// Dispatch the request
-Api.get({ path: 'users', controller }).catch(e => {
-  if (e.name === 'AbortError') {
-    console.log('Request was cancelled by the user')
-  }
-})
-
-// Cancel the request later (e.g., when the component unmounts)
-controller.abort()
-```
-
-## API Calling Methods
-
-### `request`
-
-Core executor sequence method managing pure physical network fetch pipelines. Should a solitary string serve as param context, default `GET` assumptions trigger automatically.
-In case of network failures (e.g., 500 status), the method explicitly throws an exception (`throw e`), allowing errors to be natively intercepted in `try/catch`. If the server returns a JSON object, the system automatically injects a `statusObject` field (instance of request status) to the returned payload.
-
-**Parameters:**
-- `pathRequest: string | ApiFetch` — destination path matching format or root configuration structure object.
-
-**Returns:** `Promise<ApiData<T>>` — decoded endpoint structural response formatted interface (including `data`, `statusObject`, etc., when returning an object payload).
-
-### `get`
-
-Dispatches a basic query through HTTP `GET` methodologies natively optimizing inputs payload onto string search parameters formats automatically.
-
-**Parameters:**
-- `request: ApiFetch` — fetch execution configuration property mapping (`path`, `request` body, and so on).
-
-**Returns:** `Promise<T>`
-
-### `post`
-
-Transfers query packets across standard REST/GraphQL pipelines formatted onto the HTTP `POST` specification.
-
-**Parameters:**
-- `request: ApiFetch` — parameters interface structure container including URL pointing directives.
-
-**Returns:** `Promise<T>`
-
-### `put`
-
-Directs object modifications over target remote points using typical system environment HTTP `PUT`.
-
-**Parameters:**
-- `request: ApiFetch` — query options mapped against backend routing.
-
-**Returns:** `Promise<T>`
-
-### `delete`
-
-Forwards structural clearance/purge request using classic URL targeted HTTP `DELETE`.
-
-**Parameters:**
-- `request: ApiFetch` — arguments package structure wrapper.
-
-**Returns:** `Promise<T>`
 
 ## Examples
 

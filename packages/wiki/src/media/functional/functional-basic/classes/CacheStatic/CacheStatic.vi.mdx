@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/CacheStatic - Bộ nhớ đệm tĩnh (Global)'/>
+
+# Lớp CacheStatic
+
+Một lớp định dạng lớp bọc ngoài (wrapper class) đóng vai trò xây dựng lớp giao tiếp toàn cục sử dụng bộ nhớ cache tĩnh (static cache instance). Với `CacheStatic`, cơ chế hoạt động giúp bộ nhớ có tính linh hoạt xuyên suốt đoạn code ở mọi nơi trong phân lớp code được thực thi, thay thế và loại bỏ hoàn toàn quá trình tạo đối tượng object `Cache` chuyên biệt như cấu trúc gốc.
+
+## Các tính năng chính
+
+- **Lưu Cục Bộ Toàn Phân (Global Accessibility)** — mô hình kết nối hoạt động giống singleton thông qua thiết kế pattern là stactic method. Code định dạng luôn chung vùng bộ nhớ, đảm bảo kết nối giữa nhiều lớp dữ liệu đồng thời suốt hệ thống ứng dụng.
+- **Cơ Chế Phân Định Ngầm** — phần cốt lõi bên trong lớp bọc được nạp một phương thức tham chiếu kế thừa thẳng cấu trúc từ đối tượng `Cache` tiêu chuẩn. Toàn bộ hiệu ứng phụ của `Cache` bao gồm: Cập nhật dependency, lazy loading/lazy evulation,... đều hoạt động trơn tru.
+- **Tính Tiện Dụng** — tiện lợi tuyệt đối, phù hợp với hệ module/chia sẻ component liên kết đơn giản mà không sinh ra phụ thuộc hay tính kế thừa vòng lặp phức tạp trong cây component.
+
+
+Về cấu trúc class, tất cả hàm nội bộ gắn định danh `static`. Hệ quả là hệ thống sẽ chặn không cho sử dụng trình khởi tạo `new CacheStatic()`. Người code sử dụng những hàm này theo cấu trúc thực thi trực tiếp từ class gốc thông qua dấu châm (`.`).
+
+## Lưu trữ cache toàn cục
+
+### `get`
+
+Hàm chức năng `get()` có vai trò lặp tìm phần tử hiện có từ bộ đệm, nếu đối chiếu ra null hoặc undefined nó tự động chạy logic tải và sinh phần tử cache mới thay vào vị trí truy vấn hiện tại.
+
+**Tham số:**
+- `name: string` — biến gán để tạo lập index/luồng đối chiếu cho bộ nhớ định tuyến global hiện tại.
+- `callback: () => T` — các khối lệnh đóng trong tham chiếu được xử lý thông qua biến này.
+- `comparison?: any[]` — danh sách các đối tượng thay đổi, hay dependency list. Khi chạy hàm, node `CacheItem` sẽ đánh mất tình trạng (invalidation) nếu phát hiện bất kì thông số phụ bị sửa bằng biến mảng thay thế (`comparison`).
+
+**Trả về:** `T` — biến được gọi là static cache block.
+
+```javascript
+import { CacheStatic } from '@dxtmisha/functional'
+
+// Mảng A.js
+function calculateHeavyData(id) {
+  return CacheStatic.get(
+    `heavy_data_${id}`,
+    () => {
+      console.log('Calculating...')
+      return id * 100
+    },
+    [id] // Biến phụ thuộc (Dependency)
+  )
+}
+
+// Báo lệnh 'Calculating...' sinh kết quả 500
+const res1 = calculateHeavyData(5) 
+
+// Mảng B.js
+// Trỏ vào chung dữ liệu id 5, chạy tiếp xúc trực tiếp global cache
+// Không thực thi lại callback 'Calculating...', kết xuất liền giá trị 500.
+const res2 = calculateHeavyData(5) 
+```

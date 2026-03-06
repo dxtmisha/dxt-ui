@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/DataStorage - Trình Bao bọc Local và Session Storage'/>
+
+# Lớp DataStorage
+
+Một lớp linh hoạt để tương tác với `localStorage` và `sessionStorage` của trình duyệt. Nó bao gồm các tiền tố được tích hợp sẵn, thời gian hết hạn bộ đệm (cache), lưu vào bộ nhớ đệm (memory caching) cho các bản sao hoạt động và chuyển đổi JSON tự động.
+
+## Tính năng chính
+
+- **Chuyển đổi Tự động** — tự động xử lý phân tích và chuyển đổi chuỗi JSON cho các cấu hình và đối tượng được lưu trữ.
+- **Bộ nhớ đệm Dựa trên Thời gian** — cho phép lưu các đối tượng cùng với mốc thời gian và tôn trọng các ràng buộc về tuổi đời (age) của dữ liệu trong quá trình truy xuất.
+- **Quản lý Tiền tố** — hỗ trợ cả tiền tố toàn cục và riêng biệt để cách ly cũng như gom nhóm các khóa trong `localStorage`.
+- **Tối ưu Bô nhớ** — tạo ra các singleton cho những khóa giống nhau nhằm tránh các thao tác đọc đĩa bị lặp lại.
+
+## Cách sử dụng Cơ bản
+
+## Cấu hình toàn cục
+
+- `setPrefix(newPrefix: string): void` (static) — Thay đổi tên tiền tố toàn cục áp dụng cho những instance mới đang định dùng môi trường `localStorage`. Giá trị tiền tố mặc định là `ui-storage`.
+
+## Quản lý dữ liệu
+
+### `get`
+
+Truy xuất cấu hình đã phân tích hiện tại được lưu lại từ trước.
+
+**Tham số:**
+- `defaultValue?: T | (() => T)` — giá trị dự phòng được trả về nếu bên trong bộ lưu trữ trống rỗng.
+- `cache?: number` — độ tuổi tối đa cho phép (tính bằng giây). Nếu dữ liệu đã cũ hơn mức này, nó sẽ cư xử như thể không có gì được lưu trữ.
+
+**Trả về:** `T | undefined` — giá trị được lưu trữ hoặc `undefined`.
+
+```javascript
+// Lấy dữ liệu, trả về object rỗng nếu không tìm thấy
+const currentSettings = settings.get({})
+
+// Chỉ lấy dữ liệu nếu nó được lưu lại trong vòng 60 giây gần nhất
+const cachedItem = settings.get(undefined, 60)
+```
+
+### `set`
+
+Thiết lập hoặc cập nhật một giá trị trong cơ chế lưu trữ.
+
+**Tham số:**
+- `value?: T | (() => T)` — giá trị muốn lưu. Việc truyền `undefined` sẽ loại bỏ mục đó khỏi kho lưu trữ.
+
+**Trả về:** `T | undefined` — giá trị được lưu trữ.
+
+```javascript
+settings.set({ theme: 'dark', notifications: true })
+```
+
+## Các phương thức bổ sung
+
+- `remove(): this` — Xóa bỏ chính xác khóa lưu trữ tương ứng từ phần môi trường phần mềm `localStorage` hoặc `sessionStorage`, đồng thời lập tức dọn sạch dữ liệu khối nhớ hiện tại.
+- `update(): this` — Buộc bộ đệm đối tượng trong bộ nhớ tự đồng bộ lại thật khít so với dữ liệu rỗng hiện hành bên trong các hàm Storage API vật lý.

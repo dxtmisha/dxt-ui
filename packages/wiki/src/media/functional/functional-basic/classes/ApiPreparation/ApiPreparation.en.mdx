@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiPreparation - API Request Preparation'/>
+
+# ApiPreparation Class
+
+A class specifically designed to handle tasks and side effects immediately running before and after an API request execution. It serves to intercept requests globally via tracking hooks (`callback` and `callbackEnd`), perform state manipulations, or trigger global logic like loading indicators.
+
+## Key Features
+
+- **Pre-request Execution** — hook into the API lifecycle immediately before the actual `fetch` call is made.
+- **Post-request Analysis** — execute logic exactly after a request completes, with proper access to the `Response` object and the original request configuration.
+- **Concurrency Control** — ensures overlapping hooks are resolved collectively without collision.
+- **Data Injection** — post-request hooks optionally return data or a `reset` flag that can manipulate downstream handlers.
+
+## Initialization
+
+```javascript
+import { ApiPreparation } from '@dxtmisha/functional'
+
+const preparation = new ApiPreparation()
+```
+
+## Methods
+
+- `make(active: boolean, apiFetch: ApiFetch): Promise<void>` — Executes the preparation callback before executing the request.
+- `makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>` — Executes analysis logically after the request finishes.
+- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Connects a callback function triggered right before a request execution.
+- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Connects a callback function executed after request termination.

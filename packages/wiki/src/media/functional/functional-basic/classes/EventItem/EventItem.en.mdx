@@ -1,0 +1,100 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/EventItem - Advanced Event Management'/>
+
+# EventItem Class
+
+A powerful wrapper for managing event listeners on DOM elements or the `window` object. This class simplifies the lifecycle of events (adding, removing, toggling), supports automatic DOM presence checks, and provides built-in optimization for heavy events like `resize` and `scroll`.
+
+## Key Features
+
+- **Lifecycle Management** — convenient `start`, `stop`, `toggle`, and `reset` methods for precise control over event listening.
+- **DOM Safety** — automatic `isInDom` check before executing the listener (can be configured with a control element).
+- **ResizeObserver Support** — built-in handling of the `resize` event for any HTML element using the modern API.
+- **Scroll Optimization** — special `scroll-sync` event type using `requestAnimationFrame` for high performance.
+- **Chaining and Flexibility** — support for method chaining and dynamic target, type, or listener replacement.
+- **Custom Data** — ability to pass and dispatch custom data via `CustomEvent`.
+
+## Initialization
+
+Creates a new `EventItem` instance. To activate listening, the `start()` method must be called.
+
+**Parameters:**
+- `elementSelector?: ElementOrString` — target element or selector.
+- `type: string | string[] = 'click'` — event type or array of types.
+- `listener?: Function` — callback function.
+- `options?: EventOptions` — configuration object (`passive`, `once`, `capture`).
+- `detail?: Record<string, any>` — custom data for the event.
+
+```javascript
+import { EventItem } from '@dxtmisha/functional-basic'
+
+const btn = document.querySelector('.my-button')
+const myEvent = new EventItem(btn, 'click', (e) => {
+  console.log('Clicked!', e)
+})
+
+myEvent.start()
+```
+
+## Methods
+
+### Information
+
+- `isActive(): boolean` — Checks if event listening is currently active.
+- `getElement(): E | undefined` — Returns the current target element.
+
+### Configuration (Setters)
+
+All methods in this group support chaining and automatically call `reset()` if the event is active.
+
+- `setElement(elementSelector?: ElementOrString): this` — Changes the target element.
+- `setElementControl(elementSelector?: ElementOrString): this` — Sets a control element (if missing in DOM, the event won't trigger).
+- `setType(type: string | string[]): this` — Changes the event type.
+- `setListener(listener: Function): this` — Changes the callback function.
+- `setOptions(options?: EventOptions): this` — Changes the listener options.
+- `setDetail(detail?: D): this` — Changes the custom detail data.
+
+### Control
+
+- `start(): this` — Starts listening for events.
+- `stop(): this` — Stops listening for events.
+- `toggle(activity: boolean): this` — Enables or disables listening based on the flag.
+- `reset(): this` — Restarts the event (useful after changing settings).
+- `dispatch(detail?: D): this` — Triggers the event on the target element with data transmission.
+
+## Special Events
+
+### `resize`
+If the event type is set to `resize`, the class automatically uses `ResizeObserver` to track element size changes (even if it's not the `window`).
+
+### `scroll-sync`
+A special type for optimized scrolling. It uses `requestAnimationFrame` internally, preventing redundant handler calls and improving performance.
+
+## Examples
+
+### Dynamic Element Switching
+```javascript
+const tracker = new EventItem('.item-1', 'mousemove', (e) => {
+  console.log('Coordinates:', e.clientX)
+})
+
+tracker.start()
+
+// ... later switch to another element
+tracker.setElement('.item-2')
+```
+
+### Using CustomEvent with Data
+```javascript
+const emitter = new EventItem(window, 'my-custom-event')
+
+emitter.setListener((e, detail) => {
+  console.log('Data received:', e.detail) // data from CustomEvent
+})
+
+emitter.start()
+
+// Dispatch event
+emitter.dispatch({ userId: 123, action: 'refresh' })
+```

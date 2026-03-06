@@ -1,0 +1,100 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/EventItem - Продвинутое Управление Событиями'/>
+
+# Класс EventItem
+
+Мощная обертка для управления прослушивателями событий на DOM-элементах или объекте `window`. Класс упрощает работу с жизненным циклом событий (добавление, удаление, переключение), поддерживает автоматическую проверку наличия элемента в DOM и предоставляет встроенную оптимизацию для тяжелых событий, таких как `resize` и `scroll`.
+
+## Ключевые особенности
+
+- **Управление жизненным циклом** — удобные методы `start`, `stop`, `toggle` и `reset` для контроля прослушивания событий.
+- **Безопасность DOM** — автоматическая проверка `isInDom` перед выполнением обработчика (можно настроить контрольный элемент).
+- **Поддержка ResizeObserver** — встроенная обработка события `resize` для любых HTML-элементов через современный API.
+- **Оптимизация прокрутки** — специальный тип события `scroll-sync`, использующий `requestAnimationFrame` для высокой производительности.
+- **Чейнинг и гибкость** — поддержка цепочки вызовов и динамической смены цели, типа или обработчика события.
+- **Пользовательские данные** — возможность передачи и диспетчеризации кастомных данных через `CustomEvent`.
+
+## Инициализация
+
+Создает новый экземпляр `EventItem`. Для активации прослушивания необходимо вызвать метод `start()`.
+
+**Параметры:**
+- `elementSelector?: ElementOrString` — целевой элемент или селектор.
+- `type: string | string[] = 'click'` — тип события или массив типов.
+- `listener?: Function` — функция-обработчик.
+- `options?: EventOptions` — объект настроек (`passive`, `once`, `capture`).
+- `detail?: Record<string, any>` — пользовательские данные для события.
+
+```javascript
+import { EventItem } from '@dxtmisha/functional-basic'
+
+const btn = document.querySelector('.my-button')
+const myEvent = new EventItem(btn, 'click', (e) => {
+  console.log('Нажато!', e)
+})
+
+myEvent.start()
+```
+
+## Методы
+
+### Информационные
+
+- `isActive(): boolean` — Проверяет, активно ли в данный момент прослушивание события.
+- `getElement(): E | undefined` — Возвращает текущий целевой элемент.
+
+### Настройка (Сеттеры)
+
+Все методы этой группы поддерживают чейнинг и автоматически вызывают `reset()`, если событие активно.
+
+- `setElement(elementSelector?: ElementOrString): this` — Изменяет целевой элемент.
+- `setElementControl(elementSelector?: ElementOrString): this` — Устанавливает контрольный элемент (если его нет в DOM, событие не сработает).
+- `setType(type: string | string[]): this` — Изменяет тип события.
+- `setListener(listener: Function): this` — Изменяет функцию-обработчик.
+- `setOptions(options?: EventOptions): this` — Изменяет параметры прослушивателя.
+- `setDetail(detail?: D): this` — Изменяет пользовательские данные события.
+
+### Управление
+
+- `start(): this` — Запускает прослушивание событий.
+- `stop(): this` — Останавливает прослушивание.
+- `toggle(activity: boolean): this` — Включает или выключает прослушивание в зависимости от флага.
+- `reset(): this` — Перезапускает событие (полезно после смены настроек).
+- `dispatch(detail?: D): this` — Вызывает событие на целевом элементе с передачей данных.
+
+## Специальные события
+
+### `resize`
+Если тип события установлен в `resize`, класс автоматически использует `ResizeObserver` для отслеживания изменений размера элемента (даже если это не `window`).
+
+### `scroll-sync`
+Специальный тип для оптимизированной прокрутки. Внутри использует `requestAnimationFrame`, предотвращая лишние вызовы обработчика и повышая производительность.
+
+## Примеры
+
+### Динамическое переключение элемента
+```javascript
+const tracker = new EventItem('.item-1', 'mousemove', (e) => {
+  console.log('Координаты:', e.clientX)
+})
+
+tracker.start()
+
+// ... позже переключаем на другой элемент
+tracker.setElement('.item-2')
+```
+
+### Использование CustomEvent с данными
+```javascript
+const emitter = new EventItem(window, 'my-custom-event')
+
+emitter.setListener((e, detail) => {
+  console.log('Получены данные:', e.detail) // данные из CustomEvent
+})
+
+emitter.start()
+
+// Отправка события
+emitter.dispatch({ userId: 123, action: 'refresh' })
+```

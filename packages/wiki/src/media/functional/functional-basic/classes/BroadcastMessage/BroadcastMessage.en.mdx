@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/BroadcastMessage - BroadcastChannel Messaging'/>
+
+# BroadcastMessage Class
+
+A class for handling cross-tab or cross-window messaging using the `BroadcastChannel` API. It provides a simple interface to send and receive messages with optional callback support, error handling, and environment-aware initialization.
+
+## Key Features
+
+- **Cross-context Communication** — easily send messages between different browser tabs, windows, or iframes on the same origin.
+- **Callback Based** — register callbacks to handle incoming messages and errors automatically.
+- **Environment Aware** — automatically checks for DOM runtime before initializing, preventing errors in non-browser environments.
+- **Prefixed Names** — automatically adds a unique prefix to channel names to avoid collisions with other applications.
+- **Type Safety** — supports TypeScript generics for message payload typing.
+- **Direct Access** — provide access to the underlying `BroadcastChannel` instance when needed.
+
+## Initialization
+
+Create a new instance of `BroadcastMessage` by providing a channel name and optional callbacks for messages and errors.
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional'
+
+// Initialize with message and error callbacks
+const messenger = new BroadcastMessage(
+  'my-channel', 
+  (event) => console.log('Received:', event.data),
+  (error) => console.error('Message error:', error)
+)
+```
+
+## Sending Messages
+
+### `post`
+
+Sends a message to all listeners on the same channel.
+
+**Parameters:**
+- `message: Message` — the data to send.
+
+**Returns:** `this` — for method chaining.
+
+```javascript
+messenger.post({ type: 'UPDATE', payload: { id: 123 } })
+```
+
+## Configuration & Access
+
+- `getChannel(): BroadcastChannel | undefined` — Returns the underlying `BroadcastChannel` instance (or `undefined` if not in DOM runtime).
+- `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Updates or sets the callback function for receiving messages.
+- `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Updates or sets the callback function for message errors.
+
+## Examples
+
+### Synchronizing State Across Tabs
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional'
+
+// In Tab A and Tab B
+const authChannel = new BroadcastMessage('auth-status', (event) => {
+  if (event.data === 'LOGOUT') {
+    authModule.clearSession()
+    window.location.href = '/login'
+  }
+})
+
+// When user logs out in Tab A
+function onLogout() {
+  authChannel.post('LOGOUT')
+}
+```
+
+### Simple Notification System with Error Handling
+
+```javascript
+const notifications = new BroadcastMessage(
+  'notifications',
+  (event) => showToast(event.data.message),
+  (error) => console.error('Failed to receive notification:', error)
+)
+
+// Update error handler later
+notifications.setCallbackError((error) => {
+  logToService(error)
+})
+
+// Trigger notification from anywhere in the app
+notifications.post({ message: 'New message received!' })
+```

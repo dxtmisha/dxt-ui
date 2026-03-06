@@ -1,0 +1,78 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Cookie - Cookie Management'/>
+
+# Cookie Class
+
+A seamless, stateful wrapper for managing browser cookies. It automatically syncs between memory and the `document.cookie` DOM API, allowing you to reactively set, retrieve, and delete cookies while ensuring consistent fallback values.
+
+## Key Features
+
+- **Memory Sync** — maintains an in-memory record of cookies to prevent unnecessary DOM traversals. Automatically parses `document.cookie` on startup.
+- **Environment Aware** — detects if it is running in a DOM environment. In SSR (Server-Side Rendering) or testing (non-DOM), it elegantly degrades to memory-only storage without throwing errors.
+- **Global Blocking Control** — integrates securely with `CookieBlock`. If cookie writing is globally disabled (e.g., due to user privacy consent), the `Cookie` class respects this and suspends all outgoing DOM changes.
+- **Default/Fallback Logic** — getting a value can lazily initialize it with a default standard if it doesn't already exist.
+
+## Initialization
+
+Create an instance by passing the name of the cookie you want to manage.
+
+```javascript
+import { Cookie } from '@dxtmisha/functional'
+
+// Initialize wrapper for the 'theme' cookie
+const themeCookie = new Cookie('theme')
+```
+
+## Data Management
+
+### `get`
+
+Use `get()` to read the cookie. If you pass a default value to `get()`, it will simultaneously save that default if the cookie was previously unset.
+
+**Parameters:**
+- `value?: T | string | (() => T | string)` — optional default value or a function returning it.
+
+**Returns:** `T | string | undefined` — the value from the cookie, or the assigned default.
+
+```javascript
+// Will read 'theme', OR set and return 'dark' if it doesn't exist
+const currentTheme = themeCookie.get('dark') 
+```
+
+### `set`
+
+Use `set()` to override or create new data. Options allow you to control standard cookie attributes like `age` (Max-Age cache duration in seconds) or `sameSite` policy.
+
+**Parameters:**
+- `value: T | string | (() => T | string)` — the value to store, or a function returning the value.
+- `options?: CookieOptions` — configuration for the cookie lifetime and security.
+
+```javascript
+const userPrefs = new Cookie('preferences')
+
+// Set a simple string
+userPrefs.set('{"compact": true}')
+
+// Set with advanced options
+userPrefs.set('{"compact": true}', {
+  age: 60 * 60 * 24 * 30, // 30 days
+  sameSite: 'lax'
+})
+```
+
+### `remove`
+
+Removing a cookie overwrites it with an empty string and sets its Max-Age to `-1`, instructing the browser to instantly delete the record.
+
+```javascript
+userPrefs.remove()
+```
+
+## Synchronization
+
+- `updateData(): void` (static) — Updates data from `document.cookie`.
+
+## Internal Overview
+
+Internally, `Cookie` registers all instantiated wrappers in a shared `items` dictionary. If you instantiate `new Cookie('auth')` in two different files, they will correctly share and update the exact same underlying memory instance.

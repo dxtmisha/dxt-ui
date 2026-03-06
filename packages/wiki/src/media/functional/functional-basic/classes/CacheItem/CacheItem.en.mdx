@@ -1,0 +1,89 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/CacheItem - Cache Entry Management'/>
+
+# CacheItem Class
+
+The internal engine driving individual cache entries. While `Cache` and `CacheStatic` provide the public interfaces for retrieving cached data across your application, it is the `CacheItem` class that securely manages the lifecycle, storage, and invalidation rules for each specific value.
+
+## Key Features
+
+- **Dependency Tracking** — maintains the comparison arrays used to determine if a cached value is still valid.
+- **Lazy Evaluation** — guarantees that the expensive callback function only runs when absolutely necessary.
+- **Historical Memory** — keeps a reference to the previously cached value (`getCacheOld`) even after recalculation happens.
+- **Async Execution** — natively handles both synchronous (`getCache`) and `Promise`-based asynchronous (`getCacheAsync`) data loading.
+
+
+You typically do not instantiate `CacheItem` directly in your application code. Instead, you use the `Cache` class, which manages `CacheItem` instances for you. However, understanding its API is helpful for advanced scenarios.
+
+## Initialization
+
+```javascript
+import { CacheItem } from '@dxtmisha/functional'
+
+// Initialize with the function that will generate the data
+const userCache = new CacheItem(() => fetchUserData())
+```
+
+## Cache Retrieval
+
+### `getCache`
+
+Use `getCache` to obtain the value. The provided comparison array determines if recalculation is needed.
+
+**Parameters:**
+- `comparison?: any[]` — array of dependencies. If they change, the callback is re-evaluated.
+
+**Returns:** `T` — the cached or freshly stringified value.
+
+```javascript
+let count = 0
+const counterCache = new CacheItem(() => ++count)
+
+// Evaluates and caches 1
+counterCache.getCache([1])
+
+// Returns cached 1 (dependencies match)
+counterCache.getCache([1])
+
+// Dependencies changed to [2], evaluates and caches 2
+counterCache.getCache([2])
+```
+
+### `getCacheAsync`
+
+Functions exactly like `getCache`, but handles `Promise` returns.
+
+**Parameters:**
+- `comparison?: any[]` — array of dependencies.
+
+**Returns:** `Promise<T>` — the cached or newly fetched promise.
+
+```javascript
+const apiCache = new CacheItem(async () => await fetch('/data').then(res => res.json()))
+
+// Fetches from the network
+const data1 = await apiCache.getCacheAsync(['v1'])
+
+// Returns from cache instantly
+const data2 = await apiCache.getCacheAsync(['v1'])
+```
+
+## Historical Data
+
+### `getCacheOld`
+
+If a cache invalidation occurs and new data is fetched, you can retrieve the immediate prior value using `getCacheOld()`.
+
+**Returns:** `T | undefined` — the previously cached data, if available.
+
+```javascript
+counterCache.getCache([1]) // Returns 1
+counterCache.getCache([2]) // Returns 2
+
+console.log(counterCache.getCacheOld()) // Returns 1
+```
+
+## Internal Overview
+
+`CacheItem` relies on the internal `isUpdate` method to strictly compare the incoming `comparison` array against the previous one. If they differ in length or strict equality (`===`) of their elements, the cache is flagged as stale and the internal `value` is regenerated.

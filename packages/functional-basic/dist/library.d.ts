@@ -691,13 +691,22 @@ export declare function blobToBase64(blob: Blob): Promise<string | ArrayBuffer |
  */
 export declare class BroadcastMessage<Message = any> {
     protected callback?: ((event: MessageEvent<Message>) => void) | undefined;
+    protected callbackError?: ((event: MessageEvent<Message>) => void) | undefined;
     protected channel?: BroadcastChannel;
     /**
      * Constructor
      * @param name channel name/ название канала
      * @param callback callback on message received/ колбэк на получение сообщения
+     * @param callbackError callback on message error/ колбэк на ошибку сообщения
      */
-    constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined);
+    constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined);
+    /**
+     * Get the channel.
+     *
+     * Получить канал.
+     * @returns channel/ канал
+     */
+    getChannel(): BroadcastChannel | undefined;
     /**
      * Send a message to the channel.
      *
@@ -713,12 +722,26 @@ export declare class BroadcastMessage<Message = any> {
      */
     setCallback(callback: (event: MessageEvent<Message>) => void): this;
     /**
+     * Set the callback function to be called when a message error occurs.
+     *
+     * Установить функцию колбэка, которая будет вызвана при возникновении ошибки сообщения.
+     * @param callbackError callback function/ функция колбэка
+     */
+    setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
+    /**
      * Update state on message received.
      *
      * Обновление состояния при получении сообщения.
      * @param event message event/ событие сообщения
      */
     protected readonly update: (event: MessageEvent<Message>) => this;
+    /**
+     * Update error state on message error.
+     *
+     * Обновление состояния ошибки при получении ошибки сообщения.
+     * @param event message error event/ событие ошибки сообщения
+     */
+    protected readonly updateError: (event: MessageEvent<Message>) => this;
 }
 
 /**
@@ -1543,48 +1566,6 @@ export declare type ElementOrString<E extends ElementOrWindow> = E | string;
  * Объединенный тип для HTML элементов и объекта Window
  */
 export declare type ElementOrWindow = HTMLElement | Window;
-
-/**
- * Class for taking screenshots of an element.
- *
- * Класс для создания скриншотов элемента.
- *
- * This class uses native browser APIs to capture an element by embedding its HTML into an SVG.
- * It has limitations and may not render everything with perfect accuracy, especially:
- * - Images, iframes, or other resources from different origins (due to CORS security policies).
- * - CSS pseudo-elements like ::before and ::after are not rendered.
- * - The element's context is lost, so CSS rules depending on parent elements might not apply correctly.
- *
- * For more robust and accurate capturing, a library like html2canvas is recommended as it reconstructs
- * the element and its styles on a canvas from scratch.
- */
-export declare class ElementScreenshot {
-    protected readonly element: HTMLElement;
-    /**
-     * Constructor
-     * @param element HTML element to capture/ HTML элемент для захвата
-     */
-    constructor(element: HTMLElement);
-    /**
-     * Takes a screenshot of the element.
-     *
-     * Делает скриншот элемента.
-     */
-    take(): Promise<string>;
-    /**
-     * Takes a screenshot and downloads it.
-     *
-     * Делает скриншот и скачивает его.
-     * @param filename name of the file to download/ имя файла для скачивания
-     */
-    download(filename?: string): Promise<void>;
-    /**
-     * Gathers all CSS styles from the document's stylesheets.
-     *
-     * Собирает все стили CSS из таблиц стилей документа.
-     */
-    protected getStyles(): string;
-}
 
 /**
  * Union type for all "empty" values including falsy primitives and string representations/

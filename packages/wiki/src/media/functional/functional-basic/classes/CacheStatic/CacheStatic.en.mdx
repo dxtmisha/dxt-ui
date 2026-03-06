@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/CacheStatic - Fast Global Cache'/>
+
+# CacheStatic Class
+
+A wrapper class providing a globally accessible, static cache instance. It allows you to perform fast caching operations anywhere during code execution without needing to instantiate or pass around a dedicated `Cache` object.
+
+## Key Features
+
+- **Global Accessibility** — works as a singleton pattern using static methods, meaning the same cache pool is accessible throughout the application context.
+- **Underlying Mechanism** — internally delegates all calls to a standard `Cache` instance, giving you the same dependency tracking and lazy evaluation benefits.
+- **Convenience** — perfect for simple, shared data caching requirements across multiple unlinked components.
+
+
+Since all methods are `static`, you never call `new CacheStatic()`. You interact with the class directly.
+
+## Global Caching
+
+### `get`
+
+Use the static `get()` method to retrieve a cached value or calculate it if missing.
+
+**Parameters:**
+- `name: string` — a unique identifier for the specific global cache entry.
+- `callback: () => T` — the function that computes the value.
+- `comparison?: any[]` — optional array of dependencies. Passing a new array (where values or length differ) invalidates the cache and forces a recalculation.
+
+**Returns:** `T` — the cached or freshly stringified value.
+
+```javascript
+import { CacheStatic } from '@dxtmisha/functional'
+
+// File A.js
+function calculateHeavyData(id) {
+  return CacheStatic.get(
+    `heavy_data_${id}`,
+    () => {
+      console.log('Calculating...')
+      return id * 100
+    },
+    [id] // Dependency
+  )
+}
+
+// Will log 'Calculating...' and return 500
+const res1 = calculateHeavyData(5) 
+
+// File B.js
+// Same function, same id. It hits the global cache.
+// Will NOT log 'Calculating...', instantly returns 500
+const res2 = calculateHeavyData(5) 
+```

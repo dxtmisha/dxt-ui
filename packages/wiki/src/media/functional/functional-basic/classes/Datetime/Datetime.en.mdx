@@ -1,0 +1,192 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Datetime - Date and Time Utility'/>
+
+# Datetime Class
+
+A versatile wrapper around the native JavaScript `Date` object, designed to simplify working with dates and times. It combines formatting capabilities, calculations (date navigation), and cloning, relying on `Geo` and `GeoIntl` localization settings.
+
+## Key Features
+
+- **Simplified Management** — intuitive methods for date navigation (moving to the start of the month, incrementing days, etc.).
+- **Localization Out of the Box** — automatic handling of time zones and formats based on `Geo` settings.
+- **Chaining** — most methods return `this`, allowing for complex manipulations in a single line.
+- **Support for Various Types** — the constructor and methods accept strings (ISO), numbers (timestamp), or `Date` objects.
+- **Smart Cloning** — easily create new instances based on current ones with time shifts.
+
+## Initialization
+
+Creates a new `Datetime` instance. If no parameters are passed, the current time and default locale are used.
+
+**Parameters:**
+- `date?: NumberOrStringOrDate` — date for initialization (ISO string, timestamp, or `Date` object).
+- `type: GeoDate = 'date'` — default output format.
+- `code: string = Geo.getLocation()` — locale code (e.g., 'en-US').
+
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// Current time
+const now = new Datetime()
+
+// Specific date
+const dt = new Datetime('2024-03-15', 'datetime', 'en-US')
+
+// From timestamp
+const fromTs = new Datetime(1710460800000)
+```
+
+## Methods
+
+### General Information
+
+- `getIntl(): GeoIntl` — Returns a `GeoIntl` object for working with formatting.
+- `getDate(): Date` — Returns the original native `Date` object.
+- `getType(): string` — Returns the set output type (`date`, `datetime`, etc.).
+- `getHoursType(): GeoHours` — Determines the hour format (12 or 24) for the current locale.
+- `getHour24(): boolean` — Returns the current setting for displaying the 24-hour format.
+- `getTimeZoneOffset(): number` — Returns the time zone offset in minutes.
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Returns the time zone (supports `minute`, `hour`, `RFC` styles).
+- `getFirstDayCode(): GeoFirstDay` — Returns the code for the first day of the week (0 for Sunday, 1 for Monday, 6 for Saturday).
+
+### Value Retrieval
+
+- `getYear(): number` — Returns the full year.
+- `getMonth(): number` — Returns the month (human-readable, from 1 to 12).
+- `getDay(): number` — Returns the day of the month (1-31).
+- `getHour(): number` — Returns the hours.
+- `getMinute(): number` — Returns the minutes.
+- `getSecond(): number` — Returns the seconds.
+- `getMaxDay(): number` — Returns the number of days in the current month.
+
+### Value Setting
+
+Allow for precise changes to date components. Methods (except `setCode` and `setWatch`) trigger the `watch` callback.
+
+- `setDate(value: NumberOrStringOrDate): this` — Completely overwrites the date.
+- `setType(value: GeoDate): this` — Sets the output type.
+- `setHour24(value: boolean): this` — Enables/disables the 24-hour format.
+- `setCode(code: string): this` — Changes the locale code.
+- `setWatch(watch: Function): this` — Sets a callback function for data changes.
+- `setYear(value: number): this` — Sets the year.
+- `setMonth(value: number): this` — Sets the month (1-12).
+- `setDay(value: number): this` — Sets the day of the month.
+- `setHour(value: number): this` — Sets the hours.
+- `setMinute(value: number): this` — Sets the minutes.
+- `setSecond(value: number): this` — Sets the seconds.
+
+### Navigation (Moving)
+
+Modify the current `Datetime` object.
+
+- `moveByYear(value: number): this` — Shift by the specified number of years.
+- `moveByMonth(value: number): this` — Shift by the number of months.
+- `moveByDay(value: number): this` — Shift by the number of days.
+- `moveByHour(value: number): this` — Shift by the number of hours.
+- `moveByMinute(value: number): this` — Shift by the number of minutes.
+- `moveBySecond(value: number): this` — Shift by the number of seconds.
+- `moveMonthFirst(): this` — Move to January of the current year.
+- `moveMonthLast(): this` — Move to December of the current year.
+- `moveMonthNext(): this` — Move to the first day of the next month.
+- `moveMonthPrevious(): this` — Move to the first day of the previous month.
+- `moveWeekdayFirst(): this` — Move to the first day of the current week.
+- `moveWeekdayLast(): this` — Move to the last day of the current week.
+- `moveWeekdayFirstByMonth(): this` — Move to the first day of the first week of the month.
+- `moveWeekdayLastByMonth(): this` — Move to the first day of the first full week of the next month.
+- `moveWeekdayNext(): this` — Shift one week forward.
+- `moveWeekdayPrevious(): this` — Shift one week backward.
+- `moveDayFirst(): this` — Move to the first day of the current month.
+- `moveDayLast(): this` — Move to the last day of the current month.
+- `moveDayNext(): this` — Shift one day forward.
+- `moveDayPrevious(): this` — Shift one day backward.
+
+### Cloning
+
+Create copies of the data.
+
+- `clone(): Date` — Creates an independent copy of the native `Date` object.
+- `cloneClass(): Datetime` — Creates a copy of the current `Datetime` instance.
+- `cloneMonthFirst(): Datetime` — Copy with a move to January.
+- `cloneMonthLast(): Datetime` — Copy with a move to December.
+- `cloneMonthNext(): Datetime` — Copy with a move to the next month.
+- `cloneMonthPrevious(): Datetime` — Copy with a move to the previous month.
+- `cloneWeekdayFirst(): Datetime` — Copy set to the beginning of the current week.
+- `cloneWeekdayLast(): Datetime` — Copy set to the end of the current week.
+- `cloneWeekdayFirstByMonth(): Datetime` — Copy to the beginning of the first week of the month.
+- `cloneWeekdayLastByMonth(): Datetime` — Copy to the beginning of the last week of the month.
+- `cloneWeekdayNext(): Datetime` — Copy with a shift of one week forward.
+- `cloneWeekdayPrevious(): Datetime` — Copy with a shift of one week backward.
+- `cloneDayFirst(): Datetime` — Copy to the first day of the current month.
+- `cloneDayLast(): Datetime` — Copy to the last day of the current month.
+- `cloneDayNext(): Datetime` — Copy with a shift of one day forward.
+- `cloneDayPrevious(): Datetime` — Copy with a shift of one day backward.
+
+## Formatting and Output
+
+### `locale`
+
+Main method for obtaining a localized string.
+
+**Parameters:**
+- `type?: GeoDate` — output format (taken from the instance settings by default).
+- `styleOptions?: Intl.DateTimeFormatOptions` — override display settings (e.g., month style).
+
+**Returns:** `string` — text representation of the date.
+
+```javascript
+const dt = new Datetime('2024-03-15')
+dt.locale('full') // e.g., "March 15, 2024"
+dt.locale('date', { month: 'short' }) // e.g., "Mar 15, 2024"
+```
+
+**Additional formatting methods:**
+- `localeYear(style?: 'numeric' | '2-digit'): string`
+- `localeMonth(style?: 'long' | 'short' | 'narrow' | 'numeric' | '2-digit'): string`
+- `localeDay(style?: 'numeric' | '2-digit'): string`
+- `localeHour(style?: 'numeric' | '2-digit'): string`
+- `localeMinute(style?: 'numeric' | '2-digit'): string`
+- `localeSecond(style?: 'numeric' | '2-digit'): string`
+
+### `standard`
+
+Returns the date in ISO 8601 format (YYYY-MM-DDTHH:mm:ss±HH:mm).
+
+**Parameters:**
+- `timeZone: boolean = true` — whether to add time zone information.
+
+```javascript
+dt.standard() // "2024-03-15T00:00:00+03:00"
+dt.standard(false) // "2024-03-15T00:00:00"
+```
+
+## Usage Examples
+
+### Working with Intervals and Navigation
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// Get the last day of the current month
+const lastDay = new Datetime().moveDayLast().getDay()
+
+// Create a calendar grid (find the Monday of the first week of the month)
+const startOfCalendar = new Datetime().moveWeekdayFirstByMonth()
+
+// Calculate a date in a week at the same time
+const nextWeek = new Datetime().moveByDay(7).locale('datetime')
+```
+
+### Formatting and Locales
+```javascript
+const event = new Datetime('2024-12-31T23:59:59')
+
+// English locale
+event.setCode('en-US')
+console.log(event.locale('full')) // "Tuesday, December 31, 2024"
+
+// Vietnamese locale
+event.setCode('vi-VN')
+console.log(event.locale('full')) // "Thứ Ba, 31 tháng 12, 2024"
+
+// Output only time
+console.log(event.locale('time')) // "23:59:59"
+```

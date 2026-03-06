@@ -15,19 +15,32 @@ export class BroadcastMessage<Message = any> {
    * Constructor
    * @param name channel name/ название канала
    * @param callback callback on message received/ колбэк на получение сообщения
+   * @param callbackError callback on message error/ колбэк на ошибку сообщения
    */
   constructor(
     name: string,
-    protected callback?: (event: MessageEvent<Message>) => void
+    protected callback?: (event: MessageEvent<Message>) => void,
+    protected callbackError?: (event: MessageEvent<Message>) => void
   ) {
     if (isDomRuntime()) {
       try {
         this.channel = new BroadcastChannel(`${getBroadcastName()}__${name}`)
         this.channel.onmessage = this.update
+        this.channel.onmessageerror = this.updateError
       } catch (e) {
         console.error(`BroadcastMessage ${name}:`, e)
       }
     }
+  }
+
+  /**
+   * Get the channel.
+   *
+   * Получить канал.
+   * @returns channel/ канал
+   */
+  getChannel(): BroadcastChannel | undefined {
+    return this.channel
   }
 
   /**
@@ -53,6 +66,17 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
+   * Set the callback function to be called when a message error occurs.
+   *
+   * Установить функцию колбэка, которая будет вызвана при возникновении ошибки сообщения.
+   * @param callbackError callback function/ функция колбэка
+   */
+  setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this {
+    this.callbackError = callbackError
+    return this
+  }
+
+  /**
    * Update state on message received.
    *
    * Обновление состояния при получении сообщения.
@@ -60,6 +84,17 @@ export class BroadcastMessage<Message = any> {
    */
   protected readonly update = (event: MessageEvent<Message>): this => {
     this.callback?.(event)
+    return this
+  }
+
+  /**
+   * Update error state on message error.
+   *
+   * Обновление состояния ошибки при получении ошибки сообщения.
+   * @param event message error event/ событие ошибки сообщения
+   */
+  protected readonly updateError = (event: MessageEvent<Message>): this => {
+    this.callbackError?.(event)
     return this
   }
 }

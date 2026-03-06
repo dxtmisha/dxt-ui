@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/BroadcastMessage - Truyền tin BroadcastChannel'/>
+
+# Lớp BroadcastMessage
+
+Một lớp để xử lý việc truyền tin giữa các tab hoặc cửa sổ khác nhau bằng cách sử dụng API `BroadcastChannel`. Nó cung cấp một giao diện đơn giản để gửi và nhận thông điệp với sự hỗ trợ của hàm callback, xử lý lỗi và khả năng nhận diện môi trường thực thi.
+
+## Các tính năng chính
+
+- **Giao tiếp đa ngữ cảnh** — dễ dàng gửi thông điệp giữa các tab trình duyệt, cửa sổ hoặc iframe khác nhau trên cùng một origin.
+- **Dựa trên Callback** — đăng ký các hàm callback để tự động xử lý các thông điệp đến và lỗi.
+- **Nhận diện môi trường** — tự động kiểm tra môi trường DOM trước khi khởi tạo, giúp ngăn chặn lỗi trong các môi trường không phải trình duyệt.
+- **Tiền tố tên kênh** — tự động thêm tiền tố duy nhất vào tên kênh để tránh xung đột với các ứng dụng khác.
+- **An toàn kiểu dữ liệu** — hỗ trợ Generic trong TypeScript để định nghĩa kiểu dữ liệu của thông điệp.
+- **Truy cập trực tiếp** — cung cấp quyền truy cập vào thực thể `BroadcastChannel` gốc khi cần thiết.
+
+## Khởi tạo
+
+Tạo một thực thể mới của `BroadcastMessage` bằng cách cung cấp tên kênh và các hàm callback tùy chọn cho thông điệp và lỗi.
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional'
+
+// Khởi tạo với các callback cho thông điệp và lỗi
+const messenger = new BroadcastMessage(
+  'my-channel', 
+  (event) => console.log('Đã nhận:', event.data),
+  (error) => console.error('Lỗi thông điệp:', error)
+)
+```
+
+## Gửi thông điệp
+
+### `post`
+
+Gửi một thông điệp đến tất cả các trình lắng nghe trên cùng một kênh.
+
+**Tham số:**
+- `message: Message` — dữ liệu cần gửi.
+
+**Trả về:** `this` — để hỗ trợ gọi chuỗi phương thức (method chaining).
+
+```javascript
+messenger.post({ type: 'UPDATE', payload: { id: 123 } })
+```
+
+## Cấu hình và Truy cập
+
+- `getChannel(): BroadcastChannel | undefined` — Trả về thực thể `BroadcastChannel` gốc (hoặc `undefined` nếu ngoài môi trường DOM).
+- `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Cập nhật hoặc thiết lập hàm callback để nhận thông điệp.
+- `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Cập nhật hoặc thiết lập hàm callback cho các lỗi thông điệp.
+
+## Các ví dụ điển hình
+
+### Đồng bộ hóa trạng thái giữa các tab
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional'
+
+// Trong Tab A và Tab B
+const authChannel = new BroadcastMessage('auth-status', (event) => {
+  if (event.data === 'LOGOUT') {
+    authModule.clearSession()
+    window.location.href = '/login'
+  }
+})
+
+// Khi người dùng đăng xuất ở Tab A
+function onLogout() {
+  authChannel.post('LOGOUT')
+}
+```
+
+### Hệ thống thông báo đơn giản với xử lý lỗi
+
+```javascript
+const notifications = new BroadcastMessage(
+  'notifications',
+  (event) => showToast(event.data.message),
+  (error) => console.error('Không thể nhận thông báo:', error)
+)
+
+// Cập nhật trình xử lý lỗi sau này
+notifications.setCallbackError((error) => {
+  logToService(error)
+})
+
+// Kích hoạt thông báo từ bất kỳ đâu trong ứng dụng
+notifications.post({ message: 'Đã nhận tin nhắn mới!' })
+```

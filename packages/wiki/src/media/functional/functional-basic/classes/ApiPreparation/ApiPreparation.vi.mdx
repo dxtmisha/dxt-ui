@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiPreparation - Chuẩn bị yêu cầu API'/>
+
+# Lớp ApiPreparation
+
+Một lớp được thiết kế đặc biệt để xử lý các tác vụ và hiệu ứng phụ (side effects) chạy ngay trước và sau khi thực thi một yêu cầu API. Nó đóng vai trò cung cấp các siêu liên kết điểm chốt (`callback` và `callbackEnd`) để chặn hoặc theo dõi các yêu cầu, thực hiện thao tác hay kích hoạt xử lý giao diện như đồ họa tải trang.
+
+## Các tính năng chính
+
+- **Thực thi trước yêu cầu (Pre-request Execution)** — can thiệp vào vòng đời API ngay trước thời điểm tiến hành gọi `fetch` vật lý thực tế.
+- **Phân tích sau yêu cầu (Post-request Analysis)** — kích hoạt chạy logic ngay khi yêu cầu truy vấn hoàn tất, có khả năng kết nối tới các thông số `Response` trả về cộng với cấu hình truy vấn ban đầu.
+- **Kiểm soát động (Concurrency Control)** — đảm bảo các hook chồng chéo được xử lý hợp lý mà không bị tắt nghẽn.
+- **Móc nối dữ liệu (Data Injection)** — các hook nối mạng có đặc quyền trả về dữ liệu hoặc một cờ tín hiệu `reset` nhằm thao túng hay ngắt phiên xử lý phản hồi API toàn cục sau đó.
+
+## Khởi tạo
+
+```javascript
+import { ApiPreparation } from '@dxtmisha/functional'
+
+const preparation = new ApiPreparation()
+```
+
+## Các phương thức
+
+- `make(active: boolean, apiFetch: ApiFetch): Promise<void>` — Thực thi vòng lặp chuẩn bị ngay trước thời khắc truy vấn vận hành.
+- `makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>` — Thực thi tính chất phân tích vòng lặp móc nối sau khi liên kết server đóng băng.
+- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Cách đấu nối một hàm tuỳ chỉnh thiết lập logic chạy tuần tự trước một yêu cầu.
+- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Thiết lập một hàm vòng sự kiện được kích hoạt tức thì sau khi một phiên yêu cầu khép lại.

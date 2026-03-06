@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/BroadcastMessage - Сообщения BroadcastChannel'/>
+
+# Класс BroadcastMessage
+
+Класс для работы с сообщениями между вкладками или окнами с использованием API `BroadcastChannel`. Предоставляет простой интерфейс для отправки и получения сообщений с поддержкой колбэков, обработки ошибок и проверкой среды выполнения.
+
+## Ключевые особенности
+
+- **Межконтекстное взаимодействие** — простая отправка сообщений между различными вкладками браузера, окнами или iframe одного и того же источника (origin).
+- **На основе колбэков** — регистрация функций обратного вызова для автоматической обработки входящих сообщений и ошибок.
+- **Учет среды выполнения** — автоматическая проверка наличия DOM перед инициализацией, что предотвращает ошибки в средах, отличных от браузера.
+- **Префиксы имен** — автоматическое добавление уникального префикса к именам каналов во избежание конфликтов с другими приложениями.
+- **Типизация** — поддержка универсальных типов (generics) TypeScript для полезной нагрузки сообщений.
+- **Прямой доступ** — предоставление доступа к базовому экземпляру `BroadcastChannel` при необходимости.
+
+## Инициализация
+
+Создайте новый экземпляр `BroadcastMessage`, указав имя канала и, при необходимости, функции обратного вызова для сообщений и ошибок.
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional'
+
+// Инициализация с колбэками для сообщений и ошибок
+const messenger = new BroadcastMessage(
+  'my-channel',
+  (event) => console.log('Получено:', event.data),
+  (error) => console.error('Ошибка сообщения:', error)
+)
+```
+
+## Отправка сообщений
+
+### `post`
+
+Отправляет сообщение всем слушателям в том же канале.
+
+**Параметры:**
+- `message: Message` — данные для отправки.
+
+**Возвращает:** `this` — для цепочки вызовов.
+
+```javascript
+messenger.post({ type: 'UPDATE', payload: { id: 123 } })
+```
+
+## Настройка и доступ
+
+- `getChannel(): BroadcastChannel | undefined` — Возвращает базовый экземпляр `BroadcastChannel` (или `undefined` вне среды браузера).
+- `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Обновляет или устанавливает функцию обратного вызова для получения сообщений.
+- `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Обновляет или устанавливает функцию обратного вызова для ошибок сообщений.
+
+## Примеры
+
+### Синхронизация состояния между вкладками
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional'
+
+// Во вкладке А и вкладке Б
+const authChannel = new BroadcastMessage('auth-status', (event) => {
+  if (event.data === 'LOGOUT') {
+    authModule.clearSession()
+    window.location.href = '/login'
+  }
+})
+
+// При выходе пользователя из системы во вкладке А
+function onLogout() {
+  authChannel.post('LOGOUT')
+}
+```
+
+### Простая система уведомлений с обработкой ошибок
+
+```javascript
+const notifications = new BroadcastMessage(
+  'notifications',
+  (event) => showToast(event.data.message),
+  (error) => console.error('Не удалось получить уведомление:', error)
+)
+
+// Обновление обработчика ошибок позже
+notifications.setCallbackError((error) => {
+  logToService(error)
+})
+
+// Вызов уведомления из любой части приложения
+notifications.post({ message: 'Получено новое сообщение!' })
+```

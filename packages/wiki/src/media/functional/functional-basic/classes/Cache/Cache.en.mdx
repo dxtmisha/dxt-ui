@@ -1,0 +1,81 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Cache - Basic Caching'/>
+
+# Cache Class
+
+A lightweight, memory-based caching mechanism. It provides an efficient way to execute expensive data-fetching functions only when necessary, relying on "comparison arrays" to trigger cache invalidation and recalculation.
+
+## Key Features
+
+- **On-Demand Evaluation** — functions are only executed when the cached value is missing or invalidated.
+- **Comparison Array Invalidation** — automatically recalculates the cache if the provided dependency array changes (similar to React's `useMemo` or `useEffect` dependency arrays).
+- **Asynchronous Support** — works seamlessly with `Promise`-based data fetching.
+
+## Initialization
+
+```javascript
+import { Cache } from '@dxtmisha/functional'
+
+const cache = new Cache()
+```
+
+## Data Retrieval
+
+### `get`
+
+Use the `get()` method to retrieve a cached value or calculate it if it doesn't exist or is stale.
+
+**Parameters:**
+- `name: string` — a unique identifier for the cache entry.
+- `callback: () => T` — the function that computes the value.
+- `comparison?: any[]` — optional array of dependencies. If any value in this array changes relative to the last call, the cache is invalidated and `callback` runs again.
+
+**Returns:** `T` — the cached or freshly calculated value.
+
+```javascript
+let counter = 0
+
+// Will evaluate and cache "User 1"
+const user1 = cache.get('user', () => `User ${++counter}`, [1])
+
+// Does NOT evaluate, returns cached "User 1"
+const unchanged = cache.get('user', () => `User ${++counter}`, [1])
+
+// Dependency array changed from [1] to [2]
+// Will evaluate and cache "User 2"
+const changed = cache.get('user', () => `User ${++counter}`, [2])
+```
+
+### `getAsync`
+
+Functions identically to `get()`, but designed for async calls.
+
+**Parameters:**
+- `name: string` — a unique identifier for the cache entry.
+- `callback: () => Promise<T>` — the async function that computes the value.
+- `comparison?: any[]` — optional array of dependencies.
+
+**Returns:** `Promise<T>` — the cached or freshly calculated async value.
+
+```javascript
+async function fetchUser(id) {
+  return cache.getAsync('user_api', async () => {
+    const res = await fetch(`/api/users/${id}`)
+    return res.json()
+  }, [id])
+}
+
+// First call hits the network
+const u1 = await fetchUser(5)
+
+// Second call returns cached data immediately (no network hit)
+const u1Cached = await fetchUser(5)
+
+// Dependency `id` changed (5 !== 6), hits the network again
+const u2 = await fetchUser(6)
+```
+
+## Internal Overview
+
+Internally, `Cache` uses instances of `CacheItem` to manage each individual cache entry. `CacheItem` handles the storage of the current value, the old value, and the dependency checking logic (`isUpdate`).

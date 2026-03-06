@@ -1,0 +1,78 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Cookie - Quản lý chuẩn Browser Cookie'/>
+
+# Lớp Cookie
+
+Lớp bao đóng cho phép các developer quản trị trực tiếp vùng Browser Cookie. Hệ thống `Cookie` tự cấu hình tính đồng bộ xuyên suốt từ bộ đệm của website (memory record) sang môi trường DOM API `document.cookie`, giúp cho tiến trình thao tác và tạo lập biến theo chuẩn reactive được đáp ứng đầy đủ với các chức năng dự phòng linh hoạt.
+
+## Các tính năng chính
+
+- **Đồng bộ hóa Không Gian Bộ Nhớ (Memory Sync)** — lưu giữ cấu trúc ảo cho trình quản lý trạng thái tại server cache, tránh tạo quá nhiều truy vấn lên cấu trúc DOM của cookie. Khi khởi tạo tiến trình nó lập tức bắt/nắm bắt vòng dữ liệu đầu tư của mã node `document.cookie`.
+- **Thiết Lập Theo Vùng Môi Trường (Environment Aware)** — có khả năng định vị khu sinh thái DOM. Với vùng Render SSR (Server-Side Rendering) hoặc Unit Test, tính năng bắt cookie vẫn giả lập môi trường ảo dựa trên biến cache để tránh phát sinh bug văng lỗi gián đoạn do không truy vấn được DOM window.
+- **Tính Năng Chặn Toàn Quyền (Global Cookie Blocking)** — kế nối bảo mật theo bộ thư viện của quy chế `CookieBlock`. Nếu website đánh mã dừng cấp quyền hoạt động cookie theo chính sách riêng tư bảo vệ người dùng, Class Cookie sẽ dừng tất cả chức năng sinh tác dữ liệu lên DOM theo đúng giao thức.
+- **Hỗ Trợ Luồng Code Default (Fallback/Default)** — cho phép nạp biến đệm vào làm dữ liệu phụ và sinh cấu trúc từ giá trị phụ đó khi giá trị thật vẫn đang bị mất/rỗng.
+
+## Khởi tạo
+
+Truyền file nhận diện theo thuộc tính biến tên/từ khoá cookie.
+
+```javascript
+import { Cookie } from '@dxtmisha/functional'
+
+// Mảng giao tiếp lấy biến 'theme' cookie
+const themeCookie = new Cookie('theme')
+```
+
+## Quản lý dữ liệu
+
+### `get`
+
+Khi chạy `get()`, nếu cung cấp một đoạn code tĩnh phụ, class sẽ so khớp. Trường hợp lúc này không thấy thông số cookie trên hệ điều hành, đoạn code tĩnh lập tức ghi vào cấu trúc và lưu lại lên trình duyệt.
+
+**Tham số:**
+- `value?: T | string | (() => T | string)` — cấu trúc dự phòng mặc định hoặc callback function.
+
+**Trả về:** `T | string | undefined` — biến lấy từ cookie hoặc dữ liệu phụ trợ.
+
+```javascript
+// Tìm hệ thống node 'theme', HOẶC gán/đóng gói 'dark' trả lại cho giá trị nếu web rỗng
+const currentTheme = themeCookie.get('dark') 
+```
+
+### `set`
+
+Sử dụng `set()` để nạp hoặc làm đệm chèn đè lên biến trước. Những chuẩn tham số bổ sung còn quản lý cả chuẩn cookie thông dụng là `age` (Max-Age cache thiết đặt quy đổi theo giây) và trạng thái của các `sameSite`.
+
+**Tham số:**
+- `value: T | string | (() => T | string)` — tham chiếu dùng đăng ký tạo vào cookie, hoặc trỏ lên một mảng rỗng để tính function tạo cấu trúc thay vì nhập chay string.
+- `options?: CookieOptions` — phần tham số hỗ trợ định tuổi tồn tại và cấu hình thông số cấp quyền mở rộng của cookie.
+
+```javascript
+const userPrefs = new Cookie('preferences')
+
+// Cấu trúc text / string đơn thuần
+userPrefs.set('{"compact": true}')
+
+// Trỏ cấu hình tuỳ chỉnh đa hệ
+userPrefs.set('{"compact": true}', {
+  age: 60 * 60 * 24 * 30, // Xử lý cache quy về 30 ngày vòng lặp
+  sameSite: 'lax'
+})
+```
+
+### `remove`
+
+Tập lệnh thực thi việc đẩy một mảng thông số rỗng bằng string trắng vào vùng cookie, sau đó cập nhật vòng đời thuộc tính Max-Age thành `-1`. Lúc này máy khách sẽ hiểu trình truy xuất cần dừng hoạt động, đẩy lùi chu kỳ hết hạn và loại cookie ngay rức khắc.
+
+```javascript
+userPrefs.remove()
+```
+
+## Đồng bộ hóa
+
+- `updateData(): void` (static) — Lệnh tĩnh giúp cập nhật dữ liệu từ thư mục `document.cookie` nằm trên browser.
+
+## Tổng quan nội bộ
+
+Tại hệ thống quản trị nội hàm, tiến trình bóc/ghi cookie nằm trên Class `Cookie` có thiết lập thư viện bộ nhớ tổng tên `items`. Cụ thể nếu tạo truy vấn chéo `new Cookie('auth')` trên 2 mảng component riêng rẽ, thì 2 khu component lấy cookie đó đều sử dụng/giữ kết nối tới một luồng instance giống nhau hoàn toàn mà không bị lỗi/văng xung đột.

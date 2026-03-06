@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Geo - Global Geographic Data'/>
+
+# Geo Class
+
+A static utility class for centralized management of the application's geographical data. It handles language codes (ISO 639-1), country codes (ISO 3166-1 alpha-2), time zones, and localization. The class automatically detects environment settings and ensures consistent usage across the entire system.
+
+## Key Features
+
+- **Auto-Detection** — intelligently identifies the user's locale via `navigator.language` or HTML attributes if not explicitly defined.
+- **Persistence** — utilizes `DataStorage` to save and restore user-selected language and country preferences.
+- **Media Database Integration** — provides access to a comprehensive database of countries and languages from the `@dxtmisha/media` library.
+- **Global Time Management** — centralized setting and retrieval of time zone offsets for correct date handling.
+- **Static Access** — all methods are static, eliminating the need for instantiation (`new Geo()`).
+
+## Basic Usage
+
+Since the class is static, its methods can be called directly.
+
+```javascript
+import { Geo } from '@dxtmisha/functional-basic'
+
+// Get the current language code
+console.log(Geo.getLanguage()) // e.g., 'en'
+
+// Set a new locale and save it
+Geo.set('fr-FR', true)
+
+// Get the formatted time zone
+console.log(Geo.getTimezoneFormat()) // e.g., '+00:00'
+```
+
+## Methods
+
+### General Information
+
+- `get(): GeoItemFull` — Returns the full data object for the current country and language.
+- `getCountry(): string` — Returns the 2-letter code of the current country (uppercase).
+- `getLanguage(): string` — Returns the 2-letter code of the current language (lowercase).
+- `getStandard(): string` — Returns the combined locale string (e.g., `'en-US'`).
+- `getFirstDay(): string` — Returns the code for the first day of the week for the current locale (e.g., `'Mo'`, `'Su'`).
+- `getLocation(): string` — Returns the currently set locale as a string.
+- `getItem(): GeoItemFull` — Returns a copy of the current settings object, accounting for the language.
+- `getTimezone(): number` — Returns the time zone offset in minutes.
+- `getTimezoneFormat(): string` — Returns the time zone offset in string format (e.g., `'+03:00'`).
+
+### Lists and Search
+
+- `getList(): GeoItem[]` — Returns the full list of available countries and languages from the media database.
+- `getByCode(code?: string): GeoItemFull` — Searches for data by language or country code (with fallback support).
+- `getByCodeFull(code: string): GeoItem | undefined` — Searches for an exact match by full locale code (language-country).
+- `getByCountry(country: string): GeoItem | undefined` — Searches for data by country code or alternative name.
+- `getByLanguage(language: string): GeoItem | undefined` — Searches for data by language code.
+- `find(code: string): GeoItemFull` — An alias for the `getByCode` method.
+
+### Data Manipulation (Setters)
+
+- `set(code: string, save?: boolean): void` — Globally sets the current locale. If `save` is `true`, saves the choice to `localStorage`.
+- `setTimezone(timezone: number): void` — Sets a custom time zone offset in minutes.
+
+### Utilities
+
+- `toStandard(item: GeoItem): string` — A static method for generating a standard `'language-country'` string from a `GeoItem` object.
+
+## Examples
+
+### Manual Locale Setup on App Launch
+```javascript
+import { Geo } from '@dxtmisha/functional-basic'
+
+// Assume we retrieved user settings from an API
+const userLocale = 'ja-JP'
+
+Geo.set(userLocale)
+console.log(Geo.getCountry()) // 'JP'
+```
+
+### Working with Time Zones
+```javascript
+// Setting the offset for Tokyo (UTC+9)
+Geo.setTimezone(-540) // offset in minutes (9 * 60)
+
+console.log(Geo.getTimezoneFormat()) // '+09:00'
+```
+
+### Retrieving Country List for a Selector
+```javascript
+const countries = Geo.getList().map(item => ({
+  value: item.country,
+  label: `${item.language.toUpperCase()} - ${item.country}`
+}))
+```

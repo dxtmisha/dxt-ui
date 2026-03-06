@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiHeaders - API Request Headers'/>
+
+# ApiHeaders Class
+
+A class for managing and merging HTTP request headers. It handles default application-wide headers, custom headers for specific requests, and default `Content-Type` assignment.
+
+## Key Features
+
+- **Default Headers** — set global headers like `Authorization` or `X-App-Version` once.
+- **Dynamic Content-Type** — automatically manages the `Content-Type` header (defaults to `application/json;charset=UTF-8`).
+- **Safe Merging** — merges multiple header sources without mutating the original objects.
+- **Validation** — ensures only valid objects are processed as headers.
+
+## Initialization
+
+```javascript
+import { ApiHeaders } from '@dxtmisha/functional'
+
+const apiHeaders = new ApiHeaders()
+apiHeaders.set({ 'X-App-Platform': 'web' })
+```
+
+## Methods
+
+- `get(value?: Record<string, string> | null, type = 'application/json;charset=UTF-8'): Record<string, string> | undefined` — Intersects default headers with custom ones and injects `Content-Type`.
+- `set(headers: Record<string, string>): this` — Sets or updates the default headers object.

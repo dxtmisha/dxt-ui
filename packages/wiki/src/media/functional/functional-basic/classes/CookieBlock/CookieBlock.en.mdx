@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/CookieBlock - Global Cookie Control'/>
+
+# CookieBlock Class
+
+A static utility class that serves as a global "kill switch" for DOM cookie modifications. It provides a simple boolean state that other classes, specifically `Cookie`, check before attempting to write to `document.cookie`.
+
+## Key Features
+
+- **Global Truth** — a single configuration point to halt cookie operations application-wide.
+- **Privacy Compliance** — extremely useful for implementing "Cookie Consent" banners. Simply set the block to `true` until the user explicitly accepts all cookies.
+- **DataStorage Backed** — uses the `DataStorage` abstraction internally to maintain the blocked state reliably.
+
+
+Since all methods are `static`, you interact with the class directly.
+
+## Access Management
+
+### `get`
+
+Use the `get()` method to read the current blocking status. This returns a boolean.
+
+**Returns:** `boolean` — `true` if cookie writing is blocked.
+
+```javascript
+if (CookieBlock.get()) {
+  console.log('Cookie writes are currently blocked by user settings.')
+}
+```
+
+### `set`
+
+Use the `set()` method to enable or disable cookie writing capabilities.
+
+**Parameters:**
+- `value: boolean` — `true` to block cookie writes, `false` to allow them.
+
+```javascript
+import { CookieBlock } from '@dxtmisha/functional'
+
+// Block all future DOM cookie writes
+CookieBlock.set(true)
+
+// Allow DOM cookie writes (default behavior)
+CookieBlock.set(false)
+```
+
+## How It Interacts With `Cookie`
+
+The core `Cookie` class strictly monitors this block. If `CookieBlock.get()` returns `true`:
+
+1.  Your application logic can still technically call `cookieInstance.set('value')`.
+2.  The `Cookie` instance will update its *internal memory storage* to the new value.
+3.  The `Cookie` instance **will silently refuse** to execute the actual `document.cookie = ...` DOM write. 
+
+This guarantees your app doesn't break from undefined reads in memory while strictly honoring the browser's disk persistence settings.
