@@ -1,0 +1,8 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinGrid {
+  display: grid;
+  grid-template-columns: repeat(ui.v('??columns', 12), 1fr);
+  grid-template-rows: auto;
+  align-content: stretch;
+}

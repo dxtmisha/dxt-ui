@@ -228,4 +228,38 @@
       background-color: oklch(87.2% 0.01 258.338);
     }
   }
+
+  &-dummy {
+    height: 32px;
+    background-color: rgba(82, 82, 82, 0.32);
+    border-radius: 8px;
+
+    &--color {
+      &--blue {
+        background-color: rgba(37, 99, 235, 0.32);
+      }
+
+      &--red {
+        background-color: rgba(220, 38, 38, 0.32);
+      }
+
+      &--green {
+        background-color: rgba(22, 163, 74, 0.32);
+      }
+    }
+
+    &--size {
+      &--sm {
+        height: 64px;
+      }
+
+      &--md {
+        height: 128px;
+      }
+
+      &--lg {
+        height: 256px;
+      }
+    }
+  }
 }

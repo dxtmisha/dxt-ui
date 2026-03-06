@@ -20,10 +20,13 @@ import { wikiMdxCheckbox } from './Checkbox/wikiMdxCheckbox'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
 import { wikiMdxChipGroup } from './ChipGroup/wikiMdxChipGroup'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
+import { wikiMdxDummy } from './Dummy/wikiMdxDummy'
 import { wikiMdxField } from './Field/wikiMdxField'
 import { wikiMdxFieldCounter } from './FieldCounter/wikiMdxFieldCounter'
 import { wikiMdxFieldLabel } from './FieldLabel/wikiMdxFieldLabel'
 import { wikiMdxFieldMessage } from './FieldMessage/wikiMdxFieldMessage'
+import { wikiMdxGrid } from './Grid/wikiMdxGrid'
+import { wikiMdxGridItem } from './GridItem/wikiMdxGridItem'
 import { wikiMdxHorizontalScroll } from './HorizontalScroll/wikiMdxHorizontalScroll'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
@@ -74,10 +77,13 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxChip,
   wikiMdxChipGroup,
   wikiMdxDialog,
+  wikiMdxDummy,
   wikiMdxField,
   wikiMdxFieldCounter,
   wikiMdxFieldLabel,
   wikiMdxFieldMessage,
+  wikiMdxGrid,
+  wikiMdxGridItem,
   wikiMdxHorizontalScroll,
   wikiMdxIcon,
   wikiMdxImage,

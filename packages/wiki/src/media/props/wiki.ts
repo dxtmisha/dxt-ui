@@ -30,6 +30,7 @@ import { wikiChip } from './wikiChip'
 import { wikiChipGroup } from './wikiChipGroup'
 import { wikiDialog } from './wikiDialog'
 import { wikiField } from './wikiField'
+import { wikiGridItem } from './wikiGridItem'
 import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
 import { wikiInput } from './wikiInput'
@@ -80,6 +81,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiChipGroup,
   ...wikiDialog,
   ...wikiField,
+  ...wikiGridItem,
   ...wikiIcon,
   ...wikiImage,
   ...wikiInput,

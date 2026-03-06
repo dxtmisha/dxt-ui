@@ -14,10 +14,13 @@ import { wikiDescriptionsCheckbox } from './wikiDescriptionsCheckbox'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsChipGroup } from './wikiDescriptionsChipGroup'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
+import { wikiDescriptionsDummy } from './wikiDescriptionsDummy'
 import { wikiDescriptionsField } from './wikiDescriptionsField'
 import { wikiDescriptionsFieldCounter } from './wikiDescriptionsFieldCounter'
 import { wikiDescriptionsFieldLabel } from './wikiDescriptionsFieldLabel'
 import { wikiDescriptionsFieldMessage } from './wikiDescriptionsFieldMessage'
+import { wikiDescriptionsGrid } from './wikiDescriptionsGrid'
+import { wikiDescriptionsGridItem } from './wikiDescriptionsGridItem'
 import { wikiDescriptionsHorizontalScroll } from './wikiDescriptionsHorizontalScroll'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
@@ -62,10 +65,13 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsChip,
   wikiDescriptionsChipGroup,
   wikiDescriptionsDialog,
+  wikiDescriptionsDummy,
   wikiDescriptionsField,
   wikiDescriptionsFieldCounter,
   wikiDescriptionsFieldLabel,
   wikiDescriptionsFieldMessage,
+  wikiDescriptionsGrid,
+  wikiDescriptionsGridItem,
   wikiDescriptionsHorizontalScroll,
   wikiDescriptionsIcon,
   wikiDescriptionsInput,

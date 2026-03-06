@@ -1,0 +1,42 @@
+{
+  "main": "{d.dummy}",
+  "paddingX": "{grid.paddingX}",
+  "paddingY": "{grid.paddingY}",
+  "palette-background": "{sys.palette.primary}",
+  "background-opacity": "{sys.opacity.overlay}",
+  "border-radius": "{sys.rounded.lg}",
+  "size": {
+    "x": {
+      "height": "{ref.spacing.4}"
+    },
+    "xs": {
+      "height": "{ref.spacing.8}"
+    },
+    "sm": {
+      "height": "{ref.spacing.12}"
+    },
+    "md": {
+      "height": "{ref.spacing.24}"
+    },
+    "lg": {
+      "height": "{ref.spacing.36}"
+    },
+    "xl": {
+      "height": "{ref.spacing.48}"
+    },
+    "2xl": {
+      "height": "{ref.spacing.60}"
+    },
+    "3xl": {
+      "height": "{ref.spacing.72}"
+    },
+    "4xl": {
+      "height": "{ref.spacing.84}"
+    },
+    "5xl": {
+      "height": "{ref.spacing.96}"
+    },
+    "_default": "md"
+  },
+  "@@palette": "{palette}"
+}

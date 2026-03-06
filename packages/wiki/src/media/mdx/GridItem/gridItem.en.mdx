@@ -1,0 +1,25 @@
+Individual item within a Grid component. Controls how many columns the element should take across different screen sizes.
+
+**Key Features:**
+
+- Customizable column span (1 to 12)
+- Built-in responsive support for all major breakpoints
+- Granular control over layout density
+
+```html
+<script setup>
+</script>
+
+<template>
+  <Grid>
+    <!-- Full width on mobile, half on desktop -->
+    <GridItem base="12" md="6">Item 1</GridItem>
+    <GridItem base="12" md="6">Item 2</GridItem>
+
+    <!-- Different spans for different screen sizes -->
+    <GridItem base="12" sm="6" lg="3">Responsive item</GridItem>
+  </Grid>
+</template>
+```
+
+> GridItem allows for granular control over element sizing within a Grid container, enabling complex responsive layouts with zero custom CSS.

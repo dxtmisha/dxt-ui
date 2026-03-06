@@ -8625,6 +8625,17 @@
           }
         }
       },
+      "dummy": {
+        "name": "d1-dummy",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-dummy-main",
+            "type": "var",
+            "value": "{d.dummy}"
+          }
+        }
+      },
       "field": {
         "name": "d1-field",
         "type": "component",

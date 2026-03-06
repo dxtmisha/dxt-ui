@@ -1,0 +1,35 @@
+A basic Dummy placeholder component for interface prototyping and visual testing. Allows you to quickly create blocks of specific sizes and colors.
+
+Dummy is designed as a tool for developers to help structure views before actual components are implemented.
+
+**Key Features:**
+
+- Size customization via the size property
+- Color scheme configuration via the palette property
+- Use as a space filler in layouts
+
+**Typical Usage Scenarios:**
+
+- Prototyping grids and layouts
+- Visual testing of spacing and alignment
+- Placeholders for components not yet implemented
+
+```html
+<script setup>
+</script>
+
+<template>
+  <div class="dummy-examples" style="display: flex; gap: 16px; flex-direction: column;">
+    <!-- Basic Dummy -->
+    <Dummy />
+
+    <!-- Custom Size and Palette -->
+    <Dummy size="lg" palette="blue" />
+
+    <!-- Small Red Dummy -->
+    <Dummy size="sm" palette="red" />
+  </div>
+</template>
+```
+
+> Dummy is designed as a universal utility component for visual planning of interface structure.

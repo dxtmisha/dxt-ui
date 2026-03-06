@@ -247,6 +247,18 @@
     "./Checkbox": {
       "types": "./dist/constructors/Checkbox/index.d.ts",
       "default": "./dist/checkbox.js"
+    },
+    "./Grid": {
+      "types": "./dist/constructors/Grid/index.d.ts",
+      "default": "./dist/grid.js"
+    },
+    "./GridItem": {
+      "types": "./dist/constructors/GridItem/index.d.ts",
+      "default": "./dist/gridItem.js"
+    },
+    "./Dummy": {
+      "types": "./dist/constructors/Dummy/index.d.ts",
+      "default": "./dist/dummy.js"
     }
   },
   "buildOptions": {
