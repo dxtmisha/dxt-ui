@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useSearchDataRef - Подготовка данных поиска'/>
+
+# `useSearchDataRef`
+
+Низкоуровневый composable для подготовки, кеширования и форматирования данных, используемых в поиске. `useSearchDataRef` отвечает за индексацию полей объекта и создание HTML-строк с подсветкой совпадений. Обычно используется внутри `useSearchRef`.
+
+**Параметры:**
+- `list: SearchListInput<T>` — исходный список данных.
+- `columns: K` — список колонок для индексации. Поддерживаются вложенные пути через точку (например, `info.name`).
+- `searchDelay: Ref<string>` — реактивная ссылка на значение поиска (обычно с задержкой).
+- `options?: SearchOptions` — настройки:
+    - `classSearchName?: string` — CSS класс для подсветки совпадений.
+
+**Возвращает:**
+- `listCache: Ref<SearchCache<T>>` — закэшированный массив объектов `{ item, value }`, где `value` — это склеенная строка из всех индексируемых колонок для быстрого поиска.
+- `findCacheItem(item: T): SearchCacheItem<T> | undefined` — метод для поиска закэшированного значения по ссылке на оригинальный объект.
+- `toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>` — метод для форматирования элемента. Добавляет свойства вида `{column}Search`. Если `selection: true`, применяет подсветку совпадений на основе `searchDelay`.
+
+## Пример использования
+
+```typescript
+import { useSearchDataRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const items = [{ id: 1, name: 'Apple', info: { color: 'red' } }]
+const search = ref('app')
+
+const { listCache, toFormatItem } = useSearchDataRef(
+  items, 
+  ['name', 'info.color'], 
+  search
+)
+
+// listCache будет содержать индексированную строку: " Apple red"
+// toFormatItem(items[0], true) вернет объект с:
+// nameSearch: '<span class="...">App</span>le'
+// infoColorSearch: 'red'
+```

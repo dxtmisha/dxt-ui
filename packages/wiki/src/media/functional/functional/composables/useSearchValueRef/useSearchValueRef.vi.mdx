@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useSearchValueRef - Trạng thái và logic tìm kiếm'/>
+
+# `useSearchValueRef`
+
+Composable cấp thấp để quản lý trạng thái truy vấn tìm kiếm, xử lý độ trễ (debounce) và tạo các biểu thức chính quy (RegExp) để khớp dữ liệu. Thường được sử dụng bên trong `useSearchRef`.
+
+**Tham số:**
+- `value?: Ref<string>` — tham chiếu phản hồi (Ref) tìm kiếm từ bên ngoài. Nếu không được cung cấp, một Ref nội bộ sẽ được tạo.
+- `options?: SearchOptions` — cài đặt:
+    - `limit?: number` — giới hạn ký tự tối thiểu để kích hoạt tìm kiếm. Mặc định: `2`.
+    - `delay?: number` — độ trễ debounce tính bằng ms trước khi cập nhật `searchDelay`. Mặc định: `0`.
+    - `findExactMatch?: boolean` — loại tìm kiếm: khớp chính xác cụm từ hoặc xuất hiện tất cả các từ.
+
+**Trả về:**
+- `search: Ref<string>` — giá trị tìm kiếm hiện tại (cập nhật ngay lập tức).
+- `searchDelay: Ref<string>` — giá trị tìm kiếm sau khi áp dụng độ trễ.
+- `loading: Ref<boolean>` — `true` trong thời gian chờ độ trễ `delay`.
+- `isSearch(): boolean` — kiểm tra xem tìm kiếm có đang hoạt động hay không (dựa trên `limit`).
+- `isSelection(item: SearchCacheItem<T>): boolean` — kiểm tra xem một phần tử đã cache có khớp với truy vấn tìm kiếm hiện tại hay không.
+- `isMatched(): boolean` — kiểm tra xem đối tượng RegExp có đang hoạt động để tìm kiếm hay không.
+- `getMatcher(): RegExp | undefined` — trả về đối tượng biểu thức chính quy hiện tại.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useSearchValueRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const { search, searchDelay, isSelection } = useSearchValueRef(undefined, {
+  delay: 300,
+  limit: 3
+})
+
+search.value = 'app'
+// Sau 300ms searchDelay.value sẽ là 'app'
+// isSelection({ item, value: 'Apple' }) sẽ trả về true
+```

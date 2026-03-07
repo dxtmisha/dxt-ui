@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useSearchValueRef - Search State and Logic'/>
+
+# `useSearchValueRef`
+
+A low-level composable for managing search query state, handling debounce delay, and creating regular expressions for matching. It is typically used inside `useSearchRef`.
+
+**Parameters:**
+- `value?: Ref<string>` — external search reference. If not provided, an internal one is created.
+- `options?: SearchOptions` — settings:
+    - `limit?: number` — minimum character limit to activate search. Default: `2`.
+    - `delay?: number` — debounce delay in ms before updating `searchDelay`. Default: `0`.
+    - `findExactMatch?: boolean` — search type: exact phrase match or occurrence of all words.
+
+**Returns:**
+- `search: Ref<string>` — current search value (updates immediately).
+- `searchDelay: Ref<string>` — search value with applied delay.
+- `loading: Ref<boolean>` — `true` during the debounce `delay`.
+- `isSearch(): boolean` — whether search is currently active (checks against `limit`).
+- `isSelection(item: SearchCacheItem<T>): boolean` — checks if a cached item matches the current search query.
+- `isMatched(): boolean` — whether a RegExp object is currently active for searching.
+- `getMatcher(): RegExp | undefined` — returns the current regular expression object.
+
+## Usage Example
+
+```typescript
+import { useSearchValueRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const { search, searchDelay, isSelection } = useSearchValueRef(undefined, {
+  delay: 300,
+  limit: 3
+})
+
+search.value = 'app'
+// After 300ms searchDelay.value becomes 'app'
+// isSelection({ item, value: 'Apple' }) returns true
+```

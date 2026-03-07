@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useSearchDataRef - Chuẩn bị dữ liệu tìm kiếm'/>
+
+# `useSearchDataRef`
+
+Composable cấp thấp để chuẩn bị, lưu trữ (cache) và định dạng dữ liệu được sử dụng trong tìm kiếm. `useSearchDataRef` chịu trách nhiệm lập chỉ mục các trường của đối tượng và tạo chuỗi HTML với phần đánh dấu kết quả khớp. Thường được sử dụng bên trong `useSearchRef`.
+
+**Tham số:**
+- `list: SearchListInput<T>` — danh sách dữ liệu nguồn.
+- `columns: K` — danh sách các cột để lập chỉ mục. Hỗ trợ đường dẫn lồng nhau qua dấu chấm (ví dụ: `info.name`).
+- `searchDelay: Ref<string>` — tham chiếu phản hồi (Ref) cho giá trị tìm kiếm (thường có độ trễ/debounce).
+- `options?: SearchOptions` — cài đặt:
+    - `classSearchName?: string` — lớp CSS để đánh dấu kết quả khớp.
+
+**Trả về:**
+- `listCache: Ref<SearchCache<T>>` — mảng được cache gồm các đối tượng `{ item, value }`, trong đó `value` là chuỗi được nối từ tất cả các cột đã lập chỉ mục để tìm kiếm nhanh.
+- `findCacheItem(item: T): SearchCacheItem<T> | undefined` — phương thức để tìm giá trị đã cache theo tham chiếu đến đối tượng gốc.
+- `toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>` — phương thức để định dạng phần tử. Thêm các thuộc tính dạng `{column}Search`. Nếu `selection: true`, áp dụng đánh dấu kết quả khớp dựa trên `searchDelay`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useSearchDataRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const items = [{ id: 1, name: 'Apple', info: { color: 'red' } }]
+const search = ref('app')
+
+const { listCache, toFormatItem } = useSearchDataRef(
+  items, 
+  ['name', 'info.color'], 
+  search
+)
+
+// listCache sẽ chứa chuỗi đã lập chỉ mục: " Apple red"
+// toFormatItem(items[0], true) trả về đối tượng với:
+// nameSearch: '<span class="...">App</span>le'
+// infoColorSearch: 'red'
+```

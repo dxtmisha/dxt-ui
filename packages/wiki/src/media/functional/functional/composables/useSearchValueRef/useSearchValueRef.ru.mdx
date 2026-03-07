@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useSearchValueRef - Состояние и логика поиска'/>
+
+# `useSearchValueRef`
+
+Низкоуровневый composable для управления состоянием поискового запроса, обработки задержки (debounce) и создания регулярных выражений для сопоставления. Обычно используется внутри `useSearchRef`.
+
+**Параметры:**
+- `value?: Ref<string>` — внешняя реактивная ссылка на строку поиска. Если не передана, создается внутренняя.
+- `options?: SearchOptions` — настройки:
+    - `limit?: number` — минимальное количество символов для активации поиска. По умолчанию: `2`.
+    - `delay?: number` — задержка перед обновлением `searchDelay` в мс. По умолчанию: `0`.
+    - `findExactMatch?: boolean` — тип поиска: точное совпадение фразы или вхождение всех слов.
+
+**Возвращает:**
+- `search: Ref<string>` — текущее значение поиска (меняется мгновенно).
+- `searchDelay: Ref<string>` — значение поиска с учетом задержки.
+- `loading: Ref<boolean>` — `true` во время ожидания задержки `delay`.
+- `isSearch(): boolean` — активен ли сейчас поиск (проверка по `limit`).
+- `isSelection(item: SearchCacheItem<T>): boolean` — проверяет, соответствует ли кэшированный элемент текущему поисковому запросу.
+- `isMatched(): boolean` — создан ли объект RegExp для поиска (есть ли поисковый запрос).
+- `getMatcher(): RegExp | undefined` — возвращает текущий объект регулярного выражения.
+
+## Пример использования
+
+```typescript
+import { useSearchValueRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const { search, searchDelay, isSelection } = useSearchValueRef(undefined, {
+  delay: 300,
+  limit: 3
+})
+
+search.value = 'app'
+// Через 300мс searchDelay.value станет 'app'
+// isSelection({ item, value: 'Apple' }) вернет true
+```
