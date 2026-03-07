@@ -23,7 +23,7 @@
   'd1.color',
   'd1.elevation',
   'd1.font',
-  'd1.grid',
+  'd1.layout',
   'd1.padding',
   'd1.paddingX',
   'd1.paddingY',
@@ -6489,17 +6489,17 @@
         name: 'd1-system',
         type: 'component',
         value: (
-          'gridMarginX':(
-            index: 'gridMarginX',
-            name: '--d1-grid-marginX',
+          'layoutMarginX':(
+            index: 'layoutMarginX',
+            name: '--d1-layout-marginX',
             type: 'var',
-            value: 'var(--d1-grid-paddingX)',
+            value: 'var(--d1-layout-paddingX)',
           ),
-          'gridMarginY':(
-            index: 'gridMarginY',
-            name: '--d1-grid-marginY',
+          'layoutMarginY':(
+            index: 'layoutMarginY',
+            name: '--d1-layout-marginY',
             type: 'var',
-            value: 'var(--d1-grid-paddingY)',
+            value: 'var(--d1-layout-paddingY)',
           ),
           'fontFamily':(
             index: 'fontFamily',
@@ -6548,27 +6548,27 @@
             name: '(max-width: calc(768px - 1px))',
             type: 'media-max',
             value: (
-              'gridPaddingX':(
-                index: 'gridPaddingX',
-                name: '--d1-grid-paddingX',
+              'layoutPaddingX':(
+                index: 'layoutPaddingX',
+                name: '--d1-layout-paddingX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingX-md)',
               ),
-              'gridPaddingY':(
-                index: 'gridPaddingY',
-                name: '--d1-grid-paddingY',
+              'layoutPaddingY':(
+                index: 'layoutPaddingY',
+                name: '--d1-layout-paddingY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingY)',
               ),
-              'gridGapX':(
-                index: 'gridGapX',
-                name: '--d1-grid-gapX',
+              'layoutGapX':(
+                index: 'layoutGapX',
+                name: '--d1-layout-gapX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapX-md)',
               ),
-              'gridGapY':(
-                index: 'gridGapY',
-                name: '--d1-grid-gapY',
+              'layoutGapY':(
+                index: 'layoutGapY',
+                name: '--d1-layout-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-md)',
               ),
@@ -6579,27 +6579,27 @@
             name: '(min-width: 768px)',
             type: 'media',
             value: (
-              'gridPaddingX':(
-                index: 'gridPaddingX',
-                name: '--d1-grid-paddingX',
+              'layoutPaddingX':(
+                index: 'layoutPaddingX',
+                name: '--d1-layout-paddingX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingX-lg)',
               ),
-              'gridPaddingY':(
-                index: 'gridPaddingY',
-                name: '--d1-grid-paddingY',
+              'layoutPaddingY':(
+                index: 'layoutPaddingY',
+                name: '--d1-layout-paddingY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingY)',
               ),
-              'gridGapX':(
-                index: 'gridGapX',
-                name: '--d1-grid-gapX',
+              'layoutGapX':(
+                index: 'layoutGapX',
+                name: '--d1-layout-gapX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapX-lg)',
               ),
-              'gridGapY':(
-                index: 'gridGapY',
-                name: '--d1-grid-gapY',
+              'layoutGapY':(
+                index: 'layoutGapY',
+                name: '--d1-layout-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-lg)',
               ),
@@ -6610,9 +6610,9 @@
             name: '(min-width: 1024px)',
             type: 'media',
             value: (
-              'gridMarginX':(
-                index: 'gridMarginX',
-                name: '--d1-grid-marginX',
+              'layoutMarginX':(
+                index: 'layoutMarginX',
+                name: '--d1-layout-marginX',
                 type: 'var',
                 value: 0px,
               ),
@@ -6625,17 +6625,17 @@
         name: 'd1-main',
         type: 'component',
         value: (
-          'gridMarginX':(
-            index: 'gridMarginX',
-            name: '--d1-grid-marginX',
+          'layoutMarginX':(
+            index: 'layoutMarginX',
+            name: '--d1-layout-marginX',
             type: 'var',
-            value: 'var(--d1-grid-paddingX)',
+            value: 'var(--d1-layout-paddingX)',
           ),
-          'gridMarginY':(
-            index: 'gridMarginY',
-            name: '--d1-grid-marginY',
+          'layoutMarginY':(
+            index: 'layoutMarginY',
+            name: '--d1-layout-marginY',
             type: 'var',
-            value: 'var(--d1-grid-paddingY)',
+            value: 'var(--d1-layout-paddingY)',
           ),
           'fontFamily':(
             index: 'fontFamily',
@@ -6690,27 +6690,27 @@
             name: '(max-width: calc(768px - 1px))',
             type: 'media-max',
             value: (
-              'gridPaddingX':(
-                index: 'gridPaddingX',
-                name: '--d1-grid-paddingX',
+              'layoutPaddingX':(
+                index: 'layoutPaddingX',
+                name: '--d1-layout-paddingX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingX-md)',
               ),
-              'gridPaddingY':(
-                index: 'gridPaddingY',
-                name: '--d1-grid-paddingY',
+              'layoutPaddingY':(
+                index: 'layoutPaddingY',
+                name: '--d1-layout-paddingY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingY)',
               ),
-              'gridGapX':(
-                index: 'gridGapX',
-                name: '--d1-grid-gapX',
+              'layoutGapX':(
+                index: 'layoutGapX',
+                name: '--d1-layout-gapX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapX-md)',
               ),
-              'gridGapY':(
-                index: 'gridGapY',
-                name: '--d1-grid-gapY',
+              'layoutGapY':(
+                index: 'layoutGapY',
+                name: '--d1-layout-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-md)',
               ),
@@ -6721,27 +6721,27 @@
             name: '(min-width: 768px)',
             type: 'media',
             value: (
-              'gridPaddingX':(
-                index: 'gridPaddingX',
-                name: '--d1-grid-paddingX',
+              'layoutPaddingX':(
+                index: 'layoutPaddingX',
+                name: '--d1-layout-paddingX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingX-lg)',
               ),
-              'gridPaddingY':(
-                index: 'gridPaddingY',
-                name: '--d1-grid-paddingY',
+              'layoutPaddingY':(
+                index: 'layoutPaddingY',
+                name: '--d1-layout-paddingY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingY)',
               ),
-              'gridGapX':(
-                index: 'gridGapX',
-                name: '--d1-grid-gapX',
+              'layoutGapX':(
+                index: 'layoutGapX',
+                name: '--d1-layout-gapX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapX-lg)',
               ),
-              'gridGapY':(
-                index: 'gridGapY',
-                name: '--d1-grid-gapY',
+              'layoutGapY':(
+                index: 'layoutGapY',
+                name: '--d1-layout-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-lg)',
               ),
@@ -6752,9 +6752,9 @@
             name: '(min-width: 1024px)',
             type: 'media',
             value: (
-              'gridMarginX':(
-                index: 'gridMarginX',
-                name: '--d1-grid-marginX',
+              'layoutMarginX':(
+                index: 'layoutMarginX',
+                name: '--d1-layout-marginX',
                 type: 'var',
                 value: 0px,
               ),
@@ -9143,49 +9143,49 @@
           ),
         ),
       ),
-      'grid':(
-        index: 'grid',
-        name: 'd1-grid',
+      'layout':(
+        index: 'layout',
+        name: 'd1-layout',
         type: 'component',
         value: (
-          'gridMarginX':(
-            index: 'gridMarginX',
-            name: '--d1-grid-marginX',
+          'layoutMarginX':(
+            index: 'layoutMarginX',
+            name: '--d1-layout-marginX',
             type: 'var',
-            value: 'var(--d1-grid-paddingX)',
+            value: 'var(--d1-layout-paddingX)',
           ),
-          'gridMarginY':(
-            index: 'gridMarginY',
-            name: '--d1-grid-marginY',
+          'layoutMarginY':(
+            index: 'layoutMarginY',
+            name: '--d1-layout-marginY',
             type: 'var',
-            value: 'var(--d1-grid-paddingY)',
+            value: 'var(--d1-layout-paddingY)',
           ),
           'mediaMaxMd':(
             index: 'mediaMaxMd',
             name: '(max-width: calc(768px - 1px))',
             type: 'media-max',
             value: (
-              'gridPaddingX':(
-                index: 'gridPaddingX',
-                name: '--d1-grid-paddingX',
+              'layoutPaddingX':(
+                index: 'layoutPaddingX',
+                name: '--d1-layout-paddingX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingX-md)',
               ),
-              'gridPaddingY':(
-                index: 'gridPaddingY',
-                name: '--d1-grid-paddingY',
+              'layoutPaddingY':(
+                index: 'layoutPaddingY',
+                name: '--d1-layout-paddingY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingY)',
               ),
-              'gridGapX':(
-                index: 'gridGapX',
-                name: '--d1-grid-gapX',
+              'layoutGapX':(
+                index: 'layoutGapX',
+                name: '--d1-layout-gapX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapX-md)',
               ),
-              'gridGapY':(
-                index: 'gridGapY',
-                name: '--d1-grid-gapY',
+              'layoutGapY':(
+                index: 'layoutGapY',
+                name: '--d1-layout-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-md)',
               ),
@@ -9196,27 +9196,27 @@
             name: '(min-width: 768px)',
             type: 'media',
             value: (
-              'gridPaddingX':(
-                index: 'gridPaddingX',
-                name: '--d1-grid-paddingX',
+              'layoutPaddingX':(
+                index: 'layoutPaddingX',
+                name: '--d1-layout-paddingX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingX-lg)',
               ),
-              'gridPaddingY':(
-                index: 'gridPaddingY',
-                name: '--d1-grid-paddingY',
+              'layoutPaddingY':(
+                index: 'layoutPaddingY',
+                name: '--d1-layout-paddingY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-paddingY)',
               ),
-              'gridGapX':(
-                index: 'gridGapX',
-                name: '--d1-grid-gapX',
+              'layoutGapX':(
+                index: 'layoutGapX',
+                name: '--d1-layout-gapX',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapX-lg)',
               ),
-              'gridGapY':(
-                index: 'gridGapY',
-                name: '--d1-grid-gapY',
+              'layoutGapY':(
+                index: 'layoutGapY',
+                name: '--d1-layout-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-lg)',
               ),
@@ -9227,9 +9227,9 @@
             name: '(min-width: 1024px)',
             type: 'media',
             value: (
-              'gridMarginX':(
-                index: 'gridMarginX',
-                name: '--d1-grid-marginX',
+              'layoutMarginX':(
+                index: 'layoutMarginX',
+                name: '--d1-layout-marginX',
                 type: 'var',
                 value: 0px,
               ),
@@ -12131,6 +12131,11 @@
         name: 'd1-fieldMessage',
         type: 'component',
       ),
+      'grid':(
+        index: 'grid',
+        name: 'd1-grid',
+        type: 'component',
+      ),
       'gridItem':(
         index: 'gridItem',
         name: 'd1-gridItem',
@@ -12632,6 +12637,11 @@
       'fieldMessage':(
         index: 'fieldMessage',
         name: 'd-fieldMessage',
+        type: 'component',
+      ),
+      'grid':(
+        index: 'grid',
+        name: 'd-grid',
         type: 'component',
       ),
       'gridItem':(

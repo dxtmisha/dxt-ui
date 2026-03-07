@@ -90,7 +90,7 @@
     }
   },
   "~basic": {
-    "padding": "{grid.paddingX}",
+    "padding": "{layout.paddingX}",
     "border-opacity": "0",
     "background-opacity": "0",
     "backdrop-filter": "unset",

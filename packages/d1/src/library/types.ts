@@ -20,6 +20,7 @@ import _D1Field from '../components/Ui/Field/D1Field.vue'
 import _D1FieldCounter from '../components/Ui/FieldCounter/D1FieldCounter.vue'
 import _D1FieldLabel from '../components/Ui/FieldLabel/D1FieldLabel.vue'
 import _D1FieldMessage from '../components/Ui/FieldMessage/D1FieldMessage.vue'
+import _D1Grid from '../components/Ui/Grid/D1Grid.vue'
 import _D1GridItem from '../components/Ui/GridItem/D1GridItem.vue'
 import _D1HorizontalScroll from '../components/Ui/HorizontalScroll/D1HorizontalScroll.vue'
 import _D1Icon from '../components/Ui/Icon/D1Icon.vue'
@@ -71,6 +72,7 @@ declare module '@vue/runtime-core' {
     D1FieldCounter: typeof _D1FieldCounter
     D1FieldLabel: typeof _D1FieldLabel
     D1FieldMessage: typeof _D1FieldMessage
+    D1Grid: typeof _D1Grid
     D1GridItem: typeof _D1GridItem
     D1HorizontalScroll: typeof _D1HorizontalScroll
     D1Icon: typeof _D1Icon

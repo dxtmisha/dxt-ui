@@ -5338,37 +5338,37 @@
         "name": "d1-system",
         "type": "component",
         "value": {
-          "gridMarginX": {
-            "name": "--d1-grid-marginX",
+          "layoutMarginX": {
+            "name": "--d1-layout-marginX",
             "type": "var",
-            "value": "{?grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
-          "gridMarginY": {
-            "name": "--d1-grid-marginY",
+          "layoutMarginY": {
+            "name": "--d1-layout-marginY",
             "type": "var",
-            "value": "{?grid.paddingY}"
+            "value": "{layout.paddingY}"
           },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
             "type": "media-max",
             "value": {
-              "gridPaddingX": {
-                "name": "--d1-grid-paddingX",
+              "layoutPaddingX": {
+                "name": "--d1-layout-paddingX",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingX.md}"
               },
-              "gridPaddingY": {
-                "name": "--d1-grid-paddingY",
+              "layoutPaddingY": {
+                "name": "--d1-layout-paddingY",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingY}"
               },
-              "gridGapX": {
-                "name": "--d1-grid-gapX",
+              "layoutGapX": {
+                "name": "--d1-layout-gapX",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapX.md}"
               },
-              "gridGapY": {
-                "name": "--d1-grid-gapY",
+              "layoutGapY": {
+                "name": "--d1-layout-gapY",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapY.md}"
               }
@@ -5378,23 +5378,23 @@
             "name": "(min-width: 768px)",
             "type": "media",
             "value": {
-              "gridPaddingX": {
-                "name": "--d1-grid-paddingX",
+              "layoutPaddingX": {
+                "name": "--d1-layout-paddingX",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingX.lg}"
               },
-              "gridPaddingY": {
-                "name": "--d1-grid-paddingY",
+              "layoutPaddingY": {
+                "name": "--d1-layout-paddingY",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingY}"
               },
-              "gridGapX": {
-                "name": "--d1-grid-gapX",
+              "layoutGapX": {
+                "name": "--d1-layout-gapX",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapX.lg}"
               },
-              "gridGapY": {
-                "name": "--d1-grid-gapY",
+              "layoutGapY": {
+                "name": "--d1-layout-gapY",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapY.lg}"
               }
@@ -5404,8 +5404,8 @@
             "name": "(min-width: 1024px)",
             "type": "media",
             "value": {
-              "gridMarginX": {
-                "name": "--d1-grid-marginX",
+              "layoutMarginX": {
+                "name": "--d1-layout-marginX",
                 "type": "var",
                 "value": "0px"
               }
@@ -5417,37 +5417,37 @@
         "name": "d1-main",
         "type": "component",
         "value": {
-          "gridMarginX": {
-            "name": "--d1-grid-marginX",
+          "layoutMarginX": {
+            "name": "--d1-layout-marginX",
             "type": "var",
-            "value": "{?grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
-          "gridMarginY": {
-            "name": "--d1-grid-marginY",
+          "layoutMarginY": {
+            "name": "--d1-layout-marginY",
             "type": "var",
-            "value": "{?grid.paddingY}"
+            "value": "{layout.paddingY}"
           },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
             "type": "media-max",
             "value": {
-              "gridPaddingX": {
-                "name": "--d1-grid-paddingX",
+              "layoutPaddingX": {
+                "name": "--d1-layout-paddingX",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingX.md}"
               },
-              "gridPaddingY": {
-                "name": "--d1-grid-paddingY",
+              "layoutPaddingY": {
+                "name": "--d1-layout-paddingY",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingY}"
               },
-              "gridGapX": {
-                "name": "--d1-grid-gapX",
+              "layoutGapX": {
+                "name": "--d1-layout-gapX",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapX.md}"
               },
-              "gridGapY": {
-                "name": "--d1-grid-gapY",
+              "layoutGapY": {
+                "name": "--d1-layout-gapY",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapY.md}"
               }
@@ -5457,23 +5457,23 @@
             "name": "(min-width: 768px)",
             "type": "media",
             "value": {
-              "gridPaddingX": {
-                "name": "--d1-grid-paddingX",
+              "layoutPaddingX": {
+                "name": "--d1-layout-paddingX",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingX.lg}"
               },
-              "gridPaddingY": {
-                "name": "--d1-grid-paddingY",
+              "layoutPaddingY": {
+                "name": "--d1-layout-paddingY",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingY}"
               },
-              "gridGapX": {
-                "name": "--d1-grid-gapX",
+              "layoutGapX": {
+                "name": "--d1-layout-gapX",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapX.lg}"
               },
-              "gridGapY": {
-                "name": "--d1-grid-gapY",
+              "layoutGapY": {
+                "name": "--d1-layout-gapY",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapY.lg}"
               }
@@ -5483,8 +5483,8 @@
             "name": "(min-width: 1024px)",
             "type": "media",
             "value": {
-              "gridMarginX": {
-                "name": "--d1-grid-marginX",
+              "layoutMarginX": {
+                "name": "--d1-layout-marginX",
                 "type": "var",
                 "value": "0px"
               }
@@ -5492,41 +5492,41 @@
           }
         }
       },
-      "grid": {
-        "name": "d1-grid",
+      "layout": {
+        "name": "d1-layout",
         "type": "component",
         "value": {
-          "gridMarginX": {
-            "name": "--d1-grid-marginX",
+          "layoutMarginX": {
+            "name": "--d1-layout-marginX",
             "type": "var",
-            "value": "{?grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
-          "gridMarginY": {
-            "name": "--d1-grid-marginY",
+          "layoutMarginY": {
+            "name": "--d1-layout-marginY",
             "type": "var",
-            "value": "{?grid.paddingY}"
+            "value": "{layout.paddingY}"
           },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
             "type": "media-max",
             "value": {
-              "gridPaddingX": {
-                "name": "--d1-grid-paddingX",
+              "layoutPaddingX": {
+                "name": "--d1-layout-paddingX",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingX.md}"
               },
-              "gridPaddingY": {
-                "name": "--d1-grid-paddingY",
+              "layoutPaddingY": {
+                "name": "--d1-layout-paddingY",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingY}"
               },
-              "gridGapX": {
-                "name": "--d1-grid-gapX",
+              "layoutGapX": {
+                "name": "--d1-layout-gapX",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapX.md}"
               },
-              "gridGapY": {
-                "name": "--d1-grid-gapY",
+              "layoutGapY": {
+                "name": "--d1-layout-gapY",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapY.md}"
               }
@@ -5536,23 +5536,23 @@
             "name": "(min-width: 768px)",
             "type": "media",
             "value": {
-              "gridPaddingX": {
-                "name": "--d1-grid-paddingX",
+              "layoutPaddingX": {
+                "name": "--d1-layout-paddingX",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingX.lg}"
               },
-              "gridPaddingY": {
-                "name": "--d1-grid-paddingY",
+              "layoutPaddingY": {
+                "name": "--d1-layout-paddingY",
                 "type": "var",
                 "value": "{sys.spacing.grid.paddingY}"
               },
-              "gridGapX": {
-                "name": "--d1-grid-gapX",
+              "layoutGapX": {
+                "name": "--d1-layout-gapX",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapX.lg}"
               },
-              "gridGapY": {
-                "name": "--d1-grid-gapY",
+              "layoutGapY": {
+                "name": "--d1-layout-gapY",
                 "type": "var",
                 "value": "{sys.spacing.grid.gapY.lg}"
               }
@@ -5562,8 +5562,8 @@
             "name": "(min-width: 1024px)",
             "type": "media",
             "value": {
-              "gridMarginX": {
-                "name": "--d1-grid-marginX",
+              "layoutMarginX": {
+                "name": "--d1-layout-marginX",
                 "type": "var",
                 "value": "0px"
               }
@@ -7189,12 +7189,12 @@
           "paddingX": {
             "name": "--d1-actionSheet-paddingX",
             "type": "var",
-            "value": "{grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
           "paddingY": {
             "name": "--d1-actionSheet-paddingY",
             "type": "var",
-            "value": "{grid.paddingY}"
+            "value": "{layout.paddingY}"
           },
           "width": {
             "name": "&--width",
@@ -8577,12 +8577,12 @@
           "paddingX": {
             "name": "--d1-dialog-paddingX",
             "type": "var",
-            "value": "{grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
           "paddingY": {
             "name": "--d1-dialog-paddingY",
             "type": "var",
-            "value": "{grid.paddingY}"
+            "value": "{layout.paddingY}"
           },
           "width": {
             "name": "&--width",
@@ -8756,7 +8756,7 @@
               "padding": {
                 "name": "--d1-field-padding",
                 "type": "var",
-                "value": "{grid.paddingX}"
+                "value": "{layout.paddingX}"
               }
             }
           },
@@ -8836,6 +8836,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "grid": {
+        "name": "d1-grid",
+        "type": "component",
+        "value": {
+          "columns": {
+            "name": "--d1-grid-columns",
+            "type": "var",
+            "value": "12"
           }
         }
       },
@@ -9077,7 +9088,7 @@
           "paddingX": {
             "name": "--d1-listItem-paddingX",
             "type": "var",
-            "value": "{grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
           "paddingY": {
             "name": "--d1-listItem-paddingY",
@@ -9321,12 +9332,12 @@
           "paddingX": {
             "name": "--d1-modal-paddingX",
             "type": "var",
-            "value": "{grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
           "paddingY": {
             "name": "--d1-modal-paddingY",
             "type": "var",
-            "value": "{grid.paddingY}"
+            "value": "{layout.paddingY}"
           },
           "width": {
             "name": "&--width",
@@ -9707,7 +9718,7 @@
           "paddingX": {
             "name": "--d1-tabItem-paddingX",
             "type": "var",
-            "value": "{grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
           "paddingY": {
             "name": "--d1-tabItem-paddingY",
@@ -9843,7 +9854,7 @@
           "padding": {
             "name": "--d1-window-padding",
             "type": "var",
-            "value": "{grid.paddingX}"
+            "value": "{layout.paddingX}"
           },
           "backgroundColor": {
             "name": "--d1-window-backgroundColor",
@@ -10786,6 +10797,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "grid": {
+        "name": "d-grid",
+        "type": "component",
+        "value": {
+          "columns": {
+            "name": "--d-grid-columns",
+            "type": "var",
+            "value": "12"
           }
         }
       },

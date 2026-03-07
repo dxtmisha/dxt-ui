@@ -11,8 +11,8 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-actionSheet-paddingX: var(--d1-grid-paddingX);
-    --d1-actionSheet-paddingY: var(--d1-grid-paddingY);
+    --d1-actionSheet-paddingX: var(--d1-layout-paddingX);
+    --d1-actionSheet-paddingY: var(--d1-layout-paddingY);
     
     &__footer {
       gap: var(--d1-sys-spacing-xs);

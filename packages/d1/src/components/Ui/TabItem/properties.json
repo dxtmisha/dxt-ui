@@ -1,6 +1,6 @@
 {
   "main": "{d.tabItem}",
-  "paddingX": "{grid.paddingX}",
+  "paddingX": "{layout.paddingX}",
   "paddingY": "{sys.spacing.xs}",
   "indicator": {
     "height": "{sys.spacing.x}"

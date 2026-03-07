@@ -16,8 +16,8 @@
     --d1-accordion-borderOpacity: var(--d1-sys-opacity-outline);
     
     &__body {
-      @include ui.paddingX(#{var(--d1-grid-paddingX)});
-      @include ui.paddingY(#{var(--d1-grid-paddingY)});
+      @include ui.paddingX(#{var(--d1-layout-paddingX)});
+      @include ui.paddingY(#{var(--d1-layout-paddingY)});
     }
   }
   // :style [!] System label / Системная метка

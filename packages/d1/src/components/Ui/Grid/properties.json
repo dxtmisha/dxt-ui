@@ -1,0 +1,5 @@
+{
+  "main": "{d.grid}",
+  "column-gap": "{layout.gapX}",
+  "row-gap": "{layout.gapY}"
+}

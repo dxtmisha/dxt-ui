@@ -11,7 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-tabItem-paddingX: var(--d1-grid-paddingX);
+    --d1-tabItem-paddingX: var(--d1-layout-paddingX);
     --d1-tabItem-paddingY: var(--d1-sys-spacing-xs);
     --d1-tabItem-indicator-height: var(--d1-sys-spacing-x);
     --d1-tabItem-transitionFunction: var(--d-sys-transitionFunction-standard);

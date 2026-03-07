@@ -1,8 +1,8 @@
 @use "@dxtmisha/styles" as ui;
 
 .d1-system {
-  --d1-grid-marginX: var(--d1-grid-paddingX);
-  --d1-grid-marginY: var(--d1-grid-paddingY);
+  --d1-layout-marginX: var(--d1-layout-paddingX);
+  --d1-layout-marginY: var(--d1-layout-paddingY);
   
   font-family: var(--d1-sys-font-family-basic), sans-serif;
   @include ui.fontSize(#{var(--d1-sys-font-size-md)});
@@ -14,20 +14,20 @@
   @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
   
   @media screen and (max-width: calc(768px - 1px)) {
-    --d1-grid-paddingX: var(--d1-sys-spacing-grid-paddingX-md);
-    --d1-grid-paddingY: var(--d1-sys-spacing-grid-paddingY);
-    --d1-grid-gapX: var(--d1-sys-spacing-grid-gapX-md);
-    --d1-grid-gapY: var(--d1-sys-spacing-grid-gapY-md);
+    --d1-layout-paddingX: var(--d1-sys-spacing-grid-paddingX-md);
+    --d1-layout-paddingY: var(--d1-sys-spacing-grid-paddingY);
+    --d1-layout-gapX: var(--d1-sys-spacing-grid-gapX-md);
+    --d1-layout-gapY: var(--d1-sys-spacing-grid-gapY-md);
   }
   
   @media screen and (min-width: 768px) {
-    --d1-grid-paddingX: var(--d1-sys-spacing-grid-paddingX-lg);
-    --d1-grid-paddingY: var(--d1-sys-spacing-grid-paddingY);
-    --d1-grid-gapX: var(--d1-sys-spacing-grid-gapX-lg);
-    --d1-grid-gapY: var(--d1-sys-spacing-grid-gapY-lg);
+    --d1-layout-paddingX: var(--d1-sys-spacing-grid-paddingX-lg);
+    --d1-layout-paddingY: var(--d1-sys-spacing-grid-paddingY);
+    --d1-layout-gapX: var(--d1-sys-spacing-grid-gapX-lg);
+    --d1-layout-gapY: var(--d1-sys-spacing-grid-gapY-lg);
   }
   
   @media screen and (min-width: 1024px) {
-    --d1-grid-marginX: 0px;
+    --d1-layout-marginX: 0px;
   }
 }

@@ -5,8 +5,8 @@
     "link|padding": "{?cell.padding}"
   },
   "~paddingByIndent": {
-    "paddingX": "{grid.paddingX}",
-    "paddingY": "{grid.paddingY}",
+    "paddingX": "{layout.paddingX}",
+    "paddingY": "{layout.paddingY}",
     "_default": true
   }
 }

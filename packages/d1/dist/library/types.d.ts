@@ -12,10 +12,13 @@ import { default as _D1Checkbox } from '../components/Ui/Checkbox/D1Checkbox.vue
 import { default as _D1Chip } from '../components/Ui/Chip/D1Chip.vue';
 import { default as _D1ChipGroup } from '../components/Ui/ChipGroup/D1ChipGroup.vue';
 import { default as _D1Dialog } from '../components/Ui/Dialog/D1Dialog.vue';
+import { default as _D1Dummy } from '../components/Ui/Dummy/D1Dummy.vue';
 import { default as _D1Field } from '../components/Ui/Field/D1Field.vue';
 import { default as _D1FieldCounter } from '../components/Ui/FieldCounter/D1FieldCounter.vue';
 import { default as _D1FieldLabel } from '../components/Ui/FieldLabel/D1FieldLabel.vue';
 import { default as _D1FieldMessage } from '../components/Ui/FieldMessage/D1FieldMessage.vue';
+import { default as _D1Grid } from '../components/Ui/Grid/D1Grid.vue';
+import { default as _D1GridItem } from '../components/Ui/GridItem/D1GridItem.vue';
 import { default as _D1HorizontalScroll } from '../components/Ui/HorizontalScroll/D1HorizontalScroll.vue';
 import { default as _D1Icon } from '../components/Ui/Icon/D1Icon.vue';
 import { default as _D1Image } from '../components/Ui/Image/D1Image.vue';
@@ -60,10 +63,13 @@ declare module '@vue/runtime-core' {
         D1Chip: typeof _D1Chip;
         D1ChipGroup: typeof _D1ChipGroup;
         D1Dialog: typeof _D1Dialog;
+        D1Dummy: typeof _D1Dummy;
         D1Field: typeof _D1Field;
         D1FieldCounter: typeof _D1FieldCounter;
         D1FieldLabel: typeof _D1FieldLabel;
         D1FieldMessage: typeof _D1FieldMessage;
+        D1Grid: typeof _D1Grid;
+        D1GridItem: typeof _D1GridItem;
         D1HorizontalScroll: typeof _D1HorizontalScroll;
         D1Icon: typeof _D1Icon;
         D1Image: typeof _D1Image;

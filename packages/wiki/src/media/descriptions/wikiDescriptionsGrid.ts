@@ -24,6 +24,22 @@ export const wikiDescriptionsGrid: StorybookComponentsDescriptionItem = {
     ]
   },
   import: [],
+  render: `
+    <DesignComponent>
+        <div
+          class="wiki-storybook-dummy wiki-storybook-dummy--color--blue wiki-storybook-dummy--size--sm"
+          style="grid-column: span 2;"
+        />
+        <div
+          class="wiki-storybook-dummy wiki-storybook-dummy--color--red wiki-storybook-dummy--size--sm"
+          style="grid-column: span 4;"
+        />
+        <div
+          class="wiki-storybook-dummy wiki-storybook-dummy--color--green wiki-storybook-dummy--size--sm"
+          style="grid-column: span 6;"
+        />
+    </DesignComponent>
+  `,
   stories: [],
   documentation: {
     body: `

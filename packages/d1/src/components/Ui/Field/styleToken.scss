@@ -137,7 +137,7 @@
     }
     
     &--basic {
-      --d1-field-padding: var(--d1-grid-paddingX);
+      --d1-field-padding: var(--d1-layout-paddingX);
       --d1-field-borderOpacity: 0;
       
       @include ui.backgroundOpacity(#{0}); @include ui.backgroundColor('init');

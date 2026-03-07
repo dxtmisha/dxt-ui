@@ -4,7 +4,7 @@
   "border-color": "{sys.palette.outline}",
   "border-opacity": "{sys.opacity.outline}",
   "#body": {
-    "paddingX": "{grid.paddingX}",
-    "paddingY": "{grid.paddingY}"
+    "paddingX": "{layout.paddingX}",
+    "paddingY": "{layout.paddingY}"
   }
 }

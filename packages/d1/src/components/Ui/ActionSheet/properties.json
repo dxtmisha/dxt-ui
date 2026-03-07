@@ -1,7 +1,7 @@
 {
   "main": "{d.actionSheet}",
-  "paddingX": "{grid.paddingX}",
-  "paddingY": "{grid.paddingY}",
+  "paddingX": "{layout.paddingX}",
+  "paddingY": "{layout.paddingY}",
   "#footer": {
     "gap": "{sys.spacing.xs}"
   },

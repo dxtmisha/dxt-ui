@@ -1,0 +1,24 @@
+@use "@dxtmisha/styles" as ui;
+
+.d1-layout {
+  --d1-layout-marginX: var(--d1-layout-paddingX);
+  --d1-layout-marginY: var(--d1-layout-paddingY);
+  
+  @media screen and (max-width: calc(768px - 1px)) {
+    --d1-layout-paddingX: var(--d1-sys-spacing-grid-paddingX-md);
+    --d1-layout-paddingY: var(--d1-sys-spacing-grid-paddingY);
+    --d1-layout-gapX: var(--d1-sys-spacing-grid-gapX-md);
+    --d1-layout-gapY: var(--d1-sys-spacing-grid-gapY-md);
+  }
+  
+  @media screen and (min-width: 768px) {
+    --d1-layout-paddingX: var(--d1-sys-spacing-grid-paddingX-lg);
+    --d1-layout-paddingY: var(--d1-sys-spacing-grid-paddingY);
+    --d1-layout-gapX: var(--d1-sys-spacing-grid-gapX-lg);
+    --d1-layout-gapY: var(--d1-sys-spacing-grid-gapY-lg);
+  }
+  
+  @media screen and (min-width: 1024px) {
+    --d1-layout-marginX: 0px;
+  }
+}

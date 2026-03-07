@@ -2856,6 +2856,33 @@
           ]
         },
         {
+          "name": "D1Dummy",
+          "description": "A placeholder component used for structural presentation or testing",
+          "source": {
+            "module": "@dxtmisha/d1/D1Dummy",
+            "symbol": "D1Dummy"
+          },
+          "attributes": [
+            {
+              "name": "palette",
+              "description": "Sets a color palette for the element",
+              "value": {
+                "kind": "expression",
+                "type": "red | orange | amber | yellow | lime | green | emerald | teal | cyan | sky | blue | indigo | violet | purple | fuchsia | pink | rose | slate | gray | zinc | neutral | stone | black | white"
+              }
+            },
+            {
+              "name": "size",
+              "description": "Sets component size",
+              "default": "md",
+              "value": {
+                "kind": "expression",
+                "type": "x | xs | sm | md | lg | xl | 2xl | 3xl | 4xl | 5xl"
+              }
+            }
+          ]
+        },
+        {
           "name": "D1Field",
           "description": "Base container for form controls that composes label, messages, counter, icons and progress",
           "source": {
@@ -3736,6 +3763,74 @@
               "value": {
                 "kind": "expression",
                 "type": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "D1Grid",
+          "description": "Layout component for creating grid structures with customizable columns",
+          "source": {
+            "module": "@dxtmisha/d1/D1Grid",
+            "symbol": "D1Grid"
+          },
+          "attributes": []
+        },
+        {
+          "name": "D1GridItem",
+          "description": "Individual item within a Grid component",
+          "source": {
+            "module": "@dxtmisha/d1/D1GridItem",
+            "symbol": "D1GridItem"
+          },
+          "attributes": [
+            {
+              "name": "base",
+              "description": "Number of columns to span by default",
+              "default": "1",
+              "value": {
+                "kind": "expression",
+                "type": "1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12"
+              }
+            },
+            {
+              "name": "lg",
+              "description": "Number of columns to span on large screens (media: lg)",
+              "value": {
+                "kind": "expression",
+                "type": "1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12"
+              }
+            },
+            {
+              "name": "md",
+              "description": "Number of columns to span on medium screens (media: md)",
+              "value": {
+                "kind": "expression",
+                "type": "1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12"
+              }
+            },
+            {
+              "name": "sm",
+              "description": "Number of columns to span on small screens (media: sm)",
+              "value": {
+                "kind": "expression",
+                "type": "1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12"
+              }
+            },
+            {
+              "name": "xl",
+              "description": "Number of columns to span on extra large screens (media: xl)",
+              "value": {
+                "kind": "expression",
+                "type": "1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12"
+              }
+            },
+            {
+              "name": "xl2",
+              "description": "Number of columns to span on 2xl screens (media: 2xl)",
+              "value": {
+                "kind": "expression",
+                "type": "1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12"
               }
             }
           ]

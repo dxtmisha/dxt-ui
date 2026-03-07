@@ -1,4 +1,4 @@
-const e = "d1", a = "@dxtmisha/d1", d = /((d1|dd)-?(accordion|action-?sheet|actions|anchor|arrow|badge|bars|block|button|cell|checkbox|chip|chip-?group|dialog|field|field-?counter|field-?label|field-?message|horizontal-?scroll|icon|image|input|list|list-?group|list-?item|list-?menu|mask|menu|modal|motion-?axis|motion-?transform|page|progress|ripple|scrollbar|section|select|select-?value|skeleton|tab-?item|tabs|tabs-?navigation|textarea|textarea-?autosize|tooltip|window))(?![\w-])/ig, i = /(?<=var\(--)(ref-blur|ref-font-family|ref-font-size|ref-font-weight|ref-index|ref-letterSpacing|ref-lineHeight|ref-opacity|ref-palette-red|ref-palette-orange|ref-palette-amber|ref-palette-yellow|ref-palette-lime|ref-palette-green|ref-palette-emerald|ref-palette-teal|ref-palette-cyan|ref-palette-sky|ref-palette-blue|ref-palette-indigo|ref-palette-violet|ref-palette-purple|ref-palette-fuchsia|ref-palette-pink|ref-palette-rose|ref-palette-slate|ref-palette-gray|ref-palette-zinc|ref-palette-neutral|ref-palette-stone|ref-palette-black|ref-palette-white|ref-screen|ref-shade|ref-shadow|ref-shadow-dark|ref-spacing|sys-background|sys-blur|sys-font-family|sys-font-size|sys-font-weight|sys-index|sys-letterSpacing|sys-lineHeight|sys-opacity|sys-opacity-primary|sys-opacity-surface|sys-palette|sys-rounded|sys-rounded-adaptive|sys-shade|sys-shade-dark|sys-shadow|sys-spacing|sys-spacing-grid-paddingX|sys-spacing-grid|sys-spacing-grid-gapX|sys-spacing-grid-gapY|sys-spacing-block|sys-spacing-size|sys-spacing-adaptive)/ig, t = [
+const e = "d1", d = "@dxtmisha/d1", a = /((d1|dd)-?(accordion|action-?sheet|actions|anchor|arrow|badge|bars|block|button|cell|checkbox|chip|chip-?group|dialog|dummy|field|field-?counter|field-?label|field-?message|grid|grid-?item|horizontal-?scroll|icon|image|input|list|list-?group|list-?item|list-?menu|mask|menu|modal|motion-?axis|motion-?transform|page|progress|ripple|scrollbar|section|select|select-?value|skeleton|tab-?item|tabs|tabs-?navigation|textarea|textarea-?autosize|tooltip|window))(?![\w-])/ig, i = /(?<=var\(--)(ref-blur|ref-font-family|ref-font-size|ref-font-weight|ref-index|ref-letterSpacing|ref-lineHeight|ref-opacity|ref-palette-red|ref-palette-orange|ref-palette-amber|ref-palette-yellow|ref-palette-lime|ref-palette-green|ref-palette-emerald|ref-palette-teal|ref-palette-cyan|ref-palette-sky|ref-palette-blue|ref-palette-indigo|ref-palette-violet|ref-palette-purple|ref-palette-fuchsia|ref-palette-pink|ref-palette-rose|ref-palette-slate|ref-palette-gray|ref-palette-zinc|ref-palette-neutral|ref-palette-stone|ref-palette-black|ref-palette-white|ref-screen|ref-shade|ref-shadow|ref-shadow-dark|ref-spacing|sys-background|sys-blur|sys-font-family|sys-font-size|sys-font-weight|sys-index|sys-letterSpacing|sys-lineHeight|sys-opacity|sys-opacity-primary|sys-opacity-surface|sys-palette|sys-rounded|sys-rounded-adaptive|sys-shade|sys-shade-dark|sys-shadow|sys-spacing|sys-spacing-grid-paddingX|sys-spacing-grid|sys-spacing-grid-gapX|sys-spacing-grid-gapY|sys-spacing-block|sys-spacing-size|sys-spacing-adaptive)/ig, t = [
   {
     name: "D1Accordion",
     reg: /^((d1|dd)-?(accordion))$/ig
@@ -56,6 +56,10 @@ const e = "d1", a = "@dxtmisha/d1", d = /((d1|dd)-?(accordion|action-?sheet|acti
     reg: /^((d1|dd)-?(dialog))$/ig
   },
   {
+    name: "D1Dummy",
+    reg: /^((d1|dd)-?(dummy))$/ig
+  },
+  {
     name: "D1Field",
     reg: /^((d1|dd)-?(field))$/ig
   },
@@ -70,6 +74,14 @@ const e = "d1", a = "@dxtmisha/d1", d = /((d1|dd)-?(accordion|action-?sheet|acti
   {
     name: "D1FieldMessage",
     reg: /^((d1|dd)-?(field-?message))$/ig
+  },
+  {
+    name: "D1Grid",
+    reg: /^((d1|dd)-?(grid))$/ig
+  },
+  {
+    name: "D1GridItem",
+    reg: /^((d1|dd)-?(grid-?item))$/ig
   },
   {
     name: "D1HorizontalScroll",
@@ -186,8 +198,8 @@ const e = "d1", a = "@dxtmisha/d1", d = /((d1|dd)-?(accordion|action-?sheet|acti
 ];
 export {
   t as componentsList,
-  d as componentsReg,
+  a as componentsReg,
   e as designName,
-  a as packageName,
+  d as packageName,
   i as styleVarsReg
 };

@@ -12,7 +12,7 @@
   // :style [!] System label / Системная метка
   & {
     &__slide {
-      @include ui.paddingY(#{var(--d1-grid-paddingY)});
+      @include ui.paddingY(#{var(--d1-layout-paddingY)});
     }
   }
   // :style [!] System label / Системная метка

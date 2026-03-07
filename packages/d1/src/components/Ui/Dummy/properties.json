@@ -1,7 +1,7 @@
 {
   "main": "{d.dummy}",
-  "paddingX": "{grid.paddingX}",
-  "paddingY": "{grid.paddingY}",
+  "paddingX": "{layout.paddingX}",
+  "paddingY": "{layout.paddingY}",
   "palette-background": "{sys.palette.primary}",
   "background-opacity": "{sys.opacity.overlay}",
   "border-radius": "{sys.rounded.lg}",

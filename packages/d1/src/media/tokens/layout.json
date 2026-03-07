@@ -1,50 +1,50 @@
 {
-  "=?grid-marginX": {
-    "value": "{?grid.paddingX}",
+  "=?layout-marginX": {
+    "value": "{layout.paddingX}",
     "_type": "var"
   },
-  "=?grid-marginY": {
-    "value": "{?grid.paddingY}",
+  "=?layout-marginY": {
+    "value": "{layout.paddingY}",
     "_type": "var"
   },
   "media-max|md": {
-    "=?grid-paddingX": {
+    "=?layout-paddingX": {
       "value": "{sys.spacing.grid.paddingX.md}",
       "_type": "var"
     },
-    "=?grid-paddingY": {
+    "=?layout-paddingY": {
       "value": "{sys.spacing.grid.paddingY}",
       "_type": "var"
     },
-    "=?grid-gapX": {
+    "=?layout-gapX": {
       "value": "{sys.spacing.grid.gapX.md}",
       "_type": "var"
     },
-    "=?grid-gapY": {
+    "=?layout-gapY": {
       "value": "{sys.spacing.grid.gapY.md}",
       "_type": "var"
     }
   },
   "media|md": {
-    "=?grid-paddingX": {
+    "=?layout-paddingX": {
       "value": "{sys.spacing.grid.paddingX.lg}",
       "_type": "var"
     },
-    "=?grid-paddingY": {
+    "=?layout-paddingY": {
       "value": "{sys.spacing.grid.paddingY}",
       "_type": "var"
     },
-    "=?grid-gapX": {
+    "=?layout-gapX": {
       "value": "{sys.spacing.grid.gapX.lg}",
       "_type": "var"
     },
-    "=?grid-gapY": {
+    "=?layout-gapY": {
       "value": "{sys.spacing.grid.gapY.lg}",
       "_type": "var"
     }
   },
   "media|lg": {
-    "=?grid-marginX": {
+    "=?layout-marginX": {
       "value": "0px",
       "_type": "var"
     }

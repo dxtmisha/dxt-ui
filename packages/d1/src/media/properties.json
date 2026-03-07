@@ -27,14 +27,14 @@
     "_category": "root"
   },
   "system": {
-    "grid": "{grid}",
+    "layout": "{layout}",
     "font": "{font.bodyLarge}",
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.high}",
     "_category": "class"
   },
   "main": {
-    "grid": "{grid}",
+    "layout": "{layout}",
     "font": "{font.bodyLarge}",
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.high}",
@@ -71,9 +71,9 @@
     },
     "_category": "class"
   },
-  "grid": {
+  "layout": {
     "value": {
-      "file|grid": "tokens/grid.json"
+      "file|layout": "tokens/layout.json"
     },
     "_category": "class"
   },
