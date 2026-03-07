@@ -4,102 +4,107 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `executeUse`
 
-`executeUse` is a factory that wraps any initializer function and turns its result into a **managed singleton**. The object is created exactly once, frozen (`Object.freeze`), and reused on every subsequent call. Depending on the parameters, the singleton can be:
-
-- **Component-scoped** — shared via Vue `provide/inject` within a component subtree.
-- **Global** — a single instance shared across the entire application.
-- **Local** — a single instance within the `executeUse` closure, without `provide/inject`.
+`executeUse` is a factory that wraps any initializer function and turns its result into a **managed singleton**. The object is created exactly once, frozen (`Object.freeze`), and reused on every subsequent call. Depending on the selected type, the singleton can be component-scoped, global, or local.
 
 To ensure unique identifiers, a combination of an internal global code and the `getElementId()` function is used, guaranteeing no collisions even when used across different modules.
+
+
 
 ## Signature
 
 ```typescript
-function executeUse<R, O extends any[], RI>(
+function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R>>(
   callback: (...args: O) => R,
-  options: {
-    type?: 'global' | 'provide' | 'local'
-    unmounted?: boolean
-  } = {}
+  type: ExecuteUseType = ExecuteUseType.provide
 ): ((...args: O) => RI) | (() => RI)
+
+function executeUseGlobal<R>(callback: () => R): () => ExecuteUseReturn<R>
+function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): (() => ExecuteUseReturn<R>) | ((...args: O) => ExecuteUseReturn<R>)
+function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): () => ExecuteUseReturn<R>
 ```
 
 **Parameters:**
-- `callback: (...args: O) => R` — The initializer function. Called on the first access and returns an object that will be frozen and cached.
-- `options.type: 'global' | 'provide' | 'local'` — The type of singleton:
-    - `'provide'` (default) — Shared via Vue `provide/inject`.
-    - `'global'` — Process-wide singleton.
-    - `'local'` — Closure-local singleton.
-- `options.unmounted: boolean` — If `true` (default), the cache is cleared when the component is unmounted. Ignored for global singletons.
+- `callback: (...args: O) => R` — The initializer function. Called on the first access and returns an object that will be frozen and cached. Arguments are passed only on the first call.
+- `type: ExecuteUseType` — The type of singleton (default: `ExecuteUseType.provide`).
 
-**Returns:**
-A function that, when called, returns `RI` — a frozen object extended with an `init()` method.
+**Returns:** `ExecuteUseReturn<R>` — a frozen object extending `R` with the following methods:
+- `init(): Readonly<R>` — returns the raw result of `callback` without any management methods (`init`, `destroyExecute`).
+- `destroyExecute?(): void` — only on `local` and `global`. Resets the cache, allowing the object to be re-created on the next call.
 
-### The `init()` method
+## The `ExecuteUseType` Enum
 
-Every object returned by `executeUse` contains an `init()` method. In the current implementation, this is a **structural marker** (dummy method) that returns the raw result of the `callback` (without the `init` method itself). It allows developers to explicitly document the initialization point in the code and access clean data without management wrappers.
+### `provide` (default)
 
-## Modes of Operation
-
-### 1. Component-scoped singleton (default)
-
-Ideal for state that should be shared within a component subtree. The first component that calls the function becomes the "owner" and performs `provide`. All nested components receive the same instance via `inject`.
+Ideal for state that should be shared within a component subtree. The first component that calls the function becomes the "owner": it performs `provide(id, instance)`. All nested components receive the same instance via `inject(id)`. If no injected value is found in the current component, a new instance is created and `provide` is called. Component-scoped singletons do not have a `destroyExecute()` method — their lifecycle is managed by Vue.
 
 ```typescript
-import { executeUse } from '@dxtmisha/functional'
+import { executeUseProvide } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const useTheme = executeUse(() => {
+const useTheme = executeUseProvide(() => {
   const mode = ref<'light' | 'dark'>('light')
   const toggle = () => { mode.value = mode.value === 'light' ? 'dark' : 'light' }
   return { mode, toggle }
 })
-
-// In the parent component:
+```
+// Parent component — creates provide:
 const theme = useTheme()
 theme.toggle()
 
-// In a child component:
+// Child component — receives the same object via inject:
 const theme = useTheme()
-// theme is the exact same object as in the parent
+
+// Independent component outside the tree — a new instance is created:
+const theme = useTheme()
 ```
 
-### 2. Global singleton (`isGlobal=true`)
+### `global`
 
-One instance for the entire application. The instance is initialized when `executeUseGlobalInit()` is called (typically at app startup). After initialization, all subsequent calls return the same cached object.
+A single instance for the entire application. When using `executeUseGlobal`, the initializer is **not called immediately** — it is added to an internal queue. All global singletons are initialized when `executeUseGlobalInit()` is explicitly called, which is typically placed in `main.ts before mounting the app. Afterwards the queue is cleared, and all subsequent calls return the cached object.
 
 ```typescript
-import { executeUse, executeUseGlobalInit } from '@dxtmisha/functional'
+import { executeUseGlobal, executeUseGlobalInit } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const useAuth = executeUse(() => {
+const useAuth = executeUseGlobal(() => {
   const user = ref<string | null>(null)
   const login = (name: string) => { user.value = name }
   const logout = () => { user.value = null }
   return { user, login, logout }
-}, { type: 'global', unmounted: false }) // type='global', unmounted=false
-
-// At app startup (main.ts):
+})
+```
+// In main.ts — before mounting the app:
 executeUseGlobalInit()
 
 // In any component:
 const auth = useAuth()
 auth.login('Alice')
+auth.destroyExecute?.() // Force reset the cache when needed
 ```
 
-### 3. Local singleton (`isProvide=false`)
+### `local`
 
-The cache lives in the `executeUse` closure. Does not use `provide/inject`. Suitable when you need a single instance but without coupling to the component tree.
+The cache lives in a closure. Does not use `provide/inject`. Suitable when you need a single instance without coupling to the Vue component tree. On the first call, the initializer is called with the provided arguments, the result is frozen and stored — on all subsequent calls, arguments are ignored and the same object is returned. The `destroyExecute()` method resets the cache, allowing the object to be re-created on the next call.
 
 ```typescript
-const useCounter = executeUse(() => {
-  const count = ref(0)
-  return { count }
-}, { type: 'local', unmounted: true }) // type='local', unmounted=true
+import { executeUseLocal } from '@dxtmisha/functional'
+import { ref } from 'vue'
 
-// First call initializes the object
+const useCounter = executeUseLocal(() => {
+  const count = ref(0)
+  const increment = () => count.value++
+  return { count, increment }
+})
+```
 const counter = useCounter()
-// All subsequent calls return the same instance
+counter.increment()
+console.log(counter.count.value) // 1
+
+const same = useCounter() // same object
+console.log(same === counter) // true
+
+counter.destroyExecute?.()
+const fresh = useCounter() // new object, count is 0 again
 ```
 
 ## `executeUseGlobalInit`
@@ -108,7 +113,7 @@ const counter = useCounter()
 function executeUseGlobalInit(): void
 ```
 
-Calls all registered global methods (created with `isGlobal=true`). Should be called once at application startup — typically in `main.ts` before mounting the root component.
+Calls all registered global initializers (`ExecuteUseType.global`) and clears the queue. Calling it again does not re-initialize already created singletons. Should be called **once** at app startup — before mounting the root component.
 
 ```typescript
 import { createApp } from 'vue'
@@ -119,26 +124,3 @@ executeUseGlobalInit()
 createApp(App).mount('#app')
 ```
 
-## Real-world example: `useMeta`
-
-In the library, `useMeta` — a composable for managing meta tags — is implemented as a global singleton using `executeUse`:
-
-```typescript
-const item = executeUse(() => {
-  const title = ref<string>('')
-  const description = ref<string>('')
-  // ... other fields
-
-  return { title, description, ... }
-}, { type: 'global', unmounted: false }) // type='global', unmounted=false
-
-export const useMeta = () => item()
-```
-
-This guarantees that all components work with the same meta tag state.
-
-## Unmount behavior
-
-By default (`unmounted: true`), the cache is cleared when the component that initialized the singleton is unmounted. In Vue, destroying a parent component automatically destroys all child components, so using `provide/inject` remains safe — the cache will not contain stale references to destroyed elements. To keep the object alive for the entire duration of the application, pass `unmounted: false`.
-
-> **Important:** Global singletons (`type: 'global'`) **always** ignore the `unmounted` parameter. They are typically initialized outside the component lifecycle (e.g., in `main.ts`) and persist until the application is reloaded.
