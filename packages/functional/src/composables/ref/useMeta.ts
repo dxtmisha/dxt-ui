@@ -1,14 +1,14 @@
 import { ref, watch } from 'vue'
 import { Meta, MetaRobots } from '@dxtmisha/functional-basic'
 
-import { executeUse } from '../../functions/executeUse'
+import { executeUseGlobal } from '../../functions/executeUse'
 
 /**
  * Singleton instance for meta tags management.
  *
  * Singleton экземпляр для управления мета-тегами.
  */
-const item = executeUse(() => {
+const item = executeUseGlobal(() => {
   const meta: Meta = new Meta()
 
   /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
@@ -77,9 +77,6 @@ const item = executeUse(() => {
 
     getHtmlMeta
   }
-}, {
-  type: 'global',
-  unmounted: false
 })
 
 /**
