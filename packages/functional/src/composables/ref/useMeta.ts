@@ -77,7 +77,10 @@ const item = executeUse(() => {
 
     getHtmlMeta
   }
-}, false, true)
+}, {
+  type: 'global',
+  unmounted: false
+})
 
 /**
  * Vue composable for reactive meta tags management with automatic DOM synchronization.

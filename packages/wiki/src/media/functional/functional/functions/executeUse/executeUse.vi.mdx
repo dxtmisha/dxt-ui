@@ -1,0 +1,144 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/executeUse - Singleton với quản lý vòng đời'/>
+
+# `executeUse`
+
+`executeUse` là một factory bao bọc bất kỳ hàm khởi tạo nào và biến kết quả của nó thành một **singleton được quản lý**. Đối tượng được tạo đúng một lần, đóng băng (`Object.freeze`) và tái sử dụng trong mỗi lần gọi tiếp theo. Tùy theo tham số, singleton có thể là:
+
+- **Phạm vi component** — dùng chung qua `provide/inject` của Vue trong cây component.
+- **Toàn cục** — một instance duy nhất cho toàn bộ ứng dụng.
+- **Cục bộ** — một instance duy nhất bên trong closure của `executeUse`, không dùng `provide/inject`.
+
+Để đảm bảo định danh duy nhất, thư viện kết hợp mã code toàn cục nội bộ và hàm `getElementId()`, giúp ngăn chặn hoàn toàn việc trùng lặp ID ngay cả khi sử dụng trong nhiều module khác nhau.
+
+## Chữ ký hàm
+
+```typescript
+function executeUse<R, O extends any[], RI>(
+  callback: (...args: O) => R,
+  options: {
+    type?: 'global' | 'provide' | 'local'
+    unmounted?: boolean
+  } = {}
+): ((...args: O) => RI) | (() => RI)
+```
+
+**Tham số:**
+- `callback: (...args: O) => R` — Hàm khởi tạo. Được gọi khi truy cập lần đầu và trả về một đối tượng sẽ được đóng băng và lưu vào cache.
+- `options.type: 'global' | 'provide' | 'local'` — Loại singleton:
+    - `'provide'` (mặc định) — Chia sẻ qua `provide/inject` của Vue.
+    - `'global'` — Singleton toàn cục cho toàn bộ ứng dụng.
+    - `'local'` — Singleton cục bộ bên trong `executeUse`.
+- `options.unmounted: boolean` — Nếu `true` (mặc định), cache bị xóa khi component bị unmount. Đối với singleton toàn cục, tham số này bị bỏ qua.
+
+**Trả về:**
+Một hàm, khi được gọi, trả về `RI` — đối tượng đóng băng được mở rộng thêm phương thức `init()`.
+
+### Phương thức `init()`
+
+Mỗi đối tượng được trả về bởi `executeUse` đều chứa phương thức `init()`. Trong phiên bản hiện tại, đây là một **marker cấu trúc** (phương thức rỗng) trả về kết quả gốc của `callback` (không kèm phương thức `init`). Nó giúp lập trình viên xác định rõ ràng điểm khởi tạo đối tượng trong mã nguồn và truy cập dữ liệu "sạch" mà không có lớp bọc quản lý.
+
+## Các chế độ hoạt động
+
+### 1. Singleton phạm vi component (mặc định)
+
+Lý tưởng cho trạng thái cần được chia sẻ trong cây component. Component đầu tiên gọi hàm trở thành "chủ sở hữu" và thực hiện `provide`. Tất cả component con nhận cùng instance qua `inject`.
+
+```typescript
+import { executeUse } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const useTheme = executeUse(() => {
+  const mode = ref<'light' | 'dark'>('light')
+  const toggle = () => { mode.value = mode.value === 'light' ? 'dark' : 'light' }
+  return { mode, toggle }
+})
+
+// Trong component cha:
+const theme = useTheme()
+theme.toggle()
+
+// Trong component con:
+const theme = useTheme()
+// theme là cùng một đối tượng với component cha
+```
+
+### 2. Singleton toàn cục (`isGlobal=true`)
+
+Một instance cho toàn bộ ứng dụng. Instance được khởi tạo khi gọi `executeUseGlobalInit()` (thường khi khởi động ứng dụng). Sau khi khởi tạo, mọi lần gọi tiếp theo đều trả về cùng đối tượng đã cache.
+
+```typescript
+import { executeUse, executeUseGlobalInit } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const useAuth = executeUse(() => {
+  const user = ref<string | null>(null)
+  const login = (name: string) => { user.value = name }
+  const logout = () => { user.value = null }
+  return { user, login, logout }
+}, { type: 'global', unmounted: false }) // type='global', unmounted=false
+
+// Khi khởi động ứng dụng (main.ts):
+executeUseGlobalInit()
+
+// Trong bất kỳ component nào:
+const auth = useAuth()
+auth.login('Alice')
+```
+
+### 3. Singleton cục bộ (`isProvide=false`)
+
+Cache tồn tại trong closure của `executeUse`. Không dùng `provide/inject`. Phù hợp khi cần một instance duy nhất nhưng không muốn kết nối với cây component.
+
+```typescript
+const useCounter = executeUse(() => {
+  const count = ref(0)
+  return { count }
+}, { type: 'local', unmounted: true }) // type='local', unmounted=true
+
+// Lần gọi đầu tiên khởi tạo đối tượng
+const counter = useCounter()
+// Các lần gọi tiếp theo trả về cùng instance
+```
+
+## `executeUseGlobalInit`
+
+```typescript
+function executeUseGlobalInit(): void
+```
+
+Gọi tất cả các phương thức toàn cục đã đăng ký (tạo với `isGlobal=true`). Cần được gọi một lần khi khởi động ứng dụng — thường trong `main.ts` trước khi mount component gốc.
+
+```typescript
+import { createApp } from 'vue'
+import { executeUseGlobalInit } from '@dxtmisha/functional'
+import App from './App.vue'
+
+executeUseGlobalInit()
+createApp(App).mount('#app')
+```
+
+## Ví dụ thực tế: `useMeta`
+
+Trong thư viện, `useMeta` — composable quản lý meta tag — được triển khai là singleton toàn cục dùng `executeUse`:
+
+```typescript
+const item = executeUse(() => {
+  const title = ref<string>('')
+  const description = ref<string>('')
+  // ... các trường khác
+
+  return { title, description, ... }
+}, { type: 'global', unmounted: false }) // type='global', unmounted=false
+
+export const useMeta = () => item()
+```
+
+Điều này đảm bảo tất cả component làm việc với cùng một trạng thái meta tag.
+
+## Hành vi khi unmount
+
+Theo mặc định (`unmounted: true`), cache bị xóa khi component đã khởi tạo singleton bị unmount. Trong Vue, việc hủy component cha sẽ tự động hủy các component con, do đó việc sử dụng `provide/inject` là an toàn — cache sẽ không chứa các tham chiếu cũ tới phần tử đã bị hủy. Để giữ đối tượng tồn tại suốt vòng đời ứng dụng, hãy truyền `unmounted: false`.
+
+> **Quan trọng:** Singleton toàn cục (`type: 'global'`) **luôn** bỏ qua tham số `unmounted`. Chúng thường được khởi tạo bên ngoài vòng đời component (ví dụ: trong `main.ts`) và tồn tại cho đến khi ứng dụng được tải lại.

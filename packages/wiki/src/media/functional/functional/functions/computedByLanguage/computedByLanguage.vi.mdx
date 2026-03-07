@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/computedByLanguage - Thuộc tính computed theo ngôn ngữ'/>
+
+# `computedByLanguage`
+
+Tạo một thuộc tính computed phản ứng có giá trị thay đổi tùy theo ngôn ngữ hiện tại và các điều kiện được chỉ định. Nếu ngôn ngữ chưa được thiết lập, điều kiện không được thỏa mãn, hoặc getter chính trả về `undefined` — giá trị dự phòng `getterNone` sẽ được trả về.
+
+**Tham số:**
+- `getter: ComputedGetter<R>` — Hàm trả về giá trị chính. Chỉ được gọi khi ngôn ngữ đã được thiết lập và điều kiện được thỏa mãn.
+- `getterNone: R | (() => R)` — Giá trị dự phòng hoặc hàm trả về giá trị đó. Sử dụng khi `getter` trả về `undefined` hoặc điều kiện không thỏa mãn. Mặc định: `() => undefined`.
+- `conditions?: () => boolean` — Điều kiện tùy chọn. Nếu không được truyền, luôn được coi là thỏa mãn.
+- `debugOptions?: DebuggerOptions` — Tùy chọn dùng để gỡ lỗi các phép tính phản ứng, được hỗ trợ bởi Vue.js.
+
+**Trả về:**
+`ComputedRef<R>` — Thuộc tính computed phản ứng.
+
+```typescript
+import { computedByLanguage } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// Sử dụng cơ bản
+const label = computedByLanguage(() => translateKey('hello'))
+
+// Với giá trị dự phòng
+const title = computedByLanguage(
+  () => translateKey('page.title'),
+  () => 'Untitled'
+)
+
+// Với điều kiện bổ sung
+const isReady = ref(true)
+const content = computedByLanguage(
+  () => translateKey('content'),
+  () => 'Loading...',
+  () => isReady.value
+)
+```

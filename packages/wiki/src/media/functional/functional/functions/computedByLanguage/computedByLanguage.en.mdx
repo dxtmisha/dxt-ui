@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/computedByLanguage - Language-aware computed property'/>
+
+# `computedByLanguage`
+
+Creates a reactive computed property whose value changes based on the current language and optional conditions. If the language is not set, the condition is not met, or the main getter returns `undefined`, the fallback value `getterNone` is returned instead.
+
+**Parameters:**
+- `getter: ComputedGetter<R>` — A function that returns the primary value. Called only when the language is set and the condition is satisfied.
+- `getterNone: R | (() => R)` — A fallback value or a function returning it. Used when `getter` returns `undefined` or the condition is not met. Default: `() => undefined`.
+- `conditions?: () => boolean` — An optional condition. If omitted, it is always considered satisfied.
+- `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
+
+**Returns:**
+`ComputedRef<R>` — A reactive computed property.
+
+```typescript
+import { computedByLanguage } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// Basic usage
+const label = computedByLanguage(() => translateKey('hello'))
+
+// With a fallback value
+const title = computedByLanguage(
+  () => translateKey('page.title'),
+  () => 'Untitled'
+)
+
+// With an additional condition
+const isReady = ref(true)
+const content = computedByLanguage(
+  () => translateKey('content'),
+  () => 'Loading...',
+  () => isReady.value
+)
+```

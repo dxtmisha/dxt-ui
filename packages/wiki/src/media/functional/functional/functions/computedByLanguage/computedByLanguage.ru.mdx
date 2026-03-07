@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/computedByLanguage - Вычисляемое свойство по языку'/>
+
+# `computedByLanguage`
+
+Создаёт реактивное вычисляемое свойство, значение которого изменяется в зависимости от текущего языка и заданных условий. Если язык не установлен, условие не выполнено, или основной геттер вернул `undefined` — возвращается резервное значение `getterNone`.
+
+**Параметры:**
+- `getter: ComputedGetter<R>` — Функция, возвращающая основное значение. Вызывается только при выполненном условии и установленном языке.
+- `getterNone: R | (() => R)` — Резервное значение или функция, возвращающая его. Используется, если `getter` вернул `undefined` или условие не выполнено. По умолчанию: `() => undefined`.
+- `conditions?: () => boolean` — Дополнительное условие. Если не передано, считается всегда выполненным.
+- `debugOptions?: DebuggerOptions` — Опции отладки реактивных вычислений Vue.js.
+
+**Возвращает:**
+`ComputedRef<R>` — Реактивное вычисляемое свойство.
+
+```typescript
+import { computedByLanguage } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// Базовый пример
+const label = computedByLanguage(() => translateKey('hello'))
+
+// С резервным значением
+const title = computedByLanguage(
+  () => translateKey('page.title'),
+  () => 'Untitled'
+)
+
+// С дополнительным условием
+const isReady = ref(true)
+const content = computedByLanguage(
+  () => translateKey('content'),
+  () => 'Loading...',
+  () => isReady.value
+)
+```

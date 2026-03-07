@@ -1,0 +1,144 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/executeUse - Синглтон с управлением жизненным циклом'/>
+
+# `executeUse`
+
+`executeUse` — это фабрика, которая оборачивает любую функцию-инициализатор и превращает её результат в **управляемый синглтон**. Объект создаётся ровно один раз, замораживается (`Object.freeze`) и переиспользуется по запросу. В зависимости от параметров синглтон может быть:
+
+- **Компонентным** — разделяется через Vue `provide/inject` в дереве компонентов.
+- **Глобальным** — единственный экземпляр на всё приложение.
+- **Локальным** — единственный экземпляр внутри конкретного `executeUse`, без `provide/inject`.
+
+Для обеспечения уникальности идентификаторов используется сочетание внутреннего глобального кода и функции `getElementId()`, что гарантирует отсутствие коллизий даже при множественном использовании в разных модулях.
+
+## Сигнатура
+
+```typescript
+function executeUse<R, O extends any[], RI>(
+  callback: (...args: O) => R,
+  options: {
+    type?: 'global' | 'provide' | 'local'
+    unmounted?: boolean
+  } = {}
+): ((...args: O) => RI) | (() => RI)
+```
+
+**Параметры:**
+- `callback: (...args: O) => R` — Функция-инициализатор. Вызывается при первом обращении и возвращает объект, который будет заморожен и закеширован.
+- `options.type: 'global' | 'provide' | 'local'` — Тип синглтона:
+    - `'provide'` (по умолчанию) — Использует Vue `provide/inject`.
+    - `'global'` — Глобальный синглтон на всё приложение.
+    - `'local'` — Локальный синглтон внутри `executeUse`.
+- `options.unmounted: boolean` — Если `true` (по умолчанию), кеш очищается при размонтировании компонента. Для глобальных синглтонов игнорируется.
+
+**Возвращает:**
+Функцию, которая при вызове возвращает `RI` — замороженный объект, расширенный методом `init()`.
+
+### Метод `init()`
+
+Каждовый объект, возвращаемый `executeUse`, содержит метод `init()`. В текущей реализации это **структурный маркер** (пустышка), который возвращает исходный результат `callback` (без самого метода `init`). Он позволяет разработчику явно зафиксировать место инициализации объекта в коде и получить доступ к «чистым» данным без оберток управления.
+
+## Режимы работы
+
+### 1. Компонентный синглтон (по умолчанию)
+
+Идеален для состояния, которое должно быть общим для поддерева компонентов. Первый компонент, вызвавший функцию, становится «владельцем» и выполняет `provide`. Все вложенные компоненты получат тот же экземпляр через `inject`.
+
+```typescript
+import { executeUse } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const useTheme = executeUse(() => {
+  const mode = ref<'light' | 'dark'>('light')
+  const toggle = () => { mode.value = mode.value === 'light' ? 'dark' : 'light' }
+  return { mode, toggle }
+})
+
+// В родительском компоненте:
+const theme = useTheme()
+theme.toggle() // Переключает тему
+
+// В дочернем компоненте:
+const theme = useTheme()
+// theme — тот же самый объект, что и в родителе
+```
+
+### 2. Глобальный синглтон (`isGlobal=true`)
+
+Один экземпляр на всё приложение. Экземпляр инициализируется при вызове `executeUseGlobalInit()` (обычно при старте приложения). После инициализации все повторные вызовы возвращают один и тот же кешированный объект.
+
+```typescript
+import { executeUse, executeUseGlobalInit } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const useAuth = executeUse(() => {
+  const user = ref<string | null>(null)
+  const login = (name: string) => { user.value = name }
+  const logout = () => { user.value = null }
+  return { user, login, logout }
+}, { type: 'global', unmounted: false }) // type='global', unmounted=false
+
+// При старте приложения (main.ts):
+executeUseGlobalInit()
+
+// В любом компоненте:
+const auth = useAuth()
+auth.login('Alice')
+```
+
+### 3. Локальный синглтон (`isProvide=false`)
+
+Кеш хранится в замыкании `executeUse`. Не использует `provide/inject`. Подходит, когда нужен один экземпляр, но без связи с деревом компонентов.
+
+```typescript
+const useCounter = executeUse(() => {
+  const count = ref(0)
+  return { count }
+}, { type: 'local', unmounted: true }) // type='local', unmounted=true
+
+// Первый вызов инициализирует объект
+const counter = useCounter()
+// Все последующие вызовы возвращают тот же объект
+```
+
+## `executeUseGlobalInit`
+
+```typescript
+function executeUseGlobalInit(): void
+```
+
+Вызывает все зарегистрированные глобальные методы (созданные с `isGlobal=true`). Должна быть вызвана один раз при старте приложения — обычно в `main.ts` до монтирования корневого компонента.
+
+```typescript
+import { createApp } from 'vue'
+import { executeUseGlobalInit } from '@dxtmisha/functional'
+import App from './App.vue'
+
+executeUseGlobalInit()
+createApp(App).mount('#app')
+```
+
+## Реальный пример: `useMeta`
+
+В библиотеке `useMeta` — composable для управления мета-тегами — реализован именно как глобальный синглтон через `executeUse`:
+
+```typescript
+const item = executeUse(() => {
+  const title = ref<string>('')
+  const description = ref<string>('')
+  // ... другие поля
+
+  return { title, description, ... }
+}, { type: 'global', unmounted: false }) // type='global', unmounted=false
+
+export const useMeta = () => item()
+```
+
+Это гарантирует, что все компоненты работают с одним и тем же состоянием мета-тегов.
+
+## Поведение при размонтировании
+
+По умолчанию (`unmounted: true`) кеш очищается при размонтировании компонента, который инициализировал синглтон. Во Vue уничтожение родительского компонента автоматически влечет за собой уничтожение всех дочерних, поэтому использование `provide/inject` остается безопасным — кеш не будет содержать ссылок на уничтоженные элементы. Чтобы отключить это поведение и сохранять объект на протяжении всего времени работы приложения, передайте `unmounted: false`.
+
+> **Важно:** Глобальные синглтоны (`type: 'global'`) **всегда** игнорируют параметр `unmounted`. Они инициализируются вне жизненного цикла компонентов (обычно в `main.ts`) и существуют до перезагрузки приложения.

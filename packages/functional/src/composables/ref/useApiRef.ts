@@ -10,7 +10,6 @@ import {
 } from 'vue'
 import { Api, type ApiData } from '@dxtmisha/functional-basic'
 
-import { GeoRef } from '../../library'
 import { getRef } from '../../functions/ref/getRef'
 import { getOptions } from '../../functions/getOptions'
 import { toRefItem } from '../../functions/ref/toRefItem'
@@ -188,7 +187,6 @@ export function useApiRef<R, T = any>(
 
     if (reactivity) {
       reactivityList.push(request)
-      reactivityList.push(GeoRef.getStandard())
     }
 
     if (isRef(path)) {

@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/computedAsync - Async computed property'/>
+
+# `computedAsync`
+
+Creates a computed property that can handle asynchronous getters. Unlike Vue's standard `computed`, `computedAsync` accepts async functions, synchronous functions, or raw values — the result is automatically resolved and exposed as a reactive computed ref.
+
+**Parameters:**
+- `getter: (() => Promise<R>) | (() => R) | R` — An async function, synchronous function, or raw value to compute the result from.
+- `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
+
+**Returns:**
+`ComputedRef<R>` — A reactive computed ref containing the resolved result of the getter.
+
+```typescript
+import { computedAsync } from '@dxtmisha/functional'
+
+// Async getter
+const data = computedAsync(async () => {
+  const response = await fetch('/api/data')
+  return response.json()
+})
+
+// Sync getter
+const label = computedAsync(() => 'Hello, World!')
+
+// Raw value
+const count = computedAsync(42)
+```

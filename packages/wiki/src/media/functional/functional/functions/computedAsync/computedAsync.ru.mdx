@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/computedAsync - Асинхронное вычисляемое свойство'/>
+
+# `computedAsync`
+
+Создаёт вычисляемое свойство, которое может обрабатывать асинхронные геттеры. В отличие от стандартного `computed` из Vue, `computedAsync` позволяет передавать асинхронные функции, синхронные функции или прямые значения — результат автоматически разворачивается и становится реактивным.
+
+**Параметры:**
+- `getter: (() => Promise<R>) | (() => R) | R` — Асинхронная функция, синхронная функция или прямое значение для вычисления результата.
+- `debugOptions?: DebuggerOptions` — Опции отладки реактивных вычислений Vue.js.
+
+**Возвращает:**
+`ComputedRef<R>` — Реактивное вычисляемое свойство с результатом выполнения геттера.
+
+```typescript
+import { computedAsync } from '@dxtmisha/functional'
+
+// Асинхронный геттер
+const data = computedAsync(async () => {
+  const response = await fetch('/api/data')
+  return response.json()
+})
+
+// Синхронный геттер
+const label = computedAsync(() => 'Hello, World!')
+
+// Прямое значение
+const count = computedAsync(42)
+```
