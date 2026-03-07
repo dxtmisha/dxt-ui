@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useBroadcastValueRef - Data Syncing Between Tabs'/>
+
+# `useBroadcastValueRef`
+
+A composable for creating a reactive variable whose value is synchronized across all open browser tabs within the same domain. It uses `BroadcastChannel` via the `BroadcastMessage` class.
+
+**Parameters:**
+- `name: string` — a unique name for the value. This will be used to create the communication channel.
+- `defaultValue?: T | string | (() => (T | string))` — default value. Can be static or a function.
+
+**Returns:**
+- `Ref<T | string | undefined>` — a reactive reference to the value. When the value changes in one tab, it automatically updates in all others.
+
+**Key Features:**
+- Uses the **Singleton** pattern: calling it with the same `name` within one application returns the same `Ref` instance.
+- Automatically prefixes the name with `broadcast--`.
+
+## Usage Example
+
+```typescript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+// Tab 1
+const userStatus = useBroadcastValueRef('user-status', 'offline')
+userStatus.value = 'online'
+
+// Tab 2 (same domain)
+const userStatus = useBroadcastValueRef('user-status', 'offline')
+// userStatus.value automatically becomes 'online'
+```

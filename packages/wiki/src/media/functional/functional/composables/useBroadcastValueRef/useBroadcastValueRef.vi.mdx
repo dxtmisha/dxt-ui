@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useBroadcastValueRef - Đồng bộ dữ liệu giữa các tab'/>
+
+# `useBroadcastValueRef`
+
+Composable để tạo một biến phản hồi (reactive) mà giá trị của nó được đồng bộ hóa trên tất cả các tab trình duyệt đang mở trong cùng một miền (domain). Nó sử dụng `BroadcastChannel` thông qua lớp `BroadcastMessage`.
+
+**Tham số:**
+- `name: string` — tên duy nhất cho giá trị. Tên này sẽ được sử dụng để tạo kênh giao tiếp.
+- `defaultValue?: T | string | (() => (T | string))` — giá trị mặc định. Có thể là giá trị tĩnh hoặc một hàm.
+
+**Trả về:**
+- `Ref<T | string | undefined>` — một tham chiếu phản hồi (Ref) cho giá trị. Khi giá trị thay đổi trong một tab, nó sẽ tự động cập nhật trong tất cả các tab khác.
+
+**Tính năng chính:**
+- Sử dụng mẫu **Singleton**: gọi nó với cùng một `name` trong cùng một ứng dụng sẽ trả về cùng một phiên bản `Ref`.
+- Tự động thêm tiền tố `broadcast--` vào tên.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+// Tab 1
+const userStatus = useBroadcastValueRef('user-status', 'offline')
+userStatus.value = 'online'
+
+// Tab 2 (cùng domain)
+const userStatus = useBroadcastValueRef('user-status', 'offline')
+// userStatus.value sẽ tự động trở thành 'online'
+```

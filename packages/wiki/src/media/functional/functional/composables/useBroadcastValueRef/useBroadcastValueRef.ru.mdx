@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useBroadcastValueRef - Синхронизация данных между вкладками'/>
+
+# `useBroadcastValueRef`
+
+Composable для создания реактивной переменной, значение которой синхронизируется между всеми открытыми вкладками браузера в рамках одного домена. Использует `BroadcastChannel` через класс `BroadcastMessage`.
+
+**Параметры:**
+- `name: string` — уникальное имя значения. Будет использовано для создания канала связи.
+- `defaultValue?: T | string | (() => (T | string))` — значение по умолчанию. Может быть статичным или функцией.
+
+**Возвращает:**
+- `Ref<T | string | undefined>` — реактивная ссылка на значение. При изменении значения в одной вкладке, оно автоматически обновится во всех остальных.
+
+**Особенности:**
+- Использует паттерн **Singleton**: при вызове с тем же именем `name` в рамках одного приложения, вернется та же самая ссылка `Ref`.
+- Автоматически оборачивает имя в префикс `broadcast--`.
+
+## Пример использования
+
+```typescript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+// Вкладка 1
+const userStatus = useBroadcastValueRef('user-status', 'offline')
+userStatus.value = 'online'
+
+// Вкладка 2 (тот же домен)
+const userStatus = useBroadcastValueRef('user-status', 'offline')
+// userStatus.value автоматически станет 'online'
+```
