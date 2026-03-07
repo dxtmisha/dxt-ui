@@ -1,0 +1,1 @@
+.d1-grid{display:grid;grid-template-columns:repeat(var(--d1-grid-columns, 12),1fr);grid-template-rows:auto;align-content:stretch}.d1-grid{--d1-grid-columns: 12;row-gap:var(--d1-layout-gapY);column-gap:var(--d1-layout-gapX)}

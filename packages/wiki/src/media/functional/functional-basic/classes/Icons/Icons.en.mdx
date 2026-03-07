@@ -1,0 +1,87 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Icons - Icon Management'/>
+
+# Icons Class
+
+A static class for managing the application's icon registry. Provides a mechanism for registering, lazy-loading, and retrieving SVG icons. Icons are stored in the global `window` object to be accessible across multiple library instances.
+
+## Key Features
+
+- **Global Registry** — Uses `window.__UI_ICON` to store icons, ensuring a single registry even with multiple instances.
+- **Lazy Loading** — The `addLoad` method registers an icon as "loading"; `get` will wait for it to appear.
+- **Flexible Types** — An icon can be a string, a `Promise`, or a function returning a `Promise`.
+- **Automatic URL** — Icons prefixed with `@` are expanded into a full URL based on the base `url`.
+
+## Initialization
+
+The class is static and does not require instantiation. The base URL is configured via `setUrl`.
+
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// Change the base path to icons
+Icons.setUrl('/assets/svg/')
+```
+
+## Methods
+
+### Registering Icons
+
+- `add(index: string, file: IconsItem): void` — Registers an icon by name. `file` can be a path string, a `Promise`, or a factory function.
+- `addLoad(index: string): void` — Marks an icon as "in the process of loading" (`--LOAD--` marker). `get` will wait for it.
+- `addGlobal(index: string, file: string): void` — Registers an icon with a global URL (base URL + `file`).
+- `addByList(list: Record<string, IconsItem>): void` — Bulk-registers icons from an object.
+
+### Retrieving Icons
+
+- `async get(index: string, url?: string, wait?: number): Promise<string>` — Returns the content or path of an icon by name. If the icon is marked as "loading", waits for it to appear (default timeout: 3 min).
+- `is(index: string): boolean` — Checks whether an icon is registered.
+- `getNameList(): string[]` — Returns a list of names of all registered icons.
+- `getUrlGlobal(): string` — Returns the current base URL for icons.
+
+### Configuration
+
+- `setUrl(url: string): void` — Changes the base path for icon storage.
+
+## Examples
+
+### Registering and Using Icons
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// Register as a string
+Icons.add('arrow', '<svg>...</svg>')
+
+// Register via a Promise (dynamic import)
+Icons.add('user', import('./icons/user.svg'))
+
+// Register via a factory function
+Icons.add('star', () => import('./icons/star.svg'))
+
+// Retrieve
+const svgContent = await Icons.get('arrow')
+```
+
+### Bulk Registration
+```javascript
+Icons.addByList({
+  home: '<svg>...</svg>',
+  search: () => import('./icons/search.svg'),
+  bell: import('./icons/bell.svg')
+})
+```
+
+### Lazy Loading
+```javascript
+// Mark as loading
+Icons.addLoad('dynamic-icon')
+
+// Load and register it later
+fetch('/api/icons/dynamic').then(res => res.text()).then(svg => {
+  Icons.add('dynamic-icon', svg)
+})
+
+// get() will wait until the icon appears in the registry
+const svg = await Icons.get('dynamic-icon')
+```

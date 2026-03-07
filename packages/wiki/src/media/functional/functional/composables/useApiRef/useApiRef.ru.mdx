@@ -4,62 +4,77 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `useApiRef`
 
-Возвращает данные и методы для удобной работы с API запросами. Предоставляет реактивные состояния загрузки, кэширования и перезапуска.
+Composable для удобной работы с API-запросами во Vue-компонентах. Возвращает реактивные данные, флаги состояния и методы управления загрузкой. Использует **ленивую загрузку** — запрос отправляется только при первом обращении к свойству `data`.
 
 **Параметры:**
-- `path?: RefOrNormal<string | undefined>` — путь к запросу (может быть реактивным).
-- `options?: ApiOptions` — данные для запроса (объект `ApiFetch` или строка с именем метода).
-- `reactivity?: boolean` — включить ли реактивность: автоматический перезапуск запроса при изменении `path`, `options` или глобальных `conditions` (по умолчанию `true`).
-- `conditions?: RefType<boolean>` — локальные условия выполнения запроса (если `false`, запрос не выполняется).
-- `transformation?: (data: T) => ApiData<R>` — функция преобразования ответа от сервера перед записью в `data`.
-- `unmounted?: boolean` — очищать ли данные из кэша (обнулять `data`) при размонтировании компонента.
+- `path?: RefOrNormal<string | undefined>` — путь к endpoint (может быть реактивным `Ref`).
+- `options?: ApiOptions` — опции запроса (объект `ApiFetch` или строка с именем метода).
+- `reactivity?: boolean` — автоматически перезапускать запрос при изменении `path`, `options` или локали. По умолчанию: `true`.
+- `conditions?: RefType<boolean>` — реактивное условие выполнения. Если `false` — запрос не выполняется, данные сбрасываются.
+- `transformation?: (data: T) => ApiData<R>` — функция преобразования ответа перед сохранением в `data`.
+- `unmounted?: boolean` — если `true`, данные сбрасываются и watcher останавливается при размонтировании компонента.
 
 **Возвращает (`UseApiRef<R>`):**
-Объект с реактивными свойствами и методами управления:
-- `data` — ссылка (`ref`) на загруженные данные (объект `ApiData<R>`) или `undefined`, если загрузка еще не завершена.
-- `isStarting` — флаг начала запроса (`true` если еще нет данных).
-- `loading` — текущее состояние загрузки запроса (`true` пока идет ожидание ответа).
-- `reading` — флаг активного чтения.
-- `reset()` — метод для перезагрузки данных.
-- `stop()` — метод для остановки слежения за запросом.
-- `abort()` — метод для быстрой отмены выполняемого запроса через `AbortController`.
 
-**Глобальные настройки:**
-Вы можете определить глобальные условия для всех `useApiRef` с помощью функции `setApiRefGlobalConditions(conditions)`.
+Реактивные состояния (геттеры `ComputedRef`):
+- `data` — `Ref<ApiData<R> | undefined>` — загруженные данные. При первом обращении запускает запрос (lazy loading).
+- `starting` — `ComputedRef<boolean>` — `true` пока данные еще ни разу не загружены (`data === undefined`).
+- `loading` — `ComputedRef<boolean>` — `true` пока идет активный запрос к серверу.
+- `reading` — `ComputedRef<boolean>` — `true` пока продолжается чтение данных.
 
-### Когда выполняется запрос? (Lazy Loading)
-Особенностью `useApiRef` является ленивая загрузка (Lazy Loading). При вызове функции сетевой запрос **не отправляется мгновенно**. 
+Методы:
+- `isStarting(): boolean` — возвращает значение флага `starting`.
+- `isLoading(): boolean` — возвращает значение флага `loading`.
+- `isReading(): boolean` — возвращает значение флага `reading`.
+- `getItem(): ApiData<R> | undefined` — возвращает текущие загруженные данные без реактивности.
+- `reset(): Promise<void>` — принудительно перезапускает запрос.
+- `stop(): void` — останавливает watcher и сбрасывает `data` в `undefined`.
+- `abort(): void` — отменяет текущий запрос через `AbortController` без сброса данных.
 
-Запрос будет отправлен только в тот момент, когда вы **впервые обратитесь к свойству `data`** (например, запросите `data.value` или выведете его в Vue-шаблон). Это позволяет использовать композицию на верхнем уровне сетапа без ненужных обращений к сети, пока данные реально не понадобятся для рендеринга.
+## Ленивая загрузка (Lazy Loading)
+
+Запрос **не отправляется** при вызове `useApiRef`. Он запускается только при первом обращении к свойству `data`. Это позволяет вызывать composable наверху `setup()` без лишних сетевых запросов.
+
+## Глобальные условия
+
+`setApiRefGlobalConditions(conditions)` — устанавливает глобальное условие для всех экземпляров `useApiRef`. Работает только один раз.
+
+## Пример
 
 ```typescript
 import { ref } from 'vue'
-import { useApiRef } from '@dxtmisha/functional'
+import { useApiRef, setApiRefGlobalConditions } from '@dxtmisha/functional'
 
 const userId = ref('123')
+const isAuthenticated = ref(true)
+
+// Глобальное условие (все запросы выполняются только если аутентифицированы)
+setApiRefGlobalConditions(isAuthenticated)
 
 const {
   data: user,
+  starting,
   loading,
+  reading,
+  getItem,
   reset,
-  stop
+  stop,
+  abort
 } = useApiRef(
-  () => `/api/users/${userId.value}`,
+  () => `users/${userId.value}`,
   { method: 'GET' },
-  true // Реактивно обновлять данные при изменении userId
+  true // Реактивно перезапускать при изменении userId
 )
 
+// Проверка состояния без реактивности
+console.log(getItem()) // undefined до первого обращения к data
+
 // Принудительная перезагрузка
-const refreshData = async () => {
-  await reset()
-}
+await reset()
 
-const cancelRequest = () => {
-  abort() // Быстро отменит запрос по сети
-}
+// Отмена запроса (без сброса данных)
+abort()
 
-// Остановка слежения (например, при уходе со страницы)
-const abortRequest = () => {
-  stop() // Остановит watcher и очистит данные
-}
+// Остановка слежения (сбрасывает данные)
+stop()
 ```

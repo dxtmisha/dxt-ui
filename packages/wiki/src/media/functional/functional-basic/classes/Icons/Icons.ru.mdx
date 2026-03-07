@@ -1,0 +1,87 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/Icons - Управление Иконками'/>
+
+# Класс Icons
+
+Статический класс для управления реестром иконок приложения. Предоставляет механизм регистрации, ленивой загрузки и получения SVG-иконок. Иконки хранятся в глобальном объекте `window`, чтобы быть доступными между разными экземплярами библиотеки.
+
+## Ключевые особенности
+
+- **Глобальный реестр** — Использует `window.__UI_ICON` для хранения иконок, обеспечивая единый реестр даже при нескольких экземплярах.
+- **Ленивая загрузка** — Метод `addLoad` регистрирует иконку как «загружается»; `get` будет ждать ее появления.
+- **Гибкие типы** — Иконка может быть строкой, `Promise` или функцией, возвращающей `Promise`.
+- **Автоматический URL** — Иконки с префиксом `@` разворачиваются в полный URL на основе базового `url`.
+
+## Инициализация
+
+Класс является статическим и не требует создания экземпляра. Базовый URL настраивается через `setUrl`.
+
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// Изменить базовый путь к иконкам
+Icons.setUrl('/assets/svg/')
+```
+
+## Методы
+
+### Регистрация иконок
+
+- `add(index: string, file: IconsItem): void` — Регистрирует иконку по имени. `file` может быть строкой-путем, `Promise` или фабричной функцией.
+- `addLoad(index: string): void` — Помечает иконку как «в процессе загрузки» (маркер `--LOAD--`). `get` будет ожидать её появления.
+- `addGlobal(index: string, file: string): void` — Регистрирует иконку с глобальным URL (базовый URL + `file`).
+- `addByList(list: Record<string, IconsItem>): void` — Массово регистрирует иконки из объекта.
+
+### Получение иконок
+
+- `async get(index: string, url?: string, wait?: number): Promise<string>` — Возвращает содержимое или путь к иконке по имени. Если иконка помечена как «загружается», ожидает её появления (с таймаутом по умолчанию 3 мин).
+- `is(index: string): boolean` — Проверяет, зарегистрирована ли иконка.
+- `getNameList(): string[]` — Возвращает список имен всех зарегистрированных иконок.
+- `getUrlGlobal(): string` — Возвращает текущий базовый URL иконок.
+
+### Конфигурация
+
+- `setUrl(url: string): void` — Изменяет базовый путь для хранения иконок.
+
+## Примеры
+
+### Регистрация и использование иконок
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// Регистрация строкой
+Icons.add('arrow', '<svg>...</svg>')
+
+// Регистрация через Promise (динамический импорт)
+Icons.add('user', import('./icons/user.svg'))
+
+// Регистрация через фабричную функцию
+Icons.add('star', () => import('./icons/star.svg'))
+
+// Получение
+const svgContent = await Icons.get('arrow')
+```
+
+### Массовая регистрация
+```javascript
+Icons.addByList({
+  home: '<svg>...</svg>',
+  search: () => import('./icons/search.svg'),
+  bell: import('./icons/bell.svg')
+})
+```
+
+### Ленивая загрузка
+```javascript
+// Пометить как загружающуюся
+Icons.addLoad('dynamic-icon')
+
+// Где-то позже загружаем и регистрируем
+fetch('/api/icons/dynamic').then(res => res.text()).then(svg => {
+  Icons.add('dynamic-icon', svg)
+})
+
+// get() подождет, пока иконка появится в реестре
+const svg = await Icons.get('dynamic-icon')
+```

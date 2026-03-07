@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { getElementId, ListDataRef, type NumberOrString } from '@dxtmisha/functional'
 
+import type { TabsNavigationIdsList } from './basicTypes'
 import type { TabsNavigationProps } from './props'
-import type { TabsNavigationIdsList } from './basicTypes.ts'
 
 /**
  * Class for generating and managing element IDs for tabs.

@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/MetaTwitter - Twitter Card мета-теги'/>
+
+# Класс MetaTwitter
+
+Наследует `MetaManager`. Управляет мета-тегами [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards) — используются Twitter/X для формирования карточек при публикации ссылок.
+
+## Поддерживаемые теги
+
+Управляет следующими `twitter:*` тегами: `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`.
+
+## Геттеры
+
+- `getCard(): MetaTwitterCard` — тип карточки (`'summary'`, `'summary_large_image'`, `'app'`, `'player'`).
+- `getSite(): string` — @username аккаунта сайта или бренда.
+- `getCreator(): string` — @username автора контента.
+- `getUrl(): string` — URL страницы.
+- `getTitle(): string` — заголовок карточки.
+- `getDescription(): string` — описание карточки.
+- `getImage(): string` — URL изображения.
+
+## Сеттеры
+
+Все сеттеры обновляют тег в DOM и возвращают `this` для цепочки вызовов.
+
+- `setCard(card: MetaTwitterCard): this` — тип карточки.
+- `setSite(site: string): this` — @username сайта.
+- `setCreator(creator: string): this` — @username автора.
+- `setUrl(url: string): this`
+- `setTitle(title: string): this`
+- `setDescription(description: string): this`
+- `setImage(image: string): this`
+
+## Пример
+
+```javascript
+import { MetaTwitter } from '@dxtmisha/functional-basic'
+
+const twitter = new MetaTwitter()
+
+twitter
+  .setCard('summary_large_image')
+  .setSite('@mycompany')
+  .setCreator('@author')
+  .setTitle('Заголовок поста')
+  .setDescription('Краткое описание')
+  .setUrl('https://example.com/post/1')
+  .setImage('https://example.com/images/preview.jpg')
+
+// Для SSR
+const html = twitter.html()
+// '<meta name="twitter:card" content="summary_large_image">...'
+```

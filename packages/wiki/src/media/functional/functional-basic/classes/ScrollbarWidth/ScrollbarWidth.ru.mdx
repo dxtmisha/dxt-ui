@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/ScrollbarWidth - Ширина скроллбара'/>
+
+# Класс ScrollbarWidth
+
+Статический класс для асинхронного определения ширины полосы прокрутки браузера. Результат кэшируется в `DataStorage` и пересчитывается только один раз за сессию.
+
+## Ключевые особенности
+
+- **Кэширование** — ширина измеряется только один раз, затем берётся из кэша.
+- **Асинхронное измерение** — использует `requestAnimationFrame` для точного результата после перерисовки.
+- **Определение оверлейного скролла** — `is()` проверяет, является ли скролл «наложенным» (ширина ≤ 8px), характерно для macOS и мобильных устройств.
+
+## Методы
+
+- `get(): Promise<number>` — ширина скролла в пикселях. При первом вызове измеряет через временный DOM-элемент.
+- `is(): Promise<boolean>` — `true` если скролл оверлейный (ширина ≤ 8px, macOS / мобильные).
+
+## Пример
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional-basic'
+
+const width = await ScrollbarWidth.get()
+console.log(width) // 17 (Windows), 0 (macOS)
+
+if (await ScrollbarWidth.is()) {
+  // Overlay scroll — компенсация не нужна
+}
+```

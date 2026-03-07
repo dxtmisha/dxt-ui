@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/MetaManager - Управление мета-тегами'/>
+
+# Класс MetaManager
+
+Базовый generic-класс для синхронизации мета-тегов HTML-документа. Читает существующие теги из DOM при инициализации и обеспечивает единый интерфейс для их чтения и записи.
+
+Класс является родительским для `MetaOg`, `MetaTwitter` и `Meta`.
+
+## Инициализация
+
+```typescript
+new MetaManager(listMeta, isProperty?)
+```
+
+**Параметры:**
+- `listMeta: readonly string[]` — список имён мета-тегов, которыми управляет этот экземпляр.
+- `isProperty?: boolean` — если `true`, используется атрибут `property` вместо `name` (необходимо для Open Graph). По умолчанию: `false`.
+
+## Методы
+
+- `getListMeta(): T` — возвращает список имён управляемых тегов.
+- `get(name): string` — возвращает содержимое тега по имени. Если не установлен — `''`.
+- `getItems(): MetaList<T>` — возвращает объект со всеми тегами: `{ [name]: content }`.
+- `set(name, content): this` — устанавливает тег в DOM (создаёт если нет). Поддерживает цепочку.
+- `setByList(metaList): this` — устанавливает несколько тегов из объекта. Поддерживает цепочку.
+
+## Генерация HTML
+
+### `html(): string`
+
+Генерирует HTML-строку для всех управляемых тегов с заполненным `content`. Используется для SSR.
+
+```javascript
+manager.set('description', 'Моё описание').set('keywords', 'vue, typescript')
+
+manager.html()
+// '<meta name="description" content="Моё описание"><meta name="keywords" content="vue, typescript">'
+```

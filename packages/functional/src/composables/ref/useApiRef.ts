@@ -28,13 +28,41 @@ export interface UseApiRef<R> {
   data: Ref<ApiData<R> | undefined>
 
   /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
-  isStarting: ComputedRef<boolean>
+  starting: ComputedRef<boolean>
 
   /** Request load flag / Флаг загрузки запроса */
   loading: ComputedRef<boolean>
 
   /** Active reading flag / Флаг активного чтения */
   reading: ComputedRef<boolean>
+
+  /**
+   * Checks if the request is starting (true if no data yet).
+   *
+   * Проверяет, начинается ли запрос (true, если данных еще нет).
+   */
+  isStarting(): boolean
+
+  /**
+   * Checks if the request is currently loading.
+   *
+   * Проверяет, загружается ли запрос в данный момент.
+   */
+  isLoading(): boolean
+
+  /**
+   * Checks if the request is currently reading.
+   *
+   * Проверяет, читается ли запрос в данный момент.
+   */
+  isReading(): boolean
+
+  /**
+   * Gets the current item data.
+   *
+   * Получает текущие данные элемента.
+   */
+  getItem(): ApiData<R> | undefined
 
   /** Default reset / Сброс по умолчанию */
   reset(): Promise<void>
@@ -202,7 +230,7 @@ export function useApiRef<R, T = any>(
 
       return item
     },
-    get isStarting() {
+    get starting() {
       return computed<boolean>(() => item.value === undefined)
     },
     get loading() {
@@ -210,6 +238,19 @@ export function useApiRef<R, T = any>(
     },
     get reading() {
       return computed<boolean>(() => reading.value)
+    },
+
+    isStarting() {
+      return item.value === undefined
+    },
+    isLoading() {
+      return loading.value
+    },
+    isReading() {
+      return reading.value
+    },
+    getItem() {
+      return item.value
     },
 
     reset,

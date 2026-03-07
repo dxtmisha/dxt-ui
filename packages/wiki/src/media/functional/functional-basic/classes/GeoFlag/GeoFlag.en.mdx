@@ -1,0 +1,79 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/GeoFlag - Country Flags'/>
+
+# GeoFlag Class
+
+A class for working with country flags. Provides a convenient interface for retrieving flag icons, localized country and language names based on a country code or locale. It uses `Geo` and `GeoIntl` to resolve localized names.
+
+## Key Features
+
+- **Flag Dictionary** — A built-in static `flags` dictionary mapping ISO 3166-1 alpha-2 country codes to icon names.
+- **Localized Names** — Returns country and language names according to the current UI locale.
+- **National Names** — A dedicated `getNational` method returns country names in their own language.
+- **Flexible Filtering** — List methods support filtering by an array of codes.
+
+## Initialization
+
+Creates a new `GeoFlag` instance with an optional country or locale code.
+
+**Parameters:**
+- `code?: string` — Country or locale code (e.g., `'US'`, `'en-US'`). Defaults to the current locale from `Geo`.
+
+```javascript
+import { GeoFlag } from '@dxtmisha/functional-basic'
+
+// Create with the current locale
+const flag = new GeoFlag()
+
+// Create for a specific country
+const usFlag = new GeoFlag('en-US')
+```
+
+## Methods
+
+### Data Retrieval
+
+- `get(code?: string): GeoFlagItem | undefined` — Returns a full data object for a country: language, country code, standard, and flag icon name. If no code is specified, uses the constructor's code.
+- `getFlag(code?: string): string | undefined` — Returns only the icon name for a given country's flag.
+- `getList(codes?: string[]): GeoFlagItem[]` — Returns an array of flag data objects. If `codes` is not provided, returns all countries from the dictionary.
+- `getNational(codes?: string[]): GeoFlagNational[]` — Similar to `getList`, but additionally contains country names in the country's own language.
+
+### Data Mutation
+
+- `setCode(code: string): this` — Changes the country code for the current instance.
+
+## Examples
+
+### Displaying a Flag for the Current Country
+```javascript
+import { GeoFlag } from '@dxtmisha/functional-basic'
+
+const flag = new GeoFlag()
+const item = flag.get()
+
+console.log(item?.icon)    // 'f-us'
+console.log(item?.country) // 'United States'
+```
+
+### List of All Countries with Flags
+```javascript
+const flag = new GeoFlag('en-US')
+const countries = flag.getList()
+
+countries.forEach(item => {
+  console.log(`${item.icon}: ${item.country}`)
+})
+// 'f-fr: France', 'f-de: Germany', ...
+```
+
+### List with National Names
+```javascript
+// Returns the country name in both your language and the country's own language
+const national = new GeoFlag('en-US').getNational(['FR', 'JP', 'RU'])
+
+national.forEach(item => {
+  console.log(`${item.country} (${item.nationalCountry})`)
+})
+// France (France), Japan (日本), Russia (Россия)
+```

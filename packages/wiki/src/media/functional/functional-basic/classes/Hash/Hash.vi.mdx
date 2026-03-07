@@ -1,0 +1,69 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Hash - Quản lý trạng thái URL Hash'/>
+
+# Lớp Hash
+
+Một lớp tĩnh để quản lý dữ liệu được lưu trữ trong URL hash (`#`). Tự động đồng bộ hóa trạng thái ứng dụng với URL — mỗi lần gọi `set` sẽ cập nhật chuỗi hash trên trình duyệt, và sự kiện `hashchange` sẽ làm mới trạng thái nội bộ.
+
+## Tính năng chính
+
+- **Đồng bộ với URL** — Dữ liệu được lưu ở định dạng dễ đọc trong chuỗi hash.
+- **Phản hồi qua Watcher** — Phương thức `addWatch` cho phép đăng ký theo dõi thay đổi của một biến cụ thể.
+- **Tự động khởi tạo** — Khi tải trang, dữ liệu được tự động đọc từ URL.
+- **Phân tích kiểu thông minh** — Giá trị được giải mã từ chuỗi: số, boolean và đối tượng được khôi phục về kiểu gốc.
+
+## Khởi tạo
+
+Lớp này là tĩnh và khởi tạo tự động khi tải trang — đọc chuỗi hash URL hiện tại.
+
+```javascript
+// URL: https://myapp.com/#page=2;filter=active
+
+import { Hash } from '@dxtmisha/functional-basic'
+
+const page = Hash.get('page')    // 2 (number)
+const filter = Hash.get('filter') // 'active' (string)
+```
+
+## Phương thức
+
+- `get<T>(name: string, defaultValue?: T | (() => T)): T` — Trả về giá trị của biến hash. Nếu không có giá trị, nó được thiết lập qua `defaultValue` (có thể là hàm).
+- `set<T>(name: string, callback: T | (() => T)): void` — Thiết lập giá trị của biến và cập nhật URL hash. Nếu giá trị không thay đổi, không có cập nhật nào xảy ra.
+- `addWatch<T>(name: string, callback: (value: T) => void): void` — Đăng ký theo dõi thay đổi của một biến hash cụ thể.
+- `reload(): void` — Đọc URL hash hiện tại và đồng bộ hóa với trạng thái nội bộ.
+
+## Ví dụ
+
+### Đọc và ghi
+```javascript
+import { Hash } from '@dxtmisha/functional-basic'
+
+// Đọc với giá trị mặc định
+const page = Hash.get<number>('page', 1)
+
+// Ghi (URL thay đổi thành #page=3)
+Hash.set('page', 3)
+
+// Ghi qua hàm
+Hash.set('page', () => page + 1)
+```
+
+### Đăng ký theo dõi thay đổi
+```javascript
+Hash.addWatch<string>('filter', (newFilter) => {
+  console.log('Bộ lọc đã thay đổi thành:', newFilter)
+  loadData(newFilter)
+})
+```
+
+### Quản lý trạng thái trang
+```javascript
+// Khởi tạo bộ lọc với giá trị mặc định
+const filter = Hash.get('filter', 'all')
+const sort = Hash.get('sort', 'date')
+
+// Thay đổi khi người dùng thực hiện hành động
+Hash.set('filter', 'active')
+// URL: #filter=active;sort=date
+```

@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/MetaTwitter - Thẻ meta Twitter Card'/>
+
+# Lớp MetaTwitter
+
+Kế thừa `MetaManager`. Quản lý các thẻ meta [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards) — được Twitter/X sử dụng để tạo thẻ khi chia sẻ liên kết.
+
+## Thẻ được hỗ trợ
+
+Quản lý các thẻ `twitter:*` sau: `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`.
+
+## Getter
+
+- `getCard(): MetaTwitterCard` — loại thẻ (`'summary'`, `'summary_large_image'`, `'app'`, `'player'`).
+- `getSite(): string` — @username của tài khoản website hoặc thương hiệu.
+- `getCreator(): string` — @username của tác giả nội dung.
+- `getUrl(): string` — URL trang.
+- `getTitle(): string` — tiêu đề thẻ.
+- `getDescription(): string` — mô tả thẻ.
+- `getImage(): string` — URL hình ảnh.
+
+## Setter
+
+Tất cả setter cập nhật thẻ trong DOM và trả về `this` để chuỗi phương thức.
+
+- `setCard(card: MetaTwitterCard): this` — loại thẻ.
+- `setSite(site: string): this` — @username website.
+- `setCreator(creator: string): this` — @username tác giả.
+- `setUrl(url: string): this`
+- `setTitle(title: string): this`
+- `setDescription(description: string): this`
+- `setImage(image: string): this`
+
+## Ví dụ
+
+```javascript
+import { MetaTwitter } from '@dxtmisha/functional-basic'
+
+const twitter = new MetaTwitter()
+
+twitter
+  .setCard('summary_large_image')
+  .setSite('@mycompany')
+  .setCreator('@author')
+  .setTitle('Tiêu đề bài đăng')
+  .setDescription('Mô tả ngắn')
+  .setUrl('https://example.com/post/1')
+  .setImage('https://example.com/images/preview.jpg')
+
+// Cho SSR
+const html = twitter.html()
+// '<meta name="twitter:card" content="summary_large_image">...'
+```

@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/MetaManager - Meta Tag Management'/>
+
+# MetaManager Class
+
+A base generic class for synchronizing HTML document meta tags. Reads existing tags from the DOM on initialization and provides a unified interface for reading and writing them.
+
+This class is the parent of `MetaOg`, `MetaTwitter`, and `Meta`.
+
+## Initialization
+
+```typescript
+new MetaManager(listMeta, isProperty?)
+```
+
+**Parameters:**
+- `listMeta: readonly string[]` — list of meta tag names managed by this instance.
+- `isProperty?: boolean` — if `true`, uses `property` attribute instead of `name` (required for Open Graph). Default: `false`.
+
+## Methods
+
+- `getListMeta(): T` — returns the list of managed tag names.
+- `get(name): string` — returns the content of a tag by name. Returns `''` if not set.
+- `getItems(): MetaList<T>` — returns an object with all tags: `{ [name]: content }`.
+- `set(name, content): this` — sets the tag in the DOM (creates if not found). Supports chaining.
+- `setByList(metaList): this` — sets multiple tags from an object. Supports chaining.
+
+## HTML Generation
+
+### `html(): string`
+
+Generates an HTML string for all managed tags that have content. Used for SSR.
+
+```javascript
+manager.set('description', 'My description').set('keywords', 'vue, typescript')
+
+manager.html()
+// '<meta name="description" content="My description"><meta name="keywords" content="vue, typescript">'
+```

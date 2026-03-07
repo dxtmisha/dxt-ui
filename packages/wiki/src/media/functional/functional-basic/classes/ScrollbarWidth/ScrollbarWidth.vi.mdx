@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ScrollbarWidth - Độ rộng thanh cuộn'/>
+
+# Lớp ScrollbarWidth
+
+Lớp tĩnh để đo độ rộng thanh cuộn của trình duyệt một cách bất đồng bộ. Kết quả được lưu vào `DataStorage` và chỉ tính lại một lần mỗi phiên.
+
+## Các tính năng chính
+
+- **Bộ nhớ đệm** — độ rộng chỉ được đo một lần, sau đó đọc từ bộ nhớ đệm.
+- **Đo bất đồng bộ** — sử dụng `requestAnimationFrame` để có kết quả chính xác sau khi vẽ lại.
+- **Phát hiện thanh cuộn phủ** — `is()` kiểm tra xem thanh cuộn có phải "overlay" không (rộng ≤ 8px), điển hình cho macOS và trình duyệt di động.
+
+## Phương thức
+
+- `get(): Promise<number>` — độ rộng thanh cuộn tính bằng pixel. Lần đầu tiên đo qua phần tử DOM tạm thời.
+- `is(): Promise<boolean>` — `true` nếu thanh cuộn là overlay (rộng ≤ 8px, macOS / di động).
+
+## Ví dụ
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional-basic'
+
+const width = await ScrollbarWidth.get()
+console.log(width) // 17 (Windows), 0 (macOS)
+
+if (await ScrollbarWidth.is()) {
+  // Overlay scroll — không cần bù đắp độ rộng
+}
+```

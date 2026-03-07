@@ -1,5 +1,5 @@
-import { useLazyRef } from './useLazyRef.ts'
-import type { RefType } from '../../types/refTypes.ts'
+import { useLazyRef } from './useLazyRef'
+import type { RefType } from '../../types/refTypes'
 
 export type LazyItemByMargin = {
   rootMargin: string

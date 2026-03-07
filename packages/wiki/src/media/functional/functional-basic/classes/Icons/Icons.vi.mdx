@@ -1,0 +1,87 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Icons - Quản lý Biểu tượng'/>
+
+# Lớp Icons
+
+Một lớp tĩnh để quản lý registry biểu tượng (icon) của ứng dụng. Cung cấp cơ chế đăng ký, tải chậm (lazy loading) và truy xuất SVG icon. Các icon được lưu trữ trong đối tượng `window` toàn cục để có thể truy cập từ nhiều phiên bản của thư viện.
+
+## Tính năng chính
+
+- **Registry toàn cục** — Sử dụng `window.__UI_ICON` để lưu trữ icon, đảm bảo registry duy nhất dù có nhiều phiên bản.
+- **Tải chậm (Lazy Loading)** — Phương thức `addLoad` đánh dấu icon là "đang tải"; `get` sẽ chờ cho đến khi nó xuất hiện.
+- **Kiểu linh hoạt** — Một icon có thể là chuỗi, `Promise`, hoặc hàm trả về `Promise`.
+- **URL tự động** — Icon có tiền tố `@` được chuyển thành URL đầy đủ dựa trên `url` cơ sở.
+
+## Khởi tạo
+
+Lớp này là tĩnh và không yêu cầu khởi tạo đối tượng. URL cơ sở được cấu hình qua `setUrl`.
+
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// Thay đổi đường dẫn cơ sở đến icon
+Icons.setUrl('/assets/svg/')
+```
+
+## Phương thức
+
+### Đăng ký icon
+
+- `add(index: string, file: IconsItem): void` — Đăng ký icon theo tên. `file` có thể là chuỗi đường dẫn, `Promise`, hoặc hàm factory.
+- `addLoad(index: string): void` — Đánh dấu icon là "đang tải" (marker `--LOAD--`). `get` sẽ chờ cho đến khi icon có mặt.
+- `addGlobal(index: string, file: string): void` — Đăng ký icon với URL toàn cục (URL cơ sở + `file`).
+- `addByList(list: Record<string, IconsItem>): void` — Đăng ký hàng loạt icon từ một đối tượng.
+
+### Truy xuất icon
+
+- `async get(index: string, url?: string, wait?: number): Promise<string>` — Trả về nội dung hoặc đường dẫn của icon theo tên. Nếu icon đang "tải", sẽ chờ cho đến khi xuất hiện (mặc định 3 phút).
+- `is(index: string): boolean` — Kiểm tra xem icon đã được đăng ký chưa.
+- `getNameList(): string[]` — Trả về danh sách tên của tất cả icon đã đăng ký.
+- `getUrlGlobal(): string` — Trả về URL cơ sở hiện tại của icon.
+
+### Cấu hình
+
+- `setUrl(url: string): void` — Thay đổi đường dẫn cơ sở cho lưu trữ icon.
+
+## Ví dụ
+
+### Đăng ký và sử dụng icon
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// Đăng ký bằng chuỗi
+Icons.add('arrow', '<svg>...</svg>')
+
+// Đăng ký qua Promise (dynamic import)
+Icons.add('user', import('./icons/user.svg'))
+
+// Đăng ký qua hàm factory
+Icons.add('star', () => import('./icons/star.svg'))
+
+// Truy xuất
+const svgContent = await Icons.get('arrow')
+```
+
+### Đăng ký hàng loạt
+```javascript
+Icons.addByList({
+  home: '<svg>...</svg>',
+  search: () => import('./icons/search.svg'),
+  bell: import('./icons/bell.svg')
+})
+```
+
+### Tải chậm (Lazy Loading)
+```javascript
+// Đánh dấu là đang tải
+Icons.addLoad('dynamic-icon')
+
+// Tải và đăng ký sau
+fetch('/api/icons/dynamic').then(res => res.text()).then(svg => {
+  Icons.add('dynamic-icon', svg)
+})
+
+// get() sẽ chờ cho đến khi icon xuất hiện trong registry
+const svg = await Icons.get('dynamic-icon')
+```

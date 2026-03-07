@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Global - Global Data'/>
+
+# Global Class
+
+A static class for storing and retrieving application-wide global data. Data is written **once** during initialization and is thereafter available as read-only. Used to pass server-side configuration or data to the client-side application.
+
+## Key Features
+
+- **One-time initialization** — The `add` method only works on the first call; subsequent calls are ignored.
+- **Deep copy** — Data is copied via `copyObjectLite`, isolating it from external mutations.
+- **No state management** — Intended purely for static configuration.
+
+## Initialization
+
+```javascript
+import { Global } from '@dxtmisha/functional-basic'
+
+// Set once (e.g., on application load)
+Global.add({
+  apiUrl: 'https://api.myapp.com',
+  appName: 'My Application',
+  featureFlags: { darkMode: true }
+})
+
+// Subsequent calls are ignored
+Global.add({ apiUrl: 'https://other.com' }) // Has no effect
+```
+
+## Methods
+
+- `add(data: Record<string, any>): void` — Saves the global data. Only works **on the first call**. Subsequent calls are silently ignored.
+- `get<R>(name: string): R` — Returns the value for a given key from the stored global data.
+
+## Examples
+
+### Retrieving Data
+```javascript
+import { Global } from '@dxtmisha/functional-basic'
+
+const apiUrl = Global.get<string>('apiUrl')
+console.log(apiUrl) // 'https://api.myapp.com'
+
+const flags = Global.get<Record<string, boolean>>('featureFlags')
+console.log(flags.darkMode) // true
+```
+
+### Initialization on App Start
+```javascript
+// main.ts (executed once before mounting the app)
+Global.add(window.__SERVER_DATA__ ?? {})
+
+// Anywhere else in the code
+const serverId = Global.get('serverId')
+```

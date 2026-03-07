@@ -87,6 +87,26 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Формирует данные для тела запроса.
 - `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Формирует строку query-параметров для GET-запроса.
 
+## Объект ApiFetch
+
+`ApiFetch` — главный конфигурационный объект, передаваемый в методы `request`, `get`, `post`, `put`, `delete`. Все поля опциональны:
+
+- `path?: string` — путь к endpoint-скрипту относительно базового URL (например: `'users/list'`).
+- `pathFull?: string` — полный URL запроса. Если указан, игнорирует `api` и `path`.
+- `api?: boolean` — добавлять ли базовый URL перед `path`. По умолчанию: `true`.
+- `method?: ApiMethod` — HTTP-метод (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). По умолчанию: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — тело запроса (для POST/PUT) или query-параметры (для GET). Передается как JSON или `FormData`.
+- `headers?: Record<string, string> | null` — дополнительные заголовки запроса. `null` — отключить все заголовки.
+- `type?: string` — значение `Content-Type`. По умолчанию: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — добавить заголовки аутентификации.
+- `toData?: boolean` — если `true`, автоматически разворачивает `data` из обертки `{ data: ... }`. По умолчанию: `true`.
+- `hideError?: boolean` — подавляет вывод ошибок в `console.error` при сбое. По умолчанию: `false`.
+- `globalPreparation?: boolean` — запускать ли глобальный хук `setPreparation` до этого запроса. По умолчанию: `true`.
+- `globalEnd?: boolean` — запускать ли глобальный хук `setEnd` после ответа. По умолчанию: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — обработчик ответа вместо стандартного чтения JSON.
+- `init?: RequestInit` — дополнительные опции для нативного `fetch()` (CORS, режим кеша и др.).
+- `controller?: AbortController` — контроллер для отмены запроса.
+
 ## Отмена запросов (AbortController)
 
 API поддерживает отмену запросов из коробки. Для этого можно передать экземпляр `AbortController` в поле `controller` объекта `ApiFetch`.

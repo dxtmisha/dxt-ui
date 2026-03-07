@@ -8,9 +8,10 @@ const {
 </script>
 
 <template>
-  <div class="translate-tools">
-    <D1TabsNavigation :list="list" v-model:selected="selected"/>
-  </div>
+  <D1TabsNavigation
+    v-model:selected="selected"
+    :list="list"
+  />
 </template>
 
 <style lang="scss"></style>

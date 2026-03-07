@@ -1,0 +1,372 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/GeoIntl - Интернационализация (Intl)'/>
+
+# Класс GeoIntl
+
+Мощная обертка над нативным браузерным API `Intl`, адаптированная под возможности геолокации `Geo`. Предоставляет локаль-зависимое форматирование чисел, валют, единиц измерения, дат, времени, имен и сортировки строк — с автоматическим определением локали.
+
+## Ключевые особенности
+
+- **Кэш экземпляров** — для каждой локали создается не более одного экземпляра (Singleton на локаль).
+- **Единый интерфейс** — все операции через один класс вместо прямых вызовов `new Intl.*`.
+- **Форматирование дат** — гибкая система с предустановленными типами (`'date'`, `'time'`, `'datetime'`, `'full'` и др.).
+- **Относительное время** — методы `relative`, `relativeByValue` и `relativeLimit` для гуманизированного вывода.
+- **Имена и регионы** — форматирование полных имен с учетом культурных норм (`fullName`).
+
+## Инициализация
+
+**Параметры:**
+- `code?: string` — код локали (например: `'ru-RU'`, `'en-US'`). По умолчанию — текущая локаль `Geo`.
+
+```javascript
+import { GeoIntl } from '@dxtmisha/functional-basic'
+
+const intl = new GeoIntl()          // текущая локаль
+const intl2 = new GeoIntl('fr-FR')  // французская
+const intl3 = GeoIntl.getInstance('de-DE') // через фабрику
+```
+
+## Общая информация
+
+### `getLocation`
+
+Возвращает стрингу стандартной локали (например, `'ru-RU'`).
+
+```javascript
+intl.getLocation() // 'ru-RU'
+```
+
+### `getFirstDay`
+
+Возвращает первый день недели для данной локали (`'Mon'`, `'Sun'` и т.д.) — полезно для построения календарей.
+
+```javascript
+intl.getFirstDay() // 'Mon' для России, 'Sun' для США
+```
+
+## Имена и регионы
+
+### `display`
+
+Форматирует отображаемое имя языка, региона или скрипта через `Intl.DisplayNames`.
+
+**Параметры:**
+- `value?: string` — код языка, страны или скрипта (например: `'en'`, `'RU'`).
+- `typeOptions?` — тип отображения: `'language'`, `'region'`, `'script'` или `Intl.DisplayNamesOptions`.
+
+```javascript
+intl.display('en', 'language') // 'английский'
+intl.display('RU', 'region')   // 'Россия'
+intl.display()                 // название текущего языка
+```
+
+### `languageName`
+
+Возвращает локализованное название языка.
+
+**Параметры:**
+- `value?: string` — код языка или страны. По умолчанию — текущая локаль.
+- `style?` — стиль: `'long'`, `'short'`, `'narrow'`.
+
+```javascript
+intl.languageName('en')          // 'английский'
+intl.languageName('fr', 'long')  // 'французский'
+```
+
+### `countryName`
+
+Возвращает локализованное название страны.
+
+**Параметры:**
+- `value?: string` — код страны (ISO 3166, например: `'RU'`, `'DE'`).
+- `style?` — стиль: `'long'`, `'short'`, `'narrow'`.
+
+```javascript
+intl.countryName('DE')   // 'Германия'
+intl.countryName('US')   // 'США'
+```
+
+### `fullName`
+
+Форматирует полное имя по культурным нормам локали. Порядок составляющих (имя/фамилия) определяется полем `nameFormat` гео-данных.
+
+**Параметры:**
+- `last: string` — фамилия.
+- `first: string` — имя.
+- `surname?: string` — отчество (опционально).
+- `short?: boolean` — если `true`, все части кроме первой сокращаются до инициала (`Иванов И. И.`).
+
+```javascript
+intl.fullName('Иванов', 'Иван', 'Иванович')        // 'Иван Иванович Иванов' (ru)
+intl.fullName('Иванов', 'Иван', 'Иванович', true)  // 'Иванов И. И.'
+intl.fullName('Smith', 'John')                      // 'John Smith' (en)
+```
+
+## Числа и валюты
+
+### `number`
+
+Форматирует число с учетом локали через `Intl.NumberFormat`.
+
+**Параметры:**
+- `value: NumberOrString` — число для форматирования.
+- `options?: Intl.NumberFormatOptions` — дополнительные опции `Intl.NumberFormat`.
+
+```javascript
+intl.number(1234567.89)                                   // '1 234 567,89'
+intl.number(0.005, { minimumFractionDigits: 2 })          // '0,01'
+```
+
+### `decimal`
+
+Возвращает символ десятичного разделителя для текущей локали.
+
+```javascript
+new GeoIntl('ru-RU').decimal() // ','
+new GeoIntl('en-US').decimal() // '.'
+```
+
+### `currency`
+
+Форматирует число как денежную сумму в указанной валюте.
+
+**Параметры:**
+- `value: NumberOrString` — сумма. Также принимает строку с кодом валюты в конце (`'1500 RUB'`).
+- `currencyOptions?: string | Intl.NumberFormatOptions` — код валюты (`'RUB'`) или опции `Intl.NumberFormatOptions`.
+- `numberOnly?: boolean` — если `true`, выводит только число без символа валюты. По умолчанию: `false`.
+
+```javascript
+intl.currency(1500, 'RUB')              // '1 500,00 ₽'
+intl.currency(1500, 'USD')              // '1 500,00 $'
+intl.currency('1500 EUR')               // '1 500,00 €'
+intl.currency(1500, 'RUB', true)        // '1 500,00' (без символа)
+```
+
+### `currencySymbol`
+
+Возвращает символ или код валюты для отображения.
+
+**Параметры:**
+- `currency: string` — код валюты (ISO 4217, например: `'USD'`, `'EUR'`, `'RUB'`).
+- `currencyDisplay?` — способ отображения: `'symbol'` (по умолчанию), `'code'`, `'name'`, `'narrowSymbol'`.
+
+```javascript
+intl.currencySymbol('USD')             // '$'
+intl.currencySymbol('USD', 'code')     // 'USD'
+intl.currencySymbol('USD', 'name')     // 'доллар США'
+```
+
+### `unit`
+
+Форматирует число с единицей измерения через `Intl.NumberFormat` с `style: 'unit'`.
+
+**Параметры:**
+- `value: NumberOrString` — число. Также принимает строку с аббревиатурой единицы (`'100 km'`).
+- `unitOptions?: string | Intl.NumberFormatOptions` — единица измерения (`'kilometer'`, `'liter'`) или полные опции.
+
+```javascript
+intl.unit(100, 'kilometer')   // '100 км'
+intl.unit(5, 'liter')         // '5 л'
+intl.unit('100 km')           // '100 км'
+```
+
+### `sizeFile`
+
+Автоматически конвертирует и форматирует размер файла, начиная от байт и рекурсивно укрупняя единицу при превышении 1024.
+
+**Параметры:**
+- `value: NumberOrString` — размер в байтах.
+- `unitOptions?` — начальная единица: `'byte'` (по умолчанию), `'kilobyte'`, `'megabyte'`, `'gigabyte'`, `'terabyte'`, `'petabyte'`.
+
+```javascript
+intl.sizeFile(500)              // '500 байт'
+intl.sizeFile(1536)             // '1,5 КБ'
+intl.sizeFile(1536 * 1024)      // '1,5 МБ'
+intl.sizeFile(2 * 1024 ** 3)    // '2 ГБ'
+```
+
+### `percent`
+
+Форматирует число как процент. Принимает значение в виде дроби (0–1).
+
+**Параметры:**
+- `value: NumberOrString` — число от `0` до `1`.
+- `options?: Intl.NumberFormatOptions` — дополнительные опции.
+
+```javascript
+intl.percent(0.5)    // '50%'
+intl.percent(0.007)  // '1%'
+```
+
+### `percentBy100`
+
+Форматирует число как процент, делит на 100. Удобно, когда значение уже хранится как `50` вместо `0.5`.
+
+```javascript
+intl.percentBy100(50)   // '50%'
+intl.percentBy100(7.5)  // '8%'
+```
+
+### `plural`
+
+Форматирует число с учётом правил склонения текущей локали через `Intl.PluralRules`.
+
+**Параметры:**
+- `value: NumberOrString` — число.
+- `words: string` — строка со словами, разделёнными `|`. Порядок: `one|two|few|many|other` (для русского: «яблоко|яблока|яблок»). Количество форм зависит от локали.
+- `options?: Intl.PluralRulesOptions` — опции `Intl.PluralRules`.
+- `optionsNumber?: Intl.NumberFormatOptions` — опции форматирования числа.
+
+```javascript
+intl.plural(1, 'яблоко|яблока|яблок')   // '1 яблоко'
+intl.plural(2, 'яблоко|яблока|яблок')   // '2 яблока'
+intl.plural(5, 'яблоко|яблока|яблок')   // '5 яблок'
+intl.plural(21, 'яблоко|яблока|яблок')  // '21 яблоко'
+```
+
+## Даты и время
+
+### `date`
+
+Форматирует дату через `toLocaleString` с предустановленными типами формата.
+
+**Параметры:**
+- `value: NumberOrStringOrDate` — дата (объект `Date`, timestamp или строка).
+- `type?: GeoDate` — предустановленный тип: `'date'`, `'time'`, `'datetime'`, `'full'`, `'month'` и др.
+- `styleOptions?` — стиль месяца (`'short'`, `'long'`, `'narrow'`) или произвольные `Intl.DateTimeFormatOptions`.
+- `hour24?: boolean` — если `true`, переключает на 24-часовой формат.
+
+```javascript
+const d = new Date('2024-03-07T08:15:00')
+intl.date(d, 'date')      // '07 мар. 2024'
+intl.date(d, 'time')      // '08:15'
+intl.date(d, 'datetime')  // '07 мар. 2024, 08:15'
+intl.date(d, 'full')      // '7 марта 2024 г., 08:15:00'
+intl.date(d, 'date', 'long')        // '07 марта 2024'
+intl.date(d, 'time', undefined, true) // '08:15' (принудительно 24ч)
+```
+
+### `time`
+
+Краткая обёртка для `date` с типом `'time'`.
+
+```javascript
+intl.time(new Date()) // '08:15'
+```
+
+### `month`
+
+Возвращает название месяца для указанной даты.
+
+**Параметры:**
+- `value?` — дата. По умолчанию — текущая дата.
+- `style?` — `'long'` (по умолчанию), `'short'`, `'narrow'`.
+
+```javascript
+intl.month(new Date('2024-03-01'), 'long')   // 'март'
+intl.month(new Date('2024-03-01'), 'short')  // 'мар.'
+```
+
+### `months`
+
+Возвращает массив всех 12 месяцев в формате `{ label, value }` — удобно для `<select>`.
+
+```javascript
+intl.months('long')
+// [{ label: '', value: undefined }, { label: 'Январь', value: 1 }, ...]
+```
+
+### `weekday`
+
+Возвращает название дня недели для указанной даты.
+
+**Параметры:**
+- `value?` — дата. По умолчанию — текущая дата.
+- `style?` — `'long'` (по умолчанию), `'short'`, `'narrow'`.
+
+```javascript
+intl.weekday(new Date('2024-03-07'), 'long')   // 'четверг'
+intl.weekday(new Date('2024-03-07'), 'short')  // 'чт'
+```
+
+### `weekdays`
+
+Возвращает массив 7 дней недели в формате `{ label, value }`, с учетом первого дня недели локали.
+
+```javascript
+intl.weekdays('short')
+// [{ label: 'Пн', value: 1 }, { label: 'Вт', value: 2 }, ...]
+```
+
+## Относительное время
+
+### `relative`
+
+Форматирует дату как относительное время от текущего момента (или от `todayValue`). Автоматически выбирает оптимальную единицу (секунды → минуты → часы → дни → месяцы → годы).
+
+**Параметры:**
+- `value: NumberOrStringOrDate` — дата для сравнения.
+- `styleOptions?` — стиль: `'long'`, `'short'`, `'narrow'` или `Intl.RelativeTimeFormatOptions`.
+- `todayValue?: Date` — точка отсчёта. По умолчанию — `new Date()`.
+
+```javascript
+intl.relative(new Date(Date.now() - 60000))       // '1 минуту назад'
+intl.relative(new Date(Date.now() - 3600000))     // '1 час назад'
+intl.relative(new Date(Date.now() + 86400000))    // 'через 1 день'
+intl.relative(new Date(Date.now() - 60000), 'short') // '1 мин. назад'
+```
+
+### `relativeByValue`
+
+Форматирует относительное время по явно заданному числовому значению и единице времени.
+
+**Параметры:**
+- `value: NumberOrString` — число (отрицательное — в прошлом, положительное — в будущем).
+- `unit: Intl.RelativeTimeFormatUnit` — единица: `'second'`, `'minute'`, `'hour'`, `'day'`, `'month'`, `'year'`.
+- `styleOptions?` — стиль или `Intl.RelativeTimeFormatOptions`.
+
+```javascript
+intl.relativeByValue(-5, 'minute')    // '5 минут назад'
+intl.relativeByValue(2, 'day')        // 'через 2 дня'
+intl.relativeByValue(-1, 'year')      // 'в прошлом году'
+```
+
+### `relativeLimit`
+
+Если дата находится в пределах `limit` дней от `todayValue` — выводит относительное время. Если нет — выводит абсолютную дату.
+
+**Параметры:**
+- `value: NumberOrStringOrDate` — дата.
+- `limit: number` — порог в днях (например: `7` — относительно для дат в пределах недели).
+- `todayValue?: Date` — точка отсчёта. По умолчанию — `new Date()`.
+- `relativeOptions?` — опции форматирования относительного времени.
+- `dateOptions?` — опции форматирования даты (при превышении лимита).
+- `type?: GeoDate` — тип формата для абсолютной даты.
+- `hour24?: boolean` — 24-часовой формат.
+
+```javascript
+// Вчера → относительное время
+intl.relativeLimit(new Date(Date.now() - 86400000), 7)  // 'вчера'
+
+// 2 недели назад → абсолютная дата
+intl.relativeLimit(new Date(Date.now() - 86400000 * 14), 7) // '22 фев. 2025'
+```
+
+## Сортировка
+
+### `sort`
+
+Сортирует массив строк с учетом особенностей локали через `Intl.Collator`.
+
+**Параметры:**
+- `data: T[]` — массив для сортировки.
+- `compareFn?` — функция-компаратор для извлечения строки из элемента (если массив не строковый).
+
+```javascript
+intl.sort(['яблоко', 'апельсин', 'банан'])
+// ['апельсин', 'банан', 'яблоко']
+
+intl.sort([{ name: 'Яблоко' }, { name: 'Апельсин' }], item => item.name)
+// [{ name: 'Апельсин' }, { name: 'Яблоко' }]
+```

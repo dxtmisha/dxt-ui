@@ -1,6 +1,7 @@
 import type { RouteLocationRaw, Router } from 'vue-router'
-import type { ConstrHrefProps } from '../../types/constructorTypes.ts'
 import { isObjectNotArray, isString } from '@dxtmisha/functional-basic'
+
+import type { ConstrHrefProps } from '../../types/constructorTypes'
 
 /**
  * Router management class.

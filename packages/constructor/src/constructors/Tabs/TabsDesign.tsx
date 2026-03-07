@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Tabs } from './Tabs'
 
 import {
@@ -17,7 +18,6 @@ import {
   type TabsExpose,
   type TabsSlots
 } from './types'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * TabsDesign

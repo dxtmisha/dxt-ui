@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/MetaOg - Open Graph Meta Tags'/>
+
+# MetaOg Class
+
+Extends `MetaManager`. Manages [Open Graph](https://ogp.me/) protocol meta tags — used by social networks (Facebook, VK, etc.) to generate link previews.
+
+Uses the `property` attribute (not `name`) for meta tags, as required by the Open Graph standard.
+
+## Supported Tags
+
+Manages the following `og:*` tags: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.
+
+## Getters
+
+- `getTitle(): string` — page title for preview.
+- `getType(): MetaOpenGraphType` — content type (e.g. `'website'`, `'article'`).
+- `getUrl(): string` — canonical page URL.
+- `getImage(): string` — preview image URL.
+- `getDescription(): string` — page description.
+- `getLocale(): string` — locale in `en_US`, `ru_RU` format.
+- `getSiteName(): string` — site name.
+
+## Setters
+
+All setters update the corresponding tag in the DOM and return `this` for chaining.
+
+- `setTitle(title: string): this`
+- `setType(type: MetaOpenGraphType): this` — types: `'website'`, `'article'`, `'book'`, `'music.song'`, and others.
+- `setUrl(url: string): this`
+- `setImage(url: string): this`
+- `setDescription(description: string): this`
+- `setLocale(locale: string): this` — format: `'en_US'`, `'ru_RU'`.
+- `setSiteName(siteName: string): this`
+
+## Example
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional-basic'
+
+const og = new MetaOg()
+
+og
+  .setTitle('My Article')
+  .setType('article')
+  .setUrl('https://example.com/article/1')
+  .setImage('https://example.com/images/cover.jpg')
+  .setDescription('Description of my article')
+  .setLocale('en_US')
+  .setSiteName('My Site')
+
+// For SSR
+const html = og.html()
+// '<meta property="og:title" content="My Article">...'
+```

@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/escapeExp - Экранирование специальных символов RegExp'/>
+
+# `escapeExp`
+
+Утилита, экранирующая все специальные символы регулярных выражений в строке (`.` `*` `+` `?` `^` `$` `{` `}` `(` `)` `|` `[` `]` `\` `/`), чтобы её можно было безопасно использовать внутри `RegExp`.
+
+Используется, когда строка поступает от пользователя или из внешнего источника и может содержать символы, имеющие специальное значение в регулярных выражениях.
+
+**Параметры:**
+- `value: string` — Строка, которую нужно экранировать.
+
+**Возвращает:**
+`string` — Строка с экранированными специальными символами, безопасная для использования в `RegExp`.
+
+```typescript
+import { escapeExp } from '@dxtmisha/functional-basic'
+
+// Экранирование символов
+console.log(escapeExp('user.name[0]')) // 'user\\.name\\[0\\]'
+console.log(escapeExp('price $10.00')) // 'price \\$10\\.00'
+
+// Безопасное использование в RegExp
+const regex = new RegExp(escapeExp('user.name[0]'))
+regex.test('user.name[0]') // true
+regex.test('userXname0')   // false
+```

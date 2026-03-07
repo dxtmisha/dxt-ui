@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/MetaOg - Open Graph мета-теги'/>
+
+# Класс MetaOg
+
+Наследует `MetaManager`. Управляет мета-тегами протокола [Open Graph](https://ogp.me/) — используются социальными сетями (VK, Facebook и др.) для формирования превью ссылок.
+
+Атрибут мета-тегов — `property` (а не `name`), что соответствует стандарту Open Graph.
+
+## Поддерживаемые теги
+
+Управляет следующими `og:*` тегами: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.
+
+## Геттеры
+
+- `getTitle(): string` — заголовок страницы для превью.
+- `getType(): MetaOpenGraphType` — тип контента (например: `'website'`, `'article'`).
+- `getUrl(): string` — канонический URL страницы.
+- `getImage(): string` — URL изображения для превью.
+- `getDescription(): string` — описание страницы.
+- `getLocale(): string` — локаль в формате `en_US`, `ru_RU`.
+- `getSiteName(): string` — название сайта.
+
+## Сеттеры
+
+Все сеттеры обновляют соответствующий тег в DOM и возвращают `this` для цепочки вызовов.
+
+- `setTitle(title: string): this`
+- `setType(type: MetaOpenGraphType): this` — тип: `'website'`, `'article'`, `'book'`, `'music.song'` и другие.
+- `setUrl(url: string): this`
+- `setImage(url: string): this`
+- `setDescription(description: string): this`
+- `setLocale(locale: string): this` — формат: `'ru_RU'`, `'en_US'`.
+- `setSiteName(siteName: string): this`
+
+## Пример
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional-basic'
+
+const og = new MetaOg()
+
+og
+  .setTitle('Моя статья')
+  .setType('article')
+  .setUrl('https://example.com/article/1')
+  .setImage('https://example.com/images/cover.jpg')
+  .setDescription('Описание моей статьи')
+  .setLocale('ru_RU')
+  .setSiteName('Мой сайт')
+
+// Для SSR
+const html = og.html()
+// '<meta property="og:title" content="Моя статья">...'
+```

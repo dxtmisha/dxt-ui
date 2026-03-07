@@ -1,0 +1,367 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoIntl - Quốc tế hóa (Intl)'/>
+
+# Lớp GeoIntl
+
+Lớp bao đóng mạnh mẽ cho API `Intl` của trình duyệt, được tích hợp với khả năng định vị địa lý của `Geo`. Cung cấp định dạng số, tiền tệ, đơn vị đo lường, ngày giờ, tên và sắp xếp chuỗi theo ngôn ngữ — với tự động nhận diện vùng locale.
+
+## Các tính năng chính
+
+- **Bộ nhớ đệm instance** — chỉ tạo một instance cho mỗi locale (Singleton theo locale).
+- **Giao diện thống nhất** — tất cả thao tác định dạng qua một lớp thay vì gọi trực tiếp `new Intl.*`.
+- **Định dạng ngày** — hệ thống linh hoạt với các kiểu được cài sẵn (`'date'`, `'time'`, `'datetime'`, `'full'`, v.v.).
+- **Thời gian tương đối** — `relative`, `relativeByValue`, `relativeLimit` cho hiển thị ngày thân thiện.
+- **Tên và vùng** — định dạng tên đầy đủ theo quy chuẩn văn hóa (`fullName`).
+
+## Khởi tạo
+
+**Tham số:**
+- `code?: string` — mã locale (ví dụ: `'vi-VN'`, `'en-US'`). Mặc định là locale hiện tại của `Geo`.
+
+```javascript
+import { GeoIntl } from '@dxtmisha/functional-basic'
+
+const intl = new GeoIntl()           // locale hiện tại
+const intl2 = new GeoIntl('fr-FR')   // locale tiếng Pháp
+const intl3 = GeoIntl.getInstance('de-DE') // qua factory method
+```
+
+## Thông tin chung
+
+### `getLocation`
+
+Trả về chuỗi locale chuẩn (ví dụ: `'vi-VN'`).
+
+```javascript
+intl.getLocation() // 'vi-VN'
+```
+
+### `getFirstDay`
+
+Trả về ngày đầu tiên trong tuần của locale (`'Mon'`, `'Sun'`, v.v.) — hữu ích khi xây dựng lịch.
+
+```javascript
+new GeoIntl('en-US').getFirstDay() // 'Sun'
+new GeoIntl('vi-VN').getFirstDay() // 'Mon'
+```
+
+## Tên và Vùng
+
+### `display`
+
+Định dạng tên hiển thị của ngôn ngữ, vùng hoặc chữ viết qua `Intl.DisplayNames`.
+
+**Tham số:**
+- `value?: string` — mã ngôn ngữ, quốc gia hoặc chữ viết (ví dụ: `'en'`, `'US'`).
+- `typeOptions?` — kiểu hiển thị: `'language'`, `'region'`, `'script'` hoặc `Intl.DisplayNamesOptions`.
+
+```javascript
+intl.display('en', 'language') // 'Tiếng Anh'
+intl.display('US', 'region')   // 'Hoa Kỳ'
+intl.display()                 // tên ngôn ngữ hiện tại
+```
+
+### `languageName`
+
+Trả về tên ngôn ngữ được địa phương hóa.
+
+**Tham số:**
+- `value?: string` — mã ngôn ngữ hoặc quốc gia. Mặc định là locale hiện tại.
+- `style?` — kiểu định dạng: `'long'`, `'short'`, `'narrow'`.
+
+```javascript
+intl.languageName('fr')          // 'Tiếng Pháp'
+intl.languageName('de', 'long')  // 'Tiếng Đức'
+```
+
+### `countryName`
+
+Trả về tên quốc gia được địa phương hóa.
+
+**Tham số:**
+- `value?: string` — mã quốc gia (ISO 3166, ví dụ: `'DE'`, `'US'`).
+- `style?` — kiểu định dạng: `'long'`, `'short'`, `'narrow'`.
+
+```javascript
+intl.countryName('DE')   // 'Đức'
+intl.countryName('US')   // 'Hoa Kỳ'
+```
+
+### `fullName`
+
+Định dạng tên đầy đủ theo chuẩn văn hóa của locale. Thứ tự thành phần (tên/họ) được xác định bởi trường `nameFormat` trong dữ liệu geo.
+
+**Tham số:**
+- `last: string` — họ.
+- `first: string` — tên.
+- `surname?: string` — tên đệm (tùy chọn).
+- `short?: boolean` — nếu `true`, tất cả các phần sau phần đầu sẽ được viết tắt thành chữ cái đầu (`Nguyễn V. A.`).
+
+```javascript
+intl.fullName('Nguyễn', 'Văn', 'An')        // 'Văn An Nguyễn' hoặc theo chuẩn locale
+intl.fullName('Nguyễn', 'Văn', 'An', true)  // 'Nguyễn V. A.'
+intl.fullName('Smith', 'John')              // 'John Smith'
+```
+
+## Số và Tiền tệ
+
+### `number`
+
+Định dạng số theo locale qua `Intl.NumberFormat`.
+
+**Tham số:**
+- `value: NumberOrString` — số cần định dạng.
+- `options?: Intl.NumberFormatOptions` — tùy chọn bổ sung `Intl.NumberFormat`.
+
+```javascript
+intl.number(1234567.89)                         // '1.234.567,89'
+intl.number(0.005, { minimumFractionDigits: 2 }) // '0,01'
+```
+
+### `decimal`
+
+Trả về ký hiệu dấu thập phân cho locale hiện tại.
+
+```javascript
+new GeoIntl('vi-VN').decimal() // ','
+new GeoIntl('en-US').decimal() // '.'
+```
+
+### `currency`
+
+Định dạng số thành số tiền theo loại tiền tệ chỉ định.
+
+**Tham số:**
+- `value: NumberOrString` — số tiền. Cũng chấp nhận chuỗi có mã tiền tệ ở cuối (`'1500 USD'`).
+- `currencyOptions?: string | Intl.NumberFormatOptions` — mã tiền tệ (`'VND'`) hoặc `Intl.NumberFormatOptions`.
+- `numberOnly?: boolean` — nếu `true`, chỉ xuất số mà không có ký hiệu tiền tệ. Mặc định: `false`.
+
+```javascript
+intl.currency(1500, 'USD')           // '$1,500.00'
+intl.currency(1500, 'EUR')           // '€1,500.00'
+intl.currency('1500 GBP')            // '£1,500.00'
+intl.currency(1500, 'USD', true)     // '1,500.00' (không có ký hiệu)
+```
+
+### `currencySymbol`
+
+Trả về ký hiệu hoặc mã của đơn vị tiền tệ.
+
+**Tham số:**
+- `currency: string` — mã tiền tệ (ISO 4217, ví dụ: `'USD'`, `'EUR'`, `'VND'`).
+- `currencyDisplay?` — chế độ hiển thị: `'symbol'` (mặc định), `'code'`, `'name'`, `'narrowSymbol'`.
+
+```javascript
+intl.currencySymbol('USD')             // '$'
+intl.currencySymbol('USD', 'code')     // 'USD'
+intl.currencySymbol('USD', 'name')     // 'đô la Mỹ'
+```
+
+### `unit`
+
+Định dạng số với đơn vị đo lường qua `Intl.NumberFormat` với `style: 'unit'`.
+
+**Tham số:**
+- `value: NumberOrString` — số. Cũng chấp nhận chuỗi có chữ viết tắt đơn vị (`'100 km'`).
+- `unitOptions?: string | Intl.NumberFormatOptions` — tên đơn vị (`'kilometer'`, `'liter'`) hoặc tùy chọn đầy đủ.
+
+```javascript
+intl.unit(100, 'kilometer')   // '100 km'
+intl.unit(5, 'liter')         // '5 L'
+intl.unit('100 km')           // '100 km'
+```
+
+### `sizeFile`
+
+Tự động chuyển đổi và định dạng kích thước file, bắt đầu từ byte và tự động nâng đơn vị khi vượt quá 1024.
+
+**Tham số:**
+- `value: NumberOrString` — kích thước tính bằng byte.
+- `unitOptions?` — đơn vị bắt đầu: `'byte'` (mặc định), `'kilobyte'`, `'megabyte'`, `'gigabyte'`, `'terabyte'`, `'petabyte'`.
+
+```javascript
+intl.sizeFile(500)              // '500 byte'
+intl.sizeFile(1536)             // '1,5 kB'
+intl.sizeFile(1536 * 1024)      // '1,5 MB'
+intl.sizeFile(2 * 1024 ** 3)    // '2 GB'
+```
+
+### `percent`
+
+Định dạng số dưới dạng phần trăm. Nhận giá trị dưới dạng phân số (0–1).
+
+```javascript
+intl.percent(0.5)    // '50%'
+intl.percent(0.007)  // '1%'
+```
+
+### `percentBy100`
+
+Định dạng số dưới dạng phần trăm, chia cho 100 trước. Hữu ích khi giá trị đã là `50` thay vì `0.5`.
+
+```javascript
+intl.percentBy100(50)   // '50%'
+intl.percentBy100(7.5)  // '8%'
+```
+
+### `plural`
+
+Định dạng số với quy tắc số nhiều theo locale qua `Intl.PluralRules`.
+
+**Tham số:**
+- `value: NumberOrString` — số.
+- `words: string` — chuỗi các dạng từ phân cách bằng `|`. Thứ tự: `one|two|few|many|other`. Số lượng dạng phụ thuộc vào locale.
+- `options?: Intl.PluralRulesOptions` — tùy chọn cho `Intl.PluralRules`.
+- `optionsNumber?: Intl.NumberFormatOptions` — tùy chọn định dạng số.
+
+```javascript
+intl.plural(1, 'apple|apples')     // '1 apple'
+intl.plural(2, 'apple|apples')     // '2 apples'
+intl.plural(100, 'apple|apples')   // '100 apples'
+```
+
+## Ngày và Giờ
+
+### `date`
+
+Định dạng ngày qua `toLocaleString` với các kiểu định dạng được cài sẵn.
+
+**Tham số:**
+- `value: NumberOrStringOrDate` — ngày (đối tượng `Date`, timestamp, hoặc chuỗi).
+- `type?: GeoDate` — kiểu cài sẵn: `'date'`, `'time'`, `'datetime'`, `'full'`, `'month'`, v.v.
+- `styleOptions?` — kiểu tháng (`'short'`, `'long'`, `'narrow'`) hoặc `Intl.DateTimeFormatOptions` tùy chỉnh.
+- `hour24?: boolean` — nếu `true`, bắt buộc dùng định dạng 24 giờ.
+
+```javascript
+const d = new Date('2024-03-07T08:15:00')
+intl.date(d, 'date')      // '07/03/2024'
+intl.date(d, 'time')      // '08:15'
+intl.date(d, 'datetime')  // '07/03/2024, 08:15'
+intl.date(d, 'date', 'long')         // '07 tháng 3, 2024'
+intl.date(d, 'time', undefined, true) // '08:15' (bắt buộc 24h)
+```
+
+### `time`
+
+Hàm rút gọn cho `date` với kiểu `'time'`.
+
+```javascript
+intl.time(new Date()) // '08:15'
+```
+
+### `month`
+
+Trả về tên tháng cho ngày được chỉ định.
+
+**Tham số:**
+- `value?` — ngày. Mặc định là ngày hiện tại.
+- `style?` — `'long'` (mặc định), `'short'`, `'narrow'`.
+
+```javascript
+intl.month(new Date('2024-03-01'), 'long')   // 'tháng 3'
+intl.month(new Date('2024-03-01'), 'short')  // 'thg 3'
+```
+
+### `months`
+
+Trả về mảng 12 tháng dưới dạng `{ label, value }` — hữu ích cho `<select>`.
+
+```javascript
+intl.months('long')
+// [{ label: '', value: undefined }, { label: 'Tháng 1', value: 1 }, ...]
+```
+
+### `weekday`
+
+Trả về tên ngày trong tuần cho ngày được chỉ định.
+
+**Tham số:**
+- `value?` — ngày. Mặc định là ngày hiện tại.
+- `style?` — `'long'` (mặc định), `'short'`, `'narrow'`.
+
+```javascript
+intl.weekday(new Date('2024-03-07'), 'long')   // 'Thứ Năm'
+intl.weekday(new Date('2024-03-07'), 'short')  // 'Th 5'
+```
+
+### `weekdays`
+
+Trả về mảng 7 ngày trong tuần dưới dạng `{ label, value }`, theo thứ tự ngày đầu tuần của locale.
+
+```javascript
+intl.weekdays('short')
+// [{ label: 'CN', value: 0 }, { label: 'T2', value: 1 }, ...]
+```
+
+## Thời gian Tương đối
+
+### `relative`
+
+Định dạng ngày thành thời gian tương đối so với hiện tại (hoặc `todayValue`). Tự động chọn đơn vị tốt nhất (giây → phút → giờ → ngày → tháng → năm).
+
+**Tham số:**
+- `value: NumberOrStringOrDate` — ngày cần so sánh.
+- `styleOptions?` — kiểu: `'long'`, `'short'`, `'narrow'` hoặc `Intl.RelativeTimeFormatOptions`.
+- `todayValue?: Date` — điểm tham chiếu. Mặc định là `new Date()`.
+
+```javascript
+intl.relative(new Date(Date.now() - 60000))     // '1 phút trước'
+intl.relative(new Date(Date.now() - 3600000))   // '1 giờ trước'
+intl.relative(new Date(Date.now() + 86400000))  // 'sau 1 ngày'
+intl.relative(new Date(Date.now() - 60000), 'short') // '1 ph. trước'
+```
+
+### `relativeByValue`
+
+Định dạng thời gian tương đối bằng cách chỉ định trực tiếp giá trị số và đơn vị.
+
+**Tham số:**
+- `value: NumberOrString` — số (âm = quá khứ, dương = tương lai).
+- `unit: Intl.RelativeTimeFormatUnit` — đơn vị: `'second'`, `'minute'`, `'hour'`, `'day'`, `'month'`, `'year'`.
+- `styleOptions?` — kiểu hoặc `Intl.RelativeTimeFormatOptions`.
+
+```javascript
+intl.relativeByValue(-5, 'minute')   // '5 phút trước'
+intl.relativeByValue(2, 'day')       // 'sau 2 ngày'
+intl.relativeByValue(-1, 'year')     // 'năm ngoái'
+```
+
+### `relativeLimit`
+
+Nếu ngày nằm trong `limit` ngày tính từ `todayValue` — xuất thời gian tương đối. Ngược lại — xuất ngày tuyệt đối.
+
+**Tham số:**
+- `value: NumberOrStringOrDate` — ngày.
+- `limit: number` — ngưỡng tính bằng ngày (ví dụ: `7` = tương đối cho ngày trong vòng một tuần).
+- `todayValue?: Date` — điểm tham chiếu. Mặc định là `new Date()`.
+- `relativeOptions?` — tùy chọn định dạng thời gian tương đối.
+- `dateOptions?` — tùy chọn định dạng ngày tuyệt đối.
+- `type?: GeoDate` — kiểu định dạng cho ngày tuyệt đối.
+- `hour24?: boolean` — định dạng 24 giờ.
+
+```javascript
+// Hôm qua → thời gian tương đối
+intl.relativeLimit(new Date(Date.now() - 86400000), 7)      // 'hôm qua'
+
+// 2 tuần trước → ngày tuyệt đối
+intl.relativeLimit(new Date(Date.now() - 86400000 * 14), 7) // '22 thg 2, 2025'
+```
+
+## Sắp xếp
+
+### `sort`
+
+Sắp xếp mảng chuỗi theo quy tắc đặc thù của locale qua `Intl.Collator`.
+
+**Tham số:**
+- `data: T[]` — mảng cần sắp xếp.
+- `compareFn?` — hàm so sánh để trích xuất chuỗi từ mỗi phần tử (khi mảng không phải chuỗi).
+
+```javascript
+intl.sort(['chuối', 'táo', 'cam'])
+// ['cam', 'chuối', 'táo']
+
+intl.sort([{ name: 'Chuối' }, { name: 'Táo' }], item => item.name)
+// [{ name: 'Chuối' }, { name: 'Táo' }] (theo locale)
+```

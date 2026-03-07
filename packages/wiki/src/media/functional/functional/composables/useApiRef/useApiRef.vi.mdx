@@ -1,65 +1,80 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional/Composables/useApiRef - Làm việc với các yêu cầu API'/>
+<Meta title='@dxtmisha/vi/functional/Composables/useApiRef - Yêu cầu API'/>
 
 # `useApiRef`
 
-Trả về dữ liệu và các phương thức để thuận tiện làm việc với các yêu cầu API. Cung cấp các trạng thái tải phản ứng, bộ nhớ đệm và khả năng khởi động lại.
+Composable để làm việc với các yêu cầu API trong Vue component. Trả về dữ liệu phản ứng, cờ trạng thái và các phương thức quản lý tải. Sử dụng **lazy loading** — yêu cầu chỉ được gửi khi lần đầu truy cập vào thuộc tính `data`.
 
 **Tham số:**
-- `path?: RefOrNormal<string | undefined>` — đường dẫn đến yêu cầu (có thể mang tính phản ứng).
-- `options?: ApiOptions` — dữ liệu cho yêu cầu (một đối tượng `ApiFetch` hoặc một chuỗi chứa tên phương thức).
-- `reactivity?: boolean` — có cho phép tính phản ứng hay không: tự động khởi động lại yêu cầu khi `path`, `options` hoặc các `conditions` toàn cục thay đổi (mặc định là `true`).
-- `conditions?: RefType<boolean>` — các điều kiện cục bộ để thực thi yêu cầu (nếu `false`, yêu cầu sẽ không được thực thi).
-- `transformation?: (data: T) => ApiData<R>` — một hàm để chuyển đổi phản hồi từ máy chủ trước khi ghi vào `data`.
-- `unmounted?: boolean` — có xóa dữ liệu khỏi bộ nhớ đệm hay không (gán `data` thành null) khi thành phần bị hủy (unmounted).
+- `path?: RefOrNormal<string | undefined>` — đường dẫn endpoint (có thể là `Ref` phản ứng).
+- `options?: ApiOptions` — tùy chọn yêu cầu (đối tượng `ApiFetch` hoặc chuỗi tên phương thức).
+- `reactivity?: boolean` — tự động chạy lại yêu cầu khi `path`, `options` hoặc ngôn ngữ thay đổi. Mặc định: `true`.
+- `conditions?: RefType<boolean>` — điều kiện thực thi phản ứng. Nếu `false` — yêu cầu không được thực hiện và dữ liệu bị xóa.
+- `transformation?: (data: T) => ApiData<R>` — hàm chuyển đổi phản hồi trước khi lưu vào `data`.
+- `unmounted?: boolean` — nếu `true`, dữ liệu bị xóa và watcher dừng lại khi component unmount.
 
 **Trả về (`UseApiRef<R>`):**
-Một đối tượng với các thuộc tính phản ứng và phương thức điều khiển:
-- `data` — tham chiếu (`ref`) đến dữ liệu đã tải (một đối tượng `ApiData<R>`) hoặc `undefined` nếu việc tải chưa hoàn tất.
-- `isStarting` — cờ báo bắt đầu yêu cầu (`true` nếu chưa có dữ liệu).
-- `loading` — trạng thái tải hiện tại của yêu cầu (`true` trong khi chờ phản hồi).
-- `reading` — cờ báo đang đọc chủ động.
-- `reset()` — phương thức để tải lại dữ liệu.
-- `stop()` — phương thức để dừng theo dõi yêu cầu.
-- `abort()` — phương thức để hủy bỏ yêu cầu mạng hiện tại (sử dụng `AbortController`).
 
-**Cài đặt toàn cục:**
-Bạn có thể xác định các điều kiện toàn cục cho tất cả các `useApiRef` bằng cách sử dụng hàm `setApiRefGlobalConditions(conditions)`.
+Trạng thái phản ứng (getter `ComputedRef`):
+- `data` — `Ref<ApiData<R> | undefined>` — dữ liệu đã tải. Kích hoạt yêu cầu (lazy) khi truy cập lần đầu.
+- `starting` — `ComputedRef<boolean>` — `true` khi dữ liệu chưa bao giờ được tải (`data === undefined`).
+- `loading` — `ComputedRef<boolean>` — `true` khi đang có yêu cầu tích cực đến máy chủ.
+- `reading` — `ComputedRef<boolean>` — `true` khi đang trong quá trình đọc dữ liệu.
 
-### Khi nào yêu cầu được thực thi? (Tải lười biếng / Lazy Loading)
-Một tính năng chính của `useApiRef` là tải lười biếng (Lazy Loading). Khi gọi hàm, yêu cầu mạng sẽ **không được gửi ngay lập tức**.
+Phương thức:
+- `isStarting(): boolean` — trả về giá trị hiện tại của cờ `starting`.
+- `isLoading(): boolean` — trả về giá trị hiện tại của cờ `loading`.
+- `isReading(): boolean` — trả về giá trị hiện tại của cờ `reading`.
+- `getItem(): ApiData<R> | undefined` — trả về dữ liệu đã tải hiện tại mà không có tính phản ứng.
+- `reset(): Promise<void>` — chạy lại yêu cầu một cách bắt buộc.
+- `stop(): void` — dừng watcher và đặt lại `data` về `undefined`.
+- `abort(): void` — hủy yêu cầu hiện tại qua `AbortController` mà không xóa dữ liệu.
 
-Yêu cầu sẽ chỉ được kích hoạt vào thời điểm bạn **truy cập thuộc tính `data` lần đầu tiên** (ví dụ: yêu cầu `data.value` hoặc hiển thị nó trong Vue template). Điều này cho phép bạn định nghĩa component ở cấp cao nhất của setup mà không tạo ra các yêu cầu mạng không cần thiết cho đến khi dữ liệu thực sự cần cho việc hiển thị.
+## Lazy Loading
+
+Yêu cầu **không được gửi** khi gọi `useApiRef`. Nó chỉ được kích hoạt khi lần đầu truy cập vào thuộc tính `data`. Điều này cho phép gọi composable ở đầu `setup()` mà không có các yêu cầu mạng không cần thiết.
+
+## Điều kiện toàn cục
+
+`setApiRefGlobalConditions(conditions)` — thiết lập điều kiện toàn cục cho tất cả các instance `useApiRef`. Chỉ có hiệu lực một lần.
+
+## Ví dụ
 
 ```typescript
 import { ref } from 'vue'
-import { useApiRef } from '@dxtmisha/functional'
+import { useApiRef, setApiRefGlobalConditions } from '@dxtmisha/functional'
 
 const userId = ref('123')
+const isAuthenticated = ref(true)
+
+// Điều kiện toàn cục (tất cả yêu cầu chỉ chạy nếu đã xác thực)
+setApiRefGlobalConditions(isAuthenticated)
 
 const {
   data: user,
+  starting,
   loading,
+  reading,
+  getItem,
   reset,
-  stop
+  stop,
+  abort
 } = useApiRef(
-  () => `/api/users/${userId.value}`,
+  () => `users/${userId.value}`,
   { method: 'GET' },
-  true // Phản ứng và cập nhật dữ liệu khi userId thay đổi
+  true // Tự động chạy lại khi userId thay đổi
 )
 
-// Bắt buộc tải lại
-const refreshData = async () => {
-  await reset()
-}
+// Kiểm tra trạng thái không có tính phản ứng
+console.log(getItem()) // undefined trước khi truy cập data lần đầu
 
-const cancelRequest = () => {
-  abort() // Hủy nhanh yêu cầu mạng đang diễn ra
-}
+// Tải lại bắt buộc
+await reset()
 
-// Dừng theo dõi (ví dụ: khi rời khỏi trang)
-const abortRequest = () => {
-  stop() // Dừng watcher và xóa dữ liệu
-}
+// Hủy yêu cầu (không xóa dữ liệu)
+abort()
+
+// Dừng theo dõi (xóa dữ liệu)
+stop()
 ```

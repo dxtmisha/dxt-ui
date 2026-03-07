@@ -1,0 +1,79 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/GeoFlag - Флаги Стран'/>
+
+# Класс GeoFlag
+
+Класс для работы с флагами стран. Предоставляет удобный интерфейс для получения иконок флагов, отображаемых имен стран и языков на основе кода страны или локали. Использует `Geo` и `GeoIntl` для разрешения локализованных наименований.
+
+## Ключевые особенности
+
+- **Словарь флагов** — встроенный статический словарь `flags`, связывающий коды стран (ISO 3166-1 alpha-2) с именами иконок.
+- **Локализованные имена** — возвращает название страны и языка в соответствии с текущей локалью интерфейса.
+- **Национальные имена** — отдельный метод `getNational` возвращает названия стран на их собственном языке.
+- **Гибкая фильтрация** — методы списков поддерживают фильтрацию по массиву кодов.
+
+## Инициализация
+
+Создает новый экземпляр `GeoFlag` с опциональным кодом страны или локали.
+
+**Параметры:**
+- `code?: string` — код страны или локали (например, `'RU'`, `'ru-RU'`). По умолчанию используется текущая локаль из `Geo`.
+
+```javascript
+import { GeoFlag } from '@dxtmisha/functional-basic'
+
+// Создание с текущей локалью
+const flag = new GeoFlag()
+
+// Создание для конкретной страны
+const ruFlag = new GeoFlag('ru-RU')
+```
+
+## Методы
+
+### Получение данных
+
+- `get(code?: string): GeoFlagItem | undefined` — Возвращает полный объект данных о стране: языке, коде страны, стандарте, иконке флага. Если код не указан, используется код из конструктора.
+- `getFlag(code?: string): string | undefined` — Возвращает только имя иконки флага для указанной страны.
+- `getList(codes?: string[]): GeoFlagItem[]` — Возвращает массив объектов с данными о флагах. Если `codes` не передан, возвращает все страны из словаря.
+- `getNational(codes?: string[]): GeoFlagNational[]` — Аналог `getList`, но дополнительно содержит названия на национальном языке страны.
+
+### Изменение данных
+
+- `setCode(code: string): this` — Изменяет код страны для текущего экземпляра.
+
+## Примеры
+
+### Отображение флага для текущей страны
+```javascript
+import { GeoFlag } from '@dxtmisha/functional-basic'
+
+const flag = new GeoFlag()
+const item = flag.get()
+
+console.log(item?.icon)    // 'f-ru'
+console.log(item?.country) // 'Россия'
+```
+
+### Список всех стран с флагами
+```javascript
+const flag = new GeoFlag('ru-RU')
+const countries = flag.getList()
+
+countries.forEach(item => {
+  console.log(`${item.icon}: ${item.country}`)
+})
+// 'f-us: США', 'f-fr: Франция', ...
+```
+
+### Список с национальными наименованиями
+```javascript
+// Вернет название страны как на вашем языке, так и на языке самой страны
+const national = new GeoFlag('ru-RU').getNational(['US', 'FR', 'JP'])
+
+national.forEach(item => {
+  console.log(`${item.country} (${item.nationalCountry})`)
+})
+// США (United States), Франция (France), Япония (日本)
+```

@@ -1,0 +1,89 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/Meta - Управление SEO мета-тегами'/>
+
+# Класс Meta
+
+Унифицированный фасад для управления всеми мета-тегами документа. Наследует `MetaManager` и объединяет стандартные HTML-теги, Open Graph (`MetaOg`) и Twitter Card (`MetaTwitter`) в единый интерфейс.
+
+## Ключевые особенности
+
+- **Единая точка управления** — один объект управляет `<title>`, мета-тегами `name`, `og:*` и `twitter:*`.
+- **Синхронизация** — `setTitle`, `setImage`, `setCanonical` и `setSiteName` автоматически обновляют соответствующие теги во всех трёх системах.
+- **Суффикс заголовка** — поддержка автоматического добавления названия сайта к заголовку страницы.
+- **SSR-совместимость** — метод `html()` генерирует полный HTML всех тегов.
+
+## Инициализация
+
+```javascript
+const meta = new Meta()
+```
+
+Автоматически создаёт внутренние экземпляры `MetaOg` и `MetaTwitter`.
+
+## Геттеры
+
+- `getTitle(): string` — заголовок страницы без суффикса.
+- `getKeywords(): string` — мета-тег `keywords`.
+- `getDescription(): string` — мета-тег `description`.
+- `getImage(): string` — URL изображения из Open Graph.
+- `getCanonical(): string` — канонический URL.
+- `getRobots(): MetaRobots` — мета-тег `robots`.
+- `getAuthor(): string` — мета-тег `author`.
+- `getSiteName(): string` — название сайта из Open Graph.
+- `getLocale(): string` — локаль из Open Graph.
+- `getOg(): MetaOg` — прямой доступ к экземпляру `MetaOg`.
+- `getTwitter(): MetaTwitter` — прямой доступ к экземпляру `MetaTwitter`.
+
+## Сеттеры
+
+Все сеттеры возвращают `this` для цепочки вызовов.
+
+- `setTitle(title: string)` — устанавливает `document.title` (с суффиксом), `og:title` и `twitter:title` одновременно.
+- `setKeywords(keywords: string | string[])` — принимает строку или массив; массив объединяется через запятую.
+- `setDescription(description: string)` — устанавливает `<meta name="description">`.
+- `setImage(image: string)` — устанавливает `og:image` и `twitter:image` одновременно.
+- `setCanonical(canonical: string)` — устанавливает `<meta name="canonical">`, `og:url` и `twitter:url` одновременно.
+- `setRobots(robots: MetaRobots)` — устанавливает `<meta name="robots">` (`'index, follow'`, `'noindex, nofollow'` и др.).
+- `setAuthor(author: string)` — устанавливает `<meta name="author">`.
+- `setSiteName(siteName: string)` — устанавливает `og:site_name` и `twitter:site` одновременно.
+- `setLocale(locale: string)` — устанавливает `og:locale` (формат: `'ru_RU'`).
+- `setSuffix(suffix?: string)` — суффикс заголовка. `setTitle('Статья')` + `setSuffix('Сайт')` → `'Статья - Сайт'`.
+
+## Генерация HTML
+
+### `html(): string`
+
+Генерирует полную HTML-строку всех мета-тегов: стандартных + Open Graph + Twitter Card. Используется для SSR.
+
+```javascript
+const meta = new Meta()
+meta.setTitle('Статья').setDescription('Описание').setImage('https://example.com/img.jpg')
+
+const html = meta.html()
+// <meta name="description" content="Описание">
+// <meta property="og:title" content="Статья">
+// <meta property="og:image" content="https://example.com/img.jpg">
+// <meta name="twitter:title" content="Статья">
+// ...
+```
+
+## Пример
+
+```javascript
+import { Meta } from '@dxtmisha/functional-basic'
+
+const meta = new Meta()
+meta.setSuffix('Мой Сайт')
+
+meta
+  .setTitle('Как использовать Vue 3')
+  .setDescription('Подробное руководство по Vue 3')
+  .setKeywords(['vue', 'javascript', 'typescript'])
+  .setImage('https://example.com/images/vue.jpg')
+  .setCanonical('https://example.com/articles/vue-3')
+  .setRobots('index, follow')
+  .setAuthor('Иван Иванов')
+  .setSiteName('Мой Сайт')
+  .setLocale('ru_RU')
+```

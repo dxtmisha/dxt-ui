@@ -73,6 +73,14 @@ userPrefs.remove()
 
 - `updateData(): void` (static) — Updates data from `document.cookie`.
 
+## CookieOptions
+
+`CookieOptions` is a configuration object for the `get` and `set` methods:
+
+- `age?: number` — cookie lifetime in **seconds** (`Max-Age` attribute). Default: 7 days (604800 sec). Automatically set to `-1` when deleting via `remove()`.
+- `sameSite?: 'strict' | 'lax'` — the `SameSite` policy. Default: `'strict'` (cookie is only sent on same-site navigations). `'lax'` also allows sending on cross-site GET requests.
+- `arguments?: string[]` — additional directives appended to the cookie string (e.g. `'Secure'`, `'Path=/'`, `'Domain=.myapp.com'`).
+
 ## Internal Overview
 
 Internally, `Cookie` registers all instantiated wrappers in a shared `items` dictionary. If you instantiate `new Cookie('auth')` in two different files, they will correctly share and update the exact same underlying memory instance.

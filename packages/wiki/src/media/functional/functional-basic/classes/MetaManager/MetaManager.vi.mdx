@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/MetaManager - Quản lý thẻ meta'/>
+
+# Lớp MetaManager
+
+Lớp generic cơ sở để đồng bộ hóa các thẻ meta HTML của tài liệu. Đọc các thẻ hiện có từ DOM khi khởi tạo và cung cấp giao diện thống nhất để đọc và ghi chúng.
+
+Lớp này là lớp cha của `MetaOg`, `MetaTwitter` và `Meta`.
+
+## Khởi tạo
+
+```typescript
+new MetaManager(listMeta, isProperty?)
+```
+
+**Tham số:**
+- `listMeta: readonly string[]` — danh sách tên thẻ meta được quản lý bởi instance này.
+- `isProperty?: boolean` — nếu `true`, dùng thuộc tính `property` thay vì `name` (cần thiết cho Open Graph). Mặc định: `false`.
+
+## Phương thức
+
+- `getListMeta(): T` — trả về danh sách tên thẻ được quản lý.
+- `get(name): string` — trả về nội dung thẻ theo tên. Trả về `''` nếu chưa đặt.
+- `getItems(): MetaList<T>` — trả về đối tượng với tất cả thẻ: `{ [name]: content }`.
+- `set(name, content): this` — đặt thẻ trong DOM (tạo nếu chưa có). Hỗ trợ chuỗi phương thức.
+- `setByList(metaList): this` — đặt nhiều thẻ từ một đối tượng. Hỗ trợ chuỗi phương thức.
+
+## Tạo HTML
+
+### `html(): string`
+
+Tạo chuỗi HTML cho tất cả thẻ có nội dung. Dùng cho SSR.
+
+```javascript
+manager.set('description', 'Mô tả của tôi').set('keywords', 'vue, typescript')
+
+manager.html()
+// '<meta name="description" content="Mô tả của tôi"><meta name="keywords" content="vue, typescript">'
+```

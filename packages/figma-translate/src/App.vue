@@ -11,8 +11,8 @@ const { selected } = usePage().init()
 </script>
 
 <template>
-  <TranslateTools/>
   <TranslatePage>
+    <TranslateTools/>
     <TranslateKeyCreation v-if="selected === 'key-creation'"/>
     <TranslateLocalization v-else-if="selected === 'localization'"/>
   </TranslatePage>

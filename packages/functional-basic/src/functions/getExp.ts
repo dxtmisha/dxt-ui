@@ -1,3 +1,5 @@
+import { escapeExp } from './escapeExp'
+
 /**
  * The object is used for matching text with a pattern.
  *
@@ -15,7 +17,7 @@ export function getExp(
   flags = 'ig',
   pattern = ':value'
 ): RegExp {
-  const data = value.replace(/([[\]\\^$.?*+(){}/|])/g, '\\$1')
+  const data = escapeExp(value)
 
   return new RegExp(pattern.replace(/:value/g, data), flags)
 }

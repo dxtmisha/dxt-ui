@@ -1,0 +1,69 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/Hash - Состояние URL Hash'/>
+
+# Класс Hash
+
+Статический класс для управления данными, которые хранятся в URL-хэше (`#`). Автоматически синхронизирует состояние приложения с URL — каждый вызов `set` обновляет строку хэша в браузере, а событие `hashchange` обновляет внутреннее состояние.
+
+## Ключевые особенности
+
+- **Синхронизация с URL** — Данные хранятся в человекочитаемом формате в строке хэша.
+- **Реактивность через watchers** — Метод `addWatch` позволяет подписаться на изменение конкретной переменной.
+- **Авто-инициализация** — При загрузке страницы данные автоматически считываются из URL.
+- **Умный тип** — Значения десериализуются из строки: числа, булевые значения и объекты восстанавливаются.
+
+## Инициализация
+
+Класс является статическим и инициализируется автоматически при загрузке страницы — считывает текущую строку хэша URL.
+
+```javascript
+// URL: https://myapp.com/#page=2;filter=active
+
+import { Hash } from '@dxtmisha/functional-basic'
+
+const page = Hash.get('page')    // 2 (number)
+const filter = Hash.get('filter') // 'active' (string)
+```
+
+## Методы
+
+- `get<T>(name: string, defaultValue?: T | (() => T)): T` — Возвращает значение переменной из хэша. Если значения нет, устанавливает его через `defaultValue` (может быть функцией).
+- `set<T>(name: string, callback: T | (() => T)): void` — Устанавливает значение переменной и обновляет URL-хэш. Если значение не изменилось, обновление не происходит.
+- `addWatch<T>(name: string, callback: (value: T) => void): void` — Подписывается на изменение конкретной переменной в хэше.
+- `reload(): void` — Считывает текущий URL-хэш и синхронизирует с ним внутреннее состояние.
+
+## Примеры
+
+### Чтение и запись
+```javascript
+import { Hash } from '@dxtmisha/functional-basic'
+
+// Чтение с дефолтным значением
+const page = Hash.get<number>('page', 1)
+
+// Запись (URL изменится на #page=3)
+Hash.set('page', 3)
+
+// Запись через функцию
+Hash.set('page', () => page + 1)
+```
+
+### Подписка на изменения
+```javascript
+Hash.addWatch<string>('filter', (newFilter) => {
+  console.log('Фильтр изменен на:', newFilter)
+  loadData(newFilter)
+})
+```
+
+### Управление состоянием страницы
+```javascript
+// Инициализация фильтра с дефолтным значением
+const filter = Hash.get('filter', 'all')
+const sort = Hash.get('sort', 'date')
+
+// Изменение при действии пользователя
+Hash.set('filter', 'active')
+// URL: #filter=active;sort=date
+```

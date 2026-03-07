@@ -1,0 +1,89 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Meta - Quản lý thẻ meta SEO'/>
+
+# Lớp Meta
+
+Facade thống nhất để quản lý tất cả thẻ meta của tài liệu. Kế thừa `MetaManager` và kết hợp thẻ HTML tiêu chuẩn, Open Graph (`MetaOg`) và Twitter Card (`MetaTwitter`) vào một giao diện duy nhất.
+
+## Các tính năng chính
+
+- **Điểm quản lý duy nhất** — một đối tượng quản lý `<title>`, thẻ meta `name`, `og:*` và `twitter:*`.
+- **Đồng bộ hóa** — `setTitle`, `setImage`, `setCanonical`, `setSiteName` tự động cập nhật các thẻ tương ứng trong cả ba hệ thống.
+- **Hậu tố tiêu đề** — hỗ trợ tự động thêm tên trang web vào tiêu đề trang.
+- **Tương thích SSR** — `html()` tạo HTML đầy đủ của tất cả thẻ.
+
+## Khởi tạo
+
+```javascript
+const meta = new Meta()
+```
+
+Tự động tạo các instance `MetaOg` và `MetaTwitter` nội bộ.
+
+## Getter
+
+- `getTitle(): string` — tiêu đề trang không có hậu tố.
+- `getKeywords(): string` — thẻ meta `keywords`.
+- `getDescription(): string` — thẻ meta `description`.
+- `getImage(): string` — URL hình ảnh từ Open Graph.
+- `getCanonical(): string` — URL chính.
+- `getRobots(): MetaRobots` — thẻ meta `robots`.
+- `getAuthor(): string` — thẻ meta `author`.
+- `getSiteName(): string` — tên website từ Open Graph.
+- `getLocale(): string` — locale từ Open Graph.
+- `getOg(): MetaOg` — truy cập trực tiếp instance `MetaOg`.
+- `getTwitter(): MetaTwitter` — truy cập trực tiếp instance `MetaTwitter`.
+
+## Setter
+
+Tất cả setter trả về `this` để chuỗi phương thức.
+
+- `setTitle(title: string)` — đặt `document.title` (có hậu tố), `og:title` và `twitter:title` đồng thời.
+- `setKeywords(keywords: string | string[])` — nhận chuỗi hoặc mảng; mảng tự động nối bằng dấu phẩy.
+- `setDescription(description: string)` — đặt `<meta name="description">`.
+- `setImage(image: string)` — đặt `og:image` và `twitter:image` đồng thời.
+- `setCanonical(canonical: string)` — đặt `<meta name="canonical">`, `og:url` và `twitter:url` đồng thời.
+- `setRobots(robots: MetaRobots)` — đặt `<meta name="robots">` (`'index, follow'`, `'noindex, nofollow'`, v.v.).
+- `setAuthor(author: string)` — đặt `<meta name="author">`.
+- `setSiteName(siteName: string)` — đặt `og:site_name` và `twitter:site` đồng thời.
+- `setLocale(locale: string)` — đặt `og:locale` (định dạng: `'vi_VN'`).
+- `setSuffix(suffix?: string)` — hậu tố tiêu đề. `setTitle('Bài viết')` + `setSuffix('Trang web')` → `'Bài viết - Trang web'`.
+
+## Tạo HTML
+
+### `html(): string`
+
+Tạo chuỗi HTML đầy đủ của tất cả thẻ meta: tiêu chuẩn + Open Graph + Twitter Card. Dùng cho SSR.
+
+```javascript
+const meta = new Meta()
+meta.setTitle('Bài viết').setDescription('Mô tả').setImage('https://example.com/img.jpg')
+
+const html = meta.html()
+// <meta name="description" content="Mô tả">
+// <meta property="og:title" content="Bài viết">
+// <meta property="og:image" content="https://example.com/img.jpg">
+// <meta name="twitter:title" content="Bài viết">
+// ...
+```
+
+## Ví dụ
+
+```javascript
+import { Meta } from '@dxtmisha/functional-basic'
+
+const meta = new Meta()
+meta.setSuffix('Trang web của tôi')
+
+meta
+  .setTitle('Cách sử dụng Vue 3')
+  .setDescription('Hướng dẫn toàn diện về Vue 3')
+  .setKeywords(['vue', 'javascript', 'typescript'])
+  .setImage('https://example.com/images/vue.jpg')
+  .setCanonical('https://example.com/articles/vue-3')
+  .setRobots('index, follow')
+  .setAuthor('Nguyễn Văn An')
+  .setSiteName('Trang web của tôi')
+  .setLocale('vi_VN')
+```

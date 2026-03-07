@@ -87,6 +87,26 @@ Methods to configure the API (support chaining, returning the `Api` class):
 - `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Creates data to be passed into the request physical body.
 - `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Forms query parameters specifically for HTTP arguments assigned into the URL directly used when sending `GET` queries.
 
+## ApiFetch Object
+
+`ApiFetch` is the main configuration object passed to all request methods (`request`, `get`, `post`, `put`, `delete`). All fields are optional:
+
+- `path?: string` — endpoint path relative to the base URL (e.g. `'users/list'`).
+- `pathFull?: string` — full request URL. If provided, overrides `api` and `path`.
+- `api?: boolean` — whether to prepend the base URL before `path`. Default: `true`.
+- `method?: ApiMethod` — HTTP method (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Default: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — request body (for POST/PUT) or query parameters (for GET). Serialized as JSON or `FormData`.
+- `headers?: Record<string, string> | null` — additional request headers. Pass `null` to disable all headers.
+- `type?: string` — `Content-Type` header value. Default: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — include authentication headers.
+- `toData?: boolean` — if `true`, automatically unwraps `data` from a `{ data: ... }` wrapper. Default: `true`.
+- `hideError?: boolean` — suppresses `console.error` output on failure. Default: `false`.
+- `globalPreparation?: boolean` — whether to run the global `setPreparation` hook before this request. Default: `true`.
+- `globalEnd?: boolean` — whether to run the global `setEnd` hook after the response. Default: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — custom response processor instead of the default JSON reader.
+- `init?: RequestInit` — additional options passed directly to native `fetch()` (CORS, cache mode, etc.).
+- `controller?: AbortController` — controller for canceling the request.
+
 ## Request Cancellation (AbortController)
 
 The API supports out-of-the-box request cancellation. Pass an instance of `AbortController` into the `controller` field of the `ApiFetch` configuration.

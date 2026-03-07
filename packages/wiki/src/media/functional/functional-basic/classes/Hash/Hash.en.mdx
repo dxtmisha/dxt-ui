@@ -1,0 +1,69 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Hash - URL Hash State'/>
+
+# Hash Class
+
+A static class for managing data stored in the URL hash (`#`). It automatically synchronizes application state with the URL — every `set` call updates the browser's hash string, while the `hashchange` event refreshes the internal state.
+
+## Key Features
+
+- **URL Synchronization** — Data is stored in a human-readable format in the hash string.
+- **Reactivity via Watchers** — The `addWatch` method allows subscribing to changes on a specific variable.
+- **Auto-initialization** — When the page loads, data is automatically read from the URL.
+- **Smart Typing** — Values are deserialized from a string: numbers, booleans, and objects are restored to their original types.
+
+## Initialization
+
+The class is static and initializes automatically on page load — reading the current URL hash string.
+
+```javascript
+// URL: https://myapp.com/#page=2;filter=active
+
+import { Hash } from '@dxtmisha/functional-basic'
+
+const page = Hash.get('page')    // 2 (number)
+const filter = Hash.get('filter') // 'active' (string)
+```
+
+## Methods
+
+- `get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a hash variable. If the value doesn't exist, it is set using `defaultValue` (which can be a function).
+- `set<T>(name: string, callback: T | (() => T)): void` — Sets a variable's value and updates the URL hash. If the value hasn't changed, no update occurs.
+- `addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific hash variable.
+- `reload(): void` — Reads the current URL hash and synchronizes it with the internal state.
+
+## Examples
+
+### Reading and Writing
+```javascript
+import { Hash } from '@dxtmisha/functional-basic'
+
+// Reading with a default value
+const page = Hash.get<number>('page', 1)
+
+// Writing (URL changes to #page=3)
+Hash.set('page', 3)
+
+// Writing via a function
+Hash.set('page', () => page + 1)
+```
+
+### Subscribing to Changes
+```javascript
+Hash.addWatch<string>('filter', (newFilter) => {
+  console.log('Filter changed to:', newFilter)
+  loadData(newFilter)
+})
+```
+
+### Managing Page State
+```javascript
+// Initialize filters with a default value
+const filter = Hash.get('filter', 'all')
+const sort = Hash.get('sort', 'date')
+
+// Change on user action
+Hash.set('filter', 'active')
+// URL: #filter=active;sort=date
+```

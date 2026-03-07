@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ScrollbarWidth - Scrollbar Width'/>
+
+# ScrollbarWidth Class
+
+A static class for asynchronously measuring the browser scrollbar width. The result is cached in `DataStorage` and recalculated only once per session.
+
+## Key Features
+
+- **Caching** — width is measured only once, then read from cache.
+- **Async Measurement** — uses `requestAnimationFrame` for an accurate result after repaint.
+- **Overlay Scroll Detection** — `is()` checks if the scrollbar is "overlay" (width ≤ 8px), typical of macOS and mobile browsers.
+
+## Methods
+
+- `get(): Promise<number>` — scrollbar width in pixels. On first call, measures via a temporary DOM element.
+- `is(): Promise<boolean>` — `true` if the scrollbar is overlay (width ≤ 8px, macOS / mobile).
+
+## Example
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional-basic'
+
+const width = await ScrollbarWidth.get()
+console.log(width) // 17 (Windows), 0 (macOS)
+
+if (await ScrollbarWidth.is()) {
+  // Overlay scroll — no width compensation needed
+}
+```

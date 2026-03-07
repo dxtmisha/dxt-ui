@@ -87,6 +87,26 @@ Hỗ trợ phương pháp nối chuỗi (chaining methods) trả về lớp `Api
 - `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Hoán đổi tài liệu để form nạp JSON hoặc `FormData`.
 - `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Hoàn trả dữ liệu params cấu hình chuẩn cho thanh Search URL `GET`.
 
+## Đối tượng ApiFetch
+
+`ApiFetch` là đối tượng cấu hình chính được truyền vào các phương thức `request`, `get`, `post`, `put`, `delete`. Tất cả các trường đều là tùy chọn:
+
+- `path?: string` — đường dẫn đến endpoint tương đối với URL cơ sở (ví dụ: `'users/list'`).
+- `pathFull?: string` — URL đầy đủ của yêu cầu. Nếu có, sẽ bỏ qua `api` và `path`.
+- `api?: boolean` — có thêm URL cơ sở vào trước `path` không. Mặc định: `true`.
+- `method?: ApiMethod` — phương thức HTTP (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Mặc định: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — nội dung yêu cầu (POST/PUT) hoặc tham số query (GET). Được gửi dưới dạng JSON hoặc `FormData`.
+- `headers?: Record<string, string> | null` — tiêu đề bổ sung. `null` — tắt tất cả tiêu đề.
+- `type?: string` — giá trị `Content-Type`. Mặc định: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — thêm tiêu đề xác thực.
+- `toData?: boolean` — nếu `true`, tự động giải gói `data` từ cấu trúc `{ data: ... }`. Mặc định: `true`.
+- `hideError?: boolean` — ẩn thông báo lỗi trong `console.error` khi có sự cố. Mặc định: `false`.
+- `globalPreparation?: boolean` — có chạy hook `setPreparation` toàn cục trước yêu cầu này không. Mặc định: `true`.
+- `globalEnd?: boolean` — có chạy hook `setEnd` toàn cục sau khi nhận phản hồi không. Mặc định: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — bộ xử lý phản hồi tùy chỉnh thay cho việc đọc JSON mặc định.
+- `init?: RequestInit` — các tùy chọn bổ sung truyền thẳng vào `fetch()` nội tại (CORS, chế độ cache, v.v.).
+- `controller?: AbortController` — bộ điều khiển để hủy yêu cầu.
+
 ## Hủy yêu cầu gọi dữ liệu trực tiếp (AbortController)
 
 API này hỗ trợ nền tảng chặn luồng gọi API tức thì. Bạn chỉ cần áp dụng thẻ phiên mã `AbortController` vào dữ liệu trường `controller` trong chuỗi khai báo thuộc `ApiFetch`.

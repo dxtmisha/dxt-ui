@@ -14,9 +14,9 @@
 .translate-page {
   display: flex;
   flex-direction: column;
-  row-gap: var(--d1-grid-gapY);
+  row-gap: var(--d1-layout-gapY);
 
-  @include ui.marginX(var(--d1-grid-paddingX));
-  @include ui.marginY(var(--d1-grid-paddingY));
+  @include ui.marginX(var(--d1-layout-paddingX));
+  @include ui.marginY(var(--d1-layout-paddingY));
 }
 </style>

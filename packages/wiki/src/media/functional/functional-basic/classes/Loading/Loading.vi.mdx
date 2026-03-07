@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Loading - Tải toàn cục'/>
+
+# Lớp Loading
+
+Lớp tĩnh để quản lý trạng thái tải toàn cục. Sử dụng bộ đếm: tải đang hoạt động khi ít nhất một tiến trình đang hiển thị nó. Thông báo cho các listener qua sự kiện tùy chỉnh `ui-loading`.
+
+## Các tính năng chính
+
+- **Bộ đếm lồng nhau** — nhiều lần gọi `show()` song song được xử lý chính xác: tải chỉ ẩn sau số lần gọi `hide()` tương ứng.
+- **Sự kiện toàn cục** — khi trạng thái thay đổi, sự kiện `ui-loading` được phát trên đối tượng `window`.
+- **Đăng ký listener** — đăng ký theo dõi thay đổi từ bất kỳ component nào qua `registrationEvent`.
+
+## Quản lý trạng thái
+
+- `is(): boolean` — trả về `true` nếu tải đang hoạt động (bộ đếm > 0).
+- `show(): void` — tăng bộ đếm lên 1, thông báo cho các listener.
+- `hide(): void` — giảm bộ đếm đi 1. Bỏ qua nếu bộ đếm đã bằng 0.
+
+## Đăng ký sự kiện
+
+### `registrationEvent`
+
+Đăng ký listener cho các thay đổi trạng thái tải. Hoạt động thông qua sự kiện `ui-loading` trên đối tượng `window`.
+
+**Tham số:**
+- `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — hàm xử lý nhận `event.detail.loading: boolean`.
+- `element?: ElementOrString<HTMLElement>` — phần tử DOM tùy chọn: listener tự động dừng khi phần tử bị xóa khỏi DOM.
+
+## Ví dụ
+
+```javascript
+import { Loading } from '@dxtmisha/functional-basic'
+
+Loading.registrationEvent((event) => {
+  console.log('Đang tải:', event.detail.loading) // true hoặc false
+})
+
+Loading.show()  // bộ đếm = 1
+Loading.show()  // bộ đếm = 2
+Loading.hide()  // bộ đếm = 1
+Loading.hide()  // bộ đếm = 0 → sự kiện: { loading: false }
+```
