@@ -1,3 +1,5 @@
+import type { RefOrNormal } from './refTypes'
+
 /** Search item type/ Тип элемента поиска */
 export type SearchItem = Record<string, any>
 
@@ -36,17 +38,40 @@ export type SearchFormatItem<T extends SearchItem, KT extends string[]>
 /** Type for a list of formatted search items / Тип для списка отформатированных элементов поиска */
 export type SearchFormatList<T extends SearchItem, K extends string[]> = SearchFormatItem<T, K>[]
 
+/** Search list value / Значение списка поиска */
+export type SearchListValue<T extends SearchItem> = T[] | undefined
+
+/** Search list data / Данные списка поиска */
+export type SearchListData<T extends SearchItem> = RefOrNormal<SearchListValue<T>>
+
+/** Search list input / Входные данные списка поиска */
+export type SearchListInput<T extends SearchItem> = SearchListData<T> | (() => SearchListData<T>)
+
 /** Search options / Опции поиска */
 export type SearchOptions = {
   /** Limit of output values / Лимит выводимых значений */
   limit?: number
 
-  /** Return all values if no search query / Вернуть все значения, если нет поискового запроса */
+  /** Whether to return all items even if no match / Возвращать ли все элементы, даже если совпадений нет */
   returnEverything?: boolean
 
   /** Delay before searching / Задержка перед поиском */
   delay?: number
 
-  /** Detailed search / Детальный поиск */
-  isDetail?: boolean
+  /** Find exact match / Найти точное совпадение */
+  findExactMatch?: boolean
+
+  /** CSS class for matches / CSS класс для совпадений */
+  classSearchName?: string
 }
+
+/** Search cache item / Элемент кэша поиска */
+export type SearchCacheItem<T extends SearchItem> = {
+  /** Original item / Исходный элемент */
+  item: T
+  /** Search string value / Строковое значение для поиска */
+  value: string
+}
+
+/** Search cache list / Список кэша поиска */
+export type SearchCache<T extends SearchItem> = SearchCacheItem<T>[]

@@ -30,10 +30,10 @@ describe('useApiRef', () => {
 
   describe('initialization', () => {
     it('should initialize with default states', async () => {
-      const { data, isStarting, loading, reading } = useApiRef('test/path', { method: ApiMethodItem.get })
+      const { data, starting, loading, reading } = useApiRef('test/path', { method: ApiMethodItem.get })
 
       expect(data.value).toBeUndefined()
-      expect(isStarting.value).toBe(true)
+      expect(starting.value).toBe(true)
       expect(loading.value).toBe(true)
       expect(reading.value).toBe(true)
     })

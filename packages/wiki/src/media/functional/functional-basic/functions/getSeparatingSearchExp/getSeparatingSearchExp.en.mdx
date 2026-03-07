@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getSeparatingSearchExp - Build a RegExp for space-separated word search'/>
+
+# `getSeparatingSearchExp`
+
+A utility that builds a case-insensitive global `RegExp` for searching strings containing **any** of the words from the search string (separated by spaces).
+
+Each word is split by spaces, escaped, and joined with the OR operator `|`. This is useful when you want to find a match for at least one of the entered words.
+
+**Parameters:**
+- `search: string` — A search string consisting of one or more space-separated words.
+
+**Returns:**
+`RegExp` — A regular expression with flags `ig` (global, case-insensitive).
+
+```typescript
+import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'
+
+const regex = getSeparatingSearchExp('foo bar')
+
+regex.test('foo')          // true
+regex.test('bar')          // true
+regex.test('foo bar baz')  // true
+regex.test('something')    // false
+
+// Special characters are escaped automatically
+const regex2 = getSeparatingSearchExp('$10 .')
+regex2.test('$10') // true
+regex2.test('.')   // true
+```

@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getSeparatingSearchExp - Создание RegExp для поиска по отдельным словам'/>
+
+# `getSeparatingSearchExp`
+
+Утилита, строящая регистронезависимое глобальное регулярное выражение `RegExp` для поиска строк, содержащих **любое** из слов поисковой строки (разделение пробелом).
+
+Каждое слово разбивается пробелами, экранируется и объединяется символом "или" `|`. Это полезно, когда нужно найти совпадение хотя бы по одному из введённых слов.
+
+**Параметры:**
+- `search: string` — Строка поиска, состоящая из одного или нескольких слов, разделённых пробелами.
+
+**Возвращает:**
+`RegExp` — Регулярное выражение с флагами `ig` (глобальный, без учёта регистра).
+
+```typescript
+import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'
+
+const regex = getSeparatingSearchExp('foo bar')
+
+regex.test('foo')          // true
+regex.test('bar')          // true
+regex.test('foo bar baz')  // true
+regex.test('something')    // false
+
+// Специальные символы экранируются автоматически
+const regex2 = getSeparatingSearchExp('$10 .')
+regex2.test('$10') // true
+regex2.test('.')   // true
+```

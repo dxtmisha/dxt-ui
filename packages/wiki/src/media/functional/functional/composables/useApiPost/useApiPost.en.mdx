@@ -15,8 +15,8 @@ Returns an object with a loading state and a `send` method for executing API `PO
 
 **Returns:**
 An object with the following properties:
-- `loading` — Reactive loading state (`true` while waiting for the response).
-- `send(request?: Request): Promise<Return | undefined>` — Asynchronous method to send the request. Handles loading state toggling, applies transformation, executes your `action` callback, and safely catches errors.
+- `loading: Ref<boolean>` — Reactive loading state. It becomes `true` while the request is in progress and `false` after it completes or fails.
+- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the `POST` request. It automatically manages the `loading` state, applies the transformation function to the response, executes the `action` callback on success, and safely handles errors by logging them to the console.
 
 ```typescript
 import { useApiPost } from '@dxtmisha/functional'

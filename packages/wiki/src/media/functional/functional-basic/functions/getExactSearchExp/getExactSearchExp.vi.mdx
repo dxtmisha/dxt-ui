@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getExactSearchExp - Tạo RegExp để khớp chính xác'/>
+
+# `getExactSearchExp`
+
+Tiện ích tạo một `RegExp` không phân biệt chữ hoa/thường để khớp chính xác với chuỗi đã cho.
+
+Khác với `getSearchExp`, hàm này khớp với toàn bộ chuỗi (với các ký tự đặc biệt được escape) mà không tách nó thành các từ riêng biệt.
+
+**Tham số:**
+- `search: string` — Chuỗi tìm kiếm để khớp chính xác.
+
+**Trả về:**
+`RegExp` — Biểu thức chính quy với cờ `i` (không phân biệt chữ hoa/thường).
+
+```typescript
+import { getExactSearchExp } from '@dxtmisha/functional-basic'
+
+const regex = getExactSearchExp('hello')
+
+regex.test('hello')       // true
+regex.test('HELLO')       // true
+regex.test('hello world') // false — không phải khớp chính xác
+```

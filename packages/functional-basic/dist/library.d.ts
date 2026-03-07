@@ -1,4 +1,14 @@
 /**
+ * Adds a tag to highlight the match in the string.
+ *
+ * Добавляет тег для выделения совпадения в строке.
+ * @param value initial string / исходная строка
+ * @param search search string / строка поиска
+ * @param className highlighting class / класс выделения
+ */
+export declare function addTagHighlightMatch(value: string, search?: string, className?: string): string;
+
+/**
  * Conversion of a value to a string.
  *
  * Преобразование значения в строку.
@@ -2644,6 +2654,14 @@ export declare function getElementItem<T extends ElementOrWindow, K extends keyo
 export declare function getElementOrWindow<E extends ElementOrWindow>(element?: ElementOrString<E>): E | undefined;
 
 /**
+ * Creates a case-insensitive regular expression for an exact match of a phrase (without anchors).
+ *
+ * Создает регистронезависимое регулярное выражение для точного совпадения фразы (без якорей).
+ * @param search search string / строка поиска
+ */
+export declare function getExactSearchExp(search: string): RegExp;
+
+/**
  * The object is used for matching text with a pattern.
  *
  * Конструктор создаёт объект регулярного выражения для сопоставления текста с шаблоном.
@@ -2781,6 +2799,14 @@ export declare function getRequestString(request: Record<string, any>, sign?: st
  * @param search search string with one or more space-separated words / строка поиска с одним или несколькими словами через пробел
  */
 export declare function getSearchExp(search: string): RegExp;
+
+/**
+ * Creates a case-insensitive regular expression for a search by words (separating by space).
+ *
+ * Создает регистронезависимое регулярное выражение для поиска по словам (разделение пробелом).
+ * @param search search string / строка поиска
+ */
+export declare function getSeparatingSearchExp(search: string): RegExp;
 
 /**
  * Returns the unit of measurement for 1 step

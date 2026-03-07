@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useSearchRef - List Search'/>
+
+# `useSearchRef`
+
+A composable for implementing search and filtering logic on a list of data with reactivity support and match highlighting.
+
+**Parameters:**
+- `list: SearchListInput<T>` — source data list (Array, Ref, or a function returning an array).
+- `columns: K` — list of columns (object keys) to search in.
+- `value?: Ref<string>` — external reactive search string ref. Created internally if not provided.
+- `options?: SearchOptions` — search settings:
+    - `limit?: number` — minimum character limit to activate search. Default: `2`.
+    - `delay?: number` — delay (debounce) before searching in ms. Default: `0`.
+    - `findExactMatch?: boolean` — if `true`, performs literal phrase match. If `false` (default), finds items containing all words in any order.
+    - `returnEverything?: boolean` — if `true`, returns all items (non-matching items have `searchActive: false`). If `false`, returns only matches.
+    - `classSearchName?: string` — CSS class for match highlighting. Default: `sys-search-selection`.
+
+**Returns:**
+- `isSearch: ComputedRef<boolean>` — whether the search is currently active.
+- `search: Ref<string>` — current search string.
+- `loading: Ref<boolean>` — loading status (active during `delay`).
+- `listSearch: ComputedRef<SearchFormatList<T, K>>` — filtered and formatted results list. Each item gets `{column}Search` fields with HTML highlighting and a `searchActive` flag.
+
+## Usage Example
+
+```typescript
+import { useSearchRef } from '@dxtmisha/functional'
+
+const items = [
+  { id: 1, name: 'Apple', category: 'Fruit' },
+  { id: 2, name: 'Banana', category: 'Fruit' },
+  { id: 3, name: 'Carrot', category: 'Vegetable' }
+]
+
+const { 
+  search, 
+  listSearch, 
+  isSearch, 
+  loading 
+} = useSearchRef(items, ['name', 'category'], undefined, {
+  delay: 300,
+  limit: 2
+})
+
+// When "app" is entered into search.value:
+// listSearch.value will contain { ..., nameSearch: '<span...>App</span>le', searchActive: true }
+```

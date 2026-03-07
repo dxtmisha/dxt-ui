@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/addTagHighlightMatch - Подсветка совпадений в строке'/>
+
+# `addTagHighlightMatch`
+
+Утилита для выделения совпадений в строке путём оборачивания их в HTML-тег `<span>` с заданным классом. Использует `getSeparatingSearchExp` для поддержки поиска по нескольким словам (через пробел).
+
+**Параметры:**
+- `value: string` — Исходная строка для обработки.
+- `search?: string` — Строка поиска (одно или несколько слов через пробел).
+- `className: string = 'sys-highlight-match'` — CSS-класс, который будет добавлен к тегу `<span>`.
+
+**Возвращает:**
+`string` — Строка с добавленными HTML-тегами для подсветки.
+
+```typescript
+import { addTagHighlightMatch } from '@dxtmisha/functional-basic'
+
+// Подсветка одного слова
+addTagHighlightMatch('Hello world', 'hello') 
+// '<span class="sys-highlight-match">Hello</span> world'
+
+// Подсветка нескольких слов (OR-логика)
+addTagHighlightMatch('Apple and Banana', 'apple banana')
+// '<span class="sys-highlight-match">Apple</span> and <span class="sys-highlight-match">Banana</span>'
+
+// Кастомный класс
+addTagHighlightMatch('Test', 'test', 'text-red')
+// '<span class="text-red">Test</span>'
+```

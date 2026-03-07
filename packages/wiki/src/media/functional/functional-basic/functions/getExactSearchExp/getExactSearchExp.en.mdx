@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getExactSearchExp - Build a RegExp for exact match'/>
+
+# `getExactSearchExp`
+
+A utility that builds a case-insensitive `RegExp` for an exact match of the given string.
+
+Unlike `getSearchExp`, this function matches the entire string (with special characters escaped) without splitting it into separate words.
+
+**Parameters:**
+- `search: string` — The search string for exact matching.
+
+**Returns:**
+`RegExp` — A regular expression with the `i` flag (case-insensitive).
+
+```typescript
+import { getExactSearchExp } from '@dxtmisha/functional-basic'
+
+const regex = getExactSearchExp('hello')
+
+regex.test('hello')       // true
+regex.test('HELLO')       // true
+regex.test('hello world') // false — not an exact match
+```

@@ -13,12 +13,12 @@ Managing a list of links for the router. Allows creating navigation menus based 
 
 **Returns:**
 An object with reactive properties and control methods:
-- `item` — current active item (computed property).
-- `selected` — reference (`ref`) to the selected item's value.
-- `label` — label of the current item.
-- `list` — list of items. If `hasTo` is `true`, items are augmented with a `to` property for use with `router-link` or similar components.
-- `to(name: string)` — method to navigate to an item by its value.
-- `toMain()` — method to navigate to the first item in the list.
+- `item: ComputedRef<T | undefined>` — A computed property that returns the current active item object based on `selected`.
+- `selected: Ref<string>` — A reactive reference to the value of the selected item. Allows both getting and setting the current selection.
+- `label: ComputedRef<NumberOrString>` — A computed property that returns the label of the current selected item.
+- `list: ComputedRef<ConstrBind<T>[]>` — A computed list of items. If `hasTo` is `true`, each item is automatically augmented with a `to` property for routing integration.
+- `to(name?: string): void` — A method for programmatic navigation to an item by its name (`value`). Updates `selected` and performs `router.push`.
+- `toMain(): void` — A method for quick navigation to the first ("main") item in the `list`.
 
 ```typescript
 import { ref } from 'vue'

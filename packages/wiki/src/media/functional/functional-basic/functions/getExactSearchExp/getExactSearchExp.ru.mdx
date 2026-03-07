@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getExactSearchExp - Создание RegExp для точного поиска'/>
+
+# `getExactSearchExp`
+
+Утилита, создающая регистронезависимое регулярное выражение `RegExp` для поиска точного совпадения строки.
+
+В отличие от `getSearchExp`, эта функция ищет строку целиком (с экранированием спецсимволов), не разделяя её на отдельные слова.
+
+**Параметры:**
+- `search: string` — Строка поиска для точного сопоставления.
+
+**Возвращает:**
+`RegExp` — Регулярное выражение с флагом `i` (без учёта регистра).
+
+```typescript
+import { getExactSearchExp } from '@dxtmisha/functional-basic'
+
+const regex = getExactSearchExp('hello')
+
+regex.test('hello')       // true
+regex.test('HELLO')       // true
+regex.test('hello world') // false — не точное совпадение
+```

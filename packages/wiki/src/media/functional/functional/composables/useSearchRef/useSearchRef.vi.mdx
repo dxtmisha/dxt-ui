@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useSearchRef - Tìm kiếm danh sách'/>
+
+# `useSearchRef`
+
+Một composable để triển khai logic tìm kiếm và lọc trên danh sách dữ liệu với hỗ trợ tính phản ứng (reactivity) và làm nổi bật kết quả khớp.
+
+**Tham số:**
+- `list: SearchListInput<T>` — danh sách dữ liệu nguồn (Mảng, Ref hoặc một hàm trả về mảng).
+- `columns: K` — danh sách các cột (key của đối tượng) để tìm kiếm.
+- `value?: Ref<string>` — ref chuỗi tìm kiếm phản ứng từ bên ngoài. Sẽ được tạo nội bộ nếu không được cung cấp.
+- `options?: SearchOptions` — cài đặt tìm kiếm:
+    - `limit?: number` — giới hạn ký tự tối thiểu để kích hoạt tìm kiếm. Mặc định: `2`.
+    - `delay?: number` — thời gian chờ (debounce) trước khi tìm kiếm tính bằng ms. Mặc định: `0`.
+    - `findExactMatch?: boolean` — nếu là `true`, thực hiện khớp theo cụm từ chính xác. Nếu là `false` (mặc định), tìm kiếm các mục chứa tất cả các từ theo bất kỳ thứ tự nào.
+    - `returnEverything?: boolean` — nếu là `true`, trả về tất cả các mục (các mục không khớp sẽ có `searchActive: false`). Nếu là `false`, chỉ trả về các mục khớp.
+    - `classSearchName?: string` — lớp CSS để làm nổi bật kết quả khớp. Mặc định: `sys-search-selection`.
+
+**Trả về:**
+- `isSearch: ComputedRef<boolean>` — tìm kiếm có đang hoạt động hay không.
+- `search: Ref<string>` — chuỗi tìm kiếm hiện tại.
+- `loading: Ref<boolean>` — trạng thái tải (hoạt động trong thời gian `delay`).
+- `listSearch: ComputedRef<SearchFormatList<T, K>>` — danh sách kết quả đã được lọc và định dạng. Mỗi mục sẽ có thêm các trường `{column}Search` với mã HTML làm nổi bật và cờ `searchActive`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useSearchRef } from '@dxtmisha/functional'
+
+const items = [
+  { id: 1, name: 'Apple', category: 'Fruit' },
+  { id: 2, name: 'Banana', category: 'Fruit' },
+  { id: 3, name: 'Carrot', category: 'Vegetable' }
+]
+
+const { 
+  search, 
+  listSearch, 
+  isSearch, 
+  loading 
+} = useSearchRef(items, ['name', 'category'], undefined, {
+  delay: 300,
+  limit: 2
+})
+
+// Khi "app" được nhập vào search.value:
+// listSearch.value sẽ chứa { ..., nameSearch: '<span...>App</span>le', searchActive: true }
+```

@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useSearchRef - Поиск по списку'/>
+
+# `useSearchRef`
+
+Composable для реализации логики поиска и фильтрации по списку данных с поддержкой реактивности и подсветки совпадений.
+
+**Параметры:**
+- `list: SearchListInput<T>` — исходный список данных (массив, Ref или функция, возвращающая массив).
+- `columns: K` — список колонок (ключей объекта), по которым необходимо выполнять поиск.
+- `value?: Ref<string>` — внешняя реактивная ссылка на строку поиска. Если не передана, создается внутренняя.
+- `options?: SearchOptions` — настройки поиска:
+    - `limit?: number` — минимальное количество символов для активации поиска. По умолчанию: `2`.
+    - `delay?: number` — задержка (debounce) перед выполнением поиска в мс. По умолчанию: `0`.
+    - `findExactMatch?: boolean` — если `true`, выполняется поиск по точной фразе. Если `false` (по умолчанию), поиск находит элементы, содержащие все введенные слова в любом порядке.
+    - `returnEverything?: boolean` — если `true`, возвращает все элементы списка (неподходящие пометки `searchActive: false`). Если `false`, возвращает только найденные.
+    - `classSearchName?: string` — CSS класс для подсветки совпадений. По умолчанию: `sys-search-selection`.
+
+**Возвращает:**
+- `isSearch: ComputedRef<boolean>` — активен ли поиск в данный момент.
+- `search: Ref<string>` — текущая строка поиска.
+- `loading: Ref<boolean>` — статус загрузки (активен во время задержки `delay`).
+- `listSearch: ComputedRef<SearchFormatList<T, K>>` — отфильтрованный и отформатированный список результатов. Каждому элементу добавляются поля вида `{column}Search` с HTML-подсветкой и флаг `searchActive`.
+
+## Пример использования
+
+```typescript
+import { useSearchRef } from '@dxtmisha/functional'
+
+const items = [
+  { id: 1, name: 'Apple', category: 'Fruit' },
+  { id: 2, name: 'Banana', category: 'Fruit' },
+  { id: 3, name: 'Carrot', category: 'Vegetable' }
+]
+
+const { 
+  search, 
+  listSearch, 
+  isSearch, 
+  loading 
+} = useSearchRef(items, ['name', 'category'], undefined, {
+  delay: 300,
+  limit: 2
+})
+
+// При вводе "app" в search.value:
+// listSearch.value будет содержать { ..., nameSearch: '<span...>App</span>le', searchActive: true }
+```

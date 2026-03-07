@@ -25,8 +25,12 @@ export const useRouterList = <T extends ListDataBasic>(
     ? selected
     : ref<string>(selected || list.value?.[0]?.value || '')
 
-  /** Selected item / Выбранный элемент */
-  const item = computed(() => find(index.value))
+  /**
+   * Returns the current item.
+   *
+   * Возвращает текущий элемент.
+   */
+  const getItem = (): T | undefined => find(index.value)
 
   /**
    * Find item by index.
@@ -57,37 +61,43 @@ export const useRouterList = <T extends ListDataBasic>(
 
   return {
     /** Current element/ Текущий элемент */
-    item,
+    get item() {
+      return computed<T | undefined>(() => getItem())
+    },
 
     /** Selected element / Выбранный элемент */
     selected: index,
 
     /** Label / Метка */
-    label: computed<NumberOrString>(() => item.value?.label || ''),
+    get label() {
+      return computed<NumberOrString>(() => getItem()?.label || '')
+    },
 
     /** List of elements / Список элементов */
-    list: computed<ConstrBind<T>[]>(() => {
-      if (list.value) {
-        return forEach(
-          list.value,
-          (item) => {
-            if (
-              hasTo
-              && !('to' in item)
-            ) {
-              return {
-                ...item,
-                to: { name: item.value }
+    get list() {
+      return computed<ConstrBind<T>[]>(() => {
+        if (list.value) {
+          return forEach(
+            list.value,
+            (item) => {
+              if (
+                hasTo
+                && !('to' in item)
+              ) {
+                return {
+                  ...item,
+                  to: { name: item.value }
+                }
               }
+
+              return item
             }
+          )
+        }
 
-            return item
-          }
-        )
-      }
-
-      return []
-    }),
+        return []
+      })
+    },
 
     to,
 

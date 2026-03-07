@@ -14,10 +14,10 @@ Trả về một đối tượng với trạng thái tải và phương thức `
 - `toData: boolean = true` — Việc trích xuất trường `data` từ phản hồi hay không.
 - `options?: ApiOptions` — Các tùy chọn bổ sung cho yêu cầu (đối tượng tham số `ApiFetch`).
 
-**Giá trị trả về:**
+**Giá trị t**Trả về:**
 Một đối tượng với các thuộc tính sau:
-- `loading` — Trạng thái tải phản ứng (`true` trong khi chờ phản hồi).
-- `send(request?: Request): Promise<Return | undefined>` — Phương thức bất đồng bộ để gửi yêu cầu. Nó quản lý trạng thái tải, áp dụng biến đổi hàm, thực thi callback `action` và bắt lỗi an toàn.
+- `loading: Ref<boolean>` — Trạng thái tải phản ứng. Sẽ là `true` trong khi yêu cầu đang thực hiện và `false` sau khi hoàn thành hoặc có lỗi.
+- `send(request?: Request): Promise<Return | undefined>` — Phương thức bất đồng bộ để gửi yêu cầu. Nó tự động quản lý trạng thái `loading`, áp dụng hàm biến đổi cho phản hồi, thực hiện callback `action` khi thành công và xử lý lỗi một cách an toàn bằng cách ghi log ra console.
 
 ```typescript
 import { useApiRequest } from '@dxtmisha/functional'

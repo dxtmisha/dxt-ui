@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/addTagHighlightMatch - Làm nổi bật các kết quả khớp trong chuỗi'/>
+
+# `addTagHighlightMatch`
+
+Tiện ích để làm nổi bật các kết quả khớp trong một chuỗi bằng cách bọc chúng trong thẻ HTML `<span>` với một class được chỉ định. Nó sử dụng `getSeparatingSearchExp` để hỗ trợ tìm kiếm nhiều từ (phân tách bằng dấu cách).
+
+**Tham số:**
+- `value: string` — Chuỗi ban đầu để xử lý.
+- `search?: string` — Chuỗi tìm kiếm (một hoặc nhiều từ phân tách bằng dấu cách).
+- `className: string = 'sys-highlight-match'` — Class CSS sẽ được thêm vào thẻ `<span>`.
+
+**Trả về:**
+`string` — Chuỗi với các thẻ HTML được thêm vào để làm nổi bật.
+
+```typescript
+import { addTagHighlightMatch } from '@dxtmisha/functional-basic'
+
+// Làm nổi bật một từ đơn
+addTagHighlightMatch('Hello world', 'hello') 
+// '<span class="sys-highlight-match">Hello</span> world'
+
+// Làm nổi bật nhiều từ (logic OR)
+addTagHighlightMatch('Apple and Banana', 'apple banana')
+// '<span class="sys-highlight-match">Apple</span> and <span class="sys-highlight-match">Banana</span>'
+
+// Class tùy chỉnh
+addTagHighlightMatch('Test', 'test', 'text-red')
+// '<span class="text-red">Test</span>'
+```

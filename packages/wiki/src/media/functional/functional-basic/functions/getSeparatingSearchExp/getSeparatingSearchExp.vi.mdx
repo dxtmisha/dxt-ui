@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getSeparatingSearchExp - Tạo RegExp tìm kiếm theo từ tách biệt'/>
+
+# `getSeparatingSearchExp`
+
+Tiện ích tạo một `RegExp` toàn cục, không phân biệt chữ hoa/thường để tìm kiếm các chuỗi chứa **bất kỳ** từ nào từ chuỗi tìm kiếm (phân tách bằng dấu cách).
+
+Mỗi từ được tách bởi dấu cách, escape và nối với nhau bằng toán tử OR `|`. Điều này hữu ích khi bạn muốn tìm kết quả khớp với ít nhất một trong các từ đã nhập.
+
+**Tham số:**
+- `search: string` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách.
+
+**Trả về:**
+`RegExp` — Biểu thức chính quy với cờ `ig` (toàn cục, không phân biệt chữ hoa/thường).
+
+```typescript
+import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'
+
+const regex = getSeparatingSearchExp('foo bar')
+
+regex.test('foo')          // true
+regex.test('bar')          // true
+regex.test('foo bar baz')  // true
+regex.test('something')    // false
+
+// Các ký tự đặc biệt được escape tự động
+const regex2 = getSeparatingSearchExp('$10 .')
+regex2.test('$10') // true
+regex2.test('.')   // true
+```

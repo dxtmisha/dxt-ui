@@ -17,19 +17,19 @@ A composable for working with API requests in Vue components. Returns reactive d
 **Returns (`UseApiRef<R>`):**
 
 Reactive states (getter `ComputedRef`s):
-- `data` — `Ref<ApiData<R> | undefined>` — loaded data. Triggers the request (lazy) on first access.
-- `starting` — `ComputedRef<boolean>` — `true` while data has never been loaded yet (`data === undefined`).
-- `loading` — `ComputedRef<boolean>` — `true` while an active request to the server is in progress.
-- `reading` — `ComputedRef<boolean>` — `true` while data reading is in progress.
+- `data: Ref<ApiData<R> | undefined>` — A reference to the loaded data. Implements **lazy loading**: the server request is automatically initiated on the first access to this property.
+- `starting: ComputedRef<boolean>` — Returns `true` if data has never been requested yet or is in the process of fetching the first portion of data (`data` is still `undefined`).
+- `loading: ComputedRef<boolean>` — Returns `true` if any network request (initial or subsequent `reset`) is currently in progress.
+- `reading: ComputedRef<boolean>` — A flag for an active data reading/processing process.
 
 Methods:
-- `isStarting(): boolean` — returns the current value of the `starting` flag.
-- `isLoading(): boolean` — returns the current value of the `loading` flag.
-- `isReading(): boolean` — returns the current value of the `reading` flag.
-- `getItem(): ApiData<R> | undefined` — returns the current loaded data without reactivity.
-- `reset(): Promise<void>` — force re-runs the request.
-- `stop(): void` — stops the watcher and resets `data` to `undefined`.
-- `abort(): void` — cancels the current request via `AbortController` without clearing data.
+- `isStarting(): boolean` — A synchronous method that returns the current value of the `starting` flag.
+- `isLoading(): boolean` — A synchronous method that returns the current value of the `loading` flag.
+- `isReading(): boolean` — A synchronous method that returns the current value of the `reading` flag.
+- `getItem(): ApiData<R> | undefined` — Method to get the current value of `data` without creating a reactive dependency.
+- `reset(): Promise<void>` — An asynchronous method to force re-run the request. Cancels the current active request (if any) and initiates a new one.
+- `stop(): void` — Stops watching reactive dependencies and resets `data` to `undefined`.
+- `abort(): void` — Cancels the current HTTP request via the internal `AbortController`, while keeping already loaded data in `data`.
 
 ## Lazy Loading
 
