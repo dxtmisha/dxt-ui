@@ -7,16 +7,21 @@ import { useApiRequest } from '../useApiRequest'
 import { Api, ApiMethodItem } from '@dxtmisha/functional-basic'
 
 // Mock `Api.request` globally
-vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
-  return {
-    ...actual,
-    Api: {
-      ...actual.Api,
-      request: vi.fn()
-    }
+const { viApiMethodItem } = vi.hoisted(() => ({
+  viApiMethodItem: {
+    get: 'GET',
+    post: 'POST',
+    put: 'PUT',
+    delete: 'DELETE'
   }
-})
+}))
+
+vi.mock('@dxtmisha/functional-basic', () => ({
+  Api: {
+    request: vi.fn()
+  },
+  ApiMethodItem: viApiMethodItem
+}))
 
 describe('useApiRequest', () => {
   const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
