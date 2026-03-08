@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useGeoIntlRef - Форматирование данных'/>
+
+# `useGeoIntlRef`
+
+Composable, возвращающий экземпляр класса `GeoIntlRef` для работы с интернационализацией и форматированием данных (чисел, валют, дат и т.д.) на основе текущей локали.
+
+**Возвращает (`GeoIntlRef`):**
+- Объект класса `GeoIntlRef`, предоставляющий методы для реактивного форматирования.
+
+## Основные методы `GeoIntlRef`:
+
+- `number(value, options?)` — Форматирование чисел.
+- `currency(value, currencyOptions?, numberOnly?)` — Форматирование валют.
+- `date(value, type?, styleOptions?, hour24?)` — Форматирование даты и времени.
+- `month(value?, style?)` — Название месяца.
+- `weekday(value?, style?)` — Название дня недели.
+- `relative(value, styleOptions?, todayValue?)` — Относительное время (например, "2 дня назад").
+
+## Пример
+
+```typescript
+import { useGeoIntlRef } from '@dxtmisha/functional'
+
+const intl = useGeoIntlRef()
+
+// Реактивное форматирование числа
+const formattedNumber = intl.number(1234.56) // "1 234,56" (для ru-RU)
+
+// Форматирование валюты
+const price = intl.currency(1000, 'RUB') // "1 000 ₽"
+```

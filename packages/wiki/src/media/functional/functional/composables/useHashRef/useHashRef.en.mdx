@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useHashRef - Hash Management'/>
+
+# `useHashRef`
+
+A composable for working with the URL hash (the part after `#`). It allows creating reactive variables that automatically synchronize with a specific key in the hash.
+
+**Parameters:**
+- `name: string` — Key name in the hash.
+- `defaultValue?: T | (() => T)` — Default value if the key is missing from the hash.
+
+**Returns (`Ref<T>`):**
+- A reactive reference to the value in the hash.
+
+## Example
+
+```typescript
+import { useHashRef } from '@dxtmisha/functional'
+
+// Create a reference to 'step' value in the URL hash
+const step = useHashRef('step', '1')
+
+// Update value (automatically updates URL: #step=2)
+step.value = '2'
+
+// If the user changes the hash manually or via browser history,
+// step.value will be updated automatically.
+```

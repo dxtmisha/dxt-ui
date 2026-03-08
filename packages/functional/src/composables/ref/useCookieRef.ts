@@ -10,9 +10,9 @@ import { useBroadcastValueRef } from './useBroadcastValueRef'
  * Creates a reactive variable to manage cookies.
  *
  * Создает реактивную переменную для управления cookie.
- * @param name cookie name/ название cookie
- * @param defaultValue value or function to change data/ значение или функция для изменения данных
- * @param options additional parameters/ дополнительные параметры
+ * @param name cookie name / название cookie
+ * @param defaultValue value or function to change data / значение или функция для изменения данных
+ * @param options additional parameters / дополнительные параметры
  */
 export function useCookieRef<T>(
   name: string,

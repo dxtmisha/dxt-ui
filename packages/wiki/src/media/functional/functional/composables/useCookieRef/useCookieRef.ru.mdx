@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useCookieRef - Работа с Cookie'/>
+
+# `useCookieRef`
+
+Composable для работы с браузерными Cookie. Позволяет создавать реактивные переменные, которые автоматически синхронизируются с Cookie. Также поддерживает синхронизацию между вкладками через `BroadcastChannel`.
+
+**Параметры:**
+- `name: string` — Название cookie.
+- `defaultValue?: T | string | (() => (T | string))` — Значение по умолчанию. Может быть статичным значением или функцией.
+- `options?: CookieOptions` — Дополнительные параметры для управления cookie (срок жизни, путь, домен и т.д.).
+
+**Возвращает (`Ref<T | string | undefined>`):**
+- Реактивную ссылку на значение в cookie.
+
+## Пример
+
+```typescript
+import { useCookieRef } from '@dxtmisha/functional'
+
+// Создание ссылки на cookie 'theme' со значением 'light' по умолчанию
+const theme = useCookieRef('theme', 'light', { age: 365 * 24 * 60 * 60 })
+
+// Обновление значения (автоматически сохраняется в cookie)
+theme.value = 'dark'
+
+// Значение будет одинаковым во всех вкладках браузера в реальном времени
+```

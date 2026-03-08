@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useGeoIntlRef - Data Formatting'/>
+
+# `useGeoIntlRef`
+
+A composable that returns an instance of the `GeoIntlRef` class for working with internationalization and data formatting (numbers, currencies, dates, etc.) based on the current locale.
+
+**Returns (`GeoIntlRef`):**
+- A `GeoIntlRef` class object providing methods for reactive formatting.
+
+## Key `GeoIntlRef` Methods:
+
+- `number(value, options?)` — Number formatting.
+- `currency(value, currencyOptions?, numberOnly?)` — Currency formatting.
+- `date(value, type?, styleOptions?, hour24?)` — Date and time formatting.
+- `month(value?, style?)` — Month name.
+- `weekday(value?, style?)` — Weekday name.
+- `relative(value, styleOptions?, todayValue?)` — Relative time (e.g., "2 days ago").
+
+## Example
+
+```typescript
+import { useGeoIntlRef } from '@dxtmisha/functional'
+
+const intl = useGeoIntlRef()
+
+// Reactive number formatting
+const formattedNumber = intl.number(1234.56) // "1,234.56" (for en-US)
+
+// Currency formatting
+const price = intl.currency(1000, 'USD') // "$1,000.00"
+```

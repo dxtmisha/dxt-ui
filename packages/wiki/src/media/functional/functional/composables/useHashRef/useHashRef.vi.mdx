@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useHashRef - Quản lý Hash'/>
+
+# `useHashRef`
+
+Một composable để làm việc với hash URL (phần sau dấu `#`). Nó cho phép tạo các biến phản ứng tự động đồng bộ hóa với một khóa cụ thể trong hash.
+
+**Tham số:**
+- `name: string` — Tên khóa trong hash.
+- `defaultValue?: T | (() => T)` — Giá trị mặc định nếu khóa không tồn tại trong hash.
+
+**Trả về (`Ref<T>`):**
+- Một tham chiếu phản ứng đến giá trị trong hash.
+
+## Ví dụ
+
+```typescript
+import { useHashRef } from '@dxtmisha/functional'
+
+// Tạo tham chiếu đến giá trị 'step' trong hash URL
+const step = useHashRef('step', '1')
+
+// Cập nhật giá trị (tự động cập nhật URL: #step=2)
+step.value = '2'
+
+// Nếu người dùng thay đổi hash thủ công hoặc qua lịch sử trình duyệt,
+// step.value sẽ được cập nhật tự động.
+```

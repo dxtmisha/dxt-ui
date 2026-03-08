@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useCookieRef - Cookie Management'/>
+
+# `useCookieRef`
+
+A composable for working with browser cookies. It allows creating reactive variables that automatically synchronize with cookies. It also supports cross-tab synchronization via `BroadcastChannel`.
+
+**Parameters:**
+- `name: string` — Cookie name.
+- `defaultValue?: T | string | (() => (T | string))` — Default value. Can be a static value or a function.
+- `options?: CookieOptions` — Additional parameters for cookie management (expires, path, domain, etc.).
+
+**Returns (`Ref<T | string | undefined>`):**
+- A reactive reference to the cookie value.
+
+## Example
+
+```typescript
+import { useCookieRef } from '@dxtmisha/functional'
+
+// Create a reference to 'theme' cookie with 'light' as default
+const theme = useCookieRef('theme', 'light', { age: 365 * 24 * 60 * 60 })
+
+// Update value (automatically saved to cookie)
+theme.value = 'dark'
+
+// The value will be synchronized across all browser tabs in real-time
+```

@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useHashRef - Работа с Hash'/>
+
+# `useHashRef`
+
+Composable для работы с хэшем URL (часть после `#`). Позволяет создавать реактивные переменные, которые автоматически синхронизируются с определенным ключом в хэше.
+
+**Параметры:**
+- `name: string` — Название ключа в хэше.
+- `defaultValue?: T | (() => T)` — Значение по умолчанию, если ключ отсутствует в хэше.
+
+**Возвращает (`Ref<T>`):**
+- Реактивную ссылку на значение в хэше.
+
+## Пример
+
+```typescript
+import { useHashRef } from '@dxtmisha/functional'
+
+// Создание ссылки на значение 'step' в хэше URL
+const step = useHashRef('step', '1')
+
+// Обновление значения (автоматически обновляет URL: #step=2)
+step.value = '2'
+
+// При изменении хэша пользователем вручную или через браузер, 
+// значение step.value обновится автоматически.
+```

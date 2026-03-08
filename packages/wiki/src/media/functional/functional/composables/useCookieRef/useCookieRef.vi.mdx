@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useCookieRef - Quản lý Cookie'/>
+
+# `useCookieRef`
+
+Một composable để làm việc với Cookie trình duyệt. Nó cho phép tạo các biến phản ứng tự động đồng bộ hóa với Cookie. Ngoài ra, nó cũng hỗ trợ đồng bộ hóa giữa các tab trình duyệt thông qua `BroadcastChannel`.
+
+**Tham số:**
+- `name: string` — Tên cookie.
+- `defaultValue?: T | string | (() => (T | string))` — Giá trị mặc định. Có thể là một giá trị tĩnh hoặc một hàm.
+- `options?: CookieOptions` — Các tham số bổ sung để quản lý cookie (expires, path, domain, v.v.).
+
+**Trả về (`Ref<T | string | undefined>`):**
+- Một tham chiếu phản ứng đến giá trị trong cookie.
+
+## Ví dụ
+
+```typescript
+import { useCookieRef } from '@dxtmisha/functional'
+
+// Tạo tham chiếu đến cookie 'theme' với giá trị mặc định là 'light'
+const theme = useCookieRef('theme', 'light', { age: 365 * 24 * 60 * 60 })
+
+// Cập nhật giá trị (tự động lưu vào cookie)
+theme.value = 'dark'
+
+// Giá trị sẽ được đồng bộ hóa trên tất cả các tab trình duyệt trong thời gian thực
+```

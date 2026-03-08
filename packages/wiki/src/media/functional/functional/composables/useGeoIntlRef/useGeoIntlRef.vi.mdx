@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useGeoIntlRef - Định dạng dữ liệu'/>
+
+# `useGeoIntlRef`
+
+Một composable trả về một instance của lớp `GeoIntlRef` để làm việc với quốc tế hóa và định dạng dữ liệu (số, tiền tệ, ngày tháng, v.v.) dựa trên locale hiện tại.
+
+**Trả về (`GeoIntlRef`):**
+- Một đối tượng lớp `GeoIntlRef` cung cấp các phương thức để định dạng phản ứng.
+
+## Các phương thức chính của `GeoIntlRef`:
+
+- `number(value, options?)` — Định dạng số.
+- `currency(value, currencyOptions?, numberOnly?)` — Định dạng tiền tệ.
+- `date(value, type?, styleOptions?, hour24?)` — Định dạng ngày và giờ.
+- `month(value?, style?)` — Tên tháng.
+- `weekday(value?, style?)` — Tên thứ trong tuần.
+- `relative(value, styleOptions?, todayValue?)` — Thời gian tương đối (ví dụ: "2 ngày trước").
+
+## Ví dụ
+
+```typescript
+import { useGeoIntlRef } from '@dxtmisha/functional'
+
+const intl = useGeoIntlRef()
+
+// Định dạng số phản ứng
+const formattedNumber = intl.number(1234.56) // "1.234,56" (cho vi-VN)
+
+// Định dạng tiền tệ
+const price = intl.currency(1000, 'VND') // "1.000 ₫"
+```
