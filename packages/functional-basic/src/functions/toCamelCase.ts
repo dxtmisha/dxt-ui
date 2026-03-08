@@ -8,8 +8,8 @@ export function toCamelCase(value: string): string {
   return value
     .toString()
     .trim()
-    .replace(/[^\w- ]+/g, '')
-    .replace(/ +/g, '-')
+    .replace(/[^\w-. ]+/g, '')
+    .replace(/[ .]+/g, '-')
     .replace(/(?<=[A-Z])([A-Z])/g, char => `${char.toLowerCase()}`)
     .replace(/-+([a-zA-Z0-9])/g, (...char: string[]) => `${String(char[1]).toUpperCase()}`)
     .replace(/^([A-Z])/, char => `${char.toLowerCase()}`)

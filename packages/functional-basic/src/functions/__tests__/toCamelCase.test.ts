@@ -12,6 +12,7 @@ describe('toCamelCase', () => {
   it('should handle spaces and special characters', () => {
     expect(toCamelCase('  test  string  ')).toBe('testString')
     expect(toCamelCase('data-v-123')).toBe('dataV123')
+    expect(toCamelCase('data.value.123')).toBe('dataValue123')
   })
 
   it('should handle already camelCase strings', () => {

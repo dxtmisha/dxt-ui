@@ -16,8 +16,8 @@ export function toKebabCase(value: string): string {
   return value
     .toString()
     .trim()
-    .replace(/[^\w- ]+/g, '')
-    .replace(/ +/g, '-')
+    .replace(/[^\w-. ]+/g, '')
+    .replace(/[ .]+/g, '-')
     .replace(/(?<=[A-Z])([A-Z])/g, char => `${char.toLowerCase()}`)
     .replace(/^[A-Z]/, char => char.toLowerCase())
     .replace(/(?<=[\w ])[A-Z]/g, char => `-${char.toLowerCase()}`)
