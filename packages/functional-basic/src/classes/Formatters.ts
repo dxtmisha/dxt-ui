@@ -12,6 +12,11 @@ export class Formatters<
 
   }
 
+  setColumns(columns: Key): this {
+    this.columns = columns
+    return this
+  }
+
   setList(list: List): this {
     this.list = list
     return this
