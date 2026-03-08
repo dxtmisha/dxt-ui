@@ -23,23 +23,22 @@ import type { RefOrNormal, RefType } from '../../types/refTypes'
  * Тип возвращаемого значения для useApiRef.
  */
 export interface UseApiRef<R> {
-  /** Loaded data / Загруженные данные */
-  data: Ref<ApiData<R> | undefined>
+  /** Reactive data (Computed) / Реактивные данные (Computed) */
+  data: ComputedRef<ApiData<R> | undefined>
+
+  /** Item (Ref) / Элемент (Ref) */
+  item: Ref<ApiData<R> | undefined>
 
   /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
   starting: ComputedRef<boolean>
 
   /** Request load flag / Флаг загрузки запроса */
-  loading: ComputedRef<boolean>
+  loading: Ref<boolean>
 
   /** Active reading flag / Флаг активного чтения */
-  reading: ComputedRef<boolean>
+  reading: Ref<boolean>
 
-  /**
-   * Checks if the request is starting (true if no data yet).
-   *
-   * Проверяет, начинается ли запрос (true, если данных еще нет).
-   */
+  /** Checks if the request is starting (true if no data yet) / Проверяет, начинается ли запрос (true, если данных еще нет) */
   isStarting(): boolean
 
   /**
@@ -63,13 +62,32 @@ export interface UseApiRef<R> {
    */
   getItem(): ApiData<R> | undefined
 
-  /** Default reset / Сброс по умолчанию */
+  /**
+   * Manual initialization
+   *
+   * Ручная инициализация
+   */
+  init(): void
+
+  /**
+   * Default reset
+   *
+   * Сброс по умолчанию
+   */
   reset(): Promise<void>
 
-  /** Stop request / Остановка запроса */
+  /**
+   * Stop request
+   *
+   * Остановка запроса
+   */
   stop(): void
 
-  /** Abort request / Отмена запроса */
+  /**
+   * Abort request
+   *
+   * Отмена запроса
+   */
   abort(): void
 }
 
@@ -178,6 +196,23 @@ export function useApiRef<R, T = any>(
   }
 
   /**
+   * Manual initialization.
+   *
+   * Ручная инициализация.
+   */
+  const init = () => {
+    if (first) {
+      first = false
+      reset().then()
+
+      if (unmounted) {
+        initWatch()
+        onUnmounted(() => stop())
+      }
+    }
+  }
+
+  /**
    * Watch initialization.
    *
    * Инициализация наблюдения.
@@ -215,44 +250,86 @@ export function useApiRef<R, T = any>(
   }
 
   return {
+    /** Reactive data (Computed) / Реактивные данные (Computed) */
     get data() {
-      if (first) {
-        first = false
-        reset().then()
+      return computed(() => {
+        init()
 
-        if (unmounted) {
-          initWatch()
-          onUnmounted(() => stop())
-        }
-      }
+        return item.value
+      })
+    },
+    /** Item (Ref) / Элемент (Ref) */
+    get item() {
+      init()
 
       return item
     },
+
+    /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
     get starting() {
       return computed<boolean>(() => item.value === undefined)
     },
-    get loading() {
-      return computed<boolean>(() => loading.value)
-    },
-    get reading() {
-      return computed<boolean>(() => reading.value)
-    },
+    /** Request load flag / Флаг загрузки запроса */
+    loading,
+    /** Active reading flag / Флаг активного чтения */
+    reading,
 
+    /**
+     * Checks if the request is starting (true if no data yet)
+     *
+     * Проверяет, начинается ли запрос (true, если данных еще нет)
+     */
     isStarting() {
       return item.value === undefined
     },
+    /**
+     * Checks if the request is currently loading.
+     *
+     * Проверяет, загружается ли запрос в данный момент.
+     */
     isLoading() {
       return loading.value
     },
+    /**
+     * Checks if the request is currently reading.
+     *
+     * Проверяет, читается ли запрос в данный момент.
+     */
     isReading() {
       return reading.value
     },
+    /**
+     * Gets the current item data.
+     *
+     * Получает текущие данные элемента.
+     */
     getItem() {
       return item.value
     },
 
+    /**
+     * Manual initialization
+     *
+     * Ручная инициализация
+     */
+    init,
+    /**
+     * Default reset
+     *
+     * Сброс по умолчанию
+     */
     reset,
+    /**
+     * Stop request
+     *
+     * Остановка запроса
+     */
     stop,
+    /**
+     * Abort request
+     *
+     * Отмена запроса
+     */
     abort: () => abortController?.abort()
   }
 }

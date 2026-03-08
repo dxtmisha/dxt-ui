@@ -16,17 +16,19 @@ A composable for working with API requests in Vue components. Returns reactive d
 
 **Returns (`UseApiRef<R>`):**
 
-Reactive states (getter `ComputedRef`s):
-- `data: Ref<ApiData<R> | undefined>` — A reference to the loaded data. Implements **lazy loading**: the server request is automatically initiated on the first access to this property.
+Reactive states:
+- `data: ComputedRef<ApiData<R> | undefined>` — A reference to the loaded data (Computed). Implements **lazy loading**: the server request is automatically initiated on the first access to this property.
+- `item: Ref<ApiData<R> | undefined>` — Direct reference to data (Ref). Also initiates **lazy loading** upon access.
 - `starting: ComputedRef<boolean>` — Returns `true` if data has never been requested yet or is in the process of fetching the first portion of data (`data` is still `undefined`).
-- `loading: ComputedRef<boolean>` — Returns `true` if any network request (initial or subsequent `reset`) is currently in progress.
-- `reading: ComputedRef<boolean>` — A flag for an active data reading/processing process.
+- `loading: Ref<boolean>` — Returns `true` if any network request (initial or subsequent `reset`) is currently in progress.
+- `reading: Ref<boolean>` — A flag for an active data reading/processing process.
 
 Methods:
 - `isStarting(): boolean` — A synchronous method that returns the current value of the `starting` flag.
 - `isLoading(): boolean` — A synchronous method that returns the current value of the `loading` flag.
 - `isReading(): boolean` — A synchronous method that returns the current value of the `reading` flag.
 - `getItem(): ApiData<R> | undefined` — Method to get the current value of `data` without creating a reactive dependency.
+- `init(): void` — Method for explicit request initialization. Triggered automatically on first access to `data`, but can be called manually.
 - `reset(): Promise<void>` — An asynchronous method to force re-run the request. Cancels the current active request (if any) and initiates a new one.
 - `stop(): void` — Stops watching reactive dependencies and resets `data` to `undefined`.
 - `abort(): void` — Cancels the current HTTP request via the internal `AbortController`, while keeping already loaded data in `data`.
