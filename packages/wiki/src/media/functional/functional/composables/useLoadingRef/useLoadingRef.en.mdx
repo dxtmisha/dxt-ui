@@ -1,0 +1,20 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useLoadingRef - Loading status'/>
+
+# `useLoadingRef`
+
+Composable for obtaining the global loading status.
+
+**Returns:**
+- `ShallowRef<boolean>` — a reactive reference to the current loading status.
+
+## Usage Example
+
+```typescript
+import { useLoadingRef } from '@dxtmisha/functional'
+
+const isLoading = useLoadingRef()
+
+// Use isLoading.value in your template or logic
+```

@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useStorageRef - Управление локальным хранилищем'/>
+
+# `useStorageRef`
+
+Composable для управления реактивными данными в `localStorage` с автоматической синхронизацией между разными вкладками/окнами. Использует паттерн singleton.
+
+**Параметры:**
+- `name: string` — название ключа в `localStorage`.
+- `defaultValue?: T | (() => T)` — значение по умолчанию, если в хранилище ничего не найдено.
+- `cache?: number` — время кэширования в секундах.
+
+**Возвращает:**
+- `Ref<T | undefined>` — реактивная ссылка на значение в локальном хранилище.
+
+## Пример использования
+
+```typescript
+import { useStorageRef } from '@dxtmisha/functional'
+
+const settings = useStorageRef('app-settings', { theme: 'dark' })
+
+// Обновления здесь синхронизируются с localStorage и другими открытыми вкладками
+settings.value.theme = 'light'
+```

@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useLazyRef - Ленивая загрузка'/>
+
+# `useLazyRef`
+
+Composable для инициализации отслеживания появления элемента на экране с использованием `IntersectionObserver`.
+
+**Параметры:**
+- `options?: IntersectionObserverInit` — настройки для `IntersectionObserver`. По умолчанию: `{ rootMargin: '128px 0px' }`.
+
+**Возвращает:**
+- `intersectionObserver: IntersectionObserver | undefined` — экземпляр `IntersectionObserver`.
+- `getItem(element: HTMLElement): LazyItem | undefined` — получение данных отслеживаемого элемента.
+- `addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean>` — добавление элемента для отслеживания (возвращает статус видимости).
+- `removeLazyItem(element?: HTMLElement): void` — удаление элемента из отслеживания.
+- `disconnectLazy(): void` — прекращение отслеживания и отключение наблюдателя.
+
+## Пример использования
+
+```typescript
+import { ref, watch } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+const element = ref<HTMLElement>()
+const { addLazyItem } = useLazyRef({ rootMargin: '200px' })
+
+const isVisible = addLazyItem(element)
+
+watch(isVisible, (visible) => {
+  if (visible) {
+    console.log('Элемент теперь виден!')
+  }
+})
+```

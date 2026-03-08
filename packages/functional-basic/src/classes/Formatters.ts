@@ -1,39 +1,37 @@
+import { GeoIntl } from './GeoIntl'
+
+import { forEach } from '../functions/forEach'
 import { getItemByPath } from '../functions/getItemByPath'
 import { toCamelCase } from '../functions/toCamelCase'
-import { GeoIntl } from './GeoIntl'
 
 import {
   FormattersType,
-  type FormattersDataColumns,
-  type FormattersDataList,
-  type FormattersDataListList,
-  type FormattersItem,
-  type FormattersList
+  type FormattersColumns,
+  type FormattersListFormat,
+  type FormattersListItem,
+  type FormattersList,
+  type FormattersOptionsList
 } from '../types/formattersTypes'
-import { getColumn } from '../library'
 
 export class Formatters<
-  List extends FormattersDataListList,
-  Key extends FormattersDataColumns<List>
+  Item extends FormattersListItem,
+  List extends FormattersList<Item> = FormattersList<Item>,
+  Columns extends keyof List = keyof List
 > {
-  protected columns: string[]
-
   constructor(
     protected list: List,
-    protected options: FormattersList
-  ) {
-    this.columns = this.initColumns()
-  }
-
-  getColumns(): string[] {
-    return this.columns
-  }
+    protected options: FormattersOptionsList
+  ) { }
 
   getList(): List {
     return this.list
   }
 
-  getOptions(): FormattersList {
+  getColumns(): Columns {
+    return Object.keys(this.options)
+  }
+
+  getOptions(): FormattersOptionsList {
     return this.options
   }
 
@@ -42,24 +40,18 @@ export class Formatters<
     return this
   }
 
-  setOptions(options: FormattersList): this {
+  setOptions(options: FormattersOptionsList): this {
     this.options = options
-    this.columns = this.initColumns()
     return this
   }
 
-  to(): FormattersDataList<List[number], Key> {
-    const intl = GeoIntl.getInstance()
-
-    return this.list.map(item => {
+  to(): FormattersListFormat<Item, keyof List> {
+    return forEach(this.list, (item) => {
       const result: Record<string, any> = { ...item }
 
-      for (const column of this.columns as string[]) {
+      for (const [column, formatterConfig] of Object.entries(this.options)) {
         const formatKey = `${toCamelCase(column)}Format`
         const valueOriginal = getItemByPath(item, column)
-        const formatterConfig: FormattersItem | undefined = this.options.find(
-          opt => opt.prop === column
-        )
 
         if (formatterConfig?.transformation) {
           result[formatKey] = formatterConfig.transformation(
@@ -70,7 +62,7 @@ export class Formatters<
           continue
         }
 
-        if (!formatterConfig || !formatterConfig.type) {
+        if (!formatterConfig.type) {
           result[formatKey] = valueOriginal !== undefined && valueOriginal !== null
             ? String(valueOriginal)
             : ''
@@ -81,49 +73,27 @@ export class Formatters<
 
         switch (formatterConfig.type) {
           case FormattersType.currency:
-            result[formatKey] = intl.currency(
-              (opts?.currencyPropName ? getItemByPath(item, opts.currencyPropName) ?? valueOriginal : valueOriginal) ?? '',
-              opts?.options,
-              opts?.numberOnly ?? false
-            )
+            result[formatKey] = this.formatCurrency(valueOriginal, item, opts)
             break
 
           case FormattersType.date:
-            result[formatKey] = intl.date(
-              valueOriginal ?? '',
-              opts?.type,
-              opts?.options,
-              opts?.hour24
-            )
+            result[formatKey] = this.formatDate(valueOriginal, opts)
             break
 
           case FormattersType.name:
-            result[formatKey] = intl.fullName(
-              getItemByPath(item, opts?.lastPropName) ?? '',
-              getItemByPath(item, opts?.firstPropName) ?? '',
-              opts?.surname ? getItemByPath(item, opts.surname) : undefined,
-              opts?.short
-            )
+            result[formatKey] = this.formatName(item, opts)
             break
 
           case FormattersType.number:
-            result[formatKey] = intl.number(valueOriginal ?? '', opts?.options)
+            result[formatKey] = this.formatNumber(valueOriginal, opts)
             break
 
           case FormattersType.plural:
-            result[formatKey] = intl.plural(
-              valueOriginal ?? '',
-              opts?.words ?? '',
-              opts?.options,
-              opts?.optionsNumber
-            )
+            result[formatKey] = this.formatPlural(valueOriginal, opts)
             break
 
           case FormattersType.unit:
-            result[formatKey] = intl.unit(
-              valueOriginal ?? '',
-              opts?.unit ?? opts?.options
-            )
+            result[formatKey] = this.formatUnit(valueOriginal, opts)
             break
 
           default:
@@ -134,10 +104,52 @@ export class Formatters<
       }
 
       return result
-    }) as FormattersDataList<List[number], Key>
+    }) as FormattersListFormat<Item, Key>
   }
 
-  protected initColumns(): string[] {
-    return getColumn(this.options, 'prop') as string[]
+  protected formatCurrency(value: any, item: Item, options?: any): string {
+    return GeoIntl.getInstance().currency(
+      (options?.currencyPropName ? getItemByPath(item, options.currencyPropName) ?? value : value) ?? '',
+      options?.options,
+      options?.numberOnly ?? false
+    )
+  }
+
+  protected formatDate(value: any, options?: any): string {
+    return GeoIntl.getInstance().date(
+      value ?? '',
+      options?.type,
+      options?.options,
+      options?.hour24
+    )
+  }
+
+  protected formatName(item: Item, options?: any): string {
+    return GeoIntl.getInstance().fullName(
+      getItemByPath(item, options?.lastPropName) ?? '',
+      getItemByPath(item, options?.firstPropName) ?? '',
+      options?.surname ? getItemByPath(item, options.surname) : undefined,
+      options?.short
+    )
+  }
+
+  protected formatNumber(value: any, options?: any): string {
+    return GeoIntl.getInstance().number(value ?? '', options?.options)
+  }
+
+  protected formatPlural(value: any, options?: any): string {
+    return GeoIntl.getInstance().plural(
+      value ?? '',
+      options?.words ?? '',
+      options?.options,
+      options?.optionsNumber
+    )
+  }
+
+  protected formatUnit(value: any, options?: any): string {
+    return GeoIntl.getInstance().unit(
+      value ?? '',
+      options?.unit ?? options?.options
+    )
   }
 }

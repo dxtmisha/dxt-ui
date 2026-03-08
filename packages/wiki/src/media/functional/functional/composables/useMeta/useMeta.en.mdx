@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useMeta - Meta tags management'/>
+
+# `useMeta`
+
+Composable for reactive management of meta tags (HTML, Open Graph, Twitter Card) with automatic DOM synchronization. Uses a singleton pattern where all components share the same meta state.
+
+**Returns:**
+- `title: Ref<string>` — reactive page title (without suffix).
+- `description: Ref<string>` — reactive description meta tag.
+- `keyword: Ref<string>` — reactive keywords meta tag.
+- `image: Ref<string>` — reactive image URL for Open Graph / Twitter Card.
+- `canonical: Ref<string>` — reactive canonical URL.
+- `robots: Ref<MetaRobots>` — reactive robots directive.
+- `author: Ref<string>` — reactive author meta tag.
+- `siteName: Ref<string>` — reactive site name.
+- `getHtmlMeta(): string` — generates an HTML string for all meta tags (useful for SSR).
+- `meta: Meta` — the underlying `Meta` instance.
+
+## Usage Example
+
+```typescript
+import { useMeta } from '@dxtmisha/functional'
+
+const { title, description } = useMeta()
+
+title.value = 'My Page Title'
+description.value = 'Description of my cool page'
+```

@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useLazyRef - Lazy loading'/>
+
+# `useLazyRef`
+
+Composable for initializing the tracking of an element's appearance on the screen using `IntersectionObserver`.
+
+**Parameters:**
+- `options?: IntersectionObserverInit` — options for `IntersectionObserver`. Default: `{ rootMargin: '128px 0px' }`.
+
+**Returns:**
+- `intersectionObserver: IntersectionObserver | undefined` — the `IntersectionObserver` instance.
+- `getItem(element: HTMLElement): LazyItem | undefined` — returns a tracked element's data.
+- `addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean>` — adds an element for tracking and returns its visibility status ref.
+- `removeLazyItem(element?: HTMLElement): void` — removes an element from tracking.
+- `disconnectLazy(): void` — stops all tracking and disconnects the observer.
+
+## Usage Example
+
+```typescript
+import { ref, watch } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+const element = ref<HTMLElement>()
+const { addLazyItem } = useLazyRef({ rootMargin: '200px' })
+
+const isVisible = addLazyItem(element)
+
+watch(isVisible, (visible) => {
+  if (visible) {
+    console.log('Element is now visible!')
+  }
+})
+```

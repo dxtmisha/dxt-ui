@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useMeta - Quản lý thẻ meta'/>
+
+# `useMeta`
+
+Composable để quản lý phản ứng các thẻ meta (HTML, Open Graph, Twitter Card) với khả năng tự động đồng bộ hóa DOM. Sử dụng pattern singleton - tất cả các component đều chia sẻ cùng một trạng thái meta.
+
+**Trả về:**
+- `title: Ref<string>` — tiêu đề trang phản ứng (không có hậu tố).
+- `description: Ref<string>` — thẻ meta description phản ứng.
+- `keyword: Ref<string>` — thẻ meta keywords phản ứng.
+- `image: Ref<string>` — URL hình ảnh phản ứng cho Open Graph / Twitter Card.
+- `canonical: Ref<string>` — URL canonical phản ứng.
+- `robots: Ref<MetaRobots>` — chỉ thị robots phản ứng.
+- `author: Ref<string>` — thẻ meta author phản ứng.
+- `siteName: Ref<string>` — tên trang web phản ứng.
+- `getHtmlMeta(): string` — tạo chuỗi HTML cho tất cả các thẻ meta (hữu ích cho SSR).
+- `meta: Meta` — thực thể `Meta` cơ sở.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useMeta } from '@dxtmisha/functional'
+
+const { title, description } = useMeta()
+
+title.value = 'Tiêu đề trang của tôi'
+description.value = 'Mô tả về trang web tuyệt vời của tôi'
+```

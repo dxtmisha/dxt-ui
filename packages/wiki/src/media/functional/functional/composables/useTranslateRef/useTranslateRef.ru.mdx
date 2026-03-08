@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useTranslateRef - Локализация и перевод'/>
+
+# `useTranslateRef`
+
+Composable для получения реактивных переводов на основе ключей или массива ключей. Он автоматически обновляется при изменении языка приложения.
+
+**Параметры:**
+- `names: (string | string[])[]` — строка или массив ключей для перевода.
+
+**Возвращает:**
+- `ShallowRef<TranslateList<T>>` — поверхностная реактивная ссылка, содержащая переведенные тексты.
+
+## Пример использования
+
+```typescript
+import { useTranslateRef, t } from '@dxtmisha/functional'
+
+// Базовое использование
+const translations = useTranslateRef(['home.title', 'home.description'])
+
+// Использование сокращения 't'
+const labels = t(['button.save', 'button.cancel'])
+
+// В шаблоне: <h1>{{ translations['home.title'] }}</h1>
+```

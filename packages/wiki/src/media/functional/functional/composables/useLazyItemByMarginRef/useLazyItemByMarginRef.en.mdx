@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useLazyItemByMarginRef - Lazy loading by margin'/>
+
+# `useLazyItemByMarginRef`
+
+Composable for tracking the appearance of an element on the screen using `IntersectionObserver`. It is optimized by using a single observer instance for the same `rootMargin` values.
+
+**Parameters:**
+- `element: RefType<HTMLElement | undefined>` — reactive reference to the tracked HTML element.
+- `rootMargin: string` — margin for `IntersectionObserver` (e.g., `'100px 0px'`).
+
+**Returns:**
+- `lazyItemStatus: ShallowRef<boolean>` — element visibility status (whether it intersects the area considering `rootMargin`).
+- `lazyItem: LazyItem | undefined` — (getter) object with detailed tracking information (ratio, entry, etc.).
+
+## Usage Example
+
+```typescript
+import { ref } from 'vue'
+import { useLazyItemByMarginRef } from '@dxtmisha/functional'
+
+const element = ref<HTMLElement>()
+const { lazyItemStatus } = useLazyItemByMarginRef(element, '128px 0px')
+
+// lazyItemStatus.value will become true when the element is within 128px of the viewport
+```

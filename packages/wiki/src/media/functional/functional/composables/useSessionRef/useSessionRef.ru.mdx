@@ -1,0 +1,25 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useSessionRef - Управление сессией хранения'/>
+
+# `useSessionRef`
+
+Composable для управления реактивными данными в `sessionStorage`. Использует паттерн singleton — элементы с одинаковым именем разделяют одно и то же реактивное состояние.
+
+**Параметры:**
+- `name: string` — название ключа в `sessionStorage`.
+- `defaultValue?: T | (() => T)` — значение по умолчанию, если в хранилище ничего не найдено.
+
+**Возвращает:**
+- `Ref<T | undefined>` — реактивная ссылка на значение в сессии хранения.
+
+## Пример использования
+
+```typescript
+import { useSessionRef } from '@dxtmisha/functional'
+
+const userSession = useSessionRef('user-data', { loggedIn: false })
+
+// Изменение значения автоматически обновляет sessionStorage
+userSession.value.loggedIn = true
+```

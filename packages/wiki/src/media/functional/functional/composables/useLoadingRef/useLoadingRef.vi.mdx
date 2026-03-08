@@ -1,0 +1,20 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useLoadingRef - Trạng thái tải'/>
+
+# `useLoadingRef`
+
+Composable để lấy trạng thái tải toàn cục.
+
+**Trả về:**
+- `ShallowRef<boolean>` — một tham chiếu phản ứng đến trạng thái tải hiện tại.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useLoadingRef } from '@dxtmisha/functional'
+
+const isLoading = useLoadingRef()
+
+// Sử dụng isLoading.value trong template hoặc logic của bạn
+```

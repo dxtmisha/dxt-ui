@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useTranslateRef - Bản địa hóa và dịch thuật'/>
+
+# `useTranslateRef`
+
+Composable để lấy các bản dịch phản ứng dựa trên các khóa hoặc một mảng các khóa. Nó tự động cập nhật khi ngôn ngữ của ứng dụng thay đổi.
+
+**Tham số:**
+- `names: (string | string[])[]` — một chuỗi hoặc một mảng các khóa để dịch.
+
+**Trả về:**
+- `ShallowRef<TranslateList<T>>` — một tham chiếu phản ứng nông chứa các văn bản đã dịch.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useTranslateRef, t } from '@dxtmisha/functional'
+
+// Cách sử dụng cơ bản
+const translations = useTranslateRef(['home.title', 'home.description'])
+
+// Sử dụng viết tắt 't'
+const labels = t(['button.save', 'button.cancel'])
+
+// Trong template: <h1>{{ translations['home.title'] }}</h1>
+```

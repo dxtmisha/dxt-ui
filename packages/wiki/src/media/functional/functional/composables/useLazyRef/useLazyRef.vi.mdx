@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useLazyRef - Tải lười'/>
+
+# `useLazyRef`
+
+Composable để khởi tạo việc theo dõi sự xuất hiện của một phần tử trên màn hình bằng cách sử dụng `IntersectionObserver`.
+
+**Tham số:**
+- `options?: IntersectionObserverInit` — cài đặt cho `IntersectionObserver`. Mặc định: `{ rootMargin: '128px 0px' }`.
+
+**Trả về:**
+- `intersectionObserver: IntersectionObserver | undefined` — thực thể `IntersectionObserver`.
+- `getItem(element: HTMLElement): LazyItem | undefined` — lấy dữ liệu của phần tử đang được theo dõi.
+- `addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean>` — thêm một phần tử để theo dõi (trả về ref trạng thái hiển thị).
+- `removeLazyItem(element?: HTMLElement): void` — xóa một phần tử khỏi việc theo dõi.
+- `disconnectLazy(): void` — dừng tất cả việc theo dõi và ngắt kết nối bộ quan sát.
+
+## Ví dụ sử dụng
+
+```typescript
+import { ref, watch } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+const element = ref<HTMLElement>()
+const { addLazyItem } = useLazyRef({ rootMargin: '200px' })
+
+const isVisible = addLazyItem(element)
+
+watch(isVisible, (visible) => {
+  if (visible) {
+    console.log('Phần tử hiện đã hiển thị!')
+  }
+})
+```

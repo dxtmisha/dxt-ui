@@ -1,0 +1,25 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useSessionRef - Quản lý lưu trữ phiên'/>
+
+# `useSessionRef`
+
+Composable để quản lý dữ liệu phản ứng trong `sessionStorage`. Sử dụng pattern singleton - các phần tử có cùng tên sẽ chia sẻ cùng một trạng thái phản ứng.
+
+**Tham số:**
+- `name: string` — tên của khóa trong `sessionStorage`.
+- `defaultValue?: T | (() => T)` — giá trị mặc định nếu không tìm thấy gì trong bộ nhớ.
+
+**Trả về:**
+- `Ref<T | undefined>` — một tham chiếu phản ứng đến giá trị trong bộ nhớ phiên.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useSessionRef } from '@dxtmisha/functional'
+
+const userSession = useSessionRef('user-data', { loggedIn: false })
+
+// Thay đổi giá trị sẽ tự động cập nhật sessionStorage
+userSession.value.loggedIn = true
+```

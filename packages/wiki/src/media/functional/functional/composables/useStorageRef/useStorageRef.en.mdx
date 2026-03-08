@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useStorageRef - Local storage management'/>
+
+# `useStorageRef`
+
+Composable for managing reactive data in `localStorage` with automatic synchronization across different tabs/windows. Uses a singleton pattern.
+
+**Parameters:**
+- `name: string` — the name of the key in `localStorage`.
+- `defaultValue?: T | (() => T)` — the initial value if nothing is found in storage.
+- `cache?: number` — cache time in seconds.
+
+**Returns:**
+- `Ref<T | undefined>` — a reactive reference to the local storage value.
+
+## Usage Example
+
+```typescript
+import { useStorageRef } from '@dxtmisha/functional'
+
+const settings = useStorageRef('app-settings', { theme: 'dark' })
+
+// Updates here sync with localStorage and other open tabs
+settings.value.theme = 'light'
+```

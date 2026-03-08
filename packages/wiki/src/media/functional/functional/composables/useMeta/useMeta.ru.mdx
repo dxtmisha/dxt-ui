@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useMeta - Управление мета-тегами'/>
+
+# `useMeta`
+
+Composable для реактивного управления мета-тегами (HTML, Open Graph, Twitter Card) с автоматической синхронизацией DOM. Использует паттерн singleton — все компоненты используют одно состояние мета-тегов.
+
+**Возвращает:**
+- `title: Ref<string>` — реактивный заголовок страницы (без суффикса).
+- `description: Ref<string>` — реактивный мета-тег description.
+- `keyword: Ref<string>` — реактивный мета-тег keywords.
+- `image: Ref<string>` — реактивный URL изображения для Open Graph / Twitter Card.
+- `canonical: Ref<string>` — реактивный канонический URL.
+- `robots: Ref<MetaRobots>` — реактивная директива robots.
+- `author: Ref<string>` — реактивный мета-тег author.
+- `siteName: Ref<string>` — реактивное название сайта.
+- `getHtmlMeta(): string` — генерирует HTML-строку для всех мета-тегов (полезно для SSR).
+- `meta: Meta` — базовый экземпляр `Meta`.
+
+## Пример использования
+
+```typescript
+import { useMeta } from '@dxtmisha/functional'
+
+const { title, description } = useMeta()
+
+title.value = 'Заголовок страницы'
+description.value = 'Описание моей крутой страницы'
+```

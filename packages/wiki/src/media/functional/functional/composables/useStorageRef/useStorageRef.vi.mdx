@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useStorageRef - Quản lý lưu trữ cục bộ'/>
+
+# `useStorageRef`
+
+Composable để quản lý dữ liệu phản ứng trong `localStorage` với tính năng tự động đồng bộ hóa giữa các tab/cửa sổ khác nhau. Sử dụng pattern singleton.
+
+**Tham số:**
+- `name: string` — tên của khóa trong `localStorage`.
+- `defaultValue?: T | (() => T)` — giá trị mặc định nếu không tìm thấy gì trong bộ nhớ.
+- `cache?: number` — thời gian lưu bộ nhớ cache tính bằng giây.
+
+**Trả về:**
+- `Ref<T | undefined>` — một tham chiếu phản ứng đến giá trị trong bộ nhớ cục bộ.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useStorageRef } from '@dxtmisha/functional'
+
+const settings = useStorageRef('app-settings', { theme: 'dark' })
+
+// Cập nhật tại đây sẽ đồng bộ với localStorage và các tab khác đang mở
+settings.value.theme = 'light'
+```

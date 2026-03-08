@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useLazyItemByMarginRef - Ленивая загрузка по отступу'/>
+
+# `useLazyItemByMarginRef`
+
+Composable для отслеживания появления элемента на экране с использованием `IntersectionObserver`. Оптимизирован за счет использования единого экземпляра наблюдателя для одинаковых значений `rootMargin`.
+
+**Параметры:**
+- `element: RefType<HTMLElement | undefined>` — реактивная ссылка на отслеживаемый HTML-элемент.
+- `rootMargin: string` — отступ для `IntersectionObserver` (например, `'100px 0px'`).
+
+**Возвращает:**
+- `lazyItemStatus: ShallowRef<boolean>` — статус видимости элемента (пересекает ли он область с учетом `rootMargin`).
+- `lazyItem: LazyItem | undefined` — (getter) объект с подробной информацией об отслеживании (ratio, entry и т.д.).
+
+## Пример использования
+
+```typescript
+import { ref } from 'vue'
+import { useLazyItemByMarginRef } from '@dxtmisha/functional'
+
+const element = ref<HTMLElement>()
+const { lazyItemStatus } = useLazyItemByMarginRef(element, '128px 0px')
+
+// lazyItemStatus.value станет true, когда элемент окажется в 128px от области видимости
+```

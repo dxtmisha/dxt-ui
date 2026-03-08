@@ -4,20 +4,24 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useApiRef, setApiRefGlobalConditions } from '../useApiRef'
+import { useApiRef } from '../useApiRef'
 import { Api, ApiMethodItem } from '@dxtmisha/functional-basic'
 
-// Mock Api.request globally
-vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
-  return {
-    ...actual,
-    Api: {
-      ...actual.Api,
-      request: vi.fn()
-    }
+const { viApiMethodItem } = vi.hoisted(() => ({
+  viApiMethodItem: {
+    get: 'GET',
+    post: 'POST',
+    put: 'PUT',
+    delete: 'DELETE'
   }
-})
+}))
+
+vi.mock('@dxtmisha/functional-basic', () => ({
+  Api: {
+    request: vi.fn()
+  },
+  ApiMethodItem: viApiMethodItem
+}))
 
 describe('useApiRef', () => {
   const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { })
@@ -26,7 +30,7 @@ describe('useApiRef', () => {
   beforeEach(() => {
     vi.resetAllMocks()
     // Reset global conditions (using any because it's an internal variable we can't easily reset otherwise)
-    // Actually, setApiRefGlobalConditions only sets if not already set. 
+    // Actually, setApiRefGlobalConditions only sets if not already set.
     // This is hard to reset during tests without a dedicated reset function in the source.
   })
 
@@ -57,7 +61,7 @@ describe('useApiRef', () => {
       vi.mocked(Api.request).mockResolvedValueOnce({ data: 'mocked-data' })
 
       const { init } = useApiRef('test/path')
-      
+
       init()
       await nextTick()
 

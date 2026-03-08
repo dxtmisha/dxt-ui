@@ -51,9 +51,9 @@ describe('Formatters', () => {
   ]
 
   it('should format simple fields as strings by default', () => {
-    const options = [
-      { prop: 'id' }
-    ]
+    const options = {
+      id: {}
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -62,12 +62,11 @@ describe('Formatters', () => {
   })
 
   it('should handle custom transformations', () => {
-    const options = [
-      {
-        prop: 'id',
+    const options = {
+      id: {
         transformation: (val: number) => `ID-${val}`
       }
-    ]
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -76,13 +75,12 @@ describe('Formatters', () => {
   })
 
   it('should format currency correctly', () => {
-    const options = [
-      {
-        prop: 'price',
+    const options = {
+      price: {
         type: FormattersType.currency,
         options: { options: 'USD' }
       }
-    ]
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -92,13 +90,12 @@ describe('Formatters', () => {
   })
 
   it('should format dates correctly', () => {
-    const options = [
-      {
-        prop: 'createdAt',
+    const options = {
+      createdAt: {
         type: FormattersType.date,
         options: { type: 'date' as GeoDate }
       }
-    ]
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -107,13 +104,12 @@ describe('Formatters', () => {
   })
 
   it('should format numbers correctly', () => {
-    const options = [
-      {
-        prop: 'weight',
+    const options = {
+      weight: {
         type: FormattersType.number,
         options: { options: { minimumFractionDigits: 2 } }
       }
-    ]
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -122,13 +118,12 @@ describe('Formatters', () => {
   })
 
   it('should format plurals correctly', () => {
-    const options = [
-      {
-        prop: 'count',
+    const options = {
+      count: {
         type: FormattersType.plural,
         options: { words: 'item|items' }
       }
-    ]
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -137,9 +132,8 @@ describe('Formatters', () => {
   })
 
   it('should format names correctly including nested paths', () => {
-    const options = [
-      {
-        prop: 'fullName',
+    const options = {
+      fullName: {
         type: FormattersType.name,
         options: {
           lastPropName: 'name.last',
@@ -147,7 +141,7 @@ describe('Formatters', () => {
           surname: 'name.surname'
         }
       }
-    ]
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -156,12 +150,11 @@ describe('Formatters', () => {
   })
 
   it('should handle nested path formatting', () => {
-    const options = [
-      {
-        prop: 'name.first',
+    const options = {
+      'name.first': {
         transformation: (val: string) => val.toUpperCase()
       }
-    ]
+    }
     const formatters = new Formatters(sampleData, options)
     const result = formatters.to() as any[]
 
@@ -170,27 +163,27 @@ describe('Formatters', () => {
   })
 
   it('should return correct columns via getColumns', () => {
-    const options = [
-      { prop: 'id' },
-      { prop: 'price' }
-    ]
+    const options = {
+      id: {},
+      price: {}
+    }
     const formatters = new Formatters(sampleData, options)
     expect(formatters.getColumns()).toEqual(['id', 'price'])
   })
 
   it('should return correct options via getOptions', () => {
-    const options = [{ prop: 'id' }]
+    const options = { id: {} }
     const formatters = new Formatters(sampleData, options)
     expect(formatters.getOptions()).toEqual(options)
   })
 
   it('should return correct list via getList', () => {
-    const formatters = new Formatters(sampleData, [{ prop: 'id' }])
+    const formatters = new Formatters(sampleData, { id: {} })
     expect(formatters.getList()).toEqual(sampleData)
   })
 
   it('should update list via setList', () => {
-    const formatters = new Formatters(sampleData, [{ prop: 'id' }])
+    const formatters = new Formatters(sampleData, { id: {} })
     const newData = [{ id: 100 }]
     formatters.setList(newData as any)
     expect(formatters.getList()).toEqual(newData)
@@ -200,11 +193,11 @@ describe('Formatters', () => {
   })
 
   it('should dynamically update columns and options when setOptions is called', () => {
-    const formatters = new Formatters(sampleData, [{ prop: 'id' }])
+    const formatters = new Formatters(sampleData, { id: {} })
     expect(formatters.getColumns()).toEqual(['id'])
     expect((formatters.to() as any[])[0].idFormat).toBe('1')
 
-    const newOptions = [{ prop: 'price' }]
+    const newOptions = { price: {} }
     formatters.setOptions(newOptions)
     expect(formatters.getOptions()).toEqual(newOptions)
     expect(formatters.getColumns()).toEqual(['price'])

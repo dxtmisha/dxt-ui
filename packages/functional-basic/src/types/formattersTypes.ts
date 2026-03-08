@@ -43,7 +43,7 @@ export type FormattersOptionsUnit = {
   options?: string | Intl.NumberFormatOptions
 }
 
-export type FormattersOptions<
+export type FormattersOptionsInformation<
   Type extends FormattersType
 >
   = Type extends FormattersType.currency
@@ -60,48 +60,32 @@ export type FormattersOptions<
               ? FormattersOptionsUnit
               : Record<string, any>
 
-export type FormattersItem<
+export type FormattersOptionsItem<
   Type extends FormattersType = FormattersType,
   R = string | undefined
 > = {
-  prop: string
   type?: Type
   transformation?: (
     valueOriginal: any,
     item: any,
-    options: FormattersOptions<Type>
+    options: FormattersOptionsInformation<Type>
   ) => R
-  options?: FormattersOptions<Type>
+  options?: FormattersOptionsInformation<Type>
 }
-export type FormattersList = FormattersItem[]
+export type FormattersOptionsList = Record<string, FormattersOptionsItem>
 
-export type FormattersDataListItem = Record<string, any>
-export type FormattersDataListList = FormattersDataListItem[]
+export type FormattersListItem = Record<string, any>
+export type FormattersList<Item extends FormattersListItem> = Item[]
 
-export type FormattersDataPath<K, P> = K extends string
-  ? P extends string
-    ? `${K}.${P}`
-    : never
-  : never
-
-export type FormattersDataColumn<T extends FormattersDataListItem> = {
-  [K in keyof T]: T[K] extends object ? K | FormattersDataPath<K, keyof T[K]> : K
-}[keyof T]
-
-export type FormattersDataColumns<T extends FormattersDataListItem> = (FormattersDataColumn<T> & string)[]
-
-export type FormattersDataCapitalize<K extends string> = K extends `${infer First}.${infer Rest}`
-  ? `${First}${Capitalize<FormattersDataCapitalize<Rest>>}`
+export type FormattersCapitalize<K extends string> = K extends `${infer First}.${infer Rest}`
+  ? `${First}${Capitalize<FormattersCapitalize<Rest>>}`
   : K
+export type FormattersColumns<T extends FormattersOptionsList> = (keyof T & string)[]
+export type FormattersKey<K, A extends string = 'Format'> = K extends string ? `${FormattersCapitalize<K>}${A}` : never
 
-export type FormattersDataKey<K, A extends string = 'Format'> = K extends string ? `${FormattersDataCapitalize<K>}${A}` : never
+export type FormattersDataItem<T extends FormattersListItem, KT extends string[]> = {
+  [K in keyof T | FormattersKey<KT[number]>]: K extends keyof T ? T[K] : string
+}
 
-export type FormattersDataItem<T extends FormattersDataListItem, KT extends string[]>
-  = {
-    [K in keyof T | FormattersDataKey<KT[number]>]: K extends keyof T ? T[K] : string
-  }
-  & {
-    searchActive?: boolean
-  }
-
-export type FormattersDataList<T extends FormattersDataListItem, K extends string[]> = FormattersDataItem<T, K>[]
+export type FormattersListFormat<T extends FormattersListItem, K extends string[]> = FormattersDataItem<T, K>[]
+export type FormattersListColumns<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersListFormat<T, FormattersColumns<O>>

@@ -1,0 +1,20 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useLoadingRef - Статус загрузки'/>
+
+# `useLoadingRef`
+
+Composable для получения глобального статуса загрузки.
+
+**Возвращает:**
+- `ShallowRef<boolean>` — реактивная ссылка на текущий статус загрузки.
+
+## Пример использования
+
+```typescript
+import { useLoadingRef } from '@dxtmisha/functional'
+
+const isLoading = useLoadingRef()
+
+// Используйте isLoading.value в вашем шаблоне или логике
+```
