@@ -1,0 +1,146 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Formatters - Data Formatting Utility'/>
+
+# Formatters Class
+
+A specialized class for formatting lists of data based on provided configuration. It acts as a bridge between raw data and localized, human-readable strings, leveraging the `GeoIntl` singleton for consistent formatting across different locales.
+
+## Key Features
+
+- **Declarative Configuration** — Define formatting rules once and apply them to an entire dataset.
+- **Support for Multiple Types** — Built-in support for currency, dates, names, numbers, plurals, and units.
+- **Custom Transformations** — Ability to provide custom functions for unique formatting needs.
+- **Type Safety** — Full TypeScript support for items, options, and resulting formatted lists.
+- **Automatic Key Generation** — Automatically adds formatted values to items with a `Format` suffix (e.g., `price` becomes `priceFormat`).
+
+## Initialization
+
+Creates a new `Formatters` instance with specified formatting options and an optional initial list.
+
+```javascript
+import { Formatters } from '@dxtmisha/functional-basic'
+
+const options = {
+  price: { 
+    type: 'currency', 
+    options: { currencyPropName: 'currency' } 
+  },
+  created: { 
+    type: 'date', 
+    options: { type: 'datetime' } 
+  },
+  user: {
+    type: 'name',
+    options: { lastPropName: 'surname', firstPropName: 'name' }
+  },
+  weight: { 
+    type: 'unit', 
+    options: { unit: 'kilogram' } 
+  },
+  count: { 
+    type: 'plural', 
+    options: { words: 'apple|apples' } 
+  },
+  status: {
+    transformation: (value) => value === 1 ? 'Active' : 'Inactive'
+  }
+}
+
+const data = [
+  {
+    price: 100,
+    currency: 'USD',
+    created: '2024-03-07T12:00:00',
+    name: 'John',
+    surname: 'Doe',
+    weight: 75,
+    count: 5,
+    status: 1
+  }
+]
+
+const formatter = new Formatters(options, data)
+```
+
+## Processing Data
+
+### `to`
+
+The core method that processes the list and returns a new array where each item is enriched with formatted values based on the initial configuration.
+
+**Returns:** `FormattersListColumns<Item, Options>` — a new array of objects with additional `*Format` properties.
+
+```javascript
+const result = formatter.to()
+/*
+Result: [
+  { 
+    id: 101, 
+    price: 100, 
+    currency: 'USD', 
+    priceFormat: '$100.00', 
+    status: 1, 
+    statusFormat: 'Active',
+    ... 
+  }
+]
+*/
+```
+
+## Retrieval and Data Management
+
+- `getList(): List | undefined` — Returns the current list of data.
+- `getOptions(): Options` — Returns the current formatting configuration mapping.
+- `setList(list: List): this` — Updates the list of data to be formatted and returns the instance for chaining.
+
+## Configuration Structure
+
+The configuration object passed to the constructor is a map where each key corresponds to a property name in your data. Each value must follow the `FormattersOptionsItem` structure.
+
+### Main Item Structure
+
+```typescript
+{
+  // 1. Specify the formatting type
+  type: 'currency' | 'date' | 'name' | 'number' | 'plural' | 'unit',
+
+  // 2. Pass type-specific parameters here
+  options: { ... },
+
+  // 3. Or use a custom function (overrides type-specific logic)
+  transformation: (value, item, options) => string
+}
+```
+
+## Specific Parameters
+
+Below are the parameters available within the **`options`** property for each type.
+
+### Currency (`currency`)
+- `currencyPropName?: string` — Property in the item containing the currency code (defaults to `item.currency`).
+- `options?: string | Intl.NumberFormatOptions` — Fixed currency code or full `Intl` options.
+- `numberOnly?: boolean` — If `true`, returns only the formatted number without the symbol.
+
+### Date (`date`)
+- `type?: GeoDate` — Preset type: `full`, `datetime`, `date`, `year-month`, `year`, `month`, `day`, `day-month`, `time`, `hour-minute`, `hour`, `minute`, `second`.
+- `options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Additional `Intl` date options or month style.
+- `hour24?: boolean` — Forces 24-hour format if `true`.
+
+### Name (`name`)
+- `lastPropName?: string` — Field for last name (default: `lastName`).
+- `firstPropName?: string` — Field for first name (default: `firstName`).
+- `surname?: string` — Field for surname (default: `surname`).
+- `short?: boolean` — Whether to use short format (initials).
+
+### Number (`number`)
+- `options?: Intl.NumberFormatOptions` — Standard `Intl` number options.
+
+### Plural (`plural`)
+- `words: string` — Word forms separated by `|` (e.g., `"apple|apples"`).
+- `options?: Intl.PluralRulesOptions` — Plural rule settings.
+- `optionsNumber?: Intl.NumberFormatOptions` — Formatting for the number itself.
+
+### Unit (`unit`)
+- `unit: string | Intl.NumberFormatOptions` — The unit to display (e.g., `'kilometer'`, `'kilogram'`).
+

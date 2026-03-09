@@ -1,0 +1,146 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Formatters - Tiện ích Định dạng Dữ liệu'/>
+
+# Lớp Formatters
+
+Một lớp chuyên dụng để định dạng danh sách dữ liệu dựa trên cấu hình được cung cấp. Nó đóng vai trò như một cầu nối giữa dữ liệu thô và các chuỗi văn bản đã được địa phương hóa, dễ đọc, tận dụng cơ chế singleton `GeoIntl` để đảm bảo tính nhất quán trong định dạng trên các ngôn ngữ khác nhau.
+
+## Tính năng chính
+
+- **Cấu hình khai báo** — Định nghĩa các quy tắc định dạng một lần và áp dụng chúng cho toàn bộ tập dữ liệu.
+- **Hỗ trợ nhiều kiểu dữ liệu** — Hỗ trợ tích hợp cho tiền tệ, ngày tháng, tên, số, số nhiều và các đơn vị đo lường.
+- **Biến đổi tùy chỉnh** — Khả năng cung cấp các hàm riêng cho các nhu cầu định dạng đặc thù.
+- **An toàn kiểu dữ liệu (Type Safety)** — Hỗ trợ đầy đủ TypeScript cho các mục dữ liệu, các tùy chọn và danh sách kết quả đã được định dạng.
+- **Tự động tạo khóa (Key Generation)** — Tự động thêm các giá trị đã định dạng vào các mục với hậu tố `Format` (ví dụ: `price` trở thành `priceFormat`).
+
+## Khởi tạo
+
+Tạo một thực thể `Formatters` mới với các tùy chọn định dạng được chỉ định và một danh sách khởi tạo tùy chọn.
+
+```javascript
+import { Formatters } from '@dxtmisha/functional-basic'
+
+const options = {
+  price: { 
+    type: 'currency', 
+    options: { currencyPropName: 'currency' } 
+  },
+  created: { 
+    type: 'date', 
+    options: { type: 'datetime' } 
+  },
+  user: {
+    type: 'name',
+    options: { lastPropName: 'surname', firstPropName: 'name' }
+  },
+  weight: { 
+    type: 'unit', 
+    options: { unit: 'kilogram' } 
+  },
+  count: { 
+    type: 'plural', 
+    options: { words: 'quả táo|quả táo' } 
+  },
+  status: {
+    transformation: (value) => value === 1 ? 'Đang hoạt động' : 'Ngừng hoạt động'
+  }
+}
+
+const data = [
+  {
+    price: 100,
+    currency: 'VND',
+    created: '2024-03-07T12:00:00',
+    name: 'Thanh',
+    surname: 'Nguyễn',
+    weight: 75,
+    count: 5,
+    status: 1
+  }
+]
+
+const formatter = new Formatters(options, data)
+```
+
+## Xử lý dữ liệu
+
+### `to`
+
+Phương thức cốt lõi xử lý danh sách và trả về một mảng mới, nơi mỗi mục được bổ sung các giá trị đã định dạng dựa trên cấu hình ban đầu.
+
+**Trả về:** `FormattersListColumns<Item, Options>` — một mảng đối tượng mới với các thuộc tính `*Format` bổ sung.
+
+```javascript
+const result = formatter.to()
+/*
+Kết quả: [
+  { 
+    id: 101, 
+    price: 100, 
+    currency: 'VND', 
+    priceFormat: '100.000 ₫', 
+    status: 1, 
+    statusFormat: 'Đang hoạt động',
+    ... 
+  }
+]
+*/
+```
+
+## Truy xuất và quản lý dữ liệu
+
+- `getList(): List | undefined` — Trả về danh sách dữ liệu hiện tại.
+- `getOptions(): Options` — Trả về cấu hình định dạng hiện tại.
+- `setList(list: List): this` — Cập nhật danh sách dữ liệu cần định dạng và trả về thực thể để gọi chuỗi lệnh.
+
+## Cấu trúc cấu hình
+
+Đối tượng cấu hình được truyền vào hàm khởi tạo là một bản đồ (map), nơi mỗi khóa tương ứng với tên một thuộc tính trong dữ liệu của bạn. Mỗi giá trị phải tuân theo cấu trúc `FormattersOptionsItem`.
+
+### Cấu trúc mục chính
+
+```typescript
+{
+  // 1. Chỉ định kiểu định dạng
+  type: 'currency' | 'date' | 'name' | 'number' | 'plural' | 'unit',
+
+  // 2. Truyền các tham số dành riêng cho kiểu tại đây
+  options: { ... },
+
+  // 3. Hoặc sử dụng một hàm tùy chỉnh (ghi đè logic của kiểu)
+  transformation: (value, item, options) => string
+}
+```
+
+## Các tham số cụ thể
+
+Dưới đây là các tham số có sẵn bên trong thuộc tính **`options`** cho từng kiểu.
+
+### Tiền tệ (`currency`)
+- `currencyPropName?: string` — Thuộc tính trong mục chứa mã tiền tệ (mặc định là `item.currency`).
+- `options?: string | Intl.NumberFormatOptions` — Mã tiền tệ cố định hoặc các tùy chọn `Intl` đầy đủ.
+- `numberOnly?: boolean` — Nếu là `true`, chỉ trả về số đã định dạng mà không có ký hiệu tiền tệ.
+
+### Ngày tháng (`date`)
+- `type?: GeoDate` — Kiểu thiết lập sẵn: `full`, `datetime`, `date`, `year-month`, `year`, `month`, `day`, `day-month`, `time`, `hour-minute`, `hour`, `minute`, `second`.
+- `options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Các tùy chọn ngày tháng tiêu chuẩn của `Intl` hoặc kiểu tháng.
+- `hour24?: boolean` — Kết quả định dạng bắt buộc sử dụng định dạng 24 giờ nếu là `true`.
+
+### Tên (`name`)
+- `lastPropName?: string` — Trường cho họ (mặc định: `lastName`).
+- `firstPropName?: string` — Trường cho tên (mặc định: `firstName`).
+- `surname?: string` — Trường cho tên đệm (mặc định: `surname`).
+- `short?: boolean` — Có sử dụng định dạng rút gọn (viết tắt) hay không.
+
+### Số (`number`)
+- `options?: Intl.NumberFormatOptions` — Các tùy chọn số tiêu chuẩn của `Intl`.
+
+### Số nhiều (`plural`)
+- `words: string` — Các dạng từ cách nhau bởi `|` (ví dụ: `"quả táo|quả táo"`).
+- `options?: Intl.PluralRulesOptions` — Các thiết lập quy tắc số nhiều.
+- `optionsNumber?: Intl.NumberFormatOptions` — Định dạng cho chính con số đó.
+
+### Đơn vị (`unit`)
+- `unit: string | Intl.NumberFormatOptions` — Đơn vị cần hiển thị (ví dụ: `'kilometer'`, `'kilogram'`).
+

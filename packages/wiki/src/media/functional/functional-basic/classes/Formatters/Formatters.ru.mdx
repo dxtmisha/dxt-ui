@@ -1,0 +1,146 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/Formatters - Утилита для Форматирования Данных'/>
+
+# Класс Formatters
+
+Специализированный класс для форматирования списков данных на основе предоставленной конфигурации. Он служит мостом между необработанными данными и локализованными, удобочитаемыми строками, используя синглтон `GeoIntl` для согласованного форматирования в разных локалях.
+
+## Ключевые особенности
+
+- **Декларативная конфигурация** — Определите правила форматирования один раз и примените их ко всему набору данных.
+- **Поддержка нескольких типов** — Встроенная поддержка валют, дат, имен, чисел, множественного числа и единиц измерения.
+- **Пользовательские трансформации** — Возможность предоставления собственных функций для уникальных нужд форматирования.
+- **Типизация** — Полная поддержка TypeScript для элементов, параметров и результирующих отформатированных списков.
+- **Автоматическая генерация ключей** — Автоматически добавляет отформатированные значения к элементам с суффиксом `Format` (например, `price` становится `priceFormat`).
+
+## Инициализация
+
+Создает новый экземпляр `Formatters` с указанными параметрами форматирования и необязательным начальным списком.
+
+```javascript
+import { Formatters } from '@dxtmisha/functional-basic'
+
+const options = {
+  price: { 
+    type: 'currency', 
+    options: { currencyPropName: 'currency' } 
+  },
+  created: { 
+    type: 'date', 
+    options: { type: 'datetime' } 
+  },
+  user: {
+    type: 'name',
+    options: { lastPropName: 'surname', firstPropName: 'name' }
+  },
+  weight: { 
+    type: 'unit', 
+    options: { unit: 'kilogram' } 
+  },
+  count: { 
+    type: 'plural', 
+    options: { words: 'яблоко|яблока|яблок' } 
+  },
+  status: {
+    transformation: (value) => value === 1 ? 'Активен' : 'Неактивен'
+  }
+}
+
+const data = [
+  {
+    price: 100,
+    currency: 'RUB',
+    created: '2024-03-07T12:00:00',
+    name: 'Иван',
+    surname: 'Иванов',
+    weight: 75,
+    count: 5,
+    status: 1
+  }
+]
+
+const formatter = new Formatters(options, data)
+```
+
+## Обработка данных
+
+### `to`
+
+Основной метод, который обрабатывает список и возвращает новый массив, в котором каждый элемент дополнен отформатированными значениями на основе начальной конфигурации.
+
+**Возвращает:** `FormattersListColumns<Item, Options>` — новый массив объектов с дополнительными свойствами `*Format`.
+
+```javascript
+const result = formatter.to()
+/*
+Результат: [
+  { 
+    id: 101, 
+    price: 100, 
+    currency: 'RUB', 
+    priceFormat: '100,00 ₽', 
+    status: 1, 
+    statusFormat: 'Активен',
+    ... 
+  }
+]
+*/
+```
+
+## Получение и управление данными
+
+- `getList(): List | undefined` — Возвращает текущий список данных.
+- `getOptions(): Options` — Возвращает текущую карту конфигурации форматирования.
+- `setList(list: List): this` — Обновляет список данных для форматирования и возвращает экземпляр класса для цепочки вызовов.
+
+## Структура конфигурации
+
+Объект конфигурации, передаваемый в конструктор, представляет собой карту, где каждый ключ соответствует имени свойства в ваших данных. Каждое значение должно соответствовать структуре `FormattersOptionsItem`.
+
+### Основная структура элемента
+
+```typescript
+{
+  // 1. Укажите тип форматирования
+  type: 'currency' | 'date' | 'name' | 'number' | 'plural' | 'unit',
+
+  // 2. Передайте параметры, специфичные для типа, здесь
+  options: { ... },
+
+  // 3. Или используйте собственную функцию (перекрывает логику типа)
+  transformation: (value, item, options) => string
+}
+```
+
+## Специфичные параметры
+
+Ниже приведены параметры, доступные внутри свойства **`options`** для каждого типа.
+
+### Валюта (`currency`)
+- `currencyPropName?: string` — Свойство в элементе, содержащее код валюты (по умолчанию `item.currency`).
+- `options?: string | Intl.NumberFormatOptions` — Фиксированный код валюты или полные параметры `Intl`.
+- `numberOnly?: boolean` — Если `true`, возвращает только отформатированное число без символа.
+
+### Дата (`date`)
+- `type?: GeoDate` — Предустановленный тип: `full`, `datetime`, `date`, `year-month`, `year`, `month`, `day`, `day-month`, `time`, `hour-minute`, `hour`, `minute`, `second`.
+- `options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Дополнительные параметры `Intl` или стиль месяца.
+- `hour24?: boolean` — Принудительно использует 24-часовой формат, если `true`.
+
+### Имя (`name`)
+- `lastPropName?: string` — Поле для фамилии (по умолчанию: `lastName`).
+- `firstPropName?: string` — Поле для имени (по умолчанию: `firstName`).
+- `surname?: string` — Поле для отчества (по умолчанию: `surname`).
+- `short?: boolean` — Использовать ли краткий формат (инициалы).
+
+### Число (`number`)
+- `options?: Intl.NumberFormatOptions` — Стандартные параметры чисел `Intl`.
+
+### Множественное число (`plural`)
+- `words: string` — Формы слов, разделенные `|` (например, `"яблоко|яблока|яблок"`).
+- `options?: Intl.PluralRulesOptions` — Настройки правил множественного числа.
+- `optionsNumber?: Intl.NumberFormatOptions` — Форматирование самого числа.
+
+### Единица измерения (`unit`)
+- `unit: string | Intl.NumberFormatOptions` — Единица измерения для отображения (например, `'kilometer'`, `'kilogram'`).
+

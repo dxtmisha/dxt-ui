@@ -22,8 +22,8 @@ export type FormattersOptionsDate = {
 }
 
 export type FormattersOptionsName = {
-  lastPropName: string
-  firstPropName: string
+  lastPropName?: string
+  firstPropName?: string
   surname?: string
   short?: boolean
 }
@@ -39,8 +39,7 @@ export type FormattersOptionsPlural = {
 }
 
 export type FormattersOptionsUnit = {
-  unit?: string
-  options?: string | Intl.NumberFormatOptions
+  unit: string | Intl.NumberFormatOptions
 }
 
 export type FormattersOptionsInformation<
@@ -62,13 +61,13 @@ export type FormattersOptionsInformation<
 
 export type FormattersOptionsItem<
   Type extends FormattersType = FormattersType,
-  R = string | undefined
+  R = string
 > = {
   type?: Type
   transformation?: (
     valueOriginal: any,
     item: any,
-    options: FormattersOptionsInformation<Type>
+    options?: FormattersOptionsInformation<Type>
   ) => R
   options?: FormattersOptionsInformation<Type>
 }

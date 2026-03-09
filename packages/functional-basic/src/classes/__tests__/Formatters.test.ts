@@ -1,209 +1,117 @@
 // @vitest-environment jsdom
-import { vi, describe, it, expect, beforeEach } from 'vitest'
-
-// Mock DataStorage to avoid static initialization errors in Geo.ts
-vi.mock('../DataStorage', () => {
-  return {
-    DataStorage: class {
-      constructor() { }
-      get() { return undefined }
-      set() { return undefined }
-      remove() { return this }
-      update() { return this }
-    }
-  }
-})
-
+import { describe, it, expect, beforeEach } from 'vitest'
 import { Formatters } from '../Formatters'
 import { FormattersType } from '../../types/formattersTypes'
 import { Geo } from '../Geo'
-import { type GeoDate } from '../../types/geoTypes'
 
 describe('Formatters', () => {
   beforeEach(() => {
     Geo.set('en-US')
   })
 
-  const sampleData = [
-    {
-      id: 1,
-      price: 1000,
-      count: 1,
-      name: {
-        first: 'John',
-        last: 'Doe',
-        surname: 'Middle'
-      },
-      createdAt: '2025-03-01T10:00:00',
-      weight: 2.5
+  const options = {
+    price: { type: FormattersType.currency },
+    birthday: { type: FormattersType.date },
+    name: { type: FormattersType.name },
+    count: { type: FormattersType.number },
+    apples: {
+      type: FormattersType.plural,
+      options: { words: 'apple|apples' }
     },
+    weight: {
+      type: FormattersType.unit,
+      options: { unit: 'kilogram' }
+    },
+    custom: {
+      transformation: (val: any) => `custom-${val}`
+    }
+  }
+
+  const list = [
     {
-      id: 2,
-      price: 2500,
-      count: 5,
-      name: {
-        first: 'Jane',
-        last: 'Smith'
-      },
-      createdAt: '2025-03-05T15:30:00',
-      weight: 0.5
+      price: 100,
+      currency: 'USD',
+      birthday: '2025-01-01',
+      firstName: 'John',
+      lastName: 'Doe',
+      count: 1234.56,
+      apples: 5,
+      weight: 10,
+      custom: 'value'
     }
   ]
 
-  it('should format simple fields as strings by default', () => {
-    const options = {
-      id: {}
-    }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(result[0].idFormat).toBe('1')
-    expect(result[1].idFormat).toBe('2')
+  it('should initialize with options and list', () => {
+    const formatters = new Formatters(options, list)
+    expect(formatters.getOptions()).toBe(options)
+    expect(formatters.getList()).toBe(list)
   })
 
-  it('should handle custom transformations', () => {
-    const options = {
-      id: {
-        transformation: (val: number) => `ID-${val}`
-      }
-    }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(result[0].idFormat).toBe('ID-1')
-    expect(result[1].idFormat).toBe('ID-2')
+  it('should allow setting the list', () => {
+    const formatters = new Formatters(options)
+    expect(formatters.getList()).toBeUndefined()
+    formatters.setList(list)
+    expect(formatters.getList()).toBe(list)
   })
 
-  it('should format currency correctly', () => {
-    const options = {
+  it('should format data correctly via to()', () => {
+    const formatters = new Formatters(options, list)
+    const result = formatters.to()
+    const item = result[0]!
+
+    // Currency
+    expect(item.priceFormat).toContain('$100.00')
+
+    // Date
+    expect(item.birthdayFormat).toBeTruthy()
+    expect(typeof item.birthdayFormat).toBe('string')
+
+    // Name
+    expect(item.nameFormat).toBe('John Doe')
+
+    // Number
+    expect(item.countFormat).toBe('1,234.56')
+
+    // Plural
+    expect(item.applesFormat).toBe('5 apples')
+
+    // Unit
+    expect(item.weightFormat).toBe('10 kg')
+
+    // Custom
+    expect(item.customFormat).toBe('custom-value')
+  })
+
+  it('should return an empty array if a list is missing', () => {
+    const formatters = new Formatters(options)
+    expect(formatters.to()).toEqual([])
+  })
+
+  it('should handle missing values by returning empty strings', () => {
+    const incompleteList = [{}]
+    const formatters = new Formatters(options, incompleteList as any)
+    const result = formatters.to()
+    const item = result[0]!
+
+    expect(item.priceFormat).toBe('')
+    expect(item.birthdayFormat).toBe('')
+    expect(item.nameFormat).toBe('')
+    expect(item.countFormat).toBe('')
+    expect(item.applesFormat).toBe('')
+    expect(item.weightFormat).toBe('')
+    expect(item.customFormat).toBe('')
+  })
+
+  it('should use custom currency property name if provided', () => {
+    const customOptions = {
       price: {
         type: FormattersType.currency,
-        options: { options: 'USD' }
+        options: { currencyPropName: 'myCurrency' }
       }
     }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(result[0].priceFormat).toContain('$')
-    expect(result[0].priceFormat).toContain('1,000')
-    expect(result[1].priceFormat).toContain('2,500')
-  })
-
-  it('should format dates correctly', () => {
-    const options = {
-      createdAt: {
-        type: FormattersType.date,
-        options: { type: 'date' as GeoDate }
-      }
-    }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(typeof result[0].createdAtFormat).toBe('string')
-    expect(result[0].createdAtFormat.length).toBeGreaterThan(0)
-  })
-
-  it('should format numbers correctly', () => {
-    const options = {
-      weight: {
-        type: FormattersType.number,
-        options: { options: { minimumFractionDigits: 2 } }
-      }
-    }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(result[0].weightFormat).toBe('2.50')
-    expect(result[1].weightFormat).toBe('0.50')
-  })
-
-  it('should format plurals correctly', () => {
-    const options = {
-      count: {
-        type: FormattersType.plural,
-        options: { words: 'item|items' }
-      }
-    }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(result[0].countFormat).toBe('1 item')
-    expect(result[1].countFormat).toBe('5 items')
-  })
-
-  it('should format names correctly including nested paths', () => {
-    const options = {
-      fullName: {
-        type: FormattersType.name,
-        options: {
-          lastPropName: 'name.last',
-          firstPropName: 'name.first',
-          surname: 'name.surname'
-        }
-      }
-    }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(result[0].fullNameFormat).toBe('John Doe')
-    expect(result[1].fullNameFormat).toBe('Jane Smith')
-  })
-
-  it('should handle nested path formatting', () => {
-    const options = {
-      'name.first': {
-        transformation: (val: string) => val.toUpperCase()
-      }
-    }
-    const formatters = new Formatters(sampleData, options)
-    const result = formatters.to() as any[]
-
-    expect(result[0].nameFirstFormat).toBe('JOHN')
-    expect(result[1].nameFirstFormat).toBe('JANE')
-  })
-
-  it('should return correct columns via getColumns', () => {
-    const options = {
-      id: {},
-      price: {}
-    }
-    const formatters = new Formatters(sampleData, options)
-    expect(formatters.getColumns()).toEqual(['id', 'price'])
-  })
-
-  it('should return correct options via getOptions', () => {
-    const options = { id: {} }
-    const formatters = new Formatters(sampleData, options)
-    expect(formatters.getOptions()).toEqual(options)
-  })
-
-  it('should return correct list via getList', () => {
-    const formatters = new Formatters(sampleData, { id: {} })
-    expect(formatters.getList()).toEqual(sampleData)
-  })
-
-  it('should update list via setList', () => {
-    const formatters = new Formatters(sampleData, { id: {} })
-    const newData = [{ id: 100 }]
-    formatters.setList(newData as any)
-    expect(formatters.getList()).toEqual(newData)
-    const result = formatters.to() as any[]
-    expect(result[0].id).toBe(100)
-    expect(result[0].idFormat).toBe('100')
-  })
-
-  it('should dynamically update columns and options when setOptions is called', () => {
-    const formatters = new Formatters(sampleData, { id: {} })
-    expect(formatters.getColumns()).toEqual(['id'])
-    expect((formatters.to() as any[])[0].idFormat).toBe('1')
-
-    const newOptions = { price: {} }
-    formatters.setOptions(newOptions)
-    expect(formatters.getOptions()).toEqual(newOptions)
-    expect(formatters.getColumns()).toEqual(['price'])
-
-    const result = formatters.to() as any[]
-    expect(result[0].idFormat).toBeUndefined()
-    expect(result[0].priceFormat).toBe('1000')
+    const customList = [{ price: 50, myCurrency: 'EUR' }]
+    const formatters = new Formatters(customOptions, customList)
+    const result = formatters.to()
+    expect(result[0]!.priceFormat).toContain('€50.00')
   })
 })

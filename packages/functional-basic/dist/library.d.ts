@@ -1822,6 +1822,215 @@ export declare function executePromise<T>(callback: (() => Promise<T>) | (() => 
 export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> = T[] | Record<string, T> | Map<string, T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];
 
 /**
+ * Class for formatting a list of data based on provided options.
+ *
+ * Класс для форматирования списка данных на основе предоставленных параметров.
+ * @template Item - type of items in the list/ тип элементов в списке.
+ * @template Options - type of formatting options/ тип параметров форматирования.
+ * @template List - type of the list of items/ тип списка элементов.
+ */
+export declare class Formatters<Item extends FormattersListItem, Options extends FormattersOptionsList, List extends FormattersList<Item> = FormattersList<Item>> {
+    protected options: Options;
+    protected list?: List | undefined;
+    /**
+     * Constructor
+     *
+     * Конструктор
+     * @param options formatting options for each column/ property/
+     * параметры форматирования для каждого столбца/свойства
+     * @param list initial list of data to format/ начальный список данных для форматирования
+     */
+    constructor(options: Options, list?: List | undefined);
+    /**
+     * Returns the current list of data.
+     *
+     * Возвращает текущий список данных.
+     * @returns the list of data or undefined if not set/ список данных или undefined, если не задан
+     */
+    getList(): List | undefined;
+    /**
+     * Returns the current formatting options.
+     *
+     * Возвращает текущие параметры форматирования.
+     * @returns formatting options/ параметры форматирования
+     */
+    getOptions(): Options;
+    /**
+     * Sets the list of data to be formatted.
+     *
+     * Устанавливает список данных для форматирования.
+     * @param list list of data/ список данных
+     * @returns the Formatters instance for chaining/ экземпляр Formatters для цепочки вызовов
+     */
+    setList(list: List): this;
+    /**
+     * Formats the entire list based on the provided options.
+     * Adds formatted values with the suffix 'Format' to each item.
+     *
+     * Форматирует весь список на основе предоставленных параметров.
+     * Добавляет отформатированные значения с суффиксом 'Format' к каждому элементу.
+     * @returns the list of items with additional formatted columns/
+     * список элементов с дополнительными отформатированными столбцами
+     */
+    to(): FormattersListColumns<Item, Options>;
+    /**
+     * Generates formatted data for a single item based on options.
+     *
+     * Генерирует отформатированные данные для одного элемента на основе параметров.
+     * @param item item to format/ элемент для форматирования
+     * @protected
+     */
+    protected getFormatData(item: Item): Record<string, string>;
+    /**
+     * Router-like method to delegate formatting to specific type formatters.
+     *
+     * Метод-маршрутизатор для делегирования форматирования конкретным типам форматировщиков.
+     * @param valueOriginal original value to format/ исходное значение для форматирования
+     * @param item entire item context/ весь контекст элемента
+     * @param type type of formatter to use/ тип используемого форматировщика
+     * @param options additional options for the specific formatter/
+     * дополнительные параметры для конкретного форматировщика
+     * @protected
+     * @returns Formatted string/ отформатированная строка
+     */
+    protected transformation<Type extends FormattersType>(valueOriginal: any, item: any, type?: Type, options?: FormattersOptionsInformation<Type>): string;
+    /**
+     * Formats a value as currency.
+     *
+     * Форматирует значение как валюту.
+     * @param value value to format/ значение для форматирования
+     * @param item item context/ контекст элемента
+     * @param options currency formatting options/ параметры форматирования валюты
+     * @protected
+     * @returns Formatted currency string/ отформатированная строка валюты
+     */
+    protected formatCurrency(value: any, item: Item, options?: FormattersOptionsCurrency): string;
+    /**
+     * Formats a value as a date.
+     *
+     * Форматирует значение как дату.
+     * @param value value to format/ значение для форматирования
+     * @param options date formatting options/ параметры форматирования даты
+     * @protected
+     * @returns Formatted date string/ отформатированная строка даты
+     */
+    protected formatDate(value: any, options?: FormattersOptionsDate): string;
+    /**
+     * Formats full name from multiple property names.
+     *
+     * Форматирует полное имя из нескольких имен свойств.
+     * @param item item context containing name components/ контекст элемента, содержащий компоненты имени
+     * @param options name formatting options (prop names for first, last, surname)/
+     * параметры форматирования имени (имена свойств для имени, фамилии, отчества)
+     * @protected
+     * @returns Formatted name string or empty string if components are missing/
+     * отформатированная строка имени или пустая строка, если компоненты отсутствуют
+     */
+    protected formatName(item: Item, options?: FormattersOptionsName): string;
+    /**
+     * Formats a value as a number.
+     *
+     * Форматирует значение как число.
+     * @param value value to format/ значение для форматирования
+     * @param options number formatting options/ параметры форматирования числа
+     * @protected
+     * @returns Formatted number string/ отформатированная строка числа
+     */
+    protected formatNumber(value: any, options?: FormattersOptionsNumber): string;
+    /**
+     * Formats a value based on plural rules.
+     *
+     * Форматирует значение на основе правил множественного числа.
+     * @param value numeric value for pluralization/ числовое значение для плюрализации
+     * @param options plural formatting options (words and rules)/
+     * параметры форматирования множественного числа (слова и правила)
+     * @protected
+     * @returns Formatted plural string/ отформатированная строка множественного числа
+     */
+    protected formatPlural(value: any, options?: FormattersOptionsPlural): string;
+    /**
+     * Formats a value with a specific unit.
+     *
+     * Форматирует значение с определенной единицей измерения.
+     * @param value value to format/ значение для форматирования
+     * @param options unit formatting options/ параметры форматирования единиц измерения
+     * @protected
+     * @returns Formatted unit string/ отформатированная строка единицы измерения
+     */
+    protected formatUnit(value: any, options?: FormattersOptionsUnit): string;
+}
+
+export declare type FormattersCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<FormattersCapitalize<Rest>>}` : K;
+
+export declare type FormattersColumns<T extends FormattersOptionsList> = (keyof T & string)[];
+
+export declare type FormattersDataItem<T extends FormattersListItem, KT extends string[]> = {
+    [K in keyof T | FormattersKey<KT[number]>]: K extends keyof T ? T[K] : string;
+};
+
+export declare type FormattersKey<K, A extends string = 'Format'> = K extends string ? `${FormattersCapitalize<K>}${A}` : never;
+
+export declare type FormattersList<Item extends FormattersListItem> = Item[];
+
+export declare type FormattersListColumns<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersListFormat<T, FormattersColumns<O>>;
+
+export declare type FormattersListFormat<T extends FormattersListItem, K extends string[]> = FormattersDataItem<T, K>[];
+
+export declare type FormattersListItem = Record<string, any>;
+
+export declare type FormattersOptionsCurrency = {
+    currencyPropName?: string;
+    options?: string | Intl.NumberFormatOptions;
+    numberOnly?: boolean;
+};
+
+export declare type FormattersOptionsDate = {
+    type?: GeoDate;
+    options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions;
+    hour24?: boolean;
+};
+
+export declare type FormattersOptionsInformation<Type extends FormattersType> = Type extends FormattersType.currency ? FormattersOptionsCurrency : Type extends FormattersType.date ? FormattersOptionsDate : Type extends FormattersType.name ? FormattersOptionsName : Type extends FormattersType.number ? FormattersOptionsNumber : Type extends FormattersType.plural ? FormattersOptionsPlural : Type extends FormattersType.unit ? FormattersOptionsUnit : Record<string, any>;
+
+export declare type FormattersOptionsItem<Type extends FormattersType = FormattersType, R = string> = {
+    type?: Type;
+    transformation?: (valueOriginal: any, item: any, options?: FormattersOptionsInformation<Type>) => R;
+    options?: FormattersOptionsInformation<Type>;
+};
+
+export declare type FormattersOptionsList = Record<string, FormattersOptionsItem>;
+
+export declare type FormattersOptionsName = {
+    lastPropName?: string;
+    firstPropName?: string;
+    surname?: string;
+    short?: boolean;
+};
+
+export declare type FormattersOptionsNumber = {
+    options?: Intl.NumberFormatOptions;
+};
+
+export declare type FormattersOptionsPlural = {
+    words: string;
+    options?: Intl.PluralRulesOptions;
+    optionsNumber?: Intl.NumberFormatOptions;
+};
+
+export declare type FormattersOptionsUnit = {
+    unit: string | Intl.NumberFormatOptions;
+};
+
+export declare enum FormattersType {
+    currency = "currency",
+    date = "date",
+    name = "name",
+    number = "number",
+    plural = "plural",
+    unit = "unit"
+}
+
+/**
  * Cyclically calls requestAnimationFrame until next returns true
  * The window.requestAnimationFrame() method tells the browser that you wish to perform
  * an animation and requests that the browser calls a specified function to update an
