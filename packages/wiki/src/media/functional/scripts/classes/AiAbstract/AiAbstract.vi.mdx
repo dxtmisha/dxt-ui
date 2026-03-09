@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiAbstract - Lớp cơ sở tích hợp AI'/>
+
+# Lớp AiAbstract
+
+Một lớp cơ sở trừu tượng cung cấp các cơ chế chung cho việc tích hợp AI: tích lũy ngữ cảnh (prompt), lựa chọn mô hình và quy trình nhận phản hồi thống nhất. Nó đóng vai trò là nền tảng để tạo ra các triển khai cụ thể (ví dụ: cho OpenAI, Google Gemini, v.v.).
+
+## Các tính năng chính
+
+- **Tích lũy ngữ cảnh** — các phương thức để thu thập dần văn bản, hình ảnh và các dữ liệu khác trước khi gửi yêu cầu.
+- **Quản lý mô hình** — khả năng chuyển đổi linh hoạt giữa các mô hình khác nhau trong một thực thể duy nhất.
+- **Quy trình thống nhất** — phương thức `generate` chuẩn hóa giúp ẩn đi các chi tiết khởi tạo client và gọi API cụ thể.
+- **Điểm mở rộng** — các phương thức trừu tượng được xác định rõ ràng để triển khai logic cụ thể của từng nhà cung cấp.
+
+## Các phương thức chính
+
+### `generate`
+
+Phương thức thực thi chính để nhận phản hồi từ AI. Nó tự động kiểm tra việc khởi tạo client (gọi `init()` nếu cần thiết) và thực hiện yêu cầu đến mô hình thông qua phương thức bảo vệ `response`.
+
+**Tham số:**
+- `contents: string` — văn bản prompt chính hoặc nội dung bổ sung sẽ được thêm vào ngữ cảnh đã tích lũy.
+
+**Trả về:** `Promise<string>` — kết quả văn bản được tạo bởi AI.
+
+## Các phương thức tích lũy dữ liệu
+
+Các phương thức này được sử dụng để xây dựng ngữ cảnh trước khi gọi tạo phản hồi. Chúng hỗ trợ gọi chuỗi (ngoại trừ `addPrompt`).
+
+- `addImage(image: AiImageItem): this` — Thêm hình ảnh vào danh sách các tệp đa phương tiện đã tích lũy.
+- `addContent(content: string): this` — Thêm một khối văn bản vào mảng nội dung đã tích lũy.
+- `addPrompt(prompt: string): void` — Thêm một dòng mới vào tiền tố cơ sở (system prompt).
+
+## Các phương thức quản lý trạng thái
+
+Các phương thức để xóa bộ đệm và đặt lại dữ liệu đã tích lũy:
+
+- `resetImages(): this` — Xóa hoàn toàn danh sách các hình ảnh đã tích lũy.
+- `resetContents(): this` — Xóa mảng các khối văn bản đã tích lũy.
+- `resetPrompt(): void` — Đặt lại prompt cơ sở đã tích lũy.
+
+## Cấu hình
+
+Các phương thức để cấu hình các tham số quy trình (hỗ trợ gọi chuỗi):
+
+- `setKey(key: string): this` — Thiết lập hoặc thay đổi API key. Nếu client đã được khởi tạo, nó sẽ kích hoạt việc khởi tạo lại thông qua `init()`.
+- `setModel(model: string): this` — Chuyển đổi mô hình được sử dụng để tạo phản hồi.
+
+## Các phương thức truy xuất dữ liệu
+
+- `getImages(): AiImageList` — Trả về danh sách các hình ảnh hiện đã tích lũy.
+- `getContents(): string[]` — Trả về mảng của tất cả các khối văn bản đã thêm.
+
+## Điểm mở rộng (Trừu tượng)
+
+Để tạo một tích hợp, bạn phải kế thừa từ `AiAbstract` và triển khai các phương thức sau:
+
+- `init(): void` — Logic khởi tạo client, xác thực và thiết lập vận chuyển.
+- `response(model: string, contents: string): Promise<string>` — Gọi trực tiếp API của nhà cung cấp để lấy kết quả văn bản.
+- `toImages(): void` — Chuyển đổi các hình ảnh đã tích lũy sang định dạng nội bộ của nhà cung cấp.
+- `toContents(): void` — Chuyển đổi nội dung đã tích lũy sang định dạng nội bộ của nhà cung cấp.
+
+## Ví dụ sử dụng
+
+```typescript
+import { AiAbstract } from '@dxtmisha/scripts'
+
+class MyAiProvider extends AiAbstract<SomeApiClient> {
+  protected init() {
+    this.ai = new SomeApiClient({ apiKey: this.key });
+  }
+
+  protected async response(model: string, contents: string) {
+    const result = await this.ai.chat.completions.create({ model, prompt: contents });
+    return result.choices[0].text;
+  }
+  
+  protected toImages() { /* ... */ }
+  protected toContents() { /* ... */ }
+}
+
+const ai = new MyAiProvider('api-key', 'gpt-4');
+
+// Xây dựng yêu cầu dần dần
+ai.addPrompt('Bạn là một dịch giả chuyên nghiệp.')
+  .addContent('Dịch văn bản sau sang tiếng Anh:')
+  .addImage({ url: 'image.png', type: 'image/png' });
+
+const translation = await ai.generate('Xin chào, bạn khỏe không?');
+```

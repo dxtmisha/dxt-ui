@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiAbstract - AI Integration Base'/>
+
+# AiAbstract Class
+
+An abstract base class providing common mechanics for AI integrations: prompt context accumulation, model selection, and a unified response workflow. It serves as the foundation for creating concrete implementations (e.g., for OpenAI, Google Gemini, etc.).
+
+## Key Features
+
+- **Context Accumulation** — methods for progressively collecting text, images, and other data before sending a request.
+- **Model Management** — the ability to flexibly switch between different models within a single instance.
+- **Unified Workflow** — a standardized `generate` method that hides the implementation details of client initialization and specific API calls.
+- **Extension Points** — clearly defined abstract methods for implementing provider-specific logic.
+
+## Core Methods
+
+### `generate`
+
+The primary execution method for receiving an AI response. It automatically ensures the AI client is initialized (triggering `init()` if necessary) and executes the request to the model via the protected `response` method.
+
+**Parameters:**
+- `contents: string` — the main prompt or additional content to be added to the accumulated context.
+
+**Returns:** `Promise<string>` — the generated textual response.
+
+## Data Accumulation Methods
+
+These methods are used to build the context before calling for generation. They support chaining (except for `addPrompt`).
+
+- `addImage(image: AiImageItem): this` — Adds an image to the list of accumulated media files.
+- `addContent(content: string): this` — Adds a text block to the array of accumulated contents.
+- `addPrompt(prompt: string): void` — Appends a new line to the base prefix (system prompt).
+
+## State Management Methods
+
+Methods for clearing buffers and resetting accumulated data:
+
+- `resetImages(): this` — Completely clears the list of accumulated images.
+- `resetContents(): this` — Clears the array of accumulated text blocks.
+- `resetPrompt(): void` — Resets the accumulated base prompt.
+
+## Configuration
+
+Methods for configuring workflow parameters (support chaining):
+
+- `setKey(key: string): this` — Sets or changes the API key. If the client is already initialized, it triggers a re-initialization via `init()`.
+- `setModel(model: string): this` — Switches the model used for generation.
+
+## Retrieval Methods
+
+- `getImages(): AiImageList` — Returns the current list of accumulated images.
+- `getContents(): string[]` — Returns the array of all added text blocks.
+
+## Extension Points (Abstract)
+
+To create an integration, you must inherit from `AiAbstract` and implement the following methods:
+
+- `init(): void` — Client initialization, authentication, and transport setup logic.
+- `response(model: string, contents: string): Promise<string>` — Direct call to the provider's API to retrieve textual results.
+- `toImages(): void` — Converts accumulated images into the provider's internal format.
+- `toContents(): void` — Converts accumulated contents into the provider's internal format.
+
+## Usage Example
+
+```typescript
+import { AiAbstract } from '@dxtmisha/scripts'
+
+class MyAiProvider extends AiAbstract<SomeApiClient> {
+  protected init() {
+    this.ai = new SomeApiClient({ apiKey: this.key });
+  }
+
+  protected async response(model: string, contents: string) {
+    const result = await this.ai.chat.completions.create({ model, prompt: contents });
+    return result.choices[0].text;
+  }
+  
+  protected toImages() { /* ... */ }
+  protected toContents() { /* ... */ }
+}
+
+const ai = new MyAiProvider('api-key', 'gpt-4');
+
+// Progressive request building
+ai.addPrompt('You are a professional translator.')
+  .addContent('Translate the following text to English:')
+  .addImage({ url: 'image.png', type: 'image/png' });
+
+const translation = await ai.generate('Hello, how are you?');
+```
