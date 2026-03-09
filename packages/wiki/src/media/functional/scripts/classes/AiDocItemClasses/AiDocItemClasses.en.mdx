@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocItemClasses - Class Documentation Generator'/>
+
+# AiDocItemClasses Class
+
+A specialized implementation of the `AiDocItemAbstract` class, designed for automated documentation generation and descriptions for class structures (classes).
+
+## Purpose
+
+The class adapts the base logic of `AiDocItemAbstract` to the specific requirements of object-oriented code. It uses specialized prompt templates that configure the AI for deep analysis of class methods, properties, constructors, and inheritance hierarchies.
+
+## Overridden Properties
+
+The class overrides the paths to the resources required for analyzing class structures:
+
+- `pathDemo` — the path to the `demoClassEn.mdx` file, which contains examples of correctly formatted class documentation.
+- `pathPrompt` — the path to the `aiDocClassPrompt.en.txt` file, containing system instructions for the AI on how to analyze class code.
+
+## Inheritance
+
+The class inherits all generation process management mechanisms from [AiDocItemAbstract](?path=/docs/scripts-classes-aidocitemabstract--docs), including the primary `make()` method.
+
+## Usage Example
+
+```typescript
+import { AiDocItemClasses } from '@dxtmisha/scripts'
+
+// Creating an instance for a specific class
+const generator = new AiDocItemClasses(sourcePath, gitItem);
+
+// Starting documentation generation
+await generator.make();
+```

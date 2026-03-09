@@ -1,0 +1,70 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocItemAbstract - AI Documentation Generation Base'/>
+
+# AiDocItemAbstract Class
+
+An abstract base class providing the logic for automated documentation generation (`.mdx` files) and source code updates via AI. It coordinates the process of building temporary artifacts, preparing context for the AI, and processing the generated results.
+
+## Key Features
+
+- **Wiki Automation** — creation and updating of documentation files based on source code analysis.
+- **Intelligent Updates** — generating descriptions and modifying code (e.g., adding annotations) through AI.
+- **Build Management** — automatic execution of `BuildItem` to analyze actual types and structure before generation.
+- **Date Synchronization** — generation is triggered only if the source file has been modified after the last documentation creation.
+
+## Primary Method
+
+### `make`
+
+Triggers the full workflow for a documentation item. The method checks file relevance, initializes the build, prepares the AI prompt, sends the request, and distributes the results into the appropriate files (code, MDX, description).
+
+**Main workflow steps:**
+1. Comparing the source file modification date with the existing MDX date.
+2. Checking AI instance availability.
+3. Performing a preliminary build to extract actual interfaces.
+4. Generating content via AI based on the prepared context.
+5. Parsing the response (using the `#########` separator) and writing data to files.
+
+**Returns:** `Promise<void>`
+
+## Data Processing
+
+Methods for handling content and context:
+
+- `makeAi(): void` — Prepares a detailed context for the AI: passes actual code, demo files, and existing documentation.
+- `readPrompt(): string` — Reads and prepares the prompt template for the selected documentation language.
+- `initName(content: string): string` — Injects the generated title into the text template.
+- `readDemo(): string` — Loads the demo file content for usage example analysis.
+
+## Helper Methods
+
+- `isBuildDisabled(): boolean` — Checks for the `// wiki:build-none` marker that disables the preliminary build.
+- `getPathWiki(): string[]` — Generates the path array for the future MDX file in the Wiki structure.
+- `getItemDate(): Date` — Returns the last modification date of the source item.
+- `getTitle(): string` — Calculates the full documentation title based on the project name and description.
+
+## Properties
+
+- `protected readonly build: BuildItem` — The item's build manager.
+- `protected readonly mdFile: ComponentWikiFile` — The MDX documentation file.
+- `protected readonly code: ComponentWikiFile` — The source code file.
+- `protected readonly ai?: AiAbstract` — The AI instance for generation.
+
+## Extension Points (Abstract)
+
+Subclasses must define paths to resources specific to the item type:
+- `pathDemo: string[]` — Path to the file demonstrating usage.
+- `pathPrompt: string[]` — Path to the prompt template file.
+
+## Usage Example
+
+```typescript
+class MyCodeDoc extends AiDocItemAbstract {
+  protected pathDemo = ['path', 'to', 'demo.ts'];
+  protected pathPrompt = ['path', 'to', 'prompt.txt'];
+}
+
+const docGenerator = new MyCodeDoc(sourcePath, gitItem);
+await docGenerator.make();
+```

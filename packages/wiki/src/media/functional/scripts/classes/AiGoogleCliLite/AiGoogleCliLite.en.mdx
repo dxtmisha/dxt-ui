@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiGoogleCliLite - Google AI (CLI)'/>
+
+# AiGoogleCliLite Class
+
+An implementation of the `AiAbstract` class that uses the system shell to execute commands via the `gemini` CLI utility. This approach allows interaction with Google AI in environments where using an SDK is not possible or desirable.
+
+## Key Features
+
+- **CLI Integration** — executes requests by spawning an external process in the operating system.
+- **Temporary File Usage** — prompts are saved in a temporary directory to bypass command-line argument length limits.
+- **Automatic Cleanup** — temporary files and directories are deleted immediately after the request execution.
+
+## Primary Method
+
+### `response`
+
+A protected method that constructs and executes the terminal command. It prepares the full prompt text, escapes special characters, and calls the native `gemini` utility.
+
+**Main workflow steps:**
+1. Preparing the prompt content and saving it to a temporary file (`createFile`).
+2. Constructing the command string with model flags and output instructions.
+3. Calling `exec` while passing the API key via environment variables.
+4. Parsing `stdout` and returning the result.
+5. Cleaning up temporary resources in the completion block.
+
+**Parameters:**
+- `model: string` — the model identifier.
+- `contents: string` — the primary content of the request.
+
+**Returns:** `Promise<string>`
+
+## Context Management
+
+- `createFile(content: string): string` — Writes content to a temporary file and returns the path in the `@path/to/file.txt` format recognized by the CLI.
+- `getFileName(): string` — Generates a unique name for the temporary file within the `./ai-tmp` folder.
+- `removeFile(): void` — Deletes the temporary directory containing the prompts.
+
+## Inheritance
+
+The class extends [AiAbstract](?path=/docs/scripts-classes-aiabstract--docs). In this implementation, image support (`toImages`) is currently not provided.
+
+## Usage Example
+
+```typescript
+import { AiGoogleCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleCliLite('YOUR_API_KEY');
+ai.setModel('gemini-1.5-flash');
+
+const result = await ai.generate('Write a unit test for an addition function');
+```

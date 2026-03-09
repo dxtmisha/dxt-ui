@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiGoogleCli - Google AI (CLI Wrapper)'/>
+
+# Lớp AiGoogleCli
+
+Một bản triển khai đã được cấu hình của Google AI thông qua CLI, kế thừa từ [AiGoogleCliLite](?path=/docs/scripts-classes-aigoogleclilite--docs). Lớp này tự động lấy các thông tin xác thực cần thiết từ cấu hình dự án.
+
+## Mục đích
+
+Lớp này đơn giản hóa việc sử dụng giao diện Gemini CLI bằng cách tự động kết nối mã API và các tham số mô hình thông qua hàm `getConfigAi()`. Nó được thiết kế để chạy các script tạo tài liệu trong môi trường console.
+
+## Hàm khởi tạo (Constructor)
+
+Khi khởi tạo, lớp sẽ tự động:
+1. Gọi `getConfigAi()` để lấy mã API hiện tại.
+2. Khởi tạo lớp bọc `AiGoogleCliLite` với dữ liệu đã lấy được.
+
+## Kế thừa
+
+Lớp này kế thừa các cơ chế thực thi lệnh shell từ [AiGoogleCliLite](?path=/docs/scripts-classes-aigoogleclilite--docs).
+
+## Ví dụ sử dụng
+
+```typescript
+import { AiGoogleCli } from '@dxtmisha/scripts'
+
+// Cấu hình được tải tự động
+const ai = new AiGoogleCli();
+ai.setModel('gemini-1.5-flash');
+
+const result = await ai.generate('Write documentation for this method');
+```

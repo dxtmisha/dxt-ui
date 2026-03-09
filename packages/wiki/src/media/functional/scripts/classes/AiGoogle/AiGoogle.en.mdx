@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiGoogle - Google AI (Gemini)'/>
+
+# AiGoogle Class
+
+A configured implementation of Google AI (Gemini) that extends [AiGoogleLite](?path=/docs/scripts-classes-aigooglelite--docs). This class automatically retrieves the necessary credentials from the project's global configuration, eliminating the need to pass API keys manually.
+
+## Purpose
+
+The class serves as a convenient wrapper for standard Gemini usage within the library's infrastructure. It automatically integrates with the `getConfigAi()` function, ensuring it is ready for use immediately after initialization.
+
+## Constructor
+
+When instantiated, the class automatically:
+1. Calls the `getConfigAi()` function to retrieve the API key and other parameters from the environment or configuration files.
+2. Passes the retrieved data to the `AiGoogleLite` super-constructor.
+
+## Inheritance
+
+The class inherits all SDK interaction logic from [AiGoogleLite](?path=/docs/scripts-classes-aigooglelite--docs) and general prompt accumulation mechanisms from [AiAbstract](?path=/docs/scripts-classes-aiabstract--docs).
+
+## Usage Example
+
+```typescript
+import { AiGoogle } from '@dxtmisha/scripts'
+
+// API key and settings are automatically retrieved from the project config
+const ai = new AiGoogle();
+ai.setModel('gemini-1.5-flash');
+
+const result = await ai.generate('Explain how reactivity works in Vue');
+```

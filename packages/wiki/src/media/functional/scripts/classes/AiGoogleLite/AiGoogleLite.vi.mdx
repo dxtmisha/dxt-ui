@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiGoogleLite - Triển khai Google AI (SDK)'/>
+
+# Lớp AiGoogleLite
+
+Một bản triển khai của lớp `AiAbstract` sử dụng SDK chính thức `@google/genai` để tương tác với các mô hình Google AI (Gemini). Lớp này cung cấp logic cốt lõi để khởi tạo client và thực hiện các yêu cầu đến cơ sở hạ tầng đám mây của Google.
+
+## Các tính năng chính
+
+- **Tích hợp SDK** — làm việc trực tiếp với thư viện Google Generative AI.
+- **Hỗ trợ đa phương thức** — khả năng gửi cả nội dung văn bản và hình ảnh ở định dạng Base64.
+- **Cấu trúc yêu cầu linh hoạt** — chuyển đổi dữ liệu đã tích lũy (văn bản, hình ảnh) sang định dạng yêu cầu bởi Gemini API.
+
+## Phương thức chính
+
+### `response`
+
+Một phương thức được bảo vệ (protected) thực hiện yêu cầu mạng thực tế đến Google AI API. Nó tổng hợp tất cả các phần nội dung đã chuẩn bị (văn bản và hình ảnh) và gửi chúng đến mô hình Gemini đã chỉ định.
+
+**Các bước thực hiện chính:**
+1. Gọi các phương thức hỗ trợ `toImages()` và `toContents()` để định dạng dữ liệu.
+2. Gửi yêu cầu thông qua client `GoogleGenAI` (sử dụng phương thức `generateContent`).
+3. Trích xuất kết quả văn bản một cách an toàn từ phản hồi của máy chủ.
+
+**Tham số:**
+- `model: string` — định danh mô hình (ví dụ: `'gemini-1.5-flash'`).
+- `contents: string` — nội dung văn bản chính của prompt.
+
+**Trả về:** `Promise<string>` — văn bản được tạo ra hoặc chuỗi rỗng nếu có lỗi xảy ra.
+
+## Các phương thức xử lý dữ liệu
+
+- `init(): void` — Khởi tạo thực thể `GoogleGenAI` bằng mã API được cung cấp.
+- `toImages(): any` — Chuyển đổi mảng hình ảnh từ `AiAbstract` sang cấu trúc `inlineData` yêu cầu bởi SDK.
+- `toContents(): any` — Định dạng các khối văn bản đã tích lũy thành một mảng các đối tượng `{ text: ... }`.
+
+## Kế thừa
+
+Lớp này kế thừa [AiAbstract](?path=/docs/scripts-classes-aiabstract--docs), cung cấp một bản triển khai cụ thể để làm việc với Google AI.
+
+## Ví dụ sử dụng
+
+```typescript
+import { AiGoogleLite } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleLite('YOUR_API_KEY');
+ai.setModel('gemini-1.5-flash');
+
+const result = await ai.generate('Tell me about Vue.js');
+console.log(result);
+```

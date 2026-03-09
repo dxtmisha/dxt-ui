@@ -1,0 +1,70 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiDocItemAbstract - Cơ sở tạo tài liệu bằng AI'/>
+
+# Lớp AiDocItemAbstract
+
+Một lớp cơ sở trừu tượng cung cấp logic để tự động tạo tài liệu (tệp `.mdx`) và cập nhật mã nguồn thông qua AI. Nó điều phối quá trình xây dựng các artifact tạm thời, chuẩn bị ngữ cảnh cho AI và xử lý các kết quả được tạo ra.
+
+## Các tính năng chính
+
+- **Tự động hóa Wiki** — tạo và cập nhật các tệp tài liệu dựa trên phân tích mã nguồn.
+- **Cập nhật thông minh** — tạo mô tả và sửa đổi mã (ví dụ: thêm ghi chú) thông qua AI.
+- **Quản lý xây dựng** — tự động thực thi `BuildItem` để phân tích các kiểu (types) và cấu trúc thực tế trước khi tạo tài liệu.
+- **Đồng bộ hóa theo ngày** — việc tạo tài liệu chỉ được kích hoạt nếu tệp nguồn đã được sửa đổi sau lần tạo tài liệu cuối cùng.
+
+## Phương thức chính
+
+### `make`
+
+Kích hoạt toàn bộ quy trình làm việc cho một mục tài liệu. Phương thức này kiểm tra tính phù hợp của tệp, khởi tạo quá trình xây dựng, chuẩn bị prompt cho AI, gửi yêu cầu và phân phối kết quả vào các tệp tương ứng (mã, MDX, mô tả).
+
+**Các bước thực hiện chính:**
+1. So sánh ngày sửa đổi tệp nguồn với ngày của tệp MDX hiện có.
+2. Kiểm tra tính khả dụng của thực thể (instance) AI.
+3. Thực hiện xây dựng (build) sơ bộ để trích xuất các giao diện (interfaces) thực tế.
+4. Tạo nội dung thông qua AI dựa trên ngữ cảnh đã chuẩn bị.
+5. Phân giải phản hồi (sử dụng dấu phân cách `#########`) và ghi dữ liệu vào các tệp.
+
+**Trả về:** `Promise<void>`
+
+## Xử lý dữ liệu
+
+Các phương thức để xử lý nội dung và ngữ cảnh:
+
+- `makeAi(): void` — Chuẩn bị ngữ cảnh chi tiết cho AI: truyền mã thực tế, các tệp demo và tài liệu hiện có.
+- `readPrompt(): string` — Đọc và chuẩn bị mẫu prompt cho ngôn ngữ tài liệu đã chọn.
+- `initName(content: string): string` — Chèn tiêu đề đã tạo vào mẫu văn bản.
+- `readDemo(): string` — Tải nội dung tệp demo để phân tích các ví dụ sử dụng.
+
+## Các phương thức hỗ trợ
+
+- `isBuildDisabled(): boolean` — Kiểm tra dấu hiệu `// wiki:build-none` để bỏ qua bước xây dựng sơ bộ.
+- `getPathWiki(): string[]` — Tạo mảng đường dẫn cho tệp MDX trong cấu trúc Wiki.
+- `getItemDate(): Date` — Trả về ngày sửa đổi cuối cùng của mục nguồn.
+- `getTitle(): string` — Tính toán tiêu đề tài liệu đầy đủ dựa trên tên dự án và mô tả.
+
+## Thuộc tính
+
+- `protected readonly build: BuildItem` — Trình quản lý xây dựng của mục.
+- `protected readonly mdFile: ComponentWikiFile` — Tệp tài liệu MDX.
+- `protected readonly code: ComponentWikiFile` — Tệp mã nguồn.
+- `protected readonly ai?: AiAbstract` — Thực thể AI để tạo phản hồi.
+
+## Điểm mở rộng (Trừu tượng)
+
+Các lớp con phải xác định đường dẫn đến các tài nguyên cụ thể cho loại mục:
+- `pathDemo: string[]` — Đường dẫn đến tệp trình diễn cách sử dụng.
+- `pathPrompt: string[]` — Đường dẫn đến tệp mẫu prompt.
+
+## Ví dụ sử dụng
+
+```typescript
+class MyCodeDoc extends AiDocItemAbstract {
+  protected pathDemo = ['path', 'to', 'demo.ts'];
+  protected pathPrompt = ['path', 'to', 'prompt.txt'];
+}
+
+const docGenerator = new MyCodeDoc(sourcePath, gitItem);
+await docGenerator.make();
+```

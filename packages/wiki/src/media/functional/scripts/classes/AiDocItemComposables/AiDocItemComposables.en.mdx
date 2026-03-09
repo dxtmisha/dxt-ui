@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocItemComposables - Composable Documentation Generator'/>
+
+# AiDocItemComposables Class
+
+A specialized implementation of the `AiDocItemAbstract` class, designed for automated documentation generation and code updates for Vue composable functions (composables).
+
+## Purpose
+
+The class extends the base logic of `AiDocItemAbstract` by connecting composable-specific prompt templates and demonstration code examples. This enables the AI to more accurately analyze the structure of reactive functions (using `ref`, `computed`, `watch`, etc.) and generate documentation consistent with the library's standards for composables.
+
+## Overridden Properties
+
+The class specifies the paths to the resources used during the generation process for composables:
+
+- `pathDemo` — the path to the `demoComposableEn.mdx` file, which serves as a reference example for composable documentation formatting.
+- `pathPrompt` — the path to the `aiDocComposablePrompt.en.txt` file, containing system instructions for the AI on how to analyze composable code.
+
+## Inheritance
+
+The class inherits all process management methods from [AiDocItemAbstract](?path=/docs/scripts-classes-aidocitemabstract--docs), including the primary `make()` method.
+
+## Usage Example
+
+```typescript
+import { AiDocItemComposables } from '@dxtmisha/scripts'
+
+// Creating an instance for a specific composable function
+const generator = new AiDocItemComposables(sourcePath, gitItem);
+
+// Starting the documentation update process
+await generator.make();
+```

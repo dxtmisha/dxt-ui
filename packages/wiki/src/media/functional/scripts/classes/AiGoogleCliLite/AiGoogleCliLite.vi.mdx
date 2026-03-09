@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiGoogleCliLite - Google AI (CLI)'/>
+
+# Lớp AiGoogleCliLite
+
+Một bản triển khai của lớp `AiAbstract` sử dụng vỏ hệ thống (shell) để thực thi các lệnh thông qua tiện ích `gemini` CLI. Cách tiếp cận này cho phép tương tác với Google AI trong các môi trường mà việc sử dụng SDK không khả thi hoặc không mong muốn.
+
+## Các tính năng chính
+
+- **Tích hợp CLI** — thực hiện các yêu cầu bằng cách tạo một tiến trình bên ngoài trong hệ điều hành.
+- **Sử dụng tệp tạm thời** — các prompt được lưu trong một thư mục tạm thời để vượt qua giới hạn độ dài đối số dòng lệnh.
+- **Tự động dọn dẹp** — các tệp và thư mục tạm thời sẽ bị xóa ngay sau khi thực hiện yêu cầu.
+
+## Phương thức chính
+
+### `response`
+
+Một phương thức được bảo vệ (protected) thực hiện việc xây dựng và thực thi lệnh terminal. Nó chuẩn bị toàn bộ văn bản prompt, thoát các ký tự đặc biệt và gọi tiện ích `gemini` gốc.
+
+**Các bước thực hiện chính:**
+1. Chuẩn bị nội dung prompt và lưu vào một tệp tạm thời (`createFile`).
+2. Xây dựng chuỗi lệnh với các cờ mô hình và hướng dẫn đầu ra.
+3. Gọi `exec` đồng thời truyền mã API thông qua các biến môi trường.
+4. Phân giải `stdout` và trả về kết quả.
+5. Dọn dẹp các tài nguyên tạm thời trong khối hoàn tất.
+
+**Tham số:**
+- `model: string` — định danh mô hình.
+- `contents: string` — nội dung chính của yêu cầu.
+
+**Trả về:** `Promise<string>`
+
+## Quản lý ngữ cảnh
+
+- `createFile(content: string): string` — Ghi nội dung vào một tệp tạm thời và trả về đường dẫn theo định dạng `@path/to/file.txt` được CLI hỗ trợ.
+- `getFileName(): string` — Tạo một tên duy nhất cho tệp tạm thời trong thư mục `./ai-tmp`.
+- `removeFile(): void` — Xóa thư mục tạm thời chứa các prompt.
+
+## Kế thừa
+
+Lớp này kế thừa [AiAbstract](?path=/docs/scripts-classes-aiabstract--docs). Trong bản triển khai này, việc hỗ trợ hình ảnh (`toImages`) hiện chưa được cung cấp.
+
+## Ví dụ sử dụng
+
+```typescript
+import { AiGoogleCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleCliLite('YOUR_API_KEY');
+ai.setModel('gemini-1.5-flash');
+
+const result = await ai.generate('Write a unit test for an addition function');
+```
