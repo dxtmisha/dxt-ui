@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignConstructors" />
+
+# DesignConstructors
+The `DesignConstructors` class manages the overall lifecycle and orchestration of design constructors. It is responsible for identifying components that require constructor-based generation, coordinating the creation of their respective files, and updating the main styles file to include all generated component styles.
+
+### Primary Methods
+- `make()`: The main entry point that iterates through the component library, initializes `DesignConstructor` for each component, and triggers the full generation process.
+- `makeStyles()`: Updates the main design system style file by aggregating all individual component style imports.
+
+### Configuration Methods
+- `getList()`: Scans the design system directory for components that contain a `constructors.json` file.
+- `getPath()`: Returns the absolute path to the design system's root directory.
+- `getMainStylesPath()`: Returns the path to the main SCSS style file.

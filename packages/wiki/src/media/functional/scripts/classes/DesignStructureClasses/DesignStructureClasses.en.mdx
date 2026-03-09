@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignStructureClasses" />
+
+# DesignStructureClasses
+The `DesignStructureClasses` class is designed to extract a list of specific CSS classes from a component's structural definitions. It recursively traverses the property hierarchy to identify elements marked as subclasses and formats them into standardized class names.
+
+### Primary Methods
+- `make()`: The core recursive method that processes property values to build a list of CSS class definitions, including index keys and formatted class names.
+
+### Secondary Methods
+- `isClasses()`: Determines if a given property item is explicitly marked as a CSS subclass.
+- `getNames()`: Resolves the hierarchical name of a class, considering whether it should use a full name or a relative name based on its parent.

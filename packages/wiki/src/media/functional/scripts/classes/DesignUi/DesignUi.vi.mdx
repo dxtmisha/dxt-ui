@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignUi" />
+
+# DesignUi
+Lớp `DesignUi` là bộ điều phối cấp cao nhất cho toàn bộ quy trình tạo và quản lý component giao diện người dùng. Nó điều phối việc tạo các component riêng lẻ thông qua `DesignComponent`, quản lý việc tạo dựa trên constructor thông qua `DesignConstructors` và đảm bảo rằng các cấu hình cấp dự án như `package.json` được cập nhật chính xác để phản ánh các component hiện có và các bản xuất (export) của chúng.
+
+### Các phương thức chính
+- `make()`: Điểm đầu vào chính kích hoạt một chuỗi các tác vụ tạo: xử lý các constructor, tạo các component riêng lẻ và cập nhật các bản xuất của package.
+- `makeForce()`: Kích hoạt việc tạo lại hoàn toàn, bắt buộc cho tất cả các component và cấu hình của chúng.
+
+### Các phương thức phụ
+- `makeComponents()`: Duyệt qua thư viện component và kích hoạt việc tạo từng component.
+- `makePackage()`: Cập nhật file `package.json` với thông tin component liên quan, chẳng hạn như số phiên bản và các module được xuất.
+- `getList()`: Quét thư mục hệ thống thiết kế để tìm các thư mục component hợp lệ.
+- `getPath()`: Trả về đường dẫn tuyệt đối đến thư mục gốc của hệ thống thiết kế.
+- `getPackagePath()`: Trả về đường dẫn tuyệt đối đến file `package.json` chính.

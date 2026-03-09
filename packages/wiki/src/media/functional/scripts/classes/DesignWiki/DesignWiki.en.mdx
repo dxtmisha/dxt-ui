@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignWiki" />
+
+# DesignWiki
+The `DesignWiki` class is responsible for managing the generation and initialization of wiki description files for components. IT ensures that each component has the necessary `.mdx` files for documentation across all supported languages, preventing duplication and maintaining a consistent structure.
+
+### Primary Methods
+- `make()`: The main entry point that checks for the existence of wiki files and triggers the creation of missing ones using the `ComponentWiki` service.
+- `makeForce()`: Forces the regeneration or overwriting of existing wiki files.
+
+### Configuration Methods
+- `is()`: Checks if the component directory exists and contains a description file.
+- `getDescriptionPath()`: Returns the absolute path to the component's main description file.
+- `getPath()`: Returns the base path where component documentation is located.

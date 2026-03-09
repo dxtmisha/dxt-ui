@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignStructureRead" />
+
+# DesignStructureRead
+Lớp `DesignStructureRead` chịu trách nhiệm phân tích chuyên sâu và phân giải các thuộc tính phụ thuộc của một component. Nó xử lý dữ liệu token thô để xác định các trạng thái của component, các giá trị khả dụng và các thuộc tính phù hợp để đưa vào props công khai, đảm bảo rằng dữ liệu cấu trúc đã sẵn sàng cho việc tạo mã.
+
+### Các phương thức chính
+- `get()`: Điểm đầu vào chính điều phối toàn bộ quy trình đọc và chuyển đổi.
+- `makeMain()`: Quét các thuộc tính để xác định những thuộc tính nào nên được đưa vào giao diện thuộc tính công khai của component.
+- `makeState()`: Phân tích các giá trị thuộc tính để xác định trạng thái component (ví dụ: hover, active, các biến thể kích thước).
+- `toValue()`: Chuẩn hóa các giá trị thuộc tính thô thành định dạng tiêu chuẩn cho component.
+
+### Các phương thức phụ
+- `getStates()`: Trả về danh sách các trạng thái component đã được xác định.
+- `isProps()`: Kiểm tra xem một thuộc tính cụ thể có nên được hiển thị dưới dạng prop công khai hay không.
+- `isLinkClass()`: Kiểm tra xem một giá trị thuộc tính có đại diện cho một tham chiếu đến lớp CSS hay không.
+- `getClass()`, `getClassState()`: Xử lý việc phân giải tên lớp từ các tham chiếu.
+- `makeValue()`, `makeValueAll()`, `makeValueUnique()`, `makeValueState()`: Các tiện ích nội bộ để xử lý và tối ưu hóa các giá trị thuộc tính qua các trạng thái.
+- `toName()`: Định dạng các định danh thuộc tính thành tên dễ đọc hoặc thân thiện với mã nguồn.

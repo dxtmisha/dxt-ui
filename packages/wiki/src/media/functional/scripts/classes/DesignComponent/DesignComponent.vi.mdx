@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignComponent" />
+
+# DesignComponent
+Lớp `DesignComponent` là bộ điều phối toàn diện cho việc tạo từng component riêng lẻ. Nó quản lý toàn bộ quy trình tạo và cập nhật các file cụ thể của component, bao gồm logic cốt lõi của component, các thuộc tính nội bộ, giao diện prop công khai, style và tài liệu ban đầu, đảm bảo rằng tất cả các phần đều khớp với nhau theo tiêu chuẩn của dự án.
+
+### Các phương thức chính
+- `make()`: Phương thức cấp cao nhất kích hoạt toàn bộ chu trình tạo/cập nhật cho component.
+- `makeForce()`: Buộc tạo lại hoàn toàn, có khả năng ghi đè lên các file hiện có nếu cần thiết.
+- `makeConfig()`: Tạo file cấu hình và logic cốt lõi cho component.
+- `makeProperties()`: Tạo file quản lý thuộc tính nội bộ.
+- `makeProps()`: Tạo giao diện thuộc tính công khai.
+- `makeStyles()`: Tạo các định nghĩa style cho component.
+- `makeWiki()`: Khởi tạo hoặc cập nhật các trang tài liệu wiki của component.
+
+### Các phương thức phụ
+- `getDesign()`, `getComponentName()`, `getFileName()`: Lấy các tên định danh của component.
+- `getPath()`, `getPathFile()`: Phân giải đường dẫn file đích cho việc tạo mã.
+- `getContent()`: Tải nội dung template cho các loại file cụ thể.
+- `toReplace()`: Cấu hình các placeholder của template bằng dữ liệu cấu trúc component.
+- `toWrite()`: Lưu nội dung đã tạo vào hệ thống file.

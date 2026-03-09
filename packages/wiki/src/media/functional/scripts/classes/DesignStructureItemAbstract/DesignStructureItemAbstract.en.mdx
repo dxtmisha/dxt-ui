@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignStructureItemAbstract" />
+
+# DesignStructureItemAbstract
+The `DesignStructureItemAbstract` class is a base abstract class for working with individual elements of a component's structure. It simplifies access to component properties and provides basic methods for obtaining data and generating links.
+
+### Methods
+- `get()`: Returns all data related to the component’s dependencies.
+- `getLink()`: Generates a reference string used to identify the component in the design system.
+
+### Properties
+- `properties`: An instance of the `Properties` class for managing component metadata.
+- `items`: Information about the component extracted from the structure (if available).
+- `data`: An abstract field containing specific data for the subclass.

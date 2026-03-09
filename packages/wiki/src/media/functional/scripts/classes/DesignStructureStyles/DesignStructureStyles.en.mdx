@@ -1,0 +1,12 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignStructureStyles" />
+
+# DesignStructureStyles
+The `DesignStructureStyles` class is responsible for converting design tokens into actual CSS style definitions. It uses the `StylesProperties` utility to generate formatted CSS rules based on the component's structural items.
+
+### Primary Methods
+- `make()`: Performs the transformation of component tokens into an array of CSS strings, wrapping them in a standard selector (e.g., `& { ... }`).
+
+### Properties
+- `data`: Stores the resulting array of CSS style strings.

@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/ComponentCreator - Tạo giàn giáo thành phần'/>
+
+# Lớp ComponentCreator
+
+Lớp được thiết kế để tự động hóa quy trình tạo các thành phần (component) mới. Nó quét cây thư mục thành phần và tự động tạo các tệp bản mẫu (scaffold) cần thiết trong các thư mục trống.
+
+## Mục đích
+
+Lớp này đơn giản hóa việc khởi tạo các thành phần mới trong dự án. Thay vì sao chép tệp thủ công, nhà phát triển chỉ cần tạo một thư mục với tên thành phần, và `ComponentCreator` sẽ lấp đầy nó với cấu trúc cơ bản (mã, kiểu dữ liệu, tài liệu) dựa trên các mẫu có sẵn.
+
+## Phương thức chính
+
+### `make`
+
+Phương thức chính kích hoạt quy trình quét và tạo tệp. Nó xác định tất cả các thư mục trống trong đường dẫn thành phần mục tiêu và khởi tạo cơ chế tạo tệp cho từng thư mục đó.
+
+**Thuật toán thực thi:**
+1. Lấy danh sách tất cả các thư mục bên trong `UI_DIRS_COMPONENTS` một cách đệ quy.
+2. Lọc danh sách: chỉ giữ lại các thư mục hoàn toàn không chứa tệp thành phần nào (được xác minh qua `getComponentPaths`).
+3. Lặp qua các đường dẫn đã lọc.
+4. Tạo một thực thể `ComponentItem` cho mỗi đường dẫn và gọi phương thức `make()` của nó.
+
+**Tham số:**
+- Phương thức này không nhận đối số.
+
+**Trả về:** `void`
+
+## Các phương thức hỗ trợ
+
+- `getDirs(): string[]` — Trả về một mảng các đường dẫn đến các thư mục thành phần trống cần được khởi tạo.
+
+## Ví dụ sử dụng
+
+```typescript
+import { ComponentCreator } from '@dxtmisha/scripts'
+
+const creator = new ComponentCreator();
+
+// Quét và tạo giàn giáo trong các thư mục trống
+creator.make();
+```

@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignWiki" />
+
+# DesignWiki
+Lớp `DesignWiki` chịu trách nhiệm quản lý việc tạo và khởi tạo các file mô tả wiki cho component. Nó đảm bảo rằng mỗi component đều có các file `.mdx` cần thiết để làm tài liệu bằng tất cả các ngôn ngữ được hỗ trợ, ngăn chặn sự trùng lặp và duy trì một cấu trúc nhất quán.
+
+### Các phương thức chính
+- `make()`: Điểm đầu vào chính thực hiện kiểm tra sự tồn tại của các file wiki và kích hoạt việc tạo các file còn thiếu bằng dịch vụ `ComponentWiki`.
+- `makeForce()`: Buộc tạo lại hoặc ghi đè các file wiki hiện có.
+
+### Các phương thức cấu hình
+- `is()`: Kiểm tra xem thư mục component có tồn tại và chứa file mô tả hay không.
+- `getDescriptionPath()`: Trả về đường dẫn tuyệt đối đến file mô tả chính của component.
+- `getPath()`: Trả về đường dẫn cơ sở nơi chứa tài liệu của component.

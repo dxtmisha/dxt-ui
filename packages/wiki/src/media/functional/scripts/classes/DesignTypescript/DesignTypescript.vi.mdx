@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignTypescript" />
+
+# DesignTypescript
+Lớp `DesignTypescript` cung cấp khả năng nâng cao để phân tích mã nguồn TypeScript bằng cách sử dụng TypeScript Compiler API chính thức. Nó trích xuất thông tin chi tiết về các Type, Interface và Class, bao gồm tên thuộc tính, kiểu dữ liệu, giá trị mặc định và tài liệu JSDoc, điều này rất cần thiết để tạo ra các đặc tả component chính xác và hỗ trợ IDE.
+
+### Các phương thức chính
+- `get()`: Phân giải file TypeScript mục tiêu và trả về một đối tượng cấu trúc chứa tất cả thông tin kiểu và thuộc tính đã trích xuất.
+- `make()`: Thực hiện việc duyệt thực tế cây cú pháp trừu tượng (AST) của TypeScript để thu thập dữ liệu.
+
+### Các phương thức phụ
+- `getDocumentation()`: Trích xuất các chú thích JSDoc liên quan đến một node mã cụ thể.
+- `getType()`: Phân giải và định dạng chuỗi kiểu TypeScript cho một node.
+- `getDefault()`: Xác định các giá trị mặc định được gán cho các thuộc tính hoặc tham số.
+- `getPath()`: Trả về đường dẫn tuyệt đối của file nguồn đang được phân tích.
+- `isType()`: Xác thực xem một node có đại diện cho một kiểu dữ liệu nên được đưa vào phân tích hay không.

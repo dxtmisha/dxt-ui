@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/ComponentItem - Tạo tệp thành phần'/>
+
+# Lớp ComponentItem
+
+Lớp chịu trách nhiệm tạo tệp vật lý cho một thành phần cụ thể dựa trên các mẫu. Nó thực hiện việc đọc các tệp tham chiếu và thay thế các trình giữ chỗ (placeholder) bằng dữ liệu thực tế của thành phần.
+
+## Mục đích
+
+`ComponentItem` đóng gói logic chuyển đổi các mẫu thành mã sẵn sàng sử dụng. Nó xử lý các đường dẫn, tên và siêu dữ liệu dự án để các tệp được tạo (Vue, TS, MDX) ngay lập tức phù hợp với ngữ cảnh của thành phần đang được tạo.
+
+## Phương thức chính
+
+### `make`
+
+Kích hoạt quy trình tạo tệp cho thành phần. Phương thức này xử lý tuần tự từng tệp từ thư mục mẫu.
+
+**Thuật toán thực thi:**
+1. Lấy danh sách tất cả các tệp từ thư mục mẫu `media/templates/componentDoc`.
+2. Lặp qua danh sách tệp.
+3. Đọc nội dung của từng mẫu.
+4. Áp dụng các phép biến đổi (thay thế trình giữ chỗ qua `replacement`).
+5. Ghi nội dung kết quả vào thư mục thành phần mục tiêu trong khi vẫn duy trì cấu trúc.
+
+**Tham số:**
+- Phương thức này không nhận đối số.
+
+**Trả về:** `void`
+
+## Các phương thức biến đổi và đường dẫn
+
+- `getName(): string` — Trích xuất tên thành phần từ đường dẫn thư mục của nó.
+- `replacement(contentOrPath: string): string` — Thay thế các trình giữ chỗ (ví dụ: `ComponentDoc`, `[project]`, `[path]`) bằng các giá trị thực.
+- `writeFile(path: string, content: string): void` — Ghi tệp vào thư mục đích và thiết lập các quyền truy cập cần thiết.
+
+## Các phương thức hỗ trợ
+
+- `getFilesSample(): string[]` — Trả về danh sách tất cả các tệp trong thư mục mẫu.
+- `getProjectName(): string` — Lấy tên dự án từ `package.json`.
+- `readPackage(): Record<string, any>` — Tải dữ liệu từ tệp cấu hình gói.
+
+## Ví dụ sử dụng
+
+```typescript
+import { ComponentItem } from '@dxtmisha/scripts'
+
+// Đường dẫn đến thư mục thành phần mới
+const item = new ComponentItem('path/to/MyComponent');
+
+// Tạo tệp từ các mẫu
+item.make();
+```

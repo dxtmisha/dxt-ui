@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignConstructors" />
+
+# DesignConstructors
+Lớp `DesignConstructors` quản lý toàn bộ vòng đời và sự điều phối của các constructor thiết kế. Nó chịu trách nhiệm xác định các component cần tạo dựa trên constructor, điều phối việc tạo các file tương ứng của chúng và cập nhật file style chính để bao gồm tất cả các style component đã tạo.
+
+### Các phương thức chính
+- `make()`: Điểm đầu vào chính thực hiện lặp qua thư viện component, khởi tạo `DesignConstructor` cho mỗi component và kích hoạt quy trình tạo đầy đủ.
+- `makeStyles()`: Cập nhật file style chính của hệ thống thiết kế bằng cách tổng hợp tất cả các import style của từng component riêng lẻ.
+
+### Các phương thức cấu hình
+- `getList()`: Quét thư mục hệ thống thiết kế để tìm các component có chứa file `constructors.json`.
+- `getPath()`: Trả về đường dẫn tuyệt đối đến thư mục gốc của hệ thống thiết kế.
+- `getMainStylesPath()`: Trả về đường dẫn đến file style SCSS chính.

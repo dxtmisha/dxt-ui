@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignWikiStorm" />
+
+# DesignWikiStorm
+Lớp `DesignWikiStorm` điều phối việc tạo file `web-types.json`, cho phép các tính năng nâng cao của IDE như tự động hoàn thành (auto-completion) và các tooltip tài liệu cho component trong các trình soạn thảo của JetBrains (ví dụ: WebStorm). Nó lặp qua thư viện component, thu thập các định nghĩa từ các thư mục liên quan và cấu trúc chúng theo schema JSON của Web-Types.
+
+### Các phương thức chính
+- `make()`: Điểm đầu vào chính thực hiện quét các thư mục hệ thống thiết kế, tổng hợp dữ liệu component bằng `DesignWikiStormItem` và ghi file `web-types.json` cuối cùng.
+
+### Các phương thức cấu hình
+- `getList()`: Quét thư mục được chỉ định để tìm các thư mục component có chứa file `index.ts`.
+- `getPath()`: Trả về đường dẫn tuyệt đối nơi file `web-types.json` sẽ được lưu.

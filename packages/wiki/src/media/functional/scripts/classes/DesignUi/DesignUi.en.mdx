@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignUi" />
+
+# DesignUi
+The `DesignUi` class is the top-level orchestrator for the entire UI component generation and management process. It coordinates the creation of individual components via `DesignComponent`, manages constructor-based generation via `DesignConstructors`, and ensures that project-level configurations like `package.json` are properly updated to reflect the available components and their exports.
+
+### Primary Methods
+- `make()`: The main entry point that triggers a sequence of generation tasks: processing constructors, creating individual components, and updating package exports.
+- `makeForce()`: Triggers a full, forced regeneration of all components and their configurations.
+
+### Secondary Methods
+- `makeComponents()`: Iterates through the component library and triggers the generation of each component.
+- `makePackage()`: Updates the `package.json` file with relevant component information, such as version and exported modules.
+- `getList()`: Scans the design system directory for valid component folders.
+- `getPath()`: Returns the absolute path to the design system's root directory.
+- `getPackagePath()`: Returns the absolute path to the main `package.json` file.

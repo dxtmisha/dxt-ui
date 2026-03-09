@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/ComponentCreator - Component Scaffolding'/>
+
+# ComponentCreator Class
+
+A class designed to automate the process of creating new components. It scans the component directory tree and automatically scaffolds the necessary files in empty folders.
+
+## Purpose
+
+The class simplifies the initialization of new components in the project. Instead of manually copying files, a developer can simply create a folder with the component name, and `ComponentCreator` will populate it with the basic structure (code, types, documentation) based on reference templates.
+
+## Primary Method
+
+### `make`
+
+The main method that triggers the scanning and creation process. It identifies all empty directories within the target component path and initiates the file scaffolding mechanism for each.
+
+**Execution Algorithm:**
+1. Recursively retrieving a list of all directories within `UI_DIRS_COMPONENTS`.
+2. Filtering the list: only folders that contain no component files (verified via `getComponentPaths`) are kept.
+3. Iterating through the filtered paths.
+4. Creating a `ComponentItem` instance for each path and calling its `make()` method.
+
+**Parameters:**
+- This method takes no arguments.
+
+**Returns:** `void`
+
+## Helper Methods
+
+- `getDirs(): string[]` — Returns an array of paths to empty component directories that require initialization.
+
+## Usage Example
+
+```typescript
+import { ComponentCreator } from '@dxtmisha/scripts'
+
+const creator = new ComponentCreator();
+
+// Scanning and scaffolding in empty folders
+creator.make();
+```

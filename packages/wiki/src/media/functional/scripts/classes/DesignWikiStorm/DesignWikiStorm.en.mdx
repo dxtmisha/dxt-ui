@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignWikiStorm" />
+
+# DesignWikiStorm
+The `DesignWikiStorm` class orchestrates the generation of the `web-types.json` file, which enables advanced IDE features like auto-completion and documentation tooltips for components in JetBrains editors (e.g., WebStorm). It iterates through the component library, collects definitions from relevant directories, and structures them according to the Web-Types JSON schema.
+
+### Primary Methods
+- `make()`: The main entry point that scans the design system directories, aggregates component data using `DesignWikiStormItem`, and writes the final `web-types.json` file.
+
+### Configuration Methods
+- `getList()`: Scans the specified directory for component directories that contain an `index.ts` file.
+- `getPath()`: Returns the absolute path where the `web-types.json` file will be saved.

@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignTypescript" />
+
+# DesignTypescript
+The `DesignTypescript` class provides advanced capabilities for analyzing TypeScript source code using the official TypeScript Compiler API. It extracts detailed information about types, interfaces, and classes, including property names, types, default values, and JSDoc documentation, which is essential for generating accurate component specifications and IDE support.
+
+### Primary Methods
+- `get()`: Parses the target TypeScript file and returns a structured object containing all extracted type and property information.
+- `make()`: Performs the actual traversal of the TypeScript Abstract Syntax Tree (AST) to collect data.
+
+### Secondary Methods
+- `getDocumentation()`: Extracts JSDoc comments associated with a specific code node.
+- `getType()`: Resolves and formats the TypeScript type string for a node.
+- `getDefault()`: Identifies default values assigned to properties or parameters.
+- `getPath()`: Returns the absolute path of the source file being analyzed.
+- `isType()`: Validates if a node represents a type that should be included in the analysis.

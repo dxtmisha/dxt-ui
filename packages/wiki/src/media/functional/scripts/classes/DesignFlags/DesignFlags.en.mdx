@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignFlags" />
+
+# DesignFlags
+The `DesignFlags` class is a specialized utility for generating a sprite sheet and corresponding CSS styles for country flags. It automates the process of loading SVG icons, arranging them on a canvas, and generating position-based CSS classes for efficient usage in the UI.
+
+### Primary Methods
+- `make()`: The main entry point that iterates through the flag directory, generates the sprite sheet, and saves both the image and the CSS file.
+- `getStyle()`: Generates the full CSS content with background positions for each flag class.
+
+### Configuration & Canvas Methods
+- `getCanvasWidth()`, `getCanvasHeight()`: Calculate the required canvas dimensions based on the number of flags and columns.
+- `getDx()`, `getDy()`: Calculate the drawing coordinates for the current flag item.
+- `initCanvas()`, `initContext()`: Set up the drawing environment.
+- `initList()`: Scans the specified directory for `.svg` files to include in the sprite sheet.
+
+### Saving & Navigation
+- `addImage()`: Loads and draws an individual SVG flag onto the canvas.
+- `addData()`: Records the coordinates and metadata for each flag.
+- `next()`: Advances the cursor to the next grid position on the sprite sheet.
+- `save()`, `saveStyle()`: Handle file output for the resulting sprite (WebP) and stylesheet (CSS).

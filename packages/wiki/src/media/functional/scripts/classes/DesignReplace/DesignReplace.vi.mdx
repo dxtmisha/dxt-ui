@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Functional/Scripts/Classes/DesignReplace" />
+
+# DesignReplace
+Lớp `DesignReplace` là một tiện ích cốt lõi để chuyển đổi các template thành mã nguồn chức năng. Nó thực hiện một loạt các thay thế chuỗi phân cấp, thay thế các placeholder cho tên component, đường dẫn, kiểu dữ liệu, giá trị mặc định và các lớp CSS dựa trên dữ liệu cấu trúc của component.
+
+### Các phương thức chính
+- `get()`: Trả về chuỗi template cuối cùng đã được xử lý sau tất cả các thay thế.
+- `replaceName()`, `replacePath()`: Thay thế các placeholder cho tên component và đường dẫn file.
+- `replaceType()`, `replaceDefault()`, `replaceProps()`: Chèn các kiểu TypeScript, giá trị mặc định và định nghĩa thuộc tính vào template.
+- `replaceClasses()`: Điền vào template các lớp CSS có sẵn từ cấu trúc.
+- `replaceConstructorClasses()`: Xử lý cụ thể việc thay thế lớp cho các template dựa trên constructor.
+- `replaceMark()`: Một phương thức chung để thay thế các marker tùy chỉnh bằng các mảng dữ liệu.
+
+### Các phương thức tiện ích
+- `getRoot()`: Trả về đường dẫn import module.
+- `getNameFile()`: Chuẩn hóa tên file dựa trên component.
+- `replaceOnce()`: Thực hiện một lần thay thế duy nhất cho một marker cụ thể.
+- `replacePropsValues()`, `replaceClassesValues()`, `replaceStylesValues()`: Chuyển đổi các loại thuộc tính cụ thể thành các danh sách hoặc mảng tối ưu.
+- `isBoolean()`, `isNoMark()`: Các phương thức hỗ trợ để kiểm tra kiểu và xác thực marker.
+- `getDefault()`: Lấy các giá trị mặc định cho các mục cấu trúc cụ thể.

@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/ComponentWiki - Trình tạo tài liệu thành phần'/>
+
+# Lớp ComponentWiki
+
+Một lớp điều phối phức tạp chịu trách nhiệm tự động tạo và cập nhật các cấu phần Wiki của thành phần (tài liệu MDX, Storybook stories và định kiểu). Nó kết hợp giữa việc xây dựng dự án tạm thời và phân tích mã bằng AI.
+
+## Mục đích
+
+Lớp này tự động hóa việc viết tài liệu cho các thành phần Vue. Nó phân tích mã thực tế của thành phần, "giới thiệu" nó với AI và dựa trên dữ liệu thu được, tạo ra tài liệu có cấu trúc, các ví dụ sử dụng (stories) và các tệp kiểu (types).
+
+## Phương thức chính
+
+### `make`
+
+Kích hoạt quy trình chuẩn bị và tạo tài liệu toàn diện.
+
+**Thuật toán thực thi:**
+1. Khởi tạo một bản dựng tạm thời của thành phần (`BuildItem`).
+2. Chạy bản dựng để trích xuất mã thực thi.
+3. Chuẩn bị ngữ cảnh cho AI qua `makeAi` (thu thập mã nguồn, kiểu dữ liệu và MDX hiện có).
+4. Gọi trình tạo AI qua `aiGenerate`.
+5. Phân giải phản hồi của AI và cập nhật các tệp tương ứng (`codeFile`, `typesFile`, `storiesFile`, `mdFile`).
+6. Dọn dẹp tài nguyên bản dựng tạm thời.
+
+**Tham số:**
+- Phương thức này không nhận đối số.
+
+**Trả về:** `void`
+
+## Các phương thức chuẩn bị và tạo tài liệu
+
+- `makeAi(): void` — Tổng hợp tất cả dữ liệu cần thiết (mã, kiểu, MDX demo) và thêm chúng vào prompt của AI.
+- `aiGenerate(): Promise<void>` — Thực hiện yêu cầu AI, nhận kết quả và phân phối kết quả đó vào các tệp dự án bằng các dấu phân tách và nhãn (`MARK_FULL`).
+- `readPrompt(): string` — Đọc mẫu hướng dẫn hệ thống cho AI và chèn ngôn ngữ Wiki hiện tại.
+
+## Điều hướng và đường dẫn
+
+- `getRootComponent(): string[]` — Xác định thư mục gốc của thành phần.
+- `getPathWiki(): string[]` — Xác định đường dẫn đến thư mục `_wiki` bên trong thành phần.
+- `getName(): string` — Lấy tên sạch của thành phần.
+
+## Ví dụ sử dụng
+
+```typescript
+import { ComponentWiki } from '@dxtmisha/scripts'
+
+// Đường dẫn đến thành phần tương đối với thư mục thành phần
+const wiki = new ComponentWiki('Basic/Button');
+
+// Bắt đầu quy trình tài liệu tự động
+wiki.make();
+```
