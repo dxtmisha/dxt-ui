@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/RouterItemRef - Менеджер роутера'/>
+
+# Класс RouterItemRef
+
+Статический утилитарный класс для управления интеграцией с Vue Router. Он предоставляет централизованный доступ к экземпляру роутера, разрешению ссылок и программной навигации, обеспечивая согласованное поведение маршрутизации во всех компонентах библиотеки.
+
+## Ключевые особенности
+
+- **Статический интерфейс** — нет необходимости создавать экземпляр; все методы доступны статически.
+- **Разрешение ссылок** — легкое преобразование имен маршрутов и параметров в URL-адреса.
+- **Единая навигация** — предоставляет стандартный способ выполнения программной навигации.
+- **Генерация Href** — специализированные методы для генерации `ConstrHrefProps` для ссылок в компонентах.
+
+## Использование
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+import { useRouter } from 'vue-router'
+
+// В основной точке входа или setup
+const router = useRouter()
+RouterItemRef.setOneTime(router)
+
+// Получение ссылки
+const url = RouterItemRef.getLink('profile', { id: 123 })
+```
+
+## Доступ и конфигурация
+
+- `get(): Router | undefined` — Возвращает текущий экземпляр роутера.
+- `set(router: Router): void` — Устанавливает или обновляет глобальный экземпляр роутера.
+- `setOneTime(router: Router): void` — Устанавливает экземпляр роутера только один раз.
+
+## Разрешение ссылок
+
+- `getLink(name: string, params?, query?): string | undefined` — Преобразует имя маршрута и параметры в полный URL (href).
+- `getHref(name?, params?, query?): ConstrHrefProps` — Возвращает объект с разрешенным свойством `href`.
+- `rawToHref(to?): ConstrHrefProps` — Преобразует объект местоположения или строку в `ConstrHrefProps`.
+
+## Навигация
+
+- `push(to: string | RouteLocationRaw): void` — Выполняет программную навигацию на новый путь.
+
+## Объект ConstrHrefProps
+
+Стандартный объект, используемый компонентами для свойств ссылок:
+
+- `href?: string` — разрешенный URL-адрес для ссылки.

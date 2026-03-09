@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignAsyncAbstract - Lớp thiết kế bất đồng bộ cơ sở'/>
+
+# Lớp DesignAsyncAbstract
+
+Một lớp cơ sở trừu tượng bất đồng bộ để quản lý các thuộc tính của constructor và thay đổi trạng thái. Nó mở rộng `DesignAbstract` để hỗ trợ khởi tạo sự kiện bất đồng bộ, lý tưởng cho các thiết kế yêu cầu lấy dữ liệu hoặc tính toán bất đồng bộ.
+
+## Các tính năng chính
+
+- **Khởi tạo bất đồng bộ** — hỗ trợ khởi tạo sự kiện dựa trên `Promise` thông qua `initEvent`.
+- **Quản lý thuộc tính** — kế thừa việc xử lý có cấu trúc dữ liệu đầu vào (`props`) và lưu trữ sự kiện (`event`).
+- **Luồng công việc bất đồng bộ** — đảm bảo rằng các callback chỉ được kích hoạt sau khi quá trình chuẩn bị trạng thái bất đồng bộ hoàn tất.
+
+## Khởi tạo
+
+```typescript
+import { DesignAsyncAbstract } from '@dxtmisha/functional'
+
+interface MyProps { id: string }
+interface MyEvent { name: string }
+
+class MyAsyncDesign extends DesignAsyncAbstract<MyProps, MyEvent> {
+  protected async initEvent(): Promise<void> {
+    const data = await fetch(`/api/user/${this.props.id}`).then(r => r.json())
+    this.event.name = data.name
+  }
+}
+
+const design = new MyAsyncDesign({ id: '123' }, (event) => {
+  console.log('Dữ liệu bất đồng bộ đã cập nhật:', event)
+})
+```
+
+## Quản lý dữ liệu
+
+### `make`
+
+Khởi tạo quá trình cập nhật callback bất đồng bộ. Nó gọi `makeCallback` (mà không đợi nó hoàn thành) và trả về instance để có thể thực hiện chuỗi lệnh (chaining).
+
+**Tham số:**
+- `compelled?: boolean` — nếu là `true`, sẽ ép buộc cập nhật dữ liệu bất kể có phát hiện thay đổi hay không.
+
+**Trả về:** `this`
+
+### `makeCallback`
+
+Logic thực thi bất đồng bộ chính để cập nhật trạng thái. Nó đợi `initEvent` hoàn thành trước khi kích hoạt các callback và cập nhật trình theo dõi thay đổi.
+
+**Tham số:**
+- `compelled?: boolean` — ép buộc cập nhật dữ liệu.
+
+**Trả về:** `Promise<void>`
+
+## Cấu trúc nội bộ
+
+`DesignAsyncAbstract` tận dụng cùng một cơ chế `DesignChanged` như phiên bản đồng bộ của nó nhưng bao bọc vòng đời trong `async/await`. Điều này đảm bảo rằng ngay cả với logic thiết lập bất đồng bộ phức tạp, trạng thái vẫn nhất quán và các thay đổi được theo dõi chính xác trước khi thông báo cho người nghe.

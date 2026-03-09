@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/ListDataRef - Реактивный менеджер списков'/>
+
+# Класс ListDataRef
+
+Комплексный реактивный менеджер для работы со списками данных. Он поддерживает сложные операции, такие как фильтрация, поиск (с выделением совпадений), одиночный или множественный выбор, управление фокусом и иерархические (вложенные) списки.
+
+## Ключевые особенности
+
+- **Реактивность** — все представления данных и состояния выбора являются объектами Vue `ComputedRef`.
+- **Иерархические списки** — поддержка вложенных групп и меню с автоматическим управлением подсписками.
+- **Контроль выбора** — обработка лимитов выбора (min/max) и различные способы получения выбранных элементов.
+- **Подсветка** — встроенная поддержка выделения текста при поиске и навигации по результатам.
+
+## Инициализация
+
+```typescript
+import { ListDataRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const items = ref(['Элемент 1', 'Элемент 2', 'Элемент 3'])
+const listManager = new ListDataRef(items)
+
+console.log(listManager.data.value)
+```
+
+## Свойства данных
+
+- `data`: `ComputedRef<ListList>` — Возвращает обработанный список элементов.
+- `liteData`: `ComputedRef<ListList>` — Возвращает упрощенную версию списка для быстрой отрисовки (если размер списка превышает порог `lite`).
+- `fullData`: `ComputedRef<ListDataFull>` — Возвращает список с полной информацией о состоянии каждого элемента (фокус, выбран, отключен, подсветка).
+- `map`: `ComputedRef<ListList>` — Плоский список, содержащий все элементы и их вложенные подэлементы.
+- `mapItems`: `ComputedRef<ListList>` — Плоский список, содержащий только интерактивные элементы (тип 'item').
+- `items`: `ComputedRef<ListList>` — Плоский список, содержащий элементы, группы и меню.
+
+## Состояние выбора
+
+- `isSelected`: `ComputedRef<boolean>` — Возвращает `true`, если выбран хотя бы один элемент.
+- `isSelectedMin`: `ComputedRef<boolean>` — Возвращает `true`, если достигнуто минимальное количество выбранных элементов.
+- `isSelectedMax`: `ComputedRef<boolean>` — Возвращает `true`, если достигнуто максимальное количество выбранных элементов.
+- `selectedList`: `ComputedRef<ListList>` — Возвращает список всех выбранных элементов на всей карте.
+- `selectedListInGroup`: `ComputedRef<ListList>` — Возвращает список выбранных элементов только на текущем уровне списка.
+- `selectedNames`: `ComputedRef<ListNames>` — Возвращает массив названий выбранных элементов.
+- `selectedValues`: `ComputedRef<any[]>` — Возвращает массив значений выбранных элементов.
+
+## Навигация и поиск
+
+- `highlightFirstItem`: `ComputedRef<number>` — Возвращает индекс первого элемента, соответствующего текущему запросу поиска.
+- `isFocus()`: `boolean` — Проверяет, есть ли фокус на каком-либо элементе в текущем списке.
+- `isHighlight()`: `boolean` — Проверяет, есть ли совпадения по поиску.
+- `isHighlightActive()`: `boolean` — Проверяет, активна ли в данный момент подсветка поиска.
+- `getItemByStep(item, step)`: `ListDataItem | undefined` — Возвращает элемент, находящийся на определенном количестве шагов от указанного.
+- `getItemNext(item)`: `ListDataItem | undefined` — Возвращает следующий интерактивный элемент.
+- `getItemPrev(item)`: `ListDataItem | undefined` — Возвращает предыдущий интерактивный элемент.
+- `getIndexNext(index)`: `ListDataItem | undefined` — Возвращает следующий элемент по его строковому индексу.
+- `getIndexPrev(index)`: `ListDataItem | undefined` — Возвращает предыдущий элемент по его строковому индексу.
+
+## Утилитарные методы
+
+- `getLength()`: `number` — Возвращает количество элементов на текущем уровне.
+- `getLengthByMap()`: `number` — Возвращает общее количество элементов, включая вложенные.
+- `getFocus()`: `ListSelectedItem | undefined` — Возвращает индекс элемента в фокусе.
+- `getHighlight()`: `string | undefined` — Возвращает текущую строку поиска для подсветки.
+- `getSelected()`: `ListSelectedList | undefined` — Возвращает «сырые» выбранные значения.
+- `getItemByIndex(index)`: `{ key, item } | undefined` — Находит элемент по его строковому индексу.
+- `getItemByKey(key)`: `ListDataItem | undefined` — Находит элемент по его числовому ключу в карте.
+- `getSubList(item)`: `ListDataRef` — Возвращает новый экземпляр `ListDataRef` для вложенной группы или меню.
+
+## Объект ListDataItem
+
+Стандартная структура элемента списка:
+
+- `index: string` — уникальный идентификатор.
+- `type: ListType` — тип элемента ('item', 'group', 'menu', 'subtitle', 'line' и т.д.).
+- `label?: string` — отображаемый текст.
+- `value?: any` — связанное значение.
+- `parent?: string` — идентификатор родительской группы.
+- `disabled?: boolean` — является ли элемент интерактивным.
+
+## Объект ListDataFullItem
+
+Расширенная версия `ListDataItem`, используемая в `fullData`:
+
+- `focus: boolean` — имеет ли элемент фокус.
+- `selected: boolean` — выбран ли элемент.
+- `highlight?: string` — текст для подсветки.
+- `disabled: boolean` — элемент отключен или достигнут лимит выбора.

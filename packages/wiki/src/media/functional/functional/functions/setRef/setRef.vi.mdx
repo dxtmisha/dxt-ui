@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/setRef - Cập nhật giá trị'/>
+
+# `setRef`
+
+Một hàm tiện ích cập nhật giá trị của một `Ref` phản ứng. Nó bao gồm một kiểm tra tích hợp để đảm bảo rằng việc cập nhật chỉ xảy ra nếu giá trị mới khác với giá trị hiện tại, ngăn chặn các kích hoạt phản ứng không cần thiết.
+
+**Tham số:**
+- `item: Ref<T>` — Phần tử `Ref` phản ứng cần được cập nhật.
+- `value: T` — Giá trị mới để gán cho `Ref`.
+
+**Trả về:**
+`void`
+
+```typescript
+import { ref } from 'vue'
+import { setRef } from '@dxtmisha/functional'
+
+const status = ref('idle')
+
+// Cập nhật giá trị thành 'loading'
+setRef(status, 'loading')
+
+// Cuộc gọi này sẽ bị bỏ qua vì giá trị đã là 'loading'
+setRef(status, 'loading')
+```

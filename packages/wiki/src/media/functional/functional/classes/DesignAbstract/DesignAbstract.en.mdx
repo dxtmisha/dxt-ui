@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignAbstract - Base Design Class'/>
+
+# DesignAbstract Class
+
+An abstract base class designed for managing constructor properties and state changes. It provides a structured way to handle input properties, track changes, and execute callbacks when data updates.
+
+## Key Features
+
+- **Property Management** — structured handling of input data (`props`) and event storage (`event`).
+- **Change Tracking** — integrated with `DesignChanged` to monitor and update property changes efficiently.
+- **Lifecycle Management** — automated execution of `makeCallback` and `initEvent` during data updates.
+
+## Initialization
+
+```typescript
+import { DesignAbstract } from '@dxtmisha/functional'
+
+interface MyProps { title: string }
+interface MyEvent { title: string }
+
+class MyDesign extends DesignAbstract<MyProps, MyEvent> {
+  protected initEvent(): void {
+    this.event.title = this.props.title
+  }
+}
+
+const design = new MyDesign({ title: 'Hello' }, (event) => {
+  console.log('Updated:', event)
+})
+```
+
+## Data Management
+
+### `make`
+
+Initiates the callback update process. It calls `makeCallback` and returns the instance for chaining.
+
+**Parameters:**
+- `compelled?: boolean` — if `true`, forces the data update regardless of whether changes were detected.
+
+**Returns:** `this`
+
+### `makeCallback`
+
+The primary execution logic for updating the state. It checks if changes occurred or if an update is forced, then initializes the event and triggers callbacks.
+
+**Parameters:**
+- `compelled: boolean` — forces data update. Default: `false`.
+
+**Returns:** `void`
+
+## Internal Structure
+
+Inside, `DesignAbstract` uses the `DesignChanged` class to track the state of properties. This allows the class to only trigger updates when data has actually changed, optimizing performance for complex UI components.

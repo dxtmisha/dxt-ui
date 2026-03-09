@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/toBinds - Multi-Object Property Merging'/>
+
+# `toBinds`
+
+Merges multiple property objects sequentially using `toBind`. This function is useful for combining multiple layers of properties (e.g., defaults, component props, and state-driven modifiers) while ensuring `class` and `style` properties are correctly combined rather than overwritten.
+
+**Parameters:**
+- `...values: (ItemList | undefined)[]` — A list of property objects to merge.
+
+**Returns:**
+`ConstrBind<R>` — The final merged properties object.
+
+```typescript
+import { toBinds } from '@dxtmisha/functional'
+
+const defaults = { class: 'btn', id: 'gen-id' }
+const props = { class: 'btn--primary', title: 'Click me' }
+const state = { class: 'is-loading', style: { opacity: 0.5 } }
+
+const finalBind = toBinds(defaults, props, state)
+/* 
+Result: { 
+  id: 'gen-id', 
+  title: 'Click me',
+  class: [['btn', 'btn--primary'], 'is-loading'], 
+  style: { opacity: 0.5 } 
+}
+Note: nesting depth of classes depends on implementation of toBind.
+*/
+```

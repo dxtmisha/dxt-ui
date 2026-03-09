@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/RouterItemRef - Trình quản lý Router'/>
+
+# Lớp RouterItemRef
+
+Một lớp tiện ích tĩnh để quản lý tích hợp Vue Router. Nó cung cấp quyền truy cập tập trung vào router instance, giải quyết liên kết (link resolution) và điều hướng theo chương trình, đảm bảo hành vi điều hướng nhất quán trong các thành phần của thư viện.
+
+## Các tính năng chính
+
+- **Giao diện tĩnh** — không cần khởi tạo; tất cả các phương thức đều có sẵn dưới dạng tĩnh.
+- **Giải quyết liên kết** — dễ dàng chuyển đổi tên route và các tham số thành URL.
+- **Điều hướng thống nhất** — cung cấp một cách tiêu chuẩn để thực hiện điều hướng theo chương trình.
+- **Tạo Href** — các phương thức chuyên biệt để tạo `ConstrHrefProps` cho các liên kết thành phần.
+
+## Cách sử dụng
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+import { useRouter } from 'vue-router'
+
+// Trong main entry hoặc setup
+const router = useRouter()
+RouterItemRef.setOneTime(router)
+
+// Lấy một liên kết
+const url = RouterItemRef.getLink('profile', { id: 123 })
+```
+
+## Truy cập và Cấu hình
+
+- `get(): Router | undefined` — Trả về instance router hiện tại.
+- `set(router: Router): void` — Thiết lập hoặc cập nhật global router instance.
+- `setOneTime(router: Router): void` — Thiết lập router instance chỉ một lần.
+
+## Giải quyết liên kết
+
+- `getLink(name: string, params?, query?): string | undefined` — Giải quyết tên route và tham số thành một URL đầy đủ (href).
+- `getHref(name?, params?, query?): ConstrHrefProps` — Trả về một đối tượng chứa thuộc tính `href` đã giải quyết.
+- `rawToHref(to?): ConstrHrefProps` — Chuyển đổi đối tượng vị trí hoặc chuỗi thành `ConstrHrefProps`.
+
+## Điều hướng
+
+- `push(to: string | RouteLocationRaw): void` — Thực hiện điều hướng đến đường dẫn mới theo chương trình.
+
+## Đối tượng ConstrHrefProps
+
+Đối tượng tiêu chuẩn được các thành phần sử dụng cho các thuộc tính liên kết:
+
+- `href?: string` — URL đã được giải quyết cho liên kết.

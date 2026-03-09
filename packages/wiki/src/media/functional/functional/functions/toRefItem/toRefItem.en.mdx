@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/toRefItem - Reactive Ref Normalization'/>
+
+# `toRefItem`
+
+A utility function that ensures a value is a reactive `Ref`. If the input is already a `Ref`, it is returned as is. If the input is an ordinary value, it is wrapped in a new `Ref`. This is useful for functions that expect a reactive reference as an argument.
+
+**Parameters:**
+- `item: RefOrNormal<T>` — A reactive variable (`Ref`) or an ordinary value.
+
+**Returns:**
+`Ref<T>` — A reactive `Ref` containing the value.
+
+```typescript
+import { ref } from 'vue'
+import { toRefItem } from '@dxtmisha/functional'
+
+const existingRef = ref(10)
+const ordinaryValue = 20
+
+const normalized1 = toRefItem(existingRef)   // Returns original ref
+const normalized2 = toRefItem(ordinaryValue) // Returns new ref(20)
+
+console.log(normalized1.value) // 10
+console.log(normalized2.value) // 20
+```

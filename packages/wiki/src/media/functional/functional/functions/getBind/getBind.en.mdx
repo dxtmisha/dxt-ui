@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getBind - Binding Generation (Non-reactive)'/>
+
+# `getBind`
+
+A utility function for generating a properties object for a subcomponent based on normal (non-reactive) values. It handles various input types and ensures a consistent structure for property binding. This is the non-reactive counterpart to `getBindRef`.
+
+**Parameters:**
+- `value: T | R | undefined | null` — The input value to be bound. Can be a primitive or an object.
+- `nameExtra: ItemList | string = {}` — Additional properties to merge or the name of the property to use if `value` is not an object.
+- `name: string = 'value'` — The default property name (defaults to `'value'`).
+- `except: boolean = false` — If true, skips the check requiring a primary key in the `value` object.
+
+**Returns:**
+`ConstrBind<R>` — An object containing the properties ready for binding.
+
+```typescript
+import { getBind } from '@dxtmisha/functional'
+
+// Case 1: Simple value
+const bind1 = getBind('Hello', {}, 'label') 
+// Result: { label: 'Hello' }
+
+// Case 2: Object with extra properties
+const bind2 = getBind({ id: 1 }, { class: 'active' }, 'data')
+// Result: { id: 1, class: 'active' }
+```

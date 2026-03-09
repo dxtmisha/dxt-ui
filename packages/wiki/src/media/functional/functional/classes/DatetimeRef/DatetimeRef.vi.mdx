@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DatetimeRef - Quản lý ngày giờ phản ứng'/>
+
+# Lớp DatetimeRef
+
+Một lớp để làm việc với ngày và giờ theo cách phản ứng (reactive). Nó cung cấp một lớp bọc xung quanh tiện ích `Datetime`, đảm bảo rằng dữ liệu liên quan đến ngày luôn được đồng bộ hóa với các thuộc tính Vue và cung cấp quyền truy cập dễ dàng vào các thành phần ngày khác nhau.
+
+## Các tính năng chính
+
+- **Tính phản ứng** — tự động cập nhật đối tượng ngày bên dưới khi các thuộc tính đầu vào thay đổi.
+- **Hỗ trợ bản địa hóa** — cung cấp các phương thức để định dạng ngày và giờ theo ngôn ngữ.
+- **Accessor thuận tiện** — cung cấp các thuộc tính computed để lấy năm, tháng, ngày, giờ, v.v.
+- **Đầu ra tiêu chuẩn hóa** — bao gồm các phương thức để tạo các chuỗi ngày tiêu chuẩn hóa.
+
+## Khởi tạo
+
+```typescript
+import { DatetimeRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const date = ref('2023-10-27')
+const datetimeRef = new DatetimeRef(date, 'date', 'vi-VN')
+
+console.log(datetimeRef.getYear().value) // 2023
+```
+
+## Thông tin ngày tháng
+
+- `getItem(): RefOrNormal<NumberOrStringOrDate>` — Trả về dữ liệu đầu vào ban đầu cho ngày tháng.
+- `getDate(): Ref<Date>` — Trả về đối tượng `Date` có tính phản ứng.
+- `getDatetime(): Datetime` — Trả về instance của lớp `Datetime` bên dưới.
+- `getHoursType(): ComputedRef<GeoHours>` — Trả về định dạng giờ (12 giờ hoặc 24 giờ).
+- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Trả về mã cho ngày đầu tiên của tuần.
+- `getMaxDay(): ComputedRef<number>` — Trả về số ngày tối đa trong tháng hiện tại.
+
+## Các thành phần ngày tháng
+
+- `getYear(): ComputedRef<number>` — Trả về năm.
+- `getMonth(): ComputedRef<number>` — Trả về tháng (0-11).
+- `getDay(): ComputedRef<number>` — Trả về ngày trong tháng.
+- `getHour(): ComputedRef<number>` — Trả về giờ.
+- `getMinute(): ComputedRef<number>` — Trả về phút.
+- `getSecond(): ComputedRef<number>` — Trả về giây.
+
+## Định dạng
+
+- `locale(type?: GeoDate, styleOptions?: object): ComputedRef<string>` — Trả về chuỗi ngày tháng được định dạng theo ngôn ngữ.
+- `standard(timeZone?: boolean): ComputedRef<string>` — Trả về chuỗi ngày tháng tiêu chuẩn hóa (dạng ISO).
+
+## Cấu trúc nội bộ
+
+`DatetimeRef` sử dụng hệ thống `watch` và `computed` của Vue để duy trì sự đồng bộ giữa `Ref` đầu vào và instance `Datetime` nội bộ. Nó kích hoạt các cập nhật phản ứng bất cứ khi nào ngày tháng, mã ngôn ngữ hoặc loại định dạng thay đổi.

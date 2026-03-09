@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getIndexForRender - Key Generation for Rendering'/>
+
+# `getIndexForRender`
+
+A utility function used to determine or generate a unique `key` for components during rendering. It prioritizes an explicit index if provided, and combines it with the component's class name to ensure uniqueness and stability across renders.
+
+**Parameters:**
+- `name: string` — The name or tag of the component.
+- `props?: T` — The properties object of the component (used to extract the class name).
+- `index?: string` — An optional explicit index or identifier.
+
+**Returns:**
+`string` — The generated or provided key for rendering.
+
+```typescript
+import { getIndexForRender } from '@dxtmisha/functional'
+
+// Case 1: Both index and class from props exist
+const key1 = getIndexForRender('div', { class: 'my-class' }, 'item-0') 
+// Result: 'item-0.my-class'
+
+// Case 2: Only index exists
+const key2 = getIndexForRender('span', {}, 'header')
+// Result: 'header'
+
+// Case 3: Only class exists
+const key3 = getIndexForRender('button', { class: 'primary' })
+// Result: 'primary'
+
+// Case 4: Neither exists, returns the component name
+const key4 = getIndexForRender('li')
+// Result: 'li'
+```

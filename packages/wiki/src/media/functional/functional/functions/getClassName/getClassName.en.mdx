@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getClassName - Get Class Name from Props'/>
+
+# `getClassName`
+
+A utility function that extracts the `class` property from a given properties object. It ensures that the returned value is a string, which is useful for consistently obtaining class names when rendering components or elements.
+
+**Parameters:**
+- `props?: T` — The properties object of the component, which may contain a `class` property.
+
+**Returns:**
+`string | undefined` — The class name as a string if it exists and is a string, otherwise `undefined`.
+
+```typescript
+import { getClassName } from '@dxtmisha/functional'
+
+// Returns 'my-custom-class'
+const className1 = getClassName({ class: 'my-custom-class', otherProp: 1 })
+
+// Returns undefined as 'class' is missing
+const className2 = getClassName({ otherProp: 1 })
+
+// Returns undefined as 'class' is not a string
+const className3 = getClassName({ class: 123 })
+```

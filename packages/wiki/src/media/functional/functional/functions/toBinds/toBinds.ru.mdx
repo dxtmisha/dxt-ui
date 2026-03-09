@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/toBinds - Объединение нескольких объектов свойств'/>
+
+# `toBinds`
+
+Последовательно объединяет несколько объектов свойств с помощью `toBind`. Эта функция полезна для объединения нескольких уровней свойств (например, значений по умолчанию, свойств компонентов и модификаторов состояния), гарантируя правильное объединение свойств `class` и `style`, а не их перезапись.
+
+**Параметры:**
+- `...values: (ItemList | undefined)[]` — Список объектов свойств для объединения.
+
+**Возвращает:**
+`ConstrBind<R>` — Конечный объединенный объект свойств.
+
+```typescript
+import { toBinds } from '@dxtmisha/functional'
+
+const defaults = { class: 'btn', id: 'gen-id' }
+const props = { class: 'btn--primary', title: 'Нажми меня' }
+const state = { class: 'is-loading', style: { opacity: 0.5 } }
+
+const finalBind = toBinds(defaults, props, state)
+/* 
+Результат: { 
+  id: 'gen-id', 
+  title: 'Нажми меня',
+  class: [['btn', 'btn--primary'], 'is-loading'], 
+  style: { opacity: 0.5 } 
+}
+*/
+```

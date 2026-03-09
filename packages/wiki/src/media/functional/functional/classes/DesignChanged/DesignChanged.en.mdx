@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignChanged - Change Tracking Utility'/>
+
+# DesignChanged Class
+
+A utility class designed to track changes in object properties. It maintains a cache of previous values and provides methods to detect differences between the current state and the last updated state.
+
+## Key Features
+
+- **Efficient Comparison** — compares current property values against a local cache to identify changes.
+- **Selective Tracking** — supports tracking a specific subset of properties via the `watch` parameter.
+- **Batch Updates** — provides a way to synchronize the entire cache with the current state of properties.
+
+## Initialization
+
+```typescript
+import { DesignChanged } from '@dxtmisha/functional'
+
+const props = { title: 'Hello', count: 1 }
+const tracker = new DesignChanged(props, ['title']) // Only track 'title'
+
+console.log(tracker.isChanged()) // false
+```
+
+## Change Detection
+
+### `is`
+
+Checks if specific properties have been modified since the last update.
+
+**Parameters:**
+- `name: string | string[]` — a single property name or an array of property names to check.
+
+**Returns:** `boolean` — `true` if any of the specified properties have changed.
+
+### `isChanged`
+
+Checks if any of the tracked properties (defined in the `watch` list) have changed.
+
+**Returns:** `boolean` — `true` if at least one tracked property has a different value.
+
+## Data Synchronization
+
+### `update`
+
+Synchronizes the internal cache with the current values of all tracked properties. After calling this, `isChanged()` will return `false` until properties are modified again.
+
+**Returns:** `void`
+
+## Internal Structure
+
+`DesignChanged` stores the "last known" values in a private `cache` object. The `isDifferent` method performs a strict inequality check (`!==`) between the cached value and the current value in the `props` object. This class is a core dependency for `DesignAbstract` and `DesignAsyncAbstract`.

@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignConstructorAbstract - Base Constructor Logic'/>
+
+# DesignConstructorAbstract Class
+
+An abstract base class that provides a standardized structure for component constructor logic. It facilitates the management of component data, styles, and state-driven modifications, serving as a blueprint for specialized design constructors.
+
+## Key Features
+
+- **Standardized Data Structure** — defines a consistent way to handle component properties, classes, and styles.
+- **State Integration** — seamlessly connects with component states to trigger reactive updates.
+- **Flexible Extensions** — designed to be inherited by specific component constructors to implement custom setup logic.
+
+## Initialization
+
+```typescript
+import { DesignConstructorAbstract } from '@dxtmisha/functional'
+
+interface MyProps { size: string }
+interface MyState { active: boolean }
+
+class MyConstructor extends DesignConstructorAbstract<MyProps, MyState> {
+  // Implement required abstract or setup logic
+}
+
+const instance = new MyConstructor(props, state)
+```
+
+## Logic Management
+
+- `setup(): void` — Executes the main setup sequence for the component logic.
+- `init(): this` — Initializes the constructor instance and prepares the internal state.
+
+## Internal Structure
+
+`DesignConstructorAbstract` acts as the primary orchestrator for component initialization. It manages the relationship between input properties and the resulting reactive state, ensuring that architectural patterns are consistently followed across different UI components.

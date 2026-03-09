@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/toBinds - Hợp nhất nhiều đối tượng thuộc tính'/>
+
+# `toBinds`
+
+Hợp nhất tuần tự nhiều đối tượng thuộc tính bằng cách sử dụng `toBind`. Hàm này hữu ích để kết hợp nhiều lớp thuộc tính (ví dụ: mặc định, props của thành phần và các modifier dựa trên trạng thái) trong khi đảm bảo các thuộc tính `class` và `style` được kết hợp chính xác thay vì bị ghi đè.
+
+**Tham số:**
+- `...values: (ItemList | undefined)[]` — Danh sách các đối tượng thuộc tính cần hợp nhất.
+
+**Trả về:**
+`ConstrBind<R>` — Đối tượng thuộc tính đã hợp nhất cuối cùng.
+
+```typescript
+import { toBinds } from '@dxtmisha/functional'
+
+const defaults = { class: 'btn', id: 'gen-id' }
+const props = { class: 'btn--primary', title: 'Nhấp vào tôi' }
+const state = { class: 'is-loading', style: { opacity: 0.5 } }
+
+const finalBind = toBinds(defaults, props, state)
+/* 
+Kết quả: { 
+  id: 'gen-id', 
+  title: 'Nhấp vào tôi',
+  class: [['btn', 'btn--primary'], 'is-loading'], 
+  style: { opacity: 0.5 } 
+}
+*/
+```

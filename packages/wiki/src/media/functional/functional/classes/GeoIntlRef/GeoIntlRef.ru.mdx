@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/GeoIntlRef - Реактивный менеджер интернационализации'/>
+
+# Класс GeoIntlRef
+
+Реактивный менеджер для форматирования чисел, дат и относительного времени в соответствии с международными стандартами (Intl). Он предоставляет удобную обертку над утилитой `GeoIntl`, гарантируя автоматическое обновление всех отформатированных строк при изменении локали или входных данных.
+
+## Ключевые особенности
+
+- **Реактивность** — автоматически переформатирует данные при изменении `Ref` локали или входных значений.
+- **Форматирование чисел** — поддержка десятичных дробей, валют, процентов и единиц измерения.
+- **Дата и время** — предоставляет зависящее от языка форматирование даты, времени и относительного времени.
+- **Отображаемые имена** — позволяет переводить названия языков, регионов и скриптов.
+
+## Инициализация
+
+```typescript
+import { GeoIntlRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = ref('ru-RU')
+const intl = new GeoIntlRef(locale)
+
+console.log(intl.number(1234.56).value) // "1 234,56"
+```
+
+## Общие методы
+
+- `display(value?, typeOptions?): ComputedRef<string>` — Обеспечивает последовательный перевод отображаемых названий языка, региона и скрипта.
+- `languageName(value?, style?): ComputedRef<string>` — Возвращает отображаемое имя для конкретного кода языка.
+- `countryName(value?, style?): ComputedRef<string>` — Возвращает отображаемое имя для конкретного кода региона (страны).
+- `sort<T>(data, compareFn?): ComputedRef<T[]>` — Сортирует строки с учетом особенностей стран.
+
+## Форматирование чисел
+
+- `number(value, options?): ComputedRef<string>` — Форматирует число в соответствии с текущей локалью и параметрами.
+- `decimal(): ComputedRef<string>` — Возвращает символ десятичной точки, используемый в текущей локали.
+- `currency(value, currencyOptions?, numberOnly?): ComputedRef<string>` — Форматирует значение как строку валюты.
+- `currencySymbol(currency, currencyDisplay?): ComputedRef<string>` — Возвращает символ для валюты или сам код валюты.
+- `unit(value, unitOptions?): ComputedRef<string>` — Форматирует значение с указанием единиц измерения.
+- `sizeFile(value, unitOptions?): ComputedRef<string>` — Возвращает отформатированный размер файла (например, "1.5 МБ").
+- `percent(value, options?): ComputedRef<string>` — Форматирует число в виде процента (0.1 -> "10%").
+- `percentBy100(value, options?): ComputedRef<string>` — Форматирует число в виде процента (10 -> "10%").
+- `plural(value, words, options?, optionsNumber?): ComputedRef<string>` — Применяет форматирование, учитывающее множественное число.
+
+## Форматирование даты и времени
+
+- `date(value, type?, styleOptions?, hour24?): ComputedRef<string>` — Включает языка-зависимое форматирование даты и времени.
+- `relative(value, styleOptions?, todayValue?): ComputedRef<string>` — Включает форматирование относительного времени (например, "вчера").
+- `relativeLimit(value, limit, ...): ComputedRef<string>` — Относительное форматирование с переходом на стандартный формат при превышении лимита.
+- `relativeByValue(value, unit, styleOptions?): ComputedRef<string>` — Возвращает относительное время на основе конкретной единицы времени.
+- `time(value): ComputedRef<string>` — Форматирует только временную часть даты.
+
+## Календарная информация
+
+- `month(value?, style?): ComputedRef<string>` — Возвращает название месяца для конкретной даты.
+- `months(style?): ComputedRef<ItemValue<number | undefined>[]>` — Возвращает названия всех месяцев.
+- `weekday(value?, style?): ComputedRef<string>` — Возвращает название дня недели для конкретной даты.
+- `weekdays(style?): ComputedRef<ItemValue<number | undefined>[]>` — Возвращает названия всех дней недели.

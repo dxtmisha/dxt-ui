@@ -129,6 +129,22 @@ export class GeoIntlRef {
   }
 
   /**
+   * Returns the currency symbol if it exists, otherwise the currency code.
+   *
+   * Возвращает символ для валюты, если он есть, или сам код валюты.
+   * @param currency the currency to use in currency formatting/
+   * валюта для использования в форматировании валюты
+   * @param currencyDisplay how to display the currency in currency formatting/
+   * как отобразить валюту в формате валюты
+   */
+  currencySymbol(
+    currency: RefOrNormal<string>,
+    currencyDisplay: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry = 'symbol'
+  ): ComputedRef<string> {
+    return computed(() => this.intl.value.currencySymbol(getRef(currency), currencyDisplay))
+  }
+
+  /**
    * Unit formatting.
    * If the style is 'unit', a unit property must be provided.
    *
@@ -142,6 +158,26 @@ export class GeoIntlRef {
     unitOptions?: string | Intl.NumberFormatOptions
   ): ComputedRef<string> {
     return computed(() => this.intl.value.unit(getRef(value), unitOptions))
+  }
+
+  /**
+   * Возвращает отформатированный размер файла
+   * @param value a number, bigint, or string, to format /<br>число для форматирования
+   * @param unitOptions the unit to use in unit formatting /<br>блок для использования
+   * в форматировании блока
+   */
+  sizeFile(
+    value: RefOrNormal<NumberOrString>,
+    unitOptions:
+      'byte'
+      | 'kilobyte'
+      | 'megabyte'
+      | 'gigabyte'
+      | 'terabyte'
+      | 'petabyte'
+      | Intl.NumberFormatOptions = 'byte'
+  ): ComputedRef<string> {
+    return computed(() => this.intl.value.sizeFile(getRef(value), unitOptions))
   }
 
   /**
@@ -171,6 +207,23 @@ export class GeoIntlRef {
     options?: Intl.NumberFormatOptions
   ): ComputedRef<string> {
     return computed(() => this.intl.value.percentBy100(getRef(value), options))
+  }
+
+  /**
+   * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
+   * @param value a number, bigint, or string, to format/ число для форматирования
+   * @param words list of words for formatting (in the format one|two|few|many|other|zero)/
+   * список слов для форматирования (в формате `one|two|few|many|other|zero`)
+   * @param options Property for PluralRules/ свойство для PluralRules
+   * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
+   */
+  plural(
+    value: RefOrNormal<NumberOrString>,
+    words: string,
+    options?: Intl.PluralRulesOptions,
+    optionsNumber?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.intl.value.plural(getRef(value), words, options, optionsNumber))
   }
 
   /**
@@ -247,6 +300,20 @@ export class GeoIntlRef {
   }
 
   /**
+   * Возвращает отформатированное значение времени, прошедшего с момента события
+   * @param value a number, bigint, or string, to format/ число для форматирования
+   * @param unit time unit/ единица времени
+   * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
+   */
+  relativeByValue(
+    value: RefOrNormal<NumberOrString>,
+    unit: Intl.RelativeTimeFormatUnit,
+    styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.intl.value.relativeByValue(getRef(value), unit, styleOptions))
+  }
+
+  /**
    * Names of months.
    *
    * Названия месяцев.
@@ -306,5 +373,19 @@ export class GeoIntlRef {
    */
   time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string> {
     return computed(() => this.intl.value.time(getRef(value)))
+  }
+
+  /**
+   * Sorts strings taking into account the characteristics of countries.
+   *
+   * Сортирует строки с учетом особенностей стран.
+   * @param data an array with data/ массив с данными
+   * @param compareFn a function for sorting/ функция для сортировки
+   */
+  sort<T>(
+    data: RefOrNormal<T[]>,
+    compareFn: (a: T, b: T) => [string, string] = (a, b) => [a as string, b as string]
+  ): ComputedRef<T[]> {
+    return computed(() => this.intl.value.sort([...getRef(data)], compareFn))
   }
 }

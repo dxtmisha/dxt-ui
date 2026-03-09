@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/toComputed - Read-only Computed Wrapper'/>
+
+# `toComputed`
+
+Wraps a reactive `Ref` returned by a callback function into a read-only `ComputedRef`. This is useful for exposing reactive values that should not be directly modified by the consumer, ensuring data integrity.
+
+**Parameters:**
+- `callback: () => Ref<T>` — A function that returns the reactive `Ref` to be protected.
+
+**Returns:**
+`ComputedRef<T>` — A read-only computed ref.
+
+```typescript
+import { ref } from 'vue'
+import { toComputed } from '@dxtmisha/functional'
+
+const internalState = ref(0)
+
+// Expose as read-only computed
+const publicState = toComputed(() => internalState)
+
+console.log(publicState.value) // 0
+// publicState.value = 1 // Error: cannot assign to read-only property
+```

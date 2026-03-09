@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/DatetimeRef - Реактивное управление датой и временем'/>
+
+# Класс DatetimeRef
+
+Класс для реактивной работы с датами и временем. Он предоставляет обертку над утилитой `Datetime`, обеспечивая синхронизацию данных о дате с пропсами Vue и предоставляя удобный доступ к различным компонентам даты.
+
+## Ключевые особенности
+
+- **Реактивность** — автоматически обновляет внутренний объект даты при изменении входных свойств.
+- **Поддержка локализации** — предоставляет методы для форматирования даты и времени с учетом языка.
+- **Удобные аксессоры** — предлагает вычисляемые свойства для получения года, месяца, дня, часа и т.д.
+- **Стандартизированный вывод** — включает методы для генерации стандартных строк даты.
+
+## Инициализация
+
+```typescript
+import { DatetimeRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const date = ref('2023-10-27')
+const datetimeRef = new DatetimeRef(date, 'date', 'ru-RU')
+
+console.log(datetimeRef.getYear().value) // 2023
+```
+
+## Информация о дате
+
+- `getItem(): RefOrNormal<NumberOrStringOrDate>` — Возвращает исходные данные для даты.
+- `getDate(): Ref<Date>` — Возвращает реактивный объект `Date`.
+- `getDatetime(): Datetime` — Возвращает экземпляр базового класса `Datetime`.
+- `getHoursType(): ComputedRef<GeoHours>` — Возвращает формат часов (12ч или 24ч).
+- `getFirstDayCode(): ComputedRef<GeoFirstDay>` — Возвращает код первого дня недели.
+- `getMaxDay(): ComputedRef<number>` — Возвращает максимальное количество дней в текущем месяце.
+
+## Компоненты даты
+
+- `getYear(): ComputedRef<number>` — Возвращает год.
+- `getMonth(): ComputedRef<number>` — Возвращает месяц (0-11).
+- `getDay(): ComputedRef<number>` — Возвращает день месяца.
+- `getHour(): ComputedRef<number>` — Возвращает часы.
+- `getMinute(): ComputedRef<number>` — Возвращает минуты.
+- `getSecond(): ComputedRef<number>` — Возвращает секунды.
+
+## Форматирование
+
+- `locale(type?: GeoDate, styleOptions?: object): ComputedRef<string>` — Возвращает строку даты, отформатированную с учетом языка.
+- `standard(timeZone?: boolean): ComputedRef<string>` — Возвращает стандартную строку даты (похоже на ISO).
+
+## Внутреннее устройство
+
+`DatetimeRef` использует системы `watch` и `computed` во Vue для поддержания синхронизации между входным `Ref` и внутренним экземпляром `Datetime`. Он вызывает реактивные обновления всякий раз, когда меняются дата, код локали или тип формата.

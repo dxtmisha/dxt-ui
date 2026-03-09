@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getComputedAsync - Asynchronous computed wrapper'/>
+
+# `getComputedAsync`
+
+Wraps an asynchronous callback function into a reactive computed property. It automatically handles the resolution of the promise and allows for an optional ignore value to filter out unwanted results.
+
+**Parameters:**
+- `callback: () => Promise<Ref<T | I> | T | I>` — An asynchronous function that returns the value to be computed.
+- `ignore?: I` — A value that, if returned by the callback, will be ignored, and the computed property will not be updated.
+
+**Returns:**
+`ComputedRef<T | undefined>` — A reactive computed ref containing the resolved value of the callback, or `undefined` until the first valid value is resolved.
+
+```typescript
+import { getComputedAsync } from '@dxtmisha/functional'
+
+// Fetches data asynchronously and updates when resolved
+const userData = getComputedAsync(async () => {
+  const response = await fetch('/api/user')
+  return response.json()
+})
+
+// Using the ignore parameter
+const data = getComputedAsync(async () => {
+  const result = await someAsyncAction()
+  return result === null ? 'ignored' : result
+}, 'ignored')
+```

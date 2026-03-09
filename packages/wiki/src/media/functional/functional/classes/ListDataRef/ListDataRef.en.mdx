@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/ListDataRef - Reactive List Manager'/>
+
+# ListDataRef Class
+
+A comprehensive reactive manager for handling list data. It supports complex operations such as filtering, searching (with highlighting), single or multiple selection, focus management, and hierarchical (nested) lists.
+
+## Key Features
+
+- **Reactivity** — all data views and selection states are Vue `ComputedRef` objects.
+- **Hierarchical Lists** — supports nested groups and menus with automatic sub-list management.
+- **Selection Control** — handles min/max selection limits and provides various ways to retrieve selected items.
+- **Highlighting** — built-in support for search-based highlighting and navigation.
+
+## Initialization
+
+```typescript
+import { ListDataRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const items = ref(['Item 1', 'Item 2', 'Item 3'])
+const listManager = new ListDataRef(items)
+
+console.log(listManager.data.value)
+```
+
+## Data Properties
+
+- `data`: `ComputedRef<ListList>` — Returns the processed list of items.
+- `liteData`: `ComputedRef<ListList>` — Returns a simplified version of the list for faster initial rendering (if the list size exceeds the `lite` threshold).
+- `fullData`: `ComputedRef<ListDataFull>` — Returns the list with complete state information for each item (focus, selected, disabled, highlight).
+- `map`: `ComputedRef<ListList>` — A flattened list containing all items and their nested sub-items.
+- `mapItems`: `ComputedRef<ListList>` — A flattened list containing only interactive items (type 'item').
+- `items`: `ComputedRef<ListList>` — A flattened list containing items, groups, and menus.
+
+## Selection State
+
+- `isSelected`: `ComputedRef<boolean>` — Returns `true` if at least one item is selected.
+- `isSelectedMin`: `ComputedRef<boolean>` — Returns `true` if the minimum selection count is reached.
+- `isSelectedMax`: `ComputedRef<boolean>` — Returns `true` if the maximum selection count is reached.
+- `selectedList`: `ComputedRef<ListList>` — Returns a list of all selected items across the entire map.
+- `selectedListInGroup`: `ComputedRef<ListList>` — Returns a list of selected items only within the current list level.
+- `selectedNames`: `ComputedRef<ListNames>` — Returns an array of labels for the selected items.
+- `selectedValues`: `ComputedRef<any[]>` — Returns an array of values for the selected items.
+
+## Navigation & Search
+
+- `highlightFirstItem`: `ComputedRef<number>` — Returns the index of the first item matching the current search highlight.
+- `isFocus()`: `boolean` — Checks if any item in the current list has focus.
+- `isHighlight()`: `boolean` — Checks if a search match exists.
+- `isHighlightActive()`: `boolean` — Checks if highlighting is currently active.
+- `getItemByStep(item, step)`: `ListDataItem | undefined` — Returns an item relative to the given item by a number of steps.
+- `getItemNext(item)`: `ListDataItem | undefined` — Returns the next interactive item.
+- `getItemPrev(item)`: `ListDataItem | undefined` — Returns the previous interactive item.
+- `getIndexNext(index)`: `ListDataItem | undefined` — Returns the next item by its index string.
+- `getIndexPrev(index)`: `ListDataItem | undefined` — Returns the previous item by its index string.
+
+## Utility Methods
+
+- `getLength()`: `number` — Returns the number of items at the current level.
+- `getLengthByMap()`: `number` — Returns the total number of items including nested ones.
+- `getFocus()`: `ListSelectedItem | undefined` — Returns the index of the focused item.
+- `getHighlight()`: `string | undefined` — Returns the current search highlight string.
+- `getSelected()`: `ListSelectedList | undefined` — Returns the raw selected values.
+- `getItemByIndex(index)`: `{ key, item } | undefined` — Finds an item by its index string.
+- `getItemByKey(key)`: `ListDataItem | undefined` — Finds an item by its numeric key in the map.
+- `getSubList(item)`: `ListDataRef` — Returns a new `ListDataRef` instance for a nested group or menu.
+
+## ListDataItem Object
+
+The standard structure for a list item:
+
+- `index: string` — unique identifier.
+- `type: ListType` — item type ('item', 'group', 'menu', 'subtitle', 'line', etc.).
+- `label?: string` — display text.
+- `value?: any` — associated value.
+- `parent?: string` — identifier of the parent group.
+- `disabled?: boolean` — whether the item is interactive.
+
+## ListDataFullItem Object
+
+Extended version of `ListDataItem` used in `fullData`:
+
+- `focus: boolean` — item has focus.
+- `selected: boolean` — item is selected.
+- `highlight?: string` — text to highlight.
+- `disabled: boolean` — item is disabled or selection limit reached.

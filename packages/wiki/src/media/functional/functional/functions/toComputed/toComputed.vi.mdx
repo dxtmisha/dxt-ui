@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/toComputed - Vỏ bọc Computed chỉ đọc'/>
+
+# `toComputed`
+
+Bao bọc một `Ref` phản ứng được trả về bởi một hàm callback thành một `ComputedRef` chỉ đọc. Điều này hữu ích cho việc hiển thị các giá trị phản ứng không nên được sửa đổi trực tiếp bởi người tiêu dùng, đảm bảo tính toàn vẹn của dữ liệu.
+
+**Tham số:**
+- `callback: () => Ref<T>` — Một hàm trả về `Ref` phản ứng cần được bảo vệ.
+
+**Returns:**
+`ComputedRef<T>` — Một computed ref chỉ đọc.
+
+```typescript
+import { ref } from 'vue'
+import { toComputed } from '@dxtmisha/functional'
+
+const internalState = ref(0)
+
+// Hiển thị dưới dạng computed chỉ đọc
+const publicState = toComputed(() => internalState)
+
+console.log(publicState.value) // 0
+// publicState.value = 1 // Lỗi: không thể gán cho thuộc tính chỉ đọc
+```

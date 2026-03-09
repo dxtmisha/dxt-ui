@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/getBindRef - Генерация привязок'/>
+
+# `getBindRef`
+
+Метод для генерации воиств для подкомпонента на основе реактивных или обычных значений. Помогает создавать согласованные привязки при передаче пропсов от родительского компонента к дочернему, особенно при использовании Vue `Ref`.
+
+**Параметры:**
+- `value: RefOrNormal<T | R> | undefined` — Входное значение. Может быть реактивной ссылкой или обычным объектом, содержащим несколько свойств.
+- `nameExtra: RefOrNormal<ItemList> | string = {}` — Дополнительные параметры или имена свойств для объединения в итоговый объект привязки.
+- `name: string = 'value'` — Имя свойства для основного значения (по умолчанию `'value'`).
+
+**Возвращает:**
+`ComputedRef<R>` — Реактивное вычисляемое свойство, содержащее объединенный объект свойств, готовый к привязке (например, через `v-bind`).
+
+```typescript
+import { ref } from 'vue'
+import { getBindRef } from '@dxtmisha/functional'
+
+const modelValue = ref('Привет')
+const extraProps = { placeholder: 'Введите текст...' }
+
+// Генерирует вычисляемую привязку: { value: 'Привет', placeholder: 'Введите текст...' }
+const bindings = getBindRef(modelValue, extraProps)
+```

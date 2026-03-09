@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/getIndexForRender - Генерация ключа для рендеринга'/>
+
+# `getIndexForRender`
+
+Утилитарная функция, используемая для определения или генерации уникального ключа (`key`) для компонентов во время рендеринга. Она отдает приоритет явному индексу, если он предоставлен, и объединяет его с именем класса компонента для обеспечения уникальности и стабильности между рендерами.
+
+**Параметры:**
+- `name: string` — Имя или тег компонента.
+- `props?: T` — Объект свойств компонента (используется для извлечения имени класса).
+- `index?: string` — Необязательный явный индекс или идентификатор.
+
+**Возвращает:**
+`string` — Сгенерированный или предоставленный ключ для рендеринга.
+
+```typescript
+import { getIndexForRender } from '@dxtmisha/functional'
+
+// Вариант 1: Существуют и индекс, и класс из props
+const key1 = getIndexForRender('div', { class: 'my-class' }, 'item-0') 
+// Результат: 'item-0.my-class'
+
+// Вариант 2: Существует только индекс
+const key2 = getIndexForRender('span', {}, 'header')
+// Результат: 'header'
+
+// Вариант 3: Существует только класс
+const key3 = getIndexForRender('button', { class: 'primary' })
+// Результат: 'primary'
+
+// Вариант 4: Ничего не существует, возвращается имя компонента
+const key4 = getIndexForRender('li')
+// Результат: 'li'
+```

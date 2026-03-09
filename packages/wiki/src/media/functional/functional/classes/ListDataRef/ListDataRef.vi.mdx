@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/ListDataRef - Trình quản lý danh sách phản ứng'/>
+
+# Lớp ListDataRef
+
+Một trình quản lý phản ứng toàn diện để xử lý dữ liệu danh sách. Nó hỗ trợ các hoạt động phức tạp như lọc, tìm kiếm (với làm nổi bật), lựa chọn đơn hoặc nhiều, quản lý trọng tâm (focus) và danh sách phân cấp (lồng nhau).
+
+## Các tính năng chính
+
+- **Tính phản ứng** — tất cả các chế độ xem dữ liệu và trạng thái lựa chọn đều là các đối tượng Vue `ComputedRef`.
+- **Danh sách phân cấp** — hỗ trợ các nhóm và menu lồng nhau với quản lý danh sách con tự động.
+- **Kiểm soát lựa chọn** — xử lý giới hạn lựa chọn tối thiểu/tối đa và cung cấp nhiều cách khác nhau để lấy các mục đã chọn.
+- **Làm nổi bật** — hỗ trợ tích hợp để làm nổi bật dựa trên tìm kiếm và điều hướng qua các kết quả.
+
+## Khởi tạo
+
+```typescript
+import { ListDataRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const items = ref(['Mục 1', 'Mục 2', 'Mục 3'])
+const listManager = new ListDataRef(items)
+
+console.log(listManager.data.value)
+```
+
+## Thuộc tính dữ liệu
+
+- `data`: `ComputedRef<ListList>` — Trả về danh sách các mục đã được xử lý.
+- `liteData`: `ComputedRef<ListList>` — Trả về phiên bản rút gọn của danh sách để hiển thị ban đầu nhanh hơn (nếu kích thước danh sách vượt quá ngưỡng `lite`).
+- `fullData`: `ComputedRef<ListDataFull>` — Trả về danh sách với thông tin trạng thái đầy đủ cho mỗi mục (focus, selected, disabled, highlight).
+- `map`: `ComputedRef<ListList>` — Một danh sách phẳng chứa tất cả các mục và các mục con lồng nhau của chúng.
+- `mapItems`: `ComputedRef<ListList>` — Một danh sách phẳng chỉ chứa các mục tương tác (loại 'item').
+- `items`: `ComputedRef<ListList>` — Một danh sách phẳng chứa các mục, nhóm và menu.
+
+## Trạng thái lựa chọn
+
+- `isSelected`: `ComputedRef<boolean>` — Trả về `true` nếu có ít nhất một mục được chọn.
+- `isSelectedMin`: `ComputedRef<boolean>` — Trả về `true` nếu đạt đến số lượng chọn tối thiểu.
+- `isSelectedMax`: `ComputedRef<boolean>` — Trả về `true` nếu đạt đến số lượng chọn tối đa.
+- `selectedList`: `ComputedRef<ListList>` — Trả về danh sách tất cả các mục đã chọn trên toàn bộ sơ đồ.
+- `selectedListInGroup`: `ComputedRef<ListList>` — Trả về danh sách các mục đã chọn chỉ trong cấp độ danh sách hiện tại.
+- `selectedNames`: `ComputedRef<ListNames>` — Trả về một mảng các nhãn cho các mục đã chọn.
+- `selectedValues`: `ComputedRef<any[]>` — Trả về một mảng các giá trị cho các mục đã chọn.
+
+## Điều hướng & Tìm kiếm
+
+- `highlightFirstItem`: `ComputedRef<number>` — Trả về chỉ số của mục đầu tiên khớp với tìm kiếm hiện tại.
+- `isFocus()`: `boolean` — Kiểm tra xem có mục nào trong danh sách hiện tại đang được focus hay không.
+- `isHighlight()`: `boolean` — Kiểm tra xem có kết quả tìm kiếm khớp hay không.
+- `isHighlightActive()`: `boolean` — Kiểm tra xem việc làm nổi bật tìm kiếm hiện có đang hoạt động hay không.
+- `getItemByStep(item, step)`: `ListDataItem | undefined` — Trả về một mục tương đối với mục đã cho theo một số bước.
+- `getItemNext(item)`: `ListDataItem | undefined` — Trả về mục tương tác tiếp theo.
+- `getItemPrev(item)`: `ListDataItem | undefined` — Trả về mục tương tác trước đó.
+- `getIndexNext(index)`: `ListDataItem | undefined` — Trả về mục tiếp theo bằng chuỗi chỉ số của nó.
+- `getIndexPrev(index)`: `ListDataItem | undefined` — Trả về mục trước đó bằng chuỗi chỉ số của nó.
+
+## Các phương thức tiện ích
+
+- `getLength()`: `number` — Trả về số lượng mục ở cấp độ hiện tại.
+- `getLengthByMap()`: `number` — Trả về tổng số mục bao gồm cả các mục lồng nhau.
+- `getFocus()`: `ListSelectedItem | undefined` — Trả về chỉ số của mục đang được focus.
+- `getHighlight()`: `string | undefined` — Trả về chuỗi tìm kiếm hiện tại.
+- `getSelected()`: `ListSelectedList | undefined` — Trả về các giá trị đã chọn thô.
+- `getItemByIndex(index)`: `{ key, item } | undefined` — Tìm một mục bằng chuỗi chỉ số của nó.
+- `getItemByKey(key)`: `ListDataItem | undefined` — Tìm một mục bằng khóa số của nó trong sơ đồ.
+- `getSubList(item)`: `ListDataRef` — Trả về một instance `ListDataRef` mới cho một nhóm hoặc menu lồng nhau.
+
+## Đối tượng ListDataItem
+
+Cấu trúc tiêu chuẩn cho một mục danh sách:
+
+- `index: string` — định danh duy nhất.
+- `type: ListType` — loại mục ('item', 'group', 'menu', 'subtitle', 'line', v.v.).
+- `label?: string` — văn bản hiển thị.
+- `value?: any` — giá trị liên kết.
+- `parent?: string` — định danh của nhóm cha.
+- `disabled?: boolean` — mục có thể tương tác hay không.
+
+## Đối tượng ListDataFullItem
+
+Phiên bản mở rộng của `ListDataItem` được sử dụng trong `fullData`:
+
+- `focus: boolean` — mục đang được focus.
+- `selected: boolean` — mục đang được chọn.
+- `highlight?: string` — văn bản cần làm nổi bật.
+- `disabled: boolean` — mục bị vô hiệu hóa hoặc đã đạt đến giới hạn lựa chọn.

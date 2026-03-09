@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/GeoIntlRef - Reactive Intl Manager'/>
+
+# GeoIntlRef Class
+
+A reactive manager for formatting numbers, dates, and relative times according to international standards (Intl). It provides a convenient wrapper around the `GeoIntl` utility, ensuring that all formatted strings update automatically when the locale or input data changes.
+
+## Key Features
+
+- **Reactivity** — automatically re-formats data when the locale `Ref` or input values change.
+- **Number Formatting** — supports decimals, currencies, percentages, and units.
+- **Date & Time** — provides language-sensitive date, time, and relative time formatting.
+- **Display Names** — allows translation of language, region, and script names.
+
+## Initialization
+
+```typescript
+import { GeoIntlRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = ref('en-US')
+const intl = new GeoIntlRef(locale)
+
+console.log(intl.number(1234.56).value) // "1,234.56"
+```
+
+## General Methods
+
+- `display(value?, typeOptions?): ComputedRef<string>` — Provides consistent translation of language, region, and script display names.
+- `languageName(value?, style?): ComputedRef<string>` — Returns the display name for a specific language code.
+- `countryName(value?, style?): ComputedRef<string>` — Returns the display name for a specific region (country) code.
+- `sort<T>(data, compareFn?): ComputedRef<T[]>` — Sorts strings taking into account the characteristics of countries.
+
+## Number Formatting
+
+- `number(value, options?): ComputedRef<string>` — Formats a number according to the current locale and options.
+- `decimal(): ComputedRef<string>` — Returns the decimal point symbol used in the current locale.
+- `currency(value, currencyOptions?, numberOnly?): ComputedRef<string>` — Formats a value as a currency string.
+- `currencySymbol(currency, currencyDisplay?): ComputedRef<string>` — Returns the currency symbol or code.
+- `unit(value, unitOptions?): ComputedRef<string>` — Formats a value with a specific unit.
+- `sizeFile(value, unitOptions?): ComputedRef<string>` — Returns a formatted file size (e.g., "1.5 MB").
+- `percent(value, options?): ComputedRef<string>` — Formats a number as a percentage (0.1 -> "10%").
+- `percentBy100(value, options?): ComputedRef<string>` — Formats a number as a percentage (10 -> "10%").
+- `plural(value, words, options?, optionsNumber?): ComputedRef<string>` — Applies plural-sensitive formatting and language rules.
+
+## Date & Time Formatting
+
+- `date(value, type?, styleOptions?, hour24?): ComputedRef<string>` — Enables language-sensitive date and time formatting.
+- `relative(value, styleOptions?, todayValue?): ComputedRef<string>` — Enables language-sensitive relative time formatting (e.g., "yesterday").
+- `relativeLimit(value, limit, ...): ComputedRef<string>` — Relative time formatting with a fallback to standard date format.
+- `relativeByValue(value, unit, styleOptions?): ComputedRef<string>` — Returns a formatted relative time value based on a specific unit.
+- `time(value): ComputedRef<string>` — Formats only the time part of a date.
+
+## Calendar Information
+
+- `month(value?, style?): ComputedRef<string>` — Returns the name of the month for a specific date.
+- `months(style?): ComputedRef<ItemValue<number | undefined>[]>` — Returns names of all months in the current locale.
+- `weekday(value?, style?): ComputedRef<string>` — Returns the name of the day of the week for a specific date.
+- `weekdays(style?): ComputedRef<ItemValue<number | undefined>[]>` — Returns names of all days of the week.

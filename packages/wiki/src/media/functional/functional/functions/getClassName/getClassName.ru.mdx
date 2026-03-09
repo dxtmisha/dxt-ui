@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/getClassName - Получение имени класса из свойств'/>
+
+# `getClassName`
+
+Утилитарная функция, которая извлекает свойство `class` из заданного объекта свойств. Она гарантирует, что возвращаемое значение является строкой, что полезно для единообразного получения имен классов при рендеринге компонентов или элементов.
+
+**Параметры:**
+- `props?: T` — Объект свойств компонента, который может содержать свойство `class`.
+
+**Возвращает:**
+`string | undefined` — Имя класса в виде строки, если оно существует и является строкой, в противном случае `undefined`.
+
+```typescript
+import { getClassName } from '@dxtmisha/functional'
+
+// Возвращает 'my-custom-class'
+const className1 = getClassName({ class: 'my-custom-class', otherProp: 1 })
+
+// Возвращает undefined, так как 'class' отсутствует
+const className2 = getClassName({ otherProp: 1 })
+
+// Возвращает undefined, так как 'class' не является строкой
+const className3 = getClassName({ class: 123 })
+```

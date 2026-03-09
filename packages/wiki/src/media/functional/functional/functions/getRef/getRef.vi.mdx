@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/getRef - Trích xuất giá trị'/>
+
+# `getRef`
+
+Một hàm tiện ích trích xuất giá trị cơ bản từ một `Ref` phản ứng hoặc trả về chính giá trị đó nếu nó không phải là phản ứng. Điều này hữu ích để đảm bảo bạn đang làm việc với dữ liệu thô bất kể trạng thái phản ứng của nó.
+
+**Tham số:**
+- `item: RefOrNormal<T>` — Một biến phản ứng (`Ref`) hoặc một giá trị thông thường.
+
+**Trả về:**
+`T` — Giá trị đã được mở gói của `Ref` hoặc chính giá trị đầu vào.
+
+```typescript
+import { ref } from 'vue'
+import { getRef } from '@dxtmisha/functional'
+
+const count = ref(10)
+const normalValue = 20
+
+console.log(getRef(count))       // 10
+console.log(getRef(normalValue)) // 20
+```

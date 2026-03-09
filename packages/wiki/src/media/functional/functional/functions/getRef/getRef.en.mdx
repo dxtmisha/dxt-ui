@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getRef - Value Extraction'/>
+
+# `getRef`
+
+A utility function that extracts the underlying value from a reactive `Ref` or returns the value itself if it is not reactive. This is useful for ensuring you are working with the raw data regardless of its reactivity state.
+
+**Parameters:**
+- `item: RefOrNormal<T>` — A reactive variable (`Ref`) or an ordinary value.
+
+**Returns:**
+`T` — The unwrapped value of the `Ref` or the input value itself.
+
+```typescript
+import { ref } from 'vue'
+import { getRef } from '@dxtmisha/functional'
+
+const count = ref(10)
+const normalValue = 20
+
+console.log(getRef(count))       // 10
+console.log(getRef(normalValue)) // 20
+```

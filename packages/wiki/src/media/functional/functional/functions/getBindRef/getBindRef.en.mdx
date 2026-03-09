@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getBindRef - Binding Generation'/>
+
+# `getBindRef`
+
+A method for generating properties for a subcomponent based on reactive or normal values. It helps in creating consistent bindings when passing props from a parent to a child component, especially when using Vue's reactive `Ref`.
+
+**Parameters:**
+- `value: RefOrNormal<T | R> | undefined` — Input value. Can be a reactive ref or a normal object containing multiple properties.
+- `nameExtra: RefOrNormal<ItemList> | string = {}` — Additional parameters or property names to be merged into the final binding object.
+- `name: string = 'value'` — The property name to use for the primary value (defaults to `'value'`).
+
+**Returns:**
+`ComputedRef<R>` — A reactive computed ref containing the merged properties object ready to be bound (e.g., via `v-bind`).
+
+```typescript
+import { ref } from 'vue'
+import { getBindRef } from '@dxtmisha/functional'
+
+const modelValue = ref('Hello')
+const extraProps = { placeholder: 'Type here...' }
+
+// Generates a computed binding: { value: 'Hello', placeholder: 'Type here...' }
+const bindings = getBindRef(modelValue, extraProps)
+```

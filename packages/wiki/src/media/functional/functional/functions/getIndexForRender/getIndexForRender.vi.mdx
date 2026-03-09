@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/getIndexForRender - Tạo khóa cho Render'/>
+
+# `getIndexForRender`
+
+Một hàm tiện ích dùng để xác định hoặc tạo một `key` duy nhất cho các thành phần trong quá trình render. Nó ưu tiên một chỉ số rõ ràng nếu được cung cấp, và kết hợp nó với tên lớp (class name) của thành phần để đảm bảo tính duy nhất và ổn định qua các lần render.
+
+**Tham số:**
+- `name: string` — Tên hoặc thẻ của thành phần.
+- `props?: T` — Đối tượng các thuộc tính của thành phần (dùng để trích xuất tên lớp).
+- `index?: string` — Một chỉ số hoặc định danh rõ ràng tùy chọn.
+
+**Trả về:**
+`string` — Khóa được tạo hoặc cung cấp cho việc render.
+
+```typescript
+import { getIndexForRender } from '@dxtmisha/functional'
+
+// Trường hợp 1: Cả index và class từ props đều tồn tại
+const key1 = getIndexForRender('div', { class: 'my-class' }, 'item-0') 
+// Kết quả: 'item-0.my-class'
+
+// Trường hợp 2: Chỉ có index tồn tại
+const key2 = getIndexForRender('span', {}, 'header')
+// Kết quả: 'header'
+
+// Trường hợp 3: Chỉ có class tồn tại
+const key3 = getIndexForRender('button', { class: 'primary' })
+// Kết quả: 'primary'
+
+// Trường hợp 4: Không có cái nào tồn tại, trả về tên thành phần
+const key4 = getIndexForRender('li')
+// Kết quả: 'li'
+```

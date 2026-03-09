@@ -1,0 +1,79 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/EventRef - Reactive Event Manager'/>
+
+# EventRef Class
+
+A reactive event listener manager that simplifies the process of attaching and detaching events to DOM elements or the window. It automatically handles the re-binding of listeners when the target element (provided as a Vue `Ref`) changes.
+
+## Key Features
+
+- **Reactivity** — automatically updates event subscriptions when the element or control element `Ref` changes.
+- **Support for Multiple Types** — can listen to multiple event types simultaneously.
+- **Automatic Cleanup** — integrates with Vue's reactivity system for efficient management of listeners.
+- **Control Element** — supports an optional control element for specialized checks (like verifying if an element is still in the DOM).
+
+## Initialization
+
+```typescript
+import { EventRef } from '@dxtmisha/functional'
+import { ref, onMounted } from 'vue'
+
+const buttonRef = ref<HTMLButtonElement>()
+
+const event = new EventRef(
+  buttonRef,
+  undefined,
+  'click',
+  (e) => console.log('Button clicked!', e)
+)
+
+onMounted(() => event.start())
+```
+
+## State Management (Main Methods)
+
+### `start`
+
+Activates event listening. This method identifies all specified event types and attaches listeners to the target element. If the element is a `Window` or `HTMLElement`, it also supports specialized events like `resize` or `scroll-sync`.
+
+**Returns:** `this`
+
+### `stop`
+
+Disables event listening. It removes all active listeners and disconnects any observers (like `ResizeObserver`) associated with the instance.
+
+**Returns:** `this`
+
+### `toggle`
+
+Toggles the active state of the event listener based on the provided boolean value.
+
+**Parameters:**
+- `activity: boolean` — `true` to start listening, `false` to stop.
+
+**Returns:** `this`
+
+### `isActive`
+
+Checks whether the event listener is currently active and attached to an element.
+
+**Returns:** `boolean`
+
+## Configuration
+
+- `setElement(elementSelector: ElementOrString): this` — Changes the target element for the event listener.
+- `setType(type: string | string[]): this` — Updates the type(s) of events to listen for.
+- `setListener(listener: function): this` — Updates the callback function executed when the event occurs.
+- `setOptions(options: EventOptions): this` — Modifying the options object.
+- `setDetail(detail?: D): this` — Modifying a dependent value for the dispatch method.
+
+## Utility Methods
+
+- `dispatch(detail?: object): this` — Manually triggers the events associated with the instance.
+- `getElement(): E | undefined` — Returns the currently assigned target element.
+- `reset(): this` — Resets the event listeners.
+
+## Internal Structure
+
+`EventRef` extends the base `EventItem` class. It sets up Vue `watch`ers on the provided `elementSelector` and `elementSelectorControl` to ensure that even if the DOM element changes dynamically, the event listeners are correctly stopped on the old element and started on the new one.

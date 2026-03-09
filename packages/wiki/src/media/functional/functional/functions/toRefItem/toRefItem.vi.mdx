@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/toRefItem - Chuẩn hóa Ref phản ứng'/>
+
+# `toRefItem`
+
+Một hàm tiện ích đảm bảo một giá trị là một `Ref` phản ứng. Nếu đầu vào đã là một `Ref`, nó sẽ được trả về nguyên trạng. Nếu đầu vào là một giá trị thông thường, nó sẽ được bao bọc trong một `Ref` mới. Điều này hữu ích cho các hàm mong đợi một tham chiếu phản ứng làm đối số.
+
+**Tham số:**
+- `item: RefOrNormal<T>` — Một biến phản ứng (`Ref`) hoặc một giá trị thông thường.
+
+**Trả về:**
+`Ref<T>` — Một `Ref` phản ứng chứa giá trị.
+
+```typescript
+import { ref } from 'vue'
+import { toRefItem } from '@dxtmisha/functional'
+
+const existingRef = ref(10)
+const ordinaryValue = 20
+
+const normalized1 = toRefItem(existingRef)   // Trả về ref gốc
+const normalized2 = toRefItem(ordinaryValue) // Trả về ref(20) mới
+
+console.log(normalized1.value) // 10
+console.log(normalized2.value) // 20
+```

@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignChanged - Tiện ích theo dõi thay đổi'/>
+
+# Lớp DesignChanged
+
+Một lớp tiện ích được thiết kế để theo dõi các thay đổi trong thuộc tính đối tượng. Nó duy trì một bộ nhớ đệm (cache) cho các giá trị trước đó và cung cấp các phương thức để phát hiện sự khác biệt giữa trạng thái hiện tại và trạng thái cập nhật lần cuối.
+
+## Các tính năng chính
+
+- **So sánh hiệu quả** — so sánh các giá trị thuộc tính hiện tại với bộ nhớ đệm cục bộ để xác định các thay đổi.
+- **Theo dõi có chọn lọc** — hỗ trợ theo dõi một tập hợp con cụ thể của các thuộc tính thông qua tham số `watch`.
+- **Cập nhật hàng loạt** — cung cấp cách để đồng bộ hóa toàn bộ bộ nhớ đệm với trạng thái hiện tại của các thuộc tính.
+
+## Khởi tạo
+
+```typescript
+import { DesignChanged } from '@dxtmisha/functional'
+
+const props = { title: 'Xin chào', count: 1 }
+const tracker = new DesignChanged(props, ['title']) // Chỉ theo dõi 'title'
+
+console.log(tracker.isChanged()) // false
+```
+
+## Phát hiện thay đổi
+
+### `is`
+
+Kiểm tra xem các thuộc tính cụ thể có bị thay đổi kể từ lần cập nhật cuối cùng hay không.
+
+**Tham số:**
+- `name: string | string[]` — tên của một thuộc tính hoặc một mảng các tên thuộc tính cần kiểm tra.
+
+**Trả về:** `boolean` — `true` nếu bất kỳ thuộc tính nào được chỉ định đã thay đổi.
+
+### `isChanged`
+
+Kiểm tra xem bất kỳ thuộc tính nào đang được theo dõi (được định nghĩa trong danh sách `watch`) có thay đổi hay không.
+
+**Trả về:** `boolean` — `true` nếu ít nhất một thuộc tính đang theo dõi có giá trị khác.
+
+## Đồng bộ hóa dữ liệu
+
+### `update`
+
+Đồng bộ hóa bộ nhớ đệm nội bộ với giá trị hiện tại của tất cả các thuộc tính đang được theo dõi. Sau khi gọi phương thức này, `isChanged()` sẽ trả về `false` cho đến khi các thuộc tính được sửa đổi lại.
+
+**Trả về:** `void`
+
+## Cấu trúc nội bộ
+
+`DesignChanged` lưu trữ các giá trị "được biết đến lần cuối" trong một đối tượng `cache` riêng tư. Phương thức `isDifferent` thực hiện kiểm tra so sánh nghiêm ngặt (`!==`) giữa giá trị được lưu trong bộ nhớ đệm và giá trị hiện tại trong đối tượng `props`. Lớp này là một phụ thuộc cốt lõi cho `DesignAbstract` và `DesignAsyncAbstract`.

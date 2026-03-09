@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/setRef - Value Update'/>
+
+# `setRef`
+
+A utility function that updates the value of a reactive `Ref`. It includes a built-in check to ensure that the update only occurs if the new value is different from the current one, preventing unnecessary reactivity triggers.
+
+**Parameters:**
+- `item: Ref<T>` — The reactive `Ref` element to be updated.
+- `value: T` — The new value to assign to the `Ref`.
+
+**Returns:**
+`void`
+
+```typescript
+import { ref } from 'vue'
+import { setRef } from '@dxtmisha/functional'
+
+const status = ref('idle')
+
+// Updates the value to 'loading'
+setRef(status, 'loading')
+
+// This call will be ignored because the value is already 'loading'
+setRef(status, 'loading')
+```

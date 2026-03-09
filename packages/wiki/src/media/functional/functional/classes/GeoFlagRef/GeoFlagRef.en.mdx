@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/GeoFlagRef - Reactive Flag Manager'/>
+
+# GeoFlagRef Class
+
+A reactive manager for geographical flags and country information. It provides a convenient way to retrieve country icons and data while ensuring reactivity when the selected country code changes.
+
+## Key Features
+
+- **Reactivity** — automatically updates flag information when the country code `Ref` changes.
+- **Convenient Retrieval** — provides simple methods to get country data and icons.
+- **International Support** — supports getting country lists in national languages.
+
+## Initialization
+
+```typescript
+import { GeoFlagRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const countryCode = ref('US')
+const flagManager = new GeoFlagRef(countryCode)
+
+console.log(flagManager.getFlag().value) // Link to US flag icon
+```
+
+## Flag Retrieval
+
+### `get`
+
+Returns reactive information about a specific country, including its name and flag icon.
+
+**Parameters:**
+- `code?: string` — country code (defaults to the current code in the instance).
+
+**Returns:** `ComputedRef<GeoFlagItem | undefined>`
+
+### `getFlag`
+
+Returns a reactive link to the flag icon of a country.
+
+**Parameters:**
+- `code?: string` — country code (defaults to the current code in the instance).
+
+**Returns:** `ComputedRef<string | undefined>`
+
+## Lists & Information
+
+### `getCode`
+
+Returns the reactive country code used by the instance.
+
+**Returns:** `Ref<string>`
+
+### `getList`
+
+Returns a reactive list of country objects based on the provided array of country codes.
+
+**Parameters:**
+- `codes?: string[]` — an optional array of country codes to filter the list.
+
+**Returns:** `ComputedRef<GeoFlagItem[]>`
+
+### `getNational`
+
+Returns a reactive list of countries with their names provided in the national language.
+
+**Parameters:**
+- `codes?: string[]` — an optional array of country codes to filter the list.
+
+**Returns:** `ComputedRef<GeoFlagNational[]>`
+
+## GeoFlagItem Object
+
+The main object containing information about the country and its flag:
+
+- `language: string` — language name.
+- `country: string` — country name.
+- `standard: string` — standard locale code.
+- `icon?: string` — identifier or link to the flag icon.
+- `label: string` — display label.
+- `value: string` — value for selection.
+
+## GeoFlagNational Object
+
+Extended information about the country, including names in the national language:
+
+- `description: string` — description in the national language.
+- `nationalLanguage: string` — language name in the national language.
+- `nationalCountry: string` — country name in the national language.
+- (Plus all fields from `GeoFlagItem`)

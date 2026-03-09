@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/GeoIntlRef - Trình quản lý Intl phản ứng'/>
+
+# Lớp GeoIntlRef
+
+Trình quản lý phản ứng để định dạng số, ngày tháng và thời gian tương đối theo tiêu chuẩn quốc tế (Intl). Nó cung cấp một lớp bọc thuận tiện xung quanh tiện ích `GeoIntl`, đảm bảo rằng tất cả các chuỗi được định dạng sẽ tự động cập nhật khi ngôn ngữ hoặc dữ liệu đầu vào thay đổi.
+
+## Các tính năng chính
+
+- **Tính phản ứng** — tự động định dạng lại dữ liệu khi `Ref` ngôn ngữ hoặc giá trị đầu vào thay đổi.
+- **Định dạng số** — hỗ trợ số thập phân, tiền tệ, phần trăm và đơn vị đo lường.
+- **Ngày & Giờ** — cung cấp định dạng ngày, giờ và thời gian tương đối theo ngôn ngữ.
+- **Tên hiển thị** — cho phép dịch tên các ngôn ngữ, khu vực và chữ viết.
+
+## Khởi tạo
+
+```typescript
+import { GeoIntlRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = ref('vi-VN')
+const intl = new GeoIntlRef(locale)
+
+console.log(intl.number(1234.56).value) // "1.234,56"
+```
+
+## Các phương thức chung
+
+- `display(value?, typeOptions?): ComputedRef<string>` — Cung cấp bản dịch nhất quán cho tên hiển thị của ngôn ngữ, khu vực và chữ viết.
+- `languageName(value?, style?): ComputedRef<string>` — Trả về tên hiển thị cho một mã ngôn ngữ cụ thể.
+- `countryName(value?, style?): ComputedRef<string>` — Trả về tên hiển thị cho một mã khu vực (quốc gia) cụ thể.
+- `sort<T>(data, compareFn?): ComputedRef<T[]>` — Sắp xếp các chuỗi có tính đến đặc điểm của các quốc gia.
+
+## Định dạng số
+
+- `number(value, options?): ComputedRef<string>` — Định dạng một số theo ngôn ngữ và các tùy chọn hiện tại.
+- `decimal(): ComputedRef<string>` — Trả về ký hiệu dấu thập phân cho ngôn ngữ hiện tại.
+- `currency(value, currencyOptions?, numberOnly?): ComputedRef<string>` — Định dạng một giá trị dưới dạng chuỗi tiền tệ.
+- `currencySymbol(currency, currencyDisplay?): ComputedRef<string>` — Trả về ký hiệu tiền tệ hoặc mã tiền tệ.
+- `unit(value, unitOptions?): ComputedRef<string>` — Định dạng một giá trị với một đơn vị cụ thể.
+- `sizeFile(value, unitOptions?): ComputedRef<string>` — Trả về kích thước tệp được định dạng (ví dụ: "1.5 MB").
+- `percent(value, options?): ComputedRef<string>` — Định dạng một số dưới dạng phần trăm (0.1 -> "10%").
+- `percentBy100(value, options?): ComputedRef<string>` — Định dạng một số dưới dạng phần trăm (10 -> "10%").
+- `plural(value, words, options?, optionsNumber?): ComputedRef<string>` — Áp dụng định dạng theo quy tắc số nhiều.
+
+## Định dạng Ngày & Giờ
+
+- `date(value, type?, styleOptions?, hour24?): ComputedRef<string>` — Cho phép định dạng ngày và giờ theo ngôn ngữ.
+- `relative(value, styleOptions?, todayValue?): ComputedRef<string>` — Cho phép định dạng thời gian tương đối (ví dụ: "hôm qua").
+- `relativeLimit(value, limit, ...): ComputedRef<string>` — Định dạng tương đối với khả năng chuyển sang ngày tiêu chuẩn.
+- `relativeByValue(value, unit, styleOptions?): ComputedRef<string>` — Trả về giá trị thời gian tương đối dựa trên một đơn vị cụ thể.
+- `time(value): ComputedRef<string>` — Chỉ định dạng phần thời gian của một ngày.
+
+## Thông tin lịch
+
+- `month(value?, style?): ComputedRef<string>` — Trả về tên tháng cho một ngày cụ thể.
+- `months(style?): ComputedRef<ItemValue<number | undefined>[]>` — Trả về tên của tất cả các tháng.
+- `weekday(value?, style?): ComputedRef<string>` — Trả về tên của ngày trong tuần cho một ngày cụ thể.
+- `weekdays(style?): ComputedRef<ItemValue<number | undefined>[]>` — Trả về tên của tất cả các ngày trong tuần.

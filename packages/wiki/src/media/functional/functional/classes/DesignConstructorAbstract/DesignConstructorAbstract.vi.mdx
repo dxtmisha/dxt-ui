@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignConstructorAbstract - Logic Constructor cơ sở'/>
+
+# Lớp DesignConstructorAbstract
+
+Một lớp cơ sở trừu tượng cung cấp cấu trúc tiêu chuẩn hóa cho logic constructor của thành phần. Nó tạo điều kiện thuận lợi cho việc quản lý dữ liệu thành phần, kiểu dáng (styles) và các sửa đổi dựa trên trạng thái, phục vụ như một bản thiết kế cho các specialized design constructors.
+
+## Các tính năng chính
+
+- **Cấu trúc dữ liệu tiêu chuẩn hóa** — xác định một cách nhất quán để xử lý các thuộc tính, lớp (classes) và kiểu dáng của thành phần.
+- **Tích hợp trạng thái** — kết nối liền mạch với các trạng thái thành phần để kích hoạt các cập nhật phản ứng (reactive updates).
+- **Mở rộng linh hoạt** — được thiết kế để được kế thừa bởi các constructor thành phần cụ thể để thực hiện logic thiết lập tùy chỉnh.
+
+## Khởi tạo
+
+```typescript
+import { DesignConstructorAbstract } from '@dxtmisha/functional'
+
+interface MyProps { size: string }
+interface MyState { active: boolean }
+
+class MyConstructor extends DesignConstructorAbstract<MyProps, MyState> {
+  // Thực hiện logic trừu tượng hoặc thiết lập bắt buộc
+}
+
+const instance = new MyConstructor(props, state)
+```
+
+## Quản lý Logic
+
+- `setup(): void` — Thực thi trình tự thiết lập chính cho logic thành phần.
+- `init(): this` — Khởi tạo instance constructor và chuẩn bị trạng thái nội bộ.
+
+## Cấu trúc nội bộ
+
+`DesignConstructorAbstract` đóng vai trò là bộ điều phối chính cho quá trình khởi tạo thành phần. Nó quản lý mối quan hệ giữa các thuộc tính đầu vào và trạng thái phản ứng kết quả, đảm bảo rằng các mẫu kiến trúc (architectural patterns) được tuân thủ nhất quán trên các thành phần UI khác nhau.

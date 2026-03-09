@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/DesignAsyncAbstract - Base Async Design Class'/>
+
+# DesignAsyncAbstract Class
+
+An asynchronous abstract base class for managing constructor properties and state changes. It extends `DesignAbstract` to support asynchronous initialization of events, making it ideal for designs that require data fetching or async computations.
+
+## Key Features
+
+- **Asynchronous Initialization** — supports `Promise` based event initialization via `initEvent`.
+- **Property Management** — inherited structured handling of input data (`props`) and event storage (`event`).
+- **Async Workflow** — ensures that callbacks are triggered only after asynchronous state preparation is complete.
+
+## Initialization
+
+```typescript
+import { DesignAsyncAbstract } from '@dxtmisha/functional'
+
+interface MyProps { id: string }
+interface MyEvent { name: string }
+
+class MyAsyncDesign extends DesignAsyncAbstract<MyProps, MyEvent> {
+  protected async initEvent(): Promise<void> {
+    const data = await fetch(`/api/user/${this.props.id}`).then(r => r.json())
+    this.event.name = data.name
+  }
+}
+
+const design = new MyAsyncDesign({ id: '123' }, (event) => {
+  console.log('Async Data Updated:', event)
+})
+```
+
+## Data Management
+
+### `make`
+
+Initiates the asynchronous callback update process. It calls `makeCallback` (without waiting for its completion) and returns the instance for chaining.
+
+**Parameters:**
+- `compelled?: boolean` — if `true`, forces the data update regardless of whether changes were detected.
+
+**Returns:** `this`
+
+### `makeCallback`
+
+The primary asynchronous execution logic for updating the state. It waits for `initEvent` to complete before triggering callbacks and updating the change tracker.
+
+**Parameters:**
+- `compelled?: boolean` — forces data update.
+
+**Returns:** `Promise<void>`
+
+## Internal Structure
+
+`DesignAsyncAbstract` leverages the same `DesignChanged` mechanism as its synchronous counterpart but wraps the lifecycle in `async/await`. This ensures that even with complex asynchronous setup logic, the state remains consistent and changes are tracked accurately before notifying listeners.

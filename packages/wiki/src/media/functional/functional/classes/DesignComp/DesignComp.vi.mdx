@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignComp - Trình quản lý thành phần kết nối'/>
+
+# Lớp DesignComp
+
+Một lớp để làm việc với các thành phần kết nối (connected components) và quản lý logic render của chúng trong hệ thống thiết kế. Nó cho phép đăng ký thành phần, sửa đổi các thuộc tính mặc định và tạo VNode một cách linh hoạt.
+
+## Các tính năng chính
+
+- **Quản lý thành phần** — đăng ký và truy xuất các thành phần Vue một cách tập trung.
+- **Sửa đổi động** — hỗ trợ áp dụng các sửa đổi thuộc tính toàn cục hoặc cụ thể cho các thành phần trước khi render.
+- **Render linh hoạt** — cung cấp nhiều phương thức (`render`, `renderOne`, `renderAdd`) để tạo Vue VNode với tính năng tự động liên kết thuộc tính (binding).
+- **Tối ưu hóa hiệu suất** — sử dụng bộ nhớ đệm nội bộ với các thuộc tính `computed` của Vue cho các sửa đổi thuộc tính.
+
+## Khởi tạo
+
+```typescript
+import { DesignComp } from '@dxtmisha/functional'
+import MyButton from './MyButton.vue'
+
+const components = {
+  button: MyButton
+}
+
+const modification = {
+  button: { size: 'large' }
+}
+
+const design = new DesignComp(components, modification)
+```
+
+## Truy xuất thành phần
+
+- `is(name: string): boolean` — Kiểm tra xem một thành phần có được đăng ký hay không.
+- `get(name: string): COMP[K]` — Trả về đối tượng thành phần đã đăng ký theo tên.
+- `getModification(index?: string, props?: object): object | undefined` — Trả về dữ liệu đầu vào đã sửa đổi cho các thành phần kết nối.
+
+## Các phương thức Render
+
+- `render(name: string, props?: object, children?: any, index?: string): VNode[]` — Render một thành phần và trả về một mảng chứa VNode kết quả.
+- `renderOne(name: string, props?: object, children?: any, index?: string): VNode | undefined` — Render một thành phần duy nhất và trả về VNode trực tiếp.
+- `renderAdd(item: any[], name: string, props?: object, children?: any, index?: string): this` — Render một thành phần và đẩy kết quả vào một mảng được cung cấp.
+
+## Cấu trúc nội bộ
+
+`DesignComp` đóng vai trò là cầu nối giữa logic thiết kế và công cụ render của Vue. Nó xử lý các việc hợp nhất thuộc tính phức tạp thông qua `getModification` và đảm bảo rằng các sửa đổi thành phần có tính phản ứng (reactive) bằng cách tận dụng hệ thống `computed` của Vue bên trong logic `DesignComponents` mà nó kế thừa.

@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Classes/DesignComp - Менеджер подключенных компонентов'/>
+
+# Класс DesignComp
+
+Класс для работы с подключенными компонентами и управления логикой их рендеринга в рамках дизайн-системы. Позволяет регистрировать компоненты, модифицировать их свойства по умолчанию и гибко генерировать VNode.
+
+## Ключевые особенности
+
+- **Управление компонентами** — централизованная регистрация и получение Vue-компонентов.
+- **Динамические модификации** — поддержка применения глобальных или специфических модификаций свойств к компонентам перед рендерингом.
+- **Гибкий рендеринг** — предоставляет несколько методов (`render`, `renderOne`, `renderAdd`) для генерации Vue VNode с автоматической привязкой свойств.
+- **Оптимизация производительности** — использует внутреннее кэширование с помощью вычисляемых свойств Vue (`computed`) для модификаций свойств.
+
+## Инициализация
+
+```typescript
+import { DesignComp } from '@dxtmisha/functional'
+import MyButton from './MyButton.vue'
+
+const components = {
+  button: MyButton
+}
+
+const modification = {
+  button: { size: 'large' }
+}
+
+const design = new DesignComp(components, modification)
+```
+
+## Получение компонентов
+
+- `is(name: string): boolean` — Проверяет наличие зарегистрированного компонента.
+- `get(name: string): COMP[K]` — Возвращает объект зарегистрированного компонента по его имени.
+- `getModification(index?: string, props?: object): object | undefined` — Возвращает модифицированные входные данные для подключенных компонентов.
+
+## Методы рендеринга
+
+- `render(name: string, props?: object, children?: any, index?: string): VNode[]` — Рендерит компонент и возвращает массив с VNode.
+- `renderOne(name: string, props?: object, children?: any, index?: string): VNode | undefined` — Рендерит один компонент и возвращает VNode напрямую.
+- `renderAdd(item: any[], name: string, props?: object, children?: any, index?: string): this` — Рендерит компонент и добавляет результат в массив.
+
+## Внутреннее устройство
+
+`DesignComp` выступает в качестве моста между логикой дизайна и движком рендеринга Vue. Он обрабатывает сложные слияния свойств через `getModification` и гарантирует реактивность модификаций компонентов, используя систему `computed` Vue внутри унаследованной логики `DesignComponents`.

@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/toComputed - Обертка для computed только для чтения'/>
+
+# `toComputed`
+
+Оборачивает реактивную переменную `Ref`, возвращаемую функцией обратного вызова, в `ComputedRef` только для чтения. Это полезно для предоставления доступа к реактивным значениям, которые не должны напрямую изменяться потребителем, что гарантирует целостность данных.
+
+**Параметры:**
+- `callback: () => Ref<T>` — Функция, возвращающая реактивную переменную `Ref`, которую необходимо защитить.
+
+**Возвращает:**
+`ComputedRef<T>` — Вычисляемая переменная только для чтения.
+
+```typescript
+import { ref } from 'vue'
+import { toComputed } from '@dxtmisha/functional'
+
+const internalState = ref(0)
+
+// Предоставление доступа только для чтения через computed
+const publicState = toComputed(() => internalState)
+
+console.log(publicState.value) // 0
+// publicState.value = 1 // Ошибка: нельзя присвоить значение свойству только для чтения
+```

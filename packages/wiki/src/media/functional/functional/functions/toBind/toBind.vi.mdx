@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/toBind - Hợp nhất thuộc tính sâu'/>
+
+# `toBind`
+
+Hợp nhất hai đối tượng thuộc tính trong khi xử lý thông minh các thuộc tính `class` và `style`. Nếu cả hai đối tượng đều chứa class hoặc style, chúng sẽ được kết hợp thành một mảng để tránh bị ghi đè. Các thuộc tính khác từ đối tượng thứ hai (`value`) sẽ ghi đè lên các thuộc tính trong đối tượng thứ nhất (`extra`).
+
+**Tham số:**
+- `extra: ItemList` — Đối tượng thuộc tính cơ sở.
+- `value: ItemList` — Đối tượng thuộc tính cần hợp nhất vào cơ sở.
+
+**Trả về:**
+`ConstrBind<R>` — Đối tượng thuộc tính đã được hợp nhất.
+
+```typescript
+import { toBind } from '@dxtmisha/functional'
+
+const base = { class: 'btn', style: { color: 'red' }, id: 'my-btn' }
+const mod = { class: 'btn--large', style: { margin: '10px' }, id: 'primary-btn' }
+
+const result = toBind(base, mod)
+/* 
+Kết quả: { 
+  id: 'primary-btn', 
+  class: ['btn', 'btn--large'], 
+  style: [{ color: 'red' }, { margin: '10px' }] 
+}
+*/
+```

@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/GeoFlagRef - Trình quản lý cờ phản ứng'/>
+
+# Lớp GeoFlagRef
+
+Trình quản lý phản ứng cho cờ địa lý và thông tin quốc gia. Nó cung cấp một cách thuận tiện để truy xuất các biểu tượng và dữ liệu quốc gia trong khi đảm bảo tính phản ứng khi mã quốc gia được chọn thay đổi.
+
+## Các tính năng chính
+
+- **Tính phản ứng** — tự động cập nhật thông tin cờ khi mã quốc gia `Ref` thay đổi.
+- **Truy xuất thuận tiện** — cung cấp các phương thức đơn giản để lấy dữ liệu quốc gia và biểu tượng.
+- **Hỗ trợ quốc tế** — hỗ trợ lấy danh sách quốc gia bằng ngôn ngữ bản địa.
+
+## Khởi tạo
+
+```typescript
+import { GeoFlagRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const countryCode = ref('VN')
+const flagManager = new GeoFlagRef(countryCode)
+
+console.log(flagManager.getFlag().value) // Đường dẫn đến biểu tượng cờ Việt Nam
+```
+
+## Truy xuất cờ
+
+### `get`
+
+Trả về thông tin phản ứng về một quốc gia cụ thể, bao gồm tên và biểu tượng cờ.
+
+**Tham số:**
+- `code?: string` — mã quốc gia (mặc định là mã hiện tại trong instance).
+
+**Trả về:** `ComputedRef<GeoFlagItem | undefined>`
+
+### `getFlag`
+
+Trả về đường dẫn phản ứng đến biểu tượng cờ của một quốc gia.
+
+**Tham số:**
+- `code?: string` — mã quốc gia (mặc định là mã hiện tại trong instance).
+
+**Trả về:** `ComputedRef<string | undefined>`
+
+## Danh sách & Thông tin
+
+### `getCode`
+
+Trả về mã quốc gia có tính phản ứng được sử dụng trong instance.
+
+**Trả về:** `Ref<string>`
+
+### `getList`
+
+Trả về danh sách các đối tượng quốc gia có tính phản ứng dựa trên mảng các mã quốc gia được cung cấp.
+
+**Tham số:**
+- `codes?: string[]` — một mảng tùy chọn các mã quốc gia để lọc danh sách.
+
+**Trả về:** `ComputedRef<GeoFlagItem[]>`
+
+### `getNational`
+
+Trả về danh sách các quốc gia có tính phản ứng với tên được cung cấp bằng ngôn ngữ bản địa.
+
+**Tham số:**
+- `codes?: string[]` — một mảng tùy chọn các mã quốc gia để lọc danh sách.
+
+**Trả về:** `ComputedRef<GeoFlagNational[]>`
+
+## Đối tượng GeoFlagItem
+
+Đối tượng chính chứa thông tin về quốc gia và cờ của nó:
+
+- `language: string` — tên ngôn ngữ.
+- `country: string` — tên quốc gia.
+- `standard: string` — mã quốc gia tiêu chuẩn.
+- `icon?: string` — định danh hoặc đường dẫn đến biểu tượng cờ.
+- `label: string` — nhãn hiển thị.
+- `value: string` — giá trị để lựa chọn.
+
+## Đối tượng GeoFlagNational
+
+Thông tin mở rộng về quốc gia, bao gồm các tên bằng ngôn ngữ bản địa:
+
+- `description: string` — mô tả bằng ngôn ngữ bản địa.
+- `nationalLanguage: string` — tên ngôn ngữ bằng ngôn ngữ bản địa.
+- `nationalCountry: string` — tên quốc gia bằng ngôn ngữ bản địa.
+- (Cộng với tất cả các trường từ `GeoFlagItem`)

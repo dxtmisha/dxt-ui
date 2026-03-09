@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/getRef - Извлечение значения'/>
+
+# `getRef`
+
+Утилитарная функция, которая извлекает базовое значение из реактивной переменной `Ref` или возвращает само значение, если оно не является реактивным. Это полезно для гарантии работы с чистыми данными независимо от их состояния реактивности.
+
+**Параметры:**
+- `item: RefOrNormal<T>` — Реактивная переменная (`Ref`) или обычное значение.
+
+**Возвращает:**
+`T` — Распакованное значение `Ref` или само входное значение.
+
+```typescript
+import { ref } from 'vue'
+import { getRef } from '@dxtmisha/functional'
+
+const count = ref(10)
+const normalValue = 20
+
+console.log(getRef(count))       // 10
+console.log(getRef(normalValue)) // 20
+```

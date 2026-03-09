@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/ScrollbarWidthRef - Scrollbar Width Manager'/>
+
+# ScrollbarWidthRef Class
+
+A reactive utility class for detecting and managing the browser's scrollbar width. It uses a singleton-like detection mechanism and provides reactive properties to check if the scrollbar width has been calculated.
+
+## Key Features
+
+- **Reactivity** — uses Vue `ref` and `computed` to provide the scrollbar state.
+- **Asynchronous Detection** — automatically calculates the width upon initialization.
+- **Lightweight** — minimal footprint, useful for layout calculations that depend on scrollbar presence.
+
+## Initialization & Usage
+
+```typescript
+import { ScrollbarWidthRef } from '@dxtmisha/functional'
+
+const scrollbar = new ScrollbarWidthRef()
+
+// Check if the width is calculated
+console.log(scrollbar.is.value)
+
+// Get the state (boolean)
+console.log(scrollbar.item.value)
+```
+
+## Properties
+
+- `item`: `Ref<boolean | undefined>` — Reactive item containing the scrollbar presence state.
+- `is`: `ComputedRef<boolean>` — Checks whether the scrollbar width calculation is complete.

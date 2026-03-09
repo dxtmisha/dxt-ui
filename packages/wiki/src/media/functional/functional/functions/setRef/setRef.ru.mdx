@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/setRef - Обновление значения'/>
+
+# `setRef`
+
+Утилитарная функция, которая обновляет значение реактивной переменной `Ref`. Она включает встроенную проверку, гарантирующую, что обновление происходит только в том случае, если новое значение отличается от текущего, что предотвращает лишние срабатывания реактивности.
+
+**Параметры:**
+- `item: Ref<T>` — Реактивный элемент (`Ref`) для обновления.
+- `value: T` — Новое значение для присвоения `Ref`.
+
+**Возвращает:**
+`void`
+
+```typescript
+import { ref } from 'vue'
+import { setRef } from '@dxtmisha/functional'
+
+const status = ref('idle')
+
+// Обновляет значение на 'loading'
+setRef(status, 'loading')
+
+// Этот вызов будет проигнорирован, так как значение уже 'loading'
+setRef(status, 'loading')
+```

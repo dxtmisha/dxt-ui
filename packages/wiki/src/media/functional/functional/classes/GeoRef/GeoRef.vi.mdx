@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/GeoRef - Trình quản lý địa lý phản ứng'/>
+
+# Lớp GeoRef
+
+Một lớp tĩnh (static) có tính phản ứng để quản lý dữ liệu địa lý toàn cục. Nó cung cấp quyền truy cập tập trung vào các thông tin như quốc gia hiện tại, ngôn ngữ, locale tiêu chuẩn và ngày đầu tiên của tuần, đảm bảo rằng mọi thay đổi đều được phản ánh trong toàn bộ ứng dụng.
+
+## Các tính năng chính
+
+- **Tính phản ứng toàn cục** — sử dụng trạng thái phản ứng chung cho dữ liệu địa lý.
+- **Quản lý tập trung** — là "điểm tin cậy duy nhất" (single point of truth) cho các cài đặt quốc gia và ngôn ngữ.
+- **Truy cập tĩnh** — các phương thức có thể được gọi trực tiếp trên lớp mà không cần khởi tạo instance.
+
+## Cách sử dụng
+
+```typescript
+import { GeoRef } from '@dxtmisha/functional'
+
+// Lấy quốc gia hiện tại
+console.log(GeoRef.getCountry().value)
+
+// Thay đổi vị trí toàn cục
+GeoRef.set('vi-VN')
+```
+
+## Các phương thức
+
+- `get(): Ref<GeoItemFull>` — Trả về một đối tượng phản ứng chứa thông tin địa lý đầy đủ.
+- `getCountry(): ComputedRef<string>` — Trả về một chuỗi phản ứng với mã quốc gia hiện tại.
+- `getLanguage(): ComputedRef<string>` — Trả về một chuỗi phản ứng với mã ngôn ngữ hiện tại.
+- `getStandard(): ComputedRef<string>` — Trả về một chuỗi phản ứng với định dạng locale tiêu chuẩn đầy đủ.
+- `getFirstDay(): ComputedRef<string>` — Trả về một chuỗi phản ứng đại diện cho ngày đầu tiên của tuần.
+- `set(code: string): void` — Thay đổi dữ liệu địa lý toàn cục dựa trên mã được cung cấp.
+
+## Đối tượng GeoItemFull
+
+Cấu trúc đối tượng được trả về bởi phương thức `get()`:
+
+- `country: string` — mã quốc gia hiện tại.
+- `language: string` — mã ngôn ngữ hiện tại.
+- `standard: string` — mã locale tiêu chuẩn (ví dụ: "vi-VN").
+- `firstDay: string` — ngày đầu tiên của tuần.
+- `countryAlternative?: string[]` — danh sách các mã quốc gia thay thế.
+- `languageAlternative?: string[]` — danh sách các mã ngôn ngữ thay thế.
+- `zone?: string | null` — múi giờ hiện tại.
+- `phoneCode?: string` — mã điện thoại quốc gia.
+- `phoneMask?: string | string[]` — mặt nạ số điện thoại điển hình của quốc gia.

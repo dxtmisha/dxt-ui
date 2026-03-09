@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/GeoRef - Reactive Geographic Manager'/>
+
+# GeoRef Class
+
+A static reactive class for managing global geographic data. It provides centralized access to information such as the current country, language, standard locale, and the first day of the week, ensuring that any changes are reflected across the application.
+
+## Key Features
+
+- **Global Reactivity** — uses a shared reactive state for geographic data.
+- **Centralized Management** — single point of truth for country and language settings.
+- **Static Access** — methods can be called directly on the class without instantiation.
+
+## Initialization & Usage
+
+```typescript
+import { GeoRef } from '@dxtmisha/functional'
+
+// Get current country
+console.log(GeoRef.getCountry().value)
+
+// Change global location
+GeoRef.set('en-GB')
+```
+
+## Methods
+
+- `get(): Ref<GeoItemFull>` — Returns a reactive object containing the full geographical information.
+- `getCountry(): ComputedRef<string>` — Returns a reactive string with the current country code.
+- `getLanguage(): ComputedRef<string>` — Returns a reactive string with the current language code.
+- `getStandard(): ComputedRef<string>` — Returns a reactive string with the full standard locale format.
+- `getFirstDay(): ComputedRef<string>` — Returns a reactive string representing the first day of the week.
+- `set(code: string): void` — Changes the global geographic data based on the provided code.
+
+## GeoItemFull Object
+
+The object structure returned by the `get()` method:
+
+- `country: string` — current country code.
+- `language: string` — current language code.
+- `standard: string` — standard locale code (e.g., "en-US").
+- `firstDay: string` — first day of the week.
+- `countryAlternative?: string[]` — list of alternative country codes.
+- `languageAlternative?: string[]` — list of alternative language codes.
+- `zone?: string | null` — current timezone.
+- `phoneCode?: string` — phone country code.
+- `phoneMask?: string | string[]` — typical phone number mask for the country.

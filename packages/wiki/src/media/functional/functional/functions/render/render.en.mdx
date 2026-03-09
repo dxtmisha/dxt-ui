@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/render - Component Rendering with Keys'/>
+
+# `render`
+
+A wrapper around Vue's `h` (hyperscript) function that provides automatic key generation for components. It ensures that components have unique keys for efficient rendering and transition handling, especially when dealing with lists or dynamic elements.
+
+**Parameters:**
+- `name: string` — The name or tag of the component to render.
+- `props?: T` — The properties to pass to the component.
+- `children?: RawChildren | RawSlots` — The children or slots of the component.
+- `index?: string` — An optional index or identifier to use for key generation.
+
+**Returns:**
+`VNode` — The rendered virtual node.
+
+```typescript
+import { render } from '@dxtmisha/functional'
+
+// Renders a div with an automatically generated key
+const vnode = render('div', { class: 'container' }, 'Hello World')
+
+// Renders a component with a specific index for key generation
+const item = render('my-component', { data: itemData }, null, 'item-1')
+```

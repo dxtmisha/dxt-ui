@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/getClassName - Lấy tên Class từ Props'/>
+
+# `getClassName`
+
+Một hàm tiện ích trích xuất thuộc tính `class` từ một đối tượng thuộc tính cho trước. Nó đảm bảo giá trị trả về là một chuỗi, điều này hữu ích để thu được tên lớp một cách nhất quán khi render các thành phần hoặc phần tử.
+
+**Tham số:**
+- `props?: T` — Đối tượng thuộc tính của thành phần, có thể chứa thuộc tính `class`.
+
+**Trả về:**
+`string | undefined` — Tên lớp dưới dạng chuỗi nếu nó tồn tại và là một chuỗi, nếu không thì trả về `undefined`.
+
+```typescript
+import { getClassName } from '@dxtmisha/functional'
+
+// Trả về 'my-custom-class'
+const className1 = getClassName({ class: 'my-custom-class', otherProp: 1 })
+
+// Trả về undefined vì 'class' bị thiếu
+const className2 = getClassName({ otherProp: 1 })
+
+// Trả về undefined vì 'class' không phải là một chuỗi
+const className3 = getClassName({ class: 123 })
+```

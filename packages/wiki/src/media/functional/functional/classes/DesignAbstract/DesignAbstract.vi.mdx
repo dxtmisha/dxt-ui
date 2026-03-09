@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/DesignAbstract - Lớp thiết kế cơ sở'/>
+
+# Lớp DesignAbstract
+
+Một lớp cơ sở trừu tượng (abstract base class) được thiết kế để quản lý các thuộc tính của constructor và thay đổi trạng thái. Nó cung cấp một cách có cấu trúc để xử lý các thuộc tính đầu vào, theo dõi các thay đổi và thực thi các hàm callback khi dữ liệu được cập nhật.
+
+## Các tính năng chính
+
+- **Quản lý thuộc tính** — xử lý có cấu trúc dữ liệu đầu vào (`props`) và lưu trữ sự kiện (`event`).
+- **Theo dõi thay đổi** — tích hợp với `DesignChanged` để giám sát và cập nhật các thay đổi thuộc tính một cách hiệu quả.
+- **Quản lý vòng đời** — tự động thực thi `makeCallback` và `initEvent` trong quá trình cập nhật dữ liệu.
+
+## Khởi tạo
+
+```typescript
+import { DesignAbstract } from '@dxtmisha/functional'
+
+interface MyProps { title: string }
+interface MyEvent { title: string }
+
+class MyDesign extends DesignAbstract<MyProps, MyEvent> {
+  protected initEvent(): void {
+    this.event.title = this.props.title
+  }
+}
+
+const design = new MyDesign({ title: 'Xin chào' }, (event) => {
+  console.log('Đã cập nhật:', event)
+})
+```
+
+## Quản lý dữ liệu
+
+### `make`
+
+Khởi tạo quá trình cập nhật callback. Nó gọi `makeCallback` và trả về instance để có thể thực hiện chuỗi lệnh (chaining).
+
+**Tham số:**
+- `compelled?: boolean` — nếu là `true`, sẽ ép buộc cập nhật dữ liệu bất kể có phát hiện thay đổi hay không.
+
+**Trả về:** `this`
+
+### `makeCallback`
+
+Logic thực thi chính để cập nhật trạng thái. Nó kiểm tra xem có thay đổi nào xảy ra hay không hoặc nếu việc cập nhật được ép buộc, sau đó khởi tạo sự kiện và kích hoạt các callback.
+
+**Tham số:**
+- `compelled: boolean` — ép buộc cập nhật dữ liệu. Mặc định: `false`.
+
+**Trả về:** `void`
+
+## Cấu trúc nội bộ
+
+Bên trong, `DesignAbstract` sử dụng lớp `DesignChanged` để theo dõi trạng thái của các thuộc tính. Điều này cho phép lớp chỉ kích hoạt cập nhật khi dữ liệu thực sự thay đổi, tối ưu hóa hiệu suất cho các thành phần UI phức tạp.

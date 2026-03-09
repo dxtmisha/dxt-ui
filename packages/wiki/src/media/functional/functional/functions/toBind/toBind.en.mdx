@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/toBind - Deep Property Merging'/>
+
+# `toBind`
+
+Merges two property objects while intelligently handling `class` and `style` properties. If both objects contain classes or styles, they are combined into an array to prevent overwriting. Other properties from the second object (`value`) will overwrite those in the first object (`extra`).
+
+**Parameters:**
+- `extra: ItemList` — The base property object.
+- `value: ItemList` — The property object to be merged into the base.
+
+**Returns:**
+`ConstrBind<R>` — The merged properties object.
+
+```typescript
+import { toBind } from '@dxtmisha/functional'
+
+const base = { class: 'btn', style: { color: 'red' }, id: 'my-btn' }
+const mod = { class: 'btn--large', style: { margin: '10px' }, id: 'primary-btn' }
+
+const result = toBind(base, mod)
+/* 
+Result: { 
+  id: 'primary-btn', 
+  class: ['btn', 'btn--large'], 
+  style: [{ color: 'red' }, { margin: '10px' }] 
+}
+*/
+```

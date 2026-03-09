@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/getComputedAsync - Vỏ bọc computed bất đồng bộ'/>
+
+# `getComputedAsync`
+
+Bao bọc một hàm callback bất đồng bộ thành một thuộc tính computed phản ứng. Nó tự động xử lý việc giải quyết promise và cho phép một giá trị bỏ qua tùy chọn để lọc ra các kết quả không mong muốn.
+
+**Tham số:**
+- `callback: () => Promise<Ref<T | I> | T | I>` — Một hàm bất đồng bộ trả về giá trị cần tính toán.
+- `ignore?: I` — Một giá trị mà nếu được trả về bởi callback, sẽ bị bỏ qua và thuộc tính computed sẽ không được cập nhật.
+
+**Trả về:**
+`ComputedRef<T | undefined>` — Một computed ref phản ứng chứa giá trị đã được giải quyết từ callback, hoặc `undefined` cho đến khi giá trị hợp lệ đầu tiên được giải quyết.
+
+```typescript
+import { getComputedAsync } from '@dxtmisha/functional'
+
+// Lấy dữ liệu bất đồng bộ và cập nhật khi được giải quyết
+const userData = getComputedAsync(async () => {
+  const response = await fetch('/api/user')
+  return response.json()
+})
+
+// Sử dụng tham số ignore
+const data = getComputedAsync(async () => {
+  const result = await someAsyncAction()
+  return result === null ? 'ignored' : result
+}, 'ignored')
+```

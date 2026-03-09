@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/render - Render component với Key'/>
+
+# `render`
+
+Một bản bọc (wrapper) cho hàm `h` (hyperscript) của Vue, cung cấp khả năng tự động tạo key cho các thành phần. Nó đảm bảo rằng các thành phần có key duy nhất để render hiệu quả và xử lý các chuyển đổi (transitions), đặc biệt là khi làm việc với danh sách hoặc các phần tử động.
+
+**Tham số:**
+- `name: string` — Tên hoặc thẻ của thành phần cần render.
+- `props?: T` — Các thuộc tính truyền vào thành phần.
+- `children?: RawChildren | RawSlots` — Các thành phần con hoặc slot của thành phần.
+- `index?: string` — Một chỉ số hoặc định danh tùy chọn được sử dụng để tạo key.
+
+**Trả về:**
+`VNode` — Node ảo đã được render.
+
+```typescript
+import { render } from '@dxtmisha/functional'
+
+// Render một div với key được tạo tự động
+const vnode = render('div', { class: 'container' }, 'Chào thế giới')
+
+// Render một thành phần với index cụ thể để tạo key
+const item = render('my-component', { data: itemData }, null, 'item-1')
+```
