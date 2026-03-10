@@ -15,33 +15,74 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
+Создает новый экземпляр `DesignComponents`. Класс позволяет объединять компоненты и их модификации в единый механизм управления рендерингом.
+
+**Параметры:**
+- `components: COMP = {}` — список подключаемых компонентов (объект, где ключи — названия, а значения — Vue-компоненты).
+- `modification?: ConstrComponentMod<P>` — объект модификаций, позволяющий переопределять свойства (props) для каждого компонента.
+
 ```typescript
 import { DesignComponents } from '@dxtmisha/functional'
 import MyButton from './MyButton.vue'
+import MyInput from './MyInput.vue'
 
+// 1. Регистрация компонентов
 const components = {
-  button: MyButton
+  button: MyButton,
+  input: MyInput
 }
 
+// 2. Определение модификаций (props по умолчанию)
 const modification = {
-  button: { size: 'large' }
+  button: { size: 'large', color: 'primary' },
+  input: { focus: true }
 }
 
 const design = new DesignComponents(components, modification)
 ```
 
-## Получение компонентов
+
+## Методы рендеринга
+
+### `render`
+
+Рендерит компонент по его имени и возвращает массив, содержащий один `VNode`. Это полезно для Vue, где часто требуются массивы узлов.
+
+**Параметры:**
+- `name: string` — Название зарегистрированного компонента.
+- `props: object` — Свойства, передаваемые компоненту.
+- `children: any` — Дочерние элементы или слоты.
+- `index: string` — Ключ (key) для VNode.
+
+**Возвращает:** `VNode[]` — Массив, содержащий сгенерированный VNode.
+
+### `renderOne`
+
+Рендерит один компонент и возвращает объект `VNode` напрямую. Если компонент не найден, возвращает `undefined`.
+
+**Параметры:**
+- `name: string` — Название зарегистрированного компонента.
+- `props: object` — Свойства для компонента.
+- `children: any` — Дочерние элементы.
+- `index: string` — Ключ (key) для VNode.
+
+**Возвращает:** `VNode | undefined` — Объект VNode или `undefined`.
+
+### `renderAdd`
+
+Рендерит компонент и добавляет полученный `VNode` в предоставленный массив. Позволяет собирать список узлов в один проход.
+
+**Параметры:**
+- `item: any[]` — Массив, в который будет добавлен результат рендеринга.
+- `name: string` — Название компонента.
+- `props: object` — Свойства для компонента.
+- `children: any` — Дочерние элементы.
+- `index: string` — Ключ (key) для VNode.
+
+**Возвращает:** `this` — Ссылка на текущий экземпляр для цепочки вызовов.
+
+## Дополнительные методы
 
 - `is(name: string): boolean` — Проверяет наличие зарегистрированного компонента.
 - `get(name: string): COMP[K]` — Возвращает объект зарегистрированного компонента по его имени.
 - `getModification(index?: string, props?: object): object | undefined` — Возвращает модифицированные входные данные для подключенных компонентов.
-
-## Методы рендеринга
-
-- `render(name: string, props?: object, children?: any, index?: string): VNode[]` — Рендерит компонент и возвращает массив с VNode.
-- `renderOne(name: string, props?: object, children?: any, index?: string): VNode | undefined` — Рендерит один компонент и возвращает VNode напрямую.
-- `renderAdd(item: any[], name: string, props?: object, children?: any, index?: string): this` — Рендерит компонент и добавляет результат в массив.
-
-## Внутреннее устройство
-
-`DesignComponents` выступает в качестве моста между логикой дизайна и движком рендеринга Vue. Он обрабатывает сложные слияния свойств через `getModification` и гарантирует реактивность модификаций компонентов, используя систему `computed` Vue внутри своей логики.

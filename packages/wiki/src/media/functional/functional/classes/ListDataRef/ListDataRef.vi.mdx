@@ -1,88 +1,304 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional/Classes/ListDataRef - Trình quản lý danh sách phản ứng'/>
+<Meta title='@dxtmisha/vi/functional/Classes/ListDataRef - Quản Lý Danh Sách Dữ Liệu'/>
 
 # Lớp ListDataRef
 
-Một trình quản lý phản ứng toàn diện để xử lý dữ liệu danh sách. Nó hỗ trợ các hoạt động phức tạp như lọc, tìm kiếm (với làm nổi bật), lựa chọn đơn hoặc nhiều, quản lý trọng tâm (focus) và danh sách phân cấp (lồng nhau).
+Một lớp phản ứng (reactive) để quản lý danh sách dữ liệu với bất kỳ độ phức tạp nào. Hỗ trợ lọc, lựa chọn (selection), tiêu điểm (focus) và cấu trúc lồng nhau (nhóm và menu). Lớp này chuyển đổi dữ liệu đầu vào thành định dạng chuẩn hóa và cung cấp một bộ phương thức phong phú để điều hướng, tìm kiếm và quản lý trạng thái của các phần tử.
 
 ## Các tính năng chính
 
-- **Tính phản ứng** — tất cả các chế độ xem dữ liệu và trạng thái lựa chọn đều là các đối tượng Vue `ComputedRef`.
-- **Danh sách phân cấp** — hỗ trợ các nhóm và menu lồng nhau với quản lý danh sách con tự động.
-- **Kiểm soát lựa chọn** — xử lý giới hạn lựa chọn tối thiểu/tối đa và cung cấp nhiều cách khác nhau để lấy các mục đã chọn.
-- **Làm nổi bật** — hỗ trợ tích hợp để làm nổi bật dựa trên tìm kiếm và điều hướng qua các kết quả.
+- **Tính phản ứng (Reactivity)** — tự động cập nhật các thuộc tính tính toán (computed properties) khi dữ liệu nguồn (Vue ref) hoặc tham số điều khiển thay đổi.
+- **Chuẩn hóa** — chuyển đổi bất kỳ định dạng đầu vào nào (mảng chuỗi, đối tượng) thành một giao diện `ListDataItem` thống nhất.
+- **Lồng nhau sâu** — hỗ trợ cấu trúc dạng cây với việc quản lý danh sách con tự động thông qua `getSubList`.
+- **Điều hướng thông minh** — các phương thức tích hợp sẵn để di chuyển trong danh sách, có tính đến việc lọc và loại phần tử.
+- **Chế độ Lite** — tối ưu hóa việc hiển thị cho danh sách lớn bằng cách sử dụng `liteData`.
+- **Quản lý lựa chọn** — kiểm soát số lượng phần tử được chọn (tối thiểu/tối đa) và trạng thái của chúng.
 
 ## Khởi tạo
 
-```typescript
+### `constructor`
+
+Tạo một thực thể để quản lý dữ liệu danh sách.
+
+**Tham số:**
+
+- `list: RefOrNormal<ListListInput | undefined>` — Danh sách dữ liệu phản ứng hoặc thông thường.
+- `focus?: RefType<ListSelectedItem | undefined>` — (Vue ref) Mã định danh của phần tử đang được lấy tiêu điểm.
+- `highlight?: RefType<string | undefined>` — (Vue ref) Văn bản tìm kiếm để làm nổi bật.
+- `highlightLengthStart?: RefType<number | undefined>` — (Vue ref) Số ký tự tối thiểu để bắt đầu tìm kiếm.
+- `filterMode?: RefType<boolean | undefined>` — (Vue ref) Chế độ bật/tắt lọc.
+- `selected?: RefType<ListSelectedList | undefined>` — (Vue ref) Danh sách các mã định danh đã chọn.
+- `keyValue?: RefType<string | undefined>` — (Vue ref) Tên trường cho giá trị (mặc định là `'value'`).
+- `keyLabel?: RefType<string | undefined>` — (Vue ref) Tên trường cho nhãn (mặc định là `'label'`).
+- `lite?: RefType<number | undefined>` — (Vue ref) Ngưỡng số lượng phần tử để kích hoạt chế độ Lite.
+- `min: RefOrNormal<number | string | undefined>` — Số lượng lựa chọn tối thiểu bắt buộc (mặc định là `0`).
+- `max: RefOrNormal<number | string | undefined>` — Số lượng lựa chọn tối đa cho phép (mặc định là `9,999,999`).
+- `parent?: string` — Mã định danh cha (được sử dụng cho danh sách con).
+
+## Thuộc tính
+
+### Dữ liệu
+
+- `data: Computed<ListList>` — Danh sách dữ liệu chuẩn hóa cốt lõi cho cấp độ hiện tại.
+- `liteData: Computed<ListList>` — Phiên bản danh sách đơn giản hóa để hiển thị nhanh (được kích hoạt nếu độ dài `data` vượt quá ngưỡng `lite`).
+- `fullData: Computed<ListDataFull>` — Danh sách dữ liệu mở rộng trong đó các cờ `focus`, `selected`, `disabled` và `highlight` đang hoạt động được tính toán cho từng phần tử.
+- `map: Computed<ListList>` — Danh sách phẳng của tuyệt đối tất cả các phần tử trong cây (bao gồm cả vùng chứa nhóm và menu).
+- `mapItems: Computed<ListList>` — Danh sách phẳng chỉ chứa các phần tử được chọn cuối cùng (loại `item`). Được sử dụng cho điều hướng chính.
+- `items: Computed<ListList>` — Danh sách phẳng các phần tử có thể có trạng thái tương tác (loại `item`, `group`, `menu`).
+
+### Lựa chọn và Trạng thái
+
+- `isSelected: Computed<boolean>` — Trả về `true` nếu có ít nhất một mục được chọn trong toàn bộ cây `mapItems`.
+- `isSelectedMin: Computed<boolean>` — Trả về `true` nếu số lượng mục được chọn trong nhóm hiện tại đã đạt hoặc vượt quá `min`.
+- `isSelectedMax: Computed<boolean>` — Trả về `true` nếu số lượng mục được chọn trong nhóm hiện tại đã đạt đến ngưỡng `max`.
+- `selectedList: Computed<ListList>` — Danh sách tất cả các đối tượng `ListDataItem` được chọn trên toàn bộ cây (dựa trên `mapItems`).
+- `selectedListInGroup: Computed<ListList>` — Danh sách các đối tượng được chọn chỉ ở cấp độ lồng nhau hiện tại (`data`).
+- `selectedNames: Computed<ListNames>` — Mảng các nhãn (`label`) cho tất cả các mục được chọn trong cây.
+- `selectedValues: Computed<any[]>` — Mảng các giá trị (`value`) cho tất cả các mục được chọn trong cây.
+
+### Tìm kiếm
+
+- `highlightFirstItem: Computed<number>` — Chỉ số của phần tử đầu tiên trong `map` có văn bản khớp với `highlight` (tôn trọng `highlightLengthStart`). Trả về `-1` nếu không tìm thấy kết quả khớp.
+
+## Phương thức
+
+### Trạng thái và Kiểm tra
+
+- `isLite(): boolean` — Trả về `true` nếu chế độ tối ưu hóa đang hoạt động (độ dài danh sách > `lite`).
+- `isFocus(): boolean` — Kiểm tra xem giá trị `focus` có khớp với bất kỳ phần tử nào trong `map` hiện tại hay không.
+- `isHighlight(): boolean` — Trả về `true` nếu tìm kiếm thấy ít nhất một kết quả khớp.
+- `isHighlightActive(): boolean` — Kiểm tra xem quá trình tìm kiếm có đang hoạt động hay không (độ dài chuỗi đủ và đã tìm thấy kết quả).
+- `getLength(): number` — Tổng số phần tử ở cấp độ hiện tại (`data`).
+- `getLengthByMap(): number` — Tổng số tất cả các phần tử trong toàn bộ cây (`map`).
+- `getLengthByItems(): number` — Số lượng các phần tử cuối cùng trong toàn bộ cây (`mapItems`).
+
+### Lấy giá trị
+
+- `getFocus(): ListSelectedItem | undefined` — Giá trị mã định danh đang được lấy tiêu điểm hiện tại.
+- `getHighlight(): string | undefined` — Chuỗi tìm kiếm hiện tại.
+- `getHighlightLengthStart(): number` — Độ dài chuỗi tối thiểu để kích hoạt tìm kiếm (mặc định là `2`).
+- `getSelected(): ListSelectedList | undefined` — Danh sách các mã định danh đã chọn hiện tại.
+
+### Điều hướng
+
+Tất cả các phương thức điều hướng `Next/Prev` đều có tính **vòng lặp** và chỉ hoạt động trên các phần tử cuối cùng (`type: item`).
+
+- `getItemByIndex(index?: string)` — Tìm một mục theo chỉ số duy nhất của nó. Trả về một đối tượng `{ key: map_index, item: ListDataItem }`.
+- `getItemByKey(key: number)` — Trả về một mục theo số thứ tự của nó trong mảng `map`.
+- `getItemNext(item: ListDataItem)` — Tìm phần tử tiếp theo trong `mapItems`. Quay lại phần tử đầu tiên nếu phần tử hiện tại là cuối cùng.
+- `getItemPrev(item: ListDataItem)` — Tìm phần tử trước đó trong `mapItems`. Quay lại phần tử cuối cùng nếu phần tử hiện tại là đầu tiên.
+- `getIndexNext(index: string)` — Tìm phần tử tiếp theo so với chỉ số chuỗi (vòng lặp qua `mapItems`).
+- `getIndexPrev(index: string)` — Tìm phần tử trước đó so với chỉ số chuỗi (vòng lặp qua `mapItems`).
+- `getSelectedNext()` — Tìm phần tử tiếp theo so với phần tử được chọn đầu tiên trong `selectedList`.
+- `getSelectedPrev()` — Tìm phần tử trước đó so với phần tử được chọn đầu tiên trong `selectedList`.
+- `getFirstItemByParent(parent: string | undefined)` — Trả về phần tử tương tác đầu tiên thuộc về cha được chỉ định.
+- `getLastItemByParent(parent: string | undefined)` — Trả về phần tử tương tác cuối cùng thuộc về cha được chỉ định.
+
+### Nhóm và Danh sách con
+
+#### `getSubList`
+
+Phương thức để làm việc với danh sách lồng nhau. Nếu một mục có loại `group` hoặc `menu`, phương thức này trả về một thực thể con của `ListDataRef` để quản lý nội dung của nó. Các thực thể được lưu trong bộ nhớ đệm.
+
+**Tham số:**
+- `item: ListDataItem` — Phần tử cần lấy danh sách con.
+
+**Trả về:** `ListDataRef` — một đối tượng quản lý danh sách con với các cài đặt được kế thừa (focus, selected, highlight).
+
+## Các kiểu dữ liệu
+
+Lớp sử dụng các cấu trúc chuẩn hóa để đảm bảo hành vi có thể dự đoán được với bất kỳ định dạng dữ liệu đầu vào nào.
+
+### `ListType`
+
+Xác định vai trò chức năng của một mục trong danh sách:
+- `item` — phần tử tương tác chính có sẵn để lựa chọn và lấy tiêu điểm.
+- `group` / `menu` — các vùng chứa các danh sách lồng nhau (`value`).
+- `subtitle` — một tiêu đề văn bản trong danh sách.
+- `html` — phần tử để chèn mã HTML tùy ý.
+- `line` / `space` — các vạch ngăn cách và khoảng cách trực quan.
+
+### `ListDataItem`
+
+Đối tượng mà tất cả dữ liệu đầu vào được chuyển đổi sau khi chuẩn hóa:
+- `index: string` — mã định danh duy nhất (tự động tạo nếu không được cung cấp).
+- `type: ListType` — loại mục (mặc định là `item`).
+- `label?: string | number` — văn bản hiển thị trong giao diện.
+- `value?: any` — một giá trị tùy ý được liên kết với mục.
+- `parent?: string` — mã định danh của mục cha (cho các cấu trúc lồng nhau).
+
+### `ListDataFullItem`
+
+Phiên bản mở rộng của `ListDataItem` được sử dụng trong thuộc tính `fullData`. Bao gồm các cờ trạng thái được tính toán:
+- `focus: boolean` — `true` nếu mục hiện đang được lấy tiêu điểm.
+- `selected: boolean` — `true` nếu mục được chọn.
+- `disabled: boolean` — `true` nếu mục bị vô hiệu hóa (ví dụ: khi đạt đến giới hạn lựa chọn `max`).
+- `highlight?: string` — chuỗi tìm kiếm hiện tại nếu nó khớp với văn bản của mục.
+
+### `ListListInput`
+
+Các định dạng dữ liệu được hỗ trợ cho hàm khởi tạo và các nhóm lồng nhau:
+- `string[]` — một mảng chuỗi đơn giản (được sử dụng làm nhãn).
+- `Record<string, string>` — một đối tượng trong đó khóa là giá trị kỹ thuật và thuộc tính là nhãn văn bản.
+- `ListDataBasic[]` — một mảng các đối tượng với các trường như `label`, `value`, `type`, v.v.
+
+
+## Quản lý lựa chọn (Selection)
+
+Lớp cung cấp các công cụ mạnh mẽ để kiểm soát trạng thái lựa chọn trong danh sách, hỗ trợ lựa chọn đơn và nhiều lựa chọn với các ràng buộc.
+
+### Các tham số lựa chọn cốt lõi
+
+- `selected` — một biến phản ứng (Vue `ref`) lưu trữ một mảng các mã định danh cho các mục đã chọn.
+- `min` / `max` — các ràng buộc về số lượng mục được chọn **ở cấp độ lồng nhau hiện tại** (trong một nhóm).
+
+### Lựa chọn Toàn cầu vs Cấp độ Nhóm
+
+- **selectedList** (Toàn cầu) — trả về tất cả các mục đã chọn loại `item` từ toàn bộ cây dữ liệu.
+- **selectedListInGroup** (Cấp độ nhóm) — trả về các mục đã chọn chỉ từ cấp độ hiện tại (`data`). Các ràng buộc `min` và `max` được tính toán dựa trên danh sách này.
+
+### Trạng thái disabled tự động
+
+Khi đạt đến giới hạn `max` (thuộc tính `isSelectedMax` trở thành `true`), lớp sẽ tự động đánh dấu các mục chưa được chọn còn lại trong `fullData` là `disabled: true`. Điều này cho phép các thành phần UI chặn việc lựa chọn thêm một cách trực quan.
+
+### Lấy Dữ liệu
+
+Để thuận tiện, các thuộc tính `selectedNames` (mảng các chuỗi `label`) và `selectedValues` (mảng các giá trị `value`) tổng hợp dữ liệu trên tất cả các mục đã chọn trong cây.
+
+## Quản lý tiêu điểm (Focus)
+
+Trạng thái tiêu điểm trong `ListDataRef` được triển khai thông qua một biến phản ứng bên ngoài (thường là một Vue `ref`) được chuyển vào hàm khởi tạo.
+
+### Các tính năng chính của Tiêu điểm
+
+- **Trạng thái dùng chung toàn cầu** — khi các danh sách con được tạo thông qua `getSubList`, cùng một `ref` tiêu điểm sẽ được chuyển đến tất cả các thực thể con. Điều này đảm bảo rằng trong một cây dữ liệu phức tạp, chỉ có một phần tử duy nhất có thể được lấy tiêu điểm tại bất kỳ thời điểm nào.
+- **Tính phản ứng qua fullData** — thuộc tính `fullData` tự động tính toán lại cờ `focus: true` cho mục cụ thể có `index` khớp với giá trị tiêu điểm hiện tại.
+- **Điều khiển thủ công** — lớp `ListDataRef` **không tự thay đổi** trạng thái tiêu điểm. Các phương thức điều hướng (như `getItemNext`) chỉ trả về đối tượng đích. Nhà phát triển phải gán chỉ số mới cho biến ref tiêu điểm một cách thủ công.
+
+```javascript
+// Ví dụ: đặt tiêu điểm cho phần tử tiếp theo
+const next = listData.getItemNext(currentItem)
+if (next) {
+    focus.value = next.index // Cập nhật tiêu điểm phản ứng
+}
+```
+
+### Kiểm tra sự hiện diện của Tiêu điểm
+
+Phương thức `isFocus()` cho phép bạn nhanh chóng xác định xem có bất kỳ phần tử nào trong thực thể hiện tại (bao gồm tất cả các cấp độ lồng nhau trong `map`) đang được lấy tiêu điểm hay không. Điều này hữu ích cho các chỉ báo trực quan về hoạt động của danh sách (ví dụ: thêm đường viền hoặc bóng cho toàn bộ thành phần).
+
+## Tìm kiếm và Làm nổi bật (Highlight)
+
+Cơ chế tìm kiếm cho phép lọc hoặc làm nổi bật các mục một cách trực quan dựa trên nội dung văn bản nhập vào.
+
+### Các tham số tìm kiếm cốt lõi
+
+- `highlight` — một chuỗi phản ứng chứa truy vấn tìm kiếm.
+- `highlightLengthStart` — ngưỡng kích hoạt (mặc định là `2`). Việc tìm kiếm sẽ không bắt đầu cho đến khi độ dài chuỗi đạt đến giá trị này.
+
+### Cách thức hoạt động của Tìm kiếm
+
+1. **Tạo biểu thức chính quy (Regex)** — khi chuỗi tìm kiếm thay đổi, lớp sẽ tự động tạo một biểu thức chính quy không phân biệt chữ hoa chữ thường.
+2. **Các trường tìm kiếm** — việc tìm kiếm được thực hiện trên ba trường của mục: `label`, `index` và trường `search` đặc biệt (nếu được xác định trong dữ liệu nguồn).
+3. **Tích hợp trong fullData** — trong quá trình tìm kiếm đang hoạt động, mỗi mục trong thuộc tính `fullData` sẽ nhận được giá trị `highlight` hiện tại. Điều này cho phép các thành phần UI làm nổi bật các chuỗi con khớp.
+4. **Kết quả khớp đầu tiên** — thuộc tính `highlightFirstItem` luôn trả về chỉ số thứ tự của mục đầu tiên được tìm thấy trong mảng `map`. Điều này hữu ích cho việc tự động cuộn đến kết quả đầu tiên.
+
+### Kiểm tra trạng thái
+
+- `isHighlight()` — trả về `true` nếu có ít nhất một mục khớp với truy vấn.
+- `isHighlightActive()` — trả về `true` nếu chuỗi tìm kiếm đã đạt đến độ dài yêu cầu, **bất kể** có tìm thấy kết quả hay không. Điều này giúp phân biệt giữa trạng thái "không có đầu vào" và "không tìm thấy kết quả".
+
+### Chế độ lọc (filterMode)
+
+Tham số `filterMode` là một cờ trạng thái hướng dẫn các thành phần giao diện người dùng có nên ẩn vật lý các mục không khớp với truy vấn tìm kiếm hay không.
+
+- **Sự lan truyền** — giá trị `filterMode` được tự động chèn vào mọi đối tượng `ListDataItem` trong `fullData`.
+- **Kế thừa** — khi các danh sách con được tạo thông qua `getSubList`, cờ lọc sẽ được kế thừa bởi các thực thể con.
+- **Tác động logic** — bản thân lớp `ListDataRef` không xóa các mục khỏi mảng `data` hoặc `map` khi `filterMode` đang hoạt động. Điều này cho phép lớp UI tự quyết định chính xác cách tạo hiệu ứng hoặc ẩn các hàng đã lọc.
+
+## Chế độ Lite (Lite Mode)
+
+Chế độ Lite được thiết kế để tối ưu hóa hiệu suất khi làm việc với các danh sách dữ liệu rất lớn. Nó tránh việc tính toán sâu tất cả các thuộc tính cho mọi mục khi không cần thiết cho việc hiển thị ban đầu.
+
+### Cách thức hoạt động
+
+1. **Ngưỡng kích hoạt** — tham số `lite` trong hàm khởi tạo xác định số lượng phần tử tối đa cho chế độ bình thường. Nếu số lượng phần tử trong `data` vượt quá ngưỡng này, Chế độ Lite sẽ tự động được kích hoạt.
+2. **Thuộc tính liteData** — ở chế độ này, thuộc tính `liteData` chứa một cấu trúc đơn giản hóa của các phần tử, giảm thiểu tải bộ nhớ và CPU trong quá trình hiển thị.
+3. **Phương thức isLite()** — cho phép bạn kiểm tra theo lập trình xem chế độ tối ưu hóa hiện có đang hoạt động hay không.
+
+Điều này cực kỳ hữu ích cho các danh sách thả xuống hoặc bảng có hàng nghìn hàng, nơi tính phản ứng đầy đủ cho mọi mục ngoài màn hình có thể làm chậm giao diện.
+
+## Làm việc với điều hướng
+
+Điều hướng trong `ListDataRef` được xây dựng dựa trên sự hiểu biết sâu sắc về cấu trúc dữ liệu. Lớp này phân biệt giữa các vùng chứa (`group`, `menu`) và các phần tử lựa chọn cuối cùng (`item`).
+
+### Điều hướng phẳng vòng lặp
+
+Các phương thức `getItemNext`, `getItemPrev`, `getIndexNext` và `getIndexPrev` hoạt động thông qua thuộc tính `mapItems`. Điều này có nghĩa là:
+1. **Bỏ qua cấu trúc**: Việc di chuyển chỉ diễn ra thông qua các phần tử loại `item`, bỏ qua các tiêu đề nhóm và menu.
+2. **Tìm kiếm toàn cầu**: Điều hướng duyệt qua toàn bộ cây dữ liệu (Flat Map), ngay cả khi các phần tử nằm trong các nhóm khác nhau.
+3. **Tính vòng lặp (Cyclic)**: Nếu bạn đang ở phần tử cuối cùng và называете `Next`, phương thức sẽ trả về phần tử **đầu tiên** trong danh sách. Tương tự, `Prev` từ phần tử đầu tiên sẽ trả về phần tử **cuối cùng**.
+
+### Điều hướng dựa trên lựa chọn
+
+Các phương thức `getSelectedNext` и `getSelectedPrev` tự động tìm phần tử được chọn đầu tiên trong danh sách và trả về phần tử lân cận của nó. Nếu không có gì được chọn, điều hướng sẽ bắt đầu từ phần tử đầu tiên trong danh sách.
+
+### Điều hướng theo ngữ cảnh (Parent)
+
+Để hạn chế di chuyển trong một nhóm duy nhất, hãy sử dụng các phương thức `getFirstItemByParent` и `getLastItemByParent`. Các phương thức này cho phép bạn nhanh chóng tìm thấy ranh giới của cấp độ lồng nhau hiện tại bằng cách sử dụng mã định danh cha.
+
+### Ví dụ: Triển khai Di chuyển Tiêu điểm
+
+```javascript
 import { ListDataRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const items = ref(['Mục 1', 'Mục 2', 'Mục 3'])
-const listManager = new ListDataRef(items)
+const list = ref([
+    { label: 'Group 1', type: 'group', value: [ { label: 'Item 1.1' } ] },
+    { label: 'Item 2' }
+])
+const focus = ref(undefined)
+const listData = new ListDataRef(list, focus)
 
-console.log(listManager.data.value)
+/**
+ * Phương thức để xử lý nhấn phím ArrowDown
+ */
+const onArrowDown = () => {
+    // Lấy phần tử hiện tại từ tiêu điểm
+    const current = listData.getItemByIndex(focus.value)?.item
+    
+    // Lấy phần tử cuối cùng tiếp theo trên toàn bộ bản đồ (mapItems)
+    // Nếu tiêu điểm trống hoặc phần tử là cuối cùng — nó sẽ trả về phần tử đầu tiên (vòng lặp)
+    const next = current ? listData.getItemNext(current) : listData.mapItems.value[0]
+    
+    if (next) {
+        focus.value = next.index
+    }
+}
 ```
 
-## Thuộc tính dữ liệu
+## Ví dụ sử dụng
 
-- `data`: `ComputedRef<ListList>` — Trả về danh sách các mục đã được xử lý.
-- `liteData`: `ComputedRef<ListList>` — Trả về phiên bản rút gọn của danh sách để hiển thị ban đầu nhanh hơn (nếu kích thước danh sách vượt quá ngưỡng `lite`).
-- `fullData`: `ComputedRef<ListDataFull>` — Trả về danh sách với thông tin trạng thái đầy đủ cho mỗi mục (focus, selected, disabled, highlight).
-- `map`: `ComputedRef<ListList>` — Một danh sách phẳng chứa tất cả các mục và các mục con lồng nhau của chúng.
-- `mapItems`: `ComputedRef<ListList>` — Một danh sách phẳng chỉ chứa các mục tương tác (loại 'item').
-- `items`: `ComputedRef<ListList>` — Một danh sách phẳng chứa các mục, nhóm và menu.
+### Hiển thị cây nhóm
 
-## Trạng thái lựa chọn
+```vue
+<template>
+  <ul>
+    <li v-for="item in listData.data.value" :key="item.index">
+      {{ item.label }}
+      
+      <!-- Nếu là một nhóm, hiển thị danh sách con một cách đệ quy -->
+      <ul v-if="item.type === 'group'">
+        <li v-for="sub in listData.getSubList(item).data.value" :key="sub.index">
+           {{ sub.label }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</template>
 
-- `isSelected`: `ComputedRef<boolean>` — Trả về `true` nếu có ít nhất một mục được chọn.
-- `isSelectedMin`: `ComputedRef<boolean>` — Trả về `true` nếu đạt đến số lượng chọn tối thiểu.
-- `isSelectedMax`: `ComputedRef<boolean>` — Trả về `true` nếu đạt đến số lượng chọn tối đa.
-- `selectedList`: `ComputedRef<ListList>` — Trả về danh sách tất cả các mục đã chọn trên toàn bộ sơ đồ.
-- `selectedListInGroup`: `ComputedRef<ListList>` — Trả về danh sách các mục đã chọn chỉ trong cấp độ danh sách hiện tại.
-- `selectedNames`: `ComputedRef<ListNames>` — Trả về một mảng các nhãn cho các mục đã chọn.
-- `selectedValues`: `ComputedRef<any[]>` — Trả về một mảng các giá trị cho các mục đã chọn.
-
-## Điều hướng & Tìm kiếm
-
-- `highlightFirstItem`: `ComputedRef<number>` — Trả về chỉ số của mục đầu tiên khớp với tìm kiếm hiện tại.
-- `isFocus()`: `boolean` — Kiểm tra xem có mục nào trong danh sách hiện tại đang được focus hay không.
-- `isHighlight()`: `boolean` — Kiểm tra xem có kết quả tìm kiếm khớp hay không.
-- `isHighlightActive()`: `boolean` — Kiểm tra xem việc làm nổi bật tìm kiếm hiện có đang hoạt động hay không.
-- `getItemByStep(item, step)`: `ListDataItem | undefined` — Trả về một mục tương đối với mục đã cho theo một số bước.
-- `getItemNext(item)`: `ListDataItem | undefined` — Trả về mục tương tác tiếp theo.
-- `getItemPrev(item)`: `ListDataItem | undefined` — Trả về mục tương tác trước đó.
-- `getIndexNext(index)`: `ListDataItem | undefined` — Trả về mục tiếp theo bằng chuỗi chỉ số của nó.
-- `getIndexPrev(index)`: `ListDataItem | undefined` — Trả về mục trước đó bằng chuỗi chỉ số của nó.
-
-## Các phương thức tiện ích
-
-- `getLength()`: `number` — Trả về số lượng mục ở cấp độ hiện tại.
-- `getLengthByMap()`: `number` — Trả về tổng số mục bao gồm cả các mục lồng nhau.
-- `getFocus()`: `ListSelectedItem | undefined` — Trả về chỉ số của mục đang được focus.
-- `getHighlight()`: `string | undefined` — Trả về chuỗi tìm kiếm hiện tại.
-- `getSelected()`: `ListSelectedList | undefined` — Trả về các giá trị đã chọn thô.
-- `getItemByIndex(index)`: `{ key, item } | undefined` — Tìm một mục bằng chuỗi chỉ số của nó.
-- `getItemByKey(key)`: `ListDataItem | undefined` — Tìm một mục bằng khóa số của nó trong sơ đồ.
-- `getSubList(item)`: `ListDataRef` — Trả về một instance `ListDataRef` mới cho một nhóm hoặc menu lồng nhau.
-
-## Đối tượng ListDataItem
-
-Cấu trúc tiêu chuẩn cho một mục danh sách:
-
-- `index: string` — định danh duy nhất.
-- `type: ListType` — loại mục ('item', 'group', 'menu', 'subtitle', 'line', v.v.).
-- `label?: string` — văn bản hiển thị.
-- `value?: any` — giá trị liên kết.
-- `parent?: string` — định danh của nhóm cha.
-- `disabled?: boolean` — mục có thể tương tác hay không.
-
-## Đối tượng ListDataFullItem
-
-Phiên bản mở rộng của `ListDataItem` được sử dụng trong `fullData`:
-
-- `focus: boolean` — mục đang được focus.
-- `selected: boolean` — mục đang được chọn.
-- `highlight?: string` — văn bản cần làm nổi bật.
-- `disabled: boolean` — mục bị vô hiệu hóa hoặc đã đạt đến giới hạn lựa chọn.
+<script setup>
+const listData = new ListDataRef(props.list)
+</script>
+```

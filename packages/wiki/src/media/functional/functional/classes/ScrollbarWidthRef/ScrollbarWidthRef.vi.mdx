@@ -1,16 +1,16 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional/Classes/ScrollbarWidthRef - Quản lý chiều rộng thanh cuộn'/>
+<Meta title='@dxtmisha/vi/functional/Classes/ScrollbarWidthRef - Trình quản lý độ rộng thanh cuộn'/>
 
 # Lớp ScrollbarWidthRef
 
-Một lớp tiện ích phản ứng để phát hiện và quản lý chiều rộng thanh cuộn (scrollbar) của trình duyệt. Nó sử dụng cơ chế phát hiện tự động và cung cấp các thuộc tính phản ứng để kiểm tra xem chiều rộng thanh cuộn đã được tính toán hay chưa.
+Một lớp tiện ích phản ứng để xác định và quản lý độ rộng thanh cuộn (scrollbar) của trình duyệt. Nó sử dụng một cơ chế phát hiện và cung cấp các thuộc tính phản ứng để kiểm tra xem độ rộng thanh cuộn đã được tính toán chưa và liệu nó có tồn tại hay không.
 
 ## Các tính năng chính
 
 - **Tính phản ứng** — sử dụng Vue `ref` và `computed` để cung cấp trạng thái thanh cuộn.
-- **Phát hiện bất đồng bộ** — tự động tính toán chiều rộng khi khởi tạo.
-- **Nhẹ nhàng** — dấu vết tối thiểu, hữu ích cho các tính toán bố cục phụ thuộc vào sự hiện diện của thanh cuộn.
+- **Phát hiện bất đồng bộ** — tự động tính toán độ rộng khi khởi tạo thông qua `ScrollbarWidth.is()`.
+- **Nhẹ nhàng** — kích thước tối thiểu, hữu ích cho các tính toán bố cục phụ thuộc vào sự hiện diện của thanh cuộn.
 
 ## Cách sử dụng
 
@@ -19,7 +19,7 @@ import { ScrollbarWidthRef } from '@dxtmisha/functional'
 
 const scrollbar = new ScrollbarWidthRef()
 
-// Kiểm tra xem chiều rộng đã được tính toán chưa
+// Kiểm tra xem độ rộng đã được tính toán chưa
 console.log(scrollbar.is.value)
 
 // Lấy trạng thái (boolean)
@@ -28,5 +28,14 @@ console.log(scrollbar.item.value)
 
 ## Thuộc tính
 
-- `item`: `Ref<boolean | undefined>` — Mục phản ứng chứa trạng thái hiện diện của thanh cuộn.
-- `is`: `ComputedRef<boolean>` — Kiểm tra xem việc tính toán chiều rộng thanh cuộn đã hoàn tất hay chưa.
+### `item`
+
+Một mục phản ứng chứa trạng thái hiện diện của thanh cuộn. Giá trị `true` có nghĩa là thanh cuộn chiếm không gian trong bố cục.
+
+**Kiểu:** `Ref<boolean | undefined>`
+
+### `is`
+
+Một thuộc tính computed kiểm tra xem việc tính toán độ rộng thanh cuộn đã hoàn tất chưa (tức là giá trị `item` không còn là `undefined`).
+
+**Trả về:** `ComputedRef<boolean>`

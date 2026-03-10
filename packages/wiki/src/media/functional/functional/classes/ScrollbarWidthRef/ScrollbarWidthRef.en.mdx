@@ -4,22 +4,22 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # ScrollbarWidthRef Class
 
-A reactive utility class for detecting and managing the browser's scrollbar width. It uses a singleton-like detection mechanism and provides reactive properties to check if the scrollbar width has been calculated.
+A reactive utility class for determining and managing the browser's scrollbar width. It uses a detection mechanism and provides reactive properties to check if the scrollbar width has been calculated and whether it exists.
 
 ## Key Features
 
-- **Reactivity** — uses Vue `ref` and `computed` to provide the scrollbar state.
-- **Asynchronous Detection** — automatically calculates the width upon initialization.
-- **Lightweight** — minimal footprint, useful for layout calculations that depend on scrollbar presence.
+- **Reactivity** — uses Vue `ref` and `computed` to provide scrollbar state.
+- **Asynchronous Detection** — automatically calculates the width upon initialization via `ScrollbarWidth.is()`.
+- **Lightweight** — minimal footprint, useful for layout calculations dependent on scrollbar presence.
 
-## Initialization & Usage
+## Usage
 
 ```typescript
 import { ScrollbarWidthRef } from '@dxtmisha/functional'
 
 const scrollbar = new ScrollbarWidthRef()
 
-// Check if the width is calculated
+// Check if the width has been calculated
 console.log(scrollbar.is.value)
 
 // Get the state (boolean)
@@ -28,5 +28,14 @@ console.log(scrollbar.item.value)
 
 ## Properties
 
-- `item`: `Ref<boolean | undefined>` — Reactive item containing the scrollbar presence state.
-- `is`: `ComputedRef<boolean>` — Checks whether the scrollbar width calculation is complete.
+### `item`
+
+A reactive item containing the state of the scrollbar's presence. A value of `true` means the scrollbar takes up space in the layout.
+
+**Type:** `Ref<boolean | undefined>`
+
+### `is`
+
+A computed property that checks if the scrollbar width calculation is complete (i.e., the `item` value is no longer `undefined`).
+
+**Returns:** `ComputedRef<boolean>`

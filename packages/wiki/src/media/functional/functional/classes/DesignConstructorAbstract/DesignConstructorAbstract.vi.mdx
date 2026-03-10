@@ -4,34 +4,79 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp DesignConstructorAbstract
 
-Một lớp cơ sở trừu tượng cung cấp cấu trúc tiêu chuẩn hóa cho logic constructor của thành phần. Nó tạo điều kiện thuận lợi cho việc quản lý dữ liệu thành phần, kiểu dáng (styles) và các sửa đổi dựa trên trạng thái, phục vụ như một bản thiết kế cho các specialized design constructors.
+Một lớp cơ sở trừu tượng cung cấp cấu trúc tiêu chuẩn hóa cho logic constructor của thành phần. Nó giúp quản lý dữ liệu thành phần, kiểu dáng và các sửa đổi dựa trên trạng thái.
 
 ## Các tính năng chính
 
-- **Cấu trúc dữ liệu tiêu chuẩn hóa** — xác định một cách nhất quán để xử lý các thuộc tính, lớp (classes) và kiểu dáng của thành phần.
-- **Tích hợp trạng thái** — kết nối liền mạch với các trạng thái thành phần để kích hoạt các cập nhật phản ứng (reactive updates).
-- **Mở rộng linh hoạt** — được thiết kế để được kế thừa bởi các constructor thành phần cụ thể để thực hiện logic thiết lập tùy chỉnh.
+- **Cấu trúc dữ liệu tiêu chuẩn hóa** — xử lý các thuộc tính, lớp và kiểu dáng của thành phần.
+- **Tích hợp trạng thái** — cập nhật phản ứng dựa trên trạng thái của thành phần.
+- **Mở rộng linh hoạt** — nền tảng để tạo các specialized constructors.
 
 ## Khởi tạo
+
+`DesignConstructorAbstract` là một lớp cơ sở trừu tượng và không thể được khởi tạo trực tiếp. Nó phục vụ như một nền tảng để tạo ra các hàm khởi tạo thành phần chức năng, kết hợp quản lý phong cách (styles), lớp (classes), thành phần và hiển thị (rendering).
+
+### Ràng buộc Generic (Generic Constraints)
+
+Lớp này sử dụng một hệ thống generic phức tạp để đảm bảo định kiểu đầy đủ cho thành phần:
+- `E extends Element` — Kiểu của phần tử HTML gốc (ví dụ: `HTMLElement`).
+- `COMP extends ConstrComponent` — Danh sách các thành phần phụ được kết nối.
+- `EMITS extends ConstrItem` — Định kiểu cho các sự kiện (emits) do thành phần tạo ra.
+- `EXPOSE extends ConstrItem` — Cấu trúc dữ liệu được xuất ra môi trường bên ngoài thông qua `expose`.
+- `SLOTS extends ConstrItem` — Các slot hiện có của thành phần.
+- `CLASSES extends ConstrClasses` — Đối tượng lớp CSS kết quả.
+- `P extends ConstrItem` — Các thuộc tính (props) của thành phần.
+
+**Tham số hàm khởi tạo:**
+- `name: string` — tên thành phần cơ sở (được sử dụng để tạo tên lớp và kiểu dáng).
+- `props: Readonly<P>` — một đối tượng chứa các thuộc tính của thành phần.
+- `options?: ConstrOptions<COMP, EMITS, P>` — các tham số bổ sung (thành phần, sửa đổi, trình xử lý sự kiện, ghi đè kiểu dáng và lớp).
 
 ```typescript
 import { DesignConstructorAbstract } from '@dxtmisha/functional'
 
-interface MyProps { size: string }
-interface MyState { active: boolean }
+// 1. Xác định giao diện thành phần
+interface MyProps { size?: 'small' | 'medium' }
+interface MyClasses { main: { [key: string]: boolean } }
 
-class MyConstructor extends DesignConstructorAbstract<MyProps, MyState> {
-  // Thực hiện logic trừu tượng hoặc thiết lập bắt buộc
+// 2. Triển khai hàm khởi tạo
+class ButtonDesign extends DesignConstructorAbstract<
+  HTMLButtonElement, // E
+  {},                // COMP
+  {},                // EMITS
+  {},                // EXPOSE
+  {},                // SLOTS
+  MyClasses,         // CLASSES
+  MyProps            // P
+> {
+  constructor(name: string, props: MyProps) {
+    super(name, props)
+    this.init()
+  }
+
+  // Các phương thức bắt buộc phải triển khai
+  protected initExpose() { return {} }
+  protected initClasses() { return { main: { active: true } } }
+  protected initStyles() { return {} }
+  protected initRender() { return h('button', this.getAttrs(), this.slots.default?.()) }
 }
-
-const instance = new MyConstructor(props, state)
 ```
 
-## Quản lý Logic
+## Các phương thức Vòng đời & Render
 
+- `init(): this` — Khởi tạo instance, chuẩn bị trạng thái nội bộ, lớp và kiểu dáng.
+- `render(): Function` — Trả về hàm render để sử dụng trong `setup()` của thành phần Vue.
 - `setup(): void` — Thực thi trình tự thiết lập chính cho logic thành phần.
-- `init(): this` — Khởi tạo instance constructor và chuẩn bị trạng thái nội bộ.
 
-## Cấu trúc nội bộ
+## Các phương thức Hỗ trợ Đặt tên
 
-`DesignConstructorAbstract` đóng vai trò là bộ điều phối chính cho quá trình khởi tạo thành phần. Nó quản lý mối quan hệ giữa các thuộc tính đầu vào và trạng thái phản ứng kết quả, đảm bảo rằng các mẫu kiến trúc (architectural patterns) được tuân thủ nhất quán trên các thành phần UI khác nhau.
+- `getName(): string` — Trả về tên đầy đủ của thành phần (ví dụ: `button-large`).
+- `getDesign(): string` — Trả về tên thiết kế cơ sở (phần đầu tiên của tên).
+- `getSubClass(name: string | string[]): string` — Tạo tên lớp cho phần tử con theo phong cách BEM (`__`).
+- `getStatusClass(name: string | string[]): string` — Tạo tên lớp trạng thái theo phong cách BEM (`--`).
+- `getStyle(name: string | string[]): string` — Tạo tên biến CSS hệ thống.
+
+## Dữ liệu Thành phần
+
+- `getAttrs(): object` — Trả về đối tượng thuộc tính, loại trừ các thuộc tính `class` và `style` đã được bảo lưu.
+- `expose(): object` — Trả về dữ liệu và tham chiếu để xuất thông qua `expose` của Vue.

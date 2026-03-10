@@ -14,11 +14,21 @@ A utility class designed to track changes in object properties. It maintains a c
 
 ## Initialization
 
+Creates a new `DesignChanged` instance. The class is designed to track changes in object properties by comparing them with an internal cache (the state at the time of the last update).
+
+**Parameters:**
+- `props: T` — data object whose properties need to be tracked.
+- `watch: string[] = Object.keys(props)` — an array of property names (keys) to watch. By default, all properties of the `props` object are tracked.
+
 ```typescript
 import { DesignChanged } from '@dxtmisha/functional'
 
+// 1. Tracking all properties by default
 const props = { title: 'Hello', count: 1 }
-const tracker = new DesignChanged(props, ['title']) // Only track 'title'
+const tracker = new DesignChanged(props)
+
+// 2. Tracking specific properties (subset)
+const trackerPartial = new DesignChanged(props, ['title'])
 
 console.log(tracker.isChanged()) // false
 ```
@@ -48,6 +58,3 @@ Synchronizes the internal cache with the current values of all tracked propertie
 
 **Returns:** `void`
 
-## Internal Structure
-
-`DesignChanged` stores the "last known" values in a private `cache` object. The `isDifferent` method performs a strict inequality check (`!==`) between the cached value and the current value in the `props` object. This class is a core dependency for `DesignAbstract` and `DesignAsyncAbstract`.

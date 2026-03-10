@@ -12,7 +12,7 @@ A static reactive class for managing global geographic data. It provides central
 - **Centralized Management** — single point of truth for country and language settings.
 - **Static Access** — methods can be called directly on the class without instantiation.
 
-## Initialization & Usage
+## Initialization
 
 ```typescript
 import { GeoRef } from '@dxtmisha/functional'
@@ -24,14 +24,24 @@ console.log(GeoRef.getCountry().value)
 GeoRef.set('en-GB')
 ```
 
-## Methods
+## Data Retrieval
 
-- `get(): Ref<GeoItemFull>` — Returns a reactive object containing the full geographical information.
-- `getCountry(): ComputedRef<string>` — Returns a reactive string with the current country code.
-- `getLanguage(): ComputedRef<string>` — Returns a reactive string with the current language code.
-- `getStandard(): ComputedRef<string>` — Returns a reactive string with the full standard locale format.
-- `getFirstDay(): ComputedRef<string>` — Returns a reactive string representing the first day of the week.
-- `set(code: string): void` — Changes the global geographic data based on the provided code.
+- `get(): Ref<GeoItemFull>` — returns a reactive object containing the full geographical information.
+- `getCountry(): ComputedRef<string>` — returns a reactive string with the current country code.
+- `getLanguage(): ComputedRef<string>` — returns a reactive string with the current language code.
+- `getStandard(): ComputedRef<string>` — returns a reactive string with the full standard locale format.
+- `getFirstDay(): ComputedRef<string>` — returns a reactive string representing the first day of the week.
+
+## Actions
+
+### `set`
+
+Changes the global geographic data based on the provided code.
+
+**Parameters:**
+- `code: string` — country code, full form language-country (e.g., "en-US") or one of them.
+
+**Returns:** `void`
 
 ## GeoItemFull Object
 
@@ -39,7 +49,7 @@ The object structure returned by the `get()` method:
 
 - `country: string` — current country code.
 - `language: string` — current language code.
-- `standard: string` — standard locale code (e.g., "en-US").
+- `standard: string` — standard locale code.
 - `firstDay: string` — first day of the week.
 - `countryAlternative?: string[]` — list of alternative country codes.
 - `languageAlternative?: string[]` — list of alternative language codes.

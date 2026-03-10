@@ -1,17 +1,17 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional/Classes/GeoIntlRef - Trình quản lý Intl phản ứng'/>
+<Meta title='@dxtmisha/vi/functional/Classes/GeoIntlRef - Định dạng số và ngày phản ứng'/>
 
 # Lớp GeoIntlRef
 
-Trình quản lý phản ứng để định dạng số, ngày tháng và thời gian tương đối theo tiêu chuẩn quốc tế (Intl). Nó cung cấp một lớp bọc thuận tiện xung quanh tiện ích `GeoIntl`, đảm bảo rằng tất cả các chuỗi được định dạng sẽ tự động cập nhật khi ngôn ngữ hoặc dữ liệu đầu vào thay đổi.
+Một lớp phản ứng để quản lý việc định dạng số, ngày tháng, tiền tệ và thời gian tương đối. Đảm bảo chuỗi định dạng tự động cập nhật khi mã ngôn ngữ (locale) thay đổi.
 
 ## Các tính năng chính
 
-- **Tính phản ứng** — tự động định dạng lại dữ liệu khi `Ref` ngôn ngữ hoặc giá trị đầu vào thay đổi.
-- **Định dạng số** — hỗ trợ số thập phân, tiền tệ, phần trăm và đơn vị đo lường.
-- **Ngày & Giờ** — cung cấp định dạng ngày, giờ và thời gian tương đối theo ngôn ngữ.
-- **Tên hiển thị** — cho phép dịch tên các ngôn ngữ, khu vực và chữ viết.
+- **Tính phản ứng** — tự động cập nhật chuỗi định dạng khi `Ref` locale thay đổi.
+- **Quốc tế hóa** — hỗ trợ đầy đủ các tiêu chuẩn `Intl` cho số, ngày tháng, tiền tệ và đơn vị đo lường.
+- **Thời gian tương đối** — các phương thức thuận tiện để hiển thị thời gian như "2 ngày trước" với hỗ trợ giới hạn.
+- **Danh sách và Sắp xếp** — các phương thức tích hợp để lấy tên tháng, ngày trong tuần và sắp xếp theo locale.
 
 ## Khởi tạo
 
@@ -19,42 +19,241 @@ Trình quản lý phản ứng để định dạng số, ngày tháng và thờ
 import { GeoIntlRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const locale = ref('vi-VN')
-const intl = new GeoIntlRef(locale)
-
-console.log(intl.number(1234.56).value) // "1.234,56"
+const code = ref('vi-VN')
+const geoIntl = new GeoIntlRef(code)
 ```
 
-## Các phương thức chung
+## Tên hiển thị
 
-- `display(value?, typeOptions?): ComputedRef<string>` — Cung cấp bản dịch nhất quán cho tên hiển thị của ngôn ngữ, khu vực và chữ viết.
-- `languageName(value?, style?): ComputedRef<string>` — Trả về tên hiển thị cho một mã ngôn ngữ cụ thể.
-- `countryName(value?, style?): ComputedRef<string>` — Trả về tên hiển thị cho một mã khu vực (quốc gia) cụ thể.
-- `sort<T>(data, compareFn?): ComputedRef<T[]>` — Sắp xếp các chuỗi có tính đến đặc điểm của các quốc gia.
+### `display`
+
+Trả về tên đã dịch của một ngôn ngữ, khu vực hoặc hệ chữ viết.
+
+**Tham số:**
+- `value?: RefOrNormal<string>` — mã cần dịch (ví dụ: 'en-US').
+- `typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions` — các tùy chọn loại hiển thị.
+
+**Trả về:** `ComputedRef<string>`
+
+### `languageName`
+
+Trả về tên hiển thị của một ngôn ngữ.
+
+**Tham số:**
+- `value?: RefOrNormal<string>` — mã ngôn ngữ.
+- `style?: Intl.RelativeTimeFormatStyle` — kiểu định dạng.
+
+**Trả về:** `ComputedRef<string>`
+
+### `countryName`
+
+Trả về tên hiển thị của một khu vực (quốc gia).
+
+**Tham số:**
+- `value?: RefOrNormal<string>` — mã quốc gia.
+- `style?: Intl.RelativeTimeFormatStyle` — kiểu định dạng.
+
+**Trả về:** `ComputedRef<string>`
 
 ## Định dạng số
 
-- `number(value, options?): ComputedRef<string>` — Định dạng một số theo ngôn ngữ và các tùy chọn hiện tại.
-- `decimal(): ComputedRef<string>` — Trả về ký hiệu dấu thập phân cho ngôn ngữ hiện tại.
-- `currency(value, currencyOptions?, numberOnly?): ComputedRef<string>` — Định dạng một giá trị dưới dạng chuỗi tiền tệ.
-- `currencySymbol(currency, currencyDisplay?): ComputedRef<string>` — Trả về ký hiệu tiền tệ hoặc mã tiền tệ.
-- `unit(value, unitOptions?): ComputedRef<string>` — Định dạng một giá trị với một đơn vị cụ thể.
-- `sizeFile(value, unitOptions?): ComputedRef<string>` — Trả về kích thước tệp được định dạng (ví dụ: "1.5 MB").
-- `percent(value, options?): ComputedRef<string>` — Định dạng một số dưới dạng phần trăm (0.1 -> "10%").
-- `percentBy100(value, options?): ComputedRef<string>` — Định dạng một số dưới dạng phần trăm (10 -> "10%").
-- `plural(value, words, options?, optionsNumber?): ComputedRef<string>` — Áp dụng định dạng theo quy tắc số nhiều.
+### `number`
 
-## Định dạng Ngày & Giờ
+Định dạng một số theo quy tắc của locale.
 
-- `date(value, type?, styleOptions?, hour24?): ComputedRef<string>` — Cho phép định dạng ngày và giờ theo ngôn ngữ.
-- `relative(value, styleOptions?, todayValue?): ComputedRef<string>` — Cho phép định dạng thời gian tương đối (ví dụ: "hôm qua").
-- `relativeLimit(value, limit, ...): ComputedRef<string>` — Định dạng tương đối với khả năng chuyển sang ngày tiêu chuẩn.
-- `relativeByValue(value, unit, styleOptions?): ComputedRef<string>` — Trả về giá trị thời gian tương đối dựa trên một đơn vị cụ thể.
-- `time(value): ComputedRef<string>` — Chỉ định dạng phần thời gian của một ngày.
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — giá trị cần định dạng.
+- `options?: Intl.NumberFormatOptions` — các tùy chọn định dạng.
 
-## Thông tin lịch
+**Trả về:** `ComputedRef<string>`
 
-- `month(value?, style?): ComputedRef<string>` — Trả về tên tháng cho một ngày cụ thể.
-- `months(style?): ComputedRef<ItemValue<number | undefined>[]>` — Trả về tên của tất cả các tháng.
-- `weekday(value?, style?): ComputedRef<string>` — Trả về tên của ngày trong tuần cho một ngày cụ thể.
-- `weekdays(style?): ComputedRef<ItemValue<number | undefined>[]>` — Trả về tên của tất cả các ngày trong tuần.
+### `decimal`
+
+Trả về ký hiệu phân cách thập phân cho locale hiện tại.
+
+**Trả về:** `ComputedRef<string>`
+
+### `percent`
+
+Định dạng một giá trị dưới dạng phần trăm.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — giá trị đầu vào (0.25 -> 25%).
+- `options?: Intl.NumberFormatOptions` — các tùy chọn định dạng.
+
+**Trả về:** `ComputedRef<string>`
+
+### `percentBy100`
+
+Định dạng một giá trị dưới dạng phần trăm sau khi chia cho 100.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — giá trị đầu vào (25 -> 25%).
+- `options?: Intl.NumberFormatOptions` — các tùy chọn định dạng.
+
+**Trả về:** `ComputedRef<string>`
+
+### `plural`
+
+Chọn hình thức số nhiều chính xác cho một từ dựa trên giá trị số.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — giá trị số.
+- `words: string` — danh sách các từ cách nhau bởi dấu `|` (ví dụ: 'quả táo|những quả táo').
+- `options?: Intl.PluralRulesOptions` — các tùy chọn quy tắc số nhiều.
+- `optionsNumber?: Intl.NumberFormatOptions` — các tùy chọn định dạng số.
+
+**Trả về:** `ComputedRef<string>`
+
+## Tiền tệ và Đơn vị
+
+### `currency`
+
+Định dạng một giá trị số dưới dạng chuỗi tiền tệ.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — số tiền.
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — mã tiền tệ hoặc các tùy chọn.
+- `numberOnly?: boolean` — nếu là `true`, chỉ trả về số mà không có ký hiệu tiền tệ.
+
+**Trả về:** `ComputedRef<string>`
+
+### `currencySymbol`
+
+Trả về ký hiệu tiền tệ cho một mã tiền tệ nhất định.
+
+**Tham số:**
+- `currency: RefOrNormal<string>` — mã tiền tệ (ví dụ: 'VND').
+- `currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry` — cách hiển thị tiền tệ.
+
+**Trả về:** `ComputedRef<string>`
+
+### `unit`
+
+Định dạng một số với một đơn vị cụ thể.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — giá trị số.
+- `unitOptions?: string | Intl.NumberFormatOptions` — tên đơn vị hoặc các tùy chọn.
+
+**Trả về:** `ComputedRef<string>`
+
+### `sizeFile`
+
+Định dạng kích thước tệp sang định dạng dễ đọc (bytes, KB, MB, v.v.).
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — kích thước tính bằng bytes.
+- `unitOptions?: string | Intl.NumberFormatOptions` — đơn vị bắt đầu hoặc các tùy chọn.
+
+**Trả về:** `ComputedRef<string>`
+
+## Ngày và Giờ
+
+### `date`
+
+Định dạng một ngày theo locale.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — ngày đầu vào.
+- `type?: GeoDate` — loại định dạng ('date', 'time', 'datetime', v.v.).
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — kiểu hiển thị.
+- `hour24?: boolean` — có sử dụng định dạng 24 giờ hay không.
+
+**Trả về:** `ComputedRef<string>`
+
+### `time`
+
+Định dạng một giá trị thời gian.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — ngày/giờ đầu vào.
+
+**Trả về:** `ComputedRef<string>`
+
+### `month`
+
+Trả về tên của một tháng cụ thể.
+
+**Tham số:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — ngày đầu vào.
+- `style?: Intl.DateTimeFormatOptions['month']` — kiểu định dạng (long, short, narrow).
+
+**Trả về:** `ComputedRef<string>`
+
+### `months`
+
+Trả về danh sách tên của tất cả các tháng.
+
+**Tham số:**
+- `style?: Intl.DateTimeFormatOptions['month']` — kiểu định dạng.
+
+**Trả về:** `ComputedRef<ItemValue<number | undefined>[]>`
+
+### `weekday`
+
+Trả về tên của một ngày cụ thể trong tuần.
+
+**Tham số:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — ngày đầu vào.
+- `style?: Intl.DateTimeFormatOptions['weekday']` — kiểu định dạng.
+
+**Trả về:** `ComputedRef<string>`
+
+### `weekdays`
+
+Trả về danh sách tên của tất cả các ngày trong tuần.
+
+**Tham số:**
+- `style?: Intl.DateTimeFormatOptions['weekday']` — kiểu định dạng.
+
+**Trả về:** `ComputedRef<ItemValue<number | undefined>[]>`
+
+## Thời gian tương đối
+
+### `relative`
+
+Định dạng một ngày dưới dạng thời gian tương đối (ví dụ: "2 ngày trước").
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — ngày đầu vào.
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — kiểu định dạng.
+- `todayValue?: Date` — ngày tham chiếu cho "hôm nay".
+
+**Trả về:** `ComputedRef<string>`
+
+### `relativeLimit`
+
+Định dạng thời gian tương đối với việc tự động chuyển sang định dạng ngày tiêu chuẩn nếu đạt đến giới hạn.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — ngày đầu vào.
+- `limit: number` — giới hạn tính theo ngày.
+- `todayValue?: Date` — ngày tham chiếu cho "hôm nay".
+- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — các tùy chọn định dạng tương đối.
+- `dateOptions?: Intl.DateTimeFormatOptions` — các tùy chọn ngày tiêu chuẩn.
+
+**Trả về:** `ComputedRef<string>`
+
+### `relativeByValue`
+
+Định dạng một khoảng thời gian số dưới dạng thời gian tương đối.
+
+**Tham số:**
+- `value: RefOrNormal<NumberOrString>` — số lượng.
+- `unit: Intl.RelativeTimeFormatUnit` — đơn vị thời gian (day, month, hour, v.v.).
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — kiểu định dạng.
+
+**Trả về:** `ComputedRef<string>`
+
+## Khác
+
+### `sort`
+
+Sắp xếp một mảng các chuỗi hoặc đối tượng dựa trên quy tắc của locale.
+
+**Tham số:**
+- `data: RefOrNormal<T[]>` — mảng dữ liệu.
+- `compareFn?: (a: T, b: T) => [string, string]` — hàm ánh xạ để lấy các chuỗi có thể sắp xếp.
+
+**Trả về:** `ComputedRef<T[]>`

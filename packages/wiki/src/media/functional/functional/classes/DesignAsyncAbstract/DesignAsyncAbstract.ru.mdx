@@ -14,21 +14,42 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
+`DesignAsyncAbstract` является абстрактным классом и не может быть инициализирован напрямую. Он предназначен для расширения другими классами, которые должны реализовать метод `initEvent` для асинхронной подготовки данных.
+
+### Ограничения дженериков (Generic Constraints)
+
+Класс использует два типа дженериков для обеспечения строгой типизации:
+- `T extends Record<string, any>` — Тип для входных свойств (`props`). Определяет структуру данных, передаваемых в конструктор.
+- `C extends Record<string, any>` — Тип для внутреннего состояния или кэша (`event`). Определяет структуру данных, которая будет доступна в обратных вызовах после асинхронной инициализации.
+
+**Параметры конструктора:**
+- `props: T` — объект с исходными данными.
+- `callback?: (event: C) => void` — функция обратного вызова, которая будет вызываться после каждого успешного обновления (включая асинхронное).
+
+**Обязательный метод для реализации:**
+- `protected abstract initEvent(): Promise<void>` — асинхронный метод, в котором должна происходить основная логика подготовки данных (например, HTTP-запросы).
+
 ```typescript
 import { DesignAsyncAbstract } from '@dxtmisha/functional'
 
-interface MyProps { id: string }
-interface MyEvent { name: string }
+// 1. Определение интерфейсов
+interface MyProps { userId: number }
+interface MyState { userName: string; avatar: string }
 
-class MyAsyncDesign extends DesignAsyncAbstract<MyProps, MyEvent> {
+// 2. Реализация конкретного класса
+class UserDesign extends DesignAsyncAbstract<MyProps, MyState> {
   protected async initEvent(): Promise<void> {
-    const data = await fetch(`/api/user/${this.props.id}`).then(r => r.json())
-    this.event.name = data.name
+    const response = await fetch(`https://api.example.com/users/${this.props.userId}`)
+    const data = await response.json()
+    
+    this.event.userName = data.name
+    this.event.avatar = data.image
   }
 }
 
-const design = new MyAsyncDesign({ id: '123' }, (event) => {
-  console.log('Асинхронные данные обновлены:', event)
+// 3. Использование
+const user = new UserDesign({ userId: 1 }, (state) => {
+  console.log('Данные пользователя загружены:', state.userName)
 })
 ```
 
@@ -52,6 +73,3 @@ const design = new MyAsyncDesign({ id: '123' }, (event) => {
 
 **Возвращает:** `Promise<void>`
 
-## Внутреннее устройство
-
-`DesignAsyncAbstract` использует тот же механизм `DesignChanged`, что и его синхронный аналог, но оборачивает жизненный цикл в `async/await`. Это гарантирует, что даже при сложной асинхронной логике настройки состояние остается согласованным, а изменения точно отслеживаются перед уведомлением слушателей.

@@ -15,33 +15,74 @@ A base class for working with connected components and managing their rendering 
 
 ## Initialization
 
+Creates a new `DesignComponents` instance. The class combines components and their modifications into a single rendering management mechanism.
+
+**Parameters:**
+- `components: COMP = {}` — a list of connected components (an object where keys are names and values are Vue components).
+- `modification?: ConstrComponentMod<P>` — a modification object that allows overriding props for each component.
+
 ```typescript
 import { DesignComponents } from '@dxtmisha/functional'
 import MyButton from './MyButton.vue'
+import MyInput from './MyInput.vue'
 
+// 1. Component registration
 const components = {
-  button: MyButton
+  button: MyButton,
+  input: MyInput
 }
 
+// 2. Defining modifications (default props)
 const modification = {
-  button: { size: 'large' }
+  button: { size: 'large', color: 'primary' },
+  input: { focus: true }
 }
 
 const design = new DesignComponents(components, modification)
 ```
 
-## Component Retrieval
+
+## Rendering Methods
+
+### `render`
+
+Renders a component by its name and returns an array containing a single `VNode`. This is useful for Vue, which often expects arrays of nodes.
+
+**Parameters:**
+- `name: string` — The name of the registered component.
+- `props: object` — Properties passed to the component.
+- `children: any` — Sub-elements or slots of the component.
+- `index: string` — The key for the VNode.
+
+**Returns:** `VNode[]` — An array containing the generated VNode.
+
+### `renderOne`
+
+Renders a single component and returns the `VNode` object directly. If the component is not found, it returns `undefined`.
+
+**Parameters:**
+- `name: string` — The name of the registered component.
+- `props: object` — Properties for the component.
+- `children: any` — Sub-elements of the component.
+- `index: string` — The key for the VNode.
+
+**Returns:** `VNode | undefined` — The VNode object or `undefined`.
+
+### `renderAdd`
+
+Renders a component and pushes the resulting `VNode` into a provided array. This allows for collecting multiple nodes in a single pass.
+
+**Parameters:**
+- `item: any[]` — The array to which the rendering result will be added.
+- `name: string` — The name of the component.
+- `props: object` — Properties for the component.
+- `children: any` — Sub-elements of the component.
+- `index: string` — The key for the VNode.
+
+**Returns:** `this` — A reference to the current instance for method chaining.
+
+## Additional Methods
 
 - `is(name: string): boolean` — Checks if a specific component is registered.
 - `get(name: string): COMP[K]` — Returns the registered component object by its name.
 - `getModification(index?: string, props?: object): object | undefined` — Returns modified input data for connected components.
-
-## Rendering Methods
-
-- `render(name: string, props?: object, children?: any, index?: string): VNode[]` — Renders a component and returns an array containing the resulting VNode.
-- `renderOne(name: string, props?: object, children?: any, index?: string): VNode | undefined` — Renders a single component and returns the VNode directly.
-- `renderAdd(item: any[], name: string, props?: object, children?: any, index?: string): this` — Renders a component and pushes the result into a provided array.
-
-## Internal Structure
-
-`DesignComponents` acts as a bridge between the design logic and the Vue rendering engine. It handles complex property merges via `getModification` and ensures that component modifications are reactive by leveraging Vue's `computed` system inside its logic.

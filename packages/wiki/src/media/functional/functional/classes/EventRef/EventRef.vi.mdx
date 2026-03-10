@@ -4,76 +4,85 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp EventRef
 
-Trình quản lý trình nghe sự kiện có tính phản ứng (reactive), giúp đơn giản hóa quá trình đính kèm và gỡ bỏ các sự kiện cho các thành phần DOM hoặc window. Nó tự động xử lý việc liên kết lại (re-binding) các trình nghe khi thành phần mục tiêu (được cung cấp dưới dạng Vue `Ref`) thay đổi.
+Trình quản lý trình nghe sự kiện có tính phản ứng, giúp đơn giản hóa việc gắn và gỡ bỏ các sự kiện cho các thành phần DOM hoặc đối tượng `window`. Nó tự động cập nhật các đăng ký khi thành phần mục tiêu (được cung cấp dưới dạng Vue `Ref`) thay đổi.
+
+Bao gồm việc tự động liên kết lại các trình nghe trong quá trình thay đổi thành phần động và tích hợp hoàn toàn với vòng đời của Vue.
 
 ## Các tính năng chính
 
-- **Tính phản ứng** — tự động cập nhật các đăng ký sự kiện khi `Ref` của thành phần hoặc thành phần điều khiển thay đổi.
-- **Hỗ trợ nhiều loại sự kiện** — có thể nghe nhiều loại sự kiện đồng thời.
-- **Tự động dọn dẹp** — tích hợp với hệ thống phản ứng của Vue để quản lý hiệu quả các trình nghe.
-- **Thành phần điều khiển** — hỗ trợ một thành phần điều khiển tùy chọn cho các kiểm tra chuyên biệt (như xác minh xem một thành phần có còn trong DOM hay không).
+- **Tính phản ứng** — tự động cập nhật khi thành phần `Ref` thay đổi.
+- **Hỗ trợ đa loại** — nghe nhiều loại sự kiện cùng một lúc.
+- **Tự động dọn dẹp** — quản lý bộ nhớ hiệu quả thông qua hệ thống phản ứng.
 
 ## Khởi tạo
 
-```typescript
-import { EventRef } from '@dxtmisha/functional'
-import { ref, onMounted } from 'vue'
+Tạo một thực thể `EventRef` mới. Lớp này tự động đồng bộ hóa các trình lắng nghe sự kiện với trạng thái của Vue `ref` được truyền vào. Nếu phần tử đích thay đổi, `EventRef` sẽ tự động liên kết lại sự kiện.
 
-const buttonRef = ref<HTMLButtonElement>()
+### Ràng buộc Generic (Generic Constraints)
 
-const event = new EventRef(
-  buttonRef,
-  undefined,
-  'click',
-  (e) => console.log('Nút đã được nhấn!', e)
-)
-
-onMounted(() => event.start())
-```
-
-## Quản lý trạng thái (Các phương thức chính)
-
-### `start`
-
-Kích hoạt việc nghe sự kiện. Phương thức này xác định tất cả các loại sự kiện được chỉ định và đính kèm các trình nghe vào thành phần mục tiêu. Nếu thành phần là `Window` hoặc `HTMLElement`, nó cũng hỗ trợ các sự kiện chuyên biệt như `resize` hoặc `scroll-sync`.
-
-**Trả về:** `this`
-
-### `stop`
-
-Vô hiệu hóa việc nghe sự kiện. Nó gỡ bỏ tất cả các trình nghe đang hoạt động và ngắt kết nối bất kỳ observer nào (như `ResizeObserver`) được liên kết với instance.
-
-**Trả về:** `this`
-
-### `toggle`
-
-Chuyển đổi trạng thái hoạt động của trình nghe sự kiện dựa trên giá trị boolean được cung cấp.
+- `E extends ElementOrWindow` — kiểu của phần tử đích (ví dụ: `HTMLElement`, `Window`, hoặc `Document`).
+- `O extends Event` — kiểu của đối tượng sự kiện (ví dụ: `MouseEvent`, `KeyboardEvent`).
+- `D extends Record<string, any>` — kiểu dữ liệu tùy chỉnh (`detail`) gắn liền với sự kiện.
 
 **Tham số:**
-- `activity: boolean` — `true` để bắt đầu nghe, `false` để dừng.
+- `elementSelector?: RefOrNormal<ElementOrString<E> | undefined>` — phần tử đích hoặc bộ chọn (có thể ở dạng phản ứng).
+- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>` — phần tử điều khiển. Nếu phần tử này bị xóa khỏi DOM, việc lắng nghe sẽ dừng lại.
+- `type: string | string[] = ['click']` — loại sự kiện hoặc mảng các loại sự kiện.
+- `listener?: EventListenerDetail<O, D>` — hàm xử lý.
+- `options?: EventOptions` — các tùy chọn trình lắng nghe (`capture`, `passive`, `once`).
+- `detail?: D` — dữ liệu bổ sung của sự kiện.
 
-**Trả về:** `this`
+```typescript
+import { EventRef } from '@dxtmisha/functional'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-### `isActive`
+// 1. Khởi tạo đơn giản với Ref
+const buttonRef = ref<HTMLButtonElement>()
+const event = new EventRef(buttonRef, undefined, 'click', (e) => {
+  console.log('Nút đã được nhấn:', e.target)
+})
 
-Kiểm tra xem trình nghe sự kiện hiện có đang hoạt động và được đính kèm vào một thành phần hay không.
+// 2. Sử dụng nhiều sự kiện và tùy chọn
+const scrollEvent = new EventRef(
+  window, 
+  undefined, 
+  ['scroll', 'resize'], 
+  () => console.log('Cửa sổ đã thay đổi'),
+  { passive: true }
+)
 
-**Trả về:** `boolean`
+onMounted(() => {
+  event.start()
+  scrollEvent.start()
+})
+
+onUnmounted(() => {
+  event.stop()
+  scrollEvent.stop()
+})
+```
+
+## Vòng đời & Điều khiển
+
+- `start(): this` — Kích hoạt việc nghe sự kiện trên thành phần mục tiêu.
+- `stop(): this` — Dừng nghe và gỡ bỏ tất cả các trình nghe.
+- `toggle(activity: boolean): this` — Bật hoặc tắt việc nghe sự kiện dựa trên cờ flag.
+- `reset(): this` — Tải lại các trình nghe sự kiện (hữu ích khi thay đổi cài đặt).
+
+## Trạng thái & Truy xuất
+
+- `isActive(): boolean` — Kiểm tra xem việc nghe có đang hoạt động hay không.
+- `getElement(): E | undefined` — Trả về thành phần mục tiêu hiện tại để nghe.
 
 ## Cấu hình
 
-- `setElement(elementSelector: ElementOrString): this` — Thay đổi thành phần mục tiêu cho trình nghe sự kiện.
-- `setType(type: string | string[]): this` — Cập nhật (các) loại sự kiện cần nghe.
-- `setListener(listener: function): this` — Cập nhật hàm callback cho trình xử lý sự kiện.
-- `setOptions(options: EventOptions): this` — Thay đổi đối tượng options xác định đặc tính của đối tượng.
-- `setDetail(detail?: D): this` — Thay đổi giá trị phụ thuộc cho phương thức dispatch.
+- `setElement(element: ElementOrString): this` — Thay đổi thành phần mục tiêu cho trình nghe sự kiện. Các trình nghe hiện tại sẽ tự động được chuyển sang đối tượng mới.
+- `setElementControl(element: ElementOrString): this` — Thiết lập thành phần điều khiển để xác minh sự hiện diện trong DOM. Việc nghe sẽ tự động dừng nếu thành phần này bị xóa khỏi DOM.
+- `setType(type: string | string[]): this` — Cập nhật các loại sự kiện để nghe (ví dụ: `click` hoặc `['mousedown', 'mouseup']`).
+- `setListener(listener: Function): this` — Thay đổi hàm callback (trình xử lý).
+- `setOptions(options: EventOptions): this` — Thay đổi các tùy chọn trình nghe (ví dụ: `once`, `passive`, `capture`).
+- `setDetail(detail: object): this` — Thiết lập dữ liệu bổ sung có sẵn trong trình xử lý thông qua đối tượng sự kiện.
 
-## Các phương thức tiện ích
+## Hành động
 
-- `dispatch(detail?: object): this` — Kích hoạt các sự kiện được liên kết với instance thủ công.
-- `getElement(): E | undefined` — Trả về thành phần mục tiêu hiện đang được gán.
-- `reset(): this` — Tải lại các sự kiện đang nghe.
-
-## Cấu trúc nội bộ
-
-`EventRef` kế thừa từ lớp cơ sở `EventItem`. Nó thiết lập các `watch` của Vue trên `elementSelector` và `elementSelectorControl` được cung cấp để đảm bảo rằng ngay cả khi thành phần DOM thay đổi động, các trình nghe sự kiện vẫn được dừng chính xác trên thành phần cũ và bắt đầu trên thành phần mới.
+- `dispatch(detail?: object): this` — Kích hoạt sự kiện theo cách thủ công trên thành phần mục tiêu.

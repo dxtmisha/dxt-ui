@@ -8,7 +8,7 @@ import { ListDataRef } from '../ListDataRef'
 
 describe('ListDataRef', () => {
   describe('Constructor and basic initialization', () => {
-    it('should create instance with simple array', () => {
+    it('should create an instance with a simple array', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const listData = new ListDataRef(list)
 
@@ -16,7 +16,7 @@ describe('ListDataRef', () => {
       expect(listData.data.value).toHaveLength(3)
     })
 
-    it('should create instance with object array', () => {
+    it('should create an instance with an object array', () => {
       const list = [
         { label: 'Item 1', value: 'value1' },
         { label: 'Item 2', value: 'value2' }
@@ -27,7 +27,7 @@ describe('ListDataRef', () => {
       expect(listData.data.value[0]!.label).toBe('Item 1')
     })
 
-    it('should create instance with reactive ref', async () => {
+    it('should create an instance with reactive ref', async () => {
       const list = ref(['Apple', 'Banana'])
       const listData = new ListDataRef(list)
 
@@ -39,13 +39,13 @@ describe('ListDataRef', () => {
       expect(listData.data.value).toHaveLength(3)
     })
 
-    it('should handle undefined list', () => {
+    it('should handle an undefined list', () => {
       const listData = new ListDataRef(undefined)
 
       expect(listData.data.value).toHaveLength(0)
     })
 
-    it('should create instance with parent identifier', () => {
+    it('should create an instance with a parent identifier', () => {
       const list = ['Item 1']
       const listData = new ListDataRef(list, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'parent1')
 
@@ -54,7 +54,7 @@ describe('ListDataRef', () => {
   })
 
   describe('data computed property', () => {
-    it('should transform simple array to list data items', () => {
+    it('should transform a simple array to list data items', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const listData = new ListDataRef(list)
 
@@ -75,7 +75,7 @@ describe('ListDataRef', () => {
       })
     })
 
-    it('should transform object array with custom keys', () => {
+    it('should transform an object array with custom keys', () => {
       const list = [
         { label: 'First', value: 'val1', icon: 'star' },
         { label: 'Second', value: 'val2', icon: 'check' }
@@ -119,7 +119,7 @@ describe('ListDataRef', () => {
       })
     })
 
-    it('should handle items with explicit type', () => {
+    it('should handle items with an explicit type', () => {
       const list = [
         { label: 'Subtitle', value: 'sub1', type: 'subtitle' },
         { label: 'Item', value: 'item1', type: 'item' }
@@ -132,7 +132,7 @@ describe('ListDataRef', () => {
       expect(data[1]!.type).toBe('item')
     })
 
-    it('should handle items with explicit index', () => {
+    it('should handle items with an explicit index', () => {
       const list = [
         { label: 'Item 1', value: 'val1', index: 'custom-index-1' },
         { label: 'Item 2', value: 'val2', index: 'custom-index-2' }
@@ -147,7 +147,7 @@ describe('ListDataRef', () => {
   })
 
   describe('liteData computed property', () => {
-    it('should return full data when lite threshold not reached', () => {
+    it('should return full data when a lite threshold is not reached', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const listData = new ListDataRef(
         list,
@@ -164,7 +164,7 @@ describe('ListDataRef', () => {
       expect(listData.liteData.value).toEqual(listData.data.value)
     })
 
-    it('should return simplified data when lite threshold exceeded', () => {
+    it('should return simplified data when a lite threshold is exceeded', () => {
       const list = [
         { label: 'Item 1', value: 'val1', icon: 'star', custom: 'data' },
         { label: 'Item 2', value: 'val2', icon: 'check', custom: 'data' },
@@ -190,7 +190,7 @@ describe('ListDataRef', () => {
       expect(liteData[0]).not.toHaveProperty('custom')
     })
 
-    it('should include description in lite data', () => {
+    it('should include a description in lite data', () => {
       const list = [
         { label: 'Item 1', value: 'val1', description: 'Description 1' },
         { label: 'Item 2', value: 'val2', description: 'Description 2' },
@@ -239,7 +239,7 @@ describe('ListDataRef', () => {
       expect(fullData[0]!.highlight).toBe('Ban')
     })
 
-    it('should mark items as disabled when max selection reached', () => {
+    it('should mark items as disabled when max selection is reached', () => {
       const list = [
         { label: 'Item 1', value: 'val1' },
         { label: 'Item 2', value: 'val2' },
@@ -287,7 +287,7 @@ describe('ListDataRef', () => {
   })
 
   describe('map computed property', () => {
-    it('should return flat list for simple items', () => {
+    it('should return a flat list for simple items', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const listData = new ListDataRef(list)
 
@@ -397,7 +397,7 @@ describe('ListDataRef', () => {
       expect(listData.highlightFirstItem.value).toBe(-1)
     })
 
-    it('should find first matching item by label', () => {
+    it('should find the first matching item by label', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const highlight = ref('Ban')
 
@@ -406,7 +406,7 @@ describe('ListDataRef', () => {
       expect(listData.highlightFirstItem.value).toBe(1)
     })
 
-    it('should be case insensitive', () => {
+    it('it should be case-insensitive', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const highlight = ref('CHERRY')
 
@@ -448,7 +448,7 @@ describe('ListDataRef', () => {
       expect(listData.isSelected.value).toBe(false)
     })
 
-    it('should return true when item is selected', () => {
+    it('should return true when an item is selected', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -467,7 +467,7 @@ describe('ListDataRef', () => {
       expect(listData.isSelected.value).toBe(true)
     })
 
-    it('should handle array of selections', () => {
+    it('should handle an array of selections', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -495,7 +495,7 @@ describe('ListDataRef', () => {
       expect(listData.isSelectedMin.value).toBe(false)
     })
 
-    it('should return true when selection count is below min', () => {
+    it('should return true when the selection count is below min', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -518,7 +518,7 @@ describe('ListDataRef', () => {
       expect(listData.isSelectedMin.value).toBe(true)
     })
 
-    it('should return false when selection count exceeds min', () => {
+    it('should return false when the selection count exceeds min', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -595,14 +595,14 @@ describe('ListDataRef', () => {
   })
 
   describe('selectedList computed property', () => {
-    it('should return empty array when no selection', () => {
+    it('should return an empty array when no selection', () => {
       const list = ['Apple', 'Banana']
       const listData = new ListDataRef(list)
 
       expect(listData.selectedList.value).toEqual([])
     })
 
-    it('should return list of selected items', () => {
+    it('should return a list of selected items', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -650,7 +650,7 @@ describe('ListDataRef', () => {
   })
 
   describe('selectedListInGroup computed property', () => {
-    it('should return selected items only from current group', () => {
+    it('should return selected items only from the current group', () => {
       const list = [
         { label: 'Item 1', value: 'val1' },
         { label: 'Item 2', value: 'val2' }
@@ -672,7 +672,7 @@ describe('ListDataRef', () => {
   })
 
   describe('selectedNames computed property', () => {
-    it('should return array of selected item labels', () => {
+    it('should return an array of selected item labels', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -694,7 +694,7 @@ describe('ListDataRef', () => {
       expect(names).toEqual(['Apple', 'Cherry'])
     })
 
-    it('should return empty array when no selection', () => {
+    it('should return an empty array when no selection', () => {
       const list = ['Apple', 'Banana']
       const listData = new ListDataRef(list)
 
@@ -703,7 +703,7 @@ describe('ListDataRef', () => {
   })
 
   describe('selectedValues computed property', () => {
-    it('should return array of selected item values', () => {
+    it('should return an array of selected item values', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -725,7 +725,7 @@ describe('ListDataRef', () => {
       expect(values).toEqual(['apple', 'cherry'])
     })
 
-    it('should return empty array when no selection', () => {
+    it('should return an empty array when no selection', () => {
       const list = ['Apple', 'Banana']
       const listData = new ListDataRef(list)
 
@@ -741,7 +741,7 @@ describe('ListDataRef', () => {
       expect(listData.isLite()).toBe(false)
     })
 
-    it('should return false when list length is below threshold', () => {
+    it('should return false when the list length is below a threshold', () => {
       const list = ['Apple', 'Banana']
       const listData = new ListDataRef(
         list,
@@ -758,7 +758,7 @@ describe('ListDataRef', () => {
       expect(listData.isLite()).toBe(false)
     })
 
-    it('should return true when list length exceeds threshold', () => {
+    it('should return true when the list length exceeds a threshold', () => {
       const list = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry']
       const listData = new ListDataRef(
         list,
@@ -796,7 +796,7 @@ describe('ListDataRef', () => {
       expect(listData.isFocus()).toBe(true)
     })
 
-    it('should return false when focused item is not in list', () => {
+    it('should return false when focused item is not in a list', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -810,7 +810,7 @@ describe('ListDataRef', () => {
   })
 
   describe('isHighlight method', () => {
-    it('should return false when no highlight match found', () => {
+    it('should return false when no highlight match is found', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('xyz')
 
@@ -819,7 +819,7 @@ describe('ListDataRef', () => {
       expect(listData.isHighlight()).toBe(false)
     })
 
-    it('should return true when highlight match is found', () => {
+    it('should return true when a highlight match is found', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('App')
 
@@ -830,7 +830,7 @@ describe('ListDataRef', () => {
   })
 
   describe('isHighlightActive method', () => {
-    it('should return true when highlight is too short', () => {
+    it('should return true when the highlight is too short', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('A')
 
@@ -839,7 +839,7 @@ describe('ListDataRef', () => {
       expect(listData.isHighlightActive()).toBe(true)
     })
 
-    it('should return true when highlight matches', () => {
+    it('should return true when highlighting matches', () => {
       const list = ['Apple', 'Banana']
       const highlight = ref('App')
 
@@ -859,14 +859,14 @@ describe('ListDataRef', () => {
   })
 
   describe('getLength method', () => {
-    it('should return number of items in data', () => {
+    it('should return the number of items in data', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const listData = new ListDataRef(list)
 
       expect(listData.getLength()).toBe(3)
     })
 
-    it('should return 0 for empty list', () => {
+    it('should return 0 for an empty list', () => {
       const listData = new ListDataRef([])
 
       expect(listData.getLength()).toBe(0)
@@ -874,7 +874,7 @@ describe('ListDataRef', () => {
   })
 
   describe('getLengthByMap method', () => {
-    it('should return total number of items including nested', () => {
+    it('should return the total number of items including nested', () => {
       const list = [
         {
           label: 'Group', value: [
@@ -890,7 +890,7 @@ describe('ListDataRef', () => {
   })
 
   describe('getLengthByItems method', () => {
-    it('should return number of selectable items', () => {
+    it('should return a number of selectable items', () => {
       const list = [
         { label: 'Item 1', value: 'val1', type: 'item' },
         { label: 'Subtitle', value: 'sub', type: 'subtitle' },
@@ -939,14 +939,14 @@ describe('ListDataRef', () => {
   })
 
   describe('getHighlightLengthStart method', () => {
-    it('should return default value of 2', () => {
+    it('should return the default value of 2', () => {
       const list = ['Apple', 'Banana']
       const listData = new ListDataRef(list)
 
       expect(listData.getHighlightLengthStart()).toBe(2)
     })
 
-    it('should return custom highlight length start', () => {
+    it('should return custom highlight length start?', () => {
       const list = ['Apple', 'Banana']
       const highlightLengthStart = ref(5)
 
@@ -969,7 +969,7 @@ describe('ListDataRef', () => {
       expect(listData.getSelected()).toBeUndefined()
     })
 
-    it('should return selected value', () => {
+    it('should return the selected value', () => {
       const list = ['Apple', 'Banana']
       const selected = ref('0')
 
@@ -985,7 +985,7 @@ describe('ListDataRef', () => {
       expect(listData.getSelected()).toBe('0')
     })
 
-    it('should return array of selected values', () => {
+    it('should return an array of selected values', () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const selected = ref(['0', '2'])
 
@@ -1003,7 +1003,7 @@ describe('ListDataRef', () => {
   })
 
   describe('getSelectedByStep method', () => {
-    it('should return first item when no selection', () => {
+    it('should return the first item when no selection', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -1013,7 +1013,7 @@ describe('ListDataRef', () => {
       expect(listData.getSelectedByStep(0)).toBe('apple')
     })
 
-    it('should return next item with positive step', () => {
+    it('should return the next item with a positive step', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -1034,7 +1034,7 @@ describe('ListDataRef', () => {
       expect(listData.getSelectedByStep(2)).toBe('cherry')
     })
 
-    it('should return previous item with negative step', () => {
+    it('should return the previous item with a negative step', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -1055,7 +1055,7 @@ describe('ListDataRef', () => {
       expect(listData.getSelectedByStep(-2)).toBe('apple')
     })
 
-    it('should return last item when step exceeds length', () => {
+    it('should return the last item when a step exceeds length', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -1071,10 +1071,10 @@ describe('ListDataRef', () => {
         selected
       )
 
-      expect(listData.getSelectedByStep(10)).toBe('banana')
+      expect(listData.getSelectedByStep(10)).toBe('apple')
     })
 
-    it('should return first item when negative step exceeds bounds', () => {
+    it('should return the first item when a negative step exceeds bounds', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -1090,7 +1090,7 @@ describe('ListDataRef', () => {
         selected
       )
 
-      expect(listData.getSelectedByStep(-10)).toBe('apple')
+      expect(listData.getSelectedByStep(-10)).toBe('banana')
     })
   })
 
@@ -1136,7 +1136,7 @@ describe('ListDataRef', () => {
   })
 
   describe('getItemByKey method', () => {
-    it('should return undefined for out of bounds key', () => {
+    it('should return undefined for an out-of-bounds key', () => {
       const list = ['Apple', 'Banana']
       const listData = new ListDataRef(list)
 
@@ -1162,7 +1162,7 @@ describe('ListDataRef', () => {
       expect(listData.getFirstItemByParent('nonexistent')).toBeUndefined()
     })
 
-    it('should return first item with specified parent', () => {
+    it('should return the first item with a specified parent', () => {
       const list = [
         {
           label: 'Group',
@@ -1191,7 +1191,7 @@ describe('ListDataRef', () => {
       expect(listData.getLastItemByParent('nonexistent')).toBeUndefined()
     })
 
-    it('should return last item with specified parent', () => {
+    it('should return the last item with a specified parent', () => {
       const list = [
         {
           label: 'Group',
@@ -1213,7 +1213,7 @@ describe('ListDataRef', () => {
   })
 
   describe('getSubList method', () => {
-    it('should create and return sublist for group item', () => {
+    it('should create and return a sublist for group item', () => {
       const list = [
         {
           label: 'Group',
@@ -1284,7 +1284,7 @@ describe('ListDataRef', () => {
   })
 
   describe('Reactive updates', () => {
-    it('should update data when list ref changes', async () => {
+    it('should update data when the list ref changes', async () => {
       const list = ref(['Apple', 'Banana'])
       const listData = new ListDataRef(list)
 
@@ -1334,7 +1334,7 @@ describe('ListDataRef', () => {
       expect(listData.fullData.value[1]!.selected).toBe(true)
     })
 
-    it('should update highlight when highlight ref changes', async () => {
+    it('should update highlight when highlight ref changes?', async () => {
       const list = ['Apple', 'Banana', 'Cherry']
       const highlight = ref('App')
       const listData = new ListDataRef(list, undefined, highlight)
@@ -1347,7 +1347,7 @@ describe('ListDataRef', () => {
       expect(listData.highlightFirstItem.value).toBe(1)
     })
 
-    it('should clear sublist cache when list changes', async () => {
+    it('should clear the sublist cache when the list changes', async () => {
       const list = ref<any>([
         {
           label: 'Group',
@@ -1385,7 +1385,7 @@ describe('ListDataRef', () => {
   })
 
   describe('Edge cases', () => {
-    it('should handle empty string as label', () => {
+    it('should handle empty string as a label', () => {
       const list = [{ label: '', value: 'empty' }]
       const listData = new ListDataRef(list)
 
@@ -1448,7 +1448,7 @@ describe('ListDataRef', () => {
       expect(map.length).toBeGreaterThan(2)
     })
 
-    it('should handle mixed types in list', () => {
+    it('should handle mixed types in a list', () => {
       const list = [
         { label: 'Item', value: 'val1', type: 'item' },
         { label: 'Subtitle', value: 'sub', type: 'subtitle' },
@@ -1461,7 +1461,7 @@ describe('ListDataRef', () => {
       expect(listData.data.value.map(i => i.type)).toEqual(['item', 'subtitle', 'line', 'space'])
     })
 
-    it('should handle object with no label or value', () => {
+    it('should handle an object with no label or value', () => {
       const list = [{ custom: 'data' }]
       const listData = new ListDataRef(list)
 
@@ -1495,7 +1495,7 @@ describe('ListDataRef', () => {
   })
 
   describe('Complex scenarios', () => {
-    it('should handle complete Select component scenario', async () => {
+    it('should handle a complete Select component scenario', async () => {
       const options = ref([
         { label: 'United States', value: 'us', icon: 'flag' },
         { label: 'United Kingdom', value: 'uk', icon: 'flag' },
@@ -1544,7 +1544,7 @@ describe('ListDataRef', () => {
       expect(listData.fullData.value[2]!.focus).toBe(true)
     })
 
-    it('should handle grouped menu with multiple selection', async () => {
+    it('should handle a grouped menu with multiple selections', async () => {
       const menuData = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },

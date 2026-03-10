@@ -1,17 +1,17 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/functional/Classes/GeoIntlRef - Реактивный менеджер интернационализации'/>
+<Meta title='@dxtmisha/ru/functional/Classes/GeoIntlRef - Реактивное форматирование чисел и дат'/>
 
 # Класс GeoIntlRef
 
-Реактивный менеджер для форматирования чисел, дат и относительного времени в соответствии с международными стандартами (Intl). Он предоставляет удобную обертку над утилитой `GeoIntl`, гарантируя автоматическое обновление всех отформатированных строк при изменении локали или входных данных.
+Реактивный класс для управления форматированием чисел, дат, валют и относительного времени. Обеспечивает автоматическое обновление форматированных строк при изменении локали.
 
 ## Ключевые особенности
 
-- **Реактивность** — автоматически переформатирует данные при изменении `Ref` локали или входных значений.
-- **Форматирование чисел** — поддержка десятичных дробей, валют, процентов и единиц измерения.
-- **Дата и время** — предоставляет зависящее от языка форматирование даты, времени и относительного времени.
-- **Отображаемые имена** — позволяет переводить названия языков, регионов и скриптов.
+- **Реактивность** — автоматическое обновление форматированных строк при изменении `Ref` локали.
+- **Интернационализация** — полная поддержка стандартов `Intl` для чисел, дат, валют и единиц измерения.
+- **Относительное время** — удобные методы для вывода времени в формате «2 дня назад» с поддержкой лимитов.
+- **Списки и сортировка** — встроенные методы для получения названий месяцев, дней недели и локалезависимой сортировки.
 
 ## Инициализация
 
@@ -19,42 +19,241 @@ import {Meta} from '@storybook/addon-docs/blocks'
 import { GeoIntlRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const locale = ref('ru-RU')
-const intl = new GeoIntlRef(locale)
-
-console.log(intl.number(1234.56).value) // "1 234,56"
+const code = ref('ru-RU')
+const geoIntl = new GeoIntlRef(code)
 ```
 
-## Общие методы
+## Отображаемые имена
 
-- `display(value?, typeOptions?): ComputedRef<string>` — Обеспечивает последовательный перевод отображаемых названий языка, региона и скрипта.
-- `languageName(value?, style?): ComputedRef<string>` — Возвращает отображаемое имя для конкретного кода языка.
-- `countryName(value?, style?): ComputedRef<string>` — Возвращает отображаемое имя для конкретного кода региона (страны).
-- `sort<T>(data, compareFn?): ComputedRef<T[]>` — Сортирует строки с учетом особенностей стран.
+### `display`
+
+Возвращает переведенное название языка, региона или скрипта.
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код для перевода (например, 'en-US').
+- `typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions` — тип отображаемого имени.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `languageName`
+
+Возвращает отображаемое имя языка.
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код языка.
+- `style?: Intl.RelativeTimeFormatStyle` — стиль форматирования.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `countryName`
+
+Возвращает отображаемое имя региона (страны).
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код страны.
+- `style?: Intl.RelativeTimeFormatStyle` — стиль форматирования.
+
+**Возвращает:** `ComputedRef<string>`
 
 ## Форматирование чисел
 
-- `number(value, options?): ComputedRef<string>` — Форматирует число в соответствии с текущей локалью и параметрами.
-- `decimal(): ComputedRef<string>` — Возвращает символ десятичной точки, используемый в текущей локали.
-- `currency(value, currencyOptions?, numberOnly?): ComputedRef<string>` — Форматирует значение как строку валюты.
-- `currencySymbol(currency, currencyDisplay?): ComputedRef<string>` — Возвращает символ для валюты или сам код валюты.
-- `unit(value, unitOptions?): ComputedRef<string>` — Форматирует значение с указанием единиц измерения.
-- `sizeFile(value, unitOptions?): ComputedRef<string>` — Возвращает отформатированный размер файла (например, "1.5 МБ").
-- `percent(value, options?): ComputedRef<string>` — Форматирует число в виде процента (0.1 -> "10%").
-- `percentBy100(value, options?): ComputedRef<string>` — Форматирует число в виде процента (10 -> "10%").
-- `plural(value, words, options?, optionsNumber?): ComputedRef<string>` — Применяет форматирование, учитывающее множественное число.
+### `number`
 
-## Форматирование даты и времени
+Форматирует число в соответствии с правилами локали.
 
-- `date(value, type?, styleOptions?, hour24?): ComputedRef<string>` — Включает языка-зависимое форматирование даты и времени.
-- `relative(value, styleOptions?, todayValue?): ComputedRef<string>` — Включает форматирование относительного времени (например, "вчера").
-- `relativeLimit(value, limit, ...): ComputedRef<string>` — Относительное форматирование с переходом на стандартный формат при превышении лимита.
-- `relativeByValue(value, unit, styleOptions?): ComputedRef<string>` — Возвращает относительное время на основе конкретной единицы времени.
-- `time(value): ComputedRef<string>` — Форматирует только временную часть даты.
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования.
+- `options?: Intl.NumberFormatOptions` — опции форматирования.
 
-## Календарная информация
+**Возвращает:** `ComputedRef<string>`
 
-- `month(value?, style?): ComputedRef<string>` — Возвращает название месяца для конкретной даты.
-- `months(style?): ComputedRef<ItemValue<number | undefined>[]>` — Возвращает названия всех месяцев.
-- `weekday(value?, style?): ComputedRef<string>` — Возвращает название дня недели для конкретной даты.
-- `weekdays(style?): ComputedRef<ItemValue<number | undefined>[]>` — Возвращает названия всех дней недели.
+### `decimal`
+
+Возвращает символ десятичного разделителя для текущей локали.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `percent`
+
+Форматирует число как процент.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число (0.25 -> 25%).
+- `options?: Intl.NumberFormatOptions` — опции форматирования.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `percentBy100`
+
+Форматирует число как процент, предварительно разделив на 100.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число (25 -> 25%).
+- `options?: Intl.NumberFormatOptions` — опции форматирования.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `plural`
+
+Выбирает форму множественного числа для слова.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число.
+- `words: string` — список слов через разделитель `|` (например, 'яблоко|яблока|яблок').
+- `options?: Intl.PluralRulesOptions` — опции правил.
+- `optionsNumber?: Intl.NumberFormatOptions` — опции форматирования числа.
+
+**Возвращает:** `ComputedRef<string>`
+
+## Валюта и единицы измерения
+
+### `currency`
+
+Форматирует число как денежную сумму.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — сумма.
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — код валюты или опции.
+- `numberOnly?: boolean` — если `true`, возвращает только число без символа валюты.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `currencySymbol`
+
+Возвращает символ указанной валюты.
+
+**Параметры:**
+- `currency: RefOrNormal<string>` — код валюты (например, 'USD').
+- `currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry` — способ отображения.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `unit`
+
+Форматирует число с единицами измерения.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число.
+- `unitOptions?: string | Intl.NumberFormatOptions` — единица измерения или опции.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `sizeFile`
+
+Форматирует размер файла в человекочитаемый вид (байты, КБ, МБ и т.д.).
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — размер в байтах.
+- `unitOptions?: string | Intl.NumberFormatOptions` — начальная единица или опции.
+
+**Возвращает:** `ComputedRef<string>`
+
+## Даты и время
+
+### `date`
+
+Форматирует дату.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата.
+- `type?: GeoDate` — тип формата ('date', 'time', 'datetime' и др.).
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — стиль отображения.
+- `hour24?: boolean` — использовать ли 24-часовой формат.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `time`
+
+Форматирует время.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата/время.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `month`
+
+Возвращает название месяца.
+
+**Параметры:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — дата.
+- `style?: Intl.DateTimeFormatOptions['month']` — стиль (long, short, narrow).
+
+**Возвращает:** `ComputedRef<string>`
+
+### `months`
+
+Возвращает список всех месяцев.
+
+**Параметры:**
+- `style?: Intl.DateTimeFormatOptions['month']` — стиль отображения.
+
+**Возвращает:** `ComputedRef<ItemValue<number | undefined>[]>`
+
+### `weekday`
+
+Возвращает название дня недели.
+
+**Параметры:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — дата.
+- `style?: Intl.DateTimeFormatOptions['weekday']` — стиль.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `weekdays`
+
+Возвращает список дней недели.
+
+**Параметры:**
+- `style?: Intl.DateTimeFormatOptions['weekday']` — стиль.
+
+**Возвращает:** `ComputedRef<ItemValue<number | undefined>[]>`
+
+## Относительное время
+
+### `relative`
+
+Форматирует относительное время (например, «2 дня назад»).
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата.
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — стиль.
+- `todayValue?: Date` — дата, относительно которой считать.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `relativeLimit`
+
+Форматирует относительное время, но переключается на обычную дату, если лимит превышен.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата.
+- `limit: number` — лимит в днях.
+- `todayValue?: Date` — дата «сегодня».
+- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — опции относительного времени.
+- `dateOptions?: Intl.DateTimeFormatOptions` — опции даты.
+
+**Возвращает:** `ComputedRef<string>`
+
+### `relativeByValue`
+
+Форматирует относительный интервал по числовому значению.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — количество единиц.
+- `unit: Intl.RelativeTimeFormatUnit` — единица (day, month, year и др.).
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — стиль.
+
+**Возвращает:** `ComputedRef<string>`
+
+## Прочее
+
+### `sort`
+
+Сортирует массив строк в соответствии с правилами локали.
+
+**Параметры:**
+- `data: RefOrNormal<T[]>` — массив данных.
+- `compareFn?: (a: T, b: T) => [string, string]` — функция для получения строк сравнения.
+
+**Возвращает:** `ComputedRef<T[]>`

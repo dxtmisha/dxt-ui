@@ -14,11 +14,21 @@ Một lớp tiện ích được thiết kế để theo dõi các thay đổi t
 
 ## Khởi tạo
 
+Tạo một thực thể `DesignChanged` mới. Lớp này được thiết kế để theo dõi các thay đổi trong thuộc tính đối tượng bằng cách so sánh chúng với một bộ nhớ đệm nội bộ (trạng thái tại thời điểm cập nhật lần cuối).
+
+**Tham số:**
+- `props: T` — đối tượng dữ liệu có các thuộc tính cần được theo dõi.
+- `watch: string[] = Object.keys(props)` — một mảng gồm các tên thuộc tính (khóa) để theo dõi. Theo mặc định, tất cả các thuộc tính của đối tượng `props` đều được theo dõi.
+
 ```typescript
 import { DesignChanged } from '@dxtmisha/functional'
 
+// 1. Theo dõi tất cả các thuộc tính theo mặc định
 const props = { title: 'Xin chào', count: 1 }
-const tracker = new DesignChanged(props, ['title']) // Chỉ theo dõi 'title'
+const tracker = new DesignChanged(props)
+
+// 2. Theo dõi các thuộc tính cụ thể (tập hợp con)
+const trackerPartial = new DesignChanged(props, ['title'])
 
 console.log(tracker.isChanged()) // false
 ```
@@ -48,6 +58,3 @@ Kiểm tra xem bất kỳ thuộc tính nào đang được theo dõi (được 
 
 **Trả về:** `void`
 
-## Cấu trúc nội bộ
-
-`DesignChanged` lưu trữ các giá trị "được biết đến lần cuối" trong một đối tượng `cache` riêng tư. Phương thức `isDifferent` thực hiện kiểm tra so sánh nghiêm ngặt (`!==`) giữa giá trị được lưu trong bộ nhớ đệm và giá trị hiện tại trong đối tượng `props`. Lớp này là một phụ thuộc cốt lõi cho `DesignAbstract` và `DesignAsyncAbstract`.

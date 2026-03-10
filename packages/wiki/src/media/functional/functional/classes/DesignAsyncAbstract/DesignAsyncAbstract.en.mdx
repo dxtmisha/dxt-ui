@@ -14,21 +14,42 @@ An asynchronous abstract base class for managing constructor properties and stat
 
 ## Initialization
 
+`DesignAsyncAbstract` is an abstract class and cannot be initialized directly. It is intended to be extended by other classes that must implement the `initEvent` method for asynchronous data preparation.
+
+### Generic Constraints
+
+The class uses two types of generics to ensure strict typing:
+- `T extends Record<string, any>` — Type for input properties (`props`). Defines the data structure passed to the constructor.
+- `C extends Record<string, any>` — Type for internal state or cache (`event`). Defines the data structure available in callbacks after asynchronous initialization.
+
+**Constructor Parameters:**
+- `props: T` — an object with the initial data.
+- `callback?: (event: C) => void` — a callback function that will be called after each successful update (including asynchronous ones).
+
+**Required Method to Implement:**
+- `protected abstract initEvent(): Promise<void>` — an asynchronous method where the main logic for data preparation (e.g., HTTP requests) should occur.
+
 ```typescript
 import { DesignAsyncAbstract } from '@dxtmisha/functional'
 
-interface MyProps { id: string }
-interface MyEvent { name: string }
+// 1. Defining interfaces
+interface MyProps { userId: number }
+interface MyState { userName: string; avatar: string }
 
-class MyAsyncDesign extends DesignAsyncAbstract<MyProps, MyEvent> {
+// 2. Implementing a concrete class
+class UserDesign extends DesignAsyncAbstract<MyProps, MyState> {
   protected async initEvent(): Promise<void> {
-    const data = await fetch(`/api/user/${this.props.id}`).then(r => r.json())
-    this.event.name = data.name
+    const response = await fetch(`https://api.example.com/users/${this.props.userId}`)
+    const data = await response.json()
+    
+    this.event.userName = data.name
+    this.event.avatar = data.image
   }
 }
 
-const design = new MyAsyncDesign({ id: '123' }, (event) => {
-  console.log('Async Data Updated:', event)
+// 3. Usage
+const user = new UserDesign({ userId: 1 }, (state) => {
+  console.log('User data loaded:', state.userName)
 })
 ```
 
@@ -52,6 +73,3 @@ The primary asynchronous execution logic for updating the state. It waits for `i
 
 **Returns:** `Promise<void>`
 
-## Internal Structure
-
-`DesignAsyncAbstract` leverages the same `DesignChanged` mechanism as its synchronous counterpart but wraps the lifecycle in `async/await`. This ensures that even with complex asynchronous setup logic, the state remains consistent and changes are tracked accurately before notifying listeners.

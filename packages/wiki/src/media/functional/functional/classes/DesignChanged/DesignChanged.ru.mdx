@@ -14,11 +14,21 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
+Создает новый экземпляр `DesignChanged`. Класс предназначен для отслеживания изменений в свойствах объекта путем сравнения их с внутренним кэшем (состоянием на момент последнего обновления).
+
+**Параметры:**
+- `props: T` — объект с данными, свойства которого необходимо отслеживать.
+- `watch: string[] = Object.keys(props)` — массив имен свойств (ключей), за которыми нужно следить. По умолчанию отслеживаются все свойства объекта `props`.
+
 ```typescript
 import { DesignChanged } from '@dxtmisha/functional'
 
+// 1. Отслеживание всех свойств по умолчанию
 const props = { title: 'Привет', count: 1 }
-const tracker = new DesignChanged(props, ['title']) // Отслеживать только 'title'
+const tracker = new DesignChanged(props)
+
+// 2. Отслеживание конкретных свойств (подмножества)
+const trackerPartial = new DesignChanged(props, ['title'])
 
 console.log(tracker.isChanged()) // false
 ```
@@ -48,6 +58,3 @@ console.log(tracker.isChanged()) // false
 
 **Возвращает:** `void`
 
-## Внутреннее устройство
-
-`DesignChanged` хранит «последние известные» значения в приватном объекте `cache`. Метод `isDifferent` выполняет строгую проверку на неравенство (`!==`) между кэшированным значением и текущим значением в объекте `props`. Этот класс является основной зависимостью для `DesignAbstract` и `DesignAsyncAbstract`.

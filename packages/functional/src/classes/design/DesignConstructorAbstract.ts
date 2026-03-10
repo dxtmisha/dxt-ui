@@ -329,6 +329,7 @@ export abstract class DesignConstructorAbstract<
 
     return (
       classesProps
+      ?? classes
       ?? {
         main: {}
       }
@@ -354,6 +355,6 @@ export abstract class DesignConstructorAbstract<
       }
     }
 
-    return stylesProps ?? {}
+    return stylesProps ?? styles ?? {}
   }
 }

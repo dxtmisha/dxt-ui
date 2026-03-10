@@ -1,56 +1,105 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/functional/Classes/DesignAbstract - Base Design Class'/>
+<Meta title='@dxtmisha/en/functional/Classes/DesignAbstract - Base Constructor Class'/>
 
 # DesignAbstract Class
 
-An abstract base class designed for managing constructor properties and state changes. It provides a structured way to handle input properties, track changes, and execute callbacks when data updates.
+An abstract base class designed for managing constructor properties and state changes. It provides a structured way to handle input properties, track changes, and execute callbacks upon data updates.
 
 ## Key Features
 
 - **Property Management** — structured handling of input data (`props`) and event storage (`event`).
-- **Change Tracking** — integrated with `DesignChanged` to monitor and update property changes efficiently.
-- **Lifecycle Management** — automated execution of `makeCallback` and `initEvent` during data updates.
+- **Change Tracking** — integration with `DesignChanged` for efficient monitoring and updating of property changes.
+- **Lifecycle Management** — automatic execution of `makeCallback` and `initEvent` during data updates.
 
 ## Initialization
+
+`DesignAbstract` is an abstract base class and cannot be initialized directly. It serves as a foundation for creating design classes that manage state based on input properties (`props`).
+
+### Generic Constraints
+
+The class uses two types of generics to ensure strict typing:
+- `T extends Record<string, any>` — Type for input properties (`props`). Defines the data structure passed to the constructor and used for tracking changes.
+- `C extends Record<string, any>` — Type for output data or state (`event`). Defines the structure of the object formed in `initEvent` and passed to callbacks.
+
+**Constructor Parameters:**
+- `props: T` — an object with initial initialization data.
+- `callback?: (event: C) => void` — an optional callback function executed after each data update.
+- `changed?: string[]` — a list of property names from `props` to watch. If not specified, all keys of `props` are tracked.
+
+**Required Method to Implement:**
+- `protected abstract initEvent(): void` — a method that describes the logic for transforming or filtering `props` into a state object `event`.
 
 ```typescript
 import { DesignAbstract } from '@dxtmisha/functional'
 
-interface MyProps { title: string }
-interface MyEvent { title: string }
+// 1. Defining structures
+interface MyProps { label: string; value: number }
+interface MyState { display: string }
 
-class MyDesign extends DesignAbstract<MyProps, MyEvent> {
+// 2. Implementing a concrete class
+class MyDesign extends DesignAbstract<MyProps, MyState> {
   protected initEvent(): void {
-    this.event.title = this.props.title
+    this.event.display = `${this.props.label}: ${this.props.value}`
   }
 }
 
-const design = new MyDesign({ title: 'Hello' }, (event) => {
-  console.log('Updated:', event)
-})
+// 3. Creating an instance
+const design = new MyDesign(
+  { label: 'Counter', value: 10 }, 
+  (state) => console.log('New state:', state.display)
+)
 ```
 
-## Data Management
+## Data Management Methods
 
 ### `make`
 
-Initiates the callback update process. It calls `makeCallback` and returns the instance for chaining.
+Initiates the callback update process. Calls `makeCallback` and returns the instance for method chaining.
 
 **Parameters:**
-- `compelled?: boolean` — if `true`, forces the data update regardless of whether changes were detected.
+- `compelled?: boolean` — if `true`, forces a data update regardless of changes.
 
 **Returns:** `this`
 
 ### `makeCallback`
 
-The primary execution logic for updating the state. It checks if changes occurred or if an update is forced, then initializes the event and triggers callbacks.
+The primary execution logic for state updates. Checks for changes or forced updates, then initializes the event and triggers callbacks.
 
 **Parameters:**
 - `compelled: boolean` — forces data update. Default: `false`.
 
 **Returns:** `void`
 
-## Internal Structure
+## Protected Methods (for Subclasses)
 
-Inside, `DesignAbstract` uses the `DesignChanged` class to track the state of properties. This allows the class to only trigger updates when data has actually changed, optimizing performance for complex UI components.
+### `is`
+
+Checks if a value exists in the `props` by name.
+
+**Parameters:**
+- `name: keyof T` — property name.
+
+**Returns:** `boolean`
+
+### `isChanged`
+
+Checks if a property value has been changed. Used to prevent redundant calculations.
+
+**Parameters:**
+- `name: keyof C` — property name in the event.
+- `nameProp?: keyof T | (keyof T)[]` — property name or list of property names in `props` that this value depends on. If not specified, `name` is used.
+
+**Returns:** `boolean`
+
+### `makeCallbackItem`
+
+Executes the callback function passed to the constructor.
+
+**Returns:** `void`
+
+### `initEvent` (abstract)
+
+Abstract method that must be implemented in the subclass. It populates `this.event` based on `this.props`.
+
+**Returns:** `void`

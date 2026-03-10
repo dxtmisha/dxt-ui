@@ -14,21 +14,42 @@ Một lớp cơ sở trừu tượng bất đồng bộ để quản lý các th
 
 ## Khởi tạo
 
+`DesignAsyncAbstract` là một lớp trừu tượng và không thể được khởi tạo trực tiếp. Nó được thiết kế để mở rộng bởi các lớp khác, các lớp này phải triển khai phương thức `initEvent` để chuẩn bị dữ liệu bất đồng bộ.
+
+### Ràng buộc Generic (Generic Constraints)
+
+Lớp này sử dụng hai loại generic để đảm bảo kiểu dữ liệu nghiêm ngặt:
+- `T extends Record<string, any>` — Kiểu cho các thuộc tính đầu vào (`props`). Xác định cấu trúc dữ liệu được truyền vào hàm khởi tạo.
+- `C extends Record<string, any>` — Kiểu cho trạng thái nội bộ hoặc bộ nhớ đệm (`event`). Xác định cấu trúc dữ liệu sẽ có sẵn trong các hàm gọi lại sau khi khởi tạo bất đồng bộ.
+
+**Tham số hàm khởi tạo:**
+- `props: T` — một đối tượng chứa dữ liệu ban đầu.
+- `callback?: (event: C) => void` — một hàm gọi lại sẽ được gọi sau mỗi lần cập nhật thành công (bao gồm cả cập nhật bất đồng bộ).
+
+**Phương thức bắt buộc phải triển khai:**
+- `protected abstract initEvent(): Promise<void>` — một phương thức bất đồng bộ nơi diễn ra logic chính để chuẩn bị dữ liệu (ví dụ: các yêu cầu HTTP).
+
 ```typescript
 import { DesignAsyncAbstract } from '@dxtmisha/functional'
 
-interface MyProps { id: string }
-interface MyEvent { name: string }
+// 1. Xác định các interface
+interface MyProps { userId: number }
+interface MyState { userName: string; avatar: string }
 
-class MyAsyncDesign extends DesignAsyncAbstract<MyProps, MyEvent> {
+// 2. Triển khai một lớp cụ thể
+class UserDesign extends DesignAsyncAbstract<MyProps, MyState> {
   protected async initEvent(): Promise<void> {
-    const data = await fetch(`/api/user/${this.props.id}`).then(r => r.json())
-    this.event.name = data.name
+    const response = await fetch(`https://api.example.com/users/${this.props.userId}`)
+    const data = await response.json()
+    
+    this.event.userName = data.name
+    this.event.avatar = data.image
   }
 }
 
-const design = new MyAsyncDesign({ id: '123' }, (event) => {
-  console.log('Dữ liệu bất đồng bộ đã cập nhật:', event)
+// 3. Sử dụng
+const user = new UserDesign({ userId: 1 }, (state) => {
+  console.log('Dữ liệu người dùng đã được tải:', state.userName)
 })
 ```
 
@@ -52,6 +73,3 @@ Logic thực thi bất đồng bộ chính để cập nhật trạng thái. Nó
 
 **Trả về:** `Promise<void>`
 
-## Cấu trúc nội bộ
-
-`DesignAsyncAbstract` tận dụng cùng một cơ chế `DesignChanged` như phiên bản đồng bộ của nó nhưng bao bọc vòng đời trong `async/await`. Điều này đảm bảo rằng ngay cả với logic thiết lập bất đồng bộ phức tạp, trạng thái vẫn nhất quán và các thay đổi được theo dõi chính xác trước khi thông báo cho người nghe.

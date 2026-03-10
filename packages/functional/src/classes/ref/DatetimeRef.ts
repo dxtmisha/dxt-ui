@@ -76,7 +76,7 @@ export class DatetimeRef {
    *
    * Возвращает основные данные для даты.
    */
-  getItem(): RefOrNormal<NumberOrStringOrDate> {
+  getItem(): Ref<NumberOrStringOrDate> {
     return this.item
   }
 

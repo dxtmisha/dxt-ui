@@ -1,134 +1,84 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { DesignAbstract } from '../DesignAbstract'
 
-// Concrete class for testing
-class TestDesign extends DesignAbstract<{ foo: string, bar: number }, { result: string }> {
+// Concrete class for testing DesignAbstract
+class TestDesign extends DesignAbstract<{ title: string, count?: number }, { result: string }> {
   protected initEvent(): void {
-    this.event.result = `${this.props.foo}-${this.props.bar}`
+    this.event.result = `${this.props.title}-${this.props.count || 0}`
   }
 
   // Expose protected methods for testing
-  public testIs(name: 'foo' | 'bar'): boolean {
+  public testIs(name: 'title' | 'count'): boolean {
     return this.is(name)
   }
 
-  public testIsChanged(name: 'result', nameProp?: ('foo' | 'bar') | ('foo' | 'bar')[]): boolean {
-    return this.isChanged(name, nameProp as any)
+  public testIsChanged(name: 'result', propName?: 'title' | 'count'): boolean {
+    return this.isChanged(name, propName as any)
   }
 }
 
 describe('DesignAbstract', () => {
-  let props: { foo: string, bar: number }
-  let callback: any
+  it('should initialize and call callback on make', () => {
+    const callback = vi.fn()
+    const props = { title: 'hello', count: 5 }
+    const design = new TestDesign(props, callback)
 
-  beforeEach(() => {
-    props = { foo: 'initial', bar: 10 }
-    callback = vi.fn()
+    design.make()
+
+    expect(callback).toHaveBeenCalledWith({ result: 'hello-5' })
   })
 
-  describe('Constructor', () => {
-    it('initializes basic properties', () => {
-      const design = new TestDesign(props, callback)
-      expect(design).toBeDefined()
-    })
+  it('should only call callback if props changed or compelled', () => {
+    const callback = vi.fn()
+    const props = { title: 'hello' }
+    const design = new TestDesign(props, callback)
+
+    // First call always works because changed.isChanged() is true initially
+    design.make()
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    // Second call without changes should not trigger callback
+    design.make()
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    // Compelled call should trigger callback even without changes
+    design.make(true)
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 
-  describe('is()', () => {
-    it('returns true for existing properties in props', () => {
-      const design = new TestDesign(props, callback)
-      expect(design.testIs('foo')).toBe(true)
-      expect(design.testIs('bar')).toBe(true)
-    })
+  it('should detect changes in props', () => {
+    const callback = vi.fn()
+    const props = { title: 'hello' }
+    const design = new TestDesign(props, callback)
 
-    it('returns false for non-existing properties (if typed loosely)', () => {
-      const design = new TestDesign(props, callback)
-      expect(design.testIs('nonexistent' as any)).toBe(false)
-    })
+    design.make() // Reset changed state
+
+    props.title = 'world'
+    design.make()
+    expect(callback).toHaveBeenCalledWith({ result: 'world-0' })
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 
-  describe('make() and makeCallback()', () => {
-    it('calls initEvent and callback on the first make() call', () => {
-      const design = new TestDesign(props, callback)
-      design.make()
-
-      expect(callback).toHaveBeenCalledTimes(1)
-      expect(callback).toHaveBeenCalledWith({ result: 'initial-10' })
-    })
-
-    it('it does not recall callback if data has not changed', () => {
-      const design = new TestDesign(props, callback)
-      design.make() // First call
-      design.make() // Second call (no change)
-
-      expect(callback).toHaveBeenCalledTimes(1)
-    })
-
-    it('recalls callback if data has changed', () => {
-      const design = new TestDesign(props, callback)
-      design.make()
-
-      props.foo = 'updated'
-      design.make()
-
-      expect(callback).toHaveBeenCalledTimes(2)
-      expect(callback).toHaveBeenLastCalledWith({ result: 'updated-10' })
-    })
-
-    it('recalls callback if compelled is true', () => {
-      const design = new TestDesign(props, callback)
-      design.make()
-      design.make(true)
-
-      expect(callback).toHaveBeenCalledTimes(2)
-    })
+  it('should verify property existence via is()', () => {
+    const design = new TestDesign({ title: 'test' })
+    expect(design.testIs('title')).toBe(true)
+    expect(design.testIs('count')).toBe(false)
   })
 
-  describe('isChanged()', () => {
-    it('returns true if the property is not in event yet', () => {
-      const design = new TestDesign(props, callback)
-      // design.make() not called, event is empty
-      expect(design.testIsChanged('result')).toBe(true)
-    })
+  it('should verify change status via isChanged()', () => {
+    const props = { title: 'test' }
+    const design = new TestDesign(props)
 
-    it('returns true if dependencies have changed', () => {
-      const design = new TestDesign(props, callback)
-      design.make() // Initializes event and cache
+    // Initial state: result not in event yet
+    expect(design.testIsChanged('result')).toBe(true)
 
-      props.foo = 'changed'
-      expect(design.testIsChanged('result', 'foo')).toBe(true)
-    })
+    design.make()
+    // After make, nothing changed
+    expect(design.testIsChanged('result')).toBe(false)
 
-    it('returns false if dependencies have NOT changed', () => {
-      const design = new TestDesign(props, callback)
-      design.make()
-
-      expect(design.testIsChanged('result', 'foo')).toBe(false)
-    })
-
-    it('correctly handles an array of dependency names', () => {
-      const design = new TestDesign(props, callback)
-      design.make()
-
-      expect(design.testIsChanged('result', ['foo', 'bar'])).toBe(false)
-
-      props.bar = 20
-      expect(design.testIsChanged('result', ['foo', 'bar'])).toBe(true)
-    })
-  })
-
-  describe('Integration with designChanged', () => {
-    it('it only tracks specified properties if passed to the constructor', () => {
-      // Track only 'foo', ignore 'bar'
-      const design = new TestDesign(props, callback, ['foo'])
-      design.make()
-
-      props.bar = 999
-      design.make()
-      expect(callback).toHaveBeenCalledTimes(1) // Should NOT trigger because 'bar' is not tracked
-
-      props.foo = 'new-foo'
-      design.make()
-      expect(callback).toHaveBeenCalledTimes(2) // Should trigger now
-    })
+    // Change prop
+    props.title = 'updated'
+    expect(design.testIsChanged('result', 'title')).toBe(true)
+    expect(design.testIsChanged('result', 'count')).toBe(false)
   })
 })

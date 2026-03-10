@@ -19,7 +19,6 @@ export abstract class DesignAbstract<
    * функция обратного вызова при изменении значения
    * @param changed base data/ данный для слежения
    */
-
   constructor(
     protected readonly props: T,
     protected readonly callback?: (event: C) => void,

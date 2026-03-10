@@ -1,88 +1,303 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/functional/Classes/ListDataRef - Reactive List Manager'/>
+<Meta title='@dxtmisha/en/functional/Classes/ListDataRef - Data List Management'/>
 
 # ListDataRef Class
 
-A comprehensive reactive manager for handling list data. It supports complex operations such as filtering, searching (with highlighting), single or multiple selection, focus management, and hierarchical (nested) lists.
+A reactive class for managing data lists of any complexity. It supports filtering, selection, focus, and nested structures (groups and menus). The class transforms input data into a standardized format and provides an extensive set of methods for navigation, search, and element state management.
 
 ## Key Features
 
-- **Reactivity** — all data views and selection states are Vue `ComputedRef` objects.
-- **Hierarchical Lists** — supports nested groups and menus with automatic sub-list management.
-- **Selection Control** — handles min/max selection limits and provides various ways to retrieve selected items.
-- **Highlighting** — built-in support for search-based highlighting and navigation.
+- **Reactivity** — automatic update of computed properties when source data (Vue ref) or control parameters change.
+- **Standardization** — converts any input format (array of strings, objects) to a unified `ListDataItem` interface.
+- **Deep Nesting** — supports tree-like structures with automatic sub-list management via `getSubList`.
+- **Smart Navigation** — built-in methods for list movement, considering filtering and element types.
+- **Lite Mode** — optimizes rendering for large lists using `liteData`.
+- **Selection Management** — controls the number of selected items (min/max) and their states.
 
 ## Initialization
 
-```typescript
+### `constructor`
+
+Creates an instance for managing list data.
+
+**Parameters:**
+
+- `list: RefOrNormal<ListListInput | undefined>` — Reactive or regular data list.
+- `focus?: RefType<ListSelectedItem | undefined>` — (Vue ref) Identifier of the focused item.
+- `highlight?: RefType<string | undefined>` — (Vue ref) Search text for highlighting.
+- `highlightLengthStart?: RefType<number | undefined>` — (Vue ref) Minimum characters to trigger highlighting.
+- `filterMode?: RefType<boolean | undefined>` — (Vue ref) Filter mode toggle.
+- `selected?: RefType<ListSelectedList | undefined>` — (Vue ref) List of selected identifiers.
+- `keyValue?: RefType<string | undefined>` — (Vue ref) Field name for value (defaults to `'value'`).
+- `keyLabel?: RefType<string | undefined>` — (Vue ref) Field name for label (defaults to `'label'`).
+- `lite?: RefType<number | undefined>` — (Vue ref) Element count threshold to enable Lite mode.
+- `min: RefOrNormal<number | string | undefined>` — Minimum required selection count (defaults to `0`).
+- `max: RefOrNormal<number | string | undefined>` — Maximum allowed selection count (defaults to `9,999,999`).
+- `parent?: string` — Parent identifier (used for sub-lists).
+
+## Properties
+
+### Data
+
+- `data: Computed<ListList>` — Core standardized data list for the current level.
+- `liteData: Computed<ListList>` — Simplified list version for fast rendering (activated if `data` length exceeds the `lite` threshold).
+- `fullData: Computed<ListDataFull>` — Extended data list where `focus`, `selected`, `disabled`, and active `highlight` flags are calculated for each item.
+- `map: Computed<ListList>` — Flat list of absolutely all elements in the tree (including group and menu containers).
+- `mapItems: Computed<ListList>` — Flat list containing only terminal selectable items (type `item`). Used for primary navigation.
+- `items: Computed<ListList>` — Flat list of elements that can have an interactive state (types `item`, `group`, `menu`).
+
+### Selection and State
+
+- `isSelected: Computed<boolean>` — Returns `true` if at least one item is selected in the entire `mapItems` tree.
+- `isSelectedMin: Computed<boolean>` — Returns `true` if the number of selected items in the current group has reached or exceeded `min`.
+- `isSelectedMax: Computed<boolean>` — Returns `true` if the number of selected items in the current group has reached the `max` threshold.
+- `selectedList: Computed<ListList>` — List of all `ListDataItem` objects selected across the entire tree (based on `mapItems`).
+- `selectedListInGroup: Computed<ListList>` — List of objects selected only at the current nesting level (`data`).
+- `selectedNames: Computed<ListNames>` — Array of labels (`label`) for all selected items in the tree.
+- `selectedValues: Computed<any[]>` — Array of values (`value`) for all selected items in the tree.
+
+### Search
+
+- `highlightFirstItem: Computed<number>` — Index of the first element in `map` whose text matches `highlight` (respecting `highlightLengthStart`). Returns `-1` if no match is found.
+
+## Methods
+
+### Status and Checks
+
+- `isLite(): boolean` — Returns `true` if the optimization mode is active (list length > `lite`).
+- `isFocus(): boolean` — Checks if the `focus` value matches any element in the current `map`.
+- `isHighlight(): boolean` — Returns `true` if the search found at least one match.
+- `isHighlightActive(): boolean` — Checks if the search process is active (sufficient string length and results found).
+- `getLength(): number` — Total number of elements at the current level (`data`).
+- `getLengthByMap(): number` — Total count of all elements in the entire tree (`map`).
+- `getLengthByItems(): number` — Number of terminal elements in the entire tree (`mapItems`).
+
+### Retrieving Values
+
+- `getFocus(): ListSelectedItem | undefined` — Current focused identifier value.
+- `getHighlight(): string | undefined` — Current search string.
+- `getHighlightLengthStart(): number` — Minimum string length to trigger search (defaults to `2`).
+- `getSelected(): ListSelectedList | undefined` — Current list of selected identifiers.
+
+### Navigation
+
+All `Next/Prev` navigation methods are **cyclic** and operate only on terminal elements (`type: item`).
+
+- `getItemByIndex(index?: string)` — Finds an item by its unique index. Returns an `{ key: map_index, item: ListDataItem }` object.
+- `getItemByKey(key: number)` — Returns an item by its sequence number in the `map` array.
+- `getItemNext(item: ListDataItem)` — Finds the next element in `mapItems`. Wraps to the first if the current is the last.
+- `getItemPrev(item: ListDataItem)` — Finds the previous element in `mapItems`. Wraps to the last if the current is the first.
+- `getIndexNext(index: string)` — Finds the next element relative to the string index (cyclic via `mapItems`).
+- `getIndexPrev(index: string)` — Finds the previous element relative to the string index (cyclic via `mapItems`).
+- `getSelectedNext()` — Finds the next element relative to the first selected one in `selectedList`.
+- `getSelectedPrev()` — Finds the previous element relative to the first selected one in `selectedList`.
+- `getFirstItemByParent(parent: string | undefined)` — Returns the very first interactive element belonging to the specified parent.
+- `getLastItemByParent(parent: string | undefined)` — Returns the very last interactive element belonging to the specified parent.
+
+### Groups and Sub-lists
+
+#### `getSubList`
+
+Method for working with nested lists. If an item is of type `group` or `menu`, this method returns a sub-instance of `ListDataRef` to manage its content. Instances are cached.
+
+**Parameters:**
+- `item: ListDataItem` — The element for which to retrieve the sub-list.
+
+**Returns:** `ListDataRef` — a sub-list management object with inherited settings (focus, selected, highlight).
+
+## Data Types
+
+The class uses standardized structures to ensure predictable behavior with any input data format.
+
+### `ListType`
+
+Defines the functional role of an item in the list:
+- `item` — the primary interactive element available for selection and focus.
+- `group` / `menu` — containers holding nested lists (`value`).
+- `subtitle` — a text header within the list.
+- `html` — an element for inserting arbitrary HTML code.
+- `line` / `space` — visual dividers and spacers.
+
+### `ListDataItem`
+
+The object that all input data is converted to after standardization:
+- `index: string` — a unique identifier (automatically generated if not provided).
+- `type: ListType` — the item type (defaults to `item`).
+- `label?: string | number` — the text displayed in the interface.
+- `value?: any` — an arbitrary value associated with the item.
+- `parent?: string` — the identifier of the parent item (for nested structures).
+
+### `ListDataFullItem`
+
+An extended version of `ListDataItem` used in the `fullData` property. Includes calculated state flags:
+- `focus: boolean` — `true` if the item is currently focused.
+- `selected: boolean` — `true` if the item is selected.
+- `disabled: boolean` — `true` if the item is disabled (e.g., when the `max` selection limit is reached).
+- `highlight?: string` — the current search string if it matches the item's text.
+
+### `ListListInput`
+
+Supported data formats for the constructor and nested groups:
+- `string[]` — a simple array of strings (used as labels).
+- `Record<string, string>` — an object where the key is the technical value and the property is the text label.
+- `ListDataBasic[]` — an array of objects with fields like `label`, `value`, `type`, etc.
+
+## Selection Management
+
+The class provides powerful tools for controlling the selection state in the list, supporting single and multiple selections with constraints.
+
+### Core Selection Parameters
+
+- `selected` — a reactive variable (Vue `ref`) storing an array of identifiers for the selected items.
+- `min` / `max` — constraints on the number of selected items **at the current nesting level** (within a group).
+
+### Global vs Group-Level Selection
+
+- **selectedList** (Global) — returns all selected items of type `item` from the entire data tree.
+- **selectedListInGroup** (Group-level) — returns selected items only from the current level (`data`). The `min` and `max` constraints are calculated based on this list.
+
+### Automatic disabled state
+
+When the `max` limit is reached (the `isSelectedMax` property becomes `true`), the class automatically marks the remaining unselected items in `fullData` as `disabled: true`. This allows UI components to visually block further selections.
+
+### Retrieving Data
+
+For convenience, the properties `selectedNames` (array of `label` strings) and `selectedValues` (array of `value` values) aggregate data across all selected items in the tree.
+
+## Focus Management
+
+Focus state in `ListDataRef` is implemented via an external reactive variable (typically a Vue `ref`) passed to the constructor.
+
+### Key Focus Features
+
+- **Shared Global State** — when sub-lists are created via `getSubList`, the same focus `ref` is passed to all child instances. This ensures that in a complex data tree, only one element can be focused at any given time.
+- **Reactivity via fullData** — the `fullData` property automatically recalculates the `focus: true` flag for the specific item whose `index` matches the current focus value.
+- **Manual Control** — the `ListDataRef` class **does not modify** the focus state itself. Navigation methods (like `getItemNext`) only return the target object. The developer must manually assign the new index to the focus ref.
+
+```javascript
+// Example: setting focus to the next item
+const next = listData.getItemNext(currentItem)
+if (next) {
+    focus.value = next.index // Reactive focus update
+}
+```
+
+### Checking Focus Presence
+
+The `isFocus()` method allows you to quickly determine if any element within the current instance (including all nested levels in `map`) is focused. This is useful for visual indicators of list activity (e.g., adding a border or shadow to the entire component).
+
+## Search and Highlighting
+
+The search mechanism allows for filtering or visually highlighting items based on text input.
+
+### Core Search Parameters
+
+- `highlight` — a reactive string containing the search query.
+- `highlightLengthStart` — activation threshold (defaults to `2`). Searching does not begin until the string length reaches this value.
+
+### How Search Works
+
+1. **Regex Generation** — when the search string changes, the class automatically generates a case-insensitive regular expression.
+2. **Search Fields** — the search is performed across three item fields: `label`, `index`, and the special `search` field (if defined in the source data).
+3. **Integration in fullData** — during an active search, every item in the `fullData` property receives the current `highlight` value. This allows UI components to highlight matched substrings.
+4. **First Match** — the `highlightFirstItem` property always returns the sequence index of the first found item in the `map` array. This is useful for auto-scrolling to the first result.
+
+### Status Checks
+
+- `isHighlight()` — returns `true` if at least one item matches the query.
+- `isHighlightActive()` — returns `true` if the search string has reached the required length, **regardless** of whether results were found. This helps distinguish between "no input" and "no results found" states.
+
+### Filtering Mode (filterMode)
+
+The `filterMode` parameter is a state flag that instructs UI components whether to physically hide items that do not match the search query.
+
+- **Propagation** — the `filterMode` value is automatically injected into every `ListDataItem` object within `fullData`.
+- **Inheritance** — when sub-lists are created via `getSubList`, the filtering flag is inherited by child instances.
+- **Logical Impact** — the `ListDataRef` class itself does not remove items from the `data` or `map` arrays when `filterMode` is active. This allows the UI layer to decide exactly how to animate or hide the filtered rows.
+
+## Lite Mode
+
+Lite Mode is designed to optimize performance when working with very large data lists. It avoids deep calculation of all properties for every item when it's not required for initial rendering.
+
+### How It Works
+
+1. **Activation Threshold** — the `lite` parameter in the constructor defines the maximum number of elements for normal mode. If the element count in `data` exceeds this threshold, Lite Mode is automatically activated.
+2. **liteData Property** — in this mode, the `liteData` property contains a simplified structure of elements, minimizing memory and CPU load during rendering.
+3. **isLite() Method** — allows you to programmatically check if the optimization mode is currently active.
+
+This is extremely useful for dropdowns or tables with thousands of rows, where full reactivity for every off-screen item could slow down the interface.
+
+## Working with Navigation
+
+Navigation in `ListDataRef` is built on a deep understanding of the data structure. The class distinguishes between containers (`group`, `menu`) and terminal selection elements (`item`).
+
+### Flat Cyclic Navigation
+
+The `getItemNext`, `getItemPrev`, `getIndexNext`, and `getIndexPrev` methods operate via the `mapItems` property. This means:
+1. **Structure Agnostic**: Movement occurs only through elements of type `item`, skipping group headers and menus.
+2. **Global Search**: Navigation traverses the entire data tree (Flat Map), even if items are located in different groups.
+3. **Cyclic Behavior**: If you are on the last item and call `Next`, the method will return the **first** item in the list. Similarly, `Prev` from the first item will return the **last** one.
+
+### Selection-Based Navigation
+
+The `getSelectedNext` and `getSelectedPrev` methods automatically find the first selected item in the list and return its neighbor. If nothing is selected, navigation starts from the first item in the list.
+
+### Contextual Navigation (Parent)
+
+To restrict movement within a single group, use the `getFirstItemByParent` and `getLastItemByParent` methods. These allow you to quickly find the boundaries of the current nesting level using the parent identifier.
+
+### Example: Implementing Focus Movement
+
+```javascript
 import { ListDataRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const items = ref(['Item 1', 'Item 2', 'Item 3'])
-const listManager = new ListDataRef(items)
+const list = ref([
+    { label: 'Group 1', type: 'group', value: [ { label: 'Item 1.1' } ] },
+    { label: 'Item 2' }
+])
+const focus = ref(undefined)
+const listData = new ListDataRef(list, focus)
 
-console.log(listManager.data.value)
+/**
+ * Method to handle ArrowDown key press
+ */
+const onArrowDown = () => {
+    // Get the current item from focus
+    const current = listData.getItemByIndex(focus.value)?.item
+    
+    // Get the next terminal item across the entire map (mapItems)
+    // If focus is empty or the item is the last one — it returns the first item (cyclic)
+    const next = current ? listData.getItemNext(current) : listData.mapItems.value[0]
+    
+    if (next) {
+        focus.value = next.index
+    }
+}
 ```
 
-## Data Properties
+## Usage Examples
 
-- `data`: `ComputedRef<ListList>` — Returns the processed list of items.
-- `liteData`: `ComputedRef<ListList>` — Returns a simplified version of the list for faster initial rendering (if the list size exceeds the `lite` threshold).
-- `fullData`: `ComputedRef<ListDataFull>` — Returns the list with complete state information for each item (focus, selected, disabled, highlight).
-- `map`: `ComputedRef<ListList>` — A flattened list containing all items and their nested sub-items.
-- `mapItems`: `ComputedRef<ListList>` — A flattened list containing only interactive items (type 'item').
-- `items`: `ComputedRef<ListList>` — A flattened list containing items, groups, and menus.
+### Rendering a Group Tree
 
-## Selection State
+```vue
+<template>
+  <ul>
+    <li v-for="item in listData.data.value" :key="item.index">
+      {{ item.label }}
+      
+      <!-- If it's a group, recursively render the sub-list -->
+      <ul v-if="item.type === 'group'">
+        <li v-for="sub in listData.getSubList(item).data.value" :key="sub.index">
+           {{ sub.label }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</template>
 
-- `isSelected`: `ComputedRef<boolean>` — Returns `true` if at least one item is selected.
-- `isSelectedMin`: `ComputedRef<boolean>` — Returns `true` if the minimum selection count is reached.
-- `isSelectedMax`: `ComputedRef<boolean>` — Returns `true` if the maximum selection count is reached.
-- `selectedList`: `ComputedRef<ListList>` — Returns a list of all selected items across the entire map.
-- `selectedListInGroup`: `ComputedRef<ListList>` — Returns a list of selected items only within the current list level.
-- `selectedNames`: `ComputedRef<ListNames>` — Returns an array of labels for the selected items.
-- `selectedValues`: `ComputedRef<any[]>` — Returns an array of values for the selected items.
-
-## Navigation & Search
-
-- `highlightFirstItem`: `ComputedRef<number>` — Returns the index of the first item matching the current search highlight.
-- `isFocus()`: `boolean` — Checks if any item in the current list has focus.
-- `isHighlight()`: `boolean` — Checks if a search match exists.
-- `isHighlightActive()`: `boolean` — Checks if highlighting is currently active.
-- `getItemByStep(item, step)`: `ListDataItem | undefined` — Returns an item relative to the given item by a number of steps.
-- `getItemNext(item)`: `ListDataItem | undefined` — Returns the next interactive item.
-- `getItemPrev(item)`: `ListDataItem | undefined` — Returns the previous interactive item.
-- `getIndexNext(index)`: `ListDataItem | undefined` — Returns the next item by its index string.
-- `getIndexPrev(index)`: `ListDataItem | undefined` — Returns the previous item by its index string.
-
-## Utility Methods
-
-- `getLength()`: `number` — Returns the number of items at the current level.
-- `getLengthByMap()`: `number` — Returns the total number of items including nested ones.
-- `getFocus()`: `ListSelectedItem | undefined` — Returns the index of the focused item.
-- `getHighlight()`: `string | undefined` — Returns the current search highlight string.
-- `getSelected()`: `ListSelectedList | undefined` — Returns the raw selected values.
-- `getItemByIndex(index)`: `{ key, item } | undefined` — Finds an item by its index string.
-- `getItemByKey(key)`: `ListDataItem | undefined` — Finds an item by its numeric key in the map.
-- `getSubList(item)`: `ListDataRef` — Returns a new `ListDataRef` instance for a nested group or menu.
-
-## ListDataItem Object
-
-The standard structure for a list item:
-
-- `index: string` — unique identifier.
-- `type: ListType` — item type ('item', 'group', 'menu', 'subtitle', 'line', etc.).
-- `label?: string` — display text.
-- `value?: any` — associated value.
-- `parent?: string` — identifier of the parent group.
-- `disabled?: boolean` — whether the item is interactive.
-
-## ListDataFullItem Object
-
-Extended version of `ListDataItem` used in `fullData`:
-
-- `focus: boolean` — item has focus.
-- `selected: boolean` — item is selected.
-- `highlight?: string` — text to highlight.
-- `disabled: boolean` — item is disabled or selection limit reached.
+<script setup>
+const listData = new ListDataRef(props.list)
+</script>
+```
