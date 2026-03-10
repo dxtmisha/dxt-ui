@@ -1,0 +1,107 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/RouterItemRef - Vue Router Management'/>
+
+# RouterItemRef Class
+
+The static core for working with Vue Router in the functional layer. It provides a single entry point to the router, allowing for link generation, navigation, and path normalization without direct dependency on the component context.
+
+This enables the use of router capabilities in classes and utilities where `useRouter` or `useRoute` hooks are not available.
+
+## Key Features
+
+- **Global Access** — saves the router instance for access from anywhere in the application.
+- **Safe Generation** — methods for creating links by route names with parameters.
+- **Normalization** — converts various path formats into standard `href` properties.
+
+## Usage (Setup)
+
+Since `RouterItemRef` is a static class, it must be initialized once during application creation (usually in `main.ts` or in a plugin).
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+import { createRouter, createWebHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [...]
+})
+
+// Set the router for global use
+RouterItemRef.set(router)
+```
+
+## Instance Management
+
+- `static get(): Router | undefined` — Returns the currently set router instance.
+- `static set(router: Router): void` — Sets the router instance.
+- `static setOneTime(router: Router): void` — Sets the router instance only if it hasn't been set yet. Useful for preventing accidental overwrites in plugins.
+
+## Navigation and Links
+
+A group of methods for managing navigation history and URL generation.
+
+### `push`
+
+Performs programmatic navigation to the specified route. It is a safe wrapper over `router.push`. If the router is not yet set, the action will be ignored.
+
+**Parameters:**
+- `to: string | RouteLocationRaw` — target path or route location object.
+
+### `getLink`
+
+Generates and returns a string URL (href) for a route based on its name and parameters. Uses the `router.resolve` method.
+
+**Parameters:**
+- `name: string` — unique route name.
+- `params?: any` — dynamic path parameters (params).
+- `query?: any` — query string parameters (query).
+
+**Returns:** `string | undefined` — the generated URL or `undefined` if the router is not initialized.
+
+### `getHref`
+
+Returns a standardized link properties object. Useful for passing to components expecting `ConstrHrefProps`.
+
+**Parameters:**
+- `name?: string` — route name.
+- `params?: any` — path parameters.
+- `query?: any` — query parameters.
+
+**Returns:** `ConstrHrefProps` — an `{ href: string }` object or `{}` (empty object) if no name is provided.
+
+### `rawToHref`
+
+A special normalization method. Converts a location object (if it contains a `name`) into a link properties object.
+
+**Parameters:**
+- `to?: string | RouteLocationRaw` — raw route data.
+
+**Returns:** `ConstrHrefProps` — the result of `getHref` or `{}`.
+
+## Examples
+
+### Generating a Link in Code
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Get URL for user profile page
+const userUrl = RouterItemRef.getLink('user-profile', { id: 123 })
+// Result: '/user/123' (depending on router configuration)
+
+// Use for component properties
+const linkProps = RouterItemRef.getHref('catalog', undefined, { category: 'electronics' })
+// Result: { href: '/catalog?category=electronics' }
+```
+
+### Programmatic Navigation
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+const logout = () => {
+    // Navigate to the home page after logout
+    RouterItemRef.push({ name: 'home' })
+}
+```

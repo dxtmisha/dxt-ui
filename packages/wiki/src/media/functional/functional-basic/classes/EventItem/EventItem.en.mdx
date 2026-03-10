@@ -17,24 +17,47 @@ A powerful wrapper for managing event listeners on DOM elements or the `window` 
 
 ## Initialization
 
-Creates a new `EventItem` instance. To activate listening, the `start()` method must be called.
+Creates a new `EventItem` instance. This is a base class for working with events, providing extended control over the lifecycle of listeners, built-in optimization, and support for complex scenarios of elements entering or leaving the DOM.
 
-**Parameters:**
-- `elementSelector?: ElementOrString` — target element or selector.
-- `type: string | string[] = 'click'` — event type or array of types.
-- `listener?: Function` — callback function.
-- `options?: EventOptions` — configuration object (`passive`, `once`, `capture`).
-- `detail?: Record<string, any>` — custom data for the event.
+### Generic Constraints
 
-```javascript
+To ensure strict typing, the class supports the following generics:
+- `E extends ElementOrWindow` — The type of the element on which events are listened to (e.g., `HTMLElement`, `Window`, `Document`).
+- `O extends Event` — The event object type (e.g., `MouseEvent`, `KeyboardEvent`).
+- `D extends Record<string, any>` — The structure for additional data (`detail`) passed to the handler or via `dispatch`.
+
+**Constructor Parameters:**
+- `elementSelector?: ElementOrString<E>` — the target element where the listener is attached (can be a DOM node, `window`, `document`, or a CSS selector).
+- `type: string | string[] = 'click'` — the event type (e.g., `'click'`), an array of types, or special types (`'resize'`, `'scroll-sync'`).
+- `listener?: EventListenerDetail<O, D>` — the event handler function.
+- `options?: EventOptions` — standard `addEventListener` options (`capture`, `passive`, `once`).
+- `detail?: D` — custom data that will be available in the handler.
+
+```typescript
 import { EventItem } from '@dxtmisha/functional-basic'
 
-const btn = document.querySelector('.my-button')
-const myEvent = new EventItem(btn, 'click', (e) => {
-  console.log('Clicked!', e)
-})
+// 1. Simple initialization
+const myEvent = new EventItem(
+  '.my-button', 
+  'click', 
+  (event) => console.log('Event triggered:', event.type)
+)
 
+// 2. Using generics for strict typing
+interface MyData { id: number }
+const customEvent = new EventItem<Window, MouseEvent, MyData>(
+  window,
+  'mousedown',
+  (event, detail) => {
+    console.log('Window clicked, data ID:', detail?.id)
+  },
+  { passive: true },
+  { id: 42 }
+)
+
+// 3. Activating listeners
 myEvent.start()
+customEvent.start()
 ```
 
 ## Methods

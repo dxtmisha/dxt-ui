@@ -72,6 +72,7 @@ export class ListDataRef {
    * Returns a list for forming a list.
    *
    * Возвращает список для формирования списка.
+   * @returns reactive list of items/ реактивный список элементов
    */
   readonly data = computed<ListList>(
     () => forEach(
@@ -84,6 +85,7 @@ export class ListDataRef {
    * Returns a simplified list for quick loading.
    *
    * Возвращает упрощенный список для быстрой загрузки.
+   * @returns simplified reactive list/ упрощенный реактивный список
    */
   readonly liteData = computed<ListList>(() => {
     if (this.isLite()) {
@@ -113,9 +115,10 @@ export class ListDataRef {
   })
 
   /**
-   * Returns a list of records with all additional data.
+   * Returns a list of records with all additional data (focus, selection, disabled status).
    *
-   * Возвращает список записей со всеми дополнительными данными.
+   * Возвращает список записей со всеми дополнительными данными (фокус, выделение, статус активности).
+   * @returns full reactive list/ полный реактивный список
    */
   readonly fullData = computed<ListDataFull>(() => {
     const focus = this.getFocus()
@@ -145,9 +148,10 @@ export class ListDataRef {
   })
 
   /**
-   * Returns a map of all entries.
+   * Returns a flat map of all entries including sublists.
    *
-   * Возвращает карту всех записей.
+   * Возвращает плоскую карту всех записей, включая подсписки.
+   * @returns reactive flat list/ реактивный плоский список
    */
   readonly map = computed<ListList>(() => {
     const map: ListList = []
@@ -176,9 +180,10 @@ export class ListDataRef {
   })
 
   /**
-   * Returns a list consisting only of values for selection.
+   * Returns a list consisting only of values for selection (item, group, menu).
    *
-   * Возвращает список, состоящий только из значений для выбора.
+   * Возвращает список, состоящий только из значений для выбора (item, group, menu).
+   * @returns reactive list/ реактивный список
    */
   readonly items = computed<ListList>(() => {
     return this.map.value.filter(
@@ -192,6 +197,7 @@ export class ListDataRef {
    * Finds the first element that meets the search conditions.
    *
    * Находит первый элемент, соответствующий условиям поиска.
+   * @returns first found index/ первый найденный индекс
    */
   readonly highlightFirstItem = computed<number>(() => {
     const highlight = this.getHighlight()
@@ -218,6 +224,7 @@ export class ListDataRef {
    * Is there a selected item.
    *
    * Есть ли выбранный элемент.
+   * @returns true if selection exists/ true, если есть выбор
    */
   readonly isSelected = computed<boolean>(() => {
     const selected = this.getSelected()
@@ -226,31 +233,43 @@ export class ListDataRef {
       && this.mapItems.value.findIndex(item => isSelected(item.index, selected)) !== -1
   })
 
-  /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
+  /**
+   * Is the minimum selection reached.
+   *
+   * Достигнуто ли минимальное выделение.
+   * @returns true if minimum reached/ true, если минимум достигнут
+   */
   readonly isSelectedMin = computed<boolean>(() => {
     const min = Number(getRef(this.min) || 0)
 
     if (min > 0) {
-      return min >= this.selectedListInGroup.value.length
-    }
-
-    return false
-  })
-
-  /** Is the maximum selection reached/ Достигнуто ли максимальное выделение */
-  readonly isSelectedMax = computed<boolean>(() => {
-    const max = Number(getRef(this.max) || 9_999_999)
-
-    if (max > 0) {
-      return max <= this.selectedListInGroup.value.length
+      return this.selectedListInGroup.value.length >= min
     }
 
     return false
   })
 
   /**
-   * Returns a list of selected items on the map/
-   * Возвращает список выделенных элементов на карте
+   * Is the maximum selection reached.
+   *
+   * Достигнуто ли максимальное выделение.
+   * @returns true if maximum reached/ true, если максимум достигнут
+   */
+  readonly isSelectedMax = computed<boolean>(() => {
+    const max = Number(getRef(this.max) || 9_999_999)
+
+    if (max > 0) {
+      return this.selectedListInGroup.value.length >= max
+    }
+
+    return false
+  })
+
+  /**
+   * Returns a list of selected items on the map.
+   *
+   * Возвращает список выделенных элементов на карте.
+   * @returns reactive list of selected items/ реактивный список выделенных элементов
    */
   readonly selectedList = computed<ListList>(() => {
     const selected = this.getSelected()
@@ -266,8 +285,10 @@ export class ListDataRef {
   })
 
   /**
-   * Returns a list of selected items in the current group/
-   * Возвращает список выделенных элементов в текущей группе
+   * Returns a list of selected items in the current group.
+   *
+   * Возвращает список выделенных элементов в текущей группе.
+   * @returns reactive list of selected items in group/ реактивный список выделенных элементов в группе
    */
   readonly selectedListInGroup = computed<ListList>(() => {
     const selected = this.getSelected()
@@ -283,18 +304,20 @@ export class ListDataRef {
   })
 
   /**
-   * Returns a list of selected items on the map.
+   * Returns a list of selected labels on the map.
    *
-   * Возвращает список выделенных элементов на карте.
+   * Возвращает список названий выделенных элементов на карте.
+   * @returns reactive list of labels/ реактивный список названий
    */
   readonly selectedNames = computed<ListNames>(() => {
     return getColumn(this.selectedList.value, 'label')
   })
 
   /**
-   * Returns a list of selected item values on the map.
+   * Returns a list of selected values on the map.
    *
    * Возвращает список значений выделенных элементов на карте.
+   * @returns reactive list of values/ реактивный список значений
    */
   readonly selectedValues = computed<any[]>(() => {
     return getColumn(this.selectedList.value, 'value')
@@ -304,6 +327,7 @@ export class ListDataRef {
    * Checks whether it is necessary to first display a simplified version.
    *
    * Проверяет, надо ли сначала вывести упрощенную версию.
+   * @returns true if lite mode is active/ true, если активен облегченный режим
    */
   isLite(): boolean {
     return Boolean(this.lite?.value && this.data.value.length > this.lite.value)
@@ -313,6 +337,7 @@ export class ListDataRef {
    * Checks if an element is in focus.
    *
    * Проверяет, есть ли элемент в фокусе.
+   * @returns true if focus exists/ true, если есть фокус
    */
   isFocus(): boolean {
     const focus = this.getFocus()
@@ -320,18 +345,20 @@ export class ListDataRef {
   }
 
   /**
-   * Checks if there is a selected item.
+   * Checks if there is a highlighted item (search results).
    *
-   * Проверяет, есть ли выделенный элемент.
+   * Проверяет, есть ли найденный элемент (результаты поиска).
+   * @returns true if highlight exists/ true, если есть совпадения
    */
   isHighlight(): boolean {
     return this.highlightFirstItem.value !== -1
   }
 
   /**
-   * Checks if highlighting is active.
+   * Checks if highlighting is active (minimum length reached).
    *
-   * Проверяет, активно ли выделение.
+   * Проверяет, активно ли выделение (достигнута минимальная длина).
+   * @returns true if active/ true, если активно
    */
   isHighlightActive(): boolean {
     return (this.getHighlight()?.length ?? 0) < this.getHighlightLengthStart()
@@ -339,45 +366,50 @@ export class ListDataRef {
   }
 
   /**
-   * Returns the number of records.
+   * Returns the number of records in the current list.
    *
-   * Возвращает количество записей.
+   * Возвращает количество записей в текущем списке.
+   * @returns length/ количество
    */
   getLength(): number {
     return this.data.value.length
   }
 
   /**
-   * Returns the number of all available records.
+   * Returns the number of all available records in the map.
    *
-   * Возвращает количество всех доступных записей.
+   * Возвращает количество всех доступных записей в карте.
+   * @returns length/ количество
    */
   getLengthByMap(): number {
     return this.map.value.length
   }
 
   /**
-   * Returns the number of all available records.
+   * Returns the number of all available records (items).
    *
-   * Возвращает количество всех доступных записей.
+   * Возвращает количество всех доступных записей (элементы).
+   * @returns length/ количество
    */
   getLengthByItems(): number {
     return this.items.value.length
   }
 
   /**
-   * Returns the values in focus.
+   * Returns the identifier in focus.
    *
-   * Возвращает значения в фокусе.
+   * Возвращает идентификатор в фокусе.
+   * @returns focus identifier/ идентификатор в фокусе
    */
   getFocus(): ListSelectedItem | undefined {
     return this.focus?.value
   }
 
   /**
-   * Returns the selected value.
+   * Returns the highlight text.
    *
-   * Возвращает выделенного значение.
+   * Возвращает текст для выделения.
+   * @returns text/ текст
    */
   getHighlight(): string | undefined {
     return this.highlight?.value
@@ -387,15 +419,17 @@ export class ListDataRef {
    * Returns the minimum length for highlight to start.
    *
    * Возвращает минимальную длину для начала выделения.
+   * @returns length/ длина
    */
   getHighlightLengthStart(): number {
     return this.highlightLengthStart?.value ?? 2
   }
 
   /**
-   * Returns the selected value.
+   * Returns the selected identifiers list.
    *
-   * Возвращает выбранное значение.
+   * Возвращает список выбранных идентификаторов.
+   * @returns list/ список
    */
   getSelected(): ListSelectedList | undefined {
     return this.selected?.value
@@ -406,6 +440,7 @@ export class ListDataRef {
    *
    * Возвращает элемент, перемещаясь на определенное количество шагов от выбранного элемента.
    * @param step number of steps/ количество шагов
+   * @returns target item index/ индекс целевого элемента
    */
   getSelectedByStep(step: number): ListSelectedItem | undefined {
     const selected = this.selectedList.value?.[0]
@@ -421,6 +456,7 @@ export class ListDataRef {
    * Returns the next item from the selected one.
    *
    * Возвращает следующий элемент от выбранного.
+   * @returns next item index/ индекс следующего элемента
    */
   getSelectedNext(): ListSelectedItem | undefined {
     return this.getSelectedByStep(1)
@@ -430,6 +466,7 @@ export class ListDataRef {
    * Returns the previous item from the selected one.
    *
    * Возвращает предыдущий элемент от выбранного.
+   * @returns previous item index/ индекс предыдущего элемента
    */
   getSelectedPrev(): ListSelectedItem | undefined {
     return this.getSelectedByStep(-1)
@@ -441,6 +478,7 @@ export class ListDataRef {
    * Возвращает элемент, перемещаясь на определенное количество шагов от указанного элемента.
    * @param item item/ элемент
    * @param step number of steps/ количество шагов
+   * @returns target item/ целевой элемент
    */
   getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined {
     const mapItems = this.mapItems.value
@@ -470,6 +508,7 @@ export class ListDataRef {
    *
    * Возвращает следующий элемент от указанного.
    * @param item item/ элемент
+   * @returns next item/ следующий элемент
    */
   getItemNext(item: ListDataItem): ListDataItem | undefined {
     return this.getItemByStep(item, 1)
@@ -480,6 +519,7 @@ export class ListDataRef {
    *
    * Возвращает предыдущий элемент от указанного.
    * @param item item/ элемент
+   * @returns previous item/ предыдущий элемент
    */
   getItemPrev(item: ListDataItem): ListDataItem | undefined {
     return this.getItemByStep(item, -1)
@@ -491,6 +531,7 @@ export class ListDataRef {
    * Возвращает элемент, перемещаясь на определенное количество шагов от указанного индекса.
    * @param index item index/ индекс элемента
    * @param step number of steps/ количество шагов
+   * @returns target item/ целевой элемент
    */
   getIndexByStep(index: string, step: number): ListDataItem | undefined {
     const item = this.getItemByIndex(index)
@@ -507,6 +548,7 @@ export class ListDataRef {
    *
    * Возвращает следующий элемент от указанного индекса.
    * @param index item index/ индекс элемента
+   * @returns next item/ следующий элемент
    */
   getIndexNext(index: string): ListDataItem | undefined {
     return this.getIndexByStep(index, 1)
@@ -517,6 +559,7 @@ export class ListDataRef {
    *
    * Возвращает предыдущий элемент от указанного индекса.
    * @param index item index/ индекс элемента
+   * @returns previous item/ предыдущий элемент
    */
   getIndexPrev(index: string): ListDataItem | undefined {
     return this.getIndexByStep(index, -1)
@@ -527,6 +570,7 @@ export class ListDataRef {
    *
    * Возвращает элемент по его индексу.
    * @param index item index/ индекс элемента
+   * @returns found item details/ информация о найденном элементе
    */
   getItemByIndex(index?: string): { key: number, item: ListDataItem } | undefined {
     const item = this.map.value.findIndex(item => item.index === index)
@@ -546,6 +590,7 @@ export class ListDataRef {
    *
    * Возвращает элемент по его ключу.
    * @param key item key/ ключ элемента
+   * @returns found item/ найденный элемент
    */
   getItemByKey(key: number): ListDataItem | undefined {
     return this.map.value?.[key]
@@ -556,6 +601,7 @@ export class ListDataRef {
    *
    * Возвращает первый элемент с указанным родителем.
    * @param parent parent identifier to search for / идентификатор родителя для поиска
+   * @returns first item/ первый элемент
    */
   getFirstItemByParent(parent: string | undefined): ListDataItem | undefined {
     return this.map.value
@@ -567,6 +613,7 @@ export class ListDataRef {
    *
    * Возвращает последний элемент с указанным родителем.
    * @param parent parent identifier to search for / идентификатор родителя для поиска
+   * @returns last item/ последний элемент
    */
   getLastItemByParent(parent: string | undefined): ListDataItem | undefined {
     return this.map.value
@@ -579,6 +626,7 @@ export class ListDataRef {
    *
    * Возвращает объект подсписка для группового элемента.
    * @param item List item data/ данные элемента списка
+   * @returns sublist instance/ экземпляр подсписка
    */
   getSubList(item: ListDataItem): ListDataRef {
     if (!(item.index in this.subList)) {

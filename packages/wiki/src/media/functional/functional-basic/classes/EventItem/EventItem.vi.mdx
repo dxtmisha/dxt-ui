@@ -17,24 +17,47 @@ Một bộ khung (wrapper) mạnh mẽ để quản lý các trình lắng nghe 
 
 ## Khởi tạo
 
-Tạo một thực thể `EventItem` mới. Để kích hoạt việc lắng nghe, phương thức `start()` phải được gọi.
+Tạo một thực thể `EventItem` mới. Đây là lớp cơ sở để làm việc với các sự kiện, cung cấp khả năng kiểm soát mở rộng đối với vòng đời của trình lắng nghe, tính năng tối ưu hóa tích hợp và hỗ trợ các kịch bản phức tạp về việc các phần tử truy cập hoặc rời khỏi DOM.
 
-**Tham số:**
-- `elementSelector?: ElementOrString` — phần tử mục tiêu hoặc bộ chọn (selector).
-- `type: string | string[] = 'click'` — loại sự kiện hoặc mảng các loại sự kiện.
-- `listener?: Function` — hàm xử lý (callback).
-- `options?: EventOptions` — đối tượng cấu hình (`passive`, `once`, `capture`).
-- `detail?: Record<string, any>` — dữ liệu tùy chỉnh cho sự kiện.
+### Ràng buộc Generic (Generic Constraints)
 
-```javascript
+Để đảm bảo định kiểu nghiêm ngặt, lớp này hỗ trợ các generic sau:
+- `E extends ElementOrWindow` — Kiểu của phần tử nơi các sự kiện được lắng nghe (ví dụ: `HTMLElement`, `Window`, `Document`).
+- `O extends Event` — Kiểu đối tượng sự kiện (ví dụ: `MouseEvent`, `KeyboardEvent`).
+- `D extends Record<string, any>` — Cấu trúc dữ liệu bổ sung (`detail`) được truyền vào trình xử lý hoặc thông qua `dispatch`.
+
+**Tham số hàm khởi tạo:**
+- `elementSelector?: ElementOrString<E>` — phần tử đích nơi trình lắng nghe được gắn vào (có thể là một nút DOM, `window`, `document` hoặc bộ chọn CSS).
+- `type: string | string[] = 'click'` — loại sự kiện (ví dụ: `'click'`), một mảng các loại hoặc các loại đặc biệt (`'resize'`, `'scroll-sync'`).
+- `listener?: EventListenerDetail<O, D>` — hàm xử lý sự kiện.
+- `options?: EventOptions` — các tùy chọn `addEventListener` tiêu chuẩn (`capture`, `passive`, `once`).
+- `detail?: D` — dữ liệu tùy chỉnh sẽ có sẵn trong trình xử lý.
+
+```typescript
 import { EventItem } from '@dxtmisha/functional-basic'
 
-const btn = document.querySelector('.my-button')
-const myEvent = new EventItem(btn, 'click', (e) => {
-  console.log('Đã nhấn!', e)
-})
+// 1. Khởi tạo đơn giản
+const myEvent = new EventItem(
+  '.my-button', 
+  'click', 
+  (event) => console.log('Sự kiện được kích hoạt:', event.type)
+)
 
+// 2. Sử dụng generic để định kiểu nghiêm ngặt
+interface MyData { id: number }
+const customEvent = new EventItem<Window, MouseEvent, MyData>(
+  window,
+  'mousedown',
+  (event, detail) => {
+    console.log('Cửa sổ được nhấn, ID dữ liệu:', detail?.id)
+  },
+  { passive: true },
+  { id: 42 }
+)
+
+// 3. Kích hoạt trình lắng nghe
 myEvent.start()
+customEvent.start()
 ```
 
 ## Phương thức

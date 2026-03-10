@@ -17,6 +17,12 @@ A base class for working with connected components and managing their rendering 
 
 Creates a new `DesignComponents` instance. The class combines components and their modifications into a single rendering management mechanism.
 
+### Generic Constraints
+
+The class uses generics to ensure flexible rendering type configuration:
+- `COMP extends ConstrComponent` — An object with a list of available components. Defines the structure by which `DesignComponents` will look up and return components for rendering.
+- `P extends ConstrItem` — The property (props) type used for typing modifications and data passed during rendering.
+
 **Parameters:**
 - `components: COMP = {}` — a list of connected components (an object where keys are names and values are Vue components).
 - `modification?: ConstrComponentMod<P>` — a modification object that allows overriding props for each component.

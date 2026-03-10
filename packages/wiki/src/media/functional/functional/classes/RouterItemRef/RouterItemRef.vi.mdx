@@ -1,0 +1,107 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/RouterItemRef - Quản lý Vue Router'/>
+
+# Lớp RouterItemRef
+
+Lõi tĩnh để làm việc với Vue Router trong lớp chức năng (functional layer). Nó cung cấp một điểm truy cập duy nhất vào router, cho phép tạo liên kết, điều hướng và chuẩn hóa đường dẫn mà không phụ thuộc trực tiếp vào ngữ cảnh của thành phần (component context).
+
+Điều này cho phép sử dụng các khả năng của router trong các lớp và tiện ích nơi các hook `useRouter` hoặc `useRoute` không khả dụng.
+
+## Các tính năng chính
+
+- **Truy cập Toàn cầu** — lưu trữ thực thể router để truy cập từ bất kỳ đâu trong ứng dụng.
+- **Tạo Liên kết An toàn** — các phương thức để tạo liên kết bằng tên route với các tham số.
+- **Chuẩn hóa** — chuyển đổi các định dạng đường dẫn khác nhau thành các thuộc tính `href` tiêu chuẩn.
+
+## Sử dụng (Thiết lập)
+
+Vì `RouterItemRef` là một lớp tĩnh, nó phải được khởi tạo một lần khi tạo ứng dụng (thường là trong `main.ts` hoặc trong một plugin).
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+import { createRouter, createWebHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [...]
+})
+
+// Thiết lập router để sử dụng toàn cầu
+RouterItemRef.set(router)
+```
+
+## Quản lý thực thể
+
+- `static get(): Router | undefined` — Trả về thực thể router hiện đang được thiết lập.
+- `static set(router: Router): void` — Thiết lập thực thể router.
+- `static setOneTime(router: Router): void` — Thiết lập thực thể router chỉ khi nó chưa được thiết lập. Hữu ích để ngăn chặn việc ghi đè vô tình trong các plugin.
+
+## Điều hướng và Liên kết
+
+Nhóm các phương thức quản lý lịch sử điều hướng và tạo URL.
+
+### `push`
+
+Thực hiện điều hướng theo lập trình đến route được chỉ định. Đây là một trình bao bọc an toàn cho `router.push`. Nếu router chưa được thiết lập, hành động sẽ bị bỏ qua.
+
+**Tham số:**
+- `to: string | RouteLocationRaw` — đường dẫn đích hoặc đối tượng vị trí route.
+
+### `getLink`
+
+Tạo và trả về một chuỗi URL (href) cho một route dựa trên tên và các tham số của nó. Sử dụng phương thức `router.resolve`.
+
+**Tham số:**
+- `name: string` — tên route duy nhất.
+- `params?: any` — các tham số đường dẫn động (params).
+- `query?: any` — các tham số chuỗi truy vấn (query).
+
+**Trả về:** `string | undefined` — URL được tạo hoặc `undefined` nếu router chưa được khởi tạo.
+
+### `getHref`
+
+Trả về một đối tượng thuộc tính liên kết được chuẩn hóa. Hữu ích để truyền vào các thành phần mong đợi `ConstrHrefProps`.
+
+**Tham số:**
+- `name?: string` — tên route.
+- `params?: any` — tham số đường dẫn.
+- `query?: any` — tham số truy vấn.
+
+**Trả về:** `ConstrHrefProps` — một đối tượng `{ href: string }` hoặc `{}` (đối tượng trống) nếu không có tên nào được cung cấp.
+
+### `rawToHref`
+
+Một phương thức chuẩn hóa đặc biệt. Chuyển đổi một đối tượng vị trí (nếu nó chứa `name`) thành một đối tượng thuộc tính liên kết.
+
+**Tham số:**
+- `to?: string | RouteLocationRaw` — dữ liệu route thô.
+
+**Trả về:** `ConstrHrefProps` — kết quả của `getHref` hoặc `{}`.
+
+## Ví dụ
+
+### Tạo liên kết trong mã
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Lấy URL cho trang hồ sơ người dùng
+const userUrl = RouterItemRef.getLink('user-profile', { id: 123 })
+// Kết quả: '/user/123' (tùy thuộc vào cấu hình router)
+
+// Sử dụng cho các thuộc tính thành phần
+const linkProps = RouterItemRef.getHref('catalog', undefined, { category: 'electronics' })
+// Kết quả: { href: '/catalog?category=electronics' }
+```
+
+### Điều hướng theo lập trình
+
+```typescript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+const logout = () => {
+    // Điều hướng đến trang chủ sau khi đăng xuất
+    RouterItemRef.push({ name: 'home' })
+}
+```

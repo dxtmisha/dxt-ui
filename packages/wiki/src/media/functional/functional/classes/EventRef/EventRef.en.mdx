@@ -64,25 +64,41 @@ onUnmounted(() => {
 
 ## Lifecycle & Control
 
-- `start(): this` — Activates event listening on the target element.
-- `stop(): this` — Deactivates listening and removes all listeners.
-- `toggle(activity: boolean): this` — Enables or disables event listening based on the flag.
-- `reset(): this` — Reloads event listeners (useful when changing settings).
+Methods for controlling the activity of listeners.
 
-## State & Retrieval
+- `start(): this` — Activates event listening. If the target element (`ref`) is not yet mounted, the listeners will be added automatically as soon as it appears.
+- `stop(): this` — Deactivates listening and removes all handlers from the current element.
+- `toggle(activity: boolean): this` — Enables or disables listening based on the provided value.
+- `reset(): this` — Restarts listening. It is automatically called when key parameters (event type, options, etc.) change.
 
-- `isActive(): boolean` — Checks if listening is currently active.
-- `getElement(): E | undefined` — Returns the current target element for listening.
+## State & Data Acquisition
 
-## Configuration
+Methods for checking the object's current status.
 
-- `setElement(element: ElementOrString): this` — Changes the target element for the event listener. Current listeners are automatically moved to the new object.
-- `setElementControl(element: ElementOrString): this` — Sets a control element to verify DOM presence. Listening stops automatically if this element is removed from the DOM.
-- `setType(type: string | string[]): this` — Updates the event types to listen for (e.g., `click` or `['mousedown', 'mouseup']`).
-- `setListener(listener: Function): this` — Changes the callback function (handler).
-- `setOptions(options: EventOptions): this` — Changes the listener options (e.g., `once`, `passive`, `capture`).
-- `setDetail(detail: object): this` — Sets additional data available in the handler via the event object.
+- `isActive(): boolean` — Returns `true` if event listening is currently active.
+- `getElement(): E | undefined` — Returns the current DOM element or object on which the listeners are set.
+
+## Configuration (Setters)
+
+All methods in this group support method chaining and automatically update active listeners.
+
+- `setElement(element: ElementOrString): this` — Dynamically changes the target element. When used in `EventRef`, it also supports reactive `ref`.
+- `setElementControl(element: ElementOrString): this` — Sets a control element. If this element is removed from the DOM, event listening on the main element is automatically stopped (protection against memory leaks).
+- `setType(type: string | string[]): this` — Updates the types of listened events (e.g., changes `click` to `dblclick`).
+- `setListener(listener: Function): this` — Changes the event handler function without restarting the entire cycle.
+- `setOptions(options: EventOptions): this` — Updates the listener options (`capture`, `passive`, `once`).
+- `setDetail(detail: object): this` — Updates the custom data available within the handler.
 
 ## Actions
 
-- `dispatch(detail?: object): this` — Manually triggers the event on the target element.
+- `dispatch(detail?: object): this` — Programmatically triggers an event on the target element. If data is passed in `detail`, it will take precedence over those set via `setDetail`.
+
+## Special Events
+
+`EventRef` (via the base class `EventItem`) provides enhanced handling for certain event types:
+
+### `resize`
+Unlike the standard `resize` event, which only works on the `window` object, here it uses `ResizeObserver`. This allows tracking dimension changes for any specific DOM element.
+
+### `scroll-sync`
+An optimized version of the scroll event. It uses `requestAnimationFrame` to synchronize the handler call with the screen refresh rate, preventing "lag" during heavy calculations during scrolling.

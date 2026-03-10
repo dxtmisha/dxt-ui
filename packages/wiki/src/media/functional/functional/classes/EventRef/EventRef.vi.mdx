@@ -64,25 +64,41 @@ onUnmounted(() => {
 
 ## Vòng đời & Điều khiển
 
-- `start(): this` — Kích hoạt việc nghe sự kiện trên thành phần mục tiêu.
-- `stop(): this` — Dừng nghe và gỡ bỏ tất cả các trình nghe.
-- `toggle(activity: boolean): this` — Bật hoặc tắt việc nghe sự kiện dựa trên cờ flag.
-- `reset(): this` — Tải lại các trình nghe sự kiện (hữu ích khi thay đổi cài đặt).
+Các phương thức để kiểm soát hoạt động của trình lắng nghe.
 
-## Trạng thái & Truy xuất
+- `start(): this` — Kích hoạt lắng nghe sự kiện. Nếu phần tử đích (`ref`) chưa được gắn kết (mount), các trình lắng nghe sẽ được thêm tự động ngay khi nó xuất hiện.
+- `stop(): this` — Hủy kích hoạt lắng nghe và xóa tất cả các hàm xử lý khỏi phần tử hiện tại.
+- `toggle(activity: boolean): this` — Bật hoặc tắt tính năng lắng nghe dựa trên giá trị được cung cấp.
+- `reset(): this` — Khởi động lại quá trình lắng nghe. Nó được gọi tự động khi các tham số chính (loại sự kiện, tùy chọn, v.v.) thay đổi.
 
-- `isActive(): boolean` — Kiểm tra xem việc nghe có đang hoạt động hay không.
-- `getElement(): E | undefined` — Trả về thành phần mục tiêu hiện tại để nghe.
+## Trạng thái & Truy xuất dữ liệu
 
-## Cấu hình
+Các phương thức để kiểm tra trạng thái hiện tại của đối tượng.
 
-- `setElement(element: ElementOrString): this` — Thay đổi thành phần mục tiêu cho trình nghe sự kiện. Các trình nghe hiện tại sẽ tự động được chuyển sang đối tượng mới.
-- `setElementControl(element: ElementOrString): this` — Thiết lập thành phần điều khiển để xác minh sự hiện diện trong DOM. Việc nghe sẽ tự động dừng nếu thành phần này bị xóa khỏi DOM.
-- `setType(type: string | string[]): this` — Cập nhật các loại sự kiện để nghe (ví dụ: `click` hoặc `['mousedown', 'mouseup']`).
-- `setListener(listener: Function): this` — Thay đổi hàm callback (trình xử lý).
-- `setOptions(options: EventOptions): this` — Thay đổi các tùy chọn trình nghe (ví dụ: `once`, `passive`, `capture`).
-- `setDetail(detail: object): this` — Thiết lập dữ liệu bổ sung có sẵn trong trình xử lý thông qua đối tượng sự kiện.
+- `isActive(): boolean` — Trả về `true` nếu việc lắng nghe sự kiện hiện đang hoạt động.
+- `getElement(): E | undefined` — Trả về phần tử DOM hoặc đối tượng hiện tại mà các trình lắng nghe được thiết lập.
+
+## Cấu hình (Setters)
+
+Tất cả các phương thức trong nhóm này đều hỗ trợ chuỗi phương thức (chaining) và tự động cập nhật các trình lắng nghe đang hoạt động.
+
+- `setElement(element: ElementOrString): this` — Thay đổi động phần tử đích. Khi được sử dụng trong `EventRef`, nó cũng hỗ trợ `ref` phản ứng.
+- `setElementControl(element: ElementOrString): this` — Thiết lập một phần tử điều khiển. Nếu phần tử này bị xóa khỏi DOM, việc lắng nghe sự kiện trên phần tử chính sẽ tự động dừng lại (bảo vệ chống rò rỉ bộ nhớ).
+- `setType(type: string | string[]): this` — Cập nhật các loại sự kiện được lắng nghe (ví dụ: thay đổi từ `click` thành `dblclick`).
+- `setListener(listener: Function): this` — Thay đổi hàm xử lý sự kiện mà không cần khởi động lại toàn bộ chu kỳ.
+- `setOptions(options: EventOptions): this` — Cập nhật các tùy chọn của trình lắng nghe (`capture`, `passive`, `once`).
+- `setDetail(detail: object): this` — Cập nhật dữ liệu tùy chỉnh có sẵn bên trong trình xử lý.
 
 ## Hành động
 
-- `dispatch(detail?: object): this` — Kích hoạt sự kiện theo cách thủ công trên thành phần mục tiêu.
+- `dispatch(detail?: object): this` — Kích hoạt sự kiện trên phần tử đích bằng lập trình. Nếu dữ liệu được truyền trong `detail`, nó sẽ được ưu tiên hơn dữ liệu được thiết lập thông qua `setDetail`.
+
+## Các sự kiện đặc biệt
+
+`EventRef` (thông qua lớp cơ sở `EventItem`) cung cấp khả năng xử lý nâng cao cho một số loại sự kiện nhất định:
+
+### `resize`
+Không giống như sự kiện `resize` tiêu chuẩn chỉ hoạt động trên đối tượng `window`, ở đây nó sử dụng `ResizeObserver`. Điều này cho phép theo dõi các thay đổi kích thước cho bất kỳ phần tử DOM cụ thể nào.
+
+### `scroll-sync`
+Phiên bản tối ưu hóa của sự kiện cuộn. Nó sử dụng `requestAnimationFrame` để đồng bộ hóa việc gọi hàm xử lý với tốc độ làm mới màn hình, ngăn chặn hiện tượng "giật" trong các tính toán nặng trong quá trình cuộn.

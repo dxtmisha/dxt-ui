@@ -12,40 +12,50 @@ A static reactive class for managing global geographic data. It provides central
 - **Centralized Management** — single point of truth for country and language settings.
 - **Static Access** — methods can be called directly on the class without instantiation.
 
-## Initialization
+## Global Usage
+
+Since `GeoRef` is a static class, its methods are called directly without creating an instance. It serves as a single access point for the application's geographic settings.
 
 ```typescript
 import { GeoRef } from '@dxtmisha/functional'
+import { watch } from 'vue'
 
-// Get current country
-console.log(GeoRef.getCountry().value)
+// 1. Getting a reactive value
+const country = GeoRef.getCountry()
+console.log('Current country:', country.value)
 
-// Change global location
-GeoRef.set('en-GB')
+// 2. Tracking changes
+watch(GeoRef.getLanguage(), (lang) => {
+  console.log('Language changed to:', lang)
+})
+
+// 3. Global location change
+GeoRef.set('en-US') 
+// All calls to getCountry, getLanguage, etc., will update automatically
 ```
 
-## Data Retrieval
+## State and Data Retrieval
 
 - `get(): Ref<GeoItemFull>` — returns a reactive object containing the full geographical information.
-- `getCountry(): ComputedRef<string>` — returns a reactive string with the current country code.
-- `getLanguage(): ComputedRef<string>` — returns a reactive string with the current language code.
-- `getStandard(): ComputedRef<string>` — returns a reactive string with the full standard locale format.
-- `getFirstDay(): ComputedRef<string>` — returns a reactive string representing the first day of the week.
+- `getCountry(): ComputedRef<string>` — current country code (e.g., `'US'`).
+- `getLanguage(): ComputedRef<string>` — current language code (e.g., `'en'`).
+- `getStandard(): ComputedRef<string>` — full standard locale format (e.g., `'en-US'`).
+- `getFirstDay(): ComputedRef<string>` — first day of the week (e.g., `'monday'`).
 
 ## Actions
 
 ### `set`
-
-Changes the global geographic data based on the provided code.
+Changes the global geographic data based on the provided code. This action instantly updates all reactive dependencies of `GeoRef` across the entire application.
 
 **Parameters:**
-- `code: string` — country code, full form language-country (e.g., "en-US") or one of them.
+- `code: string` — country code, full form language-country (e.g., "en-US"), or one of them.
 
 **Returns:** `void`
 
-## GeoItemFull Object
+## Types
 
-The object structure returned by the `get()` method:
+### GeoItemFull
+Object structure with full geographical information.
 
 - `country: string` — current country code.
 - `language: string` — current language code.
@@ -55,4 +65,4 @@ The object structure returned by the `get()` method:
 - `languageAlternative?: string[]` — list of alternative language codes.
 - `zone?: string | null` — current timezone.
 - `phoneCode?: string` — phone country code.
-- `phoneMask?: string | string[]` — typical phone number mask for the country.
+- `phoneMask?: string | string[]` — typical phone number mask.

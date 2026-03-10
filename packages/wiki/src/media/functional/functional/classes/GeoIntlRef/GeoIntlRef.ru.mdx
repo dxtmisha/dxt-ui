@@ -15,18 +15,31 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
+### `constructor`
+
+Создает новый экземпляр `GeoIntlRef` для реактивного управления форматированием. Класс является оберткой над `GeoIntl` и обеспечивает автоматическое обновление всех вычисляемых значений при изменении кода локали.
+
+**Параметры:**
+- `code?: RefOrNormal<string>` — код локали (например, `'ru-RU'`, `'en-US'`). Может быть обычной строкой или реактивным объектом `ref`. Если значение не передано, используется текущий язык из `GeoRef`.
+
 ```typescript
 import { GeoIntlRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
+// 1. Инициализация с реактивной локалью
 const code = ref('ru-RU')
 const geoIntl = new GeoIntlRef(code)
+
+// 2. Использование реактивного форматирования
+const price = geoIntl.currency(1000, 'USD') // ComputedRef: '$1,000.00' (на англ) или '1 000,00 $' (на рус)
+
+// 3. Автоматическое обновление
+code.value = 'en-US' // price обновится автоматически
 ```
 
 ## Отображаемые имена
 
 ### `display`
-
 Возвращает переведенное название языка, региона или скрипта.
 
 **Параметры:**
@@ -36,7 +49,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `languageName`
-
 Возвращает отображаемое имя языка.
 
 **Параметры:**
@@ -46,7 +58,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `countryName`
-
 Возвращает отображаемое имя региона (страны).
 
 **Параметры:**
@@ -58,7 +69,6 @@ const geoIntl = new GeoIntlRef(code)
 ## Форматирование чисел
 
 ### `number`
-
 Форматирует число в соответствии с правилами локали.
 
 **Параметры:**
@@ -68,13 +78,11 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `decimal`
-
 Возвращает символ десятичного разделителя для текущей локали.
 
 **Возвращает:** `ComputedRef<string>`
 
 ### `percent`
-
 Форматирует число как процент.
 
 **Параметры:**
@@ -84,7 +92,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `percentBy100`
-
 Форматирует число как процент, предварительно разделив на 100.
 
 **Параметры:**
@@ -94,7 +101,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `plural`
-
 Выбирает форму множественного числа для слова.
 
 **Параметры:**
@@ -108,7 +114,6 @@ const geoIntl = new GeoIntlRef(code)
 ## Валюта и единицы измерения
 
 ### `currency`
-
 Форматирует число как денежную сумму.
 
 **Параметры:**
@@ -119,7 +124,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `currencySymbol`
-
 Возвращает символ указанной валюты.
 
 **Параметры:**
@@ -129,7 +133,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `unit`
-
 Форматирует число с единицами измерения.
 
 **Параметры:**
@@ -139,7 +142,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `sizeFile`
-
 Форматирует размер файла в человекочитаемый вид (байты, КБ, МБ и т.д.).
 
 **Параметры:**
@@ -151,7 +153,6 @@ const geoIntl = new GeoIntlRef(code)
 ## Даты и время
 
 ### `date`
-
 Форматирует дату.
 
 **Параметры:**
@@ -163,7 +164,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `time`
-
 Форматирует время.
 
 **Параметры:**
@@ -172,7 +172,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `month`
-
 Возвращает название месяца.
 
 **Параметры:**
@@ -182,7 +181,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `months`
-
 Возвращает список всех месяцев.
 
 **Параметры:**
@@ -191,7 +189,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<ItemValue<number | undefined>[]>`
 
 ### `weekday`
-
 Возвращает название дня недели.
 
 **Параметры:**
@@ -201,7 +198,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `weekdays`
-
 Возвращает список дней недели.
 
 **Параметры:**
@@ -212,7 +208,6 @@ const geoIntl = new GeoIntlRef(code)
 ## Относительное время
 
 ### `relative`
-
 Форматирует относительное время (например, «2 дня назад»).
 
 **Параметры:**
@@ -223,7 +218,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `relativeLimit`
-
 Форматирует относительное время, но переключается на обычную дату, если лимит превышен.
 
 **Параметры:**
@@ -236,7 +230,6 @@ const geoIntl = new GeoIntlRef(code)
 **Возвращает:** `ComputedRef<string>`
 
 ### `relativeByValue`
-
 Форматирует относительный интервал по числовому значению.
 
 **Параметры:**
@@ -246,10 +239,9 @@ const geoIntl = new GeoIntlRef(code)
 
 **Возвращает:** `ComputedRef<string>`
 
-## Прочее
+## Списки и сортировка
 
 ### `sort`
-
 Сортирует массив строк в соответствии с правилами локали.
 
 **Параметры:**

@@ -17,24 +17,47 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-Создает новый экземпляр `EventItem`. Для активации прослушивания необходимо вызвать метод `start()`.
+Создает новый экземпляр `EventItem`. Это базовый класс для работы с событиями, который предоставляет расширенный контроль над жизненным циклом слушателей, встроенную оптимизацию и поддержку сложных сценариев входа/выхода элементов из DOM.
 
-**Параметры:**
-- `elementSelector?: ElementOrString` — целевой элемент или селектор.
-- `type: string | string[] = 'click'` — тип события или массив типов.
-- `listener?: Function` — функция-обработчик.
-- `options?: EventOptions` — объект настроек (`passive`, `once`, `capture`).
-- `detail?: Record<string, any>` — пользовательские данные для события.
+### Ограничения дженериков (Generic Constraints)
 
-```javascript
+Для обеспечения строгой типизации класс поддерживает следующие дженерики:
+- `E extends ElementOrWindow` — Тип элемента, на котором слушаются события (например, `HTMLElement`, `Window`, `Document`).
+- `O extends Event` — Тип объекта события (например, `MouseEvent`, `KeyboardEvent`).
+- `D extends Record<string, any>` — Структура дополнительных данных (`detail`), передаваемых в обработчик или через `dispatch`.
+
+**Параметры конструктора:**
+- `elementSelector?: ElementOrString<E>` — целевой элемент, на который вешается слушатель (может быть DOM-узлом, `window`, `document` или CSS-селектором).
+- `type: string | string[] = 'click'` — тип события (например, `'click'`), массив типов или специальные типы (`'resize'`, `'scroll-sync'`).
+- `listener?: EventListenerDetail<O, D>` — функция-обработчик события.
+- `options?: EventOptions` — стандартные опции `addEventListener` (`capture`, `passive`, `once`).
+- `detail?: D` — пользовательские данные, которые будут доступны в обработчике.
+
+```typescript
 import { EventItem } from '@dxtmisha/functional-basic'
 
-const btn = document.querySelector('.my-button')
-const myEvent = new EventItem(btn, 'click', (e) => {
-  console.log('Нажато!', e)
-})
+// 1. Простая инициализация
+const myEvent = new EventItem(
+  '.my-button', 
+  'click', 
+  (event) => console.log('Событие вызвано:', event.type)
+)
 
+// 2. Использование дженериков для строгой типизации
+interface MyData { id: number }
+const customEvent = new EventItem<Window, MouseEvent, MyData>(
+  window,
+  'mousedown',
+  (event, detail) => {
+    console.log('Клик по окну, ID данных:', detail?.id)
+  },
+  { passive: true },
+  { id: 42 }
+)
+
+// 3. Активация прослушивания
 myEvent.start()
+customEvent.start()
 ```
 
 ## Методы

@@ -14,21 +14,66 @@ A class for working with country flags in a reactive way. Ensures flag data stay
 
 ## Initialization
 
+Creates a new `GeoFlagRef` instance for working with country flags. The class acts as a reactive wrapper around `GeoFlag` and automatically updates data when the provided country code changes.
+
+**Parameters:**
+- `code: RefOrNormal<string>` — the country code (e.g., `'RU'`, `'US'`). Can be a regular string or a reactive `ref` object. Defaults to the current location via `Geo.getLocation()`.
+
 ```typescript
 import { GeoFlagRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
+// 1. Initialization with a reactive code
 const code = ref('US')
-const geoFlagRef = new GeoFlagRef(code)
+const geoFlag = new GeoFlagRef(code)
+
+// 2. Using flag data
+const flagIcon = geoFlag.getFlag() // ComputedRef with the icon for 'US'
+
+// 3. Automatic update
+code.value = 'FR' // flagIcon will update automatically
 ```
 
-## Current State
+## State
 
-- `getCode(): Ref<string>` — returns a reactive object containing the country code.
+- `getCode(): Ref<string>` — Returns a reactive reference to the currently set country code.
 
-## Information Retrieval
+## Data Retrieval
 
-- `get(code?: string): ComputedRef<GeoFlagItem | undefined>` — returns comprehensive information about a country and its flag.
-- `getFlag(code?: string): ComputedRef<string | undefined>` — returns the flag icon identifier.
-- `getList(codes?: string[]): ComputedRef<GeoFlagItem[]>` — returns an array of flag data for the specified list of codes.
-- `getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>` — returns a list of countries with names in their national language.
+All data retrieval methods return `ComputedRef`, ensuring automatic synchronization with the current country code.
+
+- `get(code?: string): ComputedRef<GeoFlagItem | undefined>` — Returns comprehensive information about a country: name, icon, and other metadata. If `code` is not provided, the current code from the state is used.
+- `getFlag(code?: string): ComputedRef<string | undefined>` — Returns the flag icon path or identifier for the specified country.
+- `getList(codes?: string[]): ComputedRef<GeoFlagItem[]>` — Returns an array of flag data for a list of codes.
+- `getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>` — Returns a list of countries with names in their national languages.
+
+## Working with Lists: getList vs getNational
+
+The class provides two methods for retrieving country lists, which differ in how the data is localized.
+
+### `getList` (Local List)
+Returns a list of countries where all names and labels are translated into the language of the **current `GeoFlagRef` instance**.
+- **When to use:** when you need to display a list of countries in the UI in the user's language (e.g., in a country selector).
+- **Result:** if `GeoFlagRef` is set to English (`EN`), you will get "Russia" for the code `RU`.
+
+### `getNational` (National List)
+Returns a list where information about each country is presented in its **native (national) language**.
+- **When to use:** when you need to show country names as they are called by the residents of those countries, or add a description in the native language.
+- **Result:** for the code `US`, you will get "United States" (in English), and for `VN`, you will get "Việt Nam" (in Vietnamese), regardless of the language set in `GeoFlagRef`.
+
+## Types
+
+### GeoFlagItem
+An object containing basic information about a country and its flag.
+- `language: string` — Language name.
+- `country: string` — Country name.
+- `standard: string` — Standard locale code.
+- `icon?: string` — Flag icon identifier.
+- `label: string` — Display label (usually the country name).
+- `value: string` — Selection value (usually the country code).
+
+### GeoFlagNational
+An extended object with national language information (inherits all fields from `GeoFlagItem`).
+- `description: string` — Description in the national language.
+- `nationalLanguage: string` — Language name in its native language.
+- `nationalCountry: string` — Country name in its native language.

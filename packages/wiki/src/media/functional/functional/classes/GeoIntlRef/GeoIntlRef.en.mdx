@@ -15,18 +15,31 @@ A reactive class for managing the formatting of numbers, dates, currencies, and 
 
 ## Initialization
 
+### `constructor`
+
+Creates a new `GeoIntlRef` instance for reactive formatting management. The class acts as a wrapper around `GeoIntl` and ensures all computed values automatically update when the locale code changes.
+
+**Parameters:**
+- `code?: RefOrNormal<string>` — locale code (e.g., `'en-US'`, `'fr-FR'`). Can be a regular string or a reactive `ref` object. If not provided, the current language from `GeoRef` is used.
+
 ```typescript
 import { GeoIntlRef } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
+// 1. Initialization with a reactive locale
 const code = ref('en-US')
 const geoIntl = new GeoIntlRef(code)
+
+// 2. Using reactive formatting
+const price = geoIntl.currency(1000, 'USD') // ComputedRef: '$1,000.00'
+
+// 3. Automatic update
+code.value = 'de-DE' // price will update automatically
 ```
 
 ## Display Names
 
 ### `display`
-
 Returns the translated name of a language, region, or script.
 
 **Parameters:**
@@ -36,7 +49,6 @@ Returns the translated name of a language, region, or script.
 **Returns:** `ComputedRef<string>`
 
 ### `languageName`
-
 Returns the display name of a language.
 
 **Parameters:**
@@ -46,7 +58,6 @@ Returns the display name of a language.
 **Returns:** `ComputedRef<string>`
 
 ### `countryName`
-
 Returns the display name of a region (country).
 
 **Parameters:**
@@ -58,7 +69,6 @@ Returns the display name of a region (country).
 ## Number Formatting
 
 ### `number`
-
 Formats a number according to locale rules.
 
 **Parameters:**
@@ -68,13 +78,11 @@ Formats a number according to locale rules.
 **Returns:** `ComputedRef<string>`
 
 ### `decimal`
-
 Returns the decimal separator symbol for the current locale.
 
 **Returns:** `ComputedRef<string>`
 
 ### `percent`
-
 Formats a value as a percentage.
 
 **Parameters:**
@@ -84,7 +92,6 @@ Formats a value as a percentage.
 **Returns:** `ComputedRef<string>`
 
 ### `percentBy100`
-
 Formats a value as a percentage after dividing it by 100.
 
 **Parameters:**
@@ -94,7 +101,6 @@ Formats a value as a percentage after dividing it by 100.
 **Returns:** `ComputedRef<string>`
 
 ### `plural`
-
 Selects the correct plural form for a word based on a numeric value.
 
 **Parameters:**
@@ -108,7 +114,6 @@ Selects the correct plural form for a word based on a numeric value.
 ## Currencies and Units
 
 ### `currency`
-
 Formats a numeric value as a currency string.
 
 **Parameters:**
@@ -119,7 +124,6 @@ Formats a numeric value as a currency string.
 **Returns:** `ComputedRef<string>`
 
 ### `currencySymbol`
-
 Returns the currency symbol for a given currency code.
 
 **Parameters:**
@@ -129,7 +133,6 @@ Returns the currency symbol for a given currency code.
 **Returns:** `ComputedRef<string>`
 
 ### `unit`
-
 Formats a number with a specific unit.
 
 **Parameters:**
@@ -139,7 +142,6 @@ Formats a number with a specific unit.
 **Returns:** `ComputedRef<string>`
 
 ### `sizeFile`
-
 Formats a file size into a human-readable format (bytes, KB, MB, etc.).
 
 **Parameters:**
@@ -151,7 +153,6 @@ Formats a file size into a human-readable format (bytes, KB, MB, etc.).
 ## Dates and Time
 
 ### `date`
-
 Formats a date according to the locale.
 
 **Parameters:**
@@ -163,7 +164,6 @@ Formats a date according to the locale.
 **Returns:** `ComputedRef<string>`
 
 ### `time`
-
 Formats a time value.
 
 **Parameters:**
@@ -172,7 +172,6 @@ Formats a time value.
 **Returns:** `ComputedRef<string>`
 
 ### `month`
-
 Returns the name of a specific month.
 
 **Parameters:**
@@ -182,7 +181,6 @@ Returns the name of a specific month.
 **Returns:** `ComputedRef<string>`
 
 ### `months`
-
 Returns a list of all month names.
 
 **Parameters:**
@@ -191,7 +189,6 @@ Returns a list of all month names.
 **Returns:** `ComputedRef<ItemValue<number | undefined>[]>`
 
 ### `weekday`
-
 Returns the name of a specific weekday.
 
 **Parameters:**
@@ -201,7 +198,6 @@ Returns the name of a specific weekday.
 **Returns:** `ComputedRef<string>`
 
 ### `weekdays`
-
 Returns a list of all weekday names.
 
 **Parameters:**
@@ -212,7 +208,6 @@ Returns a list of all weekday names.
 ## Relative Time
 
 ### `relative`
-
 Formats a date as relative time (e.g., "2 days ago").
 
 **Parameters:**
@@ -223,7 +218,6 @@ Formats a date as relative time (e.g., "2 days ago").
 **Returns:** `ComputedRef<string>`
 
 ### `relativeLimit`
-
 Formats relative time with an automatic switch to standard date formatting if a limit is reached.
 
 **Parameters:**
@@ -236,7 +230,6 @@ Formats relative time with an automatic switch to standard date formatting if a 
 **Returns:** `ComputedRef<string>`
 
 ### `relativeByValue`
-
 Formats a numeric interval as relative time.
 
 **Parameters:**
@@ -246,10 +239,9 @@ Formats a numeric interval as relative time.
 
 **Returns:** `ComputedRef<string>`
 
-## Others
+## Lists and Sorting
 
 ### `sort`
-
 Sorts an array of strings or objects based on locale rules.
 
 **Parameters:**

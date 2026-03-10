@@ -17,6 +17,12 @@ Lớp cơ sở để làm việc với các thành phần kết nối (connected
 
 Tạo một thực thể `DesignComponents` mới. Lớp này kết hợp các thành phần và các sửa đổi của chúng vào một cơ chế quản lý hiển thị duy nhất.
 
+### Ràng buộc Generic (Generic Constraints)
+
+Lớp này sử dụng các generic để đảm bảo cấu hình kiểu render linh hoạt:
+- `COMP extends ConstrComponent` — Một đối tượng chứa danh sách các thành phần có sẵn. Xác định cấu trúc mà `DesignComponents` sẽ sử dụng để tìm kiếm và trả về các thành phần để render.
+- `P extends ConstrItem` — Kiểu thuộc tính (props) được sử dụng để định kiểu cho các sửa đổi và dữ liệu được truyền trong quá trình render.
+
 **Tham số:**
 - `components: COMP = {}` — danh sách các thành phần được kết nối (một đối tượng trong đó khóa là tên và giá trị là các thành phần Vue).
 - `modification?: ConstrComponentMod<P>` — một đối tượng sửa đổi cho phép ghi đè các thuộc tính (props) cho mỗi thành phần.
