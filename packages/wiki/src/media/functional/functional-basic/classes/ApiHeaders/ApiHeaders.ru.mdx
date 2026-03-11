@@ -15,11 +15,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-```javascript
+Создает новый экземпляр `ApiHeaders`. Класс используется для хранения и управления заголовками, которые будут автоматически добавляться к каждому HTTP-запросу. Обеспечивает централизованное управление такими данными, как токены авторизации или метаданные приложения.
+
+```typescript
 import { ApiHeaders } from '@dxtmisha/functional'
 
+// 1. Простая инициализация
 const apiHeaders = new ApiHeaders()
+
+// 2. Установка заголовков по умолчанию
 apiHeaders.set({ 'X-App-Platform': 'web' })
+
+// 3. Получение заголовков для запроса
+const headers = apiHeaders.get({ 'Authorization': 'Bearer token123' })
+// Результат: { 'X-App-Platform': 'web', 'Authorization': 'Bearer token123', 'Content-Type': 'application/json;charset=UTF-8' }
 ```
 
 ## Методы

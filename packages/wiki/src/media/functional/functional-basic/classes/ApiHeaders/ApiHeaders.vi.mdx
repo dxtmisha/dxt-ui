@@ -15,11 +15,20 @@ Một lớp để quản lý và gộp các tiêu đề (headers) yêu cầu HTT
 
 ## Khởi tạo
 
-```javascript
+Tạo một thực thể `ApiHeaders` mới. Lớp này được sử dụng để lưu trữ và quản lý các tiêu đề (headers) sẽ được tự động thêm vào mỗi yêu cầu HTTP. Cung cấp khả năng quản lý tập trung cho các dữ liệu như mã thông báo xác thực (authorization tokens) hoặc siêu dữ liệu ứng dụng.
+
+```typescript
 import { ApiHeaders } from '@dxtmisha/functional'
 
+// 1. Khởi tạo đơn giản
 const apiHeaders = new ApiHeaders()
+
+// 2. Thiết lập các tiêu đề mặc định
 apiHeaders.set({ 'X-App-Platform': 'web' })
+
+// 3. Lấy các tiêu đề cho yêu cầu
+const headers = apiHeaders.get({ 'Authorization': 'Bearer token123' })
+// Kết quả: { 'X-App-Platform': 'web', 'Authorization': 'Bearer token123', 'Content-Type': 'application/json;charset=UTF-8' }
 ```
 
 ## Các phương thức

@@ -15,27 +15,27 @@ A class for managing default data for API requests. It allows setting base param
 
 ## Initialization
 
-Normally, this class is used internally by an API management system, but it can be used independently.
+Creates a new `ApiDefault` instance. The class is designed to store and manage data that should be automatically added to every API request. It is typically used as an internal component of server communication systems but can be initialized and used independently.
 
-```javascript
+```typescript
 import { ApiDefault } from '@dxtmisha/functional'
 
+// 1. Simple initialization
 const apiDefault = new ApiDefault()
+
+// 2. Setting default data
 apiDefault.set({ lang: 'en', version: 'v1' })
 
-if (apiDefault.is()) {
-  console.log('Defaults are ready')
-}
-
-// With Object
-const merged = apiDefault.request({ user_id: 5 })
+// 3. Example usage with a request object
+const requestData = { user_id: 5 }
+const mergedRequest = apiDefault.request(requestData)
 // Result: { lang: 'en', version: 'v1', user_id: 5 }
 
-// With FormData
+// 4. Example usage with FormData
 const fd = new FormData()
-fd.append('file', myFile)
+fd.append('photo', fileBlob)
 apiDefault.request(fd)
-// Result: fd now also contains 'lang' and 'version' if they weren't already there
+// Result: fd now contains 'lang' and 'version' if they were missing
 ```
 
 ## Methods
