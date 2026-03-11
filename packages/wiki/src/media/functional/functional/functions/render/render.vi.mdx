@@ -24,3 +24,14 @@ const vnode = render('div', { class: 'container' }, 'Chào thế giới')
 // Render một thành phần với index cụ thể để tạo key
 const item = render('my-component', { data: itemData }, null, 'item-1')
 ```
+
+### Cách tạo Key
+
+Key (`key`) cho Vue component được hình thành theo phương thức **cộng dồn (additive)**. Nó luôn bắt đầu bằng tên thành phần (`name`), sau đó nối thêm các giá trị sau bằng dấu chấm (nếu chúng tồn tại):
+
+1.  **.index** — từ tham số thứ ba của hàm `render`.
+2.  **.props.index** — nếu có trong đối tượng thuộc tính và là một chuỗi.
+3.  **.className** — nếu class được chỉ định trong `props`.
+4.  **.props.id** — nếu ID được chỉ định trong `props`.
+
+Điều này đảm bảo tính duy nhất của key ngay cả khi tên các thành phần giống nhau.

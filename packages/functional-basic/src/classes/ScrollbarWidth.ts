@@ -9,7 +9,7 @@ import { DataStorage } from './DataStorage'
  */
 export class ScrollbarWidth {
   private static storage = new DataStorage<number>('scrollbar', true)
-  private static calculate = false
+  private static calculate: boolean = false
 
   /**
    * Checks whether to enable scroll hiding.
@@ -41,6 +41,24 @@ export class ScrollbarWidth {
     }
 
     return width
+  }
+
+  /**
+   * Returns the storage.
+   *
+   * Возвращает хранилище.
+   */
+  static getStorage(): DataStorage<number> {
+    return this.storage
+  }
+
+  /**
+   * Returns the calculate flag.
+   *
+   * Возвращает флаг вычисления.
+   */
+  static getCalculate(): boolean {
+    return this.calculate
   }
 
   /**

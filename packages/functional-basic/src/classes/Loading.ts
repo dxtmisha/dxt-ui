@@ -32,6 +32,15 @@ export class Loading {
   }
 
   /**
+   * Get current loading value.
+   *
+   * Получить текущее значение загрузки.
+   */
+  static get(): number {
+    return this.value
+  }
+
+  /**
    * Shows the loader.
    *
    * Показывает загрузчик.

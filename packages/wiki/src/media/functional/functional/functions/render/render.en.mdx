@@ -24,3 +24,14 @@ const vnode = render('div', { class: 'container' }, 'Hello World')
 // Renders a component with a specific index for key generation
 const item = render('my-component', { data: itemData }, null, 'item-1')
 ```
+
+### Key Generation
+
+The key (`key`) for the Vue component is formed **additively** (by sequential appending). It always starts with the component name (`name`), followed by these values appended with a dot (if they exist):
+
+1.  **.index** — from the third argument of the `render` function.
+2.  **.props.index** — if provided in the properties object and is a string.
+3.  **.className** — if a class is specified in `props`.
+4.  **.props.id** — if an ID is specified in `props`.
+
+This ensures key uniqueness even when component names are identical.

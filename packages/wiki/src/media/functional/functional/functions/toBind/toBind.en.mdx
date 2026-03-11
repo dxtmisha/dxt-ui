@@ -6,9 +6,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Merges two property objects while intelligently handling `class` and `style` properties. If both objects contain classes or styles, they are combined into an array to prevent overwriting. Other properties from the second object (`value`) will overwrite those in the first object (`extra`).
 
+### How it works (Merging Mechanism)
+
+The function takes two objects and returns a new object by merging their properties according to the following rules:
+
+1. **Standard Properties:** Properties from the second object (`value`) will overwrite properties with the same name from the first object (`extra`). This is the standard behavior of the spread operator (`...`).
+2. **`class` Property:** If the `class` property is present in **only one** of the objects, it is kept as is. However, if a class is specified in **both** objects, the function does not overwrite them; instead, it combines them into an array `[extra.class, value.class]`. This ensures all classes passed to the component are preserved.
+3. **`style` Property:** Works similarly to classes. The presence of styles in both objects will result in them being combined into an array `[extra.style, value.style]`, which is necessary for correct style application in Vue.
+
 **Parameters:**
-- `extra: ItemList` — The base property object.
-- `value: ItemList` — The property object to be merged into the base.
+- `extra: ItemList` — The base property object (e.g., default or internal properties).
+- `value: ItemList` — The property object to be merged into the base (e.g., user-provided properties).
 
 **Returns:**
 `ConstrBind<R>` — The merged properties object.

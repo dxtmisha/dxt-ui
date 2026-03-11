@@ -1,4 +1,4 @@
-import type { ItemList } from '@dxtmisha/functional-basic'
+import { isString, type ItemList } from '@dxtmisha/functional-basic'
 import { getClassName } from './getClassName'
 
 /**
@@ -14,19 +14,26 @@ export function getIndexForRender<T extends ItemList>(
   props?: T,
   index?: string
 ): string {
+  const id = props?.id
+  const indexProp = props?.index
   const className = getClassName(props)
-
-  if (index && className) {
-    return `${index}.${className}`
-  }
+  let result = name
 
   if (index) {
-    return index
+    result += `.${index}`
+  }
+
+  if (indexProp && isString(indexProp)) {
+    result += `.${indexProp}`
   }
 
   if (className) {
-    return className
+    result += `.${className}`
   }
 
-  return name
+  if (id) {
+    result += `.${id}`
+  }
+
+  return result
 }

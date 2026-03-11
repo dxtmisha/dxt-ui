@@ -6,9 +6,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Hợp nhất hai đối tượng thuộc tính trong khi xử lý thông minh các thuộc tính `class` và `style`. Nếu cả hai đối tượng đều chứa class hoặc style, chúng sẽ được kết hợp thành một mảng để tránh bị ghi đè. Các thuộc tính khác từ đối tượng thứ hai (`value`) sẽ ghi đè lên các thuộc tính trong đối tượng thứ nhất (`extra`).
 
+### Cơ chế hoạt động (Cơ chế hợp nhất)
+
+Hàm nhận hai đối tượng và trả về một đối tượng mới bằng cách hợp nhất các thuộc tính của chúng theo các quy tắc sau:
+
+1. **Thuộc tính tiêu chuẩn:** Các thuộc tính từ đối tượng thứ hai (`value`) sẽ ghi đè các thuộc tính có cùng tên từ đối tượng thứ nhất (`extra`). Đây là hành vi tiêu chuẩn của toán tử spread (`...`).
+2. **Thuộc tính `class`:** Nếu thuộc tính `class` chỉ có mặt trong **một** trong các đối tượng, nó sẽ được giữ nguyên. Tuy nhiên, nếu class được chỉ định ở **cả hai** đối tượng, hàm sẽ không ghi đè chúng; thay vào đó, nó kết hợp chúng thành một mảng `[extra.class, value.class]`. Điều này giúp đảm bảo tất cả các class được truyền vào thành phần đều được giữ lại.
+3. **Thuộc tính `style`:** Hoạt động tương tự như các class. Sự hiện diện của style trong cả hai đối tượng sẽ dẫn đến việc chúng được kết hợp thành một mảng `[extra.style, value.style]`, điều này cần thiết để áp dụng style chính xác trong Vue.
+
 **Tham số:**
-- `extra: ItemList` — Đối tượng thuộc tính cơ sở.
-- `value: ItemList` — Đối tượng thuộc tính cần hợp nhất vào cơ sở.
+- `extra: ItemList` — Đối tượng thuộc tính cơ sở (ví dụ: thuộc tính mặc định hoặc nội bộ).
+- `value: ItemList` — Đối tượng thuộc tính cần hợp nhất vào cơ sở (ví dụ: thuộc tính do người dùng cung cấp).
 
 **Trả về:**
 `ConstrBind<R>` — Đối tượng thuộc tính đã được hợp nhất.

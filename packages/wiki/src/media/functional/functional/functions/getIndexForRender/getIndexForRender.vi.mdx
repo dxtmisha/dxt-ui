@@ -4,32 +4,51 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getIndexForRender`
 
-Một hàm tiện ích dùng để xác định hoặc tạo một `key` duy nhất cho các thành phần trong quá trình render. Nó ưu tiên một chỉ số rõ ràng nếu được cung cấp, và kết hợp nó với tên lớp (class name) của thành phần để đảm bảo tính duy nhất và ổn định qua các lần render.
+Một hàm tiện ích dùng để tạo một `key` duy nhất cho thành phần. Key được hình thành theo phương thức **cộng dồn (additive)**: nó luôn bắt đầu bằng tên thành phần, sau đó lần lượt nối thêm các định danh hiện có.
 
-**Tham số:**
-- `name: string` — Tên hoặc thẻ của thành phần.
-- `props?: T` — Đối tượng các thuộc tính của thành phần (dùng để trích xuất tên lớp).
-- `index?: string` — Một chỉ số hoặc định danh rõ ràng tùy chọn.
+### Tham số:
+- `name: string` — Tên hoặc thẻ của thành phần (phần cơ sở của key).
+- `props?: T` — Các thuộc tính của thành phần (dùng để trích xuất `index`, `class` và `id`).
+- `index?: string` — Một chỉ số bên ngoài tùy chọn.
 
-**Trả về:**
-`string` — Khóa được tạo hoặc cung cấp cho việc render.
+### Trả về:
+`string` — Khóa tổng hợp đã được tạo.
+
+### Ví dụ tạo key:
 
 ```typescript
 import { getIndexForRender } from '@dxtmisha/functional'
 
-// Trường hợp 1: Cả index và class từ props đều tồn tại
-const key1 = getIndexForRender('div', { class: 'my-class' }, 'item-0') 
-// Kết quả: 'item-0.my-class'
+// 1. Chỉ có tên
+getIndexForRender('li') 
+// => 'li'
 
-// Trường hợp 2: Chỉ có index tồn tại
-const key2 = getIndexForRender('span', {}, 'header')
-// Kết quả: 'header'
+// 2. Tên + chỉ số bên ngoài
+getIndexForRender('div', {}, 'row-1') 
+// => 'div.row-1'
 
-// Trường hợp 3: Chỉ có class tồn tại
-const key3 = getIndexForRender('button', { class: 'primary' })
-// Kết quả: 'primary'
+// 3. Tên + chỉ số từ props + lớp + id
+getIndexForRender('button', { 
+  index: 'primary', 
+  class: 'btn-large', 
+  id: 'submit-01' 
+}) 
+// => 'button.primary.btn-large.submit-01'
 
-// Trường hợp 4: Không có cái nào tồn tại, trả về tên thành phần
-const key4 = getIndexForRender('li')
-// Kết quả: 'li'
+// 4. Đầy đủ các thành phần (đối số bên ngoài + mọi thứ từ props)
+getIndexForRender('span', { 
+  index: 'p-idx', 
+  class: 'text-red', 
+  id: 'id-99' 
+}, 'arg-idx') 
+// => 'span.arg-idx.p-idx.text-red.id-99'
 ```
+
+### Logic lắp ghép key
+
+Key được lắp ghép theo chuỗi:
+1.  **`name`** (bắt buộc)
+2.  `+ .index` (nếu đối số `index` được truyền vào)
+3.  `+ .props.index` (nếu có trong thuộc tính và là một chuỗi)
+4.  `+ .className` (nếu có trong thuộc tính)
+5.  `+ .props.id` (nếu có trong thuộc tính)

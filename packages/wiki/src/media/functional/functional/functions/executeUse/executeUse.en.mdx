@@ -10,17 +10,21 @@ To ensure unique identifiers, a combination of an internal global code and the `
 
 
 
-## Signature
+### Generic Constraints
+
+- `R` — the type of object returned by the initializer function (`callback`).
+- `O extends any[]` — the types of arguments accepted by `callback`.
+- `RI extends ExecuteUseReturn<R>` — the resulting singleton type, including management methods.
 
 ```typescript
 function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R>>(
   callback: (...args: O) => R,
   type: ExecuteUseType = ExecuteUseType.provide
-): ((...args: O) => RI) | (() => RI)
+): (...args: O) => RI
 
 function executeUseGlobal<R>(callback: () => R): () => ExecuteUseReturn<R>
-function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): (() => ExecuteUseReturn<R>) | ((...args: O) => ExecuteUseReturn<R>)
-function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): () => ExecuteUseReturn<R>
+function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
+function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): (...args: O) => ExecuteUseReturn<R>
 ```
 
 **Parameters:**
@@ -31,11 +35,43 @@ function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): () =>
 - `init(): Readonly<R>` — returns the raw result of `callback` without any management methods (`init`, `destroyExecute`).
 - `destroyExecute?(): void` — only on `local` and `global`. Resets the cache, allowing the object to be re-created on the next call.
 
+### The Initializer Function (`callback`) and its Arguments (`...args: O`)
+
+The main feature of `executeUse` is that the factory function (`callback`) and the arguments passed to it (`...args`) are used **only once** — during actual initialization (the very first call).
+
+- **`callback`**: This is a factory describing the state creation logic. Inside it, you typically declare reactive variables (`ref`, `reactive`), functions to mutate them, and computed values (`computed`). The object returned from `callback` will be "frozen" and cached.
+- **`...args: O`**: You can pass any arguments into your initializer (e.g., initial state, ID of the entity being loaded, or an API client). These arguments will be forwarded into the `callback`.
+
+> **Important note about arguments:** Because `executeUse` strictly caches the result of the first call, any arguments passed during **subsequent** calls of the same hook in other components **will be completely ignored**. The object will not be recreated, and the `callback` function will not run again with new arguments (unless you have previously reset the cache via `destroyExecute()`).
+
+### The `init()` Placeholder Method
+
+The `init` method is simply an empty placeholder function that returns the exact same frozen state object. It exists **purely for code readability and Developer Experience (DX)**.
+
+Its main purpose is to give the developer a way to explicitly and visually highlight in the code the exact place where the actual (first) initialization of the singleton takes place. From a technical perspective, `const state = useTheme()` and `const state = useTheme().init()` do exactly the same thing.
+
+```typescript
+// Somewhere deep in the component tree, we simply get the readied state
+const theme = useTheme()
+
+// And here, in the root component (or main.ts), 
+// we explicitly show other developers: "Initialization happens exactly HERE"
+const theme = useTheme().init()
+```
 ## The `ExecuteUseType` Enum
 
-### `provide` (default)
+### `provide` (component-scoped singleton, default)
 
-Ideal for state that should be shared within a component subtree. The first component that calls the function becomes the "owner": it performs `provide(id, instance)`. All nested components receive the same instance via `inject(id)`. If no injected value is found in the current component, a new instance is created and `provide` is called. Component-scoped singletons do not have a `destroyExecute()` method — their lifecycle is managed by Vue.
+This is a component-oriented singleton that is strictly tied to the lifecycle of a Vue component and its entire subtree. Under the hood, it uses Vue's built-in reactivity and context-passing mechanism (`provide`/`inject`), allowing you to safely pass the very same state instance deep down the component tree without having to drill it through props.
+
+**When to use:** 
+- For sharing state specifically within a defined component subtree (parent -> multiple nesting levels -> child) without polluting the global store.
+- When you need to render multiple independent blocks on the same page (e.g., several complex file uploader widgets), each requiring its own unique state shared only within that widget.
+- If you need automatic garbage collection of the data straight from memory when the "owner" component is unmounted.
+
+**How it works:**
+The first component that calls this function automatically becomes the "owner". The function instantiates the object and immediately calls `provide(id, instance)`. Any nested components that call the same function will not create a new object; instead, they retrieve the previously created one via `inject(id)`. 
+> Note: This type lacks a `destroyExecute()` method because memory is freed automatically by Vue's reactivity system when the owner component is destroyed.
 
 ```typescript
 import { executeUseProvide } from '@dxtmisha/functional'
@@ -46,21 +82,29 @@ const useTheme = executeUseProvide(() => {
   const toggle = () => { mode.value = mode.value === 'light' ? 'dark' : 'light' }
   return { mode, toggle }
 })
-```
-// Parent component — creates provide:
+
+// In the parent component (owner) — the object is created and provided:
 const theme = useTheme()
 theme.toggle()
 
-// Child component — receives the same object via inject:
+// In a deeply nested child component — it receives the same object via inject:
 const theme = useTheme()
 
-// Independent component outside the tree — a new instance is created:
-const theme = useTheme()
+// In a completely different, independent component tree — a NEW instance is created:
+const theme2 = useTheme()
 ```
 
-### `global`
+### `global` (application-wide singleton)
 
-A single instance for the entire application. When using `executeUseGlobal`, the initializer is **not called immediately** — it is added to an internal queue. All global singletons are initialized when `executeUseGlobalInit()` is explicitly called, which is typically placed in `main.ts before mounting the app. Afterwards the queue is cleared, and all subsequent calls return the cached object.
+This is a classic Singleton architectural pattern, existing as a strictly unique instance throughout the entire lifetime of your application (from initialization to closing the browser tab). It provides a global point of access to state from literally anywhere in the code.
+
+**When to use:**
+- For storing global application state: authentication, current user profile, language settings, global shopping cart.
+- When the same data needs to be accessed from completely distinct, unrelated parts of the application (or even outside Vue components, such as in the router).
+- As a lightweight replacement for Vuex / Pinia for simple state management tasks.
+
+**How it works:**
+The initializer function is **not executed when called**. Instead, it is added to a special internal queue (`globalMethods`). Full initialization of all global objects only occurs upon explicitly calling `executeUseGlobalInit()`, which is typically placed in `main.ts` before the app is mounted. Thereafter, all components receive the same cached object from memory.
 
 ```typescript
 import { executeUseGlobal, executeUseGlobalInit } from '@dxtmisha/functional'
@@ -72,39 +116,52 @@ const useAuth = executeUseGlobal(() => {
   const logout = () => { user.value = null }
   return { user, login, logout }
 })
-```
-// In main.ts — before mounting the app:
+
+// In main.ts — strictly BEFORE mounting the app (app.mount()):
 executeUseGlobalInit()
 
-// In any component:
+// In any component, utility, or router:
 const auth = useAuth()
 auth.login('Alice')
-auth.destroyExecute?.() // Force reset the cache when needed
+
+// If you need to forcefully reset the state (recreate the state from scratch):
+auth.destroyExecute?.() 
 ```
 
-### `local`
+### `local` (closure-cached singleton)
 
-The cache lives in a closure. Does not use `provide/inject`. Suitable when you need a single instance without coupling to the Vue component tree. On the first call, the initializer is called with the provided arguments, the result is frozen and stored — on all subsequent calls, arguments are ignored and the same object is returned. The `destroyExecute()` method resets the cache, allowing the object to be re-created on the next call.
+This is an independent singleton that relies on the lexical closure mechanism (`closure caching`) in JavaScript. Instead of using the Vue context or the global scope, it preserves the once-generated result directly inside its own function memory, instantly returning it on all subsequent calls.
+
+**When to use:**
+- For utilities, factories, or services not coupled to Vue (`provide`/`inject` only function inside a component's `setup`).
+- When you need an isolated instance of a heavy class or service only at the exact moment it's actually required (lazy initialization on demand), rather than at app startup.
+- For caching the results of heavy mathematical calculations or configuration transformations.
+
+**How it works:**
+It does not use Vue mechanisms. On the very first call, the initializer function is executed with the provided arguments. The result is strictly frozen (`Object.freeze`) and stored in a variable inside the `executeUse` closure. On all subsequent calls (even if you pass different arguments), the function instantly returns the already saved object from the variable. 
+The `destroyExecute()` method nullifies this internal variable, allowing the initialization algorithm to run again on the next call.
 
 ```typescript
 import { executeUseLocal } from '@dxtmisha/functional'
 import { ref } from 'vue'
 
-const useCounter = executeUseLocal(() => {
-  const count = ref(0)
-  const increment = () => count.value++
-  return { count, increment }
+const useHeavyConfig = executeUseLocal((env: string) => {
+  // Heavy configuration calculation operation...
+  const config = ref({ api: `https://${env}.example.com` })
+  return { config }
 })
-```
-const counter = useCounter()
-counter.increment()
-console.log(counter.count.value) // 1
 
-const same = useCounter() // same object
-console.log(same === counter) // true
+// First call — initialization
+const devConfig = useHeavyConfig('dev')
+console.log(devConfig.config.value.api) // https://dev.example.com
 
-counter.destroyExecute?.()
-const fresh = useCounter() // new object, count is 0 again
+// Second call in another file — returns the same object, the argument is ignored!
+const sameConfig = useHeavyConfig('prod') 
+console.log(sameConfig.config.value.api) // Still https://dev.example.com
+
+// Forcefully clear the cache
+sameConfig.destroyExecute?.()
+const newConfig = useHeavyConfig('prod') // Initialization will run again
 ```
 
 ## `executeUseGlobalInit`

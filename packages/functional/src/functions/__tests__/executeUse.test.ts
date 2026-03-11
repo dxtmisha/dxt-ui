@@ -60,7 +60,7 @@ describe('executeUse', () => {
   })
 
   describe('Singleton Modes', () => {
-    it('creates instance once for local type', () => {
+    it('creates instance once for a local type', () => {
       let instancesCreated = 0
       const useLocal = executeUse(() => {
         instancesCreated++
@@ -116,7 +116,7 @@ describe('executeUse', () => {
       // Destroy the cached instance
       first.destroyExecute?.()
 
-      // Next call should re-initialize
+      // The next call should re-initialize
       const second = useItem()
       expect(second.value).toBe(2)
       expect(callCount).toBe(2)
@@ -142,7 +142,7 @@ describe('executeUse', () => {
       expect(spy1).toHaveBeenCalled()
       expect(spy2).toHaveBeenCalled()
 
-      // Second call should not re-init because stack was cleared
+      // The second call should not re-init because the stack was cleared
       executeUseGlobalInit()
       expect(spy1).toHaveBeenCalledTimes(1)
     })
@@ -184,8 +184,9 @@ describe('executeUse', () => {
 
     it('executeUseProvide works as an alias for type provide (via default behavior check)', () => {
       // Since it uses provide/inject, we just check it doesn't have destroyExecute
-      // and behaves like a provide type in simple context (returns same if cached locally in this test context?
-      // actually provide type in test without provider will just re-init if not handled, but usually we just check the structure)
+      // and behaves like a provided type in a simple context.
+      // Returns the same if cached locally in this test context?
+      // actually provide type in test without a provider will just re-init if not handled, but usually we just check the structure.
       const useItem = executeUseProvide(() => ({ val: 1 }))
       const item = useItem()
       expect(item.val).toBe(1)

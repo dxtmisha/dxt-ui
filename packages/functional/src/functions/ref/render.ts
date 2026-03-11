@@ -20,14 +20,12 @@ export function render<T extends ItemList>(
   index?: string
 ): VNode {
   let data: any = props
+  const keyExists = props && 'key' in props
 
-  if (
-    !props
-    || ('key' in props)
-  ) {
+  if (!props || !keyExists) {
     data = {
-      key: getIndexForRender(name, props, index),
-      ...props
+      ...props,
+      key: getIndexForRender(name, props, index)
     }
   }
 
