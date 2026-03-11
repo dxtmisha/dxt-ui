@@ -15,27 +15,27 @@ Một lớp để quản lý dữ liệu mặc định cho các yêu cầu API. 
 
 ## Khởi tạo
 
-Thông thường, lớp này được sử dụng nội bộ bởi hệ thống quản lý API, nhưng nó cũng có thể được sử dụng độc lập.
+Tạo một thực thể `ApiDefault` mới. Lớp này được thiết kế để lưu trữ và quản lý dữ liệu cần tự động thêm vào mỗi yêu cầu API. Nó thường được sử dụng như một thành phần nội bộ của hệ thống giao tiếp máy chủ nhưng cũng có thể được khởi tạo và sử dụng độc lập.
 
-```javascript
+```typescript
 import { ApiDefault } from '@dxtmisha/functional'
 
+// 1. Khởi tạo đơn giản
 const apiDefault = new ApiDefault()
+
+// 2. Thiết lập dữ liệu mặc định
 apiDefault.set({ lang: 'vi', version: 'v1' })
 
-if (apiDefault.is()) {
-  console.log('Dữ liệu mặc định đã sẵn sàng')
-}
-
-// Với Đối tượng
-const merged = apiDefault.request({ user_id: 5 })
+// 3. Ví dụ sử dụng với một đối tượng yêu cầu
+const requestData = { user_id: 5 }
+const mergedRequest = apiDefault.request(requestData)
 // Kết quả: { lang: 'vi', version: 'v1', user_id: 5 }
 
-// Với FormData
+// 4. Ví dụ sử dụng với FormData
 const fd = new FormData()
-fd.append('file', myFile)
+fd.append('photo', fileBlob)
 apiDefault.request(fd)
-// Kết quả: fd bây giờ cũng chứa 'lang' và 'version' nếu chúng chưa tồn tại
+// Kết quả: fd bây giờ chứa 'lang' và 'version' nếu chúng bị thiếu
 ```
 
 ## Các phương thức

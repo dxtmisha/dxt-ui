@@ -15,11 +15,20 @@ A class for managing and merging HTTP request headers. It handles default applic
 
 ## Initialization
 
-```javascript
+Creates a new `ApiHeaders` instance. The class is used to store and manage headers that will be automatically added to every HTTP request. Provides centralized management for data such as authorization tokens or application metadata.
+
+```typescript
 import { ApiHeaders } from '@dxtmisha/functional'
 
+// 1. Simple initialization
 const apiHeaders = new ApiHeaders()
+
+// 2. Setting default headers
 apiHeaders.set({ 'X-App-Platform': 'web' })
+
+// 3. Getting headers for a request
+const headers = apiHeaders.get({ 'Authorization': 'Bearer token123' })
+// Result: { 'X-App-Platform': 'web', 'Authorization': 'Bearer token123', 'Content-Type': 'application/json;charset=UTF-8' }
 ```
 
 ## Methods
