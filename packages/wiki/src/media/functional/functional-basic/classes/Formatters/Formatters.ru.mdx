@@ -16,11 +16,22 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-Создает новый экземпляр `Formatters` с указанными параметрами форматирования и необязательным начальным списком.
+Для инициализации объекта вызовите конструктор `Formatters(options, list)`.
 
-```javascript
+### Ограничения дженериков (Generic Constraints)
+
+- `Item extends FormattersListItem` — тип элементов в списке.
+- `Options extends FormattersOptionsList` — тип параметров форматирования.
+- `List extends FormattersList<Item>` — тип списка элементов.
+
+**Параметры:**
+- `options: Options` — параметры форматирования для каждого столбца/свойства.
+- `list?: List` — начальный список данных для форматирования.
+
+```typescript
 import { Formatters } from '@dxtmisha/functional-basic'
 
+// 1. Определение параметров форматирования
 const options = {
   price: { 
     type: 'currency', 
@@ -43,10 +54,11 @@ const options = {
     options: { words: 'яблоко|яблока|яблок' } 
   },
   status: {
-    transformation: (value) => value === 1 ? 'Активен' : 'Неактивен'
+    transformation: (value: number) => value === 1 ? 'Активен' : 'Неактивен'
   }
 }
 
+// 2. Исходные данные
 const data = [
   {
     price: 100,
@@ -60,6 +72,7 @@ const data = [
   }
 ]
 
+// 3. Инициализация
 const formatter = new Formatters(options, data)
 ```
 

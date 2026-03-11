@@ -13,6 +13,24 @@ Một lớp linh hoạt để tương tác với `localStorage` và `sessionStor
 - **Quản lý Tiền tố** — hỗ trợ cả tiền tố toàn cục và riêng biệt để cách ly cũng như gom nhóm các khóa trong `localStorage`.
 - **Tối ưu Bô nhớ** — tạo ra các singleton cho những khóa giống nhau nhằm tránh các thao tác đọc đĩa bị lặp lại.
 
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `DataStorage(name, isSession)`.
+
+**Tham số:**
+- `name: string` — tên của khóa lưu trữ.
+- `isSession: boolean = false` — có sử dụng `sessionStorage` hay không (mặc định là `localStorage`).
+
+```typescript
+import { DataStorage } from '@dxtmisha/functional'
+
+// 1. Tạo một thực thể cho localStorage
+const settings = new DataStorage('settings')
+
+// 2. Tạo một thực thể cho sessionStorage
+const session = new DataStorage('user_session', true)
+```
+
 ## Cách sử dụng Cơ bản
 
 ## Cấu hình toàn cục

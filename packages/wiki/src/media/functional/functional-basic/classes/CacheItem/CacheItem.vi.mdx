@@ -18,10 +18,15 @@ Bạn thường không trực tiếp gọi/khởi tạo Class `CacheItem` trong 
 
 ## Khởi tạo
 
-```javascript
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `CacheItem(callback)`.
+
+**Tham số:**
+- `callback: () => T` — hàm sẽ tạo dữ liệu cho bộ nhớ đệm.
+
+```typescript
 import { CacheItem } from '@dxtmisha/functional'
 
-// Hàm đệm nội bộ chứa lệnh tìm nạp data API
+// 1. Khởi tạo với hàm lấy dữ liệu
 const userCache = new CacheItem(() => fetchUserData())
 ```
 

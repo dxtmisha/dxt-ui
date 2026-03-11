@@ -16,23 +16,23 @@ A versatile wrapper around the native JavaScript `Date` object, designed to simp
 
 ## Initialization
 
-Creates a new `Datetime` instance. If no parameters are passed, the current time and default locale are used.
+To initialize the object, call the `Datetime(date, type, code)` constructor.
 
 **Parameters:**
 - `date?: NumberOrStringOrDate` — date for initialization (ISO string, timestamp, or `Date` object).
 - `type: GeoDate = 'date'` — default output format.
 - `code: string = Geo.getLocation()` — locale code (e.g., 'en-US').
 
-```javascript
+```typescript
 import { Datetime } from '@dxtmisha/functional-basic'
 
-// Current time
+// 1. Current time
 const now = new Datetime()
 
-// Specific date
+// 2. Specific date
 const dt = new Datetime('2024-03-15', 'datetime', 'en-US')
 
-// From timestamp
+// 3. From timestamp
 const fromTs = new Datetime(1710460800000)
 ```
 

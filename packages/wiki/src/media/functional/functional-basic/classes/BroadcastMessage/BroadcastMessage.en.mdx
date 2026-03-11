@@ -17,17 +17,29 @@ A class for handling cross-tab or cross-window messaging using the `BroadcastCha
 
 ## Initialization
 
-Create a new instance of `BroadcastMessage` by providing a channel name and optional callbacks for messages and errors.
+To initialize the object, call the `BroadcastMessage(name, callback, callbackError)` constructor.
 
-```javascript
+### Generic Constraints
+
+- `Message = any` — the type of the message payload.
+
+**Parameters:**
+- `name: string` — unique name of the communication channel.
+- `callback?: (event: MessageEvent<Message>) => void` — callback function executed when a message is received.
+- `callbackError?: (event: MessageEvent<Message>) => void` — callback function executed when a message error occurs.
+
+```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'
 
-// Initialize with message and error callbacks
+// 1. Initialization with incoming data handling
 const messenger = new BroadcastMessage(
-  'my-channel', 
+  'my-channel',
   (event) => console.log('Received:', event.data),
-  (error) => console.error('Message error:', error)
+  (error) => console.error('Error:', error)
 )
+
+// 2. Sending a message
+messenger.post({ type: 'UPDATE', value: 100 })
 ```
 
 ## Sending Messages

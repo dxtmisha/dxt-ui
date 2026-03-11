@@ -13,6 +13,24 @@ A versatile class for interacting with the browser's `localStorage` and `session
 - **Prefix Management** — supports global and instance-specific prefixes to isolate and group keys within `localStorage`.
 - **Memory Efficiency** — creates singletons for identical keys, avoiding duplicate reads from disk.
 
+## Initialization
+
+To initialize the object, call the `DataStorage(name, isSession)` constructor.
+
+**Parameters:**
+- `name: string` — the name of the storage key.
+- `isSession: boolean = false` — whether to use `sessionStorage` (defaults to `localStorage`).
+
+```typescript
+import { DataStorage } from '@dxtmisha/functional'
+
+// 1. Create an instance for localStorage
+const settings = new DataStorage('settings')
+
+// 2. Create an instance for sessionStorage
+const session = new DataStorage('user_session', true)
+```
+
 ## Global Settings
 
 - `setPrefix(newPrefix: string): void` (static) — Changes the global prefix applied to new instances attempting to use `localStorage`. The default prefix is `ui-storage`.

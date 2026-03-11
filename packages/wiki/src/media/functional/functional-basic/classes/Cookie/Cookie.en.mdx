@@ -15,12 +15,15 @@ A seamless, stateful wrapper for managing browser cookies. It automatically sync
 
 ## Initialization
 
-Create an instance by passing the name of the cookie you want to manage.
+To initialize the object, call the `Cookie(name)` constructor.
 
-```javascript
+**Parameters:**
+- `name: string` — the name of the cookie you want to manage.
+
+```typescript
 import { Cookie } from '@dxtmisha/functional'
 
-// Initialize wrapper for the 'theme' cookie
+// 1. Initialize wrapper for the 'theme' cookie
 const themeCookie = new Cookie('theme')
 ```
 
@@ -81,6 +84,4 @@ userPrefs.remove()
 - `sameSite?: 'strict' | 'lax'` — the `SameSite` policy. Default: `'strict'` (cookie is only sent on same-site navigations). `'lax'` also allows sending on cross-site GET requests.
 - `arguments?: string[]` — additional directives appended to the cookie string (e.g. `'Secure'`, `'Path=/'`, `'Domain=.myapp.com'`).
 
-## Internal Overview
 
-Internally, `Cookie` registers all instantiated wrappers in a shared `items` dictionary. If you instantiate `new Cookie('auth')` in two different files, they will correctly share and update the exact same underlying memory instance.

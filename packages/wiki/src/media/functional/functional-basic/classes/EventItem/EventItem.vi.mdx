@@ -17,20 +17,20 @@ Một bộ khung (wrapper) mạnh mẽ để quản lý các trình lắng nghe 
 
 ## Khởi tạo
 
-Tạo một thực thể `EventItem` mới. Đây là lớp cơ sở để làm việc với các sự kiện, cung cấp khả năng kiểm soát mở rộng đối với vòng đời của trình lắng nghe, tính năng tối ưu hóa tích hợp và hỗ trợ các kịch bản phức tạp về việc các phần tử truy cập hoặc rời khỏi DOM.
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `EventItem(elementSelector, type, listener, options, detail)`.
 
 ### Ràng buộc Generic (Generic Constraints)
 
 Để đảm bảo định kiểu nghiêm ngặt, lớp này hỗ trợ các generic sau:
-- `E extends ElementOrWindow` — Kiểu của phần tử nơi các sự kiện được lắng nghe (ví dụ: `HTMLElement`, `Window`, `Document`).
-- `O extends Event` — Kiểu đối tượng sự kiện (ví dụ: `MouseEvent`, `KeyboardEvent`).
-- `D extends Record<string, any>` — Cấu trúc dữ liệu bổ sung (`detail`) được truyền vào trình xử lý hoặc thông qua `dispatch`.
+- `E extends ElementOrWindow` — Kiểu của phần tử nơi các sự kiện được lắng nghe.
+- `O extends Event` — Kiểu đối tượng sự kiện.
+- `D extends Record<string, any>` — Cấu trúc dữ liệu bổ sung.
 
-**Tham số hàm khởi tạo:**
-- `elementSelector?: ElementOrString<E>` — phần tử đích nơi trình lắng nghe được gắn vào (có thể là một nút DOM, `window`, `document` hoặc bộ chọn CSS).
-- `type: string | string[] = 'click'` — loại sự kiện (ví dụ: `'click'`), một mảng các loại hoặc các loại đặc biệt (`'resize'`, `'scroll-sync'`).
+**Tham số:**
+- `elementSelector?: ElementOrString<E>` — phần tử đích nơi trình lắng nghe được gắn vào.
+- `type: string | string[] = 'click'` — loại sự kiện, một mảng các loại hoặc các loại đặc biệt (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — hàm xử lý sự kiện.
-- `options?: EventOptions` — các tùy chọn `addEventListener` tiêu chuẩn (`capture`, `passive`, `once`).
+- `options?: EventOptions` — các tùy chọn `addEventListener` tiêu chuẩn.
 - `detail?: D` — dữ liệu tùy chỉnh sẽ có sẵn trong trình xử lý.
 
 ```typescript

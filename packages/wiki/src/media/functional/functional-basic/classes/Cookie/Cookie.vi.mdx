@@ -15,12 +15,15 @@ Lớp bao đóng cho phép các developer quản trị trực tiếp vùng Brows
 
 ## Khởi tạo
 
-Truyền file nhận diện theo thuộc tính biến tên/từ khoá cookie.
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `Cookie(name)`.
 
-```javascript
+**Tham số:**
+- `name: string` — tên của cookie bạn muốn quản lý.
+
+```typescript
 import { Cookie } from '@dxtmisha/functional'
 
-// Mảng giao tiếp lấy biến 'theme' cookie
+// 1. Mảng giao tiếp lấy biến 'theme' cookie
 const themeCookie = new Cookie('theme')
 ```
 
@@ -81,6 +84,4 @@ userPrefs.remove()
 - `sameSite?: 'strict' | 'lax'` — chính sách `SameSite`. Mặc định: `'strict'` (cookie chỉ được gửi khi điều hướng trong cùng trang web). `'lax'` cũng cho phép gửi khi điều hướng từ liên kết ngoài (GET request).
 - `arguments?: string[]` — các chỉ thị bổ sung được nối vào chuỗi cookie (ví dụ: `'Secure'`, `'Path=/'`, `'Domain=.myapp.com'`).
 
-## Tổng quan nội bộ
 
-Tại hệ thống quản trị nội hàm, tiến trình bóc/ghi cookie nằm trên Class `Cookie` có thiết lập thư viện bộ nhớ tổng tên `items`. Cụ thể nếu tạo truy vấn chéo `new Cookie('auth')` trên 2 mảng component riêng rẽ, thì 2 khu component lấy cookie đó đều sử dụng/giữ kết nối tới một luồng instance giống nhau hoàn toàn mà không bị lỗi/văng xung đột.

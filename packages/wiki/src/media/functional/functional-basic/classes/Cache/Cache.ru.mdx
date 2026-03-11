@@ -14,10 +14,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-```javascript
+Для инициализации объекта вызовите конструктор `Cache()`.
+
+```typescript
 import { Cache } from '@dxtmisha/functional'
 
+// 1. Инициализация хранилища
 const cache = new Cache()
+
+// 2. Получение или вычисление значения
+const user = cache.get('user', () => 'Admin', [1])
 ```
 
 ## Получение данных
@@ -76,6 +82,3 @@ const u1Cached = await fetchUser(5)
 const u2 = await fetchUser(6)
 ```
 
-## Внутреннее устройство
-
-Внутри `Cache` использует экземпляры `CacheItem` для управления каждой отдельной записью кэша. `CacheItem` обрабатывает хранение текущего значения, старого значения и логику проверки зависимостей (`isUpdate`).

@@ -17,20 +17,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-Создает новый экземпляр `EventItem`. Это базовый класс для работы с событиями, который предоставляет расширенный контроль над жизненным циклом слушателей, встроенную оптимизацию и поддержку сложных сценариев входа/выхода элементов из DOM.
+Для инициализации объекта вызовите конструктор `EventItem(elementSelector, type, listener, options, detail)`.
 
 ### Ограничения дженериков (Generic Constraints)
 
 Для обеспечения строгой типизации класс поддерживает следующие дженерики:
-- `E extends ElementOrWindow` — Тип элемента, на котором слушаются события (например, `HTMLElement`, `Window`, `Document`).
-- `O extends Event` — Тип объекта события (например, `MouseEvent`, `KeyboardEvent`).
-- `D extends Record<string, any>` — Структура дополнительных данных (`detail`), передаваемых в обработчик или через `dispatch`.
+- `E extends ElementOrWindow` — Тип элемента, на котором слушаются события.
+- `O extends Event` — Тип объекта события.
+- `D extends Record<string, any>` — Структура дополнительных данных.
 
-**Параметры конструктора:**
-- `elementSelector?: ElementOrString<E>` — целевой элемент, на который вешается слушатель (может быть DOM-узлом, `window`, `document` или CSS-селектором).
-- `type: string | string[] = 'click'` — тип события (например, `'click'`), массив типов или специальные типы (`'resize'`, `'scroll-sync'`).
+**Параметры:**
+- `elementSelector?: ElementOrString<E>` — целевой элемент, на который вешается слушатель.
+- `type: string | string[] = 'click'` — тип события, массив типов или специальные типы (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — функция-обработчик события.
-- `options?: EventOptions` — стандартные опции `addEventListener` (`capture`, `passive`, `once`).
+- `options?: EventOptions` — стандартные опции `addEventListener`.
 - `detail?: D` — пользовательские данные, которые будут доступны в обработчике.
 
 ```typescript

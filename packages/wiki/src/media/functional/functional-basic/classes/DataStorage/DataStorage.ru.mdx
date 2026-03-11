@@ -13,6 +13,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Управление префиксами** — поддерживает глобальные и специфичные для каждого экземпляра префиксы, позволяющие изолировать и группировать ключи в рамках `localStorage`.
 - **Эффективная память** — создает паттерн singleton для идентичных ключей, чтобы избежать одновременного чтения непосредственно с диска.
 
+## Инициализация
+
+Для инициализации объекта вызовите конструктор `DataStorage(name, isSession)`.
+
+**Параметры:**
+- `name: string` — название ключа в хранилище.
+- `isSession: boolean = false` — нужно ли использовать `sessionStorage` (по умолчанию `localStorage`).
+
+```typescript
+import { DataStorage } from '@dxtmisha/functional'
+
+// 1. Создание экземпляра для localStorage
+const settings = new DataStorage('settings')
+
+// 2. Создание экземпляра для sessionStorage
+const session = new DataStorage('user_session', true)
+```
+
 ## Глобальная настройка
 
 - `setPrefix(newPrefix: string): void` (static) — Изменяет глобальный префикс, применяемый ко всем новым экземплярам. Префикс по умолчанию — `ui-storage`.

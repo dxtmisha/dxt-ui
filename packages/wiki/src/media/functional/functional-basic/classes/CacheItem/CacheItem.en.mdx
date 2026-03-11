@@ -18,10 +18,15 @@ You typically do not instantiate `CacheItem` directly in your application code. 
 
 ## Initialization
 
-```javascript
+To initialize the object, call the `CacheItem(callback)` constructor.
+
+**Parameters:**
+- `callback: () => T` — a function that will generate data for the cache.
+
+```typescript
 import { CacheItem } from '@dxtmisha/functional'
 
-// Initialize with the function that will generate the data
+// 1. Initialization with a data retrieval function
 const userCache = new CacheItem(() => fetchUserData())
 ```
 

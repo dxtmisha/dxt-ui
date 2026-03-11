@@ -14,10 +14,16 @@ A lightweight, memory-based caching mechanism. It provides an efficient way to e
 
 ## Initialization
 
-```javascript
+To initialize the object, call the `Cache()` constructor.
+
+```typescript
 import { Cache } from '@dxtmisha/functional'
 
+// 1. Storage initialization
 const cache = new Cache()
+
+// 2. Get or calculate value
+const user = cache.get('user', () => 'Admin', [1])
 ```
 
 ## Data Retrieval
@@ -76,6 +82,3 @@ const u1Cached = await fetchUser(5)
 const u2 = await fetchUser(6)
 ```
 
-## Internal Overview
-
-Internally, `Cache` uses instances of `CacheItem` to manage each individual cache entry. `CacheItem` handles the storage of the current value, the old value, and the dependency checking logic (`isUpdate`).

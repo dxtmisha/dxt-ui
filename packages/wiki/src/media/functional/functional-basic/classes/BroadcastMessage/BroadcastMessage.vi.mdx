@@ -17,17 +17,29 @@ Một lớp để xử lý việc truyền tin giữa các tab hoặc cửa sổ
 
 ## Khởi tạo
 
-Tạo một thực thể mới của `BroadcastMessage` bằng cách cung cấp tên kênh và các hàm callback tùy chọn cho thông điệp và lỗi.
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `BroadcastMessage(name, callback, callbackError)`.
 
-```javascript
+### Generic Constraints
+
+- `Message = any` — kiểu dữ liệu của tải trọng thông điệp.
+
+**Tham số:**
+- `name: string` — tên duy nhất của kênh truyền tin.
+- `callback?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi nhận được thông điệp.
+- `callbackError?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi xảy ra lỗi thông điệp.
+
+```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'
 
-// Khởi tạo với các callback cho thông điệp và lỗi
+// 1. Khởi tạo với việc xử lý dữ liệu đến
 const messenger = new BroadcastMessage(
-  'my-channel', 
+  'my-channel',
   (event) => console.log('Đã nhận:', event.data),
-  (error) => console.error('Lỗi thông điệp:', error)
+  (error) => console.error('Lỗi:', error)
 )
+
+// 2. Gửi một thông điệp
+messenger.post({ type: 'UPDATE', value: 100 })
 ```
 
 ## Gửi thông điệp

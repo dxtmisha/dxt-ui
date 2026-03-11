@@ -17,17 +17,29 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-Создайте новый экземпляр `BroadcastMessage`, указав имя канала и, при необходимости, функции обратного вызова для сообщений и ошибок.
+Для инициализации объекта вызовите конструктор `BroadcastMessage(name, callback, callbackError)`.
 
-```javascript
+### Ограничения дженериков (Generic Constraints)
+
+- `Message = any` — тип полезной нагрузки сообщения.
+
+**Параметры:**
+- `name: string` — уникальное имя канала связи.
+- `callback?: (event: MessageEvent<Message>) => void` — функция обратного вызова, выполняемая при получении сообщения.
+- `callbackError?: (event: MessageEvent<Message>) => void` — функция обратного вызова, выполняемая при возникновении ошибки сообщения.
+
+```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'
 
-// Инициализация с колбэками для сообщений и ошибок
+// 1. Инициализация с обработкой входящих данных
 const messenger = new BroadcastMessage(
   'my-channel',
   (event) => console.log('Получено:', event.data),
-  (error) => console.error('Ошибка сообщения:', error)
+  (error) => console.error('Ошибка:', error)
 )
+
+// 2. Отправка сообщения
+messenger.post({ type: 'UPDATE', value: 100 })
 ```
 
 ## Отправка сообщений

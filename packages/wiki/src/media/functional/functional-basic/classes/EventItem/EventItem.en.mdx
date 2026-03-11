@@ -17,20 +17,20 @@ A powerful wrapper for managing event listeners on DOM elements or the `window` 
 
 ## Initialization
 
-Creates a new `EventItem` instance. This is a base class for working with events, providing extended control over the lifecycle of listeners, built-in optimization, and support for complex scenarios of elements entering or leaving the DOM.
+To initialize the object, call the `EventItem(elementSelector, type, listener, options, detail)` constructor.
 
 ### Generic Constraints
 
 To ensure strict typing, the class supports the following generics:
-- `E extends ElementOrWindow` — The type of the element on which events are listened to (e.g., `HTMLElement`, `Window`, `Document`).
-- `O extends Event` — The event object type (e.g., `MouseEvent`, `KeyboardEvent`).
-- `D extends Record<string, any>` — The structure for additional data (`detail`) passed to the handler or via `dispatch`.
+- `E extends ElementOrWindow` — The type of the element on which events are listened to.
+- `O extends Event` — The event object type.
+- `D extends Record<string, any>` — The structure for additional data.
 
-**Constructor Parameters:**
-- `elementSelector?: ElementOrString<E>` — the target element where the listener is attached (can be a DOM node, `window`, `document`, or a CSS selector).
-- `type: string | string[] = 'click'` — the event type (e.g., `'click'`), an array of types, or special types (`'resize'`, `'scroll-sync'`).
+**Parameters:**
+- `elementSelector?: ElementOrString<E>` — the target element where the listener is attached.
+- `type: string | string[] = 'click'` — the event type, an array of types, or special types (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — the event handler function.
-- `options?: EventOptions` — standard `addEventListener` options (`capture`, `passive`, `once`).
+- `options?: EventOptions` — standard `addEventListener` options.
 - `detail?: D` — custom data that will be available in the handler.
 
 ```typescript

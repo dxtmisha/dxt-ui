@@ -18,10 +18,15 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-```javascript
+Для инициализации объекта вызовите конструктор `CacheItem(callback)`.
+
+**Параметры:**
+- `callback: () => T` — функция, которая будет генерировать данные для кэша.
+
+```typescript
 import { CacheItem } from '@dxtmisha/functional'
 
-// Инициализация с функцией, которая будет генерировать данные
+// 1. Инициализация с функцией получения данных
 const userCache = new CacheItem(() => fetchUserData())
 ```
 

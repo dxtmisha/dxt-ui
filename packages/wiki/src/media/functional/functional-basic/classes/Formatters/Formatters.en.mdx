@@ -16,11 +16,22 @@ A specialized class for formatting lists of data based on provided configuration
 
 ## Initialization
 
-Creates a new `Formatters` instance with specified formatting options and an optional initial list.
+To initialize the object, call the `Formatters(options, list)` constructor.
 
-```javascript
+### Generic Constraints
+
+- `Item extends FormattersListItem` — type of items in the list.
+- `Options extends FormattersOptionsList` — type of formatting options.
+- `List extends FormattersList<Item>` — type of the list of items.
+
+**Parameters:**
+- `options: Options` — formatting options for each column/property.
+- `list?: List` — initial list of data to format.
+
+```typescript
 import { Formatters } from '@dxtmisha/functional-basic'
 
+// 1. Define formatting options
 const options = {
   price: { 
     type: 'currency', 
@@ -43,10 +54,11 @@ const options = {
     options: { words: 'apple|apples' } 
   },
   status: {
-    transformation: (value) => value === 1 ? 'Active' : 'Inactive'
+    transformation: (value: number) => value === 1 ? 'Active' : 'Inactive'
   }
 }
 
+// 2. Initial data
 const data = [
   {
     price: 100,
@@ -60,6 +72,7 @@ const data = [
   }
 ]
 
+// 3. Initialization
 const formatter = new Formatters(options, data)
 ```
 

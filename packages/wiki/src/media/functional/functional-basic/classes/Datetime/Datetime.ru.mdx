@@ -16,23 +16,23 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-Создает новый экземпляр `Datetime`. Если параметры не переданы, используется текущее время и локаль по умолчанию.
+Для инициализации объекта вызовите конструктор `Datetime(date, type, code)`.
 
 **Параметры:**
 - `date?: NumberOrStringOrDate` — дата для инициализации (ISO строка, timestamp или объект `Date`).
 - `type: GeoDate = 'date'` — формат вывода по умолчанию.
 - `code: string = Geo.getLocation()` — код локали (например, 'ru-RU').
 
-```javascript
+```typescript
 import { Datetime } from '@dxtmisha/functional-basic'
 
-// Текущее время
+// 1. Текущее время
 const now = new Datetime()
 
-// Конкретная дата
+// 2. Конкретная дата
 const dt = new Datetime('2024-03-15', 'datetime', 'ru-RU')
 
-// Из timestamp
+// 3. Из timestamp
 const fromTs = new Datetime(1710460800000)
 ```
 

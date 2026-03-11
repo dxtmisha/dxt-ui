@@ -16,23 +16,23 @@ Một bộ khung lớp bao quanh đối tượng `Date` nguyên bản của Java
 
 ## Khởi tạo
 
-Tạo một thực thể `Datetime` mới. Nếu không có tham số nào được truyền vào, thời gian hiện tại và địa phương mặc định sẽ được sử dụng.
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `Datetime(date, type, code)`.
 
 **Tham số:**
 - `date?: NumberOrStringOrDate` — ngày để khởi tạo (chuỗi ISO, timestamp hoặc đối tượng `Date`).
 - `type: GeoDate = 'date'` — định dạng đầu ra mặc định.
 - `code: string = Geo.getLocation()` — mã địa phương (ví dụ: 'vi-VN').
 
-```javascript
+```typescript
 import { Datetime } from '@dxtmisha/functional-basic'
 
-// Thời gian hiện tại
+// 1. Thời gian hiện tại
 const now = new Datetime()
 
-// Ngày cụ thể
+// 2. Ngày cụ thể
 const dt = new Datetime('2024-03-15', 'datetime', 'vi-VN')
 
-// Từ timestamp
+// 3. Từ timestamp
 const fromTs = new Datetime(1710460800000)
 ```
 
