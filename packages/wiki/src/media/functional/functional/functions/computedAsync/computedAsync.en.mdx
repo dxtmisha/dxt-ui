@@ -4,14 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `computedAsync`
 
-Creates a computed property that can handle asynchronous getters. Unlike Vue's standard `computed`, `computedAsync` accepts async functions, synchronous functions, or raw values — the result is automatically resolved and exposed as a reactive computed ref.
+Creates a computed property that can handle asynchronous getters. Unlike Vue's standard `computed`, `computedAsync` accepts async functions, synchronous functions, or raw values — the result is automatically resolved and exposed as a reactive computed ref. Initialization is lazy and occurs upon first access to the property.
 
 **Parameters:**
 - `getter: (() => Promise<R>) | (() => R) | R` — An async function, synchronous function, or raw value to compute the result from.
+- `ignore?: R` — A value to be ignored (will not be set as the result).
 - `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
 
 **Returns:**
-`ComputedRef<R>` — A reactive computed ref containing the resolved result of the getter.
+`ComputedRef<R | undefined>` — A reactive computed ref containing the resolved result of the getter.
 
 ```typescript
 import { computedAsync } from '@dxtmisha/functional'

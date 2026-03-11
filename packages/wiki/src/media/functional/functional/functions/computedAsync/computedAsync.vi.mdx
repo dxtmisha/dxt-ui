@@ -4,14 +4,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `computedAsync`
 
-Tạo một thuộc tính computed có thể xử lý các getter bất đồng bộ. Khác với `computed` thông thường của Vue, `computedAsync` cho phép truyền vào hàm bất đồng bộ, hàm đồng bộ, hoặc giá trị trực tiếp — kết quả sẽ tự động được giải quyết và trở thành một computed ref phản ứng.
+Tạo một thuộc tính computed có thể xử lý các getter bất đồng bộ. Khác với `computed` thông thường của Vue, `computedAsync` cho phép truyền vào hàm bất đồng bộ, hàm đồng bộ, hoặc giá trị trực tiếp — kết quả sẽ tự động được giải quyết và trở thành một computed ref phản ứng. Khởi tạo ở chế độ lazy (lười biếng) và chỉ xảy ra khi truy cập thuộc tính lần đầu tiên.
 
 **Tham số:**
 - `getter: (() => Promise<R>) | (() => R) | R` — Hàm bất đồng bộ, hàm đồng bộ, hoặc giá trị trực tiếp dùng để tính toán kết quả.
+- `ignore?: R` — Giá trị cần bỏ qua (sẽ không được thiết lập vào kết quả).
 - `debugOptions?: DebuggerOptions` — Tùy chọn dùng để gỡ lỗi các phép tính phản ứng, được hỗ trợ bởi Vue.js.
 
 **Trả về:**
-`ComputedRef<R>` — Một computed ref phản ứng chứa kết quả đã được giải quyết từ getter.
+`ComputedRef<R | undefined>` — Một computed ref phản ứng chứa kết quả đã được giải quyết từ getter.
 
 ```typescript
 import { computedAsync } from '@dxtmisha/functional'

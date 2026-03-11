@@ -7,18 +7,33 @@ import { executePromise } from '@dxtmisha/functional-basic'
  * Создаёт вычисляемое свойство, которое может обрабатывать асинхронные геттеры.
  * @param getter Asynchronous function, synchronous function, or direct value to compute the result/
  * Асинхронная функция, синхронная функция или прямое значение для вычисления результата
+ * @param ignore values to be ignored/ значения для исключения из обработки
  * @param debugOptions Used for debugging reactive computations. Supported by Vue.js library/
  * Используется для отладки реактивных вычислений. Поддерживается библиотекой Vue.js
  */
 export function computedAsync<R>(
   getter: (() => Promise<R>) | (() => R) | R,
+  ignore?: R,
   debugOptions?: DebuggerOptions
-): ComputedRef<R> {
+): ComputedRef<R | undefined> {
   const item = ref<R>()
+  let first = true
 
-  watchEffect(async () => {
-    item.value = await executePromise(getter)
-  })
+  const init = () => {
+    if (first) {
+      first = false
+      watchEffect(async () => {
+        const newValue = await executePromise(getter)
 
-  return computed<R>(() => item.value as R, debugOptions)
+        if (newValue !== ignore) {
+          item.value = newValue as R
+        }
+      })
+    }
+  }
+
+  return computed<R>(() => {
+    init()
+    return item.value as R
+  }, debugOptions)
 }

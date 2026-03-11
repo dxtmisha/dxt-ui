@@ -4,12 +4,20 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `computedByLanguage`
 
-Creates a reactive computed property whose value changes based on the current language and optional conditions. If the language is not set, the condition is not met, or the main getter returns `undefined`, the fallback value `getterNone` is returned instead.
+Creates a reactive computed property that automatically recalculates when the current language or dependencies within the getters change.
+
+### How it works
+
+The function performs checks in the following order:
+1. **Language Check**: Verifies that a language is set via `GeoRef.get().value`.
+2. **Conditions Check**: If the `conditions` parameter is provided, it is called for an additional check (e.g., checking permissions or data loading state).
+3. **Primary Getter Execution**: If both checks above pass, the `getter` is called. If it returns a value (not `undefined`), that value becomes the result.
+4. **Fallback Option**: If any of the checks fail or the `getter` returns `undefined`, the `getterNone` is executed/returned.
 
 **Parameters:**
-- `getter: ComputedGetter<R>` — A function that returns the primary value. Called only when the language is set and the condition is satisfied.
-- `getterNone: R | (() => R)` — A fallback value or a function returning it. Used when `getter` returns `undefined` or the condition is not met. Default: `() => undefined`.
-- `conditions?: () => boolean` — An optional condition. If omitted, it is always considered satisfied.
+- `getter: ComputedGetter<R>` — The primary logic for obtaining the value. Called only if the language is set and conditions are met.
+- `getterNone: R | (() => R)` — A fallback value or a function returning it. Acts as "Plan B". Default: `() => undefined`.
+- `conditions?: () => boolean` — A condition function. Acts as a gatekeeper: if it returns `false`, the main `getter` will not even be triggered.
 - `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
 
 **Returns:**

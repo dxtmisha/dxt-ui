@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { nextTick, ref } from 'vue'
 
 import { computedByLanguage } from '../computedByLanguage'
