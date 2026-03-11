@@ -3,7 +3,15 @@ import { SearchListItem } from './SearchListItem'
 import { SearchListMatcher } from './SearchListMatcher'
 import { SearchListOptions } from './SearchListOptions'
 
-import type { SearchCacheItem, SearchColumns, SearchItem, SearchListValue, SearchOptions } from '../types/searchTypes'
+import type {
+  SearchCacheItem,
+  SearchColumns,
+  SearchFormatItem,
+  SearchFormatList,
+  SearchItem,
+  SearchListValue,
+  SearchOptions
+} from '../types/searchTypes'
 
 export class SearchList<
   T extends SearchItem,
@@ -76,36 +84,29 @@ export class SearchList<
     return this
   }
 
-  to() {
-    if (this.data.is()) {
-      if (this.item.isSearch()) {
-        return forEach(
-          listCache.value,
-          (item) => {
-            if (isSelection(item)) {
-              return toFormatItem(item.item, true)
-            }
-
-            if (returnEverything) {
-              return toFormatItem(item.item, false)
-            }
-          }
-        ) as SearchFormatList<T, K>
-      }
-
-      return forEach(listCache.value, item => toFormatItem(item.item, false))
+  to(): SearchFormatList<T, K> {
+    if (this.item.isSearch()) {
+      return this.data.forEach(this.callbackToSelection)
     }
 
-    return []
+    return this.data.forEach(this.callbackToNone)
   }
 
   protected readonly callbackToSelection = (
     item: SearchCacheItem<T>['item'],
     value: SearchCacheItem<T>['value']
-  ) => this.data.toFormatItem(item, false)
+  ): SearchFormatItem<T, K> | undefined => {
+    if (this.matcher.isSelection(value)) {
+      return this.data.toFormatItem(item, true)
+    }
+
+    if (this.options.getReturnEverything()) {
+      return this.data.toFormatItem(item, false)
+    }
+  }
 
   protected readonly callbackToNone = (
     item: SearchCacheItem<T>['item'],
     _: SearchCacheItem<T>['value']
-  ) => this.data.toFormatItem(item, false)
+  ): SearchFormatItem<T, K> => this.data.toFormatItem(item, false)
 }

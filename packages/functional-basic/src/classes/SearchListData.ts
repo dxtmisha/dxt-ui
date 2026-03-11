@@ -59,18 +59,20 @@ export class SearchListData<
     callback: (
       item: SearchCacheItem<T>['item'],
       value: SearchCacheItem<T>['value']
-    ) => SearchFormatItem<T, K>
+    ) => SearchFormatItem<T, K> | undefined
   ) {
     const list: SearchFormatList<T, K> = []
 
     if (this.is()) {
       this.listCache.forEach((cache) => {
-        list.push(
-          callback(
-            cache.item,
-            cache.value
-          )
+        const item = callback(
+          cache.item,
+          cache.value
         )
+
+        if (item) {
+          list.push(item)
+        }
       })
     }
 

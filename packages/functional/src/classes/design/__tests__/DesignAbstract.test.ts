@@ -28,16 +28,16 @@ describe('DesignAbstract', () => {
     expect(callback).toHaveBeenCalledWith({ result: 'hello-5' })
   })
 
-  it('should only call callback if props changed or compelled', () => {
+  it('should only call callback if props are changed or compelled', () => {
     const callback = vi.fn()
     const props = { title: 'hello' }
     const design = new TestDesign(props, callback)
 
-    // First call always works because changed.isChanged() is true initially
+    // The first call always works because changed.isChanged() is true initially
     design.make()
     expect(callback).toHaveBeenCalledTimes(1)
 
-    // Second call without changes should not trigger callback
+    // The second call without changes should not trigger a callback
     design.make()
     expect(callback).toHaveBeenCalledTimes(1)
 
@@ -69,7 +69,7 @@ describe('DesignAbstract', () => {
     const props = { title: 'test' }
     const design = new TestDesign(props)
 
-    // Initial state: result not in event yet
+    // Initial state: a result not in event yet
     expect(design.testIsChanged('result')).toBe(true)
 
     design.make()

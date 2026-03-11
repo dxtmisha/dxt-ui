@@ -2,10 +2,17 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { DesignChanged } from '../DesignChanged'
 
 describe('DesignChanged', () => {
-  let props: { foo: string, bar: number, baz?: string }
+  let props: {
+    bar: number
+    baz?: string
+    foo: string
+  }
 
   beforeEach(() => {
-    props = { foo: 'initial', bar: 10 }
+    props = {
+      foo: 'initial',
+      bar: 10
+    }
   })
 
   describe('Constructor', () => {

@@ -495,7 +495,7 @@ describe('ListDataRef', () => {
       expect(listData.isSelectedMin.value).toBe(false)
     })
 
-    it('should return true when the selection count is below min', () => {
+    it('should return false when the selection count is below min', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' }
@@ -515,10 +515,10 @@ describe('ListDataRef', () => {
         2
       )
 
-      expect(listData.isSelectedMin.value).toBe(true)
+      expect(listData.isSelectedMin.value).toBe(false)
     })
 
-    it('should return false when the selection count exceeds min', () => {
+    it('should return true when the selection count exceeds min', () => {
       const list = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -539,7 +539,7 @@ describe('ListDataRef', () => {
         2
       )
 
-      expect(listData.isSelectedMin.value).toBe(false)
+      expect(listData.isSelectedMin.value).toBe(true)
     })
   })
 

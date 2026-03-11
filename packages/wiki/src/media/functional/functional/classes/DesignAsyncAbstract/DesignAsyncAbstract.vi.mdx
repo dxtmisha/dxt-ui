@@ -25,9 +25,13 @@ Lớp này sử dụng hai loại generic để đảm bảo kiểu dữ liệu 
 **Tham số hàm khởi tạo:**
 - `props: T` — một đối tượng chứa dữ liệu ban đầu.
 - `callback?: (event: C) => void` — một hàm gọi lại sẽ được gọi sau mỗi lần cập nhật thành công (bao gồm cả cập nhật bất đồng bộ).
+- `changed?: string[]` — danh sách các khóa từ `props` cần theo dõi (tùy chọn). Nếu không được cung cấp, tất cả các khóa trong `props` sẽ được theo dõi.
+
+**Thuộc tính nội bộ:**
+- `protected readonly event: C` — đối tượng trạng thái. Đây là nơi bạn nên đổ dữ liệu vào trong `initEvent`. Nó sẽ được truyền vào `callback`.
 
 **Phương thức bắt buộc phải triển khai:**
-- `protected abstract initEvent(): Promise<void>` — một phương thức bất đồng bộ nơi diễn ra logic chính để chuẩn bị dữ liệu (ví dụ: các yêu cầu HTTP).
+- `protected abstract initEvent(): Promise<void>` — một phương thức bất đồng bộ được gọi mỗi khi các thuộc tính được theo dõi thay đổi. Đây là nơi `this.event` nên được chuẩn bị.
 
 ```typescript
 import { DesignAsyncAbstract } from '@dxtmisha/functional'
@@ -48,12 +52,16 @@ class UserDesign extends DesignAsyncAbstract<MyProps, MyState> {
 }
 
 // 3. Sử dụng
-const user = new UserDesign({ userId: 1 }, (state) => {
-  console.log('Dữ liệu người dùng đã được tải:', state.userName)
-})
+const user = new UserDesign(
+  { userId: 1 }, 
+  (state) => {
+    console.log('Dữ liệu người dùng đã được tải:', state.userName)
+  },
+  ['userId'] // Chỉ theo dõi thay đổi của userId
+)
 ```
 
-## Quản lý dữ liệu
+## Các phương thức quản lý dữ liệu
 
 ### `make`
 
@@ -73,3 +81,37 @@ Logic thực thi bất đồng bộ chính để cập nhật trạng thái. Nó
 
 **Trả về:** `Promise<void>`
 
+## Các phương thức được bảo vệ (cho lớp kế thừa)
+
+Các phương thức này có sẵn trong các lớp con để quản lý logic cập nhật.
+
+### `is`
+
+Kiểm tra sự tồn tại của một khóa trong đối tượng `props`.
+
+**Tham số:**
+- `name: keyof T` — tên thuộc tính.
+
+**Trả về:** `boolean`
+
+### `isChanged`
+
+Kiểm tra xem giá trị của một thuộc tính cụ thể có thay đổi so với trạng thái trước đó hay không. Hữu ích bên trong `initEvent` để tối ưu hóa các yêu cầu (chỉ thực hiện hành động nếu một ID cụ thể đã thay đổi).
+
+**Tham số:**
+- `name: keyof C` — tên thuộc tính trong trạng thái.
+- `nameProp?: keyof T | (keyof T)[]` — tên hoặc danh sách tên các thuộc tính trong `props` mà sự thay đổi dựa trên đó. Mặc định trùng với `name`.
+
+**Trả về:** `boolean`
+
+### `makeCallbackItem`
+
+Thực thi hàm callback đã được truyền vào constructor.
+
+**Trả về:** `void`
+
+### `initEvent` (trừu tượng)
+
+Phương thức bất đồng bộ phải được triển khai trong lớp con. Nó sẽ gán dữ liệu cho `this.event` dựa trên `this.props`.
+
+**Trả về:** `Promise<void>`

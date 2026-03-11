@@ -25,9 +25,13 @@ The class uses two types of generics to ensure strict typing:
 **Constructor Parameters:**
 - `props: T` — an object with the initial data.
 - `callback?: (event: C) => void` — a callback function that will be called after each successful update (including asynchronous ones).
+- `changed?: string[]` — optional list of keys from `props` to watch. If not provided, all keys in `props` are tracked.
+
+**Internal Properties:**
+- `protected readonly event: C` — the state object. This is what you should populate with data in `initEvent`. It will be passed to the `callback`.
 
 **Required Method to Implement:**
-- `protected abstract initEvent(): Promise<void>` — an asynchronous method where the main logic for data preparation (e.g., HTTP requests) should occur.
+- `protected abstract initEvent(): Promise<void>` — an asynchronous method called whenever tracked properties change. This is where `this.event` should be prepared.
 
 ```typescript
 import { DesignAsyncAbstract } from '@dxtmisha/functional'
@@ -48,12 +52,16 @@ class UserDesign extends DesignAsyncAbstract<MyProps, MyState> {
 }
 
 // 3. Usage
-const user = new UserDesign({ userId: 1 }, (state) => {
-  console.log('User data loaded:', state.userName)
-})
+const user = new UserDesign(
+  { userId: 1 }, 
+  (state) => {
+    console.log('User data loaded:', state.userName)
+  },
+  ['userId'] // Only track changes to userId
+)
 ```
 
-## Data Management
+## Data Management Methods
 
 ### `make`
 
@@ -70,6 +78,39 @@ The primary asynchronous execution logic for updating the state. It waits for `i
 
 **Parameters:**
 - `compelled?: boolean` — forces data update.
+
+**Returns:** `Promise<void>`
+
+## Protected Methods (for Subclasses)
+
+### `is`
+
+Checks for the existence of a key in the `props` object.
+
+**Parameters:**
+- `name: keyof T` — property name.
+
+**Returns:** `boolean`
+
+### `isChanged`
+
+Checks if the value of a specified property has changed compared to its previous state. Useful inside `initEvent` to optimize requests (only perform an action if a specific ID has changed).
+
+**Parameters:**
+- `name: keyof C` — property name in the state.
+- `nameProp?: keyof T | (keyof T)[]` — property name or list of property names in `props` that the change is based on. Defaults to `name`.
+
+**Returns:** `boolean`
+
+### `makeCallbackItem`
+
+Executes the callback function passed to the constructor.
+
+**Returns:** `void`
+
+### `initEvent` (abstract)
+
+An asynchronous method that must be implemented in the subclass. It populates `this.event` based on `this.props`.
 
 **Returns:** `Promise<void>`
 

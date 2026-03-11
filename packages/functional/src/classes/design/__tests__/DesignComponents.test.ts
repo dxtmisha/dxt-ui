@@ -81,29 +81,29 @@ describe('DesignComponents', () => {
 
   describe('renderOne()', () => {
     it('returns a VNode for valid component', () => {
-      const vnode = design.renderOne('button', { label: 'Click' })
-      expect(vnode).toBeDefined()
-      expect(vnode?.type).toBe(mockComponent)
-      expect(vnode?.props).toEqual({ size: 'large', label: 'Click' })
+      const node = design.renderOne('button', { label: 'Click' })
+      expect(node).toBeDefined()
+      expect(node?.type).toBe(mockComponent)
+      expect(node?.props).toEqual({ size: 'large', label: 'Click' })
     })
 
     it('returns undefined for invalid component', () => {
-      const vnode = design.renderOne('none' as any)
-      expect(vnode).toBeUndefined()
+      const node = design.renderOne('none' as any)
+      expect(node).toBeUndefined()
     })
   })
 
   describe('render()', () => {
     it('returns an array with VNode for a valid component', () => {
-      const vnodes = design.render('button')
-      expect(Array.isArray(vnodes)).toBe(true)
-      expect(vnodes).toHaveLength(1)
-      expect(vnodes[0]?.type).toBe(mockComponent)
+      const nodes = design.render('button')
+      expect(Array.isArray(nodes)).toBe(true)
+      expect(nodes).toHaveLength(1)
+      expect(nodes[0]?.type).toBe(mockComponent)
     })
 
     it('returns an empty array for an invalid component', () => {
-      const vnodes = design.render('none' as any)
-      expect(vnodes).toEqual([])
+      const nodes = design.render('none' as any)
+      expect(nodes).toEqual([])
     })
   })
 

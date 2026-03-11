@@ -32,12 +32,12 @@ export class DatetimeRef {
   protected date: Ref<Date>
   protected datetime: Datetime
 
-  protected year = computed<number>(() => this.date.value && this.datetime.getYear())
-  protected month = computed<number>(() => this.date.value && this.datetime.getMonth())
-  protected day = computed<number>(() => this.date.value && this.datetime.getDay())
-  protected hour = computed<number>(() => this.date.value && this.datetime.getHour())
-  protected minute = computed<number>(() => this.date.value && this.datetime.getMinute())
-  protected second = computed<number>(() => this.date.value && this.datetime.getSecond())
+  protected year = ref<number>(2000)
+  protected month = ref<number>(1)
+  protected day = ref<number>(1)
+  protected hour = ref<number>(1)
+  protected minute = ref<number>(1)
+  protected second = ref<number>(1)
 
   /**
    * Constructor
@@ -66,9 +66,13 @@ export class DatetimeRef {
 
     watch(this.type, type => this.datetime.setType(type))
     watch(this.code, code => this.datetime.setCode(code))
-    watch(this.date, value => this.datetime.setDate(value))
+    watch(this.date, (value) => {
+      this.datetime.setDate(value)
+      this.updateDate()
+    })
 
     this.datetime.setWatch(() => triggerRef(this.date))
+    this.updateDate()
   }
 
   /**
@@ -122,7 +126,7 @@ export class DatetimeRef {
    * Метод возвращает год указанной даты по местному времени.
    */
   getYear(): ComputedRef<number> {
-    return this.year
+    return computed(() => this.year.value)
   }
 
   /**
@@ -133,7 +137,7 @@ export class DatetimeRef {
    * месяцев начинается с нуля для первого месяца в году.
    */
   getMonth(): ComputedRef<number> {
-    return this.month
+    return computed(() => this.month.value)
   }
 
   /**
@@ -142,7 +146,7 @@ export class DatetimeRef {
    * Метод возвращает день месяца указанной даты по местному времени.
    */
   getDay(): ComputedRef<number> {
-    return this.day
+    return computed(() => this.day.value)
   }
 
   /**
@@ -151,7 +155,7 @@ export class DatetimeRef {
    * Метод возвращает часы указанной даты по местному времени.
    */
   getHour(): ComputedRef<number> {
-    return this.hour
+    return computed(() => this.hour.value)
   }
 
   /**
@@ -160,7 +164,7 @@ export class DatetimeRef {
    * Метод возвращает минуты указанной даты по местному времени.
    */
   getMinute(): ComputedRef<number> {
-    return this.minute
+    return computed(() => this.minute.value)
   }
 
   /**
@@ -169,7 +173,7 @@ export class DatetimeRef {
    * Метод возвращает секунды указанной даты по местному времени.
    */
   getSecond(): ComputedRef<number> {
-    return this.second
+    return computed(() => this.second.value)
   }
 
   /**
@@ -203,5 +207,21 @@ export class DatetimeRef {
    */
   standard(timeZone = true as boolean): ComputedRef<string> {
     return computed(() => this.date.value && this.datetime.standard(timeZone))
+  }
+
+  /**
+   * Updates all reactive date values.
+   *
+   * Обновляет все реактивные значения даты.
+   */
+  protected updateDate(): this {
+    this.year.value = this.datetime.getYear()
+    this.month.value = this.datetime.getMonth()
+    this.day.value = this.datetime.getDay()
+    this.hour.value = this.datetime.getHour()
+    this.minute.value = this.datetime.getMinute()
+    this.second.value = this.datetime.getSecond()
+
+    return this
   }
 }

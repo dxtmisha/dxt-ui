@@ -4,6 +4,8 @@ import { getSearchExp } from '../functions/getSearchExp'
 import type { SearchListItem } from './SearchListItem'
 import type { SearchListOptions } from './SearchListOptions'
 
+import type { SearchCacheItem } from '../types/searchTypes'
+
 export class SearchListMatcher {
   protected matcher: RegExp | undefined
 
@@ -12,6 +14,18 @@ export class SearchListMatcher {
     protected options: SearchListOptions
   ) {
     this.initMatcher()
+  }
+
+  is() {
+    return Boolean(this.matcher)
+  }
+
+  isSelection(value: SearchCacheItem<any>['value']): boolean {
+    if (!this.matcher) {
+      return false
+    }
+
+    return Boolean(value.match(this.matcher))
   }
 
   get(): RegExp | undefined {
