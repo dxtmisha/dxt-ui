@@ -19,6 +19,26 @@ Một đối tượng với các thuộc tính sau:
 - `loading: Ref<boolean>` — Trạng thái tải phản ứng. Sẽ là `true` trong khi yêu cầu đang thực hiện và `false` sau khi hoàn thành hoặc có lỗi.
 - `send(request?: Request): Promise<Return | undefined>` — Phương thức bất đồng bộ để gửi yêu cầu. Nó tự động quản lý trạng thái `loading`, áp dụng hàm biến đổi cho phản hồi, thực hiện callback `action` khi thành công và xử lý lỗi một cách an toàn bằng cách ghi log ra console.
 
+## Đối tượng ApiOptions
+
+`ApiOptions` — có thể nhận một chuỗi tên `method` (ví dụ: `'GET'`) hoặc một đối tượng kiểu `ApiFetch`. Các trường của đối tượng `ApiFetch`:
+
+- `path?: string` — đường dẫn đến endpoint script tương đối so với URL cơ bản (ví dụ: `'users/list'`).
+- `pathFull?: string` — URL đầy đủ của yêu cầu. Nếu được chỉ định, sẽ bỏ qua `api` và `path`.
+- `api?: boolean` — có thêm URL cơ bản trước `path` hay không. Mặc định: `true`.
+- `method?: ApiMethod` — phương thức HTTP (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Mặc định: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — thân yêu cầu (cho POST/PUT) hoặc các tham số truy vấn (cho GET). Được truyền dưới dạng JSON hoặc `FormData`.
+- `headers?: Record<string, string> | null` — các tiêu đề yêu cầu bổ sung. `null` — vô hiệu hóa tất cả các tiêu đề.
+- `type?: string` — giá trị `Content-Type`. Mặc định: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — có thêm các tiêu đề xác thực hay không.
+- `toData?: boolean` — nếu `true`, tự động giải nén `data` từ vỏ bọc `{ data: ... }`. Mặc định: `true`.
+- `hideError?: boolean` — ngăn chặn việc xuất lỗi ra `console.error` khi thất bại. Mặc định: `false`.
+- `globalPreparation?: boolean` — có chạy hook toàn cục `setPreparation` trước yêu cầu này hay không. Mặc định: `true`.
+- `globalEnd?: boolean` — có chạy hook toàn cục `setEnd` sau phản hồi hay không. Mặc định: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — trình xử lý phản hồi thay vì đọc JSON tiêu chuẩn.
+- `init?: RequestInit` — các tùy chọn bổ sung cho `fetch()` gốc (CORS, chế độ cache, v.v.).
+- `controller?: AbortController` — bộ điều khiển để hủy yêu cầu.
+
 ```typescript
 import { useApiRequest } from '@dxtmisha/functional'
 import { ApiMethodItem } from '@dxtmisha/functional-basic'

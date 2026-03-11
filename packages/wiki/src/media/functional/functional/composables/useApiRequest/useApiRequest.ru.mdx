@@ -19,6 +19,26 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `loading: Ref<boolean>` — Реактивное состояние загрузки. Принимает значение `true` во время выполнения запроса и `false` после его завершения или ошибки.
 - `send(request?: Request): Promise<Return | undefined>` — Асинхронный метод для отправки запроса. Он автоматически управляет состоянием `loading`, применяет функцию трансформации к ответу, вызывает коллбэк `action` при успехе и безопасно обрабатывает ошибки, выводя их в консоль.
 
+## Объект ApiOptions
+
+`ApiOptions` — может принимать строку с названием `method` (например, `'GET'`) или объект типа `ApiFetch`. Поля объекта `ApiFetch`:
+
+- `path?: string` — путь к endpoint-скрипту относительно базового URL (например: `'users/list'`).
+- `pathFull?: string` — полный URL запроса. Если указан, игнорирует `api` и `path`.
+- `api?: boolean` — добавлять ли базовый URL перед `path`. По умолчанию: `true`.
+- `method?: ApiMethod` — HTTP-метод (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). По умолчанию: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — тело запроса (для POST/PUT) или query-параметры (для GET). Передается как JSON или `FormData`.
+- `headers?: Record<string, string> | null` — дополнительные заголовки запроса. `null` — отключить все заголовки.
+- `type?: string` — значение `Content-Type`. По умолчанию: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — добавить заголовки аутентификации.
+- `toData?: boolean` — если `true`, автоматически разворачивает `data` из обертки `{ data: ... }`. По умолчанию: `true`.
+- `hideError?: boolean` — подавляет вывод ошибок в `console.error` при сбое. По умолчанию: `false`.
+- `globalPreparation?: boolean` — запускать ли глобальный хук `setPreparation` до этого запроса. По умолчанию: `true`.
+- `globalEnd?: boolean` — запускать ли глобальный хук `setEnd` после ответа. По умолчанию: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — обработчик ответа вместо стандартного чтения JSON.
+- `init?: RequestInit` — дополнительные опции для нативного `fetch()` (CORS, режим кеша и др.).
+- `controller?: AbortController` — контроллер для отмены запроса.
+
 ```typescript
 import { useApiRequest } from '@dxtmisha/functional'
 import { ApiMethodItem } from '@dxtmisha/functional-basic'

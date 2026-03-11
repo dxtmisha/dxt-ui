@@ -41,6 +41,26 @@ Yêu cầu **không được gửi** khi gọi `useApiRef`. Nó chỉ được k
 
 `setApiRefGlobalConditions(conditions)` — thiết lập điều kiện toàn cục cho tất cả các instance `useApiRef`. Chỉ có hiệu lực một lần.
 
+## Đối tượng ApiOptions
+
+`ApiOptions` — có thể nhận một chuỗi tên `method` (ví dụ: `'GET'`) hoặc một đối tượng kiểu `ApiFetch`. Các trường của đối tượng `ApiFetch`:
+
+- `path?: string` — đường dẫn đến endpoint script tương đối so với URL cơ bản (ví dụ: `'users/list'`).
+- `pathFull?: string` — URL đầy đủ của yêu cầu. Nếu được chỉ định, sẽ bỏ qua `api` và `path`.
+- `api?: boolean` — có thêm URL cơ bản trước `path` hay không. Mặc định: `true`.
+- `method?: ApiMethod` — phương thức HTTP (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Mặc định: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — thân yêu cầu (cho POST/PUT) hoặc các tham số truy vấn (cho GET). Được truyền dưới dạng JSON hoặc `FormData`.
+- `headers?: Record<string, string> | null` — các tiêu đề yêu cầu bổ sung. `null` — vô hiệu hóa tất cả các tiêu đề.
+- `type?: string` — giá trị `Content-Type`. Mặc định: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — có thêm các tiêu đề xác thực hay không.
+- `toData?: boolean` — nếu `true`, tự động giải nén `data` từ vỏ bọc `{ data: ... }`. Mặc định: `true`.
+- `hideError?: boolean` — ngăn chặn việc xuất lỗi ra `console.error` khi thất bại. Mặc định: `false`.
+- `globalPreparation?: boolean` — có chạy hook toàn cục `setPreparation` trước yêu cầu này hay không. Mặc định: `true`.
+- `globalEnd?: boolean` — có chạy hook toàn cục `setEnd` sau phản hồi hay không. Mặc định: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — trình xử lý phản hồi thay vì đọc JSON tiêu chuẩn.
+- `init?: RequestInit` — các tùy chọn bổ sung cho `fetch()` gốc (CORS, chế độ cache, v.v.).
+- `controller?: AbortController` — bộ điều khiển để hủy yêu cầu.
+
 ## Ví dụ
 
 ```typescript

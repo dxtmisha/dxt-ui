@@ -41,6 +41,26 @@ The request is **not sent** when `useApiRef` is called. It is triggered only on 
 
 `setApiRefGlobalConditions(conditions)` — sets a global condition for all `useApiRef` instances. Only works on the first call.
 
+## ApiOptions Object
+
+`ApiOptions` — can accept a string with the `method` name (e.g., `'GET'`) or an object of type `ApiFetch`. Fields of the `ApiFetch` object:
+
+- `path?: string` — path to the endpoint script relative to the base URL (e.g., `'users/list'`).
+- `pathFull?: string` — full URL of the request. If specified, ignores `api` and `path`.
+- `api?: boolean` — whether to add the base URL before `path`. Default: `true`.
+- `method?: ApiMethod` — HTTP method (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Default: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — request body (for POST/PUT) or query parameters (for GET). Passed as JSON or `FormData`.
+- `headers?: Record<string, string> | null` — additional request headers. `null` — disable all headers.
+- `type?: string` — `Content-Type` value. Default: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — whether to add authentication headers.
+- `toData?: boolean` — if `true`, automatically unwraps `data` from the `{ data: ... }` wrapper. Default: `true`.
+- `hideError?: boolean` — suppresses error output to `console.error` on failure. Default: `false`.
+- `globalPreparation?: boolean` — whether to run the global `setPreparation` hook before this request. Default: `true`.
+- `globalEnd?: boolean` — whether to run the global `setEnd` hook after the response. Default: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — response handler instead of standard JSON reading.
+- `init?: RequestInit` — additional options for native `fetch()` (CORS, cache mode, etc.).
+- `controller?: AbortController` — controller for canceling the request.
+
 ## Example
 
 ```typescript

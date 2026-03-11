@@ -17,7 +17,27 @@ Returns an object with a loading state and a `send` method for executing API req
 **Returns:**
 An object with the following properties:
 - `loading: Ref<boolean>` — Reactive loading state. It becomes `true` while the request is in progress and `false` after it completes or fails.
-- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the request. It automatically manages the `loading` state, applies the transformation function to the response, executes the `action` callback on success, and safely handles errors by logging them to the console.
+- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the request. It automatically manages the `loading` state, applies the transformation function to the response, executes the `action` callback on success, and handles errors safely by logging them to the console.
+
+## ApiOptions Object
+
+`ApiOptions` — can accept a string with the `method` name (e.g., `'GET'`) or an object of type `ApiFetch`. Fields of the `ApiFetch` object:
+
+- `path?: string` — path to the endpoint script relative to the base URL (e.g., `'users/list'`).
+- `pathFull?: string` — full URL of the request. If specified, ignores `api` and `path`.
+- `api?: boolean` — whether to add the base URL before `path`. Default: `true`.
+- `method?: ApiMethod` — HTTP method (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Default: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — request body (for POST/PUT) or query parameters (for GET). Passed as JSON or `FormData`.
+- `headers?: Record<string, string> | null` — additional request headers. `null` — disable all headers.
+- `type?: string` — `Content-Type` value. Default: `'application/json;charset=UTF-8'`.
+- `auth?: boolean` — whether to add authentication headers.
+- `toData?: boolean` — if `true`, automatically unwraps `data` from the `{ data: ... }` wrapper. Default: `true`.
+- `hideError?: boolean` — suppresses error output to `console.error` on failure. Default: `false`.
+- `globalPreparation?: boolean` — whether to run the global `setPreparation` hook before this request. Default: `true`.
+- `globalEnd?: boolean` — whether to run the global `setEnd` hook after the response. Default: `true`.
+- `queryReturn?: (query: Response) => Promise<any>` — response handler instead of standard JSON reading.
+- `init?: RequestInit` — additional options for native `fetch()` (CORS, cache mode, etc.).
+- `controller?: AbortController` — controller for canceling the request.
 
 ```typescript
 import { useApiRequest } from '@dxtmisha/functional'
