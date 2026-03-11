@@ -15,10 +15,24 @@ A class specifically designed to handle tasks and side effects immediately runni
 
 ## Initialization
 
-```javascript
+Creates a new `ApiPreparation` instance. The class is designed to handle tasks and side effects immediately before and after an API request execution. It allows intercepting requests, manipulating state, or triggering global logic.
+
+```typescript
 import { ApiPreparation } from '@dxtmisha/functional'
 
+// 1. Simple initialization
 const preparation = new ApiPreparation()
+
+// 2. Setting pre-request callback
+preparation.set(async (apiFetch) => {
+  console.log('Preparing request to:', apiFetch.path)
+})
+
+// 3. Setting post-request callback
+preparation.setEnd(async (query, apiFetch) => {
+  console.log('Request finished with status:', query.status)
+  return { reset: false }
+})
 ```
 
 ## Methods

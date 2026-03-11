@@ -14,10 +14,23 @@ A class dedicated to tracking and managing the state of an API request. It secur
 
 ## Initialization
 
-```javascript
+Creates a new `ApiStatus` instance. The class is dedicated to tracking and managing the state of an API request, including HTTP status, errors, and response data.
+
+```typescript
 import { ApiStatus } from '@dxtmisha/functional'
 
+// 1. Simple initialization
 const apiStatus = new ApiStatus()
+
+// 2. Setting response status
+apiStatus.setStatus(200, 'OK')
+
+// 3. Setting response data and automatic message extraction
+apiStatus.setLastResponse({
+  status: 'success',
+  message: 'Data retrieved successfully',
+  data: { id: 1 }
+})
 ```
 
 ## Methods

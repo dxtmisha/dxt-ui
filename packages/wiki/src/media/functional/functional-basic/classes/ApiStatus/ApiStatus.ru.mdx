@@ -14,10 +14,23 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-```javascript
+Создает новый экземпляр `ApiStatus`. Класс предназначен для отслеживания и управления состоянием API-запроса, включая HTTP-статус, ошибки и данные ответа.
+
+```typescript
 import { ApiStatus } from '@dxtmisha/functional'
 
+// 1. Простая инициализация
 const apiStatus = new ApiStatus()
+
+// 2. Установка статуса ответа
+apiStatus.setStatus(200, 'OK')
+
+// 3. Установка данных ответа и автоматическое извлечение сообщения
+apiStatus.setLastResponse({
+  status: 'success',
+  message: 'Данные успешно получены',
+  data: { id: 1 }
+})
 ```
 
 ## Методы

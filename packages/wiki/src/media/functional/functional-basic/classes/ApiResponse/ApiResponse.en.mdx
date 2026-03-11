@@ -15,13 +15,26 @@ A manager class for intercepting, caching, and emulating API responses. It allow
 
 ## Initialization
 
-Requires providing an actively running `ApiDefault` environment manager structure constructor object for correctly extracting baseline payload dependencies.
+Creates a new `ApiResponse` instance. The class is designed to manage and emulate API responses, allowing you to intercept requests and return mock data.
 
-```javascript
+**Parameters:**
+- `requestDefault: ApiDefault` — an instance for processing default request parameters.
+
+```typescript
 import { ApiResponse, ApiDefault } from '@dxtmisha/functional'
 
+// 1. Initialize dependencies
 const apiDefault = new ApiDefault()
+
+// 2. Create emulator instance
 const apiResponse = new ApiResponse(apiDefault)
+
+// 3. Adding a mock response
+apiResponse.add({
+  path: 'user/get',
+  method: 'get',
+  response: { id: 1, name: 'Admin' }
+})
 ```
 
 ## Methods

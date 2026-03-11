@@ -15,10 +15,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-```javascript
+Создает новый экземпляр `ApiPreparation`. Класс предназначен для выполнения задач и побочных эффектов непосредственно до и после выполнения API-запроса. Позволяет перехватывать запросы, манипулировать состоянием или запускать глобальную логику.
+
+```typescript
 import { ApiPreparation } from '@dxtmisha/functional'
 
+// 1. Простая инициализация
 const preparation = new ApiPreparation()
+
+// 2. Установка колбэка перед запросом
+preparation.set(async (apiFetch) => {
+  console.log('Подготовка запроса к:', apiFetch.path)
+})
+
+// 3. Установка колбэка после запроса
+preparation.setEnd(async (query, apiFetch) => {
+  console.log('Запрос завершен со статусом:', query.status)
+  return { reset: false }
+})
 ```
 
 ## Методы
