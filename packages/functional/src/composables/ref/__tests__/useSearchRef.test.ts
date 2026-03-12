@@ -14,6 +14,11 @@ describe('useSearchRef', () => {
   ]
   const columns = ['name', 'Category'] as any
 
+  const tick = async () => {
+    await nextTick()
+    await nextTick()
+  }
+
   it('should initialize with default states', () => {
     const { isSearch, loading, listSearch } = useSearchRef(listItems, columns)
 
@@ -30,7 +35,7 @@ describe('useSearchRef', () => {
     const { search, isSearch, listSearch } = useSearchRef(listItems, columns)
 
     search.value = 'app'
-    await nextTick()
+    await tick()
 
     expect(isSearch.value).toBe(true)
     expect(listSearch.value).toHaveLength(1)
@@ -44,7 +49,7 @@ describe('useSearchRef', () => {
     const { search, listSearch } = useSearchRef(listItems, columns, undefined, { returnEverything: true })
 
     search.value = 'app'
-    await nextTick()
+    await tick()
 
     expect(listSearch.value).toHaveLength(3)
     expect(listSearch.value[0]?.searchActive).toBe(true)
@@ -75,7 +80,7 @@ describe('useSearchRef', () => {
     expect(listSearch.value).toHaveLength(3)
 
     listRef.value.push({ id: 4, name: 'Date', Category: 'Fruit' })
-    await nextTick()
+    await tick()
 
     expect(listSearch.value).toHaveLength(4)
     expect(listSearch.value[3]?.name).toBe('Date')
@@ -85,17 +90,18 @@ describe('useSearchRef', () => {
     // Default is fuzzy (contains all words)
     const { search: searchFuzzy, listSearch: listFuzzy } = useSearchRef(listItems, columns)
     searchFuzzy.value = 'Fruit Apple' // Different order or all words
-    await nextTick()
+    await tick()
     expect(listFuzzy.value).toHaveLength(1)
 
     // Exact match is a literal phrase
     const { search: searchExact, listSearch: listExact } = useSearchRef(listItems, columns, undefined, { findExactMatch: true })
     searchExact.value = 'Fruit Apple' // Doesn't exist as a phrase
-    await nextTick()
+    await tick()
     expect(listExact.value).toHaveLength(0)
 
     searchExact.value = 'Apple' // Phrase exists
-    await nextTick()
+    await tick()
+
     expect(listExact.value).toHaveLength(1)
   })
 
@@ -103,12 +109,12 @@ describe('useSearchRef', () => {
     const { search, isSearch, listSearch } = useSearchRef(listItems, columns, undefined, { limit: 5 })
 
     search.value = 'App'
-    await nextTick()
+    await tick()
     expect(isSearch.value).toBe(false)
     expect(listSearch.value).toHaveLength(3)
 
     search.value = 'Apple'
-    await nextTick()
+    await tick()
     expect(isSearch.value).toBe(true)
     expect(listSearch.value).toHaveLength(1)
   })

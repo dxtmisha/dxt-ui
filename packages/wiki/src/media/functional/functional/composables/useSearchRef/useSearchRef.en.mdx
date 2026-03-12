@@ -18,10 +18,23 @@ A composable for implementing search and filtering logic on a list of data with 
     - `classSearchName?: string` — CSS class for match highlighting. Default: `sys-search-selection`.
 
 **Returns:**
-- `isSearch: ComputedRef<boolean>` — whether the search is currently active.
+- `isSearch: ComputedRef<boolean>` — whether the search is currently active (checks minimum character limit).
 - `search: Ref<string>` — current search string.
 - `loading: Ref<boolean>` — loading status (active during `delay`).
 - `listSearch: ComputedRef<SearchFormatList<T, K>>` — filtered and formatted results list. Each item gets `{column}Search` fields with HTML highlighting and a `searchActive` flag.
+
+## Architecture: Lazy `computed` (Dynamic Getters)
+
+This composable is specifically designed to return `isSearch` and `listSearch` as native JS getters.
+This allows you to call `useSearchRef()` **outside the lifecycle of a Vue component** (for example, globally in a service or in a Store).
+The actual `ComputedRef` objects are created (and bound to the component) exactly at the moment when the component accesses them during destructuring:
+
+```typescript
+// Getters will trigger once during destructuring in setup(), Vue will cache the ComputedRef
+const { search, listSearch, isSearch } = useSearchRef(items, ['name'])
+```
+
+> **Important**: Because of this architecture, avoid accessing getters "via dot notation" multiple times. Always destructure the result once at the `setup` level to avoid creating multiple duplicate `computed` instances.
 
 ## Usage Example
 
@@ -37,7 +50,6 @@ const items = [
 const { 
   search, 
   listSearch, 
-  isSearch, 
   loading 
 } = useSearchRef(items, ['name', 'category'], undefined, {
   delay: 300,

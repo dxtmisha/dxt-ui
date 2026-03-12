@@ -7,33 +7,37 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Composable cấp thấp để quản lý trạng thái truy vấn tìm kiếm, xử lý độ trễ (debounce) và tạo các biểu thức chính quy (RegExp) để khớp dữ liệu. Thường được sử dụng bên trong `useSearchRef`.
 
 **Tham số:**
+- `item: SearchList<T, K>` — một phiên bản đã được cấu hình của `SearchList`, dùng để quản lý các tùy chọn và giá trị.
 - `value?: Ref<string>` — tham chiếu phản hồi (Ref) tìm kiếm từ bên ngoài. Nếu không được cung cấp, một Ref nội bộ sẽ được tạo.
-- `options?: SearchOptions` — cài đặt:
-    - `limit?: number` — giới hạn ký tự tối thiểu để kích hoạt tìm kiếm. Mặc định: `2`.
-    - `delay?: number` — độ trễ debounce tính bằng ms trước khi cập nhật `searchDelay`. Mặc định: `0`.
-    - `findExactMatch?: boolean` — loại tìm kiếm: khớp chính xác cụm từ hoặc xuất hiện tất cả các từ.
 
 **Trả về:**
 - `search: Ref<string>` — giá trị tìm kiếm hiện tại (cập nhật ngay lập tức).
-- `searchDelay: Ref<string>` — giá trị tìm kiếm sau khi áp dụng độ trễ.
+- `searchDelay: Ref<string>` — giá trị tìm kiếm sau khi áp dụng độ trễ (nếu độ trễ được thiết lập).
 - `loading: Ref<boolean>` — `true` trong thời gian chờ độ trễ `delay`.
-- `isSearch(): boolean` — kiểm tra xem tìm kiếm có đang hoạt động hay không (dựa trên `limit`).
-- `isSelection(item: SearchCacheItem<T>): boolean` — kiểm tra xem một phần tử đã cache có khớp với truy vấn tìm kiếm hiện tại hay không.
-- `isMatched(): boolean` — kiểm tra xem đối tượng RegExp có đang hoạt động để tìm kiếm hay không.
-- `getMatcher(): RegExp | undefined` — trả về đối tượng biểu thức chính quy hiện tại.
+
+## Kiến trúc và cách thức hoạt động
+
+`useSearchValueRef` cô lập logic độ trễ (`debounce delay`) khỏi quá trình lọc dữ liệu thực tế.
+Khi người dùng nhập vào `search.value`, composable sẽ:
+1. Ngay lập tức đặt `loading.value = true`.
+2. Chờ trong khoảng thời gian `delay` (tính bằng mili giây) được chỉ định.
+3. Nếu người dùng tiếp tục nhập trong khoảng thời gian chờ, bộ hẹn giờ sẽ đặt lại.
+4. Khi bộ đếm thời gian hoàn thành, nó sao chép `search.value` vào `searchDelay.value` và đặt `loading.value = false`.
+
+Bằng cách sử dụng `searchDelay.value` thay vì `search.value` trong danh sách đã lọc, bạn đảm bảo rằng các thao tác dữ liệu phức tạp chỉ xảy ra sau khi người dùng ngừng nhập, cải thiện đáng kể hiệu suất trên các tập dữ liệu lớn.
 
 ## Ví dụ sử dụng
 
 ```typescript
 import { useSearchValueRef } from '@dxtmisha/functional'
+import { SearchList } from '@dxtmisha/functional-basic'
 import { ref } from 'vue'
 
-const { search, searchDelay, isSelection } = useSearchValueRef(undefined, {
-  delay: 300,
-  limit: 3
-})
+const items = [{ id: 1, name: 'Apple' }]
+const list = new SearchList(items, ['name'], undefined, { delay: 300 })
+const { search, searchDelay, loading } = useSearchValueRef(list)
 
 search.value = 'app'
-// Sau 300ms searchDelay.value sẽ là 'app'
-// isSelection({ item, value: 'Apple' }) sẽ trả về true
+// loading.value trở thành true
+// Sau 300ms searchDelay.value sẽ là 'app' và loading.value trở về false
 ```

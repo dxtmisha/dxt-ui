@@ -7,33 +7,37 @@ import {Meta} from '@storybook/addon-docs/blocks'
 A low-level composable for managing search query state, handling debounce delay, and creating regular expressions for matching. It is typically used inside `useSearchRef`.
 
 **Parameters:**
+- `item: SearchList<T, K>` — a configured instance of `SearchList` used for managing options and values.
 - `value?: Ref<string>` — external search reference. If not provided, an internal one is created.
-- `options?: SearchOptions` — settings:
-    - `limit?: number` — minimum character limit to activate search. Default: `2`.
-    - `delay?: number` — debounce delay in ms before updating `searchDelay`. Default: `0`.
-    - `findExactMatch?: boolean` — search type: exact phrase match or occurrence of all words.
 
 **Returns:**
 - `search: Ref<string>` — current search value (updates immediately).
-- `searchDelay: Ref<string>` — search value with applied delay.
+- `searchDelay: Ref<string>` — search value with applied delay (if delay is configured).
 - `loading: Ref<boolean>` — `true` during the debounce `delay`.
-- `isSearch(): boolean` — whether search is currently active (checks against `limit`).
-- `isSelection(item: SearchCacheItem<T>): boolean` — checks if a cached item matches the current search query.
-- `isMatched(): boolean` — whether a RegExp object is currently active for searching.
-- `getMatcher(): RegExp | undefined` — returns the current regular expression object.
+
+## How It Works
+
+`useSearchValueRef` isolates the `debounce` delay logic from the actual data filtering. 
+When a user types into `search.value`, the composable:
+1. Immediately sets `loading.value = true`.
+2. Waits for the specified `delay` in milliseconds.
+3. If the user types again within the delay, the timer resets.
+4. Once the timer completes, it copies `search.value` into `searchDelay.value` and sets `loading.value = false`.
+
+By using `searchDelay.value` instead of `search.value` in your filtered lists, you ensure that complex data operations only happen after the user stops typing, significantly improving performance on large datasets.
 
 ## Usage Example
 
 ```typescript
 import { useSearchValueRef } from '@dxtmisha/functional'
+import { SearchList } from '@dxtmisha/functional-basic'
 import { ref } from 'vue'
 
-const { search, searchDelay, isSelection } = useSearchValueRef(undefined, {
-  delay: 300,
-  limit: 3
-})
+const items = [{ id: 1, name: 'Apple' }]
+const list = new SearchList(items, ['name'], undefined, { delay: 300 })
+const { search, searchDelay, loading } = useSearchValueRef(list)
 
 search.value = 'app'
-// After 300ms searchDelay.value becomes 'app'
-// isSelection({ item, value: 'Apple' }) returns true
+// loading.value becomes true
+// After 300ms searchDelay.value becomes 'app' and loading.value becomes false
 ```

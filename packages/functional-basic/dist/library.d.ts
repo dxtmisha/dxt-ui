@@ -3036,9 +3036,9 @@ export declare function getStepPercent(min: number | undefined, max: number): nu
 export declare function getStepValue(min: number | undefined, max: number): number;
 
 /**
- * Class for obtaining global data.
+ * Static utility class for storing and retrieving application-wide global data.
  *
- * Класс для получения глобальных данных.
+ * Статический служебный класс для хранения и получения глобальных данных приложения.
  */
 export declare class Global {
     /**
@@ -3121,6 +3121,14 @@ export declare class Hash {
      * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
      */
     static addWatch<T>(name: string, callback: (value: T) => void): void;
+    /**
+     * Removing an event when data is changed.
+     *
+     * Удаление события при изменении данных.
+     * @param name variable names/ названия переменных
+     * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+     */
+    static removeWatch<T>(name: string, callback: (value: T) => void): void;
     /**
      * Update hash variable from URL string.
      *
@@ -3480,12 +3488,19 @@ export declare type ItemValue<V> = {
 export declare class Loading {
     protected static value: number;
     protected static event?: EventItem<Window, CustomEvent>;
+    protected static registrationList: LoadingRegistrationItem[];
     /**
      * Check if the loader is active now.
      *
      * Проверить, активен ли сейчас загрузчик.
      */
     static is(): boolean;
+    /**
+     * Get current loading value.
+     *
+     * Получить текущее значение загрузки.
+     */
+    static get(): number;
     /**
      * Shows the loader.
      *
@@ -3509,6 +3524,16 @@ export declare class Loading {
      */
     static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     /**
+     * Unregistration of an event.
+     *
+     * Отмена регистрации события.
+     * @param listener the object that receives a notification (an object that implements the
+     * Event interface) when an event of the specified type occurs/ объект, который принимает
+     * уведомление, когда событие указанного типа произошло
+     * @param element element/ элемент
+     */
+    static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    /**
      * Calls the event listener.
      *
      * Вызывает слушателя событий.
@@ -3518,6 +3543,12 @@ export declare class Loading {
 
 declare type LoadingDetail = {
     loading: boolean;
+};
+
+declare type LoadingRegistrationItem = {
+    item: EventItem<Window, CustomEvent, LoadingDetail>;
+    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
+    element?: ElementOrString<HTMLElement>;
 };
 
 /**
@@ -4706,6 +4737,18 @@ export declare class ScrollbarWidth {
      */
     static get(): Promise<number>;
     /**
+     * Returns the storage.
+     *
+     * Возвращает хранилище.
+     */
+    static getStorage(): DataStorage<number>;
+    /**
+     * Returns the calculate flag.
+     *
+     * Возвращает флаг вычисления.
+     */
+    static getCalculate(): boolean;
+    /**
      * Creates elements to check the width of the scroll.
      *
      * Создает элементы для проверки ширины скролла.
@@ -4718,6 +4761,490 @@ export declare class ScrollbarWidth {
      */
     private static init;
 }
+
+/** Search cache list / Список кэша поиска */
+export declare type SearchCache<T extends SearchItem> = SearchCacheItem<T>[];
+
+/** Search cache item / Элемент кэша поиска */
+export declare type SearchCacheItem<T extends SearchItem> = {
+    /** Original item / Исходный элемент */
+    item: T;
+    /** Search string value / Строковое значение для поиска */
+    value: string;
+};
+
+/** Type for getting a column / Тип для получения колонки */
+export declare type SearchColumn<T extends SearchItem> = {
+    [K in keyof T]-?: NonNullable<T[K]> extends object ? K | SearchColumnPath<K, keyof NonNullable<T[K]>> : K;
+}[keyof T];
+
+/** Type for generating a column path / Тип для генерации пути к колонке */
+export declare type SearchColumnPath<K, P> = K extends string ? P extends string ? `${K}.${P}` : never : never;
+
+/** Type for a list of columns / Тип для списка колонок */
+export declare type SearchColumns<T extends SearchItem> = (SearchColumn<T> & string)[];
+
+/** Type for formatting the key / Тип для форматирования ключа */
+export declare type SearchFormatCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<SearchFormatCapitalize<Rest>>}` : K;
+
+/** Type for a formatted search item / Тип для отформатированного элемента поиска */
+export declare type SearchFormatItem<T extends SearchItem, KT extends string[]> = {
+    [K in keyof T | SearchFormatKey<KT[number]>]: K extends keyof T ? T[K] : string;
+} & {
+    searchActive?: boolean;
+};
+
+/** Type for generating a search key / Тип для генерации ключа поиска */
+export declare type SearchFormatKey<K> = K extends string ? `${SearchFormatCapitalize<K>}Search` : never;
+
+/** Type for a list of formatted search items / Тип для списка отформатированных элементов поиска */
+export declare type SearchFormatList<T extends SearchItem, K extends string[]> = SearchFormatItem<T, K>[];
+
+/** Search item type/ Тип элемента поиска */
+export declare type SearchItem = Record<string, any>;
+
+/**
+ * Main class for managing a searchable list.
+ * Coordinates between options, item state, matching logic, and data storage.
+ *
+ * Основной класс для управления списком с возможностью поиска.
+ * Координирует работу опций, состояния элементов, логики сопоставления и хранения данных.
+ */
+export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
+    protected options: SearchListOptions;
+    protected item: SearchListItem;
+    protected matcher: SearchListMatcher;
+    protected data: SearchListData<T, K>;
+    /**
+     * Constructor for SearchList.
+     *
+     * Конструктор для SearchList.
+     * @param list initial list of items/ исходный список элементов
+     * @param columns columns to perform search on/ столбцы для выполнения поиска
+     * @param value initial search value/ начальное значение поиска
+     * @param options search options/ опции поиска
+     */
+    constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
+    /**
+     * Returns the search data management instance.
+     *
+     * Возвращает экземпляр управления данными поиска.
+     * @returns SearchListData instance/ экземпляр SearchListData
+     */
+    getData(): SearchListData<T, K>;
+    /**
+     * Returns the current list of items.
+     *
+     * Возвращает текущий список элементов.
+     * @returns list of items/ список элементов
+     */
+    getList(): SearchListValue<T>;
+    /**
+     * Returns the current search columns.
+     *
+     * Возвращает текущие столбцы поиска.
+     * @returns columns or undefined/ столбцы или undefined
+     */
+    getColumns(): K | undefined;
+    /**
+     * Returns the search item instance.
+     *
+     * Возвращает экземпляр элемента поиска.
+     * @returns SearchListItem instance/ экземпляр SearchListItem
+     */
+    getItem(): SearchListItem;
+    /**
+     * Returns the current search value.
+     *
+     * Возвращает текущее значение поиска.
+     * @returns search value string or undefined/ строка значения поиска или undefined
+     */
+    getValue(): string | undefined;
+    /**
+     * Returns the search options instance.
+     *
+     * Возвращает экземпляр опций поиска.
+     * @returns SearchListOptions instance/ экземпляр SearchListOptions
+     */
+    getOptions(): SearchListOptions;
+    /**
+     * Sets a new list of items.
+     *
+     * Устанавливает новый список элементов.
+     * @param list new list/ новый список
+     * @returns this instance/ данный экземпляр
+     */
+    setList(list: SearchListValue<T>): this;
+    /**
+     * Sets new search columns.
+     *
+     * Устанавливает новые столбцы поиска.
+     * @param columns new columns/ новые столбцы
+     * @returns this instance/ данный экземпляр
+     */
+    setColumns(columns?: K): this;
+    /**
+     * Sets a new search value and updates the matcher.
+     *
+     * Устанавливает новое значение поиска и обновляет сопоставитель.
+     * @param value new search value/ новое значение поиска
+     * @returns this instance/ данный экземпляр
+     */
+    setValue(value?: string): this;
+    /**
+     * Sets new search options and updates the matcher.
+     *
+     * Устанавливает новые опции поиска и обновляет сопоставитель.
+     * @param options new options/ новые опции
+     * @returns this instance/ данный экземпляр
+     */
+    setOptions(options: SearchOptions): this;
+    /**
+     * Processes the list and returns a formatted list of items based on the current search state.
+     *
+     * Обрабатывает список и возвращает отформатированный список элементов на основе текущего состояния поиска.
+     * @returns formatted list of items/ отформатированный список элементов
+     */
+    to(): SearchFormatList<T, K>;
+    /**
+     * Callback for processing items when a search is active.
+     * Checks for selection and handles "return everything" option.
+     *
+     * Обратный вызов для обработки элементов при активном поиске.
+     * Проверяет выбор и обрабатывает опцию "возвращать всё".
+     */
+    protected readonly callbackToSelection: (item: SearchCacheItem<T>["item"], value: SearchCacheItem<T>["value"]) => SearchFormatItem<T, K> | undefined;
+    /**
+     * Callback for processing items when no search is active.
+     *
+     * Обратный вызов для обработки элементов, когда поиск не активен.
+     */
+    protected readonly callbackToNone: (item: SearchCacheItem<T>["item"]) => SearchFormatItem<T, K>;
+}
+
+/**
+ * Class for managing and formatting the search data list and its cache.
+ *
+ * Класс для управления и форматирования списка данных поиска и его кэша.
+ */
+export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
+    protected list: SearchListValue<T>;
+    protected columns: K | undefined;
+    protected item: SearchListItem;
+    protected options: SearchListOptions;
+    protected listCache?: SearchCache<T>;
+    /**
+     * Constructor for SearchListData.
+     *
+     * Конструктор для SearchListData.
+     * @param list original list of items/ исходный список элементов
+     * @param columns columns to search in/ столбцы для поиска
+     * @param item current search item state/ текущее состояние элемента поиска
+     * @param options search options/ опции поиска
+     */
+    constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
+    /**
+     * Checks if both list and columns are provided.
+     *
+     * Проверяет, предоставлены ли и список, и столбцы.
+     * @returns boolean indicating if ready for column-based search/ логическое значение, указывающее на готовность к поиску по столбцам
+     */
+    is(): this is this & {
+        list: T[];
+        columns: string[];
+    };
+    /**
+     * Checks if the list is provided.
+     *
+     * Проверяет, предоставлен ли список.
+     * @returns boolean/ логическое значение
+     */
+    isList(): this is this & {
+        list: T[];
+    };
+    /**
+     * Returns the original list.
+     *
+     * Возвращает исходный список.
+     * @returns list value/ значение списка
+     */
+    getList(): SearchListValue<T>;
+    /**
+     * Returns the search columns.
+     *
+     * Возвращает столбцы поиска.
+     * @returns columns or undefined/ столбцы или undefined
+     */
+    getColumns(): K | undefined;
+    /**
+     * Gets the search cache, initializing it if necessary.
+     *
+     * Получает кэш поиска, инициализируя его при необходимости.
+     * @returns search cache/ кэш поиска
+     */
+    protected getCache(): SearchCache<T>;
+    /**
+     * Sets a new list and regenerates the cache.
+     *
+     * Устанавливает новый список и регенерирует кэш.
+     * @param list new list/ новый список
+     * @returns this instance/ данный экземпляр
+     */
+    setList(list: SearchListValue<T>): this;
+    /**
+     * Sets new search columns and regenerates the cache.
+     *
+     * Устанавливает новые столбцы поиска и регенерирует кэш.
+     * @param columns new columns/ новые столбцы
+     * @returns this instance/ данный экземпляр
+     */
+    setColumns(columns?: SearchColumns<T>): this;
+    /**
+     * Finds a cached item corresponding to the given original item.
+     *
+     * Находит кэшированный элемент, соответствующий данному исходному элементу.
+     * @param item original item/ исходный элемент
+     * @returns cache item or undefined/ кэшированный элемент или undefined
+     */
+    findCacheItem(item: T): SearchCacheItem<T> | undefined;
+    /**
+     * Iterates over the cached list and executes a callback for each item.
+     *
+     * Перебирает кэшированный список и выполняет обратный вызов для каждого элемента.
+     * @param callback function to execute for each item/ функция для выполнения для каждого элемента
+     * @returns formatted list/ отформатированный список
+     */
+    forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
+    /**
+     * Converts a single item to a formatted item with highlighted matches if selected.
+     *
+     * Преобразует один элемент в отформатированный элемент с выделенными совпадениями, если он выбран.
+     * @param item original item/ исходный элемент
+     * @param selection whether the item matches the search and should be highlighted/ совпадает ли элемент с поиском и должен ли он быть выделен
+     * @returns formatted item/ отформатированный элемент
+     */
+    toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
+    /**
+     * Formats a column path to a camelCase property name with a 'Search' suffix.
+     *
+     * Форматирует путь к столбцу в имя свойства camelCase с суффиксом 'Search'.
+     * @param column column path/ путь к столбцу
+     * @returns property name/ имя свойства
+     */
+    protected getColumnName(column: string): string;
+    /**
+     * Adds highlight tags to the given value based on the current search value.
+     *
+     * Добавляет теги выделения к данному значению на основе текущего значения поиска.
+     * @param value value to highlight/ значение для выделения
+     * @returns highlighted string/ выделенная строка
+     */
+    protected addTag(value: any): string;
+    /**
+     * Generates a search cache for the current list and columns.
+     *
+     * Генерирует кэш поиска для текущего списка и столбцов.
+     * @returns search cache/ кэш поиска
+     */
+    protected generateCache(): SearchCache<T>;
+    /**
+     * Initializes the search cache.
+     *
+     * Инициализирует кэш поиска.
+     */
+    protected initCache(): void;
+    /**
+     * Resets the search cache.
+     *
+     * Сбрасывает кэш поиска.
+     */
+    protected resetCache(): void;
+}
+
+/**
+ * Class representing a single search item's value and its search-related state.
+ *
+ * Класс, представляющий значение одного элемента поиска и его состояние, связанное с поиском.
+ */
+export declare class SearchListItem {
+    protected value: string | undefined;
+    protected options: SearchListOptions;
+    /**
+     * Constructor for SearchListItem.
+     *
+     * Конструктор для SearchListItem.
+     * @param value current search value/ текущее значение поиска
+     * @param options search options/ опции поиска
+     */
+    constructor(value: string | undefined, options: SearchListOptions);
+    /**
+     * Checks if the value is filled.
+     *
+     * Проверяет, заполнено ли значение.
+     * @returns boolean indicating if value exists/ логическое значение, указывающее на наличие значения
+     */
+    is(): this is this & {
+        value: string;
+    };
+    /**
+     * Checks if a search should be performed based on the current value and options.
+     *
+     * Проверяет, следует ли выполнять поиск на основе текущего значения и опций.
+     * @returns boolean/ логическое значение
+     */
+    isSearch(): boolean;
+    /**
+     * Returns the current search value as a string.
+     *
+     * Возвращает текущее значение поиска в виде строки.
+     * @returns search value/ значение поиска
+     */
+    get(): string;
+    /**
+     * Sets a new search value.
+     *
+     * Устанавливает новое значение поиска.
+     * @param value new search value/ новое значение поиска
+     * @returns this instance/ данный экземпляр
+     */
+    set(value?: string): this;
+}
+
+/**
+ * Class responsible for matching search values against the search list data using regular expressions.
+ *
+ * Класс, отвечающий за сопоставление значений поиска с данными списка поиска с использованием регулярных выражений.
+ */
+export declare class SearchListMatcher {
+    protected item: SearchListItem;
+    protected options: SearchListOptions;
+    protected matcher: RegExp | undefined;
+    /**
+     * Constructor for SearchListMatcher.
+     *
+     * Конструктор для SearchListMatcher.
+     * @param item search item containing the current value/ элемент поиска, содержащий текущее значение
+     * @param options search options/ опции поиска
+     */
+    constructor(item: SearchListItem, options: SearchListOptions);
+    /**
+     * Checks if the matcher is initialized.
+     *
+     * Проверяет, инициализирован ли сопоставитель.
+     * @returns boolean/ логическое значение
+     */
+    is(): boolean;
+    /**
+     * Checks if the given value matches the current search expression.
+     *
+     * Проверяет, соответствует ли данное значение текущему поисковому выражению.
+     * @param value value to check/ проверяемое значение
+     * @returns boolean indicating a match/ логическое значение, указывающее на совпадение
+     */
+    isSelection(value: SearchCacheItem<any>['value']): boolean;
+    /**
+     * Returns the current regular expression matcher.
+     *
+     * Возвращает текущий сопоставитель регулярных выражений.
+     * @returns RegExp or undefined/ RegExp или undefined
+     */
+    get(): RegExp | undefined;
+    /**
+     * Updates the matcher based on the current item value and options.
+     *
+     * Обновляет сопоставитель на основе текущего значения элемента и опций.
+     */
+    update(): void;
+    /**
+     * Initializes or resets the regular expression matcher.
+     *
+     * Инициализирует или сбрасывает сопоставитель регулярных выражений.
+     */
+    protected initMatcher(): void;
+}
+
+/**
+ * Class for managing search list options.
+ *
+ * Класс для управления опциями списка поиска.
+ */
+export declare class SearchListOptions {
+    protected options?: SearchOptions | undefined;
+    /**
+     * Constructor for SearchListOptions.
+     *
+     * Конструктор для SearchListOptions.
+     * @param options search options/ опции поиска
+     */
+    constructor(options?: SearchOptions | undefined);
+    /**
+     * Returns the current search options.
+     *
+     * Возвращает текущие опции поиска.
+     * @returns search options/ опции поиска
+     */
+    getOptions(): SearchOptions;
+    /**
+     * Returns the minimum number of characters required to trigger a search.
+     *
+     * Возвращает минимальное количество символов, необходимых для запуска поиска.
+     * @returns limit value/ значение лимита
+     */
+    getLimit(): number;
+    /**
+     * Returns whether to return all items even if they don't match the search query.
+     *
+     * Возвращает, следует ли возвращать все элементы, даже если они не соответствуют поисковому запросу.
+     * @returns boolean value/ логическое значение
+     */
+    getReturnEverything(): boolean;
+    /**
+     * Returns the search delay in milliseconds.
+     *
+     * Возвращает задержку поиска в миллисекундах.
+     * @returns delay value/ значение задержки
+     */
+    getDelay(): number;
+    /**
+     * Returns whether to perform an exact match search.
+     *
+     * Возвращает, следует ли выполнять поиск с точным совпадением.
+     * @returns boolean value/ логическое значение
+     */
+    getFindExactMatch(): boolean;
+    /**
+     * Returns the CSS class name used for highlighting matches.
+     *
+     * Возвращает имя класса CSS, используемое для выделения совпадений.
+     * @returns class name/ имя класса
+     */
+    getClassName(): string;
+    /**
+     * Sets new search options.
+     *
+     * Устанавливает новые опции поиска.
+     * @param options search options/ опции поиска
+     * @returns this instance/ данный экземпляр
+     */
+    setOptions(options: SearchOptions): this;
+}
+
+/** Search list value / Значение списка поиска */
+export declare type SearchListValue<T extends SearchItem> = T[] | undefined;
+
+/** Search options / Опции поиска */
+export declare type SearchOptions = {
+    /** Limit of output values / Лимит выводимых значений */
+    limit?: number;
+    /** Whether to return all items even if no match / Возвращать ли все элементы, даже если совпадений нет */
+    returnEverything?: boolean;
+    /** Delay before searching / Задержка перед поиском */
+    delay?: number;
+    /** Find exact match / Найти точное совпадение */
+    findExactMatch?: boolean;
+    /** CSS class for matches / CSS класс для совпадений */
+    classSearchName?: string;
+};
 
 /**
  * Converts seconds into a time string.

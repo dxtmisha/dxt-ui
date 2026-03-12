@@ -1,104 +1,104 @@
-var Zt = Object.defineProperty;
-var Vt = (i, t, e) => t in i ? Zt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var c = (i, t, e) => Vt(i, typeof t != "symbol" ? t + "" : t, e);
-import { geo as Kt } from "@dxtmisha/media";
-function C(i, t) {
-  return t ? Object.assign({}, i, t) : Object.assign({}, i);
+var Vt = Object.defineProperty;
+var Kt = (s, t, e) => t in s ? Vt(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var c = (s, t, e) => Kt(s, typeof t != "symbol" ? t + "" : t, e);
+import { geo as Yt } from "@dxtmisha/media";
+function D(s, t) {
+  return t ? Object.assign({}, s, t) : Object.assign({}, s);
 }
-function f(i) {
-  return !!(i && typeof i == "object");
+function f(s) {
+  return !!(s && typeof s == "object");
 }
-function d(i, t, e) {
-  if (f(i)) {
-    const s = [];
-    return i instanceof Map ? i.forEach((r, o) => s.push(t(r, o, i))) : Array.isArray(i) ? i.forEach((r, o) => s.push(t(r, o, i))) : Object.entries(i).forEach(
-      ([r, o]) => s.push(t(o, r, i))
-    ), e ? s : s.filter((r) => r !== void 0);
+function d(s, t, e) {
+  if (f(s)) {
+    const i = [];
+    return s instanceof Map ? s.forEach((r, a) => i.push(t(r, a, s))) : Array.isArray(s) ? s.forEach((r, a) => i.push(t(r, a, s))) : Object.entries(s).forEach(
+      ([r, a]) => i.push(t(a, r, s))
+    ), e ? i : i.filter((r) => r !== void 0);
   }
   return [];
 }
-function Rt(i, t = "=", e = "&") {
+function Pt(s, t = "=", e = "&") {
   return d(
-    i,
-    (s, r) => `${r}${t}${encodeURIComponent(String(s).trim())}`
+    s,
+    (i, r) => `${r}${t}${encodeURIComponent(String(i).trim())}`
   ).sort().join(e);
 }
-function ut(i) {
-  return Array.isArray(i);
+function ht(s) {
+  return Array.isArray(s);
 }
-function X(i) {
-  return i == null;
+function X(s) {
+  return s == null;
 }
-function y(i, t) {
-  if (i) {
-    if (t && i === "0")
+function m(s, t) {
+  if (s) {
+    if (t && s === "0")
       return !0;
-    switch (typeof i) {
+    switch (typeof s) {
       case "bigint":
       case "number":
-        return i !== 0;
+        return s !== 0;
       case "boolean":
-        return i;
+        return s;
       case "function":
       case "symbol":
         return !0;
       case "object":
-        return Array.isArray(i) ? i.length > 0 : Object.values(i).some((e) => !X(e));
+        return Array.isArray(s) ? s.length > 0 : Object.values(s).some((e) => !X(e));
       case "string":
-        return !["", "undefined", "null", "0", "false", "[]"].includes(i);
+        return !["", "undefined", "null", "0", "false", "[]"].includes(s);
       case "undefined":
         return !1;
       default:
-        return !!i;
+        return !!s;
     }
   }
   return !1;
 }
-function E(i) {
-  return f(i) && !Array.isArray(i);
+function A(s) {
+  return f(s) && !Array.isArray(s);
 }
-function W(i) {
-  return typeof i == "string";
+function U(s) {
+  return typeof s == "string";
 }
-function Z(i) {
-  return JSON.parse(JSON.stringify(i));
+function V(s) {
+  return JSON.parse(JSON.stringify(s));
 }
 function l() {
   return typeof window != "undefined" && !!window.document;
 }
-function mt(i) {
-  switch (typeof i) {
+function yt(s) {
+  switch (typeof s) {
     case "number":
       return !0;
     case "string":
-      return !!i.match(/^-?[0-9]+(\.[0-9]+)?$/);
+      return !!s.match(/^-?[0-9]+(\.[0-9]+)?$/);
     default:
       return !1;
   }
 }
-function k(i) {
-  if (typeof i == "number")
-    return i;
-  if (!i)
+function k(s) {
+  if (typeof s == "number")
+    return s;
+  if (!s)
     return 0;
-  let t = i.replace(/[^\d., ]+/ig, "");
+  let t = s.replace(/[^\d., ]+/ig, "");
   return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
 }
-function ot(i, t) {
-  return X(i) ? !1 : Array.isArray(t) ? t.includes(i) : mt(i) && mt(t) ? k(i) === k(t) : i === t;
+function ot(s, t) {
+  return X(s) ? !1 : Array.isArray(t) ? t.includes(s) : yt(s) && yt(t) ? k(s) === k(t) : s === t;
 }
-function ht(i) {
-  return i instanceof Function || typeof i == "function";
+function lt(s) {
+  return s instanceof Function || typeof s == "function";
 }
-function I(i) {
-  return ht(i) ? i() : i;
+function B(s) {
+  return lt(s) ? s() : s;
 }
-function at() {
+function ct() {
   return location.href.startsWith("data:");
 }
 const it = {};
-let yt = "ui-storage";
-class tt {
+let $t = "ui-storage";
+class et {
   /**
    * Constructor
    * @param name value name/ название значения
@@ -108,10 +108,10 @@ class tt {
     c(this, "value");
     c(this, "age");
     this.name = t, this.isSession = e;
-    const s = `${e ? "session" : "storage"}#${t}`;
-    if (s in it)
-      return it[s];
-    this.make(), it[s] = this;
+    const i = `${e ? "session" : "storage"}#${t}`;
+    if (i in it)
+      return it[i];
+    this.make(), it[i] = this;
   }
   /**
    * Changing the prefix in key names. Should be called at the beginning of the code.
@@ -120,7 +120,7 @@ class tt {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(t) {
-    yt = t;
+    $t = t;
   }
   /**
    * Getting data from local storage.
@@ -143,7 +143,7 @@ class tt {
    */
   set(t) {
     var e;
-    return this.value = I(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
+    return this.value = B(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
       value: this.value,
       age: this.age
     })), this.value;
@@ -180,7 +180,7 @@ class tt {
    * Возвращает объект для работы с хранилищем.
    */
   getMethod() {
-    if (l() && !at()) {
+    if (l() && !ct()) {
       const t = this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
       if (t)
         return t;
@@ -192,7 +192,7 @@ class tt {
    * Получение имени ключа в хранилище.
    */
   getIndex() {
-    return `${yt}__${this.name}`;
+    return `${$t}__${this.name}`;
   }
   /**
    * Getting data from storage.
@@ -205,8 +205,8 @@ class tt {
     if (t)
       try {
         return JSON.parse(t);
-      } catch (s) {
-        console.error("DataStorage", s);
+      } catch (i) {
+        console.error("DataStorage", i);
       }
   }
   /**
@@ -219,7 +219,7 @@ class tt {
     return t ? (this.value = t.value, this.age = t.age) : (this.value = void 0, this.age = void 0), this;
   }
 }
-const Yt = "geo-code", w = class w {
+const qt = "geo-code", w = class w {
   /**
    * Information about the current country.
    *
@@ -274,7 +274,7 @@ const Yt = "geo-code", w = class w {
    * Получение обработанных данных.
    */
   static getItem() {
-    return C(this.item, {
+    return D(this.item, {
       language: this.language
     });
   }
@@ -284,7 +284,7 @@ const Yt = "geo-code", w = class w {
    * Возвращает полный список стран.
    */
   static getList() {
-    return Kt;
+    return Yt;
   }
   /**
    * Returns the data about the country by its full code.
@@ -295,7 +295,7 @@ const Yt = "geo-code", w = class w {
    */
   static getByCode(t) {
     let e;
-    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(Z(e != null ? e : this.getList()[0]));
+    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(V(e != null ? e : this.getList()[0]));
   }
   /**
    * Returns the full data by language and country.
@@ -319,8 +319,8 @@ const Yt = "geo-code", w = class w {
    */
   static getByCountry(t) {
     return this.getList().find((e) => {
-      var s;
-      return e.country === t || ((s = e == null ? void 0 : e.countryAlternative) == null ? void 0 : s.find((r) => r === t));
+      var i;
+      return e.country === t || ((i = e == null ? void 0 : e.countryAlternative) == null ? void 0 : i.find((r) => r === t));
     });
   }
   /**
@@ -331,8 +331,8 @@ const Yt = "geo-code", w = class w {
    */
   static getByLanguage(t) {
     return this.getList().find((e) => {
-      var s;
-      return e.language === t || ((s = e == null ? void 0 : e.languageAlternative) == null ? void 0 : s.find((r) => r === t));
+      var i;
+      return e.language === t || ((i = e == null ? void 0 : e.languageAlternative) == null ? void 0 : i.find((r) => r === t));
     });
   }
   /**
@@ -435,33 +435,33 @@ const Yt = "geo-code", w = class w {
    * объект с данными об текущей стране
    */
   static toFull(t) {
-    return C(t, {
+    return D(t, {
       standard: this.toStandard(t),
       firstDay: (t == null ? void 0 : t.firstDay) || "Mo"
     });
   }
 };
-c(w, "storage", new tt(Yt)), c(w, "location"), c(w, "item"), c(w, "language"), c(w, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), w.location = w.findLocation(), w.language = w.findLanguage(w.location), w.item = w.getByCode(w.location);
+c(w, "storage", new et(qt)), c(w, "location"), c(w, "item"), c(w, "language"), c(w, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), w.location = w.findLocation(), w.language = w.findLanguage(w.location), w.item = w.getByCode(w.location);
 let b = w;
-function Pt(i) {
-  return l() && i === window;
+function Wt(s) {
+  return l() && s === window;
 }
-function A(i) {
+function E(s) {
   var t;
   if (l())
-    return Pt(i) ? document.body : W(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
+    return Wt(s) ? document.body : U(s) ? (t = document.querySelector(s)) != null ? t : void 0 : s;
 }
-function $t(i) {
-  return Pt(i) ? i : A(i);
+function pt(s) {
+  return Wt(s) ? s : E(s);
 }
-function qt(i) {
+function Jt(s) {
   var t;
-  return !!((t = A(i)) != null && t.closest("html"));
+  return !!((t = E(s)) != null && t.closest("html"));
 }
-function K(i) {
-  return Array.isArray(i) ? i : [i];
+function Y(s) {
+  return Array.isArray(s) ? s : [s];
 }
-class pt {
+class bt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -473,7 +473,7 @@ class pt {
    * @param detail an event-dependent value associated with the event/ зависимое от события
    * значение, связанное с событием
    */
-  constructor(t, e = ["click"], s, r, o) {
+  constructor(t, e = ["click"], i, r, a) {
     /**
      * Element.
      *
@@ -502,8 +502,8 @@ class pt {
      * Это должен быть объект, реализующий интерфейс EventListener или просто функция JavaScript.
      */
     c(this, "listenerRecent", (t) => {
-      var e, s;
-      qt(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), f(this.options) && ((s = this.options) != null && s.once) && this.stop()) : this.stop();
+      var e, i;
+      Jt(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), f(this.options) && ((i = this.options) != null && i.once) && this.stop()) : this.stop();
     });
     /**
      * Event states.
@@ -512,7 +512,7 @@ class pt {
      */
     c(this, "activity", !1);
     c(this, "activityItems", []);
-    this.listener = s, this.options = r, this.detail = o, this.element = $t(t), this.elementControl = A(t), this.type = K(e);
+    this.listener = i, this.options = r, this.detail = a, this.element = pt(t), this.elementControl = E(t), this.type = Y(e);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -532,8 +532,8 @@ class pt {
    * @param elementSelector element/ элемент
    */
   setElement(t) {
-    const e = $t(t);
-    return this.elementControlEdit || (this.elementControl = A(t)), this.element = e, this.reset(), this;
+    const e = pt(t);
+    return this.elementControlEdit || (this.elementControl = E(t)), this.element = e, this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -542,7 +542,7 @@ class pt {
    * @param elementSelector element/ элемент
    */
   setElementControl(t) {
-    return this.elementControl = A(t), this.elementControlEdit = !X(this.elementControl), this.elementControlEdit || (this.elementControl = A(this.element)), this;
+    return this.elementControl = E(t), this.elementControlEdit = !X(this.elementControl), this.elementControlEdit || (this.elementControl = E(this.element)), this;
   }
   /**
    * Changes the type of the handled event.
@@ -551,7 +551,7 @@ class pt {
    * @param type type/ тип
    */
   setType(t) {
-    return this.type = K(t), this.reset(), this;
+    return this.type = Y(t), this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -592,8 +592,8 @@ class pt {
   dispatch(t = this.detail) {
     return this.type.forEach(
       (e) => {
-        var s;
-        return (s = this.element) == null ? void 0 : s.dispatchEvent(new CustomEvent(e, { detail: t }));
+        var i;
+        return (i = this.element) == null ? void 0 : i.dispatchEvent(new CustomEvent(e, { detail: t }));
       }
     ), this;
   }
@@ -619,10 +619,10 @@ class pt {
     return this.activity && (this.activity = !1, this.activityItems.forEach(({
       element: t,
       type: e,
-      listener: s,
+      listener: i,
       observer: r
     }) => {
-      r ? r.disconnect() : s ? t == null || t.removeEventListener(e, s) : t == null || t.removeEventListener(e, this.listenerRecent);
+      r ? r.disconnect() : i ? t == null || t.removeEventListener(e, i) : t == null || t.removeEventListener(e, this.listenerRecent);
     })), this;
   }
   /**
@@ -676,9 +676,9 @@ class pt {
   makeScroll() {
     if (this.element) {
       let t = !1;
-      const e = (s) => {
+      const e = (i) => {
         t || (t = !0, requestAnimationFrame(() => {
-          this.listenerRecent(s), t = !1;
+          this.listenerRecent(i), t = !1;
         }));
       };
       return this.element.addEventListener("scroll", e, this.options), this.element.addEventListener("resize", e, this.options), this.activityItems.push(
@@ -697,7 +697,7 @@ class pt {
     return !1;
   }
 }
-const bt = "ui-loading", J = class J {
+const wt = "ui-loading", H = class H {
   /**
    * Check if the loader is active now.
    *
@@ -705,6 +705,14 @@ const bt = "ui-loading", J = class J {
    */
   static is() {
     return this.value > 0;
+  }
+  /**
+   * Get current loading value.
+   *
+   * Получить текущее значение загрузки.
+   */
+  static get() {
+    return this.value;
   }
   /**
    * Shows the loader.
@@ -732,7 +740,26 @@ const bt = "ui-loading", J = class J {
    * @param element element/ элемент
    */
   static registrationEvent(t, e) {
-    l() && new pt(window, bt, t).setElementControl(e).start();
+    if (l()) {
+      const i = new bt(window, wt, t).setElementControl(e).start();
+      this.registrationList.push({
+        item: i,
+        listener: t,
+        element: e
+      });
+    }
+  }
+  /**
+   * Unregistration of an event.
+   *
+   * Отмена регистрации события.
+   * @param listener the object that receives a notification (an object that implements the
+   * Event interface) when an event of the specified type occurs/ объект, который принимает
+   * уведомление, когда событие указанного типа произошло
+   * @param element element/ элемент
+   */
+  static unregistrationEvent(t, e) {
+    this.registrationList = this.registrationList.filter((i) => i.listener === t && i.element === e ? (i.item.stop(), !1) : !0);
   }
   /**
    * Calls the event listener.
@@ -744,9 +771,9 @@ const bt = "ui-loading", J = class J {
     (t = this.event) == null || t.dispatch({ loading: this.is() });
   }
 };
-c(J, "value", 0), c(J, "event"), l() && (J.event = new pt(window, bt));
-let x = J;
-class Jt {
+c(H, "value", 0), c(H, "event"), c(H, "registrationList", []), l() && (H.event = new bt(window, wt));
+let R = H;
+class Mt {
   constructor() {
     /** Default headers/ Заголовки по умолчанию */
     c(this, "headers", {});
@@ -760,11 +787,11 @@ class Jt {
    */
   get(t, e = "application/json;charset=UTF-8") {
     if (t !== null) {
-      const s = C(
+      const i = D(
         this.headers,
         t
       );
-      return y(e) && (s["Content-Type"] = e), s;
+      return m(e) && (i["Content-Type"] = e), i;
     }
   }
   /**
@@ -773,11 +800,11 @@ class Jt {
    * Изменяет данные заголовка по умолчанию.
    */
   set(t) {
-    return E(t) && (this.headers = t), this;
+    return A(t) && (this.headers = t), this;
   }
 }
-var L = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(L || {});
-class Mt {
+var C = /* @__PURE__ */ ((s) => (s.get = "GET", s.post = "POST", s.put = "PUT", s.delete = "DELETE", s))(C || {});
+class Qt {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
     c(this, "value");
@@ -809,8 +836,8 @@ class Mt {
     if (e) {
       if (t instanceof FormData)
         this.addByFormData(t, e);
-      else if (E(t))
-        return C(e, t);
+      else if (A(t))
+        return D(e, t);
     }
     return t;
   }
@@ -830,11 +857,11 @@ class Mt {
    * @param value default values/ значения по умолчанию
    */
   addByFormData(t, e) {
-    for (const s in e)
-      t.has(s) || t.set(s, e[s]);
+    for (const i in e)
+      t.has(i) || t.set(i, e[i]);
   }
 }
-class wt {
+class vt {
   constructor() {
     c(this, "value");
   }
@@ -938,7 +965,7 @@ class wt {
    * @param response response data/ данные ответа
    */
   setLastResponse(t) {
-    return t && E(t) && ("message" in t && this.setLastMessage(String(t.message)), "status" in t && this.setLastStatus(String(t.status))), this.set({ lastResponse: t }), this;
+    return t && A(t) && ("message" in t && this.setLastMessage(String(t.message)), "status" in t && this.setLastStatus(String(t.status))), this.set({ lastResponse: t }), this;
   }
   /**
    * Sets the last status.
@@ -969,15 +996,15 @@ class wt {
     this.value || (this.value = {}), this.value[t] = e;
   }
 }
-async function Qt(i) {
-  const t = I(i);
+async function Xt(s) {
+  const t = B(s);
   return t instanceof Promise ? await t : t;
 }
-function Q(i, t) {
-  return Math.floor(Math.random() * (t - i + 1) + i);
+function Q(s, t) {
+  return Math.floor(Math.random() * (t - s + 1) + s);
 }
-const vt = "d-response-loading";
-class Xt {
+const St = "d-response-loading";
+class _t {
   /**
    * Constructor
    * @param requestDefault default request processor/ процессор запросов по умолчанию
@@ -1002,8 +1029,8 @@ class Xt {
    * @param request data for the request/ данные для запроса
    * @param devMode is it developer mode/ является ли режим разработчика
    */
-  get(t = "", e, s, r) {
-    return this.response.find((o) => !this.isDisable(o) && this.isPath(o, t) && e === o.method && this.isFirst(o, r) && this.isResponse(o, s) ? (this.isDevMode(r) && console.warn(`Response type: ${o.path}`), this.first.push(o), !0) : !1);
+  get(t = "", e, i, r) {
+    return this.response.find((a) => !this.isDisable(a) && this.isPath(a, t) && e === a.method && this.isFirst(a, r) && this.isResponse(a, i) ? (this.isDevMode(r) && console.warn(`Response type: ${a.path}`), this.first.push(a), !0) : !1);
   }
   /**
    * Returns a list of data about the emulator.
@@ -1020,7 +1047,7 @@ class Xt {
    * @param response data for caching/ данные для кеширования
    */
   add(t) {
-    return this.response.push(...K(t)), this;
+    return this.response.push(...Y(t)), this;
   }
   /**
    * Sets developer mode.
@@ -1038,15 +1065,15 @@ class Xt {
   async emulator(t) {
     const {
       path: e = "",
-      method: s = L.get,
-      global: r = s === L.get,
-      devMode: o = !1
+      method: i = C.get,
+      global: r = i === C.get,
+      devMode: a = !1
     } = t;
-    if (r || this.isDevMode(o)) {
-      const a = this.requestDefault.request(t.request), u = this.get(e, s, a, o);
+    if (r || this.isDevMode(a)) {
+      const o = this.requestDefault.request(t.request), u = this.get(e, i, o, a);
       if (u) {
-        const h = await this.fetch(u, a);
-        return this.isDevMode(o) && console.warn("Response data:", e, a, h), h;
+        const h = await this.fetch(u, o);
+        return this.isDevMode(a) && console.warn("Response data:", e, o, h), h;
       }
     }
   }
@@ -1057,7 +1084,7 @@ class Xt {
    * @param item cached item/ кешированный элемент
    */
   isDisable(t) {
-    return !!I(t == null ? void 0 : t.disable);
+    return !!B(t == null ? void 0 : t.disable);
   }
   /**
    * Checks if the path matches the cached one.
@@ -1096,9 +1123,9 @@ class Xt {
    * @param request request data/ данные запроса
    */
   isResponse(t, e) {
-    const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || y(e) && y(s) && E(e) && E(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
-      (r, [o, a]) => r && (a === (e == null ? void 0 : e[o]) || a === "*any"),
+    const i = this.requestDefault.request(t == null ? void 0 : t.request);
+    return e === i || i === "*any" || m(e) && m(i) && A(e) && A(i) && !(e instanceof FormData) && !(i instanceof FormData) && Object.values(e).length === Object.values(i).length && Object.entries(i).reduce(
+      (r, [a, o]) => r && (o === (e == null ? void 0 : e[a]) || o === "*any"),
       !0
     );
   }
@@ -1110,13 +1137,13 @@ class Xt {
    * @param request data for the request/ данные для запроса
    */
   fetch(t, e) {
-    return this.startResponseLoading(), new Promise((s) => {
-      Qt(
-        ht(t.response) ? t.response(e) : t.response
+    return this.startResponseLoading(), new Promise((i) => {
+      Xt(
+        lt(t.response) ? t.response(e) : t.response
       ).then((r) => {
-        t != null && t.lag ? (x.show(), setTimeout(() => {
-          this.stopResponseLoading(), s(r), x.hide();
-        }, Q(0, 2e3))) : (this.stopResponseLoading(), s(r));
+        t != null && t.lag ? (R.show(), setTimeout(() => {
+          this.stopResponseLoading(), i(r), R.hide();
+        }, Q(0, 2e3))) : (this.stopResponseLoading(), i(r));
       });
     });
   }
@@ -1126,7 +1153,7 @@ class Xt {
    * Включить загрузку для эмуляции запроса.
    */
   startResponseLoading() {
-    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(vt);
+    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(St);
   }
   /**
    * Disable loading for request emulation.
@@ -1135,11 +1162,11 @@ class Xt {
    */
   stopResponseLoading() {
     this.loading = setTimeout(() => {
-      this.loading = void 0, l() && document.body.classList.remove(vt);
+      this.loading = void 0, l() && document.body.classList.remove(St);
     }, 1200);
   }
 }
-class _t {
+class Ot {
   constructor() {
     /** Function for call before the request/ Функция для вызова перед запросом */
     c(this, "callback");
@@ -1167,9 +1194,9 @@ class _t {
    * @param query data received in the request/ данные, полученные в запросе
    * @param apiFetch request options/ опции запроса
    */
-  async makeEnd(t, e, s) {
+  async makeEnd(t, e, i) {
     let r = {};
-    return t && this.callbackEnd && (r = await this.callbackEnd(e, s)), r;
+    return t && this.callbackEnd && (r = await this.callbackEnd(e, i)), r;
   }
   /**
    * The function is modified for a call before the request.
@@ -1210,8 +1237,8 @@ class _t {
    * @param apiFetch request options/ опции запроса
    */
   async end(t, e) {
-    let s = {};
-    return this.callbackEnd && (s = await this.callbackEnd(t, e)), s;
+    let i = {};
+    return this.callbackEnd && (i = await this.callbackEnd(t, e)), i;
   }
 }
 const v = class v {
@@ -1256,11 +1283,11 @@ const v = class v {
    * @param request this request/ данный запрос
    * @param method method for request/ метод запрос
    */
-  static getBody(t = {}, e = L.get) {
+  static getBody(t = {}, e = C.get) {
     if (t instanceof FormData)
       return t;
-    if (e !== L.get && y(t))
-      return W(t) ? t : JSON.stringify(t);
+    if (e !== C.get && m(t))
+      return U(t) ? t : JSON.stringify(t);
   }
   /**
    * Getting data for the body of the get method.
@@ -1270,11 +1297,11 @@ const v = class v {
    * @param path path to request/ путь к запрос
    * @param method method for request/ метод запрос
    */
-  static getBodyForGet(t, e = "", s = L.get) {
-    if (s === L.get) {
-      const r = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? Rt(t) : t;
-      if (y(o))
-        return `${r}${o}`;
+  static getBodyForGet(t, e = "", i = C.get) {
+    if (i === C.get) {
+      const r = e.match(/\?/) ? "&" : "?", a = typeof t == "object" ? Pt(t) : t;
+      if (m(a))
+        return `${r}${a}`;
     }
     return "";
   }
@@ -1328,7 +1355,7 @@ const v = class v {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(t) {
-    return W(t) ? await this.fetch({
+    return U(t) ? await this.fetch({
       path: t
     }) : await this.fetch(t);
   }
@@ -1339,8 +1366,8 @@ const v = class v {
    * @param request list of parameters/ список параметров
    */
   static get(t) {
-    return this.request(C(t, {
-      method: L.get
+    return this.request(D(t, {
+      method: C.get
     }));
   }
   /**
@@ -1350,8 +1377,8 @@ const v = class v {
    * @param request list of parameters/ список параметров
    */
   static post(t) {
-    return this.request(C(t, {
-      method: L.post
+    return this.request(D(t, {
+      method: C.post
     }));
   }
   /**
@@ -1361,8 +1388,8 @@ const v = class v {
    * @param request list of parameters/ список параметров
    */
   static put(t) {
-    return this.request(C(t, {
-      method: L.put
+    return this.request(D(t, {
+      method: C.put
     }));
   }
   /**
@@ -1372,8 +1399,8 @@ const v = class v {
    * @param request list of parameters/ список параметров
    */
   static delete(t) {
-    return this.request(C(t, {
-      method: L.delete
+    return this.request(D(t, {
+      method: C.delete
     }));
   }
   /**
@@ -1385,31 +1412,31 @@ const v = class v {
   static async fetch(t) {
     const {
       toData: e = !0,
-      hideError: s = !1,
+      hideError: i = !1,
       queryReturn: r = void 0,
-      globalPreparation: o = !0,
-      globalEnd: a = !0
+      globalPreparation: a = !0,
+      globalEnd: o = !0
     } = t, u = await this.response.emulator(t);
     if (u)
       return u;
-    const h = new wt();
-    let m;
-    x.show();
+    const h = new vt();
+    let y;
+    R.show();
     try {
-      await this.preparation.make(o, t);
-      const g = await this.makeQuery(t), S = await this.preparation.makeEnd(a, g, t);
+      await this.preparation.make(a, t);
+      const g = await this.makeQuery(t), S = await this.preparation.makeEnd(o, g, t);
       if (h.setStatus(g.status, g.statusText), this.status.setStatus(g.status, g.statusText), S != null && S.reset)
-        return x.hide(), await this.fetch(t);
-      m = await this.readData(
+        return R.hide(), await this.fetch(t);
+      y = await this.readData(
         g,
         r,
         S
       );
     } catch (g) {
-      throw s || console.error("Api: ", g), h.setError(String(g)), this.status.setError(String(g)), x.hide(), g;
+      throw i || console.error("Api: ", g), h.setError(String(g)), this.status.setError(String(g)), R.hide(), g;
     }
-    return x.hide(), h.setLastResponse(m), this.status.setLastResponse(m), this.makeStatus(
-      this.makeData(m, e),
+    return R.hide(), h.setLastResponse(y), this.status.setLastResponse(y), this.makeStatus(
+      this.makeData(y, e),
       h
     );
   }
@@ -1421,9 +1448,9 @@ const v = class v {
    * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
    * @param end finalization data/ данные финализации
    */
-  static async readData(t, e, s) {
+  static async readData(t, e, i) {
     var r;
-    return e ? await e(t) : "data" in s ? s.data : ((r = t.headers.get("Content-Type")) != null ? r : "").match("application/json") ? await t.json() : { data: await t.text() };
+    return e ? await e(t) : "data" in i ? i.data : ((r = t.headers.get("Content-Type")) != null ? r : "").match("application/json") ? await t.json() : { data: await t.text() };
   }
   /**
    * Executing the request.
@@ -1433,19 +1460,19 @@ const v = class v {
    */
   static async makeQuery(t) {
     const e = this.requestDefault.request(t.request), {
-      api: s = !0,
+      api: i = !0,
       path: r = "",
-      pathFull: o = void 0,
-      method: a = L.get,
+      pathFull: a = void 0,
+      method: o = C.get,
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
-      init: m = {},
+      init: y = {},
       controller: g = void 0
-    } = t, S = o != null ? o : this.getUrl(r, s), et = `${S}${this.getBodyForGet(e, S, a)}`, _ = this.headers.get(u, h), Y = C(m, {
-      method: a,
-      body: this.getBody(e, a)
+    } = t, S = a != null ? a : this.getUrl(r, i), st = `${S}${this.getBodyForGet(e, S, o)}`, _ = this.headers.get(u, h), q = D(y, {
+      method: o,
+      body: this.getBody(e, o)
     });
-    return _ && (Y.headers = _), g && (Y.signal = g.signal), await fetch(et, Y);
+    return _ && (q.headers = _), g && (q.signal = g.signal), await fetch(st, q);
   }
   /**
    * Transforms data if needed.
@@ -1455,12 +1482,12 @@ const v = class v {
    * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
    */
   static makeData(t, e) {
-    if (!e || !t || !E(t) || !("data" in t))
+    if (!e || !t || !A(t) || !("data" in t))
       return t;
-    if (t.data !== null && typeof t.data != "object" || ut(t.data))
+    if (t.data !== null && typeof t.data != "object" || ht(t.data))
       return t.data;
-    const s = C(t.data);
-    return "success" in t && !("success" in s) && (s.success = t.success), "status" in t && !("status" in s) && (s.status = t.status), "message" in t && !("message" in s) && (s.message = t.message), s;
+    const i = D(t.data);
+    return "success" in t && !("success" in i) && (i.success = t.success), "status" in t && !("status" in i) && (i.status = t.status), "message" in t && !("message" in i) && (i.message = t.message), i;
   }
   /**
    * Appends the status object to the response data if possible.
@@ -1470,22 +1497,22 @@ const v = class v {
    * @param status status object/ объект статуса
    */
   static makeStatus(t, e) {
-    return t && E(t) ? {
+    return t && A(t) ? {
       ...t,
       statusObject: e.get()
     } : t;
   }
 };
-c(v, "url", "/api/"), c(v, "headers", new Jt()), c(v, "requestDefault", new Mt()), c(v, "status", new wt()), c(v, "response", new Xt(v.requestDefault)), c(v, "preparation", new _t());
-let V = v;
-class Fe {
+c(v, "url", "/api/"), c(v, "headers", new Mt()), c(v, "requestDefault", new Qt()), c(v, "status", new vt()), c(v, "response", new _t(v.requestDefault)), c(v, "preparation", new Ot());
+let K = v;
+class He {
   /**
    * Constructor
    * @param name channel name/ название канала
    * @param callback callback on message received/ колбэк на получение сообщения
    * @param callbackError callback on message error/ колбэк на ошибку сообщения
    */
-  constructor(t, e, s) {
+  constructor(t, e, i) {
     c(this, "channel");
     /**
      * Update state on message received.
@@ -1507,9 +1534,9 @@ class Fe {
       var e;
       return (e = this.callbackError) == null || e.call(this, t), this;
     });
-    if (this.callback = e, this.callbackError = s, l())
+    if (this.callback = e, this.callbackError = i, l())
       try {
-        this.channel = new BroadcastChannel(`${Ot()}__${t}`), this.channel.onmessage = this.update, this.channel.onmessageerror = this.updateError;
+        this.channel = new BroadcastChannel(`${Tt()}__${t}`), this.channel.onmessage = this.update, this.channel.onmessageerror = this.updateError;
       } catch (r) {
         console.error(`BroadcastMessage ${t}:`, r);
       }
@@ -1552,8 +1579,8 @@ class Fe {
     return this.callbackError = t, this;
   }
 }
-const Ot = () => new tt("__broadcast-name").get(() => `name_${Q(1e6, 9999999)}`);
-class Tt {
+const Tt = () => new et("__broadcast-name").get(() => `name_${Q(1e6, 9999999)}`);
+class Gt {
   /**
    * Constructor
    * @param callback function for the cache/ функция для кэша
@@ -1613,10 +1640,10 @@ class Tt {
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
   isUpdate(t) {
-    return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, s) => e !== t[s]) >= 0 ? (this.comparisons = [...t], !0) : !1;
+    return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, i) => e !== t[i]) >= 0 ? (this.comparisons = [...t], !0) : !1;
   }
 }
-class Gt {
+class te {
   constructor() {
     c(this, "cache", {});
   }
@@ -1628,8 +1655,8 @@ class Gt {
    * @param callback function for the cache/ функция для кэша
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
-  get(t, e, s) {
-    return this.getCacheItem(t, e).getCache(s != null ? s : []);
+  get(t, e, i) {
+    return this.getCacheItem(t, e).getCache(i != null ? i : []);
   }
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
@@ -1639,8 +1666,8 @@ class Gt {
    * @param callback function for the cache/ функция для кэша
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
-  async getAsync(t, e, s) {
-    return await this.getCacheItem(t, e).getCacheAsync(s != null ? s : []);
+  async getAsync(t, e, i) {
+    return await this.getCacheItem(t, e).getCacheAsync(i != null ? i : []);
   }
   /**
    * Returns an instance of the object for working with the cache element.
@@ -1650,10 +1677,10 @@ class Gt {
    * @param callback function for the cache/ функция для кэша
    */
   getCacheItem(t, e) {
-    return t in this.cache || (this.cache[t] = new Tt(e)), this.cache[t];
+    return t in this.cache || (this.cache[t] = new Gt(e)), this.cache[t];
   }
 }
-const G = class G {
+const tt = class tt {
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
    *
@@ -1662,15 +1689,15 @@ const G = class G {
    * @param callback function for the cache/ функция для кэша
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
-  static get(t, e, s) {
-    return this.cache.get(t, e, s);
+  static get(t, e, i) {
+    return this.cache.get(t, e, i);
   }
 };
-c(G, "cache"), G.cache = new Gt();
-let St = G;
-function Wt(i, t = !1) {
-  if (typeof i == "string") {
-    const e = i.trim();
+c(tt, "cache"), tt.cache = new te();
+let Lt = tt;
+function Ut(s, t = !1) {
+  if (typeof s == "string") {
+    const e = s.trim();
     switch (e) {
       case "undefined":
         return;
@@ -1684,8 +1711,8 @@ function Wt(i, t = !1) {
         if (/^[{[]/.exec(e))
           try {
             return JSON.parse(e);
-          } catch (s) {
-            console.error("transformation: JSON error", s);
+          } catch (i) {
+            console.error("transformation: JSON error", i);
           }
         else {
           if (/^[0-9]+\.[0-9.]+$/.exec(e))
@@ -1697,9 +1724,9 @@ function Wt(i, t = !1) {
         }
     }
   }
-  return i;
+  return s;
 }
-const te = "cookie-block";
+const ee = "cookie-block";
 class jt {
   /**
    * Obtaining status.
@@ -1720,14 +1747,14 @@ class jt {
     this.storage.set(t);
   }
 }
-c(jt, "storage", new tt(te));
-const O = {}, ft = class ft {
+c(jt, "storage", new et(ee));
+const O = {}, mt = class mt {
   constructor(t) {
     c(this, "value");
     c(this, "options", {});
-    if (this.name = t, t in st)
-      return st[t];
-    this.value = O == null ? void 0 : O[t], st[t] = this;
+    if (this.name = t, t in rt)
+      return rt[t];
+    this.value = O == null ? void 0 : O[t], rt[t] = this;
   }
   /**
    * Get data or update if none.
@@ -1747,7 +1774,7 @@ const O = {}, ft = class ft {
    * @param options additional parameters/ дополнительные параметры
    */
   set(t, e) {
-    this.value = I(t), Object.assign(this.options, e), this.update();
+    this.value = B(t), Object.assign(this.options, e), this.update();
   }
   /**
    * Delete cookie data.
@@ -1772,14 +1799,14 @@ const O = {}, ft = class ft {
    * Обновление данных cookie.
    */
   update() {
-    var t, e, s, r, o;
-    if (l() && !at() && !jt.get()) {
-      const a = String((t = this.value) != null ? t : "");
+    var t, e, i, r, a;
+    if (l() && !ct() && !jt.get()) {
+      const o = String((t = this.value) != null ? t : "");
       document.cookie = [
-        `${encodeURIComponent(this.name)}=${encodeURIComponent(a)}`,
-        `max-age=${a === "" ? "-1" : this.getAge()}`,
-        `SameSite=${(s = (e = this.options) == null ? void 0 : e.sameSite) != null ? s : "strict"}`,
-        ...(o = (r = this.options) == null ? void 0 : r.arguments) != null ? o : []
+        `${encodeURIComponent(this.name)}=${encodeURIComponent(o)}`,
+        `max-age=${o === "" ? "-1" : this.getAge()}`,
+        `SameSite=${(i = (e = this.options) == null ? void 0 : e.sameSite) != null ? i : "strict"}`,
+        ...(a = (r = this.options) == null ? void 0 : r.arguments) != null ? a : []
       ].join("; ");
     }
   }
@@ -1790,29 +1817,29 @@ const O = {}, ft = class ft {
    */
   static updateData() {
     for (const t of document.cookie.split(";")) {
-      const [e, s] = t.trim().split("=");
-      e && y(s) && (O[e] = Wt(s));
+      const [e, i] = t.trim().split("=");
+      e && m(i) && (O[e] = Ut(i));
     }
   }
 };
-l() && !at() && ft.updateData();
-let Dt = ft;
-const st = {};
-function R(i) {
-  var r, o, a, u, h, m, g, S;
-  if (i instanceof Date)
-    return i;
-  if (X(i))
+l() && !ct() && mt.updateData();
+let Ct = mt;
+const rt = {};
+function P(s) {
+  var r, a, o, u, h, y, g, S;
+  if (s instanceof Date)
+    return s;
+  if (X(s))
     return /* @__PURE__ */ new Date();
-  if (typeof i == "number")
-    return new Date(i);
-  let t = i, e = b.getTimezoneFormat().trim();
-  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (et, _, Y) => (t = _, e = Y.trim(), et));
-  const s = (S = (g = (m = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? m : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? S : t.replace(" ", "T");
-  return /* @__PURE__ */ new Date(`${s.trim()}${e}`);
+  if (typeof s == "number")
+    return new Date(s);
+  let t = s, e = b.getTimezoneFormat().trim();
+  s.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (st, _, q) => (t = _, e = q.trim(), st));
+  const i = (S = (g = (y = (h = (u = (o = (a = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? a : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? o : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? y : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? S : t.replace(" ", "T");
+  return /* @__PURE__ */ new Date(`${i.trim()}${e}`);
 }
-function ee(i, t) {
-  return d(i, (e) => e == null ? void 0 : e[t], !0);
+function se(s, t) {
+  return d(s, (e) => e == null ? void 0 : e[t], !0);
 }
 class N {
   /**
@@ -1824,9 +1851,9 @@ class N {
     c(this, "geo");
     this.geo = b.find(t);
     const e = this.getLocation();
-    if (e in rt)
-      return rt[e];
-    rt[e] = this;
+    if (e in nt)
+      return nt[e];
+    nt[e] = this;
   }
   /**
    * Returns an instance of the class according to the specified country code.
@@ -1863,18 +1890,18 @@ class N {
    * объект с некоторыми или всеми из следующих свойств
    */
   display(t, e) {
-    var o;
-    let s = { type: "language" }, r;
-    e && (typeof e == "string" ? s.type = e : s = {
-      ...s,
+    var a;
+    let i = { type: "language" }, r;
+    e && (typeof e == "string" ? i.type = e : i = {
+      ...i,
       ...e
     });
     try {
-      l() && (t ? r = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
-    } catch (a) {
-      console.error("display: ", a);
+      l() && (t ? r = new Intl.DisplayNames(this.getLocation(), i).of(t) : i.type === "language" ? r = new Intl.DisplayNames(this.getLocation(), i).of(this.geo.language) : i.type === "region" && (r = new Intl.DisplayNames(this.getLocation(), i).of(this.geo.country)));
+    } catch (o) {
+      console.error("display: ", o);
     }
-    return (o = r != null ? r : t) != null ? o : "";
+    return (a = r != null ? r : t) != null ? a : "";
   }
   /**
    * Get display names of language.
@@ -1884,11 +1911,11 @@ class N {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   languageName(t, e) {
-    const s = {
+    const i = {
       type: "language",
       style: e
     };
-    return this.display(b.getByCode(t).language, s);
+    return this.display(b.getByCode(t).language, i);
   }
   /**
    * Get display names of region.
@@ -1898,11 +1925,11 @@ class N {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   countryName(t, e) {
-    const s = {
+    const i = {
       type: "region",
       style: e
     };
-    return this.display(t, s);
+    return this.display(t, i);
   }
   /**
    * The method returns a string containing the full name in a specific format.
@@ -1913,25 +1940,25 @@ class N {
    * @param surname surname middle name (optional)/ отчество
    * @param short shorten the names/ сократить названия
    */
-  fullName(t, e, s, r) {
+  fullName(t, e, i, r) {
     var u, h;
-    const o = (h = (u = this.geo) == null ? void 0 : u.nameFormat) != null ? h : "fl";
-    let a;
-    switch (o) {
+    const a = (h = (u = this.geo) == null ? void 0 : u.nameFormat) != null ? h : "fl";
+    let o;
+    switch (a) {
       case "fsl":
-        a = `${e}${s ? ` ${s}` : ""} ${t}`;
+        o = `${e}${i ? ` ${i}` : ""} ${t}`;
         break;
       case "lf":
-        a = `${t} ${e}`;
+        o = `${t} ${e}`;
         break;
       case "lsf":
-        a = `${t}${s ? ` ${s}` : ""} ${e}`;
+        o = `${t}${i ? ` ${i}` : ""} ${e}`;
         break;
       default:
-        a = `${e} ${t}`;
+        o = `${e} ${t}`;
         break;
     }
-    return r ? a.replace(/ (.)[^ ]+/ig, " $1.") : a;
+    return r ? o.replace(/ (.)[^ ]+/ig, " $1.") : o;
   }
   /**
    * In basic use without specifying a locale, a formatted string.
@@ -1942,8 +1969,8 @@ class N {
    * или всеми свойствами
    */
   number(t, e) {
-    var s, r;
-    return ((r = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : r.call(s, k(t))) || t.toString();
+    var i, r;
+    return ((r = (i = this.numberObject(e)) == null ? void 0 : i.format) == null ? void 0 : r.call(i, k(t))) || t.toString();
   }
   /**
    * Decimal point symbol.
@@ -1951,8 +1978,8 @@ class N {
    * Символ десятичной точки.
    */
   decimal() {
-    var t, e, s, r, o;
-    return ((o = (r = (s = (e = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : e.call(t, 1.2)) == null ? void 0 : s.find) == null ? void 0 : r.call(s, (a) => a.type === "decimal")) == null ? void 0 : o.value) || ".";
+    var t, e, i, r, a;
+    return ((a = (r = (i = (e = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : e.call(t, 1.2)) == null ? void 0 : i.find) == null ? void 0 : r.call(i, (o) => o.type === "decimal")) == null ? void 0 : a.value) || ".";
   }
   /**
    * Currency formatting.
@@ -1963,23 +1990,23 @@ class N {
    * валюта для использования в форматировании валюты
    * @param numberOnly do not display the currency symbol/ не выводить значок валюты
    */
-  currency(t, e, s = !1) {
+  currency(t, e, i = !1) {
     const r = {
       style: "currency",
       currencyDisplay: "symbol",
       ...typeof e == "string" ? { currency: e } : e || {}
-    }, o = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...a) => (r.currency = String(a[2]).toUpperCase(), String(a[1])));
-    if (s) {
-      const a = this.numberObject(r);
-      return a ? ee(
-        a.formatToParts(k(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
+    }, a = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...o) => (r.currency = String(o[2]).toUpperCase(), String(o[1])));
+    if (i) {
+      const o = this.numberObject(r);
+      return o ? se(
+        o.formatToParts(k(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
         "value"
       ).join("") : t.toString();
     } else return "currency" in r ? this.number(
-      typeof t == "number" ? t : o,
+      typeof t == "number" ? t : a,
       r
     ) : this.number(
-      typeof t == "number" ? t : o,
+      typeof t == "number" ? t : a,
       {
         ...r,
         style: "decimal"
@@ -1996,12 +2023,12 @@ class N {
    * как отобразить валюту в формате валюты
    */
   currencySymbol(t, e = "symbol") {
-    var s, r, o, a, u;
-    return ((u = (a = (o = (r = (s = this.numberObject({
+    var i, r, a, o, u;
+    return ((u = (o = (a = (r = (i = this.numberObject({
       style: "currency",
       currencyDisplay: e,
       currency: t
-    })) == null ? void 0 : s.formatToParts) == null ? void 0 : r.call(s, 100)) == null ? void 0 : o.find) == null ? void 0 : a.call(o, (h) => h.type === "currency")) == null ? void 0 : u.value) || t;
+    })) == null ? void 0 : i.formatToParts) == null ? void 0 : r.call(i, 100)) == null ? void 0 : a.find) == null ? void 0 : o.call(a, (h) => h.type === "currency")) == null ? void 0 : u.value) || t;
   }
   /**
    * Unit formatting.
@@ -2013,11 +2040,11 @@ class N {
    * в форматировании блока
    */
   unit(t, e) {
-    const s = {
+    const i = {
       style: "unit",
       ...typeof e == "string" ? { unit: e } : e || {}
-    }, r = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...o) => (s.unit = String(o[2]).toLowerCase(), String(o[1])));
-    return this.number(r, s);
+    }, r = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...a) => (i.unit = String(a[2]).toLowerCase(), String(a[1])));
+    return this.number(r, i);
   }
   /**
    * Возвращает отформатированный размер файла
@@ -2026,19 +2053,19 @@ class N {
    * в форматировании блока
    */
   sizeFile(t, e = "byte") {
-    const s = k(t);
-    if (s > 1024 && W(e))
+    const i = k(t);
+    if (i > 1024 && U(e))
       switch (e) {
         case "byte":
-          return this.sizeFile(s / 1024, "kilobyte");
+          return this.sizeFile(i / 1024, "kilobyte");
         case "kilobyte":
-          return this.sizeFile(s / 1024, "megabyte");
+          return this.sizeFile(i / 1024, "megabyte");
         case "megabyte":
-          return this.sizeFile(s / 1024, "gigabyte");
+          return this.sizeFile(i / 1024, "gigabyte");
         case "gigabyte":
-          return this.sizeFile(s / 1024, "terabyte");
+          return this.sizeFile(i / 1024, "terabyte");
         case "terabyte":
-          return this.sizeFile(s / 1024, "petabyte");
+          return this.sizeFile(i / 1024, "petabyte");
       }
     return this.unit(t, e);
   }
@@ -2074,40 +2101,40 @@ class N {
    * @param options Property for PluralRules/ свойство для PluralRules
    * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
-  plural(t, e, s, r) {
+  plural(t, e, i, r) {
     var u;
-    const o = k(t), a = e.split("|");
-    if (a.length > 1)
+    const a = k(t), o = e.split("|");
+    if (o.length > 1)
       try {
         if (l()) {
-          const m = new Intl.PluralRules(this.getLocation(), s).select(o);
+          const y = new Intl.PluralRules(this.getLocation(), i).select(a);
           let g;
-          switch (m) {
+          switch (y) {
             case "zero":
-              g = a[a.length - 1];
+              g = o[o.length - 1];
               break;
             case "one":
-              g = a == null ? void 0 : a[0];
+              g = o == null ? void 0 : o[0];
               break;
             case "two":
-              g = a == null ? void 0 : a[1];
+              g = o == null ? void 0 : o[1];
               break;
             case "few":
-              g = a != null && a[3] ? a == null ? void 0 : a[2] : a == null ? void 0 : a[1];
+              g = o != null && o[3] ? o == null ? void 0 : o[2] : o == null ? void 0 : o[1];
               break;
             case "many":
-              g = (a == null ? void 0 : a[3]) || (a == null ? void 0 : a[2]) || (a == null ? void 0 : a[1]);
+              g = (o == null ? void 0 : o[3]) || (o == null ? void 0 : o[2]) || (o == null ? void 0 : o[1]);
               break;
             case "other":
-              a.length === 6 ? g = a[a.length - 2] : g = a[a.length - 1];
+              o.length === 6 ? g = o[o.length - 2] : g = o[o.length - 1];
               break;
           }
-          return `${this.number(o, r)} ${g != null ? g : ""}`.trim();
+          return `${this.number(a, r)} ${g != null ? g : ""}`.trim();
         }
       } catch (h) {
         console.error("plural: ", h);
       }
-    return `${this.number(o, r)} ${(u = a == null ? void 0 : a[0]) != null ? u : ""}`.trim();
+    return `${this.number(a, r)} ${(u = o == null ? void 0 : o[0]) != null ? u : ""}`.trim();
   }
   /**
    * Enables language-sensitive date and time formatting.
@@ -2118,9 +2145,9 @@ class N {
    * @param styleOptions the representation of the month/ представление месяца
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  date(t, e, s, r) {
-    const o = R(t), a = typeof s == "string", u = this.dateOptions(e, a ? s : "short");
-    return r && (u.hour12 = !1), a || Object.assign(u, s), o.toLocaleString(this.getLocation(), u);
+  date(t, e, i, r) {
+    const a = P(t), o = typeof i == "string", u = this.dateOptions(e, o ? i : "short");
+    return r && (u.hour12 = !1), o || Object.assign(u, i), a.toLocaleString(this.getLocation(), u);
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -2131,13 +2158,13 @@ class N {
    * длина интернационализированного сообщения
    * @param todayValue current day/ текущий день
    */
-  relative(t, e, s) {
-    const r = R(t), o = s || /* @__PURE__ */ new Date(), a = {
+  relative(t, e, i) {
+    const r = P(t), a = i || /* @__PURE__ */ new Date(), o = {
       numeric: "auto",
       ...typeof e == "string" ? { style: e } : e || {}
     };
-    let u = "second", h = (r.getTime() - o.getTime()) / 1e3;
-    return Math.abs(h) >= 60 && (u = "minute", h /= 60, Math.abs(h) >= 60 && (u = "hour", h /= 60, Math.abs(h) >= 24 && (u = "day", h /= 24, Math.abs(h) >= 30 && (u = "month", h /= 30, Math.abs(h) >= 12 && (u = "year", h /= 12))))), this.relativeByValue(h, u, a);
+    let u = "second", h = (r.getTime() - a.getTime()) / 1e3;
+    return Math.abs(h) >= 60 && (u = "minute", h /= 60, Math.abs(h) >= 60 && (u = "hour", h /= 60, Math.abs(h) >= 24 && (u = "day", h /= 24, Math.abs(h) >= 30 && (u = "month", h /= 30, Math.abs(h) >= 12 && (u = "year", h /= 12))))), this.relativeByValue(h, u, o);
   }
   /**
    * Enables language-sensitive relative time formatting
@@ -2157,16 +2184,16 @@ class N {
    * @param type type of data format/ тип формата data
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  relativeLimit(t, e, s, r, o, a, u) {
-    const h = R(t), m = s || /* @__PURE__ */ new Date(), g = new Date(m), S = new Date(m);
-    return g.setDate(m.getDate() - e), S.setDate(m.getDate() + e), h >= g && h <= S ? this.relative(
+  relativeLimit(t, e, i, r, a, o, u) {
+    const h = P(t), y = i || /* @__PURE__ */ new Date(), g = new Date(y), S = new Date(y);
+    return g.setDate(y.getDate() - e), S.setDate(y.getDate() + e), h >= g && h <= S ? this.relative(
       h,
       r,
-      m
+      y
     ) : this.date(
       h,
-      a,
       o,
+      a,
       u
     );
   }
@@ -2176,16 +2203,16 @@ class N {
    * @param unit time unit/ единица времени
    * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
    */
-  relativeByValue(t, e, s) {
+  relativeByValue(t, e, i) {
     const r = {
       numeric: "auto",
-      ...typeof s == "string" ? { style: s } : s || {}
+      ...typeof i == "string" ? { style: i } : i || {}
     };
     try {
       if (l())
         return new Intl.RelativeTimeFormat(this.getLocation(), r).format(Math.round(k(t)), e);
-    } catch (o) {
-      console.error("relative: ", o);
+    } catch (a) {
+      console.error("relative: ", a);
     }
     return "";
   }
@@ -2198,9 +2225,9 @@ class N {
   month(t, e) {
     try {
       if (l())
-        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(R(t));
-    } catch (s) {
-      console.error("month: ", s);
+        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(P(t));
+    } catch (i) {
+      console.error("month: ", i);
     }
     return "";
   }
@@ -2217,15 +2244,15 @@ class N {
     }];
     try {
       if (l()) {
-        const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
-        for (let o = 0; o < 12; o++)
-          s.setMonth(o), e.push({
-            label: r.format(s).replace(/^./, (a) => a.toUpperCase()),
-            value: o + 1
+        const i = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
+        for (let a = 0; a < 12; a++)
+          i.setMonth(a), e.push({
+            label: r.format(i).replace(/^./, (o) => o.toUpperCase()),
+            value: a + 1
           });
       }
-    } catch (s) {
-      console.error("months: ", s);
+    } catch (i) {
+      console.error("months: ", i);
     }
     return e;
   }
@@ -2239,9 +2266,9 @@ class N {
   weekday(t, e) {
     try {
       if (l())
-        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(R(t));
-    } catch (s) {
-      console.error("weekday: ", s);
+        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(P(t));
+    } catch (i) {
+      console.error("weekday: ", i);
     }
     return "";
   }
@@ -2258,16 +2285,16 @@ class N {
     }];
     try {
       if (l()) {
-        const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = s.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
-        s.setDate(s.getDate() - o);
-        for (let a = 0; a < 7; a++)
+        const i = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), a = i.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
+        i.setDate(i.getDate() - a);
+        for (let o = 0; o < 7; o++)
           e.push({
-            label: r.format(s).replace(/^./, (u) => u.toUpperCase()),
-            value: s.getDay()
-          }), s.setDate(s.getDate() + 1);
+            label: r.format(i).replace(/^./, (u) => u.toUpperCase()),
+            value: i.getDay()
+          }), i.setDate(i.getDate() + 1);
       }
-    } catch (s) {
-      console.error("weekdays: ", s);
+    } catch (i) {
+      console.error("weekdays: ", i);
     }
     return e;
   }
@@ -2287,10 +2314,10 @@ class N {
    * @param data an array with data/ массив с данными
    * @param compareFn a function for sorting/ функция для сортировки
    */
-  sort(t, e = (s, r) => [s, r]) {
+  sort(t, e = (i, r) => [i, r]) {
     if (l()) {
-      const s = new Intl.Collator(this.getLocation());
-      return t.sort((r, o) => s.compare(...e(r, o)));
+      const i = new Intl.Collator(this.getLocation());
+      return t.sort((r, a) => i.compare(...e(r, a)));
     }
     return t;
   }
@@ -2317,23 +2344,23 @@ class N {
    * @param display the representation of the month/ представление месяца
    */
   dateOptions(t, e = "short") {
-    const s = {};
-    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
+    const i = {};
+    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (i.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (i.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (i.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (i.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (i.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (i.second = "2-digit")), i;
   }
 }
-const rt = {};
-class lt {
+const nt = {};
+class gt {
   /**
    * Constructor
    * @param date date for processing/ дата для обработки
    * @param type type of date format for output/ тип формата даты вывода
    * @param code country and language code/ код страны и языка
    */
-  constructor(t, e = "date", s = b.getLocation()) {
+  constructor(t, e = "date", i = b.getLocation()) {
     c(this, "date");
     c(this, "hour24", !1);
     c(this, "watch");
-    this.type = e, this.code = s, this.date = R(t);
+    this.type = e, this.code = i, this.date = P(t);
   }
   /**
    * Returns an object for working with formatting.
@@ -2397,11 +2424,11 @@ class lt {
     const e = this.getTimeZoneOffset();
     if (t === "minute")
       return e.toString();
-    const s = e / 60 * -1;
+    const i = e / 60 * -1;
     if (t === "hour")
-      return this.getIntl().number(Math.trunc(s), { signDisplay: "always" });
-    const r = this.toTimeZoneHourFormat(s), o = s.toString().match(/.\d+/) ? "30" : "00";
-    return t === "RFC" ? `${r}${o}` : `${r}:${o}`;
+      return this.getIntl().number(Math.trunc(i), { signDisplay: "always" });
+    const r = this.toTimeZoneHourFormat(i), a = i.toString().match(/.\d+/) ? "30" : "00";
+    return t === "RFC" ? `${r}${a}` : `${r}:${a}`;
   }
   /**
    * Returns the code of the first day of the week.
@@ -2546,13 +2573,13 @@ class lt {
    * @param timeZone add time zone/ добавить временную зону
    */
   standard(t = !0) {
-    const e = new lt(this.date, this.type, "en-GB"), s = [];
+    const e = new gt(this.date, this.type, "en-GB"), i = [];
     let r;
     return e.setHour24(!0), this.type === "hour-minute" ? r = e.locale(this.type, {
       year: "numeric",
       month: "2-digit",
       hour12: !1
-    }) : (["full", "datetime", "date", "year-month", "year", "month", "day"].indexOf(this.type) !== -1 && (s.push(e.localeYear()), s.push(e.localeMonth("2-digit"))), ["full", "datetime", "date", "year", "month", "day"].indexOf(this.type) !== -1 && s.push(e.localeDay("2-digit")), ["full", "datetime", "time", "hour", "minute", "second"].indexOf(this.type) !== -1 && (r = e.locale("time"))), `${s.join("-")}${r ? `T${r}${t ? e.getTimeZone() : ""}` : ""}`;
+    }) : (["full", "datetime", "date", "year-month", "year", "month", "day"].indexOf(this.type) !== -1 && (i.push(e.localeYear()), i.push(e.localeMonth("2-digit"))), ["full", "datetime", "date", "year", "month", "day"].indexOf(this.type) !== -1 && i.push(e.localeDay("2-digit")), ["full", "datetime", "time", "hour", "minute", "second"].indexOf(this.type) !== -1 && (r = e.locale("time"))), `${i.join("-")}${r ? `T${r}${t ? e.getTimeZone() : ""}` : ""}`;
   }
   /**
    * Change the date completely.
@@ -2562,7 +2589,7 @@ class lt {
    * целочисленное значение, представляющее число
    */
   setDate(t) {
-    return this.date = R(t), this.update(), this;
+    return this.date = P(t), this.update(), this;
   }
   /**
    * Change the type of data output.
@@ -2985,32 +3012,32 @@ class lt {
     ), this;
   }
 }
-function ie(i) {
+function T(s) {
   var t;
-  return W(i) ? i.trim() : ut(i) && i.findIndex((e) => f(e)) === -1 ? i.join(",") : f(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
+  return U(s) ? s.trim() : ht(s) && s.findIndex((e) => f(e)) === -1 ? s.join(",") : f(s) ? JSON.stringify(s) : s === !0 ? "1" : s === !1 ? "0" : (t = s == null ? void 0 : s.toString()) != null ? t : "";
 }
-function se(i, t, e) {
-  const s = ie(i);
+function ie(s, t, e) {
+  const i = T(s);
   if (!e || e <= 0)
-    return s.split(t);
-  const r = s.split(t, e), o = s.split(t);
-  return r.length === o.length ? r : (r.pop(), [
+    return i.split(t);
+  const r = i.split(t, e), a = i.split(t);
+  return r.length === a.length ? r : (r.pop(), [
     ...r,
-    o.slice(e - 1).join(t)
+    a.slice(e - 1).join(t)
   ]);
 }
-function U(i, t) {
+function x(s, t) {
   var r;
-  if (!y(t))
+  if (!m(t))
     return;
-  const e = se(t, ".", 2), s = e[0];
-  return s && (i != null && i[s]) && f(i[s]) && (e != null && e[1]) ? U(i[s], e[1]) : (r = y(s) && (i == null ? void 0 : i[s])) != null ? r : void 0;
+  const e = ie(t, ".", 2), i = e[0];
+  return i && (s != null && s[i]) && f(s[i]) && (e != null && e[1]) ? x(s[i], e[1]) : (r = m(i) && (s == null ? void 0 : s[i])) != null ? r : void 0;
 }
-function Ut(i) {
-  return i.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
+function Ht(s) {
+  return s.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-var F = /* @__PURE__ */ ((i) => (i.currency = "currency", i.date = "date", i.name = "name", i.number = "number", i.plural = "plural", i.unit = "unit", i))(F || {});
-class xe {
+var F = /* @__PURE__ */ ((s) => (s.currency = "currency", s.date = "date", s.name = "name", s.number = "number", s.plural = "plural", s.unit = "unit", s))(F || {});
+class ze {
   /**
    * Constructor
    *
@@ -3076,17 +3103,17 @@ class xe {
     const e = {};
     return d(
       this.options,
-      (s, r) => {
-        const o = `${Ut(r)}Format`, a = U(t, r);
-        s != null && s.transformation ? y(a) ? e[o] = s.transformation(
-          a,
+      (i, r) => {
+        const a = `${Ht(r)}Format`, o = x(t, r);
+        i != null && i.transformation ? m(o) ? e[a] = i.transformation(
+          o,
           t,
-          s.options
-        ) : e[o] = "" : e[o] = this.transformation(
-          a,
+          i.options
+        ) : e[a] = "" : e[a] = this.transformation(
+          o,
           t,
-          s.type,
-          s.options
+          i.type,
+          i.options
         );
       }
     ), e;
@@ -3103,9 +3130,9 @@ class xe {
    * @protected
    * @returns Formatted string/ отформатированная строка
    */
-  transformation(t, e, s, r) {
-    if (y(t) || s === F.name)
-      switch (s) {
+  transformation(t, e, i, r) {
+    if (m(t) || i === F.name)
+      switch (i) {
         case F.currency:
           return this.formatCurrency(t, e, r);
         case F.date:
@@ -3133,13 +3160,13 @@ class xe {
    * @protected
    * @returns Formatted currency string/ отформатированная строка валюты
    */
-  formatCurrency(t, e, s) {
-    var o;
-    const r = s != null && s.currencyPropName ? U(e, s.currencyPropName) : e == null ? void 0 : e.currency;
+  formatCurrency(t, e, i) {
+    var a;
+    const r = i != null && i.currencyPropName ? x(e, i.currencyPropName) : e == null ? void 0 : e.currency;
     return N.getInstance().currency(
       t,
-      (o = s == null ? void 0 : s.options) != null ? o : r,
-      s == null ? void 0 : s.numberOnly
+      (a = i == null ? void 0 : i.options) != null ? a : r,
+      i == null ? void 0 : i.numberOnly
     );
   }
   /**
@@ -3171,12 +3198,12 @@ class xe {
    * отформатированная строка имени или пустая строка, если компоненты отсутствуют
    */
   formatName(t, e) {
-    var a, u, h;
-    const s = U(t, (a = e == null ? void 0 : e.lastPropName) != null ? a : "lastName"), r = U(t, (u = e == null ? void 0 : e.firstPropName) != null ? u : "firstName"), o = U(t, (h = e == null ? void 0 : e.surname) != null ? h : "surname");
-    return s && r ? N.getInstance().fullName(
-      s,
+    var o, u, h;
+    const i = x(t, (o = e == null ? void 0 : e.lastPropName) != null ? o : "lastName"), r = x(t, (u = e == null ? void 0 : e.firstPropName) != null ? u : "firstName"), a = x(t, (h = e == null ? void 0 : e.surname) != null ? h : "surname");
+    return i && r ? N.getInstance().fullName(
+      i,
       r,
-      o,
+      a,
       e == null ? void 0 : e.short
     ) : "";
   }
@@ -3223,7 +3250,7 @@ class xe {
     return e && e.unit ? N.getInstance().unit(t, e.unit) : t;
   }
 }
-const n = "f", H = class H {
+const n = "f", z = class z {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -3238,7 +3265,7 @@ const n = "f", H = class H {
    * @param code country code/ код страны
    */
   get(t = this.code) {
-    var s;
+    var i;
     const e = b.find(t);
     if (e) {
       const r = this.getCountry(e);
@@ -3246,7 +3273,7 @@ const n = "f", H = class H {
         language: this.getLanguage(e),
         country: r,
         standard: e.standard,
-        icon: (s = H.flags) == null ? void 0 : s[e.country],
+        icon: (i = z.flags) == null ? void 0 : i[e.country],
         label: r,
         value: e.country
       };
@@ -3279,12 +3306,12 @@ const n = "f", H = class H {
    */
   getNational(t) {
     return d(this.getList(t), (e) => {
-      const s = new H(e.standard).get(e.standard);
+      const i = new z(e.standard).get(e.standard);
       return {
         ...e,
-        description: s == null ? void 0 : s.country,
-        nationalLanguage: s == null ? void 0 : s.language,
-        nationalCountry: s == null ? void 0 : s.country
+        description: i == null ? void 0 : i.country,
+        nationalLanguage: i == null ? void 0 : i.language,
+        nationalCountry: i == null ? void 0 : i.country
       };
     });
   }
@@ -3312,7 +3339,7 @@ const n = "f", H = class H {
    * @param codes country code/ код страны
    */
   getCodes(t) {
-    return t != null ? t : Object.keys(H.flags);
+    return t != null ? t : Object.keys(z.flags);
   }
   /**
    * Getting the name of the language.
@@ -3333,7 +3360,7 @@ const n = "f", H = class H {
     return this.getLocation().countryName(t.country);
   }
 };
-c(H, "flags", {
+c(z, "flags", {
   AD: `${n}-ad`,
   AE: `${n}-ae`,
   AF: `${n}-af`,
@@ -3576,8 +3603,8 @@ c(H, "flags", {
   ZM: `${n}-zm`,
   ZW: `${n}-zw`
 });
-let Lt = H;
-const z = class z {
+let Dt = z;
+const Z = class Z {
   /**
    * Getting an object with information about the phone code and country.
    *
@@ -3594,12 +3621,12 @@ const z = class z {
    * @param phone phone number/ номер телефон
    */
   static getByPhone(t) {
-    let e = this.map, s, r = "";
-    return this.toNumber(t).forEach((o) => {
-      var a;
-      r === "" && o in e ? (s = e[o], e = (a = s == null ? void 0 : s.next) != null ? a : {}) : r += o;
+    let e = this.map, i, r = "";
+    return this.toNumber(t).forEach((a) => {
+      var o;
+      r === "" && a in e ? (i = e[a], e = (o = i == null ? void 0 : i.next) != null ? o : {}) : r += a;
     }), {
-      item: s,
+      item: i,
       phone: r
     };
   }
@@ -3610,10 +3637,10 @@ const z = class z {
    * @param code country and language code/ код страны и языка
    */
   static getByCode(t) {
-    var s;
+    var i;
     const e = this.get(t);
     if (e)
-      return (s = this.getByPhone(e.phone.toString())) == null ? void 0 : s.item;
+      return (i = this.getByPhone(e.phone.toString())) == null ? void 0 : i.item;
   }
   /**
    * We get an array from a list of all phone numbers.
@@ -3639,11 +3666,11 @@ const z = class z {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (y(t) && Array.isArray(e) && e.length > 0) {
-      const s = this.removeZero(t), r = s.length;
-      for (const o of e)
-        if (this.getUnnecessaryLength(o) === r)
-          return this.toStandard(s, o);
+    if (m(t) && Array.isArray(e) && e.length > 0) {
+      const i = this.removeZero(t), r = i.length;
+      for (const a of e)
+        if (this.getUnnecessaryLength(a) === r)
+          return this.toStandard(i, a);
     }
   }
   /**
@@ -3692,11 +3719,11 @@ const z = class z {
         return {
           phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
           within: (e == null ? void 0 : e.phoneWithin) || 0,
-          mask: K(e.phoneMask),
+          mask: Y(e.phoneMask),
           value: e.country
         };
     });
-    this.list = t.sort((e, s) => e.phone - s.phone);
+    this.list = t.sort((e, i) => e.phone - i.phone);
   }
   /**
    * Creating a map for search.
@@ -3706,21 +3733,21 @@ const z = class z {
   static makeMap() {
     this.list.forEach((t) => {
       t.mask.forEach((e) => {
-        let s = this.map, r;
-        if (this.toNumber(e).forEach((o) => {
-          var a;
-          o in s || (s[o] = {
+        let i = this.map, r;
+        if (this.toNumber(e).forEach((a) => {
+          var o;
+          a in i || (i[a] = {
             items: [],
             info: void 0,
             value: void 0,
             mask: [],
             maskFull: [],
             next: {}
-          }), r = s[o], s = (a = r == null ? void 0 : r.next) != null ? a : {};
+          }), r = i[a], i = (o = r == null ? void 0 : r.next) != null ? o : {};
         }), r) {
           r.value === void 0 && (r.info = t, r.value = t.value);
-          const o = this.toWithin(e, t.within);
-          r.mask.push(o), r.maskFull.push(o.replace(/\d/ig, "*")), r.items.push(t);
+          const a = this.toWithin(e, t.within);
+          r.mask.push(a), r.maskFull.push(a.replace(/\d/ig, "*")), r.items.push(t);
         }
       });
     });
@@ -3742,8 +3769,8 @@ const z = class z {
    * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toStandard(t, e) {
-    let s = 0;
-    return e.replace(/\*/ig, () => String(t[s++]));
+    let i = 0;
+    return e.replace(/\*/ig, () => String(t[i++]));
   }
   /**
    * Replaces the first character with the internal country code
@@ -3756,9 +3783,9 @@ const z = class z {
     return t.replace(/\*/, this.getWithinSymbol(e));
   }
 };
-c(z, "list", []), c(z, "map", {}), z.makeList(), z.makeMap();
-let Ct = z, j;
-class Re {
+c(Z, "list", []), c(Z, "map", {}), Z.makeList(), Z.makeMap();
+let kt = Z, j;
+class Ze {
   /**
    * Returns the value by its name.
    *
@@ -3775,10 +3802,10 @@ class Re {
    * @param data global data/ глобальные данные
    */
   static add(t) {
-    j === void 0 && (j = C(t));
+    j === void 0 && (j = D(t));
   }
 }
-const P = class P {
+const W = class W {
   /**
    * Get data from hash.
    *
@@ -3798,8 +3825,8 @@ const P = class P {
    */
   static set(t, e) {
     var r;
-    const s = I(e);
-    s !== ((r = this.hash) == null ? void 0 : r[t]) && (this.hash[t] = s, this.update());
+    const i = B(e);
+    i !== ((r = this.hash) == null ? void 0 : r[t]) && (this.hash[t] = i, this.update());
   }
   /**
    * Adding an event when data is changed.
@@ -3809,8 +3836,20 @@ const P = class P {
    * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
    */
   static addWatch(t, e) {
-    var s;
-    t in this.watch ? (s = this.watch[t]) == null || s.push(e) : this.watch[t] = [e];
+    var i;
+    t in this.watch ? (i = this.watch[t]) == null || i.push(e) : this.watch[t] = [e];
+  }
+  /**
+   * Removing an event when data is changed.
+   *
+   * Удаление события при изменении данных.
+   * @param name variable names/ названия переменных
+   * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+   */
+  static removeWatch(t, e) {
+    var r;
+    const i = (r = this.watch) == null ? void 0 : r[t];
+    i && (this.watch[t] = i.filter((a) => a !== e));
   }
   /**
    * Update hash variable from URL string.
@@ -3832,7 +3871,7 @@ const P = class P {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = Wt(e[2]), "")
+      (...e) => (t[String(e[1])] = Ut(e[2]), "")
     ), t;
   }
   /**
@@ -3841,7 +3880,7 @@ const P = class P {
    * Обновление строки хэша в URL.
    */
   static update() {
-    this.block = !0, history.replaceState(null, "", `#${Rt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+    this.block = !0, history.replaceState(null, "", `#${Pt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
   }
@@ -3852,15 +3891,15 @@ const P = class P {
    * @param location fresh data/ свежий данные
    */
   static makeWatch(t) {
-    d(this.watch, (e, s) => {
+    d(this.watch, (e, i) => {
       var r;
-      ((r = this.hash) == null ? void 0 : r[s]) !== (t == null ? void 0 : t[s]) && e.forEach((o) => o(t[s]));
+      ((r = this.hash) == null ? void 0 : r[i]) !== (t == null ? void 0 : t[i]) && e.forEach((a) => a(t[i]));
     });
   }
 };
-c(P, "hash", {}), c(P, "watch", {}), c(P, "block", !1), l() && (P.reload(), addEventListener("hashchange", () => P.reload()));
-let kt = P;
-const nt = "__UI_ICON", Nt = 320, At = "--LOAD--", M = class M {
+c(W, "hash", {}), c(W, "watch", {}), c(W, "block", !1), l() && (W.reload(), addEventListener("hashchange", () => W.reload()));
+let Nt = W;
+const at = "__UI_ICON", Et = 320, At = "--LOAD--", M = class M {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3880,10 +3919,10 @@ const nt = "__UI_ICON", Nt = 320, At = "--LOAD--", M = class M {
    * @param wait waiting time for picture loading/
    * время ожидания загрузки картинки
    */
-  static async get(t, e = "", s = 1e3 * 60 * 3) {
-    var o, a, u, h;
-    const r = (h = (u = (o = this.icons) == null ? void 0 : o[this.getName(t)]) != null ? u : (a = this.icons) == null ? void 0 : a[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
-    return typeof r == "string" ? r === At && s > 0 ? (await this.wait(), this.get(t, e, s - Nt)) : r : ht(r) ? await r() : await r;
+  static async get(t, e = "", i = 1e3 * 60 * 3) {
+    var a, o, u, h;
+    const r = (h = (u = (a = this.icons) == null ? void 0 : a[this.getName(t)]) != null ? u : (o = this.icons) == null ? void 0 : o[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
+    return typeof r == "string" ? r === At && i > 0 ? (await this.wait(), this.get(t, e, i - Et)) : r : lt(r) ? await r() : await r;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -3899,7 +3938,7 @@ const nt = "__UI_ICON", Nt = 320, At = "--LOAD--", M = class M {
    * Возвращает глобальную ссылку.
    */
   static getUrlGlobal() {
-    return `${V.isLocalhost(), ""}${this.url}`;
+    return `${K.isLocalhost(), ""}${this.url}`;
   }
   /**
    * Adding custom icons.
@@ -3937,7 +3976,7 @@ const nt = "__UI_ICON", Nt = 320, At = "--LOAD--", M = class M {
    * @param list list of icons/ список иконки
    */
   static addByList(t) {
-    d(t, (e, s) => this.add(s, e));
+    d(t, (e, i) => this.add(i, e));
   }
   /**
    * Changes the file path.
@@ -3963,42 +4002,42 @@ const nt = "__UI_ICON", Nt = 320, At = "--LOAD--", M = class M {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((t) => setTimeout(() => t(), Nt));
+    return new Promise((t) => setTimeout(() => t(), Et));
   }
 };
-c(M, "icons", {}), c(M, "url", "/icons/"), l() && (nt in window || (window[nt] = {}), M.icons = window[nt]);
-let Et = M;
-function re(i, t, e) {
-  var s, r;
-  return (r = (s = A(i)) == null ? void 0 : s[t]) != null ? r : e;
+c(M, "icons", {}), c(M, "url", "/icons/"), l() && (at in window || (window[at] = {}), M.icons = window[at]);
+let It = M;
+function re(s, t, e) {
+  var i, r;
+  return (r = (i = E(s)) == null ? void 0 : i[t]) != null ? r : e;
 }
-function ne(i, t, e) {
-  const s = A(i);
-  if (s) {
-    const r = re(s, t);
+function ne(s, t, e) {
+  const i = E(s);
+  if (i) {
+    const r = re(i, t);
     if (f(r) && f(e))
-      d(e, (o, a) => {
-        r[a] = I(o);
+      d(e, (a, o) => {
+        r[o] = B(a);
       });
     else {
-      const o = I(e);
-      !(t in s) && typeof o == "string" ? s.setAttribute(t.toString(), o) : s[t] = I(e);
+      const a = B(e);
+      !(t in i) && typeof a == "string" ? i.setAttribute(t.toString(), a) : i[t] = B(e);
     }
   }
-  return s;
+  return i;
 }
-function T(i, t = "div", e, s) {
+function G(s, t = "div", e, i) {
   if (!l())
     return;
   const r = document.createElement(t);
-  return typeof e == "function" ? e(r) : E(e) && d(e, (o, a) => {
-    ne(r, a, o);
-  }), i == null || i.insertBefore(r, s != null ? s : null), r;
+  return typeof e == "function" ? e(r) : A(e) && d(e, (a, o) => {
+    ne(r, o, a);
+  }), s == null || s.insertBefore(r, i != null ? i : null), r;
 }
-function oe(i) {
-  return i.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
+function ae(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
 }
-class gt {
+class dt {
   /**
    * Creates an instance of MetaManager.
    *
@@ -4066,7 +4105,7 @@ class gt {
   setByList(t) {
     return d(
       t,
-      (e, s) => this.set(s, String(e))
+      (e, i) => this.set(i, String(e))
     ), this;
   }
   /**
@@ -4107,12 +4146,12 @@ class gt {
    */
   setMeta(t) {
     var r;
-    const e = this.findMetaElement(t), s = (r = this.items[t]) != null ? r : "";
+    const e = this.findMetaElement(t), i = (r = this.items[t]) != null ? r : "";
     if (e)
-      e.content = s;
+      e.content = i;
     else if (l()) {
-      const o = { content: s };
-      this.isProperty ? o.property = t : o.name = t, T(document.head, "meta", o);
+      const a = { content: i };
+      this.isProperty ? a.property = t : a.name = t, G(document.head, "meta", a);
     }
     return this;
   }
@@ -4123,8 +4162,8 @@ class gt {
    * @param name meta tag name / имя мета-тега
    */
   toHtmlString(t) {
-    var s;
-    const e = oe((s = this.items[t]) != null ? s : "");
+    var i;
+    const e = ae((i = this.items[t]) != null ? i : "");
     return e ? `<meta ${this.getAttributeName()}="${t}" content="${e}">` : "";
   }
   /**
@@ -4134,13 +4173,13 @@ class gt {
    */
   update() {
     return this.listMeta.forEach((t) => {
-      var e, s;
-      this.items[t] = (s = (e = this.findMetaElement(t)) == null ? void 0 : e.content) != null ? s : "";
+      var e, i;
+      this.items[t] = (i = (e = this.findMetaElement(t)) == null ? void 0 : e.content) != null ? i : "";
     }), this;
   }
 }
-var D = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(D || {}), ae = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(ae || {}), $ = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))($ || {}), ce = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(ce || {}), ue = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(ue || {}), he = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(he || {}), le = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(le || {}), ge = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(ge || {}), p = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))(p || {}), de = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(de || {});
-class fe extends gt {
+var L = /* @__PURE__ */ ((s) => (s.description = "description", s.keywords = "keywords", s.canonical = "canonical", s.robots = "robots", s.author = "author", s))(L || {}), oe = /* @__PURE__ */ ((s) => (s.indexFollow = "index, follow", s.noIndexFollow = "noindex, follow", s.indexNoFollow = "index, nofollow", s.noIndexNoFollow = "noindex, nofollow", s.noArchive = "noarchive", s.noSnippet = "nosnippet", s.noImageIndex = "noimageindex", s.images = "images", s.noTranslate = "notranslate", s.noPreview = "nopreview", s.textOnly = "textonly", s.noIndexSubpages = "noindex, noarchive", s.none = "none", s))(oe || {}), $ = /* @__PURE__ */ ((s) => (s.title = "og:title", s.type = "og:type", s.url = "og:url", s.image = "og:image", s.description = "og:description", s.locale = "og:locale", s.siteName = "og:site_name", s.localeAlternate = "og:locale:alternate", s.imageUrl = "og:image:url", s.imageSecureUrl = "og:image:secure_url", s.imageType = "og:image:type", s.imageWidth = "og:image:width", s.imageHeight = "og:image:height", s.imageAlt = "og:image:alt", s.video = "og:video", s.videoUrl = "og:video:url", s.videoSecureUrl = "og:video:secure_url", s.videoType = "og:video:type", s.videoWidth = "og:video:width", s.videoHeight = "og:video:height", s.audio = "og:audio", s.audioSecureUrl = "og:audio:secure_url", s.audioType = "og:audio:type", s.articlePublishedTime = "article:published_time", s.articleModifiedTime = "article:modified_time", s.articleExpirationTime = "article:expiration_time", s.articleAuthor = "article:author", s.articleSection = "article:section", s.articleTag = "article:tag", s.bookAuthor = "book:author", s.bookIsbn = "book:isbn", s.bookReleaseDate = "book:release_date", s.bookTag = "book:tag", s.musicDuration = "music:duration", s.musicAlbum = "music:album", s.musicAlbumDisc = "music:album:disc", s.musicAlbumTrack = "music:album:track", s.musicMusician = "music:musician", s.musicSong = "music:song", s.musicSongDisc = "music:song:disc", s.musicSongTrack = "music:song:track", s.musicReleaseDate = "music:release_date", s.musicCreator = "music:creator", s.videoActor = "video:actor", s.videoActorRole = "video:actor:role", s.videoDirector = "video:director", s.videoWriter = "video:writer", s.videoDuration = "video:duration", s.videoReleaseDate = "video:release_date", s.videoTag = "video:tag", s.videoSeries = "video:series", s.profileFirstName = "profile:first_name", s.profileLastName = "profile:last_name", s.profileUsername = "profile:username", s.profileGender = "profile:gender", s.productBrand = "product:brand", s.productAvailability = "product:availability", s.productCondition = "product:condition", s.productPriceAmount = "product:price:amount", s.productPriceCurrency = "product:price:currency", s.productRetailerItemId = "product:retailer_item_id", s.productCategory = "product:category", s.productEan = "product:ean", s.productIsbn = "product:isbn", s.productMfrPartNo = "product:mfr_part_no", s.productUpc = "product:upc", s.productWeightValue = "product:weight:value", s.productWeightUnits = "product:weight:units", s.productColor = "product:color", s.productMaterial = "product:material", s.productPattern = "product:pattern", s.productAgeGroup = "product:age_group", s.productGender = "product:gender", s))($ || {}), ce = /* @__PURE__ */ ((s) => (s.website = "website", s.article = "article", s.video = "video.other", s.videoTvShow = "video.tv_show", s.videoEpisode = "video.episode", s.videoMovie = "video.movie", s.musicAlbum = "music.album", s.musicPlaylist = "music.playlist", s.musicSong = "music.song", s.musicRadioStation = "music.radio_station", s.app = "app", s.product = "product", s.business = "business.business", s.place = "place", s.event = "event", s.profile = "profile", s.book = "book", s))(ce || {}), ue = /* @__PURE__ */ ((s) => (s.inStock = "in stock", s.outOfStock = "out of stock", s.preorder = "preorder", s.backorder = "backorder", s.discontinued = "discontinued", s.pending = "pending", s))(ue || {}), he = /* @__PURE__ */ ((s) => (s.new = "new", s.used = "used", s.refurbished = "refurbished", s))(he || {}), le = /* @__PURE__ */ ((s) => (s.newborn = "newborn", s.infant = "infant", s.toddler = "toddler", s.kids = "kids", s.adult = "adult", s))(le || {}), ge = /* @__PURE__ */ ((s) => (s.female = "female", s.male = "male", s.unisex = "unisex", s))(ge || {}), p = /* @__PURE__ */ ((s) => (s.card = "twitter:card", s.site = "twitter:site", s.creator = "twitter:creator", s.url = "twitter:url", s.title = "twitter:title", s.description = "twitter:description", s.image = "twitter:image", s.imageAlt = "twitter:image:alt", s.imageSrc = "twitter:image:src", s.imageWidth = "twitter:image:width", s.imageHeight = "twitter:image:height", s.label1 = "twitter:label1", s.data1 = "twitter:data1", s.label2 = "twitter:label2", s.data2 = "twitter:data2", s.appNameIphone = "twitter:app:name:iphone", s.appIdIphone = "twitter:app:id:iphone", s.appUrlIphone = "twitter:app:url:iphone", s.appNameIpad = "twitter:app:name:ipad", s.appIdIpad = "twitter:app:id:ipad", s.appUrlIpad = "twitter:app:url:ipad", s.appNameGooglePlay = "twitter:app:name:googleplay", s.appIdGooglePlay = "twitter:app:id:googleplay", s.appUrlGooglePlay = "twitter:app:url:googleplay", s.player = "twitter:player", s.playerWidth = "twitter:player:width", s.playerHeight = "twitter:player:height", s.playerStream = "twitter:player:stream", s.playerStreamContentType = "twitter:player:stream:content_type", s))(p || {}), de = /* @__PURE__ */ ((s) => (s.summary = "summary", s.summaryLargeImage = "summary_large_image", s.app = "app", s.player = "player", s.product = "product", s.gallery = "gallery", s.photo = "photo", s.leadGeneration = "lead_generation", s.audio = "audio", s.poll = "poll", s))(de || {});
+class fe extends dt {
   constructor() {
     super(Object.values($), !0);
   }
@@ -4264,7 +4303,7 @@ class fe extends gt {
     return this.set($.siteName, t);
   }
 }
-class me extends gt {
+class me extends dt {
   constructor() {
     super(Object.values(p));
   }
@@ -4388,14 +4427,14 @@ class me extends gt {
     return this.set(p.image, t), this;
   }
 }
-class Pe extends gt {
+class Ve extends dt {
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
    *
    * Создает экземпляр Meta с интегрированной поддержкой Open Graph и Twitter Card.
    */
   constructor() {
-    super(Object.values(D));
+    super(Object.values(L));
     c(this, "suffix");
     c(this, "og");
     c(this, "twitter");
@@ -4431,7 +4470,7 @@ class Pe extends gt {
    * Получает мета-тег keywords.
    */
   getKeywords() {
-    return this.get(D.keywords);
+    return this.get(L.keywords);
   }
   /**
    * Gets the description meta tag.
@@ -4439,7 +4478,7 @@ class Pe extends gt {
    * Получает мета-тег description.
    */
   getDescription() {
-    return this.get(D.description);
+    return this.get(L.description);
   }
   /**
    * Gets the Open Graph image URL.
@@ -4455,7 +4494,7 @@ class Pe extends gt {
    * Получает канонический URL.
    */
   getCanonical() {
-    return this.get(D.canonical);
+    return this.get(L.canonical);
   }
   /**
    * Gets the robots meta tag value.
@@ -4463,7 +4502,7 @@ class Pe extends gt {
    * Получает значение мета-тега robots.
    */
   getRobots() {
-    return this.get(D.robots);
+    return this.get(L.robots);
   }
   /**
    * Gets the author meta tag.
@@ -4471,7 +4510,7 @@ class Pe extends gt {
    * Получает мета-тег author.
    */
   getAuthor() {
-    return this.get(D.author);
+    return this.get(L.author);
   }
   /**
    * Gets the Open Graph site name.
@@ -4497,8 +4536,8 @@ class Pe extends gt {
    */
   setTitle(e) {
     if (l()) {
-      const s = y(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
-      document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
+      const i = m(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      document.title = i, this.og.setTitle(i), this.twitter.setTitle(i);
     }
     return this;
   }
@@ -4509,7 +4548,7 @@ class Pe extends gt {
    * @param keywords keywords as string or array / ключевые слова в виде строки или массива
    */
   setKeywords(e) {
-    return this.set(D.keywords, K(e).join(", ")), this;
+    return this.set(L.keywords, Y(e).join(", ")), this;
   }
   /**
    * Sets the description meta tag.
@@ -4518,7 +4557,7 @@ class Pe extends gt {
    * @param description page description / описание страницы
    */
   setDescription(e) {
-    return this.set(D.description, e), this;
+    return this.set(L.description, e), this;
   }
   /**
    * Sets the image for Open Graph and Twitter Card.
@@ -4536,7 +4575,7 @@ class Pe extends gt {
    * @param canonical canonical URL / канонический URL
    */
   setCanonical(e) {
-    return this.set(D.canonical, e), this.og.setUrl(e), this.twitter.setUrl(e), this;
+    return this.set(L.canonical, e), this.og.setUrl(e), this.twitter.setUrl(e), this;
   }
   /**
    * Sets the robots meta tag.
@@ -4545,7 +4584,7 @@ class Pe extends gt {
    * @param robots robots directive / директива robots
    */
   setRobots(e) {
-    return this.set(D.robots, e), this;
+    return this.set(L.robots, e), this;
   }
   /**
    * Sets the author meta tag.
@@ -4554,7 +4593,7 @@ class Pe extends gt {
    * @param author author name / имя автора
    */
   setAuthor(e) {
-    return this.set(D.author, e), this;
+    return this.set(L.author, e), this;
   }
   /**
    * Sets the site name for Open Graph and Twitter Card.
@@ -4597,10 +4636,10 @@ class Pe extends gt {
    * Получает отформатированный суффикс с разделителем.
    */
   getSuffix() {
-    return y(this.suffix) ? ` - ${this.suffix}` : "";
+    return m(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
-class ct {
+class ut {
   /**
    * Checks whether to enable scroll hiding.
    *
@@ -4619,10 +4658,26 @@ class ct {
     var e;
     const t = (e = this.storage.get()) != null ? e : -1;
     if (!this.calculate && t === -1) {
-      const s = await this.init();
-      return this.storage.set(s), s;
+      const i = await this.init();
+      return this.storage.set(i), i;
     }
     return t;
+  }
+  /**
+   * Returns the storage.
+   *
+   * Возвращает хранилище.
+   */
+  static getStorage() {
+    return this.storage;
+  }
+  /**
+   * Returns the calculate flag.
+   *
+   * Возвращает флаг вычисления.
+   */
+  static getCalculate() {
+    return this.calculate;
   }
   /**
    * Creates elements to check the width of the scroll.
@@ -4630,8 +4685,8 @@ class ct {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return T(document.body, "div", (t) => {
-      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", T(t, "div", (e) => {
+    return G(document.body, "div", (t) => {
+      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", G(t, "div", (e) => {
         e.style.height = "100px";
       });
     });
@@ -4651,8 +4706,562 @@ class ct {
     });
   }
 }
-c(ct, "storage", new tt("scrollbar", !0)), c(ct, "calculate", !1);
-const ye = [
+c(ut, "storage", new et("scrollbar", !0)), c(ut, "calculate", !1);
+function ft(s) {
+  return s.replace(/([[\]\\^$.?*+(){}/|])/g, "\\$1");
+}
+function ye(s) {
+  const t = d(
+    s.split(" "),
+    (e) => ft(e)
+  ).join("|");
+  return new RegExp(`(${t})`, "ig");
+}
+function $e(s, t, e = "sys-highlight-match") {
+  return t ? String(s).replace(
+    ye(t),
+    `<span class="${e}">$1</span>`
+  ) : s;
+}
+class pe {
+  /**
+   * Constructor for SearchListData.
+   *
+   * Конструктор для SearchListData.
+   * @param list original list of items/ исходный список элементов
+   * @param columns columns to search in/ столбцы для поиска
+   * @param item current search item state/ текущее состояние элемента поиска
+   * @param options search options/ опции поиска
+   */
+  constructor(t, e, i, r) {
+    c(this, "listCache");
+    this.list = t, this.columns = e, this.item = i, this.options = r;
+  }
+  /**
+   * Checks if both list and columns are provided.
+   *
+   * Проверяет, предоставлены ли и список, и столбцы.
+   * @returns boolean indicating if ready for column-based search/ логическое значение, указывающее на готовность к поиску по столбцам
+   */
+  is() {
+    return !!(this.list && this.columns);
+  }
+  /**
+   * Checks if the list is provided.
+   *
+   * Проверяет, предоставлен ли список.
+   * @returns boolean/ логическое значение
+   */
+  isList() {
+    return !!this.list;
+  }
+  /**
+   * Returns the original list.
+   *
+   * Возвращает исходный список.
+   * @returns list value/ значение списка
+   */
+  getList() {
+    return this.list;
+  }
+  /**
+   * Returns the search columns.
+   *
+   * Возвращает столбцы поиска.
+   * @returns columns or undefined/ столбцы или undefined
+   */
+  getColumns() {
+    return this.columns;
+  }
+  /**
+   * Gets the search cache, initializing it if necessary.
+   *
+   * Получает кэш поиска, инициализируя его при необходимости.
+   * @returns search cache/ кэш поиска
+   */
+  getCache() {
+    var t;
+    return this.listCache || this.initCache(), (t = this.listCache) != null ? t : [];
+  }
+  /**
+   * Sets a new list and regenerates the cache.
+   *
+   * Устанавливает новый список и регенерирует кэш.
+   * @param list new list/ новый список
+   * @returns this instance/ данный экземпляр
+   */
+  setList(t) {
+    return this.list = t, this.resetCache(), this;
+  }
+  /**
+   * Sets new search columns and regenerates the cache.
+   *
+   * Устанавливает новые столбцы поиска и регенерирует кэш.
+   * @param columns new columns/ новые столбцы
+   * @returns this instance/ данный экземпляр
+   */
+  setColumns(t) {
+    return this.columns = t, this.resetCache(), this;
+  }
+  /**
+   * Finds a cached item corresponding to the given original item.
+   *
+   * Находит кэшированный элемент, соответствующий данному исходному элементу.
+   * @param item original item/ исходный элемент
+   * @returns cache item or undefined/ кэшированный элемент или undefined
+   */
+  findCacheItem(t) {
+    return this.getCache().find((e) => e.item === t);
+  }
+  /**
+   * Iterates over the cached list and executes a callback for each item.
+   *
+   * Перебирает кэшированный список и выполняет обратный вызов для каждого элемента.
+   * @param callback function to execute for each item/ функция для выполнения для каждого элемента
+   * @returns formatted list/ отформатированный список
+   */
+  forEach(t) {
+    const e = [];
+    return this.isList() && this.getCache().forEach((i) => {
+      const r = t(
+        i.item,
+        i.value
+      );
+      r && e.push(r);
+    }), e;
+  }
+  /**
+   * Converts a single item to a formatted item with highlighted matches if selected.
+   *
+   * Преобразует один элемент в отформатированный элемент с выделенными совпадениями, если он выбран.
+   * @param item original item/ исходный элемент
+   * @param selection whether the item matches the search and should be highlighted/ совпадает ли элемент с поиском и должен ли он быть выделен
+   * @returns formatted item/ отформатированный элемент
+   */
+  toFormatItem(t, e) {
+    const i = {};
+    return this.columns && this.columns.forEach((r) => {
+      const a = this.getColumnName(r), o = x(t, r);
+      i[a] = m(o) && e ? this.addTag(o) : T(o);
+    }), {
+      ...t,
+      ...i,
+      searchActive: e
+    };
+  }
+  /**
+   * Formats a column path to a camelCase property name with a 'Search' suffix.
+   *
+   * Форматирует путь к столбцу в имя свойства camelCase с суффиксом 'Search'.
+   * @param column column path/ путь к столбцу
+   * @returns property name/ имя свойства
+   */
+  getColumnName(t) {
+    return t.replace(
+      /\.([a-z0-9])/ig,
+      (e, i) => i.toUpperCase()
+    ) + "Search";
+  }
+  /**
+   * Adds highlight tags to the given value based on the current search value.
+   *
+   * Добавляет теги выделения к данному значению на основе текущего значения поиска.
+   * @param value value to highlight/ значение для выделения
+   * @returns highlighted string/ выделенная строка
+   */
+  addTag(t) {
+    return $e(
+      T(t),
+      this.item.get(),
+      this.options.getClassName()
+    );
+  }
+  /**
+   * Generates a search cache for the current list and columns.
+   *
+   * Генерирует кэш поиска для текущего списка и столбцов.
+   * @returns search cache/ кэш поиска
+   */
+  generateCache() {
+    if (!this.isList())
+      return [];
+    const t = [];
+    for (const e of this.list) {
+      let i = "";
+      if (this.columns)
+        for (const r of this.columns) {
+          const a = x(e, r);
+          m(a) && (i += ` ${T(a)}`);
+        }
+      t.push({
+        item: e,
+        value: i
+      });
+    }
+    return t;
+  }
+  /**
+   * Initializes the search cache.
+   *
+   * Инициализирует кэш поиска.
+   */
+  initCache() {
+    this.listCache = this.generateCache();
+  }
+  /**
+   * Resets the search cache.
+   *
+   * Сбрасывает кэш поиска.
+   */
+  resetCache() {
+    this.listCache = void 0;
+  }
+}
+class be {
+  /**
+   * Constructor for SearchListItem.
+   *
+   * Конструктор для SearchListItem.
+   * @param value current search value/ текущее значение поиска
+   * @param options search options/ опции поиска
+   */
+  constructor(t, e) {
+    this.value = t, this.options = e;
+  }
+  /**
+   * Checks if the value is filled.
+   *
+   * Проверяет, заполнено ли значение.
+   * @returns boolean indicating if value exists/ логическое значение, указывающее на наличие значения
+   */
+  is() {
+    return !!this.value;
+  }
+  /**
+   * Checks if a search should be performed based on the current value and options.
+   *
+   * Проверяет, следует ли выполнять поиск на основе текущего значения и опций.
+   * @returns boolean/ логическое значение
+   */
+  isSearch() {
+    return this.is() && this.value.length >= this.options.getLimit();
+  }
+  /**
+   * Returns the current search value as a string.
+   *
+   * Возвращает текущее значение поиска в виде строки.
+   * @returns search value/ значение поиска
+   */
+  get() {
+    var t;
+    return (t = this.value) != null ? t : "";
+  }
+  /**
+   * Sets a new search value.
+   *
+   * Устанавливает новое значение поиска.
+   * @param value new search value/ новое значение поиска
+   * @returns this instance/ данный экземпляр
+   */
+  set(t) {
+    return this.value = t, this;
+  }
+}
+function zt(s, t = "ig", e = ":value") {
+  const i = ft(s);
+  return new RegExp(e.replace(/:value/g, i), t);
+}
+function we(s) {
+  return zt(s, "i", "(:value)");
+}
+function ve(s) {
+  let t = "";
+  return s.split(" ").forEach((e) => {
+    const i = ft(e).trim();
+    m(i) && (t += `(?=.*?${i})`);
+  }), new RegExp(`^${t}`, "ig");
+}
+class Se {
+  /**
+   * Constructor for SearchListMatcher.
+   *
+   * Конструктор для SearchListMatcher.
+   * @param item search item containing the current value/ элемент поиска, содержащий текущее значение
+   * @param options search options/ опции поиска
+   */
+  constructor(t, e) {
+    c(this, "matcher");
+    this.item = t, this.options = e, this.initMatcher();
+  }
+  /**
+   * Checks if the matcher is initialized.
+   *
+   * Проверяет, инициализирован ли сопоставитель.
+   * @returns boolean/ логическое значение
+   */
+  is() {
+    return !!this.matcher;
+  }
+  /**
+   * Checks if the given value matches the current search expression.
+   *
+   * Проверяет, соответствует ли данное значение текущему поисковому выражению.
+   * @param value value to check/ проверяемое значение
+   * @returns boolean indicating a match/ логическое значение, указывающее на совпадение
+   */
+  isSelection(t) {
+    return this.matcher ? this.matcher.test(t) : !1;
+  }
+  /**
+   * Returns the current regular expression matcher.
+   *
+   * Возвращает текущий сопоставитель регулярных выражений.
+   * @returns RegExp or undefined/ RegExp или undefined
+   */
+  get() {
+    return this.matcher;
+  }
+  /**
+   * Updates the matcher based on the current item value and options.
+   *
+   * Обновляет сопоставитель на основе текущего значения элемента и опций.
+   */
+  update() {
+    this.initMatcher();
+  }
+  /**
+   * Initializes or resets the regular expression matcher.
+   *
+   * Инициализирует или сбрасывает сопоставитель регулярных выражений.
+   */
+  initMatcher() {
+    this.item.is() ? this.matcher = this.options.getFindExactMatch() ? we(this.item.get()) : ve(this.item.get()) : this.matcher = void 0;
+  }
+}
+class Le {
+  /**
+   * Constructor for SearchListOptions.
+   *
+   * Конструктор для SearchListOptions.
+   * @param options search options/ опции поиска
+   */
+  constructor(t) {
+    this.options = t;
+  }
+  /**
+   * Returns the current search options.
+   *
+   * Возвращает текущие опции поиска.
+   * @returns search options/ опции поиска
+   */
+  getOptions() {
+    return this.options || {};
+  }
+  /**
+   * Returns the minimum number of characters required to trigger a search.
+   *
+   * Возвращает минимальное количество символов, необходимых для запуска поиска.
+   * @returns limit value/ значение лимита
+   */
+  getLimit() {
+    var t;
+    return (t = this.getOptions().limit) != null ? t : 2;
+  }
+  /**
+   * Returns whether to return all items even if they don't match the search query.
+   *
+   * Возвращает, следует ли возвращать все элементы, даже если они не соответствуют поисковому запросу.
+   * @returns boolean value/ логическое значение
+   */
+  getReturnEverything() {
+    var t;
+    return (t = this.getOptions().returnEverything) != null ? t : !1;
+  }
+  /**
+   * Returns the search delay in milliseconds.
+   *
+   * Возвращает задержку поиска в миллисекундах.
+   * @returns delay value/ значение задержки
+   */
+  getDelay() {
+    var t;
+    return (t = this.getOptions().delay) != null ? t : 0;
+  }
+  /**
+   * Returns whether to perform an exact match search.
+   *
+   * Возвращает, следует ли выполнять поиск с точным совпадением.
+   * @returns boolean value/ логическое значение
+   */
+  getFindExactMatch() {
+    var t;
+    return (t = this.getOptions().findExactMatch) != null ? t : !1;
+  }
+  /**
+   * Returns the CSS class name used for highlighting matches.
+   *
+   * Возвращает имя класса CSS, используемое для выделения совпадений.
+   * @returns class name/ имя класса
+   */
+  getClassName() {
+    var t;
+    return (t = this.getOptions().classSearchName) != null ? t : "sys-search-selection";
+  }
+  /**
+   * Sets new search options.
+   *
+   * Устанавливает новые опции поиска.
+   * @param options search options/ опции поиска
+   * @returns this instance/ данный экземпляр
+   */
+  setOptions(t) {
+    return this.options = t, this;
+  }
+}
+class Ke {
+  /**
+   * Constructor for SearchList.
+   *
+   * Конструктор для SearchList.
+   * @param list initial list of items/ исходный список элементов
+   * @param columns columns to perform search on/ столбцы для выполнения поиска
+   * @param value initial search value/ начальное значение поиска
+   * @param options search options/ опции поиска
+   */
+  constructor(t, e, i, r) {
+    c(this, "options");
+    c(this, "item");
+    c(this, "matcher");
+    c(this, "data");
+    /**
+     * Callback for processing items when a search is active.
+     * Checks for selection and handles "return everything" option.
+     *
+     * Обратный вызов для обработки элементов при активном поиске.
+     * Проверяет выбор и обрабатывает опцию "возвращать всё".
+     */
+    c(this, "callbackToSelection", (t, e) => {
+      if (this.matcher.isSelection(e))
+        return this.data.toFormatItem(t, !0);
+      if (this.options.getReturnEverything())
+        return this.data.toFormatItem(t, !1);
+    });
+    /**
+     * Callback for processing items when no search is active.
+     *
+     * Обратный вызов для обработки элементов, когда поиск не активен.
+     */
+    c(this, "callbackToNone", (t) => this.data.toFormatItem(t, !1));
+    this.options = new Le(r), this.item = new be(i, this.options), this.matcher = new Se(this.item, this.options), this.data = new pe(t, e, this.item, this.options);
+  }
+  /**
+   * Returns the search data management instance.
+   *
+   * Возвращает экземпляр управления данными поиска.
+   * @returns SearchListData instance/ экземпляр SearchListData
+   */
+  getData() {
+    return this.data;
+  }
+  /**
+   * Returns the current list of items.
+   *
+   * Возвращает текущий список элементов.
+   * @returns list of items/ список элементов
+   */
+  getList() {
+    return this.data.getList();
+  }
+  /**
+   * Returns the current search columns.
+   *
+   * Возвращает текущие столбцы поиска.
+   * @returns columns or undefined/ столбцы или undefined
+   */
+  getColumns() {
+    return this.data.getColumns();
+  }
+  /**
+   * Returns the search item instance.
+   *
+   * Возвращает экземпляр элемента поиска.
+   * @returns SearchListItem instance/ экземпляр SearchListItem
+   */
+  getItem() {
+    return this.item;
+  }
+  /**
+   * Returns the current search value.
+   *
+   * Возвращает текущее значение поиска.
+   * @returns search value string or undefined/ строка значения поиска или undefined
+   */
+  getValue() {
+    return this.item.get();
+  }
+  /**
+   * Returns the search options instance.
+   *
+   * Возвращает экземпляр опций поиска.
+   * @returns SearchListOptions instance/ экземпляр SearchListOptions
+   */
+  getOptions() {
+    return this.options;
+  }
+  /**
+   * Sets a new list of items.
+   *
+   * Устанавливает новый список элементов.
+   * @param list new list/ новый список
+   * @returns this instance/ данный экземпляр
+   */
+  setList(t) {
+    return this.data.setList(t), this;
+  }
+  /**
+   * Sets new search columns.
+   *
+   * Устанавливает новые столбцы поиска.
+   * @param columns new columns/ новые столбцы
+   * @returns this instance/ данный экземпляр
+   */
+  setColumns(t) {
+    return this.data.setColumns(t), this;
+  }
+  /**
+   * Sets a new search value and updates the matcher.
+   *
+   * Устанавливает новое значение поиска и обновляет сопоставитель.
+   * @param value new search value/ новое значение поиска
+   * @returns this instance/ данный экземпляр
+   */
+  setValue(t) {
+    return this.item.set(t), this.matcher.update(), this;
+  }
+  /**
+   * Sets new search options and updates the matcher.
+   *
+   * Устанавливает новые опции поиска и обновляет сопоставитель.
+   * @param options new options/ новые опции
+   * @returns this instance/ данный экземпляр
+   */
+  setOptions(t) {
+    return this.options.setOptions(t), this.matcher.update(), this;
+  }
+  /**
+   * Processes the list and returns a formatted list of items based on the current search state.
+   *
+   * Обрабатывает список и возвращает отформатированный список элементов на основе текущего состояния поиска.
+   * @returns formatted list of items/ отформатированный список элементов
+   */
+  to() {
+    if (this.item.isSearch())
+      return this.data.forEach(this.callbackToSelection);
+    const t = this.data.getList();
+    return t ? d(t, this.callbackToNone) : [];
+  }
+}
+const Ce = [
   "d",
   "e",
   "f",
@@ -4672,21 +5281,21 @@ const ye = [
   "t",
   "u",
   "v"
-], $e = (i, t = {}) => {
-  let e = String(i);
-  if (i.match(/%[a-z]/)) {
-    let s = 0;
+], De = (s, t = {}) => {
+  let e = String(s);
+  if (s.match(/%[a-z]/)) {
+    let i = 0;
     d(t, (r) => {
-      e = e.replace(new RegExp(`%${ye[s++]}`, "g"), String(r));
+      e = e.replace(new RegExp(`%${Ce[i++]}`, "g"), String(r));
     });
   }
-  return E(t) && d(t, (s, r) => {
+  return A(t) && d(t, (i, r) => {
     e = e.replace(
       new RegExp(`(?:\\[|\\{)${r}(?:\\]|\\})(.*?)(?:\\[|\\{)\\/${r}(?:\\]|\\})`, "g"),
-      (o, a) => String(s).replace(/(?:\[|\{)content(?:\]|\})/g, a)
-    ).replace(new RegExp(`(?:\\[|\\{)${r}(?:\\]|\\})`, "g"), String(s));
+      (a, o) => String(i).replace(/(?:\[|\{)content(?:\]|\})/g, o)
+    ).replace(new RegExp(`(?:\\[|\\{)${r}(?:\\]|\\})`, "g"), String(i));
   }), e;
-}, pe = "global", B = class B {
+}, ke = "global", I = class I {
   /**
    * Getting the translation text by its code.
    *
@@ -4696,8 +5305,8 @@ const ye = [
    */
   static async get(t, e) {
     var r;
-    const s = this.getText(t);
-    return s ? this.replacement(s, e) : (V.isLocalhost() || await this.add(t), this.replacement((r = this.getText(t)) != null ? r : t));
+    const i = this.getText(t);
+    return i ? this.replacement(i, e) : (K.isLocalhost() || await this.add(t), this.replacement((r = this.getText(t)) != null ? r : t));
   }
   /**
    * Getting the translation text by its code (Sync).
@@ -4709,9 +5318,9 @@ const ye = [
    * @param replacement If set, replaces the text with the specified values/
    * если установлено, заменяет текст на указанные значения
    */
-  static getSync(t, e = !1, s) {
+  static getSync(t, e = !1, i) {
     const r = this.getText(t);
-    return r ? this.replacement(r, s) : e ? " " : t;
+    return r ? this.replacement(r, i) : e ? " " : t;
   }
   /**
    * Getting a list of translations by an array of text codes.
@@ -4721,12 +5330,12 @@ const ye = [
    */
   static getList(t) {
     return new Promise((e) => {
-      const s = {};
+      const i = {};
       let r = 0;
-      for (const o of t) {
-        const a = Array.isArray(o) ? o[0] : o, u = Array.isArray(o) ? o.slice(1) : void 0;
-        this.get(a, u).then((h) => {
-          s[a] = h, ++r >= t.length && e(s);
+      for (const a of t) {
+        const o = Array.isArray(a) ? a[0] : a, u = Array.isArray(a) ? a.slice(1) : void 0;
+        this.get(o, u).then((h) => {
+          i[o] = h, ++r >= t.length && e(i);
         });
       }
     });
@@ -4740,12 +5349,12 @@ const ye = [
    * если установлено false, возвращает пустую строку, если нет текста
    */
   static getListSync(t, e = !1) {
-    const s = {};
+    const i = {};
     for (const r of t) {
-      const o = Array.isArray(r) ? r[0] : r, a = Array.isArray(r) ? r.slice(1) : void 0;
-      s[o] = this.getSync(o, e, a);
+      const a = Array.isArray(r) ? r[0] : r, o = Array.isArray(r) ? r.slice(1) : void 0;
+      i[a] = this.getSync(a, e, o);
     }
-    return s;
+    return i;
   }
   /**
    * Added a list of translated texts.
@@ -4769,8 +5378,8 @@ const ye = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static addSync(t) {
-    d(t, (e, s) => {
-      W(e) && y(e) && (this.data[this.getName(s)] = e);
+    d(t, (e, i) => {
+      U(e) && m(e) && (this.data[this.getName(i)] = e);
     });
   }
   /**
@@ -4780,8 +5389,8 @@ const ye = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (y(t))
-      if (V.isLocalhost())
+    if (m(t))
+      if (K.isLocalhost())
         this.addSync(t);
       else {
         const e = Object.keys(t);
@@ -4797,9 +5406,9 @@ const ye = [
   static addSyncByLocation(t) {
     d(
       t,
-      (e, s) => d(e, (r, o) => {
-        const a = `${s}-${o}`;
-        a in this.data || (this.data[a] = r);
+      (e, i) => d(e, (r, a) => {
+        const o = `${i}-${a}`;
+        o in this.data || (this.data[o] = r);
       })
     );
   }
@@ -4810,7 +5419,7 @@ const ye = [
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(t) {
-    return this.url = t, B;
+    return this.url = t, I;
   }
   static setPropsName(t) {
     return this.propsName = t, this;
@@ -4834,9 +5443,9 @@ const ye = [
     const e = this.getName(t);
     if (e in this.data)
       return this.data[e];
-    const s = this.getNameByLanguage(t);
-    if (s in this.data)
-      return this.data[s];
+    const i = this.getNameByLanguage(t);
+    if (i in this.data)
+      return this.data[i];
     const r = this.getNameByGlobal(t);
     if (r in this.data)
       return this.data[r];
@@ -4866,7 +5475,7 @@ const ye = [
    * @param name code name/ название кода
    */
   static getNameByGlobal(t) {
-    return `${pe}-${t}`;
+    return `${ke}-${t}`;
   }
   /**
    * Returns a list of names that are not yet in the list.
@@ -4876,8 +5485,8 @@ const ye = [
    */
   static getNamesNone(t) {
     const e = [];
-    return K(t).forEach((s) => {
-      s !== "__TRANSLATE_START__" && s !== "__TRANSLATE_END__" && !(this.getName(s) in this.data) && e.push(s);
+    return Y(t).forEach((i) => {
+      i !== "__TRANSLATE_START__" && i !== "__TRANSLATE_END__" && !(this.getName(i) in this.data) && e.push(i);
     }), e;
   }
   /**
@@ -4886,7 +5495,7 @@ const ye = [
    * Получение списка переводов с сервера.
    */
   static async getResponse() {
-    const t = await V.get({
+    const t = await K.get({
       api: !1,
       path: this.url,
       request: {
@@ -4905,7 +5514,7 @@ const ye = [
    * @param replacement values for replacement/ значения для замены
    */
   static replacement(t, e) {
-    return e ? $e(t, e) : t;
+    return e ? De(t, e) : t;
   }
   /**
    * Adding translation data from the server.
@@ -4915,393 +5524,363 @@ const ye = [
   static async make() {
     const t = await this.getResponse();
     this.cache.forEach((e) => {
-      var s;
-      this.data[this.getName(e)] = (s = t == null ? void 0 : t[e]) != null ? s : "";
+      var i;
+      this.data[this.getName(e)] = (i = t == null ? void 0 : t[e]) != null ? i : "";
     }), this.cache = [];
   }
 };
-c(B, "url", "/api/translate"), c(B, "propsName", "list"), c(B, "data", {}), c(B, "cache", []), c(B, "resolveList", []), c(B, "timeout");
-let Bt = B;
-function dt(i) {
-  return i.replace(/([[\]\\^$.?*+(){}/|])/g, "\\$1");
+c(I, "url", "/api/translate"), c(I, "propsName", "list"), c(I, "data", {}), c(I, "cache", []), c(I, "resolveList", []), c(I, "timeout");
+let Bt = I;
+function Ne(s, t) {
+  return Array(t).fill(s);
 }
-function be(i) {
-  const t = d(
-    i.split(" "),
-    (e) => dt(e)
-  ).join("|");
-  return new RegExp(`(${t})`, "ig");
-}
-function We(i, t, e = "sys-highlight-match") {
-  return t ? String(i).replace(
-    be(t),
-    `<span class="${e}">$1</span>`
-  ) : i;
-}
-function we(i, t) {
-  return Array(t).fill(i);
-}
-function je(i) {
+function Ye(s) {
   return new Promise((t, e) => {
-    const s = new FileReader();
-    s.onloadend = () => t(s.result), s.onerror = e, s.readAsDataURL(i);
+    const i = new FileReader();
+    i.onloadend = () => t(i.result), i.onerror = e, i.readAsDataURL(s);
   });
 }
-function Ue(i) {
+function qe(s) {
   var t;
   if (l())
-    return (t = document.querySelector(i)) != null ? t : void 0;
+    return (t = document.querySelector(s)) != null ? t : void 0;
 }
-function He(i) {
+function Je(s) {
   if (l())
-    return document.querySelectorAll(i);
+    return document.querySelectorAll(s);
 }
-function ze(i) {
-  i.preventDefault(), i.stopPropagation();
+function Me(s) {
+  s.preventDefault(), s.stopPropagation();
 }
-function ve(i, t, e) {
-  const s = () => {
-    i(), t != null && t() ? ve(i, t, e) : e == null || e();
+function Ee(s, t, e) {
+  const i = () => {
+    s(), t != null && t() ? Ee(s, t, e) : e == null || e();
   };
-  l() ? requestAnimationFrame(s) : s();
+  l() ? requestAnimationFrame(i) : i();
 }
-function Ze(i) {
-  var s;
-  const t = {}, e = A(i);
+function Qe(s) {
+  var i;
+  const t = {}, e = E(s);
   if (e)
     for (const r of e.attributes)
-      t[r.name] = (s = (r == null ? void 0 : r.value) || (r == null ? void 0 : r.textContent)) != null ? s : void 0;
+      t[r.name] = (i = (r == null ? void 0 : r.value) || (r == null ? void 0 : r.textContent)) != null ? i : void 0;
   return t;
 }
-async function Ve(i) {
+async function Xe(s) {
   var t, e;
-  return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
+  return (e = (t = s == null ? void 0 : s.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-function Ke(i = "datetime") {
-  return new lt(void 0, i).standard();
+function _e(s = "datetime") {
+  return new gt(void 0, s).standard();
 }
-let It = Q(1e5, 9e5);
-function Ye(i, t) {
-  const e = A(i);
-  return e ? (y(e.id) || e.setAttribute("id", `id-${It++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${It++}`;
+let Ft = Q(1e5, 9e5);
+function Oe(s, t) {
+  const e = E(s);
+  return e ? (m(e.id) || e.setAttribute("id", `id-${Ft++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Ft++}`;
 }
-function Se(i) {
-  return W(i) ? T(
+function Ae(s) {
+  return U(s) ? G(
     void 0,
     "img",
-    { src: i }
-  ) : i;
+    { src: s }
+  ) : s;
 }
-function Ht(i, t = "ig", e = ":value") {
-  const s = dt(i);
-  return new RegExp(e.replace(/:value/g, s), t);
+function Te(s) {
+  var t, e, i;
+  return (i = (t = s == null ? void 0 : s.key) != null ? t : s == null ? void 0 : s.code) != null ? i : (e = s == null ? void 0 : s.keyCode) == null ? void 0 : e.toString();
 }
-function qe(i) {
-  return Ht(i, "i", "(:value)");
+function Zt(s) {
+  return d(s, (t) => t.length);
 }
-function Je(i) {
-  var t, e, s;
-  return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
+function Ge(s) {
+  return Math.max(...Zt(s));
 }
-function zt(i) {
-  return d(i, (t) => t.length);
+function ts(s) {
+  return Math.min(...Zt(s));
 }
-function Me(i) {
-  return Math.max(...zt(i));
+function Ie(s) {
+  var t, e, i, r;
+  return (s == null ? void 0 : s.clientX) || ((e = (t = s == null ? void 0 : s.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((r = (i = s == null ? void 0 : s.touches) == null ? void 0 : i[0]) == null ? void 0 : r.clientX) || 0;
 }
-function Qe(i) {
-  return Math.min(...zt(i));
+function Be(s) {
+  var t, e, i, r;
+  return (s == null ? void 0 : s.clientY) || ((e = (t = s == null ? void 0 : s.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((r = (i = s == null ? void 0 : s.touches) == null ? void 0 : i[0]) == null ? void 0 : r.clientY) || 0;
 }
-function De(i) {
-  var t, e, s, r;
-  return (i == null ? void 0 : i.clientX) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((r = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : r.clientX) || 0;
-}
-function Le(i) {
-  var t, e, s, r;
-  return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((r = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : r.clientY) || 0;
-}
-function Xe(i) {
+function es(s) {
   return {
-    x: De(i),
-    y: Le(i)
+    x: Ie(s),
+    y: Be(s)
   };
 }
-function _e(i, t) {
+function ss(s, t) {
   const e = {};
-  return t.forEach((s) => {
-    s in i && i[s] !== void 0 && (e[s] = i[s]);
+  return t.forEach((i) => {
+    i in s && s[i] !== void 0 && (e[i] = s[i]);
   }), e;
 }
-function Oe(i, t = void 0) {
+function is(s, t = void 0) {
   const e = {};
-  return d(i, (s, r) => {
-    s !== t && (e[r] = s);
+  return d(s, (i, r) => {
+    i !== t && (e[r] = i);
   }), e;
 }
-function Te(i) {
-  return E(i) ? i : {};
+function rs(s) {
+  return A(s) ? s : {};
 }
-function Ce(i, t) {
-  return we(i, t).join("");
+function Fe(s, t) {
+  return Ne(s, t).join("");
 }
-function Ge(i, t, e = "#", s = 2, r = 12) {
-  const o = Q(i, t), a = [];
-  for (let u = 0; u < o; u++)
-    a.push(Ce(e, Q(s, r)));
-  return a.join(" ");
+function ns(s, t, e = "#", i = 2, r = 12) {
+  const a = Q(s, t), o = [];
+  for (let u = 0; u < a; u++)
+    o.push(Fe(e, Q(i, r)));
+  return o.join(" ");
 }
-function ti(i) {
-  let t = "";
-  return i.split(" ").forEach((e) => {
-    const s = dt(e).trim();
-    y(s) && (t += `(?=.*?${s})`);
-  }), new RegExp(`^${t}`, "ig");
-}
-function ei(i, t) {
-  const e = i != null ? i : 0;
+function as(s, t) {
+  const e = s != null ? s : 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function ii(i, t) {
-  const e = i != null ? i : 0;
+function os(s, t) {
+  const e = s != null ? s : 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const Ft = 0;
-function si(i, t, e) {
-  const s = t == null ? void 0 : t.closest(i);
-  if (t && s && s.scrollHeight !== s.offsetHeight) {
-    const r = s.getBoundingClientRect(), o = t.getBoundingClientRect();
+const xt = 0;
+function cs(s, t, e) {
+  const i = t == null ? void 0 : t.closest(s);
+  if (t && i && i.scrollHeight !== i.offsetHeight) {
+    const r = i.getBoundingClientRect(), a = t.getBoundingClientRect();
     if (e) {
-      const a = e.getBoundingClientRect();
-      s.scrollTop = t.offsetTop - (a.top - r.top) - (a.height / 2 - o.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = o.top - r.top - Ft : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = o.top - r.top + o.height - r.height + Ft);
+      const o = e.getBoundingClientRect();
+      i.scrollTop = t.offsetTop - (o.top - r.top) - (o.height / 2 - a.height / 2), i.scrollTop + i.offsetHeight < t.offsetTop + t.offsetHeight && (i.scrollTop = t.offsetTop + t.offsetHeight - i.offsetHeight);
+    } else i.scrollTop > t.offsetTop ? i.scrollTop = a.top - r.top - xt : i.scrollTop + i.offsetHeight < t.offsetTop + t.offsetHeight && (i.scrollTop = a.top - r.top + a.height - r.height + xt);
   }
 }
-function ri(i, t, e = 0) {
+function us(s, t, e = 0) {
   if (!l())
     return;
-  const s = (t == null ? void 0 : t.behavior) || "smooth";
-  if ("scrollIntoView" in i && !e) {
-    i.scrollIntoView({
-      behavior: s,
+  const i = (t == null ? void 0 : t.behavior) || "smooth";
+  if ("scrollIntoView" in s && !e) {
+    s.scrollIntoView({
+      behavior: i,
       block: (t == null ? void 0 : t.block) || "start",
       inline: (t == null ? void 0 : t.inline) || "start"
     });
     return;
   }
-  if ("getBoundingClientRect" in i && "scrollTo" in window) {
-    const r = ((window == null ? void 0 : window.scrollY) || window.pageYOffset) + i.getBoundingClientRect().top - e;
+  if ("getBoundingClientRect" in s && "scrollTo" in window) {
+    const r = ((window == null ? void 0 : window.scrollY) || window.pageYOffset) + s.getBoundingClientRect().top - e;
     window.scrollTo({
       top: r,
-      behavior: s
+      behavior: i
     });
   }
 }
-function ni(i, t, e = "smooth") {
-  if (!l() || !i || !t)
+function hs(s, t, e = "smooth") {
+  if (!l() || !s || !t)
     return;
-  const s = i.getBoundingClientRect(), r = t.getBoundingClientRect();
-  i.scrollBy({
-    top: r.top - s.top,
-    left: r.left - s.left,
+  const i = s.getBoundingClientRect(), r = t.getBoundingClientRect();
+  s.scrollBy({
+    top: r.top - i.top,
+    left: r.left - i.left,
     behavior: e
   });
 }
-function oi(i, t) {
-  return i.indexOf(t) !== -1;
+function ls(s, t) {
+  return s.indexOf(t) !== -1;
 }
-async function ai() {
+async function gs() {
   if (l()) {
-    const i = await ct.get();
-    document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
+    const s = await ut.get();
+    document.body.style.setProperty("--sys-scrollbar-offset", `${s}px`);
   }
 }
-function ci(i, t) {
+function ds(s, t) {
   const e = {};
-  return f(i) && f(t) && d(i, (s, r) => {
-    r in t && (e[r] = s);
+  return f(s) && f(t) && d(s, (i, r) => {
+    r in t && (e[r] = i);
   }), e;
 }
-function ui(i, t) {
-  let e = Object.keys(i).length !== Object.keys(t).length;
-  return e || d(i, (s, r) => {
-    s !== (t == null ? void 0 : t[r]) && (e = !0);
+function fs(s, t) {
+  let e = Object.keys(s).length !== Object.keys(t).length;
+  return e || d(s, (i, r) => {
+    i !== (t == null ? void 0 : t[r]) && (e = !0);
   }), e;
 }
-const ke = (i) => {
-  if (i instanceof HTMLElement) {
-    const t = i.tagName.toLowerCase();
-    return !!(t === "input" || t === "textarea" || t === "select" || i.isContentEditable || i.getAttribute("contenteditable") === "true");
+const xe = (s) => {
+  if (s instanceof HTMLElement) {
+    const t = s.tagName.toLowerCase();
+    return !!(t === "input" || t === "textarea" || t === "select" || s.isContentEditable || s.getAttribute("contenteditable") === "true");
   }
   return !1;
-}, hi = (i, t) => i.code === "Space" || i.code === "Enter" || i.key === " " || i.key === "Spacebar" || i.key === "Enter" || i.keyCode === 13 || i.keyCode === 32 ? t !== void 0 ? !t : !ke(i.target) : !1;
-function li(i) {
-  switch (typeof i) {
+}, ms = (s, t) => s.code === "Space" || s.code === "Enter" || s.key === " " || s.key === "Spacebar" || s.key === "Enter" || s.keyCode === 13 || s.keyCode === 32 ? t !== void 0 ? !t : !xe(s.target) : !1;
+function ys(s) {
+  switch (typeof s) {
     case "number":
       return !0;
     case "string":
-      return !!i.match(/^([0-9]+|[0-9]+\.[0-9]+)$/);
+      return !!s.match(/^([0-9]+|[0-9]+\.[0-9]+)$/);
     default:
       return !1;
   }
 }
-function gi(i, t) {
+function $s(s, t) {
   const e = Math.floor(t);
-  return i >= e && i < e + 1;
+  return s >= e && s < e + 1;
 }
-function di(i, t) {
-  return Array.isArray(i) ? i.every((e) => ot(e, t)) : ot(i, t);
+function ps(s, t) {
+  return Array.isArray(s) ? s.every((e) => ot(e, t)) : ot(s, t);
 }
-function fi(i, t) {
-  if (i.startsWith(t))
-    return i.slice(t.length).trim();
+function bs(s, t) {
+  if (s.startsWith(t))
+    return s.slice(t.length).trim();
   let e = 0;
-  for (; i[e] === t[e] && e < i.length && e < t.length; )
+  for (; s[e] === t[e] && e < s.length && e < t.length; )
     e++;
-  return i.slice(e).trim();
+  return s.slice(e).trim();
 }
-const mi = (i, t, e) => {
-  var s, r;
-  return (r = (s = i == null ? void 0 : i.replace(new RegExp(`<${t}`, "ig"), `<${e}`)) == null ? void 0 : s.replace(new RegExp(`</${t}`, "ig"), `</${e}`)) == null ? void 0 : r.trim();
+const ws = (s, t, e) => {
+  var i, r;
+  return (r = (i = s == null ? void 0 : s.replace(new RegExp(`<${t}`, "ig"), `<${e}`)) == null ? void 0 : i.replace(new RegExp(`</${t}`, "ig"), `</${e}`)) == null ? void 0 : r.trim();
 };
-function Ne(i) {
-  return [...new Set(i)];
+function Re(s) {
+  return [...new Set(s)];
 }
-function q(i, t, e = !0) {
-  const s = Z(i);
-  return f(i) && f(t) && d(
+function J(s, t, e = !0) {
+  const i = V(s);
+  return f(s) && f(t) && d(
     t,
-    (r, o) => {
-      const a = i == null ? void 0 : i[o];
-      f(a) && f(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = Z(Ne([...a, ...r])) : s[o] = q(
-        Array.isArray(a) ? { ...a } : a,
+    (r, a) => {
+      const o = s == null ? void 0 : s[a];
+      f(o) && f(r) ? e && Array.isArray(o) && Array.isArray(r) ? i[a] = V(Re([...o, ...r])) : i[a] = J(
+        Array.isArray(o) ? { ...o } : o,
         r,
         e
-      ) : s[o] = f(r) ? Z(r) : r;
+      ) : i[a] = f(r) ? V(r) : r;
     }
-  ), s;
+  ), i;
 }
-function yi(i, t) {
-  let e = i;
-  return d(t, (s, r) => {
-    e = e.replace(Ht(`[${r}]`), I(s));
+function vs(s, t) {
+  let e = s;
+  return d(t, (i, r) => {
+    e = e.replace(zt(`[${r}]`), B(i));
   }), e;
 }
-function Ae(i, t = "auto") {
+function Pe(s, t = "auto") {
   switch (t) {
     case "auto":
-      return i.naturalWidth >= i.naturalHeight;
+      return s.naturalWidth >= s.naturalHeight;
     case "width":
       return !0;
     case "height":
       return !1;
   }
 }
-function $i(i, t, e = "auto", s) {
-  var o;
-  const r = Se(i);
+function Ss(s, t, e = "auto", i) {
+  var a;
+  const r = Ae(s);
   if (r && (r.naturalWidth > t && (e === "auto" || e === "width") || r.naturalHeight > t && (e === "auto" || e === "height"))) {
-    const a = Ae(r, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
+    const o = Pe(r, e), u = (a = document.createElement("canvas")) == null ? void 0 : a.getContext("2d");
     if (u)
-      return u.canvas.width = a ? t : r.naturalWidth / r.naturalHeight * t, u.canvas.height = a ? r.naturalHeight / r.naturalWidth * t : t, u.drawImage(r, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
+      return u.canvas.width = o ? t : r.naturalWidth / r.naturalHeight * t, u.canvas.height = o ? r.naturalHeight / r.naturalWidth * t : t, u.drawImage(r, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(i);
   }
 }
-function pi(i) {
-  const t = k(i);
+function Ls(s) {
+  const t = k(s);
   if (t > 0) {
-    const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
-    return `${e}:${s}`;
+    const e = String(Math.floor(t / 60)).padStart(2, "0"), i = String(t % 60).padStart(2, "0");
+    return `${e}:${i}`;
   }
   return "00:00";
 }
-function bi(i, t, {
+function Cs(s, t, {
   multiple: e = !1,
-  maxlength: s = 0,
+  maxlength: i = 0,
   alwaysChange: r = !0,
-  notEmpty: o = !1
+  notEmpty: a = !1
 }) {
   if (e) {
-    if (ut(i)) {
-      const a = i.indexOf(t), u = [...i];
-      return a !== -1 ? (!o || u.length > 1) && u.splice(a, 1) : (!s || i.length < s) && u.push(t), u;
+    if (ht(s)) {
+      const o = s.indexOf(t), u = [...s];
+      return o !== -1 ? (!a || u.length > 1) && u.splice(o, 1) : (!i || s.length < i) && u.push(t), u;
     }
-    return i === t ? [] : i ? [i, t] : [t];
+    return s === t ? [] : s ? [s, t] : [t];
   }
-  return r || i !== t ? t : i;
+  return r || s !== t ? t : s;
 }
-function wi(i, t, e) {
-  if (f(i) && f(t)) {
+function Ds(s, t, e) {
+  if (f(s) && f(t)) {
     if (e) {
-      let s = {}, r = !1;
-      return d(i, (o, a) => {
-        !r && (e === a || e === o) ? (r = !0, s = q(s, t)) : r ? s = q(s, { [a]: o }) : s[a] = f(o) ? Z(o) : o;
-      }), r ? s : q(i, t);
+      let i = {}, r = !1;
+      return d(s, (a, o) => {
+        !r && (e === o || e === a) ? (r = !0, i = J(i, t)) : r ? i = J(i, { [o]: a }) : i[o] = f(a) ? V(a) : a;
+      }), r ? i : J(s, t);
     }
     if (f(t))
-      return q(i, t);
+      return J(s, t);
   }
-  return Z(i);
+  return V(s);
 }
-function vi(i) {
-  return Ut(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+function ks(s) {
+  return Ht(s).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function Si(i) {
-  return i.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
+function Ns(s) {
+  return s.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function Di(i, t, e, s) {
-  const r = k(i), o = k(t);
-  return t && o < r ? `${xt(o, e, s)}+` : xt(r, e, s);
+function Es(s, t, e, i) {
+  const r = k(s), a = k(t);
+  return t && a < r ? `${Rt(a, e, i)}+` : Rt(r, e, i);
 }
-const xt = (i, t, e) => t ? new N(e).number(i) : i;
-function Ee(i, t) {
-  return 1 / i * t;
+const Rt = (s, t, e) => t ? new N(e).number(s) : s;
+function We(s, t) {
+  return 1 / s * t;
 }
-function Li(i, t) {
-  return Ee(i, t) * 100;
+function As(s, t) {
+  return We(s, t) * 100;
 }
-function Ci(i) {
+function Is(s) {
   let t = "";
-  for (const e of i)
+  for (const e of s)
     t += String.fromCharCode(e);
-  return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
+  return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(s).toString("base64") : "";
 }
-async function ki(i) {
+async function Bs(s) {
   if (l())
     try {
-      await navigator.clipboard.writeText(i);
+      await navigator.clipboard.writeText(s);
     } catch (t) {
-      document == null || document.execCommand(i);
+      document == null || document.execCommand(s);
     }
 }
 export {
-  V as Api,
-  Mt as ApiDefault,
-  Jt as ApiHeaders,
-  L as ApiMethodItem,
-  _t as ApiPreparation,
-  Xt as ApiResponse,
-  wt as ApiStatus,
-  Fe as BroadcastMessage,
-  Gt as Cache,
-  Tt as CacheItem,
-  St as CacheStatic,
-  Dt as Cookie,
+  K as Api,
+  Qt as ApiDefault,
+  Mt as ApiHeaders,
+  C as ApiMethodItem,
+  Ot as ApiPreparation,
+  _t as ApiResponse,
+  vt as ApiStatus,
+  He as BroadcastMessage,
+  te as Cache,
+  Gt as CacheItem,
+  Lt as CacheStatic,
+  Ct as Cookie,
   jt as CookieBlock,
-  tt as DataStorage,
-  lt as Datetime,
-  pt as EventItem,
-  xe as Formatters,
+  et as DataStorage,
+  gt as Datetime,
+  bt as EventItem,
+  ze as Formatters,
   F as FormattersType,
   n as GEO_FLAG_ICON_NAME,
   b as Geo,
-  Lt as GeoFlag,
+  Dt as GeoFlag,
   N as GeoIntl,
-  Ct as GeoPhone,
-  Re as Global,
-  kt as Hash,
-  Et as Icons,
-  x as Loading,
-  Pe as Meta,
-  gt as MetaManager,
+  kt as GeoPhone,
+  Ze as Global,
+  Nt as Hash,
+  It as Icons,
+  R as Loading,
+  Ve as Meta,
+  dt as MetaManager,
   fe as MetaOg,
   le as MetaOpenGraphAge,
   ue as MetaOpenGraphAvailability,
@@ -5309,107 +5888,112 @@ export {
   ge as MetaOpenGraphGender,
   $ as MetaOpenGraphTag,
   ce as MetaOpenGraphType,
-  ae as MetaRobots,
-  D as MetaTag,
+  oe as MetaRobots,
+  L as MetaTag,
   me as MetaTwitter,
   de as MetaTwitterCard,
   p as MetaTwitterTag,
-  ct as ScrollbarWidth,
-  pe as TRANSLATE_GLOBAL_PREFIX,
+  ut as ScrollbarWidth,
+  Ke as SearchList,
+  pe as SearchListData,
+  be as SearchListItem,
+  Se as SearchListMatcher,
+  Le as SearchListOptions,
+  ke as TRANSLATE_GLOBAL_PREFIX,
   Bt as Translate,
-  We as addTagHighlightMatch,
-  ie as anyToString,
-  $e as applyTemplate,
-  we as arrFill,
-  je as blobToBase64,
-  Z as copyObject,
-  C as copyObjectLite,
-  T as createElement,
-  Ue as domQuerySelector,
-  He as domQuerySelectorAll,
-  oe as encodeAttribute,
-  dt as escapeExp,
-  ze as eventStopPropagation,
-  I as executeFunction,
-  Qt as executePromise,
+  $e as addTagHighlightMatch,
+  T as anyToString,
+  De as applyTemplate,
+  Ne as arrFill,
+  Ye as blobToBase64,
+  V as copyObject,
+  D as copyObjectLite,
+  G as createElement,
+  qe as domQuerySelector,
+  Je as domQuerySelectorAll,
+  ae as encodeAttribute,
+  ft as escapeExp,
+  Me as eventStopPropagation,
+  B as executeFunction,
+  Xt as executePromise,
   d as forEach,
-  ve as frame,
-  Ze as getAttributes,
-  Ve as getClipboardData,
-  ee as getColumn,
-  Ke as getCurrentDate,
-  A as getElement,
-  Ye as getElementId,
-  Se as getElementImage,
+  Ee as frame,
+  Qe as getAttributes,
+  Xe as getClipboardData,
+  se as getColumn,
+  _e as getCurrentDate,
+  E as getElement,
+  Oe as getElementId,
+  Ae as getElementImage,
   re as getElementItem,
-  $t as getElementOrWindow,
-  qe as getExactSearchExp,
-  Ht as getExp,
-  U as getItemByPath,
-  Je as getKey,
-  zt as getLengthOfAllArray,
-  Me as getMaxLengthAllArray,
-  Qe as getMinLengthAllArray,
-  Xe as getMouseClient,
-  De as getMouseClientX,
-  Le as getMouseClientY,
-  _e as getObjectByKeys,
-  Oe as getObjectNoUndefined,
-  Te as getObjectOrNone,
-  Ge as getRandomText,
-  Rt as getRequestString,
-  ti as getSearchExp,
-  be as getSeparatingSearchExp,
-  ei as getStepPercent,
-  ii as getStepValue,
-  si as goScroll,
-  ri as goScrollSmooth,
-  ni as goScrollTo,
-  oi as inArray,
-  ai as initScrollbarOffset,
-  ci as intersectKey,
-  ut as isArray,
-  ui as isDifferent,
-  at as isDomData,
+  pt as getElementOrWindow,
+  we as getExactSearchExp,
+  zt as getExp,
+  x as getItemByPath,
+  Te as getKey,
+  Zt as getLengthOfAllArray,
+  Ge as getMaxLengthAllArray,
+  ts as getMinLengthAllArray,
+  es as getMouseClient,
+  Ie as getMouseClientX,
+  Be as getMouseClientY,
+  ss as getObjectByKeys,
+  is as getObjectNoUndefined,
+  rs as getObjectOrNone,
+  ns as getRandomText,
+  Pt as getRequestString,
+  ve as getSearchExp,
+  ye as getSeparatingSearchExp,
+  as as getStepPercent,
+  os as getStepValue,
+  cs as goScroll,
+  us as goScrollSmooth,
+  hs as goScrollTo,
+  ls as inArray,
+  gs as initScrollbarOffset,
+  ds as intersectKey,
+  ht as isArray,
+  fs as isDifferent,
+  ct as isDomData,
   l as isDomRuntime,
-  hi as isEnter,
-  y as isFilled,
-  li as isFloat,
-  ht as isFunction,
-  qt as isInDom,
-  ke as isInput,
-  gi as isIntegerBetween,
+  ms as isEnter,
+  m as isFilled,
+  ys as isFloat,
+  lt as isFunction,
+  Jt as isInDom,
+  xe as isInput,
+  $s as isIntegerBetween,
   X as isNull,
-  mt as isNumber,
+  yt as isNumber,
   f as isObject,
-  E as isObjectNotArray,
+  A as isObjectNotArray,
   ot as isSelected,
-  di as isSelectedByList,
-  W as isString,
-  Pt as isWindow,
+  ps as isSelectedByList,
+  U as isString,
+  Wt as isWindow,
   Q as random,
-  fi as removeCommonPrefix,
-  mi as replaceComponentName,
-  q as replaceRecursive,
-  yi as replaceTemplate,
-  $i as resizeImageByMax,
-  pi as secondToTime,
+  bs as removeCommonPrefix,
+  ws as replaceComponentName,
+  J as replaceRecursive,
+  vs as replaceTemplate,
+  Ss as resizeImageByMax,
+  Ls as secondToTime,
   ne as setElementItem,
-  bi as setValues,
-  wi as splice,
-  Ce as strFill,
-  se as strSplit,
-  K as toArray,
-  Ut as toCamelCase,
-  vi as toCamelCaseFirst,
-  R as toDate,
-  Si as toKebabCase,
+  Cs as setValues,
+  Ds as splice,
+  Fe as strFill,
+  ie as strSplit,
+  Y as toArray,
+  Ht as toCamelCase,
+  ks as toCamelCaseFirst,
+  P as toDate,
+  Ns as toKebabCase,
   k as toNumber,
-  Di as toNumberByMax,
-  Ee as toPercent,
-  Li as toPercentBy100,
-  Wt as transformation,
-  Ci as uint8ArrayToBase64,
-  Ne as uniqueArray,
-  ki as writeClipboardData
+  Es as toNumberByMax,
+  We as toPercent,
+  As as toPercentBy100,
+  Ut as transformation,
+  Is as uint8ArrayToBase64,
+  Re as uniqueArray,
+  Bs as writeClipboardData
 };

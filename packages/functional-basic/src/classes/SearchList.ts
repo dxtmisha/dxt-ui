@@ -146,6 +146,10 @@ export class SearchList<
    * @returns this instance/ данный экземпляр
    */
   setValue(value?: string): this {
+    if (this.item.get() === value) {
+      return this
+    }
+
     this.item.set(value)
     this.matcher.update()
 

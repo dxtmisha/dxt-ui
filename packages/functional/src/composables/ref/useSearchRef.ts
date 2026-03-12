@@ -1,16 +1,16 @@
-import { computed, type Ref } from 'vue'
-import { forEach } from '@dxtmisha/functional-basic'
+import { computed, ref, watchEffect, type Ref } from 'vue'
+import {
+  executeFunction,
+  SearchList,
+  type SearchColumns,
+  type SearchFormatList,
+  type SearchItem,
+  type SearchOptions
+} from '@dxtmisha/functional-basic'
+import { getRef } from '../../functions/ref/getRef'
 
-import { useSearchDataRef } from './useSearchDataRef'
 import { useSearchValueRef } from './useSearchValueRef'
-
-import type {
-  SearchColumns,
-  SearchItem,
-  SearchListInput,
-  SearchOptions,
-  SearchFormatList
-} from '../../types/searchTypes'
+import type { SearchListInput } from '../../types/searchTypes'
 
 /**
  * Composable for handling search logic with reactive data.
@@ -30,22 +30,25 @@ export function useSearchRef<
   value?: Ref<string>,
   options?: SearchOptions
 ) {
-  const {
-    returnEverything = false
-  } = options ?? {}
+  const listRef = ref()
+  /** Search list instance / Экземпляр поиска */
+  const item = new SearchList<T, K>(
+    undefined,
+    columns,
+    undefined,
+    options
+  )
 
   const {
     search,
     searchDelay,
-    loading,
-    isSearch,
-    isSelection
-  } = useSearchValueRef<T>(value, options)
+    loading
+  } = useSearchValueRef(item, value)
 
-  const {
-    listCache,
-    toFormatItem
-  } = useSearchDataRef<T, K>(list, columns, searchDelay, options)
+  watchEffect(() => {
+    listRef.value = getRef(executeFunction(list))
+    item.setList(listRef.value)
+  })
 
   return {
     /**
@@ -53,7 +56,12 @@ export function useSearchRef<
      * Активен ли поиск в данный момент (достигнут ли лимит символов)
      */
     get isSearch() {
-      return computed<boolean>(() => isSearch())
+      return computed<boolean>(
+        () => item
+          .setValue(searchDelay.value)
+          .getItem()
+          .isSearch()
+      )
     },
 
     /** Search string ref/ Ссылка на строку поиска */
@@ -65,25 +73,10 @@ export function useSearchRef<
     /** Formatted list of search results with highlights / Форматированный список результатов поиска с подсветкой совпадений */
     get listSearch() {
       return computed<SearchFormatList<T, K>>(() => {
-        if (
-          listCache.value.length > 0
-        ) {
-          if (isSearch()) {
-            return forEach(
-              listCache.value,
-              (item) => {
-                if (isSelection(item)) {
-                  return toFormatItem(item.item, true)
-                }
-
-                if (returnEverything) {
-                  return toFormatItem(item.item, false)
-                }
-              }
-            ) as SearchFormatList<T, K>
-          }
-
-          return forEach(listCache.value, item => toFormatItem(item.item, false))
+        if (listRef.value) {
+          return item
+            .setValue(searchDelay.value)
+            .to()
         }
 
         return []

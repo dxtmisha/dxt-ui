@@ -18,10 +18,23 @@ Một composable để triển khai logic tìm kiếm và lọc trên danh sách
     - `classSearchName?: string` — lớp CSS để làm nổi bật kết quả khớp. Mặc định: `sys-search-selection`.
 
 **Trả về:**
-- `isSearch: ComputedRef<boolean>` — tìm kiếm có đang hoạt động hay không.
+- `isSearch: ComputedRef<boolean>` — tìm kiếm có đang hoạt động hay không (kiểm tra giới hạn ký tự tối thiểu).
 - `search: Ref<string>` — chuỗi tìm kiếm hiện tại.
 - `loading: Ref<boolean>` — trạng thái tải (hoạt động trong thời gian `delay`).
 - `listSearch: ComputedRef<SearchFormatList<T, K>>` — danh sách kết quả đã được lọc và định dạng. Mỗi mục sẽ có thêm các trường `{column}Search` với mã HTML làm nổi bật và cờ `searchActive`.
+
+## Kiến trúc: `computed` Lazy (Getter động)
+
+Composable này được thiết kế đặc biệt để trả về `isSearch` và `listSearch` dưới dạng native JS getter.
+Điều này cho phép bạn gọi `useSearchRef()` **bên ngoài vòng đời của component Vue** (ví dụ: toàn cục trong một service hoặc trong Store).
+Các đối tượng `ComputedRef` thực tế được tạo (và liên kết với component) chính xác tại thời điểm mà component truy cập chúng trong quá trình destructuring:
+
+```typescript
+// Các getter sẽ chạy một lần trong quá trình destructuring ở setup(), Vue sẽ cache ComputedRef
+const { search, listSearch, isSearch } = useSearchRef(items, ['name'])
+```
+
+> **Quan trọng**: Vì kiến trúc này, hãy tránh truy cập các getter thông qua "dấu chấm" nhiều lần. Luôn phân rã (destructure) kết quả một lần ở cấp độ `setup` để tránh tạo ra nhiều phiên bản `computed` trùng lặp.
 
 ## Ví dụ sử dụng
 
@@ -37,7 +50,6 @@ const items = [
 const { 
   search, 
   listSearch, 
-  isSearch, 
   loading 
 } = useSearchRef(items, ['name', 'category'], undefined, {
   delay: 300,
