@@ -15,11 +15,17 @@ A unified facade for managing all document meta tags. Extends `MetaManager` and 
 
 ## Initialization
 
+To create a meta-data management object, call the `new Meta()` constructor.
+
+**Features:**
+- **Automation** — the constructor automatically initializes registries for standard HTML, Open Graph, and Twitter Card tags.
+- **Integration** — immediately creates internal `MetaOg` and `MetaTwitter` instances.
+
 ```javascript
+import { Meta } from '@dxtmisha/functional-basic'
+
 const meta = new Meta()
 ```
-
-Automatically creates internal `MetaOg` and `MetaTwitter` instances.
 
 ## Getters
 

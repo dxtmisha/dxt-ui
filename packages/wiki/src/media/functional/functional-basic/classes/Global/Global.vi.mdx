@@ -4,15 +4,18 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Global
 
-Một lớp tĩnh để lưu trữ và truy xuất dữ liệu toàn cục của ứng dụng. Dữ liệu được ghi **một lần duy nhất** trong quá trình khởi tạo và sau đó chỉ có thể đọc. Được sử dụng để truyền cấu hình hoặc dữ liệu từ máy chủ sang phía client.
+Một lớp tiện ích tĩnh để lưu trữ và truy xuất dữ liệu toàn cục của ứng dụng. Dữ liệu được ghi **một lần duy nhất** trong quá trình khởi tạo và sau đó chỉ có thể đọc. Được sử dụng để truyền cấu hình hoặc dữ liệu từ máy chủ sang phía client.
 
 ## Tính năng chính
 
 - **Khởi tạo một lần** — Phương thức `add` chỉ hoạt động trong lần gọi đầu tiên; các lần gọi tiếp theo bị bỏ qua.
 - **Sao chép sâu** — Dữ liệu được sao chép qua `copyObjectLite`, cô lập khỏi các thay đổi bên ngoài.
 - **Không quản lý trạng thái** — Chỉ dành cho cấu hình tĩnh.
+- **Truy cập tĩnh** — tất cả các phương thức đều là tĩnh, loại bỏ nhu cầu khởi tạo (`new Global()`).
 
-## Khởi tạo
+## Cách sử dụng cơ bản
+
+Vì lớp này là tĩnh, các phương thức của nó có thể được gọi trực tiếp.
 
 ```javascript
 import { Global } from '@dxtmisha/functional-basic'
@@ -20,12 +23,11 @@ import { Global } from '@dxtmisha/functional-basic'
 // Thiết lập một lần (ví dụ: khi ứng dụng tải)
 Global.add({
   apiUrl: 'https://api.myapp.com',
-  appName: 'My Application',
-  featureFlags: { darkMode: true }
+  appName: 'My Application'
 })
 
-// Các lần gọi sau bị bỏ qua
-Global.add({ apiUrl: 'https://other.com' }) // Không có hiệu lực
+// Lấy giá trị theo khóa
+console.log(Global.get('apiUrl')) // 'https://api.myapp.com'
 ```
 
 ## Phương thức

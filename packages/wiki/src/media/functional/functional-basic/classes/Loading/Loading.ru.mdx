@@ -15,6 +15,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ## Управление состоянием
 
 - `is(): boolean` — возвращает `true`, если загрузка активна (счётчик > 0).
+- `get(): number` — возвращает текущее значение счётчика.
 - `show(): void` — увеличивает счётчик на 1, оповещает слушателей.
 - `hide(): void` — уменьшает счётчик на 1. Если счётчик уже 0 — игнорируется.
 
@@ -27,6 +28,14 @@ import {Meta} from '@storybook/addon-docs/blocks'
 **Параметры:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — функция-обработчик, получающая `event.detail.loading: boolean`.
 - `element?: ElementOrString<HTMLElement>` — DOM-элемент-триггер: при его удалении из DOM слушатель автоматически останавливается.
+
+### `unregistrationEvent`
+
+Отменяет регистрацию слушателя, добавленного через `registrationEvent`.
+
+**Параметры:**
+- `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — функция-обработчик, которая была использована при регистрации.
+- `element?: ElementOrString<HTMLElement>` — DOM-элемент, который был использован при регистрации.
 
 ## Пример
 

@@ -15,11 +15,17 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
+Для создания объекта управления мета-данными вызовите конструктор `new Meta()`.
+
+**Особенности:**
+- **Автоматизация** — конструктор автоматически инициализирует реестры для стандартных HTML, Open Graph и Twitter Card тегов.
+- **Интеграция** — сразу создаёт внутренние экземпляры `MetaOg` и `MetaTwitter`.
+
 ```javascript
+import { Meta } from '@dxtmisha/functional-basic'
+
 const meta = new Meta()
 ```
-
-Автоматически создаёт внутренние экземпляры `MetaOg` и `MetaTwitter`.
 
 ## Геттеры
 

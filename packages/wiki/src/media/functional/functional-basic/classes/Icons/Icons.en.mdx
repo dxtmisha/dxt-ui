@@ -44,6 +44,16 @@ Icons.setUrl('/assets/svg/')
 
 - `setUrl(url: string): void` — Changes the base path for icon storage.
 
+## Loading System
+
+The `Icons` class supports an asynchronous waiting mechanism. This allows you to request an icon before it is actually loaded or registered in the system.
+
+1.  **Wait Registration**: Using the `addLoad(name)` method, an icon is marked with a special `--LOAD--` marker. This tells the system that the icon will be available later.
+2.  **Waiting Process**: If `get(name)` is called for an icon that is in the loading state, the method will not return an error but will instead enter a waiting mode. It will check the registry every 320 ms.
+3.  **Completion**: Once the icon is added via `add(name, ...)`, all pending `get` calls will automatically resolve and return the icon's content.
+
+This mechanism is critical for distributed systems where components might request resources before the media database has finished initializing.
+
 ## Examples
 
 ### Registering and Using Icons

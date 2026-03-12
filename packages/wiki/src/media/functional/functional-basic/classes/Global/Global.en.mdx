@@ -4,15 +4,18 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Global Class
 
-A static class for storing and retrieving application-wide global data. Data is written **once** during initialization and is thereafter available as read-only. Used to pass server-side configuration or data to the client-side application.
+A static utility class for storing and retrieving application-wide global data. Data is written **once** during initialization and is thereafter available as read-only. Used to pass server-side configuration or data to the client-side application.
 
 ## Key Features
 
 - **One-time initialization** — The `add` method only works on the first call; subsequent calls are ignored.
 - **Deep copy** — Data is copied via `copyObjectLite`, isolating it from external mutations.
 - **No state management** — Intended purely for static configuration.
+- **Static Access** — all methods are static, eliminating the need for instantiation (`new Global()`).
 
-## Initialization
+## Basic Usage
+
+Since the class is static, its methods can be called directly.
 
 ```javascript
 import { Global } from '@dxtmisha/functional-basic'
@@ -20,12 +23,11 @@ import { Global } from '@dxtmisha/functional-basic'
 // Set once (e.g., on application load)
 Global.add({
   apiUrl: 'https://api.myapp.com',
-  appName: 'My Application',
-  featureFlags: { darkMode: true }
+  appName: 'My Application'
 })
 
-// Subsequent calls are ignored
-Global.add({ apiUrl: 'https://other.com' }) // Has no effect
+// Retrieve value by key
+console.log(Global.get('apiUrl')) // 'https://api.myapp.com'
 ```
 
 ## Methods

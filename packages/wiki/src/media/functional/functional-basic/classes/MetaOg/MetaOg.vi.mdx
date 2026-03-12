@@ -8,6 +8,20 @@ Kế thừa `MetaManager`. Quản lý các thẻ meta giao thức [Open Graph](h
 
 Sử dụng thuộc tính `property` (không phải `name`) cho các thẻ meta, theo tiêu chuẩn Open Graph.
 
+## Khởi tạo
+
+Để quản lý dữ liệu Open Graph, hãy gọi hàm khởi tạo `new MetaOg()`.
+
+**Tính năng:**
+- **Kế thừa** — mở rộng `MetaManager`, sử dụng thuộc tính `property` để quản lý các thẻ.
+- **Tiêu chuẩn** — đi kèm với danh sách được định nghĩa sẵn của tất cả các thẻ giao thức [Open Graph](https://ogp.me/) chính.
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional-basic'
+
+const og = new MetaOg()
+```
+
 ## Thẻ được hỗ trợ
 
 Quản lý các thẻ `og:*` sau: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.

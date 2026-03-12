@@ -15,11 +15,17 @@ Facade thống nhất để quản lý tất cả thẻ meta của tài liệu. 
 
 ## Khởi tạo
 
+Để tạo một đối tượng quản lý siêu dữ liệu (meta-data), hãy gọi hàm khởi tạo `new Meta()`.
+
+**Tính năng:**
+- **Tự động hóa** — hàm khởi tạo tự động khởi tạo registry cho các thẻ HTML tiêu chuẩn, Open Graph và Twitter Card.
+- **Tích hợp** — ngay lập tức tạo các instance `MetaOg` và `MetaTwitter` nội bộ.
+
 ```javascript
+import { Meta } from '@dxtmisha/functional-basic'
+
 const meta = new Meta()
 ```
-
-Tự động tạo các instance `MetaOg` và `MetaTwitter` nội bộ.
 
 ## Getter
 

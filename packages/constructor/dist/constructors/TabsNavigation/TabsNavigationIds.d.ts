@@ -1,6 +1,6 @@
 import { ListDataRef, NumberOrString } from '@dxtmisha/functional';
+import { TabsNavigationIdsList } from './basicTypes';
 import { TabsNavigationProps } from './props';
-import { TabsNavigationIdsList } from './basicTypes.ts';
 import { ComputedRef } from 'vue';
 /**
  * Class for generating and managing element IDs for tabs.

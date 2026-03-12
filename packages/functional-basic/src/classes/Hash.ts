@@ -73,6 +73,24 @@ export class Hash {
   }
 
   /**
+   * Removing an event when data is changed.
+   *
+   * Удаление события при изменении данных.
+   * @param name variable names/ названия переменных
+   * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+   */
+  static removeWatch<T>(
+    name: string,
+    callback: (value: T) => void
+  ): void {
+    const list = this.watch?.[name]
+
+    if (list) {
+      this.watch[name] = list.filter(item => item !== callback)
+    }
+  }
+
+  /**
    * Update hash variable from URL string.
    *
    * Обновление переменной хэша из строки URL.

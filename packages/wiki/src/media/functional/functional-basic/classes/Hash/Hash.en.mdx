@@ -31,6 +31,7 @@ const filter = Hash.get('filter') // 'active' (string)
 - `get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a hash variable. If the value doesn't exist, it is set using `defaultValue` (which can be a function).
 - `set<T>(name: string, callback: T | (() => T)): void` — Sets a variable's value and updates the URL hash. If the value hasn't changed, no update occurs.
 - `addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific hash variable.
+- `removeWatch<T>(name: string, callback: (value: T) => void): void` — Unsubscribes from changes for a specific variable.
 - `reload(): void` — Reads the current URL hash and synchronizes it with the internal state.
 
 ## Examples
@@ -53,8 +54,10 @@ Hash.set('page', () => page + 1)
 ```javascript
 Hash.addWatch<string>('filter', (newFilter) => {
   console.log('Filter changed to:', newFilter)
-  loadData(newFilter)
 })
+
+// Unsubscribe (callback must be a reference to the same function)
+Hash.removeWatch('filter', callback)
 ```
 
 ### Managing Page State

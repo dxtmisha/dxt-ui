@@ -31,6 +31,7 @@ const filter = Hash.get('filter') // 'active' (string)
 - `get<T>(name: string, defaultValue?: T | (() => T)): T` — Возвращает значение переменной из хэша. Если значения нет, устанавливает его через `defaultValue` (может быть функцией).
 - `set<T>(name: string, callback: T | (() => T)): void` — Устанавливает значение переменной и обновляет URL-хэш. Если значение не изменилось, обновление не происходит.
 - `addWatch<T>(name: string, callback: (value: T) => void): void` — Подписывается на изменение конкретной переменной в хэше.
+- `removeWatch<T>(name: string, callback: (value: T) => void): void` — Отписывается от изменений конкретной переменной.
 - `reload(): void` — Считывает текущий URL-хэш и синхронизирует с ним внутреннее состояние.
 
 ## Примеры
@@ -53,8 +54,10 @@ Hash.set('page', () => page + 1)
 ```javascript
 Hash.addWatch<string>('filter', (newFilter) => {
   console.log('Фильтр изменен на:', newFilter)
-  loadData(newFilter)
 })
+
+// Отписка (callback должен быть ссылкой на ту же функцию)
+Hash.removeWatch('filter', callback)
 ```
 
 ### Управление состоянием страницы

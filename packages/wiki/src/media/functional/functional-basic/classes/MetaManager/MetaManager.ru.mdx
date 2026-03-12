@@ -10,13 +10,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Инициализация
 
-```typescript
-new MetaManager(listMeta, isProperty?)
-```
+Класс является **абстрактным**. Вы не можете создать его экземпляр напрямую через `new MetaManager()`. Вместо этого его необходимо расширить.
 
-**Параметры:**
-- `listMeta: readonly string[]` — список имён мета-тегов, которыми управляет этот экземпляр.
-- `isProperty?: boolean` — если `true`, используется атрибут `property` вместо `name` (необходимо для Open Graph). По умолчанию: `false`.
+**Параметры конструктора (для потомков):**
+- `listMeta: T` — список имён мета-тегов, которыми будет управлять менеджер.
+- `isProperty?: boolean` — определяет используемый атрибут: `true` для `property` (Open Graph), `false` для `name` (стандартные теги). По умолчанию: `false`.
+
+```typescript
+import { MetaManager } from '@dxtmisha/functional-basic'
+
+// Пример расширения
+class MyMeta extends MetaManager<string[]> {
+  constructor() {
+    super(['description', 'keywords'])
+  }
+}
+
+const myMeta = new MyMeta()
+```
 
 ## Методы
 

@@ -11,6 +11,12 @@ type LoadingDetail = {
   loading: boolean
 }
 
+type LoadingRegistrationItem = {
+  item: EventItem<Window, CustomEvent, LoadingDetail>
+  listener: EventListenerDetail<CustomEvent, LoadingDetail>
+  element?: ElementOrString<HTMLElement>
+}
+
 const LOADING_EVENT_NAME = 'ui-loading'
 
 /**
@@ -21,6 +27,7 @@ const LOADING_EVENT_NAME = 'ui-loading'
 export class Loading {
   protected static value = 0
   protected static event?: EventItem<Window, CustomEvent>
+  protected static registrationList: LoadingRegistrationItem[] = []
 
   /**
    * Check if the loader is active now.
@@ -76,10 +83,42 @@ export class Loading {
     element?: ElementOrString<HTMLElement>
   ) {
     if (isDomRuntime()) {
-      new EventItem(window, LOADING_EVENT_NAME, listener)
+      const item = new EventItem(window, LOADING_EVENT_NAME, listener)
         .setElementControl(element)
         .start()
+
+      this.registrationList.push({
+        item,
+        listener,
+        element
+      })
     }
+  }
+
+  /**
+   * Unregistration of an event.
+   *
+   * Отмена регистрации события.
+   * @param listener the object that receives a notification (an object that implements the
+   * Event interface) when an event of the specified type occurs/ объект, который принимает
+   * уведомление, когда событие указанного типа произошло
+   * @param element element/ элемент
+   */
+  static unregistrationEvent(
+    listener: EventListenerDetail<CustomEvent, LoadingDetail>,
+    element?: ElementOrString<HTMLElement>
+  ) {
+    this.registrationList = this.registrationList.filter((item) => {
+      if (
+        item.listener === listener
+        && item.element === element
+      ) {
+        item.item.stop()
+        return false
+      }
+
+      return true
+    })
   }
 
   /**

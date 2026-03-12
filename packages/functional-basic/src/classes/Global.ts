@@ -3,9 +3,9 @@ import { copyObjectLite } from '../functions/copyObjectLite'
 let global: Record<string, any>
 
 /**
- * Class for obtaining global data.
+ * Static utility class for storing and retrieving application-wide global data.
  *
- * Класс для получения глобальных данных.
+ * Статический служебный класс для хранения и получения глобальных данных приложения.
  */
 export class Global {
   /**

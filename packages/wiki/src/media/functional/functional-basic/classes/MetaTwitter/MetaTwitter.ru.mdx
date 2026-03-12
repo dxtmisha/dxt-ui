@@ -6,6 +6,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Наследует `MetaManager`. Управляет мета-тегами [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards) — используются Twitter/X для формирования карточек при публикации ссылок.
 
+## Инициализация
+
+Для управления данными Twitter Card вызовите конструктор `new MetaTwitter()`.
+
+**Особенности:**
+- **Наследование** — расширяет `MetaManager`, используя стандартный атрибут `name` для управления тегами.
+- **Стандарт** — предустановлен список всех основных тегов протокола [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards).
+
+```javascript
+import { MetaTwitter } from '@dxtmisha/functional-basic'
+
+const twitter = new MetaTwitter()
+```
+
 ## Поддерживаемые теги
 
 Управляет следующими `twitter:*` тегами: `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`.

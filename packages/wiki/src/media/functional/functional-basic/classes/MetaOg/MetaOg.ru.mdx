@@ -8,6 +8,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Атрибут мета-тегов — `property` (а не `name`), что соответствует стандарту Open Graph.
 
+## Инициализация
+
+Для управления данными Open Graph вызовите конструктор `new MetaOg()`.
+
+**Особенности:**
+- **Наследование** — расширяет `MetaManager`, используя атрибут `property` для управления тегами.
+- **Стандарт** — предустановлен список всех основных тегов протокола [Open Graph](https://ogp.me/).
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional-basic'
+
+const og = new MetaOg()
+```
+
 ## Поддерживаемые теги
 
 Управляет следующими `og:*` тегами: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.

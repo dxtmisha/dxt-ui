@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/web-types",
   "framework": "vue",
   "name": "D1",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "contributions": {
     "html": {
       "types-syntax": "typescript",

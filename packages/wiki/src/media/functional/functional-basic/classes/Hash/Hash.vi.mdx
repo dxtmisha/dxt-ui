@@ -31,6 +31,7 @@ const filter = Hash.get('filter') // 'active' (string)
 - `get<T>(name: string, defaultValue?: T | (() => T)): T` — Trả về giá trị của biến hash. Nếu không có giá trị, nó được thiết lập qua `defaultValue` (có thể là hàm).
 - `set<T>(name: string, callback: T | (() => T)): void` — Thiết lập giá trị của biến và cập nhật URL hash. Nếu giá trị không thay đổi, không có cập nhật nào xảy ra.
 - `addWatch<T>(name: string, callback: (value: T) => void): void` — Đăng ký theo dõi thay đổi của một biến hash cụ thể.
+- `removeWatch<T>(name: string, callback: (value: T) => void): void` — Hủy đăng ký theo dõi thay đổi của một biến.
 - `reload(): void` — Đọc URL hash hiện tại và đồng bộ hóa với trạng thái nội bộ.
 
 ## Ví dụ
@@ -53,8 +54,10 @@ Hash.set('page', () => page + 1)
 ```javascript
 Hash.addWatch<string>('filter', (newFilter) => {
   console.log('Bộ lọc đã thay đổi thành:', newFilter)
-  loadData(newFilter)
 })
+
+// Hủy đăng ký (callback phải là tham chiếu đến cùng một hàm)
+Hash.removeWatch('filter', callback)
 ```
 
 ### Quản lý trạng thái trang

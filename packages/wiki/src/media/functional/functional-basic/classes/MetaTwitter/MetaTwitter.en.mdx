@@ -6,6 +6,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Extends `MetaManager`. Manages [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards) meta tags — used by Twitter/X to generate cards when sharing links.
 
+## Initialization
+
+To manage Twitter Card data, call the `new MetaTwitter()` constructor.
+
+**Features:**
+- **Inheritance** — extends `MetaManager`, using the standard `name` attribute to manage tags.
+- **Standard** — comes with a predefined list of all primary [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards) protocol tags.
+
+```javascript
+import { MetaTwitter } from '@dxtmisha/functional-basic'
+
+const twitter = new MetaTwitter()
+```
+
 ## Supported Tags
 
 Manages the following `twitter:*` tags: `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`.

@@ -6,6 +6,20 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Kế thừa `MetaManager`. Quản lý các thẻ meta [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards) — được Twitter/X sử dụng để tạo thẻ khi chia sẻ liên kết.
 
+## Khởi tạo
+
+Để quản lý dữ liệu Twitter Card, hãy gọi hàm khởi tạo `new MetaTwitter()`.
+
+**Tính năng:**
+- **Kế thừa** — mở rộng `MetaManager`, sử dụng thuộc tính `name` tiêu chuẩn để quản lý các thẻ.
+- **Tiêu chuẩn** — đi kèm với danh sách được định nghĩa sẵn của tất cả các thẻ giao thức [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards) chính.
+
+```javascript
+import { MetaTwitter } from '@dxtmisha/functional-basic'
+
+const twitter = new MetaTwitter()
+```
+
 ## Thẻ được hỗ trợ
 
 Quản lý các thẻ `twitter:*` sau: `twitter:card`, `twitter:site`, `twitter:creator`, `twitter:url`, `twitter:title`, `twitter:description`, `twitter:image`.

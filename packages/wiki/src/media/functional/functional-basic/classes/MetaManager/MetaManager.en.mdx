@@ -10,13 +10,24 @@ This class is the parent of `MetaOg`, `MetaTwitter`, and `Meta`.
 
 ## Initialization
 
-```typescript
-new MetaManager(listMeta, isProperty?)
-```
+The class is **abstract**. You cannot create its instance directly using `new MetaManager()`. Instead, it must be extended.
 
-**Parameters:**
-- `listMeta: readonly string[]` — list of meta tag names managed by this instance.
-- `isProperty?: boolean` — if `true`, uses `property` attribute instead of `name` (required for Open Graph). Default: `false`.
+**Constructor Parameters (for descendants):**
+- `listMeta: T` — a list of meta tag names managed by this instance.
+- `isProperty?: boolean` — determines the attribute used: `true` for `property` (Open Graph), `false` for `name` (standard tags). Default: `false`.
+
+```typescript
+import { MetaManager } from '@dxtmisha/functional-basic'
+
+// Extension example
+class MyMeta extends MetaManager<string[]> {
+  constructor() {
+    super(['description', 'keywords'])
+  }
+}
+
+const myMeta = new MyMeta()
+```
 
 ## Methods
 

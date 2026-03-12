@@ -44,6 +44,16 @@ Icons.setUrl('/assets/svg/')
 
 - `setUrl(url: string): void` — Thay đổi đường dẫn cơ sở cho lưu trữ icon.
 
+## Hệ thống tải
+
+Lớp `Icons` hỗ trợ cơ chế chờ bất đồng bộ. Điều này cho phép bạn yêu cầu một biểu tượng trước khi nó thực sự được tải hoặc đăng ký trong hệ thống.
+
+1.  **Đăng ký chờ**: Sử dụng phương thức `addLoad(name)`, một biểu tượng được đánh dấu bằng ký hiệu đặc biệt `--LOAD--`. Điều này thông báo cho hệ thống biết rằng biểu tượng sẽ có sẵn sau đó.
+2.  **Quá trình chờ**: Nếu gọi `get(name)` cho một biểu tượng đang ở trạng thái tải, phương thức sẽ không trả về lỗi mà thay vào đó sẽ chuyển sang chế độ chờ. Nó sẽ kiểm tra registry sau mỗi 320 ms.
+3.  **Hoàn tất**: Ngay khi biểu tượng được thêm qua `add(name, ...)`, tất cả các lệnh gọi `get` đang chờ sẽ tự động hoàn tất và trả về nội dung của biểu tượng đó.
+
+Cơ chế này rất quan trọng đối với các hệ thống phân tán, nơi các thành phần có thể yêu cầu tài nguyên trước khi cơ sở dữ liệu truyền thông hoàn tất quá trình khởi tạo.
+
 ## Ví dụ
 
 ### Đăng ký và sử dụng icon

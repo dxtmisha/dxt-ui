@@ -15,6 +15,7 @@ A static class for managing global loading state. Uses a counter: loading is act
 ## State Management
 
 - `is(): boolean` — returns `true` if loading is active (counter > 0).
+- `get(): number` — returns the current counter value.
 - `show(): void` — increments the counter by 1, notifies listeners.
 - `hide(): void` — decrements the counter by 1. Ignored if counter is already 0.
 
@@ -27,6 +28,14 @@ Registers a listener for loading state changes. Works through the native `ui-loa
 **Parameters:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — handler function receiving `event.detail.loading: boolean`.
 - `element?: ElementOrString<HTMLElement>` — optional DOM element trigger: the listener automatically stops when the element is removed from the DOM.
+
+### `unregistrationEvent`
+
+Unregisters a listener previously added via `registrationEvent`.
+
+**Parameters:**
+- `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — the handler function used during registration.
+- `element?: ElementOrString<HTMLElement>` — the DOM element used during registration.
 
 ## Example
 

@@ -8,6 +8,20 @@ Extends `MetaManager`. Manages [Open Graph](https://ogp.me/) protocol meta tags 
 
 Uses the `property` attribute (not `name`) for meta tags, as required by the Open Graph standard.
 
+## Initialization
+
+To manage Open Graph data, call the `new MetaOg()` constructor.
+
+**Features:**
+- **Inheritance** — extends `MetaManager`, using the `property` attribute to manage tags.
+- **Standard** — comes with a predefined list of all primary [Open Graph](https://ogp.me/) protocol tags.
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional-basic'
+
+const og = new MetaOg()
+```
+
 ## Supported Tags
 
 Manages the following `og:*` tags: `og:title`, `og:type`, `og:url`, `og:image`, `og:description`, `og:locale`, `og:site_name`.

@@ -12,6 +12,21 @@ Lớp tĩnh để đo độ rộng thanh cuộn của trình duyệt một cách
 - **Đo bất đồng bộ** — sử dụng `requestAnimationFrame` để có kết quả chính xác sau khi vẽ lại.
 - **Phát hiện thanh cuộn phủ** — `is()` kiểm tra xem thanh cuộn có phải "overlay" không (rộng ≤ 8px), điển hình cho macOS và trình duyệt di động.
 
+## Khởi tạo
+
+Lớp này là **tĩnh (static)**. Các phương thức có thể được gọi trực tiếp mà không cần tạo instance của đối tượng.
+
+**Tính năng:**
+- **Bộ nhớ đệm (Caching)** — dữ liệu được lưu trong `DataStorage` và không được tính toán lại trong các lần gọi tiếp theo.
+- **Tính kiên định (Persistence)** — giá trị được bảo toàn qua các lần tải lại trang (session storage).
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional-basic'
+
+// Gọi phương thức tĩnh
+const width = await ScrollbarWidth.get()
+```
+
 ## Phương thức
 
 - `get(): Promise<number>` — độ rộng thanh cuộn tính bằng pixel. Lần đầu tiên đo qua phần tử DOM tạm thời.

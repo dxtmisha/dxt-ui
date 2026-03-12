@@ -82,6 +82,17 @@ describe('Hash', () => {
     expect(cb2).toHaveBeenCalledWith(2)
   })
 
+  it('should remove watcher', () => {
+    const callback = vi.fn()
+    Hash.addWatch('y', callback)
+    Hash.removeWatch('y', callback)
+
+    ;(Hash as any).hash = { y: 1 }
+    ;(Hash as any).makeWatch({ y: 2 })
+
+    expect(callback).not.toHaveBeenCalled()
+  })
+
   it('should reload without throwing (jsdom has a static `location.hash`)', () => {
     // jsdom does not allow writing to `location.hash`, so we just verify reload() runs cleanly
     expect(() => Hash.reload()).not.toThrow()

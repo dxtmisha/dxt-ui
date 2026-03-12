@@ -10,13 +10,24 @@ Lớp này là lớp cha của `MetaOg`, `MetaTwitter` và `Meta`.
 
 ## Khởi tạo
 
-```typescript
-new MetaManager(listMeta, isProperty?)
-```
+Lớp này là **trừu tượng (abstract)**. Bạn không thể tạo instance của nó trực tiếp qua `new MetaManager()`. Thay vào đó, nó phải được kế thừa.
 
-**Tham số:**
-- `listMeta: readonly string[]` — danh sách tên thẻ meta được quản lý bởi instance này.
-- `isProperty?: boolean` — nếu `true`, dùng thuộc tính `property` thay vì `name` (cần thiết cho Open Graph). Mặc định: `false`.
+**Tham số constructor (cho các lớp con):**
+- `listMeta: T` — danh sách tên các thẻ meta được quản lý bởi instance này.
+- `isProperty?: boolean` — xác định thuộc tính được sử dụng: `true` cho `property` (Open Graph), `false` for `name` (thẻ tiêu chuẩn). Mặc định: `false`.
+
+```typescript
+import { MetaManager } from '@dxtmisha/functional-basic'
+
+// Ví dụ kế thừa
+class MyMeta extends MetaManager<string[]> {
+  constructor() {
+    super(['description', 'keywords'])
+  }
+}
+
+const myMeta = new MyMeta()
+```
 
 ## Phương thức
 

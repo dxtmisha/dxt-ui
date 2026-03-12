@@ -72,4 +72,13 @@ describe('Loading', () => {
     expect(listener).toHaveBeenCalled()
     expect(listener.mock.calls?.[0]?.[0].detail).toEqual({ loading: true })
   })
+
+  it('should unregister event via unregistrationEvent', () => {
+    const listener = vi.fn()
+    Loading.registrationEvent(listener)
+    Loading.unregistrationEvent(listener)
+
+    Loading.show()
+    expect(listener).not.toHaveBeenCalled()
+  })
 })

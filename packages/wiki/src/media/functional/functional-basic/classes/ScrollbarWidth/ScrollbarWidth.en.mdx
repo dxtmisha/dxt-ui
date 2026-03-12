@@ -12,6 +12,21 @@ A static class for asynchronously measuring the browser scrollbar width. The res
 - **Async Measurement** — uses `requestAnimationFrame` for an accurate result after repaint.
 - **Overlay Scroll Detection** — `is()` checks if the scrollbar is "overlay" (width ≤ 8px), typical of macOS and mobile browsers.
 
+## Initialization
+
+The class is **static**. Methods can be called directly without creating an object instance.
+
+**Features:**
+- **Caching** — data is stored in `DataStorage` and not recalculated on subsequent calls.
+- **Persistence** — the value is preserved across page reloads (session storage).
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional-basic'
+
+// Static method call
+const width = await ScrollbarWidth.get()
+```
+
 ## Methods
 
 - `get(): Promise<number>` — scrollbar width in pixels. On first call, measures via a temporary DOM element.
