@@ -84,7 +84,7 @@ describe('DesignComponents', () => {
       const node = design.renderOne('button', { label: 'Click' })
       expect(node).toBeDefined()
       expect(node?.type).toBe(mockComponent)
-      expect(node?.props).toEqual({ size: 'large', label: 'Click' })
+      expect(node?.props).toEqual({ size: 'large', label: 'Click', key: '.button' })
     })
 
     it('returns undefined for invalid component', () => {

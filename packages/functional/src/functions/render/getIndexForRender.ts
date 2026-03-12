@@ -10,14 +10,18 @@ import { getClassName } from './getClassName'
  * @param index the name of the key/ названия ключа
  */
 export function getIndexForRender<T extends ItemList>(
-  name: string,
+  name: string | any,
   props?: T,
   index?: string
-): string {
+): string | undefined {
   const id = props?.id
   const indexProp = props?.index
   const className = getClassName(props)
-  let result = name
+  let result = ''
+
+  if (isString(name)) {
+    result += `.${name}`
+  }
 
   if (index) {
     result += `.${index}`
@@ -35,5 +39,9 @@ export function getIndexForRender<T extends ItemList>(
     result += `.${id}`
   }
 
-  return result
+  if (result !== '') {
+    return result
+  }
+
+  return undefined
 }

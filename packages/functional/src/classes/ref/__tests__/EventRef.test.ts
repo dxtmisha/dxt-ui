@@ -8,6 +8,21 @@ describe('EventRef', () => {
   let control: HTMLElement
 
   beforeEach(() => {
+    // Fix for "TypeError: e.getItem is not a function" caused by broken jsdom localStorage
+    if (!window.localStorage || typeof window.localStorage.getItem !== 'function') {
+      Object.defineProperty(window, 'localStorage', {
+        value: {
+          getItem: vi.fn(() => null),
+          setItem: vi.fn(),
+          removeItem: vi.fn(),
+          clear: vi.fn(),
+          length: 0,
+          key: vi.fn()
+        },
+        writable: true
+      })
+    }
+
     element = document.createElement('div')
     control = document.createElement('div')
     document.body.appendChild(element)

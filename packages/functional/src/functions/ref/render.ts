@@ -14,7 +14,7 @@ import { type RawChildren, type RawSlots } from '../../types/refTypes'
  * @param index the name of the key/ названия ключа
  */
 export function render<T extends ItemList>(
-  name: string,
+  name: string | any,
   props?: T,
   children?: RawChildren | RawSlots,
   index?: string

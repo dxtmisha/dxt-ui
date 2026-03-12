@@ -7,7 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 A wrapper around Vue's `h` (hyperscript) function that provides automatic key generation for components. It ensures that components have unique keys for efficient rendering and transition handling, especially when dealing with lists or dynamic elements.
 
 **Parameters:**
-- `name: string` — The name or tag of the component to render.
+- `name: string | any` — The name or tag of the component to render.
 - `props?: T` — The properties to pass to the component.
 - `children?: RawChildren | RawSlots` — The children or slots of the component.
 - `index?: string` — An optional index or identifier to use for key generation.
@@ -20,18 +20,21 @@ import { render } from '@dxtmisha/functional'
 
 // Renders a div with an automatically generated key
 const vnode = render('div', { class: 'container' }, 'Hello World')
+// key => '.div.container'
 
 // Renders a component with a specific index for key generation
 const item = render('my-component', { data: itemData }, null, 'item-1')
+// key => '.my-component.item-1'
 ```
 
 ### Key Generation
 
-The key (`key`) for the Vue component is formed **additively** (by sequential appending). It always starts with the component name (`name`), followed by these values appended with a dot (if they exist):
+The key (`key`) for the Vue component is formed **additively** (by sequential appending). It always starts with a dot followed by the component name (`.name`), and other values are appended with dots (if they exist):
 
-1.  **.index** — from the third argument of the `render` function.
-2.  **.props.index** — if provided in the properties object and is a string.
-3.  **.className** — if a class is specified in `props`.
-4.  **.props.id** — if an ID is specified in `props`.
+1.  **`.name`** — if `name` is a string.
+2.  **.index** — from the third argument of the `render` function.
+3.  **.props.index** — if provided in the properties object and is a string.
+4.  **.className** — if a class is specified in `props`.
+5.  **.props.id** — if an ID is specified in `props`.
 
 This ensures key uniqueness even when component names are identical.
