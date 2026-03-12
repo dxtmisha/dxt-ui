@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/SearchListData - Quản lý Dữ liệu Tìm kiếm'/>
+
+# Lớp SearchListData
+
+Lớp `SearchListData` quản lý danh sách dữ liệu nguồn và bộ nhớ đệm (cache) tìm kiếm liên quan. Nó xử lý việc định dạng các thành phần, trích xuất các giá trị từ các đường dẫn lồng nhau và áp dụng các thẻ làm nổi bật (highlight tags) cho các chuỗi khớp.
+
+## Tính năng chính
+
+- **Khởi tạo trễ (Lazy Initialization)** — thực hiện tạo bộ nhớ đệm theo yêu cầu, đảm bảo chi phí hiệu suất chỉ xảy ra khi tìm kiếm đang được thực hiện tích cực.
+- **Bộ nhớ đệm tìm kiếm** — tạo ra một biểu diễn chuỗi phẳng của các cột được chỉ định cho mỗi thành phần để cho phép tìm kiếm nhanh chóng.
+- **Hỗ trợ đường dẫn lồng nhau** — khả năng trích xuất dữ liệu từ các cấu trúc đối tượng sâu (ví dụ: `'user.profile.name'`).
+- **Làm nổi bật tự động** — bao quanh các phần khớp của chuỗi trong các thẻ HTML để phản hồi trực quan.
+- **Định dạng CamelCase** — biến đổi các đường dẫn cột thành các tên thuộc tính tiện lợi (ví dụ: `'user.name'` trở thành `'userNameSearch'`).
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `SearchListData(list, columns, item, options)`.
+
+**Tham số:**
+- `list: T[]` — mảng ban đầu của các thành phần dữ liệu.
+- `columns?: string[]` — một mảng các đường dẫn thuộc tính để tìm kiếm.
+- `item: SearchListItem` — trạng thái thành phần tìm kiếm.
+- `options: SearchListOptions` — các tùy chọn cấu hình.
+
+```typescript
+import { SearchListData, SearchListItem, SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions()
+const item = new SearchListItem('alice', options)
+const data = new SearchListData(
+  [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }],
+  ['name'],
+  item,
+  options
+)
+
+const results = data.forEach((origItem, value) => {
+  return data.toFormatItem(origItem, true)
+})
+```
+
+## Phương thức
+
+### Thông tin
+
+- `is(): boolean` — Kiểm tra xem cả danh sách và các cột đã được khởi tạo hay chưa.
+- `isList(): boolean` — Kiểm tra xem danh sách nguồn có được cung cấp hay không.
+- `getList(): T[]` — Trả về danh sách dữ liệu ban đầu.
+- `getColumns(): string[] | undefined` — Trả về các cột tìm kiếm hiện tại.
+- `findCacheItem(item: T)` — Tìm thành phần tìm kiếm đã lưu trong bộ nhớ đệm cho một thành phần gốc cụ thể.
+
+### Cấu hình (Setters)
+
+- `setList(list: T[]): this` — Cập nhật danh sách dữ liệu và tạo lại bộ nhớ đệm.
+- `setColumns(columns?: string[]): this` — Cập nhật các cột tìm kiếm và tạo lại bộ nhớ đệm.
+
+### Xử lý
+
+- `toFormatItem(item: T, selection: boolean): object` — Chuyển đổi một thành phần gốc thành một thành phần đã định dạng với các thẻ làm nổi bật.
+- `forEach(callback: Function): Array` — Lặp qua bộ nhớ đệm và trả về danh sách các thành phần được định dạng thông qua hàm gọi lại (callback).
+
+## Quá trình tạo bộ nhớ đệm
+
+Hệ thống tìm kiếm sử dụng chiến lược khởi tạo trễ (lazy initialization) để tối ưu hóa hiệu suất khi làm việc với các danh sách lớn:
+- **Tạo theo yêu cầu**: Bộ nhớ đệm không được xây dựng khi lớp được khởi tạo. Thay vào đó, nó chỉ được tạo ra vào lần đầu tiên một thao tác tìm kiếm yêu cầu.
+- **Vô hiệu hóa bộ nhớ đệm**: Gọi `setList()` hoặc `setColumns()` sẽ tự động phá hủy bộ nhớ đệm hiện tại. Nó sẽ được xây dựng lại một cách liền mạch trong lần tìm kiếm tiếp theo.
+- **Biểu diễn phẳng**: Để tạo bộ nhớ đệm, lớp sẽ lặp qua danh sách ban đầu và trích xuất các giá trị từ các `columns` (bao gồm cả các đường dẫn sâu). Các giá trị này được chuyển đổi thành chuỗi và nối thành một chuỗi duy nhất, cách nhau bằng dấu cách. Chuỗi tổng hợp này được lưu trong `SearchCacheItem.value` и được sử dụng cho tất cả các kiểm tra biểu thức chính quy tốc độ cao tiếp theo. Phương pháp này loại bỏ hoàn toàn việc duyệt đối tượng phức tạp trong quá trình người dùng đang gõ phím.
+
+## Các kiểu dữ liệu (Types)
+
+### SearchCacheItem
+
+Đối tượng đại diện cho một mục duy nhất trong bộ nhớ đệm tìm kiếm:
+
+- `item: T` — tham chiếu đến thành phần dữ liệu gốc.
+- `value: string` — biểu diễn chuỗi phẳng của các cột có thể tìm kiếm.
+
+### SearchCache
+
+Một tập hợp các đối tượng `SearchCacheItem` được sử dụng để tìm kiếm hiệu quả:
+`type SearchCache<T> = SearchCacheItem<T>[]`

@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/SearchListItem - Search Item Management'/>
+
+# SearchListItem Class
+
+The `SearchListItem` class represents the current state of a single search input. It manages the value being searched and determines whether a search operation should be triggered based on configured options.
+
+## Key Features
+
+- **Value Management** — provides easy methods to get and set the search string.
+- **Activation Logic** — determines if a search should be triggered based on the length of the search string.
+- **Type Safety** — includes type guards to verify if the value is non-empty.
+
+## Initialization
+
+To initialize the object, call the `SearchListItem(value, options)` constructor.
+
+**Parameters:**
+- `value: string | undefined` — the initial search value.
+- `options: SearchListOptions` — an instance of `SearchListOptions` to provide the search limit.
+
+```typescript
+import { SearchListItem, SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions({ limit: 3 })
+const item = new SearchListItem('he', options)
+
+console.log(item.isSearch()) // false (length < 3)
+item.set('hello')
+console.log(item.isSearch()) // true (length >= 3)
+```
+
+## Methods
+
+### Information
+
+- `is(): boolean` — Checks if the current value is not empty or undefined.
+- `isSearch(): boolean` — Checks if a search should be performed (value exists AND length >= limit).
+- `get(): string` — Returns the current search value as a string.
+
+### Configuration (Setters)
+
+- `set(value?: string): this` — Sets a new search value and returns the current instance.
+
+## Search Activation
+
+The `SearchListItem` class acts as a filter that determines whether the search system should start processing data. This is handled by the `isSearch()` method, which uses the `limit` option from `SearchListOptions`.
+
+- **Minimum Length (`limit`)**: A search is only considered active if the number of characters in the search string is greater than or equal to the defined limit.
+- **Default Behavior**: By default, the limit is set to `2`. This means searching for `"a"` will not trigger a match, but `"ad"` or `"admin"` will.
+
+This logic helps prevent unnecessary computations and "noisy" results when the user has only typed a single character.

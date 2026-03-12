@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/SearchListMatcher - Search Matcher Logic'/>
+
+# SearchListMatcher Class
+
+The `SearchListMatcher` class is responsible for the core matching logic. It converts the current search string into a regular expression and provides methods to check if various data values match that expression.
+
+## Key Features
+
+- **Dynamic RegExp Generation** — automatically builds or resets the matcher when the search term or options change.
+- **Search Modes** — supports both standard partial matching and exact match modes based on `SearchListOptions`.
+- **Efficient Testing** — uses high-performance regular expression testing to identify matches in the data.
+
+## Initialization
+
+To initialize the object, call the `SearchListMatcher(item, options)` constructor.
+
+**Parameters:**
+- `item: SearchListItem` — the search item state containing the value.
+- `options: SearchListOptions` — configuration options (e.g., `findExactMatch`).
+
+```typescript
+import { SearchListMatcher, SearchListItem, SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions({ findExactMatch: false })
+const item = new SearchListItem('admin', options)
+const matcher = new SearchListMatcher(item, options)
+
+console.log(matcher.isSelection('System Administrator')) // true
+```
+
+## Methods
+
+### Information
+
+- `is(): boolean` — Checks if the inner regular expression matcher is initialized.
+- `isSelection(value: string): boolean` — Checks if the given value matches the current search expression.
+- `get(): RegExp | undefined` — Returns the current regular expression instance.
+
+### Control
+
+- `update(): void` — Re-initializes the matcher based on the current state of the search item and options.
+
+## Search Modes
+
+The class supports two main matching modes, controlled by the `findExactMatch` option in `SearchListOptions`:
+
+### 1. Contains All Words (Default)
+When `findExactMatch` is `false`, the search string is split into individual words. A match is found only if **every word** is present in the target string, regardless of their order.
+- **Example**: Search for `"gaming mouse"` will match `"Mouse for Gaming"` and `"Gaming Pro Mouse"`.
+
+### 2. Exact Phrase
+When `findExactMatch` is `true`, the search string is treated as a single continuous phrase. A match is found only if the **exact sequence** of characters (case-insensitive) exists in the target string.
+- **Example**: Search for `"gaming mouse"` will match `"Cool gaming mouse"`, but will **not** match `"Mouse for gaming"`.

@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/SearchListOptions - Quản lý Tùy chọn Danh sách Tìm kiếm'/>
+
+# Lớp SearchListOptions
+
+Lớp `SearchListOptions` chịu trách nhiệm quản lý và cung cấp quyền truy cập vào các tùy chọn cấu hình được sử dụng bởi hệ thống `SearchList`. Nó đảm bảo rằng các giá trị mặc định được sử dụng khi các tùy chọn cụ thể không được cung cấp.
+
+## Tính năng chính
+
+- **Cấu hình tập trung** — cung cấp một điểm truy cập duy nhất cho tất cả các cài đặt liên quan đến tìm kiếm.
+- **Xử lý giá trị mặc định** — tự động áp dụng các giá trị mặc định hợp lý (ví dụ: giới hạn, độ trễ) nếu chúng thiếu trong các tùy chọn được cung cấp.
+- **Giao diện Fluent** — hỗ trợ chuỗi lệnh (method chaining) để thiết lập các tùy chọn mới.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `SearchListOptions(options)`.
+
+**Tham số:**
+- `options?: SearchOptions` — một đối tượng chứa cấu hình tìm kiếm.
+
+```typescript
+import { SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions({
+  limit: 3,
+  delay: 300,
+  findExactMatch: true
+})
+
+console.log(options.getLimit()) // 3
+```
+
+## Phương thức
+
+### Thông tin
+
+- `getOptions(): SearchOptions` — Trả về đối tượng tùy chọn tìm kiếm hiện tại.
+- `getLimit(): number` — Trả về số lượng ký tự tối thiểu cần thiết để kích hoạt tìm kiếm (mặc định là `2`).
+- `getReturnEverything(): boolean` — Trả về liệu có trả về tất cả các mục ngay cả khi chúng không khớp với truy vấn tìm kiếm hay không (mặc định là `false`).
+- `getDelay(): number` — Trả về độ trễ tìm kiếm tính bằng mili giây (mặc định là `0`).
+- `getFindExactMatch(): boolean` — Trả về liệu có thực hiện tìm kiếm khớp chính xác hay không (mặc định là `false`).
+- `getClassName(): string` — Trả về tên lớp CSS được sử dụng để làm nổi bật các kết quả khớp (mặc định là `'sys-search-selection'`).
+
+### Cấu hình (Setters)
+
+- `setOptions(options: SearchOptions): this` — Thiết lập các tùy chọn tìm kiếm mới và trả về thực thể hiện tại để tạo chuỗi lệnh.
+
+## Các kiểu dữ liệu (Types)
+
+### SearchOptions
+
+Đối tượng cấu hình chính cho hệ thống tìm kiếm. Tất cả các trường là tùy chọn:
+
+- `limit?: number` — độ dài ký tự tối thiểu để kích hoạt tìm kiếm. Mặc định: `2`.
+- `returnEverything?: boolean` — nếu là `true`, trả về tất cả các mục bất kể có khớp hay không. Mặc định: `false`.
+- `delay?: number` — độ trễ thực hiện tìm kiếm tính bằng mili giây. Mặc định: `0`.
+- `findExactMatch?: boolean` — cho phép khớp từ chính xác. Mặc định: `false`.
+- `classSearchName?: string` — tên lớp CSS để làm nổi bật các kết quả khớp. Mặc định: `'sys-search-selection'`.

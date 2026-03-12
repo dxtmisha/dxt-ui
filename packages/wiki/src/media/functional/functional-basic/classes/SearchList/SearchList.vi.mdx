@@ -1,0 +1,113 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/SearchList - Quản lý Danh sách Tìm kiếm Nâng cao'/>
+
+# Lớp SearchList
+
+Lớp `SearchList` là điểm truy cập chính để triển khai các danh sách có thể tìm kiếm. Nó điều phối giữa việc lưu trữ dữ liệu, trạng thái thành phần tìm kiếm, logic so khớp và các tùy chọn cấu hình để cung cấp trải nghiệm tìm kiếm liền mạch.
+
+## Tính năng chính
+
+- **Tìm kiếm được điều phối** — tự động cập nhật trình so khớp và tạo lại kết quả khi giá trị tìm kiếm hoặc dữ liệu thay đổi.
+- **Kết quả linh hoạt** — cung cấp phương thức `to()` trả về toàn bộ danh sách hoặc các kết quả đã được lọc với các phần làm nổi bật HTML tùy chọn.
+- **Tích hợp dễ dàng** — API đơn giản để thiết lập dữ liệu, cột và giá trị tìm kiếm.
+- **Hỗ trợ "Trả về tất cả" (Return Everything)** — có thể được cấu hình để hiển thị toàn bộ danh sách với các phần nổi bật tại các điểm khớp, hoặc chỉ các thành phần khớp.
+- **Hiệu suất tối ưu** — sử dụng tiện ích `forEach` toàn cục để xử lý nhanh khi tìm kiếm không hoạt động, bỏ qua việc tạo bộ nhớ đệm để đạt hiệu quả tối đa.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `SearchList(list, columns, value, options)`.
+
+**Tham số:**
+- `list: T[]` — mảng dữ liệu ban đầu.
+- `columns?: string[]` — các đường dẫn thuộc tính để tìm kiếm.
+- `value?: string` — giá trị tìm kiếm ban đầu.
+- `options?: SearchOptions` — cấu hình tìm kiếm.
+
+```typescript
+import { SearchList } from '@dxtmisha/functional'
+
+const mockData = [
+  { id: 1, name: 'Search Engine', category: 'Web' },
+  { id: 2, name: 'List Manager', category: 'Utility' }
+]
+
+const search = new SearchList(mockData, ['name', 'category'], 'engine')
+
+// Lấy kết quả đã được lọc và làm nổi bật
+const results = search.to()
+```
+
+## Quản lý dữ liệu
+
+### `to`
+
+Phương thức `to()` xử lý danh sách dữ liệu hiện tại dựa trên truy vấn tìm kiếm và trả về một mảng kết quả đã được định dạng.
+
+**Trả về:** `SearchFormatList<T, K>` — một danh sách các mục trong đó mỗi trường có thể tìm kiếm được bổ sung thêm thuộc tính `...Search` chứa các phần làm nổi bật HTML.
+
+**Hành vi:**
+- **Tìm kiếm đang hoạt động**: Nếu độ dài chuỗi tìm kiếm lớn hơn hoặc bằng `limit`, nó sẽ lọc danh sách (trừ khi `returnEverything` là true) và áp dụng các thẻ làm nổi bật cho văn bản khớp.
+- **Tìm kiếm không hoạt động**: Nếu chuỗi tìm kiếm trống hoặc quá ngắn, nó sẽ trả về các mục danh sách ban đầu được định dạng với các thuộc tính tìm kiếm của chúng, nhưng không có bất kỳ phần làm nổi bật nào và với `searchActive: false`.
+
+```javascript
+const results = search.to()
+
+results.forEach(item => {
+  if (item.searchActive) {
+    console.log(`Đã tìm thấy mục khớp: ${item.nameSearch}`)
+  }
+})
+```
+
+## Phương thức
+
+### Thông tin (Getters)
+
+- `getData(): SearchListData` — Trả về thực thể quản lý dữ liệu nội bộ.
+- `getList(): T[]` — Trả về danh sách dữ liệu nguồn.
+- `getColumns(): string[] | undefined` — Trả về các cột tìm kiếm hiện tại.
+- `getItem(): SearchListItem` — Trả về thực thể trạng thái thành phần tìm kiếm.
+- `getValue(): string | undefined` — Trả về chuỗi tìm kiếm hiện tại.
+- `getOptions(): SearchListOptions` — Trả về thực thể quản lý tùy chọn.
+
+### Cấu hình (Setters)
+
+- `setList(list: T[]): this` — Thiết lập danh sách dữ liệu mới.
+- `setColumns(columns?: string[]): this` — Thiết lập các cột tìm kiếm mới.
+- `setValue(value?: string): this` — Thiết lập giá trị tìm kiếm mới và kích hoạt cập nhật trình so khớp.
+- `setOptions(options: SearchOptions): this` — Thiết lập các tùy chọn tìm kiếm mới.
+
+## Các kiểu dữ liệu (Types)
+
+### SearchOptions
+
+Đối tượng cấu hình cho hành vi của `SearchList`:
+
+- `limit?: number` — độ dài ký tự tối thiểu để kích hoạt tìm kiếm (mặc định: `2`).
+- `returnEverything?: boolean` — nếu là `true`, trả về tất cả các mục thay vì lọc; các mục không khớp sẽ có `searchActive: false`.
+- `delay?: number` — độ trễ debounce tính bằng mili giây (được sử dụng bởi các thành phần cấp cao hơn).
+- `findExactMatch?: boolean` — nếu là `true`, sử dụng chế độ "Phân đoạn chính xác"; nếu không sẽ sử dụng "Chứa tất cả các từ".
+- `classSearchName?: string` — lớp CSS tùy chỉnh cho các thẻ làm nổi bật `<span />`.
+
+### SearchFormatItem
+
+Cấu trúc của một mục được trả về bởi phương thức `to()`. Nó bao gồm tất cả các trường ban đầu từ mục dữ liệu cộng với các trường liên quan đến tìm kiếm động:
+
+- `[key]Search: string` — (Động) giá trị của cột tương ứng, có thể chứa các thẻ `<span />` cho các phần khớp.
+- `searchActive?: boolean` — cờ boolean cho biết mục đó có khớp với tiêu chí tìm kiếm hiện tại hay không.
+
+### SearchFormatList
+
+Danh sách các mục tìm kiếm đã được định dạng:
+`type SearchFormatList<T, K> = SearchFormatItem<T, K>[]`
+
+### SearchItem
+
+Một đối tượng chung có thể được tìm kiếm:
+`type SearchItem = Record<string, any>`
+
+### SearchListValue
+
+Giá trị danh sách đầu vào:
+`type SearchListValue<T> = T[] | undefined`

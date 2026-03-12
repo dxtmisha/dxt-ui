@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/SearchListData - Search Data Management'/>
+
+# SearchListData Class
+
+The `SearchListData` class manages the source data list and its associated search cache. It handles the formatting of items, extraction of values from nested paths, and the application of highlight tags to matching strings.
+
+## Key Features
+
+- **Lazy Initialization** — implements on-demand cache generation, ensuring performance overhead only occurs when a search is actively performed.
+- **Search Caching** — generates a flattened string representation of specified columns for each item to enable fast searching.
+- **Nested Path Support** — ability to extract data from deep object structures (e.g., `'user.profile.name'`).
+- **Automatic Highlighting** — wraps matching parts of the string in HTML tags for visual feedback.
+- **CamelCase Formatting** — transforms column paths into convenient property names (e.g., `'user.name'` becomes `'userNameSearch'`).
+
+## Initialization
+
+To initialize the object, call the `SearchListData(list, columns, item, options)` constructor.
+
+**Parameters:**
+- `list: T[]` — the original array of data items.
+- `columns?: string[]` — an array of property paths to search in.
+- `item: SearchListItem` — the search item state.
+- `options: SearchListOptions` — configuration options.
+
+```typescript
+import { SearchListData, SearchListItem, SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions()
+const item = new SearchListItem('alice', options)
+const data = new SearchListData(
+  [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }],
+  ['name'],
+  item,
+  options
+)
+
+const results = data.forEach((origItem, value) => {
+  return data.toFormatItem(origItem, true)
+})
+```
+
+## Methods
+
+### Information
+
+- `is(): boolean` — Checks if both the list and columns are initialized.
+- `isList(): boolean` — Checks if the source list is provided.
+- `getList(): T[]` — Returns the original data list.
+- `getColumns(): string[] | undefined` — Returns the current search columns.
+- `findCacheItem(item: T)` — Finds the cached search value for a specific original item.
+
+### Configuration (Setters)
+
+- `setList(list: T[]): this` — Updates the data list and regenerates the cache.
+- `setColumns(columns?: string[]): this` — Updates the search columns and regenerates the cache.
+
+### Processing
+
+- `toFormatItem(item: T, selection: boolean): object` — Converts an original item into a formatted one with highlight tags.
+- `forEach(callback: Function): Array` — Iterates over the cache and returns a list of items formatted via the callback.
+
+## Cache Generation
+
+The search system uses a lazy initialization strategy to optimize performance when working with large lists:
+- **On-Demand Generation**: The cache is not built when the class is instantiated. Instead, it is generated the very first time a search operation requires it.
+- **Cache Invalidation**: Calling `setList()` or `setColumns()` automatically destroys the existing cache. It will be seamlessly rebuilt during the next search.
+- **Flattened Representation**: To create the cache, the class iterates through the original list and extracts values from the specified `columns` (including deep paths). These values are converted to strings and concatenated into a single, space-separated string. This composite string is saved in `SearchCacheItem.value` and used for all subsequent, high-speed regular expression matching. This approach completely eliminates complex object traversal during active user typing.
+
+## Types
+
+### SearchCacheItem
+
+Object representing a single item in the search cache:
+
+- `item: T` — reference to the original data item.
+- `value: string` — flattened string representation of the searchable columns.
+
+### SearchCache
+
+A collection of `SearchCacheItem` objects used for efficient searching:
+`type SearchCache<T> = SearchCacheItem<T>[]`

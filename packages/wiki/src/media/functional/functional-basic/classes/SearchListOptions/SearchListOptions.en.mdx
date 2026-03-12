@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/SearchListOptions - Search List Options Management'/>
+
+# SearchListOptions Class
+
+The `SearchListOptions` class is responsible for managing and providing access to the configuration options used by the `SearchList` system. It ensures that default values are used when specific options are not provided.
+
+## Key Features
+
+- **Centralized Configuration** — provides a single point of access for all search-related settings.
+- **Default Value Handling** — automatically applies sensible defaults (e.g., limit, delay) if they are missing in the provided options.
+- **Fluent Interface** — supports method chaining for setting new options.
+
+## Initialization
+
+To initialize the object, call the `SearchListOptions(options)` constructor.
+
+**Parameters:**
+- `options?: SearchOptions` — an object containing search configuration.
+
+```typescript
+import { SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions({
+  limit: 3,
+  delay: 300,
+  findExactMatch: true
+})
+
+console.log(options.getLimit()) // 3
+```
+
+## Methods
+
+### Information
+
+- `getOptions(): SearchOptions` — Returns the current search options object.
+- `getLimit(): number` — Returns the minimum number of characters required to trigger a search (default is `2`).
+- `getReturnEverything(): boolean` — Returns whether to return all items even if they don't match the search query (default is `false`).
+- `getDelay(): number` — Returns the search delay in milliseconds (default is `0`).
+- `getFindExactMatch(): boolean` — Returns whether to perform an exact match search (default is `false`).
+- `getClassName(): string` — Returns the CSS class name used for highlighting matches (default is `'sys-search-selection'`).
+
+### Configuration (Setters)
+
+- `setOptions(options: SearchOptions): this` — Sets new search options and returns the current instance for chaining.
+
+## Types
+
+### SearchOptions
+
+Main configuration object for the search system. All fields are optional:
+
+- `limit?: number` — minimum character length to trigger search. Default: `2`.
+- `returnEverything?: boolean` — if `true`, returns all items regardless of match. Default: `false`.
+- `delay?: number` — search execution delay in milliseconds. Default: `0`.
+- `findExactMatch?: boolean` — enables strict word matching. Default: `false`.
+- `classSearchName?: string` — CSS class for highlighting matches. Default: `'sys-search-selection'`.

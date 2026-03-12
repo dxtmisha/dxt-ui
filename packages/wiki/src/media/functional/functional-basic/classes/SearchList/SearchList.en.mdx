@@ -1,0 +1,113 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/SearchList - Advanced Searchable List Management'/>
+
+# SearchList Class
+
+The `SearchList` class is the primary entry point for implementing searchable lists. it coordinates between data storage, search item state, matching logic, and configuration options to provide a seamless search experience.
+
+## Key Features
+
+- **Coordinated Search** — automatically updates the matcher and regenerates results when search values or data change.
+- **Flexible Results** — provides a `to()` method that returns either the full list or filtered results with optional HTML highlights.
+- **Easy Integration** — simple API for setting data, columns, and search values.
+- **Support for "Return Everything"** — can be configured to show the full list with highlights on matches, or only the matching items.
+- **Optimized Performance** — uses a global `forEach` utility for fast processing when search is inactive, bypassing cache generation for maximum efficiency.
+
+## Initialization
+
+To initialize the object, call the `SearchList(list, columns, value, options)` constructor.
+
+**Parameters:**
+- `list: T[]` — the initial array of data items.
+- `columns?: string[]` — the property paths to search in.
+- `value?: string` — the initial search value.
+- `options?: SearchOptions` — search configuration.
+
+```typescript
+import { SearchList } from '@dxtmisha/functional'
+
+const mockData = [
+  { id: 1, name: 'Search Engine', category: 'Web' },
+  { id: 2, name: 'List Manager', category: 'Utility' }
+]
+
+const search = new SearchList(mockData, ['name', 'category'], 'engine')
+
+// Get filtered and highlighted results
+const results = search.to()
+```
+
+## Data Management
+
+### `to`
+
+The `to()` method processes the current data list against the search query and returns an array of formatted results.
+
+**Returns:** `SearchFormatList<T, K>` — a list of items where each searchable field is supplemented with a `...Search` property containing HTML highlights.
+
+**Behavior:**
+- **Search Active**: If the search string length is greater than or equal to the `limit`, it filters the list (unless `returnEverything` is true) and applies highlight tags to matching text.
+- **Search Inactive**: If the search is empty or too short, it returns the original list items formatted with their search properties, but without any highlights and with `searchActive: false`.
+
+```javascript
+const results = search.to()
+
+results.forEach(item => {
+  if (item.searchActive) {
+    console.log(`Matched item found: ${item.nameSearch}`)
+  }
+})
+```
+
+## Methods
+
+### Information (Getters)
+
+- `getData(): SearchListData` — Returns the internal data management instance.
+- `getList(): T[]` — Returns the source data list.
+- `getColumns(): string[] | undefined` — Returns the current search columns.
+- `getItem(): SearchListItem` — Returns the search item state instance.
+- `getValue(): string | undefined` — Returns the current search string.
+- `getOptions(): SearchListOptions` — Returns the options management instance.
+
+### Configuration (Setters)
+
+- `setList(list: T[]): this` — Sets a new data list.
+- `setColumns(columns?: string[]): this` — Sets new search columns.
+- `setValue(value?: string): this` — Sets a new search value and triggers a matcher update.
+- `setOptions(options: SearchOptions): this` — Sets new search options.
+
+## Types
+
+### SearchOptions
+
+Configuration object for the `SearchList` behavior:
+
+- `limit?: number` — minimum character length to trigger search (default: `2`).
+- `returnEverything?: boolean` — if `true`, returns all items instead of filtering; non-matches will have `searchActive: false`.
+- `delay?: number` — debouncing delay in milliseconds (used by higher-level components).
+- `findExactMatch?: boolean` — if `true`, uses "Exact Phrase" mode; otherwise uses "Contains All Words".
+- `classSearchName?: string` — custom CSS class for the `<span />` highlight tags.
+
+### SearchFormatItem
+
+The structure of an item returned by the `to()` method. It includes all original fields from the data item plus dynamic search-related fields:
+
+- `[key]Search: string` — (Dynamic) value of the corresponding column, potentially containing `<span />` tags for matches.
+- `searchActive?: boolean` — boolean flag indicating if the item matched the current search criteria.
+
+### SearchFormatList
+
+A list of formatted search items:
+`type SearchFormatList<T, K> = SearchFormatItem<T, K>[]`
+
+### SearchItem
+
+A generic object that can be searched:
+`type SearchItem = Record<string, any>`
+
+### SearchListValue
+
+The input list value:
+`type SearchListValue<T> = T[] | undefined`

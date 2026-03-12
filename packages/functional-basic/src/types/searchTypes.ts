@@ -10,7 +10,7 @@ export type SearchColumnPath<K, P> = K extends string
 
 /** Type for getting a column / Тип для получения колонки */
 export type SearchColumn<T extends SearchItem> = {
-  [K in keyof T]: T[K] extends object ? K | SearchColumnPath<K, keyof T[K]> : K
+  [K in keyof T]-?: NonNullable<T[K]> extends object ? K | SearchColumnPath<K, keyof NonNullable<T[K]>> : K
 }[keyof T]
 
 /** Type for a list of columns / Тип для списка колонок */

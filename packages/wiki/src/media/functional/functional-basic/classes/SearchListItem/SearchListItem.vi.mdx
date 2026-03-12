@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/SearchListItem - Quản lý Thành phần Tìm kiếm'/>
+
+# Lớp SearchListItem
+
+Lớp `SearchListItem` đại diện cho trạng thái hiện tại của nội dung nhập tìm kiếm. Nó quản lý giá trị đang được tìm kiếm và xác định liệu có nên kích hoạt thao tác tìm kiếm hay không dựa trên các tùy chọn đã cấu hình.
+
+## Tính năng chính
+
+- **Quản lý giá trị** — cung cấp các phương thức dễ dàng để lấy và thiết lập chuỗi tìm kiếm.
+- **Logic kích hoạt** — xác định liệu có nên bắt đầu tìm kiếm hay không dựa trên độ dài của chuỗi tìm kiếm.
+- **An toàn kiểu dữ liệu** — bao gồm các type guard để xác minh xem giá trị có khác rỗng hay không.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `SearchListItem(value, options)`.
+
+**Tham số:**
+- `value: string | undefined` — giá trị tìm kiếm ban đầu.
+- `options: SearchListOptions` — một thực thể của `SearchListOptions` để cung cấp giới hạn tìm kiếm.
+
+```typescript
+import { SearchListItem, SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions({ limit: 3 })
+const item = new SearchListItem('he', options)
+
+console.log(item.isSearch()) // false (độ dài < 3)
+item.set('hello')
+console.log(item.isSearch()) // true (độ dài >= 3)
+```
+
+## Phương thức
+
+### Thông tin
+
+- `is(): boolean` — Kiểm tra xem giá trị hiện tại có khác rỗng hoặc không xác định hay không.
+- `isSearch(): boolean` — Kiểm tra xem có nên thực hiện tìm kiếm hay không (giá trị tồn tại VÀ độ dài >= giới hạn).
+- `get(): string` — Trả về giá trị tìm kiếm hiện tại dưới dạng chuỗi.
+
+### Cấu hình (Setters)
+
+- `set(value?: string): this` — Thiết lập giá trị tìm kiếm mới và trả về thực thể hiện tại.
+
+## Kích hoạt tìm kiếm
+
+Lớp `SearchListItem` đóng vai trò như một bộ lọc quyết định xem hệ thống tìm kiếm có nên bắt đầu xử lý dữ liệu hay không. Điều này được xử lý bởi phương thức `isSearch()`, phương thức này sử dụng tùy chọn `limit` từ `SearchListOptions`.
+
+- **Độ dài tối thiểu (`limit`)**: Một tìm kiếm chỉ được coi là hoạt động nếu số lượng ký tự trong chuỗi tìm kiếm lớn hơn hoặc bằng giới hạn đã xác định.
+- **Hành vi mặc định**: Theo mặc định, giới hạn được đặt thành `2`. Điều này có nghĩa là việc tìm kiếm `"a"` sẽ không kích hoạt kết quả khớp, nhưng `"ad"` hoặc `"admin"` thì có.
+
+Logic này giúp ngăn chặn các tính toán không cần thiết và các kết quả "nhiễu" khi người dùng mới chỉ nhập một ký tự duy nhất.

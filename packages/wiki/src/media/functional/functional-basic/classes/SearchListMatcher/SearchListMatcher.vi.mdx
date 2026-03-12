@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/SearchListMatcher - Logic So khớp Tìm kiếm'/>
+
+# Lớp SearchListMatcher
+
+Lớp `SearchListMatcher` chịu trách nhiệm về logic so khớp cốt lõi. Nó chuyển đổi chuỗi tìm kiếm hiện tại thành một biểu thức chính quy (regular expression) và cung cấp các phương thức để kiểm tra xem các giá trị dữ liệu khác nhau có khớp với biểu thức đó hay không.
+
+## Tính năng chính
+
+- **Tạo RegExp động** — tự động xây dựng hoặc thiết lập lại trình so khớp khi cụm từ tìm kiếm hoặc tùy chọn thay đổi.
+- **Chế độ tìm kiếm** — hỗ trợ cả chế độ khớp một phần tiêu chuẩn và khớp chính xác dựa trên `SearchListOptions`.
+- **Kiểm tra hiệu quả** — sử dụng kiểm tra biểu thức chính quy hiệu suất cao để xác định các kết quả khớp trong dữ liệu.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `SearchListMatcher(item, options)`.
+
+**Tham số:**
+- `item: SearchListItem` — trạng thái thành phần tìm kiếm chứa giá trị.
+- `options: SearchListOptions` — các tùy chọn cấu hình (ví dụ: `findExactMatch`).
+
+```typescript
+import { SearchListMatcher, SearchListItem, SearchListOptions } from '@dxtmisha/functional-basic'
+
+const options = new SearchListOptions({ findExactMatch: false })
+const item = new SearchListItem('admin', options)
+const matcher = new SearchListMatcher(item, options)
+
+console.log(matcher.isSelection('System Administrator')) // true
+```
+
+## Phương thức
+
+### Thông tin
+
+- `is(): boolean` — Kiểm tra xem trình so khớp biểu thức chính quy nội bộ đã được khởi tạo hay chưa.
+- `isSelection(value: string): boolean` — Kiểm tra xem giá trị đã cho có khớp với biểu thức tìm kiếm hiện tại hay không.
+- `get(): RegExp | undefined` — Trả về thực thể biểu thức chính quy hiện tại.
+
+### Điều khiển
+
+- `update(): void` — Khởi tạo lại trình so khớp dựa trên trạng thái hiện tại của thành phần tìm kiếm và các tùy chọn.
+
+## Chế độ tìm kiếm
+
+Lớp hỗ trợ hai chế độ so khớp chính, được điều khiển bởi tùy chọn `findExactMatch` trong `SearchListOptions`:
+
+### 1. Chứa tất cả các từ (Mặc định)
+Когда `findExactMatch` là `false`, chuỗi tìm kiếm được chia thành các từ riêng lẻ. Kết quả khớp chỉ được tìm thấy nếu **mọi từ** đều có mặt trong chuỗi đích, bất kể thứ tự của chúng.
+- **Ví dụ**: Tìm kiếm `"chuột chơi game"` sẽ khớp với `"Chuột dành cho chơi game"` và `"Chơi game Pro Chuột"`.
+
+### 2. Cụm từ chính xác
+Когда `findExactMatch` là `true`, chuỗi tìm kiếm được xử lý như một cụm từ liên tục duy nhất. Kết quả khớp chỉ được tìm thấy nếu **chính xác trình tự** các ký tự (không phân biệt hoa thường) tồn tại trong chuỗi đích.
+- **Ví dụ**: Tìm kiếm `"chuột chơi game"` sẽ khớp với `"Chuột chơi game cực ngầu"`, nhưng sẽ **không** khớp với `"Chuột dành cho chơi game"`.
+
+## Các kiểu dữ liệu (Types)
+
+Lớp này chủ yếu sử dụng kiểu gốc `RegExp` và logic nội bộ được quản lý bởi `SearchListOptions`.
