@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/getPackageJson - Get package.json content'/>
+
+# `getPackageJson`
+
+The function returns the content of the `package.json` file.
+
+**Returns:**
+`Record<string, any> | undefined` — the content of the `package.json` file or `undefined` if the file could not be read.
+
+## How it works
+
+The function uses the `PropertiesFile.readFile` method to load the content of the `package.json` file specified in the global configuration.
+
+## Example
+
+```typescript
+import { getPackageJson } from '@dxtmisha/scripts'
+
+const packageJson = getPackageJson()
+if (packageJson) {
+  console.log(`Package Name: ${packageJson.name}`)
+}
+```

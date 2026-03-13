@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/getDirname - Lấy tên thư mục hiện tại'/>
+
+# `getDirname`
+
+Hàm trả về tên của thư mục hiện tại, xử lý cả môi trường CommonJS và ESM.
+
+**Trả về:**
+`string` — tên thư mục hiện tại.
+
+## Cơ chế hoạt động
+
+Hàm kiểm tra xem môi trường có hỗ trợ `__dirname` gốc hay không (sử dụng `hasNativeDirname`). Nếu có, nó sẽ trả về `__dirname`. Nếu không, nó sẽ lấy tên thư mục từ `import.meta.url`.
+
+## Ví dụ
+
+```typescript
+import { getDirname } from '@dxtmisha/scripts'
+
+const dirname = getDirname()
+console.log(dirname)
+```

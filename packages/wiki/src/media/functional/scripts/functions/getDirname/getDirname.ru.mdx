@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/getDirname - Получение имени текущей директории'/>
+
+# `getDirname`
+
+Функция возвращает имя текущей директории, обрабатывая как среды CommonJS, так и ESM.
+
+**Возвращает:**
+`string` — имя текущей директории.
+
+## Как это работает
+
+Функция проверяет, имеет ли среда встроенную поддержку `__dirname` (используя `hasNativeDirname`). Если да, возвращается `__dirname`. В противном случае имя директории вычисляется на основе `import.meta.url`.
+
+## Пример
+
+```typescript
+import { getDirname } from '@dxtmisha/scripts'
+
+const dirname = getDirname()
+console.log(dirname)
+```

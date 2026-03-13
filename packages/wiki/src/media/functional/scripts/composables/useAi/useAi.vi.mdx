@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Composables/useAi - Lấy instance AI'/>
+
+# `useAi`
+
+Composable để lấy một instance AI dựa trên cấu hình hiện tại.
+
+**Trả về:**
+`AiAbstract | undefined` — Một instance của lớp AI (ví dụ: `AiGoogle` hoặc `AiGoogleCli`) dựa trên loại AI được định cấu hình, hoặc `undefined` nếu loại đó không được nhận dạng hoặc không được định cấu hình.
+
+## Cơ chế hoạt động
+
+Composable đọc loại AI từ `PropertiesConfig.getAiType()` và trả về một instance mới của lớp tương ứng:
+- `'gemini'` trả về một instance `AiGoogle` mới.
+- `'gemini-cli'` trả về một instance `AiGoogleCli` mới.
+- Các loại khác trả về `undefined`.
+
+## Ví dụ
+
+```typescript
+import { useAi } from '@dxtmisha/scripts'
+
+const ai = useAi()
+
+if (ai) {
+  // Sử dụng instance AI
+  const response = await ai.generate('Xin chào, AI!')
+  console.log(response)
+}
+```

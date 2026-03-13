@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/ComponentWikiFile - Tiện ích tệp Wiki'/>
+
+# Lớp ComponentWikiFile
+
+Một lớp tiện ích chuyên dụng được thiết kế để xử lý các tệp riêng lẻ trong quá trình tạo wiki. Nó cung cấp các phương pháp mạnh mẽ để đọc, ghi và quản lý siêu dữ liệu như ngày cập nhật và phiên bản tệp.
+
+## Các tính năng chính
+
+- **Quản lý siêu dữ liệu** — tự động trích xuất và cập nhật dấu "**Date: ...**" trong nội dung tệp.
+- **Ghi thông minh** — tự động loại bỏ các hàng rào mã markdown khi lưu và chỉ ghi nếu nội dung đã thay đổi.
+- **Hỗ trợ lập phiên bản** — tùy chọn bảo tồn phiên bản trước của tệp bằng cách đổi tên tệp với hậu tố `__old.txt`.
+- **Trừu tượng hóa đường dẫn** — tích hợp với `PropertiesFile` để xử lý các hoạt động tệp bằng các phân đoạn đường dẫn nhất quán.
+
+## Khởi tạo
+
+Khởi tạo với các phân đoạn đường dẫn và cấu hình để xử lý ngày tháng và lập phiên bản.
+
+**Tham số:**
+- `paths: string[]` — các phân đoạn của đường dẫn tệp.
+- `isDate: boolean = false` — nếu `true`, tự động quản lý dấu ngày tháng trong nội dung.
+- `isOld: boolean = true` — nếu `true`, lưu phiên bản trước đó trước khi ghi đè.
+
+```typescript
+import { ComponentWikiFile } from '@dxtmisha/scripts'
+
+const file = new ComponentWikiFile(['docs', 'Guide.mdx'], true, true)
+```
+
+## Các phương thức
+
+### Thông tin
+
+- `getPath(): string` — Trả về đường dẫn tuyệt đối đầy đủ đến tệp.
+- `getDate(): Datetime` — Trích xuất và trả về ngày từ nội dung tệp.
+- `read(): string` — Đọc và trả về toàn bộ nội dung tệp.
+
+### Điều khiển
+
+- `write(content: string): void` — Ghi nội dung đã xử lý vào tệp, xử lý việc lập phiên bản và cập nhật ngày tháng nếu được cấu hình.
+
+## Ví dụ
+
+### Quản lý cập nhật tài liệu
+Tự động cập nhật tài liệu trong khi giữ bản sao lưu của phiên bản trước.
+
+```typescript
+const docFile = new ComponentWikiFile(['wiki', 'MyComponent.mdx'], true, true)
+docFile.write('# Nội dung mới')
+```

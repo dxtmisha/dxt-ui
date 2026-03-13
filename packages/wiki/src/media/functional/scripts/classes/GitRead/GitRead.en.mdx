@@ -1,0 +1,285 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/GitRead - Git Repository Reader'/>
+
+# GitRead Class
+
+A powerful utility class for interacting with a Git repository. It provides high-level methods to retrieve file lists, commit dates, status information in porcelain format, and more.
+
+## Key Features
+
+- **File Discovery** — retrieves all tracked files in the current repository or filtered by specific directories.
+- **Status Reporting** — parses `git status --porcelain` to identify modified, added, or untracked files.
+- **Commit History** — extracts the last modification date for individual files.
+- **Path Management** — handles relative paths and directory prefixes within the repository structure.
+
+## Core Methods
+
+### `getList`
+
+Retrieves a simplified list of all tracked files in the current repository HEAD, including basic metadata like modified dates.
+
+**Parameters:**
+- `filter?: (file: string) => boolean` — A callback function to include only files that match specific criteria.
+
+**Returns:** `GitFileList` — An array of `GitFileItem` objects representing the tracked files.
+
+**Example:**
+```typescript
+const files = GitRead.getList((f) => f.endsWith('.ts'))
+/**
+ * [
+ *   {
+ *     path: 'src/index.ts',
+ *     pathByOS: ['src', 'index.ts'],
+ *     pathFull: 'packages/scripts/src/index.ts',
+ *     date: '2024-03-20 12:00:00',
+ *     status: undefined
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getListPorcelain`
+
+Retrieves the current status of files in the repository using the `--porcelain` format. This includes changes in the working tree and the index.
+
+**Parameters:**
+- `filter?: (file: string) => boolean` — A callback function to filter the resulting status list.
+
+**Returns:** `GitFileList` — An array of `GitFileItem` objects, each containing a `status` field.
+
+**Example:**
+```typescript
+const status = GitRead.getListPorcelain()
+/**
+ * [
+ *   {
+ *     path: 'src/classes/GitRead.ts',
+ *     pathByOS: ['src', 'classes', 'GitRead.ts'],
+ *     pathFull: 'packages/scripts/src/classes/GitRead.ts',
+ *     date: '2024-03-21 10:30:00',
+ *     status: 'M'
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getListUnique`
+
+Orchestrates a merge between the tracked files (`getList`) and the current status (`getListPorcelain`). It ensures each file is represented only once, prioritizing status information if available.
+
+**Parameters:**
+- `filter: (file: string) => boolean` — Required callback function to filter the unified list.
+
+**Returns:** `GitFileList` — A deduplicated list of files combining baseline and changed states.
+
+**Example:**
+```typescript
+const unique = GitRead.getListUnique((f) => f.includes('src/'))
+/**
+ * [
+ *   {
+ *     path: 'src/main.ts',
+ *     pathByOS: ['src', 'main.ts'],
+ *     pathFull: 'packages/scripts/src/main.ts',
+ *     date: '2024-03-19 15:45:00',
+ *     status: 'A'
+ *   }
+ * ]
+ */
+```
+
+### `getListByDirectory`
+
+A convenience method for retrieving unique file lists specifically from a given directory, filtered to include only `.ts` files and excluding `.test.ts` files.
+
+**Parameters:**
+- `directory: string | RegExp` — The target directory path or a pattern to match against file paths.
+
+**Returns:** `GitFileList`
+
+**Example:**
+```typescript
+const classes = GitRead.getListByDirectory('/classes/')
+/**
+ * [
+ *   {
+ *     path: 'classes/GitRead.ts',
+ *     ...
+ *   }
+ * ]
+ */
+```
+
+## Utility Methods
+
+### `getClassesList`
+Gets all non-test TypeScript files in the `/classes/` directory.
+
+**Example:**
+```typescript
+const classes = GitRead.getClassesList()
+/**
+ * [
+ *   {
+ *     path: 'classes/GitRead.ts',
+ *     pathByOS: ['classes', 'GitRead.ts'],
+ *     pathFull: 'packages/scripts/src/classes/GitRead.ts',
+ *     date: '2024-03-21 10:30:00',
+ *     status: undefined
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getFunctionsList`
+Gets all non-test TypeScript files in the `/functions/` directory.
+
+**Example:**
+```typescript
+const funcs = GitRead.getFunctionsList()
+/**
+ * [
+ *   {
+ *     path: 'functions/myFunction.ts',
+ *     pathByOS: ['functions', 'myFunction.ts'],
+ *     pathFull: 'packages/scripts/src/functions/myFunction.ts',
+ *     date: '2024-03-20 15:00:00',
+ *     status: undefined
+ *   }
+ * ]
+ */
+```
+
+### `getFilesPath`
+Returns an array of all tracked file paths in the repository.
+
+**Example:**
+```typescript
+const paths = GitRead.getFilesPath()
+// ['src/index.ts', 'package.json', ...]
+```
+
+### `getFilesPorcelain`
+Returns the raw output of `git status --porcelain` as an array of strings.
+
+**Example:**
+```typescript
+const porcelain = GitRead.getFilesPorcelain()
+// [' M src/index.ts', '?? new-file.txt']
+```
+
+### `getFileDate`
+Returns the date of the last commit for a specific file.
+
+**Parameters:**
+- `filePath: string` — The path to the target file.
+
+**Example:**
+```typescript
+const date = GitRead.getFileDate('src/index.ts')
+// '2024-03-20 12:00:00 +0300'
+```
+
+### `getDirPrefix`
+Returns the current directory's prefix within the Git repository.
+
+**Example:**
+```typescript
+const prefix = GitRead.getDirPrefix()
+// 'packages/scripts/'
+```
+
+### `getDate`
+Formats a date string into a standardized full format.
+
+**Parameters:**
+- `date?: string` — The date string to format (optional).
+
+**Example:**
+```typescript
+const formatted = GitRead.getDate('2024-03-20')
+// '2024-03-20 00:00:00'
+```
+
+### `filterByDirectory`
+Filters a `GitFileList` to include only items that belong to the current directory prefix.
+
+**Parameters:**
+- `list: GitFileList` — The list of files to filter.
+
+**Example:**
+```typescript
+const filtered = GitRead.filterByDirectory(myList)
+```
+
+### `mergeUnique`
+Merges two `GitFileList` arrays, ensuring each file path is unique.
+
+**Parameters:**
+- `listA: GitFileList` — First list.
+- `listB: GitFileList` — Second list.
+
+**Example:**
+```typescript
+const merged = GitRead.mergeUnique(list1, list2)
+```
+
+### `splitPath`
+Splits a file path string into an array of path segments.
+
+**Parameters:**
+- `path: string` — The path to split.
+
+**Example:**
+```typescript
+const parts = GitRead.splitPath('src/classes/GitRead.ts')
+// ['src', 'classes', 'GitRead.ts']
+```
+
+## Data Structures
+
+### `GitFileItem`
+
+The primary object representing a file's state in Git:
+
+- `path: string` — The relative path to the file.
+- `pathByOS: string[]` — The file path split into system-agnostic segments.
+- `pathFull: string` — The full path including any repository-wide directory prefixes.
+- `date: string` — The last modification date (standardized).
+- `status?: GitStatus` — The Git status code (e.g., `'M'`, `'A'`, `'??'`).
+
+### `GitStatus`
+
+Enum representing common Git status codes:
+
+- `MODIFIED` (`'M'`) — Existing file has been changed.
+- `ADDED` (`'A'`) — New file added to the index.
+- `DELETED` (`'D'`) — File has been removed.
+- `UNTRACKED` (`'??'`) — New file not yet tracked by Git.
+- `RENAMED` (`'R'`) — File has been moved or renamed.
+
+## Examples
+
+### Getting Modified Files
+Retrieve a list of files that have been modified or added to the repository.
+
+```typescript
+import { GitRead } from '@dxtmisha/scripts'
+
+const modifiedFiles = GitRead.getListPorcelain()
+console.log(modifiedFiles)
+```
+
+### Filtering Classes
+Get only the class files for a specific module.
+
+```typescript
+const componentClasses = GitRead.getListUnique(
+  (file) => file.includes('packages/ui/src/classes/')
+)
+```

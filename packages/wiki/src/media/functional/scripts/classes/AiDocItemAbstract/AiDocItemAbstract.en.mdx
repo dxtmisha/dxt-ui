@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocItemAbstract - Documentation Automation Base Class'/>
+
+# AiDocItemAbstract Class
+
+An abstract base class for automating documentation generation using AI. It manages the lifecycle of reading source files, gathering context (code, demos, prompts), and coordinating with an AI service to produce or update MDX and source files.
+
+## Key Features
+
+- **Automated Lifecycle** — orchestrates reading source code, running builds, and generating documentation updates.
+- **Context Management** — built-in logic to collect component code, original source, and fake demo data for AI context.
+- **Smart Updates** — automatically compares modification dates to determine if re-generation is needed.
+- **Template System** — supports prompt templates and dynamic title replacement (e.g., `[title]`).
+- **Build Integration** — integrates with `BuildItem` to ensure code is buildable before documenting.
+- **Selective Generation** — supports bypassing generation using the `// wiki:build-none` marker.
+
+## Initialization
+
+Since `AiDocItemAbstract` is an abstract class, it must be extended. Concrete classes must provide paths for demo files and prompt templates.
+
+**Constructor Parameters:**
+- `path: string` — The base directory path for the source files.
+- `item: GitFileItem` — Information about the specific file being documented.
+
+```typescript
+// Example of extending and using AiDocItemAbstract
+class MyComponentDoc extends AiDocItemAbstract {
+  protected pathDemo = ['path', 'to', 'demo.ts']
+  protected pathPrompt = ['path', 'to', 'prompt.txt']
+}
+
+const doc = new MyComponentDoc('/source/dir', gitFileItem)
+await doc.make() // Triggers the documentation cycle
+```
+
+## Methods
+
+### Lifecycle
+
+- `make(): Promise<void>` — The main entry point. Checks if updates are needed, prepares context, calls AI, and writes the results.
+- `isBuildDisabled(): boolean` — Checks if the source file contains the `// wiki:build-none` marker.
+
+## Abstract Methods (Implementation)
+
+- `getPathWiki(): string[]` — Logic to determine the target Wiki file path based on the source file location.
+- `getItemDate(): Date` — Retrieves the file modification date from the `GitFileItem`.
+- `getTitle(): string` — Composes a standardized title for the documentation.
+- `readDemo(): string` — Reads the content of the configured demo file.
+- `readPrompt(): string` — Reads and prepares the prompt template, replacing placeholders like `[wikiLanguage]`.
+- `makeAi(): void` — Populates the AI instance with relevant context (code, demos, etc.).
+- `initName(content: string): string` — Replaces the `[title]` placeholder in the generated content.
+
+## Types
+
+### GitFileItem
+Represents file information managed by Git.
+- `path: string` — Relative path to the file.
+- `pathByOS: string` — Absolute OS-specific path.
+- `date: string` — Last modification date.
+- `item: any` — Reserved for additional metadata.

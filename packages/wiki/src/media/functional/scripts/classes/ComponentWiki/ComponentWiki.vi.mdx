@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/ComponentWiki - Trình tạo Wiki hỗ trợ AI'/>
+
+# Lớp ComponentWiki
+
+Một lớp điều phối nâng cao tự động hóa việc tạo tài liệu, câu chuyện (stories) và định nghĩa kiểu cho các thành phần bằng AI. Nó điều phối các bản dựng tạm thời, trích xuất mã và xử lý AI để tạo ra các tạo tác wiki toàn diện.
+
+## Các tính năng chính
+
+- **Tài liệu do AI điều khiển** — tận dụng AI để phân tích mã thành phần và tạo các mô tả MDX có ý nghĩa.
+- **Tạo câu chuyện tự động** — tạo các câu chuyện Storybook ban đầu dựa trên việc triển khai thành phần.
+- **Trích xuất kiểu** — xác định và trích xuất các định nghĩa kiểu để đưa vào tài liệu.
+- **Điều phối quy trình** — xử lý vòng đời kỹ thuật bao gồm xây dựng các mục, trích xuất ảnh chụp nhanh mã và dọn dẹp.
+
+## Khởi tạo
+
+Khởi tạo lớp với đường dẫn thành phần mục tiêu và các hướng dẫn nhắc tùy chọn.
+
+**Tham số:**
+- `path: string` — đường dẫn tương đối đến thư mục thành phần.
+- `prompt: string = ''` — văn bản bổ sung tùy chọn để thêm vào lời nhắc AI cho các yêu cầu tài liệu cụ thể.
+
+```typescript
+import { ComponentWiki } from '@dxtmisha/scripts'
+
+const wiki = new ComponentWiki('src/components/MyComponent', 'Tập trung vào chi tiết khả năng truy cập.')
+
+// Bắt đầu quá trình tạo
+wiki.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Phương thức chính khởi tạo việc xây dựng mã, chuẩn bị ngữ cảnh AI và tạo các tạo tác wiki.
+
+## Ví dụ
+
+### Tạo hàng loạt
+Thường được sử dụng trong các tập lệnh để tạo lại tài liệu cho nhiều thành phần sau các thay đổi API.
+
+```javascript
+const wiki = new ComponentWiki('src/components/BaseButton')
+wiki.make()
+```

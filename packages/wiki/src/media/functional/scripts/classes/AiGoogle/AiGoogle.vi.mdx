@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiGoogle - Google Gemini AI tự động cấu hình'/>
+
+# Lớp AiGoogle
+
+Một triển khai cấp cao về tích hợp Google Gemini AI. Lớp `AiGoogle` mở rộng từ `AiGoogleLite` và tự động khởi tạo với mã API và ID mô hình được chỉ định trong các tệp cấu hình của dự án.
+
+## Tính năng chính
+
+- **Khởi tạo không cần cấu hình** — tự động tải thông tin xác thực API và cài đặt mô hình từ môi trường dự án.
+- **Sức mạnh từ Gemini** — cung cấp quyền truy cập vào các mô hình tạo nảy tiên tiến nhất của Google.
+- **Độ tin cậy được kế thừa** — bao gồm tất cả các tính năng của `AiGoogleLite`, chẳng hạn như hỗ trợ đa phương thức (văn bản + hình ảnh) và tích lũy các lời nhắc phức tạp.
+- **Quy trình đơn giản hóa** — lý tưởng để sử dụng trong công cụ tài liệu của dự án khi không cần cấu hình thủ công.
+
+## Khởi tạo
+
+Khác với `AiGoogleLite`, lớp `AiGoogle` không yêu cầu tham số hàm khởi tạo vì nó lấy các cài đặt từ `getConfigAi()`.
+
+```typescript
+import { AiGoogle } from '@dxtmisha/scripts'
+
+const ai = new AiGoogle()
+
+// Tùy chọn thay đổi mô hình nếu cần
+ai.setModel('gemini-1.5-pro')
+
+// Tạo phản hồi
+const response = await ai.generate('Tạo một mô tả ngắn gọn về dự án.')
+```
+
+## Phương thức
+
+### Tạo (Generation)
+
+- `generate(contents: string): Promise<string>` — (Kế thừa) Kết hợp ngữ cảnh đã tích lũy và thực hiện yêu cầu tạo AI.
+
+### Cấu hình
+
+- `setKey(key: string): this` — (Kế thừa) Cập nhật mã API và khởi tạo lại ứng dụng khách nội bộ.
+- `setModel(model: string): this` — (Kế thừa) Chuyển đổi mô hình hoạt động.
+
+### Xây dựng Ngữ cảnh
+
+- `addPrompt(prompt: string): void` — (Kế thừa) Thêm tiền tố văn bản cố định.
+- `addContent(content: string): this` — (Kế thừa) Thêm một phần văn bản vào lời nhắc.
+- `addImage(image: AiImageItem): this` — (Kế thừa) Thêm một hình ảnh (base64) vào yêu cầu.
+- `resetPrompt(): void` — (Kế thừa) Xóa tiền tố cố định.
+- `resetContents(): this` — (Kế thừa) Xóa các phần văn bản đã tích lũy.
+- `resetImages(): this` — (Kế thừa) Xóa các hình ảnh đã tích lũy.
+
+## Các kiểu dữ liệu
+
+### AiImageItem
+Đại diện cho một hình ảnh cho các yêu cầu đa phương thức.
+- `mime: string` — loại MIME của hình ảnh.
+- `base64: string` — dữ liệu hình ảnh ở định dạng base64.
+
+### AiImageList
+Một mảng các `AiImageItem`.

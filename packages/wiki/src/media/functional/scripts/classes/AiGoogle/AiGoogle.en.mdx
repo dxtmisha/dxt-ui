@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiGoogle - Auto-configured Google Gemini AI'/>
+
+# AiGoogle Class
+
+A high-level implementation of the Google Gemini AI integration. The `AiGoogle` class extends `AiGoogleLite` and automatically initializes itself with the API key and model ID specified in the project's configuration files.
+
+## Key Features
+
+- **Zero-config Initialization** — automatically loads API credentials and model settings from the project environment.
+- **Gemini Powered** — provides access to Google's state-of-the-art generative models.
+- **Inherited Robustness** — includes all features from `AiGoogleLite`, such as multimodal support (text + images) and complex prompt accumulation.
+- **Simplified Workflow** — ideal for use within the project's documentation engine where manual configuration is not needed.
+
+## Initialization
+
+Unlike `AiGoogleLite`, the `AiGoogle` class does not require constructor parameters as it pulls settings from `getConfigAi()`.
+
+```typescript
+import { AiGoogle } from '@dxtmisha/scripts'
+
+const ai = new AiGoogle()
+
+// Optionally override the model if needed
+ai.setModel('gemini-1.5-pro')
+
+// Generate a response
+const response = await ai.generate('Generate a brief description of the project.')
+```
+
+## Methods
+
+### Generation
+
+- `generate(contents: string): Promise<string>` — (Inherited) Combines accumulated context and performs the AI generation request.
+
+### Configuration
+
+- `setKey(key: string): this` — (Inherited) Updates the API key and re-initializes the internal client.
+- `setModel(model: string): this` — (Inherited) Switches the active model.
+
+### Context Building
+
+- `addPrompt(prompt: string): void` — (Inherited) Appends a persistent text prefix.
+- `addContent(content: string): this` — (Inherited) Adds a text part to the prompt.
+- `addImage(image: AiImageItem): this` — (Inherited) Appends an image (base64) to the request.
+- `resetPrompt(): void` — (Inherited) Clears the persistent prefix.
+- `resetContents(): this` — (Inherited) Clears accumulated text parts.
+- `resetImages(): this` — (Inherited) Clears accumulated images.
+
+## Types
+
+### AiImageItem
+Represents an image for multimodal requests.
+- `mime: string` — the MIME type of the image.
+- `base64: string` — the image data in base64 format.
+
+### AiImageList
+An array of `AiImageItem`.

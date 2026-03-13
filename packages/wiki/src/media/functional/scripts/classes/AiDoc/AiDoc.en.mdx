@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDoc - AI Documentation Engine'/>
+
+# AiDoc Class
+
+The central engine for orchestrating AI-driven documentation generation across the project. It coordinates reading configuration, scanning directories, and delegating documentation tasks to specialized AI handlers.
+
+## Key Features
+
+- **Batch Processing** — automatically iterates through configured directories to generate documentation for multiple files.
+- **Project-wide Integration** — reads project settings via `PropertiesConfig` to determine target paths and scopes.
+- **Git Intelligence** — uses `GitRead` to identify relevant files and filter them based on repository status.
+- **Error Resilience** — robust error handling during the documentation process to ensure the engine fails gracefully or reports issues clearly.
+
+## Initialization
+
+The `AiDoc` class is typically instantiated as a singleton or a main coordinator to start the documentation build.
+
+```typescript
+import { AiDoc } from '@dxtmisha/scripts'
+
+const engine = new AiDoc()
+
+// Start processing all configured directories
+await engine.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): Promise<void>` — the main entry point. Reads configuration and starts processing all defined documentation directories.
+- `makeDirectory(dir: string): Promise<void>` — processes all relevant files within a specific directory by delegating to specialized AI handlers.
+
+
+A high-level coordinator that doesn't expose public configuration properties or complex state.

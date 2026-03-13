@@ -1,0 +1,65 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-ai-doc - AI Documentation Generator'/>
+
+# dxt-ai-doc
+
+The `ai-doc.ts` script is an automated AI-driven documentation generator for the project. It uses `vite-node` to run a generation workflow that analyzes TypeScript source code (classes, composables, and functions), communicates with an AI model to summarize or explain the code, and creates or updates MDX documentation files.
+
+## Key Features
+
+- **Context-Aware Prompts**: Generates the documentation by using specific prompt templates depending on the file type (Class, Composable, or standard Function).
+- **Multi-language Support**: Automatically injects the target documentation language (`[wikiLanguage]`) into the prompt.
+- **Real-time compilation**: Before sending the context to AI, it creates a build context to get accurate TypeScript behavior context.
+
+## How does it work?
+
+The script orchestrates several key processes to automate your project's documentation:
+
+1. It reads the files from the specified directories in your configuration.
+2. It determines the code type (Class, Composable, standard Function) and prepares the specific context needed.
+3. It performs a real-time build compilation to capture accurate TypeScript information.
+4. It sends all gathered context along with customized prompt templates to the AI model.
+5. It parses the final response and updates or creates the `MDX` files directly in your repository.
+
+## How to configure and run
+
+Configuration for the AI generator is defined centrally in your project's `design.config.json` file. **Create this file in the root of your project.** Follow these exact steps to set it up:
+
+1. **Set up AI parameters in `design.config.json`**:
+   Add the API key, model target, and the language specification directly to your configuration object.
+   ```json
+   {
+     "wikiLanguage": "en",
+     "aiType": "gemini",
+     "aiModel": "gemini-2.0-flash",
+     "aiKey": "YOUR_API_KEY_HERE"
+   }
+   ```
+2. **Configure target directories**:
+   In the same `design.config.json`, configure which directories should be scanned by overriding the default `aiDocDirectory` paths. (Defaults are `/classes/`, `/composables/`, and `/functions/`).
+   ```json
+   {
+     "aiDocDirectory": [
+       "/path/to/my/classes/",
+       "/path/to/my/composables/"
+     ]
+   }
+   ```
+3. **Run the command**:
+   The generator is registered in your `package.json` under `@dxtmisha/scripts`. Simply run the `dxt-ai-doc` command via `npx` or `npm`:
+   ```bash
+   npx dxt-ai-doc
+   ```
+   The script requires no arguments—it will automatically scan the configured paths in `design.config.json` and update the documentation files.
+
+## Additional Information
+
+### Dependency on Project Build
+
+The generator depends heavily on the project's build process. **It executes `npm run build`** inside a temporary distribution directory (`dist-temporary`) to accurately capture your TypeScript definitions, exports, and structure. **If your project has TypeScript or build errors, the AI documentation script will fail.**
+
+### Excluding Files (Skip Directive)
+
+You can prevent `dxt-ai-doc` from running on specific files by adding the `// wiki:build-none` directive anywhere in the file.
+

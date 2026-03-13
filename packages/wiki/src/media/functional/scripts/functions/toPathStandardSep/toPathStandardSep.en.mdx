@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/toPathStandardSep - Convert path separators'/>
+
+# `toPathStandardSep`
+
+The function converts forward slashes in a path string to the standard path separator of the current operating system.
+
+**Parameters:**
+- `path: string` — the input path string.
+
+**Returns:**
+`string` — the path with standard separators.
+
+## How it works
+
+The function uses a regular expression to find all forward slashes (`/`) in the input string and replaces them with the platform-specific separator (`path.sep`).
+
+## Example
+
+```typescript
+import { toPathStandardSep } from '@dxtmisha/scripts'
+
+// On Windows:
+toPathStandardSep('src/components/button') // 'src\\components\\button'
+
+// On Unix:
+toPathStandardSep('src/components/button') // 'src/components/button'
+```

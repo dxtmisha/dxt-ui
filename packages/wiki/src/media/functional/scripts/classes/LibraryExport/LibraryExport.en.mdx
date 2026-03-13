@@ -1,0 +1,46 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryExport - Export Generator'/>
+
+# LibraryExport Class
+
+The `LibraryExport` class is responsible for aggregating and generating a unified export file for the library. It scans designated directories for TypeScript and Vue files, creating a single entry point that simplifies library imports.
+
+## Key Features
+
+- **Unified Export Generation** — creates a comprehensive entry point for all exportable components and utilities.
+- **Smart File Identification** — automatically handles exports for `.ts` files (using `export *`) and `.vue` files (using `import` then `export const`).
+- **Style Integration** — automatically includes global CSS or SCSS styles if they exist.
+- **Filtering** — excludes test files (`.test.`) and files marked with the `UI_FLAG_NOT_EXPORT` flag.
+
+## Initialization
+
+Initialize and run the export generator using the `make` method.
+
+```typescript
+import { LibraryExport } from '@dxtmisha/scripts'
+
+const generator = new LibraryExport()
+generator.make()
+```
+
+## Methods
+
+### Generation
+
+- `make(): void` — the main entry point that triggers the file discovery and generation process.
+
+## Example of Generated Output
+
+The generated file aggregate imports and exports like this:
+
+```typescript
+import './style.css'
+
+// Components
+import _DxtButton from './components/DxtButton/DxtButton.vue'
+export const DxtButton = _DxtButton
+
+// Utilities
+export * from './functions/myFunction'
+```

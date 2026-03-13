@@ -1,0 +1,71 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiGoogleLite - Tích hợp Google Gemini AI'/>
+
+# Lớp AiGoogleLite
+
+Một triển khai cụ thể của lớp `AiAbstract` cho Google Gemini AI (thông qua ứng dụng khách `GoogleGenAI`). Lớp này cung cấp một cách tinh gọn để tương tác với các mô hình Gemini, xử lý xác thực, tích lũy ngữ cảnh và tạo nội dung.
+
+## Tính năng chính
+
+- **Tích hợp Google Gemini** — kết nối liền mạch với các mô hình AI tạo nảy của Google.
+- **Hỗ trợ Đa phương thức** — hỗ trợ cả đầu vào văn bản và hình ảnh cho các yêu cầu tạo.
+- **Tích lũy Ngữ cảnh** — kế thừa cơ chế mạnh mẽ để xây dựng các lời nhắc phức tạp, bao gồm hình ảnh và văn bản nhiều phần.
+- **Quy trình Thống nhất** — cung cấp một giao diện nhất quán để lựa chọn mô hình và tạo, trừu tượng hóa các chi tiết cấp thấp của ứng dụng khách.
+
+## Khởi tạo
+
+Khởi tạo `AiGoogleLite` bằng cách cung cấp mã API của bạn và ID mô hình mục tiêu.
+
+**Tham số:**
+- `key: string` — mã API Google AI của bạn.
+- `model: string` — ID của mô hình Gemini sẽ sử dụng (ví dụ: `'gemini-1.5-flash'`).
+
+```typescript
+import { AiGoogleLite } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleLite('YOUR_API_KEY', 'gemini-1.5-flash')
+
+// Thiết lập tiền tố lời nhắc hệ thống tùy chọn
+ai.addPrompt('Bạn là một người viết tài liệu kỹ thuật.')
+
+// Tạo phản hồi
+const response = await ai.generate('Giải thích về lớp AiGoogleLite.')
+```
+
+## Phương thức
+
+### Tạo (Generation)
+
+- `generate(contents: string): Promise<string>` — điểm khởi đầu chính để tương tác với AI. Nó kết hợp tất cả ngữ cảnh đã tích lũy (tiền tố, hình ảnh, các phần văn bản) và thực hiện yêu cầu.
+
+### Cấu hình
+
+- `setKey(key: string): this` — cập nhật mã API và khởi tạo lại ứng dụng khách nội bộ.
+- `setModel(model: string): this` — chuyển đổi mô hình hoạt động cho các yêu cầu tiếp theo.
+
+### Xây dựng Ngữ cảnh
+
+Các phương thức này cho phép bạn tích lũy dữ liệu trước khi gọi `generate()`:
+
+- `addPrompt(prompt: string): void` — thêm tiền tố văn bản cố định (hữu ích cho các hướng dẫn hệ thống).
+- `addContent(content: string): this` — thêm một phần văn bản vào lời nhắc.
+- `addImage(image: AiImageItem): this` — thêm một hình ảnh (base64) vào yêu cầu.
+- `resetPrompt(): void` — xóa tiền tố cố định.
+- `resetContents(): this` — xóa tất cả các phần văn bản đã tích lũy.
+- `resetImages(): this` — xóa tất cả các hình ảnh đã tích lũy.
+
+### Thông tin
+
+- `getContents(): string[]` — trả về danh sách các phần văn bản đã tích lũy.
+- `getImages(): AiImageList` — trả về danh sách các hình ảnh đã tích lũy.
+
+## Các kiểu dữ liệu
+
+### AiImageItem
+Đại diện cho một hình ảnh cho các yêu cầu đa phương thức.
+- `mime: string` — loại MIME của hình ảnh (ví dụ: `'image/png'`).
+- `base64: string` — dữ liệu hình ảnh ở định dạng base64.
+
+### AiImageList
+Một mảng các `AiImageItem`.

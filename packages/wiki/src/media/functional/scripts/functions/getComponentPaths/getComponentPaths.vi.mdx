@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/getComponentPaths - Lấy đường dẫn thành phần'/>
+
+# `getComponentPaths`
+
+Hàm trả về các đường dẫn đến thành phần bằng cách kết hợp thư mục thành phần cơ sở với đường dẫn được chỉ định.
+
+**Tham số:**
+- `path: string` — đường dẫn thành phần.
+
+**Trả về:**
+`string[]` — một mảng các đường dẫn.
+
+## Cơ chế hoạt động
+
+Hàm này được sử dụng để tạo đường dẫn đầy đủ đến một thành phần dựa trên cấu hình dự án toàn cục. Nó sử dụng hằng số `UI_DIRS_COMPONENTS` xác định thư mục gốc cho tất cả các thành phần.
+
+## Ví dụ
+
+```typescript
+import { getComponentPaths } from '@dxtmisha/scripts'
+
+getComponentPaths('button') // ['src', 'components', 'button']
+```

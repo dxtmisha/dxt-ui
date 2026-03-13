@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiGoogleCliLite - Google Gemini AI via CLI'/>
+
+# AiGoogleCliLite Class
+
+A specialized implementation of the `AiAbstract` class that interacts with Google's Gemini AI using a system command-line interface (CLI). This approach is useful in environments where a direct SDK integration is not preferred or where existing CLI tools are leveraged.
+
+> This implementation requires the `gemini` CLI utility to be installed and accessible in the system path.
+
+## Key Features
+
+- **CLI-driven Workflow** — executes requests by constructing and running shell commands.
+- **Large Prompt Handling** — automatically creates temporary files to pass large prompt contents to the CLI, avoiding command-line length limitations.
+- **Clean Execution** — manages its own temporary storage (`./ai-tmp`) and performs cleanup after each request.
+- **YOLO Mode** — executes commands with strict output flags to ensure results are concise and free of conversational filler.
+
+## Initialization
+
+Initialize `AiGoogleCliLite` with your API key and intended model.
+
+**Parameters:**
+- `key: string` — your Google AI API key (passed to the CLI via environment variables).
+- `model: string` — the model identifier for the Gemini CLI.
+
+```typescript
+import { AiGoogleCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleCliLite('YOUR_API_KEY', 'gemini-1.5-flash')
+
+// Generate a response
+const response = await ai.generate('Review this code snippet.')
+```
+
+## Methods
+
+### Generation
+
+- `generate(contents: string): Promise<string>` — the primary method for interaction. It compiles the context into temporary files, executes the CLI command, and returns the trimmed output.
+
+### Configuration
+
+- `setKey(key: string): this` — updates the API key for subsequent CLI calls.
+- `setModel(model: string): this` — switches the active model ID.
+
+### Context Building
+
+- `addPrompt(prompt: string): void` — sets a persistent text prefix.
+- `addContent(content: string): this` — adds a text part to the cumulative prompt.
+- `resetPrompt(): void` — clears the persistent prefix.
+- `resetContents(): this` — clears all accumulated text parts.
+
+## Limitations
+
+- **Images** — currently, the CLI implementation does not support image passing (`addImage` will have no effect on the generation).
+- **Environment** — relies on the availability of the `exec` function and the filesystem for temporary storage.

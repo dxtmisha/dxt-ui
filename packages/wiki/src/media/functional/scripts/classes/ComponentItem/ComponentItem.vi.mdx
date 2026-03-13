@@ -1,0 +1,46 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/ComponentItem - Trình tạo tệp thành phần'/>
+
+# Lớp ComponentItem
+
+Một lớp chuyên dụng để tạo các tệp thành phần riêng lẻ dựa trên các mẫu. Nó quản lý toàn bộ quá trình tạo, từ việc đọc các mẫu tệp đến việc thực hiện thay thế chuỗi động và đặt các quyền hệ thống tệp chính xác.
+
+## Các tính năng chính
+
+- **Dựa trên mẫu** — sử dụng kho lưu trữ tập trung các mẫu thành phần để tạo tệp nhất quán.
+- **Thay thế động** — tự động thay thế các dấu hiệu như `ComponentDoc`, `[project]` và `[path]` bằng các giá trị cụ thể theo ngữ cảnh.
+- **Hỗ trợ trình giữ chỗ** — xử lý các chuyển đổi cả camelCase (tên lớp) và kebab-case (tên tệp).
+- **Quản lý quyền** — đảm bảo các tệp được tạo có quyền thực thi và đọc/ghi chính xác.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm tạo `ComponentItem(path)`.
+
+**Tham số:**
+- `path: string` — đường dẫn tương đối hoặc tuyệt đối đến thư mục nơi thành phần sẽ được tạo.
+
+```typescript
+import { ComponentItem } from '@dxtmisha/scripts'
+
+const component = new ComponentItem('src/components/MyComponent')
+
+// Tạo các tệp
+component.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Phương thức chính đọc tất cả các tệp mẫu và ghi các phiên bản đã xử lý của chúng vào thư mục thành phần.
+
+## Ví dụ
+
+### Tạo dàn giáo thủ công
+Trong khi `ComponentCreator` xử lý việc tạo hàng loạt, `ComponentItem` có thể được sử dụng trực tiếp để kiểm soát chi tiết một thành phần cụ thể.
+
+```javascript
+const item = new ComponentItem('packages/ui/src/components/Avatar')
+item.make()
+```

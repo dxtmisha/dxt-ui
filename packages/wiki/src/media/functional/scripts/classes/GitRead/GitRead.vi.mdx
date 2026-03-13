@@ -1,0 +1,285 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/GitRead - Trình đọc kho lưu trữ Git'/>
+
+# Lớp GitRead
+
+Một lớp tiện ích mạnh mẽ để tương tác với kho lưu trữ Git. Nó cung cấp các phương pháp cấp cao để lấy danh sách tệp, ngày cam kết, thông tin trạng thái ở định dạng sứ và hơn thế thế.
+
+## Các tính năng chính
+
+- **Khám phá tệp** — lấy tất cả các tệp được theo dõi trong kho lưu trữ hiện tại hoặc được lọc theo các thư mục cụ thể.
+- **Báo cáo trạng thái** — phân tích cú pháp `git status --porcelain` để xác định các tệp đã sửa đổi, được thêm vào hoặc không được theo dõi.
+- **Lịch sử cam kết** — trích xuất ngày sửa đổi cuối cùng cho các tệp riêng lẻ.
+- **Quản lý đường dẫn** — xử lý các đường dẫn tương đối và tiền tố thư mục trong cấu trúc kho lưu trữ.
+
+## Các phương thức chính
+
+### `getList`
+
+Truy xuất danh sách rút gọn của tất cả các tệp được theo dõi trong HEAD của kho lưu trữ, bao gồm các siêu dữ liệu cơ bản như ngày sửa đổi.
+
+**Tham số:**
+- `filter?: (file: string) => boolean` — Một hàm callback để chỉ bao gồm các tệp khớp với các tiêu chí cụ thể.
+
+**Trả về:** `GitFileList` — Một mảng các đối tượng `GitFileItem` đại diện cho các tệp được theo dõi.
+
+**Ví dụ:**
+```typescript
+const files = GitRead.getList((f) => f.endsWith('.ts'))
+/**
+ * [
+ *   {
+ *     path: 'src/index.ts',
+ *     pathByOS: ['src', 'index.ts'],
+ *     pathFull: 'packages/scripts/src/index.ts',
+ *     date: '2024-03-20 12:00:00',
+ *     status: undefined
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getListPorcelain`
+
+Truy xuất trạng thái hiện tại của các tệp trong kho lưu trữ bằng định dạng `--porcelain`. Điều này bao gồm các thay đổi trong cây làm việc và chỉ mục (index).
+
+**Tham số:**
+- `filter?: (file: string) => boolean` — Một hàm callback để lọc danh sách trạng thái kết quả.
+
+**Trả về:** `GitFileList` — Một mảng các đối tượng `GitFileItem`, mỗi đối tượng chứa một trường `status`.
+
+**Ví dụ:**
+```typescript
+const status = GitRead.getListPorcelain()
+/**
+ * [
+ *   {
+ *     path: 'src/classes/GitRead.ts',
+ *     pathByOS: ['src', 'classes', 'GitRead.ts'],
+ *     pathFull: 'packages/scripts/src/classes/GitRead.ts',
+ *     date: '2024-03-21 10:30:00',
+ *     status: 'M'
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getListUnique`
+
+Điều phối việc hợp nhất giữa các tệp được theo dõi (`getList`) và trạng thái hiện tại (`getListPorcelain`). Nó đảm bảo mỗi tệp chỉ được đại diện một lần, ưu tiên thông tin trạng thái nếu có.
+
+**Tham số:**
+- `filter: (file: string) => boolean` — Hàm callback bắt buộc để lọc danh sách thống nhất.
+
+**Trả về:** `GitFileList` — Một danh sách các tệp đã được loại bỏ trùng lặp, kết hợp trạng thái cơ bản và trạng thái thay đổi.
+
+**Ví dụ:**
+```typescript
+const unique = GitRead.getListUnique((f) => f.includes('src/'))
+/**
+ * [
+ *   {
+ *     path: 'src/main.ts',
+ *     pathByOS: ['src', 'main.ts'],
+ *     pathFull: 'packages/scripts/src/main.ts',
+ *     date: '2024-03-19 15:45:00',
+ *     status: 'A'
+ *   }
+ * ]
+ */
+```
+
+### `getListByDirectory`
+
+Một phương thức thuận tiện để truy xuất danh sách tệp duy nhất cụ thể từ một thư mục nhất định, được lọc để chỉ bao gồm các tệp `.ts` và loại trừ các tệp `.test.ts`.
+
+**Tham số:**
+- `directory: string | RegExp` — Đường dẫn thư mục đích hoặc một mẫu để khớp với đường dẫn tệp.
+
+**Trả về:** `GitFileList`
+
+**Ví dụ:**
+```typescript
+const classes = GitRead.getListByDirectory('/classes/')
+/**
+ * [
+ *   {
+ *     path: 'classes/GitRead.ts',
+ *     ...
+ *   }
+ * ]
+ */
+```
+
+## Các phương thức tiện ích
+
+### `getClassesList`
+Lấy tất cả các tệp TypeScript (trừ test) trong thư mục `/classes/`.
+
+**Ví dụ:**
+```typescript
+const classes = GitRead.getClassesList()
+/**
+ * [
+ *   {
+ *     path: 'classes/GitRead.ts',
+ *     pathByOS: ['classes', 'GitRead.ts'],
+ *     pathFull: 'packages/scripts/src/classes/GitRead.ts',
+ *     date: '2024-03-21 10:30:00',
+ *     status: undefined
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getFunctionsList`
+Lấy tất cả các tệp TypeScript (trừ test) trong thư mục `/functions/`.
+
+**Ví dụ:**
+```typescript
+const funcs = GitRead.getFunctionsList()
+/**
+ * [
+ *   {
+ *     path: 'functions/myFunction.ts',
+ *     pathByOS: ['functions', 'myFunction.ts'],
+ *     pathFull: 'packages/scripts/src/functions/myFunction.ts',
+ *     date: '2024-03-20 15:00:00',
+ *     status: undefined
+ *   }
+ * ]
+ */
+```
+
+### `getFilesPath`
+Trả về một mảng chứa tất cả các đường dẫn tệp được theo dõi trong kho lưu trữ.
+
+**Ví dụ:**
+```typescript
+const paths = GitRead.getFilesPath()
+// ['src/index.ts', 'package.json', ...]
+```
+
+### `getFilesPorcelain`
+Trả về đầu ra thô của `git status --porcelain` dưới dạng một mảng các chuỗi.
+
+**Ví dụ:**
+```typescript
+const porcelain = GitRead.getFilesPorcelain()
+// [' M src/index.ts', '?? new-file.txt']
+```
+
+### `getFileDate`
+Trả về ngày cam kết cuối cùng cho một tệp cụ thể.
+
+**Tham số:**
+- `filePath: string` — Đường dẫn đến tệp đích.
+
+**Ví dụ:**
+```typescript
+const date = GitRead.getFileDate('src/index.ts')
+// '2024-03-20 12:00:00 +0300'
+```
+
+### `getDirPrefix`
+Trả về tiền tố của thư mục hiện tại trong kho lưu trữ Git.
+
+**Ví dụ:**
+```typescript
+const prefix = GitRead.getDirPrefix()
+// 'packages/scripts/'
+```
+
+### `getDate`
+Định dạng một chuỗi ngày thành định dạng đầy đủ chuẩn hóa.
+
+**Tham số:**
+- `date?: string` — Chuỗi ngày cần định dạng (tùy chọn).
+
+**Ví dụ:**
+```typescript
+const formatted = GitRead.getDate('2024-03-20')
+// '2024-03-20 00:00:00'
+```
+
+### `filterByDirectory`
+Lọc một `GitFileList` để chỉ bao gồm các mục thuộc về tiền tố thư mục hiện tại.
+
+**Tham số:**
+- `list: GitFileList` — Danh sách các tệp cần lọc.
+
+**Ví dụ:**
+```typescript
+const filtered = GitRead.filterByDirectory(myList)
+```
+
+### `mergeUnique`
+Hợp nhất hai mảng `GitFileList`, đảm bảo mỗi đường dẫn tệp là duy nhất.
+
+**Tham số:**
+- `listA: GitFileList` — Danh sách thứ nhất.
+- `listB: GitFileList` — Danh sách thứ hai.
+
+**Ví dụ:**
+```typescript
+const merged = GitRead.mergeUnique(list1, list2)
+```
+
+### `splitPath`
+Tách một chuỗi đường dẫn tệp thành một mảng các phân đoạn đường dẫn.
+
+**Tham số:**
+- `path: string` — Đường dẫn cần tách.
+
+**Ví dụ:**
+```typescript
+const parts = GitRead.splitPath('src/classes/GitRead.ts')
+// ['src', 'classes', 'GitRead.ts']
+```
+
+## Cấu trúc dữ liệu
+
+### `GitFileItem`
+
+Đối tượng chính đại diện cho trạng thái của một tệp trong Git:
+
+- `path: string` — Đường dẫn tương đối đến tệp.
+- `pathByOS: string[]` — Đường dẫn tệp được chia thành các phân đoạn không phụ thuộc vào hệ điều hành.
+- `pathFull: string` — Đường dẫn đầy đủ bao gồm mọi tiền tố thư mục trên toàn bộ kho lưu trữ.
+- `date: string` — Ngày sửa đổi cuối cùng (đã được chuẩn hóa).
+- `status?: GitStatus` — Mã trạng thái Git (ví dụ: `'M'`, `'A'`, `'??'`).
+
+### `GitStatus`
+
+Enum đại diện cho các mã trạng thái Git phổ biến:
+
+- `MODIFIED` (`'M'`) — Tệp hiện có đã bị thay đổi.
+- `ADDED` (`'A'`) — Tệp mới đã được thêm vào chỉ mục (index).
+- `DELETED` (`'D'`) — Tệp đã bị xóa.
+- `UNTRACKED` (`'??'`) — Tệp mới chưa được Git theo dõi.
+- `RENAMED` (`'R'`) — Tệp đã bị di chuyển hoặc đổi tên.
+
+## Ví dụ
+
+### Lấy các tệp đã sửa đổi
+Lấy danh sách các tệp đã được sửa đổi hoặc thêm vào kho lưu trữ.
+
+```typescript
+import { GitRead } from '@dxtmisha/scripts'
+
+const modifiedFiles = GitRead.getListPorcelain()
+console.log(modifiedFiles)
+```
+
+### Lọc các lớp
+Chỉ lấy các tệp lớp cho một mô-đun cụ thể.
+
+```typescript
+const componentClasses = GitRead.getListUnique(
+  (file) => file.includes('packages/ui/src/classes/')
+)
+```

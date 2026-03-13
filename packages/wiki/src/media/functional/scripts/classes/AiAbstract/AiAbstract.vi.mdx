@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiAbstract - Lớp Cơ sở AI Trừu tượng'/>
+
+# Lớp AiAbstract
+
+Một lớp cơ sở trừu tượng được thiết kế để cung cấp các cơ chế chung cho các tích hợp AI khác nhau. Nó xử lý việc tích lũy lời nhắc (prompt accumulation), lựa chọn mô hình và cung cấp một quy trình làm việc thống nhất để nhận phản hồi từ các nhà cung cấp AI khác nhau.
+
+## Tính năng chính
+
+- **Tích lũy Lời nhắc** — các cơ chế để thu thập và soạn thảo ngữ cảnh lời nhắc trước khi gửi đến mô hình.
+- **Quản lý Mô hình** — dễ dàng chuyển đổi giữa các mô hình AI khác nhau trong cùng một instance.
+- **Quy trình Thống nhất** — phương thức `generate` chuẩn hóa quy trình nhận phản hồi.
+- **Hỗ trợ Hình ảnh & Nội dung** — các phương thức tích hợp để tích lũy hình ảnh và nội dung văn bản bổ sung cho các mô hình đa phương thức.
+- **API dạng Chuỗi (Chainable)** — hầu hết các phương thức cấu hình đều hỗ trợ chuỗi lệnh để mang lại trải nghiệm lập trình mượt mà hơn.
+- **Điểm mở rộng (Hooks)** — các điểm mở rộng rõ ràng (`init`, `response`, `toImages`, `toContents`) cho các triển khai dịch vụ AI cụ thể (ví dụ: OpenAI, Anthropic).
+
+## Khởi tạo
+
+Vì `AiAbstract` là một lớp trừu tượng, nó không thể được khởi tạo trực tiếp. Bạn nên sử dụng một triển khai cụ thể (ví dụ: `AiOpenAI` hoặc `AiAnthropic`).
+
+**Tham số khởi tạo:**
+- `key: string` — API key cho dịch vụ AI.
+- `model: string` — Định danh mô hình ban đầu (ví dụ: 'gpt-4o').
+
+```typescript
+// Ví dụ về cách sử dụng một triển khai cụ thể
+const ai = new AiOpenAI(process.env.OPENAI_API_KEY, 'gpt-4o')
+
+// Thêm ngữ cảnh
+ai.addPrompt('Bạn là một trợ lý hữu ích.')
+  .addContent('Giải thích vật lý lượng tử bằng các thuật ngữ đơn giản.')
+
+// Tạo phản hồi
+const response = await ai.generate('Tập trung vào tính lưỡng tính sóng-hạt.')
+```
+
+## Phương thức
+
+### Thông tin
+
+- `getImages(): AiImageList` — Trả về danh sách các hình ảnh đã tích lũy.
+- `getContents(): string[]` — Trả về danh sách các nội dung bổ sung đã tích lũy.
+
+### Cấu hình (Setters)
+
+Các phương thức trong nhóm này hỗ trợ chuỗi lệnh.
+
+- `setKey(key: string): this` — Thiết lập hoặc thay đổi API key. Khởi tạo lại client nếu nó đã hoạt động.
+- `setModel(model: string): this` — Thay đổi mô hình hiện tại để tạo phản hồi.
+- `addPrompt(prompt: string): void` — Thêm một dòng mới vào bộ đệm lời nhắc cố định.
+- `addImage(image: AiImageItem): this` — Thêm một hình ảnh vào danh sách tích lũy.
+- `addContent(content: string): this` — Thêm nội dung văn bản vào danh sách tích lũy.
+
+### Điều khiển
+
+- `generate(contents: string): Promise<string>` — Phương thức chính để kích hoạt việc tạo phản hồi từ AI. Nó kết hợp lời nhắc đã tích lũy với chuỗi văn bản được cung cấp, sau đó gọi triển khai cụ thể.
+- `resetImages(): this` — Xóa danh sách hình ảnh đã tích lũy.
+- `resetContents(): this` — Xóa danh sách nội dung đã tích lũy.
+- `resetPrompt(): void` — Xóa tiền tố lời nhắc cố định.
+
+## Các phương thức trừu tượng (Để triển khai)
+
+Khi kế thừa `AiAbstract`, bạn phải triển khai các phương thức protected sau:
+
+- `init(): void` — Xử lý khởi tạo client, xác thực và thiết lập phương thức truyền tải.
+- `toImages(): void` — Logic để chuyển đổi các hình ảnh đã tích lũy sang định dạng cụ thể của nhà cung cấp.
+- `toContents(): void` — Logic để chuyển đổi các nội dung đã tích lũy sang định dạng cụ thể của nhà cung cấp.
+- `response(model: string, contents: string): Promise<string>` — Logic cốt lõi để gọi mô hình AI cụ thể và trả về kết quả dưới dạng văn bản.
+
+## Các kiểu dữ liệu
+
+### AiImageList
+Một mảng các đối tượng `AiImageItem`.
+```typescript
+type AiImageList = AiImageItem[]
+```
+
+### AiImageItem
+Đại diện cho một hình ảnh ở định dạng base64.
+- `mime: string` — Kiểu MIME của hình ảnh (ví dụ: 'image/png').
+- `base64: string` — Dữ liệu hình ảnh được mã hóa base64.
+```typescript
+type AiImageItem = {
+  mime: string
+  base64: string
+}
+```

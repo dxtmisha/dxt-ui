@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/getPackageJson - Lấy nội dung package.json'/>
+
+# `getPackageJson`
+
+Hàm trả về nội dung của tệp `package.json`.
+
+**Trả về:**
+`Record<string, any> | undefined` — nội dung của tệp `package.json` hoặc `undefined` nếu không thể đọc được tệp.
+
+## Cơ chế hoạt động
+
+Hàm sử dụng phương thức `PropertiesFile.readFile` để tải nội dung của tệp `package.json` được chỉ định trong cấu hình toàn cục.
+
+## Ví dụ
+
+```typescript
+import { getPackageJson } from '@dxtmisha/scripts'
+
+const packageJson = getPackageJson()
+if (packageJson) {
+  console.log(`Package Name: ${packageJson.name}`)
+}
+```

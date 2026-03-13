@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiGoogleCliLite - Google Gemini AI qua CLI'/>
+
+# Lớp AiGoogleCliLite
+
+Một triển khai chuyên biệt của lớp `AiAbstract` tương tác với Google Gemini AI thông qua giao diện dòng lệnh (CLI) của hệ thống. Cách tiếp cận này hữu ích trong các môi trường mà việc tích hợp trực tiếp SDK không được ưu tiên hoặc khi các công cụ CLI hiện có được tận dụng.
+
+> Triển khai này yêu cầu tiện ích CLI `gemini` phải được cài đặt và có thể truy cập được trong đường dẫn hệ thống.
+
+## Tính năng chính
+
+- **Quy trình làm việc qua CLI** — thực hiện các yêu cầu bằng cách xây dựng và chạy các lệnh shell.
+- **Xử lý Lời nhắc Lớn** — tự động tạo các tệp tạm thời để chuyển nội dung lời nhắc lớn cho CLI, tránh các giới hạn về độ dài dòng lệnh.
+- **Thực thi Sạch sẽ** — quản lý bộ lưu trữ tạm thời của riêng nó (`./ai-tmp`) và thực hiện dọn dẹp sau mỗi yêu cầu.
+- **Chế độ YOLO** — thực thi các lệnh với các cờ đầu ra nghiêm ngặt để đảm bảo kết quả ngắn gọn và không có các nội dung thừa.
+
+## Khởi tạo
+
+Khởi tạo `AiGoogleCliLite` bằng mã API và mô hình dự định của bạn.
+
+**Tham số:**
+- `key: string` — mã API Google AI của bạn (được chuyển đến CLI qua các biến môi trường).
+- `model: string` — mã định danh mô hình cho Gemini CLI.
+
+```typescript
+import { AiGoogleCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleCliLite('YOUR_API_KEY', 'gemini-1.5-flash')
+
+// Tạo phản hồi
+const response = await ai.generate('Kiểm tra đoạn mã này.')
+```
+
+## Phương thức
+
+### Tạo (Generation)
+
+- `generate(contents: string): Promise<string>` — phương thức chính để tương tác. Nó biên dịch ngữ cảnh vào các tệp tạm thời, thực thi lệnh CLI và trả về đầu ra đã được cắt tỉa.
+
+### Cấu hình
+
+- `setKey(key: string): this` — cập nhật mã API cho các cuộc gọi CLI tiếp theo.
+- `setModel(model: string): this` — chuyển đổi ID mô hình hoạt động.
+
+### Xây dựng Ngữ cảnh
+
+- `addPrompt(prompt: string): void` — thiết lập tiền tố văn bản cố định.
+- `addContent(content: string): this` — thêm một phần văn bản vào lời nhắc tích lũy.
+- `resetPrompt(): void` — xóa tiền tố cố định.
+- `resetContents(): this` — xóa tất cả các phần văn bản đã tích lũy.
+
+## Hạn chế
+
+- **Hình ảnh** — hiện tại, triển khai CLI không hỗ trợ truyền hình ảnh (`addImage` sẽ không có tác dụng đối với việc tạo).
+- **Môi trường** — dựa trên tính khả dụng của hàm `exec` và hệ thống tệp cho lưu trữ tạm thời.

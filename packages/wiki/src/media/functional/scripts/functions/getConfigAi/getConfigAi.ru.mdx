@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/getConfigAi - Получение конфигурации ИИ'/>
+
+# `getConfigAi`
+
+Функция возвращает конфигурацию ИИ, включая API ключ и модель.
+
+**Возвращает:**
+`[string, string]` — кортеж с API ключом и названием модели.
+
+## Как это работает
+
+Функция извлекает значения конфигурации из класса `PropertiesConfig`, который управляет настройками уровня проекта.
+
+## Пример
+
+```typescript
+import { getConfigAi } from '@dxtmisha/scripts'
+
+const [apiKey, model] = getConfigAi()
+console.log(`API Key: ${apiKey}, Model: ${model}`)
+```

@@ -1,0 +1,65 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/bin/dxt-ai-doc - Trình tạo Sinh Bằng AI'/>
+
+# dxt-ai-doc
+
+Tập lệnh `ai-doc.ts` là một công cụ tạo tài liệu tự động dựa trên trí tuệ nhân tạo (AI) cho dự án. Nó sử dụng `vite-node` để chạy một luồng công việc phân tích mã nguồn phân tích TypeScript (lớp, composables và các hàm), giao tiếp với một mô hình AI để tóm tắt hoặc giải thích mã nguồn và tạo hoặc cập nhật các tệp tài liệu MDX.
+
+## Các tính năng chính
+
+- **Lời nhắc AI theo Ngữ cảnh**: Tạo tài liệu bằng cách sử dụng các định dạng câu lệnh (prompt) tối ưu tuỳ thuộc vào loại phân tích tệp (ví dụ Class, Composable hoặc Function tiêu chuẩn).
+- **Hỗ trợ Đa Ngôn ngữ**: Có khả năng tự động đưa ngôn ngữ được yêu cầu tạo tài liệu (`[wikiLanguage]`) vào phần mô tả của câu lệnh AI.
+- **Biên dịch Thời gian thực**: Trước khi gửi giao tiếp ngữ cảnh tới AI, quá trình sẽ tạo ra một bộ thực thi (build context) để nhận dạng cấu trúc dữ liệu theo TypeScript một cách chính xác.
+
+## Nó hoạt động như thế nào?
+
+Tập lệnh phối hợp một số quá trình cốt lõi nhằm tự động hóa việc tạo tài liệu cho dự án của bạn:
+
+1. Nó đọc danh sách tệp từ các thư mục được chỉ định trong tệp cấu hình thuộc tính của dự án.
+2. Phân loại cấu trúc mã nguồn (Lớp, Composable, Hàm tiêu chuẩn) để chuẩn bị ngữ cảnh chuyên dụng cho loại mã nguồn đó.
+3. Thực hiện quá trình biên dịch mã ngay trong thời gian thực nhằm nắm bắt thông tin dữ liệu TypeScript chính xác.
+4. Nó tổng hợp mọi bối cảnh và kết hợp với các mẫu câu lệnh để gửi đi phân tích bởi mô hình AI.
+5. Giải mã phản hồi cuối cùng và trực tiếp tạo mới hoặc cập nhật các tệp `MDX` tài liệu bên trong hệ thống dự án.
+
+## Cách thiết lập và khởi chạy
+
+Cấu hình của trình tạo AI được định nghĩa tập trung trong tệp `design.config.json` của dự án của bạn. **Hãy tạo tệp này tại thư mục gốc của dự án.** Làm theo các bước chính xác dưới đây để thiết lập:
+
+1. **Thiết lập các tham số AI trong `design.config.json`**:
+   Bạn cần thêm trực tiếp khóa API (API key), loại mô hình mục tiêu và ngôn ngữ tạo tài liệu vào trong đối tượng cấu hình dự án.
+   ```json
+   {
+     "wikiLanguage": "vi",
+     "aiType": "gemini",
+     "aiModel": "gemini-2.0-flash",
+     "aiKey": "API_KEY_CUA_BAN"
+   }
+   ```
+2. **Cấu hình các thư mục cần quét**:
+   Trực tiếp trong tệp `design.config.json`, cấu hình cho nó biết thư mục nào nên được theo dõi và quét thông qua thuộc tính mảng `aiDocDirectory`. (Các thư mục mặc định là `/classes/`, `/composables/`, và `/functions/`).
+   ```json
+   {
+     "aiDocDirectory": [
+       "/path/to/my/classes/",
+       "/path/to/my/composables/"
+     ]
+   }
+   ```
+3. **Chạy lệnh**:
+   Công cụ tạo mã tập lệnh được đăng ký trong `package.json` với tên gọi thành phần thuộc nhánh `@dxtmisha/scripts`. Bạn chỉ việc đơn giản chạy lệnh `dxt-ai-doc` qua `npx` hoặc `npm`:
+   ```bash
+   npx dxt-ai-doc
+   ```
+   Tập lệnh không yêu cầu sử dụng thêm đối số vì toàn bộ tài nguyên sẽ được tự nhận diện và cập nhật dự theo thông số lưu trữ qua `design.config.json`.
+
+## Thông tin chi tiết bổ sung
+
+### Phụ thuộc vào quá trình Biên dịch
+
+Công cụ tạo tài liệu phụ thuộc rất nhiều vào quá trình biên dịch (build) của dự án. **Nó sẽ chạy lệnh `npm run build`** trong một thư mục tạm thời (`dist-temporary`) để có thể nắm bắt chính xác các định nghĩa TypeScript, các thành phần xuất (exports) và cấu trúc của dự án. **Nếu dự án của bạn có lỗi TypeScript hoặc bị lỗi trong quá trình biên dịch, tập lệnh tạo tài liệu AI sẽ gặp lỗi (fail).**
+
+### Loại trừ các Tệp (Chỉ thị bỏ qua)
+
+Ngoài ra, bạn có thể ngăn không cho `dxt-ai-doc` tiếp cận và xử lý đối với những tệp cụ thể bằng cách thêm chỉ thị `// wiki:build-none` vào bất kỳ đâu trong tệp.
+

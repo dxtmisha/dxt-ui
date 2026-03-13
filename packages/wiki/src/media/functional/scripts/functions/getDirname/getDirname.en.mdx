@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/getDirname - Get current directory name'/>
+
+# `getDirname`
+
+The function returns the name of the current directory, handling both CommonJS and ESM environments.
+
+**Returns:**
+`string` — the current directory name.
+
+## How it works
+
+The function checks if the environment has native `__dirname` support (using `hasNativeDirname`). If it does, it returns `__dirname`. Otherwise, it derives the directory name from `import.meta.url`.
+
+## Example
+
+```typescript
+import { getDirname } from '@dxtmisha/scripts'
+
+const dirname = getDirname()
+console.log(dirname)
+```

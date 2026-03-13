@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryAiWikiItem - Trình xử lý thành phần AI Wiki'/>
+
+# Lớp LibraryAiWikiItem
+
+Lớp `LibraryAiWikiItem` là một lớp bao bọc các dữ liệu của thành phần, được thiết kế đặc biệt để xử lý các hoạt động liên quan đến AI Wiki cho một thành phần duy nhất. Nó cung cấp các phương thức để kiểm tra sự tồn tại của các tệp AI Wiki, tạo mã thành phần và tạo các chuỗi nhập (import).
+
+## Các tính năng chính
+
+- **Kiểm tra trạng thái**: Xác định xem một thành phần có tệp triển khai AI Wiki tương ứng hay không.
+- **Tạo lệnh nhập (import)**: Tạo các chuỗi nhập TypeScript chính xác cho thành phần AI Wiki.
+- **Quản lý đường dẫn**: Xử lý việc giải quyết các đường dẫn đến tệp AI Wiki của thành phần.
+
+## Khởi tạo
+
+Khởi tạo `LibraryAiWikiItem` bằng cách cung cấp một đối tượng `LibraryData`.
+
+**Tham số:**
+- `item: LibraryData` — một đối tượng chứa siêu dữ liệu của thành phần (tên, thiết kế, thư mục, v.v.).
+
+```typescript
+import { LibraryAiWikiItem } from '@dxtmisha/scripts'
+
+const componentData = {
+  name: 'button',
+  design: 'dxt',
+  alias: 'dxt.button',
+  codeFull: 'DxtButton',
+  dir: 'DxtButton'
+}
+
+const aiItem = new LibraryAiWikiItem(componentData)
+
+// Kiểm tra trạng thái
+if (aiItem.isAiWiki()) {
+  const importStr = aiItem.getImport()
+  // "import DxtButton from '../../components/DxtButton/DxtButtonAiWiki.vue'"
+}
+```
+
+## Các phương thức
+
+### Trạng thái
+
+- `isAiWiki(): boolean` — kiểm tra xem tệp `*AiWiki.vue` tương ứng có tồn tại trong thư mục của thành phần hay không.
+
+### Truy xuất dữ liệu
+
+- `getCode(): string` — trả về định danh mã đầy đủ của thành phần (ví dụ: `DxtButton`).
+- `getComponentFileNameAiWiki(): string` — trả về tên tệp dự kiến cho bản triển khai AI Wiki (ví dụ: `DxtButtonAiWiki.vue`).
+- `getImport(): string` — tạo chuỗi nhập TypeScript cho thành phần AI Wiki.

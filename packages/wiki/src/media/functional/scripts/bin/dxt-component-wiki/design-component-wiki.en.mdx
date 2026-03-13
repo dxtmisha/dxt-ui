@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-component-wiki - AI Component Docs'/>
+
+# dxt-component-wiki
+
+The `dxt-component-wiki` command provides automated generation of highly detailed AI-driven component documentation, types, and stories for the design system.
+
+## Key Features
+
+- **Granular AI File Generation**: Given a standalone component path, the AI runner can completely redefine or update standard artifacts such as `MDX` notes, `types.ts`, and `stories.ts`.
+- **Legacy Backup Mechanism**: Safely saves the preceding versions of files appending `__old.txt` when creating meaningful changes, to prevent accidental code loss.
+- **Customizable AI Instructions**: Includes the ability to append your own ad-hoc instructions to the executed prompt.
+
+## How does it work?
+
+The AI Wiki Generation flow processes an existing component path:
+1. It runs an ephemeral background compilation mapping the output to a temporary distribution environment to capture correct TypeScript behaviors.
+2. It reads your configuration parameters to locate localized system prompts (e.g., `componentPrompt.en.txt`) and synthesizes your component's real original data (MDX, vue source, storybook implementation).
+3. A single unified response from the AI model intelligently distributes new code segments via the `ComponentWikiFile` engine directly into your repository.
+
+## How to configure and run
+
+Configuration for the AI generator is defined centrally in your project's `design.config.json` file. **Create this file in the root of your project.** Follow these exact steps to set it up:
+
+1. **Set up AI parameters in `design.config.json`**:
+   Add the API key, model target, and the language specification directly to your configuration object. This `wikiLanguage` key determines both the language injected in the MDX generated and the localized system prompt target (e.g., `componentPrompt.en.txt`).
+   ```json
+   {
+     "wikiLanguage": "en",
+     "aiType": "gemini",
+     "aiModel": "gemini-2.0-flash",
+     "aiKey": "YOUR_API_KEY_HERE"
+   }
+   ```
+2. **Execute AI Generation for a Component**:
+   To analyze a specific component utilizing the AI, feed its relative path (e.g. `Button` or `MyComponent`) to the runner. You can optionally include an instructional prompt override:
+   ```bash
+   npx dxt-component-wiki <component-path> "[optional-prompt-instruction]"
+   ```
+   **Example:**
+   ```bash
+   npx dxt-component-wiki "ButtonBase" "Ensure documentation mentions it is disabled by default"
+   ```
+
+## Additional Information
+
+### Dependency on Project Build
+
+The AI generation capability deeply couples with real-time application states. It initiates `npm run build` during interpretation underneath `dist-temporary`. **If your project has preexisting TypeScript implementation failures or active build errors, the AI documentation context will systematically fail.**
+
+### Automated Backup Generation (`__old.txt`)
+
+If `ComponentWikiFile` determines that incoming documentation updates heavily differ from outgoing states, it actively replicates the former structures under the `[filename]__old.txt` format allowing roll-backs with minimal fuss.

@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/ComponentWikiFile - Wiki File Utility'/>
+
+# ComponentWikiFile Class
+
+A specialized utility class designed for handling individual files within the wiki generation process. It provides robust methods for reading, writing, and managing metadata like update dates and file versioning.
+
+## Key Features
+
+- **Metadata Management** — automatically extracts and updates the "**Date: ...**" marker within file content.
+- **Smart Writing** — automatically strips markdown code fences when saving and only writes if content has changed.
+- **Versioning Support** — optionally preserves the previous version of a file by renaming it with an `__old.txt` suffix.
+- **Path Abstraction** — integrates with `PropertiesFile` to handle file operations using consistent path segments.
+
+## Initialization
+
+Initialize with the path segments and configuration for date handling and versioning.
+
+**Parameters:**
+- `paths: string[]` — segments of the file path.
+- `isDate: boolean = false` — if `true`, automatically manages the date marker in the content.
+- `isOld: boolean = true` — if `true`, saves the previous version before overwriting.
+
+```typescript
+import { ComponentWikiFile } from '@dxtmisha/scripts'
+
+const file = new ComponentWikiFile(['docs', 'Guide.mdx'], true, true)
+```
+
+## Methods
+
+### Information
+
+- `getPath(): string` — Returns the full absolute path to the file.
+- `getDate(): Datetime` — Extracts and returns the date from the file's content.
+- `read(): string` — Reads and returns the entire file content.
+
+### Control
+
+- `write(content: string): void` — Writes processed content to the file, handling versioning and date updates if configured.
+
+## Examples
+
+### Managing Documentation Updates
+Automatically updating documentation while keeping a backup of the previous version.
+
+```typescript
+const docFile = new ComponentWikiFile(['wiki', 'MyComponent.mdx'], true, true)
+docFile.write('# New Content')
+```

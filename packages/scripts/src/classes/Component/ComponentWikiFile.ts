@@ -98,6 +98,7 @@ export class ComponentWikiFile {
    *
    * Извлекает дату из строки содержимого.
    * @param content content string / строка содержимого
+   * @protected
    */
   protected extractDateFromContent(content: string): Datetime {
     const match = content.match(DATE_UPDATED_MATCH)
@@ -118,6 +119,7 @@ export class ComponentWikiFile {
    *
    * Добавляет текущую дату в содержимое, если isDate равно true.
    * @param content content string / строка содержимого
+   * @protected
    */
   protected addDate(content: string): string {
     if (this.isDate) {

@@ -34,6 +34,7 @@ export class ComponentCreator {
    * Collects only empty component directories.
    *
    * Собирает только пустые директории компонентов.
+   * @protected
    */
   protected getDirs(): string[] {
     return PropertiesFile.readDirOnlyRecursive(UI_DIRS_COMPONENTS)

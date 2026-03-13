@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/getConstructorProperties - Get constructor properties'/>
+
+# `getConstructorProperties`
+
+The function returns the properties of the specified constructors by reading their `properties.json` files.
+
+**Parameters:**
+- `names: string[]` — list of constructor names.
+
+**Returns:**
+`PropertyList` — an object where keys are constructor names and values are their properties.
+
+## How it works
+
+The function iterates through the provided names and constructs the path to the `properties.json` file for each constructor. It uses the `PropertiesFile.readFile` method to load the data.
+
+## Example
+
+```typescript
+import { getConstructorProperties } from '@dxtmisha/scripts'
+
+const properties = getConstructorProperties(['Button', 'Input'])
+// { Button: { ... }, Input: { ... } }
+```

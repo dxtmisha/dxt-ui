@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiGoogleCli - Auto-configured Google Gemini AI via CLI'/>
+
+# AiGoogleCli Class
+
+A high-level implementation for interacting with Google's Gemini AI via a system command-line interface. The `AiGoogleCli` class extends `AiGoogleCliLite` and simplifies the process by automatically loading the required API key and model identifier from the project's configuration settings (`getConfigAi()`).
+
+> This implementation requires the `gemini` CLI utility to be installed and accessible in the system path.
+
+## Key Features
+
+- **Automated Configuration** — no manual initialization of keys or models is needed; it pulls everything from the project environment.
+- **CLI-based Execution** — leverages shell commands to perform AI requests, making it suitable for specific build environments.
+- **Temporary File Management** — handles the creation and cleanup of temporary prompt files (`./ai-tmp`) automatically.
+- **Concise Outputs** — uses optimized CLI flags to ensure the AI returns direct answers without conversational preamble.
+
+## Initialization
+
+The `AiGoogleCli` class is ready to use without any constructor arguments.
+
+```typescript
+import { AiGoogleCli } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleCli()
+
+// Generate a response using project-defined settings
+const response = await ai.generate('Summarize the changes in the project.')
+```
+
+## Methods
+
+### Generation
+
+- `generate(contents: string): Promise<string>` — (Inherited) Analyzes input, manages temporary files, and executes the CLI command to get a response.
+
+### Configuration
+
+- `setKey(key: string): this` — (Inherited) Manually overrides the API key if necessary.
+- `setModel(model: string): this` — (Inherited) Switches to a different model ID.
+
+### Context Building
+
+- `addPrompt(prompt: string): void` — (Inherited) Sets a persistent text prefix for system instructions.
+- `addContent(content: string): this` — (Inherited) Adds a text part to the cumulative request.
+- `resetPrompt(): void` — (Inherited) Clears the persistent prefix.
+- `resetContents(): this` — (Inherited) Clears all accumulated text parts.
+
+## Limitations
+
+- **Multimodal Support** — like its base class, this implementation does not currently support image inputs.
+- **System Dependencies** — requires the `gemini` CLI tool and appropriate file system permissions for temporary data.

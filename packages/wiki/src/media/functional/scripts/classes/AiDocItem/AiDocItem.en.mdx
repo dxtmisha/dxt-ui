@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocItem - AI Function Documentation Generator'/>
+
+# AiDocItem Class
+
+A dedicated class for generating and updating documentation for TypeScript functions using AI. It streamlines the creation of detailed function descriptions, parameter explanations, and usage examples.
+
+## Key Features
+
+- **Function-optimized** — uses specialized templates (`aiDocFunctionPrompt.en.txt`) designed for documenting logic-driven code.
+- **Visual Consistency** — leverages reference data from `demoDocEn.mdx` to produce documentation that fits the project's standard format.
+- **End-to-End Workflow** — handles everything from reading the source function to writing the final MDX file.
+- **Smart Metadata** — automatically determines the correct Wiki path and generates a standardized page title.
+
+## Initialization
+
+Initialize the `AiDocItem` by providing the project source path and the target file metadata.
+
+**Parameters:**
+- `path: string` — the base directory path of the project.
+- `item: GitFileItem` — information about the specific function file.
+
+```typescript
+import { AiDocItem } from '@dxtmisha/scripts'
+
+const functionDoc = new AiDocItem('/src/functions', gitFileItem)
+
+// Generate the documentation
+await functionDoc.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): Promise<void>` — manages the complete documentation process: update checks, AI context preparation, and result writing.
+
+### Metadata
+
+- `getTitle(): string` — generates a standardized title for the function documentation page.
+- `getPathWiki(): string[]` — calculates the Wiki storage path based on the file's location.
+- `isBuildDisabled(): boolean` — checks if the source file is marked with `// wiki:build-none` to skip generation.
+
+## Types
+
+### GitFileItem
+Represents file information managed by Git.
+- `path: string` — Relative path to the file.
+- `pathByOS: string` — Absolute OS-specific path.
+- `date: string` — Last modification date.
+- `item: any` — Reserved for additional metadata.

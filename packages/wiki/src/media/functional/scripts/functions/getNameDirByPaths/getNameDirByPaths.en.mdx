@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/getNameDirByPaths - Get last directory name'/>
+
+# `getNameDirByPaths`
+
+The function returns the name of the last directory from the given array of path segments.
+
+**Parameters:**
+- `paths: PropertiesFilePath` — an array of path segments.
+
+**Returns:**
+`string` — the name of the last directory.
+
+## How it works
+
+The function joins the provided path segments using `PropertiesFile.joinPath`, then splits them back into directory segments using `PropertiesFile.splitForDir` and returns the last element of the resulting array.
+
+## Example
+
+```typescript
+import { getNameDirByPaths } from '@dxtmisha/scripts'
+
+getNameDirByPaths(['src', 'components', 'button']) // 'button'
+```

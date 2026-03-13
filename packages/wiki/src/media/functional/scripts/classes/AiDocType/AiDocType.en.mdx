@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocType - AI Documentation Type Manager'/>
+
+# AiDocType Class
+
+A management class that acts as a registry and selector for different documentation types. It determines which specialized documentation handler (e.g., for classes, functions, or composables) should be used for a given file based on its characteristics.
+
+## Key Features
+
+- **Dynamic Registration** — allows adding new documentation types to the system at runtime.
+- **Smart Selection** — automatically identifies the correct documentation handler for a file by iterating through registered types and executing their check logic.
+- **Delegation** — orchestrates the instantiation and execution of specialized documentation handlers (`AiDocItemAbstract` implementations).
+- **Static API** — provides a convenient static interface for global documentation management without needing instantiation.
+
+## Initialization
+
+`AiDocType` is designed to be used via its static methods. No initialization is required.
+
+```typescript
+import { AiDocType } from '@dxtmisha/scripts'
+
+// The engine uses this class internally to process file items:
+await AiDocType.make(gitFileItem)
+```
+
+## Methods
+
+### Documentation Management
+
+- `make(item: GitFileItem): Promise<void>` — (Static) Analyzes the provided file item, selects the matching documentation type, and triggers the generation process.
+
+### Registry Control
+
+- `add(type: AiDocTypeItem): void` — (Static) Registers a new documentation type at the beginning of the priority list.
+
+## Types
+
+### AiDocTypeItem
+Configuration for a documentation type handler.
+- `check: (item: GitFileItem) => boolean` — function to determine if this handler is suitable for the file.
+- `item: new (path: string, item: GitFileItem) => AiDocItemAbstract` — the handler class constructor.
+
+### GitFileItem
+Represents file information managed by Git.
+- `path: string` — Relative path to the file.
+- `pathByOS: string` — Absolute OS-specific path.
+- `date: string` — Last modification date.
+- `item: any` — Reserved for additional metadata.

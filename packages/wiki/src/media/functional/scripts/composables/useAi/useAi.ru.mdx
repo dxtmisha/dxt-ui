@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Composables/useAi - Получение экземпляра AI'/>
+
+# `useAi`
+
+Композабл для получения экземпляра AI на основе текущей конфигурации.
+
+**Возвращает:**
+`AiAbstract | undefined` — экземпляр класса AI (например, `AiGoogle` или `AiGoogleCli`) в зависимости от настроенного типа AI, или `undefined`, если тип не распознан или не настроен.
+
+## Как это работает
+
+Композабл считывает тип AI из `PropertiesConfig.getAiType()` и возвращает новый экземпляр соответствующего класса:
+- `'gemini'` возвращает новый экземпляр `AiGoogle`.
+- `'gemini-cli'` возвращает новый экземпляр `AiGoogleCli`.
+- Другие типы возвращают `undefined`.
+
+## Пример
+
+```typescript
+import { useAi } from '@dxtmisha/scripts'
+
+const ai = useAi()
+
+if (ai) {
+  // Использование экземпляра AI
+  const response = await ai.generate('Привет, AI!')
+  console.log(response)
+}
+```

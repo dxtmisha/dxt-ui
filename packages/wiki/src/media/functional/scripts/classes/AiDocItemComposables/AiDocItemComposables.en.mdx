@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocItemComposables - AI Composable Documentation Generator'/>
+
+# AiDocItemComposables Class
+
+A specialized class for generating and updating documentation for Vue Composables using AI. It automates the process of analyzing composition functions, gathering context, and producing high-quality MDX documentation.
+
+## Key Features
+
+- **Composition-focused** — uses specialized templates (`aiDocComposablePrompt.en.txt`) tailored for documenting Vue composables.
+- **Visual Demos** — incorporates reference data from `demoComposableEn.mdx` to maintain a consistent look for composable documentation.
+- **Full Automation** — handles the technical steps of reading code, checking build status, and writing the final results.
+- **Intelligent Routing** — automatically calculates the appropriate Wiki storage path and page title.
+
+## Initialization
+
+Initialize the `AiDocItemComposables` by providing the project source path and the target file metadata.
+
+**Parameters:**
+- `path: string` — the base directory path of the project.
+- `item: GitFileItem` — information about the specific composable file.
+
+```typescript
+import { AiDocItemComposables } from '@dxtmisha/scripts'
+
+const composableDoc = new AiDocItemComposables('/src/composables', gitFileItem)
+
+// Generate the documentation
+await composableDoc.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): Promise<void>` — executes the full documentation cycle: checks for updates, prepares the AI context, and writes the output.
+
+### Metadata
+
+- `getTitle(): string` — generates a standardized title for the composable documentation.
+- `getPathWiki(): string[]` — calculates the Wiki path based on the file's location in the project.
+- `isBuildDisabled(): boolean` — checks if the source file contains `// wiki:build-none` to skip generation.
+
+## Types
+
+### GitFileItem
+Represents file information managed by Git.
+- `path: string` — Relative path to the file.
+- `pathByOS: string` — Absolute OS-specific path.
+- `date: string` — Last modification date.
+- `item: any` — Reserved for additional metadata.

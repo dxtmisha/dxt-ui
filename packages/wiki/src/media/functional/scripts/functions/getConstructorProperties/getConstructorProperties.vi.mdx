@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/getConstructorProperties - Lấy thuộc tính hàm dựng'/>
+
+# `getConstructorProperties`
+
+Hàm trả về các thuộc tính của các hàm dựng được chỉ định bằng cách đọc các tệp `properties.json` của chúng.
+
+**Tham số:**
+- `names: string[]` — danh sách tên các hàm dựng.
+
+**Trả về:**
+`PropertyList` — một đối tượng trong đó các khóa là tên hàm dựng và các giá trị là các thuộc tính của chúng.
+
+## Cơ chế hoạt động
+
+Hàm lặp qua các tên được cung cấp và xây dựng đường dẫn đến tệp `properties.json` cho mỗi hàm dựng. Nó sử dụng phương thức `PropertiesFile.readFile` để tải dữ liệu.
+
+## Ví dụ
+
+```typescript
+import { getConstructorProperties } from '@dxtmisha/scripts'
+
+const properties = getConstructorProperties(['Button', 'Input'])
+// { Button: { ... }, Input: { ... } }
+```

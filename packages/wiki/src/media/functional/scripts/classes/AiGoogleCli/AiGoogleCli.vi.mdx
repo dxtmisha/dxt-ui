@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiGoogleCli - Google Gemini AI tự động cấu hình qua CLI'/>
+
+# Lớp AiGoogleCli
+
+Một triển khai cấp cao để tương tác với Google Gemini AI thông qua giao diện dòng lệnh (CLI) của hệ thống. Lớp `AiGoogleCli` mở rộng từ `AiGoogleCliLite` và đơn giản hóa quy trình bằng cách tự động tải mã API và mã định danh mô hình được yêu cầu từ cấu hình của dự án (`getConfigAi()`).
+
+> Triển khai này yêu cầu tiện ích CLI `gemini` phải được cài đặt và có thể truy cập được trong đường dẫn hệ thống.
+
+## Tính năng chính
+
+- **Cấu hình Tự động** — không cần khởi tạo thủ công mã khoá hoặc mô hình; nó lấy mọi thứ từ môi trường dự án.
+- **Thực thi dựa trên CLI** — tận dụng các lệnh shell để thực hiện các yêu cầu AI, phù hợp cho các môi trường xây dựng cụ thể.
+- **Quản lý Tệp Tạm thời** — tự động xử lý việc tạo và dọn dẹp các tệp lời nhắc tạm thời (`./ai-tmp`).
+- **Phản hồi Ngắn gọn** — sử dụng các cờ CLI được tối ưu hóa để đảm bảo AI trả về câu trả lời trực tiếp mà không có phần dẫn dắt rườm rà.
+
+## Khởi tạo
+
+Lớp `AiGoogleCli` đã sẵn sàng để sử dụng mà không cần bất kỳ đối số hàm khởi tạo nào.
+
+```typescript
+import { AiGoogleCli } from '@dxtmisha/scripts'
+
+const ai = new AiGoogleCli()
+
+// Tạo phản hồi bằng các cài đặt được xác định trong dự án
+const response = await ai.generate('Tóm tắt các thay đổi trong dự án.')
+```
+
+## Phương thức
+
+### Tạo (Generation)
+
+- `generate(contents: string): Promise<string>` — (Kế thừa) Phân tích đầu vào, quản lý các tệp tạm thời và thực thi lệnh CLI để lấy phản hồi.
+
+### Cấu hình
+
+- `setKey(key: string): this` — (Kế thừa) Ghi đè mã API thủ công nếu cần thiết.
+- `setModel(model: string): this` — (Kế thừa) Chuyển đổi sang ID mô hình khác.
+
+### Xây dựng Ngữ cảnh
+
+- `addPrompt(prompt: string): void` — (Kế thừa) Thiết lập tiền tố văn bản cố định cho các hướng dẫn hệ thống.
+- `addContent(content: string): this` — (Kế thừa) Thêm một phần văn bản vào yêu cầu tích lũy.
+- `resetPrompt(): void` — (Kế thừa) Xóa tiền tố cố định.
+- `resetContents(): this` — (Kế thừa) Xóa tất cả các phần văn bản đã tích lũy.
+
+## Hạn chế
+
+- **Hỗ trợ Đa phương thức** — giống như lớp cơ sở của nó, triển khai này hiện không hỗ trợ đầu vào hình ảnh.
+- **Phụ thuộc Hệ thống** — yêu cầu công cụ CLI `gemini` và các quyền hệ thống tệp phù hợp cho dữ liệu tạm thời.

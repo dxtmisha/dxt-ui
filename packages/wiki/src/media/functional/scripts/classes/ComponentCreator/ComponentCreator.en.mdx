@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/ComponentCreator - Automatic Component Scaffolding'/>
+
+# ComponentCreator Class
+
+A utility class for automating the creation of component skeletons in empty directories. It proactively identifies folders within the component directory that lack files and initializes them using the project's standard templates.
+
+## Key Features
+
+- **Automated Discovery** — scans the component directory recursively to find empty folders.
+- **Smart Scaffolding** — automatically triggers the creation process for each identified directory.
+- **Project Consistency** — ensures all new components start with the same baseline structure and files.
+
+## Initialization
+
+Initialize a new instance of `ComponentCreator`. It automatically targets the standard components directory defined in the project configuration.
+
+```typescript
+import { ComponentCreator } from '@dxtmisha/scripts'
+
+const creator = new ComponentCreator()
+```
+
+## Methods
+
+### `make`
+
+The primary orchestration method that performs a recursive scan of the components directory, identifies folders without files, and triggers the `ComponentItem` scaffolding process for each one.
+
+**Returns:** `void`
+
+## Examples
+
+### Complete Scaffolding Flow
+Running the creator as part of a build or preparation script ensures that even manually created empty folders are properly initialized with necessary files (`index.ts`, `types.ts`, etc.).
+
+```javascript
+const creator = new ComponentCreator()
+creator.make()
+```

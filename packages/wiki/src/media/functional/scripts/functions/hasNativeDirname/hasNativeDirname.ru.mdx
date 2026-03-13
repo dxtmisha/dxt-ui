@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/hasNativeDirname - Проверка доступности __dirname'/>
+
+# `hasNativeDirname`
+
+Функция проверяет, доступна ли глобальная переменная `__dirname` в текущей среде.
+
+**Возвращает:**
+`boolean` — `true`, если `__dirname` определена, в противном случае `false`.
+
+## Как это работает
+
+Функция использует `typeof __dirname !== 'undefined'` для определения того, поддерживает ли среда встроенное разрешение имен директорий (обычно в средах CommonJS).
+
+## Пример
+
+```typescript
+import { hasNativeDirname } from '@dxtmisha/scripts'
+
+if (hasNativeDirname()) {
+  console.log('Среда поддерживает встроенный __dirname')
+}
+```

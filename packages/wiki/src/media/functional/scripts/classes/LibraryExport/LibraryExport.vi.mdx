@@ -1,0 +1,46 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryExport - Trình tạo xuất bản (Export)'/>
+
+# Lớp LibraryExport
+
+Lớp `LibraryExport` chịu trách nhiệm tổng hợp và tạo ra một tệp xuất bản (export) thống nhất cho thư viện. Nó quét các thư mục được chỉ định để tìm các tệp TypeScript và Vue, tạo ra một điểm nhập duy nhất giúp đơn giản hóa việc nhập thư viện.
+
+## Các tính năng chính
+
+- **Tạo xuất bản thống nhất** — tạo ra một điểm nhập toàn diện cho tất cả các thành phần và tiện ích có thể xuất bản.
+- **Nhận dạng tệp thông minh** — tự động xử lý xuất bản cho các tệp `.ts` (sử dụng `export *`) và các tệp `.vue` (sử dụng `import` sau đó là `export const`).
+- **Tích hợp phong cách (Style)** — tự động bao gồm các kiểu CSS hoặc SCSS toàn cục nếu chúng tồn tại.
+- **Bộ lọc** — loại trừ các tệp kiểm thử (`.test.`) và các tệp được đánh dấu bằng cờ `UI_FLAG_NOT_EXPORT`.
+
+## Khởi tạo
+
+Khởi tạo và chạy trình tạo xuất bản bằng phương thức `make`.
+
+```typescript
+import { LibraryExport } from '@dxtmisha/scripts'
+
+const generator = new LibraryExport()
+generator.make()
+```
+
+## Các phương thức
+
+### Tạo dữ liệu
+
+- `make(): void` — điểm nhập chính kích hoạt quá trình khám phá và tạo tệp.
+
+## Ví dụ về đầu ra được tạo
+
+Tệp được tạo tổng hợp các lệnh nhập và xuất bản như sau:
+
+```typescript
+import './style.css'
+
+// Components
+import _DxtButton from './components/DxtButton/DxtButton.vue'
+export const DxtButton = _DxtButton
+
+// Utilities
+export * from './functions/myFunction'
+```

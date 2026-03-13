@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryAiWikiItem - AI Wiki Component Handler'/>
+
+# LibraryAiWikiItem Class
+
+The `LibraryAiWikiItem` class is a wrapper around component data, specifically designed to handle AI Wiki-related operations for a single component. It provides methods to check for the existence of AI Wiki files, generate component codes, and create import strings.
+
+## Key Features
+
+- **Status Checking**: Determines if a component has an associated AI Wiki implementation file.
+- **Import Generation**: Creates correct TypeScript import strings for the AI Wiki component.
+- **Path Management**: Handles the resolution of paths to the component's AI Wiki file.
+
+## Initialization
+
+Initialize `LibraryAiWikiItem` by providing a `LibraryData` object.
+
+**Parameters:**
+- `item: LibraryData` — An object containing component metadata (name, design, directory, etc.).
+
+```typescript
+import { LibraryAiWikiItem } from '@dxtmisha/scripts'
+
+const componentData = {
+  name: 'button',
+  design: 'dxt',
+  alias: 'dxt.button',
+  codeFull: 'DxtButton',
+  dir: 'DxtButton'
+}
+
+const aiItem = new LibraryAiWikiItem(componentData)
+
+// Check status
+if (aiItem.isAiWiki()) {
+  const importStr = aiItem.getImport()
+  // "import DxtButton from '../../components/DxtButton/DxtButtonAiWiki.vue'"
+}
+```
+
+## Methods
+
+### State
+
+- `isAiWiki(): boolean` — Checks if the corresponding `*AiWiki.vue` file exists in the component's directory.
+
+### Data Retrieval
+
+- `getCode(): string` — Returns the full code identifier of the component (e.g., `DxtButton`).
+- `getComponentFileNameAiWiki(): string` — Returns the expected filename for the AI Wiki implementation (e.g., `DxtButtonAiWiki.vue`).
+- `getImport(): string` — Generates a TypeScript import string for the AI Wiki component.

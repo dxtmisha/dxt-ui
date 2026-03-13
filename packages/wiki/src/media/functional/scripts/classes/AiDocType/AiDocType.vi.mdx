@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiDocType - Trình Quản lý Loại Tài liệu AI'/>
+
+# Lớp AiDocType
+
+Một lớp quản lý đóng vai trò như một kho đăng ký và trình lựa chọn cho các loại tài liệu khác nhau. Nó xác định trình xử lý tài liệu chuyên biệt nào (ví dụ: cho lớp, hàm hoặc composable) sẽ được sử dụng cho một tệp nhất định dựa trên các đặc điểm của tệp đó.
+
+## Tính năng chính
+
+- **Đăng ký Động** — cho phép thêm các loại tài liệu mới vào hệ thống trong thời gian chạy.
+- **Lựa chọn Thông minh** — tự động xác định trình xử lý tài liệu chính xác cho tệp bằng cách lặp qua các loại đã đăng ký và thực thi logic kiểm tra của chúng.
+- **Ủy quyền** — điều phối việc khởi tạo và thực thi các trình xử lý tài liệu chuyên biệt (các triển khai của `AiDocItemAbstract`).
+- **API Tĩnh** — cung cấp một giao diện tĩnh thuận tiện cho việc quản lý tài liệu toàn cầu mà không cần khởi tạo đối tượng.
+
+## Khởi tạo
+
+`AiDocType` được thiết kế để sử dụng thông qua các phương thức tĩnh. Không cần khởi tạo.
+
+```typescript
+import { AiDocType } from '@dxtmisha/scripts'
+
+// Công cụ sử dụng lớp này nội bộ để xử lý các mục tệp:
+await AiDocType.make(gitFileItem)
+```
+
+## Phương thức
+
+### Quản lý Tài liệu
+
+- `make(item: GitFileItem): Promise<void>` — (Tĩnh) Phân tích mục tệp được cung cấp, chọn loại tài liệu phù hợp và kích hoạt quy trình tạo.
+
+### Kiểm soát Kho đăng ký
+
+- `add(type: AiDocTypeItem): void` — (Tĩnh) Đăng ký một loại tài liệu mới vào đầu danh sách ưu tiên.
+
+## Các kiểu dữ liệu
+
+### AiDocTypeItem
+Cấu hình cho trình xử lý loại tài liệu.
+- `check: (item: GitFileItem) => boolean` — hàm xác định xem trình xử lý này có phù hợp với tệp hay không.
+- `item: new (path: string, item: GitFileItem) => AiDocItemAbstract` — hàm khởi tạo lớp xử lý.
+
+### GitFileItem
+Đại diện cho thông tin tệp được quản lý bởi Git.
+- `path: string` — Đường dẫn tương đối đến tệp.
+- `pathByOS: string` — Đường dẫn tuyệt đối đặc thù của hệ điều hành.
+- `date: string` — Ngày sửa đổi cuối cùng.
+- `item: any` — Dành riêng cho siêu dữ liệu bổ sung.

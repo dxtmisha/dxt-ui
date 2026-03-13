@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/getComponentPaths - Get component paths'/>
+
+# `getComponentPaths`
+
+The function returns the paths to the component by combining the base component directory with the specified path.
+
+**Parameters:**
+- `path: string` — component path.
+
+**Returns:**
+`string[]` — an array of paths.
+
+## How it works
+
+The function is used to generate a full path to a component based on the global project configuration. It uses the `UI_DIRS_COMPONENTS` constant which defines the base directory for all components.
+
+## Example
+
+```typescript
+import { getComponentPaths } from '@dxtmisha/scripts'
+
+getComponentPaths('button') // ['src', 'components', 'button']
+```

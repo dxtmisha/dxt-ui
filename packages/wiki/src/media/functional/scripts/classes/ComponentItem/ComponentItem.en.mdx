@@ -1,0 +1,46 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/ComponentItem - Component File Generator'/>
+
+# ComponentItem Class
+
+A specialized class for generating individual component files based on templates. It manages the entire creation process, from reading template samples to performing dynamic string replacements and setting correct file system permissions.
+
+## Key Features
+
+- **Template-Driven** — uses a centralized repository of component templates for consistent file generation.
+- **Dynamic Replacements** — automatically replaces markers like `ComponentDoc`, `[project]`, and `[path]` with context-specific values.
+- **Placeholder Support** — handles both camelCase (class names) and kebab-case (filenames) transformations.
+- **Permission Management** — ensures generated files have the correct execution and read/write permissions.
+
+## Initialization
+
+To initialize the object, call the `ComponentItem(path)` constructor.
+
+**Parameters:**
+- `path: string` — the relative or absolute path to the directory where the component will be created.
+
+```typescript
+import { ComponentItem } from '@dxtmisha/scripts'
+
+const component = new ComponentItem('src/components/MyComponent')
+
+// Generating files
+component.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — The main method that reads all template files and writes their processed versions to the component directory.
+
+## Examples
+
+### Manual Scaffolding
+While `ComponentCreator` handles batch creation, `ComponentItem` can be used directly for fine-grained control over a specific component.
+
+```javascript
+const item = new ComponentItem('packages/ui/src/components/Avatar')
+item.make()
+```

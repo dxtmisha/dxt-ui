@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiDocItem - Trình Tạo Tài liệu Hàm bằng AI'/>
+
+# Lớp AiDocItem
+
+Một lớp chuyên biệt để tạo và cập nhật tài liệu cho các hàm TypeScript bằng AI. Nó giúp hợp lý hóa việc tạo các mô tả hàm chi tiết, giải thích tham số và cung cấp các ví dụ sử dụng.
+
+## Tính năng chính
+
+- **Tối ưu cho Hàm** — sử dụng các mẫu chuyên biệt (`aiDocFunctionPrompt.en.txt`) được thiết kế để viết tài liệu cho các đoạn mã thiên về logic.
+- **Tính nhất quán Trực quan** — tận dụng dữ liệu tham chiếu từ `demoDocEn.mdx` để tạo ra tài liệu phù hợp với định dạng tiêu chuẩn của dự án.
+- **Quy trình Hoàn chỉnh** — xử lý mọi thứ từ việc đọc hàm nguồn đến việc ghi tệp MDX cuối cùng.
+- **Siêu dữ liệu Thông minh** — tự động xác định đường dẫn Wiki chính xác và tạo tiêu đề trang chuẩn hóa.
+
+## Khởi tạo
+
+Khởi tạo `AiDocItem` bằng cách cung cấp đường dẫn nguồn của dự án và siêu dữ liệu tệp đích.
+
+**Tham số:**
+- `path: string` — đường dẫn thư mục gốc của dự án.
+- `item: GitFileItem` — thông tin về tệp hàm cụ thể.
+
+```typescript
+import { AiDocItem } from '@dxtmisha/scripts'
+
+const functionDoc = new AiDocItem('/src/functions', gitFileItem)
+
+// Kích hoạt việc tạo tài liệu
+await functionDoc.make()
+```
+
+## Phương thức
+
+### Điều khiển
+
+- `make(): Promise<void>` — quản lý toàn bộ quy trình tài liệu: kiểm tra cập nhật, chuẩn bị ngữ cảnh AI và ghi kết quả.
+
+### Siêu dữ liệu (Metadata)
+
+- `getTitle(): string` — tạo tiêu đề chuẩn hóa cho trang tài liệu hàm.
+- `getPathWiki(): string[]` — tính toán đường dẫn lưu trữ Wiki dựa trên vị trí tệp.
+- `isBuildDisabled(): boolean` — kiểm tra xem tệp nguồn có được đánh dấu `// wiki:build-none` để bỏ qua việc tạo hay không.
+
+## Các kiểu dữ liệu
+
+### GitFileItem
+Đại diện cho thông tin tệp được quản lý bởi Git.
+- `path: string` — Đường dẫn tương đối đến tệp.
+- `pathByOS: string` — Đường dẫn tuyệt đối đặc thù của hệ điều hành.
+- `date: string` — Ngày sửa đổi cuối cùng.
+- `item: any` — Dành riêng cho siêu dữ liệu bổ sung.

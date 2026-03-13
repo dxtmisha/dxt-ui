@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/ComponentWiki - AI-Powered Wiki Generator'/>
+
+# ComponentWiki Class
+
+An advanced orchestration class that automates the generation of documentation, stories, and type definitions for components using AI. It coordinates temporary builds, code extraction, and AI processing to create comprehensive wiki artifacts.
+
+## Key Features
+
+- **AI-Driven Documentation** — leverages AI to analyze component code and generate meaningful MDX descriptions.
+- **Automatic Story Generation** — creates initial Storybook stories based on the component's implementation.
+- **Type Extraction** — identifies and extracts type definitions for inclusion in documentation.
+- **Process Orchestration** — handles the technical lifecycle including building items, extracting code snapshots, and cleanup.
+
+## Initialization
+
+Initialize the class with the target component path and optional custom prompt instructions.
+
+**Parameters:**
+- `path: string` — the relative path to the component directory.
+- `prompt: string = ''` — optional additional text to append to the AI prompt for specific documentation requirements.
+
+```typescript
+import { ComponentWiki } from '@dxtmisha/scripts'
+
+const wiki = new ComponentWiki('src/components/MyComponent', 'Focus on accessibility details.')
+
+// Start generation process
+wiki.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — The primary method that initiates building the code, preparing the AI context, and generating the wiki artifacts.
+
+## Examples
+
+### Batch Generation
+Commonly used in scripts to regenerate documentation for multiple components after API changes.
+
+```javascript
+const wiki = new ComponentWiki('src/components/BaseButton')
+wiki.make()
+```

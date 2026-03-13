@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/getNameDirByPaths - Lấy tên thư mục cuối cùng'/>
+
+# `getNameDirByPaths`
+
+Hàm trả về tên của thư mục cuối cùng từ mảng các đoạn đường dẫn được cung cấp.
+
+**Tham số:**
+- `paths: PropertiesFilePath` — một mảng các đoạn đường dẫn.
+
+**Trả về:**
+`string` — tên của thư mục cuối cùng.
+
+## Cơ chế hoạt động
+
+Hàm kết hợp các đoạn đường dẫn được cung cấp bằng cách sử dụng `PropertiesFile.joinPath`, sau đó chia chúng lại thành các đoạn thư mục bằng cách sử dụng `PropertiesFile.splitForDir` và trả về phần tử cuối cùng của mảng kết quả.
+
+## Ví dụ
+
+```typescript
+import { getNameDirByPaths } from '@dxtmisha/scripts'
+
+getNameDirByPaths(['src', 'components', 'button']) // 'button'
+```

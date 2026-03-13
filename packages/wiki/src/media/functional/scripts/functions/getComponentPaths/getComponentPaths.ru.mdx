@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/getComponentPaths - Получение путей компонентов'/>
+
+# `getComponentPaths`
+
+Функция возвращает пути к компоненту, объединяя базовую директорию компонентов с указанным путем.
+
+**Параметры:**
+- `path: string` — путь к компоненту.
+
+**Возвращает:**
+`string[]` — массив путей.
+
+## Как это работает
+
+Функция используется для формирования полного пути к компоненту на основе глобальной конфигурации проекта. Она использует константу `UI_DIRS_COMPONENTS`, которая определяет базовую директорию для всех компонентов.
+
+## Пример
+
+```typescript
+import { getComponentPaths } from '@dxtmisha/scripts'
+
+getComponentPaths('button') // ['src', 'components', 'button']
+```

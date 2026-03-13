@@ -10,5 +10,5 @@ import requirePath from 'path'
  * @returns The path with standard separators/ Путь со стандартными разделителями
  */
 export function toPathStandardSep(path: string): string {
-  return path.replace('/', requirePath.sep)
+  return path.replace(/\//g, requirePath.sep)
 }

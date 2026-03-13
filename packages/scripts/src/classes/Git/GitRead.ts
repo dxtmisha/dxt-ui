@@ -253,6 +253,7 @@ export class GitRead {
    *
    * Выполняет Git команду и возвращает результат.
    * @param command - command to execute / команда для выполнения
+   * @protected
    */
   protected static exec(command: string): string {
     return execSync(command, { encoding: 'utf8' }).trim()

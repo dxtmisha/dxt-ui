@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiDocItemClasses - Trình Tạo Tài liệu Lớp bằng AI'/>
+
+# Lớp AiDocItemClasses
+
+Một lớp chuyên biệt để tạo và cập nhật tài liệu cho các lớp (classes) TypeScript bằng AI. Nó tự động hóa toàn bộ quy trình: từ đọc mã nguồn và thu thập ngữ cảnh đến tương tác với các mô hình AI và tạo tệp tài liệu MDX chuẩn hóa.
+
+## Tính năng chính
+
+- **Tạo Tự động** — quản lý toàn bộ vòng đời tạo tài liệu từ định nghĩa lớp.
+- **Dựa trên Mẫu** — sử dụng các mẫu lời nhắc chuyên biệt (`aiDocClassPrompt.en.txt`) để đảm bảo đầu ra AI nhất quán.
+- **Hỗ trợ Demo** — tận dụng các tệp trình diễn tham chiếu (`demoClassEn.mdx`) để hướng dẫn AI trong việc định dạng giao diện.
+- **Logic Thông minh** — tự động xác định đường dẫn Wiki và tiêu đề dựa trên cấu trúc tệp nguồn.
+- **Bảo vệ Bản dựng** — tích hợp với hệ thống bản dựng để đảm bảo chỉ những mã hợp lệ, có thể biên dịch mới được viết tài liệu.
+
+## Khởi tạo
+
+Khởi tạo `AiDocItemClasses` bằng cách cung cấp đường dẫn mã nguồn và thông tin tệp đích.
+
+**Tham số:**
+- `path: string` — đường dẫn thư mục gốc của dự án.
+- `item: GitFileItem` — thông tin về tệp lớp TypeScript cụ thể.
+
+```typescript
+import { AiDocItemClasses } from '@dxtmisha/scripts'
+
+const classDoc = new AiDocItemClasses('/src/classes', gitFileItem)
+
+// Kích hoạt việc tạo tài liệu
+await classDoc.make()
+```
+
+## Phương thức
+
+### Điều khiển
+
+- `make(): Promise<void>` — bắt đầu chu trình tài liệu: kiểm tra cập nhật, chuẩn bị ngữ cảnh, gọi AI và ghi kết quả.
+
+### Siêu dữ liệu (Metadata)
+
+- `getTitle(): string` — tạo tiêu đề chuẩn hóa cho trang tài liệu.
+- `getPathWiki(): string[]` — tính toán đường dẫn lưu trữ trong Wiki dựa trên vị trí tệp.
+- `isBuildDisabled(): boolean` — kiểm tra xem tệp nguồn có được đánh dấu `// wiki:build-none` để bỏ qua xử lý hay không.
+
+## Các kiểu dữ liệu
+
+### GitFileItem
+Đại diện cho thông tin tệp được quản lý bởi Git.
+- `path: string` — Đường dẫn tương đối đến tệp.
+- `pathByOS: string` — Đường dẫn tuyệt đối đặc thù của hệ điều hành.
+- `date: string` — Ngày sửa đổi cuối cùng.
+- `item: any` — Dành riêng cho siêu dữ liệu bổ sung.

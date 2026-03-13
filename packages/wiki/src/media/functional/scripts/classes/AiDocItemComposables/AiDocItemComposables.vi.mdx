@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiDocItemComposables - Trình Tạo Tài liệu Composable bằng AI'/>
+
+# Lớp AiDocItemComposables
+
+Một lớp chuyên biệt để tạo và cập nhật tài liệu cho các Vue Composables bằng AI. Nó tự động hóa quy trình phân tích các hàm composition, thu thập ngữ cảnh và tạo tài liệu MDX chất lượng cao.
+
+## Tính năng chính
+
+- **Tập trung vào Composable** — sử dụng các mẫu chuyên biệt (`aiDocComposablePrompt.en.txt`) được thiết kế riêng để viết tài liệu cho các hàm composition.
+- **Bản demo Trực quan** — tích hợp dữ liệu tham chiếu từ `demoComposableEn.mdx` để duy trì giao diện nhất quán cho tài liệu composable.
+- **Tự động hóa Hoàn toàn** — xử lý các bước kỹ thuật như đọc mã, kiểm tra trạng thái bản dựng và ghi kết quả cuối cùng.
+- **Định tuyến Thông minh** — tự động tính toán đường dẫn lưu trữ Wiki phù hợp và tiêu đề trang.
+
+## Khởi tạo
+
+Khởi tạo `AiDocItemComposables` bằng cách cung cấp đường dẫn nguồn của dự án và siêu dữ liệu tệp đích.
+
+**Tham số:**
+- `path: string` — đường dẫn thư mục gốc của dự án.
+- `item: GitFileItem` — thông tin về tệp composable cụ thể.
+
+```typescript
+import { AiDocItemComposables } from '@dxtmisha/scripts'
+
+const composableDoc = new AiDocItemComposables('/src/composables', gitFileItem)
+
+// Kích hoạt việc tạo tài liệu
+await composableDoc.make()
+```
+
+## Phương thức
+
+### Điều khiển
+
+- `make(): Promise<void>` — thực hiện chu trình tài liệu đầy đủ: kiểm tra cập nhật, chuẩn bị ngữ cảnh AI và ghi kết quả.
+
+### Siêu dữ liệu (Metadata)
+
+- `getTitle(): string` — tạo tiêu đề chuẩn hóa cho tài liệu composable.
+- `getPathWiki(): string[]` — tính toán đường dẫn Wiki dựa trên vị trí của tệp trong dự án.
+- `isBuildDisabled(): boolean` — kiểm tra xem tệp nguồn có chứa `// wiki:build-none` để bỏ qua việc tạo hay không.
+
+## Các kiểu dữ liệu
+
+### GitFileItem
+Đại diện cho thông tin tệp được quản lý bởi Git.
+- `path: string` — Đường dẫn tương đối đến tệp.
+- `pathByOS: string` — Đường dẫn tuyệt đối đặc thù của hệ điều hành.
+- `date: string` — Ngày sửa đổi cuối cùng.
+- `item: any` — Dành riêng cho siêu dữ liệu bổ sung.

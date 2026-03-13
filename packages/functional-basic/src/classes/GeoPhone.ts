@@ -35,25 +35,41 @@ export class GeoPhone {
    * @param phone phone number/ номер телефон
    */
   static getByPhone(phone: string): GeoPhoneMapInfo {
+    const fullPhone = this.toNumber(phone)
+    const code: string[] = ['']
+
     let focus = this.map
     let item: GeoPhoneMap | undefined
-    let value = ''
 
-    this.toNumber(phone).forEach((number) => {
-      if (
-        value === ''
-        && number in focus
-      ) {
-        item = focus[number]
-        focus = item?.next ?? {}
+    for (const number of fullPhone) {
+      code[code.length - 1] += number
+
+      if (number in focus) {
+        if (focus[number]?.value) {
+          item = focus[number]
+          code.push('')
+        }
+
+        focus = focus[number]?.next ?? {}
       } else {
-        value += number
+        break
       }
-    })
+    }
+
+    if (item) {
+      code.pop()
+
+      return {
+        item,
+        phone: fullPhone
+          .join('')
+          .slice(code.join('').length)
+      }
+    }
 
     return {
-      item,
-      phone: value
+      item: undefined,
+      phone: fullPhone.join('')
     }
   }
 
@@ -162,7 +178,7 @@ export class GeoPhone {
    * @param mask A mask to transform a phone number/ маска для преобразования номер телефон
    */
   protected static getUnnecessaryLength(mask: string): number {
-    return mask.replace(/[^*]+/ig, '').length
+    return mask.match(/\*/g)?.length ?? 0
   }
 
   /**

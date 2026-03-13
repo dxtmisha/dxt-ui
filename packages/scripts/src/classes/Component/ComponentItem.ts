@@ -56,6 +56,7 @@ export class ComponentItem {
    * Gets component name from directory path.
    *
    * Получает имя компонента из пути директории.
+   * @protected
    */
   protected getName(): string {
     const parts = PropertiesFile.splitForDir(this.path)
@@ -66,6 +67,7 @@ export class ComponentItem {
    * Reads project name from package.json.
    *
    * Читает имя проекта из package.json.
+   * @protected
    */
   protected getProjectName(): string {
     return this.readPackage()?.name ?? 'Project'
@@ -75,6 +77,8 @@ export class ComponentItem {
    * Builds destination file path for output.
    *
    * Строит путь назначения для выходного файла.
+   * @param path filename/ имя файла
+   * @protected
    */
   protected getFilePath(path: string): string[] {
     return [
@@ -87,6 +91,8 @@ export class ComponentItem {
    * Builds template file path for reading.
    *
    * Строит путь к файлу шаблона для чтения.
+   * @param path filename/ имя файла
+   * @protected
    */
   protected getSamplePath(path: string): string[] {
     return [...DIR_SAMPLE, path]
@@ -96,6 +102,7 @@ export class ComponentItem {
    * Lists all template files recursively.
    *
    * Получает список всех файлов шаблонов рекурсивно.
+   * @protected
    */
   protected getFilesSample(): string[] {
     return PropertiesFile.readDirRecursive(DIR_SAMPLE)
@@ -105,6 +112,8 @@ export class ComponentItem {
    * Reads template file content as string.
    *
    * Читает содержимое файла шаблона как строку.
+   * @param path filename/ имя файла
+   * @protected
    */
   protected readFile(path: string): string {
     return String(PropertiesFile.readFile(this.getSamplePath(path)))
@@ -114,6 +123,7 @@ export class ComponentItem {
    * Reads package.json data or returns empty object.
    *
    * Читает данные package.json или возвращает пустой объект.
+   * @protected
    */
   protected readPackage(): Record<string, any> {
     return PropertiesFile.readFile(UI_FILE_PACKAGE) ?? {}
@@ -123,6 +133,9 @@ export class ComponentItem {
    * Writes generated file to destination.
    *
    * Записывает сгенерированный файл в место назначения.
+   * @param path filename/ имя файла
+   * @param content file content/ содержимое файла
+   * @protected
    */
   protected writeFile(path: string, content: string): void {
     const paths = this.getFilePath(path)
@@ -135,6 +148,8 @@ export class ComponentItem {
    * Replaces template placeholders with actual values.
    *
    * Заменяет плейсхолдеры шаблона реальными значениями.
+   * @param contentOrPath content or path/ содержимое или путь
+   * @protected
    */
   protected replacement(contentOrPath: string): string {
     return contentOrPath

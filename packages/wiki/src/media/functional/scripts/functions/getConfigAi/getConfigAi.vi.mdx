@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/getConfigAi - Lấy cấu hình AI'/>
+
+# `getConfigAi`
+
+Hàm trả về cấu hình AI, bao gồm khóa API và mô hình.
+
+**Trả về:**
+`[string, string]` — một bộ gồm khóa API và tên mô hình.
+
+## Cơ chế hoạt động
+
+Hàm truy xuất các giá trị cấu hình từ lớp `PropertiesConfig`, lớp này quản lý các cài đặt cấp dự án.
+
+## Ví dụ
+
+```typescript
+import { getConfigAi } from '@dxtmisha/scripts'
+
+const [apiKey, model] = getConfigAi()
+console.log(`API Key: ${apiKey}, Model: ${model}`)
+```

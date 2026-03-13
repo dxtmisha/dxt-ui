@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-component - Component Scaffolding'/>
+
+# dxt-component
+
+The `dxt-component` command provides fast structural scaffolding for the design system. It uses `ComponentCreator` and `ComponentItem` to automatically identify and bootstrap completely empty component directories.
+
+## Key Features
+
+- **Automated Directory Scaffolding**: Detects empty structural folders inside `src/components` and scaffolds boilerplate vue code.
+- **Dynamic Template Injection**: Injects generic placeholders (such as `ComponentDoc` and current `[project]` name) using the internal system templates seamlessly.
+
+## How does it work?
+
+The scaffolding workflow automates repetitive folder structures:
+
+1. The `ComponentCreator` acts as a scanner, verifying all nested structures strictly placed inside `src/components`. It flags directories that are completely empty.
+2. For each empty directory, it instantiates the `ComponentItem` class which loads pre-defined component template files.
+3. It performs string replacements substituting marker placeholders with the actual derived component names and active project context, subsequently writing the fresh boilerplate directly to the file system.
+
+## How to configure and run
+
+No complex configurations are necessary for pure structural scaffolding. The tool dynamically reads your `package.json` to extract the `name` field, which it will automatically inject in place of any `[project]` template markers.
+
+To detect empty folders and initiate base component creation across the workspace, simply execute:
+```bash
+npx dxt-component
+```
+
+## Generated File Structure
+
+When a new component is scaffolded, it inherits the structure from internal templates:
+
+- `[ComponentName].vue`: Base Vue 3 component with `<script setup>`, types import, and `<style lang="scss">` scaffolding.
+- `index.ts`: Standard Vue component export mapping (`export const [ComponentName]`).
+- `types.ts`: TypeScript definitions for standard `Props`, `Emits`, `Slots`, and `Defaults`.
+- `subcomponents/`: An empty directory (with `.gitignore`) ready for internal nested components.
+- `wiki/[ComponentName].mdx`: A ready-to-run Storybook MDX documentation file utilizing `@dxtmisha/wiki/storybook`.
+- `wiki/[ComponentName].stories.ts`: The actual Storybook Vue 3 implementation script defining the component's preview.
+- `wiki/run.ts`: A shortcut executable node script designed to quickly trigger the `dxt-component-wiki` AI generation command specifically for this component.

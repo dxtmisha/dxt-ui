@@ -125,6 +125,7 @@ export class ComponentWiki {
    * Returns root path segments for the component.
    *
    * Возвращает сегменты корневого пути компонента.
+   * @protected
    */
   protected getRootComponent(): string[] {
     return [
@@ -137,6 +138,7 @@ export class ComponentWiki {
    * Returns wiki directory path segments.
    *
    * Возвращает сегменты пути wiki директории.
+   * @protected
    */
   protected getPathWiki(): string[] {
     return [
@@ -149,6 +151,7 @@ export class ComponentWiki {
    * Returns temporary directory path segments.
    *
    * Возвращает сегменты пути временной директории.
+   * @protected
    */
   protected getPathTemporary(): string[] {
     return [
@@ -161,6 +164,7 @@ export class ComponentWiki {
    * Derives component folder name.
    *
    * Получает имя директории компонента.
+   * @protected
    */
   protected getName(): string {
     return String(getNameDirByPaths(this.getRootComponent()))
@@ -170,6 +174,7 @@ export class ComponentWiki {
    * Reads the demo file content.
    *
    * Читает содержимое демо-файла.
+   * @protected
    */
   protected readDemo(): string {
     return new ComponentWikiFile(FILE_DEMO_SAMPLE).read()
@@ -179,6 +184,7 @@ export class ComponentWiki {
    * Reads the prompt template.
    *
    * Читает шаблон промпта.
+   * @protected
    */
   protected readPrompt(): string {
     return new ComponentWikiFile(FILE_PROMPT_SAMPLE)
@@ -190,6 +196,7 @@ export class ComponentWiki {
    * Prepares context for AI.
    *
    * Подготавливает контекст для ИИ.
+   * @protected
    */
   protected makeAi(): void {
     if (this.ai) {
@@ -206,6 +213,7 @@ export class ComponentWiki {
    * Invokes AI generation and splits result into types / stories / mdx.
    *
    * Вызывает генерацию через ИИ и делит результат на types / stories / mdx.
+   * @protected
    */
   protected async aiGenerate(): Promise<void> {
     if (this.ai) {

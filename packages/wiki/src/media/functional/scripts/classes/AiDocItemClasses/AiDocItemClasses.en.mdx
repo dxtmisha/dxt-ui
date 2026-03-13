@@ -1,0 +1,53 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiDocItemClasses - AI Class Documentation Generator'/>
+
+# AiDocItemClasses Class
+
+A dedicated class for generating and updating documentation for TypeScript classes using AI. It automates the entire process, including reading source code, collecting context, interacting with AI models, and generating standardized MDX documentation files.
+
+## Key Features
+
+- **Automated Generation** — handles the full lifecycle of creating documentation from a class definition.
+- **Template-driven** — uses specialized prompt templates (`aiDocClassPrompt.en.txt`) to ensure consistent AI output.
+- **Demo-aware** — incorporates reference demonstration files (`demoClassEn.mdx`) to guide the AI in visual formatting.
+- **Smart Logic** — automatically determines Wiki paths and titles based on the source file structure.
+- **Build Guard** — integrates with the build system to ensure only valid, compilable code is documented.
+
+## Initialization
+
+Initialize the `AiDocItemClasses` by providing the source path and the target file information.
+
+**Parameters:**
+- `path: string` — the base directory path of the project.
+- `item: GitFileItem` — information about the specific TypeScript class file.
+
+```typescript
+import { AiDocItemClasses } from '@dxtmisha/scripts'
+
+const classDoc = new AiDocItemClasses('/src/classes', gitFileItem)
+
+// Generate the documentation
+await classDoc.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): Promise<void>` — starts the documentation cycle: checks for updates, prepares context, invokes AI, and writes results.
+
+### Metadata
+
+- `getTitle(): string` — generates a standardized title for the documentation page.
+- `getPathWiki(): string[]` — calculates the target storage path in the Wiki based on the file's location.
+- `isBuildDisabled(): boolean` — checks if the source file is marked with `// wiki:build-none` to skip processing.
+
+## Types
+
+### GitFileItem
+Represents file information managed by Git.
+- `path: string` — Relative path to the file.
+- `pathByOS: string` — Absolute OS-specific path.
+- `date: string` — Last modification date.
+- `item: any` — Reserved for additional metadata.

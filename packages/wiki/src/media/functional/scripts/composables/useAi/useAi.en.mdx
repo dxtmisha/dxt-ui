@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Composables/useAi - AI Instance Procurement'/>
+
+# `useAi`
+
+Composable to obtain an AI instance based on the current configuration.
+
+**Returns:**
+`AiAbstract | undefined` — An instance of an AI class (e.g., `AiGoogle` or `AiGoogleCli`) based on the configured AI type, or `undefined` if the type is not recognized or not configured.
+
+## How it works
+
+The composable reads the AI type from `PropertiesConfig.getAiType()` and returns a new instance of the corresponding class:
+- `'gemini'` returns a new `AiGoogle` instance.
+- `'gemini-cli'` returns a new `AiGoogleCli` instance.
+- Other types return `undefined`.
+
+## Example
+
+```typescript
+import { useAi } from '@dxtmisha/scripts'
+
+const ai = useAi()
+
+if (ai) {
+  // Use the AI instance
+  const response = await ai.generate('Hello, AI!')
+  console.log(response)
+}
+```

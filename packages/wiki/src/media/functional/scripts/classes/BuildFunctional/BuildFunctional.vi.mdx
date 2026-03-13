@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/BuildFunctional - Bộ xây dựng thư viện chức năng' />
+
+# Lớp BuildFunctional
+
+Lớp `BuildFunctional` là một tiện ích chịu trách nhiệm tạo tệp xuất trung tâm cho thư viện chức năng. Nó quét gói `@dxtmisha/functional` và tạo tệp `functional.ts` trong thư mục thư viện, xuất lại tất cả các thành viên được tìm thấy.
+
+## Các tính năng chính
+
+- **Tự động xuất lại** — Tự động phát hiện và xuất lại tất cả các thành viên từ gói chức năng.
+- **Hỗ trợ Type** — Bao gồm `export type *` để đảm bảo tính khả dụng đầy đủ của kiểu TypeScript.
+- **Tích hợp thư viện** — Tích hợp với cấu trúc thư viện của dự án bằng cách ghi vào thư mục thư viện đã định cấu hình.
+
+## Khởi tạo
+
+Bạn có thể tạo một phiên bản của `BuildFunctional` mà không cần bất kỳ tham số nào.
+
+```typescript
+import { BuildFunctional } from './BuildFunctional'
+
+const builder = new BuildFunctional()
+builder.make()
+```
+
+## Các phương thức
+
+### make
+
+- `make(): void` — Kích hoạt quá trình xây dựng. Nó lấy danh sách các thành viên, định dạng mã xuất và ghi nó vào `src/library/functional.ts`.
+
+### getList
+
+- `getList(): string[]` — Trả về một mảng các khóa (thành viên được xuất) từ gói `@dxtmisha/functional`.

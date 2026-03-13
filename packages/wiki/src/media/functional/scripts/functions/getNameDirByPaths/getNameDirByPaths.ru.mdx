@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/getNameDirByPaths - Получение имени последней директории'/>
+
+# `getNameDirByPaths`
+
+Функция возвращает имя последней директории из переданного массива сегментов пути.
+
+**Параметры:**
+- `paths: PropertiesFilePath` — массив сегментов пути.
+
+**Возвращает:**
+`string` — имя последней директории.
+
+## Как это работает
+
+Функция объединяет переданные сегменты пути с помощью `PropertiesFile.joinPath`, затем снова разбивает их на сегменты директорий с помощью `PropertiesFile.splitForDir` и возвращает последний элемент результирующего массива.
+
+## Пример
+
+```typescript
+import { getNameDirByPaths } from '@dxtmisha/scripts'
+
+getNameDirByPaths(['src', 'components', 'button']) // 'button'
+```

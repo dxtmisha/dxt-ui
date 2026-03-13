@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiDocItemAbstract - Lớp Cơ sở Tự động hóa Tài liệu'/>
+
+# Lớp AiDocItemAbstract
+
+Một lớp cơ sở trừu tượng để tự động hóa việc tạo tài liệu bằng AI. Nó quản lý vòng đời của việc đọc các tệp nguồn, thu thập ngữ cảnh (mã nguồn, bản demo, lời nhắc) và phối hợp với dịch vụ AI để tạo hoặc cập nhật các tệp MDX và tệp nguồn.
+
+## Tính năng chính
+
+- **Vòng đời Tự động** — điều phối việc đọc mã nguồn, chạy bản dựng và tạo các bản cập nhật tài liệu.
+- **Quản lý Ngữ cảnh** — logic tích hợp để thu thập mã thành phần, mã nguồn gốc và dữ liệu demo giả cho ngữ cảnh AI.
+- **Cập nhật Thông minh** — tự động so sánh ngày sửa đổi để xác định xem có cần tạo lại hay không.
+- **Hệ thống Mẫu** — hỗ trợ các mẫu lời nhắc và thay đổi tiêu đề động (ví dụ: `[title]`).
+- **Tích hợp Bản dựng** — tích hợp với `BuildItem` để đảm bảo mã có thể dựng được trước khi viết tài liệu.
+- **Tạo có Chọn lọc** — hỗ trợ bỏ qua việc tạo tài liệu bằng cách sử dụng đánh dấu `// wiki:build-none`.
+
+## Khởi tạo
+
+Vì `AiDocItemAbstract` là một lớp trừu tượng, nó phải được kế thừa. Các lớp cụ thể phải cung cấp đường dẫn cho các tệp demo và mẫu lời nhắc.
+
+**Tham số khởi tạo:**
+- `path: string` — Đường dẫn thư mục gốc cho các tệp nguồn.
+- `item: GitFileItem` — Thông tin về tệp cụ thể đang được viết tài liệu.
+
+```typescript
+// Ví dụ về việc kế thừa và sử dụng AiDocItemAbstract
+class MyComponentDoc extends AiDocItemAbstract {
+  protected pathDemo = ['path', 'to', 'demo.ts']
+  protected pathPrompt = ['path', 'to', 'prompt.txt']
+}
+
+const doc = new MyComponentDoc('/source/dir', gitFileItem)
+await doc.make() // Kích hoạt chu trình tạo tài liệu
+```
+
+## Phương thức
+
+### Vòng đời
+
+- `make(): Promise<void>` — Điểm bắt đầu chính. Kiểm tra xem có cần cập nhật không, chuẩn bị ngữ cảnh, gọi AI và ghi kết quả.
+- `isBuildDisabled(): boolean` — Kiểm tra xem tệp nguồn có chứa đánh dấu `// wiki:build-none` hay không.
+
+## Các phương thức trừu tượng (Để triển khai)
+
+- `getPathWiki(): string[]` — Logic để xác định đường dẫn tệp Wiki mục tiêu dựa trên vị trí tệp nguồn.
+- `getItemDate(): Date` — Lấy ngày sửa đổi tệp từ `GitFileItem`.
+- `getTitle(): string` — Soạn thảo tiêu đề chuẩn hóa cho tài liệu.
+- `readDemo(): string` — Đọc nội dung của tệp demo đã cấu hình.
+- `readPrompt(): string` — Đọc và chuẩn bị mẫu lời nhắc, thay thế các trình giữ chỗ như `[wikiLanguage]`.
+- `makeAi(): void` — Hỗ trợ cung cấp cho instance AI các ngữ cảnh liên quan (mã, bản demo, v.v.).
+- `initName(content: string): string` — Thay thế trình giữ chỗ `[title]` trong nội dung được tạo.
+
+## Các kiểu dữ liệu
+
+### GitFileItem
+Đại diện cho thông tin tệp được quản lý bởi Git.
+- `path: string` — Đường dẫn tương đối đến tệp.
+- `pathByOS: string` — Đường dẫn tuyệt đối đặc thù của hệ điều hành.
+- `date: string` — Ngày sửa đổi cuối cùng.
+- `item: any` — Dành riêng cho siêu dữ liệu bổ sung.

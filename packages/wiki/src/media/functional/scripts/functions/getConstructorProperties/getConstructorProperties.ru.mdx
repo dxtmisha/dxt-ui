@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/getConstructorProperties - Получение свойств конструкторов'/>
+
+# `getConstructorProperties`
+
+Функция возвращает свойства указанных конструкторов, считывая их файлы `properties.json`.
+
+**Параметры:**
+- `names: string[]` — список названий конструкторов.
+
+**Возвращает:**
+`PropertyList` — объект, где ключи — названия конструкторов, а значения — их свойства.
+
+## Как это работает
+
+Функция перебирает переданные имена и формирует путь к файлу `properties.json` для каждого конструктора. Для загрузки данных используется метод `PropertiesFile.readFile`.
+
+## Пример
+
+```typescript
+import { getConstructorProperties } from '@dxtmisha/scripts'
+
+const properties = getConstructorProperties(['Button', 'Input'])
+// { Button: { ... }, Input: { ... } }
+```

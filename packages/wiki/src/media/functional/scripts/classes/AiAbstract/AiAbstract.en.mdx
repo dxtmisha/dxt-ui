@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiAbstract - Abstract AI Base Class'/>
+
+# AiAbstract Class
+
+An abstract base class designed to provide common mechanics for various AI integrations. It handles prompt accumulation, model selection, and provides a unified workflow for receiving responses from different AI providers.
+
+## Key Features
+
+- **Prompt Accumulation** — mechanisms to collect and compose prompt context before sending it to the model.
+- **Model Management** — easy switching between different AI models within the same instance.
+- **Unified Workflow** — a standardized `generate` method that normalizes the process of getting a response.
+- **Image & Content Support** — built-in methods to accumulate images and additional text contents for multimodal models.
+- **Chainable API** — most configuration methods support chaining for a more fluent developer experience.
+- **Implementation Hooks** — clear extension points (`init`, `response`, `toImages`, `toContents`) for concrete AI service implementations (e.g., OpenAI, Anthropic).
+
+## Initialization
+
+Since `AiAbstract` is an abstract class, it cannot be instantiated directly. You should use a concrete implementation (e.g., `AiOpenAI` or `AiAnthropic`).
+
+**Constructor Parameters:**
+- `key: string` — The API key for the AI service.
+- `model: string` — The initial model identifier (e.g., 'gpt-4o').
+
+```typescript
+// Example of a concrete implementation usage
+const ai = new AiOpenAI(process.env.OPENAI_API_KEY, 'gpt-4o')
+
+// Adding context
+ai.addPrompt('You are a helpful assistant.')
+  .addContent('Explain quantum physics in simple terms.')
+
+// Generating response
+const response = await ai.generate('Focus on wave-particle duality.')
+```
+
+## Methods
+
+### Information
+
+- `getImages(): AiImageList` — Returns the list of accumulated images.
+- `getContents(): string[]` — Returns the list of accumulated additional contents.
+
+### Configuration (Setters)
+
+Methods in this group support chaining.
+
+- `setKey(key: string): this` — Sets or switches the API key. Re-initializes the client if it's already active.
+- `setModel(model: string): this` — Switches the current model for generation.
+- `addPrompt(prompt: string): void` — Appends a new line to the persistent prompt buffer.
+- `addImage(image: AiImageItem): this` — Adds an image to the accumulation list.
+- `addContent(content: string): this` — Adds text content to the accumulation list.
+
+### Control
+
+- `generate(contents: string): Promise<string>` — The main method to trigger AI generation. It combines the accumulated prompt and the provided string, then calls the concrete implementation.
+- `resetImages(): this` — Clears the accumulated image list.
+- `resetContents(): this` — Clears the accumulated contents.
+- `resetPrompt(): void` — Clears the persistent prompt prefix.
+
+## Abstract Methods (Implementation)
+
+When extending `AiAbstract`, you must implement the following protected methods:
+
+- `init(): void` — Handle client initialization, authentication, and transport setup.
+- `toImages(): void` — Logic to convert accumulated images to a provider-specific format.
+- `toContents(): void` — Logic to convert accumulated contents to a provider-specific format.
+- `response(model: string, contents: string): Promise<string>` — The core logic to invoke the specific AI model and return the result as a string.
+
+## Types
+
+### AiImageList
+An array of `AiImageItem` objects.
+```typescript
+type AiImageList = AiImageItem[]
+```
+
+### AiImageItem
+Represents an image in base64 format.
+- `mime: string` — The MIME type of the image (e.g., 'image/png').
+- `base64: string` — The base64 encoded image data.
+```typescript
+type AiImageItem = {
+  mime: string
+  base64: string
+}
+```

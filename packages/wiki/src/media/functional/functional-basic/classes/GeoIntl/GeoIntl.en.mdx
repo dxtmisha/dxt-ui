@@ -4,364 +4,180 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # GeoIntl Class
 
-A powerful wrapper over the native browser `Intl` API, adapted to `Geo` geolocation capabilities. Provides locale-aware formatting of numbers, currencies, units, dates, times, names, and string sorting — with automatic locale detection.
+The `GeoIntl` class is a high-level, optimized wrapper over the native browser `Intl` API, designed specifically for seamless integration with `Geo` geolocation capabilities. It provides a unified, locale-aware interface for formatting numbers, currencies, units, dates, times, and geographic names, while automatically handling locale detection and instance management.
+
+The class implements a **Per-locale Singleton pattern**, ensuring that only one instance is created and cached for each unique locale code, significantly reducing the overhead of repetitive `Intl` object construction.
 
 ## Key Features
 
-- **Instance Cache** — only one instance is created per locale (per-locale Singleton pattern).
-- **Unified Interface** — all formatting through one class instead of direct `new Intl.*` calls.
-- **Date Formatting** — flexible system with preset types (`'date'`, `'time'`, `'datetime'`, `'full'`, etc.).
-- **Relative Time** — `relative`, `relativeByValue`, and `relativeLimit` for humanized date display.
-- **Names & Regions** — culturally-aware full name formatting (`fullName`) and localized language/country names.
+- **Instance Caching** — Automatically manages and reuses instances based on the standard locale string.
+- **Unified Formatting API** — Simplifies complex `Intl` configurations into straightforward, high-level methods.
+- **Adaptive Geolocation** — Automatically pulls defaults from the global `Geo` state if no explicit locale is provided.
+- **Cultural Awareness** — Correctly handles diverse naming conventions, calendar start days, and pluralization rules across different cultures.
 
 ## Initialization
 
+### `getInstance`
+
+Retrieves a cached instance or creates a new one for the specified locale code.
+
 **Parameters:**
-- `code?: string` — locale code (e.g. `'en-US'`, `'fr-FR'`). Defaults to the current `Geo` locale.
+- `code?: string` — Standardized locale string (e.g., `'en-US'`, `'ru-RU'`). Defaults to `Geo.getLocation()`.
+
+**Returns:** `GeoIntl` — The singleton instance for the requested locale.
 
 ```javascript
 import { GeoIntl } from '@dxtmisha/functional-basic'
 
-const intl = new GeoIntl()           // current locale
-const intl2 = new GeoIntl('fr-FR')   // French locale
-const intl3 = GeoIntl.getInstance('de-DE') // via factory method
+const intl = GeoIntl.getInstance('en-US')
+const currentIntl = new GeoIntl() // Also uses the singleton cache internally
 ```
 
-## General Information
+## Geographic & Localization Methods
 
-### `getLocation`
-
-Returns the standard locale string (e.g. `'en-US'`).
-
-```javascript
-intl.getLocation() // 'en-US'
-```
-
-### `getFirstDay`
-
-Returns the first day of the week for the locale (`'Mon'`, `'Sun'`, etc.) — useful for building calendars.
-
-```javascript
-new GeoIntl('en-US').getFirstDay() // 'Sun'
-new GeoIntl('de-DE').getFirstDay() // 'Mon'
-```
+- `getLocation(): string` — Returns the normalized standard locale string (e.g., `'en-US'`).
+- `getFirstDay(): string` — Returns the first day of the week specification for the locale (e.g., `'Mon'`, `'Sun'`).
 
 ## Names & Regions
 
 ### `display`
 
-Formats a display name for a language, region, or script using `Intl.DisplayNames`.
+Provides localized translations for languages, regions, and scripts using the `Intl.DisplayNames` engine.
 
 **Parameters:**
-- `value?: string` — language, country, or script code (e.g. `'en'`, `'US'`).
-- `typeOptions?` — display type: `'language'`, `'region'`, `'script'`, or `Intl.DisplayNamesOptions`.
+- `value?: string` — The identifier code (e.g., `'fr'`, `'US'`).
+- `typeOptions?` — A string representing the display type (`'language'`, `'region'`, `'script'`) or a full `Intl.DisplayNamesOptions` object.
+
+**Returns:** `string` — The localized display name.
 
 ```javascript
 intl.display('fr', 'language') // 'French'
 intl.display('DE', 'region')   // 'Germany'
-intl.display()                 // name of the current language
 ```
 
-### `languageName`
+### `languageName` / `countryName`
 
-Returns the localized name of a language.
+Shorthand methods for retrieving localized names for languages and countries.
 
 **Parameters:**
-- `value?: string` — language or country code. Defaults to the current locale.
-- `style?` — formatting style: `'long'`, `'short'`, `'narrow'`.
+- `value?: string` — Language or country code.
+- `style?` — Formatting style: `'long'`, `'short'`, or `'narrow'`.
 
-```javascript
-intl.languageName('fr')          // 'French'
-intl.languageName('de', 'long')  // 'German'
-```
-
-### `countryName`
-
-Returns the localized name of a country.
-
-**Parameters:**
-- `value?: string` — country code (ISO 3166, e.g. `'DE'`, `'US'`).
-- `style?` — formatting style: `'long'`, `'short'`, `'narrow'`.
-
-```javascript
-intl.countryName('DE')   // 'Germany'
-intl.countryName('FR')   // 'France'
-```
+**Returns:** `string`
 
 ### `fullName`
 
-Formats a full name according to the cultural norms of the locale. The order of the components (first/last) is determined by the `nameFormat` field in the locale's geo-data.
+Formats a person's full name according to the cultural conventions of the current locale. The component order (First-Middle-Last or Last-First-Middle) is determined by the `nameFormat` within the geographic data.
 
 **Parameters:**
-- `last: string` — last name.
-- `first: string` — first name.
-- `surname?: string` — middle name / patronymic (optional).
-- `short?: boolean` — if `true`, all parts after the first are abbreviated to initials (`Smith J. D.`).
+- `last: string` — Last name.
+- `first: string` — First name.
+- `surname?: string` — Middle name or patronymic (optional).
+- `short?: boolean` — If `true`, abbreviates names after the first to initials (e.g., `Smith J. D.`).
 
-```javascript
-intl.fullName('Smith', 'John', 'David')        // 'John David Smith'
-intl.fullName('Smith', 'John', 'David', true)  // 'Smith J. D.'
-intl.fullName('Smith', 'John')                 // 'John Smith'
-```
+**Returns:** `string`
 
-## Numbers & Currencies
+## Numeric Formatting
 
 ### `number`
 
-Formats a number using the locale via `Intl.NumberFormat`.
+Formats a number using the `Intl.NumberFormat` capabilities.
 
 **Parameters:**
-- `value: NumberOrString` — number to format.
-- `options?: Intl.NumberFormatOptions` — additional `Intl.NumberFormat` options.
+- `value: NumberOrString` — The numeric value to format.
+- `options?: Intl.NumberFormatOptions` — Configuration for decimal places, grouping, etc.
 
-```javascript
-intl.number(1234567.89)                                // '1,234,567.89'
-intl.number(0.005, { minimumFractionDigits: 2 })       // '0.01'
-```
-
-### `decimal`
-
-Returns the decimal separator symbol for the current locale.
-
-```javascript
-new GeoIntl('en-US').decimal() // '.'
-new GeoIntl('ru-RU').decimal() // ','
-```
+**Returns:** `string`
 
 ### `currency`
 
-Formats a number as a monetary amount in a given currency.
+Specialized monetary formatter with automatic symbol placement.
 
 **Parameters:**
-- `value: NumberOrString` — amount. Also accepts a string with a trailing currency code (`'1500 USD'`).
-- `currencyOptions?: string | Intl.NumberFormatOptions` — currency code (`'USD'`) or `Intl.NumberFormatOptions`.
-- `numberOnly?: boolean` — if `true`, outputs only the number without the currency symbol. Default: `false`.
+- `value: NumberOrString` — Amount. Also parses strings with currency suffixes (e.g., `'100 USD'`).
+- `currencyOptions?: string | Intl.NumberFormatOptions` — Currency code (`'USD'`) or detailed formatting options.
+- `numberOnly?: boolean` — If `true`, returns only the formatted digits without the currency symbol.
+
+**Returns:** `string`
 
 ```javascript
-intl.currency(1500, 'USD')           // '$1,500.00'
-intl.currency(1500, 'EUR')           // '€1,500.00'
-intl.currency('1500 GBP')            // '£1,500.00'
-intl.currency(1500, 'USD', true)     // '1,500.00' (no symbol)
+intl.currency(1500, 'USD') // '$1,500.00'
+intl.currency('1500 EUR')  // '€1,500.00'
 ```
 
-### `currencySymbol`
+### `unit` / `sizeFile`
 
-Returns the symbol or code for a currency.
+Formats numbers with units of measurement. `sizeFile` provides recursive scaling for byte values (automatically switching to KB, MB, GB).
 
-**Parameters:**
-- `currency: string` — currency code (ISO 4217, e.g. `'USD'`, `'EUR'`).
-- `currencyDisplay?` — display mode: `'symbol'` (default), `'code'`, `'name'`, `'narrowSymbol'`.
+**Parameters (`sizeFile`):**
+- `value: NumberOrString` — Size in bytes.
+- `unitOptions?` — Starting unit (defaults to `'byte'`).
 
-```javascript
-intl.currencySymbol('EUR')             // '€'
-intl.currencySymbol('USD', 'code')     // 'USD'
-intl.currencySymbol('USD', 'name')     // 'US dollar'
-```
-
-### `unit`
-
-Formats a number with a unit of measurement using `Intl.NumberFormat` with `style: 'unit'`.
-
-**Parameters:**
-- `value: NumberOrString` — number. Also accepts a string with a trailing unit abbreviation (`'100 km'`).
-- `unitOptions?: string | Intl.NumberFormatOptions` — unit name (`'kilometer'`, `'liter'`) or full options.
-
-```javascript
-intl.unit(100, 'kilometer')   // '100 km'
-intl.unit(5, 'liter')         // '5 L'
-intl.unit('100 km')           // '100 km'
-```
-
-### `sizeFile`
-
-Automatically converts and formats a file size, starting from bytes and recursively scaling the unit when a value exceeds 1024.
-
-**Parameters:**
-- `value: NumberOrString` — size in bytes.
-- `unitOptions?` — starting unit: `'byte'` (default), `'kilobyte'`, `'megabyte'`, `'gigabyte'`, `'terabyte'`, `'petabyte'`.
-
-```javascript
-intl.sizeFile(500)              // '500 bytes'
-intl.sizeFile(1536)             // '1.5 kB'
-intl.sizeFile(1536 * 1024)      // '1.5 MB'
-intl.sizeFile(2 * 1024 ** 3)    // '2 GB'
-```
-
-### `percent`
-
-Formats a number as a percentage. Expects a decimal fraction (0–1).
-
-```javascript
-intl.percent(0.5)    // '50%'
-intl.percent(0.007)  // '1%'
-```
-
-### `percentBy100`
-
-Formats a number as a percentage, dividing by 100 first. Useful when the value is already stored as `50` instead of `0.5`.
-
-```javascript
-intl.percentBy100(50)   // '50%'
-intl.percentBy100(7.5)  // '8%'
-```
+**Returns:** `string`
 
 ### `plural`
 
-Formats a number with locale-aware plural rules using `Intl.PluralRules`.
+Applies locale-sensitive pluralization rules.
 
 **Parameters:**
-- `value: NumberOrString` — number.
-- `words: string` — pipe-separated word forms: `one|two|few|many|other`. Number of forms depends on the locale.
-- `options?: Intl.PluralRulesOptions` — options for `Intl.PluralRules`.
-- `optionsNumber?: Intl.NumberFormatOptions` — number formatting options.
+- `value: NumberOrString` — The count.
+- `words: string` — Pipe-separated forms: `one|two|few|many|other|zero`.
+- `options?` — `Intl.PluralRulesOptions`.
 
-```javascript
-intl.plural(1, 'apple|apples')     // '1 apple'
-intl.plural(2, 'apple|apples')     // '2 apples'
-intl.plural(100, 'apple|apples')   // '100 apples'
-```
+**Returns:** `string` — Formatted number followed by the correct word form.
 
 ## Dates & Time
 
-### `date`
+### `date` / `time`
 
-Formats a date using `toLocaleString` with preset format types.
-
-**Parameters:**
-- `value: NumberOrStringOrDate` — date (`Date` object, timestamp, or string).
-- `type?: GeoDate` — preset type: `'date'`, `'time'`, `'datetime'`, `'full'`, `'month'`, etc.
-- `styleOptions?` — month style (`'short'`, `'long'`, `'narrow'`) or custom `Intl.DateTimeFormatOptions`.
-- `hour24?: boolean` — if `true`, forces 24-hour time format.
-
-```javascript
-const d = new Date('2024-03-07T08:15:00')
-intl.date(d, 'date')      // 'Mar 7, 2024'
-intl.date(d, 'time')      // '8:15 AM'
-intl.date(d, 'datetime')  // 'Mar 7, 2024, 8:15 AM'
-intl.date(d, 'date', 'long')         // 'March 7, 2024'
-intl.date(d, 'time', undefined, true) // '08:15' (force 24h)
-```
-
-### `time`
-
-Shorthand wrapper for `date` with type `'time'`.
-
-```javascript
-intl.time(new Date()) // '8:15 AM'
-```
-
-### `month`
-
-Returns the month name for a given date.
+Main date formatting engine providing localized representations based on predefined `GeoDate` presets.
 
 **Parameters:**
-- `value?` — date. Defaults to current date.
-- `style?` — `'long'` (default), `'short'`, `'narrow'`.
+- `value: NumberOrStringOrDate` — The date input.
+- `type?: GeoDate` — Preset identifier: `'date'`, `'time'`, `'datetime'`, `'full'`, etc.
+- `styleOptions?` — Custom `Intl.DateTimeFormatOptions` or a month style string.
+- `hour24?: boolean` — Forces 24-hour time representation.
 
-```javascript
-intl.month(new Date('2024-03-01'), 'long')   // 'March'
-intl.month(new Date('2024-03-01'), 'short')  // 'Mar'
-```
+**Returns:** `string`
 
-### `months`
+### `months` / `weekdays`
 
-Returns an array of all 12 months as `{ label, value }` objects — useful for `<select>` inputs.
+Returns arrays of localized labels for months or days, ideal for populating UI selection components.
 
-```javascript
-intl.months('long')
-// [{ label: '', value: undefined }, { label: 'January', value: 1 }, ...]
-```
-
-### `weekday`
-
-Returns the weekday name for a given date.
-
-**Parameters:**
-- `value?` — date. Defaults to current date.
-- `style?` — `'long'` (default), `'short'`, `'narrow'`.
-
-```javascript
-intl.weekday(new Date('2024-03-07'), 'long')   // 'Thursday'
-intl.weekday(new Date('2024-03-07'), 'short')  // 'Thu'
-```
-
-### `weekdays`
-
-Returns an array of 7 weekday names as `{ label, value }` objects, ordered by the locale's first day of the week.
-
-```javascript
-intl.weekdays('short')
-// [{ label: 'Sun', value: 0 }, { label: 'Mon', value: 1 }, ...]
-```
+**Returns:** `ItemValue<number>[]` — Array of objects with `label` and `value` fields.
 
 ## Relative Time
 
 ### `relative`
 
-Formats a date as relative time from now (or from `todayValue`). Automatically selects the best unit (seconds → minutes → hours → days → months → years).
+Calculates and formats the relative time difference from a reference point (now), automatically selecting the most appropriate time unit.
 
 **Parameters:**
-- `value: NumberOrStringOrDate` — date to compare.
-- `styleOptions?` — style: `'long'`, `'short'`, `'narrow'`, or `Intl.RelativeTimeFormatOptions`.
-- `todayValue?: Date` — reference point. Defaults to `new Date()`.
+- `value: NumberOrStringOrDate` — The past or future date.
+- `styleOptions?` — Formatting style (e.g., `'long'`, `'short'`).
+- `todayValue?: Date` — Explicit reference point (defaults to `new Date()`).
 
-```javascript
-intl.relative(new Date(Date.now() - 60000))     // '1 minute ago'
-intl.relative(new Date(Date.now() - 3600000))   // '1 hour ago'
-intl.relative(new Date(Date.now() + 86400000))  // 'in 1 day'
-intl.relative(new Date(Date.now() - 60000), 'short') // '1 min. ago'
-```
-
-### `relativeByValue`
-
-Formats relative time using an explicit numeric value and time unit.
-
-**Parameters:**
-- `value: NumberOrString` — number (negative = past, positive = future).
-- `unit: Intl.RelativeTimeFormatUnit` — unit: `'second'`, `'minute'`, `'hour'`, `'day'`, `'month'`, `'year'`.
-- `styleOptions?` — style or `Intl.RelativeTimeFormatOptions`.
-
-```javascript
-intl.relativeByValue(-5, 'minute')   // '5 minutes ago'
-intl.relativeByValue(2, 'day')       // 'in 2 days'
-intl.relativeByValue(-1, 'year')     // 'last year'
-```
+**Returns:** `string` (e.g., `'2 hours ago'`, `'in 3 days'`)
 
 ### `relativeLimit`
 
-If the date is within `limit` days of `todayValue` — outputs relative time. Otherwise — outputs the absolute date.
+Conditional formatter that bridge relative and absolute time. If the date is within a certain `limit` of days, it returns relative time; otherwise, it switches to a standard absolute date format.
 
-**Parameters:**
-- `value: NumberOrStringOrDate` — date.
-- `limit: number` — threshold in days (e.g. `7` = relative for dates within a week).
-- `todayValue?: Date` — reference point. Defaults to `new Date()`.
-- `relativeOptions?` — options for relative time formatting.
-- `dateOptions?` — options for absolute date formatting (when limit is exceeded).
-- `type?: GeoDate` — format type for the absolute date.
-- `hour24?: boolean` — 24-hour format.
-
-```javascript
-// Yesterday → relative
-intl.relativeLimit(new Date(Date.now() - 86400000), 7)      // 'yesterday'
-
-// 2 weeks ago → absolute date
-intl.relativeLimit(new Date(Date.now() - 86400000 * 14), 7) // 'Feb 22, 2025'
-```
+**Returns:** `string`
 
 ## Sorting
 
 ### `sort`
 
-Sorts an array of strings according to locale-specific rules using `Intl.Collator`.
+Sorts an array of elements using locale-sensitive comparison via `Intl.Collator`.
 
 **Parameters:**
-- `data: T[]` — array to sort.
-- `compareFn?` — comparator function to extract a string from each element (when array is not string-based).
+- `data: T[]` — The target array.
+- `compareFn?` — An optional transformation function to extract sort keys from complex objects.
+
+**Returns:** `T[]` — The sorted array.
 
 ```javascript
 intl.sort(['banana', 'apple', 'cherry'])
 // ['apple', 'banana', 'cherry']
-
-intl.sort([{ name: 'Banana' }, { name: 'Apple' }], item => item.name)
-// [{ name: 'Apple' }, { name: 'Banana' }]
 ```

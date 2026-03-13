@@ -1,0 +1,200 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/GitRead - Чтение Git репозитория'/>
+
+# Класс GitRead
+
+Мощный утилитный класс для взаимодействия с Git-репозиторием. Предоставляет высокоуровневые методы для получения списков файлов, дат коммитов, информации о статусе в формате porcelain и многого другого.
+
+## Ключевые особенности
+
+- **Поиск файлов** — получает все отслеживаемые файлы в текущем репозитории или отфильтрованные по конкретным директориям.
+- **Отчеты о статусе** — анализирует `git status --porcelain` для идентификации измененных, добавленных или неотслеживаемых файлов.
+- **История коммитов** — извлекает дату последнего изменения для отдельных файлов.
+- **Управление путями** — обрабатывает относительные пути и префиксы директорий внутри структуры репозитория.
+
+## Основные методы
+
+### `getList`
+
+Возвращает упрощенный список всех отслеживаемых файлов в HEAD репозитория, включая базовые метаданные, такие как даты изменения.
+
+**Параметры:**
+- `filter?: (file: string) => boolean` — функция обратного вызова для включения только тех файлов, которые соответствуют определенным критериям.
+
+**Возвращает:** `GitFileList` — массив объектов `GitFileItem`, представляющих отслеживаемые файлы.
+
+**Пример:**
+```typescript
+const files = GitRead.getList((f) => f.endsWith('.ts'))
+/**
+ * [
+ *   {
+ *     path: 'src/index.ts',
+ *     pathByOS: ['src', 'index.ts'],
+ *     pathFull: 'packages/scripts/src/index.ts',
+ *     date: '2024-03-20 12:00:00',
+ *     status: undefined
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getListPorcelain`
+
+Получает текущий статус файлов в репозитории, используя формат `--porcelain`. Сюда входят изменения в рабочем дереве и индексе.
+
+**Параметры:**
+- `filter?: (file: string) => boolean` — функция обратного вызова для фильтрации результирующего списка статусов.
+
+**Возвращает:** `GitFileList` — массив объектов `GitFileItem`, каждый из которых содержит поле `status`.
+
+**Пример:**
+```typescript
+const status = GitRead.getListPorcelain()
+/**
+ * [
+ *   {
+ *     path: 'src/classes/GitRead.ts',
+ *     pathByOS: ['src', 'classes', 'GitRead.ts'],
+ *     pathFull: 'packages/scripts/src/classes/GitRead.ts',
+ *     date: '2024-03-21 10:30:00',
+ *     status: 'M'
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getListUnique`
+
+Выполняет слияние списка отслеживаемых файлов (`getList`) и текущего статуса (`getListPorcelain`). Гарантирует, что каждый файл представлен только один раз, отдавая приоритет информации о статусе, если она доступна.
+
+**Параметры:**
+- `filter: (file: string) => boolean` — обязательная функция обратного вызова для фильтрации объединенного списка.
+
+**Возвращает:** `GitFileList` — дедуплицированный список файлов, объединяющий базовое и измененное состояния.
+
+**Пример:**
+```typescript
+const unique = GitRead.getListUnique((f) => f.includes('src/'))
+/**
+ * [
+ *   {
+ *     path: 'src/main.ts',
+ *     pathByOS: ['src', 'main.ts'],
+ *     pathFull: 'packages/scripts/src/main.ts',
+ *     date: '2024-03-19 15:45:00',
+ *     status: 'A'
+ *   }
+ * ]
+ */
+```
+
+### `getListByDirectory`
+
+Удобный метод для получения списков уникальных файлов специально из заданной директории, отфильтрованный так, чтобы включать только файлы `.ts` и исключать файлы `.test.ts`.
+
+**Параметры:**
+- `directory: string | RegExp` — целевой путь к директории или шаблон для сопоставления с путями файлов.
+
+**Возвращает:** `GitFileList`
+
+**Пример:**
+```typescript
+const classes = GitRead.getListByDirectory('/classes/')
+/**
+ * [
+ *   {
+ *     path: 'classes/GitRead.ts',
+ *     ...
+ *   }
+ * ]
+ */
+```
+
+## Вспомогательные методы
+
+
+### `getClassesList`
+Получает все TypeScript файлы (кроме тестов) в директории `/classes/`.
+
+**Пример:**
+```typescript
+const classes = GitRead.getClassesList()
+/**
+ * [
+ *   {
+ *     path: 'classes/GitRead.ts',
+ *     pathByOS: ['classes', 'GitRead.ts'],
+ *     pathFull: 'packages/scripts/src/classes/GitRead.ts',
+ *     date: '2024-03-21 10:30:00',
+ *     status: undefined
+ *   },
+ *   ...
+ * ]
+ */
+```
+
+### `getFunctionsList`
+Получает все TypeScript файлы (кроме тестов) в директории `/functions/`.
+
+**Пример:**
+```typescript
+const funcs = GitRead.getFunctionsList()
+/**
+ * [
+ *   {
+ *     path: 'functions/myFunction.ts',
+ *     pathByOS: ['functions', 'myFunction.ts'],
+ *     pathFull: 'packages/scripts/src/functions/myFunction.ts',
+ *     date: '2024-03-20 15:00:00',
+ *     status: undefined
+ *   }
+ * ]
+ */
+```
+
+## Структуры данных
+
+### `GitFileItem`
+
+Основной объект, представляющий состояние файла в Git:
+
+- `path: string` — относительный путь к файлу.
+- `pathByOS: string[]` — путь к файлу, разделенный на сегменты независимо от ОС.
+- `pathFull: string` — полный путь, включая любые префиксы директорий репозитория.
+- `date: string` — дата последнего изменения (стандартизированная).
+- `status?: GitStatus` — код статуса Git (например, `'M'`, `'A'`, `'??'`).
+
+### `GitStatus`
+
+Перечисление, представляющее распространенные коды статуса Git:
+
+- `MODIFIED` (`'M'`) — существующий файл был изменен.
+- `ADDED` (`'A'`) — новый файл добавлен в индекс.
+- `DELETED` (`'D'`) — файл был удален.
+- `UNTRACKED` (`'??'`) — новый файл, еще не отслеживаемый Git.
+- `RENAMED` (`'R'`) — файл был перемещен или переименован.
+
+## Примеры
+
+### Получение измененных файлов
+Получение списка файлов, которые были изменены или добавлены в репозиторий.
+
+```typescript
+import { GitRead } from '@dxtmisha/scripts'
+
+const modifiedFiles = GitRead.getListPorcelain()
+console.log(modifiedFiles)
+```
+
+### Фильтрация классов
+Получение только файлов классов для конкретного модуля.
+
+```typescript
+const componentClasses = GitRead.getListUnique(
+  (file) => file.includes('packages/ui/src/classes/')
+)
+```

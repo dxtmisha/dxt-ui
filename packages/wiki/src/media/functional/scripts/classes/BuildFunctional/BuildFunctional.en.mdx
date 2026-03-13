@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/BuildFunctional - Library Builder for Functional' />
+
+# BuildFunctional Class
+
+The `BuildFunctional` class is a utility responsible for generating a central export file for the functional library. It scans the `@dxtmisha/functional` package and creates a `functional.ts` file in the library directory, re-exporting all discovered members.
+
+## Key Features
+
+- **Automated Re-exports** — Automatically discovers and re-exports all members from the functional package.
+- **Type Support** — Includes `export type *` to ensure full TypeScript type availability.
+- **Library Integration** — Integrates with the project's library structure by writing to the configured library directory.
+
+## Initialization
+
+You can create an instance of `BuildFunctional` without any parameters.
+
+```typescript
+import { BuildFunctional } from './BuildFunctional'
+
+const builder = new BuildFunctional()
+builder.make()
+```
+
+## Methods
+
+### make
+
+- `make(): void` — Triggers the build process. It retrieves the list of members, formats the export code, and writes it to `src/library/functional.ts`.
+
+### getList
+
+- `getList(): string[]` — Returns an array of keys (exported members) from the `@dxtmisha/functional` package.
