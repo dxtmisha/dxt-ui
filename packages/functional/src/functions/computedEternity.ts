@@ -1,6 +1,5 @@
 import { executePromise } from '@dxtmisha/functional-basic'
 import {
-  ref,
   customRef,
   watchEffect,
   onUnmounted,
@@ -24,7 +23,7 @@ export function computedEternity<T>(
 ) {
   return customRef<T>((track, trigger) => {
     let value: T | undefined
-    const ready = ref<boolean>(false)
+    let ready = false
 
     /**
      * Updates the value from the getter.
@@ -51,7 +50,7 @@ export function computedEternity<T>(
      * Сбрасывает состояние.
      */
     const reset = () => {
-      ready.value = false
+      ready = false
       value = undefined
 
       trigger()
@@ -63,14 +62,14 @@ export function computedEternity<T>(
      * Метод для отслеживания изменений.
      */
     const init = () => {
-      watchEffect(async () => {
-        if (ready.value) {
-          await update()
-        }
-      })
+      if (!ready) {
+        ready = true
 
-      if (getCurrentInstance()) {
-        onUnmounted(() => reset())
+        watchEffect(async () => await update())
+
+        if (getCurrentInstance()) {
+          onUnmounted(() => reset())
+        }
       }
     }
 
@@ -81,12 +80,9 @@ export function computedEternity<T>(
        * Получает вычисляемое значение.
        */
       get() {
-        if (!ready.value) {
-          ready.value = true
-          init()
-        }
-
+        init()
         track()
+
         return value as T
       },
       /**

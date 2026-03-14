@@ -2,6 +2,7 @@ import { useApiRef } from './useApiRef'
 import { useFormattersRef } from './useFormattersRef'
 
 import type { ApiManagementProps } from '../../types/apiTypes'
+import type { ComputedRef } from 'vue'
 
 export function useApiManagementRef<
   R extends Record<string, any>[],
@@ -16,6 +17,8 @@ export function useApiManagementRef<
     unmounted
   } = props.get
 
+  let formatters: ReturnType<typeof useFormattersRef> | undefined
+
   const data = useApiRef<R, T>(
     path,
     options,
@@ -25,10 +28,19 @@ export function useApiManagementRef<
     unmounted
   )
 
-  const formatters = props.formatters ? useFormattersRef(data.data, props.formatters) : undefined
+  if (props.formatters) {
+    formatters = useFormattersRef(
+      data.data as ComputedRef<R>,
+      props.formatters
+    )
+  }
 
   return {
     get data() {
+      if (formatters) {
+        return formatters.listFormat
+      }
+
       return data.data
     },
     get starting() {
