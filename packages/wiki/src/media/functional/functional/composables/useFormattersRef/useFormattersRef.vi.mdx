@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useFormattersRef - Định dạng danh sách'/>
+
+# `useFormattersRef`
+
+Một bộ composable để định dạng phản ứng danh sách dữ liệu dựa trên các quy tắc được chỉ định cho từng cột.
+
+**Tham số:**
+- `list: RefType<List>` — danh sách dữ liệu nguồn (Ref hoặc ComputedRef).
+- `options: Options` — cài đặt định dạng cho từng thuộc tính:
+    - `type: FormattersType` — loại định dạng (`currency`, `date`, `name`, `number`, `plural`, `unit`).
+    - `options?: object` — cài đặt bổ sung cho loại định dạng cụ thể (ví dụ: mã tiền tệ, định dạng ngày tháng).
+    - `transformation?: function` — hàm tùy chỉnh để chuyển đổi giá trị.
+
+**Trả về:**
+- `listFormat: ComputedRef<FormattersListColumns<Item, Options>>` — danh sách dữ liệu đã được định dạng. Đối với mỗi cột được chỉ định trong `options`, một trường `{column}Format` tương ứng sẽ được thêm vào các mục.
+
+## Kiến trúc: `computed` Lazy (Getter động)
+
+Composable này trả về `listFormat` dưới dạng native JS getter.
+Điều này cho phép bạn gọi `useFormattersRef()` **bên ngoài vòng đời của component Vue** (ví dụ: toàn cục hoặc trong các store).
+Đối tượng `ComputedRef` được tạo và lưu vào bộ nhớ đệm bởi Vue trong lần đầu tiên thuộc tính được truy cập trong quá trình destructuring:
+
+```typescript
+// ComputedRef được tạo trong quá trình destructuring ở setup()
+const { listFormat } = useFormattersRef(items, { price: { type: FormattersType.currency } })
+```
+
+> **Quan trọng**: Tránh truy cập getter "thông qua dấu chấm" nhiều lần (ví dụ: `result.listFormat`). Luôn phân rã (destructure) kết quả một lần ở cấp độ `setup` để đảm bảo chỉ có một phiên bản của thuộc tính `computed` được tạo ra.
+
+## Ví dụ sử dụng
+
+```typescript
+import { ref } from 'vue'
+import { useFormattersRef } from '@dxtmisha/functional'
+import { FormattersType } from '@dxtmisha/functional-basic'
+
+const items = ref([
+  { id: 1, price: 100, firstName: 'Hùng', lastName: 'Nguyễn' },
+  { id: 2, price: 250, firstName: 'Lan', lastName: 'Trần' }
+])
+
+const { listFormat } = useFormattersRef(items, {
+  price: { type: FormattersType.currency },
+  name: { type: FormattersType.name }
+})
+
+// listFormat.value sẽ chứa:
+// [
+//   { ..., priceFormat: '100,00 ₫', nameFormat: 'Nguyễn Hùng' },
+//   { ..., priceFormat: '250,00 ₫', nameFormat: 'Trần Lan' }
+// ]
+```

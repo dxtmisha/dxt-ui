@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/computedEternity - Постоянное вычисляемое свойство'/>
+
+# `computedEternity`
+
+Создаёт вычисляемое свойство, которое вычисляется по требованию и кешируется. Значение обновляется автоматически при изменении зависимостей, но только если к нему был осуществлён доступ хотя бы один раз. При размонтировании значение сбрасывается. Это полезно для свойств, которые должны сохраняться на протяжении жизненного цикла компонента, но не требуют немедленного вычисления.
+
+**Параметры:**
+- `getter: () => Promise<T> | T` — Функция, которая возвращает вычисляемое значение (может быть синхронной или асинхронной).
+
+**Возвращает:**
+`CustomRef<T>` — Реактивное вычисляемое свойство с результатом выполнения геттера.
+
+```typescript
+import { computedEternity } from '@dxtmisha/functional'
+
+// Асинхронный геттер - будет вызван только при первом обращении к 'data.value'
+const data = computedEternity(async () => {
+  const response = await fetch('/api/data')
+  return response.json()
+})
+
+// Синхронный геттер
+const i = ref(0)
+const double = computedEternity(() => i.value * 2)
+
+console.log(double.value) // 0
+i.value = 5
+// double.value будет 10 при следующем обращении
+```

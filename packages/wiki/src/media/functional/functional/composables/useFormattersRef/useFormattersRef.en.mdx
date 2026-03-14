@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useFormattersRef - List Formatting'/>
+
+# `useFormattersRef`
+
+A composable for reactive formatting of data lists based on specified rules for each column.
+
+**Parameters:**
+- `list: RefType<List>` — source data list (Ref or ComputedRef).
+- `options: Options` — formatting settings for each property:
+    - `type: FormattersType` — type of formatter (`currency`, `date`, `name`, `number`, `plural`, `unit`).
+    - `options?: object` — additional settings for the specific formatter (e.g., currency code, date format).
+    - `transformation?: function` — custom function for value transformation.
+
+**Returns:**
+- `listFormat: ComputedRef<FormattersListColumns<Item, Options>>` — formatted data list. For each column specified in `options`, a corresponding `{column}Format` field is added to the items.
+
+## Architecture: Lazy `computed` (Dynamic Getters)
+
+This composable returns `listFormat` as a native JS getter.
+This allows you to call `useFormattersRef()` **outside the lifecycle of a Vue component** (for example, globally or in stores).
+The `ComputedRef` object is created and cached by Vue the first time the property is accessed during destructuring:
+
+```typescript
+// ComputedRef is created during destructuring in setup()
+const { listFormat } = useFormattersRef(items, { price: { type: FormattersType.currency } })
+```
+
+> **Important**: Avoid multiple accesses "via dot notation" (e.g., `result.listFormat`). Always destructure the result once at the `setup` level to ensure only one instance of the `computed` property is created.
+
+## Usage Example
+
+```typescript
+import { ref } from 'vue'
+import { useFormattersRef } from '@dxtmisha/functional'
+import { FormattersType } from '@dxtmisha/functional-basic'
+
+const items = ref([
+  { id: 1, price: 100, firstName: 'John', lastName: 'Doe' },
+  { id: 2, price: 250, firstName: 'Jane', lastName: 'Smith' }
+])
+
+const { listFormat } = useFormattersRef(items, {
+  price: { type: FormattersType.currency },
+  name: { type: FormattersType.name }
+})
+
+// listFormat.value will contain:
+// [
+//   { ..., priceFormat: '$100.00', nameFormat: 'John Doe' },
+//   { ..., priceFormat: '$250.00', nameFormat: 'Jane Smith' }
+// ]
+```

@@ -1,6 +1,7 @@
 import {
   computed,
   type ComputedRef,
+  getCurrentInstance,
   isRef,
   onUnmounted,
   type Ref,
@@ -105,7 +106,10 @@ let globalConditions: RefType<any>
  * @param transformation transforms the received request/ преобразовывает полученный запрос
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
  */
-export function useApiRef<R, T = any>(
+export function useApiRef<
+  R,
+  T = R
+>(
   path?: RefOrNormal<string | undefined>,
   options?: ApiOptions,
   reactivity: boolean = true,
@@ -207,7 +211,10 @@ export function useApiRef<R, T = any>(
 
       if (unmounted) {
         initWatch()
-        onUnmounted(() => stop())
+
+        if (getCurrentInstance()) {
+          onUnmounted(() => stop())
+        }
       }
     }
   }

@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/computedEternity - Persistent computed property'/>
+
+# `computedEternity`
+
+Creates a computed property that is computed on demand and cached. The value is updated automatically when dependencies change, but only if it has been accessed at least once. On unmount, the value is reset. This is particularly useful for properties that should persist throughout the active lifecycle of a component but don't need to be eagerly computed.
+
+**Parameters:**
+- `getter: () => Promise<T> | T` — A function that returns the value to be computed (can be synchronous or asynchronous).
+
+**Returns:**
+`CustomRef<T>` — A reactive custom ref containing the resolved result of the getter.
+
+```typescript
+import { computedEternity } from '@dxtmisha/functional'
+
+// Async getter - will only be called when 'data.value' is first accessed
+const data = computedEternity(async () => {
+  const response = await fetch('/api/data')
+  return response.json()
+})
+
+// Sync getter
+const i = ref(0)
+const double = computedEternity(() => i.value * 2)
+
+console.log(double.value) // 0
+i.value = 5
+// double.value will be 10 on next access
+```

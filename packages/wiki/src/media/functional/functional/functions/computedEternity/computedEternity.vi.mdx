@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/computedEternity - Thuộc tính tính toán vĩnh cửu'/>
+
+# `computedEternity`
+
+Tạo một thuộc tính tính toán được tính toán theo yêu cầu và được lưu vào bộ nhớ đệm. Giá trị được cập nhật tự động khi các phụ thuộc thay đổi, nhưng chỉ khi nó đã được truy cập ít nhất một lần. Khi unmount, giá trị sẽ được đặt lại. Điều này đặc biệt hữu ích cho các thuộc tính cần tồn tại trong suốt vòng đời hoạt động của một thành phần nhưng không cần phải tính toán ngay lập tức.
+
+**Các tham số:**
+- `getter: () => Promise<T> | T` — Một hàm trả về giá trị cần tính toán (có thể là đồng bộ hoặc bất đồng bộ).
+
+**Trả về:**
+`CustomRef<T>` — Một ref tùy chỉnh phản ứng chứa kết quả đã giải quyết của getter.
+
+```typescript
+import { computedEternity } from '@dxtmisha/functional'
+
+// Getter bất đồng bộ - sẽ chỉ được gọi khi 'data.value' được truy cập lần đầu tiên
+const data = computedEternity(async () => {
+  const response = await fetch('/api/data')
+  return response.json()
+})
+
+// Getter đồng bộ
+const i = ref(0)
+const double = computedEternity(() => i.value * 2)
+
+console.log(double.value) // 0
+i.value = 5
+// double.value sẽ là 10 trong lần truy cập tiếp theo
+```

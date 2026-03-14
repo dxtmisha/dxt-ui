@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useFormattersRef - Форматирование списка'/>
+
+# `useFormattersRef`
+
+Composable для реактивного форматирования списков данных на основе заданных правил для каждой колонки.
+
+**Параметры:**
+- `list: RefType<List>` — исходный список данных (Ref или ComputedRef).
+- `options: Options` — настройки форматирования для каждого свойства:
+    - `type: FormattersType` — тип форматировщика (`currency`, `date`, `name`, `number`, `plural`, `unit`).
+    - `options?: object` — дополнительные настройки для конкретного типа (например, код валюты, формат даты).
+    - `transformation?: function` — пользовательская функция для преобразования значения.
+
+**Возвращает:**
+- `listFormat: ComputedRef<FormattersListColumns<Item, Options>>` — отформатированный список данных. К элементам добавляются поля вида `{column}Format` для каждой колонки, указанной в `options`.
+
+## Архитектура: ленивые `computed` (Динамические геттеры)
+
+Композибл возвращает `listFormat` как нативный JS-геттер.
+Это позволяет вызывать `useFormattersRef()` **вне жизненного цикла компонента Vue** (например, глобально или в сторах).
+Объект `ComputedRef` создается и кэшируется Vue при первом обращении к свойству во время деструктуризации:
+
+```typescript
+// ComputedRef создается при деструктуризации в setup()
+const { listFormat } = useFormattersRef(items, { price: { type: FormattersType.currency } })
+```
+
+> **Важно**: Избегайте обращения к геттеру "через точку" множество раз (например, `result.listFormat`). Всегда деструктурируйте результат один раз на уровне `setup`, чтобы гарантировать создание только одного экземпляра `computed`.
+
+## Пример использования
+
+```typescript
+import { ref } from 'vue'
+import { useFormattersRef } from '@dxtmisha/functional'
+import { FormattersType } from '@dxtmisha/functional-basic'
+
+const items = ref([
+  { id: 1, price: 100, firstName: 'Иван', lastName: 'Иванов' },
+  { id: 2, price: 250, firstName: 'Анна', lastName: 'Петрова' }
+])
+
+const { listFormat } = useFormattersRef(items, {
+  price: { type: FormattersType.currency },
+  name: { type: FormattersType.name }
+})
+
+// listFormat.value будет содержать:
+// [
+//   { ..., priceFormat: '100,00 ₽', nameFormat: 'Иван Иванов' },
+//   { ..., priceFormat: '250,00 ₽', nameFormat: 'Анна Петрова' }
+// ]
+```
