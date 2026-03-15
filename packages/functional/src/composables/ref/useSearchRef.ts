@@ -67,10 +67,16 @@ export function useSearchRef<
     /** Search string ref/ Ссылка на строку поиска */
     search,
 
-    /** Search loading status (if delay is used) / Статус загрузки поиска (если используется задержка) */
+    /**
+     * Search loading status (if delay is used) /
+     * Статус загрузки поиска (если используется задержка)
+     */
     loading,
 
-    /** Formatted list of search results with highlights / Форматированный список результатов поиска с подсветкой совпадений */
+    /**
+     * Formatted list of search results with highlights /
+     * Форматированный список результатов поиска с подсветкой совпадений
+     */
     get listSearch() {
       return computed<SearchFormatList<T, K>>(() => {
         if (listRef.value) {

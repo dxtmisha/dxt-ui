@@ -3,6 +3,7 @@ import { useFormattersRef } from './useFormattersRef'
 
 import type { ApiManagementProps } from '../../types/apiTypes'
 import type { ComputedRef } from 'vue'
+import type { useSearchRef } from './useSearchRef'
 
 export function useApiManagementRef<
   R extends Record<string, any>[],
@@ -18,6 +19,7 @@ export function useApiManagementRef<
   } = props.get
 
   let formatters: ReturnType<typeof useFormattersRef> | undefined
+  let search: ReturnType<typeof useSearchRef> | undefined
 
   const data = useApiRef<R, T>(
     path,
@@ -36,11 +38,15 @@ export function useApiManagementRef<
   }
 
   return {
-    get data() {
+    get list() {
       if (formatters) {
         return formatters.listFormat
       }
 
+      return data.data
+    },
+
+    get data() {
       return data.data
     },
     get starting() {

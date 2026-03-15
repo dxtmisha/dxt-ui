@@ -1,5 +1,4 @@
 import { getColumn } from '../functions/getColumn'
-import { isDomRuntime } from '../functions/isDomRuntime'
 import { isString } from '../functions/isString'
 import { toDate } from '../functions/toDate'
 import { toNumber } from '../functions/toNumber'
@@ -104,7 +103,7 @@ export class GeoIntl {
     }
 
     try {
-      if (isDomRuntime()) {
+      if (typeof Intl !== 'undefined') {
         if (value) {
           text = new Intl.DisplayNames(this.getLocation(), options).of(value)
         } else if (options.type === 'language') {
@@ -420,7 +419,9 @@ export class GeoIntl {
 
     if (list.length > 1) {
       try {
-        if (isDomRuntime()) {
+        if (
+          typeof Intl !== 'undefined'
+        ) {
           const plural = new Intl.PluralRules(this.getLocation(), options)
           const type = plural.select(number)
           let wordsFormat: string | undefined
@@ -614,7 +615,10 @@ export class GeoIntl {
     })
 
     try {
-      if (isDomRuntime()) {
+      if (
+        this.hasIntl()
+        && typeof Intl.RelativeTimeFormat !== 'undefined'
+      ) {
         return new Intl.RelativeTimeFormat(this.getLocation(), options).format(Math.round(toNumber(value)), unit)
       }
     } catch (e) {
@@ -635,7 +639,7 @@ export class GeoIntl {
     style?: Intl.DateTimeFormatOptions['month']
   ): string {
     try {
-      if (isDomRuntime()) {
+      if (this.hasIntlDateTimeFormat()) {
         return Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
           .format(toDate(value))
       }
@@ -661,7 +665,7 @@ export class GeoIntl {
     }]
 
     try {
-      if (isDomRuntime()) {
+      if (this.hasIntlDateTimeFormat()) {
         const date = new Date()
         const format = Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
 
@@ -693,7 +697,7 @@ export class GeoIntl {
     style?: Intl.DateTimeFormatOptions['weekday']
   ): string {
     try {
-      if (isDomRuntime()) {
+      if (this.hasIntlDateTimeFormat()) {
         return Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
           .format(toDate(value))
       }
@@ -719,7 +723,7 @@ export class GeoIntl {
     }]
 
     try {
-      if (isDomRuntime()) {
+      if (this.hasIntlDateTimeFormat()) {
         const date = new Date()
         const format = Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
         const current = date.getDay() + (this.geo.firstDay === 'Mo' ? -1 : 1)
@@ -765,13 +769,35 @@ export class GeoIntl {
     data: T[],
     compareFn: (a: T, b: T) => [string, string] = (a, b) => [a as string, b as string]
   ) {
-    if (isDomRuntime()) {
+    if (
+      this.hasIntl()
+      && typeof Intl.Collator !== 'undefined'
+    ) {
       const collator = new Intl.Collator(this.getLocation())
 
       return data.sort((a, b) => collator.compare(...compareFn(a, b)))
     }
 
     return data
+  }
+
+  /**
+   * Checks if the Intl object is available.
+   *
+   * Проверяет доступность объекта Intl.
+   */
+  private hasIntl(): boolean {
+    return typeof Intl !== 'undefined'
+  }
+
+  /**
+   * Checks if the Intl.DateTimeFormat object is available.
+   *
+   * Проверяет доступность объекта Intl.DateTimeFormat.
+   */
+  private hasIntlDateTimeFormat(): boolean {
+    return this.hasIntl()
+      && typeof Intl.DateTimeFormat !== 'undefined'
   }
 
   /**
@@ -783,7 +809,10 @@ export class GeoIntl {
    */
   private numberObject(options?: Intl.NumberFormatOptions): Intl.NumberFormat | undefined {
     try {
-      if (isDomRuntime()) {
+      if (
+        this.hasIntl()
+        && typeof Intl.NumberFormat !== 'undefined'
+      ) {
         return new Intl.NumberFormat(this.getLocation(), options)
       }
     } catch (e) {

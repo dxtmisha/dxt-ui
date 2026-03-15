@@ -87,4 +87,6 @@ export type FormattersDataItem<T extends FormattersListItem, KT extends string[]
 }
 
 export type FormattersListFormat<T extends FormattersListItem, K extends string[]> = FormattersDataItem<T, K>[]
+
+export type FormattersListColumnItem<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersDataItem<T, FormattersColumns<O>>
 export type FormattersListColumns<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersListFormat<T, FormattersColumns<O>>

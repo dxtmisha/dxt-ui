@@ -3,6 +3,7 @@ import { GeoIntl } from './GeoIntl'
 import { forEach } from '../functions/forEach'
 import { isFilled } from '../functions/isFilled'
 import { getItemByPath } from '../functions/getItemByPath'
+import { toArray } from '../functions/toArray'
 import { toCamelCase } from '../functions/toCamelCase'
 
 import {
@@ -17,21 +18,22 @@ import {
   type FormattersOptionsName,
   type FormattersOptionsNumber,
   type FormattersOptionsPlural,
-  type FormattersOptionsUnit
+  type FormattersOptionsUnit,
+  type FormattersListColumnItem
 } from '../types/formattersTypes'
 
 /**
  * Class for formatting a list of data based on provided options.
  *
  * Класс для форматирования списка данных на основе предоставленных параметров.
- * @template Item - type of items in the list/ тип элементов в списке.
- * @template Options - type of formatting options/ тип параметров форматирования.
- * @template List - type of the list of items/ тип списка элементов.
+ * @template Options - type of formatting options / тип параметров форматирования.
+ * @template List - type of the list of items (can be an array or a single item) / тип списка элементов (может быть массивом или одним элементом).
+ * @template Item - type of a single item in the list / тип одного элемента в списке.
  */
 export class Formatters<
-  Item extends FormattersListItem,
-  Options extends FormattersOptionsList,
-  List extends FormattersList<Item> = FormattersList<Item>
+  Options extends FormattersOptionsList = FormattersOptionsList,
+  List extends FormattersList<FormattersListItem> | FormattersListItem = FormattersList<FormattersListItem>,
+  Item extends (List extends any[] ? List[number] : List) = (List extends any[] ? List[number] : List)
 > {
   /**
    * Constructor
@@ -47,13 +49,37 @@ export class Formatters<
   ) { }
 
   /**
+   * Checks if the list is set.
+   *
+   * Проверяет, установлен ли список.
+   * @returns true if the list is set, false otherwise/ true, если список установлен, иначе false
+   */
+  is(): boolean {
+    return Boolean(this.list)
+  }
+
+  /**
+   * Checks if the list is an array.
+   *
+   * Проверяет, является ли список массивом.
+   * @returns true if the list is an array, false otherwise/ true, если список является массивом, иначе false
+   */
+  isArray(): this is this & { list: FormattersList<Item> } {
+    return Array.isArray(this.list)
+  }
+
+  /**
    * Returns the current list of data.
    *
    * Возвращает текущий список данных.
    * @returns the list of data or undefined if not set/ список данных или undefined, если не задан
    */
-  getList(): List | undefined {
-    return this.list
+  getList(): FormattersList<Item> {
+    if (this.list) {
+      return toArray(this.list) as FormattersList<Item>
+    }
+
+    return []
   }
 
   /**
@@ -79,25 +105,29 @@ export class Formatters<
   }
 
   /**
-   * Formats the entire list based on the provided options.
+   * Formats the entire list or a single item based on the provided options.
    * Adds formatted values with the suffix 'Format' to each item.
    *
-   * Форматирует весь список на основе предоставленных параметров.
+   * Форматирует весь список или один элемент на основе предоставленных параметров.
    * Добавляет отформатированные значения с суффиксом 'Format' к каждому элементу.
-   * @returns the list of items with additional formatted columns/
-   * список элементов с дополнительными отформатированными столбцами
+   * @returns formatted data (list or single item) with additional formatted columns /
+   * отформатированные данные (список или один элемент) с дополнительными отформатированными столбцами
    */
-  to(): FormattersListColumns<Item, Options> {
-    if (!this.list) {
-      return []
-    }
-
-    return forEach(this.list, (item) => {
+  to(): List extends any[]
+    ? FormattersListColumns<Item, Options>
+    : (FormattersListColumnItem<Item, Options> | undefined) {
+    const list: FormattersListColumns<Item, Options> = forEach(this.getList(), (item) => {
       return {
         ...item,
         ...this.getFormatData(item)
       }
     })
+
+    if (this.isArray()) {
+      return list as any
+    }
+
+    return list[0] as any
   }
 
   /**

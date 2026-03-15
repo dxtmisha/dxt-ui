@@ -20,9 +20,9 @@ To initialize the object, call the `Formatters(options, list)` constructor.
 
 ### Generic Constraints
 
-- `Item extends FormattersListItem` — type of items in the list.
 - `Options extends FormattersOptionsList` — type of formatting options.
-- `List extends FormattersList<Item>` — type of the list of items.
+- `List extends FormattersList<FormattersListItem> | FormattersListItem` — type of the input data (array or single item).
+- `Item extends (List extends any[] ? List[number] : List)` — type of a single item in the list.
 
 **Parameters:**
 - `options: Options` — formatting options for each column/property.
@@ -58,7 +58,7 @@ const options = {
   }
 }
 
-// 2. Initial data
+// 2. Initial data (can be an array or a single object)
 const data = [
   {
     price: 100,
@@ -80,14 +80,14 @@ const formatter = new Formatters(options, data)
 
 ### `to`
 
-The core method that processes the list and returns a new array where each item is enriched with formatted values based on the initial configuration.
+Processes the data and returns the result. If the input was an array, it returns a new array of enriched items. If the input was a single item, it returns that single enriched item.
 
-**Returns:** `FormattersListColumns<Item, Options>` — a new array of objects with additional `*Format` properties.
+**Returns:** `FormattersListColumns<Item, Options> | FormattersListColumnItem<Item, Options>` — enriched data with additional `*Format` properties.
 
 ```javascript
 const result = formatter.to()
 /*
-Result: [
+Result (if array): [
   { 
     id: 101, 
     price: 100, 
@@ -98,14 +98,22 @@ Result: [
     ... 
   }
 ]
+
+Result (if single item): { 
+  price: 100, 
+  priceFormat: '$100.00', 
+  ... 
+}
 */
 ```
 
 ## Retrieval and Data Management
 
-- `getList(): List | undefined` — Returns the current list of data.
+- `is(): boolean` — Checks if the list/item is set.
+- `isArray(): boolean` — Checks if the current data is an array.
+- `getList(): Item[]` — Returns the current list of data as an array.
 - `getOptions(): Options` — Returns the current formatting configuration mapping.
-- `setList(list: List): this` — Updates the list of data to be formatted and returns the instance for chaining.
+- `setList(list: List): this` — Updates the data and returns the instance for chaining.
 
 ## Configuration Structure
 
