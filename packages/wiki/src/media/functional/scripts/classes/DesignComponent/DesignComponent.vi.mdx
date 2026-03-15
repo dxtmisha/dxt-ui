@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignComponent - Trình tạo thành phần thiết kế'/>
+
+# Lớp DesignComponent
+
+Lớp `DesignComponent` là một triển khai chuyên biệt của `DesignCommand` dành riêng cho việc tự động tạo và bảo trì các thành phần hệ thống thiết kế. Nó điều phối việc tạo ra đa dạng các loại tệp — từ kiểu dáng và logic thành phần đến tài liệu và siêu dữ liệu tích hợp.
+
+## Các tính năng chính
+
+- **Tạo khung đầy đủ (Full-Cycle Scaffolding)** — Tự động tạo hơn 10 tệp thiết yếu cho một thành phần mới (Vue, SCSS, TS, MDX).
+- **Phân giải thuộc tính thông minh** — Sử dụng `DesignTypescript` để đưa các thuộc tính (props) của thành phần trực tiếp vào các tệp được tạo.
+- **Tự động hóa Storybook** — Tạo các tệp `.stories.ts` và `.mdx` với tính năng tự động phân giải render và import.
+- **Wiki tăng cường AI** — Tạo các thành phần bổ trợ chuyên biệt để tìm kiếm và hiển thị tài liệu do AI hỗ trợ.
+- **Tích hợp Workspace** — Đăng ký các thành phần mới một cách liền mạch trong tệp `package.json` gốc và danh sách xuất bản toàn cầu của thư viện.
+- **Ánh xạ Style Token** — Tự động chuyển đổi cấu trúc dự án thành các style token SCSS.
+
+## Khởi tạo
+
+Để khởi tạo một thực thể trình tạo, hãy sử dụng hàm khởi tạo. Lưu ý rằng nó sẽ thiết lập thư mục mục tiêu dựa trên cấu hình dự án.
+
+**Tham số:**
+- `command: string` — Mã định danh cho thành phần (ví dụ: `'button'`, `'input'`).
+- `options: Record<string, string>` — Các cờ cấu hình tùy chọn.
+
+```typescript
+import { DesignComponent } from '@dxtmisha/scripts'
+
+const generator = new DesignComponent('button')
+generator.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Bắt đầu quá trình tạo toàn diện cho tất cả các tệp liên quan đến thành phần.
+
+## Các thao tác (Operations)
+
+### Cấu trúc các tệp được tạo
+
+Khi `make()` được thực thi, hệ thống phân cấp tệp sau sẽ được tạo hoặc cập nhật trong thư mục của thành phần:
+
+- `properties.json` — Lưu trữ dữ liệu ánh xạ chính cho thành phần.
+- `props.ts` — Định nghĩa TypeScript cho các props của thành phần, được phân giải từ các mẫu constructor.
+- `styleToken.scss` — Các style token SCSS dựa trên cấu trúc thiết kế của thành phần.
+- `[Name].vue` — Tệp thành phần Vue chính với các lớp và kiểu dáng được cấu hình sẵn.
+- `[Name]AiWiki.vue` — Thành phần hỗ trợ cho tài liệu wiki tăng cường AI.
+- `index.ts` — Điểm nhập của thành phần cho các xuất bản công khai.
+- `wiki.ts` & `wikiData.ts` — Siêu dữ liệu và thông tin thuộc tính có cấu trúc cho trang web tài liệu.
+- `[Name].stories.ts` — Các câu chuyện Storybook tự động với phân giải thành phần động.
+- `[Name].mdx` — Tài liệu Markdown cho Storybook với các slot và dữ liệu props được điền sẵn.
+
+### Quy trình tích hợp
+
+Lớp này đảm bảo rằng thành phần mới được tích hợp hoàn toàn vào môi trường hệ thống thiết kế:
+1. **Cập nhật gói**: Thêm một mục vào `package.json` gốc trong phần `exports`.
+2. **Xuất bản thư viện**: Tạo một tệp proxy trong thư mục thư viện để cho phép nhập thành phần toàn cầu.
+3. **Khớp mô tả Wiki**: Quét `wikiDescriptions` để tự động điền các câu chuyện Storybook với các ví dụ liên quan.

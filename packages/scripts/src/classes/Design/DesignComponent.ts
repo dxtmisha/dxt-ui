@@ -40,9 +40,11 @@ const FILE_STORIES = 'DesignComponent.stories.ts'
 const FILE_STORIES_DOCUMENTATION = 'DesignComponent.mdx'
 
 /**
- * Class for creating a component or updating data.
+ * Class for generating and updating all files and configurations associated with a design system component.
+ * It manages the lifecycle of properties, styles, Vue components, stories, and wiki documentation.
  *
- * Класс для создания компонента или обновления данных.
+ * Класс для генерации и обновления всех файлов и конфигураций, связанных с компонентом дизайн-системы.
+ * Управляет жизненным циклом свойств, стилей, компонентов Vue, историй и вики-документации.
  */
 export class DesignComponent extends DesignCommand {
   protected DIR_SAMPLE: string = 'component'
@@ -50,9 +52,11 @@ export class DesignComponent extends DesignCommand {
   protected propsType: DesignTypescriptProp[] | undefined
 
   /**
-   * Constructor
-   * @param command component name/ названия компонента
-   * @param options additional parameters/ дополнительные параметры
+   * Constructor for DesignComponent.
+   *
+   * Конструктор для DesignComponent.
+   * @param command component name or command identifier / название компонента или идентификатор команды
+   * @param options additional key-value parameters / дополнительные параметры ключ-значение
    */
   constructor(
     command: string,

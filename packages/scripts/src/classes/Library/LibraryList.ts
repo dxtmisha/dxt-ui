@@ -9,15 +9,17 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import { UI_DIRS_STYLES, UI_FILE_NAME_DESIGN } from '../../config'
 
 /**
- * Class for creating a file with a list of components.
+ * Class for generating the design system overview file, including component imports and regular expressions.
  *
- * Класс для создания файла со списком компонентов.
+ * Класс для создания обзорного файла дизайн-системы, включая импорты компонентов и регулярные выражения.
  */
 export class LibraryList {
   protected readonly packageName: string
 
   /**
-   * Constructor
+   * Constructor for LibraryList.
+   *
+   * Конструктор для LibraryList.
    * @param items object for working with the list of components / объект для работы со списком компонентов
    */
   constructor(
@@ -27,9 +29,10 @@ export class LibraryList {
   }
 
   /**
-   * Creates files with a list of components.
+   * Creates the design system overview file (`design.ts`) with metadata and component lists.
    *
-   * Создает файлы со списком компонентов.
+   * Создает обзорный файл дизайн-системы (`design.ts`) с метаданными и списками компонентов.
+   * @returns this
    */
   make(): this {
     const list = this.getComponents()

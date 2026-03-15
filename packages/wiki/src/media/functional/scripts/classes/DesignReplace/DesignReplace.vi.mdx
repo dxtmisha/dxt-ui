@@ -1,0 +1,76 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignReplace - Động cơ chuyển đổi mẫu'/>
+
+# Lớp DesignReplace
+
+Lớp `DesignReplace` là động cơ cốt lõi để chuyển đổi các tệp mẫu (templates) thô thành mã nguồn sẵn sàng cho dự án. Nó sử dụng một hệ thống đánh dấu chuyên biệt để xác định các phần văn bản cần được thay thế linh hoạt bằng tên thành phần, định nghĩa thuộc tính, kiểu dữ liệu hoặc logic tạo kiểu dáng được lấy từ `DesignStructure` của thành phần.
+
+## Các tính năng chính
+
+- **Phân giải nhãn thông minh** — Xác định và thay thế các khối văn bản được giới hạn bởi các nhận xét cụ thể (ví dụ: `// :type` hoặc `<!-- :props -->`).
+- **Đặt tên theo ngữ cảnh** — Tự động chuyển đổi các trình giữ chỗ (placeholders) chung như `[project]`, `[design]`, và `[component]` dựa trên cấu hình.
+- **Tiêm kiểu dữ liệu (Type Injection)** — Tạo các liên hợp kiểu (type unions) và giao diện TypeScript phức tạp trực tiếp từ siêu dữ liệu thuộc tính.
+- **Ánh xạ giá trị mặc định** — Phân giải và tiêm các giá trị mặc định cho các thuộc tính vào các đối tượng hoặc đối số constructor.
+- **Tạo lớp có điều kiện** — Tạo các đối tượng liên kết lớp Vue/TS và ánh xạ bộ chọn CSS được tối ưu hóa.
+- **Chuẩn hóa đường dẫn** — Tự động phân giải các đường dẫn nhập (import) tương đối dựa trên vị trí của tệp mục tiêu trong cây dự án.
+
+## Khởi tạo
+
+Để khởi tạo một động cơ thay thế, hãy truyền vào cấu trúc dữ liệu của thành phần, mã định danh nhãn mục tiêu và chuỗi mẫu.
+
+**Tham số:**
+- `structure: DesignStructure` — Nguồn sự thật cho siêu dữ liệu và các quy tắc cấu trúc của thành phần.
+- `mark: string` — Nhãn chính được sử dụng trong các mẫu để xác định các thành phần (ví dụ: `'button'`).
+- `sample: string` — Nội dung văn bản của mẫu cần được sửa đổi.
+
+```typescript
+import { DesignReplace } from '@dxtmisha/scripts'
+
+const engine = new DesignReplace(structure, 'button', templateContent)
+engine.replaceName().replaceType()
+const output = engine.get()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `get(): string` — Trả về phiên bản cuối cùng của mẫu sau tất cả các chuyển đổi.
+- `getNameFile(name: string): string` — Xử lý tên tệp hoặc chuỗi để thay thế các trình giữ chỗ cấp dự án.
+- `replaceName(): this` — Thay thế các nhãn tên thành phần chính trong toàn bộ mẫu.
+- `replacePath(): this` — Sửa các đường dẫn tương đối (`../../../`) để trỏ đến đúng vị trí gốc của dự án.
+- `replaceMark(name: string, data: string[], end = ''): this` — Thực hiện thay thế khối cho một nhãn cụ thể bằng cách tiêm một mảng các chuỗi.
+- `replaceOnce(name?: string, removeReplacement?: boolean | Function): this` — Xử lý các dấu thay thế một lần (`.once`).
+
+### Tự động hóa thuộc tính & kiểu dữ liệu
+
+- `replaceType(constructor?: string): this` — Tạo và tiêm các kiểu TypeScript cho tất cả các thuộc tính thành phần.
+- `replaceDefault(): this` — Tiêm các giá trị mặc định cho các thuộc tính vào mẫu.
+- `replaceProps(): this` — Tạo các đối tượng định nghĩa thuộc tính kiểu Vue.
+- `replacePropsValues(): this` — Tạo các mảng giá trị được phép cho các thuộc tính (enums/unions).
+
+### Kiểu dáng & Lớp (Classes)
+
+- `replaceClasses(template?: Function, end = ''): this` — Tạo danh sách các lớp CSS có sẵn dựa trên cấu trúc.
+- `replaceClassesValues(): this` — Tạo logic liên kết lớp động cho các tệp triển khai logic.
+- `replaceStylesValues(): this` — Ánh xạ các thuộc tính thành phần với các biến tùy chỉnh CSS (CSS Variables).
+- `replaceConstructorClasses(): this` — Trình tạo lớp chuyên biệt cho các constructor của thành phần.
+
+## Các thao tác (Operations)
+
+### Hệ thống đánh dấu (Marking System)
+
+Động cơ quét các mẫu nhận xét cụ thể để xác định nơi tiêm mã. Nó hỗ trợ nhiều kiểu nhận xét:
+
+1. **Logic nội dòng**: `// :label data` hoặc `/* :label */ content /* :label.end */`
+2. **Nhận xét mẫu**: `<!-- :label --> content <!-- :label.end -->`
+3. **Tính đặc hiệu của thuộc tính**: `:label.propertyName.none` (được sử dụng để loại trừ các thuộc tính cụ thể khỏi một khối).
+
+### Quy trình chuyển đổi
+
+Khi một phương thức thay thế như `replaceType()` được gọi, lớp sẽ:
+1. **Quét**: Xác định vị trí các dấu bắt đầu và kết thúc cho nhãn `type`.
+2. **Tham chiếu cấu trúc**: Lặp qua các thuộc tính trong `DesignStructure` được cung cấp.
+3. **Phân giải logic**: Xác định cú pháp TypeScript chính xác cho mỗi thuộc tính dựa trên kiểu giá trị của nó (boolean, string, hoặc union).
+4. **Tiêm mã**: Thay thế nội dung giữa các dấu bằng mã mới được tạo, duy trì lề (indentation) ban đầu.

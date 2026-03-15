@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignConstructor - Trình tạo hàm khởi tạo thiết kế'/>
+
+# Lớp DesignConstructor
+
+Lớp `DesignConstructor` là một triển khai chuyên biệt của `DesignCommand` tập trung vào việc tạo logic nội bộ và các "constructor" cho các thành phần. Nó tự động hóa việc tạo các định nghĩa thuộc tính, loại TypeScript và các điểm nối (hooks) kiểu dáng hình thành nên nền tảng của lớp hành vi của thành phần.
+
+## Các tính năng chính
+
+- **Tạo khung Constructor** — Tự động tạo toàn bộ bộ tệp cần thiết cho logic hành vi của thành phần.
+- **Tự động hóa an toàn kiểu (Type Safety)** — Tạo các tệp `props.ts`, `types.ts` và `basicTypes.ts` để đảm bảo định kiểu nghiêm ngặt trong toàn bộ thành phần.
+- **Nền tảng kiểu dáng** — Tạo tệp `style.scss` ban đầu tương thích với hệ thống lớp của constructor.
+- **Tạo logic thống nhất** — Tạo cả tệp `.ts` và `.tsx` để triển khai logic thành phần linh hoạt.
+- **Tích hợp hệ thống** — Tự động cập nhật `package.json` và tạo các xuất bản thư viện cho constructor mới.
+
+## Khởi tạo
+
+Để khởi tạo một thực thể trình tạo, hãy sử dụng hàm khởi tạo. Nó tự động phân giải thư mục mục tiêu trong thư mục `src/constructors`.
+
+**Tham số:**
+- `command: string` — Mã định danh duy nhất cho thành phần (ví dụ: `'button'`, `'list'`).
+- `options: Record<string, string>` — Các cặp khóa-giá trị cấu hình tùy chọn.
+
+```typescript
+import { DesignConstructor } from '@dxtmisha/scripts'
+
+const generator = new DesignConstructor('button')
+generator.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Thực hiện toàn bộ chuỗi tạo thư mục, tạo tệp và đăng ký hệ thống.
+
+## Các thao tác (Operations)
+
+### Cấu trúc các tệp được tạo
+
+Khi được khởi tạo, `DesignConstructor` xử lý một số tệp do mẫu điều khiển:
+
+- `properties.json` — Cấu hình ánh xạ cho các thuộc tính nội bộ của constructor.
+- `props.ts` — Định nghĩa thuộc tính bao gồm các kiểu và giá trị mặc định.
+- `types.ts` & `basicTypes.ts` — Các giao diện TypeScript và định nghĩa kiểu cho trạng thái và cấu hình thành phần.
+- `style.scss` — Định nghĩa kiểu dáng ban đầu được liên kết với cấu trúc lớp của constructor.
+- `Constructors.ts` — Tệp triển khai logic chính.
+- `ConstructorsDesign.tsx` — Triển khai lớp hiển thị/render bằng TSX.
+- `index.ts` — Điểm nhập cho các xuất bản của constructor.
+
+### Vòng đời thực thi
+
+Quy trình `make()` thực thi theo một thứ tự chính xác để duy trì tính toàn vẹn của dữ liệu:
+1. **Thiết lập thư mục**: Phân giải và xác nhận đường dẫn mục tiêu trong thư mục `src/constructors`.
+2. **Tạo tệp**: Lần lượt gọi các phương thức `make[File]()` chuyên biệt để chuyển đổi các mẫu thành mã dự án.
+3. **Tích hợp nội bộ**: Cập nhật tệp `package.json` gốc của dự án để hiển thị constructor mới.
+4. **Xuất bản thư viện**: Tạo một tệp xuất bản trong thư mục gốc của thư viện để cho phép sử dụng toàn cầu.

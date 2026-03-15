@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryTypes - Vue Type Definitions Generator'/>
+
+# LibraryTypes Class
+
+The `LibraryTypes` class is responsible for generating global Type Definition files for Vue components. This enables full IDE support and type checking for the design system components used globally within a Vue application.
+
+## Key Features
+
+- **Global Component Support** — Generates `declare module` blocks for `@vue/runtime-core`.
+- **Automated Type Mapping** — Automatically links component code names to their respective `.vue` file types.
+- **Improved DX** — Enables IntelliSense and prop validation for design system components in Vue templates.
+- **Dynamic Path Resolution** — Correctly resolves component source paths based on the design system configuration.
+
+## Initialization
+
+To initialize the object, call the `LibraryTypes(items)` constructor.
+
+**Parameters:**
+- `items: LibraryItems` — an object for working with the list of components and managing file writes.
+
+```typescript
+import { LibraryTypes, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Initialize LibraryItems
+const items = new LibraryItems()
+
+// 2. Initialize LibraryTypes
+const typeGenerator = new LibraryTypes(items)
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Triggers the generation of the global type definition file (`types.d.ts`).
+
+## Generated File Structure
+
+The `make` method generates a `types` file (typically `types.d.ts`) that extends Vue's global component registry.
+
+**Generated Code Profile:**
+- **Module:** `@vue/runtime-core`
+- **Interface:** `GlobalComponents`
+- **Output:** A mapping of all library components.
+
+**Example Structure:**
+```typescript
+import _DxtButton from '../components/dxt/button/DxtButton.vue'
+import _DxtInput from '../components/dxt/input/DxtInput.vue'
+
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents {
+    DxtButton: typeof _DxtButton
+    DxtInput: typeof _DxtInput
+  }
+}
+```

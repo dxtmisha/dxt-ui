@@ -1,0 +1,65 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryFlags - Trình tạo kết nối cờ (Flags)'/>
+
+# Lớp LibraryFlags
+
+Lớp `LibraryFlags` chịu trách nhiệm tạo các tệp để kết nối cờ quốc gia với hệ thống thiết kế. Nó tạo ra một điểm nhập TypeScript để đăng ký cờ dưới dạng biểu tượng và một tệp JSON chứa danh sách tất cả các mã định danh cờ có sẵn.
+
+## Các tính năng chính
+
+- **Tạo kết nối cờ** — Tạo tệp khởi tạo TypeScript đăng ký các cờ dưới dạng biểu tượng toàn cục.
+- **Tạo danh sách mã định danh** — Tạo tệp JSON cho siêu dữ liệu và lựa chọn cờ tự động.
+- **Tiêu chuẩn hóa đặt tên** — Tự động định dạng mã định danh cờ theo quy ước `flag-[code]`.
+- **Xử lý tự động** — Quét và xử lý tất cả các cờ có sẵn từ thư viện phương tiện.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `LibraryFlags(items)`.
+
+**Tham số:**
+- `items: LibraryItems` — một đối tượng để làm việc với danh sách các thành phần và quản lý việc ghi tệp.
+
+```typescript
+import { LibraryFlags, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo LibraryItems
+const items = new LibraryItems()
+
+// 2. Khởi tạo LibraryFlags
+const flagGenerator = new LibraryFlags(items)
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Kích hoạt quá trình tạo các tệp kết nối cờ (TS và JSON).
+
+## Cấu trúc các tệp được tạo
+
+Phương thức `make` tạo ra hai tệp chính để tích hợp cờ vào thư viện:
+
+### 1. Kết nối cờ (`flags.ts`)
+
+Đăng ký cờ dưới dạng biểu tượng toàn cục bằng trình quản lý `Icons`.
+
+**Cấu trúc ví dụ:**
+```typescript
+import { Icons } from '@dxtmisha/functional'
+import flags from '@dxtmisha/media/flags'
+
+export const makeFlags = (): void => {
+  Icons.add('flag-vn', flags.vn)
+  Icons.add('flag-us', flags.us)
+}
+```
+
+### 2. Mã định danh cờ (`flags.json`)
+
+Một mảng chuỗi đơn giản chứa tất cả các khóa cờ được tạo.
+
+**Cấu trúc ví dụ:**
+```json
+["flag-vn", "flag-us"]
+```

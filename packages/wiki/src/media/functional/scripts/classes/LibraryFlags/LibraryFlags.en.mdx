@@ -1,0 +1,65 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryFlags - Flags Connector Generator'/>
+
+# LibraryFlags Class
+
+The `LibraryFlags` class is responsible for generating files to connect country flags to the design system. It produces a TypeScript entry point for registering flags as icons and a JSON file containing a list of all available flag identifiers.
+
+## Key Features
+
+- **Flag Connection Generation** — Creates a TypeScript initialization file that registers flags as global icons.
+- **Identifier List Generation** — Produces a JSON file for metadata and automated flag selection.
+- **Naming Standardization** — Automatically formats flag identifiers to follow the `flag-[code]` convention.
+- **Automated Processing** — Scans and processes all available flags from the media library.
+
+## Initialization
+
+To initialize the object, call the `LibraryFlags(items)` constructor.
+
+**Parameters:**
+- `items: LibraryItems` — an object for working with the list of components and managing file writes.
+
+```typescript
+import { LibraryFlags, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Initialize LibraryItems
+const items = new LibraryItems()
+
+// 2. Initialize LibraryFlags
+const flagGenerator = new LibraryFlags(items)
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Triggers the generation of the flag connection files (TS and JSON).
+
+## Generated Files Structure
+
+The `make` method generates two main files to integrate flags into the library:
+
+### 1. Flag Connection (`flags.ts`)
+
+Registers flags as global icons using the `Icons` manager.
+
+**Example Structure:**
+```typescript
+import { Icons } from '@dxtmisha/functional'
+import flags from '@dxtmisha/media/flags'
+
+export const makeFlags = (): void => {
+  Icons.add('flag-us', flags.us)
+  Icons.add('flag-gb', flags.gb)
+}
+```
+
+### 2. Flag Identifiers (`flags.json`)
+
+A simple array of strings containing all generated flag keys.
+
+**Example Structure:**
+```json
+["flag-us", "flag-gb"]
+```

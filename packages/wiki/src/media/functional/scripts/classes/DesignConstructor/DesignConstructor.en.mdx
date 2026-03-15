@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignConstructor - Design Constructor Generator'/>
+
+# DesignConstructor Class
+
+The `DesignConstructor` class is a specialized implementation of `DesignCommand` focused on generating the internal logic and "constructors" for components. It automates the creation of property definitions, TypeScript types, and styling hooks that form the foundation of a component's behavioral layer.
+
+## Key Features
+
+- **Constructor Scaffolding** — Automatically generates the entire file set required for a component's behavioral logic.
+- **Type Safety Automation** — Generates `props.ts`, `types.ts`, and `basicTypes.ts` to ensure strict typing across the component.
+- **Styling Foundation** — Creates the initial `style.scss` file compatible with the constructor's class system.
+- **Unified Logic Generation** — Produces both `.ts` and `.tsx` files for flexible component logic implementation.
+- **System Integration** — Automatically updates `package.json` and creates library exports for the new constructor.
+
+## Initialization
+
+To initialize a generator instance, use the constructor. It automatically resolves the target directory within the `src/constructors` folder.
+
+**Parameters:**
+- `command: string` — The unique identifier for the component (e.g., `'button'`, `'list'`).
+- `options: Record<string, string>` — Optional configuration key-value pairs.
+
+```typescript
+import { DesignConstructor } from '@dxtmisha/scripts'
+
+const generator = new DesignConstructor('button')
+generator.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Executes the full sequence of directory creation, file generation, and system registration.
+
+## Operations
+
+### Generated Files Structure
+
+When initialized, `DesignConstructor` processes several template-driven files:
+
+- `properties.json` — Mapping configuration for the constructor's internal properties.
+- `props.ts` — Property definitions including types and default values.
+- `types.ts` & `basicTypes.ts` — TypeScript interfaces and type definitions for component state and configuration.
+- `style.scss` — Initial style definitions linked to the constructor's class structure.
+- `Constructors.ts` — The main logic implementation file.
+- `ConstructorsDesign.tsx` — The visual/render layer implementation using TSX.
+- `index.ts` — The entry point for the constructor's exports.
+
+### Lifecycle of Execution
+
+The `make()` process executes in a precise order to maintain data integrity:
+1. **Directory Setup**: Resolves and confirms the target path in the `src/constructors` directory.
+2. **File Generation**: Sequentially calls specialized `make[File]()` methods to transform templates into project code.
+3. **Internal Integration**: Updates the project's root `package.json` mapping to expose the new constructor.
+4. **Library Publication**: Generates an export file in the library's root directory to enable global consumption.

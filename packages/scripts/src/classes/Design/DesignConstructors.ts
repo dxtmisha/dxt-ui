@@ -9,14 +9,18 @@ import { DesignConstructor } from './DesignConstructor'
 import { UI_DIR_CONSTRUCTOR, UI_DIR_IN, UI_DIRS_LIBRARY, UI_FILE_STYLE_SCSS } from '../../config'
 
 /**
- * Class for managing design constructors.
+ * Class for orchestrating the generation and update of multiple design constructors.
+ * It manages the collective lifecycle of component constructors, including bulk updates and shared style generation.
  *
- * Класс для управления конструкторами дизайна.
+ * Класс для управления генерацией и обновлением нескольких конструкторов дизайна.
+ * Управляет коллективным жизненным циклом конструкторов компонентов, включая массовые обновления и генерацию общих стилей.
  */
 export class DesignConstructors {
   /**
-   * Constructor
-   * @param name component name/ название компонента
+   * Constructor for DesignConstructors.
+   *
+   * Конструктор для DesignConstructors.
+   * @param name optional specific component name to process / необязательное имя конкретного компонента для обработки
    */
   constructor(
     protected readonly name?: string

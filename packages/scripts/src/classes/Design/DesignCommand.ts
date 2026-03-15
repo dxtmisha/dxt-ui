@@ -20,9 +20,11 @@ const dirnamePath = hasNativeDirname()
 const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates']
 
 /**
- * Base abstract class for generating script files.
+ * Base abstract class for generating script files and design system components.
+ * Provides unified logic for template reading, data transformation, and file writing.
  *
- * Базовый абстрактный класс для генерации файлов скриптов.
+ * Базовый абстрактный класс для генерации файлов скриптов и компонентов дизайн-системы.
+ * Обеспечивает единую логику чтения шаблонов, трансформации данных и записи файлов.
  */
 export abstract class DesignCommand {
   protected abstract DIR_SAMPLE: string
@@ -31,11 +33,12 @@ export abstract class DesignCommand {
   protected structure?: DesignStructure
 
   /**
-   * Constructor
-   * @param command component name/ названия компонента
-   * @param options additional parameters/ дополнительные параметры
+   * Constructor for DesignCommand.
+   *
+   * Конструктор для DesignCommand.
+   * @param command component name or command identifier / название компонента или идентификатор команды
+   * @param options additional key-value parameters / дополнительные параметры ключ-значение
    */
-
   protected constructor(
     protected readonly command: string,
     protected readonly options: Record<string, string> = {}
@@ -43,9 +46,11 @@ export abstract class DesignCommand {
   }
 
   /**
-   * Entry point for the command.
+   * Main entry point for executing the command.
+   * Validates input and triggers the primary initialization logic.
    *
-   * Точка входа для команды.
+   * Основная точка входа для выполнения команды.
+   * Проверяет входные данные и запускает основную логику инициализации.
    */
   make(): void {
     if (this.command) {

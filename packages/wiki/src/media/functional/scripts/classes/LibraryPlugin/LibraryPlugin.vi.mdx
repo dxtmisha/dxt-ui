@@ -1,0 +1,69 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryPlugin - Trình tạo plugin Vite'/>
+
+# Lớp LibraryPlugin
+
+Lớp `LibraryPlugin` chịu trách nhiệm tạo điểm nhập (entry point) cho plugin Vite của thư viện hệ thống thiết kế. Plugin này tạo điều kiện thuận lợi cho việc tích hợp tự động các thành phần, các biến phong cách và cấu hình thiết kế vào quá trình xây dựng (build) của Vite.
+
+## Các tính năng chính
+
+- **Tạo điểm nhập plugin** — Tạo tệp khởi tạo plugin Vite tiêu chuẩn.
+- **Tích hợp hệ thống thiết kế** — Kết nối các thành phần và biến được định nghĩa trong cấu hình thiết kế với công cụ xây dựng.
+- **Đặt tên tự động** — Tự động tạo tên plugin và các mã định danh dựa trên mã của hệ thống thiết kế.
+- **Chuỗi lệnh và linh hoạt** — Hỗ trợ chuỗi lệnh (chaining) để cấu hình thư viện một cách hợp lý.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `LibraryPlugin(items)`.
+
+**Tham số:**
+- `items: LibraryItems` — một đối tượng để làm việc với danh sách các thành phần và quản lý việc ghi tệp.
+
+```typescript
+import { LibraryPlugin, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo LibraryItems
+const items = new LibraryItems()
+
+// 2. Khởi tạo LibraryPlugin
+const pluginGenerator = new LibraryPlugin(items)
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): this` — Kích hoạt quá trình tạo tệp plugin (`plugin.ts`).
+
+## Cấu trúc tệp được tạo
+
+Phương thức `make` tạo ra một tệp `plugin.ts` xuất bản một hàm plugin Vite chuyên dụng. Hàm này tạo điều kiện thuận lợi cho việc kết nối giữa thư viện đã biên dịch và công cụ xây dựng.
+
+**Đặc điểm của hàm được tạo:**
+- **Tên:** `ui[Design]VitePlugin` (ví dụ: `uiDxtVitePlugin`)
+- **Tham số:** `options: PluginOptions`
+- **Kết quả:** Trả về một thực thể `VitePlugin`.
+
+**Cấu trúc ví dụ:**
+```typescript
+/**
+ * Khởi tạo plugin Vite cho hệ thống thiết kế.
+ * @param options các tùy chọn plugin
+ */
+export function uiDxtVitePlugin(
+  options: PluginOptions = {}
+): VitePlugin {
+  return new Plugin(
+    designName,
+    packageName,
+    componentsReg,
+    styleVarsReg,
+    componentsList,
+    'vite-plugin-dxt-ui',
+    options
+  ).init()
+}
+```
+
+

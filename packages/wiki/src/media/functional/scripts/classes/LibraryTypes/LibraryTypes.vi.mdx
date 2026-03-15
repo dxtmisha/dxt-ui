@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryTypes - Trình tạo định nghĩa kiểu Vue'/>
+
+# Lớp LibraryTypes
+
+Lớp `LibraryTypes` chịu trách nhiệm tạo các tệp Định nghĩa Kiểu (Type Definition) toàn cục cho các thành phần Vue. Điều này cho phép hỗ trợ IDE đầy đủ và kiểm tra kiểu dữ liệu cho các thành phần hệ thống thiết kế được sử dụng trên toàn hệ thống trong một ứng dụng Vue.
+
+## Các tính năng chính
+
+- **Hỗ trợ thành phần toàn cục** — Tạo các khối `declare module` cho `@vue/runtime-core`.
+- **Ánh xạ kiểu tự động** — Tự động liên kết tên mã của thành phần với các kiểu tệp `.vue` tương ứng.
+- **Cải thiện trải nghiệm lập trình (DX)** — Cho phép IntelliSense và xác thực props cho các thành phần hệ thống thiết kế trong các mẫu (templates) Vue.
+- **Phân giải đường dẫn động** — Phân giải chính xác các đường dẫn nguồn của thành phần dựa trên cấu hình hệ thống thiết kế.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `LibraryTypes(items)`.
+
+**Tham số:**
+- `items: LibraryItems` — một đối tượng để làm việc với danh sách các thành phần và quản lý việc ghi tệp.
+
+```typescript
+import { LibraryTypes, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo LibraryItems
+const items = new LibraryItems()
+
+// 2. Khởi tạo LibraryTypes
+const typeGenerator = new LibraryTypes(items)
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Kích hoạt quá trình tạo tệp định nghĩa kiểu toàn cục (`types.d.ts`).
+
+## Cấu trúc tệp được tạo
+
+Phương thức `make` tạo ra một tệp `types` (thường là `types.d.ts`) nhằm mở rộng sổ đăng ký thành phần toàn cục của Vue.
+
+**Đặc điểm của mã được tạo:**
+- **Module:** `@vue/runtime-core`
+- **Giao diện (Interface):** `GlobalComponents`
+- **Kết quả:** Một bản ánh xạ của tất cả các thành phần trong thư viện.
+
+**Cấu trúc ví dụ:**
+```typescript
+import _DxtButton from '../components/dxt/button/DxtButton.vue'
+import _DxtInput from '../components/dxt/input/DxtInput.vue'
+
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents {
+    DxtButton: typeof _DxtButton
+    DxtInput: typeof _DxtInput
+  }
+}
+```

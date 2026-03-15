@@ -8,24 +8,26 @@ import { LibraryItems } from './LibraryItems'
 import { UI_FILE_NAME_FLAGS } from '../../config'
 
 /**
- * Class for generating a file to connect flags.
+ * Class for generating connection files for country flags and providing a list of flag identifiers.
  *
- * Класс для формирования файла для подключения флагов.
+ * Класс для формирования файлов подключения флагов стран и предоставления списка идентификаторов флагов.
  */
 export class LibraryFlags {
   /**
-   * Constructor
-   * @param items object for working with the list of components/ объект для работы со списком компонентов
+   * Constructor for LibraryFlags.
+   *
+   * Конструктор для LibraryFlags.
+   * @param items object for working with the list of components / объект для работы со списком компонентов
    */
-
   constructor(
     protected readonly items: LibraryItems
   ) {
   }
 
   /**
-   * Adds a file with flags.<br>
-   * Добавляет файл с флагами.
+   * Generates flag connection files (TypeScript) and a list of flag keys (JSON).
+   *
+   * Генерирует файлы подключения флагов (TypeScript) и список ключей флагов (JSON).
    */
   make(): void {
     const data: string[] = []

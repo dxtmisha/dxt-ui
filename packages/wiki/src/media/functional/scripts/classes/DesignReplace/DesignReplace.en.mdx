@@ -1,0 +1,76 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignReplace - Template Transformation Engine'/>
+
+# DesignReplace Class
+
+The `DesignReplace` class is the core engine for transforming raw file templates into project-ready source code. It uses a specialized marking system to identify sections of text that should be dynamically replaced with component names, property definitions, types, or styling logic derived from the component's `DesignStructure`.
+
+## Key Features
+
+- **Smart Label Resolution** — Identifies and replaces text blocks bounded by specific comments (e.g., `// :type` or `<!-- :props -->`).
+- **Context-Aware Naming** — Automatically transforms generic placeholders like `[project]`, `[design]`, and `[component]` based on configuration.
+- **Type Injection** — Generates complex TypeScript type unions and interfaces directly from property metadata.
+- **Default Value Mapping** — Resolves and injects default values for properties into object literals or constructor arguments.
+- **Conditional Class Generation** — Produces optimized Vue/TS class binding objects and CSS selector mappings.
+- **Path Normalization** — Automatically resolves relative import paths based on the target file's location in the project tree.
+
+## Initialization
+
+To initialize a replacement engine, pass the component's data structure, the target mark identifier, and the template string.
+
+**Parameters:**
+- `structure: DesignStructure` — The source of truth for component metadata and structural rules.
+- `mark: string` — The primary label used in templates to identify components (e.g., `'button'`).
+- `sample: string` — The text content of the template to be modified.
+
+```typescript
+import { DesignReplace } from '@dxtmisha/scripts'
+
+const engine = new DesignReplace(structure, 'button', templateContent)
+engine.replaceName().replaceType()
+const output = engine.get()
+```
+
+## Methods
+
+### Control
+
+- `get(): string` — Returns the final version of the template after all transformations.
+- `getNameFile(name: string): string` — Processes a filename or string to replace project-level placeholders.
+- `replaceName(): this` — Replaces the primary component name marks throughout the template.
+- `replacePath(): this` — Fixes relative paths (`../../../`) to point to the correct project root location.
+- `replaceMark(name: string, data: string[], end = ''): this` — Performs block replacement for a specific label by injecting an array of strings.
+- `replaceOnce(name?: string, removeReplacement?: boolean | Function): this` — Handles single-use replacement markers (`.once`).
+
+### Property & Type Automation
+
+- `replaceType(constructor?: string): this` — Generates and injects TypeScript types for all component properties.
+- `replaceDefault(): this` — Injects default values for properties into the template.
+- `replaceProps(): this` — Generates Vue-style property definition objects.
+- `replacePropsValues(): this` — Creates arrays of allowed values for properties (enums/unions).
+
+### Styling & Classes
+
+- `replaceClasses(template?: Function, end = ''): this` — Generates a list of available CSS classes based on the structure.
+- `replaceClassesValues(): this` — Produces dynamic class binding logic for logic implementation files.
+- `replaceStylesValues(): this` — Maps component properties to CSS custom variables (CSS Variables).
+- `replaceConstructorClasses(): this` — Specialized class generator for component constructors.
+
+## Operations
+
+### The Marking System
+
+The engine scans for specific comment patterns to identify where to inject code. It supports multiple comment styles:
+
+1. **Inline Logic**: `// :label data` or `/* :label */ content /* :label.end */`
+2. **Template Comments**: `<!-- :label --> content <!-- :label.end -->`
+3. **Property Specificity**: `:label.propertyName.none` (used to exclude specific properties from a block).
+
+### Transformation Flow
+
+When a replacement method like `replaceType()` is called, the class:
+1. **Scans**: Locates the start and end markers for the `type` label.
+2. **Consults Structure**: Iterates over the properties in the provided `DesignStructure`.
+3. **Resolves Logic**: Determines the correct TypeScript syntax for each property based on its value type (boolean, string, or union).
+4. **Injects**: Replaces the content between the markers with the new generated code, maintaining original indentation.

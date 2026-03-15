@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryItems - Trình quản lý danh sách thành phần'/>
+
+# Lớp LibraryItems
+
+Lớp `LibraryItems` chịu trách nhiệm quản lý danh sách các thành phần (components) trong hệ thống thiết kế. Nó cung cấp các tiện ích để lấy dữ liệu thành phần, đếm số lượng thành phần, xác định đường dẫn và ghi dữ liệu vào thư mục thư viện.
+
+## Các tính năng chính
+
+- **Quản lý thành phần** — Lấy và sắp xếp các thành phần theo nhóm thiết kế.
+- **Xác định đường dẫn** — Xác định đường dẫn tuyệt đối chính xác cho các thành phần của hệ thống thiết kế.
+- **Tiện ích ghi tệp** — Cung cấp cách thức chuẩn hóa để ghi các tệp TypeScript và JSON vào thư viện, bao gồm cả tiêu đề được tạo tự động.
+- **Tích hợp cấu hình thiết kế** — Tích hợp liền mạch với `PropertiesConfig` và `PropertiesFile` cho các cài đặt cụ thể của dự án.
+
+## Khởi tạo
+
+Khởi tạo lớp `LibraryItems` mà không cần đối số.
+
+```typescript
+import { LibraryItems } from '@dxtmisha/scripts'
+
+const items = new LibraryItems()
+```
+
+## Các phương thức
+
+### Truy xuất dữ liệu
+
+- `get(): LibraryAll` — trả về danh sách đầy đủ các thành phần được sắp xếp theo nhóm thiết kế.
+- `getComponentList(): LibraryData[]` — trả về một mảng phẳng của tất cả các thành phần.
+- `getCount(): number` — trả về tổng số lượng thành phần.
+- `getComponentsPath(): string[]` — trả về các thành phần đường dẫn cho thư mục thành phần.
+
+## Các thao tác (Operations)
+
+### `write`
+
+Ghi dữ liệu được cung cấp vào một tệp trong thư mục thư viện. Tự động thêm tiêu đề cảnh báo tạo tự động cho các tệp TypeScript.
+
+**Tham số:**
+- `name: string` — tên tệp (không bao gồm phần mở rộng).
+- `data: string[]` — một mảng các chuỗi để ghi. Mỗi chuỗi sẽ được phân tách bởi một ký tự xuống dòng.
+- `extension: string = 'ts'` — phần mở rộng tệp. Mặc định là `ts`. `json` cũng được hỗ trợ.
+
+**Ví dụ:**
+```typescript
+items.write('my-feature', [
+  'export const active = true',
+  'export const count = 10'
+])
+```

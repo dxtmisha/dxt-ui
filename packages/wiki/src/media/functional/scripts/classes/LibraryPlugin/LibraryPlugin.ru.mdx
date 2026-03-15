@@ -1,0 +1,69 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/LibraryPlugin - Генератор Vite-плагина'/>
+
+# Класс LibraryPlugin
+
+Класс `LibraryPlugin` отвечает за создание точки входа плагина Vite для библиотеки дизайн-системы. Этот плагин обеспечивает автоматическую интеграцию компонентов, переменных стилей и конфигураций дизайна в процесс сборки Vite.
+
+## Ключевые особенности
+
+- **Генерация точки входа плагина** — создает стандартный файл инициализации плагина Vite.
+- **Интеграция дизайн-системы** — связывает компоненты и переменные, определенные в конфигурации дизайна, с инструментом сборки.
+- **Автоматическое именование** — автоматически генерирует имя плагина и идентификаторы на основе кода дизайн-системы.
+- **Чейнинг и гибкость** — поддержка цепочки вызовов для удобной настройки библиотеки.
+
+## Инициализация
+
+Для инициализации объекта вызовите конструктор `LibraryPlugin(items)`.
+
+**Параметры:**
+- `items: LibraryItems` — объект для работы со списком компонентов и управления записью файлов.
+
+```typescript
+import { LibraryPlugin, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Инициализация LibraryItems
+const items = new LibraryItems()
+
+// 2. Инициализация LibraryPlugin
+const pluginGenerator = new LibraryPlugin(items)
+```
+
+## Методы
+
+### Управление
+
+- `make(): this` — Запускает процесс генерации файла плагина (`plugin.ts`).
+
+## Структура итогового файла
+
+Метод `make` формирует файл `plugin.ts`, который экспортирует специальную функцию плагина Vite. Эта функция обеспечивает связь между скомпилированной библиотекой и инструментом сборки.
+
+**Профиль сгенерированной функции:**
+- **Имя:** `ui[Design]VitePlugin` (например, `uiDxtVitePlugin`)
+- **Параметры:** `options: PluginOptions`
+- **Результат:** Возвращает экземпляр `VitePlugin`.
+
+**Пример структуры:**
+```typescript
+/**
+ * Инициализирует плагин Vite для дизайн-системы.
+ * @param options настройки плагина
+ */
+export function uiDxtVitePlugin(
+  options: PluginOptions = {}
+): VitePlugin {
+  return new Plugin(
+    designName,
+    packageName,
+    componentsReg,
+    styleVarsReg,
+    componentsList,
+    'vite-plugin-dxt-ui',
+    options
+  ).init()
+}
+```
+
+

@@ -4,13 +4,15 @@ import { LibraryItems } from './LibraryItems'
 import type { LibraryData } from '../../types/libraryTypes'
 
 /**
- * Class for creating a file with type exports.
+ * Class for generating global type definitions for Vue components.
  *
- * Класс для создания файла с экспортом типов.
+ * Класс для создания глобальных определений типов для компонентов Vue.
  */
 export class LibraryTypes {
   /**
-   * Constructor
+   * Constructor for LibraryTypes.
+   *
+   * Конструктор для LibraryTypes.
    * @param items object for working with the list of components / объект для работы со списком компонентов
    */
   constructor(
@@ -19,9 +21,9 @@ export class LibraryTypes {
   }
 
   /**
-   * Creates a file with type exports.
+   * Creates the type definition file (`types.d.ts`) for global Vue components.
    *
-   * Создает файл с экспортом типов.
+   * Создает файл определений типов (`types.d.ts`) для глобальных компонентов Vue.
    */
   make(): void {
     this.items.write(

@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/LibraryTypes - Генератор определений типов Vue'/>
+
+# Класс LibraryTypes
+
+Класс `LibraryTypes` отвечает за генерацию файлов глобальных определений типов для компонентов Vue. Это обеспечивает полную поддержку IDE и проверку типов для компонентов дизайн-системы, используемых глобально в приложении Vue.
+
+## Ключевые особенности
+
+- **Поддержка глобальных компонентов** — генерирует блоки `declare module` для `@vue/runtime-core`.
+- **Автоматическое сопоставление типов** — автоматически связывает программные имена компонентов с типами соответствующих `.vue` файлов.
+- **Улучшение DX** — включает IntelliSense и валидацию пропсов для компонентов дизайн-системы в шаблонах Vue.
+- **Динамическое разрешение путей** — корректно вычисляет пути к исходным кодам компонентов на основе конфигурации дизайн-системы.
+
+## Инициализация
+
+Для инициализации объекта вызовите конструктор `LibraryTypes(items)`.
+
+**Параметры:**
+- `items: LibraryItems` — объект для работы со списком компонентов и управления записью файлов.
+
+```typescript
+import { LibraryTypes, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Инициализация LibraryItems
+const items = new LibraryItems()
+
+// 2. Инициализация LibraryTypes
+const typeGenerator = new LibraryTypes(items)
+```
+
+## Методы
+
+### Управление
+
+- `make(): void` — Запускает процесс генерации файла глобальных определений типов (`types.d.ts`).
+
+## Структура сгенерированного файла
+
+Метод `make` формирует файл `types` (обычно `types.d.ts`), который расширяет глобальный реестр компонентов Vue.
+
+**Профиль сгенерированного кода:**
+- **Модуль:** `@vue/runtime-core`
+- **Интерфейс:** `GlobalComponents`
+- **Результат:** Сопоставление всех компонентов библиотеки.
+
+**Пример структуры:**
+```typescript
+import _DxtButton from '../components/dxt/button/DxtButton.vue'
+import _DxtInput from '../components/dxt/input/DxtInput.vue'
+
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents {
+    DxtButton: typeof _DxtButton
+    DxtInput: typeof _DxtInput
+  }
+}
+```

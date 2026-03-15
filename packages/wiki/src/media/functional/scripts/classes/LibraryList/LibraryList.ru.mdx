@@ -1,0 +1,70 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/LibraryList - Генератор списка компонентов'/>
+
+# Класс LibraryList
+
+Класс `LibraryList` отвечает за создание основного конфигурационного файла дизайн-системы. Этот файл консолидирует метаданные библиотеки, шаблоны идентификации (регулярные выражения) и полный список импортов компонентов, необходимых для архитектуры дизайн-системы.
+
+## Ключевые особенности
+
+- **Консолидация метаданных** — собирает имена пакетов и идентификаторы дизайна в единой точке конфигурации.
+- **Генерация шаблонов** — автоматически строит сложные регулярные выражения для идентификации компонентов и переменных стилей.
+- **Картирование импортов** — формирует структурированный список импортов компонентов, используемый дизайнерскими инструментами и средствами сборки.
+- **Соблюдение стандартов именования** — автоматически обрабатывает префиксы дизайна и соглашения об именовании в стиле kebab-case.
+
+## Инициализация
+
+Для инициализации объекта вызовите конструктор `LibraryList(items)`.
+
+**Параметры:**
+- `items: LibraryItems` — объект для работы со списком компонентов и управления записью файлов.
+
+```typescript
+import { LibraryList, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Инициализация LibraryItems
+const items = new LibraryItems()
+
+// 2. Инициализация LibraryList
+const listGenerator = new LibraryList(items)
+```
+
+## Методы
+
+### Управление
+
+- `make(): this` — Запускает процесс генерации обзорного файла дизайн-системы (`design.ts`).
+
+## Структура сгенерированного файла
+
+Метод `make` формирует файл `design.ts`, который предоставляет необходимые метаданные для интеграции дизайн-системы.
+
+**Основные экспорты:**
+- `designName: string` — основной идентификатор дизайна.
+- `packageName: string` — имя целевого NPM-пакета.
+- `componentsReg: RegExp` — глобальный шаблон для идентификации компонентов дизайна.
+- `styleVarsReg: RegExp` — шаблон для идентификации специфичных для дизайна CSS-переменных.
+- `componentsList: PluginComponentImports` — реестр определений импорта отдельных компонентов.
+
+**Пример структуры:**
+```typescript
+import type { PluginComponentImports } from '@dxtmisha/constructor/plugin'
+
+// count: 2
+export const designName: string = 'dxt'
+export const packageName: string = '@dxtmisha/ui'
+export const componentsReg: RegExp = /((dxt)-?(button|input))/ig
+export const styleVarsReg: RegExp = /(?<=var\(--)(primary-color|font-size)/ig
+
+export const componentsList: PluginComponentImports = [
+  {
+    name: 'DxtButton',
+    reg: /^((dxt)-?(button))$/ig
+  },
+  {
+    name: 'DxtInput',
+    reg: /^((dxt)-?(input))$/ig
+  }
+]
+```

@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryMedia - Media Connection Generator'/>
+
+# LibraryMedia Class
+
+The `LibraryMedia` class is responsible for generating connection files for media data (primarily icons) and the main style entry point for the design system project. This ensures that assets are indexed and optimized for use within the library.
+
+## Key Features
+
+- **Icon Connection** — Scans for icons and generates an asynchronous loading mechanism via dynamic imports.
+- **Style Integration** — Connects the main project SCSS files to the build tool.
+- **Icon Manager Integration** — Automatically registers assets with the global `Icons` manager from the functional library.
+- **Lifecycle Management** — Supports method chaining and clean asset registration through automated code generation.
+
+## Initialization
+
+To initialize the object, call the `LibraryMedia(items)` constructor.
+
+**Parameters:**
+- `items: LibraryItems` — an object for working with the list of components and managing file writes.
+
+```typescript
+import { LibraryMedia, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Initialize LibraryItems
+const items = new LibraryItems()
+
+// 2. Initialize LibraryMedia
+const mediaGenerator = new LibraryMedia(items)
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Triggers the generation of media and style connection files.
+
+## Generated Files Structure
+
+The `make` method generates several files to integrate assets into the library:
+
+### 1. Media Connection (`media.ts`)
+
+Registers all icons from the `icons` directory using dynamic imports to optimize performance.
+
+**Generated Code Profile:**
+- **Name:** `[Design]MakeIcons` (e.g., `dxtMakeIcons`)
+- **Action:** Adds icon paths to the `Icons` global registry.
+
+**Example Structure:**
+```typescript
+import { Icons } from '@dxtmisha/functional'
+
+// Dynamic imports for each icon
+const iconArrow = async () => (await import('../../icons/arrow.svg'))?.default
+const iconSearch = async () => (await import('../../icons/search.svg'))?.default
+
+export const dxtMakeIcons = (): void => {
+  Icons.add('arrow', iconArrow)
+  Icons.add('search', iconSearch)
+}
+```
+
+### 2. Style Entry (`style.ts`)
+
+Serves as the main SCSS entry point, connecting project-specific styles to the library.
+
+**Example Structure:**
+```typescript
+import '../styles/ProjectName/main.scss'
+```

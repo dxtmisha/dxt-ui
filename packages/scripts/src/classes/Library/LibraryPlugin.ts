@@ -6,13 +6,15 @@ import { LibraryItems } from './LibraryItems'
 import { UI_FILE_NAME_PLUGIN } from '../../config'
 
 /**
- * Class for creating a plugin file.
+ * Class for creating a plugin file for the design system.
  *
- * Класс для создания файла плагина.
+ * Класс для создания файла плагина для дизайн-системы.
  */
 export class LibraryPlugin {
   /**
-   * Constructor
+   * Constructor for LibraryPlugin.
+   *
+   * Конструктор для LibraryPlugin.
    * @param items object for working with the list of components / объект для работы со списком компонентов
    */
   constructor(
@@ -21,9 +23,10 @@ export class LibraryPlugin {
   }
 
   /**
-   * Creates a plugin file.
+   * Creates a plugin file that initializes the Vite plugin for the library.
    *
-   * Создает файл плагина.
+   * Создает файл плагина, который инициализирует плагин Vite для библиотеки.
+   * @returns this
    */
   make(): this {
     const design = PropertiesConfig.getDesignName()

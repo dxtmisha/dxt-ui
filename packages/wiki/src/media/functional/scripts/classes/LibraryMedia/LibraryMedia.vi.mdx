@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryMedia - Trình tạo kết nối phương tiện'/>
+
+# Lớp LibraryMedia
+
+Lớp `LibraryMedia` chịu trách nhiệm tạo các tệp kết nối cho dữ liệu phương tiện (chủ yếu là biểu tượng) và điểm nhập phong cách (style) chính cho dự án hệ thống thiết kế. Điều này đảm bảo rằng các tài nguyên được lập chỉ mục và tối ưu hóa để sử dụng trong thư viện.
+
+## Các tính năng chính
+
+- **Kết nối biểu tượng** — Quét các biểu tượng và tạo cơ chế tải không đồng bộ thông qua nhập động (dynamic imports).
+- **Tích hợp phong cách** — Kết nối các tệp SCSS chính của dự án với công cụ xây dựng.
+- **Tích hợp trình quản lý biểu tượng** — Tự động đăng ký các tài nguyên với trình quản lý `Icons` toàn cục từ thư viện chức năng.
+- **Quản lý vòng đời** — Hỗ trợ chuỗi lệnh (chaining) và đăng ký tài nguyên sạch sẽ thông qua tạo mã tự động.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `LibraryMedia(items)`.
+
+**Tham số:**
+- `items: LibraryItems` — một đối tượng để làm việc với danh sách các thành phần và quản lý việc ghi tệp.
+
+```typescript
+import { LibraryMedia, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo LibraryItems
+const items = new LibraryItems()
+
+// 2. Khởi tạo LibraryMedia
+const mediaGenerator = new LibraryMedia(items)
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Kích hoạt quá trình tạo các tệp kết nối phương tiện và phong cách.
+
+## Cấu trúc các tệp được tạo
+
+Phương thức `make` tạo ra một số tệp để tích hợp các tài nguyên vào thư viện:
+
+### 1. Kết nối phương tiện (`media.ts`)
+
+Đăng ký tất cả các biểu tượng từ thư mục `icons` bằng cách sử dụng nhập động để tối ưu hóa hiệu suất.
+
+**Đặc điểm của mã được tạo:**
+- **Tên:** `[Design]MakeIcons` (ví dụ: `dxtMakeIcons`)
+- **Hành động:** Thêm đường dẫn biểu tượng vào sổ đăng ký toàn cục `Icons`.
+
+**Cấu trúc ví dụ:**
+```typescript
+import { Icons } from '@dxtmisha/functional'
+
+// Nhập động cho từng biểu tượng
+const iconArrow = async () => (await import('../../icons/arrow.svg'))?.default
+const iconSearch = async () => (await import('../../icons/search.svg'))?.default
+
+export const dxtMakeIcons = (): void => {
+  Icons.add('arrow', iconArrow)
+  Icons.add('search', iconSearch)
+}
+```
+
+### 2. Điểm nhập phong cách (`style.ts`)
+
+Đóng vai trò là điểm nhập SCSS chính, kết nối các phong cách cụ thể của dự án với thư viện.
+
+**Cấu trúc ví dụ:**
+```typescript
+import '../styles/ProjectName/main.scss'
+```

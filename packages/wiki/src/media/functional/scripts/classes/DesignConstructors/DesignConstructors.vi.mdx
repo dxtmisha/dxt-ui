@@ -1,0 +1,62 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignConstructors - Trình quản lý các hàm khởi tạo thiết kế'/>
+
+# Lớp DesignConstructors
+
+Lớp `DesignConstructors` đóng vai trò là trình điều phối cấp cao để quản lý tất cả các constructor của thành phần trong hệ thống thiết kế. Nó xử lý các hoạt động hàng loạt, chẳng hạn như cập nhật tất cả các constructor hiện có cùng một lúc và quản lý việc hợp nhất các kiểu dáng thành phần vào các xuất bản thư viện toàn cầu.
+
+## Các tính năng chính
+
+- **Quản lý vòng đời hàng loạt** — Có thể kích hoạt cập nhật cho tất cả các thành phần trong thư mục `constructors` hoặc nhắm mục tiêu vào một thành phần cụ thể.
+- **Quản lý bộ nhớ đệm (Cache)** — Tự động xóa bộ nhớ đệm thuộc tính trước khi bắt đầu quá trình tạo để đảm bảo dữ liệu luôn mới.
+- **Hợp nhất kiểu dáng tự động** — Quét tất cả các thành phần và tạo một điểm nhập SCSS tập trung cho thư viện toàn cầu.
+- **Khám phá danh mục** — Tự động xác định tất cả các constructor thành phần nằm trong đường dẫn nguồn của hệ thống.
+
+## Khởi tạo
+
+Để khởi tạo trình quản lý, hãy sử dụng hàm khởi tạo. Nếu một tên được cung cấp, các hoạt động sẽ bị giới hạn ở thành phần cụ thể đó.
+
+**Tham số:**
+- `name?: string` — Mã định danh duy nhất tùy chọn của một thành phần cần xử lý.
+
+```typescript
+import { DesignConstructors } from '@dxtmisha/scripts'
+
+// Trình quản lý cho tất cả các constructor
+const manager = new DesignConstructors()
+manager.make()
+
+// Trình quản lý cho một thành phần cụ thể
+const buttonManager = new DesignConstructors('button')
+buttonManager.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Bắt đầu quá trình tạo hoặc cập nhật cho một hoặc tất cả các constructor được xác định và làm mới các kiểu dáng toàn cục.
+
+### Thông tin
+
+- `getComponents(): string[]` — Trả về danh sách tất cả các mã định danh thành phần được tìm thấy trong thư mục constructors.
+- `getComponentsStyle(): string[]` — Trả về một mảng các câu lệnh SCSS `@forward` cho tất cả các thành phần đã đăng ký.
+
+## Các thao tác (Operations)
+
+### Tạo kiểu dáng toàn cục (Global Style Generation)
+
+Một trong những trách nhiệm chính của lớp này là duy trì tệp `style.scss` trong thư mục gốc của thư viện. Phương thức `makeStyle()` thực hiện các công việc sau:
+1. **Quét**: Lấy danh sách tất cả các thành phần thông qua `getComponents()`.
+2. **Ánh xạ đường dẫn**: Xây dựng các quy tắc `@forward` trỏ đến tệp kiểu dáng riêng lẻ của mỗi thành phần.
+3. **Ghi tệp**: Ghi các quy tắc này vào tệp `packages/library/style.scss` tập trung, đảm bảo rằng các kiểu dáng của toàn bộ hệ thống thiết kế có thể truy cập được thông qua một lần nhập (import) duy nhất.
+
+### Quy trình thực thi
+
+Khi `make()` được gọi, lớp sẽ tuân theo trình tự sau:
+1. **Dọn dẹp**: Xóa `PropertiesCache` để ngăn dữ liệu cũ ảnh hưởng đến kết quả đầu ra.
+2. **Ủy quyền**: 
+    - Nếu `name` được cung cấp trong quá trình khởi tạo, nó sẽ tạo một `DesignConstructor` mới cho thành phần đó và gọi phương thức `make()` của nó.
+    - Nếu không có `name` nào được cung cấp, nó sẽ lặp qua tất cả các thành phần được phát hiện, tạo một `DesignConstructor` cho mỗi thành phần và kích hoạt các bản cập nhật của chúng.
+3. **Hợp nhất**: Cuối cùng, nó gọi `makeStyle()` để đồng bộ hóa các xuất bản kiểu dáng toàn cục với danh sách thành phần hiện tại.

@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignCommand - Base Design Command Class'/>
+
+# DesignCommand Class
+
+The `DesignCommand` class is a base abstract class designed to standardize the generation of files and components within the design system. It provides a common framework for reading templates, performing replacements, and writing resulting code to the project structure.
+
+## Key Features
+
+- **Standardized Execution** — Provides a consistent `make()` entry point for all design-related generation tasks.
+- **Template Management** — Includes built-in methods for reading samples and applying transformations using specialized replace objects.
+- **Naming Conventions** — Automatically handles various naming formats (CamelCase, kebab-case, etc.) for both components and projects.
+- **Structural Integrity** — Utilizes `DesignStructure` to ensure generated files follow the established design system hierarchy.
+- **Package Integration** — Provides utilities for updating `package.json` with new configuration data.
+
+## Initialization
+
+As an abstract class, `DesignCommand` is not initialized directly but inherited by specific command implementations.
+
+**Parameters (for inheritors):**
+- `command: string` — The identifier for the component or action.
+- `options: Record<string, string>` — Additional configuration parameters.
+
+```typescript
+// Example of an inheritor's constructor
+class MyDesignCommand extends DesignCommand {
+  constructor(command: string, options: Record<string, string>) {
+    super(command, options)
+  }
+}
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Triggers the command execution and main initialization logic.
+
+### Protected API (for inheritors)
+
+- `isFile(name): boolean` — Checks if a file exists in the target directory.
+- `read(name): string` — Reads the content of a file from the target directory.
+- `readSample(name): string` — Reads a template file from the samples directory.
+- `readDefinable(name, callback?): DesignReplace` — Reads a file if it exists, otherwise falls back to its template.
+- `write(name, value): void` — Writes or overwrites a file with the provided content.
+- `updatePackage(path, value): this` — Updates a specific key in the project's `package.json`.
+
+## Operations
+
+### Command Execution Workflow
+
+The `make()` method follows a strict execution pattern:
+1. **Validation**: Verifies if a command identifier is provided.
+2. **Initialization**: Calls the abstract `initMain()` method (implemented by children) to perform specific file operations.
+3. **Logging**: Provides console feedback on the start and end of the command.
+
+### Name Resolution
+
+`DesignCommand` provides several helpers for consistent naming:
+- `getName()`: Returns the command name in CamelCase.
+- `getCode()`: Returns the command name in kebab-case.
+- `getFullName()`: Combines the design prefix with the command name.
+- `getProjectName()`: Returns the standardized project identifier.

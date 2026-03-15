@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignFlags - Flag Sprite Generator'/>
+
+# DesignFlags Class
+
+The `DesignFlags` class provides an automated solution for generating optimized image sprites from a collection of SVG flag icons. It handles the canvas-based rendering, grid layout calculation, and the generation of CSS mapping files for efficient icon display using background positioning.
+
+## Key Features
+
+- **Automated Sprite Assembly** — Combines multiple individual SVG files into a single optimized `.webp` sprite.
+- **Dynamic CSS Generation** — Automatically produces utility classes with precise `background-position` values for every flag.
+- **Configurable Grid Layout** — Allows customization of flag dimensions and the number of columns in the resulting image.
+- **Canvas-Powered Rendering** — Uses high-performance image processing for smooth conversion and scaling.
+- **Aspect Ratio Maintenance** — Ensures flags are centered within their grid tiles while maintaining their original design proportions.
+
+## Initialization
+
+To initialize the generator, specify the source directory and desired output proportions.
+
+**Parameters:**
+- `dir: string` — The directory path where the source `.svg` flag icons are located.
+- `width: number` — The target width of a single flag in the generated sprite (default: 96).
+- `height: number` — The target height of a single flag in the generated sprite (default: 72).
+- `columns: number` — The number of icon columns to arrange in the sprite grid (default: 12).
+
+```typescript
+import { DesignFlags } from '@dxtmisha/scripts'
+
+const generator = new DesignFlags('assets/flags', 64, 48)
+generator.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): Promise<void>` — Orchestrates the entire process: reading files, drawing to canvas, saving the image, and writing the CSS file.
+
+### Information
+
+- `getLines(): number` — Calculates the total number of rows required in the sprite grid based on the file count and column limit.
+
+## Operations
+
+### Generation Workflow
+
+When `make()` is executed, the class performs the following steps:
+1. **Discovery**: Scans the source directory for `.svg` files and initializes the grid dimensions.
+2. **Layout Calculation**: Determines tiling offsets and centering margins for the specified flag sizes.
+3. **Canvas Drawing**: Iteratively loads each image and draws it onto the sprite canvas at the calculated grid coordinate.
+4. **Data Collection**: Records the name and coordinates of each flag to build the mapping data.
+5. **Asset Export**: 
+    - Saves the canvas content as a `webp` image in the `assets` directory.
+    - Generates a `flags.css` file with root variable definitions and individual `--[name]` modifier classes.
+
+### Style Implementation
+
+The generated CSS uses a centralized class `.ui-sys-flags` that stores dimension variables and the background image link. Individual modifiers (e.g., `.ui-sys-flags--us`) then update the `background-position` to isolate specific icons, minimizing browser paint calls and HTTP requests.

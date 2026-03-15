@@ -15,6 +15,13 @@ const DESIGN_FLAGS_FILE_PATH = ['.', '..', 'assets', DESIGN_FLAGS_FILE_NAME_ITEM
 const DESIGN_FLAGS_FILE_STYLE_NAME = [UI_DIR_IN, 'styles', 'flags.css']
 const DESIGN_FLAGS_CLASS_NAME = '.ui-sys-flags'
 
+/**
+ * Class for generating a sprite image and CSS mapping from a directory of flag icons.
+ * It automates the creation of a combined webp image and a CSS file with specific background-position utility classes.
+ *
+ * Класс для генерации спрайта и CSS-маппинга из директории иконок флагов.
+ * Автоматизирует создание комбинированного изображения webp и CSS-файла с утилитарными классами для позиционирования фона.
+ */
 export class DesignFlags {
   protected list: string[]
   protected data: DesignFlagsList = []
@@ -29,6 +36,15 @@ export class DesignFlags {
   protected readonly canvas: Canvas
   protected readonly context: SKRSContext2D
 
+  /**
+   * Constructor for DesignFlags.
+   *
+   * Конструктор для DesignFlags.
+   * @param dir path to the directory containing SVG icons / путь к директории с SVG-иконками
+   * @param width width of a single flag in the sprite / ширина одного флага в спрайте
+   * @param height height of a single flag in the sprite / высота одного флага в спрайте
+   * @param columns number of columns in the sprite grid / количество колонок в сетке спрайта
+   */
   constructor(
     protected readonly dir: string = 'src/assets/flags',
     protected readonly width: number = 96,

@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryItems - Component List Manager'/>
+
+# LibraryItems Class
+
+The `LibraryItems` class is responsible for managing the list of components within the design system. It provides utilities to retrieve component data, count components, determine component paths, and write data to the library directory.
+
+## Key Features
+
+- **Component Management** — Retrieves and organizes components by design groups.
+- **Path Resolution** — Determines the correct absolute paths for design system components.
+- **File Writing Utility** — Provides a standardized way to write TypeScript and JSON files to the library, including auto-generated headers.
+- **Design Configuration Integration** — Seamlessly integrates with `PropertiesConfig` and `PropertiesFile` for project-specific settings.
+
+## Initialization
+
+Initialize the `LibraryItems` class without arguments.
+
+```typescript
+import { LibraryItems } from '@dxtmisha/scripts'
+
+const items = new LibraryItems()
+```
+
+## Methods
+
+### Data Retrieval
+
+- `get(): LibraryAll` — returns the full list of components organized by design groups.
+- `getComponentList(): LibraryData[]` — returns a flat array of all components.
+- `getCount(): number` — returns the total number of components.
+- `getComponentsPath(): string[]` — returns the path elements for the components directory.
+
+## Operations
+
+### `write`
+
+Writes the provided data to a file within the library directory. Automatically adds a generation header for TypeScript files.
+
+**Parameters:**
+- `name: string` — the file name (without extension).
+- `data: string[]` — an array of strings to write. Each string will be separated by a newline character.
+- `extension: string = 'ts'` — the file extension. Defaults to `ts`. `json` is also supported.
+
+**Example:**
+```typescript
+items.write('my-feature', [
+  'export const active = true',
+  'export const count = 10'
+])
+```

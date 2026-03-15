@@ -15,19 +15,23 @@ import { UI_KEY_CUSTOM } from '../../config'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 /**
- * Class with basic replacement for templates.
+ * Engine for systematic text replacement within file templates based on component structure.
+ * It manages the transformation of labels (marks) into actual code segments, including property types, default values, and CSS class mappings.
  *
- * Класс с базовой заменой для шаблонов.
+ * Движок для систематической замены текста в шаблонах файлов на основе структуры компонента.
+ * Управляет преобразованием меток (marks) в реальные сегменты кода, включая типы свойств, значения по умолчанию и маппинг CSS-классов.
  */
 export class DesignReplace {
   protected readonly component: string
   protected readonly mark: string
 
   /**
-   * Constructor
-   * @param structure object for working with components/ объект для работы с компонентами
-   * @param mark метка для замена на имя
-   * @param sample property template/ шаблон свойства
+   * Constructor for DesignReplace.
+   *
+   * Конструктор для DesignReplace.
+   * @param structure object containing component metadata and design logic / объект, содержащий метаданные компонента и логику дизайна
+   * @param mark the identifier used in templates for replacement (e.g., 'button') / идентификатор, используемый в шаблонах для замены
+   * @param sample the raw template content to be processed / необработанное содержимое шаблона для обработки
    */
   constructor(
     protected structure: DesignStructure,

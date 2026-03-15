@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PackageInit - Package Initializer'/>
+
+# PackageInit Class
+
+The `PackageInit` class is responsible for bootstrapping new package structures within the design system. It handles directory scanning and delegates individual file initialization to the `PackageInitItem` class, ensuring consistent environment setup based on provided templates and types.
+
+## Key Features
+
+- **Automated Structure Bootstrapping** — Automatically creates the necessary folder hierarchy for new packages.
+- **Template-Based Initialization** — Supports different package types and template sets for flexible environment setup.
+- **Recursive Directory Handling** — Identifies and processes empty or new directories within the package root.
+- **Lifecycle Management** — Provides a single entry point for triggering the entire initialization sequence.
+
+## Initialization
+
+To initialize the object, call the `PackageInit(type, templates, dir)` constructor.
+
+**Parameters:**
+- `type: string` — The package type identifier (e.g., `'functional'`, `'ui'`).
+- `templates?: string` — Optional comma-separated list of templates to be applied.
+- `dir: string` — The base directory where packages are located (defaults to `UI_DIR_PACKAGES`).
+
+```typescript
+import { PackageInit } from '@dxtmisha/scripts'
+
+// Initialize for a 'functional' package with default templates
+const initializer = new PackageInit('functional', 'basic,test')
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Starts the initialization process for all identified directories within the target path.
+
+## Operations
+
+### Detailed Initialization Flow
+
+The `make()` method follows a specific sequence to ensure a clean package setup:
+
+1. **Scanning**: It scans the target `dir` to identify subdirectories that require initialization (typically empty ones).
+2. **Delegation**: For each identified directory, it creates an instance of `PackageInitItem`.
+3. **Execution**: It triggers the `make()` method on each `PackageInitItem`, which handles the actual file creation and template application.
+
+### Identifying Target Directories
+
+The class uses the `getDirs()` internal method to find directories that are "empty" (contain no subdirectories), which are then treated as the roots for new package components.
+```typescript
+protected getDirs(): string[] {
+  return PropertiesFile.readDir(this.dir)
+    .filter(
+      path => PropertiesFile.readDir([this.dir, path]).length === 0
+    )
+}
+```

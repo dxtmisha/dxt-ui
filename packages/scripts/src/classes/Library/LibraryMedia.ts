@@ -11,20 +11,27 @@ import { UI_DIRS_ICONS, UI_FILE_NAME_MEDIA, UI_FILE_NAME_STYLE } from '../../con
 import type { LibraryIconItem } from '../../types/libraryTypes'
 
 /**
- * Class for generating the media data connection file.
+ * Class for generating connection files for media data (primarily icons) and style entry points.
  *
- * Класс для формирования файла подключения медиа-данных.
+ * Класс для формирования файлов подключения медиа-данных (прежде всего иконок) и точек входа стилей.
  */
 export class LibraryMedia {
   /**
-   * Constructor
-   * @param items object for working with the list of components/ объект для работы со списком компонентов
+   * Constructor for LibraryMedia.
+   *
+   * Конструктор для LibraryMedia.
+   * @param items object for working with the list of components / объект для работы со списком компонентов
    */
   constructor(
     protected readonly items: LibraryItems
   ) {
   }
 
+  /**
+   * Generates media connection files and style entries.
+   *
+   * Генерирует файлы подключения медиа и записи стилей.
+   */
   make(): void {
     const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
     const name = toCamelCase(PropertiesConfig.getDesignName())

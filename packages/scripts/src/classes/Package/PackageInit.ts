@@ -6,11 +6,19 @@ import { PackageInitItem } from './PackageItem'
 import { UI_DIR_PACKAGES } from '../../config'
 
 /**
- * Initializes the package configuration and environment.
+ * Class for initializing the package structure and development environment based on templates.
  *
- * Инициализирует конфигурацию пакета и окружение.
+ * Класс для инициализации структуры пакета и среды разработки на основе шаблонов.
  */
 export class PackageInit {
+  /**
+   * Constructor for PackageInit.
+   *
+   * Конструктор для PackageInit.
+   * @param type package type identifier / идентификатор типа пакета
+   * @param templates optional list of templates to apply / необязательный список шаблонов для применения
+   * @param dir base directory for packages / базовая директория для пакетов
+   */
   constructor(
     protected readonly type: string,
     protected readonly templates?: string,
@@ -19,9 +27,9 @@ export class PackageInit {
   }
 
   /**
-   * Creates the package structure and initializes files.
+   * Triggers the package creation process and initializes required files.
    *
-   * Создает структуру пакета и инициализирует файлы.
+   * Запускает процесс создания пакета и инициализирует необходимые файлы.
    */
   make() {
     console.log(`Initializing package of type: ${this.type} with templates: ${this.templates}`)

@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignCommand - Lớp lệnh thiết kế cơ sở'/>
+
+# Lớp DesignCommand
+
+Lớp `DesignCommand` là một lớp trừu tượng cơ sở được thiết kế để tiêu chuẩn hóa việc tạo các tệp và thành phần trong hệ thống thiết kế. Nó cung cấp một khung chung để đọc các mẫu, thực hiện thay thế và ghi mã kết quả vào cấu trúc dự án.
+
+## Các tính năng chính
+
+- **Thực thi tiêu chuẩn hóa** — Cung cấp một điểm nhập `make()` nhất quán cho tất cả các tác vụ tạo liên quan đến thiết kế.
+- **Quản lý mẫu (Template Management)** — Bao gồm các phương thức tích hợp sẵn để đọc các mẫu và áp dụng các chuyển đổi bằng cách sử dụng các đối tượng thay thế chuyên dụng.
+- **Quy ước đặt tên** — Tự động xử lý các định dạng tên khác nhau (CamelCase, kebab-case, v.v.) cho cả thành phần và dự án.
+- **Tính toàn vẹn cấu trúc** — Sử dụng `DesignStructure` để đảm bảo các tệp được tạo tuân theo hệ thống phân cấp hệ thống thiết kế đã được thiết lập.
+- **Tích hợp gói** — Cung cấp các tiện ích để cập nhật `package.json` với dữ liệu cấu hình mới.
+
+## Khởi tạo
+
+Là một lớp trừu tượng, `DesignCommand` không được khởi tạo trực tiếp mà được kế thừa bởi các triển khai lệnh cụ thể.
+
+**Tham số (cho các lớp kế thừa):**
+- `command: string` — Mã định danh cho thành phần hoặc hành động.
+- `options: Record<string, string>` — Các tham số cấu hình bổ sung.
+
+```typescript
+// Ví dụ về hàm khởi tạo của lớp kế thừa
+class MyDesignCommand extends DesignCommand {
+  constructor(command: string, options: Record<string, string>) {
+    super(command, options)
+  }
+}
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Kích hoạt việc thực thi lệnh và logic khởi tạo chính.
+
+### API được bảo vệ (cho các lớp kế thừa)
+
+- `isFile(name): boolean` — Kiểm tra xem tệp có tồn tại trong thư mục mục tiêu hay không.
+- `read(name): string` — Đọc nội dung của một tệp từ thư mục mục tiêu.
+- `readSample(name): string` — Đọc một tệp mẫu từ thư mục mẫu.
+- `readDefinable(name, callback?): DesignReplace` — Đọc một tệp nếu nó tồn tại, nếu không sẽ quay lại tệp mẫu của nó.
+- `write(name, value): void` — Ghi hoặc ghi đè một tệp với nội dung được cung cấp.
+- `updatePackage(path, value): this` — Cập nhật một khóa cụ thể trong tệp `package.json` của dự án.
+
+## Các thao tác (Operations)
+
+### Quy trình thực thi lệnh
+
+Phương thức `make()` tuân theo một mẫu thực thi nghiêm ngặt:
+1. **Xác thực**: Kiểm tra xem mã định danh lệnh có được cung cấp hay không.
+2. **Khởi tạo**: Gọi phương thức trừu tượng `initMain()` (được triển khai bởi các lớp con) để thực hiện các thao tác tệp cụ thể.
+3. **Ghi nhật ký (Logging)**: Cung cấp phản hồi trên bảng điều khiển (console) về việc bắt đầu và kết thúc lệnh.
+
+### Phân giải tên
+
+`DesignCommand` cung cấp một số hàm hỗ trợ để đặt tên nhất quán:
+- `getName()`: Trả về tên lệnh ở định dạng CamelCase.
+- `getCode()`: Trả về tên lệnh ở định dạng kebab-case.
+- `getFullName()`: Kết hợp tiền tố thiết kế với tên lệnh.
+- `getProjectName()`: Trả về mã định danh dự án tiêu chuẩn hóa.

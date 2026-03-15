@@ -1,0 +1,70 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryList - Trình tạo danh sách thành phần'/>
+
+# Lớp LibraryList
+
+Lớp `LibraryList` chịu trách nhiệm tạo tệp cấu hình cốt lõi cho hệ thống thiết kế. Tệp này hợp nhất siêu dữ liệu thư viện, các mẫu nhận dạng (regex) và danh sách đầy đủ các lần nhập thành phần cần thiết cho kiến trúc hệ thống thiết kế.
+
+## Các tính năng chính
+
+- **Hợp nhất siêu dữ liệu** — Tập hợp tên gói và mã định danh thiết kế vào một điểm cấu hình duy nhất.
+- **Tạo mẫu nhận dạng** — Tự động xây dựng các biểu thức chính quy phức tạp để nhận dạng thành phần và biến phong cách.
+- **Ánh xạ nhập (Import Mapping)** — Tạo danh sách có cấu trúc các lần nhập thành phần được sử dụng bởi các công cụ thiết kế và xây dựng.
+- **Thực thi tiêu chuẩn đặt tên** — Tự động xử lý các tiền tố thiết kế và quy ước đặt tên kebab-case.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `LibraryList(items)`.
+
+**Tham số:**
+- `items: LibraryItems` — một đối tượng để làm việc với danh sách các thành phần và quản lý việc ghi tệp.
+
+```typescript
+import { LibraryList, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo LibraryItems
+const items = new LibraryItems()
+
+// 2. Khởi tạo LibraryList
+const listGenerator = new LibraryList(items)
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): this` — Kích hoạt quá trình tạo tệp tổng quan của hệ thống thiết kế (`design.ts`).
+
+## Cấu trúc tệp được tạo
+
+Phương thức `make` tạo ra một tệp `design.ts` cung cấp siêu dữ liệu thiết yếu cho việc tích hợp hệ thống thiết kế.
+
+**Các nội dung xuất bản chính:**
+- `designName: string` — Mã định danh thiết kế chính.
+- `packageName: string` — Tên gói NPM mục tiêu.
+- `componentsReg: RegExp` — Mẫu toàn cục để nhận dạng các thành phần thiết kế.
+- `styleVarsReg: RegExp` — Mẫu để nhận dạng các biến CSS dành riêng cho thiết kế.
+- `componentsList: PluginComponentImports` — Danh mục các định nghĩa nhập thành phần riêng lẻ.
+
+**Cấu trúc ví dụ:**
+```typescript
+import type { PluginComponentImports } from '@dxtmisha/constructor/plugin'
+
+// count: 2
+export const designName: string = 'dxt'
+export const packageName: string = '@dxtmisha/ui'
+export const componentsReg: RegExp = /((dxt)-?(button|input))/ig
+export const styleVarsReg: RegExp = /(?<=var\(--)(primary-color|font-size)/ig
+
+export const componentsList: PluginComponentImports = [
+  {
+    name: 'DxtButton',
+    reg: /^((dxt)-?(button))$/ig
+  },
+  {
+    name: 'DxtInput',
+    reg: /^((dxt)-?(input))$/ig
+  }
+]
+```

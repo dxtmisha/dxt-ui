@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignComponent - Design Component Generator'/>
+
+# DesignComponent Class
+
+The `DesignComponent` class is a specialized implementation of `DesignCommand` dedicated to the automated creation and maintenance of design system components. It orchestrates the generation of diverse file types—from styles and component logic to documentation and integration metadata.
+
+## Key Features
+
+- **Full-Cycle Scaffolding** — Automatically generates 10+ essential files for a new component (Vue, SCSS, TS, MDX).
+- **Intelligent Prop Resolution** — Uses `DesignTypescript` to bake component properties directly into generated files.
+- **Storybook Automation** — Generates `.stories.ts` and `.mdx` files with automated render and import resolution.
+- **AI-Enhanced Wiki** — Creates specialized companion components for AI-driven documentation search and display.
+- **Workspace Integration** — Seamlessly registers new components in the root `package.json` and the library's global export list.
+- **Style Token Mapping** — Transform project structures into SCSS style tokens automatically.
+
+## Initialization
+
+To initialize a generator instance, use the constructor. Note that it sets up the target directory based on the project configuration.
+
+**Parameters:**
+- `command: string` — The identifier for the component (e.g., `'button'`, `'input'`).
+- `options: Record<string, string>` — Optional configuration flags.
+
+```typescript
+import { DesignComponent } from '@dxtmisha/scripts'
+
+const generator = new DesignComponent('button')
+generator.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Starts the comprehensive generation process for all component-related files.
+
+## Operations
+
+### Generated Files Structure
+
+When `make()` is executed, the following file hierarchy is created or updated within the component's directory:
+
+- `properties.json` — Stores primary mapping data for the component.
+- `props.ts` — The TypeScript definition for component props, resolved from constructor templates.
+- `styleToken.scss` — SCSS style tokens based on the component's design structure.
+- `[Name].vue` — The primary Vue component file with pre-configured classes and styles.
+- `[Name]AiWiki.vue` — A companion component for AI-enhanced wiki documentation.
+- `index.ts` — The component's entry point for public exports.
+- `wiki.ts` & `wikiData.ts` — Metadata and structured property information for the documentation site.
+- `[Name].stories.ts` — Automated Storybook stories with dynamic component resolution.
+- `[Name].mdx` — Markdown documentation for Storybook with pre-filled slots and props data.
+
+### Integration Process
+
+The class ensures that the new component is fully integrated into the design system environment:
+1. **Package Update**: Adds an entry to the root `package.json` under `exports`.
+2. **Library Export**: Creates a proxy file in the library directory to enable global component imports.
+3. **Wiki Description Matching**: Scans `wikiDescriptions` to automatically populate Storybook stories with relevant examples.

@@ -1,0 +1,70 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryList - Component List Generator'/>
+
+# LibraryList Class
+
+The `LibraryList` class is responsible for generating the core configuration file for the design system. This file consolidates library metadata, identification patterns (regex), and the full list of component imports required for the design system architecture.
+
+## Key Features
+
+- **Metadata Consolidation** — Aggregates package names and design identifiers into a single configuration point.
+- **Pattern Generation** — Automatically builds complex regular expressions for component and style variable identification.
+- **Import Mapping** — Generates a structured list of component imports used by the designer and build tools.
+- **Naming Standard Enforcement** — Handles design prefixes and kebab-case naming conventions automatically.
+
+## Initialization
+
+To initialize the object, call the `LibraryList(items)` constructor.
+
+**Parameters:**
+- `items: LibraryItems` — an object for working with the list of components and managing file writes.
+
+```typescript
+import { LibraryList, LibraryItems } from '@dxtmisha/scripts'
+
+// 1. Initialize LibraryItems
+const items = new LibraryItems()
+
+// 2. Initialize LibraryList
+const listGenerator = new LibraryList(items)
+```
+
+## Methods
+
+### Control
+
+- `make(): this` — Triggers the generation of the design system overview file (`design.ts`).
+
+## Generated File Structure
+
+The `make` method generates a `design.ts` file that provides essential metadata for the design system's integration.
+
+**Key Exports:**
+- `designName: string` — The primary design identifier.
+- `packageName: string` — The target NPM package name.
+- `componentsReg: RegExp` — Global pattern for identifying design components.
+- `styleVarsReg: RegExp` — Pattern for identifying design-specific CSS variables.
+- `componentsList: PluginComponentImports` — Registry of individual component import definitions.
+
+**Example Structure:**
+```typescript
+import type { PluginComponentImports } from '@dxtmisha/constructor/plugin'
+
+// count: 2
+export const designName: string = 'dxt'
+export const packageName: string = '@dxtmisha/ui'
+export const componentsReg: RegExp = /((dxt)-?(button|input))/ig
+export const styleVarsReg: RegExp = /(?<=var\(--)(primary-color|font-size)/ig
+
+export const componentsList: PluginComponentImports = [
+  {
+    name: 'DxtButton',
+    reg: /^((dxt)-?(button))$/ig
+  },
+  {
+    name: 'DxtInput',
+    reg: /^((dxt)-?(input))$/ig
+  }
+]
+```

@@ -1,0 +1,62 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignConstructors - Design Constructors Manager'/>
+
+# DesignConstructors Class
+
+The `DesignConstructors` class serves as a high-level orchestrator for managing all component constructors within the design system. It handles bulk operations, such as updating all existing constructors at once, and manages the consolidation of component styles into the global library exports.
+
+## Key Features
+
+- **Bulk Lifecycle Management** — Can trigger updates for all components in the `constructors` directory or target a specific one.
+- **Cache Management** — Automatically clears property caches before starting the generation process to ensure data freshity.
+- **Automated Style Consolidation** — Scans all components and generates a centralized SCSS entry point for the global library.
+- **Directory Discovery** — Automatically identifies all component constructors located in the system's source path.
+
+## Initialization
+
+To initialize the manager, use the constructor. If a name is provided, operations will be restricted to that specific component.
+
+**Parameters:**
+- `name?: string` — Optional unique identifier of a component to process.
+
+```typescript
+import { DesignConstructors } from '@dxtmisha/scripts'
+
+// Manager for all constructors
+const manager = new DesignConstructors()
+manager.make()
+
+// Manager for a specific component
+const buttonManager = new DesignConstructors('button')
+buttonManager.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Starts the generation or update process for one or all identified constructors and refreshes global styles.
+
+### Information
+
+- `getComponents(): string[]` — Returns a list of all component identifiers found in the constructors directory.
+- `getComponentsStyle(): string[]` — Returns an array of SCSS `@forward` statements for all registered components.
+
+## Operations
+
+### Global Style Generation
+
+One of the primary responsibilities of this class is maintaining the `style.scss` file in the library root. The `makeStyle()` method performs the following:
+1. **Scanning**: It retrieves a list of all components via `getComponents()`.
+2. **Path Mapping**: It constructs `@forward` rules pointing to each component's individual style file.
+3. **Writing**: It writes these rules into the centralized `packages/library/style.scss` file, ensuring that the entire design system's styles are accessible through a single import.
+
+### Execution Workflow
+
+When `make()` is called, the class follows this sequence:
+1. **Cleanup**: It clears the `PropertiesCache` to prevent stale data from affecting the output.
+2. **Delegation**: 
+    - If a `name` was provided during initialization, it creates a new `DesignConstructor` for that component and calls its `make()` method.
+    - If no `name` was provided, it iterates through all discovered components, creating a `DesignConstructor` for each and triggering their updates.
+3. **Consolidation**: Finally, it calls `makeStyle()` to synchronize the global style exports with the current component list.

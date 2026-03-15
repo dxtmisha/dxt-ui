@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PackageInitItem - Package Item Initializer'/>
+
+# PackageInitItem Class
+
+The `PackageInitItem` class handles the detailed initialization of an individual component or sub-package. It manages the file lifecycle—from template application to integration with the main library, `package.json`, and Storybook.
+
+## Key Features
+
+- **File Generation** — Automatically creates files based on samples and specialized templates.
+- **Dynamic Content Replacement** — Automatically resolves placeholders like `[name]` and `@packages/library` within generated files.
+- **Library Integration** — Automatically generates entry points and registers the component in the global library.
+- **Dependency Management** — Updates the root `package.json` to include the new package in dependencies, exports, and files list.
+- **Storybook Automation** — Automatically injects new stories into the Storybook configuration.
+
+## Initialization
+
+To initialize the object, call the `PackageInitItem(name, dir, type, templates)` constructor.
+
+**Parameters:**
+- `name: string` — The unique name/path identifier of the component.
+- `dir: string[]` — The absolute path array to the component's target directory.
+- `type: string` — The package type identifier (e.g., `'functional'`, `'ui'`).
+- `templates?: string` — Optional comma-separated list of templates to be applied.
+
+```typescript
+import { PackageInitItem } from '@dxtmisha/scripts'
+
+const item = new PackageInitItem(
+  'button',
+  ['path', 'to', 'button'],
+  'ui'
+)
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Executes the full initialization sequence: creating files, updating the library, `package.json`, and Storybook.
+
+## Operations
+
+### Initialization Workflow
+
+When `make()` is called, the class performs the following steps in order:
+
+1. **File Scaffolding**: It retrieves sample files from the media/templates directory based on the package `type`.
+2. **Template Application**: If specific `templates` are provided, it fetches and applies them.
+3. **File Writing**: It writes the processed files to the target directory, performing necessary content replacements.
+4. **Integration (Library)**: If a `library.ts` file is created, it triggers the automatic generation of export files in the library root.
+5. **Integration (Package)**: It updates the root `package.json` to register the new package's workspace dependency and exports.
+6. **Integration (Storybook)**: It scans for the Storybook configuration and adds patterns to include the new component's stories.
+
+### Internal Resolution Logic
+
+The class uses several internal helpers to resolve naming conventions:
+- **`getName()`**: Normalizes the component name for use in file content.
+- **`getCode()`**: Converts the name to a hyphenated code for package identifiers.
+- **`getProjectName()`**: Resolves the full NPM package name including the design prefix.

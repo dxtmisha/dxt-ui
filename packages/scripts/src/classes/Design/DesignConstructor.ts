@@ -18,18 +18,22 @@ const FILE_CLASS = 'ConstructorsDesign.tsx'
 const FILE_INDEX = 'index.ts'
 
 /**
- * Class for generating files based on a constructor.
+ * Class for generating files and configurations based on a component's constructor.
+ * It automates the creation of property definitions, type files, styles, and integration logic for constructors.
  *
- * Класс для генерации файлов по конструктору.
+ * Класс для генерации файлов и конфигураций на основе конструктора компонента.
+ * Автоматизирует создание определений свойств, файлов типов, стилей и логики интеграции для конструкторов.
  */
 export class DesignConstructor extends DesignCommand {
   protected DIR_SAMPLE: string = UI_DIR_CONSTRUCTOR
   protected dir: string[]
 
   /**
-   * Constructor
-   * @param command component name/ названия компонента
-   * @param options additional parameters/ дополнительные параметры
+   * Constructor for DesignConstructor.
+   *
+   * Конструктор для DesignConstructor.
+   * @param command component name or command identifier / название компонента или идентификатор команды
+   * @param options additional key-value parameters / дополнительные параметры ключ-значение
    */
   constructor(
     command: string,

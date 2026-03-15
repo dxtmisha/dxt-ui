@@ -29,11 +29,20 @@ type PackageInitItemFile = {
 }
 
 /**
- * Represents a single package item with its metadata and operations.
+ * Class for initializing a single package component, managing its files, dependencies, and integration.
  *
- * Представляет отдельный элемент пакета с его метаданными и операциями.
+ * Класс для инициализации отдельного компонента пакета, управления его файлами, зависимостями и интеграцией.
  */
 export class PackageInitItem {
+  /**
+   * Constructor for PackageInitItem.
+   *
+   * Конструктор для PackageInitItem.
+   * @param name unique name of the component / уникальное имя компонента
+   * @param dir path to the component directory / путь к директории компонента
+   * @param type package type identifier / идентификатор типа пакета
+   * @param templates optional list of templates to apply / необязательный список шаблонов для применения
+   */
   constructor(
     protected readonly name: string,
     protected readonly dir: string[],
@@ -43,9 +52,9 @@ export class PackageInitItem {
   }
 
   /**
-   * Initializes the package item by creating files from samples and templates.
+   * Performs the full initialization cycle for the package item, including file creation and integration updates.
    *
-   * Инициализирует элемент пакета, создавая файлы из образцов и шаблонов.
+   * Выполняет полный цикл инициализации элемента пакета, включая создание файлов и обновление интеграций.
    */
   make() {
     console.log('Package init in:', this.dir)
