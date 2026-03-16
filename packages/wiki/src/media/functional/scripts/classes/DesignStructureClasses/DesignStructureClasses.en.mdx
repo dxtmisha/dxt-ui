@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignStructureClasses - CSS Class Resolver'/>
+
+# DesignStructureClasses Class
+
+The `DesignStructureClasses` class is responsible for transforming a component's structural metadata into a flattened list of CSS class definitions. It identifies specific tokens marked as subclasses and recursively builds class names following BEM (Block Element Modifier) naming conventions, ensuring consistency across the design system's style architecture.
+
+## Key Features
+
+- **Recursive Class Discovery** — Deeply traverses property trees to find nested elements and modifiers.
+- **BEM Name Construction** — Automatically joins parent and child identifiers using double underscores (`__`) for elements.
+- **CamelCase Indexing** — Generates clean, variable-friendly names for use in TypeScript/Vue logic.
+- **Full-Name Support** — Allows specific tokens to ignore parent hierarchies and use global class names when required.
+- **Automated Property Mapping** — Directly integrates with standard property metadata to determine which items contribute to the styling API.
+
+## Initialization
+
+To initialize the class resolver, provide the base component name. The class will automatically load the associated structural metadata via its parent abstraction.
+
+**Parameters:**
+- `component: string` — The identifier of the component to process (e.g., `'button'`).
+
+```typescript
+import { DesignStructureClasses } from '@dxtmisha/scripts'
+
+const resolver = new DesignStructureClasses('button')
+const classes = resolver.get()
+```
+
+## Methods
+
+### Information
+
+- `get(): DesignStructureClassesList` — Returns the fully processed list of class mapping objects.
+
+## Operations
+
+### The Class Resolution Workflow
+
+When initialized, the class automatically executes its resolution logic:
+1. **Property Analysis**: The engine scans the component's `PropertyItem` list for tags indicating a `subclass` type.
+2. **Namespace Building**: It tracks the hierarchy of names. For example, a `label` inside a `button` becomes `button__label`.
+3. **Data Structuring**: For each identified class, it creates an object containing:
+    - **index**: A CamelCase version of the name (e.g., `buttonLabel`) for code references.
+    - **className**: The actual CSS class string (e.g., `button__label`).
+    - **full**: A flag indicating if the name is an absolute global class.
+4. **Flattening**: The recursive tree is flattened into a single array, providing a fast lookup for template engines.
+
+### Integration with Code Generators
+
+This class provides the essential mapping used by `DesignReplace` to inject class definitions into component implementations. By centralizing the naming logic, it ensures that changes to naming conventions can be applied globally across all components without manual file edits.

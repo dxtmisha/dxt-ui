@@ -9,9 +9,11 @@ import type {
 } from '../../types/designTypes'
 
 /**
- * Class for working with TypeScript types
+ * Utility for interacting with the TypeScript Compiler API to analyze and extract type metadata from source files.
+ * It parses interfaces and type aliases to retrieve property details, including types, literal unions, and documentation comments.
  *
- * Класс для работы с типами TypeScript
+ * Утилита для взаимодействия с TypeScript Compiler API для анализа и извлечения метаданных типов из исходных файлов.
+ * Анализирует интерфейсы и псевдонимы типов для получения сведений о свойствах, включая типы, литеральные объединения и комментарии к документации.
  */
 export class DesignTypescript {
   protected readonly program: ts.Program
@@ -19,6 +21,13 @@ export class DesignTypescript {
   protected readonly sourceFile?: ts.SourceFile
   protected types?: DesignTypescriptList
 
+  /**
+   * Constructor for DesignTypescript.
+   *
+   * Конструктор для DesignTypescript.
+   * @param path path to the TypeScript source file to analyze / путь к исходному файлу TypeScript для анализа
+   * @param options compiler options for the TypeScript program / опции компилятора для программы TypeScript
+   */
   constructor(
     path: string = '',
     options: ts.CompilerOptions = {}

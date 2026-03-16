@@ -1,0 +1,62 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignWikiStormItem - Component IDE Metadata Resolver'/>
+
+# DesignWikiStormItem Class
+
+The `DesignWikiStormItem` class is a granular resolver responsible for extracting, analyzing, and formatting metadata for a single UI component. It acts as the bridge between internal Storybook-oriented documentation and the `web-types.json` format, ensuring that every property and description is correctly mapped for IDE IntelliSense.
+
+## Key Features
+
+- **Storeybook-to-WebTypes Mapping** — Automatically converts `WikiStorybook` objects into JetBrains-compatible tag definitions.
+- **Dynamic Module Resolution** — Calculates the correct module paths for components to support "Jump to Definition" in IDEs.
+- **Context-Aware Documentation** — Preserves and formats component descriptions, property types, and default values.
+- **AST-Like Data Retrieval** — Programmatically imports and parses `wikiData.ts` files to retrieve live component metadata.
+- **Attribute Synthesis** — Iteratively builds attribute lists by resolving complex types into human-readable IDE strings.
+
+## Initialization
+
+Initialize the resolver by providing the project context, the structural path, and the component's library metadata.
+
+**Parameters:**
+- `project: string` — The name of the project (e.g., `'@dxtmisha/ui'`).
+- `path: string[]` — Segments of the file system path leading to the component folder.
+- `data: LibraryData` — Core metadata of the component (name, alias, directory).
+
+```typescript
+import { DesignWikiStormItem } from '@dxtmisha/scripts'
+
+const resolver = new DesignWikiStormItem(
+  '@dxtmisha/ui',
+  ['packages', 'core', 'src', 'components'],
+  componentData
+)
+await resolver.init()
+const tagMetadata = resolver.get()
+```
+
+## Methods
+
+### Information Acquisition
+
+- `get(): WebTypesTagItem | undefined` — Returns the consolidated tag definition containing the name, description, source, and attributes.
+- `getAttribute(item: WikiStorybookProp): WebTypesAttributeItem` — Transforms a single Storybook property into a Web-Types attribute definition.
+- `getAttributes(): WebTypesAttributes` — Compiles the full list of attributes for the component.
+
+### Control
+
+- `init(): Promise<this>` — Asynchronously initializes the internal `WikiStorybook` instance by loading the component's documentation data.
+
+## Operations
+
+### The Metadata Extraction Flow
+
+When the resolver is initialized and queried, it follows a structured data pipeline:
+1. **Wiki Data Loading (`initWiki`)**: It resolves the file path to the component's `wikiData.ts` and performs a dynamic import to fetch live metadata (props, defaults, design tokens).
+2. **Tag Synthesis (`get`)**: It constructs the IDE tag name by combining the design system alias with the internal component name.
+3. **Source Mapping**: It defines the `module` and `symbol` properties, allowing IDEs to link the metadata back to the actual source code.
+4. **Attribute Compilation (`getAttributes`)**: It traverses every property defined in the wiki, resolving its documentation comment, TypeScript type, and default value into a standardized JSON structure.
+
+### Role in the IDE Engine
+
+`DesignWikiStormItem` is the "workhorse" of the metadata generation suite. While `DesignWikiStorm` manages the overall file structure, this class handles the complexity of individual component analysis, ensuring that specialized UI logic is accurately represented in a format that development tools can understand.

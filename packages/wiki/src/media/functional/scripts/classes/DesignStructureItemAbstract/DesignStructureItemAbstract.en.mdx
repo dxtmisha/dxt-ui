@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignStructureItemAbstract - Base Structural Resolver'/>
+
+# DesignStructureItemAbstract Class
+
+The `DesignStructureItemAbstract` class serves as the fundamental building block for all specialized structural resolvers within the design system. It handles the low-level orchestration of the `Properties` engine, ensuring that every inheriting class has instant access to validated component metadata and design system tokens.
+
+## Key Features
+
+- **Standardized Initialization** — Automatically sets up the `Properties` environment for any inheriting resolver.
+- **Unified Link Generation** — Centralizes the logic for creating internal cross-references within the design system's JSON metadata.
+- **Metadata Fetching** — Automatically retrieves the component-specific slice of structural data during construction.
+- **Contract Enforcement** — Uses abstract properties to ensure all subclasses implement a standardized data-access pattern.
+
+## Initialization
+
+As an abstract class, `DesignStructureItemAbstract` cannot be instantiated directly. Inheriting classes must call `super()` with the component's identifier.
+
+**Parameters:**
+- `component: string` — The identifier of the component whose structure is being analyzed (e.g., `'button'`).
+
+**Internal State:**
+- `properties`: An instance of the global `Properties` manager.
+- `items`: The specific subset of structural data resolved for the given component.
+
+## Methods
+
+### Data Access
+
+- `get(): D` — Implementation-specific method that returns the fully processed data object.
+
+### Internal Logic (Protected)
+
+- `getLink(): string` — Generates the formatted internal link (e.g., `{misha.button}`) used to look up tokens in the global design metadata.
+
+## Operations
+
+### The Resolver Foundation
+
+When a subclass is instantiated (e.g., `DesignStructureClasses`), the abstract parent coordinates the following lifecycle:
+1. **Engine Setup**: A new `Properties` instance is initialized to provide access to the design system's global state.
+2. **Identity Linkage**: The `getLink()` method generates a specialized string identifier that bridges the component name with the current design theme.
+3. **Data Localization**: Using the generated link, the class queries the global property store to isolate only the relevant metadata for the current component, storing it in the `items` property.
+4. **Subclass Extension**: The subclass can then access `this.items` to perform its specific logic (like building class trees or formatting styles) without needing to worry about the underlying file resolution or caching.
+
+### Architecture Role
+
+This abstract class ensures that the "Read" and "Resolver" layers of the script library follow a consistent pattern. By abstracting the property loading logic, it allows developer to create new types of structural analyzers by simply focusing on the transformation logic, rather than the data fetching mechanics.

@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypescript - Type Metadata Analyzer'/>
+
+# DesignTypescript Class
+
+The `DesignTypescript` class provides a high-level wrapper around the TypeScript Compiler API, allowing programmatic analysis of source code metadata. It specializes in extracting structured information from interfaces and type aliases, making it an essential tool for generating documentation, validation schemas, or optimized type definitions for AI assistants.
+
+## Key Features
+
+- **Compiler API Integration** — Seamlessly interacts with TypeScript's internal program and type checker.
+- **Deep Type Extraction** — Resolves complex property types, literal unions, and optionality.
+- **Documentation Retrieval** — Automatically extracts JSDoc comments to preserve developer-written context.
+- **AST-Aware Parsing** — Navigates the Abstract Syntax Tree (AST) to reliably identify interfaces and type declarations.
+- **Literal Value Discovery** — Intelligently broadens literal unions into usable string/number options.
+
+## Initialization
+
+Initialize the analyzer by providing the path to a TypeScript source file. You can also specify custom compiler options to match your project's environment.
+
+**Parameters:**
+- `path: string` — The absolute or relative path to the `.ts` file (default is `''`).
+- `options: ts.CompilerOptions` — Optional TypeScript compiler configuration (default is `{}`).
+
+```typescript
+import { DesignTypescript } from '@dxtmisha/scripts'
+
+const analyzer = new DesignTypescript('src/types/component.ts')
+const types = analyzer.getTypes()
+```
+
+## Methods
+
+### Data Acquisition
+
+- `getTypes(): DesignTypescriptList` — Scans the source file and returns an array of all detected type and interface metadata.
+- `getType(name: string): DesignTypescriptItem | undefined` — Retrieves metadata for a specific type or interface by its name.
+
+## Operations
+
+### The Metadata Analysis Workflow
+
+When analyzing a file, `DesignTypescript` performs the following steps:
+1. **Program Creation**: It initializes a TypeScript Program and Type Checker for the specified file.
+2. **Node Traversal**: It visits every node in the AST, specifically seeking `TypeAliasDeclaration` and `InterfaceDeclaration` nodes.
+3. **Property Resolution**: For each identified type, it queries the Type Checker to retrieve its properties (even those inherited).
+4. **Information Synthesis**: For every property, it builds a metadata object containing:
+    - **Name**: The property identifier.
+    - **Type**: A clean string representation of the type (e.g., `'string | number'`).
+    - **Options**: If the property is a literal union, it extracts the actual values.
+    - **Description**: The associated JSDoc comment.
+
+### Role in the Toolchain
+
+This class is frequently used by other generators (like `DesignTypes` or `DesignCommand`) to bridge the gap between static code and dynamic logic. By providing a clean API to the complex TypeScript Compiler, it allows the design system to remain "type-aware" across all its automated processes.

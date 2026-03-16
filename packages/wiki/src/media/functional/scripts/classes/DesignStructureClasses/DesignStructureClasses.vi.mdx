@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignStructureClasses - Bộ phân giải CSS Class'/>
+
+# Lớp DesignStructureClasses
+
+Lớp `DesignStructureClasses` chịu trách nhiệm chuyển đổi siêu dữ liệu cấu trúc của thành phần thành một danh sách phẳng các định nghĩa lớp CSS. Nó xác định các token cụ thể được đánh dấu là lớp con (subclasses) và xây dựng các tên lớp một cách đệ quy theo các quy ước đặt tên BEM (Block Element Modifier), đảm bảo tính nhất quán trên toàn bộ kiến trúc kiểu dáng của hệ thống thiết kế.
+
+## Các tính năng chính
+
+- **Khám phá lớp đệ quy** — Duyệt sâu các cây thuộc tính để tìm các phần tử và bộ sửa đổi (modifiers) lồng nhau.
+- **Xây dựng tên BEM** — Tự động kết hợp các mã định danh cha và con bằng cách sử dụng dấu gạch dưới kép (`__`) cho các phần tử.
+- **Lập chỉ mục CamelCase** — Tạo ra các tên sạch, thân thiện với biến để sử dụng trong logic TypeScript/Vue.
+- **Hỗ trợ tên đầy đủ (Full-Name)** — Cho phép các token cụ thể bỏ qua các phân cấp cha và sử dụng tên lớp toàn cục khi cần thiết.
+- **Ánh xạ thuộc tính tự động** — Tích hợp trực tiếp với siêu dữ liệu thuộc tính tiêu chuẩn để xác định các mục nào đóng góp vào API tạo kiểu dáng.
+
+## Khởi tạo
+
+Để khởi tạo bộ phân giải lớp, hãy cung cấp tên thành phần cơ sở. Lớp sẽ tự động tải siêu dữ liệu cấu trúc liên quan thông qua trừu tượng cha của nó.
+
+**Tham số:**
+- `component: string` — Mã định danh của thành phần cần xử lý (ví dụ: `'button'`).
+
+```typescript
+import { DesignStructureClasses } from '@dxtmisha/scripts'
+
+const resolver = new DesignStructureClasses('button')
+const classes = resolver.get()
+```
+
+## Các phương thức
+
+### Thông tin
+
+- `get(): DesignStructureClassesList` — Trả về danh sách đầy đủ các đối tượng ánh xạ lớp đã được xử lý.
+
+## Các thao tác (Operations)
+
+### Quy trình phân giải lớp
+
+Khi được khởi tạo, lớp sẽ tự động thực thi logic phân giải của nó:
+1. **Phân tích thuộc tính**: Động cơ quét danh sách `PropertyItem` của thành phần để tìm các thẻ cho biết kiểu `subclass`.
+2. **Xây dựng không gian tên**: Nó theo dõi phân cấp của các tên. Ví dụ, một `label` bên trong `button` sẽ trở thành `button__label`.
+3. **Cấu trúc dữ liệu**: Đối với mỗi lớp được xác định, nó tạo ra một đối tượng chứa:
+    - **index**: Phiên bản CamelCase của tên (ví dụ: `buttonLabel`) cho các tham chiếu mã.
+    - **className**: Chuỗi lớp CSS thực tế (ví dụ: `button__label`).
+    - **full**: Một cờ cho biết tên đó có phải là một lớp toàn cục tuyệt đối hay không.
+4. **Làm phẳng**: Cây đệ quy được làm phẳng thành một mảng duy nhất, cung cấp khả năng tra cứu nhanh chóng cho các động cơ mẫu.
+
+### Tích hợp với các trình tạo mã
+
+Lớp này cung cấp ánh xạ thiết yếu được `DesignReplace` sử dụng để tiêm các định nghĩa lớp vào các triển khai thành phần. Bằng cách tập trung logic đặt tên, nó đảm bảo rằng các thay đổi đối với quy ước đặt tên có thể được áp dụng chung cho tất cả các thành phần mà không cần chỉnh sửa tệp thủ công.

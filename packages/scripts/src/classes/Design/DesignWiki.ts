@@ -11,13 +11,11 @@ import {
 } from '../../config'
 
 /**
- * The DesignWiki class is responsible for managing and generating files
- * that contain descriptions of components for the wiki. It ensures that
- * the necessary files are created and initialized properly.
+ * Utility for managing and generating the central wiki configuration for the design system.
+ * It ensures that the primary registry for storybook arguments and component descriptions is correctly initialized and synchronized with the project's design configuration.
  *
- * Класс DesignWiki отвечает за управление и генерацию файлов,
- * содержащих описания компонентов для wiki. Он гарантирует, что
- * необходимые файлы создаются и инициализируются должным образом.
+ * Утилита для управления и генерации центральной конфигурации вики для дизайн-системы.
+ * Гарантирует, что основной реестр аргументов Storybook и описаний компонентов правильно инициализирован и синхронизирован с конфигурацией дизайна проекта.
  */
 export class DesignWiki {
   /**

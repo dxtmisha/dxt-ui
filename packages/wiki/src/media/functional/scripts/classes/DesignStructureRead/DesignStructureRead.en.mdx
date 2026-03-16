@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignStructureRead - Property Dependency Resolver'/>
+
+# DesignStructureRead Class
+
+The `DesignStructureRead` class is the primary parser for resolving dependencies and states between component properties. It transforms raw design system tokens into a structured list of properties, identifying which items should be exposed as public props and which represent internal interactive states or linked CSS class dependencies.
+
+## Key Features
+
+- **State Discovery** — Identifies property tokens defined as interactive states (e.g., `:hover`, `:active`) and builds their dependency chains.
+- **Link Class Resolution** — Detects and resolves references to external component classes to maintain BEM hierarchy.
+- **Value Compilation** — Aggregates all possible values for a property, including those derived from nested state structures, to generate accurate TypeScript unions.
+- **Prop Validation** — Filters and validates which property tokens are eligible for export as public component properties based on system rules.
+- **Independant Value Synthesis** — Automatically injects boolean flags for properties that lack explicit value tokens but require state tracking.
+
+## Initialization
+
+To initialize the property reader, provide the base component name. The class will automatically resolve the component's metadata via its parent abstraction and trigger the multi-stage parsing pipeline.
+
+**Parameters:**
+- `component: string` — The identifier of the component to analyze (e.g., `'input'`).
+
+```typescript
+import { DesignStructureRead } from '@dxtmisha/scripts'
+
+const reader = new DesignStructureRead('button')
+const structureList = reader.get()
+const states = reader.getStates()
+```
+
+## Methods
+
+### Information
+
+- `get(): DesignStructureList` — Returns the fully resolved linear list of component properties.
+- `getStates(): DesignStructureStateList` — Returns the hierarchical list of states and their associated property dependencies.
+
+## Operations
+
+### The Parsing Pipeline
+
+Upon construction, `DesignStructureRead` executes a series of transformations to build the final data model:
+1. **State Mapping (`makeState`)**: Recursively traverses the property tree to isolate tokens marked as `state` or `linkClass`.
+2. **Main Structure Initialization (`makeMain`)**: Creates the base entry for each identified prop, normalizing names and metadata.
+3. **Base Value Extraction (`makeValue`)**: Resolves the direct immediate values assigned to each property.
+4. **Value Expansion (`makeValueAll`)**: Aggregates values from all possible interactive states to ensure the property API covers every logical case.
+5. **Deduplication (`makeValueUnique`)**: Normalizes the value lists, removing duplicates and ensuring boolean fallbacks exist where necessary.
+
+### Handling Linked Classes
+
+Special logic is applied when a property references another component class (`linkClass`). The resolver:
+1. **Identifies the reference**: Locates the specific variable link in the global design metadata.
+2. **Naming Transformation**: Converts the reference into a standardized BEM class name (e.g., `theme-button--primary`).
+3. **Recursive Resolution**: Triggers a sub-parsing cycle for the linked component to ensure its properties and states are accounted for in the primary component's dependency tree.

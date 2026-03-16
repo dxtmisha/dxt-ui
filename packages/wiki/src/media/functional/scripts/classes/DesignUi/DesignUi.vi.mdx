@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignUi - Bộ điều phối cơ sở hạ tầng UI'/>
+
+# Lớp DesignUi
+
+Lớp `DesignUi` là bộ điều phối trung tâm chịu trách nhiệm khởi tạo và đồng bộ hóa toàn bộ cơ sở hạ tầng của thư viện UI. Nó điều phối các tác vụ cấp cao như xây dựng lại kiểu dáng, tạo tài liệu, cập nhật kiến trúc thành phần và cấu hình siêu dữ liệu phân phối gói.
+
+## Các tính năng chính
+
+- **Điều phối tập trung** — Quản lý luồng thực thi của nhiều trình tạo chuyên biệt (Styles, Wiki, Components).
+- **Khởi tạo tăng dần** — Hỗ trợ khởi tạo một thành phần cụ thể hoặc toàn bộ bộ thư viện.
+- **Quản lý bộ nhớ đệm** — Tự động xóa bộ nhớ đệm thuộc tính để đảm bảo tất cả các tài sản được tạo ra đều sử dụng các token hệ thống thiết kế mới nhất.
+- **Tự động cấu hình gói** — Cập nhật động bản đồ xuất (export maps) trong `package.json` để phản ánh trạng thái xây dựng hiện tại.
+- **Tổng hợp cấp thư viện** — Kích hoạt các bản cập nhật toàn cục cho các plugin, tài sản truyền thông và định nghĩa kiểu trên toàn bộ không gian làm việc.
+
+## Khởi tạo
+
+Khởi tạo bộ điều phối bằng cách tùy chọn cung cấp tên thành phần. Nếu không có tên nào được cung cấp, lớp sẽ hoạt động trên tất cả các thành phần được tìm thấy trong thư viện.
+
+**Tham số:**
+- `name: string` — Mã định danh của một thành phần cụ thể cần xử lý (tùy chọn, mặc định là `''`).
+
+```typescript
+import { DesignUi } from '@dxtmisha/scripts'
+
+// Để cập nhật mọi thứ:
+const ui = new DesignUi()
+ui.make()
+
+// Để cập nhật một thành phần cụ thể:
+const buttonUi = new DesignUi('button')
+buttonUi.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Thực hiện quy trình khởi tạo đầy đủ, kích hoạt tuần tự tất cả các bản cập nhật cơ sở hạ tầng.
+
+## Các thao tác (Operations)
+
+### Quy trình khởi tạo UI (The UI Initialization Pipeline)
+
+Khi `make()` được gọi, `DesignUi` điều phối một bản cập nhật đa giai đoạn toàn diện:
+1. **Đặt lại môi trường**: Xóa `PropertiesCache` để ngăn các token cũ ảnh hưởng đến bản xây dựng mới.
+2. **Tạo cơ sở hạ tầng**: Kích hoạt việc tạo `Styles` và `DesignWiki` toàn cục để chuẩn bị nền tảng hình ảnh và tài liệu.
+3. **Đồng bộ hóa thành phần**: Thực thi `DesignComponent` cho (các) thành phần mục tiêu, phân giải siêu dữ liệu cấu trúc và tạo các tệp nguồn.
+4. **Chuẩn bị phân phối**: Cập nhật `package.json` với các ánh xạ xuất mới nhất cho CSS, SCSS và các mô-đun tập lệnh.
+5. **Tổng hợp thư viện**: Kích hoạt tuần tự các trình tạo chuyên dụng cấp thư viện:
+    - `LibraryMedia`: Đồng bộ hóa các tài sản biểu tượng và cờ.
+    - `LibraryList`: Biên soạn danh mục thành phần.
+    - `LibraryPlugin`: Xây dựng lại các plugin tích hợp Vue/framework.
+    - `LibraryAiWiki`: Tạo các cấu phần tài liệu được tối ưu hóa cho AI.
+    - `LibraryTypes`: Biên soạn các định nghĩa kiểu toàn cục.
+
+### Vai trò trong hệ sinh thái
+
+`DesignUi` đóng vai trò là điểm nhập chính cho các nhà phát triển và các công cụ xây dựng tự động. Bằng cách trừu tượng hóa sự phức tạp của hàng chục lớp chuyên biệt, nó cung cấp một giao diện "một cú nhấp chuột" ổn định để giữ cho thư viện UI luôn đồng bộ với các thông số kỹ thuật đang phát triển của hệ thống thiết kế.

@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignWiki - Trình tạo registry Wiki'/>
+
+# Lớp DesignWiki
+
+Lớp `DesignWiki` cung cấp cơ sở hạ tầng thiết yếu cho hệ thống tài liệu của dự án. Nó tự động hóa việc tạo và khởi tạo tệp cấu hình wiki trung tâm, đảm bảo rằng công cụ tài liệu (Storybook) có một registry ổn định và được định kiểu để lưu trữ các tham số (arguments) và siêu dữ liệu của thành phần.
+
+## Các tính năng chính
+
+- **Khởi tạo tự động** — Phát hiện các tệp cấu hình wiki còn thiếu và tạo chúng theo cấu trúc chuẩn.
+- **Registry được định kiểu** — Tạo các cấu hình bằng cách sử dụng kiểu `StorybookArgsToList` để đảm bảo tích hợp đầy đủ với framework tài liệu.
+- **Đặt bí danh theo dự án** — Sử dụng tên hệ thống thiết kế (từ `PropertiesConfig`) để tạo các biến registry duy nhất và nhận biết dự án.
+- **Thực thi an toàn** — Thực hiện kiểm tra sự tồn tại trước khi ghi, ngăn chặn việc vô tình ghi đè lên các cấu hình tài liệu hiện có.
+
+## Khởi tạo
+
+Lớp không yêu cầu bất kỳ tham số nào để khởi tạo. Nó sử dụng các cấu hình toàn cục từ môi trường.
+
+```typescript
+import { DesignWiki } from '@dxtmisha/scripts'
+
+const wikiGenerator = new DesignWiki()
+wikiGenerator.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): void` — Kích hoạt quá trình khởi tạo wiki.
+
+## Các thao tác (Operations)
+
+### Quy trình khởi tạo Wiki
+
+Khi `make()` được thực thi, lớp sẽ tuân theo logic nội bộ sau:
+1. **Phân giải đường dẫn**: Nó sử dụng các đường dẫn thư mục đã được cấu hình trước (`UI_DIRS_WIKI`) và tên tệp (`UI_FILE_NAME_WIKI`) để định vị tệp cấu hình mục tiêu.
+2. **Kiểm tra sự tồn tại**: Nó truy vấn hệ thống tệp thông qua `PropertiesFile.is()` để xác định xem tệp cấu hình `.ts` đã tồn tại hay chưa.
+3. **Tạo Registry**: Nếu thiếu, nó sẽ lấy tên hệ thống thiết kế hiện tại và xây dựng một mẫu TypeScript:
+    - Nó nhập (import) kiểu `StorybookArgsToList` cần thiết.
+    - Nó xuất (export) một hằng số có tên `wiki[DesignName]`.
+4. **Lưu trữ**: Ghi mẫu đã tạo vào hệ thống tệp, đảm bảo công cụ tài liệu có thể bắt đầu nhập nó ngay lập tức.
+
+### Tích hợp với Storybook
+
+Bằng cách tập trung hóa việc tạo registry này, `DesignWiki` đảm bảo rằng tất cả các nhà phát triển đang làm việc trên các thành phần đều có một nơi nhất quán để lập tài liệu cho các props và trạng thái. Registry này đóng vai trò là "nguồn sự thật" cho tài liệu tương tác, cho phép Storybook hiển thị động các điều khiển thành phần dựa trên siêu dữ liệu được lưu trữ tại đây.

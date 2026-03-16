@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignUi - UI Infrastructure Orchestrator'/>
+
+# DesignUi Class
+
+The `DesignUi` class is the central orchestrator responsible for initializing and synchronizing the entire infrastructure of the UI library. It coordinates high-level tasks such as rebuilding styles, generating documentation, updating component architectures, and configuring package distribution metadata.
+
+## Key Features
+
+- **Centralized Orchestration** — Manages the execution flow of multiple specialized generators (Styles, Wiki, Components).
+- **Incremental Initialization** — Supports initializing either a single specific component or the entire library suite.
+- **Cache Management** — Automatically purges property caches to ensure all generated assets use the latest design system tokens.
+- **Package Auto-Configuration** — Dynamically updates `package.json` export maps to reflect the current build state.
+- **Library-Level Synthesis** — Triggers global updates for plugins, media assets, and type definitions across the entire workspace.
+
+## Initialization
+
+Initialize the orchestrator by optionally providing a component name. If no name is provided, the class operates on all components found in the library.
+
+**Parameters:**
+- `name: string` — The identifier of a specific component to process (optional, default is `''`).
+
+```typescript
+import { DesignUi } from '@dxtmisha/scripts'
+
+// To update everything:
+const ui = new DesignUi()
+ui.make()
+
+// To update a specific component:
+const buttonUi = new DesignUi('button')
+buttonUi.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Executes the full initialization pipeline, sequentially triggering all infrastructure updates.
+
+## Operations
+
+### The UI Initialization Pipeline
+
+When `make()` is called, `DesignUi` coordinates a comprehensive multi-stage update:
+1. **Environment Reset**: Clears the `PropertiesCache` to prevent stale tokens from affecting the new build.
+2. **Infrastructure Generation**: Triggers global `Styles` and `DesignWiki` generation to prepare the visual and documentation foundations.
+3. **Component Syncing**: Executes `DesignComponent` for the target component(s), resolving their structural metadata and generating source files.
+4. **Distribution Preparation**: Updates `package.json` with the latest export mappings for CSS, SCSS, and script modules.
+5. **Library Synthesis**: Sequentially triggers dedicated library-level generators:
+    - `LibraryMedia`: Synchronizes icon and flag assets.
+    - `LibraryList`: Compiles the component registry.
+    - `LibraryPlugin`: Rebuilds the Vue/framework integration plugins.
+    - `LibraryAiWiki`: Generates AI-optimized documentation artifacts.
+    - `LibraryTypes`: Compiles global type definitions.
+
+### Role in the Ecosystem
+
+`DesignUi` acts as the primary entry point for developers and automated build tools. By abstracting the complexity of dozen of specialized classes, it provides a stable "one-click" interface for keeping the UI library synchronized with the design system's evolving specifications.

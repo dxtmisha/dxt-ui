@@ -14,16 +14,20 @@ import {
 } from '../../types/designTypes'
 
 /**
- * A class for getting a list of classes of components.
+ * Class for resolving and generating a hierarchical list of CSS classes for a component.
+ * It recursively parses component properties to identify subclasses and build BEM-compliant class names.
  *
- * Класс для получения списка классов компонентов.
+ * Класс для разрешения и генерации иерархического списка CSS-классов для компонента.
+ * Рекурсивно анализирует свойства компонента для идентификации подклассов и построения имен классов, соответствующих BEM.
  */
 export class DesignStructureClasses extends DesignStructureItemAbstract<DesignStructureClassesList> {
   protected data: DesignStructureClassesList = []
 
   /**
-   * Constructor
-   * @param component component name/ название компонента
+   * Constructor for DesignStructureClasses.
+   *
+   * Конструктор для DesignStructureClasses.
+   * @param component component name used as the base for class generation / имя компонента, используемое в качестве базы для генерации классов
    */
   constructor(
     component: string

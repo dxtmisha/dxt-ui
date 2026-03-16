@@ -19,9 +19,11 @@ import type {
 import { UI_PROPERTY_FOR_PROPS } from '../../config'
 
 /**
- * Class for processing dependency properties of the component.
+ * Engine for parsing and resolving component property dependencies and states.
+ * It processes the raw property metadata to identify interactive states, link classes, and compile all possible values for code generation.
  *
- * Класс для обработки зависимости свойств у компонента.
+ * Движок для парсинга и разрешения зависимостей свойств и состояний компонента.
+ * Обрабатывает сырые метаданные свойств для идентификации интерактивных состояний, связанных классов и компиляции всех возможных значений для генерации кода.
  */
 export class DesignStructureRead extends DesignStructureItemAbstract<DesignStructureList> {
   protected states: DesignStructureStateList
@@ -29,8 +31,10 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
   protected data: DesignStructureList = {}
 
   /**
-   * Constructor
-   * @param component component name/ название компонента
+   * Constructor for DesignStructureRead.
+   *
+   * Конструктор для DesignStructureRead.
+   * @param component component name whose properties are being resolved / имя компонента, свойства которого разрешаются
    */
   constructor(
     component: string

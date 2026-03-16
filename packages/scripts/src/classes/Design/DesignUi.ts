@@ -20,12 +20,21 @@ import { LibraryTypes } from '../Library/LibraryTypes'
 
 import { UI_FILE_PACKAGE } from '../../config'
 
+/**
+ * Orchestrator class for managing and initializing the Design System UI.
+ * It coordinates the generation of styles, documentation, component structures, and library-level exports (media, plugins, types).
+ *
+ * Класс-оркестратор для управления и инициализации пользовательского интерфейса дизайн-системы.
+ * Координирует генерацию стилей, документации, структур компонентов и экспортов на уровне библиотеки (медиа, плагины, типы).
+ */
 export class DesignUi {
   protected readonly components: LibraryItems
 
   /**
-   * Constructor
-   * @param name component name/ названия компонента
+   * Constructor for DesignUi.
+   *
+   * Конструктор для DesignUi.
+   * @param name specific component name to initialize, or empty for all / название конкретного компонента для инициализации или пусто для всех
    */
   constructor(
     protected readonly name: string = ''

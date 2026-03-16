@@ -8,9 +8,11 @@ import type { DesignTypesList } from '../../types/designTypes'
 import { UI_FILE_AI_TYPES } from '../../config'
 
 /**
- * Class for generating AI-optimized type definitions.
+ * Engine for generating compressed and AI-optimized TypeScript type definitions.
+ * It scans the build output for declaration files, sanitizes them, and uses AI to produce a minimal, context-rich type library for use in automated coding assistants.
  *
- * Класс для генерации оптимизированных ИИ определений типов.
+ * Движок для генерации сжатых и оптимизированных для ИИ определений типов TypeScript.
+ * Сканирует выходные данные сборки на наличие файлов деклараций, очищает их и использует ИИ для создания минимальной, насыщенной контекстом библиотеки типов для использования в автоматизированных помощниках по кодированию.
  */
 export class DesignTypes {
   /**
@@ -21,8 +23,10 @@ export class DesignTypes {
   protected readonly dirArray: string[]
 
   /**
-   * Constructor
-   * @param dir directory path / путь к директории
+   * Constructor for DesignTypes.
+   *
+   * Конструктор для DesignTypes.
+   * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
    */
   constructor(
     protected readonly dir: string = 'dist'

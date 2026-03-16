@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignStructureRead - Bộ phân giải phụ thuộc thuộc tính'/>
+
+# Lớp DesignStructureRead
+
+Lớp `DesignStructureRead` là trình phân tích cú pháp chính để phân giải các phụ thuộc và trạng thái giữa các thuộc tính của thành phần. Nó chuyển đổi các token hệ thống thiết kế thô thành một danh sách các thuộc tính có cấu trúc, xác định mục nào sẽ được hiển thị dưới dạng props công khai và mục nào đại diện cho các trạng thái tương tác nội bộ hoặc các phụ thuộc lớp CSS được liên kết.
+
+## Các tính năng chính
+
+- **Khám phá trạng thái** — Xác định các token thuộc tính được định nghĩa là trạng thái tương tác (ví dụ: `:hover`, `:active`) và xây dựng các chuỗi phụ thuộc của chúng.
+- **Phân giải lớp liên kết** — Phát hiện và phân giải các tham chiếu đến các lớp thành phần bên ngoài để duy trì phân cấp BEM.
+- **Biên soạn giá trị** — Tập hợp tất cả các giá trị có thể có cho một thuộc tính, bao gồm cả các giá trị bắt nguồn từ các cấu trúc trạng thái lồng nhau, để tạo ra các union TypeScript chính xác.
+- **Xác thực Prop** — Lọc và xác thực các token thuộc tính nào đủ điều kiện để xuất dưới dạng thuộc tính thành phần công khai dựa trên các quy tắc hệ thống.
+- **Tổng hợp giá trị độc lập** — Tự động chèn các cờ boolean cho các thuộc tính thiếu các token giá trị rõ ràng nhưng yêu cầu theo dõi trạng thái.
+
+## Khởi tạo
+
+Để khởi tạo trình đọc thuộc tính, hãy cung cấp tên thành phần cơ sở. Lớp sẽ tự động phân giải siêu dữ liệu của thành phần thông qua trừu tượng cha của nó và kích hoạt quy trình phân tích cú pháp nhiều giai đoạn.
+
+**Tham số:**
+- `component: string` — Mã định danh của thành phần cần phân tích (ví dụ: `'input'`).
+
+```typescript
+import { DesignStructureRead } from '@dxtmisha/scripts'
+
+const reader = new DesignStructureRead('button')
+const structureList = reader.get()
+const states = reader.getStates()
+```
+
+## Các phương thức
+
+### Thông tin
+
+- `get(): DesignStructureList` — Trả về danh sách tuyến tính đã được phân giải hoàn chỉnh của các thuộc tính thành phần.
+- `getStates(): DesignStructureStateList` — Trả về danh sách phân cấp các trạng thái và các phụ thuộc thuộc tính liên quan của chúng.
+
+## Các thao tác (Operations)
+
+### Quy trình phân tích cú pháp (The Parsing Pipeline)
+
+Khi được xây dựng, `DesignStructureRead` thực hiện một chuỗi các chuyển đổi để xây dựng mô hình dữ liệu cuối cùng:
+1. **Ánh xạ trạng thái (`makeState`)**: Duyệt đệ quy cây thuộc tính để tách biệt các token được đánh dấu là `state` hoặc `linkClass`.
+2. **Khởi tạo cấu trúc chính (`makeMain`)**: Tạo mục nhập cơ sở cho mỗi prop được xác định, chuẩn hóa tên và siêu dữ liệu.
+3. **Trích xuất giá trị cơ sở (`makeValue`)**: Phân giải các giá trị trực tiếp được gán cho mỗi thuộc tính.
+4. **Mở rộng giá trị (`makeValueAll`)**: Tập hợp các giá trị từ tất cả các trạng thái tương tác có thể để đảm bảo API thuộc tính bao quát mọi trường hợp logic.
+5. **Duy nhất hóa giá trị (`makeValueUnique`)**: Chuẩn hóa các danh sách giá trị, loại bỏ các mục trùng lặp và đảm bảo các fallback boolean tồn tại khi cần thiết.
+
+### Xử lý các lớp liên kết (Linked Classes)
+
+Logic đặc biệt được áp dụng khi một thuộc tính tham chiếu đến một lớp thành phần khác (`linkClass`). Bộ phân giải sẽ:
+1. **Xác định tham chiếu**: Tìm liên kết biến cụ thể trong siêu dữ liệu thiết kế toàn cục.
+2. **Chuyển đổi tên**: Chuyển đổi tham chiếu thành tên lớp BEM tiêu chuẩn hóa (ví dụ: `theme-button--primary`).
+3. **Phân giải đệ quy**: Kích hoạt một chu kỳ phân tích cú pháp phụ cho thành phần được liên kết để đảm bảo các thuộc tính và trạng thái của nó được tính đến trong cây phụ thuộc của thành phần chính.

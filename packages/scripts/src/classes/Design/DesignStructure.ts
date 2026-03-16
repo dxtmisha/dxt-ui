@@ -19,9 +19,11 @@ import {
 } from '../../config'
 
 /**
- * Class for processing structured components.
+ * Class for managing and resolving the data structure of a design system component.
+ * It serves as a central hub for reading component metadata, generating class mappings, and resolving style tokens.
  *
- * Класс для обработки структурированных компонентов.
+ * Класс для управления и разрешения структуры данных компонента дизайн-системы.
+ * Служит центральным узлом для чтения метаданных компонента, генерации маппингов классов и разрешения стилевых токенов.
  */
 export class DesignStructure {
   protected readonly component: string
@@ -30,11 +32,11 @@ export class DesignStructure {
   protected itemsClasses?: DesignStructureClassesList
   protected itemsStyles?: string[]
 
-  constructor(path: string)
-  constructor(design: string, component: string)
   /**
-   * Constructor
-   * @param component component name/ название компонента
+   * Constructor for DesignStructure.
+   *
+   * Конструктор для DesignStructure.
+   * @param component component name or identifier / название или идентификатор компонента
    */
   constructor(
     component?: string

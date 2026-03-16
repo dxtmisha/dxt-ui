@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignWiki - Wiki Registry Generator'/>
+
+# DesignWiki Class
+
+The `DesignWiki` class provides essential infrastructure for the project's documentation system. It automates the creation and initialization of the central wiki configuration file, ensuring that the documentation engine (Storybook) has a stable and typed registry to store component arguments and metadata.
+
+## Key Features
+
+- **Automated Initialization** — Detects missing wiki configuration files and creates them with a standard structure.
+- **Typed Registry** — Generates configurations using the `StorybookArgsToList` type to ensure full integration with the documentation framework.
+- **Project-Specific Aliasing** — Uses the design system's name (from `PropertiesConfig`) to create unique, project-aware registry variables.
+- **Safe Execution** — Implements existence checks before writing, preventing accidental overwriting of existing documentation configurations.
+
+## Initialization
+
+The class does not require any parameters for initialization. It uses global configurations from the environment.
+
+```typescript
+import { DesignWiki } from '@dxtmisha/scripts'
+
+const wikiGenerator = new DesignWiki()
+wikiGenerator.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Triggers the wiki initialization process.
+
+## Operations
+
+### The Wiki Initialization Flow
+
+When `make()` is executed, the class follows this internal logic:
+1. **Path Resolution**: It uses preconfigured directory paths (`UI_DIRS_WIKI`) and file names (`UI_FILE_NAME_WIKI`) to locate the target configuration file.
+2. **Existence Check**: It queries the file system via `PropertiesFile.is()` to determine if the `.ts` configuration file already exists.
+3. **Registry Generation**: If missing, it fetches the current design system name and constructs a TypeScript template:
+    - It imports the necessary `StorybookArgsToList` type.
+    - It exports a constant named `wiki[DesignName]`.
+4. **Persistence**: Writes the generated template to the file system, ensuring the documentation engine can immediately begin importing it.
+
+### Integration with Storybook
+
+By centralizing the creation of this registry, `DesignWiki` ensures that all developers working on components have a consistent place to document props and states. This registry acts as the "source of truth" for the interactive documentation, allowing Storybook to dynamically render component controls based on the metadata stored here.

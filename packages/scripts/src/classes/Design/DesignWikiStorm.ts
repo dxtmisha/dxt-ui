@@ -9,18 +9,20 @@ import { DesignWikiStormItem } from './DesignWikiStormItem'
 import type { WebTypesTags, WebTypesVueJson } from '../../types/webTypes'
 
 /**
- * Class for generating web-types.json.
+ * Engine for generating `web-types.json` to provide rich metadata and IDE support (IntelliSense) for the design system components in JetBrains editors (IntelliJ IDEA, WebStorm).
+ * It aggregates component tags, attributes, and events from the entire library and formats them into the standard Web-Types schema.
  *
- * Класс для генерации web-types.json.
+ * Движок для генерации `web-types.json`, обеспечивающий расширенные метаданные и поддержку IDE (IntelliSense) для компонентов дизайн-системы в редакторах JetBrains (IntelliJ IDEA, WebStorm).
+ * Он агрегирует теги компонентов, атрибуты и события из всей библиотеки и форматирует их в стандартную схему Web-Types.
  */
 export class DesignWikiStorm {
   protected readonly components: LibraryItems
 
   /**
-   * Constructor.
+   * Constructor for DesignWikiStorm.
    *
-   * Конструктор.
-   * @param dir directory for saving the file / директория для сохранения файла
+   * Конструктор для DesignWikiStorm.
+   * @param dir target directory for saving the `web-types.json` file / целевая директория для сохранения файла `web-types.json`
    */
   constructor(
     protected dir: string = 'dist'

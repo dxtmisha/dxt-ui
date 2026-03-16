@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignWikiStorm - IDE Metadata Generator'/>
+
+# DesignWikiStorm Class
+
+The `DesignWikiStorm` class is a specialized utility designed to bridge the gap between the design system's code and developer productivity tools. It automates the generation of `web-types.json`, a standardized metadata format used by JetBrains IDEs (WebStorm, IntelliJ IDEA) to provide advanced IntelliSense, auto-completion, and documentation tooltips for Vue components.
+
+## Key Features
+
+- **Web-Types Standard Compliance** — Generates metadata strictly adhering to the official Web-Types JSON schema.
+- **IntelliSense Optimization** — Transforms component properties, events, and slots into IDE-friendly definitions.
+- **Automated Directory Discovery** — Recursively scans the library to identify all components and their respective metadata.
+- **Dynamic Versioning** — Automatically synchronizes the generated metadata version with the current `package.json` version.
+- **Framework Integration** — Specifically configured for Vue.js, ensuring that component tags and attributes are correctly recognized in `.vue` files.
+
+## Initialization
+
+Initialize the generator by specifying the target directory where the `web-types.json` file should be stored.
+
+**Parameters:**
+- `dir: string` — The path to the output directory (default is `'dist'`).
+
+```typescript
+import { DesignWikiStorm } from '@dxtmisha/scripts'
+
+const generator = new DesignWikiStorm('dist')
+await generator.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): Promise<void>` — Triggers the main generation process.
+
+## Operations
+
+### The Web-Types Generation Workflow
+
+When `make()` is called, the class coordinates a multi-stage data synthesis:
+1. **Context Acquisition**: It loads the `package.json` to retrieve the library name and current version.
+2. **Schema Bootstrapping**: It initializes an object based on the Web-Types schema, setting the framework to Vue and defining the documentation markup as Markdown.
+3. **Component Iteration**: It iterates through every component registered in `LibraryItems`.
+4. **Member Analysis**: For each component, it instantiates `DesignWikiStormItem`, which performs deep analysis of the component's source files to extract:
+    - **Tags**: Component names (e.g., `d1-button`).
+    - **Attributes**: Property names, types, and default values.
+    - **Events**: Emitted event names and their payloads.
+    - **Slots**: Available customization points and their scoped variables.
+5. **Persistence**: The final consolidated metadata object is written to `web-types.json` in the specified directory.
+
+### Impact on Developer Experience
+
+By generating `web-types.json`, the design system ensures that developers using JetBrains tools receive the same level of support as they would with native HTML elements. Property types are validated in real-time within the IDE, and documentation comments are displayed directly in the code editor, significantly reducing the need to consult external wiki pages.

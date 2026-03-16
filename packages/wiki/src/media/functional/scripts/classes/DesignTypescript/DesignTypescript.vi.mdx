@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypescript - Bộ phân tích siêu dữ liệu kiểu'/>
+
+# Lớp DesignTypescript
+
+Lớp `DesignTypescript` cung cấp một lớp bọc cấp cao xung quanh TypeScript Compiler API, cho phép phân tích theo chương trình các siêu dữ liệu của mã nguồn. Nó chuyên trích xuất thông tin có cấu trúc từ các interface và type alias, làm cho nó trở thành một công cụ thiết yếu để tạo tài liệu, lược đồ xác thực hoặc các định nghĩa kiểu được tối ưu hóa cho các trợ lý AI.
+
+## Các tính năng chính
+
+- **Tích hợp Compiler API** — Tương tác liền mạch với chương trình nội bộ và trình kiểm tra kiểu (type checker) của TypeScript.
+- **Trích xuất kiểu sâu** — Phân giải các kiểu thuộc tính phức tạp, literal unions và tính tùy chọn (optionality).
+- **Truy xuất tài liệu** — Tự động trích xuất các chú thích JSDoc để duy trì ngữ cảnh do nhà phát triển viết.
+- **Phân tích cú pháp dựa trên AST** — Điều hướng Cây Cú pháp Trừu tượng (AST) để xác định chính xác các interfaces và khai báo kiểu.
+- **Khám phá giá trị Literal** — Mở rộng các literal unions một cách thông minh thành các tùy chọn chuỗi/số có thể sử dụng.
+
+## Khởi tạo
+
+Khởi tạo bộ phân tích bằng cách cung cấp đường dẫn đến tệp nguồn TypeScript. Bạn cũng có thể chỉ định các tùy chọn trình biên dịch tùy chỉnh để phù hợp với môi trường dự án của mình.
+
+**Tham số:**
+- `path: string` — Đường dẫn tuyệt đối hoặc tương đối đến tệp `.ts` (mặc định là `''`).
+- `options: ts.CompilerOptions` — Cấu hình trình biên dịch TypeScript tùy chọn (mặc định là `{}`).
+
+```typescript
+import { DesignTypescript } from '@dxtmisha/scripts'
+
+const analyzer = new DesignTypescript('src/types/component.ts')
+const types = analyzer.getTypes()
+```
+
+## Các phương thức
+
+### Thu thập dữ liệu
+
+- `getTypes(): DesignTypescriptList` — Quét tệp nguồn và trả về một mảng siêu dữ liệu của tất cả các kiểu và interface được phát hiện.
+- `getType(name: string): DesignTypescriptItem | undefined` — Truy xuất siêu dữ liệu cho một kiểu hoặc interface cụ thể theo tên của nó.
+
+## Các thao tác (Operations)
+
+### Quy trình phân tích siêu dữ liệu
+
+Khi phân tích một tệp, `DesignTypescript` thực hiện các bước sau:
+1. **Tạo chương trình**: Nó khởi tạo một TypeScript Program và Type Checker cho tệp đã chỉ định.
+2. **Duyệt qua các nút**: Nó truy cập mọi nút trong AST, đặc biệt tìm kiếm các nút `TypeAliasDeclaration` và `InterfaceDeclaration`.
+3. **Phân giải thuộc tính**: Đối với mỗi kiểu được xác định, nó truy vấn Type Checker để lấy các thuộc tính của nó (ngay cả những thuộc tính được kế thừa).
+4. **Tổng hợp thông tin**: Đối với mỗi thuộc tính, nó xây dựng một đối tượng siêu dữ liệu chứa:
+    - **Name**: Mã định danh thuộc tính.
+    - **Type**: Một biểu diễn chuỗi sạch của kiểu (ví dụ: `'string | number'`).
+    - **Options**: Nếu thuộc tính là một literal union, nó sẽ trích xuất các giá trị thực tế.
+    - **Description**: Chú thích JSDoc liên quan.
+
+### Vai trò trong chuỗi công cụ
+
+Lớp này thường được sử dụng bởi các trình tạo khác (như `DesignTypes` hoặc `DesignCommand`) để thu hẹp khoảng cách giữa mã tĩnh và logic động. Bằng cách cung cấp một API sạch cho TypeScript Compiler phức tạp, nó cho phép hệ thống thiết kế luôn "nhận biết kiểu" trong tất cả các quy trình tự động của nó.

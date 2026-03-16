@@ -9,20 +9,22 @@ import type { LibraryData } from '../../types/libraryTypes'
 import type { WebTypesAttributeItem, WebTypesAttributes, WebTypesTagItem } from '../../types/webTypes'
 
 /**
- * Class for generating web-types for a specific component.
+ * Resolver for extracting and formatting IDE metadata for a specific component.
+ * It coordinates the transformation of Storybook-specific wiki data into JetBrains Web-Types tag and attribute definitions.
  *
- * Класс для генерации web-types для конкретного компонента.
+ * Резолвер для извлечения и форматирования метаданных IDE для конкретного компонента.
+ * Координирует преобразование данных вики для Storybook в определения тегов и атрибутов JetBrains Web-Types.
  */
 export class DesignWikiStormItem {
   protected wiki?: WikiStorybook
 
   /**
-   * Constructor.
+   * Constructor for DesignWikiStormItem.
    *
-   * Конструктор.
-   * @param project project name / имя проекта
-   * @param path path to the component / путь к компоненту
-   * @param data component data / данные компонента
+   * Конструктор для DesignWikiStormItem.
+   * @param project name of the project for module mapping / имя проекта для маппинга модулей
+   * @param path array of directory path segments to the component / массив сегментов пути к директории компонента
+   * @param data component metadata from the library / метаданные компонента из библиотеки
    */
   constructor(
     protected readonly project: string,

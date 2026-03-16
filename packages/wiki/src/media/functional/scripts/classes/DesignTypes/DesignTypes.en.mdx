@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypes - AI Type Generator'/>
+
+# DesignTypes Class
+
+The `DesignTypes` class is a specialized utility designed to bridge the gap between complex codebase type definitions and AI coding assistants. It automates the extraction, sanitation, and compression of TypeScript declaration files (`.d.ts`), using AI to generate a hyper-minimalized version of the project's type system that provides maximum context with minimum token usage.
+
+## Key Features
+
+- **Automated Discovery** — Recursively scans distribution directories to find relevant type declaration files.
+- **Intelligent Filtering** — Automatically excludes internal constructor props and non-essential logic types while preserving public APIs.
+- **AI-Driven Compression** — Uses LLM prompts to strip unnecessary metadata (imports, Russian comments, empty lines) and consolidate definitions.
+- **Unified Output** — Combines multiple fragmented declaration files into a single, cohesive type library.
+- **Context Optimization** — Prioritizes interfaces, enums, and type aliases that are most critical for AI understanding.
+
+## Initialization
+
+Initialize the generator by specifying the source directory where the compiled declaration files are located.
+
+**Parameters:**
+- `dir: string` — The path to the input directory (default is `'dist'`).
+
+```typescript
+import { DesignTypes } from '@dxtmisha/scripts'
+
+const generator = new DesignTypes('packages/core/dist')
+generator.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): void` — Starts the full generation pipeline: discovery, combination, AI processing, and storage.
+
+## Operations
+
+### The Type Generation Pipeline
+
+When `make()` is executed, the class coordinates a multi-stage workflow:
+1. **File Filtering (`getListByFilter`)**: The engine scans the directory for `.d.ts` files, filtering out internal implementation details like `props.d.ts` or `types.d.ts` within constructor folders.
+2. **Content Validation (`isContent`)**: It verifies that each file actually contains meaningful type definitions (interfaces, types, or enums) before processing.
+3. **Consolidation (`toOneFile`)**: All identified file contents are merged into a single large string, tagged with their original file paths for context.
+4. **AI Transformation (`toAiEdit`)**: The merged content is sent to an AI assistant with specific instructions to strip boilerplate, remove non-English comments, and minimize syntax.
+5. **Persistence (`save`)**: The final, high-density type library is saved to the configured output path (usually specified in `UI_FILE_AI_TYPES`).
+
+### Use Case: AI Context Injection
+
+The primary goal of this class is to create a "knowledge artifact" that can be injected into the system prompt of LLMs working on the project. By providing a clean, compressed overview of all available types and interfaces, the AI can write type-safe code and understand component architectures with significantly higher accuracy and lower cost.

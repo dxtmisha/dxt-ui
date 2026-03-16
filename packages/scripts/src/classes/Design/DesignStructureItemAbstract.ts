@@ -5,6 +5,13 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 import type { PropertyItemsItem } from '../../types/propertyTypes'
 
+/**
+ * Base abstract class for structural component items.
+ * It provides the foundation for resolving component properties and metadata from the design system's central storage.
+ *
+ * Базовый абстрактный класс для структурных элементов компонента.
+ * Предоставляет основу для разрешения свойств и метаданных компонента из центрального хранилища дизайн-системы.
+ */
 export abstract class DesignStructureItemAbstract<D> {
   protected properties: Properties
   protected items?: PropertyItemsItem
@@ -12,8 +19,10 @@ export abstract class DesignStructureItemAbstract<D> {
   protected abstract data: D
 
   /**
-   * Constructor
-   * @param component component name/ название компонента
+   * Constructor for DesignStructureItemAbstract.
+   *
+   * Конструктор для DesignStructureItemAbstract.
+   * @param component component name for which the structure is being resolved / имя компонента, для которого разрешается структура
    */
   protected constructor(
     protected readonly component: string
