@@ -1,0 +1,36 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToVirtual - Trình tạo Pseudo-Element'/>
+
+# Lớp StylesToVirtual
+
+Lớp `StylesToVirtual` chịu trách nhiệm tạo các phần tử giả CSS (như `::before`, `::after`) và các kiểu liên quan của chúng.
+
+## Các tính năng chính
+
+- **Bao bọc Pseudo-Element** — Tự động bao bọc nội dung bên trong bộ chọn `&::[name]`.
+- **Thuộc tính Content tự động** — Đối với các phần tử giả như `before` và `after`, nó tự động chèn `content: ' ';` nếu không có quy định khác.
+- **Quản lý thụt lề** — Xử lý chính xác thụt lề khối và các dòng trống dẫn đầu tùy chọn.
+
+## Khởi tạo
+
+Khởi tạo trình chuyển đổi `StylesToVirtual` với thuộc tính bắt buộc và hàm gọi nội dung.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề.
+- `content?: () => string[]` — một hàm có thể gọi trả về một mảng các chuỗi đại diện cho các quy tắc style cho phần tử giả.
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên hay không (tùy chọn).
+
+```typescript
+import { StylesToVirtual } from '@dxtmisha/scripts'
+
+const converter = new StylesToVirtual(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối quá trình bao bọc các style lồng nhau trong một khối phần tử giả.

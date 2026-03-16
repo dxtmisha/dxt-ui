@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/Styles - Style Orchestrator'/>
+
+# Styles Class
+
+The `Styles` class is the central orchestrator for generating all style-related systemic files within the design system. it manages the initialization of root variables, base classes, SCSS properties, and design-specific style setups.
+
+## Key Features
+
+- **Systemic Generation** — Coordinates the creation of `vars`, `classes`, `properties`, and `list` files.
+- **Root Variable Initialization** — Uses `StylesRoot` to generate global CSS variables.
+- **Base Class Management** — Uses `StylesClasses` to generate standard utility classes.
+- **Design-Aware Setup** — Automatically creates `main`, `basic`, and `style` files tailored to specific designs.
+- **SCSS Integration** — Transforms property data into SCSS-compatible structures using `PropertiesScss`.
+- **Automatic Cleanup** — Filters out redundant data to keep the generated list files clean.
+
+## Initialization
+
+Initialize the `Styles` orchestrator. It internally manages a `Properties` instance to retrieve design data.
+
+```typescript
+import { Styles } from '@dxtmisha/scripts'
+
+const orchestrator = new Styles()
+orchestrator.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): this` — The main entry point. Triggers the full generation cycle for all designs.
+
+### Internal Initialization
+
+- `initRoot(items: PropertiesItems): this` — Generates global variables and writes them to the `vars` file.
+- `initClasses(items: PropertiesItems): this` — Generates base classes and individual class files.
+- `initProperties(items: PropertiesItems): this` — Generates SCSS property structures.
+- `initList(items: PropertiesItems): this` — Generates a cleaned-up property list for references.
+- `initBasic(design: string): this` — Generates the basic connection files and design-specific style anchors.

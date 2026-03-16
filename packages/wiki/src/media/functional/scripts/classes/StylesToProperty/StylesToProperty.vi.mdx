@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToProperty - Trình tạo thuộc tính CSS'/>
+
+# Lớp StylesToProperty
+
+Lớp `StylesToProperty` chịu trách nhiệm chuyển đổi các thuộc tính thiết kế thành các thuộc tính CSS tiêu chuẩn hoặc các lệnh gọi SCSS mixin. Nó xử lý việc tạo biến, định dạng thuộc tính đặc biệt và các giá trị phụ trợ cho những thứ như độ mờ (opacity).
+
+## Các tính năng chính
+
+- **Thuộc tính CSS tiêu chuẩn** — Tạo các cặp thuộc tính-giá trị (ví dụ: `margin-top: 10px;`).
+- **Tích hợp SCSS Mixin** — Tự động chuyển đổi các thuộc tính cụ thể thành các lệnh gọi mixin nếu chúng được đăng ký trong `styleTypes`.
+- **Tạo biến CSS** — Có thể tạo các biến CSS tùy chỉnh nếu cờ `varKey` được đặt trên thuộc tính.
+- **Khởi tạo giá trị phụ trợ** — Tự động bao gồm các lệnh gọi khởi tạo cho các thuộc tính liên quan đến độ mờ nếu thuộc tính cơ sở bị thiếu.
+- **Sắp xếp và Khoảng cách** — Thêm khoảng cách dọc giữa các thuộc tính nếu chỉ số sắp xếp của chúng thay đổi.
+
+## Khởi tạo
+
+Khởi tạo trình chuyển đổi `StylesToProperty` với nhánh thuộc tính bắt buộc.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề.
+- `content?: () => string[]` — thường không được sử dụng cho các thuộc tính vì chúng là các nút lá.
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên hay không (tùy chọn).
+
+```typescript
+import { StylesToProperty } from '@dxtmisha/scripts'
+
+const converter = new StylesToProperty(property, '  ')
+const result = converter.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối việc chuyển đổi, bao gồm việc tạo biến và phân giải mixin.

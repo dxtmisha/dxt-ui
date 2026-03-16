@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesClasses - Base Class Generator'/>
+
+# StylesClasses Class
+
+The `StylesClasses` class is responsible for generating base CSS classes from design properties. It filters the property list for categories like `class` and `theme` and creates individual class structures.
+
+## Key Features
+
+- **Category Filtering** — Specifically targets properties categorized as `class` or `theme`.
+- **Dynamic Class Generation** — Creates a dictionary of SCSS blocks, where each key is a class name.
+- **Dependency Orchestration** — Uses `StylesProperties` to generate the internal style rules (properties, mixins, etc.) for each class.
+- **Import Management** — Automatically includes necessary SCSS `@use` directives to link the generated class files.
+
+## Initialization
+
+To initialize the object, call the `StylesClasses(items)` constructor.
+
+**Parameters:**
+- `items: PropertiesItems` — an object for working with the list of design properties.
+
+```typescript
+import { StylesClasses, PropertiesItems } from '@dxtmisha/scripts'
+
+// 1. Initialize PropertiesItems
+const items = new PropertiesItems(designData)
+
+// 2. Initialize StylesClasses
+const generator = new StylesClasses(items)
+```
+
+## Methods
+
+### Control
+
+- `init(): StylesClassesItem` — The main entry point. Processes the property list and returns an object containing the list of required imports and the generated class content.
+
+## Types
+
+### StylesClassesItem
+
+- `data: string[]` — An array of SCSS `@use` statements for the generated class files.
+- `classes: Record<string, string[]>` — A dictionary where each key is a class name and the value is an array of strings representing the SCSS content of that class.

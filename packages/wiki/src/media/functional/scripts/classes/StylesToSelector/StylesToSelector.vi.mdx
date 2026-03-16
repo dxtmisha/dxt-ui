@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToSelector - Trình tạo CSS Selector'/>
+
+# Lớp StylesToSelector
+
+Lớp `StylesToSelector` chịu trách nhiệm tạo các bộ chọn (selectors) CSS cho các thuộc tính phụ, chẳng hạn như pseudo-classes (`:hover`, `:active`) hoặc các trạng thái đích của component. Nó xác định một cách thông minh nên sử dụng pseudo-class trực tiếp hay mixin.
+
+## Các tính năng chính
+
+- **Tạo Selector động** — Tự động chuyển đổi tên thuộc tính thành các bộ chọn CSS phù hợp.
+- **Tích hợp Mixin** — Nhận dạng các trạng thái cụ thể như `hover`, `active`, `focus`, `disabled`, và `readonly`, và sử dụng các SCSS mixin tương ứng.
+- **Phân giải Class theo ngữ cảnh** — Phát hiện xem thuộc tính phụ có thuộc về class component chính hay không để tối ưu hóa các tham số của mixin.
+- **Quản lý thụt lề** — Đảm bảo cấu trúc khối chính xác và khoảng cách theo chiều dọc.
+
+## Khởi tạo
+
+Khởi tạo trình chuyển đổi `StylesToSelector` với thuộc tính bắt buộc và hàm gọi nội dung.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề.
+- `content?: () => string[]` — một hàm có thể gọi trả về một mảng các chuỗi đại diện cho các quy tắc style nội bộ.
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên hay không (tùy chọn).
+
+```typescript
+import { StylesToSelector } from '@dxtmisha/scripts'
+
+const converter = new StylesToSelector(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối việc phân giải selector và bao bọc khối. Chỉ tạo đầu ra nếu có nội dung bên trong.

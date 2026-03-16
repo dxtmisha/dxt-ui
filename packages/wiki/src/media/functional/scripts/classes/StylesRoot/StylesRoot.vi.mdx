@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesRoot - Trình tạo biến Root'/>
+
+# Lớp StylesRoot
+
+Lớp `StylesRoot` chịu trách nhiệm tạo khối CSS `:root` toàn cục từ các token thiết kế. Nó chuyển đổi các token thành các biến CSS và giải quyết các biểu thức `calc()` phức tạp một cách thông minh để đảm bảo tính tương thích của trình duyệt.
+
+## Các tính năng chính
+
+- **Tạo khối Root** — Tạo cấu trúc `:root { ... }` tiêu chuẩn chứa tất cả các token thiết kế.
+- **Chuyển đổi biến** — Sử dụng `StylesToVar` để chuyển đổi các mục thuộc tính thành các biến CSS hợp lệ.
+- **Giải quyết tính toán động** — Giải quyết đệ quy các biểu thức `calc()` tham chiếu đến các biến khác, đảm bảo rằng các giá trị cuối cùng được tính toán trước nếu có thể.
+- **Tích hợp SCSS** — Tự động bao gồm các chỉ thị SCSS `@use` cần thiết cho các định nghĩa thuộc tính.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `StylesRoot(items)`.
+
+**Tham số:**
+- `items: PropertiesItems` — một đối tượng để làm việc với danh sách các thuộc tính thiết kế.
+
+```typescript
+import { StylesRoot, PropertiesItems } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo PropertiesItems
+const items = new PropertiesItems(designData)
+
+// 2. Khởi tạo StylesRoot
+const generator = new StylesRoot(items)
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `init(): string[]` — Điểm bắt đầu chính. Xử lý danh sách thuộc tính, giải quyết các tính toán và trả về một mảng các chuỗi đại diện cho khối `:root` hoàn chỉnh cùng với các import của nó.

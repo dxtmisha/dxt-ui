@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesToVar - CSS Variable Converter'/>
+
+# StylesToVar Class
+
+The `StylesToVar` class is used to convert design properties into CSS variables. It can handle individual variables or process all nested variables within a branch.
+
+## Key Features
+
+- **Batch Variable Processing** — Can iterate through a branch and generate CSS variable declarations for all sub-properties marked as variables.
+- **Individual Variable Generation** — Can also be used to generate a single variable for the current property.
+- **Color-to-RGB Transformation** — Automatically converts color values into RGB format (wrapped in `ui.toColorRbg`) for better compatibility with opacity management.
+- **Opacity Support** — Generates additional `-opacity` variables if the property has opacity data.
+- **Value Normalization** — Ensures values are correctly escaped and defaults to `unset` if the value is missing.
+
+## Initialization
+
+Initialize the `StylesToVar` converter with the required property branch.
+
+**Parameters:**
+- `property: PropertyItemsItem` — the current branch of the property tree being processed.
+- `space: string` — the indentation string.
+- `content?: () => string[]` — not typically used for variable blocks.
+- `first?: boolean` — indicates if this is the first element (optional).
+
+```typescript
+import { StylesToVar } from '@dxtmisha/scripts'
+
+const converter = new StylesToVar(property, '  ')
+const result = converter.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): string[]` — The main entry point. Orchestrates the generation of one or multiple CSS variables based on the property structure.

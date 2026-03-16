@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesProperties - Bộ điều phối chuyển đổi thuộc tính'/>
+
+# Lớp StylesProperties
+
+Lớp `StylesProperties` đóng vai trò là bộ điều phối trung tâm để chuyển đổi các thuộc tính thiết kế thành SCSS. Nó lặp qua các nhánh thuộc tính và ủy quyền việc chuyển đổi thực tế cho các lớp `StylesTo*` chuyên biệt dựa trên kiểu biến của thuộc tính.
+
+## Các tính năng chính
+
+- **Điều phối dựa trên kiểu** — Tự động chọn trình chuyển đổi chính xác (ví dụ: `StylesToVar`, `StylesToProperty`, `StylesToSelector`) dựa trên `PropertyType`.
+- **Xử lý đệ quy** — Xử lý các cấu trúc thuộc tính lồng nhau bằng cách tự khởi tạo đệ quy cho các nhánh con.
+- **Quản lý khối phụ trợ** — Bao bọc các selector và phần tử giả (pseudo-elements) trong các khối `& { ... }` một cách thông minh khi chúng là một phần của cấu trúc lồng nhau lớn hơn.
+- **Theo dõi thụt lề** — Quản lý và tăng mức thụt lề khi đi sâu vào các nhánh thuộc tính lồng nhau.
+- **Bảo toàn trạng thái** — Theo dõi xem nó có đang xử lý phần tử đầu tiên trong một khối hay không để quản lý khoảng cách dọc một cách chính xác.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `StylesProperties(space, property, parent)`.
+
+**Tham số:**
+- `space: string` — chuỗi thụt lề.
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `parent?: PropertyItem` — mục thuộc tính cha (tùy chọn).
+
+```typescript
+import { StylesProperties } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo StylesProperties
+const dispatcher = new StylesProperties(indentation, propertyBranch, parentItem)
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Lặp qua các thuộc tính trong nhánh hiện tại và trả về một mảng các chuỗi SCSS đại diện cho các quy tắc đã được chuyển đổi.

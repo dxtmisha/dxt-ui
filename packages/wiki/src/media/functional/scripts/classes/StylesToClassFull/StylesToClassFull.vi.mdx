@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToClassFull - Trình tạo tên Class đầy đủ'/>
+
+# Lớp StylesToClassFull
+
+Lớp `StylesToClassFull` được thiết kế để tạo các quy tắc CSS trong đó selector được cung cấp dưới dạng một chuỗi đầy đủ. Khác với `StylesToClass`, lớp này luôn tạo khối CSS, ngay cả khi nó không chứa các thuộc tính nội bộ.
+
+## Các tính năng chính
+
+- **Tạo bắt buộc** — Luôn tạo một khối CSS với selector được chỉ định.
+- **Hỗ trợ Selector đầy đủ** — Sử dụng trực tiếp chuỗi được cung cấp làm CSS selector mà không cần xử lý thêm.
+- **Tự động bao bọc khối** — Bao bọc chính xác nội dung bên trong dấu ngoặc nhọn CSS tiêu chuẩn `{}`.
+
+## Khởi tạo
+
+Khởi tạo trình chuyển đổi `StylesToClassFull` với thuộc tính bắt buộc và một hàm gọi nội dung cho các quy tắc style.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề (ví dụ: `"  "` hoặc `"\t"`).
+- `content?: () => string[]` — một hàm có thể gọi trả về một mảng các chuỗi đại diện cho các quy tắc style nội bộ.
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên trong cấp độ hiện tại hay không (tùy chọn, mặc định: `true`).
+
+```typescript
+import { StylesToClassFull } from '@dxtmisha/scripts'
+
+// Sử dụng trong logic chuyển đổi
+const converter = new StylesToClassFull(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối việc chuyển đổi và thêm thụt lề cần thiết vào mỗi dòng.
+

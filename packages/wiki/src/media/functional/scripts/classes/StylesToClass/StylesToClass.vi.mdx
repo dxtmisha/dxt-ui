@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToClass - Trình tạo CSS Class'/>
+
+# Lớp StylesToClass
+
+Lớp `StylesToClass` được sử dụng để tạo các quy tắc CSS tiêu chuẩn (selector và nội dung của chúng) từ các thuộc tính thiết kế. Nó đảm bảo rằng các khối chỉ được tạo nếu chúng chứa các quy tắc lồng nhau.
+
+## Các tính năng chính
+
+- **Tạo có chọn lọc** — Chỉ tạo đầu ra nếu hàm gọi `content()` trả về một mảng không trống.
+- **Phân giải Selector** — Sử dụng tên thuộc tính thiết kế làm CSS selector.
+- **Tự động bao bọc khối** — Bao bọc chính xác các thuộc tính bên trong dấu ngoặc nhọn CSS tiêu chuẩn `{}`.
+
+## Khởi tạo
+
+Khởi tạo trình chuyển đổi `StylesToClass` với thuộc tính bắt buộc và một hàm gọi nội dung cho các quy tắc style lồng nhau.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề (ví dụ: `"  "` hoặc `"\t"`).
+- `content?: () => string[]` — một hàm có thể gọi trả về một mảng các chuỗi đại diện cho các style nội bộ.
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên trong cấp độ hiện tại hay không (tùy chọn, mặc định: `true`).
+
+```typescript
+import { StylesToClass } from '@dxtmisha/scripts'
+
+// Sử dụng trong logic chuyển đổi
+const converter = new StylesToClass(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối việc chuyển đổi và thêm thụt lề cần thiết vào mỗi dòng.
+

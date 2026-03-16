@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToVar - Trình chuyển đổi biến CSS'/>
+
+# Lớp StylesToVar
+
+Lớp `StylesToVar` được sử dụng để chuyển đổi các thuộc tính thiết kế thành các biến CSS. Nó có thể xử lý các biến riêng lẻ hoặc xử lý tất cả các biến lồng nhau trong một nhánh.
+
+## Các tính năng chính
+
+- **Xử lý biến theo lô** — Có thể lặp qua một nhánh và tạo các khai báo biến CSS cho tất cả các thuộc tính phụ được đánh dấu là biến.
+- **Tạo biến riêng lẻ** — Cũng có thể được sử dụng để tạo một biến duy nhất cho thuộc tính hiện tại.
+- **Chuyển đổi Color sang RGB** — Tự động chuyển đổi các giá trị màu sang định dạng RGB (được bao bọc trong `ui.toColorRbg`) để tương thích tốt hơn với việc quản lý độ mờ.
+- **Hỗ trợ độ mờ (Opacity)** — Tạo thêm các biến `-opacity` nếu thuộc tính có dữ liệu về độ mờ.
+- **Chuẩn hóa giá trị** — Đảm bảo các giá trị được thoát (escape) chính xác và mặc định là `unset` nếu giá trị bị thiếu.
+
+## Khởi tạo
+
+Khởi tạo trình chuyển đổi `StylesToVar` với nhánh thuộc tính bắt buộc.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề.
+- `content?: () => string[]` — thường không được sử dụng cho các khối biến.
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên hay không (tùy chọn).
+
+```typescript
+import { StylesToVar } from '@dxtmisha/scripts'
+
+const converter = new StylesToVar(property, '  ')
+const result = converter.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối việc tạo một hoặc nhiều biến CSS dựa trên cấu trúc thuộc tính.

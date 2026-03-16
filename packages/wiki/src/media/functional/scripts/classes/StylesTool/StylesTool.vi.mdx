@@ -1,0 +1,130 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesTool - Tiện ích xử lý Style'/>
+
+# Lớp StylesTool
+
+Lớp `StylesTool` là một container tiện ích tĩnh cấp cao cung cấp các chức năng thiết yếu cho quy trình tạo style của hệ thống thiết kế. Nó đóng gói logic quản lý thư mục, kiểm soát thụt lề, xây dựng các chỉ thị SCSS và các chuyển đổi tương thích với Sass.
+
+Bằng cách tập trung các thao tác chuỗi cấp thấp và tra cứu đường dẫn này, nó đảm bảo tính nhất quán trên tất cả các trình chuyển đổi `StylesTo*` và các lớp tạo mã.
+
+## Các tính năng chính
+
+- **Kiểm soát thụt lề** — cung cấp một đơn vị thụt lề chuẩn 2 khoảng trắng và các phương thức để mở rộng nó dựa trên mức độ lồng nhau.
+- **Trình dựng chỉ thị** — tiêu chuẩn hóa cú pháp cho các câu lệnh SCSS `@use`, `@import`, và `@forward`.
+- **Xác định đường dẫn** — tích hợp với cấu hình toàn cục để xác định đích đầu ra cho các tệp được tạo.
+- **Tính tương thích với Sass** — xử lý các chuyển đổi tự động của cú pháp hàm CSS tùy chỉnh thành nội suy an toàn trong Sass.
+- **Định dạng dọc** — quản lý việc kết hợp các dòng với ký tự CRLF nhất quán để tương thích giữa Windows/UNIX.
+
+## Các phương thức về Tệp và Thư mục
+
+### `getDir`
+
+Xác định cấu trúc thư mục đích để lưu trữ các tệp style được tạo. Nó kết hợp thư mục style cốt lõi với tên dự án cụ thể được định nghĩa trong cấu hình thuộc tính.
+
+**Trả về:** `string[]` — Một mảng đại diện cho các phân đoạn đường dẫn của thư mục đích.
+
+## Các phương thức về Thụt lề và Khoảng cách
+
+### `getSpace`
+
+Lấy đơn vị thụt lề cơ sở được sử dụng trong toàn bộ các tệp style được tạo của dự án.
+
+**Trả về:** `string` — Trả về một chuỗi bao gồm 2 khoảng trắng (`  `).
+
+### `addSpace`
+
+Tạo một chuỗi thụt lề dựa trên mức độ lồng nhau được chỉ định. Điều này được sử dụng để căn chỉnh các khối mã bên trong các cấu trúc lồng nhau như media queries hoặc các khối selector.
+
+**Tham số:**
+- `level: number` — Mức độ lồng nhau mong muốn (0 cho không thụt lề, 1 cho 2 khoảng trắng, 2 cho 4 khoảng trắng, v.v.).
+
+**Trả về:** `string` — Chuỗi thụt lề kết quả.
+
+### `increaseSpace`
+
+Thêm một cấp thụt lề bổ sung (2 khoảng trắng) vào một chuỗi khoảng trắng hiện có. Điều này hữu ích trong quá trình duyệt cây đệ quy nơi độ sâu tăng dần.
+
+**Tham số:**
+- `space: string` — Chuỗi thụt lề hiện tại cần được mở rộng.
+
+**Trả về:** `string` — Chuỗi thụt lề đã được cập nhật với một cấp bổ sung.
+
+## Các phương thức chỉ thị SCSS
+
+### `addImport`
+
+Xây dựng một chỉ thị SCSS `@import` tiêu chuẩn cho một đường dẫn tệp nhất định.
+
+**Tham số:**
+- `path: string` — Đường dẫn tệp cần được import.
+
+**Trả về:** `string` — Chỉ thị đã định dạng (ví dụ: `@import "path/to/file";`).
+
+### `addUse`
+
+Xây dựng một chỉ thị SCSS `@use` hiện đại, đây là cách được khuyến nghị để tải các member function, mixin và biến trong Sass hiện đại.
+
+**Tham số:**
+- `path: string` — Đường dẫn module cần được sử dụng.
+
+**Trả về:** `string` — Chỉ thị đã định dạng (ví dụ: `@use "path/to/module";`).
+
+### `addForward`
+
+Xây dựng một chỉ thị SCSS `@forward`. Điều này thường được sử dụng trong các tệp index để công khai các thành viên của một sub-module cho người dùng của package.
+
+**Tham số:**
+- `path: string` — Đường dẫn module cần được chuyển tiếp.
+
+**Trả về:** `string` — Chỉ thị đã định dạng (ví dụ: `@forward "path/to/module";`).
+
+### `addImportProperties`
+
+Tạo một chỉ thị `@use` chuyên biệt cho thư viện cốt lõi `@dxtmisha/styles`, đặt bí danh cho nó là `ui` để sử dụng trong các khối thuộc tính được tạo.
+
+**Trả về:** `string` — Luôn trả về `'@use "@dxtmisha/styles" as ui;'`.
+
+## Định dạng và Tiện ích
+
+### `join`
+
+Kết hợp một mảng các dòng mã được tạo thành một chuỗi văn bản duy nhất đã được định dạng. Nó sử dụng CRLF (`\r\n`) làm bộ phân tách dòng để đảm bảo định dạng nhất quán trên các môi trường.
+
+**Tham số:**
+- `data: string[]` — Một mảng các chuỗi đại diện cho từng dòng mã riêng lẻ.
+
+**Trả về:** `string` — Chuỗi văn bản nhiều dòng kết quả.
+
+### `toFunctionCss`
+
+Một tiện ích an toàn chuyển đổi các lời gọi `@function` tùy chỉnh bên trong các giá trị thuộc tính CSS thành cú pháp nội suy của Sass (`#{...}`). Điều này ngăn chặn các lỗi biên dịch Sass khi các hàm tùy chỉnh được sử dụng trong các ngữ cảnh yêu cầu đầu ra CSS thô.
+
+**Tham số:**
+- `value: string` — Chuỗi giá trị thuộc tính CSS chứa các lời gọi hàm tùy chỉnh tiềm năng.
+
+**Trả về:** `string` — Chuỗi đã được chuyển đổi với các lời gọi hàm được nội suy.
+
+## Ví dụ sử dụng
+
+```typescript
+import { StylesTool } from '@dxtmisha/scripts'
+
+// 1. Lấy một mức thụt lề
+const indent = StylesTool.addSpace(2) // "    "
+
+// 2. Tạo một SCSS import
+const importLine = StylesTool.addImport('../tokens/colors')
+
+// 3. Chuyển đổi một lời gọi hàm tùy chỉnh
+const safeValue = StylesTool.toFunctionCss('@getOpacity(0.5)') // "#{getOpacity(0.5)}"
+
+// 4. Kết hợp các dòng
+const fileContent = StylesTool.join([
+  StylesTool.addImportProperties(),
+  importLine,
+  `.element {`,
+  `${indent}color: red;`,
+  `}`
+])
+```

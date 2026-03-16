@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/Styles - Bộ điều phối Style'/>
+
+# Lớp Styles
+
+Lớp `Styles` là bộ điều phối trung tâm để tạo tất cả các tệp hệ thống liên quan đến style trong hệ thống thiết kế. Nó quản lý việc khởi tạo các biến gốc, các lớp cơ sở, các thuộc tính SCSS và các thiết lập style cụ thể cho từng thiết kế.
+
+## Các tính năng chính
+
+- **Tạo hệ thống** — Điều phối việc tạo các tệp `vars`, `classes`, `properties`, và `list`.
+- **Khởi tạo biến gốc** — Sử dụng `StylesRoot` để tạo các biến CSS toàn cục.
+- **Quản lý lớp cơ sở** — Sử dụng `StylesClasses` để tạo các lớp tiện ích tiêu chuẩn.
+- **Thiết lập theo thiết kế** — Tự động tạo các tệp `main`, `basic`, và `style` được tùy chỉnh cho các thiết kế cụ thể.
+- **Tích hợp SCSS** — Chuyển đổi dữ liệu thuộc tính thành các cấu trúc tương thích với SCSS bằng cách sử dụng `PropertiesScss`.
+- **Dọn dẹp tự động** — Lọc bỏ dữ liệu dư thừa để giữ cho các tệp danh sách được tạo luôn sạch sẽ.
+
+## Khởi tạo
+
+Khởi tạo bộ điều phối `Styles`. Nó quản lý nội bộ một phiên bản `Properties` để truy xuất dữ liệu thiết kế.
+
+```typescript
+import { Styles } from '@dxtmisha/scripts'
+
+const orchestrator = new Styles()
+orchestrator.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): this` — Điểm bắt đầu chính. Kích hoạt chu kỳ tạo đầy đủ cho tất cả các thiết kế.
+
+### Khởi tạo nội bộ
+
+- `initRoot(items: PropertiesItems): this` — Tạo các biến toàn cục và ghi chúng vào tệp `vars`.
+- `initClasses(items: PropertiesItems): this` — Tạo các lớp cơ sở và các tệp lớp riêng lẻ.
+- `initProperties(items: PropertiesItems): this` — Tạo cấu trúc thuộc tính SCSS.
+- `initList(items: PropertiesItems): this` — Tạo danh sách thuộc tính đã dọn dẹp để tham chiếu.
+- `initBasic(design: string): this` — Tạo các tệp kết nối cơ bản và các điểm neo style cụ thể cho thiết kế.

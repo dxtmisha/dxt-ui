@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToAbstract - Lớp cơ sở để chuyển đổi Style'/>
+
+# Lớp StylesToAbstract
+
+Lớp `StylesToAbstract` đóng vai trò là nền tảng cho tất cả các cơ chế chuyển đổi style. Nó cung cấp một giao diện tiêu chuẩn hóa và một bộ các phương thức hỗ trợ để dịch các thuộc tính thiết kế sang các cấu trúc tương thích với CSS.
+
+## Các tính năng chính
+
+- **Luồng xử lý tiêu chuẩn hóa** — Đảm bảo tất cả các lớp con đều tuân theo cùng một quy trình xử lý: `make` → `treatment` → `addSpace`.
+- **Quản lý ngữ cảnh thuộc tính** — Tự động quản lý thuộc tính thiết kế hiện tại, mức độ thụt lề và vị trí trong cây thư mục.
+- **Ủy quyền nội dung linh hoạt** — Hỗ trợ xử lý thuộc tính đệ quy thông qua các hàm có thể gọi (callables).
+- **Phân giải đường dẫn và tên** — Các trình hỗ trợ tích hợp để trích xuất và chuẩn hóa tên thuộc tính và giá trị CSS.
+
+## Khởi tạo
+
+Là một lớp trừu tượng (abstract class), `StylesToAbstract` không thể được khởi tạo trực tiếp. Nó phục vụ như một lớp cơ sở cho các trình chuyển đổi style cụ thể.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề (ví dụ: `"  "` hoặc `"\t"`).
+- `content?: () => string[]` — một hàm có thể gọi được sử dụng để xử lý các thuộc tính con (tùy chọn).
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên trong danh sách/cấp độ cây hiện tại hay không (tùy chọn, mặc định: `true`).
+
+```typescript
+import { StylesToAbstract } from '@dxtmisha/scripts'
+
+// Ví dụ: Tạo một triển khai cụ thể
+class StylesToCustom extends StylesToAbstract {
+  protected treatment(): string[] {
+    // Xác định logic chuyển đổi tùy chỉnh tại đây
+    return [
+      `${this.getName()} {`,
+      `  content: ${this.getValue()};`,
+      '}'
+    ]
+  }
+}
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối việc chuyển đổi và thêm thụt lề cần thiết vào mỗi dòng.
+
+### Phương thức trừu tượng
+
+- `treatment(): string[]` — Xác định logic chuyển đổi cụ thể để dịch dữ liệu thuộc tính sang cấu trúc style. Các lớp con phải triển khai phương thức này.

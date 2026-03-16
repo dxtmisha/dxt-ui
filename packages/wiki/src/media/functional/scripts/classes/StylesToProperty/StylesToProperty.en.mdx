@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesToProperty - CSS Property Generator'/>
+
+# StylesToProperty Class
+
+The `StylesToProperty` class is responsible for converting design properties into standard CSS properties or SCSS mixin calls. It handles variable generation, special property formatting, and auxiliary values for things like opacity.
+
+## Key Features
+
+- **Standard CSS Properties** — Generates property-value pairs (e.g., `margin-top: 10px;`).
+- **SCSS Mixin Integration** — Automatically converts specific properties into mixin calls if they are registered in `styleTypes`.
+- **CSS Variable Generation** — Can generate custom CSS variables if the `varKey` flag is set on the property.
+- **Auxiliary Value Initialization** — Automatically includes initialization calls for opacity-related properties if the base property is missing.
+- **Sorting and Spacing** — Adds vertical spacing between properties if their sort index changes.
+
+## Initialization
+
+Initialize the `StylesToProperty` converter with the required property branch.
+
+**Parameters:**
+- `property: PropertyItemsItem` — the current branch of the property tree being processed.
+- `space: string` — the indentation string.
+- `content?: () => string[]` — not typically used for properties as they are leaf nodes.
+- `first?: boolean` — indicates if this is the first element (optional).
+
+```typescript
+import { StylesToProperty } from '@dxtmisha/scripts'
+
+const converter = new StylesToProperty(property, '  ')
+const result = converter.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): string[]` — The main entry point. Orchestrates the transformation, including variable generation and mixin resolution.

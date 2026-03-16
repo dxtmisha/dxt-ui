@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesToAnimate - Animation Generator'/>
+
+# StylesToAnimate Class
+
+The `StylesToAnimate` class is responsible for generating CSS `@keyframes` animations from design properties. It implements the necessary logic to wrap nested keyframe rules within a named animation block.
+
+## Key Features
+
+- **Keyframes Wrapping** — Automatically wraps the generated style content within a `@keyframes` block.
+- **Dynamic Naming** — Uses the design property name to define the animation identifier.
+- **Indentation Management** — Correctly handles block indentation and optional leading empty lines.
+
+## Initialization
+
+Initialize the `StylesToAnimate` converter with the required property and a content callable for the keyframe steps.
+
+**Parameters:**
+- `property: PropertyItemsItem` — the current branch of the property tree being processed.
+- `space: string` — the indentation string (e.g., `"  "` or `"\t"`).
+- `content?: () => string[]` — a callable function that returns an array of strings representing the keyframes.
+- `first?: boolean` — indicates if this is the first element in the current level (optional, default: `true`).
+
+```typescript
+import { StylesToAnimate } from '@dxtmisha/scripts'
+
+// Usage in conversion logic
+const converter = new StylesToAnimate(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): string[]` — The main entry point. Orchestrates the transformation and adds the required indentation to each line.
+

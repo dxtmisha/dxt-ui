@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesToClass - CSS Class Generator'/>
+
+# StylesToClass Class
+
+The `StylesToClass` class is used to generate standard CSS rules (selectors and their content) from design properties. It ensures that blocks are only generated if they contain nested rules.
+
+## Key Features
+
+- **Selective Generation** — Only produces output if the `content()` callable returns a non-empty array.
+- **Selector Resolution** — Uses the design property name as the CSS selector.
+- **Automatic Block Wrapping** — Correctly wraps properties within standard CSS braces `{}`.
+
+## Initialization
+
+Initialize the `StylesToClass` converter with the required property and a content callable for the nested style rules.
+
+**Parameters:**
+- `property: PropertyItemsItem` — the current branch of the property tree being processed.
+- `space: string` — the indentation string (e.g., `"  "` or `"\t"`).
+- `content?: () => string[]` — a callable function that returns an array of strings representing the internal styles.
+- `first?: boolean` — indicates if this is the first element in the current level (optional, default: `true`).
+
+```typescript
+import { StylesToClass } from '@dxtmisha/scripts'
+
+// Usage in conversion logic
+const converter = new StylesToClass(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): string[]` — The main entry point. Orchestrates the transformation and adds the required indentation to each line.
+

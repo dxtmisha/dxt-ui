@@ -1,0 +1,130 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesTool - Style Processing Utilities'/>
+
+# StylesTool Class
+
+The `StylesTool` class is a high-level static utility container providing essential functions for the design system's style generation pipeline. It encapsulates logic for directory management, indentation control, SCSS directive construction, and Sass-compatibility transformations.
+
+By centralizing these low-level string manipulations and path lookups, it ensures consistency across all `StylesTo*` converters and generator classes.
+
+## Key Features
+
+- **Indentation Control** — provides a standard 2-space indentation unit and methods to scale it based on nesting levels.
+- **Directive Builders** — standardizes the syntax for SCSS `@use`, `@import`, and `@forward` statements.
+- **Path Resolution** — integrates with global configuration to determine the output destination for generated files.
+- **Sass Compatibility** — handles automated transformations of custom CSS function syntax into Sass-safe interpolation.
+- **Vertical Formatting** — manages line joining with consistent CRLF characters for Windows/UNIX compatibility.
+
+## File and Directory Methods
+
+### `getDir`
+
+Determines the target directory structure for persisting the generated style files. It combines the core style directory with the specific project name defined in the properties configuration.
+
+**Returns:** `string[]` — An array representing the path segments of the target directory.
+
+## Indentation and Spacing Methods
+
+### `getSpace`
+
+Retrieves the base indentation unit used throughout the project's generated style files.
+
+**Returns:** `string` — Returns a string consisting of 2 spaces (`  `).
+
+### `addSpace`
+
+Generates an indentation string based on a specified nesting depth level. This is used to align blocks of code within nested structures like media queries or selector blocks.
+
+**Parameters:**
+- `level: number` — The desired nesting level (0 for no indentation, 1 for 2 spaces, 2 for 4 spaces, etc.).
+
+**Returns:** `string` — The resulting indentation string.
+
+### `increaseSpace`
+
+Appends one additional level of indentation (2 spaces) to an existing space string. This is useful during recursive tree traversal where the depth increases incrementally.
+
+**Parameters:**
+- `space: string` — The current indentation string to be expanded.
+
+**Returns:** `string` — The updated indentation string with one extra level.
+
+## SCSS Directive Methods
+
+### `addImport`
+
+Constructs a standard SCSS `@import` directive for a given file path.
+
+**Parameters:**
+- `path: string` — The file path to be imported.
+
+**Returns:** `string` — The formatted directive (e.g., `@import "path/to/file";`).
+
+### `addUse`
+
+Constructs a modern SCSS `@use` directive, which is the recommended way to load member functions, mixins, and variables in modern Sass.
+
+**Parameters:**
+- `path: string` — The module path to be used.
+
+**Returns:** `string` — The formatted directive (e.g., `@use "path/to/module";`).
+
+### `addForward`
+
+Constructs an SCSS `@forward` directive. This is typically used in index files to expose members of a sub-module to users of the package.
+
+**Parameters:**
+- `path: string` — The module path to be forwarded.
+
+**Returns:** `string` — The formatted directive (e.g., `@forward "path/to/module";`).
+
+### `addImportProperties`
+
+Generates a specialized `@use` directive for the core `@dxtmisha/styles` library, aliasing it as `ui` for use in generated property blocks.
+
+**Returns:** `string` — Always returns `'@use "@dxtmisha/styles" as ui;'`.
+
+## Formatting and Utilities
+
+### `join`
+
+Combines an array of generated code lines into a single formatted string. It uses CRLF (`\r\n`) as the line separator to ensure consistent formatting across environments.
+
+**Parameters:**
+- `data: string[]` — An array of strings representing individual lines of code.
+
+**Returns:** `string` — The resulting multiline string.
+
+### `toFunctionCss`
+
+A safety utility that transforms custom `@function` calls within property values into Sass interpolation syntax (`#{...}`). This prevents Sass compilation errors when custom functions are used in contexts that require raw CSS output.
+
+**Parameters:**
+- `value: string` — The CSS property value string containing potential custom function calls.
+
+**Returns:** `string` — The transformed string with interpolated function calls.
+
+## Example Usage
+
+```typescript
+import { StylesTool } from '@dxtmisha/scripts'
+
+// 1. Getting an indentation level
+const indent = StylesTool.addSpace(2) // "    "
+
+// 2. Creating an SCSS import
+const importLine = StylesTool.addImport('../tokens/colors')
+
+// 3. Transforming a custom function call
+const safeValue = StylesTool.toFunctionCss('@getOpacity(0.5)') // "#{getOpacity(0.5)}"
+
+// 4. Joining lines
+const fileContent = StylesTool.join([
+  StylesTool.addImportProperties(),
+  importLine,
+  `.element {`,
+  `${indent}color: red;`,
+  `}`
+])
+```

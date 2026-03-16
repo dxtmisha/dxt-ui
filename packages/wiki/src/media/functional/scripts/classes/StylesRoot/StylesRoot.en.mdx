@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesRoot - Root Variable Generator'/>
+
+# StylesRoot Class
+
+The `StylesRoot` class is responsible for generating the global `:root` CSS block from design tokens. It converts tokens into CSS variables and intelligently resolves complex `calc()` expressions to ensure browser compatibility.
+
+## Key Features
+
+- **Root Block Generation** — Creates a standard `:root { ... }` structure containing all design tokens.
+- **Variable Conversion** — Uses `StylesToVar` to transform property items into valid CSS variables.
+- **Dynamic Calculation Resolution** — Recursively resolves `calc()` expressions that reference other variables, ensuring that final values are pre-calculated where possible.
+- **SCSS Integration** — Automatically includes the necessary SCSS `@use` directives for property definitions.
+
+## Initialization
+
+To initialize the object, call the `StylesRoot(items)` constructor.
+
+**Parameters:**
+- `items: PropertiesItems` — an object for working with the list of design properties.
+
+```typescript
+import { StylesRoot, PropertiesItems } from '@dxtmisha/scripts'
+
+// 1. Initialize PropertiesItems
+const items = new PropertiesItems(designData)
+
+// 2. Initialize StylesRoot
+const generator = new StylesRoot(items)
+```
+
+## Methods
+
+### Control
+
+- `init(): string[]` — The main entry point. Processes the property list, resolves calculations, and returns an array of strings representing the complete `:root` block with its imports.

@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesProperties - Property Conversion Dispatcher'/>
+
+# StylesProperties Class
+
+The `StylesProperties` class acts as a central dispatcher for converting design properties into SCSS. It iterates through property branches and delegates the actual transformation to specialized `StylesTo*` classes based on the property's variable type.
+
+## Key Features
+
+- **Type-Based Dispatching** — Automatically selects the correct converter (e.g., `StylesToVar`, `StylesToProperty`, `StylesToSelector`) based on the `PropertyType`.
+- **Recursive Processing** — Handles nested property structures by recursively initializing itself for sub-branches.
+- **Auxiliary Block Management** — Intelligently wraps selectors and virtual elements in `& { ... }` blocks when they are part of a larger nested structure.
+- **Indentation Tracking** — Manages and increases indentation levels as it descends into nested property branches.
+- **State Preservation** — Tracks whether it is processing the first element in a block to correctly manage vertical spacing.
+
+## Initialization
+
+To initialize the object, call the `StylesProperties(space, property, parent)` constructor.
+
+**Parameters:**
+- `space: string` — the indentation string.
+- `property: PropertyItemsItem` — the current branch of the property tree being processed.
+- `parent?: PropertyItem` — the parent property item (optional).
+
+```typescript
+import { StylesProperties } from '@dxtmisha/scripts'
+
+// 1. Initialize StylesProperties
+const dispatcher = new StylesProperties(indentation, propertyBranch, parentItem)
+```
+
+## Methods
+
+### Control
+
+- `make(): string[]` — The main entry point. Iterates through the properties in the current branch and returns an array of SCSS strings representing the converted rules.

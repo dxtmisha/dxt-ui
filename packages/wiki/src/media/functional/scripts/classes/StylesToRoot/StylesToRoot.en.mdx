@@ -1,0 +1,36 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesToRoot - At-Root Block Generator'/>
+
+# StylesToRoot Class
+
+The `StylesToRoot` class is used to wrap a block of nested rules within a CSS `@at-root` directive. This is useful for lifting rules out of their current scope to the root of the stylesheet.
+
+## Key Features
+
+- **At-Root Wrapping** — Automatically wraps the generated content within an `@at-root` block.
+- **Dynamic Selector Inclusion** — Appends the property name (acting as a selector extension) to the `@at-root` directive.
+- **Indentation Management** — Handles standard block indentation and leading empty lines.
+
+## Initialization
+
+Initialize the `StylesToRoot` converter with the required property and content callable.
+
+**Parameters:**
+- `property: PropertyItemsItem` — the current branch of the property tree being processed.
+- `space: string` — the indentation string.
+- `content?: () => string[]` — a callable function that returns an array of strings representing the internal style rules.
+- `first?: boolean` — indicates if this is the first element (optional).
+
+```typescript
+import { StylesToRoot } from '@dxtmisha/scripts'
+
+const converter = new StylesToRoot(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): string[]` — The main entry point. Orchestrates the process of wrapping the content in the `@at-root` structure.

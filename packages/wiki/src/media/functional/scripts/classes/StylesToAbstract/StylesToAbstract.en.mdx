@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/StylesToAbstract - Base Class for Style Conversion'/>
+
+# StylesToAbstract Class
+
+The `StylesToAbstract` class serves as the foundation for all style conversion mechanisms. It provides a standardized interface and a set of helper methods for translating design properties into CSS-compatible structures.
+
+## Key Features
+
+- **Standardized Processing Pipeline** — Ensures all sub-classes follow the same `make` → `treatment` → `addSpace` workflow.
+- **Property Context Management** — Automatically manages the current design property, indentation levels, and tree position.
+- **Flexible Content Delegation** — Supports recursive property processing via callables.
+- **Path and Name Resolution** — Built-in helpers to extract and normalize property names and CSS values.
+
+## Initialization
+
+As an abstract class, `StylesToAbstract` cannot be instantiated directly. It serves as a base for specific style converters.
+
+**Parameters:**
+- `property: PropertyItemsItem` — the current branch of the property tree being processed.
+- `space: string` — the indentation string (e.g., `"  "` or `"\t"`).
+- `content?: () => string[]` — a callable function used to process sub-properties (optional).
+- `first?: boolean` — indicates if this is the first element in the current list/tree level (optional, default: `true`).
+
+```typescript
+import { StylesToAbstract } from '@dxtmisha/scripts'
+
+// Example: Creating a concrete implementation
+class StylesToCustom extends StylesToAbstract {
+  protected treatment(): string[] {
+    // Defines the specific conversion logic
+    return [
+      `${this.getName()} {`,
+      `  content: ${this.getValue()};`,
+      '}'
+    ]
+  }
+}
+```
+
+## Methods
+
+### Control
+
+- `make(): string[]` — The main entry point. Orchestrates the transformation and adds the required indentation to each line.
+
+### Abstract
+
+- `treatment(): string[]` — Defines the specific conversion logic for translating property data into a style structure. Subclasses must implement this method.

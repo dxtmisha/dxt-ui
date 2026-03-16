@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/StylesToMedia - Trình tạo truy vấn Media'/>
+
+# Lớp StylesToMedia
+
+Lớp `StylesToMedia` chịu trách nhiệm tạo các truy vấn CSS `@media` từ các thuộc tính thiết kế. Nó triển khai logic để bao bọc các quy tắc style lồng nhau bên trong một khối truy vấn media.
+
+## Các tính năng chính
+
+- **Bao bọc truy vấn Media** — Tự động bao bọc nội dung style được tạo bên trong một quy tắc `@media screen and ...`.
+- **Phân giải truy vấn động** — Sử dụng tên thuộc tính thiết kế để định nghĩa điều kiện của truy vấn media.
+- **Quản lý thụt lề** — Xử lý chính xác thụt lề khối và các dòng trống dẫn đầu tùy chọn.
+
+## Khởi tạo
+
+Khởi tạo trình chuyển đổi `StylesToMedia` với thuộc tính bắt buộc và một hàm gọi nội dung cho các quy tắc lồng nhau.
+
+**Tham số:**
+- `property: PropertyItemsItem` — nhánh hiện tại của cây thuộc tính đang được xử lý.
+- `space: string` — chuỗi thụt lề (ví dụ: `"  "` hoặc `"\t"`).
+- `content?: () => string[]` — một hàm có thể gọi trả về một mảng các chuỗi đại diện cho các quy tắc style nội bộ.
+- `first?: boolean` — cho biết đây có phải là phần tử đầu tiên trong cấp độ hiện tại hay không (tùy chọn, mặc định: `true`).
+
+```typescript
+import { StylesToMedia } from '@dxtmisha/scripts'
+
+// Sử dụng trong logic chuyển đổi
+const converter = new StylesToMedia(property, '  ', contentCallable)
+const result = converter.make()
+```
+
+## Các phương thức
+
+### Điều khiển
+
+- `make(): string[]` — Điểm bắt đầu chính. Điều phối việc chuyển đổi và thêm thụt lề cần thiết vào mỗi dòng.
