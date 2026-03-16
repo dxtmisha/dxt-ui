@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/BuildItem - Component Build Manager'/>
+
+# BuildItem Class
+
+Responsible for orchestrating the build process of individual components using Vite. It manages temporary build configurations, executes the build pipeline, and aggregates the resulting output into a single code snapshot.
+
+## Key Features
+
+- **Configuration Isolation** — Safely renames existing Vite configs before build and restores them after completion.
+- **Vite Integration** — Generates dynamic Vite configurations based on a component-specific template.
+- **Output Aggregation** — Recursively reads all files from the temporary distribution directory and combines them into a single `code.txt` file.
+- **Error Propagation** — Monitors build status and handles environment exit codes on failure.
+- **Storage Management** — Provides utility methods for retrieving and cleaning up temporary distribution paths.
+
+## Initialization
+
+Initialize the `BuildItem` by providing the target component path.
+
+**Parameters:**
+- `path: string` — the target path to the component directory to be built.
+
+```typescript
+import { BuildItem } from '@dxtmisha/scripts'
+
+const builder = new BuildItem('packages/components/Button')
+
+// Trigger the build process
+await builder.make()
+```
+
+## Methods
+
+### Control
+
+- `make(): Promise<boolean>` — coordinates the full build lifecycle: configuration backup, build execution, and file restoration.
+- `getCode(): string` — retrieves the content of the aggregated code snapshot generated during the build.
+- `removeDir(): void` — permanently deletes the temporary distribution directory.
+
+## Internal Workflow
+
+The build process follows a strict lifecycle to ensure environment safety and consistent output:
+
+1.  **Configuration Backup** — Renames the existing `vite.config.ts` to `vite.config.workers.ts` to prevent it from being overwritten or interfering with the build.
+2.  **Template Synthesis** — Reads the component-specific Vite template and injects the target path dynamically.
+3.  **Shell Execution** — Triggers the `npm run build` command via a child process, capturing and logging all output.
+4.  **Restoration** — Safely restores the original `vite.config.ts` from the backup once the build completes.
+5.  **Aggregation** — Recursively scans the distribution directory, wraps each file's content in an identifier comment, and writes the final combined result to `code.txt`.

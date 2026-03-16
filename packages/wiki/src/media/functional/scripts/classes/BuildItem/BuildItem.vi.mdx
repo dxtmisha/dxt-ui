@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/BuildItem - Trình quản lý Build Component'/>
+
+# Lớp BuildItem
+
+Chịu trách nhiệm điều phối quy trình build của từng component riêng lẻ bằng Vite. Nó quản lý các cấu hình build tạm thời, thực thi quy trình build và tổng hợp đầu ra thu được thành một snapshot mã duy nhất.
+
+## Các tính năng chính
+
+- **Cô lập cấu hình** — Đổi tên các cấu hình Vite hiện có một cách an toàn trước khi build và khôi phục chúng sau khi hoàn tất.
+- **Tích hợp Vite** — Tạo các cấu hình Vite động dựa trên một template dành riêng cho component.
+- **Tổng hợp đầu ra** — Đọc đệ quy tất cả các tệp từ thư mục phân phối tạm thời và kết hợp chúng thành một tệp `code.txt` duy nhất.
+- **Lan truyền lỗi** — Theo dõi trạng thái build và xử lý các mã thoát (exit code) khi thất bại.
+- **Quản lý lưu trữ** — Cung cấp các phương thức để lấy và dọn dẹp các đường dẫn phân phối tạm thời.
+
+## Khởi tạo
+
+Khởi tạo `BuildItem` bằng cách cung cấp đường dẫn component mục tiêu.
+
+**Tham số:**
+- `path: string` — đường dẫn đích đến thư mục component cần build.
+
+```typescript
+import { BuildItem } from '@dxtmisha/scripts'
+
+const builder = new BuildItem('packages/components/Button')
+
+// Kích hoạt quy trình build
+await builder.make()
+```
+
+## Phương thức
+
+### Điều khiển
+
+- `make(): Promise<boolean>` — điều phối toàn bộ vòng đời build: sao lưu cấu hình, thực thi build và khôi phục tệp.
+- `getCode(): string` — lấy nội dung của snapshot mã tổng hợp được tạo ra trong quy trình build.
+- `removeDir(): void` — xóa vĩnh viễn thư mục phân phối tạm thời.
+
+## Quy trình làm việc nội bộ
+
+Quá trình build tuân theo một vòng đời nghiêm ngặt để đảm bảo an toàn cho môi trường và tính nhất quán của đầu ra:
+
+1.  **Sao lưu cấu hình** — Đổi tên `vite.config.ts` hiện có thành `vite.config.workers.ts` để ngăn nó bị ghi đè hoặc gây nhiễu cho quá trình build.
+2.  **Tổng hợp Template** — Đọc template Vite cụ thể của component và chèn đường dẫn đích một cách động.
+3.  **Thực thi Shell** — Kích hoạt lệnh `npm run build` thông qua một tiến trình con, thu thập và ghi lại toàn bộ đầu ra.
+4.  **Khôi phục** — Khôi phục an toàn `vite.config.ts` ban đầu từ bản sao lưu sau khi quá trình build hoàn tất.
+5.  **Tổng hợp** — Quét đệ quy thư mục phân phối, bao bọc nội dung của mỗi tệp trong một comment định danh và ghi kết quả kết hợp cuối cùng vào `code.txt`.
