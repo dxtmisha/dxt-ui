@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesSeparator - Property Splitting'/>
+
+# PropertiesSeparator Class
+
+The `PropertiesSeparator` class is designed to automatically transform a flat structure of tokens with composite names (using separators) into a hierarchical structure of nested objects. This allows for logical property organization, such as turning `button.primary.background` into `{ button: { primary: { background: ... } } }`.
+
+## Key Features
+
+- **Automatic Nesting** — transforms flat keys with separators (default is `.`) into nested objects.
+- **Recursive Processing** — supports unlimited nesting depth (with an optional limit via configuration).
+- **Smart Merging** — correctly merges new sub-properties with existing objects using recursive replacement.
+- **Name Cleaning** — automatically removes technical prefixes and suffixes (e.g., separator basic names) before processing.
+
+## Initialization
+
+The class provides static methods, so it does not need to be initialized via `new`.
+
+```typescript
+import { PropertiesSeparator } from '@dxtmisha/scripts'
+
+// Using static methods
+const results = PropertiesSeparator.to(rawProperties)
+```
+
+## Methods
+
+### `is`
+A static method to quickly check if the provided property list contains any keys that require splitting. It scans the top level (and nested levels up to the `limit`) for separator characters in the names.
+
+**Parameters:**
+- `properties: PropertyList` — the list of properties to analyze.
+- `limit: number` — the maximum depth of the check (default is taken from `PropertiesConfig`).
+
+**Returns:** `boolean` — `true` if at least one key contains a separator.
+
+```typescript
+const needsSplitting = PropertiesSeparator.is(myProperties);
+// Result: true if keys like "color.blue.50" exist
+```
+
+### `to`
+A static method that performs the actual transformation of a flat property list into a nested structure. The method recursively traverses all elements and, if it finds a key with a separator, "wraps" the property into a chain of nested objects according to the name segments.
+
+**Parameters:**
+- `properties: PropertyList` — the list of properties to transform.
+
+**Returns:** `PropertyList` — a new property list with a hierarchical structure.
+
+```typescript
+const nestedProperties = PropertiesSeparator.to({
+  'palette.blue.50': { value: '#e3f2fd' }
+});
+/* Result:
+{
+  palette: {
+    value: {
+      blue: {
+        value: {
+          '50': { value: '#e3f2fd', __wrap: true }
+        }
+      }
+    }
+  }
+}
+*/
+```
+
+## Operations
+
+### The Name Splitting Mechanism
+
+The transformation process in `PropertiesSeparator` involves several steps:
+1. **Separator Detection**: The `to` method checks each property name via `PropertiesKeys.isSeparator`.
+2. **Segmentation**: If a separator is found, the name is split into parts (e.g., `a.b.c` -> `['a', 'b', 'c']`). Technical characters are removed beforehand via `removeBasicName`.
+3. **Wrapping**: The `wrap` method recursively creates nested `value` objects, placing the original property element at the deepest level. Intermediate objects are marked with `__wrap: true` to indicate their structural nature.
+4. **Recursive Merging**: The resulting "branch" is merged with the main `data` object via `replaceRecursive`, allowing multiple properties with the same base (e.g., `blue.50` and `blue.100`) to correctly aggregate under a single `blue` object.
+
+## Examples
+
+### Grouping Palette Colors
+```typescript
+import { PropertiesSeparator } from '@dxtmisha/scripts'
+
+const flatPalette = {
+  'blue.50': { value: '#eef' },
+  'blue.100': { value: '#ccf' }
+}
+
+const tree = PropertiesSeparator.to(flatPalette)
+// Properties are now grouped in the tree.blue.value object
+```

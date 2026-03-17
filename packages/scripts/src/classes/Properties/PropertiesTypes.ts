@@ -8,9 +8,9 @@ import {
 } from '../../types/propertyTypes'
 
 /**
- * Class with a list of available types.
+ * Utility class for identifying and managing property types based on naming conventions and symbols.
  *
- * Класс со списком доступных типов.
+ * Утилитарный класс для идентификации и управления типами свойств на основе соглашений об именовании и символов.
  */
 export class PropertiesTypes {
   private static readonly SYMBOLS: Record<string, string> = {
@@ -27,11 +27,11 @@ export class PropertiesTypes {
   }
 
   /**
-   * Checks if the list contains such a type.
+   * Checks if the property type matches the specified list of allowed types.
    *
-   * Проверяет, входит ли в список такой тип.
-   * @param type property type/ тип свойства
-   * @param name key name/ название ключа
+   * Проверяет, соответствует ли тип свойства указанному списку разрешенных типов.
+   * @param type current property type / текущий тип свойства
+   * @param name list of allowed types / список разрешенных типов
    */
   static isInType(
     type?: PropertyItem['_type'],
@@ -48,10 +48,10 @@ export class PropertiesTypes {
   }
 
   /**
-   * Checks if there is a type in the name of the property.
+   * Determines if the property name contains a type-identifying symbol or specific prefix.
    *
-   * Проверяет, если есть тип в названии свойства.
-   * @param name key name/ название ключа
+   * Определяет, содержит ли название свойства символ-идентификатор типа или специфический префикс.
+   * @param name property key name / название ключа свойства
    */
   static isTypeInName(name: string): boolean {
     return Boolean(name.match(this.getExpSymbols()))
@@ -98,10 +98,10 @@ export class PropertiesTypes {
   }
 
   /**
-   * Returns the variable type name from the property name.
+   * Extracts and returns the property type identifier from its name string.
    *
-   * Возвращает название типа переменной из названия свойства.
-   * @param name key name/ название ключа
+   * Извлекает и возвращает идентификатор типа свойства из строки его названия.
+   * @param name property key name / название ключа свойства
    */
   static getTypeInName(name: string): PropertyItem['_type'] {
     if (this.isTypeInName(name)) {

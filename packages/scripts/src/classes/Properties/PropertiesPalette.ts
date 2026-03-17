@@ -14,9 +14,11 @@ import {
 } from '../../types/propertyTypes'
 
 /**
- * Class for working with colors.
+ * Manager for design palette and color saturation.
+ * This class handles the extraction of available shade levels (saturation steps) and tracks the usage of palette colors across the design system. It facilitates the mapping between functional variables and their underlying palette definitions, ensuring that generated styles correctly reference the intended theme colors.
  *
- * Класс для работы с цветами.
+ * Менеджер палитры дизайна и насыщенности цветов.
+ * Этот класс обрабатывает извлечение доступных уровней оттенков (шагов насыщенности) и отслеживает использование цветов палитры в системе дизайна. Он упрощает сопоставление функциональных переменных с их базовыми определениями в палитре, гарантируя, что сгенерированные стили правильно ссылаются на нужные цвета темы.
  */
 export class PropertiesPalette {
   /**
@@ -28,9 +30,11 @@ export class PropertiesPalette {
   }
 
   /**
-   * Returns a list of available saturation levels.
+   * Retrieves a list of available saturation levels (shades) grouped by design.
+   * Scans the token cluster for items categorized as 'shade' and returns their resolved value structures.
    *
-   * Возвращает список доступных уровней насыщенности.
+   * Возвращает список доступных уровней насыщенности (оттенков), сгруппированных по дизайну.
+   * Сканирует кластер токенов на наличие элементов, классифицированных как 'shade', и возвращает их разрешенные структуры значений.
    */
   getShade(): PropertyPaletteList {
     return forEach(this.items.findCategory(PropertyCategory.shade), ({
@@ -49,9 +53,11 @@ export class PropertiesPalette {
   }
 
   /**
-   * Getting a list of used values.
+   * Generates a report of all palette colors currently utilized in functional variables.
+   * Iterates through the entire property tree to identify variables referencing palette colors and maps them to their corresponding CSS variable names.
    *
-   * Получаем список использованных значений.
+   * Генерирует отчет обо всех цветах палитры, используемых в данный момент в функциональных переменных.
+   * Итерирует по всему дереву свойств для идентификации переменных, ссылающихся на цвета палитры, и сопоставляет их с соответствующими именами CSS-переменных.
    */
   getUsed(): PropertyPaletteUsed[] {
     const list = this.getList()

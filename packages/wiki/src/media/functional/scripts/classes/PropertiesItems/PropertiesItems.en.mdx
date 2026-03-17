@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesItems - Property Tree Coordinator'/>
+
+# PropertiesItems Class
+
+The `PropertiesItems` class acts as the central coordinator for navigating and searching through complex design property trees. It provides a high-level abstraction layer that hides the intricacies of tree traversal, index decoding, and design-specific filtering. Whether you need to find a specific token by its dotted path, perform a global search across categories, or execute deep recursive operations, `PropertiesItems` serves as the primary engine for property discovery.
+
+## Key Features
+
+- **Design Focusing** — Allows filtering the entire property interaction scope to a single design theme or component cluster.
+- **Deep Metadata Resolution** — Translates simple index strings (e.g., `theme.colors.primary`) into comprehensive info objects with full parental context.
+- **Unified Traversal Engine** — Provides consistent `each` and `find` mechanisms for both shallow and deep recursive exploration of the token hierarchy.
+- **Path Semantic Translation** — Automatically handles path normalization, kebab-to-camelCase conversion, and support for special link symbols like `?`.
+- **Category & Variable Filtering** — Includes optimized search methods to extract subsets of tokens based on their functional category or variable type.
+
+## Initialization
+
+To initialize the object, call the `PropertiesItems(properties)` constructor.
+
+**Parameters:**
+- `properties: PropertyList` — full property list (token tree) to be managed.
+
+```typescript
+import { PropertiesItems } from '@dxtmisha/scripts'
+
+// 1. Initialize the manager with the token tree
+const manager = new PropertiesItems(allTokenData)
+
+// 2. (Optional) Focus the environment on a specific design
+manager.setFocusDesign('my-theme')
+
+// 3. Retrieve the filtered structure
+const currentTokens = manager.get()
+```
+
+## Methods
+
+- `get(): PropertyList` — returns the current property structure (supports focus filtering).
+- `getDesigns(): string[]` — returns a list of available design names.
+- `getItem(index): PropertyItem` — retrieves a specific property record by its index.
+- `getInfo(index): PropertyItemsItem` — resolves full metadata and parental hierarchy for a given index.
+- `getKeys(index): string[]` — decodes a path string into normalized key segments.
+- `getName(name, item): string` — returns the display name of a property, accounting for renames.
+- `each(callback, property?): T[]` — performs a deep recursive traversal of the tree.
+- `find(callback): PropertyItemsItem[]` — searches for records matching custom conditions.
+- `findCategory(category): PropertyItemsItem[]` — extracts tokens belonging to specific functional categories.
+- `setFocusDesign(design): this` — restricts the operational scope to a specific design.
+
+## Operations
+
+### The Metadata Discovery & Traversal Flow
+
+`PropertiesItems` orchestrates several complex logic flows:
+1. **Index Decoding**: When an index like `theme.button-main.color` is requested, it normalizes segments to camelCase and resolves them against the nested `value` objects of the tree.
+2. **Path Context Management**: During traversal (`each`), the class maintains a `parents` stack, allowing every discovered node to know exactly where it sits in the hierarchy (crucial for generating CSS variables or documentation paths).
+3. **Design Isolation**: By calling `setFocusDesign()`, users can toggle the "view" of the entire tree. Subsequent calls to `get()` or `each()` will automatically ignore designs that are NOT the focused one or the common `_constructor`.
+4. **Link Normalization**: Methods like `getLink()` handle the transformation of legacy path symbols (like `??` and `?`) into absolute, fully-qualified property indices by prepending current design and component contexts.

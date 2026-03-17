@@ -20,22 +20,24 @@ const NAME_SHADE = 'setDesignShade'
 const NAME_PROPERTIES = 'setDesignsProperties'
 
 /**
- * Class for working with SCSS.
+ * Class for generating SCSS structures from design tokens.
  *
- * Класс для работы с SCSS.
+ * Класс для генерации структур SCSS из токенов дизайна.
  */
 export class PropertiesScss {
   /**
-   * Constructor
-   * @param items
+   * Constructor for initializing the SCSS generator.
+   *
+   * Конструктор для инициализации генератора SCSS.
+   * @param items property management instance / экземпляр управления свойствами
    */
   constructor(private items: PropertiesItems) {
   }
 
   /**
-   * Returns a formatted string for SCSS.
+   * Returns a complete SCSS formatted string containing all configuration mixins.
    *
-   * Возвращает отформатированную строку для SCSS.
+   * Возвращает полную отформатированную строку SCSS, содержащую все миксины конфигурации.
    */
   get() {
     let data = '@use "@dxtmisha/styles" as variables;\r\n\r\n'
@@ -145,9 +147,9 @@ export class PropertiesScss {
   }
 
   /**
-   * Returns a list of properties.
+   * Generates a SCSS map structure for all identified properties.
    *
-   * Возвращает список свойств.
+   * Генерирует структуру карты SCSS для всех определенных свойств.
    */
   getProperties(): string {
     return this.getPropertiesValue(NAME_PROPERTIES, this.to())

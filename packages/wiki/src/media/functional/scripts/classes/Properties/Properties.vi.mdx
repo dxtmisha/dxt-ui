@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/Properties - Bộ điều phối Token thiết kế'/>
+
+# Lớp Properties
+
+Lớp `Properties` là công cụ xử lý cốt lõi của cơ sở hạ tầng token trong hệ thống thiết kế. Nó đóng vai trò là bộ điều phối trung tâm để phối hợp việc tải, hợp nhất cấu trúc và biến đổi đệ quy các định nghĩa thuộc tính thô thành trạng thái cuối cùng đã được phân giải. Bằng cách trừu tượng hóa sự phức tạp của hàng chục quy tắc biến đổi chuyên biệt, nó cung cấp một "nguồn sự thật" ổn định cho tất cả các thành phần và công cụ xây dựng.
+
+## Các tính năng chính
+
+- **Quy trình xử lý đa giai đoạn** — Thực thi các bộ biến đổi chuyên biệt để thay thế, sao chép, kéo và liên kết các token thiết kế.
+- **Hợp nhất cấu trúc** — Phân giải và hợp nhất một cách thông minh các cài đặt, giá trị mặc định toàn cầu và các ghi đè (overrides) dành riêng cho thành phần.
+- **Quản lý bộ nhớ đệm tăng dần** — Sử dụng `PropertiesCache` để lưu trữ kết quả đã xử lý, cải thiện đáng kể hiệu suất xây dựng.
+- **Tổng hợp SCSS** — Biên dịch các token đã phân giải thành định dạng SCSS có cấu trúc để sử dụng trực tiếp trong các lớp tạo kiểu.
+- **Siêu dữ liệu tối ưu cho AI** — Chuẩn bị các cấu trúc thuộc tính dễ dàng tiêu thụ bởi các công cụ tài liệu và trình tạo dựa trên AI.
+
+## Khởi tạo
+
+Khởi tạo bộ điều phối để bắt đầu xử lý ngay lập tức các token được định nghĩa trong cấu hình dự án.
+
+```typescript
+import { Properties } from '@dxtmisha/scripts'
+
+const engine = new Properties()
+const tokens = engine.get() // Trả về PropertiesItems đã được xử lý đầy đủ
+```
+
+## Các phương thức
+
+### Truy cập dữ liệu
+
+- `get(): PropertiesItems` — Trả về container cốt lõi chứa tất cả các token thiết kế đã xử lý.
+- `getScss(): string` — Trả về biểu diễn SCSS đã biên dịch của bộ token hiện tại.
+
+## Các thao tác (Operations)
+
+### Quy trình xử lý Token (The Token Processing Pipeline)
+
+Khi được khởi tạo, `Properties` điều phối một luồng biến đổi đa lớp toàn diện:
+1. **Thu thập nguồn**: Nó đọc và hợp nhất dữ liệu thô từ `PropertiesSettings`, `PropertiesMain` và các tệp JSON bên ngoài.
+2. **Chuẩn hóa cơ bản**: Kích hoạt các biến đổi nền tảng:
+    - **Thay thế (Replacement)**: Phân giải các mẫu alias.
+    - **Phân giải bảng màu (Palette Resolution)**: Tiêm các giá trị bảng màu.
+    - **Sao chép & Tổng hợp thuộc tính con**: Xử lý các bản sao thuộc tính phức tạp.
+3. **Biến đổi nâng cao**: Thực thi logic cấp cao cho:
+    - **Phân giải thành phần**: Ánh xạ các thuộc tính vào các cấu trúc thành phần cụ thể.
+    - **Ánh xạ Trạng thái & Lớp (State & Class Mapping)**: Tạo siêu dữ liệu cho các trạng thái UI (hover, active) và các lớp BEM.
+    - **Tổng hợp Media & Animation**: Phân giải các điểm dừng (breakpoints) phản hồi và các token chuyển động.
+4. **Tối ưu hóa & Làm sạch**: Sắp xếp các thuộc tính, xử lý các bản trùng lặp và loại bỏ các nút trống.
+5. **Lưu trữ**: Kết quả cuối cùng được lưu vào `PropertiesCache` bằng một mã hash duy nhất dựa trên cấu hình thiết kế hiện tại.
+

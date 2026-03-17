@@ -1,0 +1,120 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesTypes - Property Types'/>
+
+# PropertiesTypes Class
+
+The `PropertiesTypes` class serves as a system directory and analyzer for property types within the design system. Its primary role is to determine the property category (variable, selector, state, media query, etc.) based on special prefix symbols or key naming conventions.
+
+## Symbols and Types Mapping
+
+The system utilizes the following mapping of symbols to types:
+
+- `$` — **var** (CSS variable)
+- `::` — **virtual** (virtual element)
+- `:` — **selector** (SCSS selector)
+- `~` — **state** (state, e.g., :hover)
+- `#` — **subclass** (subclass)
+- `@@` — **linkClass** (link to a class)
+- `@` — **link** (link to a token)
+- `&&` — **root** (SCSS @at-root)
+- `&` — **scss** (SCSS selector)
+- `--` — **none** (ignored property)
+
+## Initialization
+
+The class contains only static methods and does not require instantiation via `new`.
+
+```typescript
+import { PropertiesTypes } from '@dxtmisha/scripts'
+
+// Using static methods
+const type = PropertiesTypes.getTypeInName('$primary-color')
+```
+
+## Methods
+
+### `isInType`
+Checks if the current property type is included in the specified list of allowed types. Used for filtering properties during the generation of specific blocks (e.g., media queries only).
+
+**Parameters:**
+- `type: PropertyItem['_type']` — the property type to verify.
+- `name: PropertyType[]` — an array of allowed types.
+
+**Returns:** `boolean` — `true` if the type matches one in the list.
+
+```typescript
+const isMedia = PropertiesTypes.isInType(type, ['media', 'media-max']);
+```
+
+### `isTypeInName`
+Determines if the provided name string (key) contains any of the reserved type symbols at the beginning.
+
+**Parameters:**
+- `name: string` — the property key name.
+
+**Returns:** `boolean` — `true` if a type symbol is identified.
+
+```typescript
+const hasSymbol = PropertiesTypes.isTypeInName('$myVar');
+// Result: true
+```
+
+### `isMedia`
+A specialized check to determine if the property type refers to media queries (`media` or `media-max`).
+
+**Parameters:**
+- `type: PropertyItem['_type']` — the property type.
+
+**Returns:** `boolean` — `true` if it is a media type.
+
+```typescript
+if (PropertiesTypes.isMedia(item.type)) { /* ... */ }
+```
+
+### `getTypeInName`
+The primary method for extracting the type from a key name. If a special symbol is found at the beginning of the key, the method returns its corresponding type. If no symbol is found but the key contains a `|` separator, the portion before the separator is converted to kebab-case and returned as the type.
+
+**Parameters:**
+- `name: string` — the property key name.
+
+**Returns:** `PropertyItem['_type']` — the identified type ID or `null`.
+
+```typescript
+const type1 = PropertiesTypes.getTypeInName('$color'); // 'var'
+const type2 = PropertiesTypes.getTypeInName('custom|value'); // 'custom'
+```
+
+### `getBySymbol`
+Returns the type name assigned to a specific symbol or string.
+
+**Parameters:**
+- `name: string` — the symbol (e.g., `$`).
+
+**Returns:** `string | undefined` — the type name (e.g., `var`).
+
+```typescript
+const typeName = PropertiesTypes.getBySymbol('$'); // 'var'
+```
+
+## Operations
+
+### The Recognition Mechanism via RegExp
+
+The symbol search in `PropertiesTypes` is implemented through a dynamic regular expression formed from the `SYMBOLS` dictionary keys. The `getExpSymbols` method creates an expression that:
+1. Searches for reserved symbols at the start of the string (e.g., `@`, `&&`, `~`).
+2. Searches for custom named types before a vertical bar (e.g., `media|...`).
+3. Groups the results for efficient type extraction by the `getTypeInName` method.
+
+## Examples
+
+### Identifying Types During Token Parsing
+```typescript
+import { PropertiesTypes } from '@dxtmisha/scripts'
+
+const keys = ['$primary', ':hover', '@link'];
+
+keys.forEach(key => {
+  console.log(`${key} is type: ${PropertiesTypes.getTypeInName(key)}`);
+});
+```

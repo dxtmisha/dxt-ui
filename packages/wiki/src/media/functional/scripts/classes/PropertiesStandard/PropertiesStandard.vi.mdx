@@ -1,0 +1,87 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesStandard - Chuẩn hóa thuộc tính'/>
+
+# Lớp PropertiesStandard
+
+Lớp `PropertiesStandard` là cơ chế trung tâm để chuẩn hóa dữ liệu trong hệ thống thiết kế. Nhiệm vụ chính của nó là chuyển đổi dữ liệu đầu vào token "thô" (có thể được biểu diễn dưới dạng chuỗi, số hoặc đối tượng đơn giản hóa) thành một cấu trúc `PropertyItem` được định kiểu nghiêm ngặt mà các công cụ khác của hệ thống có thể làm việc cùng.
+
+## Các tính năng chính
+
+- **Chuẩn hóa dữ liệu** — đảm bảo rằng mọi thuộc tính đều có một tập hợp các trường tiêu chuẩn (`value`, `type`, `index`, v.v.).
+- **Xử lý đệ quy** — tự động chuẩn hóa các cấu trúc đối tượng lồng nhau.
+- **Tự động phát hiện kiểu** — cố gắng xác định kiểu thuộc tính dựa trên tên của nó (thông qua `PropertiesTypes`).
+- **Phân tích thông minh** — phân biệt giữa các giá trị thông thường và các thuộc tính meta đặc biệt (bắt đầu bằng `__`).
+- **Hợp nhất dữ liệu** — hợp nhất chính xác dữ liệu mới với dữ liệu hiện có, duy trì tính toàn vẹn của cấu trúc.
+
+## Khởi tạo
+
+Lớp này cung cấp các phương thức tĩnh, vì vậy không cần phải khởi tạo thông qua `new`.
+
+```typescript
+import { PropertiesStandard } from '@dxtmisha/scripts'
+
+// Gọi một phương thức tĩnh
+const standardized = PropertiesStandard.to(rawInput)
+```
+
+## Các phương thức
+
+### `to`
+Một phương thức tĩnh nhận dữ liệu thô hoặc danh sách thuộc tính và trả về một `PropertyList` đã được chuẩn hóa hoàn toàn. Phương thức này lặp qua tất cả các phần tử, xác định khóa, kiểu và giá trị của chúng, đồng thời xử lý đệ quy các đối tượng lồng nhau.
+
+**Tham số:**
+- `properties: PropertyListOrData` — dữ liệu thuộc tính đầu vào ở bất kỳ định dạng nào được hỗ trợ.
+
+**Trả về:** `PropertyList` — một đối tượng trong đó mọi phần tử đều được đưa về tiêu chuẩn `PropertyItem`.
+
+```typescript
+const result = PropertiesStandard.to({
+  'primary-color': '#007bff',
+  'padding': { value: 16, type: 'size' }
+});
+
+/* Kết quả:
+{
+  'primary-color': { 
+    value: '#007bff', 
+    type: 'color', 
+    index: 'primary-color' 
+  },
+  'padding': { 
+    value: '16px', 
+    type: 'size', 
+    index: 'padding' 
+  }
+}
+*/
+```
+
+## Các thao tác (Operations)
+
+### Thuật toán chuẩn hóa (getItem)
+
+Khi xử lý từng phần tử, các bước sau được thực hiện:
+1. **Chuyển đổi đối tượng**: Phương thức `toItem` kiểm tra kiểu giá trị đầu vào. Nếu là chuỗi hoặc mảng, nó sẽ được bọc trong một đối tượng `{ value: ... }`.
+2. **Tách dữ liệu meta**: Phương thức `getValueAndSpecial` tách giá trị hữu ích (`value`) khỏi các khóa điều khiển đặc biệt (ví dụ: `__custom`).
+3. **Xác định kiểu**: Nếu kiểu không được chỉ định rõ ràng, phương thức `addType` cố gắng tính toán nó dựa trên tên khóa.
+4. **Kiểm tra tính hoàn tất**: Phương thức `addFull` thêm các thẻ `fullName` hoặc `fullValue` nếu dữ liệu không yêu cầu xử lý thêm (ví dụ: đối với các liên kết đã được phân giải).
+5. **Chuyển đổi giá trị**: Thông qua `addValue`, tất cả các giá trị số được chuyển đổi thành chuỗi, thêm đơn vị khi cần thiết.
+6. **Đăng ký chỉ mục (Index)**: Mỗi phần tử được gán một `index` đã được làm sạch để phục vụ việc truy vết nhanh chóng.
+
+## Ví dụ (Examples)
+
+### Chuẩn hóa một cấu trúc phức tạp
+```typescript
+import { PropertiesStandard } from '@dxtmisha/scripts'
+
+const data = {
+  header: {
+    height: 60,
+    background: '{color.white}'
+  }
+}
+
+const standardData = PropertiesStandard.to(data)
+// Tất cả các trường trong standardData.header.value hiện có cấu trúc PropertyItem chính xác
+```

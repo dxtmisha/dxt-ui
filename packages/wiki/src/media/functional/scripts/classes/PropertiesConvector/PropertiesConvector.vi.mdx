@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesConvector - Bộ chuyển đổi Token ngữ nghĩa'/>
+
+# Lớp PropertiesConvector
+
+Lớp `PropertiesConvector` là một tiện ích tĩnh chuyên biệt được thiết kế để xử lý các phép biến đổi ngữ nghĩa phức tạp của các token thiết kế. Nó đóng vai trò như một bộ điều phối cho động cơ xử lý token, xác định các loại thuộc tính cụ thể (như màu sắc, bóng đổ hoặc kiểu chữ) và áp dụng logic chuyển đổi chuyên biệt để đảm bảo dữ liệu thô được chuẩn hóa thành các cấu trúc hệ thống thiết kế có thể sử dụng được.
+
+## Các tính năng chính
+
+- **Điều phối ngữ nghĩa** — Tự động định tuyến các token đến các bộ chuyển đổi chuyên biệt dựa trên siêu dữ liệu `type` của chúng.
+- **Duyệt đệ quy** — Duyệt sâu qua các đối tượng thuộc tính lồng nhau để đảm bảo tất cả các token con đều được xử lý.
+- **Bộ chuyển đổi chuyên biệt** — Tích hợp logic dành riêng cho `color`, `boxShadow`, `fontFamilies` và `typography`.
+- **Biến đổi tại chỗ (In-Place)** — Sửa đổi trực tiếp các đối tượng thuộc tính để duy trì tính toàn vẹn của cấu trúc trong quá trình xây dựng.
+
+## Khởi tạo
+
+Là một lớp tiện ích tĩnh, `PropertiesConvector` không yêu cầu khởi tạo instance. Chức năng chính của nó được truy cập trực tiếp.
+
+```typescript
+import { PropertiesConvector } from '@dxtmisha/scripts'
+
+// Biến đổi một tập hợp các thuộc tính thô
+PropertiesConvector.to(rawProperties)
+```
+
+## Các phương thức
+
+### Biến đổi
+
+- `to(properties): void` — Xử lý đệ quy danh sách thuộc tính, áp dụng các phép biến đổi cụ thể theo loại cho từng mục.
+
+## Các thao tác (Operations)
+
+### Luồng điều phối chuyển đổi (The Conversion Dispatch Flow)
+
+`PropertiesConvector` quản lý vòng đời biến đổi thông qua chiến lược khớp đệ quy:
+1. **Phát hiện loại**: Đối với mỗi mục trong cụm thuộc tính được cung cấp, nó kiểm tra xem một bộ chuyển đổi tương ứng có tồn tại trong sổ đăng ký nội bộ hay không (ví dụ: khớp `color` với `convectorColor`).
+2. **Thực thi chuyên biệt**: Nếu tìm thấy kết quả khớp, logic bộ chuyển đổi cụ thể sẽ được thực thi trên mục đó, biến đổi các giá trị thô của nó thành các định dạng cuối cùng.
+3. **Phân nhánh đệ quy**:
+    - Nếu mục có `value` là một đối tượng, nó sẽ gọi đệ quy `to()` trên đối tượng đó.
+    - Nếu bản thân mục đó là một đối tượng không có loại được công nhận, nó sẽ tiếp tục duyệt để tìm các token lồng nhau.
+4. **Tính toàn vẹn dữ liệu**: Quy trình đảm bảo rằng các cấu trúc phức tạp (như bản đồ kiểu chữ hoặc các lớp bóng đổ đa tầng) được phân giải hoàn toàn trước giai đoạn tiếp theo của quy trình.

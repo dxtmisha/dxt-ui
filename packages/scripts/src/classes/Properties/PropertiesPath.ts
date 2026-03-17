@@ -24,9 +24,11 @@ export type PropertiesPathList = PropertiesPathItem[]
 const DIR_CACHE = 'read'
 
 /**
- * Class for working with paths by the given name of the design.
+ * Directory and path resolver for multi-design token environments.
+ * This class translates abstract design names into concrete filesystem paths for global tokens and component-specific settings. It coordinates the cross-platform path discovery flow and provided cached traversal mechanisms (`to`, `toAll`) to efficiently process token files across the entire project structure.
  *
- * Класс для работы с путями по заданному названию дизайна.
+ * Резолвер директорий и путей для сред с несколькими дизайнами токенов.
+ * Этот класс преобразует абстрактные названия дизайнов в конкретные пути файловой системы для глобальных токенов и настроек компонентов. Он координирует процесс обнаружения путей на разных платформах и предоставляет механизмы кэшированного обхода (`to`, `toAll`) для эффективной обработки файлов токенов во всей структуре проекта.
  */
 export class PropertiesPath {
   private readonly paths: PropertiesPathList
@@ -92,12 +94,14 @@ export class PropertiesPath {
   }
 
   /**
-   * Processes all token values for the selected design and combines them into one-big array.
+   * Executes a cached transformation for a specific design and token group.
+   * Resolves paths for the target design, executes the provided callback to process the data, and caches the result for future performance. Ideal for processing individual themes or component layers within a theme.
    *
-   * Обрабатывает все значения токена у выбранного дизайна и соединяет их в одну-большую массива.
-   * @param name name of the group/ названия группы
-   * @param design design name/ название дизайна
-   * @param callback function for processing/ функция для обработки
+   * Выполняет кэшированную трансформацию для конкретного дизайна и группы токенов.
+   * Разрешает пути для целевого дизайна, выполняет предоставленный callback для обработки данных и кэширует результат. Идеально подходит для обработки отдельных тем или слоев компонентов внутри темы.
+   * @param name unique name for the processing group (used as cache key) / уникальное имя группы обработки (используется как ключ кэша)
+   * @param design names of the design to process / названия дизайна для обработки
+   * @param callback function that receives resolved paths and returns processed data / функция, которая получает разрешенные пути и возвращает обработанные данные
    */
   to(
     name: string,
@@ -128,11 +132,13 @@ export class PropertiesPath {
   }
 
   /**
-   * Processes all token values for all designs and combines them into one-big array.
+   * Orchestrates a global cached transformation across all registered designs.
+   * Iterates through every design defined in the constructor, processes its tokens using the provided callback, and merges the results into a single unified property tree.
    *
-   * Обрабатывает все значения токена у всех дизайнов и соединяет их в одну-большую массива.
-   * @param name name of the group/ названия группы
-   * @param callback function for processing/ функция для обработки
+   * Координирует глобальную кэшированную трансформацию для всех зарегистрированных дизайнов.
+   * Итерирует по каждому дизайну, определенному в конструкторе, обрабатывает его токены с помощью предоставленного callback и объединяет результаты в единое унифицированное дерево свойств.
+   * @param name unique name for the global processing group / уникальное имя глобальной группы обработки
+   * @param callback function for processing individual designs / функция для обработки отдельных дизайнов
    */
   toAll(
     name: string,

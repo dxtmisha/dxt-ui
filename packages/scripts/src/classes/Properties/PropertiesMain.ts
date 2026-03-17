@@ -19,9 +19,11 @@ import type {
 const DIR_NAME = 'main'
 
 /**
- * A class for transforming global tokens.
+ * Orchestrator for global design token transformation.
+ * This class serves as the primary engine for loading, validating, and normalizing "main" tokens across all supported designs. It coordinates a multi-stage pipeline—including semantic conversion, reference import, and structural wrapping—to synthesize a unified property tree ready for consumption by external builders.
  *
- * Класс для преобразования глобальных токенов.
+ * Оркестратор глобальной трансформации токенов дизайна.
+ * Этот класс служит основным движком для загрузки, валидации и нормализации «основных» (main) токенов во всех поддерживаемых дизайнах. Он координирует многоэтапный конвейер — включая семантическую конвертацию, импорт ссылок и структурную обертку — для синтеза унифицированного дерева свойств, готового к использованию внешними строителями.
  */
 export class PropertiesMain {
   /**
@@ -34,9 +36,11 @@ export class PropertiesMain {
   }
 
   /**
-   * Returns all main tokens.
+   * Executes the full transformation pipeline for all main design tokens.
+   * Discovers token files via the path manager, then sequentially applies reading, conversion, standardization, link resolution, and structural wrapping for every design entry.
    *
-   * Возвращает все основные токены.
+   * Выполняет полный конвейер трансформации для всех основных токенов дизайна.
+   * Обнаруживает файлы токенов через менеджер путей, затем последовательно применяет чтение, конвертацию, стандартизацию, разрешение ссылок и структурную обертку для каждой записи дизайна.
    */
   get(): PropertyList {
     return this.path.toAll(DIR_NAME, (
@@ -66,10 +70,12 @@ export class PropertiesMain {
   }
 
   /**
-   * We get the main property taking into account the change of settings.
+   * Synchronizes global tokens with a provided settings cluster.
+   * Retrieves the full set of main tokens and deeply merges internal state flags from the settings list into the corresponding nodes of the global tree.
    *
-   * Получаем главное свойство с учетом изменения настроек.
-   * @param list list of settings/ список настроек
+   * Синхронизирует глобальные токены с предоставленным кластером настроек.
+   * Получает полный набор основных токенов и глубоко объединяет флаги внутреннего состояния из списка настроек в соответствующие узлы глобального дерева.
+   * @param list the settings cluster to apply / кластер настроек для применения
    */
   getBySettings(list: PropertyList): PropertyList {
     const data = this.get()

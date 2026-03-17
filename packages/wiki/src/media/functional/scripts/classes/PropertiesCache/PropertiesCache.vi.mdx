@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesCache - Bộ điều phối bộ nhớ đệm vĩnh viễn'/>
+
+# Lớp PropertiesCache
+
+Lớp `PropertiesCache` là một tiện ích tĩnh hiệu suất cao được thiết kế để quản lý việc lưu trữ bộ nhớ đệm (caching) dựa trên tệp vĩnh viễn cho bộ công cụ hệ thống thiết kế. Nó đảm bảo rằng các biến đổi token phức tạp chỉ được thực hiện khi cần thiết, giúp giảm đáng kể thời gian xây dựng cho các dự án quy mô lớn bằng cách theo dõi các phụ thuộc tệp và duy trì một cấu trúc phân cấp bộ nhớ đệm chặt chẽ.
+
+## Các tính năng chính
+
+- **Theo dõi phụ thuộc** — Tự động giám sát các thay đổi của tệp nguồn và vô hiệu hóa bộ nhớ đệm nếu bất kỳ phụ thuộc nào bị sửa đổi.
+- **Lưu trữ phân cấp** — Tổ chức dữ liệu đã lưu vào thư mục ẩn `.cache` với các thư mục con chuyên biệt cho các bước xử lý khác nhau.
+- **Xây dựng tăng dần** — Cho phép tính toán lại một phần bằng cách lưu trữ kết quả biến đổi trung gian.
+- **Tính toàn vẹn hệ thống** — Duy trì sổ đăng ký `system.json` để theo dõi dấu thời gian của bộ nhớ đệm và siêu dữ liệu tệp.
+- **Hỗ trợ Generic** — Cung cấp hỗ trợ TypeScript đầy đủ để truy xuất các cấu trúc dữ liệu đã lưu một cách an toàn về kiểu.
+
+## Khởi tạo
+
+Là một lớp tĩnh, `PropertiesCache` không yêu cầu khởi tạo instance. Các phương thức của nó được truy cập trực tiếp.
+
+```typescript
+import { PropertiesCache } from '@dxtmisha/scripts'
+
+// Truy xuất dữ liệu với quản lý bộ nhớ đệm tự động
+const data = PropertiesCache.get(
+  ['tokens', 'color'], 
+  'palette-cache', 
+  () => transformPaletteLogic()
+)
+
+// Xóa tất cả dữ liệu đã lưu
+PropertiesCache.clear()
+```
+
+## Các phương thức
+
+### Các thao tác bộ nhớ đệm
+
+- `get<T>(path, name, callback, extension): T` — Truy xuất dữ liệu từ bộ nhớ đệm hoặc tạo lại dữ liệu đó thông qua hàm callback.
+- `read<R>(path): R | undefined` — Đọc một tệp và đăng ký nó như một phụ thuộc của bộ nhớ đệm.
+- `write<T>(name, value): void` — Lưu kết quả xử lý trung gian vào bộ nhớ đệm tạm thời.
+- `clear(): void` — Xóa đệ quy toàn bộ thư mục bộ nhớ đệm.
+
+## Các thao tác (Operations)
+
+### Luồng đồng bộ hóa bộ nhớ đệm (The Cache Synchronization Flow)
+
+`PropertiesCache` hoạt động thông qua một vòng đời nội bộ tinh vi để đảm bảo tính nhất quán của dữ liệu:
+1. **Yêu cầu (`get`)**: Khi dữ liệu được yêu cầu, lớp trước tiên sẽ kiểm tra sự tồn tại của tệp bộ nhớ đệm vật lý.
+2. **Xác thực hệ thống**: Nó tham khảo sổ đăng ký `system` nội bộ để so sánh dấu thời gian tạo của bộ nhớ đệm với thời gian sửa đổi của tất cả các tệp phụ thuộc đã đăng ký.
+3. **Tạo lại**: Nếu tệp bị thiếu hoặc lỗi thời:
+    - Nó đẩy `name` bộ nhớ đệm hiện tại vào một ngăn xếp `listenerName` nội bộ.
+    - Bất kỳ lần đọc tệp tiếp theo nào thông qua `PropertiesCache.read()` trong khi thực thi callback sẽ tự động được ghi lại như một phụ thuộc cho mục bộ nhớ đệm cụ thể này.
+    - Kết quả callback được ghi vào đĩa.
+4. **Hoàn tất**: Sau khi callback hoàn tất, nó cập nhật `system.json` với dấu thời gian và danh sách phụ thuộc mới, đảm bảo yêu cầu tiếp theo vẫn hợp lệ trừ khi tệp nguồn thay đổi.
+

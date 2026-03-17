@@ -12,19 +12,17 @@ import {
 } from '../../types/propertyTypes'
 
 /**
- * Class for working with property splitting into multiple sub-properties.
+ * Class for handling the splitting of property names with separators into nested sub-properties.
  *
- * Класс для работы с разделением свойства на множество под-свойств.
+ * Класс для работы с разделением названий свойств с разделителями на вложенные под-свойства.
  */
 export class PropertiesSeparator {
   /**
-   * Checks if the structure has grouped records.
+   * Checks if the property list contains any keys that require splitting (contain separators).
    *
-   * Проверяет, есть ли у структуры сгруппированные записи.
-   * @param properties an array that needs to be transformed/
-   * массив, который нужно преобразовать
-   * @param limit the maximum permissible level of verification/
-   * максимальный допустимый уровень проверки
+   * Проверяет, содержит ли список свойств ключи, требующие разделения (содержащие разделители).
+   * @param properties list of properties to check / список свойств для проверки
+   * @param limit maximum recursion depth for verification / максимальная глубина рекурсии для проверки
    */
   static is(
     properties: PropertyList,
@@ -52,10 +50,10 @@ export class PropertiesSeparator {
   }
 
   /**
-   * Transforming a property with long names with separators into a set of sub-properties.
+   * Transforms properties with separator-containing keys into a nested object structure.
    *
-   * Преобразование свойства с длинными названиями с разделителями на множество под-свойств.
-   * @param properties an array that needs to be transformed/ массив, который нужно преобразовать
+   * Преобразует свойства с ключами, содержащими разделители, во вложенную структуру объектов.
+   * @param properties the property list to transform / список свойств для преобразования
    */
   static to(properties: PropertyList): PropertyList {
     let data: PropertyList = {}

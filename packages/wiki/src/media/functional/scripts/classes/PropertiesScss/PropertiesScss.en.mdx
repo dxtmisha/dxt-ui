@@ -1,0 +1,74 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesScss - SCSS Generation'/>
+
+# PropertiesScss Class
+
+The `PropertiesScss` class is responsible for transforming design system tokens and properties into a structured SCSS format. The resulting code is used to integrate design variables into the library's stylesheets, ensuring synchronization between JSON definitions and Sass variables.
+
+## Key Features
+
+- **Automated Code Generation** — creates a complete SCSS structure for integration into stylesheets.
+- **Mixin Integration** — generates calls to special mixins (`setDesignsDesigns`, `setDesignsRoot`, etc.) for automatic configuration.
+- **Media Query Support** — transforms device sizes into an SCSS map.
+- **Palette Processing** — generates lists of utilized colors and saturation levels.
+- **Smart Formatting** — correctly handles value types (colors, dimensions, links) to match SCSS syntax.
+
+## Initialization
+
+To initialize the SCSS generator, pass a `PropertiesItems` instance to the constructor.
+
+**Parameters:**
+- `items: PropertiesItems` — the manager object for all property elements.
+
+```typescript
+import { PropertiesItems, PropertiesScss } from '@dxtmisha/scripts'
+
+const manager = new PropertiesItems(tokenData)
+const generator = new PropertiesScss(manager)
+```
+
+## Methods
+
+### `get`
+Returns a complete, formatted SCSS string ready to be written to a file. This string includes imports of core style variables and sequential mixin calls to register designs, root properties, media queries, classes, and the palette.
+
+**Returns:** `string` — the full text of the SCSS file.
+
+```typescript
+const scssContent = generator.get();
+// Result: "@use \"@dxtmisha/styles\" as variables; \n @include variables.setDesignsDesigns(...)"
+```
+
+### `getProperties`
+Generates a specialized SCSS map structure for all properties defined in the system. This method focuses on common tokens (variables) that should be available in the global CSS/SCSS scope.
+
+**Returns:** `string` — an SCSS snippet with a call to the `setDesignsProperties` mixin.
+
+```typescript
+const propertyMap = generator.getProperties();
+```
+
+## Operations
+
+### The SCSS Generation Process
+
+`PropertiesScss` performs a multi-stage data transformation:
+1. **Design Collection**: Identifies all active designs and forms a list for the `setDesignsDesigns` mixin.
+2. **Category Analysis**: Distributes properties by category (root, class, theme) to generate the corresponding blocks.
+3. **Palette Resolution**: Uses `PropertiesPalette` to obtain a list of actually used colors and saturation steps.
+4. **Value Parsing**: The `getValueItem` method checks each value against SCSS types (strings are quoted, HEX codes and dimensions with units remain unquoted).
+5. **Structure Assembly**: Forms nested SCSS maps, observing correct indentation and delimiters to ensure valid Sass code.
+
+## Examples
+
+### Full Generation Cycle
+```typescript
+import { PropertiesItems, PropertiesScss } from '@dxtmisha/scripts'
+
+const items = new PropertiesItems(data)
+const scss = new PropertiesScss(items)
+
+// Get the ready code for writing to variables.scss
+const fileData = scss.get()
+```

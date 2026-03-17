@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesMain - Global Token Orchestrator'/>
+
+# PropertiesMain Class
+
+The `PropertiesMain` class is the high-level orchestrator responsible for synthesizing the global design token tree. It manages the entire lifecycle of "main" tokens—from filesystem discovery and raw reading to multi-stage semantic transformation and hierarchical merging. By abstracting the complexities of modular property loading, it provides a unified entry point for obtaining fully resolved and standardized design configurations.
+
+## Key Features
+
+- **Automated Pipeline Orchestration** — Integrates multiple utilities (`Import`, `Standard`, `Convector`) into a single cohesive loading sequence.
+- **Design-Centric Discovery** — Leverages `PropertiesPath` to automatically locate and process tokens for all active design themes.
+- **Dynamic Configuration Merging** — Supports hot-swapping or layering settings onto the global tree through deep recursive synchronization.
+- **Structural Integrity Enforcement** — Automatically applies structural wrapping and separators to ensure tokens are correctly categorized and accessible.
+- **Internal State Synchronization** — Preserves internal engine flags (properties starting with `_`) during configuration updates.
+
+## Initialization
+
+To initialize the object, call the `PropertiesMain(path)` constructor.
+
+**Parameters:**
+- `path: PropertiesPath` — an instance of the class responsible for filesystem discovery and path resolution.
+
+```typescript
+import { PropertiesMain, PropertiesPath } from '@dxtmisha/scripts'
+
+// 1. Initialize the prerequisite path manager
+const pathManager = new PropertiesPath(['packages', 'tokens'])
+
+// 2. Create the main token orchestrator
+const main = new PropertiesMain(pathManager)
+
+// 3. Resolve the complete global property tree
+const globalTokens = main.get()
+```
+
+## Methods
+
+- `get(): PropertyList` — performs the full transformation pipeline and returns all resolved main tokens.
+- `getBySettings(list): PropertyList` — merges a custom settings cluster into the global token tree.
+
+## Operations
+
+### The Global Transformation Pipeline
+
+When `get()` is invoked, `PropertiesMain` executes the following sequence for every design discovered:
+1. **Reading**: Fetches raw data from the filesystem using `PropertiesTool`.
+2. **Semantic Conversion**: Passes data through `PropertiesConvector` to transform raw values into tokens.
+3. **Standardization**: Normalizes structures via `PropertiesStandard` to ensure consistent object shapes.
+4. **Link Resolution**: Utilizes `PropertiesImport` to recursively fetch and merge any external file references.
+5. **Structural Finalization**: If necessary, it splits keys via `PropertiesSeparator` and applies `PropertiesWrap` to organize tokens into their final hierarchical containers.
+6. **Unified Synthesis**: Combines processed data from all designs into a single `PropertyList` where keys represent top-level design names.

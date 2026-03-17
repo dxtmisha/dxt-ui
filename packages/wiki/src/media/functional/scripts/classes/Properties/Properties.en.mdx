@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/Properties - Design Token Orchestrator'/>
+
+# Properties Class
+
+The `Properties` class is the core processing engine of the design system's token infrastructure. It acts as a central orchestrator that coordinates the loading, structural merging, and recursive transformation of raw property definitions into a final, resolved state. By abstracting the complexity of dozens of specialized transformation rules, it provides a stable "source of truth" for all components and build tools.
+
+## Key Features
+
+- **Multi-Stage Processing Pipeline** — Executes specialized transformers for replacing, cloning, dragging, and linking design tokens.
+- **Structural Merging** — Intelligently resolves and merges settings, global defaults, and component-specific overrides.
+- **Incremental Cache Management** — Uses `PropertiesCache` to persist processed results, significantly improving build performance.
+- **SCSS Synthesis** — Compiles resolved tokens into a structured SCSS format for direct use in styling layers.
+- **AI-Optimized Metadata** — Prepares property structures that are easily consumable by documentation engines and AI-driven generators.
+
+## Initialization
+
+Initialize the orchestrator to immediately begin processing the tokens defined in the project's configuration.
+
+```typescript
+import { Properties } from '@dxtmisha/scripts'
+
+const engine = new Properties()
+const tokens = engine.get() // Returns the fully processed PropertiesItems
+```
+
+## Methods
+
+### Data Access
+
+- `get(): PropertiesItems` — Returns the core container of all processed design tokens.
+- `getScss(): string` — Returns the compiled SCSS representation of the current token set.
+
+## Operations
+
+### The Token Processing Pipeline
+
+When instantiated, `Properties` coordinates a comprehensive multi-layered transformation flow:
+1. **Source Acquisition**: It reads and merges raw data from `PropertiesSettings`, `PropertiesMain`, and external JSON files.
+2. **Basic Normalization**: Triggers foundational transformations:
+    - **Replacement**: Resolves alias patterns.
+    - **Palette Resolution**: Injects color palette values.
+    - **Cloning & Sub-Property Synthesis**: Handles complex property replications.
+3. **Advanced Transformation**: Executes high-level logic for:
+    - **Component Resolution**: Maps properties to specific component structures.
+    - **State & Class Mapping**: Generates metadata for UI states (hover, active) and BEM classes.
+    - **Media & Animation Synthesis**: Resolves responsive breakpoints and motion tokens.
+4. **Optimization & Cleanup**: Sorts properties, handles duplicates, and purges empty nodes.
+5. **Persistence**: The final result is stored in the `PropertiesCache` using a unique hash based on the current design configuration.
+

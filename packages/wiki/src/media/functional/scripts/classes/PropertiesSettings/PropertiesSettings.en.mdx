@@ -1,0 +1,63 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesSettings - Component Settings'/>
+
+# PropertiesSettings Class
+
+The `PropertiesSettings` class is responsible for automatically searching for and loading component configuration files (settings) across all active designs. It scans specialized `settings` directories and merges the identified tokens into a unified registry, which is then used for stylesheet generation and typing.
+
+## Key Features
+
+- **Automated Scanning** — independently discovers all component folders within `components` and `constructor` paths.
+- **Multi-Design Support** — loads settings for each design separately and combines them contextually.
+- **Constructor Integration** — includes specialized logic for collecting component constructor properties (`dxt.constructor`).
+- **Standardization** — automatically transforms raw data from settings files into a standardized property format via `PropertiesStandard`.
+
+## Initialization
+
+To initialize the settings resolver, pass a `PropertiesPath` instance to the constructor.
+
+**Parameters:**
+- `path: PropertiesPath` — the object for working with design system paths.
+
+```typescript
+import { PropertiesPath, PropertiesSettings } from '@dxtmisha/scripts'
+
+const pathHandler = new PropertiesPath()
+const settings = new PropertiesSettings(pathHandler)
+```
+
+## Methods
+
+### `get`
+Returns a unified list of all settings properties found in the system. This includes both the individual component settings for each design and the shared component constructor properties.
+
+**Returns:** `PropertyList` — an object containing all loaded and standardized settings.
+
+```typescript
+const allSettings = settings.get();
+// Result: { basic: { button: { ... } }, 'dxt.constructor': { ... } }
+```
+
+## Operations
+
+### The Settings Collection Process
+
+`PropertiesSettings` performs its data search in several stages:
+1. **Path Determination**: The class retrieves the current paths to `settings` directories for each design via the path manager.
+2. **Directory Scanning**: For each identified path, all subdirectories (component names) are scanned.
+3. **File Reading**: Within each component folder, a token file (settings) is searched for and read via `PropertiesFile`.
+4. **Normalization**: The retrieved data is processed through `PropertiesStandard` to bring it into a uniform format (`PropertyItem`), including converting names to kebab-case.
+5. **Constructor Generation**: Simultaneously, `getConstructorProperties()` is called, which forms meta-data for the component constructor based on the list of identified folders.
+
+## Examples
+
+### Collecting All System Settings
+```typescript
+import { PropertiesSettings, PropertiesPath } from '@dxtmisha/scripts'
+
+const settingsManager = new PropertiesSettings(new PropertiesPath())
+const config = settingsManager.get()
+
+// config now contains all component variables for all themes
+```

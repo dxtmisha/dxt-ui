@@ -1,0 +1,112 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesTool - Tiện ích thuộc tính'/>
+
+# Lớp PropertiesTool
+
+Lớp `PropertiesTool` cung cấp một tập hợp các tiện ích tĩnh để xử lý việc đặt tên thành phần, phân giải đường dẫn và đọc các tệp cấu hình của hệ thống thiết kế. Nó đóng vai trò là một công cụ hỗ trợ cho các lớp khác, đảm bảo tính nhất quán trong quy ước đặt tên và cung cấp khả năng truy cập hiệu quả vào các tài nguyên tệp.
+
+## Các tính năng chính
+
+- **Chuẩn hóa Đặt tên** — tạo tên thành phần và tên lớp CSS nhất quán (camelCase).
+- **Logic Constructor** — bao gồm chức năng để xác định và tải các thuộc tính trình xây dựng cơ sở.
+- **Tích hợp Bộ nhớ đệm** — cung cấp khả năng đọc các tệp thuộc tính hiệu quả thông qua hệ thống bộ nhớ đệm.
+- **Cấu hình Linh hoạt** — lấy các định danh thiết kế đang hoạt động trực tiếp từ cài đặt môi trường.
+
+## Khởi tạo
+
+Lớp này chỉ cung cấp các phương thức tĩnh, vì vậy không cần phải khởi tạo thông qua `new`.
+
+```typescript
+import { PropertiesTool } from '@dxtmisha/scripts'
+
+// Gọi trực tiếp các phương thức tĩnh
+const isConst = PropertiesTool.isConstructor('basic')
+```
+
+## Các phương thức
+
+### `isConstructor`
+Kiểm tra xem tên thiết kế được cung cấp có khớp với khóa trình xây dựng (constructor) của hệ thống hay không. Điều này rất cần thiết để tách biệt các thuộc tính meta cơ sở khỏi các thuộc tính cụ thể liên quan đến chủ đề.
+
+**Tham số:**
+- `design: string` — tên thiết kế cần xác minh.
+
+**Trả về:** `boolean` — `true` nếu thiết kế là một trình xây dựng.
+
+```typescript
+const result = PropertiesTool.isConstructor('dxt.constructor');
+// Kết quả: true
+```
+
+### `getDesigns`
+Trả về danh sách các định danh thiết kế có sẵn trong môi trường hiện tại. Danh sách này bao gồm trình xây dựng hệ thống và thiết kế được chỉ định trong cấu hình chính của dự án.
+
+**Trả về:** `string[]` — một mảng gồm tên các thiết kế.
+
+```typescript
+const list = PropertiesTool.getDesigns();
+// Kết quả: ['dxt.constructor', 'my-project-design']
+```
+
+### `getComponentName`
+Tạo một chuỗi tên thành phần đã được chuẩn hóa bằng cách kết hợp tên thiết kế và tên thành phần. Tên thành phần được tự động chuyển đổi sang `camelCase`.
+
+**Tham số:**
+- `design: string` — tên thiết kế.
+- `component: string` (tùy chọn) — tên thành phần.
+
+**Trả về:** `string` — tên được tạo ra (ví dụ: `designName-componentName`).
+
+```typescript
+const name = PropertiesTool.getComponentName('basic', 'button-primary');
+// Kết quả: "basic-buttonPrimary"
+```
+
+### `getClassName`
+Tương tự như `getComponentName`, nhưng trả về một chuỗi được định dạng dưới dạng bộ chọn lớp CSS (bắt đầu bằng dấu chấm).
+
+**Tham số:**
+- `design: string` — tên thiết kế.
+- `component: string` (tùy chọn) — tên thành phần.
+
+**Trả về:** `string` — một chuỗi lớp CSS.
+
+```typescript
+const selector = PropertiesTool.getClassName('basic', 'button');
+// Kết quả: ".basic-button"
+```
+
+### `readFile`
+Đọc và trả về danh sách các thuộc tính (token) từ hệ thống tệp. Đối với trình xây dựng, nó trả về một bản sao của các thuộc tính cơ sở từ `properties.json`; đối với các trường hợp khác, nó đọc tệp thuộc tính thông qua bộ nhớ đệm hệ thống.
+
+**Tham số:**
+- `design: string` — tên thiết kế.
+- `path: string[] | undefined` — đường dẫn thư mục chứa tệp.
+
+**Trả về:** `PropertyList | undefined` — một đối tượng thuộc tính hoặc `undefined` nếu đường dẫn không được cung cấp.
+
+```typescript
+const data = PropertiesTool.readFile('basic', ['src', 'theme', 'settings', 'button']);
+```
+
+## Các thao tác (Operations)
+
+### Cơ chế phân giải tên (The Name Resolution Mechanism)
+
+1. **Chuyển đổi kiểu chữ**: Tất cả tên thành phần đầu vào đều trải qua `toCamelCase` trước khi được hợp nhất.
+2. **Thêm tiền tố**: Các phương thức công khai luôn thêm tên thiết kế vào đầu, giúp ngăn chặn xung đột kiểu khi sử dụng nhiều chủ đề cùng lúc.
+3. **Đọc tệp an toàn**: Khi đọc tệp thông qua `readFile` cho trình xây dựng, việc sao chép sâu (`copyObject`) được sử dụng để ngăn chặn sự thay đổi vô ý đối với các cài đặt cơ sở toàn cục bởi các công cụ khác.
+
+## Ví dụ (Examples)
+
+### Tạo một lớp CSS cho một thành phần động
+```typescript
+import { PropertiesTool } from '@dxtmisha/scripts'
+
+const design = 'basic'
+const component = 'input-field'
+
+const className = PropertiesTool.getClassName(design, component)
+// Kết quả: .basic-inputField
+```

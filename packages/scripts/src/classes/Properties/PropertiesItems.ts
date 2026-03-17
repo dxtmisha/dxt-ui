@@ -31,9 +31,11 @@ const SUPPORT_NAME = [
 ]
 
 /**
- * Class for working with a list of all properties.
+ * Coordinator for design property collections.
+ * This class provides a high-level API for traversing, searching, and extracting metadata from complex design token trees. It manages state related to design focusing (filtering view to a specific design set), converts complex path strings into normalized keys, and facilitates deep recursive iteration for token processing engines.
  *
- * Класс для работы со списком всех свойств.
+ * Координатор коллекций свойств дизайна.
+ * Этот класс предоставляет высокоуровневый API для обхода, поиска и извлечения метаданных из сложных деревьев токенов дизайна. Он управляет состоянием, связанным с фокусировкой дизайна (фильтрация представления для конкретного набора дизайнов), преобразует сложные строки путей в нормализованные ключи и упрощает глубокую рекурсивную итерацию для движков обработки токенов.
  */
 export class PropertiesItems {
   private focusDesign?: string
@@ -65,9 +67,11 @@ export class PropertiesItems {
   }
 
   /**
-   * Getting full structure property.
+   * Retrieves the current property structure.
+   * If a focus design is set, returns only the subset corresponding to that design and common constructor data; otherwise, returns the full collection.
    *
-   * Получение полной структуры свойства.
+   * Получает текущую структуру свойств.
+   * Если установлен фокус на дизайн, возвращает только подмножество, соответствующее этому дизайну и общим данным конструктора; в противном случае возвращает полную коллекцию.
    */
   get(): PropertyList {
     if (this.focusDesign) {
@@ -114,10 +118,12 @@ export class PropertiesItems {
   }
 
   /**
-   * Returns the full information about the element by its link.
+   * Resolves comprehensive metadata for a property element by its dotted index.
+   * Decodes the index, traverses the tree to find the target node, and synthesizes a detailed info object including parent hierarchy, name normalization, and raw values.
    *
-   * Возвращает полную информацию об элементе по его ссылке.
-   * @param index index for splitting/ индекс для разделения
+   * Разрешает полные метаданные элемента свойства по его индексу через точку.
+   * Декодирует индекс, обходит дерево для поиска целевого узла и синтезирует подробный объект информации, включая иерархию родителей, нормализацию имен и необработанные значения.
+   * @param index index for splitting / индекс для разделения
    */
   getInfo(index: string): PropertyItemsItem | undefined {
     const keys = this.getKeys(index)
@@ -376,12 +382,13 @@ export class PropertiesItems {
   }
 
   /**
-   * Recursively applies a custom function to each element of the property.
+   * Performs a deep recursive traversal of the property tree.
+   * Executes a callback for every node discovered. If a specific property node is provided, the traversal is restricted to its children; otherwise, the entire tree is visited.
    *
-   * Рекурсивно применяет пользовательскую функцию к каждому элементу свойства.
-   * @param callback the callback function is executed for each element/
-   * выполняется функция обратного вызова (callback) для каждого элемента
-   * @param property
+   * Выполняет глубокий рекурсивный обход дерева свойств.
+   * Выполняет callback для каждого обнаруженного узла. Если предоставлен конкретный узел свойства, обход ограничивается его дочерними элементами; в противном случае посещается все дерево.
+   * @param callback the callback function to execute for each element / функция обратного вызова для каждого элемента
+   * @param property optional start node for traversal / опциональный начальный узел для обхода
    */
   each<T>(
     callback: PropertyItemsCallback<T>,

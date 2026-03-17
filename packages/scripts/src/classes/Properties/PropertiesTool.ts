@@ -12,16 +12,16 @@ import basicProperties from '../../media/properties.json'
 import { UI_KEY_CONSTRUCTOR, UI_FILE_PROPERTY } from '../../config'
 
 /**
- * A class for static methods of obtaining various data.
+ * Utility class for naming components and reading design system property files.
  *
- * Класс для статических методов получения различных данных.
+ * Утилитарный класс для именования компонентов и чтения файлов свойств дизайн-системы.
  */
 export class PropertiesTool {
   /**
-   * Checks if the names of the design relate to the construction.
+   * Checks if the design name identifies as a constructor.
    *
-   * Проверяет, относятся ли названия дизайна к конструкции.
-   * @param design design name/ название дизайна
+   * Проверяет, идентифицирует ли название дизайна конструктор.
+   * @param design design name / название дизайна
    */
   static isConstructor(design: string): boolean {
     return design === UI_KEY_CONSTRUCTOR
@@ -37,11 +37,11 @@ export class PropertiesTool {
   }
 
   /**
-   * Return a list of component names.
+   * Generates a camelCase component name string based on design and component name.
    *
-   * Возвращаем список названий компонентов.
-   * @param design design name/ название дизайна
-   * @param component component name/ название компонента
+   * Генерирует строку названия компонента в стиле camelCase на основе дизайна и названия компонента.
+   * @param design design name / название дизайна
+   * @param component component name / название компонента
    */
   static getComponentName(design: string, component?: string): string {
     return `${design}${component ? `-${toCamelCase(component)}` : ''}`
@@ -58,6 +58,13 @@ export class PropertiesTool {
     return `.${this.getComponentName(design, component)}`
   }
 
+  /**
+   * Reads a property list from a specified path, with special handling for constructors.
+   *
+   * Считывает список свойств по указанному пути с особой обработкой для конструкторов.
+   * @param design design name / название дизайна
+   * @param path array representing the directory path / массив, представляющий путь к директории
+   */
   static readFile(
     design: string,
     path: string[] | undefined

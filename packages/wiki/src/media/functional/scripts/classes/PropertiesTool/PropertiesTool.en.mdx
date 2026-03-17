@@ -1,0 +1,112 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesTool - Property Utilities'/>
+
+# PropertiesTool Class
+
+The `PropertiesTool` class provides a set of static utilities for handling component naming, path resolution, and reading design system configuration files. It serves as an auxiliary tool for other classes, ensuring consistency in naming conventions and providing efficient access to file resources.
+
+## Key Features
+
+- **Naming Standardization** — generates consistent component and CSS class names (camelCase).
+- **Constructor Logic** — includes functionality for identifying and loading base constructor properties.
+- **Cache Integration** — provides efficient reading of property files through a caching system.
+- **Flexible Configuration** — retrieves active design identifiers directly from environment settings.
+
+## Initialization
+
+The class provides only static methods, so creating an instance via `new` is not required.
+
+```typescript
+import { PropertiesTool } from '@dxtmisha/scripts'
+
+// Direct call to static methods
+const isConst = PropertiesTool.isConstructor('basic')
+```
+
+## Methods
+
+### `isConstructor`
+Checks if the provided design name matches the system's constructor key. This is essential for separating base meta-properties from specific theme-related properties.
+
+**Parameters:**
+- `design: string` — the design name to verify.
+
+**Returns:** `boolean` — `true` if the design is a constructor.
+
+```typescript
+const result = PropertiesTool.isConstructor('dxt.constructor');
+// Result: true
+```
+
+### `getDesigns`
+Returns a list of design identifiers available in the current environment. This list includes the system constructor and the design specified in the project's primary configuration.
+
+**Returns:** `string[]` — an array of design names.
+
+```typescript
+const list = PropertiesTool.getDesigns();
+// Result: ['dxt.constructor', 'my-project-design']
+```
+
+### `getComponentName`
+Generates a normalized component name string by combining the design name and the component name. The component name is automatically converted to `camelCase`.
+
+**Parameters:**
+- `design: string` — the design name.
+- `component: string` (optional) — the component name.
+
+**Returns:** `string` — the generated name (e.g., `designName-componentName`).
+
+```typescript
+const name = PropertiesTool.getComponentName('basic', 'button-primary');
+// Result: "basic-buttonPrimary"
+```
+
+### `getClassName`
+Similar to `getComponentName`, but returns a string formatted as a CSS class selector (starting with a dot).
+
+**Parameters:**
+- `design: string` — the design name.
+- `component: string` (optional) — the component name.
+
+**Returns:** `string` — a CSS class string.
+
+```typescript
+const selector = PropertiesTool.getClassName('basic', 'button');
+// Result: ".basic-button"
+```
+
+### `readFile`
+Reads and returns a list of properties (tokens) from the file system. For the constructor, it returns a copy of base properties from `properties.json`; for others, it reads the property file via the system cache.
+
+**Parameters:**
+- `design: string` — the design name.
+- `path: string[] | undefined` — the directory path containing the file.
+
+**Returns:** `PropertyList | undefined` — a property object or `undefined` if the path is not provided.
+
+```typescript
+const data = PropertiesTool.readFile('basic', ['src', 'theme', 'settings', 'button']);
+```
+
+## Operations
+
+### The Name Resolution Mechanism
+
+1. **Case Transformation**: All input component names undergo `toCamelCase` before being merged.
+2. **Prefixing**: Public methods always prepend the design name, preventing style collisions when using multiple themes simultaneously.
+3. **Safe Reading**: When reading files via `readFile` for the constructor, deep copying (`copyObject`) is used to prevent accidental mutation of global base settings by other tools.
+
+## Examples
+
+### Generating a CSS Class for a Dynamic Component
+```typescript
+import { PropertiesTool } from '@dxtmisha/scripts'
+
+const design = 'basic'
+const component = 'input-field'
+
+const className = PropertiesTool.getClassName(design, component)
+// Result: .basic-inputField
+```

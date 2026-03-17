@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesSeparator - Phân tách thuộc tính'/>
+
+# Lớp PropertiesSeparator
+
+Lớp `PropertiesSeparator` được thiết kế để tự động chuyển đổi cấu trúc phẳng của các token có tên phức hợp (sử dụng dấu phân cách) thành cấu trúc phân cấp của các đối tượng lồng nhau. Điều này cho phép tổ chức thuộc tính một cách logic, ví dụ: biến `button.primary.background` thành `{ button: { primary: { background: ... } } }`.
+
+## Các tính năng chính
+
+- **Lồng ghép tự động** — chuyển đổi các khóa phẳng với dấu phân cách (mặc định là `.`) thành các đối tượng lồng nhau.
+- **Xử lý đệ quy** — hỗ trợ độ sâu lồng nhau không giới hạn (với khả năng giới hạn thông qua cấu hình).
+- **Hợp nhất thông minh** — hợp nhất chính xác các thuộc tính con mới với các đối tượng hiện có bằng cách thay thế đệ quy.
+- **Làm sạch tên** — tự động loại bỏ các tiền tố và hậu tố kỹ thuật (ví dụ: tên cơ bản của dấu phân cách) trước khi xử lý.
+
+## Khởi tạo
+
+Lớp này cung cấp các phương thức tĩnh, vì vậy không cần phải khởi tạo thông qua `new`.
+
+```typescript
+import { PropertiesSeparator } from '@dxtmisha/scripts'
+
+// Sử dụng các phương thức tĩnh
+const results = PropertiesSeparator.to(rawProperties)
+```
+
+## Các phương thức
+
+### `is`
+Một phương thức tĩnh để kiểm tra nhanh xem danh sách thuộc tính được cung cấp có chứa bất kỳ khóa nào yêu cầu phân tách hay không. Nó quét cấp độ cao nhất (và các cấp độ lồng nhau lên đến giới hạn `limit`) để tìm các ký tự phân cách trong tên.
+
+**Tham số:**
+- `properties: PropertyList` — danh sách các thuộc tính cần phân tích.
+- `limit: number` — độ sâu tối đa của việc kiểm tra (mặc định được lấy từ `PropertiesConfig`).
+
+**Trả về:** `boolean` — `true` nếu có ít nhất một khóa chứa dấu phân cách.
+
+```typescript
+const needsSplitting = PropertiesSeparator.is(myProperties);
+// Kết quả: true nếu tồn tại các khóa như "color.blue.50"
+```
+
+### `to`
+Một phương thức tĩnh thực hiện quá trình chuyển đổi thực tế từ danh sách thuộc tính phẳng thành cấu trúc lồng nhau. Phương thức lặp lại đệ quy qua tất cả các phần tử và nếu tìm thấy một khóa có dấu phân cách, nó sẽ "bao bọc" thuộc tính vào một chuỗi các đối tượng lồng nhau theo các phân đoạn tên.
+
+**Tham số:**
+- `properties: PropertyList` — danh sách các thuộc tính cần chuyển đổi.
+
+**Trả về:** `PropertyList` — một danh sách thuộc tính mới với cấu trúc phân cấp.
+
+```typescript
+const nestedProperties = PropertiesSeparator.to({
+  'palette.blue.50': { value: '#e3f2fd' }
+});
+/* Kết quả:
+{
+  palette: {
+    value: {
+      blue: {
+        value: {
+          '50': { value: '#e3f2fd', __wrap: true }
+        }
+      }
+    }
+  }
+}
+*/
+```
+
+## Các thao tác (Operations)
+
+### Cơ chế phân tách tên (The Name Splitting Mechanism)
+
+Quá trình chuyển đổi trong `PropertiesSeparator` bao gồm các bước sau:
+1. **Phát hiện dấu phân cách**: Phương thức `to` kiểm tra từng tên thuộc tính thông qua `PropertiesKeys.isSeparator`.
+2. **Phân đoạn**: Nếu tìm thấy dấu phân cách, tên sẽ được chia thành các phần (ví dụ: `a.b.c` -> `['a', 'b', 'c']`). Các ký tự kỹ thuật sẽ được loại bỏ trước đó thông qua `removeBasicName`.
+3. **Bao bọc (Wrapping)**: Phương thức `wrap` tạo đệ quy các đối tượng `value` lồng nhau, đặt phần tử thuộc tính ban đầu ở cấp sâu nhất. Các đối tượng trung gian được đánh dấu bằng `__wrap: true` để chỉ định bản chất cấu trúc của chúng.
+4. **Hợp nhất đệ quy**: "Nhánh" kết quả được hợp nhất với đối tượng `data` chính thông qua `replaceRecursive`, cho phép nhiều thuộc tính có cùng gốc (ví dụ: `blue.50` và `blue.100`) tập hợp chính xác dưới một đối tượng `blue` duy nhất.
+
+## Ví dụ (Examples)
+
+### Nhóm các màu sắc bảng màu (Palette)
+```typescript
+import { PropertiesSeparator } from '@dxtmisha/scripts'
+
+const flatPalette = {
+  'blue.50': { value: '#eef' },
+  'blue.100': { value: '#ccf' }
+}
+
+const tree = PropertiesSeparator.to(flatPalette)
+// Các thuộc tính hiện được nhóm trong đối tượng tree.blue.value
+```

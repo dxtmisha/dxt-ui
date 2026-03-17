@@ -13,125 +13,127 @@ import {
 } from '../../config'
 
 /**
- * Class for retrieving configuration data.
+ * Static configuration orchestrator for the design system.
+ * Responsible for locating, loading, and merging the `design-ui.json` configuration file, handling recursive extensions, and providing a centralized interface for accessing project-wide settings including naming, separators, and AI integration parameters.
  *
- * Класс для получения данных конфигурации.
+ * Статический оркестратор конфигурации для дизайн-системы.
+ * Отвечает за поиск, загрузку и слияние файла конфигурации `design-ui.json`, обработку рекурсивных расширений и предоставление централизованного интерфейса для доступа к общепроектным настройкам, включая именование, разделители и параметры интеграции ИИ.
  */
 export class PropertiesConfig {
   protected static config: DesignUiConfig
 
   /**
-   * Returns the project name.
+   * Retrieves the global project identifier.
    *
-   * Возвращает название проекта.
+   * Получает глобальный идентификатор проекта.
    */
   static getProjectName(): string {
     return this.config.project ?? 'ui'
   }
 
   /**
-   * Returns the project name.
+   * Retrieves the primary design system name.
    *
-   * Возвращает название проекта.
+   * Получает основное название дизайн-системы.
    */
   static getDesignName(): string {
     return this.config.name ?? 'ui'
   }
 
   /**
-   * Returns alternative design names.
+   * Returns alternative design system aliases.
    *
-   * Возвращает альтернативные названия дизайна.
+   * Возвращает альтернативные алиасы дизайн-системы.
    */
   static getDesignAlternativeName(): string[] | undefined {
     return this.config?.alternativeName
   }
 
   /**
-   * Returns the separator symbol.
+   * Returns the token path separator character.
    *
-   * Возвращает символ разделителя.
+   * Возвращает символ-разделитель пути токена.
    */
   static getSeparator(): string {
     return this.config.separator ?? '/'
   }
 
   /**
-   * Returns the base name of the separator.
+   * Returns the identifier for the base level separator.
    *
-   * Возвращает базовое название разделителя.
+   * Возвращает идентификатор для базового разделителя.
    */
   static getSeparatorBasicName(): string {
     return this.config.separatorBasicName ?? 'basic'
   }
 
   /**
-   * Returns the limit of separator characters in a single key.
+   * Returns the maximum depth for token path segments.
    *
-   * Возвращает лимит символов-разделителей в одном ключе.
+   * Возвращает максимальную глубину сегментов пути токена.
    */
   static getSeparatorLimit(): number {
     return this.config.separatorLimit ?? 6
   }
 
   /**
-   * Returns the wiki language.
+   * Returns the primary language for documentation generation.
    *
-   * Возвращает язык wiki.
+   * Возвращает основной язык для генерации документации.
    */
   static getWikiLanguage(): string {
     return this.config.wikiLanguage ?? 'en'
   }
 
   /**
-   * Returns the package prefix.
+   * Returns the prefix for generated npm packages.
    *
-   * Возвращает префикс пакета.
+   * Возвращает префикс для генерируемых npm-пакетов.
    */
   static getPackagePrefix(): string | undefined {
     return this.config.packagePrefix ?? undefined
   }
 
   /**
-   * Returns the AI type.
+   * Returns the configured AI provider type.
    *
-   * Возвращает тип ИИ.
+   * Возвращает настроенный тип ИИ-провайдера.
    */
   static getAiType(): AiType {
     return this.config.aiType ?? 'gemini'
   }
 
   /**
-   * Returns the AI model.
+   * Returns the specific AI model identifier.
    *
-   * Возвращает модель ИИ.
+   * Возвращает конкретный идентификатор модели ИИ.
    */
   static getAiModel(): string {
     return this.config.aiModel ?? ''
   }
 
   /**
-   * Returns the AI API key.
+   * Returns the secure API key for AI authentication.
    *
-   * Возвращает API ключ ИИ.
+   * Возвращает безопасный API-ключ для аутентификации ИИ.
    */
   static getAiKey(): string {
     return this.config.aiKey ?? ''
   }
 
   /**
-   * Returns the directories for AI documentation generation.
+   * Returns the list of directories targeted for AI-driven documentation.
    *
-   * Возвращает каталоги для генерации AI документации.
+   * Возвращает список директорий, предназначенных для автоматической документации через ИИ.
    */
   static getAiDocDirectory(): string[] {
     return this.config.aiDocDirectory ?? UI_AI_DOC_DIRECTORY
   }
 
   /**
-   * Returns the Storybook path for AI documentation generation.
+   * Returns the export path for Storybook-compatible AI documentation.
    *
-   * Возвращает путь Storybook для генерации AI документации.
+   * Возвращает путь экспорта для AI-документации, совместимой со Storybook.
    */
   static getAiDocStorybookPath(): string {
     return this.config.aiDocStorybookPath ?? UI_AI_DOC_STORYBOOK

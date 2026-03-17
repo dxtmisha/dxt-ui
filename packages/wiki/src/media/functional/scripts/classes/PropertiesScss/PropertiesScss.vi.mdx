@@ -1,0 +1,74 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesScss - Tạo SCSS'/>
+
+# Lớp PropertiesScss
+
+Lớp `PropertiesScss` chịu trách nhiệm chuyển đổi các token và thuộc tính của hệ thống thiết kế thành cấu trúc SCSS có tổ chức. Mã nguồn kết quả được sử dụng để tích hợp các biến thiết kế vào bảng kiểu của thư viện, đảm bảo sự đồng bộ giữa các định nghĩa JSON và các biến Sass.
+
+## Các tính năng chính
+
+- **Tự động tạo mã** — tạo một cấu trúc SCSS hoàn chỉnh để tích hợp vào các bảng kiểu.
+- **Tích hợp Mixin** — tạo các lệnh gọi đến các mixin đặc biệt (`setDesignsDesigns`, `setDesignsRoot`, v.v.) để cấu hình tự động.
+- **Hỗ trợ Media Query** — chuyển đổi kích thước thiết bị thành một bảng (map) SCSS.
+- **Xử lý Bảng màu (Palette)** — tạo danh sách các màu sắc được sử dụng và các mức độ bão hòa.
+- **Định dạng Thông minh** — xử lý chính xác các loại giá trị (màu sắc, kích thước, liên kết) để phù hợp với cú pháp SCSS.
+
+## Khởi tạo
+
+Để khởi tạo trình tạo SCSS, hãy truyền một thực thể `PropertiesItems` vào hàm khởi tạo.
+
+**Tham số:**
+- `items: PropertiesItems` — đối tượng quản lý cho tất cảnh các thành phần thuộc tính.
+
+```typescript
+import { PropertiesItems, PropertiesScss } from '@dxtmisha/scripts'
+
+const manager = new PropertiesItems(tokenData)
+const generator = new PropertiesScss(manager)
+```
+
+## Các phương thức
+
+### `get`
+Trả về một chuỗi SCSS đã được định dạng đầy đủ, sẵn sàng để ghi vào tệp. Chuỗi này bao gồm việc nhập các biến kiểu cốt lõi và các lệnh gọi mixin tuần tự để đăng ký các thiết kế, thuộc tính gốc, truy vấn phương tiện, các lớp và bảng màu.
+
+**Trả về:** `string` — toàn bộ nội dung của tệp SCSS.
+
+```typescript
+const scssContent = generator.get();
+// Kết quả: "@use \"@dxtmisha/styles\" as variables; \n @include variables.setDesignsDesigns(...)"
+```
+
+### `getProperties`
+Tạo một cấu trúc bảng SCSS chuyên biệt cho tất cả các thuộc tính được định nghĩa trong hệ thống. Phương thức này tập trung vào các token (biến) chung nên có sẵn trong phạm vi CSS/SCSS toàn cục.
+
+**Trả về:** `string` — một đoạn mã SCSS với lệnh gọi đến mixin `setDesignsProperties`.
+
+```typescript
+const propertyMap = generator.getProperties();
+```
+
+## Các thao tác (Operations)
+
+### Quy trình tạo SCSS
+
+`PropertiesScss` thực hiện chuyển đổi dữ liệu qua nhiều giai đoạn:
+1. **Thu thập Thiết kế**: Xác định tất cả các thiết kế đang hoạt động và tạo danh sách cho mixin `setDesignsDesigns`.
+2. **Phân tích Danh mục**: Phân phối các thuộc tính theo danh mục (root, class, theme) để tạo các khối tương ứng.
+3. **Phân giải Bảng màu**: Sử dụng `PropertiesPalette` để lấy danh sách các màu sắc và các bước bão hòa thực tế được sử dụng.
+4. **Phân tích Giá trị**: Phương thức `getValueItem` kiểm tra từng giá trị so với các loại SCSS (chuỗi được đặt trong dấu ngoặc kép, mã HEX và kích thước có đơn vị được giữ nguyên không dùng ngoặc kép).
+5. **Lắp ráp Cấu trúc**: Tạo các bảng SCSS lồng nhau, tuân thủ thụt lề và dấu phân cách chính xác để đảm bảo mã Sass hợp lệ.
+
+## Ví dụ (Examples)
+
+### Chu kỳ tạo mã đầy đủ
+```typescript
+import { PropertiesItems, PropertiesScss } from '@dxtmisha/scripts'
+
+const items = new PropertiesItems(data)
+const scss = new PropertiesScss(items)
+
+// Lấy mã đã sẵn sàng để ghi vào variables.scss
+const fileData = scss.get()
+```

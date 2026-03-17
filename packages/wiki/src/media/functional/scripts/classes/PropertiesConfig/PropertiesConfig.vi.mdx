@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesConfig - Bộ điều phối cấu hình toàn cầu'/>
+
+# Lớp PropertiesConfig
+
+Lớp `PropertiesConfig` là một tiện ích tĩnh tập trung chịu trách nhiệm quản lý các tham số vận hành của hệ thống thiết kế. Nó xử lý việc khám phá và hợp nhất đệ quy các tệp cấu hình `design-ui.json`, cung cấp một API nhất quán để truy cập các quy ước đặt tên, khóa tích hợp AI và các quy tắc định tuyến tài liệu trên toàn bộ thư viện.
+
+## Các tính năng chính
+
+- **Mở rộng đệ quy** — Hỗ trợ cơ chế `extends`, cho phép các cấu hình kế thừa và ghi đè các cài đặt từ các thư mục cha.
+- **Tự động khám phá** — Tìm kiếm ngược lên cây thư mục để tìm điểm nhập `design-ui.json` gần nhất.
+- **Cài đặt tập trung** — Cung cấp quyền truy cập thống nhất vào các định danh dự án, tên thiết kế và các ký tự phân tách đường dẫn.
+- **Tích hợp AI** — Quản lý thông tin xác thực và các tham số mô hình cho việc tạo tài liệu và mã nguồn bằng AI.
+- **Định tuyến tài liệu** — Cấu hình các thư mục đích và đường dẫn Storybook cho hệ thống wiki tự động.
+
+## Khởi tạo
+
+Là một lớp tĩnh, `PropertiesConfig` tự động khởi tạo khi được import lần đầu tiên. Bạn không cần phải gọi hàm khởi tạo.
+
+```typescript
+import { PropertiesConfig } from '@dxtmisha/scripts'
+
+// Truy cập các cài đặt toàn cầu
+const designName = PropertiesConfig.getDesignName()
+const separator = PropertiesConfig.getSeparator()
+```
+
+## Các phương thức
+
+### Cấu hình chung
+
+- `getProjectName(): string` — Truy xuất định danh gốc của dự án.
+- `getDesignName(): string` — Trả về định danh chính của hệ thống thiết kế.
+- `getDesignAlternativeName(): string[]` — Trả về các alias thay thế cho thiết kế.
+- `getSeparator(): string` — Trả về ký tự phân tách đường dẫn được sử dụng trong các token.
+- `getWikiLanguage(): string` — Trả về mã ngôn ngữ đích cho tài liệu.
+
+### AI & Tài liệu
+
+- `getAiType(): AiType` — Trả về nhà cung cấp AI đã cấu hình (ví dụ: 'gemini').
+- `getAiModel(): string` — Trả về tên mô hình AI cụ thể.
+- `getAiDocDirectory(): string[]` — Trả về các thư mục mục tiêu để tạo tài liệu.
+- `getAiDocStorybookPath(): string` — Trả về đích xuất cho các tệp MDX của Storybook.
+
+## Các thao tác (Operations)
+
+### Luồng phân giải cấu hình (The Configuration Resolution Flow)
+
+`PropertiesConfig` sử dụng một chiến lược mạnh mẽ để phân giải các cài đặt hệ thống:
+1. **Khám phá tệp**: Khi tải, nó cố gắng tìm `design-ui.json` bằng cách duyệt ngược lên từ thư mục làm việc hiện tại (tối đa 32 cấp).
+2. **Hợp nhất đệ quy**: Nếu tệp được tìm thấy có chứa thuộc tính `extends`:
+    - Nó tải đệ quy cấu hình cha được tham chiếu.
+    - Nó hợp nhất các cài đặt một cách thông minh, trong đó các thuộc tính cục bộ ghi đè các thuộc tính kế thừa.
+3. **Tính sẵn sàng tĩnh**: Cấu hình hợp nhất cuối cùng được lưu trữ trong một trường tĩnh riêng tư, giúp tất cả các cài đặt có sẵn ngay lập tức thông qua các getter công khai.
+

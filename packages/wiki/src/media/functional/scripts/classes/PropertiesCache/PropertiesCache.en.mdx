@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesCache - Persistent Cache Orchestrator'/>
+
+# PropertiesCache Class
+
+The `PropertiesCache` class is a high-performance static utility designed to manage persistent file-based caching for the design system toolchain. It ensures that complex token transformations are only performed when necessary, significantly reducing build times for large-scale projects by tracking file dependencies and maintaining a structured cache hierarchy.
+
+## Key Features
+
+- **Dependency Tracking** — Automatically monitors source file changes and invalidates the cache if any dependency is modified.
+- **Hierarchical Storage** — Organizes cached data into a hidden `.cache` directory with specialized sub-folders for different processing steps.
+- **Incremental Builds** — Enables partial re-computation by storing intermediate transformation results.
+- **System Integrity** — Maintains a `system.json` registry to track cache timestamps and file metadata.
+- **Generic Support** — Provides full TypeScript support for type-safe retrieval of cached data structures.
+
+## Initialization
+
+As a static class, `PropertiesCache` does not require instantiation. Its methods are accessed directly.
+
+```typescript
+import { PropertiesCache } from '@dxtmisha/scripts'
+
+// Retrieve data with automatic cache management
+const data = PropertiesCache.get(
+  ['tokens', 'color'], 
+  'palette-cache', 
+  () => transformPaletteLogic()
+)
+
+// Clear all cached data
+PropertiesCache.clear()
+```
+
+## Methods
+
+### Cache Operations
+
+- `get<T>(path, name, callback, extension): T` — Retrieves data from the cache or regenerates it via the callback.
+- `read<R>(path): R | undefined` — Reads a file and registers it as a cache dependency.
+- `write<T>(name, value): void` — Saves intermediate processing results to the temporary cache.
+- `clear(): void` — Recursively deletes the entire cache directory.
+
+## Operations
+
+### The Cache Synchronization Flow
+
+`PropertiesCache` operates through a sophisticated internal lifecycle to ensure data consistency:
+1. **Request (`get`)**: When data is requested, the class first checks for the existence of the physical cache file.
+2. **System Validation**: It consults the internal `system` registry to compare the cache's creation timestamp against the modification times of all registered dependency files.
+3. **Regeneration**: If the file is missing or outdated:
+    - It pushes the current cache `name` onto an internal `listenerName` stack.
+    - Any subsequent file read via `PropertiesCache.read()` during the callback execution is automatically logged as a dependency for this specific cache entry.
+    - The callback result is written to disk.
+4. **Finalization**: After the callback completes, it updates the `system.json` with the new timestamp and dependency list, ensuring the next request remains valid unless a source file changes.
+

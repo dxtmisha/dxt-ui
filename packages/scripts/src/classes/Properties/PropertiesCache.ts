@@ -20,9 +20,11 @@ type PropertiesCacheSystem = {
 }
 
 /**
- * Processing for storing temporary files.
+ * Static orchestrator for managing persistent file caching in the design system.
+ * Provides a structured mechanism for storing transformed tokens, tracking file dependencies, and ensuring incremental build performance by avoiding redundant processing.
  *
- * Обработка для хранения временных файлов.
+ * Статический оркестратор для управления постоянным файловым кэшированием в дизайн-системе.
+ * Предоставляет структурированный механизм для хранения трансформированных токенов, отслеживания зависимостей файлов и обеспечения производительности инкрементальной сборки за счет исключения повторной обработки.
  */
 export class PropertiesCache {
   private static time = 0
@@ -31,16 +33,13 @@ export class PropertiesCache {
   private static readonly listenerName: string[] = ['global']
 
   /**
-   * Reads data from the cache or updates the cache if the data is outdated.
+   * Retrieves data from the cache or executes the callback to regenerate and store it if the cache is missing or outdated.
    *
-   * Читает данные из кэша или обновляет кэш, если данные устарели.
-   * @param path path to the file/ путь к файлу
-   * @param name file name/ название файла
-   * @param callback if the file is not found, the callback function is called
-   * and its result is saved in the current file /
-   * если файл не найден, вызывается функция обратного вызова (callback) и её
-   * результат сохраняется в текущем файле
-   * @param extension file extension by default is json/ расширение файла по умолчанию - json
+   * Извлекает данные из кэша или выполняет функцию обратного вызова для регенерации и сохранения данных, если кэш отсутствует или устарел.
+   * @param path the logical path structure for the cache file/ логическая структура пути для файла кэша
+   * @param name the unique identifier for the cache entry/ уникальный идентификатор записи кэша
+   * @param callback the generator function to execute on cache miss/ функция-генератор, выполняемая при отсутствии данных в кэше
+   * @param extension the file extension, typically 'json'/ расширение файла, обычно 'json'
    */
   static get<T extends PropertiesFileValue>(
     path: PropertiesFilePath,
@@ -67,10 +66,10 @@ export class PropertiesCache {
   }
 
   /**
-   * Returns the content of the file by the specified path
+   * Directly reads a file and registers it as a dependency for the currently active cache listener.
    *
-   * Возвращает содержимое файла по указанному пути.
-   * @param path filename/ имя файла
+   * Напрямую читает файл и регистрирует его как зависимость для текущего активного слушателя кэша.
+   * @param path the path to the file to be read/ путь к считываемому файлу
    */
   static read<R>(path: PropertiesFilePath): R | undefined {
     if (PropertiesFile.is(path)) {
@@ -89,20 +88,20 @@ export class PropertiesCache {
   }
 
   /**
-   * Saves intermediate data
+   * Persists intermediate results to the temporary step-based cache directory.
    *
-   * Сохраняет промежуточные данные.
-   * @param name file name/ название файла
-   * @param value values for storage/ значения для хранения
+   * Сохраняет промежуточные результаты во временную директорию пошагового кэша.
+   * @param name the name of the cached step result/ название кэшированного результата шага
+   * @param value the data structure to persist/ структура данных для сохранения
    */
   static write<T extends PropertiesFileValue>(name: string, value: T): void {
     this.writeFile<T>(DIR_STEP, name, value)
   }
 
   /**
-   * Clear cached data
+   * Recursively removes all cached data from the `.cache` directory.
    *
-   * Очистить кешированные данные.
+   * Рекурсивно удаляет все кэшированные данные из директории `.cache`.
    */
   static clear(): void {
     PropertiesFile.removeDir(this.getPath([]))

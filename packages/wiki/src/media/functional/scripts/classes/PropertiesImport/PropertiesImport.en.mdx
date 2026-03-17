@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesImport - External Token Resolver'/>
+
+# PropertiesImport Class
+
+The `PropertiesImport` class is a specialized manager for resolving and integrating external file references within design token clusters. It allows developers to modularize property definitions across multiple files or directories, providing powerful mechanisms for deep-linking into specific data structures and recursive merging of independent token sets into a single unified configuration.
+
+## Key Features
+
+- **Modular Resolution** — Transparently includes external `.json` files or entire directories into the property tree.
+- **Deep Deep-Linking** — Supports fragment identifiers (e.g., `#path.to.node`) to import only specific subsets of an external file.
+- **Recursive Directory Import** — Automatically maps folder structures to property namespaces when a directory is referenced.
+- **Context-Aware Resolution** — Tracks the current directory level to resolve relative file paths correctly during deep traversal.
+- **Normalized Merging** — Ensures that imported data is passed through `PropertiesStandard` before being merged into the parent tree.
+
+## Initialization
+
+To initialize the object, call the `PropertiesImport(properties, root)` constructor.
+
+**Parameters:**
+- `properties: PropertyList` — initial property list (token tree) to be processed.
+- `root: string[]` — base path segments for resolving relative file references.
+
+```typescript
+import { PropertiesImport } from '@dxtmisha/scripts'
+
+// 1. Prepare raw data and path context
+const initialProperties = { 
+  button: { type: 'file', value: 'components/button.json' } 
+}
+const rootPath = ['src', 'tokens']
+
+// 2. Create the importer instance
+const importer = new PropertiesImport(initialProperties, rootPath)
+
+// 3. Trigger the resolution of external references
+const resolvedData = importer.to()
+```
+
+## Methods
+
+- `to(properties, root): PropertyList` — resolves and merges all external file references within the property cluster.
+
+## Operations
+
+### The External Resolution Flow
+
+`PropertiesImport` manages a multi-stage resolution pipeline:
+1. **Detection**: As it traverses the tree, it specifically targets items where the `value` is a string and the type metadata matches `PropertyType.file`.
+2. **Link Parsing**: It splits the reference string (e.g., `theme/colors.json#primary`) into a physical file `path` and an optional internal `link` fragment.
+3. **IO Execution**:
+    - **Single File**: Reads the target file via `PropertiesCache`.
+    - **Directory**: Maps all `.json` files in the folder to child properties named after the filenames.
+4. **Deep Extraction**: If a fragment identifier (`#`) was present, it navigates through the read object to return only the requested sub-path.
+5. **Standardization & Recusion**: The extracted data is passed to `PropertiesStandard` for normalization and then recursively passed back to `to()` to resolve any *nested* imports within the newly included file.
+6. **Merging**: The finalized data is recursively merged into the parent structure using `replaceRecursive`.

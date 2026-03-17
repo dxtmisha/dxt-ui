@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesItems - Bộ điều phối cây thuộc tính'/>
+
+# Lớp PropertiesItems
+
+Lớp `PropertiesItems` đóng vai trò là bộ điều phối trung tâm để điều hướng và tìm kiếm qua các cây thuộc tính thiết kế phức tạp. Nó cung cấp một lớp trừu tượng cấp cao giúp ẩn đi các chi tiết phức tạp của việc duyệt cây, giải mã chỉ mục và lọc theo thiết kế cụ thể. Cho dù bạn cần tìm một token cụ thể theo đường dẫn dấu chấm, thực hiện tìm kiếm toàn cục theo danh mục hay thực thi các thao tác đệ quy sâu, `PropertiesItems` đóng vai trò là công cụ chính để khám phá thuộc tính.
+
+## Các tính năng chính
+
+- **Tập trung vào Thiết kế (Design Focusing)** — Cho phép lọc toàn bộ phạm vi tương tác thuộc tính vào một chủ đề thiết kế hoặc cụm thành phần duy nhất.
+- **Phân giải Siêu dữ liệu Sâu** — Chuyển đổi các chuỗi chỉ mục đơn giản (ví dụ: `theme.colors.primary`) thành các đối tượng thông tin toàn diện với ngữ cảnh cha đầy đủ.
+- **Công cụ Duyệt thống nhất** — Cung cấp các cơ chế `each` và `find` nhất quán cho cả việc khám phá phân cấp token theo kiểu nông và đệ quy sâu.
+- **Chuyển đổi Ngữ nghĩa Đường dẫn** — Tự động xử lý chuẩn hóa đường dẫn, chuyển đổi kebab-to-camelCase và hỗ trợ các biểu tượng liên kết đặc biệt như `?`.
+- **Lọc theo Danh mục & Biến** — Bao gồm các phương pháp tìm kiếm được tối ưu hóa để trích xuất các tập hợp con token dựa trên danh mục chức năng hoặc loại biến của chúng.
+
+## Khởi tạo
+
+Để khởi khởi tạo đối tượng, hãy gọi hàm khởi tạo `PropertiesItems(properties)`.
+
+**Tham số:**
+- `properties: PropertyList` — danh sách đầy đủ các thuộc tính (cây token) cần quản lý.
+
+```typescript
+import { PropertiesItems } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo manager với cây token
+const manager = new PropertiesItems(allTokenData)
+
+// 2. (Tùy chọn) Tập trung môi trường vào một thiết kế cụ thể
+manager.setFocusDesign('my-theme')
+
+// 3. Truy xuất cấu trúc đã lọc
+const currentTokens = manager.get()
+```
+
+## Các phương thức
+
+- `get(): PropertyList` — trả về cấu trúc thuộc tính hiện tại (hỗ trợ lọc focus).
+- `getDesigns(): string[]` — trả về danh sách các tên thiết kế có sẵn.
+- `getItem(index): PropertyItem` — truy xuất một bản ghi thuộc tính cụ thể theo chỉ mục của nó.
+- `getInfo(index): PropertyItemsItem` — phân giải siêu dữ liệu đầy đủ và phân cấp cha cho một chỉ mục nhất định.
+- `getKeys(index): string[]` — giải mã một chuỗi đường dẫn thành các phân đoạn khóa đã chuẩn hóa.
+- `getName(name, item): string` — trả về tên hiển thị của một thuộc tính, có tính đến việc đổi tên.
+- `each(callback, property?): T[]` — thực hiện duyệt đệ quy sâu của cây.
+- `find(callback): PropertyItemsItem[]` — tìm kiếm các bản ghi khớp với các điều kiện tùy chỉnh.
+- `findCategory(category): PropertyItemsItem[]` — trích xuất các token thuộc về các danh mục chức năng cụ thể.
+- `setFocusDesign(design): this` — giới hạn phạm vi hoạt động ở một thiết kế cụ thể.
+
+## Các thao tác (Operations)
+
+### Luồng Khám phá Siêu dữ liệu & Duyệt cây
+
+`PropertiesItems` điều phối một số luồng logic phức tạp:
+1. **Giải mã chỉ mục**: Khi một chỉ mục như `theme.button-main.color` được yêu cầu, nó chuẩn hóa các phân đoạn thành camelCase và phân giải chúng dựa trên các đối tượng `value` lồng nhau của cây.
+2. **Quản lý Ngữ cảnh Đường dẫn**: Trong quá trình duyệt cây (`each`), lớp duy trì một ngăn xếp `parents`, cho phép mọi nút được khám phá biết chính xác vị trí của nó trong hệ thống phân cấp (quan trọng để tạo các biến CSS hoặc đường dẫn tài liệu).
+3. **Cô lập Thiết kế**: Bằng cách gọi `setFocusDesign()`, người dùng có thể chuyển đổi "chế độ xem" của toàn bộ cây. Các cuộc gọi tiếp theo đến `get()` hoặc `each()` sẽ tự động bỏ qua các thiết kế KHÔNG phải là thiết kế đang tập trung hoặc `_constructor` chung.
+4. **Chuẩn hóa liên kết**: Các phương thức như `getLink()` xử lý việc chuyển đổi các ký hiệu đường dẫn cũ (như `??` và `?`) thành các chỉ mục thuộc tính tuyệt đối, đủ điều kiện bằng cách thêm ngữ cảnh thiết kế và thành phần hiện tại vào trước.

@@ -1,0 +1,87 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesStandard - Property Standardization'/>
+
+# PropertiesStandard Class
+
+The `PropertiesStandard` class is the central mechanism for data normalization within the design system. Its primary task is to transform "raw" token input data (which may be represented as strings, numbers, or simplified objects) into a strictly typed `PropertyItem` structure that the rest of the system's tools can work with.
+
+## Key Features
+
+- **Data Normalization** — ensures that every property has a standardized set of fields (`value`, `type`, `index`, etc.).
+- **Recursive Processing** — automatically standardizes nested object structures.
+- **Automated Type Detection** — attempts to determine the property type based on its name (via `PropertiesTypes`).
+- **Intelligent Parsing** — distinguishes between regular values and special meta-properties (starting with `__`).
+- **Data Merging** — correctly merges new data with existing data, maintaining structural integrity.
+
+## Initialization
+
+The class provides static methods, so it does not need to be initialized via `new`.
+
+```typescript
+import { PropertiesStandard } from '@dxtmisha/scripts'
+
+// Calling a static method
+const standardized = PropertiesStandard.to(rawInput)
+```
+
+## Methods
+
+### `to`
+A static method that takes raw data or a property list and returns a fully normalized `PropertyList`. The method iterates through all elements, determines their keys, types, and values, and recursively processes nested objects.
+
+**Parameters:**
+- `properties: PropertyListOrData` — input property data in any supported format.
+
+**Returns:** `PropertyList` — an object where every element is brought to the `PropertyItem` standard.
+
+```typescript
+const result = PropertiesStandard.to({
+  'primary-color': '#007bff',
+  'padding': { value: 16, type: 'size' }
+});
+
+/* Result:
+{
+  'primary-color': { 
+    value: '#007bff', 
+    type: 'color', 
+    index: 'primary-color' 
+  },
+  'padding': { 
+    value: '16px', 
+    type: 'size', 
+    index: 'padding' 
+  }
+}
+*/
+```
+
+## Operations
+
+### The Standardization Algorithm (getItem)
+
+When processing each element, the following steps are performed:
+1. **Object Transformation**: The `toItem` method checks the input value type. If it is a string or array, it is wrapped in an `{ value: ... }` object.
+2. **Meta-data Separation**: The `getValueAndSpecial` method separates the useful `value` from special control keys (e.g., `__custom`).
+3. **Type Determination**: If the type is not explicitly specified, the `addType` method attempts to calculate it based on the key name.
+4. **Finality Check**: The `addFull` method adds `fullName` or `fullValue` markers if the data does not require further processing (e.g., for already resolved links).
+5. **Value Transformation**: Through `addValue`, all numeric values are converted to strings, adding units where necessary.
+6. **Index Registration**: Each element is assigned a cleaned `index` for quick backtracking.
+
+## Examples
+
+### Standardizing a Complex Structure
+```typescript
+import { PropertiesStandard } from '@dxtmisha/scripts'
+
+const data = {
+  header: {
+    height: 60,
+    background: '{color.white}'
+  }
+}
+
+const standardData = PropertiesStandard.to(data)
+// All fields in standardData.header.value now have the correct PropertyItem structure
+```

@@ -12,34 +12,31 @@ export type PropertiesFileValue<T = any> = string | Record<string, T> | Buffer
 const dirnamePath = hasNativeDirname() ? __dirname : requirePath.dirname(fileURLToPath(import.meta.url))
 
 /**
- * A class for working with files.
+ * Universal static utility for filesystem orchestration.
+ * This class provides a standardized interface for all IO operations within the design system, including path normalization, recursive directory traversal, synchronized file reading/writing, and metadata retrieval. It abstracts platform-specific path differences and ensures consistent data handling across the toolchain.
  *
- * Класс для работы с файлами.
+ * Универсальная статическая утилита для оркестрации файловой системы.
+ * Этот класс предоставляет стандартизированный интерфейс для всех операций ввода-вывода в рамках дизайн-системы, включая нормализацию путей, рекурсивный обход директорий, синхронное чтение/запись файлов и получение метаданных. Он абстрагирует различия путей в разных ОС и обеспечивает согласованную обработку данных во всей цепочке инструментов.
  */
 export class PropertiesFile {
   protected static root: string
   protected static module: boolean
 
   /**
-   * The fs.existsSync() method is used to synchronously check if a file already
-   * exists in the given path or not. It returns a boolean value which indicates
-   * the presence of a file.
+   * Synchronously checks for the existence of a file or directory at the specified path.
    *
-   * Метод fs.existsSync() используется для синхронной проверки наличия файла в
-   * указанном пути. Он возвращает логическое значение, которое указывает на
-   * наличие файла.
-   * @param path it holds the path of the file that has to be checked /
-   * это содержит путь к файлу, который необходимо проверить
+   * Синхронно проверяет существование файла или директории по указанному пути.
+   * @param path target filesystem path to verify / целевой путь в файловой системе для проверки
    */
   static is(path: PropertiesFilePath): boolean {
     return requireFs.existsSync(this.joinPath(path))
   }
 
   /**
-   * Checks whether it is a directory.
+   * Determines if the specified path points to a directory.
    *
-   * Проверяет, является ли это директорией.
-   * @param path name of the element being checked/ название проверяемого элемента
+   * Определяет, указывает ли указанный путь на директорию.
+   * @param path path to the filesystem element / путь к элементу файловой системы
    */
   static isDir(path: PropertiesFilePath): boolean {
     if (this.is(path)) {
@@ -59,13 +56,10 @@ export class PropertiesFile {
   }
 
   /**
-   * The path.joinPath() method joins all given path segments together using the
-   * platform-specific separator as a delimiter, then normalizes the resulting path.
+   * Joins multiple path segments into a single normalized path string using the OS separator.
    *
-   * Метод path.joinPath() объединяет все указанные сегменты пути с использованием
-   * специфического для платформы разделителя в качестве разделителя,
-   * а затем нормализует полученный путь.
-   * @param path a sequence of path segments/ последовательность сегментов пути
+   * Объединяет несколько сегментов пути в одну нормализованную строку пути, используя разделитель ОС.
+   * @param path array or string of path segments / массив или строка сегментов пути
    */
   static joinPath(path: PropertiesFilePath): string {
     const pathArray = forEach(
@@ -344,10 +338,10 @@ export class PropertiesFile {
   }
 
   /**
-   * Returns the contents of the path.
+   * Synchronously reads and parses the contents of a file (JSON or raw text).
    *
-   * Возвращает содержимое пути.
-   * @param path filename/ имя файла
+   * Синхронно читает и парсит содержимое файла (JSON или обычный текст).
+   * @param path path to the target file / путь к целевому файлу
    */
   static readFile<R>(path: PropertiesFilePath): R | undefined {
     if (this.is(path)) {
@@ -391,13 +385,13 @@ export class PropertiesFile {
   }
 
   /**
-   * Writing data to a file.
+   * Writes data to a file at the specified location, automatically creating directories and formatting objects as JSON by default.
    *
-   * Запись данных в файл.
-   * @param path path to the file/ путь к файлу
-   * @param name file name/ название файла
-   * @param value values for storage/ значения для хранения
-   * @param extension file extension by default is ts/ расширение файла по умолчанию - ts
+   * Записывает данные в файл по указанному адресу, автоматически создавая директории и форматируя объекты в JSON по умолчанию.
+   * @param path base directory path / путь к базовой директории
+   * @param name target filename (without extension if extension provided) / имя целевого файла
+   * @param value data to be stored / данные для хранения
+   * @param extension file extension (defaults to 'json') / расширение файла (по умолчанию 'json')
    */
   static write<T extends PropertiesFileValue>(
     path: PropertiesFilePath,

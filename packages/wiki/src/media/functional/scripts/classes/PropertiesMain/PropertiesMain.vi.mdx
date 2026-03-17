@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesMain - Bộ điều phối Token toàn cầu'/>
+
+# Lớp PropertiesMain
+
+Lớp `PropertiesMain` là bộ điều phối cấp cao chịu trách nhiệm tổng hợp cây token thiết kế toàn cầu. Nó quản lý toàn bộ vòng đời của các token "chính" (main) — từ việc khám phá hệ thống tệp và đọc dữ liệu thô đến việc chuyển đổi ngữ nghĩa nhiều giai đoạn và hợp nhất phân cấp. Bằng cách trừu tượng hóa các phức tạp của việc tải thuộc tính mô-đun, nó cung cấp một điểm nhập thống nhất để có được các cấu hình thiết kế đã được phân giải đầy đủ và chuẩn hóa.
+
+## Các tính năng chính
+
+- **Điều phối quy trình tự động** — Tích hợp nhiều tiện ích (`Import`, `Standard`, `Convector`) vào một chuỗi tải gắn kết duy nhất.
+- **Khám phá tập trung vào Thiết kế** — Cung cấp `PropertiesPath` để tự động định vị và xử lý các token cho tất cả các chủ đề thiết kế đang hoạt động.
+- **Hợp nhất cấu hình linh hoạt** — Hỗ trợ thay thế nóng hoặc xếp lớp các cài đặt lên cây toàn cầu thông qua đồng bộ hóa đệ quy sâu.
+- **Thực thi tính toàn vẹn cấu trúc** — Tự động áp dụng bao bọc cấu trúc và dấu phân cách để đảm bảo các token được phân loại và truy cập chính xác.
+- **Đồng bộ hóa trạng thái nội bộ** — Bảo toàn các cờ nội bộ của engine (các thuộc tính bắt đầu bằng `_`) trong quá trình cập nhật cấu hình.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `PropertiesMain(path)`.
+
+**Tham số:**
+- `path: PropertiesPath` — một thực thể của lớp chịu trách nhiệm khám phá hệ thống tệp và phân giải đường dẫn.
+
+```typescript
+import { PropertiesMain, PropertiesPath } from '@dxtmisha/scripts'
+
+// 1. Khởi tạo trình quản lý đường dẫn tiên quyết
+const pathManager = new PropertiesPath(['packages', 'tokens'])
+
+// 2. Tạo bộ điều phối token chính
+const main = new PropertiesMain(pathManager)
+
+// 3. Phân giải cây thuộc tính toàn cầu hoàn chỉnh
+const globalTokens = main.get()
+```
+
+## Các phương thức
+
+- `get(): PropertyList` — thực hiện quy trình chuyển đổi đầy đủ và trả về tất cả các token chính đã được phân giải.
+- `getBySettings(list): PropertyList` — hợp nhất một cụm cài đặt tùy chỉnh vào cây token toàn cầu.
+
+## Các thao tác (Operations)
+
+### Quy trình Chuyển đổi Toàn cầu (Global Transformation Pipeline)
+
+Khi `get()` được gọi, `PropertiesMain` sẽ thực thi chuỗi hành động sau cho mọi thiết kế được khám phá:
+1. **Đọc**: Lấy dữ liệu thô từ hệ thống tệp bằng `PropertiesTool`.
+2. **Chuyển đổi ngữ nghĩa**: Truyền dữ liệu qua `PropertiesConvector` để chuyển đổi các giá trị thô thành các token.
+3. **Chuẩn hóa**: Chuẩn hóa cấu trúc thông qua `PropertiesStandard` để đảm bảo hình dạng đối tượng nhất quán.
+4. **Phân giải liên kết**: Sử dụng `PropertiesImport` để lấy và hợp nhất đệ quy mọi tham chiếu tệp bên ngoài.
+5. **Hoàn thiện cấu trúc**: Nếu cần, nó sẽ tách các khóa qua `PropertiesSeparator` và áp dụng `PropertiesWrap` để tổ chức các token vào các vùng chứa phân cấp cuối cùng của chúng.
+6. **Tổng hợp thống nhất**: Kết hợp dữ liệu đã xử lý từ tất cả các thiết kế vào một `PropertyList` duy nhất, trong đó các khóa đại diện cho tên thiết kế cấp cao nhất.

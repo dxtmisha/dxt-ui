@@ -1,0 +1,118 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesPalette - Palette & Shade Manager'/>
+
+# PropertiesPalette Class
+
+The `PropertiesPalette` class is a specialized manager for handling color-related design tokens. It focuses on two primary areas: managing color saturation steps (shades) and tracking the actual usage of palette colors within functional variables. By analyzing how colors are referenced throughout the design system, it helps ensure that theme definitions remain consistent and that generated CSS variables correctly point to their corresponding palette entries.
+
+## Key Features
+
+- **Saturation Discovery** — Automatically extracts available shade levels (e.g., 50, 100, 200) from the property tree.
+- **Usage Tracking** — Identifies which palette colors are actually mapped to component variables, facilitating dead-code elimination or audit reports.
+- **Theme-Aware Mapping** — Resolves complex color links, accounting for theme-specific overrides (like `basic` or `dark`).
+- **CSS Variable Synthesis** — Transparently converts internal color references into standardized CSS variable names (e.g., `--design-palette-theme-color`).
+
+## Initialization
+
+To initialize the object, call the `PropertiesPalette(items)` constructor.
+
+**Parameters:**
+- `items: PropertiesItems` — an instance of the coordinator class responsible for property tree traversal and searching.
+
+```typescript
+import { PropertiesPalette, PropertiesItems } from '@dxtmisha/scripts'
+
+// 1. Prepare the dependency coordinator
+const manager = new PropertiesItems(allTokenData)
+
+// 2. Create the palette manager
+const palette = new PropertiesPalette(manager)
+
+// 3. Extract active shades or used colors
+const shades = palette.getShade()
+const usedColors = palette.getUsed()
+```
+
+## Methods
+
+### `getShade`
+Retrieves a list of available saturation levels (shades) grouped by design. This method scans the entire property tree for items categorized specifically as 'shade' and returns their resolved structures. These shades typically represent the numerical scale of color saturation (e.g., 50, 100, 200) used in the design system.
+
+**Returns:** `PropertyPaletteList` — a specialized object where keys are design names and values are arrays of color shade tokens.
+
+```typescript
+const shades = palette.getShade();
+// Result: { "basic": ["50", "100", ...], "premium": ["50", ...] }
+```
+
+### `getUsed`
+Generates a comprehensive report of all palette colors currently utilized in functional variables across the entire design system. It iterates through all tokens, identifying CSS variable references that point to palette entries, and maps them to their generated CSS variable names. This is essential for auditing color usage and identifying orphaned palette entries.
+
+**Returns:** `PropertyPaletteUsed[]` — an array of objects, each containing a functional variable name and its corresponding palette-derived CSS variable name.
+
+```typescript
+const report = palette.getUsed();
+/* Result: 
+[
+  { "name": "primaryBackground", "value": ["--basic-palette-basic-blue-50"] }
+] 
+*/
+```
+
+### `getFocusUsed`
+Recursively resolves a specific property value to determine its ultimate palette source. This utility method is used to trace links through multiple layers of abstraction (such as component variables pointing to theme colors, which in turn point to palette shades).
+
+**Parameters:**
+- `list: PropertyItem['value'][]` — a list of known palette values to check against during resolution.
+- `design: string` — the name of the current design theme.
+- `component: string` — the name of the component context being resolved.
+- `value: string` — the raw value or link (e.g., `{color.primary}`) to trace back to the palette.
+
+**Returns:** `string | undefined` — the ultimate resolved value string if it leads to a palette entry; otherwise, `undefined`.
+
+```typescript
+const source = palette.getFocusUsed(
+  paletteList, 
+  'basic', 
+  'button', 
+  '{color.primary}'
+);
+```
+
+## Operations
+
+### The Color Usage Resolution Flow
+
+`PropertiesPalette` performs a deep analysis of how colors flow from the palette to components:
+1. **Tree Traversal**: Using `PropertiesItems.each()`, the class visits every node in the design system.
+2. **Variable Filtering**: It specifically targets items of type `var` that are NOT themselves categorized as `color`, yet hold string values that look like color links.
+3. **Recursive Link Resolution**: When a candidate is found, `getFocusUsed()` resolves any intermediate links (e.g., `primary` -> `theme.brand.main` -> `palette.blue.50`) until it reaches the raw palette definition or confirms the link is non-palette.
+4. **Theme Detection**: It examines the hierarchy (`parents`) to identify if the color belongs to a specific theme block, allowing it to correctly name the resulting CSS variable (e.g., prepending the theme name).
+5. **Data Aggregation**: Results are grouped by variable name, providing a clear map of which functional tokens consume which palette colors.
+
+## Examples
+
+### Extracting Shades and Usage
+```typescript
+import { PropertiesPalette, PropertiesItems } from '@dxtmisha/scripts'
+
+const manager = new PropertiesItems(allTokenData)
+const palette = new PropertiesPalette(manager)
+
+// 1. Get available shades
+const shades = palette.getShade()
+
+// 2. Scan for used colors in components
+const report = palette.getUsed()
+```
+
+### Manual Link Resolution
+```typescript
+const isPaletteValue = palette.getFocusUsed(
+  paletteValueList, 
+  'basic', 
+  'button', 
+  '{color.primary}'
+)
+```

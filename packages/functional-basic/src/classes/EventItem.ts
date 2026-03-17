@@ -14,9 +14,11 @@ import {
 } from '../types/basicTypes'
 
 /**
- * Class for working with events.
+ * Advanced wrapper for managing event listeners on DOM elements or the `window` object.
+ * It simplifies the entire event lifecycle (start, stop, toggle, reset) and provides built-in optimizations for high-frequency events like `resize` and `scroll-sync`.
  *
- * Класс для работы с событиями.
+ * Продвинутая обертка для управления слушателями событий на DOM-элементах или объекте `window`.
+ * Упрощает весь жизненный цикл событий (запуск, остановка, переключение, сброс) и предоставляет встроенные оптимизации для высокочастотных событий, таких как `resize` и `scroll-sync`.
  */
 export class EventItem<
   E extends ElementOrWindow,
@@ -77,15 +79,14 @@ export class EventItem<
   protected activityItems: EventActivityItem<E>[] = []
 
   /**
-   * Classes Constructor
-   * @param elementSelector element/ элемент
-   * @param type type/ тип
-   * @param listener the object that receives a notification (an object that implements the
-   * Event interface) when an event of the specified type occurs/ объект, который принимает
-   * уведомление, когда событие указанного типа произошло
-   * @param options object that specifies characteristics/ объект options
-   * @param detail an event-dependent value associated with the event/ зависимое от события
-   * значение, связанное с событием
+   * Constructor for EventItem.
+   *
+   * Конструктор для EventItem.
+   * @param elementSelector target element or selector where the listener should be attached / целевой элемент или селектор, к которому должен быть прикреплен слушатель
+   * @param type event type (e.g., 'click'), array of types, or special optimization types ('resize', 'scroll-sync') / тип события (например, 'click'), массив типов или специальные типы оптимизации ('resize', 'scroll-sync')
+   * @param listener the handler function to be executed when the event occurs / функция-обработчик, которая будет выполнена при возникновении события
+   * @param options standard EventListenerOptions or boolean for useCapture / стандартные EventListenerOptions или логическое значение для useCapture
+   * @param detail additional data provided to the listener via the custom Event interaction / дополнительные данные, предоставляемые слушателю через кастомное взаимодействие с событием
    */
   constructor(
     elementSelector?: ElementOrString<E>,
@@ -197,13 +198,12 @@ export class EventItem<
   }
 
   /**
-   * The method of the EventTarget sends an Event to the object, (synchronously) invoking
-   * the affected EventListeners in the appropriate order.
+   * Triggers the events on the target element, optionally with a new detail value.
+   * This method manually initiates a `CustomEvent` dispatch for all specified types.
    *
-   * Отправляет событие в общую систему событий. Это событие подчиняется тем же правилам
-   * поведения "Захвата" и "Всплывания" как и непосредственно инициированные события.
-   * @param detail an event-dependent value associated with the event/ зависимое от события
-   * значение, связанное с событием
+   * Инициирует события на целевом элементе, опционально с новым значением detail.
+   * Этот метод вручную запускает диспетчеризацию `CustomEvent` для всех указанных типов.
+   * @param detail the value to be passed as the event detail / значение, которое будет передано как detail события
    */
   dispatch(detail: D | undefined = this.detail): this {
     this.type.forEach(

@@ -16,17 +16,16 @@ import {
 } from '../../types/propertyTypes'
 
 /**
- * A class for transforming a property into a basic structure for work.
+ * Class for transforming raw property data into a standardized structure for internal processing.
  *
- * Класс для преобразования свойства в базовую структуру для работы.
+ * Класс для преобразования сырых данных свойств в стандартизированную структуру для внутренней обработки.
  */
 export class PropertiesStandard {
   /**
-   * Transforms an array into the required data structure.
+   * Transforms a property list or raw data into a standardized PropertyList structure.
    *
-   * Преобразует массив в нужную структуру.
-   * @param properties an array that needs to be transformed/
-   * массив, который нужно преобразовать
+   * Преобразует список свойств или сырые данные в стандартизированную структуру PropertyList.
+   * @param properties the property list or data to transform / список свойств или данные для преобразования
    */
   static to(properties: PropertyListOrData): PropertyList {
     const data: PropertyList = {}

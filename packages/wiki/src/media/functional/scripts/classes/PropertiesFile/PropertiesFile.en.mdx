@@ -1,0 +1,310 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesFile - Filesystem Path Orchestrator'/>
+
+# PropertiesFile Class
+
+The `PropertiesFile` class is a comprehensive static utility designed to orchestrate all filesystem-related tasks within the design system toolchain. It provides a platform-agnostic interface for path manipulation, synchronized IO, and recursive directory management, ensuring that file discovery and data persistence remain consistent across different operating systems and development environments.
+
+## Key Features
+
+- **Path Normalization** — Automatically resolves OS-specific path separators and joins segments into standardized strings.
+- **Recursive Traversal** — Provides specialized methods for deep exploration of directory structures with optional indexing.
+- **Synchronized IO** — Handles file reading (JSON/Text) and writing with automatic directory synthesis.
+- **Metadata Discovery** — Retrieves file timestamps and statistical data for cache invalidation logic.
+- **Safe Operations** — Includes built-in checks for entry existence, type (file vs directory), and module status.
+
+## Initialization
+
+As a static class, `PropertiesFile` is self-initializing and ready for use upon import.
+
+```typescript
+import { PropertiesFile } from '@dxtmisha/scripts'
+
+// Check if a configuration exists
+if (PropertiesFile.is('design-ui.json')) {
+  const config = PropertiesFile.readFile('design-ui.json')
+}
+
+// Join paths safely
+const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
+```
+
+## Verification Methods
+
+- `is(path): boolean` — synchronously checks for the existence of a file or directory.
+- `isDir(path): boolean` — determines if the specified path points to a directory.
+- `isModule(): boolean` — determines if the project is connected as an external module.
+
+## Path Management Methods
+
+### `joinPath`
+
+Joins multiple path segments into a single normalized path string using the OS separator.
+
+**Parameters:**
+- `path: PropertiesFilePath` — array or string of path segments.
+
+**Example:**
+```typescript
+const path = PropertiesFile.joinPath(['src', 'styles', 'main.css'])
+// Returns: "src/styles/main.css" (on Mac/Linux) or "src\styles\main.css" (on Windows)
+```
+
+**Returns:** `string` — joined and normalized path.
+
+### `joinPathByName`
+
+Constructs a full file path by joining directory path, filename, and extension.
+
+**Parameters:**
+- `path: PropertiesFilePath` — directory path.
+- `name: string` — filename.
+- `extension: string` — file extension (defaults to `json`).
+
+**Example:**
+```typescript
+const filePath = PropertiesFile.joinPathByName('data', 'user-profile', 'json')
+// Returns: "data/user-profile.json"
+```
+
+**Returns:** `string`
+
+### `getPathDir`
+
+Extracts the directory path from a full path. If a directory path is passed, returns it unchanged.
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to a file or directory.
+
+**Example:**
+```typescript
+const dirOnly = PropertiesFile.getPathDir('src/classes/App.ts')
+// Returns: "src/classes"
+```
+
+**Returns:** `string`
+
+### `getPathFile`
+
+Constructs an array of path segments for a file.
+
+**Parameters:**
+- `path: PropertiesFilePath` — base path.
+- `name: string` — filename.
+- `extension: string` — extension (defaults to `json`).
+
+**Example:**
+```typescript
+const segments = PropertiesFile.getPathFile('dist', 'manifest')
+// Returns: ["dist", "manifest.json"]
+```
+
+**Returns:** `string[]`
+
+### `getRoot`
+
+Returns the current root project path (`process.cwd()`).
+
+**Example:**
+```typescript
+const root = PropertiesFile.getRoot()
+// Returns: "/Users/user/project"
+```
+
+**Returns:** `string`
+
+### `getFileName`
+
+Converts a name to kebab-case and adds the specified extension.
+
+**Parameters:**
+- `name: string` — element name.
+- `extension: string` — extension (defaults to `json`).
+
+**Example:**
+```typescript
+const name = PropertiesFile.getFileName('UserProfile', 'ts')
+// Returns: "user-profile.ts"
+```
+
+**Returns:** `string`
+
+### `sep`
+
+Returns the system-specific directory separator (`/` or `\`).
+
+**Example:**
+```typescript
+const s = PropertiesFile.sep()
+// Returns: "/"
+```
+
+**Returns:** `string`
+
+## Reading Methods
+
+### `readFile`
+
+Synchronously reads and automatically parses file content. Returns an object if JSON, otherwise a string.
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to the file.
+
+**Example:**
+```typescript
+const data = PropertiesFile.readFile<{ name: string }>('config.json')
+// Returns: { name: "DXT" } (object)
+```
+
+**Returns:** `R | undefined` — parsed data or `undefined` if file is missing.
+
+### `readFileOnly`
+
+Reads file content as a raw string without any transformation.
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to the file.
+
+**Example:**
+```typescript
+const text = PropertiesFile.readFileOnly('README.md')
+// Returns: "# Project Title..." (string)
+```
+
+**Returns:** `string | undefined`
+
+### `readDir`
+
+Reads the contents of a directory (list of child names).
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to the directory.
+
+**Example:**
+```typescript
+const items = PropertiesFile.readDir('src')
+// Returns: ["index.ts", "classes", "types"]
+```
+
+**Returns:** `string[]`
+
+### `readDirRecursive`
+
+Recursively reads all files within a directory and its sub-folders.
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to the directory.
+
+**Example:**
+```typescript
+const allFiles = PropertiesFile.readDirRecursive('src')
+// Returns: ["index.ts", "classes/App.ts", "classes/DB.ts", ...]
+```
+
+**Returns:** `string[]` — list of paths to all discovered files.
+
+## Modification Methods
+
+### `write`
+
+Saves data to a file, automatically synthesizing any missing parent directories.
+
+**Parameters:**
+- `path: PropertiesFilePath` — directory path.
+- `name: string` — filename.
+- `value: T` — data to write.
+- `extension: string` — extension (defaults to `json`).
+
+**Example:**
+```typescript
+PropertiesFile.write('dist/cache', 'data', { id: 1 })
+// Creates dist/cache/data.json with JSON content
+```
+
+**Returns:** `void`
+
+### `writeByPath`
+
+Writes data to an exact file path.
+
+**Parameters:**
+- `path: PropertiesFilePath` — full path to the file.
+- `value: T` — data.
+- `transform: boolean` — whether to stringify objects as JSON (defaults to `true`).
+
+**Example:**
+```typescript
+PropertiesFile.writeByPath('logs/error.log', 'Critical error', false)
+// Writes raw string to file without JSON transformation
+```
+
+**Returns:** `void`
+
+### `createDir`
+
+Recursively creates a directory if it does not already exist.
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to create.
+
+**Example:**
+```typescript
+PropertiesFile.createDir('storage/images/2024')
+// Creates the entire directory tree
+```
+
+**Returns:** `void`
+
+### `copy`
+
+Copies a file from the source path to the destination path.
+
+**Parameters:**
+- `path: PropertiesFilePath` — target path.
+- `pathsSrc: PropertiesFilePath` — source path.
+
+**Example:**
+```typescript
+PropertiesFile.copy('backup/config.json', 'config.json')
+```
+
+**Returns:** `void`
+
+### `removeFile`
+
+Deletes the specified file.
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to the file.
+
+**Example:**
+```typescript
+PropertiesFile.removeFile('temp.tmp')
+```
+
+**Returns:** `void`
+
+### `removeDir`
+
+Recursively deletes a directory and all its contents.
+
+**Parameters:**
+- `path: PropertiesFilePath` — path to the directory.
+
+**Example:**
+```typescript
+PropertiesFile.removeDir('dist/old-version')
+```
+
+**Returns:** `void`
+
+## Operations
+
+### The Paths & IO Synchronization Flow
+
+`PropertiesFile` acts as the low-level synchronization layer for the entire library:
+1. **Path Normalization**: Every method internally calls `joinPath` and `toSep`, which converts all incoming forward slashes into the OS-specific separator (e.g., `\` on Windows).
+2. **Atomic Writes**: When `write()` is called, the class first determines the target directory and executes `createDir()`, which recursively builds any missing folders before finally writing the content via `fs.writeFileSync`.
+3. **Recursive Context**: The specialized recursive methods (`readDirRecursive`, etc.) allow the documentation and token engines to discover every file in a component tree without manually managing depth or recursion limits.
+4. **Root Resolution**: It maintains an internal `root` (based on `process.cwd()`) to ensure that relative path segments are always resolved from the project's base directory.

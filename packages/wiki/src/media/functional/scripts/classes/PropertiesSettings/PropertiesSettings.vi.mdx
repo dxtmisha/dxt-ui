@@ -1,0 +1,63 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesSettings - Cài đặt thành phần'/>
+
+# Lớp PropertiesSettings
+
+Lớp `PropertiesSettings` chịu trách nhiệm tự động tìm kiếm và tải các tệp cấu hình thành phần (settings) trên tất cả các thiết kế đang hoạt động. Nó quét các thư mục `settings` chuyên biệt và hợp nhất các token tìm thấy vào một kho lưu trữ thống nhất, sau đó được sử dụng để tạo bảng kiểu và định kiểu.
+
+## Các tính năng chính
+
+- **Quét tự động** — tự động phát hiện tất cả các thư mục thành phần trong đường dẫn `components` và `constructor`.
+- **Hỗ trợ đa thiết kế** — tải cài đặt cho từng thiết kế riêng biệt và kết hợp chúng theo ngữ cảnh.
+- **Tích hợp Constructor** — bao gồm logic chuyên biệt để thu thập các thuộc tính trình xây dựng thành phần (`dxt.constructor`).
+- **Chuẩn hóa** — tự động chuyển đổi dữ liệu thô từ các tệp cài đặt thành định dạng thuộc tính tiêu chuẩn thông qua `PropertiesStandard`.
+
+## Khởi tạo
+
+Để khởi tạo bộ giải quyết cài đặt, hãy truyền một thực thể `PropertiesPath` vào hàm khởi tạo.
+
+**Tham số:**
+- `path: PropertiesPath` — đối tượng làm việc với các đường dẫn của hệ thống thiết kế.
+
+```typescript
+import { PropertiesPath, PropertiesSettings } from '@dxtmisha/scripts'
+
+const pathHandler = new PropertiesPath()
+const settings = new PropertiesSettings(pathHandler)
+```
+
+## Các phương thức
+
+### `get`
+Trả về một danh sách thống nhất của tất cả các thuộc tính cài đặt được tìm thấy trong hệ thống. Điều này bao gồm cả các cài đặt thành phần riêng lẻ cho từng thiết kế và các thuộc tính trình xây dựng thành phần chung.
+
+**Trả về:** `PropertyList` — một đối tượng chứa tất cả các cài đặt đã được tải và chuẩn hóa.
+
+```typescript
+const allSettings = settings.get();
+// Kết quả: { basic: { button: { ... } }, 'dxt.constructor': { ... } }
+```
+
+## Các thao tác (Operations)
+
+### Quy trình thu thập cài đặt
+
+`PropertiesSettings` thực hiện tìm kiếm dữ liệu qua nhiều giai đoạn:
+1. **Xác định đường dẫn**: Lớp lấy các đường dẫn hiện tại đến các thư mục `settings` cho từng thiết kế thông qua bộ quản lý đường dẫn.
+2. **Quét thư mục**: Đối với mỗi đường dẫn đã xác định, tất cả các thư mục con (tên thành phần) sẽ được quét.
+3. **Đọc tệp**: Trong mỗi thư mục thành phần, một tệp token (settings) sẽ được tìm kiếm và đọc thông qua `PropertiesFile`.
+4. **Bình thường hóa**: Dữ liệu lấy được được xử lý qua `PropertiesStandard` để đưa về một định dạng thống nhất (`PropertyItem`), bao gồm cả việc chuyển đổi tên sang kebab-case.
+5. **Tạo Constructor**: Đồng thời, `getConstructorProperties()` được gọi để tạo siêu dữ liệu cho trình xây dựng thành phần dựa trên danh sách các thư mục đã xác định.
+
+## Ví dụ (Examples)
+
+### Thu thập tất cả cài đặt hệ thống
+```typescript
+import { PropertiesSettings, PropertiesPath } from '@dxtmisha/scripts'
+
+const settingsManager = new PropertiesSettings(new PropertiesPath())
+const config = settingsManager.get()
+
+// Bây giờ config chứa tất cả các biến thành phần cho tất cả các chủ đề
+```

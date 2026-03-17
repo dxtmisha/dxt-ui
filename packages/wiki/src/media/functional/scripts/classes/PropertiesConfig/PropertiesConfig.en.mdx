@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesConfig - Global Configuration Orchestrator'/>
+
+# PropertiesConfig Class
+
+The `PropertiesConfig` class is a centralized static utility responsible for managing the design system's operational parameters. It handles the discovery and recursive merging of `design-ui.json` configuration files, providing a consistent API for accessing naming conventions, AI integration keys, and documentation routing rules across the entire library.
+
+## Key Features
+
+- **Recursive Extension** — Supports an `extends` mechanism, allowing configurations to inherit and override settings from parent directories.
+- **Auto-Discovery** — Searches up the directory tree to find the nearest `design-ui.json` entry point.
+- **Centralized Settings** — Provides unified access to project identifiers, design names, and path separators.
+- **AI Integration** — Manages credentials and model parameters for AI-driven documentation and code generation.
+- **Documentation Routing** — Configures target directories and Storybook paths for the automated wiki system.
+
+## Initialization
+
+As a static class, `PropertiesConfig` initializes itself automatically upon the first import. You don't need to call a constructor.
+
+```typescript
+import { PropertiesConfig } from '@dxtmisha/scripts'
+
+// Access global settings
+const designName = PropertiesConfig.getDesignName()
+const separator = PropertiesConfig.getSeparator()
+```
+
+## Methods
+
+### General Configuration
+
+- `getProjectName(): string` — Retrieves the project's root identifier.
+- `getDesignName(): string` — Returns the primary design system identifier.
+- `getDesignAlternativeName(): string[]` — Returns alternative aliases for the design.
+- `getSeparator(): string` — Returns the path separator used in token definitions.
+- `getWikiLanguage(): string` — Returns the target language code for documentation.
+
+### AI & Documentation
+
+- `getAiType(): AiType` — Returns the configured AI provider (e.g., 'gemini').
+- `getAiModel(): string` — Returns the specific AI model name.
+- `getAiDocDirectory(): string[]` — Returns directories targeted for doc generation.
+- `getAiDocStorybookPath(): string` — Returns the export destination for Storybook MDX files.
+
+## Operations
+
+### The Configuration Resolution Flow
+
+`PropertiesConfig` uses a robust strategy to resolve system settings:
+1. **File Discovery**: Upon loading, it attempts to find `design-ui.json` by traversing upwards from the current working directory (up to 32 levels).
+2. **Recursive Merging**: If the discovered file contains an `extends` property:
+    - It recursively loads the referenced parent configuration.
+    - It intelligently merges settings, where local properties override inherited ones.
+3. **Static Availability**: The final merged configuration is stored in a private static field, making all settings immediately available through public getters.
+

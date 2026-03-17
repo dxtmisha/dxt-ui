@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesConvector - Semantic Token Transformer'/>
+
+# PropertiesConvector Class
+
+The `PropertiesConvector` class is a specialized static utility designed to handle complex semantic transformations of design tokens. It acts as a dispatcher for the token processing engine, identifying specific property types (like colors, shadows, or typography) and applying specialized conversion logic to Ensure raw data is normalized into usable design system structures.
+
+## Key Features
+
+- **Semantic Dispatching** — Automatically routes tokens to specialized convectors based on their `type` metadata.
+- **Recursive Traversal** — Deeply traverses nested property objects to ensure all child tokens are processed.
+- **Specialized Converters** — Integrates dedicated logic for `color`, `boxShadow`, `fontFamilies`, and `typography`.
+- **In-Place Transformation** — Modifies property objects directly to maintain structural integrity during the build process.
+
+## Initialization
+
+As a static utility class, `PropertiesConvector` does not require instantiation. Its primary function is accessed directly.
+
+```typescript
+import { PropertiesConvector } from '@dxtmisha/scripts'
+
+// Transform a set of raw properties
+PropertiesConvector.to(rawProperties)
+```
+
+## Methods
+
+### Transformation
+
+- `to(properties): void` — Recursively processes a property list, applying type-specific transformations to each item.
+
+## Operations
+
+### The Conversion Dispatch Flow
+
+`PropertiesConvector` manages the transformation lifecycle through a recursive matching strategy:
+1. **Type Detection**: For each item in the provided property cluster, it checks if a corresponding convector exists in its internal registry (e.g., matching `color` to `convectorColor`).
+2. **Specialized Execution**: If a match is found, the specific convector logic is executed on the item, transforming its raw values into finalized formats.
+3. **Recursive Branching**:
+    - If the item has a `value` that is an object, it recursively calls `to()` on that object.
+    - If the item itself is an object without a recognized type, it continues the traversal to find nested tokens.
+4. **Data Integrity**: The process ensures that complex structures (like typography maps or multi-layered shadows) are fully resolved before the next stage of the pipeline.

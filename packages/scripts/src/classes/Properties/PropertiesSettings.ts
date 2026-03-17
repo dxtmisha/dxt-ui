@@ -16,14 +16,16 @@ import { UI_DIRS_COMPONENTS, UI_DIRS_CONSTRUCTOR, UI_KEY_CONSTRUCTOR } from '../
 const DIR_NAME = 'settings'
 
 /**
- * Class for searching all components.
+ * Class for searching and loading global component settings.
  *
- * Класс для поиск всех компоненты.
+ * Класс для поиска и загрузки глобальных настроек компонентов.
  */
 export class PropertiesSettings {
   /**
-   * Constructor
-   * @param path object of the class for working with paths/ объект класса для работы с путями
+   * Constructor for initializing the settings resolver.
+   *
+   * Конструктор для инициализации резолвера настроек.
+   * @param path path handler instance / экземпляр обработчика путей
    */
   constructor(
     private readonly path: PropertiesPath
@@ -31,9 +33,9 @@ export class PropertiesSettings {
   }
 
   /**
-   * Returns the basic settings of the component.
+   * Returns a unified list of settings for all identified components and constructors.
    *
-   * Возвращает базовые настройки у компонента.
+   * Возвращает унифицированный список настроек для всех определенных компонентов и конструкторов.
    */
   get(): PropertyList {
     return {

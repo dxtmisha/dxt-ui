@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesKeys - Key Semantic Transformer'/>
+
+# PropertiesKeys Class
+
+The `PropertiesKeys` class is a specialized static utility designed to parse and transform the semantic meaning of design token keys. It acts as the "grammatical engine" for property names, distinguishing between functional data keys and architectural metadata keys. By providing mechanisms for normalization, type-aware prefixing, and special symbol detection, it ensures that token keys remain consistent and predictable regardless of their source format (JSON, SCSS, or internal state).
+
+## Key Features
+
+- **Metadata Identification** — Detects protected system keys like `value`, `type`, and underscored internal properties.
+- **Prefix Normalization** — Automatically strips architectural symbols (like `=` or `|`) to extract the pure semantic name.
+- **Casing Orchestration** — Integrates with `toCamelCase` to maintain consistent naming conventions across the token tree.
+- **Type-Aware Re-keying** — Dynamically transforms keys based on their category (e.g., prepending `media-` to media tokens or `container-` to container queries).
+- **SCSS Compatibility** — Handles special formatting for SCSS-compatible keys, including leading ampersands.
+
+## Initialization
+
+As a static utility class, `PropertiesKeys` does not require instantiation and is ready to use upon import.
+
+```typescript
+import { PropertiesKeys } from '@dxtmisha/scripts'
+
+// Check if a key is a metadata field
+const isReserved = PropertiesKeys.isSpecialKey('type')
+
+// Resolve a clean semantic name
+const cleanName = PropertiesKeys.getName('=primary-color')
+// Returns: "primaryColor"
+```
+
+## Methods
+
+- `isSpecialKey(key): boolean` — checks if the key is a reserved system metadata field.
+- `isFull(name): boolean` — determines if the name is an absolute/complete definition.
+- `getName(name, camelCase?): string` — normalizes a key by stripping prefixes and optionally applying camelCase.
+- `reKey(key, type?): string` — transforms a key based on its architectural type (media, container, scss, etc.).
+
+## Operations
+
+### The Key Transformation Pipeline
+
+`PropertiesKeys` manages the translation logic between raw input formats and standardized internal tokens:
+1. **Semantic Extraction**: When `getName()` is called, the class uses `PropertiesTypes` regex triggers to identify and remove control symbols (like `=` which signifies an immutable value).
+2. **Contextual Prefixing**: In the `reKey()` flow, the class checks the `_type` of the token. If it identifies a `media` type, it intelligently ensures the key reflects this role (e.g., `desktop` becomes `mediaDesktop`), avoiding redundant prefixes if they already exist.
+3. **Internal State Protection**: The `isSpecialKey()` check is crucial for traversal engines; it prevents the processing of internal machinery (keys starting with `_`) as if they were actual user-defined design tokens.
+4. **Platform Adaptation**: For SCSS generation, the class specifically handles prefixing with `&`, allowing design tokens to be directly usable in nested style declarations.

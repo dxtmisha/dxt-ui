@@ -1,0 +1,310 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesFile - Bộ điều phối đường dẫn hệ thống tệp'/>
+
+# Lớp PropertiesFile
+
+Lớp `PropertiesFile` là một tiện ích tĩnh toàn diện được thiết kế để điều phối tất cả các tác vụ liên quan đến hệ thống tệp trong bộ công cụ hệ thống thiết kế. Nó cung cấp một giao diện không phụ thuộc vào nền tảng để thao tác đường dẫn, IO đồng bộ và quản lý thư mục đệ quy, đảm bảo rằng việc khám phá tệp và lưu trữ dữ liệu luôn nhất quán trên các hệ điều hành và môi trường phát triển khác nhau.
+
+## Các tính năng chính
+
+- **Chuẩn hóa đường dẫn** — Tự động phân giải các ký tự phân tách đường dẫn cụ thể của hệ điều hành và hợp nhất các phân đoạn thành các chuỗi tiêu chuẩn.
+- **Duyệt đệ quy** — Cung cấp các phương thức chuyên biệt để khám phá sâu các cấu trúc thư mục với tính năng lập chỉ mục tùy chọn.
+- **IO đồng bộ** — Xử lý việc đọc tệp (JSON/Văn bản) và ghi tệp với tính năng tự động tổng hợp thư mục.
+- **Khám phá siêu dữ liệu** — Truy xuất dấu thời gian của tệp và dữ liệu thống kê cho logic vô hiệu hóa bộ nhớ đệm (cache invalidation).
+- **Hoạt động an toàn** — Bao gồm các kiểm tra tích hợp về sự tồn tại của mục nhập, loại (tệp so với thư mục) và trạng thái mô-đun.
+
+## Khởi tạo
+
+Là một lớp tĩnh, `PropertiesFile` tự khởi tạo và sẵn sàng sử dụng ngay khi import.
+
+```typescript
+import { PropertiesFile } from '@dxtmisha/scripts'
+
+// Kiểm tra xem cấu hình có tồn tại không
+if (PropertiesFile.is('design-ui.json')) {
+  const config = PropertiesFile.readFile('design-ui.json')
+}
+
+// Hợp nhất các đường dẫn một cách an toàn
+const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
+```
+
+## Các phương thức kiểm tra
+
+- `is(path): boolean` — Kiểm tra đồng bộ sự tồn tại của tệp hoặc thư mục.
+- `isDir(path): boolean` — Xác định xem đường dẫn có trỏ đến một thư mục hay không.
+- `isModule(): boolean` — Xác định xem gói hiện tại có được kết nối dưới dạng mô-đun ngoài hay không.
+
+## Các phương thức quản lý đường dẫn
+
+### `joinPath`
+
+Hợp nhất nhiều phân đoạn đường dẫn thành một chuỗi đường dẫn chuẩn hóa duy nhất bằng cách sử dụng ký tự phân tách của hệ điều hành hiện tại.
+
+**Tham số:**
+- `path: PropertiesFilePath` — mảng các phân đoạn hoặc chuỗi đường dẫn.
+
+**Ví dụ:**
+```typescript
+const path = PropertiesFile.joinPath(['src', 'styles', 'main.css'])
+// Trả về: "src/styles/main.css" (trên Mac/Linux) hoặc "src\styles\main.css" (trên Windows)
+```
+
+**Trả về:** `string` — đường dẫn đã hợp nhất và chuẩn hóa.
+
+### `joinPathByName`
+
+Tạo đường dẫn đầy đủ đến tệp bằng cách hợp nhất đường dẫn thư mục, tên tệp và phần mở rộng.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn thư mục.
+- `name: string` — tên tệp.
+- `extension: string` — phần mở rộng tệp (mặc định là `json`).
+
+**Ví dụ:**
+```typescript
+const filePath = PropertiesFile.joinPathByName('data', 'user-profile', 'json')
+// Trả về: "data/user-profile.json"
+```
+
+**Trả về:** `string`
+
+### `getPathDir`
+
+Trích xuất đường dẫn thư mục từ một đường dẫn đầy đủ. Nếu đường dẫn thư mục được truyền vào, nó sẽ trả về nguyên vẹn.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đến tệp hoặc thư mục.
+
+**Ví dụ:**
+```typescript
+const dirOnly = PropertiesFile.getPathDir('src/classes/App.ts')
+// Trả về: "src/classes"
+```
+
+**Trả về:** `string`
+
+### `getPathFile`
+
+Tạo một mảng các phân đoạn đường dẫn đến tệp.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn cơ sở.
+- `name: string` — tên tệp.
+- `extension: string` — phần mở rộng (mặc định là `json`).
+
+**Ví dụ:**
+```typescript
+const segments = PropertiesFile.getPathFile('dist', 'manifest')
+// Trả về: ["dist", "manifest.json"]
+```
+
+**Trả về:** `string[]`
+
+### `getRoot`
+
+Trả về đường dẫn gốc hiện tại của dự án (`process.cwd()`).
+
+**Ví dụ:**
+```typescript
+const root = PropertiesFile.getRoot()
+// Trả về: "/Users/user/project"
+```
+
+**Trả về:** `string`
+
+### `getFileName`
+
+Chuyển đổi tên sang kebab-case và thêm phần mở rộng được chỉ định.
+
+**Tham số:**
+- `name: string` — tên phần tử.
+- `extension: string` — phần mở rộng (mặc định là `json`).
+
+**Ví dụ:**
+```typescript
+const name = PropertiesFile.getFileName('UserProfile', 'ts')
+// Trả về: "user-profile.ts"
+```
+
+**Trả về:** `string`
+
+### `sep`
+
+Trả về ký tự phân tách thư mục cụ thể của hệ thống (`/` hoặc `\`).
+
+**Ví dụ:**
+```typescript
+const s = PropertiesFile.sep()
+// Trả về: "/"
+```
+
+**Trả về:** `string`
+
+## Các phương thức đọc
+
+### `readFile`
+
+Đọc đồng bộ và tự động phân giải nội dung tệp. Trả về một đối tượng nếu là JSON, ngược lại là một chuỗi.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đến tệp.
+
+**Ví dụ:**
+```typescript
+const data = PropertiesFile.readFile<{ name: string }>('config.json')
+// Trả về: { name: "DXT" } (đối tượng)
+```
+
+**Trả về:** `R | undefined` — dữ liệu đã phân giải hoặc `undefined` nếu không tìm thấy tệp.
+
+### `readFileOnly`
+
+Đọc nội dung tệp dưới dạng chuỗi thô mà không có bất kỳ chuyển đổi nào.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đến tệp.
+
+**Ví dụ:**
+```typescript
+const text = PropertiesFile.readFileOnly('README.md')
+// Trả về: "# Project Title..." (chuỗi)
+```
+
+**Trả về:** `string | undefined`
+
+### `readDir`
+
+Đọc nội dung của một thư mục (danh sách tên các mục con).
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đến thư mục.
+
+**Ví dụ:**
+```typescript
+const items = PropertiesFile.readDir('src')
+// Trả về: ["index.ts", "classes", "types"]
+```
+
+**Trả về:** `string[]`
+
+### `readDirRecursive`
+
+Đọc đệ quy tất cả các tệp trong một thư mục và các thư mục con của nó.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đến thư mục.
+
+**Ví dụ:**
+```typescript
+const allFiles = PropertiesFile.readDirRecursive('src')
+// Trả về: ["index.ts", "classes/App.ts", "classes/DB.ts", ...]
+```
+
+**Trả về:** `string[]` — danh sách đường dẫn đến tất cả các tệp được tìm thấy.
+
+## Các phương thức chỉnh sửa
+
+### `write`
+
+Lưu dữ liệu vào một tệp, tự động tạo bất kỳ thư mục cha nào còn thiếu.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn thư mục.
+- `name: string` — tên tệp.
+- `value: T` — dữ liệu cần ghi.
+- `extension: string` — phần mở rộng (mặc định là `json`).
+
+**Ví dụ:**
+```typescript
+PropertiesFile.write('dist/cache', 'data', { id: 1 })
+// Tạo dist/cache/data.json với nội dung JSON
+```
+
+**Trả về:** `void`
+
+### `writeByPath`
+
+Ghi dữ liệu vào một đường dẫn tệp chính xác.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đầy đủ đến tệp.
+- `value: T` — dữ liệu.
+- `transform: boolean` — có chuyển đổi đối tượng thành JSON hay không (mặc định là `true`).
+
+**Ví dụ:**
+```typescript
+PropertiesFile.writeByPath('logs/error.log', 'Critical error', false)
+// Ghi chuỗi thô vào tệp mà không chuyển đổi JSON
+```
+
+**Trả về:** `void`
+
+### `createDir`
+
+Tạo đệ quy một thư mục nếu nó chưa tồn tại.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn cần tạo.
+
+**Ví dụ:**
+```typescript
+PropertiesFile.createDir('storage/images/2024')
+// Tạo toàn bộ cây thư mục
+```
+
+**Trả về:** `void`
+
+### `copy`
+
+Sao chép một tệp từ đường dẫn nguồn đến đường dẫn đích.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đích.
+- `pathsSrc: PropertiesFilePath` — đường dẫn nguồn.
+
+**Ví dụ:**
+```typescript
+PropertiesFile.copy('backup/config.json', 'config.json')
+```
+
+**Trả về:** `void`
+
+### `removeFile`
+
+Xóa tệp được chỉ định.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đến tệp.
+
+**Ví dụ:**
+```typescript
+PropertiesFile.removeFile('temp.tmp')
+```
+
+**Trả về:** `void`
+
+### `removeDir`
+
+Xóa đệ quy một thư mục và tất cả nội dung của nó.
+
+**Tham số:**
+- `path: PropertiesFilePath` — đường dẫn đến thư mục.
+
+**Ví dụ:**
+```typescript
+PropertiesFile.removeDir('dist/old-version')
+```
+
+**Trả về:** `void`
+
+## Các thao tác (Operations)
+
+### Luồng đồng bộ hóa Đường dẫn & IO (The Paths & IO Synchronization Flow)
+
+`PropertiesFile` đóng vai trò là lớp đồng bộ hóa cấp thấp cho toàn bộ thư viện:
+1. **Chuẩn hóa đường dẫn**: Mọi phương thức đều gọi nội bộ `joinPath` и `toSep`, chuyển đổi tất cả các dấu gạch chéo xuôi thành ký tự phân tách cụ thể của hệ điều hành (ví dụ: `\` trên Windows).
+2. **Ghi nguyên tử**: Khi `write()` được gọi, lớp trước tiên sẽ xác định thư mục đích và thực thi `createDir()`, lệnh này sẽ xây dựng đệ quy bất kỳ thư mục nào còn thiếu trước khi ghi nội dung thông qua `fs.writeFileSync`.
+3. **Ngữ cảnh đệ quy**: Các phương thức đệ quy chuyên biệt (`readDirRecursive`, v.v.) cho phép các công cụ tài liệu và token khám phá mọi tệp trong cây thành phần mà không cần quản lý thủ công độ sâu hoặc giới hạn đệ quy.
+4. **Phân giải gốc (Root Resolution)**: Nó duy trì một `root` nội bộ (dựa trên `process.cwd()`) để đảm bảo các phân đoạn đường dẫn tương đối luôn được phân giải từ thư mục gốc của dự án.

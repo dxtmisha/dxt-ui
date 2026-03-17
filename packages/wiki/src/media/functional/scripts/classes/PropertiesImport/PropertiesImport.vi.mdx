@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesImport - Bộ phân giải Token bên ngoài'/>
+
+# Lớp PropertiesImport
+
+Lớp `PropertiesImport` là một trình quản lý chuyên biệt để phân giải và tích hợp các tham chiếu tệp bên ngoài trong các cụm token thiết kế. Nó cho phép các nhà phát triển mô-đun hóa các định nghĩa thuộc tính trên nhiều tệp hoặc thư mục, cung cấp các cơ chế mạnh mẽ để liên kết sâu (deep-linking) vào các cấu trúc dữ liệu cụ thể và hợp nhất đệ quy các tập hợp token độc lập vào một cấu hình thống nhất duy nhất.
+
+## Các tính năng chính
+
+- **Phân giải mô-đun** — Bao gồm các tệp `.json` bên ngoài hoặc toàn bộ thư mục vào cây thuộc tính một cách minh bạch.
+- **Liên kết sâu (Deep-linking)** — Hỗ trợ các định danh phân đoạn (ví dụ: `#path.to.node`) để chỉ nhập các tập hợp con cụ thể của một tệp bên ngoài.
+- **Nhập thư mục đệ quy** — Tự động ánh xạ cấu trúc thư mục tới các không gian tên thuộc tính khi một thư mục được tham chiếu.
+- **Phân giải nhận biết ngữ cảnh** — Theo dõi cấp độ thư mục hiện tại để phân giải chính xác các đường dẫn tệp tương đối trong quá trình duyệt sâu.
+- **Hợp nhất chuẩn hóa** — Đảm bảo rằng dữ liệu đã nhập được truyền qua `PropertiesStandard` trước khi được hợp nhất vào cây cha.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `PropertiesImport(properties, root)`.
+
+**Tham số:**
+- `properties: PropertyList` — danh sách thuộc tính ban đầu (cây token) cần xử lý.
+- `root: string[]` — các phân đoạn đường dẫn cơ sở để phân giải các tham chiếu tệp tương đối.
+
+```typescript
+import { PropertiesImport } from '@dxtmisha/scripts'
+
+// 1. Chuẩn bị dữ liệu thô và ngữ cảnh đường dẫn
+const initialProperties = { 
+  button: { type: 'file', value: 'components/button.json' } 
+}
+const rootPath = ['src', 'tokens']
+
+// 2. Tạo thực thể importer
+const importer = new PropertiesImport(initialProperties, rootPath)
+
+// 3. Kích hoạt việc phân giải các tham chiếu bên ngoài
+const resolvedData = importer.to()
+```
+
+## Các phương thức
+
+- `to(properties, root): PropertyList` — phân giải và hợp nhất tất cả các tham chiếu tệp bên ngoài trong cụm thuộc tính.
+
+## Các thao tác (Operations)
+
+### Luồng phân giải bên ngoài (The External Resolution Flow)
+
+`PropertiesImport` quản lý một quy trình phân giải nhiều giai đoạn:
+1. **Phát hiện**: Khi duyệt cây, nó nhắm mục tiêu cụ thể vào các mục có `value` là một chuỗi và siêu dữ liệu loại khớp với `PropertyType.file`.
+2. **Phân tích cú pháp liên kết**: Nó tách chuỗi tham chiếu (ví dụ: `theme/colors.json#primary`) thành `path` tệp vật lý và một phân đoạn `link` nội bộ tùy chọn.
+3. **Thực thi IO**:
+    - **Tệp đơn**: Đọc tệp mục tiêu thông qua `PropertiesCache`.
+    - **Thư mục**: Ánh xạ tất cả các tệp `.json` trong thư mục tới các thuộc tính con được đặt tên theo tên tệp.
+4. **Trích xuất sâu**: Nếu có định danh phân đoạn (`#`), nó sẽ điều hướng qua đối tượng đã đọc để chỉ trả về đường dẫn phụ được yêu cầu.
+5. **Chuẩn hóa & Đệ quy**: Dữ liệu được trích xuất được truyền cho `PropertiesStandard` để chuẩn hóa và sau đó được truyền đệ quy trở lại `to()` để phân giải bất kỳ lượt nhập *lồng nhau* nào bên trong tệp vừa được bao gồm.
+6. **Hợp nhất**: Dữ liệu cuối cùng được hợp nhất đệ quy vào cấu trúc cha bằng `replaceRecursive`.

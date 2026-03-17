@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesPath - Path & Environment Resolver'/>
+
+# PropertiesPath Class
+
+The `PropertiesPath` class is a core utility responsible for translating abstract design identities into concrete physical filesystem paths. It manages the directory mapping for both global design tokens and specific component overrides, ensuring that cross-platform path discovery remains consistent. By providing cached traversal methods like `to` and `toAll`, it coordinates the data loading sequence for multi-theme projects, acting as the primary source of environmental truth for the properties engine.
+
+## Key Features
+
+- **Multi-Design Mapping** — Automatically maps an array of design names to their corresponding token and component directories.
+- **Cross-Platform Root Discovery** — Leverages `PropertiesFile` to ensure paths are absolute and resolved correctly across different operating systems.
+- **Internal Optimization (Caching)** — Integrated with `PropertiesCache` to minimize redundant filesystem access during complex token transformation pipelines.
+- **Constructor Mode Detection** — Identifies and handles the special `_constructor` design, which serves as the common base for all themes.
+- **Flexible Data Traversal** — Provides high-level callbacks for processing design files without exposing raw filesystem details.
+
+## Initialization
+
+To initialize the object, call the `PropertiesPath(designs)` constructor.
+
+**Parameters:**
+- `designs: string[]` — a list of design names corresponding to folder names in the project structure.
+
+```typescript
+import { PropertiesPath } from '@dxtmisha/scripts'
+
+// 1. Define the designs to be managed
+const activeDesigns = ['basic', 'constructor', 'premium']
+
+// 2. Create the path resolver instance
+const pathResolver = new PropertiesPath(activeDesigns)
+
+// 3. Resolve paths for a specific design
+const basicPaths = pathResolver.getPath('basic')
+```
+
+## Methods
+
+- `isConstructor(): boolean` — checks if the current environment includes a base constructor design.
+- `getDesigns(): string[]` — returns the list of design names registered in the instance.
+- `getPath(name): PropertiesPathItem` — retrieves the specific paths (global and component) for a given design.
+- `getPaths(): PropertiesPathList` — returns the full registry of design-to-path mappings.
+- `to(name, design, callback): T` — executes a cached transformation callback for a specific design.
+- `toAll(name, callback): T` — orchestrates a global cached transformation across all registered designs.
+
+## Operations
+
+### The Environmental Discovery & Caching Flow
+
+`PropertiesPath` manages the mapping between high-level logic and physical storage:
+1. **Directory Aggregation**: Upon instantiation, the class normalizes design names to kebab-case and uses internal `getDir` logic to synthesize absolute paths to `UI_DIRS_TOKENS` and `UI_DIRS_COMPONENTS`.
+2. **Design Isolation**: The class distinguishes between standard themes and the `_constructor`. If a design is marked as a constructor, standard directory discovery is bypassed to allow for specialized base-layer processing.
+3. **Cached Transformation**: When `to()` or `toAll()` are called, the class doesn't just return paths—it attempts to retrieve previously processed data from `PropertiesCache`. If a cache miss occurs, the provided callback is executed with the resolved paths, and the new result is transparently stored.
+4. **Unified Hierarchy Synthesis**: Through `toAll()`, the class enables the "merge-up" pattern, where tokens from multiple designs (e.g., `constructor` + `basic` + `local-theme`) are fetched in sequence and combined into a single hierarchical structure using `replaceRecursive`.

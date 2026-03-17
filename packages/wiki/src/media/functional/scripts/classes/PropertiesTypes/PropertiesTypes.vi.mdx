@@ -1,0 +1,120 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesTypes - Các kiểu thuộc tính'/>
+
+# Lớp PropertiesTypes
+
+Lớp `PropertiesTypes` đóng vai trò là một danh mục hệ thống và bộ phân tích cho các kiểu thuộc tính trong hệ thống thiết kế. Nhiệm vụ chính của nó là xác định danh mục thuộc tính (biến, bộ chọn, trạng thái, truy vấn truyền thông, v.v.) dựa trên các biểu tượng tiền tố đặc biệt hoặc các quy ước đặt tên khóa.
+
+## Ánh xạ Biểu tượng và Kiểu
+
+Hệ thống sử dụng các ánh xạ biểu tượng sang kiểu như sau:
+
+- `$` — **var** (biến CSS)
+- `::` — **virtual** (phần tử ảo)
+- `:` — **selector** (bộ chọn SCSS)
+- `~` — **state** (trạng thái, ví dụ: :hover)
+- `#` — **subclass** (lớp con)
+- `@@` — **linkClass** (liên kết đến một lớp)
+- `@` — **link** (liên kết đến một token)
+- `&&` — **root** (SCSS @at-root)
+- `&` — **scss** (bộ chọn SCSS)
+- `--` — **none** (thuộc tính bị bỏ qua)
+
+## Khởi tạo
+
+Lớp này chỉ chứa các phương thức tĩnh và không yêu cầu khởi tạo thông qua `new`.
+
+```typescript
+import { PropertiesTypes } from '@dxtmisha/scripts'
+
+// Sử dụng các phương thức tĩnh
+const type = PropertiesTypes.getTypeInName('$primary-color')
+```
+
+## Các phương thức
+
+### `isInType`
+Kiểm tra xem kiểu thuộc tính hiện tại có nằm trong danh sách các kiểu được cho phép hay không. Được sử dụng để lọc các thuộc tính trong quá trình tạo các khối cụ thể (ví dụ: chỉ các truy vấn truyền thông).
+
+**Tham số:**
+- `type: PropertyItem['_type']` — kiểu thuộc tính cần xác minh.
+- `name: PropertyType[]` — một mảng các kiểu được cho phép.
+
+**Trả về:** `boolean` — `true` nếu kiểu khớp với một kiểu trong danh sách.
+
+```typescript
+const isMedia = PropertiesTypes.isInType(type, ['media', 'media-max']);
+```
+
+### `isTypeInName`
+Xác định xem chuỗi tên (khóa) được cung cấp có chứa bất kỳ biểu tượng kiểu dành riêng nào ở đầu hay không.
+
+**Tham số:**
+- `name: string` — tên khóa thuộc tính.
+
+**Trả về:** `boolean` — `true` nếu xác định được biểu tượng kiểu.
+
+```typescript
+const hasSymbol = PropertiesTypes.isTypeInName('$myVar');
+// Kết quả: true
+```
+
+### `isMedia`
+Một kiểm tra chuyên biệt để xác định xem kiểu thuộc tính có liên quan đến các truy vấn truyền thông hay không (`media` hoặc `media-max`).
+
+**Tham số:**
+- `type: PropertyItem['_type']` — kiểu thuộc tính.
+
+**Trả về:** `boolean` — `true` nếu đó là kiểu truyền thông.
+
+```typescript
+if (PropertiesTypes.isMedia(item.type)) { /* ... */ }
+```
+
+### `getTypeInName`
+Phương thức chính để trích xuất kiểu từ một tên khóa. Nếu tìm thấy một biểu tượng đặc biệt ở đầu khóa, phương thức sẽ trả về kiểu tương ứng của nó. Nếu không tìm thấy biểu tượng nhưng khóa chứa dấu phân cách `|`, phần trước dấu phân cách sẽ được chuyển đổi sang kebab-case và được trả về làm kiểu.
+
+**Tham số:**
+- `name: string` — tên khóa thuộc tính.
+
+**Trả về:** `PropertyItem['_type']` — ID kiểu đã xác định hoặc `null`.
+
+```typescript
+const type1 = PropertiesTypes.getTypeInName('$color'); // 'var'
+const type2 = PropertiesTypes.getTypeInName('custom|value'); // 'custom'
+```
+
+### `getBySymbol`
+Trả về tên kiểu được gán cho một biểu tượng hoặc chuỗi cụ thể.
+
+**Tham số:**
+- `name: string` — biểu tượng (ví dụ: `$`).
+
+**Trả về:** `string | undefined` — tên kiểu (ví dụ: `var`).
+
+```typescript
+const typeName = PropertiesTypes.getBySymbol('$'); // 'var'
+```
+
+## Các thao tác (Operations)
+
+### Cơ chế nhận dạng qua RegExp
+
+Việc tìm kiếm biểu tượng trong `PropertiesTypes` được thực hiện thông qua một biểu thức chính quy động được tạo từ các khóa từ điển `SYMBOLS`. Phương thức `getExpSymbols` tạo ra một biểu thức để:
+1. Tìm kiếm các biểu tượng dành riêng ở đầu chuỗi (ví dụ: `@`, `&&`, `~`).
+2. Tìm kiếm các kiểu tự định nghĩa được đặt tên trước một dấu gạch đứng (ví dụ: `media|...`).
+3. Nhóm các kết quả để trích xuất kiểu hiệu quả bằng phương thức `getTypeInName`.
+
+## Ví dụ (Examples)
+
+### Xác định các kiểu trong quá trình phân tích Token
+```typescript
+import { PropertiesTypes } from '@dxtmisha/scripts'
+
+const keys = ['$primary', ':hover', '@link'];
+
+keys.forEach(key => {
+  console.log(`${key} is type: ${PropertiesTypes.getTypeInName(key)}`);
+});
+```

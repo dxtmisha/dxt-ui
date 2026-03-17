@@ -20,9 +20,11 @@ import {
 } from '../../types/propertyTypes'
 
 /**
- * Class for working with external files, which adds them to the current list of properties.
+ * Resolver for external property references.
+ * This class orchestrates the inclusion of external design tokens into the primary property tree. It identifies file references, resolves paths (including nested directory imports and specific object path deep-linking via hashes), and merges the external data into the current configuration cluster.
  *
- * Класс для работы с внешними файлами, который подключает их к текущему списку свойств.
+ * Резолвер внешних ссылок на свойства.
+ * Этот класс координирует включение внешних токенов дизайна в основное дерево свойств. Он идентифицирует ссылки на файлы, разрешает пути (включая импорт вложенных директорий и глубокие ссылки на конкретные объекты через хеш) и объединяет внешние данные с текущим кластером конфигурации.
  */
 export class PropertiesImport {
   /**
@@ -38,12 +40,13 @@ export class PropertiesImport {
   }
 
   /**
-   * Method that adds external files to the current property.
+   * Resolves and merges external file references within a property cluster.
+   * Iterates through the properties, looks for items of type 'file', and recursively imports their content, supporting deep-linking (e.g., 'file.json#path.to.data').
    *
-   * Метод подключает внешние файлы к текущему свойству.
-   * @param properties An array that needs to be transformed/
-   * Массив, который нужно преобразовать
-   * @param root path to the directory/ путь к директории
+   * Разрешает и объединяет ссылки на внешние файлы внутри кластера свойств.
+   * Итерирует по свойствам, ищет элементы типа 'file' и рекурсивно импортирует их содержимое, поддерживая глубокие ссылки (например, 'file.json#path.to.data').
+   * @param properties the property list to process / список свойств для обработки
+   * @param root the base path segments for resolution / базовые сегменты пути для разрешения
    */
   to(
     properties = this.properties,

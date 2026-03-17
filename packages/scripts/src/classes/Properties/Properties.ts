@@ -45,22 +45,33 @@ import { type PropertyList } from '../../types/propertyTypes'
 const FILE_CACHE = 'properties'
 
 /**
- * The main class for working with tokens.
+ * Central orchestrator for the design system's token management.
+ * Responsible for loading, merging, and executing a multi-stage transformation pipeline to convert raw property definitions into structured, resolved data for various output formats.
  *
- * Главный класс для работы с токенами.
+ * Центральный оркестратор для управления токенами дизайн-системы.
+ * Отвечает за загрузку, слияние и выполнение многоэтапного конвейера преобразований для конвертации необработанных определений свойств в структурированные, разрешенные данные для различных выходных форматов.
  */
 export class Properties {
   private readonly designs: string[]
   private readonly items: PropertiesItems
 
   /**
-   * Constructor
+   * Constructor for Properties.
+   * Initializes the list of designs and triggers the token processing pipeline.
+   *
+   * Конструктор для Properties.
+   * Инициализирует список дизайнов и запускает конвейер обработки токенов.
    */
   constructor() {
     this.designs = PropertiesTool.getDesigns()
     this.items = new PropertiesItems(this.read())
   }
 
+  /**
+   * Returns the processed collection of design tokens.
+   *
+   * Возвращает обработанную коллекцию токенов дизайна.
+   */
   get() {
     return this.items
   }
