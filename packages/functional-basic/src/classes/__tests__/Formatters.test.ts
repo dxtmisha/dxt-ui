@@ -63,6 +63,17 @@ describe('Formatters', () => {
       expect(formattersSingle.isArray()).toBe(false)
     })
 
+    it('should return the correct count of records using length()', () => {
+      const formattersEmpty = new Formatters(options)
+      expect(formattersEmpty.length()).toBe(0)
+
+      const formattersArray = new Formatters(options, list)
+      expect(formattersArray.length()).toBe(list.length)
+
+      const formattersSingle = new Formatters(options, list[0])
+      expect(formattersSingle.length()).toBe(1)
+    })
+
     it('should allow setting and getting the list', () => {
       const formatters = new Formatters(options)
       expect(formatters.getList()).toEqual([])
@@ -88,10 +99,10 @@ describe('Formatters', () => {
 
     it('should format a single item correctly', () => {
       const formatters = new Formatters(options, list[0])
-      const item = formatters.to() as any
+      const item = formatters.to()
 
-      expect(item.priceFormat).toContain('$100.00')
-      expect(item.nameFormat).toBe('John Doe')
+      expect(item?.priceFormat).toContain('$100.00')
+      expect(item?.nameFormat).toBe('John Doe')
     })
 
     it('should return undefined if a list is missing', () => {

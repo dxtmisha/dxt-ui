@@ -4,30 +4,35 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `useFormattersRef`
 
-A composable for reactive formatting of data lists based on specified rules for each column.
+A composable for reactive formatting of data lists based on specified rules for each property.
 
 **Parameters:**
 - `list: RefType<List>` — source data list (Ref or ComputedRef).
 - `options: Options` — formatting settings for each property:
-    - `type: FormattersType` — type of formatter (`currency`, `date`, `name`, `number`, `plural`, `unit`).
+    - `type: FormattersType` — formatter type (`currency`, `date`, `name`, `number`, `plural`, `unit`).
     - `options?: object` — additional settings for the specific formatter (e.g., currency code, date format).
     - `transformation?: function` — custom function for value transformation.
 
 **Returns:**
-- `listFormat: ComputedRef<FormattersListColumns<Item, Options>>` — formatted data list. For each column specified in `options`, a corresponding `{column}Format` field is added to the items.
+- `listFormat: ComputedRef<FormattersReturn<List, Options>>` — formatted data list. For each property specified in `options`, a corresponding `{property}Format` field is added to the items.
+
+### Generic Constraints
+
+- `Options extends FormattersOptionsList` — type of formatting options for each property.
+- `List extends FormattersListProp` — type of the source list (can be an array or a single item).
 
 ## Architecture: Lazy `computed` (Dynamic Getters)
 
-This composable returns `listFormat` as a native JS getter.
-This allows you to call `useFormattersRef()` **outside the lifecycle of a Vue component** (for example, globally or in stores).
-The `ComputedRef` object is created and cached by Vue the first time the property is accessed during destructuring:
+This composable returns `listFormat` as a native JavaScript getter.
+This design allows calling `useFormattersRef()` **outside of the Vue component lifecycle** (e.g., globally or in stores).
+The `ComputedRef` object is created and cached by Vue upon the first access to the property during destructuring:
 
 ```typescript
 // ComputedRef is created during destructuring in setup()
 const { listFormat } = useFormattersRef(items, { price: { type: FormattersType.currency } })
 ```
 
-> **Important**: Avoid multiple accesses "via dot notation" (e.g., `result.listFormat`). Always destructure the result once at the `setup` level to ensure only one instance of the `computed` property is created.
+> **Important**: Avoid multiple accesses via dot notation (e.g., `result.listFormat`). Always destructure the result once at the `setup` level to ensure only one instance of the `computed` property is created.
 
 ## Usage Example
 

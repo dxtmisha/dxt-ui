@@ -3084,6 +3084,15 @@ class ze {
     return Array.isArray(this.list);
   }
   /**
+   * Returns the count of records in the list.
+   *
+   * Возвращает количество записей в списке.
+   * @returns count of records/ количество записей
+   */
+  length() {
+    return this.list ? this.isArray() ? this.list.length : 1 : 0;
+  }
+  /**
    * Returns the current list of data.
    *
    * Возвращает текущий список данных.

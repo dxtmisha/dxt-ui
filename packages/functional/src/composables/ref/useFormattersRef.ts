@@ -1,41 +1,50 @@
 import { computed } from 'vue'
 import {
   Formatters,
-  type FormattersList,
-  type FormattersListColumns,
-  type FormattersListItem,
-  type FormattersOptionsList
+  type FormattersListProp,
+  type FormattersOptionsList,
+  type FormattersReturn
 } from '@dxtmisha/functional-basic'
 
 import type { RefType } from '../../types/refTypes'
 
 /**
- * Composable for handling data formatting logic with reactive data.
- *
- * Композабл для управления логикой форматирования данных с реактивными данными.
- * @param list list of items for formatting / список элементов для форматирования
- * @param options formatting options / настройки форматирования
+ * Composable for reactive formatting of data lists based on specified rules for each property. /
+ * Композабл для реактивного форматирования списков данных на основе заданных правил для каждого свойства.
+ * @param list source data list (Ref or ComputedRef) / исходный список данных (Ref или ComputedRef)
+ * @param options formatting settings for each property / настройки форматирования для каждого свойства
  */
 export function useFormattersRef<
-  Item extends FormattersListItem,
-  Options extends FormattersOptionsList,
-  List extends FormattersList<Item> = FormattersList<Item>
+  Options extends FormattersOptionsList = FormattersOptionsList,
+  List extends FormattersListProp = FormattersListProp
 >(
-  list: RefType<List | Item>,
+  list: RefType<List>,
   options: Options
 ) {
-  const item = new Formatters<Item, Options, List>(options)
+  const item = new Formatters<Options, List>(options)
 
   return {
     /**
-     * Formatted list of items /
-     * Форматированный список элементов
+     * Formatted data list (ComputedRef) /
+     * Отформатированный список данных (ComputedRef)
      */
     get listFormat() {
-      return computed<FormattersListColumns<Item, Options>>(() => {
+      return computed<FormattersReturn<List, Options>>(() => {
         return item
           .setList(list.value)
           .to()
+      })
+    },
+
+    /**
+     * Returns the count of records in the list (ComputedRef) /
+     * Возвращает количество записей в списке (ComputedRef)
+     */
+    get length() {
+      return computed<number>(() => {
+        return item
+          .setList(list.value)
+          .length()
       })
     }
   }

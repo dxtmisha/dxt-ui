@@ -1,18 +1,29 @@
-import type { ApiData, ApiFetch, ApiMethodItem, FormattersOptionsList } from '@dxtmisha/functional-basic'
+import type { ApiData, ApiDefaultValue, ApiFetch, ApiMethodItem, SearchColumns, SearchItem, SearchOptions } from '@dxtmisha/functional-basic'
 import type { RefOrNormal, RefType } from './refTypes'
+import type { Ref } from 'vue'
 
 /** Options for api requests/ Опции для запросов api */
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>
 
-export type ApiManagementProps<R, T> = {
-  get: {
-    path?: RefOrNormal<string | undefined>
-    options?: ApiOptions
-    reactivity?: boolean
-    conditions?: RefType<boolean>
-    transformation?: (data: T) => ApiData<R>
-    unmounted?: boolean
-  }
-
-  formatters?: FormattersOptionsList
+export type ApiManagementGet<
+  Return extends ApiManagementValue,
+  Type extends ApiManagementValue = Return
+> = {
+  path?: RefOrNormal<string | undefined>
+  options?: ApiOptions
+  reactivity?: boolean
+  conditions?: RefType<boolean>
+  transformation?: (data: Type) => ApiData<Return>
+  unmounted?: boolean
 }
+
+export type ApiManagementSearch<
+  T extends SearchItem,
+  K extends SearchColumns<T>
+> = {
+  columns: K
+  value?: Ref<string>
+  options?: SearchOptions
+}
+
+export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[]

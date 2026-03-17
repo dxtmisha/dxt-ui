@@ -43,6 +43,12 @@ export type ObjectItem<T = any> = Record<string, T>
 /** Generic type that can be either an array or an object/ Дженерик тип для массива или объекта */
 export type ObjectOrArray<T = any> = T[] | ObjectItem<T>
 
+/**
+ * Converts an array type to an item type (extracts the item type from an array)/
+ * Преобразует тип массива в тип элемента (извлекает тип элемента из массива)
+ */
+export type ArrayToItem<T> = T extends any[] ? T[number] : T
+
 // Function
 /**
  * Function type that returns a value of type R/

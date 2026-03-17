@@ -30,6 +30,9 @@ export interface UseApiRef<R> {
   /** Item (Ref) / Элемент (Ref) */
   item: Ref<ApiData<R> | undefined>
 
+  /** Length of the list (Computed) / Длина списка (Computed) */
+  length: ComputedRef<number>
+
   /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
   starting: ComputedRef<boolean>
 
@@ -270,6 +273,20 @@ export function useApiRef<
       init()
 
       return item
+    },
+
+    /**
+     * Returns the count of records in the list (ComputedRef) /
+     * Возвращает количество записей в списке (ComputedRef)
+     */
+    get length() {
+      return computed<number>(() => {
+        if (Array.isArray(item.value)) {
+          return item.value.length
+        }
+
+        return item.value ? 1 : 0
+      })
     },
 
     /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */

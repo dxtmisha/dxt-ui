@@ -1,4 +1,4 @@
-import { inject, provide } from 'vue'
+import { effectScope, inject, provide } from 'vue'
 import { getElementId, random } from '@dxtmisha/functional-basic'
 
 /**
@@ -41,6 +41,9 @@ const globalCode = random(100000, 999999)
 
 /** The global callbacks/ Глобальные callback */
 const globalMethods: (() => any)[] = []
+
+/** Effect scope for computed eternity/ Эффектный scope для вычисляемого вечения */
+const scope = effectScope()
 
 /**
  * Creates a managed singleton that encapsulates initialization logic and access mode.
@@ -125,7 +128,13 @@ export function executeUse<
         return initProvide(args)
       }
     } else if (!item) {
-      item = initItem(args)
+      if (type === ExecuteUseType.local) {
+        scope.run(() => {
+          item = initItem(args)
+        })
+      } else {
+        item = initItem(args)
+      }
     }
 
     return item as RI

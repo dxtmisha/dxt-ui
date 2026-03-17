@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `useFormattersRef`
 
-Một bộ composable để định dạng phản ứng danh sách dữ liệu dựa trên các quy tắc được chỉ định cho từng cột.
+Một bộ composable để định dạng phản hồi danh sách dữ liệu dựa trên các quy tắc được chỉ định cho từng thuộc tính.
 
 **Tham số:**
 - `list: RefType<List>` — danh sách dữ liệu nguồn (Ref hoặc ComputedRef).
@@ -14,11 +14,16 @@ Một bộ composable để định dạng phản ứng danh sách dữ liệu d
     - `transformation?: function` — hàm tùy chỉnh để chuyển đổi giá trị.
 
 **Trả về:**
-- `listFormat: ComputedRef<FormattersListColumns<Item, Options>>` — danh sách dữ liệu đã được định dạng. Đối với mỗi cột được chỉ định trong `options`, một trường `{column}Format` tương ứng sẽ được thêm vào các mục.
+- `listFormat: ComputedRef<FormattersReturn<List, Options>>` — danh sách dữ liệu đã được định dạng. Đối với mỗi thuộc tính được chỉ định trong `options`, một trường `{property}Format` tương ứng sẽ được thêm vào các mục.
+
+### Ràng buộc Generic (Generic Constraints)
+
+- `Options extends FormattersOptionsList` — kiểu tùy chọn định dạng cho từng thuộc tính.
+- `List extends FormattersListProp` — kiểu danh sách nguồn (có thể là một mảng hoặc một mục duy nhất).
 
 ## Kiến trúc: `computed` Lazy (Getter động)
 
-Composable này trả về `listFormat` dưới dạng native JS getter.
+Composable này trả về `listFormat` dưới dạng native JavaScript getter.
 Điều này cho phép bạn gọi `useFormattersRef()` **bên ngoài vòng đời của component Vue** (ví dụ: toàn cục hoặc trong các store).
 Đối tượng `ComputedRef` được tạo và lưu vào bộ nhớ đệm bởi Vue trong lần đầu tiên thuộc tính được truy cập trong quá trình destructuring:
 

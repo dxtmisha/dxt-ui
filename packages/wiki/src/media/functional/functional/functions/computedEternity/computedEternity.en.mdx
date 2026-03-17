@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `computedEternity`
 
-Creates a computed property that is computed on demand and cached. The value is updated automatically when dependencies change, but only if it has been accessed at least once. On unmount, the value is reset. This is particularly useful for properties that should persist throughout the active lifecycle of a component but don't need to be eagerly computed.
+Creates a computed property that is computed on demand and cached. The value is updated automatically when dependencies change, but only if it has been accessed at least once. The watcher remains active throughout the application's lifecycle. This is particularly useful for properties that should persist globally after the first access.
 
 **Parameters:**
 - `getter: () => Promise<T> | T` — A function that returns the value to be computed (can be synchronous or asynchronous).

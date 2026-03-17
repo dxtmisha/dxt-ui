@@ -8,10 +8,8 @@ import { toCamelCase } from '../functions/toCamelCase'
 
 import {
   FormattersType,
-  type FormattersListItem,
   type FormattersList,
   type FormattersOptionsList,
-  type FormattersListColumns,
   type FormattersOptionsInformation,
   type FormattersOptionsCurrency,
   type FormattersOptionsDate,
@@ -19,7 +17,9 @@ import {
   type FormattersOptionsNumber,
   type FormattersOptionsPlural,
   type FormattersOptionsUnit,
-  type FormattersListColumnItem
+  type FormattersReturn,
+  type FormattersListProp,
+  type FormattersItemProp
 } from '../types/formattersTypes'
 
 /**
@@ -32,8 +32,8 @@ import {
  */
 export class Formatters<
   Options extends FormattersOptionsList = FormattersOptionsList,
-  List extends FormattersList<FormattersListItem> | FormattersListItem = FormattersList<FormattersListItem>,
-  Item extends (List extends any[] ? List[number] : List) = (List extends any[] ? List[number] : List)
+  List extends FormattersListProp = FormattersListProp,
+  Item extends FormattersItemProp<List> = FormattersItemProp<List>
 > {
   /**
    * Constructor
@@ -66,6 +66,24 @@ export class Formatters<
    */
   isArray(): this is this & { list: FormattersList<Item> } {
     return Array.isArray(this.list)
+  }
+
+  /**
+   * Returns the count of records in the list.
+   *
+   * Возвращает количество записей в списке.
+   * @returns count of records/ количество записей
+   */
+  length(): number {
+    if (this.list) {
+      if (this.isArray()) {
+        return this.list.length
+      }
+
+      return 1
+    }
+
+    return 0
   }
 
   /**
@@ -113,10 +131,8 @@ export class Formatters<
    * @returns formatted data (list or single item) with additional formatted columns /
    * отформатированные данные (список или один элемент) с дополнительными отформатированными столбцами
    */
-  to(): List extends any[]
-    ? FormattersListColumns<Item, Options>
-    : (FormattersListColumnItem<Item, Options> | undefined) {
-    const list: FormattersListColumns<Item, Options> = forEach(this.getList(), (item) => {
+  to(): FormattersReturn<List, Options> {
+    const list = forEach(this.getList(), (item) => {
       return {
         ...item,
         ...this.getFormatData(item)
