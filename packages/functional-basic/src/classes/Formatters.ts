@@ -117,7 +117,7 @@ export class Formatters<
    * @param list list of data/ список данных
    * @returns the Formatters instance for chaining/ экземпляр Formatters для цепочки вызовов
    */
-  setList(list: List): this {
+  setList(list?: List): this {
     this.list = list
     return this
   }

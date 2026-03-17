@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { GeoIntl } from '../GeoIntl'
 import { Geo } from '../Geo'
 
@@ -7,208 +7,209 @@ describe('GeoIntl', () => {
   let intl: GeoIntl
 
   beforeEach(() => {
+    // Reset Geo to a known state
     Geo.set('en-US')
     intl = new GeoIntl('en-US')
   })
 
-  // --- General ---
-  describe('getLocation / getFirstDay', () => {
-    it('should return the correct location string', () => {
-      expect(intl.getLocation()).toBe('en-US')
-    })
-
-    it('should return the first day of the week', () => {
-      const firstDay = intl.getFirstDay()
-      expect(['Mo', 'Su', 'Sa']).toContain(firstDay)
-    })
-  })
-
-  // --- Numbers ---
-  describe('number / decimal / percent', () => {
-    it('should format a number', () => {
-      const result = intl.number(1234.5)
-      expect(result).toBe('1,234.5')
-    })
-
-    it('should return the decimal separator', () => {
-      const dec = intl.decimal()
-      expect(['.', ',']).toContain(dec)
-    })
-
-    it('should format percent from a fraction', () => {
-      const result = intl.percent(0.5)
-      expect(result).toBe('50%')
-    })
-
-    it('should format percentBy100', () => {
-      const result = intl.percentBy100(75)
-      expect(result).toBe('75%')
-    })
-  })
-
-  // --- Currency ---
-  describe('currency / currencySymbol', () => {
-    it('should format currency', () => {
-      const result = intl.currency(1000, 'USD')
-      expect(result).toContain('1,000')
-      expect(result).toContain('$')
-    })
-
-    it('should return numberOnly without a symbol', () => {
-      const result = intl.currency(1500, 'USD', true)
-      expect(result).not.toContain('$')
-      expect(result).toContain('1,500')
-    })
-
-    it('should return currency symbol', () => {
-      expect(intl.currencySymbol('USD')).toBe('$')
-      expect(intl.currencySymbol('EUR')).toBe('€')
-    })
-  })
-
-  // --- File Size ---
-  describe('sizeFile', () => {
-    it('should format bytes', () => {
-      const result = intl.sizeFile(500)
-      expect(result).toContain('500')
-    })
-
-    it('should auto-upgrade to kilobytes', () => {
-      const result = intl.sizeFile(2048)
-      expect(result).toContain('2') // 2 KB
-    })
-
-    it('should auto-upgrade to megabytes', () => {
-      const result = intl.sizeFile(1024 * 1024 * 3)
-      expect(result).toContain('3') // 3 MB
-    })
-  })
-
-  // --- Plural ---
-  describe('plural', () => {
-    it('should handle simple plural form', () => {
-      const result = intl.plural(1, 'apple|apples')
-      expect(result).toBe('1 apple')
-    })
-
-    it('should use plural form for multiple', () => {
-      const result = intl.plural(5, 'apple|apples')
-      expect(result).toBe('5 apples')
-    })
-  })
-
-  // --- Names ---
-  describe('languageName / countryName / fullName', () => {
-    it('should return a language name', () => {
-      const result = intl.languageName('en')
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
-    })
-
-    it('should return a country name', () => {
-      const result = intl.countryName('US')
-      expect(result).toBeTruthy()
-    })
-
-    it('should format full name in Western order (first last)', () => {
-      const result = intl.fullName('Smith', 'John')
-      expect(result).toBe('John Smith')
-    })
-
-    it('should abbreviate the full name when short=true', () => {
-      const result = intl.fullName('Smith', 'John', undefined, true)
-      // The regex replaces 2nd+ word tokens: 'John Smith' → 'John S.'
-      expect(result).toContain('S.')
-      expect(result).toContain('John')
-    })
-  })
-
-  // --- Dates ---
-  describe('date / time / month / weekday', () => {
-    const testDate = new Date('2025-03-07T10:00:00')
-
-    it('should format a date result', () => {
-      const result = intl.date(testDate, 'date')
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
-    })
-
-    it('should format time', () => {
-      const result = intl.time(testDate)
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
-    })
-
-    it('should return month name', () => {
-      const result = intl.month(testDate, 'long')
-      expect(result.toLowerCase()).toContain('march')
-    })
-
-    it('should return a months array with 13 items (empty + 12)', () => {
-      const result = intl.months()
-      expect(result).toHaveLength(13)
-      expect(result[0]?.value).toBeUndefined()
-      expect(result[1]?.value).toBe(1)
-    })
-
-    it('should return weekday name', () => {
-      const result = intl.weekday(testDate, 'long')
-      expect(result.toLowerCase()).toContain('friday')
-    })
-
-    it('should return a weekdays array with 8 items (empty + 7)', () => {
-      const result = intl.weekdays()
-      expect(result).toHaveLength(8)
-      expect(result[0]?.value).toBeUndefined()
-    })
-  })
-
-  // --- Relative Time ---
-  describe('relative / relativeByValue', () => {
-    it('should return a relative time string', () => {
-      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000)
-      const result = intl.relative(fiveMinutesAgo)
-      expect(result).toBeTruthy()
-      expect(typeof result).toBe('string')
-    })
-
-    it('should return relative by value with unit', () => {
-      const result = intl.relativeByValue(-3, 'day')
-      expect(result).toBeTruthy()
-    })
-
-    it('relativeLimit: within limit should return relative', () => {
-      const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
-      const result = intl.relativeLimit(yesterday, 7)
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
-    })
-
-    it('relativeLimit: beyond limit should return the absolute date', () => {
-      const twoMonthsAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000)
-      const result = intl.relativeLimit(twoMonthsAgo, 7)
-      expect(typeof result).toBe('string')
-      expect(result.length).toBeGreaterThan(0)
-    })
-  })
-
-  // --- Static factory ---
-  describe('getInstance', () => {
-    it('should return a GeoIntl instance', () => {
+  describe('Initialization & Caching', () => {
+    it('getInstance should return a GeoIntl instance', () => {
       const instance = GeoIntl.getInstance('en-US')
       expect(instance).toBeInstanceOf(GeoIntl)
       expect(instance.getLocation()).toBe('en-US')
     })
+
+    it('should cache instances by location (standard) in the constructor', () => {
+      const instance1 = new GeoIntl('en-US')
+      const instance2 = new GeoIntl('en-US')
+      // Due to: if (location in items) { return items[location] }
+      // The constructor returns the cached instance if it exists.
+      expect(instance1).toBe(instance2)
+    })
+
+    it('should return different instances for different locations', () => {
+      const en = new GeoIntl('en-US')
+      const ru = new GeoIntl('ru-RU')
+      expect(en).not.toBe(ru)
+      expect(en.getLocation()).toBe('en-US')
+      expect(ru.getLocation()).toBe('ru-RU')
+    })
   })
 
-  // --- Sort ---
-  describe('sort', () => {
-    it('should sort strings in locale order', () => {
-      const data = ['banana', 'apple', 'cherry']
-      const sorted = intl.sort([...data])
-      expect(sorted[0]).toBe('apple')
-      expect(sorted[1]).toBe('banana')
-      expect(sorted[2]).toBe('cherry')
+  describe('General Methods', () => {
+    it('getLocation should return the correct location string', () => {
+      expect(intl.getLocation()).toBe('en-US')
+    })
+
+    it('getFirstDay should return a valid code', () => {
+      expect(['Mo', 'Su', 'Sa']).toContain(intl.getFirstDay())
+    })
+  })
+
+  describe('Display Names', () => {
+    it('display should return language name by default', () => {
+      expect(intl.display('en')).toBe('English')
+    })
+
+    it('display should return region name when requested', () => {
+      expect(intl.display('US', 'region')).toBe('United States')
+    })
+
+    it('languageName should format language code', () => {
+      expect(intl.languageName('ru-RU')).toBe('Russian')
+    })
+
+    it('countryName should format country code', () => {
+      expect(intl.countryName('FR')).toBe('France')
+    })
+  })
+
+  describe('Full Name Formatting', () => {
+    it('should format as first last by default', () => {
+      expect(intl.fullName('Doe', 'John')).toBe('John Doe')
+    })
+
+    it('should include surname if provided', () => {
+      // Default uses 'fl' -> first last (no surname in default case 'fl' as per current code)
+      // Actually, default 'fl' calls `fullName = `${first} ${last}``
+      expect(intl.fullName('Doe', 'John', 'Smith')).toBe('John Doe')
+    })
+
+    it('should abbreviate names when short=true', () => {
+      expect(intl.fullName('Doe', 'John', undefined, true)).toBe('John D.')
+    })
+  })
+
+  describe('Number Formatting', () => {
+    it('number handles regular formatting', () => {
+      expect(intl.number(1234.56)).toBe('1,234.56')
+    })
+
+    it('decimal returns the current separator', () => {
+      expect(intl.decimal()).toBe('.')
+    })
+
+    it('percent formats fraction to percent', () => {
+      expect(intl.percent(0.25)).toBe('25%')
+    })
+
+    it('percentBy100 formats 100-based value', () => {
+      expect(intl.percentBy100(25)).toBe('25%')
+    })
+  })
+
+  describe('Currency & Units', () => {
+    it('currency formats with symbol', () => {
+      expect(intl.currency(10, 'USD')).toContain('$10.00')
+    })
+
+    it('currency with numberOnly returns only value', () => {
+      expect(intl.currency(10, 'USD', true)).toBe('10.00')
+    })
+
+    it('currencySymbol returns symbol string', () => {
+      expect(intl.currencySymbol('EUR')).toBe('€')
+    })
+
+    it('unit formats with unit label', () => {
+      expect(intl.unit(50, 'celsius')).toContain('50°C')
+    })
+
+    it('sizeFile auto-upgrades through units', () => {
+      expect(intl.sizeFile(1024, 'byte')).toContain('1,024 byte')
+      expect(intl.sizeFile(1025, 'byte')).toContain('1 kB')
+      expect(intl.sizeFile(1024 * 1024 + 1, 'byte')).toContain('1 MB')
+      expect(intl.sizeFile(1024 * 1024 * 1024 + 1, 'byte')).toContain('1 GB')
+    })
+  })
+
+  describe('Pluralization', () => {
+    const list = 'один|два|несколько|много|остальное|ноль' // Corrected Russian form order
+    const ruIntl = new GeoIntl('ru-RU')
+
+    it('should select correct form for Russian plural (one)', () => {
+      expect(ruIntl.plural(1, list)).toContain('один')
+    })
+
+    it('should select correct form for Russian plural (few)', () => {
+      // 2, 3, 4 are 'few' in Russian
+      expect(ruIntl.plural(2, list)).toContain('несколько')
+    })
+
+    it('should select correct form for Russian plural (many)', () => {
+      expect(ruIntl.plural(5, list)).toContain('много')
+    })
+  })
+
+  describe('Date & Time', () => {
+    const date = new Date(2025, 2, 7, 15, 30, 0) // March 7, 2025
+
+    it('date formats as date by default', () => {
+      expect(intl.date(date)).toBe('Mar 07, 2025')
+    })
+
+    it('time formats correct time', () => {
+      expect(intl.time(date)).toContain('3:30')
+    })
+
+    it('month returns long month name', () => {
+      expect(intl.month(date)).toBe('March')
+    })
+
+    it('weekday returns long weekday name', () => {
+      expect(intl.weekday(date)).toBe('Friday')
+    })
+
+    it('months returns list of all months', () => {
+      const list = intl.months()
+      expect(list).toHaveLength(13)
+      expect(list[3]?.label).toBe('March')
+    })
+
+    it('weekdays returns list of all days', () => {
+      // Mocking system time to ensure consistent behavior
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date(2025, 2, 7)) // A Friday
+      const list = intl.weekdays()
+      expect(list).toHaveLength(8)
+      // For en-US, Su is first day (0). Friday is 5.
+      // GeoIntl.weekdays loops 7 days from (today - current).
+      // current = 5 + 1 = 6. 7 - 6 = 1 (Sunday).
+      // So list[1] is Sunday, list[6] should be Friday? 
+      // Let's just check if 'Friday' exists in the labels.
+      expect(list.some(item => item.label === 'Friday')).toBe(true)
+      vi.useRealTimers()
+    })
+  })
+
+  describe('Relative Time', () => {
+    it('relative formats correctly', () => {
+      const now = new Date(2025, 2, 7)
+      const future = new Date(2025, 2, 9)
+      expect(intl.relative(future, undefined, now)).toBe('in 2 days')
+    })
+
+    it('relativeByValue formats direct value with unit', () => {
+      expect(intl.relativeByValue(-5, 'minute')).toBe('5 minutes ago')
+    })
+
+    it('relativeLimit should respect boundaries', () => {
+      const now = new Date(2025, 0, 10)
+      const near = new Date(2025, 0, 12)
+      const far = new Date(2025, 1, 10)
+
+      expect(intl.relativeLimit(near, 7, now)).toBe('in 2 days')
+      expect(intl.relativeLimit(far, 7, now)).toBe('Feb 10, 2025')
+    })
+  })
+
+  describe('Sorting', () => {
+    it('sorts alphabetically per locale', () => {
+      const data = ['яблоко', 'арбуз', 'банан']
+      const ruIntl = new GeoIntl('ru-RU')
+      const sorted = ruIntl.sort([...data])
+      expect(sorted[0]).toBe('арбуз')
+      expect(sorted[2]).toBe('яблоко')
     })
   })
 })

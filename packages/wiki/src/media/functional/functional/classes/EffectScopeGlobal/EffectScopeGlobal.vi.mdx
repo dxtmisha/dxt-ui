@@ -1,0 +1,42 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Classes/EffectScopeGlobal - Phạm vi hiệu ứng toàn cục'/>
+
+# Lớp EffectScopeGlobal
+
+Một lớp tiện ích cung cấp `effectScope` Vue toàn cục và tách biệt (detached). Điều này cho phép chạy các hiệu ứng phản ứng (watchers, computed properties) không bị ràng buộc vào vòng đời của bất kỳ thành phần cụ thể nào, đảm bảo chúng không tự động bị hủy khi một thành phần bị gỡ bỏ (unmount).
+
+Phạm vi được khởi tạo lười biếng (lazy) khi gọi `run` lần đầu tiên và được tạo dưới dạng phạm vi "tách biệt" (`effectScope(true)`), có nghĩa là nó sẽ không bị nắm giữ bởi bất kỳ phạm vi cha nào.
+
+## Các tính năng chính
+
+- **Sự tồn tại toàn cục** — các hiệu ứng tồn tại cùng với ứng dụng.
+- **Phạm vi tách biệt** — được tạo với `effectScope(true)`, ngăn chặn việc bị hủy vô tình bởi các phạm vi cha.
+- **Khởi tạo lười biếng** — phạm vi nội bộ chỉ được tạo khi cần thiết lần đầu tiên.
+- **Quản lý phạm vi** — nhóm các hiệu ứng phản ứng toàn cục lại với nhau để quản lý có tổ chức.
+- **Dễ sử dụng** — phương thức tĩnh đơn giản để chạy bất kỳ hàm phản ứng nào.
+
+## Hành động
+
+### `run`
+
+Thực thi hàm được cung cấp trong phạm vi hiệu ứng toàn cục.
+
+**Tham số:**
+- `fn: () => T` — hàm cần thực thi (thường chứa logic phản ứng như `watch` hoặc `computed`).
+
+**Giá trị trả về:** `T | undefined`
+
+```typescript
+import { EffectScopeGlobal } from '@dxtmisha/functional'
+import { watch, ref } from 'vue'
+
+const globalState = ref(0)
+
+// Trình theo dõi (watcher) này sẽ tồn tại ngay cả khi thành phần tạo ra nó được gỡ bỏ
+EffectScopeGlobal.run(() => {
+  watch(globalState, (val) => {
+    console.log('Trạng thái toàn cục thay đổi:', val)
+  })
+})
+```

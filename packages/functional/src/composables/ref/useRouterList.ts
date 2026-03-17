@@ -59,45 +59,46 @@ export const useRouterList = <T extends ListDataBasic>(
     }
   }
 
+  /** Current element/ Текущий элемент */
+  const item = computed<T | undefined>(() => getItem())
+
+  /** Label / Метка */
+  const label = computed<NumberOrString>(() => getItem()?.label || '')
+
+  /** List of elements / Список элементов */
+  const listComputed = computed<ConstrBind<T>[]>(() => {
+    if (list.value) {
+      return forEach(
+        list.value,
+        (item) => {
+          if (
+            hasTo
+            && !('to' in item)
+          ) {
+            return {
+              ...item,
+              to: { name: item.value }
+            }
+          }
+
+          return item
+        }
+      )
+    }
+
+    return []
+  })
+
   return {
-    /** Current element/ Текущий элемент */
-    get item() {
-      return computed<T | undefined>(() => getItem())
-    },
+    item,
 
     /** Selected element / Выбранный элемент */
     selected: index,
 
-    /** Label / Метка */
-    get label() {
-      return computed<NumberOrString>(() => getItem()?.label || '')
-    },
+    label,
 
     /** List of elements / Список элементов */
-    get list() {
-      return computed<ConstrBind<T>[]>(() => {
-        if (list.value) {
-          return forEach(
-            list.value,
-            (item) => {
-              if (
-                hasTo
-                && !('to' in item)
-              ) {
-                return {
-                  ...item,
-                  to: { name: item.value }
-                }
-              }
-
-              return item
-            }
-          )
-        }
-
-        return []
-      })
-    },
+    list: listComputed,
 
     to,
 

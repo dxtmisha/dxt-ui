@@ -15,6 +15,8 @@ import { getRef } from '../../functions/ref/getRef'
 import { getOptions } from '../../functions/getOptions'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
+import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
+
 import type { ApiOptions } from '../../types/apiTypes'
 import type { RefOrNormal, RefType } from '../../types/refTypes'
 
@@ -118,7 +120,7 @@ export function useApiRef<
   reactivity: boolean = true,
   conditions?: RefType<boolean>,
   transformation?: (data: T) => ApiData<R>,
-  unmounted?: boolean
+  unmounted: boolean = true
 ): UseApiRef<R> {
   /** Value item / Элемент-значение */
   const item = ref<ApiData<R> | undefined>()
@@ -218,6 +220,8 @@ export function useApiRef<
         if (getCurrentInstance()) {
           onUnmounted(() => stop())
         }
+      } else {
+        EffectScopeGlobal.run(() => initWatch())
       }
     }
   }
@@ -255,19 +259,31 @@ export function useApiRef<
     }
   }
 
-  if (!unmounted) {
-    initWatch()
-  }
+  /** Reactive data (Computed) / Реактивные данные (Computed) */
+  const data = computed(() => {
+    init()
+
+    return item.value
+  })
+
+  /**
+   * Returns the count of records in the list (ComputedRef) /
+   * Возвращает количество записей в списке (ComputedRef)
+   */
+  const length = computed<number>(() => {
+    if (Array.isArray(item.value)) {
+      return item.value.length
+    }
+
+    return item.value ? 1 : 0
+  })
+
+  /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
+  const starting = computed<boolean>(() => item.value === undefined)
 
   return {
     /** Reactive data (Computed) / Реактивные данные (Computed) */
-    get data() {
-      return computed(() => {
-        init()
-
-        return item.value
-      })
-    },
+    data,
     /** Item (Ref) / Элемент (Ref) */
     get item() {
       init()
@@ -279,20 +295,10 @@ export function useApiRef<
      * Returns the count of records in the list (ComputedRef) /
      * Возвращает количество записей в списке (ComputedRef)
      */
-    get length() {
-      return computed<number>(() => {
-        if (Array.isArray(item.value)) {
-          return item.value.length
-        }
-
-        return item.value ? 1 : 0
-      })
-    },
+    length,
 
     /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
-    get starting() {
-      return computed<boolean>(() => item.value === undefined)
-    },
+    starting,
     /** Request load flag / Флаг загрузки запроса */
     loading,
     /** Active reading flag / Флаг активного чтения */

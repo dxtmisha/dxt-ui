@@ -114,9 +114,9 @@ export type ApiResponseItem = {
 }
 
 /**
- * Shape of API response data wrapper/ Структура обёртки данных ответа API
+ * Type of API response data item/ Тип элемента данных ответа API
  */
-export type ApiData<T = any>
+export type ApiDataItem<T = any>
   = T
     & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
@@ -130,6 +130,11 @@ export type ApiData<T = any>
       /** Status object/ Объект статуса */
       statusObject?: ApiStatusItem
     }
+
+/**
+ * Shape of API response data wrapper/ Структура обёртки данных ответа API
+ */
+export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>
 
 /**
  * Result of global preparation/end hooks/ Результат глобальных хуков

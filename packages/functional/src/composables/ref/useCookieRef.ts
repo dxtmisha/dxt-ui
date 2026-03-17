@@ -4,6 +4,7 @@ import {
 } from 'vue'
 import { Cookie, type CookieOptions } from '@dxtmisha/functional-basic'
 
+import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 import { useBroadcastValueRef } from './useBroadcastValueRef'
 
 /**
@@ -29,8 +30,10 @@ export function useCookieRef<T>(
     cookie.get(defaultValue, options)
   )
 
-  watch(item, (value) => {
-    cookie.set(value as T, options)
+  EffectScopeGlobal.run(() => {
+    watch(item, (value) => {
+      cookie.set(value as T, options)
+    })
   })
 
   items[name] = item

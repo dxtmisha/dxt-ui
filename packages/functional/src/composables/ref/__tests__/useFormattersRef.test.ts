@@ -67,22 +67,19 @@ describe('useFormattersRef', () => {
     expect(listFormat.value).toEqual([])
   })
 
-  it('should create a new computed on each access to the getter (current behavior check)', () => {
+  it('should return the same computed instance on multiple accesses', () => {
     const list = ref([...listData])
 
-    // In the current implementation, a check call to listFormat (the getter) returns a NEW computed.
-    // However, the object returned by useFormattersRef is { get listFormat() { ... } }
+    // After the fix, accessing listFormat returns the same computed instance.
+    const result = useFormattersRef(list, options)
+    const comp1 = result.listFormat
+    const comp2 = result.listFormat
 
-    const result1 = useFormattersRef(list, options)
-    const comp1 = result1.listFormat
-    const comp2 = result1.listFormat
+    // They should now be the same instance
+    expect(comp1).toBe(comp2)
 
-    // They should be different instances if my review was correct
-    expect(comp1).not.toBe(comp2)
-
-    // But they both should work and be reactive
+    // And it should work and be reactive
     expect(comp1.value[0]?.priceFormat).toContain('$100.00')
-    expect(comp2.value[0]?.priceFormat).toContain('$100.00')
 
     if (list.value[0]) {
       list.value[0].price = 300

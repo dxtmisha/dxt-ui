@@ -1,5 +1,6 @@
 import { ref, type Ref, watch } from 'vue'
 import { BroadcastMessage, executeFunction } from '@dxtmisha/functional-basic'
+import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 type BroadcastValueItem<T> = T | string | undefined
 
@@ -30,7 +31,9 @@ export function useBroadcastValueRef<T>(
     }
   )
 
-  watch(item, value => broadcast.post({ message: value }))
+  EffectScopeGlobal.run(() => {
+    watch(item, value => broadcast.post({ message: value }))
+  })
 
   items[fullName] = item
   return item as Ref<BroadcastValueItem<T>>

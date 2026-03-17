@@ -183,7 +183,12 @@ export declare class Api {
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API
  */
-export declare type ApiData<T = any> = T & {
+export declare type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
+
+/**
+ * Type of API response data item/ Тип элемента данных ответа API
+ */
+export declare type ApiDataItem<T = any> = T & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
     data?: T;
     /** Success flag/ Флаг успешности */
@@ -1621,9 +1626,11 @@ export declare type EventActivityItem<E extends ElementOrWindow> = {
 };
 
 /**
- * Class for working with events.
+ * Advanced wrapper for managing event listeners on DOM elements or the `window` object.
+ * It simplifies the entire event lifecycle (start, stop, toggle, reset) and provides built-in optimizations for high-frequency events like `resize` and `scroll-sync`.
  *
- * Класс для работы с событиями.
+ * Продвинутая обертка для управления слушателями событий на DOM-элементах или объекте `window`.
+ * Упрощает весь жизненный цикл событий (запуск, остановка, переключение, сброс) и предоставляет встроенные оптимизации для высокочастотных событий, таких как `resize` и `scroll-sync`.
  */
 export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
     protected listener?: EventListenerDetail<O, D> | undefined;
@@ -1665,15 +1672,14 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
     protected activity: boolean;
     protected activityItems: EventActivityItem<E>[];
     /**
-     * Classes Constructor
-     * @param elementSelector element/ элемент
-     * @param type type/ тип
-     * @param listener the object that receives a notification (an object that implements the
-     * Event interface) when an event of the specified type occurs/ объект, который принимает
-     * уведомление, когда событие указанного типа произошло
-     * @param options object that specifies characteristics/ объект options
-     * @param detail an event-dependent value associated with the event/ зависимое от события
-     * значение, связанное с событием
+     * Constructor for EventItem.
+     *
+     * Конструктор для EventItem.
+     * @param elementSelector target element or selector where the listener should be attached / целевой элемент или селектор, к которому должен быть прикреплен слушатель
+     * @param type event type (e.g., 'click'), array of types, or special optimization types ('resize', 'scroll-sync') / тип события (например, 'click'), массив типов или специальные типы оптимизации ('resize', 'scroll-sync')
+     * @param listener the handler function to be executed when the event occurs / функция-обработчик, которая будет выполнена при возникновении события
+     * @param options standard EventListenerOptions or boolean for useCapture / стандартные EventListenerOptions или логическое значение для useCapture
+     * @param detail additional data provided to the listener via the custom Event interaction / дополнительные данные, предоставляемые слушателю через кастомное взаимодействие с событием
      */
     constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
     /**
@@ -1726,13 +1732,12 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      */
     setDetail(detail?: D): this;
     /**
-     * The method of the EventTarget sends an Event to the object, (synchronously) invoking
-     * the affected EventListeners in the appropriate order.
+     * Triggers the events on the target element, optionally with a new detail value.
+     * This method manually initiates a `CustomEvent` dispatch for all specified types.
      *
-     * Отправляет событие в общую систему событий. Это событие подчиняется тем же правилам
-     * поведения "Захвата" и "Всплывания" как и непосредственно инициированные события.
-     * @param detail an event-dependent value associated with the event/ зависимое от события
-     * значение, связанное с событием
+     * Инициирует события на целевом элементе, опционально с новым значением detail.
+     * Этот метод вручную запускает диспетчеризацию `CustomEvent` для всех указанных типов.
+     * @param detail the value to be passed as the event detail / значение, которое будет передано как detail события
      */
     dispatch(detail?: D | undefined): this;
     /**
@@ -1891,7 +1896,7 @@ export declare class Formatters<Options extends FormattersOptionsList = Formatte
      * @param list list of data/ список данных
      * @returns the Formatters instance for chaining/ экземпляр Formatters для цепочки вызовов
      */
-    setList(list: List): this;
+    setList(list?: List): this;
     /**
      * Formats the entire list or a single item based on the provided options.
      * Adds formatted values with the suffix 'Format' to each item.

@@ -1,4 +1,4 @@
-import { computed, ref, watchEffect, type Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import {
   executeFunction,
   SearchList,
@@ -30,7 +30,6 @@ export function useSearchRef<
   value?: Ref<string>,
   options?: SearchOptions
 ) {
-  const listRef = ref()
   /** Search list instance / Экземпляр поиска */
   const item = new SearchList<T, K>(
     undefined,
@@ -45,24 +44,55 @@ export function useSearchRef<
     loading
   } = useSearchValueRef(item, value)
 
-  watchEffect(() => {
-    listRef.value = getRef(executeFunction(list))
-    item.setList(listRef.value)
+  /**
+   * Get list of items to search
+   *
+   * Получить список элементов для поиска
+   */
+  const getList = (): T[] => {
+    const listRead = getRef(executeFunction(list))
+
+    if (listRead) {
+      return listRead
+    }
+
+    return []
+  }
+
+  /**
+   * Whether the search is currently active (minimum character limit reached) /
+   * Активен ли поиск в данный момент (достигнут ли лимит символов)
+   */
+  const isSearch = computed<boolean>(
+    () => item
+      .setValue(searchDelay.value)
+      .getItem()
+      .isSearch()
+  )
+
+  /**
+   * Formatted list of search results with highlights /
+   * Форматированный список результатов поиска с подсветкой совпадений
+   */
+  const listSearch = computed<SearchFormatList<T, K>>(() => {
+    return item
+      .setList(getList())
+      .setValue(searchDelay.value)
+      .to()
   })
+
+  /**
+   * Length of the search results /
+   * Длина списка результатов поиска
+   */
+  const length = computed(() => listSearch.value.length)
 
   return {
     /**
      * Whether the search is currently active (minimum character limit reached)/
      * Активен ли поиск в данный момент (достигнут ли лимит символов)
      */
-    get isSearch() {
-      return computed<boolean>(
-        () => item
-          .setValue(searchDelay.value)
-          .getItem()
-          .isSearch()
-      )
-    },
+    isSearch,
 
     /** Search string ref/ Ссылка на строку поиска */
     search,
@@ -77,16 +107,12 @@ export function useSearchRef<
      * Formatted list of search results with highlights /
      * Форматированный список результатов поиска с подсветкой совпадений
      */
-    get listSearch() {
-      return computed<SearchFormatList<T, K>>(() => {
-        if (listRef.value) {
-          return item
-            .setValue(searchDelay.value)
-            .to()
-        }
+    listSearch,
 
-        return []
-      })
-    }
+    /**
+     * Length of the search results /
+     * Длина списка результатов поиска
+     */
+    length
   }
 }

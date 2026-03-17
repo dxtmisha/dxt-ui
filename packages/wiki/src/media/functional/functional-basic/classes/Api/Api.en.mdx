@@ -100,12 +100,40 @@ Methods to configure the API (support chaining, returning the `Api` class):
 - `type?: string` — `Content-Type` header value. Default: `'application/json;charset=UTF-8'`.
 - `auth?: boolean` — include authentication headers.
 - `toData?: boolean` — if `true`, automatically unwraps `data` from a `{ data: ... }` wrapper. Default: `true`.
+- `global?: boolean` — use global response cache.
+- `devMode?: boolean` — enable development logging.
 - `hideError?: boolean` — suppresses `console.error` output on failure. Default: `false`.
 - `globalPreparation?: boolean` — whether to run the global `setPreparation` hook before this request. Default: `true`.
 - `globalEnd?: boolean` — whether to run the global `setEnd` hook after the response. Default: `true`.
 - `queryReturn?: (query: Response) => Promise<any>` — custom response processor instead of the default JSON reader.
 - `init?: RequestInit` — additional options passed directly to native `fetch()` (CORS, cache mode, etc.).
 - `controller?: AbortController` — controller for canceling the request.
+
+## Response Data Structure
+
+Requests return a `Promise<ApiData<T>>`.
+
+### `ApiData<T>`
+
+The structure of the returned data depends on the type of response:
+- **Array**: If the response is an array, `ApiData<T>` acts as `T[]`.
+- **Object**: If the response is an object, `ApiData<T>` includes fields from `T` and the standard wrapper `ApiDataItem<T>`.
+
+### `ApiDataItem<T>`
+
+The object response contains the following fields:
+
+- `data?: T` — primary payload if the response was wrapped.
+- `success?: boolean` — success flag.
+- `status?: ApiStatusType` — status type (`'success'`, `'error'`, `'warning'`, `'info'`).
+- `message?: string` — response message or error description.
+- `statusObject?: ApiStatusItem` — technical information about the request:
+    - `status?: number` — HTTP status code (e.g., 200, 404).
+    - `statusText?: string` — HTTP status text.
+    - `error?: string` — internal error message if the request failed.
+    - `lastResponse?: any` — data from the last response before parsing.
+    - `lastStatus?: ApiStatusType` — status of the last request.
+    - `lastMessage?: string` — message from the last request.
 
 ## Request Cancellation (AbortController)
 
@@ -138,6 +166,8 @@ The `add` method accepts an `ApiResponseItem` object or an array of such objects
 - `method` — HTTP method (`ApiMethodItem.get`, `post`, etc.).
 - `request` — (Optional) Request body filter. You can use the special marker `'*any'` to bypass payload validation and capture all requests to this path.
 - `response` — Static data object _or_ a dynamic factory function `(request) => any` that generates a response based on the incoming request payload.
+- `disable` — (Optional) Disable this mock (boolean or callback).
+- `isForGlobal` — (Optional) Mark as global mock.
 - `lag` — (Optional) Simulates network lag (`boolean`), adding a random `setTimeout` from 0 to 2000ms.
 
 ```javascript

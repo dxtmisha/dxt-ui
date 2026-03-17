@@ -5,6 +5,7 @@ import {
   watch
 } from 'vue'
 import { Hash } from '@dxtmisha/functional-basic'
+import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 /**
  * Creates a reactive variable to manage the hash.
@@ -23,7 +24,10 @@ export function useHashRef<T>(
 
   const item = shallowRef<T>(Hash.get(name, defaultValue))
 
-  watch(item, (value: T) => Hash.set(name, value))
+  EffectScopeGlobal.run(() => {
+    watch(item, (value: T) => Hash.set(name, value))
+  })
+
   Hash.addWatch(name, (value: T) => {
     item.value = value
   })

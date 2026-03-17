@@ -1,5 +1,6 @@
 import { ref, type Ref, watch } from 'vue'
 import { DataStorage } from '@dxtmisha/functional-basic'
+import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 /**
  * Creates a reactive variable to manage session storage.
@@ -19,7 +20,9 @@ export function useSessionRef<T>(
   const storage = new DataStorage<T>(name, true)
   const item = ref<T | undefined>(storage.get(defaultValue))
 
-  watch(item, value => storage.set(value as T))
+  EffectScopeGlobal.run(() => {
+    watch(item, value => storage.set(value as T))
+  })
 
   items[name] = item
   return item as Ref<T>

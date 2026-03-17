@@ -1,0 +1,42 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Classes/EffectScopeGlobal - Global Reactive Scope'/>
+
+# EffectScopeGlobal Class
+
+A utility class that provides a global, detached Vue `effectScope`. This allows running reactive effects (watchers, computed properties) that are not tied to any specific component lifecycle, ensuring they aren't automatically disposed of when a component unmounts.
+
+The scope is initialized lazily upon the first call to `run`, and it is created as a "detached" scope (`effectScope(true)`), meaning it will not be captured by any parent scope.
+
+## Key Features
+
+- **Global Persistence** — effects live as long as the application does.
+- **Detached Scope** — created with `effectScope(true)`, preventing accidental disposal by parent scopes.
+- **Lazy Initialization** — the internal scope is created only when first needed.
+- **Scope Management** — groups global reactive effects together for organized disposal if needed (via the internal scope).
+- **Ease of Use** — simple static method to run any reactive function.
+
+## Actions
+
+### `run`
+
+Executes the provided function within the global effect scope.
+
+**Parameters:**
+- `fn: () => T` — the function to execute (typically containing reactive logic like `watch` or `computed`).
+
+**Returns:** `T | undefined`
+
+```typescript
+import { EffectScopeGlobal } from '@dxtmisha/functional'
+import { watch, ref } from 'vue'
+
+const globalState = ref(0)
+
+// This watcher will persist even if the component that created it is unmounted
+EffectScopeGlobal.run(() => {
+  watch(globalState, (val) => {
+    console.log('Global state changed:', val)
+  })
+})
+```

@@ -406,10 +406,10 @@ export class Api {
     }
 
     if (isArray(data.data)) {
-      return data.data
+      return data.data as any
     }
 
-    const item: ApiData<T> = copyObjectLite(data.data)
+    const item: ApiData<T & Record<string, any>> = copyObjectLite(data.data)
 
     if (
       'success' in data

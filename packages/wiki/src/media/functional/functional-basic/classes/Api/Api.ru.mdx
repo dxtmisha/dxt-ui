@@ -100,12 +100,40 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `type?: string` — значение `Content-Type`. По умолчанию: `'application/json;charset=UTF-8'`.
 - `auth?: boolean` — добавить заголовки аутентификации.
 - `toData?: boolean` — если `true`, автоматически разворачивает `data` из обертки `{ data: ... }`. По умолчанию: `true`.
+- `global?: boolean` — использовать глобальный кэш ответов.
+- `devMode?: boolean` — включить логирование разработки.
 - `hideError?: boolean` — подавляет вывод ошибок в `console.error` при сбое. По умолчанию: `false`.
 - `globalPreparation?: boolean` — запускать ли глобальный хук `setPreparation` до этого запроса. По умолчанию: `true`.
 - `globalEnd?: boolean` — запускать ли глобальный хук `setEnd` после ответа. По умолчанию: `true`.
 - `queryReturn?: (query: Response) => Promise<any>` — обработчик ответа вместо стандартного чтения JSON.
 - `init?: RequestInit` — дополнительные опции для нативного `fetch()` (CORS, режим кеша и др.).
 - `controller?: AbortController` — контроллер для отмены запроса.
+
+## Структура данных ответа
+
+Запросы возвращают `Promise<ApiData<T>>`.
+
+### `ApiData<T>`
+
+Структура возвращаемых данных зависит от типа ответа:
+- **Массив**: Если ответ является массивом, `ApiData<T>` представляет собой `T[]`.
+- **Объект**: Если ответ является объектом, `ApiData<T>` включает в себя поля из `T` и стандартную обертку `ApiDataItem<T>`.
+
+### `ApiDataItem<T>`
+
+Объект ответа содержит следующие поля:
+
+- `data?: T` — основная полезная нагрузка, если ответ был обернут.
+- `success?: boolean` — флаг успешности.
+- `status?: ApiStatusType` — тип статуса (`'success'`, `'error'`, `'warning'`, `'info'`).
+- `message?: string` — сообщение ответа или описание ошибки.
+- `statusObject?: ApiStatusItem` — техническая информация о запросе:
+    - `status?: number` — HTTP-код статуса (например, 200, 404).
+    - `statusText?: string` — текст статуса HTTP.
+    - `error?: string` — внутреннее сообщение об ошибке, если запрос не удался.
+    - `lastResponse?: any` — данные последнего ответа до парсинга.
+    - `lastStatus?: ApiStatusType` — статус последнего запроса.
+    - `lastMessage?: string` — сообщение последнего запроса.
 
 ## Отмена запросов (AbortController)
 
@@ -138,6 +166,8 @@ controller.abort()
 - `method` — HTTP метод (`ApiMethodItem.get`, `post` и т.д.).
 - `request` — (Опционально) Фильтр по телу запроса. Можно использовать специальный маркер `'*any'`, чтобы перехватывать любые данные.
 - `response` — Статический объект с данными ответа _или_ функция `(request) => any`, генерирующая ответ динамически на основе параметров запроса.
+- `disable` — (Опционально) Отключить этот мок (boolean или callback).
+- `isForGlobal` — (Опционально) Пометить как глобальный мок.
 - `lag` — (Опционально) Имитировать задержку сети (`boolean`), добавляет случайный setTimeout от 0 до 2000мс.
 
 ```javascript

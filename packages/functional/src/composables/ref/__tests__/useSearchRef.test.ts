@@ -118,4 +118,16 @@ describe('useSearchRef', () => {
     expect(isSearch.value).toBe(true)
     expect(listSearch.value).toHaveLength(1)
   })
+
+  it('should return the same computed instance on multiple accesses', () => {
+    const { isSearch, listSearch } = useSearchRef(listItems, columns)
+
+    const isSearch1 = isSearch
+    const isSearch2 = isSearch
+    const listSearch1 = listSearch
+    const listSearch2 = listSearch
+
+    expect(isSearch1).toBe(isSearch2)
+    expect(listSearch1).toBe(listSearch2)
+  })
 })

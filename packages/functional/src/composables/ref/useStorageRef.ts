@@ -1,5 +1,6 @@
 import { ref, type Ref, watch } from 'vue'
 import { DataStorage, isDomRuntime } from '@dxtmisha/functional-basic'
+import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 /**
  * Creates a reactive variable to manage a local storage.
@@ -21,7 +22,9 @@ export function useStorageRef<T>(
   const storage = new DataStorage<T>(name)
   const item = ref<T | undefined>(storage.get(defaultValue, cache))
 
-  watch(item, value => storage.set(value as T))
+  EffectScopeGlobal.run(() => {
+    watch(item, value => storage.set(value as T))
+  })
 
   if (isDomRuntime()) {
     window.addEventListener('storage', () => {

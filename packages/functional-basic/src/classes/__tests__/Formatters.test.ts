@@ -72,13 +72,20 @@ describe('Formatters', () => {
 
       const formattersSingle = new Formatters(options, list[0])
       expect(formattersSingle.length()).toBe(1)
+
+      formattersArray.setList([])
+      expect(formattersArray.length()).toBe(0)
+
+      formattersArray.setList(undefined)
+      expect(formattersArray.length()).toBe(0)
     })
 
     it('should allow setting and getting the list', () => {
       const formatters = new Formatters(options)
       expect(formatters.getList()).toEqual([])
-      formatters.setList(list)
+      const result = formatters.setList(list)
       expect(formatters.getList()).toEqual(list)
+      expect(result).toBe(formatters) // Check chaining
     })
   })
 
@@ -95,6 +102,14 @@ describe('Formatters', () => {
       expect(item.applesFormat).toBe('5 apples')
       expect(item.weightFormat).toBe('10 kg')
       expect(item.customFormat).toBe('custom-value')
+    })
+
+    it('should update formatted output when list is changed via setList', () => {
+      const formatters = new Formatters(options, list)
+      expect((formatters.to()[0] as any).priceFormat).toContain('$100.00')
+
+      formatters.setList([{ ...list[0], price: 200 } as any])
+      expect((formatters.to()[0] as any).priceFormat).toContain('$200.00')
     })
 
     it('should format a single item correctly', () => {

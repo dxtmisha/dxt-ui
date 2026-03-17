@@ -5,6 +5,8 @@ import type { Ref } from 'vue'
 /** Options for api requests/ Опции для запросов api */
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>
 
+export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[]
+
 export type ApiManagementGet<
   Return extends ApiManagementValue,
   Type extends ApiManagementValue = Return
@@ -15,6 +17,7 @@ export type ApiManagementGet<
   conditions?: RefType<boolean>
   transformation?: (data: Type) => ApiData<Return>
   unmounted?: boolean
+  skeleton?: () => Return
 }
 
 export type ApiManagementSearch<
@@ -25,5 +28,3 @@ export type ApiManagementSearch<
   value?: Ref<string>
   options?: SearchOptions
 }
-
-export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[]

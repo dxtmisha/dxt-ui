@@ -18,34 +18,34 @@ export function useFormattersRef<
   Options extends FormattersOptionsList = FormattersOptionsList,
   List extends FormattersListProp = FormattersListProp
 >(
-  list: RefType<List>,
+  list: RefType<List | undefined>,
   options: Options
 ) {
   const item = new Formatters<Options, List>(options)
+
+  const listFormat = computed<FormattersReturn<List, Options>>(() => {
+    return item
+      .setList(list.value)
+      .to()
+  })
+
+  const length = computed<number>(() => {
+    return item
+      .setList(list.value)
+      .length()
+  })
 
   return {
     /**
      * Formatted data list (ComputedRef) /
      * Отформатированный список данных (ComputedRef)
      */
-    get listFormat() {
-      return computed<FormattersReturn<List, Options>>(() => {
-        return item
-          .setList(list.value)
-          .to()
-      })
-    },
+    listFormat,
 
     /**
      * Returns the count of records in the list (ComputedRef) /
      * Возвращает количество записей в списке (ComputedRef)
      */
-    get length() {
-      return computed<number>(() => {
-        return item
-          .setList(list.value)
-          .length()
-      })
-    }
+    length
   }
 }

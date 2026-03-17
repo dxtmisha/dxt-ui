@@ -1,27 +1,31 @@
 import { computed, type ComputedRef } from 'vue'
 import {
-  FormattersType,
   type FormattersOptionsList,
   type FormattersReturn,
   type ApiData,
   type ArrayToItem,
-  type SearchColumns
+  type SearchColumns,
+  type SearchFormatList,
+  type FormattersListColumns
 } from '@dxtmisha/functional-basic'
 
 import { useApiRef } from './useApiRef'
 import { useFormattersRef } from './useFormattersRef'
-import type { useSearchRef } from './useSearchRef'
+import { useSearchRef } from './useSearchRef'
 
-import type { ApiManagementGet, ApiManagementValue } from '../../types/apiTypes'
+import type { ApiManagementGet, ApiManagementSearch, ApiManagementValue } from '../../types/apiTypes'
 
 export function useApiManagementRef<
   Return extends ApiManagementValue,
   FormattersOptions extends FormattersOptionsList,
   Type extends ApiManagementValue = Return,
-  Item extends ArrayToItem<Return> = ArrayToItem<Return>
+  Item extends ArrayToItem<Return> = ArrayToItem<Return>,
+  ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number],
+  Columns extends SearchColumns<ItemFormatters> = []
 >(
   propsGet: ApiManagementGet<Return, Type>,
-  formattersOptions?: FormattersOptions
+  formattersOptions?: FormattersOptions,
+  searchOptions?: ApiManagementSearch<Item, Columns>
 ) {
   const {
     path,
@@ -29,13 +33,14 @@ export function useApiManagementRef<
     reactivity,
     conditions,
     transformation,
-    unmounted
+    unmounted,
+    skeleton
   } = propsGet
 
   let formatters: ReturnType<typeof useFormattersRef<FormattersOptions, Return>> | undefined
-  let search: ReturnType<typeof useSearchRef<Item, SearchColumns<Item>>> | undefined
+  let search: ReturnType<typeof useSearchRef<Item, Columns>> | undefined
 
-  const data = useApiRef<Return, Type>(
+  const request = useApiRef<Return, Type>(
     path,
     options,
     reactivity,
@@ -44,65 +49,80 @@ export function useApiManagementRef<
     unmounted
   )
 
+  const data = computed(() => {
+    if (
+      request.isStarting()
+      && skeleton
+    ) {
+      return skeleton()
+    }
+
+    return request.data.value
+  })
+
   if (formattersOptions) {
     formatters = useFormattersRef<FormattersOptions, Return>(
-      data.data as ComputedRef<Return>,
+      data,
       formattersOptions
+    )
+  }
+
+  if (searchOptions) {
+    const dataForSearch = computed(() => {
+      const list = formatters?.listFormat.value ?? request.data.value
+
+      if (Array.isArray(list)) {
+        return list
+      }
+
+      return undefined
+    })
+
+    search = useSearchRef<Item, Columns>(
+      dataForSearch,
+      searchOptions.columns,
+      searchOptions.value,
+      searchOptions.options
     )
   }
 
   return {
     get list(): ComputedRef<
-      typeof formatters extends undefined
-      ? (ApiData<Return> | undefined)
-      : FormattersReturn<Return, FormattersOptions>
+      typeof search extends undefined ? (
+        typeof formatters extends undefined ? (ApiData<Return> | undefined) : FormattersReturn<Return, FormattersOptions>
+      ) : SearchFormatList<typeof formatters extends undefined ? Item : ItemFormatters, Columns>
     > {
-      if (formatters) {
-        return formatters.listFormat
+      if (
+        search
+        && Array.isArray(request.data.value)
+      ) {
+        return search.listSearch as any
       }
 
-      return data.data as any
+      if (formatters) {
+        return formatters.listFormat as any
+      }
+
+      return data.value as any
     },
     get data() {
-      return data.data
+      return request.data
     },
 
     get length() {
-      if (formatters) {
-        return formatters.length
+      if (search) {
+        return search.length
       }
 
-      return data.length
+      return request.length
     },
+    lengthData: request.length,
 
-    get starting() {
-      return data.starting
-    },
-    get loading() {
-      return data.loading
-    },
-    get reading() {
-      return data.reading
-    }
+    starting: request.starting,
+    loading: request.loading,
+    reading: request.reading,
+
+    reset: request.reset,
+    abort: request.abort
   }
 }
-
-type t = {
-  name: string
-  age: number
-}
-
-const {
-  list
-} = useApiManagementRef(
-  {
-    path: 'test'
-  } as ApiManagementGet<t>,
-  {
-    age: {
-      type: FormattersType.number
-    }
-  }
-)
-
-console.log(list.value?.)
