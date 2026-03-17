@@ -1,0 +1,110 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesValues - Property Values'/>
+
+# PropertiesValues Class
+
+The `PropertiesValues` class provides utility methods for validating and normalizing property values (tokens). It is responsible for identifying data formats (colors, full values) and standardizing them before they are used in style generation.
+
+## Key Features
+
+- **Marker Recognition** — identifies values marked as "full" (requiring no further processing).
+- **Color Validation** — verifies strings against HEX formats (including transparency).
+- **Type Normalization** — automatically converts numeric values to strings for consistency.
+- **Data Cleanup** — removes system markers before the final application of values.
+
+## Initialization
+
+The class contains only static methods, so instantiation via `new` is not required.
+
+```typescript
+import { PropertiesValues } from '@dxtmisha/scripts'
+
+// Accessing static methods
+const isFull = PropertiesValues.isFull('=someValue')
+```
+
+## Methods
+
+### `isFull`
+Checks if a string value starts with the special `=` (equals) marker. This marker signals to the system that the value is final and does not require reference processing or other transformations.
+
+**Parameters:**
+- `value: PropertyItemPartial['value']` — the property value to verify.
+
+**Returns:** `boolean` — `true` if the value is marked as full.
+
+```typescript
+const result = PropertiesValues.isFull('=100%');
+// Result: true
+```
+
+### `isColor`
+Checks if the provided string is a valid HEX color (starts with the `#` symbol).
+
+**Parameters:**
+- `value: PropertyItemPartial['__c']` — the value to verify.
+
+**Returns:** `boolean` — `true` if the string resembles a HEX color.
+
+```typescript
+const isHex = PropertiesValues.isColor('#ff0000');
+// Result: true
+```
+
+### `isColorWithOpacity`
+A specialized check for HEX colors with an alpha channel. It verifies if the string matches the eight-digit HEX format (e.g., `#rrggbbaa`).
+
+**Parameters:**
+- `value: PropertyItemPartial['__c']` — the value to verify.
+
+**Returns:** `boolean` — `true` if the value is a color with transparency.
+
+```typescript
+const isTrans = PropertiesValues.isColorWithOpacity('#ff000080');
+// Result: true
+```
+
+### `reValue`
+Normalizes the value for further use. If the value is marked as "full", the `=` marker is removed. If the value is a number, it is converted to a string.
+
+**Parameters:**
+- `value: PropertyItemPartial['value']` — the original property value.
+
+**Returns:** `PropertyItemPartial['value']` — the normalized string (or original object) value.
+
+```typescript
+const val1 = PropertiesValues.reValue('=12px'); // '12px'
+const val2 = PropertiesValues.reValue(24); // '24'
+```
+
+### `getExpFull`
+Returns the regular expression used to identify the full value marker.
+
+**Returns:** `RegExp` — the regular expression `/^=/`.
+
+```typescript
+const regex = PropertiesValues.getExpFull();
+```
+
+## Operations
+
+### The Value Normalization Process
+
+1. **"Fullness" Check**: The `isFull` method determines whether the reference processing stage should be skipped.
+2. **Typing**: All numbers are converted to string types via `reValue` to avoid errors during CSS/SCSS concatenation.
+3. **Filtering**: Control markers (such as `=`) are removed from the final string to prevent them from appearing in the resulting CSS code.
+
+## Examples
+
+### Validating and Cleaning Input Data
+```typescript
+import { PropertiesValues } from '@dxtmisha/scripts'
+
+const rawValue = '=rgba(0,0,0,0.5)'
+
+if (PropertiesValues.isFull(rawValue)) {
+  const cleanValue = PropertiesValues.reValue(rawValue)
+  console.log(cleanValue) // 'rgba(0,0,0,0.5)'
+}
+```

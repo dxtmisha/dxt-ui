@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/convectorColor - Chuyển đổi màu sắc'/>
+
+# Hàm convectorColor
+
+Hàm `convectorColor` là một phần của hệ thống convector để xử lý các token thuộc tính. Vai trò chính của nó là trích xuất siêu dữ liệu màu sắc cụ thể từ các phần mở rộng 'studio.tokens' và áp dụng chúng vào đối tượng thuộc tính. Hiện tại, hàm chuyên về xử lý các sửa đổi độ mờ (alpha).
+
+## Các tính năng chính
+
+- **Tích hợp Studio Tokens** — hoạt động với các phần mở rộng `$extensions['studio.tokens']`.
+- **Sửa đổi độ mờ** — trích xuất giá trị `alpha` từ các tham số sửa đổi và lưu trữ nó trong khóa hệ thống `cssColorOpacity`.
+- **Tự động hóa** — được gọi trong quá trình chuẩn hóa thuộc tính khi phát hiện siêu dữ liệu tương ứng.
+
+## Tham số
+
+Hàm chấp nhận một đối số duy nhất:
+
+- `item: PropertyItemInput` — đối tượng dữ liệu đầu vào của thuộc tính, đối tượng này sẽ được thay đổi (mute) trong quá trình thực thi.
+
+## Ví dụ (Examples)
+
+### Xử lý sửa đổi độ mờ
+
+Nếu một token chứa thông tin sửa đổi màu sắc, `convectorColor` sẽ trích xuất thông tin đó:
+
+```typescript
+import { convectorColor, PropertyKey } from '@dxtmisha/scripts'
+
+const item = {
+  value: '#ff0000',
+  $extensions: {
+    'studio.tokens': {
+      modify: {
+        type: 'alpha',
+        value: '0.5'
+      }
+    }
+  }
+};
+
+convectorColor(item);
+
+console.log(item[PropertyKey.cssColorOpacity]); // '0.5'
+```
+
+## Các thao tác (Operations)
+
+### Cơ chế xử lý
+
+Quá trình xử lý dữ liệu trong `convectorColor` bao gồm các bước sau:
+1. **Tìm kiếm phần mở rộng**: Hàm tìm kiếm đường dẫn `$extensions['studio.tokens'].modify`.
+2. **Xác định kiểu**: Nếu kiểu sửa đổi được thiết lập là `alpha`, hàm sẽ bắt đầu xử lý.
+3. **Lưu trữ dữ liệu**: Giá trị độ mờ (`value`) được ghi vào thuộc tính của đối tượng `item` bằng khóa `_o` (được lưu trong `PropertyKey.cssColorOpacity`). Nếu không có giá trị nào được chỉ định, giá trị mặc định là `'1'`.
+
+## Phạm vi ứng dụng
+
+Hàm này được dùng trong các lớp xử lý thuộc tính (ví dụ: `PropertiesStandard`) để làm phong phú dữ liệu token với thông tin về độ mờ được lấy từ các công cụ thiết kế.

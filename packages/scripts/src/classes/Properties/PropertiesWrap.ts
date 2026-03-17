@@ -11,17 +11,16 @@ import {
 } from '../../types/propertyTypes'
 
 /**
- * A class for moving data up the level, if the property is used in all records at the same level.
+ * Utility class for optimizing the property structure by moving duplicated data to a higher level.
  *
- * Класс для переноса данных выше по уровню, если свойство используется во всех записях на одном уровне.
+ * Утилитарный класс для оптимизации структуры свойств путем переноса дублирующихся данных на более высокий уровень.
  */
 export class PropertiesWrap {
   /**
-   * Drag the duplicate properties to the top level to reduce the record.
+   * Analyzes the property list and moves duplicate properties to the parent level to reduce redundancy.
    *
-   * Перетаскивает дублирующиеся свойства на верхний уровень для уменьшения записи.
-   * @param properties an array that needs to be transformed/
-   * массив, который нужно преобразовать
+   * Анализирует список свойств и переносит дублирующиеся свойства на родительский уровень для уменьшения избыточности.
+   * @param properties property list to transform / список свойств для преобразования
    */
   static to(properties: PropertyList): void {
     forEach(properties, (item) => {

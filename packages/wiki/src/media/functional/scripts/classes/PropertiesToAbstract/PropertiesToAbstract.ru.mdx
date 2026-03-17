@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToAbstract - Базовый класс трансформации'/>
+
+# Абстрактный класс PropertiesToAbstract
+
+Класс `PropertiesToAbstract` служит фундаментом для всех процессов преобразования свойств (токенов) в системе. Он определяет общий жизненный цикл трансформации: от инициализации данных до их сохранения в кэш.
+
+## Ключевые особенности
+
+- **Стандартизация жизненного цикла** — гарантирует единый порядок выполнения операций (`init` -> `write`) во всех наследниках.
+- **Интеграция с PropertiesItems** — обеспечивает централизованное управление элементами свойств.
+- **Управление кэшем** — автоматизирует процесс записи промежуточных результатов в указанный файл.
+
+## Инициализация
+
+Поскольку класс является абстрактным, он не может быть создан напрямую. Он предназначен для расширения конкретными классами трансформации (например, для генерации SCSS или JSON).
+
+**Пример реализации наследника:**
+
+```typescript
+import { PropertiesToAbstract, PropertiesItems } from '@dxtmisha/scripts'
+
+class MyPropertiesTransformer extends PropertiesToAbstract {
+  protected readonly FILE_CACHE = 'my-cache-file.json'
+
+  protected init(): void {
+    // Логика инициализации и трансформации
+    console.log('Transforming data...')
+  }
+}
+```
+
+## Методы
+
+### `to`
+Запускает полный цикл трансформации. Этот метод является публичной точкой входа и обеспечивает строгую последовательность действий: сначала инициализация данных, затем их запись.
+
+```typescript
+const transformer = new MyPropertiesTransformer(items);
+transformer.to(); // Запуск процесса
+```
+
+### `init` (abstract)
+Абстрактный защищенный метод, который должен быть реализован в классах-наследниках. В этом методе должна быть сосредоточена основная логика обработки данных.
+
+### `write` (protected)
+Записывает текущее состояние элементов свойств (`PropertiesItems`) в файл, путь к которому определен в `FILE_CACHE`.
+
+**Возвращает:** `void`
+
+## Свойства
+
+### `FILE_CACHE` (abstract)
+Абстрактное свойство, определяющее путь к файлу, в который будут сохранены результаты трансформации. Должно быть переопределено в каждом конкретном классе-наследнике.
+
+## Примеры
+
+### Создание кастомного трансформера
+```typescript
+import { PropertiesToAbstract, PropertiesItems } from '@dxtmisha/scripts'
+
+export class PropertiesToCustom extends PropertiesToAbstract {
+  protected readonly FILE_CACHE = 'custom-tokens.json'
+
+  protected init(): void {
+    // Пример модификации данных перед записью
+    forEach(this.items, (item) => {
+      item.myData = 'processed'
+    })
+  }
+}
+```

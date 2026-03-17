@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToAbstract - Base Transformation Class'/>
+
+# PropertiesToAbstract Class
+
+The `PropertiesToAbstract` class serves as the foundation for all property (token) transformation processes within the system. It defines a common transformation lifecycle, ranging from data initialization to cache persistence.
+
+## Key Features
+
+- **Lifecycle Standardization** — ensures a consistent execution order (`init` -> `write`) across all subclasses.
+- **PropertiesItems Integration** — provide centralized management of property items.
+- **Cache Management** — automates the process of writing intermediate results to a specified file.
+
+## Initialization
+
+As an abstract class, it cannot be instantiated directly. It is intended to be extended by concrete transformation classes (e.g., for SCSS or JSON generation).
+
+**Example subclass implementation:**
+
+```typescript
+import { PropertiesToAbstract, PropertiesItems } from '@dxtmisha/scripts'
+
+class MyPropertiesTransformer extends PropertiesToAbstract {
+  protected readonly FILE_CACHE = 'my-cache-file.json'
+
+  protected init(): void {
+    // Initialization and transformation logic
+    console.log('Transforming data...')
+  }
+}
+```
+
+## Methods
+
+### `to`
+Executes the full transformation cycle. This method is the public entry point and ensures a strict sequence of actions: data initialization followed by data writing.
+
+```typescript
+const transformer = new MyPropertiesTransformer(items);
+transformer.to(); // Starts the process
+```
+
+### `init` (abstract)
+An abstract protected method that must be implemented by subclasses. The primary data processing logic should be centered within this method.
+
+### `write` (protected)
+Writes the current state of property items (`PropertiesItems`) to a file defined by the `FILE_CACHE` path.
+
+**Returns:** `void`
+
+## Properties
+
+### `FILE_CACHE` (abstract)
+An abstract property defining the file path where the transformation results will be saved. It must be overridden in every concrete subclass.
+
+## Examples
+
+### Creating a Custom Transformer
+```typescript
+import { PropertiesToAbstract, PropertiesItems } from '@dxtmisha/scripts'
+
+export class PropertiesToCustom extends PropertiesToAbstract {
+  protected readonly FILE_CACHE = 'custom-tokens.json'
+
+  protected init(): void {
+    // Example of data modification before writing
+    forEach(this.items, (item) => {
+      item.myData = 'processed'
+    })
+  }
+}
+```

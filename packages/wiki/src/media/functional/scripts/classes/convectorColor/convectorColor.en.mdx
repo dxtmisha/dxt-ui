@@ -1,0 +1,58 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/convectorColor - Color Conversion'/>
+
+# convectorColor Function
+
+The `convectorColor` function is part of the convector system for processing property tokens. Its primary role is to extract specific color metadata from 'studio.tokens' extensions and apply it to the property object. Currently, the function specializes in handling opacity (alpha) modifications.
+
+## Key Features
+
+- **Studio Tokens Integration** — works with `$extensions['studio.tokens']` extensions.
+- **Opacity Modification** — extracts the `alpha` value from modification parameters and saves it in the system key `cssColorOpacity`.
+- **Automation** — called during the property standardization process when corresponding metadata is detected.
+
+## Parameters
+
+The function accepts a single argument:
+
+- `item: PropertyItemInput` — the property input data object, which will be mutated during execution.
+
+## Examples
+
+### Handling Opacity Modification
+
+If a token contains color modification information, `convectorColor` will extract it:
+
+```typescript
+import { convectorColor, PropertyKey } from '@dxtmisha/scripts'
+
+const item = {
+  value: '#ff0000',
+  $extensions: {
+    'studio.tokens': {
+      modify: {
+        type: 'alpha',
+        value: '0.5'
+      }
+    }
+  }
+};
+
+convectorColor(item);
+
+console.log(item[PropertyKey.cssColorOpacity]); // '0.5'
+```
+
+## Operations
+
+### Processing Mechanism
+
+The data processing in `convectorColor` involves the following steps:
+1. **Extension Lookup**: The function searches for the path `$extensions['studio.tokens'].modify`.
+2. **Type Identification**: If the modification type is set to `alpha`, the function proceeds to process it.
+3. **Data Persistence**: The opacity value (`value`) is written to the `item` object property using the `_o` key (stored in `PropertyKey.cssColorOpacity`). If no value is specified, it defaults to `'1'`.
+
+## Scope of Application
+
+The function is used within property processing classes (e.g., `PropertiesStandard`) to enrich token data with opacity information derived from design tools.

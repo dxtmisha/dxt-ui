@@ -1,0 +1,92 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesWrap - Structure Optimization'/>
+
+# PropertiesWrap Class
+
+The `PropertiesWrap` class is designed for the automated optimization of token structures within the design system. Its primary role is to identify duplicate property values occurring at the same nesting level and move them to the parent level. This significantly reduces the size of JSON/JS configuration files and simplifies their maintenance.
+
+## Key Features
+
+- **Duplicate Elimination** — automatically moves common properties of a component group higher up the hierarchy.
+- **Recursive Optimization** — processes the property tree to any depth.
+- **Smart Merging** — identifies properties with the maximum number of occurrences for most efficient structural compression.
+- **Transparency** — utilizes the system `wrap` key to identify blocks requiring optimization.
+
+## Initialization
+
+The class provides static methods and does not require instantiation via `new`.
+
+```typescript
+import { PropertiesWrap } from '@dxtmisha/scripts'
+
+// Optimizing property structure (mutates the original object)
+PropertiesWrap.to(myProperties)
+```
+
+## Methods
+
+### `to`
+A static method that initiates the optimization process. It traverses the property tree and, upon encountering a block with the `_wrap` flag, analyzes its contents. If identical properties are found among child elements within the block, they are moved to the level of the current block, and the duplicates in the child elements are removed.
+
+**Parameters:**
+- `properties: PropertyList` — the property list object to be optimized.
+
+```typescript
+const tokens = {
+  button: {
+    _wrap: true,
+    value: {
+      primary: { value: { padding: '10px', color: 'red' } },
+      secondary: { value: { padding: '10px', color: 'blue' } }
+    }
+  }
+};
+
+PropertiesWrap.to(tokens);
+
+/* Optimization result:
+{
+  button: {
+    padding: '10px', // Moved up one level
+    value: {
+      primary: { value: { color: 'red' } },
+      secondary: { value: { color: 'blue' } }
+    }
+  }
+}
+*/
+```
+
+## Operations
+
+### The Optimization Algorithm (How it works)
+
+The structural compression process occurs in several stages:
+1. **Flag Searching**: The system searches the object for the `_wrap` property (defined in `PropertyKey.wrap`).
+2. **Statistics Collection (getSelectors)**: If the flag is found, the class gathers information about all properties of the child elements (names and their values).
+3. **Repetition Analysis (getMaxRepeat)**: It identifies the property that occurs most frequently with the same value.
+4. **Data Transfer**: The identified common property is added to the current (parent) block.
+5. **Cleanup (removeProperties)**: This property is removed from all child elements where it had an identical value.
+6. **Completion**: The `_wrap` flag is removed from the object.
+
+## Examples
+
+### Compressing Theme Configuration
+```typescript
+import { PropertiesWrap } from '@dxtmisha/scripts'
+
+const designData = {
+  typography: {
+    _wrap: true,
+    value: {
+      h1: { value: { 'font-family': 'Inter', 'font-size': '32px' } },
+      h2: { value: { 'font-family': 'Inter', 'font-size': '24px' } },
+      p: { value: { 'font-family': 'Inter', 'font-size': '16px' } }
+    }
+  }
+}
+
+PropertiesWrap.to(designData)
+// Result: 'font-family': 'Inter' will be moved to the root of the typography object
+```

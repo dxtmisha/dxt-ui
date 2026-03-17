@@ -3,26 +3,26 @@
 import { type PropertyItemPartial } from '../../types/propertyTypes'
 
 /**
- * Class for working with the values.
+ * Utility class for validating and normalizing design system property values.
  *
- * Класс для работы со значениями.
+ * Утилитарный класс для валидации и нормализации значений свойств дизайн-системы.
  */
 export class PropertiesValues {
   /**
-   * Checks if the values are complete.
+   * Checks if the value is marked as "full" (starting with `=`), meaning it doesn't require further processing.
    *
-   * Проверяет, является ли значение полным.
-   * @param value property value/ значение свойства
+   * Проверяет, помечено ли значение как «полное» (начинается с `=`), что означает отсутствие необходимости дальнейшей обработки.
+   * @param value property value / значение свойства
    */
   static isFull(value: PropertyItemPartial['value']): value is string {
     return typeof value === 'string' && Boolean(value.match(this.getExpFull()))
   }
 
   /**
-   * Checks if the value is a color value.
+   * Identifies if the value is a hex color string.
    *
-   * Проверяет, является ли значение цветом.
-   * @param value property value/ значение свойства
+   * Определяет, является ли значение строкой цвета в формате HEX.
+   * @param value property value / значение свойства
    */
   static isColor(value: PropertyItemPartial['__c']): boolean {
     return Boolean(
@@ -33,10 +33,10 @@ export class PropertiesValues {
   }
 
   /**
-   * Checks if the value is a color with transparency.
+   * Identifies if the value is a hex color string with an alpha channel (opacity).
    *
-   * Проверяет, является ли значение цветом с прозрачности.
-   * @param value property value/ значение свойства
+   * Определяет, является ли значение строкой цвета HEX с альфа-каналом (прозрачностью).
+   * @param value property value / значение свойства
    */
   static isColorWithOpacity(value: PropertyItemPartial['__c']): boolean {
     return Boolean(
@@ -47,10 +47,10 @@ export class PropertiesValues {
   }
 
   /**
-   * Removes unnecessary values from the values.
+   * Cleans up the value by removing the "full" marker or converting numeric values to strings.
    *
-   * Убирает лишние значения из значений.
-   * @param value property value/ значение свойства
+   * Очищает значение, удаляя маркер «полноты» или преобразовывая числовые значения в строки.
+   * @param value property value / значение свойства
    */
   static reValue(value: PropertyItemPartial['value']): PropertyItemPartial['value'] {
     if (this.isFull(value)) {

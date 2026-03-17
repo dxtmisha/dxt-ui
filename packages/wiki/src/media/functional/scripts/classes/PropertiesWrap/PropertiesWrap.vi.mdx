@@ -1,0 +1,92 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesWrap - Tối ưu hóa cấu trúc'/>
+
+# Lớp PropertiesWrap
+
+Lớp `PropertiesWrap` được thiết kế để tự động tối ưu hóa cấu trúc token trong hệ thống thiết kế. Nhiệm vụ chính của nó là tìm các giá trị thuộc tính lặp lại ở cùng một mức lồng nhau và đưa chúng lên mức cha. Điều này giúp giảm đáng kể kích thước của các tệp cấu hình JSON/JS và đơn giản hóa việc bảo trì chúng.
+
+## Các tính năng chính
+
+- **Loại bỏ trùng lặp** — tự động chuyển các thuộc tính chung của một nhóm thành phần lên cao hơn trong hệ phân cấp.
+- **Tối ưu hóa đệ quy** — xử lý cây thuộc tính ở bất kỳ độ sâu nào.
+- **Hợp nhất thông minh** — xác định các thuộc tính có số lần lặp lại tối đa để nén cấu trúc hiệu quả nhất.
+- **Tính minh bạch** — sử dụng khóa hệ thống `wrap` để xác định các khối yêu cầu tối ưu hóa.
+
+## Khởi tạo
+
+Lớp này cung cấp các phương thức tĩnh và không yêu cầu khởi tạo thông qua `new`.
+
+```typescript
+import { PropertiesWrap } from '@dxtmisha/scripts'
+
+// Tối ưu hóa cấu trúc thuộc tính (làm thay đổi đối tượng gốc)
+PropertiesWrap.to(myProperties)
+```
+
+## Các phương thức
+
+### `to`
+Một phương thức tĩnh khởi động quá trình tối ưu hóa. Nó duyệt qua cây thuộc tính và khi gặp một khối có cờ `_wrap`, nó sẽ phân tích nội dung của khối đó. Nếu tìm thấy các thuộc tính giống hệt nhau giữa các phần tử con trong khối, chúng sẽ được chuyển lên mức của khối hiện tại và các bản trùng lặp ở các phần tử con sẽ bị xóa bỏ.
+
+**Tham số:**
+- `properties: PropertyList` — đối tượng chứa danh sách các thuộc tính cần được tối ưu hóa.
+
+```typescript
+const tokens = {
+  button: {
+    _wrap: true,
+    value: {
+      primary: { value: { padding: '10px', color: 'red' } },
+      secondary: { value: { padding: '10px', color: 'blue' } }
+    }
+  }
+};
+
+PropertiesWrap.to(tokens);
+
+/* Kết quả tối ưu hóa:
+{
+  button: {
+    padding: '10px', // Được chuyển lên trên một mức
+    value: {
+      primary: { value: { color: 'red' } },
+      secondary: { value: { color: 'blue' } }
+    }
+  }
+}
+*/
+```
+
+## Các thao tác (Operations)
+
+### Thuật toán tối ưu hóa (Cách thức hoạt động)
+
+Quá trình nén cấu trúc diễn ra qua các giai đoạn sau:
+1. **Tìm kiếm cờ**: Hệ thống tìm kiếm trong đối tượng thuộc tính `_wrap` (được định nghĩa trong `PropertyKey.wrap`).
+2. **Thu thập thống kê (getSelectors)**: Nếu tìm thấy cờ, lớp sẽ thu thập thông tin về tất cả các thuộc tính của các phần tử con (tên và giá trị của chúng).
+3. **Phân tích lặp lại (getMaxRepeat)**: Nó xác định thuộc tính xuất hiện thường xuyên nhất với cùng một giá trị.
+4. **Chuyển dữ liệu**: Thuộc tính chung đã xác định được thêm vào khối hiện tại (khối cha).
+5. **Làm sạch (removeProperties)**: Thuộc tính này được xóa khỏi tất cả các phần tử con nơi nó có giá trị giống hệt nhau.
+6. **Hoàn tất**: Cờ `_wrap` được gỡ bỏ khỏi đối tượng.
+
+## Ví dụ (Examples)
+
+### Nén cấu trúc cấu hình chủ đề (Theme)
+```typescript
+import { PropertiesWrap } from '@dxtmisha/scripts'
+
+const designData = {
+  typography: {
+    _wrap: true,
+    value: {
+      h1: { value: { 'font-family': 'Inter', 'font-size': '32px' } },
+      h2: { value: { 'font-family': 'Inter', 'font-size': '24px' } },
+      p: { value: { 'font-family': 'Inter', 'font-size': '16px' } }
+    }
+  }
+}
+
+PropertiesWrap.to(designData)
+// Kết quả: 'font-family': 'Inter' sẽ được chuyển vào gốc của đối tượng typography
+```
