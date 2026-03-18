@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isApiSuccess - Kiểm tra phản hồi API thành công'/>
+
+# `isApiSuccess`
+
+Kiểm tra xem phản hồi API có thành công hay không.
+
+Việc kiểm tra được thực hiện theo các quy tắc sau:
+- Nếu dữ liệu là một mảng, nó được coi là thành công.
+- Nếu dữ liệu là một đối tượng, sự thành công được xác định bởi các trường `status === 'success'` hoặc `success === true`.
+- Nếu trường `statusObject` có mặt, sự thành công được xác định bởi mã trạng thái HTTP (bắt đầu bằng 2).
+- Nếu không có trường nào có mặt, sự thành công được xác định bởi trạng thái API toàn cục.
+
+**Tham số:**
+- `data: ApiData<T>` — dữ liệu phản hồi API.
+
+**Trả về:**
+`boolean` — `true` nếu phản hồi thành công, ngược lại là `false`.
+
+```typescript
+import { isApiSuccess } from '@dxtmisha/functional-basic'
+
+console.log(isApiSuccess({ status: 'success' })) // true
+console.log(isApiSuccess({ success: true })) // true
+console.log(isApiSuccess([])) // true
+```

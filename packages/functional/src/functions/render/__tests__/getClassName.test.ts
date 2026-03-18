@@ -17,7 +17,7 @@ describe('getClassName', () => {
   })
 
   it('should return undefined when class prop is an object (current limitation)', () => {
-    expect(getClassName({ class: { 'active': true } })).toBeUndefined()
+    expect(getClassName({ class: { active: true } })).toBeUndefined()
   })
 
   it('should return undefined when class prop is an array (current limitation)', () => {
@@ -25,9 +25,7 @@ describe('getClassName', () => {
   })
 
   it('should return undefined for other non-string types', () => {
-    // @ts-expect-error testing invalid input
     expect(getClassName({ class: 123 })).toBeUndefined()
-    // @ts-expect-error testing invalid input
     expect(getClassName({ class: true })).toBeUndefined()
   })
 })

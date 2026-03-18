@@ -1,0 +1,121 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useApiManagementRef - API Management'/>
+
+# `useApiManagementRef`
+
+A powerful composable for comprehensive API request orchestration. It manages data fetching (GET), list formatting, client-side searching, and mutations (POST, PUT, DELETE) all within a single reactive interface.
+
+## Parameters
+- `propsGet: ApiManagementGet<Return, Type>` — configuration for the main GET request (path, reactivity, skeleton, etc.).
+- `formattersOptions?: FormattersOptions` — optional reactive formatting rules (`useFormattersRef`).
+- `searchOptions?: ApiManagementSearch<Item, Columns>` — optional client-side search configuration (`useSearchRef`).
+- `postRequest?: ApiManagementRequest<Post>` — optional config for a POST creation request.
+- `putRequest?: ApiManagementRequest<Put>` — optional config for a PUT update request.
+- `deleteRequest?: ApiManagementRequest<Delete>` — optional config for a DELETE removal request.
+- `action?: function` — a common callback to perform after any successful mutation.
+
+## Returns
+- `list: ComputedRef` — the processed data array. **Supports Skeleton**: if data is not yet loaded and a `skeleton()` is provided, it returns placeholders. Accounts for search filters and formatters.
+- `data: ComputedRef<ApiData<Return> | undefined>` — the raw reactive data from `useApiRef`.
+- `length: ComputedRef<number>` — current length of the `list` (dynamically updates when searching).
+- `lengthData: ComputedRef<number>` — original length of the data in `data.value`.
+- `starting: ComputedRef<boolean>` — `true` if the request is still in its initial loading phase.
+- `reading: Ref<boolean>` — flag indicating the data is currently being fetched/read from the server.
+- `loading: Ref<boolean>` — loading state of the main GET request.
+- `loadingSearch: Ref<boolean>` — loading state of the search operation.
+- `loadingPost / loadingPut / loadingDelete` — individual loading sub-states for each mutation.
+- `isSearch: ComputedRef<boolean>` — whether a search query is currently active.
+- `search: Ref<string>` — reactive search string (Proxy to the provided `searchOptions.value`).
+- `sendPost / sendPut / sendDelete: (request?: ApiFetch['request']) => Promise<any>` — methods to execute mutations.
+- `reset: () => Promise<void>` — forces a manual restart/refresh of the main GET request.
+- `abort: () => void` — aborts the ongoing network request.
+
+## Generic Constraints
+
+- `Return extends ApiManagementValue` — logic model for data returned by the API.
+- `FormattersOptions extends FormattersOptionsList` — optional formatting rules.
+- `Post / Put / Delete extends Record<string, any>` — data types for the respective mutation requests.
+- `Type extends ApiManagementValue = Return` — the original raw data type (before transformation).
+- `Item extends ArrayToItem<Return>` — the type of a single item in the data list.
+- `ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number]` — the item type after formatters are applied.
+- `Columns extends SearchColumns<ItemFormatters>` — columns used for searching.
+
+## How to work with it
+
+`useApiManagementRef` is the central hub for data management in CRUD interfaces. It combines network requests, local search, and formatting into a single automated cycle:
+
+1.  **Initialization and Lazy Loading**: The hook does not send the network request immediately. The GET request is queued only when your component first accesses the `list` or `data` property. This saves resources if the data is not always needed on the screen.
+2.  **Instant Response (Skeleton)**: If you provide a `skeleton` function, the `list` property will immediately return an array of "placeholders" when loading starts. This allows you to render the table or list structure before the first byte of data arrives, eliminating UI "jumps".
+3.  **Smart List (`list`)**: This is the primary point of interaction. The `list` property automatically switches between:
+    - Skeleton data (during loading).
+    - Search results (if a search query is entered).
+    - Formatted data (if `formattersOptions` are configured).
+    - Raw data (if none of the above applies).
+4.  **Search and Format Synchronization**: Searching is performed on data that is already loaded and, if necessary, formatted. This ensures that a user can find "John Doe" even if the raw JSON data stores these in separate fields. Searching happens on the client side (Client-side), providing instant results.
+5.  **Mutation Cycle and Auto-Refresh**: 
+    - When calling `sendPost`, `sendPut`, or `sendDelete` methods, the hook tracks the response status. 
+    - If the server returns success (verified via `isApiSuccess`), the hook **automatically** calls `reset()` for the main GET request. 
+    - This triggers a data reload and updates the entire list. Thus, after deleting a row or adding a new one, your list always remains up to date without writing extra code.
+6.  **Parameter Reactivity**: If the `path` or `options` (in `propsGet`) are reactive (Vue Ref) and you set `reactivity: true`, the hook will watch for changes and automatically reload data when the URL or filtering parameters change.
+
+## Core Architecture
+
+`useApiManagementRef` is an orchestrator hook designed to manage standard CRUD views (like data tables). By passing configurations, you get an all-in-one return object that manages loading spinners, searches, formats data for display, handles CRUD actions, and automatically refetches lists.
+
+## Types
+
+### `ApiManagementGet<Return, Type>`
+- `path?: string | Ref<string>` — API path.
+- `options?: ApiOptions` — request options (method, headers, etc.).
+- `reactivity?: boolean` — whether to automatically refetch when `path` or `options` change.
+- `conditions?: Ref<boolean>` — condition under which the request is executed.
+- `transformation?: (data: Type) => ApiData<Return>` — function to transform data after fetching.
+- `unmounted?: boolean` — whether to clear data after component unmount.
+- `skeleton?: () => Return` — function returning placeholder data during loading.
+
+### `ApiManagementSearch<T, K>`
+- `columns: K` — list of columns for searching.
+- `value?: Ref<string>` — reactive search string.
+- `options?: SearchOptions` — additional search settings.
+
+### `ApiManagementRequest<T, Return>`
+- `path?: string | Ref<string>` — path for the mutation request.
+- `action?: (data: Return | undefined) => Promise<void> | void` — callback after request execution.
+- `transformation?: (data: T) => Return` — data transformation before sending.
+- `toData?: boolean` — whether to send data in the request body (under `data`).
+- `options?: ApiOptions` — additional request options.
+
+## Usage Example
+
+```typescript
+import { ref } from 'vue'
+import { useApiManagementRef } from '@dxtmisha/functional'
+import { FormattersType } from '@dxtmisha/functional-basic'
+
+const searchVal = ref('')
+
+const { 
+  list, 
+  loading, 
+  sendPost, 
+  sendDelete 
+} = useApiManagementRef(
+  // 1. GET Request
+  { path: 'api/users', skeleton: () => [{ id: 0, name: 'Loading...' }] },
+  // 2. Formatters
+  {  price: { type: FormattersType.currency } },
+  // 3. Search
+  { columns: ['name'], value: searchVal },
+  // 4. POST
+  { path: 'api/users/create' },
+  // 5. PUT (not used)
+  undefined,
+  // 6. DELETE
+  { path: 'api/users/delete' }
+)
+
+// To create a user:
+// await sendPost({ data: { name: 'New User' } })
+// This will automatically run request.reset() and fetch latest users!
+```

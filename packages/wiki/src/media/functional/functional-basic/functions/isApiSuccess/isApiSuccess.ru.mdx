@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isApiSuccess - Проверка успешности ответа API'/>
+
+# `isApiSuccess`
+
+Проверяет, является ли ответ API успешным.
+
+Проверка выполняется по следующим правилам:
+- Если данные являются массивом, это считается успехом.
+- Если данные являются объектом, успех определяется полями `status === 'success'` или `success === true`.
+- Если присутствует поле `statusObject`, успех определяется кодом статуса HTTP (начинается с 2).
+- Если ни одно из полей не присутствует, успех определяется глобальным статусом API.
+
+**Параметры:**
+- `data: ApiData<T>` — данные ответа API.
+
+**Возвращает:**
+`boolean` — `true`, если ответ успешен, иначе `false`.
+
+```typescript
+import { isApiSuccess } from '@dxtmisha/functional-basic'
+
+console.log(isApiSuccess({ status: 'success' })) // true
+console.log(isApiSuccess({ success: true })) // true
+console.log(isApiSuccess([])) // true
+```

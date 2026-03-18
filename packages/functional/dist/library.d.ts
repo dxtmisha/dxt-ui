@@ -1,6 +1,8 @@
 import { ApiData } from '@dxtmisha/functional-basic';
+import { ApiDefaultValue } from '@dxtmisha/functional-basic';
 import { ApiFetch } from '@dxtmisha/functional-basic';
 import { ApiMethodItem } from '@dxtmisha/functional-basic';
+import { ArrayToItem } from '@dxtmisha/functional-basic';
 import { ComputedGetter } from 'vue';
 import { ComputedRef } from 'vue';
 import { CookieOptions } from '@dxtmisha/functional-basic';
@@ -11,6 +13,10 @@ import { ElementOrWindow } from '@dxtmisha/functional-basic';
 import { EventItem } from '@dxtmisha/functional-basic';
 import { EventListenerDetail } from '@dxtmisha/functional-basic';
 import { EventOptions } from '@dxtmisha/functional-basic';
+import { FormattersListColumns } from '@dxtmisha/functional-basic';
+import { FormattersListProp } from '@dxtmisha/functional-basic';
+import { FormattersOptionsList } from '@dxtmisha/functional-basic';
+import { FormattersReturn } from '@dxtmisha/functional-basic';
 import { GeoDate } from '@dxtmisha/functional-basic';
 import { GeoFirstDay } from '@dxtmisha/functional-basic';
 import { GeoFlag } from '@dxtmisha/functional-basic';
@@ -29,12 +35,44 @@ import { PropType } from 'vue';
 import { Ref } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { Router } from 'vue-router';
+import { SearchColumns } from '@dxtmisha/functional-basic';
+import { SearchFormatList } from '@dxtmisha/functional-basic';
+import { SearchItem } from '@dxtmisha/functional-basic';
+import { SearchList } from '@dxtmisha/functional-basic';
+import { SearchListValue } from '@dxtmisha/functional-basic';
+import { SearchOptions } from '@dxtmisha/functional-basic';
 import { ShallowRef } from 'vue';
 import { ToRefs } from 'vue';
 import { TranslateList } from '@dxtmisha/functional-basic';
 import { Undefined } from '@dxtmisha/functional-basic';
 import { VNode } from 'vue';
 import { VNodeArrayChildren } from 'vue';
+
+export declare type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
+    path?: RefOrNormal<string | undefined>;
+    options?: ApiOptions;
+    reactivity?: boolean;
+    conditions?: RefType<boolean>;
+    transformation?: (data: Type) => ApiData<Return>;
+    unmounted?: boolean;
+    skeleton?: () => Return;
+};
+
+export declare type ApiManagementRequest<T, Return extends ApiData<T> = ApiData<T>> = {
+    path?: RefOrNormal<string | undefined>;
+    action?: (data: Return | undefined) => Promise<void> | void;
+    transformation?: (data: T) => Return;
+    toData?: boolean;
+    options?: ApiOptions;
+};
+
+export declare type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
+    columns: K;
+    value?: Ref<string>;
+    options?: SearchOptions;
+};
+
+export declare type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
 
 /** Options for api requests/ Опции для запросов api */
 export declare type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
@@ -47,10 +85,11 @@ declare type BroadcastValueItem<T> = T | string | undefined;
  * Создаёт вычисляемое свойство, которое может обрабатывать асинхронные геттеры.
  * @param getter Asynchronous function, synchronous function, or direct value to compute the result/
  * Асинхронная функция, синхронная функция или прямое значение для вычисления результата
+ * @param ignore values to be ignored/ значения для исключения из обработки
  * @param debugOptions Used for debugging reactive computations. Supported by Vue.js library/
  * Используется для отладки реактивных вычислений. Поддерживается библиотекой Vue.js
  */
-export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, debugOptions?: DebuggerOptions): ComputedRef<R>;
+export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
 
 /**
  * Метод `computedByLanguage` предоставляет возможность создания реактивного свойства `computed`,
@@ -66,6 +105,20 @@ export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) 
  * Поддерживается библиотекой Vue.js
  */
 export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
+
+/**
+ * Creates a computed property that is computed on demand and cached.
+ * The value is updated automatically when dependencies change, but only if it has been accessed at least once.
+ * The watcher remains active throughout the life of the application.
+ *
+ * Создаёт вычисляемое свойство, которое вычисляется по требованию и кешируется.
+ * Значение обновляется автоматически при изменении зависимостей, но только если к нему был осуществлён доступ хотя бы один раз.
+ * Вотчер остаётся активным на протяжении работы всего приложения.
+ *
+ * @param getter A function that returns the value to be computed/
+ * Функция, которая возвращает вычисляемое значение
+ */
+export declare function computedEternity<T>(getter: () => Promise<T> | T): Ref<T, T>;
 
 /**
  * Constructor bind type for component binding with class and style support/
@@ -220,12 +273,12 @@ export declare class DatetimeRef {
     protected code: Ref<string>;
     protected date: Ref<Date>;
     protected datetime: Datetime;
-    protected year: ComputedRef<number>;
-    protected month: ComputedRef<number>;
-    protected day: ComputedRef<number>;
-    protected hour: ComputedRef<number>;
-    protected minute: ComputedRef<number>;
-    protected second: ComputedRef<number>;
+    protected year: Ref<number, number>;
+    protected month: Ref<number, number>;
+    protected day: Ref<number, number>;
+    protected hour: Ref<number, number>;
+    protected minute: Ref<number, number>;
+    protected second: Ref<number, number>;
     /**
      * Constructor
      * @param date date for processing. дата для обработки
@@ -238,7 +291,7 @@ export declare class DatetimeRef {
      *
      * Возвращает основные данные для даты.
      */
-    getItem(): RefOrNormal<NumberOrStringOrDate>;
+    getItem(): Ref<NumberOrStringOrDate>;
     /**
      * Returns a Date object.
      *
@@ -322,6 +375,12 @@ export declare class DatetimeRef {
      * @param timeZone add time zone. добавить временную зону
      */
     standard(timeZone?: boolean): ComputedRef<string>;
+    /**
+     * Updates all reactive date values.
+     *
+     * Обновляет все реактивные значения даты.
+     */
+    protected updateDate(): this;
 }
 
 /**
@@ -687,6 +746,35 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
 }
 
 /**
+ * Global effect scope class.
+ *
+ * Глобальный класс для области действия эффекта.
+ */
+export declare class EffectScopeGlobal {
+    /**
+     * Effect scope instance.
+     *
+     * Экземпляр области действия эффекта.
+     */
+    private static scope;
+    /**
+     * Runs a function within the global scope.
+     *
+     * Запускает функцию в глобальной области.
+     * @param fn function/ функция
+     * @returns the return value of the function/ возвращаемое значение функции
+     */
+    static run<T>(fn: () => T): T | undefined;
+    /**
+     * Gets the global effect scope instance.
+     *
+     * Получает экземпляр глобальной области действия эффекта.
+     * @returns the global effect scope instance/ экземпляр глобальной области действия эффекта
+     */
+    private static getScope;
+}
+
+/**
  * Class for working with events (Ref).
  *
  * Класс для работа с события (Ref).
@@ -708,19 +796,138 @@ export declare class EventRef<E extends ElementOrWindow, O extends Event, D exte
 }
 
 /**
- * Returns a function for use during the initialization of control methods.
+ * Creates a managed singleton that encapsulates initialization logic and access mode.
  *
- * Возвращает функцию для использования при инициализации методов управления.
- * @param callback function or any value/ функция или любое значение
- * @param unmounted delete data from the cache/ удалить ли данные из кеша
- * @param isGlobal is the object global?/ является ли объект глобальным?
- * @param isProvide execution as a component inheritance/ выполнение как наследие компонента
+ * Создает управляемый синглтон, который инкапсулирует логику инициализации и режим доступа.
+ * @param callback Initialization function/ Функция инициализации
+ * @param type Initialization type/ Тип инициализации
  */
-export declare function executeUse<R, O extends any[], RI extends Readonly<Readonly<R> & {
-    init(): Readonly<R>;
-}>>(callback: (...args: O) => R, unmounted?: boolean, isGlobal?: boolean, isProvide?: boolean): ((...args: O) => RI) | (() => RI);
+export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
 
+/**
+ * Creates a global singleton.
+ *
+ * Создает глобальный синглтон.
+ * @param callback Initialization function/ Функция инициализации
+ */
+export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<R & {
+    /**
+     * Returns the raw instance without management methods/
+     * Возвращает чистый экземпляр без методов управления
+     */
+    init(): Readonly<R>;
+    /**
+     * Resets the cached instance (available for local and global)/
+     * Сбрасывает закешированный экземпляр (доступно для local и global)
+     */
+    destroyExecute?(): void;
+}>) | (() => Readonly<R & {
+    /**
+     * Returns the raw instance without management methods/
+     * Возвращает чистый экземпляр без методов управления
+     */
+    init(): Readonly<R>;
+    /**
+     * Resets the cached instance (available for local and global)/
+     * Сбрасывает закешированный экземпляр (доступно для local и global)
+     */
+    destroyExecute?(): void;
+}>);
+
+/**
+ * Initializes all global callbacks.
+ *
+ * Инициализирует все глобальные callback.
+ */
 export declare function executeUseGlobalInit(): void;
+
+/**
+ * Creates a local singleton.
+ *
+ * Создает локальный синглтон.
+ * @param callback Initialization function/ Функция инициализации
+ */
+export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
+    /**
+     * Returns the raw instance without management methods/
+     * Возвращает чистый экземпляр без методов управления
+     */
+    init(): Readonly<R>;
+    /**
+     * Resets the cached instance (available for local and global)/
+     * Сбрасывает закешированный экземпляр (доступно для local и global)
+     */
+    destroyExecute?(): void;
+}>) | (() => Readonly<R & {
+    /**
+     * Returns the raw instance without management methods/
+     * Возвращает чистый экземпляр без методов управления
+     */
+    init(): Readonly<R>;
+    /**
+     * Resets the cached instance (available for local and global)/
+     * Сбрасывает закешированный экземпляр (доступно для local и global)
+     */
+    destroyExecute?(): void;
+}>);
+
+/**
+ * Creates a component-scoped singleton.
+ *
+ * Создает компонентный синглтон.
+ * @param callback Initialization function/ Функция инициализации
+ */
+export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
+    /**
+     * Returns the raw instance without management methods/
+     * Возвращает чистый экземпляр без методов управления
+     */
+    init(): Readonly<R>;
+    /**
+     * Resets the cached instance (available for local and global)/
+     * Сбрасывает закешированный экземпляр (доступно для local и global)
+     */
+    destroyExecute?(): void;
+}>) | (() => Readonly<R & {
+    /**
+     * Returns the raw instance without management methods/
+     * Возвращает чистый экземпляр без методов управления
+     */
+    init(): Readonly<R>;
+    /**
+     * Resets the cached instance (available for local and global)/
+     * Сбрасывает закешированный экземпляр (доступно для local и global)
+     */
+    destroyExecute?(): void;
+}>);
+
+/**
+ * The object returned by the factory function/ Объект, возвращаемый фабричной функцией
+ */
+export declare type ExecuteUseReturn<R> = Readonly<R & {
+    /**
+     * Returns the raw instance without management methods/
+     * Возвращает чистый экземпляр без методов управления
+     */
+    init(): Readonly<R>;
+    /**
+     * Resets the cached instance (available for local and global)/
+     * Сбрасывает закешированный экземпляр (доступно для local и global)
+     */
+    destroyExecute?(): void;
+}>;
+
+/**
+ * Types of initialization for a singleton/ Типы инициализации для синглтона
+ */
+export declare enum ExecuteUseType {
+    /** A single instance for the entire application/ Единственный экземпляр на всё приложение */
+    global = "global",
+    /** Shared via provide/inject in the component tree/ Разделяется через provide/inject в дереве компонентов */
+    provide = "provide",
+    /** A single instance within the closure/ Единственный экземпляр в замыкании */
+    local = "local"
+}
 
 /**
  * Class for working with Flags.
@@ -837,6 +1044,16 @@ export declare class GeoIntlRef {
      */
     currency(value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly?: boolean): ComputedRef<string>;
     /**
+     * Returns the currency symbol if it exists, otherwise the currency code.
+     *
+     * Возвращает символ для валюты, если он есть, или сам код валюты.
+     * @param currency the currency to use in currency formatting/
+     * валюта для использования в форматировании валюты
+     * @param currencyDisplay how to display the currency in currency formatting/
+     * как отобразить валюту в формате валюты
+     */
+    currencySymbol(currency: RefOrNormal<string>, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): ComputedRef<string>;
+    /**
      * Unit formatting.
      * If the style is 'unit', a unit property must be provided.
      *
@@ -846,6 +1063,13 @@ export declare class GeoIntlRef {
      * в форматировании блока
      */
     unit(value: RefOrNormal<NumberOrString>, unitOptions?: string | Intl.NumberFormatOptions): ComputedRef<string>;
+    /**
+     * Возвращает отформатированный размер файла
+     * @param value a number, bigint, or string, to format /<br>число для форматирования
+     * @param unitOptions the unit to use in unit formatting /<br>блок для использования
+     * в форматировании блока
+     */
+    sizeFile(value: RefOrNormal<NumberOrString>, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): ComputedRef<string>;
     /**
      * Number as a percentage.
      *
@@ -863,6 +1087,15 @@ export declare class GeoIntlRef {
      * объект с некоторыми или всеми свойствами
      */
     percentBy100(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
+    /**
+     * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
+     * @param value a number, bigint, or string, to format/ число для форматирования
+     * @param words list of words for formatting (in the format one|two|few|many|other|zero)/
+     * список слов для форматирования (в формате `one|two|few|many|other|zero`)
+     * @param options Property for PluralRules/ свойство для PluralRules
+     * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
+     */
+    plural(value: RefOrNormal<NumberOrString>, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): ComputedRef<string>;
     /**
      * Enables language-sensitive date and time formatting.
      *
@@ -903,6 +1136,13 @@ export declare class GeoIntlRef {
      */
     relativeLimit(value: RefOrNormal<NumberOrStringOrDate>, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): ComputedRef<string>;
     /**
+     * Возвращает отформатированное значение времени, прошедшего с момента события
+     * @param value a number, bigint, or string, to format/ число для форматирования
+     * @param unit time unit/ единица времени
+     * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
+     */
+    relativeByValue(value: RefOrNormal<NumberOrString>, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): ComputedRef<string>;
+    /**
      * Names of months.
      *
      * Названия месяцев.
@@ -939,6 +1179,14 @@ export declare class GeoIntlRef {
      * @param value the date to format/ дата для форматирования
      */
     time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string>;
+    /**
+     * Sorts strings taking into account the characteristics of countries.
+     *
+     * Сортирует строки с учетом особенностей стран.
+     * @param data an array with data/ массив с данными
+     * @param compareFn a function for sorting/ функция для сортировки
+     */
+    sort<T>(data: RefOrNormal<T[]>, compareFn?: (a: T, b: T) => [string, string]): ComputedRef<T[]>;
 }
 
 /**
@@ -956,30 +1204,37 @@ export declare class GeoRef {
      * Information about the current country.
      *
      * Информация об текущей стране.
+     * @returns reactive object with full geographic information/ реактивный объект с полной географической информацией
      */
     static get(): Ref<GeoItemFull>;
     /**
      * Current country.
      *
      * Текущая страна.
+     * @returns reactive string with the current country code/ реактивная строка с кодом текущей страны
      */
     static getCountry(): ComputedRef<string>;
     /**
      * Current language.
      *
      * Текущий язык.
+     * @returns reactive string with the current language code/ реактивная строка с кодом текущего языка
      */
     static getLanguage(): ComputedRef<string>;
     /**
      * Full format according to the standard.
      *
      * Полный формат согласно стандарту.
+     * @returns reactive string with the full standard locale format/
+     * реактивная строка с полным форматом стандарта локали
      */
     static getStandard(): ComputedRef<string>;
     /**
      * Returns the first day of the week.
      *
      * Возвращает первый день недели.
+     * @returns reactive string representing the first day of the week/
+     * реактивная строка, представляющая первый день недели
      */
     static getFirstDay(): ComputedRef<string>;
     /**
@@ -1025,15 +1280,6 @@ export declare function getBindRef<T, R extends ItemList>(value: RefOrNormal<T |
 export declare function getClassName<T extends ItemList>(props?: T): string | undefined;
 
 /**
- * Processes an asynchronous method for wrapping in computed.
- *
- * Обрабатывает асинхронный метод для обёртки в computed.
- * @param callback callback function/ функция обратного вызова
- * @param ignore values to be ignored/ значения для исключения из обработки
- */
-export declare const getComputedAsync: <T, I = undefined>(callback: () => Promise<Ref<T | I> | T | I>, ignore?: I) => ComputedRef<T | undefined>;
-
-/**
  * Returns or generates a new element.
  *
  * Возвращает или генерирует новый элемент.
@@ -1041,7 +1287,7 @@ export declare const getComputedAsync: <T, I = undefined>(callback: () => Promis
  * @param props property of the component/ свойство компонента
  * @param index the name of the key/ названия ключа
  */
-export declare function getIndexForRender<T extends ItemList>(name: string, props?: T, index?: string): string;
+export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
 
 /**
  * Get request options.
@@ -1155,136 +1401,170 @@ export declare class ListDataRef {
      * Returns a list for forming a list.
      *
      * Возвращает список для формирования списка.
+     * @returns reactive list of items/ реактивный список элементов
      */
     readonly data: ComputedRef<ListList>;
     /**
      * Returns a simplified list for quick loading.
      *
      * Возвращает упрощенный список для быстрой загрузки.
+     * @returns simplified reactive list/ упрощенный реактивный список
      */
     readonly liteData: ComputedRef<ListList>;
     /**
-     * Returns a list of records with all additional data.
+     * Returns a list of records with all additional data (focus, selection, disabled status).
      *
-     * Возвращает список записей со всеми дополнительными данными.
+     * Возвращает список записей со всеми дополнительными данными (фокус, выделение, статус активности).
+     * @returns full reactive list/ полный реактивный список
      */
     readonly fullData: ComputedRef<ListDataFull>;
     /**
-     * Returns a map of all entries.
+     * Returns a flat map of all entries including sublists.
      *
-     * Возвращает карту всех записей.
+     * Возвращает плоскую карту всех записей, включая подсписки.
+     * @returns reactive flat list/ реактивный плоский список
      */
     readonly map: ComputedRef<ListList>;
     /**  Returns a list consisting only of items/ Возвращает список, состоящий только из элементов. */
     readonly mapItems: ComputedRef<ListList>;
     /**
-     * Returns a list consisting only of values for selection.
+     * Returns a list consisting only of values for selection (item, group, menu).
      *
-     * Возвращает список, состоящий только из значений для выбора.
+     * Возвращает список, состоящий только из значений для выбора (item, group, menu).
+     * @returns reactive list/ реактивный список
      */
     readonly items: ComputedRef<ListList>;
     /**
      * Finds the first element that meets the search conditions.
      *
      * Находит первый элемент, соответствующий условиям поиска.
+     * @returns first found index/ первый найденный индекс
      */
     readonly highlightFirstItem: ComputedRef<number>;
     /**
      * Is there a selected item.
      *
      * Есть ли выбранный элемент.
+     * @returns true if selection exists/ true, если есть выбор
      */
     readonly isSelected: ComputedRef<boolean>;
-    /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
+    /**
+     * Is the minimum selection reached.
+     *
+     * Достигнуто ли минимальное выделение.
+     * @returns true if minimum reached/ true, если минимум достигнут
+     */
     readonly isSelectedMin: ComputedRef<boolean>;
-    /** Is the maximum selection reached/ Достигнуто ли максимальное выделение */
+    /**
+     * Is the maximum selection reached.
+     *
+     * Достигнуто ли максимальное выделение.
+     * @returns true if maximum reached/ true, если максимум достигнут
+     */
     readonly isSelectedMax: ComputedRef<boolean>;
-    /**
-     * Returns a list of selected items on the map/
-     * Возвращает список выделенных элементов на карте
-     */
-    readonly selectedList: ComputedRef<ListList>;
-    /**
-     * Returns a list of selected items in the current group/
-     * Возвращает список выделенных элементов в текущей группе
-     */
-    readonly selectedListInGroup: ComputedRef<ListList>;
     /**
      * Returns a list of selected items on the map.
      *
      * Возвращает список выделенных элементов на карте.
+     * @returns reactive list of selected items/ реактивный список выделенных элементов
+     */
+    readonly selectedList: ComputedRef<ListList>;
+    /**
+     * Returns a list of selected items in the current group.
+     *
+     * Возвращает список выделенных элементов в текущей группе.
+     * @returns reactive list of selected items in group/ реактивный список выделенных элементов в группе
+     */
+    readonly selectedListInGroup: ComputedRef<ListList>;
+    /**
+     * Returns a list of selected labels on the map.
+     *
+     * Возвращает список названий выделенных элементов на карте.
+     * @returns reactive list of labels/ реактивный список названий
      */
     readonly selectedNames: ComputedRef<ListNames>;
     /**
-     * Returns a list of selected item values on the map.
+     * Returns a list of selected values on the map.
      *
      * Возвращает список значений выделенных элементов на карте.
+     * @returns reactive list of values/ реактивный список значений
      */
     readonly selectedValues: ComputedRef<any[]>;
     /**
      * Checks whether it is necessary to first display a simplified version.
      *
      * Проверяет, надо ли сначала вывести упрощенную версию.
+     * @returns true if lite mode is active/ true, если активен облегченный режим
      */
     isLite(): boolean;
     /**
      * Checks if an element is in focus.
      *
      * Проверяет, есть ли элемент в фокусе.
+     * @returns true if focus exists/ true, если есть фокус
      */
     isFocus(): boolean;
     /**
-     * Checks if there is a selected item.
+     * Checks if there is a highlighted item (search results).
      *
-     * Проверяет, есть ли выделенный элемент.
+     * Проверяет, есть ли найденный элемент (результаты поиска).
+     * @returns true if highlight exists/ true, если есть совпадения
      */
     isHighlight(): boolean;
     /**
-     * Checks if highlighting is active.
+     * Checks if highlighting is active (minimum length reached).
      *
-     * Проверяет, активно ли выделение.
+     * Проверяет, активно ли выделение (достигнута минимальная длина).
+     * @returns true if active/ true, если активно
      */
     isHighlightActive(): boolean;
     /**
-     * Returns the number of records.
+     * Returns the number of records in the current list.
      *
-     * Возвращает количество записей.
+     * Возвращает количество записей в текущем списке.
+     * @returns length/ количество
      */
     getLength(): number;
     /**
-     * Returns the number of all available records.
+     * Returns the number of all available records in the map.
      *
-     * Возвращает количество всех доступных записей.
+     * Возвращает количество всех доступных записей в карте.
+     * @returns length/ количество
      */
     getLengthByMap(): number;
     /**
-     * Returns the number of all available records.
+     * Returns the number of all available records (items).
      *
-     * Возвращает количество всех доступных записей.
+     * Возвращает количество всех доступных записей (элементы).
+     * @returns length/ количество
      */
     getLengthByItems(): number;
     /**
-     * Returns the values in focus.
+     * Returns the identifier in focus.
      *
-     * Возвращает значения в фокусе.
+     * Возвращает идентификатор в фокусе.
+     * @returns focus identifier/ идентификатор в фокусе
      */
     getFocus(): ListSelectedItem | undefined;
     /**
-     * Returns the selected value.
+     * Returns the highlight text.
      *
-     * Возвращает выделенного значение.
+     * Возвращает текст для выделения.
+     * @returns text/ текст
      */
     getHighlight(): string | undefined;
     /**
      * Returns the minimum length for highlight to start.
      *
      * Возвращает минимальную длину для начала выделения.
+     * @returns length/ длина
      */
     getHighlightLengthStart(): number;
     /**
-     * Returns the selected value.
+     * Returns the selected identifiers list.
      *
-     * Возвращает выбранное значение.
+     * Возвращает список выбранных идентификаторов.
+     * @returns list/ список
      */
     getSelected(): ListSelectedList | undefined;
     /**
@@ -1292,18 +1572,21 @@ export declare class ListDataRef {
      *
      * Возвращает элемент, перемещаясь на определенное количество шагов от выбранного элемента.
      * @param step number of steps/ количество шагов
+     * @returns target item index/ индекс целевого элемента
      */
     getSelectedByStep(step: number): ListSelectedItem | undefined;
     /**
      * Returns the next item from the selected one.
      *
      * Возвращает следующий элемент от выбранного.
+     * @returns next item index/ индекс следующего элемента
      */
     getSelectedNext(): ListSelectedItem | undefined;
     /**
      * Returns the previous item from the selected one.
      *
      * Возвращает предыдущий элемент от выбранного.
+     * @returns previous item index/ индекс предыдущего элемента
      */
     getSelectedPrev(): ListSelectedItem | undefined;
     /**
@@ -1312,6 +1595,7 @@ export declare class ListDataRef {
      * Возвращает элемент, перемещаясь на определенное количество шагов от указанного элемента.
      * @param item item/ элемент
      * @param step number of steps/ количество шагов
+     * @returns target item/ целевой элемент
      */
     getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined;
     /**
@@ -1319,6 +1603,7 @@ export declare class ListDataRef {
      *
      * Возвращает следующий элемент от указанного.
      * @param item item/ элемент
+     * @returns next item/ следующий элемент
      */
     getItemNext(item: ListDataItem): ListDataItem | undefined;
     /**
@@ -1326,6 +1611,7 @@ export declare class ListDataRef {
      *
      * Возвращает предыдущий элемент от указанного.
      * @param item item/ элемент
+     * @returns previous item/ предыдущий элемент
      */
     getItemPrev(item: ListDataItem): ListDataItem | undefined;
     /**
@@ -1334,6 +1620,7 @@ export declare class ListDataRef {
      * Возвращает элемент, перемещаясь на определенное количество шагов от указанного индекса.
      * @param index item index/ индекс элемента
      * @param step number of steps/ количество шагов
+     * @returns target item/ целевой элемент
      */
     getIndexByStep(index: string, step: number): ListDataItem | undefined;
     /**
@@ -1341,6 +1628,7 @@ export declare class ListDataRef {
      *
      * Возвращает следующий элемент от указанного индекса.
      * @param index item index/ индекс элемента
+     * @returns next item/ следующий элемент
      */
     getIndexNext(index: string): ListDataItem | undefined;
     /**
@@ -1348,6 +1636,7 @@ export declare class ListDataRef {
      *
      * Возвращает предыдущий элемент от указанного индекса.
      * @param index item index/ индекс элемента
+     * @returns previous item/ предыдущий элемент
      */
     getIndexPrev(index: string): ListDataItem | undefined;
     /**
@@ -1355,6 +1644,7 @@ export declare class ListDataRef {
      *
      * Возвращает элемент по его индексу.
      * @param index item index/ индекс элемента
+     * @returns found item details/ информация о найденном элементе
      */
     getItemByIndex(index?: string): {
         key: number;
@@ -1365,6 +1655,7 @@ export declare class ListDataRef {
      *
      * Возвращает элемент по его ключу.
      * @param key item key/ ключ элемента
+     * @returns found item/ найденный элемент
      */
     getItemByKey(key: number): ListDataItem | undefined;
     /**
@@ -1372,6 +1663,7 @@ export declare class ListDataRef {
      *
      * Возвращает первый элемент с указанным родителем.
      * @param parent parent identifier to search for / идентификатор родителя для поиска
+     * @returns first item/ первый элемент
      */
     getFirstItemByParent(parent: string | undefined): ListDataItem | undefined;
     /**
@@ -1379,6 +1671,7 @@ export declare class ListDataRef {
      *
      * Возвращает последний элемент с указанным родителем.
      * @param parent parent identifier to search for / идентификатор родителя для поиска
+     * @returns last item/ последний элемент
      */
     getLastItemByParent(parent: string | undefined): ListDataItem | undefined;
     /**
@@ -1386,6 +1679,7 @@ export declare class ListDataRef {
      *
      * Возвращает объект подсписка для группового элемента.
      * @param item List item data/ данные элемента списка
+     * @returns sublist instance/ экземпляр подсписка
      */
     getSubList(item: ListDataItem): ListDataRef;
     /**
@@ -1505,7 +1799,7 @@ export declare type RefUndefined<T> = RefType<T | undefined>;
  * @param children sub-elements of the component/ под элементы компонента
  * @param index the name of the key/ названия ключа
  */
-export declare function render<T extends ItemList>(name: string, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
+export declare function render<T extends ItemList>(name: string | any, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
 
 /**
  * Router management class.
@@ -1592,6 +1886,12 @@ export declare class ScrollbarWidthRef {
     readonly is: ComputedRef<boolean>;
 }
 
+/** Search list input / Входные данные списка поиска */
+export declare type SearchListInput<T extends SearchItem> = SearchListValueRef<T> | (() => SearchListValueRef<T>);
+
+/** Search list data / Данные списка поиска */
+export declare type SearchListValueRef<T extends SearchItem> = RefOrNormal<SearchListValue<T>>;
+
 /**
  * Defines global conditions for the API request.
  *
@@ -1635,14 +1935,6 @@ export declare function toBind<R extends ItemList = ItemList>(extra: ItemList, v
 export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
 
 /**
- * Packs reactive values into computed to prohibit editing.
- *
- * Упаковывает реактивные значения в computed для запрета редактирования.
- * @param callback callback function/ функция обратного вызова
- */
-export declare function toComputed<T>(callback: () => Ref<T>): ComputedRef<T>;
-
-/**
  * Returns a regular variable or wraps it in a regular variable if it is an ordinary variable.
  *
  * Возвращает регулярный переменный или оборачивает его в регулярный переменный, если является обычным переменным.
@@ -1663,6 +1955,92 @@ export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFe
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
+/**
+ * Hook for managing API requests, formatting, search, and mutations (POST, PUT, DELETE).
+ *
+ * Хук для управления API-запросами, форматированием, поиском и мутациями (POST, PUT, DELETE).
+ * @param propsGet properties for GET request / параметры для GET запроса
+ * @param formattersOptions options for formatting / опции форматирования
+ * @param searchOptions options for search / опции поиска
+ * @param postRequest properties for POST request / параметры для POST запроса
+ * @param putRequest properties for PUT request / параметры для PUT запроса
+ * @param deleteRequest properties for DELETE request / параметры для DELETE запроса
+ * @param action additional action to perform on mutations / дополнительное действие при мутациях
+ */
+export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void): {
+    /** List data (Computed) / Данные списка (Computed) */
+    readonly list: ComputedRef<{
+        isSearch: ComputedRef<boolean>;
+        search: Ref<string, string>;
+        loading: Ref<boolean, boolean>;
+        listSearch: ComputedRef<SearchFormatList<Item, Columns>>;
+        length: ComputedRef<number>;
+    } | undefined extends undefined ? ({
+        listFormat: ComputedRef<FormattersReturn<Return, FormattersOptions, ArrayToItem<Return>>>;
+        length: ComputedRef<number>;
+    } | undefined extends undefined ? (ApiData<Return> | undefined) : FormattersReturn<Return, FormattersOptions>) : SearchFormatList<{
+        listFormat: ComputedRef<FormattersReturn<Return, FormattersOptions, ArrayToItem<Return>>>;
+        length: ComputedRef<number>;
+    } | undefined extends undefined ? Item : ItemFormatters, Columns>>;
+    /** Raw request data (Computed) / Исходные данные запроса (Computed) */
+    readonly data: ComputedRef<ApiData<Return> | undefined>;
+    /** Length of the list (Computed) / Длина списка (Computed) */
+    readonly length: ComputedRef<number>;
+    /** Data length (number) / Длина исходных данных */
+    lengthData: ComputedRef<number>;
+    /** Active starting flag (true if no data yet) / Флаг начальной загрузки (true если еще нет данных) */
+    starting: ComputedRef<boolean>;
+    /** Active reading flag / Флаг активного чтения */
+    reading: Ref<boolean, boolean>;
+    /** Request load flag / Флаг загрузки запроса */
+    loading: Ref<boolean, boolean>;
+    /** Loading search flag / Флаг загрузки поиска */
+    loadingSearch: Ref<boolean, boolean> | undefined;
+    /** POST request load flag / Флаг загрузки POST запроса */
+    loadingPost: Ref<boolean, boolean> | undefined;
+    /** PUT request load flag / Флаг загрузки PUT запроса */
+    loadingPut: Ref<boolean, boolean> | undefined;
+    /** DELETE request load flag / Флаг загрузки DELETE запроса */
+    loadingDelete: Ref<boolean, boolean> | undefined;
+    /** Is search active / Активен ли поиск */
+    isSearch: ComputedRef<boolean> | undefined;
+    /** Search function / Функция поиска */
+    search: Ref<string, string> | undefined;
+    /**
+     * Default reset.
+     *
+     * Сброс по умолчанию.
+     */
+    reset: () => Promise<void>;
+    /**
+     * Abort request.
+     *
+     * Отмена запроса.
+     */
+    abort: () => void;
+    /**
+     * Send POST request.
+     *
+     * Выполнить POST запрос.
+     * @param request request data / данные запроса
+     */
+    sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
+    /**
+     * Send PUT request.
+     *
+     * Выполнить PUT запрос.
+     * @param request request data / данные запроса
+     */
+    sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
+    /**
+     * Send DELETE request.
+     *
+     * Выполнить DELETE запрос.
+     * @param request request data / данные запроса
+     */
+    sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
+};
+
 export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
@@ -1679,19 +2057,61 @@ export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFe
  * Тип возвращаемого значения для useApiRef.
  */
 export declare interface UseApiRef<R> {
-    /** Loaded data / Загруженные данные */
-    data: Ref<ApiData<R> | undefined>;
+    /** Reactive data (Computed) / Реактивные данные (Computed) */
+    data: ComputedRef<ApiData<R> | undefined>;
+    /** Item (Ref) / Элемент (Ref) */
+    item: Ref<ApiData<R> | undefined>;
+    /** Length of the list (Computed) / Длина списка (Computed) */
+    length: ComputedRef<number>;
     /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
-    isStarting: ComputedRef<boolean>;
+    starting: ComputedRef<boolean>;
     /** Request load flag / Флаг загрузки запроса */
-    loading: ComputedRef<boolean>;
+    loading: Ref<boolean>;
     /** Active reading flag / Флаг активного чтения */
-    reading: ComputedRef<boolean>;
-    /** Default reset / Сброс по умолчанию */
+    reading: Ref<boolean>;
+    /** Checks if the request is starting (true if no data yet) / Проверяет, начинается ли запрос (true, если данных еще нет) */
+    isStarting(): boolean;
+    /**
+     * Checks if the request is currently loading.
+     *
+     * Проверяет, загружается ли запрос в данный момент.
+     */
+    isLoading(): boolean;
+    /**
+     * Checks if the request is currently reading.
+     *
+     * Проверяет, читается ли запрос в данный момент.
+     */
+    isReading(): boolean;
+    /**
+     * Gets the current item data.
+     *
+     * Получает текущие данные элемента.
+     */
+    getItem(): ApiData<R> | undefined;
+    /**
+     * Manual initialization
+     *
+     * Ручная инициализация
+     */
+    init(): void;
+    /**
+     * Default reset
+     *
+     * Сброс по умолчанию
+     */
     reset(): Promise<void>;
-    /** Stop request / Остановка запроса */
+    /**
+     * Stop request
+     *
+     * Остановка запроса
+     */
     stop(): void;
-    /** Abort request / Отмена запроса */
+    /**
+     * Abort request
+     *
+     * Отмена запроса
+     */
     abort(): void;
 }
 
@@ -1706,7 +2126,7 @@ export declare interface UseApiRef<R> {
  * @param transformation transforms the received request/ преобразовывает полученный запрос
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
  */
-export declare function useApiRef<R, T = any>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean): UseApiRef<R>;
+export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean): UseApiRef<R>;
 
 /**
  * Use api request.
@@ -1745,11 +2165,30 @@ export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T |
  * Creates a reactive variable to manage cookies.
  *
  * Создает реактивную переменную для управления cookie.
- * @param name cookie name/ название cookie
- * @param defaultValue value or function to change data/ значение или функция для изменения данных
- * @param options additional parameters/ дополнительные параметры
+ * @param name cookie name / название cookie
+ * @param defaultValue value or function to change data / значение или функция для изменения данных
+ * @param options additional parameters / дополнительные параметры
  */
 export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;
+
+/**
+ * Composable for reactive formatting of data lists based on specified rules for each property. /
+ * Композабл для реактивного форматирования списков данных на основе заданных правил для каждого свойства.
+ * @param list source data list (Ref or ComputedRef) / исходный список данных (Ref или ComputedRef)
+ * @param options formatting settings for each property / настройки форматирования для каждого свойства
+ */
+export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): {
+    /**
+     * Formatted data list (ComputedRef) /
+     * Отформатированный список данных (ComputedRef)
+     */
+    listFormat: ComputedRef<FormattersReturn<List, Options>>;
+    /**
+     * Returns the count of records in the list (ComputedRef) /
+     * Возвращает количество записей в списке (ComputedRef)
+     */
+    length: ComputedRef<number>;
+};
 
 /**
  * Returns a class object for working with data formatting.
@@ -1762,10 +2201,10 @@ export declare function useGeoIntlRef(): GeoIntlRef;
  * Creates a reactive variable to manage the hash.
  *
  * Создает реактивную переменную для управления хэшем.
- * @param name value name/ название значения
- * @param defaultValue default value/ значение по умолчанию
+ * @param name value name / название значения
+ * @param defaultValue default value / значение по умолчанию
  */
-export declare function useHashRef<T>(name: string, defaultValue?: T | (() => T)): Ref<any, any> | undefined;
+export declare function useHashRef<T>(name: string, defaultValue?: T | (() => T)): ShallowRef<T>;
 
 /**
  * Hook for initializing the tracking of an element's appearance on the screen by margin.
@@ -1834,7 +2273,7 @@ export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
  * Vue композабл для реактивного управления мета-тегами с автоматической синхронизацией DOM.
  * Использует паттерн singleton - все компоненты используют одно состояние мета-тегов.
  */
-export declare const useMeta: () => Readonly<Readonly<{
+export declare const useMeta: () => Readonly<{
     meta: Meta;
     title: Ref<string, string>;
     keyword: Ref<string, string>;
@@ -1845,7 +2284,7 @@ export declare const useMeta: () => Readonly<Readonly<{
     robots: Ref<MetaRobots, MetaRobots>;
     siteName: Ref<string, string>;
     getHtmlMeta: () => string;
-}> & {
+} & {
     init(): Readonly<{
         meta: Meta;
         title: Ref<string, string>;
@@ -1858,6 +2297,7 @@ export declare const useMeta: () => Readonly<Readonly<{
         siteName: Ref<string, string>;
         getHtmlMeta: () => string;
     }>;
+    destroyExecute?(): void;
 }>;
 
 /**
@@ -1869,11 +2309,9 @@ export declare const useMeta: () => Readonly<Readonly<{
  * @param hasTo has to / имеет to
  */
 export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
-    /** Current element/ Текущий элемент */
     item: ComputedRef<T | undefined>;
     /** Selected element / Выбранный элемент */
     selected: Ref<string, string>;
-    /** Label / Метка */
     label: ComputedRef<NumberOrString>;
     /** List of elements / Список элементов */
     list: ComputedRef<ConstrBind<T>[]>;
@@ -1884,6 +2322,58 @@ export declare const useRouterList: <T extends ListDataBasic>(list: RefType<Cons
      * Переход к главному элементу.
      */
     toMain(): void;
+};
+
+/**
+ * Composable for handling search logic with reactive data.
+ *
+ * Композабл для управления логикой поиска с реактивными данными.
+ * @param list list of items to search / список элементов для поиска
+ * @param columns columns to search in / колонки, по которым ведется поиск
+ * @param value reactive search string / реактивная строка поиска
+ * @param options search options / настройки поиска
+ */
+export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
+    /**
+     * Whether the search is currently active (minimum character limit reached)/
+     * Активен ли поиск в данный момент (достигнут ли лимит символов)
+     */
+    isSearch: ComputedRef<boolean>;
+    /** Search string ref/ Ссылка на строку поиска */
+    search: Ref<string, string>;
+    /**
+     * Search loading status (if delay is used) /
+     * Статус загрузки поиска (если используется задержка)
+     */
+    loading: Ref<boolean, boolean>;
+    /**
+     * Formatted list of search results with highlights /
+     * Форматированный список результатов поиска с подсветкой совпадений
+     */
+    listSearch: ComputedRef<SearchFormatList<T, K>>;
+    /**
+     * Length of the search results /
+     * Длина списка результатов поиска
+     */
+    length: ComputedRef<number>;
+};
+
+/**
+ * Composable for managing search value state and handling delays.
+ *
+ * Композабл для управления состоянием значения поиска и обработки задержек.
+ * Он изолирует логику debounce, предоставляя `searchDelay` (строка с задержкой)
+ * и `loading` (флаг ожидания), которые затем читаются классом `SearchList` или `useSearchRef`.
+ * @param item search list instance / экземпляр поиска `SearchList`
+ * @param value reactive search string / реактивная строка поиска (опционально)
+ */
+export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
+    /** Current search value / Текущее значение поиска */
+    search: Ref<string, string>;
+    /** Search value with applied delay / Значение поиска с примененной задержкой */
+    searchDelay: Ref<string, string>;
+    /** Loading status during delay / Статус загрузки во время задержки */
+    loading: Ref<boolean, boolean>;
 };
 
 /**

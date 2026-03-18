@@ -28,3 +28,14 @@ export type ApiManagementSearch<
   value?: Ref<string>
   options?: SearchOptions
 }
+
+export type ApiManagementRequest<
+  T,
+  Return extends ApiData<T> = ApiData<T>
+> = {
+  path?: RefOrNormal<string | undefined>
+  action?: (data: Return | undefined) => Promise<void> | void
+  transformation?: (data: T) => Return
+  toData?: boolean
+  options?: ApiOptions
+}

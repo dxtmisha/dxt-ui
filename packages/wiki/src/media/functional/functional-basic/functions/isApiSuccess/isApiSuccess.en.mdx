@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isApiSuccess - Check if API response is successful'/>
+
+# `isApiSuccess`
+
+Checks if the API response is successful.
+
+The check is performed according to the following rules:
+- If the data is an array, it is considered a success.
+- If the data is an object, the success is determined by the `status === 'success'` or `success === true` fields.
+- If the `statusObject` field is present, the success is determined by the HTTP status code (starts with 2).
+- If none of the fields are present, the success is determined by the global API status.
+
+**Parameters:**
+- `data: ApiData<T>` — API response data.
+
+**Returns:**
+`boolean` — `true` if the response is successful, otherwise `false`.
+
+```typescript
+import { isApiSuccess } from '@dxtmisha/functional-basic'
+
+console.log(isApiSuccess({ status: 'success' })) // true
+console.log(isApiSuccess({ success: true })) // true
+console.log(isApiSuccess([])) // true
+```

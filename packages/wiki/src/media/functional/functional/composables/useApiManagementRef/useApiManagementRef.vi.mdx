@@ -1,0 +1,121 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useApiManagementRef - Quản lý API'/>
+
+# `useApiManagementRef`
+
+Một composable mạnh mẽ để điều phối toàn diện các request API. Nó quản lý việc fetching dữ liệu (GET), format danh sách, tìm kiếm trên client và các đột biến (POST, PUT, DELETE) đều được tích hợp trong một giao diện phản ứng (reactive interface) duy nhất.
+
+## Tham số
+- `propsGet: ApiManagementGet<Return, Type>` — cấu hình cho GET request chính (path, reactivity, skeleton, v.v.).
+- `formattersOptions?: FormattersOptions` — các quy tắc định dạng reactive tùy chọn (`useFormattersRef`).
+- `searchOptions?: ApiManagementSearch<Item, Columns>` — cấu hình tìm kiếm phía client tùy chọn (`useSearchRef`).
+- `postRequest?: ApiManagementRequest<Post>` — cấu hình tùy chọn cho yêu cầu tạo (POST).
+- `putRequest?: ApiManagementRequest<Put>` — cấu hình tùy chọn cho yêu cầu cập nhật (PUT).
+- `deleteRequest?: ApiManagementRequest<Delete>` — cấu hình tùy chọn cho yêu cầu xóa (DELETE).
+- `action?: function` — callback chung để thực thi sau bất kỳ mutation nào thành công.
+
+## Giá trị trả về
+- `list: ComputedRef` — mảng dữ liệu đã qua xử lý. **Hỗ trợ Skeleton**: nếu dữ liệu chưa được tải và `skeleton()` được cung cấp, nó sẽ trả về các giá trị giả. Tính toán dựa trên bộ lọc tìm kiếm và formatter.
+- `data: ComputedRef<ApiData<Return> | undefined>` — dữ liệu reactive thô từ `useApiRef`.
+- `length: ComputedRef<number>` — độ dài hiện tại của `list` (cập nhật động khi tìm kiếm).
+- `lengthData: ComputedRef<number>` — độ dài gốc của dữ liệu trong `data.value`.
+- `starting: ComputedRef<boolean>` — `true` nếu yêu cầu vẫn đang trong giai đoạn tải ban đầu.
+- `reading: Ref<boolean>` — cờ chỉ định rằng dữ liệu hiện đang được tải/đọc từ server.
+- `loading: Ref<boolean>` — trạng thái loading của GET request chính.
+- `loadingSearch: Ref<boolean>` — trạng thái loading của thao tác tìm kiếm.
+- `loadingPost / loadingPut / loadingDelete` — trạng thái loading độc lập cho từng thao tác đột biến.
+- `isSearch: ComputedRef<boolean>` — cho biết truy vấn tìm kiếm hiện có đang hoạt động hay không.
+- `search: Ref<string>` — chuỗi tìm kiếm reactive (Proxy đến `searchOptions.value` đã cung cấp).
+- `sendPost / sendPut / sendDelete: (request?: ApiFetch['request']) => Promise<any>` — các phương thức để thực thi mutation.
+- `reset: () => Promise<void>` — buộc khởi động lại/làm mới GET request chính thủ công.
+- `abort: () => void` — hủy bỏ yêu cầu mạng đang diễn ra.
+
+## Ràng buộc Generic (Generic Constraints)
+
+- `Return extends ApiManagementValue` — kiểu dữ liệu trả về từ API.
+- `FormattersOptions extends FormattersOptionsList` — kiểu cho các tùy chọn format.
+- `Post / Put / Delete extends Record<string, any>` — kiểu dữ liệu cho các mutation request tương ứng.
+- `Type extends ApiManagementValue = Return` — kiểu dữ liệu thô ban đầu (trước khi transform).
+- `Item extends ArrayToItem<Return>` — kiểu cho một phần tử trong danh sách dữ liệu.
+- `ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number]` — kiểu phần tử sau khi áp dụng formatter.
+- `Columns extends SearchColumns<ItemFormatters>` — các cột được sử dụng để tìm kiếm.
+
+## Cách làm việc
+
+`useApiManagementRef` là trung tâm điều phối quản lý dữ liệu cho các giao diện CRUD. Nó kết hợp các yêu cầu mạng, tìm kiếm cục bộ và định dạng dữ liệu vào một chu kỳ tự động duy nhất:
+
+1.  **Khởi tạo và Cơ chế Lazy Loading**: Hook không gửi yêu cầu mạng ngay lập tức. GET request chỉ được đưa vào hàng đợi khi component của bạn truy cập lần đầu vào thuộc tính `list` hoặc `data`. Điều này giúp tiết kiệm tài nguyên nếu dữ liệu không phải lúc nào cũng cần hiển thị.
+2.  **Phản hồi tức thì (Skeleton)**: Nếu bạn cung cấp hàm `skeleton`, thuộc tính `list` sẽ trả về ngay một mảng các "dữ liệu giả" khi bắt đầu tải. Điều này cho phép bạn dựng cấu trúc bảng hoặc danh sách trước khi byte dữ liệu đầu tiên được tải về, loại bỏ tình trạng giao diện bị "nhảy".
+3.  **Danh sách thông minh (`list`)**: Đây là điểm tương tác chính. Thuộc tính `list` tự động chuyển đổi giữa:
+    - Dữ liệu Skeleton (trong khi đang tải).
+    - Kết quả tìm kiếm (nếu có chuỗi tìm kiếm được nhập).
+    - Dữ liệu đã định dạng (nếu `formattersOptions` được cấu hình).
+    - Dữ liệu thô (nếu không có trường hợp nào ở trên áp dụng).
+4.  **Đồng bộ hóa Tìm kiếm và Định dạng**: Việc tìm kiếm được thực hiện trên dữ liệu đã tải và đã được định dạng (nếu cần). Điều này đảm bảo người dùng có thể tìm thấy "Nguyễn Văn A" ngay cả khi dữ liệu JSON gốc lưu họ và tên ở các trường riêng biệt. Tìm kiếm diễn ra ở phía client (Client-side), mang lại kết quả tức thì.
+5.  **Chu kỳ Mutation và Tự động làm mới**: 
+    - Khi gọi các phương thức `sendPost`, `sendPut` hoặc `sendDelete`, hook sẽ theo dõi trạng thái phản hồi. 
+    - Nếu server trả về thành công (được xác nhận qua `isApiSuccess`), hook sẽ **tự động** gọi `reset()` cho GET request chính. 
+    - Việc này kích hoạt tải lại dữ liệu và cập nhật toàn bộ danh sách. Do đó, sau khi xóa một dòng hoặc thêm mới, danh sách của bạn luôn được cập nhật mà không cần viết thêm mã xử lý thủ công.
+6.  **Tính phản xạ của tham số**: Nếu `path` hoặc `options` (trong `propsGet`) là các biến reactive (Vue Ref) và bạn thiết lập `reactivity: true`, hook sẽ theo dõi sự thay đổi của chúng và tự động tải lại dữ liệu khi URL hoặc tham số lọc thay đổi.
+
+## Kiến trúc phần lõi
+
+`useApiManagementRef` là một hook điều hướng được thiết kế chuyên biệt để quản lý các mẫu màn hình CRUD tiêu chuẩn (ví dụ như data tables). Thông qua cấu hình tham số, bạn sẽ nhận được một đối tượng "tất cả trong một" để quản lý loading spinners, bộ tìm kiếm, chuẩn hóa dữ liệu cho UI, điều khiển thao tác CRUD và tự động tải lại danh sách.
+
+## Các kiểu dữ liệu (Types)
+
+### `ApiManagementGet<Return, Type>`
+- `path?: string | Ref<string>` — đường dẫn API.
+- `options?: ApiOptions` — các tùy chọn request (method, headers, v.v.).
+- `reactivity?: boolean` — có tự động refetch khi `path` hoặc `options` thay đổi hay không.
+- `conditions?: Ref<boolean>` — điều kiện để thực thi request.
+- `transformation?: (data: Type) => ApiData<Return>` — hàm transform dữ liệu sau khi fetch.
+- `unmounted?: boolean` — có xóa dữ liệu khi component bị unmount hay không.
+- `skeleton?: () => Return` — hàm trả về dữ liệu giả (placeholder) trong khi loading.
+
+### `ApiManagementSearch<T, K>`
+- `columns: K` — danh sách các cột để tìm kiếm.
+- `value?: Ref<string>` — chuỗi tìm kiếm reactive.
+- `options?: SearchOptions` — các tùy chọn tìm kiếm bổ sung.
+
+### `ApiManagementRequest<T, Return>`
+- `path?: string | Ref<string>` — đường dẫn cho mutation request.
+- `action?: (data: Return | undefined) => Promise<void> | void` — callback sau khi thực thi request.
+- `transformation?: (data: T) => Return` — hàm transform dữ liệu trước khi gửi.
+- `toData?: boolean` — có gửi dữ liệu trong body của request (dưới thuộc tính `data`) hay không.
+- `options?: ApiOptions` — các tùy chọn request bổ sung.
+
+## Ví dụ sử dụng
+
+```typescript
+import { ref } from 'vue'
+import { useApiManagementRef } from '@dxtmisha/functional'
+import { FormattersType } from '@dxtmisha/functional-basic'
+
+const searchVal = ref('')
+
+const { 
+  list, 
+  loading, 
+  sendPost, 
+  sendDelete 
+} = useApiManagementRef(
+  // 1. GET Request
+  { path: 'api/users', skeleton: () => [{ id: 0, name: 'Đang tải...' }] },
+  // 2. Formatters
+  {  price: { type: FormattersType.currency } },
+  // 3. Tiềm kiếm
+  { columns: ['name'], value: searchVal },
+  // 4. POST
+  { path: 'api/users/create' },
+  // 5. PUT (không dùng)
+  undefined,
+  // 6. DELETE
+  { path: 'api/users/delete' }
+)
+
+// Tạo một người dùng mới:
+// await sendPost({ data: { name: 'Người Dùng Mới' } })
+// Thao tác này sẽ tự gọi request.reset() để làm mới bảng dữ liệu!
+```

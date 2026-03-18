@@ -1,23 +1,27 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.8.2",
+  "version": "1.9.0",
   "type": "module",
-  "description": "Comprehensive functional utilities library for DXT UI - classes, composables, functions and types for modern web development",
+  "description": "A comprehensive library of utilities, base classes, and Vue 3 composables for reactive web development. Extends @dxtmisha/functional-basic with Composition API.",
   "keywords": [
     "functional",
     "utilities",
     "helpers",
     "typescript",
     "vue",
+    "vue3",
+    "composition-api",
     "composables",
     "classes",
+    "reactivity",
+    "api-client",
+    "storage",
+    "i18n",
     "geo",
     "datetime",
     "cache",
-    "api",
-    "ui",
-    "dxt"
+    "ui"
   ],
   "author": "dxtmisha@gmail.com",
   "license": "MIT",
@@ -37,7 +41,8 @@
     "test": "vitest",
     "library": "dxt-library",
     "dxt-types": "dxt-types",
-    "prepublishOnly": "npm run library && npm run build"
+    "prepublishOnly": "npm run library && npm run build",
+    "public": "npm publish --access public"
   },
   "files": [
     "dist",

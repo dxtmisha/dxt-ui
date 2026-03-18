@@ -3502,6 +3502,14 @@ export declare function initScrollbarOffset(): Promise<void>;
 export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
 
 /**
+ * Checks if the API response is successful.
+ *
+ * Проверяет, является ли ответ API успешным.
+ * @param data API response data/ данные ответа API
+ */
+export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
+
+/**
  * Checks if the values are arrays.
  *
  * Проверяет, являются ли значения массивами.

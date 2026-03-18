@@ -33,9 +33,7 @@ describe('getIndexForRender', () => {
   })
 
   it('should ignore non-string index in props', () => {
-    // @ts-expect-error testing invalid input
     expect(getIndexForRender('div', { index: 123 })).toBe('div')
-    // @ts-expect-error testing invalid input
     expect(getIndexForRender('div', { index: true })).toBe('div')
   })
 
@@ -45,7 +43,7 @@ describe('getIndexForRender', () => {
     expect(getIndexForRender('div', { index: 'idx1', id: 'id1' })).toBe('div.idx1.id1')
   })
 
-  it('should handle undefined props or index argument gracefully', () => {
+  it('should handle undefined props or index arguments gracefully', () => {
     expect(getIndexForRender('div', undefined, undefined)).toBe('div')
   })
 })

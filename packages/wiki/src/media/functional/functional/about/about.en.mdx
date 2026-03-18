@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/! About library'/>
+
+# @dxtmisha/functional
+
+`@dxtmisha/functional` is a library of utilities, base classes, and composables for complex web development in Vue 3. 
+
+Modern frontend applications require managing dozens of asynchronous processes: fetching data via APIs, synchronizing tabs, working with local storages, formatting dates, and adapting to the user's locale. Often, developers solve these tasks locally within components, leading to code duplication, "bloated" `.vue` files, and bugs related to clearing subscriptions or timers. The package operates on the foundation of `@dxtmisha/functional-basic`, providing reactive wrappers and architectural solutions specifically created to address these issues within the Vue ecosystem (Composition API).
+
+## Why is this library needed?
+
+The main idea of the package is to extract standard business logic and side effects outside of components, making this process strictly typed and reactive by default.
+
+You no longer need to manually synchronize HTTP requests with the local state of the screen, write wrappers for reactive data caching, or invent solutions for working with LocalStorage inside components. The library provides ready-made reactive abstractions that take this work upon themselves. You simply call the necessary composable or class, and under the hood, the library manages reactive references (`ref`), monitors the Vue lifecycle, cleans up garbage collectors upon component unmounting, and maintains strict TypeScript typing.
+
+## Features and Development Approach
+
+**Full integration with Composition API**
+Every utility in the library is designed with Vue 3's reactivity system in mind. Data from storages, API responses, or system locales are always returned as reactive objects. If the configuration changes, all dependent components are updated automatically.
+
+**Architectural Separation of Concerns**
+The package ideologically encourages developers to write "thin" components. All validation logic, complex state management (`loading`, `error`, `success`), data preparation, and caching are extracted into specialized classes and composables. The `.vue` file is left with only declarative variable bindings to the template.
+
+**Type Safety**
+Thanks to powerful TypeScript interfaces, the package ensures 100% type coverage between APIs, storages, and the UI. Generics and smart type inference protect against typos and refactoring errors. The IDE always knows what fields a request returned and what methods can be called on a class.
+
+**Predictable Resource Management**
+The library takes care of safely managing subscriptions and freeing memory. If a component that initiated an API request or listened to a global event is unmounted, its associated tasks and watchers will be correctly terminated, preventing memory leaks in the application.
+
+## What can it do?
+
+The library covers all key needs when developing a complex frontend:
+
+**Network requests (API)** 
+A set of composables (`useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`, `useApiRequest`) encapsulating the logic of server interaction. Upon being called, they return an object with built-in fields: the current loading state (`loading`), recorded errors, and the received data (`item`, `list`). Out of the box, they can cache responses, automatically cancel outdated previous requests (especially important for live search), and are easily configured via headers.
+
+**State storages** 
+Reactive hooks like `useStorageRef`, `useSessionRef`, `useCookieRef`, and `useHashRef`. They allow directly binding a reactive variable to LocalStorage, SessionStorage, URL hash, or a cookie file. You simply work with this variable like a normal `ref` in the code, and the library synchronizes it with the browser's persistent storage, instantly propagating changes even to other open user tabs.
+
+**Internationalization and formatting** 
+Tools like `useTranslateRef`, `useGeoIntlRef`, `DatetimeRef`, and `GeoFlagRef` are functions that respond on the fly to changes in environment parameters (changing language, selecting a different currency, or region). They automatically rebuild date formats, adapt currencies, and translate texts. Component updates happen independently, without writing additional event listeners.
+
+**UI Component Engineering**
+The base class system: `DesignAbstract`, `DesignComp`, `DesignChanged`, `DesignAsyncAbstract`. It allows developers to encapsulate the internal logic of non-standard UI elements (custom selectors, complex forms, modal windows with states) into independent classes. This makes business logic detachable from the markup, easy to test, and allows functionality to be reused in other projects.
+
+**Auxiliary utilities**
+The package includes many focused reactive solutions:
+- `useMeta` for reactive manipulation of SEO tags depending on the page state;
+- `useBroadcastValueRef` for establishing a real-time data exchange channel between browser windows;
+- `useLoadingRef` for centralized control over loading indicators;
+- Functions `computedAsync` and `toComputed` for elegantly executing asynchronous operations within Vue 3.
+
+## Who is this for?
+
+The package is intended for developers building multipage business applications, complex control panels (dashboards), or their own UI frameworks using Vue 3 technologies. It radically reduces the amount of boilerplate code, offering instead proven and safe development patterns.

@@ -1,0 +1,121 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useApiManagementRef - Управление API'/>
+
+# `useApiManagementRef`
+
+Мощный композабл для комплексной оркестрации API-запросов. Он централизованно управляет загрузкой данных (GET), форматированием списков, клиентским поиском и мутациями (POST, PUT, DELETE) через единый реактивный интерфейс.
+
+## Параметры
+- `propsGet: ApiManagementGet<Return, Type>` — настройки главного GET-запроса (path, reactivity, skeleton и т.д.).
+- `formattersOptions?: FormattersOptions` — опциональные правила для реактивного форматирования данных (`useFormattersRef`).
+- `searchOptions?: ApiManagementSearch<Item, Columns>` — опциональные настройки для клиентского поиска по списку (`useSearchRef`).
+- `postRequest?: ApiManagementRequest<Post>` — опциональные настройки для POST-запроса создания.
+- `putRequest?: ApiManagementRequest<Put>` — опциональные настройки для PUT-запроса обновления.
+- `deleteRequest?: ApiManagementRequest<Delete>` — опциональные настройки для DELETE-запроса удаления.
+- `action?: function` — общий коллбэк для выполнения после любой успешной мутации.
+
+## Возвращает
+- `list: ComputedRef` — обработанный массив данных. **Поддерживает Skeleton**: если данные ещё не загружены и передан `skeleton()`, вернет заглушки. Учитывает фильтры поиска и форматтеры.
+- `data: ComputedRef<ApiData<Return> | undefined>` — «сырые» реактивные данные из `useApiRef`.
+- `length: ComputedRef<number>` — текущее количество элементов в `list` (динамически меняется при поиске).
+- `lengthData: ComputedRef<number>` — общее количество элементов в исходном `data`.
+- `starting: ComputedRef<boolean>` — флаг первичной загрузки (когда данных еще нет).
+- `reading: Ref<boolean>` — флаг активного процесса чтения данных.
+- `loading: Ref<boolean>` — общее состояние загрузки главного GET-запроса.
+- `loadingSearch: Ref<boolean>` — состояние загрузки в процессе поиска.
+- `loadingPost / loadingPut / loadingDelete` — состояния загрузки для каждой мутации.
+- `isSearch: ComputedRef<boolean>` — активен ли поиск (есть ли поисковый запрос).
+- `search: Ref<string>` — реактивная строка поиска (Proxy к переданному `searchOptions.value`).
+- `sendPost / sendPut / sendDelete: (request?: ApiFetch['request']) => Promise<any>` — методы для вызова мутаций.
+- `reset: () => Promise<void>` — принудительный перезапуск GET-запроса и очистка текущего состояния.
+- `abort: () => void` — прерывание текущего сетевого запроса.
+
+## Ограничения дженериков (Generic Constraints)
+
+- `Return extends ApiManagementValue` — тип данных, возвращаемых API.
+- `FormattersOptions extends FormattersOptionsList` — опциональные правила форматирования.
+- `Post / Put / Delete extends Record<string, any>` — типы данных для соответствующих запросов мутации.
+- `Type extends ApiManagementValue = Return` — тип исходных данных (до трансформации).
+- `Item extends ArrayToItem<Return>` — тип одного элемента из списка данных.
+- `ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number]` — тип элемента после применения форматировщиков.
+- `Columns extends SearchColumns<ItemFormatters>` — колонки, по которым производится поиск.
+
+## Как с ним работать
+
+`useApiManagementRef` — это центральный хаб для управления данными в CRUD-интерфейсах. Он объединяет сетевые запросы, локальный поиск и форматирование в единый автоматизированный цикл:
+
+1.  **Инициализация и Ленивость (Lazy Loading)**: Хук не отправляет сетевой запрос немедленно. GET-запрос ставится в очередь только тогда, когда ваш компонент впервые обращается к свойству `list` или `data`. Это экономит ресурсы, если данные не всегда нужны на экране.
+2.  **Мгновенный отклик (Skeleton)**: Если вы передали функцию `skeleton`, то в момент начала загрузки `list` сразу вернет массив "заглушек". Это позволяет отрисовать структуру таблицы или списка до того, как придет первый байт данных, исключая "прыжки" интерфейса.
+3.  **Умный список (`list`)**: Это основная точка взаимодействия. Свойство `list` автоматически переключается между:
+    - Данными-скелетонами (при загрузке).
+    - Результатами поиска (если введен поисковый запрос).
+    - Отформатированными данными (если настроены `formattersOptions`).
+    - Исходными данными (если ничего из вышеперечисленного не применимо).
+4.  **Синхронизация Поиска и Форматов**: Поиск выполняется по уже загруженным и, если необходимо, отформатированным данным. Это гарантирует, что пользователь найдет "Иванов Иван", даже если в исходном JSON эти данные пришли в разных полях. Поиск происходит на стороне клиента (Client-side), что дает мгновенный результат.
+5.  **Цикл Мутаций и Авто-обновление**: 
+    - При вызове методов `sendPost`, `sendPut` или `sendDelete` хук отслеживает статус ответа. 
+    - Если сервер вернул успех (проверка через `isApiSuccess`), хук **автоматически** вызывает `reset()` для основного GET-запроса. 
+    - Это приводит к повторной загрузке данных и обновлению всего списка. Таким образом, после удаления строки или добавления новой, ваш список всегда остается актуальным без написания лишнего кода.
+6.  **Реактивность параметров**: Если `path` или `options` (в `propsGet`) являются реактивными (Vue Ref), и вы установили `reactivity: true`, хук будет следить за их изменением и автоматически перезагружать данные при смене URL или параметров фильтрации.
+
+## Архитектура
+
+`useApiManagementRef` — это центральный оркестратор для CRUD-задач. Он объединяет четыре независимых хука (`useApiRef`, `useFormattersRef`, `useSearchRef` и мутации) в единую реактивную систему. Вместо управления десятками разрозненных состояний (загрузка, ошибки, данные, фильтры), разработчик описывает конфигурацию, а хук берет на себя синхронизацию их жизненных циклов.
+
+## Типы (Types)
+
+### `ApiManagementGet<Return, Type>`
+- `path?: string | Ref<string>` — путь к API.
+- `options?: ApiOptions` — параметры запроса (метод, заголовки и т.д.).
+- `reactivity?: boolean` — включить ли автоматическое обновление при изменении `path` или `options`.
+- `conditions?: Ref<boolean>` — условие, при котором выполняется запрос.
+- `transformation?: (data: Type) => ApiData<Return>` — функция для трансформации данных после получения.
+- `unmounted?: boolean` — удалять ли данные после размонтирования компонента.
+- `skeleton?: () => Return` — функция, возвращающая данные-заглушки во время загрузки.
+
+### `ApiManagementSearch<T, K>`
+- `columns: K` — список колонок для поиска.
+- `value?: Ref<string>` — реактивная строка поиска.
+- `options?: SearchOptions` — дополнительные настройки поиска.
+
+### `ApiManagementRequest<T, Return>`
+- `path?: string | Ref<string>` — путь для запроса мутации.
+- `action?: (data: Return | undefined) => Promise<void> | void` — коллбэк, вызываемый после выполнения запроса.
+- `transformation?: (data: T) => Return` — трансформация данных перед отправкой.
+- `toData?: boolean` — отправлять ли данные в теле запроса (в свойстве `data`).
+- `options?: ApiOptions` — дополнительные параметры запроса.
+
+## Пример использования
+
+```typescript
+import { ref } from 'vue'
+import { useApiManagementRef } from '@dxtmisha/functional'
+import { FormattersType } from '@dxtmisha/functional-basic'
+
+const searchVal = ref('')
+
+const { 
+  list, 
+  loading, 
+  sendPost, 
+  sendDelete 
+} = useApiManagementRef(
+  // 1. GET Запрос
+  { path: 'api/users', skeleton: () => [{ id: 0, name: 'Загрузка...' }] },
+  // 2. Форматтеры
+  {  price: { type: FormattersType.currency } },
+  // 3. Поиск
+  { columns: ['name'], value: searchVal },
+  // 4. POST
+  { path: 'api/users/create' },
+  // 5. PUT (не используется)
+  undefined,
+  // 6. DELETE
+  { path: 'api/users/delete' }
+)
+
+// Для создания пользователя:
+// await sendPost({ data: { name: 'Новый' } })
+// Будет вызван POST запрос, а затем таблица пользователей обновится автоматически!
+```
