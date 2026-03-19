@@ -2,12 +2,12 @@ import { describe, it, expect } from 'vitest'
 import { getIndexForRender } from '../getIndexForRender'
 
 describe('getIndexForRender', () => {
-  it('should return name when no other identifiers are provided', () => {
+  it('should return the name when no other identifiers are provided', () => {
     expect(getIndexForRender('li')).toBe('li')
     expect(getIndexForRender('div', {})).toBe('div')
   })
 
-  it('should append external index argument', () => {
+  it('should append an external index argument', () => {
     expect(getIndexForRender('div', {}, 'arg-1')).toBe('div.arg-1')
   })
 

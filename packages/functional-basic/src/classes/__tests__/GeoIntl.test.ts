@@ -175,7 +175,7 @@ describe('GeoIntl', () => {
       // For en-US, Su is first day (0). Friday is 5.
       // GeoIntl.weekdays loops 7 days from (today - current).
       // current = 5 + 1 = 6. 7 - 6 = 1 (Sunday).
-      // So list[1] is Sunday, list[6] should be Friday? 
+      // So list[1] is Sunday, list[6] should be Friday?
       // Let's just check if 'Friday' exists in the labels.
       expect(list.some(item => item.label === 'Friday')).toBe(true)
       vi.useRealTimers()

@@ -6,7 +6,7 @@ describe('RouterItemRef', () => {
   let mockRouter: any
 
   beforeEach(() => {
-    // Reset internal state of RouterItemRef if possible, 
+    // Reset internal state of RouterItemRef if possible,
     // but since it's static we just overwrite it
     mockRouter = {
       resolve: vi.fn(),

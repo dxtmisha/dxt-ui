@@ -16,6 +16,7 @@ A powerful composable for comprehensive API request orchestration. It manages da
 - `action?: function` — a common callback to perform after any successful mutation.
 
 ## Returns
+- `isValid: ComputedRef<boolean>` — `true` if data matches `typeData` check.
 - `list: ComputedRef` — the processed data array. **Supports Skeleton**: if data is not yet loaded and a `skeleton()` is provided, it returns placeholders. Accounts for search filters and formatters.
 - `data: ComputedRef<ApiData<Return> | undefined>` — the raw reactive data from `useApiRef`.
 - `length: ComputedRef<number>` — current length of the `list` (dynamically updates when searching).
@@ -71,6 +72,7 @@ A powerful composable for comprehensive API request orchestration. It manages da
 - `reactivity?: boolean` — whether to automatically refetch when `path` or `options` change.
 - `conditions?: Ref<boolean>` — condition under which the request is executed.
 - `transformation?: (data: Type) => ApiData<Return>` — function to transform data after fetching.
+- `typeData?: ((data: Return) => boolean) | any` — data validation function or constructor (e.g., `Array`).
 - `unmounted?: boolean` — whether to clear data after component unmount.
 - `skeleton?: () => Return` — function returning placeholder data during loading.
 

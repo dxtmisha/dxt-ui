@@ -16,6 +16,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `action?: function` — общий коллбэк для выполнения после любой успешной мутации.
 
 ## Возвращает
+- `isValid: ComputedRef<boolean>` — `true`, если данные прошли проверку `typeData`.
 - `list: ComputedRef` — обработанный массив данных. **Поддерживает Skeleton**: если данные ещё не загружены и передан `skeleton()`, вернет заглушки. Учитывает фильтры поиска и форматтеры.
 - `data: ComputedRef<ApiData<Return> | undefined>` — «сырые» реактивные данные из `useApiRef`.
 - `length: ComputedRef<number>` — текущее количество элементов в `list` (динамически меняется при поиске).
@@ -71,6 +72,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `reactivity?: boolean` — включить ли автоматическое обновление при изменении `path` или `options`.
 - `conditions?: Ref<boolean>` — условие, при котором выполняется запрос.
 - `transformation?: (data: Type) => ApiData<Return>` — функция для трансформации данных после получения.
+- `typeData?: ((data: Return) => boolean) | any` — функция проверки данных или конструктор (например, `Array`).
 - `unmounted?: boolean` — удалять ли данные после размонтирования компонента.
 - `skeleton?: () => Return` — функция, возвращающая данные-заглушки во время загрузки.
 

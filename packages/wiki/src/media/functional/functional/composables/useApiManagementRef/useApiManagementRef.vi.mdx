@@ -16,6 +16,7 @@ Một composable mạnh mẽ để điều phối toàn diện các request API.
 - `action?: function` — callback chung để thực thi sau bất kỳ mutation nào thành công.
 
 ## Giá trị trả về
+- `isValid: ComputedRef<boolean>` — `true` nếu dữ liệu khớp với kiểm tra `typeData`.
 - `list: ComputedRef` — mảng dữ liệu đã qua xử lý. **Hỗ trợ Skeleton**: nếu dữ liệu chưa được tải và `skeleton()` được cung cấp, nó sẽ trả về các giá trị giả. Tính toán dựa trên bộ lọc tìm kiếm và formatter.
 - `data: ComputedRef<ApiData<Return> | undefined>` — dữ liệu reactive thô từ `useApiRef`.
 - `length: ComputedRef<number>` — độ dài hiện tại của `list` (cập nhật động khi tìm kiếm).
@@ -71,6 +72,7 @@ Một composable mạnh mẽ để điều phối toàn diện các request API.
 - `reactivity?: boolean` — có tự động refetch khi `path` hoặc `options` thay đổi hay không.
 - `conditions?: Ref<boolean>` — điều kiện để thực thi request.
 - `transformation?: (data: Type) => ApiData<Return>` — hàm transform dữ liệu sau khi fetch.
+- `typeData?: ((data: Return) => boolean) | any` — hàm kiểm tra dữ liệu hoặc constructor (ví dụ: `Array`).
 - `unmounted?: boolean` — có xóa dữ liệu khi component bị unmount hay không.
 - `skeleton?: () => Return` — hàm trả về dữ liệu giả (placeholder) trong khi loading.
 

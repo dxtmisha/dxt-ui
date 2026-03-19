@@ -16,6 +16,7 @@ export type ApiManagementGet<
   reactivity?: boolean
   conditions?: RefType<boolean>
   transformation?: (data: Type) => ApiData<Return>
+  typeData?: ((data: Return) => boolean) | any
   unmounted?: boolean
   skeleton?: () => Return
 }

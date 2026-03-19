@@ -20,7 +20,7 @@ export function getIndexForRender<T extends ItemList>(
   let result = ''
 
   if (isString(name)) {
-    result += `.${name}`
+    result += name
   }
 
   if (index) {

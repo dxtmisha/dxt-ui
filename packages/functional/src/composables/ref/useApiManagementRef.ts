@@ -1,4 +1,4 @@
-import { computed, type ComputedRef } from 'vue'
+import { computed } from 'vue'
 import {
   type FormattersOptionsList,
   type FormattersReturn,
@@ -20,7 +20,12 @@ import { useApiDelete } from './useApiDelete'
 import { useFormattersRef } from './useFormattersRef'
 import { useSearchRef } from './useSearchRef'
 
-import type { ApiManagementGet, ApiManagementRequest, ApiManagementSearch, ApiManagementValue } from '../../types/apiTypes'
+import type {
+  ApiManagementGet,
+  ApiManagementRequest,
+  ApiManagementSearch,
+  ApiManagementValue
+} from '../../types/apiTypes'
 
 /**
  * Hook for managing API requests, formatting, search, and mutations (POST, PUT, DELETE).
@@ -59,6 +64,7 @@ export function useApiManagementRef<
     reactivity,
     conditions,
     transformation,
+    typeData,
     unmounted,
     skeleton
   } = propsGet
@@ -84,6 +90,23 @@ export function useApiManagementRef<
     transformation,
     unmounted
   )
+
+  /** Is valid data / Валидность данных */
+  const isValid = computed<boolean>(() => {
+    if (typeData === undefined) {
+      return true
+    }
+
+    if (request.isStarting()) {
+      return false
+    }
+
+    if (isFunction(typeData)) {
+      return typeData(request.data.value)
+    }
+
+    return request.data.value instanceof typeData
+  })
 
   /** Reactive data with fallback to skeleton / Реактивные данные с фолбеком на скелетон */
   const data = computed(() => {
@@ -192,26 +215,34 @@ export function useApiManagementRef<
     }
   }
 
-  return {
-    /** List data (Computed) / Данные списка (Computed) */
-    get list(): ComputedRef<
-      typeof search extends undefined ? (
-        typeof formatters extends undefined ? (ApiData<Return> | undefined) : FormattersReturn<Return, FormattersOptions>
-      ) : SearchFormatList<typeof formatters extends undefined ? Item : ItemFormatters, Columns>
-    > {
+  /** List data (Computed) / Данные списка (Computed) */
+  const list = computed<
+    typeof search extends undefined ? (
+      typeof formatters extends undefined ? (ApiData<Return> | undefined) : FormattersReturn<Return, FormattersOptions>
+    ) : SearchFormatList<typeof formatters extends undefined ? Item : ItemFormatters, Columns>
+  >(() => {
+    if (isValid.value) {
       if (
         search
         && Array.isArray(request.data.value)
       ) {
-        return search.listSearch as any
+        return search.listSearch.value as any
       }
 
       if (formatters) {
-        return formatters.listFormat as any
+        return formatters.listFormat.value
       }
+    }
 
-      return data as any
-    },
+    return data.value
+  })
+
+  return {
+    /** Is valid data (Computed) / Валидность данных (Computed) */
+    isValid,
+
+    /** List data (Computed) / Данные списка (Computed) */
+    list,
     /** Raw request data (Computed) / Исходные данные запроса (Computed) */
     get data() {
       return request.data

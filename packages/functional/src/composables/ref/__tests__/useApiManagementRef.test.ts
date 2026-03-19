@@ -204,4 +204,97 @@ describe('useApiManagementRef', () => {
       }))
     })
   })
+
+  describe('Validation and isValid', () => {
+    it('should return isValid true if typeData is not provided', () => {
+      const { isValid } = useApiManagementRef({
+        path: 'test/path'
+      })
+      expect(isValid.value).toBe(true)
+    })
+
+    it('should return isValid based on typeData check', async () => {
+      vi.mocked(Api.request).mockResolvedValueOnce('NOT_A_NUMBER')
+
+      const { isValid, list } = useApiManagementRef({
+        path: 'test/path',
+        typeData: (data: any) => typeof data === 'number'
+      })
+
+      // trigger fetch
+      expect(list.value).toBeUndefined()
+      await new Promise(r => setTimeout(r, 0))
+
+      expect(isValid.value).toBe(false)
+      // Implementation returns data.value even if isValid is false, so it will be 'NOT_A_NUMBER'
+      expect(list.value).toBe('NOT_A_NUMBER')
+    })
+  })
+
+  describe('Search and loading flags', () => {
+    it('should return search flags if searchOptions are provided', () => {
+      const { isSearch, loadingSearch } = useApiManagementRef(
+        { path: 'test/path' },
+        undefined,
+        {
+          columns: ['name'],
+          value: ref(''),
+          options: {}
+        } as any
+      )
+
+      expect(isSearch).toBeDefined()
+      expect(loadingSearch).toBeDefined()
+    })
+  })
+
+  describe('Success-based reset', () => {
+    it('should NOT trigger reset if mutation fails', async () => {
+      vi.mocked(Api.request)
+        .mockResolvedValueOnce([{ id: 1 }]) // GET
+        .mockResolvedValueOnce({ success: false }) // POST fail
+
+      const { sendPost, list } = useApiManagementRef(
+        { path: 'test/get' },
+        undefined,
+        undefined,
+        { path: 'test/post' }
+      )
+
+      // trigger
+      expect(list.value).toBeUndefined()
+      await new Promise(r => setTimeout(r, 0))
+
+      vi.mocked(Api.request).mockClear()
+
+      await sendPost({ data: { name: 'New Item' } })
+
+      // verify POST request was executed
+      expect(Api.request).toHaveBeenCalledTimes(1) // Only POST, no second GET
+    })
+
+    it('should trigger reset if mutation succeeds', async () => {
+      vi.mocked(Api.request)
+        .mockResolvedValueOnce([{ id: 1 }]) // GET
+        .mockResolvedValueOnce({ success: true }) // POST success
+        .mockResolvedValueOnce([{ id: 1 }, { id: 2 }]) // GET after reset
+
+      const { sendPost, list } = useApiManagementRef(
+        { path: 'test/get' },
+        undefined,
+        undefined,
+        { path: 'test/post' }
+      )
+
+      // trigger
+      expect(list.value).toBeUndefined()
+      await new Promise(r => setTimeout(r, 0))
+
+      vi.mocked(Api.request).mockClear()
+
+      await sendPost({ data: { name: 'New Item' } })
+
+      expect(Api.request).toHaveBeenCalledTimes(2) // 1 POST + 1 GET
+    })
+  })
 })

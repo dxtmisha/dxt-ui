@@ -54,6 +54,7 @@ export declare type ApiManagementGet<Return extends ApiManagementValue, Type ext
     reactivity?: boolean;
     conditions?: RefType<boolean>;
     transformation?: (data: Type) => ApiData<Return>;
+    typeData?: ((data: Return) => boolean) | any;
     unmounted?: boolean;
     skeleton?: () => Return;
 };
@@ -1968,20 +1969,10 @@ export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFe
  * @param action additional action to perform on mutations / дополнительное действие при мутациях
  */
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void): {
+    /** Is valid data (Computed) / Валидность данных (Computed) */
+    isValid: ComputedRef<boolean>;
     /** List data (Computed) / Данные списка (Computed) */
-    readonly list: ComputedRef<{
-        isSearch: ComputedRef<boolean>;
-        search: Ref<string, string>;
-        loading: Ref<boolean, boolean>;
-        listSearch: ComputedRef<SearchFormatList<Item, Columns>>;
-        length: ComputedRef<number>;
-    } | undefined extends undefined ? ({
-        listFormat: ComputedRef<FormattersReturn<Return, FormattersOptions, ArrayToItem<Return>>>;
-        length: ComputedRef<number>;
-    } | undefined extends undefined ? (ApiData<Return> | undefined) : FormattersReturn<Return, FormattersOptions>) : SearchFormatList<{
-        listFormat: ComputedRef<FormattersReturn<Return, FormattersOptions, ArrayToItem<Return>>>;
-        length: ComputedRef<number>;
-    } | undefined extends undefined ? Item : ItemFormatters, Columns>>;
+    list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
     /** Raw request data (Computed) / Исходные данные запроса (Computed) */
     readonly data: ComputedRef<ApiData<Return> | undefined>;
     /** Length of the list (Computed) / Длина списка (Computed) */

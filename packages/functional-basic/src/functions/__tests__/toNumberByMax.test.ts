@@ -1,7 +1,13 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { toNumberByMax } from '../toNumberByMax'
+import { Geo } from '../../classes/Geo'
 
 describe('toNumberByMax', () => {
+  beforeEach(() => {
+    // Reset Geo to a known state
+    Geo.set('en-US')
+  })
+
   it('should return the number if below or equal to max', () => {
     expect(toNumberByMax(50, 100)).toBe(50)
     expect(toNumberByMax(100, 100)).toBe(100)
@@ -12,7 +18,10 @@ describe('toNumberByMax', () => {
   })
 
   it('should handle formatting', () => {
-    // In test environment, formatting doesn't add commas for 1000
-    expect(toNumberByMax(1000, 5000, true)).toBe('1000')
+    expect(toNumberByMax(1000, 5000, true)).toBe('1,000')
+  })
+
+  it('should handle formatting with max+', () => {
+    expect(toNumberByMax(1500, 1000, true)).toBe('1,000+')
   })
 })

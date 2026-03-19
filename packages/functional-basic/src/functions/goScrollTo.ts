@@ -1,4 +1,4 @@
-import { isDomRuntime } from './isDomRuntime.ts'
+import { isDomRuntime } from './isDomRuntime'
 
 /**
  * Scrolls the container to make the target element visible.
