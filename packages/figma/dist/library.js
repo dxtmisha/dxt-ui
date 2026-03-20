@@ -1,9 +1,9 @@
-var d = Object.defineProperty;
-var p = (s, t, e) => t in s ? d(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var h = (s, t, e) => p(s, typeof t != "symbol" ? t + "" : t, e);
+var f = Object.defineProperty;
+var x = (i, t, e) => t in i ? f(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var r = (i, t, e) => x(i, typeof t != "symbol" ? t + "" : t, e);
 import "@dxtmisha/scripts/ai";
-import { uint8ArrayToBase64 as f, forEach as l, getElementImage as x, resizeImageByMax as I, blobToBase64 as T } from "@dxtmisha/functional-basic";
-const m = "image/jpeg", y = "+)w496um509nu9ue06eu94=vl0efef", w = "texts", g = `
+import { uint8ArrayToBase64 as I, forEach as p, random as T, getElementImage as M, resizeImageByMax as y, blobToBase64 as w } from "@dxtmisha/functional-basic";
+const u = "image/jpeg", E = "texts", l = `
 Нужно из список текст преобразовать в префикс + ключи текст
 пример:
 {
@@ -55,36 +55,36 @@ const m = "image/jpeg", y = "+)w496um509nu9ue06eu94=vl0efef", w = "texts", g = `
 Список текст:
 [texts]
 `;
-class M {
+class G {
   constructor(t, e) {
     this.ai = t, this.data = e;
   }
   async make() {
-    return this.ai.resetImages(), this.makeImage(), console.warn("texts", g.replace("[texts]", this.initTexts())), console.log(
+    return this.ai.resetImages(), this.makeImage(), console.warn("texts", l.replace("[texts]", this.initTexts())), console.log(
       "getImages",
       this.ai.getImages(),
-      await this.ai.generate(g.replace("[texts]", this.initTexts()))
+      await this.ai.generate(l.replace("[texts]", this.initTexts()))
     ), this;
   }
   makeImage() {
     return this.data.screenshot.forEach(
       (t) => {
         this.ai.addImage({
-          mime: m,
-          base64: f(t)
+          mime: u,
+          base64: I(t)
         });
       }
     ), this;
   }
   initTexts() {
-    return l(
+    return p(
       this.data.texts,
       (t) => t.text
     ).join(`\r
 `);
   }
 }
-class c {
+class o {
   /**
    * Constructor
    * @param item Figma node/ узел Figma
@@ -171,7 +171,7 @@ class c {
   getParentItem() {
     const t = this.getParent();
     if (t)
-      return new c(t);
+      return new o(t);
   }
   /**
    * Returns the child nodes.
@@ -189,7 +189,7 @@ class c {
   getChildrenItems() {
     const t = [];
     for (const e of this.getChildren())
-      t.push(new c(e));
+      t.push(new o(e));
     return t;
   }
   /**
@@ -262,7 +262,7 @@ class c {
     return "exportAsync" in this.item ? await this.item.exportAsync(this.getExportSettings(t)) : "";
   }
 }
-class E {
+class S {
   /**
    * Constructor
    * @param page Figma page or node/ страница или узел Figma
@@ -270,13 +270,13 @@ class E {
    */
   constructor(t, e = !1) {
     /** List of main Figma items/ Список основных элементов Figma */
-    h(this, "mainItem", []);
+    r(this, "mainItem", []);
     /**
      * List of all Figma items.
      *
      * Список всех элементов Figma.
      */
-    h(this, "items", []);
+    r(this, "items", []);
     this.page = t, this.selection = e, this.mainItem = this.initMain(), this.items = this.initBySelection();
   }
   /**
@@ -328,12 +328,12 @@ class E {
   getTexts() {
     const t = [];
     return this.filter(
-      (i) => i.isTextNoValue()
-    ).forEach((i) => {
-      const n = i.getText(), o = t.find((r) => r.text === n);
-      o ? o.id.push(i.getId()) : t.push({
-        id: [i.getId()],
-        text: n
+      (s) => s.isTextNoValue()
+    ).forEach((s) => {
+      const c = s.getText(), a = t.find((n) => n.text === c);
+      a ? a.id.push(s.getId()) : t.push({
+        id: [s.getId()],
+        text: c
       });
     }), t;
   }
@@ -354,10 +354,10 @@ class E {
    * Инициализирует основные элементы на основе выделения или всей страницы.
    */
   initMain() {
-    return this.isSelection() ? l(
+    return this.isSelection() ? p(
       [...this.page.selection],
-      (t) => new c(t)
-    ) : [new c(this.page)];
+      (t) => new o(t)
+    ) : [new o(this.page)];
   }
   /**
    * Recursively initializes all items from the page.
@@ -368,10 +368,10 @@ class E {
   initItems(t) {
     const e = [];
     if ("children" in t)
-      for (const i of t.children)
+      for (const s of t.children)
         e.push(
-          new c(i),
-          ...this.initItems(i)
+          new o(s),
+          ...this.initItems(s)
         );
     return e;
   }
@@ -404,113 +404,186 @@ class E {
    * Возвращает главный (корневой) элемент в иерархии.
    * @param item starting item/ начальный элемент
    */
-  toMain(t = new c(this.page)) {
+  toMain(t = new o(this.page)) {
     const e = t.getParentItem();
     return e && !e.isDocument() && this.toMain(e), t;
   }
 }
-const a = class a {
+class h {
   /**
-   * Sends a message from plugin code to UI.
+   * Checks if the provided code matches the current post code.
    *
-   * Отправляет сообщение из кода плагина в UI.
-   * @param type message type/ тип сообщения
-   * @param message message data/ данные сообщения
+   * Проверяет, совпадает ли предоставленный код с текущим кодом сообщения.
+   * @param code The code to check / Проверяемый код
    */
-  static post(t, e) {
+  static is(t) {
+    return this.code === t;
+  }
+  /**
+   * Returns the current post code.
+   *
+   * Возвращает текущий код сообщения.
+   */
+  static get() {
+    return this.code;
+  }
+  /**
+   * Sets a new post code. Can only be called once.
+   *
+   * Устанавливает новый код сообщения. Можно вызвать только один раз.
+   * @param code The new code to set / Новый код для установки
+   */
+  static set(t) {
+    this.isEditable && (this.code = t, this.isEditable = !1);
+  }
+}
+r(h, "code", `figma-${T(1e5, 999999)}`), r(h, "isEditable", !0);
+class d {
+  constructor() {
+    r(this, "isMake", !1);
+    r(this, "posts", /* @__PURE__ */ new Map());
+    /**
+     * Internal message handler that filters by post code and notifies listeners.
+     *
+     * Внутренний обработчик сообщений, который фильтрует по коду сообщения и уведомляет слушателей.
+     * @param data The received message data / Данные полученного сообщения
+     */
+    r(this, "onMessage", (t) => {
+      t && h.is(t.code) && this.notify(
+        t.type,
+        t.message
+      );
+    });
+  }
+  /**
+   * Adds a callback listener for a specific message type.
+   *
+   * Добавляет колбэк-слушатель для определенного типа сообщения.
+   * @param type The type of the message / Тип сообщения
+   * @param callback The function to call when the message is received / Функция, вызываемая при получении сообщения
+   */
+  add(t, e) {
+    const s = this.posts.get(t);
+    s ? s.push(e) : this.posts.set(t, [e]);
+  }
+  /**
+   * Initializes the message listener.
+   *
+   * Инициализирует слушатель сообщений.
+   */
+  make() {
+    this.isMake || (this.isMake = !0, this.prepare());
+  }
+  /**
+   * Notifies all registered listeners for a specific message type.
+   *
+   * Уведомляет всех зарегистрированных слушателей для определенного типа сообщения.
+   * @param type The type of the message / Тип сообщения
+   * @param message The message data / Данные сообщения
+   */
+  notify(t, e) {
+    var s;
+    (s = this.posts.get(t)) == null || s.forEach((c) => c(e));
+  }
+}
+class F extends d {
+  /**
+   * Sends a message to the Figma UI.
+   *
+   * Отправляет сообщение в UI Figma.
+   * @param type The type of the message / Тип сообщения
+   * @param message The message data / Данные сообщения
+   */
+  post(t, e) {
     figma.ui.postMessage({
-      code: this.code,
+      code: h.get(),
       type: t,
       message: e
     });
   }
   /**
-   * Registers a callback handler for a specific message type.
+   * Initializes the listener using the figma.ui.onmessage API.
    *
-   * Регистрирует обработчик callback для определённого типа сообщения.
-   * @param type message type/ тип сообщения
-   * @param callback callback function/ функция обратного вызова
+   * Инициализирует слушатель, используя API figma.ui.onmessage.
    */
-  static add(t, e) {
-    const i = this.messages.find((n) => n.type === t);
-    i ? i.callbackList.push(e) : this.messages.push({
-      type: t,
-      callbackList: [e]
-    });
+  prepare() {
+    figma.ui.onmessage = (t) => this.onMessage(t);
+  }
+}
+class b extends d {
+  /**
+   * Sends a message to the Figma plugin.
+   *
+   * Отправляет сообщение в плагин Figma.
+   * @param type The type of the message / Тип сообщения
+   * @param message The message data / Данные сообщения
+   */
+  post(t, e) {
+    parent.postMessage({
+      pluginMessage: {
+        code: h.get(),
+        type: t,
+        message: e
+      }
+    }, "*");
   }
   /**
-   * Checks if the message code matches the expected code.
+   * Initializes the listener using the window message event.
    *
-   * Проверяет, соответствует ли код сообщения ожидаемому коду.
-   * @param code message code/ код сообщения
+   * Инициализирует слушатель, используя событие message объекта window.
    */
-  static isCode(t) {
-    return this.code === t;
+  prepare() {
+    window.addEventListener(
+      "message",
+      (t) => {
+        var e;
+        return this.onMessage((e = t.data) == null ? void 0 : e.pluginMessage);
+      }
+    );
   }
-  /**
-   * Executes all registered callbacks for a specific message type.
-   *
-   * Выполняет все зарегистрированные обработчики для определённого типа сообщения.
-   * @param type message type/ тип сообщения
-   * @param message message data/ данные сообщения
-   */
-  static go(t, e) {
-    const i = a.messages.find((n) => n.type === t);
-    i && i.callbackList.forEach((n) => n(e));
-  }
-};
-/**
- * List of registered message handlers/
- * Список зарегистрированных обработчиков сообщений
- */
-h(a, "messages", []), /**
- * Unique code for message identification/
- * Уникальный код для идентификации сообщений
- */
-h(a, "code", y), /**
- * Message event handler from the plugin.
- *
- * Обработчик события сообщения от плагина.
- * @param event message event/ событие сообщения
- */
-h(a, "on", (t) => {
-  var i;
-  const e = (i = t.data) == null ? void 0 : i.pluginMessage;
-  e && a.isCode(e.code) && a.go(
-    e.type,
-    e.message
-  );
-}), window !== void 0 && window.addEventListener("message", a.on);
-let u = a;
-async function P(s, t = 0.56) {
+}
+let g;
+function P() {
+  return g || (g = new F(), g.make()), g;
+}
+let m;
+function N() {
+  return m || (m = new b(), m.make()), m;
+}
+async function J(i, t = 0.56) {
   return new Promise((e) => {
-    const i = new Blob([s], { type: m }), n = URL.createObjectURL(i), o = x(n);
-    o ? o.onload = () => {
-      const r = I(
-        o,
-        t * o.naturalWidth,
+    const s = new Blob([i], { type: u }), c = URL.createObjectURL(s), a = M(c);
+    a ? a.onload = () => {
+      const n = y(
+        a,
+        t * a.naturalWidth,
         "width",
-        m
+        u
       );
-      e(r != null ? r : "");
-    } : T(i).then((r) => e(String(r != null ? r : "")));
+      e(n != null ? n : "");
+    } : w(s).then((n) => e(String(n != null ? n : "")));
   });
 }
-const G = () => {
+const B = () => {
   figma.on("selectionchange", async () => {
-    const s = new E(figma.currentPage, !0);
-    u.post(w, {
-      frame: s,
-      texts: s.getTexts(),
-      screenshot: await s.screenshot()
+    const i = new S(figma.currentPage, !0);
+    P().post(E, {
+      frame: i,
+      texts: i.getTexts(),
+      screenshot: await i.screenshot()
     });
   });
 };
 export {
-  M as FigmaAiText,
-  E as FigmaFrame,
-  c as FigmaItem,
-  u as FigmaMessage,
-  P as ensureMaxSize,
-  G as makeFigmaTexts
+  G as FigmaAiText,
+  S as FigmaFrame,
+  o as FigmaItem,
+  F as FigmaPluginMessenger,
+  d as FigmaPostAbstract,
+  h as FigmaPostCode,
+  b as FigmaUiMessenger,
+  J as ensureMaxSize,
+  B as makeFigmaTexts,
+  P as useFigmaPluginMessenger,
+  N as useFigmaUiMessenger
 };

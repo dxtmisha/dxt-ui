@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import { usePage } from './composables/usePage'
+import { TranslatePostReceiver } from './classes/TranslatePostReceiver'
 
-import TranslateTools from './components/TranslateTools.vue'
-import TranslatePage from './components/TranslatePage.vue'
+import TranslateMain from './components/TranslateMain.vue'
 
-import TranslateKeyCreation from './components/KeyCreation/TranslateKeyCreation.vue'
-import TranslateLocalization from './components/Localization/TranslateLocalization.vue'
-
-const { selected } = usePage().init()
+TranslatePostReceiver.make()
 </script>
 
 <template>
-  <TranslatePage>
-    <TranslateTools/>
-    <TranslateKeyCreation v-if="selected === 'key-creation'"/>
-    <TranslateLocalization v-else-if="selected === 'localization'"/>
-  </TranslatePage>
+  <TranslateMain/>
 </template>
 
 <style lang="scss"></style>

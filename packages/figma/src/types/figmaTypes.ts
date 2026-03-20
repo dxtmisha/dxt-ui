@@ -21,18 +21,6 @@ export type UiFigmaExportFormat = 'PNG'
   | 'PDF'
   | 'JSON_REST_V1'
 
-export type UiFigmaMessageData<T = any> = {
-  code: string
-  type: string
-  message?: T
-}
-export type UiFigmaMessageCallback<T = any> = (message: T) => void
-export type UiFigmaMessageItem = {
-  type: string
-  callbackList: UiFigmaMessageCallback[]
-}
-export type UiFigmaMessageList = UiFigmaMessageItem[]
-
 export type UiFigmaMessageTexts = {
   frame: FigmaFrame
   texts: UiFigmaItemText[]
