@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Classes/FigmaFrame - Quản lý Frame'/>
+
+# Lớp FigmaFrame
+
+Một tiện ích toàn diện để điều hướng và trích xuất dữ liệu từ các frame và section trong Figma. Lớp này hỗ trợ phân tích và nhóm các node theo cách đệ quy cho cả toàn bộ trang hoặc vùng chọn hiện tại.
+
+## Các tính năng chính
+
+- **Xử lý theo ngữ cảnh** — Tự động xử lý sự khác biệt logic giữa phân tích toàn bộ trang và phân tích theo vùng chọn.
+- **Lọc Node** — Các phương thức chuyên biệt để lấy riêng các frame, section hoặc text node từ hệ thống phân cấp.
+- **Tổng hợp văn bản** — Nhóm các node văn bản theo nội dung để dễ dàng dịch và phân tích.
+- **Xuất hàng loạt** — Tự động hóa việc chụp ảnh màn hình (screenshot) cho tất cả các phần tử chính trong ngữ cảnh hiện tại.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm dựng `FigmaFrame(page, selection)`.
+
+**Tham số:**
+- `page: UiFigmaNode` — Node gốc (thường là `figma.currentPage` hoặc một `PageNode`) để phân tích.
+- `selection: boolean = false` — Nếu `true`, thực thể sẽ chỉ xử lý các node trong vùng chọn hiện tại thay vì toàn bộ trang.
+
+```typescript
+import { FigmaFrame } from '@dxtmisha/figma'
+
+// 1. Khởi tạo cho toàn bộ trang
+const pageManager = new FigmaFrame(figma.currentPage)
+
+// 2. Khởi tạo cụ thể cho vùng chọn đang hoạt động
+const selectionManager = new FigmaFrame(figma.currentPage, true)
+```
+
+## Ngữ cảnh & Phân tích
+
+- `isSelection(): boolean` — Kiểm tra xem có đang làm việc với vùng chọn hay không. Ví dụ: `frameManager.isSelection()`
+- `getMainFrames(): FigmaItem[]` — Trả về các frame/section chính từ node gốc. Ví dụ: `const roots = frameManager.getMainFrames()`
+
+## Lọc hệ thống phân cấp
+
+- `getItemsFrame(): FigmaItem<FrameNode>[]` — Lọc các node FRAME từ hệ thống phân cấp. Ví dụ: `const frames = frameManager.getItemsFrame()`
+- `getItemsSection(): FigmaItem<SectionNode>[]` — Lọc các node SECTION từ hệ thống phân cấp. Ví dụ: `const sections = frameManager.getItemsSection()`
+- `getItemsText(): FigmaItem<TextNode>[]` — Lọc các node TEXT từ hệ thống phân cấp. Ví dụ: `const textNodes = frameManager.getItemsText()`
+
+## Dữ liệu & Chụp ảnh (Capture)
+
+- `getTexts(): UiFigmaItemText[]` — Tổng hợp các node văn bản được nhóm theo nội dung. Ví dụ: `const groups = frameManager.getTexts()`
+- `screenshot(): Promise<Uint8Array[]>` — Chụp ảnh JPG cho các phần tử chính. Ví dụ: `const images = await frameManager.screenshot()`
+
+## Các loại dữ liệu (Types)
+
+### `UiFigmaNode`
+
+Một kiểu union đại diện cho bất kỳ node Figma nào có liên quan, có thể chứa các node con hoặc được xử lý bởi trình quản lý.
+- Bao gồm: `DocumentNode`, `PageNode`, `FrameNode`, `SectionNode`, `TextNode`, và các biến thể `SceneNode` khác.
+
+### `UiFigmaItemText`
+
+Cấu trúc đối tượng được sử dụng để nhóm nội dung văn bản trong tài liệu.
+- `id: string[]` — Danh sách các ID node Figma duy nhất mà tại đó nội dung văn bản này được tìm thấy.
+- `text: string` — Nội dung văn bản thực tế đã được cắt bỏ khoảng trắng thừa.

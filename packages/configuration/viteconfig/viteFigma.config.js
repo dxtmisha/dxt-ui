@@ -20,14 +20,14 @@ export const viteFigma = (
       return {
         plugins: [vue(), ...plugins, viteSingleFile()],
         build: {
-          target: 'es2018',
+          target: 'es2017',
           emptyOutDir: !isWatch
         }
       }
     case 'code':
       return {
         build: {
-          target: 'es2018',
+          target: 'es2017',
           emptyOutDir: false,
           rollupOptions: {
             input: {

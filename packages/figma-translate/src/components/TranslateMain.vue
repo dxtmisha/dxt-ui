@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TranslateFramesRead } from '../classes/TranslateFramesRead'
+import { TranslateFramesUi } from '../classes/TranslateFramesUi'
 import { usePage } from '../composables/usePage'
 
 import TranslateKeyCreation from './KeyCreation/TranslateKeyCreation.vue'
@@ -9,7 +9,8 @@ import TranslateTools from './TranslateTools.vue'
 
 const { selected } = usePage().init()
 
-TranslateFramesRead.make()
+TranslateFramesUi.make()
+TranslateFramesUi.update()
 </script>
 
 <template>

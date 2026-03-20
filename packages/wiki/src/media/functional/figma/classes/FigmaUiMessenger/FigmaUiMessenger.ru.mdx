@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Classes/FigmaUiMessenger - Мессенджер UI'/>
+
+# Класс FigmaUiMessenger
+
+Мессенджер для стороны UI Figma (frontend). Обрабатывает отправку сообщений в плагин Figma и прослушивание сообщений из плагина, используя API браузера `postMessage`.
+
+## Инициализация
+
+Наследует `FigmaPostAbstract`.
+
+```typescript
+import { FigmaUiMessenger } from '@dxtmisha/figma'
+
+const messenger = new FigmaUiMessenger()
+  .make()
+  .add('plugin-update', (data) => console.log('Плагин:', data))
+```
+
+## Публичные методы
+
+### `make`
+
+Инициализирует слушатель сообщений, используя событие `message` объекта `window`. Должен быть вызван один раз для начала приема сообщений из плагина (backend).
+
+**Возвращает:** `this`
+
+```javascript
+messenger.make()
+```
+
+### `add`
+
+Регистрирует слушатель для определенного типа сообщения, поступающего из плагина (backend).
+
+**Параметры:**
+- `type: string` — Уникальный идентификатор типа сообщения для прослушивания.
+- `callback: (message: Message) => void` — функция, которую необходимо выполнить при получении соответствующего сообщения из плагина.
+
+**Возвращает:** `this`
+
+```javascript
+messenger.add('selection-changed', (data) => {
+  renderSidebar(data.nodes)
+})
+```
+
+### `post`
+
+Отправляет сообщение в плагин Figma.
+
+**Параметры:**
+- `type: string` — Идентификатор сообщения (тип).
+- `message: Message` — (Опционально) Полезные данные для отправки в плагин.
+
+**Возвращает:** `void`
+
+```javascript
+messenger.post('create-rectangles', { count: 5, color: '#FF0000' })
+```

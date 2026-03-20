@@ -77,7 +77,7 @@ export class FigmaFrame {
     if (main) {
       return main
         .getChildrenItems()
-        .filter(item => item.isFrame() || item.isSection())
+        .filter((item: FigmaItem) => item.isFrame() || item.isSection())
     }
 
     return []
@@ -204,14 +204,14 @@ export class FigmaFrame {
    */
   protected toMain(
     item: FigmaItem = new FigmaItem(this.page)
-  ) {
+  ): FigmaItem {
     const parent = item.getParentItem()
 
     if (
       parent
       && !parent.isDocument()
     ) {
-      this.toMain(parent)
+      return this.toMain(parent)
     }
 
     return item

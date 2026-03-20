@@ -1,4 +1,3 @@
-import MagicString from 'magic-string'
 import { PluginTool } from './PluginTool'
 
 /**
@@ -7,7 +6,6 @@ import { PluginTool } from './PluginTool'
  * Класс для работы с кодом плагина.
  */
 export class PluginCode {
-  protected magicString: MagicString
   protected newCode: string
 
   /**
@@ -19,7 +17,6 @@ export class PluginCode {
     protected readonly id: string,
     protected readonly code: string
   ) {
-    this.magicString = new MagicString(code)
     this.newCode = code
   }
 
@@ -66,19 +63,6 @@ export class PluginCode {
    */
   getCode(): string {
     return this.code
-  }
-
-  /**
-   * Returns the source map.
-   *
-   * Возвращает карту кода.
-   */
-  getMaps() {
-    return this.magicString.generateMap({
-      source: this.id,
-      includeContent: true,
-      hires: true
-    })
   }
 
   /**

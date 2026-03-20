@@ -1,4 +1,4 @@
-import { FigmaFrame } from '../classes/FigmaFrame.ts'
+import { FigmaFrame } from '../classes/FigmaFrame'
 
 export type UiFigmaNode
   = ChildrenMixin

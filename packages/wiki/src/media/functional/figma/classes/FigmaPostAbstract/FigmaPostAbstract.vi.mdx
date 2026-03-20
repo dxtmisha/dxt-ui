@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Classes/FigmaPostAbstract - Lớp cơ sở cho nhắn tin'/>
+
+# Lớp FigmaPostAbstract
+
+Lớp trừu tượng cơ sở để quản lý việc nhắn tin giữa plugin Figma (backend) và UI (frontend). Nó cung cấp một nền tảng có cấu trúc cho giao tiếp hai chiều với tính năng xác minh tích hợp và quản lý nhiều trình lắng nghe.
+
+## Các tính năng chính
+
+- **Hỗ trợ hai chiều** — Nền tảng cho cả `FigmaPluginMessenger` và `FigmaUiMessenger`.
+- **Xác minh tin nhắn** — Sử dụng `FigmaPostCode` để đảm bảo rằng tin nhắn bắt nguồn từ cùng một phiên bản plugin.
+- **Trình lắng nghe đa điểm** — Hỗ trợ nhiều callback cho một loại tin nhắn duy nhất.
+- **Chuỗi phương thức (Chaining)** — Các phương thức như `make` và `add` trả về `this`, cho phép khởi tạo ngắn gọn hơn.
+
+## Các phương thức công khai
+
+### `make`
+
+Khởi tạo trình lắng nghe tin nhắn. Phương thức này đảm bảo rằng việc thiết lập cụ thể cho môi trường (`prepare`) được thực hiện đúng một lần, bất kể `make` được gọi bao nhiêu lần.
+
+**Trả về:** `this`
+
+```javascript
+const messenger = new FigmaPluginMessenger().make()
+```
+
+### `add`
+
+Đăng ký một hàm callback để thực thi khi nhận được tin nhắn thuộc một loại cụ thể.
+
+**Tham số:**
+- `type: string` — Mã định danh duy nhất cho loại tin nhắn.
+- `callback: UiFigmaMessengerCallback<Message>` — Hàm sẽ gọi khi nhận được tin nhắn. Nhận dữ liệu tin nhắn làm đối số đầu tiên.
+
+**Trả về:** `this`
+
+```javascript
+messenger
+  .add('update-selection', (data) => console.log('Selection:', data.count))
+  .add('close', () => figma.closePlugin())
+```
+
+## Cấu trúc dữ liệu
+
+### `UiFigmaMessengerData`
+
+Cấu trúc của đối tượng dữ liệu được truyền qua đường truyền tin nhắn:
+
+- `code: string` — Mã xác minh từ `FigmaPostCode`.
+- `type: string` — Mã định danh của tin nhắn.
+- `message: Message` — Dữ liệu payload thực tế.

@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Classes/FigmaItem - Обертка узла'/>
+
+# Класс FigmaItem
+
+Класс-обертка для узлов Figma (`UiFigmaNode`), который предоставляет упрощенный типизированный интерфейс для общих операций, таких как проверка типа, навигация по дереву и асинхронный экспорт.
+
+## Ключевые особенности
+
+- **Типизированный доступ** — Предоставляет методы-тайпгарды для узлов `DOCUMENT`, `FRAME`, `SECTION` и `TEXT`.
+- **Упрощенная навигация** — Легкий доступ к родительским или дочерним узлам, обернутым в экземпляры `FigmaItem`.
+- **Экспорт** — Высокоуровневые методы для экспорта узлов в форматы JPG или JSON.
+- **Анализ контента** — Специализированная логика для извлечения и валидации текстового содержимого.
+
+## Инициализация
+
+Для инициализации объекта вызовите конструктор `FigmaItem(item)`.
+
+### Ограничения универсальных типов (Generics)
+
+Класс поддерживает параметр универсального типа для строгой типизации:
+- `T extends UiFigmaNode` — Конкретный тип обернутого узла Figma.
+
+**Параметры:**
+- `item: T` — Нативный узел Figma (например, `SceneNode`, `FrameNode`, `TextNode`), который необходимо обернуть.
+
+```typescript
+import { FigmaItem } from '@dxtmisha/figma'
+
+// 1. Обертывание текущего выделенного узла
+const item = new FigmaItem(figma.currentPage.selection[0])
+
+// 2. Использование дженериков для конкретных типов узлов
+const frameItem = new FigmaItem<FrameNode>(someFrameNode)
+```
+
+## Идентификация узла
+
+- `isDocument(): boolean` — Проверяет, является ли узел документом. Пример: `item.isDocument()`
+- `isFrame(): boolean` — Проверяет, является ли узел фреймом. Пример: `item.isFrame()`
+- `isSection(): boolean` — Проверяет, является ли узел секцией. Пример: `item.isSection()`
+- `isText(): boolean` — Проверяет, является ли узел текстовым. Пример: `item.isText()`
+- `isTextNoValue(): boolean` — Фильтрует текстовые узлы со значимым контентом. Пример: `item.isTextNoValue()`
+- `getType(): string | undefined` — Возвращает строковую константу типа узла. Пример: `const type = item.getType()`
+- `getId(): string` — Возвращает уникальный ID узла. Пример: `const id = item.getId()`
+- `getName(): string` — Возвращает отображаемое имя узла. Пример: `const name = item.getName()`
+
+## Навигация
+
+- `getParent(): UiFigmaNode | undefined` — Возвращает нативный родительский узел. Пример: `const parent = item.getParent()`
+- `getParentItem(): FigmaItem | undefined` — Возвращает родителя, обернутого в `FigmaItem`. Пример: `const parentItem = item.getParentItem()`
+- `getChildren(): UiFigmaNode[]` — Возвращает массив нативных дочерних узлов. Пример: `const children = item.getChildren()`
+- `getChildrenItems(): FigmaItem[]` — Возвращает массив обернутых дочерних узлов. Пример: `const items = item.getChildrenItems()`
+
+## Данные и экспорт
+
+- `get(): T` — Возвращает исходный нативный узел Figma. Пример: `const raw = item.get()`
+- `exportJpg(): Promise<Uint8Array | string>` — Асинхронно экспортирует узел в JPG. Пример: `const bytes = await item.exportJpg()`
+- `exportJson(): Promise<Uint8Array | string>` — Асинхронно экспортирует узел в JSON. Пример: `const json = await item.exportJson()`
+- `getText(): string` — Извлекает очищенное текстовое содержимое. Пример: `const content = item.getText()`
+
+## Типы (Types)
+
+### `UiFigmaNode`
+
+Тип-объединение (union), представляющий любой релевантный узел Figma, который может быть обернут в `FigmaItem`.
+- Включает: `DocumentNode`, `PageNode`, `FrameNode`, `SectionNode`, `TextNode` и другие варианты `SceneNode`.
+
+### `UiFigmaExportFormat`
+
+Поддерживаемые форматы для операций экспорта узлов.
+- Значения: `'PNG'`, `'JPG'`, `'SVG'`, `'PDF'`, `'JSON_REST_V1'`.

@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Classes/FigmaUiMessenger - Trình nhắn tin UI'/>
+
+# Lớp FigmaUiMessenger
+
+Trình nhắn tin cho phía UI Figma (frontend). Nó xử lý việc gửi tin nhắn đến plugin Figma và lắng nghe tin nhắn từ plugin bằng API `postMessage` của trình duyệt.
+
+## Khởi tạo
+
+Kế thừa từ `FigmaPostAbstract`.
+
+```typescript
+import { FigmaUiMessenger } from '@dxtmisha/figma'
+
+const messenger = new FigmaUiMessenger()
+  .make()
+  .add('plugin-update', (data) => console.log('Plugin:', data))
+```
+
+## Các phương thức công khai
+
+### `make`
+
+Khởi tạo trình lắng nghe tin nhắn bằng sự kiện `message` của đối tượng `window`. Nên được gọi một lần để bắt đầu nhận tin nhắn từ plugin (backend).
+
+**Trả về:** `this`
+
+```javascript
+messenger.make()
+```
+
+### `add`
+
+Đăng ký một trình lắng nghe cho một loại tin nhắn cụ thể đến từ plugin (backend).
+
+**Tham số:**
+- `type: string` — Mã định danh duy nhất cho loại tin nhắn cần lắng nghe.
+- `callback: (message: Message) => void` — hàm sẽ thực thi khi có một tin nhắn phù hợp đến từ plugin.
+
+**Trả về:** `this`
+
+```javascript
+messenger.add('selection-changed', (data) => {
+  renderSidebar(data.nodes)
+})
+```
+
+### `post`
+
+Gửi một tin nhắn đến phía backend của plugin Figma.
+
+**Tham số:**
+- `type: string` — Mã định danh của tin nhắn (loại).
+- `message: Message` — (Tùy chọn) Dữ liệu payload để gửi đến plugin.
+
+**Trả về:** `void`
+
+```javascript
+messenger.post('create-rectangles', { count: 5, color: '#FF0000' })
+```

@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Classes/FigmaItem - Node Wrapper'/>
+
+# Lớp FigmaItem
+
+Một lớp wrapper cho các node Figma (`UiFigmaNode`) cung cấp giao diện được định nghĩa kiểu dữ liệu đơn giản cho các thao tác phổ biến như kiểm tra loại node, điều hướng cây node và xuất dữ liệu không đồng bộ.
+
+## Các tính năng chính
+
+- **Truy cập có định kiểu** — Cung cấp các phương thức type guard cho các node `DOCUMENT`, `FRAME`, `SECTION`, và `TEXT`.
+- **Điều hướng đơn giản** — Dễ dàng truy cập các node cha hoặc con được bọc trong các thực thể `FigmaItem`.
+- **Hỗ trợ Export** — Các phương thức cấp cao để xuất các node sang định dạng JPG hoặc JSON.
+- **Phân tích nội dung** — Logic chuyên biệt để trích xuất và xác thực nội dung văn bản.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm dựng `FigmaItem(item)`.
+
+### Ràng buộc Generics
+
+Lớp hỗ trợ một tham số generic để định kiểu nghiêm ngặt:
+- `T extends UiFigmaNode` — Loại cụ thể của node Figma được bọc.
+
+**Tham số:**
+- `item: T` — Node Figma gốc (ví dụ: `SceneNode`, `FrameNode`, `TextNode`) cần được bọc.
+
+```typescript
+import { FigmaItem } from '@dxtmisha/figma'
+
+// 1. Bọc một node đang được chọn
+const item = new FigmaItem(figma.currentPage.selection[0])
+
+// 2. Sử dụng generics cho các loại node cụ thể
+const frameItem = new FigmaItem<FrameNode>(someFrameNode)
+```
+
+## Định danh Node
+
+- `isDocument(): boolean` — Kiểm tra xem node được bọc có phải là DOCUMENT hay không. Ví dụ: `item.isDocument()`
+- `isFrame(): boolean` — Kiểm tra xem node có phải là FRAME hay không. Ví dụ: `item.isFrame()`
+- `isSection(): boolean` — Kiểm tra xem node có phải là SECTION hay không. Ví dụ: `item.isSection()`
+- `isText(): boolean` — Kiểm tra xem node có phải là TEXT hay không. Ví dụ: `item.isText()`
+- `isTextNoValue(): boolean` — Lọc các node văn bản có nội dung ý nghĩa. Ví dụ: `item.isTextNoValue()`
+- `getType(): string | undefined` — Trả về hằng số chuỗi loại của node. Ví dụ: `const type = item.getType()`
+- `getId(): string` — Trả về ID duy nhất của node. Ví dụ: `const id = item.getId()`
+- `getName(): string` — Trả về tên hiển thị của node. Ví dụ: `const name = item.getName()`
+
+## Điều hướng
+
+- `getParent(): UiFigmaNode | undefined` — Trả về node cha gốc. Ví dụ: `const parent = item.getParent()`
+- `getParentItem(): FigmaItem | undefined` — Trả về node cha được bọc. Ví dụ: `const parentItem = item.getParentItem()`
+- `getChildren(): UiFigmaNode[]` — Trả về một mảng các node con gốc. Ví dụ: `const children = item.getChildren()`
+- `getChildrenItems(): FigmaItem[]` — Trả về một mảng các node con đã bọc. Ví dụ: `const items = item.getChildrenItems()`
+
+## Dữ liệu & Xuất bản
+
+- `get(): T` — Trả về node Figma gốc bên dưới. Ví dụ: `const raw = item.get()`
+- `exportJpg(): Promise<Uint8Array | string>` — Xuất node sang định dạng JPG. Ví dụ: `const bytes = await item.exportJpg()`
+- `exportJson(): Promise<Uint8Array | string>` — Xuất node sang định dạng JSON. Ví dụ: `const json = await item.exportJson()`
+- `getText(): string` — Lấy nội dung văn bản đã làm sạch. Ví dụ: `const content = item.getText()`
+
+## Các loại dữ liệu (Types)
+
+### `UiFigmaNode`
+
+Một kiểu union đại diện cho bất kỳ node Figma nào có liên quan có thể được bọc bởi `FigmaItem`.
+- Bao gồm: `DocumentNode`, `PageNode`, `FrameNode`, `SectionNode`, `TextNode`, và các biến thể `SceneNode` khác.
+
+### `UiFigmaExportFormat`
+
+Các định dạng được hỗ trợ cho các thao tác xuất (export) node.
+- Các giá trị: `'PNG'`, `'JPG'`, `'SVG'`, `'PDF'`, `'JSON_REST_V1'`.

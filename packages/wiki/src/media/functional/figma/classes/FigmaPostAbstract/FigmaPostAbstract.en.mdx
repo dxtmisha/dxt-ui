@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Classes/FigmaPostAbstract - Base Messaging Class'/>
+
+# FigmaPostAbstract Class
+
+Base abstract class for managing messaging between the Figma plugin (backend) and the UI (frontend). It provides a structured foundation for bidirectional communication with built-in verification and multiple listener management.
+
+## Key Features
+
+- **Bidirectional Support** — Foundation for both `FigmaPluginMessenger` and `FigmaUiMessenger`.
+- **Message Verification** — Uses `FigmaPostCode` to ensure that messages originated from the same plugin instance.
+- **Multicast Listeners** — Supports multiple callbacks for a single message type.
+- **Method Chaining** — Methods like `make` and `add` return `this`, allowing for a more concise initialization.
+
+## Public Methods
+
+### `make`
+
+Initializes the message listener. This method ensures that the environment-specific setup (`prepare`) is executed exactly once, regardless of how many times `make` is called.
+
+**Returns:** `this`
+
+```javascript
+const messenger = new FigmaPluginMessenger().make()
+```
+
+### `add`
+
+Registers a callback function to be executed when a message of a specific type is received.
+
+**Parameters:**
+- `type: string` — The unique identifier for the message type.
+- `callback: UiFigmaMessengerCallback<Message>` — The function to call when the message is received. Receives the message data as its first argument.
+
+**Returns:** `this`
+
+```javascript
+messenger
+  .add('update-selection', (data) => console.log('Selection:', data.count))
+  .add('close', () => figma.closePlugin())
+```
+
+## Data Structures
+
+### `UiFigmaMessengerData`
+
+The structure of the data object passed through the messaging pipeline:
+
+- `code: string` — The verification code from `FigmaPostCode`.
+- `type: string` — The identifier of the message.
+- `message: Message` — The actual payload data.

@@ -9,7 +9,7 @@ import type { UiFigmaMessengerCallback, UiFigmaMessengerData } from '../types/fi
  */
 export abstract class FigmaPostAbstract {
   protected isMake: boolean = false
-  protected readonly posts = new Map<string, UiFigmaMessengerCallback[]>()
+  protected readonly posts: Record<string, UiFigmaMessengerCallback[]> = {}
 
   /**
    * Sends a message to the other side.
@@ -33,14 +33,14 @@ export abstract class FigmaPostAbstract {
   add<Message>(
     type: string,
     callback: UiFigmaMessengerCallback<Message>
-  ) {
-    const list = this.posts.get(type)
-
-    if (list) {
-      list.push(callback)
-    } else {
-      this.posts.set(type, [callback])
+  ): this {
+    if (!this.posts[type]) {
+      this.posts[type] = []
     }
+
+    this.posts[type].push(callback)
+
+    return this
   }
 
   /**
@@ -48,11 +48,13 @@ export abstract class FigmaPostAbstract {
    *
    * Инициализирует слушатель сообщений.
    */
-  make() {
+  make(): this {
     if (!this.isMake) {
       this.isMake = true
       this.prepare()
     }
+
+    return this
   }
 
   /**
@@ -73,7 +75,7 @@ export abstract class FigmaPostAbstract {
     type: string,
     message: Message
   ) {
-    this.posts.get(type)?.forEach(callback => callback(message))
+    this.posts[type]?.forEach(callback => callback(message))
   }
 
   /**
@@ -83,6 +85,8 @@ export abstract class FigmaPostAbstract {
    * @param data The received message data / Данные полученного сообщения
    */
   protected onMessage = (data?: UiFigmaMessengerData) => {
+    console.log('data', data)
+
     if (
       data
       && FigmaPostCode.is(data.code)
