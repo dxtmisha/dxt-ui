@@ -36,7 +36,7 @@ export class FigmaPostCode {
    */
   static set(code: string) {
     if (this.isEditable) {
-      this.code = code
+      this.code = `figma-${code}`
       this.isEditable = false
     }
   }

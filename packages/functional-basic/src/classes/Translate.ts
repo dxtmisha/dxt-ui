@@ -7,13 +7,8 @@ import { toArray } from '../functions/toArray'
 import { Api } from './Api'
 import { Geo } from './Geo'
 
-export type TranslateCode = string | string[]
-export type TranslateList<T extends TranslateCode[]> = {
-  [K in T[number]as K extends readonly string[] ? K[0] : K]: string
-}
-export type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string
-
-export const TRANSLATE_GLOBAL_PREFIX = 'global'
+import { TRANSLATE_GLOBAL_PREFIX, TRANSLATE_TIME_OUT, type TranslateCode, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
+import { TranslateFile } from './TranslateFile'
 
 /**
  * Class for getting the translated text.
@@ -28,6 +23,8 @@ export class Translate {
   protected static cache: string[] = []
   protected static resolveList: (() => void)[] = []
   protected static timeout?: any
+
+  protected static isReadApi: boolean = true
 
   /**
    * Getting the translation text by its code.
@@ -149,7 +146,7 @@ export class Translate {
             this.resolveList.forEach(resolve => resolve())
             this.resolveList = []
           })
-        }, 160)
+        }, TRANSLATE_TIME_OUT)
       } else {
         resolve()
       }
@@ -216,6 +213,16 @@ export class Translate {
   }
 
   /**
+   * Adds texts synchronously from the file.
+   *
+   * Добавляет тексты синхронно из файла.
+   * @param data file with translations/ файл с переводами
+   */
+  static addSyncByFile(data: TranslateDataFile): void {
+    TranslateFile.add(data)
+  }
+
+  /**
    * Change the path to the script for obtaining the translation.
    *
    * Изменить путь к скрипту для получения перевода.
@@ -226,8 +233,25 @@ export class Translate {
     return Translate
   }
 
+  /**
+   * Change the name of the property to get the translation.
+   *
+   * Изменить имя свойства для получения перевода.
+   * @param name property name/ имя свойства
+   */
   static setPropsName(name: string): Translate {
     this.propsName = name
+    return this
+  }
+
+  /**
+   * Change the read mode from the API.
+   *
+   * Изменить режим чтения из API.
+   * @param value read mode/ режим чтения
+   */
+  static setReadApi(value: boolean): Translate {
+    this.isReadApi = value
     return this
   }
 
@@ -366,8 +390,26 @@ export class Translate {
    * Добавление данных по переводу с сервера.
    */
   protected static async make(): Promise<void> {
-    const list = await this.getResponse()
+    let list: Record<string, string> | undefined
 
+    if (TranslateFile.isFile()) {
+      list = await TranslateFile.getList()
+    } else if (this.isReadApi) {
+      list = await this.getResponse()
+    }
+
+    if (list) {
+      this.makeList(list)
+    }
+  }
+
+  /**
+   * Adding translation data from the list.
+   *
+   * Добавление данных по переводу из списка.
+   * @param list list of translations/ список переводов
+   */
+  protected static makeList(list: Record<string, string>): void {
     this.cache.forEach((name) => {
       this.data[this.getName(name)] = list?.[name] ?? ''
     })

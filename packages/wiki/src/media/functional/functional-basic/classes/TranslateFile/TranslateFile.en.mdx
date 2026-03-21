@@ -1,0 +1,66 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/TranslateFile - Translation File Management'/>
+
+# TranslateFile Class
+
+A static utility class for managing translation data from external files. It supports lazy loading of translation packs, automatic locale matching, and internal caching to optimize performance and reduce redundant file processing.
+
+## Key Features
+
+- **Lazy Loading** — Supports asynchronous loading of translation files only when they are needed for the current locale.
+- **Smart Caching** — Automatically caches the content of loaded files, preventing repetitive file reads or network requests.
+- **Locale Prioritization** — Intelligently selects the best-matching file based on location (Location > Language > Global).
+- **Seamless Integration** — Works in tandem with the `Translate` class to provide a unified translation system.
+
+## Initialization
+
+The class is static and is primarily configured by adding file loaders for different locales.
+
+```javascript
+import { TranslateFile } from '@dxtmisha/functional-basic'
+
+// Register file loaders (typically async imports)
+TranslateFile.add({
+  'en-US': () => import('./locales/en-US.json'),
+  'en': () => import('./locales/en.json'),
+  'global': () => import('./locales/global.json')
+})
+```
+
+## Methods
+
+### Data Retrieval
+
+- `async getList(): Promise<TranslateDataFileList | undefined>` — Returns a list of translations for the current location. It first checks the internal cache, then tries to load from the registered file loaders.
+- `isFile(): boolean` — Checks if there are any registered file loaders applicable to the current location or language.
+
+### Data Management
+
+- `add(data: TranslateDataFile): void` — Adds a mapping of locales to their respective translation file loaders (functions returning a Promise).
+
+## Types
+
+### `TranslateDataFile`
+A collection of asynchronous loader functions indexed by locale/region strings:
+- **Key**: Locale code (e.g., `'en-US'`, `'ru'`, `'global'`).
+- **Value**: Function returning a `Promise` of `TranslateDataFileList`.
+
+### `TranslateDataFileList`
+A simple key-value record of translations: `Record<string, string>`.
+
+## Examples
+
+### Registering Files with Dynamic Imports
+
+```javascript
+import { TranslateFile, Translate } from '@dxtmisha/functional-basic'
+
+TranslateFile.add({
+  'en-US': () => import('./en-US.json'),
+  'ru-RU': () => import('./ru-RU.json')
+})
+
+// Translate class will internally use TranslateFile if files are available
+const title = await Translate.get('app.title')
+```

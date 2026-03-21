@@ -3,9 +3,11 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { Translate, TRANSLATE_GLOBAL_PREFIX } from '../Translate'
+import { Translate } from '../Translate'
+import { TranslateFile } from '../TranslateFile'
 import { Api } from '../Api'
 import { Geo } from '../Geo'
+import { TRANSLATE_GLOBAL_PREFIX } from '../../types/translateTypes'
 
 describe('Translate', () => {
   let mockGetLocation: any
@@ -18,6 +20,12 @@ describe('Translate', () => {
     for (const key in anyTranslate.data) delete anyTranslate.data[key]
     anyTranslate.cache = []
     anyTranslate.resolveList = []
+    anyTranslate.isReadApi = true
+
+    // Clear TranslateFile
+    const anyTranslateFile = TranslateFile as any
+    anyTranslateFile.files = {}
+    anyTranslateFile.data = {}
 
     mockGetLocation = vi.spyOn(Geo, 'getLocation').mockReturnValue('en-US')
     mockIsLocalhost = vi.spyOn(Api, 'isLocalhost').mockReturnValue(true)
@@ -123,7 +131,7 @@ describe('Translate', () => {
 
       // Fast-forward timers if necessary or just await
       // Wait for timeout (160ms) of Translate.add
-      await new Promise(resolve => setTimeout(resolve, 200))
+      await new Promise(resolve => setTimeout(resolve, 500))
       const text = await textPromise
 
       expect(mockApiGet).toHaveBeenCalled()
@@ -132,6 +140,17 @@ describe('Translate', () => {
 
     it('should not call API when on localhost and the key is missing', async () => {
       mockIsLocalhost.mockReturnValue(true)
+
+      const text = await Translate.get('hello')
+
+      expect(mockApiGet).not.toHaveBeenCalled()
+      expect(text).toBe('hello')
+    })
+
+    it('should not call API when setReadApi(false) is called', async () => {
+      mockIsLocalhost.mockReturnValue(false)
+      Translate.setReadApi(false)
+      mockApiGet.mockResolvedValue({ hello: 'World API' })
 
       const text = await Translate.get('hello')
 
@@ -157,9 +176,24 @@ describe('Translate', () => {
       expect(Translate.getSync('test.key')).toBe('test.value')
     })
 
-    it('setUrl and setPropsName should return Translate for chaining', () => {
+    it('setUrl, setPropsName and setReadApi should return Translate for chaining', () => {
       expect(Translate.setUrl('/new/url')).toBe(Translate)
       expect(Translate.setPropsName('newProps')).toBe(Translate)
+      expect(Translate.setReadApi(true)).toBe(Translate)
+    })
+
+    it('should use TranslateFile when addSyncByFile is called', async () => {
+      mockIsLocalhost.mockReturnValue(false)
+      const mockFile = vi.fn().mockResolvedValue({ hello: 'World File' })
+      Translate.addSyncByFile({ 'en-US': mockFile })
+
+      const textPromise = Translate.get('hello')
+      await new Promise(resolve => setTimeout(resolve, 500))
+      const text = await textPromise
+
+      expect(mockFile).toHaveBeenCalled()
+      expect(text).toBe('World File')
+      expect(mockApiGet).not.toHaveBeenCalled()
     })
   })
 })

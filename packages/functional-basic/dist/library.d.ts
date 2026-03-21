@@ -5671,6 +5671,7 @@ export declare class Translate {
     protected static cache: string[];
     protected static resolveList: (() => void)[];
     protected static timeout?: any;
+    protected static isReadApi: boolean;
     /**
      * Getting the translation text by its code.
      *
@@ -5735,13 +5736,33 @@ export declare class Translate {
      */
     static addSyncByLocation(data: Record<string, Record<string, string>>): void;
     /**
+     * Adds texts synchronously from the file.
+     *
+     * Добавляет тексты синхронно из файла.
+     * @param data file with translations/ файл с переводами
+     */
+    static addSyncByFile(data: TranslateDataFile): void;
+    /**
      * Change the path to the script for obtaining the translation.
      *
      * Изменить путь к скрипту для получения перевода.
      * @param url path to the script/ путь к скрипту
      */
     static setUrl(url: string): Translate;
+    /**
+     * Change the name of the property to get the translation.
+     *
+     * Изменить имя свойства для получения перевода.
+     * @param name property name/ имя свойства
+     */
     static setPropsName(name: string): Translate;
+    /**
+     * Change the read mode from the API.
+     *
+     * Изменить режим чтения из API.
+     * @param value read mode/ режим чтения
+     */
+    static setReadApi(value: boolean): Translate;
     /**
      * Checks for translation by code, taking into account fallback options.
      *
@@ -5804,14 +5825,112 @@ export declare class Translate {
      * Добавление данных по переводу с сервера.
      */
     protected static make(): Promise<void>;
+    /**
+     * Adding translation data from the list.
+     *
+     * Добавление данных по переводу из списка.
+     * @param list list of translations/ список переводов
+     */
+    protected static makeList(list: Record<string, string>): void;
 }
 
+/**
+ * Prefix for global translations.
+ * Префикс для глобальных переводов.
+ */
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 
+/**
+ * Request timeout for batch loading (ms).
+ * Таймаут запроса для пакетной загрузки (мс).
+ */
+export declare const TRANSLATE_TIME_OUT = 320;
+
+/**
+ * Translation code or a list of translation codes for template replacement.
+ * Код перевода или список кодов для замены шаблона.
+ */
 export declare type TranslateCode = string | string[];
 
+/**
+ * A mapping of locale strings to their respective translation file loaders.
+ * Сопоставление строк локалей и соответствующих им загрузчиков файлов перевода.
+ */
+export declare type TranslateDataFile = Record<string, TranslateDataFileItem>;
+
+/**
+ * Asynchronous loader function for a translation file.
+ * Асинхронная функция-загрузчик для файла перевода.
+ */
+export declare type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
+
+/**
+ * A simple key-value record of translations from a file.
+ * Простой рекорд «ключ-значение» с переводами из файла.
+ */
+export declare type TranslateDataFileList = Record<string, string>;
+
+/**
+ * Class for working with translation files.
+ *
+ * Класс для работы с файлами перевода.
+ */
+export declare class TranslateFile {
+    /** List of files with translations/ Список файлов с переводами */
+    protected static files: TranslateDataFile;
+    /** Data from files/ Данные из файлов */
+    protected static data: Record<string, TranslateDataFileList>;
+    /**
+     * Checks if there are files for the current location.
+     *
+     * Проверяет, есть ли файлы для текущего местоположения.
+     */
+    static isFile(): boolean;
+    /**
+     * Returns a list of translations from the file for the current location.
+     *
+     * Возвращает список переводов из файла для текущего местоположения.
+     */
+    static getList(): Promise<TranslateDataFileList | undefined>;
+    /**
+     * Adds a list of files with translations.
+     *
+     * Добавляет список файлов с переводами.
+     * @param data list of files/ список файлов
+     */
+    static add(data: TranslateDataFile): void;
+    /**
+     * Returns the key for the current location from the list of files.
+     *
+     * Возвращает ключ для текущего местоположения из списка файлов.
+     */
+    protected static getIndex(): string | undefined;
+    /**
+     * Returns a list of translations from the cache.
+     *
+     * Возвращает список переводов из кэша.
+     * @param index file key/ ключ файла
+     */
+    protected static getByData(index: string): TranslateDataFileList | undefined;
+    /**
+     * Returns a list of translations from the file and caches the result.
+     *
+     * Возвращает список переводов из файла и кэширует результат.
+     * @param index file key/ ключ файла
+     */
+    protected static getByFile(index: string): Promise<TranslateDataFileList | undefined>;
+}
+
+/**
+ * Return type for translation retrieval: an object if a list was requested, or a string for a single key.
+ * Тип возвращаемого значения для получения перевода: объект, если был запрошен список, или строка для одного ключа.
+ */
 export declare type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string;
 
+/**
+ * Object with translated strings, where the keys are the names of the translation codes.
+ * Объект с переведенными строками, где ключи — имена кодов переводов.
+ */
 export declare type TranslateList<T extends TranslateCode[]> = {
     [K in T[number] as K extends readonly string[] ? K[0] : K]: string;
 };

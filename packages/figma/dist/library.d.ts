@@ -1,4 +1,14 @@
 /**
+ * Ensures that an image does not exceed the maximum size by resizing it if needed.
+ *
+ * Гарантирует, что изображение не превышает максимальный размер, изменяя его размер при необходимости.
+ * @param file image file as Uint8Array / файл изображения в виде Uint8Array
+ * @param compress maximum size as a fraction of the original size (default is 0.7)/
+ * максимальный размер в виде доли от оригинального размера (по умолчанию 0.7)
+ */
+export declare function ensureMaxSize(file: Uint8Array, compress?: number): Promise<string>;
+
+/**
  * Class for working with Figma frames and their elements.
  *
  * Класс для работы с фреймами Figma и их элементами.
@@ -364,6 +374,13 @@ export declare class FigmaUiMessenger extends FigmaPostAbstract {
     protected prepare(): void;
 }
 
+/**
+ * Sets up a listener for selection changes in Figma and sends text elements to the UI.
+ *
+ * Настраивает слушатель изменений выделения в Figma и отправляет текстовые элементы в UI.
+ */
+export declare const makeFigmaTexts: () => void;
+
 export declare type UiFigmaExportFormat = 'PNG' | 'JPG' | 'SVG' | 'PDF' | 'JSON_REST_V1';
 
 export declare type UiFigmaItemText = {
@@ -378,16 +395,14 @@ export declare type UiFigmaMessageTexts = {
 };
 
 /**
- * Type for the message callback function.
- *
- * Тип для функции обратного вызова сообщения.
+ * Type for the message callback function/
+ * Тип для функции обратного вызова сообщения
  */
 export declare type UiFigmaMessengerCallback<Message = any> = (message: Message) => void;
 
 /**
- * Data structure for a message sent between the plugin and UI.
- *
- * Структура данных для сообщения, передаваемого между плагином и UI.
+ * Data structure for a message sent between the plugin and UI/
+ * Структура данных для сообщения, передаваемого между плагином и UI
  */
 export declare type UiFigmaMessengerData<Message = any> = {
     /** Verification code / Проверочный код */
@@ -399,9 +414,8 @@ export declare type UiFigmaMessengerData<Message = any> = {
 };
 
 /**
- * Structure for storing a message type and its associated callbacks.
- *
- * Структура для хранения типа сообщения и связанных с ним обратных вызовов.
+ * Structure for storing a message type and its associated callbacks/
+ * Структура для хранения типа сообщения и связанных с ним обратных вызовов
  */
 export declare type UiFigmaMessengerItem = {
     type: string;
@@ -409,9 +423,8 @@ export declare type UiFigmaMessengerItem = {
 };
 
 /**
- * List of message items.
- *
- * Список элементов сообщений.
+ * List of message items/
+ * Список элементов сообщений
  */
 export declare type UiFigmaMessengerList = UiFigmaMessengerItem[];
 

@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/TranslateFile - Quản lý Tệp Bản dịch'/>
+
+# Lớp TranslateFile
+
+Một lớp tiện ích tĩnh (static class) để quản lý dữ liệu bản dịch từ các tệp bên ngoài. Lớp này hỗ trợ tải chậm (lazy loading) các gói ngôn ngữ, tự động khớp mã vùng và lưu trữ bộ nhớ đệm nội bộ để tối ưu hóa hiệu suất và giảm bớt việc xử lý tệp thừa.
+
+## Tính năng chính
+
+- **Tải chậm (Lazy Loading)** — Hỗ trợ tải các tệp bản dịch bất đồng bộ chỉ khi chúng thực sự cần thiết cho ngôn ngữ hiện tại.
+- **Bộ nhớ đệm thông minh** — Tự động lưu trữ nội dung của các tệp đã tải vào cache, ngăn chặn việc đọc tệp lặp lại hoặc các yêu cầu mạng dư thừa.
+- **Ưu tiên Lokale** — Lựa chọn tệp phù hợp nhất một cách thông minh dựa trên vị trí (Vị trí > Ngôn ngữ > Toàn cầu).
+- **Tích hợp liền mạch** — Hoạt động song song với lớp `Translate` để cung cấp một hệ thống dịch thuật thống nhất.
+
+## Khởi tạo
+
+Lớp này là tĩnh và chủ yếu được cấu hình bằng cách thêm các trình tải tệp (file loaders) cho các ngôn ngữ khác nhau.
+
+```javascript
+import { TranslateFile } from '@dxtmisha/functional-basic'
+
+// Đăng ký trình tải tệp (thường là async imports)
+TranslateFile.add({
+  'en-US': () => import('./locales/en-US.json'),
+  'en': () => import('./locales/en.json'),
+  'global': () => import('./locales/global.json')
+})
+```
+
+## Phương thức
+
+### Truy xuất dữ liệu
+
+- `async getList(): Promise<TranslateDataFileList | undefined>` — Trả về danh sách các bản dịch cho vị trí hiện tại. Đầu tiên nó kiểm tra cache nội bộ, sau đó cố gắng tải từ các trình tải tệp đã đăng ký.
+- `isFile(): boolean` — Kiểm tra xem có trình tải tệp nào đã đăng ký phù hợp với vị trí hoặc ngôn ngữ hiện tại hay không.
+
+- `add(data: TranslateDataFile): void` — Thêm ánh xạ giữa các mã vùng và trình tải tệp bản dịch tương ứng (các hàm trả về Promise).
+
+## Kiểu dữ liệu (Types)
+
+### `TranslateDataFile`
+Một tập hợp các hàm tải bất đồng bộ được chỉ mục theo chuỗi ngôn ngữ/khu vực:
+- **Khóa**: Mã locale (ví dụ: `'en-US'`, `'ru'`, `'global'`).
+- **Giá trị**: Hàm trả về một `Promise` của `TranslateDataFileList`.
+
+### `TranslateDataFileList`
+Một bản ghi key-value đơn giản của các bản dịch: `Record<string, string>`.
+
+## Ví dụ
+
+### Đăng ký Tệp với Dynamic Imports
+
+```javascript
+import { TranslateFile, Translate } from '@dxtmisha/functional-basic'
+
+TranslateFile.add({
+  'en-US': () => import('./en-US.json'),
+  'ru-RU': () => import('./ru-RU.json')
+})
+
+// Lớp Translate sẽ tự động sử dụng TranslateFile nếu có sẵn tệp
+const title = await Translate.get('app.title')
+```

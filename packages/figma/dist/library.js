@@ -1,6 +1,6 @@
-import { forEach as e, random as t } from "@dxtmisha/functional-basic";
+import { blobToBase64 as e, forEach as t, getElementImage as n, random as r, resizeImageByMax as i } from "@dxtmisha/functional-basic";
 //#region src/classes/FigmaItem.ts
-var n = class e {
+var a = class e {
 	constructor(e) {
 		this.item = e;
 	}
@@ -78,36 +78,36 @@ var n = class e {
 };
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/typeof.js
-function r(e) {
+function o(e) {
 	"@babel/helpers - typeof";
-	return r = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return o = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, r(e);
+	}, o(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPrimitive.js
-function i(e, t) {
-	if (r(e) != "object" || !e) return e;
+function s(e, t) {
+	if (o(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
-		var i = n.call(e, t || "default");
-		if (r(i) != "object") return i;
+		var r = n.call(e, t || "default");
+		if (o(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPropertyKey.js
-function a(e) {
-	var t = i(e, "string");
-	return r(t) == "symbol" ? t : t + "";
+function c(e) {
+	var t = s(e, "string");
+	return o(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/defineProperty.js
-function o(e, t, n) {
-	return (t = a(t)) in e ? Object.defineProperty(e, t, {
+function l(e, t, n) {
+	return (t = c(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -116,9 +116,9 @@ function o(e, t, n) {
 }
 //#endregion
 //#region src/classes/FigmaFrame.ts
-var s = class {
+var u = class {
 	constructor(e, t = !1) {
-		o(this, "mainItem", []), o(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
+		l(this, "mainItem", []), l(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
 	}
 	isSelection() {
 		return this.selection && "selection" in this.page;
@@ -152,11 +152,11 @@ var s = class {
 		return e;
 	}
 	initMain() {
-		return this.isSelection() ? e([...this.page.selection], (e) => new n(e)) : [new n(this.page)];
+		return this.isSelection() ? t([...this.page.selection], (e) => new a(e)) : [new a(this.page)];
 	}
 	initItems(e) {
 		let t = [];
-		if ("children" in e) for (let r of e.children) t.push(new n(r), ...this.initItems(r));
+		if ("children" in e) for (let n of e.children) t.push(new a(n), ...this.initItems(n));
 		return t;
 	}
 	initBySelection() {
@@ -170,11 +170,11 @@ var s = class {
 	filter(e) {
 		return this.items.filter(e);
 	}
-	toMain(e = new n(this.page)) {
+	toMain(e = new a(this.page)) {
 		let t = e.getParentItem();
 		return t && !t.isDocument() ? this.toMain(t) : e;
 	}
-}, c = class {
+}, d = class {
 	static is(e) {
 		return this.code === e;
 	}
@@ -182,16 +182,16 @@ var s = class {
 		return this.code;
 	}
 	static set(e) {
-		this.isEditable && (this.code = e, this.isEditable = !1);
+		this.isEditable && (this.code = `figma-${e}`, this.isEditable = !1);
 	}
 };
-o(c, "code", `figma-${t(1e5, 999999)}`), o(c, "isEditable", !0);
+l(d, "code", `figma-${r(1e5, 999999)}`), l(d, "isEditable", !0);
 //#endregion
 //#region src/classes/FigmaPostAbstract.ts
-var l = class {
+var f = class {
 	constructor() {
-		o(this, "isMake", !1), o(this, "posts", {}), o(this, "onMessage", (e) => {
-			console.log("data", e), e && c.is(e.code) && this.notify(e.type, e.message);
+		l(this, "isMake", !1), l(this, "posts", {}), l(this, "onMessage", (e) => {
+			e && d.is(e.code) && this.notify(e.type, e.message);
 		});
 	}
 	add(e, t) {
@@ -204,10 +204,10 @@ var l = class {
 		var n;
 		(n = this.posts[e]) == null || n.forEach((e) => e(t));
 	}
-}, u = class extends l {
+}, p = class extends f {
 	post(e, t) {
 		figma.ui.postMessage({
-			code: c.get(),
+			code: d.get(),
 			type: e,
 			message: t
 		});
@@ -215,10 +215,10 @@ var l = class {
 	prepare() {
 		figma.ui.onmessage = (e) => this.onMessage(e);
 	}
-}, d = class extends l {
+}, m = class extends f {
 	post(e, t) {
 		parent.postMessage({ pluginMessage: {
-			code: c.get(),
+			code: d.get(),
 			type: e,
 			message: t
 		} }, "*");
@@ -229,15 +229,41 @@ var l = class {
 			return this.onMessage((t = e.data) == null ? void 0 : t.pluginMessage);
 		});
 	}
-}, f;
-function p() {
-	return f || (f = new u(), f.make()), f;
+}, h;
+function g() {
+	return h || (h = new p(), h.make()), h;
 }
 //#endregion
 //#region src/composables/useFigmaUiMessenger.ts
-var m;
-function h() {
-	return m || (m = new d(), m.make()), m;
+var _;
+function v() {
+	return _ || (_ = new m(), _.make()), _;
 }
 //#endregion
-export { s as FigmaFrame, n as FigmaItem, u as FigmaPluginMessenger, l as FigmaPostAbstract, c as FigmaPostCode, d as FigmaUiMessenger, p as useFigmaPluginMessenger, h as useFigmaUiMessenger };
+//#region src/config.ts
+var y = "image/jpeg", b = "texts";
+//#endregion
+//#region src/functions/ensureMaxSize.ts
+async function x(t, r = .56) {
+	return new Promise((a) => {
+		let o = new Blob([t], { type: y }), s = n(URL.createObjectURL(o));
+		s ? s.onload = () => {
+			let e = i(s, r * s.naturalWidth, "width", y);
+			a(e == null ? "" : e);
+		} : e(o).then((e) => a(String(e == null ? "" : e)));
+	});
+}
+//#endregion
+//#region src/functions/makeFigmaTexts.ts
+var S = () => {
+	figma.on("selectionchange", async () => {
+		let e = new u(figma.currentPage, !0);
+		g().post(b, {
+			frame: e,
+			texts: e.getTexts(),
+			screenshot: await e.screenshot()
+		});
+	});
+};
+//#endregion
+export { u as FigmaFrame, a as FigmaItem, p as FigmaPluginMessenger, f as FigmaPostAbstract, d as FigmaPostCode, m as FigmaUiMessenger, x as ensureMaxSize, S as makeFigmaTexts, g as useFigmaPluginMessenger, v as useFigmaUiMessenger };

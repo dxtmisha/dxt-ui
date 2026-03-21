@@ -37,3 +37,15 @@ Sets a new post code. This method can only be successful once; once a code is se
 - `code: string` — The new code to be used for the remainder of the session.
 
 **Returns:** `void`
+
+## Recommendation
+
+For stable and unique verification, it is recommended to use the `id` from your plugin's `manifest.json`.
+
+```typescript
+import manifest from '../manifest.json'
+import { FigmaPostCode } from '@dxtmisha/figma'
+
+// Set the post code using the plugin's unique ID from manifest
+FigmaPostCode.set(manifest.id)
+```

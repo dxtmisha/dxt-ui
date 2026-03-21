@@ -34,6 +34,7 @@ export * from './classes/SearchListItem'
 export * from './classes/SearchListMatcher'
 export * from './classes/SearchListOptions'
 export * from './classes/Translate'
+export * from './classes/TranslateFile'
 
 // Functions
 export * from './functions/addTagHighlightMatch'
@@ -140,3 +141,4 @@ export * from './types/formattersTypes'
 export * from './types/geoTypes'
 export * from './types/metaTypes'
 export * from './types/searchTypes'
+export * from './types/translateTypes'

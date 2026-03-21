@@ -37,3 +37,15 @@ Trả về mã tin nhắn hiện tại được sử dụng để xác minh tron
 - `code: string` — Mã mới sẽ được sử dụng cho phần còn lại của phiên.
 
 **Trả về:** `void`
+
+## Khuyến nghị
+
+Để đảm bảo xác thực ổn định và duy nhất, bạn nên sử dụng trường `id` từ tệp `manifest.json` của plugin làm mã bảo mật.
+
+```typescript
+import manifest from '../manifest.json'
+import { FigmaPostCode } from '@dxtmisha/figma'
+
+// Thiết lập mã xác thực bằng ID duy nhất của plugin từ manifest
+FigmaPostCode.set(manifest.id)
+```

@@ -12,6 +12,7 @@ A static utility class for managing translations and localized text. It provides
 - **Flexible Templates** — Supports parameter replacement in text using both indices (`[0]`) and named keys (`{key}`).
 - **Sync and Async Access** — Methods for instant text retrieval from cache (`getSync`) or guaranteed server loading (`get`).
 - **Smart Cache** — Stores translations scoped to the current locale and supports fallbacks (language-country → language → global).
+- **Flexible Data Sources** — Supports loading translations from both the server (API) and local files (via `TranslateFile`).
 - **Local Development** — The `addNormalOrSync` mode automatically switches between mocks and real requests based on the environment.
 
 ## Initialization
@@ -43,11 +44,26 @@ await Translate.add(['welcome', 'auth.login', 'errors.required'])
 - `addSync(data: Record<string, string>): void` — Directly adds translated strings to the cache.
 - `async addNormalOrSync(data: Record<string, string>): Promise<void>` — Intelligent addition: behaves as `addSync` on localhost, and as `add` otherwise.
 - `addSyncByLocation(data: Record<string, Record<string, string>>): void` — Bulk-adds texts tied to specific locales.
+- `addSyncByFile(data: TranslateDataFile): void` — Registers translation file loaders for lazy loading (see `TranslateFile`).
 
 ### Configuration
 
-- `setUrl(url: string): Translate` — Sets the API path for loading translations.
-- `setPropsName(name: string): Translate` — Sets the property name in the request body (default is `list`).
+- `setUrl(url: string): typeof Translate` — Sets the API path for loading translations.
+- `setPropsName(name: string): typeof Translate` — Sets the property name in the request body (default is `list`).
+- `setReadApi(read: boolean): typeof Translate` — Enables or disables API requests for translations (default is `true`).
+
+## Types
+
+### `TranslateCode`
+A string (code name) or an array of strings. Arrays are used for template replacement:
+- `string` — e.g., `'welcome'`
+- `string[]` — e.g., `['welcome', 'Guest']`
+
+### `TranslateList`
+A record where keys are translation codes and values are the resulting translated strings.
+
+### `TranslateDataFile`
+A mapping of locale strings to their respective loader functions. Used in `addSyncByFile`.
 
 ## Examples
 

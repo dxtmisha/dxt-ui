@@ -12,6 +12,7 @@ Một lớp tiện ích tĩnh (static class) để quản lý bản dịch và v
 - **Mẫu văn bản linh hoạt** — Hỗ trợ thay thế tham số trong văn bản thông qua chỉ số (`[0]`) hoặc khóa định danh (`{key}`).
 - **Truy cập Đồng bộ và Bất đồng bộ** — Cung cấp các phương thức lấy văn bản tức thì từ cache (`getSync`) hoặc đảm bảo tải từ máy chủ (`get`).
 - **Bộ nhớ đệm thông minh** — Lưu trữ bản dịch theo phạm vi ngôn ngữ hiện tại và hỗ trợ cơ chế dự phòng (ngôn ngữ-quốc gia → ngôn ngữ → toàn cầu).
+- **Nguồn dữ liệu linh hoạt** — Hỗ trợ tải bản dịch từ cả máy chủ (API) và tệp cục bộ (thông qua `TranslateFile`).
 - **Phát triển cục bộ** — Chế độ `addNormalOrSync` tự động chuyển đổi giữa dữ liệu giả (mock) và yêu cầu thực tế tùy theo môi trường.
 
 ## Khởi tạo
@@ -43,11 +44,26 @@ await Translate.add(['welcome', 'auth.login', 'errors.required'])
 - `addSync(data: Record<string, string>): void` — Thêm trực tiếp các chuỗi đã dịch vào bộ nhớ đệm.
 - `async addNormalOrSync(data: Record<string, string>): Promise<void>` — Thêm dữ liệu thông minh: hoạt động như `addSync` trên localhost, và như `add` trong các môi trường khác.
 - `addSyncByLocation(data: Record<string, Record<string, string>>): void` — Thêm hàng loạt văn bản gắn liền với các ngôn ngữ/khu vực cụ thể.
+- `addSyncByFile(data: TranslateDataFile): void` — Đăng ký trình tải tệp bản dịch để tải chậm (xem `TranslateFile`).
 
 ### Cấu hình
 
-- `setUrl(url: string): Translate` — Thiết lập đường dẫn API để tải bản dịch.
-- `setPropsName(name: string): Translate` — Thiết lập tên thuộc tính trong thân yêu cầu (mặc định là `list`).
+- `setUrl(url: string): typeof Translate` — Thiết lập đường dẫn API để tải bản dịch.
+- `setPropsName(name: string): typeof Translate` — Thiết lập tên thuộc tính trong thân yêu cầu (mặc định là `list`).
+- `setReadApi(read: boolean): typeof Translate` — Bật hoặc tắt các yêu cầu API cho bản dịch (mặc định là `true`).
+
+## Kiểu dữ liệu (Types)
+
+### `TranslateCode`
+Một chuỗi (mã văn bản) hoặc một mảng các chuỗi. Mảng được dùng để thay thế mẫu (template):
+- `string` — ví dụ: `'welcome'`
+- `string[]` — ví dụ: `['welcome', 'Khách']`
+
+### `TranslateList`
+Một bản ghi (record) với khóa là mã bản dịch và giá trị là các chuỗi đã dịch tương ứng.
+
+### `TranslateDataFile`
+Ánh xạ các chuỗi ngôn ngữ/khu vực (locale) với các hàm tải tương ứng. Được dùng trong `addSyncByFile`.
 
 ## Ví dụ
 

@@ -1,18 +1,19 @@
 import { useFigmaPluginMessenger } from '@dxtmisha/figma'
-import { TranslateCommand } from '../types/TranslateTypes'
+import { TranslatePostCommand, TranslatePostType, type TranslatePostItem } from '../types/TranslateTypes'
+import { TranslateFramesInit } from './TranslateFramesInit'
 
 export class TranslateFramesPlugin {
   protected static post = useFigmaPluginMessenger()
 
   static make(): void {
-    this.post.add(TranslateCommand.frames, this.on)
+    this.post.add(TranslatePostType.frames, this.on)
   }
 
-  static update() {
-    this.post.post(TranslateCommand.frames, { command: 'update' })
-  }
-
-  protected static on = (message: any) => {
-    console.log('message', message)
+  protected static on = (message: TranslatePostItem) => {
+    switch (message.command) {
+      case TranslatePostCommand.update:
+        TranslateFramesInit.make()
+        break
+    }
   }
 }

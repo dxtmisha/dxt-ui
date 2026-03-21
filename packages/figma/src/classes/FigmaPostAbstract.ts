@@ -85,8 +85,6 @@ export abstract class FigmaPostAbstract {
    * @param data The received message data / Данные полученного сообщения
    */
   protected onMessage = (data?: UiFigmaMessengerData) => {
-    console.log('data', data)
-
     if (
       data
       && FigmaPostCode.is(data.code)

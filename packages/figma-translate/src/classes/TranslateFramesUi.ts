@@ -1,19 +1,21 @@
 import { useFigmaUiMessenger } from '@dxtmisha/figma'
-import { TranslateCommand } from '../types/TranslateTypes'
+import { TranslatePostCommand, TranslatePostType, type TranslatePostItem } from '../types/TranslateTypes'
 
 export class TranslateFramesUi {
   protected static post = useFigmaUiMessenger()
 
   static make(): void {
-    this.post.add(TranslateCommand.frames, this.on)
+    this.post.add(TranslatePostType.frames, this.on)
   }
 
   static update() {
-    console.log('update')
-    this.post.post(TranslateCommand.frames, { command: 'update' })
+    this.post.post(
+      TranslatePostType.frames,
+      { command: TranslatePostCommand.update }
+    )
   }
 
-  protected static on = (message: any) => {
+  protected static on = (message: TranslatePostItem) => {
     console.log(message)
   }
 }

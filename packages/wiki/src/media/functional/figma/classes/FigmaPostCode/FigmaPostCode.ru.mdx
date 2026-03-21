@@ -37,3 +37,15 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `code: string` — Новое значение кода для использования в текущей сессии.
 
 **Возвращает:** `void`
+
+## Рекомендации
+
+Для обеспечения стабильной и уникальной верификации рекомендуется использовать `id` из вашего файла `manifest.json`.
+
+```typescript
+import manifest from '../manifest.json'
+import { FigmaPostCode } from '@dxtmisha/figma'
+
+// Установка кода верификации с использованием ID из манифеста
+FigmaPostCode.set(manifest.id)
+```
