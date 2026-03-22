@@ -46,4 +46,4 @@ export const TRANSLATE_GLOBAL_PREFIX = 'global'
  * Request timeout for batch loading (ms).
  * Таймаут запроса для пакетной загрузки (мс).
  */
-export const TRANSLATE_TIME_OUT = 320
+export const TRANSLATE_TIME_OUT = 160

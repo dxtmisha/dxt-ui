@@ -3,6 +3,7 @@ import { isFunction } from '../functions/isFunction'
 import { Geo } from './Geo'
 
 import { TRANSLATE_GLOBAL_PREFIX, type TranslateDataFile, type TranslateDataFileList } from '../types/translateTypes'
+import { executeFunction } from '../functions/executeFunction.ts'
 
 /**
  * Class for working with translation files.
@@ -99,9 +100,11 @@ export class TranslateFile {
    */
   protected static async getByFile(index: string): Promise<TranslateDataFileList | undefined> {
     if (index in this.files) {
-      const data = await this.files[index]()
+      const data = await executeFunction(this.files[index])
 
-      this.data[index] = data
+      if (data) {
+        this.data[index] = data
+      }
 
       return data
     }

@@ -5844,7 +5844,7 @@ export declare const TRANSLATE_GLOBAL_PREFIX = "global";
  * Request timeout for batch loading (ms).
  * Таймаут запроса для пакетной загрузки (мс).
  */
-export declare const TRANSLATE_TIME_OUT = 320;
+export declare const TRANSLATE_TIME_OUT = 160;
 
 /**
  * Translation code or a list of translation codes for template replacement.
