@@ -7,8 +7,13 @@ import { isString } from './isString'
  *
  * Преобразование значения в строку.
  * @param value values for conversion/ значения для преобразования
+ * @param isArrayString if true, then arrays will be converted to strings/
+ * если true, то массивы будут преобразованы в строки
  */
-export function anyToString<V>(value: V): string {
+export function anyToString<V>(
+  value: V,
+  isArrayString: boolean = true
+): string {
   if (isString(value)) {
     return value.trim()
   }
@@ -16,6 +21,7 @@ export function anyToString<V>(value: V): string {
   if (
     isArray(value)
     && value.findIndex(item => isObject(item)) === -1
+    && isArrayString
   ) {
     return value.join(',')
   }

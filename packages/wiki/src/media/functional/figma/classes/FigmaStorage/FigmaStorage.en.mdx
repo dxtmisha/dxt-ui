@@ -1,0 +1,90 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Classes/FigmaStorage - Storage Manager'/>
+
+# FigmaStorage Class
+
+A class for robust management of Figma's `PluginData`. It provides a high-level API for storing, retrieving, and expiring data on Figma nodes (defaulting to the root node), with support for in-memory caching and default values.
+
+## Key Features
+
+- **Persistence** — Wraps `getPluginData` and `setPluginData` for seamless data storage.
+- **In-Memory Caching** — Stores values in the instance for fast access during the current execution context.
+- **Expiration Logic** — Supports age-based caching to invalidate stale data.
+- **Functional Values** — Supports passing functions as values or default values for dynamic data generation.
+
+## Initialization
+
+To initialize the object, call the `FigmaStorage(name, item, cache)` constructor.
+
+### Generic Parameters
+
+The class supports a generic parameter for typed data management:
+- `T` — The type of the value being stored and retrieved.
+
+**Parameters:**
+- `name: string` — The unique key name for the storage item.
+- `item: PluginDataMixin = figma.root` — The Figma node where the data will be stored. Defaults to `figma.root`.
+- `cache: number` — (Optional) TTL in seconds for the stored data.
+
+```typescript
+import { FigmaStorage } from '@dxtmisha/figma'
+
+// 1. Initialize with implicit typing
+const settings = new FigmaStorage('plugin-settings')
+
+// 2. Initialize with explicit generic for strict typing
+interface MyData { theme: string; version: number }
+const typedSettings = new FigmaStorage<MyData>('app-data')
+
+// 3. Initialize with a 1-hour cache
+const cacheSettings = new FigmaStorage('cache', figma.root, 3600)
+```
+
+## Methods
+
+### `get`
+
+Retrieves data from storage with support for default values and cache validation.
+
+**Parameters:**
+- `defaultValue: T | (() => T)` — (Optional) Value returned (and saved) if storage is empty or expired.
+
+**Returns:** `T | undefined`
+
+```javascript
+const val = settings.get('default_val')
+```
+
+### `set`
+
+Updates the data in both the in-memory cache and the Figma node's `PluginData`.
+
+**Parameters:**
+- `value: T | (() => T)` — (Optional) New value or a function that returns the new value.
+
+**Returns:** `T | undefined`
+
+```javascript
+settings.set({ theme: 'dark' })
+```
+
+### `remove`
+
+Clears the data from both the in-memory cache and the Figma node's `PluginData`.
+
+**Returns:** `this`
+
+```javascript
+settings.remove()
+```
+
+### `getName`
+
+Returns the key name used for this storage instance.
+
+**Returns:** `string`
+
+```javascript
+console.log(settings.getName())
+```

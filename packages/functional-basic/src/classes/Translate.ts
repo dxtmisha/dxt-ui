@@ -6,9 +6,9 @@ import { toArray } from '../functions/toArray'
 
 import { Api } from './Api'
 import { Geo } from './Geo'
+import { TranslateFile } from './TranslateFile'
 
 import { TRANSLATE_GLOBAL_PREFIX, TRANSLATE_TIME_OUT, type TranslateCode, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
-import { TranslateFile } from './TranslateFile'
 
 /**
  * Class for getting the translated text.

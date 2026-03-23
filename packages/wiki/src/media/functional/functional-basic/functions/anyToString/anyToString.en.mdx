@@ -10,6 +10,7 @@ This is useful when outputting data to the interface when the variable type (obj
 
 **Parameters:**
 - `value: V` — Values for conversion.
+- `isArrayString: boolean` (optional, default: `true`) — If `true`, arrays of primitives will be joined by commas. If `false`, they will be stringified as JSON.
 
 **Returns:**
 `string` — The string representation of the provided value.
@@ -17,10 +18,16 @@ This is useful when outputting data to the interface when the variable type (obj
 ```typescript
 import { anyToString } from '@dxtmisha/functional-basic'
 
-console.log(anyToString(' test ')) // 'test'
-console.log(anyToString([1, 2, 3])) // '1,2,3'
+console.log(anyToString(' test ')) // 'test' (trimmed)
+console.log(anyToString([1, 2, 3])) // '1,2,3' (isArrayString = true)
+console.log(anyToString([1, 2, 3], false)) // '[1,2,3]' (isArrayString = false)
+
+console.log(anyToString([[1], [2]])) // '[[1],[2]]' (nested arrays are stringified as JSON)
+console.log(anyToString([{ a: 1 }, 2])) // '[{"a":1},2]' (arrays with objects are stringified as JSON)
+
 console.log(anyToString({ a: 1 })) // '{"a":1}'
 console.log(anyToString(true)) // '1'
 console.log(anyToString(false)) // '0'
+console.log(anyToString(123)) // '123'
 console.log(anyToString(null)) // ''
 ```

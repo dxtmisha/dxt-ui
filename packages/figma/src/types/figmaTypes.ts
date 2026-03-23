@@ -2,13 +2,13 @@ import { FigmaFrame } from '../classes/FigmaFrame'
 
 export type UiFigmaNode
   = ChildrenMixin
-  | SceneNode
-  | DefaultShapeMixin
-  | DocumentNode
-  | PageNode
-  | FrameNode
-  | SectionNode
-  | TextNode
+    | SceneNode
+    | DefaultShapeMixin
+    | DocumentNode
+    | PageNode
+    | FrameNode
+    | SectionNode
+    | TextNode
 
 export type UiFigmaItemText = {
   id: string[]

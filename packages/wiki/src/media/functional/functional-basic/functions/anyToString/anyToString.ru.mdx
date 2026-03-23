@@ -10,6 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `value: V` — Значения для преобразования.
+- `isArrayString: boolean` (необязательно, по умолчанию: `true`) — Если `true`, массивы примитивов будут объединены через запятую. Если `false`, они будут преобразованы в строку JSON.
 
 **Возвращает:**
 `string` — Строковое представление переданного значения.
@@ -17,10 +18,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 ```typescript
 import { anyToString } from '@dxtmisha/functional-basic'
 
-console.log(anyToString(' test ')) // 'test'
-console.log(anyToString([1, 2, 3])) // '1,2,3'
+console.log(anyToString(' test ')) // 'test' (trimmed)
+console.log(anyToString([1, 2, 3])) // '1,2,3' (isArrayString = true)
+console.log(anyToString([1, 2, 3], false)) // '[1,2,3]' (isArrayString = false)
+
+console.log(anyToString([[1], [2]])) // '[[1],[2]]' (вложенные массивы превращаются в JSON)
+console.log(anyToString([{ a: 1 }, 2])) // '[{"a":1},2]' (массивы с объектами превращаются в JSON)
+
 console.log(anyToString({ a: 1 })) // '{"a":1}'
 console.log(anyToString(true)) // '1'
 console.log(anyToString(false)) // '0'
+console.log(anyToString(123)) // '123'
 console.log(anyToString(null)) // ''
 ```

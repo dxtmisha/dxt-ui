@@ -7,17 +7,28 @@ describe('anyToString', () => {
     expect(anyToString('test')).toBe('test')
   })
 
-  it('should join an array with commas if it contains no objects', () => {
+  it('should join an array with commas if it contains no objects and isArrayString is true', () => {
     expect(anyToString([1, 2, 3])).toBe('1,2,3')
     expect(anyToString(['a', 'b'])).toBe('a,b')
+    expect(anyToString([])).toBe('')
+  })
+
+  it('should return stringified JSON for an array if isArrayString is false', () => {
+    expect(anyToString([1, 2, 3], false)).toBe('[1,2,3]')
+    expect(anyToString(['a', 'b'], false)).toBe('["a","b"]')
   })
 
   it('should return stringified JSON for an object', () => {
     expect(anyToString({ a: 1 })).toBe('{"a":1}')
   })
 
-  it('should return stringified JSON for an array containing objects', () => {
+  it('should return stringified JSON for an array containing objects, regardless of isArrayString', () => {
     expect(anyToString([{ a: 1 }, 2])).toBe('[{"a":1},2]')
+    expect(anyToString([{ a: 1 }, 2], false)).toBe('[{"a":1},2]')
+  })
+
+  it('should return stringified JSON for nested arrays', () => {
+    expect(anyToString([[1], [2]])).toBe('[[1],[2]]')
   })
 
   it('should return "1" for true', () => {
@@ -30,6 +41,7 @@ describe('anyToString', () => {
 
   it('should return fallback toString() of the value if appropriate', () => {
     expect(anyToString(123)).toBe('123')
+    expect(anyToString(0)).toBe('0')
   })
 
   it('should return an empty string for null or undefined', () => {
