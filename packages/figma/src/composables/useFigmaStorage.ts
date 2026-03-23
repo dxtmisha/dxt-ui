@@ -1,29 +1,31 @@
-import { FigmaStorage } from '../classes/FigmaStorage'
+import { ref, type Ref, watch } from 'vue'
+import { DataStorage, isDomRuntime } from '@dxtmisha/functional-basic'
+import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
 
-/**
- * Getting a class for working with Figma storage (PluginData).
- *
- * Получение класса для работы с хранилищем Figma (PluginData).
- * @param name value name/ название значения
- * @param item object for storing data/ объект для хранения данных
- * @param cache cache time/ время кэширования
- */
 export function useFigmaStorage<T>(
   name: string,
-  item: PluginDataMixin = figma.root,
-  cache?: number
-): FigmaStorage<T> {
-  const id = 'id' in item ? item.id : 'root'
-  const key = `${id}:${name}`
-
-  if (key in items) {
-    return items[key] as FigmaStorage<T>
+  defaultValue?: T | (() => T)
+): Ref<T | undefined> {
+  if (name in items) {
+    return items[name] as Ref<T | undefined>
   }
 
-  const storage = new FigmaStorage<T>(name, item, cache)
+  const storage = new DataStorage<T>(name)
+  const item = ref<T | undefined>(storage.get(defaultValue, cache))
 
-  items[key] = storage
-  return storage
+  EffectScopeGlobal.run(() => {
+    watch(item, value => storage.set(value as T))
+  })
+
+  if (isDomRuntime()) {
+    window.addEventListener('storage', () => {
+      storage.update()
+      item.value = storage.get()
+    })
+  }
+
+  items[name] = item
+  return item as Ref<T>
 }
 
-const items: Record<string, FigmaStorage<any>> = {}
+const items: Record<string, Ref<any>> = {}
