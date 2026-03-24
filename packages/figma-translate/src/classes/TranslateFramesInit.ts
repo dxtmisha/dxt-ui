@@ -1,4 +1,5 @@
 import { FigmaFrame, FigmaItem, useFigmaPluginMessenger } from '@dxtmisha/figma'
+import { TranslateFramesInitEnabled } from './TranslateFramesInitEnabled'
 
 import { TranslatePostCommand, TranslatePostType, type TranslateFrameItem } from '../types/TranslateTypes'
 
@@ -9,11 +10,14 @@ export class TranslateFramesInit {
   static async make() {
     const listData = await this.getListData()
 
+    await this.makeEnabled()
+
     useFigmaPluginMessenger().post(
       TranslatePostType.frames,
       {
         command: TranslatePostCommand.frames,
-        data: listData
+        data: listData,
+        enabled: TranslateFramesInitEnabled.get()
       }
     )
   }
@@ -32,6 +36,7 @@ export class TranslateFramesInit {
       this.listData = []
 
       for (const item of this.getList()) {
+        console.log('item, type', item)
         this.listData.push({
           name: item.getName(),
           id: item.getId(),
@@ -41,5 +46,13 @@ export class TranslateFramesInit {
     }
 
     return this.listData
+  }
+
+  protected static async makeEnabled(): Promise<void> {
+    const listData = await this.getListData()
+
+    listData.forEach((item) => {
+      console.log('item', item)
+    })
   }
 }

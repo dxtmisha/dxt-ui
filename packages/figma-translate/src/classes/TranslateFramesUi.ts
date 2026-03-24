@@ -1,5 +1,7 @@
 import { useFigmaUiMessenger } from '@dxtmisha/figma'
+
 import { TranslateFramesDisplay } from './TranslateFramesDisplay'
+import { TranslateFramesEnabled } from './TranslateFramesEnabled'
 
 import { TranslatePostCommand, TranslatePostType, type TranslatePostItem } from '../types/TranslateTypes'
 
@@ -20,7 +22,8 @@ export class TranslateFramesUi {
   protected static on = (message: TranslatePostItem) => {
     switch (message.command) {
       case TranslatePostCommand.frames:
-        TranslateFramesDisplay.set(message.data)
+        TranslateFramesDisplay.update(message.data)
+        TranslateFramesEnabled.update(message.enabled)
         break
     }
   }

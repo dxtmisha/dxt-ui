@@ -353,6 +353,99 @@ export declare class FigmaPostCode {
 }
 
 /**
+ * Class for working with Figma storage (PluginData).
+ *
+ * Класс для работы с хранилищем Figma (PluginData).
+ */
+export declare class FigmaStorage<T> {
+    protected readonly name: string;
+    protected readonly item: PluginDataMixin;
+    protected readonly cache?: number | undefined;
+    /** Current value in the instance/ Текущее значение в экземпляре */
+    protected value?: T;
+    /** Value update time/ Время обновления значения */
+    protected age?: number;
+    /**
+     * Constructor
+     * @param name value name/ название значения
+     * @param item object for storing data/ объект для хранения данных
+     * @param cache cache time/ время кэширования
+     */
+    constructor(name: string, item?: PluginDataMixin, cache?: number | undefined);
+    /**
+     * Getting data from storage.
+     *
+     * Получение данных из хранилища.
+     * @param defaultValue default value/ значение по умолчанию
+     */
+    get(defaultValue?: T | (() => T)): T | undefined;
+    /**
+     * Getting the storage key name.
+     *
+     * Получение имени ключа в хранилище.
+     * @returns storage key name/ имя ключа в хранилище
+     */
+    getName(): string;
+    /**
+     * Changing data in storage.
+     *
+     * Изменение данных в хранилище.
+     * @param value new values/ новые значения
+     * @returns current value/ текущее значение
+     */
+    set(value?: T | (() => T)): T | undefined;
+    /**
+     * Removing data from storage.
+     *
+     * Удаление данных из хранилища.
+     * @returns current instance/ текущий экземпляр
+     */
+    remove(): this;
+    /**
+     * Checks for storage time limit.
+     *
+     * Проверяет на лимит времени хранения.
+     */
+    protected isCache(): boolean | 0 | undefined;
+    /**
+     * Getting the current time.
+     *
+     * Получение текущего времени.
+     * @returns current time/ текущее время
+     */
+    protected getTime(): number;
+    /**
+     * Getting data from storage.
+     *
+     * Получение данных из хранилища.
+     * @returns data from storage/ данные из хранилища
+     */
+    protected getValue(): FigmaStorageValue<T> | undefined;
+    /**
+     * Making an instance from storage data.
+     *
+     * Создание экземпляра из данных хранилища.
+     * @returns current instance/ текущий экземпляр
+     */
+    protected make(): this;
+    /**
+     * Converting data to a string for storage.
+     *
+     * Преобразование данных в строку для хранения.
+     * @returns string for storage/ строка для хранения
+     */
+    protected toValue(): string;
+}
+
+/** Type for storing data in Figma/ Тип для хранения данных в Figma */
+declare type FigmaStorageValue<T> = {
+    /** Value/ Значение */
+    value: T;
+    /** Age/ Возраст */
+    age: number;
+};
+
+/**
  * Messenger for the Figma UI side (frontend).
  *
  * Мессенджер для стороны UI Figma (frontend).
@@ -439,6 +532,16 @@ export declare type UiFigmaNode = ChildrenMixin | SceneNode | DefaultShapeMixin 
  * @returns FigmaPluginMessenger
  */
 export declare function useFigmaPluginMessenger(): FigmaPluginMessenger;
+
+/**
+ * Getting a class for working with Figma storage (PluginData).
+ *
+ * Получение класса для работы с хранилищем Figma (PluginData).
+ * @param name value name/ название значения
+ * @param item object for storing data/ объект для хранения данных
+ * @param cache cache time/ время кэширования
+ */
+export declare function useFigmaStorage<T>(name: string, item?: PluginDataMixin, cache?: number): FigmaStorage<T>;
 
 /**
  * Composable for accessing the FigmaUiMessenger singleton.

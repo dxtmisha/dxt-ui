@@ -4,14 +4,15 @@ export enum TranslatePostType {
 
 export enum TranslatePostCommand {
   frames = 'translate-command-frames',
+  framesEnabled = 'translate-command-frames-enabled',
   update = 'translate-command-update'
 }
 
 export type TranslatePostItem<Data extends Record<string, any> = Record<string, any>>
   = Data
-    & {
-      command: TranslatePostCommand
-    }
+  & {
+    command: TranslatePostCommand
+  }
 
 export type TranslateFrameItem = {
   name: string

@@ -1,8 +1,9 @@
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
+
 import type { TranslateFrameItem } from '../types/TranslateTypes'
 
 export class TranslateFramesDisplay {
-  protected static frames = ref<TranslateFrameItem[]>()
+  protected static frames = shallowRef<TranslateFrameItem[]>()
 
   static is(): boolean {
     return Boolean(
@@ -15,7 +16,7 @@ export class TranslateFramesDisplay {
     return this.frames.value || []
   }
 
-  static set(frames: TranslateFrameItem[]): void {
+  static update(frames: TranslateFrameItem[]): void {
     this.frames.value = frames
   }
 }
