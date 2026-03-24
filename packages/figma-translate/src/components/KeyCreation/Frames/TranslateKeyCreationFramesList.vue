@@ -11,13 +11,11 @@ const frames = computed(() => TranslateFramesDisplay.get())
 
 <template>
   <div class="translate-key-creation-frames-list">
-    <div
+    <TranslateKeyCreationFramesItem
       v-for="frame in frames"
       :key="frame.id"
-      class="translate-key-creation-frames-list__item"
-    >
-      {{ frame.name }}
-    </div>
+      v-bind="frame"
+    />
   </div>
 </template>
 
