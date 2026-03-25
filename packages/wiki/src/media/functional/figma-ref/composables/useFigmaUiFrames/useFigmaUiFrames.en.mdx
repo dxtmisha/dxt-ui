@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaUiFrames - List of top-level frames'/>
+
+# `useFigmaUiFrames`
+
+Composable for managing and observing the list of top-level frames in the Figma UI. It simplifies the process of fetching and accessing frame data with a built-in loading state.
+
+## Returns
+
+- `frames: ComputedRef<UiFigmaFramesList>` — a reactive list of top-level frames. Automatically updates when data is received.
+- `loading: ShallowRef<boolean>` — a reactive flag indicating whether the frames are currently being fetched from the Figma plugin.
+
+## How to work with it
+
+`useFigmaUiFrames` handles the lifecycle of frame data fetching:
+
+1.  **Lazy Initialization**: The composable checks if the frames have already been loaded into the global `item` cache. If not, it automatically initiates the fetch process.
+2.  **Loading State Management**: While the fetch operation is in progress, the `loading` property is set to `true`. This allows the UI to display spinners or skeleton screens.
+3.  **Reactive Updates**: Once `fetchTopLevelFrames` completes, the internal cache is updated, `loading` returns to `false`, and the `frames` computed property notifies all subscribers of the new data.
+4.  **Global Caching**: The frames are stored in a module-level variable, meaning subsequent calls to `useFigmaUiFrames` across different components will share the same data and won't trigger redundant fetch requests.
+
+## Core Architecture
+
+The composable acts as a reactive wrapper around the `fetchTopLevelFrames` utility. It manages a singleton-like state for frames, ensuring consistent data across the application while providing local reactivity for loading states.
+
+## Usage Example
+
+```typescript
+import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
+
+const { frames, loading } = useFigmaUiFrames()
+
+// Use loading to show a progress indicator
+if (loading.value) {
+  console.log('Fetching frames...')
+}
+
+// Use frames to render the list
+console.log('Frames:', frames.value)
+```

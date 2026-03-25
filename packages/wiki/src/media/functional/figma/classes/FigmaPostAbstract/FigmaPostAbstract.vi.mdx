@@ -32,13 +32,33 @@ const messenger = new FigmaPluginMessenger().make()
 **Tham số:**
 - `type: string` — Mã định danh duy nhất cho loại tin nhắn.
 - `callback: UiFigmaMessengerCallback<Message>` — Hàm sẽ gọi khi nhận được tin nhắn. Nhận dữ liệu tin nhắn làm đối số đầu tiên.
+- `once: boolean = false` — Nếu được đặt thành `true`, callback sẽ tự động bị xóa sau khi được gọi một lần.
 
 **Trả về:** `this`
 
 ```javascript
 messenger
   .add('update-selection', (data) => console.log('Selection:', data.count))
+  .add('init', (data) => console.log('Init:', data), true)
   .add('close', () => figma.closePlugin())
+```
+
+### `remove`
+
+Xóa một hàm callback đã đăng ký trước đó cho một loại tin nhắn cụ thể.
+
+**Tham số:**
+- `type: string` — Mã định danh duy nhất cho loại tin nhắn.
+- `callback: UiFigmaMessengerCallback<Message>` — Hàm sẽ bị xóa khỏi các trình lắng nghe.
+
+**Trả về:** `this`
+
+```javascript
+const onUpdate = (data) => console.log('Selection:', data.count)
+
+messenger
+  .add('update-selection', onUpdate)
+  .remove('update-selection', onUpdate)
 ```
 
 ## Cấu trúc dữ liệu

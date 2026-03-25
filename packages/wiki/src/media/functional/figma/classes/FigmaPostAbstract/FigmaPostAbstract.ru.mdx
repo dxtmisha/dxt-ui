@@ -32,13 +32,33 @@ const messenger = new FigmaPluginMessenger().make()
 **Параметры:**
 - `type: string` — Уникальный идентификатор типа сообщения.
 - `callback: UiFigmaMessengerCallback<Message>` — Функция, вызываемая при получении сообщения. Получает данные сообщения в качестве первого аргумента.
+- `once: boolean = false` — Если установлено значение `true`, колбэк будет автоматически удален после одного вызова.
 
 **Возвращает:** `this`
 
 ```javascript
 messenger
   .add('update-selection', (data) => console.log('Выбор:', data.count))
+  .add('init', (data) => console.log('Init:', data), true)
   .add('close', () => figma.closePlugin())
+```
+
+### `remove`
+
+Удаляет ранее зарегистрированную функцию обратного вызова для определенного типа сообщения.
+
+**Параметры:**
+- `type: string` — Уникальный идентификатор типа сообщения.
+- `callback: UiFigmaMessengerCallback<Message>` — Функция, которая будет удалена из слушателей.
+
+**Возвращает:** `this`
+
+```javascript
+const onUpdate = (data) => console.log('Выбор:', data.count)
+
+messenger
+  .add('update-selection', onUpdate)
+  .remove('update-selection', onUpdate)
 ```
 
 ## Структуры данных

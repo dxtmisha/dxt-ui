@@ -1,3 +1,5 @@
+import { AiAbstract } from '@dxtmisha/scripts/ai';
+
 /**
  * Ensures that an image does not exceed the maximum size by resizing it if needed.
  *
@@ -7,6 +9,23 @@
  * максимальный размер в виде доли от оригинального размера (по умолчанию 0.7)
  */
 export declare function ensureMaxSize(file: Uint8Array, compress?: number): Promise<string>;
+
+/**
+ * Fetches the top-level frames from the Figma plugin.
+ *
+ * Получает фреймы верхнего уровня из плагина Figma.
+ * @param callback The function to call once the frames are received / Функция, вызываемая после получения фреймов
+ */
+export declare function fetchTopLevelFrames(callback: (frames: UiFigmaFramesList) => void): void;
+
+export declare class FigmaAiText {
+    protected readonly ai: AiAbstract;
+    protected readonly data: UiFigmaMessageTexts;
+    constructor(ai: AiAbstract, data: UiFigmaMessageTexts);
+    make(): Promise<this>;
+    protected makeImage(): this;
+    protected initTexts(): string;
+}
 
 /**
  * Class for working with Figma frames and their elements.
@@ -218,13 +237,13 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      *
      * Экспортирует узел в формате JPG.
      */
-    exportJpg(): Promise<Uint8Array<ArrayBufferLike> | "">;
+    exportJpg(): Promise<"" | Uint8Array<ArrayBufferLike>>;
     /**
      * Exports the node as JSON.
      *
      * Экспортирует узел в формате JSON.
      */
-    exportJson(): Promise<Uint8Array<ArrayBufferLike> | "">;
+    exportJson(): Promise<"" | Uint8Array<ArrayBufferLike>>;
     /**
      * Returns the text content of the node.
      *
@@ -244,7 +263,7 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      * Экспортирует узел в указанном формате.
      * @param formatSettings format settings/ настройки формата
      */
-    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<Uint8Array<ArrayBufferLike> | "">;
+    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<"" | Uint8Array<ArrayBufferLike>>;
 }
 
 /**
@@ -276,7 +295,7 @@ export declare class FigmaPluginMessenger extends FigmaPostAbstract {
  */
 export declare abstract class FigmaPostAbstract {
     protected isMake: boolean;
-    protected readonly posts: Record<string, UiFigmaMessengerCallback[]>;
+    protected readonly posts: UiFigmaMessengerList;
     /**
      * Sends a message to the other side.
      *
@@ -291,8 +310,17 @@ export declare abstract class FigmaPostAbstract {
      * Добавляет колбэк-слушатель для определенного типа сообщения.
      * @param type The type of the message / Тип сообщения
      * @param callback The function to call when the message is received / Функция, вызываемая при получении сообщения
+     * @param once Whether the callback should only be called once / Вызывать ли колбэк только один раз
      */
-    add<Message>(type: string, callback: UiFigmaMessengerCallback<Message>): this;
+    add<Message>(type: string, callback: UiFigmaMessengerCallback<Message>, once?: boolean): this;
+    /**
+     * Removes a callback listener for a specific message type.
+     *
+     * Удаляет колбэк-слушатель для определенного типа сообщения.
+     * @param type The type of the message / Тип сообщения
+     * @param callback The function to remove / Функция для удаления
+     */
+    remove<Message>(type: string, callback: UiFigmaMessengerCallback<Message>): this;
     /**
      * Initializes the message listener.
      *
@@ -474,7 +502,18 @@ export declare class FigmaUiMessenger extends FigmaPostAbstract {
  */
 export declare const makeFigmaTexts: () => void;
 
+export declare const UI_FIGMA_FRAMES_POST_NAME = "ui-figma-frames-list";
+
 export declare type UiFigmaExportFormat = 'PNG' | 'JPG' | 'SVG' | 'PDF' | 'JSON_REST_V1';
+
+export declare type UiFigmaFramesItem<T extends UiFigmaNode = UiFigmaNode> = {
+    name: string;
+    id: string;
+    image?: Uint8Array<ArrayBufferLike> | string;
+    item?: FigmaItem<T>;
+};
+
+export declare type UiFigmaFramesList = UiFigmaFramesItem[];
 
 export declare type UiFigmaItemText = {
     id: string[];
@@ -492,6 +531,11 @@ export declare type UiFigmaMessageTexts = {
  * Тип для функции обратного вызова сообщения
  */
 export declare type UiFigmaMessengerCallback<Message = any> = (message: Message) => void;
+
+export declare type UiFigmaMessengerCallbackItem<Message = any> = {
+    callback: UiFigmaMessengerCallback<Message>;
+    once: boolean;
+};
 
 /**
  * Data structure for a message sent between the plugin and UI/
@@ -512,14 +556,14 @@ export declare type UiFigmaMessengerData<Message = any> = {
  */
 export declare type UiFigmaMessengerItem = {
     type: string;
-    callbackList: UiFigmaMessengerCallback[];
+    callbackList: UiFigmaMessengerCallbackItem[];
 };
 
 /**
  * List of message items/
  * Список элементов сообщений
  */
-export declare type UiFigmaMessengerList = UiFigmaMessengerItem[];
+export declare type UiFigmaMessengerList = Record<string, UiFigmaMessengerItem>;
 
 export declare type UiFigmaNode = ChildrenMixin | SceneNode | DefaultShapeMixin | DocumentNode | PageNode | FrameNode | SectionNode | TextNode;
 

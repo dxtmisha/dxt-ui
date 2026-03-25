@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/fetchTopLevelFrames - Получение фреймов верхнего уровня'/>
+
+# `fetchTopLevelFrames`
+
+Утилита, которая запрашивает фреймы верхнего уровня из плагина Figma. Она поддерживает кэширование и предотвращает дублирование одновременных запросов.
+
+**Параметры:**
+- `callback: (frames: UiFigmaFramesList) => void` — Функция, вызываемая после получения фреймов.
+
+**Возвращает:**
+`void`
+
+```javascript
+import { fetchTopLevelFrames } from '@dxtmisha/figma'
+
+fetchTopLevelFrames((frames) => {
+  console.log('Фреймы верхнего уровня:', frames)
+})
+```

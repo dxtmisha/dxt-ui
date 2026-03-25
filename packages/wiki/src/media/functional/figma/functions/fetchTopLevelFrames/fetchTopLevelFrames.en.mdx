@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/fetchTopLevelFrames - Fetching top-level frames'/>
+
+# `fetchTopLevelFrames`
+
+A utility that fetches the top-level frames from the Figma plugin. It handles caching and prevents concurrent duplicate requests.
+
+**Parameters:**
+- `callback: (frames: UiFigmaFramesList) => void` — The function to call once the frames are received.
+
+**Returns:**
+`void`
+
+```javascript
+import { fetchTopLevelFrames } from '@dxtmisha/figma'
+
+fetchTopLevelFrames((frames) => {
+  console.log('Top level frames:', frames)
+})
+```

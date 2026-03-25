@@ -1,6 +1,6 @@
 import { FigmaPostCode } from './FigmaPostCode'
 
-import type { UiFigmaMessengerCallback, UiFigmaMessengerData } from '../types/figmaMessengerTypes'
+import type { UiFigmaMessengerCallback, UiFigmaMessengerData, UiFigmaMessengerList } from '../types/figmaMessengerTypes'
 
 /**
  * Base abstract class for managing messaging between the Figma plugin and UI.
@@ -9,7 +9,7 @@ import type { UiFigmaMessengerCallback, UiFigmaMessengerData } from '../types/fi
  */
 export abstract class FigmaPostAbstract {
   protected isMake: boolean = false
-  protected readonly posts: Record<string, UiFigmaMessengerCallback[]> = {}
+  protected readonly posts: UiFigmaMessengerList = {}
 
   /**
    * Sends a message to the other side.
@@ -29,16 +29,46 @@ export abstract class FigmaPostAbstract {
    * Добавляет колбэк-слушатель для определенного типа сообщения.
    * @param type The type of the message / Тип сообщения
    * @param callback The function to call when the message is received / Функция, вызываемая при получении сообщения
+   * @param once Whether the callback should only be called once / Вызывать ли колбэк только один раз
    */
   add<Message>(
+    type: string,
+    callback: UiFigmaMessengerCallback<Message>,
+    once: boolean = false
+  ): this {
+    if (!this.posts[type]) {
+      this.posts[type] = {
+        type,
+        callbackList: []
+      }
+    }
+
+    this.posts[type].callbackList.push({
+      callback,
+      once
+    })
+
+    return this
+  }
+
+  /**
+   * Removes a callback listener for a specific message type.
+   *
+   * Удаляет колбэк-слушатель для определенного типа сообщения.
+   * @param type The type of the message / Тип сообщения
+   * @param callback The function to remove / Функция для удаления
+   */
+  remove<Message>(
     type: string,
     callback: UiFigmaMessengerCallback<Message>
   ): this {
     if (!this.posts[type]) {
-      this.posts[type] = []
+      return this
     }
 
-    this.posts[type].push(callback)
+    this.posts[type].callbackList
+      = this.posts[type].callbackList
+        .filter(callbackPost => callbackPost.callback !== callback)
 
     return this
   }
@@ -75,7 +105,15 @@ export abstract class FigmaPostAbstract {
     type: string,
     message: Message
   ) {
-    this.posts[type]?.forEach(callback => callback(message))
+    if (type in this.posts) {
+      this.posts[type].callbackList.forEach((item) => {
+        item.callback(message)
+
+        if (item.once) {
+          this.remove(type, item.callback)
+        }
+      })
+    }
   }
 
   /**

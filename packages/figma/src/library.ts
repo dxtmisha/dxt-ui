@@ -1,5 +1,5 @@
 // Classes
-// export * from './classes/FigmaAiText'
+export * from './classes/FigmaAiText'
 export * from './classes/FigmaFrame'
 export * from './classes/FigmaItem'
 export * from './classes/FigmaPluginMessenger'
@@ -15,8 +15,10 @@ export * from './composables/useFigmaUiMessenger'
 
 // Functions
 export * from './functions/ensureMaxSize'
+export * from './functions/fetchTopLevelFrames'
 export * from './functions/makeFigmaTexts'
 
 // Types
 export * from './types/figmaMessengerTypes'
 export * from './types/figmaTypes'
+export * from './types/framesTypes'

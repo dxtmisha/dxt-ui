@@ -1,6 +1,25 @@
-import { blobToBase64 as e, executeFunction as t, forEach as n, getElementImage as r, isNull as i, random as a, resizeImageByMax as o } from "@dxtmisha/functional-basic";
-//#region src/classes/FigmaItem.ts
-var s = class e {
+import "@dxtmisha/scripts/ai";
+import { blobToBase64 as e, executeFunction as t, forEach as n, getElementImage as r, isNull as i, random as a, resizeImageByMax as o, uint8ArrayToBase64 as s } from "@dxtmisha/functional-basic";
+//#region src/config.ts
+var c = "image/jpeg", l = "texts", u = "\nНужно из список текст преобразовать в префикс + ключи текст\nпример:\n{\n  \"global-calendar\": \"Календарь\",\n  \"events-table-title\": \"Детализация по месяцам\"\n}\n\n0) изучи скриншоты. И нужно вот что сделать\n\n1) придумать префик для ключи текст. Префик отображает содержимый страница. Префик глобальный, то есть он 1 для всего страница (что на скрине)\n2) определить какие тексты являеться моковым данный, токие переместит в группа моговый данный\n3) если текст можно использовать на нескольких страницах (простые фразы, слова, названия компания, пример \"страна\", \"купить\", \"жен.\"), то вынести его в глобальный префикс (global-*)/ в названия ключ дольжен отражать содердимый. Не какой отображения место использования. То есть не какой footer, link для приер\n4) составить список ключи текст с префиксом и текстом. Названия ключа дольжен отображать место использования текста\n5) если видишь, в текст подставлено какой значения, надо его знаменить на [xxx] - где xxx это название значения\nпример: \"Мастерские каникулы 2025\" => \"Мастерские каникулы [year]\"\n5.1) так же добавить доп ключ, на основе орининал и разделить текст на несколько частей. место разделения это место подстановки значения\nпример:\"получателю Васильева Л. (ID 2154643)\" => \"получателю [name] (ID [id])\" дольжен добавииться ключи:\n{\n...\n\"order-recipient\": \"получателю [name] (ID [id])\",\n\"order-recipient-part1\": \"получателю \",\n\"order-recipient-part2\": \" (ID \",\n\"order-recipient-part3\": \")\",\n...\n}\n7) что дольжень получить в итоге (json с даными):\n{\n    \"global\":{\n    \"глобальный-префикс-клчю-текст\": \"текст\",\n    \"глобальный-префикс-клчю-текст\": \"текст\",\n    \"глобальный-префикс-клчю-текст\": \"текст\",\n    \"глобальный-префикс-клчю-текст\": \"текст\"\n    },\n    \"page\": {\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\"\n    },\n    \"mock\":{\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    }\n}\n8) не придумывать тексты, использовать только те что в список ниже\n\nСписок текст:\n[texts]\n", d = class {
+	constructor(e, t) {
+		this.ai = e, this.data = t;
+	}
+	async make() {
+		return this.ai.resetImages(), this.makeImage(), console.warn("texts", u.replace("[texts]", this.initTexts())), console.log("getImages", this.ai.getImages(), await this.ai.generate(u.replace("[texts]", this.initTexts()))), this;
+	}
+	makeImage() {
+		return this.data.screenshot.forEach((e) => {
+			this.ai.addImage({
+				mime: c,
+				base64: s(e)
+			});
+		}), this;
+	}
+	initTexts() {
+		return n(this.data.texts, (e) => e.text).join("\r\n");
+	}
+}, f = class e {
 	constructor(e) {
 		this.item = e;
 	}
@@ -78,36 +97,36 @@ var s = class e {
 };
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/typeof.js
-function c(e) {
+function p(e) {
 	"@babel/helpers - typeof";
-	return c = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return p = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, c(e);
+	}, p(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPrimitive.js
-function l(e, t) {
-	if (c(e) != "object" || !e) return e;
+function m(e, t) {
+	if (p(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (c(r) != "object") return r;
+		if (p(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPropertyKey.js
-function u(e) {
-	var t = l(e, "string");
-	return c(t) == "symbol" ? t : t + "";
+function h(e) {
+	var t = m(e, "string");
+	return p(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/defineProperty.js
-function d(e, t, n) {
-	return (t = u(t)) in e ? Object.defineProperty(e, t, {
+function g(e, t, n) {
+	return (t = h(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -116,9 +135,9 @@ function d(e, t, n) {
 }
 //#endregion
 //#region src/classes/FigmaFrame.ts
-var f = class {
+var _ = class {
 	constructor(e, t = !1) {
-		d(this, "mainItem", []), d(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
+		g(this, "mainItem", []), g(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
 	}
 	isSelection() {
 		return this.selection && "selection" in this.page;
@@ -152,11 +171,11 @@ var f = class {
 		return e;
 	}
 	initMain() {
-		return this.isSelection() ? n([...this.page.selection], (e) => new s(e)) : [new s(this.page)];
+		return this.isSelection() ? n([...this.page.selection], (e) => new f(e)) : [new f(this.page)];
 	}
 	initItems(e) {
 		let t = [];
-		if ("children" in e) for (let n of e.children) t.push(new s(n), ...this.initItems(n));
+		if ("children" in e) for (let n of e.children) t.push(new f(n), ...this.initItems(n));
 		return t;
 	}
 	initBySelection() {
@@ -170,11 +189,11 @@ var f = class {
 	filter(e) {
 		return this.items.filter(e);
 	}
-	toMain(e = new s(this.page)) {
+	toMain(e = new f(this.page)) {
 		let t = e.getParentItem();
 		return t && !t.isDocument() ? this.toMain(t) : e;
 	}
-}, p = class {
+}, v = class {
 	static is(e) {
 		return this.code === e;
 	}
@@ -185,29 +204,39 @@ var f = class {
 		this.isEditable && (this.code = `figma-${e}`, this.isEditable = !1);
 	}
 };
-d(p, "code", `figma-${a(1e5, 999999)}`), d(p, "isEditable", !0);
+g(v, "code", `figma-${a(1e5, 999999)}`), g(v, "isEditable", !0);
 //#endregion
 //#region src/classes/FigmaPostAbstract.ts
-var m = class {
+var y = class {
 	constructor() {
-		d(this, "isMake", !1), d(this, "posts", {}), d(this, "onMessage", (e) => {
-			e && p.is(e.code) && this.notify(e.type, e.message);
+		g(this, "isMake", !1), g(this, "posts", {}), g(this, "onMessage", (e) => {
+			e && v.is(e.code) && this.notify(e.type, e.message);
 		});
 	}
-	add(e, t) {
-		return this.posts[e] || (this.posts[e] = []), this.posts[e].push(t), this;
+	add(e, t, n = !1) {
+		return this.posts[e] || (this.posts[e] = {
+			type: e,
+			callbackList: []
+		}), this.posts[e].callbackList.push({
+			callback: t,
+			once: n
+		}), this;
+	}
+	remove(e, t) {
+		return this.posts[e] && (this.posts[e].callbackList = this.posts[e].callbackList.filter((e) => e.callback !== t)), this;
 	}
 	make() {
 		return this.isMake || (this.isMake = !0, this.prepare()), this;
 	}
 	notify(e, t) {
-		var n;
-		(n = this.posts[e]) == null || n.forEach((e) => e(t));
+		e in this.posts && this.posts[e].callbackList.forEach((n) => {
+			n.callback(t), n.once && this.remove(e, n.callback);
+		});
 	}
-}, h = class extends m {
+}, b = class extends y {
 	post(e, t) {
 		figma.ui.postMessage({
-			code: p.get(),
+			code: v.get(),
 			type: e,
 			message: t
 		});
@@ -215,9 +244,9 @@ var m = class {
 	prepare() {
 		figma.ui.onmessage = (e) => this.onMessage(e);
 	}
-}, g = class {
+}, x = class {
 	constructor(e, t = figma.root, n) {
-		d(this, "value", void 0), d(this, "age", void 0), this.name = e, this.item = t, this.cache = n;
+		g(this, "value", void 0), g(this, "age", void 0), this.name = e, this.item = t, this.cache = n;
 	}
 	get(e) {
 		if (this.make(), this.value !== void 0 && this.isCache()) return this.value;
@@ -259,10 +288,10 @@ var m = class {
 			age: this.age
 		});
 	}
-}, _ = class extends m {
+}, S = class extends y {
 	post(e, t) {
 		parent.postMessage({ pluginMessage: {
-			code: p.get(),
+			code: v.get(),
 			type: e,
 			message: t
 		} }, "*");
@@ -273,42 +302,57 @@ var m = class {
 			return this.onMessage((t = e.data) == null ? void 0 : t.pluginMessage);
 		});
 	}
-}, v;
-function y() {
-	return v || (v = new h(), v.make()), v;
+}, C;
+function w() {
+	return C || (C = new b(), C.make()), C;
 }
 //#endregion
 //#region src/composables/useFigmaStorage.ts
-function b(e, t = figma.root, n) {
+function T(e, t = figma.root, n) {
 	let r = `${"id" in t ? t.id : "root"}:${e}`;
-	if (r in x) return x[r];
-	let i = new g(e, t, n);
-	return x[r] = i, i;
+	if (r in E) return E[r];
+	let i = new x(e, t, n);
+	return E[r] = i, i;
 }
-var x = {}, S;
-function C() {
-	return S || (S = new _(), S.make()), S;
+var E = {}, D;
+function O() {
+	return D || (D = new S(), D.make()), D;
 }
-//#endregion
-//#region src/config.ts
-var w = "image/jpeg", T = "texts";
 //#endregion
 //#region src/functions/ensureMaxSize.ts
-async function E(t, n = .56) {
+async function k(t, n = .56) {
 	return new Promise((i) => {
-		let a = new Blob([t], { type: w }), s = r(URL.createObjectURL(a));
+		let a = new Blob([t], { type: c }), s = r(URL.createObjectURL(a));
 		s ? s.onload = () => {
-			let e = o(s, n * s.naturalWidth, "width", w);
+			let e = o(s, n * s.naturalWidth, "width", c);
 			i(e == null ? "" : e);
 		} : e(a).then((e) => i(String(e == null ? "" : e)));
 	});
 }
 //#endregion
+//#region src/types/framesTypes.ts
+var A = "ui-figma-frames-list", j, M = !1;
+function N(e) {
+	if (j) {
+		e(j);
+		return;
+	}
+	if (M) {
+		setTimeout(() => N(e), 160);
+		return;
+	}
+	M = !0;
+	let t = O(), n = (r) => {
+		j = r, j.length > 0 && (e(j), t.remove(A, n), M = !1);
+	};
+	t.add(A, n).post(A);
+}
+//#endregion
 //#region src/functions/makeFigmaTexts.ts
-var D = () => {
+var P = () => {
 	figma.on("selectionchange", async () => {
-		let e = new f(figma.currentPage, !0);
-		y().post(T, {
+		let e = new _(figma.currentPage, !0);
+		w().post(l, {
 			frame: e,
 			texts: e.getTexts(),
 			screenshot: await e.screenshot()
@@ -316,4 +360,4 @@ var D = () => {
 	});
 };
 //#endregion
-export { f as FigmaFrame, s as FigmaItem, h as FigmaPluginMessenger, m as FigmaPostAbstract, p as FigmaPostCode, g as FigmaStorage, _ as FigmaUiMessenger, E as ensureMaxSize, D as makeFigmaTexts, y as useFigmaPluginMessenger, b as useFigmaStorage, C as useFigmaUiMessenger };
+export { d as FigmaAiText, _ as FigmaFrame, f as FigmaItem, b as FigmaPluginMessenger, y as FigmaPostAbstract, v as FigmaPostCode, x as FigmaStorage, S as FigmaUiMessenger, A as UI_FIGMA_FRAMES_POST_NAME, k as ensureMaxSize, N as fetchTopLevelFrames, P as makeFigmaTexts, w as useFigmaPluginMessenger, T as useFigmaStorage, O as useFigmaUiMessenger };

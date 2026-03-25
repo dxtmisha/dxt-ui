@@ -32,13 +32,33 @@ Registers a callback function to be executed when a message of a specific type i
 **Parameters:**
 - `type: string` — The unique identifier for the message type.
 - `callback: UiFigmaMessengerCallback<Message>` — The function to call when the message is received. Receives the message data as its first argument.
+- `once: boolean = false` — If set to `true`, the callback will be automatically removed after being called once.
 
 **Returns:** `this`
 
 ```javascript
 messenger
   .add('update-selection', (data) => console.log('Selection:', data.count))
+  .add('init', (data) => console.log('Init:', data), true)
   .add('close', () => figma.closePlugin())
+```
+
+### `remove`
+
+Removes a previously registered callback function for a specific message type.
+
+**Parameters:**
+- `type: string` — The unique identifier for the message type.
+- `callback: UiFigmaMessengerCallback<Message>` — The function to be removed from the listeners.
+
+**Returns:** `this`
+
+```javascript
+const onUpdate = (data) => console.log('Selection:', data.count)
+
+messenger
+  .add('update-selection', onUpdate)
+  .remove('update-selection', onUpdate)
 ```
 
 ## Data Structures

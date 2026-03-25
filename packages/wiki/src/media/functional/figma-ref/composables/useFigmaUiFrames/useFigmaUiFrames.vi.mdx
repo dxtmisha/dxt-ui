@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-ref/Composables/useFigmaUiFrames - Danh sách các frame cấp cao nhất'/>
+
+# `useFigmaUiFrames`
+
+Composable để quản lý và theo dõi danh sách các frame cấp cao nhất trong Figma UI. Nó đơn giản hóa quy trình lấy và truy cập dữ liệu frame với trạng thái đang tải được tích hợp sẵn.
+
+## Trả về
+
+- `frames: ComputedRef<UiFigmaFramesList>` — một danh sách reactivity chứa các frame cấp cao nhất. Tự động cập nhật khi nhận được dữ liệu.
+- `loading: ShallowRef<boolean>` — một biến boolean reactivity cho biết các frame có đang được lấy từ plugin Figma hay không.
+
+## Cách hoạt động
+
+`useFigmaUiFrames` quản lý vòng đời của việc lấy dữ liệu frame:
+
+1.  **Khởi tạo lười biếng (Lazy Initialization)**: Composable kiểm tra xem các frame đã được tải vào bộ nhớ đệm `item` toàn cục hay chưa. Nếu chưa, nó sẽ tự động bắt đầu quy trình lấy dữ liệu.
+2.  **Quản lý trạng thái đang tải**: Trong khi quy trình lấy dữ liệu đang diễn ra, thuộc tính `loading` được đặt thành `true`. Điều này cho phép giao diện người dùng hiển thị vòng quay tải hoặc màn hình skeleton.
+3.  **Cập nhật reactivity**: Sau khi `fetchTopLevelFrames` hoàn tất, bộ nhớ đệm nội bộ được cập nhật, `loading` trở lại thành `false`, và thuộc tính computed `frames` thông báo cho tất cả các thành phần đang sử dụng dữ liệu mới.
+4.  **Bộ nhớ đệm toàn cục**: Các frame được lưu trữ trong một biến cấp module, nghĩa là các lần gọi `useFigmaUiFrames` tiếp theo ở các component khác nhau sẽ chia sẻ cùng một dữ liệu và không kích hoạt lại các yêu cầu lấy dữ liệu dư thừa.
+
+## Kiến trúc cốt lõi
+
+Composable này đóng vai trò là một lớp vỏ bọc reactivity quanh tiện ích `fetchTopLevelFrames`. Nó quản lý trạng thái của các frame theo kiểu singleton, đảm bảo dữ liệu nhất quán trong toàn bộ ứng dụng đồng thời cung cấp tính reactivity cục bộ cho các trạng thái đang tải.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
+
+const { frames, loading } = useFigmaUiFrames()
+
+// Sử dụng loading để hiển thị chỉ báo tiến trình
+if (loading.value) {
+  console.log('Đang lấy danh sách frame...')
+}
+
+// Sử dụng frames để hiển thị danh sách
+console.log('Danh sách frame:', frames.value)
+```
