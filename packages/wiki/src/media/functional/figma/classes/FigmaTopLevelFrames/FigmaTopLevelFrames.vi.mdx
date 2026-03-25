@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Classes/FigmaTopLevelFrames - Quản lý frame cấp cao nhất'/>
+
+# Lớp FigmaTopLevelFrames
+
+Một lớp tiện ích tĩnh (static utility class) dùng để quản lý, lưu trữ bộ nhớ đệm (cache) và truyền tải danh sách các frame cấp cao nhất trong môi trường plugin Figma. Nó đóng vai trò là cầu nối giữa cấu trúc tài liệu Figma và giao diện người dùng (UI) của plugin thông qua một messenger chuyên dụng.
+
+## Các tính năng chính
+
+- **Tự động lưu bộ nhớ đệm** — Quản lý hiệu quả bộ nhớ đệm của dữ liệu frame đã được định dạng theo mô hình singleton.
+- **Tích hợp Messenger** — Đơn giản hóa việc giao tiếp hai chiều giữa plugin và giao diện người dùng về danh sách các frame.
+- **Xử lý các Node** — Sử dụng `FigmaFrame` để trích xuất và định dạng các thuộc tính cốt lõi của node (ID, tên, xuất JPG) để hiển thị trên UI.
+
+## Các phương thức tĩnh (Static Methods)
+
+### `getListData`
+
+Lấy và lưu vào bộ nhớ đệm danh sách các frame cấp cao nhất đã được định dạng. Nó xử lý từng frame chính từ trang hiện tại, trích xuất ID, tên và xuất nó sang định dạng JPG.
+
+**Trả về:** `Promise<UiFigmaFramesList>` — Một promise sẽ trả về mảng dữ liệu frame đã được định dạng.
+
+```typescript
+const frames = await FigmaTopLevelFrames.getListData()
+```
+
+### `send`
+
+Thiết lập một listener cho các yêu cầu frame bằng cách sử dụng messenger của plugin. Khi nhận được thông báo `UI_FIGMA_FRAMES_POST_NAME` từ giao diện người dùng (UI), nó sẽ tự động lấy dữ liệu mới nhất và gửi ngược lại cho UI.
+
+**Trả về:** `void`
+
+```typescript
+FigmaTopLevelFrames.send()
+```
+
+## Các kiểu dữ liệu (Types)
+
+### `UiFigmaFramesList`
+
+Một mảng các đối tượng đại diện cho dữ liệu frame đã được xử lý cho UI.
+- `id: string` — ID duy nhất của node Figma.
+- `name: string` — Tên hiển thị của frame.
+- `image: Uint8Array | string` — Dữ liệu JPG đã được xuất.
+- `item: FigmaItem` — Instance của `FigmaItem` để thực hiện các thao tác tiếp theo.

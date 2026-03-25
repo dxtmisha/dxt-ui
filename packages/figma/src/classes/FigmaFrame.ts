@@ -71,7 +71,7 @@ export class FigmaFrame {
    *
    * Возвращает основные фреймы из корневого узла.
    */
-  getMainFrames() {
+  getMainFrames(): FigmaItem[] {
     const main = this.toMain()
 
     if (main) {
