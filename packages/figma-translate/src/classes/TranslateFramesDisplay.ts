@@ -18,5 +18,6 @@ export class TranslateFramesDisplay {
 
   static update(frames: TranslateFrameItem[]): void {
     this.frames.value = frames
+    console.log('frames', this.frames.value)
   }
 }

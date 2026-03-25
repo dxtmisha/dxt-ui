@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { TranslateFramesDisplay } from '../../../classes/TranslateFramesDisplay'
+
+import TranslateKeyCreationFramesItem from './TranslateKeyCreationFramesItem.vue'
 
 defineOptions({
   name: 'TranslateKeyCreationFramesList'
 })
 
 const frames = computed(() => TranslateFramesDisplay.get())
+watchEffect(() => {
+  console.log('frames', frames.value)
+})
 </script>
 
 <template>
