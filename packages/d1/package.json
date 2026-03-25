@@ -38,6 +38,10 @@
     "LICENSE"
   ],
   "exports": {
+    ".": {
+      "types": "./dist/library/types.d.ts",
+      "default": "./dist/types.js"
+    },
     "./D1Accordion": {
       "types": "./dist/library/D1Accordion.d.ts",
       "default": "./dist/D1Accordion.js"
@@ -94,6 +98,10 @@
       "types": "./dist/library/D1Dialog.d.ts",
       "default": "./dist/D1Dialog.js"
     },
+    "./D1Dummy": {
+      "types": "./dist/library/D1Dummy.d.ts",
+      "default": "./dist/D1Dummy.js"
+    },
     "./D1Field": {
       "types": "./dist/library/D1Field.d.ts",
       "default": "./dist/D1Field.js"
@@ -109,6 +117,14 @@
     "./D1FieldMessage": {
       "types": "./dist/library/D1FieldMessage.d.ts",
       "default": "./dist/D1FieldMessage.js"
+    },
+    "./D1Grid": {
+      "types": "./dist/library/D1Grid.d.ts",
+      "default": "./dist/D1Grid.js"
+    },
+    "./D1GridItem": {
+      "types": "./dist/library/D1GridItem.d.ts",
+      "default": "./dist/D1GridItem.js"
     },
     "./D1HorizontalScroll": {
       "types": "./dist/library/D1HorizontalScroll.d.ts",
@@ -222,30 +238,18 @@
       "types": "./dist/library/D1Window.d.ts",
       "default": "./dist/D1Window.js"
     },
-    ".": {
-      "types": "./dist/library/types.d.ts",
-      "default": "./dist/types.js"
+    "./media": {
+      "types": "./dist/library/media.d.ts",
+      "default": "./dist/media.js"
     },
     "./plugin": {
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
     "./style.css": "./dist/style.css",
-    "./style/ui.scss": "./src/styles/Ui/main.scss",
     "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
-    "./types.d.ts": "./dist/library/types.d.ts",
-    "./D1Dummy": {
-      "types": "./dist/library/D1Dummy.d.ts",
-      "default": "./dist/D1Dummy.js"
-    },
-    "./D1GridItem": {
-      "types": "./dist/library/D1GridItem.d.ts",
-      "default": "./dist/D1GridItem.js"
-    },
-    "./D1Grid": {
-      "types": "./dist/library/D1Grid.d.ts",
-      "default": "./dist/D1Grid.js"
-    }
+    "./style/ui.scss": "./src/styles/Ui/main.scss",
+    "./types.d.ts": "./dist/library/types.d.ts"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

@@ -1,1284 +1,878 @@
-import { toKebabCase as k, toCamelCase as E } from "@dxtmisha/functional-basic";
-import { isFilled as R } from "@dxtmisha/functional";
-import { designName as L, packageName as $, componentsReg as N, styleVarsReg as _, componentsList as O } from "./design.js";
-var M = Object.defineProperty, I = (a, t, e) => t in a ? M(a, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : a[t] = e, c = (a, t, e) => I(a, typeof t != "symbol" ? t + "" : t, e);
-class w {
-  /**
-   * Checks if the id is a user’s file.
-   *
-   * Проверяет, является ли id файлом пользователя.
-   * @param id file identification / идентификация файла
-   */
-  static isSrc(t) {
-    return !!(t.match(/\/src\//i) && !t.match(/\/node_modules\//i));
-  }
-  /**
-   * Checks if the id is a JS user’s file.
-   *
-   * Проверяет, является ли id файлом JS пользователя.
-   * @param id file identification / идентификация файла
-   */
-  static isJs(t) {
-    return this.isSrc(t) && !!t.match(/\.ts|js|tsx/);
-  }
-  /**
-   * Checks if the id is a Vue user’s file.
-   *
-   * Проверяет, является ли id файлом vue пользователя.
-   * @param id file identification / идентификация файла
-   */
-  static isVue(t) {
-    return this.isSrc(t) && !!t.match(/\.vue$/);
-  }
-  /**
-   * Checks if the id is a Style user’s file.
-   *
-   * Проверяет, является ли id файлом style пользователя.
-   * @param id file identification / идентификация файла
-   */
-  static isCss(t) {
-    return this.isSrc(t) && !!t.match(/\.(css|sass|scss)/);
-  }
-  /**
-   * Checks if it is development mode.
-   *
-   * Проверяет, является ли режим разработка.
-   * @param mode current mode / текущий режим
-   */
-  static isDev(t) {
-    return t === "development";
-  }
+import { componentsList as e, componentsReg as t, packageName as n, styleVarsReg as r } from "./design.js";
+import { isFilled as i } from "@dxtmisha/functional";
+import { toCamelCase as a, toKebabCase as o } from "@dxtmisha/functional-basic";
+//#region ../constructor/dist/Plugin-BxAZ9kvG.js
+var s = Object.defineProperty, c = (e, t, n) => t in e ? s(e, t, {
+	enumerable: !0,
+	configurable: !0,
+	writable: !0,
+	value: n
+}) : e[t] = n, l = (e, t, n) => c(e, typeof t == "symbol" ? t : t + "", n), u = class {
+	static isSrc(e) {
+		return !!(e.match(/\/src\//i) && !e.match(/\/node_modules\//i));
+	}
+	static isJs(e) {
+		return this.isSrc(e) && !!e.match(/\.ts|js|tsx/);
+	}
+	static isVue(e) {
+		return this.isSrc(e) && !!e.match(/\.vue$/);
+	}
+	static isCss(e) {
+		return this.isSrc(e) && !!e.match(/\.(css|sass|scss)/);
+	}
+	static isDev(e) {
+		return e === "development";
+	}
+}, d = 44, f = 59, p = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", m = new Uint8Array(64), h = new Uint8Array(128);
+for (let e = 0; e < p.length; e++) {
+	let t = p.charCodeAt(e);
+	m[e] = t, h[t] = e;
 }
-var j = 44, D = 59, y = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", v = new Uint8Array(64), P = new Uint8Array(128);
-for (let a = 0; a < y.length; a++) {
-  const t = y.charCodeAt(a);
-  v[a] = t, P[t] = a;
+function g(e, t, n) {
+	let r = t - n;
+	r = r < 0 ? -r << 1 | 1 : r << 1;
+	do {
+		let t = r & 31;
+		r >>>= 5, r > 0 && (t |= 32), e.write(m[t]);
+	} while (r > 0);
+	return t;
 }
-function g(a, t, e) {
-  let i = t - e;
-  i = i < 0 ? -i << 1 | 1 : i << 1;
-  do {
-    let n = i & 31;
-    i >>>= 5, i > 0 && (n |= 32), a.write(v[n]);
-  } while (i > 0);
-  return t;
-}
-var C = 1024 * 16, S = typeof TextDecoder != "undefined" ? /* @__PURE__ */ new TextDecoder() : typeof Buffer != "undefined" ? {
-  decode(a) {
-    return Buffer.from(a.buffer, a.byteOffset, a.byteLength).toString();
-  }
-} : {
-  decode(a) {
-    let t = "";
-    for (let e = 0; e < a.length; e++)
-      t += String.fromCharCode(a[e]);
-    return t;
-  }
-}, A = class {
-  constructor() {
-    this.pos = 0, this.out = "", this.buffer = new Uint8Array(C);
-  }
-  write(a) {
-    const { buffer: t } = this;
-    t[this.pos++] = a, this.pos === C && (this.out += S.decode(t), this.pos = 0);
-  }
-  flush() {
-    const { buffer: a, out: t, pos: e } = this;
-    return e > 0 ? t + S.decode(a.subarray(0, e)) : t;
-  }
+var _ = 1024 * 16, v = typeof TextDecoder < "u" ? /* @__PURE__ */ new TextDecoder() : typeof Buffer < "u" ? { decode(e) {
+	return Buffer.from(e.buffer, e.byteOffset, e.byteLength).toString();
+} } : { decode(e) {
+	let t = "";
+	for (let n = 0; n < e.length; n++) t += String.fromCharCode(e[n]);
+	return t;
+} }, y = class {
+	constructor() {
+		this.pos = 0, this.out = "", this.buffer = new Uint8Array(_);
+	}
+	write(e) {
+		let { buffer: t } = this;
+		t[this.pos++] = e, this.pos === _ && (this.out += v.decode(t), this.pos = 0);
+	}
+	flush() {
+		let { buffer: e, out: t, pos: n } = this;
+		return n > 0 ? t + v.decode(e.subarray(0, n)) : t;
+	}
 };
-function V(a) {
-  const t = new A();
-  let e = 0, i = 0, n = 0, s = 0;
-  for (let r = 0; r < a.length; r++) {
-    const h = a[r];
-    if (r > 0 && t.write(D), h.length === 0) continue;
-    let o = 0;
-    for (let l = 0; l < h.length; l++) {
-      const u = h[l];
-      l > 0 && t.write(j), o = g(t, u[0], o), u.length !== 1 && (e = g(t, u[1], e), i = g(t, u[2], i), n = g(t, u[3], n), u.length !== 4 && (s = g(t, u[4], s)));
-    }
-  }
-  return t.flush();
+function b(e) {
+	let t = new y(), n = 0, r = 0, i = 0, a = 0;
+	for (let o = 0; o < e.length; o++) {
+		let s = e[o];
+		if (o > 0 && t.write(f), s.length === 0) continue;
+		let c = 0;
+		for (let e = 0; e < s.length; e++) {
+			let o = s[e];
+			e > 0 && t.write(d), c = g(t, o[0], c), o.length !== 1 && (n = g(t, o[1], n), r = g(t, o[2], r), i = g(t, o[3], i), o.length !== 4 && (a = g(t, o[4], a)));
+		}
+	}
+	return t.flush();
 }
-class m {
-  constructor(t) {
-    this.bits = t instanceof m ? t.bits.slice() : [];
-  }
-  add(t) {
-    this.bits[t >> 5] |= 1 << (t & 31);
-  }
-  has(t) {
-    return !!(this.bits[t >> 5] & 1 << (t & 31));
-  }
-}
-class p {
-  constructor(t, e, i) {
-    this.start = t, this.end = e, this.original = i, this.intro = "", this.outro = "", this.content = i, this.storeName = !1, this.edited = !1, this.previous = null, this.next = null;
-  }
-  appendLeft(t) {
-    this.outro += t;
-  }
-  appendRight(t) {
-    this.intro = this.intro + t;
-  }
-  clone() {
-    const t = new p(this.start, this.end, this.original);
-    return t.intro = this.intro, t.outro = this.outro, t.content = this.content, t.storeName = this.storeName, t.edited = this.edited, t;
-  }
-  contains(t) {
-    return this.start < t && t < this.end;
-  }
-  eachNext(t) {
-    let e = this;
-    for (; e; )
-      t(e), e = e.next;
-  }
-  eachPrevious(t) {
-    let e = this;
-    for (; e; )
-      t(e), e = e.previous;
-  }
-  edit(t, e, i) {
-    return this.content = t, i || (this.intro = "", this.outro = ""), this.storeName = e, this.edited = !0, this;
-  }
-  prependLeft(t) {
-    this.outro = t + this.outro;
-  }
-  prependRight(t) {
-    this.intro = t + this.intro;
-  }
-  reset() {
-    this.intro = "", this.outro = "", this.edited && (this.content = this.original, this.storeName = !1, this.edited = !1);
-  }
-  split(t) {
-    const e = t - this.start, i = this.original.slice(0, e), n = this.original.slice(e);
-    this.original = i;
-    const s = new p(t, this.end, n);
-    return s.outro = this.outro, this.outro = "", this.end = t, this.edited ? (s.edit("", !1), this.content = "") : this.content = i, s.next = this.next, s.next && (s.next.previous = s), s.previous = this, this.next = s, s;
-  }
-  toString() {
-    return this.intro + this.content + this.outro;
-  }
-  trimEnd(t) {
-    if (this.outro = this.outro.replace(t, ""), this.outro.length) return !0;
-    const e = this.content.replace(t, "");
-    if (e.length)
-      return e !== this.content && (this.split(this.start + e.length).edit("", void 0, !0), this.edited && this.edit(e, this.storeName, !0)), !0;
-    if (this.edit("", void 0, !0), this.intro = this.intro.replace(t, ""), this.intro.length) return !0;
-  }
-  trimStart(t) {
-    if (this.intro = this.intro.replace(t, ""), this.intro.length) return !0;
-    const e = this.content.replace(t, "");
-    if (e.length) {
-      if (e !== this.content) {
-        const i = this.split(this.end - e.length);
-        this.edited && i.edit(e, this.storeName, !0), this.edit("", void 0, !0);
-      }
-      return !0;
-    } else if (this.edit("", void 0, !0), this.outro = this.outro.replace(t, ""), this.outro.length) return !0;
-  }
-}
-function T() {
-  return typeof globalThis != "undefined" && typeof globalThis.btoa == "function" ? (a) => globalThis.btoa(unescape(encodeURIComponent(a))) : typeof Buffer == "function" ? (a) => Buffer.from(a, "utf-8").toString("base64") : () => {
-    throw new Error("Unsupported environment: `window.btoa` or `Buffer` should be supported.");
-  };
-}
-const U = /* @__PURE__ */ T();
-class B {
-  constructor(t) {
-    this.version = 3, this.file = t.file, this.sources = t.sources, this.sourcesContent = t.sourcesContent, this.names = t.names, this.mappings = V(t.mappings), typeof t.x_google_ignoreList != "undefined" && (this.x_google_ignoreList = t.x_google_ignoreList), typeof t.debugId != "undefined" && (this.debugId = t.debugId);
-  }
-  toString() {
-    return JSON.stringify(this);
-  }
-  toUrl() {
-    return "data:application/json;charset=utf-8;base64," + U(this.toString());
-  }
-}
-function z(a) {
-  const t = a.split(`
-`), e = t.filter((s) => /^\t+/.test(s)), i = t.filter((s) => /^ {2,}/.test(s));
-  if (e.length === 0 && i.length === 0)
-    return null;
-  if (e.length >= i.length)
-    return "	";
-  const n = i.reduce((s, r) => {
-    const h = /^ +/.exec(r)[0].length;
-    return Math.min(h, s);
-  }, 1 / 0);
-  return new Array(n + 1).join(" ");
-}
-function J(a, t) {
-  const e = a.split(/[/\\]/), i = t.split(/[/\\]/);
-  for (e.pop(); e[0] === i[0]; )
-    e.shift(), i.shift();
-  if (e.length) {
-    let n = e.length;
-    for (; n--; ) e[n] = "..";
-  }
-  return e.concat(i).join("/");
-}
-const q = Object.prototype.toString;
-function F(a) {
-  return q.call(a) === "[object Object]";
-}
-function x(a) {
-  const t = a.split(`
-`), e = [];
-  for (let i = 0, n = 0; i < t.length; i++)
-    e.push(n), n += t[i].length + 1;
-  return function(i) {
-    let n = 0, s = e.length;
-    for (; n < s; ) {
-      const o = n + s >> 1;
-      i < e[o] ? s = o : n = o + 1;
-    }
-    const r = n - 1, h = i - e[r];
-    return { line: r, column: h };
-  };
-}
-const K = /\w/;
-class H {
-  constructor(t) {
-    this.hires = t, this.generatedCodeLine = 0, this.generatedCodeColumn = 0, this.raw = [], this.rawSegments = this.raw[this.generatedCodeLine] = [], this.pending = null;
-  }
-  addEdit(t, e, i, n) {
-    if (e.length) {
-      const s = e.length - 1;
-      let r = e.indexOf(`
-`, 0), h = -1;
-      for (; r >= 0 && s > r; ) {
-        const l = [this.generatedCodeColumn, t, i.line, i.column];
-        n >= 0 && l.push(n), this.rawSegments.push(l), this.generatedCodeLine += 1, this.raw[this.generatedCodeLine] = this.rawSegments = [], this.generatedCodeColumn = 0, h = r, r = e.indexOf(`
-`, r + 1);
-      }
-      const o = [this.generatedCodeColumn, t, i.line, i.column];
-      n >= 0 && o.push(n), this.rawSegments.push(o), this.advance(e.slice(h + 1));
-    } else this.pending && (this.rawSegments.push(this.pending), this.advance(e));
-    this.pending = null;
-  }
-  addUneditedChunk(t, e, i, n, s) {
-    let r = e.start, h = !0, o = !1;
-    for (; r < e.end; ) {
-      if (i[r] === `
-`)
-        n.line += 1, n.column = 0, this.generatedCodeLine += 1, this.raw[this.generatedCodeLine] = this.rawSegments = [], this.generatedCodeColumn = 0, h = !0, o = !1;
-      else {
-        if (this.hires || h || s.has(r)) {
-          const l = [this.generatedCodeColumn, t, n.line, n.column];
-          this.hires === "boundary" ? K.test(i[r]) ? o || (this.rawSegments.push(l), o = !0) : (this.rawSegments.push(l), o = !1) : this.rawSegments.push(l);
-        }
-        n.column += 1, this.generatedCodeColumn += 1, h = !1;
-      }
-      r += 1;
-    }
-    this.pending = null;
-  }
-  advance(t) {
-    if (!t) return;
-    const e = t.split(`
-`);
-    if (e.length > 1) {
-      for (let i = 0; i < e.length - 1; i++)
-        this.generatedCodeLine++, this.raw[this.generatedCodeLine] = this.rawSegments = [];
-      this.generatedCodeColumn = 0;
-    }
-    this.generatedCodeColumn += e[e.length - 1].length;
-  }
-}
-const f = `
-`, d = {
-  insertLeft: !1,
-  insertRight: !1,
-  storeName: !1
+var x = class e {
+	constructor(t) {
+		this.bits = t instanceof e ? t.bits.slice() : [];
+	}
+	add(e) {
+		this.bits[e >> 5] |= 1 << (e & 31);
+	}
+	has(e) {
+		return !!(this.bits[e >> 5] & 1 << (e & 31));
+	}
+}, S = class e {
+	constructor(e, t, n) {
+		this.start = e, this.end = t, this.original = n, this.intro = "", this.outro = "", this.content = n, this.storeName = !1, this.edited = !1, this.previous = null, this.next = null;
+	}
+	appendLeft(e) {
+		this.outro += e;
+	}
+	appendRight(e) {
+		this.intro += e;
+	}
+	clone() {
+		let t = new e(this.start, this.end, this.original);
+		return t.intro = this.intro, t.outro = this.outro, t.content = this.content, t.storeName = this.storeName, t.edited = this.edited, t;
+	}
+	contains(e) {
+		return this.start < e && e < this.end;
+	}
+	eachNext(e) {
+		let t = this;
+		for (; t;) e(t), t = t.next;
+	}
+	eachPrevious(e) {
+		let t = this;
+		for (; t;) e(t), t = t.previous;
+	}
+	edit(e, t, n) {
+		return this.content = e, n || (this.intro = "", this.outro = ""), this.storeName = t, this.edited = !0, this;
+	}
+	prependLeft(e) {
+		this.outro = e + this.outro;
+	}
+	prependRight(e) {
+		this.intro = e + this.intro;
+	}
+	reset() {
+		this.intro = "", this.outro = "", this.edited && (this.content = this.original, this.storeName = !1, this.edited = !1);
+	}
+	split(t) {
+		let n = t - this.start, r = this.original.slice(0, n), i = this.original.slice(n);
+		this.original = r;
+		let a = new e(t, this.end, i);
+		return a.outro = this.outro, this.outro = "", this.end = t, this.edited ? (a.edit("", !1), this.content = "") : this.content = r, a.next = this.next, a.next && (a.next.previous = a), a.previous = this, this.next = a, a;
+	}
+	toString() {
+		return this.intro + this.content + this.outro;
+	}
+	trimEnd(e) {
+		if (this.outro = this.outro.replace(e, ""), this.outro.length) return !0;
+		let t = this.content.replace(e, "");
+		if (t.length) return t !== this.content && (this.split(this.start + t.length).edit("", void 0, !0), this.edited && this.edit(t, this.storeName, !0)), !0;
+		if (this.edit("", void 0, !0), this.intro = this.intro.replace(e, ""), this.intro.length) return !0;
+	}
+	trimStart(e) {
+		if (this.intro = this.intro.replace(e, ""), this.intro.length) return !0;
+		let t = this.content.replace(e, "");
+		if (t.length) {
+			if (t !== this.content) {
+				let e = this.split(this.end - t.length);
+				this.edited && e.edit(t, this.storeName, !0), this.edit("", void 0, !0);
+			}
+			return !0;
+		} else if (this.edit("", void 0, !0), this.outro = this.outro.replace(e, ""), this.outro.length) return !0;
+	}
 };
-class b {
-  constructor(t, e = {}) {
-    const i = new p(0, t.length, t);
-    Object.defineProperties(this, {
-      original: { writable: !0, value: t },
-      outro: { writable: !0, value: "" },
-      intro: { writable: !0, value: "" },
-      firstChunk: { writable: !0, value: i },
-      lastChunk: { writable: !0, value: i },
-      lastSearchedChunk: { writable: !0, value: i },
-      byStart: { writable: !0, value: {} },
-      byEnd: { writable: !0, value: {} },
-      filename: { writable: !0, value: e.filename },
-      indentExclusionRanges: { writable: !0, value: e.indentExclusionRanges },
-      sourcemapLocations: { writable: !0, value: new m() },
-      storedNames: { writable: !0, value: {} },
-      indentStr: { writable: !0, value: void 0 },
-      ignoreList: { writable: !0, value: e.ignoreList },
-      offset: { writable: !0, value: e.offset || 0 }
-    }), this.byStart[0] = i, this.byEnd[t.length] = i;
-  }
-  addSourcemapLocation(t) {
-    this.sourcemapLocations.add(t);
-  }
-  append(t) {
-    if (typeof t != "string") throw new TypeError("outro content must be a string");
-    return this.outro += t, this;
-  }
-  appendLeft(t, e) {
-    if (t = t + this.offset, typeof e != "string") throw new TypeError("inserted content must be a string");
-    this._split(t);
-    const i = this.byEnd[t];
-    return i ? i.appendLeft(e) : this.intro += e, this;
-  }
-  appendRight(t, e) {
-    if (t = t + this.offset, typeof e != "string") throw new TypeError("inserted content must be a string");
-    this._split(t);
-    const i = this.byStart[t];
-    return i ? i.appendRight(e) : this.outro += e, this;
-  }
-  clone() {
-    const t = new b(this.original, { filename: this.filename, offset: this.offset });
-    let e = this.firstChunk, i = t.firstChunk = t.lastSearchedChunk = e.clone();
-    for (; e; ) {
-      t.byStart[i.start] = i, t.byEnd[i.end] = i;
-      const n = e.next, s = n && n.clone();
-      s && (i.next = s, s.previous = i, i = s), e = n;
-    }
-    return t.lastChunk = i, this.indentExclusionRanges && (t.indentExclusionRanges = this.indentExclusionRanges.slice()), t.sourcemapLocations = new m(this.sourcemapLocations), t.intro = this.intro, t.outro = this.outro, t;
-  }
-  generateDecodedMap(t) {
-    t = t || {};
-    const e = 0, i = Object.keys(this.storedNames), n = new H(t.hires), s = x(this.original);
-    return this.intro && n.advance(this.intro), this.firstChunk.eachNext((r) => {
-      const h = s(r.start);
-      r.intro.length && n.advance(r.intro), r.edited ? n.addEdit(
-        e,
-        r.content,
-        h,
-        r.storeName ? i.indexOf(r.original) : -1
-      ) : n.addUneditedChunk(e, r, this.original, h, this.sourcemapLocations), r.outro.length && n.advance(r.outro);
-    }), this.outro && n.advance(this.outro), {
-      file: t.file ? t.file.split(/[/\\]/).pop() : void 0,
-      sources: [
-        t.source ? J(t.file || "", t.source) : t.file || ""
-      ],
-      sourcesContent: t.includeContent ? [this.original] : void 0,
-      names: i,
-      mappings: n.raw,
-      x_google_ignoreList: this.ignoreList ? [e] : void 0
-    };
-  }
-  generateMap(t) {
-    return new B(this.generateDecodedMap(t));
-  }
-  _ensureindentStr() {
-    this.indentStr === void 0 && (this.indentStr = z(this.original));
-  }
-  _getRawIndentString() {
-    return this._ensureindentStr(), this.indentStr;
-  }
-  getIndentString() {
-    return this._ensureindentStr(), this.indentStr === null ? "	" : this.indentStr;
-  }
-  indent(t, e) {
-    const i = /^[^\r\n]/gm;
-    if (F(t) && (e = t, t = void 0), t === void 0 && (this._ensureindentStr(), t = this.indentStr || "	"), t === "") return this;
-    e = e || {};
-    const n = {};
-    e.exclude && (typeof e.exclude[0] == "number" ? [e.exclude] : e.exclude).forEach((l) => {
-      for (let u = l[0]; u < l[1]; u += 1)
-        n[u] = !0;
-    });
-    let s = e.indentStart !== !1;
-    const r = (l) => s ? `${t}${l}` : (s = !0, l);
-    this.intro = this.intro.replace(i, r);
-    let h = 0, o = this.firstChunk;
-    for (; o; ) {
-      const l = o.end;
-      if (o.edited)
-        n[h] || (o.content = o.content.replace(i, r), o.content.length && (s = o.content[o.content.length - 1] === `
-`));
-      else
-        for (h = o.start; h < l; ) {
-          if (!n[h]) {
-            const u = this.original[h];
-            u === `
-` ? s = !0 : u !== "\r" && s && (s = !1, h === o.start || (this._splitChunk(o, h), o = o.next), o.prependRight(t));
-          }
-          h += 1;
-        }
-      h = o.end, o = o.next;
-    }
-    return this.outro = this.outro.replace(i, r), this;
-  }
-  insert() {
-    throw new Error(
-      "magicString.insert(...) is deprecated. Use prependRight(...) or appendLeft(...)"
-    );
-  }
-  insertLeft(t, e) {
-    return d.insertLeft || (console.warn(
-      "magicString.insertLeft(...) is deprecated. Use magicString.appendLeft(...) instead"
-    ), d.insertLeft = !0), this.appendLeft(t, e);
-  }
-  insertRight(t, e) {
-    return d.insertRight || (console.warn(
-      "magicString.insertRight(...) is deprecated. Use magicString.prependRight(...) instead"
-    ), d.insertRight = !0), this.prependRight(t, e);
-  }
-  move(t, e, i) {
-    if (t = t + this.offset, e = e + this.offset, i = i + this.offset, i >= t && i <= e) throw new Error("Cannot move a selection inside itself");
-    this._split(t), this._split(e), this._split(i);
-    const n = this.byStart[t], s = this.byEnd[e], r = n.previous, h = s.next, o = this.byStart[i];
-    if (!o && s === this.lastChunk) return this;
-    const l = o ? o.previous : this.lastChunk;
-    return r && (r.next = h), h && (h.previous = r), l && (l.next = n), o && (o.previous = s), n.previous || (this.firstChunk = s.next), s.next || (this.lastChunk = n.previous, this.lastChunk.next = null), n.previous = l, s.next = o || null, l || (this.firstChunk = n), o || (this.lastChunk = s), this;
-  }
-  overwrite(t, e, i, n) {
-    return n = n || {}, this.update(t, e, i, { ...n, overwrite: !n.contentOnly });
-  }
-  update(t, e, i, n) {
-    if (t = t + this.offset, e = e + this.offset, typeof i != "string") throw new TypeError("replacement content must be a string");
-    if (this.original.length !== 0) {
-      for (; t < 0; ) t += this.original.length;
-      for (; e < 0; ) e += this.original.length;
-    }
-    if (e > this.original.length) throw new Error("end is out of bounds");
-    if (t === e)
-      throw new Error(
-        "Cannot overwrite a zero-length range – use appendLeft or prependRight instead"
-      );
-    this._split(t), this._split(e), n === !0 && (d.storeName || (console.warn(
-      "The final argument to magicString.overwrite(...) should be an options object. See https://github.com/rich-harris/magic-string"
-    ), d.storeName = !0), n = { storeName: !0 });
-    const s = n !== void 0 ? n.storeName : !1, r = n !== void 0 ? n.overwrite : !1;
-    if (s) {
-      const l = this.original.slice(t, e);
-      Object.defineProperty(this.storedNames, l, {
-        writable: !0,
-        value: !0,
-        enumerable: !0
-      });
-    }
-    const h = this.byStart[t], o = this.byEnd[e];
-    if (h) {
-      let l = h;
-      for (; l !== o; ) {
-        if (l.next !== this.byStart[l.end])
-          throw new Error("Cannot overwrite across a split point");
-        l = l.next, l.edit("", !1);
-      }
-      h.edit(i, s, !r);
-    } else {
-      const l = new p(t, e, "").edit(i, s);
-      o.next = l, l.previous = o;
-    }
-    return this;
-  }
-  prepend(t) {
-    if (typeof t != "string") throw new TypeError("outro content must be a string");
-    return this.intro = t + this.intro, this;
-  }
-  prependLeft(t, e) {
-    if (t = t + this.offset, typeof e != "string") throw new TypeError("inserted content must be a string");
-    this._split(t);
-    const i = this.byEnd[t];
-    return i ? i.prependLeft(e) : this.intro = e + this.intro, this;
-  }
-  prependRight(t, e) {
-    if (t = t + this.offset, typeof e != "string") throw new TypeError("inserted content must be a string");
-    this._split(t);
-    const i = this.byStart[t];
-    return i ? i.prependRight(e) : this.outro = e + this.outro, this;
-  }
-  remove(t, e) {
-    if (t = t + this.offset, e = e + this.offset, this.original.length !== 0) {
-      for (; t < 0; ) t += this.original.length;
-      for (; e < 0; ) e += this.original.length;
-    }
-    if (t === e) return this;
-    if (t < 0 || e > this.original.length) throw new Error("Character is out of bounds");
-    if (t > e) throw new Error("end must be greater than start");
-    this._split(t), this._split(e);
-    let i = this.byStart[t];
-    for (; i; )
-      i.intro = "", i.outro = "", i.edit(""), i = e > i.end ? this.byStart[i.end] : null;
-    return this;
-  }
-  reset(t, e) {
-    if (t = t + this.offset, e = e + this.offset, this.original.length !== 0) {
-      for (; t < 0; ) t += this.original.length;
-      for (; e < 0; ) e += this.original.length;
-    }
-    if (t === e) return this;
-    if (t < 0 || e > this.original.length) throw new Error("Character is out of bounds");
-    if (t > e) throw new Error("end must be greater than start");
-    this._split(t), this._split(e);
-    let i = this.byStart[t];
-    for (; i; )
-      i.reset(), i = e > i.end ? this.byStart[i.end] : null;
-    return this;
-  }
-  lastChar() {
-    if (this.outro.length) return this.outro[this.outro.length - 1];
-    let t = this.lastChunk;
-    do {
-      if (t.outro.length) return t.outro[t.outro.length - 1];
-      if (t.content.length) return t.content[t.content.length - 1];
-      if (t.intro.length) return t.intro[t.intro.length - 1];
-    } while (t = t.previous);
-    return this.intro.length ? this.intro[this.intro.length - 1] : "";
-  }
-  lastLine() {
-    let t = this.outro.lastIndexOf(f);
-    if (t !== -1) return this.outro.substr(t + 1);
-    let e = this.outro, i = this.lastChunk;
-    do {
-      if (i.outro.length > 0) {
-        if (t = i.outro.lastIndexOf(f), t !== -1) return i.outro.substr(t + 1) + e;
-        e = i.outro + e;
-      }
-      if (i.content.length > 0) {
-        if (t = i.content.lastIndexOf(f), t !== -1) return i.content.substr(t + 1) + e;
-        e = i.content + e;
-      }
-      if (i.intro.length > 0) {
-        if (t = i.intro.lastIndexOf(f), t !== -1) return i.intro.substr(t + 1) + e;
-        e = i.intro + e;
-      }
-    } while (i = i.previous);
-    return t = this.intro.lastIndexOf(f), t !== -1 ? this.intro.substr(t + 1) + e : this.intro + e;
-  }
-  slice(t = 0, e = this.original.length - this.offset) {
-    if (t = t + this.offset, e = e + this.offset, this.original.length !== 0) {
-      for (; t < 0; ) t += this.original.length;
-      for (; e < 0; ) e += this.original.length;
-    }
-    let i = "", n = this.firstChunk;
-    for (; n && (n.start > t || n.end <= t); ) {
-      if (n.start < e && n.end >= e)
-        return i;
-      n = n.next;
-    }
-    if (n && n.edited && n.start !== t)
-      throw new Error(`Cannot use replaced character ${t} as slice start anchor.`);
-    const s = n;
-    for (; n; ) {
-      n.intro && (s !== n || n.start === t) && (i += n.intro);
-      const r = n.start < e && n.end >= e;
-      if (r && n.edited && n.end !== e)
-        throw new Error(`Cannot use replaced character ${e} as slice end anchor.`);
-      const h = s === n ? t - n.start : 0, o = r ? n.content.length + e - n.end : n.content.length;
-      if (i += n.content.slice(h, o), n.outro && (!r || n.end === e) && (i += n.outro), r)
-        break;
-      n = n.next;
-    }
-    return i;
-  }
-  // TODO deprecate this? not really very useful
-  snip(t, e) {
-    const i = this.clone();
-    return i.remove(0, t), i.remove(e, i.original.length), i;
-  }
-  _split(t) {
-    if (this.byStart[t] || this.byEnd[t]) return;
-    let e = this.lastSearchedChunk, i = e;
-    const n = t > e.end;
-    for (; e; ) {
-      if (e.contains(t)) return this._splitChunk(e, t);
-      if (e = n ? this.byStart[e.end] : this.byEnd[e.start], e === i) return;
-      i = e;
-    }
-  }
-  _splitChunk(t, e) {
-    if (t.edited && t.content.length) {
-      const n = x(this.original)(e);
-      throw new Error(
-        `Cannot split a chunk that has already been edited (${n.line}:${n.column} – "${t.original}")`
-      );
-    }
-    const i = t.split(e);
-    return this.byEnd[e] = t, this.byStart[e] = i, this.byEnd[i.end] = i, t === this.lastChunk && (this.lastChunk = i), this.lastSearchedChunk = t, !0;
-  }
-  toString() {
-    let t = this.intro, e = this.firstChunk;
-    for (; e; )
-      t += e.toString(), e = e.next;
-    return t + this.outro;
-  }
-  isEmpty() {
-    let t = this.firstChunk;
-    do
-      if (t.intro.length && t.intro.trim() || t.content.length && t.content.trim() || t.outro.length && t.outro.trim())
-        return !1;
-    while (t = t.next);
-    return !0;
-  }
-  length() {
-    let t = this.firstChunk, e = 0;
-    do
-      e += t.intro.length + t.content.length + t.outro.length;
-    while (t = t.next);
-    return e;
-  }
-  trimLines() {
-    return this.trim("[\\r\\n]");
-  }
-  trim(t) {
-    return this.trimStart(t).trimEnd(t);
-  }
-  trimEndAborted(t) {
-    const e = new RegExp((t || "\\s") + "+$");
-    if (this.outro = this.outro.replace(e, ""), this.outro.length) return !0;
-    let i = this.lastChunk;
-    do {
-      const n = i.end, s = i.trimEnd(e);
-      if (i.end !== n && (this.lastChunk === i && (this.lastChunk = i.next), this.byEnd[i.end] = i, this.byStart[i.next.start] = i.next, this.byEnd[i.next.end] = i.next), s) return !0;
-      i = i.previous;
-    } while (i);
-    return !1;
-  }
-  trimEnd(t) {
-    return this.trimEndAborted(t), this;
-  }
-  trimStartAborted(t) {
-    const e = new RegExp("^" + (t || "\\s") + "+");
-    if (this.intro = this.intro.replace(e, ""), this.intro.length) return !0;
-    let i = this.firstChunk;
-    do {
-      const n = i.end, s = i.trimStart(e);
-      if (i.end !== n && (i === this.lastChunk && (this.lastChunk = i.next), this.byEnd[i.end] = i, this.byStart[i.next.start] = i.next, this.byEnd[i.next.end] = i.next), s) return !0;
-      i = i.next;
-    } while (i);
-    return !1;
-  }
-  trimStart(t) {
-    return this.trimStartAborted(t), this;
-  }
-  hasChanged() {
-    return this.original !== this.toString();
-  }
-  _replaceRegexp(t, e) {
-    function i(s, r) {
-      return typeof e == "string" ? e.replace(/\$(\$|&|\d+)/g, (h, o) => o === "$" ? "$" : o === "&" ? s[0] : +o < s.length ? s[+o] : `$${o}`) : e(...s, s.index, r, s.groups);
-    }
-    function n(s, r) {
-      let h;
-      const o = [];
-      for (; h = s.exec(r); )
-        o.push(h);
-      return o;
-    }
-    if (t.global)
-      n(t, this.original).forEach((s) => {
-        if (s.index != null) {
-          const r = i(s, this.original);
-          r !== s[0] && this.overwrite(s.index, s.index + s[0].length, r);
-        }
-      });
-    else {
-      const s = this.original.match(t);
-      if (s && s.index != null) {
-        const r = i(s, this.original);
-        r !== s[0] && this.overwrite(s.index, s.index + s[0].length, r);
-      }
-    }
-    return this;
-  }
-  _replaceString(t, e) {
-    const { original: i } = this, n = i.indexOf(t);
-    return n !== -1 && (typeof e == "function" && (e = e(t, n, i)), t !== e && this.overwrite(n, n + t.length, e)), this;
-  }
-  replace(t, e) {
-    return typeof t == "string" ? this._replaceString(t, e) : this._replaceRegexp(t, e);
-  }
-  _replaceAllString(t, e) {
-    const { original: i } = this, n = t.length;
-    for (let s = i.indexOf(t); s !== -1; s = i.indexOf(t, s + n)) {
-      const r = i.slice(s, s + n);
-      let h = e;
-      typeof e == "function" && (h = e(r, s, i)), r !== h && this.overwrite(s, s + n, h);
-    }
-    return this;
-  }
-  replaceAll(t, e) {
-    if (typeof t == "string")
-      return this._replaceAllString(t, e);
-    if (!t.global)
-      throw new TypeError(
-        "MagicString.prototype.replaceAll called with a non-global RegExp argument"
-      );
-    return this._replaceRegexp(t, e);
-  }
+function C() {
+	return typeof globalThis < "u" && typeof globalThis.btoa == "function" ? (e) => globalThis.btoa(unescape(encodeURIComponent(e))) : typeof Buffer == "function" ? (e) => Buffer.from(e, "utf-8").toString("base64") : () => {
+		throw Error("Unsupported environment: `window.btoa` or `Buffer` should be supported.");
+	};
 }
-class W {
-  /**
-   * Constructor
-   * @param id file ID / ID файла
-   * @param code source code / исходный код
-   */
-  constructor(t, e) {
-    c(this, "magicString"), c(this, "newCode"), this.id = t, this.code = e, this.magicString = new b(e), this.newCode = e;
-  }
-  /**
-   * Checks if the file is a Vue component.
-   *
-   * Проверяет, является ли файл компонентом Vue.
-   */
-  isVue() {
-    return w.isVue(this.id);
-  }
-  /**
-   * Checks if the file is a SCSS file.
-   *
-   * Проверяет, является ли файл SCSS.
-   */
-  isScss() {
-    return w.isCss(this.id);
-  }
-  /**
-   * Returns the modified code.
-   *
-   * Возвращает измененный код.
-   */
-  get() {
-    return this.newCode;
-  }
-  /**
-   * Returns the file ID.
-   *
-   * Возвращает ID файла.
-   */
-  getId() {
-    return this.id;
-  }
-  /**
-   * Returns the original code.
-   *
-   * Возвращает оригинальный код.
-   */
-  getCode() {
-    return this.code;
-  }
-  /**
-   * Returns the source map.
-   *
-   * Возвращает карту кода.
-   */
-  getMaps() {
-    return this.magicString.generateMap({
-      source: this.id,
-      includeContent: !0,
-      hires: !0
-    });
-  }
-  /**
-   * Checks for the presence of code.
-   *
-   * Проверяет наличие кода.
-   * @param pattern search pattern / паттерн поиска
-   * @param flags search flags / флаги поиска
-   */
-  has(t, e = "i") {
-    return typeof t == "string" ? this.code.includes(t) : new RegExp(t, e).test(this.code);
-  }
-  /**
-   * Adds code after the <script setup> tag.
-   * If the tag is missing, adds it to the beginning of the file.
-   *
-   * Добавляет код после тега <script setup>.
-   * Если тег отсутствует, добавляет в начало файла.
-   * @param code code to add / код для добавления
-   */
-  addAfterScript(t) {
-    const e = /(<script[^>]*\bsetup\b[^>]*>)/;
-    return this.code.match(e) ? this.newCode = this.newCode.replace(e, `$1${t}`) : this.newCode = `<script setup>\r
-${t}<\/script>${this.newCode}`, this;
-  }
-  /**
-   * Adds code to the beginning of the file.
-   *
-   * Добавляет код в начало файла.
-   * @param code code to add / код для добавления
-   */
-  addStart(t) {
-    return this.newCode = `${t}${this.newCode}`, this;
-  }
-  /**
-   * Adds code to the beginning of the file if it is missing.
-   *
-   * Добавляет код в начало файла, если он отсутствует.
-   * @param code code to add / код для добавления
-   * @param pattern search pattern / паттерн поиска
-   */
-  addStartIfNone(t, e) {
-    return this.has(e != null ? e : t) || this.addStart(t), this;
-  }
-  /**
-   * Replaces the found fragment with new code in newCode.
-   *
-   * Заменяет найденный фрагмент на новый код в newCode.
-   * @param pattern search pattern / паттерн поиска
-   * @param replacement replacement string / строка замены
-   */
-  replace(t, e) {
-    return this.newCode = this.newCode.replace(t, e), this;
-  }
+var w = /* @__PURE__ */ C(), T = class {
+	constructor(e) {
+		this.version = 3, this.file = e.file, this.sources = e.sources, this.sourcesContent = e.sourcesContent, this.names = e.names, this.mappings = b(e.mappings), e.x_google_ignoreList !== void 0 && (this.x_google_ignoreList = e.x_google_ignoreList), e.debugId !== void 0 && (this.debugId = e.debugId);
+	}
+	toString() {
+		return JSON.stringify(this);
+	}
+	toUrl() {
+		return "data:application/json;charset=utf-8;base64," + w(this.toString());
+	}
+};
+function E(e) {
+	let t = e.split("\n"), n = t.filter((e) => /^\t+/.test(e)), r = t.filter((e) => /^ {2,}/.test(e));
+	if (n.length === 0 && r.length === 0) return null;
+	if (n.length >= r.length) return "	";
+	let i = r.reduce((e, t) => {
+		let n = /^ +/.exec(t)[0].length;
+		return Math.min(n, e);
+	}, Infinity);
+	return Array(i + 1).join(" ");
 }
-const Y = [
-  /* Flex */
-  "flex-position",
-  "flex-dynamic",
-  "justify-content",
-  /* Position */
-  "inset",
-  "horizon",
-  "vertically",
-  "left",
-  "right",
-  "absolute",
-  "absolute-top",
-  "absolute-bottom",
-  "absolute-after",
-  /* Padding */
-  "padding-x",
-  "padding-y",
-  "padding-left",
-  "padding-right",
-  /* Margin */
-  "margin-x",
-  "margin-y",
-  "margin-left",
-  "margin-right",
-  /* Dimension */
-  "width",
-  "height",
-  "width-basis",
-  "height-basis",
-  "aspect-ratio",
-  "aspect-ratio-width",
-  "aspect-ratio-height",
-  "squared",
-  "circle",
-  /* Font */
-  "font-size",
-  "line-height",
-  "text-align",
-  "text-overflow",
-  "clamp",
-  "text-select-none",
-  "text-case",
-  "paragraph-spacing",
-  /* Color */
-  "palette",
-  "palette-var",
-  "palette-color",
-  "palette-stroke",
-  "palette-background",
-  "palette-fill",
-  "palette-gradient",
-  "palette-border",
-  "color",
-  "color-opacity",
-  "stroke",
-  "stroke-opacity",
-  "background-color",
-  "background-opacity",
-  "background-size",
-  "fill",
-  "fill-opacity",
-  "gradient",
-  "gradient-opacity",
-  "border-color",
-  "border-opacity",
-  /* Transform */
-  "translate-x",
-  "translate-y",
-  "scale",
-  "rotate"
-];
-class Z {
-  /**
-   * Constructor
-   * @param design design name / название дизайна
-   * @param packageName package name / название пакета
-   * @param componentsReg regular expression for finding components / регулярное выражение для поиска компонентов
-   * @param styleVarsReg regular expression for finding variables / регулярное выражение для поиска переменных
-   * @param componentsList list of components / список компонентов
-   */
-  constructor(t, e, i, n, s) {
-    c(this, "styleModification"), this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = n, this.componentsList = s, this.styleModification = this.initStyleModification();
-  }
-  /**
-   * Checks if the code contains a component.
-   *
-   * Проверяет, содержит ли код компонент.
-   * @param code code to check / код для проверки
-   */
-  hasComponent(t) {
-    return !!t.match(new RegExp(this.componentsReg, "i"));
-  }
-  /**
-   * Checks if the code contains variables.
-   *
-   * Проверяет, содержит ли код переменные.
-   * @param code code to check / код для проверки
-   */
-  hasVars(t) {
-    return !!t.match(new RegExp(this.styleVarsReg, "i"));
-  }
-  /**
-   * Returns the design name.
-   *
-   * Возвращает название дизайна.
-   */
-  getDesign() {
-    return this.design;
-  }
-  /**
-   * Returns the package name.
-   *
-   * Возвращает название пакета.
-   */
-  getPackageName() {
-    return this.packageName;
-  }
-  /**
-   * Returns a list of all components in the code.
-   *
-   * Возвращает список всех компонентов в коде.
-   * @param code code to check / код для проверки
-   */
-  getComponents(t) {
-    const e = t.match(this.componentsReg), i = [];
-    return e && e.forEach((n) => {
-      const s = this.findComponent(n.trim());
-      s && !i.find((r) => r.name === s.name) && !t.match(`${this.getPackageName()}/${s.name}`) && i.push(s);
-    }), i;
-  }
-  /**
-   * Returns the regular expression for finding variables.
-   *
-   * Возвращает регулярное выражение для поиска переменных.
-   */
-  getStyleVarsReg() {
-    return this.styleVarsReg;
-  }
-  /**
-   * Returns the style modification map.
-   *
-   * Возвращает карту модификации стилей.
-   */
-  getStyleModification() {
-    return this.styleModification;
-  }
-  /**
-   * Finds a component by name.
-   *
-   * Находит компонент по имени.
-   * @param component component name / название компонента
-   */
-  findComponent(t) {
-    return this.componentsList.find(
-      (e) => e.name === t || !!t.match(new RegExp(e.reg, "i"))
-    );
-  }
-  /**
-   * Initializes the style modification map.
-   *
-   * Инициализирует карту модификации стилей.
-   */
-  initStyleModification() {
-    const t = {};
-    return Y.forEach((e) => {
-      t[k(e)] = E(e);
-    }), t;
-  }
+function D(e, t) {
+	let n = e.split(/[/\\]/), r = t.split(/[/\\]/);
+	for (n.pop(); n[0] === r[0];) n.shift(), r.shift();
+	if (n.length) {
+		let e = n.length;
+		for (; e--;) n[e] = "..";
+	}
+	return n.concat(r).join("/");
 }
-class G {
-  /**
-   * Constructor
-   * @param packageName package name / название пакета
-   * @param code file content / содержимое файла
-   */
-  constructor(t, e) {
-    c(this, "code"), this.packageName = t, this.code = e;
-  }
-  /**
-   * Returns the file content.
-   *
-   * Возвращает содержимое файла.
-   */
-  get() {
-    return this.code;
-  }
-  /**
-   * Returns the style connection code.
-   *
-   * Возвращает код подключения стиля.
-   */
-  importStyle() {
-    return this.makeImport("style.css"), this;
-  }
-  /**
-   * Creates an import line.
-   *
-   * Создает строку импорта.
-   * @param name file name / имя файла
-   */
-  makeImport(t) {
-    const e = `${this.packageName}/${t}`;
-    this.code.includes(e) || (this.code = `import '${e}';${this.code}`);
-  }
+var O = Object.prototype.toString;
+function k(e) {
+	return O.call(e) === "[object Object]";
 }
-class Q {
-  /**
-   * Constructor
-   * @param code file content / содержимое файла
-   * @param pluginData plugin data / данные плагина
-   */
-  constructor(t, e) {
-    this.code = t, this.pluginData = e;
-  }
-  /**
-   * Initializes the data.
-   *
-   * Инициализирует данные.
-   */
-  make() {
-    if (this.code.isVue() && this.pluginData.hasComponent(this.code.getCode())) {
-      const t = this.pluginData.getComponents(this.code.getCode());
-      if (t && t.length > 0) {
-        const e = t.map((i) => this.importComponent(i)).join(`\r
-`);
-        this.code.addAfterScript(e);
-      }
-    }
-  }
-  /**
-   * Returns the path to the component.
-   *
-   * Возвращает путь к компоненту.
-   * @param item component data / данные компонента
-   */
-  getPath(t) {
-    return `${this.pluginData.getPackageName()}/${t.name}`;
-  }
-  /**
-   * Generates the import string for a component.
-   *
-   * Генерирует строку импорта для компонента.
-   * @param item component data / данные компонента
-   */
-  importComponent(t) {
-    return `import { ${t.name} } from'${this.getPath(t)}';`;
-  }
+function A(e) {
+	let t = e.split("\n"), n = [];
+	for (let e = 0, r = 0; e < t.length; e++) n.push(r), r += t[e].length + 1;
+	return function(e) {
+		let t = 0, r = n.length;
+		for (; t < r;) {
+			let i = t + r >> 1;
+			e < n[i] ? r = i : t = i + 1;
+		}
+		let i = t - 1;
+		return {
+			line: i,
+			column: e - n[i]
+		};
+	};
 }
-class X {
-  /**
-   * Constructor
-   * @param code file content / содержимое файла
-   * @param data plugin data / данные плагина
-   */
-  constructor(t, e) {
-    this.code = t, this.data = e;
-  }
-  /**
-   * Initialization of the transformation of all style properties.
-   *
-   * Инициализация преобразования всех свойств стилей.
-   */
-  make() {
-    return this.is() && this.importDesign().makeColors().makeVars().makeProperties(), this;
-  }
-  /**
-   * Checks whether this file needs to be transformed.
-   *
-   * Проверяет, нужно ли преобразовывать этот файл.
-   */
-  is() {
-    return this.code.isScss() && R(this.code.getCode()) && !this.code.has(this.getIgnoreComment());
-  }
-  /**
-   * Returns the comment for ignoring the file.
-   *
-   * Возвращает комментарий для игнорирования файла.
-   */
-  getIgnoreComment() {
-    return `// ${this.data.getDesign()}-css-ignore`;
-  }
-  /**
-   * Returns a string for a negative lookahead to exclude lines with a special comment.
-   *
-   * Возвращает строку для негативного просмотра вперед, чтобы исключить строки со специальным комментарием.
-   */
-  getPropertiesNone() {
-    return `(?![^\r
+var j = /\w/, M = class {
+	constructor(e) {
+		this.hires = e, this.generatedCodeLine = 0, this.generatedCodeColumn = 0, this.raw = [], this.rawSegments = this.raw[this.generatedCodeLine] = [], this.pending = null;
+	}
+	addEdit(e, t, n, r) {
+		if (t.length) {
+			let i = t.length - 1, a = t.indexOf("\n", 0), o = -1;
+			for (; a >= 0 && i > a;) {
+				let i = [
+					this.generatedCodeColumn,
+					e,
+					n.line,
+					n.column
+				];
+				r >= 0 && i.push(r), this.rawSegments.push(i), this.generatedCodeLine += 1, this.raw[this.generatedCodeLine] = this.rawSegments = [], this.generatedCodeColumn = 0, o = a, a = t.indexOf("\n", a + 1);
+			}
+			let s = [
+				this.generatedCodeColumn,
+				e,
+				n.line,
+				n.column
+			];
+			r >= 0 && s.push(r), this.rawSegments.push(s), this.advance(t.slice(o + 1));
+		} else this.pending && (this.rawSegments.push(this.pending), this.advance(t));
+		this.pending = null;
+	}
+	addUneditedChunk(e, t, n, r, i) {
+		let a = t.start, o = !0, s = !1;
+		for (; a < t.end;) {
+			if (n[a] === "\n") r.line += 1, r.column = 0, this.generatedCodeLine += 1, this.raw[this.generatedCodeLine] = this.rawSegments = [], this.generatedCodeColumn = 0, o = !0, s = !1;
+			else {
+				if (this.hires || o || i.has(a)) {
+					let t = [
+						this.generatedCodeColumn,
+						e,
+						r.line,
+						r.column
+					];
+					this.hires === "boundary" ? j.test(n[a]) ? s || (this.rawSegments.push(t), s = !0) : (this.rawSegments.push(t), s = !1) : this.rawSegments.push(t);
+				}
+				r.column += 1, this.generatedCodeColumn += 1, o = !1;
+			}
+			a += 1;
+		}
+		this.pending = null;
+	}
+	advance(e) {
+		if (!e) return;
+		let t = e.split("\n");
+		if (t.length > 1) {
+			for (let e = 0; e < t.length - 1; e++) this.generatedCodeLine++, this.raw[this.generatedCodeLine] = this.rawSegments = [];
+			this.generatedCodeColumn = 0;
+		}
+		this.generatedCodeColumn += t[t.length - 1].length;
+	}
+}, N = "\n", P = {
+	insertLeft: !1,
+	insertRight: !1,
+	storeName: !1
+}, F = class e {
+	constructor(e, t = {}) {
+		let n = new S(0, e.length, e);
+		Object.defineProperties(this, {
+			original: {
+				writable: !0,
+				value: e
+			},
+			outro: {
+				writable: !0,
+				value: ""
+			},
+			intro: {
+				writable: !0,
+				value: ""
+			},
+			firstChunk: {
+				writable: !0,
+				value: n
+			},
+			lastChunk: {
+				writable: !0,
+				value: n
+			},
+			lastSearchedChunk: {
+				writable: !0,
+				value: n
+			},
+			byStart: {
+				writable: !0,
+				value: {}
+			},
+			byEnd: {
+				writable: !0,
+				value: {}
+			},
+			filename: {
+				writable: !0,
+				value: t.filename
+			},
+			indentExclusionRanges: {
+				writable: !0,
+				value: t.indentExclusionRanges
+			},
+			sourcemapLocations: {
+				writable: !0,
+				value: new x()
+			},
+			storedNames: {
+				writable: !0,
+				value: {}
+			},
+			indentStr: {
+				writable: !0,
+				value: void 0
+			},
+			ignoreList: {
+				writable: !0,
+				value: t.ignoreList
+			},
+			offset: {
+				writable: !0,
+				value: t.offset || 0
+			}
+		}), this.byStart[0] = n, this.byEnd[e.length] = n;
+	}
+	addSourcemapLocation(e) {
+		this.sourcemapLocations.add(e);
+	}
+	append(e) {
+		if (typeof e != "string") throw TypeError("outro content must be a string");
+		return this.outro += e, this;
+	}
+	appendLeft(e, t) {
+		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
+		this._split(e);
+		let n = this.byEnd[e];
+		return n ? n.appendLeft(t) : this.intro += t, this;
+	}
+	appendRight(e, t) {
+		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
+		this._split(e);
+		let n = this.byStart[e];
+		return n ? n.appendRight(t) : this.outro += t, this;
+	}
+	clone() {
+		let t = new e(this.original, {
+			filename: this.filename,
+			offset: this.offset
+		}), n = this.firstChunk, r = t.firstChunk = t.lastSearchedChunk = n.clone();
+		for (; n;) {
+			t.byStart[r.start] = r, t.byEnd[r.end] = r;
+			let e = n.next, i = e && e.clone();
+			i && (r.next = i, i.previous = r, r = i), n = e;
+		}
+		return t.lastChunk = r, this.indentExclusionRanges && (t.indentExclusionRanges = this.indentExclusionRanges.slice()), t.sourcemapLocations = new x(this.sourcemapLocations), t.intro = this.intro, t.outro = this.outro, t;
+	}
+	generateDecodedMap(e) {
+		e = e || {};
+		let t = Object.keys(this.storedNames), n = new M(e.hires), r = A(this.original);
+		return this.intro && n.advance(this.intro), this.firstChunk.eachNext((e) => {
+			let i = r(e.start);
+			e.intro.length && n.advance(e.intro), e.edited ? n.addEdit(0, e.content, i, e.storeName ? t.indexOf(e.original) : -1) : n.addUneditedChunk(0, e, this.original, i, this.sourcemapLocations), e.outro.length && n.advance(e.outro);
+		}), this.outro && n.advance(this.outro), {
+			file: e.file ? e.file.split(/[/\\]/).pop() : void 0,
+			sources: [e.source ? D(e.file || "", e.source) : e.file || ""],
+			sourcesContent: e.includeContent ? [this.original] : void 0,
+			names: t,
+			mappings: n.raw,
+			x_google_ignoreList: this.ignoreList ? [0] : void 0
+		};
+	}
+	generateMap(e) {
+		return new T(this.generateDecodedMap(e));
+	}
+	_ensureindentStr() {
+		this.indentStr === void 0 && (this.indentStr = E(this.original));
+	}
+	_getRawIndentString() {
+		return this._ensureindentStr(), this.indentStr;
+	}
+	getIndentString() {
+		return this._ensureindentStr(), this.indentStr === null ? "	" : this.indentStr;
+	}
+	indent(e, t) {
+		let n = /^[^\r\n]/gm;
+		if (k(e) && (t = e, e = void 0), e === void 0 && (this._ensureindentStr(), e = this.indentStr || "	"), e === "") return this;
+		t = t || {};
+		let r = {};
+		t.exclude && (typeof t.exclude[0] == "number" ? [t.exclude] : t.exclude).forEach((e) => {
+			for (let t = e[0]; t < e[1]; t += 1) r[t] = !0;
+		});
+		let i = t.indentStart !== !1, a = (t) => i ? `${e}${t}` : (i = !0, t);
+		this.intro = this.intro.replace(n, a);
+		let o = 0, s = this.firstChunk;
+		for (; s;) {
+			let t = s.end;
+			if (s.edited) r[o] || (s.content = s.content.replace(n, a), s.content.length && (i = s.content[s.content.length - 1] === "\n"));
+			else for (o = s.start; o < t;) {
+				if (!r[o]) {
+					let t = this.original[o];
+					t === "\n" ? i = !0 : t !== "\r" && i && (i = !1, o === s.start || (this._splitChunk(s, o), s = s.next), s.prependRight(e));
+				}
+				o += 1;
+			}
+			o = s.end, s = s.next;
+		}
+		return this.outro = this.outro.replace(n, a), this;
+	}
+	insert() {
+		throw Error("magicString.insert(...) is deprecated. Use prependRight(...) or appendLeft(...)");
+	}
+	insertLeft(e, t) {
+		return P.insertLeft || (console.warn("magicString.insertLeft(...) is deprecated. Use magicString.appendLeft(...) instead"), P.insertLeft = !0), this.appendLeft(e, t);
+	}
+	insertRight(e, t) {
+		return P.insertRight || (console.warn("magicString.insertRight(...) is deprecated. Use magicString.prependRight(...) instead"), P.insertRight = !0), this.prependRight(e, t);
+	}
+	move(e, t, n) {
+		if (e += this.offset, t += this.offset, n += this.offset, n >= e && n <= t) throw Error("Cannot move a selection inside itself");
+		this._split(e), this._split(t), this._split(n);
+		let r = this.byStart[e], i = this.byEnd[t], a = r.previous, o = i.next, s = this.byStart[n];
+		if (!s && i === this.lastChunk) return this;
+		let c = s ? s.previous : this.lastChunk;
+		return a && (a.next = o), o && (o.previous = a), c && (c.next = r), s && (s.previous = i), r.previous || (this.firstChunk = i.next), i.next || (this.lastChunk = r.previous, this.lastChunk.next = null), r.previous = c, i.next = s || null, c || (this.firstChunk = r), s || (this.lastChunk = i), this;
+	}
+	overwrite(e, t, n, r) {
+		return r = r || {}, this.update(e, t, n, {
+			...r,
+			overwrite: !r.contentOnly
+		});
+	}
+	update(e, t, n, r) {
+		if (e += this.offset, t += this.offset, typeof n != "string") throw TypeError("replacement content must be a string");
+		if (this.original.length !== 0) {
+			for (; e < 0;) e += this.original.length;
+			for (; t < 0;) t += this.original.length;
+		}
+		if (t > this.original.length) throw Error("end is out of bounds");
+		if (e === t) throw Error("Cannot overwrite a zero-length range – use appendLeft or prependRight instead");
+		this._split(e), this._split(t), r === !0 && (P.storeName || (console.warn("The final argument to magicString.overwrite(...) should be an options object. See https://github.com/rich-harris/magic-string"), P.storeName = !0), r = { storeName: !0 });
+		let i = r === void 0 ? !1 : r.storeName, a = r === void 0 ? !1 : r.overwrite;
+		if (i) {
+			let n = this.original.slice(e, t);
+			Object.defineProperty(this.storedNames, n, {
+				writable: !0,
+				value: !0,
+				enumerable: !0
+			});
+		}
+		let o = this.byStart[e], s = this.byEnd[t];
+		if (o) {
+			let e = o;
+			for (; e !== s;) {
+				if (e.next !== this.byStart[e.end]) throw Error("Cannot overwrite across a split point");
+				e = e.next, e.edit("", !1);
+			}
+			o.edit(n, i, !a);
+		} else {
+			let r = new S(e, t, "").edit(n, i);
+			s.next = r, r.previous = s;
+		}
+		return this;
+	}
+	prepend(e) {
+		if (typeof e != "string") throw TypeError("outro content must be a string");
+		return this.intro = e + this.intro, this;
+	}
+	prependLeft(e, t) {
+		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
+		this._split(e);
+		let n = this.byEnd[e];
+		return n ? n.prependLeft(t) : this.intro = t + this.intro, this;
+	}
+	prependRight(e, t) {
+		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
+		this._split(e);
+		let n = this.byStart[e];
+		return n ? n.prependRight(t) : this.outro = t + this.outro, this;
+	}
+	remove(e, t) {
+		if (e += this.offset, t += this.offset, this.original.length !== 0) {
+			for (; e < 0;) e += this.original.length;
+			for (; t < 0;) t += this.original.length;
+		}
+		if (e === t) return this;
+		if (e < 0 || t > this.original.length) throw Error("Character is out of bounds");
+		if (e > t) throw Error("end must be greater than start");
+		this._split(e), this._split(t);
+		let n = this.byStart[e];
+		for (; n;) n.intro = "", n.outro = "", n.edit(""), n = t > n.end ? this.byStart[n.end] : null;
+		return this;
+	}
+	reset(e, t) {
+		if (e += this.offset, t += this.offset, this.original.length !== 0) {
+			for (; e < 0;) e += this.original.length;
+			for (; t < 0;) t += this.original.length;
+		}
+		if (e === t) return this;
+		if (e < 0 || t > this.original.length) throw Error("Character is out of bounds");
+		if (e > t) throw Error("end must be greater than start");
+		this._split(e), this._split(t);
+		let n = this.byStart[e];
+		for (; n;) n.reset(), n = t > n.end ? this.byStart[n.end] : null;
+		return this;
+	}
+	lastChar() {
+		if (this.outro.length) return this.outro[this.outro.length - 1];
+		let e = this.lastChunk;
+		do {
+			if (e.outro.length) return e.outro[e.outro.length - 1];
+			if (e.content.length) return e.content[e.content.length - 1];
+			if (e.intro.length) return e.intro[e.intro.length - 1];
+		} while (e = e.previous);
+		return this.intro.length ? this.intro[this.intro.length - 1] : "";
+	}
+	lastLine() {
+		let e = this.outro.lastIndexOf(N);
+		if (e !== -1) return this.outro.substr(e + 1);
+		let t = this.outro, n = this.lastChunk;
+		do {
+			if (n.outro.length > 0) {
+				if (e = n.outro.lastIndexOf(N), e !== -1) return n.outro.substr(e + 1) + t;
+				t = n.outro + t;
+			}
+			if (n.content.length > 0) {
+				if (e = n.content.lastIndexOf(N), e !== -1) return n.content.substr(e + 1) + t;
+				t = n.content + t;
+			}
+			if (n.intro.length > 0) {
+				if (e = n.intro.lastIndexOf(N), e !== -1) return n.intro.substr(e + 1) + t;
+				t = n.intro + t;
+			}
+		} while (n = n.previous);
+		return e = this.intro.lastIndexOf(N), e === -1 ? this.intro + t : this.intro.substr(e + 1) + t;
+	}
+	slice(e = 0, t = this.original.length - this.offset) {
+		if (e += this.offset, t += this.offset, this.original.length !== 0) {
+			for (; e < 0;) e += this.original.length;
+			for (; t < 0;) t += this.original.length;
+		}
+		let n = "", r = this.firstChunk;
+		for (; r && (r.start > e || r.end <= e);) {
+			if (r.start < t && r.end >= t) return n;
+			r = r.next;
+		}
+		if (r && r.edited && r.start !== e) throw Error(`Cannot use replaced character ${e} as slice start anchor.`);
+		let i = r;
+		for (; r;) {
+			r.intro && (i !== r || r.start === e) && (n += r.intro);
+			let a = r.start < t && r.end >= t;
+			if (a && r.edited && r.end !== t) throw Error(`Cannot use replaced character ${t} as slice end anchor.`);
+			let o = i === r ? e - r.start : 0, s = a ? r.content.length + t - r.end : r.content.length;
+			if (n += r.content.slice(o, s), r.outro && (!a || r.end === t) && (n += r.outro), a) break;
+			r = r.next;
+		}
+		return n;
+	}
+	snip(e, t) {
+		let n = this.clone();
+		return n.remove(0, e), n.remove(t, n.original.length), n;
+	}
+	_split(e) {
+		if (this.byStart[e] || this.byEnd[e]) return;
+		let t = this.lastSearchedChunk, n = t, r = e > t.end;
+		for (; t;) {
+			if (t.contains(e)) return this._splitChunk(t, e);
+			if (t = r ? this.byStart[t.end] : this.byEnd[t.start], t === n) return;
+			n = t;
+		}
+	}
+	_splitChunk(e, t) {
+		if (e.edited && e.content.length) {
+			let n = A(this.original)(t);
+			throw Error(`Cannot split a chunk that has already been edited (${n.line}:${n.column} – "${e.original}")`);
+		}
+		let n = e.split(t);
+		return this.byEnd[t] = e, this.byStart[t] = n, this.byEnd[n.end] = n, e === this.lastChunk && (this.lastChunk = n), this.lastSearchedChunk = e, !0;
+	}
+	toString() {
+		let e = this.intro, t = this.firstChunk;
+		for (; t;) e += t.toString(), t = t.next;
+		return e + this.outro;
+	}
+	isEmpty() {
+		let e = this.firstChunk;
+		do
+			if (e.intro.length && e.intro.trim() || e.content.length && e.content.trim() || e.outro.length && e.outro.trim()) return !1;
+		while (e = e.next);
+		return !0;
+	}
+	length() {
+		let e = this.firstChunk, t = 0;
+		do
+			t += e.intro.length + e.content.length + e.outro.length;
+		while (e = e.next);
+		return t;
+	}
+	trimLines() {
+		return this.trim("[\\r\\n]");
+	}
+	trim(e) {
+		return this.trimStart(e).trimEnd(e);
+	}
+	trimEndAborted(e) {
+		let t = RegExp((e || "\\s") + "+$");
+		if (this.outro = this.outro.replace(t, ""), this.outro.length) return !0;
+		let n = this.lastChunk;
+		do {
+			let e = n.end, r = n.trimEnd(t);
+			if (n.end !== e && (this.lastChunk === n && (this.lastChunk = n.next), this.byEnd[n.end] = n, this.byStart[n.next.start] = n.next, this.byEnd[n.next.end] = n.next), r) return !0;
+			n = n.previous;
+		} while (n);
+		return !1;
+	}
+	trimEnd(e) {
+		return this.trimEndAborted(e), this;
+	}
+	trimStartAborted(e) {
+		let t = RegExp("^" + (e || "\\s") + "+");
+		if (this.intro = this.intro.replace(t, ""), this.intro.length) return !0;
+		let n = this.firstChunk;
+		do {
+			let e = n.end, r = n.trimStart(t);
+			if (n.end !== e && (n === this.lastChunk && (this.lastChunk = n.next), this.byEnd[n.end] = n, this.byStart[n.next.start] = n.next, this.byEnd[n.next.end] = n.next), r) return !0;
+			n = n.next;
+		} while (n);
+		return !1;
+	}
+	trimStart(e) {
+		return this.trimStartAborted(e), this;
+	}
+	hasChanged() {
+		return this.original !== this.toString();
+	}
+	_replaceRegexp(e, t) {
+		function n(e, n) {
+			return typeof t == "string" ? t.replace(/\$(\$|&|\d+)/g, (t, n) => n === "$" ? "$" : n === "&" ? e[0] : +n < e.length ? e[+n] : `$${n}`) : t(...e, e.index, n, e.groups);
+		}
+		function r(e, t) {
+			let n, r = [];
+			for (; n = e.exec(t);) r.push(n);
+			return r;
+		}
+		if (e.global) r(e, this.original).forEach((e) => {
+			if (e.index != null) {
+				let t = n(e, this.original);
+				t !== e[0] && this.overwrite(e.index, e.index + e[0].length, t);
+			}
+		});
+		else {
+			let t = this.original.match(e);
+			if (t && t.index != null) {
+				let e = n(t, this.original);
+				e !== t[0] && this.overwrite(t.index, t.index + t[0].length, e);
+			}
+		}
+		return this;
+	}
+	_replaceString(e, t) {
+		let { original: n } = this, r = n.indexOf(e);
+		return r !== -1 && (typeof t == "function" && (t = t(e, r, n)), e !== t && this.overwrite(r, r + e.length, t)), this;
+	}
+	replace(e, t) {
+		return typeof e == "string" ? this._replaceString(e, t) : this._replaceRegexp(e, t);
+	}
+	_replaceAllString(e, t) {
+		let { original: n } = this, r = e.length;
+		for (let i = n.indexOf(e); i !== -1; i = n.indexOf(e, i + r)) {
+			let e = n.slice(i, i + r), a = t;
+			typeof t == "function" && (a = t(e, i, n)), e !== a && this.overwrite(i, i + r, a);
+		}
+		return this;
+	}
+	replaceAll(e, t) {
+		if (typeof e == "string") return this._replaceAllString(e, t);
+		if (!e.global) throw TypeError("MagicString.prototype.replaceAll called with a non-global RegExp argument");
+		return this._replaceRegexp(e, t);
+	}
+}, I = class {
+	constructor(e, t) {
+		l(this, "magicString"), l(this, "newCode"), this.id = e, this.code = t, this.magicString = new F(t), this.newCode = t;
+	}
+	isVue() {
+		return u.isVue(this.id);
+	}
+	isScss() {
+		return u.isCss(this.id);
+	}
+	get() {
+		return this.newCode;
+	}
+	getId() {
+		return this.id;
+	}
+	getCode() {
+		return this.code;
+	}
+	getMaps() {
+		return this.magicString.generateMap({
+			source: this.id,
+			includeContent: !0,
+			hires: !0
+		});
+	}
+	has(e, t = "i") {
+		return typeof e == "string" ? this.code.includes(e) : new RegExp(e, t).test(this.code);
+	}
+	addAfterScript(e) {
+		let t = /(<script[^>]*\bsetup\b[^>]*>)/;
+		return this.code.match(t) ? this.newCode = this.newCode.replace(t, `$1${e}`) : this.newCode = `<script setup>\r
+${e}<\/script>${this.newCode}`, this;
+	}
+	addStart(e) {
+		return this.newCode = `${e}${this.newCode}`, this;
+	}
+	addStartIfNone(e, t) {
+		return this.has(t == null ? e : t) || this.addStart(e), this;
+	}
+	replace(e, t) {
+		return this.newCode = this.newCode.replace(e, t), this;
+	}
+}, L = /* @__PURE__ */ "flex-position.flex-dynamic.justify-content.inset.horizon.vertically.left.right.absolute.absolute-top.absolute-bottom.absolute-after.padding-x.padding-y.padding-left.padding-right.margin-x.margin-y.margin-left.margin-right.width.height.width-basis.height-basis.aspect-ratio.aspect-ratio-width.aspect-ratio-height.squared.circle.font-size.line-height.text-align.text-overflow.clamp.text-select-none.text-case.paragraph-spacing.palette.palette-var.palette-color.palette-stroke.palette-background.palette-fill.palette-gradient.palette-border.color.color-opacity.stroke.stroke-opacity.background-color.background-opacity.background-size.fill.fill-opacity.gradient.gradient-opacity.border-color.border-opacity.translate-x.translate-y.scale.rotate".split("."), R = class {
+	constructor(e, t, n, r, i) {
+		l(this, "styleModification"), this.design = e, this.packageName = t, this.componentsReg = n, this.styleVarsReg = r, this.componentsList = i, this.styleModification = this.initStyleModification();
+	}
+	hasComponent(e) {
+		return !!e.match(new RegExp(this.componentsReg, "i"));
+	}
+	hasVars(e) {
+		return !!e.match(new RegExp(this.styleVarsReg, "i"));
+	}
+	getDesign() {
+		return this.design;
+	}
+	getPackageName() {
+		return this.packageName;
+	}
+	getComponents(e) {
+		let t = e.match(this.componentsReg), n = [];
+		return t && t.forEach((t) => {
+			let r = this.findComponent(t.trim());
+			r && !n.find((e) => e.name === r.name) && !e.match(`${this.getPackageName()}/${r.name}`) && n.push(r);
+		}), n;
+	}
+	getStyleVarsReg() {
+		return this.styleVarsReg;
+	}
+	getStyleModification() {
+		return this.styleModification;
+	}
+	findComponent(e) {
+		return this.componentsList.find((t) => t.name === e || !!e.match(new RegExp(t.reg, "i")));
+	}
+	initStyleModification() {
+		let e = {};
+		return L.forEach((t) => {
+			e[o(t)] = a(t);
+		}), e;
+	}
+}, z = class {
+	constructor(e, t) {
+		l(this, "code"), this.packageName = e, this.code = t;
+	}
+	get() {
+		return this.code;
+	}
+	importStyle() {
+		return this.makeImport("style.css"), this;
+	}
+	makeImport(e) {
+		let t = `${this.packageName}/${e}`;
+		this.code.includes(t) || (this.code = `import '${t}';${this.code}`);
+	}
+}, B = class {
+	constructor(e, t) {
+		this.code = e, this.pluginData = t;
+	}
+	make() {
+		if (this.code.isVue() && this.pluginData.hasComponent(this.code.getCode())) {
+			let e = this.pluginData.getComponents(this.code.getCode());
+			if (e && e.length > 0) {
+				let t = e.map((e) => this.importComponent(e)).join("\r\n");
+				this.code.addAfterScript(t);
+			}
+		}
+	}
+	getPath(e) {
+		return `${this.pluginData.getPackageName()}/${e.name}`;
+	}
+	importComponent(e) {
+		return `import { ${e.name} } from'${this.getPath(e)}';`;
+	}
+}, V = class {
+	constructor(e, t) {
+		this.code = e, this.data = t;
+	}
+	make() {
+		return this.is() && this.importDesign().makeColors().makeVars().makeProperties(), this;
+	}
+	is() {
+		return this.code.isScss() && i(this.code.getCode()) && !this.code.has(this.getIgnoreComment());
+	}
+	getIgnoreComment() {
+		return `// ${this.data.getDesign()}-css-ignore`;
+	}
+	getPropertiesNone() {
+		return `(?![^\r
 ]*// ${this.data.getDesign()}-mode-none)`;
-  }
-  /**
-   * Returns a regular expression for finding properties that need to be replaced with mixins.
-   *
-   * Возвращает регулярное выражение для поиска свойств, которые необходимо заменить на миксины.
-   */
-  getModificationRef() {
-    const t = this.data.getStyleModification();
-    return new RegExp(
-      `(?<=^\\s*)(${Object.keys(t).join("|")}):([^;\r
-]+)(;*)${this.getPropertiesNone()}`,
-      "igm"
-    );
-  }
-  /**
-   * Connects a list of tokens to work with values.
-   *
-   * Подключает список токенов для работы со значениями.
-   */
-  importDesign() {
-    const t = `${this.data.getPackageName()}/style/ui-properties`, e = `@use '${t}.scss' as *;`;
-    return this.code.addStartIfNone(e, t), this;
-  }
-  /**
-   * Removes default values from colors.
-   *
-   * Удаляет значения по умолчанию у цветов.
-   */
-  makeColors() {
-    const t = new RegExp(`(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`, "ig");
-    return this.code.has(t) && this.code.replace(t, ""), this;
-  }
-  /**
-   * Transforms property values under the correct name.
-   *
-   * Преобразовывает значения свойств под правильным именем.
-   */
-  makeVars() {
-    const t = this.data.getStyleVarsReg();
-    return this.code.has(t) && this.code.replace(
-      t,
-      `${this.data.getDesign()}-$1`
-    ), this;
-  }
-  /**
-   * Transformation of all properties into non-standard ones used through mixins.
-   *
-   * Преобразование всех свойств в нестандартные, используемые через миксины.
-   */
-  makeProperties() {
-    const t = this.data.getStyleModification(), e = this.getModificationRef();
-    return this.code.has(e, "im") && this.code.replace(
-      e,
-      (i, n, s, r) => {
-        const h = s.trim();
-        return `@include ${t == null ? void 0 : t[n.trim()]}(${h.match(/[()]/) ? `#{${h}}` : h})${r}`;
-      }
-    ), this;
-  }
-}
-class tt {
-  /**
-   * Constructor
-   * @param design design name / название дизайна
-   * @param packageName package name / название пакета
-   * @param componentsReg regular expression for finding components / регулярное выражение для поиска компонентов
-   * @param styleVarsReg regular expression for finding variables / регулярное выражение для поиска переменных
-   * @param componentsList list of components / список компонентов
-   * @param name plugin name / название плагина
-   * @param options plugin options / настройки плагина
-   */
-  constructor(t, e, i, n, s, r = "vite-plugin-design-ui", h = {}) {
-    c(this, "data"), c(this, "first", !0), c(this, "mode", "production"), this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = n, this.componentsList = s, this.name = r, this.options = h, this.data = new Z(
-      t,
-      e,
-      i,
-      n,
-      s
-    );
-  }
-  /**
-   * Initializes the plugin.
-   *
-   * Инициализирует плагин.
-   */
-  init() {
-    var t;
-    return {
-      name: this.name,
-      enforce: "pre",
-      apply: (e, i) => (this.mode = i.mode, !0),
-      transform: (e, i) => this.transform(e, i),
-      ...(t = this.options) == null ? void 0 : t.viteOptions
-    };
-  }
-  /**
-   * Checks if components should be processed.
-   *
-   * Проверяет, нужно ли обрабатывать компоненты.
-   */
-  isComponents() {
-    var t, e;
-    return !!((e = (t = this.options) == null ? void 0 : t.component) == null || e);
-  }
-  /**
-   * Checks if styles should be processed.
-   *
-   * Проверяет, нужно ли обрабатывать стили.
-   */
-  isStyles() {
-    var t, e;
-    return !!((e = (t = this.options) == null ? void 0 : t.style) == null || e);
-  }
-  /**
-   * Transforms the code.
-   *
-   * Преобразовывает код.
-   * @param code file content / содержимое файла
-   * @param id file identification / идентификация файла
-   */
-  transform(t, e) {
-    this.first && w.isJs(e) && (t = this.initMain(t), this.first = !1);
-    const i = new W(e, t);
-    return this.makeComponents(i), this.initStyles(i), {
-      code: i.get()
-    };
-  }
-  /**
-   * Initializes the main file.
-   *
-   * Инициализирует главный файл.
-   * @param code file content / содержимое файла
-   */
-  initMain(t) {
-    const e = new G(this.packageName, t);
-    return e.importStyle(), e.get();
-  }
-  /**
-   * Initializes components.
-   *
-   * Инициализирует компоненты.
-   * @param code file content / содержимое файла
-   */
-  makeComponents(t) {
-    return this.isComponents() && new Q(t, this.data).make(), this;
-  }
-  /**
-   * Initializes styles.
-   *
-   * Инициализирует стили.
-   * @param code file content / содержимое файла
-   */
-  initStyles(t) {
-    return this.isStyles() && new X(t, this.data).make(), this;
-  }
-}
-function st(a = {}) {
-  return new tt(
-    L,
-    $,
-    N,
-    _,
-    O,
-    "vite-plugin-d1-ui",
-    a
-  ).init();
-}
-export {
-  st as uiD1VitePlugin
+	}
+	getModificationRef() {
+		let e = this.data.getStyleModification();
+		return RegExp(`(?<=^\\s*)(${Object.keys(e).join("|")}):([^;\r
+]+)(;*)${this.getPropertiesNone()}`, "igm");
+	}
+	importDesign() {
+		let e = `${this.data.getPackageName()}/style/ui-properties`, t = `@use '${e}.scss' as *;`;
+		return this.code.addStartIfNone(t, e), this;
+	}
+	makeColors() {
+		let e = RegExp(`(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`, "ig");
+		return this.code.has(e) && this.code.replace(e, ""), this;
+	}
+	makeVars() {
+		let e = this.data.getStyleVarsReg();
+		return this.code.has(e) && this.code.replace(e, `${this.data.getDesign()}-$1`), this;
+	}
+	makeProperties() {
+		let e = this.data.getStyleModification(), t = this.getModificationRef();
+		return this.code.has(t, "im") && this.code.replace(t, (t, n, r, i) => {
+			let a = r.trim();
+			return `@include ${e == null ? void 0 : e[n.trim()]}(${a.match(/[()]/) ? `#{${a}}` : a})${i}`;
+		}), this;
+	}
+}, H = class {
+	constructor(e, t, n, r, i, a = "vite-plugin-design-ui", o = {}) {
+		l(this, "data"), l(this, "first", !0), l(this, "mode", "production"), this.design = e, this.packageName = t, this.componentsReg = n, this.styleVarsReg = r, this.componentsList = i, this.name = a, this.options = o, this.data = new R(e, t, n, r, i);
+	}
+	init() {
+		var e;
+		return {
+			name: this.name,
+			enforce: "pre",
+			apply: (e, t) => (this.mode = t.mode, !0),
+			transform: (e, t) => this.transform(e, t),
+			...(e = this.options) == null ? void 0 : e.viteOptions
+		};
+	}
+	isComponents() {
+		var e, t;
+		return !!((t = (e = this.options) == null ? void 0 : e.component) == null || t);
+	}
+	isStyles() {
+		var e, t;
+		return !!((t = (e = this.options) == null ? void 0 : e.style) == null || t);
+	}
+	transform(e, t) {
+		this.first && u.isJs(t) && (e = this.initMain(e), this.first = !1);
+		let n = new I(t, e);
+		return this.makeComponents(n), this.initStyles(n), { code: n.get() };
+	}
+	initMain(e) {
+		let t = new z(this.packageName, e);
+		return t.importStyle(), t.get();
+	}
+	makeComponents(e) {
+		return this.isComponents() && new B(e, this.data).make(), this;
+	}
+	initStyles(e) {
+		return this.isStyles() && new V(e, this.data).make(), this;
+	}
 };
+//#endregion
+//#region src/library/plugin.ts
+function U(i = {}) {
+	return new H("d1", n, t, r, e, "vite-plugin-d1-ui", i).init();
+}
+//#endregion
+export { U as uiD1VitePlugin };

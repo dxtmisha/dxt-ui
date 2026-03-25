@@ -1,5 +1,7 @@
-import { _ as o } from "./D1Badge.vue_vue_type_script_setup_true_lang-DDyP8LuL.js";
-const m = o;
-export {
-  m as D1Badge
-};
+import "./D1Icon-BnpmOB4B.js";
+import "./Image-CQ3p93mr.js";
+import { t as e } from "./D1Badge-BGe6Ttlr.js";
+//#region src/components/Ui/Badge/index.ts
+var t = e;
+//#endregion
+export { t as D1Badge };

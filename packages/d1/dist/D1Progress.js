@@ -1,4 +1,3 @@
-import { D as s } from "./index-B4sAKw5g.js";
-export {
-  s as D1Progress
-};
+import "./D1Progress-CD6wYH0x.js";
+import { t as e } from "./Progress-LN--cv5q.js";
+export { e as D1Progress };

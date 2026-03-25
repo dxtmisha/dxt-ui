@@ -1,4 +1,2 @@
-import { D } from "./index-Dp_TskRA.js";
-export {
-  D as D1Arrow
-};
+import { t as e } from "./Arrow-M-90F1OC.js";
+export { e as D1Arrow };

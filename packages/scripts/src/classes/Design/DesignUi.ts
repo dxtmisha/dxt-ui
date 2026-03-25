@@ -112,6 +112,10 @@ export class DesignUi {
         types: './dist/library/plugin.d.ts',
         default: './dist/plugin.js'
       }
+      packageJson.exports['./media'] = {
+        types: './dist/library/media.d.ts',
+        default: './dist/media.js'
+      }
       packageJson.exports['./style.css'] = './dist/style.css'
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
       packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`

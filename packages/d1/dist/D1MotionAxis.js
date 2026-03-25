@@ -1,4 +1,2 @@
-import { D as r } from "./index-DvBKCMWu.js";
-export {
-  r as D1MotionAxis
-};
+import { t as e } from "./MotionAxis-DkY5i_Gj.js";
+export { e as D1MotionAxis };

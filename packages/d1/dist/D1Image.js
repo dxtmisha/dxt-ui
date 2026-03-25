@@ -1,4 +1,2 @@
-import { D as m } from "./index-CoclgqEF.js";
-export {
-  m as D1Image
-};
+import { t as e } from "./Image-CQ3p93mr.js";
+export { e as D1Image };

@@ -1,4 +1,2 @@
-import { D as a } from "./index-DvM8ec2g.js";
-export {
-  a as D1MotionTransform
-};
+import { t as e } from "./MotionTransform-DHopcUHp.js";
+export { e as D1MotionTransform };

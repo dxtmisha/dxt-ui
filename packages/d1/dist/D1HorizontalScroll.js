@@ -1,4 +1,2 @@
-import { D as l } from "./index-BQAyk2ld.js";
-export {
-  l as D1HorizontalScroll
-};
+import { t as e } from "./HorizontalScroll-Dp4GiHHd.js";
+export { e as D1HorizontalScroll };
