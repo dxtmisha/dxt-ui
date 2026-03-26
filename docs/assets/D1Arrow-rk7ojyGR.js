@@ -1,4 +1,0 @@
-import{j as o}from"./jsx-runtime-u17CrQMm.js";import{useMDXComponents as e}from"./index-DC9WpFni.js";import{M as a,C as i}from"./blocks-DrZFBXp-.js";import{S as m,a as p}from"./StorybookDescriptions-DZXllrFZ.js";import{A as c,a as x,b as n,c as f}from"./D1Arrow.stories-CMTjLezN.js";import"./preload-helper-DV8odVq5.js";import"./_commonjsHelpers-CqkleIqs.js";import"./iframe-okvuAVTt.js";import"./wiki-BeTUR4cU.js";import"./D1Arrow-DqkKSnpA.js";import"./AriaStaticInclude-DRHG8ILX-DsrSPayf.js";function s(r){return o.jsxs(o.Fragment,{children:[o.jsx(a,{of:c}),`
-`,o.jsx(m,{name:n.getName(),description:n.getDescription(),story:x}),`
-`,o.jsx(p,{componentName:"Arrow",type:"arrow"}),`
-`,o.jsx(i,{of:f})]})}function S(r={}){const{wrapper:t}={...e(),...r.components};return t?o.jsx(t,{...r,children:o.jsx(s,{...r})}):s()}export{S as default};
