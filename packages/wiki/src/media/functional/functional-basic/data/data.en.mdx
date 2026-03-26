@@ -1,0 +1,87 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Data & Types'/>
+
+# Data & Types
+
+A set of utilities for reliable type checking, safe data conversion, and efficient manipulation of objects and arrays. These functions help avoid `undefined` errors and simplify the processing of complex structures.
+
+## Type Checking (is...)
+
+Functions for determining the type and content of variables.
+
+```javascript
+import { isFilled, isObject, isFunction } from '@dxtmisha/functional-basic'
+
+// 1. Check for content (non-empty string/array/object)
+isFilled('hello') // true
+isFilled([])      // false
+
+// 2. Object check (includes arrays, excludes null)
+isObject({ a: 1 }) // true
+isObject([1, 2])   // true
+
+// 3. Object check excluding arrays
+isObjectNotArray({ a: 1 }) // true
+isObjectNotArray([1, 2])   // false
+
+// 4. Check if value is a function
+isFunction(() => {}) // true
+```
+
+## Conversion (to...)
+
+Utilities for casting data to the desired type or format.
+
+```javascript
+import { toNumber, toArray, toCamelCase, transformation } from '@dxtmisha/functional-basic'
+
+// 1. Cast to number (with string cleaning support)
+toNumber('100.50 px') // 100.5
+
+// 2. Guaranteed array
+toArray('single') // ['single']
+toArray([1, 2])   // [1, 2]
+
+// 3. Automatic type detection from string
+transformation('true')  // true (boolean)
+transformation('12.5')  // 12.5 (number)
+transformation('{"a":1}') // { a: 1 } (object)
+
+// 4. String formatting
+toCamelCase('background-color') // 'backgroundColor'
+```
+
+## Data Manipulation
+
+Methods for deep copying and safe property access.
+
+```javascript
+import { copyObject, getItemByPath, getObjectNoUndefined } from '@dxtmisha/functional-basic'
+
+// 1. Deep object cloning
+const clone = copyObject(original)
+
+// 2. Safe value retrieval by path
+const value = getItemByPath(myData, 'user.profile.name')
+
+// 3. Cleaning an object of empty values
+const cleaned = getObjectNoUndefined({ a: 1, b: undefined, c: null }, null) 
+// { a: 1, b: undefined } (removes only c: null)
+```
+
+## Array Operations
+
+Utilities for filtering and iteration.
+
+```javascript
+import { uniqueArray, forEach } from '@dxtmisha/functional-basic'
+
+// 1. Removing duplicates
+uniqueArray([1, 2, 2, 3, 1]) // [1, 2, 3]
+
+// 2. Universal iterator (for arrays and objects)
+forEach([10, 20], (value, index) => {
+  console.log(`${index}: ${value}`)
+})
+```

@@ -1,0 +1,74 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# DOM & Elements'/>
+
+# DOM & Elements
+
+A set of utilities for simplifying work with the DOM tree. Includes methods for safe element lookup, dynamic node creation with attributes, smart scrolling, and checking object states within the browser environment.
+
+## Retrieval and Lookup
+
+Functions for extracting elements by selectors or references with automatic runtime environment checks.
+
+```javascript
+import { getElement, domQuerySelector } from '@dxtmisha/functional-basic'
+
+// 1. Get an element by selector or reference
+const container = getElement('#app')
+
+// 2. Search within a specific parent (scoped search)
+const button = domQuerySelector('.btn-submit', container)
+```
+
+## Creation and Attributes
+
+A convenient way to generate HTML structures and manage their properties without using bulky native APIs.
+
+```javascript
+import { createElement, setElementItem } from '@dxtmisha/functional-basic'
+
+// 1. Create a div element inside #app with attributes
+const el = createElement(document.getElementById('app'), 'div', {
+  className: 'p-4 active',
+  innerHTML: '<span>Hello World</span>',
+  id: 'dynamic-node'
+})
+
+// 2. Set/update element properties
+setElementItem(el, 'title', 'Hover tooltip')
+```
+
+## Navigation and Scrolling
+
+Utilities for managing container scrolling and ensuring element visibility.
+
+```javascript
+import { goScrollTo, goScrollSmooth } from '@dxtmisha/functional-basic'
+
+const list = getElement('.scroll-container')
+const item = getElement('.target-item')
+
+// 1. Scroll container to a specific element
+goScrollTo(list, item, 'smooth')
+
+// 2. Smooth scroll the page to the top
+goScrollSmooth(0)
+```
+
+## State Checks
+
+Helper functions for determining element types and their presence in the current document.
+
+```javascript
+import { isInDom, isInput } from '@dxtmisha/functional-basic'
+
+// 1. Check if an element is mounted in the DOM
+if (isInDom(el)) {
+  console.log('Element is visible to the user')
+}
+
+// 2. Check if a node is an input field
+if (isInput(el)) {
+  el.focus()
+}
+```

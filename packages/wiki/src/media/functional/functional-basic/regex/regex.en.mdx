@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Regular Expressions'/>
+
+# Regular Expressions
+
+A set of utilities for simplifying work with regular expressions. Includes methods for safely escaping user input and generating complex patterns for "contains all words" or "contains any word" searches.
+
+## Escaping and Creation
+
+Safely use strings inside regular expressions without the risk of syntax errors.
+
+```javascript
+import { escapeExp, getExp } from '@dxtmisha/functional-basic'
+
+// 1. Escaping special characters (.*+?^${}()|[\]\)
+const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
+
+// 2. Quick RegExp object creation with flags
+const regex = getExp('search-term', 'ig') 
+```
+
+## Search Patterns
+
+Specialized generators for implementing search and filtering functionality.
+
+```javascript
+import { 
+  getSearchExp, 
+  getSeparatingSearchExp, 
+  getExactSearchExp 
+} from '@dxtmisha/functional-basic'
+
+// 1. "Contains all words" search (any order)
+// Good for: "red car buy" -> matches "buy red car"
+const searchAll = getSearchExp('red car')
+
+// 2. "Contains any word" search (OR-based)
+const searchAny = getSeparatingSearchExp('apple orange') // (apple|orange)
+
+// 3. Exact word match
+const exact = getExactSearchExp('React') // Matches 'React', but not 'Reactions'
+```
+
+## Practical Example
+
+Usage in data array filtering:
+
+```javascript
+const search = 'John Developer'
+const regex = getSearchExp(search)
+
+const users = [
+  { name: 'John Doe', job: 'Senior Developer' },
+  { name: 'Peter Johnson', job: 'Designer' }
+]
+
+// Will find the first user, as their data contains both words
+const filtered = users.filter(u => `${u.name} ${u.job}`.match(regex))
+```

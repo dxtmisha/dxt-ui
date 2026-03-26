@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/# Регулярные выражения'/>
+
+# Регулярные выражения
+
+Набор утилит для упрощения работы с регулярными выражениями. Включает методы для безопасного экранирования пользовательского ввода и генерации сложных паттернов для поиска "по всем словам" или "хотя бы по одному".
+
+## Экранирование и создание
+
+Безопасное использование строк внутри регулярных выражений без риска синтаксических ошибок.
+
+```javascript
+import { escapeExp, getExp } from '@dxtmisha/functional-basic'
+
+// 1. Экранирование спецсимволов (.*+?^${}()|[\]\)
+const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
+
+// 2. Быстрое создание объекта RegExp с флагами
+const regex = getExp('search-term', 'ig') 
+```
+
+## Поисковые паттерны
+
+Специализированные генераторы для реализации функционала поиска и фильтрации.
+
+```javascript
+import { 
+  getSearchExp, 
+  getSeparatingSearchExp, 
+  getExactSearchExp 
+} from '@dxtmisha/functional-basic'
+
+// 1. Поиск "содержит все слова" (в любом порядке)
+// Подойдет для: "купить машину красную" -> найдет "красную машину купить"
+const searchAll = getSearchExp('красная машина')
+
+// 2. Поиск "хотя бы одно слово" (через ИЛИ)
+const searchAny = getSeparatingSearchExp('apple orange') // (apple|orange)
+
+// 3. Точное совпадение слова целиком
+const exact = getExactSearchExp('React') // Найдет 'React', но не 'Reactions'
+```
+
+## Практический пример
+
+Использование в фильтрации массивов данных:
+
+```javascript
+const search = 'Иван Разработчик'
+const regex = getSearchExp(search)
+
+const users = [
+  { name: 'Иван Сергеев', job: 'Ведущий разработчик' },
+  { name: 'Петр Иванов', job: 'Дизайнер' }
+]
+
+// Найдет первого пользователя, так как его данные содержат оба слова
+const filtered = users.filter(u => `${u.name} ${u.job}`.match(regex))
+```

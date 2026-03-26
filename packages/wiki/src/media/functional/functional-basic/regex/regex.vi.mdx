@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/# Biểu thức chính quy'/>
+
+# Biểu thức chính quy
+
+Bộ tiện ích để đơn giản hóa công việc với biểu thức chính quy. Bao gồm các phương thức để thoát đầu vào của người dùng một cách an toàn và tạo các mẫu phức tạp cho các tìm kiếm "chứa tất cả các từ" hoặc "chứa bất kỳ từ nào".
+
+## Thoát và Tạo
+
+Sử dụng chuỗi bên trong biểu thức chính quy một cách an toàn mà không có nguy cơ lỗi cú pháp.
+
+```javascript
+import { escapeExp, getExp } from '@dxtmisha/functional-basic'
+
+// 1. Thoát các ký tự đặc biệt (.*+?^${}()|[\]\)
+const safeText = escapeExp('price block ($)') // 'price block \(\$\)'
+
+// 2. Tạo đối tượng RegExp nhanh chóng với các cờ
+const regex = getExp('search-term', 'ig') 
+```
+
+## Mẫu Tìm kiếm
+
+Các bộ tạo chuyên dụng để triển khai chức năng tìm kiếm và lọc.
+
+```javascript
+import { 
+  getSearchExp, 
+  getSeparatingSearchExp, 
+  getExactSearchExp 
+} from '@dxtmisha/functional-basic'
+
+// 1. Tìm kiếm "chứa tất cả các từ" (thứ tự bất kỳ)
+// Phù hợp cho: "mua xe đỏ" -> khớp với "xe đỏ mua"
+const searchAll = getSearchExp('xe đỏ')
+
+// 2. Tìm kiếm "chứa bất kỳ từ nào" (dựa trên OR)
+const searchAny = getSeparatingSearchExp('apple orange') // (apple|orange)
+
+// 3. Khớp từ chính xác
+const exact = getExactSearchExp('React') // Khớp 'React', nhưng không khớp 'Reactions'
+```
+
+## Ví dụ thực tế
+
+Sử dụng trong lọc mảng dữ liệu:
+
+```javascript
+const search = 'John Developer'
+const regex = getSearchExp(search)
+
+const users = [
+  { name: 'John Doe', job: 'Senior Developer' },
+  { name: 'Peter Johnson', job: 'Designer' }
+]
+
+// Sẽ tìm thấy người dùng đầu tiên, vì dữ liệu của họ chứa cả hai từ
+const filtered = users.filter(u => `${u.name} ${u.job}`.match(regex))
+```
