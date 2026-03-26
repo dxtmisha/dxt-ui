@@ -39,13 +39,9 @@ export function fetchFramesSelected(
    */
   const update = (selectedNew: string[]) => {
     selected = selectedNew
+    loading = false
 
-    if (selected.length > 0) {
-      callback(selected)
-      messenger.remove(UI_FIGMA_FRAMES_SELECTED_POST_NAME, update)
-
-      loading = false
-    }
+    callback(selected)
   }
 
   messenger.add(UI_FIGMA_FRAMES_SELECTED_POST_NAME, update)

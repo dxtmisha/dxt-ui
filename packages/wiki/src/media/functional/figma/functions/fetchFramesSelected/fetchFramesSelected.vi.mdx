@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/fetchFramesSelected - Lấy danh sách các frame đang chọn'/>
+
+# `fetchFramesSelected`
+
+Một tiện ích giúp lấy danh sách các frame hiện đang được chọn từ plugin Figma. Nó hỗ trợ lưu bộ nhớ đệm (caching) và ngăn chặn các yêu cầu trùng lặp đồng thời.
+
+**Tham số:**
+- `callback: (selected: string[]) => void` — Hàm sẽ được gọi sau khi nhận được danh sách ID các frame đang chọn.
+
+**Trả về:**
+`void`
+
+```javascript
+import { fetchFramesSelected } from '@dxtmisha/figma'
+
+fetchFramesSelected((selected) => {
+  console.log('Các frame đang chọn:', selected)
+})
+```

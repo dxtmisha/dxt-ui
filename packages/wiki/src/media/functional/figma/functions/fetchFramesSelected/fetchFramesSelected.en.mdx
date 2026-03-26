@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/fetchFramesSelected - Fetching selected frames'/>
+
+# `fetchFramesSelected`
+
+A utility that fetches the currently selected frames from the Figma plugin. It handles caching and prevents concurrent duplicate requests.
+
+**Parameters:**
+- `callback: (selected: string[]) => void` — The function to call once the selected frame IDs are received.
+
+**Returns:**
+`void`
+
+```javascript
+import { fetchFramesSelected } from '@dxtmisha/figma'
+
+fetchFramesSelected((selected) => {
+  console.log('Selected frames:', selected)
+})
+```

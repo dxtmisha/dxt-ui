@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/fetchFramesSelected - Получение выбранных фреймов'/>
+
+# `fetchFramesSelected`
+
+Утилита, которая запрашивает текущие выбранные фреймы из плагина Figma. Она поддерживает кэширование и предотвращает дублирование одновременных запросов.
+
+**Параметры:**
+- `callback: (selected: string[]) => void` — Функция, вызываемая после получения идентификаторов выбранных фреймов.
+
+**Возвращает:**
+`void`
+
+```javascript
+import { fetchFramesSelected } from '@dxtmisha/figma'
+
+fetchFramesSelected((selected) => {
+  console.log('Выбранные фреймы:', selected)
+})
+```
