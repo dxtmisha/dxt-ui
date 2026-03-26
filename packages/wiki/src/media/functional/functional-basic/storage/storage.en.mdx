@@ -1,0 +1,95 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Data storage'/>
+
+# Data storage
+
+The library provides several tools for persistent data storage, including LocalStorage, SessionStorage, Cookies, and URL Hash management.
+
+## Local & Session Storage (DataStorage)
+
+The `DataStorage` class simplifies working with browser storage by providing automatic JSON serialization, global key prefixing via `setPrefix` (defaulting to `ui-storage`), and a TTL caching mechanism. It ensures data consistency application-wide by returning the same instance for each key and gracefully handles SSR environments where the DOM is unavailable.
+
+
+```javascript
+import { DataStorage } from '@dxtmisha/functional-basic'
+
+// Set a global prefix (optional)
+DataStorage.setPrefix('my-app')
+
+// 1. Initialize (localStorage by default)
+const storage = new DataStorage('user_settings')
+
+// 2. Save data (automatically serialized to JSON)
+storage.set({ theme: 'dark', language: 'en' })
+
+// 3. Retrieve data with a default value
+const settings = storage.get({ theme: 'light' })
+```
+
+### Session Storage
+
+To use `sessionStorage` (cleared when the tab is closed), pass `true` as the second argument:
+
+```javascript
+const session = new DataStorage('temp_data', true)
+```
+
+### Caching (TTL)
+
+You can limit data validity by continuous TTL check during the `get` call. Specifying a lifetime (in seconds) allows the library to treat older data as expired without manual cleanup.
+
+```javascript
+// Retrieve data only if it was saved within the last hour (3600 sec)
+const recentData = storage.get(undefined, 3600)
+```
+
+## Cookies (Cookie)
+
+The `Cookie` class provides a clean interface for browser cookies, abstracting the complexities of `document.cookie`. It automatically syncs existing browser data upon initialization, supports security settings like `SameSite`, and ensures reliable deletion via the `remove()` method.
+
+```javascript
+import { Cookie } from '@dxtmisha/functional-basic'
+
+const myCookie = new Cookie('auth_token')
+
+// Set cookie with custom options
+myCookie.set('secure_value', { 
+  age: 3600 * 24, // 1 day
+  sameSite: 'lax'
+})
+
+// Get value
+const token = myCookie.get()
+```
+
+## URL Hash (Hash)
+
+The `Hash` class turns the URL hash into a reactive state store (`#key:value;`), ideal for shareable UI states like active tabs or filters. Data is automatically synchronized with the internal `Hash` object, allowing for instant interface updates as the address bar changes without a page reload.
+
+```javascript
+import { Hash } from '@dxtmisha/functional-basic'
+
+// 1. Set values: URL changes to ...#tab:profile;filter:active
+Hash.set('tab', 'profile')
+Hash.set('filter', 'active')
+
+// 2. Get a value (with an optional default)
+const currentTab = Hash.get('tab', 'home')
+```
+
+### Watching Changes
+
+The `addWatch` method allows you to subscribe to changes of specific URL parameters. This is useful for performing actions when tabs are switched or filters are applied by the user.
+
+```javascript
+// 1. Reactive watching
+const onTabChange = (newTab) => {
+  console.log('User switched to:', newTab)
+}
+
+Hash.addWatch('tab', onTabChange)
+
+// 2. Remove watcher if needed
+// Hash.removeWatch('tab', onTabChange)
+```

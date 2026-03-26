@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/# Tìm kiếm danh sách'/>
+
+# Tìm kiếm danh sách
+
+Lớp `SearchList` là một công cụ mạnh mẽ để tổ chức tìm kiếm và lọc phản hồi trong các mảng đối tượng. Nó đóng gói logic so khớp (matcher), quản lý trạng thái truy vấn và định dạng kết quả, bao gồm cả làm nổi bật các kết quả khớp.
+
+```javascript
+import { SearchList } from '@dxtmisha/functional-basic'
+
+const data = [
+  { id: 1, name: 'Apple', Category: 'Fruit' },
+  { id: 2, name: 'Banana', Category: 'Fruit' }
+]
+
+// 1. Khởi tạo tìm kiếm trên các trường 'name' và 'Category'
+const search = new SearchList(data, ['name', 'Category'])
+
+// 2. Thiết lập giá trị tìm kiếm
+search.setValue('app')
+
+// 3. Lấy danh sách đã lọc
+const results = search.to()
+// [{ item: { id: 1, ... }, selected: true, ... }]
+```
+
+## Quản lý dữ liệu
+
+Bạn có thể thay đổi linh hoạt cả danh sách dữ liệu và tập hợp các cột tìm kiếm mà không cần khởi động lại logic tìm kiếm.
+
+```javascript
+// Cập nhật danh sách dữ liệu
+search.setList(newData)
+
+// Thay đổi các cột mục tiêu
+search.setColumns(['Category'])
+```
+
+## Tinh chỉnh
+
+Hành vi tìm kiếm có thể được quản lý thông qua các tùy chọn, chẳng hạn như buộc hệ thống trả về tất cả các mục trong khi đánh dấu các kết quả khớp bằng cờ `selected`.
+
+```javascript
+const search = new SearchList(data, ['name'], '', {
+  returnEverything: true // Trả về toàn bộ danh sách, không chỉ các kết quả khớp
+})
+
+search.setValue('apple')
+const list = search.to() 
+// list sẽ chứa tất cả các mục, nhưng 'Apple' sẽ có selected: true
+```

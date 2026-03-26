@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Icons'/>
+
+# Icons
+
+The `Icons` class is a centralized registry for registering, storing, and lazy-loading icons. It manages asset paths, supports dynamic imports, and synchronizes state across different parts of the application via a global object.
+
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// 1. Setting the base path (default is /icons/)
+Icons.setUrl('/assets/icons/')
+
+// 2. Registering icons
+Icons.add('home', 'home-icon.svg')
+Icons.addByList({
+  'search': 'search.svg',
+  'close': 'close.svg'
+})
+
+// 3. Checking and retrieving
+if (Icons.is('home')) {
+  const path = await Icons.get('home')
+}
+```
+
+## Lazy Loading
+
+A key feature is the support for `Promise` and functions, allowing icons to be loaded only when they are actually needed, reducing the initial bundle size.
+
+```javascript
+// Registration via dynamic import
+Icons.add('user', () => import('./user.svg'))
+
+// Automatic wait for loading when calling get
+const iconData = await Icons.get('user')
+```
+
+## Global Synchronization
+
+The tool automatically maintains data relevance in `window.__UI_ICON`. This allows icons to be registered in one place (e.g., during app initialization) and accessed instantly anywhere in the code.
+
+```javascript
+// Adding an icon relative to the global path
+Icons.addGlobal('logo', 'logo.svg')
+```

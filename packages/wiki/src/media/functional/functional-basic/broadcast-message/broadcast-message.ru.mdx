@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/# Межвкладочные сообщения'/>
+
+# Межвкладочные сообщения
+
+Класс `BroadcastMessage` является удобной оберткой над нативным API `BroadcastChannel`, позволяя синхронизировать данные и передавать сообщения между различными вкладками или окнами браузера в рамках одного домена.
+
+## Базовое использование
+
+Для начала работы создайте экземпляр класса, указав имя канала и функцию обратного вызова (callback) для обработки входящих сообщений.
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
+
+// 1. Инициализация канала
+const messenger = new BroadcastMessage('my-feature-channel', (event) => {
+  console.log('Получено сообщение:', event.data)
+})
+
+// 2. Отправка сообщения в другие вкладки
+messenger.post({ action: 'update', id: 123 })
+```
+
+Библиотека автоматически добавляет уникальный префикс к имени канала для изоляции сообщений разных сессий приложения.
+
+## Обработка сообщений
+
+Вы можете установить или обновить обработчики сообщений после инициализации с помощью следующих методов:
+
+- `setCallback(callback)` — устанавливает основной обработчик входящих сообщений.
+- `setCallbackError(callback)` — устанавливает обработчик ошибок сообщений (например, при проблемах с десериализацией).
+
+```javascript
+messenger.setCallback((event) => {
+  if (event.data.type === 'REFRESH') {
+    window.location.reload()
+  }
+})
+```
+
+## Дополнительные возможности
+
+Если вам нужен прямой доступ к нативному инстансу `BroadcastChannel`, используйте метод `getChannel()`.
+
+```javascript
+const nativeChannel = messenger.getChannel()
+
+if (nativeChannel) {
+  console.log('Имя нативного канала:', nativeChannel.name)
+}
+```

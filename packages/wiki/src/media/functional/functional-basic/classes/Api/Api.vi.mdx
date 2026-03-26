@@ -153,6 +153,77 @@ Api.get({ path: 'users', controller }).catch(e => {
 controller.abort()
 ```
 
+## Hook vòng đời (Lifecycle Hooks)
+
+Các hook cho phép bạn chèn logic toàn cục sẽ được tự động thực thi cho mọi yêu cầu mạng. Đây là một công cụ mạnh mẽ để giải quyết các tác vụ như:
+- Tự động thêm token xác thực động.
+- Ghi log tập trung hoạt động mạng.
+- Tự động làm mới token hết hạn (Refresh Token).
+- Thông báo lỗi toàn cục cho người dùng.
+
+### Chuẩn bị yêu cầu (`setPreparation`)
+
+Phương thức `setPreparation` thiết lập một hàm callback được gọi ngay trước khi yêu cầu được gửi đến máy chủ (trước khi thực hiện lệnh `fetch` gốc).
+
+**Đặc điểm hoạt động:**
+- **Thứ tự thực thi**: Nếu nhiều yêu cầu được bắt đầu đồng thời, thư viện đảm bảo rằng hook chuẩn bị sẽ được thực thi **tuần tự**. Tất cả các yêu cầu tiếp theo sẽ đợi hook hiện tại kết thúc trong chế độ chờ (với khoảng thời gian thăm dò 160ms). Điều này ngăn chặn xung đột, ví dụ như khi nhiều yêu cầu đồng thời cố gắng làm mới token.
+- **Tham số**: Nhận đối tượng `apiFetch`, chứa tất cả các cài đặt yêu cầu hiện tại. Bạn có thể sửa đổi đối tượng này (ví dụ: thêm tiêu đề hoặc sửa đổi thân yêu cầu).
+- **Trả về**: `Promise<void>`.
+
+```javascript
+Api.setPreparation(async (apiFetch) => {
+  // Ví dụ: thêm tiêu đề động
+  if (apiFetch.auth) {
+    const token = await authStore.getToken()
+    apiFetch.headers = {
+      ...apiFetch.headers,
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  
+  console.log(`[API] Đang chuẩn bị yêu cầu: ${apiFetch.method} ${apiFetch.path}`)
+})
+```
+
+### Kết thúc yêu cầu (`setEnd`)
+
+Phương thức `setEnd` thiết lập một hàm callback được gọi sau khi nhận được phản hồi từ máy chủ, nhưng trước khi dữ liệu được chuyển đến mã gọi.
+
+**Tham số:**
+- `query: Response` — đối tượng phản hồi Fetch API gốc.
+- `apiFetch: ApiFetch` — đối tượng tham số đã dùng để thực hiện yêu cầu.
+
+**Trả về:** `Promise<ApiPreparationEnd>`. Đối tượng kết quả có thể chứa các trường sau:
+- `reset?: boolean` — nếu được đặt thành `true`, thư viện sẽ hủy chuỗi hiện tại và **thực hiện lại yêu cầu** (đệ quy). Toàn bộ quá trình chuẩn bị và thực thi sẽ được khởi động lại. Việc này được dùng để tự động xử lý quyền truy cập đã được làm mới.
+- `data?: any` — cho phép bạn ghi đè dữ liệu mà phương thức API trả về. Nếu trường này được chỉ định, cơ chế đọc phản hồi tiêu chuẩn (JSON/văn bản) sẽ bị bỏ qua.
+
+```javascript
+Api.setEnd(async (response, apiFetch) => {
+  // Ví dụ: tự động cập nhật Refresh Token
+  if (response.status === 401) {
+    const isSuccess = await authStore.refresh()
+    
+    if (isSuccess) {
+      // Thử lại yêu cầu với token mới
+      return { reset: true }
+    }
+  }
+
+  // Ví dụ: thông báo lỗi toàn cục
+  if (response.status >= 500) {
+    notification.error('Dịch vụ hiện không khả dụng')
+  }
+
+  return {}
+})
+```
+
+### Tắt Hook cho một yêu cầu cụ thể
+
+Bạn có thể tắt chọn lọc các hook toàn cục trong đối tượng `ApiFetch`:
+- `globalPreparation: false` — bỏ qua việc thực thi hook `setPreparation`.
+- `globalEnd: false` — bỏ qua việc thực thi hook `setEnd`.
+
 ## Giả lập phản hồi (ApiResponse)
 
 Trình quản lý giả lập `ApiResponse` (có thể truy cập thông qua `Api.getResponse()`) cho phép cấu hình các phản hồi mẫu (mock) cho những đường dẫn cụ thể. Hệ thống này vô cùng hữu ích khi phát triển giao diện (UI frontend) trước khi có API backend hoàn chỉnh hoặc khi cần viết test.

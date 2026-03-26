@@ -1,0 +1,47 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/# Icons'/>
+
+# Icons
+
+Lớp `Icons` là một registry tập trung để đăng ký, lưu trữ và tải chậm (lazy-loading) các icon. Nó quản lý đường dẫn tài nguyên, hỗ trợ import động và đồng bộ hóa trạng thái giữa các phần khác nhau của ứng dụng thông qua một đối tượng toàn cục.
+
+```javascript
+import { Icons } from '@dxtmisha/functional-basic'
+
+// 1. Thiết lập đường dẫn cơ sở (mặc định là /icons/)
+Icons.setUrl('/assets/icons/')
+
+// 2. Đăng ký icon
+Icons.add('home', 'home-icon.svg')
+Icons.addByList({
+  'search': 'search.svg',
+  'close': 'close.svg'
+})
+
+// 3. Kiểm tra và lấy dữ liệu
+if (Icons.is('home')) {
+  const path = await Icons.get('home')
+}
+```
+
+## Tải chậm (Lazy Loading)
+
+Một tính năng chính là hỗ trợ `Promise` và các hàm, cho phép các icon chỉ được tải khi chúng thực sự cần thiết, giúp giảm dung lượng tải ban đầu của ứng dụng.
+
+```javascript
+// Đăng ký qua import động
+Icons.add('user', () => import('./user.svg'))
+
+// Tự động đợi khi gọi get
+const iconData = await Icons.get('user')
+```
+
+## Đồng bộ hóa toàn cục
+
+Công cụ tự động duy trì tính phù hợp của dữ liệu trong `window.__UI_ICON`. Điều này cho phép đăng ký icon ở một nơi (ví dụ: khi khởi tạo ứng dụng) và truy cập ngay lập tức ở bất kỳ đâu trong mã nguồn.
+
+```javascript
+// Thêm icon tương đối với đường dẫn toàn cục
+Icons.addGlobal('logo', 'logo.svg')
+```

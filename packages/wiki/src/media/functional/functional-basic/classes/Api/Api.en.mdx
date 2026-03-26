@@ -153,6 +153,77 @@ Api.get({ path: 'users', controller }).catch(e => {
 controller.abort()
 ```
 
+## Lifecycle Hooks
+
+Hooks allow you to inject global logic that will automatically execute for every network request. This is a powerful tool for tasks such as:
+- Dynamically adding authorization tokens.
+- Centralized logging of network activity.
+- Automatically refreshing expired tokens (Refresh Token).
+- Global user notification of errors.
+
+### Request Preparation (`setPreparation`)
+
+The `setPreparation` method sets a callback function that is called immediately before a request is sent to the server (before the native `fetch` is executed).
+
+**Key Features:**
+- **Execution Order**: If multiple requests are started simultaneously, the library ensures that the preparation hook is executed **sequentially**. All subsequent requests will wait for the current hook to finish in wait mode (with a 160ms polling interval). This prevents conflicts, such as when multiple concurrent requests attempt to refresh a token.
+- **Parameters**: Receives the `apiFetch` object, which contains all current request settings. You can modify this object (e.g., adding headers or modifying the request body).
+- **Returns**: `Promise<void>`.
+
+```javascript
+Api.setPreparation(async (apiFetch) => {
+  // Example: adding a dynamic header
+  if (apiFetch.auth) {
+    const token = await authStore.getToken()
+    apiFetch.headers = {
+      ...apiFetch.headers,
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  
+  console.log(`[API] Preparing request: ${apiFetch.method} ${apiFetch.path}`)
+})
+```
+
+### Request Completion (`setEnd`)
+
+The `setEnd` method sets a callback function that is called after receiving a response from the server, but before the data is passed to the calling code.
+
+**Parameters:**
+- `query: Response` — the native Fetch API response object.
+- `apiFetch: ApiFetch` — the parameters object with which the request was performed.
+
+**Returns:** `Promise<ApiPreparationEnd>`. The result object can contain the following fields:
+- `reset?: boolean` — if set to `true`, the library will abort the current chain and **execute the request again** (recursively). The entire process of preparation and execution will be restarted. This is used for automatic handling of refreshed access rights.
+- `data?: any` — allows you to override the data returned by the API method. If this field is specified, the standard response reading mechanism (JSON/text) will be ignored.
+
+```javascript
+Api.setEnd(async (response, apiFetch) => {
+  // Example: automatic Refresh Token update
+  if (response.status === 401) {
+    const isSuccess = await authStore.refresh()
+    
+    if (isSuccess) {
+      // Retry the request with the new token
+      return { reset: true }
+    }
+  }
+
+  // Example: global error notification
+  if (response.status >= 500) {
+    notification.error('Service is temporarily unavailable')
+  }
+
+  return {}
+})
+```
+
+### Disabling Hooks for a Specific Request
+
+You can selectively disable global hooks in the `ApiFetch` object:
+- `globalPreparation: false` — skip the `setPreparation` hook execution.
+- `globalEnd: false` — skip the `setEnd` hook execution.
+
 ## Response Emulation (ApiResponse)
 
 The emulator manager `ApiResponse` (accessible via `Api.getResponse()`) allows configuring mock responses for specified paths. This is incredibly useful during frontend UI development without a completely ready backend API or for writing test fixtures.

@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Translation'/>
+
+# Translation
+
+The `Translate` class is a centralized system for managing multi-language content. It supports automatic fetching of missing keys via an API, caching, variable interpolation, and a multi-level fallback system.
+
+```javascript
+import { Translate } from '@dxtmisha/functional-basic'
+
+// 1. API Configuration (default is /api/translate)
+Translate.setUrl('/api/v1/dictionary')
+
+// 2. Retrieving translation (Async)
+// If the key is not in cache, it will be automatically requested from the server
+const text = await Translate.get('welcome_message', { name: 'Admin' })
+
+// 3. Synchronous retrieval (from cache)
+const label = Translate.getSync('save_button')
+```
+
+## Interpolation
+
+The class supports a flexible insertion system via the `applyTemplate` function. You can use named keys, positional markers, or functional wrappers.
+
+### Keys and Markers
+Both curly `{}` and square `[]` brackets are supported for named keys, along with `%` markers for sequential arguments.
+
+```javascript
+// 1. Named keys (object)
+// Text: "Hello, {name}!"
+await Translate.get('hi', { name: 'Alex' }) // Hello, Alex!
+
+// 2. Positional markers (array)
+// Text: "File %d of %e"
+Translate.getSync('status', false, ['1', '10']) // File 1 of 10
+// %d — 1st element, %e — 2nd, %f — 3rd, and so on.
+```
+
+### Tagging (Wrappers)
+Allows wrapping text in HTML tags or additional components. The text inside the tag is injected into the `{content}` variable.
+
+```javascript
+// Text: "{link}Read more{/link} in the source."
+const replacement = { 
+  link: '<a href="/news">{content}</a>' 
+}
+Translate.getSync('more', false, replacement)
+// <a href="/news">Read more</a> in the source.
+```
+
+## Data Management
+
+You can manually add translations to the registry, which is useful for static constants or initialization from local files.
+
+```javascript
+// Adding a list of translations
+Translate.addSync({
+  'en-button_ok': 'Ok',
+  'en-button_cancel': 'Cancel'
+})
+
+// Batch pre-loading keys from the server
+await Translate.add(['title', 'description', 'footer_text'])
+```
+
+## Search Hierarchy
+
+When looking up a translation, the system follows a strict order:
+1. Current locale (e.g., `en-US-key`)
+2. Current language (`en-key`)
+3. Global prefix (`global-key`)

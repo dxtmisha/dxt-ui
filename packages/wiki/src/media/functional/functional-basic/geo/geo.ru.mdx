@@ -1,0 +1,99 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/# Geo и форматирование'/>
+
+# Geo и форматирование
+
+Инструменты для управления локализацией (i18n), географическими данными и умного форматирования. Система автоматически определяет настройки пользователя и обеспечивает корректное отображение валют, дат и чисел по государственным стандартам.
+
+## Локализация (Geo)
+Управление глобальным состоянием страны, языка и временной зоны. Поддерживает автоопределение по браузеру и сохранение в сессии.
+
+```javascript
+import { Geo } from '@dxtmisha/functional-basic'
+
+// Глобальные настройки
+Geo.set('en-US', true)      // Установить локаль и сохранить в браузере
+Geo.setTimezone('+05:00')   // Переопределить временную зону
+Geo.getCountry()            // 'US'
+
+// Работа со справочниками
+const list = Geo.getList()  // Полный список стран и языков
+const current = Geo.getItem() // Объект с данными текущей локали
+const hasRU = Geo.hasCountry('RU') // Проверка поддержки страны
+```
+
+## Форматирование (GeoIntl)
+Универсальный движок для работы с данными на основе нативного `Intl`.
+
+```javascript
+import { GeoIntl } from '@dxtmisha/functional-basic'
+
+const intl = GeoIntl.getInstance()
+
+// Числа и валюты
+intl.currency(1000, 'USD')          // '$1,000.00'
+intl.percent(0.15)                  // '15%'
+
+// Даты и время
+intl.date(new Date(), 'full')       // Полноформатная дата
+intl.relative(new Date() - 3600000) // '1 час назад'
+intl.relativeLimit(pastDate, 7)     // Относительно (до 7 дней) или дата
+
+// Утилиты
+intl.plural(5, 'яблоко|яблока|яблок') // Склонение
+intl.sizeFile(1024 * 1024)           // '1 МБ'
+intl.sort(['яблоко', 'Ёж', 'арбуз'])  // Умная сортировка списка
+intl.displayNames('DE', 'region')    // 'Германия' (локализовано)
+```
+
+## Флаги стран (GeoFlag)
+Получение иконок флагов и названий стран на родном языке или языке системы.
+
+```javascript
+import { GeoFlag } from '@dxtmisha/functional-basic'
+
+const geoFlag = new GeoFlag('ru-RU')
+
+// Данные конкретной страны
+const ru = geoFlag.get('RU') // { icon: 'f-ru', country: 'Россия', area: '7', ... }
+
+// Список имен на языке оригинала
+const native = geoFlag.getNational(['DE']) 
+// [{ country: 'Германия', nationalCountry: 'Deutschland', ... }]
+```
+
+## Телефоны (GeoPhone)
+Автоопределение страны по номеру и работа с международными масками.
+
+```javascript
+import { GeoPhone } from '@dxtmisha/functional-basic'
+
+// Умная детекция
+const { item, phone } = GeoPhone.getByPhone('79001234567') 
+// item — данные страны (RU), phone — очищенный номер
+
+// Форматирование
+GeoPhone.toMask(phone, item.mask) // '+7 (900) 123-45-67'
+GeoPhone.clear(' +7 (900) 123-45-67 ') // '79001234567' (очистка)
+```
+
+## Списки (Formatters)
+Массовое форматирование массивов объектов. Автоматически создает новые свойства с суффиксом `Format`.
+
+```javascript
+import { Formatters } from '@dxtmisha/functional-basic'
+
+const options = {
+  price: { type: 'currency', options: 'USD' },
+  birthday: { type: 'date' },
+  'user.name': { type: 'name' }, // Объединяет firstName/lastName
+  count: { type: 'plural', options: 'штука|штуки|штук' },
+  status: { 
+    transformation: (v) => v === 1 ? 'Ок' : 'Ошибка' 
+  }
+}
+
+// transformed — копия data с полями priceFormat, birthdayFormat и т.д.
+const transformed = new Formatters(options, data).to()
+```

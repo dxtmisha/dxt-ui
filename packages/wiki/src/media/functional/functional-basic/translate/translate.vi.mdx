@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/# Dịch thuật'/>
+
+# Dịch thuật
+
+Lớp `Translate` là một hệ thống tập trung để quản lý nội dung đa ngôn ngữ. Nó hỗ trợ tự động lấy các khóa còn thiếu thông qua API, lưu trữ caching, chèn biến và hệ thống dự phòng đa cấp (fallback).
+
+```javascript
+import { Translate } from '@dxtmisha/functional-basic'
+
+// 1. Cấu hình API (mặc định là /api/translate)
+Translate.setUrl('/api/v1/dictionary')
+
+// 2. Lấy bản dịch (Bất đồng bộ)
+// Nếu khóa không có trong cache, nó sẽ tự động được yêu cầu từ máy chủ
+const text = await Translate.get('welcome_message', { name: 'Admin' })
+
+// 3. Lấy bản dịch đồng bộ (từ cache)
+const label = Translate.getSync('save_button')
+```
+
+## Chèn biến (Interpolation)
+
+Lớp hỗ trợ hệ thống chèn linh hoạt thông qua hàm `applyTemplate`. Bạn có thể sử dụng các khóa có tên, dấu mốc vị trí hoặc các trình bao bọc chức năng.
+
+### Khóa và Dấu mốc
+Cả dấu ngoặc nhọn `{}` và ngoặc vuông `[]` đều được hỗ trợ cho các khóa có tên, cùng với dấu `%` cho các đối số theo thứ tự.
+
+```javascript
+// 1. Khóa có tên (đối tượng)
+// Văn bản: "Xin chào, {name}!"
+await Translate.get('hi', { name: 'Alex' }) // Xin chào, Alex!
+
+// 2. Dấu mốc vị trí (mảng)
+// Văn bản: "Tệp %d trên %e"
+Translate.getSync('status', false, ['1', '10']) // Tệp 1 trên 10
+// %d — phần tử thứ 1, %e — thứ 2, %f — thứ 3, v.v.
+```
+
+### Gắn thẻ (Tagging)
+Cho phép bao bọc văn bản trong các thẻ HTML hoặc các thành phần bổ sung. Văn bản bên trong thẻ sẽ được đưa vào biến `{content}`.
+
+```javascript
+// Văn bản: "{link}Đọc thêm{/link} tại nguồn."
+const replacement = { 
+  link: '<a href="/news">{content}</a>' 
+}
+Translate.getSync('more', false, replacement)
+// <a href="/news">Đọc thêm</a> tại nguồn.
+```
+
+## Quản lý dữ liệu
+
+Bạn có thể thêm các bản dịch vào registry một cách thủ công, điều này hữu ích cho các hằng số tĩnh hoặc khởi tạo từ các tệp cục bộ.
+
+```javascript
+// Thêm danh sách bản dịch
+Translate.addSync({
+  'vi-button_ok': 'Ok',
+  'vi-button_cancel': 'Hủy'
+})
+
+// Tải trước hàng loạt các khóa từ máy chủ
+await Translate.add(['title', 'description', 'footer_text'])
+```
+
+## Thứ tự tìm kiếm
+
+Khi tìm kiếm một bản dịch, hệ thống sẽ tuân theo một thứ tự nghiêm ngặt:
+1. Locale hiện tại (ví dụ: `vi-VN-key`)
+2. Ngôn ngữ hiện tại (`vi-key`)
+3. Tiền tố toàn cục (`global-key`)

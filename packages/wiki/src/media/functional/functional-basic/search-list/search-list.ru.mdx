@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/# Поиск по списку'/>
+
+# Поиск по списку
+
+Класс `SearchList` — это мощный инструмент для организации реактивного поиска и фильтрации в массивах объектов. Он инкапсулирует логику сопоставителя (matcher), управление состоянием запроса и форматирование результатов, включая подсветку совпадений.
+
+```javascript
+import { SearchList } from '@dxtmisha/functional-basic'
+
+const data = [
+  { id: 1, name: 'Apple', Category: 'Fruit' },
+  { id: 2, name: 'Banana', Category: 'Fruit' }
+]
+
+// 1. Инициализация поиска по полям 'name' и 'Category'
+const search = new SearchList(data, ['name', 'Category'])
+
+// 2. Установка значения поиска
+search.setValue('app')
+
+// 3. Получение отфильтрованного списка
+const results = search.to()
+// [{ item: { id: 1, ... }, selected: true, ... }]
+```
+
+## Управление данными
+
+Вы можете динамически изменять как сам список данных, так и набор столбцов, по которым производится поиск, без перезапуска всей логики.
+
+```javascript
+// Обновление списка данных
+search.setList(newData)
+
+// Изменение целевых столбцов
+search.setColumns(['Category'])
+```
+
+## Тонкая настройка
+
+Через опции можно управлять поведением поиска, например, заставить систему возвращать все элементы, помечая совпавшие через флаг `selected`.
+
+```javascript
+const search = new SearchList(data, ['name'], '', {
+  returnEverything: true // Возвращать весь список, а не только совпадения
+})
+
+search.setValue('apple')
+const list = search.to() 
+// list будет содержать все элементы, но у 'Apple' будет selected: true
+```

@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Cross-tab messaging'/>
+
+# Cross-tab messaging
+
+The `BroadcastMessage` class provides a simple wrapper around the native `BroadcastChannel` API for synchronization and communication between different browser tabs or windows within the same origin.
+
+## Basic Usage
+
+To start communicating, create an instance of the class by specifying a channel name and a callback function to handle incoming messages.
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
+
+// 1. Initialize the channel
+const messenger = new BroadcastMessage('my-feature-channel', (event) => {
+  console.log('Received message:', event.data)
+})
+
+// 2. Send a message to other tabs
+messenger.post({ action: 'update', id: 123 })
+```
+
+The library automatically prefixes channel names with a unique session ID to ensure that messages from different application instances do not conflict.
+
+## Handling Messages
+
+You can update or set callbacks after initialization using the following methods:
+
+- `setCallback(callback)` — sets the main message handler.
+- `setCallbackError(callback)` — sets a handler for message errors (e.g., serialization issues).
+
+```javascript
+messenger.setCallback((event) => {
+  if (event.data.type === 'REFRESH') {
+    window.location.reload()
+  }
+})
+```
+
+## Advanced Access
+
+If you need direct access to the underlying `BroadcastChannel` instance, use the `getChannel()` method.
+
+```javascript
+const nativeChannel = messenger.getChannel()
+
+if (nativeChannel) {
+  console.log('Current channel name:', nativeChannel.name)
+}
+```

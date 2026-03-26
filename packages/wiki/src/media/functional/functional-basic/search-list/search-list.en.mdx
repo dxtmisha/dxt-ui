@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Search List'/>
+
+# Search List
+
+The `SearchList` class is a powerful tool for organizing reactive search and filtering within object arrays. It encapsulates matcher logic, query state management, and result formatting, including match highlighting.
+
+```javascript
+import { SearchList } from '@dxtmisha/functional-basic'
+
+const data = [
+  { id: 1, name: 'Apple', Category: 'Fruit' },
+  { id: 2, name: 'Banana', Category: 'Fruit' }
+]
+
+// 1. Initializing search on 'name' and 'Category' fields
+const search = new SearchList(data, ['name', 'Category'])
+
+// 2. Setting the search value
+search.setValue('app')
+
+// 3. Retrieving the filtered list
+const results = search.to()
+// [{ item: { id: 1, ... }, selected: true, ... }]
+```
+
+## Data Management
+
+You can dynamically change both the data list and the set of search columns without needing to restart the search logic.
+
+```javascript
+// Updating the data list
+search.setList(newData)
+
+// Changing target columns
+search.setColumns(['Category'])
+```
+
+## Fine-Tuning
+
+Search behavior can be managed via options, such as forcing the system to return all items while marking matches with a `selected` flag.
+
+```javascript
+const search = new SearchList(data, ['name'], '', {
+  returnEverything: true // Return the entire list, not just matches
+})
+
+search.setValue('apple')
+const list = search.to() 
+// list will contain all items, but 'Apple' will have selected: true
+```

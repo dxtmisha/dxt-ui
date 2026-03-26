@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/# Truyền tin giữa các tab'/>
+
+# Truyền tin giữa các tab
+
+Lớp `BroadcastMessage` cung cấp một wrapper đơn giản cho API `BroadcastChannel` gốc, cho phép đồng bộ hóa dữ liệu và truyền tin nhắn giữa các tab hoặc cửa sổ trình duyệt khác nhau trong cùng một origin.
+
+## Cách sử dụng cơ bản
+
+Để bắt đầu giao tiếp, hãy tạo một instance của lớp bằng cách chỉ định tên kênh và một hàm callback để xử lý các tin nhắn đến.
+
+```javascript
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
+
+// 1. Khởi tạo kênh
+const messenger = new BroadcastMessage('my-feature-channel', (event) => {
+  console.log('Nhận được tin nhắn:', event.data)
+})
+
+// 2. Gửi tin nhắn đến các tab khác
+messenger.post({ action: 'update', id: 123 })
+```
+
+Thư viện tự động thêm tiền tố (prefix) duy nhất vào tên kênh để đảm bảo rằng tin nhắn từ các phiên ứng dụng khác nhau không bị xung đột.
+
+## Xử lý tin nhắn
+
+Bạn có thể cập nhật hoặc thiết lập các callback sau khi khởi tạo bằng các phương thức sau:
+
+- `setCallback(callback)` — thiết lập trình xử lý tin nhắn chính.
+- `setCallbackError(callback)` — thiết lập trình xử lý cho các lỗi tin nhắn (ví dụ: vấn đề tuần tự hóa).
+
+```javascript
+messenger.setCallback((event) => {
+  if (event.data.type === 'REFRESH') {
+    window.location.reload()
+  }
+})
+```
+
+## Truy cập nâng cao
+
+Nếu bạn cần truy cập trực tiếp vào instance `BroadcastChannel` gốc, hãy sử dụng phương thức `getChannel()`.
+
+```javascript
+const nativeChannel = messenger.getChannel()
+
+if (nativeChannel) {
+  console.log('Tên kênh gốc hiện tại:', nativeChannel.name)
+}
+```

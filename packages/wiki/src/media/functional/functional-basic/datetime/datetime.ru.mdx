@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/# Работа с датами'/>
+
+# Работа с датами
+
+Класс `Datetime` — это продвинутый инструмент для манипуляции, навигации и локализованного форматирования дат. Он расширяет стандартный `Date`, добавляя умные методы перемещения (по дням, неделям, месяцам) и бесшовную интеграцию с системой интернационализации.
+
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// 1. Инициализация (из строки, числа или объекта Date)
+const date = new Datetime('2024-03-21')
+
+// 2. Локализованное форматирование
+date.locale()           // '21.03.2024' (зависит от Geo)
+date.localeMonth('long') // 'март'
+
+// 3. Получение часового пояса
+date.getTimeZone() // '+03:00'
+```
+
+## Манипуляция и сдвиги
+
+Методы `moveBy...` позволяют изменять дату относительно текущего значения. Все методы поддерживают цепочки вызовов (chaining).
+
+```javascript
+const date = new Datetime()
+
+// Сдвиг на 2 года вперед и 1 месяц назад
+date.moveByYear(2).moveByMonth(-1)
+
+// Установка конкретных значений
+date.setDay(15).setHour(12)
+```
+
+## Навигация
+
+Специальные методы для быстрого перехода к границам периодов (начало месяца, следующая неделя и т.д.).
+
+```javascript
+const date = new Datetime()
+
+// Переход к первому дню текущего месяца
+date.moveDayFirst()
+
+// Переход к первому дню следующего месяца
+date.moveMonthNext()
+
+// Переход к первому дню недели (учитывает локаль)
+date.moveWeekdayFirst()
+```
+
+## Клонирование (Иммутабельность)
+
+Если вам нужно получить измененную дату, не меняя исходный объект, используйте методы `clone...`.
+
+```javascript
+const start = new Datetime()
+const nextMonth = start.cloneMonthNext() // Новый объект Datetime
+
+console.log(start.locale())     // Сегодня
+console.log(nextMonth.locale()) // +1 месяц
+```

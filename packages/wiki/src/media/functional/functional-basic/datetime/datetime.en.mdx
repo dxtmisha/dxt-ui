@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Datetime'/>
+
+# Datetime
+
+The `Datetime` class is an advanced tool for date manipulation, navigation, and localized formatting. It extends the standard `Date` object by adding smart movement methods (by days, weeks, months) and seamless integration with the internationalization system.
+
+```javascript
+import { Datetime } from '@dxtmisha/functional-basic'
+
+// 1. Initialization (from string, number, or Date object)
+const date = new Datetime('2024-03-21')
+
+// 2. Localized formatting
+date.locale()           // '03/21/2024' (depends on Geo)
+date.localeMonth('long') // 'March'
+
+// 3. Get timezone info
+date.getTimeZone() // '+03:00'
+```
+
+## Manipulation and Offsets
+
+The `moveBy...` methods allow you to modify the date relative to its current value. All methods support method chaining.
+
+```javascript
+const date = new Datetime()
+
+// Move 2 years forward and 1 month back
+date.moveByYear(2).moveByMonth(-1)
+
+// Set specific values
+date.setDay(15).setHour(12)
+```
+
+## Navigation
+
+Specialized methods for quick navigation to period boundaries (start of month, next week, etc.).
+
+```javascript
+const date = new Datetime()
+
+// Move to the first day of the current month
+date.moveDayFirst()
+
+// Move to the first day of the next month
+date.moveMonthNext()
+
+// Move to the first day of the week (locale-aware)
+date.moveWeekdayFirst()
+```
+
+## Cloning (Immutability)
+
+If you need to derive a modified date without changing the original object, use the `clone...` methods.
+
+```javascript
+const start = new Datetime()
+const nextMonth = start.cloneMonthNext() // A new Datetime object
+
+console.log(start.locale())     // Today
+console.log(nextMonth.locale()) // +1 month
+```

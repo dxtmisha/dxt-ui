@@ -1,0 +1,95 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/# Lưu trữ dữ liệu'/>
+
+# Lưu trữ dữ liệu
+
+Thư viện cung cấp bộ công cụ để lưu trữ dữ liệu bền vững, bao gồm quản lý LocalStorage, SessionStorage, Cookie và URL Hash.
+
+## Bộ nhớ cục bộ & phiên (DataStorage)
+
+Lớp `DataStorage` giúp đơn giản hóa việc làm việc với bộ nhớ trình duyệt bằng cách tự động hóa tuần tự hóa JSON, quản lý tiền tố key toàn cục thông qua `setPrefix` (mặc định là `ui-storage`) và cơ chế TTL cache. Nó đảm bảo tính nhất quán của dữ liệu trên toàn hệ thống bằng cách trả về cùng một instance cho mỗi key và xử lý mượt mà trong môi trường SSR nơi không có sẵn DOM.
+
+
+```javascript
+import { DataStorage } from '@dxtmisha/functional-basic'
+
+// Thiết lập tiền tố toàn cục (tùy chọn)
+DataStorage.setPrefix('my-app')
+
+// 1. Khởi tạo (mặc định là localStorage)
+const storage = new DataStorage('user_settings')
+
+// 2. Lưu dữ liệu (tự động chuyển sang JSON)
+storage.set({ theme: 'dark', language: 'vi' })
+
+// 3. Lấy dữ liệu với giá trị mặc định
+const settings = storage.get({ theme: 'light' })
+```
+
+### Bộ nhớ phiên (Session Storage)
+
+Để sử dụng `sessionStorage` (dữ liệu bị xóa khi đóng tab), hãy truyền `true` làm đối số thứ hai:
+
+```javascript
+const session = new DataStorage('temp_data', true)
+```
+
+### Lưu trữ tạm thời (TTL)
+
+Bạn có thể giới hạn tính hợp lệ của dữ liệu bằng cơ chế kiểm tra TTL liên tục trong lệnh gọi `get`. Việc chỉ định thời gian tồn tại (tính bằng giây) cho phép thư viện coi dữ liệu cũ là hết hạn mà không cần dọn dẹp thủ công.
+
+```javascript
+// Chỉ lấy dữ liệu nếu nó được lưu trong vòng 1 giờ qua (3600 giây)
+const recentData = storage.get(undefined, 3600)
+```
+
+## Cookie (Cookie)
+
+Lớp `Cookie` cung cấp một giao diện sạch sẽ để quản lý cookie trình duyệt, loại bỏ sự phức tạp của `document.cookie`. Nó tự động đồng bộ hóa dữ liệu trình duyệt hiện có khi khởi tạo, hỗ trợ các cài đặt bảo mật như `SameSite` và đảm bảo việc xóa cookie tin cậy thông qua phương thức `remove()`.
+
+```javascript
+import { Cookie } from '@dxtmisha/functional-basic'
+
+const myCookie = new Cookie('auth_token')
+
+// Thiết lập cookie với các tùy chọn tùy chỉnh
+myCookie.set('secure_value', { 
+  age: 3600 * 24, // 1 ngày
+  sameSite: 'lax'
+})
+
+// Lấy giá trị
+const token = myCookie.get()
+```
+
+## URL Hash (Hash)
+
+Lớp `Hash` biến URL hash thành một kho lưu trữ trạng thái có tính phản hồi (`#key:value;`), lý tưởng cho các trạng thái giao diện có thể chia sẻ như tab đang hoạt động hoặc bộ lọc. Dữ liệu được tự động đồng bộ hóa với đối tượng `Hash` nội bộ, cho phép cập nhật giao diện ngay lập tức khi thanh địa chỉ thay đổi mà không cần tải lại trang.
+
+```javascript
+import { Hash } from '@dxtmisha/functional-basic'
+
+// 1. Thiết lập giá trị: URL thay đổi thành ...#tab:profile;filter:active
+Hash.set('tab', 'profile')
+Hash.set('filter', 'active')
+
+// 2. Lấy giá trị (với giá trị mặc định tùy chọn)
+const currentTab = Hash.get('tab', 'home')
+```
+
+### Theo dõi thay đổi
+
+Phương thức `addWatch` cho phép bạn đăng ký theo dõi các thay đổi của các tham số URL cụ thể. Điều này rất hữu ích để thực hiện các hành động khi tab được chuyển đổi hoặc bộ lọc được áp dụng bởi người dùng.
+
+```javascript
+// 1. Theo dõi phản hồi
+const onTabChange = (newTab) => {
+  console.log('Người dùng đã chuyển sang:', newTab)
+}
+
+Hash.addWatch('tab', onTabChange)
+
+// 2. Xóa theo dõi nếu cần
+// Hash.removeWatch('tab', onTabChange)
+```

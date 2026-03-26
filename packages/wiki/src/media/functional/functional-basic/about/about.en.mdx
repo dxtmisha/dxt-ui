@@ -4,39 +4,51 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # @dxtmisha/functional-basic
 
-`@dxtmisha/functional-basic` is a foundational utility library for modern web development. It's framework-agnostic and can be used in any TypeScript project — whether Vue, React, Nuxt, or plain browser code.
+`@dxtmisha/functional-basic` is a small utility library for everyday web development. It is framework-agnostic and can be used in any TypeScript project, including Vue, React, Nuxt, or plain browser code.
+
+## Installation
+
+To start using the library in your project, install it via npm:
+
+```bash
+npm i @dxtmisha/functional-basic
+```
 
 ## Why this library?
 
-Every web application inevitably faces the same set of challenges: HTTP requests, localization, dates, cookies, caching, loading states. Typically each project solves these in its own way, accumulating scattered utilities that are spread across folders, duplicated between projects, and grow stale over time.
+Most web projects face similar tasks: API requests, handling dates, cookies, or loading states. Instead of copying these functions between projects, we gathered them here for easier reuse.
 
-`functional-basic` brings all these solutions together in one place — thoughtful, tested, and ready to use. It's not a mega-framework with strict conventions, but a library: pick only what you need and use it however works best for you.
+It is not a complex framework, but a simple collection of tools: you can pick only what you need for your specific task.
 
 ## What does it do?
 
-The library covers a wide range of tasks that developers encounter every day.
+The library covers common tasks encountered during development:
 
-For **networking** — a full-featured HTTP client with lifecycle hooks, response caching, header management, response mocking for development, and an integrated loading state. Requests can be cancelled, configured, and extended — without pulling in extra dependencies.
+For **networking** — a basic HTTP client with hook support, caching, and loading indicators. This allows you to handle requests without adding heavy external dependencies.
 
-For **geolocation and internationalization** — automatic detection of the user's country and language, locale-aware formatting of numbers, dates, currencies, and units of measurement, pluralization rules, country flags (200+ countries), phone codes and input masks. Everything is built on top of the native `Intl` API, ensuring correctness in any market.
+For **localization and geography** — user country and language detection, phone codes, country flags, and data formatting via the `Intl` API. It also includes tools for interface translations.
 
-For **browser state management** — convenient wrappers over `localStorage`, `sessionStorage`, `cookie`, and URL hash. All with TypeScript types and change subscription support. Data persists across sessions without extra boilerplate on your end.
+For **state management** — simple wrappers for `localStorage`, `sessionStorage`, `cookie`, and URL hash. They help persist data across sessions with TypeScript support.
 
-For **SEO and meta tags** — a unified class that synchronizes `<title>`, Open Graph, and Twitter Card simultaneously. A single `setTitle()` call updates the browser tab, social media previews, and Twitter card at once. Works in both browser and SSR environments.
+For **SEO** — tools to manage `<title>`, Open Graph, and Twitter Card. They help keep meta tags updated in both browser and SSR environments.
 
-For **data manipulation** — a rich set of utilities: deep object copying, array operations, safe type conversion, value validation, string formatting, and template substitution. Written with real edge cases in mind, not just the happy path.
+For **data manipulation** — utilities for deep object cloning, array processing, safe type conversion, and string formatting.
 
-For **DOM** — element creation, attribute handling, scrolling, querying, and image utilities. Small but essential tools that save time when working with the browser environment.
+For **search and filtering** — functions for text matching and easy searching through complex data lists.
+
+For **events and broadcasting** — tools for communication between components or browser tabs (via `BroadcastChannel`).
+
+For **DOM and UI** — helper functions for working with elements, attributes, images, clipboard, and scrolling.
 
 ## Who is it for?
 
-This library is aimed at developers who want to avoid code duplication and stop reinventing the wheel. It works equally well for small landing pages and large enterprise applications with multilingual interfaces.
+The library is for developers who prefer using common solutions for simple tasks instead of writing them from scratch each time. It works well for both small scripts and larger applications.
 
-It fits naturally into the `@dxtmisha` ecosystem but has no dependency on it — individual classes and functions can be imported and used in absolutely any project. If you only need a date formatter or an HTTP client, you take just that — nothing else is pulled in automatically.
+While it is part of the `@dxtmisha` ecosystem, it can be used independently in any project.
 
 ## Principles
 
-- **Zero external dependencies** — the library doesn't pull in third-party packages. Fewer conflicts, fewer vulnerabilities, fewer surprises during updates.
-- **TypeScript-first** — strict typing and autocomplete out of the box. Types aren't an "add-on" — they're an integral part of the API.
-- **Clean API** — method chaining, predictable behavior, clear naming. You don't need to read the docs to understand what `isFilled` or `setTitle` does.
-- **Test coverage** — every class and function ships with tests. Library changes won't silently break your project.
+- **Minimalist** — the library uses no external dependencies, making maintenance easier.
+- **TypeScript Support** — all tools are typed to improve the developer experience.
+- **Clear API** — method names and their behavior are designed to be predictable.
+- **Tested** — core functions are covered by tests to ensure basic stability.
