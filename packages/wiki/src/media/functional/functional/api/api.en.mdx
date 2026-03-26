@@ -1,0 +1,74 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/# API Hooks'/>
+
+# API Hooks
+
+A set of tools for efficient backend interaction, fully integrated with **Vue 3 (Composition API)**.
+
+## Features
+
+The main task of these tools is to automate routine operations: tracking loading states (`loading`), handling errors, and synchronizing data across different parts of the interface. All hooks support reactive parameters, allowing for the creation of dynamic requests that automatically update when input filters or paths change.
+
+## Available Tools
+
+- `useApiRef` — Reactive data retrieval (GET) with automatic execution and storage in a `ref`.
+- `useApiRequest` — Base hook for manual execution of any HTTP requests (returns the `send` method).
+- `useApiPost / Put / Delete` — Specialized wrappers for mutations (create, update, delete).
+- `useApiManagementRef` — A comprehensive orchestrator combining GET requests, search, formatting, and mutations into a single cycle.
+
+## How to Work with Them
+
+For simple data display, using `useApiRef` is sufficient. You don't need to manually call a load function — the request is executed automatically as soon as you access the `data` property. If the API path is a reactive ref, the hook will track its changes and load new data by itself.
+
+```typescript
+import { useApiRef } from '@dxtmisha/functional'
+
+// Data will load automatically when accessing 'data'
+const { data, loading } = useApiRef('api/profile')
+```
+
+If you need to perform an action on an event (e.g., saving a form), mutation hooks are used. They return a `send` method that can be called in an event handler, and a `loading` flag to disable buttons.
+
+```typescript
+import { useApiPost } from '@dxtmisha/functional'
+
+const { send, loading } = useApiPost('api/save')
+
+const onSave = async () => {
+  await send({ data: { name: 'Dxt' } })
+}
+```
+
+## useApiManagementRef
+
+The most powerful approach is using `useApiManagementRef`. It acts as a full hub for managing data in complex interfaces (like tables). It links the GET request with mutations: as soon as you successfully execute `sendDelete` or `sendPost`, the orchestrator automatically calls `reset()` for the main list, and the data on the screen updates automatically.
+
+### Key Capabilities:
+- **Automation**: Full synchronization between data reading and modification.
+- **Integration**: Includes search (`useSearchRef`) and formatting (`useFormattersRef`) functionality.
+- **Skeleton**: Support for placeholders during loading to prevent layout shifts.
+- **Flexibility**: Configuration of individual paths and transformations for each request type (GET, POST, PUT, DELETE).
+
+```typescript
+import { ref } from 'vue'
+import { useApiManagementRef } from '@dxtmisha/functional'
+
+const search = ref('')
+const { 
+  list, 
+  sendPost, 
+  sendDelete 
+} = useApiManagementRef(
+  { path: 'api/items' },      // Listen to GET
+  undefined,                  // Formatters
+  { columns: ['name'], value: search }, // Live search
+  { path: 'api/items/add' },  // POST setup
+  undefined,
+  { path: 'api/items/delete' } // DELETE setup
+)
+
+// After calling sendDelete(), the main 'list' will update AUTOMATICALLY!
+```
+
+This architecture allows you to describe data logic declaratively, focusing on request configuration rather than manual management of loading states and list updates.

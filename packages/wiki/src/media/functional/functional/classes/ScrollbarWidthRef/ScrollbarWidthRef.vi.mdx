@@ -1,36 +1,87 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional/Classes/ScrollbarWidthRef - Trình quản lý độ rộng thanh cuộn'/>
+<Meta title='@dxtmisha/vi/functional/Classes/ScrollbarWidthRef - Chiều rộng thanh cuộn'/>
 
 # Lớp ScrollbarWidthRef
 
-Một lớp tiện ích phản ứng để xác định và quản lý độ rộng thanh cuộn (scrollbar) của trình duyệt. Nó sử dụng một cơ chế phát hiện và cung cấp các thuộc tính phản ứng để kiểm tra xem độ rộng thanh cuộn đã được tính toán chưa và liệu nó có tồn tại hay không.
+Một lớp vỏ phản hồi bao quanh tiện ích cơ bản để xác định các thông số của thanh cuộn. Lớp này cho phép theo dõi cả sự hiện diện của thanh cuộn (loại của nó) và chiều rộng thực tế của nó tính bằng pixel. Điều này rất quan trọng để ngăn chặn tình trạng thay đổi bố cục (layout shift) khi thanh cuộn bị ẩn hoặc hiện, chẳng hạn như khi mở các cửa sổ modal.
 
-## Các tính năng chính
+## Các đặc điểm chính
 
-- **Tính phản ứng** — sử dụng Vue `ref` và `computed` để cung cấp trạng thái thanh cuộn.
-- **Phát hiện bất đồng bộ** — tự động tính toán độ rộng khi khởi tạo thông qua `ScrollbarWidth.is()`.
-- **Nhẹ nhàng** — kích thước tối thiểu, hữu ích cho các tính toán bố cục phụ thuộc vào sự hiện diện của thanh cuộn.
+- **Tính phản hồi** — tự động cập nhật các giá trị `item` và `width` khi nhận được dữ liệu từ trình duyệt.
+- **Tính toán tự động** — lớp tự động khởi tạo việc đo chiều rộng thanh cuộn ngay sau khi tạo phiên bản.
+- **Trạng thái sẵn sàng** — sự tồn tại của thuộc tính tính toán `is` cho phép sử dụng dữ liệu an toàn chỉ sau khi khởi tạo.
+- **Đa nền tảng** — xác định chính xác các thanh cuộn "mảnh" và tự động ẩn (macOS, thiết bị di động).
 
 ## Khởi tạo
 
-Tạo một thực thể `ScrollbarWidthRef` mới. Khi được tạo, lớp sẽ bắt đầu một quy trình bất đồng bộ để xác định độ rộng thanh cuộn của trình duyệt. Kết quả sẽ được ghi vào các thuộc tính phản ứng ngay khi có sẵn.
+Tạo một phiên bản mới của `ScrollbarWidthRef` và bắt đầu quá trình không đồng bộ để đo chiều rộng thanh cuộn.
+
+**Tham số:**
+- `Không có`
 
 ```typescript
 import { ScrollbarWidthRef } from '@dxtmisha/functional'
-import { watch } from 'vue'
+
+const scrollbar = new ScrollbarWidthRef()
+```
+
+## Các thuộc tính
+
+### Trạng thái
+
+- `item: Ref<boolean | undefined>` — Cờ xác định kết quả kiểm tra `ScrollbarWidth.is()`. Trả về `true` nếu thanh cuộn được coi là "đặc biệt" (ví dụ: tự động ẩn trong macOS hoặc di động, nơi chiều rộng thường `<= 8px`).
+- `width: Ref<number>` — Chiều rộng thực tế của thanh cuộn tính bằng pixel. Mặc định là `0`. Được cập nhật không đồng bộ sau khi đo.
+- `is: Computed<boolean>` — Trả về `true` khi việc tính toán chiều rộng hoàn tất và các giá trị `item` và `width` đã được cập nhật.
+
+## Ví dụ
+
+### Bù đắp cuộn động trong CSS
+
+Sử dụng chiều rộng phản hồi để tạo biến CSS bù đắp cho khoảng cách khi thanh cuộn bị chặn.
+
+```vue
+<template>
+  <div :style="style" class="container">
+    Nội dung với bù đắp động
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { ScrollbarWidthRef } from '@dxtmisha/functional'
 
 const scrollbar = new ScrollbarWidthRef()
 
-// Theo dõi sự sẵn sàng của dữ liệu
-watch(scrollbar.is, (isReady) => {
-  if (isReady) {
-    console.log('Độ rộng thanh cuộn đã được xác định:', scrollbar.item.value)
+// Chỉ tính toán biến sau khi chiều rộng đã được xác định
+const style = computed(() => ({
+  '--scrollbar-width': scrollbar.is.value ? `${scrollbar.width.value}px` : '0px'
+}))
+</script>
+
+<style scoped>
+.container {
+  /* Ví dụ sử dụng cho lề phải */
+  padding-right: var(--scrollbar-width);
+}
+</style>
+```
+
+### Theo dõi loại thanh cuộn
+
+```typescript
+import { watch } from 'vue'
+import { ScrollbarWidthRef } from '@dxtmisha/functional'
+
+const scrollbar = new ScrollbarWidthRef()
+
+watch(() => scrollbar.is.value, (ready) => {
+  if (ready) {
+    if (scrollbar.item.value) {
+      console.log('Thanh cuộn hệ thống/tự động ẩn đang được sử dụng')
+    } else {
+      console.log(`Thanh cuộn tiêu chuẩn với chiều rộng ${scrollbar.width.value}px`)
+    }
   }
 })
 ```
-
-## Thuộc tính
-
-- `item: Ref<boolean | undefined>` — Một mục phản ứng chứa trạng thái hiện diện của thanh cuộn. Giá trị `true` có nghĩa là thanh cuộn chiếm không gian trong bố cục.
-- `is: ComputedRef<boolean>` — Một thuộc tính computed kiểm tra xem việc tính toán độ rộng thanh cuộn đã hoàn tất chưa.

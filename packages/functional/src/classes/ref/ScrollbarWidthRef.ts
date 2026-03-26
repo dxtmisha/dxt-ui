@@ -7,12 +7,11 @@ import { ScrollbarWidth } from '@dxtmisha/functional-basic'
  * Класс для получения ширины скролла в виде реактивного элемента.
  */
 export class ScrollbarWidthRef {
-  /**
-   * Reactive item.
-   *
-   * Реактивный элемент.
-   */
+  /** Reactive item/ Реактивный элемент */
   readonly item = ref<boolean>()
+
+  /** Reactive width/ Реактивная ширина */
+  readonly width = ref<number>(0)
 
   /**
    * Constructor
@@ -20,6 +19,10 @@ export class ScrollbarWidthRef {
   constructor() {
     ScrollbarWidth.is().then((is) => {
       this.item.value = is
+    })
+
+    ScrollbarWidth.get().then((width) => {
+      this.width.value = width
     })
   }
 

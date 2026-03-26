@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/# Reactive Hooks (Composables)'/>
+
+# Reactive Hooks (Composables)
+
+A set of tools for working with browser APIs, storage, and internationalization in the reactive style of **Vue 3 (Composition API)**.
+
+## Features
+
+The core idea of these hooks is to provide a simple and reliable interface for working with external data and state. They automatically synchronize values with storage, track changes in other tabs, and ensure instant UI updates when global settings (such as language or currency) change.
+
+## Available Hooks
+
+### Data Storage
+- `useStorageRef` — Reactive wrapper for `localStorage`. Supports TTL (cache) and cross-tab synchronization.
+- `useSessionRef` — For working with `sessionStorage`.
+- `useCookieRef` — Reactive cookie management.
+
+### Internationalization (I18n)
+- `useTranslateRef` — Reactive retrieval of translation strings. Automatically updates when the language is changed in `GeoRef`.
+- `useGeoIntlRef` — Formatting of numbers, currencies, and dates based on the current locale.
+
+### Data Processing and Search
+- `useSearchRef` — Client-side search for data arrays with support for multi-column filtering.
+- `useFormattersRef` — Bulk formatting of object lists based on predefined rules.
+
+### Browser APIs and State
+- `useBroadcastValueRef` — Data transfer and synchronization between windows/tabs via `BroadcastChannel`.
+- `useHashRef` — Reactive management of the URL hash (`window.location.hash`).
+- `useLoadingRef` — Easy management of loading states (local and global).
+
+## How to Work with Them
+
+The hooks are designed to minimize boilerplate code. For example, when working with local storage, you don't need to manually call `getItem` and `setItem`. Just create a variable, and any changes to it will be automatically saved to `localStorage`.
+
+```typescript
+import { useStorageRef } from '@dxtmisha/functional'
+
+// The 'theme' value will be automatically saved and loaded
+const theme = useStorageRef('theme', 'light')
+
+const toggleTheme = () => {
+  theme.value = theme.value === 'light' ? 'dark' : 'light'
+}
+```
+
+For internationalization, a combination of management classes and hooks is used. If you change the language via `GeoRef.set()`, all variables created via `useTranslateRef` will instantly update their values across the entire application without a page reload.
+
+```typescript
+import { useTranslateRef, useGeoIntlRef } from '@dxtmisha/functional'
+
+const title = useTranslateRef('main.title')
+const intl = useGeoIntlRef()
+
+// The formatted price will update itself when the currency or language changes
+const priceDisplay = intl.currency(12500, 'RUB')
+```
+
+Search and formatting hooks (`useSearchRef`, `useFormattersRef`) are often used as building blocks for more complex tools like `useApiManagementRef`, but they can also be used independently for processing local data arrays.
+
+```typescript
+import { ref } from 'vue'
+import { useSearchRef } from '@dxtmisha/functional'
+
+const items = ref([{ name: 'Apple' }, { name: 'Banana' }])
+const search = ref('')
+
+const { listSearch } = useSearchRef(items, ['name'], search)
+// listSearch will always contain only the filtered items
+```
+
+This approach allows you to build interfaces declaratively: you describe what data you need and how it should be linked, and the hooks take care of all the synchronization and updating work.

@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/# Phạm vi hiệu ứng toàn cục'/>
+
+# Phạm vi hiệu ứng toàn cục
+
+Lớp **EffectScopeGlobal** cung cấp quyền truy cập vào một phạm vi hiệu ứng (**EffectScope**) thống nhất và chạy lâu dài trong **Vue 3**. Điều này cho phép tạo ra các phụ thuộc phản hồi (watch, computed) không bị ràng buộc với chu kỳ sống của các thành phần cụ thể.
+
+## Các đặc điểm
+
+- **Tính bền bỉ**: Các hiệu ứng được khởi chạy thông qua lớp này sẽ tồn tại trong suốt thời gian hoạt động của ứng dụng.
+- **Sự cô lập**: Cho phép nhóm các quá trình phản hồi toàn cục vào một nơi để ngăn chặn rò rỉ bộ nhớ.
+- **Kiểm soát**: Tất cả các phụ thuộc được tạo bên trong `run()` sẽ tự động được liên kết với ngữ cảnh toàn cục.
+
+## Ví dụ sử dụng
+
+Thường được sử dụng để thiết lập các trình lắng nghe toàn cục hoặc các thuộc tính tính toán phải luôn sẵn dùng trong toàn bộ ứng dụng.
+
+```javascript
+import { watch, ref } from 'vue'
+import { EffectScopeGlobal } from '@dxtmisha/functional'
+
+const globalState = ref(0)
+
+// 1. Bắt đầu một quy trình toàn cục
+EffectScopeGlobal.run(() => {
+  watch(globalState, (val) => {
+    console.log('Trạng thái toàn cục đã thay đổi:', val)
+  })
+})
+
+// 2. Tạo ra các thuộc tính tính toán lâu dài
+const persistentValue = EffectScopeGlobal.run(() => {
+  return computed(() => globalState.value * 2)
+})
+```
+
+Cách tiếp cận này đảm bảo rằng ngay cả khi thành phần khởi tạo việc tạo `watch` này bị hủy (unmounted), trình theo dõi vẫn sẽ tiếp tục hoạt động.

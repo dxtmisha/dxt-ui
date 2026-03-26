@@ -1,36 +1,87 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/functional/Classes/ScrollbarWidthRef - Scrollbar Width Manager'/>
+<Meta title='@dxtmisha/en/functional/Classes/ScrollbarWidthRef - Scrollbar Width'/>
 
-# ScrollbarWidthRef Class
+# Class ScrollbarWidthRef
 
-A reactive utility class for determining and managing the browser's scrollbar width. It uses a detection mechanism and provides reactive properties to check if the scrollbar width has been calculated and whether it exists.
+A reactive wrapper around the base utility for determining scrollbar parameters. The class allows for tracking both the presence of a scrollbar (its type) and its actual width in pixels. This is critical for preventing layout shifts when a scrollbar is hidden or shown, such as when opening modal windows.
 
 ## Key Features
 
-- **Reactivity** — uses Vue `ref` and `computed` to provide scrollbar state.
-- **Asynchronous Detection** — automatically calculates the width upon initialization via `ScrollbarWidth.is()`.
-- **Lightweight** — minimal footprint, useful for layout calculations dependent on scrollbar presence.
+- **Reactivity** — automatic update of `item` and `width` values when data is received from the browser.
+- **Automatic Calculation** — the class independently initiates a scrollbar width measurement immediately after instance creation.
+- **Readiness State** — the existence of the computed property `is` allows for safe data usage only after initialization.
+- **Cross-platform** — correctly identifies "thin" and auto-hiding scrollbars (macOS, mobile devices).
 
 ## Initialization
 
-Creates a new `ScrollbarWidthRef` instance. Upon creation, the class starts an asynchronous process to determine the browser's scrollbar width. The result is written to reactive properties as soon as it becomes available.
+Creates a new instance of `ScrollbarWidthRef` and starts the asynchronous process of measuring the scrollbar width.
+
+**Parameters:**
+- `None`
 
 ```typescript
 import { ScrollbarWidthRef } from '@dxtmisha/functional'
-import { watch } from 'vue'
 
 const scrollbar = new ScrollbarWidthRef()
-
-// Watch for data readiness
-watch(scrollbar.is, (isReady) => {
-  if (isReady) {
-    console.log('Scrollbar width determined:', scrollbar.item.value)
-  }
-})
 ```
 
 ## Properties
 
-- `item: Ref<boolean | undefined>` — A reactive item containing the state of the scrollbar's presence. A value of `true` means the scrollbar takes up space in the layout.
-- `is: ComputedRef<boolean>` — A computed property that checks if the scrollbar width calculation is complete.
+### State
+
+- `item: Ref<boolean | undefined>` — Flag determining the result of the `ScrollbarWidth.is()` check. Returns `true` if the scrollbar is considered "special" (e.g., auto-hiding in macOS or mobile, where the width is typically `<= 8px`).
+- `width: Ref<number>` — The actual width of the scrollbar in pixels. Defaults to `0`. Updated asynchronously after measurement.
+- `is: Computed<boolean>` — Returns `true` when the width calculation is complete and the `item` and `width` values are up-to-date.
+
+## Examples
+
+### Dynamic Scroll Compensation in CSS
+
+Using reactive width to create a CSS variable that compensates for offset when scrolling is blocked.
+
+```vue
+<template>
+  <div :style="style" class="container">
+    Content with dynamic offset
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { ScrollbarWidthRef } from '@dxtmisha/functional'
+
+const scrollbar = new ScrollbarWidthRef()
+
+// Calculate the variable only after the width is determined
+const style = computed(() => ({
+  '--scrollbar-width': scrollbar.is.value ? `${scrollbar.width.value}px` : '0px'
+}))
+</script>
+
+<style scoped>
+.container {
+  /* Example usage for right padding */
+  padding-right: var(--scrollbar-width);
+}
+</style>
+```
+
+### Tracking Scrollbar Type
+
+```typescript
+import { watch } from 'vue'
+import { ScrollbarWidthRef } from '@dxtmisha/functional'
+
+const scrollbar = new ScrollbarWidthRef()
+
+watch(() => scrollbar.is.value, (ready) => {
+  if (ready) {
+    if (scrollbar.item.value) {
+      console.log('System/auto-hiding scrollbar is being used')
+    } else {
+      console.log(`Standard scrollbar with width ${scrollbar.width.value}px`)
+    }
+  }
+})
+```

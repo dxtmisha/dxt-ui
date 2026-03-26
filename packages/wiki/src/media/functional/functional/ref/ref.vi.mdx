@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/# Lớp Phản hồi (Ref)'/>
+
+# Lớp Phản hồi (Ref)
+
+Các phiên bản phản hồi của các lớp cơ bản được tạo ra để tích hợp liền mạch với **Vue 3 (Composition API)**.
+
+## Các đặc điểm
+
+Ý tưởng cốt lõi là chính lớp đó sẽ giám sát các thay đổi dữ liệu đầu vào và cung cấp `ComputedRef` sẵn sàng sử dụng cho các mẫu. Điều này loại bỏ nhu cầu tính toán lại các giá trị theo cách thủ công khi địa phương hoặc các biến đầu vào thay đổi.
+
+## Các lớp hiện có
+
+- `GeoRef` — Quản lý địa phương toàn cục (quốc gia, ngôn ngữ) và trạng thái phản hồi của nó.
+- `DatetimeRef` — Thao tác ngày tháng phản hồi, định dạng và tính toán thành phần thời gian.
+- `GeoIntlRef` — Định dạng phản hồi các con số, tiền tệ, danh sách và thời gian tương đối.
+- `EventRef` — Quản lý trình lắng nghe sự kiện với khả năng tự động ràng buộc với các phần tử phản hồi.
+- `GeoFlagRef` — Truy xuất phản hồi các liên kết cờ quốc gia và danh sách các quốc gia.
+
+## Cách làm việc với chúng
+
+Khác với các lớp cơ bản từ `functional-basic` làm việc với các giá trị trực tiếp, các lớp có hậu tố `Ref` chấp nhận cả dữ liệu thô và `ref` làm đầu vào. Bên trong, chúng thiết lập các trình quan sát (`watch`) sao cho bất kỳ thay đổi nào đối với nguồn sẽ tự động cập nhật tất cả các thuộc tính tính toán phụ thuộc.
+
+Trạng thái ứng dụng toàn cục được quản lý thông qua lớp `GeoRef` tĩnh. Các phương thức của nó trả về dữ liệu phản hồi về quốc gia và ngôn ngữ hiện tại, và việc gọi `GeoRef.set()` sẽ ngay lập tức cập nhật định dạng trên tất cả các lớp khác, chẳng hạn như `GeoIntlRef` или `DatetimeRef`.
+
+```javascript
+import { ref } from 'vue'
+import { GeoRef, DatetimeRef, GeoIntlRef } from '@dxtmisha/functional'
+
+// 1. Quản lý toàn cục (GeoRef)
+const country = GeoRef.getCountry() // Luôn cập nhật mã quốc gia
+
+// 2. Bộ bọc ngày phản hồi (DatetimeRef)
+const dateRaw = ref('2024-03-21')
+const date = new DatetimeRef(dateRaw)
+const displayDate = date.locale() // Tự động cập nhật khi dateRaw hoặc địa phương thay đổi
+
+// 3. Định dạng tức thì (GeoIntlRef)
+const price = ref(12500)
+const intl = new GeoIntlRef()
+const displayPrice = intl.currency(price, 'VND')
+```
+
+Cách tiếp cận tương tự được sử dụng trong `EventRef` để xử lý các sự kiện. Nếu phần tử mục tiêu (`ref`) thay đổi hoặc tạm thời trở thành `null`, lớp sẽ tự động gắn lại các trình lặp một khi phần tử xuất hiện lại trong DOM. Bạn không cần phải theo dõi chu kỳ sống của phần tử theo cách thủ công — chỉ cần truyền một tham chiếu đến đối tượng.
+
+```javascript
+import { ref } from 'vue'
+import { EventRef } from '@dxtmisha/functional'
+
+const buttonRef = ref(null)
+
+// Trình lắng nghe sẽ tự tìm thấy nút một khi Vue ràng buộc nó với buttonRef
+new EventRef(buttonRef, null, 'click', () => {
+  console.log('Nhấp chuột được xử lý một cách phản hồi')
+})
+```

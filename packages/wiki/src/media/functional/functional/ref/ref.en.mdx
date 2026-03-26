@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/# Reactive Classes (Ref)'/>
+
+# Reactive Classes (Ref)
+
+Reactive versions of basic classes are created for seamless integration with the **Vue 3 (Composition API)**.
+
+## Features
+
+The core idea is that the class itself monitors input data changes and provides ready-to-use `ComputedRef` for templates. This eliminates the need to manually recalculate values when the locale or input variables change.
+
+## Available Classes
+
+- `GeoRef` — Management of global locale (country, language) and its reactive state.
+- `DatetimeRef` — Reactive date manipulation, formatting, and time component calculation.
+- `GeoIntlRef` — Reactive formatting of numbers, currencies, lists, and relative time.
+- `EventRef` — Event listener management with automatic binding to reactive elements.
+- `GeoFlagRef` — Reactive retrieval of country flag links and state lists.
+
+## How to Work with Them
+
+Unlike the basic classes from `functional-basic`, which work with direct values, classes with the `Ref` suffix accept both raw data and `ref` as input. Internally, they set up listeners (`watch`) such that any change to the source automatically updates all dependent computed properties.
+
+Global application state is managed via the static `GeoRef` class. Its methods return reactive data about the current country and language, and calling `GeoRef.set()` instantly updates formatting across all other classes, such as `GeoIntlRef` or `DatetimeRef`.
+
+```javascript
+import { ref } from 'vue'
+import { GeoRef, DatetimeRef, GeoIntlRef } from '@dxtmisha/functional'
+
+// 1. Global management (GeoRef)
+const country = GeoRef.getCountry() // Always up-to-date country code
+
+// 2. Reactive date wrapper (DatetimeRef)
+const dateRaw = ref('2024-03-21')
+const date = new DatetimeRef(dateRaw)
+const displayDate = date.locale() // Automatically updates when dateRaw or locale changes
+
+// 3. On-the-fly formatting (GeoIntlRef)
+const price = ref(12500)
+const intl = new GeoIntlRef()
+const displayPrice = intl.currency(price, 'USD')
+```
+
+The same approach is used in `EventRef` for handling events. If the target element (`ref`) changes or temporarily becomes `null`, the class will automatically re-attach listeners once the element reappears in the DOM. You don't need to track element lifecycles manually — just pass a reference to the object.
+
+```javascript
+import { ref } from 'vue'
+import { EventRef } from '@dxtmisha/functional'
+
+const buttonRef = ref(null)
+
+// The listener will find the button itself once Vue binds it to buttonRef
+new EventRef(buttonRef, null, 'click', () => {
+  console.log('Click handled reactively')
+})
+```
