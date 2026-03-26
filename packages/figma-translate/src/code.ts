@@ -1,5 +1,4 @@
-import { FigmaPostCode } from '@dxtmisha/figma'
-import { TranslateFramesPlugin } from './classes/TranslateFramesPlugin'
+import { FigmaPostCode, FigmaTopLevelFrames } from '@dxtmisha/figma'
 
 import manifest from '../manifest.json'
 
@@ -7,7 +6,7 @@ FigmaPostCode.set(manifest.id)
 
 switch (figma.mode) {
   case 'inspect':
-    TranslateFramesPlugin.make()
+    FigmaTopLevelFrames.send()
 
     figma.showUI(__html__)
     break

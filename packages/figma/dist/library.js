@@ -1,25 +1,6 @@
-import "@dxtmisha/scripts/ai";
-import { blobToBase64 as e, executeFunction as t, forEach as n, getElementImage as r, isNull as i, random as a, resizeImageByMax as o, uint8ArrayToBase64 as s } from "@dxtmisha/functional-basic";
-//#region src/config.ts
-var c = "image/jpeg", l = "texts", u = "\nНужно из список текст преобразовать в префикс + ключи текст\nпример:\n{\n  \"global-calendar\": \"Календарь\",\n  \"events-table-title\": \"Детализация по месяцам\"\n}\n\n0) изучи скриншоты. И нужно вот что сделать\n\n1) придумать префик для ключи текст. Префик отображает содержимый страница. Префик глобальный, то есть он 1 для всего страница (что на скрине)\n2) определить какие тексты являеться моковым данный, токие переместит в группа моговый данный\n3) если текст можно использовать на нескольких страницах (простые фразы, слова, названия компания, пример \"страна\", \"купить\", \"жен.\"), то вынести его в глобальный префикс (global-*)/ в названия ключ дольжен отражать содердимый. Не какой отображения место использования. То есть не какой footer, link для приер\n4) составить список ключи текст с префиксом и текстом. Названия ключа дольжен отображать место использования текста\n5) если видишь, в текст подставлено какой значения, надо его знаменить на [xxx] - где xxx это название значения\nпример: \"Мастерские каникулы 2025\" => \"Мастерские каникулы [year]\"\n5.1) так же добавить доп ключ, на основе орининал и разделить текст на несколько частей. место разделения это место подстановки значения\nпример:\"получателю Васильева Л. (ID 2154643)\" => \"получателю [name] (ID [id])\" дольжен добавииться ключи:\n{\n...\n\"order-recipient\": \"получателю [name] (ID [id])\",\n\"order-recipient-part1\": \"получателю \",\n\"order-recipient-part2\": \" (ID \",\n\"order-recipient-part3\": \")\",\n...\n}\n7) что дольжень получить в итоге (json с даными):\n{\n    \"global\":{\n    \"глобальный-префикс-клчю-текст\": \"текст\",\n    \"глобальный-префикс-клчю-текст\": \"текст\",\n    \"глобальный-префикс-клчю-текст\": \"текст\",\n    \"глобальный-префикс-клчю-текст\": \"текст\"\n    },\n    \"page\": {\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\"\n    },\n    \"mock\":{\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    \"префикс-клчю-текст\": \"текст\",\n    }\n}\n8) не придумывать тексты, использовать только те что в список ниже\n\nСписок текст:\n[texts]\n", d = class {
-	constructor(e, t) {
-		this.ai = e, this.data = t;
-	}
-	async make() {
-		return this.ai.resetImages(), this.makeImage(), console.warn("texts", u.replace("[texts]", this.initTexts())), console.log("getImages", this.ai.getImages(), await this.ai.generate(u.replace("[texts]", this.initTexts()))), this;
-	}
-	makeImage() {
-		return this.data.screenshot.forEach((e) => {
-			this.ai.addImage({
-				mime: c,
-				base64: s(e)
-			});
-		}), this;
-	}
-	initTexts() {
-		return n(this.data.texts, (e) => e.text).join("\r\n");
-	}
-}, f = class e {
+import { blobToBase64 as e, executeFunction as t, forEach as n, getElementImage as r, isNull as i, random as a, resizeImageByMax as o } from "@dxtmisha/functional-basic";
+//#region src/classes/FigmaItem.ts
+var s = class e {
 	constructor(e) {
 		this.item = e;
 	}
@@ -97,36 +78,36 @@ var c = "image/jpeg", l = "texts", u = "\nНужно из список текс�
 };
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/typeof.js
-function p(e) {
+function c(e) {
 	"@babel/helpers - typeof";
-	return p = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return c = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, p(e);
+	}, c(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPrimitive.js
-function m(e, t) {
-	if (p(e) != "object" || !e) return e;
+function l(e, t) {
+	if (c(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (p(r) != "object") return r;
+		if (c(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPropertyKey.js
-function h(e) {
-	var t = m(e, "string");
-	return p(t) == "symbol" ? t : t + "";
+function u(e) {
+	var t = l(e, "string");
+	return c(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/defineProperty.js
-function g(e, t, n) {
-	return (t = h(t)) in e ? Object.defineProperty(e, t, {
+function d(e, t, n) {
+	return (t = u(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -135,9 +116,9 @@ function g(e, t, n) {
 }
 //#endregion
 //#region src/classes/FigmaFrame.ts
-var _ = class {
+var f = class {
 	constructor(e, t = !1) {
-		g(this, "mainItem", []), g(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
+		d(this, "mainItem", []), d(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
 	}
 	isSelection() {
 		return this.selection && "selection" in this.page;
@@ -171,11 +152,11 @@ var _ = class {
 		return e;
 	}
 	initMain() {
-		return this.isSelection() ? n([...this.page.selection], (e) => new f(e)) : [new f(this.page)];
+		return this.isSelection() ? n([...this.page.selection], (e) => new s(e)) : [new s(this.page)];
 	}
 	initItems(e) {
 		let t = [];
-		if ("children" in e) for (let n of e.children) t.push(new f(n), ...this.initItems(n));
+		if ("children" in e) for (let n of e.children) t.push(new s(n), ...this.initItems(n));
 		return t;
 	}
 	initBySelection() {
@@ -189,11 +170,11 @@ var _ = class {
 	filter(e) {
 		return this.items.filter(e);
 	}
-	toMain(e = new f(this.page)) {
+	toMain(e = new s(this.page)) {
 		let t = e.getParentItem();
 		return t && !t.isDocument() ? this.toMain(t) : e;
 	}
-}, v = class {
+}, p = class {
 	static is(e) {
 		return this.code === e;
 	}
@@ -204,13 +185,13 @@ var _ = class {
 		this.isEditable && (this.code = `figma-${e}`, this.isEditable = !1);
 	}
 };
-g(v, "code", `figma-${a(1e5, 999999)}`), g(v, "isEditable", !0);
+d(p, "code", `figma-${a(1e5, 999999)}`), d(p, "isEditable", !0);
 //#endregion
 //#region src/classes/FigmaPostAbstract.ts
-var y = class {
+var m = class {
 	constructor() {
-		g(this, "isMake", !1), g(this, "posts", {}), g(this, "onMessage", (e) => {
-			e && v.is(e.code) && this.notify(e.type, e.message);
+		d(this, "isMake", !1), d(this, "posts", {}), d(this, "onMessage", (e) => {
+			e && p.is(e.code) && this.notify(e.type, e.message);
 		});
 	}
 	add(e, t, n = !1) {
@@ -233,10 +214,10 @@ var y = class {
 			n.callback(t), n.once && this.remove(e, n.callback);
 		});
 	}
-}, b = class extends y {
+}, h = class extends m {
 	post(e, t) {
 		figma.ui.postMessage({
-			code: v.get(),
+			code: p.get(),
 			type: e,
 			message: t
 		});
@@ -244,9 +225,15 @@ var y = class {
 	prepare() {
 		figma.ui.onmessage = (e) => this.onMessage(e);
 	}
-}, x = class {
+}, g;
+function _() {
+	return g || (g = new h(), g.make()), g;
+}
+//#endregion
+//#region src/classes/FigmaStorage.ts
+var v = class {
 	constructor(e, t = figma.root, n) {
-		g(this, "value", void 0), g(this, "age", void 0), this.name = e, this.item = t, this.cache = n;
+		d(this, "value", void 0), d(this, "age", void 0), this.name = e, this.item = t, this.cache = n;
 	}
 	get(e) {
 		if (this.make(), this.value !== void 0 && this.isCache()) return this.value;
@@ -288,10 +275,76 @@ var y = class {
 			age: this.age
 		});
 	}
-}, S = class extends y {
+}, y = "ui-figma-frames-list", b = "ui-figma-frames-selected", x = "ui-figma-frames-selected-add", S = class {
+	static has(e) {
+		return this.get().includes(e);
+	}
+	static get() {
+		return this.selected || (this.selected = this.getList()), this.selected;
+	}
+	static add(e) {
+		if (this.has(e)) return;
+		let t = this.get();
+		t.push(e), this.set(t);
+	}
+	static remove(e) {
+		if (this.has(e)) {
+			let t = this.get();
+			t.splice(t.indexOf(e), 1), this.set(t);
+		}
+	}
+	static toggle(e, t) {
+		t ? this.add(e) : this.remove(e);
+	}
+	static send() {
+		let e = _();
+		e.add(b, () => {
+			e.post(b, this.get());
+		}), e.add(x, ({ id: e, selected: t }) => this.toggle(e, t));
+	}
+	static getList() {
+		var e;
+		return (e = this.storage.get()) == null ? [] : e;
+	}
+	static set(e) {
+		this.selected = e, this.storage.set(e);
+	}
+};
+d(S, "storage", new v(b)), d(S, "selected", void 0);
+//#endregion
+//#region src/classes/FigmaTopLevelFrames.ts
+var C = class {
+	static async getListData() {
+		if (!this.frames) {
+			this.frames = [];
+			for (let e of this.getList()) this.frames.push({
+				name: e.getName(),
+				id: e.getId(),
+				image: await e.exportJpg(),
+				item: e
+			});
+		}
+		return this.frames;
+	}
+	static send() {
+		let e = _();
+		e.add(y, () => {
+			this.getListData().then((t) => {
+				e.post(y, t);
+			});
+		});
+	}
+	static getList() {
+		return new f(figma.currentPage).getMainFrames();
+	}
+};
+d(C, "frames", void 0);
+//#endregion
+//#region src/classes/FigmaUiMessenger.ts
+var w = class extends m {
 	post(e, t) {
 		parent.postMessage({ pluginMessage: {
-			code: v.get(),
+			code: p.get(),
 			type: e,
 			message: t
 		} }, "*");
@@ -302,57 +355,81 @@ var y = class {
 			return this.onMessage((t = e.data) == null ? void 0 : t.pluginMessage);
 		});
 	}
-}, C;
-function w() {
-	return C || (C = new b(), C.make()), C;
-}
+};
 //#endregion
 //#region src/composables/useFigmaStorage.ts
 function T(e, t = figma.root, n) {
 	let r = `${"id" in t ? t.id : "root"}:${e}`;
 	if (r in E) return E[r];
-	let i = new x(e, t, n);
+	let i = new v(e, t, n);
 	return E[r] = i, i;
 }
 var E = {}, D;
 function O() {
-	return D || (D = new S(), D.make()), D;
+	return D || (D = new w(), D.make()), D;
 }
 //#endregion
+//#region src/functions/addFramesSelected.ts
+function k(e, t) {
+	O().post(x, {
+		id: e,
+		selected: t
+	});
+}
+//#endregion
+//#region src/config.ts
+var A = "image/jpeg", j = "texts";
+//#endregion
 //#region src/functions/ensureMaxSize.ts
-async function k(t, n = .56) {
+async function M(t, n = .56) {
 	return new Promise((i) => {
-		let a = new Blob([t], { type: c }), s = r(URL.createObjectURL(a));
+		let a = new Blob([t], { type: A }), s = r(URL.createObjectURL(a));
 		s ? s.onload = () => {
-			let e = o(s, n * s.naturalWidth, "width", c);
+			let e = o(s, n * s.naturalWidth, "width", A);
 			i(e == null ? "" : e);
 		} : e(a).then((e) => i(String(e == null ? "" : e)));
 	});
 }
 //#endregion
-//#region src/types/framesTypes.ts
-var A = "ui-figma-frames-list", j, M = !1;
-function N(e) {
-	if (j) {
-		e(j);
+//#region src/functions/fetchFramesSelected.ts
+var N, P = !1;
+function F(e) {
+	if (N) {
+		e(N);
 		return;
 	}
-	if (M) {
-		setTimeout(() => N(e), 160);
+	if (P) {
+		setTimeout(() => F(e), 160);
 		return;
 	}
-	M = !0;
+	P = !0, O().add(b, (t) => {
+		N = t, P = !1, e(N);
+	}).post(b);
+}
+//#endregion
+//#region src/functions/fetchTopLevelFrames.ts
+var I, L = !1;
+function R(e) {
+	if (I) {
+		e(I);
+		return;
+	}
+	if (L) {
+		setTimeout(() => R(e), 160);
+		return;
+	}
+	L = !0;
 	let t = O(), n = (r) => {
-		j = r, j.length > 0 && (e(j), t.remove(A, n), M = !1);
+		I = r, I.length > 0 && (e(I), t.remove(y, n), L = !1);
 	};
-	t.add(A, n).post(A);
+	t.add(y, n).post(y);
 }
 //#endregion
 //#region src/functions/makeFigmaTexts.ts
-var P = () => {
+var z = () => {
 	figma.on("selectionchange", async () => {
-		let e = new _(figma.currentPage, !0);
-		w().post(l, {
+		let e = new f(figma.currentPage, !0);
+		_().post(j, {
 			frame: e,
 			texts: e.getTexts(),
 			screenshot: await e.screenshot()
@@ -360,4 +437,4 @@ var P = () => {
 	});
 };
 //#endregion
-export { d as FigmaAiText, _ as FigmaFrame, f as FigmaItem, b as FigmaPluginMessenger, y as FigmaPostAbstract, v as FigmaPostCode, x as FigmaStorage, S as FigmaUiMessenger, A as UI_FIGMA_FRAMES_POST_NAME, k as ensureMaxSize, N as fetchTopLevelFrames, P as makeFigmaTexts, w as useFigmaPluginMessenger, T as useFigmaStorage, O as useFigmaUiMessenger };
+export { f as FigmaFrame, S as FigmaFramesSelected, s as FigmaItem, h as FigmaPluginMessenger, m as FigmaPostAbstract, p as FigmaPostCode, v as FigmaStorage, C as FigmaTopLevelFrames, w as FigmaUiMessenger, y as UI_FIGMA_FRAMES_POST_NAME, x as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, b as UI_FIGMA_FRAMES_SELECTED_POST_NAME, k as addFramesSelected, M as ensureMaxSize, F as fetchFramesSelected, R as fetchTopLevelFrames, z as makeFigmaTexts, _ as useFigmaPluginMessenger, T as useFigmaStorage, O as useFigmaUiMessenger };

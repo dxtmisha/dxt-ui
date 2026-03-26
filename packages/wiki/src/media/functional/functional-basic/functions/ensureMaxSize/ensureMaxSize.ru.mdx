@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/ensureMaxSize - Изменение размера изображения до максимального'/>
+
+# `ensureMaxSize`
+
+Гарантирует, что изображение не превышает максимальный размер, изменяя его при необходимости. Функция возвращает изображение в формате строки Base64.
+
+Эта функция полезна для оптимизации изображений перед их отправкой на сервер, что позволяет сократить использование трафика и объем занимаемой памяти.
+
+**Параметры:**
+- `file: Uint8Array` — Файл изображения в виде `Uint8Array`.
+- `compress: number` (необязательно, по умолчанию: `0.56`) — Максимальный размер в виде доли от оригинального размера.
+- `type: string` (необязательно, по умолчанию: `'image/jpeg'`) — MIME-тип выходного изображения.
+
+**Возвращает:**
+`Promise<string>` — Возвращает промис, который разрешается в строку Base64 измененного изображения.
+
+```typescript
+import { ensureMaxSize } from '@dxtmisha/functional-basic'
+
+async function processImage(u8array: Uint8Array) {
+  const base64 = await ensureMaxSize(u8array, 0.8, 'image/webp')
+  console.log(base64) // 'data:image/webp;base64,...'
+}
+```

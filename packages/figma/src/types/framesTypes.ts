@@ -11,4 +11,6 @@ export type UiFigmaFramesItem<T extends UiFigmaNode = UiFigmaNode> = {
 export type UiFigmaFramesList = UiFigmaFramesItem[]
 
 export const UI_FIGMA_FRAMES_POST_NAME = 'ui-figma-frames-list'
+
 export const UI_FIGMA_FRAMES_SELECTED_POST_NAME = 'ui-figma-frames-selected'
+export const UI_FIGMA_FRAMES_SELECTED_ADD_NAME = 'ui-figma-frames-selected-add'

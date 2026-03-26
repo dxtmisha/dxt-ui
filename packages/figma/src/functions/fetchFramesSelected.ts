@@ -47,4 +47,3 @@ export function fetchFramesSelected(
   messenger.add(UI_FIGMA_FRAMES_SELECTED_POST_NAME, update)
     .post(UI_FIGMA_FRAMES_SELECTED_POST_NAME)
 }
-

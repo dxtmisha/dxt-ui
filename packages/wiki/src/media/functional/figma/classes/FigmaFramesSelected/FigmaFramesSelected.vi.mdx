@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Classes/FigmaFramesSelected - Quản lý các frame đang chọn'/>
+
+# Lớp FigmaFramesSelected
+
+Một lớp tiện ích tĩnh dùng để quản lý, lưu trữ bộ nhớ đệm (cache) và đồng bộ hóa danh sách các frame đang được chọn trong môi trường plugin Figma. Nó chịu trách nhiệm lưu trữ lâu dài và giao tiếp hai chiều giữa plugin và giao diện người dùng (UI) về trạng thái lựa chọn.
+
+## Các tính năng chính
+
+- **Lưu trữ lâu dài** — Sử dụng `FigmaStorage` để giữ danh sách các ID frame đang chọn ngay cả khi tải lại plugin.
+- **Tự động lưu bộ nhớ đệm** — Quản lý hiệu quả bộ nhớ đệm của các ID đang chọn để truy cập nhanh chóng.
+- **Tích hợp Messenger** — Đơn giản hóa việc giao tiếp hai chiều để cập nhật và lấy trạng thái lựa chọn.
+
+## Các phương thức tĩnh (Static Methods)
+
+### `has`
+
+Kiểm tra xem một frame với ID cụ thể có đang được chọn hay không.
+
+**Tham số:**
+- `id: string` — Mã định danh (ID) duy nhất của node Figma.
+
+**Trả về:** `boolean` — `true` nếu frame đang được chọn, `false` nếu ngược lại.
+
+```typescript
+const has = FigmaFramesSelected.has('123:456')
+```
+
+### `get`
+
+Lấy danh sách các ID frame đang được chọn hiện tại, sử dụng bộ nhớ đệm nếu có sẵn.
+
+**Trả về:** `string[]` — Một mảng chứa danh sách các ID các frame đang chọn.
+
+```typescript
+const selectedIds = FigmaFramesSelected.get()
+```
+
+### `toggle`
+
+Thay đổi trạng thái lựa chọn của một frame.
+
+**Tham số:**
+- `id: string` — Mã định danh (ID) duy nhất của node Figma.
+- `selected: boolean` — Chọn (`true`) hoặc bỏ chọn (`false`) frame.
+
+**Trả về:** `void`
+
+```typescript
+FigmaFramesSelected.toggle('123:456', true)
+```
+
+### `add`
+
+Thêm một ID frame vào danh sách lựa chọn và cập nhật bộ nhớ lưu trữ.
+
+**Tham số:**
+- `id: string` — Mã định danh (ID) duy nhất của frame Figma cần thêm.
+
+**Trả về:** `void`
+
+```typescript
+FigmaFramesSelected.add('123:456')
+```
+
+### `remove`
+
+Xóa một ID frame khỏi danh sách lựa chọn và cập nhật bộ nhớ lưu trữ.
+
+**Tham số:**
+- `id: string` — Mã định danh (ID) duy nhất của frame Figma cần xóa.
+
+**Trả về:** `void`
+
+```typescript
+FigmaFramesSelected.remove('123:456')
+```
+
+### `send`
+
+Thiết lập các listener qua messenger của plugin để xử lý các yêu cầu về danh sách lựa chọn và các cập nhật từ giao diện người dùng (UI).
+
+**Trả về:** `void`
+
+```typescript
+FigmaFramesSelected.send()
+```

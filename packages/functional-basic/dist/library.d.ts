@@ -13,8 +13,10 @@ export declare function addTagHighlightMatch(value: string, search?: string, cla
  *
  * Преобразование значения в строку.
  * @param value values for conversion/ значения для преобразования
+ * @param isArrayString if true, then arrays will be converted to strings/
+ * если true, то массивы будут преобразованы в строки
  */
-export declare function anyToString<V>(value: V): string;
+export declare function anyToString<V>(value: V, isArrayString?: boolean): string;
 
 /**
  * Class for working with requests.
@@ -1601,6 +1603,17 @@ export declare type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'nul
  * @param text text to encode / текст для кодирования
  */
 export declare function encodeAttribute(text: string): string;
+
+/**
+ * Ensures that an image does not exceed the maximum size by resizing it if needed.
+ *
+ * Гарантирует, что изображение не превышает максимальный размер, изменяя его размер при необходимости.
+ * @param file image file as Uint8Array / файл изображения в виде Uint8Array
+ * @param compress maximum size as a fraction of the original size (default is 0.7)/
+ * максимальный размер в виде доли от оригинального размера (по умолчанию 0.7)
+ * @param type image type (default is 'image/jpeg') / тип изображения (по умолчанию 'image/jpeg')
+ */
+export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
 
 /**
  * Escapes special regex characters in a string so it can be used safely in a RegExp.

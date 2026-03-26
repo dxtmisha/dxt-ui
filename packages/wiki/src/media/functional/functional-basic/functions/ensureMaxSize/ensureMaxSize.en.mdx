@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/ensureMaxSize - Resize image to fit maximum size'/>
+
+# `ensureMaxSize`
+
+Ensures that an image does not exceed the maximum size by resizing it if needed. It returns the image as a Base64 string.
+
+This function is useful for optimizing images before uploading them to a server, reducing bandwidth usage and storage requirements.
+
+**Parameters:**
+- `file: Uint8Array` — The image file as a `Uint8Array`.
+- `compress: number` (optional, default: `0.56`) — The maximum size as a fraction of the original size.
+- `type: string` (optional, default: `'image/jpeg'`) — The MIME type of the output image.
+
+**Returns:**
+`Promise<string>` — Returns a promise that resolves with the Base64 string of the resized image.
+
+```typescript
+import { ensureMaxSize } from '@dxtmisha/functional-basic'
+
+async function processImage(u8array: Uint8Array) {
+  const base64 = await ensureMaxSize(u8array, 0.8, 'image/webp')
+  console.log(base64) // 'data:image/webp;base64,...'
+}
+```

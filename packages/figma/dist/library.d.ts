@@ -1,4 +1,11 @@
-import { AiAbstract } from '@dxtmisha/scripts/ai';
+/**
+ * Sends the selected frames to the Figma plugin.
+ *
+ * Отправляет выбранные фреймы в плагин Figma.
+ * @param id The ID of the frame / Идентификатор фрейма
+ * @param selected The selection state of the frame / Состояние выбора фрейма
+ */
+export declare function addFramesSelected(id: string, selected: boolean): void;
 
 /**
  * Ensures that an image does not exceed the maximum size by resizing it if needed.
@@ -11,21 +18,20 @@ import { AiAbstract } from '@dxtmisha/scripts/ai';
 export declare function ensureMaxSize(file: Uint8Array, compress?: number): Promise<string>;
 
 /**
+ * Fetches the selected frames from the Figma plugin.
+ *
+ * Получает выбранные фреймы из плагина Figma.
+ * @param callback The function to call once the frames are received / Функция, вызываемая после получения выбранных фреймов
+ */
+export declare function fetchFramesSelected(callback: (selected: string[]) => void): void;
+
+/**
  * Fetches the top-level frames from the Figma plugin.
  *
  * Получает фреймы верхнего уровня из плагина Figma.
  * @param callback The function to call once the frames are received / Функция, вызываемая после получения фреймов
  */
 export declare function fetchTopLevelFrames(callback: (frames: UiFigmaFramesList) => void): void;
-
-export declare class FigmaAiText {
-    protected readonly ai: AiAbstract;
-    protected readonly data: UiFigmaMessageTexts;
-    constructor(ai: AiAbstract, data: UiFigmaMessageTexts);
-    make(): Promise<this>;
-    protected makeImage(): this;
-    protected initTexts(): string;
-}
 
 /**
  * Class for working with Figma frames and their elements.
@@ -80,11 +86,7 @@ export declare class FigmaFrame {
      *
      * Возвращает основные фреймы из корневого узла.
      */
-    getMainFrames(): ((FigmaItem<UiFigmaNode> & {
-        item: FrameNode;
-    }) | (FigmaItem<UiFigmaNode> & {
-        item: SectionNode;
-    }))[];
+    getMainFrames(): FigmaItem[];
     /**
      * Returns all text nodes with their IDs grouped by text content.
      *
@@ -130,6 +132,75 @@ export declare class FigmaFrame {
      * @param item starting item/ начальный элемент
      */
     protected toMain(item?: FigmaItem): FigmaItem;
+}
+
+/**
+ * Class for managing and synchronizing the list of selected frames in the Figma plugin.
+ *
+ * Класс для управления и синхронизации списка выбранных фреймов в плагине Figma.
+ */
+export declare class FigmaFramesSelected {
+    /** Storage for persistent selected frames / Хранилище для постоянного списка выбранных фреймов */
+    protected static storage: FigmaStorage<string[]>;
+    /** Cached list of selected frame IDs / Кэшированный список идентификаторов выбранных фреймов */
+    protected static selected: string[] | undefined;
+    /**
+     * Checks if a frame with the given ID is selected.
+     *
+     * Проверяет, выбран ли фрейм с указанным идентификатором.
+     * @param id Frame ID / Идентификатор фрейма
+     * @returns `true` if selected / `true`, если выбран
+     */
+    static has(id: string): boolean;
+    /**
+     * Retrieves the current list of selected frame IDs, using cache if available.
+     *
+     * Получает текущий список идентификаторов выбранных фреймов, используя кэш при его наличии.
+     * @returns An array of selected frame IDs / Массив идентификаторов выбранных фреймов
+     */
+    static get(): string[];
+    /**
+     * Adds a frame ID to the selection list.
+     *
+     * Добавляет идентификатор фрейма в список выбора.
+     * @param id Frame ID / Идентификатор фрейма
+     */
+    static add(id: string): void;
+    /**
+     * Removes a frame ID from the selection list.
+     *
+     * Удаляет идентификатор фрейма из списка выбора.
+     * @param id Frame ID / Идентификатор фрейма
+     */
+    static remove(id: string): void;
+    /**
+     * Toggles the selection state of a frame.
+     *
+     * Переключает состояние выбора фрейма.
+     * @param id Frame ID / Идентификатор фрейма
+     * @param selected Whether to select or deselect / Выбрать или отменить выбор
+     */
+    static toggle(id: string, selected: boolean): void;
+    /**
+     * Sets up communication via the plugin messenger to handle selection state.
+     *
+     * Настраивает связь через мессенджер плагина для управления состоянием выбора.
+     */
+    static send(): void;
+    /**
+     * Retrieves the raw selection list from storage.
+     *
+     * Получает необработанный список выбора из хранилища.
+     * @returns An array of frame IDs / Массив идентификаторов фреймов
+     */
+    protected static getList(): string[];
+    /**
+     * Updates the selection list in cache and storage.
+     *
+     * Обновляет список выбора в кэше и хранилище.
+     * @param selected New selection list / Новый список выбора
+     */
+    protected static set(selected: string[]): void;
 }
 
 /**
@@ -237,13 +308,13 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      *
      * Экспортирует узел в формате JPG.
      */
-    exportJpg(): Promise<"" | Uint8Array<ArrayBufferLike>>;
+    exportJpg(): Promise<Uint8Array<ArrayBufferLike> | "">;
     /**
      * Exports the node as JSON.
      *
      * Экспортирует узел в формате JSON.
      */
-    exportJson(): Promise<"" | Uint8Array<ArrayBufferLike>>;
+    exportJson(): Promise<Uint8Array<ArrayBufferLike> | "">;
     /**
      * Returns the text content of the node.
      *
@@ -263,7 +334,7 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      * Экспортирует узел в указанном формате.
      * @param formatSettings format settings/ настройки формата
      */
-    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<"" | Uint8Array<ArrayBufferLike>>;
+    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<Uint8Array<ArrayBufferLike> | "">;
 }
 
 /**
@@ -474,6 +545,36 @@ declare type FigmaStorageValue<T> = {
 };
 
 /**
+ * Class for managing and sending the list of top-level frames in the Figma plugin.
+ *
+ * Класс для управления и отправки списка фреймов верхнего уровня в плагине Figma.
+ */
+export declare class FigmaTopLevelFrames {
+    /** Cached list of top-level frames / Кэшированный список фреймов верхнего уровня */
+    protected static frames: UiFigmaFramesList | undefined;
+    /**
+     * Retrieves and caches the formatted list of top-level frames.
+     *
+     * Получает и кэширует отформатированный список фреймов верхнего уровня.
+     * @returns A promise that resolves to the list of frames / Промис, который разрешается в список фреймов
+     */
+    static getListData(): Promise<UiFigmaFramesList>;
+    /**
+     * Sets up a listener for frame requests and sends the data back using the plugin messenger.
+     *
+     * Настраивает прослушиватель для запросов фреймов и отправляет данные обратно с помощью мессенджера плагина.
+     */
+    static send(): void;
+    /**
+     * Gets the list of main frames from the current Figma page.
+     *
+     * Получает список основных фреймов с текущей страницы Figma.
+     * @returns An array of Figma items / Массив элементов Figma
+     */
+    protected static getList(): FigmaItem<UiFigmaNode>[];
+}
+
+/**
  * Messenger for the Figma UI side (frontend).
  *
  * Мессенджер для стороны UI Figma (frontend).
@@ -503,6 +604,10 @@ export declare class FigmaUiMessenger extends FigmaPostAbstract {
 export declare const makeFigmaTexts: () => void;
 
 export declare const UI_FIGMA_FRAMES_POST_NAME = "ui-figma-frames-list";
+
+export declare const UI_FIGMA_FRAMES_SELECTED_ADD_NAME = "ui-figma-frames-selected-add";
+
+export declare const UI_FIGMA_FRAMES_SELECTED_POST_NAME = "ui-figma-frames-selected";
 
 export declare type UiFigmaExportFormat = 'PNG' | 'JPG' | 'SVG' | 'PDF' | 'JSON_REST_V1';
 

@@ -1,0 +1,88 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Classes/FigmaFramesSelected - Selected Frames Management'/>
+
+# FigmaFramesSelected Class
+
+A static utility class for managing, caching, and synchronizing the list of selected frames within the Figma plugin environment. It handles persistent storage and bidirectional communication between the plugin and the UI regarding the selection state.
+
+## Key Features
+
+- **Persistent Storage** — Uses `FigmaStorage` to keep the list of selected frame IDs across plugin reloads.
+- **Automated Caching** — Efficiently manages a singleton-like cache of selected IDs for fast access.
+- **Messenger Integration** — Simplifies bidirectional communication for updating and retrieving the selection state.
+
+## Static Methods
+
+### `has`
+
+Checks if a frame with the given ID is currently selected.
+
+**Parameters:**
+- `id: string` — The unique Figma node ID of the frame.
+
+**Returns:** `boolean` — `true` if the frame is selected, `false` otherwise.
+
+```typescript
+const has = FigmaFramesSelected.has('123:456')
+```
+
+### `get`
+
+Retrieves the current list of selected frame IDs, using the cache if available.
+
+**Returns:** `string[]` — An array of selected frame IDs.
+
+```typescript
+const selectedIds = FigmaFramesSelected.get()
+```
+
+### `toggle`
+
+Toggles the selection state of a frame.
+
+**Parameters:**
+- `id: string` — The unique Figma node ID of the frame.
+- `selected: boolean` — Whether to select (`true`) or deselect (`false`) the frame.
+
+**Returns:** `void`
+
+```typescript
+FigmaFramesSelected.toggle('123:456', true)
+```
+
+### `add`
+
+Adds a frame ID to the selection list and updates the storage.
+
+**Parameters:**
+- `id: string` — The unique Figma node ID of the frame to add.
+
+**Returns:** `void`
+
+```typescript
+FigmaFramesSelected.add('123:456')
+```
+
+### `remove`
+
+Removes a frame ID from the selection list and updates the storage.
+
+**Parameters:**
+- `id: string` — The unique Figma node ID of the frame to remove.
+
+**Returns:** `void`
+
+```typescript
+FigmaFramesSelected.remove('123:456')
+```
+
+### `send`
+
+Sets up listeners via the plugin messenger to handle requests for the selection list and updates from the UI.
+
+**Returns:** `void`
+
+```typescript
+FigmaFramesSelected.send()
+```

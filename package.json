@@ -70,6 +70,7 @@
     "@dxtmisha/configuration": "workspace:*",
     "@dxtmisha/constructor": "workspace:*",
     "@dxtmisha/figma": "workspace:*",
+    "@dxtmisha/figma-code": "workspace:*",
     "@dxtmisha/figma-ref": "workspace:*",
     "@dxtmisha/functional": "workspace:*",
     "@dxtmisha/functional-basic": "workspace:*",

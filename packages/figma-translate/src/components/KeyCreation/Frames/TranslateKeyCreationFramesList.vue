@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue'
-import { TranslateFramesDisplay } from '../../../classes/TranslateFramesDisplay'
+import { watchEffect } from 'vue'
+import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
 
 import TranslateKeyCreationFramesItem from './TranslateKeyCreationFramesItem.vue'
 
@@ -8,7 +8,8 @@ defineOptions({
   name: 'TranslateKeyCreationFramesList'
 })
 
-const frames = computed(() => TranslateFramesDisplay.get())
+const { frames } = useFigmaUiFrames()
+
 watchEffect(() => {
   console.log('frames', frames.value)
 })
@@ -24,6 +25,4 @@ watchEffect(() => {
   </div>
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

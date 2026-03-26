@@ -1,4 +1,6 @@
-import { blobToBase64, getElementImage, resizeImageByMax } from '@dxtmisha/functional-basic'
+import { blobToBase64 } from './blobToBase64'
+import { getElementImage } from './getElementImage'
+import { resizeImageByMax } from './resizeImageByMax'
 
 /**
  * Ensures that an image does not exceed the maximum size by resizing it if needed.
@@ -7,6 +9,7 @@ import { blobToBase64, getElementImage, resizeImageByMax } from '@dxtmisha/funct
  * @param file image file as Uint8Array / файл изображения в виде Uint8Array
  * @param compress maximum size as a fraction of the original size (default is 0.7)/
  * максимальный размер в виде доли от оригинального размера (по умолчанию 0.7)
+ * @param type image type (default is 'image/jpeg') / тип изображения (по умолчанию 'image/jpeg')
  */
 export async function ensureMaxSize(
   file: Uint8Array,

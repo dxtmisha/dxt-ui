@@ -1,5 +1,4 @@
-import { FigmaPostAbstract } from './FigmaPostAbstract'
-import { FigmaPostCode } from './FigmaPostCode'
+import { FigmaPostAbstract, FigmaPostCode } from '@dxtmisha/figma'
 
 import type { UiFigmaMessengerData } from '../types/figmaMessengerTypes'
 

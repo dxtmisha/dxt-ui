@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TranslateKeyCreationFrames from './Frames/TranslateKeyCreationFrames.vue'
-
 </script>
 
 <template>
