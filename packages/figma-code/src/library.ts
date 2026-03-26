@@ -4,25 +4,15 @@ export * from './classes/FigmaFrame'
 export * from './classes/FigmaFramesSelected'
 export * from './classes/FigmaItem'
 export * from './classes/FigmaPluginMessenger'
-export * from './classes/FigmaPostAbstract'
-export * from './classes/FigmaPostCode'
 export * from './classes/FigmaStorage'
 export * from './classes/FigmaTopLevelFrames'
-export * from './classes/FigmaUiMessenger'
 
 // Composables
 export * from './composables/useFigmaPluginMessenger'
 export * from './composables/useFigmaStorage'
-export * from './composables/useFigmaUiMessenger'
 
 // Functions
-export * from './functions/addFramesSelected'
-export * from './functions/ensureMaxSize'
-export * from './functions/fetchFramesSelected'
-export * from './functions/fetchTopLevelFrames'
 export * from './functions/makeFigmaTexts'
 
 // Types
-export * from './types/figmaMessengerTypes'
 export * from './types/figmaTypes'
-export * from './types/framesTypes'

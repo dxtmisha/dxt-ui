@@ -1,6 +1,4 @@
-import { FigmaPostAbstract, FigmaPostCode } from '@dxtmisha/figma'
-
-import type { UiFigmaMessengerData } from '../types/figmaMessengerTypes'
+import { FigmaPostAbstract, FigmaPostCode, type UiFigmaMessengerData } from '@dxtmisha/figma'
 
 /**
  * Messenger for the Figma plugin side (backend).

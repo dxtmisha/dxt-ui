@@ -1,0 +1,63 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Classes/FigmaPluginMessenger - Мессенджер плагина'/>
+
+# Класс FigmaPluginMessenger
+
+Мессенджер для стороны плагина Figma (backend). Обрабатывает отправку сообщений в UI Figma и прослушивание сообщений из UI, используя внутренний API Figma `figma.ui`.
+
+## Инициализация
+
+Наследует `FigmaPostAbstract`.
+
+```typescript
+import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
+
+const messenger = new FigmaPluginMessenger()
+  .make()
+  .add('hello-ui', (msg) => console.log('UI:', msg))
+```
+
+## Публичные методы
+
+### `make`
+
+Инициализирует слушатель сообщений, используя API `figma.ui.onmessage`. Должен быть вызван один раз для начала приема сообщений из UI.
+
+**Возвращает:** `this`
+
+```javascript
+messenger.make()
+```
+
+### `add`
+
+Регистрирует слушатель для определенного типа сообщения, поступающего из UI.
+
+**Параметры:**
+- `type: string` — Уникальный идентификатор типа сообщения для прослушивания.
+- `callback: (message: Message) => void` — функция, которую необходимо выполнить при получении соответствующего сообщения.
+
+**Возвращает:** `this`
+
+```javascript
+messenger.add('resize-ui', (data) => {
+  figma.ui.resize(data.width, data.height)
+})
+```
+
+### `post`
+
+Отправляет сообщение в UI Figma.
+
+**Параметры:**
+- `type: string` — Идентификатор сообщения (тип).
+- `message: Message` — (Опционально) Полезные данные для отправки в UI.
+
+**Возвращает:** `void`
+
+```javascript
+messenger.post('selection-data', { 
+  ids: figma.currentPage.selection.map(node => node.id) 
+})
+```

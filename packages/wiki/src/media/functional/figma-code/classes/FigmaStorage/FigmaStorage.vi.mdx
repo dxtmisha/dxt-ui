@@ -1,0 +1,90 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaStorage - Quản lý Lưu trữ'/>
+
+# Lớp FigmaStorage
+
+Một lớp để quản lý `PluginData` trong Figma một cách mạnh mẽ. Nó cung cấp một API cấp cao để lưu trữ, truy xuất và kiểm soát thời hạn của dữ liệu trên các node Figma (mặc định là node gốc của tài liệu), hỗ trợ bộ nhớ đệm (caching) và các giá trị mặc định.
+
+## Các tính năng chính
+
+- **Tính kiên trì (Persistence)** — Bao bọc `getPluginData` và `setPluginData` để lưu trữ dữ liệu liền mạch.
+- **Bộ nhớ đệm (In-Memory Caching)** — Lưu trữ các giá trị trong thực thể để truy cập nhanh trong ngữ cảnh thực thi hiện tại.
+- **Logic hết hạn** — Hỗ trợ lưu trữ dựa trên thời gian để vô hiệu hóa dữ liệu lỗi thời.
+- **Giá trị chức năng** — Hỗ trợ truyền các hàm dưới dạng giá trị hoặc giá trị mặc định để tạo dữ liệu động.
+
+## Khởi tạo
+
+Khởi tạo đối tượng bằng cách gọi hàm dựng `FigmaStorage(name, item, cache)`.
+
+### Tham số Generics
+
+Lớp hỗ trợ một tham số generic để quản lý dữ liệu có định kiểu:
+- `T` — Kiểu dữ liệu của giá trị được lưu trữ và truy xuất.
+
+**Tham số:**
+- `name: string` — Tên khóa duy nhất cho mục lưu trữ.
+- `item: PluginDataMixin = figma.root` — Node Figma nơi dữ liệu sẽ được lưu trữ. Mặc định là `figma.root`.
+- `cache: number` — (Tùy chọn) Thời gian sống (TTL) tính bằng giây cho dữ liệu được lưu trữ.
+
+```typescript
+import { FigmaStorage } from '@dxtmisha/figma-code'
+
+// 1. Khởi tạo với kiểu dữ liệu ngầm định
+const settings = new FigmaStorage('plugin-settings')
+
+// 2. Sử dụng generics để định kiểu nghiêm ngặt
+interface MyData { theme: string; version: number }
+const typedSettings = new FigmaStorage<MyData>('app-data')
+
+// 3. Khởi tạo với bộ nhớ đệm 1 giờ
+const cacheSettings = new FigmaStorage('cache', figma.root, 3600)
+```
+
+## Các phương thức
+
+### `get`
+
+Truy xuất dữ liệu từ bộ lưu trữ với hỗ trợ các giá trị mặc định và xác thực bộ nhớ đệm.
+
+**Tham số:**
+- `defaultValue: T | (() => T)` — (Tùy chọn) Giá trị được trả về (và bộ lưu trữ) nếu bộ lưu trữ trống hoặc hết hạn.
+
+**Trả về:** `T | undefined`
+
+```javascript
+const val = settings.get('default_val')
+```
+
+### `set`
+
+Cập nhật dữ liệu trong cả bộ nhớ đệm trong bộ nhớ và `PluginData` của node Figma.
+
+**Tham số:**
+- `value: T | (() => T)` — (Tùy chọn) Giá trị mới hoặc một hàm trả về giá trị mới.
+
+**Trả về:** `T | undefined`
+
+```javascript
+settings.set({ theme: 'dark' })
+```
+
+### `remove`
+
+Xóa dữ liệu khỏi cả bộ nhớ đệm trong bộ nhớ và `PluginData` của node Figma.
+
+**Trả về:** `this`
+
+```javascript
+settings.remove()
+```
+
+### `getName`
+
+Trả về tên khóa được sử dụng cho thực thể lưu trữ này.
+
+**Trả về:** `string`
+
+```javascript
+console.log(settings.getName())
+```

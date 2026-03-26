@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaFrame - Frame Manager'/>
+
+# FigmaFrame Class
+
+A comprehensive utility for navigating and extracting data from Figma frames and sections. It supports recursive node analysis and grouping for both entire pages and active selections.
+
+## Key Features
+
+- **Context Sensitivity** — Automatically handles logic differences between full page analysis and active selection.
+- **Node Filtering** — Specialized methods to retrieve only frames, sections, or text nodes from the hierarchy.
+- **Text Aggregation** — Grouping of text nodes by content for easier translation and analysis.
+- **Bulk Export** — Streamlined asynchronous screenshotting for all main items in the context.
+
+## Initialization
+
+To initialize the object, call the `FigmaFrame(page, selection)` constructor.
+
+**Parameters:**
+- `page: UiFigmaNode` — The root node (usually `figma.currentPage` or a `PageNode`) for analysis.
+- `selection: boolean = false` — If `true`, the instance will only process nodes within the current selection instead of the entire page.
+
+```typescript
+import { FigmaFrame } from '@dxtmisha/figma-code'
+
+// 1. Initialize for the entire page
+const pageManager = new FigmaFrame(figma.currentPage)
+
+// 2. Initialize specifically for the active selection
+const selectionManager = new FigmaFrame(figma.currentPage, true)
+```
+
+## Context & Analysis
+
+- `isSelection(): boolean` — Checks if work is limited to the active selection. Example: `frameManager.isSelection()`
+- `getMainFrames(): FigmaItem[]` — Returns top-level frames/sections from the root. Example: `const roots = frameManager.getMainFrames()`
+
+## Hierarchy Filtering
+
+- `getItemsFrame(): FigmaItem<FrameNode>[]` — Filters hierarchy for FRAME nodes. Example: `const frames = frameManager.getItemsFrame()`
+- `getItemsSection(): FigmaItem<SectionNode>[]` — Filters hierarchy for SECTION nodes. Example: `const sections = frameManager.getItemsSection()`
+- `getItemsText(): FigmaItem<TextNode>[]` — Filters hierarchy for TEXT nodes. Example: `const textNodes = frameManager.getItemsText()`
+
+## Data & Capture
+
+- `getTexts(): UiFigmaItemText[]` — Aggregates all text nodes grouped by content. Example: `const groups = frameManager.getTexts()`
+- `screenshot(): Promise<Uint8Array[]>` — Captures JPG screenshots of all main items. Example: `const images = await frameManager.screenshot()`
+
+## Types
+
+### `UiFigmaNode`
+
+A union type representing any relevant Figma node that can contain children or be processed by the manager.
+- Includes: `DocumentNode`, `PageNode`, `FrameNode`, `SectionNode`, `TextNode`, and other `SceneNode` variants.
+
+### `UiFigmaItemText`
+
+An object structure used for grouping text content across the document.
+- `id: string[]` — A list of unique Figma node IDs where this exact text content is found.
+- `text: string` — The actual trimmed string content.

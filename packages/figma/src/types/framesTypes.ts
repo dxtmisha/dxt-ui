@@ -1,16 +1,36 @@
-import type { FigmaItem } from '../classes/FigmaItem'
-import type { UiFigmaNode } from './figmaTypes'
-
-export type UiFigmaFramesItem<T extends UiFigmaNode = UiFigmaNode> = {
+/**
+ * Represents a simplified Figma frame item for the UI/
+ * Представляет упрощенный элемент фрейма Figma для пользовательского интерфейса
+ */
+export type UiFigmaFramesItem = {
+  /** Name of the frame / Название фрейма */
   name: string
+  /** Unique element ID / Уникальный идентификатор элемента */
   id: string
+  /** Image as a byte array or Base64 string / Изображение в виде байтового массива или строки Base64 */
   image?: Uint8Array<ArrayBufferLike> | string
-  item?: FigmaItem<T>
 }
 
+/**
+ * List of frame items/
+ * Список элементов фреймов
+ */
 export type UiFigmaFramesList = UiFigmaFramesItem[]
 
+/**
+ * Message name for sending the list of frames/
+ * Имя сообщения для отправки списка фреймов
+ */
 export const UI_FIGMA_FRAMES_POST_NAME = 'ui-figma-frames-list'
 
+/**
+ * Message name for sending the selected frames/
+ * Имя сообщения для отправки выбранных фреймов
+ */
 export const UI_FIGMA_FRAMES_SELECTED_POST_NAME = 'ui-figma-frames-selected'
+
+/**
+ * Message name for adding a frame to the selection/
+ * Имя сообщения для добавления фрейма в выборку
+ */
 export const UI_FIGMA_FRAMES_SELECTED_ADD_NAME = 'ui-figma-frames-selected-add'

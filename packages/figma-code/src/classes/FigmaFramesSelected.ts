@@ -1,7 +1,6 @@
+import { UI_FIGMA_FRAMES_SELECTED_ADD_NAME, UI_FIGMA_FRAMES_SELECTED_POST_NAME } from '@dxtmisha/figma'
 import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
 import { FigmaStorage } from './FigmaStorage'
-
-import { UI_FIGMA_FRAMES_SELECTED_ADD_NAME, UI_FIGMA_FRAMES_SELECTED_POST_NAME } from '../types/framesTypes'
 
 /**
  * Class for managing and synchronizing the list of selected frames in the Figma plugin.

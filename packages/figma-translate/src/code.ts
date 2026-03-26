@@ -1,4 +1,5 @@
-import { FigmaPostCode, FigmaTopLevelFrames } from '@dxtmisha/figma'
+import { FigmaPostCode } from '@dxtmisha/figma'
+import { FigmaTopLevelFrames } from '@dxtmisha/figma-code'
 
 import manifest from '../manifest.json'
 

@@ -1,0 +1,73 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaItem - Node Wrapper'/>
+
+# FigmaItem Class
+
+A wrapper class for Figma nodes (`UiFigmaNode`) that provides a simplified, typed interface for common operations such as type checking, tree navigation, and asynchronous export.
+
+## Key Features
+
+- **Typed Access** — Provides type guard methods for `DOCUMENT`, `FRAME`, `SECTION`, and `TEXT` nodes.
+- **Simplified Navigation** — Easily access parent or child nodes wrapped in `FigmaItem` instances.
+- **Export Hook** — High-level methods for exporting nodes to JPG or JSON formats.
+- **Content Analysis** — Specialized logic for extracting and validating text content.
+
+## Initialization
+
+To initialize the object, call the `FigmaItem(item)` constructor.
+
+### Generic Constraints
+
+The class supports a generic parameter for strict typing:
+- `T extends UiFigmaNode` — The specific type of the wrapped Figma node.
+
+**Parameters:**
+- `item: T` — The native Figma node (e.g., `SceneNode`, `FrameNode`, `TextNode`) to be wrapped.
+
+```typescript
+import { FigmaItem } from '@dxtmisha/figma-code'
+
+// 1. Wrapping a selected node
+const item = new FigmaItem(figma.currentPage.selection[0])
+
+// 2. Using generics for specific node types
+const frameItem = new FigmaItem<FrameNode>(someFrameNode)
+```
+
+## Identification
+
+- `isDocument(): boolean` — Checks if the wrapped node is a `DOCUMENT`. Example: `item.isDocument()`
+- `isFrame(): boolean` — Checks if the wrapped node is a `FRAME`. Example: `item.isFrame()`
+- `isSection(): boolean` — Checks if the wrapped node is a `SECTION`. Example: `item.isSection()`
+- `isText(): boolean` — Checks if the wrapped node is a `TEXT` node. Example: `item.isText()`
+- `isTextNoValue(): boolean` — Filters for text nodes with meaningful content. Example: `item.isTextNoValue()`
+- `getType(): string | undefined` — Returns the string type constant of the node. Example: `const type = item.getType()`
+- `getId(): string` — Returns the unique ID of the node. Example: `const id = item.getId()`
+- `getName(): string` — Returns the display name of the node. Example: `const name = item.getName()`
+
+## Navigation
+
+- `getParent(): UiFigmaNode | undefined` — Returns the raw parent node. Example: `const parent = item.getParent()`
+- `getParentItem(): FigmaItem | undefined` — Returns the wrapped parent. Example: `const parentItem = item.getParentItem()`
+- `getChildren(): UiFigmaNode[]` — Returns an array of raw child nodes. Example: `const children = item.getChildren()`
+- `getChildrenItems(): FigmaItem[]` — Returns an array of wrapped child nodes. Example: `const items = item.getChildrenItems()`
+
+## Data & Export
+
+- `get(): T` — Returns the raw underlying Figma node. Example: `const raw = item.get()`
+- `exportJpg(): Promise<Uint8Array | string>` — Asynchronously exports the node in JPG format. Example: `const bytes = await item.exportJpg()`
+- `exportJson(): Promise<Uint8Array | string>` — Asynchronously exports the node in JSON format. Example: `const json = await item.exportJson()`
+- `getText(): string` — Retrieves the trimmed text content from the node. Example: `const content = item.getText()`
+
+## Types
+
+### `UiFigmaNode`
+
+A union type representing any relevant Figma node that can be wrapped by `FigmaItem`.
+- Includes: `DocumentNode`, `PageNode`, `FrameNode`, `SectionNode`, `TextNode`, and other `SceneNode` variants.
+
+### `UiFigmaExportFormat`
+
+Supported formats for node export operations.
+- Values: `'PNG'`, `'JPG'`, `'SVG'`, `'PDF'`, `'JSON_REST_V1'`.

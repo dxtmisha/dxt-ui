@@ -4,8 +4,14 @@
  */
 export type UiFigmaMessengerCallback<Message = any> = (message: Message) => void
 
+/**
+ * Item containing a callback and its execution rule/
+ * Элемент, содержащий функцию обратного вызова и правило её выполнения
+ */
 export type UiFigmaMessengerCallbackItem<Message = any> = {
+  /** Callback function / Функция обратного вызова */
   callback: UiFigmaMessengerCallback<Message>
+  /** Rule for single execution / Правило однократного выполнения */
   once: boolean
 }
 
@@ -14,7 +20,9 @@ export type UiFigmaMessengerCallbackItem<Message = any> = {
  * Структура для хранения типа сообщения и связанных с ним обратных вызовов
  */
 export type UiFigmaMessengerItem = {
+  /** Message type / Тип сообщения */
   type: string
+  /** List of registered callbacks / Список зарегистрированных функций обратного вызова */
   callbackList: UiFigmaMessengerCallbackItem[]
 }
 

@@ -1,7 +1,6 @@
+import { UI_FIGMA_FRAMES_POST_NAME, type UiFigmaFramesList } from '@dxtmisha/figma'
 import { FigmaFrame } from './FigmaFrame'
 import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
-
-import { UI_FIGMA_FRAMES_POST_NAME, type UiFigmaFramesList } from '../types/framesTypes'
 
 /**
  * Class for managing and sending the list of top-level frames in the Figma plugin.
@@ -26,8 +25,7 @@ export class FigmaTopLevelFrames {
         this.frames.push({
           name: item.getName(),
           id: item.getId(),
-          image: await item.exportJpg(),
-          item
+          image: await item.exportJpg()
         })
       }
     }

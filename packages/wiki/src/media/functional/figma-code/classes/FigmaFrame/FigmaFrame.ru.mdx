@@ -1,0 +1,61 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Classes/FigmaFrame - Менеджер фреймов'/>
+
+# Класс FigmaFrame
+
+Комплексная утилита для навигации и извлечения данных из фреймов и секций Figma. Поддерживает рекурсивный анализ и группировку узлов как для целых страниц, так и для активных выделений.
+
+## Ключевые особенности
+
+- **Контекстная зависимость** — Автоматически обрабатывает различия в логике между анализом всей страницы и активным выделением.
+- **Фильтрация узлов** — Специализированные методы для получения только фреймов, секций или текстовых узлов из иерархии.
+- **Агрегация текста** — Группировка текстовых узлов по содержимому для упрощения перевода и анализа.
+- **Массовый экспорт** — Оптимизированное асинхронное создание скриншотов для всех основных элементов в контексте.
+
+## Инициализация
+
+Для инициализации объекта вызовите конструктор `FigmaFrame(page, selection)`.
+
+**Параметры:**
+- `page: UiFigmaNode` — Корневой узел (обычно `figma.currentPage` или `PageNode`) для анализа.
+- `selection: boolean = false` — Если `true`, экземпляр будет обрабатывать только узлы в текущем выделении, а не на всей странице.
+
+```typescript
+import { FigmaFrame } from '@dxtmisha/figma-code'
+
+// 1. Инициализация для всей страницы
+const pageManager = new FigmaFrame(figma.currentPage)
+
+// 2. Инициализация конкретно для текущего выделения
+const selectionManager = new FigmaFrame(figma.currentPage, true)
+```
+
+## Контекст и анализ
+
+- `isSelection(): boolean` — Проверяет, ограничен ли контекст текущим выделением. Пример: `frameManager.isSelection()`
+- `getMainFrames(): FigmaItem[]` — Возвращает основные фреймы/секции от корня. Пример: `const roots = frameManager.getMainFrames()`
+
+## Фильтрация иерархии
+
+- `getItemsFrame(): FigmaItem<FrameNode>[]` — Фильтрует иерархию по узлам FRAME. Пример: `const frames = frameManager.getItemsFrame()`
+- `getItemsSection(): FigmaItem<SectionNode>[]` — Фильтрует иерархию по узлам SECTION. Пример: `const sections = frameManager.getItemsSection()`
+- `getItemsText(): FigmaItem<TextNode>[]` — Фильтрует иерархию по узлам TEXT. Пример: `const textNodes = frameManager.getItemsText()`
+
+## Данные и захват (Capture)
+
+- `getTexts(): UiFigmaItemText[]` — Агрегирует текстовые узлы, группируя их по контенту. Пример: `const groups = frameManager.getTexts()`
+- `screenshot(): Promise<Uint8Array[]>` — Асинхронно создает JPG-скриншоты элементов. Пример: `const images = await frameManager.screenshot()`
+
+## Типы (Types)
+
+### `UiFigmaNode`
+
+Тип-объединение (union), представляющий любой релевантный узел Figma, который может содержать дочерние элементы или обрабатываться менеджером.
+- Включает: `DocumentNode`, `PageNode`, `FrameNode`, `SectionNode`, `TextNode` и другие варианты `SceneNode`.
+
+### `UiFigmaItemText`
+
+Структура объекта, используемая для группировки текстового содержимого по всему документу.
+- `id: string[]` — список уникальных ID узлов Figma, в которых найден этот текст.
+- `text: string` — само текстовое содержимое (очищенное от лишних пробелов).
