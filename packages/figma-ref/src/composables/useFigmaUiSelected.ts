@@ -29,6 +29,7 @@ export function useFigmaUiSelected() {
     loading.value = true
 
     fetchFramesSelected((selected: string[]) => {
+      console.log('selected', selected)
       item.value = selected
       loading.value = false
     })

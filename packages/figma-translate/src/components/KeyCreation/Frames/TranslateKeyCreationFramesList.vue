@@ -12,12 +12,18 @@ defineOptions({
 
 const { frames, loading } = useFigmaUiFrames()
 
+/**
+ * Reactive list of frames. Returns actual frames if loaded,
+ * or placeholder data if in loading state/
+ * Реактивный список фреймов. Возвращает реальные фреймы, если они загружены,
+ * или заполнители, если данные в процессе загрузки
+ */
 const list = computed<UiFigmaFramesList>(() => {
   if (isFilled(frames.value)) {
     return frames.value
   }
 
-  if (loading) {
+  if (loading.value) {
     return [
       {
         id: '000_000_000_001',
@@ -39,13 +45,16 @@ const list = computed<UiFigmaFramesList>(() => {
 </script>
 
 <template>
-  <div class="translate-key-creation-frames-list">
+  <D1Skeleton
+    :active="loading"
+    class="translate-key-creation-frames-list"
+  >
     <TranslateKeyCreationFramesItem
       v-for="frame in list"
       :key="frame.id"
       v-bind="frame"
     />
-  </div>
+  </D1Skeleton>
 </template>
 
 <style lang="scss"></style>

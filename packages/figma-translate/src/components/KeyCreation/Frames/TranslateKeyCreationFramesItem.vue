@@ -1,32 +1,42 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
 
-import { TranslateFramesEnabled } from '../../../classes/TranslateFramesEnabled'
-
+import type { FieldValidationItem } from '@dxtmisha/constructor'
 import type { TranslateFrameItem } from '../../../types/TranslateTypes'
 
 defineOptions({
-  name: 'TranslateKeyCreationFramesList'
+  name: 'TranslateKeyCreationFramesItem'
 })
 
 const props = defineProps<TranslateFrameItem>()
 
-const isEnabled = computed(() => TranslateFramesEnabled.is(props.name))
+const { isSelected, toggleSelected } = useFigmaUiSelected()
 
-const toggleEnabled = () => {
-  TranslateFramesEnabled.set(props.name, !isEnabled.value)
-}
+/**
+ * Indicates if the current frame is selected/
+ * Указывает, выбран ли текущий фрейм
+ */
+const value = isSelected(props.id)
+
+/**
+ * Toggles the selection state of the current frame.
+ *
+ * Переключает состояние выбора текущего фрейма.
+ * @param event Change event object / Объект события изменения
+ */
+const onChange = ({ value }: FieldValidationItem<boolean>) => toggleSelected(props.id, value)
 </script>
 
 <template>
   <D1Cell
     :icon="image"
     :label="name"
+    is-skeleton
   >
     <template #trailing>
       <D1Checkbox
-        :value="isEnabled"
-        @change-lite="toggleEnabled"
+        :value="value"
+        @change-lite="onChange"
       />
     </template>
   </D1Cell>
