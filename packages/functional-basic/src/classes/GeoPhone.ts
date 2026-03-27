@@ -15,8 +15,8 @@ import {
  * Класс для хранения и обработка маски телефона.
  */
 export class GeoPhone {
-  protected static list: GeoPhoneValue[] = []
-  protected static map: Record<string, GeoPhoneMap> = {}
+  protected static list?: GeoPhoneValue[]
+  protected static map?: Record<string, GeoPhoneMap>
 
   /**
    * Getting an object with information about the phone code and country.
@@ -25,7 +25,7 @@ export class GeoPhone {
    * @param code country and language code/ код страны и языка
    */
   static get(code: string): GeoPhoneValue | undefined {
-    return this.list.find(item => code === item.value)
+    return this.getList().find(item => code === item.value)
   }
 
   /**
@@ -38,7 +38,7 @@ export class GeoPhone {
     const fullPhone = this.toNumber(phone)
     const code: string[] = ['']
 
-    let focus = this.map
+    let focus = this.getMap()
     let item: GeoPhoneMap | undefined
 
     for (const number of fullPhone) {
@@ -95,7 +95,11 @@ export class GeoPhone {
    * Получаем массив из списка всех телефонных кодов.
    */
   static getList(): GeoPhoneValue[] {
-    return this.list
+    if (!this.list) {
+      this.makeList()
+    }
+
+    return this.list ?? []
   }
 
   /**
@@ -104,7 +108,11 @@ export class GeoPhone {
    * Получаем карту дерева, отсортированную по его коду.
    */
   static getMap(): Record<string, GeoPhoneMap> {
-    return this.map
+    if (!this.map) {
+      this.makeMap()
+    }
+
+    return this.map ?? {}
   }
 
   /**
@@ -209,9 +217,11 @@ export class GeoPhone {
    * Создание карты для поиска.
    */
   protected static makeMap(): void {
-    this.list.forEach((item) => {
+    this.map = {}
+
+    this.getList().forEach((item) => {
       item.mask.forEach((mask) => {
-        let focus = this.map
+        let focus = this.map!
         let value: GeoPhoneMap | undefined
 
         this.toNumber(mask).forEach((number) => {
@@ -279,10 +289,5 @@ export class GeoPhone {
    */
   protected static toWithin(mask: string, within: number | string): string {
     return mask.replace(/\*/, this.getWithinSymbol(within))
-  }
-
-  static {
-    this.makeList()
-    this.makeMap()
   }
 }

@@ -3,7 +3,7 @@ import { GeoPhone } from '../GeoPhone'
 
 describe('GeoPhone', () => {
   describe('removeZero', () => {
-    it('should remove leading zero', () => {
+    it('should remove the leading zero', () => {
       expect(GeoPhone.removeZero('0123456789')).toBe('123456789')
     })
 
