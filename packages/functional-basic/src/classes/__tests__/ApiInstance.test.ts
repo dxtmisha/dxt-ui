@@ -5,22 +5,25 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ApiInstance } from '../ApiInstance'
 import { ApiMethodItem } from '../../types/apiTypes'
+import { LoadingInstance } from '../LoadingInstance'
+import { Loading } from '../Loading'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
 globalThis.fetch = mockFetch
 
-// Mock console.error to avoid cluttering test output
-const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {
-})
+// Mock console.error
+let consoleErrorSpy: any
 
 describe('ApiInstance', () => {
   let api: ApiInstance
 
   beforeEach(() => {
-    api = new ApiInstance('/api/')
+    vi.restoreAllMocks()
     mockFetch.mockClear()
-    consoleErrorSpy.mockClear()
+
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {
+    })
 
     // Set up default successful response
     mockFetch.mockResolvedValue({
@@ -31,6 +34,89 @@ describe('ApiInstance', () => {
         'Content-Type': 'application/json'
       }),
       json: async () => ({ data: 'test', success: true })
+    })
+
+    api = new ApiInstance('/api/')
+
+    // Reset default loading instance state
+    // @ts-expect-error: Accessing protected member for testing purposes
+    Loading.getItem().value = 0
+  })
+
+  describe('loading lifecycle', () => {
+    it('should call loading.show() and loading.hide() on successful request', async () => {
+      const loading = Loading.getItem()
+      const showSpy = vi.spyOn(loading, 'show')
+      const hideSpy = vi.spyOn(loading, 'hide')
+
+      await api.get({ path: 'test' })
+
+      expect(showSpy).toHaveBeenCalled()
+      expect(hideSpy).toHaveBeenCalled()
+      expect(loading.get()).toBe(0)
+    })
+
+    it('should call loading.show() and loading.hide() on failed request', async () => {
+      const loading = Loading.getItem()
+      const showSpy = vi.spyOn(loading, 'show')
+      const hideSpy = vi.spyOn(loading, 'hide')
+
+      mockFetch.mockRejectedValueOnce(new Error('Network failure'))
+
+      await expect(api.get({ path: 'test' })).rejects.toThrow()
+
+      expect(showSpy).toHaveBeenCalled()
+      expect(hideSpy).toHaveBeenCalled()
+      expect(loading.get()).toBe(0)
+    })
+
+    it('should not call loading operations when hideLoading is true', async () => {
+      const loading = Loading.getItem()
+      const showSpy = vi.spyOn(loading, 'show')
+      const hideSpy = vi.spyOn(loading, 'hide')
+
+      await api.get({ path: 'test', hideLoading: true })
+
+      expect(showSpy).not.toHaveBeenCalled()
+      expect(hideSpy).not.toHaveBeenCalled()
+    })
+
+    it('should use custom LoadingInstance if provided', async () => {
+      const customLoading = new LoadingInstance('custom-event')
+      const showSpy = vi.spyOn(customLoading, 'show')
+      const hideSpy = vi.spyOn(customLoading, 'hide')
+
+      const customApi = new ApiInstance('/api/', { loadingClass: customLoading })
+      await customApi.get({ path: 'test' })
+
+      expect(showSpy).toHaveBeenCalled()
+      expect(hideSpy).toHaveBeenCalled()
+      expect(customLoading.get()).toBe(0)
+
+      // Default loading should NOT be called
+      expect(Loading.is()).toBe(false)
+    })
+
+    it('should hide loading before retrying when `end.reset` is true', async () => {
+      const loading = Loading.getItem()
+      let callCount = 0
+
+      // Mock end lifecycle to reset once
+      api.setEnd(async () => {
+        callCount++
+        return callCount === 1 ? { reset: true } : {}
+      })
+
+      const showSpy = vi.spyOn(loading, 'show')
+      const hideSpy = vi.spyOn(loading, 'hide')
+
+      await api.get({ path: 'test' })
+
+      // Each request (including retry) calls show/hide
+      // The manual hide in reset also adds one
+      expect(showSpy).toHaveBeenCalledTimes(2)
+      expect(hideSpy).toHaveBeenCalledTimes(2)
+      expect(loading.get()).toBe(0)
     })
   })
 

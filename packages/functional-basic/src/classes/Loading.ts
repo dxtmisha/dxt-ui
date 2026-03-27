@@ -1,23 +1,9 @@
-import { isDomRuntime } from '../functions/isDomRuntime'
-
-import { EventItem } from './EventItem'
+import { LoadingInstance, type LoadingDetail } from './LoadingInstance'
 
 import {
   type ElementOrString,
   type EventListenerDetail
 } from '../types/basicTypes'
-
-type LoadingDetail = {
-  loading: boolean
-}
-
-type LoadingRegistrationItem = {
-  item: EventItem<Window, CustomEvent, LoadingDetail>
-  listener: EventListenerDetail<CustomEvent, LoadingDetail>
-  element?: ElementOrString<HTMLElement>
-}
-
-const LOADING_EVENT_NAME = 'ui-loading'
 
 /**
  * Class for working with global loading.
@@ -25,9 +11,8 @@ const LOADING_EVENT_NAME = 'ui-loading'
  * Класс для работы с глобальной загрузкой.
  */
 export class Loading {
-  protected static value = 0
-  protected static event?: EventItem<Window, CustomEvent>
-  protected static registrationList: LoadingRegistrationItem[] = []
+  /** Instance of the loading class / Экземпляр класса загрузки */
+  protected static item = new LoadingInstance()
 
   /**
    * Check if the loader is active now.
@@ -35,7 +20,7 @@ export class Loading {
    * Проверить, активен ли сейчас загрузчик.
    */
   static is(): boolean {
-    return this.value > 0
+    return this.item.is()
   }
 
   /**
@@ -44,7 +29,16 @@ export class Loading {
    * Получить текущее значение загрузки.
    */
   static get(): number {
-    return this.value
+    return this.item.get()
+  }
+
+  /**
+   * Get instance of the loading class.
+   *
+   * Получить экземпляр класса загрузки.
+   */
+  static getItem(): LoadingInstance {
+    return this.item
   }
 
   /**
@@ -53,8 +47,7 @@ export class Loading {
    * Показывает загрузчик.
    */
   static show(): void {
-    this.value++
-    this.dispatch()
+    this.item.show()
   }
 
   /**
@@ -63,10 +56,7 @@ export class Loading {
    * Скрывает загрузчик.
    */
   static hide(): void {
-    if (this.is()) {
-      this.value--
-      this.dispatch()
-    }
+    this.item.hide()
   }
 
   /**
@@ -82,17 +72,7 @@ export class Loading {
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
   ) {
-    if (isDomRuntime()) {
-      const item = new EventItem(window, LOADING_EVENT_NAME, listener)
-        .setElementControl(element)
-        .start()
-
-      this.registrationList.push({
-        item,
-        listener,
-        element
-      })
-    }
+    this.item.registrationEvent(listener, element)
   }
 
   /**
@@ -108,31 +88,6 @@ export class Loading {
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
   ) {
-    this.registrationList = this.registrationList.filter((item) => {
-      if (
-        item.listener === listener
-        && item.element === element
-      ) {
-        item.item.stop()
-        return false
-      }
-
-      return true
-    })
-  }
-
-  /**
-   * Calls the event listener.
-   *
-   * Вызывает слушателя событий.
-   */
-  protected static dispatch(): void {
-    this.event?.dispatch({ loading: this.is() } as LoadingDetail)
-  }
-
-  static {
-    if (isDomRuntime()) {
-      this.event = new EventItem(window, LOADING_EVENT_NAME)
-    }
+    this.item.unregistrationEvent(listener, element)
   }
 }

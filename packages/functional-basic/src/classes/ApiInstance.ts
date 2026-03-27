@@ -7,6 +7,7 @@ import { isString } from '../functions/isString'
 
 import { Geo } from './Geo'
 import { Loading } from './Loading'
+import { type LoadingInstance } from './LoadingInstance'
 
 import { ApiHeaders } from './ApiHeaders'
 import { ApiDefault } from './ApiDefault'
@@ -21,6 +22,16 @@ import {
   type ApiPreparationEnd
 } from '../types/apiTypes'
 
+/** Options for the API instance/ Опции для экземпляра API */
+export type ApiInstanceOptions = {
+  headersClass?: typeof ApiHeaders
+  requestDefaultClass?: typeof ApiDefault
+  statusClass?: typeof ApiStatus
+  responseClass?: typeof ApiResponse
+  preparationClass?: typeof ApiPreparation
+  loadingClass?: LoadingInstance
+}
+
 /**
  * Class for working with requests.
  *
@@ -28,27 +39,47 @@ import {
  */
 export class ApiInstance {
   /** Headers / Заголовки */
-  protected headers = new ApiHeaders()
+  protected headers: ApiHeaders
 
   /** Default request parameters / Параметры запроса по умолчанию */
-  protected requestDefault: ApiDefault = new ApiDefault()
+  protected requestDefault: ApiDefault
 
   /** Status of the last request / Статус последнего запроса */
-  protected status = new ApiStatus()
+  protected status: ApiStatus
 
   /** Response handler / Обработчик ответа */
-  protected response = new ApiResponse(this.requestDefault)
+  protected response: ApiResponse
 
   /** Request modification handler / Обработчик модификации запроса */
-  protected preparation = new ApiPreparation()
+  protected preparation: ApiPreparation
+
+  /** Loading handler / Обработчик загрузки */
+  protected loading: LoadingInstance
 
   /**
    * Constructor
    * @param url base path to the script/ базовый путь к скрипту
+   * @param options options for the API instance/ опции для экземпляра API
    */
   constructor(
-    protected url: string = '/api/'
+    protected url: string = '/api/',
+    options: ApiInstanceOptions = {}
   ) {
+    const {
+      headersClass = ApiHeaders,
+      requestDefaultClass = ApiDefault,
+      statusClass = ApiStatus,
+      responseClass = ApiResponse,
+      preparationClass = ApiPreparation,
+      loadingClass = Loading.getItem()
+    } = options
+
+    this.headers = new headersClass()
+    this.requestDefault = new requestDefaultClass()
+    this.status = new statusClass()
+    this.response = new responseClass(this.requestDefault)
+    this.preparation = new preparationClass()
+    this.loading = loadingClass
   }
 
   /**
@@ -273,6 +304,7 @@ export class ApiInstance {
     const {
       toData = true,
       hideError = false,
+      hideLoading = false,
       queryReturn = undefined,
       globalPreparation = true,
       globalEnd = true
@@ -287,7 +319,9 @@ export class ApiInstance {
     const status = new ApiStatus()
     let data: ApiData<T>
 
-    Loading.show()
+    if (!hideLoading) {
+      this.loading.show()
+    }
 
     try {
       await this.preparation.make(globalPreparation, apiFetch)
@@ -299,7 +333,7 @@ export class ApiInstance {
       this.status.setStatus(query.status, query.statusText)
 
       if (end?.reset) {
-        Loading.hide()
+        this.loading.hide()
         return await this.fetch(apiFetch)
       }
 
@@ -316,11 +350,16 @@ export class ApiInstance {
       status.setError(String(e))
       this.status.setError(String(e))
 
-      Loading.hide()
+      if (!hideLoading) {
+        this.loading.hide()
+      }
+
       throw e
     }
 
-    Loading.hide()
+    if (!hideLoading) {
+      this.loading.hide()
+    }
 
     status.setLastResponse(data)
     this.status.setLastResponse(data)

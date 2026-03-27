@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Loading Class
 
-A static class for managing global loading state. Uses a counter: loading is active as long as at least one process is showing it. Notifies listeners via the custom `ui-loading` event.
+A static class for managing global loading state (uses `LoadingInstance`). Uses a counter: loading is active as long as at least one process is showing it. Notifies listeners via the custom `ui-loading` event.
 
 ## Key Features
 
@@ -36,6 +36,9 @@ Unregisters a listener previously added via `registrationEvent`.
 **Parameters:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — the handler function used during registration.
 - `element?: ElementOrString<HTMLElement>` — the DOM element used during registration.
+
+## LoadingInstance
+The `LoadingInstance` class can be used to create a separate instance for tracking loading.
 
 ## Example
 

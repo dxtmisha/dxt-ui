@@ -77,6 +77,9 @@ export type ApiFetch = {
   /** Suppress error logging/ Подавить логирование ошибок */
   hideError?: boolean
 
+  /** Suppress loading/ Подавить загрузку */
+  hideLoading?: boolean
+
   /** Custom response processor/ Пользовательский процессор ответа */
   queryReturn?: (query: Response) => Promise<any>
 
@@ -118,18 +121,18 @@ export type ApiResponseItem = {
  */
 export type ApiDataItem<T = any>
   = T
-    & {
+  & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-      data?: T
-      /** Success flag/ Флаг успешности */
-      success?: boolean
-      /** Status/ Статус */
-      status?: ApiStatusType
-      /** Message/ Сообщение */
-      message?: string
-      /** Status object/ Объект статуса */
-      statusObject?: ApiStatusItem
-    }
+    data?: T
+    /** Success flag/ Флаг успешности */
+    success?: boolean
+    /** Status/ Статус */
+    status?: ApiStatusType
+    /** Message/ Сообщение */
+    message?: string
+    /** Status object/ Объект статуса */
+    statusObject?: ApiStatusItem
+  }
 
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API

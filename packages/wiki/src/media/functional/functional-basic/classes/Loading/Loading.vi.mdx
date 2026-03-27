@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Loading
 
-Lớp tĩnh để quản lý trạng thái tải toàn cục. Sử dụng bộ đếm: tải đang hoạt động khi ít nhất một tiến trình đang hiển thị nó. Thông báo cho các listener qua sự kiện tùy chỉnh `ui-loading`.
+Lớp tĩnh để quản lý trạng thái tải toàn cục (sử dụng `LoadingInstance`). Sử dụng bộ đếm: tải đang hoạt động khi ít nhất một tiến trình đang hiển thị nó. Thông báo cho các listener qua sự kiện tùy chỉnh `ui-loading`.
 
 ## Các tính năng chính
 
@@ -36,6 +36,9 @@ Hủy đăng ký listener đã được thêm trước đó qua `registrationEve
 **Tham số:**
 - `listener: EventListenerDetail<CustomEvent, { loading: boolean }>` — hàm xử lý đã sử dụng khi đăng ký.
 - `element?: ElementOrString<HTMLElement>` — phần tử DOM đã sử dụng khi đăng ký.
+
+## LoadingInstance
+Lớp `LoadingInstance` có thể được sử dụng để tạo một thực thể (instance) riêng biệt để theo dõi quá trình tải.
 
 ## Ví dụ
 
