@@ -1,143 +1,62 @@
-var v = Object.defineProperty;
-var C = (s, e, t) => e in s ? v(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
-var r = (s, e, t) => C(s, typeof e != "symbol" ? e + "" : e, t);
-import { computed as p, h as m } from "vue";
-import { toBinds as S } from "@dxtmisha/functional";
-import { M as T, a as _ } from "./ModalDesignAbstract-CdF7kXxe.js";
-import { T as w } from "./TouchEventInclude-DctYCjt8.js";
-class A extends T {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.TouchEventIncludeConstructor class for working with touch event/ класс для работы с событием касания
-   */
-  constructor(t, i, o, h, a, l, u, c, n) {
-    const {
-      TouchEventIncludeConstructor: b = w
-    } = n != null ? n : {};
-    super(
-      t,
-      i,
-      o,
-      h,
-      a,
-      l,
-      u,
-      c,
-      p(() => ({
-        open: t.open,
-        adaptive: "actionSheet",
-        closeButton: t.barsBackHide,
-        closeMobileHide: t.touchClose
-      })),
-      void 0,
-      { align: "auto" }
-    );
-    r(this, "touchEvent");
-    this.props = t, this.refs = i, this.element = o, this.classDesign = h, this.className = a, this.components = l, this.slots = u, this.emits = c, this.touchEvent = new b(
-      void 0,
-      (f, d, E, g) => g >= 0,
-      (f, d) => d === "bottom" ? (this.window.expose.setOpen(!1).then(), !1) : !0
-    );
-  }
-}
-const I = {
-  barsBackHide: !0,
-  touchClose: !0
+import { t as e } from "./defineProperty-BTtSLqQS.js";
+import { r as t, t as n } from "./ModalDesignAbstract-09Xi8-4h.js";
+import { t as r } from "./TouchEventInclude-c55bz912.js";
+import { computed as i, h as a } from "vue";
+import { toBinds as o } from "@dxtmisha/functional";
+//#region src/constructors/ActionSheet/ActionSheet.ts
+var s = class extends t {
+	constructor(t, n, a, o, s, c, l, u, d) {
+		let { TouchEventIncludeConstructor: f = r } = d == null ? {} : d;
+		super(t, n, a, o, s, c, l, u, i(() => ({
+			open: t.open,
+			adaptive: "actionSheet",
+			closeButton: t.barsBackHide,
+			closeMobileHide: t.touchClose
+		})), void 0, { align: "auto" }), e(this, "touchEvent", void 0), this.props = t, this.refs = n, this.element = a, this.classDesign = o, this.className = s, this.components = c, this.slots = l, this.emits = u, this.touchEvent = new f(void 0, (e, t, n, r) => r >= 0, (e, t) => t === "bottom" ? (this.window.expose.setOpen(!1).then(), !1) : !0);
+	}
+}, c = {
+	barsBackHide: !0,
+	touchClose: !0
+}, l = class extends n {
+	constructor(...t) {
+		super(...t), e(this, "renderTitleTouch", (e) => {
+			let t = this.renderTitle(e);
+			if (this.props.touchClose) {
+				var n, r;
+				return [a("div", {
+					class: (n = this.classes) == null ? void 0 : n.value.touch,
+					...this.item.touchEvent.onTouch
+				}, [a("div", { class: (r = this.classes) == null ? void 0 : r.value.tab }), ...t])];
+			}
+			return t;
+		});
+	}
+	initItem() {
+		return new s(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits);
+	}
+	initClasses() {
+		return {
+			main: {},
+			title: this.getSubClass("title"),
+			header: this.getSubClass("header"),
+			body: this.getSubClass("body"),
+			footer: this.getSubClass("footer"),
+			touch: this.getSubClass("touch"),
+			tab: this.getSubClass("tab")
+		};
+	}
+	initRender() {
+		var e;
+		return this.item.window.render({
+			control: this.renderControl,
+			title: this.renderTitleTouch,
+			default: this.renderDefault,
+			footer: this.renderFooter
+		}, o({
+			class: (e = this.classes) == null ? void 0 : e.value.main,
+			"data-touch": "touch"
+		}, this.getAttrs()));
+	}
 };
-class k extends _ {
-  constructor() {
-    super(...arguments);
-    /**
-     * Generates data for the header.
-     *
-     * Генерирует данные для заголовка.
-     * @param props data for the transferable property/ данные для передаваемого свойства
-     */
-    r(this, "renderTitleTouch", (t) => {
-      var o, h;
-      const i = this.renderTitle(t);
-      return this.props.touchClose ? [m(
-        "div",
-        {
-          class: (o = this.classes) == null ? void 0 : o.value.touch,
-          ...this.item.touchEvent.onTouch
-        },
-        [
-          m("div", { class: (h = this.classes) == null ? void 0 : h.value.tab }),
-          ...i
-        ]
-      )] : i;
-    });
-  }
-  /**
-   * Creates an instance of the item class.
-   *
-   * Создает экземпляр класса элемента.
-   */
-  initItem() {
-    return new A(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    );
-  }
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: {},
-      // :classes [!] System label / Системная метка
-      title: this.getSubClass("title"),
-      header: this.getSubClass("header"),
-      body: this.getSubClass("body"),
-      footer: this.getSubClass("footer"),
-      touch: this.getSubClass("touch"),
-      tab: this.getSubClass("tab")
-    };
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    var t;
-    return this.item.window.render(
-      {
-        control: this.renderControl,
-        title: this.renderTitleTouch,
-        default: this.renderDefault,
-        footer: this.renderFooter
-      },
-      S(
-        {
-          class: (t = this.classes) == null ? void 0 : t.value.main,
-          "data-touch": "touch"
-        },
-        this.getAttrs()
-      )
-    );
-  }
-}
-export {
-  A as ActionSheet,
-  k as ActionSheetDesign,
-  I as defaultsActionSheet
-};
+//#endregion
+export { s as ActionSheet, l as ActionSheetDesign, c as defaultsActionSheet };

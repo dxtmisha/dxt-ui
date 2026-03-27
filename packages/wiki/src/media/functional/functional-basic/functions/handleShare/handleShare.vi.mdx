@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/handleShare - Chia sẻ dữ liệu qua Web Share API'/>
+
+# `handleShare`
+
+Triệu hồi cơ chế chia sẻ tự nhiên của thiết bị như một phần của Web Share API.
+Nên kiểm tra hỗ trợ bằng `isShare` trước khi gọi.
+
+**Tham số:**
+- `data: ShareData` — một đối tượng chứa dữ liệu để chia sẻ (tiêu đề, văn bản, đường dẫn).
+
+**Trả về:**
+`Promise<boolean>` — `true` nếu dữ liệu được chia sẻ thành công, ngược lại là `false`.
+
+```typescript
+import { handleShare, isShare } from '@dxtmisha/functional-basic'
+
+const shareData = {
+  title: 'Hãy xem trang web này!',
+  text: 'Tôi đã tìm thấy điều gì đó thú vị ở đây.',
+  url: 'https://example.com'
+}
+
+if (isShare()) {
+  const success = await handleShare(shareData)
+  
+  if (success) {
+    console.log('Đã chia sẻ thành công!')
+  }
+}
+```

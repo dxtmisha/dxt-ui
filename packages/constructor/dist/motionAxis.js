@@ -1,774 +1,318 @@
-var A = Object.defineProperty;
-var C = (n, t, e) => t in n ? A(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var s = (n, t, e) => C(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as o, watch as r, onMounted as N, computed as I, h as u } from "vue";
-import { DesignConstructorAbstract as M, forEach as E } from "@dxtmisha/functional";
-import { M as P } from "./ModelInclude-BiYm_iCQ.js";
-class w {
-  /**
-   * Constructor
-   * @param element window element / элемент окна
-   * @param className class name / название класса
-   */
-  constructor(t, e) {
-    s(this, "classStatus");
-    s(this, "start", o(!1));
-    s(this, "move", o(!1));
-    this.element = t, this.className = e, this.classStatus = {
-      main: this.getClassStatusItem(),
-      previous: this.getClassStatusItem("previous"),
-      preparation: this.getClassStatusItem("preparation"),
-      active: this.getClassStatusItem("active")
-    };
-  }
-  /**
-   * Checks if the element is an active slide.
-   *
-   * Проверяет, является ли элемент активным слайдом.
-   * @param element selected element / выбранный элемент
-   */
-  isActive(t) {
-    return t.classList.contains(this.classStatus.active);
-  }
-  /**
-   * Returns the element.
-   *
-   * Возвращает элемент.
-   */
-  get() {
-    return this.element.value;
-  }
-  /**
-   * Returns the start state.
-   *
-   * Возвращает состояние старта.
-   */
-  getStart() {
-    return this.start.value;
-  }
-  /**
-   * Returns the move state.
-   *
-   * Возвращает состояние движения.
-   */
-  getMove() {
-    return this.move.value;
-  }
-  /**
-   * Returns a list of all classes by status.
-   *
-   * Возвращает список всех классов по статусу.
-   */
-  getClassStatus() {
-    return this.classStatus;
-  }
-  /**
-   * Returns the element for preparation to transition to the active element.
-   *
-   * Возвращает элемент для подготовки к переходу к активному элементу.
-   */
-  getElementPreparation() {
-    var t;
-    return (t = this.element.value) == null ? void 0 : t.querySelector(`.${this.classStatus.preparation}`);
-  }
-  /**
-   * Blocks scrolling.
-   *
-   * Блокирует прокрутку.
-   */
-  blockScroll() {
-    const t = this.getElementScroll();
-    t && t.classList.add(this.getClassScrollHidden());
-  }
-  /**
-   * Restores scrolling.
-   *
-   * Восстанавливает прокрутку.
-   */
-  returnScroll() {
-    const t = this.getElementScroll();
-    t && t.classList.remove(this.getClassScrollHidden());
-  }
-  /**
-   * Transition to start state.
-   *
-   * Переход в состояние старта.
-   */
-  toStart() {
-    this.start.value = !0;
-  }
-  /**
-   * End of start state.
-   *
-   * Окончание состояния старта.
-   */
-  toEnd() {
-    this.start.value = !1;
-  }
-  /**
-   * Transition to move state.
-   *
-   * Переход в состояние движения.
-   */
-  toMove() {
-    this.move.value = !0;
-  }
-  /**
-   * End of move state.
-   *
-   * Окончание состояния движения.
-   */
-  toStop() {
-    this.move.value = !1;
-  }
-  /**
-   * Activates event listeners for animation end.
-   *
-   * Активизирует события прослушивания окончания анимации.
-   * @param callback event listener / прослушивать события
-   */
-  initEvent(t) {
-    if (this.element.value) {
-      const e = (a) => {
-        var i;
-        this.isTransitionend(a) && (t(), (i = this.element.value) == null || i.removeEventListener("transitionend", e), this.toStop());
-      };
-      this.element.value.addEventListener("transitionend", e);
-    }
-  }
-  /**
-   * Returns class names by status.
-   *
-   * Возвращает названия классов по статусу.
-   * @param status status name / название статуса
-   */
-  getClassStatusItem(t) {
-    return `${this.className}__slide${t ? `--${t}` : ""}`;
-  }
-  /**
-   * Returns the class name for the scroll element.
-   *
-   * Возвращает название класса для элемента прокрутки.
-   */
-  getClassScroll() {
-    return `${this.className}__scroll`;
-  }
-  /**
-   * Returns the class name for the hidden scroll element.
-   *
-   * Возвращает название класса для скрытого элемента прокрутки.
-   */
-  getClassScrollHidden() {
-    return `${this.className}__scroll--hidden`;
-  }
-  /**
-   * Returns the scroll element.
-   *
-   * Возвращает элемент прокрутки.
-   */
-  getElementScroll() {
-    var t, e;
-    return (e = (t = this.element.value) == null ? void 0 : t.closest(`.${this.getClassScroll()}`)) != null ? e : void 0;
-  }
-  /**
-   * End of animation event.
-   *
-   * Событие окончания анимации.
-   * @param event event object / объект события
-   */
-  isTransitionend(t) {
-    return ["transform", "translate", "scale"].indexOf(t.propertyName) !== -1 && this.isActive(t.target);
-  }
-}
-class b {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   */
-  constructor(t) {
-    s(this, "item", o());
-    this.props = t, this.item.value = t.selected;
-  }
-  /**
-   * Checks if the current active value corresponds.
-   *
-   * Проверяет, соответствует ли текущее активное значение.
-   * @param selected selected slide/ выбранный слайд
-   */
-  is(t) {
-    return this.item.value === t;
-  }
-  /**
-   * Changes the active slide.
-   *
-   * Изменяет активный слайд.
-   * @param selected selected slide/ выбранный слайд
-   */
-  set(t) {
-    return this.item.value = t, this;
-  }
-}
-class D {
-  /**
-   * Constructor
-   * @param element window element / элемент окна
-   * @param className class name / название класса
-   * @param selected class object for managing the active element / объект класса для управления активным элементом
-   */
-  constructor(t, e, a) {
-    this.element = t, this.className = e, this.selected = a;
-  }
-  /**
-   * Adding styles for animation.
-   *
-   * Добавление стилей для анимации.
-   * @param slide slide title / название слайда
-   */
-  add(t) {
-    var a;
-    const e = this.element.value;
-    if (t && e) {
-      const i = e.getBoundingClientRect(), l = (a = e.querySelector(`[data-key="${t}"]`)) == null ? void 0 : a.getBoundingClientRect();
-      i && l && (e.style.setProperty(`--${this.className}-sys-top`, `${l.top - i.top}px`), e.style.setProperty(`--${this.className}-sys-left`, `${l.left - i.left}px`), e.style.setProperty(`--${this.className}-sys-width`, `${l.width}px`), e.style.setProperty(`--${this.className}-sys-height`, `${l.height}px`));
-    }
-  }
-  /**
-   * Adding styles for the next element.
-   *
-   * Добавление стилей для следующего элемента.
-   */
-  addNext() {
-    var e, a;
-    const t = this.element.value;
-    if (t) {
-      const i = (e = t == null ? void 0 : t.querySelector(`[data-key="${this.selected.item.value}"]`)) == null ? void 0 : e.getBoundingClientRect();
-      i && t.style.setProperty(`--${this.className}-sys-next-height`, `${(a = i == null ? void 0 : i.height) != null ? a : "0"}px`);
-    }
-  }
-  /**
-   * Removing animation styles.
-   *
-   * Удаление стилей анимации.
-   */
-  remove() {
-    const t = this.element.value;
-    t && (t.style.removeProperty(`--${this.className}-sys-top`), t.style.removeProperty(`--${this.className}-sys-left`), t.style.removeProperty(`--${this.className}-sys-width`), t.style.removeProperty(`--${this.className}-sys-height`), t.style.removeProperty(`--${this.className}-sys-next-height`));
-  }
-}
-class B {
-  /**
-   * Constructor
-   * @param styles style management object / объект управления стилями
-   */
-  constructor(t) {
-    /**
-     * Identifier of the previous slide.
-     *
-     * Идентификатор предыдущего слайда.
-     */
-    s(this, "item", o());
-    this.styles = t, r(this.item, (e) => {
-      e ? this.styles.add(e) : this.styles.remove();
-    });
-  }
-  /**
-   * Checks if the value matches the previous slide.
-   *
-   * Проверяет, совпадает ли значение с предыдущим слайдом.
-   * @param value value to check / значение для проверки
-   */
-  is(t) {
-    return this.item.value === t;
-  }
-  /**
-   * Returns the previous slide.
-   *
-   * Возвращает предыдущий слайд.
-   */
-  get() {
-    return this.item.value;
-  }
-  /**
-   * Changing the display status.
-   *
-   * Изменение статуса отображения.
-   * @param value values for change / значения для изменения
-   */
-  set(t) {
-    return this.item.value = t, this;
-  }
-}
-class H {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element class object for managing an element/ объект класса для управления элементом
-   * @param selected class object for managing the active element/ объект класса для управления активным элементом
-   * @param previous object for managing the outgoing slide/ объект управления уходящим слайдом
-   * @param styles class object for managing styles/ объект класса для управления стилями
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   */
-  constructor(t, e, a, i, l, h) {
-    /** Element preparation status/ Статус подготовки элемента */
-    s(this, "preparation", o());
-    /** Active element status/ Статус активного элемента */
-    s(this, "active", o());
-    /**
-     * Stopping and deleting all data.
-     *
-     * Остановка и удаление всех данных.
-     */
-    s(this, "end", () => {
-      this.previous.set(void 0), this.preparation.value = void 0, this.emit("end"), this.element.returnScroll();
-    });
-    this.element = e, this.selected = a, this.previous = i, this.styles = l, this.emits = h, this.active.value = t.selected;
-  }
-  /**
-   * Checks if the element is in preparation status.
-   *
-   * Проверяет, находится ли элемент в статусе подготовки.
-   * @param key element key/ ключ элемента
-   */
-  isPreparation(t) {
-    return this.preparation.value === t;
-  }
-  /**
-   * Checks if the element is active.
-   *
-   * Проверяет, активен ли элемент.
-   * @param key element key/ ключ элемента
-   */
-  isActive(t) {
-    return this.active.value === t;
-  }
-  /**
-   * Returns the selected element.
-   *
-   * Возвращает выбранный элемент.
-   */
-  get() {
-    return this.selected.item.value;
-  }
-  /**
-   * Changes the active slide.
-   *
-   * Изменяет активный слайд.
-   * @param selected selected slide/ выбранный слайд
-   */
-  set(t) {
-    return this.selected.is(t) || (this.selected.set(t), this.start()), this;
-  }
-  /**
-   * Instantly changes the active slide without animation.
-   *
-   * Мгновенно изменяет активный слайд без анимации.
-   * @param selected selected slide/ выбранный слайд
-   */
-  setFlash(t) {
-    return this.selected.set(t), this;
-  }
-  /**
-   * Beginning of activation.
-   *
-   * Начало активации.
-   */
-  start() {
-    this.element.toStart(), this.previous.set(this.active.value), this.preparation.value = this.selected.item.value, this.element.blockScroll(), this.expectation();
-  }
-  /**
-   * Waiting for element preparation.
-   *
-   * Ожидание подготовки элемента.
-   */
-  expectation() {
-    requestAnimationFrame(() => {
-      const t = this.element.getElementPreparation();
-      t && t.offsetHeight > 0 ? (this.styles.addNext(), requestAnimationFrame(() => {
-        this.element.toEnd(), this.element.toMove(), this.element.initEvent(this.end), this.active.value = this.selected.item.value, this.emit("start");
-      })) : this.expectation();
-    });
-  }
-  emit(t) {
-    this.emits && this.selected.item.value !== void 0 && (t === "start" ? this.emits("start", this.selected.item.value) : this.emits("end", this.selected.item.value), this.emits("motionAxis", {
-      type: t,
-      selected: this.selected.item.value,
-      previous: this.previous.get(),
-      preparation: this.preparation.value,
-      active: this.active.value
-    }));
-  }
-}
-class _ {
-  constructor(t) {
-    s(this, "item", o([]));
-    this.status = t;
-  }
-  get() {
-    return this.item;
-  }
-  /**
-   * Returns the selected slide.
-   *
-   * Возвращает выбранный слайд.
-   * @param step change step number / номер шага изменения
-   */
-  getByIndex(t) {
-    var l;
-    const e = (l = this.item.value) != null ? l : [], a = this.findIndex();
-    if (a === -1)
-      return e == null ? void 0 : e[0];
-    const i = a + t;
-    return i >= e.length ? e == null ? void 0 : e[0] : i <= -1 ? e == null ? void 0 : e[e.length - 1] : e == null ? void 0 : e[i];
-  }
-  findIndex(t = this.status.get()) {
-    return this.item.value.findIndex((e) => e === t);
-  }
-  add(t) {
-    return this.item.value.push(t), this;
-  }
-  reset() {
-    this.item.value = [];
-  }
-}
-class q {
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
-   * @param element window element / элемент окна
-   * @param slides list of slides / список слайдов
-   * @param status class object for managing the active element / объект класса для управления активным элементом
-   */
-  constructor(t, e, a, i, l) {
-    s(this, "axis", o());
-    s(this, "direction", o());
-    /**
-     * Previous slide.
-     *
-     * Перемещение слайда на один шаг назад.
-     */
-    s(this, "back", () => {
-      this.direction.value = "back", this.status.set(this.slides.getByIndex(-1));
-    });
-    /**
-     * Next slide.
-     *
-     * Перемещение слайда на один шаг вперед.
-     */
-    s(this, "next", () => {
-      this.direction.value = "next", this.status.set(this.slides.getByIndex(1));
-    });
-    /**
-     * Moving the slide to the selected slide with automatic selection of animation direction.
-     *
-     * Перемещение слайда на выбранный слайд с автоматическим выбором направления анимации.
-     * @param selected selected item / выбранный элемент
-     */
-    s(this, "to", (t) => {
-      const e = this.slides.findIndex(), a = this.slides.findIndex(t);
-      if (a !== -1 && a !== e) {
-        if (e === -1) {
-          this.status.setFlash(t);
-          return;
-        }
-        e > a ? this.direction.value = "back" : this.direction.value = "next", this.status.set(t);
-      }
-    });
-    /**
-     * Move to the upper slide.
-     *
-     * Переместите на верхний слайд.
-     * @param selected selected item / выбранный элемент
-     */
-    s(this, "top", (t) => {
-      this.axis.value = "y", this.direction.value = "back", this.status.set(t);
-    });
-    /**
-     * Move to the right slide.
-     *
-     * Переместите на правый слайд.
-     * @param selected selected item / выбранный элемент
-     */
-    s(this, "right", (t) => {
-      this.axis.value = "x", this.direction.value = "next", this.status.set(t);
-    });
-    /**
-     * Move to the lower slide.
-     *
-     * Переместите на нижний слайд.
-     * @param selected selected item / выбранный элемент
-     */
-    s(this, "bottom", (t) => {
-      this.axis.value = "y", this.direction.value = "next", this.status.set(t);
-    });
-    /**
-     * Move to the left slide.
-     *
-     * Переместите на левый слайд.
-     * @param selected selected item / выбранный элемент
-     */
-    s(this, "left", (t) => {
-      this.axis.value = "x", this.direction.value = "back", this.status.set(t);
-    });
-    /**
-     * Move to the back slide.
-     *
-     * Переместите на задний слайд.
-     * @param selected selected item / выбранный элемент
-     */
-    s(this, "down", (t) => {
-      this.axis.value = "z", this.direction.value = "back", this.status.set(t);
-    });
-    /**
-     * Move to the front slide.
-     *
-     * Переместите на передний слайд.
-     * @param selected selected item / выбранный элемент
-     */
-    s(this, "up", (t) => {
-      this.axis.value = "z", this.direction.value = "next", this.status.set(t);
-    });
-    /**
-     * Changes the axis.
-     *
-     * Изменяет ось.
-     * @param axis axis name / название оси
-     */
-    s(this, "setAxis", (t) => {
-      this.axis.value = t;
-    });
-    /**
-     * Changes the direction.
-     *
-     * Изменяет направление.
-     * @param direction direction name / название направления
-     */
-    s(this, "setDirection", (t) => {
-      this.direction.value = t;
-    });
-    this.props = t, this.refs = e, this.element = a, this.slides = i, this.status = l, this.axis.value = t.axis, this.direction.value = t.direction, r([e.axis], () => this.setAxis(t.axis)), r([e.direction], () => this.setDirection(t.direction));
-  }
-}
-class L {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
-   * @param constructors.MotionAxisElementConstructor class for working with elements/ класс для работы с элементами
-   * @param constructors.MotionAxisGoConstructor class for working with go/ класс для работы с переходом
-   * @param constructors.MotionAxisPreviousConstructor class for working with previous/ класс для работы с предыдущим
-   * @param constructors.MotionAxisSelectedConstructor class for working with selected/ класс для работы с выбранным
-   * @param constructors.MotionAxisSlidesConstructor class for working with slides/ класс для работы со слайдами
-   * @param constructors.MotionAxisStatusConstructor class for working with status/ класс для работы со статусом
-   * @param constructors.MotionAxisStylesConstructor class for working with styles/ класс для работы со стилями
-   */
-  constructor(t, e, a, i, l, h, m, d, c) {
-    s(this, "elementItem");
-    s(this, "go");
-    s(this, "previous");
-    s(this, "selected");
-    s(this, "slides");
-    s(this, "status");
-    s(this, "styles");
-    /**
-     * Returns a list of available values for the style/
-     * Возвращает список доступных значений для стиля
-     */
-    s(this, "classes", I(() => ({
-      [`${this.className}--axis--${this.go.axis.value}`]: !0,
-      [`${this.className}--direction--${this.go.direction.value}`]: !0,
-      [`${this.className}--start`]: this.elementItem.getStart() && !!this.props.animationHeight,
-      [`${this.className}--move`]: this.elementItem.getMove() && !!this.props.animationHeight
-    })));
-    /**
-     * Updating data based on its status.
-     *
-     * Обновление данных по его статусу.
-     */
-    s(this, "updateSelected", () => {
-      const t = this.props.selected;
-      if (!this.selected.is(t)) {
-        if (this.props.direction === "auto") {
-          this.go.to(t);
-          return;
-        }
-        this.status.set(t);
-      }
-    });
-    this.props = t, this.refs = e, this.element = a, this.classDesign = i, this.className = l, this.components = h, this.slots = m, this.emits = d;
-    const {
-      ModelIncludeConstructor: v = P,
-      MotionAxisElementConstructor: p = w,
-      MotionAxisGoConstructor: g = q,
-      MotionAxisPreviousConstructor: x = B,
-      MotionAxisSelectedConstructor: f = b,
-      MotionAxisSlidesConstructor: S = _,
-      MotionAxisStatusConstructor: y = H,
-      MotionAxisStylesConstructor: $ = D
-    } = c != null ? c : {};
-    this.selected = new f(this.props), this.elementItem = new p(
-      this.element,
-      this.className
-    ), this.styles = new $(
-      this.element,
-      this.className,
-      this.selected
-    ), this.previous = new x(this.styles), this.status = new y(
-      this.props,
-      this.elementItem,
-      this.selected,
-      this.previous,
-      this.styles,
-      this.emits
-    ), this.slides = new S(this.status), this.go = new g(
-      this.props,
-      this.refs,
-      this.element,
-      this.slides,
-      this.status
-    ), new v(
-      "selected",
-      this.emits,
-      this.selected.item
-    ), N(() => {
-      r(
-        [e.selected],
-        this.updateSelected,
-        { immediate: !0 }
-      );
-    });
-  }
-  isInDom(t) {
-    return this.props.inDom || this.isInDomSlide(t) || this.previous.is(t) || this.status.isPreparation(t) || this.status.isActive(t);
-  }
-  isInDomSlide(t) {
-    return !!(this.props.inDomSlide && this.props.inDomSlide.indexOf(t) !== -1);
-  }
-}
-const G = {
-  // :default [!] System label / Системная метка
-  axis: "x",
-  direction: "auto"
+import { t as e } from "./defineProperty-BTtSLqQS.js";
+import { t } from "./ModelInclude-ZrPu5V5T.js";
+import { computed as n, h as r, onMounted as i, ref as a, watch as o } from "vue";
+import { DesignConstructorAbstract as s, forEach as c } from "@dxtmisha/functional";
+//#region src/constructors/MotionAxis/MotionAxisElement.ts
+var l = class {
+	constructor(t, n) {
+		e(this, "classStatus", void 0), e(this, "start", a(!1)), e(this, "move", a(!1)), this.element = t, this.className = n, this.classStatus = {
+			main: this.getClassStatusItem(),
+			previous: this.getClassStatusItem("previous"),
+			preparation: this.getClassStatusItem("preparation"),
+			active: this.getClassStatusItem("active")
+		};
+	}
+	isActive(e) {
+		return e.classList.contains(this.classStatus.active);
+	}
+	get() {
+		return this.element.value;
+	}
+	getStart() {
+		return this.start.value;
+	}
+	getMove() {
+		return this.move.value;
+	}
+	getClassStatus() {
+		return this.classStatus;
+	}
+	getElementPreparation() {
+		var e;
+		return (e = this.element.value) == null ? void 0 : e.querySelector(`.${this.classStatus.preparation}`);
+	}
+	blockScroll() {
+		let e = this.getElementScroll();
+		e && e.classList.add(this.getClassScrollHidden());
+	}
+	returnScroll() {
+		let e = this.getElementScroll();
+		e && e.classList.remove(this.getClassScrollHidden());
+	}
+	toStart() {
+		this.start.value = !0;
+	}
+	toEnd() {
+		this.start.value = !1;
+	}
+	toMove() {
+		this.move.value = !0;
+	}
+	toStop() {
+		this.move.value = !1;
+	}
+	initEvent(e) {
+		if (this.element.value) {
+			let t = (n) => {
+				if (this.isTransitionend(n)) {
+					var r;
+					e(), (r = this.element.value) == null || r.removeEventListener("transitionend", t), this.toStop();
+				}
+			};
+			this.element.value.addEventListener("transitionend", t);
+		}
+	}
+	getClassStatusItem(e) {
+		return `${this.className}__slide${e ? `--${e}` : ""}`;
+	}
+	getClassScroll() {
+		return `${this.className}__scroll`;
+	}
+	getClassScrollHidden() {
+		return `${this.className}__scroll--hidden`;
+	}
+	getElementScroll() {
+		var e, t;
+		return (e = (t = this.element.value) == null ? void 0 : t.closest(`.${this.getClassScroll()}`)) == null ? void 0 : e;
+	}
+	isTransitionend(e) {
+		return [
+			"transform",
+			"translate",
+			"scale"
+		].indexOf(e.propertyName) !== -1 && this.isActive(e.target);
+	}
+}, u = class {
+	constructor(t) {
+		e(this, "item", a()), this.props = t, this.item.value = t.selected;
+	}
+	is(e) {
+		return this.item.value === e;
+	}
+	set(e) {
+		return this.item.value = e, this;
+	}
+}, d = class {
+	constructor(e, t, n) {
+		this.element = e, this.className = t, this.selected = n;
+	}
+	add(e) {
+		let t = this.element.value;
+		if (e && t) {
+			var n;
+			let r = t.getBoundingClientRect(), i = (n = t.querySelector(`[data-key="${e}"]`)) == null ? void 0 : n.getBoundingClientRect();
+			r && i && (t.style.setProperty(`--${this.className}-sys-top`, `${i.top - r.top}px`), t.style.setProperty(`--${this.className}-sys-left`, `${i.left - r.left}px`), t.style.setProperty(`--${this.className}-sys-width`, `${i.width}px`), t.style.setProperty(`--${this.className}-sys-height`, `${i.height}px`));
+		}
+	}
+	addNext() {
+		let e = this.element.value;
+		if (e) {
+			var t;
+			let r = e == null || (t = e.querySelector(`[data-key="${this.selected.item.value}"]`)) == null ? void 0 : t.getBoundingClientRect();
+			if (r) {
+				var n;
+				e.style.setProperty(`--${this.className}-sys-next-height`, `${(n = r == null ? void 0 : r.height) == null ? "0" : n}px`);
+			}
+		}
+	}
+	remove() {
+		let e = this.element.value;
+		e && (e.style.removeProperty(`--${this.className}-sys-top`), e.style.removeProperty(`--${this.className}-sys-left`), e.style.removeProperty(`--${this.className}-sys-width`), e.style.removeProperty(`--${this.className}-sys-height`), e.style.removeProperty(`--${this.className}-sys-next-height`));
+	}
+}, f = class {
+	constructor(t) {
+		e(this, "item", a()), this.styles = t, o(this.item, (e) => {
+			e ? this.styles.add(e) : this.styles.remove();
+		});
+	}
+	is(e) {
+		return this.item.value === e;
+	}
+	get() {
+		return this.item.value;
+	}
+	set(e) {
+		return this.item.value = e, this;
+	}
+}, p = class {
+	constructor(t, n, r, i, o, s) {
+		e(this, "preparation", a()), e(this, "active", a()), e(this, "end", () => {
+			this.previous.set(void 0), this.preparation.value = void 0, this.emit("end"), this.element.returnScroll();
+		}), this.element = n, this.selected = r, this.previous = i, this.styles = o, this.emits = s, this.active.value = t.selected;
+	}
+	isPreparation(e) {
+		return this.preparation.value === e;
+	}
+	isActive(e) {
+		return this.active.value === e;
+	}
+	get() {
+		return this.selected.item.value;
+	}
+	set(e) {
+		return this.selected.is(e) || (this.selected.set(e), this.start()), this;
+	}
+	setFlash(e) {
+		return this.selected.set(e), this;
+	}
+	start() {
+		this.element.toStart(), this.previous.set(this.active.value), this.preparation.value = this.selected.item.value, this.element.blockScroll(), this.expectation();
+	}
+	expectation() {
+		requestAnimationFrame(() => {
+			let e = this.element.getElementPreparation();
+			e && e.offsetHeight > 0 ? (this.styles.addNext(), requestAnimationFrame(() => {
+				this.element.toEnd(), this.element.toMove(), this.element.initEvent(this.end), this.active.value = this.selected.item.value, this.emit("start");
+			})) : this.expectation();
+		});
+	}
+	emit(e) {
+		this.emits && this.selected.item.value !== void 0 && (e === "start" ? this.emits("start", this.selected.item.value) : this.emits("end", this.selected.item.value), this.emits("motionAxis", {
+			type: e,
+			selected: this.selected.item.value,
+			previous: this.previous.get(),
+			preparation: this.preparation.value,
+			active: this.active.value
+		}));
+	}
+}, m = class {
+	constructor(t) {
+		e(this, "item", a([])), this.status = t;
+	}
+	get() {
+		return this.item;
+	}
+	getByIndex(e) {
+		var t;
+		let n = (t = this.item.value) == null ? [] : t, r = this.findIndex();
+		if (r === -1) return n == null ? void 0 : n[0];
+		let i = r + e;
+		return i >= n.length ? n == null ? void 0 : n[0] : i <= -1 ? n == null ? void 0 : n[n.length - 1] : n == null ? void 0 : n[i];
+	}
+	findIndex(e = this.status.get()) {
+		return this.item.value.findIndex((t) => t === e);
+	}
+	add(e) {
+		return this.item.value.push(e), this;
+	}
+	reset() {
+		this.item.value = [];
+	}
+}, h = class {
+	constructor(t, n, r, i, s) {
+		e(this, "axis", a()), e(this, "direction", a()), e(this, "back", () => {
+			this.direction.value = "back", this.status.set(this.slides.getByIndex(-1));
+		}), e(this, "next", () => {
+			this.direction.value = "next", this.status.set(this.slides.getByIndex(1));
+		}), e(this, "to", (e) => {
+			let t = this.slides.findIndex(), n = this.slides.findIndex(e);
+			if (n !== -1 && n !== t) {
+				if (t === -1) {
+					this.status.setFlash(e);
+					return;
+				}
+				t > n ? this.direction.value = "back" : this.direction.value = "next", this.status.set(e);
+			}
+		}), e(this, "top", (e) => {
+			this.axis.value = "y", this.direction.value = "back", this.status.set(e);
+		}), e(this, "right", (e) => {
+			this.axis.value = "x", this.direction.value = "next", this.status.set(e);
+		}), e(this, "bottom", (e) => {
+			this.axis.value = "y", this.direction.value = "next", this.status.set(e);
+		}), e(this, "left", (e) => {
+			this.axis.value = "x", this.direction.value = "back", this.status.set(e);
+		}), e(this, "down", (e) => {
+			this.axis.value = "z", this.direction.value = "back", this.status.set(e);
+		}), e(this, "up", (e) => {
+			this.axis.value = "z", this.direction.value = "next", this.status.set(e);
+		}), e(this, "setAxis", (e) => {
+			this.axis.value = e;
+		}), e(this, "setDirection", (e) => {
+			this.direction.value = e;
+		}), this.props = t, this.refs = n, this.element = r, this.slides = i, this.status = s, this.axis.value = t.axis, this.direction.value = t.direction, o([n.axis], () => this.setAxis(t.axis)), o([n.direction], () => this.setDirection(t.direction));
+	}
+}, g = class {
+	constructor(r, a, s, c, g, _, v, y, b) {
+		e(this, "elementItem", void 0), e(this, "go", void 0), e(this, "previous", void 0), e(this, "selected", void 0), e(this, "slides", void 0), e(this, "status", void 0), e(this, "styles", void 0), e(this, "classes", n(() => ({
+			[`${this.className}--axis--${this.go.axis.value}`]: !0,
+			[`${this.className}--direction--${this.go.direction.value}`]: !0,
+			[`${this.className}--start`]: this.elementItem.getStart() && !!this.props.animationHeight,
+			[`${this.className}--move`]: this.elementItem.getMove() && !!this.props.animationHeight
+		}))), e(this, "updateSelected", () => {
+			let e = this.props.selected;
+			if (!this.selected.is(e)) {
+				if (this.props.direction === "auto") {
+					this.go.to(e);
+					return;
+				}
+				this.status.set(e);
+			}
+		}), this.props = r, this.refs = a, this.element = s, this.classDesign = c, this.className = g, this.components = _, this.slots = v, this.emits = y;
+		let { ModelIncludeConstructor: x = t, MotionAxisElementConstructor: S = l, MotionAxisGoConstructor: C = h, MotionAxisPreviousConstructor: w = f, MotionAxisSelectedConstructor: T = u, MotionAxisSlidesConstructor: E = m, MotionAxisStatusConstructor: D = p, MotionAxisStylesConstructor: O = d } = b == null ? {} : b;
+		this.selected = new T(this.props), this.elementItem = new S(this.element, this.className), this.styles = new O(this.element, this.className, this.selected), this.previous = new w(this.styles), this.status = new D(this.props, this.elementItem, this.selected, this.previous, this.styles, this.emits), this.slides = new E(this.status), this.go = new C(this.props, this.refs, this.element, this.slides, this.status), new x("selected", this.emits, this.selected.item), i(() => {
+			o([a.selected], this.updateSelected, { immediate: !0 });
+		});
+	}
+	isInDom(e) {
+		return this.props.inDom || this.isInDomSlide(e) || this.previous.is(e) || this.status.isPreparation(e) || this.status.isActive(e);
+	}
+	isInDomSlide(e) {
+		return !!(this.props.inDomSlide && this.props.inDomSlide.indexOf(e) !== -1);
+	}
+}, _ = {
+	axis: "x",
+	direction: "auto"
+}, v = class extends s {
+	constructor(t, n, i, a = g) {
+		super(t, n, i), e(this, "item", void 0), e(this, "renderSlides", () => {
+			let e = [];
+			return this.item.slides.reset(), this.slots && c(this.slots, (t, n) => {
+				if (this.item.slides.add(n), this.item.isInDom(n)) {
+					let i = this.item.elementItem.getClassStatus();
+					e.push(r("div", {
+						key: n,
+						class: {
+							[i.main]: !0,
+							[i.previous]: this.item.previous.is(n),
+							[i.preparation]: this.item.status.isPreparation(n),
+							[i.active]: this.item.status.isActive(n)
+						},
+						"data-key": n
+					}, t == null ? void 0 : t({})));
+				}
+			}), e;
+		}), this.item = new a(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+	}
+	initExpose() {
+		return {
+			next: this.item.go.next,
+			back: this.item.go.back,
+			to: this.item.go.to,
+			top: this.item.go.top,
+			right: this.item.go.right,
+			bottom: this.item.go.bottom,
+			left: this.item.go.left,
+			down: this.item.go.down,
+			up: this.item.go.up
+		};
+	}
+	initClasses() {
+		return {
+			main: this.item.classes.value,
+			slide: this.getSubClass("slide")
+		};
+	}
+	initStyles() {
+		return {};
+	}
+	initRender() {
+		var e;
+		return r("div", {
+			...this.getAttrs(),
+			ref: this.element,
+			class: (e = this.classes) == null ? void 0 : e.value.main
+		}, this.renderSlides());
+	}
 };
-class O extends M {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
-   */
-  constructor(e, a, i, l = L) {
-    super(
-      e,
-      a,
-      i
-    );
-    s(this, "item");
-    /**
-     * Rendering the slide.
-     *
-     * Рендеринг слайда.
-     */
-    s(this, "renderSlides", () => {
-      const e = [];
-      return this.item.slides.reset(), this.slots && E(this.slots, (a, i) => {
-        if (this.item.slides.add(i), this.item.isInDom(i)) {
-          const l = this.item.elementItem.getClassStatus();
-          e.push(u(
-            "div",
-            {
-              key: i,
-              class: {
-                [l.main]: !0,
-                [l.previous]: this.item.previous.is(i),
-                [l.preparation]: this.item.status.isPreparation(i),
-                [l.active]: this.item.status.isActive(i)
-              },
-              "data-key": i
-            },
-            a == null ? void 0 : a({})
-          ));
-        }
-      }), e;
-    });
-    this.item = new l(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    ), this.init();
-  }
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  initExpose() {
-    return {
-      next: this.item.go.next,
-      back: this.item.go.back,
-      to: this.item.go.to,
-      top: this.item.go.top,
-      right: this.item.go.right,
-      bottom: this.item.go.bottom,
-      left: this.item.go.left,
-      down: this.item.go.down,
-      up: this.item.go.up
-    };
-  }
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: this.item.classes.value,
-      // :classes [!] System label / Системная метка
-      slide: this.getSubClass("slide")
-    };
-  }
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  initStyles() {
-    return {};
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    var e;
-    return u(
-      "div",
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: (e = this.classes) == null ? void 0 : e.value.main
-      },
-      this.renderSlides()
-    );
-  }
-}
-export {
-  L as MotionAxis,
-  O as MotionAxisDesign,
-  G as defaultsMotionAxis
-};
+//#endregion
+export { g as MotionAxis, v as MotionAxisDesign, _ as defaultsMotionAxis };

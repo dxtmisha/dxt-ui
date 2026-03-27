@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isShare - Проверка поддержки Web Share API'/>
+
+# `isShare`
+
+Проверяет, поддерживается ли Web Share API в текущей среде.
+
+**Возвращает:**
+`boolean` — `true`, если Web Share API поддерживается, иначе `false`.
+
+```typescript
+import { isShare } from '@dxtmisha/functional-basic'
+
+if (isShare()) {
+  console.log('Обмен данными поддерживается!')
+}
+```

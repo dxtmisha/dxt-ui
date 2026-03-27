@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/handleShare - Share data via Web Share API'/>
+
+# `handleShare`
+
+Invokes the native sharing mechanism of the device as part of the Web Share API.
+Check support with `isShare` before calling.
+
+**Parameters:**
+- `data: ShareData` — an object containing data to share (title, text, url).
+
+**Returns:**
+`Promise<boolean>` — `true` if the data was shared successfully, otherwise `false`.
+
+```typescript
+import { handleShare, isShare } from '@dxtmisha/functional-basic'
+
+const shareData = {
+  title: 'Check out this website!',
+  text: 'I found something interesting here.',
+  url: 'https://example.com'
+}
+
+if (isShare()) {
+  const success = await handleShare(shareData)
+  
+  if (success) {
+    console.log('Shared successfully!')
+  }
+}
+```

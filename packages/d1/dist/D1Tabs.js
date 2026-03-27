@@ -1,13 +1,13 @@
-import "./D1Icon-BnpmOB4B.js";
-import "./D1Progress-CD6wYH0x.js";
-import "./D1Ripple-CvolQ-qx.js";
-import "./Image-CQ3p93mr.js";
-import "./D1Badge-BGe6Ttlr.js";
-import "./HorizontalScroll-Dp4GiHHd.js";
-import "./MotionAxis-DkY5i_Gj.js";
-import "./TabItem-D9ZS-tc-.js";
-import { t as e } from "./D1Tabs-DPwIYKUU.js";
-import "./TabsNavigation-CGGLtNpu.js";
+import "./D1Icon-m4nYEnhh.js";
+import "./D1Progress-D8vaV3J3.js";
+import "./D1Ripple-4NrKuW_d.js";
+import "./Image-ouwANoLf.js";
+import "./D1Badge-Cj_Fa7wP.js";
+import "./HorizontalScroll--g0eA2nS.js";
+import "./MotionAxis-DRLOW7lb.js";
+import "./TabItem-Bii7PJR2.js";
+import { t as e } from "./D1Tabs-BTH_hCHZ.js";
+import "./TabsNavigation-M3Q1WvQx.js";
 //#region src/components/Ui/Tabs/index.ts
 var t = e;
 //#endregion

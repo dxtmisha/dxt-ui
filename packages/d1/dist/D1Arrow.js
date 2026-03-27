@@ -1,2 +1,2 @@
-import { t as e } from "./Arrow-M-90F1OC.js";
+import { t as e } from "./Arrow-D-HUBK69.js";
 export { e as D1Arrow };

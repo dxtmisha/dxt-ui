@@ -1,238 +1,83 @@
-var I = Object.defineProperty;
-var A = (s, t, i) => t in s ? I(s, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : s[t] = i;
-var e = (s, t, i) => A(s, typeof t != "symbol" ? t + "" : t, i);
-import { computed as n, h as f } from "vue";
-import { getBindRef as d, DesignConstructorAbstract as b } from "@dxtmisha/functional";
-import { A as h } from "./AriaStaticInclude-DRHG8ILX.js";
-import { E as g } from "./EventClickInclude-DMbEP-nH.js";
-import { S as k } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as M, a as O } from "./IconInclude-CLqwI29Q.js";
-import { I as $ } from "./IconTrailingInclude-CdsOcDxv.js";
-class B {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with events/ класс для работы с событиями
-   * @param constructors.SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
-   */
-  constructor(t, i, c, r, o, p, u, l, a) {
-    /**
-     * Returns the property for the base icon/ Возвращает свойство для базовой иконки
-     */
-    e(this, "iconBind");
-    /**
-     * Returns the property for the additional icon/ Возвращает свойство для дополнительной иконки
-     */
-    e(this, "iconActiveBind");
-    /**
-     * An object for working with the Skeleton/ Объект для работы с Skeleton
-     */
-    e(this, "skeleton");
-    /**
-     * Object for working with events/ Объект для работы с событиями
-     */
-    e(this, "event");
-    /**
-     * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
-     */
-    e(this, "isActive", n(() => !!(this.props.active && this.props.iconActive)));
-    /**
-     * Values for the class/ Значения для класса
-     */
-    e(this, "classes", n(() => ({
-      ...this.skeleton.classes.value
-    })));
-    /**
-     * Computed bindings for the icon element.
-     *
-     * Вычисляемые привязки для элемента иконки.
-     */
-    e(this, "binds", n(() => {
-      var i;
-      const t = {
-        key: "icon",
-        ...h.role(this.getRole()),
-        ...h.label(this.props.ariaLabel)
-      };
-      return this.props.dynamic ? {
-        ...t,
-        tabindex: (i = this.props.tabindex) != null ? i : 0,
-        ...this.event.binds
-      } : {
-        ...t,
-        ...h.hidden()
-      };
-    }));
-    /**
-     * Triggers an event when the image loading is complete.
-     *
-     * Вызывает событие, когда завершится загрузка картинки.
-     * @param event event object/ объект события
-     */
-    e(this, "onLoad", (t) => {
-      var i;
-      return (i = this.emits) == null ? void 0 : i.call(this, "load", t);
-    });
-    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = p, this.slots = u, this.emits = l;
-    const {
-      EventClickIncludeConstructor: m = g,
-      SkeletonIncludeConstructor: v = k
-    } = a != null ? a : {};
-    this.iconBind = d(
-      i.icon,
-      n(() => ({
-        key: "mainIcon",
-        class: `${o}__icon`,
-        turn: this.props.turn,
-        disabled: this.props.disabled,
-        hide: this.isActive.value,
-        onLoad: this.onLoad
-      }))
-    ), this.iconActiveBind = d(
-      i.iconActive,
-      n(() => ({
-        key: "activeIcon",
-        class: `${o}__iconActive`,
-        turn: this.props.turn,
-        disabled: this.props.disabled,
-        hide: !this.isActive.value
-      }))
-    ), this.event = new m(
-      t,
-      void 0,
-      l
-    ), this.skeleton = new v(
-      t,
-      r,
-      ["classBackgroundVariant"]
-    );
-  }
-  /**
-   * Get the ARIA role for the icon element.
-   *
-   * Получить ARIA роль для элемента иконки.
-   */
-  getRole() {
-    if (this.props.role)
-      return this.props.role;
-    if (this.props.dynamic)
-      return "button";
-  }
-}
-const R = {
-  // :default [!] System label / Системная метка
-  animationType: "type1"
+import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
+import { t } from "./defineProperty-BTtSLqQS.js";
+import { t as n } from "./EventClickInclude-B0o5DErp.js";
+import { t as r } from "./SkeletonInclude-DtQCG1qF.js";
+import { n as i, t as a } from "./IconInclude-Bex3cqNy.js";
+import { t as o } from "./IconTrailingInclude-BDIQA_q_.js";
+import { computed as s, h as c } from "vue";
+import { DesignConstructorAbstract as l, getBindRef as u } from "@dxtmisha/functional";
+//#region src/constructors/Icon/Icon.ts
+var d = class {
+	constructor(i, a, o, c, l, d, f, p, m) {
+		t(this, "iconBind", void 0), t(this, "iconActiveBind", void 0), t(this, "skeleton", void 0), t(this, "event", void 0), t(this, "isActive", s(() => !!(this.props.active && this.props.iconActive))), t(this, "classes", s(() => ({ ...this.skeleton.classes.value }))), t(this, "binds", s(() => {
+			let t = {
+				key: "icon",
+				...e.role(this.getRole()),
+				...e.label(this.props.ariaLabel)
+			};
+			if (this.props.dynamic) {
+				var n;
+				return {
+					...t,
+					tabindex: (n = this.props.tabindex) == null ? 0 : n,
+					...this.event.binds
+				};
+			}
+			return {
+				...t,
+				...e.hidden()
+			};
+		})), t(this, "onLoad", (e) => {
+			var t;
+			return (t = this.emits) == null ? void 0 : t.call(this, "load", e);
+		}), this.props = i, this.refs = a, this.element = o, this.classDesign = c, this.className = l, this.components = d, this.slots = f, this.emits = p;
+		let { EventClickIncludeConstructor: h = n, SkeletonIncludeConstructor: g = r } = m == null ? {} : m;
+		this.iconBind = u(a.icon, s(() => ({
+			key: "mainIcon",
+			class: `${l}__icon`,
+			turn: this.props.turn,
+			disabled: this.props.disabled,
+			hide: this.isActive.value,
+			onLoad: this.onLoad
+		}))), this.iconActiveBind = u(a.iconActive, s(() => ({
+			key: "activeIcon",
+			class: `${l}__iconActive`,
+			turn: this.props.turn,
+			disabled: this.props.disabled,
+			hide: !this.isActive.value
+		}))), this.event = new h(i, void 0, p), this.skeleton = new g(i, c, ["classBackgroundVariant"]);
+	}
+	getRole() {
+		if (this.props.role) return this.props.role;
+		if (this.props.dynamic) return "button";
+	}
+}, f = { animationType: "type1" }, p = class extends l {
+	constructor(e, n, r, i = d) {
+		super(e, n, r), t(this, "item", void 0), t(this, "propsMain", s(() => {
+			var e;
+			return {
+				...this.getAttrs(),
+				...this.item.binds.value,
+				class: (e = this.classes) == null ? void 0 : e.value.main
+			};
+		})), t(this, "renderIcon", () => this.components.renderOne("image", this.item.iconBind.value, void 0, "icon")), t(this, "renderIconActive", () => this.components.renderOne("image", this.item.iconActiveBind.value, void 0, "iconActive")), this.item = new i(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+	}
+	initExpose() {
+		return {
+			...this.item.event.expose,
+			isActive: this.item.isActive
+		};
+	}
+	initClasses() {
+		return { main: this.item.classes.value };
+	}
+	initStyles() {
+		return {};
+	}
+	initRender() {
+		let e = [];
+		return this.initSlot("default", e), this.props.icon && e.push(this.renderIcon()), this.props.iconActive && e.push(this.renderIconActive()), c("span", this.propsMain.value, e);
+	}
 };
-class _ extends b {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor icon item class/ класс элемента иконки
-   */
-  constructor(i, c, r, o = B) {
-    super(
-      i,
-      c,
-      r
-    );
-    e(this, "item");
-    /**
-     * Computed properties for the main element.
-     *
-     * Вычисляемые свойства для главного элемента.
-     */
-    e(this, "propsMain", n(() => {
-      var i;
-      return {
-        ...this.getAttrs(),
-        ...this.item.binds.value,
-        class: (i = this.classes) == null ? void 0 : i.value.main
-      };
-    }));
-    /**
-     * Render the main icon.
-     *
-     * Рендер основной иконки.
-     */
-    e(this, "renderIcon", () => this.components.renderOne(
-      "image",
-      this.item.iconBind.value,
-      void 0,
-      "icon"
-    ));
-    /**
-     * Render the secondary icon.
-     *
-     * Рендер вторичной иконки.
-     */
-    e(this, "renderIconActive", () => this.components.renderOne(
-      "image",
-      this.item.iconActiveBind.value,
-      void 0,
-      "iconActive"
-    ));
-    this.item = new o(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    ), this.init();
-  }
-  /**
-   * Initialization of all the necessary properties for work<br>
-   * Инициализация всех необходимых свойств для работы.
-   */
-  initExpose() {
-    return {
-      ...this.item.event.expose,
-      isActive: this.item.isActive
-    };
-  }
-  /**
-   * Improvement of the obtained list of classes.<br>
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: this.item.classes.value
-    };
-  }
-  /**
-   * Refinement of the received list of styles.<br>
-   * Доработка полученного списка стилей.
-   */
-  initStyles() {
-    return {};
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    const i = [];
-    return this.initSlot("default", i), this.props.icon && i.push(this.renderIcon()), this.props.iconActive && i.push(this.renderIconActive()), f("span", this.propsMain.value, i);
-  }
-}
-export {
-  B as Icon,
-  _ as IconDesign,
-  M as IconInclude,
-  O as IconLiteInclude,
-  $ as IconTrailingInclude,
-  R as defaultsIcon
-};
+//#endregion
+export { d as Icon, p as IconDesign, a as IconInclude, i as IconLiteInclude, o as IconTrailingInclude, f as defaultsIcon };

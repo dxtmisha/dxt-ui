@@ -1,200 +1,78 @@
-var d = Object.defineProperty;
-var v = (s, t, e) => t in s ? d(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var i = (s, t, e) => v(s, typeof t != "symbol" ? t + "" : t, e);
-import { computed as r, h as o } from "vue";
-import { isFilled as f, applyTemplate as M, toNumber as u, DesignConstructorAbstract as C } from "@dxtmisha/functional";
-import { T } from "./TextInclude--GERRCGj.js";
-import { A as m } from "./AriaStaticInclude-DRHG8ILX.js";
-import { F as y } from "./FieldCounterInclude-D0oojGWY.js";
-class A {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
-   */
-  constructor(t, e, n, a, h, p, c, g, l) {
-    i(this, "text");
-    /** Checks if it is necessary to display the number of input characters/ Проверяет, надо ли выводить количество вводимых символов */
-    i(this, "is", r(() => this.props.counter !== void 0 || this.isMax.value));
-    /** Checks if it is necessary to display the maximum available number of characters/ Проверяет, надо ли выводить максимальное доступное количество символов */
-    i(this, "isMax", r(() => this.getMax() > 0));
-    /** Returns text for output/ Возвращает текст для вывода */
-    i(this, "item", r(() => {
-      const t = this.getCounter().toString(), e = this.getMax().toString();
-      return f(this.props.template) ? this.props.template.replace("[c]", t).replace("[m]", e) : this.isMax.value ? `${t} / ${e}` : t;
-    }));
-    /**
-     * Returns the text for the screen reader.
-     *
-     * Возвращает текст для скринридера.
-     */
-    i(this, "ariaText", r(() => {
-      if (this.isMax.value) {
-        const t = this.getRemaining();
-        if (t <= 0)
-          return this.text.characterLimit.value;
-        if (t <= this.getMaxlengthOnce() && this.text.characterRemaining.value)
-          return M(
-            this.text.characterRemaining.value,
-            { left: t }
-          );
-      }
-    }));
-    this.props = t, this.refs = e, this.element = n, this.classDesign = a, this.className = h, this.components = p, this.slots = c, this.emits = g;
-    const {
-      TextIncludeConstructor: x = T
-    } = l != null ? l : {};
-    this.text = new x(this.props);
-  }
-  /**
-   * Returns the number of input characters.
-   *
-   * Возвращает количество вводимых символов.
-   */
-  getCounter() {
-    var t;
-    return u((t = this.props.counter) != null ? t : 0);
-  }
-  /**
-   * Returns the maximum available input number.
-   *
-   * Возвращает максимально доступное вводимое число.
-   */
-  getMax() {
-    var t;
-    return u((t = this.props.maxlength) != null ? t : 0);
-  }
-  /**
-   * Returns the number of characters remaining at which the screen reader starts announcing.
-   *
-   * Возвращает количество оставшихся символов, при котором скринридер начинает произносить.
-   */
-  getMaxlengthOnce() {
-    return this.props.maxlengthOnce !== void 0 ? u(this.props.maxlengthOnce) : Math.ceil(this.getMax() * 0.1);
-  }
-  /**
-   * Returns the number of remaining characters.
-   *
-   * Возвращает количество оставшихся символов.
-   */
-  getRemaining() {
-    return this.getMax() - this.getCounter();
-  }
-}
-const I = {};
-class O extends C {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
-   */
-  constructor(e, n, a, h = A) {
-    super(
-      e,
-      n,
-      a
-    );
-    i(this, "item");
-    /**
-     * Render hidden element for screen reader.
-     *
-     * Рендер скрытого элемента для скринридера.
-     */
-    i(this, "renderAria", () => {
-      var e;
-      return this.item.ariaText.value ? [
-        o(
-          "div",
-          {
-            class: (e = this.classes) == null ? void 0 : e.value.aria,
-            ...m.live("polite")
-          },
-          [
-            o(
-              "span",
-              {
-                ...m.role("img"),
-                ...m.label(this.item.ariaText.value)
-              }
-            )
-          ]
-        )
-      ] : [];
-    });
-    this.item = new h(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    ), this.init();
-  }
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  initExpose() {
-    return {};
-  }
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: {},
-      // :classes [!] System label / Системная метка
-      aria: this.getSubClass("aria")
-    };
-  }
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  initStyles() {
-    return {};
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    var e;
-    if (this.item.is.value)
-      return [
-        o(
-          "span",
-          {
-            ...this.getAttrs(),
-            id: this.props.id,
-            class: (e = this.classes) == null ? void 0 : e.value.main,
-            innerHTML: this.item.item.value
-          }
-        ),
-        ...this.renderAria()
-      ];
-  }
-}
-export {
-  A as FieldCounter,
-  O as FieldCounterDesign,
-  y as FieldCounterInclude,
-  I as defaultsFieldCounter
+import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
+import { t } from "./defineProperty-BTtSLqQS.js";
+import { t as n } from "./TextInclude-BIa1AeDQ.js";
+import { t as r } from "./FieldCounterInclude-BT7VqAaq.js";
+import { computed as i, h as a } from "vue";
+import { DesignConstructorAbstract as o, applyTemplate as s, isFilled as c, toNumber as l } from "@dxtmisha/functional";
+//#region src/constructors/FieldCounter/FieldCounter.ts
+var u = class {
+	constructor(e, r, a, o, l, u, d, f, p) {
+		t(this, "text", void 0), t(this, "is", i(() => this.props.counter !== void 0 || this.isMax.value)), t(this, "isMax", i(() => this.getMax() > 0)), t(this, "item", i(() => {
+			let e = this.getCounter().toString(), t = this.getMax().toString();
+			return c(this.props.template) ? this.props.template.replace("[c]", e).replace("[m]", t) : this.isMax.value ? `${e} / ${t}` : e;
+		})), t(this, "ariaText", i(() => {
+			if (this.isMax.value) {
+				let e = this.getRemaining();
+				if (e <= 0) return this.text.characterLimit.value;
+				if (e <= this.getMaxlengthOnce() && this.text.characterRemaining.value) return s(this.text.characterRemaining.value, { left: e });
+			}
+		})), this.props = e, this.refs = r, this.element = a, this.classDesign = o, this.className = l, this.components = u, this.slots = d, this.emits = f;
+		let { TextIncludeConstructor: m = n } = p == null ? {} : p;
+		this.text = new m(this.props);
+	}
+	getCounter() {
+		var e;
+		return l((e = this.props.counter) == null ? 0 : e);
+	}
+	getMax() {
+		var e;
+		return l((e = this.props.maxlength) == null ? 0 : e);
+	}
+	getMaxlengthOnce() {
+		return this.props.maxlengthOnce === void 0 ? Math.ceil(this.getMax() * .1) : l(this.props.maxlengthOnce);
+	}
+	getRemaining() {
+		return this.getMax() - this.getCounter();
+	}
+}, d = {}, f = class extends o {
+	constructor(n, r, i, o = u) {
+		super(n, r, i), t(this, "item", void 0), t(this, "renderAria", () => {
+			if (this.item.ariaText.value) {
+				var t;
+				return [a("div", {
+					class: (t = this.classes) == null ? void 0 : t.value.aria,
+					...e.live("polite")
+				}, [a("span", {
+					...e.role("img"),
+					...e.label(this.item.ariaText.value)
+				})])];
+			}
+			return [];
+		}), this.item = new o(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+	}
+	initExpose() {
+		return {};
+	}
+	initClasses() {
+		return {
+			main: {},
+			aria: this.getSubClass("aria")
+		};
+	}
+	initStyles() {
+		return {};
+	}
+	initRender() {
+		if (this.item.is.value) {
+			var e;
+			return [a("span", {
+				...this.getAttrs(),
+				id: this.props.id,
+				class: (e = this.classes) == null ? void 0 : e.value.main,
+				innerHTML: this.item.item.value
+			}), ...this.renderAria()];
+		}
+	}
 };
+//#endregion
+export { u as FieldCounter, f as FieldCounterDesign, r as FieldCounterInclude, d as defaultsFieldCounter };

@@ -3322,6 +3322,17 @@ export declare function goScrollSmooth<E extends HTMLElement>(element: E, option
 export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
 
 /**
+ * The method invokes the native sharing mechanism of the device as part of the Web Share API.
+ * If the Web Share API is not supported by the browser or the data cannot be shared, the method returns false.
+ *
+ * Метод вызывает встроенный механизм обмена данными мобильного устройства или операционной системы.
+ * Если Web Share API не поддерживается браузером или данные не могут быть переданы, метод возвращает false.
+ * @param data an object containing data to share/ объект, содержащий данные для обмена
+ * @returns true if the data was shared successfully/ true, если данные были успешно переданы
+ */
+export declare function handleShare(data: ShareData): Promise<boolean>;
+
+/**
  * Working with data stored in hash.
  *
  * Работа с данными сохраненными в хеш.
@@ -3558,6 +3569,17 @@ export declare function isDomData(): boolean;
 export declare function isDomRuntime(): boolean;
 
 /**
+ * Checks if an element is visible (not hidden by CSS and is in the DOM).
+ * An element can be off-screen and still be considered visible.
+ *
+ * Проверяет, является ли элемент видимым (не скрыт через CSS и находится в DOM).
+ * Элемент может находиться за пределами экрана и при этом считаться видимым.
+ * @param elementSelectors selectors for matching or an Element/ селекторов для сопоставления или Element
+ * @returns true if the element is visible, otherwise false/ true, если элемент является видимым, иначе false
+ */
+export declare function isElementVisible<E extends ElementOrWindow>(elementSelectors?: ElementOrString<E>): boolean;
+
+/**
  * Checks if the pressed key is Enter or Space.
  *
  * Проверяет, является ли нажатая клавиша Enter или Space.
@@ -3665,6 +3687,14 @@ export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boole
  * @param selected array or string for comparison/ массив или строка для сравнения
  */
 export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
+
+/**
+ * Checks if the Web Share API is supported in the current environment.
+ *
+ * Проверяет, поддерживается ли Web Share API в текущей среде.
+ * @returns true if the Web Share API is supported/ true, если Web Share API поддерживается
+ */
+export declare function isShare(): boolean;
 
 /**
  * Checks if the value is of type string.

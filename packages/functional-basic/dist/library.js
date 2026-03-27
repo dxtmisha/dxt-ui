@@ -155,15 +155,15 @@ function y(e, t, n) {
 }
 //#endregion
 //#region src/classes/DataStorage.ts
-var ne = {}, re = "ui-storage", b = class {
+var b = {}, ne = "ui-storage", x = class {
 	static setPrefix(e) {
-		re = e;
+		ne = e;
 	}
 	constructor(e, t = !1) {
 		y(this, "value", void 0), y(this, "age", void 0), this.name = e, this.isSession = t;
 		let n = `${t ? "session" : "storage"}#${e}`;
-		if (n in ne) return ne[n];
-		this.make(), ne[n] = this;
+		if (n in b) return b[n];
+		this.make(), b[n] = this;
 	}
 	get(e, t) {
 		if (this.value !== null && this.value !== void 0 && this.isCache(t)) return this.value;
@@ -198,7 +198,7 @@ var ne = {}, re = "ui-storage", b = class {
 		}
 	}
 	getIndex() {
-		return `${re}__${this.name}`;
+		return `${ne}__${this.name}`;
 	}
 	getValue() {
 		var e;
@@ -213,7 +213,7 @@ var ne = {}, re = "ui-storage", b = class {
 		let e = this.getValue();
 		return e ? (this.value = e.value, this.age = e.age) : (this.value = void 0, this.age = void 0), this;
 	}
-}, x, ie = "geo-code", S = class {
+}, S, re = "geo-code", C = class {
 	static get() {
 		return this.item;
 	}
@@ -297,17 +297,17 @@ var ne = {}, re = "ui-storage", b = class {
 		});
 	}
 };
-x = S, y(S, "storage", new b(ie)), y(S, "location", void 0), y(S, "item", void 0), y(S, "language", void 0), y(S, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), x.location = x.findLocation(), x.language = x.findLanguage(x.location), x.item = x.getByCode(x.location);
+S = C, y(C, "storage", new x(re)), y(C, "location", void 0), y(C, "item", void 0), y(C, "language", void 0), y(C, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), S.location = S.findLocation(), S.language = S.findLanguage(S.location), S.item = S.getByCode(S.location);
 //#endregion
 //#region src/functions/isWindow.ts
-function ae(e) {
+function ie(e) {
 	return d() && e === window;
 }
 //#endregion
 //#region src/functions/getElement.ts
-function C(e) {
+function w(e) {
 	if (d()) {
-		if (ae(e)) return document.body;
+		if (ie(e)) return document.body;
 		if (l(e)) {
 			var t;
 			return (t = document.querySelector(e)) == null ? void 0 : t;
@@ -317,30 +317,30 @@ function C(e) {
 }
 //#endregion
 //#region src/functions/getElementOrWindow.ts
-function oe(e) {
-	return ae(e) ? e : C(e);
+function T(e) {
+	return ie(e) ? e : w(e);
 }
 //#endregion
 //#region src/functions/isInDom.ts
-function se(e) {
+function ae(e) {
 	var t;
-	return !!((t = C(e)) != null && t.closest("html"));
+	return !!((t = w(e)) != null && t.closest("html"));
 }
 //#endregion
 //#region src/functions/toArray.ts
-function w(e) {
+function E(e) {
 	return Array.isArray(e) ? e : [e];
 }
 //#endregion
 //#region src/classes/EventItem.ts
-var T = class {
+var oe = class {
 	constructor(e, t = ["click"], r, i, a) {
 		y(this, "element", void 0), y(this, "elementControl", void 0), y(this, "elementControlEdit", void 0), y(this, "type", void 0), y(this, "listenerRecent", (e) => {
-			if (se(this.elementControl)) {
+			if (ae(this.elementControl)) {
 				var t, r;
 				(t = this.listener) == null || t.call(this.element, e, this.detail), n(this.options) && (r = this.options) != null && r.once && this.stop();
 			} else this.stop();
-		}), y(this, "activity", !1), y(this, "activityItems", []), this.listener = r, this.options = i, this.detail = a, this.element = oe(e), this.elementControl = C(e), this.type = w(t);
+		}), y(this, "activity", !1), y(this, "activityItems", []), this.listener = r, this.options = i, this.detail = a, this.element = T(e), this.elementControl = w(e), this.type = E(t);
 	}
 	isActive() {
 		return this.activity;
@@ -349,14 +349,14 @@ var T = class {
 		return this.element;
 	}
 	setElement(e) {
-		let t = oe(e);
-		return this.elementControlEdit || (this.elementControl = C(e)), this.element = t, this.reset(), this;
+		let t = T(e);
+		return this.elementControlEdit || (this.elementControl = w(e)), this.element = t, this.reset(), this;
 	}
 	setElementControl(e) {
-		return this.elementControl = C(e), this.elementControlEdit = !o(this.elementControl), this.elementControlEdit || (this.elementControl = C(this.element)), this;
+		return this.elementControl = w(e), this.elementControlEdit = !o(this.elementControl), this.elementControlEdit || (this.elementControl = w(this.element)), this;
 	}
 	setType(e) {
-		return this.type = w(e), this.reset(), this;
+		return this.type = E(e), this.reset(), this;
 	}
 	setListener(e) {
 		return this.listener = e, this;
@@ -425,7 +425,7 @@ var T = class {
 		}
 		return !1;
 	}
-}, ce, le = "ui-loading", E = class {
+}, se, ce = "ui-loading", D = class {
 	static is() {
 		return this.value > 0;
 	}
@@ -440,7 +440,7 @@ var T = class {
 	}
 	static registrationEvent(e, t) {
 		if (d()) {
-			let n = new T(window, le, e).setElementControl(t).start();
+			let n = new oe(window, ce, e).setElementControl(t).start();
 			this.registrationList.push({
 				item: n,
 				listener: e,
@@ -456,10 +456,10 @@ var T = class {
 		(e = this.event) == null || e.dispatch({ loading: this.is() });
 	}
 };
-ce = E, y(E, "value", 0), y(E, "event", void 0), y(E, "registrationList", []), d() && (ce.event = new T(window, le));
+se = D, y(D, "value", 0), y(D, "event", void 0), y(D, "registrationList", []), d() && (se.event = new oe(window, ce));
 //#endregion
 //#region src/classes/ApiHeaders.ts
-var ue = class {
+var le = class {
 	constructor() {
 		y(this, "headers", {});
 	}
@@ -472,9 +472,9 @@ var ue = class {
 	set(e) {
 		return c(e) && (this.headers = e), this;
 	}
-}, D = /* @__PURE__ */ function(e) {
+}, O = /* @__PURE__ */ function(e) {
 	return e.get = "GET", e.post = "POST", e.put = "PUT", e.delete = "DELETE", e;
-}({}), de = class {
+}({}), ue = class {
 	constructor() {
 		y(this, "value", void 0);
 	}
@@ -498,7 +498,7 @@ var ue = class {
 	addByFormData(e, t) {
 		for (let n in t) e.has(n) || e.set(n, t[n]);
 	}
-}, O = class {
+}, k = class {
 	constructor() {
 		y(this, "value", void 0);
 	}
@@ -556,18 +556,18 @@ var ue = class {
 };
 //#endregion
 //#region src/functions/executePromise.ts
-async function fe(e) {
+async function de(e) {
 	let t = g(e);
 	return t instanceof Promise ? await t : t;
 }
 //#endregion
 //#region src/functions/random.ts
-function k(e, t) {
+function A(e, t) {
 	return Math.floor(Math.random() * (t - e + 1) + e);
 }
 //#endregion
 //#region src/classes/ApiResponse.ts
-var pe = "d-response-loading", me = class {
+var fe = "d-response-loading", pe = class {
 	constructor(e) {
 		y(this, "first", []), y(this, "response", []), y(this, "loading", void 0), y(this, "devMode", !1), this.requestDefault = e;
 	}
@@ -578,13 +578,13 @@ var pe = "d-response-loading", me = class {
 		return this.response.filter((e) => e.isForGlobal !== !0);
 	}
 	add(e) {
-		return this.response.push(...w(e)), this;
+		return this.response.push(...E(e)), this;
 	}
 	setDevMode(e) {
 		return this.devMode = e, this;
 	}
 	async emulator(e) {
-		let { path: t = "", method: n = D.get, global: r = n === D.get, devMode: i = !1 } = e;
+		let { path: t = "", method: n = O.get, global: r = n === O.get, devMode: i = !1 } = e;
 		if (r || this.isDevMode(i)) {
 			let r = this.requestDefault.request(e.request), a = this.get(t, n, r, i);
 			if (a) {
@@ -611,22 +611,22 @@ var pe = "d-response-loading", me = class {
 	}
 	fetch(e, t) {
 		return this.startResponseLoading(), new Promise((n) => {
-			fe(h(e.response) ? e.response(t) : e.response).then((t) => {
-				e != null && e.lag ? (E.show(), setTimeout(() => {
-					this.stopResponseLoading(), n(t), E.hide();
-				}, k(0, 2e3))) : (this.stopResponseLoading(), n(t));
+			de(h(e.response) ? e.response(t) : e.response).then((t) => {
+				e != null && e.lag ? (D.show(), setTimeout(() => {
+					this.stopResponseLoading(), n(t), D.hide();
+				}, A(0, 2e3))) : (this.stopResponseLoading(), n(t));
 			});
 		});
 	}
 	startResponseLoading() {
-		this.loading && clearTimeout(this.loading), d() && document.body.classList.add(pe);
+		this.loading && clearTimeout(this.loading), d() && document.body.classList.add(fe);
 	}
 	stopResponseLoading() {
 		this.loading = setTimeout(() => {
-			this.loading = void 0, d() && document.body.classList.remove(pe);
+			this.loading = void 0, d() && document.body.classList.remove(fe);
 		}, 1200);
 	}
-}, he = class {
+}, me = class {
 	constructor() {
 		y(this, "callback", void 0), y(this, "callbackEnd", void 0), y(this, "loading", !1);
 	}
@@ -654,7 +654,7 @@ var pe = "d-response-loading", me = class {
 		let n = {};
 		return this.callbackEnd && (n = await this.callbackEnd(e, t)), n;
 	}
-}, ge, A = class e {
+}, he, j = class e {
 	static isLocalhost() {
 		return typeof location > "u" || location.hostname === "localhost";
 	}
@@ -665,14 +665,14 @@ var pe = "d-response-loading", me = class {
 		return this.response;
 	}
 	static getUrl(e, t = !0) {
-		return `${t ? this.url : ""}${e}`.replace("{locale}", S.getLocation()).replace("{country}", S.getCountry()).replace("{language}", S.getLanguage());
+		return `${t ? this.url : ""}${e}`.replace("{locale}", C.getLocation()).replace("{country}", C.getCountry()).replace("{language}", C.getLanguage());
 	}
-	static getBody(e = {}, t = D.get) {
+	static getBody(e = {}, t = O.get) {
 		if (e instanceof FormData) return e;
-		if (t !== D.get && s(e)) return l(e) ? e : JSON.stringify(e);
+		if (t !== O.get && s(e)) return l(e) ? e : JSON.stringify(e);
 	}
-	static getBodyForGet(e, t = "", n = D.get) {
-		if (n === D.get) {
+	static getBodyForGet(e, t = "", n = O.get) {
+		if (n === O.get) {
 			let n = t.match(/\?/) ? "&" : "?", r = typeof e == "object" ? i(e) : e;
 			if (s(r)) return `${n}${r}`;
 		}
@@ -697,38 +697,38 @@ var pe = "d-response-loading", me = class {
 		return l(e) ? await this.fetch({ path: e }) : await this.fetch(e);
 	}
 	static get(e) {
-		return this.request(t(e, { method: D.get }));
+		return this.request(t(e, { method: O.get }));
 	}
 	static post(e) {
-		return this.request(t(e, { method: D.post }));
+		return this.request(t(e, { method: O.post }));
 	}
 	static put(e) {
-		return this.request(t(e, { method: D.put }));
+		return this.request(t(e, { method: O.put }));
 	}
 	static delete(e) {
-		return this.request(t(e, { method: D.delete }));
+		return this.request(t(e, { method: O.delete }));
 	}
 	static async fetch(e) {
 		let { toData: t = !0, hideError: n = !1, queryReturn: r = void 0, globalPreparation: i = !0, globalEnd: a = !0 } = e, o = await this.response.emulator(e);
 		if (o) return o;
-		let s = new O(), c;
-		E.show();
+		let s = new k(), c;
+		D.show();
 		try {
 			await this.preparation.make(i, e);
 			let t = await this.makeQuery(e), n = await this.preparation.makeEnd(a, t, e);
-			if (s.setStatus(t.status, t.statusText), this.status.setStatus(t.status, t.statusText), n != null && n.reset) return E.hide(), await this.fetch(e);
+			if (s.setStatus(t.status, t.statusText), this.status.setStatus(t.status, t.statusText), n != null && n.reset) return D.hide(), await this.fetch(e);
 			c = await this.readData(t, r, n);
 		} catch (e) {
-			throw n || console.error("Api: ", e), s.setError(String(e)), this.status.setError(String(e)), E.hide(), e;
+			throw n || console.error("Api: ", e), s.setError(String(e)), this.status.setError(String(e)), D.hide(), e;
 		}
-		return E.hide(), s.setLastResponse(c), this.status.setLastResponse(c), this.makeStatus(this.makeData(c, t), s);
+		return D.hide(), s.setLastResponse(c), this.status.setLastResponse(c), this.makeStatus(this.makeData(c, t), s);
 	}
 	static async readData(e, t, n) {
 		var r;
 		return t ? await t(e) : "data" in n ? n.data : ((r = e.headers.get("Content-Type")) == null ? "" : r).match("application/json") ? await e.json() : { data: await e.text() };
 	}
 	static async makeQuery(e) {
-		let n = this.requestDefault.request(e.request), { api: r = !0, path: i = "", pathFull: a = void 0, method: o = D.get, headers: s = {}, type: c = "application/json;charset=UTF-8", init: l = {}, controller: u = void 0 } = e, d = a == null ? this.getUrl(i, r) : a, f = `${d}${this.getBodyForGet(n, d, o)}`, p = this.headers.get(s, c), m = t(l, {
+		let n = this.requestDefault.request(e.request), { api: r = !0, path: i = "", pathFull: a = void 0, method: o = O.get, headers: s = {}, type: c = "application/json;charset=UTF-8", init: l = {}, controller: u = void 0 } = e, d = a == null ? this.getUrl(i, r) : a, f = `${d}${this.getBodyForGet(n, d, o)}`, p = this.headers.get(s, c), m = t(l, {
 			method: o,
 			body: this.getBody(n, o)
 		});
@@ -747,10 +747,10 @@ var pe = "d-response-loading", me = class {
 		} : e;
 	}
 };
-ge = A, y(A, "url", "/api/"), y(A, "headers", new ue()), y(A, "requestDefault", new de()), y(A, "status", new O()), y(A, "response", new me(ge.requestDefault)), y(A, "preparation", new he());
+he = j, y(j, "url", "/api/"), y(j, "headers", new le()), y(j, "requestDefault", new ue()), y(j, "status", new k()), y(j, "response", new pe(he.requestDefault)), y(j, "preparation", new me());
 //#endregion
 //#region src/classes/BroadcastMessage.ts
-var _e = class {
+var ge = class {
 	constructor(e, t, n) {
 		if (y(this, "channel", void 0), y(this, "update", (e) => {
 			var t;
@@ -759,7 +759,7 @@ var _e = class {
 			var t;
 			return (t = this.callbackError) == null || t.call(this, e), this;
 		}), this.callback = t, this.callbackError = n, d()) try {
-			this.channel = new BroadcastChannel(`${ve()}__${e}`), this.channel.onmessage = this.update, this.channel.onmessageerror = this.updateError;
+			this.channel = new BroadcastChannel(`${_e()}__${e}`), this.channel.onmessage = this.update, this.channel.onmessageerror = this.updateError;
 		} catch (t) {
 			console.error(`BroadcastMessage ${e}:`, t);
 		}
@@ -777,7 +777,7 @@ var _e = class {
 	setCallbackError(e) {
 		return this.callbackError = e, this;
 	}
-}, ve = () => new b("__broadcast-name").get(() => `name_${k(1e6, 9999999)}`), ye = class {
+}, _e = () => new x("__broadcast-name").get(() => `name_${A(1e6, 9999999)}`), ve = class {
 	constructor(e) {
 		y(this, "cache", void 0), y(this, "cacheOld", void 0), y(this, "comparisons", []), this.callback = e;
 	}
@@ -799,7 +799,7 @@ var _e = class {
 	isUpdate(e) {
 		return this.cache === void 0 || this.comparisons.length !== e.length || this.comparisons.findIndex((t, n) => t !== e[n]) >= 0 ? (this.comparisons = [...e], !0) : !1;
 	}
-}, be = class {
+}, ye = class {
 	constructor() {
 		y(this, "cache", {});
 	}
@@ -810,17 +810,17 @@ var _e = class {
 		return await this.getCacheItem(e, t).getCacheAsync(n == null ? [] : n);
 	}
 	getCacheItem(e, t) {
-		return e in this.cache || (this.cache[e] = new ye(t)), this.cache[e];
+		return e in this.cache || (this.cache[e] = new ve(t)), this.cache[e];
 	}
-}, xe, Se = class {
+}, be, xe = class {
 	static get(e, t, n) {
 		return this.cache.get(e, t, n);
 	}
 };
-xe = Se, y(Se, "cache", void 0), xe.cache = new be();
+be = xe, y(xe, "cache", void 0), be.cache = new ye();
 //#endregion
 //#region src/functions/transformation.ts
-function Ce(e, t = !1) {
+function Se(e, t = !1) {
 	if (typeof e == "string") {
 		let r = e.trim();
 		switch (r) {
@@ -844,7 +844,7 @@ function Ce(e, t = !1) {
 }
 //#endregion
 //#region src/classes/CookieBlock.ts
-var we = "cookie-block", j = class {
+var Ce = "cookie-block", we = class {
 	static get() {
 		var e;
 		return (e = this.storage.get()) == null ? !1 : e;
@@ -853,13 +853,13 @@ var we = "cookie-block", j = class {
 		this.storage.set(e);
 	}
 };
-y(j, "storage", new b(we));
+y(we, "storage", new x(Ce));
 //#endregion
 //#region src/classes/Cookie.ts
 var Te, M = {}, Ee = class {
 	constructor(e) {
-		if (y(this, "value", void 0), y(this, "options", {}), this.name = e, e in De) return De[e];
-		this.value = M == null ? void 0 : M[e], De[e] = this;
+		if (y(this, "value", void 0), y(this, "options", {}), this.name = e, e in N) return N[e];
+		this.value = M == null ? void 0 : M[e], N[e] = this;
 	}
 	get(e, t) {
 		return this.value === void 0 && e && this.set(e, t), this.value;
@@ -875,7 +875,7 @@ var Te, M = {}, Ee = class {
 		return (e = (t = this.options) == null ? void 0 : t.age) == null ? 10080 * 60 : e;
 	}
 	update() {
-		if (d() && !_() && !j.get()) {
+		if (d() && !_() && !we.get()) {
 			var e, t, n, r, i;
 			let a = String((e = this.value) == null ? "" : e);
 			document.cookie = [
@@ -889,40 +889,40 @@ var Te, M = {}, Ee = class {
 	static updateData() {
 		for (let e of document.cookie.split(";")) {
 			let [t, n] = e.trim().split("=");
-			t && s(n) && (M[t] = Ce(n));
+			t && s(n) && (M[t] = Se(n));
 		}
 	}
 };
 Te = Ee, d() && !_() && Te.updateData();
-var De = {};
+var N = {};
 //#endregion
 //#region src/functions/toDate.ts
-function N(e) {
+function P(e) {
 	var t, n, r, i, a, s, c, l;
 	if (e instanceof Date) return e;
 	if (o(e)) return /* @__PURE__ */ new Date();
 	if (typeof e == "number") return new Date(e);
-	let u = e, d = S.getTimezoneFormat().trim();
+	let u = e, d = C.getTimezoneFormat().trim();
 	e.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (e, t, n) => (u = t, d = n.trim(), e));
 	let f = (t = (n = (r = (i = (a = (s = (c = (l = /^\d{4}\d{2}\d{2}$/.exec(u) && `${u.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) == null ? /^\d{4}\d{2}$/.exec(u) && `${u.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00` : l) == null ? /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(u) && u.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6") : c) == null ? /^\d{4}-\d{2}-\d{2}$/.exec(u) && `${u}T00:00:00` : s) == null ? /^\d{4}-\d{2}$/.exec(u) && `${u}-01T00:00:00` : a) == null ? /^\d{4}$/.exec(u) && `${u}-01-01T00:00:00` : i) == null ? /^\d{2}:\d{2}$/.exec(u) && `2000-01-01T${u}:00` : r) == null ? /^\d{2}:\d{2}:\d{2}$/.exec(u) && `2000-01-01T${u}` : n) == null ? u.replace(" ", "T") : t;
 	return /* @__PURE__ */ new Date(`${f.trim()}${d}`);
 }
 //#endregion
 //#region src/functions/getColumn.ts
-function Oe(e, t) {
+function De(e, t) {
 	return r(e, (e) => e == null ? void 0 : e[t], !0);
 }
 //#endregion
 //#region src/classes/GeoIntl.ts
-var P = class e {
-	static getInstance(t = S.getLocation()) {
+var F = class e {
+	static getInstance(t = C.getLocation()) {
 		return new e(t);
 	}
-	constructor(e = S.getLocation()) {
-		y(this, "geo", void 0), this.geo = S.find(e);
+	constructor(e = C.getLocation()) {
+		y(this, "geo", void 0), this.geo = C.find(e);
 		let t = this.getLocation();
-		if (t in ke) return ke[t];
-		ke[t] = this;
+		if (t in I) return I[t];
+		I[t] = this;
 	}
 	getLocation() {
 		return this.geo.standard;
@@ -949,7 +949,7 @@ var P = class e {
 			type: "language",
 			style: t
 		};
-		return this.display(S.getByCode(e).language, n);
+		return this.display(C.getByCode(e).language, n);
 	}
 	countryName(e, t) {
 		let n = {
@@ -993,7 +993,7 @@ var P = class e {
 		}, i = e.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...e) => (r.currency = String(e[2]).toUpperCase(), String(e[1])));
 		if (n) {
 			let t = this.numberObject(r);
-			return t ? Oe(t.formatToParts(p(e)).filter((e) => ["literal", "currency"].indexOf(e.type) === -1), "value").join("") : e.toString();
+			return t ? De(t.formatToParts(p(e)).filter((e) => ["literal", "currency"].indexOf(e.type) === -1), "value").join("") : e.toString();
 		} else if ("currency" in r) return this.number(typeof e == "number" ? e : i, r);
 		else return this.number(typeof e == "number" ? e : i, {
 			...r,
@@ -1070,18 +1070,18 @@ var P = class e {
 		return `${this.number(a, r)} ${(i = o == null ? void 0 : o[0]) == null ? "" : i}`.trim();
 	}
 	date(e, t, n, r) {
-		let i = N(e), a = typeof n == "string", o = this.dateOptions(t, a ? n : "short");
+		let i = P(e), a = typeof n == "string", o = this.dateOptions(t, a ? n : "short");
 		return r && (o.hour12 = !1), a || Object.assign(o, n), i.toLocaleString(this.getLocation(), o);
 	}
 	relative(e, t, n) {
-		let r = N(e), i = n || /* @__PURE__ */ new Date(), a = {
+		let r = P(e), i = n || /* @__PURE__ */ new Date(), a = {
 			numeric: "auto",
 			...typeof t == "string" ? { style: t } : t || {}
 		}, o = "second", s = (r.getTime() - i.getTime()) / 1e3;
 		return Math.abs(s) >= 60 && (o = "minute", s /= 60, Math.abs(s) >= 60 && (o = "hour", s /= 60, Math.abs(s) >= 24 && (o = "day", s /= 24, Math.abs(s) >= 30 && (o = "month", s /= 30, Math.abs(s) >= 12 && (o = "year", s /= 12))))), this.relativeByValue(s, o, a);
 	}
 	relativeLimit(e, t, n, r, i, a, o) {
-		let s = N(e), c = n || /* @__PURE__ */ new Date(), l = new Date(c), u = new Date(c);
+		let s = P(e), c = n || /* @__PURE__ */ new Date(), l = new Date(c), u = new Date(c);
 		return l.setDate(c.getDate() - t), u.setDate(c.getDate() + t), s >= l && s <= u ? this.relative(s, r, c) : this.date(s, a, i, o);
 	}
 	relativeByValue(e, t, n) {
@@ -1098,7 +1098,7 @@ var P = class e {
 	}
 	month(e, t) {
 		try {
-			if (this.hasIntlDateTimeFormat()) return Intl.DateTimeFormat(this.getLocation(), { month: t || "long" }).format(N(e));
+			if (this.hasIntlDateTimeFormat()) return Intl.DateTimeFormat(this.getLocation(), { month: t || "long" }).format(P(e));
 		} catch (e) {
 			console.error("month: ", e);
 		}
@@ -1124,7 +1124,7 @@ var P = class e {
 	}
 	weekday(e, t) {
 		try {
-			if (this.hasIntlDateTimeFormat()) return Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }).format(N(e));
+			if (this.hasIntlDateTimeFormat()) return Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }).format(P(e));
 		} catch (e) {
 			console.error("weekday: ", e);
 		}
@@ -1214,12 +1214,12 @@ var P = class e {
 			"second"
 		].indexOf(e) !== -1 && (n.second = "2-digit")), n;
 	}
-}, ke = {}, Ae = class e {
-	constructor(e, t = "date", n = S.getLocation()) {
-		y(this, "date", void 0), y(this, "hour24", !1), y(this, "watch", void 0), this.type = t, this.code = n, this.date = N(e);
+}, I = {}, Oe = class e {
+	constructor(e, t = "date", n = C.getLocation()) {
+		y(this, "date", void 0), y(this, "hour24", !1), y(this, "watch", void 0), this.type = t, this.code = n, this.date = P(e);
 	}
 	getIntl() {
-		return new P(this.code);
+		return new F(this.code);
 	}
 	getDate() {
 		return this.date;
@@ -1322,7 +1322,7 @@ var P = class e {
 		].indexOf(this.type) !== -1 && (i = n.locale("time"))), `${r.join("-")}${i ? `T${i}${t ? n.getTimeZone() : ""}` : ""}`;
 	}
 	setDate(e) {
-		return this.date = N(e), this.update(), this;
+		return this.date = P(e), this.update(), this;
 	}
 	setType(e) {
 		return this.type = e, this.update(), this;
@@ -1478,36 +1478,36 @@ var P = class e {
 };
 //#endregion
 //#region src/functions/anyToString.ts
-function F(e, t = !0) {
+function L(e, t = !0) {
 	var r;
 	return l(e) ? e.trim() : a(e) && e.findIndex((e) => n(e)) === -1 && t ? e.join(",") : n(e) ? JSON.stringify(e) : e === !0 ? "1" : e === !1 ? "0" : (r = e == null ? void 0 : e.toString()) == null ? "" : r;
 }
 //#endregion
 //#region src/functions/strSplit.ts
-function je(e, t, n) {
-	let r = F(e);
+function ke(e, t, n) {
+	let r = L(e);
 	if (!n || n <= 0) return r.split(t);
 	let i = r.split(t, n), a = r.split(t);
 	return i.length === a.length ? i : (i.pop(), [...i, a.slice(n - 1).join(t)]);
 }
 //#endregion
 //#region src/functions/getItemByPath.ts
-function I(e, t) {
+function R(e, t) {
 	var r;
 	if (!s(t)) return;
-	let i = je(t, ".", 2), a = i[0];
-	return a && e != null && e[a] && n(e[a]) && i != null && i[1] ? I(e[a], i[1]) : (r = s(a) && (e == null ? void 0 : e[a])) == null ? void 0 : r;
+	let i = ke(t, ".", 2), a = i[0];
+	return a && e != null && e[a] && n(e[a]) && i != null && i[1] ? R(e[a], i[1]) : (r = s(a) && (e == null ? void 0 : e[a])) == null ? void 0 : r;
 }
 //#endregion
 //#region src/functions/toCamelCase.ts
-function Me(e) {
+function Ae(e) {
 	return e.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (e) => `${e.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...e) => `${String(e[1]).toUpperCase()}`).replace(/^([A-Z])/, (e) => `${e.toLowerCase()}`);
 }
 //#endregion
 //#region src/types/formattersTypes.ts
-var L = /* @__PURE__ */ function(e) {
+var z = /* @__PURE__ */ function(e) {
 	return e.currency = "currency", e.date = "date", e.name = "name", e.number = "number", e.plural = "plural", e.unit = "unit", e;
-}({}), Ne = class {
+}({}), je = class {
 	constructor(e, t) {
 		this.options = e, this.list = t;
 	}
@@ -1521,7 +1521,7 @@ var L = /* @__PURE__ */ function(e) {
 		return this.list ? this.isArray() ? this.list.length : 1 : 0;
 	}
 	getList() {
-		return this.list ? w(this.list) : [];
+		return this.list ? E(this.list) : [];
 	}
 	getOptions() {
 		return this.options;
@@ -1539,50 +1539,50 @@ var L = /* @__PURE__ */ function(e) {
 	getFormatData(e) {
 		let t = {};
 		return r(this.options, (n, r) => {
-			let i = `${Me(r)}Format`, a = I(e, r);
+			let i = `${Ae(r)}Format`, a = R(e, r);
 			n != null && n.transformation ? s(a) ? t[i] = n.transformation(a, e, n.options) : t[i] = "" : t[i] = this.transformation(a, e, n.type, n.options);
 		}), t;
 	}
 	transformation(e, t, n, r) {
-		if (s(e) || n === L.name) switch (n) {
-			case L.currency: return this.formatCurrency(e, t, r);
-			case L.date: return this.formatDate(e, r);
-			case L.name: return this.formatName(t, r);
-			case L.number: return this.formatNumber(e, r);
-			case L.plural: return this.formatPlural(e, r);
-			case L.unit: return this.formatUnit(e, r);
+		if (s(e) || n === z.name) switch (n) {
+			case z.currency: return this.formatCurrency(e, t, r);
+			case z.date: return this.formatDate(e, r);
+			case z.name: return this.formatName(t, r);
+			case z.number: return this.formatNumber(e, r);
+			case z.plural: return this.formatPlural(e, r);
+			case z.unit: return this.formatUnit(e, r);
 			default: return String(e);
 		}
 		return "";
 	}
 	formatCurrency(e, t, n) {
 		var r;
-		let i = n != null && n.currencyPropName ? I(t, n.currencyPropName) : t == null ? void 0 : t.currency;
-		return P.getInstance().currency(e, (r = n == null ? void 0 : n.options) == null ? i : r, n == null ? void 0 : n.numberOnly);
+		let i = n != null && n.currencyPropName ? R(t, n.currencyPropName) : t == null ? void 0 : t.currency;
+		return F.getInstance().currency(e, (r = n == null ? void 0 : n.options) == null ? i : r, n == null ? void 0 : n.numberOnly);
 	}
 	formatDate(e, t) {
-		return P.getInstance().date(e, t == null ? void 0 : t.type, t == null ? void 0 : t.options, t == null ? void 0 : t.hour24);
+		return F.getInstance().date(e, t == null ? void 0 : t.type, t == null ? void 0 : t.options, t == null ? void 0 : t.hour24);
 	}
 	formatName(e, t) {
 		var n, r, i;
-		let a = I(e, (n = t == null ? void 0 : t.lastPropName) == null ? "lastName" : n), o = I(e, (r = t == null ? void 0 : t.firstPropName) == null ? "firstName" : r), s = I(e, (i = t == null ? void 0 : t.surname) == null ? "surname" : i);
-		return a && o ? P.getInstance().fullName(a, o, s, t == null ? void 0 : t.short) : "";
+		let a = R(e, (n = t == null ? void 0 : t.lastPropName) == null ? "lastName" : n), o = R(e, (r = t == null ? void 0 : t.firstPropName) == null ? "firstName" : r), s = R(e, (i = t == null ? void 0 : t.surname) == null ? "surname" : i);
+		return a && o ? F.getInstance().fullName(a, o, s, t == null ? void 0 : t.short) : "";
 	}
 	formatNumber(e, t) {
-		return P.getInstance().number(e, t == null ? void 0 : t.options);
+		return F.getInstance().number(e, t == null ? void 0 : t.options);
 	}
 	formatPlural(e, t) {
-		return t && t.words ? P.getInstance().plural(e, t == null ? void 0 : t.words, t == null ? void 0 : t.options, t == null ? void 0 : t.optionsNumber) : e;
+		return t && t.words ? F.getInstance().plural(e, t == null ? void 0 : t.words, t == null ? void 0 : t.options, t == null ? void 0 : t.optionsNumber) : e;
 	}
 	formatUnit(e, t) {
-		return t && t.unit ? P.getInstance().unit(e, t.unit) : e;
+		return t && t.unit ? F.getInstance().unit(e, t.unit) : e;
 	}
-}, Pe = "f", Fe = class e {
-	constructor(e = S.getLocation()) {
+}, Me = "f", Ne = class e {
+	constructor(e = C.getLocation()) {
 		this.code = e;
 	}
 	get(t = this.code) {
-		let n = S.find(t);
+		let n = C.find(t);
 		if (n) {
 			var r;
 			let t = this.getCountry(n);
@@ -1618,7 +1618,7 @@ var L = /* @__PURE__ */ function(e) {
 		return this.code = e, this;
 	}
 	getLocation() {
-		return new P(this.code);
+		return new F(this.code);
 	}
 	getCodes(t) {
 		return t == null ? Object.keys(e.flags) : t;
@@ -1630,7 +1630,7 @@ var L = /* @__PURE__ */ function(e) {
 		return this.getLocation().countryName(e.country);
 	}
 };
-y(Fe, "flags", {
+y(Ne, "flags", {
 	AD: "f-ad",
 	AE: "f-ae",
 	AF: "f-af",
@@ -1875,7 +1875,7 @@ y(Fe, "flags", {
 });
 //#endregion
 //#region src/classes/GeoPhone.ts
-var R, z = class {
+var Pe, B = class {
 	static get(e) {
 		return this.list.find((t) => e === t.value);
 	}
@@ -1929,11 +1929,11 @@ var R, z = class {
 		return (t = (n = e.match(/\*/g)) == null ? void 0 : n.length) == null ? 0 : t;
 	}
 	static makeList() {
-		this.list = r(S.getList(), (e) => {
+		this.list = r(C.getList(), (e) => {
 			if (e != null && e.phoneMask) return {
 				phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
 				within: (e == null ? void 0 : e.phoneWithin) || 0,
-				mask: w(e.phoneMask),
+				mask: E(e.phoneMask),
 				value: e.country
 			};
 		}).sort((e, t) => e.phone - t.phone);
@@ -1971,17 +1971,17 @@ var R, z = class {
 		return e.replace(/\*/, this.getWithinSymbol(t));
 	}
 };
-R = z, y(z, "list", []), y(z, "map", {}), R.makeList(), R.makeMap();
+Pe = B, y(B, "list", []), y(B, "map", {}), Pe.makeList(), Pe.makeMap();
 //#endregion
 //#region src/classes/Global.ts
-var B, Ie = class {
+var V, Fe = class {
 	static get(e) {
-		return B && (B == null ? void 0 : B[e]);
+		return V && (V == null ? void 0 : V[e]);
 	}
 	static add(e) {
-		B === void 0 && (B = t(e));
+		V === void 0 && (V = t(e));
 	}
-}, V, H = class {
+}, Ie, H = class {
 	static get(e, t) {
 		return !(e in this.hash) && t && this.set(e, t), this.hash[e];
 	}
@@ -2009,7 +2009,7 @@ var B, Ie = class {
 	}
 	static getLocation() {
 		let e = {};
-		return location.hash.replace(/([\w-]+)[:=]([^;]+)/gi, (...t) => (e[String(t[1])] = Ce(t[2]), "")), e;
+		return location.hash.replace(/([\w-]+)[:=]([^;]+)/gi, (...t) => (e[String(t[1])] = Se(t[2]), "")), e;
 	}
 	static update() {
 		this.block = !0, history.replaceState(null, "", `#${i(this.hash, "=", ";")}`), requestAnimationFrame(() => {
@@ -2023,7 +2023,7 @@ var B, Ie = class {
 		});
 	}
 };
-V = H, y(H, "hash", {}), y(H, "watch", {}), y(H, "block", !1), d() && (V.reload(), addEventListener("hashchange", () => V.reload()));
+Ie = H, y(H, "hash", {}), y(H, "watch", {}), y(H, "block", !1), d() && (Ie.reload(), addEventListener("hashchange", () => Ie.reload()));
 //#endregion
 //#region src/classes/Icons.ts
 var Le, Re = "__UI_ICON", ze = 320, Be = "--LOAD--", U = class {
@@ -2039,7 +2039,7 @@ var Le, Re = "__UI_ICON", ze = 320, Be = "--LOAD--", U = class {
 		return r(this.icons, (e, t) => t.replace(/^@/, ""));
 	}
 	static getUrlGlobal() {
-		return `${A.isLocalhost(), ""}${this.url}`;
+		return `${j.isLocalhost(), ""}${this.url}`;
 	}
 	static add(e, t) {
 		this.icons[this.getName(e)] = t;
@@ -2068,12 +2068,12 @@ Le = U, y(U, "icons", {}), y(U, "url", "/icons/"), d() && (Re in window || (wind
 //#region src/functions/getElementItem.ts
 function Ve(e, t, n) {
 	var r, i;
-	return (r = (i = C(e)) == null ? void 0 : i[t]) == null ? n : r;
+	return (r = (i = w(e)) == null ? void 0 : i[t]) == null ? n : r;
 }
 //#endregion
 //#region src/functions/setElementItem.ts
 function He(e, t, i) {
-	let a = C(e);
+	let a = w(e);
 	if (a) {
 		let e = Ve(a, t);
 		if (n(e) && n(i)) r(i, (t, n) => {
@@ -2314,7 +2314,7 @@ var G = class {
 		return this;
 	}
 	setKeywords(e) {
-		return this.set(K.keywords, w(e).join(", ")), this;
+		return this.set(K.keywords, E(e).join(", ")), this;
 	}
 	setDescription(e) {
 		return this.set(K.description, e), this;
@@ -2383,7 +2383,7 @@ var G = class {
 		});
 	}
 };
-y(Y, "storage", new b("scrollbar", !0)), y(Y, "calculate", !1);
+y(Y, "storage", new x("scrollbar", !0)), y(Y, "calculate", !1);
 //#endregion
 //#region src/functions/escapeExp.ts
 function X(e) {
@@ -2441,8 +2441,8 @@ var nt = class {
 	toFormatItem(e, t) {
 		let n = {};
 		return this.columns && this.columns.forEach((r) => {
-			let i = this.getColumnName(r), a = I(e, r);
-			n[i] = s(a) && t ? this.addTag(a) : F(a);
+			let i = this.getColumnName(r), a = R(e, r);
+			n[i] = s(a) && t ? this.addTag(a) : L(a);
 		}), {
 			...e,
 			...n,
@@ -2453,7 +2453,7 @@ var nt = class {
 		return e.replace(/\.([a-z0-9])/gi, (e, t) => t.toUpperCase()) + "Search";
 	}
 	addTag(e) {
-		return tt(F(e), this.item.get(), this.options.getClassName());
+		return tt(L(e), this.item.get(), this.options.getClassName());
 	}
 	generateCache() {
 		if (!this.isList()) return [];
@@ -2461,8 +2461,8 @@ var nt = class {
 		for (let t of this.list) {
 			let n = "";
 			if (this.columns) for (let e of this.columns) {
-				let r = I(t, e);
-				s(r) && (n += ` ${F(r)}`);
+				let r = R(t, e);
+				s(r) && (n += ` ${L(r)}`);
 			}
 			e.push({
 				item: t,
@@ -2656,8 +2656,8 @@ var st = class {
 		});
 	}
 	static getIndex() {
-		if (S.getLocation() in this.files) return S.getLocation();
-		if (S.getLanguage() in this.files) return S.getLanguage();
+		if (C.getLocation() in this.files) return C.getLocation();
+		if (C.getLanguage() in this.files) return C.getLanguage();
 		if ("global" in this.files) return ft;
 	}
 	static getByData(e) {
@@ -2677,7 +2677,7 @@ var Q = class e {
 	static async get(e, t) {
 		var n;
 		let r = this.getText(e);
-		return r ? this.replacement(r, t) : (A.isLocalhost() || await this.add(e), this.replacement((n = this.getText(e)) == null ? e : n));
+		return r ? this.replacement(r, t) : (j.isLocalhost() || await this.add(e), this.replacement((n = this.getText(e)) == null ? e : n));
 	}
 	static getSync(e, t = !1, n) {
 		let r = this.getText(e);
@@ -2717,7 +2717,7 @@ var Q = class e {
 		});
 	}
 	static async addNormalOrSync(e) {
-		if (s(e)) if (A.isLocalhost()) this.addSync(e);
+		if (s(e)) if (j.isLocalhost()) this.addSync(e);
 		else {
 			let t = Object.keys(e);
 			t.length > 0 && await this.add(t);
@@ -2753,22 +2753,22 @@ var Q = class e {
 		if (r in this.data) return this.data[r];
 	}
 	static getName(e) {
-		return `${S.getLocation()}-${e}`;
+		return `${C.getLocation()}-${e}`;
 	}
 	static getNameByLanguage(e) {
-		return `${S.getLanguage()}-${e}`;
+		return `${C.getLanguage()}-${e}`;
 	}
 	static getNameByGlobal(e) {
 		return `${ft}-${e}`;
 	}
 	static getNamesNone(e) {
 		let t = [];
-		return w(e).forEach((e) => {
+		return E(e).forEach((e) => {
 			e !== "__TRANSLATE_START__" && e !== "__TRANSLATE_END__" && !(this.getName(e) in this.data) && t.push(e);
 		}), t;
 	}
 	static async getResponse() {
-		let e = await A.get({
+		let e = await j.get({
 			api: !1,
 			path: this.url,
 			request: { [this.propsName]: this.cache },
@@ -2867,7 +2867,7 @@ function Ct(e, t, n) {
 //#endregion
 //#region src/functions/getAttributes.ts
 function wt(e) {
-	let t = {}, n = C(e);
+	let t = {}, n = w(e);
 	if (n) for (let e of n.attributes) {
 		var r;
 		t[e.name] = (r = (e == null ? void 0 : e.value) || (e == null ? void 0 : e.textContent)) == null ? void 0 : r;
@@ -2883,13 +2883,13 @@ async function Tt(e) {
 //#endregion
 //#region src/functions/getCurrentDate.ts
 function Et(e = "datetime") {
-	return new Ae(void 0, e).standard();
+	return new Oe(void 0, e).standard();
 }
 //#endregion
 //#region src/functions/getElementId.ts
-var Dt = k(1e5, 9e5);
+var Dt = A(1e5, 9e5);
 function Ot(e, t) {
-	let n = C(e);
+	let n = w(e);
 	return n ? (s(n.id) || n.setAttribute("id", `id-${Dt++}`), t ? `#${n.id}${t}`.trim() : n.id) : `id-${Dt++}`;
 }
 //#endregion
@@ -2962,8 +2962,8 @@ function zt(e, t) {
 //#endregion
 //#region src/functions/getRandomText.ts
 function Bt(e, t, n = "#", r = 2, i = 12) {
-	let a = k(e, t), o = [];
-	for (let e = 0; e < a; e++) o.push(zt(n, k(r, i)));
+	let a = A(e, t), o = [];
+	for (let e = 0; e < a; e++) o.push(zt(n, A(r, i)));
 	return o.join(" ");
 }
 //#endregion
@@ -3025,13 +3025,28 @@ function Kt(e, t, n = "smooth") {
 	});
 }
 //#endregion
+//#region src/functions/isShare.ts
+function qt() {
+	return d() && typeof navigator < "u" && !!navigator.share;
+}
+//#endregion
+//#region src/functions/handleShare.ts
+async function Jt(e) {
+	if (qt() && navigator.canShare && navigator.canShare(e)) try {
+		return await navigator.share(e), !0;
+	} catch (e) {
+		console.error("handleShare error:", e);
+	}
+	return !1;
+}
+//#endregion
 //#region src/functions/inArray.ts
-function qt(e, t) {
+function Yt(e, t) {
 	return e.indexOf(t) !== -1;
 }
 //#endregion
 //#region src/functions/initScrollbarOffset.ts
-async function Jt() {
+async function Xt() {
 	if (d()) {
 		let e = await Y.get();
 		document.body.style.setProperty("--sys-scrollbar-offset", `${e}px`);
@@ -3039,7 +3054,7 @@ async function Jt() {
 }
 //#endregion
 //#region src/functions/intersectKey.ts
-function Yt(e, t) {
+function Zt(e, t) {
 	let i = {};
 	return n(e) && n(t) && r(e, (e, n) => {
 		n in t && (i[n] = e);
@@ -3047,30 +3062,39 @@ function Yt(e, t) {
 }
 //#endregion
 //#region src/functions/isApiSuccess.ts
-var Xt = (e) => {
+var Qt = (e) => {
 	var t;
-	return a(e) ? !0 : !!(e && c(e) && ((e == null ? void 0 : e.status) === "success" || e != null && e.success || !(e == null || (t = e.statusObject) == null) && t.status && String(e.statusObject.status).match(/^2/) || !("status" in e) && !("success" in e) && !("statusObject" in e) && String(A.getStatus().getStatus()).match(/^2/)));
+	return a(e) ? !0 : !!(e && c(e) && ((e == null ? void 0 : e.status) === "success" || e != null && e.success || !(e == null || (t = e.statusObject) == null) && t.status && String(e.statusObject.status).match(/^2/) || !("status" in e) && !("success" in e) && !("statusObject" in e) && String(j.getStatus().getStatus()).match(/^2/)));
 };
 //#endregion
 //#region src/functions/isDifferent.ts
-function Zt(e, t) {
+function $t(e, t) {
 	let n = Object.keys(e).length !== Object.keys(t).length;
 	return n || r(e, (e, r) => {
 		e !== (t == null ? void 0 : t[r]) && (n = !0);
 	}), n;
 }
 //#endregion
+//#region src/functions/isElementVisible.ts
+function en(e) {
+	if (!d()) return !1;
+	let t = w(e);
+	if (!t || "isConnected" in t && t.isConnected === !1) return !1;
+	let n = window.getComputedStyle(t);
+	return n.display !== "none" && n.visibility !== "hidden" && n.opacity !== "0" && t.offsetWidth !== 0 && t.offsetHeight !== 0;
+}
+//#endregion
 //#region src/functions/isInput.ts
-var Qt = (e) => {
+var tn = (e) => {
 	if (e instanceof HTMLElement) {
 		let t = e.tagName.toLowerCase();
 		return !!(t === "input" || t === "textarea" || t === "select" || e.isContentEditable || e.getAttribute("contenteditable") === "true");
 	}
 	return !1;
-}, $t = (e, t) => e.code === "Space" || e.code === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 13 || e.keyCode === 32 ? t === void 0 ? !Qt(e.target) : !t : !1;
+}, nn = (e, t) => e.code === "Space" || e.code === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 13 || e.keyCode === 32 ? t === void 0 ? !tn(e.target) : !t : !1;
 //#endregion
 //#region src/functions/isFloat.ts
-function en(e) {
+function rn(e) {
 	switch (typeof e) {
 		case "number": return !0;
 		case "string": return !!e.match(/^([0-9]+|[0-9]+\.[0-9]+)$/);
@@ -3079,18 +3103,18 @@ function en(e) {
 }
 //#endregion
 //#region src/functions/isIntegerBetween.ts
-function tn(e, t) {
+function an(e, t) {
 	let n = Math.floor(t);
 	return e >= n && e < n + 1;
 }
 //#endregion
 //#region src/functions/isSelectedByList.ts
-function nn(e, t) {
+function on(e, t) {
 	return Array.isArray(e) ? e.every((e) => m(e, t)) : m(e, t);
 }
 //#endregion
 //#region src/functions/removeCommonPrefix.ts
-function rn(e, t) {
+function sn(e, t) {
 	if (e.startsWith(t)) return e.slice(t.length).trim();
 	let n = 0;
 	for (; e[n] === t[n] && n < e.length && n < t.length;) n++;
@@ -3098,13 +3122,13 @@ function rn(e, t) {
 }
 //#endregion
 //#region src/functions/replaceComponentName.ts
-var an = (e, t, n) => {
+var cn = (e, t, n) => {
 	var r;
 	return e == null || (r = e.replace(RegExp(`<${t}`, "ig"), `<${n}`)) == null || (r = r.replace(RegExp(`</${t}`, "ig"), `</${n}`)) == null ? void 0 : r.trim();
 };
 //#endregion
 //#region src/functions/uniqueArray.ts
-function on(e) {
+function ln(e) {
 	return [...new Set(e)];
 }
 //#endregion
@@ -3113,12 +3137,12 @@ function $(e, t, i = !0) {
 	let a = u(e);
 	return n(e) && n(t) && r(t, (t, r) => {
 		let o = e == null ? void 0 : e[r];
-		n(o) && n(t) ? i && Array.isArray(o) && Array.isArray(t) ? a[r] = u(on([...o, ...t])) : a[r] = $(Array.isArray(o) ? { ...o } : o, t, i) : a[r] = n(t) ? u(t) : t;
+		n(o) && n(t) ? i && Array.isArray(o) && Array.isArray(t) ? a[r] = u(ln([...o, ...t])) : a[r] = $(Array.isArray(o) ? { ...o } : o, t, i) : a[r] = n(t) ? u(t) : t;
 	}), a;
 }
 //#endregion
 //#region src/functions/replaceTemplate.ts
-function sn(e, t) {
+function un(e, t) {
 	let n = e;
 	return r(t, (e, t) => {
 		n = n.replace(it(`[${t}]`), g(e));
@@ -3126,13 +3150,13 @@ function sn(e, t) {
 }
 //#endregion
 //#region src/functions/secondToTime.ts
-function cn(e) {
+function dn(e) {
 	let t = p(e);
 	return t > 0 ? `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}` : "00:00";
 }
 //#endregion
 //#region src/functions/setValues.ts
-function ln(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: i = !0, notEmpty: o = !1 }) {
+function fn(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: i = !0, notEmpty: o = !1 }) {
 	if (n) {
 		if (a(e)) {
 			let n = e.indexOf(t), i = [...e];
@@ -3144,7 +3168,7 @@ function ln(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: i = !0, no
 }
 //#endregion
 //#region src/functions/splice.ts
-function un(e, t, i) {
+function pn(e, t, i) {
 	if (n(e) && n(t)) {
 		if (i) {
 			let a = {}, o = !1;
@@ -3158,34 +3182,34 @@ function un(e, t, i) {
 }
 //#endregion
 //#region src/functions/toCamelCaseFirst.ts
-function dn(e) {
-	return Me(e).replace(/^([a-z])/, (e) => `${e.toUpperCase()}`);
+function mn(e) {
+	return Ae(e).replace(/^([a-z])/, (e) => `${e.toUpperCase()}`);
 }
 //#endregion
 //#region src/functions/toKebabCase.ts
-function fn(e) {
+function hn(e) {
 	return e.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (e) => `${e.toLowerCase()}`).replace(/^[A-Z]/, (e) => e.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (e) => `-${e.toLowerCase()}`).replace(/[A-Z]/g, (e) => e.toLowerCase());
 }
 //#endregion
 //#region src/functions/toNumberByMax.ts
-function pn(e, t, n, r) {
+function gn(e, t, n, r) {
 	let i = p(e), a = p(t);
-	return t && a < i ? `${mn(a, n, r)}+` : mn(i, n, r);
+	return t && a < i ? `${_n(a, n, r)}+` : _n(i, n, r);
 }
-var mn = (e, t, n) => t ? new P(n).number(e) : e;
+var _n = (e, t, n) => t ? new F(n).number(e) : e;
 //#endregion
 //#region src/functions/toPercent.ts
-function hn(e, t) {
+function vn(e, t) {
 	return 1 / e * t;
 }
 //#endregion
 //#region src/functions/toPercentBy100.ts
-function gn(e, t) {
-	return hn(e, t) * 100;
+function yn(e, t) {
+	return vn(e, t) * 100;
 }
 //#endregion
 //#region src/functions/uint8ArrayToBase64.ts
-function _n(e) {
+function bn(e) {
 	let t = "";
 	for (let n of e) t += String.fromCharCode(n);
 	if (d()) return window.btoa(t);
@@ -3197,7 +3221,7 @@ function _n(e) {
 }
 //#endregion
 //#region src/functions/writeClipboardData.ts
-async function vn(e) {
+async function xn(e) {
 	if (d()) try {
 		await navigator.clipboard.writeText(e);
 	} catch (n) {
@@ -3206,4 +3230,4 @@ async function vn(e) {
 	}
 }
 //#endregion
-export { A as Api, de as ApiDefault, ue as ApiHeaders, D as ApiMethodItem, he as ApiPreparation, me as ApiResponse, O as ApiStatus, _e as BroadcastMessage, be as Cache, ye as CacheItem, Se as CacheStatic, Ee as Cookie, j as CookieBlock, b as DataStorage, Ae as Datetime, T as EventItem, Ne as Formatters, L as FormattersType, Pe as GEO_FLAG_ICON_NAME, S as Geo, Fe as GeoFlag, P as GeoIntl, z as GeoPhone, Ie as Global, H as Hash, U as Icons, E as Loading, $e as Meta, G as MetaManager, Ze as MetaOg, Je as MetaOpenGraphAge, Ke as MetaOpenGraphAvailability, qe as MetaOpenGraphCondition, Ye as MetaOpenGraphGender, q as MetaOpenGraphTag, Ge as MetaOpenGraphType, We as MetaRobots, K as MetaTag, Qe as MetaTwitter, Xe as MetaTwitterCard, J as MetaTwitterTag, Y as ScrollbarWidth, lt as SearchList, nt as SearchListData, rt as SearchListItem, st as SearchListMatcher, ct as SearchListOptions, ft as TRANSLATE_GLOBAL_PREFIX, pt as TRANSLATE_TIME_OUT, Q as Translate, Z as TranslateFile, tt as addTagHighlightMatch, F as anyToString, dt as applyTemplate, mt as arrFill, ht as blobToBase64, u as copyObject, t as copyObjectLite, W as createElement, gt as domQuerySelector, _t as domQuerySelectorAll, Ue as encodeAttribute, xt as ensureMaxSize, X as escapeExp, St as eventStopPropagation, g as executeFunction, fe as executePromise, r as forEach, Ct as frame, wt as getAttributes, Tt as getClipboardData, Oe as getColumn, Et as getCurrentDate, C as getElement, Ot as getElementId, vt as getElementImage, Ve as getElementItem, oe as getElementOrWindow, at as getExactSearchExp, it as getExp, I as getItemByPath, kt as getKey, At as getLengthOfAllArray, jt as getMaxLengthAllArray, Mt as getMinLengthAllArray, Ft as getMouseClient, Nt as getMouseClientX, Pt as getMouseClientY, It as getObjectByKeys, Lt as getObjectNoUndefined, Rt as getObjectOrNone, Bt as getRandomText, i as getRequestString, ot as getSearchExp, et as getSeparatingSearchExp, Vt as getStepPercent, Ht as getStepValue, Wt as goScroll, Gt as goScrollSmooth, Kt as goScrollTo, qt as inArray, Jt as initScrollbarOffset, Yt as intersectKey, Xt as isApiSuccess, a as isArray, Zt as isDifferent, _ as isDomData, d as isDomRuntime, $t as isEnter, s as isFilled, en as isFloat, h as isFunction, se as isInDom, Qt as isInput, tn as isIntegerBetween, o as isNull, f as isNumber, n as isObject, c as isObjectNotArray, m as isSelected, nn as isSelectedByList, l as isString, ae as isWindow, k as random, rn as removeCommonPrefix, an as replaceComponentName, $ as replaceRecursive, sn as replaceTemplate, bt as resizeImageByMax, cn as secondToTime, He as setElementItem, ln as setValues, un as splice, zt as strFill, je as strSplit, w as toArray, Me as toCamelCase, dn as toCamelCaseFirst, N as toDate, fn as toKebabCase, p as toNumber, pn as toNumberByMax, hn as toPercent, gn as toPercentBy100, Ce as transformation, _n as uint8ArrayToBase64, on as uniqueArray, vn as writeClipboardData };
+export { j as Api, ue as ApiDefault, le as ApiHeaders, O as ApiMethodItem, me as ApiPreparation, pe as ApiResponse, k as ApiStatus, ge as BroadcastMessage, ye as Cache, ve as CacheItem, xe as CacheStatic, Ee as Cookie, we as CookieBlock, x as DataStorage, Oe as Datetime, oe as EventItem, je as Formatters, z as FormattersType, Me as GEO_FLAG_ICON_NAME, C as Geo, Ne as GeoFlag, F as GeoIntl, B as GeoPhone, Fe as Global, H as Hash, U as Icons, D as Loading, $e as Meta, G as MetaManager, Ze as MetaOg, Je as MetaOpenGraphAge, Ke as MetaOpenGraphAvailability, qe as MetaOpenGraphCondition, Ye as MetaOpenGraphGender, q as MetaOpenGraphTag, Ge as MetaOpenGraphType, We as MetaRobots, K as MetaTag, Qe as MetaTwitter, Xe as MetaTwitterCard, J as MetaTwitterTag, Y as ScrollbarWidth, lt as SearchList, nt as SearchListData, rt as SearchListItem, st as SearchListMatcher, ct as SearchListOptions, ft as TRANSLATE_GLOBAL_PREFIX, pt as TRANSLATE_TIME_OUT, Q as Translate, Z as TranslateFile, tt as addTagHighlightMatch, L as anyToString, dt as applyTemplate, mt as arrFill, ht as blobToBase64, u as copyObject, t as copyObjectLite, W as createElement, gt as domQuerySelector, _t as domQuerySelectorAll, Ue as encodeAttribute, xt as ensureMaxSize, X as escapeExp, St as eventStopPropagation, g as executeFunction, de as executePromise, r as forEach, Ct as frame, wt as getAttributes, Tt as getClipboardData, De as getColumn, Et as getCurrentDate, w as getElement, Ot as getElementId, vt as getElementImage, Ve as getElementItem, T as getElementOrWindow, at as getExactSearchExp, it as getExp, R as getItemByPath, kt as getKey, At as getLengthOfAllArray, jt as getMaxLengthAllArray, Mt as getMinLengthAllArray, Ft as getMouseClient, Nt as getMouseClientX, Pt as getMouseClientY, It as getObjectByKeys, Lt as getObjectNoUndefined, Rt as getObjectOrNone, Bt as getRandomText, i as getRequestString, ot as getSearchExp, et as getSeparatingSearchExp, Vt as getStepPercent, Ht as getStepValue, Wt as goScroll, Gt as goScrollSmooth, Kt as goScrollTo, Jt as handleShare, Yt as inArray, Xt as initScrollbarOffset, Zt as intersectKey, Qt as isApiSuccess, a as isArray, $t as isDifferent, _ as isDomData, d as isDomRuntime, en as isElementVisible, nn as isEnter, s as isFilled, rn as isFloat, h as isFunction, ae as isInDom, tn as isInput, an as isIntegerBetween, o as isNull, f as isNumber, n as isObject, c as isObjectNotArray, m as isSelected, on as isSelectedByList, qt as isShare, l as isString, ie as isWindow, A as random, sn as removeCommonPrefix, cn as replaceComponentName, $ as replaceRecursive, un as replaceTemplate, bt as resizeImageByMax, dn as secondToTime, He as setElementItem, fn as setValues, pn as splice, zt as strFill, ke as strSplit, E as toArray, Ae as toCamelCase, mn as toCamelCaseFirst, P as toDate, hn as toKebabCase, p as toNumber, gn as toNumberByMax, vn as toPercent, yn as toPercentBy100, Se as transformation, bn as uint8ArrayToBase64, ln as uniqueArray, xn as writeClipboardData };

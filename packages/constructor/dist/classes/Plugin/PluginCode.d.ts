@@ -1,4 +1,3 @@
-import { default as MagicString, SourceMap } from 'magic-string';
 /**
  * Class for working with plugin code.
  *
@@ -7,7 +6,6 @@ import { default as MagicString, SourceMap } from 'magic-string';
 export declare class PluginCode {
     protected readonly id: string;
     protected readonly code: string;
-    protected magicString: MagicString;
     protected newCode: string;
     /**
      * Constructor
@@ -45,12 +43,6 @@ export declare class PluginCode {
      * Возвращает оригинальный код.
      */
     getCode(): string;
-    /**
-     * Returns the source map.
-     *
-     * Возвращает карту кода.
-     */
-    getMaps(): SourceMap;
     /**
      * Checks for the presence of code.
      *

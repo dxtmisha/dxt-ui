@@ -1,293 +1,118 @@
-var I = Object.defineProperty;
-var k = (r, i, t) => i in r ? I(r, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[i] = t;
-var e = (r, i, t) => k(r, typeof i != "symbol" ? i + "" : i, t);
-import { computed as c, h } from "vue";
-import { DesignConstructorAbstract as w } from "@dxtmisha/functional";
-import { g as T } from "./getClassTagAStatic-BnVYlXHI.js";
-import { L as _ } from "./LabelInclude-D-mLvjK5.js";
-import { C as D } from "./CaptionInclude-CohAZRI2.js";
-import { D as E } from "./DescriptionInclude-D4ane9aR.js";
-import { E as A } from "./EnabledInclude-B9oXYBtR.js";
-import { E as $ } from "./EventClickInclude-DMbEP-nH.js";
-import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as L } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P } from "./ProgressInclude-DlEbC7XP.js";
-import { R as B } from "./RippleInclude-Du5yIzX_.js";
-import { A as M } from "./AriaStaticInclude-DRHG8ILX.js";
-class N {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.CaptionConstructor class for creating a caption/ класс для создания подписи
-   * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
-   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param constructors.EventConstructor class for creating an event/ класс для создания события
-   * @param constructors.IconConstructor class for creating an icon/ класс для создания иконки
-   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
-   * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-   * @param constructors.RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
-   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-   */
-  constructor(i, t, n, o, s, l, a, u, d) {
-    e(this, "progress");
-    e(this, "skeleton");
-    e(this, "label");
-    e(this, "description");
-    e(this, "caption");
-    e(this, "enabled");
-    e(this, "icon");
-    e(this, "ripple");
-    e(this, "event");
-    /**
-     * Computed CSS classes for the cell component.
-     *
-     * Вычисляемые CSS классы для компонента ячейки.
-     */
-    e(this, "classes", c(() => ({
-      [`${this.className}--description`]: this.description.is.value,
-      [T(this.classDesign)]: !0
-    })));
-    /**
-     * Computed role for the cell component.
-     *
-     * Вычисляемая роль для компонента ячейки.
-     */
-    e(this, "role", c(() => {
-      if (this.props.role)
-        return this.props.role;
-      if (this.props.dynamic)
-        return "button";
-    }));
-    this.props = i, this.refs = t, this.element = n, this.classDesign = o, this.className = s, this.components = l, this.slots = a, this.emits = u;
-    const {
-      CaptionConstructor: m = D,
-      DescriptionConstructor: g = E,
-      EnabledConstructor: b = A,
-      EventConstructor: v = $,
-      IconConstructor: C = L,
-      LabelConstructor: f = _,
-      ProgressConstructor: S = P,
-      RippleConstructor: x = B,
-      SkeletonConstructor: y = R
-    } = d != null ? d : {}, p = new S(
-      i,
-      s,
-      l,
-      {
-        position: "bottom"
-      }
-    );
-    this.skeleton = new y(
-      i,
-      o,
-      ["classTextVariant"]
-    ), this.label = new f(
-      i,
-      s,
-      void 0,
-      a,
-      void 0,
-      void 0,
-      void 0,
-      this.skeleton
-    ), this.caption = new m(i, s, a), this.description = new g(i, s, a, this.skeleton), this.enabled = new b(i, p), this.icon = new C(i, s, l), this.progress = p, this.ripple = new x(s, l, this.enabled), this.event = new v(
-      i,
-      this.enabled,
-      u
-    );
-  }
-  /**
-   * Returns a list of sub-element CSS classes for the cell component.
-   *
-   * Возвращает список CSS классов для под-элементов компонента ячейки.
-   */
-  getClassesSub() {
-    return {
-      label: `${this.className}__label`,
-      description: `${this.className}__description`,
-      caption: `${this.className}__caption`,
-      trailing: `${this.className}__trailing`
-    };
-  }
-}
-const Y = {
-  tag: "div",
-  // :default [!] System label / Системная метка
-  divider: !0
+import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
+import { t } from "./defineProperty-BTtSLqQS.js";
+import { t as n } from "./ProgressInclude-j7LjKx-L.js";
+import { t as r } from "./EnabledInclude-D1O_lLPV.js";
+import { t as i } from "./EventClickInclude-B0o5DErp.js";
+import { t as a } from "./SkeletonInclude-DtQCG1qF.js";
+import { t as o } from "./LabelInclude-BJc8uC4Y.js";
+import { t as s } from "./DescriptionInclude--_NvJ6ka.js";
+import { t as c } from "./getClassTagAStatic-Cdptb763.js";
+import { t as l } from "./IconTrailingInclude-BDIQA_q_.js";
+import { t as u } from "./CaptionInclude-Bg-QLUJc.js";
+import { t as d } from "./RippleInclude-DUp1Zljh.js";
+import { computed as f, h as p } from "vue";
+import { DesignConstructorAbstract as m } from "@dxtmisha/functional";
+//#region src/constructors/Cell/Cell.ts
+var h = class {
+	constructor(e, p, m, h, g, _, v, y, b) {
+		t(this, "progress", void 0), t(this, "skeleton", void 0), t(this, "label", void 0), t(this, "description", void 0), t(this, "caption", void 0), t(this, "enabled", void 0), t(this, "icon", void 0), t(this, "ripple", void 0), t(this, "event", void 0), t(this, "classes", f(() => ({
+			[`${this.className}--description`]: this.description.is.value,
+			[c(this.classDesign)]: !0
+		}))), t(this, "role", f(() => {
+			if (this.props.role) return this.props.role;
+			if (this.props.dynamic) return "button";
+		})), this.props = e, this.refs = p, this.element = m, this.classDesign = h, this.className = g, this.components = _, this.slots = v, this.emits = y;
+		let { CaptionConstructor: x = u, DescriptionConstructor: S = s, EnabledConstructor: C = r, EventConstructor: w = i, IconConstructor: T = l, LabelConstructor: E = o, ProgressConstructor: D = n, RippleConstructor: O = d, SkeletonConstructor: k = a } = b == null ? {} : b, A = new D(e, g, _, { position: "bottom" });
+		this.skeleton = new k(e, h, ["classTextVariant"]), this.label = new E(e, g, void 0, v, void 0, void 0, void 0, this.skeleton), this.caption = new x(e, g, v), this.description = new S(e, g, v, this.skeleton), this.enabled = new C(e, A), this.icon = new T(e, g, _), this.progress = A, this.ripple = new O(g, _, this.enabled), this.event = new w(e, this.enabled, y);
+	}
+	getClassesSub() {
+		return {
+			label: `${this.className}__label`,
+			description: `${this.className}__description`,
+			caption: `${this.className}__caption`,
+			trailing: `${this.className}__trailing`
+		};
+	}
+}, g = {
+	tag: "div",
+	divider: !0
+}, _ = class extends m {
+	constructor(n, r, i, a = h) {
+		super(n, r, i), t(this, "item", void 0), t(this, "renderContext", () => {
+			var e;
+			return [p("div", {
+				key: "context",
+				class: (e = this.classes) == null ? void 0 : e.value.context
+			}, [
+				...this.item.label.render(),
+				...this.item.caption.render(),
+				...this.item.description.render()
+			])];
+		}), t(this, "renderTrailing", () => {
+			if (this.slots && "trailing" in this.slots) {
+				var e;
+				return [p("div", {
+					key: "trailing",
+					class: (e = this.classes) == null ? void 0 : e.value.contextTrailing
+				}, this.initSlot("trailing", void 0, this.item.getClassesSub()))];
+			}
+			return [];
+		}), t(this, "renderBody", () => {
+			if (this.slots && "body" in this.slots) {
+				var e;
+				return [p("div", {
+					key: "body",
+					class: (e = this.classes) == null ? void 0 : e.value.body
+				}, this.initSlot("body", void 0, this.item.getClassesSub()))];
+			}
+			return [];
+		}), t(this, "propsMain", f(() => {
+			var t;
+			let n = {
+				...this.getAttrs(),
+				class: (t = this.classes) == null ? void 0 : t.value.main,
+				"data-value": this.props.value,
+				"data-divider": this.props.divider ? "active" : void 0,
+				...this.item.event.binds,
+				...e.role(this.item.role.value)
+			};
+			return this.props.dynamic ? {
+				...n,
+				tabindex: "0"
+			} : n;
+		})), this.item = new a(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+	}
+	initExpose() {
+		return { ...this.item.event.expose };
+	}
+	initClasses() {
+		return {
+			main: this.item.classes.value,
+			context: this.getSubClass("context"),
+			contextTrailing: this.getSubClass("contextTrailing"),
+			label: this.getSubClass("label"),
+			description: this.getSubClass("description"),
+			caption: this.getSubClass("caption"),
+			icon: this.getSubClass("icon"),
+			trailing: this.getSubClass("trailing"),
+			body: this.getSubClass("body"),
+			loading: this.getSubClass("loading")
+		};
+	}
+	initStyles() {
+		return {};
+	}
+	initRender() {
+		var e;
+		return p((e = this.props.tag) == null ? "div" : e, this.propsMain.value, [
+			...this.item.icon.render(),
+			...this.renderContext(),
+			...this.renderTrailing(),
+			...this.renderBody(),
+			...this.item.ripple.render(),
+			...this.item.progress.render()
+		]);
+	}
 };
-class Z extends w {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor cell item class/ класс элемента ячейки
-   */
-  constructor(t, n, o, s = N) {
-    super(
-      t,
-      n,
-      o
-    );
-    e(this, "item");
-    /**
-     * Generates text elements.
-     *
-     * Генерирует элементы текста.
-     */
-    e(this, "renderContext", () => {
-      var t;
-      return [
-        h(
-          "div",
-          {
-            key: "context",
-            class: (t = this.classes) == null ? void 0 : t.value.context
-          },
-          [
-            ...this.item.label.render(),
-            ...this.item.caption.render(),
-            ...this.item.description.render()
-          ]
-        )
-      ];
-    });
-    /**
-     * Generates a slot for elements on the right.
-     *
-     * Генерирует слот для элементов справа.
-     */
-    e(this, "renderTrailing", () => {
-      var t;
-      return this.slots && "trailing" in this.slots ? [
-        h(
-          "div",
-          {
-            key: "trailing",
-            class: (t = this.classes) == null ? void 0 : t.value.contextTrailing
-          },
-          this.initSlot("trailing", void 0, this.item.getClassesSub())
-        )
-      ] : [];
-    });
-    /**
-     * Generates a slot for elements on the right.
-     *
-     * Генерирует слот для элементов справа.
-     */
-    e(this, "renderBody", () => {
-      var t;
-      return this.slots && "body" in this.slots ? [
-        h(
-          "div",
-          {
-            key: "body",
-            class: (t = this.classes) == null ? void 0 : t.value.body
-          },
-          this.initSlot("body", void 0, this.item.getClassesSub())
-        )
-      ] : [];
-    });
-    /**
-     * Props for the main element.
-     *
-     * Свойства для главного элемента.
-     */
-    e(this, "propsMain", c(() => {
-      var n;
-      const t = {
-        ...this.getAttrs(),
-        class: (n = this.classes) == null ? void 0 : n.value.main,
-        "data-value": this.props.value,
-        "data-divider": this.props.divider ? "active" : void 0,
-        ...this.item.event.binds,
-        ...M.role(this.item.role.value)
-      };
-      return this.props.dynamic ? {
-        ...t,
-        tabindex: "0"
-      } : t;
-    }));
-    this.item = new s(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    ), this.init();
-  }
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  initExpose() {
-    return {
-      ...this.item.event.expose
-    };
-  }
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: this.item.classes.value,
-      // :classes [!] System label / Системная метка
-      context: this.getSubClass("context"),
-      contextTrailing: this.getSubClass("contextTrailing"),
-      label: this.getSubClass("label"),
-      description: this.getSubClass("description"),
-      caption: this.getSubClass("caption"),
-      icon: this.getSubClass("icon"),
-      trailing: this.getSubClass("trailing"),
-      body: this.getSubClass("body"),
-      loading: this.getSubClass("loading")
-    };
-  }
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  initStyles() {
-    return {};
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    var t;
-    return h(
-      (t = this.props.tag) != null ? t : "div",
-      this.propsMain.value,
-      [
-        ...this.item.icon.render(),
-        ...this.renderContext(),
-        ...this.renderTrailing(),
-        ...this.renderBody(),
-        ...this.item.ripple.render(),
-        ...this.item.progress.render()
-      ]
-    );
-  }
-}
-export {
-  N as Cell,
-  Z as CellDesign,
-  Y as defaultsCell
-};
+//#endregion
+export { h as Cell, _ as CellDesign, g as defaultsCell };

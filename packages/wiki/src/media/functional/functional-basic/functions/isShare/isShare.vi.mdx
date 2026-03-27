@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isShare - Kiểm tra hỗ trợ Web Share API'/>
+
+# `isShare`
+
+Kiểm tra xem Web Share API có được hỗ trợ trong môi trường hiện tại hay không.
+
+**Trả về:**
+`boolean` — `true` nếu Web Share API được hỗ trợ, ngược lại là `false`.
+
+```typescript
+import { isShare } from '@dxtmisha/functional-basic'
+
+if (isShare()) {
+  console.log('Chia sẻ dữ liệu được hỗ trợ!')
+}
+```

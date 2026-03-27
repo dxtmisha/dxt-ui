@@ -1,30 +1,13 @@
-import { B as n, a } from "./BlockDesign-DHCkcwP1.js";
+import { r as e, t } from "./BlockDesign-C6w_RCLR.js";
 import "@dxtmisha/functional";
-class i extends n {
-}
-const d = {
-  tag: "section",
-  tagHeader: "h2"
+//#region src/constructors/Section/Section.ts
+var n = class extends e {}, r = {
+	tag: "section",
+	tagHeader: "h2"
+}, i = class extends t {
+	constructor(e, t, r, i = n) {
+		super(e, t, r, i);
+	}
 };
-class g extends a {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor block item class/ класс элемента блока
-   */
-  constructor(s, t, o, c = i) {
-    super(
-      s,
-      t,
-      o,
-      c
-    );
-  }
-}
-export {
-  i as Section,
-  g as SectionDesign,
-  d as defaultsSection
-};
+//#endregion
+export { n as Section, i as SectionDesign, r as defaultsSection };

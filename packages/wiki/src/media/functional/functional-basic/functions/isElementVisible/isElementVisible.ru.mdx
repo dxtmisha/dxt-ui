@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isElementVisible - Проверка видимости элемента'/>
+
+# `isElementVisible`
+
+Проверяет, является ли элемент видимым (не скрыт через CSS и находится в DOM).
+Элемент может находиться за пределами экрана и при этом считаться видимым.
+
+**Параметры:**
+- `elementSelectors: ElementOrString<E>` — селекторов для сопоставления или Element.
+
+**Возвращает:**
+`boolean` — `true`, если элемент является видимым, иначе `false`.
+
+```typescript
+import { isElementVisible } from '@dxtmisha/functional-basic'
+
+const div = document.createElement('div')
+document.body.appendChild(div)
+console.log(isElementVisible(div)) // true
+
+div.style.display = 'none'
+console.log(isElementVisible(div)) // false
+```

@@ -26,6 +26,12 @@ export declare class FieldEventInclude {
      */
     constructor(props: FieldAllProps, change: FieldChangeInclude, value: FieldValueInclude, validation?: FieldValidationInclude | undefined, emits?: ConstrEmit<FieldBasicEmits> | undefined);
     /**
+     * Checks if it is possible to change the value.
+     *
+     * Проверяет, возможно ли изменение значения.
+     */
+    isEnabled(): boolean;
+    /**
      * Events for losing focus.
      *
      * События для потери фокуса.
@@ -96,12 +102,6 @@ export declare class FieldEventInclude {
      * @param type event type/ тип события
      */
     protected isValue(type: string & keyof FieldBasicEmits): boolean;
-    /**
-     * Checks if it is possible to change the value.
-     *
-     * Проверяет, возможно ли изменение значения.
-     */
-    protected isEnabled(): boolean;
     /**
      * Returns input data.
      *

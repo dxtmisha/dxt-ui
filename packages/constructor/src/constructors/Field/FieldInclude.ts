@@ -172,6 +172,7 @@ export class FieldInclude<
   ) => {
     if (
       (event.target as HTMLElement).closest('[data-element="scoreboard"]')
+      && (this.event?.isEnabled() ?? true)
     ) {
       switch (type) {
         case 'icon':

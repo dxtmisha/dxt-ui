@@ -1,662 +1,233 @@
-var k = Object.defineProperty;
-var F = (n, t, e) => t in n ? k(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var i = (n, t, e) => F(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, computed as d, watch as g, nextTick as m, toRef as D, onMounted as T } from "vue";
-import { toBinds as f, getRef as v, isSelected as A, toArray as E, getElementId as $, isDomRuntime as L, EventItem as R, ListDataRef as z, DesignConstructorAbstract as B } from "@dxtmisha/functional";
-import { A as P } from "./AriaStaticInclude-DRHG8ILX.js";
-import { E as H } from "./EventClickInclude-DMbEP-nH.js";
-import { M as q } from "./ModelInclude-BiYm_iCQ.js";
-class M {
-  /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter/ дополнительный параметр
-   * @param index index identifier/ идентификатор индекса
-   */
-  constructor(t, e, s, r, a) {
-    /**
-     * Element of the component.
-     *
-     * Элемент компонента.
-     */
-    i(this, "element", u());
-    /**
-     * HTML element of the component.
-     *
-     * HTML элемент компонента.
-     */
-    i(this, "elementHtml", d(() => {
-      var t;
-      return (t = this.element.value) == null ? void 0 : t.elementHtml;
-    }));
-    /**
-     * Computed bindings for the horizontal scroll/ Вычисляемые привязки для горизонтальной прокрутки
-     */
-    i(this, "binds", d(
-      () => f(
-        v(this.extra),
-        {
-          ref: this.element,
-          flush: this.props.horizontalScrollFlush,
-          align: this.props.horizontalScrollAlign
-        },
-        this.props.horizontalScrollAttrs
-      )
-    ));
-    /**
-     * Scrolls to the selected element.
-     *
-     * Прокручивает к выбранному элементу.
-     */
-    i(this, "toSelected", () => {
-      var t, e;
-      (e = (t = this.element.value) == null ? void 0 : t.toSelected) == null || e.call(t);
-    });
-    /**
-     * Renders the horizontal scroll component with provided properties and configuration.
-     * Returns an array of VNode elements representing the rendered horizontal scroll, or an empty
-     * array if the component cannot be rendered.
-     *
-     * Обрисовывает компонент горизонтальной прокрутки с предоставленными свойствами и конфигурацией.
-     * Возвращает массив VNode элементов, представляющих отрисованную горизонтальную прокрутку, или пустой
-     * массив, если компонент не может быть отрисованы.
-     *
-     * @param children content for the default slot/ контент для слота по умолчанию
-     * @param props additional properties/ дополнительные свойства
-     */
-    i(this, "render", (t, e) => {
-      var s;
-      return this.components ? this.components.render(
-        "horizontalScroll",
-        {
-          ...this.binds.value,
-          ...v(e)
-        },
-        t,
-        (s = this.index) != null ? s : "horizontalScroll"
-      ) : [];
-    });
-    this.props = t, this.className = e, this.components = s, this.extra = r, this.index = a;
-  }
-}
-class V {
-  /**
-   * Constructor
-   * @param props input data / входные данные
-   */
-  constructor(t) {
-    i(this, "item", u());
-    i(this, "actualItem", u());
-    this.props = t, this.item.value = t.selected, this.actualItem.value = t.selected;
-  }
-  /**
-   * Checks if the value is selected.
-   *
-   * Проверяет, выбрано ли значение.
-   * @param selected value to check/ значение для проверки
-   */
-  isSelected(t) {
-    return A(t, this.actualItem.value);
-  }
-  /**
-   * Sets the selected value.
-   *
-   * Устанавливает выбранное значение.
-   * @param selected selected value/ выбранное значение
-   */
-  set(t) {
-    return this.item.value = t, this;
-  }
-  /**
-   * Sets the actual selected value.
-   *
-   * Устанавливает актуальное выбранное значение.
-   * @param selected selected value/ выбранное значение
-   */
-  setActual(t) {
-    return this.actualItem.value = t, this;
-  }
-}
-class O {
-  /**
-   * Constructor
-   * @param element main element/ главный элемент
-   * @param selected selected value object/ объект значения выделения
-   */
-  constructor(t, e) {
-    /**
-     * Current focus value.
-     *
-     * Текущее значение фокуса.
-     */
-    i(this, "item", u());
-    this.element = t, this.selected = e;
-  }
-  /**
-   * Returns the current focus value.
-   *
-   * Возвращает текущее значение фокуса.
-   */
-  get() {
-    if (this.item.value)
-      return String(this.item.value);
-  }
-  /**
-   * Applies the current focus value to the selection.
-   *
-   * Применяет текущее значение фокуса к выделению.
-   */
-  apply() {
-    return this.selected.set(this.item.value), this;
-  }
-  /**
-   * Sets the focus to the specified value.
-   *
-   * Устанавливает фокус на указанное значение.
-   * @param focus focus value/ значение фокуса
-   */
-  set(t) {
-    var e;
-    return this.item.value = t, (e = this.getElement()) == null || e.focus(), this;
-  }
-  /**
-   * Sets the initial focus position based on the selected value.
-   *
-   * Устанавливает начальную позицию фокуса на основе выбранного значения.
-   */
-  position() {
-    var t;
-    return this.item.value = (t = E(this.selected.actualItem.value)) == null ? void 0 : t[0], this;
-  }
-  /**
-   * Resets the focus.
-   *
-   * Сбрасывает фокус.
-   */
-  reset() {
-    return this.item.value = void 0, this;
-  }
-  /**
-   * Returns the focused element.
-   *
-   * Возвращает элемент в фокусе.
-   */
-  getElement() {
-    var t;
-    if (this.item.value)
-      return ((t = this.element.value) == null ? void 0 : t.querySelector(`[data-value="${this.item.value}"]`)) || void 0;
-  }
-}
-class j {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param data object for working with data/ объект для работы с данными
-   */
-  constructor(t, e) {
-    /**
-     * List of generated IDs.
-     *
-     * Список сгенерированных идентификаторов.
-     */
-    i(this, "ids", d(() => {
-      const t = {};
-      return this.data.fullData.value.forEach((e) => {
-        t[e.value] = $();
-      }), t;
-    }));
-    this.props = t, this.data = e;
-  }
-  /**
-   * Returns the ID by value.
-   *
-   * Возвращает идентификатор по значению.
-   * @param value value/ значение
-   */
-  getIdByValue(t) {
-    var e;
-    return (e = this.ids.value[t != null ? t : ""]) != null ? e : String(t);
-  }
-}
-class G {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element main element/ главный элемент
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param selected selection value object/ объект значения выделения
-   */
-  constructor(t, e, s, r, a, h) {
-    /**
-     * Changes the selection state.
-     *
-     * Изменяет состояние выделения.
-     * @param newSelected new selection/ новое выделение
-     * @param oldSelected old selection/ старое выделение
-     */
-    i(this, "go", async (t, e) => {
-      await m();
-      const s = this.getItem(t), r = this.getItem(e);
-      if (s && r) {
-        const a = `${this.classDesign}-${this.getItemClassName()}`, h = s.getBoundingClientRect(), o = r.getBoundingClientRect(), l = o.left - h.left, c = `${l}px ${l >= 0 ? "-" : "+"} var(--${a}-gap, 0px)`;
-        s.style.setProperty(`--${a}-sys-left`, c), s.style.setProperty(`--${a}-sys-width`, o.width + "px"), this.reset(s);
-      }
-      requestAnimationFrame(() => {
-        this.selected.setActual(t);
-      });
-    });
-    /**
-     * Resets the given styles.
-     *
-     * Сбрасывает данные стили.
-     * @param item element/ элемент
-     */
-    i(this, "reset", (t) => {
-      setTimeout(() => {
-        t.style.removeProperty(`--${this.className}-sys-left`), t.style.removeProperty(`--${this.className}-sys-width`);
-      }, 384);
-    });
-    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = a, this.selected = h, g(
-      this.selected.item,
-      (o, l) => this.go(o, l)
-    ), m().then(
-      () => requestAnimationFrame(
-        () => {
-          var o, l;
-          s.value && (s.value.scrollLeft = (l = (o = this.getItem(this.selected.item.value)) == null ? void 0 : o.offsetLeft) != null ? l : 0);
-        }
-      )
-    );
-  }
-  /**
-   * Returns the class name of the item.
-   *
-   * Возвращает имя класса элемента.
-   */
-  getItemClassName() {
-    return "tabItem";
-  }
-  /**
-   * Returns the selected element.
-   *
-   * Возвращает выделенный элемент.
-   * @param selected selection number/ номер выделения
-   */
-  getItem(t) {
-    var e;
-    return ((e = this.element.value) == null ? void 0 : e.querySelector(`[data-value="${t != null ? t : ""}"]`)) || void 0;
-  }
-}
-class J {
-  /**
-   * Constructor
-   * @param selected selection management object/ объект управления выделением
-   * @param focus focus management object/ объект управления фокусом
-   * @param data data list object/ объект списка данных
-   */
-  constructor(t, e, s) {
-    i(this, "event");
-    /**
-     * Handler for the focus event.
-     *
-     * Обработчик события фокуса.
-     */
-    i(this, "onFocus", () => {
-      this.start();
-    });
-    /**
-     * Handler for the blur event.
-     *
-     * Обработчик события потери фокуса.
-     */
-    i(this, "onBlur", () => {
-      this.stop();
-    });
-    /**
-     * Method for tracking keys when a window is open.
-     *
-     * Метод для отслеживания нажатий при открытом окне.
-     * @param event event object/ объект события
-     */
-    i(this, "on", (t) => {
-      if (this.data.getLength())
-        switch (t.code || t.key || t.keyCode) {
-          case "ArrowLeft":
-          case "Left":
-          case 37:
-            t.preventDefault(), this.prev();
-            break;
-          case "ArrowRight":
-          case "Right":
-          case 39:
-            t.preventDefault(), this.next();
-            break;
-          case "Enter":
-          case 13:
-          case "Space":
-          case "Spacebar":
-          case " ":
-          case 32:
-            t.preventDefault(), this.selected.set(this.focus.item.value);
-            break;
-        }
-    });
-    this.selected = t, this.focus = e, this.data = s;
-  }
-  /**
-   * Returns bindings for the element.
-   *
-   * Возвращает привязки для элемента.
-   */
-  get binds() {
-    return {
-      onFocus: this.onFocus,
-      onBlur: this.onBlur
-    };
-  }
-  /**
-   * Returns the first item in the list.
-   *
-   * Возвращает первый элемент в списке.
-   */
-  getFirstItem() {
-    var t;
-    return (t = this.data.getFirstItemByParent(void 0)) == null ? void 0 : t.index;
-  }
-  /**
-   * Returns the current focus value or the first item.
-   *
-   * Возвращает текущее значение фокуса или первый элемент.
-   */
-  getFocus() {
-    return this.focus.get() || this.getFirstItem();
-  }
-  /**
-   * Starts the event.
-   *
-   * Запускает событие.
-   */
-  start() {
-    L() && (this.event || (this.event = new R(
-      document.body,
-      ["keydown"],
-      this.on
-    )), this.focus.position(), this.event.start());
-  }
-  /**
-   * Stops the event.
-   *
-   * Останавливает событие.
-   */
-  stop() {
-    this.event && (this.event.stop(), this.event = void 0, this.focus.reset());
-  }
-  /**
-   * Moves focus to the previous item.
-   *
-   * Перемещает фокус на предыдущий элемент.
-   */
-  prev() {
-    var e;
-    const t = this.getFocus();
-    return t && this.focus.set(
-      (e = this.data.getIndexPrev(t)) == null ? void 0 : e.index
-    ), this;
-  }
-  /**
-   * Moves focus to the next item.
-   *
-   * Перемещает фокус на следующий элемент.
-   */
-  next() {
-    var e;
-    const t = this.getFocus();
-    return t && this.focus.set(
-      (e = this.data.getIndexNext(t)) == null ? void 0 : e.index
-    ), this;
-  }
-}
-class K {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
-   * @param constructors.TabsNavigationFocusConstructor class for working with focus/ класс для работы с фокусом
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.HorizontalScrollIncludeConstructor class for working with horizontal scroll/ класс для работы с горизонтальной прокруткой
-   * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
-   * @param constructors.TabsNavigationControlConstructor class for working with control/ класс для работы с управлением
-   * @param constructors.TabsNavigationIdsConstructor class for working with ids/ класс для работы с идентификаторами
-   * @param constructors.TabsNavigationIndicatorConstructor class for working with indicator/ класс для работы с индикатором
-   * @param constructors.TabsNavigationSelectedConstructor class for working with selected/ класс для работы с выбранным
-   */
-  constructor(t, e, s, r, a, h, o, l, c) {
-    i(this, "scroll");
-    i(this, "selected");
-    i(this, "focus");
-    i(this, "data");
-    i(this, "ids");
-    i(this, "indicator");
-    i(this, "control");
-    i(this, "event");
-    /**
-     * Returns bindings for the element.
-     *
-     * Возвращает привязки для элемента.
-     */
-    i(this, "binds", d(() => ({
-      tabindex: 0,
-      ...this.control.binds,
-      ...P.role("tablist")
-    })));
-    /**
-     * Handler for the click event.
-     *
-     * Обработчик события клика.
-     * @param event event object/ объект события
-     * @param options additional event options/ дополнительные опции события
-     */
-    i(this, "onClick", (t, e) => {
-      this.selected.set(e == null ? void 0 : e.value), this.event.onClick(t, e);
-    });
-    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = a, this.components = h, this.slots = o, this.emits = l;
-    const {
-      EventClickIncludeConstructor: p = H,
-      HorizontalScrollIncludeConstructor: I = M,
-      ListDataRefConstructor: b = z,
-      ModelIncludeConstructor: y = q,
-      TabsNavigationControlConstructor: S = J,
-      TabsNavigationIdsConstructor: N = j,
-      TabsNavigationFocusConstructor: C = O,
-      TabsNavigationIndicatorConstructor: x = G,
-      TabsNavigationSelectedConstructor: w = V
-    } = c != null ? c : {};
-    this.scroll = new I(
-      this.props,
-      this.className,
-      this.components
-    ), this.selected = new w(this.props), this.focus = new C(
-      this.element,
-      this.selected
-    ), this.data = new b(
-      D(this.props, "list"),
-      this.focus.item,
-      void 0,
-      void 0,
-      void 0,
-      this.selected.actualItem,
-      this.refs.keyValue,
-      this.refs.keyLabel
-    ), this.ids = new N(
-      this.props,
-      this.data
-    ), this.indicator = new x(
-      this.props,
-      this.refs,
-      this.scroll.elementHtml,
-      this.classDesign,
-      this.className,
-      this.selected
-    ), this.control = new S(
-      this.selected,
-      this.focus,
-      this.data
-    ), this.event = new p(
-      void 0,
-      void 0,
-      this.emits
-    ), new y(
-      "selected",
-      this.emits,
-      this.selected.item
-    ), this.initSelected(), T(() => {
-      g(
-        [e.selected],
-        () => this.selected.set(t.selected),
-        { immediate: !0 }
-      );
-    });
-  }
-  /**
-   * Initializes the selected element.
-   *
-   * Инициализирует выбранный элемент.
-   */
-  initSelected() {
-    this.props.selected || this.selected.set(this.control.getFirstItem());
-  }
-}
-const _ = {
-  horizontalScrollFlush: !0,
-  horizontalScrollAlign: "left"
+import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
+import { t } from "./defineProperty-BTtSLqQS.js";
+import { t as n } from "./EventClickInclude-B0o5DErp.js";
+import { t as r } from "./ModelInclude-ZrPu5V5T.js";
+import { computed as i, nextTick as a, onMounted as o, ref as s, toRef as c, watch as l } from "vue";
+import { DesignConstructorAbstract as u, EventItem as d, ListDataRef as f, getElementId as p, getRef as m, isDomRuntime as h, isSelected as g, toArray as _, toBinds as v } from "@dxtmisha/functional";
+//#region src/constructors/HorizontalScroll/HorizontalScrollInclude.ts
+var y = class {
+	constructor(e, n, r, a, o) {
+		t(this, "element", s()), t(this, "elementHtml", i(() => {
+			var e;
+			return (e = this.element.value) == null ? void 0 : e.elementHtml;
+		})), t(this, "binds", i(() => v(m(this.extra), {
+			ref: this.element,
+			flush: this.props.horizontalScrollFlush,
+			align: this.props.horizontalScrollAlign
+		}, this.props.horizontalScrollAttrs))), t(this, "toSelected", () => {
+			var e, t;
+			(e = this.element.value) == null || (t = e.toSelected) == null || t.call(e);
+		}), t(this, "render", (e, t) => {
+			if (this.components) {
+				var n;
+				return this.components.render("horizontalScroll", {
+					...this.binds.value,
+					...m(t)
+				}, e, (n = this.index) == null ? "horizontalScroll" : n);
+			}
+			return [];
+		}), this.props = e, this.className = n, this.components = r, this.extra = a, this.index = o;
+	}
+}, b = class {
+	constructor(e) {
+		t(this, "item", s()), t(this, "actualItem", s()), this.props = e, this.item.value = e.selected, this.actualItem.value = e.selected;
+	}
+	isSelected(e) {
+		return g(e, this.actualItem.value);
+	}
+	set(e) {
+		return this.item.value = e, this;
+	}
+	setActual(e) {
+		return this.actualItem.value = e, this;
+	}
+}, x = class {
+	constructor(e, n) {
+		t(this, "item", s()), this.element = e, this.selected = n;
+	}
+	get() {
+		if (this.item.value) return String(this.item.value);
+	}
+	apply() {
+		return this.selected.set(this.item.value), this;
+	}
+	set(e) {
+		var t;
+		return this.item.value = e, (t = this.getElement()) == null || t.focus(), this;
+	}
+	position() {
+		var e;
+		return this.item.value = (e = _(this.selected.actualItem.value)) == null ? void 0 : e[0], this;
+	}
+	reset() {
+		return this.item.value = void 0, this;
+	}
+	getElement() {
+		if (this.item.value) {
+			var e;
+			return ((e = this.element.value) == null ? void 0 : e.querySelector(`[data-value="${this.item.value}"]`)) || void 0;
+		}
+	}
+}, S = class {
+	constructor(e, n) {
+		t(this, "ids", i(() => {
+			let e = {};
+			return this.data.fullData.value.forEach((t) => {
+				e[t.value] = p();
+			}), e;
+		})), this.props = e, this.data = n;
+	}
+	getIdByValue(e) {
+		var t;
+		return (t = this.ids.value[e == null ? "" : e]) == null ? String(e) : t;
+	}
+}, C = class {
+	constructor(e, n, r, i, o, s) {
+		t(this, "go", async (e, t) => {
+			await a();
+			let n = this.getItem(e), r = this.getItem(t);
+			if (n && r) {
+				let e = `${this.classDesign}-${this.getItemClassName()}`, t = n.getBoundingClientRect(), i = r.getBoundingClientRect(), a = i.left - t.left, o = `${a}px ${a >= 0 ? "-" : "+"} var(--${e}-gap, 0px)`;
+				n.style.setProperty(`--${e}-sys-left`, o), n.style.setProperty(`--${e}-sys-width`, i.width + "px"), this.reset(n);
+			}
+			requestAnimationFrame(() => {
+				this.selected.setActual(e);
+			});
+		}), t(this, "reset", (e) => {
+			setTimeout(() => {
+				e.style.removeProperty(`--${this.className}-sys-left`), e.style.removeProperty(`--${this.className}-sys-width`);
+			}, 384);
+		}), this.props = e, this.refs = n, this.element = r, this.classDesign = i, this.className = o, this.selected = s, l(this.selected.item, (e, t) => this.go(e, t)), a().then(() => requestAnimationFrame(() => {
+			if (r.value) {
+				var e, t;
+				r.value.scrollLeft = (e = (t = this.getItem(this.selected.item.value)) == null ? void 0 : t.offsetLeft) == null ? 0 : e;
+			}
+		}));
+	}
+	getItemClassName() {
+		return "tabItem";
+	}
+	getItem(e) {
+		var t;
+		return ((t = this.element.value) == null ? void 0 : t.querySelector(`[data-value="${e == null ? "" : e}"]`)) || void 0;
+	}
+}, w = class {
+	constructor(e, n, r) {
+		t(this, "event", void 0), t(this, "onFocus", () => {
+			this.start();
+		}), t(this, "onBlur", () => {
+			this.stop();
+		}), t(this, "on", (e) => {
+			if (this.data.getLength()) switch (e.code || e.key || e.keyCode) {
+				case "ArrowLeft":
+				case "Left":
+				case 37:
+					e.preventDefault(), this.prev();
+					break;
+				case "ArrowRight":
+				case "Right":
+				case 39:
+					e.preventDefault(), this.next();
+					break;
+				case "Enter":
+				case 13:
+				case "Space":
+				case "Spacebar":
+				case " ":
+				case 32:
+					e.preventDefault(), this.selected.set(this.focus.item.value);
+					break;
+			}
+		}), this.selected = e, this.focus = n, this.data = r;
+	}
+	get binds() {
+		return {
+			onFocus: this.onFocus,
+			onBlur: this.onBlur
+		};
+	}
+	getFirstItem() {
+		var e;
+		return (e = this.data.getFirstItemByParent(void 0)) == null ? void 0 : e.index;
+	}
+	getFocus() {
+		return this.focus.get() || this.getFirstItem();
+	}
+	start() {
+		h() && (this.event || (this.event = new d(document.body, ["keydown"], this.on)), this.focus.position(), this.event.start());
+	}
+	stop() {
+		this.event && (this.event.stop(), this.event = void 0, this.focus.reset());
+	}
+	prev() {
+		let e = this.getFocus();
+		if (e) {
+			var t;
+			this.focus.set((t = this.data.getIndexPrev(e)) == null ? void 0 : t.index);
+		}
+		return this;
+	}
+	next() {
+		let e = this.getFocus();
+		if (e) {
+			var t;
+			this.focus.set((t = this.data.getIndexNext(e)) == null ? void 0 : t.index);
+		}
+		return this;
+	}
+}, T = class {
+	constructor(a, s, u, d, p, m, h, g, _) {
+		t(this, "scroll", void 0), t(this, "selected", void 0), t(this, "focus", void 0), t(this, "data", void 0), t(this, "ids", void 0), t(this, "indicator", void 0), t(this, "control", void 0), t(this, "event", void 0), t(this, "binds", i(() => ({
+			tabindex: 0,
+			...this.control.binds,
+			...e.role("tablist")
+		}))), t(this, "onClick", (e, t) => {
+			this.selected.set(t == null ? void 0 : t.value), this.event.onClick(e, t);
+		}), this.props = a, this.refs = s, this.element = u, this.classDesign = d, this.className = p, this.components = m, this.slots = h, this.emits = g;
+		let { EventClickIncludeConstructor: v = n, HorizontalScrollIncludeConstructor: T = y, ListDataRefConstructor: E = f, ModelIncludeConstructor: D = r, TabsNavigationControlConstructor: O = w, TabsNavigationIdsConstructor: k = S, TabsNavigationFocusConstructor: A = x, TabsNavigationIndicatorConstructor: j = C, TabsNavigationSelectedConstructor: M = b } = _ == null ? {} : _;
+		this.scroll = new T(this.props, this.className, this.components), this.selected = new M(this.props), this.focus = new A(this.element, this.selected), this.data = new E(c(this.props, "list"), this.focus.item, void 0, void 0, void 0, this.selected.actualItem, this.refs.keyValue, this.refs.keyLabel), this.ids = new k(this.props, this.data), this.indicator = new j(this.props, this.refs, this.scroll.elementHtml, this.classDesign, this.className, this.selected), this.control = new O(this.selected, this.focus, this.data), this.event = new v(void 0, void 0, this.emits), new D("selected", this.emits, this.selected.item), this.initSelected(), o(() => {
+			l([s.selected], () => this.selected.set(a.selected), { immediate: !0 });
+		});
+	}
+	initSelected() {
+		this.props.selected || this.selected.set(this.control.getFirstItem());
+	}
+}, E = {
+	horizontalScrollFlush: !0,
+	horizontalScrollAlign: "left"
+}, D = class extends u {
+	constructor(e, n, r, i = T) {
+		super(e, n, r), t(this, "item", void 0), t(this, "renderList", (e) => {
+			let t = [];
+			return this.initSlot("leading", t), this.item.data.fullData.value.forEach((n) => t.push(this.renderItem(e, n))), this.initSlot("trailing", t), t;
+		}), t(this, "renderItem", (e, t) => {
+			let n = this.item.selected.isSelected(t.index);
+			return this.components.renderOne("tabItem", v({
+				tag: this.props.tag,
+				key: t.index
+			}, this.props.itemAttrs, t, e.binds, {
+				id: this.item.ids.getIdByValue(t.value),
+				onClick: this.item.onClick,
+				class: { [e.classItemSelected]: n }
+			}));
+		}), this.item = new i(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+	}
+	initExpose() {
+		return { ids: this.item.ids.ids };
+	}
+	initClasses() {
+		return { main: {} };
+	}
+	initStyles() {
+		return {};
+	}
+	initRender() {
+		var e;
+		return this.item.scroll.render({ default: this.renderList }, {
+			...this.item.binds.value,
+			class: (e = this.classes) == null ? void 0 : e.value.main
+		});
+	}
 };
-class tt extends B {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
-   */
-  constructor(e, s, r, a = K) {
-    super(
-      e,
-      s,
-      r
-    );
-    i(this, "item");
-    /**
-     * Generates a list of elements.
-     *
-     * Генерирует список элементов.
-     * @param props data for the transferable property/ данные для передаваемого свойства
-     */
-    i(this, "renderList", (e) => {
-      const s = [];
-      return this.initSlot("leading", s), this.item.data.fullData.value.forEach(
-        (r) => s.push(
-          this.renderItem(e, r)
-        )
-      ), this.initSlot("trailing", s), s;
-    });
-    /**
-     * Generates an element.
-     *
-     * Генерирует элемент.
-     * @param props data for the transferable property/ данные для передаваемого свойства
-     * @param item selected element / выбранный элемент
-     */
-    i(this, "renderItem", (e, s) => {
-      const r = this.item.selected.isSelected(s.index);
-      return this.components.renderOne(
-        "tabItem",
-        f(
-          {
-            tag: this.props.tag,
-            key: s.index
-          },
-          this.props.itemAttrs,
-          s,
-          e.binds,
-          {
-            id: this.item.ids.getIdByValue(s.value),
-            onClick: this.item.onClick,
-            class: {
-              [e.classItemSelected]: r
-            }
-          }
-        )
-      );
-    });
-    this.item = new a(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    ), this.init();
-  }
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  initExpose() {
-    return {
-      ids: this.item.ids.ids
-    };
-  }
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: {}
-    };
-  }
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  initStyles() {
-    return {};
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    var e;
-    return this.item.scroll.render(
-      { default: this.renderList },
-      {
-        ...this.item.binds.value,
-        class: (e = this.classes) == null ? void 0 : e.value.main
-      }
-    );
-  }
-}
-export {
-  K as TabsNavigation,
-  tt as TabsNavigationDesign,
-  _ as defaultsTabsNavigation
-};
+//#endregion
+export { T as TabsNavigation, D as TabsNavigationDesign, E as defaultsTabsNavigation };

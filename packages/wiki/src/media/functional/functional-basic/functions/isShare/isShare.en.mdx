@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isShare - Check for Web Share API support'/>
+
+# `isShare`
+
+Checks if the Web Share API is supported in the current environment.
+
+**Returns:**
+`boolean` — `true` if the Web Share API is supported, otherwise `false`.
+
+```typescript
+import { isShare } from '@dxtmisha/functional-basic'
+
+if (isShare()) {
+  console.log('Sharing is supported!')
+}
+```

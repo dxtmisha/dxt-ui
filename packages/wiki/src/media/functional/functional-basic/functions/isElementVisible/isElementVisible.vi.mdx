@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isElementVisible - Kiểm tra xem phần tử có hiển thị không'/>
+
+# `isElementVisible`
+
+Kiểm tra xem một phần tử có hiển thị hay không (không bị ẩn bởi CSS và có trong DOM).
+Một phần tử có thể nằm ngoài màn hình và vẫn được coi là hiển thị.
+
+**Tham số:**
+- `elementSelectors: ElementOrString<E>` — bộ chọn để khớp hoặc một Element.
+
+**Trả về:**
+`boolean` — `true` nếu phần tử có hiển thị, ngược lại là `false`.
+
+```typescript
+import { isElementVisible } from '@dxtmisha/functional-basic'
+
+const div = document.createElement('div')
+document.body.appendChild(div)
+console.log(isElementVisible(div)) // true
+
+div.style.display = 'none'
+console.log(isElementVisible(div)) // false
+```

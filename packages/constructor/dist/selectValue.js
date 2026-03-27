@@ -1,255 +1,88 @@
-var b = Object.defineProperty;
-var g = (r, e, s) => e in r ? b(r, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[e] = s;
-var t = (r, e, s) => g(r, typeof e != "symbol" ? e + "" : e, s);
-import { computed as a, h as f } from "vue";
-import { isFilled as C, DesignConstructorAbstract as w, toBinds as h, getRef as S, toBind as x } from "@dxtmisha/functional";
-import { E } from "./EnabledInclude-B9oXYBtR.js";
-import { E as N } from "./EventClickInclude-DMbEP-nH.js";
-import { W as D } from "./WindowClassesInclude-B56usxgx.js";
-class I {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param constructors.EventConstructor class for creating an event/ класс для создания события
-   * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
-   */
-  constructor(e, s, i, l, n, p, c, d, o) {
-    t(this, "enabled");
-    t(this, "event");
-    t(this, "window");
-    /** Is placeholder/ Является ли плейсхолдером */
-    t(this, "isPlaceholder", a(
-      () => !C(this.props.value) && !!this.props.placeholder
-    ));
-    /** Icon for canceling selection/ Иконка для отмены выбора */
-    t(this, "iconTrailing", a(() => {
-      if (this.enabled.isEnabled.value)
-        return {
-          icon: this.props.iconCancel,
-          dynamic: !0,
-          class: [
-            `${this.className}__trailing`,
-            this.window.get().controlStatic
-          ]
-        };
-    }));
-    /** Returns data for the main style class/ Возвращает данные для главного класса стиля */
-    t(this, "classes", a(() => ({
-      [`${this.className}--placeholder`]: this.isPlaceholder.value,
-      [`${this.className}--multiple`]: !!this.props.multiple
-    })));
-    /**
-     * Click event handler.
-     *
-     * Обработчик события клика.
-     * @param event event object/ объект события
-     * @param options additional event options/ дополнительные опции события
-     */
-    t(this, "onClick", (e, s) => {
-      e.preventDefault(), e.stopPropagation(), this.event.onClick(e, s);
-    });
-    this.props = e, this.refs = s, this.element = i, this.classDesign = l, this.className = n, this.components = p, this.slots = c, this.emits = d;
-    const {
-      EnabledConstructor: u = E,
-      EventConstructor: m = N,
-      WindowClassesConstructor: v = D
-    } = o != null ? o : {};
-    this.enabled = new u(this.props), this.event = new m(
-      this.props,
-      this.enabled,
-      this.emits
-    ), this.window = new v(l);
-  }
-}
-const $ = {};
-class y extends w {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor select value item class/ класс элемента значения выбора
-   */
-  constructor(s, i, l, n = I) {
-    super(
-      s,
-      i,
-      l
-    );
-    t(this, "item");
-    /**
-     * Rendering data.
-     *
-     * Рендеринг данных.
-     */
-    t(this, "renderData", () => {
-      var s, i, l;
-      if (this.item.isPlaceholder.value)
-        return [String(this.props.placeholder)];
-      if (this.props.value) {
-        if (this.props.multiple)
-          return this.renderList();
-        const n = (l = (s = this.props.value[0]) == null ? void 0 : s.label) != null ? l : (i = this.props.value[0]) == null ? void 0 : i.value;
-        if (n)
-          return [String(n)];
-      }
-      return [];
-    });
-    /**
-     * List rendering.
-     *
-     * Рендеринг списка.
-     */
-    t(this, "renderList", () => {
-      var i;
-      const s = [];
-      return (i = this.props.value) == null || i.forEach((l) => {
-        const n = this.renderItem(l);
-        n ? s.push(n) : s.push(l.label);
-      }), s;
-    });
-    /**
-     * Element rendering.
-     *
-     * Рендеринг элемента.
-     * @param item selected element/ выбранный элемент
-     */
-    t(this, "renderItem", (s) => {
-      var i;
-      return this.components.renderOne(
-        "chip",
-        h(
-          this.props.chipAttrs,
-          {
-            class: (i = this.classes) == null ? void 0 : i.value.item,
-            icon: this.props.iconShow && s.icon ? s.icon : void 0,
-            iconTrailing: this.item.iconTrailing.value,
-            label: s.label,
-            "data-value": s.index,
-            readonly: !0,
-            disabled: this.props.disabled,
-            value: s.value,
-            detail: s.detail,
-            onClick: this.item.onClick
-          }
-        ),
-        void 0,
-        s.index
-      );
-    });
-    this.item = new n(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    ), this.init();
-  }
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  initExpose() {
-    return {};
-  }
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: this.item.classes.value,
-      // :classes [!] System label / Системная метка
-      item: this.getSubClass("item"),
-      trailing: this.getSubClass("trailing")
-    };
-  }
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  initStyles() {
-    return {};
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    var s;
-    return f(
-      "div",
-      {
-        ...this.getAttrs(),
-        class: (s = this.classes) == null ? void 0 : s.value.main
-      },
-      this.renderData()
-    );
-  }
-}
-class T {
-  /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
-   */
-  constructor(e, s, i, l, n) {
-    /**
-     * Checks whether selectValue should be displayed/
-     * Проверяет, нужно ли отображать selectValue
-     */
-    t(this, "is", a(() => !!(!this.props.disabled && this.components)));
-    /** Computed bindings for the selectValue/ Вычисляемые привязки для selectValue */
-    t(this, "binds", a(() => ({
-      ...h(
-        S(this.extra),
-        this.props.selectValueAttrs,
-        {
-          class: `${this.className}__select-value`
-        }
-      ),
-      disabled: this.props.disabled
-    })));
-    /**
-     * Render the SelectValue component
-     *
-     * Рендер компонента selectValue
-     * @param attrs additional attributes/ дополнительные атрибуты
-     * @returns VNode array/ массив VNode
-     */
-    t(this, "render", (e) => this.components && this.is.value ? this.components.render(
-      "selectValue",
-      x(
-        e != null ? e : {},
-        this.binds.value
-      ),
-      this.index
-    ) : []);
-    this.props = e, this.className = s, this.components = i, this.extra = l, this.index = n;
-  }
-}
-export {
-  I as SelectValue,
-  y as SelectValueDesign,
-  T as SelectValueInclude,
-  $ as defaultsSelectValue
+import { t as e } from "./defineProperty-BTtSLqQS.js";
+import { t } from "./EnabledInclude-D1O_lLPV.js";
+import { t as n } from "./EventClickInclude-B0o5DErp.js";
+import { t as r } from "./WindowClassesInclude-C8R8pgeo.js";
+import { computed as i, h as a } from "vue";
+import { DesignConstructorAbstract as o, getRef as s, isFilled as c, toBind as l, toBinds as u } from "@dxtmisha/functional";
+//#region src/constructors/SelectValue/SelectValue.ts
+var d = class {
+	constructor(a, o, s, l, u, d, f, p, m) {
+		e(this, "enabled", void 0), e(this, "event", void 0), e(this, "window", void 0), e(this, "isPlaceholder", i(() => !c(this.props.value) && !!this.props.placeholder)), e(this, "iconTrailing", i(() => {
+			if (this.enabled.isEnabled.value) return {
+				icon: this.props.iconCancel,
+				dynamic: !0,
+				class: [`${this.className}__trailing`, this.window.get().controlStatic]
+			};
+		})), e(this, "classes", i(() => ({
+			[`${this.className}--placeholder`]: this.isPlaceholder.value,
+			[`${this.className}--multiple`]: !!this.props.multiple
+		}))), e(this, "onClick", (e, t) => {
+			e.preventDefault(), e.stopPropagation(), this.event.onClick(e, t);
+		}), this.props = a, this.refs = o, this.element = s, this.classDesign = l, this.className = u, this.components = d, this.slots = f, this.emits = p;
+		let { EnabledConstructor: h = t, EventConstructor: g = n, WindowClassesConstructor: _ = r } = m == null ? {} : m;
+		this.enabled = new h(this.props), this.event = new g(this.props, this.enabled, this.emits), this.window = new _(l);
+	}
+}, f = {}, p = class extends o {
+	constructor(t, n, r, i = d) {
+		super(t, n, r), e(this, "item", void 0), e(this, "renderData", () => {
+			if (this.item.isPlaceholder.value) return [String(this.props.placeholder)];
+			if (this.props.value) {
+				var e, t, n;
+				if (this.props.multiple) return this.renderList();
+				let r = (e = (t = this.props.value[0]) == null ? void 0 : t.label) == null ? (n = this.props.value[0]) == null ? void 0 : n.value : e;
+				if (r) return [String(r)];
+			}
+			return [];
+		}), e(this, "renderList", () => {
+			var e;
+			let t = [];
+			return (e = this.props.value) == null || e.forEach((e) => {
+				let n = this.renderItem(e);
+				n ? t.push(n) : t.push(e.label);
+			}), t;
+		}), e(this, "renderItem", (e) => {
+			var t;
+			return this.components.renderOne("chip", u(this.props.chipAttrs, {
+				class: (t = this.classes) == null ? void 0 : t.value.item,
+				icon: this.props.iconShow && e.icon ? e.icon : void 0,
+				iconTrailing: this.item.iconTrailing.value,
+				label: e.label,
+				"data-value": e.index,
+				readonly: !0,
+				disabled: this.props.disabled,
+				value: e.value,
+				detail: e.detail,
+				onClick: this.item.onClick
+			}), void 0, e.index);
+		}), this.item = new i(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+	}
+	initExpose() {
+		return {};
+	}
+	initClasses() {
+		return {
+			main: this.item.classes.value,
+			item: this.getSubClass("item"),
+			trailing: this.getSubClass("trailing")
+		};
+	}
+	initStyles() {
+		return {};
+	}
+	initRender() {
+		var e;
+		return a("div", {
+			...this.getAttrs(),
+			class: (e = this.classes) == null ? void 0 : e.value.main
+		}, this.renderData());
+	}
+}, m = class {
+	constructor(t, n, r, a, o) {
+		e(this, "is", i(() => !!(!this.props.disabled && this.components))), e(this, "binds", i(() => ({
+			...u(s(this.extra), this.props.selectValueAttrs, { class: `${this.className}__select-value` }),
+			disabled: this.props.disabled
+		}))), e(this, "render", (e) => this.components && this.is.value ? this.components.render("selectValue", l(e == null ? {} : e, this.binds.value), this.index) : []), this.props = t, this.className = n, this.components = r, this.extra = a, this.index = o;
+	}
 };
+//#endregion
+export { d as SelectValue, p as SelectValueDesign, m as SelectValueInclude, f as defaultsSelectValue };

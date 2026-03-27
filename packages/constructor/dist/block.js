@@ -1,10 +1,2 @@
-import { B as t, a as s } from "./BlockDesign-DHCkcwP1.js";
-const a = {
-  tag: "div",
-  tagHeader: "h3"
-};
-export {
-  t as Block,
-  s as BlockDesign,
-  a as defaultsBlock
-};
+import { n as e, r as t, t as n } from "./BlockDesign-C6w_RCLR.js";
+export { t as Block, n as BlockDesign, e as defaultsBlock };

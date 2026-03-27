@@ -60,14 +60,19 @@ goScrollSmooth(0)
 Вспомогательные функции для определения типов элементов и их наличия в текущем документе.
 
 ```javascript
-import { isInDom, isInput } from '@dxtmisha/functional-basic'
+import { isInDom, isElementVisible, isInput } from '@dxtmisha/functional-basic'
 
 // 1. Проверка, примонтирован ли элемент к DOM
 if (isInDom(el)) {
+  console.log('Элемент находится в дереве DOM')
+}
+
+// 2. Проверка, является ли элемент видимым (не скрыт через CSS)
+if (isElementVisible(el)) {
   console.log('Элемент виден пользователю')
 }
 
-// 2. Проверка, является ли узел полем ввода
+// 3. Проверка, является ли узел полем ввода
 if (isInput(el)) {
   el.focus()
 }

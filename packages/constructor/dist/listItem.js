@@ -1,287 +1,114 @@
-var A = Object.defineProperty;
-var L = (n, t, e) => t in n ? A(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var i = (n, t, e) => L(n, typeof t != "symbol" ? t + "" : t, e);
-import { computed as d, h as g } from "vue";
-import { DesignConstructorAbstract as P } from "@dxtmisha/functional";
-import { g as R } from "./getClassTagAStatic-BnVYlXHI.js";
-import { E as T } from "./EventClickInclude-DMbEP-nH.js";
-import { A as c } from "./AriaStaticInclude-DRHG8ILX.js";
-import { L as H } from "./LabelHighlightInclude-CLmTvW_6.js";
-import { S as M, P as V } from "./SuffixInclude-maZ7235l.js";
-import { C as $ } from "./CaptionInclude-CohAZRI2.js";
-import { D as j } from "./DescriptionInclude-D4ane9aR.js";
-import { B as q } from "./BadgeInclude-BwCIBVyK.js";
-import { E as z } from "./EnabledInclude-B9oXYBtR.js";
-import { I as F } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as G } from "./ProgressInclude-DlEbC7XP.js";
-import { R as J } from "./RippleInclude-Du5yIzX_.js";
-import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
-class O {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
-   * @param constructors.CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
-   * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
-   * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-   * @param constructors.LabelHighlightIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param constructors.PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
-   * @param constructors.ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
-   * @param constructors.RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
-   * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
-   */
-  constructor(t, e, r, o, s, a, l, m, u) {
-    i(this, "icon");
-    i(this, "label");
-    i(this, "prefix");
-    i(this, "caption");
-    i(this, "suffix");
-    i(this, "description");
-    i(this, "badge");
-    i(this, "ripple");
-    i(this, "progress");
-    i(this, "skeleton");
-    i(this, "enabled");
-    i(this, "event");
-    /** tag type/ тип тега */
-    i(this, "tag", d(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "div"));
-    /** values for the class/ значения для класса */
-    i(this, "classes", d(() => ({
-      [`${this.className}--description`]: this.description.is.value,
-      [R(this.classDesign)]: !0
-    })));
-    /** values for attributes/ значения для атрибутов */
-    i(this, "binds", d(() => {
-      var t;
-      return {
-        href: this.props.href,
-        "data-value": (t = this.props.index) != null ? t : this.props.value,
-        "data-divider": this.props.divider ? "active" : void 0,
-        "data-parent": this.props.parent,
-        "data-list-id": this.props.listId,
-        ...this.event.binds
-      };
-    }));
-    /** values for aria attributes/ значения для атрибутов aria */
-    i(this, "aria", d(() => {
-      const t = {
-        tabindex: this.props.tabindex,
-        ...c.role(this.props.role),
-        ...c.disabled(!!this.props.disabled)
-      };
-      switch (this.props.role) {
-        case "menuitemradio":
-        case "menuitemcheckbox":
-          return {
-            ...t,
-            ...c.checked(!!this.props.selected)
-          };
-        case "menuitem":
-        case "option":
-          return {
-            ...t,
-            ...c.selected(!!this.props.selected)
-          };
-      }
-      return t;
-    }));
-    this.props = t, this.refs = e, this.element = r, this.classDesign = o, this.className = s, this.components = a, this.slots = l, this.emits = m;
-    const {
-      BadgeIncludeConstructor: f = q,
-      CaptionIncludeConstructor: C = $,
-      DescriptionIncludeConstructor: I = j,
-      EnabledIncludeConstructor: v = z,
-      EventClickIncludeConstructor: x = T,
-      IconTrailingIncludeConstructor: S = F,
-      LabelHighlightIncludeConstructor: w = H,
-      PrefixIncludeConstructor: k = V,
-      ProgressIncludeConstructor: y = G,
-      RippleIncludeConstructor: B = J,
-      SkeletonIncludeConstructor: D = K,
-      SuffixIncludeConstructor: E = M
-    } = u != null ? u : {}, b = new y(
-      t,
-      s,
-      a,
-      {
-        circular: !0
-      }
-    ), h = new D(
-      t,
-      o,
-      ["classTextVariant"]
-    ), p = new v(t, b);
-    this.icon = new S(t, s, a), this.label = new w(
-      t,
-      s,
-      void 0,
-      l,
-      void 0,
-      h
-    ), this.prefix = new k(t, s, l, h), this.caption = new C(t, s, l), this.suffix = new E(t, s, l), this.description = new I(t, s, l, h), this.badge = new f(
-      t,
-      s,
-      a,
-      {
-        overlap: "static"
-      }
-    ), this.ripple = new B(s, a, p), this.progress = b, this.skeleton = h, this.enabled = p, this.event = new x(t, p, m);
-  }
-}
-const at = {
-  tabindex: "-1",
-  role: "option",
-  // :default [!] System label / Системная метка
-  iconAlign: "center"
+import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
+import { t } from "./defineProperty-BTtSLqQS.js";
+import { t as n } from "./ProgressInclude-j7LjKx-L.js";
+import { t as r } from "./EnabledInclude-D1O_lLPV.js";
+import { t as i } from "./EventClickInclude-B0o5DErp.js";
+import { t as a } from "./SkeletonInclude-DtQCG1qF.js";
+import { t as o } from "./DescriptionInclude--_NvJ6ka.js";
+import { t as s } from "./getClassTagAStatic-Cdptb763.js";
+import { t as c } from "./IconTrailingInclude-BDIQA_q_.js";
+import { t as l } from "./CaptionInclude-Bg-QLUJc.js";
+import { t as u } from "./RippleInclude-DUp1Zljh.js";
+import { t as d } from "./LabelHighlightInclude-ClA0rsRb.js";
+import { n as f, t as p } from "./SuffixInclude-BGaSX001.js";
+import { t as m } from "./BadgeInclude-CRF-O-bM.js";
+import { computed as h, h as g } from "vue";
+import { DesignConstructorAbstract as _ } from "@dxtmisha/functional";
+//#region src/constructors/ListItem/ListItem.ts
+var v = class {
+	constructor(g, _, v, y, b, x, S, C, w) {
+		t(this, "icon", void 0), t(this, "label", void 0), t(this, "prefix", void 0), t(this, "caption", void 0), t(this, "suffix", void 0), t(this, "description", void 0), t(this, "badge", void 0), t(this, "ripple", void 0), t(this, "progress", void 0), t(this, "skeleton", void 0), t(this, "enabled", void 0), t(this, "event", void 0), t(this, "tag", h(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "div")), t(this, "classes", h(() => ({
+			[`${this.className}--description`]: this.description.is.value,
+			[s(this.classDesign)]: !0
+		}))), t(this, "binds", h(() => {
+			var e;
+			return {
+				href: this.props.href,
+				"data-value": (e = this.props.index) == null ? this.props.value : e,
+				"data-divider": this.props.divider ? "active" : void 0,
+				"data-parent": this.props.parent,
+				"data-list-id": this.props.listId,
+				...this.event.binds
+			};
+		})), t(this, "aria", h(() => {
+			let t = {
+				tabindex: this.props.tabindex,
+				...e.role(this.props.role),
+				...e.disabled(!!this.props.disabled)
+			};
+			switch (this.props.role) {
+				case "menuitemradio":
+				case "menuitemcheckbox": return {
+					...t,
+					...e.checked(!!this.props.selected)
+				};
+				case "menuitem":
+				case "option": return {
+					...t,
+					...e.selected(!!this.props.selected)
+				};
+			}
+			return t;
+		})), this.props = g, this.refs = _, this.element = v, this.classDesign = y, this.className = b, this.components = x, this.slots = S, this.emits = C;
+		let { BadgeIncludeConstructor: T = m, CaptionIncludeConstructor: E = l, DescriptionIncludeConstructor: D = o, EnabledIncludeConstructor: O = r, EventClickIncludeConstructor: k = i, IconTrailingIncludeConstructor: A = c, LabelHighlightIncludeConstructor: j = d, PrefixIncludeConstructor: M = f, ProgressIncludeConstructor: N = n, RippleIncludeConstructor: P = u, SkeletonIncludeConstructor: F = a, SuffixIncludeConstructor: I = p } = w == null ? {} : w, L = new N(g, b, x, { circular: !0 }), R = new F(g, y, ["classTextVariant"]), z = new O(g, L);
+		this.icon = new A(g, b, x), this.label = new j(g, b, void 0, S, void 0, R), this.prefix = new M(g, b, S, R), this.caption = new E(g, b, S), this.suffix = new I(g, b, S), this.description = new D(g, b, S, R), this.badge = new T(g, b, x, { overlap: "static" }), this.ripple = new P(b, x, z), this.progress = L, this.skeleton = R, this.enabled = z, this.event = new k(g, z, C);
+	}
+}, y = {
+	tabindex: "-1",
+	role: "option",
+	iconAlign: "center"
+}, b = class extends _ {
+	constructor(e, n, r) {
+		super(e, n, r), t(this, "item", void 0), t(this, "renderBody", () => {
+			var e;
+			let t = [...this.renderContext(), ...this.item.description.render()];
+			return this.initSlot("body", t), [g("div", { class: (e = this.classes) == null ? void 0 : e.value.body }, t)];
+		}), t(this, "renderContext", () => {
+			var e;
+			return [g("div", { class: (e = this.classes) == null ? void 0 : e.value.context }, [
+				...this.item.prefix.render(),
+				...this.item.label.render(),
+				...this.item.caption.render(),
+				...this.item.suffix.render(),
+				...this.item.badge.render()
+			])];
+		}), this.item = new v(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+	}
+	initExpose() {
+		return { ...this.item.event.expose };
+	}
+	initClasses() {
+		return {
+			main: this.item.classes.value,
+			body: this.getSubClass("body"),
+			context: this.getSubClass("context"),
+			label: this.getSubClass("label"),
+			highlight: this.getSubClass("highlight"),
+			prefix: this.getSubClass("prefix"),
+			caption: this.getSubClass("caption"),
+			description: this.getSubClass("description"),
+			icon: this.getSubClass("icon"),
+			trailing: this.getSubClass("trailing"),
+			badge: this.getSubClass("badge"),
+			input: this.getSubClass("input")
+		};
+	}
+	initStyles() {
+		return {};
+	}
+	initRender() {
+		var e, t;
+		if (this.props.filterMode && !this.item.label.isHighlight()) return;
+		let n = [];
+		return this.initSlot("leading", n), n.push(...this.renderBody()), this.initSlot("trailing", n), n.push(...this.item.icon.render(), ...this.item.progress.render(), ...this.item.ripple.render()), g(this.item.tag.value, {
+			...this.getAttrs(),
+			ref: this.element,
+			class: (e = this.classes) == null ? void 0 : e.value.main,
+			style: (t = this.styles) == null ? void 0 : t.value,
+			...this.item.binds.value,
+			...this.item.aria.value
+		}, n);
+	}
 };
-class ht extends P {
-  /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   */
-  constructor(e, r, o) {
-    super(
-      e,
-      r,
-      o
-    );
-    i(this, "item");
-    /**
-     * Method for rendering the main part of the component.
-     *
-     * Метод для рендеринга основной части компонента.
-     */
-    i(this, "renderBody", () => {
-      var r;
-      const e = [
-        ...this.renderContext(),
-        ...this.item.description.render()
-      ];
-      return this.initSlot("body", e), [
-        g(
-          "div",
-          { class: (r = this.classes) == null ? void 0 : r.value.body },
-          e
-        )
-      ];
-    });
-    /**
-     * Method for rendering the context part of the component.
-     * This includes prefix, caption, suffix, badge, and label.
-     *
-     * Метод для рендеринга контекстной части компонента.
-     * Включает в себя префикс, подпись, суффикс, значок и метку.
-     */
-    i(this, "renderContext", () => {
-      var e;
-      return [
-        g(
-          "div",
-          { class: (e = this.classes) == null ? void 0 : e.value.context },
-          [
-            ...this.item.prefix.render(),
-            ...this.item.label.render(),
-            ...this.item.caption.render(),
-            ...this.item.suffix.render(),
-            ...this.item.badge.render()
-          ]
-        )
-      ];
-    });
-    this.item = new O(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    ), this.init();
-  }
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  initExpose() {
-    return {
-      ...this.item.event.expose
-    };
-  }
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  initClasses() {
-    return {
-      main: this.item.classes.value,
-      // :classes [!] System label / Системная метка
-      body: this.getSubClass("body"),
-      context: this.getSubClass("context"),
-      label: this.getSubClass("label"),
-      highlight: this.getSubClass("highlight"),
-      prefix: this.getSubClass("prefix"),
-      caption: this.getSubClass("caption"),
-      description: this.getSubClass("description"),
-      icon: this.getSubClass("icon"),
-      trailing: this.getSubClass("trailing"),
-      badge: this.getSubClass("badge"),
-      input: this.getSubClass("input")
-    };
-  }
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  initStyles() {
-    return {};
-  }
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  initRender() {
-    var r, o;
-    if (this.props.filterMode && !this.item.label.isHighlight())
-      return;
-    const e = [];
-    return this.initSlot("leading", e), e.push(...this.renderBody()), this.initSlot("trailing", e), e.push(
-      ...this.item.icon.render(),
-      ...this.item.progress.render(),
-      ...this.item.ripple.render()
-    ), g(
-      this.item.tag.value,
-      {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: (r = this.classes) == null ? void 0 : r.value.main,
-        style: (o = this.styles) == null ? void 0 : o.value,
-        ...this.item.binds.value,
-        ...this.item.aria.value
-      },
-      e
-    );
-  }
-}
-export {
-  O as ListItem,
-  ht as ListItemDesign,
-  at as defaultsListItem
-};
+//#endregion
+export { v as ListItem, b as ListItemDesign, y as defaultsListItem };

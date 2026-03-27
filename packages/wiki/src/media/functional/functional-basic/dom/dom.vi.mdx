@@ -60,14 +60,19 @@ goScrollSmooth(0)
 Các hàm trợ giúp để xác định loại phần tử và sự hiện diện của chúng trong tài liệu hiện tại.
 
 ```javascript
-import { isInDom, isInput } from '@dxtmisha/functional-basic'
+import { isInDom, isElementVisible, isInput } from '@dxtmisha/functional-basic'
 
 // 1. Kiểm tra xem một phần tử có được gắn vào DOM hay không
 if (isInDom(el)) {
+  console.log('Phần tử nằm trong cây DOM')
+}
+
+// 2. Kiểm tra xem một phần tử có hiển thị hay không (không bị ẩn bởi CSS)
+if (isElementVisible(el)) {
   console.log('Phần tử hiển thị với người dùng')
 }
 
-// 2. Kiểm tra xem một nút có phải là trường nhập liệu hay không
+// 3. Kiểm tra xem một nút có phải là trường nhập liệu hay không
 if (isInput(el)) {
   el.focus()
 }

@@ -1,4 +1,4 @@
-import { t as e } from "./D1Skeleton-CjHvXywZ.js";
+import { t as e } from "./D1Skeleton-CWGefj10.js";
 //#region src/components/Ui/Skeleton/index.ts
 var t = e;
 //#endregion

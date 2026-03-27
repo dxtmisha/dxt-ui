@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/handleShare - Обмен данными через Web Share API'/>
+
+# `handleShare`
+
+Вызывает встроенный механизм обмена данными мобильного устройства или операционной системы через Web Share API.
+Рекомендуется проверять поддержку с помощью `isShare` перед вызовом.
+
+**Параметры:**
+- `data: ShareData` — объект, содержащий данные для обмена (заголовок, текст, ссылка).
+
+**Возвращает:**
+`Promise<boolean>` — `true`, если данные были успешно переданы, иначе `false`.
+
+```typescript
+import { handleShare, isShare } from '@dxtmisha/functional-basic'
+
+const shareData = {
+  title: 'Посмотрите этот сайт!',
+  text: 'Я нашел здесь кое-что интересное.',
+  url: 'https://example.com'
+}
+
+if (isShare()) {
+  const success = await handleShare(shareData)
+  
+  if (success) {
+    console.log('Данные успешно переданы!')
+  }
+}
+```

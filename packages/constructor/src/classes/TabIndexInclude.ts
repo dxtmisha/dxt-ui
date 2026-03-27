@@ -180,7 +180,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   findLastElement(): HTMLElement | undefined {
     const elements = this.getElement()
       ?.querySelectorAll<HTMLButtonElement>('*')
-
+    console.log('elements', elements)
     if (elements) {
       for (let i = elements.length - 1; i >= 0; i--) {
         const element = elements[i]
@@ -237,7 +237,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     }
 
     const focusActive = document.activeElement as HTMLElement
-
+    console.log('focusActive', focusActive, this.findLastElement())
     if (focusActive) {
       if (this.isShift(event)) {
         if (focusActive === this.findFirstElement()) {

@@ -60,14 +60,19 @@ goScrollSmooth(0)
 Helper functions for determining element types and their presence in the current document.
 
 ```javascript
-import { isInDom, isInput } from '@dxtmisha/functional-basic'
+import { isInDom, isElementVisible, isInput } from '@dxtmisha/functional-basic'
 
 // 1. Check if an element is mounted in the DOM
 if (isInDom(el)) {
+  console.log('Element is in the DOM tree')
+}
+
+// 2. Check if an element is visible (not hidden by CSS)
+if (isElementVisible(el)) {
   console.log('Element is visible to the user')
 }
 
-// 2. Check if a node is an input field
+// 3. Check if a node is an input field
 if (isInput(el)) {
   el.focus()
 }

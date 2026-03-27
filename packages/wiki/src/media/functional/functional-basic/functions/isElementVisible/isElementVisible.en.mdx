@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isElementVisible - Check if element is visible'/>
+
+# `isElementVisible`
+
+Checks if an element is visible (not hidden by CSS and is in the DOM).
+An element can be off-screen and still be considered visible.
+
+**Parameters:**
+- `elementSelectors: ElementOrString<E>` — selectors for matching or an Element.
+
+**Returns:**
+`boolean` — `true` if the element is visible, otherwise `false`.
+
+```typescript
+import { isElementVisible } from '@dxtmisha/functional-basic'
+
+const div = document.createElement('div')
+document.body.appendChild(div)
+console.log(isElementVisible(div)) // true
+
+div.style.display = 'none'
+console.log(isElementVisible(div)) // false
+```

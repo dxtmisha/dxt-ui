@@ -39,6 +39,16 @@ export class FieldEventInclude {
   }
 
   /**
+   * Checks if it is possible to change the value.
+   *
+   * Проверяет, возможно ли изменение значения.
+   */
+  isEnabled(): boolean {
+    return this.props.disabled !== true
+      && this.props.readonly !== true
+  }
+
+  /**
    * Events for losing focus.
    *
    * События для потери фокуса.
@@ -191,16 +201,6 @@ export class FieldEventInclude {
     type: string & keyof FieldBasicEmits
   ): boolean {
     return Boolean(type && ['input', 'change'].indexOf(type) >= 0)
-  }
-
-  /**
-   * Checks if it is possible to change the value.
-   *
-   * Проверяет, возможно ли изменение значения.
-   */
-  protected isEnabled(): boolean {
-    return this.props.disabled !== true
-      && this.props.readonly !== true
   }
 
   /**

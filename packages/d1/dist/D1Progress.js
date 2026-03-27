@@ -1,3 +1,3 @@
-import "./D1Progress-CD6wYH0x.js";
-import { t as e } from "./Progress-LN--cv5q.js";
+import "./D1Progress-D8vaV3J3.js";
+import { t as e } from "./Progress-BAZDdrS1.js";
 export { e as D1Progress };

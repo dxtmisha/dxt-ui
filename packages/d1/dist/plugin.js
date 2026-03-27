@@ -1,13 +1,9 @@
-import { componentsList as e, componentsReg as t, packageName as n, styleVarsReg as r } from "./design.js";
-import { isFilled as i } from "@dxtmisha/functional";
-import { toCamelCase as a, toKebabCase as o } from "@dxtmisha/functional-basic";
-//#region ../constructor/dist/Plugin-BxAZ9kvG.js
-var s = Object.defineProperty, c = (e, t, n) => t in e ? s(e, t, {
-	enumerable: !0,
-	configurable: !0,
-	writable: !0,
-	value: n
-}) : e[t] = n, l = (e, t, n) => c(e, typeof t == "symbol" ? t : t + "", n), u = class {
+import { t as e } from "./defineProperty-BTtSLqQS-TjUoew5B.js";
+import { componentsList as t, componentsReg as n, packageName as r, styleVarsReg as i } from "./design.js";
+import { isFilled as a } from "@dxtmisha/functional";
+import { toCamelCase as o, toKebabCase as s } from "@dxtmisha/functional-basic";
+//#region ../constructor/dist/Plugin-CUh4OV1f.js
+var c = class {
 	static isSrc(e) {
 		return !!(e.match(/\/src\//i) && !e.match(/\/node_modules\//i));
 	}
@@ -23,668 +19,15 @@ var s = Object.defineProperty, c = (e, t, n) => t in e ? s(e, t, {
 	static isDev(e) {
 		return e === "development";
 	}
-}, d = 44, f = 59, p = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", m = new Uint8Array(64), h = new Uint8Array(128);
-for (let e = 0; e < p.length; e++) {
-	let t = p.charCodeAt(e);
-	m[e] = t, h[t] = e;
-}
-function g(e, t, n) {
-	let r = t - n;
-	r = r < 0 ? -r << 1 | 1 : r << 1;
-	do {
-		let t = r & 31;
-		r >>>= 5, r > 0 && (t |= 32), e.write(m[t]);
-	} while (r > 0);
-	return t;
-}
-var _ = 1024 * 16, v = typeof TextDecoder < "u" ? /* @__PURE__ */ new TextDecoder() : typeof Buffer < "u" ? { decode(e) {
-	return Buffer.from(e.buffer, e.byteOffset, e.byteLength).toString();
-} } : { decode(e) {
-	let t = "";
-	for (let n = 0; n < e.length; n++) t += String.fromCharCode(e[n]);
-	return t;
-} }, y = class {
-	constructor() {
-		this.pos = 0, this.out = "", this.buffer = new Uint8Array(_);
-	}
-	write(e) {
-		let { buffer: t } = this;
-		t[this.pos++] = e, this.pos === _ && (this.out += v.decode(t), this.pos = 0);
-	}
-	flush() {
-		let { buffer: e, out: t, pos: n } = this;
-		return n > 0 ? t + v.decode(e.subarray(0, n)) : t;
-	}
-};
-function b(e) {
-	let t = new y(), n = 0, r = 0, i = 0, a = 0;
-	for (let o = 0; o < e.length; o++) {
-		let s = e[o];
-		if (o > 0 && t.write(f), s.length === 0) continue;
-		let c = 0;
-		for (let e = 0; e < s.length; e++) {
-			let o = s[e];
-			e > 0 && t.write(d), c = g(t, o[0], c), o.length !== 1 && (n = g(t, o[1], n), r = g(t, o[2], r), i = g(t, o[3], i), o.length !== 4 && (a = g(t, o[4], a)));
-		}
-	}
-	return t.flush();
-}
-var x = class e {
-	constructor(t) {
-		this.bits = t instanceof e ? t.bits.slice() : [];
-	}
-	add(e) {
-		this.bits[e >> 5] |= 1 << (e & 31);
-	}
-	has(e) {
-		return !!(this.bits[e >> 5] & 1 << (e & 31));
-	}
-}, S = class e {
-	constructor(e, t, n) {
-		this.start = e, this.end = t, this.original = n, this.intro = "", this.outro = "", this.content = n, this.storeName = !1, this.edited = !1, this.previous = null, this.next = null;
-	}
-	appendLeft(e) {
-		this.outro += e;
-	}
-	appendRight(e) {
-		this.intro += e;
-	}
-	clone() {
-		let t = new e(this.start, this.end, this.original);
-		return t.intro = this.intro, t.outro = this.outro, t.content = this.content, t.storeName = this.storeName, t.edited = this.edited, t;
-	}
-	contains(e) {
-		return this.start < e && e < this.end;
-	}
-	eachNext(e) {
-		let t = this;
-		for (; t;) e(t), t = t.next;
-	}
-	eachPrevious(e) {
-		let t = this;
-		for (; t;) e(t), t = t.previous;
-	}
-	edit(e, t, n) {
-		return this.content = e, n || (this.intro = "", this.outro = ""), this.storeName = t, this.edited = !0, this;
-	}
-	prependLeft(e) {
-		this.outro = e + this.outro;
-	}
-	prependRight(e) {
-		this.intro = e + this.intro;
-	}
-	reset() {
-		this.intro = "", this.outro = "", this.edited && (this.content = this.original, this.storeName = !1, this.edited = !1);
-	}
-	split(t) {
-		let n = t - this.start, r = this.original.slice(0, n), i = this.original.slice(n);
-		this.original = r;
-		let a = new e(t, this.end, i);
-		return a.outro = this.outro, this.outro = "", this.end = t, this.edited ? (a.edit("", !1), this.content = "") : this.content = r, a.next = this.next, a.next && (a.next.previous = a), a.previous = this, this.next = a, a;
-	}
-	toString() {
-		return this.intro + this.content + this.outro;
-	}
-	trimEnd(e) {
-		if (this.outro = this.outro.replace(e, ""), this.outro.length) return !0;
-		let t = this.content.replace(e, "");
-		if (t.length) return t !== this.content && (this.split(this.start + t.length).edit("", void 0, !0), this.edited && this.edit(t, this.storeName, !0)), !0;
-		if (this.edit("", void 0, !0), this.intro = this.intro.replace(e, ""), this.intro.length) return !0;
-	}
-	trimStart(e) {
-		if (this.intro = this.intro.replace(e, ""), this.intro.length) return !0;
-		let t = this.content.replace(e, "");
-		if (t.length) {
-			if (t !== this.content) {
-				let e = this.split(this.end - t.length);
-				this.edited && e.edit(t, this.storeName, !0), this.edit("", void 0, !0);
-			}
-			return !0;
-		} else if (this.edit("", void 0, !0), this.outro = this.outro.replace(e, ""), this.outro.length) return !0;
-	}
-};
-function C() {
-	return typeof globalThis < "u" && typeof globalThis.btoa == "function" ? (e) => globalThis.btoa(unescape(encodeURIComponent(e))) : typeof Buffer == "function" ? (e) => Buffer.from(e, "utf-8").toString("base64") : () => {
-		throw Error("Unsupported environment: `window.btoa` or `Buffer` should be supported.");
-	};
-}
-var w = /* @__PURE__ */ C(), T = class {
-	constructor(e) {
-		this.version = 3, this.file = e.file, this.sources = e.sources, this.sourcesContent = e.sourcesContent, this.names = e.names, this.mappings = b(e.mappings), e.x_google_ignoreList !== void 0 && (this.x_google_ignoreList = e.x_google_ignoreList), e.debugId !== void 0 && (this.debugId = e.debugId);
-	}
-	toString() {
-		return JSON.stringify(this);
-	}
-	toUrl() {
-		return "data:application/json;charset=utf-8;base64," + w(this.toString());
-	}
-};
-function E(e) {
-	let t = e.split("\n"), n = t.filter((e) => /^\t+/.test(e)), r = t.filter((e) => /^ {2,}/.test(e));
-	if (n.length === 0 && r.length === 0) return null;
-	if (n.length >= r.length) return "	";
-	let i = r.reduce((e, t) => {
-		let n = /^ +/.exec(t)[0].length;
-		return Math.min(n, e);
-	}, Infinity);
-	return Array(i + 1).join(" ");
-}
-function D(e, t) {
-	let n = e.split(/[/\\]/), r = t.split(/[/\\]/);
-	for (n.pop(); n[0] === r[0];) n.shift(), r.shift();
-	if (n.length) {
-		let e = n.length;
-		for (; e--;) n[e] = "..";
-	}
-	return n.concat(r).join("/");
-}
-var O = Object.prototype.toString;
-function k(e) {
-	return O.call(e) === "[object Object]";
-}
-function A(e) {
-	let t = e.split("\n"), n = [];
-	for (let e = 0, r = 0; e < t.length; e++) n.push(r), r += t[e].length + 1;
-	return function(e) {
-		let t = 0, r = n.length;
-		for (; t < r;) {
-			let i = t + r >> 1;
-			e < n[i] ? r = i : t = i + 1;
-		}
-		let i = t - 1;
-		return {
-			line: i,
-			column: e - n[i]
-		};
-	};
-}
-var j = /\w/, M = class {
-	constructor(e) {
-		this.hires = e, this.generatedCodeLine = 0, this.generatedCodeColumn = 0, this.raw = [], this.rawSegments = this.raw[this.generatedCodeLine] = [], this.pending = null;
-	}
-	addEdit(e, t, n, r) {
-		if (t.length) {
-			let i = t.length - 1, a = t.indexOf("\n", 0), o = -1;
-			for (; a >= 0 && i > a;) {
-				let i = [
-					this.generatedCodeColumn,
-					e,
-					n.line,
-					n.column
-				];
-				r >= 0 && i.push(r), this.rawSegments.push(i), this.generatedCodeLine += 1, this.raw[this.generatedCodeLine] = this.rawSegments = [], this.generatedCodeColumn = 0, o = a, a = t.indexOf("\n", a + 1);
-			}
-			let s = [
-				this.generatedCodeColumn,
-				e,
-				n.line,
-				n.column
-			];
-			r >= 0 && s.push(r), this.rawSegments.push(s), this.advance(t.slice(o + 1));
-		} else this.pending && (this.rawSegments.push(this.pending), this.advance(t));
-		this.pending = null;
-	}
-	addUneditedChunk(e, t, n, r, i) {
-		let a = t.start, o = !0, s = !1;
-		for (; a < t.end;) {
-			if (n[a] === "\n") r.line += 1, r.column = 0, this.generatedCodeLine += 1, this.raw[this.generatedCodeLine] = this.rawSegments = [], this.generatedCodeColumn = 0, o = !0, s = !1;
-			else {
-				if (this.hires || o || i.has(a)) {
-					let t = [
-						this.generatedCodeColumn,
-						e,
-						r.line,
-						r.column
-					];
-					this.hires === "boundary" ? j.test(n[a]) ? s || (this.rawSegments.push(t), s = !0) : (this.rawSegments.push(t), s = !1) : this.rawSegments.push(t);
-				}
-				r.column += 1, this.generatedCodeColumn += 1, o = !1;
-			}
-			a += 1;
-		}
-		this.pending = null;
-	}
-	advance(e) {
-		if (!e) return;
-		let t = e.split("\n");
-		if (t.length > 1) {
-			for (let e = 0; e < t.length - 1; e++) this.generatedCodeLine++, this.raw[this.generatedCodeLine] = this.rawSegments = [];
-			this.generatedCodeColumn = 0;
-		}
-		this.generatedCodeColumn += t[t.length - 1].length;
-	}
-}, N = "\n", P = {
-	insertLeft: !1,
-	insertRight: !1,
-	storeName: !1
-}, F = class e {
-	constructor(e, t = {}) {
-		let n = new S(0, e.length, e);
-		Object.defineProperties(this, {
-			original: {
-				writable: !0,
-				value: e
-			},
-			outro: {
-				writable: !0,
-				value: ""
-			},
-			intro: {
-				writable: !0,
-				value: ""
-			},
-			firstChunk: {
-				writable: !0,
-				value: n
-			},
-			lastChunk: {
-				writable: !0,
-				value: n
-			},
-			lastSearchedChunk: {
-				writable: !0,
-				value: n
-			},
-			byStart: {
-				writable: !0,
-				value: {}
-			},
-			byEnd: {
-				writable: !0,
-				value: {}
-			},
-			filename: {
-				writable: !0,
-				value: t.filename
-			},
-			indentExclusionRanges: {
-				writable: !0,
-				value: t.indentExclusionRanges
-			},
-			sourcemapLocations: {
-				writable: !0,
-				value: new x()
-			},
-			storedNames: {
-				writable: !0,
-				value: {}
-			},
-			indentStr: {
-				writable: !0,
-				value: void 0
-			},
-			ignoreList: {
-				writable: !0,
-				value: t.ignoreList
-			},
-			offset: {
-				writable: !0,
-				value: t.offset || 0
-			}
-		}), this.byStart[0] = n, this.byEnd[e.length] = n;
-	}
-	addSourcemapLocation(e) {
-		this.sourcemapLocations.add(e);
-	}
-	append(e) {
-		if (typeof e != "string") throw TypeError("outro content must be a string");
-		return this.outro += e, this;
-	}
-	appendLeft(e, t) {
-		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
-		this._split(e);
-		let n = this.byEnd[e];
-		return n ? n.appendLeft(t) : this.intro += t, this;
-	}
-	appendRight(e, t) {
-		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
-		this._split(e);
-		let n = this.byStart[e];
-		return n ? n.appendRight(t) : this.outro += t, this;
-	}
-	clone() {
-		let t = new e(this.original, {
-			filename: this.filename,
-			offset: this.offset
-		}), n = this.firstChunk, r = t.firstChunk = t.lastSearchedChunk = n.clone();
-		for (; n;) {
-			t.byStart[r.start] = r, t.byEnd[r.end] = r;
-			let e = n.next, i = e && e.clone();
-			i && (r.next = i, i.previous = r, r = i), n = e;
-		}
-		return t.lastChunk = r, this.indentExclusionRanges && (t.indentExclusionRanges = this.indentExclusionRanges.slice()), t.sourcemapLocations = new x(this.sourcemapLocations), t.intro = this.intro, t.outro = this.outro, t;
-	}
-	generateDecodedMap(e) {
-		e = e || {};
-		let t = Object.keys(this.storedNames), n = new M(e.hires), r = A(this.original);
-		return this.intro && n.advance(this.intro), this.firstChunk.eachNext((e) => {
-			let i = r(e.start);
-			e.intro.length && n.advance(e.intro), e.edited ? n.addEdit(0, e.content, i, e.storeName ? t.indexOf(e.original) : -1) : n.addUneditedChunk(0, e, this.original, i, this.sourcemapLocations), e.outro.length && n.advance(e.outro);
-		}), this.outro && n.advance(this.outro), {
-			file: e.file ? e.file.split(/[/\\]/).pop() : void 0,
-			sources: [e.source ? D(e.file || "", e.source) : e.file || ""],
-			sourcesContent: e.includeContent ? [this.original] : void 0,
-			names: t,
-			mappings: n.raw,
-			x_google_ignoreList: this.ignoreList ? [0] : void 0
-		};
-	}
-	generateMap(e) {
-		return new T(this.generateDecodedMap(e));
-	}
-	_ensureindentStr() {
-		this.indentStr === void 0 && (this.indentStr = E(this.original));
-	}
-	_getRawIndentString() {
-		return this._ensureindentStr(), this.indentStr;
-	}
-	getIndentString() {
-		return this._ensureindentStr(), this.indentStr === null ? "	" : this.indentStr;
-	}
-	indent(e, t) {
-		let n = /^[^\r\n]/gm;
-		if (k(e) && (t = e, e = void 0), e === void 0 && (this._ensureindentStr(), e = this.indentStr || "	"), e === "") return this;
-		t = t || {};
-		let r = {};
-		t.exclude && (typeof t.exclude[0] == "number" ? [t.exclude] : t.exclude).forEach((e) => {
-			for (let t = e[0]; t < e[1]; t += 1) r[t] = !0;
-		});
-		let i = t.indentStart !== !1, a = (t) => i ? `${e}${t}` : (i = !0, t);
-		this.intro = this.intro.replace(n, a);
-		let o = 0, s = this.firstChunk;
-		for (; s;) {
-			let t = s.end;
-			if (s.edited) r[o] || (s.content = s.content.replace(n, a), s.content.length && (i = s.content[s.content.length - 1] === "\n"));
-			else for (o = s.start; o < t;) {
-				if (!r[o]) {
-					let t = this.original[o];
-					t === "\n" ? i = !0 : t !== "\r" && i && (i = !1, o === s.start || (this._splitChunk(s, o), s = s.next), s.prependRight(e));
-				}
-				o += 1;
-			}
-			o = s.end, s = s.next;
-		}
-		return this.outro = this.outro.replace(n, a), this;
-	}
-	insert() {
-		throw Error("magicString.insert(...) is deprecated. Use prependRight(...) or appendLeft(...)");
-	}
-	insertLeft(e, t) {
-		return P.insertLeft || (console.warn("magicString.insertLeft(...) is deprecated. Use magicString.appendLeft(...) instead"), P.insertLeft = !0), this.appendLeft(e, t);
-	}
-	insertRight(e, t) {
-		return P.insertRight || (console.warn("magicString.insertRight(...) is deprecated. Use magicString.prependRight(...) instead"), P.insertRight = !0), this.prependRight(e, t);
-	}
-	move(e, t, n) {
-		if (e += this.offset, t += this.offset, n += this.offset, n >= e && n <= t) throw Error("Cannot move a selection inside itself");
-		this._split(e), this._split(t), this._split(n);
-		let r = this.byStart[e], i = this.byEnd[t], a = r.previous, o = i.next, s = this.byStart[n];
-		if (!s && i === this.lastChunk) return this;
-		let c = s ? s.previous : this.lastChunk;
-		return a && (a.next = o), o && (o.previous = a), c && (c.next = r), s && (s.previous = i), r.previous || (this.firstChunk = i.next), i.next || (this.lastChunk = r.previous, this.lastChunk.next = null), r.previous = c, i.next = s || null, c || (this.firstChunk = r), s || (this.lastChunk = i), this;
-	}
-	overwrite(e, t, n, r) {
-		return r = r || {}, this.update(e, t, n, {
-			...r,
-			overwrite: !r.contentOnly
-		});
-	}
-	update(e, t, n, r) {
-		if (e += this.offset, t += this.offset, typeof n != "string") throw TypeError("replacement content must be a string");
-		if (this.original.length !== 0) {
-			for (; e < 0;) e += this.original.length;
-			for (; t < 0;) t += this.original.length;
-		}
-		if (t > this.original.length) throw Error("end is out of bounds");
-		if (e === t) throw Error("Cannot overwrite a zero-length range – use appendLeft or prependRight instead");
-		this._split(e), this._split(t), r === !0 && (P.storeName || (console.warn("The final argument to magicString.overwrite(...) should be an options object. See https://github.com/rich-harris/magic-string"), P.storeName = !0), r = { storeName: !0 });
-		let i = r === void 0 ? !1 : r.storeName, a = r === void 0 ? !1 : r.overwrite;
-		if (i) {
-			let n = this.original.slice(e, t);
-			Object.defineProperty(this.storedNames, n, {
-				writable: !0,
-				value: !0,
-				enumerable: !0
-			});
-		}
-		let o = this.byStart[e], s = this.byEnd[t];
-		if (o) {
-			let e = o;
-			for (; e !== s;) {
-				if (e.next !== this.byStart[e.end]) throw Error("Cannot overwrite across a split point");
-				e = e.next, e.edit("", !1);
-			}
-			o.edit(n, i, !a);
-		} else {
-			let r = new S(e, t, "").edit(n, i);
-			s.next = r, r.previous = s;
-		}
-		return this;
-	}
-	prepend(e) {
-		if (typeof e != "string") throw TypeError("outro content must be a string");
-		return this.intro = e + this.intro, this;
-	}
-	prependLeft(e, t) {
-		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
-		this._split(e);
-		let n = this.byEnd[e];
-		return n ? n.prependLeft(t) : this.intro = t + this.intro, this;
-	}
-	prependRight(e, t) {
-		if (e += this.offset, typeof t != "string") throw TypeError("inserted content must be a string");
-		this._split(e);
-		let n = this.byStart[e];
-		return n ? n.prependRight(t) : this.outro = t + this.outro, this;
-	}
-	remove(e, t) {
-		if (e += this.offset, t += this.offset, this.original.length !== 0) {
-			for (; e < 0;) e += this.original.length;
-			for (; t < 0;) t += this.original.length;
-		}
-		if (e === t) return this;
-		if (e < 0 || t > this.original.length) throw Error("Character is out of bounds");
-		if (e > t) throw Error("end must be greater than start");
-		this._split(e), this._split(t);
-		let n = this.byStart[e];
-		for (; n;) n.intro = "", n.outro = "", n.edit(""), n = t > n.end ? this.byStart[n.end] : null;
-		return this;
-	}
-	reset(e, t) {
-		if (e += this.offset, t += this.offset, this.original.length !== 0) {
-			for (; e < 0;) e += this.original.length;
-			for (; t < 0;) t += this.original.length;
-		}
-		if (e === t) return this;
-		if (e < 0 || t > this.original.length) throw Error("Character is out of bounds");
-		if (e > t) throw Error("end must be greater than start");
-		this._split(e), this._split(t);
-		let n = this.byStart[e];
-		for (; n;) n.reset(), n = t > n.end ? this.byStart[n.end] : null;
-		return this;
-	}
-	lastChar() {
-		if (this.outro.length) return this.outro[this.outro.length - 1];
-		let e = this.lastChunk;
-		do {
-			if (e.outro.length) return e.outro[e.outro.length - 1];
-			if (e.content.length) return e.content[e.content.length - 1];
-			if (e.intro.length) return e.intro[e.intro.length - 1];
-		} while (e = e.previous);
-		return this.intro.length ? this.intro[this.intro.length - 1] : "";
-	}
-	lastLine() {
-		let e = this.outro.lastIndexOf(N);
-		if (e !== -1) return this.outro.substr(e + 1);
-		let t = this.outro, n = this.lastChunk;
-		do {
-			if (n.outro.length > 0) {
-				if (e = n.outro.lastIndexOf(N), e !== -1) return n.outro.substr(e + 1) + t;
-				t = n.outro + t;
-			}
-			if (n.content.length > 0) {
-				if (e = n.content.lastIndexOf(N), e !== -1) return n.content.substr(e + 1) + t;
-				t = n.content + t;
-			}
-			if (n.intro.length > 0) {
-				if (e = n.intro.lastIndexOf(N), e !== -1) return n.intro.substr(e + 1) + t;
-				t = n.intro + t;
-			}
-		} while (n = n.previous);
-		return e = this.intro.lastIndexOf(N), e === -1 ? this.intro + t : this.intro.substr(e + 1) + t;
-	}
-	slice(e = 0, t = this.original.length - this.offset) {
-		if (e += this.offset, t += this.offset, this.original.length !== 0) {
-			for (; e < 0;) e += this.original.length;
-			for (; t < 0;) t += this.original.length;
-		}
-		let n = "", r = this.firstChunk;
-		for (; r && (r.start > e || r.end <= e);) {
-			if (r.start < t && r.end >= t) return n;
-			r = r.next;
-		}
-		if (r && r.edited && r.start !== e) throw Error(`Cannot use replaced character ${e} as slice start anchor.`);
-		let i = r;
-		for (; r;) {
-			r.intro && (i !== r || r.start === e) && (n += r.intro);
-			let a = r.start < t && r.end >= t;
-			if (a && r.edited && r.end !== t) throw Error(`Cannot use replaced character ${t} as slice end anchor.`);
-			let o = i === r ? e - r.start : 0, s = a ? r.content.length + t - r.end : r.content.length;
-			if (n += r.content.slice(o, s), r.outro && (!a || r.end === t) && (n += r.outro), a) break;
-			r = r.next;
-		}
-		return n;
-	}
-	snip(e, t) {
-		let n = this.clone();
-		return n.remove(0, e), n.remove(t, n.original.length), n;
-	}
-	_split(e) {
-		if (this.byStart[e] || this.byEnd[e]) return;
-		let t = this.lastSearchedChunk, n = t, r = e > t.end;
-		for (; t;) {
-			if (t.contains(e)) return this._splitChunk(t, e);
-			if (t = r ? this.byStart[t.end] : this.byEnd[t.start], t === n) return;
-			n = t;
-		}
-	}
-	_splitChunk(e, t) {
-		if (e.edited && e.content.length) {
-			let n = A(this.original)(t);
-			throw Error(`Cannot split a chunk that has already been edited (${n.line}:${n.column} – "${e.original}")`);
-		}
-		let n = e.split(t);
-		return this.byEnd[t] = e, this.byStart[t] = n, this.byEnd[n.end] = n, e === this.lastChunk && (this.lastChunk = n), this.lastSearchedChunk = e, !0;
-	}
-	toString() {
-		let e = this.intro, t = this.firstChunk;
-		for (; t;) e += t.toString(), t = t.next;
-		return e + this.outro;
-	}
-	isEmpty() {
-		let e = this.firstChunk;
-		do
-			if (e.intro.length && e.intro.trim() || e.content.length && e.content.trim() || e.outro.length && e.outro.trim()) return !1;
-		while (e = e.next);
-		return !0;
-	}
-	length() {
-		let e = this.firstChunk, t = 0;
-		do
-			t += e.intro.length + e.content.length + e.outro.length;
-		while (e = e.next);
-		return t;
-	}
-	trimLines() {
-		return this.trim("[\\r\\n]");
-	}
-	trim(e) {
-		return this.trimStart(e).trimEnd(e);
-	}
-	trimEndAborted(e) {
-		let t = RegExp((e || "\\s") + "+$");
-		if (this.outro = this.outro.replace(t, ""), this.outro.length) return !0;
-		let n = this.lastChunk;
-		do {
-			let e = n.end, r = n.trimEnd(t);
-			if (n.end !== e && (this.lastChunk === n && (this.lastChunk = n.next), this.byEnd[n.end] = n, this.byStart[n.next.start] = n.next, this.byEnd[n.next.end] = n.next), r) return !0;
-			n = n.previous;
-		} while (n);
-		return !1;
-	}
-	trimEnd(e) {
-		return this.trimEndAborted(e), this;
-	}
-	trimStartAborted(e) {
-		let t = RegExp("^" + (e || "\\s") + "+");
-		if (this.intro = this.intro.replace(t, ""), this.intro.length) return !0;
-		let n = this.firstChunk;
-		do {
-			let e = n.end, r = n.trimStart(t);
-			if (n.end !== e && (n === this.lastChunk && (this.lastChunk = n.next), this.byEnd[n.end] = n, this.byStart[n.next.start] = n.next, this.byEnd[n.next.end] = n.next), r) return !0;
-			n = n.next;
-		} while (n);
-		return !1;
-	}
-	trimStart(e) {
-		return this.trimStartAborted(e), this;
-	}
-	hasChanged() {
-		return this.original !== this.toString();
-	}
-	_replaceRegexp(e, t) {
-		function n(e, n) {
-			return typeof t == "string" ? t.replace(/\$(\$|&|\d+)/g, (t, n) => n === "$" ? "$" : n === "&" ? e[0] : +n < e.length ? e[+n] : `$${n}`) : t(...e, e.index, n, e.groups);
-		}
-		function r(e, t) {
-			let n, r = [];
-			for (; n = e.exec(t);) r.push(n);
-			return r;
-		}
-		if (e.global) r(e, this.original).forEach((e) => {
-			if (e.index != null) {
-				let t = n(e, this.original);
-				t !== e[0] && this.overwrite(e.index, e.index + e[0].length, t);
-			}
-		});
-		else {
-			let t = this.original.match(e);
-			if (t && t.index != null) {
-				let e = n(t, this.original);
-				e !== t[0] && this.overwrite(t.index, t.index + t[0].length, e);
-			}
-		}
-		return this;
-	}
-	_replaceString(e, t) {
-		let { original: n } = this, r = n.indexOf(e);
-		return r !== -1 && (typeof t == "function" && (t = t(e, r, n)), e !== t && this.overwrite(r, r + e.length, t)), this;
-	}
-	replace(e, t) {
-		return typeof e == "string" ? this._replaceString(e, t) : this._replaceRegexp(e, t);
-	}
-	_replaceAllString(e, t) {
-		let { original: n } = this, r = e.length;
-		for (let i = n.indexOf(e); i !== -1; i = n.indexOf(e, i + r)) {
-			let e = n.slice(i, i + r), a = t;
-			typeof t == "function" && (a = t(e, i, n)), e !== a && this.overwrite(i, i + r, a);
-		}
-		return this;
-	}
-	replaceAll(e, t) {
-		if (typeof e == "string") return this._replaceAllString(e, t);
-		if (!e.global) throw TypeError("MagicString.prototype.replaceAll called with a non-global RegExp argument");
-		return this._replaceRegexp(e, t);
-	}
-}, I = class {
-	constructor(e, t) {
-		l(this, "magicString"), l(this, "newCode"), this.id = e, this.code = t, this.magicString = new F(t), this.newCode = t;
+}, l = class {
+	constructor(t, n) {
+		e(this, "newCode", void 0), this.id = t, this.code = n, this.newCode = n;
 	}
 	isVue() {
-		return u.isVue(this.id);
+		return c.isVue(this.id);
 	}
 	isScss() {
-		return u.isCss(this.id);
+		return c.isCss(this.id);
 	}
 	get() {
 		return this.newCode;
@@ -695,20 +38,12 @@ var j = /\w/, M = class {
 	getCode() {
 		return this.code;
 	}
-	getMaps() {
-		return this.magicString.generateMap({
-			source: this.id,
-			includeContent: !0,
-			hires: !0
-		});
-	}
 	has(e, t = "i") {
 		return typeof e == "string" ? this.code.includes(e) : new RegExp(e, t).test(this.code);
 	}
 	addAfterScript(e) {
 		let t = /(<script[^>]*\bsetup\b[^>]*>)/;
-		return this.code.match(t) ? this.newCode = this.newCode.replace(t, `$1${e}`) : this.newCode = `<script setup>\r
-${e}<\/script>${this.newCode}`, this;
+		return this.code.match(t) ? this.newCode = this.newCode.replace(t, `$1${e}`) : this.newCode = `<script setup>\r\n${e}<\/script>${this.newCode}`, this;
 	}
 	addStart(e) {
 		return this.newCode = `${e}${this.newCode}`, this;
@@ -719,9 +54,9 @@ ${e}<\/script>${this.newCode}`, this;
 	replace(e, t) {
 		return this.newCode = this.newCode.replace(e, t), this;
 	}
-}, L = /* @__PURE__ */ "flex-position.flex-dynamic.justify-content.inset.horizon.vertically.left.right.absolute.absolute-top.absolute-bottom.absolute-after.padding-x.padding-y.padding-left.padding-right.margin-x.margin-y.margin-left.margin-right.width.height.width-basis.height-basis.aspect-ratio.aspect-ratio-width.aspect-ratio-height.squared.circle.font-size.line-height.text-align.text-overflow.clamp.text-select-none.text-case.paragraph-spacing.palette.palette-var.palette-color.palette-stroke.palette-background.palette-fill.palette-gradient.palette-border.color.color-opacity.stroke.stroke-opacity.background-color.background-opacity.background-size.fill.fill-opacity.gradient.gradient-opacity.border-color.border-opacity.translate-x.translate-y.scale.rotate".split("."), R = class {
-	constructor(e, t, n, r, i) {
-		l(this, "styleModification"), this.design = e, this.packageName = t, this.componentsReg = n, this.styleVarsReg = r, this.componentsList = i, this.styleModification = this.initStyleModification();
+}, u = /* @__PURE__ */ "flex-position.flex-dynamic.justify-content.inset.horizon.vertically.left.right.absolute.absolute-top.absolute-bottom.absolute-after.padding-x.padding-y.padding-left.padding-right.margin-x.margin-y.margin-left.margin-right.width.height.width-basis.height-basis.aspect-ratio.aspect-ratio-width.aspect-ratio-height.squared.circle.font-size.line-height.text-align.text-overflow.clamp.text-select-none.text-case.paragraph-spacing.palette.palette-var.palette-color.palette-stroke.palette-background.palette-fill.palette-gradient.palette-border.color.color-opacity.stroke.stroke-opacity.background-color.background-opacity.background-size.fill.fill-opacity.gradient.gradient-opacity.border-color.border-opacity.translate-x.translate-y.scale.rotate".split("."), d = class {
+	constructor(t, n, r, i, a) {
+		e(this, "styleModification", void 0), this.design = t, this.packageName = n, this.componentsReg = r, this.styleVarsReg = i, this.componentsList = a, this.styleModification = this.initStyleModification();
 	}
 	hasComponent(e) {
 		return !!e.match(new RegExp(this.componentsReg, "i"));
@@ -753,13 +88,13 @@ ${e}<\/script>${this.newCode}`, this;
 	}
 	initStyleModification() {
 		let e = {};
-		return L.forEach((t) => {
-			e[o(t)] = a(t);
+		return u.forEach((t) => {
+			e[s(t)] = o(t);
 		}), e;
 	}
-}, z = class {
-	constructor(e, t) {
-		l(this, "code"), this.packageName = e, this.code = t;
+}, f = class {
+	constructor(t, n) {
+		e(this, "code", void 0), this.packageName = t, this.code = n;
 	}
 	get() {
 		return this.code;
@@ -771,7 +106,7 @@ ${e}<\/script>${this.newCode}`, this;
 		let t = `${this.packageName}/${e}`;
 		this.code.includes(t) || (this.code = `import '${t}';${this.code}`);
 	}
-}, B = class {
+}, p = class {
 	constructor(e, t) {
 		this.code = e, this.pluginData = t;
 	}
@@ -790,7 +125,7 @@ ${e}<\/script>${this.newCode}`, this;
 	importComponent(e) {
 		return `import { ${e.name} } from'${this.getPath(e)}';`;
 	}
-}, V = class {
+}, m = class {
 	constructor(e, t) {
 		this.code = e, this.data = t;
 	}
@@ -798,19 +133,17 @@ ${e}<\/script>${this.newCode}`, this;
 		return this.is() && this.importDesign().makeColors().makeVars().makeProperties(), this;
 	}
 	is() {
-		return this.code.isScss() && i(this.code.getCode()) && !this.code.has(this.getIgnoreComment());
+		return this.code.isScss() && a(this.code.getCode()) && !this.code.has(this.getIgnoreComment());
 	}
 	getIgnoreComment() {
 		return `// ${this.data.getDesign()}-css-ignore`;
 	}
 	getPropertiesNone() {
-		return `(?![^\r
-]*// ${this.data.getDesign()}-mode-none)`;
+		return `(?![^\r\n]*// ${this.data.getDesign()}-mode-none)`;
 	}
 	getModificationRef() {
 		let e = this.data.getStyleModification();
-		return RegExp(`(?<=^\\s*)(${Object.keys(e).join("|")}):([^;\r
-]+)(;*)${this.getPropertiesNone()}`, "igm");
+		return RegExp(`(?<=^\\s*)(${Object.keys(e).join("|")}):([^;\r\n]+)(;*)${this.getPropertiesNone()}`, "igm");
 	}
 	importDesign() {
 		let e = `${this.data.getPackageName()}/style/ui-properties`, t = `@use '${e}.scss' as *;`;
@@ -831,9 +164,9 @@ ${e}<\/script>${this.newCode}`, this;
 			return `@include ${e == null ? void 0 : e[n.trim()]}(${a.match(/[()]/) ? `#{${a}}` : a})${i}`;
 		}), this;
 	}
-}, H = class {
-	constructor(e, t, n, r, i, a = "vite-plugin-design-ui", o = {}) {
-		l(this, "data"), l(this, "first", !0), l(this, "mode", "production"), this.design = e, this.packageName = t, this.componentsReg = n, this.styleVarsReg = r, this.componentsList = i, this.name = a, this.options = o, this.data = new R(e, t, n, r, i);
+}, h = class {
+	constructor(t, n, r, i, a, o = "vite-plugin-design-ui", s = {}) {
+		e(this, "data", void 0), e(this, "first", !0), e(this, "mode", "production"), this.design = t, this.packageName = n, this.componentsReg = r, this.styleVarsReg = i, this.componentsList = a, this.name = o, this.options = s, this.data = new d(t, n, r, i, a);
 	}
 	init() {
 		var e;
@@ -847,32 +180,32 @@ ${e}<\/script>${this.newCode}`, this;
 	}
 	isComponents() {
 		var e, t;
-		return !!((t = (e = this.options) == null ? void 0 : e.component) == null || t);
+		return !!((e = (t = this.options) == null ? void 0 : t.component) == null || e);
 	}
 	isStyles() {
 		var e, t;
-		return !!((t = (e = this.options) == null ? void 0 : e.style) == null || t);
+		return !!((e = (t = this.options) == null ? void 0 : t.style) == null || e);
 	}
 	transform(e, t) {
-		this.first && u.isJs(t) && (e = this.initMain(e), this.first = !1);
-		let n = new I(t, e);
+		this.first && c.isJs(t) && (e = this.initMain(e), this.first = !1);
+		let n = new l(t, e);
 		return this.makeComponents(n), this.initStyles(n), { code: n.get() };
 	}
 	initMain(e) {
-		let t = new z(this.packageName, e);
+		let t = new f(this.packageName, e);
 		return t.importStyle(), t.get();
 	}
 	makeComponents(e) {
-		return this.isComponents() && new B(e, this.data).make(), this;
+		return this.isComponents() && new p(e, this.data).make(), this;
 	}
 	initStyles(e) {
-		return this.isStyles() && new V(e, this.data).make(), this;
+		return this.isStyles() && new m(e, this.data).make(), this;
 	}
 };
 //#endregion
 //#region src/library/plugin.ts
-function U(i = {}) {
-	return new H("d1", n, t, r, e, "vite-plugin-d1-ui", i).init();
+function g(e = {}) {
+	return new h("d1", r, n, i, t, "vite-plugin-d1-ui", e).init();
 }
 //#endregion
-export { U as uiD1VitePlugin };
+export { g as uiD1VitePlugin };

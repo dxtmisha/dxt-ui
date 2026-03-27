@@ -1,4 +1,4 @@
-import { t as e } from "./D1GridItem-B7jGEvfc.js";
+import { t as e } from "./D1GridItem-MGRtuxtZ.js";
 //#region src/components/Ui/GridItem/index.ts
 var t = e;
 //#endregion
