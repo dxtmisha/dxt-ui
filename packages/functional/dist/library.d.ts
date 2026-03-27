@@ -1,6 +1,7 @@
 import { ApiData } from '@dxtmisha/functional-basic';
 import { ApiDefaultValue } from '@dxtmisha/functional-basic';
 import { ApiFetch } from '@dxtmisha/functional-basic';
+import { ApiInstance } from '@dxtmisha/functional-basic';
 import { ApiMethodItem } from '@dxtmisha/functional-basic';
 import { ArrayToItem } from '@dxtmisha/functional-basic';
 import { ComputedGetter } from 'vue';
@@ -1869,12 +1870,10 @@ export declare class RouterItemRef {
  * Класс для получения ширины скролла в виде реактивного элемента.
  */
 export declare class ScrollbarWidthRef {
-    /**
-     * Reactive item.
-     *
-     * Реактивный элемент.
-     */
+    /** Reactive item/ Реактивный элемент */
     readonly item: Ref<boolean | undefined, boolean | undefined>;
+    /** Reactive width/ Реактивная ширина */
+    readonly width: Ref<number, number>;
     /**
      * Constructor
      */
@@ -1946,12 +1945,36 @@ export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
 /** Utility type to convert union types to intersection types/ Утилитарный тип для преобразования объединенных типов в пересеченные */
 export declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
-export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+/**
+ * Use API delete request.
+ *
+ * Использование API delete запроса.
+ * @param path Path to the API endpoint / Путь к endpoint API
+ * @param action Action to perform after the request / Действие, выполняемое после запроса
+ * @param transformation Transformation function / Функция трансформации
+ * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
+ * @param options Additional request options / Дополнительные опции запроса
+ * @param apiInstance Api instance / Экземпляр Api
+ * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
+ */
+export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+/**
+ * Use API get request.
+ *
+ * Использование API get запроса.
+ * @param path Path to the API endpoint / Путь к endpoint API
+ * @param action Action to perform after the request / Действие, выполняемое после запроса
+ * @param transformation Transformation function / Функция трансформации
+ * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
+ * @param options Additional request options / Дополнительные опции запроса
+ * @param apiInstance Api instance / Экземпляр Api
+ * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
+ */
+export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
@@ -1968,7 +1991,7 @@ export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFe
  * @param deleteRequest properties for DELETE request / параметры для DELETE запроса
  * @param action additional action to perform on mutations / дополнительное действие при мутациях
  */
-export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void): {
+export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     /** Is valid data (Computed) / Валидность данных (Computed) */
     isValid: ComputedRef<boolean>;
     /** List data (Computed) / Данные списка (Computed) */
@@ -2032,12 +2055,36 @@ export declare function useApiManagementRef<Return extends ApiManagementValue, F
     sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
 };
 
-export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+/**
+ * Use API post request.
+ *
+ * Использование API post запроса.
+ * @param path Path to the API endpoint / Путь к endpoint API
+ * @param action Action to perform after the request / Действие, выполняемое после запроса
+ * @param transformation Transformation function / Функция трансформации
+ * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
+ * @param options Additional request options / Дополнительные опции запроса
+ * @param apiInstance Api instance / Экземпляр Api
+ * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
+ */
+export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+/**
+ * Use API put request.
+ *
+ * Использование API put запроса.
+ * @param path Path to the API endpoint / Путь к endpoint API
+ * @param action Action to perform after the request / Действие, выполняемое после запроса
+ * @param transformation Transformation function / Функция трансформации
+ * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
+ * @param options Additional request options / Дополнительные опции запроса
+ * @param apiInstance Api instance / Экземпляр Api
+ * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
+ */
+export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
@@ -2116,8 +2163,9 @@ export declare interface UseApiRef<R> {
  * @param conditions conditions for executing the request/ условия выполнения запроса
  * @param transformation transforms the received request/ преобразовывает полученный запрос
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
+ * @param apiInstance Api instance / Экземпляр Api
  */
-export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean): UseApiRef<R>;
+export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
 
 /**
  * Use api request.
@@ -2129,9 +2177,10 @@ export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefine
  * @param transformation Transformation function / Функция трансформации
  * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
  * @param options Additional request options / Дополнительные опции запроса
+ * @param apiInstance Api instance / Экземпляр Api
  * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
  */
-export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, method?: ApiMethodItem, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions): {
+export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, method?: ApiMethodItem, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     /**
      * Send request.
@@ -2228,7 +2277,7 @@ export declare const useLazyRef: (options?: IntersectionObserverInit) => {
      * Получение отслеживаемого элемента.
      * @param element tracked element/ отслеживаемый элемент
      */
-    getItem(element: HTMLElement): LazyItem | undefined;
+    getItem(element: HTMLElement): LazyItem;
     /**
      * Adding an element for tracking.
      *

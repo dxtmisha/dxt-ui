@@ -12,6 +12,7 @@ Trả về một đối tượng với trạng thái tải và phương thức `
 - `transformation?: (data: T) => Return` — Hàm chuyển đổi dữ liệu phản hồi từ máy chủ trước khi trả về hoặc truyền vào `action`.
 - `toData: boolean = true` — Việc trích xuất trường `data` từ phản hồi hay không.
 - `options?: ApiOptions` — Các tùy chọn bổ sung cho yêu cầu (đối tượng tham số `ApiFetch`).
+- `apiInstance?: ApiInstance` — Phiên bản API sử dụng cho yêu cầu. Mặc định là `Api.getItem()`.
 
 **Giá trị trả về:**
 Một đối tượng với các thuộc tính sau:

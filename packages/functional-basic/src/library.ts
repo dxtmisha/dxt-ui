@@ -2,6 +2,7 @@
 export * from './classes/Api'
 export * from './classes/ApiDefault'
 export * from './classes/ApiHeaders'
+export * from './classes/ApiInstance'
 export * from './classes/ApiPreparation'
 export * from './classes/ApiResponse'
 export * from './classes/ApiStatus'

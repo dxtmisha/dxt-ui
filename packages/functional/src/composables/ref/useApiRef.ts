@@ -9,7 +9,7 @@ import {
   watch,
   type WatchHandle
 } from 'vue'
-import { Api, type ApiData } from '@dxtmisha/functional-basic'
+import { Api, type ApiInstance, type ApiData } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { getOptions } from '../../functions/getOptions'
@@ -110,6 +110,7 @@ let globalConditions: RefType<any>
  * @param conditions conditions for executing the request/ условия выполнения запроса
  * @param transformation transforms the received request/ преобразовывает полученный запрос
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
+ * @param apiInstance Api instance / Экземпляр Api
  */
 export function useApiRef<
   R,
@@ -120,7 +121,8 @@ export function useApiRef<
   reactivity: boolean = true,
   conditions?: RefType<boolean>,
   transformation?: (data: T) => ApiData<R>,
-  unmounted: boolean = true
+  unmounted: boolean = true,
+  apiInstance: ApiInstance = Api.getItem()
 ): UseApiRef<R> {
   /** Value item / Элемент-значение */
   const item = ref<ApiData<R> | undefined>()
@@ -167,7 +169,7 @@ export function useApiRef<
       reading.value = true
 
       try {
-        const response = await Api.request<Record<string, any>>({
+        const response = await apiInstance.request<Record<string, any>>({
           path: pathValue,
           controller: abortController,
           ...request.value

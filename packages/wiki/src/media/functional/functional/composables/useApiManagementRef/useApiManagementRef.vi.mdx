@@ -14,6 +14,7 @@ Một composable mạnh mẽ để điều phối toàn diện các request API.
 - `putRequest?: ApiManagementRequest<Put>` — cấu hình tùy chọn cho yêu cầu cập nhật (PUT).
 - `deleteRequest?: ApiManagementRequest<Delete>` — cấu hình tùy chọn cho yêu cầu xóa (DELETE).
 - `action?: function` — callback chung để thực thi sau bất kỳ mutation nào thành công.
+- `apiInstance?: ApiInstance` — Phiên bản API sử dụng cho yêu cầu. Mặc định là `Api.getItem()`.
 
 ## Giá trị trả về
 - `isValid: ComputedRef<boolean>` — `true` nếu dữ liệu khớp với kiểm tra `typeData`.

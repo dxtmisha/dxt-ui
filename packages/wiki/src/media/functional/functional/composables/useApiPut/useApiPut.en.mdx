@@ -12,6 +12,7 @@ Returns an object with a loading state and a `send` method for executing API `PU
 - `transformation?: (data: T) => Return` — Function to transform the response data before it is returned or passed to the `action`.
 - `toData: boolean = true` — Whether to extract the `data` field from the response.
 - `options?: ApiOptions` — Additional request options (`ApiFetch` object parameter).
+- `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
 
 **Returns:**
 An object with the following properties:

@@ -14,6 +14,7 @@ A powerful composable for comprehensive API request orchestration. It manages da
 - `putRequest?: ApiManagementRequest<Put>` — optional config for a PUT update request.
 - `deleteRequest?: ApiManagementRequest<Delete>` — optional config for a DELETE removal request.
 - `action?: function` — a common callback to perform after any successful mutation.
+- `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
 
 ## Returns
 - `isValid: ComputedRef<boolean>` — `true` if data matches `typeData` check.

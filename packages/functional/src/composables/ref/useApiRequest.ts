@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { Api, ApiMethodItem, type ApiData, type ApiFetch } from '@dxtmisha/functional-basic'
+import { Api, type ApiInstance, ApiMethodItem, type ApiData, type ApiFetch } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { getOptions } from '../../functions/getOptions'
@@ -18,6 +18,7 @@ import type { RefOrNormal } from '../../types/refTypes'
  * @param transformation Transformation function / Функция трансформации
  * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
  * @param options Additional request options / Дополнительные опции запроса
+ * @param apiInstance Api instance / Экземпляр Api
  * @returns Object with loading state and send method / Объект с состоянием загрузки и методом отправки
  */
 export function useApiRequest<
@@ -30,7 +31,8 @@ export function useApiRequest<
   action?: (data: Return | undefined) => Promise<void> | void,
   transformation?: (data: T) => Return,
   toData: boolean = true,
-  options?: ApiOptions
+  options?: ApiOptions,
+  apiInstance: ApiInstance = Api.getItem()
 ) {
   /** Loading state / Состояние загрузки */
   const loading = ref<boolean>(false)
@@ -55,7 +57,7 @@ export function useApiRequest<
       let data: Return | undefined
 
       try {
-        data = await Api.request<Return | undefined>({
+        data = await apiInstance.request<Return | undefined>({
           path: getRef(path),
           method,
           request,

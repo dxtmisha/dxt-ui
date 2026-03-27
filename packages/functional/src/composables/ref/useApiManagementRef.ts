@@ -3,6 +3,7 @@ import {
   type FormattersOptionsList,
   type FormattersReturn,
   type ApiData,
+  type ApiInstance,
   type ArrayToItem,
   type SearchColumns,
   type SearchFormatList,
@@ -56,7 +57,8 @@ export function useApiManagementRef<
   postRequest?: ApiManagementRequest<Post>,
   putRequest?: ApiManagementRequest<Put>,
   deleteRequest?: ApiManagementRequest<Delete>,
-  action?: () => Promise<void> | void
+  action?: () => Promise<void> | void,
+  apiInstance?: ApiInstance
 ) {
   const {
     path,
@@ -88,7 +90,8 @@ export function useApiManagementRef<
     reactivity,
     conditions,
     transformation,
-    unmounted
+    unmounted,
+    apiInstance
   )
 
   /** Is valid data / Валидность данных */

@@ -13,6 +13,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `transformation?: (data: T) => Return` — Функция трансформации ответа от сервера перед возвращением или передачей в `action`.
 - `toData: boolean = true` — Извлекать ли поле `data` из ответа.
 - `options?: ApiOptions` — Дополнительные опции запроса (объект параметров `ApiFetch`).
+- `apiInstance?: ApiInstance` — Экземпляр API, используемый для выполнения запроса. По умолчанию `Api.getItem()`.
 
 **Возвращает:**
 Объект со следующими свойствами:

@@ -24,18 +24,19 @@ export declare function anyToString<V>(value: V, isArrayString?: boolean): strin
  * Класс для работы с запросами.
  */
 export declare class Api {
-    protected static url: string;
-    protected static headers: ApiHeaders;
-    protected static requestDefault: ApiDefault;
-    protected static status: ApiStatus;
-    protected static response: ApiResponse;
-    protected static preparation: ApiPreparation;
+    protected static item: ApiInstance;
     /**
      * Is the server local.
      *
      * Является ли сервер локальный.
      */
     static isLocalhost(): boolean;
+    /**
+     * Returns the instance of the class.
+     *
+     * Возвращает инстанс класса.
+     */
+    static getItem(): ApiInstance;
     /**
      * Returns the status of the last request.
      *
@@ -141,45 +142,6 @@ export declare class Api {
      * @param request list of parameters/ список параметров
      */
     static delete<T>(request: ApiFetch): Promise<T>;
-    /**
-     * To execute a request.
-     *
-     * Выполнить запрос.
-     * @param apiFetch property of the request/ свойство запроса
-     */
-    protected static fetch<T>(apiFetch: ApiFetch): Promise<T>;
-    /**
-     * Reading data from the response.
-     *
-     * Чтение данных из ответа.
-     * @param query response from the server/ ответ от сервера
-     * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
-     * @param end finalization data/ данные финализации
-     */
-    protected static readData<T>(query: Response, queryReturn: ApiFetch['queryReturn'], end: ApiPreparationEnd): Promise<ApiData<T>>;
-    /**
-     * Executing the request.
-     *
-     * Выполнение запроса.
-     * @param apiFetch property of the request/ свойство запроса
-     */
-    protected static makeQuery(apiFetch: ApiFetch): Promise<Response>;
-    /**
-     * Transforms data if needed.
-     *
-     * Преобразует данные, если нужно.
-     * @param data data for transformation/ данные для преобразования
-     * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
-     */
-    protected static makeData<T>(data: ApiData<T>, toData: boolean): ApiData<T>;
-    /**
-     * Appends the status object to the response data if possible.
-     *
-     * Добавляет объект статуса к данным ответа, если это возможно.
-     * @param data response data/ данные ответа
-     * @param status status object/ объект статуса
-     */
-    protected static makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
 }
 
 /**
@@ -313,6 +275,180 @@ export declare class ApiHeaders {
      * Изменяет данные заголовка по умолчанию.
      */
     set(headers: Record<string, string>): this;
+}
+
+/**
+ * Class for working with requests.
+ *
+ * Класс для работы с запросами.
+ */
+export declare class ApiInstance {
+    protected url: string;
+    /** Headers / Заголовки */
+    protected headers: ApiHeaders;
+    /** Default request parameters / Параметры запроса по умолчанию */
+    protected requestDefault: ApiDefault;
+    /** Status of the last request / Статус последнего запроса */
+    protected status: ApiStatus;
+    /** Response handler / Обработчик ответа */
+    protected response: ApiResponse;
+    /** Request modification handler / Обработчик модификации запроса */
+    protected preparation: ApiPreparation;
+    /**
+     * Constructor
+     * @param url base path to the script/ базовый путь к скрипту
+     */
+    constructor(url?: string);
+    /**
+     * Is the server local.
+     *
+     * Является ли сервер локальный.
+     */
+    isLocalhost(): boolean;
+    /**
+     * Returns the status of the last request.
+     *
+     * Возвращает статус последнего запроса.
+     */
+    getStatus(): ApiStatus;
+    /**
+     * Getting the response handler.
+     *
+     * Получение обработчика ответа.
+     */
+    getResponse(): ApiResponse;
+    /**
+     * Getting the full path to the request script.
+     *
+     * Получение полного пути к скрипту запроса.
+     * @param path path to the script/ путь к скрипту
+     * @param api adding a path to the site’s API/ добавление пути к API сайта
+     */
+    getUrl(path: string, api?: boolean): string;
+    /**
+     * Getting data for the body.
+     *
+     * Получение данных для тела.
+     * @param request this request/ данный запрос
+     * @param method method for request/ метод запрос
+     */
+    getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
+    /**
+     * Getting data for the body of the get method.
+     *
+     * Получение данных для тела метода get.
+     * @param request this request/ данный запрос
+     * @param path path to request/ путь к запрос
+     * @param method method for request/ метод запрос
+     */
+    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
+    /**
+     * Modifies the default header data.
+     *
+     * Изменяет данные заголовка по умолчанию.
+     */
+    setHeaders(headers: Record<string, string>): this;
+    /**
+     * Modifies the default request data.
+     *
+     * Изменяет данные запроса по умолчанию.
+     */
+    setRequestDefault(request: Record<string, any>): this;
+    /**
+     * Change the base path to the script.
+     *
+     * Изменить базовый путь к скрипту.
+     * @param url path to the script/ путь к скрипту
+     */
+    setUrl(url: string): this;
+    /**
+     * The function is modified for a call before the request.
+     *
+     * Изменить функцию перед запросом.
+     * @param callback function for call/ функция для вызова
+     */
+    setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
+    /**
+     * Modify the function after the request.
+     *
+     * Изменить функцию после запроса.
+     * @param callback function for call/ функция для вызова
+     */
+    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
+    /**
+     * To execute a request.
+     *
+     * Выполнить запрос.
+     * @param pathRequest query string or list of parameters/ строка запроса или список параметров
+     */
+    request<T>(pathRequest: string | ApiFetch): Promise<T>;
+    /**
+     * Sends a get method request.
+     *
+     * Отправляет запрос метода get.
+     * @param request list of parameters/ список параметров
+     */
+    get<T>(request: ApiFetch): Promise<T>;
+    /**
+     * Sends a post method request.
+     *
+     * Отправляет запрос метода post.
+     * @param request list of parameters/ список параметров
+     */
+    post<T>(request: ApiFetch): Promise<T>;
+    /**
+     * Sends a put method request.
+     *
+     * Отправляет запрос метода put.
+     * @param request list of parameters/ список параметров
+     */
+    put<T>(request: ApiFetch): Promise<T>;
+    /**
+     * Sends a delete method request.
+     *
+     * Отправляет запрос метода delete.
+     * @param request list of parameters/ список параметров
+     */
+    delete<T>(request: ApiFetch): Promise<T>;
+    /**
+     * To execute a request.
+     *
+     * Выполнить запрос.
+     * @param apiFetch property of the request/ свойство запроса
+     */
+    protected fetch<T>(apiFetch: ApiFetch): Promise<T>;
+    /**
+     * Reading data from the response.
+     *
+     * Чтение данных из ответа.
+     * @param query response from the server/ ответ от сервера
+     * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
+     * @param end finalization data/ данные финализации
+     */
+    protected readData<T>(query: Response, queryReturn: ApiFetch['queryReturn'], end: ApiPreparationEnd): Promise<ApiData<T>>;
+    /**
+     * Executing the request.
+     *
+     * Выполнение запроса.
+     * @param apiFetch property of the request/ свойство запроса
+     */
+    protected makeQuery(apiFetch: ApiFetch): Promise<Response>;
+    /**
+     * Transforms data if needed.
+     *
+     * Преобразует данные, если нужно.
+     * @param data data for transformation/ данные для преобразования
+     * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
+     */
+    protected makeData<T>(data: ApiData<T>, toData: boolean): ApiData<T>;
+    /**
+     * Appends the status object to the response data if possible.
+     *
+     * Добавляет объект статуса к данным ответа, если это возможно.
+     * @param data response data/ данные ответа
+     * @param status status object/ объект статуса
+     */
+    protected makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
 }
 
 /**
