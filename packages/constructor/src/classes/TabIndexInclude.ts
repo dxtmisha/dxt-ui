@@ -1,5 +1,5 @@
 import { onUnmounted, type Ref } from 'vue'
-import { EventItem, getRef, isDomRuntime, isFunction } from '@dxtmisha/functional'
+import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction } from '@dxtmisha/functional'
 
 /**
  * Class for managing focus and tab index of elements
@@ -163,6 +163,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
         if (
           'tabIndex' in element
           && element.tabIndex >= 0
+          && isElementVisible(element)
         ) {
           return element
         }
@@ -180,7 +181,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   findLastElement(): HTMLElement | undefined {
     const elements = this.getElement()
       ?.querySelectorAll<HTMLButtonElement>('*')
-    console.log('elements', elements)
+
     if (elements) {
       for (let i = elements.length - 1; i >= 0; i--) {
         const element = elements[i]
@@ -189,6 +190,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
           element
           && 'tabIndex' in element
           && element.tabIndex >= 0
+          && isElementVisible(element)
         ) {
           return element
         }
