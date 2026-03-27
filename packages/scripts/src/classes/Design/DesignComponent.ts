@@ -20,6 +20,7 @@ import type { DesignReplace } from './DesignReplace'
 import {
   UI_DIR_COMPONENTS,
   UI_DIR_CONSTRUCTOR,
+  UI_DIR_DIST,
   UI_DIR_IN,
   UI_DIRS_COMPONENTS,
   UI_DIRS_LIBRARY,
@@ -34,6 +35,7 @@ const FILE_STYLE = 'styleToken.scss'
 const FILE_CLASS = 'DesignComponent.vue'
 const FILE_CLASS_AI = 'DesignComponentAiWiki.vue'
 const FILE_INDEX = 'index.ts'
+const FILE_INDEX_DTS = 'index.d.ts'
 const FILE_WIKI = 'wiki.ts'
 const FILE_WIKI_DATA = 'wikiData.ts'
 const FILE_STORIES = 'DesignComponent.stories.ts'
@@ -50,6 +52,8 @@ export class DesignComponent extends DesignCommand {
   protected DIR_SAMPLE: string = 'component'
   protected dir: string[]
   protected propsType: DesignTypescriptProp[] | undefined
+  protected slotsType: DesignTypescriptProp[] | undefined
+  protected eventsType: DesignTypescriptProp[] | undefined
 
   /**
    * Constructor for DesignComponent.
@@ -253,10 +257,13 @@ export class DesignComponent extends DesignCommand {
   protected makeWikiData(): this {
     const file = FILE_WIKI_DATA
     const typeInfo = this.getPropsList()
+    const slotsInfo = this.getSlotsList()
+    const eventsInfo = this.getEventsList()
     const sample = this.readDefinable(file)
-    const props: string[] = []
 
     if (typeInfo) {
+      const props: string[] = []
+
       typeInfo
         .sort((a, b) => a.name.localeCompare(b.name))
         .forEach((prop) => {
@@ -277,6 +284,70 @@ export class DesignComponent extends DesignCommand {
         })
 
       sample.replaceMark('propsList', props, ',')
+    }
+
+    if (slotsInfo) {
+      const slots: string[] = []
+
+      slotsInfo
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach((slot) => {
+          const description = slot.description
+          const type = slot.type
+            .replace(/\(props: ([^)]+)\) => any/i, '$1')
+            .trim()
+
+          let item: string = ''
+
+          item += `{ name: '${slot.name}'`
+
+          if (description) {
+            item += `, description: \`${description}\``
+          }
+
+          if (
+            type
+            && type !== 'any'
+          ) {
+            item += `, properties: [{ name: 'props', type: '${type}' }]`
+          }
+
+          item += ` }`
+          slots.push(item)
+        })
+
+      sample.replaceMark('slotsList', slots, ',')
+    }
+
+    if (eventsInfo) {
+      const events: string[] = []
+
+      eventsInfo
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach((event) => {
+          const description = event.description
+          const type = event.type
+
+          let item: string = ''
+
+          item += `{ name: '${event.name}'`
+
+          if (description) {
+            item += `, description: \`${description}\``
+          }
+
+          if (
+            type
+            && type !== '[]'
+          ) {
+            item += `, properties: ${type}`
+          }
+
+          item += ` }`
+          events.push(item)
+        })
+
+      sample.replaceMark('eventsList', events, ',')
     }
 
     this.write(file, sample.get())
@@ -340,17 +411,76 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
+   * Getting the paths for the typescript compiler.
+   *
+   * Получение путей для компилятора typescript.
+   * @returns paths for the typescript compiler/ пути для компилятора typescript
+   */
+  private getTypescriptPaths(): string[] | undefined {
+    const root = PropertiesFile.getRootProject()
+    const componentName = this.getStructure().getComponentNameFirst()
+
+    if (root) {
+      return [
+        root,
+        UI_PROJECT_CONSTRUCTOR_NAME,
+        UI_DIR_DIST,
+        UI_DIR_CONSTRUCTOR,
+        componentName
+      ]
+    }
+
+    return undefined
+  }
+
+  /**
+   * Getting the path to the index file.
+   *
+   * Получение пути к файлу index.
+   */
+  private getTypescriptPathsIndex(): string | undefined {
+    const paths = this.getTypescriptPaths()
+
+    if (paths) {
+      return PropertiesFile.joinPath([
+        ...paths,
+        FILE_INDEX_DTS
+      ])
+    }
+
+    return undefined
+  }
+
+  /**
+   * Getting the path to the type file.
+   *
+   * Получение пути к файлу type.
+   */
+  private getTypescriptPathsType(): string | undefined {
+    const paths = this.getTypescriptPaths()
+
+    if (paths) {
+      return PropertiesFile.joinPath([
+        ...paths,
+        'types.d.ts'
+      ])
+    }
+
+    return undefined
+  }
+
+  /**
    * Getting a list of all properties of a component.
    *
    * Получение списка всех свойств компонента.
    */
   private getPropsList(): DesignTypescriptProp[] | undefined {
     if (!this.propsType) {
-      const root = PropertiesFile.getRootProject()
+      const paths = this.getTypescriptPathsIndex()
       const componentName = this.getStructure().getComponentNameFirst()
 
-      if (root) {
-        const ts = new DesignTypescript(
+      if (paths) {
+        const tsRead = new DesignTypescript(
           PropertiesFile.joinPath([
             PropertiesFile.getRoot(),
             UI_DIR_IN,
@@ -361,25 +491,61 @@ export class DesignComponent extends DesignCommand {
           ]),
           {
             paths: {
-              [`${UI_PROJECT_CONSTRUCTOR_FULL_NAME}/${componentName}`]: [
-                PropertiesFile.joinPath([
-                  root,
-                  UI_PROJECT_CONSTRUCTOR_NAME,
-                  UI_DIR_IN,
-                  UI_DIR_CONSTRUCTOR,
-                  componentName,
-                  FILE_INDEX
-                ])
-              ]
+              [`${UI_PROJECT_CONSTRUCTOR_FULL_NAME}/${componentName}`]: [paths]
             }
           }
         )
 
-        this.propsType = ts.getType(`${componentName}Props`)?.props
+        this.propsType = tsRead.getType(`${componentName}Props`)?.props
       }
     }
 
     return this.propsType
+  }
+
+  /**
+   * Getting a list of all slots of a component.
+   *
+   * Получение списка всех слотов компонента.
+   */
+  private getSlotsList(): DesignTypescriptProp[] | undefined {
+    if (!this.slotsType) {
+      const types = this.getTypesFromConstructor('Slots')
+
+      if (types) {
+        this.slotsType = types
+      }
+    }
+
+    return this.slotsType
+  }
+
+  /**
+   * Getting a list of all events of a component.
+   *
+   * Получение списка всех событий компонента.
+   */
+  private getEventsList(): DesignTypescriptProp[] | undefined {
+    if (!this.eventsType) {
+      const types = this.getTypesFromConstructor('Emits')
+
+      if (types) {
+        this.eventsType = forEach(
+          types,
+          (item) => {
+            return {
+              name: item.name,
+              type: String(item.type)
+                .replace(/([^:,[\]]+): ([^:,[\]]+)/gi, `{ name: '$1', type: '$2' }`)
+                .replace(/,{/gi, ', {'),
+              description: item.description
+            }
+          }
+        )
+      }
+    }
+
+    return this.eventsType
   }
 
   /**
@@ -414,6 +580,24 @@ export class DesignComponent extends DesignCommand {
     }
 
     return []
+  }
+
+  /**
+   * Getting the types from the constructor.
+   *
+   * Получение типов из конструктора.
+   * @param name name of the type/ имя типа
+   */
+  private getTypesFromConstructor(name: string): DesignTypescriptProp[] | undefined {
+    const paths = this.getTypescriptPathsType()
+    const componentName = this.getStructure().getComponentNameFirst()
+
+    if (paths) {
+      const tsRead = new DesignTypescript(paths)
+      return tsRead.getType(`${componentName}${name}`)?.props
+    }
+
+    return undefined
   }
 
   /**

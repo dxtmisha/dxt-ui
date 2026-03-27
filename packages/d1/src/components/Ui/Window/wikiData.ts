@@ -1,4 +1,4 @@
-import { type StorybookProps, type WikiDataItem } from '@dxtmisha/wiki'
+import { type StorybookProps, type StorybookSlots, type WikiDataItem } from '@dxtmisha/wiki'
 
 import { wikiD1 } from '../../../wiki/wiki'
 import { defaults } from './props'
@@ -55,9 +55,40 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
 ]
 
+const slotsNames: StorybookSlots = [
+  // :slotsList [!] System label / Системная метка
+  { name: 'control', description: `Control slot for window management/
+Слот управления для управления окном`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+  { name: 'default', description: `Default slot for main content/
+Основной слот для главного содержимого`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+  { name: 'footer', description: `Footer slot for window bottom/
+Слот подвала для низа окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+  { name: 'title', description: `Title slot for window header/
+Слот заголовка для шапки окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] }
+  // :slotsList [!] System label / Системная метка
+]
+
+const eventsNames: StorybookSlots = [
+  // :eventsList [!] System label / Системная метка
+  { name: 'load', properties: [{ name: 'image', type: 'ImageEventData' }] },
+  { name: 'scrollbarBottom', properties: [{ name: 'isBottom', type: 'boolean' }] },
+  { name: 'scrollbarEdge', properties: [{ name: 'isTop', type: 'boolean' }, { name: ' isBottom', type: 'boolean' }, { name: ' edge', type: 'ScrollbarEdgeType' }] },
+  { name: 'scrollbarLeaveBottom' },
+  { name: 'scrollbarLeaveTop' },
+  { name: 'scrollbarReachBottom' },
+  { name: 'scrollbarReachTop' },
+  { name: 'scrollbarTop', properties: [{ name: 'isTop', type: 'boolean' }] },
+  { name: 'update:modelOpen', description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: 'value', type: 'boolean' }] },
+  { name: 'update:open', description: `Update open event/ Событие обновления открытия`, properties: [{ name: 'value', type: 'boolean' }] },
+  { name: 'window', properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
+  // :eventsList [!] System label / Системная метка
+]
+
 export const WindowWikiData: WikiDataItem = {
   component: 'Window',
   props: propsNames,
+  slots: slotsNames,
+  events: eventsNames,
   defaults,
   wikiDesign: wikiD1
 }

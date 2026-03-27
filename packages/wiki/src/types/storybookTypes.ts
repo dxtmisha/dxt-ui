@@ -169,6 +169,27 @@ export type StorybookProp = {
 /** A list of component properties for Storybook / Список свойств компонента для Storybook */
 export type StorybookProps = StorybookProp[]
 
+/** Represents a slot property for a component in Storybook / Представляет свойство слота для компонента в Storybook */
+export type StorybookSlotProperty = {
+  /** Name of the slot property / Название свойства слота */
+  name: string
+  /** Type of the slot property / Тип свойства слота */
+  type: string
+}
+
+/** Represents a slot for a component in Storybook / Представляет слот для компонента в Storybook */
+export type StorybookSlot = {
+  /** Name of the slot / Название слота */
+  name: string
+  /** Description of the slot / Описание слота */
+  description?: string
+  /** Properties of the slot / Свойства слота */
+  properties?: StorybookSlotProperty[]
+}
+
+/** A list of slots for a component in Storybook / Список слотов для компонента в Storybook */
+export type StorybookSlots = StorybookSlot[]
+
 /** Represents a story for a component in Storybook / Представляет историю для компонента в Storybook */
 export type StorybookComponentsDescriptionStory = {
   /** Unique identifier for the story / Уникальный идентификатор истории */
