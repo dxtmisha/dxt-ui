@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-ref/Composables/useFigmaUiSelected - Выбранные фреймы'/>
+
+# `useFigmaUiSelected`
+
+Композабл для управления и наблюдения за списком выбранных фреймов в интерфейсе Figma.
+
+**Возвращает:**
+Объект со следующими свойствами:
+- `selected: ComputedRef<string[]>` — Реактивный список ID выбранных фреймов. Автоматически обновляется при изменении выбора в Figma.
+- `loading: ComputedRef<boolean>` — Реактивный флаг, указывающий, загружаются ли в данный момент данные о выборе из плагина Figma.
+- `isSelected(id: string): ComputedRef<boolean>` — Функция, возвращающая реактивное логическое значение, указывающее, выбран ли в данный момент конкретный ID фрейма.
+- `toggleSelected(id: string, selected: boolean): void` — Функция для обновления состояния выбора фрейма в Figma.
+
+```typescript
+import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
+
+const { selected, loading, isSelected, toggleSelected } = useFigmaUiSelected()
+
+// Проверка, выбран ли конкретный фрейм
+const frameId = '123:456'
+const isFrameSelected = isSelected(frameId)
+
+// Переключение выбора
+const handleToggle = () => {
+  toggleSelected(frameId, !isFrameSelected.value)
+}
+
+// Наблюдение за изменениями выбора
+console.log('Текущие ID выбранных фреймов:', selected.value)
+```

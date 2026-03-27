@@ -17,7 +17,7 @@ export class FigmaTopLevelFrames {
    * Получает и кэширует отформатированный список фреймов верхнего уровня.
    * @returns A promise that resolves to the list of frames / Промис, который разрешается в список фреймов
    */
-  static async getListData() {
+  static async get() {
     if (!this.frames) {
       this.frames = []
 
@@ -43,7 +43,8 @@ export class FigmaTopLevelFrames {
     const messenger = useFigmaPluginMessenger()
 
     messenger.add(UI_FIGMA_FRAMES_POST_NAME, () => {
-      this.getListData()
+      this
+        .get()
         .then((frames) => {
           messenger.post(UI_FIGMA_FRAMES_POST_NAME, frames)
         })

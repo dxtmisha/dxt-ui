@@ -19,21 +19,17 @@ const toggleEnabled = () => {
 </script>
 
 <template>
-  asd232
-  <div class="translate-key-creation-frames-item">
-    <div class="translate-key-creation-frames-item__image">
-      <D1Icon :icon="image"/>
-    </div>
-    <div class="translate-key-creation-frames-item__name">
-      {{ name }}
-    </div>
-    <div class="translate-key-creation-frames-item__enabled">
+  <D1Cell
+    :icon="image"
+    :label="name"
+  >
+    <template #trailing>
       <D1Checkbox
         :value="isEnabled"
         @change-lite="toggleEnabled"
       />
-    </div>
-  </div>
+    </template>
+  </D1Cell>
 </template>
 
 <style lang="scss">

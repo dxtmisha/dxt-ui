@@ -1,5 +1,5 @@
 import { computed, shallowRef } from 'vue'
-import { fetchFramesSelected } from '@dxtmisha/figma'
+import { addFramesSelected, fetchFramesSelected } from '@dxtmisha/figma'
 
 /** Cached list of selected frames / Кэшированный список выбранных фреймов */
 const item = shallowRef<string[] | undefined>()
@@ -41,7 +41,7 @@ export function useFigmaUiSelected() {
      * Indicates if a fetch operation is currently in progress /
      * Указывает, выполняется ли в данный момент операция получения
      */
-    loading,
+    loading: computed(() => loading.value),
 
     /**
      * Checks if a frame with the given ID is selected /
@@ -51,6 +51,15 @@ export function useFigmaUiSelected() {
      */
     isSelected(id: string) {
       return computed(() => item.value?.includes(id))
+    },
+
+    /**
+     * Toggles the selection state of a frame / Переключает состояние выбора фрейма
+     * @param id Frame ID / ID фрейма
+     * @param selected Selection state / Состояние выбора
+     */
+    toggleSelected(id: string, selected: boolean) {
+      addFramesSelected(id, selected)
     }
   }
 }
