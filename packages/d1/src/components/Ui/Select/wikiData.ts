@@ -1,4 +1,4 @@
-import { type StorybookProps, type WikiDataItem } from '@dxtmisha/wiki'
+import { type StorybookProps, type StorybookSlots, type WikiDataItem } from '@dxtmisha/wiki'
 
 import { wikiD1 } from '../../../wiki/wiki'
 import { defaults } from './props'
@@ -82,9 +82,41 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
 ]
 
+const slotsNames: StorybookSlots = [
+  // :slotsList [!] System label / Системная метка
+  { name: 'caption', description: `Caption slot/ Слот заголовка` },
+  { name: 'contextBottom', description: `Context slot for bottom area / Слот контекстной области снизу`, properties: [{ name: 'props', type: 'MenuControlItem' }] },
+  { name: 'contextTop', description: `Context slot for top area / Слот контекстной области сверху`, properties: [{ name: 'props', type: 'MenuControlItem' }] },
+  { name: 'footer', description: `Footer slot for window bottom/ Слот подвала для низа окна`, properties: [{ name: 'props', type: 'MenuControlItem' }] },
+  { name: 'label', description: `Label slot content/ Содержимое слота метки` },
+  { name: 'leading', properties: [{ name: 'props', type: 'FieldControl' }] },
+  { name: 'prefix', description: `Prefix slot/ Слот префикса` },
+  { name: 'suffix', description: `Suffix slot/ Слот суффикса` },
+  { name: 'title', description: `Title slot for window title/ Слот заголовка для заголовка окна`, properties: [{ name: 'props', type: 'MenuControlItem' }] },
+  { name: 'trailing', properties: [{ name: 'props', type: 'FieldControl' }] }
+  // :slotsList [!] System label / Системная метка
+]
+
+const eventsNames: StorybookSlots = [
+  // :eventsList [!] System label / Системная метка
+  { name: 'change', description: `Emitted when value is committed (blur/confirm)/
+Эмит при подтверждении значения (blur/confirm): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: ' value', type: 'FieldValidationItem<any>' }] },
+  { name: 'changeLite', description: `Lightweight change emit without DOM event/
+Лёгкий эмит подтверждения без события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<any>' }] },
+  { name: 'input', description: `Emitted on input events (every change while typing)/
+Эмит при вводе (каждое изменение): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: ' value', type: 'FieldValidationItem<any>' }] },
+  { name: 'inputLite', description: `Lightweight input emit without DOM event/
+Лёгкий эмит ввода без DOM-события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<any>' }] },
+  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'any' }] },
+  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'any' }] }
+  // :eventsList [!] System label / Системная метка
+]
+
 export const SelectWikiData: WikiDataItem = {
   component: 'Select',
   props: propsNames,
+  slots: slotsNames,
+  events: eventsNames,
   defaults,
   wikiDesign: wikiD1
 }

@@ -1,4 +1,4 @@
-import { type StorybookProps, type WikiDataItem } from '@dxtmisha/wiki'
+import { type StorybookProps, type StorybookSlots, type WikiDataItem } from '@dxtmisha/wiki'
 
 import { wikiD1 } from '../../../wiki/wiki'
 import { defaults } from './props'
@@ -29,9 +29,32 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
 ]
 
+const slotsNames: StorybookSlots = [
+  // :slotsList [!] System label / Системная метка
+  // :slotsList [!] System label / Системная метка
+]
+
+const eventsNames: StorybookSlots = [
+  // :eventsList [!] System label / Системная метка
+  { name: 'beforeinput', properties: [{ name: 'event', type: 'InputEvent' }] },
+  { name: 'blur', properties: [{ name: 'event', type: 'FocusEvent' }] },
+  { name: 'change', properties: [{ name: 'event', type: 'InputEvent' }, { name: ' value', type: 'FieldValidationItem' }] },
+  { name: 'changeLite', properties: [{ name: 'value', type: 'FieldValidationItem' }] },
+  { name: 'focus', properties: [{ name: 'event', type: 'FocusEvent' }] },
+  { name: 'input', properties: [{ name: 'event', type: 'InputEvent' }, { name: ' value', type: 'FieldValidationItem' }] },
+  { name: 'inputLite', properties: [{ name: 'value', type: 'FieldValidationItem' }] },
+  { name: 'keydown', properties: [{ name: 'event', type: 'KeyboardEvent' }] },
+  { name: 'keyup', properties: [{ name: 'event', type: 'KeyboardEvent' }] },
+  { name: 'paste', properties: [{ name: 'event', type: 'ClipboardEvent' }] },
+  { name: 'reset', properties: [{ name: 'event', type: 'Event' }] }
+  // :eventsList [!] System label / Системная метка
+]
+
 export const MaskWikiData: WikiDataItem = {
   component: 'Mask',
   props: propsNames,
+  slots: slotsNames,
+  events: eventsNames,
   defaults,
   wikiDesign: wikiD1
 }
