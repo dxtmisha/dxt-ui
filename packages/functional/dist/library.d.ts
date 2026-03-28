@@ -12,6 +12,7 @@ import { Datetime } from '@dxtmisha/functional-basic';
 import { DebuggerOptions } from 'vue';
 import { ElementOrString } from '@dxtmisha/functional-basic';
 import { ElementOrWindow } from '@dxtmisha/functional-basic';
+import { ErrorCenterCauseList } from '@dxtmisha/functional-basic';
 import { EventItem } from '@dxtmisha/functional-basic';
 import { EventListenerDetail } from '@dxtmisha/functional-basic';
 import { EventOptions } from '@dxtmisha/functional-basic';
@@ -753,8 +754,25 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
 }
 
 /**
- * Vue plugin for initializing functional services /
- * Vue плагин для инициализации функциональных сервисов
+ * Vue plugin for initializing and configuring global functional services
+ * (Api, Translate, Icons, Meta).
+ *
+ * Vue плагин для инициализации и настройки глобальных функциональных сервисов
+ * (Api, Translate, Icons, Meta).
+ *
+ * @example
+ * ```typescript
+ * import { createApp } from 'vue'
+ * import { dxtFunctionalPlugin } from '@dxtmisha/functional'
+ * import router from './router'
+ *
+ * const app = createApp(App)
+ * app.use(dxtFunctionalPlugin, {
+ *   api: { url: 'https://api.example.com' },
+ *   metaSuffix: ' | My App',
+ *   router
+ * })
+ * ```
  */
 export declare const dxtFunctionalPlugin: Plugin_2;
 
@@ -947,16 +965,36 @@ export declare enum ExecuteUseType {
  * Интерфейс для опций функционального плагина
  */
 export declare interface FunctionalPluginOptions {
-    /** Configuration for the API / Конфигурация для API */
+    /**
+     * Configuration for the API client /
+     * Конфигурация для API-клиента
+     */
     api?: ApiConfig;
-    /** Configuration for translations / Конфигурация для переводов */
+    /**
+     * Configuration for the translation service /
+     * Конфигурация для сервиса переводов
+     */
     translate?: TranslateConfig;
-    /** Suffix for the page title / Суффикс для заголовка страницы */
+    /**
+     * Suffix to be appended to all page titles /
+     * Суффикс, который будет добавляться ко всем заголовкам страниц
+     */
     metaSuffix?: string;
-    /** Configuration for icons / Конфигурация для иконок */
+    /**
+     * Configuration for the icon management service /
+     * Конфигурация для сервиса управления иконками
+     */
     icons?: IconsConfig;
-    /** Router instance / Экземпляр роутера */
+    /**
+     * Vue Router instance for global navigation state management /
+     * Экземпляр Vue Router для глобального управления состоянием навигации
+     */
     router?: Router;
+    /**
+     * Error causes list for error center /
+     * Список причин ошибок для центра ошибок
+     */
+    errorCauses?: ErrorCenterCauseList;
 }
 
 /**

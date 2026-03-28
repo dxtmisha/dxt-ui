@@ -47,19 +47,19 @@ describe('dxtFunctionalPlugin', () => {
 
   it('should call Api.setConfig if api option is provided', () => {
     const options = { api: { url: 'https://api.test' } }
-    dxtFunctionalPlugin.install(appMock, options)
+    dxtFunctionalPlugin?.install?.(appMock, options)
     expect(Api.setConfig).toHaveBeenCalledWith(options.api)
   })
 
   it('should call Translate.setConfig if translate option is provided', () => {
     const options = { translate: { url: '/locales/' } }
-    dxtFunctionalPlugin.install(appMock, options)
+    dxtFunctionalPlugin?.install?.(appMock, options)
     expect(Translate.setConfig).toHaveBeenCalledWith(options.translate)
   })
 
   it('should call Icons.setConfig if icons option is provided', () => {
     const options = { icons: { url: '/icons/' } }
-    dxtFunctionalPlugin.install(appMock, options)
+    dxtFunctionalPlugin?.install?.(appMock, options)
     expect(Icons.setConfig).toHaveBeenCalledWith(options.icons)
   })
 
@@ -68,7 +68,7 @@ describe('dxtFunctionalPlugin', () => {
     const setSuffixSpy = vi.fn()
     vi.mocked(useMeta).mockReturnValue({ setSuffix: setSuffixSpy } as any)
 
-    dxtFunctionalPlugin.install(appMock, options)
+    dxtFunctionalPlugin?.install?.(appMock, options)
     expect(useMeta).toHaveBeenCalled()
     expect(setSuffixSpy).toHaveBeenCalledWith(' - Test')
   })
@@ -76,7 +76,7 @@ describe('dxtFunctionalPlugin', () => {
   it('should set router in RouterItemRef if router option is provided', () => {
     const routerMock = { name: 'router' } as any
     const options = { router: routerMock }
-    dxtFunctionalPlugin.install(appMock, options)
+    dxtFunctionalPlugin?.install?.(appMock, options)
     expect(RouterItemRef.set).toHaveBeenCalledWith(routerMock)
   })
 
@@ -88,12 +88,12 @@ describe('dxtFunctionalPlugin', () => {
       }
     } as any
 
-    dxtFunctionalPlugin.install(appWithRouter, {})
+    dxtFunctionalPlugin?.install?.(appWithRouter, {})
     expect(RouterItemRef.set).toHaveBeenCalledWith(routerMock)
   })
 
   it('should call executeUseGlobalInit at the end', () => {
-    dxtFunctionalPlugin.install(appMock, {})
+    dxtFunctionalPlugin?.install?.(appMock, {})
     expect(executeUse.executeUseGlobalInit).toHaveBeenCalled()
   })
 })

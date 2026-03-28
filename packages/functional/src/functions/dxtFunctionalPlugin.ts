@@ -2,6 +2,8 @@ import { type App, type Plugin } from 'vue'
 import {
   Api,
   type ApiConfig,
+  ErrorCenter,
+  type ErrorCenterCauseList,
   Icons,
   type IconsConfig,
   Translate,
@@ -48,6 +50,12 @@ export interface FunctionalPluginOptions {
    * Экземпляр Vue Router для глобального управления состоянием навигации
    */
   router?: Router
+
+  /**
+   * Error causes list for error center /
+   * Список причин ошибок для центра ошибок
+   */
+  errorCauses?: ErrorCenterCauseList
 }
 
 /**
@@ -109,6 +117,10 @@ export const dxtFunctionalPlugin: Plugin = {
       if (router) {
         RouterItemRef.set(router)
       }
+    }
+
+    if (options.errorCauses) {
+      ErrorCenter.addList(options.errorCauses)
     }
 
     // 6. Initialize global singletons (ExecuteUseType.global)

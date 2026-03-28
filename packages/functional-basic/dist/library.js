@@ -202,10 +202,10 @@ var ne = class {
 		return this.causes.find((n) => n.group === t && n.code === e);
 	}
 	add(e) {
-		return this.causes.push(e), this;
+		return this.causes.unshift(e), this;
 	}
 	addList(e) {
-		return this.causes.push(...e), this;
+		return this.causes.unshift(...e), this;
 	}
 	addHandler(e, t) {
 		return this.handler.add(e, t), this;

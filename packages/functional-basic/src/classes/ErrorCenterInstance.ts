@@ -62,7 +62,7 @@ export class ErrorCenterInstance {
    * @param cause error cause item / элемент причины ошибки
    */
   add(cause: ErrorCenterCauseItem): this {
-    this.causes.push(cause)
+    this.causes.unshift(cause)
     return this
   }
 
@@ -73,7 +73,7 @@ export class ErrorCenterInstance {
    * @param causes error causes list / список причин ошибок
    */
   addList(causes: ErrorCenterCauseList): this {
-    this.causes.push(...causes)
+    this.causes.unshift(...causes)
     return this
   }
 
