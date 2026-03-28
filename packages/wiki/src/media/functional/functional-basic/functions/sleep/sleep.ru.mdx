@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/sleep - Задержка выполнения'/>
+
+# `sleep`
+
+Приостановить выполнение на указанное количество миллисекунд.
+
+**Параметры:**
+- `ms: number` — Количество миллисекунд, на которое нужно приостановить выполнение.
+
+**Возвращает:**
+`Promise<void>` — Промис, который разрешится после указанной задержки.
+
+```typescript
+import { sleep } from '@dxtmisha/functional-basic'
+
+async function performTask() {
+  console.log('Начало задачи')
+  // Подождать 2 секунды
+  await sleep(2000)
+  console.log('Задача возобновлена через 2 секунды')
+}
+
+performTask()
+```

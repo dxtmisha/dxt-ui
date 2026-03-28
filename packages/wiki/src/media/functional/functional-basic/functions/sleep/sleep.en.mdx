@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/sleep - Timeout delay'/>
+
+# `sleep`
+
+Pause execution for a specified number of milliseconds.
+
+**Parameters:**
+- `ms: number` — The number of milliseconds to pause execution.
+
+**Returns:**
+`Promise<void>` — A promise that resolves after the specified delay.
+
+```typescript
+import { sleep } from '@dxtmisha/functional-basic'
+
+async function performTask() {
+  console.log('Task started')
+  // Wait for 2 seconds
+  await sleep(2000)
+  console.log('Task resumed after 2 seconds')
+}
+
+performTask()
+```

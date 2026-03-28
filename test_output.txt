@@ -1,0 +1,262 @@
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Volumes/T7/Code/dxt-ui[39m
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mloading lifecycle[2m > [22m[2mshould call loading.show() and loading.hide() on failed request
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mloading lifecycle[2m > [22m[2mshould not hide loading on error when hideLoading is true
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mconfiguration methods[2m > [22m[2mretry logic[2m > [22m[2mshould retry the request when the `retry` property is set
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mconfiguration methods[2m > [22m[2mretry logic[2m > [22m[2mshould throw after exceeding the maximum number of retries
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mconfiguration methods[2m > [22m[2mretry logic[2m > [22m[2mshould calculate delay using getRetryDelay on each retry
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mconfiguration methods[2m > [22m[2mretry logic[2m > [22m[2mshould calculate delay using getRetryDelay on each retry
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mHTTP method shortcuts[2m > [22m[2mget[2m > [22m[2mshould make a GET request
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2merror handling[2m > [22m[2mshould report network error to ErrorCenter
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2merror handling[2m > [22m[2mshould set error status on failure
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2merror handling[2m > [22m[2mshould report 404 to ErrorCenter with notFound code
+[22m[39mError Center: notFound
+The requested resource could not be found on the server.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2merror handling[2m > [22m[2mshould report 500 to ErrorCenter with server code
+[22m[39mError Center: server
+Something went wrong on our end. We are working to fix it.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2merror handling[2m > [22m[2mshould report other 4xx/5xx statuses to ErrorCenter with api-server group
+[22m[39mError Center: 403
+[90mundefined[39m
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2merror handling[2m > [22m[2mshould handle TimeoutError via ErrorCenter with timeout code
+[22m[39mError Center: timeout
+The request took too long to complete. Please check your connection.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2merror handling[2m > [22m[2mshould use custom errorCenterInstance from options for reporting errors
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mstatus tracking[2m > [22m[2mshould update the status on 404 response
+[22m[39mError Center: notFound
+The requested resource could not be found on the server.
+
+[90mstderr[2m | packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22m[2mApiInstance[2m > [22m[2mstatus tracking[2m > [22m[2mshould update the error status on exception
+[22m[39mError Center: unknown
+An unexpected error occurred. Please try again later.
+
+ [31m❯[39m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts [2m([22m[2m105 tests[22m[2m | [22m[31m5 failed[39m[2m)[22m[32m 35[2mms[22m[39m
+       [32m✓[39m should use the default url "/api/" when no argument is provided[32m 2[2mms[22m[39m
+       [32m✓[39m should use custom url when provided[32m 0[2mms[22m[39m
+       [32m✓[39m should accept custom headersClass in options[32m 0[2mms[22m[39m
+       [32m✓[39m should accept custom requestDefaultClass in options[32m 0[2mms[22m[39m
+       [32m✓[39m should accept custom statusClass in options[32m 0[2mms[22m[39m
+       [32m✓[39m should accept custom responseClass in options[32m 0[2mms[22m[39m
+       [32m✓[39m should accept custom preparationClass in options[32m 0[2mms[22m[39m
+       [32m✓[39m should accept custom loadingClass in options[32m 0[2mms[22m[39m
+       [32m✓[39m should accept custom errorCenterClass in options[32m 0[2mms[22m[39m
+       [32m✓[39m should use Loading.getItem() by default for loading[32m 0[2mms[22m[39m
+       [32m✓[39m should use ErrorCenter.getItem() by default for errorCenter[32m 0[2mms[22m[39m
+       [32m✓[39m should call loading.show() and loading.hide() on successful request[32m 2[2mms[22m[39m
+       [32m✓[39m should call loading.show() and loading.hide() on failed request[32m 1[2mms[22m[39m
+       [32m✓[39m should not call loading operations when hideLoading is true[32m 0[2mms[22m[39m
+       [32m✓[39m should use custom LoadingInstance if provided[32m 0[2mms[22m[39m
+       [32m✓[39m should hide loading before retrying when `end.reset` is true[32m 0[2mms[22m[39m
+       [32m✓[39m should not hide loading on error when hideLoading is true[32m 0[2mms[22m[39m
+         [32m✓[39m should set base URL and return instance for chaining[32m 0[2mms[22m[39m
+         [32m✓[39m should use custom URL in requests[32m 1[2mms[22m[39m
+         [32m✓[39m should set default headers and return the instance for chaining[32m 0[2mms[22m[39m
+         [32m✓[39m should include default headers in requests[32m 1[2mms[22m[39m
+         [32m✓[39m should set default request data and return an instance for chaining[32m 0[2mms[22m[39m
+         [32m✓[39m should merge default request data with a custom request[32m 0[2mms[22m[39m
+         [32m✓[39m should set a preparation callback and return the instance[32m 0[2mms[22m[39m
+         [32m✓[39m should call preparation callback before request[32m 0[2mms[22m[39m
+         [32m✓[39m should set an end callback and return the instance[32m 0[2mms[22m[39m
+         [32m✓[39m should call end callback after request[32m 0[2mms[22m[39m
+         [32m✓[39m should retry the request when the end callback returns a reset flag[32m 0[2mms[22m[39m
+         [32m✓[39m should return a jittered delay from getRetryDelay[32m 2[2mms[22m[39m
+[31m         [31m×[31m should retry the request when the `retry` property is set[39m[32m 4[2mms[22m[39m
+[31m         [31m×[31m should throw after exceeding the maximum number of retries[39m[32m 2[2mms[22m[39m
+[31m         [31m×[31m should calculate delay using getRetryDelay on each retry[39m[32m 0[2mms[22m[39m
+         [32m✓[39m should return true when the hostname is localhost[32m 0[2mms[22m[39m
+         [32m✓[39m should return false when the hostname is not localhost[32m 0[2mms[22m[39m
+         [32m✓[39m should return a path with an API prefix by default[32m 0[2mms[22m[39m
+         [32m✓[39m should return the path without API prefix when api is false[32m 0[2mms[22m[39m
+         [32m✓[39m should replace {locale} placeholder[32m 0[2mms[22m[39m
+         [32m✓[39m should replace {country} placeholder[32m 0[2mms[22m[39m
+         [32m✓[39m should replace {language} placeholder[32m 0[2mms[22m[39m
+         [32m✓[39m should return undefined for GET method[32m 0[2mms[22m[39m
+         [32m✓[39m should return JSON string for a POST method with an object[32m 0[2mms[22m[39m
+         [32m✓[39m should return FormData as is[32m 0[2mms[22m[39m
+         [32m✓[39m should return string as is for the POST method[32m 0[2mms[22m[39m
+         [32m✓[39m should return undefined for empty request[32m 0[2mms[22m[39m
+         [32m✓[39m should return undefined when called with no arguments[32m 0[2mms[22m[39m
+         [32m✓[39m should return JSON string for PUT method[32m 0[2mms[22m[39m
+         [32m✓[39m should return JSON string for DELETE method with data[32m 0[2mms[22m[39m
+         [32m✓[39m should return the query string for GET method[32m 0[2mms[22m[39m
+         [32m✓[39m should use and when a path already has a query string[32m 0[2mms[22m[39m
+         [32m✓[39m should return empty string for non-GET methods[32m 0[2mms[22m[39m
+         [32m✓[39m should return an empty string for an empty request[32m 0[2mms[22m[39m
+         [32m✓[39m should handle string request for GET method[32m 0[2mms[22m[39m
+[31m         [31m×[31m should make a GET request[39m[32m 0[2mms[22m[39m
+         [32m✓[39m should append a query string to URL for GET request[32m 0[2mms[22m[39m
+         [32m✓[39m should make a POST request[32m 0[2mms[22m[39m
+         [32m✓[39m should send request data in the body[32m 0[2mms[22m[39m
+         [32m✓[39m should make a PUT request[32m 0[2mms[22m[39m
+         [32m✓[39m should make a DELETE request[32m 0[2mms[22m[39m
+       [32m✓[39m should accept string as a path[32m 0[2mms[22m[39m
+       [32m✓[39m should accept ApiFetch object[32m 0[2mms[22m[39m
+       [32m✓[39m should return parsed JSON data by default (toData = true)[32m 0[2mms[22m[39m
+       [32m✓[39m should return a full response when toData is false[32m 0[2mms[22m[39m
+       [32m✓[39m should use custom headers[32m 0[2mms[22m[39m
+       [32m✓[39m should use a custom content type[32m 0[2mms[22m[39m
+       [32m✓[39m should use pathFull when provided[32m 0[2mms[22m[39m
+       [32m✓[39m should pass custom init options to fetch[32m 0[2mms[22m[39m
+       [32m✓[39m should skip api prefix when api is false[32m 0[2mms[22m[39m
+       [32m✓[39m should report network error to ErrorCenter[32m 1[2mms[22m[39m
+       [32m✓[39m should not report an error when hideError is true[32m 0[2mms[22m[39m
+       [32m✓[39m should set error status on failure[32m 0[2mms[22m[39m
+       [32m✓[39m should report 404 to ErrorCenter with notFound code[32m 0[2mms[22m[39m
+       [32m✓[39m should report 500 to ErrorCenter with server code[32m 0[2mms[22m[39m
+       [32m✓[39m should report other 4xx/5xx statuses to ErrorCenter with api-server group[32m 0[2mms[22m[39m
+       [32m✓[39m should not report a query error when hideError is true[32m 0[2mms[22m[39m
+       [32m✓[39m should handle TimeoutError via ErrorCenter with timeout code[32m 0[2mms[22m[39m
+       [32m✓[39m should use custom errorCenterInstance from options for reporting errors[32m 0[2mms[22m[39m
+       [32m✓[39m should not report AbortError to ErrorCenter[32m 0[2mms[22m[39m
+       [32m✓[39m should update the status on a successful request[32m 0[2mms[22m[39m
+       [32m✓[39m should update the status on 404 response[32m 0[2mms[22m[39m
+       [32m✓[39m should store last response[32m 0[2mms[22m[39m
+       [32m✓[39m should update the error status on exception[32m 0[2mms[22m[39m
+       [32m✓[39m should use queryReturn callback when provided[32m 0[2mms[22m[39m
+       [32m✓[39m should handle text responses[32m 0[2mms[22m[39m
+       [32m✓[39m should use data from end callback when provided[32m 0[2mms[22m[39m
+       [32m✓[39m should not call global preparation when globalPreparation is false[32m 0[2mms[22m[39m
+       [32m✓[39m should not call the global end when globalEnd is false[32m 0[2mms[22m[39m
+       [32m✓[39m should call preparation with the apiFetch object[32m 0[2mms[22m[39m
+       [32m✓[39m should call end with the response and apiFetch objects?[32m 0[2mms[22m[39m
+       [32m✓[39m should extract a data field and merge success/status/message[32m 0[2mms[22m[39m
+       [32m✓[39m should return raw data when the data field is not an object[32m 0[2mms[22m[39m
+       [32m✓[39m should return array data as-is[32m 0[2mms[22m[39m
+       [32m✓[39m should not overwrite the success field if already present in data[32m 0[2mms[22m[39m
+       [32m✓[39m should return a full response when toData is false[32m 0[2mms[22m[39m
+       [32m✓[39m should handle null `data.data` gracefully[32m 0[2mms[22m[39m
+       [32m✓[39m should append statusObject to object responses[32m 0[2mms[22m[39m
+       [32m✓[39m should not append statusObject to non-object responses[32m 0[2mms[22m[39m
+       [32m✓[39m should set signal when timeout only is provided and `AbortSignal.timeout` exists[32m 0[2mms[22m[39m
+       [32m✓[39m should set signal when controller only is provided[32m 0[2mms[22m[39m
+       [32m✓[39m should use controller signal when both timeout and controller are provided[32m 0[2mms[22m[39m
+[31m       [31m×[31m should not set signal when neither timeout nor controller are provided[39m[32m 1[2mms[22m[39m
+       [32m✓[39m should return an emulated response if available[32m 1[2mms[22m[39m
+       [32m✓[39m should return a status instance[32m 0[2mms[22m[39m
+       [32m✓[39m should return a response instance[32m 0[2mms[22m[39m
+       [32m✓[39m should not include headers when the header option is null[32m 0[2mms[22m[39m
+       [32m✓[39m should send FormData as a body for POST request[32m 0[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 5 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22mApiInstance[2m > [22mconfiguration methods[2m > [22mretry logic[2m > [22mshould retry the request when the `retry` property is set
+[31m[1mError[22m: Fail 1[39m
+[36m [2m❯[22m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts:[2m423:34[22m[39m
+    [90m421|[39m         [90m// First two attempts fail, third one succeeds[39m
+    [90m422|[39m         mockFetch
+    [90m423|[39m           [33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'Fail 1'[39m))
+    [90m   |[39m                                  [31m^[39m
+    [90m424|[39m           [33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'Fail 2'[39m))
+    [90m425|[39m           .mockResolvedValueOnce(createMockResponse({ json: { data: 's…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22mApiInstance[2m > [22mconfiguration methods[2m > [22mretry logic[2m > [22mshould throw after exceeding the maximum number of retries
+[31m[1mAssertionError[22m: expected [Function] to throw error including 'Persistent fail' but got 'Fail 2'[39m
+
+Expected: [32m"[7mPersistent f[27mail"[39m
+Received: [31m"[7mF[27mail[7m 2[27m"[39m
+
+[36m [2m❯[22m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts:[2m444:12[22m[39m
+    [90m442|[39m           path[33m:[39m [32m'test'[39m[33m,[39m
+    [90m443|[39m           retry[33m:[39m [34m2[39m
+    [90m444|[39m         }))[33m.[39mrejects[33m.[39m[34mtoThrow[39m([32m'Persistent fail'[39m)
+    [90m   |[39m            [31m^[39m
+    [90m445|[39m
+    [90m446|[39m         expect(mockFetch).toHaveBeenCalledTimes(3) // 1 initial + 2 re…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22mApiInstance[2m > [22mconfiguration methods[2m > [22mretry logic[2m > [22mshould calculate delay using getRetryDelay on each retry
+[31m[1mError[22m: Fail 1[39m
+[36m [2m❯[22m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts:[2m452:34[22m[39m
+    [90m450|[39m       it('should calculate delay using getRetryDelay on each retry', a…
+    [90m451|[39m         mockFetch
+    [90m452|[39m           [33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'Fail 1'[39m))
+    [90m   |[39m                                  [31m^[39m
+    [90m453|[39m           [33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'Fail 2'[39m))
+    [90m454|[39m           [33m.[39m[34mmockResolvedValueOnce[39m([34mcreateMockResponse[39m())
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22mApiInstance[2m > [22mHTTP method shortcuts[2m > [22mget[2m > [22mshould make a GET request
+[31m[1mError[22m: Fail 2[39m
+[36m [2m❯[22m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts:[2m453:34[22m[39m
+    [90m451|[39m         mockFetch
+    [90m452|[39m           [33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'Fail 1'[39m))
+    [90m453|[39m           [33m.[39m[34mmockRejectedValueOnce[39m([35mnew[39m [33mError[39m([32m'Fail 2'[39m))
+    [90m   |[39m                                  [31m^[39m
+    [90m454|[39m           [33m.[39m[34mmockResolvedValueOnce[39m([34mcreateMockResponse[39m())
+    [90m455|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts[2m > [22mApiInstance[2m > [22minitController (timeout and abort)[2m > [22mshould not set signal when neither timeout nor controller are provided
+[31m[1mAssertionError[22m: expected AbortSignal { aborted: false } to be undefined[39m
+
+[32m- Expected:[39m
+undefined
+
+[31m+ Received:[39m
+AbortSignal {
+  Symbol(kEvents): Map {},
+  Symbol(events.maxEventTargetListeners): 0,
+  Symbol(events.maxEventTargetListenersWarned): false,
+  Symbol(kHandlers): Map {},
+  Symbol(kAborted): false,
+  Symbol(kReason): undefined,
+  Symbol(kComposite): false,
+  Symbol(kTimeout): true,
+}
+
+[36m [2m❯[22m packages/functional-basic/src/classes/__tests__/ApiInstance.test.ts:[2m1292:32[22m[39m
+    [90m1290|[39m
+    [90m1291|[39m       [35mconst[39m fetchInit [33m=[39m mockFetch[33m.[39mmock[33m.[39mcalls[[34m0[39m][[34m1[39m]
+    [90m1292|[39m       [34mexpect[39m(fetchInit[33m.[39msignal)[33m.[39m[34mtoBeUndefined[39m()
+    [90m   |[39m                                [31m^[39m
+    [90m1293|[39m     })
+    [90m1294|[39m   })
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m100 passed[39m[22m[90m (105)[39m
+[2m   Start at [22m 00:53:12
+[2m   Duration [22m 1.10s[2m (transform 144ms, setup 0ms, import 187ms, tests 35ms, environment 754ms)[22m
+

@@ -125,7 +125,10 @@ Hỗ trợ phương pháp nối chuỗi (chaining methods) trả về đối tư
 - `globalEnd?: boolean` — có chạy hook `setEnd` toàn cục sau khi nhận phản hồi không. Mặc định: `true`.
 - `queryReturn?: (query: Response) => Promise<any>` — bộ xử lý phản hồi tùy chỉnh thay cho việc đọc JSON mặc định.
 - `init?: RequestInit` — các tùy chọn bổ sung truyền thẳng vào `fetch()` nội tại (CORS, chế độ cache, v.v.).
+- `timeout?: number` — thời gian chờ yêu cầu tính bằng mili giây. Mặc định: `16000`ms.
 - `controller?: AbortController` — bộ điều khiển để hủy yêu cầu.
+- `retry?: number` — số lần thử lại khi thất bại.
+- `retryDelay?: number` — độ trễ cơ bản giữa các lần thử lại tính bằng mili giây. Mặc định: `64`ms.
 
 ## Cấu trúc dữ liệu phản hồi
 
@@ -212,7 +215,7 @@ Phương thức `setEnd` thiết lập một hàm callback được gọi sau kh
 - `apiFetch: ApiFetch` — đối tượng tham số đã dùng để thực hiện yêu cầu.
 
 **Trả về:** `Promise<ApiPreparationEnd>`. Đối tượng kết quả có thể chứa các trường sau:
-- `reset?: boolean` — nếu được đặt thành `true`, thư viện sẽ hủy chuỗi hiện tại và **thực hiện lại yêu cầu** (đệ quy). Toàn bộ quá trình chuẩn bị và thực thi sẽ được khởi động lại. Việc này được dùng để tự động xử lý quyền truy cập đã được làm mới.
+- `reset?: boolean` — nếu được đặt thành `true`, thư viện sẽ hủy chuỗi hiện tại và **thực hiện lại yêu cầu** (đệ quy) sau một khoảng trễ ngẫu nhiên (xem `retryDelay`). Toàn bộ quá trình chuẩn bị và thực thi sẽ được khởi động lại. Việc này được dùng để tự động xử lý quyền truy cập đã được làm mới.
 - `data?: any` — cho phép bạn ghi đè dữ liệu mà phương thức API trả về. Nếu trường này được chỉ định, cơ chế đọc phản hồi tiêu chuẩn (JSON/văn bản) sẽ bị bỏ qua.
 
 ```javascript

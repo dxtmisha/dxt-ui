@@ -136,6 +136,28 @@ export class Api {
   }
 
   /**
+   * Modify the function after the request.
+   *
+   * Изменить функцию после запроса.
+   * @param callback function for call/ функция для вызова
+   */
+  static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api {
+    this.item.setEnd(callback)
+    return Api
+  }
+
+  /**
+   * Change the timeout for the request in milliseconds.
+   *
+   * Изменить таймаут запроса в миллисекундах.
+   * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+   */
+  static setTimeout(timeout: number): Api {
+    this.item.setTimeout(timeout)
+    return Api
+  }
+
+  /**
    * Set config for API.
    *
    * Установить конфигурацию для API.
@@ -165,20 +187,13 @@ export class Api {
       if (config.end) {
         this.setEnd(config.end)
       }
+
+      if (config.timeout) {
+        this.setTimeout(config.timeout)
+      }
     }
 
     return this
-  }
-
-  /**
-   * Modify the function after the request.
-   *
-   * Изменить функцию после запроса.
-   * @param callback function for call/ функция для вызова
-   */
-  static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api {
-    this.item.setEnd(callback)
-    return Api
   }
 
   /**

@@ -125,7 +125,10 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `globalEnd?: boolean` — whether to run the global `setEnd` hook after the response. Default: `true`.
 - `queryReturn?: (query: Response) => Promise<any>` — custom response processor instead of the default JSON reader.
 - `init?: RequestInit` — additional options passed directly to native `fetch()` (CORS, cache mode, etc.).
+- `timeout?: number` — request timeout in milliseconds. Default: `16000`ms.
 - `controller?: AbortController` — controller for canceling the request.
+- `retry?: number` — number of retries on failure.
+- `retryDelay?: number` — base delay between retries in milliseconds. Default: `64`ms.
 
 ## Response Data Structure
 
@@ -212,7 +215,7 @@ The `setEnd` method sets a callback function that is called after receiving a re
 - `apiFetch: ApiFetch` — the parameters object with which the request was performed.
 
 **Returns:** `Promise<ApiPreparationEnd>`. The result object can contain the following fields:
-- `reset?: boolean` — if set to `true`, the library will abort the current chain and **execute the request again** (recursively). The entire process of preparation and execution will be restarted. This is used for automatic handling of refreshed access rights.
+- `reset?: boolean` — if set to `true`, the library will abort the current chain and **execute the request again** (recursively) after a jittered delay (see `retryDelay`). The entire process of preparation and execution will be restarted. This is used for automatic handling of refreshed access rights.
 - `data?: any` — allows you to override the data returned by the API method. If this field is specified, the standard response reading mechanism (JSON/text) will be ignored.
 
 ```javascript

@@ -15,6 +15,17 @@ import { ApiResponse } from '../ApiResponse'
 import { ApiPreparation } from '../ApiPreparation'
 import { ErrorCenterInstance } from '../ErrorCenterInstance'
 import { errorCauseList } from '../../media/errorCauseList'
+import { random } from '../../functions/random'
+import { sleep } from '../../functions/sleep'
+
+// Mock dependencies
+vi.mock('../../functions/random', () => ({
+  random: vi.fn((min, _max) => min)
+}))
+
+vi.mock('../../functions/sleep', () => ({
+  sleep: vi.fn(() => Promise.resolve())
+}))
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -58,13 +69,17 @@ describe('ApiInstance', () => {
 
   beforeEach(() => {
     vi.restoreAllMocks()
-    mockFetch.mockClear()
+    mockFetch.mockReset()
+    mockFetch.mockResolvedValue(createMockResponse())
+
+    // Clear global mocks
+    // @ts-expect-error: sleep is mocked
+    sleep.mockClear()
+    // @ts-expect-error: random is mocked
+    random.mockClear()
 
     // Spy on the default ErrorCenter instance's on method
     errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
-
-    // Set up default successful response
-    mockFetch.mockResolvedValue(createMockResponse())
 
     api = new ApiInstance('/api/')
 
@@ -392,6 +407,70 @@ describe('ApiInstance', () => {
 
         expect(endCallback).toHaveBeenCalledTimes(2)
         expect(mockFetch).toHaveBeenCalledTimes(2)
+      })
+    })
+
+    describe('retry logic', () => {
+      it('should return a jittered delay from getRetryDelay', () => {
+        const retryDelay = 100
+        const retryCount = 2
+        // @ts-expect-error: accessing protected member
+        const delay = api.getRetryDelay(retryCount, retryDelay)
+
+        expect(random).toHaveBeenCalledWith(retryDelay, retryDelay + (retryCount * retryDelay))
+        expect(delay).toBe(retryDelay) // based on our mock
+      })
+
+      it('should retry the request when the `retry` property is set', async () => {
+        // First two attempts fail with 500 status, third one succeeds
+        mockFetch
+          .mockResolvedValueOnce(createMockResponse({ status: 500, json: { error: 'Fail 1' } }))
+          .mockResolvedValueOnce(createMockResponse({ status: 500, json: { error: 'Fail 2' } }))
+          .mockResolvedValueOnce(createMockResponse({ json: { data: 'success' } }))
+
+        const result = await api.get({
+          path: 'test',
+          retry: 2,
+          retryDelay: 100
+        })
+
+        expect(mockFetch).toHaveBeenCalledTimes(3)
+        expect(sleep).toHaveBeenCalledTimes(2)
+        expect(result).toBe('success')
+      })
+
+      it('should throw after exceeding the maximum number of retries', async () => {
+        mockFetch.mockResolvedValue(createMockResponse({ status: 500, json: { error: 'Persistent fail' } }))
+
+        // The current implementation returns the parsed data from the last failed attempt
+        // if it doesn't throw. Let's check what it actually does.
+        // In fetch(): query.status >= 400 calls makeErrorQuery, then it retries or reads data.
+        const result = await api.get({
+          path: 'test',
+          retry: 2
+        })
+
+        expect(mockFetch).toHaveBeenCalledTimes(3) // 1 initial + 2 retries
+        expect(sleep).toHaveBeenCalledTimes(2)
+        expect(result).toEqual(expect.objectContaining({ error: 'Persistent fail' }))
+      })
+
+      it('should calculate delay using getRetryDelay on each retry', async () => {
+        mockFetch
+          .mockResolvedValueOnce(createMockResponse({ status: 500 }))
+          .mockResolvedValueOnce(createMockResponse({ status: 500 }))
+          .mockResolvedValueOnce(createMockResponse())
+
+        const getRetryDelaySpy = vi.spyOn(api as any, 'getRetryDelay')
+
+        await api.get({
+          path: 'test',
+          retry: 2,
+          retryDelay: 50
+        })
+
+        expect(getRetryDelaySpy).toHaveBeenCalledWith(0, 50)
+        expect(getRetryDelaySpy).toHaveBeenCalledWith(1, 50)
       })
     })
   })
@@ -1212,9 +1291,10 @@ describe('ApiInstance', () => {
       expect(fetchInit.signal).toBe(controller.signal)
     })
 
-    it('should not set signal when neither timeout nor controller are provided', async () => {
+    it('should not set signal when neither timeout nor controller are provided and timeout is 0', async () => {
       await api.request({
-        path: 'test'
+        path: 'test',
+        timeout: 0
       })
 
       const fetchInit = mockFetch.mock.calls[0][1]

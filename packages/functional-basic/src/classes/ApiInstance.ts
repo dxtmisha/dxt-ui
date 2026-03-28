@@ -5,6 +5,8 @@ import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isOnLine } from '../functions/isOnLine'
 import { isString } from '../functions/isString'
+import { random } from '../functions/random'
+import { sleep } from '../functions/sleep'
 
 import { Geo } from './Geo'
 import { Loading } from './Loading'
@@ -69,6 +71,9 @@ export class ApiInstance {
 
   /** Error handler / Обработчик ошибок */
   protected errorCenter: ErrorCenterInstance
+
+  /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
+  protected timeout: number = 16000
 
   /**
    * Constructor
@@ -247,6 +252,17 @@ export class ApiInstance {
   }
 
   /**
+   * Change the timeout for the request in milliseconds.
+   *
+   * Изменить таймаут запроса в миллисекундах.
+   * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+   */
+  setTimeout(timeout: number): this {
+    this.timeout = timeout
+    return this
+  }
+
+  /**
    * To execute a request.
    *
    * Выполнить запрос.
@@ -311,16 +327,33 @@ export class ApiInstance {
   }
 
   /**
+   * Get retry delay.
+   *
+   * Получить задержку повтора.
+   * @param retryCount count of retries/ количество повторов
+   * @param retryDelay delay between retries/ задержка между повторами
+   */
+  protected getRetryDelay(retryCount: number, retryDelay: number): number {
+    return random(retryDelay, retryDelay + (retryCount * retryDelay))
+  }
+
+  /**
    * To execute a request.
    *
    * Выполнить запрос.
    * @param apiFetch property of the request/ свойство запроса
+   * @param retryCount count of retries/ количество повторов
    */
-  protected async fetch<T>(apiFetch: ApiFetch): Promise<T> {
+  protected async fetch<T>(
+    apiFetch: ApiFetch,
+    retryCount: number = 0
+  ): Promise<T> {
     const {
       toData = true,
       hideError = false,
       hideLoading = false,
+      retry = 0,
+      retryDelay = 64,
       queryReturn = undefined,
       globalPreparation = true,
       globalEnd = true
@@ -360,9 +393,14 @@ export class ApiInstance {
         this.makeErrorQuery(query)
       }
 
-      if (end?.reset) {
+      if (
+        end?.reset
+        || retryCount < retry
+      ) {
+        await sleep(this.getRetryDelay(retryCount, retryDelay))
+
         this.loading.hide()
-        return await this.fetch(apiFetch)
+        return await this.fetch(apiFetch, retryCount + 1)
       }
 
       data = await this.readData<T>(
@@ -603,7 +641,7 @@ export class ApiInstance {
     fetchInit: RequestInit
   ): any {
     const {
-      timeout,
+      timeout = this.timeout,
       controller
     } = apiFetch
 

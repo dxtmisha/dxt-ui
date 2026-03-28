@@ -52,6 +52,9 @@ export type ApiConfig = {
   preparation?: (apiFetch: ApiFetch) => Promise<void>
   /** Function to call after request/ Функция для вызова после запроса */
   end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>
+
+  /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
+  timeout?: number
 }
 
 /**
@@ -97,6 +100,12 @@ export type ApiFetch = {
   /** Suppress loading/ Подавить загрузку */
   hideLoading?: boolean
 
+  /** Retry count/ Количество повторов */
+  retry?: number
+
+  /** Retry delay in milliseconds/ Задержка повтора в миллисекундах */
+  retryDelay?: number
+
   /** Custom response processor/ Пользовательский процессор ответа */
   queryReturn?: (query: Response) => Promise<any>
 
@@ -141,18 +150,18 @@ export type ApiResponseItem = {
  */
 export type ApiDataItem<T = any>
   = T
-    & {
+  & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-      data?: T
-      /** Success flag/ Флаг успешности */
-      success?: boolean
-      /** Status/ Статус */
-      status?: ApiStatusType
-      /** Message/ Сообщение */
-      message?: string
-      /** Status object/ Объект статуса */
-      statusObject?: ApiStatusItem
-    }
+    data?: T
+    /** Success flag/ Флаг успешности */
+    success?: boolean
+    /** Status/ Статус */
+    status?: ApiStatusType
+    /** Message/ Сообщение */
+    message?: string
+    /** Status object/ Объект статуса */
+    statusObject?: ApiStatusItem
+  }
 
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API

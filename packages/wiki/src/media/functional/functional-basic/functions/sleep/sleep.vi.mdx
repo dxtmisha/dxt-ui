@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/sleep - Tạm dừng thực thi'/>
+
+# `sleep`
+
+Tạm dừng thực thi trong một số mili giây nhất định.
+
+**Tham số:**
+- `ms: number` — Số mili giây để tạm dừng thực thi.
+
+**Trả về:**
+`Promise<void>` — Một promise sẽ giải quyết sau khoảng thời gian chờ đã chỉ định.
+
+```typescript
+import { sleep } from '@dxtmisha/functional-basic'
+
+async function performTask() {
+  console.log('Bắt đầu công việc')
+  // Đợi 2 giây
+  await sleep(2000)
+  console.log('Công việc tiếp tục sau 2 giây')
+}
+
+performTask()
+```

@@ -101,19 +101,26 @@ export declare class Api {
      */
     static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api;
     /**
-     * Set config for API.
-     *
-     * Установить конфигурацию для API.
-     * @param config config for API/ конфигурация для API
-     */
-    static setConfig(config?: ApiConfig): Api;
-    /**
      * Modify the function after the request.
      *
      * Изменить функцию после запроса.
      * @param callback function for call/ функция для вызова
      */
     static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api;
+    /**
+     * Change the timeout for the request in milliseconds.
+     *
+     * Изменить таймаут запроса в миллисекундах.
+     * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+     */
+    static setTimeout(timeout: number): Api;
+    /**
+     * Set config for API.
+     *
+     * Установить конфигурацию для API.
+     * @param config config for API/ конфигурация для API
+     */
+    static setConfig(config?: ApiConfig): Api;
     /**
      * To execute a request.
      *
@@ -165,6 +172,8 @@ export declare type ApiConfig = {
     preparation?: (apiFetch: ApiFetch) => Promise<void>;
     /** Function to call after request/ Функция для вызова после запроса */
     end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
+    /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
+    timeout?: number;
 };
 
 /**
@@ -266,6 +275,10 @@ export declare type ApiFetch = {
     hideError?: boolean;
     /** Suppress loading/ Подавить загрузку */
     hideLoading?: boolean;
+    /** Retry count/ Количество повторов */
+    retry?: number;
+    /** Retry delay in milliseconds/ Задержка повтора в миллисекундах */
+    retryDelay?: number;
     /** Custom response processor/ Пользовательский процессор ответа */
     queryReturn?: (query: Response) => Promise<any>;
     /** Run global preparation hooks/ Запускать глобальные хуки подготовки */
@@ -325,6 +338,8 @@ export declare class ApiInstance {
     protected loading: LoadingInstance;
     /** Error handler / Обработчик ошибок */
     protected errorCenter: ErrorCenterInstance;
+    /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
+    protected timeout: number;
     /**
      * Constructor
      * @param url base path to the script/ базовый путь к скрипту
@@ -408,6 +423,13 @@ export declare class ApiInstance {
      */
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
     /**
+     * Change the timeout for the request in milliseconds.
+     *
+     * Изменить таймаут запроса в миллисекундах.
+     * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+     */
+    setTimeout(timeout: number): this;
+    /**
      * To execute a request.
      *
      * Выполнить запрос.
@@ -443,12 +465,21 @@ export declare class ApiInstance {
      */
     delete<T>(request: ApiFetch): Promise<T>;
     /**
+     * Get retry delay.
+     *
+     * Получить задержку повтора.
+     * @param retryCount count of retries/ количество повторов
+     * @param retryDelay delay between retries/ задержка между повторами
+     */
+    protected getRetryDelay(retryCount: number, retryDelay: number): number;
+    /**
      * To execute a request.
      *
      * Выполнить запрос.
      * @param apiFetch property of the request/ свойство запроса
+     * @param retryCount count of retries/ количество повторов
      */
-    protected fetch<T>(apiFetch: ApiFetch): Promise<T>;
+    protected fetch<T>(apiFetch: ApiFetch, retryCount?: number): Promise<T>;
     /**
      * Reading data from the response.
      *
@@ -6126,6 +6157,14 @@ export declare function setValues<T>(selected: T | T[] | undefined, value: any, 
     alwaysChange?: boolean | undefined;
     notEmpty?: boolean | undefined;
 }): T | T[] | undefined;
+
+/**
+ * Pause execution for a specified number of milliseconds.
+ *
+ * Приостановить выполнение на указанное количество миллисекунд.
+ * @param ms milliseconds/ миллисекунды
+ */
+export declare function sleep(ms: number): Promise<void>;
 
 /**
  * This method is used to copy the values of all enumerable own properties from one source object to a target object.
