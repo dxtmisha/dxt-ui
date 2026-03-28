@@ -101,6 +101,13 @@ export declare class Api {
      */
     static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api;
     /**
+     * Set config for API.
+     *
+     * Установить конфигурацию для API.
+     * @param config config for API/ конфигурация для API
+     */
+    static setConfig(config?: ApiConfig): Api;
+    /**
      * Modify the function after the request.
      *
      * Изменить функцию после запроса.
@@ -143,6 +150,22 @@ export declare class Api {
      */
     static delete<T>(request: ApiFetch): Promise<T>;
 }
+
+/**
+ * API configuration/ Конфигурация API
+ */
+export declare type ApiConfig = {
+    /** Base URL for API requests/ Базовый URL для API-запросов */
+    urlRoot?: string;
+    /** Default headers for API requests/ Заголовки по умолчанию для API-запросов */
+    headers?: Record<string, string>;
+    /** Default request data for API requests/ Данные запроса по умолчанию для API-запросов */
+    requestDefault?: Record<string, any>;
+    /** Function to call before request/ Функция для вызова перед запросом */
+    preparation?: (apiFetch: ApiFetch) => Promise<void>;
+    /** Function to call after request/ Функция для вызова после запроса */
+    end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
+};
 
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API
@@ -3627,6 +3650,13 @@ export declare class Icons {
      */
     static setUrl(url: string): void;
     /**
+     * Changes the configuration.
+     *
+     * Изменяет конфигурацию.
+     * @param config new configuration/ новая конфигурация
+     */
+    static setConfig(config: IconsConfig): void;
+    /**
      * Returns the icon name.
      *
      * Возвращает название иконки.
@@ -3640,6 +3670,13 @@ export declare class Icons {
      */
     protected static wait(): Promise<void>;
 }
+
+export declare type IconsConfig = {
+    /** URL to the icons storage / URL к хранилищу иконок */
+    url?: string;
+    /** List of custom icons / Список пользовательских иконок */
+    list?: Record<string, IconsItem>;
+};
 
 export declare type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
 
@@ -6042,41 +6079,61 @@ export declare class Translate {
      * @param value read mode/ режим чтения
      */
     static setReadApi(value: boolean): Translate;
+    /**
+     * Set the configuration for the translation.
+     *
+     * Установить конфигурацию для перевода.
+     * @param config configuration/ конфигурация
+     */
+    static setConfig(config: TranslateConfig): Translate;
 }
 
 /**
- * Prefix for global translations.
- * Префикс для глобальных переводов.
+ * Prefix for global translations/
+ * Префикс для глобальных переводов
  */
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 
 /**
- * Request timeout for batch loading (ms).
- * Таймаут запроса для пакетной загрузки (мс).
+ * Request timeout for batch loading (ms)/
+ * Таймаут запроса для пакетной загрузки (мс)
  */
 export declare const TRANSLATE_TIME_OUT = 160;
 
 /**
- * Translation code or a list of translation codes for template replacement.
- * Код перевода или список кодов для замены шаблона.
+ * Translation code or a list of translation codes for template replacement/
+ * Код перевода или список кодов для замены шаблона
  */
 export declare type TranslateCode = string | string[];
 
 /**
- * A mapping of locale strings to their respective translation file loaders.
- * Сопоставление строк локалей и соответствующих им загрузчиков файлов перевода.
+ * Interface for the functional plugin options /
+ * Интерфейс для опций функционального плагина
+ */
+export declare type TranslateConfig = {
+    /** URL to the translations script / URL к скрипту переводов */
+    url?: string;
+    /** Property name for translations / Имя свойства для переводов */
+    propsName?: string;
+    /** Read translations from API / Читать переводы из API */
+    readApi?: boolean;
+};
+
+/**
+ * A mapping of locale strings to their respective translation file loaders/
+ * Сопоставление строк локалей и соответствующих им загрузчиков файлов перевода
  */
 export declare type TranslateDataFile = Record<string, TranslateDataFileItem>;
 
 /**
- * Asynchronous loader function for a translation file.
- * Асинхронная функция-загрузчик для файла перевода.
+ * Asynchronous loader function for a translation file/
+ * Асинхронная функция-загрузчик для файла перевода
  */
 export declare type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
 
 /**
- * A simple key-value record of translations from a file.
- * Простой рекорд «ключ-значение» с переводами из файла.
+ * A simple key-value record of translations from a file/
+ * Простой рекорд «ключ-значение» с переводами из файла
  */
 export declare type TranslateDataFileList = Record<string, string>;
 
@@ -6345,14 +6402,14 @@ export declare class TranslateInstance {
 }
 
 /**
- * Return type for translation retrieval: an object if a list was requested, or a string for a single key.
- * Тип возвращаемого значения для получения перевода: объект, если был запрошен список, или строка для одного ключа.
+ * Return type for translation retrieval: an object if a list was requested, or a string for a single key/
+ * Тип возвращаемого значения для получения перевода: объект, если был запрошен список, или строка для одного ключа
  */
 export declare type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string;
 
 /**
- * Object with translated strings, where the keys are the names of the translation codes.
- * Объект с переведенными строками, где ключи — имена кодов переводов.
+ * Object with translated strings, where the keys are the names of the translation codes/
+ * Объект с переведенными строками, где ключи — имена кодов переводов
  */
 export declare type TranslateList<T extends TranslateCode[]> = {
     [K in T[number] as K extends readonly string[] ? K[0] : K]: string;

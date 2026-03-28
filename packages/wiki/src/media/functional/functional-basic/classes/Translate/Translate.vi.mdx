@@ -35,12 +35,27 @@ await Translate.add(['welcome', 'auth.login'])
 
 ## Phương thức
 
+### Cấu hình
+
+- `setConfig(config: TranslateConfig): Translate` — Thiết lập cấu hình hoàn chỉnh cho thực thể dịch thuật.
+- `setUrl(url: string): Translate` — Thay đổi đường dẫn API để lấy bản dịch.
+- `setPropsName(name: string): Translate` — Thay đổi tên thuộc tính được sử dụng trong yêu cầu/phản hồi API.
+- `setReadApi(value: boolean): Translate` — Bật hoặc tắt việc lấy bản dịch từ API.
+
 ### Truy xuất bản dịch
 
 - `async get(name: string, replacement?: any): Promise<string>` — Lấy văn bản bất đồng bộ. Nếu không có trong cache và không phải môi trường localhost, hệ thống sẽ cố gắng tải từ máy chủ.
 - `getSync(name: string, first?: boolean, replacement?: any): string` — Trả về văn bản từ cache. Nếu `first` là `true`, trả về một khoảng trắng ` ` nếu thiếu văn bản.
-- `async getList(names: TranslateCode[]): Promise<TranslateList>` — Lấy một nhóm các bản dịch (bất đồng bộ).
-- `getListSync(names: TranslateCode[], first?: boolean): TranslateList` — Lấy một nhóm các bản dịch từ cache (đồng bộ).
+- `async getList<T>(names: T): Promise<TranslateList<T>>` — Lấy một nhóm các bản dịch (bất đồng bộ).
+- `getListSync<T>(names: T, first?: boolean): TranslateList<T>` — Lấy một nhóm các bản dịch từ cache (đồng bộ).
+
+### Cập nhật theo lô
+
+- `async add(names: string | string[]): Promise<void>` — Thêm nhiều mã vào hàng đợi để tải theo lô.
+- `addSync(data: Record<string, string>): void` — Thêm trực tiếp các bản dịch vào bộ nhớ đệm.
+- `async addNormalOrSync(data: Record<string, string>): Promise<void>` — Thêm bản dịch trực tiếp trên localhost, ngược lại sẽ đưa vào hàng đợi để tải.
+- `addSyncByLocation(data: Record<string, Record<string, string>>): void` — Thêm bản dịch cho các vị trí/ngôn ngữ cụ thể.
+- `addSyncByFile(data: TranslateDataFile): void` — Thêm bản dịch từ định nghĩa tệp.
 
 ### Static và Thực thể (Instance)
 

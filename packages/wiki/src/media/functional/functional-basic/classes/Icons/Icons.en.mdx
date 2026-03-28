@@ -43,6 +43,7 @@ Icons.setUrl('/assets/svg/')
 ### Configuration
 
 - `setUrl(url: string): void` — Changes the base path for icon storage.
+- `setConfig(config: IconsConfig): void` — Updates the icons configuration (URL and/or icon list).
 
 ## Loading System
 
@@ -53,6 +54,19 @@ The `Icons` class supports an asynchronous waiting mechanism. This allows you to
 3.  **Completion**: Once the icon is added via `add(name, ...)`, all pending `get` calls will automatically resolve and return the icon's content.
 
 This mechanism is critical for distributed systems where components might request resources before the media database has finished initializing.
+
+## Types
+
+### `IconsItem`
+The definition of an icon. Can be:
+- `string` — Raw SVG content or a path to the SVG file.
+- `Promise<string>` — A promise that resolves to the SVG content (useful for dynamic imports).
+- `() => Promise<string>` — A factory function that returns a promise (useful for lazy-loading on demand).
+
+### `IconsConfig`
+Configuration object for the `setConfig` method:
+- `url?: string` — Base URL for icon storage.
+- `list?: Record<string, IconsItem>` — A list of icons to register.
 
 ## Examples
 
@@ -71,6 +85,15 @@ Icons.add('star', () => import('./icons/star.svg'))
 
 // Retrieve
 const svgContent = await Icons.get('arrow')
+
+// Batch configuration via setConfig
+Icons.setConfig({
+  url: '/custom-icons/',
+  list: {
+    check: '<svg>...</svg>',
+    error: () => import('./icons/error.svg')
+  }
+})
 ```
 
 ### Bulk Registration

@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/dxtFunctionalPlugin - Khởi tạo thống nhất'/>
+
+# `dxtFunctionalPlugin`
+
+`dxtFunctionalPlugin` là một plugin cho Vue 3 được thiết kế để tập trung hóa cấu hình và khởi tạo cho tất cả các dịch vụ tính năng (`Api`, `Translate`, `Icons`, `Meta`) trong ứng dụng của bạn. Nó đảm bảo các đối tượng đơn lẻ (singleton) được thiết lập đúng cách trước khi gắn kết (mount) ứng dụng.
+
+**Các tham số:**
+- `app: App` — Thực thể ứng dụng Vue.
+- `options: FunctionalPluginOptions` — Đối tượng cấu hình cho các dịch vụ tính năng.
+
+**Trả về:**
+`Plugin` — Một đối tượng plugin Vue tích hợp logic tính năng cốt lõi vào ứng dụng.
+
+## Cài đặt
+
+Thêm plugin vào ứng dụng Vue của bạn trong `main.ts`:
+
+```typescript
+import { createApp } from 'vue'
+import { dxtFunctionalPlugin } from '@dxtmisha/functional'
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+app.use(dxtFunctionalPlugin, {
+  api: { urlRoot: 'https://api.example.com' },
+  metaSuffix: ' | Ứng dụng của tôi',
+  router
+})
+
+app.mount('#app')
+```
+
+## Luồng khởi tạo
+
+Khi plugin được cài đặt, nó thực hiện các bước sau theo thứ tự:
+
+1.  **Api**: Gọi `Api.setConfig()` với `ApiConfig` được cung cấp.
+2.  **Translate**: Gọi `Translate.setConfig()` với `TranslateConfig` được cung cấp.
+3.  **Icons**: Gọi `Icons.setConfig()` với `IconsConfig` được cung cấp.
+4.  **Meta**: Cấu hình hậu tố cho tiêu đề thông qua `useMeta().setSuffix()`.
+5.  **Router**: Đăng ký router vào `RouterItemRef`, giúp có thể truy cập toàn cục.
+6.  **executeUseGlobalInit**: Kích hoạt quá trình khởi tạo hàng loạt cho tất cả các đối tượng đơn lẻ được định nghĩa thông qua `executeUseGlobal`.
+
+## Các kiểu dữ liệu
+
+Plugin sử dụng các giao diện (interface) sau để cấu hình:
+
+### `FunctionalPluginOptions`
+
+- `api?: ApiConfig` — Cấu hình cho phiên bản `Api` toàn cục.
+- `translate?: TranslateConfig` — Cấu hình cho dịch vụ dịch thuật `Translate` toàn cục.
+- `icons?: IconsConfig` — Cấu hình cho cơ sở dữ liệu biểu tượng `Icons` toàn cục.
+- `metaSuffix?: string` — Chuỗi hậu tố sẽ được thêm vào tất cả tiêu đề trang được thiết lập thông qua `useMeta()`.
+- `router?: Router` — Thực thể Vue Router. Nếu bỏ qua, plugin sẽ cố gắng lấy nó từ `app.config.globalProperties.$router`.
+
+### `ApiConfig`
+
+Giao diện cấu hình cho dịch vụ API:
+- `urlRoot?: string` — URL cơ sở cho các yêu cầu API.
+- `headers?: Record<string, string>` — Các tiêu đề mặc định cho tất cả yêu cầu API.
+- `requestDefault?: Record<string, any>` — Dữ liệu yêu cầu mặc định được gửi kèm theo mỗi yêu cầu.
+- `preparation?: (apiFetch: ApiFetch) => Promise<void>` — Hook được gọi trước mỗi yêu cầu.
+- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — Hook được gọi sau mỗi yêu cầu.
+
+### `TranslateConfig`
+
+Giao diện cấu hình cho dịch vụ dịch thuật:
+- `url?: string` — URL đến script chứa dữ liệu dịch thuật.
+- `propsName?: string` — Tên khóa trong bộ nhớ cục bộ hoặc trạng thái cho bản dịch.
+- `readApi?: boolean` — Cờ đọc các bản dịch từ API.
+
+### `IconsConfig`
+
+Giao diện cấu hình cho cơ sở dữ liệu biểu tượng:
+- `url?: string` — URL cơ sở để lấy các tài nguyên biểu tượng.
+- `list?: Record<string, IconsItem>` — Đối tượng ánh xạ tên biểu tượng với nội dung SVG hoặc bộ nạp của chúng.

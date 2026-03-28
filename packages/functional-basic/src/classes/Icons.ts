@@ -5,6 +5,12 @@ import { isFunction } from '../functions/isFunction'
 import { Api } from './Api'
 
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>)
+export type IconsConfig = {
+  /** URL to the icons storage / URL к хранилищу иконок */
+  url?: string
+  /** List of custom icons / Список пользовательских иконок */
+  list?: Record<string, IconsItem>
+}
 
 const ICONS_KEY = '__UI_ICON'
 const ICONS_WAIT = 320
@@ -147,6 +153,22 @@ export class Icons {
    */
   static setUrl(url: string): void {
     this.url = url
+  }
+
+  /**
+   * Changes the configuration.
+   *
+   * Изменяет конфигурацию.
+   * @param config new configuration/ новая конфигурация
+   */
+  static setConfig(config: IconsConfig): void {
+    if (config.url) {
+      this.setUrl(config.url)
+    }
+
+    if (config.list) {
+      this.addByList(config.list)
+    }
   }
 
   /**

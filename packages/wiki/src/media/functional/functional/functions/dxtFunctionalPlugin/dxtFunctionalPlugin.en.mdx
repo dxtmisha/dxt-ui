@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/dxtFunctionalPlugin - Unified Initialization'/>
+
+# `dxtFunctionalPlugin`
+
+`dxtFunctionalPlugin` is a Vue 3 plugin designed to centralize the configuration and initialization of all functional services (`Api`, `Translate`, `Icons`, `Meta`) in your application. It ensures that global singletons are properly set up before the app is mounted.
+
+**Parameters:**
+- `app: App` — The Vue application instance.
+- `options: FunctionalPluginOptions` — Configuration object for functional services.
+
+**Returns:**
+`Plugin` — A Vue plugin object that integrates core functional logic into the application.
+
+## Installation
+
+Add the plugin to your Vue application in `main.ts`:
+
+```typescript
+import { createApp } from 'vue'
+import { dxtFunctionalPlugin } from '@dxtmisha/functional'
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+app.use(dxtFunctionalPlugin, {
+  api: { urlRoot: 'https://api.example.com' },
+  metaSuffix: ' | My Portal',
+  router
+})
+
+app.mount('#app')
+```
+
+## Initialization Flow
+
+When the plugin is installed, it performs the following steps in order:
+
+1.  **Api**: Calls `Api.setConfig()` with the provided `ApiConfig`.
+2.  **Translate**: Calls `Translate.setConfig()` with the provided `TranslateConfig`.
+3.  **Icons**: Calls `Icons.setConfig()` with the provided `IconsConfig`.
+4.  **Meta**: Configures the default title suffix via `useMeta().setSuffix()`.
+5.  **Router**: Registers the router instance in `RouterItemRef`, making it accessible globally.
+6.  **executeUseGlobalInit**: Triggers the batch initialization of all global singletons defined using `executeUseGlobal`.
+
+## Data Types
+
+The plugin uses the following interfaces for configuration:
+
+### `FunctionalPluginOptions`
+
+- `api?: ApiConfig` — Configuration for the global `Api` instance.
+- `translate?: TranslateConfig` — Configuration for the global `Translate` service.
+- `icons?: IconsConfig` — Configuration for the global `Icons` registry.
+- `metaSuffix?: string` — A string that will be appended to all page titles set via `useMeta()`.
+- `router?: Router` — The Vue Router instance. If omitted, the plugin will attempt to extract it from `app.config.globalProperties.$router`.
+
+### `ApiConfig`
+
+Interface for API service configuration:
+- `urlRoot?: string` — Base URL for API requests.
+- `headers?: Record<string, string>` — Default headers for all API requests.
+- `requestDefault?: Record<string, any>` — Default request data to be sent with every request.
+- `preparation?: (apiFetch: ApiFetch) => Promise<void>` — Hook called before every request.
+- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — Hook called after every request.
+
+### `TranslateConfig`
+
+Interface for translation service configuration:
+- `url?: string` — URL to the translation data script.
+- `propsName?: string` — Key name in the local storage or state for translations.
+- `readApi?: boolean` — Whether to read translations from the API.
+
+### `IconsConfig`
+
+Interface for icon registry configuration:
+- `url?: string` — Base URL for retrieving icon assets.
+- `list?: Record<string, IconsItem>` — Object mapping icon names to their SVG content or loader.

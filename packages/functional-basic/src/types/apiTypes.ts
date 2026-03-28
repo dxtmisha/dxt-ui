@@ -38,6 +38,23 @@ export type ApiMethod = string & ApiMethodItem
 export type ApiStatusType = 'success' | 'error' | 'warning' | 'info'
 
 /**
+ * API configuration/ Конфигурация API
+ */
+export type ApiConfig = {
+  /** Base URL for API requests/ Базовый URL для API-запросов */
+  urlRoot?: string
+  /** Default headers for API requests/ Заголовки по умолчанию для API-запросов */
+  headers?: Record<string, string>
+  /** Default request data for API requests/ Данные запроса по умолчанию для API-запросов */
+  requestDefault?: Record<string, any>
+
+  /** Function to call before request/ Функция для вызова перед запросом */
+  preparation?: (apiFetch: ApiFetch) => Promise<void>
+  /** Function to call after request/ Функция для вызова после запроса */
+  end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>
+}
+
+/**
  * Options for making API requests/ Опции для выполнения API-запросов
  */
 export type ApiFetch = {
@@ -121,18 +138,18 @@ export type ApiResponseItem = {
  */
 export type ApiDataItem<T = any>
   = T
-  & {
+    & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-    data?: T
-    /** Success flag/ Флаг успешности */
-    success?: boolean
-    /** Status/ Статус */
-    status?: ApiStatusType
-    /** Message/ Сообщение */
-    message?: string
-    /** Status object/ Объект статуса */
-    statusObject?: ApiStatusItem
-  }
+      data?: T
+      /** Success flag/ Флаг успешности */
+      success?: boolean
+      /** Status/ Статус */
+      status?: ApiStatusType
+      /** Message/ Сообщение */
+      message?: string
+      /** Status object/ Объект статуса */
+      statusObject?: ApiStatusItem
+    }
 
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API

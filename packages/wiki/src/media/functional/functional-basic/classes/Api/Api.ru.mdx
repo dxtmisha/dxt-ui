@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс Api
 
-`Api` — это статичная обертка над инстансом `ApiInstance`. 
+`Api` — это статичная обертка над инстансом `ApiInstance`.
 
 Все вызовы методов `Api` автоматически делегируются внутреннему глобальному объекту `ApiInstance`. Это позволяет работать с HTTP запросами без необходимости самостоятельного создания инстансов:
 
@@ -18,4 +18,61 @@ Api.setHeaders({ 'Authorization': 'Bearer token123' })
 const data = await Api.get({ path: 'users' })
 ```
 
-> **Важно:** Полный список методов, параметров (`ApiFetch`), хуков (Lifecycle Hooks) и особенностей эмуляции ответов (`ApiResponse`) описан в документации базового класса **ApiInstance**.
+## Методы
+
+### Доступ к инстансу
+
+- `getItem(): ApiInstance` — Возвращает внутренний объект `ApiInstance`, используемый всеми статическими методами.
+
+### Информационные методы
+
+- `isLocalhost(): boolean` — Возвращает `true`, если код работает на локальном сервере разработки.
+- `getStatus(): ApiStatus` — Возвращает менеджер `ApiStatus` для отслеживания состояния и ошибок последнего запроса.
+- `getResponse(): ApiResponse` — Возвращает менеджер ответов/эмуляции `ApiResponse`.
+- `getUrl(path: string, api?: boolean): string` — Возвращает полный URL запроса. Динамические заполнители `{locale}`, `{country}`, `{language}` заменяются автоматически.
+- `getBody(request?, method?): string | FormData | undefined` — Возвращает данные для тела запроса.
+- `getBodyForGet(request, path?, method?): string` — Возвращает строку параметров запроса для метода GET.
+
+### Методы конфигурации
+
+Все методы конфигурации возвращают сам класс `Api` для цепочечного вызова:
+
+- `setUrl(url: string): Api` — Устанавливает базовый URL для всех запросов.
+- `setHeaders(headers: Record<string, string>): Api` — Устанавливает заголовки по умолчанию для всех запросов.
+- `setRequestDefault(request: Record<string, any>): Api` — Устанавливает данные запроса по умолчанию, объединяемые с каждым телом запроса.
+- `setPreparation(callback): Api` — Устанавливает функцию обратного вызова, выполняемую перед каждым запросом.
+- `setEnd(callback): Api` — Устанавливает функцию обратного вызова, выполняемую после каждого запроса.
+- `setConfig(config?: ApiConfig): Api` — Применяет полный объект конфигурации сразу (`urlRoot`, `headers`, `requestDefault`, `preparation`, `end`).
+
+### Методы запросов
+
+- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Основной исполнитель запросов. Принимает строку пути или объект конфигурации `ApiFetch`.
+- `get<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP GET запрос.
+- `post<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP POST запрос.
+- `put<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP PUT запрос.
+- `delete<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP DELETE запрос.
+
+## setConfig
+
+Метод `setConfig` позволяет применить несколько параметров конфигурации одновременно с помощью объекта `ApiConfig`:
+
+```typescript
+import { Api } from '@dxtmisha/functional'
+
+Api.setConfig({
+  urlRoot: 'https://api.example.com/v1/',
+  headers: { 'Authorization': 'Bearer token123' },
+  requestDefault: { source: 'webapp' },
+  preparation: async (apiFetch) => {
+    console.log('Подготовка:', apiFetch.path)
+  },
+  end: async (response, apiFetch) => {
+    if (response.status === 401) {
+      return { reset: true }
+    }
+    return {}
+  }
+})
+```
+
+> **Важно:** Полный список параметров (`ApiFetch`), хуков (Lifecycle Hooks), эмуляции ответов и структуры данных ответа описан в документации базового класса **ApiInstance**.

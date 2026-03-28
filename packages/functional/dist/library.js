@@ -1,5 +1,5 @@
-import { Api as e, ApiMethodItem as t, BroadcastMessage as n, Cookie as r, DataStorage as i, Datetime as a, EventItem as o, Formatters as s, Geo as c, GeoFlag as l, GeoIntl as u, Hash as d, Loading as f, Meta as p, ScrollbarWidth as m, SearchList as h, Translate as g, executeFunction as _, executePromise as v, forEach as y, getColumn as b, getElementId as x, getExp as S, isApiSuccess as ee, isArray as C, isDomRuntime as w, isFunction as te, isObject as ne, isObjectNotArray as T, isSelected as E, isString as D, random as re, toArray as O, toCamelCase as ie, toDate as ae } from "@dxtmisha/functional-basic";
-import { computed as k, customRef as oe, effectScope as A, getCurrentInstance as se, h as ce, inject as le, isRef as j, onUnmounted as ue, provide as de, ref as M, shallowRef as N, toRefs as fe, triggerRef as pe, useAttrs as me, useSlots as he, watch as P, watchEffect as ge } from "vue";
+import { Api as e, ApiMethodItem as t, BroadcastMessage as n, Cookie as r, DataStorage as i, Datetime as a, EventItem as o, Formatters as s, Geo as c, GeoFlag as l, GeoIntl as u, Hash as d, Icons as f, Loading as p, Meta as m, ScrollbarWidth as h, SearchList as g, Translate as _, executeFunction as v, executePromise as y, forEach as b, getColumn as x, getElementId as S, getExp as C, isApiSuccess as ee, isArray as te, isDomRuntime as ne, isFunction as re, isObject as w, isObjectNotArray as T, isSelected as E, isString as D, random as ie, toArray as O, toCamelCase as ae, toDate as oe } from "@dxtmisha/functional-basic";
+import { computed as k, customRef as se, effectScope as A, getCurrentInstance as ce, h as le, inject as ue, isRef as j, onUnmounted as de, provide as fe, ref as M, shallowRef as N, toRefs as pe, triggerRef as me, useAttrs as he, useSlots as ge, watch as P, watchEffect as _e } from "vue";
 export * from "@dxtmisha/functional-basic";
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/typeof.js
@@ -13,7 +13,7 @@ function F(e) {
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPrimitive.js
-function _e(e, t) {
+function ve(e, t) {
 	if (F(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
@@ -25,14 +25,14 @@ function _e(e, t) {
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPropertyKey.js
-function ve(e) {
-	var t = _e(e, "string");
+function ye(e) {
+	var t = ve(e, "string");
 	return F(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/defineProperty.js
 function I(e, t, n) {
-	return (t = ve(t)) in e ? Object.defineProperty(e, t, {
+	return (t = ye(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -41,12 +41,12 @@ function I(e, t, n) {
 }
 //#endregion
 //#region src/classes/design/DesignChanged.ts
-var ye = class {
+var be = class {
 	constructor(e, t = Object.keys(e)) {
 		I(this, "cache", {}), this.props = e, this.watch = t;
 	}
 	is(e) {
-		return C(e) ? !!e.find((e) => this.isDifferent(e)) : this.isDifferent(e);
+		return te(e) ? !!e.find((e) => this.isDifferent(e)) : this.isDifferent(e);
 	}
 	isChanged() {
 		let e = this.props;
@@ -62,9 +62,9 @@ var ye = class {
 		var t, n;
 		return ((t = this.cache) == null ? void 0 : t[e]) !== ((n = this.props) == null ? void 0 : n[e]);
 	}
-}, be = class {
+}, xe = class {
 	constructor(e, t, n) {
-		I(this, "event", {}), I(this, "changed", void 0), this.props = e, this.callback = t, this.changed = new ye(e, n);
+		I(this, "event", {}), I(this, "changed", void 0), this.props = e, this.callback = t, this.changed = new be(e, n);
 	}
 	make(e) {
 		return this.makeCallback(e), this;
@@ -81,7 +81,7 @@ var ye = class {
 	makeCallbackItem() {
 		this.callback && this.callback(this.event);
 	}
-}, xe = class extends be {
+}, Se = class extends xe {
 	make(e) {
 		return this.makeCallback(e).then(), this;
 	}
@@ -96,23 +96,23 @@ function L(e) {
 }
 //#endregion
 //#region src/functions/render/getClassName.ts
-function Se(e) {
+function Ce(e) {
 	return e && "class" in e && typeof e.class == "string" ? e.class : void 0;
 }
 //#endregion
 //#region src/functions/render/getIndexForRender.ts
-function Ce(e, t, n) {
-	let r = t == null ? void 0 : t.id, i = t == null ? void 0 : t.index, a = Se(t), o = "";
+function we(e, t, n) {
+	let r = t == null ? void 0 : t.id, i = t == null ? void 0 : t.index, a = Ce(t), o = "";
 	if (D(e) && (o += e), n && (o += `.${n}`), i && D(i) && (o += `.${i}`), a && (o += `.${a}`), r && (o += `.${r}`), o !== "") return o;
 }
 //#endregion
 //#region src/functions/ref/render.ts
-function we(e, t, n, r) {
+function Te(e, t, n, r) {
 	let i = t, a = t && "key" in t;
 	return (!t || !a) && (i = {
 		...t,
-		key: Ce(e, t, r)
-	}), ce(e, i, n);
+		key: we(e, t, r)
+	}), le(e, i, n);
 }
 //#endregion
 //#region src/functions/toBind.ts
@@ -125,7 +125,7 @@ function R(e, t) {
 }
 //#endregion
 //#region src/functions/toBinds.ts
-function Te(...e) {
+function Ee(...e) {
 	let t = {};
 	return e.forEach((e) => {
 		e && (t = R(t, e));
@@ -148,7 +148,7 @@ var z = class {
 		if (e) {
 			e in this.caching || (this.caching[e] = k(() => this.computeModification(e)));
 			let n = this.caching[e];
-			if (n) return t ? Te(n.value, t) : n.value;
+			if (n) return t ? Ee(n.value, t) : n.value;
 		}
 		return t;
 	}
@@ -159,7 +159,7 @@ var z = class {
 	renderOne(e, t, n, r) {
 		if (this.is(e)) {
 			let i = r == null ? e : r;
-			return we(this.get(e), this.getModification(i, t), n, i);
+			return Te(this.get(e), this.getModification(i, t), n, i);
 		}
 	}
 	renderAdd(e, t, n, r, i) {
@@ -170,15 +170,15 @@ var z = class {
 		let n = L((t = this.modification) == null ? void 0 : t[e]);
 		if (n && T(n)) {
 			let e = {};
-			return y(n, (t, n) => {
+			return b(n, (t, n) => {
 				e[n] = L(t);
 			}), e;
 		}
 		return {};
 	}
-}, Ee = class extends z {}, De = class {
+}, De = class extends z {}, Oe = class {
 	constructor(e, t, n) {
-		I(this, "name", void 0), I(this, "element", M()), I(this, "refs", void 0), I(this, "components", void 0), I(this, "emits", void 0), I(this, "classes", void 0), I(this, "classesSub", void 0), I(this, "styles", void 0), I(this, "stylesSub", void 0), I(this, "attrs", void 0), I(this, "slots", void 0), I(this, "dataExpose", void 0), this.props = t, this.options = n, this.name = this.initName(e), this.refs = this.props ? fe(this.props) : {}, this.components = new z(n == null ? void 0 : n.components, n == null ? void 0 : n.compMod), this.emits = n == null ? void 0 : n.emits, this.classes = k(() => this.updateClasses()), this.styles = k(() => this.updateStyles()), this.attrs = me(), this.slots = he();
+		I(this, "name", void 0), I(this, "element", M()), I(this, "refs", void 0), I(this, "components", void 0), I(this, "emits", void 0), I(this, "classes", void 0), I(this, "classesSub", void 0), I(this, "styles", void 0), I(this, "stylesSub", void 0), I(this, "attrs", void 0), I(this, "slots", void 0), I(this, "dataExpose", void 0), this.props = t, this.options = n, this.name = this.initName(e), this.refs = this.props ? pe(this.props) : {}, this.components = new z(n == null ? void 0 : n.components, n == null ? void 0 : n.compMod), this.emits = n == null ? void 0 : n.emits, this.classes = k(() => this.updateClasses()), this.styles = k(() => this.updateStyles()), this.attrs = he(), this.slots = ge();
 	}
 	init() {
 		return this.classesSub = k(() => this.initClasses()), this.stylesSub = k(() => this.initStyles()), this.dataExpose = this.initExpose(), this;
@@ -224,16 +224,16 @@ var z = class {
 		return T(e) ? e : Array.isArray(e) ? { [e.filter((e) => typeof e == "string" && e.trim() !== "").join(" ")]: !0 } : typeof e == "string" ? { [e]: !0 } : {};
 	}
 	toClassName(e) {
-		if (ne(e)) {
+		if (w(e)) {
 			let t = {};
-			return y(e, (e, n) => {
+			return b(e, (e, n) => {
 				n.match(/\?\?/) ? t[n.replace(/\?\?/, this.getName())] = e : n.match(/\?/) ? t[n.replace(/\?/, this.getDesign())] = e : t[n] = e;
 			}), t;
 		}
 		return {};
 	}
 	initName(e) {
-		return y(e.split(".", 2), (e) => ie(e));
+		return b(e.split(".", 2), (e) => ae(e));
 	}
 	updateClasses() {
 		var e, t, n;
@@ -263,13 +263,13 @@ function B(e) {
 }
 //#endregion
 //#region src/classes/ref/DatetimeRef.ts
-var Oe = class {
+var ke = class {
 	constructor(e, t = "date", n = c.getLocation()) {
-		I(this, "item", void 0), I(this, "type", void 0), I(this, "code", void 0), I(this, "date", void 0), I(this, "datetime", void 0), I(this, "year", M(2e3)), I(this, "month", M(1)), I(this, "day", M(1)), I(this, "hour", M(1)), I(this, "minute", M(1)), I(this, "second", M(1)), this.item = B(e), this.type = B(t), this.code = B(n), this.date = M(ae(this.item.value)), this.datetime = new a(this.date.value, this.type.value, this.code.value), P(this.item, (e) => {
-			this.date.value = ae(e);
+		I(this, "item", void 0), I(this, "type", void 0), I(this, "code", void 0), I(this, "date", void 0), I(this, "datetime", void 0), I(this, "year", M(2e3)), I(this, "month", M(1)), I(this, "day", M(1)), I(this, "hour", M(1)), I(this, "minute", M(1)), I(this, "second", M(1)), this.item = B(e), this.type = B(t), this.code = B(n), this.date = M(oe(this.item.value)), this.datetime = new a(this.date.value, this.type.value, this.code.value), P(this.item, (e) => {
+			this.date.value = oe(e);
 		}), P(this.type, (e) => this.datetime.setType(e)), P(this.code, (e) => this.datetime.setCode(e)), P(this.date, (e) => {
 			this.datetime.setDate(e), this.updateDate();
-		}), this.datetime.setWatch(() => pe(this.date)), this.updateDate();
+		}), this.datetime.setWatch(() => me(this.date)), this.updateDate();
 	}
 	getItem() {
 		return this.item;
@@ -327,12 +327,12 @@ var Oe = class {
 I(V, "scope", void 0);
 //#endregion
 //#region src/classes/ref/EventRef.ts
-var ke = class extends o {
+var Ae = class extends o {
 	constructor(e, t, n = ["click"], r, i, a) {
 		let o = B(e), s = B(t);
 		super(o.value, n, r, i, a), s.value && this.setElementControl(s.value), P(o, (e) => this.setElement(e)), P(s, (e) => this.setElementControl(e));
 	}
-}, Ae = class {
+}, je = class {
 	constructor(e = c.getLocation()) {
 		I(this, "code", void 0), I(this, "flag", void 0), this.code = B(e), this.flag = new l(this.code.value), P(this.code, (e) => this.flag.setCode(e));
 	}
@@ -377,7 +377,7 @@ var ke = class extends o {
 H = U, I(U, "item", N(c.get())), I(U, "country", k(() => H.item.value.country)), I(U, "language", k(() => H.item.value.language)), I(U, "standard", k(() => H.item.value.standard)), I(U, "firstDay", k(() => H.item.value.firstDay));
 //#endregion
 //#region src/classes/ref/GeoIntlRef.ts
-var je = class {
+var Me = class {
 	constructor(e) {
 		I(this, "location", void 0), I(this, "intl", void 0), this.location = B(e), this.intl = k(() => {
 			var e;
@@ -450,9 +450,9 @@ var je = class {
 	sort(e, t = (e, t) => [e, t]) {
 		return k(() => this.intl.value.sort([...L(e)], t));
 	}
-}, Me = class e {
+}, Ne = class e {
 	constructor(e, t, n, r, i, a, o, s, c, l = 0, u = 9999999, d) {
-		I(this, "subList", {}), I(this, "data", k(() => y(L(this.list) || [], (e, t) => this.initItem(t, e)))), I(this, "liteData", k(() => {
+		I(this, "subList", {}), I(this, "data", k(() => b(L(this.list) || [], (e, t) => this.initItem(t, e)))), I(this, "liteData", k(() => {
 			if (this.isLite()) {
 				let e = [];
 				for (let t of this.data.value) {
@@ -471,7 +471,7 @@ var je = class {
 			return this.data.value;
 		})), I(this, "fullData", k(() => {
 			let e = this.getFocus(), t = this.getHighlight(), n = this.getSelected();
-			return y(this.data.value, (r) => {
+			return b(this.data.value, (r) => {
 				var i, a;
 				let o = E(r.index, n);
 				return {
@@ -499,7 +499,7 @@ var je = class {
 		})), I(this, "mapItems", k(() => this.map.value.filter((e) => e.type === "item"))), I(this, "items", k(() => this.map.value.filter((e) => e.type === "item" || e.type === "group" || e.type === "menu"))), I(this, "highlightFirstItem", k(() => {
 			let e = this.getHighlight();
 			if (e && e.length >= this.getHighlightLengthStart()) {
-				let t = S(e, "i");
+				let t = C(e, "i");
 				if (t) return this.map.value.findIndex((e) => {
 					var n, r, i;
 					return ((n = e.label) == null ? void 0 : n.toString().match(t)) || ((r = e.index) == null ? void 0 : r.toString().match(t)) || ((i = e.search) == null ? void 0 : i.toString().match(t));
@@ -521,7 +521,7 @@ var je = class {
 		})), I(this, "selectedListInGroup", k(() => {
 			let e = this.getSelected();
 			return e && this.isSelected.value ? this.data.value.filter((t) => E(t.index, e)) : [];
-		})), I(this, "selectedNames", k(() => b(this.selectedList.value, "label"))), I(this, "selectedValues", k(() => b(this.selectedList.value, "value"))), this.list = e, this.focus = t, this.highlight = n, this.highlightLengthStart = r, this.filterMode = i, this.selected = a, this.keyValue = o, this.keyLabel = s, this.lite = c, this.min = l, this.max = u, this.parent = d, j(e) && P(e, () => {
+		})), I(this, "selectedNames", k(() => x(this.selectedList.value, "label"))), I(this, "selectedValues", k(() => x(this.selectedList.value, "value"))), this.list = e, this.focus = t, this.highlight = n, this.highlightLengthStart = r, this.filterMode = i, this.selected = a, this.keyValue = o, this.keyLabel = s, this.lite = c, this.min = l, this.max = u, this.parent = d, j(e) && P(e, () => {
 			this.subList = {};
 		});
 	}
@@ -632,7 +632,7 @@ var je = class {
 		return t.parent === e && this.isItem(t);
 	}
 	getIndex(e, t, n, r) {
-		return e && !ne(e) ? e : t && !ne(t) ? t : n && r;
+		return e && !w(e) ? e : t && !w(t) ? t : n && r;
 	}
 	initItem(e, t) {
 		if (T(t)) {
@@ -690,11 +690,11 @@ var je = class {
 I(W, "router", void 0);
 //#endregion
 //#region src/classes/ref/ScrollbarWidthRef.ts
-var Ne = class {
+var Pe = class {
 	constructor() {
-		I(this, "item", M()), I(this, "width", M(0)), I(this, "is", k(() => this.item.value !== void 0)), m.is().then((e) => {
+		I(this, "item", M()), I(this, "width", M(0)), I(this, "is", k(() => this.item.value !== void 0)), h.is().then((e) => {
 			this.item.value = e;
-		}), m.get().then((e) => {
+		}), h.get().then((e) => {
 			this.width.value = e;
 		});
 	}
@@ -728,18 +728,18 @@ function K(n, r = t.post, i, a, o = !0, s, c = e.getItem()) {
 }
 //#endregion
 //#region src/composables/ref/useApiDelete.ts
-function Pe(e, n, r, i = !0, a, o) {
+function Fe(e, n, r, i = !0, a, o) {
 	return K(e, t.delete, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useApiGet.ts
-function Fe(e, n, r, i = !0, a, o) {
+function Ie(e, n, r, i = !0, a, o) {
 	return K(e, t.get, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useApiRef.ts
 var q;
-function Ie(t, n, r = !0, i, a, o = !0, s = e.getItem()) {
+function Le(t, n, r = !0, i, a, o = !0, s = e.getItem()) {
 	let c = M(), l = B(G(n)), u = M(!1), d = M(!1), f, p = !0, m, h = async () => {
 		if (p) return;
 		f && f.abort(), f = l.value.controller || new AbortController();
@@ -761,7 +761,7 @@ function Ie(t, n, r = !0, i, a, o = !0, s = e.getItem()) {
 	}, g = () => {
 		console.warn("useApiRef: stop", L(t)), m == null || m(), c.value = void 0, p = !0;
 	}, _ = () => {
-		p && (p = !1, h().then(), o ? (v(), se() && ue(() => g())) : V.run(() => v()));
+		p && (p = !1, h().then(), o ? (v(), ce() && de(() => g())) : V.run(() => v()));
 	}, v = () => {
 		let e = [];
 		r && e.push(l), j(t) && e.push(t), i && e.push(i), q && e.push(q), e.length > 0 && (m = P(e, async () => {
@@ -795,22 +795,22 @@ function Ie(t, n, r = !0, i, a, o = !0, s = e.getItem()) {
 		abort: () => f == null ? void 0 : f.abort()
 	};
 }
-var Le = (e) => {
+var Re = (e) => {
 	q || (q = e);
 };
 //#endregion
 //#region src/composables/ref/useApiPost.ts
-function Re(e, n, r, i = !0, a, o) {
+function ze(e, n, r, i = !0, a, o) {
 	return K(e, t.post, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useApiPut.ts
-function ze(e, n, r, i = !0, a, o) {
+function Be(e, n, r, i = !0, a, o) {
 	return K(e, t.put, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useFormattersRef.ts
-function Be(e, t) {
+function Ve(e, t) {
 	let n = new s(t);
 	return {
 		listFormat: k(() => n.setList(e.value).to()),
@@ -819,7 +819,7 @@ function Be(e, t) {
 }
 //#endregion
 //#region src/composables/ref/useSearchValueRef.ts
-function Ve(e, t) {
+function He(e, t) {
 	let n = t == null ? M("") : t, r = M(n.value), i = M(!1), a;
 	return P(n, (t, o, s) => {
 		let c = e.getOptions().getDelay();
@@ -836,8 +836,8 @@ function Ve(e, t) {
 }
 //#endregion
 //#region src/composables/ref/useSearchRef.ts
-function He(e, t, n, r) {
-	let i = new h(void 0, t, void 0, r), { search: a, searchDelay: o, loading: s } = Ve(i, n), c = () => L(_(e)) || [], l = k(() => i.setValue(o.value).getItem().isSearch()), u = k(() => i.setList(c()).setValue(o.value).to());
+function Ue(e, t, n, r) {
+	let i = new g(void 0, t, void 0, r), { search: a, searchDelay: o, loading: s } = He(i, n), c = () => L(v(e)) || [], l = k(() => i.setValue(o.value).getItem().isSearch()), u = k(() => i.setList(c()).setValue(o.value).to());
 	return {
 		isSearch: l,
 		search: a,
@@ -848,9 +848,9 @@ function He(e, t, n, r) {
 }
 //#endregion
 //#region src/composables/ref/useApiManagementRef.ts
-function Ue(e, t, n, r, i, a, o, s) {
-	let { path: c, options: l, reactivity: u, conditions: d, transformation: f, typeData: p, unmounted: m, skeleton: h } = e, g, _, y, b, x, S = Ie(c, l, u, d, f, m, s), C = k(() => p === void 0 ? !0 : S.isStarting() ? !1 : te(p) ? p(S.data.value) : S.data.value instanceof p), w = k(() => S.isStarting() && h ? h() : S.data.value);
-	if (t && (g = Be(w, t)), n && (_ = He(k(() => {
+function We(e, t, n, r, i, a, o, s) {
+	let { path: c, options: l, reactivity: u, conditions: d, transformation: f, typeData: p, unmounted: m, skeleton: h } = e, g, _, v, b, x, S = Le(c, l, u, d, f, m, s), C = k(() => p === void 0 ? !0 : S.isStarting() ? !1 : re(p) ? p(S.data.value) : S.data.value instanceof p), te = k(() => S.isStarting() && h ? h() : S.data.value);
+	if (t && (g = Ve(te, t)), n && (_ = Ue(k(() => {
 		var e;
 		let t = (e = g == null ? void 0 : g.listFormat.value) == null ? S.data.value : e;
 		if (Array.isArray(t)) return t;
@@ -858,9 +858,9 @@ function Ue(e, t, n, r, i, a, o, s) {
 		let e = (e) => {
 			o == null || o(), ee(e) && S.reset();
 		}, t = (t) => async (n) => {
-			te(t) && await v(t(n)), e(n);
+			re(t) && await y(t(n)), e(n);
 		};
-		r && (y = Re(r.path, t(r.action), r.transformation, r.toData, r.options)), i && (b = ze(i.path, t(i.action), i.transformation, i.toData, i.options)), a && (x = Pe(a.path, t(a.action), a.transformation, a.toData, a.options));
+		r && (v = ze(r.path, t(r.action), r.transformation, r.toData, r.options, s)), i && (b = Be(i.path, t(i.action), i.transformation, i.toData, i.options, s)), a && (x = Fe(a.path, t(a.action), a.transformation, a.toData, a.options, s));
 	}
 	return {
 		isValid: C,
@@ -869,7 +869,7 @@ function Ue(e, t, n, r, i, a, o, s) {
 				if (_ && Array.isArray(S.data.value)) return _.listSearch.value;
 				if (g) return g.listFormat.value;
 			}
-			return w.value;
+			return te.value;
 		}),
 		get data() {
 			return S.data;
@@ -882,24 +882,24 @@ function Ue(e, t, n, r, i, a, o, s) {
 		reading: S.reading,
 		loading: S.loading,
 		loadingSearch: _ == null ? void 0 : _.loading,
-		loadingPost: y == null ? void 0 : y.loading,
+		loadingPost: v == null ? void 0 : v.loading,
 		loadingPut: b == null ? void 0 : b.loading,
 		loadingDelete: x == null ? void 0 : x.loading,
 		isSearch: _ == null ? void 0 : _.isSearch,
 		search: _ == null ? void 0 : _.search,
 		reset: S.reset,
 		abort: S.abort,
-		sendPost: async (e) => await (y == null ? void 0 : y.send(e)),
+		sendPost: async (e) => await (v == null ? void 0 : v.send(e)),
 		sendPut: async (e) => await (b == null ? void 0 : b.send(e)),
 		sendDelete: async (e) => await (x == null ? void 0 : x.send(e))
 	};
 }
 //#endregion
 //#region src/composables/ref/useBroadcastValueRef.ts
-function We(e, t) {
+function Ge(e, t) {
 	let r = `broadcast--${e}`;
 	if (r in J) return J[r];
-	let i = M(_(t)), a = new n(r, (e) => {
+	let i = M(v(t)), a = new n(r, (e) => {
 		i.value !== e.data.message && (i.value = e.data.message);
 	});
 	return V.run(() => {
@@ -909,9 +909,9 @@ function We(e, t) {
 var J = {};
 //#endregion
 //#region src/composables/ref/useCookieRef.ts
-function Ge(e, t, n) {
+function Ke(e, t, n) {
 	if (e in Y) return Y[e];
-	let i = new r(e), a = We(`__cookie:${e}`, i.get(t, n));
+	let i = new r(e), a = Ge(`__cookie:${e}`, i.get(t, n));
 	return V.run(() => {
 		P(a, (e) => {
 			i.set(e, n);
@@ -921,12 +921,12 @@ function Ge(e, t, n) {
 var Y = {};
 //#endregion
 //#region src/composables/ref/useGeoIntlRef.ts
-function Ke() {
-	return new je();
+function qe() {
+	return new Me();
 }
 //#endregion
 //#region src/composables/ref/useHashRef.ts
-function qe(e, t) {
+function Je(e, t) {
 	if (e in X) return X[e];
 	let n = N(d.get(e, t));
 	return V.run(() => {
@@ -935,10 +935,10 @@ function qe(e, t) {
 		n.value = e;
 	}), X[e] = n, n;
 }
-var X = {}, Je = (e = { rootMargin: "128px 0px" }) => {
-	let t = {}, n = w() && "IntersectionObserver" in window ? new IntersectionObserver((e) => {
+var X = {}, Ye = (e = { rootMargin: "128px 0px" }) => {
+	let t = {}, n = ne() && "IntersectionObserver" in window ? new IntersectionObserver((e) => {
 		e.forEach((e) => {
-			let n = x(e.target);
+			let n = S(e.target);
 			if (n in t) {
 				let r = t[n];
 				r.status.value = e.isIntersecting, r.ratio.value = e.intersectionRatio, r.entry.value = e;
@@ -946,7 +946,7 @@ var X = {}, Je = (e = { rootMargin: "128px 0px" }) => {
 		});
 	}, e) : void 0, r = (e) => {
 		if (e) {
-			let i = x(e);
+			let i = S(e);
 			if (i in t) {
 				var r;
 				n == null || n.unobserve(e), (r = t[i]) == null || r.stopWatch(), delete t[i];
@@ -956,7 +956,7 @@ var X = {}, Je = (e = { rootMargin: "128px 0px" }) => {
 	return {
 		intersectionObserver: n,
 		getItem(e) {
-			return t[x(e)];
+			return t[S(e)];
 		},
 		addLazyItem(e) {
 			let i = N(!n);
@@ -964,7 +964,7 @@ var X = {}, Je = (e = { rootMargin: "128px 0px" }) => {
 				let a;
 				a = P(e, (o, s) => {
 					if (s && r(s), e.value) {
-						let r = x(e.value);
+						let r = S(e.value);
 						t[r] = {
 							status: i,
 							ratio: N(0),
@@ -979,16 +979,16 @@ var X = {}, Je = (e = { rootMargin: "128px 0px" }) => {
 		removeLazyItem: r,
 		disconnectLazy: () => n == null ? void 0 : n.disconnect()
 	};
-}, Ye = [], Xe = (e) => {
-	let t = Ye.find((t) => t.rootMargin === e);
+}, Xe = [], Ze = (e) => {
+	let t = Xe.find((t) => t.rootMargin === e);
 	if (t) return t.item;
-	let n = Je({ rootMargin: e });
-	return Ye.push({
+	let n = Ye({ rootMargin: e });
+	return Xe.push({
 		rootMargin: e,
 		item: n
 	}), n;
-}, Ze = (e, t) => {
-	let n = Xe(t);
+}, Qe = (e, t) => {
+	let n = Ze(t);
 	return {
 		lazyItemStatus: n.addLazyItem(e),
 		get lazyItem() {
@@ -998,9 +998,9 @@ var X = {}, Je = (e = { rootMargin: "128px 0px" }) => {
 };
 //#endregion
 //#region src/composables/ref/useLoadingRef.ts
-function Qe() {
-	let e = N(f.is());
-	return f.registrationEvent(({ detail: t }) => {
+function $e() {
+	let e = N(p.is());
+	return p.registrationEvent(({ detail: t }) => {
 		e.value = t.loading;
 	}), e;
 }
@@ -1008,9 +1008,9 @@ function Qe() {
 //#region src/functions/executeUse.ts
 var Z = /* @__PURE__ */ function(e) {
 	return e.global = "global", e.provide = "provide", e.local = "local", e;
-}({}), $e = () => `__execute_use${et}::${x()}`, et = re(1e5, 999999), Q = [], tt = A();
+}({}), et = () => `__execute_use${tt}::${S()}`, tt = ie(1e5, 999999), Q = [], nt = A();
 function $(e, t = Z.provide) {
-	let n = $e(), r, i = (t) => {
+	let n = et(), r, i = (t) => {
 		let n = Object.freeze(e(...t));
 		return {
 			...n,
@@ -1020,7 +1020,7 @@ function $(e, t = Z.provide) {
 		};
 	}, a = (e) => {
 		let t = Object.freeze(i(e));
-		return de(n, t), t;
+		return fe(n, t), t;
 	}, o = (e) => {
 		let t = i(e);
 		return Object.freeze({
@@ -1029,27 +1029,27 @@ function $(e, t = Z.provide) {
 				r = void 0;
 			}
 		});
-	}, s = (...e) => t === Z.provide ? le(n, void 0) || a(e) : (r || (t === Z.local ? tt.run(() => {
+	}, s = (...e) => t === Z.provide ? ue(n, void 0) || a(e) : (r || (t === Z.local ? nt.run(() => {
 		r = o(e);
 	}) : r = o(e)), r);
 	return t === Z.global && Q.push(s), s;
 }
-function nt(e) {
+function rt(e) {
 	return $(e, Z.global);
 }
-function rt(e) {
+function it(e) {
 	return $(e, Z.provide);
 }
-function it(e) {
+function at(e) {
 	return $(e, Z.local);
 }
-function at() {
+function ot() {
 	Q.forEach((e) => e()), Q.length = 0;
 }
 //#endregion
 //#region src/composables/ref/useMeta.ts
-var ot = nt(() => {
-	let e = new p(), t = M(e.getTitle()), n = M(e.getKeywords()), r = M(e.getDescription()), i = M(e.getImage()), a = M(e.getCanonical()), o = M(e.getRobots()), s = M(e.getAuthor()), c = M(e.getSiteName());
+var st = rt(() => {
+	let e = new m(), t = M(e.getTitle()), n = M(e.getKeywords()), r = M(e.getDescription()), i = M(e.getImage()), a = M(e.getCanonical()), o = M(e.getRobots()), s = M(e.getAuthor()), c = M(e.getSiteName());
 	return P(t, () => {
 		e.setTitle(t.value);
 	}), P(n, () => {
@@ -1076,9 +1076,10 @@ var ot = nt(() => {
 		canonical: a,
 		robots: o,
 		siteName: c,
-		getHtmlMeta: () => e.html()
+		getHtmlMeta: () => e.html(),
+		setSuffix: (t) => e.setSuffix(t)
 	};
-}), st = () => ot(), ct = (e, t, n = !0) => {
+}), ct = () => st(), lt = (e, t, n = !0) => {
 	var r;
 	let i = j(t) ? t : M(t || ((r = e.value) == null || (r = r[0]) == null ? void 0 : r.value) || ""), a = () => o(i.value), o = (t) => {
 		var n;
@@ -1093,7 +1094,7 @@ var ot = nt(() => {
 			var e;
 			return ((e = a()) == null ? void 0 : e.label) || "";
 		}),
-		list: k(() => e.value ? y(e.value, (e) => n && !("to" in e) ? {
+		list: k(() => e.value ? b(e.value, (e) => n && !("to" in e) ? {
 			...e,
 			to: { name: e.value }
 		} : e) : []),
@@ -1106,29 +1107,29 @@ var ot = nt(() => {
 };
 //#endregion
 //#region src/composables/ref/useSessionRef.ts
-function lt(e, t) {
-	if (e in ut) return ut[e];
+function ut(e, t) {
+	if (e in dt) return dt[e];
 	let n = new i(e, !0), r = M(n.get(t));
 	return V.run(() => {
 		P(r, (e) => n.set(e));
-	}), ut[e] = r, r;
+	}), dt[e] = r, r;
 }
-var ut = {};
+var dt = {};
 //#endregion
 //#region src/composables/ref/useStorageRef.ts
-function dt(e, t, n) {
-	if (e in ft) return ft[e];
+function ft(e, t, n) {
+	if (e in pt) return pt[e];
 	let r = new i(e), a = M(r.get(t, n));
 	return V.run(() => {
 		P(a, (e) => r.set(e));
-	}), w() && window.addEventListener("storage", () => {
+	}), ne() && window.addEventListener("storage", () => {
 		r.update(), a.value = r.get();
-	}), ft[e] = a, a;
+	}), pt[e] = a, a;
 }
-var ft = {};
+var pt = {};
 //#endregion
 //#region src/composables/ref/useTranslateRef.ts
-function pt(e, t = g.getItem()) {
+function mt(e, t = _.getItem()) {
 	let n = N(t.getListSync(e, !0)), r = async () => {
 		n.value = { ...await t.getList(e) };
 	};
@@ -1139,13 +1140,13 @@ function pt(e, t = g.getItem()) {
 	}
 	return n;
 }
-var mt = (e) => pt(e);
+var ht = (e) => mt(e);
 //#endregion
 //#region src/functions/computedAsync.ts
-function ht(e, t, n) {
+function gt(e, t, n) {
 	let r = M(), i = !0, a = () => {
-		i && (i = !1, ge(async () => {
-			let n = await v(e);
+		i && (i = !1, _e(async () => {
+			let n = await y(e);
 			n !== t && (r.value = n);
 		}));
 	};
@@ -1153,25 +1154,25 @@ function ht(e, t, n) {
 }
 //#endregion
 //#region src/functions/computedByLanguage.ts
-function gt(e, t = () => void 0, n, r) {
+function _t(e, t = () => void 0, n, r) {
 	return k(() => {
 		if (U.get().value && (n === void 0 || n())) {
 			let t = e();
 			if (t !== void 0) return t;
 		}
-		return _(t);
+		return v(t);
 	}, r);
 }
 //#endregion
 //#region src/functions/computedEternity.ts
-var _t = A();
-function vt(e) {
-	return oe((t, n) => {
+var vt = A();
+function yt(e) {
+	return se((t, n) => {
 		let r = M(), i = !1, a = async () => {
-			r.value = await v(e), n();
+			r.value = await y(e), n();
 		}, o = () => {
-			i || (i = !0, _t.run(() => {
-				ge(async () => await a());
+			i || (i = !0, vt.run(() => {
+				_e(async () => await a());
 			}));
 		};
 		return {
@@ -1185,20 +1186,30 @@ function vt(e) {
 	});
 }
 //#endregion
+//#region src/functions/dxtFunctionalPlugin.ts
+var bt = { install(t, n = {}) {
+	if (n.api && e.setConfig(n.api), n.translate && _.setConfig(n.translate), n.icons && f.setConfig(n.icons), n.metaSuffix && ct().setSuffix(n.metaSuffix), n.router) W.set(n.router);
+	else {
+		let e = t.config.globalProperties.$router;
+		e && W.set(e);
+	}
+	ot();
+} };
+//#endregion
 //#region src/functions/render/getBind.ts
-function yt(e, t = {}, n = "value", r = !1) {
+function xt(e, t = {}, n = "value", r = !1) {
 	let i = typeof t == "string", a = i ? t : n, o = i ? {} : t;
 	return e ? e && T(e) && (a in e || r) ? R(o, e) : R(o, { [a]: e }) : i ? {} : { ...o };
 }
 //#endregion
 //#region src/functions/ref/getBindRef.ts
-function bt(e, t = {}, n = "value") {
-	return k(() => yt(L(e), L(t), n));
+function St(e, t = {}, n = "value") {
+	return k(() => xt(L(e), L(t), n));
 }
 //#endregion
 //#region src/functions/ref/setRef.ts
-function xt(e, t) {
+function Ct(e, t) {
 	e.value !== t && (e.value = t);
 }
 //#endregion
-export { Oe as DatetimeRef, be as DesignAbstract, xe as DesignAsyncAbstract, ye as DesignChanged, Ee as DesignComp, z as DesignComponents, De as DesignConstructorAbstract, V as EffectScopeGlobal, ke as EventRef, Z as ExecuteUseType, Ae as GeoFlagRef, je as GeoIntlRef, U as GeoRef, Me as ListDataRef, W as RouterItemRef, Ne as ScrollbarWidthRef, ht as computedAsync, gt as computedByLanguage, vt as computedEternity, $ as executeUse, nt as executeUseGlobal, at as executeUseGlobalInit, it as executeUseLocal, rt as executeUseProvide, yt as getBind, bt as getBindRef, Se as getClassName, Ce as getIndexForRender, G as getOptions, L as getRef, we as render, Le as setApiRefGlobalConditions, xt as setRef, mt as t, R as toBind, Te as toBinds, B as toRefItem, Pe as useApiDelete, Fe as useApiGet, Ue as useApiManagementRef, Re as useApiPost, ze as useApiPut, Ie as useApiRef, K as useApiRequest, We as useBroadcastValueRef, Ge as useCookieRef, Be as useFormattersRef, Ke as useGeoIntlRef, qe as useHashRef, Ze as useLazyItemByMarginRef, Je as useLazyRef, Qe as useLoadingRef, st as useMeta, ct as useRouterList, He as useSearchRef, Ve as useSearchValueRef, lt as useSessionRef, dt as useStorageRef, pt as useTranslateRef };
+export { ke as DatetimeRef, xe as DesignAbstract, Se as DesignAsyncAbstract, be as DesignChanged, De as DesignComp, z as DesignComponents, Oe as DesignConstructorAbstract, V as EffectScopeGlobal, Ae as EventRef, Z as ExecuteUseType, je as GeoFlagRef, Me as GeoIntlRef, U as GeoRef, Ne as ListDataRef, W as RouterItemRef, Pe as ScrollbarWidthRef, gt as computedAsync, _t as computedByLanguage, yt as computedEternity, bt as dxtFunctionalPlugin, $ as executeUse, rt as executeUseGlobal, ot as executeUseGlobalInit, at as executeUseLocal, it as executeUseProvide, xt as getBind, St as getBindRef, Ce as getClassName, we as getIndexForRender, G as getOptions, L as getRef, Te as render, Re as setApiRefGlobalConditions, Ct as setRef, ht as t, R as toBind, Ee as toBinds, B as toRefItem, Fe as useApiDelete, Ie as useApiGet, We as useApiManagementRef, ze as useApiPost, Be as useApiPut, Le as useApiRef, K as useApiRequest, Ge as useBroadcastValueRef, Ke as useCookieRef, Ve as useFormattersRef, qe as useGeoIntlRef, Je as useHashRef, Qe as useLazyItemByMarginRef, Ye as useLazyRef, $e as useLoadingRef, ct as useMeta, lt as useRouterList, Ue as useSearchRef, He as useSearchValueRef, ut as useSessionRef, ft as useStorageRef, mt as useTranslateRef };

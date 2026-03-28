@@ -1,6 +1,8 @@
+import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { ApiInstance } from './ApiInstance'
 
 import {
+  type ApiConfig,
   type ApiFetch,
   ApiMethodItem,
   type ApiPreparationEnd
@@ -131,6 +133,41 @@ export class Api {
   static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api {
     this.item.setPreparation(callback)
     return Api
+  }
+
+  /**
+   * Set config for API.
+   *
+   * Установить конфигурацию для API.
+   * @param config config for API/ конфигурация для API
+   */
+  static setConfig(config?: ApiConfig): Api {
+    if (
+      config
+      && isObjectNotArray(config)
+    ) {
+      if (config.urlRoot) {
+        this.setUrl(config.urlRoot)
+      }
+
+      if (config.headers) {
+        this.setHeaders(config.headers)
+      }
+
+      if (config.requestDefault) {
+        this.setRequestDefault(config.requestDefault)
+      }
+
+      if (config.preparation) {
+        this.setPreparation(config.preparation)
+      }
+
+      if (config.end) {
+        this.setEnd(config.end)
+      }
+    }
+
+    return this
   }
 
   /**

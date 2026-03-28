@@ -35,12 +35,27 @@ await Translate.add(['welcome', 'auth.login'])
 
 ## Методы
 
+### Конфигурация
+
+- `setConfig(config: TranslateConfig): Translate` — Устанавливает полную конфигурацию для экземпляра перевода.
+- `setUrl(url: string): Translate` — Изменяет адрес API для получения переводов.
+- `setPropsName(name: string): Translate` — Изменяет имя свойства, используемое в API-запросе/ответе.
+- `setReadApi(value: boolean): Translate` — Включает или отключает получение переводов из API.
+
 ### Получение переводов
 
 - `async get(name: string, replacement?: any): Promise<string>` — Асинхронно получает текст. Если его нет в кэше и мы не на localhost, пытается загрузить его с сервера.
 - `getSync(name: string, first?: boolean, replacement?: any): string` — Возвращает текст из кэша. Если `first` равен `true`, вернет пробел ` `, если текст отсутствует.
-- `async getList(names: TranslateCode[]): Promise<TranslateList>` — Получает группу переводов (асинхронно).
-- `getListSync(names: TranslateCode[], first?: boolean): TranslateList` — Получает группу переводов из кэша (синхронно).
+- `async getList<T>(names: T): Promise<TranslateList<T>>` — Получает группу переводов (асинхронно).
+- `getListSync<T>(names: T, first?: boolean): TranslateList<T>` — Получает группу переводов из кэша (синхронно).
+
+### Групповое обновление
+
+- `async add(names: string | string[]): Promise<void>` — Добавляет несколько кодов в очередь для пакетной загрузки.
+- `addSync(data: Record<string, string>): void` — Напрямую добавляет переводы в кэш.
+- `async addNormalOrSync(data: Record<string, string>): Promise<void>` — Добавляет переводы напрямую на localhost, иначе ставит их в очередь на загрузку.
+- `addSyncByLocation(data: Record<string, Record<string, string>>): void` — Добавляет переводы для определенных локаций/местоположений.
+- `addSyncByFile(data: TranslateDataFile): void` — Добавляет переводы из определения файла.
 
 ### Статика vs Экземпляр
 

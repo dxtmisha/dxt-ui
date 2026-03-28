@@ -84,4 +84,18 @@ describe('Icons', () => {
     const result = await Icons.get('lazy', '', 1000)
     expect(result).toBe('<svg>lazy-loaded</svg>')
   }, 5000)
+
+  it('should update configuration via setConfig', async () => {
+    Icons.setConfig({
+      url: '/config-icons/',
+      list: {
+        gear: '<svg>gear</svg>',
+        wrench: '<svg>wrench</svg>'
+      }
+    })
+
+    expect(Icons.getUrlGlobal()).toContain('/config-icons/')
+    expect(await Icons.get('gear')).toBe('<svg>gear</svg>')
+    expect(await Icons.get('wrench')).toBe('<svg>wrench</svg>')
+  })
 })

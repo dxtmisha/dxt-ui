@@ -43,6 +43,7 @@ Icons.setUrl('/assets/svg/')
 ### Конфигурация
 
 - `setUrl(url: string): void` — Изменяет базовый путь для хранения иконок.
+- `setConfig(config: IconsConfig): void` — Обновляет конфигурацию иконок (URL и/или список иконок).
 
 ## Система загрузки
 
@@ -54,13 +55,26 @@ Icons.setUrl('/assets/svg/')
 
 Этот механизм критически важен для распределенных систем, где компоненты могут запрашивать ресурсы до завершения инициализации медиа-базы.
 
-## Примеры
+## Типы
+
+### `IconsItem`
+Определение иконки. Может быть:
+- `string` — Прямой контент SVG или путь к файлу SVG.
+- `Promise<string>` — Promise, который разрешается в контент SVG (полезно для динамических импортов).
+- `() => Promise<string>` — Фабричная функция, возвращающая Promise (полезно для ленивой загрузки по требованию).
+
+### `IconsConfig`
+Объект конфигурации для метода `setConfig`:
+- `url?: string` — Базовый URL для хранения иконок.
+- `list?: Record<string, IconsItem>` — Список иконок для регистрации.
+
+## Пример использования
 
 ### Регистрация и использование иконок
 ```javascript
 import { Icons } from '@dxtmisha/functional-basic'
 
-// Регистрация строкой
+// Регистрация в виде строки
 Icons.add('arrow', '<svg>...</svg>')
 
 // Регистрация через Promise (динамический импорт)
@@ -71,6 +85,15 @@ Icons.add('star', () => import('./icons/star.svg'))
 
 // Получение
 const svgContent = await Icons.get('arrow')
+
+// Групповая конфигурация через setConfig
+Icons.setConfig({
+  url: '/custom-icons/',
+  list: {
+    check: '<svg>...</svg>',
+    error: () => import('./icons/error.svg')
+  }
+})
 ```
 
 ### Массовая регистрация
@@ -82,16 +105,16 @@ Icons.addByList({
 })
 ```
 
-### Ленивая загрузка
+### Отложенная загрузка
 ```javascript
-// Пометить как загружающуюся
+// Пометка как загружаемой
 Icons.addLoad('dynamic-icon')
 
-// Где-то позже загружаем и регистрируем
+// Загрузка и регистрация позже
 fetch('/api/icons/dynamic').then(res => res.text()).then(svg => {
   Icons.add('dynamic-icon', svg)
 })
 
-// get() подождет, пока иконка появится в реестре
+// get() будет ждать, пока иконка появится в реестре
 const svg = await Icons.get('dynamic-icon')
 ```

@@ -18,4 +18,61 @@ Api.setHeaders({ 'Authorization': 'Bearer token123' })
 const data = await Api.get({ path: 'users' })
 ```
 
-> **Important:** The exhaustive list of methods, lifecycle hooks, request specifications (`ApiFetch`), and response mocking capabilities (`ApiResponse`) is documented in the core **ApiInstance** documentation.
+## Methods
+
+### Instance Access
+
+- `getItem(): ApiInstance` — Returns the internal `ApiInstance` object used by all static method delegations.
+
+### Information Methods
+
+- `isLocalhost(): boolean` — Returns `true` if the code is running on a local development server.
+- `getStatus(): ApiStatus` — Returns the `ApiStatus` manager for tracking the state and errors of the last request.
+- `getResponse(): ApiResponse` — Returns the responses/emulation manager `ApiResponse`.
+- `getUrl(path: string, api?: boolean): string` — Returns the full URL for the request. Dynamic placeholders `{locale}`, `{country}`, `{language}` are automatically replaced.
+- `getBody(request?, method?): string | FormData | undefined` — Returns data for the request body.
+- `getBodyForGet(request, path?, method?): string` — Returns the query string for GET method requests.
+
+### Configuration Methods
+
+All configuration methods return the `Api` class itself for chaining:
+
+- `setUrl(url: string): Api` — Sets the base URL for all requests.
+- `setHeaders(headers: Record<string, string>): Api` — Sets default headers for all requests.
+- `setRequestDefault(request: Record<string, any>): Api` — Sets default request data merged into every request body.
+- `setPreparation(callback): Api` — Sets a callback function executed before each request.
+- `setEnd(callback): Api` — Sets a callback function executed after each request.
+- `setConfig(config?: ApiConfig): Api` — Applies a full configuration object at once (`urlRoot`, `headers`, `requestDefault`, `preparation`, `end`).
+
+### Request Methods
+
+- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Core request executor. Accepts a string path or an `ApiFetch` configuration object.
+- `get<T>(request: ApiFetch): Promise<T>` — Sends an HTTP GET request.
+- `post<T>(request: ApiFetch): Promise<T>` — Sends an HTTP POST request.
+- `put<T>(request: ApiFetch): Promise<T>` — Sends an HTTP PUT request.
+- `delete<T>(request: ApiFetch): Promise<T>` — Sends an HTTP DELETE request.
+
+## setConfig
+
+The `setConfig` method allows applying multiple configuration options at once using an `ApiConfig` object:
+
+```typescript
+import { Api } from '@dxtmisha/functional'
+
+Api.setConfig({
+  urlRoot: 'https://api.example.com/v1/',
+  headers: { 'Authorization': 'Bearer token123' },
+  requestDefault: { source: 'webapp' },
+  preparation: async (apiFetch) => {
+    console.log('Preparing:', apiFetch.path)
+  },
+  end: async (response, apiFetch) => {
+    if (response.status === 401) {
+      return { reset: true }
+    }
+    return {}
+  }
+})
+```
+
+> **Important:** The exhaustive details on `ApiFetch` options, lifecycle hooks, response emulation, and response data structure are documented in the core **ApiInstance** documentation.

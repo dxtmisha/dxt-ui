@@ -35,7 +35,7 @@ describe('TranslateInstance', () => {
     it('should return translation by specific location', () => {
       translate.addSyncByLocation({
         'en-US': { hello: 'Hello US' },
-        en: { hello: 'Hello EN' },
+        'en': { hello: 'Hello EN' },
         [TRANSLATE_GLOBAL_PREFIX]: { hello: 'Hello Global' }
       })
 
@@ -144,6 +144,37 @@ describe('TranslateInstance', () => {
       await promise
 
       expect(mockApiGet).not.toHaveBeenCalled()
+    })
+
+    it('should not add to cache if available in fallback language (optimization fix)', async () => {
+      mockIsLocalhost.mockReturnValue(false)
+      vi.spyOn(mockFile, 'getLanguage').mockReturnValue('en')
+      // Add translation to language fallback
+      translate.addSyncByLocation({
+        en: { fallback: 'Language Value' }
+      })
+
+      const promise = translate.add('fallback')
+      await vi.advanceTimersByTimeAsync(200)
+      await promise
+
+      expect(mockApiGet).not.toHaveBeenCalled()
+      expect(translate.getSync('fallback')).toBe('Language Value')
+    })
+
+    it('should not add to cache if available in global fallback (optimization fix)', async () => {
+      mockIsLocalhost.mockReturnValue(false)
+      // Add translation to global fallback
+      translate.addSyncByLocation({
+        [TRANSLATE_GLOBAL_PREFIX]: { globalKey: 'Global Value' }
+      })
+
+      const promise = translate.add('globalKey')
+      await vi.advanceTimersByTimeAsync(200)
+      await promise
+
+      expect(mockApiGet).not.toHaveBeenCalled()
+      expect(translate.getSync('globalKey')).toBe('Global Value')
     })
   })
 

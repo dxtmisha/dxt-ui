@@ -110,18 +110,18 @@ export type FormattersOptionsInformation<
   Type extends FormattersType
 >
   = Type extends FormattersType.currency
-  ? FormattersOptionsCurrency
-  : Type extends FormattersType.date
-  ? FormattersOptionsDate
-  : Type extends FormattersType.name
-  ? FormattersOptionsName
-  : Type extends FormattersType.number
-  ? FormattersOptionsNumber
-  : Type extends FormattersType.plural
-  ? FormattersOptionsPlural
-  : Type extends FormattersType.unit
-  ? FormattersOptionsUnit
-  : Record<string, any>
+    ? FormattersOptionsCurrency
+    : Type extends FormattersType.date
+      ? FormattersOptionsDate
+      : Type extends FormattersType.name
+        ? FormattersOptionsName
+        : Type extends FormattersType.number
+          ? FormattersOptionsNumber
+          : Type extends FormattersType.plural
+            ? FormattersOptionsPlural
+            : Type extends FormattersType.unit
+              ? FormattersOptionsUnit
+              : Record<string, any>
 
 /**
  * Configuration for a single property formatter.

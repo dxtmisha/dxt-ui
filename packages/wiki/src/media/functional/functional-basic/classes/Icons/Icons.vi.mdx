@@ -42,7 +42,8 @@ Icons.setUrl('/assets/svg/')
 
 ### Cấu hình
 
-- `setUrl(url: string): void` — Thay đổi đường dẫn cơ sở cho lưu trữ icon.
+- `setUrl(url: string): void` — Thay đổi đường dẫn cơ sở để lưu trữ icon.
+- `setConfig(config: IconsConfig): void` — Cập nhật cấu hình biểu tượng (URL và/hoặc danh sách biểu tượng).
 
 ## Hệ thống tải
 
@@ -54,23 +55,45 @@ Lớp `Icons` hỗ trợ cơ chế chờ bất đồng bộ. Điều này cho ph
 
 Cơ chế này rất quan trọng đối với các hệ thống phân tán, nơi các thành phần có thể yêu cầu tài nguyên trước khi cơ sở dữ liệu truyền thông hoàn tất quá trình khởi tạo.
 
-## Ví dụ
+## Các loại dữ liệu (Types)
 
-### Đăng ký và sử dụng icon
+### `IconsItem`
+Định nghĩa của một biểu tượng (icon). Có thể là:
+- `string` — Nội dung SVG thô hoặc đường dẫn đến tệp SVG.
+- `Promise<string>` — Một promise giải quyết thành nội dung SVG (hữu ích cho việc import động).
+- `() => Promise<string>` — Một hàm factory trả về một promise (hữu ích cho việc tải lười khi cần thiết).
+
+### `IconsConfig`
+Đối tượng cấu hình cho phương thức `setConfig`:
+- `url?: string` — URL cơ sở để lưu trữ biểu tượng.
+- `list?: Record<string, IconsItem>` — Danh sách các biểu tượng cần đăng ký.
+
+## Ví dụ sử dụng
+
+### Đăng ký và sử dụng biểu tượng
 ```javascript
 import { Icons } from '@dxtmisha/functional-basic'
 
-// Đăng ký bằng chuỗi
+// Đăng ký dưới dạng chuỗi
 Icons.add('arrow', '<svg>...</svg>')
 
-// Đăng ký qua Promise (dynamic import)
+// Đăng ký qua Promise (import động)
 Icons.add('user', import('./icons/user.svg'))
 
 // Đăng ký qua hàm factory
 Icons.add('star', () => import('./icons/star.svg'))
 
-// Truy xuất
+// Lấy dữ liệu
 const svgContent = await Icons.get('arrow')
+
+// Cấu hình hàng loạt qua setConfig
+Icons.setConfig({
+  url: '/custom-icons/',
+  list: {
+    check: '<svg>...</svg>',
+    error: () => import('./icons/error.svg')
+  }
+})
 ```
 
 ### Đăng ký hàng loạt
@@ -82,16 +105,16 @@ Icons.addByList({
 })
 ```
 
-### Tải chậm (Lazy Loading)
+### Tải lười (Lazy Loading)
 ```javascript
 // Đánh dấu là đang tải
 Icons.addLoad('dynamic-icon')
 
-// Tải và đăng ký sau
+// Tải và đăng ký sau đó
 fetch('/api/icons/dynamic').then(res => res.text()).then(svg => {
   Icons.add('dynamic-icon', svg)
 })
 
-// get() sẽ chờ cho đến khi icon xuất hiện trong registry
+// get() sẽ đợi cho đến khi biểu tượng xuất hiện trong sổ đăng ký
 const svg = await Icons.get('dynamic-icon')
 ```

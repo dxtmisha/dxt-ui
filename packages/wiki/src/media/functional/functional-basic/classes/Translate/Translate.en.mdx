@@ -35,12 +35,27 @@ await Translate.add(['welcome', 'auth.login'])
 
 ## Methods
 
+### Configuration
+
+- `setConfig(config: TranslateConfig): Translate` — Sets the complete configuration for the translation instance.
+- `setUrl(url: string): Translate` — Changes the API endpoint for fetching translations.
+- `setPropsName(name: string): Translate` — Changes the property name used in the API request/response.
+- `setReadApi(value: boolean): Translate` — Enables or disables fetching translations from the API.
+
 ### Translation Retrieval
 
 - `async get(name: string, replacement?: any): Promise<string>` — Asynchronously retrieves text. If not in cache and not on localhost, it attempts to load it from the server.
 - `getSync(name: string, first?: boolean, replacement?: any): string` — Returns text from the cache. If `first` is `true`, returns a space ` ` if the text is missing.
-- `async getList(names: TranslateCode[]): Promise<TranslateList>` — Retrieves a group of translations (asynchronous).
-- `getListSync(names: TranslateCode[], first?: boolean): TranslateList` — Retrieves a group of translations from the cache (synchronous).
+- `async getList<T>(names: T): Promise<TranslateList<T>>` — Retrieves a group of translations (asynchronous).
+- `getListSync<T>(names: T, first?: boolean): TranslateList<T>` — Retrieves a group of translations from the cache (synchronous).
+
+### Batch Update
+
+- `async add(names: string | string[]): Promise<void>` — Adds multiple codes to the queue for batch loading.
+- `addSync(data: Record<string, string>): void` — Directly adds translations to the cache.
+- `async addNormalOrSync(data: Record<string, string>): Promise<void>` — Adds translations directly on localhost, otherwise queues them for loading.
+- `addSyncByLocation(data: Record<string, Record<string, string>>): void` — Adds translations for specific locations/locales.
+- `addSyncByFile(data: TranslateDataFile): void` — Adds translations from a file definition.
 
 ### Static vs Instance
 

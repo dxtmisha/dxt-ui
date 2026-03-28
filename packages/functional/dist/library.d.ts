@@ -1,3 +1,4 @@
+import { ApiConfig } from '@dxtmisha/functional-basic';
 import { ApiData } from '@dxtmisha/functional-basic';
 import { ApiDefaultValue } from '@dxtmisha/functional-basic';
 import { ApiFetch } from '@dxtmisha/functional-basic';
@@ -25,6 +26,7 @@ import { GeoFlagItem } from '@dxtmisha/functional-basic';
 import { GeoFlagNational } from '@dxtmisha/functional-basic';
 import { GeoHours } from '@dxtmisha/functional-basic';
 import { GeoItemFull } from '@dxtmisha/functional-basic';
+import { IconsConfig } from '@dxtmisha/functional-basic';
 import { ItemList } from '@dxtmisha/functional-basic';
 import { ItemValue } from '@dxtmisha/functional-basic';
 import { Meta } from '@dxtmisha/functional-basic';
@@ -32,6 +34,7 @@ import { MetaRobots } from '@dxtmisha/functional-basic';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 import { NumberOrStringOrBoolean } from '@dxtmisha/functional-basic';
 import { NumberOrStringOrDate } from '@dxtmisha/functional-basic';
+import { Plugin as Plugin_2 } from 'vue';
 import { PropType } from 'vue';
 import { Ref } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
@@ -44,6 +47,7 @@ import { SearchListValue } from '@dxtmisha/functional-basic';
 import { SearchOptions } from '@dxtmisha/functional-basic';
 import { ShallowRef } from 'vue';
 import { ToRefs } from 'vue';
+import { TranslateConfig } from '@dxtmisha/functional-basic';
 import { TranslateInstance } from '@dxtmisha/functional-basic';
 import { TranslateList } from '@dxtmisha/functional-basic';
 import { Undefined } from '@dxtmisha/functional-basic';
@@ -749,6 +753,12 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
 }
 
 /**
+ * Vue plugin for initializing functional services /
+ * Vue плагин для инициализации функциональных сервисов
+ */
+export declare const dxtFunctionalPlugin: Plugin_2;
+
+/**
  * Global effect scope class.
  *
  * Глобальный класс для области действия эффекта.
@@ -930,6 +940,23 @@ export declare enum ExecuteUseType {
     provide = "provide",
     /** A single instance within the closure/ Единственный экземпляр в замыкании */
     local = "local"
+}
+
+/**
+ * Interface for the functional plugin options /
+ * Интерфейс для опций функционального плагина
+ */
+export declare interface FunctionalPluginOptions {
+    /** Configuration for the API / Конфигурация для API */
+    api?: ApiConfig;
+    /** Configuration for translations / Конфигурация для переводов */
+    translate?: TranslateConfig;
+    /** Suffix for the page title / Суффикс для заголовка страницы */
+    metaSuffix?: string;
+    /** Configuration for icons / Конфигурация для иконок */
+    icons?: IconsConfig;
+    /** Router instance / Экземпляр роутера */
+    router?: Router;
 }
 
 /**
@@ -2316,27 +2343,67 @@ export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
  */
 export declare const useMeta: () => Readonly<{
     meta: Meta;
+    /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
     title: Ref<string, string>;
+    /** Reactive keywords meta tag / Реактивный мета-тег keywords */
     keyword: Ref<string, string>;
+    /** Reactive description meta tag / Реактивный мета-тег description */
     description: Ref<string, string>;
+    /** Reactive author meta tag / Реактивный мета-тег author */
     author: Ref<string, string>;
+    /** Reactive Open Graph / Twitter Card image URL / Реактивный URL изображения для Open Graph / Twitter Card */
     image: Ref<string, string>;
+    /** Reactive canonical URL / Реактивный канонический URL */
     canonical: Ref<string, string>;
+    /** Reactive robots meta tag directive / Реактивная директива мета-тега robots */
     robots: Ref<MetaRobots, MetaRobots>;
+    /** Reactive site name for Open Graph and Twitter Card / Реактивное название сайта для Open Graph и Twitter Card */
     siteName: Ref<string, string>;
+    /**
+     * Generates HTML string for all meta tags (for SSR).
+     *
+     * Генерирует HTML-строку для всех мета-тегов (для SSR).
+     */
     getHtmlMeta: () => string;
+    /**
+     * Sets the suffix for the page title.
+     *
+     * Устанавливает суффикс для заголовка страницы.
+     * @param suffix Suffix to set / Суффикс для установки
+     */
+    setSuffix: (suffix: string) => void;
 } & {
     init(): Readonly<{
         meta: Meta;
+        /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
         title: Ref<string, string>;
+        /** Reactive keywords meta tag / Реактивный мета-тег keywords */
         keyword: Ref<string, string>;
+        /** Reactive description meta tag / Реактивный мета-тег description */
         description: Ref<string, string>;
+        /** Reactive author meta tag / Реактивный мета-тег author */
         author: Ref<string, string>;
+        /** Reactive Open Graph / Twitter Card image URL / Реактивный URL изображения для Open Graph / Twitter Card */
         image: Ref<string, string>;
+        /** Reactive canonical URL / Реактивный канонический URL */
         canonical: Ref<string, string>;
+        /** Reactive robots meta tag directive / Реактивная директива мета-тега robots */
         robots: Ref<MetaRobots, MetaRobots>;
+        /** Reactive site name for Open Graph and Twitter Card / Реактивное название сайта для Open Graph и Twitter Card */
         siteName: Ref<string, string>;
+        /**
+         * Generates HTML string for all meta tags (for SSR).
+         *
+         * Генерирует HTML-строку для всех мета-тегов (для SSR).
+         */
         getHtmlMeta: () => string;
+        /**
+         * Sets the suffix for the page title.
+         *
+         * Устанавливает суффикс для заголовка страницы.
+         * @param suffix Suffix to set / Суффикс для установки
+         */
+        setSuffix: (suffix: string) => void;
     }>;
     destroyExecute?(): void;
 }>;

@@ -66,16 +66,37 @@ const item = executeUseGlobal(() => {
   return {
     meta,
 
+    /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
     title,
+    /** Reactive keywords meta tag / Реактивный мета-тег keywords */
     keyword,
+    /** Reactive description meta tag / Реактивный мета-тег description */
     description,
+    /** Reactive author meta tag / Реактивный мета-тег author */
     author,
+    /** Reactive Open Graph / Twitter Card image URL / Реактивный URL изображения для Open Graph / Twitter Card */
     image,
+    /** Reactive canonical URL / Реактивный канонический URL */
     canonical,
+    /** Reactive robots meta tag directive / Реактивная директива мета-тега robots */
     robots,
+    /** Reactive site name for Open Graph and Twitter Card / Реактивное название сайта для Open Graph и Twitter Card */
     siteName,
 
-    getHtmlMeta
+    /**
+     * Generates HTML string for all meta tags (for SSR).
+     *
+     * Генерирует HTML-строку для всех мета-тегов (для SSR).
+     */
+    getHtmlMeta,
+
+    /**
+     * Sets the suffix for the page title.
+     *
+     * Устанавливает суффикс для заголовка страницы.
+     * @param suffix Suffix to set / Суффикс для установки
+     */
+    setSuffix: (suffix: string) => meta.setSuffix(suffix)
   }
 })
 

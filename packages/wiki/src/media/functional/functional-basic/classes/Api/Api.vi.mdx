@@ -18,4 +18,61 @@ Api.setHeaders({ 'Authorization': 'Bearer token123' })
 const data = await Api.get({ path: 'users' })
 ```
 
-> **Quan trọng:** Toàn bộ danh sách đầy đủ về các phương thức, hook vòng đời, cấu hình giao thức (`ApiFetch`), cũng như chức năng mô phỏng phản hồi (Mock Responses thông qua `ApiResponse`) đã được ghi chép chi tiết tại tài liệu gốc của cấu trúc lõi **ApiInstance**.
+## Các phương thức
+
+### Truy cập instance
+
+- `getItem(): ApiInstance` — Trả về đối tượng `ApiInstance` nội bộ được sử dụng bởi tất cả các phương thức tĩnh.
+
+### Phương thức thông tin
+
+- `isLocalhost(): boolean` — Trả về `true` nếu mã đang chạy trên máy chủ phát triển cục bộ.
+- `getStatus(): ApiStatus` — Trả về trình quản lý `ApiStatus` để theo dõi trạng thái và lỗi của yêu cầu cuối cùng.
+- `getResponse(): ApiResponse` — Trả về trình quản lý phản hồi/mô phỏng `ApiResponse`.
+- `getUrl(path: string, api?: boolean): string` — Trả về URL đầy đủ cho yêu cầu. Các trình giữ chỗ động `{locale}`, `{country}`, `{language}` được thay thế tự động.
+- `getBody(request?, method?): string | FormData | undefined` — Trả về dữ liệu cho phần thân (body) của yêu cầu.
+- `getBodyForGet(request, path?, method?): string` — Trả về chuỗi tham số truy vấn (query string) cho phương thức GET.
+
+### Phương thức cấu hình
+
+Tất cả các phương thức cấu hình đều trả về chính lớp `Api` để hỗ trợ chuỗi lệnh (chaining):
+
+- `setUrl(url: string): Api` — Đặt URL cơ sở cho tất cả các yêu cầu.
+- `setHeaders(headers: Record<string, string>): Api` — Đặt các headers mặc định cho tất cả các yêu cầu.
+- `setRequestDefault(request: Record<string, any>): Api` — Đặt dữ liệu yêu cầu mặc định được hợp nhất vào mọi thân yêu cầu (request body).
+- `setPreparation(callback): Api` — Đặt hàm callback được thực thi trước mỗi yêu cầu.
+- `setEnd(callback): Api` — Đặt hàm callback được thực thi sau mỗi yêu cầu.
+- `setConfig(config?: ApiConfig): Api` — Áp dụng toàn bộ đối tượng cấu hình cùng một lúc (`urlRoot`, `headers`, `requestDefault`, `preparation`, `end`).
+
+### Phương thức yêu cầu
+
+- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Trình thực thi yêu cầu chính. Chấp nhận chuỗi đường dẫn hoặc đối tượng cấu hình `ApiFetch`.
+- `get<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP GET.
+- `post<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP POST.
+- `put<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP PUT.
+- `delete<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP DELETE.
+
+## setConfig
+
+Phương thức `setConfig` cho phép áp dụng nhiều tùy chọn cấu hình cùng lúc bằng đối tượng `ApiConfig`:
+
+```typescript
+import { Api } from '@dxtmisha/functional'
+
+Api.setConfig({
+  urlRoot: 'https://api.example.com/v1/',
+  headers: { 'Authorization': 'Bearer token123' },
+  requestDefault: { source: 'webapp' },
+  preparation: async (apiFetch) => {
+    console.log('Chuẩn bị:', apiFetch.path)
+  },
+  end: async (response, apiFetch) => {
+    if (response.status === 401) {
+      return { reset: true }
+    }
+    return {}
+  }
+})
+```
+
+> **Quan trọng:** Toàn bộ danh sách đầy đủ về các tùy chọn `ApiFetch`, hook vòng đời, mô phỏng phản hồi và cấu trúc dữ liệu phản hồi đã được ghi chép chi tiết tại tài liệu gốc của lớp **ApiInstance**.

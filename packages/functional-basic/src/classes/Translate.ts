@@ -1,6 +1,6 @@
 import { TranslateInstance } from './TranslateInstance'
 
-import { type TranslateCode, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
+import { type TranslateCode, type TranslateConfig, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
 
 /**
  * Class for getting the translated text.
@@ -153,6 +153,28 @@ export class Translate {
    */
   static setReadApi(value: boolean): Translate {
     this.item.setReadApi(value)
+    return this
+  }
+
+  /**
+   * Set the configuration for the translation.
+   *
+   * Установить конфигурацию для перевода.
+   * @param config configuration/ конфигурация
+   */
+  static setConfig(config: TranslateConfig): Translate {
+    if (config.url) {
+      this.item.setUrl(config.url)
+    }
+
+    if (config.propsName) {
+      this.item.setPropsName(config.propsName)
+    }
+
+    if (typeof config.readApi === 'boolean') {
+      this.item.setReadApi(config.readApi)
+    }
+
     return this
   }
 }

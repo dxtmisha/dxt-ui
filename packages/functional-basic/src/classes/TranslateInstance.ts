@@ -356,7 +356,7 @@ export class TranslateInstance {
       if (
         name !== '__TRANSLATE_START__'
         && name !== '__TRANSLATE_END__'
-        && !(this.getName(name) in this.data)
+        && !this.hasName(name)
       ) {
         data.push(name)
       }

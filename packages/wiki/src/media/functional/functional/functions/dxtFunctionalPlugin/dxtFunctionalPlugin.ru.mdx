@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/dxtFunctionalPlugin - Единая инициализация'/>
+
+# `dxtFunctionalPlugin`
+
+`dxtFunctionalPlugin` — это плагин для Vue 3, предназначенный для централизованной настройки и инициализации всех функциональных сервисов (`Api`, `Translate`, `Icons`, `Meta`) в вашем приложении. Он гарантирует, что глобальные синглтоны будут правильно настроены до монтирования приложения.
+
+**Параметры:**
+- `app: App` — Экземпляр приложения Vue.
+- `options: FunctionalPluginOptions` — Объект конфигурации для функциональных сервисов.
+
+**Возвращает:**
+`Plugin` — Объект плагина Vue, который интегрирует основную функциональную логику в приложение.
+
+## Установка
+
+Добавьте плагин в ваше приложение Vue в `main.ts`:
+
+```typescript
+import { createApp } from 'vue'
+import { dxtFunctionalPlugin } from '@dxtmisha/functional'
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+app.use(dxtFunctionalPlugin, {
+  api: { urlRoot: 'https://api.example.com' },
+  metaSuffix: ' | Мое приложение',
+  router
+})
+
+app.mount('#app')
+```
+
+## Процесс инициализации
+
+При установке плагин выполняет следующие шаги по порядку:
+
+1.  **Api**: Вызывает `Api.setConfig()` с предоставленным `ApiConfig`.
+2.  **Translate**: Вызывает `Translate.setConfig()` с предоставленным `TranslateConfig`.
+3.  **Icons**: Вызывает `Icons.setConfig()` с предоставленным `IconsConfig`.
+4.  **Meta**: Настраивает суффикс заголовка по умолчанию через `useMeta().setSuffix()`.
+5.  **Router**: Регистрирует экземпляр роутера в `RouterItemRef`, делая его доступным глобально.
+6.  **executeUseGlobalInit**: Запускает пакетную инициализацию всех глобальных синглтонов, определенных с помощью `executeUseGlobal`.
+
+## Типы данных
+
+Плагин использует следующие интерфейсы для конфигурации:
+
+### `FunctionalPluginOptions`
+
+- `api?: ApiConfig` — Конфигурация для глобального экземпляра `Api`.
+- `translate?: TranslateConfig` — Конфигурация для глобального сервиса переводов `Translate`.
+- `icons?: IconsConfig` — Конфигурация для глобального реестра иконок `Icons`.
+- `metaSuffix?: string` — Строка, которая будет добавлена ко всем заголовкам страниц, установленным через `useMeta()`.
+- `router?: Router` — Экземпляр Vue Router. Если не указан, плагин попытается извлечь его из `app.config.globalProperties.$router`.
+
+### `ApiConfig`
+
+Интерфейс конфигурации API-сервиса:
+- `urlRoot?: string` — Базовый URL для API-запросов.
+- `headers?: Record<string, string>` — Заголовки по умолчанию для всех API-запросов.
+- `requestDefault?: Record<string, any>` — Данные запроса по умолчанию, отправляемые с каждым запросом.
+- `preparation?: (apiFetch: ApiFetch) => Promise<void>` — Хук, вызываемый перед каждым запросом.
+- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — Хук, вызываемый после каждого запроса.
+
+### `TranslateConfig`
+
+Интерфейс конфигурации сервиса переводов:
+- `url?: string` — URL к скрипту с данными переводов.
+- `propsName?: string` — Имя ключа в локальном хранилище или состоянии для переводов.
+- `readApi?: boolean` — Флаг чтения переводов из API.
+
+### `IconsConfig`
+
+Интерфейс конфигурации реестра иконок:
+- `url?: string` — Базовый URL для получения ресурсов иконок.
+- `list?: Record<string, IconsItem>` — Объект, сопоставляющий имена иконок с их SVG-контентом или загрузчиком.

@@ -91,13 +91,28 @@ describe('Translate (Static Wrapper)', () => {
 
   it('setPropsName should delegate to item.setPropsName and return Translate', () => {
     const res = Translate.setPropsName('list')
-    expect(instance.setPropsName('list'))
+    expect(instance.setPropsName).toHaveBeenCalledWith('list')
     expect(res).toBe(Translate)
   })
 
   it('setReadApi should delegate to item.setReadApi and return Translate', () => {
     const res = Translate.setReadApi(true)
     expect(instance.setReadApi).toHaveBeenCalledWith(true)
+    expect(res).toBe(Translate)
+  })
+
+  it('setConfig should delegate to individual setters and return Translate', () => {
+    const config = {
+      url: '/new-url',
+      propsName: 'new-props',
+      readApi: false
+    }
+
+    const res = Translate.setConfig(config)
+
+    expect(instance.setUrl).toHaveBeenCalledWith('/new-url')
+    expect(instance.setPropsName).toHaveBeenCalledWith('new-props')
+    expect(instance.setReadApi).toHaveBeenCalledWith(false)
     expect(res).toBe(Translate)
   })
 })
