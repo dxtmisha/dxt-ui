@@ -4,196 +4,100 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { Translate } from '../Translate'
-import { TranslateFile } from '../TranslateFile'
-import { Api } from '../Api'
-import { Geo } from '../Geo'
-import { TRANSLATE_GLOBAL_PREFIX } from '../../types/translateTypes'
+import { TranslateInstance } from '../TranslateInstance'
 
-describe('Translate', () => {
-  let mockGetLocation: any
-  let mockIsLocalhost: any
-  let mockApiGet: any
+describe('Translate (Static Wrapper)', () => {
+  let instance: TranslateInstance
 
   beforeEach(() => {
-    // Clear the protected internal dictionaries
-    const anyTranslate = Translate as any
-    for (const key in anyTranslate.data) delete anyTranslate.data[key]
-    anyTranslate.cache = []
-    anyTranslate.resolveList = []
-    anyTranslate.isReadApi = true
-
-    // Clear TranslateFile
-    const anyTranslateFile = TranslateFile as any
-    anyTranslateFile.files = {}
-    anyTranslateFile.data = {}
-
-    mockGetLocation = vi.spyOn(Geo, 'getLocation').mockReturnValue('en-US')
-    mockIsLocalhost = vi.spyOn(Api, 'isLocalhost').mockReturnValue(true)
-    mockApiGet = vi.spyOn(Api, 'get').mockResolvedValue({})
+    instance = Translate.getItem()
+    vi.spyOn(instance, 'get').mockResolvedValue('Mocked Get')
+    vi.spyOn(instance, 'getSync').mockReturnValue('Mocked Sync')
+    vi.spyOn(instance, 'getList').mockResolvedValue({ key: 'Mocked List' } as any)
+    vi.spyOn(instance, 'getListSync').mockReturnValue({ key: 'Mocked List Sync' } as any)
+    vi.spyOn(instance, 'add').mockResolvedValue()
+    vi.spyOn(instance, 'addSync').mockReturnValue()
+    vi.spyOn(instance, 'addNormalOrSync').mockResolvedValue()
+    vi.spyOn(instance, 'addSyncByLocation').mockReturnValue()
+    vi.spyOn(instance, 'addSyncByFile').mockReturnValue()
+    vi.spyOn(instance, 'setUrl').mockReturnThis()
+    vi.spyOn(instance, 'setPropsName').mockReturnThis()
+    vi.spyOn(instance, 'setReadApi').mockReturnThis()
   })
 
   afterEach(() => {
     vi.restoreAllMocks()
   })
 
-  describe('Sync getters and fallbacks', () => {
-    it('should return translation by a specific location', () => {
-      Translate.addSyncByLocation({
-        'en-US': { hello: 'Hello US' },
-        'en': { hello: 'Hello EN' },
-        [TRANSLATE_GLOBAL_PREFIX]: { hello: 'Hello Global' }
-      })
-
-      expect(Translate.getSync('hello')).toBe('Hello US')
-    })
-
-    it('should fall back to language if the location lacks the key', () => {
-      Translate.addSyncByLocation({
-        en: { hello: 'Hello EN' },
-        [TRANSLATE_GLOBAL_PREFIX]: { hello: 'Hello Global' }
-      })
-
-      expect(Translate.getSync('hello')).toBe('Hello EN')
-    })
-
-    it('should fall back to global if language and location lack the key', () => {
-      Translate.addSyncByLocation({
-        [TRANSLATE_GLOBAL_PREFIX]: { hello: 'Hello Global' }
-      })
-
-      expect(Translate.getSync('hello')).toBe('Hello Global')
-    })
-
-    it('should return the key name if no translation is found', () => {
-      expect(Translate.getSync('missing.key')).toBe('missing.key')
-    })
-
-    it('should return an empty string if the first is set to false and text is missing', () => {
-      expect(Translate.getSync('missing.key', true)).toBe(' ') // As per `first ? ' ' : name` in code
-    })
+  it('getItem should return the internal TranslateInstance', () => {
+    expect(Translate.getItem()).toBeInstanceOf(TranslateInstance)
   })
 
-  describe('Template replacement', () => {
-    it('should replace templates using array values', () => {
-      Translate.addSync({ greeting: 'Hello, %d!' })
-      expect(Translate.getSync('greeting', false, ['World'])).toBe('Hello, World!')
-    })
-
-    it('should replace templates using object values', () => {
-      Translate.addSync({ items: 'You have [count] [type].' })
-      expect(Translate.getSync('items', false, { count: 'five', type: 'apples' })).toBe('You have five apples.')
-    })
+  it('get should delegate to item.get', async () => {
+    const res = await Translate.get('test', ['val'])
+    expect(instance.get).toHaveBeenCalledWith('test', ['val'])
+    expect(res).toBe('Mocked Get')
   })
 
-  describe('getListSync', () => {
-    it('should return an object with translated values', () => {
-      Translate.addSync({
-        'btn.save': 'Save',
-        'btn.cancel': 'Cancel'
-      })
-
-      const list = Translate.getListSync(['btn.save', 'btn.cancel', 'btn.missing'])
-
-      expect(list).toEqual({
-        'btn.save': 'Save',
-        'btn.cancel': 'Cancel',
-        'btn.missing': 'btn.missing'
-      })
-    })
-
-    it('should replace templates when passing an array to list', () => {
-      Translate.addSync({
-        greet: 'Hello, %d!'
-      })
-
-      const list = Translate.getListSync([['greet', 'Alice']])
-
-      expect(list).toEqual({
-        greet: 'Hello, Alice!'
-      })
-    })
+  it('getSync should delegate to item.getSync', () => {
+    const res = Translate.getSync('test', true, { a: 1 })
+    expect(instance.getSync).toHaveBeenCalledWith('test', true, { a: 1 })
+    expect(res).toBe('Mocked Sync')
   })
 
-  describe('Async getters and API', () => {
-    it('should return a cached translation without calling API', async () => {
-      Translate.addSync({ hello: 'Hello API' })
-      const text = await Translate.get('hello')
-
-      expect(text).toBe('Hello API')
-      expect(mockApiGet).not.toHaveBeenCalled()
-    })
-
-    it('should call API when translation is missing and not localhost', async () => {
-      mockIsLocalhost.mockReturnValue(false)
-      mockApiGet.mockResolvedValue({ hello: 'World API' })
-
-      const textPromise = Translate.get('hello')
-
-      // Fast-forward timers if necessary or just await
-      // Wait for timeout (160ms) of Translate.add
-      await new Promise(resolve => setTimeout(resolve, 500))
-      const text = await textPromise
-
-      expect(mockApiGet).toHaveBeenCalled()
-      expect(text).toBe('World API')
-    })
-
-    it('should not call API when on localhost and the key is missing', async () => {
-      mockIsLocalhost.mockReturnValue(true)
-
-      const text = await Translate.get('hello')
-
-      expect(mockApiGet).not.toHaveBeenCalled()
-      expect(text).toBe('hello')
-    })
-
-    it('should not call API when setReadApi(false) is called', async () => {
-      mockIsLocalhost.mockReturnValue(false)
-      Translate.setReadApi(false)
-      mockApiGet.mockResolvedValue({ hello: 'World API' })
-
-      const text = await Translate.get('hello')
-
-      expect(mockApiGet).not.toHaveBeenCalled()
-      expect(text).toBe('hello')
-    })
+  it('getList should delegate to item.getList', async () => {
+    const res = await Translate.getList(['a', 'b'])
+    expect(instance.getList).toHaveBeenCalledWith(['a', 'b'])
+    expect(res).toEqual({ key: 'Mocked List' })
   })
 
-  describe('Data manipulation', () => {
-    it('addSync should use exactly the current location', () => {
-      Translate.addSync({ direct: 'Added directly' })
-      expect(Translate.getSync('direct')).toBe('Added directly')
+  it('getListSync should delegate to item.getListSync', () => {
+    const res = Translate.getListSync(['a', 'b'], true)
+    expect(instance.getListSync).toHaveBeenCalledWith(['a', 'b'], true)
+    expect(res).toEqual({ key: 'Mocked List Sync' })
+  })
 
-      // Changing location should lose the translation
-      mockGetLocation.mockReturnValue('ru-RU')
-      expect(Translate.getSync('direct')).toBe('direct') // fallback to key
-    })
+  it('add should delegate to item.add', async () => {
+    await Translate.add(['a'])
+    expect(instance.add).toHaveBeenCalledWith(['a'])
+  })
 
-    it('addNormalOrSync should use addSync on localhost', async () => {
-      mockIsLocalhost.mockReturnValue(true)
-      await Translate.addNormalOrSync({ 'test.key': 'test.value' })
+  it('addSync should delegate to item.addSync', () => {
+    Translate.addSync({ a: 'b' })
+    expect(instance.addSync).toHaveBeenCalledWith({ a: 'b' })
+  })
 
-      expect(Translate.getSync('test.key')).toBe('test.value')
-    })
+  it('addNormalOrSync should delegate to item.addNormalOrSync', async () => {
+    await Translate.addNormalOrSync({ a: 'b' })
+    expect(instance.addNormalOrSync).toHaveBeenCalledWith({ a: 'b' })
+  })
 
-    it('setUrl, setPropsName and setReadApi should return Translate for chaining', () => {
-      expect(Translate.setUrl('/new/url')).toBe(Translate)
-      expect(Translate.setPropsName('newProps')).toBe(Translate)
-      expect(Translate.setReadApi(true)).toBe(Translate)
-    })
+  it('addSyncByLocation should delegate to item.addSyncByLocation', () => {
+    Translate.addSyncByLocation({ en: { a: 'b' } })
+    expect(instance.addSyncByLocation).toHaveBeenCalledWith({ en: { a: 'b' } })
+  })
 
-    it('should use TranslateFile when addSyncByFile is called', async () => {
-      mockIsLocalhost.mockReturnValue(false)
-      const mockFile = vi.fn().mockResolvedValue({ hello: 'World File' })
-      Translate.addSyncByFile({ 'en-US': mockFile })
+  it('addSyncByFile should delegate to item.addSyncByFile', () => {
+    const file = { en: () => Promise.resolve({}) }
+    Translate.addSyncByFile(file)
+    expect(instance.addSyncByFile).toHaveBeenCalledWith(file)
+  })
 
-      const textPromise = Translate.get('hello')
-      await new Promise(resolve => setTimeout(resolve, 500))
-      const text = await textPromise
+  it('setUrl should delegate to item.setUrl and return Translate', () => {
+    const res = Translate.setUrl('/api')
+    expect(instance.setUrl).toHaveBeenCalledWith('/api')
+    expect(res).toBe(Translate)
+  })
 
-      expect(mockFile).toHaveBeenCalled()
-      expect(text).toBe('World File')
-      expect(mockApiGet).not.toHaveBeenCalled()
-    })
+  it('setPropsName should delegate to item.setPropsName and return Translate', () => {
+    const res = Translate.setPropsName('list')
+    expect(instance.setPropsName('list'))
+    expect(res).toBe(Translate)
+  })
+
+  it('setReadApi should delegate to item.setReadApi and return Translate', () => {
+    const res = Translate.setReadApi(true)
+    expect(instance.setReadApi).toHaveBeenCalledWith(true)
+    expect(res).toBe(Translate)
   })
 })

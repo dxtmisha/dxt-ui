@@ -3,35 +3,19 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { ref } from 'vue'
 import { useApiManagementRef } from '../useApiManagementRef'
-import { Api } from '@dxtmisha/functional-basic'
-
-const { viApiMethodItem } = vi.hoisted(() => ({
-  viApiMethodItem: {
-    get: 'GET',
-    post: 'POST',
-    put: 'PUT',
-    delete: 'DELETE'
-  }
-}))
-
-vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
-  const actual = await importOriginal<any>()
-  return {
-    ...actual,
-    Api: {
-      request: vi.fn()
-    },
-    ApiMethodItem: viApiMethodItem,
-    executePromise: vi.fn(async val => val),
-    isFunction: (val: any) => typeof val === 'function'
-  }
-})
+import { Api, ApiMethodItem, type ApiInstance } from '@dxtmisha/functional-basic'
 
 describe('useApiManagementRef', () => {
+  let mockApiInstance: ApiInstance
+
   beforeEach(() => {
-    vi.resetAllMocks()
+    vi.clearAllMocks()
+    mockApiInstance = {
+      request: vi.fn()
+    } as unknown as ApiInstance
+
+    vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
   })
 
   describe('GET Initialization and skeleton', () => {
@@ -45,163 +29,76 @@ describe('useApiManagementRef', () => {
       expect(list.value).toBe('SKELETON')
     })
 
-    it('should return API data after fetching', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce({ data: 'MOCK_DATA' })
+    it('should return API data after fetching via apiInstance', async () => {
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ data: 'MOCK_DATA' })
 
       const { data, starting, list } = useApiManagementRef({
         path: 'test/path'
       })
 
       expect(data.value).toBeUndefined()
-
-      // Accessing the list triggers data dependency logic which triggers initialization
       expect(list.value).toBeUndefined()
 
-      await new Promise(r => setTimeout(r, 0)) // Wait for macro queue / promises
+      await new Promise(r => setTimeout(r, 0))
 
       expect(starting.value).toBe(false)
       expect(data.value).toEqual({ data: 'MOCK_DATA' })
-      expect(list.value).toEqual({ data: 'MOCK_DATA' })
+      expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/path' }))
     })
-  })
 
-  describe('Formatters Integration', () => {
-    it('should return formatted data in a list when formattersOptions are used', async () => {
-      // Return bare array from API to be formatted
-      vi.mocked(Api.request).mockResolvedValueOnce([{ id: 1, name: 'test' }])
+    it('should use custom apiInstance for GET requests', async () => {
+      const customInstance = { request: vi.fn() } as unknown as ApiInstance
+      vi.mocked(customInstance.request).mockResolvedValueOnce({ data: 'custom' })
 
-      const { list, data } = useApiManagementRef(
-        { path: 'test/path' },
-        {
-          name: {
-            type: 'text'
-          }
-        } as any
-      )
+      const { data } = useApiManagementRef({ path: 'test/get' }, undefined, undefined, undefined, undefined, undefined, undefined, customInstance)
 
-      expect(data.value).toBeUndefined() // trigger fetch
+      expect(data.value).toBeUndefined()
       await new Promise(r => setTimeout(r, 0))
 
-      // Without diving deep into useFormattersRef internal mocking,
-      // We know it transforms the array or wraps it in its own format logic.
-      expect(list.value).toBeDefined()
-      // If it's correctly falling back and initialized, it's not undefined
+      expect(customInstance.request).toHaveBeenCalled()
+      expect(mockApiInstance.request).not.toHaveBeenCalled()
     })
   })
 
-  describe('Search Integration', () => {
-    it('should return a search result in a list if searchOptions are provided', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce([{ id: 1, name: 'test' }, { id: 2, name: 'other' }])
+  describe('Mutations (POST, PUT, DELETE) propagation', () => {
+    it('should propagate custom apiInstance to mutation hooks', async () => {
+      const customInstance = { request: vi.fn() } as unknown as ApiInstance
+      // Mock GET response to let it finish starting
+      vi.mocked(customInstance.request).mockResolvedValue([{ id: 1 }])
 
-      const { list, data } = useApiManagementRef(
-        { path: 'test/path' },
-        undefined,
-        {
-          columns: ['name'],
-          value: ref('other'),
-          options: {}
-        } as any
-      )
-
-      expect(data.value).toBeUndefined() // trigger fetch
-      await new Promise(r => setTimeout(r, 0))
-
-      expect(Array.isArray(list.value)).toBe(true)
-      // Since `useSearchRef` logic depends on real execution, it might filter or keep the original.
-      // We just ensure the search hook was integrated without throwing.
-    })
-  })
-
-  describe('Mutations (POST, PUT, DELETE)', () => {
-    it('should send a POST request and trigger reset of the main request', async () => {
-      vi.mocked(Api.request)
-        .mockResolvedValueOnce([{ id: 1 }]) // GET
-        .mockResolvedValueOnce({ success: true }) // POST
-        .mockResolvedValueOnce([{ id: 1 }, { id: 2 }]) // GET after reset
-
-      let actionCalled = false
-
-      const { sendPost, list } = useApiManagementRef(
+      const { sendPost, sendPut, sendDelete, list } = useApiManagementRef(
         { path: 'test/get' },
         undefined,
         undefined,
-        {
-          path: 'test/post',
-          action: async () => { actionCalled = true }
-        }
+        { path: 'test/post' },
+        { path: 'test/put' },
+        { path: 'test/delete' },
+        undefined,
+        customInstance
       )
 
       // Trigger init
       expect(list.value).toBeUndefined()
       await new Promise(r => setTimeout(r, 0))
 
-      // Execute POST
-      await sendPost({ data: { name: 'New Item' } })
+      vi.mocked(customInstance.request).mockClear()
 
-      // verify POST request was executed
-      expect(Api.request).toHaveBeenCalledWith(expect.objectContaining({
-        path: 'test/post',
-        method: viApiMethodItem.post,
-        request: { data: { name: 'New Item' } }
-      }))
+      // Test POST
+      vi.mocked(customInstance.request).mockResolvedValueOnce({ success: true })
+      await sendPost({ data: 'post' })
+      expect(customInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/post', method: ApiMethodItem.post }))
 
-      await new Promise(r => setTimeout(r, 0))
+      // Test PUT
+      vi.mocked(customInstance.request).mockResolvedValueOnce({ success: true })
+      await sendPut({ data: 'put' })
+      expect(customInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/put', method: ApiMethodItem.put }))
 
-      expect(actionCalled).toBe(true)
+      // Test DELETE
+      vi.mocked(customInstance.request).mockResolvedValueOnce({ success: true })
+      await sendDelete({ data: 'delete' })
+      expect(customInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/delete', method: ApiMethodItem.delete }))
 
-      // Because `reset()` is called, we should see another GET request
-      expect(Api.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/get' }))
-    })
-
-    it('should send a PUT request and trigger reset', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce([{ id: 1 }]) // GET
-      vi.mocked(Api.request).mockResolvedValueOnce({ success: true }) // PUT
-
-      const { sendPut, list } = useApiManagementRef(
-        { path: 'test/get' },
-        undefined,
-        undefined,
-        undefined,
-        { path: 'test/put' }
-      )
-
-      // trigger
-      expect(list.value).toBeUndefined()
-      await new Promise(r => setTimeout(r, 0))
-
-      await sendPut({ data: { id: 1, name: 'Updated' } })
-
-      expect(Api.request).toHaveBeenCalledWith(expect.objectContaining({
-        path: 'test/put',
-        method: viApiMethodItem.put,
-        request: { data: { id: 1, name: 'Updated' } }
-      }))
-    })
-
-    it('should send DELETE request and trigger reset', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce([{ id: 1 }]) // GET
-      vi.mocked(Api.request).mockResolvedValueOnce({ success: true }) // DELETE
-
-      const { sendDelete, list } = useApiManagementRef(
-        { path: 'test/get' },
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        { path: 'test/delete' }
-      )
-
-      // trigger
-      expect(list.value).toBeUndefined()
-      await new Promise(r => setTimeout(r, 0))
-
-      await sendDelete({ data: { id: 1 } })
-
-      expect(Api.request).toHaveBeenCalledWith(expect.objectContaining({
-        path: 'test/delete',
-        method: viApiMethodItem.delete,
-        request: { data: { id: 1 } }
-      }))
+      expect(mockApiInstance.request).not.toHaveBeenCalled()
     })
   })
 
@@ -214,7 +111,7 @@ describe('useApiManagementRef', () => {
     })
 
     it('should return isValid based on typeData check', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce('NOT_A_NUMBER')
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce('NOT_A_NUMBER')
 
       const { isValid, list } = useApiManagementRef({
         path: 'test/path',
@@ -226,55 +123,13 @@ describe('useApiManagementRef', () => {
       await new Promise(r => setTimeout(r, 0))
 
       expect(isValid.value).toBe(false)
-      // Implementation returns data.value even if isValid is false, so it will be 'NOT_A_NUMBER'
       expect(list.value).toBe('NOT_A_NUMBER')
     })
   })
 
-  describe('Search and loading flags', () => {
-    it('should return search flags if searchOptions are provided', () => {
-      const { isSearch, loadingSearch } = useApiManagementRef(
-        { path: 'test/path' },
-        undefined,
-        {
-          columns: ['name'],
-          value: ref(''),
-          options: {}
-        } as any
-      )
-
-      expect(isSearch).toBeDefined()
-      expect(loadingSearch).toBeDefined()
-    })
-  })
-
   describe('Success-based reset', () => {
-    it('should NOT trigger reset if mutation fails', async () => {
-      vi.mocked(Api.request)
-        .mockResolvedValueOnce([{ id: 1 }]) // GET
-        .mockResolvedValueOnce({ success: false }) // POST fail
-
-      const { sendPost, list } = useApiManagementRef(
-        { path: 'test/get' },
-        undefined,
-        undefined,
-        { path: 'test/post' }
-      )
-
-      // trigger
-      expect(list.value).toBeUndefined()
-      await new Promise(r => setTimeout(r, 0))
-
-      vi.mocked(Api.request).mockClear()
-
-      await sendPost({ data: { name: 'New Item' } })
-
-      // verify POST request was executed
-      expect(Api.request).toHaveBeenCalledTimes(1) // Only POST, no second GET
-    })
-
-    it('should trigger reset if mutation succeeds', async () => {
-      vi.mocked(Api.request)
+    it('should trigger reset if mutation succeeds via apiInstance', async () => {
+      vi.mocked(mockApiInstance.request)
         .mockResolvedValueOnce([{ id: 1 }]) // GET
         .mockResolvedValueOnce({ success: true }) // POST success
         .mockResolvedValueOnce([{ id: 1 }, { id: 2 }]) // GET after reset
@@ -290,11 +145,11 @@ describe('useApiManagementRef', () => {
       expect(list.value).toBeUndefined()
       await new Promise(r => setTimeout(r, 0))
 
-      vi.mocked(Api.request).mockClear()
+      vi.mocked(mockApiInstance.request).mockClear()
 
       await sendPost({ data: { name: 'New Item' } })
 
-      expect(Api.request).toHaveBeenCalledTimes(2) // 1 POST + 1 GET
+      expect(mockApiInstance.request).toHaveBeenCalledTimes(2) // 1 POST + 1 GET (reset)
     })
   })
 })

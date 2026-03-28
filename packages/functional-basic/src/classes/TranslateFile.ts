@@ -1,9 +1,10 @@
 import { forEach } from '../functions/forEach'
+import { executeFunction } from '../functions/executeFunction'
 import { isFunction } from '../functions/isFunction'
+
 import { Geo } from './Geo'
 
 import { TRANSLATE_GLOBAL_PREFIX, type TranslateDataFile, type TranslateDataFileList } from '../types/translateTypes'
-import { executeFunction } from '../functions/executeFunction.ts'
 
 /**
  * Class for working with translation files.
@@ -12,19 +13,55 @@ import { executeFunction } from '../functions/executeFunction.ts'
  */
 export class TranslateFile {
   /** List of files with translations/ Список файлов с переводами */
-  protected static files: TranslateDataFile = {}
+  protected files: TranslateDataFile = {}
 
   /** Data from files/ Данные из файлов */
-  protected static data: Record<string, TranslateDataFileList> = {}
+  protected data: Record<string, TranslateDataFileList> = {}
+
+  /**
+   * Creates an instance of the class.
+   *
+   * Создает экземпляр класса.
+   * @param data list of files/ список файлов
+   * @param language language/ язык
+   * @param location location/ местоположение
+   */
+  constructor(
+    data?: TranslateDataFile,
+    protected language: string | (() => string) = () => Geo.getLanguage(),
+    protected location: string | (() => string) = () => Geo.getLocation()
+  ) {
+    if (data) {
+      this.add(data)
+    }
+  }
 
   /**
    * Checks if there are files for the current location.
    *
    * Проверяет, есть ли файлы для текущего местоположения.
    */
-  static isFile(): boolean {
+  isFile(): boolean {
     return Object.keys(this.files).length > 0
       && this.getIndex() !== undefined
+  }
+
+  /**
+   * Returns the location.
+   *
+   * Возвращает местоположение.
+   */
+  getLocation(): string {
+    return executeFunction(this.location)
+  }
+
+  /**
+   * Returns the language.
+   *
+   * Возвращает язык.
+   */
+  getLanguage(): string {
+    return executeFunction(this.language)
   }
 
   /**
@@ -32,7 +69,7 @@ export class TranslateFile {
    *
    * Возвращает список переводов из файла для текущего местоположения.
    */
-  static async getList(): Promise<TranslateDataFileList | undefined> {
+  async getList(): Promise<TranslateDataFileList | undefined> {
     const index = this.getIndex()
 
     if (index) {
@@ -49,7 +86,7 @@ export class TranslateFile {
    * Добавляет список файлов с переводами.
    * @param data list of files/ список файлов
    */
-  static add(data: TranslateDataFile): void {
+  add(data: TranslateDataFile): void {
     forEach(data, (file, key) => {
       if (isFunction(file)) {
         this.files[key] = file
@@ -62,13 +99,17 @@ export class TranslateFile {
    *
    * Возвращает ключ для текущего местоположения из списка файлов.
    */
-  protected static getIndex(): string | undefined {
-    if (Geo.getLocation() in this.files) {
-      return Geo.getLocation()
+  protected getIndex(): string | undefined {
+    const location = this.getLocation()
+
+    if (location in this.files) {
+      return location
     }
 
-    if (Geo.getLanguage() in this.files) {
-      return Geo.getLanguage()
+    const language = this.getLanguage()
+
+    if (language in this.files) {
+      return language
     }
 
     if (TRANSLATE_GLOBAL_PREFIX in this.files) {
@@ -84,7 +125,7 @@ export class TranslateFile {
    * Возвращает список переводов из кэша.
    * @param index file key/ ключ файла
    */
-  protected static getByData(index: string): TranslateDataFileList | undefined {
+  protected getByData(index: string): TranslateDataFileList | undefined {
     if (index in this.data) {
       return this.data[index]
     }
@@ -98,7 +139,7 @@ export class TranslateFile {
    * Возвращает список переводов из файла и кэширует результат.
    * @param index file key/ ключ файла
    */
-  protected static async getByFile(index: string): Promise<TranslateDataFileList | undefined> {
+  protected async getByFile(index: string): Promise<TranslateDataFileList | undefined> {
     if (index in this.files) {
       const data = await executeFunction(this.files[index])
 

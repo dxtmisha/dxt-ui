@@ -1128,16 +1128,16 @@ function dt(e, t, n) {
 var ft = {};
 //#endregion
 //#region src/composables/ref/useTranslateRef.ts
-function pt(e) {
-	let t = N(g.getListSync(e, !0)), n = async () => {
-		t.value = { ...await g.getList(e) };
+function pt(e, t = g.getItem()) {
+	let n = N(t.getListSync(e, !0)), r = async () => {
+		n.value = { ...await t.getList(e) };
 	};
-	P(U.getLanguage(), n);
-	for (let e in t.value) if (t.value[e] === e || t.value[e] === " ") {
-		n().then();
+	P(U.getLanguage(), r);
+	for (let e in n.value) if (n.value[e] === e || n.value[e] === " ") {
+		r().then();
 		break;
 	}
-	return t;
+	return n;
 }
 var mt = (e) => pt(e);
 //#endregion

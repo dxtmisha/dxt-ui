@@ -1,64 +1,87 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Classes/TranslateFile - Quản lý Tệp Bản dịch'/>
+<Meta title='@dxtmisha/vi/functional-basic/Classes/TranslateFile - Quản Lý Tập Tin Dịch'/>
 
 # Lớp TranslateFile
 
-Một lớp tiện ích tĩnh (static class) để quản lý dữ liệu bản dịch từ các tệp bên ngoài. Lớp này hỗ trợ tải chậm (lazy loading) các gói ngôn ngữ, tự động khớp mã vùng và lưu trữ bộ nhớ đệm nội bộ để tối ưu hóa hiệu suất và giảm bớt việc xử lý tệp thừa.
+Lớp dùng để quản lý dữ liệu dịch thuật từ các tập tin bên ngoài. Nó hỗ trợ tải chậm (lazy loading) các bộ dịch, tự động khớp mã vùng và bộ nhớ đệm nội bộ để tối ưu hóa hiệu suất.
 
-## Tính năng chính
+Khác với các công cụ tĩnh (static utilities), `TranslateFile` là một lớp có thể khởi tạo (instantiable), cho phép tạo nhiều bộ dịch với các thiết lập ngôn ngữ và khu vực độc lập.
 
-- **Tải chậm (Lazy Loading)** — Hỗ trợ tải các tệp bản dịch bất đồng bộ chỉ khi chúng thực sự cần thiết cho ngôn ngữ hiện tại.
-- **Bộ nhớ đệm thông minh** — Tự động lưu trữ nội dung của các tệp đã tải vào cache, ngăn chặn việc đọc tệp lặp lại hoặc các yêu cầu mạng dư thừa.
-- **Ưu tiên Lokale** — Lựa chọn tệp phù hợp nhất một cách thông minh dựa trên vị trí (Vị trí > Ngôn ngữ > Toàn cầu).
-- **Tích hợp liền mạch** — Hoạt động song song với lớp `Translate` để cung cấp một hệ thống dịch thuật thống nhất.
+## Các Tính Năng Chính
+
+- **Tải chậm (Lazy Loading)** — Hỗ trợ tải bất đồng bộ các tập tin dịch chỉ khi cần thiết cho mã vùng hiện tại.
+- **Bộ nhớ đệm thông minh** — Tự động lưu trữ nội dung các tập tin đã tải, ngăn chặn việc đọc tập tin lặp lại hoặc các yêu cầu mạng không cần thiết.
+- **Ưu tiên Mã vùng** — Tự động chọn tập tin phù hợp nhất dựa trên vị trí (Vị trí > Ngôn ngữ > Toàn cầu).
+- **Ngữ cảnh Linh hoạt** — Hỗ trợ các trình cung cấp vị trí và ngôn ngữ tùy chỉnh, mặc định sử dụng thiết lập toàn cục của `Geo`.
 
 ## Khởi tạo
 
-Lớp này là tĩnh và chủ yếu được cấu hình bằng cách thêm các trình tải tệp (file loaders) cho các ngôn ngữ khác nhau.
+Để khởi tạo đối tượng, hãy gọi hàm tạo `TranslateFile(data, language, location)`.
+
+**Tham số:**
+- `data?: TranslateDataFile` — ánh xạ ban đầu của mã vùng và các trình tải tập tin.
+- `language: string | (() => string) = () => Geo.getLanguage()` — ngôn ngữ hiện tại hoặc một hàm trả về giá trị đó.
+- `location: string | (() => string) = () => Geo.getLocation()` — vị trí hiện tại hoặc một hàm trả về giá trị đó.
 
 ```javascript
-import { TranslateFile } from '@dxtmisha/functional-basic'
+import { TranslateFile, Geo } from '@dxtmisha/functional-basic'
 
-// Đăng ký trình tải tệp (thường là async imports)
-TranslateFile.add({
+// 1. Khởi tạo đơn giản
+const files = new TranslateFile({
   'en-US': () => import('./locales/en-US.json'),
-  'en': () => import('./locales/en.json'),
+  'vi': () => import('./locales/vi.json'),
   'global': () => import('./locales/global.json')
 })
+
+// 2. Sử dụng các trình cung cấp ngữ cảnh tùy chỉnh
+const customFiles = new TranslateFile(
+  {}, 
+  () => 'fr', 
+  () => 'fr-FR'
+)
 ```
 
-## Phương thức
+## Các Phương thức
 
-### Truy xuất dữ liệu
+### Lấy Dữ liệu
 
-- `async getList(): Promise<TranslateDataFileList | undefined>` — Trả về danh sách các bản dịch cho vị trí hiện tại. Đầu tiên nó kiểm tra cache nội bộ, sau đó cố gắng tải từ các trình tải tệp đã đăng ký.
-- `isFile(): boolean` — Kiểm tra xem có trình tải tệp nào đã đăng ký phù hợp với vị trí hoặc ngôn ngữ hiện tại hay không.
+- `async getList(): Promise<TranslateDataFileList | undefined>` — Trả về danh sách các bản dịch cho vị trí hiện tại. Nó kiểm tra bộ nhớ đệm trước, sau đó thử tải từ các trình tải tập tin đã đăng ký.
+- `isFile(): boolean` — Kiểm tra xem có trình tải tập tin nào phù hợp với vị trí hoặc ngôn ngữ hiện tại hay không.
+- `getLocation(): string` — Trả về chuỗi vị trí hiện tại (phụ thuộc vào trình cung cấp nếu nó là một hàm).
+- `getLanguage(): string` — Trả về chuỗi ngôn ngữ hiện tại (phụ thuộc vào trình cung cấp nếu nó là một hàm).
 
-- `add(data: TranslateDataFile): void` — Thêm ánh xạ giữa các mã vùng và trình tải tệp bản dịch tương ứng (các hàm trả về Promise).
+### Quản lý Dữ liệu
 
-## Kiểu dữ liệu (Types)
+- `add(data: TranslateDataFile): void` — Thêm ánh xạ mã vùng vào các trình tải tập tin dịch tương ứng (các hàm trả về Promise).
+
+## Các Kiểu Dữ liệu
 
 ### `TranslateDataFile`
-Một tập hợp các hàm tải bất đồng bộ được chỉ mục theo chuỗi ngôn ngữ/khu vực:
-- **Khóa**: Mã locale (ví dụ: `'en-US'`, `'ru'`, `'global'`).
+Một tập hợp các hàm tải bất đồng bộ được lập chỉ mục bởi các chuỗi mã vùng/khu vực:
+- **Khóa**: Mã vùng (ví dụ: `'en-US'`, `'vi'`, `'global'`).
 - **Giá trị**: Hàm trả về một `Promise` của `TranslateDataFileList`.
 
 ### `TranslateDataFileList`
-Một bản ghi key-value đơn giản của các bản dịch: `Record<string, string>`.
+Một bản ghi khóa-giá trị đơn giản của các bản dịch: `Record<string, string>`.
 
 ## Ví dụ
 
-### Đăng ký Tệp với Dynamic Imports
+### Tích hợp với TranslateInstance
 
 ```javascript
-import { TranslateFile, Translate } from '@dxtmisha/functional-basic'
+import { TranslateFile, TranslateInstance } from '@dxtmisha/functional-basic'
 
-TranslateFile.add({
-  'en-US': () => import('./en-US.json'),
-  'ru-RU': () => import('./ru-RU.json')
+const translationFiles = new TranslateFile({
+  'en-US': () => Promise.resolve({ hello: 'Hello US' }),
+  'vi': () => Promise.resolve({ hello: 'Xin chào' })
 })
 
-// Lớp Translate sẽ tự động sử dụng TranslateFile nếu có sẵn tệp
-const title = await Translate.get('app.title')
+const translate = new TranslateInstance(
+  '/api/translate',
+  'list',
+  translationFiles
+)
+
+const message = await translate.get('hello')
 ```

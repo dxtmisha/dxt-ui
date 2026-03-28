@@ -193,7 +193,8 @@ export function useApiManagementRef<
         getCallbackActionRequest(postRequest.action),
         postRequest.transformation,
         postRequest.toData,
-        postRequest.options
+        postRequest.options,
+        apiInstance
       )
     }
 
@@ -203,7 +204,8 @@ export function useApiManagementRef<
         getCallbackActionRequest(putRequest.action),
         putRequest.transformation,
         putRequest.toData,
-        putRequest.options
+        putRequest.options,
+        apiInstance
       )
     }
 
@@ -213,7 +215,8 @@ export function useApiManagementRef<
         getCallbackActionRequest(deleteRequest.action),
         deleteRequest.transformation,
         deleteRequest.toData,
-        deleteRequest.options
+        deleteRequest.options,
+        apiInstance
       )
     }
   }

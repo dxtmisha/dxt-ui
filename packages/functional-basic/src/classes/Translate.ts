@@ -25,6 +25,15 @@ export class Translate {
   }
 
   /**
+   * Returns an instance of the class.
+   *
+   * Возвращает экземпляр класса.
+   */
+  static getItem(): TranslateInstance {
+    return this.item
+  }
+
+  /**
    * Getting the translation text by its code (Sync).
    *
    * Получение текста перевода по его коду (Sync).
@@ -70,8 +79,8 @@ export class Translate {
    * Добавлен список переведенных текстов.
    * @param names list of codes to get translations/ список кодов для получения переводов
    */
-  static add(names: string | string[]): Promise<void> {
-    return this.item.add(names)
+  static async add(names: string | string[]): Promise<void> {
+    await this.item.add(names)
   }
 
   /**
@@ -81,7 +90,7 @@ export class Translate {
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static addSync(data: Record<string, string>): void {
-    return this.item.addSync(data)
+    this.item.addSync(data)
   }
 
   /**
@@ -91,7 +100,7 @@ export class Translate {
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(data: Record<string, string>): Promise<void> {
-    return this.item.addNormalOrSync(data)
+    await this.item.addNormalOrSync(data)
   }
 
   /**
@@ -101,7 +110,7 @@ export class Translate {
    * @param data list of texts by location/ список текстов по местоположению
    */
   static addSyncByLocation(data: Record<string, Record<string, string>>): void {
-    return this.item.addSyncByLocation(data)
+    this.item.addSyncByLocation(data)
   }
 
   /**
@@ -111,7 +120,7 @@ export class Translate {
    * @param data file with translations/ файл с переводами
    */
   static addSyncByFile(data: TranslateDataFile): void {
-    return this.item.addSyncByFile(data)
+    this.item.addSyncByFile(data)
   }
 
   /**
@@ -122,7 +131,7 @@ export class Translate {
    */
   static setUrl(url: string): Translate {
     this.item.setUrl(url)
-    return Translate
+    return this
   }
 
   /**

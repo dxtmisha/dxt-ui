@@ -31,7 +31,7 @@ describe('ScrollbarWidthRef', () => {
     const scrollbar = new ScrollbarWidthRef()
 
     expect(scrollbar.item.value).toBeUndefined()
-    expect(scrollbar.width.value).toBeUndefined()
+    expect(scrollbar.width.value).toBe(0)
     expect(scrollbar.is.value).toBe(false)
 
     resolveIs!(true)

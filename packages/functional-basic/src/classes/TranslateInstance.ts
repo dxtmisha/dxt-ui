@@ -5,7 +5,6 @@ import { isString } from '../functions/isString'
 import { toArray } from '../functions/toArray'
 
 import { Api } from './Api'
-import { Geo } from './Geo'
 import { TranslateFile } from './TranslateFile'
 
 import { TRANSLATE_GLOBAL_PREFIX, TRANSLATE_TIME_OUT, type TranslateCode, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
@@ -16,15 +15,34 @@ import { TRANSLATE_GLOBAL_PREFIX, TRANSLATE_TIME_OUT, type TranslateCode, type T
  * Класс для получения переведенного текста.
  */
 export class TranslateInstance {
-  protected url = '/api/translate'
-  protected propsName = 'list'
+  /** List of translations/ Список переводов */
   protected readonly data: Record<string, string> = {}
 
+  /** Cache of codes to get/ Кэш кодов для получения */
   protected cache: string[] = []
+
+  /** List of resolves for promises/ Список разрешений для промисов */
   protected resolveList: (() => void)[] = []
+
+  /** Timeout for getting translations/ Таймаут для получения переводов */
   protected timeout?: any
 
+  /** Flag indicating whether to read from the API/ Флаг, указывающий, нужно ли читать из API */
   protected isReadApi: boolean = true
+
+  /**
+   * Creates an instance of the class.
+   *
+   * Создает экземпляр класса.
+   * @param url URL for getting translations/ URL для получения переводов
+   * @param propsName Property name for getting translations/ Имя свойства для получения переводов
+   * @param files List of files with translations/ Список файлов с переводами
+   */
+  constructor(
+    protected url: string = '/api/translate',
+    protected propsName: string = 'list',
+    protected readonly files: TranslateFile = new TranslateFile()
+  ) { }
 
   /**
    * Getting the translation text by its code.
@@ -133,7 +151,7 @@ export class TranslateInstance {
       const list = this.getNamesNone(names)
 
       if (list.length > 0) {
-        this.cache.push(...this.getNamesNone(names))
+        this.cache.push(...list)
         this.resolveList.push(resolve)
 
         if (this.timeout) {
@@ -219,7 +237,7 @@ export class TranslateInstance {
    * @param data file with translations/ файл с переводами
    */
   addSyncByFile(data: TranslateDataFile): void {
-    TranslateFile.add(data)
+    this.files.add(data)
   }
 
   /**
@@ -302,7 +320,7 @@ export class TranslateInstance {
    * @param name code name/ название кода
    */
   protected getName(name: string): string {
-    return `${Geo.getLocation()}-${name}`
+    return `${this.files.getLocation()}-${name}`
   }
 
   /**
@@ -312,7 +330,7 @@ export class TranslateInstance {
    * @param name code name/ название кода
    */
   protected getNameByLanguage(name: string): string {
-    return `${Geo.getLanguage()}-${name}`
+    return `${this.files.getLanguage()}-${name}`
   }
 
   /**
@@ -392,8 +410,8 @@ export class TranslateInstance {
   protected async make(): Promise<void> {
     let list: Record<string, string> | undefined
 
-    if (TranslateFile.isFile()) {
-      list = await TranslateFile.getList()
+    if (this.files.isFile()) {
+      list = await this.files.getList()
     } else if (this.isReadApi) {
       list = await this.getResponse()
     }

@@ -4,29 +4,33 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Translate
 
-Một lớp tiện ích tĩnh (static class) để quản lý bản dịch và văn bản đa ngôn ngữ. Lớp này cung cấp các công cụ mạnh mẽ để truy xuất, lưu trữ bộ nhớ đệm (cache) và hiển thị nội dung với hỗ trợ mẫu (template), tự động phát hiện ngôn ngữ và tải yêu cầu theo lô (batch) để tối ưu hóa hiệu suất.
+Một lớp bao tĩnh (static wrapper) cho một thực thể mặc định của lớp `TranslateInstance`. Nó quản lý bản dịch và văn bản đa ngôn ngữ ở cấp độ toàn cục, cung cấp các công cụ để truy xuất, lưu trữ bộ nhớ đệm (cache) và hiển thị nội dung với hỗ trợ mẫu (template) cùng khả năng tự động phát hiện ngôn ngữ.
+
+## Mối liên hệ với TranslateInstance
+
+Lớp `Translate` hoạt động như một giao diện toàn cục, được cấu hình sẵn cho `TranslateInstance`. Tất cả các phương thức tĩnh đều gọi đến các phương thức tương ứng trên một thực thể nội bộ (`Translate.getItem()`).
+
+Mặc dù `Translate` phù hợp cho hầu hết các nhu cầu dịch thuật toàn ứng dụng, bạn có thể tạo các môi trường dịch thuật độc lập bằng cách sử dụng `TranslateInstance`.
 
 ## Tính năng chính
 
 - **Tải theo lô (Batch Loading)** — Tự động gom nhóm các yêu cầu dịch thuật và gửi đi trong một gói duy nhất sau 160ms kể từ khi đưa vào hàng đợi.
 - **Mẫu văn bản linh hoạt** — Hỗ trợ thay thế tham số trong văn bản thông qua chỉ số (`[0]`) hoặc khóa định danh (`{key}`).
 - **Truy cập Đồng bộ và Bất đồng bộ** — Cung cấp các phương thức lấy văn bản tức thì từ cache (`getSync`) hoặc đảm bảo tải từ máy chủ (`get`).
-- **Bộ nhớ đệm thông minh** — Lưu trữ bản dịch theo phạm vi ngôn ngữ hiện tại và hỗ trợ cơ chế dự phòng (ngôn ngữ-quốc gia → ngôn ngữ → toàn cầu).
-- **Nguồn dữ liệu linh hoạt** — Hỗ trợ tải bản dịch từ cả máy chủ (API) và tệp cục bộ (thông qua `TranslateFile`).
-- **Phát triển cục bộ** — Chế độ `addNormalOrSync` tự động chuyển đổi giữa dữ liệu giả (mock) và yêu cầu thực tế tùy theo môi trường.
+- **Bộ nhớ đệm thông minh** — Lưu trữ bản dịch theo mã vùng hiện tại và hỗ trợ cơ chế dự phòng (Vị trí > Ngôn ngữ > Toàn cầu).
 
 ## Khởi tạo
 
-Lớp này là tĩnh và không yêu cầu khởi tạo đối tượng. Cấu hình chính bao gồm việc thiết lập URL của API.
+Lớp này là tĩnh và không yêu cầu khởi tạo đối tượng. Cấu hình được áp dụng cho thực thể dịch thuật toàn cục.
 
 ```javascript
 import { Translate } from '@dxtmisha/functional-basic'
 
-// Cấu hình URL API cho các yêu cầu
+// Cấu hình URL API cho thực thể toàn cục
 Translate.setUrl('/api/v1/translate')
 
 // Tải trước các văn bản cần thiết
-await Translate.add(['welcome', 'auth.login', 'errors.required'])
+await Translate.add(['welcome', 'auth.login'])
 ```
 
 ## Phương thức
@@ -34,23 +38,38 @@ await Translate.add(['welcome', 'auth.login', 'errors.required'])
 ### Truy xuất bản dịch
 
 - `async get(name: string, replacement?: any): Promise<string>` — Lấy văn bản bất đồng bộ. Nếu không có trong cache và không phải môi trường localhost, hệ thống sẽ cố gắng tải từ máy chủ.
-- `getSync(name: string, first?: boolean, replacement?: any): string` — Trả về văn bản từ cache. Nếu `first` là `true`, trả về một khoảng trắng ` ` nếu thiếu văn bản; nếu không, trả về chính mã `name`.
-- `async getList(names: TranslateCode[]): Promise<TranslateList>` — Lấy một đối tượng chứa nhóm các bản dịch (bất đồng bộ).
-- `getListSync(names: TranslateCode[], first?: boolean): TranslateList` — Lấy một đối tượng chứa nhóm các bản dịch từ cache (đồng bộ).
+- `getSync(name: string, first?: boolean, replacement?: any): string` — Trả về văn bản từ cache. Nếu `first` là `true`, trả về một khoảng trắng ` ` nếu thiếu văn bản.
+- `async getList(names: TranslateCode[]): Promise<TranslateList>` — Lấy một nhóm các bản dịch (bất đồng bộ).
+- `getListSync(names: TranslateCode[], first?: boolean): TranslateList` — Lấy một nhóm các bản dịch từ cache (đồng bộ).
 
-### Quản lý dữ liệu
+### Static và Thực thể (Instance)
 
-- `async add(names: string | string[]): Promise<void>` — Thêm các mã vào hàng đợi tải. Các yêu cầu được gom nhóm để giảm tải cho mạng.
-- `addSync(data: Record<string, string>): void` — Thêm trực tiếp các chuỗi đã dịch vào bộ nhớ đệm.
-- `async addNormalOrSync(data: Record<string, string>): Promise<void>` — Thêm dữ liệu thông minh: hoạt động như `addSync` trên localhost, và như `add` trong các môi trường khác.
-- `addSyncByLocation(data: Record<string, Record<string, string>>): void` — Thêm hàng loạt văn bản gắn liền với các ngôn ngữ/khu vực cụ thể.
-- `addSyncByFile(data: TranslateDataFile): void` — Đăng ký trình tải tệp bản dịch để tải chậm (xem `TranslateFile`).
+- **Cách dùng**: Truy cập toàn cục bằng `Translate` ở bất kỳ đâu trong ứng dụng hoặc sử dụng `TranslateInstance` cho các thực thể độc lập, theo từng khu vực cụ thể.
+- **Trạng thái**: Trạng thái `Translate` chia sẻ chung cho toàn bộ ứng dụng, trong khi `TranslateInstance` cung cấp trạng thái cô lập cho các thành phần hoặc mô-đun cụ thể.
+- **Khởi tạo**: `Translate` không yêu cầu khởi tạo đối tượng (lớp bao tĩnh), trong khi `TranslateInstance` được tạo thông qua `new TranslateInstance()`.
 
-### Cấu hình
+## Các thực thể độc lập
 
-- `setUrl(url: string): typeof Translate` — Thiết lập đường dẫn API để tải bản dịch.
-- `setPropsName(name: string): typeof Translate` — Thiết lập tên thuộc tính trong thân yêu cầu (mặc định là `list`).
-- `setReadApi(read: boolean): typeof Translate` — Bật hoặc tắt các yêu cầu API cho bản dịch (mặc định là `true`).
+Nếu bạn cần quản lý một tập hợp các bản dịch riêng biệt (ví dụ: cho một ứng dụng con cụ thể hoặc một widget chuyên dụng), hãy sử dụng `TranslateInstance` thay vì lớp `Translate` toàn cục.
+
+```javascript
+import { TranslateInstance, TranslateFile } from '@dxtmisha/functional-basic'
+
+// 1. Tạo một bộ tệp dịch chuyên dụng
+const widgetFiles = new TranslateFile({
+  'vi-VN': () => import('./locales/widget.vi-VN.json')
+})
+
+// 2. Khởi tạo một thực thể dịch thuật độc lập
+const widgetTranslate = new TranslateInstance(
+  '/api/widget/translate', 
+  'list', 
+  widgetFiles
+)
+
+// 3. Sử dụng độc lập
+const label = await widgetTranslate.get('widget.welcome')
+```
 
 ## Kiểu dữ liệu (Types)
 
@@ -62,9 +81,6 @@ Một chuỗi (mã văn bản) hoặc một mảng các chuỗi. Mảng được
 ### `TranslateList`
 Một bản ghi (record) với khóa là mã bản dịch và giá trị là các chuỗi đã dịch tương ứng.
 
-### `TranslateDataFile`
-Ánh xạ các chuỗi ngôn ngữ/khu vực (locale) với các hàm tải tương ứng. Được dùng trong `addSyncByFile`.
-
 ## Ví dụ
 
 ### Làm việc với mẫu (Template)
@@ -74,22 +90,11 @@ const text = await Translate.get('user.notifications', ['Sơn', { count: 5 }])
 // Kết quả: "Xin chào, Sơn! Bạn có 5 thông báo."
 ```
 
-### Sử dụng đồng bộ trong Component
-```javascript
-// Trước tiên, tải tất cả những gì cần thiết (ví dụ: khi khởi tạo ứng dụng)
-await Translate.add(['btn.save', 'btn.cancel'])
-
-// Bên trong một component, sử dụng đồng bộ để tránh lạm dụng await
-const label = Translate.getSync('btn.save')
-```
-
 ### Lấy danh sách hàng loạt
 ```javascript
 const labels = await Translate.getList([
   'home.title',
-  ['home.welcome', 'Khách'], // thay thế mẫu ngay lập tức
+  ['home.welcome', 'Khách'], 
   'home.footer'
 ])
-
-console.log(labels['home.welcome']) // "Chào mừng, Khách!"
 ```

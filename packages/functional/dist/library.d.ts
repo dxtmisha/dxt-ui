@@ -44,6 +44,7 @@ import { SearchListValue } from '@dxtmisha/functional-basic';
 import { SearchOptions } from '@dxtmisha/functional-basic';
 import { ShallowRef } from 'vue';
 import { ToRefs } from 'vue';
+import { TranslateInstance } from '@dxtmisha/functional-basic';
 import { TranslateList } from '@dxtmisha/functional-basic';
 import { Undefined } from '@dxtmisha/functional-basic';
 import { VNode } from 'vue';
@@ -2440,8 +2441,9 @@ export declare function useStorageRef<T>(name: string, defaultValue?: T | (() =>
  *
  * Получение переведенного текста по массиву ключей или строке с ключом.
  * @param names a string or an array with keys/ строка или массив с ключами
+ * @param translateInstance a translate instance/ экземпляр перевода
  */
-export declare function useTranslateRef<T extends (string | string[])[]>(names: T): ShallowRef<TranslateList<T>>;
+export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
 
 
 export * from "@dxtmisha/functional-basic";

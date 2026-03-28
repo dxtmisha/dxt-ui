@@ -4,28 +4,42 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # TranslateFile Class
 
-A static utility class for managing translation data from external files. It supports lazy loading of translation packs, automatic locale matching, and internal caching to optimize performance and reduce redundant file processing.
+A class for managing translation data from external files. It supports lazy loading of translation packs, automatic locale matching, and internal caching to optimize performance and reduce redundant file processing.
+
+Unlike static utilities, `TranslateFile` is an instantiable class, allowing for multiple translation sets with independent locale and location settings.
 
 ## Key Features
 
 - **Lazy Loading** — Supports asynchronous loading of translation files only when they are needed for the current locale.
 - **Smart Caching** — Automatically caches the content of loaded files, preventing repetitive file reads or network requests.
 - **Locale Prioritization** — Intelligently selects the best-matching file based on location (Location > Language > Global).
-- **Seamless Integration** — Works in tandem with the `Translate` class to provide a unified translation system.
+- **Flexible Context** — Supports custom location and language providers, defaulting to the global `Geo` settings.
 
 ## Initialization
 
-The class is static and is primarily configured by adding file loaders for different locales.
+To initialize the object, call the `TranslateFile(data, language, location)` constructor.
+
+**Parameters:**
+- `data?: TranslateDataFile` — initial mapping of locales to file loaders.
+- `language: string | (() => string) = () => Geo.getLanguage()` — current language or a function returning it.
+- `location: string | (() => string) = () => Geo.getLocation()` — current location or a function returning it.
 
 ```javascript
-import { TranslateFile } from '@dxtmisha/functional-basic'
+import { TranslateFile, Geo } from '@dxtmisha/functional-basic'
 
-// Register file loaders (typically async imports)
-TranslateFile.add({
+// 1. Simple initialization
+const files = new TranslateFile({
   'en-US': () => import('./locales/en-US.json'),
   'en': () => import('./locales/en.json'),
   'global': () => import('./locales/global.json')
 })
+
+// 2. Custom context providers
+const customFiles = new TranslateFile(
+  {}, 
+  () => 'fr', 
+  () => 'fr-FR'
+)
 ```
 
 ## Methods
@@ -34,6 +48,8 @@ TranslateFile.add({
 
 - `async getList(): Promise<TranslateDataFileList | undefined>` — Returns a list of translations for the current location. It first checks the internal cache, then tries to load from the registered file loaders.
 - `isFile(): boolean` — Checks if there are any registered file loaders applicable to the current location or language.
+- `getLocation(): string` — Returns the current location string (executes the provider if it's a function).
+- `getLanguage(): string` — Returns the current language string (executes the provider if it's a function).
 
 ### Data Management
 
@@ -51,16 +67,21 @@ A simple key-value record of translations: `Record<string, string>`.
 
 ## Examples
 
-### Registering Files with Dynamic Imports
+### Integration with TranslateInstance
 
 ```javascript
-import { TranslateFile, Translate } from '@dxtmisha/functional-basic'
+import { TranslateFile, TranslateInstance } from '@dxtmisha/functional-basic'
 
-TranslateFile.add({
-  'en-US': () => import('./en-US.json'),
-  'ru-RU': () => import('./ru-RU.json')
+const translationFiles = new TranslateFile({
+  'en-US': () => Promise.resolve({ hello: 'Hello US' }),
+  'en': () => Promise.resolve({ hello: 'Hello' })
 })
 
-// Translate class will internally use TranslateFile if files are available
-const title = await Translate.get('app.title')
+const translate = new TranslateInstance(
+  '/api/translate',
+  'list',
+  translationFiles
+)
+
+const message = await translate.get('hello')
 ```

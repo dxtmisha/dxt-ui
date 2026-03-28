@@ -5,33 +5,21 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 import { useApiRef } from '../useApiRef'
-import { Api, ApiMethodItem } from '@dxtmisha/functional-basic'
-
-const { viApiMethodItem } = vi.hoisted(() => ({
-  viApiMethodItem: {
-    get: 'GET',
-    post: 'POST',
-    put: 'PUT',
-    delete: 'DELETE'
-  }
-}))
-
-vi.mock('@dxtmisha/functional-basic', () => ({
-  Api: {
-    request: vi.fn()
-  },
-  ApiMethodItem: viApiMethodItem
-}))
+import { Api, ApiMethodItem, type ApiInstance } from '@dxtmisha/functional-basic'
 
 describe('useApiRef', () => {
+  let mockApiInstance: ApiInstance
   const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { })
   const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
 
   beforeEach(() => {
-    vi.resetAllMocks()
-    // Reset global conditions (using any because it's an internal variable we can't easily reset otherwise)
-    // Actually, setApiRefGlobalConditions only sets if not already set.
-    // This is hard to reset during tests without a dedicated reset function in the source.
+    vi.clearAllMocks()
+    mockApiInstance = {
+      request: vi.fn()
+    } as unknown as ApiInstance
+    
+    // Mock the default Api.getItem()
+    vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
   })
 
   describe('initialization', () => {
@@ -41,11 +29,11 @@ describe('useApiRef', () => {
       expect(starting.value).toBe(true)
       expect(loading.value).toBe(false)
       expect(reading.value).toBe(false)
-      expect(Api.request).not.toHaveBeenCalled()
+      expect(mockApiInstance.request).not.toHaveBeenCalled()
     })
 
     it('should trigger a request on first data access (computed/lazy)', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce({ data: 'mocked-data' })
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ data: 'mocked-data' })
 
       const { data } = useApiRef('test/path')
 
@@ -54,37 +42,39 @@ describe('useApiRef', () => {
 
       await nextTick()
 
-      expect(Api.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/path' }))
+      expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/path' }))
     })
 
-    it('should trigger a request on explicit init() call', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce({ data: 'mocked-data' })
+    it('should use custom apiInstance if provided', async () => {
+      const customInstance = { request: vi.fn() } as unknown as ApiInstance
+      vi.mocked(customInstance.request).mockResolvedValueOnce({ data: 'custom' })
 
-      const { init } = useApiRef('test/path')
-
-      init()
+      const { data } = useApiRef('test/path', {}, true, undefined, undefined, true, customInstance)
+      
+      expect(data.value).toBeUndefined()
       await nextTick()
 
-      expect(Api.request).toHaveBeenCalled()
+      expect(customInstance.request).toHaveBeenCalled()
+      expect(mockApiInstance.request).not.toHaveBeenCalled()
     })
   })
 
   describe('reactivity', () => {
     it('should react to path changes after initialization', async () => {
-      vi.mocked(Api.request).mockResolvedValue({ data: 'response' })
+      vi.mocked(mockApiInstance.request).mockResolvedValue({ data: 'response' })
       const pathRef = ref('initial/path')
 
       const { data } = useApiRef(pathRef)
       expect(data.value).toBeUndefined() // trigger init
 
       await nextTick()
-      expect(Api.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'initial/path' }))
+      expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'initial/path' }))
 
       // Change path
       pathRef.value = 'new/path'
       await nextTick()
 
-      expect(Api.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'new/path' }))
+      expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'new/path' }))
     })
   })
 
@@ -96,7 +86,7 @@ describe('useApiRef', () => {
       expect(data.value).toBeUndefined() // Trigger init
       await reset()
 
-      expect(Api.request).not.toHaveBeenCalled()
+      expect(mockApiInstance.request).not.toHaveBeenCalled()
     })
 
     it('should fetch when conditions become true after init', async () => {
@@ -105,18 +95,18 @@ describe('useApiRef', () => {
 
       expect(data.value).toBeUndefined() // init
       await nextTick()
-      expect(Api.request).not.toHaveBeenCalled()
+      expect(mockApiInstance.request).not.toHaveBeenCalled()
 
       conditions.value = true
       await nextTick()
 
-      expect(Api.request).toHaveBeenCalled()
+      expect(mockApiInstance.request).toHaveBeenCalled()
     })
   })
 
   describe('transformations', () => {
     it('should apply transformation to response data', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce({ rawInfo: '  text  ' })
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ rawInfo: '  text  ' })
 
       const transformation = (data: any) => ({ cleanInfo: data.rawInfo.trim() })
       const { data } = useApiRef('test/path', undefined, true, undefined, transformation)
@@ -131,7 +121,7 @@ describe('useApiRef', () => {
 
   describe('abort and stop', () => {
     it('should provide an abort method which calls controller abort', async () => {
-      vi.mocked(Api.request).mockResolvedValueOnce({ data: 'ok' })
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ data: 'ok' })
       const abortSpy = vi.spyOn(AbortController.prototype, 'abort')
 
       const { data, abort } = useApiRef('test/path')
@@ -143,13 +133,13 @@ describe('useApiRef', () => {
     })
 
     it('should stop watcher correctly', async () => {
-      vi.mocked(Api.request).mockResolvedValue({ data: 'ok' })
+      vi.mocked(mockApiInstance.request).mockResolvedValue({ data: 'ok' })
       const pathRef = ref('path1')
       const { data, stop } = useApiRef(pathRef)
 
       expect(data.value).toBeUndefined() // init
       await nextTick()
-      expect(Api.request).toHaveBeenCalledTimes(1)
+      expect(mockApiInstance.request).toHaveBeenCalledTimes(1)
 
       stop()
       expect(consoleWarnSpy).toHaveBeenCalledWith('useApiRef: stop', 'path1')
@@ -158,13 +148,13 @@ describe('useApiRef', () => {
       pathRef.value = 'path2'
       await nextTick()
 
-      expect(Api.request).toHaveBeenCalledTimes(1) // Still 1
+      expect(mockApiInstance.request).toHaveBeenCalledTimes(1) // Still 1
     })
   })
 
   describe('error handling', () => {
     it('should handle API errors and clear data', async () => {
-      vi.mocked(Api.request).mockRejectedValueOnce(new Error('Network error'))
+      vi.mocked(mockApiInstance.request).mockRejectedValueOnce(new Error('Network error'))
 
       const { data, loading } = useApiRef('test/path')
 

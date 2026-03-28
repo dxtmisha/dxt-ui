@@ -241,6 +241,8 @@ export declare type ApiFetch = {
     devMode?: boolean;
     /** Suppress error logging/ Подавить логирование ошибок */
     hideError?: boolean;
+    /** Suppress loading/ Подавить загрузку */
+    hideLoading?: boolean;
     /** Custom response processor/ Пользовательский процессор ответа */
     queryReturn?: (query: Response) => Promise<any>;
     /** Run global preparation hooks/ Запускать глобальные хуки подготовки */
@@ -294,11 +296,14 @@ export declare class ApiInstance {
     protected response: ApiResponse;
     /** Request modification handler / Обработчик модификации запроса */
     protected preparation: ApiPreparation;
+    /** Loading handler / Обработчик загрузки */
+    protected loading: LoadingInstance;
     /**
      * Constructor
      * @param url base path to the script/ базовый путь к скрипту
+     * @param options options for the API instance/ опции для экземпляра API
      */
-    constructor(url?: string);
+    constructor(url?: string, options?: ApiInstanceOptions);
     /**
      * Is the server local.
      *
@@ -450,6 +455,16 @@ export declare class ApiInstance {
      */
     protected makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
 }
+
+/** Options for the API instance/ Опции для экземпляра API */
+export declare type ApiInstanceOptions = {
+    headersClass?: typeof ApiHeaders;
+    requestDefaultClass?: typeof ApiDefault;
+    statusClass?: typeof ApiStatus;
+    responseClass?: typeof ApiResponse;
+    preparationClass?: typeof ApiPreparation;
+    loadingClass?: LoadingInstance;
+};
 
 /**
  * Supported HTTP methods type/ Тип HTTP-методов
@@ -3024,8 +3039,8 @@ export declare interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
  * Класс для хранения и обработка маски телефона.
  */
 export declare class GeoPhone {
-    protected static list: GeoPhoneValue[];
-    protected static map: Record<string, GeoPhoneMap>;
+    protected static list?: GeoPhoneValue[];
+    protected static map?: Record<string, GeoPhoneMap>;
     /**
      * Getting an object with information about the phone code and country.
      *
@@ -3893,9 +3908,8 @@ export declare type ItemValue<V> = {
  * Класс для работы с глобальной загрузкой.
  */
 export declare class Loading {
-    protected static value: number;
-    protected static event?: EventItem<Window, CustomEvent>;
-    protected static registrationList: LoadingRegistrationItem[];
+    /** Instance of the loading class / Экземпляр класса загрузки */
+    protected static item: LoadingInstance;
     /**
      * Check if the loader is active now.
      *
@@ -3908,6 +3922,12 @@ export declare class Loading {
      * Получить текущее значение загрузки.
      */
     static get(): number;
+    /**
+     * Get instance of the loading class.
+     *
+     * Получить экземпляр класса загрузки.
+     */
+    static getItem(): LoadingInstance;
     /**
      * Shows the loader.
      *
@@ -3940,21 +3960,101 @@ export declare class Loading {
      * @param element element/ элемент
      */
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+}
+
+/**
+ * Data for the loading event.
+ *
+ * Данные для события загрузки.
+ */
+export declare type LoadingDetail = {
+    /** Loading status / Статус загрузки */
+    loading: boolean;
+};
+
+/**
+ * Class for working with global loading.
+ *
+ * Класс для работы с глобальной загрузкой.
+ */
+export declare class LoadingInstance {
+    protected eventName: string;
+    /** Current loading value / Текущее значение загрузки */
+    protected value: number;
+    /** Event item / Элемент события */
+    protected event?: EventItem<Window, CustomEvent>;
+    /** Registration list / Список регистрации */
+    protected registrationList: LoadingRegistrationItem[];
+    /**
+     * Constructor
+     * @param eventName name of the event for tracking loading/ название события для отслеживания загрузки
+     */
+    constructor(eventName?: string);
+    /**
+     * Check if the loader is active now.
+     *
+     * Проверить, активен ли сейчас загрузчик.
+     * @returns returns true if the loader is active/ возвращает true, если загрузчик активен
+     */
+    is(): boolean;
+    /**
+     * Get current loading value.
+     *
+     * Получить текущее значение загрузки.
+     * @returns returns the current loading value/ возвращает текущее значение загрузки
+     */
+    get(): number;
+    /**
+     * Shows the loader.
+     *
+     * Показывает загрузчик.
+     */
+    show(): void;
+    /**
+     * Hides the loader.
+     *
+     * Скрывает загрузчик.
+     */
+    hide(): void;
+    /**
+     * Event registration to listen for data changes.
+     *
+     * Регистрация события для прослушивания изменений данных.
+     * @param listener the object that receives a notification (an object that implements the
+     * Event interface) when an event of the specified type occurs/ объект, который принимает
+     * уведомление, когда событие указанного типа произошло
+     * @param element element/ элемент
+     */
+    registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    /**
+     * Unregistration of an event.
+     *
+     * Отмена регистрации события.
+     * @param listener the object that receives a notification (an object that implements the
+     * Event interface) when an event of the specified type occurs/ объект, который принимает
+     * уведомление, когда событие указанного типа произошло
+     * @param element element/ элемент
+     */
+    unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     /**
      * Calls the event listener.
      *
      * Вызывает слушателя событий.
      */
-    protected static dispatch(): void;
+    protected dispatch(): void;
 }
 
-declare type LoadingDetail = {
-    loading: boolean;
-};
-
-declare type LoadingRegistrationItem = {
+/**
+ * Registration item for the loading event.
+ *
+ * Элемент регистрации для события загрузки.
+ */
+export declare type LoadingRegistrationItem = {
+    /** Event item / Элемент события */
     item: EventItem<Window, CustomEvent, LoadingDetail>;
+    /** Event listener / Слушатель события */
     listener: EventListenerDetail<CustomEvent, LoadingDetail>;
+    /** Element / Элемент */
     element?: ElementOrString<HTMLElement>;
 };
 
@@ -5844,13 +5944,7 @@ export declare function transformation(value: any, isFunction?: boolean): any;
  * Класс для получения переведенного текста.
  */
 export declare class Translate {
-    protected static url: string;
-    protected static propsName: string;
-    protected static readonly data: Record<string, string>;
-    protected static cache: string[];
-    protected static resolveList: (() => void)[];
-    protected static timeout?: any;
-    protected static isReadApi: boolean;
+    protected static item: TranslateInstance;
     /**
      * Getting the translation text by its code.
      *
@@ -5859,6 +5953,12 @@ export declare class Translate {
      * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
      */
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
+    /**
+     * Returns an instance of the class.
+     *
+     * Возвращает экземпляр класса.
+     */
+    static getItem(): TranslateInstance;
     /**
      * Getting the translation text by its code (Sync).
      *
@@ -5942,75 +6042,6 @@ export declare class Translate {
      * @param value read mode/ режим чтения
      */
     static setReadApi(value: boolean): Translate;
-    /**
-     * Checks for translation by code, taking into account fallback options.
-     *
-     * Проверяет наличие перевода по коду с учетом запасных вариантов.
-     * @param name code name/ название кода
-     */
-    protected static hasName(name: string): boolean;
-    /**
-     * Retrieves translation text by code, returning the first matching fallback.
-     *
-     * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
-     * @param name code name/ название кода
-     */
-    protected static getText(name: string): string | undefined;
-    /**
-     * Getting the full title for translation.
-     *
-     * Получение полного названия для перевода.
-     * @param name code name/ название кода
-     */
-    protected static getName(name: string): string;
-    /**
-     * Getting the title for translation by language.
-     *
-     * Получение названия для перевода по языку.
-     * @param name code name/ название кода
-     */
-    protected static getNameByLanguage(name: string): string;
-    /**
-     * Getting the title for translation globally.
-     *
-     * Получение названия для перевода глобально.
-     * @param name code name/ название кода
-     */
-    protected static getNameByGlobal(name: string): string;
-    /**
-     * Returns a list of names that are not yet in the list.
-     *
-     * Возвращает список имен, которых еще нет в списке.
-     * @param names list of codes to get translations/ список кодов для получения переводов
-     */
-    protected static getNamesNone(names: string | string[]): string[];
-    /**
-     * Getting the list of translations from the server.
-     *
-     * Получение списка переводов с сервера.
-     */
-    protected static getResponse(): Promise<Record<string, string>>;
-    /**
-     * Replaces the text with the specified values.
-     *
-     * Заменяет текст на указанные значения.
-     * @param text text to replace/ текст для замены
-     * @param replacement values for replacement/ значения для замены
-     */
-    protected static replacement(text: string, replacement?: string[] | Record<string, string | number>): any;
-    /**
-     * Adding translation data from the server.
-     *
-     * Добавление данных по переводу с сервера.
-     */
-    protected static make(): Promise<void>;
-    /**
-     * Adding translation data from the list.
-     *
-     * Добавление данных по переводу из списка.
-     * @param list list of translations/ список переводов
-     */
-    protected static makeList(list: Record<string, string>): void;
 }
 
 /**
@@ -6055,49 +6086,262 @@ export declare type TranslateDataFileList = Record<string, string>;
  * Класс для работы с файлами перевода.
  */
 export declare class TranslateFile {
+    protected language: string | (() => string);
+    protected location: string | (() => string);
     /** List of files with translations/ Список файлов с переводами */
-    protected static files: TranslateDataFile;
+    protected files: TranslateDataFile;
     /** Data from files/ Данные из файлов */
-    protected static data: Record<string, TranslateDataFileList>;
+    protected data: Record<string, TranslateDataFileList>;
+    /**
+     * Creates an instance of the class.
+     *
+     * Создает экземпляр класса.
+     * @param data list of files/ список файлов
+     * @param language language/ язык
+     * @param location location/ местоположение
+     */
+    constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
     /**
      * Checks if there are files for the current location.
      *
      * Проверяет, есть ли файлы для текущего местоположения.
      */
-    static isFile(): boolean;
+    isFile(): boolean;
+    /**
+     * Returns the location.
+     *
+     * Возвращает местоположение.
+     */
+    getLocation(): string;
+    /**
+     * Returns the language.
+     *
+     * Возвращает язык.
+     */
+    getLanguage(): string;
     /**
      * Returns a list of translations from the file for the current location.
      *
      * Возвращает список переводов из файла для текущего местоположения.
      */
-    static getList(): Promise<TranslateDataFileList | undefined>;
+    getList(): Promise<TranslateDataFileList | undefined>;
     /**
      * Adds a list of files with translations.
      *
      * Добавляет список файлов с переводами.
      * @param data list of files/ список файлов
      */
-    static add(data: TranslateDataFile): void;
+    add(data: TranslateDataFile): void;
     /**
      * Returns the key for the current location from the list of files.
      *
      * Возвращает ключ для текущего местоположения из списка файлов.
      */
-    protected static getIndex(): string | undefined;
+    protected getIndex(): string | undefined;
     /**
      * Returns a list of translations from the cache.
      *
      * Возвращает список переводов из кэша.
      * @param index file key/ ключ файла
      */
-    protected static getByData(index: string): TranslateDataFileList | undefined;
+    protected getByData(index: string): TranslateDataFileList | undefined;
     /**
      * Returns a list of translations from the file and caches the result.
      *
      * Возвращает список переводов из файла и кэширует результат.
      * @param index file key/ ключ файла
      */
-    protected static getByFile(index: string): Promise<TranslateDataFileList | undefined>;
+    protected getByFile(index: string): Promise<TranslateDataFileList | undefined>;
+}
+
+/**
+ * Class for getting the translated text.
+ *
+ * Класс для получения переведенного текста.
+ */
+export declare class TranslateInstance {
+    protected url: string;
+    protected propsName: string;
+    protected readonly files: TranslateFile;
+    /** List of translations/ Список переводов */
+    protected readonly data: Record<string, string>;
+    /** Cache of codes to get/ Кэш кодов для получения */
+    protected cache: string[];
+    /** List of resolves for promises/ Список разрешений для промисов */
+    protected resolveList: (() => void)[];
+    /** Timeout for getting translations/ Таймаут для получения переводов */
+    protected timeout?: any;
+    /** Flag indicating whether to read from the API/ Флаг, указывающий, нужно ли читать из API */
+    protected isReadApi: boolean;
+    /**
+     * Creates an instance of the class.
+     *
+     * Создает экземпляр класса.
+     * @param url URL for getting translations/ URL для получения переводов
+     * @param propsName Property name for getting translations/ Имя свойства для получения переводов
+     * @param files List of files with translations/ Список файлов с переводами
+     */
+    constructor(url?: string, propsName?: string, files?: TranslateFile);
+    /**
+     * Getting the translation text by its code.
+     *
+     * Получение текста перевода по его коду.
+     * @param name code name/ название кода
+     * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
+     */
+    get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
+    /**
+     * Getting the translation text by its code (Sync).
+     *
+     * Получение текста перевода по его коду (Sync).
+     * @param name code name/ название кода
+     * @param first If set to false, returns an empty string if there is no text/
+     * если установлено false, возвращает пустую строку, если нет текста
+     * @param replacement If set, replaces the text with the specified values/
+     * если установлено, заменяет текст на указанные значения
+     */
+    getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
+    /**
+     * Getting a list of translations by an array of text codes.
+     *
+     * Получение списка переводов по массиву кодов текста.
+     * @param names list of codes to get translations/ список кодов для получения переводов
+     */
+    getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
+    /**
+     * Getting a list of translations by an array of text codes.
+     *
+     * Получение списка переводов по массиву кодов текста.
+     * @param names list of codes to get translations/ список кодов для получения переводов
+     * @param first If set to false, returns an empty string if there is no text/
+     * если установлено false, возвращает пустую строку, если нет текста
+     */
+    getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
+    /**
+     * Added a list of translated texts.
+     *
+     * Добавлен список переведенных текстов.
+     * @param names list of codes to get translations/ список кодов для получения переводов
+     */
+    add(names: string | string[]): Promise<void>;
+    /**
+     * Adds texts in sync mode.
+     *
+     * Добавляет тексты в режиме синхронизации.
+     * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
+     */
+    addSync(data: Record<string, string>): void;
+    /**
+     * Adding data in the form of a query or directly, depending on the execution environment.
+     *
+     * Добавление данных в виде запроса или напрямую, в зависимости от среды выполнения.
+     * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
+     */
+    addNormalOrSync(data: Record<string, string>): Promise<void>;
+    /**
+     * Adds texts synchronously by location.
+     *
+     * Добавляет тексты синхронно по местоположению.
+     * @param data list of texts by location/ список текстов по местоположению
+     */
+    addSyncByLocation(data: Record<string, Record<string, string>>): void;
+    /**
+     * Adds texts synchronously from the file.
+     *
+     * Добавляет тексты синхронно из файла.
+     * @param data file with translations/ файл с переводами
+     */
+    addSyncByFile(data: TranslateDataFile): void;
+    /**
+     * Change the path to the script for obtaining the translation.
+     *
+     * Изменить путь к скрипту для получения перевода.
+     * @param url path to the script/ путь к скрипту
+     */
+    setUrl(url: string): this;
+    /**
+     * Change the name of the property to get the translation.
+     *
+     * Изменить имя свойства для получения перевода.
+     * @param name property name/ имя свойства
+     */
+    setPropsName(name: string): this;
+    /**
+     * Change the read mode from the API.
+     *
+     * Изменить режим чтения из API.
+     * @param value read mode/ режим чтения
+     */
+    setReadApi(value: boolean): this;
+    /**
+     * Checks for translation by code, taking into account fallback options.
+     *
+     * Проверяет наличие перевода по коду с учетом запасных вариантов.
+     * @param name code name/ название кода
+     */
+    protected hasName(name: string): boolean;
+    /**
+     * Retrieves translation text by code, returning the first matching fallback.
+     *
+     * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
+     * @param name code name/ название кода
+     */
+    protected getText(name: string): string | undefined;
+    /**
+     * Getting the full title for translation.
+     *
+     * Получение полного названия для перевода.
+     * @param name code name/ название кода
+     */
+    protected getName(name: string): string;
+    /**
+     * Getting the title for translation by language.
+     *
+     * Получение названия для перевода по языку.
+     * @param name code name/ название кода
+     */
+    protected getNameByLanguage(name: string): string;
+    /**
+     * Getting the title for translation globally.
+     *
+     * Получение названия для перевода глобально.
+     * @param name code name/ название кода
+     */
+    protected getNameByGlobal(name: string): string;
+    /**
+     * Returns a list of names that are not yet in the list.
+     *
+     * Возвращает список имен, которых еще нет в списке.
+     * @param names list of codes to get translations/ список кодов для получения переводов
+     */
+    protected getNamesNone(names: string | string[]): string[];
+    /**
+     * Getting the list of translations from the server.
+     *
+     * Получение списка переводов с сервера.
+     */
+    protected getResponse(): Promise<Record<string, string>>;
+    /**
+     * Replaces the text with the specified values.
+     *
+     * Заменяет текст на указанные значения.
+     * @param text text to replace/ текст для замены
+     * @param replacement values for replacement/ значения для замены
+     */
+    protected replacement(text: string, replacement?: string[] | Record<string, string | number>): any;
+    /**
+     * Adding translation data from the server.
+     *
+     * Добавление данных по переводу с сервера.
+     */
+    protected make(): Promise<void>;
+    /**
+     * Adding translation data from the list.
+     *
+     * Добавление данных по переводу из списка.
+     * @param list list of translations/ список переводов
+     */
+    protected makeList(list: Record<string, string>): void;
 }
 
 /**

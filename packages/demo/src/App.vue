@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { D1Image } from '@dxtmisha/d1/D1Image'
-import { } from '@dxtmisha/d1/D1Tabs'
 
-// is Comid
-const ad = 'sdsd'
+import { useApiRequest } from '@dxtmisha/functional'
 
+const { send } = useApiRequest('test')
+send()
 </script>
 
 <template>
   <div class="app-demo">
-    {{ ad }}
     Hi!
     <D1Image  value="home"/>
   </div>
