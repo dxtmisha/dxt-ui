@@ -274,6 +274,8 @@ export declare type ApiFetch = {
     globalEnd?: boolean;
     /** Additional fetch() options/ Дополнительные опции fetch() */
     init?: RequestInit;
+    /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
+    timeout?: number;
     /** AbortController for canceling the request/ AbortController для отмены запроса */
     controller?: AbortController;
 };
@@ -321,6 +323,8 @@ export declare class ApiInstance {
     protected preparation: ApiPreparation;
     /** Loading handler / Обработчик загрузки */
     protected loading: LoadingInstance;
+    /** Error handler / Обработчик ошибок */
+    protected errorCenter: ErrorCenterInstance;
     /**
      * Constructor
      * @param url base path to the script/ базовый путь к скрипту
@@ -460,7 +464,10 @@ export declare class ApiInstance {
      * Выполнение запроса.
      * @param apiFetch property of the request/ свойство запроса
      */
-    protected makeQuery(apiFetch: ApiFetch): Promise<Response>;
+    protected makeQuery(apiFetch: ApiFetch): Promise<{
+        query: Response;
+        timeoutId: any;
+    }>;
     /**
      * Transforms data if needed.
      *
@@ -477,16 +484,49 @@ export declare class ApiInstance {
      * @param status status object/ объект статуса
      */
     protected makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
+    /**
+     * Processing an error.
+     *
+     * Обработка ошибки.
+     * @param error error object/ объект ошибки
+     * @param group error group/ группа ошибки
+     */
+    protected makeError(error: Record<string, any> & {
+        name: string;
+    }, group?: string): void;
+    /**
+     * Processing an error query.
+     *
+     * Обработка ошибки запроса.
+     * @param query error query/ ошибка запроса
+     */
+    protected makeErrorQuery(query: Response): void;
+    /**
+     * Initialize controller for request.
+     *
+     * Инициализация контроллера для запроса.
+     * @param apiFetch request options/ опции запроса
+     * @param fetchInit request initialization/ инициализация запроса
+     */
+    protected initController(apiFetch: ApiFetch, fetchInit: RequestInit): any;
 }
 
 /** Options for the API instance/ Опции для экземпляра API */
 export declare type ApiInstanceOptions = {
+    /** Class for working with headers/ Класс для работы с заголовками */
     headersClass?: typeof ApiHeaders;
+    /** Class for working with default request parameters/ Класс для работы с параметрами запроса по умолчанию */
     requestDefaultClass?: typeof ApiDefault;
+    /** Class for working with status/ Класс для работы со статусом */
     statusClass?: typeof ApiStatus;
+    /** Class for working with response/ Класс для работы с ответом */
     responseClass?: typeof ApiResponse;
+    /** Class for working with preparation/ Класс для работы с модификацией запроса */
     preparationClass?: typeof ApiPreparation;
+    /** Instance of loading handler/ Экземпляр обработчика загрузки */
     loadingClass?: LoadingInstance;
+    /** Instance of error handler/ Экземпляр обработчика ошибок */
+    errorCenterClass?: ErrorCenterInstance;
 };
 
 /**
@@ -895,8 +935,9 @@ export declare class BroadcastMessage<Message = any> {
      * @param name channel name/ название канала
      * @param callback callback on message received/ колбэк на получение сообщения
      * @param callbackError callback on message error/ колбэк на ошибку сообщения
+     * @param errorCenter error center instance/ экземпляр центра ошибок
      */
-    constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined);
+    constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
     /**
      * Get the channel.
      *
@@ -1174,6 +1215,7 @@ export declare function createElement<T extends HTMLElement>(parentElement?: HTM
 export declare class DataStorage<T> {
     private name;
     private isSession;
+    private errorCenter;
     /**
      * Changing the prefix in key names. Should be called at the beginning of the code.
      *
@@ -1187,8 +1229,9 @@ export declare class DataStorage<T> {
      * Constructor
      * @param name value name/ название значения
      * @param isSession should we use a session/ использовать ли сессию
+     * @param errorCenter error center instance/ экземпляр центра ошибок
      */
-    constructor(name: string, isSession?: boolean);
+    constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
     /**
      * Getting data from local storage.
      *
@@ -1788,6 +1831,254 @@ export declare function encodeAttribute(text: string): string;
  * @param type image type (default is 'image/jpeg') / тип изображения (по умолчанию 'image/jpeg')
  */
 export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
+
+/**
+ * Class for managing error storage and handling.
+ *
+ * Класс для управления хранилищем ошибок и их обработкой.
+ */
+export declare class ErrorCenter {
+    /** Instance of the error center / Экземпляр центра ошибок */
+    protected static item: ErrorCenterInstance;
+    /**
+     * Checks if a cause with specific code exists.
+     *
+     * Проверяет наличие причины с конкретным кодом.
+     * @param code error code / код ошибки
+     * @param group error group / группа ошибки
+     */
+    static has(code: string, group?: string): boolean;
+    /**
+     * Gets a specific error cause by code and group.
+     *
+     * Получает конкретную причину ошибки по коду и группе.
+     * @param code error code / код ошибки
+     * @param group error group / группа ошибки
+     */
+    static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
+    /**
+     * Returns the instance of the class.
+     *
+     * Возвращает инстанс класса.
+     */
+    static getItem(): ErrorCenterInstance;
+    /**
+     * Adds an error cause to the storage.
+     *
+     * Добавляет причину ошибки в хранилище.
+     * @param cause error cause item / элемент причины ошибки
+     */
+    static add(cause: ErrorCenterCauseItem): ErrorCenter;
+    /**
+     * Adds a list of error causes to the storage.
+     *
+     * Добавляет список причин ошибок в хранилище.
+     * @param causes error causes list / список причин ошибок
+     */
+    static addList(causes: ErrorCenterCauseList): ErrorCenter;
+    /**
+     * Registers a new handler.
+     *
+     * Регистрирует новый обработчик.
+     * @param group target group / целевая группа
+     * @param handler handler callback / обратный вызов обработчика
+     */
+    static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): ErrorCenter;
+    /**
+     * Registers a list of handlers.
+     *
+     * Регистрирует список обработчиков.
+     * @param handlers handlers list / список обработчиков
+     */
+    static addHandlerList(handlers: ErrorCenterHandlerList): ErrorCenter;
+    /**
+     * Triggers error handling for a group.
+     *
+     * Вызывает обработку ошибки для группы.
+     * @param cause error cause details / детали причины ошибки
+     */
+    static on(cause: ErrorCenterCauseItem): ErrorCenter;
+}
+
+/**
+ * Interface for an error item / Интерфейс для элемента ошибки
+ */
+export declare type ErrorCenterCauseItem = {
+    /** Error group / Группа ошибки */
+    group?: ErrorCenterGroup;
+    /** Error code / Код ошибки */
+    code: string;
+    /** Error label / Название ошибки */
+    label?: string;
+    /** Error message / Сообщение ошибки */
+    message?: string;
+    /** Additional details / Дополнительные детали */
+    details?: any;
+};
+
+/**
+ * List of error items / Список элементов ошибок
+ */
+export declare type ErrorCenterCauseList = ErrorCenterCauseItem[];
+
+/**
+ * Error group identifier / Идентификатор группы ошибок
+ */
+export declare type ErrorCenterGroup = string | undefined;
+
+/**
+ * Class for managing and triggering error handlers.
+ *
+ * Класс для управления и вызова обработчиков ошибок.
+ */
+export declare class ErrorCenterHandler {
+    /** Registered handlers list / Список зарегистрированных обработчиков */
+    protected handlers: ErrorCenterHandlerList;
+    /**
+     * Constructor
+     * @param handlers initial handlers list / начальный список обработчиков
+     */
+    constructor(handlers?: ErrorCenterHandlerList);
+    /**
+     * Checks if handlers exist for a group.
+     *
+     * Проверяет наличие обработчиков для группы.
+     * @param group error group / группа ошибки
+     */
+    has(group: ErrorCenterGroup): boolean;
+    /**
+     * Gets handlers for a group.
+     *
+     * Получает обработчики для группы.
+     * @param group error group / группа ошибки
+     */
+    get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
+    /**
+     * Adds a handler for a specific group.
+     *
+     * Добавляет обработчик для определенной группы.
+     * @param group error group / группа ошибки
+     * @param handler callback function / функция обратного вызова
+     */
+    add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
+    /**
+     * Adds a list of group-based handlers.
+     *
+     * Добавляет список обработчиков по группам.
+     * @param handlers handlers list / список обработчиков
+     */
+    addList(handlers: ErrorCenterHandlerList): this;
+    /**
+     * Triggers handlers for a group and logs to console.
+     *
+     * Вызывает обработчики для группы и выводит ошибку в консоль.
+     * @param cause error cause details / детали причины ошибки
+     */
+    on(cause: ErrorCenterCauseItem): this;
+    /**
+     * Logs error cause to the console.
+     *
+     * Выводит причину ошибки в консоль.
+     * @param cause error details / детали ошибки
+     */
+    protected toConsole(cause: ErrorCenterCauseItem): this;
+}
+
+/**
+ * Callback function for error handling / Функция обратного вызова для обработки ошибок
+ */
+export declare type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void;
+
+/**
+ * Interface for error handler storage / Интерфейс для хранения обработчика ошибок
+ */
+export declare type ErrorCenterHandlerItem = {
+    /** Targeted error group / Целевая группа ошибок */
+    group?: ErrorCenterGroup;
+    /** List of handlers / Список обработчиков */
+    handlers: ErrorCenterHandlerCallback[];
+};
+
+/**
+ * List of error handlers / Список обработчиков ошибок
+ */
+export declare type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
+
+/**
+ * Class for managing error storage and handling within an instance.
+ *
+ * Класс для управления хранилищем ошибок и их обработкой внутри экземпляра.
+ */
+export declare class ErrorCenterInstance {
+    protected handler: ErrorCenterHandler;
+    /** List of stored error causes / Список сохраненных причин ошибок */
+    protected causes: ErrorCenterCauseList;
+    /**
+     * Constructor
+     * @param causes initial list of error causes / начальный список причин ошибок
+     * @param handler handler instance / экземпляр обработчика
+     */
+    constructor(causes?: ErrorCenterCauseList, handler?: ErrorCenterHandler);
+    /**
+     * Checks if a cause with specific code exists.
+     *
+     * Проверяет наличие причины с конкретным кодом.
+     * @param code error code / код ошибки
+     * @param group error group / группа ошибки
+     */
+    has(code: string, group?: string): boolean;
+    /**
+     * Gets a specific error cause by code and group.
+     *
+     * Получает конкретную причину ошибки по коду и группе.
+     * @param code error code / код ошибки
+     * @param group error group / группа ошибки
+     */
+    get(code: string, group?: string): ErrorCenterCauseItem | undefined;
+    /**
+     * Adds an error cause to the storage.
+     *
+     * Добавляет причину ошибки в хранилище.
+     * @param cause error cause item / элемент причины ошибки
+     */
+    add(cause: ErrorCenterCauseItem): this;
+    /**
+     * Adds a list of error causes to the storage.
+     *
+     * Добавляет список причин ошибок в хранилище.
+     * @param causes error causes list / список причин ошибок
+     */
+    addList(causes: ErrorCenterCauseList): this;
+    /**
+     * Registers a new handler.
+     *
+     * Регистрирует новый обработчик.
+     * @param group target group / целевая группа
+     * @param handler handler callback / обратный вызов обработчика
+     */
+    addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
+    /**
+     * Registers a list of handlers.
+     *
+     * Регистрирует список обработчиков.
+     * @param handlers handlers list / список обработчиков
+     */
+    addHandlerList(handlers: ErrorCenterHandlerList): this;
+    /**
+     * Triggers error handling for a group.
+     *
+     * Вызывает обработку ошибки для группы.
+     * @param cause error cause details / детали причины ошибки
+     */
+    on(cause: ErrorCenterCauseItem): this;
+    /**
+     * Merges provided cause with stored cause data.
+     *
+     * Объединяет предоставленную причину с сохраненными данными причины.
+     * @param cause input cause / входная причина
+     */
+    protected assign(cause: ErrorCenterCauseItem): ErrorCenterCauseItem;
+}
 
 /**
  * Escapes special regex characters in a string so it can be used safely in a RegExp.
@@ -2764,6 +3055,7 @@ export declare type GeoHours = '12' | '24';
  * языка-зависимых функций
  */
 export declare class GeoIntl {
+    private errorCenter;
     /**
      * Returns an instance of the class according to the specified country code.
      *
@@ -2777,8 +3069,9 @@ export declare class GeoIntl {
      * Constructor
      * @param code country code, full form language-country or one of them/
      * код страны, полный вид язык-страна или один из них
+     * @param errorCenter error center instance/ экземпляр центра ошибок
      */
-    constructor(code?: string);
+    constructor(code?: string, errorCenter?: ErrorCenterInstance);
     /**
      * Returns country code and language.
      *
@@ -3857,6 +4150,14 @@ export declare function isObject<T>(value: T): value is Extract<T, Record<any, a
  * @param value input value/ входное значение
  */
 export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
+
+/**
+ * Check if the device is online.
+ *
+ * Проверка, находится ли устройство в сети.
+ * @returns true if the device is online, false otherwise/true, если устройство в сети, иначе false
+ */
+export declare function isOnLine(): boolean;
 
 /**
  * Checks if value is in the array selected or if value equals selected, if selected is a string.

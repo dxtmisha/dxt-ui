@@ -1,0 +1,95 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ErrorCenter - Error Management'/>
+
+# ErrorCenter
+
+A static wrapper for `ErrorCenterInstance` providing centralized management for error storage, retrieval, and event-based handling. It acts as a global registry for error causes and provides a mechanism to register and trigger custom handlers for different error groups.
+
+The class follows the "Static Bridge" pattern, delegating all operations to a singleton instance while maintaining a clean, globally accessible API.
+
+## Key Features
+
+- **Static Access** — Global access to error management without the need for manual instantiation.
+- **Centralized Registry** — Stores standardized error causes (labels and messages) for consistent UI feedback.
+- **Group-Based Handling** — Allows registering multiple callbacks for specific error categories.
+- **Chainable API** — Methods for adding causes and handlers support fluent interface design.
+- **Predefined Defaults** — Comes pre-configured with standard network error causes (`timeout`, `offline`, `notFound`, etc.).
+
+## Check Methods
+
+- `has(code: string, group?: string): boolean` — Checks if an error cause exists in the registry.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Retrieves the full error cause object.
+
+## Instance Retrieval
+
+- `getItem(): ErrorCenterInstance` — Returns the underlying instance used by the static wrapper.
+
+## Configuration
+
+- `add(cause: ErrorCenterCauseItem): this` — Adds a single error cause to the global storage.
+- `addList(causes: ErrorCenterCauseList): this` — Adds multiple error causes to the registry at once.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Registers a callback function for a specific group.
+- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Registers a batch of handlers.
+
+## Action Methods
+
+### `on`
+
+Triggers error handling for the specified cause. It merges the provided cause with stored data (if any), executes all registered handlers for the group, and logs the error to the console.
+
+**Parameters:**
+- `cause: ErrorCenterCauseItem` — The cause to trigger. Only `code` and `group` are required if the cause was previously registered via `add()`.
+
+**Returns:** `this`
+
+## Types
+
+### `ErrorCenterCauseItem`
+
+The main object used to define an error cause.
+
+- `group?: ErrorCenterGroup` — The category/group the error belongs to.
+- `code: string` — Unique identifier for the error.
+- `label?: string` — Human-readable name of the error.
+- `message?: string` — Detailed description of the error.
+- `details?: any` — Optional object for additional context or technical data.
+
+### `ErrorCenterGroup`
+
+A simple type definition for categorizing errors: `string | undefined`.
+
+## Default Error Causes
+
+The `ErrorCenter` is automatically populated with these standard network-related causes:
+
+- `unknown` — **Unknown Error**: An unexpected error occurred. Please try again.
+- `timeout` — **Request Timeout**: The request took too long. Please check your connection.
+- `offline` — **No Connection**: You are offline. Please check your internet connection.
+- `notFound` — **Not Found**: The requested resource could not be found.
+- `server` — **Server Error**: Internal server error occurred.
+
+## Usage Example
+
+```javascript
+import { ErrorCenter } from '@dxtmisha/functional-basic'
+
+// 1. Configure global handlers
+ErrorCenter.addHandler('api', (cause) => {
+  notification.error({
+    title: cause.label,
+    message: cause.message
+  })
+})
+
+// 2. Register specific error causes
+ErrorCenter.add({
+  group: 'auth',
+  code: 'token_expired',
+  label: 'Session Expired',
+  message: 'Your session has timed out. Please log in again.'
+})
+
+// 3. Trigger errors via code and group
+ErrorCenter.on({ group: 'auth', code: 'token_expired' })
+```

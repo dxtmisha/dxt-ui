@@ -18,6 +18,24 @@ It includes tight integration with dependency classes: `ApiStatus`, `ApiResponse
 - **Automatic Parsing** — converting the request body into JSON/FormData and automatically extracting data from JSON responses
 - **Geolocation** — automatic substitution of `{locale}`, `{country}`, `{language}` placeholders into request paths
 
+## Constructor
+
+The `ApiInstance` can be configured during initialization with custom dependency classes or specific instances.
+
+**Parameters:**
+- `url: string` — base path for all requests (default: `'/api/'`).
+- `options: ApiInstanceOptions` — configuration object for dependency injection.
+
+### `ApiInstanceOptions`
+
+- `headersClass?: typeof ApiHeaders` — class for managing headers.
+- `requestDefaultClass?: typeof ApiDefault` — class for global request parameters.
+- `statusClass?: typeof ApiStatus` — class for tracking request status.
+- `responseClass?: typeof ApiResponse` — class for response emulation and caching.
+- `preparationClass?: typeof ApiPreparation` — class for lifecycle hook management.
+- `loadingClass?: LoadingInstance` — instance of the loading indicator manager (defaults to `Loading.getItem()`).
+- `errorCenterClass?: ErrorCenterInstance` — instance of the error center for triggering events (defaults to `ErrorCenter.getItem()`).
+
 ## API Calling Methods
 
 ### `request`

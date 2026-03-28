@@ -13,11 +13,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Учет среды выполнения** — автоматическая проверка наличия DOM перед инициализацией, что предотвращает ошибки в средах, отличных от браузера.
 - **Префиксы имен** — автоматическое добавление уникального префикса к именам каналов во избежание конфликтов с другими приложениями.
 - **Типизация** — поддержка универсальных типов (generics) TypeScript для полезной нагрузки сообщений.
+- **Интеграция с ErrorCenter** — централизованная отчетность об ошибках в случае сбоя инициализации `BroadcastChannel`.
 - **Прямой доступ** — предоставление доступа к базовому экземпляру `BroadcastChannel` при необходимости.
 
 ## Инициализация
 
-Для инициализации объекта вызовите конструктор `BroadcastMessage(name, callback, callbackError)`.
+Для инициализации объекта вызовите конструктор `BroadcastMessage(name, callback, callbackError, errorCenter)`.
 
 ### Ограничения дженериков (Generic Constraints)
 
@@ -27,6 +28,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `name: string` — уникальное имя канала связи.
 - `callback?: (event: MessageEvent<Message>) => void` — функция обратного вызова, выполняемая при получении сообщения.
 - `callbackError?: (event: MessageEvent<Message>) => void` — функция обратного вызова, выполняемая при возникновении ошибки сообщения.
+- `errorCenter: ErrorCenterInstance` — экземпляр центра ошибок для вызова событий (по умолчанию: `ErrorCenter.getItem()`).
 
 ```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'

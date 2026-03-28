@@ -1,48 +1,110 @@
-import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from "../types/errorCenter"
-import { ErrorCenterInstance } from "./ErrorCenterInstance"
+import { ErrorCenterInstance } from './ErrorCenterInstance'
+import { errorCauseList } from '../media/errorCauseList'
 
+import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from '../types/errorCenter'
+
+/**
+ * Class for managing error storage and handling.
+ *
+ * Класс для управления хранилищем ошибок и их обработкой.
+ */
 export class ErrorCenter {
-    protected static item = new ErrorCenterInstance()
+  /** Instance of the error center / Экземпляр центра ошибок */
+  protected static item = new ErrorCenterInstance(errorCauseList)
 
-    static has(
-        code: string,
-        group?: string
-    ): boolean {
-        return this.item.has(code, group)
-    }
+  /**
+   * Checks if a cause with specific code exists.
+   *
+   * Проверяет наличие причины с конкретным кодом.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   */
+  static has(
+    code: string,
+    group?: string
+  ): boolean {
+    return this.item.has(code, group)
+  }
 
-    static get(
-        code: string,
-        group?: string
-    ): ErrorCenterCauseItem | undefined {
-        return this.item.get(code, group)
-    }
+  /**
+   * Gets a specific error cause by code and group.
+   *
+   * Получает конкретную причину ошибки по коду и группе.
+   * @param code error code / код ошибки
+   * @param group error group / группа ошибки
+   */
+  static get(
+    code: string,
+    group?: string
+  ): ErrorCenterCauseItem | undefined {
+    return this.item.get(code, group)
+  }
 
-    static add(cause: ErrorCenterCauseItem): ErrorCenter {
-        this.item.add(cause)
-        return this
-    }
+  /**
+   * Returns the instance of the class.
+   *
+   * Возвращает инстанс класса.
+   */
+  static getItem(): ErrorCenterInstance {
+    return this.item
+  }
 
-    static addList(causes: ErrorCenterCauseList): ErrorCenter {
-        this.item.addList(causes)
-        return this
-    }
+  /**
+   * Adds an error cause to the storage.
+   *
+   * Добавляет причину ошибки в хранилище.
+   * @param cause error cause item / элемент причины ошибки
+   */
+  static add(cause: ErrorCenterCauseItem): ErrorCenter {
+    this.item.add(cause)
+    return this
+  }
 
-    static addHandler(
-        group: ErrorCenterGroup,
-        handler: ErrorCenterHandlerCallback
-    ): ErrorCenter {
-        this.item.addHandler(group, handler)
-        return this
-    }
+  /**
+   * Adds a list of error causes to the storage.
+   *
+   * Добавляет список причин ошибок в хранилище.
+   * @param causes error causes list / список причин ошибок
+   */
+  static addList(causes: ErrorCenterCauseList): ErrorCenter {
+    this.item.addList(causes)
+    return this
+  }
 
-    static addHandlerList(handlers: ErrorCenterHandlerList): ErrorCenter {
-        this.item.addHandlerList(handlers)
-        return this
-    }
+  /**
+   * Registers a new handler.
+   *
+   * Регистрирует новый обработчик.
+   * @param group target group / целевая группа
+   * @param handler handler callback / обратный вызов обработчика
+   */
+  static addHandler(
+    group: ErrorCenterGroup,
+    handler: ErrorCenterHandlerCallback
+  ): ErrorCenter {
+    this.item.addHandler(group, handler)
+    return this
+  }
 
-    static on(cause: ErrorCenterCauseItem): ErrorCenter {
-        this.item.on(cause)
-        return this
-    }
+  /**
+   * Registers a list of handlers.
+   *
+   * Регистрирует список обработчиков.
+   * @param handlers handlers list / список обработчиков
+   */
+  static addHandlerList(handlers: ErrorCenterHandlerList): ErrorCenter {
+    this.item.addHandlerList(handlers)
+    return this
+  }
+
+  /**
+   * Triggers error handling for a group.
+   *
+   * Вызывает обработку ошибки для группы.
+   * @param cause error cause details / детали причины ошибки
+   */
+  static on(cause: ErrorCenterCauseItem): ErrorCenter {
+    this.item.on(cause)
+    return this
+  }
 }

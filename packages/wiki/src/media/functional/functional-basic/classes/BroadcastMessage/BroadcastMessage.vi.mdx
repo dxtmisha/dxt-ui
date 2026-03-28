@@ -13,11 +13,12 @@ Một lớp để xử lý việc truyền tin giữa các tab hoặc cửa sổ
 - **Nhận diện môi trường** — tự động kiểm tra môi trường DOM trước khi khởi tạo, giúp ngăn chặn lỗi trong các môi trường không phải trình duyệt.
 - **Tiền tố tên kênh** — tự động thêm tiền tố duy nhất vào tên kênh để tránh xung đột với các ứng dụng khác.
 - **An toàn kiểu dữ liệu** — hỗ trợ Generic trong TypeScript để định nghĩa kiểu dữ liệu của thông điệp.
+- **Tích hợp ErrorCenter** — báo cáo lỗi tập trung khi `BroadcastChannel` không khởi tạo được.
 - **Truy cập trực tiếp** — cung cấp quyền truy cập vào thực thể `BroadcastChannel` gốc khi cần thiết.
 
 ## Khởi tạo
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `BroadcastMessage(name, callback, callbackError)`.
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `BroadcastMessage(name, callback, callbackError, errorCenter)`.
 
 ### Generic Constraints
 
@@ -27,6 +28,7 @@ Một lớp để xử lý việc truyền tin giữa các tab hoặc cửa sổ
 - `name: string` — tên duy nhất của kênh truyền tin.
 - `callback?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi nhận được thông điệp.
 - `callbackError?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi xảy ra lỗi thông điệp.
+- `errorCenter: ErrorCenterInstance` — thực thể của trung tâm lỗi để kích hoạt các sự kiện (mặc định: `ErrorCenter.getItem()`).
 
 ```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'

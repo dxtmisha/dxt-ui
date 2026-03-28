@@ -1,0 +1,69 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ErrorCenterHandler - Quản lý trình xử lý'/>
+
+# ErrorCenterHandler
+
+Một lớp tiện ích cốt lõi để quản lý và kích hoạt các trình xử lý lỗi dựa trên các nhóm đã được định nghĩa. Nó cho phép các chiến lược phản hồi lỗi linh hoạt, chẳng hạn như hiển thị thông báo toàn cục cho các lỗi API trong khi thực hiện ghi nhật ký âm thầm cho các tác vụ nền.
+
+## Các tính năng chính
+
+- **Đăng ký trình xử lý** — Dễ dàng thêm nhiều hàm gọi lại cho các nhóm lỗi cụ thể.
+- **Lọc theo nhóm** — Nhắm mục tiêu các danh mục lỗi cụ thể (ví dụ: `api`, `auth`, `validation`).
+- **Dự phòng toàn cục** — Hỗ trợ trình xử lý cho nhóm `undefined` để bắt bất kỳ lỗi nào không có trình xử lý cụ thể.
+- **Thực thi tuần tự** — Kích hoạt tất cả các hàm gọi lại theo thứ tự chúng được thêm vào.
+- **Tích hợp ghi nhật ký** — Tự động xuất chi tiết lỗi ra console trình duyệt.
+
+## Các phương thức kiểm tra
+
+- `has(group: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý nào được đăng ký cho một nhóm không.
+- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Truy xuất ánh xạ trình xử lý cho một nhóm.
+
+## Cấu hình
+
+- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Thêm một hàm gọi lại cho một nhóm.
+- `addList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
+
+## Các phương thức hành động
+
+### `on`
+
+Kích hoạt tất cả các trình xử lý đã đăng ký cho nhóm của nguyên nhân lỗi được cung cấp. Nếu không tìm thấy trình xử lý cụ thể nào, nó sẽ quay về các trình xử lý được đăng ký cho nhóm `undefined` (nếu có). Luôn xuất chi tiết lỗi ra bảng điều khiển nội bộ.
+
+**Tham số:**
+- `cause: ErrorCenterCauseItem` — Chi tiết lỗi để chuyển cho các trình xử lý.
+
+**Trả về:** `this`
+
+## Các kiểu dữ liệu
+
+### `ErrorCenterHandlerCallback`
+
+Hàm cho các callback xử lý lỗi.
+
+- `(cause: ErrorCenterCauseItem) => void` — Nhận đối tượng nguyên nhân lỗi đã được hợp nhất.
+
+## Ví dụ sử dụng
+
+```javascript
+import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
+
+const handlerManager = new ErrorCenterHandler()
+
+// 1. Đăng ký trình xử lý cho nhóm cụ thể
+handlerManager.add('api', (cause) => {
+  console.log('[API Handler]', cause.message)
+})
+
+// 2. Đăng ký trình xử lý dự phòng toàn cục
+handlerManager.add(undefined, (cause) => {
+  console.error('[Global Fallback]', cause.code)
+})
+
+// 3. Kích hoạt một lỗi
+handlerManager.on({
+  group: 'api',
+  code: '500',
+  message: 'Lỗi máy chủ nội bộ'
+})
+```

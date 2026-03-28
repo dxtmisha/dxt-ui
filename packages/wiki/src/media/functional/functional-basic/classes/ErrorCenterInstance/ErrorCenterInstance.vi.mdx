@@ -1,0 +1,123 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ErrorCenterInstance - Thực thể lỗi'/>
+
+# ErrorCenterInstance
+
+Một lớp để quản lý việc lưu trữ và xử lý lỗi trong một thực thể (instance) cụ thể. Nó cung cấp logic cốt lõi để duy trì một danh mục các nguyên nhân gây lỗi và điều phối các thông báo thông qua một trình quản lý xử lý.
+
+Trong khi `ErrorCenter` cung cấp một lớp tĩnh toàn cục, `ErrorCenterInstance` có thể được sử dụng trực tiếp để theo dõi lỗi tách biệt hoặc các hệ thống quản lý lỗi tùy chỉnh.
+
+## Các tính năng chính
+
+- **Lưu trữ tách biệt** — Duy trì danh sách các nguyên nhân lỗi cục bộ riêng biệt với trạng thái toàn cầu.
+- **Hợp nhất dữ liệu** — Tự động bổ sung thông tin nhãn và thông báo đã đăng ký cho các lỗi được kích hoạt.
+- **Ủy quyền xử lý** — Sử dụng một `ErrorCenterHandler` riêng để thực thi các hàm gọi lại.
+- **Nguyên nhân định nghĩa trước** — Có thể được khởi tạo với một danh sách các nguyên nhân lỗi mặc định.
+- **Chainable API** — Hỗ trợ cấu hình linh hoạt để thêm nguyên nhân và trình xử lý.
+
+## Các phương thức kiểm tra
+
+- `has(code: string, group?: string): boolean` — Kiểm tra xem một nguyên nhân lỗi có tồn tại trong bộ lưu trữ không.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Truy xuất đối tượng nguyên nhân lỗi đã lưu trữ.
+
+## Cấu hình
+
+- `add(cause: ErrorCenterCauseItem): this` — Thêm một nguyên nhân lỗi duy nhất vào bộ lưu trữ.
+- `addList(causes: ErrorCenterCauseList): this` — Thêm một danh sách các nguyên nhân lỗi.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Đăng ký một trình xử lý cho nhóm cụ thể.
+- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
+
+## Các phương thức hành động
+
+### `on`
+
+Kích hoạt xử lý lỗi. Nó tìm kiếm dữ liệu đã đăng ký cho mã lỗi đầu vào, hợp nhất dữ liệu đó với nguyên nhân `cause`, và chuyển nó cho trình xử lý nội bộ.
+
+**Tham số:**
+- `cause: ErrorCenterCauseItem` — Thông tin lỗi cần kích hoạt.
+
+**Trả về:** `this`
+
+## Các kiểu dữ liệu
+
+### `ErrorCenterCauseItem`
+
+Đối tượng chính được sử dụng để xác định nguyên nhân gây lỗi trong thực thể này.
+
+- `group?: ErrorCenterGroup` — danh mục/nhóm mà lỗi thuộc về.
+- `code: string` — mã định danh duy nhất cho lỗi.
+- `label?: string` — tên lỗi dễ đọc cho người dùng.
+- `message?: string` — mô tả chi tiết về lỗi.
+- `details?: any` — đối tượng tùy chọn cho các dữ liệu bổ sung.
+
+## Hướng dẫn: Quản lý nguyên nhân lỗi và bộ lắng nghe
+
+Sử dụng `ErrorCenterInstance` bao gồm ba bước chính: định nghĩa các nguyên nhân gây lỗi, thiết lập bộ lắng nghe (trình xử lý), và kích hoạt lỗi.
+
+### 1. Thêm nguyên nhân lỗi
+
+Các nguyên nhân gây lỗi hoạt động như một từ điển cho ứng dụng của bạn. Bằng cách đăng ký trước chúng, bạn đảm bảo rằng các nhãn và thông báo nhất quán được sử dụng trên toàn bộ nền tảng.
+
+```javascript
+import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+
+const myErrorCenter = new ErrorCenterInstance()
+
+// Đăng ký một nguyên nhân lỗi duy nhất
+myErrorCenter.add({
+  group: 'auth',
+  code: 'token_expired',
+  label: 'Phiên hết hạn',
+  message: 'Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.'
+})
+
+// Đăng ký nhiều nguyên nhân cùng lúc
+myErrorCenter.addList([
+  { group: 'api', code: '404', label: 'Không tìm thấy', message: 'Dữ liệu được yêu cầu không tồn tại.' },
+  { group: 'api', code: '500', label: 'Lỗi máy chủ', message: 'Đã có lỗi xảy ra trên máy chủ.' }
+])
+```
+
+### 2. Thêm bộ lắng nghe
+
+Bộ lắng nghe (trình xử lý) là các hàm callback thực thi khi một lỗi cụ thể xảy ra. Bạn gán các bộ lắng nghe cho một nhóm (`group`) cụ thể để chúng chỉ phản ứng với các lỗi liên quan.
+
+```javascript
+// Thêm bộ lắng nghe dành riêng cho nhóm "auth"
+myErrorCenter.addHandler('auth', (cause) => {
+  // Ví dụ: chuyển hướng đến trang đăng nhập hoặc hiển thị thông báo cảnh báo
+  console.log(`[LỖI XÁC THỰC] ${cause.label}: ${cause.message}`)
+})
+
+// Thêm bộ lắng nghe cho nhóm "api"
+myErrorCenter.addHandler('api', (cause) => {
+  // Ví dụ: hiển thị thông báo dạng toast
+  console.error(`[LỖI API ${cause.code}] ${cause.message}`)
+})
+
+// Thêm bộ lắng nghe dự phòng toàn cục (bắt các lỗi không có trình xử lý cụ thể)
+myErrorCenter.addHandler(undefined, (cause) => {
+  console.warn(`[LỖI KHÔNG XÁC ĐỊNH]`, cause)
+})
+```
+
+### 3. Kích hoạt lỗi
+
+Khi một lỗi xảy ra trong ứng dụng của bạn, bạn kích hoạt quá trình xử lý bằng cách sử dụng phương thức `on`. Bạn chỉ cần cung cấp mã (`code`) và nhóm (`group`). `ErrorCenterInstance` sẽ tự động hợp nhất yêu cầu này với nhãn (`label`) và thông báo (`message`) đã đăng ký trước đó rồi mới truyền đến các bộ lắng nghe.
+
+```javascript
+// Kích hoạt lỗi xác thực
+// Các bộ lắng nghe cho "auth" sẽ nhận được toàn bộ đối tượng ErrorCenterCauseItem
+myErrorCenter.on({
+  group: 'auth',
+  code: 'token_expired'
+})
+
+// Kích hoạt một lỗi chưa đăng ký (sẽ rơi vào bộ lắng nghe của nhóm undefined)
+myErrorCenter.on({
+  group: 'database',
+  code: 'connection_lost',
+  message: 'Mất kết nối với CSDL.' // Bạn cũng có thể truyền dữ liệu trực tiếp
+})
+```

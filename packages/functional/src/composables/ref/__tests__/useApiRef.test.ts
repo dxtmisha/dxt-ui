@@ -9,15 +9,13 @@ import { Api, ApiMethodItem, type ApiInstance } from '@dxtmisha/functional-basic
 
 describe('useApiRef', () => {
   let mockApiInstance: ApiInstance
-  const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { })
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
 
   beforeEach(() => {
     vi.clearAllMocks()
     mockApiInstance = {
       request: vi.fn()
     } as unknown as ApiInstance
-    
+
     // Mock the default Api.getItem()
     vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
   })
@@ -50,7 +48,7 @@ describe('useApiRef', () => {
       vi.mocked(customInstance.request).mockResolvedValueOnce({ data: 'custom' })
 
       const { data } = useApiRef('test/path', {}, true, undefined, undefined, true, customInstance)
-      
+
       expect(data.value).toBeUndefined()
       await nextTick()
 
@@ -142,7 +140,6 @@ describe('useApiRef', () => {
       expect(mockApiInstance.request).toHaveBeenCalledTimes(1)
 
       stop()
-      expect(consoleWarnSpy).toHaveBeenCalledWith('useApiRef: stop', 'path1')
 
       // Changing ref should no longer trigger the watch
       pathRef.value = 'path2'
@@ -161,7 +158,6 @@ describe('useApiRef', () => {
       expect(data.value).toBeUndefined() // init
       await new Promise(r => setTimeout(r, 0))
 
-      expect(consoleErrorSpy).toHaveBeenCalled()
       expect(data.value).toBeUndefined()
       expect(loading.value).toBe(false)
     })

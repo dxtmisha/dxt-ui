@@ -13,11 +13,12 @@ A class for handling cross-tab or cross-window messaging using the `BroadcastCha
 - **Environment Aware** — automatically checks for DOM runtime before initializing, preventing errors in non-browser environments.
 - **Prefixed Names** — automatically adds a unique prefix to channel names to avoid collisions with other applications.
 - **Type Safety** — supports TypeScript generics for message payload typing.
+- **ErrorCenter Integration** — centralized error reporting when the `BroadcastChannel` fails to initialize.
 - **Direct Access** — provide access to the underlying `BroadcastChannel` instance when needed.
 
 ## Initialization
 
-To initialize the object, call the `BroadcastMessage(name, callback, callbackError)` constructor.
+To initialize the object, call the `BroadcastMessage(name, callback, callbackError, errorCenter)` constructor.
 
 ### Generic Constraints
 
@@ -27,6 +28,7 @@ To initialize the object, call the `BroadcastMessage(name, callback, callbackErr
 - `name: string` — unique name of the communication channel.
 - `callback?: (event: MessageEvent<Message>) => void` — callback function executed when a message is received.
 - `callbackError?: (event: MessageEvent<Message>) => void` — callback function executed when a message error occurs.
+- `errorCenter: ErrorCenterInstance` — instance of the error center for triggering events (defaults to `ErrorCenter.getItem()`).
 
 ```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'

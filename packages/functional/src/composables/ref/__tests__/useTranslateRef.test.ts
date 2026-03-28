@@ -71,7 +71,7 @@ describe('useTranslateRef', () => {
     } as unknown as TranslateInstance
 
     const translate = useTranslateRef(['custom'], customInstance)
-    
+
     expect(translate.value).toEqual({ custom: 'custom' })
     expect(customInstance.getListSync).toHaveBeenCalled()
     expect(mockTranslateInstance.getListSync).not.toHaveBeenCalled()

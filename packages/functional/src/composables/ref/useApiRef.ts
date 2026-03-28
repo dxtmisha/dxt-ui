@@ -182,8 +182,7 @@ export function useApiRef<
             item.value = response as ApiData<R>
           }
         }
-      } catch (error) {
-        console.error('useApiRef: error', pathValue, error)
+      } catch (_) {
         item.value = undefined
       }
 
@@ -199,8 +198,6 @@ export function useApiRef<
    * Остановка запроса.
    */
   const stop = () => {
-    console.warn('useApiRef: stop', getRef(path))
-
     watchEnd?.()
     item.value = undefined
     first = true

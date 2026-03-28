@@ -18,6 +18,24 @@ Nó kết hợp chặt chẽ với các lớp phụ thuộc: `ApiStatus`, `ApiRe
 - **Tự động phân tích dữ liệu** — tự động chuyển đổi định dạng body thành JSON/FormData và trích xuất dữ liệu từ các phản hồi JSON
 - **Định vị khu vực (Geolocation)** — tự động thay thế các tham số `{locale}`, `{country}`, `{language}` trong đường dẫn yêu cầu
 
+## Hàm khởi tạo (Constructor)
+
+Thực thể `ApiInstance` có thể được cấu hình trong quá trình khởi tạo với các lớp phụ thuộc tùy chỉnh hoặc các thực thể cụ thể.
+
+**Tham số:**
+- `url: string` — đường dẫn cơ sở cho tất cả các yêu cầu (mặc định: `'/api/'`).
+- `options: ApiInstanceOptions` — đối tượng cấu hình để tiêm các phụ thuộc (dependency injection).
+
+### `ApiInstanceOptions`
+
+- `headersClass?: typeof ApiHeaders` — lớp quản lý các tiêu đề (headers).
+- `requestDefaultClass?: typeof ApiDefault` — lớp cho các tham số yêu cầu mặc định toàn cục.
+- `statusClass?: typeof ApiStatus` — lớp để theo dõi trạng thái yêu cầu.
+- `responseClass?: typeof ApiResponse` — lớp để giả lập phản hồi và bộ nhớ đệm.
+- `preparationClass?: typeof ApiPreparation` — lớp quản lý các hook vòng đời.
+- `loadingClass?: LoadingInstance` — thực thể của trình quản lý chỉ báo tải (mặc định: `Loading.getItem()`).
+- `errorCenterClass?: ErrorCenterInstance` — thực thể của trung tâm lỗi để kích hoạt các sự kiện (mặc định: `ErrorCenter.getItem()`).
+
 ## Phương thức Gọi Tín Hiệu (API Calling Methods)
 
 ### `request`

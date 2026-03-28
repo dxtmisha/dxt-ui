@@ -2,6 +2,8 @@ import { isDomRuntime } from '../functions/isDomRuntime'
 import { random } from '../functions/random'
 
 import { DataStorage } from './DataStorage'
+import { ErrorCenter } from './ErrorCenter'
+import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
 /**
  * A class to handle BroadcastChannel messaging.
@@ -16,11 +18,13 @@ export class BroadcastMessage<Message = any> {
    * @param name channel name/ название канала
    * @param callback callback on message received/ колбэк на получение сообщения
    * @param callbackError callback on message error/ колбэк на ошибку сообщения
+   * @param errorCenter error center instance/ экземпляр центра ошибок
    */
   constructor(
     name: string,
     protected callback?: (event: MessageEvent<Message>) => void,
-    protected callbackError?: (event: MessageEvent<Message>) => void
+    protected callbackError?: (event: MessageEvent<Message>) => void,
+    errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
     if (isDomRuntime()) {
       try {
@@ -28,7 +32,11 @@ export class BroadcastMessage<Message = any> {
         this.channel.onmessage = this.update
         this.channel.onmessageerror = this.updateError
       } catch (e) {
-        console.error(`BroadcastMessage ${name}:`, e)
+        errorCenter.on({
+          group: 'broadcast',
+          code: 'error',
+          details: e
+        })
       }
     }
   }

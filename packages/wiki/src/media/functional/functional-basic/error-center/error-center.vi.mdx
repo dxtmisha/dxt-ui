@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/# Trung tâm Lỗi (Error Center)'/>
+
+# Trung tâm Lỗi
+
+Mô-đun `ErrorCenter` cung cấp một hệ thống tập trung, mạnh mẽ để quản lý các lỗi ứng dụng. Nó cho phép bạn tạo ánh xạ dạng từ điển giữa mã lỗi và thông báo thân thiện với người dùng, phân loại lỗi thành các nhóm và triển khai các bộ lắng nghe (listener) mục tiêu để xử lý lỗi chính xác nơi cần thiết.
+
+## Bắt đầu nhanh
+
+Cách nhanh nhất để bắt đầu là sử dụng lớp tĩnh `ErrorCenter`, hoạt động như một thực thể (singleton) toàn cục cho toàn bộ ứng dụng của bạn.
+
+```javascript
+import { ErrorCenter } from '@dxtmisha/functional-basic'
+
+// 1. Thêm định nghĩa lỗi của bạn
+ErrorCenter.add({
+  group: 'network',
+  code: '503',
+  label: 'Dịch vụ không khả dụng',
+  message: 'Máy chủ hiện không thể xử lý yêu cầu.'
+})
+
+// 2. Gắn bộ lắng nghe vào các nhóm lỗi cụ thể
+ErrorCenter.addHandler('network', (cause) => {
+  // Thực thi phản hồi UI (ví dụ: hiển thị thông báo)
+  alert(`[LỖI MẠNG] ${cause.label}: ${cause.message}`)
+})
+
+// 3. Kích hoạt lỗi ở bất kỳ đâu trong mã ứng dụng của bạn
+ErrorCenter.on({ group: 'network', code: '503' })
+```
+
+## Kiến trúc: `ErrorCenter` và `ErrorCenterInstance`
+
+Mô-đun được xây dựng trên hai lớp chính: một lớp bọc tĩnh cầu nối (static bridge) và một cỗ máy cốt lõi có thể khởi tạo. Hiểu rõ thời điểm sử dụng lớp nào là yếu tố then chốt để duy trì kiến trúc rõ ràng.
+
+### Khi nào sử dụng `ErrorCenter` (Lớp bọc tĩnh)
+
+`ErrorCenter` là một lớp tĩnh có thể truy cập toàn cục, quản lý lỗi ở mức độ ứng dụng. Về mặt nội bộ, nó tự động khởi tạo một `ErrorCenterInstance` duy nhất.
+
+**Trường hợp sử dụng:**
+- **Yêu cầu mạng toàn cục:** Bắt các mã trạng thái HTTP không được xử lý (`401`, `403`, `500`).
+- **Khởi tạo ứng dụng:** Đăng ký các ranh giới xác thực cốt lõi hoặc tình trạng phiên hết hạn.
+- **Đồng bộ hóa Micro-frontend:** Chia sẻ ngữ cảnh lỗi toàn cục mà không cần truyền thuộc tính (props) hay tiêm phụ thuộc (dependencies).
+
+### Khi nào sử dụng `new ErrorCenterInstance()`
+
+`ErrorCenterInstance` là cỗ máy nền tảng thực sự quản lý các trạng thái và trình xử lý. Bạn có thể khởi tạo trực tiếp nó để tạo các vùng quản lý lỗi **bị cô lập** (isolated).
+
+**Trường hợp sử dụng:**
+- **Biểu mẫu & Xác thực phức tạp:** Một component biểu mẫu cụ thể muốn theo dõi và phản hồi chính xác các lỗi xác thực cục bộ của nó mà không làm ô nhiễm nhật ký lỗi toàn cục.
+- **Hệ thống phụ dạng mô-đun:** Các plugin, widget độc lập hoặc tích hợp bên thứ ba chạy bên trong ứng dụng.
+- **Kiểm thử đơn vị (Unit Testing):** Bắt chước (mock) an toàn và kiểm tra hành vi của các bộ lắng nghe lỗi mà không gây ra tác dụng phụ giữa các bộ kiểm thử.
+
+```javascript
+import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+
+// Môi trường lỗi cô lập cho một mô-đun cụ thể
+const formErrorCenter = new ErrorCenterInstance()
+
+formErrorCenter.add({
+  group: 'validation',
+  code: 'missing_field',
+  message: 'Trường này là bắt buộc.'
+})
+
+formErrorCenter.addHandler('validation', (cause) => {
+  // Cập nhật trạng thái UI cục bộ dành riêng cho biểu mẫu này
+  showLocalFieldError(cause)
+})
+```

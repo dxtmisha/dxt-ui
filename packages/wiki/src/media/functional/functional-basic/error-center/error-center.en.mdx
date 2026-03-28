@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/# Error Center'/>
+
+# Error Center
+
+The `ErrorCenter` module provides a centralized, robust system for managing application errors. It allows you to create dictionary-style mappings of error codes to user-friendly messages, categorize errors into groups, and deploy targeted listeners to handle them exactly where needed.
+
+## Quick Start
+
+The fastest way to get started is by using the static `ErrorCenter` class, which acts as a global singleton across your entire application.
+
+```javascript
+import { ErrorCenter } from '@dxtmisha/functional-basic'
+
+// 1. Add your error definitions
+ErrorCenter.add({
+  group: 'network',
+  code: '503',
+  label: 'Service Unavailable',
+  message: 'The server is currently unable to handle the request.'
+})
+
+// 2. Attach a listener to specific error groups
+ErrorCenter.addHandler('network', (cause) => {
+  // Execute your UI reaction (e.g., showing a notification)
+  alert(`[NETWORK ERROR] ${cause.label}: ${cause.message}`)
+})
+
+// 3. Trigger the error anywhere in your app code
+ErrorCenter.on({ group: 'network', code: '503' })
+```
+
+## Architecture: `ErrorCenter` vs `ErrorCenterInstance`
+
+The module is built on two primary layers: a static bridge wrapper and an instantiable core engine. Understanding which one to use is crucial for maintaining a clean architecture.
+
+### When to use `ErrorCenter` (Static Wrapper)
+
+`ErrorCenter` is a globally accessible static class that manages errors at the application level. It automatically initializes a singleton `ErrorCenterInstance` internally.
+
+**Use cases:**
+- **Global Network Requests:** Catching unhandled HTTP status codes (`401`, `403`, `500`).
+- **Application Initialization:** Registering core auth boundaries or session expirations.
+- **Micro-frontend Synchronization:** Sharing error contexts globally without needing to pass down props or inject dependencies.
+
+### When to use `new ErrorCenterInstance()`
+
+`ErrorCenterInstance` is the underlying engine that actually manages the states and handlers. You can instantiate it directly to create **isolated** error management zones.
+
+**Use cases:**
+- **Complex Forms & Validations:** A specific form component wants to track and react exactly to its local validation failures without polluting the global error logs.
+- **Modular Sub-systems:** Independent plugins, widgets, or third-party integrations running within the app.
+- **Unit Testing:** Safely mocking and verifying error handler behaviors without side effects bleeding between test suites.
+
+```javascript
+import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+
+// Isolated error environment for a specific module
+const formErrorCenter = new ErrorCenterInstance()
+
+formErrorCenter.add({
+  group: 'validation',
+  code: 'missing_field',
+  message: 'This field is required.'
+})
+
+formErrorCenter.addHandler('validation', (cause) => {
+  // Updates local UI state specifically for this form
+  showLocalFieldError(cause)
+})
+```

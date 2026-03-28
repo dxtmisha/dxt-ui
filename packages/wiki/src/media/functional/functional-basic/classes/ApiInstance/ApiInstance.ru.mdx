@@ -18,6 +18,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Автоматический парсинг** — преобразование тела запроса в JSON/FormData и автоматическое извлечение данных из JSON-ответов
 - **Геолокация** — автоматическая подстановка `{locale}`, `{country}`, `{language}` в пути запросов
 
+## Конструктор
+
+Экземпляр `ApiInstance` может быть настроен во время инициализации с помощью пользовательских классов зависимостей или конкретных экземпляров.
+
+**Параметры:**
+- `url: string` — базовый путь для всех запросов (по умолчанию: `'/api/'`).
+- `options: ApiInstanceOptions` — объект конфигурации для внедрения зависимостей.
+
+### `ApiInstanceOptions`
+
+- `headersClass?: typeof ApiHeaders` — класс для управления заголовками.
+- `requestDefaultClass?: typeof ApiDefault` — класс для параметров запроса по умолчанию.
+- `statusClass?: typeof ApiStatus` — класс для отслеживания статуса запросов.
+- `responseClass?: typeof ApiResponse` — класс для эмуляции ответов и кэширования.
+- `preparationClass?: typeof ApiPreparation` — класс для управления хуками жизненного цикла.
+- `loadingClass?: LoadingInstance` — экземпляр менеджера индикации загрузки (по умолчанию: `Loading.getItem()`).
+- `errorCenterClass?: ErrorCenterInstance` — экземпляр центра ошибок для вызова событий (по умолчанию: `ErrorCenter.getItem()`).
+
 ## Методы запросов
 
 ### `request`

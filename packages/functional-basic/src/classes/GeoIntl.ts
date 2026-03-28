@@ -4,6 +4,8 @@ import { toDate } from '../functions/toDate'
 import { toNumber } from '../functions/toNumber'
 
 import { Geo } from './Geo'
+import { ErrorCenter } from './ErrorCenter'
+import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
 import {
   type NumberOrStringOrDate,
@@ -45,8 +47,12 @@ export class GeoIntl {
    * Constructor
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
+   * @param errorCenter error center instance/ экземпляр центра ошибок
    */
-  constructor(code: string = Geo.getLocation()) {
+  constructor(
+    code: string = Geo.getLocation(),
+    private errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
+  ) {
     this.geo = Geo.find(code)
 
     const location = this.getLocation()
@@ -113,7 +119,11 @@ export class GeoIntl {
         }
       }
     } catch (e) {
-      console.error('display: ', e)
+      this.errorCenter.on({
+        group: 'intl',
+        code: 'display',
+        details: e
+      })
     }
 
     return text ?? value ?? ''
@@ -454,7 +464,11 @@ export class GeoIntl {
           return `${this.number(number, optionsNumber)} ${wordsFormat ?? ''}`.trim()
         }
       } catch (e) {
-        console.error('plural: ', e)
+        this.errorCenter.on({
+          group: 'intl',
+          code: 'plural',
+          details: e
+        })
       }
     }
 
@@ -622,7 +636,11 @@ export class GeoIntl {
         return new Intl.RelativeTimeFormat(this.getLocation(), options).format(Math.round(toNumber(value)), unit)
       }
     } catch (e) {
-      console.error('relative: ', e)
+      this.errorCenter.on({
+        group: 'intl',
+        code: 'relative',
+        details: e
+      })
     }
 
     return ''
@@ -644,7 +662,11 @@ export class GeoIntl {
           .format(toDate(value))
       }
     } catch (e) {
-      console.error('month: ', e)
+      this.errorCenter.on({
+        group: 'intl',
+        code: 'datetime',
+        details: e
+      })
     }
 
     return ''
@@ -679,7 +701,11 @@ export class GeoIntl {
         }
       }
     } catch (e) {
-      console.error('months: ', e)
+      this.errorCenter.on({
+        group: 'intl',
+        code: 'datetime',
+        details: e
+      })
     }
 
     return list
@@ -702,7 +728,11 @@ export class GeoIntl {
           .format(toDate(value))
       }
     } catch (e) {
-      console.error('weekday: ', e)
+      this.errorCenter.on({
+        group: 'intl',
+        code: 'datetime',
+        details: e
+      })
     }
 
     return ''
@@ -742,7 +772,11 @@ export class GeoIntl {
         }
       }
     } catch (e) {
-      console.error('weekdays: ', e)
+      this.errorCenter.on({
+        group: 'intl',
+        code: 'datetime',
+        details: e
+      })
     }
 
     return list
@@ -816,7 +850,11 @@ export class GeoIntl {
         return new Intl.NumberFormat(this.getLocation(), options)
       }
     } catch (e) {
-      console.error('numberObject: ', e)
+      this.errorCenter.on({
+        group: 'intl',
+        code: 'number',
+        details: e
+      })
     }
 
     return undefined

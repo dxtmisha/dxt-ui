@@ -8,14 +8,13 @@ import { Api, ApiMethodItem, type ApiInstance } from '@dxtmisha/functional-basic
 
 describe('useApiRequest', () => {
   let mockApiInstance: ApiInstance
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
 
   beforeEach(() => {
     vi.clearAllMocks()
     mockApiInstance = {
       request: vi.fn()
     } as unknown as ApiInstance
-    
+
     vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
   })
 
@@ -66,7 +65,7 @@ describe('useApiRequest', () => {
       vi.mocked(customInstance.request).mockResolvedValueOnce({ id: 123 })
 
       const { send } = useApiRequest('test/path', ApiMethodItem.post, undefined, undefined, true, {}, customInstance)
-      
+
       const result = await send()
 
       expect(result).toEqual({ id: 123 })
@@ -108,7 +107,6 @@ describe('useApiRequest', () => {
 
       const result = await send()
 
-      expect(consoleErrorSpy).toHaveBeenCalledWith('useApiRequest: error', 'test/path', error)
       expect(loading.value).toBe(false)
       expect(result).toBeUndefined()
     })

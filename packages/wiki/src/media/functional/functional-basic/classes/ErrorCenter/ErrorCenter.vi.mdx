@@ -1,0 +1,95 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ErrorCenter - Quản lý lỗi'/>
+
+# ErrorCenter
+
+Một lớp tĩnh (static wrapper) cho `ErrorCenterInstance` cung cấp quản lý tập trung cho việc lưu trữ, truy xuất và xử lý lỗi dựa trên sự kiện. Nó đóng vai trò như một bộ lưu trữ toàn cầu cho các nguyên nhân gây lỗi và cung cấp cơ chế để đăng ký cũng như kích hoạt các trình xử lý tùy chỉnh cho các nhóm lỗi khác nhau.
+
+Lớp này tuân theo mô hình "Static Bridge", chuyển giao tất cả các hoạt động cho một thực thể duy nhất (singleton instance) trong khi vẫn duy trì một API sạch sẽ, có thể truy cập toàn cầu.
+
+## Các tính năng chính
+
+- **Truy cập tĩnh** — Truy cập toàn cầu vào quản lý lỗi mà không cần khởi tạo thủ công.
+- **Bộ lưu trữ tập trung** — Lưu trữ các nguyên nhân lỗi được tiêu chuẩn hóa để phản hồi UI nhất quán.
+- **Xử lý theo nhóm** — Cho phép đăng ký nhiều hàm gọi lại cho các danh mục lỗi cụ thể.
+- **Chainable API** — Các phương thức thêm nguyên nhân và trình xử lý hỗ trợ thiết kế giao diện linh hoạt.
+- **Giá trị mặc định** — Đi kèm với các nguyên nhân lỗi mạng tiêu chuẩn (`timeout`, `offline`, `notFound`, v.v.).
+
+## Các phương thức kiểm tra
+
+- `has(code: string, group?: string): boolean` — Kiểm tra xem một nguyên nhân lỗi có tồn tại trong bộ lưu trữ hay không.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Truy xuất đối tượng nguyên nhân lỗi đầy đủ.
+
+## Truy xuất thực thể
+
+- `getItem(): ErrorCenterInstance` — Trả về thực thể nền tảng được sử dụng bởi lớp tĩnh.
+
+## Cấu hình
+
+- `add(cause: ErrorCenterCauseItem): this` — Thêm một nguyên nhân lỗi duy nhất vào bộ lưu trữ toàn cầu.
+- `addList(causes: ErrorCenterCauseList): this` — Thêm nhiều nguyên nhân lỗi vào bộ lưu trữ cùng một lúc.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Đăng ký một hàm gọi lại cho một nhóm lỗi cụ thể.
+- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
+
+## Các phương thức hành động
+
+### `on`
+
+Kích hoạt xử lý lỗi cho nguyên nhân được chỉ định. Nó tìm kiếm dữ liệu đã đăng ký trước đó cho mã lỗi (nếu có), hợp nhất với nguyên nhân đầu vào (`cause`), thực thi tất cả các trình xử lý đã đăng ký cho nhóm đó và ghi lỗi vào bảng điều khiển (console).
+
+**Tham số:**
+- `cause: ErrorCenterCauseItem` — Nguyên nhân lỗi cần kích hoạt. Chỉ cần cung cấp mã và nhóm nếu nguyên nhân đó đã được đăng ký trước đó qua `add()`.
+
+**Trả về:** `this`
+
+## Các kiểu dữ liệu
+
+### `ErrorCenterCauseItem`
+
+Đối tượng chính được sử dụng để xác định nguyên nhân gây lỗi.
+
+- `group?: ErrorCenterGroup` — danh mục/nhóm mà lỗi thuộc về.
+- `code: string` — mã định danh duy nhất cho lỗi.
+- `label?: string` — tên lỗi dễ đọc cho người dùng.
+- `message?: string` — mô tả chi tiết về lỗi.
+- `details?: any` — đối tượng tùy chọn cho các dữ liệu bổ sung.
+
+### `ErrorCenterGroup`
+
+Định nghĩa kiểu đơn giản để phân loại lỗi: `string | undefined`.
+
+## Các nguyên nhân lỗi mặc định
+
+`ErrorCenter` được điền sẵn tự động với các nguyên nhân mạng tiêu chuẩn sau:
+
+- `unknown` — **Lỗi không xác định**: Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.
+- `timeout` — **Yêu cầu hết hạn**: Yêu cầu mất quá nhiều thời gian. Vui lòng kiểm tra kết nối.
+- `offline` — **Không có kết nối**: Bạn đang ngoại tuyến. Vui lòng kiểm tra mạng.
+- `notFound` — **Không tìm thấy**: Tài nguyên được yêu cầu không thể tìm thấy.
+- `server` — **Lỗi máy chủ**: Đã xảy ra lỗi nội bộ máy chủ.
+
+## Ví dụ sử dụng
+
+```javascript
+import { ErrorCenter } from '@dxtmisha/functional-basic'
+
+// 1. Cấu hình trình xử lý toàn cục
+ErrorCenter.addHandler('api', (cause) => {
+  notification.error({
+    title: cause.label,
+    message: cause.message
+  })
+})
+
+// 2. Đăng ký các nguyên nhân lỗi cụ thể
+ErrorCenter.add({
+  group: 'auth',
+  code: 'token_expired',
+  label: 'Phiên làm việc hết hạn',
+  message: 'Vui lòng đăng nhập lại.'
+})
+
+// 3. Kích hoạt lỗi qua mã và nhóm
+ErrorCenter.on({ group: 'auth', code: 'token_expired' })
+```

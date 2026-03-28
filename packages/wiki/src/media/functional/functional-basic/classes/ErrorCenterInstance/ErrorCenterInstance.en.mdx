@@ -1,0 +1,123 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ErrorCenterInstance - Error Instance'/>
+
+# ErrorCenterInstance
+
+A class for managing error storage and handling within a specific instance. It provides the core logic for maintaining a registry of error causes and orchestrating their notification through a handler manager.
+
+While `ErrorCenter` provides a global static bridge, `ErrorCenterInstance` can be used directly for isolated error tracking or custom error management systems.
+
+## Key Features
+
+- **Isolated Storage** — Maintain a local list of error causes separate from the global state.
+- **Data Merging** — Automatically supplements triggered errors with pre-registered label and message data.
+- **Handler Delegation** — Uses a dedicated `ErrorCenterHandler` to manage and execute callbacks.
+- **Predefined Causes** — Can be initialized with a list of default error causes.
+- **Chainable Methods** — Supports fluent configuration for adding causes and handlers.
+
+## Check Methods
+
+- `has(code: string, group?: string): boolean` — Checks if a cause exists in the instance's registry.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Retrieves the stored error cause object.
+
+## Configuration
+
+- `add(cause: ErrorCenterCauseItem): this` — Adds a single error cause to the storage.
+- `addList(causes: ErrorCenterCauseList): this` — Adds multiple error causes.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Registers a callback for a specific error group.
+- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Registers a collection of handlers.
+
+## Action Methods
+
+### `on`
+
+Triggers error handling. It looks up the pre-registered data for the provided error code, merges it with the input `cause`, and passes it to the internal handler.
+
+**Parameters:**
+- `cause: ErrorCenterCauseItem` — The error information to trigger.
+
+**Returns:** `this`
+
+## Types
+
+### `ErrorCenterCauseItem`
+
+The main object used to define an error cause in this instance.
+
+- `group?: ErrorCenterGroup` — The category/group the error belongs to.
+- `code: string` — Unique identifier for the error.
+- `label?: string` — Human-readable name of the error.
+- `message?: string` — Detailed description of the error.
+- `details?: any` — Optional object for additional context or technical data.
+
+## Guide: Managing Errors and Listeners
+
+Using the `ErrorCenterInstance` involves three main steps: defining error causes, setting up listeners (handlers), and triggering the errors.
+
+### 1. Adding Error Causes
+
+Error causes act as a dictionary for your application. By pre-registering them, you ensure that consistent labels and messages are used throughout your platform.
+
+```javascript
+import { ErrorCenterInstance } from '@dxtmisha/functional-basic'
+
+const myErrorCenter = new ErrorCenterInstance()
+
+// Register a single error cause
+myErrorCenter.add({
+  group: 'auth',
+  code: 'token_expired',
+  label: 'Session Expired',
+  message: 'Your login session has expired. Please log in again.'
+})
+
+// Register multiple causes at once
+myErrorCenter.addList([
+  { group: 'api', code: '404', label: 'Not Found', message: 'The requested data does not exist.' },
+  { group: 'api', code: '500', label: 'Server Error', message: 'Something went wrong on the server.' }
+])
+```
+
+### 2. Adding Listeners
+
+Listeners (handlers) are callback functions that execute when a specific error occurs. You assign listeners to a specific `group` so they only react to relevant errors.
+
+```javascript
+// Add a listener specifically for the "auth" group
+myErrorCenter.addHandler('auth', (cause) => {
+  // E.g., redirect to login or show an alert
+  console.log(`[AUTH ERROR] ${cause.label}: ${cause.message}`)
+})
+
+// Add a listener for the "api" group
+myErrorCenter.addHandler('api', (cause) => {
+  // E.g., show a toast notification
+  console.error(`[API ERROR ${cause.code}] ${cause.message}`)
+})
+
+// Add a global fallback listener (catches errors without a specific group handler)
+myErrorCenter.addHandler(undefined, (cause) => {
+  console.warn(`[UNKNOWN ERROR]`, cause)
+})
+```
+
+### 3. Triggering Errors
+
+When an error occurs in your application, you trigger the handling process using the `on` method. You only need to provide the `code` and the `group`. The `ErrorCenterInstance` will automatically merge this with the pre-registered `label` and `message` before passing it to the listeners.
+
+```javascript
+// Trigger an authentication error
+// The listeners for "auth" will receive the full ErrorCenterCauseItem
+myErrorCenter.on({
+  group: 'auth',
+  code: 'token_expired'
+})
+
+// Trigger an unregistered error (will fallback to the undefined group listener)
+myErrorCenter.on({
+  group: 'database',
+  code: 'connection_lost',
+  message: 'Lost connection to DB.' // You can pass inline data as well
+})
+```

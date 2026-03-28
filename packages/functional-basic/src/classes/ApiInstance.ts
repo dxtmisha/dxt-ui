@@ -10,6 +10,7 @@ import { Geo } from './Geo'
 import { Loading } from './Loading'
 import { type LoadingInstance } from './LoadingInstance'
 import { ErrorCenter } from './ErrorCenter'
+import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
 import { ApiHeaders } from './ApiHeaders'
 import { ApiDefault } from './ApiDefault'
@@ -26,12 +27,20 @@ import {
 
 /** Options for the API instance/ Опции для экземпляра API */
 export type ApiInstanceOptions = {
+  /** Class for working with headers/ Класс для работы с заголовками */
   headersClass?: typeof ApiHeaders
+  /** Class for working with default request parameters/ Класс для работы с параметрами запроса по умолчанию */
   requestDefaultClass?: typeof ApiDefault
+  /** Class for working with status/ Класс для работы со статусом */
   statusClass?: typeof ApiStatus
+  /** Class for working with response/ Класс для работы с ответом */
   responseClass?: typeof ApiResponse
+  /** Class for working with preparation/ Класс для работы с модификацией запроса */
   preparationClass?: typeof ApiPreparation
+  /** Instance of loading handler/ Экземпляр обработчика загрузки */
   loadingClass?: LoadingInstance
+  /** Instance of error handler/ Экземпляр обработчика ошибок */
+  errorCenterClass?: ErrorCenterInstance
 }
 
 /**
@@ -58,6 +67,9 @@ export class ApiInstance {
   /** Loading handler / Обработчик загрузки */
   protected loading: LoadingInstance
 
+  /** Error handler / Обработчик ошибок */
+  protected errorCenter: ErrorCenterInstance
+
   /**
    * Constructor
    * @param url base path to the script/ базовый путь к скрипту
@@ -73,7 +85,8 @@ export class ApiInstance {
       statusClass = ApiStatus,
       responseClass = ApiResponse,
       preparationClass = ApiPreparation,
-      loadingClass = Loading.getItem()
+      loadingClass = Loading.getItem(),
+      errorCenterClass = ErrorCenter.getItem()
     } = options
 
     this.headers = new headersClass()
@@ -82,6 +95,7 @@ export class ApiInstance {
     this.response = new responseClass(this.requestDefault)
     this.preparation = new preparationClass()
     this.loading = loadingClass
+    this.errorCenter = errorCenterClass
   }
 
   /**
@@ -541,15 +555,15 @@ export class ApiInstance {
   ): void {
     switch (error.name) {
       case 'TimeoutError':
-        ErrorCenter.on({ group, code: 'timeout', details: error })
+        this.errorCenter.on({ group, code: 'timeout', details: error })
         break
       case 'AbortError':
         break
       default:
         if (isOnLine()) {
-          ErrorCenter.on({ group, code: 'unknown', details: error })
+          this.errorCenter.on({ group, code: 'unknown', details: error })
         } else {
-          ErrorCenter.on({ group, code: 'offline', details: error })
+          this.errorCenter.on({ group, code: 'offline', details: error })
         }
     }
   }
@@ -563,13 +577,13 @@ export class ApiInstance {
   protected makeErrorQuery(query: Response): void {
     switch (query.status) {
       case 404:
-        ErrorCenter.on({ group: 'api', code: 'notFound', details: query })
+        this.errorCenter.on({ group: 'api', code: 'notFound', details: query })
         break
       case 500:
-        ErrorCenter.on({ group: 'api', code: 'server', details: query })
+        this.errorCenter.on({ group: 'api', code: 'server', details: query })
         break
       default:
-        ErrorCenter.on({
+        this.errorCenter.on({
           group: 'api-server',
           code: String(query.status),
           details: query

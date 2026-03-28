@@ -7,13 +7,51 @@ import { ApiInstance } from '../ApiInstance'
 import { ApiMethodItem } from '../../types/apiTypes'
 import { LoadingInstance } from '../LoadingInstance'
 import { Loading } from '../Loading'
+import { ErrorCenter } from '../ErrorCenter'
+import { ApiHeaders } from '../ApiHeaders'
+import { ApiDefault } from '../ApiDefault'
+import { ApiStatus } from '../ApiStatus'
+import { ApiResponse } from '../ApiResponse'
+import { ApiPreparation } from '../ApiPreparation'
+import { ErrorCenterInstance } from '../ErrorCenterInstance'
+import { errorCauseList } from '../../media/errorCauseList'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
 globalThis.fetch = mockFetch
 
-// Mock console.error
-let consoleErrorSpy: any
+// Spy on ErrorCenterInstance.on to verify error handling
+let errorCenterSpy: ReturnType<typeof vi.spyOn>
+
+/**
+ * Creates a mock Response object for fetch.
+ *
+ * Создаёт мок-объект Response для fetch.
+ */
+function createMockResponse(options: {
+  status?: number
+  statusText?: string
+  contentType?: string
+  json?: any
+  text?: string
+} = {}) {
+  const {
+    status = 200,
+    statusText = 'OK',
+    contentType = 'application/json',
+    json = { data: 'test', success: true },
+    text = ''
+  } = options
+
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    statusText,
+    headers: new Headers({ 'Content-Type': contentType }),
+    json: vi.fn().mockResolvedValue(json),
+    text: vi.fn().mockResolvedValue(text)
+  }
+}
 
 describe('ApiInstance', () => {
   let api: ApiInstance
@@ -22,19 +60,11 @@ describe('ApiInstance', () => {
     vi.restoreAllMocks()
     mockFetch.mockClear()
 
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {
-    })
+    // Spy on the default ErrorCenter instance's on method
+    errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
 
     // Set up default successful response
-    mockFetch.mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      json: async () => ({ data: 'test', success: true })
-    })
+    mockFetch.mockResolvedValue(createMockResponse())
 
     api = new ApiInstance('/api/')
 
@@ -42,6 +72,108 @@ describe('ApiInstance', () => {
     // @ts-expect-error: Accessing protected member for testing purposes
     Loading.getItem().value = 0
   })
+
+  // ─────────────────────────────────────────────
+  // Constructor and DI
+  // ─────────────────────────────────────────────
+
+  describe('constructor', () => {
+    it('should use the default url "/api/" when no argument is provided', () => {
+      const defaultApi = new ApiInstance()
+
+      expect(defaultApi.getUrl('test')).toContain('/api/test')
+    })
+
+    it('should use custom url when provided', () => {
+      const customApi = new ApiInstance('/v2/')
+
+      expect(customApi.getUrl('users')).toBe('/v2/users')
+    })
+
+    it('should accept custom headersClass in options', () => {
+      class CustomHeaders extends ApiHeaders {
+        get() {
+          return { 'X-Custom': 'yes' } as Record<string, string>
+        }
+      }
+
+      const customApi = new ApiInstance('/api/', { headersClass: CustomHeaders })
+
+      // Verify that the custom headers are used internally
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(customApi.headers).toBeInstanceOf(CustomHeaders)
+    })
+
+    it('should accept custom requestDefaultClass in options', () => {
+      class CustomDefault extends ApiDefault {}
+
+      const customApi = new ApiInstance('/api/', { requestDefaultClass: CustomDefault })
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(customApi.requestDefault).toBeInstanceOf(CustomDefault)
+    })
+
+    it('should accept custom statusClass in options', () => {
+      class CustomStatus extends ApiStatus {}
+
+      const customApi = new ApiInstance('/api/', { statusClass: CustomStatus })
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(customApi.status).toBeInstanceOf(CustomStatus)
+    })
+
+    it('should accept custom responseClass in options', () => {
+      class CustomResponse extends ApiResponse {}
+
+      const customApi = new ApiInstance('/api/', { responseClass: CustomResponse })
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(customApi.response).toBeInstanceOf(CustomResponse)
+    })
+
+    it('should accept custom preparationClass in options', () => {
+      class CustomPreparation extends ApiPreparation {}
+
+      const customApi = new ApiInstance('/api/', { preparationClass: CustomPreparation })
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(customApi.preparation).toBeInstanceOf(CustomPreparation)
+    })
+
+    it('should accept custom loadingClass in options', () => {
+      const customLoading = new LoadingInstance('custom-event')
+      const customApi = new ApiInstance('/api/', { loadingClass: customLoading })
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(customApi.loading).toBe(customLoading)
+    })
+
+    it('should accept custom errorCenterClass in options', () => {
+      const customErrorCenter = new ErrorCenterInstance(errorCauseList)
+      const customApi = new ApiInstance('/api/', { errorCenterClass: customErrorCenter })
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(customApi.errorCenter).toBe(customErrorCenter)
+    })
+
+    it('should use Loading.getItem() by default for loading', () => {
+      const defaultApi = new ApiInstance()
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(defaultApi.loading).toBe(Loading.getItem())
+    })
+
+    it('should use ErrorCenter.getItem() by default for errorCenter', () => {
+      const defaultApi = new ApiInstance()
+
+      // @ts-expect-error: Accessing protected member for testing purposes
+      expect(defaultApi.errorCenter).toBe(ErrorCenter.getItem())
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // Loading lifecycle
+  // ─────────────────────────────────────────────
 
   describe('loading lifecycle', () => {
     it('should call loading.show() and loading.hide() on successful request', async () => {
@@ -51,8 +183,8 @@ describe('ApiInstance', () => {
 
       await api.get({ path: 'test' })
 
-      expect(showSpy).toHaveBeenCalled()
-      expect(hideSpy).toHaveBeenCalled()
+      expect(showSpy).toHaveBeenCalledTimes(1)
+      expect(hideSpy).toHaveBeenCalledTimes(1)
       expect(loading.get()).toBe(0)
     })
 
@@ -65,8 +197,8 @@ describe('ApiInstance', () => {
 
       await expect(api.get({ path: 'test' })).rejects.toThrow()
 
-      expect(showSpy).toHaveBeenCalled()
-      expect(hideSpy).toHaveBeenCalled()
+      expect(showSpy).toHaveBeenCalledTimes(1)
+      expect(hideSpy).toHaveBeenCalledTimes(1)
       expect(loading.get()).toBe(0)
     })
 
@@ -89,11 +221,11 @@ describe('ApiInstance', () => {
       const customApi = new ApiInstance('/api/', { loadingClass: customLoading })
       await customApi.get({ path: 'test' })
 
-      expect(showSpy).toHaveBeenCalled()
-      expect(hideSpy).toHaveBeenCalled()
+      expect(showSpy).toHaveBeenCalledTimes(1)
+      expect(hideSpy).toHaveBeenCalledTimes(1)
       expect(customLoading.get()).toBe(0)
 
-      // Default loading should NOT be called
+      // Default loading should NOT be affected
       expect(Loading.is()).toBe(false)
     })
 
@@ -101,7 +233,6 @@ describe('ApiInstance', () => {
       const loading = Loading.getItem()
       let callCount = 0
 
-      // Mock end lifecycle to reset once
       api.setEnd(async () => {
         callCount++
         return callCount === 1 ? { reset: true } : {}
@@ -112,17 +243,33 @@ describe('ApiInstance', () => {
 
       await api.get({ path: 'test' })
 
-      // Each request (including retry) calls show/hide
-      // The manual hide in reset also adds one
+      // First attempt: show + hide(reset), second attempt: show + hide(success)
       expect(showSpy).toHaveBeenCalledTimes(2)
       expect(hideSpy).toHaveBeenCalledTimes(2)
       expect(loading.get()).toBe(0)
     })
+
+    it('should not hide loading on error when hideLoading is true', async () => {
+      const loading = Loading.getItem()
+      const hideSpy = vi.spyOn(loading, 'hide')
+
+      mockFetch.mockRejectedValueOnce(new Error('fail'))
+
+      await expect(
+        api.get({ path: 'test', hideLoading: true })
+      ).rejects.toThrow()
+
+      expect(hideSpy).not.toHaveBeenCalled()
+    })
   })
+
+  // ─────────────────────────────────────────────
+  // Configuration methods
+  // ─────────────────────────────────────────────
 
   describe('configuration methods', () => {
     describe('setUrl', () => {
-      it('should set base URL and return instance', () => {
+      it('should set base URL and return instance for chaining', () => {
         const result = api.setUrl('/custom-api/')
 
         expect(result).toBe(api)
@@ -141,7 +288,7 @@ describe('ApiInstance', () => {
     })
 
     describe('setHeaders', () => {
-      it('should set default headers and return instance', () => {
+      it('should set default headers and return the instance for chaining', () => {
         const result = api.setHeaders({
           'X-Custom-Header': 'test-value'
         })
@@ -164,7 +311,7 @@ describe('ApiInstance', () => {
     })
 
     describe('setRequestDefault', () => {
-      it('should set default request data and return instance', () => {
+      it('should set default request data and return an instance for chaining', () => {
         const result = api.setRequestDefault({
           userId: '123',
           token: 'abc'
@@ -178,13 +325,7 @@ describe('ApiInstance', () => {
           apiKey: 'default-key'
         })
 
-        mockFetch.mockResolvedValueOnce({
-          ok: true,
-          status: 200,
-          statusText: 'OK',
-          headers: new Headers({ 'Content-Type': 'application/json' }),
-          json: async () => ({ data: 'test' })
-        })
+        mockFetch.mockResolvedValueOnce(createMockResponse())
 
         await api.post({
           path: 'test',
@@ -254,6 +395,10 @@ describe('ApiInstance', () => {
       })
     })
   })
+
+  // ─────────────────────────────────────────────
+  // Utility methods
+  // ─────────────────────────────────────────────
 
   describe('utility methods', () => {
     describe('isLocalhost', () => {
@@ -344,6 +489,24 @@ describe('ApiInstance', () => {
 
         expect(body).toBeUndefined()
       })
+
+      it('should return undefined when called with no arguments', () => {
+        const body = api.getBody()
+
+        expect(body).toBeUndefined()
+      })
+
+      it('should return JSON string for PUT method', () => {
+        const body = api.getBody({ key: 'value' }, ApiMethodItem.put)
+
+        expect(body).toBe('{"key":"value"}')
+      })
+
+      it('should return JSON string for DELETE method with data', () => {
+        const body = api.getBody({ id: 1 }, ApiMethodItem.delete)
+
+        expect(body).toBe('{"id":1}')
+      })
     })
 
     describe('getBodyForGet', () => {
@@ -372,8 +535,18 @@ describe('ApiInstance', () => {
 
         expect(body).toBe('')
       })
+
+      it('should handle string request for GET method', () => {
+        const body = api.getBodyForGet('key=value', '/path', ApiMethodItem.get)
+
+        expect(body).toContain('key=value')
+      })
     })
   })
+
+  // ─────────────────────────────────────────────
+  // HTTP method shortcuts
+  // ─────────────────────────────────────────────
 
   describe('HTTP method shortcuts', () => {
     describe('get', () => {
@@ -452,6 +625,10 @@ describe('ApiInstance', () => {
     })
   })
 
+  // ─────────────────────────────────────────────
+  // request
+  // ─────────────────────────────────────────────
+
   describe('request', () => {
     it('should accept string as a path', async () => {
       await api.request('test/path')
@@ -475,14 +652,10 @@ describe('ApiInstance', () => {
       )
     })
 
-    it('should return parsed JSON data by default', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        json: async () => ({ data: { id: 1, name: 'test' }, success: true })
-      })
+    it('should return parsed JSON data by default (toData = true)', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: { id: 1, name: 'test' }, success: true }
+      }))
 
       const result = await api.request<{ id: number, name: string }>({
         path: 'test'
@@ -492,13 +665,9 @@ describe('ApiInstance', () => {
     })
 
     it('should return a full response when toData is false', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        json: async () => ({ data: 'test', success: true, meta: { count: 10 } })
-      })
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: 'test', success: true, meta: { count: 10 } }
+      }))
 
       const result = await api.request({
         path: 'test',
@@ -558,18 +727,42 @@ describe('ApiInstance', () => {
         })
       )
     })
+
+    it('should skip api prefix when api is false', async () => {
+      await api.request({
+        path: '/absolute/path',
+        api: false
+      })
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/absolute/path'),
+        expect.any(Object)
+      )
+
+      const url = mockFetch.mock.calls[0][0]
+      expect(url).not.toContain('/api/')
+    })
   })
 
+  // ─────────────────────────────────────────────
+  // Error handling
+  // ─────────────────────────────────────────────
+
   describe('error handling', () => {
-    it('should handle fetch errors', async () => {
+    it('should report network error to ErrorCenter', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
       await expect(api.request({ path: 'test' })).rejects.toThrow('Network error')
 
-      expect(consoleErrorSpy).toHaveBeenCalled()
+      expect(errorCenterSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          group: 'api',
+          code: 'unknown'
+        })
+      )
     })
 
-    it('should not log error when hideError is true', async () => {
+    it('should not report an error when hideError is true', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
       await expect(
@@ -579,7 +772,7 @@ describe('ApiInstance', () => {
         })
       ).rejects.toThrow('Network error')
 
-      expect(consoleErrorSpy).not.toHaveBeenCalled()
+      expect(errorCenterSpy).not.toHaveBeenCalled()
     })
 
     it('should set error status on failure', async () => {
@@ -590,17 +783,125 @@ describe('ApiInstance', () => {
       const status = api.getStatus()
       expect(status.getError()).toContain('Request failed')
     })
+
+    it('should report 404 to ErrorCenter with notFound code', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        status: 404,
+        statusText: 'Not Found',
+        json: { error: 'Not found' }
+      }))
+
+      await api.request({ path: 'test' })
+
+      expect(errorCenterSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          group: 'api',
+          code: 'notFound'
+        })
+      )
+    })
+
+    it('should report 500 to ErrorCenter with server code', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        status: 500,
+        statusText: 'Internal Server Error',
+        json: { error: 'Server error' }
+      }))
+
+      await api.request({ path: 'test' })
+
+      expect(errorCenterSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          group: 'api',
+          code: 'server'
+        })
+      )
+    })
+
+    it('should report other 4xx/5xx statuses to ErrorCenter with api-server group', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        status: 403,
+        statusText: 'Forbidden',
+        json: { error: 'Forbidden' }
+      }))
+
+      await api.request({ path: 'test' })
+
+      expect(errorCenterSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          group: 'api-server',
+          code: '403'
+        })
+      )
+    })
+
+    it('should not report a query error when hideError is true', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        status: 500,
+        statusText: 'Server Error',
+        json: {}
+      }))
+
+      await api.request({ path: 'test', hideError: true })
+
+      expect(errorCenterSpy).not.toHaveBeenCalled()
+    })
+
+    it('should handle TimeoutError via ErrorCenter with timeout code', async () => {
+      const timeoutError = new DOMException('Timeout', 'TimeoutError')
+      mockFetch.mockRejectedValueOnce(timeoutError)
+
+      await expect(api.request({ path: 'test' })).rejects.toThrow()
+
+      expect(errorCenterSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          group: 'api',
+          code: 'timeout'
+        })
+      )
+    })
+
+    it('should use custom errorCenterInstance from options for reporting errors', async () => {
+      const customErrorCenter = new ErrorCenterInstance(errorCauseList)
+      const customSpy = vi.spyOn(customErrorCenter, 'on')
+      const customApi = new ApiInstance('/api/', { errorCenterClass: customErrorCenter })
+
+      mockFetch.mockRejectedValueOnce(new Error('isolated error'))
+
+      await expect(customApi.request({ path: 'test' })).rejects.toThrow()
+
+      expect(customSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          group: 'api',
+          code: 'unknown'
+        })
+      )
+      // The default error center should NOT have been called
+      expect(errorCenterSpy).not.toHaveBeenCalled()
+    })
+
+    it('should not report AbortError to ErrorCenter', async () => {
+      const abortError = new DOMException('Aborted', 'AbortError')
+      mockFetch.mockRejectedValueOnce(abortError)
+
+      await expect(api.request({ path: 'test' })).rejects.toThrow()
+
+      // AbortError is silently ignored in makeError
+      expect(errorCenterSpy).not.toHaveBeenCalled()
+    })
   })
+
+  // ─────────────────────────────────────────────
+  // Status tracking
+  // ─────────────────────────────────────────────
 
   describe('status tracking', () => {
     it('should update the status on a successful request', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
+      mockFetch.mockResolvedValueOnce(createMockResponse({
         status: 200,
         statusText: 'OK',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        json: async () => ({ data: 'test' })
-      })
+        json: { data: 'test' }
+      }))
 
       await api.request({ path: 'test' })
 
@@ -610,13 +911,11 @@ describe('ApiInstance', () => {
     })
 
     it('should update the status on 404 response', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
+      mockFetch.mockResolvedValueOnce(createMockResponse({
         status: 404,
         statusText: 'Not Found',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        json: async () => ({ error: 'Not found' })
-      })
+        json: { error: 'Not found' }
+      }))
 
       await api.request({ path: 'test' })
 
@@ -627,32 +926,37 @@ describe('ApiInstance', () => {
 
     it('should store last response', async () => {
       const responseData = { data: { id: 1, name: 'test' }, success: true }
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        json: async () => responseData
-      })
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: responseData
+      }))
 
       await api.request({ path: 'test' })
 
       const status = api.getStatus()
       expect(status.getResponse()).toMatchObject(responseData)
     })
+
+    it('should update the error status on exception', async () => {
+      mockFetch.mockRejectedValueOnce(new Error('Connection refused'))
+
+      await expect(api.request({ path: 'test' })).rejects.toThrow()
+
+      const status = api.getStatus()
+      expect(status.getError()).toContain('Connection refused')
+    })
   })
+
+  // ─────────────────────────────────────────────
+  // Custom response processing
+  // ─────────────────────────────────────────────
 
   describe('custom response processing', () => {
     it('should use queryReturn callback when provided', async () => {
       const customCallback = vi.fn().mockResolvedValue({ customData: 'processed' })
 
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        json: async () => ({ data: 'original' })
-      })
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: 'original' }
+      }))
 
       const result = await api.request({
         path: 'test',
@@ -664,19 +968,31 @@ describe('ApiInstance', () => {
     })
 
     it('should handle text responses', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'Content-Type': 'text/plain' }),
-        text: async () => 'plain text response'
-      })
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        contentType: 'text/plain',
+        text: 'plain text response'
+      }))
 
       const result = await api.request({ path: 'test' })
 
       expect(result).toBe('plain text response')
     })
+
+    it('should use data from end callback when provided', async () => {
+      const endCallback = vi.fn().mockResolvedValue({
+        data: { customData: 'from-end-callback' }
+      })
+      api.setEnd(endCallback)
+
+      const result = await api.request({ path: 'test' })
+
+      expect(result).toEqual(expect.objectContaining({ customData: 'from-end-callback' }))
+    })
   })
+
+  // ─────────────────────────────────────────────
+  // Preparation lifecycle
+  // ─────────────────────────────────────────────
 
   describe('preparation lifecycle', () => {
     it('should not call global preparation when globalPreparation is false', async () => {
@@ -703,17 +1019,233 @@ describe('ApiInstance', () => {
       expect(endCallback).not.toHaveBeenCalled()
     })
 
-    it('should use data from end callback when provided', async () => {
-      const endCallback = vi.fn().mockResolvedValue({
-        data: { customData: 'from-end-callback' }
-      })
+    it('should call preparation with the apiFetch object', async () => {
+      const preparationCallback = vi.fn().mockResolvedValue(undefined)
+      api.setPreparation(preparationCallback)
+
+      const fetchOptions = { path: 'test', method: ApiMethodItem.post as any }
+      await api.request(fetchOptions)
+
+      expect(preparationCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ path: 'test' })
+      )
+    })
+
+    it('should call end with the response and apiFetch objects?', async () => {
+      const endCallback = vi.fn().mockResolvedValue({})
       api.setEnd(endCallback)
+
+      await api.request({ path: 'test' })
+
+      const [query, apiFetch] = endCallback.mock.calls[0]
+      expect(query).toBeDefined()
+      expect(query.status).toBe(200)
+      expect(apiFetch).toBeDefined()
+      expect(apiFetch.path).toBe('test')
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // makeData transformation
+  // ─────────────────────────────────────────────
+
+  describe('makeData transformation (via toData)', () => {
+    it('should extract a data field and merge success/status/message', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: {
+          data: { id: 1 },
+          success: true,
+          status: 'success',
+          message: 'Created successfully'
+        }
+      }))
+
+      const result = await api.request<{ id: number }>({ path: 'test' })
+
+      expect(result).toEqual(expect.objectContaining({
+        id: 1,
+        success: true,
+        status: 'success',
+        message: 'Created successfully'
+      }))
+    })
+
+    it('should return raw data when the data field is not an object', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: 42, success: true }
+      }))
 
       const result = await api.request({ path: 'test' })
 
-      expect(result).toEqual(expect.objectContaining({ customData: 'from-end-callback' }))
+      expect(result).toBe(42)
+    })
+
+    it('should return array data as-is', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: [1, 2, 3], success: true }
+      }))
+
+      const result = await api.request<number[]>({ path: 'test' })
+
+      expect(result).toEqual([1, 2, 3])
+    })
+
+    it('should not overwrite the success field if already present in data', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: {
+          data: { id: 1, success: false },
+          success: true
+        }
+      }))
+
+      const result = await api.request<{ id: number, success: boolean }>({ path: 'test' })
+
+      // data.success takes precedence — the wrapper success should not overwrite
+      expect(result).toEqual(expect.objectContaining({
+        id: 1,
+        success: false
+      }))
+    })
+
+    it('should return a full response when toData is false', async () => {
+      const responseData = { data: { id: 1 }, success: true, extra: 'field' }
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: responseData
+      }))
+
+      const result = await api.request({
+        path: 'test',
+        toData: false
+      })
+
+      expect(result).toEqual(expect.objectContaining({
+        data: { id: 1 },
+        success: true,
+        extra: 'field'
+      }))
+    })
+
+    it('should handle null `data.data` gracefully', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: null, success: true }
+      }))
+
+      const result = await api.request({ path: 'test' })
+
+      // typeof null === 'object', so makeData falls through to copyObjectLite(null)
+      // then success is merged in and makeStatus adds statusObject
+      expect(result).toEqual(expect.objectContaining({
+        success: true,
+        statusObject: expect.objectContaining({ status: 200 })
+      }))
     })
   })
+
+  // ─────────────────────────────────────────────
+  // makeStatus — statusObject injection
+  // ─────────────────────────────────────────────
+
+  describe('makeStatus (statusObject injection)', () => {
+    it('should append statusObject to object responses', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: { id: 1 }, success: true }
+      }))
+
+      const result = await api.request<{ id: number }>({ path: 'test' })
+
+      expect(result).toHaveProperty('statusObject')
+      expect((result as any).statusObject).toEqual(expect.objectContaining({
+        status: 200,
+        statusText: 'OK'
+      }))
+    })
+
+    it('should not append statusObject to non-object responses', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({
+        json: { data: 42, success: true }
+      }))
+
+      const result = await api.request({ path: 'test' })
+
+      // Primitive value — no statusObject
+      expect(result).toBe(42)
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // initController — timeout and abort
+  // ─────────────────────────────────────────────
+
+  describe('initController (timeout and abort)', () => {
+    it('should set signal when timeout only is provided and `AbortSignal.timeout` exists', async () => {
+      await api.request({
+        path: 'test',
+        timeout: 5000
+      })
+
+      const fetchInit = mockFetch.mock.calls[0][1]
+      expect(fetchInit.signal).toBeDefined()
+    })
+
+    it('should set signal when controller only is provided', async () => {
+      const controller = new AbortController()
+
+      await api.request({
+        path: 'test',
+        controller
+      })
+
+      const fetchInit = mockFetch.mock.calls[0][1]
+      expect(fetchInit.signal).toBe(controller.signal)
+    })
+
+    it('should use controller signal when both timeout and controller are provided', async () => {
+      const controller = new AbortController()
+
+      await api.request({
+        path: 'test',
+        timeout: 5000,
+        controller
+      })
+
+      const fetchInit = mockFetch.mock.calls[0][1]
+      expect(fetchInit.signal).toBe(controller.signal)
+    })
+
+    it('should not set signal when neither timeout nor controller are provided', async () => {
+      await api.request({
+        path: 'test'
+      })
+
+      const fetchInit = mockFetch.mock.calls[0][1]
+      expect(fetchInit.signal).toBeUndefined()
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // Emulator (via ApiResponse)
+  // ─────────────────────────────────────────────
+
+  describe('emulator integration', () => {
+    it('should return an emulated response if available', async () => {
+      const response = api.getResponse()
+      response.add({
+        path: 'emulated',
+        method: ApiMethodItem.get as any,
+        response: { data: 'emulated-data', success: true }
+      })
+
+      const result = await api.get({ path: 'emulated' })
+
+      // Emulator should handle the request without calling fetch
+      expect(result).toEqual(expect.objectContaining({ data: 'emulated-data' }))
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // getStatus and getResponse accessors
+  // ─────────────────────────────────────────────
 
   describe('getStatus and getResponse', () => {
     it('should return a status instance', () => {
@@ -721,6 +1253,9 @@ describe('ApiInstance', () => {
 
       expect(status).toBeDefined()
       expect(typeof status.getStatus).toBe('function')
+      expect(typeof status.getStatusText).toBe('function')
+      expect(typeof status.getError).toBe('function')
+      expect(typeof status.getResponse).toBe('function')
     })
 
     it('should return a response instance', () => {
@@ -728,6 +1263,43 @@ describe('ApiInstance', () => {
 
       expect(response).toBeDefined()
       expect(typeof response.emulator).toBe('function')
+      expect(typeof response.add).toBe('function')
+      expect(typeof response.getList).toBe('function')
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // Headers with null
+  // ─────────────────────────────────────────────
+
+  describe('header null handling', () => {
+    it('should not include headers when the header option is null', async () => {
+      await api.request({
+        path: 'test',
+        headers: null
+      })
+
+      const fetchInit = mockFetch.mock.calls[0][1]
+      expect(fetchInit.headers).toBeUndefined()
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // FormData request integration
+  // ─────────────────────────────────────────────
+
+  describe('FormData request', () => {
+    it('should send FormData as a body for POST request', async () => {
+      const formData = new FormData()
+      formData.append('file', 'content')
+
+      await api.post({
+        path: 'upload',
+        request: formData
+      })
+
+      const fetchInit = mockFetch.mock.calls[0][1]
+      expect(fetchInit.body).toBe(formData)
     })
   })
 })

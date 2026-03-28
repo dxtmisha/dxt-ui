@@ -79,8 +79,8 @@ export function useApiRequest<
             }
           }
         }
-      } catch (error) {
-        console.error('useApiRequest: error', getRef(path), error)
+      } catch (_) {
+        data = undefined
       }
 
       loading.value = false

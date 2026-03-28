@@ -2,6 +2,8 @@ import { executeFunction } from '../functions/executeFunction'
 import { isDomData } from '../functions/isDomData'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isNull } from '../functions/isNull'
+import { ErrorCenter } from './ErrorCenter'
+import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
 type DataStorageValue<T> = {
   value: T
@@ -34,10 +36,12 @@ export class DataStorage<T> {
    * Constructor
    * @param name value name/ название значения
    * @param isSession should we use a session/ использовать ли сессию
+   * @param errorCenter error center instance/ экземпляр центра ошибок
    */
   constructor(
     private name: string,
-    private isSession = false
+    private isSession = false,
+    private errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
     const nameCache = `${isSession ? 'session' : 'storage'}#${name}`
 
@@ -178,7 +182,11 @@ export class DataStorage<T> {
       try {
         return JSON.parse(value)
       } catch (e) {
-        console.error('DataStorage', e)
+        this.errorCenter.on({
+          group: 'storage',
+          code: 'error',
+          details: e
+        })
       }
     }
 
