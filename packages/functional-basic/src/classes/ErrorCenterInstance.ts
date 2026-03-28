@@ -1,6 +1,6 @@
-import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from "../types/errorCenter"
 import { ErrorCenterHandler } from "./ErrorCenterHandler"
 
+import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from "../types/errorCenter"
 
 /**
  * Class for managing error storage and handling within an instance.
@@ -107,15 +107,10 @@ export class ErrorCenterInstance {
      * Triggers error handling for a group.
      *
      * Вызывает обработку ошибки для группы.
-     * @param group error group / группа ошибки
      * @param cause error cause details / детали причины ошибки
      */
-    on(
-        group: ErrorCenterGroup,
-        cause: ErrorCenterCauseItem
-    ): this {
-        this.handler.on(group, this.assign(cause))
-
+    on(cause: ErrorCenterCauseItem): this {
+        this.handler.on(this.assign(cause))
         return this
     }
 

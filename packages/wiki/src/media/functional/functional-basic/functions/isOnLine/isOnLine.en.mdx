@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isOnLine - Check if device is online'/>
+
+# `isOnLine`
+
+A simple utility to determine the device's current connectivity status.
+
+This function checks the `navigator.onLine` property. If the environment is not a browser (e.g., during Server-Side Rendering), it returns `true` by default to ensure that any network-dependent logic is not prematurely blocked.
+
+**Returns:**
+`boolean` — Returns `true` if the device is online or if the environment is not a browser. Returns `false` if the device is explicitly offline.
+
+```typescript
+import { isOnLine } from '@dxtmisha/functional-basic'
+
+if (isOnLine()) {
+  console.log('Device is online!')
+} else {
+  console.log('Device is offline.')
+}
+```

@@ -1,6 +1,5 @@
 import type { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerItem, ErrorCenterHandlerList } from "../types/errorCenter"
 
-
 /**
  * Class for managing and triggering error handlers.
  *
@@ -88,14 +87,10 @@ export class ErrorCenterHandler {
      * Triggers handlers for a group and logs to console.
      *
      * Вызывает обработчики для группы и выводит ошибку в консоль.
-     * @param group group identifier / идентификатор группы
      * @param cause error cause details / детали причины ошибки
      */
-    on(
-        group: ErrorCenterGroup,
-        cause: ErrorCenterCauseItem
-    ): this {
-        const item = this.get(group)
+    on(cause: ErrorCenterCauseItem): this {
+        const item = this.get(cause.group) ?? this.get(undefined)
 
         if (item) {
             item.handlers.forEach(handler => handler(cause))

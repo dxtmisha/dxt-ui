@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isOnLine - Kiểm tra kết nối mạng'/>
+
+# `isOnLine`
+
+Một công cụ tiện ích đơn giản để xác định trạng thái kết nối mạng hiện tại của thiết bị.
+
+Hàm này kiểm tra thuộc tính `navigator.onLine`. Nếu môi trường không phải là trình duyệt (ví dụ: trong quá trình Server-Side Rendering - SSR), nó sẽ trả về `true` theo mặc định để đảm bảo rằng các logic phụ thuộc vào mạng không bị chặn sớm.
+
+**Trả về:**
+`boolean` — Trả về `true` nếu thiết bị đang trực tuyến hoặc nếu môi trường không phải là trình duyệt. Trả về `false` nếu thiết bị đang ngoại tuyến.
+
+```typescript
+import { isOnLine } from '@dxtmisha/functional-basic'
+
+if (isOnLine()) {
+  console.log('Thiết bị đang trực tuyến!')
+} else {
+  console.log('Thiết bị đang ngoại tuyến.')
+}
+```

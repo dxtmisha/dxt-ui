@@ -3,11 +3,13 @@ import { getRequestString } from '../functions/getRequestString'
 import { isArray } from '../functions/isArray'
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
+import { isOnLine } from '../functions/isOnLine'
 import { isString } from '../functions/isString'
 
 import { Geo } from './Geo'
 import { Loading } from './Loading'
 import { type LoadingInstance } from './LoadingInstance'
+import { ErrorCenter } from './ErrorCenter'
 
 import { ApiHeaders } from './ApiHeaders'
 import { ApiDefault } from './ApiDefault'
@@ -326,11 +328,23 @@ export class ApiInstance {
     try {
       await this.preparation.make(globalPreparation, apiFetch)
 
-      const query = await this.makeQuery(apiFetch)
+      const { query, timeoutId } = await this.makeQuery(apiFetch)
+
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+
       const end = await this.preparation.makeEnd(globalEnd, query, apiFetch)
 
       status.setStatus(query.status, query.statusText)
       this.status.setStatus(query.status, query.statusText)
+
+      if (
+        !hideError
+        && query.status >= 400
+      ) {
+        this.makeErrorQuery(query)
+      }
 
       if (end?.reset) {
         this.loading.hide()
@@ -344,7 +358,7 @@ export class ApiInstance {
       )
     } catch (e) {
       if (!hideError) {
-        console.error('Api: ', e)
+        this.makeError(e as { name: string })
       }
 
       status.setError(String(e))
@@ -404,7 +418,7 @@ export class ApiInstance {
    * Выполнение запроса.
    * @param apiFetch property of the request/ свойство запроса
    */
-  protected async makeQuery(apiFetch: ApiFetch): Promise<Response> {
+  protected async makeQuery(apiFetch: ApiFetch): Promise<{ query: Response, timeoutId: any }> {
     const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
     const {
       api = true,
@@ -413,8 +427,7 @@ export class ApiInstance {
       method = ApiMethodItem.get,
       headers = {},
       type = 'application/json;charset=UTF-8',
-      init = {},
-      controller = undefined
+      init = {}
     } = apiFetch
 
     const pathFinal = pathFull ?? this.getUrl(path, api)
@@ -429,11 +442,12 @@ export class ApiInstance {
       fetchInit.headers = fetchHeaders
     }
 
-    if (controller) {
-      fetchInit.signal = controller.signal
-    }
+    const timeoutId = this.initController(apiFetch, fetchInit)
 
-    return await fetch(url, fetchInit)
+    return {
+      query: await fetch(url, fetchInit),
+      timeoutId
+    }
   }
 
   /**
@@ -512,5 +526,100 @@ export class ApiInstance {
     }
 
     return data
+  }
+
+  /**
+   * Processing an error.
+   *
+   * Обработка ошибки.
+   * @param error error object/ объект ошибки
+   * @param group error group/ группа ошибки
+   */
+  protected makeError(
+    error: Record<string, any> & { name: string },
+    group: string = 'api'
+  ): void {
+    switch (error.name) {
+      case 'TimeoutError':
+        ErrorCenter.on({ group, code: 'timeout', details: error })
+        break
+      case 'AbortError':
+        break
+      default:
+        if (isOnLine()) {
+          ErrorCenter.on({ group, code: 'unknown', details: error })
+        } else {
+          ErrorCenter.on({ group, code: 'offline', details: error })
+        }
+    }
+  }
+
+  /**
+   * Processing an error query.
+   *
+   * Обработка ошибки запроса.
+   * @param query error query/ ошибка запроса
+   */
+  protected makeErrorQuery(query: Response): void {
+    switch (query.status) {
+      case 404:
+        ErrorCenter.on({ group: 'api', code: 'notFound', details: query })
+        break
+      case 500:
+        ErrorCenter.on({ group: 'api', code: 'server', details: query })
+        break
+      default:
+        ErrorCenter.on({
+          group: 'api-server',
+          code: String(query.status),
+          details: query
+        })
+    }
+  }
+
+  /**
+   * Initialize controller for request.
+   *
+   * Инициализация контроллера для запроса.
+   * @param apiFetch request options/ опции запроса
+   * @param fetchInit request initialization/ инициализация запроса
+   */
+  protected initController(
+    apiFetch: ApiFetch,
+    fetchInit: RequestInit
+  ): any {
+    const {
+      timeout,
+      controller
+    } = apiFetch
+
+    if (
+      timeout
+      && !controller
+      && typeof AbortSignal !== 'undefined'
+    ) {
+      fetchInit.signal = AbortSignal.timeout(timeout)
+      return undefined
+    }
+
+    if (
+      !timeout
+      && controller
+    ) {
+      fetchInit.signal = controller.signal
+      return undefined
+    }
+
+    if (timeout) {
+      const controllerFocus = controller ?? new AbortController()
+
+      fetchInit.signal = controllerFocus.signal
+
+      return setTimeout(() => {
+        controllerFocus.abort(new DOMException('Timeout', 'TimeoutError'))
+      }, timeout)
+    }
+
+    return undefined
   }
 }
