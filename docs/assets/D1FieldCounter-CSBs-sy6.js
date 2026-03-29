@@ -1,7 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{r as t}from"./react-C7Xu3oTM.js";import{t as n}from"./jsx-runtime-BRDTPpDF.js";import{n as r,s as i,u as a}from"./blocks-DymlrBn2.js";import{t as o}from"./mdx-react-shim-CwKyAxtk.js";import{n as s,r as c,t as l}from"./storybook-BOy6IPut.js";import{FieldCounter as u,FieldCounterTemplate as d,i as f,n as p,r as m,t as h}from"./D1FieldCounter.stories-Cmi5Qkia.js";function g(e){let n={h2:`h2`,...t(),...e.components};return(0,v.jsxs)(v.Fragment,{children:[(0,v.jsx)(i,{of:h}),`
-`,(0,v.jsx)(c,{name:m.getName(),description:m.getDescription(),story:u}),`
-`,(0,v.jsx)(s,{componentName:`FieldCounter`,type:`fieldCounter`}),`
-`,(0,v.jsx)(s,{componentName:`FieldCounter`,type:`templates`}),`
-`,(0,v.jsx)(r,{of:d}),`
-`,(0,v.jsx)(n.h2,{id:`expose`,children:`Expose`}),`
-`,(0,v.jsx)(s,{componentName:`Expose`,type:`id`})]})}function _(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,v.jsx)(n,{...e,children:(0,v.jsx)(g,{...e})}):g(e)}var v;e((()=>{v=n(),o(),a(),l(),p(),f()}))();export{_ as default};
