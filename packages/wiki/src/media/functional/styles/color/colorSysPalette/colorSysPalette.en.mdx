@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/colorSysPalette - System color palette'/>
+
+# `colorSysPalette`
+
+The mixin sets a system color variable (e.g., `--sys-color`) by generating a search chain across the specified palette variables.
+
+**Parameters:**
+- `$prop: String` — the property name (e.g., 'color', 'background').
+- `$palette: List | String` — list of palette variable names to search.
+- `$color: Color | String` — fallback color if no palette variables are defined.
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.sys-themed {
+  @include styles.colorSysPalette('color', ('theme-primary', 'sys-primary'), #0000ff);
+}
+```

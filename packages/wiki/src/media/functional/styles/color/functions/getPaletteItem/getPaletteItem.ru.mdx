@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/getPaletteItem - Цепочка палитры'/>
+
+# `getPaletteItem`
+
+Функция генерирует вложенную цепочку переменных CSS (используя параметр fallback функции `var()`) для поиска цвета в нескольких узлах палитры.
+
+**Параметры:**
+- `$palette: List | String` — список имен переменных палитры или одно имя.
+- `$color: Color | String` — резервный цвет, если переменные палитры не определены.
+
+**Возвращает:**
+- `String` — вложенная строка вида `var(--name1, var(--name2, ...))`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$chain: styles.getPaletteItem(('theme-color', 'sys-color'), #ff0000); 
+// var(--theme-color, var(--sys-color, 255, 0, 0))
+```

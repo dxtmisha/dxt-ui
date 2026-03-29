@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/colorSys - Set system color'/>
+
+# `colorSys`
+
+The mixin sets a system color variable (e.g., `--sys-color`, `--sys-background`) by converting the value using `toCustomVarRgb`.
+
+**Parameters:**
+- `$prop: String` — the property name (e.g., 'color', 'background').
+- `$color: Color | String` — the color value to set.
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.sys-update {
+  @include styles.colorSys('color', #ff0000);
+}
+```

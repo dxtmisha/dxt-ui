@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/toColorOpacity - Trích xuất độ mờ'/>
+
+# `toColorOpacity`
+
+Hàm trích xuất kênh alpha (độ mờ) từ một đối tượng Màu Sass hoặc một chuỗi biến CSS tùy chỉnh.
+
+**Tham số:**
+- `$color: Color | String` — giá trị màu cần trích xuất độ mờ.
+
+**Trả về:**
+- `Number | String` — giá trị alpha [0..1] hoặc chuỗi biến CSS đã được sửa đổi.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$opacity: styles.toColorOpacity(rgba(255, 0, 0, 0.5)); // 0.5
+$var-opacity: styles.toColorOpacity(var(--sys-color)); // var(--sys-color-opacity)
+```

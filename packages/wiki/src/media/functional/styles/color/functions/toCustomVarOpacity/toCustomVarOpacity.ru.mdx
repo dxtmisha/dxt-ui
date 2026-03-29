@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/toCustomVarOpacity - Формат прозрачности'/>
+
+# `toCustomVarOpacity`
+
+Функция модифицирует строку ссылки на переменную CSS (например, `var(--name)`) таким образом, чтобы она указывала на соответствующую ей переменную прозрачности (`var(--name-opacity)`).
+
+**Параметры:**
+- `$color: String` — строка переменной CSS для модификации.
+- `$defaultValue: Number | null` [null] — необязательное резервное значение прозрачности.
+
+**Возвращает:**
+- `String` — модифицированная строка переменной.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$opacity: styles.toCustomVarOpacity(var(--sys-color)); 
+// var(--sys-color-opacity)
+
+$with-fallback: styles.toCustomVarOpacity(var(--sys-color), 0.5); 
+// var(--sys-color-opacity, 0.5)
+```

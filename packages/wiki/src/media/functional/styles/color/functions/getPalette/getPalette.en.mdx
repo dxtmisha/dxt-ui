@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/getPalette - Get palette variable'/>
+
+# `getPalette`
+
+The function determines the correct palette variable for a given color input, handling both palette names and direct color values.
+
+**Parameters:**
+- `$color: Color | String` — input color or CSS variable reference.
+
+**Returns:**
+- `String` — the resulting CSS variable reference or raw color value.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$p: styles.getPalette('--sys-primary'); 
+// var(--sys-palette-primary, 255, 255, 255) (conceptual)
+
+$direct: styles.getPalette(#ff0000);
+// var(--sys-palette, 255, 0, 0)
+```

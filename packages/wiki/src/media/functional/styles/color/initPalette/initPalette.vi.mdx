@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/initPalette - Khởi tạo bảng màu'/>
+
+# `initPalette`
+
+Mixin khởi tạo biến `--sys-palette-color`, đóng vai trò là tham chiếu cốt lõi cho các kiểu dựa trên bảng màu.
+
+**Tham số:**
+- `$color: Color | String` — giá trị màu cần khởi tạo.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.local-theme {
+  @include styles.initPalette(#ff0000);
+}
+```

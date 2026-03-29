@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/getPaletteItemOpacity - Opacity search chain'/>
+
+# `getPaletteItemOpacity`
+
+The function generates a nested CSS variable chain (using the `var()` fallback parameter) to search for an opacity value across multiple palette nodes.
+
+**Parameters:**
+- `$palette: List | String` — list of palette variable names or a single name.
+- `$color: Color | String` — the fallback color if no palette variables are defined.
+
+**Returns:**
+- `String` — a nested `var(--name1-opacity, var(--name2-opacity, ...))` string.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$chain: styles.getPaletteItemOpacity(('theme-color', 'sys-color'), #ff0000); 
+// var(--theme-color-opacity, var(--sys-color-opacity, 1))
+```

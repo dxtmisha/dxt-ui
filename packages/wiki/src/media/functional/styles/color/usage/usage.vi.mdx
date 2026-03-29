@@ -1,0 +1,101 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/# Sử dụng Thuộc tính'/>
+
+# Sử dụng Thuộc tính Cơ bản
+
+Các mixin thuộc tính cơ bản là công cụ chính của bạn để áp dụng màu sắc cho các thành phần (components) UI. Thay vì viết thuộc tính CSS thông thường như `color: black;`, bạn sẽ gọi:
+
+```scss
+@use '@dxtmisha/styles';
+
+.my-text {
+  @include styles.color(#000000);
+}
+```
+
+Cách tiếp cận này đảm bảo rằng màu sắc được phân tích chính xác thành các kênh RGB và các biến độ mờ hệ thống cần thiết được tạo cũng như áp dụng định dạng cho thành phần.
+
+## Các Base Mixin hiện có
+
+Các mixin chính hoạt động theo cùng một cơ chế. Tất cả các mixin này đều chấp nhận các tham số chung (màu sắc và độ mờ) được mô tả chi tiết dưới đây:
+
+- `color()` — dành cho màu văn bản (`color`). Biến hệ thống: `--sys-color`.
+- `backgroundColor()` — dành cho màu nền (`background-color`). Biến hệ thống: `--sys-background`.
+- `borderColor()` — dành cho màu viền ngoài (`border-color`). Biến hệ thống: `--sys-border`.
+- `outlineColor()` — dành cho màu viền bao (`outline-color`). Biến hệ thống: `--sys-outline`.
+- `fill()` — dành cho màu tô của các phần tử vector (`fill`). Biến hệ thống: `--sys-fill`.
+- `stroke()` — dành cho nét vẽ của các phần tử vector (`stroke`). Biến hệ thống: `--sys-stroke`.
+- `gradient()` — dành cho màu rắn áp dụng cho các thuộc tính yêu cầu hình ảnh (`background-image`). Biến hệ thống: `--sys-gradient`.
+
+### Tham số `$color`
+
+Tất cả các mixin này đều chấp nhận một biến màu làm tham số đầu tiên, có thể thuộc một trong ba loại sau:
+
+#### 1. Màu cụ thể (HEX, RGB hoặc Biến CSS)
+
+Thường xuyên nhất, bạn sẽ truyền vào màu từ hệ thống thiết kế của chúng ta bằng hàm `styles.getColor('color-name')`, các giá trị HEX cơ bản hoặc biến CSS tuỳ chỉnh `var(--my-color)`:
+
+```scss
+.card {
+  @include styles.backgroundColor(styles.getColor('surface'));
+  @include styles.color(#333333);
+}
+```
+
+#### 2. Giá trị Đặc biệt `'as-color'`
+
+Điều gì xảy ra nếu bạn cần viền, đường bao hoặc màu nền khớp chính xác với màu văn bản hệ thống hiện tại (`--sys-color`)? Bạn có thể truyền vào chuỗi `'as-color'`:
+
+```scss
+.button-outline {
+  // Văn bản trở thành màu xanh lam
+  @include styles.color(styles.getColor('primary'));
+  
+  // Viền sẽ tự động đổi màu xanh lam từ --sys-color
+  @include styles.borderColor('as-color');
+}
+```
+Đây là một công cụ mạnh mẽ để tạo các thành phần thay đổi toàn bộ tông màu của chúng (văn bản + viền + biểu tượng) chỉ bằng cách sửa đổi biến `--sys-color`.
+
+#### 3. Giá trị Đặc biệt `'init'`
+
+Truyền `'init'` được sử dụng khi bạn cần **ép cập nhật** thuộc tính mà không thay đổi màu cơ bản. Ví dụ, nếu độ mờ (`--sys-color-opacity`) đã được thay đổi trực tiếp qua CSS và bạn muốn trình duyệt áp dụng lại thuộc tính `color`:
+
+```scss
+.text-reset {
+  @include styles.color('init');
+}
+```
+
+### Quản lý Độ mờ (`$opacity`)
+
+Tham số thứ hai của các mixin là `$opacity`. Nó cho phép bạn kiểm soát độ mờ lúc ban đầu của thành phần.
+
+```scss
+.text-faded {
+  // Văn bản có độ mờ 50%
+  @include styles.color(#000000, 0.5);
+}
+```
+
+Nếu bạn truyền `null` (hoặc không truyền), độ mờ mặc định sẽ được lấy từ biến hệ thống tiêu chuẩn.
+Bạn cũng có thể chèn một biến CSS nếu độ mờ cần thay đổi động:
+
+```scss
+.dynamic-fade {
+  @include styles.backgroundColor(#ff0000, var(--custom-opacity));
+}
+```
+
+## Làm việc với Biến Cục bộ: `colorSys`
+
+Đôi khi, bạn cần lưu trữ một màu vào một biến mà không áp dụng nó trực tiếp vào một thuộc tính (ví dụ, để chuyển màu cho một thành phần con). Bạn có thể dùng `colorSys`:
+
+```scss
+.parent {
+  // Đặt giá trị --sys-color và --sys-color-opacity: 0.8
+  @include styles.colorSys('color', #ff0000, 0.8);
+}
+```
+Tham số đầu tiên là "tên thuộc tính", sẽ trở thành số đuôi trong biến `--sys-[name]`. Màu này sau đó có thể được áp dụng với các thành phần dạng nút con bằng cách sử dụng `color('init')` hoặc đưa vào dưới định dạng CSS như `rgba(var(--sys-color), 1)`.

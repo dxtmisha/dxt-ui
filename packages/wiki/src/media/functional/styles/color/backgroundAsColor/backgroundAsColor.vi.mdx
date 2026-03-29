@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/backgroundAsColor - Nền theo màu'/>
+
+# `backgroundAsColor`
+
+Mixin thiết lập `background-color` để khớp với màu văn bản hệ thống hiện tại (`--sys-color`).
+
+**Tham số:**
+- Không.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-follows-text {
+  @include styles.backgroundAsColor;
+}
+```

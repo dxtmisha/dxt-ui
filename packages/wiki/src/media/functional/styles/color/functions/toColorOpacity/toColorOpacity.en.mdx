@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/toColorOpacity - Extract opacity'/>
+
+# `toColorOpacity`
+
+The function extracts the alpha channel (opacity) from a Sass Color object or a custom CSS variable string.
+
+**Parameters:**
+- `$color: Color | String` — the color value to extract opacity from.
+
+**Returns:**
+- `Number | String` — alpha value [0..1] or the modified CSS variable string.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$opacity: styles.toColorOpacity(rgba(255, 0, 0, 0.5)); // 0.5
+$var-opacity: styles.toColorOpacity(var(--sys-color)); // var(--sys-color-opacity)
+```

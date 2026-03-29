@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/getPaletteItem - Chuỗi bảng màu'/>
+
+# `getPaletteItem`
+
+Hàm tạo một chuỗi biến CSS lồng nhau (sử dụng tham số fallback của hàm `var()`) để tìm kiếm màu sắc trên nhiều nút bảng màu khác nhau.
+
+**Tham số:**
+- `$palette: List | String` — danh sách tên biến bảng màu hoặc một tên duy nhất.
+- `$color: Color | String` — màu dự phòng nếu không có biến bảng màu nào được định nghĩa.
+
+**Trả về:**
+- `String` — một chuỗi `var(--name1, var(--name2, ...))` lồng nhau.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$chain: styles.getPaletteItem(('theme-color', 'sys-color'), #ff0000); 
+// var(--theme-color, var(--sys-color, 255, 0, 0))
+```

@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/backgroundColor - Set background color'/>
+
+# `backgroundColor`
+
+The mixin sets the `background-color` property using the design system's variables, allowing for dynamic updates and opacity control.
+
+**Parameters:**
+- `$color: Color | String` — color value, `'as-color'`, or `'init'`.
+- `$opacity: Number | null` [null] — optional opacity level [0..1].
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-primary {
+  @include styles.backgroundColor(styles.getColor('primary'), 0.5);
+}
+
+.bg-reset {
+  @include styles.backgroundColor('init');
+}
+```

@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/getColorByPalette - Màu từ bảng màu'/>
+
+# `getColorByPalette`
+
+Hàm tìm kiếm một tên màu hoặc hậu tố cụ thể trong danh sách bảng màu thiết kế được chỉ định từ tệp `variables.scss`.
+
+**Tham số:**
+- `$color: String` — giá trị màu hoặc chuỗi biến CSS cần tìm kiếm.
+
+**Trả về:**
+- `String | null` — tên bảng màu hoặc null nếu không tìm thấy kết quả khớp.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$name: styles.getColorByPalette('var(--primary)'); // 'primary'
+$none: styles.getColorByPalette('#ff0000'); // null
+```

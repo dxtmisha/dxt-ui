@@ -1,0 +1,101 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/# Basic Properties Usage'/>
+
+# Usage of Base Properties
+
+Base property mixins are your primary tool for applying colors to UI components. Instead of writing a typical CSS property like `color: black;`, you invoke:
+
+```scss
+@use '@dxtmisha/styles';
+
+.my-text {
+  @include styles.color(#000000);
+}
+```
+
+This approach ensures that the color is correctly decomposed into RGB channels, and the necessary system opacity variables are created and applied for the component.
+
+## Available Base Mixins
+
+Key mixins operating on the identical principle. All of these mixins accept the common parameters (color value and opacity) detailed below:
+
+- `color()` — for text color (`color`). System variable: `--sys-color`.
+- `backgroundColor()` — for background color (`background-color`). System variable: `--sys-background`.
+- `borderColor()` — for border outlines (`border-color`). System variable: `--sys-border`.
+- `outlineColor()` — for outer outline color (`outline-color`). System variable: `--sys-outline`.
+- `fill()` — for vector element fills (`fill`). System variable: `--sys-fill`.
+- `stroke()` — for vector element strokes (`stroke`). System variable: `--sys-stroke`.
+- `gradient()` — for a solid color applied to properties expecting an image (`background-image`). System variable: `--sys-gradient`.
+
+### The `$color` Parameter
+
+All of these mixins accept a color as the first parameter, which can be one of three types:
+
+#### 1. Explicit Color (HEX, RGB, or CSS Variable)
+
+Most often, you will pass a color from our design system using the `styles.getColor('color-name')` function, basic HEX values, or a custom CSS variable `var(--my-color)`:
+
+```scss
+.card {
+  @include styles.backgroundColor(styles.getColor('surface'));
+  @include styles.color(#333333);
+}
+```
+
+#### 2. Special Value `'as-color'`
+
+What if you need the border, outline, or background color to exactly match the current system text color (`--sys-color`)? You can pass the string `'as-color'`:
+
+```scss
+.button-outline {
+  // Text becomes blue
+  @include styles.color(styles.getColor('primary'));
+  
+  // The border automatically picks up the blue color from --sys-color
+  @include styles.borderColor('as-color');
+}
+```
+This is a powerful tool for creating components that change their entire color scheme (text + border + icons) simply by modifying the `--sys-color` variable.
+
+#### 3. Special Value `'init'`
+
+Passing `'init'` is used when you need to **force update** the property without changing the base color. For example, if the opacity (`--sys-color-opacity`) was changed directly via CSS, and you want the browser to reapply the `color` property:
+
+```scss
+.text-reset {
+  @include styles.color('init');
+}
+```
+
+### Opacity Management (`$opacity`)
+
+The second parameter of the mixins is `$opacity`. It allows you to control the initial opacity of the element.
+
+```scss
+.text-faded {
+  // Text with 50% opacity
+  @include styles.color(#000000, 0.5);
+}
+```
+
+If you pass `null` (or pass nothing), the opacity defaults to the standard stored in the system variable.
+You can also pass a CSS variable if the opacity needs to change dynamically:
+
+```scss
+.dynamic-fade {
+  @include styles.backgroundColor(#ff0000, var(--custom-opacity));
+}
+```
+
+## Working with Local Variables: `colorSys`
+
+Sometimes you need to store a color in a variable without immediately applying it to a property (e.g., to pass the color down to a child component). For this, use the `colorSys` mixin:
+
+```scss
+.parent {
+  // Sets --sys-color and --sys-color-opacity: 0.8
+  @include styles.colorSys('color', #ff0000, 0.8);
+}
+```
+The first parameter is a "property name", which becomes the suffix in the `--sys-[name]` variable. This color can then be applied in child nodes using `color('init')` or read into CSS as `rgba(var(--sys-color), 1)`.

@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/colorOpacity - Độ mờ văn bản'/>
+
+# `colorOpacity`
+
+Mixin này thiết lập biến `--sys-color-opacity`, cho phép kiểm soát tính trong suốt của văn bản một cách độc lập.
+
+**Tham số:**
+- `$opacity: Number | String` — giá trị trong suốt [0..1] hoặc biến CSS.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+- `$init: Boolean` [false] — nếu `true`, sẽ áp dụng ngay thuộc tính `color`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-faded {
+  @include styles.colorOpacity(0.5);
+}
+
+.text-faded-important {
+  @include styles.colorOpacity(var(--my-opacity), true, true);
+}
+```

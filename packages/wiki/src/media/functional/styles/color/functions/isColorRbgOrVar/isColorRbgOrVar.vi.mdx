@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/isColorRbgOrVar - Xác thực màu'/>
+
+# `isColorRbgOrVar`
+
+Hàm kiểm tra xem một giá trị có phải là một màu hợp lệ hoặc một từ khóa CSS đặc biệt hay không (như `transparent`, `initial`, `inherit`, v.v.).
+
+**Tham số:**
+- `$color: Color | String` — giá trị màu hoặc từ khóa CSS để kiểm tra.
+
+**Trả về:**
+- `Boolean` — `true` nếu giá trị là một màu hoặc từ khóa hợp lệ.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$is-color: styles.isColorRbgOrVar(#ff0000); // true
+$is-keyword: styles.isColorRbgOrVar('transparent'); // true
+$is-invalid: styles.isColorRbgOrVar('none'); // false
+```

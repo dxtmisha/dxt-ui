@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/strokeOpacity - Set stroke opacity'/>
+
+# `strokeOpacity`
+
+The mixin sets the `--sys-stroke-opacity` variable, allowing for independent control of SVG stroke transparency.
+
+**Parameters:**
+- `$opacity: Number | String` — transparency value [0..1] or CSS variable.
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+- `$init: Boolean` [false] — if `true`, immediately applies the `stroke` property.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-outline-faded {
+  @include styles.strokeOpacity(0.5);
+}
+
+.icon-outline-faded-important {
+  @include styles.strokeOpacity(var(--my-opacity), true, true);
+}
+```

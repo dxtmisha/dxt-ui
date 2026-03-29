@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/fillOpacity - Прозрачность заливки'/>
+
+# `fillOpacity`
+
+Миксин устанавливает переменную `--sys-fill-opacity`, обеспечивая независимый контроль прозрачности заливки SVG.
+
+**Параметры:**
+- `$opacity: Number | String` — значение прозрачности [0..1] или переменная CSS.
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+- `$init: Boolean` [false] — если `true`, немедленно применяет свойство `fill`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-faded {
+  @include styles.fillOpacity(0.5);
+}
+
+.icon-faded-important {
+  @include styles.fillOpacity(var(--my-opacity), true, true);
+}
+```

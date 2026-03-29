@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/paletteBorder - Граница из палитры'/>
+
+# `paletteBorder`
+
+Миксин устанавливает `border-color`, генерируя цепочку поиска по указанным переменным палитры.
+
+**Параметры:**
+- `$palette: List | String` — список имен переменных палитры для поиска.
+- `$color: Color | String` — резервный цвет, если переменные палитры не определены.
+- `$opacity: Number | null` [null] — необязательный уровень прозрачности [0..1].
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-themed {
+  @include styles.paletteBorder(('theme-border', 'sys-border'), #cccccc);
+}
+```

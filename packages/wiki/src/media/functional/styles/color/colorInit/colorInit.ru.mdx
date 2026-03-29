@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/colorInit - Применить цвет'/>
+
+# `colorInit`
+
+Миксин применяет текущий вычисленный системный цвет к свойству `color`.
+
+**Параметры:**
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-update {
+  @include styles.colorInit;
+}
+
+.text-force {
+  @include styles.colorInit(true);
+}
+```

@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/stroke - Nét vẽ SVG'/>
+
+# `stroke`
+
+Mixin thiết lập thuộc tính `stroke` (cho các phần tử SVG) bằng cách sử dụng các biến của hệ thống thiết kế, cho phép cập nhật động và kiểm soát độ mờ.
+
+**Tham số:**
+- `$color: Color | String` — giá trị màu, `'as-color'`, hoặc `'init'`.
+- `$opacity: Number | null` [null] — mức độ mờ tùy chọn [0..1].
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-outline {
+  @include styles.stroke(styles.getColor('secondary'), 0.8);
+}
+
+.icon-reset {
+  @include styles.stroke('init');
+}
+```

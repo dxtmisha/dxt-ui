@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/toColorRbg - Trích xuất RGB'/>
+
+# `toColorRbg`
+
+Hàm chuyển đổi một đối tượng Màu của Sass thành một chuỗi chứa các giá trị kênh đỏ (red), xanh lá (green) và xanh dương (blue) được ngăn cách bởi dấu phẩy.
+
+**Tham số:**
+- `$color: Color | String` — giá trị màu cần chuyển đổi.
+
+**Trả về:**
+- `String` — các kênh "R, G, B" hoặc chuỗi gốc nếu nó không phải là màu.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$channels: styles.toColorRbg(#ff0000); // "255, 0, 0"
+$from-var: styles.toColorRbg(var(--my-color)); // "var(--my-color)"
+```

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/colorAsPalette - Văn bản theo bảng màu'/>
+
+# `colorAsPalette`
+
+Mixin áp dụng thuộc tính `color` bằng cách sử dụng trạng thái hiện tại của các biến bảng màu, dự phòng về màu hệ thống nếu bảng màu không được xác định.
+
+**Tham số:**
+- Không.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-follow-palette {
+  @include styles.colorAsPalette;
+}
+```

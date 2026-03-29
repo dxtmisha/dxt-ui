@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/outlineColor - Màu đường viền'/>
+
+# `outlineColor`
+
+Mixin thiết lập thuộc tính `outline-color` bằng cách sử dụng các biến của hệ thống thiết kế, cho phép cập nhật động và kiểm soát độ mờ.
+
+**Tham số:**
+- `$color: Color | String` — giá trị màu, `'as-color'`, hoặc `'init'`.
+- `$opacity: Number | null` [null] — mức độ mờ tùy chọn [0..1].
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.outline-primary {
+  @include styles.outlineColor(styles.getColor('primary'), 0.8);
+}
+
+.outline-reset {
+  @include styles.outlineColor('init');
+}
+```

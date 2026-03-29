@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/colorSys - Màu hệ thống'/>
+
+# `colorSys`
+
+Mixin thiết lập một biến màu hệ thống (ví dụ: `--sys-color`, `--sys-background`) bằng cách chuyển đổi giá trị bằng `toCustomVarRgb`.
+
+**Tham số:**
+- `$prop: String` — tên thuộc tính (ví dụ: 'color', 'background').
+- `$color: Color | String` — giá trị màu cần thiết lập.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.sys-update {
+  @include styles.colorSys('color', #ff0000);
+}
+```

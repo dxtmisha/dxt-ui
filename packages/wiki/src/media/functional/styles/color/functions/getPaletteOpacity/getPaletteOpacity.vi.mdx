@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/getPaletteOpacity - Độ mờ bảng màu'/>
+
+# `getPaletteOpacity`
+
+Hàm xác định đúng biến độ mờ bảng màu cho một đầu vào màu cụ thể, xử lý cả tên bảng màu và giá trị màu trực tiếp.
+
+**Tham số:**
+- `$color: Color | String` — màu đầu vào hoặc tham chiếu biến CSS.
+
+**Trả về:**
+- `String` — kết quả tham chiếu biến CSS cho độ mờ.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$o: styles.getPaletteOpacity('--sys-primary'); 
+// var(--sys-palette-primary-opacity, 1)
+
+$direct: styles.getPaletteOpacity(#ff0000);
+// var(--sys-palette-opacity, 1)
+```

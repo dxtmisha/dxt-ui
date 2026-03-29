@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/toCustomVarRgb - Формат RGB переменной'/>
+
+# `toCustomVarRgb`
+
+Функция преобразует пользовательскую переменную CSS (например, `var(--my-color)`) в вызов функции `rgba()`, который включает соответствующую ей переменную прозрачности.
+
+**Параметры:**
+- `$color: String` — строка переменной CSS для преобразования.
+
+**Возвращает:**
+- `String` — вызов функции `rgba(var(--name), var(--name-opacity))`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$rgba: styles.toCustomVarRgb(var(--sys-color)); 
+// rgba(var(--sys-color), var(--sys-color-opacity))
+```

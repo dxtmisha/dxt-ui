@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/borderByFilter - Viền bằng bộ lọc'/>
+
+# `borderByFilter`
+
+Mixin thiết lập `border-color` dựa trên bộ lọc (filter) nào hiện đang hoạt động trong hệ thống thiết kế.
+
+**Tham số:**
+- `$filter: String` — tên bộ lọc tìm kiếm.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-filtered {
+  @include styles.borderByFilter('search-active');
+}
+```

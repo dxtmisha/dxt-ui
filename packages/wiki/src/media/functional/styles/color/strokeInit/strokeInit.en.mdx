@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/strokeInit - Apply SVG stroke'/>
+
+# `strokeInit`
+
+The mixin applies the current computed system color to the SVG `stroke` property.
+
+**Parameters:**
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-outline-update {
+  @include styles.strokeInit;
+}
+
+.icon-outline-force {
+  @include styles.strokeInit(true);
+}
+```

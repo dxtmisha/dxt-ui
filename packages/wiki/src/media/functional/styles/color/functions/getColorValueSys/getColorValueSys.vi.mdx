@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/getColorValueSys - Màu hệ thống'/>
+
+# `getColorValueSys`
+
+Hàm truy xuất giá trị CSS `rgba()` được định dạng cụ thể cho các thuộc tính màu sắc, nền, nét vẽ (stroke) hoặc tô màu (fill) hiện tại của hệ thống thiết kế.
+
+**Tham số:**
+- `$prop: String` — tên thuộc tính hệ thống (ví dụ: 'color', 'background', 'border').
+- `$defaultValue: Color | String` [null] — giá trị màu dự phòng tùy chọn.
+
+**Trả về:**
+- `String` — một chuỗi CSS `rgba()` được định dạng tham chiếu đến `--sys-[prop]`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$color: styles.getColorValueSys('color'); 
+// rgba(var(--sys-color), var(--sys-color-opacity, var(--sys-color-opacity-custom, 1)))
+
+$border: styles.getColorValueSys('border', #cccccc);
+// rgba(var(--sys-border, 204, 204, 204), var(--sys-border-opacity, var(--sys-border-opacity-custom, 1)))
+```

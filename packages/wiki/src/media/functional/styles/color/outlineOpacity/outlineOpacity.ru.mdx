@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/outlineOpacity - Прозрачность контура'/>
+
+# `outlineOpacity`
+
+Миксин устанавливает переменную `--sys-outline-opacity`, обеспечивая независимый контроль прозрачности контура.
+
+**Параметры:**
+- `$opacity: Number | String` — значение прозрачности [0..1] или переменная CSS.
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+- `$init: Boolean` [false] — если `true`, немедленно применяет свойство `outline-color`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.outline-faded {
+  @include styles.outlineOpacity(0.5);
+}
+
+.outline-faded-important {
+  @include styles.outlineOpacity(var(--my-opacity), true, true);
+}
+```

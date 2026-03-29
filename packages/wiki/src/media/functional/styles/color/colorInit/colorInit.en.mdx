@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/colorInit - Apply text color'/>
+
+# `colorInit`
+
+The mixin applies the current computed system color to the `color` property.
+
+**Parameters:**
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-update {
+  @include styles.colorInit;
+}
+
+.text-force {
+  @include styles.colorInit(true);
+}
+```

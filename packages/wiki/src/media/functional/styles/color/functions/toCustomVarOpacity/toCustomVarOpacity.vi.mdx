@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/toCustomVarOpacity - Định dạng độ mờ'/>
+
+# `toCustomVarOpacity`
+
+Hàm sửa đổi một chuỗi tham chiếu biến CSS (ví dụ: `var(--name)`) để trỏ đến biến độ mờ tương ứng của nó (`var(--name-opacity)`).
+
+**Tham số:**
+- `$color: String` — chuỗi biến CSS cần sửa đổi.
+- `$defaultValue: Number | null` [null] — giá trị độ mờ fallback tùy chọn.
+
+**Trả về:**
+- `String` — chuỗi biến đã được sửa đổi.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$opacity: styles.toCustomVarOpacity(var(--sys-color)); 
+// var(--sys-color-opacity)
+
+$with-fallback: styles.toCustomVarOpacity(var(--sys-color), 0.5); 
+// var(--sys-color-opacity, 0.5)
+```

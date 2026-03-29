@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/outlineColor - Цвет контура'/>
+
+# `outlineColor`
+
+Миксин устанавливает свойство `outline-color`, используя переменные дизайн-системы, что позволяет обеспечить динамическое обновление и контроль прозрачности.
+
+**Параметры:**
+- `$color: Color | String` — значение цвета, `'as-color'` или `'init'`.
+- `$opacity: Number | null` [null] — необязательный уровень прозрачности [0..1].
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.outline-primary {
+  @include styles.outlineColor(styles.getColor('primary'), 0.8);
+}
+
+.outline-reset {
+  @include styles.outlineColor('init');
+}
+```

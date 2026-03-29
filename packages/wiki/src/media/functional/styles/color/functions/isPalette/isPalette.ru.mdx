@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/isPalette - Проверить палитру'/>
+
+# `isPalette`
+
+Функция проверяет, представляет ли строка переменную CSS, связанную с палитрой, ища префикс `--`.
+
+**Параметры:**
+- `$color: String` — имя переменной цвета или строка для проверки.
+
+**Возвращает:**
+- `Boolean` — `true`, если строка содержит префикс в виде двойного тире (`--`).
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$is-palette: styles.isPalette('--sys-color'); // true
+$is-not-palette: styles.isPalette('#ff0000'); // false
+```

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/borderAsColor - Граница по цвету'/>
+
+# `borderAsColor`
+
+Миксин устанавливает `border-color` в соответствии с текущим системным цветом текста (`--sys-color`).
+
+**Параметры:**
+- Нет.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-follows-text {
+  @include styles.borderAsColor;
+}
+```

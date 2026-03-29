@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/toCustomVarRgb - Định dạng RGB'/>
+
+# `toCustomVarRgb`
+
+Hàm chuyển đổi một biến CSS tùy chỉnh (ví dụ: `var(--my-color)`) thành một lệnh gọi hàm `rgba()` bao gồm biến độ mờ tương ứng của nó.
+
+**Tham số:**
+- `$color: String` — chuỗi biến CSS cần chuyển đổi.
+
+**Trả về:**
+- `String` — một lệnh gọi hàm `rgba(var(--name), var(--name-opacity))`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$rgba: styles.toCustomVarRgb(var(--sys-color)); 
+// rgba(var(--sys-color), var(--sys-color-opacity))
+```

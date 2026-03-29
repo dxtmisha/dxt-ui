@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/toCustomVarRgb - Format variable RGB'/>
+
+# `toCustomVarRgb`
+
+The function converts a custom CSS variable (e.g., `var(--my-color)`) into an `rgba()` function call that includes its corresponding opacity variable.
+
+**Parameters:**
+- `$color: String` — the CSS variable string to convert.
+
+**Returns:**
+- `String` — an `rgba(var(--name), var(--name-opacity))` function call.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$rgba: styles.toCustomVarRgb(var(--sys-color)); 
+// rgba(var(--sys-color), var(--sys-color-opacity))
+```

@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/fillInit - Áp dụng tô'/>
+
+# `fillInit`
+
+Mixin áp dụng màu hệ thống hiện tại đã được tính toán cho thuộc tính `fill` của SVG.
+
+**Tham số:**
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-update {
+  @include styles.fillInit;
+}
+
+.icon-force {
+  @include styles.fillInit(true);
+}
+```

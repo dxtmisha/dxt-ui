@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/borderByFilter - Border by filter'/>
+
+# `borderByFilter`
+
+The mixin sets the `border-color` based on which filter is currently active in the design system.
+
+**Parameters:**
+- `$filter: String` — the search filter name.
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-filtered {
+  @include styles.borderByFilter('search-active');
+}
+```

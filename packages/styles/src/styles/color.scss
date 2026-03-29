@@ -5,10 +5,14 @@
 @use "variables";
 @use "rules";
 
-/// Checks if a value is a color
-/// Проверяет, является ли значение цветом
-/// @param {Color} $color
-/// @return {Boolean}
+/// Checks if a value is a color or a special CSS keyword
+/// Проверяет, является ли значение цветом или специальным ключевым словом CSS
+/// @group Color-Basic
+/// @param {Color|String} $color - Color value or CSS keyword / Значение цвета или ключевое слово CSS
+/// @return {Boolean} - True if value is a valid color or keyword / True, если значение является валидным цветом или словом
+/// @example scss
+///   $is-color: isColorRbgOrVar(#ff0000); // true
+///   $is-keyword: isColorRbgOrVar('transparent'); // true
 @function isColorRbgOrVar($color) {
   @return meta.type-of($color) == color or (
     $color != 'none' and
@@ -16,23 +20,28 @@
     $color != 'initial' and
     $color != 'inherit' and
     $color != 'unset'
-  )
+  );
 }
 
-/// Checks if a color is suitable for the palette
-/// Проверяет, является ли цвет подходящим для палитры
-/// @param {Color} $color
-/// @return {Boolean}
+/// Checks if a color name or variable is suitable for the palette
+/// Проверяет, подходит ли имя цвета или переменная для палитры
+/// @group Color-Palette
+/// @param {String} $color - Color variable name / Имя переменной цвета
+/// @return {Boolean} - True if it's a palette variable / True, если это переменная палитры
 @function isPalette($color) {
-  @return string.index($color, '--') != null
+  @return string.index($color, '--') != null;
 }
 
-/// Returns color value by its code
-/// Возвращает значение цвета по его коду
-/// @param {Color} $color
-/// @param {Number} $opacity
-/// @param {Boolean} $gradient if true, returns as an image/ если true, возвращает в виде изображения
-/// @return {String}
+/// Returns a color value by its code, optionally with opacity or as a gradient
+/// Возвращает значение цвета по его коду, опционально с прозрачностью или в виде градиента
+/// @group Color-Basic
+/// @param {Color|String} $color - Input color or CSS variable / Входной цвет или переменная CSS
+/// @param {Number} $opacity [1] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $gradient [false] - Returns as a linear-gradient / Возвращает в виде линейного градиента
+/// @return {String|Color} - Formatted color value / Отформатированное значение цвета
+/// @example scss
+///   $c: getColor(#f00, 0.5); // rgba(255, 0, 0, 0.5)
+///   $g: getColor(#f00, 1, true); // linear-gradient(0deg, #f00, #f00)
 @function getColor(
   $color,
   $opacity: 1,
@@ -51,10 +60,11 @@
   }
 }
 
-/// Checking if a color is part of the list of used colors
-/// Проверка, является ли цвет частью списка используемых цветов
-/// @param {Color} $color
-/// @return {String}
+/// Finds the color name in the design palette list
+/// Ищет имя цвета в списке дизайн-палитры
+/// @group Color-Palette
+/// @param {String} $color - Color string to search / Строка цвета для поиска
+/// @return {String|null} - Palette name or null / Имя палитры или null
 @function getColorByPalette($color) {
   @each $name, $value in variables.$designsPalette {
     @if (string.index($color, #{$name}#{')'}) != null) {
@@ -65,10 +75,11 @@
   @return null;
 }
 
-/// Checking if a color is part of the list of saturation levels
-/// Проверка, является ли цвет частью списка насыщенности
-/// @param {Color} $color
-/// @return {String}
+/// Finds the saturation level variable for a color
+/// Ищет переменную уровня насыщенности для цвета
+/// @group Color-Palette
+/// @param {String} $color - Color string to search / Строка цвета для поиска
+/// @return {String|null} - Shade variable name or null / Имя переменной оттенка или null
 @function getColorByShade($color) {
   @each $design, $list in variables.$designsShade {
     @if ($design == variables.$designsDesign) {
@@ -83,10 +94,11 @@
   @return null;
 }
 
-/// Returns value for palette
-/// Возвращает значение для палитры
-/// @param {Color} $color
-/// @return {String}
+/// Retrieves the palette variable name for a given color
+/// Получает имя переменной палитры для заданного цвета
+/// @group Color-Palette
+/// @param {Color|String} $color - Input color or variable / Входной цвет или переменная
+/// @return {String} - CSS variable value / Значение переменной CSS
 @function getPalette($color) {
   @if (isPalette($color)) {
     $palette: getColorByPalette($color);
@@ -101,13 +113,14 @@
       }
     }
   }
-  @return #{var(--sys-palette, #{toColorRbg($color)})}
+  @return #{var(--sys-palette, #{toColorRbg($color)})};
 }
 
-/// Returns value for palette
-/// Возвращает значение для палитры
-/// @param {Color} $color
-/// @return {String}
+/// Retrieves the palette opacity variable name for a given color
+/// Получает имя переменной прозрачности палитры для заданного цвета
+/// @group Color-Palette
+/// @param {Color|String} $color - Input color or variable / Входной цвет или переменная
+/// @return {String} - CSS variable value for opacity / Значение переменной CSS для прозрачности
 @function getPaletteOpacity($color) {
   @if (isPalette($color)) {
     $palette: getColorByPalette($color);
@@ -122,14 +135,15 @@
       }
     }
   }
-  @return #{var(--sys-palette-opacity, #{toColorOpacity($color)})}
+  @return #{var(--sys-palette-opacity, #{toColorOpacity($color)})};
 }
 
-/// Returns value for palette
-/// Возвращает значение для поиск нужный цветов
-/// @param {List} $palette
-/// @param {Color|String} $color
-/// @return {String}
+/// Generates a CSS variable chain for palette color searching
+/// Генерирует цепочку переменных CSS для поиска цвета в палитре
+/// @group Color-Palette
+/// @param {List|String} $palette - Palette list or name / Список или имя палитры
+/// @param {Color|String} $color - Fallback color / Резервный цвет
+/// @return {String} - Generated variable chain / Сгенерированная цепочка переменных
 @function getPaletteItem($palette, $color) {
   $value: #{toColorRbg($color)};
 
@@ -144,11 +158,12 @@
   }
 }
 
-/// Returns value for palette
-/// Возвращает значение для поиск нужный цветов
-/// @param {List} $palette
-/// @param {Color|String} $color
-/// @return {String}
+/// Generates a CSS variable chain for palette opacity searching
+/// Генерирует цепочку переменных CSS для поиска прозрачности в палитре
+/// @group Color-Palette
+/// @param {List|String} $palette - Palette list or name / Список или имя палитры
+/// @param {Color|String} $color - Fallback color / Резервный цвет
+/// @return {String} - Generated variable chain for opacity / Сгенерированная цепочка переменных для прозрачности
 @function getPaletteItemOpacity($palette, $color) {
   $value: #{toColorOpacity($color)};
 
@@ -163,11 +178,12 @@
   }
 }
 
-/// Getting the color code for insertion into the property
-/// Получение кода цвета для вставки в свойство
-/// @param {String} $name
-/// @param {Color|String} $defaultValue
-/// @return {String}
+/// Gets the color code formatted for CSS using custom variables and opacity
+/// Получает код цвета, отформатированный для CSS, используя переменные и непрозрачность
+/// @group Color-Basic
+/// @param {String} $name - Property or variable name / Имя свойства или переменной
+/// @param {Color|String} $defaultValue [null] - Fallback color value / Резервное значение цвета
+/// @return {String} - CSS rgba() function call / Вызов функции rgba() для CSS
 @function getColorValue($name, $defaultValue: null) {
   @if ($defaultValue) {
     @return rgba(
@@ -182,18 +198,20 @@
   );
 }
 
-/// Getting the system color code for insertion into the property
-/// Получение кода системного цвета для вставки в свойство
-/// @param {String} $name
-/// @return {String}
+/// Gets the system color code formatted for CSS (with --sys- prefix)
+/// Получает код системного цвета, отформатированный для CSS (с префиксом --sys-)
+/// @group Color-Basic
+/// @param {String} $name - System variable suffix / Суффикс системной переменной
+/// @return {String} - CSS rgba() function call / Вызов функции rgba() для CSS
 @function getColorValueSys($name) {
   @return getColorValue(--sys-#{$name});
 }
 
-/// Color conversion to rgb type
-/// Преобразование цвета в тип RGB
-/// @param {Color} $color
-/// @return {String}
+/// Converts a Color object to a comma-separated RGB channel list
+/// Преобразует объект Color в список каналов RGB через запятую
+/// @group Color-Basic
+/// @param {Color|String} $color - Input color / Входной цвет
+/// @return {String} - "R, G, B" channels / Каналы "R, G, B"
 @function toColorRbg($color) {
   @if (meta.type-of($color) == color) {
     @return color.channel($color, 'red', rgb) + ', '
@@ -204,10 +222,11 @@
   @return $color;
 }
 
-/// Gets the transparency of the color
-/// Получает прозрачность цвета
-/// @param {Color} $color
-/// @return {String}
+/// Extracts the alpha channel (opacity) from a color or CSS variable
+/// Извлекает альфа-канал (прозрачность) из цвета или переменной CSS
+/// @group Color-Basic
+/// @param {Color|String} $color - Input color / Входной цвет
+/// @return {Number|String} - Opacity value [0..1] / Значение прозрачности [0..1]
 @function toColorOpacity($color) {
   @if (meta.type-of($color) == color) {
     @return color.alpha($color);
@@ -218,24 +237,34 @@
   @return $color;
 }
 
-/// Conversion of color into images for working with background-image
-/// Преобразование цвета в изображения для работы с background-image
-/// @param {Color} $color
-/// @return {String}
+/// Wraps a color in a linear-gradient for background-image usage
+/// Оборачивает цвет в linear-gradient для использования в background-image
+/// @group Color-Basic
+/// @param {Color|String} $color - Input color / Входной цвет
+/// @return {String} - linear-gradient value / Значение linear-gradient
 @function toGradient($color) {
   @return linear-gradient(0deg, #{$color}, #{$color});
 }
 
+/// Converts a custom CSS variable to an RGBA color format
+/// Преобразует пользовательскую переменную CSS в формат цвета RGBA
+/// @group Color-Basic
+/// @param {String} $color - CSS custom property (var) / Пользовательское свойство CSS (var)
+/// @return {String} - rgba() CSS value / Значение rgba() для CSS
 @function toCustomVarRgb($color) {
   @if (rules.isCustomVar($color)) {
     @return rgba(#{$color}, #{toCustomVarOpacity($color, 1)})
   }
 
-  @return $color
+  @return $color;
 }
 
-/// Adding the transparency property
-/// Добавление свойства прозрачности
+/// Manipulates a CSS variable string to add or modify its opacity relationship
+/// Манипулирует строкой переменной CSS для добавления или изменения связи с прозрачностью
+/// @group Color-Basic
+/// @param {String} $color - CSS variable string / Строка переменной CSS
+/// @param {Number|null} $defaultValue [null] - Default opacity fallback / Резервная прозрачность по умолчанию
+/// @return {String} - Modified CSS variable chain / Измененная цепочка переменных CSS
 @function toCustomVarOpacity($color, $defaultValue: null) {
   @if ($defaultValue) {
     @return rules.strReplace($color, ')', '-opacity, '#{$defaultValue}')');
@@ -244,19 +273,21 @@
   @return rules.strReplace($color, ')', '-opacity)');
 }
 
-/// Initializes palette-related opacity variables
-/// Инициализирует связанные с палитрой переменные прозрачности
+/// Initializes core palette-related opacity variables to their initial state
+/// Инициализирует основные переменные прозрачности палитры в их начальное состояние
+/// @group Color-System
 @mixin initPalette {
   @include colorOpacity(initial);
   @include backgroundOpacity(initial);
   @include gradientOpacity(initial);
 }
 
-/// Defines system color variables (RGB and opacity)
-/// Определяет системные цветовые переменные (RGB и непрозрачность)
-/// @param {String} $name variable suffix (e.g. 'color')
-/// @param {Color|String} $color input color or CSS var
-/// @param {Boolean} $important add !important to declarations
+/// Defines core system color variables (--sys-*) for RGB and opacity
+/// Определяет основные переменные системного цвета (--sys-*) для RGB и непрозрачности
+/// @group Color-System
+/// @param {String} $name - Variable suffix (e.g. 'color', 'background') / Суффикс переменной
+/// @param {Color|String} $color - Value to assign / Присваиваемое значение
+/// @param {Boolean} $important [false] - Add !important to declarations / Добавить !important к объявлениям
 @mixin colorSys($name, $color, $important: false) {
   @if ($important) {
     --sys-#{$name}: #{toColorRbg($color)} !important;
@@ -273,10 +304,11 @@
   }
 }
 
-/// Defines system palette variables (RGB and opacity)
-/// Определяет системные переменные палитры (RGB и непрозрачность)
-/// @param {String} $name palette key suffix
-/// @param {Color|String} $color input color or CSS var
+/// Defines system palette-mapped variables (--sys-palette-*)
+/// Определяет переменные, сопоставленные с системной палитрой (--sys-palette-*)
+/// @group Color-System
+/// @param {String} $name - Palette key suffix / Суффикс ключа палитры
+/// @param {Color|String} $color - Value or palette reference / Значение или ссылка на палитру
 @mixin colorSysPalette($name, $color) {
   --sys-palette-#{$name}: #{getPalette($color)};
 
@@ -285,74 +317,83 @@
   }
 }
 
-/// Sets base palette RGB value
-/// Устанавливает базовое RGB‑значение палитры
-/// @param {Color|String} $color input color or CSS var
+/// Sets the base RGB value for the system palette
+/// Устанавливает базовое RGB-значение для системной палитры
+/// @group Color-System
+/// @param {Color|String} $color - Source color or CSS variable / Исходный цвет или переменная CSS
 @mixin palette($color) {
   --sys-palette: #{toColorRbg($color)};
 }
 
-/// Maps a custom variable into palette chain
-/// Привязывает пользовательскую переменную к палитре
-/// @param {Color|String} $color CSS custom property
+/// Maps a custom CSS variable into the palette variable chain
+/// Привязывает пользовательскую переменную CSS к цепочке палитры
+/// @group Color-System
+/// @param {String} $color - CSS variable (var) / Переменная CSS (var)
 @mixin paletteVar($color) {
   @include colorSysPalette('var', $color);
 }
 
-/// Applies palette color to text
-/// Применяет цвет палитры к тексту
-/// @param {Color|String} $color palette reference or color
+/// Maps a palette color and applies it to the text color
+/// Сопоставляет цвет палитры и применяет его к цвету текста
+/// @group Palette-Application
+/// @param {Color|String} $color - Palette reference or color / Ссылка на палитру или цвет
 @mixin paletteColor($color) {
   @include colorSysPalette('color', $color);
   @include color(#{var(--sys-palette-color)});
 }
 
-/// Applies palette color to stroke
-/// Применяет цвет палитры к обводке (stroke)
-/// @param {Color|String} $color palette reference or color
+/// Maps a palette color and applies it to the stroke
+/// Сопоставляет цвет палитры и применяет его к обводке
+/// @group Palette-Application
+/// @param {Color|String} $color - Palette reference or color / Ссылка на палитру или цвет
 @mixin paletteStroke($color) {
   @include colorSysPalette('color', $color);
   @include stroke(#{var(--sys-palette-color)});
 }
 
-/// Applies palette color to background
-/// Применяет цвет палитры к фону
-/// @param {Color|String} $color palette reference or color
+/// Maps a palette color and applies it to the background
+/// Сопоставляет цвет палитры и применяет его к фону
+/// @group Palette-Application
+/// @param {Color|String} $color - Palette reference or color / Ссылка на палитру или цвет
 @mixin paletteBackground($color) {
   @include colorSysPalette('background', $color);
   @include backgroundColor(#{var(--sys-palette-background)});
 }
 
-/// Applies palette color to fill
-/// Применяет цвет палитры к заливке (fill)
-/// @param {Color|String} $color palette reference or color
+/// Maps a palette color and applies it to the fill
+/// Сопоставляет цвет палитры и применяет его к заливке
+/// @group Palette-Application
+/// @param {Color|String} $color - Palette reference or color / Ссылка на палитру или цвет
 @mixin paletteFill($color) {
   @include colorSysPalette('background', $color);
   @include fill(#{var(--sys-palette-background)});
 }
 
-/// Applies palette gradient to background-image
-/// Применяет градиент палитры к background-image
-/// @param {Color|String} $color palette reference or color
+/// Maps a palette gradient and applies it to the background-image
+/// Сопоставляет градиент палитры и применяет его к фоновому изображению
+/// @group Palette-Application
+/// @param {Color|String} $color - Palette reference or color / Ссылка на палитру или цвет
 @mixin paletteGradient($color) {
   @include colorSysPalette('gradient', $color);
   @include gradient(#{var(--sys-palette-gradient)});
 }
 
-/// Applies palette color to border
-/// Применяет цвет палитры к границе (border)
-/// @param {Color|String} $color palette reference or color
+/// Maps a palette color and applies it to the border
+/// Сопоставляет цвет палитры и применяет его к границе
+/// @group Palette-Application
+/// @param {Color|String} $color - Palette reference or color / Ссылка на палитру или цвет
 @mixin paletteBorder($color) {
   @include colorSysPalette('border', $color);
   @include borderColor(#{var(--sys-palette-border)});
 }
 
-/// Sets text color via system variables
+/// Sets the text color using system variables
 /// Устанавливает цвет текста через системные переменные
-/// @param {Color|String} $color color or CSS var
-/// @param {Number|null} $opacity optional opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {String} $propertyName CSS property name (default 'color')
+/// @group Color-Properties
+/// @param {Color|String} $color - Color, keyword, or 'init' / Цвет, ключевое слово или 'init'
+/// @param {Number|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {String} $propertyName ['color'] - Property name / Имя свойства
 @mixin color($color, $opacity: null, $important: false, $propertyName: 'color') {
   @if ($color == 'init') {
     @include colorInit($important, $propertyName);
@@ -365,12 +406,13 @@
   }
 }
 
-/// Sets text color opacity variable; can init property
-/// Устанавливает переменную непрозрачности текста; может инициализировать свойство
-/// @param {Number} $opacity opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {Boolean} $init immediately apply computed color
-/// @param {String} $propertyName CSS property name
+/// Sets the text color opacity variable; optionally initializes the property
+/// Устанавливает переменную прозрачности текста; опционально инициализирует свойство
+/// @group Color-Properties
+/// @param {Number|String} $opacity - Opacity value [0..1] / Значение прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {Boolean} $init [false] - Immediately apply color / Намеренно применить цвет
+/// @param {String} $propertyName ['color'] - Property name / Имя свойства
 @mixin colorOpacity($opacity, $important: false, $init: false, $propertyName: 'color') {
   @if ($opacity != null) {
     @if ($important) {
@@ -385,10 +427,11 @@
   }
 }
 
-/// Applies computed system text color
-/// Применяет вычисленный системный цвет текста
-/// @param {Boolean} $important add !important
-/// @param {String} $propertyName CSS property name
+/// Applies the computed system color to the text property
+/// Применяет вычисленный системный цвет к свойству текста
+/// @group Color-Properties
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {String} $propertyName ['color'] - Property name / Имя свойства
 @mixin colorInit($important: false, $propertyName: 'color') {
   @if ($important) {
     #{$propertyName}: getColorValueSys('color') !important;
@@ -397,37 +440,41 @@
   }
 }
 
-/// Sets stroke color via system variables
-/// Устанавливает цвет обводки (stroke) через системные переменные
-/// @param {Color|String} $color color or CSS var
-/// @param {Number|null} $opacity optional opacity [0..1]
-/// @param {Boolean} $important add !important
+/// Sets the stroke color using system variables
+/// Устанавливает цвет обводки через системные переменные
+/// @group Color-Properties
+/// @param {Color|String} $color - Color value or variable / Значение цвета или переменная
+/// @param {Number|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin stroke($color, $opacity: null, $important: false) {
   @include color($color, $opacity, $important, 'stroke');
 }
 
-/// Sets stroke opacity variable; can init property
-/// Устанавливает переменную непрозрачности обводки; может инициализировать свойство
-/// @param {Number} $opacity opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {Boolean} $init immediately apply computed stroke
+/// Sets the stroke opacity variable; optionally initializes the property
+/// Устанавливает переменную прозрачности обводки; опционально инициализирует свойство
+/// @group Color-Properties
+/// @param {Number|String} $opacity - Opacity value [0..1] / Значение прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {Boolean} $init [false] - Immediately apply stroke / Намеренно применить обводку
 @mixin strokeOpacity($opacity, $important: false, $init: false) {
   @include colorOpacity($opacity, $important, $init, 'stroke');
 }
 
-/// Applies computed stroke color
-/// Применяет вычисленный цвет обводки
-/// @param {Boolean} $important add !important
+/// Applies the computed system color to the stroke property
+/// Применяет вычисленный системный цвет к свойству обводки
+/// @group Color-Properties
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin strokeInit($important: false) {
   @include colorInit($important, 'stroke');
 }
 
-/// Sets background color via system variables
+/// Sets the background color using system variables
 /// Устанавливает цвет фона через системные переменные
-/// @param {Color|String} $color color, 'as-color', transparent or CSS var
-/// @param {Number|null} $opacity optional opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {String} $propertyName CSS property name (default 'background-color')
+/// @group Color-Properties
+/// @param {Color|String} $color - Color, 'as-color', or 'init' / Цвет, 'as-color' или 'init'
+/// @param {Number|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {String} $propertyName ['background-color'] - Property name / Имя свойства
 @mixin backgroundColor($color, $opacity: null, $important: false, $propertyName: 'background-color') {
   @if ($color == 'init') {
     @include backgroundInit($important, $propertyName);
@@ -444,12 +491,13 @@
   }
 }
 
-/// Sets background opacity variable; can init property
-/// Устанавливает переменную непрозрачности фона; может инициализировать свойство
-/// @param {Number} $opacity opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {Boolean} $init immediately apply computed background
-/// @param {String} $propertyName CSS property name
+/// Sets the background opacity variable; optionally initializes the property
+/// Устанавливает переменную прозрачности фона; опционально инициализирует свойство
+/// @group Color-Properties
+/// @param {Number|String} $opacity - Opacity value [0..1] / Значение прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {Boolean} $init [false] - Immediately apply background / Намеренно применить фон
+/// @param {String} $propertyName ['background-color'] - Property name / Имя свойства
 @mixin backgroundOpacity($opacity, $important: false, $init: false, $propertyName: 'background-color') {
   @if ($opacity != null) {
     @if ($important) {
@@ -464,18 +512,20 @@
   }
 }
 
-/// Sets background-size and disables repeat
-/// Устанавливает background-size и отключает повтор
-/// @param {String} $value background-size value
+/// Configures background-size and disables background repetition
+/// Настраивает background-size и отключает повтор фона
+/// @group Color-Properties
+/// @param {String} $value - background-size value / Значение background-size
 @mixin backgroundSize($value) {
   background-size: #{$value};
   background-repeat: no-repeat;
 }
 
-/// Applies computed background color
-/// Применяет вычисленный цвет фона
-/// @param {Boolean} $important add !important
-/// @param {String} $propertyName CSS property name
+/// Applies the computed system color to the background property
+/// Применяет вычисленный системный цвет к свойству фона
+/// @group Color-Properties
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {String} $propertyName ['background-color'] - Property name / Имя свойства
 @mixin backgroundInit($important: false, $propertyName: 'background-color') {
   @if ($important) {
     #{$propertyName}: #{getColorValueSys('background')} !important;
@@ -484,36 +534,40 @@
   }
 }
 
-/// Sets fill color via background helpers
-/// Устанавливает цвет заливки (fill) через фоновые миксины
-/// @param {Color|String} $color color or CSS var
-/// @param {Number|null} $opacity optional opacity [0..1]
-/// @param {Boolean} $important add !important
+/// Sets the fill color using background utility logic
+/// Устанавливает цвет заливки, используя логику фоновых утилит
+/// @group Color-Properties
+/// @param {Color|String} $color - Color value or variable / Значение цвета или переменная
+/// @param {Number|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin fill($color, $opacity: null, $important: false) {
   @include backgroundColor($color, $opacity, $important, 'fill');
 }
 
-/// Sets fill opacity variable; can init property
-/// Устанавливает переменную непрозрачности заливки; может инициализировать свойство
-/// @param {Number} $opacity opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {Boolean} $init immediately apply computed fill
+/// Sets the fill opacity variable; optionally initializes the property
+/// Устанавливает переменную прозрачности заливки; опционально инициализирует свойство
+/// @group Color-Properties
+/// @param {Number|String} $opacity - Opacity value [0..1] / Значение прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {Boolean} $init [false] - Immediately apply fill / Намеренно применить заливку
 @mixin fillOpacity($opacity, $important: false, $init: false) {
   @include backgroundOpacity($opacity, $important, $init);
 }
 
-/// Applies computed fill color
-/// Применяет вычисленный цвет заливки
-/// @param {Boolean} $important add !important
+/// Applies the computed system color to the fill property
+/// Применяет вычисленный системный цвет к свойству заливки
+/// @group Color-Properties
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin fillInit($important: false) {
   @include backgroundInit($important, 'fill');
 }
 
-/// Sets gradient (background-image) via system variables
-/// Устанавливает градиент (background-image) через системные переменные
-/// @param {Color|String} $color color or CSS var
-/// @param {Number|null} $opacity optional opacity [0..1]
-/// @param {Boolean} $important add !important
+/// Sets the background gradient using system variables
+/// Устанавливает градиент фона через системные переменные
+/// @group Color-Properties
+/// @param {Color|String} $color - Color value or 'init' / Значение цвета или 'init'
+/// @param {Number|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin gradient($color, $opacity: null, $important: false) {
   @if ($color == 'init') {
     @include gradientInit($important);
@@ -526,11 +580,12 @@
   }
 }
 
-/// Sets gradient opacity variable; can init property
-/// Устанавливает переменную непрозрачности градиента; может инициализировать свойство
-/// @param {Number} $opacity opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {Boolean} $init immediately apply computed gradient
+/// Sets the gradient opacity variable; optionally initializes the property
+/// Устанавливает переменную прозрачности градиента; опционально инициализирует свойство
+/// @group Color-Properties
+/// @param {Number|String} $opacity - Opacity value [0..1] / Значение прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {Boolean} $init [false] - Immediately apply gradient / Намеренно применить градиент
 @mixin gradientOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
     @if ($important) {
@@ -545,9 +600,10 @@
   }
 }
 
-/// Applies computed gradient background image
-/// Применяет вычисленный градиент для background-image
-/// @param {Boolean} $important add !important
+/// Applies the computed system gradient to the background-image property
+/// Применяет вычисленный системный градиент к свойству background-image
+/// @group Color-Properties
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin gradientInit($important: false) {
   @if ($important) {
     background-image: #{toGradient(#{getColorValueSys('gradient')})} !important;
@@ -556,11 +612,12 @@
   }
 }
 
-/// Sets border color via system variables
-/// Устанавливает цвет границы (border) через системные переменные
-/// @param {Color|String} $color color or CSS var
-/// @param {Number|null} $opacity optional opacity [0..1]
-/// @param {Boolean} $important add !important
+/// Sets the border color using system variables
+/// Устанавливает цвет границы через системные переменные
+/// @group Color-Properties
+/// @param {Color|String} $color - Color, 'as-color', or 'init' / Цвет, 'as-color' или 'init'
+/// @param {Number|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin borderColor($color, $opacity: null, $important: false) {
   @if ($color == 'init') {
     @include borderInit($important);
@@ -575,11 +632,12 @@
   }
 }
 
-/// Sets border opacity variable; can init property
-/// Устанавливает переменную непрозрачности границы; может инициализировать свойство
-/// @param {Number} $opacity opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {Boolean} $init immediately apply computed border
+/// Sets the border opacity variable; optionally initializes the property
+/// Устанавливает переменную прозрачности границы; опционально инициализирует свойство
+/// @group Color-Properties
+/// @param {Number|String} $opacity - Opacity value [0..1] / Значение прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {Boolean} $init [false] - Immediately apply border / Намеренно применить границу
 @mixin borderOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
     @if ($important) {
@@ -594,9 +652,10 @@
   }
 }
 
-/// Applies computed border color
-/// Применяет вычисленный цвет границы
-/// @param {Boolean} $important add !important
+/// Applies the computed system color to the border property
+/// Применяет вычисленный системный цвет к свойству границы
+/// @group Color-Properties
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin borderInit($important: false) {
   @if ($important) {
     border-color: getColorValueSys('border') !important;
@@ -605,8 +664,11 @@
   }
 }
 
-/// Applies border color via filter drop-shadow
-/// Применяет цвет границы через фильтр drop-shadow
+/// Applies a border-like effect using CSS filters (drop-shadow)
+/// Применяет эффект, похожий на границу, используя CSS-фильтры (drop-shadow)
+/// @group Color-Properties
+/// @param {Color|String} $color - Color value or variable / Значение цвета или переменная
+/// @param {Number} $width [1px] - Border width effect / Эффект ширины границы
 @mixin borderByFilter($color, $width: 1px) {
   filter: drop-shadow(1px 0 0 #{toCustomVarRgb($color)}),
           drop-shadow(-1px 0 0 #{toCustomVarRgb($color)}),
@@ -614,11 +676,12 @@
           drop-shadow(0 -1px 0 #{toCustomVarRgb($color)});
 }
 
-/// Sets outline color via system variables
-/// Устанавливает цвет границы (outline) через системные переменные
-/// @param {Color|String} $color color or CSS var
-/// @param {Number|null} $opacity optional opacity [0..1]
-/// @param {Boolean} $important add !important
+/// Sets the outline color using system variables
+/// Устанавливает цвет контура через системные переменные
+/// @group Color-Properties
+/// @param {Color|String} $color - Color, 'as-color', or 'init' / Цвет, 'as-color' или 'init'
+/// @param {Number|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin outlineColor($color, $opacity: null, $important: false) {
   @if ($color == 'init') {
     @include outlineInit($important);
@@ -633,11 +696,12 @@
   }
 }
 
-/// Sets outline opacity variable; can init property
-/// Устанавливает переменную непрозрачности границы; может инициализировать свойство
-/// @param {Number} $opacity opacity [0..1]
-/// @param {Boolean} $important add !important
-/// @param {Boolean} $init immediately apply computed outline
+/// Sets the outline opacity variable; optionally initializes the property
+/// Устанавливает переменную прозрачности контура; опционально инициализирует свойство
+/// @group Color-Properties
+/// @param {Number|String} $opacity - Opacity value [0..1] / Значение прозрачности [0..1]
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
+/// @param {Boolean} $init [false] - Immediately apply outline / Намеренно применить контур
 @mixin outlineOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
     @if ($important) {
@@ -652,9 +716,10 @@
   }
 }
 
-/// Applies computed outline color
-/// Применяет вычисленный цвет границы
-/// @param {Boolean} $important add !important
+/// Applies the computed system color to the outline property
+/// Применяет вычисленный системный цвет к свойству контура
+/// @group Color-Properties
+/// @param {Boolean} $important [false] - Add !important / Добавить !important
 @mixin outlineInit($important: false) {
   @if ($important) {
     outline-color: getColorValueSys('outline') !important;
@@ -663,8 +728,9 @@
   }
 }
 
-/// Renders text color using palette variables
-/// Рендерит цвет текста, используя переменные палитры
+/// Renders text color using defined palette variables
+/// Отрисовывает цвет текста, используя определенные переменные палитры
+/// @group Color-As-Color
 @mixin colorAsPalette() {
   color: rgba(
                   var(--sys-palette-color, var(--sys-color)),
@@ -672,22 +738,25 @@
   );
 }
 
-/// Sets background from --sys-color variables
-/// Устанавливает фон из переменных --sys-color
+/// Sets background properties based on current system color variables
+/// Устанавливает свойства фона на основе текущих системных переменных цвета
+/// @group Color-As-Color
 @mixin backgroundAsColor() {
   @include backgroundColor(var(--sys-color), var(--sys-color-opacity));
   --sys-background-opacity-custom: var(--sys-color-opacity-custom);
 }
 
-/// Sets border from --sys-color variables
-/// Устанавливает границу из переменных --sys-color
+/// Sets border properties based on current system color variables
+/// Устанавливает свойства границы на основе текущих системных переменных цвета
+/// @group Color-As-Color
 @mixin borderAsColor() {
   @include borderColor(var(--sys-color), var(--sys-color-opacity));
   --sys-border-opacity-custom: var(--sys-color-opacity-custom);
 }
 
-/// Sets outline from --sys-color variables
-/// Устанавливает границу из переменных --sys-color
+/// Sets outline properties based on current system color variables
+/// Устанавливает свойства контура на основе текущих системных переменных цвета
+/// @group Color-As-Color
 @mixin outlineAsColor() {
   @include outlineColor(var(--sys-color), var(--sys-color-opacity));
   --sys-outline-opacity-custom: var(--sys-color-opacity-custom);

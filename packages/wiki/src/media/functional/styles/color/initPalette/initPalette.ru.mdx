@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/initPalette - Инициализировать палитру'/>
+
+# `initPalette`
+
+Миксин инициализирует переменную `--sys-palette-color`, которая служит основным ориентиром для стилей на основе палитры.
+
+**Параметры:**
+- `$color: Color | String` — значение цвета для инициализации.
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.local-theme {
+  @include styles.initPalette(#ff0000);
+}
+```

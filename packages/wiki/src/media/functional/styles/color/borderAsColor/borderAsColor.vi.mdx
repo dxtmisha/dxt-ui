@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/borderAsColor - Viền theo màu'/>
+
+# `borderAsColor`
+
+Mixin thiết lập `border-color` để khớp với màu văn bản hệ thống hiện tại (`--sys-color`).
+
+**Tham số:**
+- Không.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-follows-text {
+  @include styles.borderAsColor;
+}
+```

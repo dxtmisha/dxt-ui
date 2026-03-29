@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/getColorByShade - Get color by shade'/>
+
+# `getColorByShade`
+
+The function searches for a specific saturation level (shade) within the active design's shade list from `variables.scss`.
+
+**Parameters:**
+- `$color: String` — the color value or variable string to search.
+
+**Returns:**
+- `String | null` — the full shade variable name (e.g., `--d1-palette-500`) or null if no match is found.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$shade: styles.getColorByShade('var(--d1-500)'); // '--d1-palette-500'
+$none: styles.getColorByShade('red'); // null
+```

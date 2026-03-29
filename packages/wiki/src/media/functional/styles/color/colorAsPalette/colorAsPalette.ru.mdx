@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/colorAsPalette - Текст по палитре'/>
+
+# `colorAsPalette`
+
+Миксин применяет свойство `color`, используя текущее состояние переменных палитры, с откатом к системному цвету, если палитра не определена.
+
+**Параметры:**
+- Нет.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-follow-palette {
+  @include styles.colorAsPalette;
+}
+```

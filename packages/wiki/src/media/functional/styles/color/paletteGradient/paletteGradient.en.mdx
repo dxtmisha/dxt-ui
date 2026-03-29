@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/paletteGradient - Palette background gradient'/>
+
+# `paletteGradient`
+
+The mixin sets the `background-image` (as a solid linear gradient) by generating a search chain across the specified palette variables.
+
+**Parameters:**
+- `$palette: List | String` — list of palette variable names to search.
+- `$color: Color | String` — fallback color if no palette variables are defined.
+- `$opacity: Number | null` [null] — optional opacity level [0..1].
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-gradient-themed {
+  @include styles.paletteGradient(('theme-primary', 'sys-primary'), #0000ff);
+}
+```

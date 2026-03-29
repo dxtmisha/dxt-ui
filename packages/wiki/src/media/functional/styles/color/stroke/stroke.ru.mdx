@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/stroke - Обводка SVG'/>
+
+# `stroke`
+
+Миксин устанавливает свойство `stroke` (для SVG-элементов), используя переменные дизайн-системы, что позволяет обеспечить динамическое обновление и контроль прозрачности.
+
+**Параметры:**
+- `$color: Color | String` — значение цвета, `'as-color'` или `'init'`.
+- `$opacity: Number | null` [null] — необязательный уровень прозрачности [0..1].
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-outline {
+  @include styles.stroke(styles.getColor('secondary'), 0.8);
+}
+
+.icon-reset {
+  @include styles.stroke('init');
+}
+```

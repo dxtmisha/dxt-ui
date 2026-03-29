@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/strokeInit - Áp dụng nét'/>
+
+# `strokeInit`
+
+Mixin áp dụng màu hệ thống hiện tại đã được tính toán cho thuộc tính `stroke` của SVG.
+
+**Tham số:**
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-outline-update {
+  @include styles.strokeInit;
+}
+
+.icon-outline-force {
+  @include styles.strokeInit(true);
+}
+```

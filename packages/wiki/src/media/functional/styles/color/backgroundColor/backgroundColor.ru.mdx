@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/backgroundColor - Цвет фона'/>
+
+# `backgroundColor`
+
+Миксин устанавливает свойство `background-color`, используя переменные дизайн-системы, что позволяет обеспечить динамическое обновление и контроль прозрачности.
+
+**Параметры:**
+- `$color: Color | String` — значение цвета, `'as-color'` или `'init'`.
+- `$opacity: Number | null` [null] — необязательный уровень прозрачности [0..1].
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-primary {
+  @include styles.backgroundColor(styles.getColor('primary'), 0.5);
+}
+
+.bg-reset {
+  @include styles.backgroundColor('init');
+}
+```

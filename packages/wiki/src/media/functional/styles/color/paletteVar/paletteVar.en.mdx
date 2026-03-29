@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/paletteVar - Set palette variable'/>
+
+# `paletteVar`
+
+The mixin sets a specified CSS variable by generating a search chain across the provided palette variables.
+
+**Parameters:**
+- `$name: String` — the name of the CSS variable to set (e.g., '--local-color').
+- `$palette: List | String` — list of palette variable names to search.
+- `$color: Color | String` — fallback color if no palette variables are defined.
+- `$opacity: Number | null` [null] — optional opacity level [0..1].
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.custom-component {
+  @include styles.paletteVar('--my-color', ('theme-primary', 'sys-primary'), #0000ff);
+}
+```

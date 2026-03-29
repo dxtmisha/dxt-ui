@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/outlineAsColor - Outline using color'/>
+
+# `outlineAsColor`
+
+The mixin sets the `outline-color` property to match the current system text color (`--sys-color`).
+
+**Parameters:**
+- None.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.outline-follows-text {
+  @include styles.outlineAsColor;
+}
+```

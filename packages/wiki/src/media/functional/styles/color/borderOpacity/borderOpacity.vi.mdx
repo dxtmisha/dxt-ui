@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/borderOpacity - Độ mờ viền'/>
+
+# `borderOpacity`
+
+Mixin này thiết lập biến `--sys-border-opacity`, cho phép kiểm soát tính trong suốt của viền một cách độc lập.
+
+**Tham số:**
+- `$opacity: Number | String` — giá trị trong suốt [0..1] hoặc biến CSS.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+- `$init: Boolean` [false] — nếu `true`, sẽ áp dụng ngay thuộc tính `border-color`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-faded {
+  @include styles.borderOpacity(0.5);
+}
+
+.border-faded-important {
+  @include styles.borderOpacity(var(--my-opacity), true, true);
+}
+```

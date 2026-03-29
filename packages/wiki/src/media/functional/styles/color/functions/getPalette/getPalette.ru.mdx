@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/getPalette - Переменная палитры'/>
+
+# `getPalette`
+
+Функция определяет правильную переменную палитры для заданного цвета, обрабатывая как именованные цвета палитры, так и прямые значения цвета.
+
+**Параметры:**
+- `$color: Color | String` — входной цвет или ссылка на переменную CSS.
+
+**Возвращает:**
+- `String` — итоговая ссылка на переменную CSS или исходное значение цвета.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$p: styles.getPalette('--sys-primary'); 
+// var(--sys-palette-primary, 255, 255, 255) (концептуально)
+
+$direct: styles.getPalette(#ff0000);
+// var(--sys-palette, 255, 0, 0)
+```

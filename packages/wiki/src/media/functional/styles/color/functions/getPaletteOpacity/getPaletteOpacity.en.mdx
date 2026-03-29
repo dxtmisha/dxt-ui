@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/getPaletteOpacity - Get palette opacity'/>
+
+# `getPaletteOpacity`
+
+The function determines the correct palette opacity variable for a given color input, handling both palette names and direct color values.
+
+**Parameters:**
+- `$color: Color | String` — input color or CSS variable reference.
+
+**Returns:**
+- `String` — the resulting CSS variable reference for opacity.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$o: styles.getPaletteOpacity('--sys-primary'); 
+// var(--sys-palette-primary-opacity, 1)
+
+$direct: styles.getPaletteOpacity(#ff0000);
+// var(--sys-palette-opacity, 1)
+```

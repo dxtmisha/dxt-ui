@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/# Sử dụng Palette'/>
+
+# Sử dụng Bảng màu (Palette)
+
+Các mixin Palette là vũ khí trọng tâm để làm việc với các hệ màu sắc ngữ nghĩa và màu hệ thống trong DxtUI. Mục tiêu tối thượng của chúng là **tự động hóa khả năng định tuyến chuỗi Biến CSS (CSS variable routing)**. Vai trò cung cấp khả năng hoán đổi theme giao diện màu sắc của component ngay tức thì mà không hề làm phá vỡ đi tỷ lệ tương phản sắc độ ban đầu.
+
+Khi xây dựng component thuộc hệ thống thiết kế này, thay vì gọi hàm CSS thụ động `backgroundColor()` thông thường, bạn mang vào trong SCSS Mixin dòng định dạng gốc thuộc họ Palette:
+
+```scss
+@use '@dxtmisha/styles';
+
+.my-button {
+  // Áp dụng gán màu 'primary' của hệ thống
+  @include styles.paletteBackgroundColor('--d1-sys-palette-primary');
+}
+```
+
+Sức mạnh của tiền tố mixin hệ `palette` là để cấp chứng chỉ bảo hiểm cho việc Component này sẽ biết tự động điều hướng màu sắc theo mọi can thiệp ngoại vi - điển hình như khi bạn gán class đổi bảng màu tổng từ cấu trúc Xanh Blue sang Vàng Yellow trên một div ở ngoài.
+
+## Các Mixin Palette Thường trực
+
+Bên dưới là danh mục các hàm Mixin trung tâm có chung cấu trúc nguyên lý vận hành giống hệt nhau. Lệnh sẽ thu nạp tham số duy nhất là **một chuỗi ký tự diễn tả đích danh Biến Hệ thống CSS**.
+
+- `paletteColor()` — Kéo mã màu vào Text dòng chữ (`color`).
+- `paletteBackgroundColor()` — Trát màu vào khối phông Nền (`background-color`).
+- `paletteBorderColor()` — Trát màu vào Đường viền khung (`border-color`).
+- `paletteOutlineColor()` — Trát màu viền khung highlight báo nét (`outline-color`).
+- `paletteFill()` — Đổ màu kín vector lõi SVG (`fill`).
+- `paletteStroke()` — Viền chỉ dệt đường theo vector SVG dẻo (`stroke`).
+
+### Ví dụ Mixin gọi hội đồng:
+
+```scss
+.card-alert {
+  // Nét chữ hấp thụ gam màu 'cảnh báo Lỗi' từ hệ thống
+  @include styles.paletteColor('--d1-sys-palette-error');
+  
+  // Khối nền tảng lót đáy thụ hưởng màu mặt phẳng (Surface)
+  @include styles.paletteBackgroundColor('--d1-sys-palette-surface');
+  
+  // Viền biên tự nhận màu khung chìm tự nhiên
+  @include styles.paletteBorderColor('--d1-sys-palette-outline');
+}
+```
+
+---
+
+## Luồng Giao thông Chạy Ngầm Bằng Cách Nào? (Cơ Chế Rooting)
+
+Để thông được não khi áp dụng mixin `palette` trong ứng dụng của mình, bạn bắt buộc cần theo dõi cách SCSS compiler đọc mảng chữ chuỗi (string) như một cỗ máy thông minh ở phần biên dịch Code ra sao. Kiến trúc được gọt giũa tỉ mỉ có nghĩa bạn tuyệt đối không phải hì hục cắm đầu gõ thêm cả thúng code CSS để Override bắt giao diện chuyển bóng.
+
+### Bước 1: Khai báo Biến Hệ thống và Trị số Trọng lực Sáng/Tối (Shade Weights)
+Tiền đề, cuốn sổ config (`properties.scss`) tuyên bố các Cụm từ ngữ nghĩa (như `primary`) ứng với một Trị số Đo lường độ Tương phản chuẩn xác giữa màn sáng/tối.
+
+Ví dụ, ngữ nghĩa mã `primary` của ánh sáng trắng mặc định bám rễ vĩnh viễn ở cấp cường độ **`600`**. Do chưa đổi màu mới, cấp cường độ này đương nhiên đổ bóng sang màu Xanh Lam Basic (`--d1-ref-palette-blue-600`).
+
+### Bước 2: Build Hàm Trình Biên Dịch 
+Đúng khoảnh khắc bạn nhập lệnh gõ `paletteBackgroundColor('--d1-sys-palette-primary')`, trạm gác SCSS preprocessor chẹn đứng chuỗi String này để móc ra chiếu với Danh bạ nội quy.
+
+Thay vì trả ra luôn luôn mã HEX màu Xanh Lam trơ trụi. Nó vặn vẹo dòng biến xuất ra **một cụm mã chuỗi CSS biến Fallback tầng tầng lớp lớp**. Lòng cốt để Móc lốp nối cứng cường độ background của mảng đó luôn phải chĩa chính diện về chốt cường tráng `600`:
+
+```css
+/* Tóm gọn lại cho bạn dễ hình dung đoạn code cuối cùng sau compiler: */
+background-color: var(--d1-palette-basic600, var(--d1-sys-palette-primary));
+```
+
+### Bước 3: Đánh Chặn Bẻ Lái ngay trong HTML (DOM Override)
+Thử hình dung đoạn Button bọc trên được lọt gọn vào một mảng DOM Container to đùng treo nhãn báo bảng MÀU VÀNG:
+
+```html
+<div class="d1-palette--yellow">
+  <button class="my-button">Nhấn Vô</button>
+</div>
+```
+
+Chính cái bộ Thẻ Class `.d1-palette--yellow` sinh ra để vặn nọc cục biến cơ sở bơ vơ mang tên `--d1-palette-basic600`. Giờ phút này, `basic600` chệch bánh ray, chạy vào tông Vàng cấp độ `600` (`--d1-ref-palette-yellow-600`).
+
+Chỉ nhờ cái phím còi mà cục Component đã tự quấn thân với đầu trỏ lưới liên lạc `basic600` thông qua dòng Mixin gốc, nền Button lập tức bơi ngay trong sắc Vàng Hoàng Gia Yellow-600.
+
+**Đẳng Cấp Của Hệ Thống:** 
+Cường độ Màu (Shade) ghim chặt ở neo cấp `600`. Ngụ ý rằng bài toán mâu thuẫn Trắng-Vàng, Trắng-Xanh lam không hề bị méo hay chói mắt, khoảng trống độ Tương phải của màu đã được máy toán tự thân khắc chế cân xứng tuyệt phẩm tinh tế mọi góc độ. Coder thảnh thơi nhàn nhã tay mà không cần viết lệnh củ chuối đại loại như `.d1-palette--yellow .my-button { ... }` bẻ màu thủ công rườm rà - Vì đã có Auto Routing chèo lái con tàu DxtUI.
+
+## Sự khác biệt giữa Mixin cơ bản và Palette
+
+Điều quan trọng là phải hiểu sự khác biệt cơ bản trong logic của chúng:
+
+- **Mixin cơ bản (`backgroundColor`, `color`, v.v.)**
+  Chúng chấp nhận một **giá trị cụ thể** (HEX, RGB hoặc kết quả của hàm `getColor`). Các mixin này thiết lập màu "nguyên trạng". Mặc dù chúng hỗ trợ độ mờ hệ thống, bản thân màu sắc vẫn ở trạng thái tĩnh. Nếu bạn truyền màu xanh lam qua `getColor ('primary')`, nó sẽ vẫn là màu xanh lam ngay cả khi bạn thêm lớp bảng màu vàng vào thẻ cha.
+
+- **Mixin Palette (`paletteBackgroundColor`, `paletteColor`, v.v.)**
+  Chúng chấp nhận một **khóa chuỗi** (tên của biến hệ thống, ví dụ: `'--d1-sys-palette-primary'`). Các mixin này không thiết lập màu trực tiếp; thay vào đó, chúng tạo ra một **lộ trình động** tới các biến bảng màu (cấp độ `basic`). Đây chính xác là những gì cho phép thành phần ngay lập tức "tự đổi màu" khi lớp bảng màu được thay đổi trong DOM, trong khi vẫn duy trì mức độ tương phản cần thiết.

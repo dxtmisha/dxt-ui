@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/backgroundAsColor - Background using color'/>
+
+# `backgroundAsColor`
+
+The mixin sets the `background-color` to match the current system text color (`--sys-color`).
+
+**Parameters:**
+- None.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-follows-text {
+  @include styles.backgroundAsColor;
+}
+```

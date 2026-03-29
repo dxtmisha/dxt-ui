@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/paletteVar - Biến bảng màu'/>
+
+# `paletteVar`
+
+Mixin thiết lập một biến CSS được chỉ định bằng cách tạo chuỗi tìm kiếm qua các biến bảng màu được cung cấp.
+
+**Tham số:**
+- `$name: String` — tên của biến CSS cần thiết lập (ví dụ: '--local-color').
+- `$palette: List | String` — danh sách tên biến bảng màu để tìm kiếm.
+- `$color: Color | String` — màu dự phòng nếu không có biến bảng màu nào được xác định.
+- `$opacity: Number | null` [null] — mức độ mờ tùy chọn [0..1].
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.custom-component {
+  @include styles.paletteVar('--my-color', ('theme-primary', 'sys-primary'), #0000ff);
+}
+```

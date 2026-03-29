@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/getPaletteItemOpacity - Цепочка прозрачности'/>
+
+# `getPaletteItemOpacity`
+
+Функция генерирует вложенную цепочку переменных CSS (используя параметр fallback функции `var()`) для поиска значения прозрачности в нескольких узлах палитры.
+
+**Параметры:**
+- `$palette: List | String` — список имен переменных палитры или одно имя.
+- `$color: Color | String` — резервный цвет, если переменные палитры не определены.
+
+**Возвращает:**
+- `String` — вложенная строка вида `var(--name1-opacity, var(--name2-opacity, ...))`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$chain: styles.getPaletteItemOpacity(('theme-color', 'sys-color'), #ff0000); 
+// var(--theme-color-opacity, var(--sys-color-opacity, 1))
+```

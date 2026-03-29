@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/getColorByShade - Цвет по оттенку'/>
+
+# `getColorByShade`
+
+Функция ищет конкретный уровень насыщенности (оттенок) в списке оттенков активного дизайна из файла `variables.scss`.
+
+**Параметры:**
+- `$color: String` — значение цвета или строка переменной для поиска.
+
+**Возвращает:**
+- `String | null` — полное имя переменной оттенка (например,, `--d1-palette-500`) или null,, если совпадение не найдено.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$shade: styles.getColorByShade('var(--d1-500)'); // '--d1-palette-500'
+$none: styles.getColorByShade('red'); // null
+```

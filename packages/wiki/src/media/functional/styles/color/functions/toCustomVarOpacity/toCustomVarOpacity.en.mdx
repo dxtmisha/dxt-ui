@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/toCustomVarOpacity - Format variable opacity'/>
+
+# `toCustomVarOpacity`
+
+The function modifies a CSS variable reference string (e.g., `var(--name)`) to point to its corresponding opacity variable (`var(--name-opacity)`).
+
+**Parameters:**
+- `$color: String` — the CSS variable string to modify.
+- `$defaultValue: Number | null` [null] — an optional fallback opacity value.
+
+**Returns:**
+- `String` — the modified variable string.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$opacity: styles.toCustomVarOpacity(var(--sys-color)); 
+// var(--sys-color-opacity)
+
+$with-fallback: styles.toCustomVarOpacity(var(--sys-color), 0.5); 
+// var(--sys-color-opacity, 0.5)
+```

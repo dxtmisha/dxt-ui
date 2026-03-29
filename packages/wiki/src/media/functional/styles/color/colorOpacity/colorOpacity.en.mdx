@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/colorOpacity - Set color opacity'/>
+
+# `colorOpacity`
+
+The mixin sets the `--sys-color-opacity` variable, allowing for independent control of text transparency.
+
+**Parameters:**
+- `$opacity: Number | String` — transparency value [0..1] or CSS variable.
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+- `$init: Boolean` [false] — if `true`, immediately applies the `color` property.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-faded {
+  @include styles.colorOpacity(0.5);
+}
+
+.text-faded-important {
+  @include styles.colorOpacity(var(--my-opacity), true, true);
+}
+```

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/outlineAsColor - Đường viền theo màu'/>
+
+# `outlineAsColor`
+
+Mixin thiết lập thuộc tính `outline-color` để khớp với màu văn bản hệ thống hiện tại (`--sys-color`).
+
+**Tham số:**
+- Không.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.outline-follows-text {
+  @include styles.outlineAsColor;
+}
+```

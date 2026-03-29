@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/borderByFilter - Граница через фильтр'/>
+
+# `borderByFilter`
+
+Миксин устанавливает `border-color` в зависимости от того, какой фильтр в данный момент активен в дизайн-системе.
+
+**Параметры:**
+- `$filter: String` — имя поискового фильтра.
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-filtered {
+  @include styles.borderByFilter('search-active');
+}
+```

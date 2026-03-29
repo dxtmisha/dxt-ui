@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/paletteColor - Текст из палитры'/>
+
+# `paletteColor`
+
+Миксин устанавливает `color` текста, генерируя цепочку поиска по указанным переменным палитры.
+
+**Параметры:**
+- `$palette: List | String` — список имен переменных палитры для поиска.
+- `$color: Color | String` — резервный цвет, если переменные палитры не определены.
+- `$opacity: Number | null` [null] — необязательный уровень прозрачности [0..1].
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-themed {
+  @include styles.paletteColor(('theme-primary', 'sys-primary'), #0000ff);
+}
+```

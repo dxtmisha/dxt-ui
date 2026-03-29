@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/strokeInit - Применить обводку'/>
+
+# `strokeInit`
+
+Миксин применяет текущий вычисленный системный цвет к свойству SVG `stroke`.
+
+**Параметры:**
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-outline-update {
+  @include styles.strokeInit;
+}
+
+.icon-outline-force {
+  @include styles.strokeInit(true);
+}
+```

@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/getColorValue - Giá trị màu'/>
+
+# `getColorValue`
+
+Hàm truy xuất giá trị CSS `rgba()` được định dạng dựa trên một tên thuộc tính nhất định, tùy chọn sử dụng màu dự phòng mặc định.
+
+**Tham số:**
+- `$name: String` — tên biến CSS (ví dụ: `--sys-color`).
+- `$defaultValue: Color | String` [null] — giá trị màu dự phòng tùy chọn.
+
+**Trả về:**
+- `String` — một chuỗi CSS `rgba()` được định dạng.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$color: styles.getColorValue('--sys-primary'); 
+// rgba(var(--sys-primary), var(--sys-primary-opacity, var(--sys-primary-opacity-custom, 1)))
+
+$with-fallback: styles.getColorValue('--non-existent', #ff0000);
+// rgba(var(--non-existent, 255, 0, 0), var(--non-existent-opacity, var(--non-existent-opacity-custom, 1)))
+```

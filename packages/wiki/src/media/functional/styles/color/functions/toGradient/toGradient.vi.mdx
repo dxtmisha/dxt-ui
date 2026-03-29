@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/toGradient - Chuyển sang gradient'/>
+
+# `toGradient`
+
+Hàm bọc một giá trị màu trong hàm `linear-gradient` để tương thích với thuộc tính `background-image`.
+
+**Tham số:**
+- `$color: Color | String` — giá trị màu cần bọc.
+
+**Trả về:**
+- `String` — một chuỗi `linear-gradient(0deg, #color, #color)`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$gradient: styles.toGradient(#ff0000); 
+// linear-gradient(0deg, #ff0000, #ff0000)
+```

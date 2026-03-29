@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/backgroundSize - Kích thước nền'/>
+
+# `backgroundSize`
+
+Mixin thiết lập thuộc tính `background-size`, đảm bảo tỷ lệ hình nền và dải màu (gradient) được hiển thị chính xác.
+
+**Tham số:**
+- `$value: String | Number` — giá trị kích thước (ví dụ: 'cover', 'contain', '100%').
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-cover {
+  @include styles.backgroundSize('cover');
+}
+```

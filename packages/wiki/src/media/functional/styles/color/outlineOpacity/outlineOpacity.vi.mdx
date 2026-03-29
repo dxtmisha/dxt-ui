@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/outlineOpacity - Độ mờ đường viền'/>
+
+# `outlineOpacity`
+
+Mixin này thiết lập biến `--sys-outline-opacity`, cho phép kiểm soát tính trong suốt của đường viền ngoài (outline) một cách độc lập.
+
+**Tham số:**
+- `$opacity: Number | String` — giá trị trong suốt [0..1] hoặc biến CSS.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+- `$init: Boolean` [false] — nếu `true`, sẽ áp dụng ngay thuộc tính `outline-color`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.outline-faded {
+  @include styles.outlineOpacity(0.5);
+}
+
+.outline-faded-important {
+  @include styles.outlineOpacity(var(--my-opacity), true, true);
+}
+```

@@ -1,0 +1,93 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/# Using Palettes'/>
+
+# Using Palettes
+
+Palette mixins are the primary tool for working with semantic and system colors in DxtUI. They exist to **automatically support CSS variable routing**, allowing you to dynamically swap out themes and component color palettes on the fly without breaking the original design's contrast ratio.
+
+When building components with the design system, instead of using standard `backgroundColor()` functions, you use the specialized palette equivalent:
+
+```scss
+@use '@dxtmisha/styles';
+
+.my-button {
+  // Applying the system 'primary' color
+  @include styles.paletteBackgroundColor('--d1-sys-palette-primary');
+}
+```
+
+Using the `palette` mixin prefix ensures that the component's color will properly react to any active overrides in the color scheme, such as switching from a blue global structure class to a yellow one.
+
+## Available Palette Mixins
+
+Below is the list of key mixins that all operate on this identical principle. As their sole parameter, they accept a **string representing the name of the system CSS variable**.
+
+- `paletteColor()` — Sets the text color (`color`).
+- `paletteBackgroundColor()` — Sets the background fill (`background-color`).
+- `paletteBorderColor()` — Sets the border (`border-color`).
+- `paletteOutlineColor()` — Sets an external outline (`outline-color`).
+- `paletteFill()` — Sets vector SVG fill regions (`fill`).
+- `paletteStroke()` — Sets vector SVG line strokes (`stroke`).
+
+### Example using multiple mixins together:
+
+```scss
+.card-alert {
+  // Text will inherit the system error color
+  @include styles.paletteColor('--d1-sys-palette-error');
+  
+  // The background becomes the baseline surface color
+  @include styles.paletteBackgroundColor('--d1-sys-palette-surface');
+  
+  // The border will match the system outline configuration
+  @include styles.paletteBorderColor('--d1-sys-palette-outline');
+}
+```
+
+---
+
+## How it Works Under the Hood (Routing Architecture)
+
+To fully exploit the potential of `palette` mixins, it helps to understand how the SCSS compiler processes these strings during build-time. The architecture is explicitly designed so you never have to author additional boilerplate CSS for theme overrides.
+
+### Step 1: System Variables and Basic Shade Weights
+First, a configuration registry (`properties.scss`) dictates that a semantic name (like `primary`) mathematically correlates to a specific contrast "weight" for both light and dark modes.
+
+For example, the semantic `primary` color in the light theme always translates to a contrast tier of **`600`**. By default, this tier links to a pure Blue (`--d1-ref-palette-blue-600`).
+
+### Step 2: Mixin Compilation
+When you invoke `paletteBackgroundColor('--d1-sys-palette-primary')`, the SCSS preprocessor intercepts this string and checks it against the registry layer. 
+
+Rather than returning a flat blue color hex, the compiler yields a **smart cascading CSS variable pointer** that intrinsically locks your background to the `600` "basic" intensity:
+
+```css
+/* A simplified look at the generated CSS output: */
+background-color: var(--d1-palette-basic600, var(--d1-sys-palette-primary));
+```
+
+### Step 3: Changing the Palette via HTML (DOM)
+Let's imagine you wrap this component inside an HTML container designated with a completely different palette class:
+
+```html
+<div class="d1-palette--yellow">
+  <button class="my-button">Click Me</button>
+</div>
+```
+
+The `.d1-palette--yellow` class locally intercepts the generic baseline variable `--d1-palette-basic600`. Suddenly, `basic600` is repointed structurally to output a tier-600 Yellow (`--d1-ref-palette-yellow-600`).
+
+Because your button was already anchored to `basic600` dynamically via the `paletteBackgroundColor` mixin, the element's actual surface color swaps immediately to Yellow.
+
+**The Major Benefit:** 
+The actual weight intensity strictly remains at `600`. This signifies that the mathematical contrast ratio remaining between white button text and its background stays perfect and entirely legible. The developer writes absolutely zero CSS exception rules (like `.d1-palette--yellow .my-button { ... }`) to manually "re-theme" components—everything behaves entirely autonomously based on native routing.
+
+## Difference Between Base Mixins and Palettes
+
+It is important to understand the fundamental difference in their logic:
+
+- **Base Mixins (`backgroundColor`, `color`, etc.)**
+  These accept a **specific value** (HEX, RGB, or the result of a `getColor` function). These mixins set the color "as is". While they support system opacity, the color itself remains static. If you pass a blue color via `getColor('primary')`, it will stay blue even if you add a yellow palette class to the parent.
+
+- **Palette Mixins (`paletteBackgroundColor`, `paletteColor`, etc.)**
+  These accept a **string key** (the name of a system variable, e.g., `'--d1-sys-palette-primary'`). These mixins do not set the color directly; instead, they create a **dynamic route** to palette variables (the `basic` level). This is precisely what allows the component to instantly "re-color" itself when the palette class is changed in the DOM, while maintaining the required contrast level.

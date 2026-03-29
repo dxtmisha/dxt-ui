@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/backgroundSize - Размер фона'/>
+
+# `backgroundSize`
+
+Миксин устанавливает свойство `background-size`, обеспечивая правильное масштабирование фоновых изображений и градиентов.
+
+**Параметры:**
+- `$value: String | Number` — значение размера (например, 'cover', 'contain', '100%').
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-cover {
+  @include styles.backgroundSize('cover');
+}
+```

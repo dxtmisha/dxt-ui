@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/getColorByPalette - Цвет из палитры'/>
+
+# `getColorByPalette`
+
+Функция ищет конкретное имя цвета или суффикс в назначенной дизайн-палитре из файла `variables.scss`.
+
+**Параметры:**
+- `$color: String` — значение цвета или строка переменной CSS для поиска.
+
+**Возвращает:**
+- `String | null` — имя палитры или null, если совпадение не найдено.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$name: styles.getColorByPalette('var(--primary)'); // 'primary'
+$none: styles.getColorByPalette('#ff0000'); // null
+```

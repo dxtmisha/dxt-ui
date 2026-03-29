@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/backgroundOpacity - Độ mờ nền'/>
+
+# `backgroundOpacity`
+
+Mixin này thiết lập biến `--sys-background-opacity`, cho phép kiểm soát tính trong suốt của nền một cách độc lập.
+
+**Tham số:**
+- `$opacity: Number | String` — giá trị trong suốt [0..1] hoặc biến CSS.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+- `$init: Boolean` [false] — nếu `true`, sẽ áp dụng ngay thuộc tính `background-color`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-faded {
+  @include styles.backgroundOpacity(0.5);
+}
+
+.bg-faded-important {
+  @include styles.backgroundOpacity(var(--my-opacity), true, true);
+}
+```

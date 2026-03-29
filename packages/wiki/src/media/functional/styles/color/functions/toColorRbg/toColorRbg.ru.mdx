@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/toColorRbg - Извлечь RGB'/>
+
+# `toColorRbg`
+
+Функция преобразует объект Sass Color в строку, содержащую значения красного (red), зеленого (green) и синего (blue) каналов, разделенные запятыми.
+
+**Параметры:**
+- `$color: Color | String` — значение цвета для преобразования.
+
+**Возвращает:**
+- `String` — каналы "R, G, B" или исходную строку, если это не был цвет.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$channels: styles.toColorRbg(#ff0000); // "255, 0, 0"
+$from-var: styles.toColorRbg(var(--my-color)); // "var(--my-color)"
+```

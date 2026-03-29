@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/backgroundSize - Set background size'/>
+
+# `backgroundSize`
+
+The mixin sets the `background-size` property, ensuring proper scaling of background images and gradients.
+
+**Parameters:**
+- `$value: String | Number` — the size value (e.g., 'cover', 'contain', '100%').
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-cover {
+  @include styles.backgroundSize('cover');
+}
+```

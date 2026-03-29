@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/getColor - Get color or gradient'/>
+
+# `getColor`
+
+The function formats a color value with optional opacity and returns it either as an RGBA value or wrapped in a linear gradient.
+
+**Parameters:**
+- `$color: Color | String` — the base color to format.
+- `$opacity: Number` [1] — optional opacity level [0..1].
+- `$gradient: Boolean` [false] — if `true`, returns the value as a linear gradient.
+
+**Returns:**
+- `String | Color` — the formatted color value.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$solid: styles.getColor(#ff0000, 0.5); 
+// rgba(255, 0, 0, 0.5)
+
+$gradient: styles.getColor(#ff0000, 1, true); 
+// linear-gradient(0deg, #ff0000, #ff0000)
+```

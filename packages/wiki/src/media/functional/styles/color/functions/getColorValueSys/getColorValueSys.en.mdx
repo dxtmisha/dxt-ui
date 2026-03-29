@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/getColorValueSys - System color value'/>
+
+# `getColorValueSys`
+
+The function retrieves a formatted CSS `rgba()` value specifically for the design system's current color, background, stroke, or fill properties.
+
+**Parameters:**
+- `$prop: String` — the system property name (e.g., 'color', 'background', 'border').
+- `$defaultValue: Color | String` [null] — an optional fallback color value.
+
+**Returns:**
+- `String` — a formatted CSS `rgba()` string referencing `--sys-[prop]`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$color: styles.getColorValueSys('color'); 
+// rgba(var(--sys-color), var(--sys-color-opacity, var(--sys-color-opacity-custom, 1)))
+
+$border: styles.getColorValueSys('border', #cccccc);
+// rgba(var(--sys-border, 204, 204, 204), var(--sys-border-opacity, var(--sys-border-opacity-custom, 1)))
+```

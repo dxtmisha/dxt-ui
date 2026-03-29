@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/fillOpacity - Độ mờ tô'/>
+
+# `fillOpacity`
+
+Mixin này thiết lập biến `--sys-fill-opacity`, cho phép kiểm soát tính trong suốt của phần tô SVG một cách độc lập.
+
+**Tham số:**
+- `$opacity: Number | String` — giá trị trong suốt [0..1] hoặc biến CSS.
+- `$important: Boolean` [false] — nếu `true`, thêm `!important`.
+- `$init: Boolean` [false] — nếu `true`, sẽ áp dụng ngay thuộc tính `fill`.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-faded {
+  @include styles.fillOpacity(0.5);
+}
+
+.icon-faded-important {
+  @include styles.fillOpacity(var(--my-opacity), true, true);
+}
+```

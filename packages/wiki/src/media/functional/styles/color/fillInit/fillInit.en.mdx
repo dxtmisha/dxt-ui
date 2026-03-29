@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/fillInit - Apply SVG fill'/>
+
+# `fillInit`
+
+The mixin applies the current computed system color to the SVG `fill` property.
+
+**Parameters:**
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-update {
+  @include styles.fillInit;
+}
+
+.icon-force {
+  @include styles.fillInit(true);
+}
+```

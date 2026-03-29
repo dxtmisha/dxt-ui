@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/getColorValue - Formatted color value'/>
+
+# `getColorValue`
+
+The function retrieves a formatted CSS `rgba()` value based on a given property name, optionally using a default fallback color.
+
+**Parameters:**
+- `$name: String` — the name of the CSS variable (e.g., `--sys-color`).
+- `$defaultValue: Color | String` [null] — an optional fallback color value.
+
+**Returns:**
+- `String` — a formatted CSS `rgba()` string.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$color: styles.getColorValue('--sys-primary'); 
+// rgba(var(--sys-primary), var(--sys-primary-opacity, var(--sys-primary-opacity-custom, 1)))
+
+$with-fallback: styles.getColorValue('--non-existent', #ff0000);
+// rgba(var(--non-existent, 255, 0, 0), var(--non-existent-opacity, var(--non-existent-opacity-custom, 1)))
+```

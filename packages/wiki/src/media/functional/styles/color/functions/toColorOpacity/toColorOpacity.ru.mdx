@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/toColorOpacity - Извлечь прозрачность'/>
+
+# `toColorOpacity`
+
+Функция извлекает альфа-канал (прозрачность) из объекта Sass Color или строки пользовательской переменной CSS.
+
+**Параметры:**
+- `$color: Color | String` — значение цвета для извлечения прозрачности.
+
+**Возвращает:**
+- `Number | String` — значение альфа [0..1] или модифицированная строка переменной CSS.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$opacity: styles.toColorOpacity(rgba(255, 0, 0, 0.5)); // 0.5
+$var-opacity: styles.toColorOpacity(var(--sys-color)); // var(--sys-color-opacity)
+```

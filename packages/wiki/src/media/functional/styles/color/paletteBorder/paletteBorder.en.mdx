@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/paletteBorder - Palette border color'/>
+
+# `paletteBorder`
+
+The mixin sets the `border-color` by generating a search chain across the specified palette variables.
+
+**Parameters:**
+- `$palette: List | String` — list of palette variable names to search.
+- `$color: Color | String` — fallback color if no palette variables are defined.
+- `$opacity: Number | null` [null] — optional opacity level [0..1].
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.border-themed {
+  @include styles.paletteBorder(('theme-border', 'sys-border'), #cccccc);
+}
+```

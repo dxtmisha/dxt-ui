@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/fillOpacity - Set fill opacity'/>
+
+# `fillOpacity`
+
+The mixin sets the `--sys-fill-opacity` variable, allowing for independent control of SVG fill transparency.
+
+**Parameters:**
+- `$opacity: Number | String` — transparency value [0..1] or CSS variable.
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+- `$init: Boolean` [false] — if `true`, immediately applies the `fill` property.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.icon-faded {
+  @include styles.fillOpacity(0.5);
+}
+
+.icon-faded-important {
+  @include styles.fillOpacity(var(--my-opacity), true, true);
+}
+```

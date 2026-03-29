@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/colorAsPalette - Text using palette'/>
+
+# `colorAsPalette`
+
+The mixin applies the `color` property using the current state of palette variables, falling back to the system color if the palette is not defined.
+
+**Parameters:**
+- None.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.text-follow-palette {
+  @include styles.colorAsPalette;
+}
+```

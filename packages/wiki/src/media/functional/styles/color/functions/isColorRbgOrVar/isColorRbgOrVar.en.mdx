@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/isColorRbgOrVar - Validate color'/>
+
+# `isColorRbgOrVar`
+
+The function checks if a value is a valid color or a special CSS keyword (like `transparent`, `initial`, `inherit`, etc.).
+
+**Parameters:**
+- `$color: Color | String` — color value or CSS keyword for checking.
+
+**Returns:**
+- `Boolean` — `true` if the value is a valid color or keyword.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$is-color: styles.isColorRbgOrVar(#ff0000); // true
+$is-keyword: styles.isColorRbgOrVar('transparent'); // true
+$is-invalid: styles.isColorRbgOrVar('none'); // false
+```

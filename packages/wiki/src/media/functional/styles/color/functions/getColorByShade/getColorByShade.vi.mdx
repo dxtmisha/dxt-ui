@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/color/| functions/getColorByShade - Màu theo sắc thái'/>
+
+# `getColorByShade`
+
+Hàm tìm kiếm một mức độ bão hòa (shade) cụ thể trong danh sách shade của thiết kế đang hoạt động từ `variables.scss`.
+
+**Tham số:**
+- `$color: String` — giá trị màu hoặc chuỗi biến cần tìm kiếm.
+
+**Trả về:**
+- `String | null` — tên đầy đủ của biến shade (ví dụ: `--d1-palette-500`) hoặc null nếu không tìm thấy kết quả khớp.
+
+## Ví dụ
+
+```scss
+@use '@dxtmisha/styles';
+
+$shade: styles.getColorByShade('var(--d1-500)'); // '--d1-palette-500'
+$none: styles.getColorByShade('red'); // null
+```

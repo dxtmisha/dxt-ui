@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/isColorRbgOrVar - Проверить цвет'/>
+
+# `isColorRbgOrVar`
+
+Функция проверяет, является ли значение допустимым цветом или специальным ключевым словом CSS (например, `transparent`, `initial`, `inherit` и т. д.).
+
+**Параметры:**
+- `$color: Color | String` — значение цвета или ключевое слово CSS для проверки.
+
+**Возвращает:**
+- `Boolean` — `true`, если значение является допустимым цветом или ключевым словом.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$is-color: styles.isColorRbgOrVar(#ff0000); // true
+$is-keyword: styles.isColorRbgOrVar('transparent'); // true
+$is-invalid: styles.isColorRbgOrVar('none'); // false
+```

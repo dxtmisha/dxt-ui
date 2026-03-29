@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/colorSys - Системный цвет'/>
+
+# `colorSys`
+
+Миксин устанавливает системную переменную цвета (например, `--sys-color`, `--sys-background`), преобразуя значение с помощью `toCustomVarRgb`.
+
+**Параметры:**
+- `$prop: String` — имя свойства (например, 'color', 'background').
+- `$color: Color | String` — значение цвета для установки.
+- `$important: Boolean` [false] — если `true`, добавляет `!important`.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.sys-update {
+  @include styles.colorSys('color', #ff0000);
+}
+```

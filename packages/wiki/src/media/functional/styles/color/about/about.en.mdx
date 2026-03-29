@@ -1,0 +1,68 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/! About the Color System'/>
+
+# About the Color System
+
+The `@dxtmisha/styles` library provides a powerful and flexible mechanism for managing colors in applications. Unlike the standard approach with hardcoded HEX colors, this system is entirely built on dynamic CSS variables. This ensures instant theme switching (light/dark) and smooth transitions without code duplication.
+
+It solves the primary problem of complex styling: **how to apply opacity to colors coming from variables without breaking CSS animations?**
+
+## Core Concept: Separating RGB and Opacity
+
+If you store a color as a normal variable (e.g., `--primary: #ff0000;`), you cannot apply transparency to it "on the fly" using CSS tools (without using new functions like `color-mix`, which are not fully supported yet). The old attempt to do `rgba(var(--primary), 0.5)` simply won't work with HEX values.
+
+To solve this problem, our design system automatically converts all base colors into a list of RGB channels:
+
+```scss
+// How it happens under the hood:
+--sys-primary: 255, 0, 0; // Instead of #ff0000
+```
+
+This allows us to dynamically "construct" the color the moment it is applied:
+
+```css
+color: rgba(var(--sys-primary), 1);
+background-color: rgba(var(--sys-primary), 0.5);
+```
+
+### Independent Opacity
+
+To give you even more control and provide **reactive transitions** for opacity (when only the opacity level changes, not the color itself), a specific System opacity variable is generated for each property:
+
+```scss
+--sys-color: 255, 0, 0;
+--sys-color-opacity: 1;
+
+--sys-background: 0, 255, 0;
+--sys-background-opacity: 0.5;
+```
+
+The final output in the browser looks like this:
+`color: rgba(var(--sys-color), var(--sys-color-opacity));`
+
+You **do not** need to write this manually — the library provides convenient mixins that generate this code for you.
+
+## Library Structure
+
+The `color.scss` library is conceptually divided into three layers of abstraction:
+
+### 1. System Generation Functions (Utilities)
+Functions like `getColor`, `toColorRbg`, or `toCustomVarRgb`. They serve as a low-level engine that translates ordinary HEX colors into a string RGB format and vice versa. You will rarely call them directly in everyday development, but they are needed to register new colors at the design token level (`@dxtmisha/theme`).
+
+### 2. Base Property Mixins
+These are the main tools for applying colors to UI components: `@include color(...)`, `@include backgroundColor(...)`, `@include borderColor(...)`, `@include stroke(...)`, etc.
+They accept a color, update the component's system variable, and apply the CSS property. This is your everyday component styling tool.
+
+### 3. Palette & Theme Mixins
+An advanced level of styling designed for components that need to instantly adapt to the local context (e.g., a button that becomes red if it is inside a "danger" block).
+Mixins like `@include paletteColor()` and the `getPaletteItem()` function are used here. They build a "search chain" of variables (find `--theme-primary`, if not — find `--sys-primary`, if not — use fallback HEX).
+
+## Why not just use `color: #ff0000;`?
+
+You can do this, but it will break the integrity of the design system:
+1. **Hard Binding:** When changing a theme (e.g., to dark mode), your hardcoded color will remain the same.
+2. **Lack of Flexibility:** If you want to make the text semi-transparent on hover, you will have to redefine `color: rgba(...)` again instead of just changing the opacity variable.
+3. **Animation Errors:** The transition from full color to semi-transparent will be smoother if the browser animates the independent `--sys-color-opacity` variable, rather than trying to interpolate complex `rgba` or HEX values.
+
+Use the mixins described in the **Base Properties Usage** and **Working with Palettes** sections to keep your interface scalable and easily maintainable.

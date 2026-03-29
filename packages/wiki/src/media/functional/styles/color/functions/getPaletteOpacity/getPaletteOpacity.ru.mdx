@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/| functions/getPaletteOpacity - Прозрачность палитры'/>
+
+# `getPaletteOpacity`
+
+Функция определяет правильную переменную прозрачности палитры для заданного цвета, обрабатывая как именованные цвета палитры, так и прямые значения цвета.
+
+**Параметры:**
+- `$color: Color | String` — входной цвет или ссылка на переменную CSS.
+
+**Прозрачность:**
+- `String` — итоговая ссылка на переменную CSS для прозрачности.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+$o: styles.getPaletteOpacity('--sys-primary'); 
+// var(--sys-palette-primary-opacity, 1)
+
+$direct: styles.getPaletteOpacity(#ff0000);
+// var(--sys-palette-opacity, 1)
+```

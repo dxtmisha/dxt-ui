@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/| functions/isPalette - Validate palette color'/>
+
+# `isPalette`
+
+The function checks if a string represents a palette-related CSS variable by looking for the `--` prefix.
+
+**Parameters:**
+- `$color: String` — the color variable name or string to check.
+
+**Returns:**
+- `Boolean` — `true` if the string contains a double-dash (`--`) prefix.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+$is-palette: styles.isPalette('--sys-color'); // true
+$is-not-palette: styles.isPalette('#ff0000'); // false
+```

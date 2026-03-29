@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/color/gradient - Set background gradient'/>
+
+# `gradient`
+
+The mixin sets the `background-image` property using the design system's variables formatted as a solid linear gradient.
+
+**Parameters:**
+- `$color: Color | String` — color value, `'as-color'`, or `'init'`.
+- `$opacity: Number | null` [null] — optional opacity level [0..1].
+- `$important: Boolean` [false] — if `true`, adds `!important`.
+
+## Example
+
+```scss
+@use '@dxtmisha/styles';
+
+.bg-gradient-primary {
+  @include styles.gradient(styles.getColor('primary'), 0.9);
+}
+
+.bg-gradient-reset {
+  @include styles.gradient('init');
+}
+```

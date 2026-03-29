@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/color/outlineAsColor - Контур по цвету'/>
+
+# `outlineAsColor`
+
+Миксин устанавливает свойство `outline-color` в соответствии с текущим системным цветом текста (`--sys-color`).
+
+**Параметры:**
+- Нет.
+
+## Пример
+
+```scss
+@use '@dxtmisha/styles';
+
+.outline-follows-text {
+  @include styles.outlineAsColor;
+}
+```
