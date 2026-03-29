@@ -1,0 +1,106 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/# Managed Singletons'/>
+
+# Managed Singletons (executeUse)
+
+The **executeUse** function is an advanced factory for creating managed singletons within the **Vue 3** ecosystem. It solves the problem of initializing and reusing reactive states, global services (like meta tags), or component logic by providing flexible control over the execution context (global, local, or via `provide/inject`).
+
+## Execution Modes
+
+**executeUse** supports three initialization modes (`ExecuteUseType` enum), each designed for specific architectural tasks:
+
+1. **global** (`executeUseGlobal`) — a single instance for the entire application. Ideal for creating services that live outside any specific component.
+2. **provide** (`executeUseProvide`) — shares state down the component tree using Vue's `provide`/`inject`. Guarantees that child components will receive the exact same instance from their closest provider parent.
+3. **local** (`executeUseLocal`) — a single instance within a closure, isolated inside its own `effectScope`.
+
+### Differences between `global` and `local`
+
+The main architectural difference between the `global` and `local` modes lies in the **initialization timing** (exactly when the instance is created):
+
+1. **`global` (Eager/Mass Initialization):**
+   - All callbacks wrapped in `global` are collected in a global array. They are **immediately executed all together** when the `executeUseGlobalInit()` function is called at the application's entry point (e.g., in `main.ts` or during SSR).
+   - **Use Case:** Mission-critical services (Settings, Meta Tags, Locales, User Sessions) that must be fully ready to work *before* the first component renders, or services that must be centrally recreated on app reset.
+
+2. **`local` (Lazy Initialization):**
+   - The instance is created **only at the exact moment of the first call** inside a component or service. Importantly, because the initialization is wrapped in a global `effectScope`, this singleton—just like the global one—will "live forever" and won't be destroyed even when the calling component unmounts.
+   - **Use Case:** Heavy or context-specific services (e.g., complex filtering, an isolated websocket chat, heavy analytics trackers) that:
+     - Might not be needed during the current user session.
+     - Should only be initialized exactly when the user reaches the relevant section of the application.
+
+## Usage (Global Service Example)
+
+The most common scenario is creating a global store or service (for example, to manage SEO meta tags).
+
+```typescript
+import { ref } from 'vue'
+import { executeUseGlobal } from '@dxtmisha/functional'
+
+// 1. Defining the singleton
+const item = executeUseGlobal(() => {
+  const title = ref('My Title')
+  
+  const updateTitle = (newTitle: string) => {
+    title.value = newTitle
+  }
+
+  return { title, updateTitle }
+})
+
+// 2. Exporting a composable function (following Vue conventions)
+export const useMeta = () => item()
+```
+
+Inside any Vue component:
+
+```typescript
+import { useMeta } from './useMeta'
+
+const { title, updateTitle } = useMeta() // title will be shared across all calls
+```
+
+## Provide / Inject Usage
+
+If you need the state to live only within a specific component tree (like a complex form and its internal fields), use `executeUseProvide`.
+
+```typescript
+import { executeUseProvide } from '@dxtmisha/functional'
+
+const useFormState = executeUseProvide((initialData: any) => {
+  // ... reactive state initialization logic
+  return { /* ... */ }
+})
+```
+
+Upon the first call to `useFormState(data)` in a parent component, the state is initialized and provided downwards (via `provide`). Any child component that then calls `useFormState()` will receive this very instance via `inject`.
+
+## Instance Management
+
+The `executeUse` functions wrap the result of your factory and augment it with special lifecycle management methods (depending on the chosen mode).
+
+### The init() method
+
+The `init()` method is simply a stub that returns the object itself. It is used exclusively to explicitly highlight the initial call of the composable within a component's code.
+
+```typescript
+const service = useMeta()
+
+// Explicitly defining the entry point
+service.init()
+```
+
+### Reset and Reinitialization
+
+```typescript
+const service = useMeta()
+
+// Resets the cached instance (available for local and global modes).
+// On the next composable call, a fresh instance will be created.
+if (service.destroyExecute) {
+  service.destroyExecute()
+}
+```
+
+Additionally, for global singletons, the `executeUseGlobalInit()` function is available, which forcefully invokes all registered global `callback` methods (useful for SSR initialization or full application state resets).
+
+If your application uses the `dxtFunctionalPlugin`, you **do not need** to call `executeUseGlobalInit()` manually at startup — the plugin handles it automatically under the hood.

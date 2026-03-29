@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/# Tải Lười (Lazy Loading)'/>
+
+# Theo Dõi Tầm Nhìn Và Tải Lười Phần Tử
+
+Bộ nhóm các hook này mang đến một lớp bọc hiệu năng vượt trội để làm việc với API `IntersectionObserver` nguyên bản của trình duyệt. Chúng được dùng chủ yếu để thu nhận sự kiện khi phần tử DOM bắt đầu đi vào khung hình nhìn thấy (hoặc trong một khoảng từ màn hình được định trước).
+
+Các ứng dụng thực tiễn điển hình:
+- **Tải lười (Lazy load) hình ảnh**: Chỉ tải tài nguyên đồ họa nặng khi người dùng chuẩn bị cuộn tới sát chúng.
+- **Cuộn vô tận (Infinite Scroll)**: Tự động nạp thêm dữ liệu danh sách ngay lúc người dùng lướt đến điểm cuối mốc cuộn.
+- **Diễn hoạt đồ họa (Animations)**: Kích hoạt các hiệu ứng đúng ngay khi phần tử DOM xuất hiện trên tầm mắt người quan sát.
+
+## Những Đặc Tính Khác Biệt Và Nên Dùng Hàm Nào?
+
+- **`useLazyItemByMarginRef` (Khuyên dùng)**: Đây là một hook thông minh. Việc duy nhất nó làm là **tái sử dụng** chính xác một đối tượng `IntersectionObserver` cho tất thảy phần tử thẻ nào khai báo thông số `rootMargin` tương đồng. Phép phân luồng ngầm này giảm thiểu khổng lồ bộ nhớ và sức mạnh CPU. Lấy ví dụ bạn đang tải một danh sách 1,000 thẻ — hệ thống chỉ khởi tạo bảo vệ đúng 1 cái quan sát (thay vì lạm phát lên 1,000).
+- **`useLazyRef` (Cho thiết lập tùy chọn sâu)**: Một dạng hàm base nguyên thủy cấu thành từ đầu. Tự sinh ra một **IntersectionObserver duy nhất** đi theo yêu cầu cục bộ của bạn. Cực kì lý tưởng cho lúc bạn hứng những thông số thiết lập dằn vặt (như mảng array cho phép đo `threshold`, tùy sửa `root`) hay thao tác dập quyền tuyệt đối hủy `disconnect` trình quan sát.
+
+## Ví Dụ Cách Sử Dụng Ngắn Gọn
+
+### 1. Phủ Sóng Mọi Mặt Trận (`useLazyItemByMarginRef`)
+
+Biện pháp căn bản nhất. Định đoạn đối tượng Ref của bạn gửi kèm biên giới khung viền (rootMargin - ví dụ cách bao xa thì trạng thái nảy lên true). Kết quả trả về một biến trạng thái phản ứng boolean.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useLazyItemByMarginRef } from '@dxtmisha/functional'
+
+const imageRef = ref<HTMLElement>()
+
+// Chỉ dấu '128px' ám chỉ là hệ biến status sẽ lật sang True
+// trước lúc bức ảnh xê dịch tiến tới sát màn hình đúng 128px
+const { lazyItemStatus } = useLazyItemByMarginRef(imageRef, '128px')
+</script>
+
+<template>
+  <!-- Render thứ đồ nặng nề một lúc khi đã tới quá gần -->
+  <img 
+    ref="imageRef" 
+    :src="lazyItemStatus ? 'heavy-image.jpg' : 'placeholder.jpg'" 
+  />
+</template>
+```
+
+### 2. Thu Trắc Liên Lẻ (`useLazyRef`)
+
+Giáp nối vào khi thông số API `IntersectionObserver` trở nên cần tính chi li hơn.
+
+```typescript
+import { ref } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+const myContainer = ref<HTMLElement>()
+
+// 1. Dựng trạm dò tìm đặc quyền 
+const observer = useLazyRef({
+  root: document.getElementById('scrollable-area'),
+  rootMargin: '0px',
+  threshold: [0, 0.5, 1.0] // Báo tín hiệu ở các mốc 0, 50% và hiển thị 100% lần
+})
+
+// 2. Bắt nó nhìn theo một mục tiêu
+const isVisible = observer.addLazyItem(myContainer)
+
+// 3. Lấy trực tiếp đối tượng dữ liệu đồ sộ của IntersectionObserverEntry:
+// observer.getItem(myContainer.value)
+
+// 4. Giải tán và tước quyền thủ công (khi thực sự cần thiết):
+// observer.removeLazyItem(myContainer.value)
+// observer.disconnectLazy()
+```

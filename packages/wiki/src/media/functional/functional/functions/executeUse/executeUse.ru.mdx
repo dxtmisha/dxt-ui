@@ -58,6 +58,95 @@ const theme = useTheme()
 // мы явно показываем другим разработчикам: "Инициализация происходит именно ТУТ"
 const theme = useTheme().init()
 ```
+## Пошаговая инструкция: Как создать и использовать свой сервис
+
+Создание управляемого синглтона с помощью `executeUse` обычно состоит из трёх простых шагов.
+
+### Шаг 1: Определение состояния (Фабрика)
+Сначала решите, какой тип стейта вам нужен (`global`, `local` или `provide`). Создайте отдельный файл (например, `useMyService.ts`). Используйте одну из функций-фабрик (например, `executeUseGlobal`).
+
+Внутри функции-колбека опишите все ваши реактивные переменные (`ref`, `reactive`), вычисляемые свойства (`computed`) и функции для изменения состояния:
+
+```typescript
+// src/composables/useMyService.ts
+import { ref, computed } from 'vue'
+import { executeUseGlobal } from '@dxtmisha/functional'
+
+// Создаем синглтон и инкапсулируем логику
+const instance = executeUseGlobal(() => {
+  // 1. Реактивное состояние
+  const count = ref(0)
+  
+  // 2. Вычисляемые свойства
+  const isPositive = computed(() => count.value > 0)
+  
+  // 3. Методы управления
+  const increment = () => count.value++
+  const reset = () => { count.value = 0 }
+
+  // Возвращаем то, что должно быть доступно снаружи
+  return {
+    count,
+    isPositive,
+    increment,
+    reset
+  }
+})
+
+// Экспортируем функцию-обертку.
+// Конструкция () => instance() нужна для того, чтобы редакторы кода (IDE)
+// корректно распознавали useMyService именно как функцию-composable.
+// Это обеспечивает корректную работу автокомплита и вывода типов.
+export const useMyService = () => instance()
+```
+
+### Шаг 2: Инициализация (Только для global)
+Если вы выбрали режим `global` (как в примере выше), вам необходимо указать приложению, когда именно создать этот экземпляр. Обычно это делается однократно в точке входа (`main.ts`):
+
+```typescript
+// src/main.ts
+import { createApp } from 'vue'
+import { executeUseGlobalInit } from '@dxtmisha/functional'
+import App from './App.vue'
+
+// Инициализируем абсолютно все global-синглтоны разом
+executeUseGlobalInit() 
+
+createApp(App).mount('#app')
+```
+
+> **Примечание:** Если в вашем приложении подключен плагин `dxtFunctionalPlugin`, вызывать `executeUseGlobalInit()` вручную при старте приложения **не нужно** — плагин делает это автоматически под капотом.
+
+### Шаг 3: Использование в компоненте
+Теперь вы можете импортировать вашу функцию `useMyService` в любой Vue-компонент. При самом первом логическом вызове для наглядности используйте метод `init()`.
+
+```vue
+<!-- src/components/MyComponent.vue -->
+<script setup lang="ts">
+import { useMyService } from '@/composables/useMyService'
+
+// Получаем стейт напрямую. Метод init() подсказывает, 
+// что здесь происходит первичное обращение в рамках этого компонента.
+const { count, isPositive, increment } = useMyService().init()
+</script>
+
+<template>
+  <div>
+    <p>Текущий счетчик: {{ count }}</p>
+    <p>Больше нуля? {{ isPositive ? 'Да' : 'Нет' }}</p>
+    <button @click="increment">Увеличить</button>
+  </div>
+</template>
+```
+
+Если по какой-то причине вам нужно принудительно сбросить стейт (например, при выходе пользователя из аккаунта), вызовите встроенный метод сброса:
+```typescript
+const service = useMyService()
+if (service.destroyExecute) {
+  service.destroyExecute()
+}
+```
+
 ## Тип `ExecuteUseType`
 
 ### `provide` (компонентный синглтон, по умолчанию)

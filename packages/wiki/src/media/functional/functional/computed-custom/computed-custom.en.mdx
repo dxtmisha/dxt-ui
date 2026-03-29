@@ -1,0 +1,75 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/# Advanced Computed Properties'/>
+
+# Advanced Computed Properties (Custom Computed)
+
+This library provides three specialized wrappers over standard Vue 3 `computed` properties. They solve complex architectural problems: asynchronous computations, decoupling from component lifecycles, and automatic multilingual recalculations.
+
+## 1. Asynchronous Computation (`computedAsync`)
+
+Vue's standard `computed` is strictly synchronous. `computedAsync` allows you to safely and cleanly implement `async/await` logic inside your getters.
+
+**Features:**
+- Evaluates lazily (execution starts only upon the first property access).
+- Automatically re-runs when its internal reactive dependencies change (powered by an internal `watchEffect`).
+- Provides an `ignore` parameter to skip assigning specific resolved values, preventing unnecessary UI thrashing.
+
+**Usage Example:**
+```typescript
+import { ref } from 'vue'
+import { computedAsync } from '@dxtmisha/functional'
+
+const userId = ref(1)
+
+const userData = computedAsync(async () => {
+  // Automatically re-fetches whenever userId.value changes
+  const response = await fetch(`/api/users/${userId.value}`)
+  return await response.json()
+})
+```
+
+## 2. Global Caching (`computedEternity`)
+
+Standard computed properties and watchers are destroyed when their parent component unmounts. `computedEternity` escapes this by placing the computation (and its watcher) into an independent global `effectScope`.
+
+**Features:**
+- Perfect for heavy or frequently reused datasets that you want to initialize once and keep updated in memory even if the user navigates away from the originating view.
+- Evaluates entirely on-demand on the first access.
+- "Lives forever" — persists strictly until the application is fully closed.
+- Values are strictly read-only.
+
+**Usage Example:**
+```typescript
+import { computedEternity } from '@dxtmisha/functional'
+
+// This fetch and its watcher will persist in memory permanently
+const heavyGlobalConfig = computedEternity(async () => {
+  return await fetch('/api/heavy-config').then(res => res.json())
+})
+```
+
+## 3. Language-Dependent Reactivity (`computedByLanguage`)
+
+Syntactic sugar for reactive properties that must instantly recalculate whenever the application's locale/language dictionary changes.
+
+**Features:**
+- Deeply tied to the internal `GeoRef` singleton.
+- Allows defining exact `conditions` under which evaluating the primary getter makes sense.
+- Built-in graceful fallback mechanism (`getterNone`), used exclusively when the primary value resolves to `undefined` or preconditions fail.
+
+**Usage Example:**
+```typescript
+import { computedByLanguage } from '@dxtmisha/functional'
+
+const pageTitle = computedByLanguage(
+  // Primary getter (runs if conditions are met)
+  () => dictionary.value.title,
+  
+  // Fallback (runs if primary returns undefined or conditions are false)
+  () => 'Default Title',
+  
+  // Precondition checking (optional)
+  () => isReady.value === true
+)
+```

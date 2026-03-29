@@ -58,6 +58,90 @@ const theme = useTheme()
 // we explicitly show other developers: "Initialization happens exactly HERE"
 const theme = useTheme().init()
 ```
+## Step-by-Step Guide: How to Create and Use Your Own Service
+
+Creating a managed singleton using `executeUse` typically consists of three simple steps.
+
+### Step 1: Defining the State (Factory)
+First, decide what type of state you need (`global`, `local`, or `provide`). Create a separate file (e.g., `useMyService.ts`). Use one of the factory functions (e.g., `executeUseGlobal`).
+
+Inside the callback function, define all your reactive variables (`ref`, `reactive`), computed properties (`computed`), and functions to mutate the state:
+
+```typescript
+// src/composables/useMyService.ts
+import { ref, computed } from 'vue'
+import { executeUseGlobal } from '@dxtmisha/functional'
+
+// Create the singleton and encapsulate the logic
+const instance = executeUseGlobal(() => {
+  // 1. Reactive state
+  const count = ref(0)
+  
+  // 2. Computed properties
+  const isPositive = computed(() => count.value > 0)
+  
+  // 3. Management methods
+  const increment = () => count.value++
+  const reset = () => { count.value = 0 }
+
+  // Return exactly what should be exposed to the outside
+  return { count, isPositive, increment, reset }
+})
+
+// Export a wrapper function.
+// The () => instance() construct is necessary so that code editors (IDEs)
+// correctly recognize useMyService as a composable function.
+// This ensures proper autocomplete and type inference.
+export const useMyService = () => instance()
+```
+
+### Step 2: Initialization (For `global` only)
+If you chose the `global` mode (like in the example above), you need to tell the application exactly when to instantiate it. This is usually done once at the entry point (`main.ts`):
+
+```typescript
+// src/main.ts
+import { createApp } from 'vue'
+import { executeUseGlobalInit } from '@dxtmisha/functional'
+import App from './App.vue'
+
+// Initialize absolutely all global singletons at once
+executeUseGlobalInit() 
+
+createApp(App).mount('#app')
+```
+
+> **Note:** If your application uses the `dxtFunctionalPlugin`, you **do not need** to call `executeUseGlobalInit()` manually at startup — the plugin handles it automatically under the hood.
+
+### Step 3: Usage in a Component
+Now you can import your `useMyService` function into any Vue component. On the very first logical call, use the `init()` method for clarity.
+
+```vue
+<!-- src/components/MyComponent.vue -->
+<script setup lang="ts">
+import { useMyService } from '@/composables/useMyService'
+
+// We receive the state directly. The init() method indicates
+// that the primary (first) access within this scope is happening here.
+const { count, isPositive, increment } = useMyService().init()
+</script>
+
+<template>
+  <div>
+    <p>Current count: {{ count }}</p>
+    <p>Is positive? {{ isPositive ? 'Yes' : 'No' }}</p>
+    <button @click="increment">Increment</button>
+  </div>
+</template>
+```
+
+If for some reason you need to forcefully reset the state (e.g., upon user logout), simply call the built-in reset method:
+```typescript
+const service = useMyService()
+if (service.destroyExecute) {
+  service.destroyExecute()
+}
+```
+
 ## The `ExecuteUseType` Enum
 
 ### `provide` (component-scoped singleton, default)

@@ -1,0 +1,77 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/# Plugin Initialization'/>
+
+# Unified Plugin Initialization (dxtFunctionalPlugin)
+
+`dxtFunctionalPlugin` is a Vue 3 plugin that handles all the routine work of centrally configuring and batch-initializing the core services (`Api`, `Translate`, `Icons`, `Meta`) in your application.
+
+Instead of manually importing each service and configuring them separately, you pass a single configuration object at application startup.
+
+## Quick Start (Installation)
+
+In your main application file (`main.ts`), call the `app.use()` method, passing the plugin and your options. **Be sure to do this before mounting the app (`app.mount`).**
+
+```typescript
+// src/main.ts
+import { createApp } from 'vue'
+import { dxtFunctionalPlugin, type FunctionalPluginOptions } from '@dxtmisha/functional'
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+// Prepare configuration
+const functionalOptions: FunctionalPluginOptions = {
+  // API client configuration (base URL)
+  api: { urlRoot: 'https://api.example.com' },
+  // Suffix to be appended to all page <title>
+  metaSuffix: ' | My App',
+  // Pass the router so services can access navigation
+  router
+}
+
+// Use functional plugin
+app.use(dxtFunctionalPlugin, functionalOptions)
+
+app.mount('#app')
+```
+
+## What Does the Plugin Do Under the Hood?
+
+When you call `app.use(dxtFunctionalPlugin)`, the following steps occur automatically:
+
+1. **`Api` Initialization**: Sets the base URL, default headers, and interception logic (hooks) via `Api.setConfig()`.
+2. **`Translate` Initialization**: Applies the configuration for localization and text loading.
+3. **`Icons` Initialization**: Configures the global SVG icon registry.
+4. **`Meta` Initialization**: Automatically sets the browser tab suffix (via `useMeta().setSuffix()`) if provided.
+5. **Vue Router Integration**: Globally registers the router object in the library's memory (`RouterItemRef`), allowing other functional services to use navigation even outside Vue components.
+6. **`executeUseGlobalInit()` Execution**: Automatically triggers the initialization of absolutely all global singletons created via `executeUseGlobal`. You no longer need to call it manually!
+
+## Service Configuration
+
+In `FunctionalPluginOptions`, you only specify the services you actually need. For example, if your project does not use translations (`Translate`), you simply omit that key from the options object.
+
+### Advanced API Configuration Example:
+
+```typescript
+const options: FunctionalPluginOptions = {
+  api: {
+    urlRoot: 'https://api.my-crm.com',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // Hook called BEFORE every request (e.g., adding an auth token)
+    preparation: async (fetchObj) => {
+      fetchObj.request.headers['Authorization'] = `Bearer ${myToken}`
+    },
+    // Hook called AFTER every request (e.g., global error handling)
+    end: async (response, fetchObj) => {
+      if (response.status === 401) {
+        // Log the user out
+      }
+      return undefined
+    }
+  }
+}
+```

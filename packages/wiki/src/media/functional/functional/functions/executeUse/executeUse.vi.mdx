@@ -58,6 +58,90 @@ const theme = useTheme()
 // chúng ta chủ động hiển thị cho các lập trình viên khác thấy: "Quá trình khởi tạo diễn ra ngay TẠI ĐÂY"
 const theme = useTheme().init()
 ```
+## Hướng Dẫn Từng Bước: Cách Tạo và Sử Dụng Dịch Vụ Của Riêng Bạn
+
+Việc tạo một singleton được quản lý bằng `executeUse` thường bao gồm ba bước đơn giản.
+
+### Bước 1: Định Nghĩa Trạng Thái (Factory)
+Trước tiên, hãy quyết định bạn cần loại trạng thái nào (`global`, `local` hoặc `provide`). Tạo một tệp riêng biệt (ví dụ: `useMyService.ts`). Sử dụng một trong các hàm factory (ví dụ: `executeUseGlobal`).
+
+Bên trong hàm callback, hãy định nghĩa tất cả các biến phản ứng (`ref`, `reactive`), thuộc tính tính toán (`computed`) và các hàm để thay đổi trạng thái:
+
+```typescript
+// src/composables/useMyService.ts
+import { ref, computed } from 'vue'
+import { executeUseGlobal } from '@dxtmisha/functional'
+
+// Tạo singleton và đóng gói cơ chế logic
+const instance = executeUseGlobal(() => {
+  // 1. Trạng thái phản hồi
+  const count = ref(0)
+  
+  // 2. Thuộc tính tính toán
+  const isPositive = computed(() => count.value > 0)
+  
+  // 3. Phương thức quản lý
+  const increment = () => count.value++
+  const reset = () => { count.value = 0 }
+
+  // Trả về những gì cần được bộc lộ ra bên ngoài
+  return { count, isPositive, increment, reset }
+})
+
+// Xuất ra một hàm bọc ngoài (wrapper).
+// Cú pháp () => instance() là điều cần thiết để giúp các trình soạn thảo mã (IDE)
+// nhận diện useMyService chính xác là một hàm composable.
+// Điều này đảm bảo tính năng tự động hoàn thành mã (autocomplete) và suy luận kiểu hoạt động đúng.
+export const useMyService = () => instance()
+```
+
+### Bước 2: Khởi Tạo (Chỉ dành cho `global`)
+Nếu bạn chọn chế độ `global` (như trong ví dụ trên), bạn cần báo cho ứng dụng biết chính xác thời điểm thể hiện nó. Điều này thường được thực hiện một lần tại điểm xâm nhập (`main.ts`):
+
+```typescript
+// src/main.ts
+import { createApp } from 'vue'
+import { executeUseGlobalInit } from '@dxtmisha/functional'
+import App from './App.vue'
+
+// Khởi tạo toàn bộ các global singleton cùng một lúc
+executeUseGlobalInit() 
+
+createApp(App).mount('#app')
+```
+
+> **Lưu ý:** Nếu ứng dụng của bạn sử dụng `dxtFunctionalPlugin`, bạn **không cần phải** gọi `executeUseGlobalInit()` một cách thủ công lúc khởi động — plugin đã tự động xử lý việc này ở hậu trường.
+
+### Bước 3: Sử Dụng trong Component
+Bây giờ bạn có thể nhập hàm `useMyService` của mình vào bất kỳ component Vue nào. Tại lần gọi định danh đầu tiên, hãy sử dụng phương thức `init()` để mã rõ ràng hơn.
+
+```vue
+<!-- src/components/MyComponent.vue -->
+<script setup lang="ts">
+import { useMyService } from '@/composables/useMyService'
+
+// Nhận trực tiếp trạng thái. Phương thức init() cho biết
+// lệnh gọi (truy cập) chính đầu tiên đang xảy ra ở đây.
+const { count, isPositive, increment } = useMyService().init()
+</script>
+
+<template>
+  <div>
+    <p>Số đếm hiện tại: {{ count }}</p>
+    <p>Có dương không? {{ isPositive ? 'Có' : 'Không' }}</p>
+    <button @click="increment">Tăng Dần</button>
+  </div>
+</template>
+```
+
+Nếu vì lý do nào đó, bạn cần thiết lập lại trạng thái (ví dụ: khi người dùng đăng xuất), bạn chỉ cần gọi phương thức reset tích hợp sẵn:
+```typescript
+const service = useMyService()
+if (service.destroyExecute) {
+  service.destroyExecute()
+}
+```
+
 ## Enum `ExecuteUseType`
 
 ### `provide` (singleton phạm vi component, mặc định)

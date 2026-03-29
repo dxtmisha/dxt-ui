@@ -1,0 +1,106 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/# Singleton được quản lý'/>
+
+# Singleton được quản lý (executeUse)
+
+Hàm **executeUse** là một nhà máy tiên tiến (factory) để tạo ra các singleton được quản lý trong hệ sinh thái **Vue 3**. Nó giải quyết vấn đề khởi tạo và tái sử dụng các trạng thái phản hồi, dịch vụ toàn cầu (như thẻ meta) hoặc các logic thành phần bằng cách cung cấp quyền kiểm soát linh hoạt đối với ngữ cảnh thực thi (toàn cầu - global, cục bộ - local, hoặc thông qua `provide/inject`).
+
+## Chế độ thực thi
+
+**executeUse** hỗ trợ ba chế độ khởi tạo (enum `ExecuteUseType`), mỗi chế độ được thiết kế cho những nhiệm vụ kiến trúc riêng biệt:
+
+1. **global** (`executeUseGlobal`) — một phiên bản duy nhất cho toàn bộ ứng dụng. Rất thích hợp để tạo các dịch vụ tồn tại bên ngoài một thành phần cụ thể.
+2. **provide** (`executeUseProvide`) — chia sẻ trạng thái qua cây thành phần (`provide`/`inject`). Đảm bảo rằng các thành phần con sẽ nhận được cùng một phiên bản từ thành phần cha gần nhất.
+3. **local** (`executeUseLocal`) — một phiên bản duy nhất trong một bao đóng (closure), được cách ly bên trong `effectScope` của riêng nó.
+
+### Sự khác biệt giữa `global` và `local`
+
+Sự khác biệt chính về mặt kiến trúc giữa các chế độ `global` và `local` nằm ở **thời điểm khởi tạo** (thời điểm chính xác mà phiên bản được tạo):
+
+1. **`global` (Khởi tạo sớm / Hàng loạt):**
+   - Tất cả các lệnh gọi hàm được bọc trong `global` sẽ được thu thập vào một mảng toàn cục. Chúng được **thực thi ngay lập tức cùng nhau** khi hàm `executeUseGlobalInit()` được gọi tại điểm xâm nhập của ứng dụng (ví dụ: trong `main.ts` hoặc trong quá trình chạy SSR).
+   - **Cú pháp sử dụng (Kịch bản):** Các dịch vụ thiết yếu và quan trọng (Cài đặt, Thẻ meta, Bản dịch ngôn ngữ, Phiên của người dùng) phải SẴN SÀNG hoạt động *trước* khi render thành phần đầu tiên, hoặc các dịch vụ cần được khởi tạo lại tập trung khi ứng dụng thiết lập lại.
+
+2. **`local` (Khởi tạo lười biếng - Lazy Initialization):**
+   - Phiên bản được tạo **chỉ vào đúng thời điểm được gọi lần đầu tiên** bên trong một thành phần hoặc dịch vụ khác. Ở đây, nhờ việc khởi tạo được bọc bên trong một `effectScope` toàn cầu, singleton này – tương tự như `global` – sẽ "sống vĩnh viễn" và không bị hủy ngay cả khi thành phần gọi nó bị gỡ bỏ (unmount).
+   - **Cú pháp sử dụng (Kịch bản):** Các dịch vụ nặng hoặc đặc thù theo ngữ cảnh (ví dụ: bộ xử lý bộ lọc phức tạp, một trang chat websocket riêng biệt, phân tích thống kê) mà:
+     - Có thể không bao giờ được dùng tới trong phiên làm việc hiện tại của người dùng.
+     - Chỉ nên khởi tạo khi người dùng đi tới một trang cụ thể cần đến chức năng đó.
+
+## Cú pháp sử dụng (Ví dụ dịch vụ toàn cầu)
+
+Kịch bản phổ biến nhất là khởi tạo một kho lưu trữ toàn cầu hoặc dịch vụ (ví dụ: để làm việc với các thẻ meta).
+
+```typescript
+import { ref } from 'vue'
+import { executeUseGlobal } from '@dxtmisha/functional'
+
+// 1. Khai báo singleton
+const item = executeUseGlobal(() => {
+  const title = ref('Tiêu đề của tôi')
+  
+  const updateTitle = (newTitle: string) => {
+    title.value = newTitle
+  }
+
+  return { title, updateTitle }
+})
+
+// 2. Xuất (export) hàm composable (theo quy ước của Vue)
+export const useMeta = () => item()
+```
+
+Bên trong bất kỳ thành phần Vue nào:
+
+```typescript
+import { useMeta } from './useMeta'
+
+const { title, updateTitle } = useMeta() // title sẽ được dùng chung cho tất cả các lệnh gọi
+```
+
+## Sử dụng Provide / Inject
+
+Nếu bạn cần trạng thái chỉ tồn tại trong một cây thành phần cụ thể (ví dụ: một biểu mẫu và các trường bên trong nó), hãy sử dụng `executeUseProvide`.
+
+```typescript
+import { executeUseProvide } from '@dxtmisha/functional'
+
+const useFormState = executeUseProvide((initialData: any) => {
+  // ... logic khởi tạo trạng thái phản hồi
+  return { /* ... */ }
+})
+```
+
+Trong lần gọi `useFormState(data)` đầu tiên ở thành phần cha, trạng thái sẽ được khởi tạo và truyền xuống (qua `provide`). Bất kỳ thành phần con nào gọi `useFormState()` sau đó sẽ nhận được chính phiên bản này thông qua `inject`.
+
+## Quản lý phiên bản
+
+Các hàm `executeUse` bọc kết quả từ factory của bạn và bổ sung thêm các phương thức đặc biệt để quản lý vòng đời (tùy thuộc vào chế độ).
+
+### Phương thức init()
+
+Phương thức `init()` chỉ đơn giản là một lệnh giữ chỗ (stub) trả về chính đối tượng. Nó được sử dụng độc quyền để làm nổi bật rõ ràng lệnh gọi ban đầu của composable trong mã của một thành phần.
+
+```typescript
+const service = useMeta()
+
+// Xác định rõ ràng điểm vào ban đầu
+service.init()
+```
+
+### Đặt lại và Khởi tạo lại
+
+```typescript
+const service = useMeta()
+
+// Đặt lại (reset) phiên bản được lưu trữ trong bộ nhớ đệm chế độ cục bộ (local) và toàn cầu (global).
+// Trong lần gọi composable tiếp theo, một phiên bản mới sẽ được tạo ra.
+if (service.destroyExecute) {
+  service.destroyExecute()
+}
+```
+
+Ngoài ra, đối với các singleton toàn cầu, hàm `executeUseGlobalInit()` có sẵn để buộc kích hoạt lại tất cả các phương thức `callback` đã đăng ký (có ích trong trường hợp khởi tạo SSR hoặc đặt lại toàn bộ ứng dụng).
+
+Nếu ứng dụng của bạn sử dụng `dxtFunctionalPlugin`, bạn **không cần phải** gọi `executeUseGlobalInit()` một cách thủ công lúc khởi động — plugin đã tự động xử lý việc này ở hậu trường.

@@ -1,0 +1,77 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/# Инициализация плагина'/>
+
+# Единая инициализация плагина (dxtFunctionalPlugin)
+
+`dxtFunctionalPlugin` — это плагин для Vue 3, который берет на себя всю рутину по централизованной настройке и пакетной инициализации базовых сервисов (`Api`, `Translate`, `Icons`, `Meta`) в вашем приложении. 
+
+Вместо того чтобы вручную импортировать каждый сервис и настраивать их по отдельности, вы передаете единый конфигурационный объект при старте приложения. 
+
+## Быстрый старт (Установка)
+
+В вашем основном файле конфигурации приложения (`main.ts`), вызовите метод `app.use()`, передав туда плагин и ваши опции. **Обязательно сделайте это до монтирования приложения (`app.mount`).**
+
+```typescript
+// src/main.ts
+import { createApp } from 'vue'
+import { dxtFunctionalPlugin, type FunctionalPluginOptions } from '@dxtmisha/functional'
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+// Подготавливаем конфигурацию
+const functionalOptions: FunctionalPluginOptions = {
+  // Настройка API-клиента (базовый URL)
+  api: { urlRoot: 'https://api.example.com' },
+  // Суффикс, который будет добавляться ко всем <title> страниц
+  metaSuffix: ' | Мое приложение',
+  // Передача роутера для работы навигации внутри сервисов
+  router
+}
+
+// Подключаем функциональный плагин
+app.use(dxtFunctionalPlugin, functionalOptions)
+
+app.mount('#app')
+```
+
+## Что делает плагин под капотом?
+
+При вызове `app.use(dxtFunctionalPlugin)` происходят следующие шаги:
+
+1. **Инициализация `Api`**: Настраивает базовый URL, заголовки по умолчанию и логику перехватов (hook-и) через `Api.setConfig()`.
+2. **Инициализация `Translate`**: Устанавливает конфигурацию для локализации и загрузки текстов.
+3. **Инициализация `Icons`**: Запускает конфигурацию глобального реестра иконок (SVG).
+4. **Инициализация `Meta`**: Автоматически прописывает суффикс вкладки браузера (через `useMeta().setSuffix()`), если он был передан.
+5. **Интеграция с Vue Router**: Глобально регистрирует объект роутера в памяти библиотеки (`RouterItemRef`), чтобы другие функциональные сервисы имели доступ к навигации даже за пределами компонентов.
+6. **Запуск `executeUseGlobalInit()`**: Автоматически триггерит инициализацию абсолютно всех глобальных синглтонов на базе `executeUseGlobal`. Заботиться о ручном вызове больше не нужно!
+
+## Конфигурация сервисов
+
+В `FunctionalPluginOptions` вы указываете только те сервисы, которые вам действительно необходимы. Например, если в вашем проекте нет переводов (`Translate`), вы просто не передаете соответствующий ключ в опции.
+
+### Пример расширенной настройки Api:
+
+```typescript
+const options: FunctionalPluginOptions = {
+  api: {
+    urlRoot: 'https://api.my-crm.com',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // Хук, вызываемый ПЕРЕД каждым запросом (например, для добавления токена)
+    preparation: async (fetchObj) => {
+      fetchObj.request.headers['Authorization'] = `Bearer ${myToken}`
+    },
+    // Хук, вызываемый ПОСЛЕ каждого запроса (обработка глобальных ошибок)
+    end: async (response, fetchObj) => {
+      if (response.status === 401) {
+        // разлогинить пользователя
+      }
+      return undefined
+    }
+  }
+}
+```

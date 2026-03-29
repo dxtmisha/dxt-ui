@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/# Lazy Element Loading'/>
+
+# Element Visibility Tracking (Lazy Loading)
+
+This family of hooks provides a highly performant wrapper around the native browser `IntersectionObserver` API. They are used to track when DOM elements enter the visible viewport (or a specified margin area).
+
+Main use cases:
+- **Lazy loading images**: Load heavy assets only when the user scrolls close to them.
+- **Infinite Scrolling**: Fetch new data when nearing the end of a list.
+- **Scroll animations**: Trigger visual effects exactly when a block becomes visible.
+
+## Features and Which Hook to Choose?
+
+- **`useLazyItemByMarginRef` (Recommended)**: A "smart" singleton hook. It **reuses** the exact same `IntersectionObserver` instance for all elements that share identical `rootMargin` settings. This drastically reduces memory and CPU consumption. If your page has 1,000 lazy images, it creates just 1 shared observer instead of 1,000.
+- **`useLazyRef` (For complex tasks)**: The low-level base hook. It strictly creates an **individual** `IntersectionObserver` scoped to your task. Useful when you need specific configurations (like complex `threshold` arrays, a custom `root` element) or complete manual control over the observer's lifecycle via the `disconnect` method.
+
+## Usage Examples
+
+### 1. Mass Element Tracking (`useLazyItemByMarginRef`)
+
+The most common approach. Pass your element ref and the desired viewport margin (when the trigger should fire). Returns a reactive visibility flag.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useLazyItemByMarginRef } from '@dxtmisha/functional'
+
+const imageRef = ref<HTMLElement>()
+
+// '128px' means the status becomes true 
+// when the element is 128px away from entering the viewport.
+const { lazyItemStatus } = useLazyItemByMarginRef(imageRef, '128px')
+</script>
+
+<template>
+  <!-- Render heavy content only when we get close -->
+  <img 
+    ref="imageRef" 
+    :src="lazyItemStatus ? 'heavy-image.jpg' : 'placeholder.jpg'" 
+  />
+</template>
+```
+
+### 2. Isolated Observer (`useLazyRef`)
+
+Used for fine-grained tasks requiring specific `IntersectionObserver` configurations.
+
+```typescript
+import { ref } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+const myContainer = ref<HTMLElement>()
+
+// 1. Create a unique observer
+const observer = useLazyRef({
+  root: document.getElementById('scrollable-area'),
+  rootMargin: '0px',
+  threshold: [0, 0.5, 1.0] // Track every 50% visibility stage
+})
+
+// 2. Add an element to watch
+const isVisible = observer.addLazyItem(myContainer)
+
+// 3. You can extract raw IntersectionObserverEntry data:
+// observer.getItem(myContainer.value)
+
+// 4. Manual cleanup if necessary:
+// observer.removeLazyItem(myContainer.value)
+// observer.disconnectLazy()
+```
