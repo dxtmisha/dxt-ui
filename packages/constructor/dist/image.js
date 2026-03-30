@@ -54,30 +54,62 @@ var S = 1280, C = class {
 	static async get(e) {
 		return v(e) ? `${e}${w}` : this.isPdf(e) ? `${await C.getFileReader(e)}${w}` : "";
 	}
-}, E = /* @__PURE__ */ function(e) {
-	return e.pdf = "pdf", e.file = "file", e.image = "image", e.flag = "flag", e.flagCompressed = "flag-compressed", e.color = "color", e.public = "public", e.filled = "filled", e.outlined = "outlined", e.round = "round", e.sharp = "sharp", e.twoTone = "two-tone", e.material = "material", e.icon = "icon", e;
-}({}), D = class {
+}, E = [], D = class {
+	static is(e) {
+		return e instanceof Uint8Array || e instanceof ArrayBuffer;
+	}
+	static createImage(e, t = "image/jpeg") {
+		let n = this.getCacheItem(e, t), r = new Image();
+		if (n) r.src = n.src;
+		else {
+			let n = new Blob([this.toUint8Array(e)], { type: t }), i = URL.createObjectURL(n);
+			r.src = i, this.addCacheItem(e, t, i);
+		}
+		return {
+			image: r,
+			src: r.src,
+			width: r.naturalWidth,
+			height: r.naturalHeight
+		};
+	}
+	static toUint8Array(e) {
+		return e instanceof ArrayBuffer ? new Uint8Array(e) : e;
+	}
+	static getCacheItem(e, t) {
+		return E.find((n) => n.item === e && n.type === t);
+	}
+	static addCacheItem(e, t, n) {
+		E.push({
+			item: e,
+			type: t,
+			src: n
+		});
+	}
+}, O = /* @__PURE__ */ function(e) {
+	return e.pdf = "pdf", e.file = "file", e.array = "array", e.image = "image", e.flag = "flag", e.flagCompressed = "flag-compressed", e.color = "color", e.public = "public", e.filled = "filled", e.outlined = "outlined", e.round = "round", e.sharp = "sharp", e.twoTone = "two-tone", e.material = "material", e.icon = "icon", e;
+}({}), k = class {
 	constructor(e) {
 		t(this, "item", n(() => {
 			let e = this.props.value;
-			if (e instanceof File || g(e)) {
-				if (T.isPdf(e)) return E.pdf;
-				if (e instanceof File) return E.file;
-				if (e.match(/\//)) return E.image;
-				if (e.match(/^#/)) return E.color;
-				if (e.match(/^@/)) return E.public;
-				if (e.match(/^\$/)) return E.material;
-				if (e.match(/^flag-[a-z]{2}$/)) return E.flag;
-				if (e.match(/^f-[a-z]{2}$/)) return E.flagCompressed;
+			if (e instanceof File) return O.file;
+			if (D.is(e)) return O.array;
+			if (v(e) && g(e)) {
+				if (T.isPdf(e)) return O.pdf;
+				if (e.match(/\//)) return O.image;
+				if (e.match(/^#/)) return O.color;
+				if (e.match(/^@/)) return O.public;
+				if (e.match(/^\$/)) return O.material;
+				if (e.match(/^flag-[a-z]{2}$/)) return O.flag;
+				if (e.match(/^f-[a-z]{2}$/)) return O.flagCompressed;
 				let t = e.match(/^(outlined|round|sharp|material)-/);
-				return t ? t[1] : d.is(e) ? E.public : E.outlined;
+				return t ? t[1] : d.is(e) ? O.public : O.outlined;
 			}
 		})), this.props = e;
 	}
-}, O = {
+}, A = {
 	adaptiveGroup: "basic",
 	preloadOffset: "1024px"
-}, k = class {
+}, j = class {
 	constructor(e, n) {
 		t(this, "image", a()), this.props = e, this.type = n, c(async () => {
 			this.image.value = await this.init();
@@ -95,23 +127,24 @@ var S = 1280, C = class {
 	async init() {
 		let e = this.props.value;
 		if (e) switch (this.type.item.value) {
-			case E.pdf: return await T.get(e);
-			case E.image:
-			case E.file:
+			case O.pdf: return await T.get(e);
+			case O.array: return await D.createImage(e);
+			case O.image:
+			case O.file:
 				try {
 					return this.props.lazy ? this.props.value : await C.createImage(e);
 				} catch (t) {
 					console.error("ImageData.initImage: ", e);
 				}
 				break;
-			case E.public:
-			case E.icon:
-			case E.flag:
+			case O.public:
+			case O.icon:
+			case O.flag:
 				if (v(e)) return await d.get(e, this.props.url);
 				break;
 		}
 	}
-}, A = class {
+}, M = class {
 	constructor(e) {
 		t(this, "coordinator", n(() => {
 			if (this.is()) {
@@ -169,7 +202,7 @@ var S = 1280, C = class {
 			height: `${100 / n * 100}%`
 		};
 	}
-}, j = class {
+}, N = class {
 	constructor(e, r) {
 		t(this, "x", n(() => {
 			var e;
@@ -179,7 +212,7 @@ var S = 1280, C = class {
 			return this.coordinator.is() ? `${this.coordinator.coordinator.value[0] + this.coordinator.size.value.height / 2}%` : ((e = this.props.y) == null ? void 0 : e.toString()) || "center";
 		})), this.props = e, this.coordinator = r;
 	}
-}, M = class {
+}, P = class {
 	constructor(e) {
 		t(this, "factorMax", 1), t(this, "size", {
 			width: 0,
@@ -234,7 +267,7 @@ var S = 1280, C = class {
 			height: 7680
 		}, this;
 	}
-}, N = class {
+}, F = class {
 	static isSize() {
 		return this.items.find((e) => e.isSize()) !== void 0;
 	}
@@ -248,14 +281,14 @@ var S = 1280, C = class {
 		return this.items.find((t) => t.is(e));
 	}
 	static init(e) {
-		let t = new M(e);
+		let t = new P(e);
 		return this.items.push(t), t;
 	}
 };
-t(N, "items", []);
+t(F, "items", []);
 //#endregion
 //#region src/constructors/Image/ImageAdaptiveGroup.ts
-var P = class {
+var I = class {
 	static is(e) {
 		return this.objects.findIndex((t) => t === e) !== -1;
 	}
@@ -293,14 +326,14 @@ var P = class {
 		});
 	}
 	static makeSize() {
-		N.reset(), this.objectsAdaptive.forEach((e) => {
+		F.reset(), this.objectsAdaptive.forEach((e) => {
 			let t = e.element.value;
-			t && N.get(e.group.value).makeWidth(e.width.value).makeHeight(e.height.value).makeOffsetWidth(t.offsetWidth).makeOffsetHeight(t.offsetHeight);
+			t && F.get(e.group.value).makeWidth(e.width.value).makeHeight(e.height.value).makeOffsetWidth(t.offsetWidth).makeOffsetHeight(t.offsetHeight);
 		});
 	}
 	static makePercent() {
-		N.isSize() && this.objectsAdaptive.forEach((e) => {
-			let t = e.element.value, n = N.get(e.group.value);
+		F.isSize() && this.objectsAdaptive.forEach((e) => {
+			let t = e.element.value, n = F.get(e.group.value);
 			if (t) {
 				let r = n.getWidth(), i = n.getHeight();
 				e.setPercent(e.width.value * (r ? 1 / r : 0) * (n.getOffsetWidth() / t.offsetWidth), e.height.value * (i ? 1 / i : 0) * (n.getOffsetHeight() / t.offsetHeight));
@@ -308,8 +341,8 @@ var P = class {
 		});
 	}
 	static makeFactorMax() {
-		N.isSize() && this.objectsAdaptive.forEach((e) => {
-			N.get(e.group.value).makeFactorMax(e.factor.value);
+		F.isSize() && this.objectsAdaptive.forEach((e) => {
+			F.get(e.group.value).makeFactorMax(e.factor.value);
 		});
 	}
 	static isAdaptive() {
@@ -319,19 +352,19 @@ var P = class {
 		return this.cache.join("|") !== e.join("|");
 	}
 };
-t(P, "objects", []), t(P, "objectsAdaptive", []), t(P, "cache", []), t(P, "event", void 0), t(P, "time", void 0);
+t(I, "objects", []), t(I, "objectsAdaptive", []), t(I, "cache", []), t(I, "event", void 0), t(I, "time", void 0);
 //#endregion
 //#region src/constructors/Image/ImageAdaptiveItem.ts
-var F = /* @__PURE__ */ function(e) {
+var L = /* @__PURE__ */ function(e) {
 	return e.x = "x", e.y = "y", e;
-}(F || {}), I = "main", L = class {
+}(L || {}), R = "main", z = class {
 	constructor(e, r, i) {
 		t(this, "percent", a({
 			width: 0,
 			height: 0
 		})), t(this, "beyond", !1), t(this, "visible", !1), t(this, "active", n(() => !!(this.props.adaptive && (this.width.value || this.height.value)) && this.data.isImage())), t(this, "group", n(() => {
 			var e;
-			return (e = this.props.adaptiveGroup) == null ? I : e;
+			return (e = this.props.adaptiveGroup) == null ? R : e;
 		})), t(this, "width", n(() => {
 			var e;
 			return b((e = this.props.objectWidth) == null ? 0 : e);
@@ -339,14 +372,14 @@ var F = /* @__PURE__ */ function(e) {
 			var e, t;
 			return b((e = (t = this.props) == null ? void 0 : t.objectHeight) == null ? 0 : e);
 		})), t(this, "type", n(() => {
-			if (this.width.value && this.percent.value.width > 0) return F.x;
-			if (this.height.value && this.percent.value.height > 0) return F.y;
+			if (this.width.value && this.percent.value.width > 0) return L.x;
+			if (this.height.value && this.percent.value.height > 0) return L.y;
 		})), t(this, "size", n(() => {
 			if (this.element.value && this.data.isImage()) {
 				let e = this.data.image.value;
 				switch (this.type.value) {
-					case F.x: return e.height * (this.element.value.offsetWidth * this.percent.value.width / e.width);
-					case F.y: return e.width * (this.element.value.offsetHeight * this.percent.value.height / e.height);
+					case L.x: return e.height * (this.element.value.offsetWidth * this.percent.value.width / e.width);
+					case L.y: return e.width * (this.element.value.offsetHeight * this.percent.value.height / e.height);
 				}
 			}
 			return 0;
@@ -354,12 +387,12 @@ var F = /* @__PURE__ */ function(e) {
 			let e = this.element.value;
 			if (e) {
 				let t = this.size.value;
-				if (this.type.value === F.x && t > e.offsetHeight) return e.offsetHeight / t;
-				if (this.type.value === F.y && t > e.offsetWidth) return e.offsetWidth / t;
+				if (this.type.value === L.x && t > e.offsetHeight) return e.offsetHeight / t;
+				if (this.type.value === L.y && t > e.offsetWidth) return e.offsetWidth / t;
 			}
 			return 1;
 		})), this.props = e, this.data = r, this.element = i, c(() => {
-			this.is() ? P.add(this) : P.remove(this);
+			this.is() ? I.add(this) : I.remove(this);
 		});
 	}
 	is() {
@@ -379,10 +412,10 @@ var F = /* @__PURE__ */ function(e) {
 		return p(this.element.value);
 	}
 	getBackgroundSize() {
-		let e = N.get(this.group.value).getFactorMax();
+		let e = F.get(this.group.value).getFactorMax();
 		switch (this.type.value) {
-			case F.x: return `${100 * this.percent.value.width * e}% auto`;
-			case F.y: return `auto ${100 * this.percent.value.height * e}%`;
+			case L.x: return `${100 * this.percent.value.width * e}% auto`;
+			case L.y: return `auto ${100 * this.percent.value.height * e}%`;
 		}
 		return null;
 	}
@@ -393,7 +426,7 @@ var F = /* @__PURE__ */ function(e) {
 		}), this;
 	}
 	remove() {
-		this.active.value && P.remove(this);
+		this.active.value && I.remove(this);
 	}
 	make() {
 		if (this.beyond = !1, this.visible = !1, this.element.value && this.is()) if (this.props.adaptiveAlways) this.beyond = !0, this.visible = !0;
@@ -403,7 +436,7 @@ var F = /* @__PURE__ */ function(e) {
 		}
 		return this;
 	}
-}, R = class {
+}, B = class {
 	constructor(e, r, i, a) {
 		t(this, "image", n(() => {
 			let e = this.imageSrc.value;
@@ -439,7 +472,7 @@ var F = /* @__PURE__ */ function(e) {
 		let e = this.props.size;
 		return g(e) ? e.toString().match(/%$/) ? this.getSize(e, e) : e.toString() : null;
 	}
-}, z = class {
+}, V = class {
 	constructor(e, r, i, c, l) {
 		t(this, "lazyInit", a(!1)), t(this, "lazyStatus", void 0), t(this, "is", n(() => !!this.props.tagImg && this.isType())), t(this, "isLazy", n(() => !!this.props.lazy && !this.lazyInit.value)), t(this, "isPicture", n(() => this.is.value && !!this.props.picture)), t(this, "binds", n(() => {
 			let e = { key: "img" };
@@ -477,7 +510,7 @@ var F = /* @__PURE__ */ function(e) {
 	}
 	isType() {
 		let e = this.type.item.value;
-		return e === E.file || e === E.image;
+		return e === O.file || e === O.image;
 	}
 	isSize() {
 		let e = this.background.size.value;
@@ -499,16 +532,16 @@ var F = /* @__PURE__ */ function(e) {
 			this.lazyInit.value = e.value;
 		}, { immediate: !0 });
 	}
-}, B = class {
+}, H = class {
 	constructor(r, a, o, c, l) {
 		t(this, "type", void 0), t(this, "data", void 0), t(this, "coordinator", void 0), t(this, "position", void 0), t(this, "adaptiveItem", void 0), t(this, "background", void 0), t(this, "img", void 0), t(this, "tag", n(() => this.img.is.value ? "img" : "span")), t(this, "text", n(() => {
 			let e = this.type.item.value;
-			if (e === E.pdf) {
+			if (e === O.pdf) {
 				let e = this.data.image.value;
 				if (v(e)) return e;
 			}
 			let t = this.props.value;
-			if (e === E.flagCompressed && t) return String(t).replace("f-", "").toUpperCase();
+			if (e === O.flagCompressed && t) return String(t).replace("f-", "").toUpperCase();
 			if (e && v(t) && [
 				"filled",
 				"outlined",
@@ -541,20 +574,21 @@ var F = /* @__PURE__ */ function(e) {
 		})), t(this, "styles", n(() => {
 			let e = this.props.value;
 			if (e) switch (this.type.item.value) {
-				case E.file:
-				case E.image: return {
+				case O.file:
+				case O.image:
+				case O.array: return {
 					"background-image": this.background.image.value,
 					"background-size": this.background.size.value,
 					"background-position-x": this.position.x.value,
 					"background-position-y": this.position.y.value
 				};
-				case E.icon: return { "background-image": this.background.image.value };
-				case E.flag: return {
+				case O.icon: return { "background-image": this.background.image.value };
+				case O.flag: return {
 					"background-image": this.background.image.value,
 					"background-size": "contain"
 				};
-				case E.public: return { "mask-image": this.background.image.value };
-				case E.color: if (v(e)) return { "background-color": e };
+				case O.public: return { "mask-image": this.background.image.value };
+				case O.color: if (v(e)) return { "background-color": e };
 			}
 			return {};
 		})), t(this, "binds", n(() => ({
@@ -566,7 +600,7 @@ var F = /* @__PURE__ */ function(e) {
 			key: "value",
 			data: this.data.image.value
 		}))), this.props = r, this.element = a, this.className = o, this.emits = c;
-		let { ImageAdaptiveItemConstructor: u = L, ImageBackgroundConstructor: d = R, ImageCoordinatorConstructor: f = A, ImageDataConstructor: p = k, ImageImgConstructor: m = z, ImagePositionConstructor: h = j, ImageTypeConstructor: g = D } = l == null ? {} : l;
+		let { ImageAdaptiveItemConstructor: u = z, ImageBackgroundConstructor: d = B, ImageCoordinatorConstructor: f = M, ImageDataConstructor: p = j, ImageImgConstructor: m = V, ImagePositionConstructor: h = N, ImageTypeConstructor: g = k } = l == null ? {} : l;
 		this.type = new g(r), this.data = new p(r, this.type), this.coordinator = new f(r), this.position = new h(r, this.coordinator), this.adaptiveItem = new u(r, this.data, a), this.background = new d(r, this.data, this.coordinator, this.adaptiveItem), this.img = new m(this.props, a, this.type, this.position, this.background), c && s(this.data.image, (e) => {
 			c("load", {
 				type: this.type.item.value,
@@ -574,8 +608,8 @@ var F = /* @__PURE__ */ function(e) {
 			});
 		}), i(() => this.adaptiveItem.remove());
 	}
-}, V = class extends l {
-	constructor(e, i, a, o = B) {
+}, U = class extends l {
+	constructor(e, i, a, o = H) {
 		super(e, i, a), t(this, "item", void 0), t(this, "propsImage", n(() => {
 			var e;
 			return {
@@ -594,7 +628,7 @@ var F = /* @__PURE__ */ function(e) {
 		})), t(this, "renderPicture", () => {
 			let e = this.item.img.picture.value, t = [];
 			return e && e.forEach((e) => t.push(r("source", e))), t.push(this.renderImgItem()), r("picture", this.propsImage.value, t);
-		}), t(this, "renderImg", () => r("span", this.propsImage.value, this.renderImgItem())), t(this, "renderImgItem", () => r("img", this.item.img.binds.value)), t(this, "renderValue", () => this.item.type.item.value === E.pdf ? r("object", this.item.valueBinds.value) : this.item.type.item.value === E.flagCompressed ? r("span", { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }) : this.item.text.value), this.item = new o(this.props, this.element, this.getName(), this.emits), this.init();
+		}), t(this, "renderImg", () => r("span", this.propsImage.value, this.renderImgItem())), t(this, "renderImgItem", () => r("img", this.item.img.binds.value)), t(this, "renderValue", () => this.item.type.item.value === O.pdf ? r("object", this.item.valueBinds.value) : this.item.type.item.value === O.flagCompressed ? r("span", { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }) : this.item.text.value), this.item = new o(this.props, this.element, this.getName(), this.emits), this.init();
 	}
 	initExpose() {
 		return {
@@ -613,4 +647,4 @@ var F = /* @__PURE__ */ function(e) {
 	}
 };
 //#endregion
-export { B as Image, V as ImageDesign, E as ImageTypeValue, O as defaultsImage };
+export { H as Image, U as ImageDesign, O as ImageTypeValue, A as defaultsImage };

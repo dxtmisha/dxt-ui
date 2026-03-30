@@ -1,7 +1,8 @@
 import { computed } from 'vue'
-import { Icons, isFilled } from '@dxtmisha/functional'
+import { Icons, isFilled, isString } from '@dxtmisha/functional'
 
 import { ImagePdf } from './ImagePdf'
+import { ImageUint8Array } from './ImageUint8Array'
 
 import { type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
@@ -29,16 +30,20 @@ export class ImageType {
   readonly item = computed<ImageTypeItem>(() => {
     const image = this.props.value
 
+    if (image instanceof File) {
+      return ImageTypeValue.file
+    }
+
+    if (ImageUint8Array.is(image)) {
+      return ImageTypeValue.array
+    }
+
     if (
-      image instanceof File
-      || isFilled(image)
+      isString(image)
+      && isFilled(image)
     ) {
       if (ImagePdf.isPdf(image)) {
         return ImageTypeValue.pdf
-      }
-
-      if (image instanceof File) {
-        return ImageTypeValue.file
       }
 
       if (image.match(/\//)) {

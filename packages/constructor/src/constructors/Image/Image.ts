@@ -213,6 +213,7 @@ export class Image {
       switch (this.type.item.value) {
         case ImageTypeValue.file:
         case ImageTypeValue.image:
+        case ImageTypeValue.array:
           return {
             'background-image': this.background.image.value,
             'background-size': this.background.size.value,

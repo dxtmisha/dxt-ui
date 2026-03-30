@@ -3,6 +3,7 @@ import { Icons, isString, type Undefined } from '@dxtmisha/functional'
 
 import { ImageFile } from './ImageFile'
 import { ImagePdf } from './ImagePdf'
+import { ImageUint8Array } from './ImageUint8Array'
 
 import { ImageType } from './ImageType'
 
@@ -75,6 +76,8 @@ export class ImageData {
       switch (this.type.item.value) {
         case ImageTypeValue.pdf:
           return await ImagePdf.get(image)
+        case ImageTypeValue.array:
+          return await ImageUint8Array.createImage(image)
         case ImageTypeValue.image:
         case ImageTypeValue.file:
           try {

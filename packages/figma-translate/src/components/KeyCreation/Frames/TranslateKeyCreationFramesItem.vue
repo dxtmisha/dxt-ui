@@ -3,6 +3,7 @@ import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
 
 import type { FieldValidationItem } from '@dxtmisha/constructor'
 import type { TranslateFrameItem } from '../../../types/TranslateTypes'
+import { watchEffect } from 'vue'
 
 defineOptions({
   name: 'TranslateKeyCreationFramesItem'
@@ -27,6 +28,10 @@ const value = isSelected(props.id)
 const onChange = ({ value }: FieldValidationItem<boolean>) => {
   toggleSelected(props.id, value)
 }
+
+watchEffect(() => {
+  console.log(typeof props.image, props.image, props.image instanceof Uint8Array)
+})
 </script>
 
 <template>
