@@ -183,10 +183,13 @@ export class FieldEventInclude {
       this.model.emit(this.value.itemByFull.value)
     }
 
-    this.emits?.(type as 'input', event as Event, {
+    const data = {
       ...this.getValidation(type),
       ...this.getData()
-    })
+    }
+
+    this.emits?.(type as 'input', event as Event, data)
+    this.emits?.(`${type}Lite` as 'inputLite', data)
 
     return this
   }

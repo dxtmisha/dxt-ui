@@ -169,6 +169,12 @@ export declare class FigmaFramesSelected {
      * @param selected New selection list / Новый список выбора
      */
     protected static set(selected: string[]): void;
+    /**
+     * Posts the current selection list to the Figma UI.
+     *
+     * Публикует текущий список выбора в интерфейс Figma.
+     */
+    protected static post(): void;
 }
 
 /**
@@ -434,7 +440,7 @@ export declare class FigmaTopLevelFrames {
      * Получает и кэширует отформатированный список фреймов верхнего уровня.
      * @returns A promise that resolves to the list of frames / Промис, который разрешается в список фреймов
      */
-    static getListData(): Promise<UiFigmaFramesList>;
+    static get(): Promise<UiFigmaFramesList>;
     /**
      * Sets up a listener for frame requests and sends the data back using the plugin messenger.
      *

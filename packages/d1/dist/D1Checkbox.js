@@ -3,7 +3,7 @@ import "./D1Ripple-4NrKuW_d.js";
 import "./Image-ouwANoLf.js";
 import "./FieldCounter-DFbH7Kyn.js";
 import "./FieldMessage-CrmegY4v.js";
-import { t as e } from "./D1Checkbox-BCRF2Cyk.js";
+import { t as e } from "./D1Checkbox-R0a4Oj2q.js";
 //#region src/components/Ui/Checkbox/index.ts
 var t = e;
 //#endregion

@@ -24,7 +24,10 @@ const value = isSelected(props.id)
  * Переключает состояние выбора текущего фрейма.
  * @param event Change event object / Объект события изменения
  */
-const onChange = ({ value }: FieldValidationItem<boolean>) => toggleSelected(props.id, value)
+const onChange = ({ value }: FieldValidationItem<boolean>) => {
+  console.warn('onChange', props.id, value)
+  toggleSelected(props.id, value)
+}
 </script>
 
 <template>
@@ -36,7 +39,7 @@ const onChange = ({ value }: FieldValidationItem<boolean>) => toggleSelected(pro
     <template #trailing>
       <D1Checkbox
         :value="value"
-        @change-lite="onChange"
+        @input-lite="onChange"
       />
     </template>
   </D1Cell>

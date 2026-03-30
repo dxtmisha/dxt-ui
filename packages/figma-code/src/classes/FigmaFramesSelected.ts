@@ -93,9 +93,10 @@ export class FigmaFramesSelected {
   static send() {
     const messenger = useFigmaPluginMessenger()
 
-    messenger.add(UI_FIGMA_FRAMES_SELECTED_POST_NAME, () => {
-      messenger.post(UI_FIGMA_FRAMES_SELECTED_POST_NAME, this.get())
-    })
+    messenger.add(
+      UI_FIGMA_FRAMES_SELECTED_POST_NAME,
+      () => this.post()
+    )
 
     messenger.add(
       UI_FIGMA_FRAMES_SELECTED_ADD_NAME,
@@ -122,5 +123,15 @@ export class FigmaFramesSelected {
   protected static set(selected: string[]): void {
     this.selected = selected
     this.storage.set(selected)
+  }
+
+  /**
+   * Posts the current selection list to the Figma UI.
+   *
+   * Публикует текущий список выбора в интерфейс Figma.
+   */
+  protected static post() {
+    useFigmaPluginMessenger()
+      .post(UI_FIGMA_FRAMES_SELECTED_POST_NAME, this.get())
   }
 }

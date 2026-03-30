@@ -60,6 +60,7 @@ export function useFigmaUiSelected() {
      * @param selected Selection state / Состояние выбора
      */
     toggleSelected(id: string, selected: boolean) {
+      console.warn('toggleSelected', id, selected)
       addFramesSelected(id, selected)
     }
   }

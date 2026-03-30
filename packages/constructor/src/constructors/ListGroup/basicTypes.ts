@@ -6,5 +6,5 @@ export type ListGroupComponentInclude = {
 
 export type ListGroupSlotsPropsInclude
   = MotionTransformControlItem & {
-  open: boolean
-}
+    open: boolean
+  }

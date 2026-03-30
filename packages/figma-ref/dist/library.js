@@ -32,7 +32,7 @@ function f() {
 			});
 		},
 		toggleSelected(e, t) {
-			n(e, t);
+			console.warn("toggleSelected", e, t), n(e, t);
 		}
 	};
 }

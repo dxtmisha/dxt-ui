@@ -1,9 +1,9 @@
-import { t as e } from "./defineProperty-BTtSLqQS.js";
-import { t } from "./ModelInclude-ZrPu5V5T.js";
-import { t as n } from "./FieldInputCheckInclude-4SFkzDMP.js";
+import { t as e } from "./defineProperty-BTtSLqQS-TjUoew5B.js";
+import { t } from "./ModelInclude-ZrPu5V5T-BdFUphAW.js";
+import { t as n } from "./FieldInputCheckInclude-4SFkzDMP-Jm6LdZ7z.js";
 import { computed as r, ref as i, watch as a } from "vue";
 import { anyToString as o, getRef as s, isArray as c, isFilled as l, isObject as u, setValues as d, toArray as f, toBinds as p, toNumber as m } from "@dxtmisha/functional";
-//#region src/classes/Field/FieldVisibilityInclude.ts
+//#region ../constructor/dist/FieldEventInclude-DwaYlW7D.js
 var h = class {
 	constructor() {
 		e(this, "item", i(!1));
@@ -339,7 +339,7 @@ var h = class {
 		}), e(this, "onSelect", (e, t) => {
 			this.isEnabled() && (this.value.setByEvent(t == null ? e : t), this.onAndChange(e));
 		}), e(this, "onChecked", (e) => {
-			this.isEnabled() && (this.value.setByChecked(e), this.onAndChange(e));
+			console.warn("onChecked", e, this.isEnabled()), this.isEnabled() && (this.value.setByChecked(e), this.onAndChange(e));
 		}), e(this, "onRadio", (e) => {
 			this.isEnabled() && (this.value.setByRadio(e), this.onAndChange(e));
 		}), e(this, "onClear", (e) => {
@@ -347,11 +347,13 @@ var h = class {
 		}), e(this, "onValue", (e) => {
 			this.isEnabled() && (this.value.set(e), this.onAndChange());
 		}), e(this, "on", (e, t = "input") => {
-			var n;
-			return t === "input" && this.model.emit(this.value.itemByFull.value), (n = this.emits) == null || n.call(this, t, e, {
+			var n, r;
+			t === "input" && this.model.emit(this.value.itemByFull.value);
+			let i = {
 				...this.getValidation(t),
 				...this.getData()
-			}), this;
+			};
+			return (n = this.emits) == null || n.call(this, t, e, i), (r = this.emits) == null || r.call(this, `${t}Lite`, i), this;
 		}), this.props = n, this.change = r, this.value = i, this.validation = a, this.emits = o, this.model = new t("value", this.emits, this.value.itemByFull);
 	}
 	isEnabled() {
@@ -378,4 +380,4 @@ var h = class {
 	}
 };
 //#endregion
-export { S as a, y as c, h as d, C as i, v as l, T as n, x as o, w as r, b as s, E as t, g as u };
+export { b as a, v as c, y as d, T as i, w as l, E as n, g as o, S as r, h as s, C as t, x as u };

@@ -6,6 +6,7 @@ import {
   toBinds
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../library'
 import { Checkbox } from './Checkbox'
 
 import {
@@ -18,7 +19,6 @@ import {
   type CheckboxExpose,
   type CheckboxSlots
 } from './types'
-import { AriaStaticInclude } from '../../library'
 
 /**
  * CheckboxDesign
@@ -29,14 +29,14 @@ export class CheckboxDesign<
   CLASSES extends CheckboxClasses,
   P extends CheckboxPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  CheckboxEmits,
-  EXPOSE,
-  CheckboxSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    CheckboxEmits,
+    EXPOSE,
+    CheckboxSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Checkbox
 
   /**

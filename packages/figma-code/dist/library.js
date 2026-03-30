@@ -259,9 +259,7 @@ var _ = class {
 	}
 	static send() {
 		let e = g();
-		e.add(s, () => {
-			e.post(s, this.get());
-		}), e.add(o, ({ id: e, selected: t }) => this.toggle(e, t));
+		e.add(s, () => this.post()), e.add(o, ({ id: e, selected: t }) => this.toggle(e, t));
 	}
 	static getList() {
 		var e;
@@ -270,12 +268,15 @@ var _ = class {
 	static set(e) {
 		this.selected = e, this.storage.set(e);
 	}
+	static post() {
+		console.log("post", this.get()), g().post(s, this.get());
+	}
 };
 f(v, "storage", new _(s)), f(v, "selected", void 0);
 //#endregion
 //#region src/classes/FigmaTopLevelFrames.ts
 var y = class {
-	static async getListData() {
+	static async get() {
 		if (!this.frames) {
 			this.frames = [];
 			for (let e of this.getList()) this.frames.push({
@@ -289,7 +290,7 @@ var y = class {
 	static send() {
 		let e = g();
 		e.add(a, () => {
-			this.getListData().then((t) => {
+			this.get().then((t) => {
 				e.post(a, t);
 			});
 		});
