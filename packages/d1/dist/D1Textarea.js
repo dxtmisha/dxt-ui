@@ -5,7 +5,7 @@ import "./FieldCounter-DFbH7Kyn.js";
 import "./FieldMessage-CrmegY4v.js";
 import "./FieldLabel-C_zOz9QN.js";
 import "./Field-DVIVag-5.js";
-import { t as e } from "./D1Textarea-Dv_U5xeh.js";
+import { t as e } from "./D1Textarea-DXrlzbs8.js";
 import "./TextareaAutosize-BXz42gCR.js";
 //#region src/components/Ui/Textarea/index.ts
 var t = e;

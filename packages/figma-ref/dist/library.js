@@ -18,7 +18,7 @@ function c() {
 var l = t(), u = t(!1), d = !0;
 function f() {
 	return d && (d = !1, u.value = !0, r((e) => {
-		console.log("selected", e), l.value = e, u.value = !1;
+		l.value = e, u.value = !1;
 	})), {
 		selected: e(() => {
 			var e;
@@ -32,7 +32,7 @@ function f() {
 			});
 		},
 		toggleSelected(e, t) {
-			console.warn("toggleSelected", e, t), n(e, t);
+			n(e, t);
 		}
 	};
 }

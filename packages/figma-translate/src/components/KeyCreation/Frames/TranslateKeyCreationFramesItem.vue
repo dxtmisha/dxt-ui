@@ -25,7 +25,6 @@ const value = isSelected(props.id)
  * @param event Change event object / Объект события изменения
  */
 const onChange = ({ value }: FieldValidationItem<boolean>) => {
-  console.warn('onChange', props.id, value)
   toggleSelected(props.id, value)
 }
 </script>
@@ -34,6 +33,7 @@ const onChange = ({ value }: FieldValidationItem<boolean>) => {
   <D1Cell
     :icon="image"
     :label="name"
+    :description="id"
     is-skeleton
   >
     <template #trailing>

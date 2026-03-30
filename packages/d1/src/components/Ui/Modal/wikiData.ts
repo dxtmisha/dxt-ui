@@ -41,9 +41,9 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'actions', properties: [{ name: 'event', type: 'MouseEvent' }, { name: ' value', type: 'EventClickValue' }] },
+  { name: 'actions', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'actionsLite', properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'bars', properties: [{ name: 'event', type: 'MouseEvent' }, { name: ' value', type: 'EventClickValue' }] },
+  { name: 'bars', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'barsBack', properties: [{ name: 'value', type: 'EventClickValue' }] },
   { name: 'barsLite', properties: [{ name: 'value', type: 'EventClickValue' }] },
   { name: 'window', properties: [{ name: 'options', type: 'WindowEmitOptions' }] }

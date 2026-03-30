@@ -79,9 +79,9 @@ export class DesignWikiStorm {
           component
         )
 
-        ;(await item.init())
+        await item.init()
 
-        const tag = item.get()
+        const tag = await item.get()
 
         if (tag) {
           tags.push(tag)

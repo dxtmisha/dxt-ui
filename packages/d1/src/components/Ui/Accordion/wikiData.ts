@@ -36,9 +36,9 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: ' value', type: 'EventClickValue' }] },
+  { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'transform', description: `Transform event with native event and options/ Событие трансформации с нативным событием и опциями`, properties: [{ name: 'event', type: 'Event' }, { name: ' options', type: 'MotionTransformEmitOptions' }] },
+  { name: 'transform', description: `Transform event with native event and options/ Событие трансформации с нативным событием и опциями`, properties: [{ name: 'event', type: 'Event' }, { name: 'options', type: 'MotionTransformEmitOptions' }] },
   { name: 'transformLite', description: `Lightweight transform event with options only/ Облегчённое событие трансформации только с опциями`, properties: [{ name: 'options', type: 'MotionTransformEmitOptions' }] },
   { name: 'update:modelOpen', description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: 'value', type: 'boolean' }] },
   { name: 'update:open', description: `Update open event/ Событие обновления открытия`, properties: [{ name: 'value', type: 'boolean' }] }

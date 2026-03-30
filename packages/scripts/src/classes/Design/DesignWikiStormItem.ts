@@ -6,7 +6,7 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryData } from '../../types/libraryTypes'
-import type { WebTypesAttributeItem, WebTypesAttributes, WebTypesTagItem } from '../../types/webTypes'
+import type { WebTypesAttributeItem, WebTypesAttributes, WebTypesEvents, WebTypesSlots, WebTypesTagItem } from '../../types/webTypes'
 
 /**
  * Resolver for extracting and formatting IDE metadata for a specific component.
@@ -17,6 +17,7 @@ import type { WebTypesAttributeItem, WebTypesAttributes, WebTypesTagItem } from 
  */
 export class DesignWikiStormItem {
   protected wiki?: WikiStorybook
+  protected dataComponent?: WikiDataItem
 
   /**
    * Constructor for DesignWikiStormItem.
@@ -38,11 +39,11 @@ export class DesignWikiStormItem {
    *
    * Возвращает определение тега для web-types.
    */
-  get(): WebTypesTagItem | undefined {
+  async get(): Promise<WebTypesTagItem | undefined> {
     if (this.wiki) {
       const name = `${toCamelCaseFirst(PropertiesConfig.getDesignName())}${this.wiki.getName()}`
 
-      return {
+      const tag: WebTypesTagItem = {
         name,
         description: this.wiki.getDescription(),
         source: {
@@ -51,6 +52,20 @@ export class DesignWikiStormItem {
         },
         attributes: this.getAttributes()
       }
+
+      const slots = await this.getSlots()
+
+      if (slots) {
+        tag.slots = slots
+      }
+
+      const events = await this.getEvents()
+
+      if (events) {
+        tag.events = events
+      }
+
+      return tag
     }
 
     return undefined
@@ -93,6 +108,56 @@ export class DesignWikiStormItem {
   }
 
   /**
+   * Returns a list of slots.
+   *
+   * Возвращает список слотов.
+   */
+  async getSlots(): Promise<WebTypesSlots | undefined> {
+    const data = await this.getData()
+
+    if (data && data.slots) {
+      const slots: WebTypesSlots = []
+
+      data.slots.forEach(
+        props => slots.push({
+          name: props.name,
+          description: props.description,
+          'vue-properties': props.properties ?? []
+        })
+      )
+
+      return slots
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns a list of events.
+   *
+   * Возвращает список событий.
+   */
+  async getEvents(): Promise<WebTypesEvents | undefined> {
+    const data = await this.getData()
+
+    if (data && data.events) {
+      const events: WebTypesEvents = []
+
+      data.events.forEach(
+        event => events.push({
+          name: event.name,
+          description: event.description,
+          arguments: event.properties ?? []
+        })
+      )
+
+      return events
+    }
+
+    return undefined
+  }
+
+  /**
    * Returns the directory name.
    *
    * Возвращает имя директории.
@@ -117,18 +182,18 @@ export class DesignWikiStormItem {
    * Получает данные из wikiData.ts.
    */
   protected async getData(): Promise<WikiDataItem | undefined> {
-    const filePath = this.getPaths(['wikiData.ts'])
+    if (!this.dataComponent) {
+      const filePath = this.getPaths(['wikiData.ts'])
 
-    if (PropertiesFile.is(filePath)) {
-      const wiki: Record<string, any> = await import(filePath.join('/'))
-      const data: WikiDataItem | undefined = Object.values(wiki).find(item => 'component' in item)
+      if (PropertiesFile.is(filePath)) {
+        const wiki: Record<string, any> = await import(filePath.join('/'))
+        const data: WikiDataItem | undefined = Object.values(wiki).find(item => 'component' in item)
 
-      if (data) {
-        return data
+        this.dataComponent = data
       }
     }
 
-    return undefined
+    return this.dataComponent
   }
 
   /**

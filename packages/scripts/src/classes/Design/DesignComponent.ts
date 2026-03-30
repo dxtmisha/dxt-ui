@@ -536,7 +536,7 @@ export class DesignComponent extends DesignCommand {
             return {
               name: item.name,
               type: String(item.type)
-                .replace(/([^:,[\]]+): ([^:,[\]]+)/gi, `{ name: '$1', type: '$2' }`)
+                .replace(/([^:,[\] ]+): ([^:,[\]]+)/gi, `{ name: '$1', type: '$2' }`)
                 .replace(/,{/gi, ', {'),
               description: item.description
             }

@@ -3,7 +3,7 @@ import { t } from "./ModelInclude-ZrPu5V5T-BdFUphAW.js";
 import { t as n } from "./FieldInputCheckInclude-4SFkzDMP-Jm6LdZ7z.js";
 import { computed as r, ref as i, watch as a } from "vue";
 import { anyToString as o, getRef as s, isArray as c, isFilled as l, isObject as u, setValues as d, toArray as f, toBinds as p, toNumber as m } from "@dxtmisha/functional";
-//#region ../constructor/dist/FieldEventInclude-DwaYlW7D.js
+//#region ../constructor/dist/FieldEventInclude-DFTu0XbR.js
 var h = class {
 	constructor() {
 		e(this, "item", i(!1));
@@ -339,7 +339,7 @@ var h = class {
 		}), e(this, "onSelect", (e, t) => {
 			this.isEnabled() && (this.value.setByEvent(t == null ? e : t), this.onAndChange(e));
 		}), e(this, "onChecked", (e) => {
-			console.warn("onChecked", e, this.isEnabled()), this.isEnabled() && (this.value.setByChecked(e), this.onAndChange(e));
+			this.isEnabled() && (this.value.setByChecked(e), this.onAndChange(e));
 		}), e(this, "onRadio", (e) => {
 			this.isEnabled() && (this.value.setByRadio(e), this.onAndChange(e));
 		}), e(this, "onClear", (e) => {

@@ -25,7 +25,7 @@ const slotsNames: StorybookSlots = [
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
   { name: 'bottom', properties: [{ name: 'isBottom', type: 'boolean' }] },
-  { name: 'edge', properties: [{ name: 'isTop', type: 'boolean' }, { name: ' isBottom', type: 'boolean' }, { name: ' edge', type: 'ScrollbarEdgeType' }] },
+  { name: 'edge', properties: [{ name: 'isTop', type: 'boolean' }, { name: 'isBottom', type: 'boolean' }, { name: 'edge', type: 'ScrollbarEdgeType' }] },
   { name: 'leaveBottom' },
   { name: 'leaveTop' },
   { name: 'reachBottom' },

@@ -38,10 +38,10 @@ const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
   { name: 'beforeinput', properties: [{ name: 'event', type: 'InputEvent' }] },
   { name: 'blur', properties: [{ name: 'event', type: 'FocusEvent' }] },
-  { name: 'change', properties: [{ name: 'event', type: 'InputEvent' }, { name: ' value', type: 'FieldValidationItem' }] },
+  { name: 'change', properties: [{ name: 'event', type: 'InputEvent' }, { name: 'value', type: 'FieldValidationItem' }] },
   { name: 'changeLite', properties: [{ name: 'value', type: 'FieldValidationItem' }] },
   { name: 'focus', properties: [{ name: 'event', type: 'FocusEvent' }] },
-  { name: 'input', properties: [{ name: 'event', type: 'InputEvent' }, { name: ' value', type: 'FieldValidationItem' }] },
+  { name: 'input', properties: [{ name: 'event', type: 'InputEvent' }, { name: 'value', type: 'FieldValidationItem' }] },
   { name: 'inputLite', properties: [{ name: 'value', type: 'FieldValidationItem' }] },
   { name: 'keydown', properties: [{ name: 'event', type: 'KeyboardEvent' }] },
   { name: 'keyup', properties: [{ name: 'event', type: 'KeyboardEvent' }] },

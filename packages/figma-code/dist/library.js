@@ -269,7 +269,7 @@ var _ = class {
 		this.selected = e, this.storage.set(e);
 	}
 	static post() {
-		console.log("post", this.get()), g().post(s, this.get());
+		g().post(s, this.get());
 	}
 };
 f(v, "storage", new _(s)), f(v, "selected", void 0);

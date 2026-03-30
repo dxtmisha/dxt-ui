@@ -72,7 +72,7 @@ const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
   { name: 'load', properties: [{ name: 'image', type: 'ImageEventData' }] },
   { name: 'scrollbarBottom', properties: [{ name: 'isBottom', type: 'boolean' }] },
-  { name: 'scrollbarEdge', properties: [{ name: 'isTop', type: 'boolean' }, { name: ' isBottom', type: 'boolean' }, { name: ' edge', type: 'ScrollbarEdgeType' }] },
+  { name: 'scrollbarEdge', properties: [{ name: 'isTop', type: 'boolean' }, { name: 'isBottom', type: 'boolean' }, { name: 'edge', type: 'ScrollbarEdgeType' }] },
   { name: 'scrollbarLeaveBottom' },
   { name: 'scrollbarLeaveTop' },
   { name: 'scrollbarReachBottom' },

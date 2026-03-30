@@ -29,7 +29,6 @@ export function useFigmaUiSelected() {
     loading.value = true
 
     fetchFramesSelected((selected: string[]) => {
-      console.log('selected', selected)
       item.value = selected
       loading.value = false
     })
@@ -60,7 +59,6 @@ export function useFigmaUiSelected() {
      * @param selected Selection state / Состояние выбора
      */
     toggleSelected(id: string, selected: boolean) {
-      console.warn('toggleSelected', id, selected)
       addFramesSelected(id, selected)
     }
   }
