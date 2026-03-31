@@ -88,6 +88,8 @@ export const wikiDescriptionsPage: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Page'} type={'block'}/>
 <Canvas of={Component.PageBasic}/>
+
+<StorybookDescriptions componentName={'Block'} type={'differences'}/>
 `,
     slots: `
 <Canvas of={Component.PageSlots}/>

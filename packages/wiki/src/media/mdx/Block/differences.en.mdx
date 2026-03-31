@@ -1,0 +1,47 @@
+## Differences between Page, Section, Block, and Group
+
+All components are built on top of **Block** and differ in semantics and header levels:
+
+### Page
+This is the root structural component that serves as the main wrapper for all page content. Its primary purpose is to define the main theme and semantically link content to the first-level heading. Its main difference is its uniqueness (used once per page); therefore, choose it as the primary container when creating a new page (`<main>`, `h1`).
+
+### Section
+A container for major thematic division of the page into independent semantic blocks. It is needed for logical partitioning of content into parts like "About Us" or "Services". Unlike Block and Group, it carries higher semantic weight, so use it to form the page structure and highlight its main sections (`<section>`, `h2`).
+
+### Block
+A universal and highly flexible building block for grouping any related content. It is the base element for creating independent functional units, cards, or informational inserts. Use it in any scenario where you need to organize content without strict adherence to global page divisions (`<div>`, `h3`).
+
+### Group
+An auxiliary component for combining small thematic elements into logical groups. Its main goal is to structure details, such as form fields or sub-sections within a card. It ranks at the bottom of the hierarchy and is used for fine-tuning content structure within larger blocks or sections (`<div>`, `h4`).
+
+### Hierarchy Example
+
+```html
+<Page headline="User Account">
+  <Section label="User Profile" description="Manage personal data" icon="person">
+    <Block label="Basic Information">
+      <p>Configure your display name and bio for other users.</p>
+      
+      <Group label="Contact Details">
+        <p>Email: user@example.com</p>
+        <p>Phone: +7 (999) 000-00-00</p>
+      </Group>
+    </Block>
+    
+    <Block label="Security" description="Password and authentication settings">
+      <p>Regular password updates improve your account security.</p>
+    </Block>
+  </Section>
+
+  <Section label="Notifications" icon="notifications">
+    <Block label="Subscriptions">
+      <Group label="Email">
+        <p>Weekly news and promotions.</p>
+      </Group>
+      <Group label="SMS">
+        <p>Critical system messages only.</p>
+      </Group>
+    </Block>
+  </Section>
+</Page>
+```

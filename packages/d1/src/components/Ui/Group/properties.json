@@ -1,0 +1,23 @@
+{
+  "main": "{d.group}",
+  "gap": "{sys.spacing.sm}",
+  "#headline": {
+    "padding-bottom": "{sys.spacing.x}",
+    "palette-color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.primary.high}"
+  },
+  "#header": {
+    "gap": "{sys.spacing.x}"
+  },
+  "#label": {
+    "link|font": "{font.titleMedium}"
+  },
+  "#caption": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#description": {
+    "padding-top": "{sys.spacing.x}",
+    "link|font": "{font.bodyMedium}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  }
+}

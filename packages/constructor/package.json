@@ -259,6 +259,10 @@
     "./Dummy": {
       "types": "./dist/constructors/Dummy/index.d.ts",
       "default": "./dist/dummy.js"
+    },
+    "./Group": {
+      "types": "./dist/constructors/Group/index.d.ts",
+      "default": "./dist/group.js"
     }
   },
   "buildOptions": {

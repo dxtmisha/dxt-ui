@@ -22,6 +22,7 @@ import D1FieldLabel from '../../src/components/Ui/FieldLabel/D1FieldLabelAiWiki.
 import D1FieldMessage from '../../src/components/Ui/FieldMessage/D1FieldMessageAiWiki.vue'
 import D1Grid from '../../src/components/Ui/Grid/D1GridAiWiki.vue'
 import D1GridItem from '../../src/components/Ui/GridItem/D1GridItemAiWiki.vue'
+import D1Group from '../../src/components/Ui/Group/D1GroupAiWiki.vue'
 import D1HorizontalScroll from '../../src/components/Ui/HorizontalScroll/D1HorizontalScrollAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
@@ -73,6 +74,7 @@ export const aiList: any[] = [
   D1FieldMessage,
   D1Grid,
   D1GridItem,
+  D1Group,
   D1HorizontalScroll,
   D1Icon,
   D1Image,

@@ -1,0 +1,40 @@
+## Description
+
+A structural component designed to group related content with support for headers, descriptions, and flexible layout options. It is a semantic alias for the Block component, with a default header level of h4.
+
+Group provides a standardized way to organize information within a page or another component, ensuring a consistent visual hierarchy. It inherits all the capabilities of the Block component, including support for icons, captions, and slot-based customization.
+
+**Key Features:**
+
+- Standardized grouping of content using `<div>` tag
+- Support for titles (`h4` by default), labels, descriptions, and captions
+- Icon support
+- Fully inherits Block component capabilities
+- Flexible layout for content organization
+
+**Typical Use Cases:**
+
+- Subsections within a page
+- Grouping elements within a card or modal
+- Organizing complex forms into thematic areas
+- Creating structured content blocks with smaller headers
+
+```html
+<script setup>
+import { ref } from 'vue'
+</script>
+
+<template>
+  <Group
+    headline="Group Headline"
+    label="Group Label"
+    description="Detailed description for the group content"
+    caption="Auxiliary text"
+    icon="folder"
+  >
+    Main group content goes here
+  </Group>
+</template>
+```
+
+> Group is an ideal choice for creating semantic sub-structures within your application.

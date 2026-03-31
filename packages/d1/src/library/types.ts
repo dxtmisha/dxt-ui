@@ -22,6 +22,7 @@ import _D1FieldLabel from '../components/Ui/FieldLabel/D1FieldLabel.vue'
 import _D1FieldMessage from '../components/Ui/FieldMessage/D1FieldMessage.vue'
 import _D1Grid from '../components/Ui/Grid/D1Grid.vue'
 import _D1GridItem from '../components/Ui/GridItem/D1GridItem.vue'
+import _D1Group from '../components/Ui/Group/D1Group.vue'
 import _D1HorizontalScroll from '../components/Ui/HorizontalScroll/D1HorizontalScroll.vue'
 import _D1Icon from '../components/Ui/Icon/D1Icon.vue'
 import _D1Image from '../components/Ui/Image/D1Image.vue'
@@ -74,6 +75,7 @@ declare module '@vue/runtime-core' {
     D1FieldMessage: typeof _D1FieldMessage
     D1Grid: typeof _D1Grid
     D1GridItem: typeof _D1GridItem
+    D1Group: typeof _D1Group
     D1HorizontalScroll: typeof _D1HorizontalScroll
     D1Icon: typeof _D1Icon
     D1Image: typeof _D1Image
