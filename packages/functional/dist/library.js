@@ -238,14 +238,19 @@ var z = class {
 	updateClasses() {
 		var e, t, n;
 		let r = (e = this.classesSub) == null ? void 0 : e.value, i = (t = this.options) == null || (t = t.classes) == null ? void 0 : t.value;
-		return r && i ? {
-			...r,
-			...i,
-			main: {
-				...this.toClass(r == null ? void 0 : r.main),
-				...this.toClass(i == null ? void 0 : i.main)
-			}
-		} : (n = i == null ? r : i) == null ? { main: {} } : n;
+		if (r && i) {
+			var a;
+			return {
+				...r,
+				...i,
+				main: {
+					...this.toClass(r == null ? void 0 : r.main),
+					...this.toClass(i == null ? void 0 : i.main),
+					...this.toClass((a = this.attrs) == null ? void 0 : a.class)
+				}
+			};
+		}
+		return (n = i == null ? r : i) == null ? { main: {} } : n;
 	}
 	updateStyles() {
 		var e, t, n;

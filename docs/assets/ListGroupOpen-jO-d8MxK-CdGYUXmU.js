@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{Lt as t,_t as n,yt as r}from"./iframe-CuL5mTF3.js";import{f as i,p as a}from"./wiki-Dd40E_Te.js";var o,s=e((()=>{i(),n(),o=class{constructor(e){a(this,`open`,t(!1)),a(this,`is`,r(()=>this.open.value||!!this.props.open)),a(this,`onOpen`,({open:e})=>{this.open.value!==e&&(this.open.value=e)}),this.props=e}}}));export{o as n,s as t};

@@ -1,0 +1,4 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{r as t}from"./react-C7Xu3oTM.js";import{t as n}from"./jsx-runtime-BRDTPpDF.js";import{n as r,s as i,u as a}from"./blocks-AxVGGqmg.js";import{t as o}from"./mdx-react-shim-CwKyAxtk.js";import{n as s,r as c,t as l}from"./storybook-CA0Rw2K-.js";import{Arrow as u,ArrowBasic as d,i as f,n as p,r as m,t as h}from"./D1Arrow.stories-BwVBCENL.js";function g(e){return(0,v.jsxs)(v.Fragment,{children:[(0,v.jsx)(i,{of:h}),`
+`,(0,v.jsx)(c,{name:m.getName(),description:m.getDescription(),story:u}),`
+`,(0,v.jsx)(s,{componentName:`Arrow`,type:`arrow`}),`
+`,(0,v.jsx)(r,{of:d})]})}function _(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,v.jsx)(n,{...e,children:(0,v.jsx)(g,{...e})}):g(e)}var v;e((()=>{v=n(),o(),a(),l(),p(),f()}))();export{_ as default};

@@ -18,23 +18,30 @@ const description = ref('')
 
 <template>
   <div class="translate-key-creation-prefix-app">
-    <div class="translate-key-creation-prefix-app__group">
-      <D1Input
-        v-model="prefix"
-        class="translate-key-creation-prefix-app__input"
-        :label="translate['translate-prefix']"
-      />
-      <D1Button
-        text
-        icon="genetics"
-      />
-    </div>
-    <div class="translate-key-creation-prefix-app__description">
-      <D1Textarea
-        v-model="description"
-        :label="translate['translate-description']"
-      />
-    </div>
+    <D1Grid>
+      <D1GridItem base="12">
+        <div class="translate-key-creation-prefix-app__group">
+          <D1Input
+            v-model="prefix"
+            class="translate-key-creation-prefix-app__input"
+            :placeholder="translate['translate-prefix']"
+          />
+          <D1Button
+            text
+            icon="genetics"
+          />
+        </div>
+      </D1GridItem>
+
+      <D1GridItem base="12">
+        <div class="translate-key-creation-prefix-app__description">
+          <D1Textarea
+            v-model="description"
+            :label="translate['translate-description']"
+          />
+        </div>
+      </D1GridItem>
+    </D1Grid>
   </div>
 </template>
 
@@ -43,7 +50,7 @@ const description = ref('')
 
 .translate-key-creation-prefix-app {
   &__group {
-    @include ui.flex();
+    @include ui.flexX();
     column-gap: var(--d1-layout-gapX);
   }
 
