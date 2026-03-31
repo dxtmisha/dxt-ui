@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import TranslateKeyCreationPrefixAdd from './Add/TranslateKeyCreationPrefixAdd.vue';
+
 defineOptions({
   name: 'TranslateKeyCreationPrefix'
 })
@@ -6,7 +8,7 @@ defineOptions({
 
 <template>
   <div class="translate-key-creation-prefix">
-
+    <TranslateKeyCreationPrefixAdd/>
   </div>
 </template>
 

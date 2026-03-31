@@ -34,8 +34,7 @@
     "link|caption": "{??prefix}"
   },
   "focus": {
-    "gradient-opacity": "{sys.opacity.focus}",
-    "outline": "{outline.md}"
+    "gradient-opacity": "{sys.opacity.focus}"
   },
   "hover": {
     "gradient-opacity": "{sys.opacity.hover}"
