@@ -18,7 +18,7 @@ import { LibraryList } from '../Library/LibraryList'
 import { LibraryPlugin } from '../Library/LibraryPlugin'
 import { LibraryTypes } from '../Library/LibraryTypes'
 
-import { UI_FILE_PACKAGE } from '../../config'
+import { UI_FILE_PACKAGE, UI_FILE_STYLE_PROPERTIES } from '../../config'
 
 /**
  * Orchestrator class for managing and initializing the Design System UI.
@@ -63,7 +63,8 @@ export class DesignUi {
     new DesignWiki().make()
 
     this.makeConstructorComponent()
-    this.makePackage()
+      .makePackage()
+      .makeUiProperties()
 
     new LibraryMedia(this.components).make()
     new LibraryList(this.components).make()
@@ -99,7 +100,7 @@ export class DesignUi {
    *
    * Обновляет файл package.json, добавляя пути экспорта для стилей UI, и сохраняет изменения.
    */
-  protected makePackage(): void {
+  protected makePackage(): this {
     const packageJson = getPackageJson()
     const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
 
@@ -118,11 +119,25 @@ export class DesignUi {
       }
       packageJson.exports['./style.css'] = './dist/style.css'
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
-      packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`
+      packageJson.exports['./ui-properties'] = {
+        sass: './ui-properties.scss',
+        default: './ui-properties.scss'
+      }
       packageJson.exports['./types.d.ts'] = './dist/library/types.d.ts'
       packageJson['web-types'] = './dist/web-types.json'
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)
     }
+
+    return this
+  }
+
+  protected makeUiProperties(): this {
+    PropertiesFile.writeByPath(
+      UI_FILE_STYLE_PROPERTIES,
+      '@forward "./src/styles/Ui/style.scss";'
+    )
+
+    return this
   }
 }

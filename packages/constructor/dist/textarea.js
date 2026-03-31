@@ -27,14 +27,8 @@ var p = class {
 }, h = class extends d {
 	constructor(t, n, r, i = p) {
 		super(t, n, r), e(this, "item", void 0), e(this, "renderInput", (e) => {
-			let t = f(e.binds, this.item.binds.value);
-			return this.components.is("textareaAutosize") ? [this.components.renderOne("textareaAutosize", {
-				...t,
-				inputAttrs: this.item.bindsInput.value
-			})] : [u("textarea", {
-				...t,
-				...this.item.bindsInput.value
-			})];
+			let t = f(e.binds, this.item.binds.value, this.item.bindsInput.value);
+			return this.components.is("textareaAutosize") ? [this.components.renderOne("textareaAutosize", { inputAttrs: t })] : [u("textarea", t)];
 		}), this.item = new i(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
 	}
 	initExpose() {

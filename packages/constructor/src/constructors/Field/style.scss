@@ -31,6 +31,8 @@
       border-left-width: ui.v('??sys.border.width', 0);
       @include ui.borderColor(ui.v('??sys.border.color'));
       @include ui.borderOpacity(ui.v('??sys.border.opacity', 1));
+
+      pointer-events: none;
     }
   }
 

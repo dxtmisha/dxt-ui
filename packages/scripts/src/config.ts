@@ -92,6 +92,7 @@ export const UI_FILE_INDEX = 'index.ts'
 
 export const UI_FILE_AI_TYPES = 'ai-types.txt'
 export const UI_FILE_STYLE_SCSS = 'style.scss'
+export const UI_FILE_STYLE_PROPERTIES = 'ui-properties.scss'
 
 /** SCSS file extension/ Расширение файлов SCSS */
 export const UI_EXTENSION_STYLE = 'scss'

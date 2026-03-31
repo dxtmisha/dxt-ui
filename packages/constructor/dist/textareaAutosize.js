@@ -1,8 +1,8 @@
 import { t as e } from "./defineProperty-BTtSLqQS.js";
 import { h as t, nextTick as n, ref as r, watch as i } from "vue";
-import { DesignConstructorAbstract as a } from "@dxtmisha/functional";
+import { DesignConstructorAbstract as a, toBinds as o } from "@dxtmisha/functional";
 //#region src/constructors/TextareaAutosize/TextareaAutosizeValue.ts
-var o = class {
+var s = class {
 	constructor(t, n, a) {
 		e(this, "item", r("")), this.props = t, this.refs = n, this.emits = a, i([n.value], () => this.set(t.value), { immediate: !0 });
 	}
@@ -18,7 +18,7 @@ var o = class {
 	isDifference(e) {
 		return this.item.value !== e;
 	}
-}, s = class {
+}, c = class {
 	constructor(t, a, o) {
 		e(this, "clone", r()), e(this, "updateSize", () => {
 			if (this.isElements()) {
@@ -39,25 +39,23 @@ var o = class {
 	updateValue() {
 		this.isElements() && (this.clone.value.innerText = `${this.value.item.value} --`, requestAnimationFrame(this.updateHeight));
 	}
-}, c = class {
-	constructor(t, n, r, i, a, c, l, u, d) {
-		e(this, "value", void 0), e(this, "resize", void 0), this.props = t, this.refs = n, this.element = r, this.classDesign = i, this.className = a, this.components = c, this.slots = l, this.emits = u;
-		let { TextareaAutosizeResizeConstructor: f = s, TextareaAutosizeValueConstructor: p = o } = d == null ? {} : d;
+}, l = class {
+	constructor(t, n, r, i, a, o, l, u, d) {
+		e(this, "value", void 0), e(this, "resize", void 0), this.props = t, this.refs = n, this.element = r, this.classDesign = i, this.className = a, this.components = o, this.slots = l, this.emits = u;
+		let { TextareaAutosizeResizeConstructor: f = c, TextareaAutosizeValueConstructor: p = s } = d == null ? {} : d;
 		this.value = new p(t, n, u), this.resize = new f(t, r, this.value);
 	}
-}, l = { autosize: !0 }, u = class extends a {
-	constructor(n, r, i, a = c) {
+}, u = { autosize: !0 }, d = class extends a {
+	constructor(n, r, i, a = l) {
 		super(n, r, i), e(this, "item", void 0), e(this, "renderTextarea", () => {
 			var e;
-			return t("textarea", {
-				...this.getAttrs(),
-				...this.props.inputAttrs,
+			return t("textarea", o(this.getAttrs(), this.props.inputAttrs, {
 				ref: this.element,
 				value: this.item.value.item.value,
 				class: (e = this.classes) == null ? void 0 : e.value.main,
 				onFocus: this.item.resize.on,
 				onInput: this.item.resize.onInput
-			});
+			}));
 		}), e(this, "renderClone", () => {
 			var e;
 			return t("div", {
@@ -83,4 +81,4 @@ var o = class {
 	}
 };
 //#endregion
-export { c as TextareaAutosize, u as TextareaAutosizeDesign, l as defaultsTextareaAutosize };
+export { l as TextareaAutosize, d as TextareaAutosizeDesign, u as defaultsTextareaAutosize };

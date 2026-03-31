@@ -9,7 +9,7 @@
 </template>
 
 <style lang="scss">
-@use '@dxtmisha/d1/style/ui-properties.scss' as ui;
+@use '@dxtmisha/d1/ui-properties' as ui;
 
 .translate-page {
   display: flex;

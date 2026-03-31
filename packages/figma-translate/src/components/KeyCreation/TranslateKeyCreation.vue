@@ -12,16 +12,18 @@ const translate = useTranslateRef([
 </script>
 
 <template>
-    <div class="translate-keyCreation">
-        <D1Section>
-          <D1Block :label="translate['translate-key_creation-prefix']">
-            <TranslateKeyCreationPrefixAdd/>
-          </D1Block>
-          <D1Block :label="translate['translate-frames']">
-            <TranslateKeyCreationFrames/>
-          </D1Block>
-        </D1Section>
-    </div>
+  <div class="translate-keyCreation">
+    <D1Section>
+      <D1Block>
+        <D1Group :label="translate['translate-key_creation-prefix']">
+          <TranslateKeyCreationPrefixAdd/>
+        </D1Group>
+        <D1Group :label="translate['translate-frames']">
+          <TranslateKeyCreationFrames/>
+        </D1Group>
+      </D1Block>
+    </D1Section>
+  </div>
 </template>
 
 <style lang="scss"></style>

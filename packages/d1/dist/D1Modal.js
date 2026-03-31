@@ -7,7 +7,7 @@ import "./Bars-HkklEy9_.js";
 import "./Actions-KKJJ2K_j.js";
 import "./D1Scrollbar-CppyFqdd.js";
 import "./D1Button-BHpmWqRm.js";
-import { t as e } from "./D1Modal-DBODkYxE.js";
+import { t as e } from "./D1Modal-h0Ip8JrG.js";
 //#region src/components/Ui/Modal/index.ts
 var t = e;
 //#endregion

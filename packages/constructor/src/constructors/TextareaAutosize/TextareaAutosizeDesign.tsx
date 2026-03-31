@@ -2,7 +2,8 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { TextareaAutosize } from './TextareaAutosize'
@@ -124,15 +125,19 @@ export class TextareaAutosizeDesign<
    * Рендерит элемент textarea.
    */
   protected readonly renderTextarea = (): VNode => {
-    return h('textarea', {
-      ...this.getAttrs(),
-      ...this.props.inputAttrs,
-      ref: this.element,
-      value: this.item.value.item.value,
-      class: this.classes?.value.main,
-      onFocus: this.item.resize.on,
-      onInput: this.item.resize.onInput
-    })
+    const props = toBinds(
+      this.getAttrs(),
+      this.props.inputAttrs,
+      {
+        ref: this.element,
+        value: this.item.value.item.value,
+        class: this.classes?.value.main,
+        onFocus: this.item.resize.on,
+        onInput: this.item.resize.onInput
+      }
+    )
+
+    return h('textarea', props)
   }
 
   /**

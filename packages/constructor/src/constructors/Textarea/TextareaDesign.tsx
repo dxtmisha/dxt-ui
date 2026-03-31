@@ -2,7 +2,8 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract, toBinds
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { Textarea } from './Textarea'
@@ -135,19 +136,16 @@ export class TextareaDesign<
   protected readonly renderInput = (input: FieldControl): VNode[] => {
     const props = toBinds(
       input.binds,
-      this.item.binds.value
+      this.item.binds.value,
+      this.item.bindsInput.value
     )
 
     if (this.components.is('textareaAutosize')) {
       return [this.components.renderOne('textareaAutosize', {
-        ...props,
-        inputAttrs: this.item.bindsInput.value
+        inputAttrs: props
       }) as VNode]
     }
 
-    return [h('textarea', {
-      ...props,
-      ...this.item.bindsInput.value
-    })]
+    return [h('textarea', props)]
   }
 }

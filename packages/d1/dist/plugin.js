@@ -2,7 +2,7 @@ import { t as e } from "./defineProperty-BTtSLqQS-TjUoew5B.js";
 import { componentsList as t, componentsReg as n, packageName as r, styleVarsReg as i } from "./design.js";
 import { isFilled as a } from "@dxtmisha/functional";
 import { toCamelCase as o, toKebabCase as s } from "@dxtmisha/functional-basic";
-//#region ../constructor/dist/Plugin-CUh4OV1f.js
+//#region ../constructor/dist/Plugin-BEPvcn0G.js
 var c = class {
 	static isSrc(e) {
 		return !!(e.match(/\/src\//i) && !e.match(/\/node_modules\//i));
@@ -146,7 +146,7 @@ var c = class {
 		return RegExp(`(?<=^\\s*)(${Object.keys(e).join("|")}):([^;\r\n]+)(;*)${this.getPropertiesNone()}`, "igm");
 	}
 	importDesign() {
-		let e = `${this.data.getPackageName()}/style/ui-properties`, t = `@use '${e}.scss' as *;`;
+		let e = `${this.data.getPackageName()}/ui-properties`, t = `@use '${e}' as *;`;
 		return this.code.addStartIfNone(t, e), this;
 	}
 	makeColors() {
