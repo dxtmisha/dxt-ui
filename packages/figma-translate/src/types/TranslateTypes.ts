@@ -10,9 +10,9 @@ export enum TranslatePostCommand {
 
 export type TranslatePostItem<Data extends Record<string, any> = Record<string, any>>
   = Data
-  & {
-    command: TranslatePostCommand
-  }
+    & {
+      command: TranslatePostCommand
+    }
 
 export type TranslateFrameItem = {
   name: string

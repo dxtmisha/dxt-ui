@@ -138,6 +138,20 @@ export declare class FigmaUiMessenger extends FigmaPostAbstract {
 }
 
 /**
+ * Send selection frame to UI
+ *
+ * Отправка выделенного фрейма в UI
+ * @param id - Frame ID / ID фрейма
+ */
+export declare function sendSelectionFrame(id?: string): void;
+
+/**
+ * Message name for setting the selection of frames/
+ * Имя сообщения для установки выборки фреймов
+ */
+export declare const UI_FIGMA_FRAME_SET_SELECTION = "ui-figma-frame-set-selection";
+
+/**
  * Message name for sending the list of frames/
  * Имя сообщения для отправки списка фреймов
  */

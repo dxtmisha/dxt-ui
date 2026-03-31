@@ -181,6 +181,7 @@ export declare class FigmaFramesSelected {
  * Class for working with Figma nodes.
  *
  * Класс для работы с узлами Figma.
+ * @template T type of Figma node/ тип узла Figma
  */
 export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     protected item: T;
@@ -230,6 +231,12 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
         item: TextNode;
     };
     /**
+     * Checks if the node is in the current page.
+     *
+     * Проверяет, находится ли узел на текущей странице.
+     */
+    inCurrentPage(): boolean;
+    /**
      * Returns the Figma node.
      *
      * Возвращает узел Figma.
@@ -253,6 +260,18 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      * Возвращает родительский узел, обернутый в FigmaItem.
      */
     getParentItem(): FigmaItem | undefined;
+    /**
+     * Returns the parent page.
+     *
+     * Возвращает родительскую страницу.
+     */
+    getParentPage(): PageNode | undefined;
+    /**
+     * Returns the parent page wrapped in FigmaItem.
+     *
+     * Возвращает родительскую страницу, обернутую в FigmaItem.
+     */
+    getParentPageItem(): FigmaItem | undefined;
     /**
      * Returns the child nodes.
      *
@@ -295,6 +314,18 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      * Возвращает текстовое содержимое узла.
      */
     getText(): string;
+    /**
+     * Selects the node.
+     *
+     * Выделяет узел.
+     */
+    toSelection(): void;
+    /**
+     * Moves to the page containing the node and selects it.
+     *
+     * Перемещает на страницу, содержащую узел, и выделяет его.
+     */
+    toPageAndSelection(): Promise<void>;
     /**
      * Converts format settings to ExportSettings.
      *
@@ -457,26 +488,69 @@ export declare class FigmaTopLevelFrames {
 }
 
 /**
+ * Returns the Figma item by ID.
+ *
+ * Возвращает узел Figma по идентификатору.
+ * @param id node ID/ идентификатор узла
+ */
+export declare function getFigmaItemById(id: string): Promise<FigmaItem | undefined>;
+
+/**
  * Sets up a listener for selection changes in Figma and sends text elements to the UI.
  *
  * Настраивает слушатель изменений выделения в Figma и отправляет текстовые элементы в UI.
  */
 export declare const makeFigmaTexts: () => void;
 
+/**
+ * Sets up the selection by message.
+ *
+ * Устанавливает выборку по сообщению.
+ */
+export declare function setupSelectionByMessage(): void;
+
+/**
+ * Moves the view to the specified item and selects it.
+ *
+ * Перемещает вид на указанный элемент и выбирает его.
+ */
+export declare function toFrameSelection(id?: string): Promise<void>;
+
+/**
+ * Possible formats for exporting Figma nodes/
+ * Возможные форматы для экспорта узлов Figma
+ */
 export declare type UiFigmaExportFormat = 'PNG' | 'JPG' | 'SVG' | 'PDF' | 'JSON_REST_V1';
 
+/**
+ * Type for representing a text node and its IDs/
+ * Тип для представления текстового узла и его идентификаторов
+ */
 export declare type UiFigmaItemText = {
+    /** Node IDs/ Идентификаторы узлов */
     id: string[];
+    /** Text content/ Текстовое содержимое */
     text: string;
 };
 
+/**
+ * Type for message data containing frame information, text items, and screenshots/
+ * Тип для данных сообщения, содержащих информацию о фрейме, текстовые элементы и скриншоты
+ */
 export declare type UiFigmaMessageTexts = {
+    /** Figma frame item/ Элемент фрейма Figma */
     frame: FigmaFrame;
+    /** List of text items/ Список текстовых элементов */
     texts: UiFigmaItemText[];
+    /** Screenshots in Uint8Array format/ Скриншоты в формате Uint8Array */
     screenshot: Uint8Array[];
 };
 
-export declare type UiFigmaNode = ChildrenMixin | SceneNode | DefaultShapeMixin | DocumentNode | PageNode | FrameNode | SectionNode | TextNode;
+/**
+ * Type for Figma nodes/
+ * Тип для узлов Figma
+ */
+export declare type UiFigmaNode = ChildrenMixin | SceneNode | DefaultShapeMixin | DocumentNode | PageNode | FrameNode | SectionNode | TextNode | BaseNode;
 
 /**
  * Composable for accessing the FigmaPluginMessenger singleton.

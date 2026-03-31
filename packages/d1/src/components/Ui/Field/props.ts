@@ -43,8 +43,8 @@ export type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type FieldProps = FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> &
-  PropsToken
+export type FieldProps = FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps>
+  & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

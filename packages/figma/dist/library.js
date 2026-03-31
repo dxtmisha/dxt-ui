@@ -98,10 +98,10 @@ function l() {
 }
 //#endregion
 //#region src/types/framesTypes.ts
-var u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add";
+var u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add", p = "ui-figma-frame-set-selection";
 //#endregion
 //#region src/functions/addFramesSelected.ts
-function p(e, t) {
+function m(e, t) {
 	l().post(f, {
 		id: e,
 		selected: t
@@ -109,37 +109,42 @@ function p(e, t) {
 }
 //#endregion
 //#region src/functions/fetchFramesSelected.ts
-var m, h = !1;
-function g(e) {
-	if (m) {
-		e(m);
-		return;
-	}
+var h, g = !1;
+function _(e) {
 	if (h) {
-		setTimeout(() => g(e), 160);
+		e(h);
 		return;
 	}
-	h = !0, l().add(d, (t) => {
-		m = t, h = !1, e(m);
+	if (g) {
+		setTimeout(() => _(e), 160);
+		return;
+	}
+	g = !0, l().add(d, (t) => {
+		h = t, g = !1, e(h);
 	}).post(d);
 }
 //#endregion
 //#region src/functions/fetchTopLevelFrames.ts
-var _, v = !1;
-function y(e) {
-	if (_) {
-		e(_);
-		return;
-	}
+var v, y = !1;
+function b(e) {
 	if (v) {
-		setTimeout(() => y(e), 160);
+		e(v);
 		return;
 	}
-	v = !0;
+	if (y) {
+		setTimeout(() => b(e), 160);
+		return;
+	}
+	y = !0;
 	let t = l(), n = (r) => {
-		_ = r, _.length > 0 && (e(_), t.remove(u, n), v = !1);
+		v = r, v.length > 0 && (e(v), t.remove(u, n), y = !1);
 	};
 	t.add(u, n).post(u);
 }
 //#endregion
-export { o as FigmaPostAbstract, a as FigmaPostCode, s as FigmaUiMessenger, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as addFramesSelected, g as fetchFramesSelected, y as fetchTopLevelFrames, l as useFigmaUiMessenger };
+//#region src/functions/sendSelectionFrame.ts
+function x(e) {
+	l().post(p, { id: e });
+}
+//#endregion
+export { o as FigmaPostAbstract, a as FigmaPostCode, s as FigmaUiMessenger, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as UI_FIGMA_FRAME_SET_SELECTION, m as addFramesSelected, _ as fetchFramesSelected, b as fetchTopLevelFrames, x as sendSelectionFrame, l as useFigmaUiMessenger };

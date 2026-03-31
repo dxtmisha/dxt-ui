@@ -1124,6 +1124,14 @@ export declare class CacheStatic {
 }
 
 /**
+ * Capitalizes the first letter of a string.
+ *
+ * Делает первую букву строки заглавной.
+ * @param value string to capitalize / строка для капитализации
+ */
+export declare function capitalize(value: string): string;
+
+/**
  * Class for working with cookies.
  *
  * Класс для управления Cookie.

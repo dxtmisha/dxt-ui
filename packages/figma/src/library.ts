@@ -10,6 +10,7 @@ export * from './composables/useFigmaUiMessenger'
 export * from './functions/addFramesSelected'
 export * from './functions/fetchFramesSelected'
 export * from './functions/fetchTopLevelFrames'
+export * from './functions/sendSelectionFrame'
 
 // Types
 export * from './types/figmaMessengerTypes'

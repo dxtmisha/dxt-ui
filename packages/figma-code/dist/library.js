@@ -1,7 +1,7 @@
 import { executeFunction as e, forEach as t, isNull as n } from "@dxtmisha/functional-basic";
-import { FigmaPostAbstract as r, FigmaPostCode as i, UI_FIGMA_FRAMES_POST_NAME as a, UI_FIGMA_FRAMES_SELECTED_ADD_NAME as o, UI_FIGMA_FRAMES_SELECTED_POST_NAME as s } from "@dxtmisha/figma";
+import { FigmaPostAbstract as r, FigmaPostCode as i, UI_FIGMA_FRAMES_POST_NAME as a, UI_FIGMA_FRAMES_SELECTED_ADD_NAME as o, UI_FIGMA_FRAMES_SELECTED_POST_NAME as s, UI_FIGMA_FRAME_SET_SELECTION as c } from "@dxtmisha/figma";
 //#region src/classes/FigmaItem.ts
-var c = class e {
+var l = class e {
 	constructor(e) {
 		this.item = e;
 	}
@@ -24,6 +24,10 @@ var c = class e {
 		}
 		return !1;
 	}
+	inCurrentPage() {
+		var e;
+		return ((e = this.getParentPage()) == null ? void 0 : e.id) === figma.currentPage.id;
+	}
 	get() {
 		return this.item;
 	}
@@ -38,6 +42,16 @@ var c = class e {
 	}
 	getParentItem() {
 		let t = this.getParent();
+		if (t) return new e(t);
+	}
+	getParentPage() {
+		let e = this.getParent();
+		for (; e && e.type !== "PAGE";) if (e.parent) e = e.parent;
+		else return;
+		return e;
+	}
+	getParentPageItem() {
+		let t = this.getParentPage();
 		if (t) return new e(t);
 	}
 	getChildren() {
@@ -63,6 +77,14 @@ var c = class e {
 	getText() {
 		return this.isText() ? this.item.characters.trim() : "";
 	}
+	toSelection() {
+		figma.currentPage.selection = [this.item], figma.viewport.scrollAndZoomIntoView([this.item]);
+	}
+	async toPageAndSelection() {
+		this.inCurrentPage() && this.toSelection();
+		let e = this.getParentPage();
+		e && (await figma.setCurrentPageAsync(e), this.toSelection());
+	}
 	getExportSettings(e) {
 		switch (e) {
 			case "JSON_REST_V1":
@@ -79,36 +101,36 @@ var c = class e {
 };
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/typeof.js
-function l(e) {
+function u(e) {
 	"@babel/helpers - typeof";
-	return l = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return u = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, l(e);
+	}, u(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPrimitive.js
-function u(e, t) {
-	if (l(e) != "object" || !e) return e;
+function d(e, t) {
+	if (u(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (l(r) != "object") return r;
+		if (u(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/toPropertyKey.js
-function d(e) {
-	var t = u(e, "string");
-	return l(t) == "symbol" ? t : t + "";
+function f(e) {
+	var t = d(e, "string");
+	return u(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.120.0/helpers/defineProperty.js
-function f(e, t, n) {
-	return (t = d(t)) in e ? Object.defineProperty(e, t, {
+function p(e, t, n) {
+	return (t = f(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -117,9 +139,9 @@ function f(e, t, n) {
 }
 //#endregion
 //#region src/classes/FigmaFrame.ts
-var p = class {
+var m = class {
 	constructor(e, t = !1) {
-		f(this, "mainItem", []), f(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
+		p(this, "mainItem", []), p(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
 	}
 	isSelection() {
 		return this.selection && "selection" in this.page;
@@ -153,11 +175,11 @@ var p = class {
 		return e;
 	}
 	initMain() {
-		return this.isSelection() ? t([...this.page.selection], (e) => new c(e)) : [new c(this.page)];
+		return this.isSelection() ? t([...this.page.selection], (e) => new l(e)) : [new l(this.page)];
 	}
 	initItems(e) {
 		let t = [];
-		if ("children" in e) for (let n of e.children) t.push(new c(n), ...this.initItems(n));
+		if ("children" in e) for (let n of e.children) t.push(new l(n), ...this.initItems(n));
 		return t;
 	}
 	initBySelection() {
@@ -171,11 +193,11 @@ var p = class {
 	filter(e) {
 		return this.items.filter(e);
 	}
-	toMain(e = new c(this.page)) {
+	toMain(e = new l(this.page)) {
 		let t = e.getParentItem();
 		return t && !t.isDocument() ? this.toMain(t) : e;
 	}
-}, m = class extends r {
+}, h = class extends r {
 	post(e, t) {
 		figma.ui.postMessage({
 			code: i.get(),
@@ -186,15 +208,15 @@ var p = class {
 	prepare() {
 		figma.ui.onmessage = (e) => this.onMessage(e);
 	}
-}, h;
-function g() {
-	return h || (h = new m(), h.make()), h;
+}, g;
+function _() {
+	return g || (g = new h(), g.make()), g;
 }
 //#endregion
 //#region src/classes/FigmaStorage.ts
-var _ = class {
+var v = class {
 	constructor(e, t = figma.root, n) {
-		f(this, "value", void 0), f(this, "age", void 0), this.name = e, this.item = t, this.cache = n;
+		p(this, "value", void 0), p(this, "age", void 0), this.name = e, this.item = t, this.cache = n;
 	}
 	get(e) {
 		if (this.make(), this.value !== void 0 && this.isCache()) return this.value;
@@ -236,7 +258,7 @@ var _ = class {
 			age: this.age
 		});
 	}
-}, v = class {
+}, y = class {
 	static has(e) {
 		return this.get().includes(e);
 	}
@@ -258,7 +280,7 @@ var _ = class {
 		t ? this.add(e) : this.remove(e);
 	}
 	static send() {
-		let e = g();
+		let e = _();
 		e.add(s, () => this.post()), e.add(o, ({ id: e, selected: t }) => this.toggle(e, t));
 	}
 	static getList() {
@@ -269,13 +291,13 @@ var _ = class {
 		this.selected = e, this.storage.set(e);
 	}
 	static post() {
-		g().post(s, this.get());
+		_().post(s, this.get());
 	}
 };
-f(v, "storage", new _(s)), f(v, "selected", void 0);
+p(y, "storage", new v(s)), p(y, "selected", void 0);
 //#endregion
 //#region src/classes/FigmaTopLevelFrames.ts
-var y = class {
+var b = class {
 	static async get() {
 		if (!this.frames) {
 			this.frames = [];
@@ -288,7 +310,7 @@ var y = class {
 		return this.frames;
 	}
 	static send() {
-		let e = g();
+		let e = _();
 		e.add(a, () => {
 			this.get().then((t) => {
 				e.post(a, t);
@@ -296,22 +318,31 @@ var y = class {
 		});
 	}
 	static getList() {
-		return new p(figma.currentPage).getMainFrames();
+		return new m(figma.currentPage).getMainFrames();
 	}
 };
-f(y, "frames", void 0);
+p(b, "frames", void 0);
 //#endregion
 //#region src/composables/useFigmaStorage.ts
-function b(e, t = figma.root, n) {
+function x(e, t = figma.root, n) {
 	let r = `${"id" in t ? t.id : "root"}:${e}`;
-	if (r in x) return x[r];
-	let i = new _(e, t, n);
-	return x[r] = i, i;
+	if (r in S) return S[r];
+	let i = new v(e, t, n);
+	return S[r] = i, i;
 }
-var x = {}, S = "texts", C = () => {
+var S = {};
+//#endregion
+//#region src/functions/getFigmaItemById.ts
+async function C(e) {
+	let t = await figma.getNodeByIdAsync(e);
+	if (t) return new l(t);
+}
+//#endregion
+//#region src/config.ts
+var w = "texts", T = () => {
 	figma.on("selectionchange", async () => {
-		let e = new p(figma.currentPage, !0);
-		g().post(S, {
+		let e = new m(figma.currentPage, !0);
+		_().post(w, {
 			frame: e,
 			texts: e.getTexts(),
 			screenshot: await e.screenshot()
@@ -319,4 +350,19 @@ var x = {}, S = "texts", C = () => {
 	});
 };
 //#endregion
-export { p as FigmaFrame, v as FigmaFramesSelected, c as FigmaItem, m as FigmaPluginMessenger, _ as FigmaStorage, y as FigmaTopLevelFrames, C as makeFigmaTexts, g as useFigmaPluginMessenger, b as useFigmaStorage };
+//#region src/functions/toFrameSelection.ts
+async function E(e) {
+	if (e) {
+		let t = await C(e);
+		t && t.toPageAndSelection();
+	}
+}
+//#endregion
+//#region src/functions/setupSelectionByMessage.ts
+function D() {
+	_().add(c, ({ id: e }) => {
+		console.log("id", e), E(e).then();
+	});
+}
+//#endregion
+export { m as FigmaFrame, y as FigmaFramesSelected, l as FigmaItem, h as FigmaPluginMessenger, v as FigmaStorage, b as FigmaTopLevelFrames, C as getFigmaItemById, T as makeFigmaTexts, D as setupSelectionByMessage, E as toFrameSelection, _ as useFigmaPluginMessenger, x as useFigmaStorage };

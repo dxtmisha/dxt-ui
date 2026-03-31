@@ -12,7 +12,10 @@ export * from './composables/useFigmaPluginMessenger'
 export * from './composables/useFigmaStorage'
 
 // Functions
+export * from './functions/getFigmaItemById'
 export * from './functions/makeFigmaTexts'
+export * from './functions/setupSelectionByMessage'
+export * from './functions/toFrameSelection'
 
 // Types
 export * from './types/figmaTypes'

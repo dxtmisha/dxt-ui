@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/capitalize - Viết hoa chữ cái đầu tiên của một chuỗi'/>
+
+# `capitalize`
+
+Viết hoa chữ cái đầu tiên của một chuỗi. Trả về cùng một chuỗi nếu ký tự đầu tiên không phải là chữ cái hoặc nếu chuỗi trống.
+
+**Tham số:**
+- `value: string` — Chuỗi gốc cần viết hoa.
+
+**Trả về:**
+`string` — Chuỗi với chữ cái đầu tiên được viết hoa.
+
+```typescript
+import { capitalize } from '@dxtmisha/functional-basic'
+
+console.log(capitalize('hello')) // 'Hello'
+console.log(capitalize('Hello')) // 'Hello'
+console.log(capitalize('123'))   // '123'
+```

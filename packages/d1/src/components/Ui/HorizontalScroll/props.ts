@@ -16,7 +16,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type HorizontalScrollProps =  HorizontalScrollPropsBasic & PropsToken
+export type HorizontalScrollProps = HorizontalScrollPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

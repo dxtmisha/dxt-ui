@@ -4,6 +4,7 @@ import type { UiFigmaExportFormat, UiFigmaNode } from '../types/figmaTypes'
  * Class for working with Figma nodes.
  *
  * Класс для работы с узлами Figma.
+ * @template T type of Figma node/ тип узла Figma
  */
 export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   /**
@@ -70,6 +71,15 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   }
 
   /**
+   * Checks if the node is in the current page.
+   *
+   * Проверяет, находится ли узел на текущей странице.
+   */
+  inCurrentPage(): boolean {
+    return this.getParentPage()?.id === figma.currentPage.id
+  }
+
+  /**
    * Returns the Figma node.
    *
    * Возвращает узел Figma.
@@ -114,6 +124,40 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
 
     if (parent) {
       return new FigmaItem(parent)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the parent page.
+   *
+   * Возвращает родительскую страницу.
+   */
+  getParentPage(): PageNode | undefined {
+    let parent = this.getParent()
+
+    while (parent && parent.type !== 'PAGE') {
+      if (parent.parent) {
+        parent = parent.parent
+      } else {
+        return undefined
+      }
+    }
+
+    return parent as PageNode | undefined
+  }
+
+  /**
+   * Returns the parent page wrapped in FigmaItem.
+   *
+   * Возвращает родительскую страницу, обернутую в FigmaItem.
+   */
+  getParentPageItem(): FigmaItem | undefined {
+    const parentPage = this.getParentPage()
+
+    if (parentPage) {
+      return new FigmaItem(parentPage)
     }
 
     return undefined
@@ -202,6 +246,34 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     }
 
     return ''
+  }
+
+  /**
+   * Selects the node.
+   *
+   * Выделяет узел.
+   */
+  toSelection() {
+    figma.currentPage.selection = [this.item as never]
+    figma.viewport.scrollAndZoomIntoView([this.item as never])
+  }
+
+  /**
+   * Moves to the page containing the node and selects it.
+   *
+   * Перемещает на страницу, содержащую узел, и выделяет его.
+   */
+  async toPageAndSelection() {
+    if (this.inCurrentPage()) {
+      this.toSelection()
+    }
+
+    const parentPage = this.getParentPage()
+
+    if (parentPage) {
+      await figma.setCurrentPageAsync(parentPage)
+      this.toSelection()
+    }
   }
 
   /**

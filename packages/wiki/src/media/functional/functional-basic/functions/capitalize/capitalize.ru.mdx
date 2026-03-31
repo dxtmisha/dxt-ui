@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/capitalize - Делает первую букву строки заглавной'/>
+
+# `capitalize`
+
+Делает первую букву строки заглавной. Возвращает ту же строку, если первый символ не является буквой или если строка пуста.
+
+**Параметры:**
+- `value: string` — Исходная строка для капитализации.
+
+**Возвращает:**
+`string` — Строка с заглавной первой буквой.
+
+```typescript
+import { capitalize } from '@dxtmisha/functional-basic'
+
+console.log(capitalize('hello')) // 'Hello'
+console.log(capitalize('Hello')) // 'Hello'
+console.log(capitalize('123'))   // '123'
+```

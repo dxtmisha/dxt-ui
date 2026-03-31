@@ -14,8 +14,10 @@
   }
 
   &__label {
+    @include ui.flex;
     align-self: center;
     flex-basis: auto;
+    gap: inherit;
   }
 
   &__caption {
@@ -24,8 +26,10 @@
   }
 
   &__description {
+    @include ui.flex;
     grid-area: description;
     flex-basis: 100%;
+    gap: inherit;
   }
 
   &__contextTrailing {
@@ -70,8 +74,9 @@
   }
 
   @at-root {
-    [data-divider="active"] + &[data-divider="active"],
-    [data-divider="active"] + * > &[data-divider="active"] {
+
+    [data-divider="active"]+&[data-divider="active"],
+    [data-divider="active"]+*>&[data-divider="active"] {
       border-top-style: solid;
       border-top-width: ui.v('??borderWidth');
       @include ui.borderColor(ui.v('??borderColor'));

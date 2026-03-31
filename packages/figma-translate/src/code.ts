@@ -1,5 +1,5 @@
 import { FigmaPostCode } from '@dxtmisha/figma'
-import { FigmaFramesSelected, FigmaTopLevelFrames } from '@dxtmisha/figma-code'
+import { FigmaFramesSelected, FigmaTopLevelFrames, setupSelectionByMessage } from '@dxtmisha/figma-code'
 
 import manifest from '../manifest.json'
 
@@ -9,6 +9,8 @@ switch (figma.mode) {
   case 'inspect':
     FigmaTopLevelFrames.send()
     FigmaFramesSelected.send()
+
+    setupSelectionByMessage()
 
     figma.showUI(__html__)
     break

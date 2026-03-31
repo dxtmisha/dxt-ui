@@ -30,10 +30,10 @@ export type ImageAttrs = Record<keyof HTMLImageElement, any>
 /** Image coordinator item type / Тип элемента координат изображения */
 export type ImageCoordinatorItem
   = [number]
-  | [number, number]
-  | [number, number, number]
-  | [number, number, number, number]
-  | Undefined
+    | [number, number]
+    | [number, number, number]
+    | [number, number, number, number]
+    | Undefined
 
 /** Image size type / Тип размера изображения */
 export type ImageSize<T = number> = {
@@ -64,10 +64,10 @@ export type ImageUint8ArrayCache = ImageUint8ArrayItem[]
 /** Parameters for the uploaded image or the one available by a direct link / Параметры для загруженного изображения или доступного по прямой ссылке */
 export type ImageItem
   = ImageSize
-  & {
-    image: HTMLImageElement
-    src: string
-  }
+    & {
+      image: HTMLImageElement
+      src: string
+    }
 
 /** Image type item / Элемент типа изображения */
 export type ImageTypeItem = ImageTypeValue | Undefined
@@ -83,9 +83,9 @@ export type ImageEventType = {
 /** Image event data type / Тип данных события изображения */
 export type ImageEventData
   = ImageEventType
-  & {
-    image: ImageEventItem
-  }
+    & {
+      image: ImageEventItem
+    }
 
 /** Image value type / Тип значения изображения */
 export type ImageValue<

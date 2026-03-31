@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/capitalize - Capitalizing the first letter of a string'/>
+
+# `capitalize`
+
+Capitalizes the first letter of a string. Returns the same string if the first character is not a letter or if the string is empty.
+
+**Parameters:**
+- `value: string` — The original string to capitalize.
+
+**Returns:**
+`string` — The string with the first letter capitalized.
+
+```typescript
+import { capitalize } from '@dxtmisha/functional-basic'
+
+console.log(capitalize('hello')) // 'Hello'
+console.log(capitalize('Hello')) // 'Hello'
+console.log(capitalize('123'))   // '123'
+```

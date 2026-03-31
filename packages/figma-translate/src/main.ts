@@ -8,7 +8,10 @@ import './media/responseData/responseData'
 import manifest from '../manifest.json'
 import App from './App.vue'
 
+import { makeIcons } from './media/icons'
+
 d1MakeIcons()
+makeIcons()
 FigmaPostCode.set(manifest.id)
 
 createApp(App)
