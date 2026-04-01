@@ -1,27 +1,37 @@
 import { computed, readonly, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, getBind } from '@dxtmisha/functional'
 
-import { IconInclude } from '../Icon'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { TextInclude } from '../../classes/TextInclude'
-import { WindowClassesInclude } from '../Window'
 
+import { type ActionsInclude } from '../Actions'
+import { type BarsInclude } from '../Bars'
+import { IconInclude } from '../Icon'
 import { ModalAbstract } from '../Modal/ModalAbstract'
+import { WindowClassesInclude, type WindowInclude } from '../Window'
 
 import type { DialogComponents, DialogEmits, DialogSlots } from './types'
 import type { DialogProps } from './props'
 
 /**
  * Dialog
+ *
+ * The class for working with a dialog window.
+ * Класс для работы с диалоговым окном.
  */
 export class Dialog extends ModalAbstract {
+  /** icon/ иконка */
   readonly icon: IconInclude
+  /** label/ метка */
   readonly label: LabelInclude
+  /** description/ описание */
   readonly description: DescriptionInclude
 
+  /** window classes/ классы окна */
   readonly windowClasses: WindowClassesInclude
 
+  /** text translations/ текстовые переводы */
   readonly text: TextInclude
 
   /**
@@ -35,11 +45,14 @@ export class Dialog extends ModalAbstract {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
+   * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
+   * @param constructors.BarsConstructor class for creating bars/ класс для создания панелей
    * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
    * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
    * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
    * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
    * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
+   * @param constructors.WindowConstructor class for creating a window/ класс для создания окна
    */
   constructor(
     protected readonly props: DialogProps,
@@ -51,11 +64,14 @@ export class Dialog extends ModalAbstract {
     protected readonly slots?: DialogSlots,
     protected readonly emits?: ConstrEmit<DialogEmits>,
     constructors?: {
+      ActionsConstructor?: typeof ActionsInclude
+      BarsConstructor?: typeof BarsInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
       IconIncludeConstructor?: typeof IconInclude
       LabelIncludeConstructor?: typeof LabelInclude
       TextIncludeConstructor?: typeof TextInclude
       WindowClassesIncludeConstructor?: typeof WindowClassesInclude
+      WindowConstructor?: typeof WindowInclude
     }
   ) {
     const {
@@ -123,7 +139,8 @@ export class Dialog extends ModalAbstract {
           list,
           align: 'center'
         }
-      })
+      }),
+      constructors
     )
 
     this.icon = new IconIncludeConstructor(

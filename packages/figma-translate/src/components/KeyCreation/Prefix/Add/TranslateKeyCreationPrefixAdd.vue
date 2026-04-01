@@ -37,7 +37,7 @@ const description = ref('')
         <div class="translate-key-creation-prefix-app__description">
           <D1Textarea
             v-model="description"
-            :label="translate['translate-description']"
+            :placeholder="translate['translate-description']"
           />
         </div>
       </D1GridItem>

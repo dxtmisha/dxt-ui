@@ -120,7 +120,8 @@
     },
     "focus": {
       "gradient": "{sys.palette.scrim}",
-      "gradient-opacity": "{sys.opacity.focus}"
+      "gradient-opacity": "{sys.opacity.focus}",
+      "outline": "{outline.sm}"
     },
     "active": {
       "gradient": "{sys.palette.scrim}",

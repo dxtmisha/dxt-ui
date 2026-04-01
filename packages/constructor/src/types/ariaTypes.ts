@@ -6,18 +6,6 @@ export type AriaTrueOrFalse = 'true' | 'false' | boolean
 
 /** ARIA list type/ ARIA тип списка */
 export type AriaList = {
-  /** Element ID/ ID элемента */
-  'id'?: string
-
-  /** ARIA role type/ Тип ARIA роли */
-  'role'?: RoleType
-
-  /**
-   * Tabindex attribute - indicates if the element can be focused/
-   * Атрибут Tabindex - указывает, может ли элемент получать фокус
-   */
-  'tabindex'?: NumberOrString
-
   /**
    * ARIA activedescendant attribute - identifies the currently active element/
    * Атрибут ARIA activedescendant - идентифицирует текущий активный элемент
@@ -299,19 +287,35 @@ export type AriaList = {
    * Атрибут ARIA valuetext - определяет читаемую человеком текстовую альтернативу aria-valuenow
    */
   'aria-valuetext'?: string
-}
 
-/** Basic ARIA role props/ Базовые ARIA пропсы роли */
-export type AriaRolePropsInclude = {
-  role?: RoleType
+  /** Element ID/ ID элемента */
+  'id'?: string
+
+  /** ARIA role type/ Тип ARIA роли */
+  'role'?: RoleType
+
+  /**
+   * Tabindex attribute - indicates if the element can be focused/
+   * Атрибут Tabindex - указывает, может ли элемент получать фокус
+   */
+  'tabindex'?: NumberOrString
 }
 
 /**
- * ARIA label prop/
- * ARIA проп label
+ * ARIA atomic prop/
+ * ARIA проп atomic
  */
-export type AriaLabelPropsInclude = {
-  ariaLabel?: string
+export type AriaAtomicPropsInclude = {
+  ariaAtomic?: AriaList['aria-atomic']
+}
+
+/**
+ * ARIA props with labelledby and describedby/
+ * ARIA пропсы с labelledby и describedby
+ */
+export type AriaByPropsInclude = {
+  ariaLabelledby?: string
+  ariaDescribedby?: string
 }
 
 /**
@@ -331,11 +335,11 @@ export type AriaHaspopupPropsInclude = {
 }
 
 /**
- * ARIA multiselectable prop/
- * ARIA проп multiselectable
+ * ARIA label prop/
+ * ARIA проп label
  */
-export type AriaMultiselectablePropsInclude = {
-  ariaMultiselectable?: boolean
+export type AriaLabelPropsInclude = {
+  ariaLabel?: string
 }
 
 /**
@@ -347,12 +351,11 @@ export type AriaLivePropsInclude = {
 }
 
 /**
- * ARIA props with labelledby and describedby/
- * ARIA пропсы с labelledby и describedby
+ * ARIA multiselectable prop/
+ * ARIA проп multiselectable
  */
-export type AriaByPropsInclude = {
-  ariaLabelledby?: string
-  ariaDescribedby?: string
+export type AriaMultiselectablePropsInclude = {
+  ariaMultiselectable?: boolean
 }
 
 /**
@@ -370,4 +373,9 @@ export type AriaRoleControlPropsInclude = AriaRolePropsInclude & AriaHaspopupPro
   ariaControls?: string
   ariaHaspopup?: AriaList['aria-haspopup']
   ariaExpanded?: string
+}
+
+/** Basic ARIA role props/ Базовые ARIA пропсы роли */
+export type AriaRolePropsInclude = {
+  role?: RoleType
 }

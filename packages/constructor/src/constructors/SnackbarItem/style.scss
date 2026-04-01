@@ -1,0 +1,25 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinSnackbarItem {
+  position: relative;
+
+  &__tool {
+    @include ui.flexX;
+  }
+
+  &__context {
+    @include ui.flexStretchY;
+    @include ui.flexDynamic;
+    order: 4;
+  }
+
+  &__button {
+    order: 1024;
+  }
+
+  &__buttonClose {
+    align-self: flex-start;
+    z-index: 48;
+    order: 1040;
+  }
+}

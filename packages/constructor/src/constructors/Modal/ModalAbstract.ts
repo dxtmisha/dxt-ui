@@ -34,6 +34,10 @@ export abstract class ModalAbstract {
    * @param extraWindow additional parameters for WindowInclude/ дополнительные параметры для WindowInclude
    * @param extraBars additional parameters for BarsInclude/ дополнительные параметры для BarsInclude
    * @param extraActions additional parameters for ActionsInclude/ дополнительные параметры для ActionsInclude
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.WindowConstructor class for creating a window/ класс для создания окна
+   * @param constructors.BarsConstructor class for creating bars/ класс для создания панелей
+   * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
    */
   protected constructor(
     protected readonly props: ModalProps,
@@ -46,12 +50,23 @@ export abstract class ModalAbstract {
     protected readonly emits?: ConstrEmit<ModalEmits>,
     protected readonly extraWindow?: RefOrNormal<any>,
     protected readonly extraBars?: RefOrNormal<any>,
-    protected readonly extraActions?: RefOrNormal<any>
+    protected readonly extraActions?: RefOrNormal<any>,
+    constructors?: {
+      WindowConstructor?: typeof WindowInclude
+      BarsConstructor?: typeof BarsInclude
+      ActionsConstructor?: typeof ActionsInclude
+    }
   ) {
+    const {
+      WindowConstructor = WindowInclude,
+      BarsConstructor = BarsInclude,
+      ActionsConstructor = ActionsInclude
+    } = constructors ?? {}
+
     const labelId: string = getElementId()
     const descriptionId: string = getElementId()
 
-    this.bars = new BarsInclude(
+    this.bars = new BarsConstructor(
       props,
       className,
       components,
@@ -61,7 +76,7 @@ export abstract class ModalAbstract {
       descriptionId
     )
 
-    this.actions = new ActionsInclude(
+    this.actions = new ActionsConstructor(
       props,
       className,
       components,
@@ -69,7 +84,7 @@ export abstract class ModalAbstract {
       extraActions
     )
 
-    this.window = new WindowInclude(
+    this.window = new WindowConstructor(
       props,
       className,
       components,

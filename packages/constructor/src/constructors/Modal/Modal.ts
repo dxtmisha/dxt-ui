@@ -1,6 +1,10 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { type ActionsInclude } from '../Actions'
+import { type BarsInclude } from '../Bars'
+import { type WindowInclude } from '../Window'
+
 import { ModalAbstract } from './ModalAbstract'
 
 import type { ModalComponents, ModalEmits, ModalSlots } from './types'
@@ -8,6 +12,9 @@ import type { ModalProps } from './props'
 
 /**
  * Modal
+ *
+ * The class for working with a modal window.
+ * Класс для работы с модальным окном.
  */
 export class Modal extends ModalAbstract {
   /**
@@ -20,6 +27,10 @@ export class Modal extends ModalAbstract {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
+   * @param constructors.BarsConstructor class for creating bars/ класс для создания панелей
+   * @param constructors.WindowConstructor class for creating a window/ класс для создания окна
    */
   constructor(
     protected readonly props: ModalProps,
@@ -29,7 +40,12 @@ export class Modal extends ModalAbstract {
     protected readonly className: string,
     protected readonly components?: DesignComp<ModalComponents, ModalProps>,
     protected readonly slots?: ModalSlots,
-    protected readonly emits?: ConstrEmit<ModalEmits>
+    protected readonly emits?: ConstrEmit<ModalEmits>,
+    constructors?: {
+      ActionsConstructor?: typeof ActionsInclude
+      BarsConstructor?: typeof BarsInclude
+      WindowConstructor?: typeof WindowInclude
+    }
   ) {
     super(
       props,
@@ -47,7 +63,10 @@ export class Modal extends ModalAbstract {
         adaptive: 'modal',
         imagePosition: props.imagePosition,
         closeButton: props.barsBackHide
-      }))
+      })),
+      undefined,
+      undefined,
+      constructors
     )
   }
 }

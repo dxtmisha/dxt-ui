@@ -53,6 +53,7 @@ export class Window {
   readonly classes: WindowClasses
   /** Element manager for window DOM element/ Менеджер элементов для DOM элемента окна */
   readonly element: WindowElement
+  /** Tab index manager for window/ Менеджер таб индекса для окна */
   readonly tabIndex: TabIndexInclude
 
   /** Status manager for window state/ Менеджер статуса для состояния окна */
@@ -89,6 +90,7 @@ export class Window {
   /** Escape key manager for window closing/ Менеджер клавиши Escape для закрытия окна */
   readonly esc: WindowEsc
 
+  /** Text manager for window content/ Менеджер текста для содержимого окна */
   readonly text: TextInclude
 
   /** Hidden manager for hiding elements outside the window when open/ Менеджер скрытия элементов вне окна при открытии */

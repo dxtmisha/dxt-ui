@@ -15,19 +15,24 @@ import type { ButtonPropsBasic } from './props'
  *
  * @template Props - Properties interface extending ButtonPropsInclude
  */
-export class ButtonInclude<Props extends ButtonPropsInclude = ButtonPropsInclude> {
+export class ButtonInclude<
+  Props extends ButtonPropsInclude = ButtonPropsInclude,
+  PropsBasic extends ButtonPropsBasic = ButtonPropsBasic
+> {
   /**
    * Constructor
-   * @param props input parameter/ входной параметр
+   * @param label label text or bind/ текст метки или привязка
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
+   * @param props input parameter/ входной параметр
    * @param extra additional parameter/ дополнительный параметр
    * @param index index identifier/ идентификатор индекса
    */
   constructor(
-    protected readonly props: Readonly<Props>,
+    protected readonly label: RefOrNormal<string | ConstrBind<PropsBasic>>,
     protected readonly className: string,
     protected readonly components?: DesignComponents<ButtonComponentInclude, Props>,
+    protected readonly props?: Props,
     protected readonly extra?: RefOrNormal<ConstrBind<ButtonPropsBasic>>,
     protected readonly index?: string
   ) {
@@ -38,9 +43,9 @@ export class ButtonInclude<Props extends ButtonPropsInclude = ButtonPropsInclude
    */
   readonly binds = computed(
     () => toBinds(
-      this.props.buttonAttrs,
+      this.props?.buttonAttrs,
       getBind(
-        getRef(this.props),
+        getRef(this.label),
         getRef(this.extra),
         'label'
       )
