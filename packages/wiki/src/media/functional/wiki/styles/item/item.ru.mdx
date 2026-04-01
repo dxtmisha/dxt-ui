@@ -1,0 +1,75 @@
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/wiki/styles/item - Утилиты элементов'/>
+
+# Утилиты элементов
+
+Система `.wiki-storybook-item` предоставляет надежный способ демонстрации компонентов с использованием заранее определенных пропорций (aspect ratios) и размеров сетки. Это основной строительный блок для создания структурированных страниц документации.
+
+## Базовый класс
+
+- `.wiki-storybook-item`: Основной класс контейнера. Он обеспечивает:
+  - Пропорции `1:1` по умолчанию.
+  - Скругление углов `12px`.
+  - Тонкую рамку `1px`.
+  - `overflow: hidden`.
+  - `position: relative`.
+
+## Модификаторы
+
+### Пропорции (Aspect Ratio)
+Используется для изменения формы элемента:
+- `.wiki-storybook-item--rectangle`: пропорция `16:9`.
+- `.wiki-storybook-item--widescreen`: пропорция `32:9`.
+- `.wiki-storybook-item--compact`: пропорция `64:9`.
+- `.wiki-storybook-item--auto`: отключает фиксированные пропорции (`auto`).
+
+### Сетка и Ширина (Span)
+Адаптивные модификаторы, используемые внутри `.wiki-storybook-group`:
+- `.wiki-storybook-item--squared--xs`: занимает 3 колонки на мобильных, 2 колонки на десктопе.
+- `.wiki-storybook-item--squared--sm`: занимает 6 колонок на мобильных, 2-4 колонки на десктопе.
+- `.wiki-storybook-item--squared--md`: занимает 12 колонок на мобильных, 4-6 колонок на десктопе.
+- `.wiki-storybook-item--squared--lg`: занимает 12 колонок на мобильных, 6 колонок на десктопе.
+
+### Раскладка и внешний вид
+- `.wiki-storybook-item--center`: Центрирует дочерние элементы с помощью flexbox.
+- `.wiki-storybook-item--rtl`: Меняет направление текста на справа налево (`rtl`).
+- `.wiki-storybook-item--padding`: Добавляет внутренний отступ `16px`.
+- `.wiki-storybook-item--overflowVisible`: Устанавливает `overflow: visible`, чтобы предотвратить обрезку контента.
+
+## Метки (Labels)
+
+- `.wiki-storybook-item__label`: Маленькая плавающая метка, расположенная в верхнем левом углу.
+- `.wiki-storybook-item__label--static`: Статичная метка, следующая по обычному потоку документа.
+
+## Примеры
+
+### Пропорции сторон
+Элементы документации обычно отображаются с фиксированными пропорциями для поддержания чистоты макета.
+
+<Canvas>
+  <Story name="Пропорции сторон">
+    <div className="wiki-storybook-group">
+      <div className="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
+        <div className="wiki-storybook-item__label">xs (1:1)</div>
+        <div className="wiki-storybook-dummy" style={{ width: '40%' }}></div>
+      </div>
+      <div className="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--rectangle wiki-storybook-item--center">
+        <div className="wiki-storybook-item__label">sm (16:9)</div>
+        <div className="wiki-storybook-dummy" style={{ width: '40%' }}></div>
+      </div>
+    </div>
+  </Story>
+</Canvas>
+
+### Центрирование и отступы
+Удобно для демонстрации небольших элементов интерфейса.
+
+<Canvas>
+  <Story name="Центрирование и отступы">
+    <div className="wiki-storybook-item wiki-storybook-item--compact wiki-storybook-item--center wiki-storybook-item--padding">
+      <div className="wiki-storybook-item__label">С отступами и по центру</div>
+      <div className="wiki-storybook-dummy" style={{ width: '100%' }}></div>
+    </div>
+  </Story>
+</Canvas>

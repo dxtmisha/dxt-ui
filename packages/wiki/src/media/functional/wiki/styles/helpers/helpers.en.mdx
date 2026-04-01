@@ -1,0 +1,59 @@
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/wiki/styles/helpers - Helper utilities'/>
+
+# Helper Utilities
+
+These classes are specifically designed for documentation examples, providing quick ways to create mock cards, buttons, and placeholder blocks to visualize layouts and component contexts.
+
+## Classes
+
+### Mock Card
+- `.wiki-storybook-card`: The main card container (`320px` width, `12px` border-radius).
+  - `.wiki-storybook-card__image`: A fixed-height placeholder for images.
+  - `.wiki-storybook-card__content`: Padded vertical container for text and actions.
+  - `.wiki-storybook-card__label`: Larger title text (`20px`).
+  - `.wiki-storybook-card__information`: Smaller, muted info text (`14px`).
+  - `.wiki-storybook-card__actions`: Horizontal flex container for action buttons.
+
+### Button
+- `.wiki-storybook-button`: A minimalist button with a subtle border and interactive states (hover/active).
+
+### Dummy Placeholder
+- `.wiki-storybook-dummy`: A simple rectangular placeholder.
+  - **Colors**: `--color--blue`, `--color--red`, `--color--green`.
+  - **Sizes**: `--size--sm` (`64px`), `--size--md` (`128px`), `--size--lg` (`256px`).
+
+## Examples
+
+### Mock Card
+Use this to demonstrate components that typically live within card layouts.
+
+<Canvas>
+  <Story name="Mock Card">
+    <div className="wiki-storybook-card">
+      <div className="wiki-storybook-card__image" style={{ backgroundImage: "url('https://picsum.photos/400/200')" }}></div>
+      <div className="wiki-storybook-card__content">
+        <div className="wiki-storybook-card__label">Card Preview</div>
+        <div className="wiki-storybook-card__information">Useful for showing complex layouts.</div>
+        <div className="wiki-storybook-card__actions">
+          <button className="wiki-storybook-button">Accept</button>
+          <button className="wiki-storybook-button">Decline</button>
+        </div>
+      </div>
+    </div>
+  </Story>
+</Canvas>
+
+### Dummies and Buttons
+Ideal for filling space or representing generic UI interactive elements.
+
+<Canvas>
+  <Story name="Dummies and Buttons">
+    <div className="wiki-storybook-flex">
+      <div className="wiki-storybook-dummy wiki-storybook-dummy--color--blue" style={{ width: '100px' }}></div>
+      <div className="wiki-storybook-dummy wiki-storybook-dummy--color--red" style={{ width: '100px' }}></div>
+      <button className="wiki-storybook-button">Standard Button</button>
+    </div>
+  </Story>
+</Canvas>

@@ -28,14 +28,14 @@ export class SnackbarDesign<
   CLASSES extends SnackbarClasses,
   P extends SnackbarPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SnackbarEmits,
-    EXPOSE,
-    SnackbarSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SnackbarEmits,
+  EXPOSE,
+  SnackbarSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Snackbar
 
   /**
@@ -153,7 +153,7 @@ export class SnackbarDesign<
 
     this.item.data.item.value.forEach(
       item => children.push(h(
-        'aside',
+        item.highPriority ? 'aside' : 'div',
         {
           'key': item.value,
           'class': {
@@ -176,26 +176,21 @@ export class SnackbarDesign<
    * @param item add element / элемент добавления
    */
   protected readonly renderItem = (item: SnackbarValue): VNode => {
+    const props = {
+      ...item.data,
+      value: item.value,
+      onClose: this.item.onClose
+    }
+
     if (item.component) {
       const component = { ...markRaw(item.component) }
 
-      return h(
-        component,
-        {
-          ...item.data,
-          value: item.value,
-          onClose: this.item.onClose
-        }
-      )
+      return h(component, props)
     }
 
     return this.components.renderOne(
       'snackbarItem',
-      {
-        ...item.data,
-        value: item.value,
-        onClose: this.item.onClose
-      },
+      props,
       undefined,
       item.value
     ) as VNode

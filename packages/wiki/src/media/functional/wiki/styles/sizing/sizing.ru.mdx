@@ -1,0 +1,39 @@
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/wiki/styles/sizing - Утилиты размеров'/>
+
+# Утилиты размеров
+
+Эти классы предоставляют ограничения ширины для примеров документации, что полезно для тестирования адаптивного поведения или демонстрации компонентов в узких контекстах.
+
+## Классы
+
+- `.wiki-storybook-decreased`: Устанавливает ширину контейнера в `72%`.
+- `.wiki-storybook-decreasedX2`: Адаптивная утилита, которая постепенно уменьшает ширину по мере увеличения экрана:
+  - По умолчанию: `100%`
+  - На брейкпоинте `md`: `64%`
+  - На брейкпоинте `lg`: `48%`
+
+## Примеры
+
+### Фиксированное уменьшение
+Класс `.wiki-storybook-decreased` занимает около 3/4 доступной ширины.
+
+<Canvas>
+  <Story name="Фиксированное уменьшение">
+    <div className="wiki-storybook-decreased" style={{ background: 'rgba(0,0,0,0.05)', border: '1px dashed #ccc', padding: '16px' }}>
+      Ширина: 72%
+    </div>
+  </Story>
+</Canvas>
+
+### Адаптивное уменьшение
+Класс `.wiki-storybook-decreasedX2` обеспечивает более заметное уменьшение на больших экранах.
+
+<Canvas>
+  <Story name="Адаптивное уменьшение">
+    <div className="wiki-storybook-decreasedX2" style={{ background: 'rgba(0,0,0,0.05)', border: '1px dashed #ccc', padding: '16px' }}>
+      Адаптивная ширина (64% md, 48% lg)
+    </div>
+  </Story>
+</Canvas>

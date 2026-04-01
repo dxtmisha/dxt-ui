@@ -27,14 +27,20 @@
   },
   "files": [
     "src/styles",
+    "index.scss",
+    "properties.scss",
     "README.md",
     "package.json",
     "LICENSE"
   ],
   "main": "src/styles/index.scss",
   "exports": {
-    ".": "./src/styles/index.scss",
-    "./properties": "./src/styles/properties/index.scss"
+    ".": {
+      "sass": "./src/styles/index.scss"
+    },
+    "./properties": {
+      "sass": "./src/styles/properties/index.scss"
+    }
   },
   "engines": {
     "node": ">=20.0.0"

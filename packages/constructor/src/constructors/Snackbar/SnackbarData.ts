@@ -1,4 +1,5 @@
 import { computed, type Ref, shallowRef } from 'vue'
+import { isElementVisible } from '@dxtmisha/functional-basic'
 
 import type { SnackbarList, SnackbarValue } from './basicTypes'
 import type { SnackbarProps } from './props'
@@ -105,8 +106,11 @@ export class SnackbarData {
    * Возвращает элемент сообщения по его идентификации.
    * @param value element identification / идентификация элемента
    */
-  protected getElementItem(value: string) {
-    return document.querySelector(`[data-snackbar-item="${value}"]`)
+  protected getElementItem(value: string): HTMLDivElement | undefined {
+    const element = this.element.value
+      ?.querySelector<HTMLDivElement>(`[data-snackbar-item="${value}"]`)
+
+    return element ?? undefined
   }
 
   /**
@@ -164,7 +168,10 @@ export class SnackbarData {
       if (delay > 0) {
         const element = this.getElementItem(value)
 
-        if (element) {
+        if (
+          element
+          && isElementVisible(element)
+        ) {
           element.addEventListener('animationend', () => {
             setTimeout(() => this.remove(value), delay)
           })

@@ -1,0 +1,50 @@
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
+import * as LayoutStories from './layout.stories'
+
+<Meta of={LayoutStories} />
+
+# Утилиты раскладки
+
+Эти классы предоставляют структурные возможности компоновки для примеров документации, обеспечивая единообразное распределение и выравнивание в историях Storybook.
+
+## Классы
+
+- `.wiki-storybook-container`: Устанавливает `container-type: inline-size`, что позволяет дочерним элементам использовать контейнерные запросы (container queries).
+- `.wiki-storybook-group`: 12-колонная сетка с отступом `8px`.
+- `.wiki-storybook-flex`: Контейнер flexbox с переносом строк (`flex-wrap: wrap`) и отступом `8px`.
+- `.wiki-storybook-flex-center`: Центрирующий контейнер flexbox (выравнивание по обеим осям).
+- `.wiki-storybook-flex-column`: Вертикальный контейнер flexbox (`flex-direction: column`) с отступом `16px`.
+
+## Примеры
+
+### Сетка (Group Grid)
+Класс `.wiki-storybook-group` создает 12-колонную сетку, обычно используется вместе с модификаторами `.wiki-storybook-item` для управления шириной колонок.
+
+<Canvas>
+  <Story of={LayoutStories.Grid} />
+</Canvas>
+
+### Flex Раскладка
+Класс `.wiki-storybook-flex` идеально подходит для создания простых горизонтальных списков с автоматическим переносом.
+
+<Canvas>
+  <Story of={LayoutStories.Flex} />
+</Canvas>
+
+### Центрирование
+Класс `.wiki-storybook-flex-center` центрирует элементы внутри контейнера.
+
+<Canvas>
+  <Story of={LayoutStories.FlexCenter} />
+</Canvas>
+
+### Утилиты ширины
+Эти классы позволяют управлять шириной элемента относительно его контейнера.
+
+- `.wiki-storybook-decreased`: Устанавливает ширину в `72%`.
+- `.wiki-storybook-decreasedX2`: Устанавливает ширину в `64%` на средних экранах (md) и `48%` на больших (lg).
+
+<Canvas>
+  <Story of={LayoutStories.Decreased} />
+</Canvas>
+

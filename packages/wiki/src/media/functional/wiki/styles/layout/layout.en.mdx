@@ -1,0 +1,50 @@
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
+import * as LayoutStories from './layout.stories'
+
+<Meta of={LayoutStories} />
+
+# Layout Utilities
+
+These classes provide structural layout options for documentation examples, ensuring consistent spacing and alignment across different Storybook stories.
+
+## Classes
+
+- `.wiki-storybook-container`: Sets `container-type: inline-size`, enabling container queries for children.
+- `.wiki-storybook-group`: A 12-column grid container with an `8px` gap.
+- `.wiki-storybook-flex`: A flexbox container with `flex-wrap: wrap` and an `8px` gap.
+- `.wiki-storybook-flex-center`: A flexbox container that centers its content both horizontally and vertically.
+- `.wiki-storybook-flex-column`: A vertical flexbox container (`flex-direction: column`) with a `16px` gap.
+
+## Examples
+
+### Group Grid
+The `.wiki-storybook-group` class creates a 12-column grid, often used with `.wiki-storybook-item` modifiers to control span.
+
+<Canvas>
+  <Story of={LayoutStories.Grid} />
+</Canvas>
+
+### Flex Layout
+Use `.wiki-storybook-flex` for simple horizontal lists with wrapping.
+
+<Canvas>
+  <Story of={LayoutStories.Flex} />
+</Canvas>
+
+### Centered Flex
+The `.wiki-storybook-flex-center` class centers elements within the container.
+
+<Canvas>
+  <Story of={LayoutStories.FlexCenter} />
+</Canvas>
+
+### Width Utilities
+These classes allow for controlling the width of an element relative to its container.
+
+- `.wiki-storybook-decreased`: Sets width to `72%`.
+- `.wiki-storybook-decreasedX2`: Sets width to `64%` on medium screens and `48%` on large screens.
+
+<Canvas>
+  <Story of={LayoutStories.Decreased} />
+</Canvas>
+

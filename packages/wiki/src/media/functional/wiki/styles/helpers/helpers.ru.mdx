@@ -1,0 +1,55 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/wiki/styles/helpers - Утилиты помощники'/>
+
+# Утилиты помощники
+
+Эти классы специально разработаны для примеров в документации, предоставляя быстрые способы создания макетов карточек, кнопок и заглушек для визуализации макетов и контекстов компонентов.
+
+## Классы
+
+### Макет карточки (Card)
+- `.wiki-storybook-card`: Основной контейнер карточки (ширина `320px`, радиус `12px`).
+  - `.wiki-storybook-card__image`: Заглушка для изображения фиксированной высоты.
+  - `.wiki-storybook-card__content`: Вертикальный контейнер с отступами для текста и действий.
+  - `.wiki-storybook-card__label`: Крупный заголовок (`20px`).
+  - `.wiki-storybook-card__information`: Вторичный приглушенный текст (`14px`).
+  - `.wiki-storybook-card__actions`: Горизонтальный flex-контейнер для кнопок действий.
+
+### Кнопка (Button)
+- `.wiki-storybook-button`: Минималистичная кнопка с легкой рамкой и поддержкой интерактивных состояний (наведение/нажатие).
+
+### Заглушка (Dummy Placeholder)
+- `.wiki-storybook-dummy`: Простой прямоугольный заполнитель.
+  - **Цвета**: `--color--blue`, `--color--red`, `--color--green`.
+  - **Размеры**: `--size--sm` (`64px`), `--size--md` (`128px`), `--size--lg` (`256px`).
+
+## Примеры
+
+### Макет карточки
+Используйте этот макет для демонстрации компонентов, которые обычно живут внутри карточных раскладок.
+
+<Canvas>
+  <div class="wiki-storybook-card">
+    <div class="wiki-storybook-card__image" style="background-image: url('https://picsum.photos/400/200');"></div>
+    <div class="wiki-storybook-card__content">
+      <div class="wiki-storybook-card__label">Заголовок карточки</div>
+      <div class="wiki-storybook-card__information">Полезно для демонстрации сложных макетов.</div>
+      <div class="wiki-storybook-card__actions">
+        <button class="wiki-storybook-button">Принять</button>
+        <button class="wiki-storybook-button">Отказать</button>
+      </div>
+    </div>
+  </div>
+</Canvas>
+
+### Заглушки и кнопки
+Идеально подходят для заполнения пространства или представления общих интерактивных элементов интерфейса.
+
+<Canvas>
+  <div class="wiki-storybook-flex">
+    <div class="wiki-storybook-dummy wiki-storybook-dummy--color--blue" style="width: 100px;"></div>
+    <div class="wiki-storybook-dummy wiki-storybook-dummy--color--red" style="width: 100px;"></div>
+    <button class="wiki-storybook-button">Стандартная кнопка</button>
+  </div>
+</Canvas>
