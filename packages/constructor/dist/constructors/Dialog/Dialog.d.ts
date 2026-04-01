@@ -1,15 +1,20 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
-import { IconInclude, IconValue, IconPropsBasic } from '../Icon';
 import { LabelInclude } from '../../classes/LabelInclude';
 import { DescriptionInclude } from '../../classes/DescriptionInclude';
 import { TextInclude } from '../../classes/TextInclude';
-import { WindowClassesInclude } from '../Window';
+import { ActionsInclude } from '../Actions';
+import { BarsInclude } from '../Bars';
+import { IconInclude, IconValue, IconPropsBasic } from '../Icon';
 import { ModalAbstract } from '../Modal/ModalAbstract';
+import { WindowClassesInclude, WindowInclude } from '../Window';
 import { DialogComponents, DialogEmits, DialogSlots } from './types';
 import { DialogProps } from './props';
 /**
  * Dialog
+ *
+ * The class for working with a dialog window.
+ * Класс для работы с диалоговым окном.
  */
 export declare class Dialog extends ModalAbstract {
     protected readonly props: DialogProps;
@@ -20,10 +25,15 @@ export declare class Dialog extends ModalAbstract {
     protected readonly components?: DesignComp<DialogComponents, DialogProps> | undefined;
     protected readonly slots?: DialogSlots | undefined;
     protected readonly emits?: ConstrEmit<DialogEmits> | undefined;
+    /** icon/ иконка */
     readonly icon: IconInclude;
+    /** label/ метка */
     readonly label: LabelInclude;
+    /** description/ описание */
     readonly description: DescriptionInclude;
+    /** window classes/ классы окна */
     readonly windowClasses: WindowClassesInclude;
+    /** text translations/ текстовые переводы */
     readonly text: TextInclude;
     /**
      * Constructor
@@ -36,18 +46,24 @@ export declare class Dialog extends ModalAbstract {
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      * @param constructors object with classes/ объект с классами
+     * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
+     * @param constructors.BarsConstructor class for creating bars/ класс для создания панелей
      * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
      * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
      * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
      * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
      * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
+     * @param constructors.WindowConstructor class for creating a window/ класс для создания окна
      */
     constructor(props: DialogProps, refs: ToRefs<DialogProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<DialogComponents, DialogProps> | undefined, slots?: DialogSlots | undefined, emits?: ConstrEmit<DialogEmits> | undefined, constructors?: {
+        ActionsConstructor?: typeof ActionsInclude;
+        BarsConstructor?: typeof BarsInclude;
         DescriptionIncludeConstructor?: typeof DescriptionInclude;
         IconIncludeConstructor?: typeof IconInclude;
         LabelIncludeConstructor?: typeof LabelInclude;
         TextIncludeConstructor?: typeof TextInclude;
         WindowClassesIncludeConstructor?: typeof WindowClassesInclude;
+        WindowConstructor?: typeof WindowInclude;
     });
     /**
      * Returns the icon for display.

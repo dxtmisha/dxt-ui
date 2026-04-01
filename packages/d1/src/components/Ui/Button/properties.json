@@ -18,9 +18,6 @@
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.disabled}"
   },
-  "#label": {
-    "min-width": "{ref.spacing.20}"
-  },
   "~primary": {
     "color": "{sys.palette.onPrimary}",
     "color-opacity": "{sys.opacity.primary.high}",
@@ -145,6 +142,12 @@
   },
   "~roundedFull": {
     "border-radius": "{sys.rounded.full}"
+  },
+  "~hasLabelMinWidth": {
+    "#label": {
+      "min-width": "{ref.spacing.20}"
+    },
+    "_default": true
   },
   "@@palette": "{palette}"
 }

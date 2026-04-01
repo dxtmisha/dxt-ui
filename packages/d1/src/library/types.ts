@@ -44,6 +44,7 @@ import _D1Section from '../components/Ui/Section/D1Section.vue'
 import _D1Select from '../components/Ui/Select/D1Select.vue'
 import _D1SelectValue from '../components/Ui/SelectValue/D1SelectValue.vue'
 import _D1Skeleton from '../components/Ui/Skeleton/D1Skeleton.vue'
+import _D1SnackbarItem from '../components/Ui/SnackbarItem/D1SnackbarItem.vue'
 import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
 import _D1Tabs from '../components/Ui/Tabs/D1Tabs.vue'
 import _D1TabsNavigation from '../components/Ui/TabsNavigation/D1TabsNavigation.vue'
@@ -97,6 +98,7 @@ declare module '@vue/runtime-core' {
     D1Select: typeof _D1Select
     D1SelectValue: typeof _D1SelectValue
     D1Skeleton: typeof _D1Skeleton
+    D1SnackbarItem: typeof _D1SnackbarItem
     D1TabItem: typeof _D1TabItem
     D1Tabs: typeof _D1Tabs
     D1TabsNavigation: typeof _D1TabsNavigation

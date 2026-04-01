@@ -3003,6 +3003,12 @@
                 type: 'var',
                 value: 'calc(var(--d1-ref-spacing-1)*96)',
               ),
+              '112':(
+                index: '112',
+                name: '--d1-ref-spacing-112',
+                type: 'var',
+                value: 'calc(var(--d1-ref-spacing-1)*112)',
+              ),
               '128':(
                 index: '128',
                 name: '--d1-ref-spacing-128',
@@ -12251,6 +12257,11 @@
         name: 'd1-skeleton',
         type: 'component',
       ),
+      'snackbarItem':(
+        index: 'snackbarItem',
+        name: 'd1-snackbarItem',
+        type: 'component',
+      ),
       'tabItem':(
         index: 'tabItem',
         name: 'd1-tabItem',
@@ -12762,6 +12773,11 @@
       'skeleton':(
         index: 'skeleton',
         name: 'd-skeleton',
+        type: 'component',
+      ),
+      'snackbarItem':(
+        index: 'snackbarItem',
+        name: 'd-snackbarItem',
         type: 'component',
       ),
       'tabItem':(

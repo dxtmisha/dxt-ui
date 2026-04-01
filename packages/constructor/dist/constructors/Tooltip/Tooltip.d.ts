@@ -13,8 +13,8 @@ import { RoleType } from '../../types/roleTypes';
 import { TooltipControl, TooltipControlBinds } from './basicTypes';
 import { TooltipComponents, TooltipEmits, TooltipSlots } from './types';
 import { TooltipProps } from './props';
-import { NumberOrString } from '@dxtmisha/functional-basic';
 import { AriaTrueOrFalse } from '../../library';
+import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * Tooltip
  */
@@ -82,9 +82,6 @@ export declare class Tooltip {
      * Вычисляемые привязки для элемента подсказки
      */
     readonly binds: ComputedRef<{
-        id: string;
-        role?: RoleType;
-        tabindex?: NumberOrString;
         'aria-activedescendant'?: string;
         'aria-atomic'?: AriaTrueOrFalse;
         'aria-autocomplete'?: "none" | "inline" | "list" | "both";
@@ -132,6 +129,9 @@ export declare class Tooltip {
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        id: string;
+        role?: RoleType;
+        tabindex?: NumberOrString;
         onMouseover: () => void;
         onMouseout: ({ relatedTarget }: MouseEvent) => void;
         onTransitionend: (event: TransitionEvent) => void;

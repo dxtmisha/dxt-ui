@@ -44,6 +44,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-button--text': props.text,
     [`d1-button--size--${props.size}`]: inArray(propsValues.size, props.size),
     'd1-button--roundedFull': props.roundedFull,
+    'd1-button--hasLabelMinWidth': props.hasLabelMinWidth,
     [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }

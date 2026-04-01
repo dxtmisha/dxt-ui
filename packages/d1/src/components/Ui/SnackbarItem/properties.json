@@ -1,0 +1,29 @@
+{
+  "main": "{d.snackbarItem}",
+  "gap": "{sys.spacing.md}",
+  "paddingX": "{layout.paddingX}",
+  "paddingY": "{layout.paddingY}",
+  "media|sm": {
+    "width": "{ref.spacing.80}"
+  },
+  "media|md": {
+    "width": "{ref.spacing.96}"
+  },
+  "media|lg": {
+    "width": "{ref.spacing.112}"
+  },
+  "color": "{sys.palette.onPrimary}",
+  "color-opacity": "{sys.opacity.primary.high}",
+  "palette-background": "{sys.palette.primaryVariant}",
+  "background-opacity": "{sys.opacity.primary.high}",
+  "border-radius": "{sys.rounded.lg}",
+  "box-shadow": "{sys.shadow.lg}",
+  "backdrop-filter": "{sys.blur.lg}",
+  "#context": {
+    "gap": "{sys.spacing.xs}"
+  },
+  "#description": {
+    "link|font": "{font.bodyMedium}"
+  },
+  "@@palette": "{palette}"
+}

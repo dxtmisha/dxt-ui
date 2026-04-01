@@ -246,7 +246,9 @@ export class SnackbarItemDesign<
           class: this.classes?.value.close,
           icon: this.props.iconClose,
           ...AriaStaticInclude.label(this.item.text.close.value)
-        }
+        },
+        undefined,
+        'button-close'
       )
     }
 

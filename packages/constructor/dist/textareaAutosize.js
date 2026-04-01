@@ -1,4 +1,4 @@
-import { t as e } from "./defineProperty-BTtSLqQS.js";
+import { t as e } from "./defineProperty-hmGKPWdq.js";
 import { h as t, nextTick as n, ref as r, watch as i } from "vue";
 import { DesignConstructorAbstract as a, toBinds as o } from "@dxtmisha/functional";
 //#region src/constructors/TextareaAutosize/TextareaAutosizeValue.ts

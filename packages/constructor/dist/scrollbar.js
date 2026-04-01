@@ -1,4 +1,4 @@
-import { t as e } from "./defineProperty-BTtSLqQS.js";
+import { t as e } from "./defineProperty-hmGKPWdq.js";
 import { computed as t, h as n, onUnmounted as r, watch as i } from "vue";
 import { DesignConstructorAbstract as a, EventItem as o, ScrollbarWidthRef as s } from "@dxtmisha/functional";
 //#region src/constructors/Scrollbar/ScrollbarBorder.ts

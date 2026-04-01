@@ -14,21 +14,23 @@ import { ItemList } from '@dxtmisha/functional-basic';
  *
  * @template Props - Properties interface extending ButtonPropsInclude
  */
-export declare class ButtonInclude<Props extends ButtonPropsInclude = ButtonPropsInclude> {
-    protected readonly props: Readonly<Props>;
+export declare class ButtonInclude<Props extends ButtonPropsInclude = ButtonPropsInclude, PropsBasic extends ButtonPropsBasic = ButtonPropsBasic> {
+    protected readonly label: RefOrNormal<string | ConstrBind<PropsBasic>>;
     protected readonly className: string;
     protected readonly components?: DesignComponents<ButtonComponentInclude, Props> | undefined;
+    protected readonly props?: Props | undefined;
     protected readonly extra?: RefOrNormal<ConstrBind<ButtonPropsBasic>> | undefined;
     protected readonly index?: string | undefined;
     /**
      * Constructor
-     * @param props input parameter/ входной параметр
+     * @param label label text or bind/ текст метки или привязка
      * @param className class name/ название класса
      * @param components object for working with components/ объект для работы с компонентами
+     * @param props input parameter/ входной параметр
      * @param extra additional parameter/ дополнительный параметр
      * @param index index identifier/ идентификатор индекса
      */
-    constructor(props: Readonly<Props>, className: string, components?: DesignComponents<ButtonComponentInclude, Props> | undefined, extra?: RefOrNormal<ConstrBind<ButtonPropsBasic>> | undefined, index?: string | undefined);
+    constructor(label: RefOrNormal<string | ConstrBind<PropsBasic>>, className: string, components?: DesignComponents<ButtonComponentInclude, Props> | undefined, props?: Props | undefined, extra?: RefOrNormal<ConstrBind<ButtonPropsBasic>> | undefined, index?: string | undefined);
     /**
      * Computed bindings for the button/ Вычисляемые привязки для кнопки
      */

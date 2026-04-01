@@ -219,6 +219,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  hasLabelMinWidth: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Indicates whether a minimum width should be applied to the label',
+        ru: 'Определяет, нужно ли устанавливать минимальную ширину для метки'
+      }
+    }
+  },
   maxWidth: {
     type: StorybookControl.select,
     options: {

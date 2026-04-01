@@ -2423,6 +2423,11 @@
                 "type": "var",
                 "value": "{ref.spacing.1}*96"
               },
+              "112": {
+                "name": "--d1-ref-spacing-112",
+                "type": "var",
+                "value": "{ref.spacing.1}*112"
+              },
               "128": {
                 "name": "--d1-ref-spacing-128",
                 "type": "var",

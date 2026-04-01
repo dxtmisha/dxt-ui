@@ -3,7 +3,7 @@ import { ConstrOptions, ConstrStyles, DesignConstructorAbstract, ConstrClass } f
 import { Cell } from './Cell';
 import { CellPropsBasic } from './props';
 import { CellClasses, CellComponents, CellEmits, CellExpose, CellSlots } from './types';
-import { RoleType, AriaTrueOrFalse, EventClickValue } from '../../library';
+import { AriaTrueOrFalse, RoleType, EventClickValue } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * CellDesign
@@ -66,9 +66,6 @@ export declare class CellDesign<COMP extends CellComponents, EXPOSE extends Cell
      * Свойства для главного элемента.
      */
     protected readonly propsMain: ComputedRef<{
-        id?: string;
-        role?: RoleType;
-        tabindex?: NumberOrString;
         'aria-activedescendant'?: string;
         'aria-atomic'?: AriaTrueOrFalse;
         'aria-autocomplete'?: "none" | "inline" | "list" | "both";
@@ -116,6 +113,9 @@ export declare class CellDesign<COMP extends CellComponents, EXPOSE extends Cell
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        id?: string;
+        role?: RoleType;
+        tabindex?: NumberOrString;
         onClick: (event: MouseEvent, options?: EventClickValue) => void;
         onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
         href?: string;

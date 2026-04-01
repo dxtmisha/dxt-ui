@@ -1,7 +1,7 @@
 import { VNode, ComputedRef } from 'vue';
 import { SkeletonInclude } from '../constructors/Skeleton';
 import { CaptionProps, CaptionSlots } from '../types/captionTypes';
-import { RoleType, AriaTrueOrFalse } from '../library';
+import { AriaTrueOrFalse, RoleType } from '../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * Class for working with caption.
@@ -33,9 +33,6 @@ export declare class CaptionInclude {
      * Возвращает привязки для элемента подписи.
      */
     readonly binds: ComputedRef<{
-        id?: string;
-        role?: RoleType;
-        tabindex?: NumberOrString;
         'aria-activedescendant'?: string;
         'aria-atomic'?: AriaTrueOrFalse;
         'aria-autocomplete'?: "none" | "inline" | "list" | "both";
@@ -83,6 +80,9 @@ export declare class CaptionInclude {
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        id?: string;
+        role?: RoleType;
+        tabindex?: NumberOrString;
         class: {
             [x: string]: boolean;
         };

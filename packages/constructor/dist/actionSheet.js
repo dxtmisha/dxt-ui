@@ -1,23 +1,23 @@
-import { t as e } from "./defineProperty-BTtSLqQS.js";
-import { r as t, t as n } from "./ModalDesignAbstract-09Xi8-4h.js";
-import { t as r } from "./TouchEventInclude-c55bz912.js";
+import { t as e } from "./defineProperty-hmGKPWdq.js";
+import { t } from "./TouchEventInclude-By_ChOIe.js";
+import { r as n, t as r } from "./ModalDesignAbstract-CZnrxm84.js";
 import { computed as i, h as a } from "vue";
 import { toBinds as o } from "@dxtmisha/functional";
 //#region src/constructors/ActionSheet/ActionSheet.ts
-var s = class extends t {
-	constructor(t, n, a, o, s, c, l, u, d) {
-		let { TouchEventIncludeConstructor: f = r } = d == null ? {} : d;
-		super(t, n, a, o, s, c, l, u, i(() => ({
-			open: t.open,
+var s = class extends n {
+	constructor(n, r, a, o, s, c, l, u, d) {
+		let { TouchEventIncludeConstructor: f = t } = d == null ? {} : d;
+		super(n, r, a, o, s, c, l, u, i(() => ({
+			open: n.open,
 			adaptive: "actionSheet",
-			closeButton: t.barsBackHide,
-			closeMobileHide: t.touchClose
-		})), void 0, { align: "auto" }), e(this, "touchEvent", void 0), this.props = t, this.refs = n, this.element = a, this.classDesign = o, this.className = s, this.components = c, this.slots = l, this.emits = u, this.touchEvent = new f(void 0, (e, t, n, r) => r >= 0, (e, t) => t === "bottom" ? (this.window.expose.setOpen(!1).then(), !1) : !0);
+			closeButton: n.barsBackHide,
+			closeMobileHide: n.touchClose
+		})), void 0, { align: "auto" }, d), e(this, "touchEvent", void 0), this.props = n, this.refs = r, this.element = a, this.classDesign = o, this.className = s, this.components = c, this.slots = l, this.emits = u, this.touchEvent = new f(void 0, (e, t, n, r) => r >= 0, (e, t) => t === "bottom" ? (this.window.expose.setOpen(!1).then(), !1) : !0);
 	}
 }, c = {
 	barsBackHide: !0,
 	touchClose: !0
-}, l = class extends n {
+}, l = class extends r {
 	constructor(...t) {
 		super(...t), e(this, "renderTitleTouch", (e) => {
 			let t = this.renderTitle(e);

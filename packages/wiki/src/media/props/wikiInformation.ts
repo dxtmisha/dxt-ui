@@ -1,6 +1,17 @@
 import { type StorybookArgsToList, StorybookCategory, StorybookControl } from '../../types/storybookTypes'
 
 export const wikiInformation: StorybookArgsToList = {
+  button: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.information,
+      type: ['string', 'number', 'ConstrBind<ButtonPropsBasic>', 'null'],
+      description: {
+        en: 'Button configuration (string for label, number, or full button props object)',
+        ru: 'Конфигурация кнопки (строка для метки, число или полный объект свойств кнопки)'
+      }
+    }
+  },
   buttonClose: {
     type: StorybookControl.object,
     options: {
@@ -35,6 +46,28 @@ export const wikiInformation: StorybookArgsToList = {
     },
     isDemo: true,
     demo: 'Caption text'
+  },
+  component: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.information,
+      type: 'any',
+      description: {
+        en: 'Component to be rendered',
+        ru: 'Компонент для рендеринга'
+      }
+    }
+  },
+  componentProps: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.information,
+      type: 'object',
+      description: {
+        en: 'Properties for the rendered component',
+        ru: 'Свойства для рендеримого компонента'
+      }
+    }
   },
   description: {
     type: StorybookControl.string,
@@ -79,6 +112,17 @@ export const wikiInformation: StorybookArgsToList = {
         ru: 'Вспомогательный текст, предоставляющий руководство или дополнительную информацию'
       },
       value: 'This is a helpful message'
+    }
+  },
+  html: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'HTML content to be rendered',
+        ru: 'HTML-контент для рендеринга'
+      }
     }
   },
   image: {

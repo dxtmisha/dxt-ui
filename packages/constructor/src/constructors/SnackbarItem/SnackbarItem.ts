@@ -94,7 +94,15 @@ export class SnackbarItem {
       undefined,
       { onClick: this.event.onClick }
     )
-    this.actions = new ActionsConstructor(props, className, components, emits)
+    this.actions = new ActionsConstructor(
+      props,
+      className,
+      components,
+      emits,
+      {
+        align: 'left'
+      }
+    )
 
     this.text = new TextConstructor(props)
   }

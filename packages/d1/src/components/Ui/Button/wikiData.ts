@@ -12,6 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'focus', type: 'boolean' },
   { name: 'grid', type: 'boolean' },
+  { name: 'hasLabelMinWidth', type: 'boolean' },
   { name: 'href', type: 'string' },
   { name: 'icon', type: 'IconValue<Icon>' },
   { name: 'iconAttrs', type: 'ConstrBind<Icon>' },

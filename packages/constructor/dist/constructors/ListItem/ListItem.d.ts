@@ -14,7 +14,7 @@ import { BadgeInclude } from '../Badge/BadgeInclude';
 import { EnabledInclude } from '../../classes/EnabledInclude';
 import { ListItemComponents, ListItemEmits, ListItemSlots } from './types';
 import { ListItemProps } from './props';
-import { EventClickValue, RoleType, AriaTrueOrFalse } from '../../library';
+import { EventClickValue, AriaTrueOrFalse, RoleType } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * ListItem
@@ -94,9 +94,6 @@ export declare class ListItem {
     }>;
     /** values for aria attributes/ значения для атрибутов aria */
     readonly aria: ComputedRef<{
-        id?: string;
-        role?: RoleType;
-        tabindex: NumberOrString;
         'aria-activedescendant'?: string;
         'aria-atomic'?: AriaTrueOrFalse;
         'aria-autocomplete'?: "none" | "inline" | "list" | "both";
@@ -144,5 +141,8 @@ export declare class ListItem {
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        id?: string;
+        role?: RoleType;
+        tabindex: NumberOrString;
     }>;
 }

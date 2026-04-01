@@ -52,6 +52,7 @@ export type SnackbarItemProps = SnackbarItemPropsBasic & SnackbarItemPropsToken
  */
 export const defaultsSnackbarItem = {
   closeButton: true,
+  role: 'status',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

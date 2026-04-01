@@ -9,7 +9,7 @@ import { ImageBackground } from './ImageBackground';
 import { ImageImg } from './ImageImg';
 import { ImageEmits } from './types';
 import { ImageProps } from './props';
-import { RoleType, AriaTrueOrFalse } from '../../library';
+import { AriaTrueOrFalse, RoleType } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * Base class for working with images and icons.
@@ -79,9 +79,6 @@ export declare class Image {
      * Вычисляемые привязки для элемента изображения.
      */
     readonly binds: ComputedRef<{
-        id?: string;
-        role?: RoleType;
-        tabindex?: NumberOrString;
         'aria-activedescendant'?: string;
         'aria-atomic'?: AriaTrueOrFalse;
         'aria-autocomplete'?: "none" | "inline" | "list" | "both";
@@ -129,6 +126,9 @@ export declare class Image {
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        id?: string;
+        role?: RoleType;
+        tabindex?: NumberOrString;
         translate: string;
     }>;
     /**

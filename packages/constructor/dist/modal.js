@@ -1,16 +1,16 @@
-import { n as e, r as t, t as n } from "./ModalDesignAbstract-09Xi8-4h.js";
+import { n as e, r as t, t as n } from "./ModalDesignAbstract-CZnrxm84.js";
 import { computed as r } from "vue";
 import "@dxtmisha/functional";
 //#region src/constructors/Modal/Modal.ts
 var i = class extends t {
-	constructor(e, t, n, i, a, o, s, c) {
+	constructor(e, t, n, i, a, o, s, c, l) {
 		super(e, t, n, i, a, o, s, c, r(() => ({
 			open: e.open,
 			image: e.image,
 			adaptive: "modal",
 			imagePosition: e.imagePosition,
 			closeButton: e.barsBackHide
-		}))), this.props = e, this.refs = t, this.element = n, this.classDesign = i, this.className = a, this.components = o, this.slots = s, this.emits = c;
+		})), void 0, void 0, l), this.props = e, this.refs = t, this.element = n, this.classDesign = i, this.className = a, this.components = o, this.slots = s, this.emits = c;
 	}
 }, a = class extends n {
 	initItem(e) {

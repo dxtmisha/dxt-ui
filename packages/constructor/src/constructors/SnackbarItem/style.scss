@@ -1,15 +1,18 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinSnackbarItem {
+  @include ui.flexStretchY;
   position: relative;
 
   &__tool {
     @include ui.flexX;
+    gap: inherit;
   }
 
   &__context {
     @include ui.flexStretchY;
     @include ui.flexDynamic;
+    gap: inherit;
     order: 4;
   }
 
@@ -17,7 +20,7 @@
     order: 1024;
   }
 
-  &__buttonClose {
+  &__close {
     align-self: flex-start;
     z-index: 48;
     order: 1040;

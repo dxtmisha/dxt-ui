@@ -1,16 +1,16 @@
-import { t as e } from "./defineProperty-BTtSLqQS.js";
-import { t } from "./TextInclude-BIa1AeDQ.js";
-import { t as n } from "./WindowClassesInclude-C8R8pgeo.js";
-import { t as r } from "./LabelInclude-BJc8uC4Y.js";
-import { t as i } from "./DescriptionInclude--_NvJ6ka.js";
-import { r as a, t as o } from "./ModalDesignAbstract-09Xi8-4h.js";
-import { t as s } from "./IconInclude-Bex3cqNy.js";
+import { t as e } from "./defineProperty-hmGKPWdq.js";
+import { t } from "./TextInclude-OwyVCAbS.js";
+import { t as n } from "./LabelInclude-DoZ7EUYO.js";
+import { t as r } from "./DescriptionInclude-B_Xf_j3l.js";
+import { t as i } from "./WindowClassesInclude-Dp9vrvR4.js";
+import { r as a, t as o } from "./ModalDesignAbstract-CZnrxm84.js";
+import { t as s } from "./IconInclude-DbC8m22T.js";
 import { computed as c, h as l, readonly as u } from "vue";
 import { getBind as d, toBinds as f } from "@dxtmisha/functional";
 //#region src/constructors/Dialog/Dialog.ts
 var p = class extends a {
 	constructor(a, o, l, f, p, m, h, g, _) {
-		let { DescriptionIncludeConstructor: v = i, IconIncludeConstructor: y = s, LabelIncludeConstructor: b = r, TextIncludeConstructor: x = t, WindowClassesIncludeConstructor: S = n } = _ == null ? {} : _;
+		let { DescriptionIncludeConstructor: v = r, IconIncludeConstructor: y = s, LabelIncludeConstructor: b = n, TextIncludeConstructor: x = t, WindowClassesIncludeConstructor: S = i } = _ == null ? {} : _;
 		super(a, o, l, f, p, m, h, g, c(() => ({
 			open: a.open,
 			image: a.image,
@@ -39,7 +39,7 @@ var p = class extends a {
 				list: e,
 				align: "center"
 			};
-		})), e(this, "icon", void 0), e(this, "label", void 0), e(this, "description", void 0), e(this, "windowClasses", void 0), e(this, "text", void 0), e(this, "iconValue", c(() => this.props.success ? this.props.iconSuccess : this.props.error ? this.props.iconError : this.props.icon)), this.props = a, this.refs = o, this.element = l, this.classDesign = f, this.className = p, this.components = m, this.slots = h, this.emits = g, this.icon = new y(u({ icon: this.iconValue }), p, m, o.iconAttrs), this.label = new b(a, p, void 0, h, void 0, void 0, !0), this.description = new v(a, p, h), this.windowClasses = new S(f), this.text = new x(this.props);
+		}), _), e(this, "icon", void 0), e(this, "label", void 0), e(this, "description", void 0), e(this, "windowClasses", void 0), e(this, "text", void 0), e(this, "iconValue", c(() => this.props.success ? this.props.iconSuccess : this.props.error ? this.props.iconError : this.props.icon)), this.props = a, this.refs = o, this.element = l, this.classDesign = f, this.className = p, this.components = m, this.slots = h, this.emits = g, this.icon = new y(u({ icon: this.iconValue }), p, m, o.iconAttrs), this.label = new b(a, p, void 0, h, void 0, void 0, !0), this.description = new v(a, p, h), this.windowClasses = new S(f), this.text = new x(this.props);
 	}
 }, m = {
 	barsBackHide: !0,

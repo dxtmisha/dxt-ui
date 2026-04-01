@@ -36,6 +36,14 @@ export declare abstract class ModalAbstract {
      * @param extraWindow additional parameters for WindowInclude/ дополнительные параметры для WindowInclude
      * @param extraBars additional parameters for BarsInclude/ дополнительные параметры для BarsInclude
      * @param extraActions additional parameters for ActionsInclude/ дополнительные параметры для ActionsInclude
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.WindowConstructor class for creating a window/ класс для создания окна
+     * @param constructors.BarsConstructor class for creating bars/ класс для создания панелей
+     * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
      */
-    protected constructor(props: ModalProps, refs: ToRefs<ModalProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ModalComponents, ModalProps> | undefined, slots?: ModalSlots | undefined, emits?: ConstrEmit<ModalEmits> | undefined, extraWindow?: RefOrNormal<any> | undefined, extraBars?: RefOrNormal<any> | undefined, extraActions?: RefOrNormal<any> | undefined);
+    protected constructor(props: ModalProps, refs: ToRefs<ModalProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ModalComponents, ModalProps> | undefined, slots?: ModalSlots | undefined, emits?: ConstrEmit<ModalEmits> | undefined, extraWindow?: RefOrNormal<any> | undefined, extraBars?: RefOrNormal<any> | undefined, extraActions?: RefOrNormal<any> | undefined, constructors?: {
+        WindowConstructor?: typeof WindowInclude;
+        BarsConstructor?: typeof BarsInclude;
+        ActionsConstructor?: typeof ActionsInclude;
+    });
 }

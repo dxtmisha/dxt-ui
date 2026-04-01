@@ -9,7 +9,7 @@ import { EnabledInclude } from '../../classes/EnabledInclude';
 import { EventClickInclude } from '../../classes/EventClickInclude';
 import { TabItemComponents, TabItemEmits, TabItemSlots } from './types';
 import { TabItemProps } from './props';
-import { RoleType, AriaTrueOrFalse, EventClickValue } from '../../library';
+import { AriaTrueOrFalse, RoleType, EventClickValue } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * TabItem
@@ -62,9 +62,6 @@ export declare class TabItem {
     readonly tag: ComputedRef<string>;
     /** values for attributes/ значения для атрибутов */
     readonly binds: ComputedRef<{
-        id?: string;
-        role?: RoleType;
-        tabindex: NumberOrString;
         'aria-activedescendant'?: string;
         'aria-atomic'?: AriaTrueOrFalse;
         'aria-autocomplete'?: "none" | "inline" | "list" | "both";
@@ -112,6 +109,9 @@ export declare class TabItem {
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        id?: string;
+        role?: RoleType;
+        tabindex: NumberOrString;
         onClick: (event: MouseEvent, options?: EventClickValue) => void;
         onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
         href: string;

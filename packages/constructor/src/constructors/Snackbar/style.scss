@@ -1,0 +1,58 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinSnackbar {
+  @include ui.flexY;
+  position: fixed;
+  z-index: 16384;
+
+  top: ui.v('??paddingY');
+  bottom: ui.v('??paddingY');
+
+  overflow: visible;
+
+  @include ui.scrollbarHide;
+
+  pointer-events: none;
+
+  &__item {
+    display: block;
+    opacity: 1;
+    pointer-events: visible;
+
+    transform-origin: ui.v('??transformOrigin', center);
+    transition: opacity #{ui.v('d.sys.transitionDuration.fade.exit')} linear;
+
+    animation: ui.n('??item-show') ui.v('d.sys.transitionDuration.fade.enter') ui.v('d.sys.transitionFunction.deceleration');
+
+    @include ui.state('hide') {
+      opacity: 0;
+    }
+  }
+
+  aside:nth-of-type(n+2) {
+    display: none;
+  }
+
+  &__priority {
+    order: 8;
+  }
+
+  &__space {
+    order: 4;
+  }
+
+  @keyframes #{ui.n('??item-show')} {
+    0% {
+      opacity: 0;
+      transform: ui.v('??transformPreparation', none);
+    }
+
+    30% {
+      opacity: 1;
+    }
+
+    100% {
+      transform: none;
+    }
+  }
+}

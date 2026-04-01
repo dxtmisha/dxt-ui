@@ -1,0 +1,68 @@
+{
+  "paddingX": {
+    "_type": "var"
+  },
+  "paddingY": {
+    "_type": "var"
+  },
+  "transform-preparation": {
+    "_type": "var"
+  },
+  "transform-origin": {
+    "_type": "var"
+  },
+  "#item": {},
+  "#space": {},
+  "#priority": {},
+  "~full": {
+    "#space": {
+      "flex-grow": "1"
+    }
+  },
+  "~all": {
+    "& aside:nth-of-type(-n+4)": {
+      "display": "block"
+    }
+  },
+  "~vertical": {
+    "~top": {
+      "justify-content": "flex-start"
+    },
+    "~bottom": {
+      "justify-content": "flex-end"
+    }
+  },
+  "~horizontal": {
+    "~right": {
+      "align-items": "flex-end",
+      "right": "{??paddingX}"
+    },
+    "~left": {
+      "align-items": "flex-start",
+      "left": "{??paddingX}"
+    },
+    "~block": {
+      "align-items": "stretch",
+      "left": "{??paddingX}",
+      "right": "{??paddingX}"
+    }
+  },
+  "~origin": {
+    "~topToBottom": {
+      "transform-preparation": "translateY(-64px)",
+      "transform-origin": "top center"
+    },
+    "~bottomToTop": {
+      "transform-preparation": "translateY(64px)",
+      "transform-origin": "bottom center"
+    },
+    "~rightToLeft": {
+      "transform-preparation": "translateX(calc(64px * #{isDir()}))",
+      "transform-origin": "center #{dirRight()}"
+    },
+    "~leftToRight": {
+      "transform-preparation": "translateX(calc(-64px * #{isDir()}))",
+      "transform-origin": "center #{dirLeft()}"
+    }
+  }
+}

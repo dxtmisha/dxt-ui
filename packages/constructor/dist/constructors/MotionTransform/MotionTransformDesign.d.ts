@@ -108,9 +108,6 @@ export declare class MotionTransformDesign<COMP extends MotionTransformComponent
      * Свойства для элемента тела.
      */
     protected readonly propsBody: ComputedRef<{
-        id: string;
-        role?: RoleType;
-        tabindex?: NumberOrString;
         'aria-activedescendant'?: string;
         'aria-atomic'?: AriaTrueOrFalse;
         'aria-autocomplete'?: "none" | "inline" | "list" | "both";
@@ -158,6 +155,9 @@ export declare class MotionTransformDesign<COMP extends MotionTransformComponent
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        id: string;
+        role?: RoleType;
+        tabindex?: NumberOrString;
         key: string;
         class: string | undefined;
     }>;
