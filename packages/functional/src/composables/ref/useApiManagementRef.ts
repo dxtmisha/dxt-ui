@@ -29,16 +29,42 @@ import type {
 } from '../../types/apiTypes'
 
 /**
- * Hook for managing API requests, formatting, search, and mutations (POST, PUT, DELETE).
+ * A powerful composable for comprehensive API request orchestration.
+ * It centrally manages data loading (GET), list formatting, client-side searching,
+ * and mutations (POST, PUT, DELETE) through a single reactive interface.
  *
- * Хук для управления API-запросами, форматированием, поиском и мутациями (POST, PUT, DELETE).
- * @param propsGet properties for GET request / параметры для GET запроса
- * @param formattersOptions options for formatting / опции форматирования
- * @param searchOptions options for search / опции поиска
- * @param postRequest properties for POST request / параметры для POST запроса
- * @param putRequest properties for PUT request / параметры для PUT запроса
- * @param deleteRequest properties for DELETE request / параметры для DELETE запроса
- * @param action additional action to perform on mutations / дополнительное действие при мутациях
+ * Мощный композабл для комплексной оркестрации API-запросов.
+ * Он централизованно управляет загрузкой данных (GET), форматированием списков,
+ * клиентским поиском и мутациями (POST, PUT, DELETE) через единый реактивный интерфейс.
+ *
+ * @template Return type of data returned by the API / тип данных, возвращаемых API
+ * @template FormattersOptions optional formatting rules / опциональные правила форматирования
+ * @template Post data type for POST creation request / тип данных для POST-запроса создания
+ * @template Put data type for PUT update request / тип данных для PUT-запроса обновления
+ * @template Delete data type for DELETE removal request / тип данных для DELETE-запроса удаления
+ * @template Type original data type (before transformation) / тип исходных данных (до трансформации)
+ * @template Item type of a single item in the data list / тип одного элемента из списка данных
+ * @template ItemFormatters item type after formatters are applied / тип элемента после применения форматировщиков
+ * @template Columns search columns derived from formatting / колонки, по которым производится поиск
+ *
+ * @param propsGet main GET request settings (path, reactivity, skeleton, etc.) / настройки главного GET-запроса
+ * @param formattersOptions optional reactive formatting rules / правила для реактивного форматирования данных
+ * @param searchOptions optional client-side search settings / настройки для клиентского поиска по списку
+ * @param postRequest optional POST mutation settings / настройки для POST-запроса создания
+ * @param putRequest optional PUT mutation settings / настройки для PUT-запроса обновления
+ * @param deleteRequest optional DELETE mutation settings / настройки для DELETE-запроса удаления
+ * @param action common callback executed after any successful mutation / общий коллбэк после любой успешной мутации
+ * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
+ *
+ * @returns {object} reactive API management interface / реактивный интерфейс управления API
+ *
+ * @note This hook is recommended to be used in tandem with `executeUse` for centralized state management.
+ * By wrapping `useApiManagementRef` in `executeUseProvide` or `executeUseGlobal`, you can ensure
+ * a single source of truth across the component tree or the entire application.
+ *
+ * Рекомендуется использовать этот хук в тандеме с `executeUse` для централизованного управления состоянием.
+ * Обернув `useApiManagementRef` в `executeUseProvide` или `executeUseGlobal`, вы обеспечите
+ * единый источник истины в дереве компонентов или во всем приложении.
  */
 export function useApiManagementRef<
   Return extends ApiManagementValue,
@@ -244,17 +270,17 @@ export function useApiManagementRef<
   })
 
   return {
-    /** Is valid data (Computed) / Валидность данных (Computed) */
+    /** Whether data passed the `typeData` check / `true`, если данные прошли проверку `typeData` */
     isValid,
 
-    /** List data (Computed) / Данные списка (Computed) */
+    /** Processed data array (supports Skeleton, formatters, and search) / Обработанный массив данных (поддерживает Skeleton, форматтеры и поиск) */
     list,
-    /** Raw request data (Computed) / Исходные данные запроса (Computed) */
+    /** Raw reactive data from `useApiRef` / «Сырые» реактивные данные из `useApiRef` */
     get data() {
       return request.data
     },
 
-    /** Length of the list (Computed) / Длина списка (Computed) */
+    /** Current number of items in `list` (changes with search) / Текущее количество элементов в `list` (меняется при поиске) */
     get length() {
       if (search) {
         return search.length
@@ -262,61 +288,61 @@ export function useApiManagementRef<
 
       return request.length
     },
-    /** Data length (number) / Длина исходных данных */
+    /** Total number of items in raw `data` / Общее количество элементов в исходном `data` */
     lengthData: request.length,
 
-    /** Active starting flag (true if no data yet) / Флаг начальной загрузки (true если еще нет данных) */
+    /** Initial loading flag (true when no data yet) / Флаг первичной загрузки (когда данных еще нет) */
     starting: request.starting,
-    /** Active reading flag / Флаг активного чтения */
+    /** Active read process flag / Флаг активного процесса чтения данных */
     reading: request.reading,
 
-    /** Request load flag / Флаг загрузки запроса */
+    /** Loading state for the main GET request / Общее состояние загрузки главного GET-запроса */
     loading: request.loading,
-    /** Loading search flag / Флаг загрузки поиска */
+    /** Loading state during search processing / Состояние загрузки в процессе поиска */
     loadingSearch: search?.loading,
-    /** POST request load flag / Флаг загрузки POST запроса */
+    /** Loading state for POST mutation / Состояние загрузки для POST мутации */
     loadingPost: postItem?.loading,
-    /** PUT request load flag / Флаг загрузки PUT запроса */
+    /** Loading state for PUT mutation / Состояние загрузки для PUT мутации */
     loadingPut: putItem?.loading,
-    /** DELETE request load flag / Флаг загрузки DELETE запроса */
+    /** Loading state for DELETE mutation / Состояние загрузки для DELETE мутации */
     loadingDelete: deleteItem?.loading,
 
-    /** Is search active / Активен ли поиск */
+    /** Whether search is currently active / Активен ли поиск (есть ли поисковый запрос) */
     isSearch: search?.isSearch,
-    /** Search function / Функция поиска */
+    /** Reactive search string (Proxy to `searchOptions.value`) / Реактивная строка поиска (Proxy к переданному `searchOptions.value`) */
     search: search?.search,
 
     /**
-     * Default reset.
+     * Force reset the GET request and clear state.
      *
-     * Сброс по умолчанию.
+     * Принудительный перезапуск GET-запроса и очистка состояния.
      */
     reset: request.reset,
     /**
-     * Abort request.
+     * Abort the current network request.
      *
-     * Отмена запроса.
+     * Прекращение текущего сетевого запроса.
      */
     abort: request.abort,
 
     /**
-     * Send POST request.
+     * Execute POST mutation request.
      *
-     * Выполнить POST запрос.
+     * Выполнить POST запрос мутации.
      * @param request request data / данные запроса
      */
     sendPost: async (request?: ApiFetch['request']) => await postItem?.send(request),
     /**
-     * Send PUT request.
+     * Execute PUT mutation request.
      *
-     * Выполнить PUT запрос.
+     * Выполнить PUT запрос мутации.
      * @param request request data / данные запроса
      */
     sendPut: async (request?: ApiFetch['request']) => await putItem?.send(request),
     /**
-     * Send DELETE request.
+     * Execute DELETE mutation request.
      *
-     * Выполнить DELETE запрос.
+     * Выполнить DELETE запрос мутации.
      * @param request request data / данные запроса
      */
     sendDelete: async (request?: ApiFetch['request']) => await deleteItem?.send(request)

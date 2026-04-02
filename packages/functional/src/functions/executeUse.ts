@@ -20,15 +20,9 @@ export type ExecuteUseReturn<R>
   = Readonly<
     R
     & {
-      /**
-       * Returns the raw instance without management methods/
-       * Возвращает чистый экземпляр без методов управления
-       */
+      /** Returns the raw instance without management methods / Возвращает чистый экземпляр без методов управления */
       init(): Readonly<R>
-      /**
-       * Resets the cached instance (available for local and global)/
-       * Сбрасывает закешированный экземпляр (доступно для local и global)
-       */
+      /** Resets the cached instance (available for local and global) / Сбрасывает закешированный экземпляр (доступно для local и global) */
       destroyExecute?(): void
     }
   >
@@ -48,9 +42,26 @@ const scope = effectScope()
 /**
  * Creates a managed singleton that encapsulates initialization logic and access mode.
  *
+ * It supports three initialization strategies:
+ * - `global`: A single instance for the entire application.
+ * - `provide`: Shared via provide/inject in the component tree (standard for Vue 3).
+ * - `local`: A single instance within the closure of the returned function.
+ *
  * Создает управляемый синглтон, который инкапсулирует логику инициализации и режим доступа.
- * @param callback Initialization function/ Функция инициализации
- * @param type Initialization type/ Тип инициализации
+ *
+ * Поддерживает три стратегии инициализации:
+ * - `global`: Единственный экземпляр на всё приложение.
+ * - `provide`: Разделяется через provide/inject в дереве компонентов (стандарт для Vue 3).
+ * - `local`: Единственный экземпляр в замыкании возвращаемой функции.
+ *
+ * @template R return type of the factory function / тип данных, возвращаемых фабрикой
+ * @template O argument types for the factory function / типы аргументов фабричной функции
+ * @template RI instance type with management methods / тип экземпляра с методами управления
+ *
+ * @param callback initialization function / функция инициализации
+ * @param type initialization strategy (defaults to provide) / стратегия инициализации (по умолчанию provide)
+ *
+ * @returns {function} accessor function for the singleton / функция-аксессор для синглтона
  */
 export function executeUse<
   R,
