@@ -1,0 +1,51 @@
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/wiki/styles/# Demo Card'/>
+
+# Demo Card
+
+The `.wiki-storybook-card` class and its internal elements are designed for creating standard demonstration cards for components with a fixed width of **320px**.
+
+
+## Card Structure
+
+A card consists of several named blocks:
+
+- `.wiki-storybook-card`: The main wrapper with border, rounding, and `overflow: hidden`.
+- `.wiki-storybook-card__image`: A block for background images with a fixed height of **128px**.
+- `.wiki-storybook-card__content`: The content area with a vertical stack and **16px** inner padding.
+- `.wiki-storybook-card__label`: Header text with a **20px** font size.
+- `.wiki-storybook-card__information`: Supplementary text for short descriptions.
+- `.wiki-storybook-card__actions`: A horizontal stack for buttons at the bottom.
+
+
+## Usage Example
+
+```html
+<div class="wiki-storybook-card">
+  <div class="wiki-storybook-card__image" style="background-image: ..."></div>
+  <div class="wiki-storybook-card__content">
+    <div class="wiki-storybook-card__label">Title</div>
+    <div class="wiki-storybook-card__information">Description...</div>
+    <div class="wiki-storybook-card__actions">
+      <button class="wiki-storybook-button">Button</button>
+    </div>
+  </div>
+</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-card">
+    <div class="wiki-storybook-card__image" style={{backgroundImage: 'url(https://picsum.photos/320/128)'}} />
+    <div class="wiki-storybook-card__content">
+      <div class="wiki-storybook-card__label">Card Title</div>
+      <div class="wiki-storybook-card__information">
+        Description or additional information about the component to be shown in this card.
+      </div>
+      <div class="wiki-storybook-card__actions">
+        <button class="wiki-storybook-button">Action 1</button>
+        <button class="wiki-storybook-button">Action 2</button>
+      </div>
+    </div>
+  </div>
+</Unstyled>

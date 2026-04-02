@@ -1,0 +1,51 @@
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/wiki/styles/# Thẻ demo'/>
+
+# Thẻ demo
+
+Class `.wiki-storybook-card` và các phần tử nội bộ của nó được thiết kế để tạo các thẻ trình diễn tiêu chuẩn cho các component với chiều rộng cố định là **320px**.
+
+
+## Cấu trúc Thẻ
+
+Một thẻ bao gồm nhiều khối được đặt tên:
+
+- `.wiki-storybook-card`: Lớp bọc chính với đường viền, bo góc và ẩn nội dung tràn (`overflow: hidden`).
+- `.wiki-storybook-card__image`: Khối cho hình nền với chiều cao cố định **128px**.
+- `.wiki-storybook-card__content`: Khu vực nội dung với sắp xếp dọc và khoảng đệm nội bộ **16px**.
+- `.wiki-storybook-card__label`: Văn bản tiêu đề với kích thước phông chữ **20px**.
+- `.wiki-storybook-card__information`: Văn bản bổ sung cho các mô tả ngắn.
+- `.wiki-storybook-card__actions`: Một hàng ngang cho các nút bấm ở dưới cùng.
+
+
+## Ví dụ sử dụng
+
+```html
+<div class="wiki-storybook-card">
+  <div class="wiki-storybook-card__image" style="background-image: ..."></div>
+  <div class="wiki-storybook-card__content">
+    <div class="wiki-storybook-card__label">Tiêu đề</div>
+    <div class="wiki-storybook-card__information">Mô tả...</div>
+    <div class="wiki-storybook-card__actions">
+      <button class="wiki-storybook-button">Nút bấm</button>
+    </div>
+  </div>
+</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-card">
+    <div class="wiki-storybook-card__image" style={{backgroundImage: 'url(https://picsum.photos/320/128)'}} />
+    <div class="wiki-storybook-card__content">
+      <div class="wiki-storybook-card__label">Tiêu đề thẻ</div>
+      <div class="wiki-storybook-card__information">
+        Mô tả hoặc thông tin bổ sung về component được hiển thị trong thẻ này.
+      </div>
+      <div class="wiki-storybook-card__actions">
+        <button class="wiki-storybook-button">Hành động 1</button>
+        <button class="wiki-storybook-button">Hành động 2</button>
+      </div>
+    </div>
+  </div>
+</Unstyled>

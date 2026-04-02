@@ -49,6 +49,7 @@
     position: relative;
     overflow: hidden;
 
+    width: 100%;
     max-width: 1080px;
     border-radius: 12px;
 
@@ -77,10 +78,6 @@
         width: 100%;
         background: transparent;
       }
-    }
-
-    &--overflowVisible {
-      overflow: visible;
     }
 
     &--padding {
@@ -167,6 +164,14 @@
 
     &--center {
       @include ui.flexCenter;
+    }
+
+    &--widthAuto {
+      width: auto;
+    }
+
+    &--overflowVisible {
+      overflow: visible;
     }
 
     &--rtl {

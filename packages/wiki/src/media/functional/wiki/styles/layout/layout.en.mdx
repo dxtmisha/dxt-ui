@@ -1,50 +1,103 @@
-import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
-import * as LayoutStories from './layout.stories'
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
 
-<Meta of={LayoutStories} />
+<Meta title='@dxtmisha/en/wiki/styles/# Layout Utilities'/>
 
 # Layout Utilities
 
-These classes provide structural layout options for documentation examples, ensuring consistent spacing and alignment across different Storybook stories.
+A set of CSS classes for organizing the spatial structure of demonstration areas within Storybook and Wiki. These classes allow you to quickly create grids, flex containers, and restrict content width.
 
-## Classes
+All classes use the `.wiki-storybook-` prefix.
 
-- `.wiki-storybook-container`: Sets `container-type: inline-size`, enabling container queries for children.
-- `.wiki-storybook-group`: A 12-column grid container with an `8px` gap.
-- `.wiki-storybook-flex`: A flexbox container with `flex-wrap: wrap` and an `8px` gap.
-- `.wiki-storybook-flex-center`: A flexbox container that centers its content both horizontally and vertically.
-- `.wiki-storybook-flex-column`: A vertical flexbox container (`flex-direction: column`) with a `16px` gap.
 
-## Examples
+## Container
 
-### Group Grid
-The `.wiki-storybook-group` class creates a 12-column grid, often used with `.wiki-storybook-item` modifiers to control span.
+The `.wiki-storybook-container` class initializes an `inline-size` container. This allows child elements to utilize `@container` queries.
 
-<Canvas>
-  <Story of={LayoutStories.Grid} />
-</Canvas>
+```html
+<div class="wiki-storybook-container">
+  <!-- Content that reacts to the width of this container -->
+</div>
+```
 
-### Flex Layout
-Use `.wiki-storybook-flex` for simple horizontal lists with wrapping.
 
-<Canvas>
-  <Story of={LayoutStories.Flex} />
-</Canvas>
+## Grid
 
-### Centered Flex
-The `.wiki-storybook-flex-center` class centers elements within the container.
+The `.wiki-storybook-group` class creates a CSS Grid container with 12 columns and a standard `8px` gap.
 
-<Canvas>
-  <Story of={LayoutStories.FlexCenter} />
-</Canvas>
+```html
+<div class="wiki-storybook-group">
+  <div class="wiki-storybook-item wiki-storybook-item--squared--xs">Span XS</div>
+  <div class="wiki-storybook-item wiki-storybook-item--squared--xs">Span XS</div>
+  <div class="wiki-storybook-item wiki-storybook-item--squared--sm">Span SM</div>
+</div>
+```
 
-### Width Utilities
-These classes allow for controlling the width of an element relative to its container.
+<Unstyled>
+  <div class="wiki-storybook-group">
+    <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding wiki-storybook-item--squared--xs">Span XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding wiki-storybook-item--squared--xs">Span XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding wiki-storybook-item--squared--sm">Span SM</div>
+  </div>
+</Unstyled>
 
-- `.wiki-storybook-decreased`: Sets width to `72%`.
-- `.wiki-storybook-decreasedX2`: Sets width to `64%` on medium screens and `48%` on large screens.
 
-<Canvas>
-  <Story of={LayoutStories.Decreased} />
-</Canvas>
+## Flex Layouts
 
+Utilities for quickly aligning elements horizontally or vertically.
+
+### Standard Flex
+The `.wiki-storybook-flex` class — a horizontal stack with wrapping and an `8px` gap.
+
+```html
+<div class="wiki-storybook-flex">
+    <div class="wiki-storybook-item">1</div>
+    <div class="wiki-storybook-item">2</div>
+    <div class="wiki-storybook-item">3</div>
+</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex">
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">1</div>
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">2</div>
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">3</div>
+  </div>
+</Unstyled>
+
+### Centering (Flex Center)
+The `.wiki-storybook-flex-center` class aligns content perfectly at the center.
+
+```html
+<div class="wiki-storybook-flex-center">
+    <div class="wiki-storybook-item">1</div>
+    <div class="wiki-storybook-item">2</div>
+    <div class="wiki-storybook-item">3</div>
+</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-center">
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">1</div>
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">2</div>
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">3</div>
+  </div>
+</Unstyled>
+
+### Vertical Stack (Flex Column)
+The `.wiki-storybook-flex-column` class arranges elements vertically with a `16px` gap.
+
+```html
+<div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item">1</div>
+    <div class="wiki-storybook-item">2</div>
+    <div class="wiki-storybook-item">3</div>
+</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">1</div>
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">2</div>
+    <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding">3</div>
+  </div>
+</Unstyled>

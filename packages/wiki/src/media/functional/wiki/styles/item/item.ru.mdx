@@ -1,75 +1,103 @@
-import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/wiki/styles/item - Утилиты элементов'/>
+<Meta title='@dxtmisha/ru/wiki/styles/# Контейнеры элементов'/>
 
-# Утилиты элементов
+# Контейнеры элементов
 
-Система `.wiki-storybook-item` предоставляет надежный способ демонстрации компонентов с использованием заранее определенных пропорций (aspect ratios) и размеров сетки. Это основной строительный блок для создания структурированных страниц документации.
+Класс `.wiki-storybook-item` — универсальный контейнер для демонстрации компонентов. Он обеспечивает стандартные скругления, рамки и управление пропорциями.
 
-## Базовый класс
 
-- `.wiki-storybook-item`: Основной класс контейнера. Он обеспечивает:
-  - Пропорции `1:1` по умолчанию.
-  - Скругление углов `12px`.
-  - Тонкую рамку `1px`.
-  - `overflow: hidden`.
-  - `position: relative`.
+## Базовое использование
 
-## Модификаторы
+По умолчанию элемент имеет пропорции **1:1** и максимальную ширину **1080px**.
 
-### Пропорции (Aspect Ratio)
-Используется для изменения формы элемента:
-- `.wiki-storybook-item--rectangle`: пропорция `16:9`.
-- `.wiki-storybook-item--widescreen`: пропорция `32:9`.
-- `.wiki-storybook-item--compact`: пропорция `64:9`.
-- `.wiki-storybook-item--auto`: отключает фиксированные пропорции (`auto`).
+```html
+<div class="wiki-storybook-item">
+  <!-- Контент -->
+</div>
+```
 
-### Сетка и Ширина (Span)
-Адаптивные модификаторы, используемые внутри `.wiki-storybook-group`:
-- `.wiki-storybook-item--squared--xs`: занимает 3 колонки на мобильных, 2 колонки на десктопе.
-- `.wiki-storybook-item--squared--sm`: занимает 6 колонок на мобильных, 2-4 колонки на десктопе.
-- `.wiki-storybook-item--squared--md`: занимает 12 колонок на мобильных, 4-6 колонок на десктопе.
-- `.wiki-storybook-item--squared--lg`: занимает 12 колонок на мобильных, 6 колонок на десктопе.
+<Unstyled>
+  <div class="wiki-storybook-item">
+    Элемент 1:1
+  </div>
+</Unstyled>
 
-### Раскладка и внешний вид
-- `.wiki-storybook-item--center`: Центрирует дочерние элементы с помощью flexbox.
-- `.wiki-storybook-item--rtl`: Меняет направление текста на справа налево (`rtl`).
-- `.wiki-storybook-item--padding`: Добавляет внутренний отступ `16px`.
-- `.wiki-storybook-item--overflowVisible`: Устанавливает `overflow: visible`, чтобы предотвратить обрезку контента.
 
-## Метки (Labels)
+## Метки
 
-- `.wiki-storybook-item__label`: Маленькая плавающая метка, расположенная в верхнем левом углу.
-- `.wiki-storybook-item__label--static`: Статичная метка, следующая по обычному потоку документа.
+Внутренний элемент `.wiki-storybook-item__label` предназначен для подписей. По умолчанию он прижат к левому верхнему углу.
 
-## Примеры
+### Позиционирование метки:
+- Стандарт: Абсолютное позиционирование поверх контента.
+- `.wiki-storybook-item__label--static`: Статичное позиционирование (обычный текстовый блок).
 
-### Пропорции сторон
-Элементы документации обычно отображаются с фиксированными пропорциями для поддержания чистоты макета.
-
-<Canvas>
-  <Story name="Пропорции сторон">
-    <div className="wiki-storybook-group">
-      <div className="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
-        <div className="wiki-storybook-item__label">xs (1:1)</div>
-        <div className="wiki-storybook-dummy" style={{ width: '40%' }}></div>
-      </div>
-      <div className="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--rectangle wiki-storybook-item--center">
-        <div className="wiki-storybook-item__label">sm (16:9)</div>
-        <div className="wiki-storybook-dummy" style={{ width: '40%' }}></div>
-      </div>
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">
+      <div class="wiki-storybook-item__label">Overlay Label</div>
+      <div class="wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue"></div>
     </div>
-  </Story>
-</Canvas>
-
-### Центрирование и отступы
-Удобно для демонстрации небольших элементов интерфейса.
-
-<Canvas>
-  <Story name="Центрирование и отступы">
-    <div className="wiki-storybook-item wiki-storybook-item--compact wiki-storybook-item--center wiki-storybook-item--padding">
-      <div className="wiki-storybook-item__label">С отступами и по центру</div>
-      <div className="wiki-storybook-dummy" style={{ width: '100%' }}></div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">
+      <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Static Label</div>
+      <div class="wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue"></div>
     </div>
-  </Story>
-</Canvas>
+  </div>
+</Unstyled>
+
+
+## Пропорции
+
+Модификаторы для изменения соотношения сторон:
+
+- `.wiki-storybook-item--auto`: автоматическая высота под контент
+- `.wiki-storybook-item--rectangle`: соотношение **16:9**
+- `.wiki-storybook-item--widescreen`: соотношение **32:9**
+- `.wiki-storybook-item--compact`: соотношение **64:9**
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--auto">Автоматическая высота</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--rectangle">Элемент 16:9</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen">Элемент 32:9</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">Элемент 64:9</div>
+  </div>
+</Unstyled>
+
+
+## Сетки и размеры
+
+Классы в формате `--squared--[size]` управляют шириной элемента внутри сетки `.wiki-storybook-group`.
+
+- `.wiki-storybook-item--squared--xs`: Занимает 3 колонки на мобильных, 2 на десктопе.
+- `.wiki-storybook-item--squared--sm`: Занимает 6 колонок на мобильных, 2 или 4 на десктопе.
+- `.wiki-storybook-item--squared--md`: Занимает 12 колонок на мобильных, 4 или 6 на десктопе.
+- `.wiki-storybook-item--squared--lg`: Занимает 12 колонок на мобильных, 6 на десктопе.
+- `.wiki-storybook-item--squared--max`: Занимает все 12 колонок на любом устройстве.
+
+<Unstyled>
+  <div class="wiki-storybook-group">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--xs">XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--xs">XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--sm">SM</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen wiki-storybook-item--squared--md">MD</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen wiki-storybook-item--squared--max">MAX</div>
+  </div>
+</Unstyled>
+
+
+
+
+## Дополнительные модификаторы
+
+- `.wiki-storybook-item--widthAuto`: Устанавливает автоматическую ширину (по умолчанию `100%`).
+- `.wiki-storybook-item--overflowVisible`: Позволяет контенту выходить за границы (отключает `hidden`).
+- `.wiki-storybook-item--padding`: Добавляет стандартный отступ `16px`.
+- `.wiki-storybook-item--center`: Центрирует содержимое контента.
+- `.wiki-storybook-item--rtl`: Устанавливает направление текста справа налево (для тестирования RTL).
+
+<Unstyled>
+  <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding wiki-storybook-item--center">
+    Контент с паддингом в центре (width: auto)
+  </div>
+</Unstyled>

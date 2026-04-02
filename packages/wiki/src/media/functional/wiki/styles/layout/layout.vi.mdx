@@ -1,27 +1,28 @@
 import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/wiki/styles/# Макетные утилиты'/>
+<Meta title='@dxtmisha/vi/wiki/styles/# Tiện ích Bố cục'/>
 
-# Макетные утилиты
+# Tiện ích Bố cục
 
-Набор CSS-классов для организации пространственной структуры демонстрационных зон в Storybook и Wiki. Эти классы позволяют быстро создавать сетки, флекс-контейнеры и ограничивать ширину контента.
+Tập hợp các class CSS để tổ chức cấu trúc không gian cho các khu vực trình diễn trong Storybook và Wiki. Những class này giúp bạn nhanh chóng tạo lưới (grid), khung linh hoạt (flex) và giới hạn chiều rộng nội dung.
 
-Все классы имеют префикс `.wiki-storybook-`.
+Tất cả các class đều có tiền tố `.wiki-storybook-`.
 
 
-## Контейнер
+## Thẻ chứa
 
-Класс `.wiki-storybook-container` инициализирует контейнер типа `inline-size`. Это позволяет вложенным элементам использовать `@container` запросы.
+Class `.wiki-storybook-container` khởi tạo một thẻ chứa loại `inline-size`. Điều này cho phép các phần tử con sử dụng các truy vấn `@container`.
 
 ```html
 <div class="wiki-storybook-container">
-  <!-- Контент, реагирующий на ширину этого контейнера -->
+  <!-- Nội dung phản hồi theo chiều rộng của thẻ chứa này -->
 </div>
 ```
 
-## Сетка
 
-Класс `.wiki-storybook-group` создает CSS Grid контейнер с 12 колонками и стандартным отступом `8px`.
+## Lưới
+
+Class `.wiki-storybook-group` tạo ra một thẻ chứa CSS Grid với 12 cột và khoảng cách (gap) tiêu chuẩn là `8px`.
 
 ```html
 <div class="wiki-storybook-group">
@@ -40,12 +41,12 @@ import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
 </Unstyled>
 
 
-## Флекс-слои
+## Bố cục linh hoạt
 
-Утилиты для быстрого выравнивания элементов по горизонтали или вертикали.
+Các tiện ích để nhanh chóng căn chỉnh các phần tử theo chiều ngang hoặc chiều dọc.
 
-### Стандартный Flex
-Класс `.wiki-storybook-flex` — горизонтальный стек с переносом и отступом `8px`.
+### Flex tiêu chuẩn
+Class `.wiki-storybook-flex` — sắp xếp theo hàng ngang, tự động xuống dòng với khoảng cách `8px`.
 
 ```html
 <div class="wiki-storybook-flex">
@@ -63,8 +64,8 @@ import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
   </div>
 </Unstyled>
 
-### Центрирование (Flex Center)
-Класс `.wiki-storybook-flex-center` выравнивает контент строго по центру.
+### Căn giữa (Flex Center)
+Class `.wiki-storybook-flex-center` căn chỉnh nội dung chính xác ở giữa.
 
 ```html
 <div class="wiki-storybook-flex-center">
@@ -82,8 +83,8 @@ import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
   </div>
 </Unstyled>
 
-### Вертикальный стек (Flex Column)
-Класс `.wiki-storybook-flex-column` располагает элементы вертикально с отступом `16px`.
+### Xếp chồng dọc (Flex Column)
+Class `.wiki-storybook-flex-column` sắp xếp các phần tử theo chiều dọc với khoảng cách `16px`.
 
 ```html
 <div class="wiki-storybook-flex-column">

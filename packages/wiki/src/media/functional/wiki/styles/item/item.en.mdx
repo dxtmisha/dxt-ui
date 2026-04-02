@@ -1,75 +1,103 @@
-import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks'
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/wiki/styles/item - Item utilities'/>
+<Meta title='@dxtmisha/en/wiki/styles/# Item Containers'/>
 
-# Item Utilities
+# Item Containers
 
-The `.wiki-storybook-item` system provides a robust way to showcase components within predefined aspect ratios and grid spans. It's the primary building block for creating structured documentation pages.
+The `.wiki-storybook-item` class is a versatile container for demonstrating components. It provides standard rounding, borders, and aspect ratio management.
 
-## Base Class
 
-- `.wiki-storybook-item`: The core container class. It provides:
-  - `1:1` aspect ratio by default.
-  - `12px` border-radius.
-  - `1px` subtle border.
-  - `overflow: hidden`.
-  - `position: relative`.
+## Basic Usage
 
-## Modifiers
+By default, an element has a **1:1** aspect ratio and a maximum width of **1080px**.
 
-### Aspect Ratio
-Used to change the shape of the item:
-- `.wiki-storybook-item--rectangle`: `16:9` aspect ratio.
-- `.wiki-storybook-item--widescreen`: `32:9` aspect ratio.
-- `.wiki-storybook-item--compact`: `64:9` aspect ratio.
-- `.wiki-storybook-item--auto`: Unsets the aspect ratio (`auto`).
+```html
+<div class="wiki-storybook-item">
+  <!-- Content -->
+</div>
+```
 
-### Structural Span
-Responsive modifiers used within `.wiki-storybook-group`:
-- `.wiki-storybook-item--squared--xs`: Spans 3 columns mobile, 2 columns desktop.
-- `.wiki-storybook-item--squared--sm`: Spans 6 columns mobile, 2-4 columns desktop.
-- `.wiki-storybook-item--squared--md`: Spans 12 columns mobile, 4-6 columns desktop.
-- `.wiki-storybook-item--squared--lg`: Spans 12 columns mobile, 6 columns desktop.
+<Unstyled>
+  <div class="wiki-storybook-item">
+    1:1 Element
+  </div>
+</Unstyled>
 
-### Layout & Appearance
-- `.wiki-storybook-item--center`: Centers children using flexbox.
-- `.wiki-storybook-item--rtl`: Reverses the text direction (`rtl`).
-- `.wiki-storybook-item--padding`: Adds `16px` internal padding.
-- `.wiki-storybook-item--overflowVisible`: Sets `overflow: visible` to prevent clipping.
 
-## Labels
+## Internal Labels
 
-- `.wiki-storybook-item__label`: A small floating label positioned at the top-left corner.
-- `.wiki-storybook-item__label--static`: A label that follows normal document flow.
+The `.wiki-storybook-item__label` element is used for subtitles or notes. By default, it is positioned in the top-left corner.
 
-## Examples
+### Label positioning options:
+- Default: Absolute positioning overlaying the content.
+- `.wiki-storybook-item__label--static`: Standard static positioning (standard text block).
 
-### Aspect Ratios
-Documentation items are usually displayed with fixed aspect ratios to keep the layout clean.
-
-<Canvas>
-  <Story name="Aspect Ratios">
-    <div className="wiki-storybook-group">
-      <div className="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
-        <div className="wiki-storybook-item__label">xs (1:1)</div>
-        <div className="wiki-storybook-dummy" style={{ width: '40%' }}></div>
-      </div>
-      <div className="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--rectangle wiki-storybook-item--center">
-        <div className="wiki-storybook-item__label">sm (16:9)</div>
-        <div className="wiki-storybook-dummy" style={{ width: '40%' }}></div>
-      </div>
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">
+      <div class="wiki-storybook-item__label">Overlay Label</div>
+      <div class="wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue"></div>
     </div>
-  </Story>
-</Canvas>
-
-### Padded and Centered
-Useful for showcasing small UI elements.
-
-<Canvas>
-  <Story name="Padded and Centered">
-    <div className="wiki-storybook-item wiki-storybook-item--compact wiki-storybook-item--center wiki-storybook-item--padding">
-      <div className="wiki-storybook-item__label">Padded and Centered</div>
-      <div className="wiki-storybook-dummy" style={{ width: '100%' }}></div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">
+      <div class="wiki-storybook-item__label `.wiki-storybook-item__label--static`">Static Label</div>
+      <div class="wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue"></div>
     </div>
-  </Story>
-</Canvas>
+  </div>
+</Unstyled>
+
+
+## Aspect Ratio Modifiers
+
+Use these modifiers to change the proportions:
+
+- `.wiki-storybook-item--auto`: Automatic height based on content
+- `.wiki-storybook-item--rectangle`: **16:9** aspect ratio
+- `.wiki-storybook-item--widescreen`: **32:9** aspect ratio
+- `.wiki-storybook-item--compact`: **64:9** aspect ratio
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--auto">Automatic Height</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--rectangle">16:9 Element</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen">32:9 Element</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">64:9 Element</div>
+  </div>
+</Unstyled>
+
+
+## Grid Sizing
+
+Classes in the format `--squared--[size]` control the element's width within a `.wiki-storybook-group` grid.
+
+- `.wiki-storybook-item--squared--xs`: Spans 3 columns on mobile, 2 on desktop.
+- `.wiki-storybook-item--squared--sm`: Spans 6 columns on mobile, 2 or 4 on desktop.
+- `.wiki-storybook-item--squared--md`: Spans 12 columns on mobile, 4 or 6 on desktop.
+- `.wiki-storybook-item--squared--lg`: Spans 12 columns on mobile, 6 on desktop.
+- `.wiki-storybook-item--squared--max`: Full width (12 columns) on any device.
+
+<Unstyled>
+  <div class="wiki-storybook-group">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--xs">XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--xs">XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--sm">SM</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen wiki-storybook-item--squared--md">MD</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen wiki-storybook-item--squared--max">MAX</div>
+  </div>
+</Unstyled>
+
+
+
+
+## Additional Modifiers
+
+- `.wiki-storybook-item--widthAuto`: Sets an automatic width (default is `100%`).
+- `.wiki-storybook-item--overflowVisible`: Allows content to overflow the borders (disables `hidden`).
+- `.wiki-storybook-item--padding`: Adds a standard `16px` inner padding.
+- `.wiki-storybook-item--center`: Centers the internal content.
+- `.wiki-storybook-item--rtl`: Sets the text direction to right-to-left (for RTL testing).
+
+<Unstyled>
+  <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding wiki-storybook-item--center">
+    Centered content with padding (width: auto)
+  </div>
+</Unstyled>

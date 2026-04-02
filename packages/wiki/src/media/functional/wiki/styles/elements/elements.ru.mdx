@@ -1,0 +1,85 @@
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/wiki/styles/# Мелкие элементы и утилиты'/>
+
+# Мелкие элементы и утилиты
+
+Набор вспомогательных классов для создания простых кнопок, заполнителей (скелетонов) и управления шириной элементов.
+
+
+## Кнопка demo
+
+Простая кнопка с базовой рамкой и эффектами при наведении и нажатии.
+
+```html
+<button class="wiki-storybook-button">Button Title</button>
+```
+
+<Unstyled>
+  <button class="wiki-storybook-button">Base Button</button>
+</Unstyled>
+
+
+## Заполнители
+
+Блоки-плейсхолдеры для визуализации пространства или макета. По умолчанию имеют серый цвет и высоту **32px**.
+
+### Цвета
+
+- `.wiki-storybook-dummy--color--blue`: Синий заполнитель.
+- `.wiki-storybook-dummy--color--red`: Красный заполнитель.
+- `.wiki-storybook-dummy--color--green`: Зеленый заполнитель.
+
+```html
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--blue">Blue</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--red">Red</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--green">Green</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue">Синий заполнитель</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--red">Красный заполнитель</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--green">Зеленый заполнитель</div>
+  </div>
+</Unstyled>
+
+### Размеры
+
+- `.wiki-storybook-dummy--size--sm`: Высота **64px**.
+- `.wiki-storybook-dummy--size--md`: Высота **128px**.
+- `.wiki-storybook-dummy--size--lg`: Высота **256px**.
+
+```html
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--sm">Small (64px)</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--md">Medium (128px)</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--lg">Large (256px)</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm">Small (64px)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--md">Medium (128px)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--lg">Large (256px)</div>
+  </div>
+</Unstyled>
+
+
+## Ширина
+
+Классы для уменьшения ширины контейнера, чтобы элементы не растягивались на всю ширину на больших экранах.
+
+- `.wiki-storybook-decreased`: Уменьшает ширину до **72%**.
+- `.wiki-storybook-decreasedX2`: Адаптивное уменьшение ширины (**64%** на планшетах, **48%** на десктопах).
+
+```html
+<div class="wiki-storybook-decreased">Decreased 72%</div>
+<div class="wiki-storybook-decreasedX2">DecreasedX2 Adaptive</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-decreased">Decreased (72%)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-decreasedX2">DecreasedX2 (Adaptive)</div>
+  </div>
+</Unstyled>

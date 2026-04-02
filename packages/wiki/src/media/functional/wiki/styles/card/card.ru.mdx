@@ -1,0 +1,51 @@
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/wiki/styles/# Карточка demo'/>
+
+# Карточка demo
+
+Класс `.wiki-storybook-card` и его внутренние элементы предназначены для создания стандартных демонстрационных карточек компонентов с фиксированной шириной **320px**.
+
+
+## Структура карточки
+
+Карточка состоит из нескольких именованных блоков:
+
+- `.wiki-storybook-card`: Основная обертка с границей, скруглением и скрытием содержимого (`overflow: hidden`).
+- `.wiki-storybook-card__image`: Блок для фонового изображения с фиксированной высотой **128px**.
+- `.wiki-storybook-card__content`: Область содержимого с вертикальным стеком и внутренними отступами **16px**.
+- `.wiki-storybook-card__label`: Текст заголовка с размером шрифта **20px**.
+- `.wiki-storybook-card__information`: Дополнительный текст для краткого описания.
+- `.wiki-storybook-card__actions`: Горизонтальный стек для кнопок в нижней части.
+
+
+## Пример использования
+
+```html
+<div class="wiki-storybook-card">
+  <div class="wiki-storybook-card__image" style="background-image: ..."></div>
+  <div class="wiki-storybook-card__content">
+    <div class="wiki-storybook-card__label">Title</div>
+    <div class="wiki-storybook-card__information">Description...</div>
+    <div class="wiki-storybook-card__actions">
+      <button class="wiki-storybook-button">Button</button>
+    </div>
+  </div>
+</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-card">
+    <div class="wiki-storybook-card__image" style={{backgroundImage: 'url(https://picsum.photos/320/128)'}} />
+    <div class="wiki-storybook-card__content">
+      <div class="wiki-storybook-card__label">Заголовок карточки</div>
+      <div class="wiki-storybook-card__information">
+        Описание или дополнительная информация о компоненте, которую нужно показать в этой карточке.
+      </div>
+      <div class="wiki-storybook-card__actions">
+        <button class="wiki-storybook-button">Action 1</button>
+        <button class="wiki-storybook-button">Action 2</button>
+      </div>
+    </div>
+  </div>
+</Unstyled>

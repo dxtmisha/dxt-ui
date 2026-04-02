@@ -1,0 +1,85 @@
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/wiki/styles/# Các Phần tử nhỏ & Tiện ích'/>
+
+# Các Phần tử nhỏ & Tiện ích
+
+Tập hợp các class bổ trợ để tạo các nút bấm đơn giản, các khối giữ chỗ (skeleton) và quản lý chiều rộng của phần tử.
+
+
+## Nút bấm demo
+
+Một nút bấm đơn giản với đường viền cơ bản và các hiệu ứng khi di chuột (hover) và nhấn (active).
+
+```html
+<button class="wiki-storybook-button">Tiêu đề nút</button>
+```
+
+<Unstyled>
+  <button class="wiki-storybook-button">Nút Cơ bản</button>
+</Unstyled>
+
+
+## Khối giữ chỗ
+
+Các khối giữ chỗ (placeholder) được sử dụng để hình dung không gian hoặc bố cục. Chúng có màu xám và chiều cao mặc định là **32px**.
+
+### Modifier Màu sắc
+
+- `.wiki-storybook-dummy--color--blue`: Khối giữ chỗ màu xanh dương.
+- `.wiki-storybook-dummy--color--red`: Khối giữ chỗ màu đỏ.
+- `.wiki-storybook-dummy--color--green`: Khối giữ chỗ màu xanh lá.
+
+```html
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--blue">Blue</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--red">Red</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--green">Green</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue">Khối giữ chỗ màu xanh dương</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--red">Khối giữ chỗ màu đỏ</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--green">Khối giữ chỗ màu xanh lá</div>
+  </div>
+</Unstyled>
+
+### Modifier Kích thước
+
+- `.wiki-storybook-dummy--size--sm`: Chiều cao **64px**.
+- `.wiki-storybook-dummy--size--md`: Chiều cao **128px**.
+- `.wiki-storybook-dummy--size--lg`: Chiều cao **256px**.
+
+```html
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--sm">Small (64px)</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--md">Medium (128px)</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--lg">Large (256px)</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-dummy--size--sm">Nhỏ (64px)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-dummy--size--md">Vừa (128px)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-dummy--size--lg">Lớn (256px)</div>
+  </div>
+</Unstyled>
+
+
+## Tiện ích Chiều rộng
+
+Các class được sử dụng để giảm chiều rộng của thẻ chứa, ngăn các phần tử kéo dài hết chiều rộng trên màn hình lớn.
+
+- `.wiki-storybook-decreased`: Giảm chiều rộng xuống còn **72%**.
+- `.wiki-storybook-decreasedX2`: Giảm chiều rộng thích ứng (**64%** trên máy tính bảng, **48%** trên máy tính để bàn).
+
+```html
+<div class="wiki-storybook-decreased">Giảm chiều ngang 72%</div>
+<div class="wiki-storybook-decreasedX2">Giảm thích ứng (X2)</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-decreased">Giảm (72%)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-decreasedX2">Giảm thích ứng (X2)</div>
+  </div>
+</Unstyled>

@@ -1,0 +1,85 @@
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/wiki/styles/# Minor Elements & Utilities'/>
+
+# Minor Elements & Utilities
+
+A collection of auxiliary classes for creating simple buttons, placeholders (skeletons), and managing element widths.
+
+
+## Demo Button
+
+A simple button with a basic border and effects upon hovering and clicking.
+
+```html
+<button class="wiki-storybook-button">Button Title</button>
+```
+
+<Unstyled>
+  <button class="wiki-storybook-button">Base Button</button>
+</Unstyled>
+
+
+## Placeholders
+
+Placeholder blocks used to visualize space or layout. They have a gray color and a default height of **32px**.
+
+### Color Modifiers
+
+- `.wiki-storybook-dummy--color--blue`: Blue placeholder.
+- `.wiki-storybook-dummy--color--red`: Red placeholder.
+- `.wiki-storybook-dummy--color--green`: Green placeholder.
+
+```html
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--blue">Blue</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--red">Red</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--color--green">Green</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue">Blue placeholder</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--red">Red placeholder</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--green">Green placeholder</div>
+  </div>
+</Unstyled>
+
+### Size Modifiers
+
+- `.wiki-storybook-dummy--size--sm`: Height of **64px**.
+- `.wiki-storybook-dummy--size--md`: Height of **128px**.
+- `.wiki-storybook-dummy--size--lg`: Height of **256px**.
+
+```html
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--sm">Small (64px)</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--md">Medium (128px)</div>
+<div class="wiki-storybook-dummy wiki-storybook-dummy--size--lg">Large (256px)</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm">Small (64px)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--md">Medium (128px)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--lg">Large (256px)</div>
+  </div>
+</Unstyled>
+
+
+## Width Modifiers
+
+Classes used to decrease the width of a container, preventing elements from stretching across the entire width on large screens.
+
+- `.wiki-storybook-decreased`: Reduces the width to **72%**.
+- `.wiki-storybook-decreasedX2`: Adaptive width reduction (**64%** on tablets, **48%** on desktops).
+
+```html
+<div class="wiki-storybook-decreased">Decreased 72%</div>
+<div class="wiki-storybook-decreasedX2">DecreasedX2 Adaptive</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-decreased">Decreased (72%)</div>
+    <div class="wiki-storybook-dummy wiki-storybook-item--padding wiki-storybook-dummy--size--sm wiki-storybook-decreasedX2">DecreasedX2 (Adaptive)</div>
+  </div>
+</Unstyled>

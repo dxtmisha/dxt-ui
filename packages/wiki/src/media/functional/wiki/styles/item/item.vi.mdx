@@ -1,0 +1,103 @@
+import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/wiki/styles/# Thẻ chứa Phần tử'/>
+
+# Thẻ chứa Phần tử
+
+Class `.wiki-storybook-item` là một thẻ chứa linh hoạt để trình diện các component. Nó cung cấp các góc bo tròn tiêu chuẩn, đường viền và quản lý tỷ lệ khung hình.
+
+
+## Cách sử dụng Cơ bản
+
+Theo mặc định, phần tử có tỷ lệ khung hình **1:1** và chiều rộng tối đa là **1080px**.
+
+```html
+<div class="wiki-storybook-item">
+  <!-- Nội dung -->
+</div>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-item">
+    Phần tử 1:1
+  </div>
+</Unstyled>
+
+
+## Nhãn nội bộ
+
+Phần tử `.wiki-storybook-item__label` được sử dụng cho các tiêu đề phụ hoặc ghi chú. Theo mặc định, nó được định vị ở góc trên bên trái.
+
+### Các tùy chọn định vị nhãn:
+- Mặc định: Định vị tuyệt đối (absolute) đè lên nội dung.
+- `.wiki-storybook-item__label--static`: Định vị tĩnh tiêu chuẩn (khối văn bản bình thường).
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">
+      <div class="wiki-storybook-item__label">Nhãn Overlay</div>
+      <div class="wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue"></div>
+    </div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">
+      <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Nhãn Static</div>
+      <div class="wiki-storybook-dummy--size--sm wiki-storybook-dummy--color--blue"></div>
+    </div>
+  </div>
+</Unstyled>
+
+
+## Tỷ lệ khung hình
+
+Sử dụng các modifier này để thay đổi tỷ lệ:
+
+- `.wiki-storybook-item--auto`: chiều cao tự động theo nội dung
+- `.wiki-storybook-item--rectangle`: tỷ lệ **16:9**
+- `.wiki-storybook-item--widescreen`: tỷ lệ **32:9**
+- `.wiki-storybook-item--compact`: tỷ lệ **64:9**
+
+<Unstyled>
+  <div class="wiki-storybook-flex-column">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--auto">Chiều cao tự động</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--rectangle">Phần tử 16:9</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen">Phần tử 32:9</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--compact">Phần tử 64:9</div>
+  </div>
+</Unstyled>
+
+
+## Kích thước lưới
+
+Các class theo định dạng `--squared--[size]` điều khiển chiều rộng của phần tử bên trong lưới `.wiki-storybook-group`.
+
+- `.wiki-storybook-item--squared--xs`: Chiếm 3 cột trên di động, 2 cột trên máy tính.
+- `.wiki-storybook-item--squared--sm`: Chiếm 6 cột trên di động, 2 hoặc 4 cột trên máy tính.
+- `.wiki-storybook-item--squared--md`: Chiếm 12 cột trên di động, 4 hoặc 6 cột trên máy tính.
+- `.wiki-storybook-item--squared--lg`: Chiếm 12 cột trên di động, 6 cột trên máy tính.
+- `.wiki-storybook-item--squared--max`: Toàn bộ chiều rộng (12 cột) trên mọi thiết bị.
+
+<Unstyled>
+  <div class="wiki-storybook-group">
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--xs">XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--xs">XS</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--sm">SM</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen wiki-storybook-item--squared--md">MD</div>
+    <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--widescreen wiki-storybook-item--squared--max">MAX</div>
+  </div>
+</Unstyled>
+
+
+
+
+## Các modifier bổ sung
+
+- `.wiki-storybook-item--widthAuto`: Thiết lập chiều rộng tự động (mặc định là `100%`).
+- `.wiki-storybook-item--overflowVisible`: Cho phép nội dung tràn ra ngoài đường viền (tắt `hidden`).
+- `.wiki-storybook-item--padding`: Thêm khoảng đệm nội bộ (padding) tiêu chuẩn `16px`.
+- `.wiki-storybook-item--center`: Căn giữa nội dung bên trong.
+- `.wiki-storybook-item--rtl`: Thiết lập hướng văn bản từ phải sang trái (để kiểm tra RTL).
+
+<Unstyled>
+  <div class="wiki-storybook-item wiki-storybook-item--widthAuto wiki-storybook-item--auto wiki-storybook-item--padding wiki-storybook-item--center">
+    Nội dung căn giữa với padding (width: auto)
+  </div>
+</Unstyled>
