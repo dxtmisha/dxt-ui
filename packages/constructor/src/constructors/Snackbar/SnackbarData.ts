@@ -4,25 +4,22 @@ import { isElementVisible } from '@dxtmisha/functional-basic'
 import type { SnackbarList, SnackbarValue } from './basicTypes'
 import type { SnackbarProps } from './props'
 
-/** Item number / Номер элемента */
+/** Item number/ Номер элемента */
 let itemNumber = 0
 
 /**
- * Class for managing data.
- *
- * Класс для управления данными.
+ * SnackbarData
  */
 export class SnackbarData {
-  /** Message list / Список сообщений */
+  /** Message list/ Список сообщений */
   readonly item = shallowRef<SnackbarList>([])
 
   /**
    * Constructor
-   * @param props input data / входные данные
-   * @param element window element / элемент окна
-   * @param className class name / название класса
+   * @param props input data/ входные данные
+   * @param element window element/ элемент окна
+   * @param className class name/ название класса
    */
-
   constructor(
     protected readonly props: Readonly<SnackbarProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
@@ -53,7 +50,7 @@ export class SnackbarData {
    * Add message element.
    *
    * Добавить элемент сообщения.
-   * @param item add element / элемент добавления
+   * @param item add element/ элемент добавления
    */
   readonly add = (item: SnackbarValue): void => {
     const value = this.getItemValue(item)
@@ -76,7 +73,7 @@ export class SnackbarData {
    * Deleting message element.
    *
    * Удаление элемента сообщения.
-   * @param value element identification / идентификация элемента
+   * @param value element identification/ идентификация элемента
    */
   readonly remove = (value: string): void => {
     if (this.getItemByValue(value)) {
@@ -103,8 +100,8 @@ export class SnackbarData {
   /**
    * Returns a message element by its value.
    *
-   * Возвращает элемент сообщения по его идентификации.
-   * @param value element identification / идентификация элемента
+   * Возвращает элемент сообщения по его идентификатору.
+   * @param value element identification/ идентификация элемента
    */
   protected getElementItem(value: string): HTMLDivElement | undefined {
     const element = this.element.value
@@ -116,8 +113,8 @@ export class SnackbarData {
   /**
    * Returns a message element by its value.
    *
-   * Возвращает запись сообщения по его идентификации.
-   * @param value element identification / идентификация элемента
+   * Возвращает запись сообщения по его идентификатору.
+   * @param value element identification/ идентификация элемента
    */
   protected getItemByValue(value: string): SnackbarValue | undefined {
     return this.item.value.find(item => item.value === value)
@@ -126,8 +123,8 @@ export class SnackbarData {
   /**
    * Returns a message value.
    *
-   * Возвращает идентификация сообщения.
-   * @param item message element / элемент сообщения
+   * Возвращает идентификатор сообщения.
+   * @param item message element/ элемент сообщения
    */
   protected getItemValue(item: SnackbarValue) {
     return item.value ?? `snackbar-item-${++itemNumber}`
@@ -137,7 +134,7 @@ export class SnackbarData {
    * Returns a message delay.
    *
    * Возвращает задержку сообщения.
-   * @param item message element / элемент сообщения
+   * @param item message element/ элемент сообщения
    */
   protected getItemDelay(item: SnackbarValue) {
     return item.delay ?? this.props.delay ?? 10_000
@@ -147,7 +144,7 @@ export class SnackbarData {
    * Record deletion.
    *
    * Удаление записи.
-   * @param value element identification / идентификация элемента
+   * @param value element identification/ идентификация элемента
    */
   protected toNone(value: string) {
     this.item.value = this.item.value.filter(item => item.value !== value)
@@ -157,8 +154,8 @@ export class SnackbarData {
    * Managing the element during display.
    *
    * Управление элементом при выводе.
-   * @param value element identification / идентификация элемента
-   * @param delay delay for closing the element / задержка для закрытия элемента
+   * @param value element identification/ идентификация элемента
+   * @param delay delay for closing the element/ задержка для закрытия элемента
    */
   protected toShow(
     value: string,
