@@ -1,106 +1,690 @@
-type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
-interface UseApiRef<R> {
-    data: Ref<R | undefined>;
-    isStarting: ComputedRef<boolean>;
-    loading: ComputedRef<boolean>;
-    reading: ComputedRef<boolean>;
-    reset(): Promise<void>;
-}
-type LazyItemByMargin = {
-    rootMargin: string;
-    item: any;
+export declare type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
+    path?: RefOrNormal<string | undefined>;
+    options?: ApiOptions;
+    reactivity?: boolean;
+    conditions?: RefType<boolean>;
+    transformation?: (data: Type) => ApiData<Return>;
+    typeData?: ((data: Return) => boolean) | any;
+    unmounted?: boolean;
+    skeleton?: () => Return;
 };
-type LazyItem = {
-    status: ShallowRef<boolean>;
-    ratio: ShallowRef<number>;
-    entry: ShallowRef<IntersectionObserverEntry | undefined>;
-    stopWatch: () => void;
+
+export declare type ApiManagementRequest<T, Return extends ApiData<T> = ApiData<T>> = {
+    path?: RefOrNormal<string | undefined>;
+    action?: (data: Return | undefined) => Promise<void> | void;
+    transformation?: (data: T) => Return;
+    toData?: boolean;
+    options?: ApiOptions;
 };
-type LazyList = Record<string, LazyItem>;
-type ConstrItem = Record<string, any>;
-type ConstrValue<T = any> = {
-    value?: T;
+
+export declare type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
+    columns: K;
+    value?: Ref<string>;
+    options?: SearchOptions;
 };
-type ConstrComponent = Record<string, any>;
-type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
-    [K in keyof P]?: RefOrNormal<P[K]>;
+
+export declare type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
+
+/** Options for api requests */
+export declare type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
+
+declare type BroadcastValueItem<T> = T | string | undefined;
+
+/** Creates a computed property that handles asynchronous getters. */
+export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
+
+/** Creates a reactive property that changes based on language and conditions. */
+export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
+
+/** Creates a computed property that is computed on demand and cached permanently. */
+export declare function computedEternity<T>(getter: () => Promise<T> | T): Ref<T, T>;
+
+/** Constructor bind type for component binding with class and style support */
+export declare type ConstrBind<T> = T & Record<string, any> & {
+    key?: string;
+    class?: ConstrClass;
+    style?: ConstrStyles;
 };
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
-type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
-type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
-    [K in keyof T]: (evt: K, ...args: T[K]) => void;
-}>>;
-type ConstrClassObject = Record<string, boolean>;
-type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject;
-type ConstrClassList = Record<string, ConstrClass>;
-type ConstrClasses = {
+
+/** Constructor class type supporting strings, arrays, and objects */
+export declare type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject;
+
+/** Constructor classes with main class and additional class list */
+export declare type ConstrClasses = {
     main: ConstrClass;
 } & ConstrClassList;
-type ConstrStylesItem = string | null;
-type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
-type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
+
+export declare type ConstrClassList = Record<string, ConstrClass>;
+export declare type ConstrClassObject = Record<string, boolean>;
+export declare type ConstrComponent = Record<string, any>;
+
+/** Component modification type with reactive or normal values */
+export declare type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
+    [K in keyof P]?: RefOrNormal<P[K]>;
+};
+
+/** Constructor emit type with event handler signatures */
+export declare type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
+    [K in keyof T]: (evt: K, ...args: T[K]) => void;
+}>>;
+
+export declare type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
+
+export declare type ConstrExpose<E extends Element, EXPOSE extends ConstrItem> = EXPOSE & {
+    elementHtml?: ComputedRef<E | undefined>;
+};
+
+/** Props for link handling */
+export declare type ConstrHrefProps = {
+    href?: string;
+};
+
+export declare type ConstrItem = Record<string, any>;
+
+/** Constructor options interface for component configuration */
+export declare type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
     components?: COMP;
     compMod?: ConstrComponentMod<P>;
     emits?: ConstrEmit<EMITS>;
     classes?: RefType<ConstrClasses>;
     styles?: RefType<ConstrStyles>;
 };
-type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
-    name: string;
-    element: Ref<E | undefined>;
-    classes: RefType<CLASSES>;
-    styles: RefType<ConstrStyles>;
-} & SETUP;
-type ConstrRegistration = {
-    flag?: boolean;
-    translate?: Record<string, string>;
-};
-type ConstrBind<T> = T & Record<string, any> & {
-    key?: string;
-    class?: ConstrClass;
-    style?: ConstrStyles;
-};
-type ConstrPropItemOptions<T = any> = {
+
+export declare type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
+
+/** Constructor prop item options for Vue definitions */
+export declare type ConstrPropItemOptions<T = any> = {
     type?: PropType<T>;
     required?: boolean;
     default?: any;
     validator?(value: any, props: any): boolean;
 };
-type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
-type ConstrProps<P = Record<string, any>> = {
+
+export declare type ConstrProps<P = Record<string, any>> = {
     [K in keyof P]: ConstrPropItem<P[K]>;
 };
-type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
-type ListDataBasic = {
+
+export declare type ConstrRegistration = {
+    flag?: boolean;
+    translate?: Record<string, string>;
+};
+
+/** Constructor setup interface for component initialization */
+export declare type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
+    name: string;
+    element: Ref<E | undefined>;
+    classes: RefType<CLASSES>;
+    styles: RefType<ConstrStyles>;
+} & SETUP;
+
+export declare type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
+export declare type ConstrStylesItem = string | null;
+
+export declare type ConstrValue<T = any> = {
+    value?: T;
+};
+
+/** Class for managing reactive dates and localization. */
+export declare class DatetimeRef {
+    protected item: Ref<NumberOrStringOrDate>;
+    protected type: Ref<GeoDate>;
+    protected code: Ref<string>;
+    protected date: Ref<Date>;
+    protected datetime: Datetime;
+    protected year: Ref<number, number>;
+    protected month: Ref<number, number>;
+    protected day: Ref<number, number>;
+    protected hour: Ref<number, number>;
+    protected minute: Ref<number, number>;
+    protected second: Ref<number, number>;
+    constructor(date: RefOrNormal<NumberOrStringOrDate>, type?: RefOrNormal<GeoDate>, code?: RefOrNormal<string>);
+    getItem(): Ref<NumberOrStringOrDate>;
+    getDate(): Ref<Date>;
+    getDatetime(): Datetime;
+    getHoursType(): ComputedRef<GeoHours>;
+    getFirstDayCode(): ComputedRef<GeoFirstDay>;
+    getYear(): ComputedRef<number>;
+    getMonth(): ComputedRef<number>;
+    getDay(): ComputedRef<number>;
+    getHour(): ComputedRef<number>;
+    getMinute(): ComputedRef<number>;
+    getSecond(): ComputedRef<number>;
+    getMaxDay(): ComputedRef<number>;
+    locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): ComputedRef<string>;
+    standard(timeZone?: boolean): ComputedRef<string>;
+    protected updateDate(): this;
+}
+
+/** Base class for design components. */
+export declare abstract class DesignAbstract<T extends Record<string, any>, C extends Record<string, any>> {
+    protected readonly props: T;
+    protected readonly callback?: ((event: C) => void) | undefined;
+    protected readonly event: C;
+    protected readonly changed: DesignChanged<T>;
+    constructor(props: T, callback?: ((event: C) => void) | undefined, changed?: string[]);
+    make(compelled?: boolean): this;
+    protected is<K extends keyof T>(name: K): boolean;
+    protected isChanged<K extends keyof C & string, KT extends keyof T & string>(name: K, nameProp?: KT | KT[]): boolean;
+    makeCallback(compelled?: boolean): void;
+    protected makeCallbackItem(): void;
+    protected abstract initEvent(): void;
+}
+
+/** Base class for asynchronous design components. */
+export declare abstract class DesignAsyncAbstract<T extends Record<string, any>, C extends Record<string, any>> extends DesignAbstract<T, C> {
+    make(compelled?: boolean): this;
+    makeCallback(compelled?: boolean): Promise<void>;
+    protected abstract initEvent(): Promise<void>;
+}
+
+/** Tracks modified properties in design components. */
+export declare class DesignChanged<T extends Record<string, any>> {
+    protected readonly props: T;
+    protected readonly watch: string[];
+    private readonly cache;
+    constructor(props: T, watch?: string[]);
+    is(name: string | string[]): boolean;
+    isChanged(): boolean;
+    update(): void;
+    protected isDifferent(name: string): boolean;
+}
+
+export declare class DesignComp<COMP extends ConstrComponent, P extends ConstrItem> extends DesignComponents<COMP, P> {}
+
+/** Manages sub-components and their modifications. */
+export declare class DesignComponents<COMP extends ConstrComponent, P extends ConstrItem> {
+    protected readonly components: COMP;
+    protected readonly modification?: ConstrComponentMod<P> | undefined;
+    protected caching: Record<string, ComputedRef<any>>;
+    constructor(components?: COMP, modification?: ConstrComponentMod<P> | undefined);
+    is<K extends keyof COMP>(name: K): name is K;
+    get<K extends keyof COMP>(name: K): COMP[K];
+    getModification<K extends keyof P>(index?: K & string | string, props?: P[K] | Record<string, any>): Record<string, any> | undefined;
+    render<K extends keyof COMP, PK extends keyof P>(name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): VNode[];
+    renderOne<K extends keyof COMP, PK extends keyof P>(name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): VNode | undefined;
+    renderAdd<K extends keyof COMP, PK extends keyof P>(item: any[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): this;
+    protected computeModification<K extends keyof P>(index: K & string | string): Record<string, any>;
+}
+
+/** Abstract class for component construction and rendering logic. */
+export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
+    protected readonly props: Readonly<P>;
+    protected readonly options?: ConstrOptions<COMP, EMITS, P> | undefined;
+    protected readonly name: string[];
+    protected readonly element: Ref<E | undefined, E | undefined>;
+    protected readonly refs: ToRefs<P>;
+    protected readonly components: DesignComponents<COMP, P>;
+    protected readonly emits?: ConstrEmit<EMITS>;
+    protected readonly classes?: ComputedRef<CLASSES>;
+    protected classesSub?: ComputedRef<Partial<CLASSES>>;
+    protected readonly styles?: ComputedRef<ConstrStyles>;
+    protected stylesSub?: ComputedRef<ConstrStyles>;
+    protected attrs?: ConstrItem;
+    protected slots?: SLOTS;
+    protected dataExpose?: EXPOSE;
+    protected constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> | undefined);
+    protected init(): this;
+    getName(): string;
+    getDesign(): string;
+    getSubClass(name: string | string[]): string;
+    getStatusClass(name: string | string[]): string;
+    getStyle(name: string | string[]): string;
+    getAttrs(): ConstrItem;
+    expose(): ConstrExpose<E, EXPOSE>;
+    render(): () => VNode | (VNode | any)[] | undefined;
+    protected abstract initExpose(): EXPOSE;
+    protected abstract initClasses(): Partial<CLASSES>;
+    protected abstract initStyles(): ConstrStyles;
+    protected abstract initRender(): VNode | (VNode | any)[] | undefined;
+    protected initSlot<K extends keyof SLOTS>(name: K, children?: any[], props?: ConstrItem): VNode | undefined;
+    protected toClass(classes?: ConstrClass): ConstrClassObject;
+    protected toClassName<T extends ConstrItem>(classes?: ConstrItem): T;
+    private initName;
+    private updateClasses;
+    private updateStyles;
+}
+
+/** Vue plugin for global services configuration. */
+export declare const dxtFunctionalPlugin: Plugin_2;
+
+/** Manages global effect scopes. */
+export declare class EffectScopeGlobal {
+    private static scope;
+    static run<T>(fn: () => T): T | undefined;
+    private static getScope;
+}
+
+/** Class for reactive event handling. */
+export declare class EventRef<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> extends EventItem<E, O, D> {
+    constructor(elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type?: string | string[], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D);
+}
+
+/** Singleton management factory. */
+export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
+
+/** Creates a global singleton. */
+export declare function executeUseGlobal<R>(callback: () => R): (() => ExecuteUseReturn<R>);
+
+/** Initializes all global callbacks. */
+export declare function executeUseGlobalInit(): void;
+
+/** Creates a local singleton. */
+export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => ExecuteUseReturn<R>);
+
+/** Creates a component-scoped singleton via provide/inject. */
+export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => ExecuteUseReturn<R>);
+
+export declare type ExecuteUseReturn<R> = Readonly<R & {
+    init(): Readonly<R>;
+    destroyExecute?(): void;
+}>;
+
+export declare enum ExecuteUseType {
+    global = "global",
+    provide = "provide",
+    local = "local"
+}
+
+export declare interface FunctionalPluginOptions {
+    api?: ApiConfig;
+    translate?: TranslateConfig;
+    metaSuffix?: string;
+    icons?: IconsConfig;
+    router?: Router;
+    errorCauses?: ErrorCenterCauseList;
+}
+
+/** Manages geographic flags. */
+export declare class GeoFlagRef {
+    protected code: Ref<string>;
+    protected flag: GeoFlag;
+    constructor(code?: RefOrNormal<string>);
+    getCode(): Ref<string>;
+    get(code?: string): ComputedRef<GeoFlagItem | undefined>;
+    getFlag(code?: string): ComputedRef<string | undefined>;
+    getList(codes?: string[]): ComputedRef<GeoFlagItem[]>;
+    getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>;
+}
+
+/** Reactive manager for number and date formatting. */
+export declare class GeoIntlRef {
+    private location;
+    private intl;
+    constructor(code?: RefOrNormal<string>);
+    display(value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): ComputedRef<string>;
+    languageName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
+    countryName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
+    number(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
+    decimal(): ComputedRef<string>;
+    currency(value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly?: boolean): ComputedRef<string>;
+    currencySymbol(currency: RefOrNormal<string>, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): ComputedRef<string>;
+    unit(value: RefOrNormal<NumberOrString>, unitOptions?: string | Intl.NumberFormatOptions): ComputedRef<string>;
+    sizeFile(value: RefOrNormal<NumberOrString>, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): ComputedRef<string>;
+    percent(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
+    percentBy100(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
+    plural(value: RefOrNormal<NumberOrString>, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): ComputedRef<string>;
+    date(value: RefOrNormal<NumberOrStringOrDate>, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): ComputedRef<string>;
+    relative(value: RefOrNormal<NumberOrStringOrDate>, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): ComputedRef<string>;
+    relativeLimit(value: RefOrNormal<NumberOrStringOrDate>, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): ComputedRef<string>;
+    relativeByValue(value: RefOrNormal<NumberOrString>, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): ComputedRef<string>;
+    month(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month']): ComputedRef<string>;
+    months(style?: Intl.DateTimeFormatOptions['month']): ComputedRef<ItemValue<number | undefined>[]>;
+    weekday(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<string>;
+    weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<ItemValue<number | undefined>[]>;
+    time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string>;
+    sort<T>(data: RefOrNormal<T[]>, compareFn?: (a: T, b: T) => [string, string]): ComputedRef<T[]>;
+}
+
+/** Global reactive manager for geographic settings. */
+export declare class GeoRef {
+    private static readonly item;
+    private static readonly country;
+    private static readonly language;
+    private static readonly standard;
+    private static readonly firstDay;
+    static get(): Ref<GeoItemFull>;
+    static getCountry(): ComputedRef<string>;
+    static getLanguage(): ComputedRef<string>;
+    static getStandard(): ComputedRef<string>;
+    static getFirstDay(): ComputedRef<string>;
+    static set(code: string): void;
+}
+
+/** Generates properties for subcomponents. */
+export declare function getBind<T, R extends ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;
+
+/** Generates reactive properties for subcomponents. */
+export declare function getBindRef<T, R extends ItemList>(value: RefOrNormal<T | R> | undefined, nameExtra?: RefOrNormal<ItemList> | string, name?: string): ComputedRef<R>;
+
+export declare function getClassName<T extends ItemList>(props?: T): string | undefined;
+
+export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
+
+export declare const getOptions: (options?: ApiOptions) => RefOrNormal<ApiFetch>;
+
+/** Returns value from ref or direct value. */
+export declare function getRef<T>(item: RefOrNormal<T>): T;
+
+export declare type LazyItem = {
+    status: ShallowRef<boolean>;
+    ratio: ShallowRef<number>;
+    entry: ShallowRef<IntersectionObserverEntry | undefined>;
+    stopWatch: () => void;
+};
+
+export declare type LazyItemByMargin = {
+    rootMargin: string;
+    item: any;
+};
+
+export declare type LazyList = Record<string, LazyItem>;
+
+export declare type ListDataBasic = {
     label?: NumberOrString;
     value?: any;
     search?: string;
 };
-type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
-    parent?: string;
-    type: ListType;
-    index: string;
-}>;
-type ListList<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item>[];
-type ListRecord<Item extends ListDataBasic = ListDataBasic> = ListList<Item> | Record<string, any>;
-type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & {
+
+export declare type ListDataFull<Item extends ListDataBasic = ListDataBasic> = ListDataFullItem<Item>[];
+
+export declare type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & {
     focus: boolean;
     highlight?: string;
     selected: boolean;
     disabled?: boolean;
 };
-type ListDataFull<Item extends ListDataBasic = ListDataBasic> = ListDataFullItem<Item>[];
-type ListListInputItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item>;
-type ListListInput<Item extends ListDataBasic = ListDataBasic> = ListListInputItem<Item>[] | string[] | Record<string, ListListInputItem<Item>> | Record<string, string>;
-type ListSelectedItem = NumberOrStringOrBoolean;
-type ListSelectedList = ListSelectedItem | ListSelectedItem[];
-type ListName = string | number | undefined;
-type ListNames = ListName[];
-type RefType<T> = ComputedRef<T> | Ref<T>;
-type RefUndefined<T> = RefType<T | undefined>;
-type RefOrNormal<T> = RefType<T> | T;
-type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
-type RawSlots = {
-    [name: string]: unknown;
-    $stable?: boolean;
+
+export declare type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
+    parent?: string;
+    type: ListType;
+    index: string;
+}>;
+
+/** Manages complex data lists with focus, selection, and hierarchy. */
+export declare class ListDataRef {
+    protected readonly list: RefOrNormal<ListListInput | undefined>;
+    protected readonly focus?: RefType<ListSelectedItem | undefined> | undefined;
+    protected readonly highlight?: RefType<string | undefined> | undefined;
+    protected readonly highlightLengthStart?: RefType<number | undefined> | undefined;
+    protected readonly filterMode?: RefType<boolean | undefined> | undefined;
+    protected readonly selected?: RefType<ListSelectedList | undefined> | undefined;
+    protected readonly keyValue?: RefType<string | undefined> | undefined;
+    protected readonly keyLabel?: RefType<string | undefined> | undefined;
+    protected readonly lite?: RefType<number | undefined> | undefined;
+    protected readonly min: RefOrNormal<number | string | undefined>;
+    protected readonly max: RefOrNormal<number | string | undefined>;
+    protected readonly parent?: string | undefined;
+    protected subList: Record<any, ListDataRef>;
+    constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
+    readonly data: ComputedRef<ListList>;
+    readonly liteData: ComputedRef<ListList>;
+    readonly fullData: ComputedRef<ListDataFull>;
+    readonly map: ComputedRef<ListList>;
+    readonly mapItems: ComputedRef<ListList>;
+    readonly items: ComputedRef<ListList>;
+    readonly highlightFirstItem: ComputedRef<number>;
+    readonly isSelected: ComputedRef<boolean>;
+    readonly isSelectedMin: ComputedRef<boolean>;
+    readonly isSelectedMax: ComputedRef<boolean>;
+    readonly selectedList: ComputedRef<ListList>;
+    readonly selectedListInGroup: ComputedRef<ListList>;
+    readonly selectedNames: ComputedRef<ListNames>;
+    readonly selectedValues: ComputedRef<any[]>;
+    isLite(): boolean;
+    isFocus(): boolean;
+    isHighlight(): boolean;
+    isHighlightActive(): boolean;
+    getLength(): number;
+    getLengthByMap(): number;
+    getLengthByItems(): number;
+    getFocus(): ListSelectedItem | undefined;
+    getHighlight(): string | undefined;
+    getHighlightLengthStart(): number;
+    getSelected(): ListSelectedList | undefined;
+    getSelectedByStep(step: number): ListSelectedItem | undefined;
+    getSelectedNext(): ListSelectedItem | undefined;
+    getSelectedPrev(): ListSelectedItem | undefined;
+    getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined;
+    getItemNext(item: ListDataItem): ListDataItem | undefined;
+    getItemPrev(item: ListDataItem): ListDataItem | undefined;
+    getIndexByStep(index: string, step: number): ListDataItem | undefined;
+    getIndexNext(index: string): ListDataItem | undefined;
+    getIndexPrev(index: string): ListDataItem | undefined;
+    getItemByIndex(index?: string): { key: number; item: ListDataItem; } | undefined;
+    getItemByKey(key: number): ListDataItem | undefined;
+    getFirstItemByParent(parent: string | undefined): ListDataItem | undefined;
+    getLastItemByParent(parent: string | undefined): ListDataItem | undefined;
+    getSubList(item: ListDataItem): ListDataRef;
+    protected isItem(item: ListDataItem): boolean;
+    protected isInParent(parent: string | undefined, item: ListDataItem): boolean;
+    protected getIndex(index: string | number | undefined, value: any, key: string | number | undefined, label: string | number | undefined): string | number | undefined;
+    protected initItem(key: string | number, item: any): ListDataItem;
+}
+
+export declare type ListList<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item>[];
+export declare type ListListInput<Item extends ListDataBasic = ListDataBasic> = ListListInputItem<Item>[] | string[] | Record<string, ListListInputItem<Item>> | Record<string, string>;
+export declare type ListListInputItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item>;
+export declare type ListName = string | number | undefined;
+export declare type ListNames = ListName[];
+export declare type ListRecord<Item extends ListDataBasic = ListDataBasic> = ListList<Item> | Record<string, any>;
+export declare type ListSelectedItem = NumberOrStringOrBoolean;
+export declare type ListSelectedList = ListSelectedItem | ListSelectedItem[];
+export declare type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
+
+export declare type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
+export declare type RawSlots = { [name: string]: unknown; $stable?: boolean; };
+export declare type RefOrNormal<T> = RefType<T> | T;
+export declare type RefType<T> = ComputedRef<T> | Ref<T>;
+export declare type RefUndefined<T> = RefType<T | undefined>;
+
+export declare function render<T extends ItemList>(name: string | any, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
+
+/** Singleton manager for Vue Router. */
+export declare class RouterItemRef {
+    protected static router?: Router;
+    static get(): Router | undefined;
+    static getLink(name: string, params?: any, query?: any): string | undefined;
+    static getHref(name?: string, params?: any, query?: any): ConstrHrefProps;
+    static push(to: string | RouteLocationRaw): void;
+    static set(router: Router): void;
+    static setOneTime(router: Router): void;
+    static rawToHref(to?: string | RouteLocationRaw): ConstrHrefProps;
+}
+
+/** Reactive manager for scrollbar width detection. */
+export declare class ScrollbarWidthRef {
+    readonly item: Ref<boolean | undefined, boolean | undefined>;
+    readonly width: Ref<number, number>;
+    constructor();
+    readonly is: ComputedRef<boolean>;
+}
+
+export declare type SearchListInput<T extends SearchItem> = SearchListValueRef<T> | (() => SearchListValueRef<T>);
+export declare type SearchListValueRef<T extends SearchItem> = RefOrNormal<SearchListValue<T>>;
+
+export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
+export declare function setRef<T>(item: Ref<T>, value: T): void;
+
+/** Gets translated keys. */
+export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;
+
+/** Merges objects with class/style merging. */
+export declare function toBind<R extends ItemList = ItemList>(extra: ItemList, value: ItemList): ConstrBind<R>;
+export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
+export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
+
+export declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+
+/** Hook for DELETE request. */
+export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
 };
+
+/** Hook for GET request. */
+export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
+};
+
+/** Complex API management hook including search, formatting, and mutations. */
+export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
+    isValid: ComputedRef<boolean>;
+    list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
+    readonly data: ComputedRef<ApiData<Return> | undefined>;
+    readonly length: ComputedRef<number>;
+    lengthData: ComputedRef<number>;
+    starting: ComputedRef<boolean>;
+    reading: Ref<boolean, boolean>;
+    loading: Ref<boolean, boolean>;
+    loadingSearch: Ref<boolean, boolean> | undefined;
+    loadingPost: Ref<boolean, boolean> | undefined;
+    loadingPut: Ref<boolean, boolean> | undefined;
+    loadingDelete: Ref<boolean, boolean> | undefined;
+    isSearch: ComputedRef<boolean> | undefined;
+    search: Ref<string, string> | undefined;
+    reset: () => Promise<void>;
+    abort: () => void;
+    sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
+    sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
+    sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
+};
+
+/** Hook for POST request. */
+export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
+};
+
+/** Hook for PUT request. */
+export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request | undefined): Promise<Return | undefined>;
+};
+
+export declare interface UseApiRef<R> {
+    data: ComputedRef<ApiData<R> | undefined>;
+    item: Ref<ApiData<R> | undefined>;
+    length: ComputedRef<number>;
+    starting: ComputedRef<boolean>;
+    loading: Ref<boolean>;
+    reading: Ref<boolean>;
+    isStarting(): boolean;
+    isLoading(): boolean;
+    isReading(): boolean;
+    getItem(): ApiData<R> | undefined;
+    init(): void;
+    reset(): Promise<void>;
+    stop(): void;
+    abort(): void;
+}
+
+/** Hook for reactive data fetching with automatic cache management. */
+export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
+
+/** Generic API request hook. */
+export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, method?: ApiMethodItem, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
+    loading: Ref<boolean, boolean>;
+    send(request?: Request): Promise<Return | undefined>;
+};
+
+/** Reactive variable shared between browser tabs. */
+export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T | string | (() => (T | string))): Ref<BroadcastValueItem<T>>;
+
+/** Reactive cookie management. */
+export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;
+
+/** Reactive formatting for lists. */
+export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): {
+    listFormat: ComputedRef<FormattersReturn<List, Options>>;
+    length: ComputedRef<number>;
+};
+
+export declare function useGeoIntlRef(): GeoIntlRef;
+
+/** Reactive URL hash management. */
+export declare function useHashRef<T>(name: string, defaultValue?: T | (() => T)): ShallowRef<T>;
+
+/** Detects element visibility with custom margin. */
+export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | undefined>, rootMargin: string) => {
+    lazyItemStatus: any;
+    readonly lazyItem: any;
+};
+
+/** Global intersection observer management hook. */
+export declare const useLazyRef: (options?: IntersectionObserverInit) => {
+    intersectionObserver: IntersectionObserver | undefined;
+    getItem(element: HTMLElement): LazyItem;
+    addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>;
+    removeLazyItem: (element?: HTMLElement) => void;
+    disconnectLazy: () => void | undefined;
+};
+
+export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
+
+/** Global reactive meta tags management. */
+export declare const useMeta: () => Readonly<{
+    meta: Meta;
+    title: Ref<string, string>;
+    keyword: Ref<string, string>;
+    description: Ref<string, string>;
+    author: Ref<string, string>;
+    image: Ref<string, string>;
+    canonical: Ref<string, string>;
+    robots: Ref<MetaRobots, MetaRobots>;
+    siteName: Ref<string, string>;
+    getHtmlMeta: () => string;
+    setSuffix: (suffix: string) => void;
+} & {
+    init(): Readonly<{
+        meta: Meta;
+        title: Ref<string, string>;
+        keyword: Ref<string, string>;
+        description: Ref<string, string>;
+        author: Ref<string, string>;
+        image: Ref<string, string>;
+        canonical: Ref<string, string>;
+        robots: Ref<MetaRobots, MetaRobots>;
+        siteName: Ref<string, string>;
+        getHtmlMeta: () => string;
+        setSuffix: (suffix: string) => void;
+    }>;
+    destroyExecute?(): void;
+}>;
+
+/** Reactive router link list management. */
+export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
+    item: ComputedRef<T | undefined>;
+    selected: Ref<string, string>;
+    label: ComputedRef<NumberOrString>;
+    list: ComputedRef<ConstrBind<T>[]>;
+    to: (name?: string) => void;
+    toMain(): void;
+};
+
+/** Hook for reactive list searching. */
+export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
+    isSearch: ComputedRef<boolean>;
+    search: Ref<string, string>;
+    loading: Ref<boolean, boolean>;
+    listSearch: ComputedRef<SearchFormatList<T, K>>;
+    length: ComputedRef<number>;
+};
+
+/** Search state management with debounce. */
+export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
+    search: Ref<string, string>;
+    searchDelay: Ref<string, string>;
+    loading: Ref<boolean, boolean>;
+};
+
+/** Reactive session storage management. */
+export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
+
+/** Reactive local storage management with optional cache. */
+export declare function useStorageRef<T>(name: string, defaultValue?: T | (() => T), cache?: number): Ref<T | undefined>;
+
+/** Hook for reactive translations. */
+export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
+
+export * from "@dxtmisha/functional-basic";

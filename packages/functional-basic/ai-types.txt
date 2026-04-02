@@ -1,1 +1,1587 @@
-Please provide the code content you would like me to process. It appears that the source code was missing from your request.
+/** Adds a tag to highlight search match in a string. */
+export declare function addTagHighlightMatch(value: string, search?: string, className?: string): string;
+
+/** Converts a value to a string. */
+export declare function anyToString<V>(value: V, isArrayString?: boolean): string;
+
+/** Class for handling API requests. */
+export declare class Api {
+    protected static item: ApiInstance;
+    /** Check if server is localhost. */
+    static isLocalhost(): boolean;
+    /** Get ApiInstance. */
+    static getItem(): ApiInstance;
+    /** Get last request status. */
+    static getStatus(): ApiStatus;
+    /** Get response handler. */
+    static getResponse(): ApiResponse;
+    /** Get full script URL. */
+    static getUrl(path: string, api?: boolean): string;
+    /** Get request body data. */
+    static getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
+    /** Get body data for GET method. */
+    static getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
+    /** Set default headers. */
+    static setHeaders(headers: Record<string, string>): Api;
+    /** Set default request data. */
+    static setRequestDefault(request: Record<string, any>): Api;
+    /** Set base script URL. */
+    static setUrl(url: string): Api;
+    /** Set callback before request. */
+    static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api;
+    /** Set callback after request. */
+    static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api;
+    /** Set request timeout (ms). */
+    static setTimeout(timeout: number): Api;
+    /** Set API configuration. */
+    static setConfig(config?: ApiConfig): Api;
+    /** Execute request. */
+    static request<T>(pathRequest: string | ApiFetch): Promise<T>;
+    /** Execute GET request. */
+    static get<T>(request: ApiFetch): Promise<T>;
+    /** Execute POST request. */
+    static post<T>(request: ApiFetch): Promise<T>;
+    /** Execute PUT request. */
+    static put<T>(request: ApiFetch): Promise<T>;
+    /** Execute DELETE request. */
+    static delete<T>(request: ApiFetch): Promise<T>;
+}
+
+/** API configuration. */
+export declare type ApiConfig = {
+    urlRoot?: string;
+    headers?: Record<string, string>;
+    requestDefault?: Record<string, any>;
+    preparation?: (apiFetch: ApiFetch) => Promise<void>;
+    end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
+    timeout?: number;
+};
+
+/** API response data wrapper. */
+export declare type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
+
+/** API response data item structure. */
+export declare type ApiDataItem<T = any> = T & {
+    data?: T;
+    success?: boolean;
+    status?: ApiStatusType;
+    message?: string;
+    statusObject?: ApiStatusItem;
+};
+
+/** Manage default API request data. */
+export declare class ApiDefault {
+    protected value?: ApiDefaultValue;
+    is(): boolean;
+    get(): ApiDefaultValue;
+    request(request: ApiFetch['request']): ApiFetch['request'];
+    set(request: ApiDefaultValue): void;
+    protected addByFormData(request: FormData, value: ApiDefaultValue): void;
+}
+
+export declare type ApiDefaultValue = Record<string, any>;
+
+/** API request options. */
+export declare type ApiFetch = {
+    api?: boolean;
+    path?: string;
+    pathFull?: string;
+    method?: ApiMethod;
+    request?: FormData | Record<string, any> | string;
+    auth?: boolean;
+    headers?: Record<string, string> | null;
+    type?: string;
+    toData?: boolean;
+    global?: boolean;
+    devMode?: boolean;
+    hideError?: boolean;
+    hideLoading?: boolean;
+    retry?: number;
+    retryDelay?: number;
+    queryReturn?: (query: Response) => Promise<any>;
+    globalPreparation?: boolean;
+    globalEnd?: boolean;
+    init?: RequestInit;
+    timeout?: number;
+    controller?: AbortController;
+};
+
+/** Manage HTTP request headers. */
+export declare class ApiHeaders {
+    protected headers: Record<string, string>;
+    get(value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
+    set(headers: Record<string, string>): this;
+}
+
+/** API request handling instance. */
+export declare class ApiInstance {
+    protected url: string;
+    protected headers: ApiHeaders;
+    protected requestDefault: ApiDefault;
+    protected status: ApiStatus;
+    protected response: ApiResponse;
+    protected preparation: ApiPreparation;
+    protected loading: LoadingInstance;
+    protected errorCenter: ErrorCenterInstance;
+    protected timeout: number;
+    constructor(url?: string, options?: ApiInstanceOptions);
+    isLocalhost(): boolean;
+    getStatus(): ApiStatus;
+    getResponse(): ApiResponse;
+    getUrl(path: string, api?: boolean): string;
+    getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
+    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
+    setHeaders(headers: Record<string, string>): this;
+    setRequestDefault(request: Record<string, any>): this;
+    setUrl(url: string): this;
+    setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
+    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
+    setTimeout(timeout: number): this;
+    request<T>(pathRequest: string | ApiFetch): Promise<T>;
+    get<T>(request: ApiFetch): Promise<T>;
+    post<T>(request: ApiFetch): Promise<T>;
+    put<T>(request: ApiFetch): Promise<T>;
+    delete<T>(request: ApiFetch): Promise<T>;
+    protected getRetryDelay(retryCount: number, retryDelay: number): number;
+    protected fetch<T>(apiFetch: ApiFetch, retryCount?: number): Promise<T>;
+    protected readData<T>(query: Response, queryReturn: ApiFetch['queryReturn'], end: ApiPreparationEnd): Promise<ApiData<T>>;
+    protected makeQuery(apiFetch: ApiFetch): Promise<{ query: Response; timeoutId: any; }>;
+    protected makeData<T>(data: ApiData<T>, toData: boolean): ApiData<T>;
+    protected makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
+    protected makeError(error: Record<string, any> & { name: string; }, group?: string): void;
+    protected makeErrorQuery(query: Response): void;
+    protected initController(apiFetch: ApiFetch, fetchInit: RequestInit): any;
+}
+
+/** API Instance options. */
+export declare type ApiInstanceOptions = {
+    headersClass?: typeof ApiHeaders;
+    requestDefaultClass?: typeof ApiDefault;
+    statusClass?: typeof ApiStatus;
+    responseClass?: typeof ApiResponse;
+    preparationClass?: typeof ApiPreparation;
+    loadingClass?: LoadingInstance;
+    errorCenterClass?: ErrorCenterInstance;
+};
+
+export declare type ApiMethod = string & ApiMethodItem;
+
+/** Supported HTTP methods. */
+export declare enum ApiMethodItem {
+    get = "GET",
+    post = "POST",
+    put = "PUT",
+    delete = "DELETE"
+}
+
+/** Prepare and analyze requests. */
+export declare class ApiPreparation {
+    protected callback?: (apiFetch: ApiFetch) => Promise<void>;
+    protected callbackEnd?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
+    protected loading: boolean;
+    make(active: boolean, apiFetch: ApiFetch): Promise<void>;
+    makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
+    set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
+    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
+    protected go(apiFetch: ApiFetch): Promise<void>;
+    protected end(query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
+}
+
+export declare type ApiPreparationEnd = {
+    reset?: boolean;
+    data?: any;
+};
+
+/** Manage API responses and mocking. */
+export declare class ApiResponse {
+    protected readonly requestDefault: ApiDefault;
+    protected readonly first: ApiResponseItem[];
+    protected readonly response: ApiResponseItem[];
+    protected loading?: any;
+    protected devMode: boolean;
+    constructor(requestDefault: ApiDefault);
+    get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
+    getList(): (ApiResponseItem & Record<string, any>)[];
+    add(response: ApiResponseItem | ApiResponseItem[]): this;
+    setDevMode(devMode: boolean): this;
+    emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
+    protected isDisable(item: ApiResponseItem): boolean;
+    protected isPath(item: ApiResponseItem, path: string): boolean;
+    protected isDevMode(devMode?: boolean): boolean;
+    protected isFirst(item: ApiResponseItem, devMode?: boolean): boolean;
+    protected isResponse(item: ApiResponseItem, request?: ApiFetch['request']): boolean;
+    protected fetch<T>(response: ApiResponseItem, request?: ApiFetch['request']): Promise<T>;
+    protected startResponseLoading(): void;
+    protected stopResponseLoading(): void;
+}
+
+/** Mock response descriptor. */
+export declare type ApiResponseItem = {
+    path: string | RegExp;
+    method: ApiMethod;
+    request?: ApiFetch['request'] | '*any';
+    response: any | ((request?: ApiFetch['request']) => any);
+    disable?: any;
+    isForGlobal?: boolean;
+    lag?: any;
+};
+
+/** API execution status. */
+export declare class ApiStatus {
+    protected value?: ApiStatusItem;
+    get(): ApiStatusItem;
+    getStatus(): number | undefined;
+    getStatusText(): string | undefined;
+    getStatusType(): ApiStatusType | undefined;
+    getError(): string | undefined;
+    getResponse<T>(): T | undefined;
+    getMessage(): string;
+    set(data: ApiStatusItem): this;
+    setStatus(status?: number, statusText?: string): this;
+    setError(error?: string): this;
+    setLastResponse(response?: any): this;
+    setLastStatus(status?: ApiStatusType): this;
+    setLastMessage(message?: string): this;
+    protected setValue<K extends keyof ApiStatusItem>(name: K, value?: ApiStatusItem[K]): void;
+}
+
+export declare type ApiStatusItem = {
+    status?: number;
+    statusText?: string;
+    error?: string;
+    lastResponse?: any;
+    lastStatus?: ApiStatusType;
+    lastMessage?: string;
+};
+
+export declare type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
+
+/** Replace template keys in text. */
+export declare const applyTemplate: (text: string, replacement?: Record<string, string | number> | string[]) => string;
+
+export declare type ArrayToItem<T> = T extends any[] ? T[number] : T;
+
+/** Create array of count elements filled with value. */
+export declare function arrFill<T>(value: T, count: number): T[];
+
+/** Convert Blob to Base64. */
+export declare function blobToBase64(blob: Blob): Promise<string | ArrayBuffer | null>;
+
+/** BroadcastChannel messaging handler. */
+export declare class BroadcastMessage<Message = any> {
+    protected callback?: ((event: MessageEvent<Message>) => void) | undefined;
+    protected callbackError?: ((event: MessageEvent<Message>) => void) | undefined;
+    protected channel?: BroadcastChannel;
+    constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
+    getChannel(): BroadcastChannel | undefined;
+    post(message: Message): this;
+    setCallback(callback: (event: MessageEvent<Message>) => void): this;
+    setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
+    protected readonly update: (event: MessageEvent<Message>) => this;
+    protected readonly updateError: (event: MessageEvent<Message>) => this;
+}
+
+/** Cache manager. */
+declare class Cache_2 {
+    private cache;
+    get<T>(name: string, callback: () => T, comparison?: any[]): T;
+    getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
+    private getCacheItem;
+}
+export { Cache_2 as Cache }
+
+/** Cache a single value. */
+export declare class CacheItem<T> {
+    private readonly callback;
+    private cache?;
+    private cacheOld?;
+    private comparisons;
+    constructor(callback: () => T);
+    getCache(comparison: any[]): T;
+    getCacheOld(): T | undefined;
+    getCacheAsync(comparison: any[]): Promise<T>;
+    private setCache;
+    private setCacheAsync;
+    private isUpdate;
+}
+
+/** Static cache helper. */
+export declare class CacheStatic {
+    private static cache;
+    static get<T>(name: string, callback: () => T, comparison?: any[]): T;
+}
+
+/** Capitalize first letter of string. */
+export declare function capitalize(value: string): string;
+
+/** Cookie management. */
+export declare class Cookie<T> {
+    private name;
+    value?: T | string;
+    private options;
+    constructor(name: string);
+    get(defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): string | T | undefined;
+    set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
+    remove(): void;
+    private getAge;
+    private update;
+    static updateData(): void;
+}
+
+/** Control cookie access status. */
+export declare class CookieBlock {
+    static storage: DataStorage<boolean>;
+    static get(): boolean;
+    static set(value: boolean): void;
+}
+
+export declare type CookieOptions = {
+    age?: number;
+    sameSite?: CookieSameSite_2;
+    arguments?: string[];
+};
+
+declare type CookieSameSite_2 = 'strict' | 'lax';
+
+/** Deep copy a simple object. */
+export declare function copyObject<T>(value: T): T;
+
+/** Shallow copy a simple object. */
+export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
+
+/** Create HTML element. */
+export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
+
+/** LocalStorage wrapper. */
+export declare class DataStorage<T> {
+    private name;
+    private isSession;
+    private errorCenter;
+    static setPrefix(newPrefix: string): void;
+    private value?;
+    private age?;
+    constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
+    get(defaultValue?: T | (() => T), cache?: number): T | undefined;
+    set(value?: T | (() => T)): T | undefined;
+    remove(): this;
+    update(): this;
+    private isCache;
+    private getMethod;
+    private getIndex;
+    private getValue;
+    private make;
+}
+
+/** Date and time utilities. */
+export declare class Datetime {
+    protected type: GeoDate;
+    protected code: string;
+    protected date: Date;
+    protected hour24: boolean;
+    protected watch?: (date: Date, type: GeoDate, hour24: boolean) => void;
+    constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
+    getIntl(): GeoIntl;
+    getDate(): Date;
+    getType(): string;
+    getHoursType(): GeoHours;
+    getHour24(): boolean;
+    getTimeZoneOffset(): number;
+    getTimeZone(style?: GeoTimeZoneStyle): string;
+    getFirstDayCode(): GeoFirstDay;
+    getYear(): number;
+    getMonth(): number;
+    getDay(): number;
+    getHour(): number;
+    getMinute(): number;
+    getSecond(): number;
+    getMaxDay(): number;
+    locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): string;
+    localeYear(style?: Intl.DateTimeFormatOptions['year']): string;
+    localeMonth(style?: Intl.DateTimeFormatOptions['month']): string;
+    localeDay(style?: Intl.DateTimeFormatOptions['day']): string;
+    localeHour(style?: Intl.DateTimeFormatOptions['hour']): string;
+    localeMinute(style?: Intl.DateTimeFormatOptions['minute']): string;
+    localeSecond(style?: Intl.DateTimeFormatOptions['second']): string;
+    standard(timeZone?: boolean): string;
+    setDate(value: NumberOrStringOrDate): this;
+    setType(value: GeoDate): this;
+    setHour24(value: boolean): this;
+    setCode(code: string): this;
+    setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this;
+    setYear(value: number): this;
+    setMonth(value: number): this;
+    setDay(value: number): this;
+    setHour(value: number): this;
+    setMinute(value: number): this;
+    setSecond(value: number): this;
+    moveByYear(value: number): this;
+    moveByMonth(value: number): this;
+    moveByDay(value: number): this;
+    moveByHour(value: number): this;
+    moveByMinute(value: number): this;
+    moveBySecond(value: number): this;
+    moveMonthFirst(): this;
+    moveMonthLast(): this;
+    moveMonthNext(): this;
+    moveMonthPrevious(): this;
+    moveWeekdayFirst(): this;
+    moveWeekdayLast(): this;
+    moveWeekdayFirstByMonth(): this;
+    moveWeekdayLastByMonth(): this;
+    moveWeekdayNext(): this;
+    moveWeekdayPrevious(): this;
+    moveDayFirst(): this;
+    moveDayLast(): this;
+    moveDayNext(): this;
+    moveDayPrevious(): this;
+    clone(): Date;
+    cloneClass(): Datetime;
+    cloneMonthFirst(): Datetime;
+    cloneMonthLast(): Datetime;
+    cloneMonthNext(): Datetime;
+    cloneMonthPrevious(): Datetime;
+    cloneWeekdayFirst(): Datetime;
+    cloneWeekdayLast(): Datetime;
+    cloneWeekdayFirstByMonth(): Datetime;
+    cloneWeekdayLastByMonth(): Datetime;
+    cloneWeekdayNext(): Datetime;
+    cloneWeekdayPrevious(): Datetime;
+    cloneDayFirst(): Datetime;
+    cloneDayLast(): Datetime;
+    cloneDayNext(): Datetime;
+    cloneDayPrevious(): Datetime;
+    protected toTimeZoneHourFormat(hour: number): string;
+    protected update(): this;
+}
+
+/** Select first element matching selector. */
+export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;
+
+/** Select all elements matching selector. */
+export declare function domQuerySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E> | undefined;
+
+export declare type ElementOrString<E extends ElementOrWindow> = E | string;
+export declare type ElementOrWindow = HTMLElement | Window;
+export declare type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
+
+/** Encode string for HTML attributes. */
+export declare function encodeAttribute(text: string): string;
+
+/** Resize image to max size limit. */
+export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
+
+/** Centralized error handling. */
+export declare class ErrorCenter {
+    protected static item: ErrorCenterInstance;
+    static has(code: string, group?: string): boolean;
+    static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
+    static getItem(): ErrorCenterInstance;
+    static add(cause: ErrorCenterCauseItem): ErrorCenter;
+    static addList(causes: ErrorCenterCauseList): ErrorCenter;
+    static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): ErrorCenter;
+    static addHandlerList(handlers: ErrorCenterHandlerList): ErrorCenter;
+    static on(cause: ErrorCenterCauseItem): ErrorCenter;
+}
+
+export declare type ErrorCenterCauseItem = {
+    group?: ErrorCenterGroup;
+    code: string;
+    label?: string;
+    message?: string;
+    details?: any;
+};
+
+export declare type ErrorCenterCauseList = ErrorCenterCauseItem[];
+export declare type ErrorCenterGroup = string | undefined;
+
+/** Handle and trigger error callbacks. */
+export declare class ErrorCenterHandler {
+    protected handlers: ErrorCenterHandlerList;
+    constructor(handlers?: ErrorCenterHandlerList);
+    has(group: ErrorCenterGroup): boolean;
+    get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
+    add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
+    addList(handlers: ErrorCenterHandlerList): this;
+    on(cause: ErrorCenterCauseItem): this;
+    protected toConsole(cause: ErrorCenterCauseItem): this;
+}
+
+export declare type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void;
+
+export declare type ErrorCenterHandlerItem = {
+    group?: ErrorCenterGroup;
+    handlers: ErrorCenterHandlerCallback[];
+};
+
+export declare type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
+
+/** Instance-based error center. */
+export declare class ErrorCenterInstance {
+    protected handler: ErrorCenterHandler;
+    protected causes: ErrorCenterCauseList;
+    constructor(causes?: ErrorCenterCauseList, handler?: ErrorCenterHandler);
+    has(code: string, group?: string): boolean;
+    get(code: string, group?: string): ErrorCenterCauseItem | undefined;
+    add(cause: ErrorCenterCauseItem): this;
+    addList(causes: ErrorCenterCauseList): this;
+    addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
+    addHandlerList(handlers: ErrorCenterHandlerList): this;
+    on(cause: ErrorCenterCauseItem): this;
+    protected assign(cause: ErrorCenterCauseItem): ErrorCenterCauseItem;
+}
+
+/** Escape regex characters. */
+export declare function escapeExp(value: string): string;
+
+export declare type EventActivityItem<E extends ElementOrWindow> = {
+    element: E | undefined;
+    type: string;
+    listener?: (event: any | Event) => void;
+    observer?: ResizeObserver;
+};
+
+/** Advanced event listener manager. */
+export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
+    protected listener?: EventListenerDetail<O, D> | undefined;
+    protected options?: EventOptions;
+    protected detail?: D | undefined;
+    protected element?: E;
+    protected elementControl?: ElementOrWindow;
+    protected elementControlEdit?: boolean;
+    protected type: string[];
+    protected listenerRecent: (event?: O | ResizeObserverEntry) => void;
+    protected activity: boolean;
+    protected activityItems: EventActivityItem<E>[];
+    constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
+    isActive(): boolean;
+    getElement(): E | undefined;
+    setElement(elementSelector?: ElementOrString<E>): this;
+    setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
+    setType(type: string | string[]): this;
+    setListener(listener: EventListenerDetail<O, D>): this;
+    setOptions(options?: EventOptions): this;
+    setDetail(detail?: D): this;
+    dispatch(detail?: D | undefined): this;
+    start(): this;
+    stop(): this;
+    toggle(activity: boolean): this;
+    reset(): this;
+    protected isObserver(): boolean;
+    protected makeResize(): boolean;
+    protected makeScroll(): boolean;
+}
+
+export declare type EventListenerDetail<O extends Event, D extends Record<string, any>> = (event: O, detail?: D) => void;
+export declare type EventOptions = AddEventListenerOptions | boolean | undefined;
+
+/** Stop event propagation. */
+export declare function eventStopPropagation(event: Event): void;
+
+/** Execute function or return value. */
+export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>): T;
+
+/** Execute async function or return value. */
+export declare function executePromise<T>(callback: (() => Promise<T>) | (() => T) | T): Promise<T>;
+
+/** Iterate over array, object, or map. */
+export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> = T[] | Record<string, T> | Map<string, T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];
+
+/** Data formatting class. */
+export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
+    protected options: Options;
+    protected list?: List | undefined;
+    constructor(options: Options, list?: List | undefined);
+    is(): boolean;
+    isArray(): this is this & { list: FormattersList<Item>; };
+    length(): number;
+    getList(): FormattersList<Item>;
+    getOptions(): Options;
+    setList(list?: List): this;
+    to(): FormattersReturn<List, Options>;
+    protected getFormatData(item: Item): Record<string, string>;
+    protected transformation<Type extends FormattersType>(valueOriginal: any, item: any, type?: Type, options?: FormattersOptionsInformation<Type>): string;
+    protected formatCurrency(value: any, item: Item, options?: FormattersOptionsCurrency): string;
+    protected formatDate(value: any, options?: FormattersOptionsDate): string;
+    protected formatName(item: Item, options?: FormattersOptionsName): string;
+    protected formatNumber(value: any, options?: FormattersOptionsNumber): string;
+    protected formatPlural(value: any, options?: FormattersOptionsPlural): string;
+    protected formatUnit(value: any, options?: FormattersOptionsUnit): string;
+}
+
+export declare type FormattersCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<FormattersCapitalize<Rest>>}` : K;
+export declare type FormattersColumns<T extends FormattersOptionsList> = (keyof T & string)[];
+export declare type FormattersDataItem<T extends FormattersListItem, KT extends string[]> = { [K in keyof T | FormattersKey<KT[number]>]: K extends keyof T ? T[K] : string; };
+export declare type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>;
+export declare type FormattersKey<K, A extends string = 'Format'> = K extends string ? `${FormattersCapitalize<K>}${A}` : never;
+export declare type FormattersList<Item extends FormattersListItem> = Item[];
+export declare type FormattersListColumnItem<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersDataItem<T, FormattersColumns<O>>;
+export declare type FormattersListColumns<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersListFormat<T, FormattersColumns<O>>;
+export declare type FormattersListFormat<T extends FormattersListItem, K extends string[]> = FormattersDataItem<T, K>[];
+export declare type FormattersListItem = Record<string, any>;
+export declare type FormattersListProp = FormattersList<FormattersListItem> | FormattersListItem;
+export declare type FormattersOptionsCurrency = { currencyPropName?: string; options?: string | Intl.NumberFormatOptions; numberOnly?: boolean; };
+export declare type FormattersOptionsDate = { type?: GeoDate; options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions; hour24?: boolean; };
+export declare type FormattersOptionsInformation<Type extends FormattersType> = Type extends FormattersType.currency ? FormattersOptionsCurrency : Type extends FormattersType.date ? FormattersOptionsDate : Type extends FormattersType.name ? FormattersOptionsName : Type extends FormattersType.number ? FormattersOptionsNumber : Type extends FormattersType.plural ? FormattersOptionsPlural : Type extends FormattersType.unit ? FormattersOptionsUnit : Record<string, any>;
+export declare type FormattersOptionsItem<Type extends FormattersType = FormattersType, R = string> = { type?: Type; transformation?: (valueOriginal: any, item: any, options?: FormattersOptionsInformation<Type>) => R; options?: FormattersOptionsInformation<Type>; };
+export declare type FormattersOptionsList = Record<string, FormattersOptionsItem>;
+export declare type FormattersOptionsName = { lastPropName?: string; firstPropName?: string; surname?: string; short?: boolean; };
+export declare type FormattersOptionsNumber = { options?: Intl.NumberFormatOptions; };
+export declare type FormattersOptionsPlural = { words: string; options?: Intl.PluralRulesOptions; optionsNumber?: Intl.NumberFormatOptions; };
+export declare type FormattersOptionsUnit = { unit: string | Intl.NumberFormatOptions; };
+export declare type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = List extends any[] ? FormattersListColumns<Item, Options> : (FormattersListColumnItem<Item, Options> | undefined);
+
+export declare enum FormattersType {
+    currency = "currency",
+    date = "date",
+    name = "name",
+    number = "number",
+    plural = "plural",
+    unit = "unit"
+}
+
+/** Animation frame helper. */
+export declare function frame(callback: () => void, next?: () => boolean, end?: () => void): void;
+
+export declare type FunctionAnyType<T = any, R = any> = (...args: T[]) => R;
+export declare type FunctionArgs<T, R> = (...args: T[]) => R;
+export declare type FunctionReturn<R = any> = () => R;
+export declare type FunctionVoid = () => void;
+
+/** Geographic location data helper. */
+export declare class Geo {
+    private static storage;
+    private static location;
+    private static item;
+    private static language;
+    private static timezone;
+    static get(): GeoItemFull;
+    static getCountry(): string;
+    static getLanguage(): string;
+    static getStandard(): string;
+    static getFirstDay(): string;
+    static getLocation(): string;
+    static getItem(): GeoItemFull;
+    static getList(): GeoItem[];
+    static getByCode(code?: string): GeoItemFull;
+    static getByCodeFull(code: string): GeoItem | undefined;
+    static getByCountry(country: string): GeoItem | undefined;
+    static getByLanguage(language: string): GeoItem | undefined;
+    static getTimezone(): number;
+    static getTimezoneFormat(): string;
+    static find(code: string): GeoItemFull;
+    static toStandard(item: GeoItem): string;
+    static set(code: string, save?: boolean): void;
+    static setTimezone(timezone: number): void;
+    private static findLocation;
+    private static findLanguage;
+    private static toCountry;
+    private static toLanguage;
+    private static toFull;
+}
+
+export declare const GEO_FLAG_ICON_NAME = "f";
+export declare type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second';
+export declare type GeoFirstDay = 1 | 6 | 0;
+
+/** Handles country flags and geographic info. */
+export declare class GeoFlag {
+    protected code: string;
+    static flags: Record<string, string>;
+    constructor(code?: string);
+    get(code?: string): GeoFlagItem | undefined;
+    getFlag(code?: string): string | undefined;
+    getList(codes?: string[]): GeoFlagItem[];
+    getNational(codes?: string[]): GeoFlagNational[];
+    setCode(code: string): this;
+    protected getLocation(): GeoIntl;
+    protected getCodes(codes?: string[]): string[];
+    protected getLanguage(data: GeoItemFull): string;
+    protected getCountry(data: GeoItemFull): string;
+}
+
+export declare interface GeoFlagItem {
+    language: string;
+    country: string;
+    standard: string;
+    icon?: string;
+    label: string;
+    value: string;
+}
+
+export declare interface GeoFlagNational extends GeoFlagItem {
+    description: string;
+    nationalLanguage: string;
+    nationalCountry: string;
+}
+
+export declare type GeoHours = '12' | '24';
+
+/** Intl API wrapper. */
+export declare class GeoIntl {
+    private errorCenter;
+    static getInstance(code?: string): GeoIntl;
+    private readonly geo;
+    constructor(code?: string, errorCenter?: ErrorCenterInstance);
+    getLocation(): string;
+    getFirstDay(): string;
+    display(value?: string, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): string;
+    languageName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
+    countryName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
+    fullName(last: string, first: string, surname?: string, short?: boolean): string;
+    number(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    decimal(): string;
+    currency(value: NumberOrString, currencyOptions?: string | Intl.NumberFormatOptions, numberOnly?: boolean): string;
+    currencySymbol(currency: string, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): string;
+    unit(value: NumberOrString, unitOptions?: string | Intl.NumberFormatOptions): string;
+    sizeFile(value: NumberOrString, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): string;
+    percent(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    percentBy100(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    plural(value: NumberOrString, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): string;
+    date(value: NumberOrStringOrDate, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): string;
+    relative(value: NumberOrStringOrDate, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): string;
+    relativeLimit(value: NumberOrStringOrDate, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): string;
+    relativeByValue(value: NumberOrString, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): string;
+    month(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['month']): string;
+    months(style?: Intl.DateTimeFormatOptions['month']): ItemValue<number | undefined>[];
+    weekday(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['weekday']): string;
+    weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ItemValue<number | undefined>[];
+    time(value: NumberOrStringOrDate): string;
+    sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
+    private hasIntl;
+    private hasIntlDateTimeFormat;
+    private numberObject;
+    private dateOptions;
+}
+
+export declare interface GeoItem {
+    country: string;
+    countryAlternative?: string[];
+    language: string;
+    languageAlternative?: string[];
+    firstDay?: string | null;
+    zone?: string | null;
+    phoneCode?: string;
+    phoneWithin?: string;
+    phoneMask?: string | string[];
+    nameFormat?: 'fl' | 'fsl' | 'lf' | 'lsf' | string;
+}
+
+export declare interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
+    standard: string;
+    firstDay: string;
+}
+
+/** Handles phone masks and country phone codes. */
+export declare class GeoPhone {
+    protected static list?: GeoPhoneValue[];
+    protected static map?: Record<string, GeoPhoneMap>;
+    static get(code: string): GeoPhoneValue | undefined;
+    static getByPhone(phone: string): GeoPhoneMapInfo;
+    static getByCode(code: string): GeoPhoneMap | undefined;
+    static getList(): GeoPhoneValue[];
+    static getMap(): Record<string, GeoPhoneMap>;
+    static toMask(phone: string, masks?: string[]): string | undefined;
+    static removeZero(phone: string): string;
+    protected static getWithinSymbol(within: number | string): string;
+    protected static getUnnecessaryLength(mask: string): number;
+    protected static makeList(): void;
+    protected static makeMap(): void;
+    protected static toNumber(value: string): string[];
+    protected static toStandard(phone: string, mask: string): string;
+    protected static toWithin(mask: string, within: number | string): string;
+}
+
+export declare interface GeoPhoneMap {
+    items: GeoPhoneValue[];
+    info: GeoPhoneValue | undefined;
+    value: string | undefined;
+    mask: string[];
+    maskFull: string[];
+    next: Record<string, GeoPhoneMap>;
+}
+
+export declare interface GeoPhoneMapInfo { item?: GeoPhoneMap; phone?: string; }
+export declare interface GeoPhoneValue { phone: number; within: number; mask: string[]; value: string; }
+export declare type GeoTimeZoneStyle = 'minute' | 'hour' | 'ISO8601' | 'RFC';
+
+/** Get all attributes of an element. */
+export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
+
+/** Get clipboard data as string. */
+export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
+
+/** Get values of a specific column from array of objects. */
+export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
+
+/** Get formatted current date. */
+export declare function getCurrentDate(format?: GeoDate): string;
+
+/** Resolve selector to Element. */
+export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
+
+/** Get element ID or generate new one. */
+export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
+
+/** Get HTMLImageElement from source. */
+export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
+
+/** Get property value from element. */
+export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
+
+/** Get Element or Window. */
+export declare function getElementOrWindow<E extends ElementOrWindow>(element?: ElementOrString<E>): E | undefined;
+
+/** Regex for exact phrase match. */
+export declare function getExactSearchExp(search: string): RegExp;
+
+/** Create optimized RegExp from string. */
+export declare function getExp(value: string, flags?: string, pattern?: string): RegExp;
+
+/** Get data by object path string. */
+export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
+
+/** Get key name from KeyboardEvent. */
+export declare function getKey(event: KeyboardEvent): string;
+
+/** Get array of string lengths. */
+export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];
+
+/** Get longest string length in array. */
+export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;
+
+/** Get shortest string length in array. */
+export declare function getMinLengthAllArray(data: ObjectOrArray<string>): number;
+
+/** Get mouse or touch coordinates. */
+export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;
+export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
+export declare function getMouseClientY(event: MouseEvent & TouchEvent): number;
+
+/** Filter object by key list. */
+export declare function getObjectByKeys(data: Record<string, any>, keys: string[]): Record<string, any>;
+
+/** Filter out undefined properties. */
+export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
+
+/** Return object if it has values. */
+export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
+
+/** Generate random text. */
+export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
+
+/** Convert object to query string. */
+export declare function getRequestString(request: Record<string, any>, sign?: string, separator?: string): string;
+
+/** Regex for multi-word "contains all" search. */
+export declare function getSearchExp(search: string): RegExp;
+
+/** Regex for word search. */
+export declare function getSeparatingSearchExp(search: string): RegExp;
+
+/** Calculate percentage per step. */
+export declare function getStepPercent(min: number | undefined, max: number): number;
+
+/** Calculate value per step. */
+export declare function getStepValue(min: number | undefined, max: number): number;
+
+/** App-wide global data storage. */
+export declare class Global {
+    static get<R = any>(name: string): R;
+    static add(data: Record<string, any>): void;
+}
+
+/** Scroll to element. */
+export declare function goScroll(selector: string, elementTo: HTMLElement | undefined, elementCenter?: HTMLElement): void;
+
+/** Smooth scroll to element. */
+export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
+
+/** Scroll container to target. */
+export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
+
+/** Share data via Web Share API. */
+export declare function handleShare(data: ShareData): Promise<boolean>;
+
+/** Manage URL hash variables. */
+export declare class Hash {
+    private static hash;
+    private static watch;
+    private static block;
+    static get<T>(name: string, defaultValue?: T | (() => T)): T;
+    static set<T>(name: string, callback: T | (() => T)): void;
+    static addWatch<T>(name: string, callback: (value: T) => void): void;
+    static removeWatch<T>(name: string, callback: (value: T) => void): void;
+    static reload(): void;
+    private static getLocation;
+    private static update;
+    private static makeWatch;
+}
+
+/** Manage SVG/image icons. */
+export declare class Icons {
+    protected static icons: Record<string, IconsItem>;
+    protected static url: string;
+    static is(index: string): boolean;
+    static get(index: string, url?: string, wait?: number): Promise<string>;
+    static getNameList(): string[];
+    static getUrlGlobal(): string;
+    static add(index: string, file: IconsItem): void;
+    static addLoad(index: string): void;
+    static addGlobal(index: string, file: string): void;
+    static addByList(list: Record<string, IconsItem>): void;
+    static setUrl(url: string): void;
+    static setConfig(config: IconsConfig): void;
+    protected static getName(index: string): string;
+    protected static wait(): Promise<void>;
+}
+
+export declare type IconsConfig = { url?: string; list?: Record<string, IconsItem>; };
+export declare type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
+export declare type ImageCoordinator = { x: number; y: number; };
+
+/** Check if value exists in array. */
+export declare function inArray<T>(array: T[], value: T): boolean;
+
+/** Initialize scroll control data. */
+export declare function initScrollbarOffset(): Promise<void>;
+
+/** Intersect two objects by keys. */
+export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
+
+/** Check for API success. */
+export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
+
+/** Check if value is array. */
+export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
+
+/** Check if two objects differ. */
+export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
+
+/** Check if env is data URL. */
+export declare function isDomData(): boolean;
+
+/** Check if running in browser. */
+export declare function isDomRuntime(): boolean;
+
+/** Check if element is visible in DOM. */
+export declare function isElementVisible<E extends ElementOrWindow>(elementSelectors?: ElementOrString<E>): boolean;
+
+/** Check if key is Enter or Space. */
+export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
+
+/** Check if value is non-empty. */
+export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;
+
+/** Check if value is float/number. */
+export declare function isFloat(value: any): boolean;
+
+/** Check if value is function. */
+export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
+
+/** Check if element is in DOM. */
+export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
+
+/** Check if element is editable/input. */
+export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
+
+/** Check if number is between range. */
+export declare function isIntegerBetween(value: number, between: number): boolean;
+
+/** Check if value is null/undefined. */
+export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
+
+/** Check if value is numeric. */
+export declare function isNumber(value: any): boolean;
+
+/** Check if value is object. */
+export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;
+
+/** Check if object and not array. */
+export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
+
+/** Check online status. */
+export declare function isOnLine(): boolean;
+
+/** Check if value matches selection. */
+export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;
+export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
+
+/** Check Web Share API support. */
+export declare function isShare(): boolean;
+
+/** Check if value is string. */
+export declare function isString<T>(value: T): value is Extract<T, string>;
+
+/** Check if element is Window. */
+export declare function isWindow<E>(element: E): element is Extract<E, Window>;
+
+export declare type Item<V> = { index: string; value: V; };
+export declare type ItemList<T = any> = Record<string, T>;
+export declare type ItemName<V> = { name: string | number; value: V; };
+export declare type ItemValue<V> = { label: string; value: V; };
+
+/** Global loading state manager. */
+export declare class Loading {
+    protected static item: LoadingInstance;
+    static is(): boolean;
+    static get(): number;
+    static getItem(): LoadingInstance;
+    static show(): void;
+    static hide(): void;
+    static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+}
+
+export declare type LoadingDetail = { loading: boolean; };
+
+/** Loading state instance. */
+export declare class LoadingInstance {
+    protected eventName: string;
+    protected value: number;
+    protected event?: EventItem<Window, CustomEvent>;
+    protected registrationList: LoadingRegistrationItem[];
+    constructor(eventName?: string);
+    is(): boolean;
+    get(): number;
+    show(): void;
+    hide(): void;
+    registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    protected dispatch(): void;
+}
+
+export declare type LoadingRegistrationItem = {
+    item: EventItem<Window, CustomEvent, LoadingDetail>;
+    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
+    element?: ElementOrString<HTMLElement>;
+};
+
+/** HTML Meta tag manager. */
+export declare class Meta extends MetaManager<MetaTag[]> {
+    protected suffix?: string;
+    protected og: MetaOg;
+    protected twitter: MetaTwitter;
+    constructor();
+    getOg(): MetaOg;
+    getTwitter(): MetaTwitter;
+    getTitle(): string;
+    getKeywords(): string;
+    getDescription(): string;
+    getImage(): string;
+    getCanonical(): string;
+    getRobots(): MetaRobots;
+    getAuthor(): string;
+    getSiteName(): string;
+    getLocale(): string;
+    setTitle(title: string): this;
+    setKeywords(keywords: string | string[]): this;
+    setDescription(description: string): this;
+    setImage(image: string): this;
+    setCanonical(canonical: string): this;
+    setRobots(robots: MetaRobots): this;
+    setAuthor(author: string): this;
+    setSiteName(siteName: string): this;
+    setLocale(locale: string): this;
+    setSuffix(suffix?: string): void;
+    html(): string;
+    protected getSuffix(): string;
+}
+
+declare type MetaList<T extends readonly string[]> = { [K in T[number]]?: string; };
+
+/** Base meta manager. */
+export declare class MetaManager<T extends readonly string[], Key extends keyof MetaList<T> = keyof MetaList<T>> {
+    protected readonly listMeta: T;
+    protected readonly isProperty: boolean;
+    protected readonly items: MetaList<T>;
+    constructor(listMeta: T, isProperty?: boolean);
+    getListMeta(): T;
+    get(name: Key): string;
+    getItems(): MetaList<T>;
+    html(): string;
+    set(name: Key, content: string): this;
+    setByList(metaList: MetaList<T>): this;
+    protected getAttributeName(): string;
+    protected findMetaElement(name: string): HTMLMetaElement | undefined;
+    protected setItem(name: Key, content: string): this;
+    protected setMeta(name: Key): this;
+    protected toHtmlString(name: Key): string;
+    protected update(): this;
+}
+
+/** Open Graph meta tags. */
+export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
+    constructor();
+    getTitle(): string;
+    getType(): MetaOpenGraphType;
+    getUrl(): string;
+    getImage(): string;
+    getDescription(): string;
+    getLocale(): string;
+    getSiteName(): string;
+    setTitle(title: string): this;
+    setType(type: MetaOpenGraphType): this;
+    setUrl(url: string): this;
+    setImage(url: string): this;
+    setDescription(description: string): this;
+    setLocale(locale: string): this;
+    setSiteName(siteName: string): this;
+}
+
+export declare enum MetaOpenGraphAge { newborn = "newborn", infant = "infant", toddler = "toddler", kids = "kids", adult = "adult" }
+export declare enum MetaOpenGraphAvailability { inStock = "in stock", outOfStock = "out of stock", preorder = "preorder", backorder = "backorder", discontinued = "discontinued", pending = "pending" }
+export declare enum MetaOpenGraphCondition { new = "new", used = "used", refurbished = "refurbished" }
+export declare enum MetaOpenGraphGender { female = "female", male = "male", unisex = "unisex" }
+
+export declare enum MetaOpenGraphTag {
+    title = "og:title",
+    type = "og:type",
+    url = "og:url",
+    image = "og:image",
+    description = "og:description",
+    locale = "og:locale",
+    siteName = "og:site_name",
+    localeAlternate = "og:locale:alternate",
+    imageUrl = "og:image:url",
+    imageSecureUrl = "og:image:secure_url",
+    imageType = "og:image:type",
+    imageWidth = "og:image:width",
+    imageHeight = "og:image:height",
+    imageAlt = "og:image:alt",
+    video = "og:video",
+    videoUrl = "og:video:url",
+    videoSecureUrl = "og:video:secure_url",
+    videoType = "og:video:type",
+    videoWidth = "og:video:width",
+    videoHeight = "og:video:height",
+    audio = "og:audio",
+    audioSecureUrl = "og:audio:secure_url",
+    audioType = "og:audio:type",
+    articlePublishedTime = "article:published_time",
+    articleModifiedTime = "article:modified_time",
+    articleExpirationTime = "article:expiration_time",
+    articleAuthor = "article:author",
+    articleSection = "article:section",
+    articleTag = "article:tag",
+    bookAuthor = "book:author",
+    bookIsbn = "book:isbn",
+    bookReleaseDate = "book:release_date",
+    bookTag = "book:tag",
+    musicDuration = "music:duration",
+    musicAlbum = "music:album",
+    musicAlbumDisc = "music:album:disc",
+    musicAlbumTrack = "music:album:track",
+    musicMusician = "music:musician",
+    musicSong = "music:song",
+    musicSongDisc = "music:song:disc",
+    musicSongTrack = "music:song:track",
+    musicReleaseDate = "music:release_date",
+    musicCreator = "music:creator",
+    videoActor = "video:actor",
+    videoActorRole = "video:actor:role",
+    videoDirector = "video:director",
+    videoWriter = "video:writer",
+    videoDuration = "video:duration",
+    videoReleaseDate = "video:release_date",
+    videoTag = "video:tag",
+    videoSeries = "video:series",
+    profileFirstName = "profile:first_name",
+    profileLastName = "profile:last_name",
+    profileUsername = "profile:username",
+    profileGender = "profile:gender",
+    productBrand = "product:brand",
+    productAvailability = "product:availability",
+    productCondition = "product:condition",
+    productPriceAmount = "product:price:amount",
+    productPriceCurrency = "product:price:currency",
+    productRetailerItemId = "product:retailer_item_id",
+    productCategory = "product:category",
+    productEan = "product:ean",
+    productIsbn = "product:isbn",
+    productMfrPartNo = "product:mfr_part_no",
+    productUpc = "product:upc",
+    productWeightValue = "product:weight:value",
+    productWeightUnits = "product:weight:units",
+    productColor = "product:color",
+    productMaterial = "product:material",
+    productPattern = "product:pattern",
+    productAgeGroup = "product:age_group",
+    productGender = "product:gender"
+}
+
+export declare enum MetaOpenGraphType {
+    website = "website",
+    article = "article",
+    video = "video.other",
+    videoTvShow = "video.tv_show",
+    videoEpisode = "video.episode",
+    videoMovie = "video.movie",
+    musicAlbum = "music.album",
+    musicPlaylist = "music.playlist",
+    musicSong = "music.song",
+    musicRadioStation = "music.radio_station",
+    app = "app",
+    product = "product",
+    business = "business.business",
+    place = "place",
+    event = "event",
+    profile = "profile",
+    book = "book"
+}
+
+export declare enum MetaRobots {
+    indexFollow = "index, follow",
+    noIndexFollow = "noindex, follow",
+    indexNoFollow = "index, nofollow",
+    noIndexNoFollow = "noindex, nofollow",
+    noArchive = "noarchive",
+    noSnippet = "nosnippet",
+    noImageIndex = "noimageindex",
+    images = "images",
+    noTranslate = "notranslate",
+    noPreview = "nopreview",
+    textOnly = "textonly",
+    noIndexSubpages = "noindex, noarchive",
+    none = "none"
+}
+
+export declare enum MetaTag { description = "description", keywords = "keywords", canonical = "canonical", robots = "robots", author = "author" }
+
+/** Twitter Card meta tags. */
+export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
+    constructor();
+    getCard(): MetaTwitterCard;
+    getSite(): string;
+    getCreator(): string;
+    getUrl(): string;
+    getTitle(): string;
+    getDescription(): string;
+    getImage(): string;
+    setCard(card: MetaTwitterCard): this;
+    setSite(site: string): this;
+    setCreator(creator: string): this;
+    setUrl(url: string): this;
+    setTitle(title: string): this;
+    setDescription(description: string): this;
+    setImage(image: string): this;
+}
+
+export declare enum MetaTwitterCard {
+    summary = "summary",
+    summaryLargeImage = "summary_large_image",
+    app = "app",
+    player = "player",
+    product = "product",
+    gallery = "gallery",
+    photo = "photo",
+    leadGeneration = "lead_generation",
+    audio = "audio",
+    poll = "poll"
+}
+
+export declare enum MetaTwitterTag {
+    card = "twitter:card",
+    site = "twitter:site",
+    creator = "twitter:creator",
+    url = "twitter:url",
+    title = "twitter:title",
+    description = "twitter:description",
+    image = "twitter:image",
+    imageAlt = "twitter:image:alt",
+    imageSrc = "twitter:image:src",
+    imageWidth = "twitter:image:width",
+    imageHeight = "twitter:image:height",
+    label1 = "twitter:label1",
+    data1 = "twitter:data1",
+    label2 = "twitter:label2",
+    data2 = "twitter:data2",
+    appNameIphone = "twitter:app:name:iphone",
+    appIdIphone = "twitter:app:id:iphone",
+    appUrlIphone = "twitter:app:url:iphone",
+    appNameIpad = "twitter:app:name:ipad",
+    appIdIpad = "twitter:app:id:ipad",
+    appUrlIpad = "twitter:app:url:ipad",
+    appNameGooglePlay = "twitter:app:name:googleplay",
+    appIdGooglePlay = "twitter:app:id:googleplay",
+    appUrlGooglePlay = "twitter:app:url:googleplay",
+    player = "twitter:player",
+    playerWidth = "twitter:player:width",
+    playerHeight = "twitter:player:height",
+    playerStream = "twitter:player:stream",
+    playerStreamContentType = "twitter:player:stream:content_type"
+}
+
+export declare type NormalOrArray<T = NumberOrString> = T | T[];
+export declare type NormalOrPromise<T> = T | Promise<T>;
+export declare type NumberOrString = number | string;
+export declare type NumberOrStringOrBoolean = number | string | boolean;
+export declare type NumberOrStringOrDate = NumberOrString | Date;
+export declare type ObjectItem<T = any> = Record<string, T>;
+export declare type ObjectOrArray<T = any> = T[] | ObjectItem<T>;
+
+/** Generate random integer. */
+export declare function random(min: number, max: number): number;
+
+/** Remove string prefix. */
+export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
+
+/** Replace component name in text. */
+export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
+
+/** Recursive object merge. */
+export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
+
+/** Replace data in template string. */
+export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
+
+/** Resize image by constraints. */
+export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string): string | undefined;
+
+declare type ResizeImageByMaxType = 'auto' | 'width' | 'height';
+
+/** Detect scrollbar width. */
+export declare class ScrollbarWidth {
+    private static storage;
+    private static calculate;
+    static is(): Promise<boolean>;
+    static get(): Promise<number>;
+    static getStorage(): DataStorage<number>;
+    static getCalculate(): boolean;
+    private static createElement;
+    private static init;
+}
+
+export declare type SearchCache<T extends SearchItem> = SearchCacheItem<T>[];
+export declare type SearchCacheItem<T extends SearchItem> = { item: T; value: string; };
+export declare type SearchColumn<T extends SearchItem> = { [K in keyof T]-?: NonNullable<T[K]> extends object ? K | SearchColumnPath<K, keyof NonNullable<T[K]>> : K; }[keyof T];
+export declare type SearchColumnPath<K, P> = K extends string ? P extends string ? `${K}.${P}` : never : never;
+export declare type SearchColumns<T extends SearchItem> = (SearchColumn<T> & string)[];
+export declare type SearchFormatCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<SearchFormatCapitalize<Rest>>}` : K;
+export declare type SearchFormatItem<T extends SearchItem, KT extends string[]> = { [K in keyof T | SearchFormatKey<KT[number]>]: K extends keyof T ? T[K] : string; } & { searchActive?: boolean; };
+export declare type SearchFormatKey<K> = K extends string ? `${SearchFormatCapitalize<K>}Search` : never;
+export declare type SearchFormatList<T extends SearchItem, K extends string[]> = SearchFormatItem<T, K>[];
+export declare type SearchItem = Record<string, any>;
+
+/** Searchable list manager. */
+export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
+    protected options: SearchListOptions;
+    protected item: SearchListItem;
+    protected matcher: SearchListMatcher;
+    protected data: SearchListData<T, K>;
+    constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
+    getData(): SearchListData<T, K>;
+    getList(): SearchListValue<T>;
+    getColumns(): K | undefined;
+    getItem(): SearchListItem;
+    getValue(): string | undefined;
+    getOptions(): SearchListOptions;
+    setList(list: SearchListValue<T>): this;
+    setColumns(columns?: K): this;
+    setValue(value?: string): this;
+    setOptions(options: SearchOptions): this;
+    to(): SearchFormatList<T, K>;
+    protected readonly callbackToSelection: (item: SearchCacheItem<T>["item"], value: SearchCacheItem<T>["value"]) => SearchFormatItem<T, K> | undefined;
+    protected readonly callbackToNone: (item: SearchCacheItem<T>["item"]) => SearchFormatItem<T, K>;
+}
+
+/** Data handler for search list. */
+export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
+    protected list: SearchListValue<T>;
+    protected columns: K | undefined;
+    protected item: SearchListItem;
+    protected options: SearchListOptions;
+    protected listCache?: SearchCache<T>;
+    constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
+    is(): this is this & { list: T[]; columns: string[]; };
+    isList(): this is this & { list: T[]; };
+    getList(): SearchListValue<T>;
+    getColumns(): K | undefined;
+    protected getCache(): SearchCache<T>;
+    setList(list: SearchListValue<T>): this;
+    setColumns(columns?: SearchColumns<T>): this;
+    findCacheItem(item: T): SearchCacheItem<T> | undefined;
+    forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
+    toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
+    protected getColumnName(column: string): string;
+    protected addTag(value: any): string;
+    protected generateCache(): SearchCache<T>;
+    protected initCache(): void;
+    protected resetCache(): void;
+}
+
+/** Search list item state. */
+export declare class SearchListItem {
+    protected value: string | undefined;
+    protected options: SearchListOptions;
+    constructor(value: string | undefined, options: SearchListOptions);
+    is(): this is this & { value: string; };
+    isSearch(): boolean;
+    get(): string;
+    set(value?: string): this;
+}
+
+/** Match logic using regex. */
+export declare class SearchListMatcher {
+    protected item: SearchListItem;
+    protected options: SearchListOptions;
+    protected matcher: RegExp | undefined;
+    constructor(item: SearchListItem, options: SearchListOptions);
+    is(): boolean;
+    isSelection(value: SearchCacheItem<any>['value']): boolean;
+    get(): RegExp | undefined;
+    update(): void;
+    protected initMatcher(): void;
+}
+
+/** Options for search. */
+export declare class SearchListOptions {
+    protected options?: SearchOptions | undefined;
+    constructor(options?: SearchOptions | undefined);
+    getOptions(): SearchOptions;
+    getLimit(): number;
+    getReturnEverything(): boolean;
+    getDelay(): number;
+    getFindExactMatch(): boolean;
+    getClassName(): string;
+    setOptions(options: SearchOptions): this;
+}
+
+export declare type SearchListValue<T extends SearchItem> = T[] | undefined;
+export declare type SearchOptions = { limit?: number; returnEverything?: boolean; delay?: number; findExactMatch?: boolean; classSearchName?: string; };
+
+/** Convert seconds to time string. */
+export declare function secondToTime(second: number | string | undefined): string;
+
+/** Set property on element. */
+export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
+
+/** Apply multiple values based on options. */
+export declare function setValues<T>(selected: T | T[] | undefined, value: any, { multiple, maxlength, alwaysChange, notEmpty }: { multiple?: boolean | undefined; maxlength?: number | undefined; alwaysChange?: boolean | undefined; notEmpty?: boolean | undefined; }): T | T[] | undefined;
+
+/** Async pause. */
+export declare function sleep(ms: number): Promise<void>;
+
+/** Copy properties from source to target. */
+export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
+
+/** Create string filled with value. */
+export declare function strFill(value: string, count: number): string;
+
+/** Split string with limit. */
+export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
+
+/** Ensure value is array. */
+export declare function toArray<T>(value: T): T extends any[] ? T : [T];
+
+/** CamelCase converters. */
+export declare function toCamelCase(value: string): string;
+export declare function toCamelCaseFirst(value: string): string;
+
+/** Convert value to Date. */
+export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
+
+/** Convert to kebab-case. */
+export declare function toKebabCase(value: string): string;
+
+/** Convert to number. */
+export declare function toNumber<T extends NumberOrString>(value?: T): (T & number) | number;
+export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
+
+/** Percentage converters. */
+export declare function toPercent(maxValue: number, value: number): number;
+export declare function toPercentBy100(maxValue: number, value: number): number;
+
+/** Transform string to primitive data type. */
+export declare function transformation(value: any, isFunction?: boolean): any;
+
+/** Translation management. */
+export declare class Translate {
+    protected static item: TranslateInstance;
+    static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
+    static getItem(): TranslateInstance;
+    static getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
+    static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
+    static getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
+    static add(names: string | string[]): Promise<void>;
+    static addSync(data: Record<string, string>): void;
+    static addNormalOrSync(data: Record<string, string>): Promise<void>;
+    static addSyncByLocation(data: Record<string, Record<string, string>>): void;
+    static addSyncByFile(data: TranslateDataFile): void;
+    static setUrl(url: string): Translate;
+    static setPropsName(name: string): Translate;
+    static setReadApi(value: boolean): Translate;
+    static setConfig(config: TranslateConfig): Translate;
+}
+
+export declare const TRANSLATE_GLOBAL_PREFIX = "global";
+export declare const TRANSLATE_TIME_OUT = 160;
+export declare type TranslateCode = string | string[];
+export declare type TranslateConfig = { url?: string; propsName?: string; readApi?: boolean; };
+export declare type TranslateDataFile = Record<string, TranslateDataFileItem>;
+export declare type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
+export declare type TranslateDataFileList = Record<string, string>;
+
+/** Async translation file handler. */
+export declare class TranslateFile {
+    protected language: string | (() => string);
+    protected location: string | (() => string);
+    protected files: TranslateDataFile;
+    protected data: Record<string, TranslateDataFileList>;
+    constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
+    isFile(): boolean;
+    getLocation(): string;
+    getLanguage(): string;
+    getList(): Promise<TranslateDataFileList | undefined>;
+    add(data: TranslateDataFile): void;
+    protected getIndex(): string | undefined;
+    protected getByData(index: string): TranslateDataFileList | undefined;
+    protected getByFile(index: string): Promise<TranslateDataFileList | undefined>;
+}
+
+/** Core translation instance. */
+export declare class TranslateInstance {
+    protected url: string;
+    protected propsName: string;
+    protected readonly files: TranslateFile;
+    protected readonly data: Record<string, string>;
+    protected cache: string[];
+    protected resolveList: (() => void)[];
+    protected timeout?: any;
+    protected isReadApi: boolean;
+    constructor(url?: string, propsName?: string, files?: TranslateFile);
+    get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
+    getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
+    getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
+    getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
+    add(names: string | string[]): Promise<void>;
+    addSync(data: Record<string, string>): void;
+    addNormalOrSync(data: Record<string, string>): Promise<void>;
+    addSyncByLocation(data: Record<string, Record<string, string>>): void;
+    addSyncByFile(data: TranslateDataFile): void;
+    setUrl(url: string): this;
+    setPropsName(name: string): this;
+    setReadApi(value: boolean): this;
+    protected hasName(name: string): boolean;
+    protected getText(name: string): string | undefined;
+    protected getName(name: string): string;
+    protected getNameByLanguage(name: string): string;
+    protected getNameByGlobal(name: string): string;
+    protected getNamesNone(names: string | string[]): string[];
+    protected getResponse(): Promise<Record<string, string>>;
+    protected replacement(text: string, replacement?: string[] | Record<string, string | number>): any;
+    protected make(): Promise<void>;
+    protected makeList(list: Record<string, string>): void;
+}
+
+export declare type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string;
+export declare type TranslateList<T extends TranslateCode[]> = { [K in T[number] as K extends readonly string[] ? K[0] : K]: string; };
+
+/** Binary to Base64. */
+export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
+export declare type Undefined = undefined | null;
+
+/** Remove duplicates. */
+export declare function uniqueArray<T>(value: T[]): T[];
+
+/** Write to clipboard. */
+export declare function writeClipboardData(text: string): Promise<void>;

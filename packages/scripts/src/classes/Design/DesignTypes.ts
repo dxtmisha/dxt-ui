@@ -79,11 +79,9 @@ export class DesignTypes {
    */
   protected isContent(content?: string): content is string {
     return Boolean(
-      content && (
-        content.includes('export interface')
-        || content.includes('export type')
-        || content.includes('export enum')
-      ))
+      content
+      && content.includes('export')
+    )
   }
 
   /**
@@ -181,11 +179,8 @@ export class DesignTypes {
 
       const generate = await ai.generate(
         'Remove all Russian comments from this code. '
-        + 'Remove comments if the property name makes its purpose obvious. '
+        + 'Simplify comments if possible, while ensuring they remain understandable for AI. '
         + 'Remove all imports. '
-        + 'Remove empty lines. '
-        + 'Remove the "export" keyword if possible. '
-        + 'Keep only "type", "interface" and "enum" definitions, remove everything else. '
         + 'Minimize the content as much as possible without losing any data or logic. '
         + 'Return only the corrected code without any additional text or explanations.'
       )
