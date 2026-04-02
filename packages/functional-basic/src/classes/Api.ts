@@ -9,9 +9,46 @@ import {
 } from '../types/apiTypes'
 
 /**
- * Class for working with requests.
+ * Class for working with HTTP requests.
  *
- * Класс для работы с запросами.
+ * It is a static wrapper over {@link ApiInstance}, providing a convenient interface for:
+ * - Performing standard HTTP requests (GET, POST, PUT, DELETE).
+ * - Global configuration (URL, headers, defaults).
+ * - Request lifecycle hooks (`setPreparation`, `setEnd`).
+ * - Automatic retries and session handling (Refresh Token).
+ * - Data processing and JSON parsing.
+ * - Localization support (`{locale}`, `{country}`, `{language}`).
+ * - Error handling and {@link ErrorCenter} integration.
+ * - Response emulation via {@link ApiResponse}.
+ *
+ * ---
+ *
+ * Класс для работы с HTTP-запросами.
+ *
+ * Является статической оберткой над {@link ApiInstance}, предоставляя удобный интерфейс для:
+ * - Выполнения стандартных HTTP-запросов (GET, POST, PUT, DELETE).
+ * - Глобальной настройки (URL, заголовки, параметры).
+ * - Хуков жизненного цикла (`setPreparation`, `setEnd`).
+ * - Автоматических повторов и обработки сессий (Refresh Token).
+ * - Обработки данных и парсинга JSON.
+ * - Поддержки локализации в URL (`{locale}`, `{country}`, `{language}`).
+ * - Обработки ошибок и интеграции с {@link ErrorCenter}.
+ * - Эмуляции ответов через {@link ApiResponse}.
+ *
+ * ---
+ *
+ * ### Usage Examples / Примеры использования:
+ *
+ * #### 1. Global Setup / Глобальная настройка
+ * ```typescript
+ * Api.setUrl('https://api.example.com/v1/')
+ *    .setHeaders({ 'Authorization': 'Bearer token' });
+ * ```
+ *
+ * #### 2. Basic Request / Базовый запрос
+ * ```typescript
+ * const data = await Api.get<User>({ path: 'profile' });
+ * ```
  */
 export class Api {
   protected static item = new ApiInstance()
