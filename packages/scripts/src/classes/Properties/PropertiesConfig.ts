@@ -122,6 +122,15 @@ export class PropertiesConfig {
   }
 
   /**
+   * Returns the AI configuration object.
+   *
+   * Возвращает объект конфигурации ИИ.
+   */
+  static getAiConfig(): Record<string, any> {
+    return this.config.aiConfig ?? {}
+  }
+
+  /**
    * Returns the list of directories targeted for AI-driven documentation.
    *
    * Возвращает список директорий, предназначенных для автоматической документации через ИИ.

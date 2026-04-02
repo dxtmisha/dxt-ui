@@ -25,7 +25,12 @@ const props = withDefaults(defineProps<SnackbarProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-snackbar': true
+    'd1-snackbar': true,
+    'd1-snackbar--full': props.full,
+    'd1-snackbar--all': props.all,
+    [`d1-snackbar--vertical--${props.vertical}`]: inArray(propsValues.vertical, props.vertical),
+    [`d1-snackbar--horizontal--${props.horizontal}`]: inArray(propsValues.horizontal, props.horizontal),
+    [`d1-snackbar--origin--${props.origin}`]: inArray(propsValues.origin, props.origin)
     // :classes-values [!] System label / Системная метка
   }
 }))

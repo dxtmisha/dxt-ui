@@ -5,9 +5,10 @@ import { PropertiesConfig } from '../classes/Properties/PropertiesConfig'
  *
  * Возвращает конфигурацию ИИ: API ключ и модель.
  */
-export function getConfigAi(): [string, string] {
+export function getConfigAi(): [string, string, Record<string, any>] {
   return [
     PropertiesConfig.getAiKey(),
-    PropertiesConfig.getAiModel()
+    PropertiesConfig.getAiModel(),
+    PropertiesConfig.getAiConfig()
   ]
 }

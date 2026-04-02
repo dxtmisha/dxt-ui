@@ -1,0 +1,18 @@
+### `close`
+
+Событие срабатывает при закрытии элемента (нажатии на кнопку закрытия или программном закрытии).
+
+**Параметры:**
+- `value: string | undefined` — идентификатор элемента (значение свойства `value`)
+
+```html
+<script setup>
+const onClose = (value) => {
+  console.log('Элемент закрыт:', value)
+}
+</script>
+
+<template>
+  <SnackbarItem value="item-1" @close="onClose" />
+</template>
+```

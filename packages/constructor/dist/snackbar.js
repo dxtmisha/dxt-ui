@@ -1,8 +1,9 @@
 import { t as e } from "./defineProperty-hmGKPWdq.js";
 import { Teleport as t, computed as n, h as r, markRaw as i, shallowRef as a } from "vue";
 import { DesignConstructorAbstract as o } from "@dxtmisha/functional";
+import { isElementVisible as s } from "@dxtmisha/functional-basic";
 //#region src/constructors/Snackbar/SnackbarData.ts
-var s = 0, c = class {
+var c = 0, l = class {
 	constructor(t, r, i) {
 		e(this, "item", a([])), e(this, "isItem", n(() => this.item.value.length > 0)), e(this, "isPriority", n(() => this.isItem.value && this.item.value.findIndex((e) => e.highPriority === !0) !== -1)), e(this, "add", (e) => {
 			let t = this.getItemValue(e), n = this.getItemDelay(e);
@@ -21,14 +22,16 @@ var s = 0, c = class {
 		}), this.props = t, this.element = r, this.className = i;
 	}
 	getElementItem(e) {
-		return document.querySelector(`[data-snackbar-item="${e}"]`);
+		var t;
+		let n = (t = this.element.value) == null ? void 0 : t.querySelector(`[data-snackbar-item="${e}"]`);
+		return n == null ? void 0 : n;
 	}
 	getItemByValue(e) {
 		return this.item.value.find((t) => t.value === e);
 	}
 	getItemValue(e) {
 		var t;
-		return (t = e.value) == null ? `snackbar-item-${++s}` : t;
+		return (t = e.value) == null ? `snackbar-item-${++c}` : t;
 	}
 	getItemDelay(e) {
 		var t, n;
@@ -41,7 +44,7 @@ var s = 0, c = class {
 		requestAnimationFrame(() => {
 			if (t > 0) {
 				let n = this.getElementItem(e);
-				n ? n.addEventListener("animationend", () => {
+				n && s(n) ? n.addEventListener("animationend", () => {
 					setTimeout(() => this.remove(e), t);
 				}) : this.toShow(e, t);
 			}
@@ -52,19 +55,19 @@ var s = 0, c = class {
 			this.element.value && (this.element.value.scrollTop = 1e6);
 		});
 	}
-}, l = class {
-	constructor(t, n, r, i, a, o, s, l, u) {
-		e(this, "data", void 0), e(this, "onClose", (e) => this.data.remove(e)), this.props = t, this.refs = n, this.element = r, this.classDesign = i, this.className = a, this.components = o, this.slots = s, this.emits = l;
-		let { DataConstructor: d = c } = u == null ? {} : u;
+}, u = class {
+	constructor(t, n, r, i, a, o, s, c, u) {
+		e(this, "data", void 0), e(this, "onClose", (e) => this.data.remove(e)), this.props = t, this.refs = n, this.element = r, this.classDesign = i, this.className = a, this.components = o, this.slots = s, this.emits = c;
+		let { DataConstructor: d = l } = u == null ? {} : u;
 		this.data = new d(t, r, a);
 	}
-}, u = { delay: 8e3 }, d = class extends o {
-	constructor(t, n, a, o = l) {
+}, d = { delay: 8e3 }, f = class extends o {
+	constructor(t, n, a, o = u) {
 		super(t, n, a), e(this, "item", void 0), e(this, "renderData", () => {
 			let e = [];
 			return this.item.data.item.value.forEach((t) => {
 				var n, i, a, o;
-				return e.push(r("aside", {
+				return e.push(r(t.highPriority ? "aside" : "div", {
 					key: t.value,
 					class: {
 						[(n = (i = this.classes) == null ? void 0 : i.value.item) == null ? "item" : n]: !0,
@@ -73,15 +76,14 @@ var s = 0, c = class {
 					"data-snackbar-item": t.value
 				}, this.renderItem(t)));
 			}), e;
-		}), e(this, "renderItem", (e) => e.component ? r({ ...i(e.component) }, {
-			...e.data,
-			value: e.value,
-			onClose: this.item.onClose
-		}) : this.components.renderOne("snackbarItem", {
-			...e.data,
-			value: e.value,
-			onClose: this.item.onClose
-		}, void 0, e.value)), e(this, "renderSpace", () => {
+		}), e(this, "renderItem", (e) => {
+			let t = {
+				...e.data,
+				value: e.value,
+				onClose: this.item.onClose
+			};
+			return e.component ? r({ ...i(e.component) }, t) : this.components.renderOne("snackbarItem", t, void 0, e.value);
+		}), e(this, "renderSpace", () => {
 			if (this.item.data.isPriority.value) {
 				var e;
 				return [r("div", { class: (e = this.classes) == null ? void 0 : e.value.space })];
@@ -123,4 +125,4 @@ var s = 0, c = class {
 	}
 };
 //#endregion
-export { l as Snackbar, d as SnackbarDesign, u as defaultsSnackbar };
+export { u as Snackbar, f as SnackbarDesign, d as defaultsSnackbar };

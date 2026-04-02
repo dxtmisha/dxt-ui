@@ -19,9 +19,46 @@ export declare function addTagHighlightMatch(value: string, search?: string, cla
 export declare function anyToString<V>(value: V, isArrayString?: boolean): string;
 
 /**
- * Class for working with requests.
+ * Class for working with HTTP requests.
  *
- * Класс для работы с запросами.
+ * It is a static wrapper over {@link ApiInstance}, providing a convenient interface for:
+ * - Performing standard HTTP requests (GET, POST, PUT, DELETE).
+ * - Global configuration (URL, headers, defaults).
+ * - Request lifecycle hooks (`setPreparation`, `setEnd`).
+ * - Automatic retries and session handling (Refresh Token).
+ * - Data processing and JSON parsing.
+ * - Localization support (`{locale}`, `{country}`, `{language}`).
+ * - Error handling and {@link ErrorCenter} integration.
+ * - Response emulation via {@link ApiResponse}.
+ *
+ * ---
+ *
+ * Класс для работы с HTTP-запросами.
+ *
+ * Является статической оберткой над {@link ApiInstance}, предоставляя удобный интерфейс для:
+ * - Выполнения стандартных HTTP-запросов (GET, POST, PUT, DELETE).
+ * - Глобальной настройки (URL, заголовки, параметры).
+ * - Хуков жизненного цикла (`setPreparation`, `setEnd`).
+ * - Автоматических повторов и обработки сессий (Refresh Token).
+ * - Обработки данных и парсинга JSON.
+ * - Поддержки локализации в URL (`{locale}`, `{country}`, `{language}`).
+ * - Обработки ошибок и интеграции с {@link ErrorCenter}.
+ * - Эмуляции ответов через {@link ApiResponse}.
+ *
+ * ---
+ *
+ * ### Usage Examples / Примеры использования:
+ *
+ * #### 1. Global Setup / Глобальная настройка
+ * ```typescript
+ * Api.setUrl('https://api.example.com/v1/')
+ *    .setHeaders({ 'Authorization': 'Bearer token' });
+ * ```
+ *
+ * #### 2. Basic Request / Базовый запрос
+ * ```typescript
+ * const data = await Api.get<User>({ path: 'profile' });
+ * ```
  */
 export declare class Api {
     protected static item: ApiInstance;
@@ -318,9 +355,81 @@ export declare class ApiHeaders {
 }
 
 /**
- * Class for working with requests.
+ * Core class for managing HTTP requests using the Fetch API.
  *
- * Класс для работы с запросами.
+ * `ApiInstance` is a powerful and flexible engine for network communication, designed to handle
+ * complex scenarios like automatic token refreshing, request retries, response emulation,
+ * and global loading/error management. It is used as the base for the static {@link Api} class.
+ *
+ * ### Key Features:
+ * - **CRUD operations**: Support for `GET`, `POST`, `PUT`, `DELETE` methods with full type support.
+ * - **Lifecycle Hooks**: `setPreparation` (before request) and `setEnd` (after response) callbacks.
+ * - **Automatic Retries**: Built-in support for request repetition with randomized delays (jitter).
+ * - **Data Processing**: Intelligent JSON/FormData parsing and automatic payload extraction.
+ * - **Response Emulation**: Intercept and mock requests using the {@link ApiResponse} manager.
+ * - **Localization**: Automated substitution of `{locale}`, `{country}`, and `{language}` in URLs.
+ * - **Integration**: Seamless connectivity with {@link Loading} and {@link ErrorCenter} components.
+ *
+ * ---
+ *
+ * Основной класс для управления HTTP-запросами через Fetch API.
+ *
+ * `ApiInstance` — это мощный и гибкий движок для сетевого взаимодействия, разработанный для решения
+ * сложных задач, таких как автоматическое обновление токенов, повторы запросов, эмуляция ответов
+ * и глобальное управление индикацией загрузки и ошибками. Используется как основа для статического класса {@link Api}.
+ *
+ * ### Ключевые особенности:
+ * - **CRUD операции**: Поддержка методов `GET`, `POST`, `PUT`, `DELETE` с полной типизацией.
+ * - **Хуки жизненного цикла**: Колбэки `setPreparation` (до запроса) и `setEnd` (после ответа).
+ * - **Автоматические повторы**: Встроенная поддержка повтора запросов с джиттером.
+ * - **Обработка данных**: Интеллектуальный парсинг JSON/FormData и извлечение полезной нагрузки.
+ * - **Эмуляция ответов**: Перехват и подмена запросов через менеджер {@link ApiResponse}.
+ * - **Локализация**: Автоматическая подстановка плейсхолдеров `{locale}`, `{country}` и `{language}`.
+ * - **Интеграция**: Бесшовная связь с компонентами {@link Loading} и {@link ErrorCenter}.
+ *
+ * ---
+ *
+ * ### Usage Examples / Примеры использования:
+ *
+ * #### 1. Initialization and Configuration / Инициализация и настройка
+ * ```typescript
+ * const api = new ApiInstance('https://api.example.com/v1/');
+ * api.setHeaders({ 'Accept-Language': 'en' })
+ *    .setTimeout(10000);
+ * ```
+ *
+ * #### 2. Simple Request / Простой запрос
+ * ```typescript
+ * const users = await api.get<User[]>({ path: 'users' });
+ * ```
+ *
+ * #### 3. Lifecycle Hooks: Auth & Refresh Token / Хуки жизненного цикла: Авторизация и Refresh Token
+ * ```typescript
+ * // Preparation hook for adding tokens / Хук подготовки для добавления токенов
+ * api.setPreparation(async (apiFetch) => {
+ *   const token = localStorage.getItem('token');
+ *   if (token) apiFetch.headers = { ...apiFetch.headers, Authorization: `Bearer ${token}` };
+ * });
+ *
+ * // End hook for token refresh / Хук завершения для обновления токена
+ * api.setEnd(async (response, apiFetch) => {
+ *   if (response.status === 401) {
+ *     const refreshed = await refreshToken();
+ *     if (refreshed) return { reset: true }; // Retries the request / Повтор запроса
+ *   }
+ *   return {};
+ * });
+ * ```
+ *
+ * #### 4. Response Emulation (Mocking) / Эмуляция ответов (Моки)
+ * ```typescript
+ * api.getResponse().add({
+ *   path: 'profile',
+ *   method: 'GET',
+ *   response: { id: 1, name: 'John Doe' },
+ *   lag: true // simulate network delay / имитация задержки сети
+ * });
+ * ```
  */
 export declare class ApiInstance {
     protected url: string;
@@ -2144,10 +2253,83 @@ export declare type EventActivityItem<E extends ElementOrWindow> = {
 
 /**
  * Advanced wrapper for managing event listeners on DOM elements or the `window` object.
- * It simplifies the entire event lifecycle (start, stop, toggle, reset) and provides built-in optimizations for high-frequency events like `resize` and `scroll-sync`.
+ *
+ * `EventItem` simplifies the entire event lifecycle (start, stop, toggle, reset), provides
+ * built-in optimizations for high-frequency events, and ensures DOM safety by automatically
+ * checking if elements are still in the document.
+ *
+ * ### Key Features:
+ * - **Lifecycle Control**: Easily `start`, `stop`, `toggle`, or `reset` event listeners.
+ * - **DOM Safety**: Automatically halts the event if the target element is removed from the DOM.
+ * - **Specialized Optimizations**:
+ *   - `resize`: Uses `ResizeObserver` for any HTML element (not limited to `window`).
+ *   - `scroll-sync`: High-performance scroll tracking using `requestAnimationFrame`.
+ * - **Dynamic Configuration**: Chained setters for target element, event type, listener, and options.
+ * - **Custom Event Dispatching**: Built-in support for triggering events with custom data via `dispatch`.
+ * - **Strict Typing**: Generic support for elements, event objects, and custom detail data.
+ *
+ * ---
  *
  * Продвинутая обертка для управления слушателями событий на DOM-элементах или объекте `window`.
- * Упрощает весь жизненный цикл событий (запуск, остановка, переключение, сброс) и предоставляет встроенные оптимизации для высокочастотных событий, таких как `resize` и `scroll-sync`.
+ *
+ * `EventItem` упрощает весь жизненный цикл событий (запуск, остановка, переключение, сброс),
+ * предоставляет встроенную оптимизацию для тяжелых событий и гарантирует безопасность работы с DOM,
+ * автоматически проверяя наличие элементов в документе.
+ *
+ * ### Ключевые особенности:
+ * - **Управление циклом**: Простой контроль через методы `start`, `stop`, `toggle` и `reset`.
+ * - **Безопасность DOM**: Автоматическая остановка события, если целевой элемент удален из DOM.
+ * - **Специальные оптимизации**:
+ *   - `resize`: Использует `ResizeObserver` для любых HTML-элементов (не только для `window`).
+ *   - `scroll-sync`: Высокопроизводительный трекинг скролла через `requestAnimationFrame`.
+ * - **Динамическая настройка**: Чейнинг сеттеров для смены цели, типа события, метода или опций.
+ * - **Диспетчеризация**: Встроенная поддержка вызова событий с передачей пользовательских данных через `dispatch`.
+ * - **Строгая типизация**: Поддержка дженериков для типа элемента, объекта события и структуры данных.
+ *
+ * ---
+ *
+ * ### Usage Examples / Примеры использования:
+ *
+ * #### 1. Basic Listener / Базовый слушатель
+ * ```typescript
+ * const clickEvent = new EventItem('.btn', 'click', (e) => console.log('Clicked!'));
+ * clickEvent.start();
+ * ```
+ *
+ * #### 2. Specialized 'resize' and 'scroll-sync' / Оптимизированные 'resize' и 'scroll-sync'
+ * ```typescript
+ * // Tracks any element's size / Отслеживает размер любого элемента
+ * const resizeEvent = new EventItem('.box', 'resize', (entry) => console.log('New size:', entry));
+ *
+ * // Performance-optimized scroll / Оптимизированный скролл
+ * const scrollEvent = new EventItem(window, 'scroll-sync', () => console.log('Scrolling...'));
+ *
+ * resizeEvent.start();
+ * scrollEvent.start();
+ * ```
+ *
+ * #### 3. Custom Data and Dispatching / Пользовательские данные и диспетчеризация
+ * ```typescript
+ * interface UserData { id: number }
+ * const emitter = new EventItem<Window, CustomEvent, UserData>(window, 'user-update');
+ *
+ * emitter.setListener((e, detail) => {
+ *   console.log('Update received for ID:', detail?.id);
+ * });
+ *
+ * emitter.start();
+ *
+ * // Trigger manually with data / Вызов вручную с данными
+ * emitter.dispatch({ id: 456 });
+ * ```
+ *
+ * #### 4. Chaining and Dynamic Updates / Чейнинг и динамическое обновление
+ * ```typescript
+ * const tracker = new EventItem('.item-1', 'mousemove', (e) => console.log(e.clientX));
+ *
+ * // Switch element on the fly / Переключение элемента "на лету"
+ * tracker.start().setElement('.item-2');
+ * ```
  */
 export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
     protected listener?: EventListenerDetail<O, D> | undefined;

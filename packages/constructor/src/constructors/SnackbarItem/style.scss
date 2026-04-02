@@ -4,6 +4,8 @@
   @include ui.flexStretchY;
   position: relative;
 
+  max-width: 100%;
+
   &__tool {
     @include ui.flexX;
     gap: inherit;

@@ -27,7 +27,7 @@ export type SnackbarItemEmits
   = ActionsEmitsInclude
     & EventClickEmits
     & {
-      close: [index: string | undefined]
+      close: [value: string | undefined]
     }
 
 /**
@@ -44,7 +44,7 @@ export interface SnackbarItemExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SnackbarItemSlots extends LabelSlots, DescriptionSlots {
-  body? (props: any): any
+  body?(props: any): any
 }
 
 /**

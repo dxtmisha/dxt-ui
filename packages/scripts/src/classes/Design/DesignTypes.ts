@@ -1,4 +1,5 @@
 import { forEach } from '@dxtmisha/functional-basic'
+import { getPackageJson } from '../../functions/getPackageJson'
 import { useAi } from '../../composables/useAi'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
@@ -145,10 +146,23 @@ export class DesignTypes {
    * @param content content to save / контент для сохранения
    */
   protected save(content: string) {
-    PropertiesFile.writeByPath(
-      UI_FILE_AI_TYPES,
-      content
-    )
+    const packageJson = getPackageJson()
+
+    if (packageJson) {
+      PropertiesFile.writeByPath(
+        UI_FILE_AI_TYPES,
+        [
+          `1) All these methods are in the ${packageJson.name} library.`,
+          '2) Everything that is exported can be used.',
+          '3) Use what is in this library if it exists; do not use other libraries if there is an analogue here. Do not create new ones if an analogue already exists here.',
+          '',
+          'The following is the content of "exports" from package.json:',
+          JSON.stringify(packageJson.exports, null, 2),
+          '',
+          content
+        ].join('\n')
+      )
+    }
   }
 
   /**
@@ -175,15 +189,24 @@ export class DesignTypes {
     const ai = useAi()
 
     if (ai) {
+      ai.addPrompt(
+        'Remove all Russian comments from this code. '
+        + 'Simplify and shorten all English comments for AI readability while maintaining a clear balance between brevity and context. Do not delete them even if the code seems obvious. '
+        + 'Always keep All JSDoc "@example", "@remarks", "@note", and any other notes or warnings. '
+        + 'Remove all imports. '
+        + 'Remove all non-public content: delete all private and protected class methods and properties, and any non-exported elements. The final output must contain only the members and entities that are accessible from outside. '
+        + 'Remove any code segments or data that do not provide useful information for an AI assistant. '
+        + 'You may remove abstract classes or other structures that provide no practical value for code generation, but do so with extreme caution. Maintain a strict balance: if there is even a 5% chance the item might be relevant for understanding the API or generating code, keep it. Think carefully before every deletion. '
+        + 'Remove any large Enums that add excessive length without providing critical context. '
+        + 'Your goal is to create a compact, context-rich file that enables any AI coding assistant to generate high-quality code for a developer. '
+        + 'Ensure that no public API surface, essential data types, or required logic is lost. '
+        + 'Do not delete file paths (labels starting with "// File:"). '
+        + 'All instructions are mandatory and must be executed perfectly. '
+        + 'Return ONLY the resulting code. No markdown code blocks, no tags, no explanations, and no additional comments from the AI. NOTHING but the pure code.'
+      )
       ai.addPrompt(`File Content: ${content}`)
 
-      const generate = await ai.generate(
-        'Remove all Russian comments from this code. '
-        + 'Simplify comments if possible, while ensuring they remain understandable for AI. '
-        + 'Remove all imports. '
-        + 'Minimize the content as much as possible without losing any data or logic. '
-        + 'Return only the corrected code without any additional text or explanations.'
-      )
+      const generate = await ai.generate('go!')
 
       if (generate) {
         return generate

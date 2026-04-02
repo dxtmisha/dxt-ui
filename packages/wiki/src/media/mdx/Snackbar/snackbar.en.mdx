@@ -1,0 +1,46 @@
+## Description
+
+A component used to display temporary notifications (snackbars) in various parts of the screen. Snackbars provide brief messages about app processes at the bottom or top of the screen.
+
+Snackbar manages a message queue, automatically hiding notifications after a specified time or upon user interaction.
+
+**Key Features:**
+
+- Flexible positioning (top/bottom, left/right/block)
+- Configurable auto-hide delay (default 8 seconds)
+- Supports different entrance animations based on position
+- Active notification list management
+
+**Typical Usage Scenarios:**
+
+- Confirming user actions (e.g., "File saved erfolgreich")
+- Informing about errors or warnings
+- Real-time system notifications
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const snackbar = ref(null)
+
+const addMessage = () => {
+  snackbar.value?.data.add({
+    label: 'Notification Title',
+    description: 'Description of the event that occurred in the app.',
+    button: 'Ok'
+  })
+}
+</script>
+
+<template>
+  <Button label="Show Notification" @click="addMessage" />
+
+  <Snackbar
+    ref="snackbar"
+    vertical="bottom"
+    horizontal="right"
+  />
+</template>
+```
+
+> It is recommended to use Snackbar for non-critical information that does not require immediate user action.

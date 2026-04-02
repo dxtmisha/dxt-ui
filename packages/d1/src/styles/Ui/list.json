@@ -9716,6 +9716,135 @@
           }
         }
       },
+      "snackbar": {
+        "name": "d1-snackbar",
+        "type": "component",
+        "value": {
+          "paddingX": {
+            "name": "--d1-snackbar-paddingX",
+            "type": "var",
+            "value": "{layout.paddingX}"
+          },
+          "paddingY": {
+            "name": "--d1-snackbar-paddingY",
+            "type": "var",
+            "value": "{layout.paddingY}"
+          },
+          "origin": {
+            "name": "&--origin",
+            "type": "state",
+            "value": {
+              "topToBottom": {
+                "name": "&--topToBottom",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d1-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateY(-64px)"
+                  },
+                  "transformOrigin": {
+                    "name": "--d1-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "top center"
+                  }
+                }
+              },
+              "bottomToTop": {
+                "name": "&--bottomToTop",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d1-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateY(64px)"
+                  },
+                  "transformOrigin": {
+                    "name": "--d1-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "bottom center"
+                  }
+                }
+              },
+              "rightToLeft": {
+                "name": "&--rightToLeft",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d1-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateX(calc(64px * #{isDir()}))"
+                  },
+                  "transformOrigin": {
+                    "name": "--d1-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "center #{dirRight()}"
+                  }
+                }
+              },
+              "leftToRight": {
+                "name": "&--leftToRight",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d1-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateX(calc(-64px * #{isDir()}))"
+                  },
+                  "transformOrigin": {
+                    "name": "--d1-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "center #{dirLeft()}"
+                  }
+                }
+              }
+            }
+          },
+          "mediaMd": {
+            "name": "(min-width: 768px)",
+            "type": "media",
+            "value": {
+              "transformPreparation": {
+                "name": "--d1-snackbar-transformPreparation",
+                "type": "var",
+                "value": "translateX(calc(64px * #{isDir()}))"
+              },
+              "transformOrigin": {
+                "name": "--d1-snackbar-transformOrigin",
+                "type": "var",
+                "value": "center #{dirRight()}"
+              }
+            }
+          },
+          "mediaMaxMd": {
+            "name": "(max-width: calc(768px - 1px))",
+            "type": "media-max",
+            "value": {
+              "transformPreparation": {
+                "name": "--d1-snackbar-transformPreparation",
+                "type": "var",
+                "value": "translateY(-64px)"
+              },
+              "transformOrigin": {
+                "name": "--d1-snackbar-transformOrigin",
+                "type": "var",
+                "value": "top center"
+              },
+              "priority": {
+                "name": "& .d1-snackbar__priority",
+                "type": "subclass",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d1-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateY(64px)"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "tabItem": {
         "name": "d1-tabItem",
         "type": "component",
@@ -10883,6 +11012,82 @@
                     "name": "--sys-type-body",
                     "type": "var",
                     "value": "unset"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "snackbar": {
+        "name": "d-snackbar",
+        "type": "component",
+        "value": {
+          "origin": {
+            "name": "&--origin",
+            "type": "state",
+            "value": {
+              "topToBottom": {
+                "name": "&--topToBottom",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateY(-64px)"
+                  },
+                  "transformOrigin": {
+                    "name": "--d-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "top center"
+                  }
+                }
+              },
+              "bottomToTop": {
+                "name": "&--bottomToTop",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateY(64px)"
+                  },
+                  "transformOrigin": {
+                    "name": "--d-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "bottom center"
+                  }
+                }
+              },
+              "rightToLeft": {
+                "name": "&--rightToLeft",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateX(calc(64px * #{isDir()}))"
+                  },
+                  "transformOrigin": {
+                    "name": "--d-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "center #{dirRight()}"
+                  }
+                }
+              },
+              "leftToRight": {
+                "name": "&--leftToRight",
+                "type": "state",
+                "value": {
+                  "transformPreparation": {
+                    "name": "--d-snackbar-transformPreparation",
+                    "type": "var",
+                    "value": "translateX(calc(-64px * #{isDir()}))"
+                  },
+                  "transformOrigin": {
+                    "name": "--d-snackbar-transformOrigin",
+                    "type": "var",
+                    "value": "center #{dirLeft()}"
                   }
                 }
               }

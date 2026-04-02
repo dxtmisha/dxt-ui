@@ -1,0 +1,18 @@
+## ARIA Role
+
+The `role` property allows you to override the default ARIA role for the notification element. The default role is `status`.
+
+**When to use:**
+ - `status` (default) — used for messages that contain advisory information not requiring immediate action. Assistive technologies (screen readers) will announce such a message when the user is idle.
+ - `alert` — use for critical errors or warnings requiring immediate attention. Screen readers will interrupt the current task to announce this notification.
+ - `log` — use if notifications represent a sequential log of events.
+
+```html
+<template>
+  <!-- Standard notification -->
+  <SnackbarItem label="Download complete" role="status" />
+
+  <!-- Critical error -->
+  <SnackbarItem label="Connection error!" role="alert" />
+</template>
+```

@@ -10,6 +10,112 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    --d1-snackbar-paddingX: var(--d1-layout-paddingX);
+    --d1-snackbar-paddingY: var(--d1-layout-paddingY);
+    
+    gap: var(--d1-sys-spacing-md);
+    
+    &--full {
+      & .d1-snackbar__space {
+        flex-grow: 1;
+      }
+    }
+    
+    &--all {
+      & aside:nth-of-type(-n+4) {
+        display: block;
+      }
+    }
+    
+    &--vertical {
+      &--top {
+        @include ui.justifyContent(#{flex-start});
+      }
+      
+      &--bottom {
+        @include ui.justifyContent(#{flex-end});
+      }
+    }
+    
+    &--horizontal {
+      &--right {
+        @include ui.right(#{var(--d1-snackbar-paddingX)});
+        
+        align-items: flex-end;
+      }
+      
+      &--left {
+        @include ui.left(#{var(--d1-snackbar-paddingX)});
+        
+        align-items: flex-start;
+      }
+      
+      &--block {
+        @include ui.right(#{var(--d1-snackbar-paddingX)});
+        @include ui.left(#{var(--d1-snackbar-paddingX)});
+        
+        align-items: stretch;
+      }
+    }
+    
+    &--origin {
+      &--topToBottom {
+        --d1-snackbar-transformPreparation: translateY(-64px);
+        --d1-snackbar-transformOrigin: top center;
+      }
+      
+      &--bottomToTop {
+        --d1-snackbar-transformPreparation: translateY(64px);
+        --d1-snackbar-transformOrigin: bottom center;
+      }
+      
+      &--rightToLeft {
+        --d1-snackbar-transformPreparation: translateX(calc(64px * #{isDir()}));
+        --d1-snackbar-transformOrigin: center #{dirRight()};
+      }
+      
+      &--leftToRight {
+        --d1-snackbar-transformPreparation: translateX(calc(-64px * #{isDir()}));
+        --d1-snackbar-transformOrigin: center #{dirLeft()};
+      }
+    }
+    
+    @media screen and (min-width: 768px) {
+      --d1-snackbar-transformPreparation: translateX(calc(64px * #{isDir()}));
+      --d1-snackbar-transformOrigin: center #{dirRight()};
+      
+      @include ui.right(#{var(--d1-snackbar-paddingX)});
+      
+      align-items: flex-end;
+      @include ui.justifyContent(#{flex-end});
+      
+      & aside:nth-of-type(-n+4) {
+        display: block;
+      }
+    }
+    
+    @media screen and (max-width: calc(768px - 1px)) {
+      --d1-snackbar-transformPreparation: translateY(-64px);
+      --d1-snackbar-transformOrigin: top center;
+      
+      @include ui.right(#{var(--d1-snackbar-paddingX)});
+      @include ui.left(#{var(--d1-snackbar-paddingX)});
+      
+      align-items: stretch;
+      @include ui.justifyContent(#{flex-start});
+      
+      & .d1-snackbar__space {
+        flex-grow: 1;
+      }
+      
+      & .d1-snackbar__priority {
+        --d1-snackbar-transformPreparation: translateY(64px);
+        
+        transform-origin: bottom center;
+      }
+    }
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

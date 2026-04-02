@@ -53,4 +53,7 @@ export type DesignUiConfig = {
 
   /** Paths to Storybook for AI documentation generation / Пути к Storybook для генерации AI документации */
   aiDocStorybookPath?: string
+
+  /** AI configuration object / Объект конфигурации ИИ */
+  aiConfig?: Record<string, any>
 }

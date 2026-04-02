@@ -131,7 +131,7 @@ function b() {
 	return location.href.startsWith("data:");
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.120.0/helpers/typeof.js
+//#region \0@oxc-project+runtime@0.122.0/helpers/typeof.js
 function x(e) {
 	"@babel/helpers - typeof";
 	return x = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
@@ -141,7 +141,7 @@ function x(e) {
 	}, x(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.120.0/helpers/toPrimitive.js
+//#region \0@oxc-project+runtime@0.122.0/helpers/toPrimitive.js
 function ee(e, t) {
 	if (x(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
@@ -153,13 +153,13 @@ function ee(e, t) {
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.120.0/helpers/toPropertyKey.js
+//#region \0@oxc-project+runtime@0.122.0/helpers/toPropertyKey.js
 function te(e) {
 	var t = ee(e, "string");
 	return x(t) == "symbol" ? t : t + "";
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.120.0/helpers/defineProperty.js
+//#region \0@oxc-project+runtime@0.122.0/helpers/defineProperty.js
 function S(e, t, n) {
 	return (t = te(t)) in e ? Object.defineProperty(e, t, {
 		value: n,

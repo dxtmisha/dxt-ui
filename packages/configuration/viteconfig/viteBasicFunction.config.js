@@ -77,6 +77,7 @@ export const viteBasicFunction = (
       formats: ['es'],
       fileName: (_, entryName) => `${entryName}.js`
     },
+    sourcemap: false,
     rollupOptions: {
       external: (id) => {
         if (!id.startsWith('.') && !path.isAbsolute(id)) {

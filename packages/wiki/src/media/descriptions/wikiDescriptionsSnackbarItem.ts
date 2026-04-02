@@ -38,43 +38,28 @@ export const wikiDescriptionsSnackbarItem: StorybookComponentsDescriptionItem = 
         ru: 'Базовые'
       },
       template: `
-        <div class="wiki-storybook-flex">
-          <DesignComponent label="Notification label" />
-          <DesignComponent label="Detailed notification" description="Description text provides more context for the user." />
-        </div>
-      `
-    },
-    {
-      id: 'SnackbarItemIcon',
-      name: {
-        en: 'With Icons',
-        ru: 'С иконками'
-      },
-      template: `
-        <div class="wiki-storybook-flex">
-          <DesignComponent label="Success message" icon="check_circle" />
-          <DesignComponent label="Warning message" icon="warning" />
-          <DesignComponent label="Error message" icon="error" />
-        </div>
-      `
-    },
-    {
-      id: 'SnackbarItemActions',
-      name: {
-        en: 'With Actions',
-        ru: 'С действиями'
-      },
-      template: `
-        <div class="wiki-storybook-flex">
-          <DesignComponent 
-            label="File deleted" 
-            icon="delete" 
-            button="Undo" 
+        <div class="wiki-storybook-group">
+          <DesignComponent
+            label="Detailed notification"
+            description="Description text provides more context for the user."
+            class="wiki-storybook-item--squared--lg"
           />
-          <DesignComponent 
-            label="Connection lost" 
-            icon="wifi_off" 
-            :actions="[{ label: 'Retry', primary: true }]" 
+          <DesignComponent
+            label="Success message"
+            icon="check_circle"
+            class="wiki-storybook-item--squared--lg"
+          />
+          <DesignComponent
+            label="File deleted"
+            icon="delete"
+            button="Undo"
+            class="wiki-storybook-item--squared--lg"
+          />
+          <DesignComponent
+            label="Connection lost"
+            icon="wifi_off"
+            :actions-list="[{ label: 'Retry', primary: true }]"
+            class="wiki-storybook-item--squared--lg"
           />
         </div>
       `
@@ -85,41 +70,25 @@ export const wikiDescriptionsSnackbarItem: StorybookComponentsDescriptionItem = 
 <StorybookDescriptions componentName={'SnackbarItem'} type={'snackbarItem'}/>
 <Canvas of={Component.SnackbarItemBasic}/>
 
-<template prop="icon">
-<StorybookDescriptions componentName={'SnackbarItem'} type={'icon'}/>
-<Canvas of={Component.SnackbarItemIcon}/>
-</template>
-
-<template prop="iconTrailing">
-<StorybookDescriptions componentName={'SnackbarItem'} type={'iconTrailing'}/>
-</template>
-
-<template prop="button">
-<StorybookDescriptions componentName={'SnackbarItem'} type={'button'}/>
-<Canvas of={Component.SnackbarItemActions}/>
-</template>
-
-<template prop="closeButton">
-<StorybookDescriptions componentName={'SnackbarItem'} type={'closeButton'}/>
-</template>
-
-<template prop="iconClose">
-<StorybookDescriptions componentName={'SnackbarItem'} type={'iconClose'}/>
-</template>
-
-<StorybookDescriptions componentName={'Value'} type={'label'}/>
-<StorybookDescriptions componentName={'Value'} type={'description'}/>
-<StorybookDescriptions componentName={'Value'} type={'html'}/>
+<StorybookDescriptions componentName={'SnackbarItem'} type={'component'}/>
+<StorybookDescriptions componentName={'SnackbarItem'} type={'html'}/>
+<StorybookDescriptions componentName={'SnackbarItem'} type={'role'}/>
     `,
     events: `
-<StorybookDescriptions componentName={'Event'} type={'close'}/>
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'Event'} type={'actions'}/>
+<StorybookDescriptions componentName={'SnackbarItem'} type={'eventClose'}/>
     `,
     expose: '',
-    slots: ''
+    slots: `
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Slot'} type={'body'}/>
+`
   },
   ai: {
     description: `
-SnackbarItem is the visual representation of a single notification. 
+SnackbarItem is the visual representation of a single notification.
 It is typically rendered inside a Snackbar component.
 
 **Key Features:**

@@ -69,7 +69,8 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
             { text: contents }
           ]
         }
-      ]
+      ],
+      config: this.config
     })
 
     return response?.text ?? ''

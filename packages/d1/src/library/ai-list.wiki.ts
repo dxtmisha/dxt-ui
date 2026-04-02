@@ -44,6 +44,7 @@ import D1Section from '../../src/components/Ui/Section/D1SectionAiWiki.vue'
 import D1Select from '../../src/components/Ui/Select/D1SelectAiWiki.vue'
 import D1SelectValue from '../../src/components/Ui/SelectValue/D1SelectValueAiWiki.vue'
 import D1Skeleton from '../../src/components/Ui/Skeleton/D1SkeletonAiWiki.vue'
+import D1Snackbar from '../../src/components/Ui/Snackbar/D1SnackbarAiWiki.vue'
 import D1SnackbarItem from '../../src/components/Ui/SnackbarItem/D1SnackbarItemAiWiki.vue'
 import D1TabItem from '../../src/components/Ui/TabItem/D1TabItemAiWiki.vue'
 import D1Tabs from '../../src/components/Ui/Tabs/D1TabsAiWiki.vue'
@@ -97,6 +98,7 @@ export const aiList: any[] = [
   D1Select,
   D1SelectValue,
   D1Skeleton,
+  D1Snackbar,
   D1SnackbarItem,
   D1TabItem,
   D1Tabs,

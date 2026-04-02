@@ -39,10 +39,12 @@ export abstract class AiAbstract<AI = any> {
    * Конструктор инициализирует ресурсы конкретной реализации.
    * @param key - API key / API ключ
    * @param model - initial model id / начальный идентификатор модели
+   * @param config - configuration object / объект конфигурации
    */
   constructor(
     protected key: string,
-    protected model: string
+    protected model: string,
+    protected config: Record<string, any> = {}
   ) {
   }
 
@@ -147,6 +149,17 @@ export abstract class AiAbstract<AI = any> {
    */
   setModel(model: string): this {
     this.model = model
+    return this
+  }
+
+  /**
+   * Sets / switches configuration object.
+   *
+   * Устанавливает / переключает объект конфигурации.
+   * @param config - configuration object / объект конфигурации
+   */
+  setConfig(config: Record<string, any>): this {
+    this.config = config
     return this
   }
 

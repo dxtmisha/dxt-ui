@@ -36,6 +36,11 @@
       @include ui.focus('.d1-icon') {
         @include ui.gradient(#{var(--d1-sys-palette-scrim)});
         @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
+        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+        
+        outline-width: var(--d1-ref-spacing-2px);
+        outline-style: solid;
+        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
       }
       
       @include ui.hover('.d1-icon') {

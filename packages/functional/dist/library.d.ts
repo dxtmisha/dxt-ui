@@ -55,31 +55,67 @@ import { Undefined } from '@dxtmisha/functional-basic';
 import { VNode } from 'vue';
 import { VNodeArrayChildren } from 'vue';
 
+/**
+ * Configuration for the main GET request in API management.
+ *
+ * Конфигурация для основного GET-запроса в управлении API.
+ */
 export declare type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
+    /** API endpoint path / Путь к API */
     path?: RefOrNormal<string | undefined>;
+    /** Additional request options / Дополнительные опции запроса */
     options?: ApiOptions;
+    /** Enable reactive updates when path or options change / Включить реактивные обновления при изменении пути или опций */
     reactivity?: boolean;
+    /** Condition to trigger the request / Условие выполнения запроса */
     conditions?: RefType<boolean>;
+    /** Custom transformation for the fetched data / Пользовательская трансформация полученных данных */
     transformation?: (data: Type) => ApiData<Return>;
+    /** Validation function or class constructor for data / Функция валидации или конструктор класса для данных */
     typeData?: ((data: Return) => boolean) | any;
+    /** Whether to clear data when the component is unmounted / Удалять ли данные при размонтировании компонента */
     unmounted?: boolean;
+    /** Function to provide skeleton data during loading / Функция, предоставляющая данные-заглушки во время загрузки */
     skeleton?: () => Return;
 };
 
+/**
+ * Configuration for mutation requests (POST, PUT, DELETE).
+ *
+ * Конфигурация для запросов мутации (POST, PUT, DELETE).
+ */
 export declare type ApiManagementRequest<T, Return extends ApiData<T> = ApiData<T>> = {
+    /** Target API endpoint path / Целевой путь к API */
     path?: RefOrNormal<string | undefined>;
+    /** Action to perform after a successful request / Действие после успешного выполнения запроса */
     action?: (data: Return | undefined) => Promise<void> | void;
+    /** Transformation before sending data / Трансформация перед отправкой данных */
     transformation?: (data: T) => Return;
+    /** Whether to wrap the payload in a 'data' property / Обертывать ли полезную нагрузку в свойство 'data' */
     toData?: boolean;
+    /** Additional mutation request options / Дополнительные опции запроса мутации */
     options?: ApiOptions;
 };
 
+/**
+ * Configuration for client-side search across API data.
+ *
+ * Конфигурация для клиентского поиска по данным API.
+ */
 export declare type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
+    /** List of columns to search through / Список столбцов для поиска */
     columns: K;
+    /** Reactive search query / Реактивная строка поиска */
     value?: Ref<string>;
+    /** Additional search algorithm options / Дополнительные опции алгоритма поиска */
     options?: SearchOptions;
 };
 
+/**
+ * Base type for API management values, either a single value or an array.
+ *
+ * Базовый тип для значений управления API: одиночное значение или массив.
+ */
 export declare type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
 
 /** Options for api requests/ Опции для запросов api */
@@ -829,9 +865,26 @@ export declare class EventRef<E extends ElementOrWindow, O extends Event, D exte
 /**
  * Creates a managed singleton that encapsulates initialization logic and access mode.
  *
+ * It supports three initialization strategies:
+ * - `global`: A single instance for the entire application.
+ * - `provide`: Shared via provide/inject in the component tree (standard for Vue 3).
+ * - `local`: A single instance within the closure of the returned function.
+ *
  * Создает управляемый синглтон, который инкапсулирует логику инициализации и режим доступа.
- * @param callback Initialization function/ Функция инициализации
- * @param type Initialization type/ Тип инициализации
+ *
+ * Поддерживает три стратегии инициализации:
+ * - `global`: Единственный экземпляр на всё приложение.
+ * - `provide`: Разделяется через provide/inject в дереве компонентов (стандарт для Vue 3).
+ * - `local`: Единственный экземпляр в замыкании возвращаемой функции.
+ *
+ * @template R return type of the factory function / тип данных, возвращаемых фабрикой
+ * @template O argument types for the factory function / типы аргументов фабричной функции
+ * @template RI instance type with management methods / тип экземпляра с методами управления
+ *
+ * @param callback initialization function / функция инициализации
+ * @param type initialization strategy (defaults to provide) / стратегия инициализации (по умолчанию provide)
+ *
+ * @returns {function} accessor function for the singleton / функция-аксессор для синглтона
  */
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
 
@@ -1976,10 +2029,15 @@ export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => vo
 export declare function setRef<T>(item: Ref<T>, value: T): void;
 
 /**
- * Getting the translated text by an array of keys or a string with a key.
+ * Shorthand for useTranslateRef.
+ * Use `as const` for arrays to ensure proper TypeScript key inference.
  *
- * Получение переведенного текста по массиву ключей или строке с ключом.
- * @param names a string or an array with keys/ строка или массив с ключами
+ * ---
+ *
+ * Сокращение для useTranslateRef.
+ * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
+ *
+ * @param names a string or an array with keys / строка или массив с ключами
  */
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;
 
@@ -2046,76 +2104,102 @@ export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFe
 };
 
 /**
- * Hook for managing API requests, formatting, search, and mutations (POST, PUT, DELETE).
+ * A powerful composable for comprehensive API request orchestration.
+ * It centrally manages data loading (GET), list formatting, client-side searching,
+ * and mutations (POST, PUT, DELETE) through a single reactive interface.
  *
- * Хук для управления API-запросами, форматированием, поиском и мутациями (POST, PUT, DELETE).
- * @param propsGet properties for GET request / параметры для GET запроса
- * @param formattersOptions options for formatting / опции форматирования
- * @param searchOptions options for search / опции поиска
- * @param postRequest properties for POST request / параметры для POST запроса
- * @param putRequest properties for PUT request / параметры для PUT запроса
- * @param deleteRequest properties for DELETE request / параметры для DELETE запроса
- * @param action additional action to perform on mutations / дополнительное действие при мутациях
+ * Мощный композабл для комплексной оркестрации API-запросов.
+ * Он централизованно управляет загрузкой данных (GET), форматированием списков,
+ * клиентским поиском и мутациями (POST, PUT, DELETE) через единый реактивный интерфейс.
+ *
+ * @template Return type of data returned by the API / тип данных, возвращаемых API
+ * @template FormattersOptions optional formatting rules / опциональные правила форматирования
+ * @template Post data type for POST creation request / тип данных для POST-запроса создания
+ * @template Put data type for PUT update request / тип данных для PUT-запроса обновления
+ * @template Delete data type for DELETE removal request / тип данных для DELETE-запроса удаления
+ * @template Type original data type (before transformation) / тип исходных данных (до трансформации)
+ * @template Item type of a single item in the data list / тип одного элемента из списка данных
+ * @template ItemFormatters item type after formatters are applied / тип элемента после применения форматировщиков
+ * @template Columns search columns derived from formatting / колонки, по которым производится поиск
+ *
+ * @param propsGet main GET request settings (path, reactivity, skeleton, etc.) / настройки главного GET-запроса
+ * @param formattersOptions optional reactive formatting rules / правила для реактивного форматирования данных
+ * @param searchOptions optional client-side search settings / настройки для клиентского поиска по списку
+ * @param postRequest optional POST mutation settings / настройки для POST-запроса создания
+ * @param putRequest optional PUT mutation settings / настройки для PUT-запроса обновления
+ * @param deleteRequest optional DELETE mutation settings / настройки для DELETE-запроса удаления
+ * @param action common callback executed after any successful mutation / общий коллбэк после любой успешной мутации
+ * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
+ *
+ * @returns {object} reactive API management interface / реактивный интерфейс управления API
+ *
+ * @note This hook is recommended to be used in tandem with `executeUse` for centralized state management.
+ * By wrapping `useApiManagementRef` in `executeUseProvide` or `executeUseGlobal`, you can ensure
+ * a single source of truth across the component tree or the entire application.
+ *
+ * Рекомендуется использовать этот хук в тандеме с `executeUse` для централизованного управления состоянием.
+ * Обернув `useApiManagementRef` в `executeUseProvide` или `executeUseGlobal`, вы обеспечите
+ * единый источник истины в дереве компонентов или во всем приложении.
  */
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
-    /** Is valid data (Computed) / Валидность данных (Computed) */
+    /** Whether data passed the `typeData` check / `true`, если данные прошли проверку `typeData` */
     isValid: ComputedRef<boolean>;
-    /** List data (Computed) / Данные списка (Computed) */
+    /** Processed data array (supports Skeleton, formatters, and search) / Обработанный массив данных (поддерживает Skeleton, форматтеры и поиск) */
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
-    /** Raw request data (Computed) / Исходные данные запроса (Computed) */
+    /** Raw reactive data from `useApiRef` / «Сырые» реактивные данные из `useApiRef` */
     readonly data: ComputedRef<ApiData<Return> | undefined>;
-    /** Length of the list (Computed) / Длина списка (Computed) */
+    /** Current number of items in `list` (changes with search) / Текущее количество элементов в `list` (меняется при поиске) */
     readonly length: ComputedRef<number>;
-    /** Data length (number) / Длина исходных данных */
+    /** Total number of items in raw `data` / Общее количество элементов в исходном `data` */
     lengthData: ComputedRef<number>;
-    /** Active starting flag (true if no data yet) / Флаг начальной загрузки (true если еще нет данных) */
+    /** Initial loading flag (true when no data yet) / Флаг первичной загрузки (когда данных еще нет) */
     starting: ComputedRef<boolean>;
-    /** Active reading flag / Флаг активного чтения */
+    /** Active read process flag / Флаг активного процесса чтения данных */
     reading: Ref<boolean, boolean>;
-    /** Request load flag / Флаг загрузки запроса */
+    /** Loading state for the main GET request / Общее состояние загрузки главного GET-запроса */
     loading: Ref<boolean, boolean>;
-    /** Loading search flag / Флаг загрузки поиска */
+    /** Loading state during search processing / Состояние загрузки в процессе поиска */
     loadingSearch: Ref<boolean, boolean> | undefined;
-    /** POST request load flag / Флаг загрузки POST запроса */
+    /** Loading state for POST mutation / Состояние загрузки для POST мутации */
     loadingPost: Ref<boolean, boolean> | undefined;
-    /** PUT request load flag / Флаг загрузки PUT запроса */
+    /** Loading state for PUT mutation / Состояние загрузки для PUT мутации */
     loadingPut: Ref<boolean, boolean> | undefined;
-    /** DELETE request load flag / Флаг загрузки DELETE запроса */
+    /** Loading state for DELETE mutation / Состояние загрузки для DELETE мутации */
     loadingDelete: Ref<boolean, boolean> | undefined;
-    /** Is search active / Активен ли поиск */
+    /** Whether search is currently active / Активен ли поиск (есть ли поисковый запрос) */
     isSearch: ComputedRef<boolean> | undefined;
-    /** Search function / Функция поиска */
+    /** Reactive search string (Proxy to `searchOptions.value`) / Реактивная строка поиска (Proxy к переданному `searchOptions.value`) */
     search: Ref<string, string> | undefined;
     /**
-     * Default reset.
+     * Force reset the GET request and clear state.
      *
-     * Сброс по умолчанию.
+     * Принудительный перезапуск GET-запроса и очистка состояния.
      */
     reset: () => Promise<void>;
     /**
-     * Abort request.
+     * Abort the current network request.
      *
-     * Отмена запроса.
+     * Прекращение текущего сетевого запроса.
      */
     abort: () => void;
     /**
-     * Send POST request.
+     * Execute POST mutation request.
      *
-     * Выполнить POST запрос.
+     * Выполнить POST запрос мутации.
      * @param request request data / данные запроса
      */
     sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
     /**
-     * Send PUT request.
+     * Execute PUT mutation request.
      *
-     * Выполнить PUT запрос.
+     * Выполнить PUT запрос мутации.
      * @param request request data / данные запроса
      */
     sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
     /**
-     * Send DELETE request.
+     * Execute DELETE mutation request.
      *
-     * Выполнить DELETE запрос.
+     * Выполнить DELETE запрос мутации.
      * @param request request data / данные запроса
      */
     sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
@@ -2544,9 +2628,27 @@ export declare function useStorageRef<T>(name: string, defaultValue?: T | (() =>
 /**
  * Getting the translated text by an array of keys or a string with a key.
  *
- * Получение переведенного текста по массиву ключей или строке с ключом.
- * @param names a string or an array with keys/ строка или массив с ключами
- * @param translateInstance a translate instance/ экземпляр перевода
+ * It returns a `ShallowRef` that automatically updates when the global language changes.
+ * Use `as const` for arrays to ensure proper TypeScript key inference.
+ *
+ * ---
+ *
+ * Получение переведенного текста по массиву ключей или пункту с ключом.
+ *
+ * Возвращает `ShallowRef`, который автоматически обновляется при смене глобального языка.
+ * Используйте `as const` для массивов, чтобы обеспечить корректный вывод типов ключей в TypeScript.
+ *
+ * ### Examples / Примеры использования:
+ * ```typescript
+ * // 1. Using the main composable / Использование основного хука
+ * const translations = useTranslateRef(['home.title', 'home.description'] as const);
+ *
+ * // 2. Using the shorthand 't' / Использование сокращения 't'
+ * const labels = t(['button.save', 'button.cancel'] as const);
+ * ```
+ *
+ * @param names a string or an array with keys / строка или массив с ключами
+ * @param translateInstance a translate instance / экземпляр перевода
  */
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
 
