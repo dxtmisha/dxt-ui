@@ -20,9 +20,15 @@ export type ExecuteUseReturn<R>
   = Readonly<
     R
     & {
-      /** Returns the raw instance without management methods / Возвращает чистый экземпляр без методов управления */
+      /**
+       * Returns the raw instance without management methods/
+       * Возвращает чистый экземпляр без методов управления
+       */
       init(): Readonly<R>
-      /** Resets the cached instance (available for local and global) / Сбрасывает закешированный экземпляр (доступно для local и global) */
+      /**
+       * Resets the cached instance (available for local and global)/
+       * Сбрасывает закешированный экземпляр (доступно для local и global)
+       */
       destroyExecute?(): void
     }
   >
