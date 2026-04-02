@@ -46,9 +46,81 @@ export type ApiInstanceOptions = {
 }
 
 /**
- * Class for working with requests.
+ * Core class for managing HTTP requests using the Fetch API.
  *
- * Класс для работы с запросами.
+ * `ApiInstance` is a powerful and flexible engine for network communication, designed to handle
+ * complex scenarios like automatic token refreshing, request retries, response emulation,
+ * and global loading/error management. It is used as the base for the static {@link Api} class.
+ *
+ * ### Key Features:
+ * - **CRUD operations**: Support for `GET`, `POST`, `PUT`, `DELETE` methods with full type support.
+ * - **Lifecycle Hooks**: `setPreparation` (before request) and `setEnd` (after response) callbacks.
+ * - **Automatic Retries**: Built-in support for request repetition with randomized delays (jitter).
+ * - **Data Processing**: Intelligent JSON/FormData parsing and automatic payload extraction.
+ * - **Response Emulation**: Intercept and mock requests using the {@link ApiResponse} manager.
+ * - **Localization**: Automated substitution of `{locale}`, `{country}`, and `{language}` in URLs.
+ * - **Integration**: Seamless connectivity with {@link Loading} and {@link ErrorCenter} components.
+ *
+ * ---
+ *
+ * Основной класс для управления HTTP-запросами через Fetch API.
+ *
+ * `ApiInstance` — это мощный и гибкий движок для сетевого взаимодействия, разработанный для решения
+ * сложных задач, таких как автоматическое обновление токенов, повторы запросов, эмуляция ответов
+ * и глобальное управление индикацией загрузки и ошибками. Используется как основа для статического класса {@link Api}.
+ *
+ * ### Ключевые особенности:
+ * - **CRUD операции**: Поддержка методов `GET`, `POST`, `PUT`, `DELETE` с полной типизацией.
+ * - **Хуки жизненного цикла**: Колбэки `setPreparation` (до запроса) и `setEnd` (после ответа).
+ * - **Автоматические повторы**: Встроенная поддержка повтора запросов с джиттером.
+ * - **Обработка данных**: Интеллектуальный парсинг JSON/FormData и извлечение полезной нагрузки.
+ * - **Эмуляция ответов**: Перехват и подмена запросов через менеджер {@link ApiResponse}.
+ * - **Локализация**: Автоматическая подстановка плейсхолдеров `{locale}`, `{country}` и `{language}`.
+ * - **Интеграция**: Бесшовная связь с компонентами {@link Loading} и {@link ErrorCenter}.
+ *
+ * ---
+ *
+ * ### Usage Examples / Примеры использования:
+ *
+ * #### 1. Initialization and Configuration / Инициализация и настройка
+ * ```typescript
+ * const api = new ApiInstance('https://api.example.com/v1/');
+ * api.setHeaders({ 'Accept-Language': 'en' })
+ *    .setTimeout(10000);
+ * ```
+ *
+ * #### 2. Simple Request / Простой запрос
+ * ```typescript
+ * const users = await api.get<User[]>({ path: 'users' });
+ * ```
+ *
+ * #### 3. Lifecycle Hooks: Auth & Refresh Token / Хуки жизненного цикла: Авторизация и Refresh Token
+ * ```typescript
+ * // Preparation hook for adding tokens / Хук подготовки для добавления токенов
+ * api.setPreparation(async (apiFetch) => {
+ *   const token = localStorage.getItem('token');
+ *   if (token) apiFetch.headers = { ...apiFetch.headers, Authorization: `Bearer ${token}` };
+ * });
+ *
+ * // End hook for token refresh / Хук завершения для обновления токена
+ * api.setEnd(async (response, apiFetch) => {
+ *   if (response.status === 401) {
+ *     const refreshed = await refreshToken();
+ *     if (refreshed) return { reset: true }; // Retries the request / Повтор запроса
+ *   }
+ *   return {};
+ * });
+ * ```
+ *
+ * #### 4. Response Emulation (Mocking) / Эмуляция ответов (Моки)
+ * ```typescript
+ * api.getResponse().add({
+ *   path: 'profile',
+ *   method: 'GET',
+ *   response: { id: 1, name: 'John Doe' },
+ *   lag: true // simulate network delay / имитация задержки сети
+ * });
+ * ```
  */
 export class ApiInstance {
   /** Headers / Заголовки */

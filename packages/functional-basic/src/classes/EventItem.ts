@@ -15,10 +15,83 @@ import {
 
 /**
  * Advanced wrapper for managing event listeners on DOM elements or the `window` object.
- * It simplifies the entire event lifecycle (start, stop, toggle, reset) and provides built-in optimizations for high-frequency events like `resize` and `scroll-sync`.
+ *
+ * `EventItem` simplifies the entire event lifecycle (start, stop, toggle, reset), provides
+ * built-in optimizations for high-frequency events, and ensures DOM safety by automatically
+ * checking if elements are still in the document.
+ *
+ * ### Key Features:
+ * - **Lifecycle Control**: Easily `start`, `stop`, `toggle`, or `reset` event listeners.
+ * - **DOM Safety**: Automatically halts the event if the target element is removed from the DOM.
+ * - **Specialized Optimizations**:
+ *   - `resize`: Uses `ResizeObserver` for any HTML element (not limited to `window`).
+ *   - `scroll-sync`: High-performance scroll tracking using `requestAnimationFrame`.
+ * - **Dynamic Configuration**: Chained setters for target element, event type, listener, and options.
+ * - **Custom Event Dispatching**: Built-in support for triggering events with custom data via `dispatch`.
+ * - **Strict Typing**: Generic support for elements, event objects, and custom detail data.
+ *
+ * ---
  *
  * Продвинутая обертка для управления слушателями событий на DOM-элементах или объекте `window`.
- * Упрощает весь жизненный цикл событий (запуск, остановка, переключение, сброс) и предоставляет встроенные оптимизации для высокочастотных событий, таких как `resize` и `scroll-sync`.
+ *
+ * `EventItem` упрощает весь жизненный цикл событий (запуск, остановка, переключение, сброс),
+ * предоставляет встроенную оптимизацию для тяжелых событий и гарантирует безопасность работы с DOM,
+ * автоматически проверяя наличие элементов в документе.
+ *
+ * ### Ключевые особенности:
+ * - **Управление циклом**: Простой контроль через методы `start`, `stop`, `toggle` и `reset`.
+ * - **Безопасность DOM**: Автоматическая остановка события, если целевой элемент удален из DOM.
+ * - **Специальные оптимизации**:
+ *   - `resize`: Использует `ResizeObserver` для любых HTML-элементов (не только для `window`).
+ *   - `scroll-sync`: Высокопроизводительный трекинг скролла через `requestAnimationFrame`.
+ * - **Динамическая настройка**: Чейнинг сеттеров для смены цели, типа события, метода или опций.
+ * - **Диспетчеризация**: Встроенная поддержка вызова событий с передачей пользовательских данных через `dispatch`.
+ * - **Строгая типизация**: Поддержка дженериков для типа элемента, объекта события и структуры данных.
+ *
+ * ---
+ *
+ * ### Usage Examples / Примеры использования:
+ *
+ * #### 1. Basic Listener / Базовый слушатель
+ * ```typescript
+ * const clickEvent = new EventItem('.btn', 'click', (e) => console.log('Clicked!'));
+ * clickEvent.start();
+ * ```
+ *
+ * #### 2. Specialized 'resize' and 'scroll-sync' / Оптимизированные 'resize' и 'scroll-sync'
+ * ```typescript
+ * // Tracks any element's size / Отслеживает размер любого элемента
+ * const resizeEvent = new EventItem('.box', 'resize', (entry) => console.log('New size:', entry));
+ *
+ * // Performance-optimized scroll / Оптимизированный скролл
+ * const scrollEvent = new EventItem(window, 'scroll-sync', () => console.log('Scrolling...'));
+ *
+ * resizeEvent.start();
+ * scrollEvent.start();
+ * ```
+ *
+ * #### 3. Custom Data and Dispatching / Пользовательские данные и диспетчеризация
+ * ```typescript
+ * interface UserData { id: number }
+ * const emitter = new EventItem<Window, CustomEvent, UserData>(window, 'user-update');
+ *
+ * emitter.setListener((e, detail) => {
+ *   console.log('Update received for ID:', detail?.id);
+ * });
+ *
+ * emitter.start();
+ *
+ * // Trigger manually with data / Вызов вручную с данными
+ * emitter.dispatch({ id: 456 });
+ * ```
+ *
+ * #### 4. Chaining and Dynamic Updates / Чейнинг и динамическое обновление
+ * ```typescript
+ * const tracker = new EventItem('.item-1', 'mousemove', (e) => console.log(e.clientX));
+ *
+ * // Switch element on the fly / Переключение элемента "на лету"
+ * tracker.start().setElement('.item-2');
+ * ```
  */
 export class EventItem<
   E extends ElementOrWindow,
