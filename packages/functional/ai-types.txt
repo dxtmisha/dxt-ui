@@ -17,90 +17,82 @@ The following is the content of "exports" from package.json:
 
 // File: library.d.ts
 
-/**
- * Configuration for the main GET request in API management.
- */
+/** Config for primary GET request in API management. */
 export declare type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
     /** API endpoint path */
     path?: RefOrNormal<string | undefined>;
-    /** Additional request options */
+    /** Request options */
     options?: ApiOptions;
-    /** Enable reactive updates when path or options change */
+    /** Enable reactive updates on change */
     reactivity?: boolean;
-    /** Condition to trigger the request */
+    /** Condition to trigger request */
     conditions?: RefType<boolean>;
-    /** Custom transformation for the fetched data */
+    /** Custom data transformation */
     transformation?: (data: Type) => ApiData<Return>;
-    /** Validation function or class constructor for data */
+    /** Validation function or constructor */
     typeData?: ((data: Return) => boolean) | any;
-    /** Whether to clear data when the component is unmounted */
+    /** Clear data on unmount */
     unmounted?: boolean;
-    /** Function to provide skeleton data during loading */
+    /** Provide skeleton data during loading */
     skeleton?: () => Return;
 };
 
-/**
- * Configuration for mutation requests (POST, PUT, DELETE).
- */
+/** Config for mutation requests (POST, PUT, DELETE). */
 export declare type ApiManagementRequest<T, Return extends ApiData<T> = ApiData<T>> = {
-    /** Target API endpoint path */
+    /** Target API path */
     path?: RefOrNormal<string | undefined>;
-    /** Action to perform after a successful request */
+    /** Callback after success */
     action?: (data: Return | undefined) => Promise<void> | void;
-    /** Transformation before sending data */
+    /** Pre-send transformation */
     transformation?: (data: T) => Return;
-    /** Whether to wrap the payload in a 'data' property */
+    /** Wrap payload in 'data' property */
     toData?: boolean;
-    /** Additional mutation request options */
+    /** Mutation request options */
     options?: ApiOptions;
 };
 
-/**
- * Configuration for client-side search across API data.
- */
+/** Config for client-side search in API data. */
 export declare type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
-    /** List of columns to search through */
+    /** Columns to search */
     columns: K;
     /** Reactive search query */
     value?: Ref<string>;
-    /** Additional search algorithm options */
+    /** Search algorithm options */
     options?: SearchOptions;
 };
 
-/**
- * Base type for API management values, either a single value or an array.
- */
+/** Base API value type: single or array. */
 export declare type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
 
 /** Options for api requests */
 export declare type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 
+declare type BroadcastValueItem<T> = T | string | undefined;
+
 /**
- * Creates a computed property that can handle asynchronous getters.
- * @param getter Asynchronous function, synchronous function, or direct value to compute the result
- * @param ignore values to be ignored
- * @param debugOptions Used for debugging reactive computations. Supported by Vue.js library
+ * Computed property for asynchronous getters.
+ * @param getter Async/sync function or value
+ * @param ignore Values to ignore
+ * @param debugOptions Vue debugging options
  */
 export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
 
 /**
- * Creates a computed property whose value changes depending on the current language and conditions.
- * @param getter Function providing the main value
- * @param getterNone Alternative value returned if conditions are unmet or getter returns undefined
- * @param conditions Condition determining when the main getter should be called
- * @param debugOptions Used for debugging reactive computations. Supported by Vue.js library
+ * Computed property dependent on current language.
+ * @param getter Main language-dependent value
+ * @param getterNone Alternative value if conditions fail
+ * @param conditions Trigger condition
+ * @param debugOptions Vue debugging options
  */
 export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
 
 /**
- * Creates a computed property that is computed on demand and cached.
- * @param getter A function that returns the value to be computed
+ * Computed property cached and updated on demand.
+ * @param getter Function returning value
  */
 export declare function computedEternity<T>(getter: () => Promise<T> | T): Ref<T, T>;
 
-/**
- * Constructor bind type for component binding with class and style support
- */
+/** Constructor bind type with class/style support */
 export declare type ConstrBind<T> = T & Record<string, any> & {
     /** Optional key */
     key?: string;
@@ -110,77 +102,67 @@ export declare type ConstrBind<T> = T & Record<string, any> & {
     style?: ConstrStyles;
 };
 
-/**
- * Constructor class type supporting strings, arrays, and objects
- */
+/** Constructor class supporting strings, arrays, and objects */
 export declare type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject;
 
-/** Constructor classes with required main class and additional class list */
+/** Constructor classes with main class and list */
 export declare type ConstrClasses = {
     main: ConstrClass;
 } & ConstrClassList;
 
-/** Record type for mapping class names to class definitions */
+/** Class name mapping */
 export declare type ConstrClassList = Record<string, ConstrClass>;
 
-/** Object type for CSS class names with boolean values */
+/** Boolean CSS class mapping */
 export declare type ConstrClassObject = Record<string, boolean>;
 
-/** Generic record type for constructor components */
+/** Generic record for constructor components */
 export declare type ConstrComponent = Record<string, any>;
 
-/**
- * Constructor component modification type with reactive or normal values
- */
+/** Component modification with reactive/normal values */
 export declare type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
     [K in keyof P]?: RefOrNormal<P[K]>;
 };
 
-/**
- * Constructor emit type with proper event handler signatures
- */
+/** Constructor emit with event signatures */
 export declare type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
     [K in keyof T]: (evt: K, ...args: T[K]) => void;
 }>>;
 
-/** Extract emit item type from constructor item */
+/** Extract emit item type */
 export declare type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
 
 export declare type ConstrExpose<E extends Element, EXPOSE extends ConstrItem> = EXPOSE & {
     elementHtml?: ComputedRef<E | undefined>;
 };
 
-/**
- * Props for link handling
- */
+/** Props for link handling */
 export declare type ConstrHrefProps = {
     /** Hyperlink reference */
     href?: string;
 };
 
-/** Generic record type for constructor items */
+/** Generic record for constructor items */
 export declare type ConstrItem = Record<string, any>;
 
-/**
- * Constructor options interface for component configuration
- */
+/** Constructor options for component configuration */
 export declare type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
-    /** Optional components configuration */
+    /** Components configuration */
     components?: COMP;
-    /** Optional component modifications */
+    /** Component modifications */
     compMod?: ConstrComponentMod<P>;
-    /** Optional emit handlers */
+    /** Emit handlers */
     emits?: ConstrEmit<EMITS>;
-    /** Optional reactive classes */
+    /** Reactive classes */
     classes?: RefType<ConstrClasses>;
-    /** Optional reactive styles */
+    /** Reactive styles */
     styles?: RefType<ConstrStyles>;
 };
 
-/** Constructor prop item type with options or direct PropType */
+/** Constructor prop item */
 export declare type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
 
-/** Constructor prop item options for Vue prop definitions */
+/** Vue prop definition options */
 export declare type ConstrPropItemOptions<T = any> = {
     /** Vue prop type */
     type?: PropType<T>;
@@ -188,30 +170,28 @@ export declare type ConstrPropItemOptions<T = any> = {
     required?: boolean;
     /** Default value */
     default?: any;
-    /** Custom validator function */
+    /** Custom validator */
     validator?(value: any, props: any): boolean;
 };
 
-/** Constructor props type for component prop definitions */
+/** Component prop definitions */
 export declare type ConstrProps<P = Record<string, any>> = {
     [K in keyof P]: ConstrPropItem<P[K]>;
 };
 
-/** Constructor registration configuration */
+/** Constructor registration config */
 export declare type ConstrRegistration = {
-    /** Optional flag for registration */
+    /** Registration flag */
     flag?: boolean;
-    /** Optional translation map */
+    /** Translation map */
     translate?: Record<string, string>;
 };
 
-/**
- * Constructor setup interface for component initialization
- */
+/** Component initialization interface */
 export declare type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
     /** Component name */
     name: string;
-    /** Reactive element reference */
+    /** Reactive element ref */
     element: Ref<E | undefined>;
     /** Reactive classes */
     classes: RefType<CLASSES>;
@@ -219,258 +199,169 @@ export declare type ConstrSetup<E extends Element, CLASSES extends ConstrClasses
     styles: RefType<ConstrStyles>;
 } & SETUP;
 
-/**
- * Constructor styles type supporting objects and arrays of style definitions
- */
+/** Style definitions: objects or arrays */
 export declare type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
 
-/** Constructor style item type for individual style properties */
+/** Individual style property */
 export declare type ConstrStylesItem = string | null;
 
-/** Constructor value wrapper with optional value property */
+/** Constructor value wrapper */
 export declare type ConstrValue<T = any> = {
     /** Optional value of type T */
     value?: T;
 };
 
-/**
- * A class for working with dates.
- */
+/** Date management class. */
 export declare class DatetimeRef {
     /**
-     * Constructor
-     * @param date date for processing.
-     * @param type type of date format for output.
-     * @param code country and language code.
+     * @param date Date for processing
+     * @param type Output format type
+     * @param code Country and language code
      */
     constructor(date: RefOrNormal<NumberOrStringOrDate>, type?: RefOrNormal<GeoDate>, code?: RefOrNormal<string>);
-    /**
-     * Returns the basic data for the date.
-     */
+    /** Returns basic date data. */
     getItem(): Ref<NumberOrStringOrDate>;
-    /**
-     * Returns a Date object.
-     */
+    /** Returns Date object. */
     getDate(): Ref<Date>;
-    /**
-     * Obtaining an object of the basic Datetime class.
-     */
+    /** Returns base Datetime instance. */
     getDatetime(): Datetime;
-    /**
-     * Returns the format of hours.
-     */
+    /** Returns hour format. */
     getHoursType(): ComputedRef<GeoHours>;
-    /**
-     * Returns the code of the first day of the week.
-     */
+    /** Returns first day of week code. */
     getFirstDayCode(): ComputedRef<GeoFirstDay>;
-    /**
-     * The method returns the year of the specified date according to local time.
-     */
+    /** Returns local year. */
     getYear(): ComputedRef<number>;
-    /**
-     * The method returns the month in the specified date according to local time,
-     * as a zero-based value.
-     */
+    /** Returns local month (0-indexed). */
     getMonth(): ComputedRef<number>;
-    /**
-     * The method returns the day of the month for the specified date according to local time.
-     */
+    /** Returns local day of month. */
     getDay(): ComputedRef<number>;
-    /**
-     * The method returns the hour for the specified date, according to local time.
-     */
+    /** Returns local hour. */
     getHour(): ComputedRef<number>;
-    /**
-     * The method returns the minutes in the specified date according to local time.
-     */
+    /** Returns local minutes. */
     getMinute(): ComputedRef<number>;
-    /**
-     * The method returns the seconds in the specified date according to local time.
-     */
+    /** Returns local seconds. */
     getSecond(): ComputedRef<number>;
-    /**
-     * Returns the last day of the week.
-     */
+    /** Returns last day of week. */
     getMaxDay(): ComputedRef<number>;
     /**
-     * Enables language-sensitive date and time formatting.
-     * @param type type of date format for output.
-     * @param styleOptions the representation of the month.
+     * Language-sensitive date/time formatting.
+     * @param type Output format type
+     * @param styleOptions Month representation
      */
     locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): ComputedRef<string>;
     /**
-     * Output of standard data.
-     * @param timeZone add time zone.
+     * Standard data output.
+     * @param timeZone Include timezone
      */
     standard(timeZone?: boolean): ComputedRef<string>;
 }
 
-/**
- * Base class for working with the constructor.
- */
+/** Base class for constructor design logic. */
 export declare abstract class DesignAbstract<T extends Record<string, any>, C extends Record<string, any>> {
     /**
-     * Constructor
-     * @param props base data
-     * @param callback callback function when the value changes
-     * @param changed base data
+     * @param props Base data
+     * @param callback Change callback
+     * @param changed Tracking data
      */
     constructor(props: T, callback?: ((event: C) => void) | undefined, changed?: string[]);
     /**
-     * Calls the callback function.
-     * @param compelled forces data to update
+     * Triggers callback.
+     * @param compelled Force update
      */
     make(compelled?: boolean): this;
     /**
-     * Calls the callback function.
-     * @param compelled forces data to update
+     * Triggers callback.
+     * @param compelled Force update
      */
     makeCallback(compelled?: boolean): void;
 }
 
-/**
- * Base class for working with the constructor.
- */
+/** Async base class for constructor design logic. */
 export declare abstract class DesignAsyncAbstract<T extends Record<string, any>, C extends Record<string, any>> extends DesignAbstract<T, C> {
-    /**
-     * Calls the callback function.
-     * @param compelled forces data to update
-     */
     make(compelled?: boolean): this;
-    /**
-     * Calls the callback function.
-     * @param compelled forces data to update
-     */
     makeCallback(compelled?: boolean): Promise<void>;
 }
 
-/**
- * The class checks the values that have been edited.
- */
+/** Tracks edited values. */
 export declare class DesignChanged<T extends Record<string, any>> {
     /**
-     * Constructor
-     * @param props base data
-     * @param watch data for tracking
+     * @param props Base data
+     * @param watch Tracking list
      */
     constructor(props: T, watch?: string[]);
     /**
-     * Checks if the value has been updated.
-     * @param name property name
+     * Check if property updated.
+     * @param name Property name(s)
      */
     is(name: string | string[]): boolean;
-    /**
-     * Checks if there are changes in the data.
-     */
+    /** Check for any changes. */
     isChanged(): boolean;
-    /**
-     * Updates all values.
-     */
+    /** Update all values. */
     update(): void;
 }
 
 export declare class DesignComp<COMP extends ConstrComponent, P extends ConstrItem> extends DesignComponents<COMP, P> {
 }
 
-/**
- * Class for working with connected components.
- */
+/** Manages connected components. */
 export declare class DesignComponents<COMP extends ConstrComponent, P extends ConstrItem> {
     /**
-     * Constructor
-     * @param components list of connected components
-     * @param modification data for modification
+     * @param components Connected components
+     * @param modification Modification data
      */
     constructor(components?: COMP, modification?: ConstrComponentMod<P> | undefined);
-    /**
-     * Check the presence of the component.
-     * @param name name of the component
-     */
+    /** Check component existence. */
     is<K extends keyof COMP>(name: K): name is K;
-    /**
-     * Getting the object of the component.
-     * @param name name of the component
-     */
+    /** Get component object. */
     get<K extends keyof COMP>(name: K): COMP[K];
     /**
-     * Returns the modified input data of the connected components.
-     * @param index the name of this
-     * @param props basic data
+     * Get modified input data.
+     * @param index Item name
+     * @param props Base data
      */
     getModification<K extends keyof P>(index?: K & string | string, props?: P[K] | Record<string, any>): Record<string, any> | undefined;
     /**
-     * Rendering a component by its name and returning an array with one component.
-     * @param name name of the component
-     * @param props property of the component
-     * @param children sub-elements of the component
-     * @param index the name of the key
+     * Render component as array.
+     * @param name Component name
+     * @param props Props
+     * @param children Children/Slots
+     * @param index Key name
      */
     render<K extends keyof COMP, PK extends keyof P>(name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): VNode[];
-    /**
-     * Rendering a component by its name.
-     * @param name name of the component
-     * @param props property of the component
-     * @param children sub-elements of the component
-     * @param index the name of the key
-     */
+    /** Render single component. */
     renderOne<K extends keyof COMP, PK extends keyof P>(name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): VNode | undefined;
-    /**
-     * Rendering the component by its name.
-     * @param item an array to which the rendered object will be added
-     * @param name name of the component
-     * @param props property of the component
-     * @param children sub-elements of the component
-     * @param index the name of the key
-     */
+    /** Add rendered component to array. */
     renderAdd<K extends keyof COMP, PK extends keyof P>(item: any[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): this;
 }
 
-/**
- * Class for collecting all functional components.
- */
+/** Collects functional components. */
 export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
     /**
-     * Getting the class name.
+     * @param name Class name
+     * @param props Properties
+     * @param options Additional parameters
      */
+    protected constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> | undefined);
+    /** Get class name. */
     getName(): string;
-    /**
-     * Getting the class name.
-     */
+    /** Get design name. */
     getDesign(): string;
-    /**
-     * Getting the class name.
-     * @param name list of class names by levels
-     */
+    /** Get sub-level class name. */
     getSubClass(name: string | string[]): string;
-    /**
-     * Getting the class name for the status.
-     * @param name list of class names by levels
-     */
+    /** Get status class name. */
     getStatusClass(name: string | string[]): string;
-    /**
-     * Getting the property name for the style.
-     * @param name list of class names by levels
-     */
+    /** Get style property name. */
     getStyle(name: string | string[]): string;
-    /**
-     * Getting additional parameters.
-     */
+    /** Get extra parameters. */
     getAttrs(): ConstrItem;
-    /**
-     * List of available external variables.
-     */
+    /** External variables list. */
     expose(): ConstrExpose<E, EXPOSE>;
-    /**
-     * The rendering method for the setup method.
-     */
+    /** Render setup method. */
     render(): () => VNode | (VNode | any)[] | undefined;
 }
 
 /**
- * Vue plugin for initializing and configuring global functional services
- * (Api, Translate, Icons, Meta).
- *
+ * Vue plugin for services (Api, Translate, Icons, Meta).
  * @example
  * ```typescript
  * import { createApp } from 'vue'
@@ -487,411 +378,188 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
  */
 export declare const dxtFunctionalPlugin: Plugin_2;
 
-/**
- * Global effect scope class.
- */
+/** Global effect scope. */
 export declare class EffectScopeGlobal {
-    /**
-     * Runs a function within the global scope.
-     * @param fn function
-     * @returns the return value of the function
-     */
+    /** Run function in global scope. */
     static run<T>(fn: () => T): T | undefined;
 }
 
-/**
- * Class for working with events (Ref).
- */
+/** Event management class (Ref). */
 export declare class EventRef<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> extends EventItem<E, O, D> {
-    /**
-     * Classes Constructor
-     * @param elementSelector element
-     * @param elementSelectorControl control element
-     * @param type type
-     * @param listener the object that receives a notification when an event occurs
-     * @param options object that specifies characteristics
-     * @param detail an event-dependent value associated with the event
-     */
     constructor(elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type?: string | string[], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D);
 }
 
 /**
- * Creates a managed singleton that encapsulates initialization logic and access mode.
- *
- * It supports three initialization strategies:
- * - `global`: A single instance for the entire application.
- * - `provide`: Shared via provide/inject in the component tree (standard for Vue 3).
- * - `local`: A single instance within the closure of the returned function.
- *
- * @template R return type of the factory function
- * @template O argument types for the factory function
- * @template RI instance type with management methods
- *
- * @param callback initialization function
- * @param type initialization strategy (defaults to provide)
- *
- * @returns {function} accessor function for the singleton
+ * Creates a managed singleton with initialization strategies.
+ * @template R return type
+ * @template O argument types
+ * @template RI instance type
+ * @param callback initialization
+ * @param type strategy (global, provide, local)
+ * @remarks
+ * Use for: API Services, Resource Optimization, Shared State, External SDKs.
+ * @example
+ * // 1. Global API singleton
+ * export const useUserApi = executeUseGlobal(() => useApiGet('/api/user'));
+ * @example
+ * // 2. Shared Reactive State
+ * export const useFeatureState = executeUseProvide(() => {
+ *   const items = [];
+ *   const addItem = (item) => items.push(item);
+ *   return { items, addItem };
+ * });
  */
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
 
 /**
  * Creates a global singleton.
- * @param callback Initialization function
+ * @remarks See {@link executeUse}.
  */
 export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<R & {
-    /** Returns the raw instance without management methods */
     init(): Readonly<R>;
-    /** Resets the cached instance */
-    destroyExecute?(): void;
-}>) | (() => Readonly<R & {
-    /** Returns the raw instance without management methods */
-    init(): Readonly<R>;
-    /** Resets the cached instance */
     destroyExecute?(): void;
 }>);
 
-/**
- * Initializes all global callbacks.
- */
+/** Init global callbacks. */
 export declare function executeUseGlobalInit(): void;
 
 /**
  * Creates a local singleton.
- * @param callback Initialization function
+ * @remarks Best for closure internal state. See {@link executeUse}.
  */
 export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
-    /** Returns the raw instance without management methods */
     init(): Readonly<R>;
-    /** Resets the cached instance */
-    destroyExecute?(): void;
-}>) | (() => Readonly<R & {
-    /** Returns the raw instance without management methods */
-    init(): Readonly<R>;
-    /** Resets the cached instance */
     destroyExecute?(): void;
 }>);
 
 /**
  * Creates a component-scoped singleton.
- * @param callback Initialization function
+ * @remarks Best for sub-tree state sharing. See {@link executeUse}.
  */
 export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
-    /** Returns the raw instance without management methods */
     init(): Readonly<R>;
-    /** Resets the cached instance */
-    destroyExecute?(): void;
-}>) | (() => Readonly<R & {
-    /** Returns the raw instance without management methods */
-    init(): Readonly<R>;
-    /** Resets the cached instance */
     destroyExecute?(): void;
 }>);
 
-/**
- * The object returned by the factory function
- */
+/** Factory function return object */
 export declare type ExecuteUseReturn<R> = Readonly<R & {
-    /** Returns the raw instance without management methods */
     init(): Readonly<R>;
-    /** Resets the cached instance */
     destroyExecute?(): void;
 }>;
 
-/**
- * Types of initialization for a singleton
- */
+/** Singleton initialization types */
 export declare enum ExecuteUseType {
-    /** A single instance for the entire application */
     global = "global",
-    /** Shared via provide/inject in the component tree */
     provide = "provide",
-    /** A single instance within the closure */
     local = "local"
 }
 
-/**
- * Interface for the functional plugin options
- */
+/** Functional plugin options */
 export declare interface FunctionalPluginOptions {
-    /** Configuration for the API client */
     api?: ApiConfig;
-    /** Configuration for the translation service */
     translate?: TranslateConfig;
-    /** Suffix to be appended to all page titles */
     metaSuffix?: string;
-    /** Configuration for the icon management service */
     icons?: IconsConfig;
-    /** Vue Router instance for global navigation state management */
     router?: Router;
-    /** Error causes list for error center */
     errorCauses?: ErrorCenterCauseList;
 }
 
-/**
- * Class for working with Flags.
- */
+/** Flag management. */
 export declare class GeoFlagRef {
-    /**
-     * Constructor
-     * @param code country and language code
-     */
     constructor(code?: RefOrNormal<string>);
-    /**
-     * Obtaining a reactive object with the country code.
-     */
+    /** Get reactive country code. */
     getCode(): Ref<string>;
-    /**
-     * Returns information about the country and its flag.
-     * @param code country code
-     */
+    /** Get country/flag info. */
     get(code?: string): ComputedRef<GeoFlagItem | undefined>;
-    /**
-     * Getting a link to the flag.
-     * @param code country code
-     */
+    /** Get flag link. */
     getFlag(code?: string): ComputedRef<string | undefined>;
-    /**
-     * Getting a list of countries by an array of codes.
-     * @param codes country code
-     */
+    /** Get country list by codes. */
     getList(codes?: string[]): ComputedRef<GeoFlagItem[]>;
-    /**
-     * Getting a list of countries by an array of codes in national language.
-     * @param codes country code
-     */
+    /** Get national-language country list. */
     getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>;
 }
 
-/**
- * Reactive class for managing the formatting of numbers and dates.
- */
+/** Manages number and date formatting. */
 export declare class GeoIntlRef {
-    /**
-     * Constructor
-     * @param code country code, full form language-country or one of them
-     */
     constructor(code?: RefOrNormal<string>);
-    /**
-     * The consistent translation of language, region and script display names.
-     * @param value the code to provide depends on the type
-     * @param typeOptions an object with some or all of the following properties
-     */
+    /** Language/region display names. */
     display(value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): ComputedRef<string>;
-    /**
-     * Get display names of language.
-     * @param value the code to provide depends on the type
-     * @param style the formatting style to use
-     */
+    /** Language display name. */
     languageName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /**
-     * Get display names of region.
-     * @param value the code to provide depends on the type
-     * @param style the formatting style to use
-     */
+    /** Region display name. */
     countryName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /**
-     * In basic use without specifying a locale, a formatted string.
-     * @param value a number, bigint, or string, to format
-     * @param options an object with some or all properties
-     */
+    /** Format number. */
     number(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Decimal point symbol.
-     */
+    /** Decimal separator. */
     decimal(): ComputedRef<string>;
-    /**
-     * Currency formatting.
-     * @param value a number, bigint, or string, to format
-     * @param currencyOptions the currency to use in currency formatting
-     * @param numberOnly do not display the currency symbol
-     */
+    /** Currency formatting. */
     currency(value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly?: boolean): ComputedRef<string>;
-    /**
-     * Returns the currency symbol if it exists, otherwise the currency code.
-     * @param currency the currency to use in currency formatting
-     * @param currencyDisplay how to display the currency in currency formatting
-     */
+    /** Currency symbol or code. */
     currencySymbol(currency: RefOrNormal<string>, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): ComputedRef<string>;
-    /**
-     * Unit formatting.
-     * If the style is 'unit', a unit property must be provided.
-     * @param value a number, bigint, or string, to format
-     * @param unitOptions the unit to use in unit formatting
-     */
+    /** Unit formatting. */
     unit(value: RefOrNormal<NumberOrString>, unitOptions?: string | Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Returns the formatted file size
-     * @param value a number, bigint, or string, to format
-     * @param unitOptions the unit to use in unit formatting
-     */
+    /** File size formatting. */
     sizeFile(value: RefOrNormal<NumberOrString>, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Number as a percentage.
-     * @param value a number, bigint, or string, to format
-     * @param options an object with some or all properties
-     */
+    /** Percentage formatting. */
     percent(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Number as a percentage (unit).
-     * @param value a number, bigint, or string, to format
-     * @param options an object with some or all properties
-     */
+    /** Percentage by 100 formatting. */
     percentBy100(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Apply formatting considering plural rules and language characteristics.
-     * @param value a number, bigint, or string, to format
-     * @param words list of words for formatting (in the format one|two|few|many|other|zero)
-     * @param options Property for PluralRules
-     * @param optionsNumber an object with some or all properties
-     */
+    /** Plural rule formatting. */
     plural(value: RefOrNormal<NumberOrString>, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /**
-     * Enables language-sensitive date and time formatting.
-     * @param value the date to format
-     * @param type type of data format
-     * @param styleOptions the representation of the month
-     * @param hour24 whether to use 12-hour time
-     */
+    /** Date/time formatting. */
     date(value: RefOrNormal<NumberOrStringOrDate>, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): ComputedRef<string>;
-    /**
-     * Enables language-sensitive relative time formatting.
-     * @param value a number, bigint, or string, to format
-     * @param styleOptions the length of the internationalized message
-     * @param todayValue current day
-     */
+    /** Relative time formatting. */
     relative(value: RefOrNormal<NumberOrStringOrDate>, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): ComputedRef<string>;
-    /**
-     * Enables language-sensitive relative time formatting
-     * Including the ability to add a limit to output the standard time format if the value
-     * exceeds the allowable limit.
-     * @param value a number, bigint, or string, to format
-     * @param limit values that determine the output limit (values per day)
-     * @param todayValue current day
-     * @param relativeOptions the length of the internationalized message
-     * @param dateOptions the representation of the month
-     * @param type type of data format
-     * @param hour24 whether to use 12-hour time
-     */
+    /** Relative time with limit support. */
     relativeLimit(value: RefOrNormal<NumberOrStringOrDate>, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): ComputedRef<string>;
-    /**
-     * Returns the formatted time value elapsed since the event
-     * @param value a number, bigint, or string, to format
-     * @param unit time unit
-     * @param styleOptions additional option or formatting style
-     */
+    /** Time elapsed since event. */
     relativeByValue(value: RefOrNormal<NumberOrString>, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): ComputedRef<string>;
-    /**
-     * Names of months.
-     * @param value the date to format
-     * @param style the representation of the month
-     */
+    /** Month name. */
     month(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month']): ComputedRef<string>;
-    /**
-     * Array to list of months.
-     * @param style the representation of the month
-     */
+    /** List of months. */
     months(style?: Intl.DateTimeFormatOptions['month']): ComputedRef<ItemValue<number | undefined>[]>;
-    /**
-     * Returns names of days of the week.
-     * @param value the date to format
-     * @param style the representation of the weekday
-     */
+    /** Weekday name. */
     weekday(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<string>;
-    /**
-     * An array of the list of names of the days of the week.
-     * @param style the representation of the weekday
-     */
+    /** List of weekdays. */
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<ItemValue<number | undefined>[]>;
-    /**
-     * Time.
-     * @param value the date to format
-     */
+    /** Time format. */
     time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string>;
-    /**
-     * Sorts strings taking into account the characteristics of countries.
-     * @param data an array with data
-     * @param compareFn a function for sorting
-     */
+    /** Country-sensitive string sorting. */
     sort<T>(data: RefOrNormal<T[]>, compareFn?: (a: T, b: T) => [string, string]): ComputedRef<T[]>;
 }
 
-/**
- * Reactive class for working with geographic data.
- */
+/** Reactive geographic data access. */
 export declare class GeoRef {
-    /**
-     * Information about the current country.
-     * @returns reactive object with full geographic information
-     */
+    /** Get full geographic info. */
     static get(): Ref<GeoItemFull>;
-    /**
-     * Current country.
-     * @returns reactive string with the current country code
-     */
+    /** Current country code. */
     static getCountry(): ComputedRef<string>;
-    /**
-     * Current language.
-     * @returns reactive string with the current language code
-     */
+    /** Current language code. */
     static getLanguage(): ComputedRef<string>;
-    /**
-     * Full format according to the standard.
-     * @returns reactive string with the full standard locale format
-     */
+    /** Standard locale format. */
     static getStandard(): ComputedRef<string>;
-    /**
-     * Returns the first day of the week.
-     * @returns reactive string representing the first day of the week
-     */
+    /** First day of week. */
     static getFirstDay(): ComputedRef<string>;
-    /**
-     * Changes the data by the full code.
-     * @param code country code, full form language-country or one of them
-     */
+    /** Set geographic data by code. */
     static set(code: string): void;
 }
 
-/**
- * A method for generating properties for a subcomponent.
- * @param value input value. Can be an object if you need to pass multiple properties
- * @param nameExtra additional parameter or property name
- * @param name property name
- * @param except exclude the rule requiring the presence of a primary key
- */
+/** Generates subcomponent props. */
 export declare function getBind<T, R extends ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;
 
-/**
- * A method for generating properties for a subcomponent.
- * @param value input value. Can be an object if you need to pass multiple properties
- * @param nameExtra additional parameter or property name
- * @param name property name
- */
+/** Reactive generation of subcomponent props. */
 export declare function getBindRef<T, R extends ItemList>(value: RefOrNormal<T | R> | undefined, nameExtra?: RefOrNormal<ItemList> | string, name?: string): ComputedRef<R>;
 
-/**
- * Returns the name of the class from the property.
- * @param props property of the component
- */
+/** Get class name from props. */
 export declare function getClassName<T extends ItemList>(props?: T): string | undefined;
 
-/**
- * Returns or generates a new element.
- * @param name name of the component
- * @param props property of the component
- * @param index the name of the key
- */
+/** Generate or return render index. */
 export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
 
-/**
- * Get request options.
- * @param options options
- */
+/** Get request options. */
 export declare const getOptions: (options?: ApiOptions) => RefOrNormal<ApiFetch>;
 
-/**
- * You return the values of the ref variable or the variable itself if it is not reactive.
- * @param item reactive variable or ordinary value
- */
+/** Unwrap ref or return value. */
 export declare function getRef<T>(item: RefOrNormal<T>): T;
 
 export declare type LazyItem = {
@@ -908,930 +576,396 @@ export declare type LazyItemByMargin = {
 
 export declare type LazyList = Record<string, LazyItem>;
 
-/** Basic data structure for list item */
+/** List item base structure */
 export declare type ListDataBasic = {
-    /** Optional display label */
     label?: NumberOrString;
-    /** Any value associated with the item */
     value?: any;
-    /** Search text for filtering */
     search?: string;
 };
 
-/**
- * Array of extended list items with state
- */
+/** List items with state */
 export declare type ListDataFull<Item extends ListDataBasic = ListDataBasic> = ListDataFullItem<Item>[];
 
-/**
- * Extended list item with additional state properties
- */
+/** List item with focus/selection state */
 export declare type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & {
-    /** Whether the item has focus */
     focus: boolean;
-    /** Highlighted text portion */
     highlight?: string;
-    /** Whether the item is selected */
     selected: boolean;
-    /** Whether the item is disabled */
     disabled?: boolean;
 };
 
-/** Extended list item with type and index */
+/** List item with index and type */
 export declare type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
-    /** Parent item identifier */
     parent?: string;
-    /** Type of list item */
     type: ListType;
-    /** Unique item identifier */
     index: string;
 }>;
 
-/**
- * Class for managing the data list.
- */
+/** Data list management. */
 export declare class ListDataRef {
-    /**
-     * Creates an instance of ListData for managing list data.
-     * @param list List data
-     * @param focus Focused item
-     * @param highlight Search text for highlighting
-     * @param highlightLengthStart Minimum length to start highlighting
-     * @param filterMode Filter mode
-     * @param selected Selected items
-     * @param keyValue Key for getting item value
-     * @param keyLabel Key for getting item label
-     * @param lite Threshold for lite mode
-     * @param min Minimum number of selections
-     * @param max Maximum number of selections
-     * @param parent Parent identifier
-     */
     constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
-    /**
-     * Returns a list for forming a list.
-     * @returns reactive list of items
-     */
+    /** Reactive items list. */
     readonly data: ComputedRef<ListList>;
-    /**
-     * Returns a simplified list for quick loading.
-     * @returns simplified reactive list
-     */
+    /** Fast loading simplified list. */
     readonly liteData: ComputedRef<ListList>;
-    /**
-     * Returns a list of records with all additional data (focus, selection, disabled status).
-     * @returns full reactive list
-     */
+    /** List with full state (focus, selection). */
     readonly fullData: ComputedRef<ListDataFull>;
-    /**
-     * Returns a flat map of all entries including sublists.
-     * @returns reactive flat list
-     */
+    /** Flat map of entries including sublists. */
     readonly map: ComputedRef<ListList>;
-    /**  Returns a list consisting only of items */
     readonly mapItems: ComputedRef<ListList>;
-    /**
-     * Returns a list consisting only of values for selection (item, group, menu).
-     * @returns reactive list
-     */
+    /** Only selectable values. */
     readonly items: ComputedRef<ListList>;
-    /**
-     * Finds the first element that meets the search conditions.
-     * @returns first found index
-     */
+    /** First index matching search. */
     readonly highlightFirstItem: ComputedRef<number>;
-    /**
-     * Is there a selected item.
-     * @returns true if selection exists
-     */
+    /** True if any item is selected. */
     readonly isSelected: ComputedRef<boolean>;
-    /**
-     * Is the minimum selection reached.
-     * @returns true if minimum reached
-     */
+    /** True if minimum selection count met. */
     readonly isSelectedMin: ComputedRef<boolean>;
-    /**
-     * Is the maximum selection reached.
-     * @returns true if maximum reached
-     */
+    /** True if maximum selection count met. */
     readonly isSelectedMax: ComputedRef<boolean>;
-    /**
-     * Returns a list of selected items on the map.
-     * @returns reactive list of selected items
-     */
+    /** Selected items list. */
     readonly selectedList: ComputedRef<ListList>;
-    /**
-     * Returns a list of selected items in the current group.
-     * @returns reactive list of selected items in group
-     */
+    /** Selected items in current group. */
     readonly selectedListInGroup: ComputedRef<ListList>;
-    /**
-     * Returns a list of selected labels on the map.
-     * @returns reactive list of labels
-     */
+    /** Selected item labels. */
     readonly selectedNames: ComputedRef<ListNames>;
-    /**
-     * Returns a list of selected values on the map.
-     * @returns reactive list of values
-     */
+    /** Selected item values. */
     readonly selectedValues: ComputedRef<any[]>;
-    /**
-     * Checks whether it is necessary to first display a simplified version.
-     * @returns true if lite mode is active
-     */
+    /** Check for lite mode. */
     isLite(): boolean;
-    /**
-     * Checks if an element is in focus.
-     * @returns true if focus exists
-     */
+    /** Check for focused item. */
     isFocus(): boolean;
-    /**
-     * Checks if there is a highlighted item (search results).
-     * @returns true if highlight exists
-     */
+    /** Check for highlights. */
     isHighlight(): boolean;
-    /**
-     * Checks if highlighting is active (minimum length reached).
-     * @returns true if active
-     */
+    /** Check if highlighting is active. */
     isHighlightActive(): boolean;
-    /**
-     * Returns the number of records in the current list.
-     * @returns length
-     */
+    /** Total current records. */
     getLength(): number;
-    /**
-     * Returns the number of all available records in the map.
-     * @returns length
-     */
+    /** Total entries in map. */
     getLengthByMap(): number;
-    /**
-     * Returns the number of all available records (items).
-     * @returns length
-     */
+    /** Total items. */
     getLengthByItems(): number;
-    /**
-     * Returns the identifier in focus.
-     * @returns focus identifier
-     */
+    /** Get focus identifier. */
     getFocus(): ListSelectedItem | undefined;
-    /**
-     * Returns the highlight text.
-     * @returns text
-     */
+    /** Get highlight text. */
     getHighlight(): string | undefined;
-    /**
-     * Returns the minimum length for highlight to start.
-     * @returns length
-     */
+    /** Get min highlight length. */
     getHighlightLengthStart(): number;
-    /**
-     * Returns the selected identifiers list.
-     * @returns list
-     */
+    /** Get selected IDs. */
     getSelected(): ListSelectedList | undefined;
-    /**
-     * Returns an item by moving a certain number of steps from the selected item.
-     * @param step number of steps
-     * @returns target item index
-     */
+    /** Get item by relative step. */
     getSelectedByStep(step: number): ListSelectedItem | undefined;
-    /**
-     * Returns the next item from the selected one.
-     * @returns next item index
-     */
+    /** Get next item. */
     getSelectedNext(): ListSelectedItem | undefined;
-    /**
-     * Returns the previous item from the selected one.
-     * @returns previous item index
-     */
+    /** Get previous item. */
     getSelectedPrev(): ListSelectedItem | undefined;
-    /**
-     * Returns an item by moving a certain number of steps from the specified item.
-     * @param item item
-     * @param step number of steps
-     * @returns target item
-     */
     getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined;
-    /**
-     * Returns the next item from the specified one.
-     * @param item item
-     * @returns next item
-     */
     getItemNext(item: ListDataItem): ListDataItem | undefined;
-    /**
-     * Returns the previous item from the specified one.
-     * @param item item
-     * @returns previous item
-     */
     getItemPrev(item: ListDataItem): ListDataItem | undefined;
-    /**
-     * Returns an item by moving a certain number of steps from the specified index.
-     * @param index item index
-     * @param step number of steps
-     * @returns target item
-     */
     getIndexByStep(index: string, step: number): ListDataItem | undefined;
-    /**
-     * Returns the next item from the specified index.
-     * @param index item index
-     * @returns next item
-     */
     getIndexNext(index: string): ListDataItem | undefined;
-    /**
-     * Returns the previous item from the specified index.
-     * @param index item index
-     * @returns previous item
-     */
     getIndexPrev(index: string): ListDataItem | undefined;
-    /**
-     * Returns an item by its index.
-     * @param index item index
-     * @returns found item details
-     */
     getItemByIndex(index?: string): {
         key: number;
         item: ListDataItem;
     } | undefined;
-    /**
-     * Returns an item by its key.
-     * @param key item key
-     * @returns found item
-     */
     getItemByKey(key: number): ListDataItem | undefined;
-    /**
-     * Returns the first item with the specified parent.
-     * @param parent parent identifier to search for
-     * @returns first item
-     */
     getFirstItemByParent(parent: string | undefined): ListDataItem | undefined;
-    /**
-     * Returns the last item with the specified parent.
-     * @param parent parent identifier to search for
-     * @returns last item
-     */
     getLastItemByParent(parent: string | undefined): ListDataItem | undefined;
-    /**
-     * Returns a sublist object for a group item.
-     * @param item List item data
-     * @returns sublist instance
-     */
     getSubList(item: ListDataItem): ListDataRef;
 }
 
-/** Array of list data items */
+/** Array of list items */
 export declare type ListList<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item>[];
 
-/**
- * Various input formats for list creation
- */
+/** List creation input formats */
 export declare type ListListInput<Item extends ListDataBasic = ListDataBasic> = ListListInputItem<Item>[] | string[] | Record<string, ListListInputItem<Item>> | Record<string, string>;
 
-/** Input item for list creation */
+/** List creation input item */
 export declare type ListListInputItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item>;
 
-/** Name of selected list item */
+/** Selected item label */
 export declare type ListName = string | number | undefined;
 
-/** Array of list item names */
+/** Selected labels array */
 export declare type ListNames = ListName[];
 
-/**
- * List or record structure for list data
- */
+/** List data structure */
 export declare type ListRecord<Item extends ListDataBasic = ListDataBasic> = ListList<Item> | Record<string, any>;
 
-/** Single selected item identifier */
+/** Selected item ID */
 export declare type ListSelectedItem = NumberOrStringOrBoolean;
 
-/** Single or multiple selected items */
+/** Single/multiple selected items */
 export declare type ListSelectedList = ListSelectedItem | ListSelectedItem[];
 
-/** Type of list item */
+/** Item type */
 export declare type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
 
-/**
- * Union type for Vue raw children content
- * (strings, numbers, booleans, VNodes, arrays, functions)
- */
+/** Vue raw children content */
 export declare type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
 
-/**
- * Type for Vue raw slots with optional stability flag
- */
+/** Vue raw slots */
 export declare type RawSlots = {
-    /** Slot name mapping to unknown content */
     [name: string]: unknown;
-    /**
-     * Optional stability flag for performance optimization
-     */
     $stable?: boolean;
 };
 
-/**
- * Union type that can be either a Vue reactive reference or a normal value
- */
+/** Ref or normal value */
 export declare type RefOrNormal<T> = RefType<T> | T;
 
-/**
- * Union type for Vue reactive references (computed or ref)
- */
+/** Vue reactive ref */
 export declare type RefType<T> = ComputedRef<T> | Ref<T>;
 
-/**
- * Union type for Vue reactive references that can be undefined
- */
+/** Nullable reactive ref */
 export declare type RefUndefined<T> = RefType<T | undefined>;
 
-/**
- * Getting cached, immutable data.
- * @param name name of the component
- * @param props property of the component
- * @param children sub-elements of the component
- * @param index the name of the key
- */
+/** Render cached component. */
 export declare function render<T extends ItemList>(name: string | any, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
 
-/**
- * Router management class.
- */
+/** Router management. */
 export declare class RouterItemRef {
-    /**
-     * Get router instance.
-     */
+    /** Get router. */
     static get(): Router | undefined;
-    /**
-     * Returns the link by name.
-     * @param name route name
-     * @param params route parameters
-     * @param query route query
-     */
+    /** Get link by name. */
     static getLink(name: string, params?: any, query?: any): string | undefined;
-    /**
-     * Returns the link property by name.
-     * @param name route name
-     * @param params route parameters
-     * @param query route query
-     */
+    /** Get href props by name. */
     static getHref(name?: string, params?: any, query?: any): ConstrHrefProps;
-    /**
-     * Site path change.
-     * @param to new path
-     */
+    /** Change path. */
     static push(to: string | RouteLocationRaw): void;
-    /**
-     * Set router instance.
-     * @param router router instance
-     */
+    /** Set router instance. */
     static set(router: Router): void;
-    /**
-     * Set router instance only once.
-     * @param router router instance
-     */
+    /** Set router once. */
     static setOneTime(router: Router): void;
-    /**
-     * Converts the raw route location to href properties.
-     * @param to raw route location
-     */
+    /** Location to href conversion. */
     static rawToHref(to?: string | RouteLocationRaw): ConstrHrefProps;
 }
 
-/**
- * Class for getting the scroll width as a reactive item.
- */
+/** Reactive scrollbar width. */
 export declare class ScrollbarWidthRef {
-    /** Reactive item */
     readonly item: Ref<boolean | undefined, boolean | undefined>;
-    /** Reactive width */
     readonly width: Ref<number, number>;
-    /**
-     * Constructor
-     */
     constructor();
-    /**
-     * Checks whether the scroll width is defined.
-     */
     readonly is: ComputedRef<boolean>;
 }
 
 /** Search list input */
 export declare type SearchListInput<T extends SearchItem> = SearchListValueRef<T> | (() => SearchListValueRef<T>);
 
-/** Search list data */
+/** Search list data ref */
 export declare type SearchListValueRef<T extends SearchItem> = RefOrNormal<SearchListValue<T>>;
 
-/**
- * Defines global conditions for the API request.
- * @param conditions conditions for executing the request
- */
+/** Set global API conditions. */
 export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
 
-/**
- * Changing the value for the reactive method.
- * @param item reactive element
- * @param value values for replacement
- */
+/** Set reactive value. */
 export declare function setRef<T>(item: Ref<T>, value: T): void;
 
-/**
- * Shorthand for useTranslateRef.
- * Use `as const` for arrays to ensure proper TypeScript key inference.
- *
- * @param names a string or an array with keys
- */
+/** Shorthand for useTranslateRef. */
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;
 
-/**
- * Merges two objects with properties, taking into account their classes and styles
- * @param extra additional property
- * @param value input value
- */
+/** Merges two objects preserving classes/styles. */
 export declare function toBind<R extends ItemList = ItemList>(extra: ItemList, value: ItemList): ConstrBind<R>;
 
-/**
- * Merges multiple objects with properties, taking into account their classes and styles
- * @param values list of input values
- */
+/** Merges multiple objects preserving classes/styles. */
 export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
 
-/**
- * Returns a regular variable or wraps it in a regular variable if it is an ordinary variable.
- * @param item
- */
+/** Wrap value in ref if normal. */
 export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
 
-/** Utility type to convert union types to intersection types */
+/** Union to Intersection converter */
 export declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
-/**
- * Use API delete request.
- * @param path Path to the API endpoint
- * @param action Action to perform after the request
- * @param transformation Transformation function
- * @param toData Extract 'data' field from response
- * @param options Additional request options
- * @param apiInstance Api instance
- * @returns Object with loading state and send method
- */
+/** API delete request hook. */
 export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-/**
- * Use API get request.
- * @param path Path to the API endpoint
- * @param action Action to perform after the request
- * @param transformation Transformation function
- * @param toData Extract 'data' field from response
- * @param options Additional request options
- * @param apiInstance Api instance
- * @returns Object with loading state and send method
- */
+/** API get request hook. */
 export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
 /**
- * A powerful composable for comprehensive API request orchestration.
- * It centrally manages data loading (GET), list formatting, client-side searching,
- * and mutations (POST, PUT, DELETE) through a single reactive interface.
- *
- * @template Return type of data returned by the API
- * @template FormattersOptions optional formatting rules
- * @template Post data type for POST creation request
- * @template Put data type for PUT update request
- * @template Delete data type for DELETE removal request
- * @template Type original data type (before transformation)
- * @template Item type of a single item in the data list
- * @template ItemFormatters item type after formatters are applied
- * @template Columns search columns derived from formatting
- *
- * @param propsGet main GET request settings (path, reactivity, skeleton, etc.)
- * @param formattersOptions optional reactive formatting rules
- * @param searchOptions optional client-side search settings
- * @param postRequest optional POST mutation settings
- * @param putRequest optional PUT mutation settings
- * @param deleteRequest optional DELETE mutation settings
- * @param action common callback executed after any successful mutation
- * @param apiInstance API instance for requests (defaults to Api.getItem())
- *
- * @returns {object} reactive API management interface
- *
- * @note This hook is recommended to be used in tandem with `executeUse` for centralized state management.
- * By wrapping `useApiManagementRef` in `executeUseProvide` or `executeUseGlobal`, you can ensure
- * a single source of truth across the component tree or the entire application.
+ * Advanced API orchestration: GET, formatting, search, and mutations.
+ * @note Use with `executeUse` for centralized state.
+ * @remarks Formatting: use for display values (prices, dates); avoid for IDs/logic codes.
+ * @example
+ * const products = useApiManagementRef(
+ *   { path: '/api/v1/products', skeleton: () => [...] },
+ *   { price: (v) => `${v} USD` },
+ *   { columns: ['name'] },
+ *   { path: '/api/v1/products' }
+ * );
  */
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
-    /** Whether data passed the `typeData` check */
     isValid: ComputedRef<boolean>;
-    /** Processed data array (supports Skeleton, formatters, and search) */
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
-    /** Raw reactive data from `useApiRef` */
     readonly data: ComputedRef<ApiData<Return> | undefined>;
-    /** Current number of items in `list` (changes with search) */
     readonly length: ComputedRef<number>;
-    /** Total number of items in raw `data` */
     lengthData: ComputedRef<number>;
-    /** Initial loading flag (true when no data yet) */
     starting: ComputedRef<boolean>;
-    /** Active read process flag */
     reading: Ref<boolean, boolean>;
-    /** Loading state for the main GET request */
     loading: Ref<boolean, boolean>;
-    /** Loading state during search processing */
     loadingSearch: Ref<boolean, boolean> | undefined;
-    /** Loading state for POST mutation */
     loadingPost: Ref<boolean, boolean> | undefined;
-    /** Loading state for PUT mutation */
     loadingPut: Ref<boolean, boolean> | undefined;
-    /** Loading state for DELETE mutation */
     loadingDelete: Ref<boolean, boolean> | undefined;
-    /** Whether search is currently active */
     isSearch: ComputedRef<boolean> | undefined;
-    /** Reactive search string (Proxy to `searchOptions.value`) */
     search: Ref<string, string> | undefined;
-    /**
-     * Force reset the GET request and clear state.
-     */
     reset: () => Promise<void>;
-    /**
-     * Abort the current network request.
-     */
     abort: () => void;
-    /**
-     * Execute POST mutation request.
-     * @param request request data
-     */
     sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
-    /**
-     * Execute PUT mutation request.
-     * @param request request data
-     */
     sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
-    /**
-     * Execute DELETE mutation request.
-     * @param request request data
-     */
     sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
 };
 
-/**
- * Use API post request.
- * @param path Path to the API endpoint
- * @param action Action to perform after the request
- * @param transformation Transformation function
- * @param toData Extract 'data' field from response
- * @param options Additional request options
- * @param apiInstance Api instance
- * @returns Object with loading state and send method
- */
+/** API post request hook. */
 export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-/**
- * Use API put request.
- * @param path Path to the API endpoint
- * @param action Action to perform after the request
- * @param transformation Transformation function
- * @param toData Extract 'data' field from response
- * @param options Additional request options
- * @param apiInstance Api instance
- * @returns Object with loading state and send method
- */
+/** API put request hook. */
 export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-/**
- * Use api ref return type.
- */
+/** useApiRef return type. */
 export declare interface UseApiRef<R> {
-    /** Reactive data (Computed) */
     data: ComputedRef<ApiData<R> | undefined>;
-    /** Item (Ref) */
     item: Ref<ApiData<R> | undefined>;
-    /** Length of the list (Computed) */
     length: ComputedRef<number>;
-    /** Start request flag (true if no data yet) */
     starting: ComputedRef<boolean>;
-    /** Request load flag */
     loading: Ref<boolean>;
-    /** Active reading flag */
     reading: Ref<boolean>;
-    /** Checks if the request is starting (true if no data yet) */
     isStarting(): boolean;
-    /**
-     * Checks if the request is currently loading.
-     */
     isLoading(): boolean;
-    /**
-     * Checks if the request is currently reading.
-     */
     isReading(): boolean;
-    /**
-     * Gets the current item data.
-     */
     getItem(): ApiData<R> | undefined;
-    /**
-     * Manual initialization
-     */
     init(): void;
-    /**
-     * Default reset
-     */
     reset(): Promise<void>;
-    /**
-     * Stop request
-     */
     stop(): void;
-    /**
-     * Abort request
-     */
     abort(): void;
 }
 
-/**
- * Returns data for working with requests.
- * @param path path to request
- * @param options data for the request
- * @param reactivity should reactivity be enabled
- * @param conditions conditions for executing the request
- * @param transformation transforms the received request
- * @param unmounted delete data from the cache
- * @param apiInstance Api instance
- */
+/** Basic API ref hook. */
 export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
 
-/**
- * Use api request.
- * @param path Path to the API endpoint
- * @param method HTTP method
- * @param action Action to perform after the request
- * @param transformation Transformation function
- * @param toData Extract 'data' field from response
- * @param options Additional request options
- * @param apiInstance Api instance
- * @returns Object with loading state and send method
- */
+/** Generic API request hook. */
 export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, method?: ApiMethodItem, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
-    /**
-     * Send request.
-     * @param request Request data
-     * @returns Response data
-     */
     send(request?: Request): Promise<Return | undefined>;
 };
 
-/**
- * Creates a reactive variable to manage data between browser tabs.
- * @param name value name
- * @param defaultValue default value
- */
+/** Tab-to-tab data synchronization. */
 export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T | string | (() => (T | string))): Ref<BroadcastValueItem<T>>;
 
-/**
- * Creates a reactive variable to manage cookies.
- * @param name cookie name
- * @param defaultValue value or function to change data
- * @param options additional parameters
- */
+/** Reactive cookie management. */
 export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;
 
-/**
- * Composable for reactive formatting of data lists based on specified rules for each property.
- * @param list source data list (Ref or ComputedRef)
- * @param options formatting settings for each property
- */
+/** Reactive formatting of list properties. */
 export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): {
-    /**
-     * Formatted data list (ComputedRef)
-     */
     listFormat: ComputedRef<FormattersReturn<List, Options>>;
-    /**
-     * Returns the count of records in the list (ComputedRef)
-     */
     length: ComputedRef<number>;
 };
 
-/**
- * Returns a class object for working with data formatting.
- */
+/** Get internationalization helper. */
 export declare function useGeoIntlRef(): GeoIntlRef;
 
-/**
- * Creates a reactive variable to manage the hash.
- * @param name value name
- * @param defaultValue default value
- */
+/** Reactive URL hash management. */
 export declare function useHashRef<T>(name: string, defaultValue?: T | (() => T)): ShallowRef<T>;
 
-/**
- * Hook for initializing the tracking of an element's appearance on the screen by margin.
- * @param element element for tracking
- * @param rootMargin root margin for IntersectionObserver
- */
+/** Track element screen appearance by margin. */
 export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | undefined>, rootMargin: string) => {
-    /** Lazy item status */
     lazyItemStatus: any;
-    /**
-     * Getting a tracked lazy item.
-     */
     readonly lazyItem: any;
 };
 
-/**
- * Hook for initializing the tracking of an element's appearance on the screen.
- */
+/** Track element screen appearance. */
 export declare const useLazyRef: (options?: IntersectionObserverInit) => {
     intersectionObserver: IntersectionObserver | undefined;
-    /**
-     * Getting a tracked element.
-     * @param element tracked element
-     */
     getItem(element: HTMLElement): LazyItem;
-    /**
-     * Adding an element for tracking.
-     * @param element element for tracking
-     */
     addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>;
-    /**
-     * Removing an element from tracking.
-     */
     removeLazyItem: (element?: HTMLElement) => void;
-    /**
-     * Removing all elements from tracking.
-     */
     disconnectLazy: () => void | undefined;
 };
 
-/**
- * Returns the loading status.
- */
+/** Get loading status. */
 export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
 
-/**
- * Vue composable for reactive meta tags management with automatic DOM synchronization.
- * Uses singleton pattern - all components share the same meta state.
- */
+/** Reactive meta tags with DOM sync. Singleton pattern. */
 export declare const useMeta: () => Readonly<{
     meta: Meta;
-    /** Reactive page title (without suffix) */
     title: Ref<string, string>;
-    /** Reactive keywords meta tag */
     keyword: Ref<string, string>;
-    /** Reactive description meta tag */
     description: Ref<string, string>;
-    /** Reactive author meta tag */
     author: Ref<string, string>;
-    /** Reactive Open Graph / Twitter Card image URL */
     image: Ref<string, string>;
-    /** Reactive canonical URL */
     canonical: Ref<string, string>;
-    /** Reactive robots meta tag directive */
     robots: Ref<MetaRobots, MetaRobots>;
-    /** Reactive site name for Open Graph and Twitter Card */
     siteName: Ref<string, string>;
-    /**
-     * Generates HTML string for all meta tags (for SSR).
-     */
     getHtmlMeta: () => string;
-    /**
-     * Sets the suffix for the page title.
-     * @param suffix Suffix to set
-     */
     setSuffix: (suffix: string) => void;
 } & {
     init(): Readonly<{
         meta: Meta;
-        /** Reactive page title (without suffix) */
         title: Ref<string, string>;
-        /** Reactive keywords meta tag */
         keyword: Ref<string, string>;
-        /** Reactive description meta tag */
         description: Ref<string, string>;
-        /** Reactive author meta tag */
         author: Ref<string, string>;
-        /** Reactive Open Graph / Twitter Card image URL */
         image: Ref<string, string>;
-        /** Reactive canonical URL */
         canonical: Ref<string, string>;
-        /** Reactive robots meta tag directive */
         robots: Ref<MetaRobots, MetaRobots>;
-        /** Reactive site name for Open Graph and Twitter Card */
         siteName: Ref<string, string>;
-        /**
-         * Generates HTML string for all meta tags (for SSR).
-         */
         getHtmlMeta: () => string;
-        /**
-         * Sets the suffix for the page title.
-         * @param suffix Suffix to set
-         */
         setSuffix: (suffix: string) => void;
     }>;
     destroyExecute?(): void;
 }>;
 
-/**
- * Managing a list of links for the router.
- * @param list list of items
- * @param selected selected item
- * @param hasTo has to
- */
+/** Manage router-linked lists. */
 export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
     item: ComputedRef<T | undefined>;
-    /** Selected element */
     selected: Ref<string, string>;
     label: ComputedRef<NumberOrString>;
-    /** List of elements */
     list: ComputedRef<ConstrBind<T>[]>;
     to: (name?: string) => void;
-    /**
-     * Transition to the main element.
-     */
     toMain(): void;
 };
 
-/**
- * Composable for handling search logic with reactive data.
- * @param list list of items to search
- * @param columns columns to search in
- * @param value reactive search string
- * @param options search options
- */
+/** Reactive search logic. */
 export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
-    /**
-     * Whether the search is currently active (minimum character limit reached)
-     */
     isSearch: ComputedRef<boolean>;
-    /** Search string ref */
     search: Ref<string, string>;
-    /**
-     * Search loading status (if delay is used)
-     */
     loading: Ref<boolean, boolean>;
-    /**
-     * Formatted list of search results with highlights
-     */
     listSearch: ComputedRef<SearchFormatList<T, K>>;
-    /**
-     * Length of the search results
-     */
     length: ComputedRef<number>;
 };
 
-/**
- * Composable for managing search value state and handling delays.
- * @param item search list instance
- * @param value reactive search string
- */
+/** Manage search state and debouncing. */
 export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
-    /** Current search value */
     search: Ref<string, string>;
-    /** Search value with applied delay */
     searchDelay: Ref<string, string>;
-    /** Loading status during delay */
     loading: Ref<boolean, boolean>;
 };
 
-/**
- * Creates a reactive variable to manage session storage.
- * @param name value name
- * @param defaultValue default value
- */
+/** Reactive session storage management. */
 export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
 
-/**
- * Creates a reactive variable to manage a local storage.
- * @param name value name
- * @param defaultValue default value
- * @param cache cache time
- */
+/** Reactive local storage management. */
 export declare function useStorageRef<T>(name: string, defaultValue?: T | (() => T), cache?: number): Ref<T | undefined>;
 
 /**
- * Getting the translated text by an array of keys or a string with a key.
- *
- * It returns a `ShallowRef` that automatically updates when the global language changes.
- * Use `as const` for arrays to ensure proper TypeScript key inference.
- *
- * ### Examples
- * ```typescript
- * // 1. Using the main composable
- * const translations = useTranslateRef(['home.title', 'home.description'] as const);
- *
- * // 2. Using the shorthand 't'
- * const labels = t(['button.save', 'button.cancel'] as const);
- * ```
- *
- * @param names a string or an array with keys
- * @param translateInstance a translate instance
+ * Get reactive translation keys. Updates on language change.
+ * @example
+ * const translations = useTranslateRef(['home.title'] as const);
  */
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
 
 export * from "@dxtmisha/functional-basic";
+
+export { }

@@ -885,6 +885,56 @@ export declare class EventRef<E extends ElementOrWindow, O extends Event, D exte
  * @param type initialization strategy (defaults to provide) / стратегия инициализации (по умолчанию provide)
  *
  * @returns {function} accessor function for the singleton / функция-аксессор для синглтона
+ *
+ * @remarks
+ * Use this function in the following cases:
+ * - **API Services:** Always wrap API clients to ensure a single connection point and unified state.
+ * - **Resource Optimization:** For functions where creating multiple instances is undesirable (e.g., heavy objects, event buses).
+ * - **Shared State:** To share reactive state within a component tree using the `provide` strategy.
+ * - **External SDKs:** Initializing third-party libraries (analytics, maps, charts) that should be singletons.
+ *
+ * Используйте эту функцию в следующих случаях:
+ * - **API-сервисы:** Всегда оборачивайте API-клиенты для обеспечения единой точки подключения и унифицированного состояния.
+ * - **Оптимизация ресурсов:** Для функций, где нежелательно создание множества экземпляров (например, тяжелые объекты, шины событий).
+ * - **Общее состояние:** Для совместного использования реактивного состояния в дереве компонентов с помощью стратегии `provide`.
+ * - **Внешние SDK:** Инициализация сторонних библиотек (аналитика, карты, графики), которые должны быть синглтонами.
+ *
+ * @example
+ * // 1. Global API singleton (useApiGet)/ Глобальный синглтон API (useApiGet)
+ * export const useUserApi = executeUseGlobal(() => {
+ *   return useApiGet('/api/user');
+ * });
+ *
+ * @example
+ * // 2. Shared Reactive State/ Общее реактивное состояние
+ * export const useFeatureState = executeUseProvide(() => {
+ *   // Reactive logic here/ Здесь может быть реактивная логика (reactive, ref)
+ *   const items = [];
+ *   const addItem = (item) => items.push(item);
+ *   return { items, addItem };
+ * });
+ *
+ * @example
+ * // 3. Local Caching/ Локальное кеширование
+ * export const useHeavyResource = executeUseLocal((config) => {
+ *   return new HeavyResource(config);
+ * });
+ *
+ * @example
+ * // 4. Complex API Service (useApiManagementRef)/ Комплексный API-сервис (useApiManagementRef)
+ * export const useUserManagement = executeUseGlobal(() => {
+ *   return useApiManagementRef(
+ *     { path: '/api/users' },                 // GET setup
+ *     { date: (v) => new Date(v).toLocaleString() }, // Formatters
+ *     { columns: ['name', 'email'] },         // Search
+ *     { path: '/api/users' },                 // POST (create)
+ *     { path: (o) => `/api/users/${o.id}` },  // PUT (update)
+ *     { path: (o) => `/api/users/${o.id}` }   // DELETE (remove)
+ *   );
+ * });
+ *
+ * // Usage in component/ Использование в компоненте:
+ * // const { list, loading, sendPost, sendDelete } = useUserManagement();
  */
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
 
@@ -892,6 +942,12 @@ export declare function executeUse<R, O extends any[], RI extends ExecuteUseRetu
  * Creates a global singleton.
  *
  * Создает глобальный синглтон.
+ *
+ * @remarks
+ * See {@link executeUse} for more details.
+ *
+ * Подробнее см. {@link executeUse}.
+ *
  * @param callback Initialization function/ Функция инициализации
  */
 export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<R & {
@@ -929,6 +985,14 @@ export declare function executeUseGlobalInit(): void;
  * Creates a local singleton.
  *
  * Создает локальный синглтон.
+ *
+ * @remarks
+ * Best for internal state preservation within a closure.
+ * See {@link executeUse} for more details.
+ *
+ * Лучше всего подходит для сохранения внутреннего состояния внутри замыкания.
+ * Подробнее см. {@link executeUse}.
+ *
  * @param callback Initialization function/ Функция инициализации
  */
 export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
@@ -959,6 +1023,14 @@ export declare function executeUseLocal<R, O extends any[]>(callback: (...args: 
  * Creates a component-scoped singleton.
  *
  * Создает компонентный синглтон.
+ *
+ * @remarks
+ * Best for sharing state within a component sub-tree.
+ * See {@link executeUse} for more details.
+ *
+ * Лучше всего подходит для совместного использования состояния внутри поддерева компонентов.
+ * Подробнее см. {@link executeUse}.
+ *
  * @param callback Initialization function/ Функция инициализации
  */
 export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
@@ -2140,6 +2212,40 @@ export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFe
  * Рекомендуется использовать этот хук в тандеме с `executeUse` для централизованного управления состоянием.
  * Обернув `useApiManagementRef` в `executeUseProvide` или `executeUseGlobal`, вы обеспечите
  * единый источник истины в дереве компонентов или во всем приложении.
+ *
+ * @remarks
+ * Data formatting guidelines for `formattersOptions`:
+ * - **Recommended for formatting:** Numbers that represent values (prices, counts), dates, currency, units, and statuses.
+ * - **Not recommended for formatting:** Technical identifiers such as ID, UUID, account numbers (if used for logic), types, or internal codes.
+ *
+ * Рекомендации по форматированию данных для `formattersOptions`:
+ * - **Рекомендуется для форматирования:** Числа, представляющие значения (цены, количества), даты, валюта, единицы измерения и статусы.
+ * - **Не рекомендуется для форматирования:** Технические идентификаторы, такие как ID, UUID, номера счетов (если они используются для логики), типы или внутренние коды.
+ *
+ * @example
+ * // 1. Comprehensive API orchestration/ Комплексная оркестрация API
+ * const products = useApiManagementRef(
+ *   {
+ *     path: '/api/v1/products',
+ *     skeleton: () => Array(5).fill({ id: 0, name: 'Loading...', price: 0 })
+ *   },
+ *   {
+ *     // Formatters for display/ Форматтеры для отображения
+ *     price: (v) => `${v} USD`,
+ *     created_at: (v) => new Date(v).toLocaleDateString()
+ *   },
+ *   {
+ *     // Client-side search setup/ Настройка поиска на стороне клиента
+ *     columns: ['name', 'category']
+ *   },
+ *   { path: '/api/v1/products' }, // POST (create)
+ *   { path: (data) => `/api/v1/products/${data.id}` }, // PUT (update)
+ *   { path: (data) => `/api/v1/products/${data.id}` }  // DELETE (remove)
+ * );
+ *
+ * // Accessing data/ Доступ к данным:
+ * // products.list.value -> processed, formatted, and searched list
+ * // products.sendPost({ name: 'New Product', price: 100 }) -> execute mutation
  */
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     /** Whether data passed the `typeData` check / `true`, если данные прошли проверку `typeData` */

@@ -277,6 +277,18 @@ export const wikiOption: StorybookArgsToList = {
       label: 1234567
     }
   },
+  limit: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Limits the number of simultaneously visible items',
+        ru: 'Ограничивает количество одновременно видимых элементов'
+      }
+    }
+  },
   maxlengthOnce: {
     type: StorybookControl.number,
     options: {

@@ -77,6 +77,7 @@ var f = class {
 					key: "button-close",
 					class: (t = this.classes) == null ? void 0 : t.value.close,
 					icon: this.props.iconClose,
+					onclick: this.item.onClose,
 					...e.label(this.item.text.close.value)
 				}, void 0, "button-close");
 			}

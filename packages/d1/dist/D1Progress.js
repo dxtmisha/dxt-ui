@@ -1,3 +1,2 @@
-import "./D1Progress-D8vaV3J3.js";
-import { t as e } from "./Progress-BAZDdrS1.js";
+import { t as e } from "./Progress-DSR_WO0S.js";
 export { e as D1Progress };

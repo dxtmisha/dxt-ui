@@ -11,12 +11,37 @@ import {Meta, Unstyled} from '@storybook/addon-docs/blocks'
 
 Простая кнопка с базовой рамкой и эффектами при наведении и нажатии.
 
+### Базовая кнопка
+
 ```html
 <button class="wiki-storybook-button">Button Title</button>
 ```
 
 <Unstyled>
   <button class="wiki-storybook-button">Base Button</button>
+</Unstyled>
+
+### Виды
+
+- `.wiki-storybook-button--success`: Зеленая кнопка успеха.
+- `.wiki-storybook-button--error`: Красная кнопка ошибки.
+- `.wiki-storybook-button--warning`: Желтая кнопка предупреждения.
+- `.wiki-storybook-button--info`: Синяя кнопка информации.
+
+```html
+<button class="wiki-storybook-button wiki-storybook-button--success">Успех</button>
+<button class="wiki-storybook-button wiki-storybook-button--error">Ошибка</button>
+<button class="wiki-storybook-button wiki-storybook-button--warning">Предупреждение</button>
+<button class="wiki-storybook-button wiki-storybook-button--info">Инфо</button>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex">
+    <button class="wiki-storybook-button wiki-storybook-button--success">Успех</button>
+    <button class="wiki-storybook-button wiki-storybook-button--error">Ошибка</button>
+    <button class="wiki-storybook-button wiki-storybook-button--warning">Предупреждение</button>
+    <button class="wiki-storybook-button wiki-storybook-button--info">Инфо</button>
+  </div>
 </Unstyled>
 
 

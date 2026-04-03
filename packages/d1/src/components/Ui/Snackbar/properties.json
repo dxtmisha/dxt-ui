@@ -3,17 +3,20 @@
   "gap": "{sys.spacing.md}",
   "paddingX": "{layout.paddingX}",
   "paddingY": "{layout.paddingY}",
+  "#item": {},
   "media|md": {
     "link|vertical": "{??vertical.bottom}",
     "link|horizontal": "{??horizontal.right}",
     "link|origin": "{??origin.rightToLeft}",
-    "link|all": "{??all}"
+    "link|all": "{??all}",
+    "link|limit": "{??limit.6}"
   },
   "media-max|md": {
     "link|vertical": "{??vertical.top}",
     "link|horizontal": "{??horizontal.block}",
     "link|origin": "{??origin.topToBottom}",
     "link|all": "{??full}",
+    "link|limit": "{??limit.1}",
     "#priority": {
       "link|origin": "{??origin.bottomToTop}"
     }

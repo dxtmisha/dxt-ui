@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import {
   inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -11,6 +10,8 @@ import {
   type SnackbarEmits,
   type SnackbarSlots
 } from '@dxtmisha/constructor/Snackbar'
+
+import { D1SnackbarItem } from '../SnackbarItem'
 
 import { defaults, type SnackbarProps, propsValues } from './props'
 import './styleToken.scss'
@@ -28,6 +29,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-snackbar': true,
     'd1-snackbar--full': props.full,
     'd1-snackbar--all': props.all,
+    [`d1-snackbar--limit--${props.limit}`]: inArray(propsValues.limit, props.limit),
     [`d1-snackbar--vertical--${props.vertical}`]: inArray(propsValues.vertical, props.vertical),
     [`d1-snackbar--horizontal--${props.horizontal}`]: inArray(propsValues.horizontal, props.horizontal),
     [`d1-snackbar--origin--${props.origin}`]: inArray(propsValues.origin, props.origin)
@@ -45,7 +47,10 @@ const design = new SnackbarDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      snackbarItem: D1SnackbarItem
+    }
   }
 )
 

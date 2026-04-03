@@ -45,6 +45,7 @@ import { wikiPropsTextarea } from './wikiPropsTextarea'
 import { wikiScrollbar } from './wikiScrollbar'
 import { wikiSelect } from './wikiSelect'
 import { wikiSelectValue } from './wikiSelectValue'
+import { wikiSnackbar } from './wikiSnackbar'
 import { wikiSnackbarItem } from './wikiSnackbarItem'
 import { wikiTabs } from './wikiTabs'
 import { wikiTabsNavigation } from './wikiTabsNavigation'
@@ -97,6 +98,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiScrollbar,
   ...wikiSelect,
   ...wikiSelectValue,
+  ...wikiSnackbar,
   ...wikiSnackbarItem,
   ...wikiTabs,
   ...wikiTabsNavigation,

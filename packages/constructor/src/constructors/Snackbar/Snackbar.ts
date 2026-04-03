@@ -2,6 +2,7 @@ import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { SnackbarData } from './SnackbarData'
+import { SnackbarEvent } from './SnackbarEvent'
 
 import type { SnackbarComponents, SnackbarEmits, SnackbarSlots } from './types'
 import type { SnackbarProps } from './props'
@@ -12,6 +13,9 @@ import type { SnackbarProps } from './props'
 export class Snackbar {
   /** Data manager for snackbar / Менеджер данных для снекбара */
   readonly data: SnackbarData
+
+  /** Event manager for snackbar / Менеджер событий для снекбара */
+  readonly event: SnackbarEvent
 
   /**
    * Constructor
@@ -37,13 +41,22 @@ export class Snackbar {
     protected readonly emits?: ConstrEmit<SnackbarEmits>,
     constructors?: {
       DataConstructor?: typeof SnackbarData
+      EventConstructor?: typeof SnackbarEvent
     }
   ) {
     const {
-      DataConstructor = SnackbarData
+      DataConstructor = SnackbarData,
+      EventConstructor = SnackbarEvent
     } = constructors ?? {}
 
-    this.data = new DataConstructor(props, element as any, className)
+    this.event = new EventConstructor(emits)
+
+    this.data = new DataConstructor(
+      props,
+      element as any,
+      className,
+      this.event
+    )
   }
 
   /**

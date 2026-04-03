@@ -1,6 +1,4 @@
-import "./D1Icon-DNWzv1hb.js";
-import "./Image-CKe9JQ0K.js";
-import { t as e } from "./D1Badge-B1fWQk6q.js";
+import { t as e } from "./D1Badge-CMTl-Rpk.js";
 //#region src/components/Ui/Badge/index.ts
 var t = e;
 //#endregion

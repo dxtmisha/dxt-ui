@@ -27,45 +27,51 @@ type Story = StoryObj<typeof meta>
 
 export const Snackbar: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1Snackbar },
+    setup: () => ({ args }),
+    template: `
+      <div class="wiki-storybook-flex-column">
+      <div class="wiki-storybook-flex">
+        <button
+          class="wiki-storybook-button"
+          @click="() => $refs.snackbar.add({ data: { label: 'Action completed', icon: 'check_circle' }, delay: 3000 })"
+        >
+          Success Message
+        </button>
+        <button
+          class="wiki-storybook-button"
+          @click="() => $refs.snackbar.add({ data: { label: 'Connection timeout', description: 'Retrying in 5s...', icon: 'error' }, highPriority: true })"
+        >
+          System Error
+        </button>
+        <button
+          class="wiki-storybook-button wiki-storybook-button--warning"
+          @click="() => $refs.snackbar.clear()"
+        >
+          Clear Queue
+        </button>
+      </div>
+      <D1Snackbar ref="snackbar" v-bind="args" />
+    </div>
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка
 export const SnackbarBasic: Story = {
-  name: 'Базовые',
+  name: 'Базовое использование',
   render: () => ({
     components: { D1Snackbar },
     template: `
         <div class="wiki-storybook-flex">
           <D1Snackbar ref="snackbar" />
-          <D1Button 
-            label="Add Snackbar" 
-            primary 
-            @click="() => $refs.snackbar.add({ label: 'Basic message' })" 
+          <D1Button
+            label="Push Message"
+            primary
+            @click="() => $refs.snackbar.add({ data: { label: 'Action completed successfully' } })"
           />
-        </div>
-    `
-  })
-}
-export const SnackbarPosition: Story = {
-  name: 'Позиционирование',
-  render: () => ({
-    components: { D1Snackbar },
-    template: `
-        <div class="wiki-storybook-flex">
-          <D1Button 
-            label="Top Left" 
-            outline 
-            @click="() => $refs.snackbarTopLeft.add({ label: 'Top Left message' })" 
-          />
-          <D1Button 
-            label="Bottom Right" 
-            outline 
-            @click="() => $refs.snackbarBottomRight.add({ label: 'Bottom Right message' })" 
-          />
-          
-          <D1Snackbar ref="snackbarTopLeft" vertical="top" horizontal="left" />
-          <D1Snackbar ref="snackbarBottomRight" vertical="bottom" horizontal="right" />
         </div>
     `
   })

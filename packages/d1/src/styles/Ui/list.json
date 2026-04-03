@@ -9773,12 +9773,12 @@
                   "transformPreparation": {
                     "name": "--d1-snackbar-transformPreparation",
                     "type": "var",
-                    "value": "translateX(calc(64px * #{isDir()}))"
+                    "value": "translateX(calc(64px * #{ui.isDir()}))"
                   },
                   "transformOrigin": {
                     "name": "--d1-snackbar-transformOrigin",
                     "type": "var",
-                    "value": "center #{dirRight()}"
+                    "value": "center #{ui.dirRight()}"
                   }
                 }
               },
@@ -9789,12 +9789,12 @@
                   "transformPreparation": {
                     "name": "--d1-snackbar-transformPreparation",
                     "type": "var",
-                    "value": "translateX(calc(-64px * #{isDir()}))"
+                    "value": "translateX(calc(-64px * #{ui.isDir()}))"
                   },
                   "transformOrigin": {
                     "name": "--d1-snackbar-transformOrigin",
                     "type": "var",
-                    "value": "center #{dirLeft()}"
+                    "value": "center #{ui.dirLeft()}"
                   }
                 }
               }
@@ -9807,12 +9807,12 @@
               "transformPreparation": {
                 "name": "--d1-snackbar-transformPreparation",
                 "type": "var",
-                "value": "translateX(calc(64px * #{isDir()}))"
+                "value": "translateX(calc(64px * #{ui.isDir()}))"
               },
               "transformOrigin": {
                 "name": "--d1-snackbar-transformOrigin",
                 "type": "var",
-                "value": "center #{dirRight()}"
+                "value": "center #{ui.dirRight()}"
               }
             }
           },
@@ -11066,12 +11066,12 @@
                   "transformPreparation": {
                     "name": "--d-snackbar-transformPreparation",
                     "type": "var",
-                    "value": "translateX(calc(64px * #{isDir()}))"
+                    "value": "translateX(calc(64px * #{ui.isDir()}))"
                   },
                   "transformOrigin": {
                     "name": "--d-snackbar-transformOrigin",
                     "type": "var",
-                    "value": "center #{dirRight()}"
+                    "value": "center #{ui.dirRight()}"
                   }
                 }
               },
@@ -11082,12 +11082,12 @@
                   "transformPreparation": {
                     "name": "--d-snackbar-transformPreparation",
                     "type": "var",
-                    "value": "translateX(calc(-64px * #{isDir()}))"
+                    "value": "translateX(calc(-64px * #{ui.isDir()}))"
                   },
                   "transformOrigin": {
                     "name": "--d-snackbar-transformOrigin",
                     "type": "var",
-                    "value": "center #{dirLeft()}"
+                    "value": "center #{ui.dirLeft()}"
                   }
                 }
               }

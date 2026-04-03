@@ -1,6 +1,8 @@
 import { computed, type Ref, shallowRef } from 'vue'
 import { isElementVisible } from '@dxtmisha/functional-basic'
 
+import { SnackbarEvent } from './SnackbarEvent'
+
 import type { SnackbarList, SnackbarValue } from './basicTypes'
 import type { SnackbarProps } from './props'
 
@@ -19,11 +21,13 @@ export class SnackbarData {
    * @param props input data/ входные данные
    * @param element window element/ элемент окна
    * @param className class name/ название класса
+   * @param event event manager for snackbar/ менеджер событий для снекбара
    */
   constructor(
     protected readonly props: Readonly<SnackbarProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly className: string
+    protected readonly className: string,
+    protected readonly event?: SnackbarEvent
   ) {
   }
 
@@ -45,6 +49,16 @@ export class SnackbarData {
         item => item.highPriority === true
       ) !== -1
   )
+
+  /**
+   * Returns a message element by its value.
+   *
+   * Возвращает запись сообщения по его идентификатору.
+   * @param value element identification/ идентификация элемента
+   */
+  getItemByValue(value: string): SnackbarValue | undefined {
+    return this.item.value.find(item => item.value === value)
+  }
 
   /**
    * Add message element.
@@ -82,6 +96,7 @@ export class SnackbarData {
       if (element) {
         element.addEventListener('transitionend', () => this.toNone(value))
         element.classList.add(`${this.className}--hide`)
+        setTimeout(() => this.toNone(value), 512)
       } else {
         this.toNone(value)
       }
@@ -111,16 +126,6 @@ export class SnackbarData {
   }
 
   /**
-   * Returns a message element by its value.
-   *
-   * Возвращает запись сообщения по его идентификатору.
-   * @param value element identification/ идентификация элемента
-   */
-  protected getItemByValue(value: string): SnackbarValue | undefined {
-    return this.item.value.find(item => item.value === value)
-  }
-
-  /**
    * Returns a message value.
    *
    * Возвращает идентификатор сообщения.
@@ -147,7 +152,12 @@ export class SnackbarData {
    * @param value element identification/ идентификация элемента
    */
   protected toNone(value: string) {
-    this.item.value = this.item.value.filter(item => item.value !== value)
+    const item = this.getItemByValue(value)
+
+    if (item) {
+      this.item.value = this.item.value.filter(item => item.value !== value)
+      this.event?.hide(value, item)
+    }
   }
 
   /**
@@ -161,20 +171,26 @@ export class SnackbarData {
     value: string,
     delay: number
   ) {
-    requestAnimationFrame(() => {
-      if (delay > 0) {
-        const element = this.getElementItem(value)
+    if (delay < 0) {
+      return
+    }
 
-        if (
-          element
-          && isElementVisible(element)
-        ) {
-          element.addEventListener('animationend', () => {
-            setTimeout(() => this.remove(value), delay)
-          })
-        } else {
-          this.toShow(value, delay)
-        }
+    requestAnimationFrame(() => {
+      const element = this.getElementItem(value)
+      const item = this.getItemByValue(value)
+
+      if (!item) {
+        return
+      }
+
+      if (
+        element
+        && isElementVisible(element)
+      ) {
+        this.event?.show(value, item)
+        setTimeout(() => this.remove(value), delay + 256)
+      } else {
+        setTimeout(() => this.toShow(value, delay), 128)
       }
     })
   }

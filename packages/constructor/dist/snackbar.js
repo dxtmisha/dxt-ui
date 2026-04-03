@@ -15,7 +15,7 @@ var c = 0, l = class {
 		}), e(this, "remove", (e) => {
 			if (this.getItemByValue(e)) {
 				let t = this.getElementItem(e);
-				t ? (t.addEventListener("transitionend", () => this.toNone(e)), t.classList.add(`${this.className}--hide`)) : this.toNone(e);
+				t ? (t.addEventListener("transitionend", () => this.toNone(e)), t.classList.add(`${this.className}--hide`), setTimeout(() => this.toNone(e), 512)) : this.toNone(e);
 			}
 		}), e(this, "clear", () => {
 			this.item.value.forEach((e) => e.value && this.remove(e.value));

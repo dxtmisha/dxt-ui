@@ -11,12 +11,38 @@ A collection of auxiliary classes for creating simple buttons, placeholders (ske
 
 A simple button with a basic border and effects upon hovering and clicking.
 
+### Base Button
+
 ```html
 <button class="wiki-storybook-button">Button Title</button>
 ```
 
 <Unstyled>
   <button class="wiki-storybook-button">Base Button</button>
+</Unstyled>
+
+
+### Variants
+
+- `.wiki-storybook-button--success`: Green success button.
+- `.wiki-storybook-button--error`: Red error button.
+- `.wiki-storybook-button--warning`: Yellow warning button.
+- `.wiki-storybook-button--info`: Blue info button.
+
+```html
+<button class="wiki-storybook-button wiki-storybook-button--success">Success</button>
+<button class="wiki-storybook-button wiki-storybook-button--error">Error</button>
+<button class="wiki-storybook-button wiki-storybook-button--warning">Warning</button>
+<button class="wiki-storybook-button wiki-storybook-button--info">Info</button>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex">
+    <button class="wiki-storybook-button wiki-storybook-button--success">Success</button>
+    <button class="wiki-storybook-button wiki-storybook-button--error">Error</button>
+    <button class="wiki-storybook-button wiki-storybook-button--warning">Warning</button>
+    <button class="wiki-storybook-button wiki-storybook-button--info">Info</button>
+  </div>
 </Unstyled>
 
 

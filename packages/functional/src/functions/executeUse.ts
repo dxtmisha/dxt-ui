@@ -68,6 +68,56 @@ const scope = effectScope()
  * @param type initialization strategy (defaults to provide) / стратегия инициализации (по умолчанию provide)
  *
  * @returns {function} accessor function for the singleton / функция-аксессор для синглтона
+ *
+ * @remarks
+ * Use this function in the following cases:
+ * - **API Services:** Always wrap API clients to ensure a single connection point and unified state.
+ * - **Resource Optimization:** For functions where creating multiple instances is undesirable (e.g., heavy objects, event buses).
+ * - **Shared State:** To share reactive state within a component tree using the `provide` strategy.
+ * - **External SDKs:** Initializing third-party libraries (analytics, maps, charts) that should be singletons.
+ *
+ * Используйте эту функцию в следующих случаях:
+ * - **API-сервисы:** Всегда оборачивайте API-клиенты для обеспечения единой точки подключения и унифицированного состояния.
+ * - **Оптимизация ресурсов:** Для функций, где нежелательно создание множества экземпляров (например, тяжелые объекты, шины событий).
+ * - **Общее состояние:** Для совместного использования реактивного состояния в дереве компонентов с помощью стратегии `provide`.
+ * - **Внешние SDK:** Инициализация сторонних библиотек (аналитика, карты, графики), которые должны быть синглтонами.
+ *
+ * @example
+ * // 1. Global API singleton (useApiGet)/ Глобальный синглтон API (useApiGet)
+ * export const useUserApi = executeUseGlobal(() => {
+ *   return useApiGet('/api/user');
+ * });
+ *
+ * @example
+ * // 2. Shared Reactive State/ Общее реактивное состояние
+ * export const useFeatureState = executeUseProvide(() => {
+ *   // Reactive logic here/ Здесь может быть реактивная логика (reactive, ref)
+ *   const items = [];
+ *   const addItem = (item) => items.push(item);
+ *   return { items, addItem };
+ * });
+ *
+ * @example
+ * // 3. Local Caching/ Локальное кеширование
+ * export const useHeavyResource = executeUseLocal((config) => {
+ *   return new HeavyResource(config);
+ * });
+ *
+ * @example
+ * // 4. Complex API Service (useApiManagementRef)/ Комплексный API-сервис (useApiManagementRef)
+ * export const useUserManagement = executeUseGlobal(() => {
+ *   return useApiManagementRef(
+ *     { path: '/api/users' },                 // GET setup
+ *     { date: (v) => new Date(v).toLocaleString() }, // Formatters
+ *     { columns: ['name', 'email'] },         // Search
+ *     { path: '/api/users' },                 // POST (create)
+ *     { path: (o) => `/api/users/${o.id}` },  // PUT (update)
+ *     { path: (o) => `/api/users/${o.id}` }   // DELETE (remove)
+ *   );
+ * });
+ *
+ * // Usage in component/ Использование в компоненте:
+ * // const { list, loading, sendPost, sendDelete } = useUserManagement();
  */
 export function executeUse<
   R,
@@ -168,6 +218,12 @@ export function executeUse<
  * Creates a global singleton.
  *
  * Создает глобальный синглтон.
+ *
+ * @remarks
+ * See {@link executeUse} for more details.
+ *
+ * Подробнее см. {@link executeUse}.
+ *
  * @param callback Initialization function/ Функция инициализации
  */
 export function executeUseGlobal<R>(callback: () => R) {
@@ -178,6 +234,14 @@ export function executeUseGlobal<R>(callback: () => R) {
  * Creates a component-scoped singleton.
  *
  * Создает компонентный синглтон.
+ *
+ * @remarks
+ * Best for sharing state within a component sub-tree.
+ * See {@link executeUse} for more details.
+ *
+ * Лучше всего подходит для совместного использования состояния внутри поддерева компонентов.
+ * Подробнее см. {@link executeUse}.
+ *
  * @param callback Initialization function/ Функция инициализации
  */
 export function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R) {
@@ -188,6 +252,14 @@ export function executeUseProvide<R, O extends any[]>(callback: (...args: O) => 
  * Creates a local singleton.
  *
  * Создает локальный синглтон.
+ *
+ * @remarks
+ * Best for internal state preservation within a closure.
+ * See {@link executeUse} for more details.
+ *
+ * Лучше всего подходит для сохранения внутреннего состояния внутри замыкания.
+ * Подробнее см. {@link executeUse}.
+ *
  * @param callback Initialization function/ Функция инициализации
  */
 export function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R) {

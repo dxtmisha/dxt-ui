@@ -24,6 +24,33 @@
       "display": "block"
     }
   },
+  "~limit": {
+    "~1": {
+      "& div:nth-of-type(n+2)": {
+        "display": "none"
+      }
+    },
+    "~2": {
+      "& div:nth-of-type(n+3)": {
+        "display": "none"
+      }
+    },
+    "~4": {
+      "& div:nth-of-type(n+5)": {
+        "display": "none"
+      }
+    },
+    "~6": {
+      "& div:nth-of-type(n+7)": {
+        "display": "none"
+      }
+    },
+    "~8": {
+      "& div:nth-of-type(n+9)": {
+        "display": "none"
+      }
+    }
+  },
   "~vertical": {
     "~top": {
       "justify-content": "flex-start"
@@ -57,12 +84,12 @@
       "transform-origin": "bottom center"
     },
     "~rightToLeft": {
-      "transform-preparation": "translateX(calc(64px * #{isDir()}))",
-      "transform-origin": "center #{dirRight()}"
+      "transform-preparation": "translateX(calc(64px * #{ui.isDir()}))",
+      "transform-origin": "center #{ui.dirRight()}"
     },
     "~leftToRight": {
-      "transform-preparation": "translateX(calc(-64px * #{isDir()}))",
-      "transform-origin": "center #{dirLeft()}"
+      "transform-preparation": "translateX(calc(-64px * #{ui.isDir()}))",
+      "transform-origin": "center #{ui.dirLeft()}"
     }
   }
 }

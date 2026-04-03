@@ -8,67 +8,68 @@ import type { StorybookComponentsDescriptionItem } from '../../types/storybookTy
 export const wikiDescriptionsSnackbar: StorybookComponentsDescriptionItem = {
   name: 'Snackbar',
   description: {
-    en: 'A container component for managing and displaying temporary notification messages (Snackbars).',
-    ru: 'Компонент-контейнер для управления и отображения временных уведомлений (Snackbars).'
+    en: 'An orchestration component for managing and displaying a queue of temporary notification messages (Snackbars).',
+    ru: 'Компонент-оркестратор для управления и отображения очереди временных уведомлений (Snackbars).'
   },
   possibilities: {
     en: [
-      'automatic disappearance of messages after a set delay',
-      'flexible positioning (top, bottom, left, right, block)',
-      'priority-based message sorting',
-      'support for custom animation origins',
-      'teleportation to the document body for better layering',
-      'programmatic control (add, remove, clear)'
+      'automatic lifecycle management for notifications',
+      'flexible anchor positioning (top/bottom, left/right/block)',
+      'priority-based visual separation of messages',
+      'configurable auto-hide timeout',
+      'teleport-based rendering to ensure overlay on top of all elements',
+      'full programmatic control over the notification queue'
     ],
     ru: [
-      'автоматическое исчезновение сообщений после установленной задержки',
-      'гибкое позиционирование (сверху, снизу, слева, справа, блоком)',
-      'сортировка сообщений по приоритету',
-      'поддержка пользовательских точек начала анимации',
-      'телепортация в body документа для лучшего наслоения',
-      'программное управление (add, remove, clear)'
+      'автоматическое управление жизненным циклом уведомлений',
+      'гибкое позиционирование (сверху/снизу, слева/справа/блоком)',
+      'визуальное разделение сообщений по приоритету',
+      'настраиваемое время автоматического скрытия',
+      'рендер через Teleport для гарантированного отображения поверх всех элементов',
+      'полный программный контроль над очередью уведомлений'
     ]
   },
   import: [],
+  render: `
+    <div class="wiki-storybook-flex-column">
+      <div class="wiki-storybook-flex">
+        <button
+          class="wiki-storybook-button"
+          @click="() => $refs.snackbar.add({ data: { label: 'Action completed', icon: 'check_circle' }, delay: 3000 })"
+        >
+          Success Message
+        </button>
+        <button
+          class="wiki-storybook-button"
+          @click="() => $refs.snackbar.add({ data: { label: 'Connection timeout', description: 'Retrying in 5s...', icon: 'error' }, highPriority: true })"
+        >
+          System Error
+        </button>
+        <button
+          class="wiki-storybook-button wiki-storybook-button--warning"
+          @click="() => $refs.snackbar.clear()"
+        >
+          Clear Queue
+        </button>
+      </div>
+      <DesignComponent ref="snackbar" v-bind="args" />
+    </div>
+  `,
   stories: [
     {
       id: 'SnackbarBasic',
       name: {
-        en: 'Basic',
-        ru: 'Базовые'
+        en: 'Basic Usage',
+        ru: 'Базовое использование'
       },
       template: `
         <div class="wiki-storybook-flex">
           <DesignComponent ref="snackbar" />
-          <DesignButton 
-            label="Add Snackbar" 
-            primary 
-            @click="() => $refs.snackbar.add({ label: 'Basic message' })" 
+          <DesignButton
+            label="Push Message"
+            primary
+            @click="() => $refs.snackbar.add({ data: { label: 'Action completed successfully' } })"
           />
-        </div>
-      `
-    },
-    {
-      id: 'SnackbarPosition',
-      name: {
-        en: 'Positioning',
-        ru: 'Позиционирование'
-      },
-      template: `
-        <div class="wiki-storybook-flex">
-          <DesignButton 
-            label="Top Left" 
-            outline 
-            @click="() => $refs.snackbarTopLeft.add({ label: 'Top Left message' })" 
-          />
-          <DesignButton 
-            label="Bottom Right" 
-            outline 
-            @click="() => $refs.snackbarBottomRight.add({ label: 'Bottom Right message' })" 
-          />
-          
-          <DesignComponent ref="snackbarTopLeft" vertical="top" horizontal="left" />
-          <DesignComponent ref="snackbarBottomRight" vertical="bottom" horizontal="right" />
         </div>
       `
     }
@@ -76,58 +77,46 @@ export const wikiDescriptionsSnackbar: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Snackbar'} type={'snackbar'}/>
-<Canvas of={Component.SnackbarBasic}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'add'}/>
 
-<template prop="vertical">
-<StorybookDescriptions componentName={'Snackbar'} type={'vertical'}/>
-</template>
-
-<template prop="horizontal">
-<StorybookDescriptions componentName={'Snackbar'} type={'horizontal'}/>
-<Canvas of={Component.SnackbarPosition}/>
-</template>
-
-<template prop="origin">
-<StorybookDescriptions componentName={'Snackbar'} type={'origin'}/>
-</template>
-
-<StorybookDescriptions componentName={'Value'} type={'delay'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'adaptation'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'position'}/>
     `,
     events: `
-<StorybookDescriptions componentName={'Event'} type={'close'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'event.show'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'event.hide'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Expose'} type={'isItem'}/>
-<StorybookDescriptions componentName={'Expose'} type={'add'}/>
-<StorybookDescriptions componentName={'Expose'} type={'remove'}/>
-<StorybookDescriptions componentName={'Expose'} type={'clear'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'isItem'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'add'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'remove'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'clear'}/>
     `,
-    slots: ''
+    slots: `
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+`
   },
   ai: {
     description: `
-Snackbar is a notification system that manages multiple SnackbarItem elements. 
-It handles positioning, timing (automatic removal), and teleportation to the body.
+Snackbar is a centralized management system for temporary notifications. It renders \`SnackbarItem\` components and controls their lifecycle through a data manager.
 
-**Key Features:**
-1. **Management:**
-   - \`add(item)\`: Method to programmatically add a notification.
-   - \`remove(id)\`: Removes a specific notification.
-   - \`clear()\`: Removes all active notifications.
-2. **Positioning:**
-   - \`vertical\`: 'top' or 'bottom'.
-   - \`horizontal\`: 'right', 'left', or 'block'.
-3. **Behavior:**
-   - \`delay\`: Time in milliseconds before the message disappears (default: 8000).
-   - \`origin\`: Controls the direction from which notifications appear (e.g., 'bottomToTop').
+**Key API (Exposed):**
+- \`add(item: SnackbarValue)\`: Adds a new notification to the queue.
+  - \`SnackbarValue.data\`: Props for the \`SnackbarItem\` (label, description, etc.).
+  - \`SnackbarValue.highPriority\`: If true, renders the item in a separate priority container.
+  - \`SnackbarValue.delay\`: Individual delay for this particular message.
+- \`remove(value: string)\`: Manually removes a notification by its unique value/id.
+- \`clear()\`: Instantly removes all active notifications.
+- \`isItem\`: A ComputedRef<boolean> indicating if any notifications are currently visible.
 
-**Usage Example:**
-\`\`\`vue
-<Snackbar ref="mySnackbar" vertical="bottom" horizontal="right" />
+**Configuration:**
+- \`vertical\`: \`top\` | \`bottom\` (Anchor point vertical).
+- \`horizontal\`: \`right\` | \`left\` | \`block\` (Anchor point horizontal).
+- \`delay\`: Global auto-hide threshold (default: 8000ms).
+- \`origin\`: Entrance animation direction.
 
-<!-- Add message -->
-<Button @click="$refs.mySnackbar.add({ label: 'Item saved successfully', icon: 'check' })" />
-\`\`\`
-    `
+**Usage:**
+Place a single \`Snackbar\` component in the layout (often in the root App component) and interact with it via a template ref or a shared state manager.
+`
   }
 }

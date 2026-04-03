@@ -65,6 +65,40 @@ import type {
  * Рекомендуется использовать этот хук в тандеме с `executeUse` для централизованного управления состоянием.
  * Обернув `useApiManagementRef` в `executeUseProvide` или `executeUseGlobal`, вы обеспечите
  * единый источник истины в дереве компонентов или во всем приложении.
+ *
+ * @remarks
+ * Data formatting guidelines for `formattersOptions`:
+ * - **Recommended for formatting:** Numbers that represent values (prices, counts), dates, currency, units, and statuses.
+ * - **Not recommended for formatting:** Technical identifiers such as ID, UUID, account numbers (if used for logic), types, or internal codes.
+ *
+ * Рекомендации по форматированию данных для `formattersOptions`:
+ * - **Рекомендуется для форматирования:** Числа, представляющие значения (цены, количества), даты, валюта, единицы измерения и статусы.
+ * - **Не рекомендуется для форматирования:** Технические идентификаторы, такие как ID, UUID, номера счетов (если они используются для логики), типы или внутренние коды.
+ *
+ * @example
+ * // 1. Comprehensive API orchestration/ Комплексная оркестрация API
+ * const products = useApiManagementRef(
+ *   {
+ *     path: '/api/v1/products',
+ *     skeleton: () => Array(5).fill({ id: 0, name: 'Loading...', price: 0 })
+ *   },
+ *   {
+ *     // Formatters for display/ Форматтеры для отображения
+ *     price: (v) => `${v} USD`,
+ *     created_at: (v) => new Date(v).toLocaleDateString()
+ *   },
+ *   {
+ *     // Client-side search setup/ Настройка поиска на стороне клиента
+ *     columns: ['name', 'category']
+ *   },
+ *   { path: '/api/v1/products' }, // POST (create)
+ *   { path: (data) => `/api/v1/products/${data.id}` }, // PUT (update)
+ *   { path: (data) => `/api/v1/products/${data.id}` }  // DELETE (remove)
+ * );
+ *
+ * // Accessing data/ Доступ к данным:
+ * // products.list.value -> processed, formatted, and searched list
+ * // products.sendPost({ name: 'New Product', price: 100 }) -> execute mutation
  */
 export function useApiManagementRef<
   Return extends ApiManagementValue,

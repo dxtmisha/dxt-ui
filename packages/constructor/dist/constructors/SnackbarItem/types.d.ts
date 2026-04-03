@@ -17,7 +17,7 @@ export type SnackbarItemComponents = IconComponentInclude & ButtonComponentInclu
  * Тип, описывающий доступные события.
  */
 export type SnackbarItemEmits = ActionsEmitsInclude & EventClickEmits & {
-    close: [index: string | undefined];
+    close: [value: string | undefined];
 };
 /**
  * Type describing available properties.

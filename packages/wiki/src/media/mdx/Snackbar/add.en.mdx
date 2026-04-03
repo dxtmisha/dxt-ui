@@ -1,0 +1,44 @@
+## Adding Notifications
+
+The primary interaction with the `Snackbar` component occurs through the `add` method, which is used to dynamically push new messages into the queue.
+
+### Method add()
+
+The component instance (via `ref`) provides a `data` object containing the `add(item: SnackbarValue)` method. The `item` parameter determines the configuration and behavior of the new notification.
+
+```typescript
+snackbar.value?.data.add({
+  data: {
+    label: 'Notification Title',
+    description: 'Description of the occurring event'
+  }
+})
+```
+
+### SnackbarValue Structure
+
+The configuration object includes the following properties:
+
+- **`data`** (`SnackbarItemProps`) — Properties for the rendered component (by default `SnackbarItem`). This is where you pass information like `label`, `description`, `icon`, action buttons, and other visual data.
+- **`component`** (`any`) — Allows for passing a custom Vue component to be rendered instead of the standard `SnackbarItem`.
+- **`highPriority`** (`boolean`) — If `true`, the notification is displayed in a separate priority container (usually pinned to the top or the start of the list).
+- **`delay`** (`number`) — Individual lifespan of the notification in milliseconds. If omitted, the global `delay` value from the `Snackbar` settings is used.
+- **`value`** (`string`) — A unique key for the notification. If omitted, it is generated automatically. Used for manual removal of the message via the `remove(value)` method.
+
+### Custom Components
+
+For notifications with non-standard layouts, you can pass your own component via the `component` property. All properties specified in the `data` object will be passed to your component as `props`.
+
+```typescript
+import MyAlert from './MyAlert.vue'
+
+snackbar.value?.data.add({
+  component: MyAlert,
+  data: {
+    title: 'Warning!',
+    message: 'This is a message with custom styling'
+  }
+})
+```
+
+The `highPriority` property is recommended for critical system notifications or authorization errors, ensuring they reliably catch the user's attention and are displayed separately from the general message flow.

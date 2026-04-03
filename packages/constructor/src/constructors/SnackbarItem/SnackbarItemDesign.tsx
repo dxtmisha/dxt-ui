@@ -28,14 +28,14 @@ export class SnackbarItemDesign<
   CLASSES extends SnackbarItemClasses,
   P extends SnackbarItemPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SnackbarItemEmits,
-    EXPOSE,
-    SnackbarItemSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SnackbarItemEmits,
+  EXPOSE,
+  SnackbarItemSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: SnackbarItem
 
   /**
@@ -245,6 +245,7 @@ export class SnackbarItemDesign<
           key: 'button-close',
           class: this.classes?.value.close,
           icon: this.props.iconClose,
+          onclick: this.item.onClose,
           ...AriaStaticInclude.label(this.item.text.close.value)
         },
         undefined,

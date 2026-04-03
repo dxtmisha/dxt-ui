@@ -2,6 +2,7 @@ import { type SnackbarPropsBasic, defaultsSnackbar } from '@dxtmisha/constructor
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  limit: ['1', '2', '4', '6', '8'],
   vertical: ['top', 'bottom'],
   horizontal: ['right', 'left', 'block'],
   origin: ['topToBottom', 'bottomToTop', 'rightToLeft', 'leftToRight']
@@ -12,6 +13,7 @@ type PropsToken = {
   // :type [!] System label / Системная метка
   full?: boolean
   all?: boolean
+  limit?: '1' | '2' | '4' | '6' | '8'
   vertical?: 'top' | 'bottom'
   horizontal?: 'right' | 'left' | 'block'
   origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight'

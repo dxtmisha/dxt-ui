@@ -1666,6 +1666,15 @@
               }
             },
             {
+              "name": "has-label-min-width",
+              "description": "Indicates whether a minimum width should be applied to the label",
+              "default": "true",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
               "name": "inverse",
               "description": "Inverts component colors",
               "default": "false",
@@ -10117,6 +10126,436 @@
             }
           ],
           "events": []
+        },
+        {
+          "name": "D1Snackbar",
+          "description": "An orchestration component for managing and displaying a queue of temporary notification messages (Snackbars).",
+          "source": {
+            "module": "@dxtmisha/d1/D1Snackbar",
+            "symbol": "D1Snackbar"
+          },
+          "attributes": [
+            {
+              "name": "all",
+              "description": "If enabled, multiple notifications can be displayed simultaneously",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "full",
+              "description": "Expands notifications to full width, typically used on mobile devices",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "origin",
+              "description": "The direction from which the notification animation starts",
+              "value": {
+                "kind": "expression",
+                "type": "topToBottom | bottomToTop | rightToLeft | leftToRight"
+              }
+            },
+            {
+              "name": "delay",
+              "description": "Default display duration for notifications in milliseconds",
+              "default": "8000",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              }
+            },
+            {
+              "name": "horizontal",
+              "description": "Sets horizontal alignment of elements",
+              "value": {
+                "kind": "expression",
+                "type": "right | left | block"
+              }
+            },
+            {
+              "name": "limit",
+              "description": "Limits the number of simultaneously visible items",
+              "value": {
+                "kind": "expression",
+                "type": "1 | 2 | 4 | 6 | 8"
+              }
+            },
+            {
+              "name": "vertical",
+              "description": "Sets vertical alignment of elements",
+              "value": {
+                "kind": "expression",
+                "type": "top | bottom"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "vue-properties": []
+            }
+          ],
+          "events": [
+            {
+              "name": "hide",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "string"
+                },
+                {
+                  "name": "item",
+                  "type": "SnackbarValue"
+                }
+              ]
+            },
+            {
+              "name": "show",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "string"
+                },
+                {
+                  "name": "item",
+                  "type": "SnackbarValue"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "D1SnackbarItem",
+          "description": "Individual notification message element used within a Snackbar.",
+          "source": {
+            "module": "@dxtmisha/d1/D1SnackbarItem",
+            "symbol": "D1SnackbarItem"
+          },
+          "attributes": [
+            {
+              "name": "selected",
+              "description": "Selected state of the element",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "value",
+              "description": "Current value",
+              "value": {
+                "kind": "expression",
+                "type": "number | string"
+              }
+            },
+            {
+              "name": "button",
+              "description": "Button configuration (string for label, number, or full button props object)",
+              "value": {
+                "kind": "expression",
+                "type": "string | number | ConstrBind<ButtonPropsBasic> | null"
+              }
+            },
+            {
+              "name": "component",
+              "description": "Component to be rendered",
+              "value": {
+                "kind": "expression",
+                "type": "any"
+              }
+            },
+            {
+              "name": "component-props",
+              "description": "Properties for the rendered component",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              }
+            },
+            {
+              "name": "description",
+              "description": "Description text providing additional context",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "html",
+              "description": "HTML content to be rendered",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "label",
+              "description": "Text label for the component",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "actions-hide",
+              "description": "Hides the actions block",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "actions-list",
+              "description": "Array of primary action buttons displayed in the actions area",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
+              }
+            },
+            {
+              "name": "actions-secondary",
+              "description": "Array of secondary action buttons displayed in the actions area",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
+              }
+            },
+            {
+              "name": "icon",
+              "description": "Value of the main icon",
+              "value": {
+                "kind": "expression",
+                "type": "string | File"
+              }
+            },
+            {
+              "name": "icon-close",
+              "description": "Sets icon for close button",
+              "default": "close",
+              "value": {
+                "kind": "expression",
+                "type": "IconValue<IconPropsBasic>"
+              }
+            },
+            {
+              "name": "icon-dir",
+              "description": "Mirrors the icon depending on a site direction (RTL/LTR)",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "icon-hide",
+              "description": "Hides the icon",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "icon-palette",
+              "description": "Sets icon color based on palette class",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "icon-trailing",
+              "description": "Value of the trailing icon",
+              "value": {
+                "kind": "expression",
+                "type": "string | File"
+              }
+            },
+            {
+              "name": "icon-trailing-dir-only",
+              "description": "Applies direction mirroring only to the trailing icon",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "icon-trailing-palette",
+              "description": "Sets trailing icon color based on palette class",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "icon-trailing-turn-only",
+              "description": "Applies rotation only to the trailing icon",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "icon-turn",
+              "description": "Turns the icon",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "close-button",
+              "description": "Shows a close button in the header",
+              "default": "true",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "palette",
+              "description": "Sets a color palette for the element",
+              "value": {
+                "kind": "expression",
+                "type": "red | orange | amber | yellow | lime | green | emerald | teal | cyan | sky | blue | indigo | violet | purple | fuchsia | pink | rose | slate | gray | zinc | neutral | stone | black | white"
+              }
+            },
+            {
+              "name": "actions-attrs",
+              "description": "Additional attributes for the Actions component container",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<ActionsPropsBasic>"
+              }
+            },
+            {
+              "name": "icon-attrs",
+              "description": "Sets additional attributes for the icon element",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<IconPropsBasic>"
+              }
+            },
+            {
+              "name": "text-close",
+              "description": "Close text",
+              "value": {
+                "kind": "expression",
+                "type": "string | (() => string)"
+              }
+            },
+            {
+              "name": "role",
+              "description": "Defines the role of the element for accessibility",
+              "default": "status",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "description-id",
+              "description": "Unique identifier for the description element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "label-id",
+              "description": "Unique identifier for the label element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "body",
+              "vue-properties": []
+            },
+            {
+              "name": "default",
+              "description": "Default slot content/ Содержимое слота по умолчанию",
+              "vue-properties": []
+            },
+            {
+              "name": "description",
+              "description": "Description slot/ Слот описания",
+              "vue-properties": []
+            }
+          ],
+          "events": [
+            {
+              "name": "actions",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "MouseEvent"
+                },
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "actionsLite",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "click",
+              "description": "Full click event with MouseEvent/ Полное событие клика с MouseEvent",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "MouseEvent"
+                },
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "clickLite",
+              "description": "Lightweight click event/ Упрощённое событие клика",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "close",
+              "arguments": [
+                {
+                  "name": "index",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
         },
         {
           "name": "D1TabItem",

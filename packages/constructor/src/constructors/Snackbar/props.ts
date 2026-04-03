@@ -2,6 +2,7 @@ type SnackbarPropsToken = {
   // :type [!] System label / Системная метка
   full?: boolean
   all?: boolean
+  limit?: '1' | '2' | '4' | '6' | '8'
   vertical?: 'top' | 'bottom'
   horizontal?: 'right' | 'left' | 'block'
   origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight'

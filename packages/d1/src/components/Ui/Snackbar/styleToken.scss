@@ -28,6 +28,38 @@
       }
     }
     
+    &--limit {
+      &--1 {
+        & div:nth-of-type(n+2) {
+          display: none;
+        }
+      }
+      
+      &--2 {
+        & div:nth-of-type(n+3) {
+          display: none;
+        }
+      }
+      
+      &--4 {
+        & div:nth-of-type(n+5) {
+          display: none;
+        }
+      }
+      
+      &--6 {
+        & div:nth-of-type(n+7) {
+          display: none;
+        }
+      }
+      
+      &--8 {
+        & div:nth-of-type(n+9) {
+          display: none;
+        }
+      }
+    }
+    
     &--vertical {
       &--top {
         @include ui.justifyContent(#{flex-start});
@@ -71,19 +103,19 @@
       }
       
       &--rightToLeft {
-        --d1-snackbar-transformPreparation: translateX(calc(64px * #{isDir()}));
-        --d1-snackbar-transformOrigin: center #{dirRight()};
+        --d1-snackbar-transformPreparation: translateX(calc(64px * #{ui.isDir()}));
+        --d1-snackbar-transformOrigin: center #{ui.dirRight()};
       }
       
       &--leftToRight {
-        --d1-snackbar-transformPreparation: translateX(calc(-64px * #{isDir()}));
-        --d1-snackbar-transformOrigin: center #{dirLeft()};
+        --d1-snackbar-transformPreparation: translateX(calc(-64px * #{ui.isDir()}));
+        --d1-snackbar-transformOrigin: center #{ui.dirLeft()};
       }
     }
     
     @media screen and (min-width: 768px) {
-      --d1-snackbar-transformPreparation: translateX(calc(64px * #{isDir()}));
-      --d1-snackbar-transformOrigin: center #{dirRight()};
+      --d1-snackbar-transformPreparation: translateX(calc(64px * #{ui.isDir()}));
+      --d1-snackbar-transformOrigin: center #{ui.dirRight()};
       
       @include ui.right(#{var(--d1-snackbar-paddingX)});
       
@@ -92,6 +124,10 @@
       
       & aside:nth-of-type(-n+4) {
         display: block;
+      }
+      
+      & div:nth-of-type(n+7) {
+        display: none;
       }
     }
     
@@ -113,6 +149,10 @@
         --d1-snackbar-transformPreparation: translateY(64px);
         
         transform-origin: bottom center;
+      }
+      
+      & div:nth-of-type(n+2) {
+        display: none;
       }
     }
   }

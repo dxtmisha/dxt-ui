@@ -11,12 +11,38 @@ Tập hợp các class bổ trợ để tạo các nút bấm đơn giản, các
 
 Một nút bấm đơn giản với đường viền cơ bản và các hiệu ứng khi di chuột (hover) và nhấn (active).
 
+### Nút cơ bản
+
 ```html
 <button class="wiki-storybook-button">Tiêu đề nút</button>
 ```
 
 <Unstyled>
   <button class="wiki-storybook-button">Nút Cơ bản</button>
+</Unstyled>
+
+
+### Các loại
+
+- `.wiki-storybook-button--success`: Nút thành công màu xanh lá.
+- `.wiki-storybook-button--error`: Nút lỗi màu đỏ.
+- `.wiki-storybook-button--warning`: Nút cảnh báo màu vàng.
+- `.wiki-storybook-button--info`: Nút thông tin màu xanh dương.
+
+```html
+<button class="wiki-storybook-button wiki-storybook-button--success">Thành công</button>
+<button class="wiki-storybook-button wiki-storybook-button--error">Lỗi</button>
+<button class="wiki-storybook-button wiki-storybook-button--warning">Cảnh báo</button>
+<button class="wiki-storybook-button wiki-storybook-button--info">Thông tin</button>
+```
+
+<Unstyled>
+  <div class="wiki-storybook-flex">
+    <button class="wiki-storybook-button wiki-storybook-button--success">Thành công</button>
+    <button class="wiki-storybook-button wiki-storybook-button--error">Lỗi</button>
+    <button class="wiki-storybook-button wiki-storybook-button--warning">Cảnh báo</button>
+    <button class="wiki-storybook-button wiki-storybook-button--info">Thông tin</button>
+  </div>
 </Unstyled>
 
 

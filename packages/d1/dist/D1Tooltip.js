@@ -1,3 +1,2 @@
-import { t as e } from "./Tooltip-CR8XS57-.js";
-import "./Arrow-D-HUBK69.js";
+import { t as e } from "./Tooltip-FF6QEorh.js";
 export { e as D1Tooltip };
