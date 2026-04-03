@@ -1,4 +1,5 @@
 import { Ref, ShallowRef, ComputedRef } from 'vue';
+import { SnackbarEvent } from './SnackbarEvent';
 import { SnackbarList, SnackbarValue } from './basicTypes';
 import { SnackbarProps } from './props';
 /**
@@ -8,6 +9,7 @@ export declare class SnackbarData {
     protected readonly props: Readonly<SnackbarProps>;
     protected readonly element: Ref<HTMLDivElement | undefined>;
     protected readonly className: string;
+    protected readonly event?: SnackbarEvent | undefined;
     /** Message list/ Список сообщений */
     readonly item: ShallowRef<SnackbarList, SnackbarList>;
     /**
@@ -15,8 +17,9 @@ export declare class SnackbarData {
      * @param props input data/ входные данные
      * @param element window element/ элемент окна
      * @param className class name/ название класса
+     * @param event event manager for snackbar/ менеджер событий для снекбара
      */
-    constructor(props: Readonly<SnackbarProps>, element: Ref<HTMLDivElement | undefined>, className: string);
+    constructor(props: Readonly<SnackbarProps>, element: Ref<HTMLDivElement | undefined>, className: string, event?: SnackbarEvent | undefined);
     /**
      * Checks if there is an active element.
      *
@@ -29,6 +32,13 @@ export declare class SnackbarData {
      * Проверяет, есть ли элемент в приоритете.
      */
     readonly isPriority: ComputedRef<boolean>;
+    /**
+     * Returns a message element by its value.
+     *
+     * Возвращает запись сообщения по его идентификатору.
+     * @param value element identification/ идентификация элемента
+     */
+    getItemByValue(value: string): SnackbarValue | undefined;
     /**
      * Add message element.
      *
@@ -56,13 +66,6 @@ export declare class SnackbarData {
      * @param value element identification/ идентификация элемента
      */
     protected getElementItem(value: string): HTMLDivElement | undefined;
-    /**
-     * Returns a message element by its value.
-     *
-     * Возвращает запись сообщения по его идентификатору.
-     * @param value element identification/ идентификация элемента
-     */
-    protected getItemByValue(value: string): SnackbarValue | undefined;
     /**
      * Returns a message value.
      *

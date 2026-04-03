@@ -55,25 +55,7 @@ export const wikiDescriptionsSnackbar: StorybookComponentsDescriptionItem = {
       <DesignComponent ref="snackbar" v-bind="args" />
     </div>
   `,
-  stories: [
-    {
-      id: 'SnackbarBasic',
-      name: {
-        en: 'Basic Usage',
-        ru: 'Базовое использование'
-      },
-      template: `
-        <div class="wiki-storybook-flex">
-          <DesignComponent ref="snackbar" />
-          <DesignButton
-            label="Push Message"
-            primary
-            @click="() => $refs.snackbar.add({ data: { label: 'Action completed successfully' } })"
-          />
-        </div>
-      `
-    }
-  ],
+  stories: [],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Snackbar'} type={'snackbar'}/>
@@ -87,14 +69,12 @@ export const wikiDescriptionsSnackbar: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Snackbar'} type={'event.hide'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Snackbar'} type={'isItem'}/>
-<StorybookDescriptions componentName={'Snackbar'} type={'add'}/>
-<StorybookDescriptions componentName={'Snackbar'} type={'remove'}/>
-<StorybookDescriptions componentName={'Snackbar'} type={'clear'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'expose.isItem'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'expose.add'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'expose.remove'}/>
+<StorybookDescriptions componentName={'Snackbar'} type={'expose.clear'}/>
     `,
-    slots: `
-<StorybookDescriptions componentName={'Slot'} type={'default'}/>
-`
+    slots: ``
   },
   ai: {
     description: `

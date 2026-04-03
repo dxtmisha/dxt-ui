@@ -1,4 +1,4 @@
-import { n as e, r as t, t as n } from "./ModalDesignAbstract-CZnrxm84.js";
+import { n as e, r as t, t as n } from "./ModalDesignAbstract-BaVdtb1N.js";
 import { computed as r } from "vue";
 import "@dxtmisha/functional";
 //#region src/constructors/Modal/Modal.ts
@@ -27,4 +27,4 @@ var i = class extends t {
 	}
 };
 //#endregion
-export { i as Modal, a as ModalDesign, e as defaultsModal };
+export { i as Modal, t as ModalAbstract, a as ModalDesign, n as ModalDesignAbstract, e as defaultsModal };

@@ -1,8 +1,9 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
-import { a as n, i as r, n as i, o as a, r as o, s, t as c } from "./FieldEventInclude-CEmW7PIm.js";
-import { t as l } from "./FieldInclude-CDK_X54V.js";
-import { t as u } from "./MenuInclude-3Av-WATt.js";
+import { n, r } from "./FieldInputCheckInclude-czZ02ymY.js";
+import { a as i, i as a, n as o, r as s, t as c } from "./FieldEventInclude-DLX__9aJ.js";
+import { t as l } from "./FieldInclude-DCvNorOt.js";
+import { t as u } from "./MenuInclude-BT27rmFW.js";
 import { computed as d, h as f, ref as p } from "vue";
 import { DesignConstructorAbstract as m, executeFunction as h, isFilled as g, toBinds as _ } from "@dxtmisha/functional";
 //#region src/constructors/Select/SelectInput.ts
@@ -46,7 +47,7 @@ var v = class {
 		})), t(this, "onClick", (e) => {
 			e && this.value.set(e);
 		}), this.props = e, this.refs = f, this.element = p, this.classDesign = m, this.className = _, this.components = b, this.slots = x, this.emits = S;
-		let { FieldAttributesIncludeConstructor: w = s, FieldChangeIncludeConstructor: T = a, FieldCodeIncludeConstructor: E = n, FieldElementIncludeConstructor: D = r, FieldEventIncludeConstructor: O = c, FieldIncludeConstructor: k = l, FieldValidationIncludeConstructor: A = i, FieldValueIncludeConstructor: j = o, MenuIncludeConstructor: M = u, SelectFilterConstructor: N = y, SelectInputConstructor: P = v } = C == null ? {} : C;
+		let { FieldAttributesIncludeConstructor: w = i, FieldChangeIncludeConstructor: T = a, FieldCodeIncludeConstructor: E = s, FieldElementIncludeConstructor: D = r, FieldEventIncludeConstructor: O = c, FieldIncludeConstructor: k = l, FieldValidationIncludeConstructor: A = o, FieldValueIncludeConstructor: j = n, MenuIncludeConstructor: M = u, SelectFilterConstructor: N = y, SelectInputConstructor: P = v } = C == null ? {} : C;
 		this.attributes = new w(this.props), this.change = new T(this.props), this.elementItem = new D(this.props, this.element), this.value = new j(this.props, this.refs, this.elementItem), this.code = new E(this.props), this.validation = new A(this.props, this.attributes, this.value, this.change, this.code), this.event = new O(this.props, this.change, this.value, this.validation, this.emits), this.field = new k(this.props, this.value, this.components, this.event, void 0, void 0, () => {
 			var e;
 			return (e = this.menu.getElement()) == null ? void 0 : e.toggle();
@@ -160,4 +161,4 @@ var v = class {
 	}
 };
 //#endregion
-export { b as Select, S as SelectDesign, x as defaultsSelect };
+export { b as Select, S as SelectDesign, y as SelectFilter, v as SelectInput, x as defaultsSelect };

@@ -1,6 +1,6 @@
 import { TooltipOpen } from './TooltipOpen'
 import { TooltipStatus } from './TooltipStatus'
-import { TooltipClasses } from './TooltipClasses'
+import { TooltipClassesData } from './TooltipClassesData'
 import { TooltipStyle } from './TooltipStyle'
 
 import type { TooltipProps } from './props'
@@ -24,7 +24,7 @@ export class TooltipEvent {
    */
   constructor(
     protected readonly props: Readonly<TooltipProps>,
-    protected readonly classes: TooltipClasses,
+    protected readonly classes: TooltipClassesData,
     protected readonly style: TooltipStyle,
     protected readonly status: TooltipStatus,
     protected readonly open: TooltipOpen

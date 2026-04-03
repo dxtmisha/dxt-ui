@@ -34,7 +34,6 @@ export interface SnackbarExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SnackbarSlots {
-    default?(props: any): any;
 }
 /**
  * Type describing subclasses.

@@ -1,4 +1,4 @@
-import { t as e } from "./D1Anchor-D3N53j-O.js";
+import { t as e } from "./D1Anchor-CCzDVyrJ.js";
 //#region src/components/Ui/Anchor/index.ts
 var t = e;
 //#endregion

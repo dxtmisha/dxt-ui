@@ -11,7 +11,7 @@ import { TextInclude } from '../../classes/TextInclude'
 import { WindowClient } from './WindowClient'
 import { WindowHook } from './WindowHook'
 
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 import { WindowElement } from './WindowElement'
 
 import { WindowStatus } from './WindowStatus'
@@ -50,7 +50,7 @@ export class Window {
   readonly hook: WindowHook
 
   /** Class manager for window styles/ Менеджер классов для стилей окна */
-  readonly classes: WindowClasses
+  readonly classes: WindowClassesData
   /** Element manager for window DOM element/ Менеджер элементов для DOM элемента окна */
   readonly element: WindowElement
   /** Tab index manager for window/ Менеджер таб индекса для окна */
@@ -146,7 +146,7 @@ export class Window {
       ScrollbarConstructor?: typeof ScrollbarInclude
       TabIndexConstructor?: typeof TabIndexInclude
       TextConstructor?: typeof TextInclude
-      WindowClassesConstructor?: typeof WindowClasses
+      WindowClassesConstructor?: typeof WindowClassesData
       WindowClientConstructor?: typeof WindowClient
       WindowCoordinatesConstructor?: typeof WindowCoordinates
       WindowElementConstructor?: typeof WindowElement
@@ -172,7 +172,7 @@ export class Window {
       ScrollbarConstructor = ScrollbarInclude,
       TabIndexConstructor = TabIndexInclude,
       TextConstructor = TextInclude,
-      WindowClassesConstructor = WindowClasses,
+      WindowClassesConstructor = WindowClassesData,
       WindowClientConstructor = WindowClient,
       WindowCoordinatesConstructor = WindowCoordinates,
       WindowElementConstructor = WindowElement,

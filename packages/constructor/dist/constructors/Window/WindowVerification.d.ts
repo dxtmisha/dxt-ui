@@ -1,5 +1,5 @@
 import { WindowPersistent } from './WindowPersistent';
-import { WindowClasses } from './WindowClasses';
+import { WindowClassesData } from './WindowClassesData';
 import { WindowElement } from './WindowElement';
 import { WindowStatic } from './WindowStatic';
 import { WindowOpen } from './WindowOpen';
@@ -12,7 +12,7 @@ import { WindowProps } from './props';
 export declare class WindowVerification {
     protected readonly props: WindowProps;
     protected readonly persistent: WindowPersistent;
-    protected readonly classes: WindowClasses;
+    protected readonly classes: WindowClassesData;
     protected readonly element: WindowElement;
     protected readonly staticMode: WindowStatic;
     protected readonly open: WindowOpen;
@@ -27,7 +27,7 @@ export declare class WindowVerification {
      * @param staticMode class object for working with static status/ объект класса для работы со статическим статусом
      * @param open the class object for working with the status of closing or opening the window/ объект класса для работы со статусом закрытия или открытия окна
      */
-    constructor(props: WindowProps, persistent: WindowPersistent, classes: WindowClasses, element: WindowElement, staticMode: WindowStatic, open: WindowOpen);
+    constructor(props: WindowProps, persistent: WindowPersistent, classes: WindowClassesData, element: WindowElement, staticMode: WindowStatic, open: WindowOpen);
     /**
      * Updates the window opening status.
      *

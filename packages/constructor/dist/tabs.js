@@ -2,53 +2,34 @@ import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
 import { t as n } from "./EventClickInclude-6I8kuFc9.js";
 import { t as r } from "./ModelInclude-D8LkrhPp.js";
-import { computed as i, h as a, ref as o, watch as s } from "vue";
-import { DesignConstructorAbstract as c, getBind as l, getRef as u, isSelected as d, toBinds as f } from "@dxtmisha/functional";
-//#region src/constructors/MotionAxis/MotionAxisInclude.ts
-var p = class {
-	constructor(e, n, r, a, s, c, l) {
-		t(this, "element", o()), t(this, "selectedItem", i(() => this.selected ? u(this.selected) : this.props.selected)), t(this, "binds", i(() => f(u(this.extra), { class: `${this.className}__motionAxis` }, this.props.motionAxisAttrs))), t(this, "render", (e, t) => this.components ? this.components.render("motionAxis", {
-			...f(t, this.binds.value, { selected: this.selectedItem.value }),
-			ref: this.element,
-			onMotionAxis: this.onMotionAxis
-		}, e, this.index) : []), t(this, "onMotionAxis", (e) => {
-			var t;
-			(t = this.emits) == null || t.call(this, "motionAxis", e);
-		}), this.props = e, this.className = n, this.components = r, this.emits = a, this.extra = s, this.selected = c, this.index = l;
-	}
-}, m = class {
-	constructor(e, n, r, a, s) {
-		t(this, "element", o()), t(this, "binds", i(() => f(u(this.extra), {
-			class: `${this.className}__tabsNavigation`,
-			itemAttrs: this.props.tabItemAttrs
-		}, l(this.props.tabs, "list"), this.props.tabsNavigationAttrs))), t(this, "ids", i(() => {
-			var e;
-			return (e = this.element.value) == null ? void 0 : e.ids;
-		})), t(this, "render", (e, t) => this.components ? this.components.render("tabsNavigation", f(t, this.binds.value, { ref: this.element }), e, this.index) : []), this.props = e, this.className = n, this.components = r, this.extra = a, this.index = s;
-	}
-}, h = class {
+import { t as i } from "./MotionAxisInclude-DO4t3_lZ.js";
+import { t as a } from "./TabsNavigationInclude-DU9Nb7hG.js";
+import { computed as o, h as s, ref as c, watch as l } from "vue";
+import { DesignConstructorAbstract as u, isSelected as d } from "@dxtmisha/functional";
+//#region src/constructors/Tabs/TabsSelected.ts
+var f = class {
 	constructor(e, n) {
-		t(this, "item", o()), t(this, "set", (e) => {
+		t(this, "item", c()), t(this, "set", (e) => {
 			this.item.value = e;
 		}), t(this, "update", () => {
 			this.is(this.props.selected) || this.set(this.props.selected);
-		}), this.props = e, this.refs = n, this.item.value = e.selected, s([this.refs.selected], this.update);
+		}), this.props = e, this.refs = n, this.item.value = e.selected, l([this.refs.selected], this.update);
 	}
 	is(e) {
 		return d(e, this.item.value);
 	}
-}, g = class {
-	constructor(e, a, o, s, c, l, u, d, f) {
-		t(this, "event", void 0), t(this, "motionAxis", void 0), t(this, "tabsNavigation", void 0), t(this, "selected", void 0), this.props = e, this.refs = a, this.element = o, this.classDesign = s, this.className = c, this.components = l, this.slots = u, this.emits = d;
-		let { EventClickIncludeConstructor: g = n, ModelIncludeConstructor: _ = r, MotionAxisIncludeConstructor: v = p, TabsNavigationIncludeConstructor: y = m, TabsSelectedConstructor: b = h } = f == null ? {} : f;
-		this.selected = new b(this.props, this.refs), this.event = new g(void 0, void 0, this.emits), this.tabsNavigation = new y(this.props, this.className, this.components, i(() => ({
+}, p = class {
+	constructor(e, s, c, l, u, d, p, m, h) {
+		t(this, "event", void 0), t(this, "motionAxis", void 0), t(this, "tabsNavigation", void 0), t(this, "selected", void 0), this.props = e, this.refs = s, this.element = c, this.classDesign = l, this.className = u, this.components = d, this.slots = p, this.emits = m;
+		let { EventClickIncludeConstructor: g = n, ModelIncludeConstructor: _ = r, MotionAxisIncludeConstructor: v = i, TabsNavigationIncludeConstructor: y = a, TabsSelectedConstructor: b = f } = h == null ? {} : h;
+		this.selected = new b(this.props, this.refs), this.event = new g(void 0, void 0, this.emits), this.tabsNavigation = new y(this.props, this.className, this.components, o(() => ({
 			selected: this.selected.item.value,
 			onClick: this.event.onClick,
 			"onUpdate:selected": this.selected.set
-		}))), this.motionAxis = new v(this.props, this.className, this.components, this.emits, void 0, i(() => String(this.selected.item.value))), new _("selected", this.emits, this.selected.item);
+		}))), this.motionAxis = new v(this.props, this.className, this.components, this.emits, void 0, o(() => String(this.selected.item.value))), new _("selected", this.emits, this.selected.item);
 	}
-}, _ = {}, v = class extends c {
-	constructor(n, r, i, o = g) {
+}, m = {}, h = class extends u {
+	constructor(n, r, i, a = p) {
 		super(n, r, i), t(this, "item", void 0), t(this, "slidesRender", () => {
 			if (this.slots) {
 				let n = {};
@@ -57,7 +38,7 @@ var p = class {
 					let i = (t = this.item.tabsNavigation.ids.value) == null ? void 0 : t[r];
 					n[r] = () => {
 						var t;
-						return a("div", {
+						return s("div", {
 							class: (t = this.classes) == null ? void 0 : t.value.slide,
 							...e.role("tabpanel"),
 							...e.labelledby(i)
@@ -66,7 +47,7 @@ var p = class {
 				}
 				return n;
 			}
-		}), this.item = new o(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+		}), this.item = new a(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
 	}
 	initExpose() {
 		return {};
@@ -85,4 +66,4 @@ var p = class {
 	}
 };
 //#endregion
-export { g as Tabs, v as TabsDesign, _ as defaultsTabs };
+export { p as Tabs, h as TabsDesign, f as TabsSelected, m as defaultsTabs };

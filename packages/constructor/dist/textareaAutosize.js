@@ -81,4 +81,4 @@ var s = class {
 	}
 };
 //#endregion
-export { l as TextareaAutosize, d as TextareaAutosizeDesign, u as defaultsTextareaAutosize };
+export { l as TextareaAutosize, d as TextareaAutosizeDesign, c as TextareaAutosizeResize, s as TextareaAutosizeValue, u as defaultsTextareaAutosize };

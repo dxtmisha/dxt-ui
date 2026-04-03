@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 import { WindowElement } from './WindowElement'
 
 import type { WindowProps } from './props'
@@ -21,7 +21,7 @@ export class WindowPersistent {
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly classes: WindowClasses,
+    protected readonly classes: WindowClassesData,
     protected readonly element: WindowElement
   ) {
     watch(this.item, (value) => {

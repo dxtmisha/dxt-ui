@@ -60,20 +60,4 @@ export const Snackbar: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const SnackbarBasic: Story = {
-  name: 'Базовое использование',
-  render: () => ({
-    components: { D1Snackbar },
-    template: `
-        <div class="wiki-storybook-flex">
-          <D1Snackbar ref="snackbar" />
-          <D1Button
-            label="Push Message"
-            primary
-            @click="() => $refs.snackbar.add({ data: { label: 'Action completed successfully' } })"
-          />
-        </div>
-    `
-  })
-}
 // :story-items [!] System label / Системная метка

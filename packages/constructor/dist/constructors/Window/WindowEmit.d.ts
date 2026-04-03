@@ -1,5 +1,5 @@
 import { ConstrEmit } from '@dxtmisha/functional';
-import { WindowClasses } from './WindowClasses';
+import { WindowClassesData } from './WindowClassesData';
 import { WindowElement } from './WindowElement';
 import { WindowEmits } from './types';
 import { WindowEmitOptions } from './basicTypes';
@@ -9,7 +9,7 @@ import { WindowEmitOptions } from './basicTypes';
  * Класс, вызывающий событие изменения статуса клика.
  */
 export declare class WindowEmit {
-    protected readonly classes: WindowClasses;
+    protected readonly classes: WindowClassesData;
     protected readonly element: WindowElement;
     protected readonly emits?: ConstrEmit<WindowEmits> | undefined;
     /**
@@ -18,7 +18,7 @@ export declare class WindowEmit {
      * @param element an object of the class for working with elements/ объект класса для работы с элементами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      */
-    constructor(classes: WindowClasses, element: WindowElement, emits?: ConstrEmit<WindowEmits> | undefined);
+    constructor(classes: WindowClassesData, element: WindowElement, emits?: ConstrEmit<WindowEmits> | undefined);
     /**
      * Perform events.
      *

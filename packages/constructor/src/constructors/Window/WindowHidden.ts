@@ -2,7 +2,7 @@ import { watch } from 'vue'
 import { isDomRuntime } from '@dxtmisha/functional'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 import { WindowStatic } from './WindowStatic'
 
 import type { WindowOpen } from './WindowOpen'
@@ -27,7 +27,7 @@ export class WindowHidden {
    */
   constructor(
     protected readonly props: WindowProps,
-    protected readonly classes: WindowClasses,
+    protected readonly classes: WindowClassesData,
     protected readonly staticMode: WindowStatic,
     protected readonly open: WindowOpen
   ) {

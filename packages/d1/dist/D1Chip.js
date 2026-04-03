@@ -1,2 +1,2 @@
-import { t as e } from "./Chip-e4HgqaUu.js";
+import { t as e } from "./Chip-D_AyftNu.js";
 export { e as D1Chip };

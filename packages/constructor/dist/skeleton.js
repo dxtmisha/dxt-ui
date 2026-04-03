@@ -1,10 +1,10 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
-import { n, t as r } from "./SkeletonInclude-DCCPPs2e.js";
-import { h as i } from "vue";
-import { DesignConstructorAbstract as a } from "@dxtmisha/functional";
+import { n, r, t as i } from "./SkeletonInclude-D8on8xmw.js";
+import { h as a } from "vue";
+import { DesignConstructorAbstract as o } from "@dxtmisha/functional";
 //#region src/constructors/Skeleton/props.ts
-var o = {}, s = class extends a {
+var s = {}, c = class extends o {
 	constructor(e, r, i, a = n) {
 		super(e, r, i), t(this, "item", void 0), this.item = new a(this.props, this.refs, this.element, this.getName(), this.components, this.slots, this.emits), this.init();
 	}
@@ -20,7 +20,7 @@ var o = {}, s = class extends a {
 	initRender() {
 		var t;
 		let n = [];
-		return this.initSlot("default", n, this.item.classes), i("div", {
+		return this.initSlot("default", n, this.item.classes), a("div", {
 			...this.getAttrs(),
 			ref: this.element,
 			class: (t = this.classes) == null ? void 0 : t.value.main,
@@ -30,4 +30,4 @@ var o = {}, s = class extends a {
 	}
 };
 //#endregion
-export { n as Skeleton, s as SkeletonDesign, r as SkeletonInclude, o as defaultsSkeleton };
+export { r as SKELETON_NAME_STATUS, n as Skeleton, c as SkeletonDesign, i as SkeletonInclude, s as defaultsSkeleton };

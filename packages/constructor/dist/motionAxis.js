@@ -1,11 +1,12 @@
 import { t as e } from "./defineProperty-hmGKPWdq.js";
 import { t } from "./ModelInclude-D8LkrhPp.js";
-import { computed as n, h as r, onMounted as i, ref as a, watch as o } from "vue";
-import { DesignConstructorAbstract as s, forEach as c } from "@dxtmisha/functional";
+import { t as n } from "./MotionAxisInclude-DO4t3_lZ.js";
+import { computed as r, h as i, onMounted as a, ref as o, watch as s } from "vue";
+import { DesignConstructorAbstract as c, forEach as l } from "@dxtmisha/functional";
 //#region src/constructors/MotionAxis/MotionAxisElement.ts
-var l = class {
+var u = class {
 	constructor(t, n) {
-		e(this, "classStatus", void 0), e(this, "start", a(!1)), e(this, "move", a(!1)), this.element = t, this.className = n, this.classStatus = {
+		e(this, "classStatus", void 0), e(this, "start", o(!1)), e(this, "move", o(!1)), this.element = t, this.className = n, this.classStatus = {
 			main: this.getClassStatusItem(),
 			previous: this.getClassStatusItem("previous"),
 			preparation: this.getClassStatusItem("preparation"),
@@ -82,9 +83,9 @@ var l = class {
 			"scale"
 		].indexOf(e.propertyName) !== -1 && this.isActive(e.target);
 	}
-}, u = class {
+}, d = class {
 	constructor(t) {
-		e(this, "item", a()), this.props = t, this.item.value = t.selected;
+		e(this, "item", o()), this.props = t, this.item.value = t.selected;
 	}
 	is(e) {
 		return this.item.value === e;
@@ -92,7 +93,7 @@ var l = class {
 	set(e) {
 		return this.item.value = e, this;
 	}
-}, d = class {
+}, f = class {
 	constructor(e, t, n) {
 		this.element = e, this.className = t, this.selected = n;
 	}
@@ -119,9 +120,9 @@ var l = class {
 		let e = this.element.value;
 		e && (e.style.removeProperty(`--${this.className}-sys-top`), e.style.removeProperty(`--${this.className}-sys-left`), e.style.removeProperty(`--${this.className}-sys-width`), e.style.removeProperty(`--${this.className}-sys-height`), e.style.removeProperty(`--${this.className}-sys-next-height`));
 	}
-}, f = class {
+}, p = class {
 	constructor(t) {
-		e(this, "item", a()), this.styles = t, o(this.item, (e) => {
+		e(this, "item", o()), this.styles = t, s(this.item, (e) => {
 			e ? this.styles.add(e) : this.styles.remove();
 		});
 	}
@@ -134,11 +135,11 @@ var l = class {
 	set(e) {
 		return this.item.value = e, this;
 	}
-}, p = class {
-	constructor(t, n, r, i, o, s) {
-		e(this, "preparation", a()), e(this, "active", a()), e(this, "end", () => {
+}, m = class {
+	constructor(t, n, r, i, a, s) {
+		e(this, "preparation", o()), e(this, "active", o()), e(this, "end", () => {
 			this.previous.set(void 0), this.preparation.value = void 0, this.emit("end"), this.element.returnScroll();
-		}), this.element = n, this.selected = r, this.previous = i, this.styles = o, this.emits = s, this.active.value = t.selected;
+		}), this.element = n, this.selected = r, this.previous = i, this.styles = a, this.emits = s, this.active.value = t.selected;
 	}
 	isPreparation(e) {
 		return this.preparation.value === e;
@@ -175,9 +176,9 @@ var l = class {
 			active: this.active.value
 		}));
 	}
-}, m = class {
+}, h = class {
 	constructor(t) {
-		e(this, "item", a([])), this.status = t;
+		e(this, "item", o([])), this.status = t;
 	}
 	get() {
 		return this.item;
@@ -198,9 +199,9 @@ var l = class {
 	reset() {
 		this.item.value = [];
 	}
-}, h = class {
-	constructor(t, n, r, i, s) {
-		e(this, "axis", a()), e(this, "direction", a()), e(this, "back", () => {
+}, g = class {
+	constructor(t, n, r, i, a) {
+		e(this, "axis", o()), e(this, "direction", o()), e(this, "back", () => {
 			this.direction.value = "back", this.status.set(this.slides.getByIndex(-1));
 		}), e(this, "next", () => {
 			this.direction.value = "next", this.status.set(this.slides.getByIndex(1));
@@ -229,11 +230,11 @@ var l = class {
 			this.axis.value = e;
 		}), e(this, "setDirection", (e) => {
 			this.direction.value = e;
-		}), this.props = t, this.refs = n, this.element = r, this.slides = i, this.status = s, this.axis.value = t.axis, this.direction.value = t.direction, o([n.axis], () => this.setAxis(t.axis)), o([n.direction], () => this.setDirection(t.direction));
+		}), this.props = t, this.refs = n, this.element = r, this.slides = i, this.status = a, this.axis.value = t.axis, this.direction.value = t.direction, s([n.axis], () => this.setAxis(t.axis)), s([n.direction], () => this.setDirection(t.direction));
 	}
-}, g = class {
-	constructor(r, a, s, c, g, _, v, y, b) {
-		e(this, "elementItem", void 0), e(this, "go", void 0), e(this, "previous", void 0), e(this, "selected", void 0), e(this, "slides", void 0), e(this, "status", void 0), e(this, "styles", void 0), e(this, "classes", n(() => ({
+}, _ = class {
+	constructor(n, i, o, c, l, _, v, y, b) {
+		e(this, "elementItem", void 0), e(this, "go", void 0), e(this, "previous", void 0), e(this, "selected", void 0), e(this, "slides", void 0), e(this, "status", void 0), e(this, "styles", void 0), e(this, "classes", r(() => ({
 			[`${this.className}--axis--${this.go.axis.value}`]: !0,
 			[`${this.className}--direction--${this.go.direction.value}`]: !0,
 			[`${this.className}--start`]: this.elementItem.getStart() && !!this.props.animationHeight,
@@ -247,10 +248,10 @@ var l = class {
 				}
 				this.status.set(e);
 			}
-		}), this.props = r, this.refs = a, this.element = s, this.classDesign = c, this.className = g, this.components = _, this.slots = v, this.emits = y;
-		let { ModelIncludeConstructor: x = t, MotionAxisElementConstructor: S = l, MotionAxisGoConstructor: C = h, MotionAxisPreviousConstructor: w = f, MotionAxisSelectedConstructor: T = u, MotionAxisSlidesConstructor: E = m, MotionAxisStatusConstructor: D = p, MotionAxisStylesConstructor: O = d } = b == null ? {} : b;
-		this.selected = new T(this.props), this.elementItem = new S(this.element, this.className), this.styles = new O(this.element, this.className, this.selected), this.previous = new w(this.styles), this.status = new D(this.props, this.elementItem, this.selected, this.previous, this.styles, this.emits), this.slides = new E(this.status), this.go = new C(this.props, this.refs, this.element, this.slides, this.status), new x("selected", this.emits, this.selected.item), i(() => {
-			o([a.selected], this.updateSelected, { immediate: !0 });
+		}), this.props = n, this.refs = i, this.element = o, this.classDesign = c, this.className = l, this.components = _, this.slots = v, this.emits = y;
+		let { ModelIncludeConstructor: x = t, MotionAxisElementConstructor: S = u, MotionAxisGoConstructor: C = g, MotionAxisPreviousConstructor: w = p, MotionAxisSelectedConstructor: T = d, MotionAxisSlidesConstructor: E = h, MotionAxisStatusConstructor: D = m, MotionAxisStylesConstructor: O = f } = b == null ? {} : b;
+		this.selected = new T(this.props), this.elementItem = new S(this.element, this.className), this.styles = new O(this.element, this.className, this.selected), this.previous = new w(this.styles), this.status = new D(this.props, this.elementItem, this.selected, this.previous, this.styles, this.emits), this.slides = new E(this.status), this.go = new C(this.props, this.refs, this.element, this.slides, this.status), new x("selected", this.emits, this.selected.item), a(() => {
+			s([i.selected], this.updateSelected, { immediate: !0 });
 		});
 	}
 	isInDom(e) {
@@ -259,23 +260,23 @@ var l = class {
 	isInDomSlide(e) {
 		return !!(this.props.inDomSlide && this.props.inDomSlide.indexOf(e) !== -1);
 	}
-}, _ = {
+}, v = {
 	axis: "x",
 	direction: "auto"
-}, v = class extends s {
-	constructor(t, n, i, a = g) {
-		super(t, n, i), e(this, "item", void 0), e(this, "renderSlides", () => {
+}, y = class extends c {
+	constructor(t, n, r, a = _) {
+		super(t, n, r), e(this, "item", void 0), e(this, "renderSlides", () => {
 			let e = [];
-			return this.item.slides.reset(), this.slots && c(this.slots, (t, n) => {
+			return this.item.slides.reset(), this.slots && l(this.slots, (t, n) => {
 				if (this.item.slides.add(n), this.item.isInDom(n)) {
-					let i = this.item.elementItem.getClassStatus();
-					e.push(r("div", {
+					let r = this.item.elementItem.getClassStatus();
+					e.push(i("div", {
 						key: n,
 						class: {
-							[i.main]: !0,
-							[i.previous]: this.item.previous.is(n),
-							[i.preparation]: this.item.status.isPreparation(n),
-							[i.active]: this.item.status.isActive(n)
+							[r.main]: !0,
+							[r.previous]: this.item.previous.is(n),
+							[r.preparation]: this.item.status.isPreparation(n),
+							[r.active]: this.item.status.isActive(n)
 						},
 						"data-key": n
 					}, t == null ? void 0 : t({})));
@@ -307,7 +308,7 @@ var l = class {
 	}
 	initRender() {
 		var e;
-		return r("div", {
+		return i("div", {
 			...this.getAttrs(),
 			ref: this.element,
 			class: (e = this.classes) == null ? void 0 : e.value.main
@@ -315,4 +316,4 @@ var l = class {
 	}
 };
 //#endregion
-export { g as MotionAxis, v as MotionAxisDesign, _ as defaultsMotionAxis };
+export { _ as MotionAxis, y as MotionAxisDesign, u as MotionAxisElement, g as MotionAxisGo, n as MotionAxisInclude, p as MotionAxisPrevious, d as MotionAxisSelected, h as MotionAxisSlides, m as MotionAxisStatus, f as MotionAxisStyles, v as defaultsMotionAxis };

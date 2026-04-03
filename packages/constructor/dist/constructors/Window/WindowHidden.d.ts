@@ -1,4 +1,4 @@
-import { WindowClasses } from './WindowClasses';
+import { WindowClassesData } from './WindowClassesData';
 import { WindowStatic } from './WindowStatic';
 import { WindowOpen } from './WindowOpen';
 import { WindowProps } from './props';
@@ -9,7 +9,7 @@ import { WindowProps } from './props';
  */
 export declare class WindowHidden {
     protected readonly props: WindowProps;
-    protected readonly classes: WindowClasses;
+    protected readonly classes: WindowClassesData;
     protected readonly staticMode: WindowStatic;
     protected readonly open: WindowOpen;
     protected elements: HTMLElement[];
@@ -20,7 +20,7 @@ export declare class WindowHidden {
      * @param staticMode class object for working with static status / объект класса для работы со статическим статусом
      * @param open an object for working with the open state of the window / объект для работы с состоянием открытия окна
      */
-    constructor(props: WindowProps, classes: WindowClasses, staticMode: WindowStatic, open: WindowOpen);
+    constructor(props: WindowProps, classes: WindowClassesData, staticMode: WindowStatic, open: WindowOpen);
     /**
      * Returns the aria attribute data for hiding elements.
      *

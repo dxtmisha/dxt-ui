@@ -223,4 +223,4 @@ var v = class {
 	}
 };
 //#endregion
-export { C as MotionTransform, o as MotionTransformClassesInclude, T as MotionTransformDesign, c as MotionTransformInclude, a as __MOTION_TRANSFORM_TYPE_BODY_NAME, w as defaultsMotionTransform };
+export { C as MotionTransform, o as MotionTransformClassesInclude, T as MotionTransformDesign, i as MotionTransformElement, x as MotionTransformEvent, S as MotionTransformGo, c as MotionTransformInclude, v as MotionTransformSize, y as MotionTransformState, a as __MOTION_TRANSFORM_TYPE_BODY_NAME, w as defaultsMotionTransform };

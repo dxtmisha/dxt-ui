@@ -1,4 +1,4 @@
-import { WindowClasses } from './WindowClasses';
+import { WindowClassesData } from './WindowClassesData';
 import { WindowElement } from './WindowElement';
 /**
  * A class for working with coordinates.
@@ -6,7 +6,7 @@ import { WindowElement } from './WindowElement';
  * Класс для работы с координатами.
  */
 export declare class WindowCoordinates {
-    protected readonly classes: WindowClasses;
+    protected readonly classes: WindowClassesData;
     protected readonly element: WindowElement;
     protected top: number;
     protected right: number;
@@ -25,7 +25,7 @@ export declare class WindowCoordinates {
      * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
      * @param element an object of the class for working with elements/ объект класса для работы с элементами
      */
-    constructor(classes: WindowClasses, element: WindowElement);
+    constructor(classes: WindowClassesData, element: WindowElement);
     /**
      * Returns the distance from the top point.
      *

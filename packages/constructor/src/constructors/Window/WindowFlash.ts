@@ -1,4 +1,4 @@
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 
 import type { WindowProps } from './props'
 import { WindowStatusItem } from './basicTypes'
@@ -23,7 +23,7 @@ export class WindowFlash {
 
   constructor(
     protected readonly props: WindowProps,
-    protected readonly classes: WindowClasses
+    protected readonly classes: WindowClassesData
   ) {
   }
 

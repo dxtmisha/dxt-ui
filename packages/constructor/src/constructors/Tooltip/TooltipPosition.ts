@@ -1,6 +1,6 @@
 import { type Ref } from 'vue'
 
-import { TooltipClasses } from './TooltipClasses'
+import { TooltipClassesData } from './TooltipClassesData'
 import { TooltipStyle } from './TooltipStyle'
 
 import type { TooltipProps } from './props'
@@ -21,7 +21,7 @@ export class TooltipPosition {
   constructor(
     protected readonly props: Readonly<TooltipProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly classes: TooltipClasses,
+    protected readonly classes: TooltipClassesData,
     protected readonly style: TooltipStyle
   ) {
   }

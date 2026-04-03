@@ -1,4 +1,4 @@
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 import { WindowElement } from './WindowElement'
 
 /**
@@ -26,7 +26,7 @@ export class WindowCoordinates {
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
    */
   constructor(
-    protected readonly classes: WindowClasses,
+    protected readonly classes: WindowClassesData,
     protected readonly element: WindowElement
   ) {
   }

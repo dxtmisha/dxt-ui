@@ -3,15 +3,15 @@ import { t } from "./defineProperty-hmGKPWdq.js";
 import { t as n } from "./ProgressInclude-BnPBYwJg.js";
 import { t as r } from "./EnabledInclude-CkD_lxMY.js";
 import { t as i } from "./EventClickInclude-6I8kuFc9.js";
-import { t as a } from "./SkeletonInclude-DCCPPs2e.js";
+import { t as a } from "./SkeletonInclude-D8on8xmw.js";
 import { t as o } from "./DescriptionInclude-B_Xf_j3l.js";
-import { t as s } from "./getClassTagAStatic-Cdptb763.js";
-import { t as c } from "./IconTrailingInclude-CCAEyAaE.js";
-import { t as l } from "./CaptionInclude-XqCixeva.js";
-import { t as u } from "./RippleInclude-BBnpNshG.js";
-import { t as d } from "./LabelHighlightInclude-bH6Bd_tJ.js";
-import { n as f, t as p } from "./SuffixInclude-BtXj8RiG.js";
-import { t as m } from "./BadgeInclude-xKutRNVE.js";
+import { t as s } from "./getClassTagAStatic-BPIEWyHY.js";
+import { t as c } from "./IconTrailingInclude-BwoB_AQn.js";
+import { t as l } from "./BadgeInclude-DISlNqBJ.js";
+import { t as u } from "./CaptionInclude-CunHUsec.js";
+import { t as d } from "./RippleInclude-BlC1h0Ya.js";
+import { t as f } from "./LabelHighlightInclude-DC9qNAR-.js";
+import { n as p, t as m } from "./SuffixInclude-VNq8SwAI.js";
 import { computed as h, h as g } from "vue";
 import { DesignConstructorAbstract as _ } from "@dxtmisha/functional";
 //#region src/constructors/ListItem/ListItem.ts
@@ -50,7 +50,7 @@ var v = class {
 			}
 			return t;
 		})), this.props = g, this.refs = _, this.element = v, this.classDesign = y, this.className = b, this.components = x, this.slots = S, this.emits = C;
-		let { BadgeIncludeConstructor: T = m, CaptionIncludeConstructor: E = l, DescriptionIncludeConstructor: D = o, EnabledIncludeConstructor: O = r, EventClickIncludeConstructor: k = i, IconTrailingIncludeConstructor: A = c, LabelHighlightIncludeConstructor: j = d, PrefixIncludeConstructor: M = f, ProgressIncludeConstructor: N = n, RippleIncludeConstructor: P = u, SkeletonIncludeConstructor: F = a, SuffixIncludeConstructor: I = p } = w == null ? {} : w, L = new N(g, b, x, { circular: !0 }), R = new F(g, y, ["classTextVariant"]), z = new O(g, L);
+		let { BadgeIncludeConstructor: T = l, CaptionIncludeConstructor: E = u, DescriptionIncludeConstructor: D = o, EnabledIncludeConstructor: O = r, EventClickIncludeConstructor: k = i, IconTrailingIncludeConstructor: A = c, LabelHighlightIncludeConstructor: j = f, PrefixIncludeConstructor: M = p, ProgressIncludeConstructor: N = n, RippleIncludeConstructor: P = d, SkeletonIncludeConstructor: F = a, SuffixIncludeConstructor: I = m } = w == null ? {} : w, L = new N(g, b, x, { circular: !0 }), R = new F(g, y, ["classTextVariant"]), z = new O(g, L);
 		this.icon = new A(g, b, x), this.label = new j(g, b, void 0, S, void 0, R), this.prefix = new M(g, b, S, R), this.caption = new E(g, b, S), this.suffix = new I(g, b, S), this.description = new D(g, b, S, R), this.badge = new T(g, b, x, { overlap: "static" }), this.ripple = new P(b, x, z), this.progress = L, this.skeleton = R, this.enabled = z, this.event = new k(g, z, C);
 	}
 }, y = {

@@ -2,9 +2,9 @@ import { t as e } from "./defineProperty-hmGKPWdq.js";
 import { t } from "./TextInclude-OwyVCAbS.js";
 import { t as n } from "./LabelInclude-DoZ7EUYO.js";
 import { t as r } from "./DescriptionInclude-B_Xf_j3l.js";
-import { t as i } from "./WindowClassesInclude-Dp9vrvR4.js";
-import { r as a, t as o } from "./ModalDesignAbstract-CZnrxm84.js";
-import { t as s } from "./IconInclude-DbC8m22T.js";
+import { t as i } from "./WindowClassesInclude-zm-ITw5d.js";
+import { r as a, t as o } from "./ModalDesignAbstract-BaVdtb1N.js";
+import { t as s } from "./IconInclude-BhzGfa3o.js";
 import { computed as c, h as l, readonly as u } from "vue";
 import { getBind as d, toBinds as f } from "@dxtmisha/functional";
 //#region src/constructors/Dialog/Dialog.ts

@@ -1,6 +1,6 @@
 import type { ConstrEmit } from '@dxtmisha/functional'
 
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 import { WindowElement } from './WindowElement'
 
 import type { WindowEmits } from './types'
@@ -19,7 +19,7 @@ export class WindowEmit {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly classes: WindowClasses,
+    protected readonly classes: WindowClassesData,
     protected readonly element: WindowElement,
     protected readonly emits?: ConstrEmit<WindowEmits>
   ) {

@@ -1,12 +1,13 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
-import { t as n } from "./FieldInputCheckInclude-nVNxhJ8H.js";
-import { computed as r, h as i, ref as a, watch as o } from "vue";
-import { Datetime as s, DesignConstructorAbstract as c, GeoIntl as l, GeoRef as u, anyToString as d, eventStopPropagation as f, forEach as p, getClipboardData as m, getColumn as h, getExp as g, getMaxLengthAllArray as _, isArray as v, isFilled as y, isFloat as b, isObject as x, isObjectNotArray as S, isSelected as C, isString as w, replaceRecursive as T, strFill as E, toArray as D, toBinds as O, writeClipboardData as k } from "@dxtmisha/functional";
+import { t as n } from "./FieldInputCheckInclude-czZ02ymY.js";
+import { t as r } from "./MaskInclude-DuE6XcDZ.js";
+import { computed as i, h as a, ref as o, watch as s } from "vue";
+import { Datetime as c, DesignConstructorAbstract as l, GeoIntl as u, GeoRef as d, anyToString as f, eventStopPropagation as p, forEach as m, getClipboardData as h, getColumn as g, getExp as _, getMaxLengthAllArray as v, isArray as y, isFilled as ee, isFloat as b, isObject as x, isObjectNotArray as S, isSelected as C, isString as w, replaceRecursive as T, strFill as E, toArray as D, toBinds as O, writeClipboardData as k } from "@dxtmisha/functional";
 //#region src/constructors/Mask/MaskType.ts
 var A = class {
 	constructor(e) {
-		t(this, "item", r(() => {
+		t(this, "item", i(() => {
 			var e;
 			return (e = this.props.type) == null ? "text" : e;
 		})), this.props = e;
@@ -47,7 +48,7 @@ var A = class {
 	getByDate() {
 		return this.isDate() ? this.item.value : "date";
 	}
-}, ee = class {
+}, j = class {
 	constructor() {
 		t(this, "chars", []), t(this, "start", !1);
 	}
@@ -72,7 +73,7 @@ var A = class {
 	resetChars() {
 		return this.chars = [], this;
 	}
-}, j = class {
+}, M = class {
 	constructor(e) {
 		t(this, "value", !1), this.buffer = e;
 	}
@@ -85,9 +86,9 @@ var A = class {
 	out() {
 		this.value = !1, this.buffer.reset();
 	}
-}, M = class {
+}, N = class {
 	constructor() {
-		t(this, "length", a(0));
+		t(this, "length", o(0));
 	}
 	is() {
 		return this.length.value > 0;
@@ -98,9 +99,9 @@ var A = class {
 	set(e) {
 		return this.length.value = e, this;
 	}
-}, N = class {
+}, P = class {
 	constructor() {
-		t(this, "item", a({}));
+		t(this, "item", o({}));
 	}
 	is(e) {
 		var t;
@@ -127,13 +128,13 @@ var A = class {
 	}
 	expandMask(e) {
 		let t = e;
-		return p(this.item.value, (e, n) => {
-			t = t.replace(g(n, "g", "([:value]+)"), (t) => `${t}${E(n, e)}`);
+		return m(this.item.value, (e, n) => {
+			t = t.replace(_(n, "g", "([:value]+)"), (t) => `${t}${E(n, e)}`);
 		}), t;
 	}
-}, P = class {
+}, F = class {
 	constructor() {
-		t(this, "item", a(""));
+		t(this, "item", o(""));
 	}
 	is() {
 		return this.item.value !== "";
@@ -147,7 +148,7 @@ var A = class {
 	reset() {
 		return this.set("");
 	}
-}, F = {
+}, I = {
 	Y: "[0-9]{4}",
 	M: {
 		type: "number",
@@ -159,7 +160,7 @@ var A = class {
 		return {
 			type: "number",
 			min: "1",
-			max: new s(`${(t = e == null || (n = e.Y) == null ? void 0 : n.value) == null ? "2000" : t}-${(r = e == null || (i = e.M) == null ? void 0 : i.value) == null ? "01" : r}-01`).getMaxDay().toString()
+			max: new c(`${(t = e == null || (n = e.Y) == null ? void 0 : n.value) == null ? "2000" : t}-${(r = e == null || (i = e.M) == null ? void 0 : i.value) == null ? "01" : r}-01`).getMaxDay().toString()
 		};
 	},
 	h: {
@@ -177,19 +178,19 @@ var A = class {
 		min: "0",
 		max: "59"
 	}
-}, I = {
+}, L = {
 	Y: "y",
 	M: "m",
 	D: "d",
 	h: "h",
 	m: "m",
 	s: "s"
-}, L = class {
+}, R = class {
 	constructor(e, n) {
-		t(this, "mask", r(() => this.getDatetime().setHour24(!0).locale(void 0, "2-digit").replace("1987", "YYYY").replace("12", "MM").replace("18", "DD").replace("10", "hh").replace("20", "mm").replace("30", "ss").split(""))), this.props = e, this.type = n;
+		t(this, "mask", i(() => this.getDatetime().setHour24(!0).locale(void 0, "2-digit").replace("1987", "YYYY").replace("12", "MM").replace("18", "DD").replace("10", "hh").replace("20", "mm").replace("30", "ss").split(""))), this.props = e, this.type = n;
 	}
 	getDatetime(e) {
-		return new s(e == null ? "1987-12-18T10:20:30" : e, this.type.getByDate(), this.props.language);
+		return new c(e == null ? "1987-12-18T10:20:30" : e, this.type.getByDate(), this.props.language);
 	}
 	getValue(e) {
 		return this.getDatetime(e).locale(void 0, "2-digit");
@@ -204,7 +205,7 @@ var A = class {
 		return isNaN(Date.parse(s)) ? "" : s;
 	}
 	getPattern() {
-		return F;
+		return I;
 	}
 	getSpecialDate() {
 		return [
@@ -222,14 +223,14 @@ var A = class {
 		];
 	}
 	getView(e) {
-		return I == null ? void 0 : I[e];
+		return L == null ? void 0 : L[e];
 	}
-}, R = class {
-	constructor(e, n, i) {
+}, z = class {
+	constructor(e, n, r) {
 		t(this, "special", {
 			n: {},
 			f: { defaultValue: "0" }
-		}), t(this, "rubber", r(() => ({
+		}), t(this, "rubber", i(() => ({
 			n: {
 				rubber: !0,
 				transitionChar: this.getDecimal(),
@@ -239,11 +240,11 @@ var A = class {
 				rubber: this.isFractionRubber(),
 				maxLength: 4
 			}
-		}))), t(this, "view", r(() => this.type.isNumber() ? "⁠" : "0")), t(this, "fraction", r(() => {
+		}))), t(this, "view", i(() => this.type.isNumber() ? "⁠" : "0")), t(this, "fraction", i(() => {
 			if (this.type.isCurrency()) return 2;
 			let e = this.props.fraction;
 			return typeof e == "number" ? e : typeof e == "string" && e.match(/[0-9]+/) ? Number(e) : this.rubberItem.is("f") ? this.rubberItem.getByIndex("f") + 1 : e === !0 ? 1 : 0;
-		})), t(this, "mask", r(() => this.type.isCurrency() ? this.toSpecial(this.getCurrency()) : this.type.isNumberFormat() ? this.toSpecial(this.getNumberFormat()) : this.toSpecial(this.getNumber()))), this.props = e, this.type = n, this.rubberItem = i;
+		})), t(this, "mask", i(() => this.type.isCurrency() ? this.toSpecial(this.getCurrency()) : this.type.isNumberFormat() ? this.toSpecial(this.getNumberFormat()) : this.toSpecial(this.getNumber()))), this.props = e, this.type = n, this.rubberItem = r;
 	}
 	isFractionRubber() {
 		return this.props.fraction === !0;
@@ -273,7 +274,7 @@ var A = class {
 		return Object.keys(this.special);
 	}
 	getIntl() {
-		return new l(this.props.language);
+		return new u(this.props.language);
 	}
 	getNumberForString() {
 		let e = this.fraction.value;
@@ -282,23 +283,23 @@ var A = class {
 	toSpecial(e) {
 		return e.replace(/9/gi, "n").replace(/3/gi, "f").split("");
 	}
-}, z = class {
-	constructor(e, n, i, a) {
-		t(this, "item", r(() => {
+}, B = class {
+	constructor(e, n, r, a) {
+		t(this, "item", i(() => {
 			if (this.type.isCurrencyOrNumber()) return this.format.getSpecial();
 			if (this.type.isTime()) return this.date.getSpecialFull();
 			if (this.type.isDate()) return this.date.getSpecialDate();
 			let e = this.special.value;
-			return v(e) ? e : x(e) ? Object.keys(e) : [e];
-		})), t(this, "rubberList", r(() => {
+			return y(e) ? e : x(e) ? Object.keys(e) : [e];
+		})), t(this, "rubberList", i(() => {
 			let e = {};
-			return S(this.special.value) && p(this.special.value, (t, n) => {
+			return S(this.special.value) && m(this.special.value, (t, n) => {
 				t != null && t.rubber && (e[n] = t);
 			}), e;
-		})), t(this, "special", r(() => {
+		})), t(this, "special", i(() => {
 			var e;
 			return this.type.isCurrencyOrNumber() ? this.format.special : (e = this.props.special) == null ? "*" : e;
-		})), this.props = e, this.type = n, this.date = i, this.format = a;
+		})), this.props = e, this.type = n, this.date = r, this.format = a;
 	}
 	isSpecial(e) {
 		return this.item.value.indexOf(e) !== -1;
@@ -326,37 +327,37 @@ var A = class {
 		let t = this.special.value;
 		if (S(t) && e in t) return t[e];
 	}
-}, B = /[0-9]/, V = class {
+}, V = /[0-9]/, H = class {
 	constructor(e, t) {
 		this.props = e, this.special = t;
 	}
 	is(e, t) {
 		let n = this.get(t);
-		return n instanceof RegExp ? !!e.match(n) : w(n) ? !!e.match(new RegExp(n)) : !!e.match(B);
+		return n instanceof RegExp ? !!e.match(n) : w(n) ? !!e.match(new RegExp(n)) : !!e.match(V);
 	}
 	get(e) {
 		var t, n;
-		return (t = (n = e && this.special.getMatch(e)) == null ? this.props.match : n) == null ? B : t;
+		return (t = (n = e && this.special.getMatch(e)) == null ? this.props.match : n) == null ? V : t;
 	}
 	filter(e) {
 		let t = this.special.item.value;
 		return e.split("").filter((e) => t.find((t) => this.is(e, t)));
 	}
-}, H = class {
-	constructor(e, i, a, o) {
-		t(this, "item", r(() => {
+}, U = class {
+	constructor(e, r, a, o) {
+		t(this, "item", i(() => {
 			let e = {};
-			return p(this.list.value, (t, r) => {
+			return m(this.list.value, (t, r) => {
 				e[r] = new n(t, r);
 			}), this.props.check && (e.check = new n(this.props.check)), e;
-		})), t(this, "list", r(() => {
+		})), t(this, "list", i(() => {
 			let e = this.getByType();
 			for (let t in e) {
 				let n = this.getPattern(t);
 				e[t] && (w(n) ? Object.assign(e[t], { pattern: n }) : S(n) && S(e[t]) && Object.assign(e[t], n));
 			}
 			return e;
-		})), this.props = e, this.type = i, this.date = a, this.special = o;
+		})), this.props = e, this.type = r, this.date = a, this.special = o;
 	}
 	isCheck() {
 		return !!this.props.check;
@@ -376,14 +377,14 @@ var A = class {
 		var t;
 		return (t = e && this.special.getPattern(e)) == null ? this.props.pattern : t;
 	}
-}, U = {
+}, W = {
 	special: "*",
 	match: /[0-9]/,
 	type: "text",
 	groupSave: !0,
 	view: "_",
 	visible: !0
-}, W = class {
+}, G = class {
 	constructor(e, t) {
 		this.props = e, this.type = t;
 	}
@@ -393,12 +394,12 @@ var A = class {
 	isRight() {
 		return this.props.align === "right" || this.isEnd();
 	}
-}, G = class {
-	constructor(e, n, i, a, o, s, c) {
-		t(this, "list", r(() => {
+}, K = class {
+	constructor(e, n, r, a, o, s, c) {
+		t(this, "list", i(() => {
 			let e = this.special.rubberList.value;
 			return this.type.isCurrencyOrNumber() ? T(this.format.rubber.value, e) : e;
-		})), t(this, "transition", r(() => h(Object.values(this.list.value).filter((e) => "transitionChar" in e && (w(e.transitionChar) || v(e.transitionChar))), "transitionChar").flat())), this.props = e, this.type = n, this.rubberItem = i, this.rubberTransition = a, this.special = o, this.match = s, this.format = c;
+		})), t(this, "transition", i(() => g(Object.values(this.list.value).filter((e) => "transitionChar" in e && (w(e.transitionChar) || y(e.transitionChar))), "transitionChar").flat())), this.props = e, this.type = n, this.rubberItem = r, this.rubberTransition = a, this.special = o, this.match = s, this.format = c;
 	}
 	isTransition(e) {
 		return this.transition.value.indexOf(e) >= 0;
@@ -417,9 +418,9 @@ var A = class {
 	reset() {
 		return this.rubberItem.reset(), this.rubberTransition.reset(), this;
 	}
-}, K = class {
-	constructor(e, n, i, a, o, s, c) {
-		t(this, "item", r(() => this.type.isCurrencyOrNumber() ? this.format.mask.value : this.type.isDate() ? this.date.mask.value : this.basic.value)), t(this, "info", r(() => {
+}, q = class {
+	constructor(e, n, r, a, o, s, c) {
+		t(this, "item", i(() => this.type.isCurrencyOrNumber() ? this.format.mask.value : this.type.isDate() ? this.date.mask.value : this.basic.value)), t(this, "info", i(() => {
 			let e = [], t = 0;
 			return this.item.value.forEach((n, r) => {
 				this.special.isSpecial(n) && (e.push({
@@ -428,13 +429,13 @@ var A = class {
 					char: n
 				}), t++);
 			}), e;
-		})), t(this, "maxLength", r(() => {
+		})), t(this, "maxLength", i(() => {
 			let e = this.getMask();
-			return v(e) ? _(e) : this.item.value.length;
-		})), t(this, "maskActive", r(() => {
+			return y(e) ? v(e) : this.item.value.length;
+		})), t(this, "maskActive", i(() => {
 			let e = this.getMask();
-			return v(e) ? e.find((e) => this.getSpecialLength(e) >= this.characterLength.get()) || (e == null ? void 0 : e[e.length - 1]) || "" : e;
-		})), t(this, "basic", r(() => this.rubberItem.expandMask(this.maskActive.value).split(""))), this.props = e, this.type = n, this.rubberItem = i, this.characterLength = a, this.date = o, this.format = s, this.special = c;
+			return y(e) ? e.find((e) => this.getSpecialLength(e) >= this.characterLength.get()) || (e == null ? void 0 : e[e.length - 1]) || "" : e;
+		})), t(this, "basic", i(() => this.rubberItem.expandMask(this.maskActive.value).split(""))), this.props = e, this.type = n, this.rubberItem = r, this.characterLength = a, this.date = o, this.format = s, this.special = c;
 	}
 	get(e) {
 		var t, n;
@@ -465,7 +466,7 @@ var A = class {
 	getSpecialLength(e) {
 		return e.split("").filter((e) => this.special.isSpecial(e)).length;
 	}
-}, q = class {
+}, J = class {
 	constructor(e, n) {
 		t(this, "value", 0), t(this, "immediate", 0), t(this, "shift", !1), this.special = e, this.mask = n;
 	}
@@ -522,9 +523,9 @@ var A = class {
 		for (let t of this.mask.info.value) if (t.index >= e) return t.key;
 		return this.mask.getLength();
 	}
-}, J = "~", Y = "_", X = class {
-	constructor(e, n, r, i, o, s) {
-		t(this, "item", a([])), this.props = e, this.rubberItem = n, this.characterLength = r, this.special = i, this.mask = o, this.selection = s;
+}, Y = "~", X = "_", Z = class {
+	constructor(e, n, r, i, a, s) {
+		t(this, "item", o([])), this.props = e, this.rubberItem = n, this.characterLength = r, this.special = i, this.mask = a, this.selection = s;
 	}
 	is() {
 		return this.item.value.length > 0;
@@ -573,16 +574,16 @@ var A = class {
 	updateLength() {
 		return this.characterLength.set(this.item.value.length), this;
 	}
-}, Z = class {
-	constructor(e, n, i, a) {
-		t(this, "item", r(() => {
+}, Q = class {
+	constructor(e, n, r, a) {
+		t(this, "item", i(() => {
 			let e = this.character.item.value, t = [], n = 0;
 			for (let r of this.mask.item.value) if (!this.special.isSpecial(r)) t.push(r);
 			else if (n in e) {
 				if (t.push(String(e[n++])), n > e.length && this.rubberTransition.is() && !this.rubberTransition.isChar(r)) break;
 			} else break;
 			return t.join("");
-		})), this.rubberTransition = e, this.mask = n, this.special = i, this.character = a;
+		})), this.rubberTransition = e, this.mask = n, this.special = r, this.character = a;
 	}
 	is() {
 		return this.getLength() > 0;
@@ -594,9 +595,9 @@ var A = class {
 	getLength() {
 		return this.item.value.length;
 	}
-}, Q = class {
-	constructor(e, n, i, a, s, c, l) {
-		t(this, "infoCache", void 0), t(this, "info", r(() => {
+}, $ = class {
+	constructor(e, n, r, a, o, c, l) {
+		t(this, "infoCache", void 0), t(this, "info", i(() => {
 			let e = this.valueBasic.item.value, t = {};
 			return this.mask.item.value.forEach((n, r) => {
 				if (this.special.isSpecial(n)) {
@@ -604,13 +605,13 @@ var A = class {
 					this.isStandard(r) && e[r] !== "~" && i.chars.push(String(e[r])), i.maxLength++, i.end = i.maxLength === i.chars.length, i.full = this.special.isDefault(n) || i.end, i.value = i.full ? i.chars.join("") : "";
 				}
 			}), t;
-		})), t(this, "item", r(() => this.getValue(this.info.value))), t(this, "isFull", r(() => {
+		})), t(this, "item", i(() => this.getValue(this.info.value))), t(this, "isFull", i(() => {
 			for (let e of Object.values(this.info.value)) if (!e.full) return !1;
 			return !0;
-		})), t(this, "isEnd", r(() => {
+		})), t(this, "isEnd", i(() => {
 			for (let e of Object.values(this.info.value)) if (!e.end) return !1;
 			return !0;
-		})), t(this, "valueFinal", r(() => {
+		})), t(this, "valueFinal", i(() => {
 			let e = this.valueBasic.item.value.split(""), t = this.mask.item.value, n = "";
 			for (let r in t) if (r in e) n += e[r];
 			else if (t[r]) {
@@ -618,7 +619,7 @@ var A = class {
 				e && (n += e);
 			}
 			return n;
-		})), this.props = e, this.type = n, this.date = i, this.format = a, this.mask = s, this.special = c, this.valueBasic = l, o(this.info, (e, t) => {
+		})), this.props = e, this.type = n, this.date = r, this.format = a, this.mask = o, this.special = c, this.valueBasic = l, s(this.info, (e, t) => {
 			this.type.isDate() && (this.infoCache = t);
 		});
 	}
@@ -658,7 +659,7 @@ var A = class {
 	}
 }, te = class {
 	constructor(e, n) {
-		t(this, "item", r(() => {
+		t(this, "item", i(() => {
 			for (let e of Object.values(this.pattern.item.value)) {
 				let t = this.value.getInfoItem(e.group);
 				if (t && t.full) {
@@ -701,8 +702,8 @@ var A = class {
 		};
 	}
 }, ne = class {
-	constructor(e, n, i, a, o, s, c, l, u, d) {
-		t(this, "classNameItem", void 0), t(this, "item", r(() => {
+	constructor(e, n, r, a, o, s, c, l, u, d) {
+		t(this, "classNameItem", void 0), t(this, "item", i(() => {
 			let e = [], t = this.valueBasic.item.value;
 			return this.mask.item.value.forEach((n, r) => {
 				let i = t == null ? void 0 : t[r];
@@ -711,7 +712,7 @@ var A = class {
 					value: this.getValue(n, i)
 				});
 			}), e;
-		})), t(this, "input", r(() => {
+		})), t(this, "input", i(() => {
 			let e = [], t = this.mask.item.value;
 			return this.valueBasic.item.value.split("").forEach((n, r) => {
 				if (n === "~") {
@@ -719,7 +720,7 @@ var A = class {
 					e.push((i = this.getSpecialToView((a = t == null ? void 0 : t[r]) == null ? "" : a)) == null ? n : i);
 				} else e.push(n);
 			}), e.join("");
-		})), this.props = e, this.type = n, this.date = i, this.format = a, this.special = o, this.rubber = s, this.mask = c, this.valueBasic = l, this.validation = u, this.classNameItem = `${d}__character__item`;
+		})), this.props = e, this.type = n, this.date = r, this.format = a, this.special = o, this.rubber = s, this.mask = c, this.valueBasic = l, this.validation = u, this.classNameItem = `${d}__character__item`;
 	}
 	isValue(e) {
 		return !!(e && e !== "~");
@@ -797,7 +798,7 @@ var A = class {
 		return this;
 	}
 	reset(e = "") {
-		if (this.character.reset(), this.rubber.reset(), y(e)) {
+		if (this.character.reset(), this.rubber.reset(), ee(e)) {
 			let t = this.type.isDate() ? this.date.getValue(e) : e;
 			this.add(0, this.extra(t.split("")));
 		}
@@ -859,7 +860,7 @@ var A = class {
 				"ArrowLeft"
 			].indexOf(e.key) >= 0 && (this.makeToEnd(e), this.makeToStart(e));
 		}), t(this, "onBeforeinput", (e) => {
-			this.emit.set("beforeinput", e).go(), this.unidentified || (this.makeChange(e), f(e));
+			this.emit.set("beforeinput", e).go(), this.unidentified || (this.makeChange(e), p(e));
 		}), t(this, "onInput", (e) => {
 			if (this.unidentified) {
 				let t = e.target;
@@ -867,7 +868,7 @@ var A = class {
 			}
 		}), t(this, "onPaste", (e) => {
 			let { start: t, end: n } = this.getSelectionInfo(e);
-			m(e).then((r) => {
+			h(e).then((r) => {
 				let i = r.split("");
 				t === n ? this.data.add(t, this.data.extra(i)) : this.data.pop(t, n).add(this.selection.getShift(), this.data.extra(i)), this.change = !0, this.emit.set("paste", e).go();
 			}).catch((e) => console.error("getClipboardData", e));
@@ -914,9 +915,9 @@ var A = class {
 		let t = this.selection.getFirst(), { target: n, start: r } = this.getSelectionInfo(e);
 		r < t && (n.selectionStart = t, n.selectionEnd = t);
 	}
-}, $ = class {
-	constructor(e, n, i, a, s, c, l, f, p) {
-		t(this, "type", void 0), t(this, "buffer", void 0), t(this, "focus", void 0), t(this, "characterLength", void 0), t(this, "rubberItem", void 0), t(this, "rubberTransition", void 0), t(this, "date", void 0), t(this, "format", void 0), t(this, "special", void 0), t(this, "match", void 0), t(this, "pattern", void 0), t(this, "right", void 0), t(this, "rubber", void 0), t(this, "item", void 0), t(this, "selection", void 0), t(this, "character", void 0), t(this, "valueBasic", void 0), t(this, "value", void 0), t(this, "validation", void 0), t(this, "view", void 0), t(this, "emit", void 0), t(this, "data", void 0), t(this, "event", void 0), t(this, "basic", r(() => {
+}, oe = class {
+	constructor(e, n, r, a, o, c, l, u, p) {
+		t(this, "type", void 0), t(this, "buffer", void 0), t(this, "focus", void 0), t(this, "characterLength", void 0), t(this, "rubberItem", void 0), t(this, "rubberTransition", void 0), t(this, "date", void 0), t(this, "format", void 0), t(this, "special", void 0), t(this, "match", void 0), t(this, "pattern", void 0), t(this, "right", void 0), t(this, "rubber", void 0), t(this, "item", void 0), t(this, "selection", void 0), t(this, "character", void 0), t(this, "valueBasic", void 0), t(this, "value", void 0), t(this, "validation", void 0), t(this, "view", void 0), t(this, "emit", void 0), t(this, "data", void 0), t(this, "event", void 0), t(this, "basic", i(() => {
 			if (this.right.isRight()) {
 				let e = "";
 				return this.view.item.value.forEach((t) => {
@@ -924,29 +925,29 @@ var A = class {
 				}), e;
 			}
 			return this.view.input.value;
-		})), t(this, "classes", r(() => ({
+		})), t(this, "classes", i(() => ({
 			[`${this.className}--value`]: this.characterLength.is(),
 			[`${this.className}--end`]: this.right.isEnd()
 		}))), t(this, "set", (e) => this.reset(e)), t(this, "clear", () => {
 			var e, t;
 			this.data.reset(((e = this.props.valueDefault) == null ? "" : e).toString()), this.emit.set("reset", {}).go(), (t = this.element.value) == null || t.focus();
-		}), this.props = e, this.refs = n, this.element = i, this.classDesign = a, this.className = s, this.components = c, this.slots = l, this.emits = f;
-		let { MaskBufferConstructor: m = ee, MaskCharacterConstructor: h = X, MaskCharacterLengthConstructor: g = M, MaskDataConstructor: _ = ie, MaskDateConstructor: v = L, MaskEmitConstructor: y = re, MaskEventConstructor: b = ae, MaskFocusConstructor: x = j, MaskFormatConstructor: S = R, MaskItemConstructor: C = K, MaskMatchConstructor: w = V, MaskPatternConstructor: T = H, MaskRightConstructor: E = W, MaskRubberConstructor: D = G, MaskRubberItemConstructor: O = N, MaskRubberTransitionConstructor: k = P, MaskSelectionConstructor: F = q, MaskSpecialConstructor: I = z, MaskTypeConstructor: B = A, MaskValidationConstructor: U = te, MaskValueBasicConstructor: J = Z, MaskValueConstructor: Y = Q, MaskViewConstructor: $ = ne } = p == null ? {} : p;
-		this.type = new B(this.props), this.buffer = new m(), this.focus = new x(this.buffer), this.characterLength = new g(), this.rubberItem = new O(), this.rubberTransition = new k(), this.date = new v(this.props, this.type), this.format = new S(this.props, this.type, this.rubberItem), this.special = new I(this.props, this.type, this.date, this.format), this.match = new w(this.props, this.special), this.pattern = new T(this.props, this.type, this.date, this.special), this.right = new E(this.props, this.type), this.rubber = new D(this.props, this.type, this.rubberItem, this.rubberTransition, this.special, this.match, this.format), this.item = new C(this.props, this.type, this.rubberItem, this.characterLength, this.date, this.format, this.special), this.selection = new F(this.special, this.item), this.character = new h(this.props, this.rubberItem, this.characterLength, this.special, this.item, this.selection), this.valueBasic = new J(this.rubberTransition, this.item, this.special, this.character), this.value = new Y(this.props, this.type, this.date, this.format, this.item, this.special, this.valueBasic), this.validation = new U(this.pattern, this.value), this.view = new $(this.props, this.type, this.date, this.format, this.special, this.rubber, this.item, this.valueBasic, this.validation, this.className), this.emit = new y(this.validation, this.emits), this.data = new _(this.type, this.buffer, this.focus, this.rubberTransition, this.date, this.special, this.match, this.rubber, this.item, this.selection, this.character, this.valueBasic, this.value, this.emit, this.element), this.event = new b(this.buffer, this.focus, this.characterLength, this.right, this.selection, this.valueBasic, this.emit, this.data), o([n.value], () => this.reset(e.value)), o(this.basic, () => this.data.goSelection(!1)), o([u.getStandard(), n.language], () => this.reset(this.value.getValueCache())), e.value && this.data.reset(d(e.value));
+		}), this.props = e, this.refs = n, this.element = r, this.classDesign = a, this.className = o, this.components = c, this.slots = l, this.emits = u;
+		let { MaskBufferConstructor: m = j, MaskCharacterConstructor: h = Z, MaskCharacterLengthConstructor: g = N, MaskDataConstructor: _ = ie, MaskDateConstructor: v = R, MaskEmitConstructor: y = re, MaskEventConstructor: ee = ae, MaskFocusConstructor: b = M, MaskFormatConstructor: x = z, MaskItemConstructor: S = q, MaskMatchConstructor: C = H, MaskPatternConstructor: w = U, MaskRightConstructor: T = G, MaskRubberConstructor: E = K, MaskRubberItemConstructor: D = P, MaskRubberTransitionConstructor: O = F, MaskSelectionConstructor: k = J, MaskSpecialConstructor: I = B, MaskTypeConstructor: L = A, MaskValidationConstructor: V = te, MaskValueBasicConstructor: W = Q, MaskValueConstructor: Y = $, MaskViewConstructor: X = ne } = p == null ? {} : p;
+		this.type = new L(this.props), this.buffer = new m(), this.focus = new b(this.buffer), this.characterLength = new g(), this.rubberItem = new D(), this.rubberTransition = new O(), this.date = new v(this.props, this.type), this.format = new x(this.props, this.type, this.rubberItem), this.special = new I(this.props, this.type, this.date, this.format), this.match = new C(this.props, this.special), this.pattern = new w(this.props, this.type, this.date, this.special), this.right = new T(this.props, this.type), this.rubber = new E(this.props, this.type, this.rubberItem, this.rubberTransition, this.special, this.match, this.format), this.item = new S(this.props, this.type, this.rubberItem, this.characterLength, this.date, this.format, this.special), this.selection = new k(this.special, this.item), this.character = new h(this.props, this.rubberItem, this.characterLength, this.special, this.item, this.selection), this.valueBasic = new W(this.rubberTransition, this.item, this.special, this.character), this.value = new Y(this.props, this.type, this.date, this.format, this.item, this.special, this.valueBasic), this.validation = new V(this.pattern, this.value), this.view = new X(this.props, this.type, this.date, this.format, this.special, this.rubber, this.item, this.valueBasic, this.validation, this.className), this.emit = new y(this.validation, this.emits), this.data = new _(this.type, this.buffer, this.focus, this.rubberTransition, this.date, this.special, this.match, this.rubber, this.item, this.selection, this.character, this.valueBasic, this.value, this.emit, this.element), this.event = new ee(this.buffer, this.focus, this.characterLength, this.right, this.selection, this.valueBasic, this.emit, this.data), s([n.value], () => this.reset(e.value)), s(this.basic, () => this.data.goSelection(!1)), s([d.getStandard(), n.language], () => this.reset(this.value.getValueCache())), e.value && this.data.reset(f(e.value));
 	}
 	reset(e) {
-		let t = d(e);
+		let t = f(e);
 		return t !== this.props.valueDefault && (this.value.item.value !== t || this.valueBasic.item.value !== t && !b(t)) ? (this.data.reset(t), this.emit.set("reset", {}).go(), !0) : !1;
 	}
-}, oe = class extends c {
-	constructor(n, r, a, o = $) {
-		super(n, r, a), t(this, "item", void 0), t(this, "renderData", () => this.props.name ? [i("input", {
+}, se = class extends l {
+	constructor(n, r, i, o = oe) {
+		super(n, r, i), t(this, "item", void 0), t(this, "renderData", () => this.props.name ? [a("input", {
 			type: "hidden",
 			name: this.props.name,
 			value: this.item.value.item.value
 		})] : []), t(this, "renderInput", () => {
 			var e;
-			return [i("input", O(this.props.inputAttrs, {
+			return [a("input", O(this.props.inputAttrs, {
 				ref: this.element,
 				class: (e = this.classes) == null ? void 0 : e.value.input,
 				type: "text",
@@ -964,18 +965,18 @@ var A = class {
 			}))];
 		}), t(this, "renderView", () => {
 			var t;
-			let n = this.item.view.item.value, r = [], a;
+			let n = this.item.view.item.value, r = [], i;
 			return n.length > 0 ? n.forEach((e, t) => {
-				r.push(i("span", {
+				r.push(a("span", {
 					key: t,
 					class: e.className,
 					innerHTML: e.value === " " ? "&nbsp;" : e.value
 				}));
-			}) : a = "&nbsp;", [i("span", {
+			}) : i = "&nbsp;", [a("span", {
 				class: (t = this.classes) == null ? void 0 : t.value.character,
 				"data-length": "1",
 				...e.hidden(),
-				innerHTML: a
+				innerHTML: i
 			}, r)];
 		}), this.item = new o(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
 	}
@@ -1005,11 +1006,11 @@ var A = class {
 			...this.renderInput(),
 			...this.renderView()
 		];
-		return i("span", {
+		return a("span", {
 			...this.getAttrs(),
 			class: (e = this.classes) == null ? void 0 : e.value.main
 		}, t);
 	}
 };
 //#endregion
-export { J as MASK_CHAR_DELETE, Y as MASK_VIEW_DEFAULT, $ as Mask, oe as MaskDesign, U as defaultsMask };
+export { Y as MASK_CHAR_DELETE, X as MASK_VIEW_DEFAULT, oe as Mask, j as MaskBuffer, Z as MaskCharacter, N as MaskCharacterLength, ie as MaskData, R as MaskDate, se as MaskDesign, re as MaskEmit, ae as MaskEvent, M as MaskFocus, z as MaskFormat, r as MaskInclude, q as MaskItem, H as MaskMatch, U as MaskPattern, G as MaskRight, K as MaskRubber, P as MaskRubberItem, F as MaskRubberTransition, J as MaskSelection, B as MaskSpecial, A as MaskType, te as MaskValidation, $ as MaskValue, Q as MaskValueBasic, ne as MaskView, W as defaultsMask };

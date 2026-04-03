@@ -1,7 +1,7 @@
 import { isDomRuntime } from '@dxtmisha/functional'
 
 import { WindowPersistent } from './WindowPersistent'
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 import { WindowElement } from './WindowElement'
 import { WindowStatic } from './WindowStatic'
 import { WindowOpen } from './WindowOpen'
@@ -31,7 +31,7 @@ export class WindowVerification {
   constructor(
     protected readonly props: WindowProps,
     protected readonly persistent: WindowPersistent,
-    protected readonly classes: WindowClasses,
+    protected readonly classes: WindowClassesData,
     protected readonly element: WindowElement,
     protected readonly staticMode: WindowStatic,
     protected readonly open: WindowOpen

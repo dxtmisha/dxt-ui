@@ -2,12 +2,13 @@ import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
 import { t as n } from "./ProgressInclude-BnPBYwJg.js";
 import { t as r } from "./EnabledInclude-CkD_lxMY.js";
-import { t as i } from "./SkeletonInclude-DCCPPs2e.js";
+import { t as i } from "./SkeletonInclude-D8on8xmw.js";
 import { t as a } from "./LabelInclude-DoZ7EUYO.js";
 import { t as o } from "./DescriptionInclude-B_Xf_j3l.js";
-import { t as s } from "./RippleInclude-BBnpNshG.js";
-import { a as c, i as l, n as u, o as d, r as f, s as p, t as m } from "./FieldEventInclude-CEmW7PIm.js";
-import { t as h } from "./FieldMessageInclude-Pt76xZjp.js";
+import { t as s } from "./RippleInclude-BlC1h0Ya.js";
+import { n as c, r as l } from "./FieldInputCheckInclude-czZ02ymY.js";
+import { a as u, i as d, n as f, r as p, t as m } from "./FieldEventInclude-DLX__9aJ.js";
+import { t as h } from "./FieldMessageInclude-6cxMqgIx.js";
 import { computed as g, h as _ } from "vue";
 import { DesignConstructorAbstract as v, getBind as y, toBinds as b } from "@dxtmisha/functional";
 //#region src/constructors/Checkbox/CheckboxIcon.ts
@@ -21,7 +22,7 @@ var x = class {
 }, S = class {
 	constructor(e, g, _, v, y, b, S, C, w) {
 		t(this, "type", "checkbox"), t(this, "attributes", void 0), t(this, "change", void 0), t(this, "code", void 0), t(this, "description", void 0), t(this, "elementItem", void 0), t(this, "enabled", void 0), t(this, "event", void 0), t(this, "icon", void 0), t(this, "label", void 0), t(this, "message", void 0), t(this, "progress", void 0), t(this, "ripple", void 0), t(this, "skeleton", void 0), t(this, "validation", void 0), t(this, "value", void 0), this.props = e, this.refs = g, this.element = _, this.classDesign = v, this.className = y, this.components = b, this.slots = S, this.emits = C;
-		let { CheckboxIconConstructor: T = x, DescriptionConstructor: E = o, EnabledConstructor: D = r, FieldAttributesIncludeConstructor: O = p, FieldChangeIncludeConstructor: k = d, FieldCodeIncludeConstructor: A = c, FieldElementIncludeConstructor: j = l, FieldEventIncludeConstructor: M = m, FieldMessageConstructor: N = h, FieldValidationIncludeConstructor: P = u, FieldValueIncludeConstructor: F = f, LabelConstructor: I = a, ProgressConstructor: L = n, RippleConstructor: R = s, SkeletonConstructor: z = i } = w == null ? {} : w;
+		let { CheckboxIconConstructor: T = x, DescriptionConstructor: E = o, EnabledConstructor: D = r, FieldAttributesIncludeConstructor: O = u, FieldChangeIncludeConstructor: k = d, FieldCodeIncludeConstructor: A = p, FieldElementIncludeConstructor: j = l, FieldEventIncludeConstructor: M = m, FieldMessageConstructor: N = h, FieldValidationIncludeConstructor: P = f, FieldValueIncludeConstructor: F = c, LabelConstructor: I = a, ProgressConstructor: L = n, RippleConstructor: R = s, SkeletonConstructor: z = i } = w == null ? {} : w;
 		this.skeleton = new z(this.props, this.classDesign, ["classText"]), this.progress = new L(this.props, this.className, this.components, {
 			circular: !0,
 			inverse: !0
@@ -108,4 +109,4 @@ var x = class {
 	}
 };
 //#endregion
-export { S as Checkbox, w as CheckboxDesign, C as defaultsCheckbox };
+export { S as Checkbox, w as CheckboxDesign, x as CheckboxIcon, C as defaultsCheckbox };

@@ -1,7 +1,7 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
 import { t as n } from "./TextInclude-OwyVCAbS.js";
-import { t as r } from "./FieldCounterInclude-Do9sVNiw.js";
+import { t as r } from "./FieldCounterInclude-l1o0Bm7V.js";
 import { computed as i, h as a } from "vue";
 import { DesignConstructorAbstract as o, applyTemplate as s, isFilled as c, toNumber as l } from "@dxtmisha/functional";
 //#region src/constructors/FieldCounter/FieldCounter.ts

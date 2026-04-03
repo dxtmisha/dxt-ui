@@ -1,6 +1,7 @@
 import { Ref, ToRefs } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
 import { SnackbarData } from './SnackbarData';
+import { SnackbarEvent } from './SnackbarEvent';
 import { SnackbarComponents, SnackbarEmits, SnackbarSlots } from './types';
 import { SnackbarProps } from './props';
 /**
@@ -17,6 +18,8 @@ export declare class Snackbar {
     protected readonly emits?: ConstrEmit<SnackbarEmits> | undefined;
     /** Data manager for snackbar / Менеджер данных для снекбара */
     readonly data: SnackbarData;
+    /** Event manager for snackbar / Менеджер событий для снекбара */
+    readonly event: SnackbarEvent;
     /**
      * Constructor
      * @param props input data / входные данные
@@ -32,6 +35,7 @@ export declare class Snackbar {
      */
     constructor(props: SnackbarProps, refs: ToRefs<SnackbarProps>, element: Ref<HTMLDivElement | undefined>, classDesign: string, className: string, components?: DesignComp<SnackbarComponents, SnackbarProps> | undefined, slots?: SnackbarSlots | undefined, emits?: ConstrEmit<SnackbarEmits> | undefined, constructors?: {
         DataConstructor?: typeof SnackbarData;
+        EventConstructor?: typeof SnackbarEvent;
     });
     /**
      * Event for hiding the message.

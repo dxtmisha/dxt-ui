@@ -1,19 +1,19 @@
 import { Ref } from 'vue';
-import { WindowClasses } from './WindowClasses';
+import { WindowClassesData } from './WindowClassesData';
 /**
  * A class for working with elements.
  *
  * Класс для работы с элементами.
  */
 export declare class WindowElement {
-    protected readonly classes: WindowClasses;
+    protected readonly classes: WindowClassesData;
     readonly element: Ref<HTMLDivElement | undefined>;
     /**
      * Constructor
      * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
      * @param element the element of the window itself/ элемент самого окна
      */
-    constructor(classes: WindowClasses, element: Ref<HTMLDivElement | undefined>);
+    constructor(classes: WindowClassesData, element: Ref<HTMLDivElement | undefined>);
     /**
      * Checks if the main element exists.
      *

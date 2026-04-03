@@ -12,6 +12,14 @@ import eventShowEn from './event.show.en.mdx'
 import eventShowRu from './event.show.ru.mdx'
 import eventHideEn from './event.hide.en.mdx'
 import eventHideRu from './event.hide.ru.mdx'
+import exposeIsItemEn from './expose.isItem.en.mdx'
+import exposeIsItemRu from './expose.isItem.ru.mdx'
+import exposeAddEn from './expose.add.en.mdx'
+import exposeAddRu from './expose.add.ru.mdx'
+import exposeRemoveEn from './expose.remove.en.mdx'
+import exposeRemoveRu from './expose.remove.ru.mdx'
+import exposeClearEn from './expose.clear.en.mdx'
+import exposeClearRu from './expose.clear.ru.mdx'
 
 /**
  * MDX files for Snackbar component
@@ -44,6 +52,22 @@ export const wikiMdxSnackbar: StorybookComponentsMdxItem = {
     'event.hide': {
       en: eventHideEn,
       ru: eventHideRu
+    },
+    'expose.isItem': {
+      en: exposeIsItemEn,
+      ru: exposeIsItemRu
+    },
+    'expose.add': {
+      en: exposeAddEn,
+      ru: exposeAddRu
+    },
+    'expose.remove': {
+      en: exposeRemoveEn,
+      ru: exposeRemoveRu
+    },
+    'expose.clear': {
+      en: exposeClearEn,
+      ru: exposeClearRu
     }
   }
 }

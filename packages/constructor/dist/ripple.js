@@ -1,6 +1,6 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
-import { t as n } from "./RippleInclude-BBnpNshG.js";
+import { t as n } from "./RippleInclude-BlC1h0Ya.js";
 import { h as r } from "vue";
 import { DesignConstructorAbstract as i, createElement as a } from "@dxtmisha/functional";
 //#region src/constructors/Ripple/RippleItem.ts
@@ -53,4 +53,4 @@ var o = class {
 	}
 };
 //#endregion
-export { s as Ripple, l as RippleDesign, n as RippleInclude, c as defaultsRipple };
+export { s as Ripple, l as RippleDesign, n as RippleInclude, o as RippleItem, c as defaultsRipple };

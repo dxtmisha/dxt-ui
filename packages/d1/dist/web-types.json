@@ -10195,12 +10195,7 @@
               }
             }
           ],
-          "slots": [
-            {
-              "name": "default",
-              "vue-properties": []
-            }
-          ],
+          "slots": [],
           "events": [
             {
               "name": "hide",
@@ -10550,7 +10545,7 @@
               "name": "close",
               "arguments": [
                 {
-                  "name": "index",
+                  "name": "value",
                   "type": "string"
                 }
               ]

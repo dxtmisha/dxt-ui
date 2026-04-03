@@ -1,9 +1,9 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
 import { t as n } from "./EventClickInclude-6I8kuFc9.js";
-import { t as r } from "./SkeletonInclude-DCCPPs2e.js";
-import { n as i, t as a } from "./IconInclude-DbC8m22T.js";
-import { t as o } from "./IconTrailingInclude-CCAEyAaE.js";
+import { t as r } from "./SkeletonInclude-D8on8xmw.js";
+import { n as i, t as a } from "./IconInclude-BhzGfa3o.js";
+import { t as o } from "./IconTrailingInclude-BwoB_AQn.js";
 import { computed as s, h as c } from "vue";
 import { DesignConstructorAbstract as l, getBindRef as u } from "@dxtmisha/functional";
 //#region src/constructors/Icon/Icon.ts

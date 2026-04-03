@@ -1,4 +1,4 @@
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 
 import type { WindowClassesList } from './basicTypes'
 
@@ -23,7 +23,7 @@ export class WindowClassesInclude {
    * Возвращает список классов окна для указанного дизайна.
    */
   get(): WindowClassesList {
-    return WindowClasses.getClassesListByDesign(this.design)
+    return WindowClassesData.getClassesListByDesign(this.design)
   }
 
   /**

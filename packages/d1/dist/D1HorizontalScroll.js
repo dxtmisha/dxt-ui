@@ -1,2 +1,2 @@
-import { t as e } from "./HorizontalScroll-DJSjhKm4.js";
+import { t as e } from "./HorizontalScroll-B6zWySQG.js";
 export { e as D1HorizontalScroll };

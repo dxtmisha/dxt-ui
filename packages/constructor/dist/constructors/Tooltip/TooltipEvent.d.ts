@@ -1,6 +1,6 @@
 import { TooltipOpen } from './TooltipOpen';
 import { TooltipStatus } from './TooltipStatus';
-import { TooltipClasses } from './TooltipClasses';
+import { TooltipClassesData } from './TooltipClassesData';
 import { TooltipStyle } from './TooltipStyle';
 import { TooltipProps } from './props';
 /**
@@ -10,7 +10,7 @@ import { TooltipProps } from './props';
  */
 export declare class TooltipEvent {
     protected readonly props: Readonly<TooltipProps>;
-    protected readonly classes: TooltipClasses;
+    protected readonly classes: TooltipClassesData;
     protected readonly style: TooltipStyle;
     protected readonly status: TooltipStatus;
     protected readonly open: TooltipOpen;
@@ -24,7 +24,7 @@ export declare class TooltipEvent {
      * @param status object for working with statuses/ объект для работы со статусами
      * @param open data opening management/ управление открытием данных
      */
-    constructor(props: Readonly<TooltipProps>, classes: TooltipClasses, style: TooltipStyle, status: TooltipStatus, open: TooltipOpen);
+    constructor(props: Readonly<TooltipProps>, classes: TooltipClassesData, style: TooltipStyle, status: TooltipStatus, open: TooltipOpen);
     /**
      * Events on clicking an element in a mobile application.
      *

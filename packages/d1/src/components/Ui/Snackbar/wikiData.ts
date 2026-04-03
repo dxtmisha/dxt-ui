@@ -17,7 +17,6 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default' }
   // :slotsList [!] System label / Системная метка
 ]
 

@@ -4,11 +4,11 @@ import { t as n } from "./TextInclude-OwyVCAbS.js";
 import { t as r } from "./EventClickInclude-6I8kuFc9.js";
 import { t as i } from "./ModelInclude-D8LkrhPp.js";
 import { t as a } from "./MotionTransformClassesInclude-BN-T4YKS.js";
-import { t as o } from "./SkeletonInclude-DCCPPs2e.js";
+import { t as o } from "./SkeletonInclude-D8on8xmw.js";
 import { t as s } from "./LabelInclude-DoZ7EUYO.js";
 import { t as c } from "./DescriptionInclude-B_Xf_j3l.js";
-import { t as l } from "./WindowClassesInclude-Dp9vrvR4.js";
-import { t as u } from "./BarsInclude-jZpD17w1.js";
+import { t as l } from "./WindowClassesInclude-zm-ITw5d.js";
+import { t as u } from "./BarsInclude-rBLacb0J.js";
 import { computed as d, h as f, reactive as p, ref as m, watch as h } from "vue";
 import { DesignConstructorAbstract as g, forEach as _, getBind as v, toBind as y } from "@dxtmisha/functional";
 //#region src/constructors/Bars/BarsAction.ts
@@ -118,4 +118,4 @@ var b = class {
 	}
 };
 //#endregion
-export { x as Bars, C as BarsDesign, u as BarsInclude, S as defaultsBars };
+export { x as Bars, b as BarsAction, C as BarsDesign, u as BarsInclude, S as defaultsBars };

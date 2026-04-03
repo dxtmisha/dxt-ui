@@ -1,4 +1,4 @@
-import { WindowClasses } from './WindowClasses';
+import { WindowClassesData } from './WindowClassesData';
 import { WindowProps } from './props';
 /**
  * The class for working with the flash parameter. The flash property is
@@ -11,14 +11,14 @@ import { WindowProps } from './props';
  */
 export declare class WindowFlash {
     protected readonly props: WindowProps;
-    protected readonly classes: WindowClasses;
+    protected readonly classes: WindowClassesData;
     protected control: boolean;
     /**
      * Constructor
      * @param props input data/ входные данные
      * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
      */
-    constructor(props: WindowProps, classes: WindowClasses);
+    constructor(props: WindowProps, classes: WindowClassesData);
     /**
      * Is the flash property active.
      *

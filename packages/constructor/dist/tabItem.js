@@ -2,11 +2,11 @@ import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
 import { t as n } from "./EnabledInclude-CkD_lxMY.js";
 import { t as r } from "./EventClickInclude-6I8kuFc9.js";
-import { t as i } from "./SkeletonInclude-DCCPPs2e.js";
+import { t as i } from "./SkeletonInclude-D8on8xmw.js";
 import { t as a } from "./LabelInclude-DoZ7EUYO.js";
-import { t as o } from "./IconTrailingInclude-CCAEyAaE.js";
-import { t as s } from "./RippleInclude-BBnpNshG.js";
-import { t as c } from "./BadgeInclude-xKutRNVE.js";
+import { t as o } from "./IconTrailingInclude-BwoB_AQn.js";
+import { t as s } from "./BadgeInclude-DISlNqBJ.js";
+import { t as c } from "./RippleInclude-BlC1h0Ya.js";
 import { computed as l, h as u } from "vue";
 import { DesignConstructorAbstract as d } from "@dxtmisha/functional";
 //#region src/constructors/TabItem/TabItem.ts
@@ -24,7 +24,7 @@ var f = class {
 				...e.disabled(!!this.props.disabled)
 			};
 		})), this.props = u, this.refs = d, this.element = f, this.classDesign = p, this.className = m, this.components = h, this.slots = g, this.emits = _;
-		let { BadgeIncludeConstructor: y = c, EnabledIncludeConstructor: b = n, EventClickIncludeConstructor: x = r, IconTrailingIncludeConstructor: S = o, LabelIncludeConstructor: C = a, RippleIncludeConstructor: w = s, SkeletonIncludeConstructor: T = i } = v == null ? {} : v;
+		let { BadgeIncludeConstructor: y = s, EnabledIncludeConstructor: b = n, EventClickIncludeConstructor: x = r, IconTrailingIncludeConstructor: S = o, LabelIncludeConstructor: C = a, RippleIncludeConstructor: w = c, SkeletonIncludeConstructor: T = i } = v == null ? {} : v;
 		this.skeleton = new T(this.props, this.classDesign, ["classTextVariant"]), this.enabled = new b(this.props), this.icon = new S(this.props, this.className, this.components), this.label = new C(this.props, this.className, void 0, this.slots, void 0, void 0, void 0, this.skeleton), this.badge = new y(this.props, this.className, this.components, { overlap: "static" }), this.ripple = new w(this.className, this.components, this.enabled), this.event = new x(this.props, this.enabled, this.emits);
 	}
 }, p = { role: "tab" }, m = class extends d {

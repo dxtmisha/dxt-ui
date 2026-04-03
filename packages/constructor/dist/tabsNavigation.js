@@ -2,38 +2,17 @@ import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-hmGKPWdq.js";
 import { t as n } from "./EventClickInclude-6I8kuFc9.js";
 import { t as r } from "./ModelInclude-D8LkrhPp.js";
-import { computed as i, nextTick as a, onMounted as o, ref as s, toRef as c, watch as l } from "vue";
-import { DesignConstructorAbstract as u, EventItem as d, ListDataRef as f, getElementId as p, getRef as m, isDomRuntime as h, isSelected as g, toArray as _, toBinds as v } from "@dxtmisha/functional";
-//#region src/constructors/HorizontalScroll/HorizontalScrollInclude.ts
-var y = class {
-	constructor(e, n, r, a, o) {
-		t(this, "element", s()), t(this, "elementHtml", i(() => {
-			var e;
-			return (e = this.element.value) == null ? void 0 : e.elementHtml;
-		})), t(this, "binds", i(() => v(m(this.extra), {
-			ref: this.element,
-			flush: this.props.horizontalScrollFlush,
-			align: this.props.horizontalScrollAlign
-		}, this.props.horizontalScrollAttrs))), t(this, "toSelected", () => {
-			var e, t;
-			(e = this.element.value) == null || (t = e.toSelected) == null || t.call(e);
-		}), t(this, "render", (e, t) => {
-			if (this.components) {
-				var n;
-				return this.components.render("horizontalScroll", {
-					...this.binds.value,
-					...m(t)
-				}, e, (n = this.index) == null ? "horizontalScroll" : n);
-			}
-			return [];
-		}), this.props = e, this.className = n, this.components = r, this.extra = a, this.index = o;
-	}
-}, b = class {
+import { t as i } from "./HorizontalScrollInclude-BN6p9jjq.js";
+import { t as a } from "./TabsNavigationInclude-DU9Nb7hG.js";
+import { computed as o, nextTick as s, onMounted as c, ref as l, toRef as u, watch as d } from "vue";
+import { DesignConstructorAbstract as f, EventItem as p, ListDataRef as m, getElementId as h, isDomRuntime as g, isSelected as _, toArray as v, toBinds as y } from "@dxtmisha/functional";
+//#region src/constructors/TabsNavigation/TabsNavigationSelected.ts
+var b = class {
 	constructor(e) {
-		t(this, "item", s()), t(this, "actualItem", s()), this.props = e, this.item.value = e.selected, this.actualItem.value = e.selected;
+		t(this, "item", l()), t(this, "actualItem", l()), this.props = e, this.item.value = e.selected, this.actualItem.value = e.selected;
 	}
 	isSelected(e) {
-		return g(e, this.actualItem.value);
+		return _(e, this.actualItem.value);
 	}
 	set(e) {
 		return this.item.value = e, this;
@@ -43,7 +22,7 @@ var y = class {
 	}
 }, x = class {
 	constructor(e, n) {
-		t(this, "item", s()), this.element = e, this.selected = n;
+		t(this, "item", l()), this.element = e, this.selected = n;
 	}
 	get() {
 		if (this.item.value) return String(this.item.value);
@@ -57,7 +36,7 @@ var y = class {
 	}
 	position() {
 		var e;
-		return this.item.value = (e = _(this.selected.actualItem.value)) == null ? void 0 : e[0], this;
+		return this.item.value = (e = v(this.selected.actualItem.value)) == null ? void 0 : e[0], this;
 	}
 	reset() {
 		return this.item.value = void 0, this;
@@ -70,10 +49,10 @@ var y = class {
 	}
 }, S = class {
 	constructor(e, n) {
-		t(this, "ids", i(() => {
+		t(this, "ids", o(() => {
 			let e = {};
 			return this.data.fullData.value.forEach((t) => {
-				e[t.value] = p();
+				e[t.value] = h();
 			}), e;
 		})), this.props = e, this.data = n;
 	}
@@ -82,9 +61,9 @@ var y = class {
 		return (t = this.ids.value[e == null ? "" : e]) == null ? String(e) : t;
 	}
 }, C = class {
-	constructor(e, n, r, i, o, s) {
+	constructor(e, n, r, i, a, o) {
 		t(this, "go", async (e, t) => {
-			await a();
+			await s();
 			let n = this.getItem(e), r = this.getItem(t);
 			if (n && r) {
 				let e = `${this.classDesign}-${this.getItemClassName()}`, t = n.getBoundingClientRect(), i = r.getBoundingClientRect(), a = i.left - t.left, o = `${a}px ${a >= 0 ? "-" : "+"} var(--${e}-gap, 0px)`;
@@ -97,7 +76,7 @@ var y = class {
 			setTimeout(() => {
 				e.style.removeProperty(`--${this.className}-sys-left`), e.style.removeProperty(`--${this.className}-sys-width`);
 			}, 384);
-		}), this.props = e, this.refs = n, this.element = r, this.classDesign = i, this.className = o, this.selected = s, l(this.selected.item, (e, t) => this.go(e, t)), a().then(() => requestAnimationFrame(() => {
+		}), this.props = e, this.refs = n, this.element = r, this.classDesign = i, this.className = a, this.selected = o, d(this.selected.item, (e, t) => this.go(e, t)), s().then(() => requestAnimationFrame(() => {
 			if (r.value) {
 				var e, t;
 				r.value.scrollLeft = (e = (t = this.getItem(this.selected.item.value)) == null ? void 0 : t.offsetLeft) == null ? 0 : e;
@@ -154,7 +133,7 @@ var y = class {
 		return this.focus.get() || this.getFirstItem();
 	}
 	start() {
-		h() && (this.event || (this.event = new d(document.body, ["keydown"], this.on)), this.focus.position(), this.event.start());
+		g() && (this.event || (this.event = new p(document.body, ["keydown"], this.on)), this.focus.position(), this.event.start());
 	}
 	stop() {
 		this.event && (this.event.stop(), this.event = void 0, this.focus.reset());
@@ -176,17 +155,17 @@ var y = class {
 		return this;
 	}
 }, T = class {
-	constructor(a, s, u, d, p, m, h, g, _) {
-		t(this, "scroll", void 0), t(this, "selected", void 0), t(this, "focus", void 0), t(this, "data", void 0), t(this, "ids", void 0), t(this, "indicator", void 0), t(this, "control", void 0), t(this, "event", void 0), t(this, "binds", i(() => ({
+	constructor(a, s, l, f, p, h, g, _, v) {
+		t(this, "scroll", void 0), t(this, "selected", void 0), t(this, "focus", void 0), t(this, "data", void 0), t(this, "ids", void 0), t(this, "indicator", void 0), t(this, "control", void 0), t(this, "event", void 0), t(this, "binds", o(() => ({
 			tabindex: 0,
 			...this.control.binds,
 			...e.role("tablist")
 		}))), t(this, "onClick", (e, t) => {
 			this.selected.set(t == null ? void 0 : t.value), this.event.onClick(e, t);
-		}), this.props = a, this.refs = s, this.element = u, this.classDesign = d, this.className = p, this.components = m, this.slots = h, this.emits = g;
-		let { EventClickIncludeConstructor: v = n, HorizontalScrollIncludeConstructor: T = y, ListDataRefConstructor: E = f, ModelIncludeConstructor: D = r, TabsNavigationControlConstructor: O = w, TabsNavigationIdsConstructor: k = S, TabsNavigationFocusConstructor: A = x, TabsNavigationIndicatorConstructor: j = C, TabsNavigationSelectedConstructor: M = b } = _ == null ? {} : _;
-		this.scroll = new T(this.props, this.className, this.components), this.selected = new M(this.props), this.focus = new A(this.element, this.selected), this.data = new E(c(this.props, "list"), this.focus.item, void 0, void 0, void 0, this.selected.actualItem, this.refs.keyValue, this.refs.keyLabel), this.ids = new k(this.props, this.data), this.indicator = new j(this.props, this.refs, this.scroll.elementHtml, this.classDesign, this.className, this.selected), this.control = new O(this.selected, this.focus, this.data), this.event = new v(void 0, void 0, this.emits), new D("selected", this.emits, this.selected.item), this.initSelected(), o(() => {
-			l([s.selected], () => this.selected.set(a.selected), { immediate: !0 });
+		}), this.props = a, this.refs = s, this.element = l, this.classDesign = f, this.className = p, this.components = h, this.slots = g, this.emits = _;
+		let { EventClickIncludeConstructor: y = n, HorizontalScrollIncludeConstructor: T = i, ListDataRefConstructor: E = m, ModelIncludeConstructor: D = r, TabsNavigationControlConstructor: O = w, TabsNavigationIdsConstructor: k = S, TabsNavigationFocusConstructor: A = x, TabsNavigationIndicatorConstructor: j = C, TabsNavigationSelectedConstructor: M = b } = v == null ? {} : v;
+		this.scroll = new T(this.props, this.className, this.components), this.selected = new M(this.props), this.focus = new A(this.element, this.selected), this.data = new E(u(this.props, "list"), this.focus.item, void 0, void 0, void 0, this.selected.actualItem, this.refs.keyValue, this.refs.keyLabel), this.ids = new k(this.props, this.data), this.indicator = new j(this.props, this.refs, this.scroll.elementHtml, this.classDesign, this.className, this.selected), this.control = new O(this.selected, this.focus, this.data), this.event = new y(void 0, void 0, this.emits), new D("selected", this.emits, this.selected.item), this.initSelected(), c(() => {
+			d([s.selected], () => this.selected.set(a.selected), { immediate: !0 });
 		});
 	}
 	initSelected() {
@@ -195,14 +174,14 @@ var y = class {
 }, E = {
 	horizontalScrollFlush: !0,
 	horizontalScrollAlign: "left"
-}, D = class extends u {
+}, D = class extends f {
 	constructor(e, n, r, i = T) {
 		super(e, n, r), t(this, "item", void 0), t(this, "renderList", (e) => {
 			let t = [];
 			return this.initSlot("leading", t), this.item.data.fullData.value.forEach((n) => t.push(this.renderItem(e, n))), this.initSlot("trailing", t), t;
 		}), t(this, "renderItem", (e, t) => {
 			let n = this.item.selected.isSelected(t.index);
-			return this.components.renderOne("tabItem", v({
+			return this.components.renderOne("tabItem", y({
 				tag: this.props.tag,
 				key: t.index
 			}, this.props.itemAttrs, t, e.binds, {
@@ -230,4 +209,4 @@ var y = class {
 	}
 };
 //#endregion
-export { T as TabsNavigation, D as TabsNavigationDesign, E as defaultsTabsNavigation };
+export { T as TabsNavigation, w as TabsNavigationControl, D as TabsNavigationDesign, x as TabsNavigationFocus, S as TabsNavigationIds, a as TabsNavigationInclude, C as TabsNavigationIndicator, b as TabsNavigationSelected, E as defaultsTabsNavigation };

@@ -2,7 +2,7 @@ import { t as e } from "./defineProperty-hmGKPWdq-iNw-og8N.js";
 import { componentsList as t, componentsReg as n, packageName as r, styleVarsReg as i } from "./design.js";
 import { isFilled as a } from "@dxtmisha/functional";
 import { toCamelCase as o, toKebabCase as s } from "@dxtmisha/functional-basic";
-//#region ../constructor/dist/Plugin-D9OVhioJ.js
+//#region ../constructor/dist/Plugin-cWn0HZcf.js
 var c = class {
 	static isSrc(e) {
 		return !!(e.match(/\/src\//i) && !e.match(/\/node_modules\//i));

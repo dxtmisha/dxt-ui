@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 
-import { WindowClasses } from './WindowClasses'
+import { WindowClassesData } from './WindowClassesData'
 
 /**
  * A class for working with elements.
@@ -14,7 +14,7 @@ export class WindowElement {
    * @param element the element of the window itself/ элемент самого окна
    */
   constructor(
-    protected readonly classes: WindowClasses,
+    protected readonly classes: WindowClassesData,
     public readonly element: Ref<HTMLDivElement | undefined>
   ) {
   }

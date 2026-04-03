@@ -28,14 +28,14 @@ export class SnackbarItemDesign<
   CLASSES extends SnackbarItemClasses,
   P extends SnackbarItemPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SnackbarItemEmits,
-  EXPOSE,
-  SnackbarItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SnackbarItemEmits,
+    EXPOSE,
+    SnackbarItemSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: SnackbarItem
 
   /**

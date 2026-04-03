@@ -3,7 +3,7 @@ import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
 import { LabelInclude } from '../../classes/LabelInclude';
 import { DescriptionInclude } from '../../classes/DescriptionInclude';
 import { ArrowInclude } from '../Arrow';
-import { TooltipClasses } from './TooltipClasses';
+import { TooltipClassesData } from './TooltipClassesData';
 import { TooltipStyle } from './TooltipStyle';
 import { TooltipStatus } from './TooltipStatus';
 import { TooltipPosition } from './TooltipPosition';
@@ -28,7 +28,7 @@ export declare class Tooltip {
     protected readonly slots?: TooltipSlots | undefined;
     protected readonly emits?: ConstrEmit<TooltipEmits> | undefined;
     /** Class manager for tooltip classes/ Менеджер классов для подсказки */
-    readonly classes: TooltipClasses;
+    readonly classes: TooltipClassesData;
     /** Style manager for tooltip styles/ Менеджер стилей для подсказки */
     readonly style: TooltipStyle;
     /** Status manager for tooltip state/ Менеджер статуса для состояния подсказки */
@@ -70,7 +70,7 @@ export declare class Tooltip {
         ArrowIncludeConstructor?: typeof ArrowInclude;
         DescriptionIncludeConstructor?: typeof DescriptionInclude;
         LabelIncludeConstructor?: typeof LabelInclude;
-        TooltipClassesConstructor?: typeof TooltipClasses;
+        TooltipClassesConstructor?: typeof TooltipClassesData;
         TooltipEventConstructor?: typeof TooltipEvent;
         TooltipOpenConstructor?: typeof TooltipOpen;
         TooltipPositionConstructor?: typeof TooltipPosition;

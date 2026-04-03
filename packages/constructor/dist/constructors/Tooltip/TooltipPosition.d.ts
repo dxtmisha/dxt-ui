@@ -1,5 +1,5 @@
 import { Ref } from 'vue';
-import { TooltipClasses } from './TooltipClasses';
+import { TooltipClassesData } from './TooltipClassesData';
 import { TooltipStyle } from './TooltipStyle';
 import { TooltipProps } from './props';
 /**
@@ -10,7 +10,7 @@ import { TooltipProps } from './props';
 export declare class TooltipPosition {
     protected readonly props: Readonly<TooltipProps>;
     protected readonly element: Ref<HTMLDivElement | undefined>;
-    protected readonly classes: TooltipClasses;
+    protected readonly classes: TooltipClassesData;
     protected readonly style: TooltipStyle;
     /**
      * Constructor
@@ -19,7 +19,7 @@ export declare class TooltipPosition {
      * @param classes object for working with the class/ объект для работы с классом
      * @param style object for working with styles/ объект для работы со стилями
      */
-    constructor(props: Readonly<TooltipProps>, element: Ref<HTMLDivElement | undefined>, classes: TooltipClasses, style: TooltipStyle);
+    constructor(props: Readonly<TooltipProps>, element: Ref<HTMLDivElement | undefined>, classes: TooltipClassesData, style: TooltipStyle);
     /**
      * Update all sizes.
      *

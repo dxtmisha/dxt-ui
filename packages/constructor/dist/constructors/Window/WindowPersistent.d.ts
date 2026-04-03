@@ -1,4 +1,4 @@
-import { WindowClasses } from './WindowClasses';
+import { WindowClassesData } from './WindowClassesData';
 import { WindowElement } from './WindowElement';
 import { WindowProps } from './props';
 import { Ref } from 'vue';
@@ -9,7 +9,7 @@ import { Ref } from 'vue';
  */
 export declare class WindowPersistent {
     protected readonly props: WindowProps;
-    protected readonly classes: WindowClasses;
+    protected readonly classes: WindowClassesData;
     protected readonly element: WindowElement;
     readonly item: Ref<boolean, boolean>;
     /**
@@ -18,7 +18,7 @@ export declare class WindowPersistent {
      * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
      * @param element an object of the class for working with elements/ объект класса для работы с элементами
      */
-    constructor(props: WindowProps, classes: WindowClasses, element: WindowElement);
+    constructor(props: WindowProps, classes: WindowClassesData, element: WindowElement);
     /**
      * Request to enable animation.
      *
