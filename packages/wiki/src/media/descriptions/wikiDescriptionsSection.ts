@@ -117,38 +117,9 @@ export const wikiDescriptionsSection: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Section is a structural component used to divide a page into distinct thematic areas.
-It is a semantic alias for the \`Block\` component, inheriting all its layout and styling capabilities.
-
-**Key Features:**
-1. **Structure:**
-   - **Headline:** Top-level category text (\`headline\`).
-   - **Header:** Contains Icon, Label (Title), Caption, and Trailing actions.
-   - **Description:** Subtitle or explanatory text.
-   - **Content:** The main body of the section.
-
-2. **Usage:**
-   - Use \`Section\` to group related content within a Page.
-   - It provides a consistent header structure for page blocks.
-
-3. **Props & Slots:**
-   - Inherits all props from \`Block\` (\`label\`, \`icon\`, \`tag\`, etc.).
-   - Supports slots: \`#headline\`, \`#trailing\`, \`#default\`.
-
-**Usage Examples:**
-
-- **Standard Section:**
-  \`<Section headline="Account" label="Profile Settings">
-     <ProfileForm />
-   </Section>\`
-
-- **Section with Actions:**
-  \`<Section label="Recent Activity">
-     <template #trailing>
-       <button>View All</button>
-     </template>
-     <ActivityList />
-   </Section>\`
+Structural component used to divide a page into distinct thematic areas, serving as a semantic alias for the Block component. Provides a standardized header structure for grouping related content within a coherent layout.
+Features a flexible header with support for icons, labels (titles), captions, and trailing action areas. Inherits all layout and styling capabilities from the Block component, including support for custom semantic tags (defaulting to <section>) and high-level category headlines.
+Controlled via headline, label, and icon props, with dedicated slots for primary content and secondary actions. Use to logically organize and category-label information within the flow of a Page or complex Dashboard.
     `
   }
 }

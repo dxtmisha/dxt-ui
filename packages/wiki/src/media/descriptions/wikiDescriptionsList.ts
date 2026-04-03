@@ -119,33 +119,9 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-List is a core structural component for rendering interactive lists.
-It is the engine behind Dropdowns, Selects, and Navigation Menus.
-
-**Key Features:**
-1. **Data Structure:**
-   - \`list\`: Array of objects. Supports types: \`item\` (default), \`group\`, \`menu\`, \`line\` (separator), \`space\`, \`subtitle\`, \`html\`.
-   - Items properties: \`label\`, \`value\`, \`icon\`, \`description\`, \`disabled\`, \`to\` (link).
-
-2. **Interaction:**
-   - **Selection:** \`v-model:selected\` (single or array).
-   - **Keyboard:** Full arrow key navigation, Enter to select.
-   - **Focus:** Manages internal focus.
-
-3. **Search & Filtering:**
-   - \`highlight\`: Text to highlight.
-   - \`filterMode\`: Hides non-matching items.
-
-**Usage Examples:**
-
-- **Basic List:**
-  \`<List :list="[{ label: 'Home', icon: 'home' }, { label: 'Settings', icon: 'settings' }]" />\`
-
-- **With Selection:**
-  \`<List v-model:selected="current" :list="options" />\`
-
-- **Filtered List:**
-  \`<List :list="data" :highlight="searchText" filter-mode />\`
+Core engine for rendering interactive, searchable, and hierarchical lists. Serves as the foundation for complex components like Selects, Dropdowns, and multi-level Navigation Menus.
+Features support for multiple item types (group, menu, line, html), real-time search highlighting, and full keyboard navigation. Includes automatic focus management, ARIA accessibility roles, and a "lite" rendering mode for performance optimization with large datasets.
+Controlled via the list prop for data and v-model:selected for state tracking. Use as the primary building block for any interface requiring item selection, structured data display, or interactive command menus.
     `
   }
 }

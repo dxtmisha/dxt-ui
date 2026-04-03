@@ -77,31 +77,9 @@ export const wikiDescriptionsSelectValue: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-SelectValue is a specialized display component used primarily within Select-like inputs to render the selected value(s).
-It handles the visual representation of selection, switching between a simple text label (single selection) and a group of chips (multiple selection).
-
-**Key Features:**
-1. **Display Modes:**
-   - **Single Selection (default):** Renders the label of the first item in the \`value\` array as text.
-   - **Multiple Selection (\`multiple\`):** Renders each item in the \`value\` array as a \`Chip\` component.
-
-2. **Data Handling (\`value\`):**
-   - Accepts an array of objects: \`[{ label: 'Text', value: 'val', ... }]\`.
-   - Even for single selection, it expects an array (uses the first item).
-   - If \`value\` is empty, it displays the \`placeholder\`.
-
-3. **Chip Customization (Multiple Mode):**
-   - \`chipAttrs\`: Allows passing props to the internal \`Chip\` components (e.g., \`{ outline: true, icon: 'check' }\`).
-   - Handles chip removal events automatically if not disabled/readonly.
-
-**When to use:**
-- Inside the trigger area of a **Select**, **Combobox**, or **Autocomplete** component.
-- To display a list of selected tags or tokens.
-
-**Usage Examples:**
-
-- **Multiple Values (Chips):**
-  \`<SelectValue multiple :value="[{ label: 'Apple' }, { label: 'Banana' }]" />\`
+Specialized display engine used within Select, Combobox, or Autocomplete controls to render selected state. Dynamically switches between a simple text label for single selection and a group of Chips for multiple selection.
+Features automated Chip management, including removal event handling and integration with the Select data model. Supports empty state placeholders, custom Chip attributes (icons, outlines), and handles disabled/readonly states to prevent interaction.
+Controlled via the multiple and value props, requiring an array of objects even for single selection. Use as a foundational element when building custom selection fields requiring standardized token-based or text-based value representation.
     `
   }
 }

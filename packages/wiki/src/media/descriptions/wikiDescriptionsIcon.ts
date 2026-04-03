@@ -143,36 +143,9 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Icon is a component for displaying vector icons, typically from the Material Symbols library.
-It supports state switching (active/inactive), directionality (RTL), and integration with the design system's palette.
-
-**Key Features:**
-1. **Icon Source:**
-   - \`icon\`: The name of the icon to display (e.g., "home", "menu", "arrow_forward").
-     Uses the project's icon set (usually Material Symbols).
-
-2. **Interactive States:**
-   - \`active\`: Boolean flag to toggle the active state.
-   - \`iconActive\`: The icon name to show when \`active\` is \`true\`.
-     Ideal for toggle buttons (e.g., "favorite_border" vs "favorite").
-
-3. **Styling:**
-   - \`size\`: Controls the dimensions of the icon (e.g., "sm", "md", "lg").
-   - \`asPalette\`: Applies the active palette color to the icon.
-   - \`inverse\`: Inverts the colors, useful for dark backgrounds or contrast.
-
-4. **Directionality (\`dir\`):**
-   - Automatically mirrors the icon for RTL (Right-to-Left) languages if the icon is directional (like arrows).
-
-5. **Loading:**
-   - \`isSkeleton\`: Renders a loading placeholder (skeleton) instead of the icon.
-
-**Usage Examples:**
-
-- **Simple Icon:** \`<Icon icon="search" />\`
-- **Toggle Icon:** \`<Icon icon="visibility_off" iconActive="visibility" :active="isVisible" />\`
-- **Directional Arrow:** \`<Icon icon="arrow_forward" dir />\`
-- **Large Palette Icon:** \`<Icon icon="star" size="xl" asPalette />\`
+Vector icon component, typically utilizing the Material Symbols library. Supports dynamic state management, automatic mirroring for RTL languages, and deep integration with the design system's palette.
+Features toggle-able states (active/inactive) with specific icons for each, built-in skeleton loading (isSkeleton), and directionality adaptation. Customizing via size, palette, and inverse props ensures visual consistency across all themes.
+Controlled via the icon and iconActive props and various styling flags. Use for navigation links, action buttons, status indicators, or any UI element requiring concise visual representation.
     `
   }
 }

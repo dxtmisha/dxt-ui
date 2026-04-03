@@ -187,5 +187,12 @@ export const wikiDescriptionsMotionAxis: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'MotionAxis'} type={'slots'}/>
     `
+  },
+  ai: {
+    description: `
+Low-level layout component for animating transitions between multiple content areas (slides) along X, Y, or Z axes. Ideal for multi-step wizards, tabbed content, and gallery-like interfaces requiring direction-aware motion.
+Features automated animation direction detection (next/back), smooth container height transitions, and lazy loading support to manage slide life-cycles in the DOM. Supports horizontal slide, vertical flip, and depth-based transitions with customizable speed and easing.
+Controlled via the selected prop or v-model:selected, utilizing numbered slide slots (#slide1, #slide2, etc.) for content distribution. Use when content needs to transition within a fixed or dynamic container while maintaining high visual polish and spatial orientation.
+    `
   }
 }

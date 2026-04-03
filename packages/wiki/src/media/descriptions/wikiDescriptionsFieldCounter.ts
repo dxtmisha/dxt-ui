@@ -66,34 +66,9 @@ export const wikiDescriptionsFieldCounter: StorybookComponentsDescriptionItem = 
   },
   ai: {
     description: `
-**Note:** This is a subcomponent of \`Field\`. You should generally not use it directly.
-          It is automatically integrated into components like \`Input\` and \`Textarea\`.
-
-FieldCounter is a utility component designed to display character counts and limits for input fields.
-It provides visual feedback to users about the length of their input and includes accessibility features for screen readers.
-
-**Key Features:**
-1. **Display Logic:**
-   - **Counter Only:** If \`maxlength\` is not set, displays the current count (e.g., "10").
-   - **With Limit:** If \`maxlength\` is set, displays "current / max" (e.g., "10 / 100").
-   - **Template:** The \`template\` prop allows custom formatting using placeholders \`[c]\` (counter) and \`[m]\` (max).
-
-2. **Accessibility:**
-   - Automatically manages ARIA live regions to announce status to screen readers.
-   - \`maxlengthOnce\`: Determines when to start announcing remaining characters (default is 10% of max).
-   - Provides specific messages for "remaining characters" and "limit exceeded".
-
-3. **Integration:**
-   - Typically used within \`Input\`, \`Textarea\`, or custom form wrappers.
-   - Accepts \`counter\` (current length) and \`maxlength\` (limit) as numbers or strings.
-
-**Usage Examples:**
-
-- **Standard Limit:**
-  \`<FieldCounter :counter="currentLength" :maxlength="50" />\`
-
-- **Custom Format:**
-  \`<FieldCounter :counter="5" :maxlength="10" template="[c] of [m] chars" />\`
+Utility subcomponent for displaying character counts and input limits. Provides visual feedback to users and accessibility status to screen readers during formal data entry.
+Features customizable display templates with placeholders ([c] for counter, [m] for max) and automated visibility based on maxlength. Includes ARIA live region management for screen reader announcements.
+Integrated automatically into components like Input and Textarea; should generally not be used directly. Controlled via counter and maxlength props within the Field wrapper.
     `
   }
 }

@@ -114,44 +114,9 @@ export const wikiDescriptionsPage: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Page is a top-level structural component designed to wrap the main content of a view or document.
-It acts as a semantic container (typically rendering a \`<main>\` tag) and provides a standardized header structure.
-It inherits all functionality from the \`Block\` component.
-
-**Key Features:**
-1. **Semantic Structure:**
-   - Represents the main content area of the application.
-   - Provides a consistent layout for page headers.
-
-2. **Header Layout:**
-   - **Headline:** High-level category or breadcrumb-like text.
-   - **Label:** The primary page title.
-   - **Description:** Subtitle or page summary.
-   - **Icon:** Page icon.
-   - **Trailing:** Area for page-level actions (e.g., "Save", "Edit").
-
-3. **Customization:**
-   - Supports all \`Block\` props.
-   - Flexible content slot (\`#default\`).
-
-**When to use:**
-- As the root container for a route or view.
-- To provide a consistent title and action bar for a page.
-
-**Usage Examples:**
-
-- **Standard Page:**
-  \`<Page label="Home" description="Welcome back">
-     <DashboardWidgets />
-   </Page>\`
-
-- **Page with Actions:**
-  \`<Page headline="Settings" label="Profile">
-     <template #trailing>
-       <button>Save Changes</button>
-     </template>
-     <ProfileForm />
-   </Page>\`
+Top-level structural container designed to wrap the primary content of a view or document. Serves as a semantic root (typically rendering a <main> tag) and establishes the high-level document hierarchy with standardized headers.
+Features a comprehensive header structure inherited from the Block component, including support for headlines (h1), labels (page titles), descriptions, and trailing action areas. Automatically manages spacing and layout consistency for page-level navigation and identity.
+Controlled via headline, label, and icon props, with dedicated slots for content and actions (#default, #trailing). Use as the foundational wrapper for any route or unique screen to ensure accessibility and consistent information architecture.
     `
   }
 }

@@ -144,62 +144,9 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Checkbox is a fundamental form control component that allows users to select binary (yes/no) or indeterminate states.
-
-**When to use:**
-1. **Binary Choice:** Agreeing to terms, toggling settings, enabling features.
-2. **Multiple Selection:** Selecting multiple items from a list (use multiple checkboxes).
-3. **Indeterminate State:** Parent checkbox representing partially selected child items.
-4. **Form Controls:** Part of forms requiring boolean input values.
-
-**Key Properties & Logic:**
-
-1. **Value & State:**
-   - \`value\` or \`v-model\`: Boolean value representing checked state (true/false).
-   - \`indeterminate\`: Special state showing a dash instead of a checkmark, representing a partial selection.
-
-2. **Label & Description:**
-   - \`label\`: Primary text displayed next to the checkbox.
-   - \`description\`: Secondary descriptive text below the label.
-   - Both support slots for custom content.
-
-3. **Icons:**
-   - \`iconCheckbox\`: Custom icon for the checked state (default: checkmark).
-   - \`iconIndeterminate\`: Custom icon for the indeterminate state (default: horizontal line).
-
-4. **Form Integration:**
-   - \`name\`: Form field name for submission.
-   - \`valueVariantHide\`: Hidden input value when unchecked (default: "0").
-   - \`required\`: Makes the field required for validation.
-
-5. **Validation:**
-   - \`validationMessage\`: Custom error message to display.
-   - \`checkValidity()\`: Exposed method to programmatically validate.
-
-6. **Visual States:**
-   - \`disabled\`: Prevents interaction and grays out the component.
-   - \`loading\`: Shows a progress indicator instead of the checkbox icon.
-   - \`focus\`: Programmatically applies focus state.
-   - \`isSkeleton\`: Shows skeleton loading state.
-
-7. **Layout:**
-   - \`block\`: Makes the checkbox full width (default: true).
-   - \`itemCenter\`: Centers the checkbox icon vertically (default: true).
-   - \`adaptive\`: Adaptive layout options.
-
-8. **Interaction:**
-   - Clicking anywhere on the label or checkbox toggles the state.
-   - Ripple effect on click for visual feedback.
-   - Emits \`input\` and \`change\` events.
-
-**Design Identification:**
-- **Standard Checkbox:** Square box with optional checkmark and label.
-- **With Description:** Checkbox with primary label and secondary text.
-- **Indeterminate:** Checkbox showing a horizontal line (dash) instead of checkmark.
-- **Error State:** Checkbox with red border/text and validation message below.
-
-**Example:**
-\`<Checkbox label="I agree to terms" description="Required to continue" required v-model="agreed" />\`
+Form control component for binary (yes/no) or indeterminate state selection. Allows users to toggle specific options or select multiple items from a list with visual feedback.
+Features support for primary label, secondary description, and custom icons for checked/indeterminate states. Includes built-in validation, loading indicators, and adaptive layout options.
+Controlled via v-model or value prop and emits @input/@change events. Use for terms agreement, feature toggles, or parent-child coordinated selections (via indeterminate state).
     `
   }
 }

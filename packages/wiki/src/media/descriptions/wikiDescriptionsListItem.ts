@@ -147,44 +147,9 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-ListItem is a versatile structural component used to render items within lists, menus, or navigation bars.
-It provides a standardized layout with slots for leading (prefix) and trailing (suffix) elements, along with a central content area.
-
-**Key Features:**
-1. **Layout Structure:**
-   - **Prefix:** Left-most area (e.g., for avatars, checkboxes, or icons).
-   - **Content:** Central area containing:
-     - \`label\`: Main title.
-     - \`caption\`: Meta text (above or next to label).
-     - \`description\`: Subtitle text (below label).
-   - **Suffix:** Right-side meta content (e.g., timestamp, status).
-   - **Trailing:** Far-right action area (e.g., arrow icon, badge).
-
-2. **Interaction:**
-   - **Navigation:** Renders as an \`<a>\` tag if \`href\` is provided.
-   - **Selection:** Supports \`selected\` state (useful for menus).
-   - **Feedback:** Includes ripple effect and hover/active states.
-   - **Disabled:** \`disabled\` prop prevents interaction.
-
-3. **Styling:**
-   - \`divider\` adds a bottom border.
-   - Supports \`badge\` integration via props.
-
-**Usage Examples:**
-
-- **Navigation Link:**
-  \`<ListItem href="/home" label="Home" icon="chevron_right">
-     <template #prefix>prefix</template>
-   </ListItem>\`
-
-- **User List Item:**
-  \`<ListItem label="John Doe" description="Online" divider>
-     <template #prefix><Avatar src="..."/></template>
-     <template #suffix>12:30 PM</template>
-   </ListItem>\`
-
-- **Menu Item:**
-  \`<ListItem label="Settings" icon="settings" selected />\`
+Versatile structural component for rendering items within lists, menus, or navigation bars. Provides a standardized layout with high-density content support for labels, descriptions, and metadata.
+Features dedicated slots for prefix (leading), content (central), suffix (trailing metadata), and trailing (action indicators). Includes built-in support for icons, badges, selected states, and interactive feedback like ripple effects.
+Controlled via label, description, and href/to props; renders as an <a> tag when navigating. Use for building navigation menus, data-rich list rows, or simple clickable interactive elements.
     `
   }
 }

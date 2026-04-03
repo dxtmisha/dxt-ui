@@ -229,45 +229,21 @@ export const wikiDescriptionsMask: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
+    render: `
+<div :class="classDemo.item">
+  <Mask embedded :window-attrs="{open: true}" v-bind="args">
+    <template #control="{ binds }">
+      <button class="wiki-storybook-button" v-bind="binds">
+        Open Menu
+      </button>
+    </template>
+  </Mask>
+</div>
+    `,
     description: `
- **Note:** This component is already integrated into the \`Input\` component and should not be used directly.
-
- Mask is a low-level utility component responsible for controlling and formatting user input. It ensures that the data entered matches a predefined structure (mask) or data type (date, number, currency).
-
- **How it works:**
- The component intercepts input events (\`beforeinput\`, \`input\`) and validates each character against allowed patterns (\`match\`). It automatically inserts static characters defined in the \`mask\` (like parentheses, dashes) and skips over them during navigation. For complex types like \`date\` or \`number\`, it uses internal logic to validate ranges (e.g., month 1-12) and format values (e.g., adding thousands separators).
-
- **Key Properties & Usage:**
-
- 1. **Masking (\`mask\`):**
-    - **String:** A single pattern (e.g., \`+1 (***) ***-****\`). The \`*\` character (or value of \`special\`) represents an input slot. All other characters are treated as static literals and are automatically inserted/skipped.
-    - **Array:** A list of patterns (e.g., \`['(***) ***-****', '+1 (***) ***-****']\`). The component automatically selects the most appropriate mask based on the input length.
-
- 2. **Input Types (\`type\`):**
-    - \`text\` (default): Uses the \`mask\` pattern directly.
-    - \`number\`: Formats input as a number. Automatically adds thousands separators based on \`language\`.
-    - \`currency\`: Formats as currency. Requires \`currency\` prop (e.g., 'USD'). Uses \`fraction\` for decimal places.
-    - \`date\` / \`datetime\` / \`time\`: Enforces valid date/time entry. The format (e.g., DD.MM.YYYY vs MM/DD/YYYY) is determined by the \`language\` prop.
-
- 3. **Validation & Constraints:**
-    - \`match\`: A Regular Expression string (e.g., \`[0-9a-fA-F]\`). Only characters matching this pattern are accepted. Useful for Hex codes, alphanumeric IDs, etc.
-    - \`pattern\`: A Regex for validating the *completed* value.
-    - \`min\`, \`max\`: For number/currency types, restricts the value range.
-
- 4. **Customization:**
-    - \`special\`: Defines the placeholder character in the \`mask\`. Default is \`*\`. Change this if your mask needs to contain literal asterisks.
-    - \`language\`: Determines locale-specific formatting for dates and numbers (separators, date order).
-    - \`fraction\`: Specifies the number of decimal places for numbers/currency.
-
- **When to use (Design Identification):**
- - **Formatted Text:** Inputs that require specific formatting like Phone Numbers \`+1 (555) ...\`, Credit Cards \`0000 0000 ...\`, or License Plates.
- - **Financial Data:** Inputs for amounts that need thousands separators or currency symbols.
- - **Dates:** Inputs requiring strict date structure (DD.MM.YYYY).
-
- **Example Scenarios:**
- - **Phone:** \`<Mask mask="+1 (***) ***-****" match="[0-9]"/>\`
- - **Price:** \`<Mask type="currency" currency="USD" fraction="2"/>\`
- - **Date:** \`<Mask type="date" language="en-GB"/>\` (DD/MM/YYYY)
-     `
+Low-level input masking utility for controlling and formatting text, numeric, and date/time data entry. Intercepts input events to enforce strict patterns, automatically inserting literal characters and validating each keystroke against allowed rules.
+Features support for single or multiple patterns (auto-selection), specialized input types (currency, number-format), and locale-aware date/time validation. Includes granular control over allowed characters (match), decimal fractions, and value range constraints (min/max).
+Integrated primarily within the Input component; should generally not be used as a standalone element. Controlled via mask and type props, providing a foundation for phone numbers, credit card fields, and international financial inputs.
+    `
   }
 }

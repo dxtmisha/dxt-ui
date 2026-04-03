@@ -139,35 +139,9 @@ export const wikiDescriptionsBars: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Bars is a structural component used as a header, toolbar, or action bar.
-It typically sits at the top of a page, card, or window to provide context (title) and actions.
-
-**Key Features:**
-1. **Content Structure:**
-   - \`label\`: The main title (e.g., page name).
-   - \`description\`: Subtitle or additional context.
-   - \`backButton\`: Configuration for the navigation button on the left (e.g., arrow back, menu).
-
-2. **Action Buttons (\`bars\`):**
-   - Accepts an array of button configurations (props for \`Button\` component).
-   - Rendered on the right side.
-   - Useful for primary page actions (Search, Filter, Settings).
-
-3. **Action Mode (Contextual State):**
-   - Activated via \`action\` prop (boolean).
-   - Switches the UI to a specific state (e.g., when items are selected in a list).
-   - **Overrides:**
-     - \`label\` -> \`actionLabel\`
-     - \`description\` -> \`actionDescription\`
-     - \`bars\` -> \`actionBars\`
-   - The back button usually transforms into a "Close" or "Cancel" action in this mode.
-
-**Usage Examples:**
-
-- **Standard Header:** \`<Bars label="Dashboard" :bars="[{ icon: 'notifications' }]" />\`
-- **With Back Button:** \`<Bars label="Settings" :back-button="{ icon: 'arrow_back' }" />\`
-- **Contextual Action Bar:**
-  \`<Bars :action="selectedCount > 0" :action-label="\`\${selectedCount} selected\`" :action-bars="[{ icon: 'delete' }]" />\`
-      `
+Structural header or toolbar component for pages, cards, and windows. Provides a consistent layout for titles, descriptions, and interactive action buttons.
+Features a built-in back navigation button, primary action button list (bars), and a specialized "action mode" for contextual states (e.g., selection). Supports skeleton loading and full button customization.
+Controlled via label/description props and action boolean for state switching. Use for top-level page headers, modal toolbars, or dynamic action bars that appear after item selection.
+    `
   }
 }

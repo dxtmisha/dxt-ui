@@ -142,40 +142,9 @@ export const wikiDescriptionsBadge: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Badge is a small visual indicator used to display status, counts, or short labels (tags).
-It is typically positioned over the corner of another element (like an icon or avatar) or used inline.
-
-**Key Features:**
-1. **Content Handling:**
-   - **Numeric:** Displays numbers via \`label\`. Use \`labelMax\` to cap the value (e.g., "99+").
-   - **Text:** Displays short text strings.
-   - **Icon:** Can display an icon via the \`icon\` prop.
-   - **Dot:** If \`dot\` is true, renders as a small circle without text (status indicator).
-
-2. **Positioning (\`overlap\`):**
-   - \`static\`: Renders inline (default flow).
-   - \`rectangular\`: Positioned absolutely over a rectangular parent.
-   - \`circular\`: Positioned absolutely over a circular parent (adjusts coordinates).
-   - **Alignment:** Controlled by \`vertical\` (top/bottom) and \`horizontal\` (right/left).
-
-3. **Styling:**
-   - Supports variants: \`primary\`, \`secondary\`, \`outline\`.
-   - \`hide\`: Toggles visibility.
-   - \`dot\`: Switches to dot mode.
-
-**Usage Examples:**
-
-- **Notification Count:**
-  \`<div class="relative-container">
-     <Icon name="notifications" />
-     <Badge label="5" overlap="circular" vertical="top" horizontal="right" />
-   </div>\`
-
-- **Status Dot:**
-  \`<Badge dot primary />\`
-
-- **Inline Tag:**
-  \`<Badge label="New" overlap="static" />\`
+Small visual indicator used to display status, counts, notifications, or short labels (tags). Typically positioned over the corner of another element (like an icon or avatar) or used inline.
+Features numeric handling with label-max cap (e.g., "99+"), dot-only mode for status indication, and support for icons. Includes flexible positioning (overlap: rectangular or circular) and various color variants.
+Controlled primarily through the label, icon, and dot props. Use for unread counts, online status indicators, or marking items as "New" or "Sale" in e-commerce contexts.
     `
   }
 }

@@ -192,34 +192,9 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Button is a fundamental interactive component used for user actions, navigation, and submitting forms.
-It supports various visual styles, states, and content configurations.
-
-**Key Features:**
-1. **Content:**
-   - \`label\`: The text displayed inside the button.
-   - \`icon\`: Name of the icon to display *before* the label (Material Symbols).
-   - \`iconTrailing\`: Name of the icon to display *after* the label.
-
-2. **States:**
-   - \`disabled\`: Prevents user interaction and visually grays out the button.
-   - \`selected\`: Indicates an active or toggled state.
-   - \`loading\`: Replaces content or adds a spinner to indicate processing.
-
-3. **Navigation:**
-   - \`to\`: Vue Router path. Renders as an \`<a>\` tag or uses router push.
-   - \`href\`: External URL. Renders as an \`<a>\` tag.
-
-4. **Sizing & Layout:**
-   - \`adaptive\`: Makes the button fill the container width or adapt to specific breakpoints.
-
-**Usage Examples:**
-
-- **Main Action:** \`<Button label="Confirm" primary icon="check" />\`
-- **Secondary Action:** \`<Button label="Cancel" secondary />\`
-- **Navigation:** \`<Button label="Read More" to="/details" text iconTrailing="arrow_forward" />\`
-- **Icon Only:** \`<Button icon="menu" text />\` (Ensure aria-label is provided for accessibility)
-- **Loading:** \`<Button label="Saving..." primary loading />\`
+Fundamental interactive component for user actions, navigation, and form submission. Supports various visual styles (primary, secondary, outline, text), states, and content configurations.
+Features built-in support for icons (Material Symbols), loading spinners, and disabled/selected states. Includes native-like navigation via "to" (Vue Router) or "href" (external) props and supports skeleton loading.
+Highly customizable through design tokens and adaptive layout options. Controlled primarily via click events and various styling props. Use for call-to-actions, navigation links, or icon-only toggle buttons.
     `
   }
 }

@@ -33,16 +33,9 @@ export const wikiDescriptionsDummy: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Dummy is a basic skeleton or placeholder component used mainly for testing or laying out interfaces early in development.
-
-**Key Features:**
-1. **Size:** Configurable via the \`size\` prop (e.g., 'sm', 'md', 'lg').
-2. **Palette:** Customizable colors through the \`palette\` prop (e.g., 'red', 'blue', 'green').
-
-**Usage Examples:**
-
-- **Basic Dummy:** \`<Dummy />\`
-- **Colored Dummy with Size:** \`<Dummy size="lg" palette="primary" />\`
+Placeholder component used for structural presentation, testing, or laying out interfaces early in development. Provides a simple geometric shape to represent where a future component will be placed.
+Features configurable sizes (from 'xs' to '5xl') and customizable color palettes. Acts as a lightweight visual anchor without complex logic or dependencies.
+Controlled via size and palette props. Use during prototyping to define layout structures before final components are implemented or for testing responsive container behavior.
     `
   }
 }

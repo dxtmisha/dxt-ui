@@ -208,46 +208,9 @@ export const wikiDescriptionsSelect: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-The select is a comprehensive form component used for choosing one or multiple values from a collection of options.
-It integrates a trigger field, a dropdown menu, and value display logic into a single cohesive control.
-
-**Key Features:**
-1. **Data Handling (\`option\`):**
-   - **Static Data:** Accepts an array of objects or strings via the \`option\` prop.
-   - **Mapping:** Use \`keyLabel\` and \`keyValue\` to specify which properties to use for display and value (defaults to 'label' and 'value').
-   - **Async Data:** Use the \`ajax\` prop to provide a function that returns a Promise with the list of options. Supports caching via \`cache\`.
-
-2. **Selection Modes:**
-   - **Single Selection:** Default. Displays the selected item's label as text.
-   - **Multiple Selection (\`multiple\`):** Allows selecting multiple items. Displays them as Chips. Use \`max\` to limit the number of selections.
-   - **Editable (\`editValue\`):** Allows the user to type into the input field, acting like a Combobox.
-
-3. **Search & Filtering:**
-   - **Filter Mode (\`filterMode\`):** Filters the list options in real-time as the user types.
-   - **Show Search (\`showSearch\`):** Adds a dedicated search input field inside the dropdown menu (useful for mobile or when \`editValue\` is false).
-
-4. **Appearance & Feedback:**
-   - **Field Integration:** Inherits all \`Field\` styling props (\`label\`, \`helperMessage\`, \`validationMessage\`, \`icon\`, \`loading\`).
-   - **Placeholder:** Text shown when no value is selected.
-   - **Cancel:** The \`cancel\` prop controls the visibility of the clear button ('auto', 'always', 'none').
-
-**Usage Examples:**
-
-- **Standard Select:**
-  \`<Select label="Choose a fruit" :option="['Apple', 'Banana', 'Orange']" />\`
-
-- **Multiple Select with Object Data:**
-  \`<Select
-      label="Assignees"
-      multiple
-      :option="users"
-      key-label="name"
-      key-value="id"
-      v-model="selectedUserIds"
-   />\`
-
-- **Searchable Select:**
-  \`<Select label="Country" :option="countries" filter-mode />\`
+High-level form control that combines a trigger field, a dropdown menu, and a structured value display (Chips or text). Designed for choosing single or multiple items from static lists or dynamic datasets with built-in search and filtering.
+Features support for AJAX data loading with caching, multiple selection with chips, and an editable combobox mode (editValue). Includes integrated validation, keyboard navigation, and full Field component functionality (labels, icons, and state messages).
+Controlled via the option prop for data and v-model for state tracking, supporting custom key mapping (keyLabel/keyValue). Use for user selection, category filtering, or complex multi-select interfaces requiring real-time search.
     `
   }
 }

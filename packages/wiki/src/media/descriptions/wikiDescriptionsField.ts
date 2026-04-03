@@ -246,46 +246,9 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Field is the foundational wrapper component for all form inputs.
-It provides the structural layout, styling, and state management for labels, messages, icons, and the input container.
-
-**Key Features:**
-1. **Layout Structure:**
-   - **Label:** Displays the field label (\`label\`).
-   - **Body:** The main container for the input.
-     - **Prefix/Suffix:** Content before/after the input (\`prefix\`, \`suffix\`).
-     - **Icons:** Leading (\`icon\`) and trailing (\`iconTrailing\`) icons.
-     - **Input Slot:** The \`#default\` slot for the actual form control (input, select, etc.).
-   - **Footer:** Displays helper text (\`helperMessage\`), validation errors (\`validationMessage\`), and character counter.
-
-2. **Input Integration:**
-   - The \`#default\` slot exposes \`binds\` (id, class, aria-attributes).
-   - These \`binds\` **must** be applied to the native \`<input>\` or the focusable element within the slot to ensure proper styling and accessibility.
-
-3. **States & Validation:**
-   - **Loading:** \`loading\` prop shows a progress bar.
-   - **Validation:** \`validationMessage\` turns the field red and displays the error.
-   - **Disabled/Readonly:** \`disabled\`, \`readonly\` props style the wrapper accordingly.
-
-**When to use:**
-- When creating a custom form component (e.g., DatePicker, ColorPicker) that needs to match the design system's input style.
-- Do not use for standard text inputs; use \`Input\` instead.
-
-**Usage Examples:**
-
-- **Custom Input Wrapper:**
-  \`<Field label="Username" icon="person">
-     <template #default="{ binds }">
-       <input v-bind="binds" type="text" />
-     </template>
-   </Field>\`
-
-- **With Validation:**
-  \`<Field label="Email" validation-message="Invalid email">
-     <template #default="{ binds }">
-       <input v-bind="binds" type="email" />
-     </template>
-   </Field>\`
+Foundational wrapper component for all form inputs. Provides the structural layout, styling, and state management for labels, helper messages, validation errors, icons, and progress indicators.
+Features a composable structure with prefix/suffix slots, leading/trailing icons, and a character counter. Automatically handles validation states, loading spinners, and disabled/readonly appearances.
+Integrates with native inputs via the #default slot, exposing essential bindings (id, class, aria) to maintain design consistency and accessibility. Use as a base when creating custom form controls.
     `
   }
 }

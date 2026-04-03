@@ -85,37 +85,9 @@ export const wikiDescriptionsHorizontalScroll: StorybookComponentsDescriptionIte
   },
   ai: {
     description: `
-HorizontalScroll is a container component that enables horizontal scrolling for its content.
-It is useful for displaying lists of items, galleries, or any content that exceeds the viewport width.
-
-**Key Features:**
-1. **Scrolling:**
-   - Provides a scrollable area for content that overflows horizontally.
-   - Supports smooth scrolling behavior.
-
-2. **Selection:**
-   - Can automatically scroll to a selected item (marked with a specific class) when the component mounts.
-   - Exposes a \`toSelected\` method to programmatically scroll to the selected item.
-
-3. **Slot Binding:**
-   - The default slot provides \`binds\` object which should be applied to each child item.
-   - This binding ensures correct styling and behavior for scroll items.
-
-4. **Customization:**
-   - \`tag\`: Allows changing the root element tag (default is \`div\`).
-   - \`flush\`: Controls whether the scrollbar is flush with the content (implementation detail).
-
-**Usage Examples:**
-
-- **Basic List:**
-  \`\`\`html
-  <HorizontalScroll>
-    <template #default="{ binds }">
-      <div v-bind="binds">Item 1</div>
-      <div v-bind="binds">Item 2</div>
-    </template>
-  </HorizontalScroll>
-  \`\`\`
+Container component that enables horizontal scrolling for large content sets like galleries, item lists, or tab bars. Ensures smooth navigation when the body exceeds the viewport width.
+Features automated scroll-to-selected behavior on mount and exposes a programmatic method (toSelected) for navigation. Provides scoped slot bindings to ensure correct item styling and selection tracking.
+Controlled via the tag prop for root element customization. Use for product carousels, category filters, or any horizontally-oriented navigation menus in space-constrained layouts.
     `
   }
 }

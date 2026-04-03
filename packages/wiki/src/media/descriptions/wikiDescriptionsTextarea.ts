@@ -95,45 +95,9 @@ export const wikiDescriptionsTextarea: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Textarea is a component for multi-line text input.
-It extends the functionality of the standard \`<textarea>\` element with additional features.
-
-**Key Features:**
-
-1.  **Auto-sizing (\`autosize\`):**
-    -   Automatically adjusts the height of the textarea based on the content.
-    -   Enabled by default.
-    -   Use \`rows\` to set a fixed height if \`autosize\` is disabled.
-
-2.  **Validation:**
-    -   Supports \`validationMessage\` to display error messages.
-    -   Supports \`required\`, \`minlength\`, \`maxlength\` attributes.
-    -   Visual states for error and success.
-
-3.  **Label and Helper:**
-    -   \`label\`: Floating or static label for the field.
-    -   \`helperMessage\`: Additional text below the field.
-
-4.  **Counter:**
-    -   \`counter\`: Displays a character counter.
-    -   \`maxlength\`: Limits the number of characters and shows the limit in the counter.
-
-5.  **Icons:**
-    -   Supports icons via \`icon\` (leading) and \`iconTrailing\` (trailing) props (inherited from Field).
-
-**Usage Examples:**
-
--   **Basic:**
-    \`<Textarea label="Description" />\`
-
--   **With Fixed Rows:**
-    \`<Textarea label="Comment" :autosize="false" rows="5" />\`
-
--   **With Validation:**
-    \`<Textarea label="Feedback" required validation-message="Please enter feedback" />\`
-
--   **With Counter:**
-    \`<Textarea label="Bio" :maxlength="200" counter />\`
+Versatile multi-line text input control with automated spatial management and comprehensive validation support. Designed for feedback forms, detailed descriptions, and any scenario requiring a flexible, high-volume data entry area.
+Features an intelligent autosize engine that grows/shrinks dynamically based on content, along with character counter integration and Material symbol icons (leading/trailing). Inherits full Field component functionality including floating labels, helper messages, and reactive error states.
+Controlled via the v-model for content and autosize prop for height behavior. Use for user biographies, multi-row comments, or complex data entry views where standard single-line inputs lack sufficient capacity.
     `
   }
 }

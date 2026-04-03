@@ -90,41 +90,9 @@ export const wikiDescriptionsTabItem: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-TabItem is a fundamental UI component designed for navigation bars, tab lists, and menus.
-It encapsulates a label, optional icons, and a badge into a clickable element with built-in state management.
-
-**Key Features:**
-
-1.  **Content Structure:**
-    -   **Label (\`label\`):** The primary text content.
-    -   **Icons:** Supports a leading icon (\`icon\`) and a trailing icon (\`iconTrailing\`).
-    -   **Badge (\`badge\`):** Integrated badge support for displaying counts or status dots.
-
-2.  **Interactive States:**
-    -   **Selected (\`selected\`):** Indicates the active or current item.
-    -   **Disabled (\`disabled\`):** Prevents interaction and applies disabled styling.
-    -   **Ripple:** Provides visual feedback on click (enabled by default).
-
-3.  **Navigation:**
-    -   **Link (\`href\`):** Renders as an \`<a>\` tag if provided.
-    -   **Router Link (\`to\`):** Renders as a router link if provided (requires Vue Router).
-    -   **Custom Tag (\`tag\`):** Allows rendering as any HTML tag (e.g., \`button\`, \`div\`, \`li\`).
-
-4.  **Accessibility:**
-    -   Automatically sets \`role="tab"\` (default) or other roles.
-    -   Manages \`aria-selected\` and \`aria-disabled\` attributes based on props.
-    -   Supports keyboard navigation via \`tabindex\`.
-
-**Usage Examples:**
-
--   **Navigation Tab:**
-    \`<TabItem label="Dashboard" icon="dashboard" :selected="currentTab === 'dashboard'" @click="currentTab = 'dashboard'" />\`
-
--   **Menu Item with Badge:**
-    \`<TabItem label="Notifications" icon="notifications" badge="12" />\`
-
--   **External Link:**
-    \`<TabItem label="Documentation" icon="description" href="https://docs.example.com" tag="a" />\`
+Foundational interactive building block for multi-item navigation structures like tabs, list menus, and sidebars. Encapsulates a label, optional icons, and status indicators (badges) into a single semantic unit with integrated state management.
+Features built-in support for selected, disabled, and loading (skeleton) states, along with automated navigation logic for href and router-link. Includes a Material-style ripple effect for high-polish click feedback and flexible tag rendering to support various HTML roles (button, a, li).
+Controlled via label, icon, and badge props, with v-model or selected prop integration. Use within Tabs or List components to create cohesive, accessible navigation interfaces with consistent visual affordance and spatial organization.
     `
   }
 }

@@ -90,47 +90,9 @@ export const wikiDescriptionsListGroup: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-ListGroup is a structural component designed to group related list items, often providing collapsible/expandable functionality.
-It serves as a container that manages the visibility of nested items, creating a hierarchical structure within lists or menus.
-
-**Key Features:**
-1. **Collapsible Logic:**
-   - Wraps content in a \`MotionTransform\` component for smooth height animations.
-   - Can be controlled programmatically via the \`open\` prop or interactively via the header.
-
-2. **Slots Structure:**
-   - \`#head\`: The header area acting as the trigger. It receives \`binds\` (click handlers, ARIA attributes) that **must** be applied to the interactive element (e.g., \`ListItem\`) to enable toggling.
-   - \`#list\`: The content area where nested \`ListItem\` or other components are placed.
-
-3. **Styling:**
-   - \`divider\`: Adds a visual separator if enabled.
-   - Automatically handles ARIA roles (\`role="group"\`).
-
-**When to use:**
-- **Navigation Menus:** To create submenus or grouped links (e.g., "Settings" -> "Profile", "Security").
-- **Categorized Lists:** To group items under a common heading.
-- **Accordions within Lists:** When list items need to expand to show details.
-
-**Usage Examples:**
-
-- **Basic Group:**
-  \`<ListGroup>
-     <template #head="{ binds }">
-       <ListItem v-bind="binds" label="My Group" icon="folder" />
-     </template>
-     <template #list>
-       <ListItem label="File 1" />
-       <ListItem label="File 2" />
-     </template>
-   </ListGroup>\`
-
-- **Open by Default:**
-  \`<ListGroup open>
-     <template #head="{ binds }">
-       <ListItem v-bind="binds" label="Always Open" />
-     </template>
-     <template #list>...</template>
-   </ListGroup>\`
+Structural component for grouping related list items into collapsible/expandable hierarchies. Manages the visual nesting and visibility of child elements, providing organized categorization within dense lists.
+Features smooth height animations via MotionTransform and integrated header functionality with automatic arrow rotation. Exposes localized bindings in the #head slot to correctly link triggers with their collapsible content.
+Controlled via the open prop and utilizes #head and #list slots for content distribution. Use for navigation submenus, categorized data lists, or accordion-style expanding rows.
     `
   }
 }

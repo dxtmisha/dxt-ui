@@ -165,35 +165,9 @@ export const wikiDescriptionsChipGroup: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-ChipGroup is a wrapper component that manages a collection of Chip elements based on a data list.
-It streamlines the creation of filter sets, choice groups, and tag lists by handling data iteration and selection logic.
-
-**Key Features:**
-1. **Data Binding:**
-   - \`list\`: Array of objects defining the chips (e.g., \`[{ label: 'A', value: 'a' }]\`).
-   - \`v-model:selected\`: Tracks the selected value(s).
-
-2. **Selection Modes:**
-   - Supports single and multiple selection (depending on configuration, typically inferred from the initial value type or explicit props).
-
-3. **Styling & Customization:**
-   - \`chipAttrs\`: Object containing props to be passed to every child Chip (e.g., \`{ outline: true, icon: 'check' }\`).
-   - \`iconWhenSelected\`: If true, displays the icon only when the chip is selected.
-
-**Usage Examples:**
-
-- **Basic Selection:**
-  \`<ChipGroup
-      :list="items"
-      v-model:selected="selectedItem"
-   />\`
-
-- **Filter Group (Multiple):**
-  \`<ChipGroup
-      :list="filters"
-      v-model:selected="activeFilters"
-      :chip-attrs="{ outline: true }"
-   />\`
+Wrapper component for managing collections of Chip elements based on an array of data. Streamlines the creation of filter sets, choice groups, and tag lists by automating iteration and selection logic.
+Features support for single and multiple selection modes, shared chip attributes (via chipAttrs), and icon visibility control. Includes built-in data binding for selected values and @click event propagation.
+Controlled via the list prop for data and v-model:selected for state. Use for dynamic filtering interfaces, selecting multiple categories, or building interactive tag lists from API data.
     `
   }
 }

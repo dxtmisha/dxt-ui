@@ -132,43 +132,9 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Skeleton is a structural component used to display a loading state (placeholder) for content.
-It creates an animated "ghost" version of the UI to improve perceived performance and prevent layout shifts (CLS).
-
-**Key Features:**
-1. **Activation (\`active\`):**
-   - The \`active\` prop controls the visibility of the skeleton effect.
-   - When \`true\`, the component applies loading styles and accessibility attributes.
-
-2. **Context & Inheritance:**
-   - Uses Vue's \`provide\`/\`inject\` mechanism.
-   - Child components (like \`Image\`, \`Field\`, \`Chip\`) automatically detect if they are inside an active \`Skeleton\` and switch to their own skeleton view without needing individual props.
-
-3. **Styling Classes (Slot Props):**
-   - The component exposes CSS classes via the default slot to style raw HTML elements.
-   - **Text:** \`classText\` (lines), \`classTextVariant\` (headings).
-   - **Background:** \`classBackground\` (blocks, images), \`classBackgroundVariant\`.
-   - **Border:** \`classBorder\` (outlines).
-
-4. **Accessibility:**
-   - Automatically applies \`aria-busy="true"\` and \`aria-live="polite"\` to the wrapper.
-
-**Usage Examples:**
-
-- **Wrapping Smart Components:**
-  \`<Skeleton :active="isLoading">
-     <div class="profile">
-       <Image :value="user.avatar" /> <!-- Auto-skeleton -->
-       <Field :value="user.name" readonly /> <!-- Auto-skeleton -->
-     </div>
-   </Skeleton>\`
-
-- **Manual Structure (using slot classes):**
-  \`<Skeleton :active="isLoading" v-slot="{ classes }">
-     <div :class="classes.classBackground" style="height: 200px"></div>
-     <h3 :class="classes.classTextVariant"></h3>
-     <p :class="classes.classText"></p>
-   </Skeleton>\`
+Structural layout utility designed to display animated loading placeholders (ghost versions) for UI elements. Improves perceived performance and prevents Cumulative Layout Shift (CLS) by reserving space for incoming content.
+Features a logic-sharing mechanism via provide/inject that allows child components (Field, Image, Chip) to automatically switch to their skeleton states without individual props. Exposes specialized CSS classes through slot props for styling raw HTML elements as text lines, backgrounds, or borders.
+Controlled via the active prop to toggle the global loading state and accessibility Busy/Live attributes. Use as a wrapper for sections or entire pages during data fetching to maintain structural integrity and a high-quality user experience.
     `
   }
 }

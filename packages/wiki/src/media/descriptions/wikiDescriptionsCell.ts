@@ -113,26 +113,9 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Cell is a universal list item component used for building menus, settings panels, and data lists.
-It provides a structured layout with slots for icons, text content, and actions.
-
-**Structure:**
-1. **Icon (Left):** Defined by \`icon\` prop.
-2. **Context (Center):**
-   - **Label:** Main text/title (prop \`label\`).
-   - **Caption:** Small text above/below the label (prop \`caption\`).
-   - **Description:** Secondary text below the label (prop \`description\`).
-3. **Trailing (Right):** Slot \`#trailing\` for actions (switch, checkbox, button) or meta-info.
-4. **Body:** Slot \`#body\` for additional content below the main row.
-
-**Key Features:**
-- **Interactive:** Supports \`to\`, \`href\`, and click events with Ripple effect.
-- **States:** Handles \`disabled\`, \`selected\`, and \`loading\` (skeleton) states.
-
-**When to use:**
-- **List Items:** For navigation menus or settings.
-- **Data Rows:** To display structured data entities.
-- **Action Items:** Clickable rows with icons and text.
+Universal list item component for building structured interfaces like menus, settings, and data lists. Provides a standardized row layout with dedicated areas for icons, text, and actions.
+Features a composable structure with label, description, and caption support. Includes interactive states (hover, focus, selected, loading), built-in Ripple effect, and skeleton loading integration.
+Highly flexible via slots (#default, #trailing, #body) and controlled through content props and navigation attributes (to/href). Use for clickable rows, menu items, or complex data entities in lists.
     `
   }
 }

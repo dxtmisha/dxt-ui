@@ -37,24 +37,9 @@ export const wikiDescriptionsFieldLabel: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-**Note:** This is a subcomponent of \`Field\`. You should generally not use it directly.
-          It is automatically integrated into components like \`Input\` and \`Textarea\`.
-
-FieldLabel is a component responsible for rendering the label of a form field.
-It ensures consistent styling, positioning, and accessibility for field labels.
-
-**Key Features:**
-1. **Label Text:**
-   - Displays the text provided in the \`label\` prop.
-   - Can be customized via the \`#label\` slot.
-
-2. **Required Indicator:**
-   - If the \`required\` prop is true, it visually indicates that the field is mandatory (usually with an asterisk).
-
-**Usage Examples:**
-
-- **Standard Label:**
-  \`<FieldLabel label="Username" />\`
+Subcomponent of the Field wrapper responsible for rendering form field labels and required markers. Ensures consistent styling, positioning, and accessibility for all input headings.
+Features automated support for the "required" property (showing an asterisk) and works seamlessly with character counters and progress bars within the Field header.
+Controlled through the label prop or #label slot. Primarily used within Input, Textarea, and other field-based controls; should generally not be used as a standalone component.
     `
   }
 }

@@ -189,42 +189,9 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Image is a universal component for displaying graphic content.
-It automatically determines the type of content (image, icon, file, PDF)
-based on the \`value\` property.
-
-**Key Features:**
-1. **Automatic Type Detection:**
-   - **Image:** If \`value\` is a URL to an image or a File object.
-   - **Icon:** If \`value\` is a string matching an icon name
-     (e.g., "home", "filled-home"). Supports Material Symbols/Icons.
-   - **PDF:** If \`value\` is a URL to a PDF file.
-   - **Color:** If \`value\` is a color string (e.g., "#ff0000").
-
-2. **Display Modes (\`size\`):**
-   - \`auto\` (default): Standard behavior.
-   - \`contain\`: Scales the image to fit within the container while maintaining aspect ratio.
-   - \`cover\`: Scales the image to cover the container, cropping if necessary.
-
-3. **Rendering Method (\`tagImg\`):**
-   - \`false\` (default): Renders as a background image (\`background-image\`) on a \`<span>\`.
-     Useful for precise positioning and sizing.
-   - \`true\`: Renders as a standard \`<img>\` tag. Required for SEO (alt text), lazy loading,
-     and accessibility.
-
-4. **Adaptivity (\`adaptive\`):**
-   - Allows scaling the image relative to its original size using \`objectWidth\` and \`objectHeight\`.
-
-5. **Advanced Positioning:**
-   - \`coordinator\`: Array \`[top, right, bottom, left]\` for cropping or positioning the background.
-   - \`x\`, \`y\`: Direct control over background position.
-
-**Usage Examples:**
-
-- **Icon:** \`<Image value="home" />\`
-- **Image (Background):** \`<Image value="https://example.com/img.jpg" size="cover" />\`
-- **Image (Tag):** \`<Image value="https://example.com/img.jpg" tag-img alt="Description" />\`
-- **PDF:** \`<Image value="https://example.com/doc.pdf" />\`
+Universal component for displaying graphic content, including images, Material icons, and PDF files. Automatically detects the content type based on the value string or File object provided.
+Features multiple display modes (contain, cover, auto), adaptive scaling (objectWidth/Height), and standard img tag support for SEO and lazy loading. Includes advanced positioning via coordinator and x/y props.
+Controlled via the value prop and various sizing/rendering flags. Use for avatars, product photos, system icons, or embedded PDF documents requiring specific cropping and aspect ratio control.
     `
   }
 }

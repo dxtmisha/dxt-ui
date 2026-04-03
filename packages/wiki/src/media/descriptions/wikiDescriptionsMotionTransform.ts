@@ -225,45 +225,9 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
 </div>
     `,
     description: `
-MotionTransform is a core utility component for creating expanding, collapsing, or floating UI elements with smooth animations.
-It serves as the base for Dropdowns, Accordions, and custom interactive panels.
-
-**Key Features:**
-1. **Structure:**
-   - \`#head\`: The trigger area (e.g., a button or title).
-   - \`#body\`: The content area that animates in/out.
-
-2. **Animation Logic:**
-   - Automatically handles height calculations for smooth CSS transitions (expand/collapse).
-   - \`animationHeadPosition\`: Controls the visual flow (e.g., \`top\` for standard dropdowns, \`toBottom\` for specific motion effects).
-
-3. **Positioning & Teleport:**
-   - **Inline (Default):** Content expands within the flow (Accordion style).
-   - **Teleported:** With \`teleport\`, content moves to the \`<body>\` tag, useful for floating menus/popups that need to overlay other content.
-
-4. **Interaction:**
-   - \`clickOpen\`: Toggles state when clicking the head.
-   - \`autoClose\`: Closes when clicking outside the component.
-   - \`ignore\`: Selectors to exclude from the "click outside" check.
-
-**When to use:**
-- **Accordion/Collapse:** When clicking a header should push content down.
-- **Dropdown/Menu:** When clicking a button should show a floating list (use with \`teleport\`).
-- **Custom Toggles:** Any UI pattern requiring show/hide transitions.
-
-**Usage Examples:**
-
-- **Accordion:**
-  \`<MotionTransform click-open>
-     <template #head>Title</template>
-     <template #body>Content</template>
-   </MotionTransform>\`
-
-- **Floating Menu:**
-  \`<MotionTransform teleport auto-close>
-     <template #head><button>Options</button></template>
-     <template #body><menu>...</menu></template>
-   </MotionTransform>\`
+Low-level motion engine designed for complex component transitions like windows, dropdowns, and collapsible sections. Provides a unified system for managing element transforms, off-DOM teleportation, and interaction patterns (click-outside, etc.).
+Features dynamic size measurement with automatic CSS variable updates for smooth hardware-accelerated animations. Includes a robust state manager (open/show/teleport), focus trapping, and customizable interaction ignoring areas for triggers.
+Controlled via the v-model:open prop and utilizes #head and #body slots for layout. Use as a foundational utility when building custom interactive components requiring sophisticated motion, state transitions, and high-performance DOM manipulation.
     `
   }
 }

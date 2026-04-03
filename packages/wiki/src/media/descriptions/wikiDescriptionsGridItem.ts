@@ -40,18 +40,9 @@ export const wikiDescriptionsGridItem: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-GridItem represents a single cell or unit within a Grid layout, allowing control over its span across various breakpoints.
-
-**Key Features:**
-1. **Column Span:** Set the number of columns to span (1 to 12).
-2. **Responsive Spans:** Control layout for different screen sizes:
-   - \`base\`: Default span.
-   - \`sm\`, \`md\`, \`lg\`, \`xl\`, \`xl2\`: Breakpoint-specific spans.
-
-**Usage Examples:**
-
-- **Standard Item:** \`<GridItem base="6">...</GridItem>\`
-- **Responsive Item:** \`<GridItem base="12" md="6" lg="4">...</GridItem>\`
+Individual cell unit within a Grid layout, providing granular control over column spanning across various screen resolutions. Enables building complex, responsive layouts with minimal CSS.
+Features responsive span settings for all major breakpoints (base, sm, md, lg, xl, 2xl). Allows items to occupy different widths on mobile vs desktop, ensuring optimal use of screen space.
+Controlled via the base prop for default span and breakpoint-specific props (e.g., md="6"). Use inside a Grid container to define local widths for UI elements, widgets, or form fields.
     `
   }
 }

@@ -97,40 +97,9 @@ export const wikiDescriptionsTabsNavigation: StorybookComponentsDescriptionItem 
   },
   ai: {
     description: `
-TabsNavigation is a component for creating a horizontal navigation menu with tabs.
-It manages the list of tabs, the selected item, and scrolling.
-
-**Key Features:**
-1. **Data List (\`list\`):**
-   - Accepts an array of objects or an object describing the tabs.
-   - Each item should contain a label (\`label\`) and a value (\`value\`).
-   - You can customize the keys for label and value using \`keyLabel\` and \`keyValue\`.
-
-2. **Selection Management (\`selected\`):**
-   - Supports two-way binding (\`v-model:selected\`).
-   - Determines which tab is currently active.
-   - Can work with single or multiple selections (depending on implementation, usually single for tabs).
-
-3. **Horizontal Scrolling:**
-   - Automatically adds scrolling if tabs do not fit in the container.
-   - Supports \`horizontalScrollFlush\` and \`horizontalScrollAlign\` to control scroll behavior.
-
-4. **Keyboard Navigation:**
-   - **Left/Right Arrows:** Move focus between tabs.
-   - **Enter/Space:** Select the focused tab.
-
-5. **Customization:**
-   - \`tag\`: Allows changing the tag of the tab item (e.g., 'button', 'a').
-   - \`itemAttrs\`: Allows passing additional attributes to each tab.
-   - \`divider\`: Adds a separator (if supported by the design).
-
-**Usage Examples:**
-
-- **Basic:**
-  \`<TabsNavigation :list="[{label: 'A', value: 'a'}, {label: 'B', value: 'b'}]" v-model:selected="currentTab" />\`
-
-- **With Custom Keys:**
-  \`<TabsNavigation :list="items" keyLabel="name" keyValue="id" v-model:selected="currentTab" />\`
+Specialized navigation container for creating horizontal tab bars with automated scrolling and focus management. Designed for switching between filtered views, dashboard sections, or multi-step form progress indicators.
+Features intelligent horizontal scrolling with alignment control, keyboard navigation support (arrows, Enter, Space), and customizable tab item rendering via the tag and itemAttrs props. Automatically synchronizes active state through two-way binding and provides leading/trailing slots for auxiliary navigation actions.
+Controlled via the list prop for tab definitions and v-model:selected for active state tracking. Use as the base header for complex tabbed layouts or standalone navigation bars requiring high accessibility and smooth interaction across mobile and desktop.
     `
   }
 }

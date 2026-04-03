@@ -186,41 +186,9 @@ export const wikiDescriptionsDialog: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Dialog is a specialized modal component designed for standard user interactions such as alerts, confirmations, and status messages.
-It extends the functionality of the Modal component by providing a pre-defined layout for icons, titles, descriptions, and action buttons.
-
-**Note:** The \`embedded\` prop is used only for documentation examples to render the component inline. Do not use it in production code.
-
-**Key Features:**
-1. **Standardized Layout:**
-   - Automatically arranges elements: Icon -> Title (\`label\`) -> Description (\`description\`) -> Content (\`default\`) -> Actions (\`footer\`).
-   - Supports positioning the image/icon via \`imagePosition\` (e.g., top or left).
-
-2. **State Presets:**
-   - **Success:** Setting the \`success\` prop automatically displays a success icon and applies relevant styling.
-   - **Error:** Setting the \`error\` prop automatically displays an error icon and applies relevant styling.
-   - **Custom:** You can provide a custom icon via the \`icon\` prop.
-
-3. **Content Props:**
-   - \`label\`: The main heading or title of the dialog.
-   - \`description\`: Subtitle or explanatory text.
-   - \`open\`: Controls visibility (v-model).
-
-4. **Slots:**
-   - \`#control\`: Trigger element.
-   - \`#default\`: Custom content area.
-   - \`#footer\`: Area for action buttons (Cancel, OK).
-
-**Usage Examples:**
-
-- **Simple Confirmation:**
-  \`<Dialog v-model:open="isOpen" label="Confirm Action" description="Are you sure you want to proceed?" />\`
-
-- **Success Alert:**
-  \`<Dialog success label="Operation Successful" description="Your data has been saved." />\`
-
-- **Error Alert:**
-  \`<Dialog error label="Error" description="Failed to connect to the server." />\`
+Specialized modal component for standardized user interactions such as alerts, confirmations, and status messages. Extends the Modal component with a predefined layout for icons, titles, and action buttons.
+Features built-in success/error states with automatic icon switching and content styling. Supports flexible positioning of images (top/left) and integrates with Window, Bars, and Actions for a consistent footer.
+Controlled via v-model:open and various content props (label, description). Use for critical operations requiring user confirmation, operation success/fail alerts, or informative system messages.
     `
   }
 }

@@ -41,9 +41,9 @@ export const wikiDescriptionsAnchor: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Standard navigation component for creating hyperlinks, internal anchor points, and interactive links. Wraps the native <a> tag with additional support for smooth scrolling, clipboard operations, and icon integration.
-Features automated smooth scroll-to-id behavior, custom scroll offsets via shift prop, and a built-in copy-to-clipboard function when isCopy is enabled. Supports icons for link types, tags, and copy success states.
-Highly flexible via the #default slot for custom content. Controlled primarily through href or name props. Use for page navigation, table of contents, permalinks, or quick-copy action buttons.
+Navigation component for creating hyperlinks, internal page anchors, and interactive links. Wraps the native <a> tag with additional support for smooth scrolling and clipboard operations.
+Features automated scroll-to-id behavior with custom offsets and a built-in copy-to-clipboard function (isCopy). Supports icon integration for different link types and success feedback.
+Controlled primarily through href or name props. Use for table of contents, permalinks, external resource links, or quick-copy action buttons for IDs and URLs.
     `
   }
 }

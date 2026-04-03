@@ -88,27 +88,9 @@ export const wikiDescriptionsSnackbarItem: StorybookComponentsDescriptionItem = 
   },
   ai: {
     description: `
-SnackbarItem is the visual representation of a single notification.
-It is typically rendered inside a Snackbar component.
-
-**Key Features:**
-1. **Content:**
-   - \`label\`: Primary message text.
-   - \`description\`: Secondary, detailed message text.
-   - \`icon\`: Material symbol name for the leading icon.
-   - \`iconTrailing\`: Material symbol name for the trailing icon.
-2. **Actions:**
-   - \`button\`: A quick action label or bind object for a single button.
-   - \`actions\`: Array of action button configurations for more complex scenarios.
-3. **Control:**
-   - \`closeButton\`: Boolean to show/hide the close icon (default: true).
-   - \`iconClose\`: Custom icon for the close button.
-4. **Customization:**
-   - \`html\`: Allows rendering raw HTML as content.
-   - \`component\`: Allows rendering a custom Vue component as the notification body.
-
-**Usage:**
-Normally you don't use SnackbarItem directly; instead, you pass its props to the \`add()\` method of the Snackbar component.
+Visual representation element for a single notification message, typically orchestrated by the Snackbar component. Designed for concise informational alerts, success messages, or quick-action prompts.
+Features a flexible internal structure with support for labels, detailed descriptions, and material-symbol icons (leading/trailing). Includes integrated action button support, a mandatory close button, and support for rendering custom HTML or Vue components as message bodies.
+Controlled via simple content props or an actions-list array for complex button configurations. Use as the base message unit for all system feedback, ensuring high visibility and accessibility through automatic ARIA status role implementation.
     `
   }
 }

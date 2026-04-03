@@ -84,35 +84,9 @@ export const wikiDescriptionsScrollbar: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Scrollbar is a structural component that wraps content to provide custom scrolling behavior and visual indicators.
-It is designed to handle overflow content within a fixed-height container, adding dynamic dividers (borders) that indicate scroll position.
-
-**Key Features:**
-1. **Scroll Indicators (Dividers):**
-   - Automatically detects scroll position.
-   - Displays a top divider when scrolled down.
-   - Displays a bottom divider when there is more content below.
-   - Configurable via props (e.g., \`divider\`, \`border\`).
-
-2. **Layout:**
-   - Renders as a block container (default \`div\`).
-   - Must have a defined height or max-height (inherited or set) to enable scrolling.
-
-3. **Usage:**
-   - Essential for **Modals**, **Dropdowns**, and **Sidebars** where content length varies.
-   - Provides visual cues to users that more content is available.
-
-**Usage Examples:**
-
-- **Basic Scroll Area:**
-  \`<Scrollbar style="height: 200px">
-     <p>Long content...</p>
-   </Scrollbar>\`
-
-- **With Custom Tag:**
-  \`<Scrollbar tag="section" class="my-scroll-area">
-     <List :list="items" />
-   </Scrollbar>\`
+Structural container that provides custom scrolling behavior and visual status indicators (borders/dividers) based on content overflow. Essential for maintaining spatial context in fixed-height areas like menus, modals, and sidebars.
+Features dynamic scroll position detection to show/hide top and bottom dividers based on visibility of content edges. Supports custom border styling, inverse divider logic, and specialized visibility controls for different scroll states.
+Controlled via the tag and divider props, requiring a defined height or max-height to enable active scrolling. Use as a base wrapper for any dense content block requiring clear visual cues that more data is available above or below.
     `
   }
 }

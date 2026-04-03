@@ -78,25 +78,9 @@ export const wikiDescriptionsSnackbar: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Snackbar is a centralized management system for temporary notifications. It renders \`SnackbarItem\` components and controls their lifecycle through a data manager.
-
-**Key API (Exposed):**
-- \`add(item: SnackbarValue)\`: Adds a new notification to the queue.
-  - \`SnackbarValue.data\`: Props for the \`SnackbarItem\` (label, description, etc.).
-  - \`SnackbarValue.highPriority\`: If true, renders the item in a separate priority container.
-  - \`SnackbarValue.delay\`: Individual delay for this particular message.
-- \`remove(value: string)\`: Manually removes a notification by its unique value/id.
-- \`clear()\`: Instantly removes all active notifications.
-- \`isItem\`: A ComputedRef<boolean> indicating if any notifications are currently visible.
-
-**Configuration:**
-- \`vertical\`: \`top\` | \`bottom\` (Anchor point vertical).
-- \`horizontal\`: \`right\` | \`left\` | \`block\` (Anchor point horizontal).
-- \`delay\`: Global auto-hide threshold (default: 8000ms).
-- \`origin\`: Entrance animation direction.
-
-**Usage:**
-Place a single \`Snackbar\` component in the layout (often in the root App component) and interact with it via a template ref or a shared state manager.
-`
+Centralized notification management system (orchestrator) that coordinates the lifecycle and queue of temporary messages. Ideal for global system alerts, user feedback, and asynchronous status updates across the application.
+Features an intelligent queue manager with support for priority containers, automatic lifecycle hooks (show/hide), and flexible screen anchoring (vertical/horizontal positioning). Includes programmatic control over message stack, custom auto-hide delays, and teleport-based rendering to ensure overlay priority over all content.
+Controlled via an exposed API (add, remove, clear) and configurable global settings like delay and origin. Place a single instance at the root of the application (e.g., App.vue) to manage consistent notification patterns throughout the entire user session.
+    `
   }
 }

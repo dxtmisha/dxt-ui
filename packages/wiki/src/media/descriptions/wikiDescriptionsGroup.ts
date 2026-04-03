@@ -110,30 +110,9 @@ export const wikiDescriptionsGroup: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Group is a structural component used to organize content with a standardized header structure.
-It is an alias for the \`Block\` component with \`h4\` set as the default headline level.
-
-**Key Features:**
-1. **Structure:**
-   - **Headline:** Top-level category text (\`headline\`).
-   - **Header:** Contains Icon, Label (Title), Caption, and Trailing actions.
-   - **Description:** Subtitle or explanatory text.
-   - **Content:** The main body of the group.
-
-2. **Usage:**
-   - Use \`Group\` for subsections or grouping elements within a larger section or card.
-   - It provides semantic structure while keeping the visual hierarchy below \`Section\` (which uses \`h2\`).
-
-3. **Props & Slots:**
-   - Inherits all props from \`Block\` (\`label\`, \`icon\`, \`tag\`, etc.).
-   - Supports slots: \`#headline\`, \`#trailing\`, \`#default\`.
-
-**Usage Examples:**
-
-- **Simple Group:**
-  \`<Group label="Account Settings" description="Update your email and password" icon="settings">
-     <SettingsForm />
-   </Group>\`
-`
+Structural component for organizing related content with a standardized header hierarchy. Acts as a semantic wrapper for subsections or grouping elements within a larger section or card.
+Features support for headlines (h4 by default), labels, icons, and descriptions. Inherits all capabilities of the Block component, providing a consistent layout for titles and body content.
+Controlled via headline, label, and description props. Use for grouping settings, categorizing information, or breaking down complex forms into logical, titled segments.
+    `
   }
 }

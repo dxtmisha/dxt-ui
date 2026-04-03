@@ -153,48 +153,9 @@ export const wikiDescriptionsModal: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Modal is a simplified wrapper over the Window component for creating centered modal dialogs.
-It is designed to handle standard use cases for pop-ups, alerts, and forms with minimal configuration.
-
-**Note:** The \`embedded\` prop is used only for documentation examples to render the component inline. Do not use it in production code.
-
-**Key Features:**
-1. **Positioning & Overlay:**
-   - Always centered on the screen.
-   - Renders a backdrop (overlay) to block background interactions.
-   - Preset \`adaptive="modal"\` ensures correct behavior on all devices.
-
-2. **State Management:**
-   - Controlled via \`v-model:open\` (boolean).
-   - Automatically manages focus and scroll locking on the body.
-
-3. **Slots Structure:**
-   - \`#control\`: The trigger element (e.g., button). Receives \`binds\` (click handlers) to automatically toggle the modal.
-   - \`#title\`: The header area of the modal.
-   - \`#default\`: The main content body.
-   - \`#footer\`: The footer area, typically for action buttons.
-
-4. **User Interaction:**
-   - Closes on ESC key press.
-   - Closes on clicking outside the modal (backdrop).
-   - Supports a close button in the header.
-
-**Usage Examples:**
-
-- **With Trigger Button:**
-  \`<Modal>
-     <template #control="{ binds }">
-       <button v-bind="binds">Open Modal</button>
-     </template>
-     <template #default>
-       <p>Are you sure?</p>
-     </template>
-   </Modal>\`
-
-- **Programmatic Control:**
-  \`<Modal v-model:open="showModal">
-     <p>Content...</p>
-   </Modal>\`
+Simplified wrapper over the Window component pre-configured for centered modal dialogs. Provides a high-level API for typical interaction patterns like confirmation prompts, info alerts, and data entry forms.
+Features automatic overlay management, background interaction blocking, and body scroll locking. Includes built-in focus trapping, Esc key dismissal, and responsive layout optimization (adaptive="modal") for consistent mobile and desktop UX.
+Controlled via the v-model:open prop and utilizes #control, #title, and #footer slots for modular layout. Use for critical user notifications, blocking confirmation steps, or focused sub-tasks requiring immediate attention.
     `
   }
 }

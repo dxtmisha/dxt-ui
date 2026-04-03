@@ -107,40 +107,9 @@ export const wikiDescriptionsTabs: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Tabs is a high-level compound component that integrates \`TabsNavigation\` (for the tab bar) and \`MotionAxis\` (for the content area) to provide a complete tabbed interface with animated transitions.
-
-**Key Features:**
-1. **Structure:**
-   - **Navigation:** Automatically renders a \`TabsNavigation\` component based on the \`tabs\` prop.
-   - **Content:** Renders the active tab's content inside a \`MotionAxis\` component, enabling smooth transitions (sliding/fading) between views.
-
-2. **Data Binding:**
-   - **\`tabs\`:** An array of objects defining the tabs (e.g., \`[{ label: 'Home', value: 'home' }]\`).
-   - **\`selected\`:** The value of the currently active tab. Supports two-way binding (\`v-model:selected\`).
-
-3. **Content Slots:**
-   - Content for each tab is provided via **named slots**.
-   - The slot name must correspond to the \`value\` property of the tab item.
-   - **Example:** If you have a tab with \`value: 'settings'\`, you should provide a \`<template #settings>...</template>\` slot.
-
-4. **Customization:**
-   - Inherits properties from \`TabsNavigation\` (e.g., styling of the tab bar) and \`MotionAxis\` (e.g., \`axis\`, \`animation\`).
-
-**Usage Example:**
-\`<Tabs
-  v-model:selected="activeTab"
-  :tabs="[
-    { label: 'Account', value: 'account' },
-    { label: 'Security', value: 'security' }
-  ]"
->
-  <template #account>
-    <AccountSettings />
-  </template>
-  <template #security>
-    <SecuritySettings />
-  </template>
-</Tabs>\`
+High-level compound component that integrates TabsNavigation and MotionAxis to provide a complete, animated tabbed interface. Simplifies the creation of multi-view layouts where each section is logically separated and visually transitioned.
+Features automated coordination between the navigation bar and the content area, including direction-aware sliding animations and lazy loading. Supports dynamic tab lists, centralized state management via v-model, and modular content distribution through named slots matching tab values.
+Controlled via the tabs prop for structure and v-model:selected for active state. Use for main dashboard views, complex settings panels, or any multi-step interface requiring a polished, interactive navigation experience with high performance.
     `
   }
 }

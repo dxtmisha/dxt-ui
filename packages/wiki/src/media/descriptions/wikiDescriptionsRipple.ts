@@ -44,33 +44,9 @@ export const wikiDescriptionsRipple: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-**Note:** This is a low-level decorative component. You should not use it directly.
-          It is automatically integrated into interactive components like \`Button\`, \`ListItem\`,
-          and \`Card\` to provide feedback. This documentation is for informational purposes.
-
-Ripple is a decorative component that adds a Material Design-style wave effect to provide
-visual feedback on user interaction (clicks, taps). It should be placed inside an interactive container.
-
-**Key Features:**
-1.  **Placement:** It is designed to be placed as the last child inside a host element
-                   (like a button, card, or list item). The host element MUST have \`position:
-                   relative\` and \`overflow: hidden\` for the effect to work correctly.
-
-2.  **Automatic Effect:** The ripple animation starts automatically from the point of a \`pointerdown\`
-                          event (click or tap) on its parent container.
-
-3.  **Self-Managing:** The component handles the creation, animation (expansion and fade-out),
-                       and removal of ripple elements from the DOM automatically.
-
-4.  **Styling:** The ripple's color is determined by the CSS \`color\` property of its host element
-                 (\`currentColor\`). It can be styled by changing the text color of the parent.
-
-5.  **Control:** The effect can be completely disabled by passing the \`disabled: true\` prop.
-
-**When to Use:**
-- Use inside buttons, cards, list items, or any other clickable surface to provide clear,
-  tangible feedback that the user's action was registered.
-- It is purely a visual enhancement and adds no functionality on its own.
-`
+Low-level decorative utility that provides Material Design-style visual feedback on user interactions. Automatically generates a dynamic wave effect at the exact coordinates of a pointerdown event within its parent container.
+Features automated animation lifecycle management, including expansion, fade-out, and DOM cleanup. Inherits visual styling directly from the host element via currentColor and requires the parent to have relative positioning and hidden overflow to function correctly.
+Primarily integrated within interactive components like Buttons, ListItems, and Cards; should generally not be manually implemented. Controlled via the disabled prop, serving as a subtle but high-polish affordance for touch and click actions.
+    `
   }
 }

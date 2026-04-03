@@ -51,15 +51,9 @@ export const wikiDescriptionsGrid: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-Grid is a layout utility designed to manage the arrangement of items in a column-based system.
-
-**Key Features:**
-1. **Columns:** Default is 12 columns, configurable via CSS variables.
-2. **Layout:** Works in tandem with GridItem for precise control.
-
-**Usage Examples:**
-
-- **Basic Grid:** \`<Grid><GridItem>...</GridItem></Grid>\`
+Layout utility designed to manage the arrangement of items in a flexible, column-based system. Provides a standardized way to create responsive multi-column layouts across different screen sizes.
+Features a default 12-column grid structure with customizable gaps and responsive breakpoint support. Works in tandem with GridItem to provide precise control over column spans and alignment.
+Controlled primarily via CSS variables for columns and gaps. Use as a top-level container for dashboard widgets, form layouts, or any content requiring a structured multi-column arrangement.
     `
   }
 }
