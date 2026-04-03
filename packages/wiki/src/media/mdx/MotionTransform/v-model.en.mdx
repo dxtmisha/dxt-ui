@@ -14,15 +14,6 @@ const isOpen = ref(false)
 
 <template>
   <button @click="isOpen = true">Open</button>
-
-  <MotionTransform v-model:open="isOpen">
-    <template #head>
-      <div>Header</div>
-    </template>
-    <template #body>
-      <p>Component content</p>
-      <button @click="isOpen = false">Close</button>
-    </template>
-  </MotionTransform>
+  <Component v-model:open="isOpen"/>
 </template>
 ```

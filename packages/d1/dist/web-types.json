@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/web-types",
   "framework": "vue",
   "name": "D1",
-  "version": "0.2.2",
+  "version": "0.52.0",
   "contributions": {
     "html": {
       "types-syntax": "typescript",
@@ -146,6 +146,7 @@
           "slots": [
             {
               "name": "body",
+              "description": "Slot for the main body content/ Слот для основного контента тела",
               "vue-properties": [
                 {
                   "name": "props",
@@ -160,6 +161,7 @@
             },
             {
               "name": "default",
+              "description": "Main expandable content of the accordion/ Основное раскрывающееся содержимое аккордеона",
               "vue-properties": [
                 {
                   "name": "props",
@@ -179,6 +181,7 @@
             },
             {
               "name": "trailing",
+              "description": "Slot for elements on the right/ Слот для элементов справа",
               "vue-properties": [
                 {
                   "name": "props",
@@ -8492,6 +8495,7 @@
           "events": [
             {
               "name": "transform",
+              "description": "Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации",
               "arguments": [
                 {
                   "name": "event",
@@ -8505,6 +8509,7 @@
             },
             {
               "name": "transformLite",
+              "description": "Lightweight transformation event/ Облегченное событие трансформации",
               "arguments": [
                 {
                   "name": "options",

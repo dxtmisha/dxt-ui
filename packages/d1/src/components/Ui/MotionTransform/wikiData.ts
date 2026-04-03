@@ -33,8 +33,8 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'transform', properties: [{ name: 'event', type: 'Event' }, { name: 'options', type: 'MotionTransformEmitOptions' }] },
-  { name: 'transformLite', properties: [{ name: 'options', type: 'MotionTransformEmitOptions' }] },
+  { name: 'transform', description: `Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации`, properties: [{ name: 'event', type: 'Event' }, { name: 'options', type: 'MotionTransformEmitOptions' }] },
+  { name: 'transformLite', description: `Lightweight transformation event/ Облегченное событие трансформации`, properties: [{ name: 'options', type: 'MotionTransformEmitOptions' }] },
   { name: 'update:modelOpen', description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: 'value', type: 'boolean' }] },
   { name: 'update:open', description: `Update open event/ Событие обновления открытия`, properties: [{ name: 'value', type: 'boolean' }] }
   // :eventsList [!] System label / Системная метка

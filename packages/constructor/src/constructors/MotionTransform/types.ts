@@ -17,10 +17,12 @@ export type MotionTransformComponents = {}
  * Тип, описывающий доступные события.
  */
 export type MotionTransformEmits = ModelEmitsOpen & {
+  /** Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации */
   transform: [
     event: Event | undefined,
     options: MotionTransformEmitOptions
   ]
+  /** Lightweight transformation event/ Облегченное событие трансформации */
   transformLite: [
     options: MotionTransformEmitOptions
   ]
@@ -61,9 +63,9 @@ export interface MotionTransformExpose {
  */
 export interface MotionTransformSlots {
   /** Head slot for controls/ Слот шапки для элементов управления */
-  head? (props: MotionTransformControlItem): any
+  head?(props: MotionTransformControlItem): any
   /** Body slot for content/ Слот тела для содержимого */
-  body? (props: MotionTransformControlItem): any
+  body?(props: MotionTransformControlItem): any
 }
 
 /**
@@ -72,6 +74,7 @@ export interface MotionTransformSlots {
  * Тип, описывающий подклассы.
  */
 export type MotionTransformClasses = {
+  /** Main class/ Основной класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   context: string

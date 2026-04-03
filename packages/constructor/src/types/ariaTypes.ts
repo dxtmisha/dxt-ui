@@ -306,6 +306,7 @@ export type AriaList = {
  * ARIA проп atomic
  */
 export type AriaAtomicPropsInclude = {
+  /** ARIA atomic attribute/ Атрибут ARIA atomic */
   ariaAtomic?: AriaList['aria-atomic']
 }
 
@@ -314,7 +315,9 @@ export type AriaAtomicPropsInclude = {
  * ARIA пропсы с labelledby и describedby
  */
 export type AriaByPropsInclude = {
+  /** ARIA labelledby attribute/ Атрибут ARIA labelledby */
   ariaLabelledby?: string
+  /** ARIA describedby attribute/ Атрибут ARIA describedby */
   ariaDescribedby?: string
 }
 
@@ -323,6 +326,7 @@ export type AriaByPropsInclude = {
  * ARIA проп description
  */
 export type AriaDescriptionPropsInclude = {
+  /** ARIA description attribute/ Атрибут ARIA description */
   ariaDescription?: string
 }
 
@@ -331,6 +335,7 @@ export type AriaDescriptionPropsInclude = {
  * ARIA проп haspopup
  */
 export type AriaHaspopupPropsInclude = {
+  /** ARIA haspopup attribute/ Атрибут ARIA haspopup */
   ariaHaspopup?: AriaList['aria-haspopup']
 }
 
@@ -339,6 +344,7 @@ export type AriaHaspopupPropsInclude = {
  * ARIA проп label
  */
 export type AriaLabelPropsInclude = {
+  /** ARIA label attribute/ Атрибут ARIA label */
   ariaLabel?: string
 }
 
@@ -347,6 +353,7 @@ export type AriaLabelPropsInclude = {
  * ARIA проп live
  */
 export type AriaLivePropsInclude = {
+  /** ARIA live attribute/ Атрибут ARIA live */
   ariaLive?: AriaList['aria-live']
 }
 
@@ -355,6 +362,7 @@ export type AriaLivePropsInclude = {
  * ARIA проп multiselectable
  */
 export type AriaMultiselectablePropsInclude = {
+  /** ARIA multiselectable attribute/ Атрибут ARIA multiselectable */
   ariaMultiselectable?: boolean
 }
 
@@ -369,13 +377,18 @@ export type AriaRoleByPropsInclude = AriaRolePropsInclude & AriaByPropsInclude
  * ARIA пропсы роли управления с controls и expanded
  */
 export type AriaRoleControlPropsInclude = AriaRolePropsInclude & AriaHaspopupPropsInclude & {
+  /** Element ID/ ID элемента */
   id?: string
+  /** ARIA controls attribute/ Атрибут ARIA controls */
   ariaControls?: string
+  /** ARIA haspopup attribute/ Атрибут ARIA haspopup */
   ariaHaspopup?: AriaList['aria-haspopup']
+  /** ARIA expanded state attribute/ Атрибут ARIA состояния развёрнутости */
   ariaExpanded?: string
 }
 
 /** Basic ARIA role props/ Базовые ARIA пропсы роли */
 export type AriaRolePropsInclude = {
+  /** ARIA role type/ Тип ARIA роли */
   role?: RoleType
 }

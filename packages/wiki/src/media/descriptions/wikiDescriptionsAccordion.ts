@@ -96,18 +96,22 @@ export const wikiDescriptionsAccordion: StorybookComponentsDescriptionItem = {
       }
       `,
       template: `
-        <div class="wiki-storybook-item--padding">
-          <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="open = !open">
+              Toggle ({{ open }})
+            </button>
+          </div>
+          <DesignComponent v-model:open="open" label="Settings" description="Click to expand" icon="settings">
+            <template #default>
+              <div class="wiki-storybook-item--padding">
+                <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
+                <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the accordion's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
+                <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the accordion, such as in complex forms or coordinated UI interactions.</p>
+              </div>
+            </template>
+          </DesignComponent>
         </div>
-        <DesignComponent v-model:open="open" label="Settings" description="Click to expand" icon="settings">
-          <template #default>
-            <div class="wiki-storybook-item--padding">
-              <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
-              <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the accordion's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
-              <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the accordion, such as in complex forms or coordinated UI interactions.</p>
-            </div>
-          </template>
-        </DesignComponent>
       `
     },
     {
@@ -122,7 +126,6 @@ export const wikiDescriptionsAccordion: StorybookComponentsDescriptionItem = {
           <template #description>Custom description slot</template>
           <template #caption>Custom caption slot</template>
           <template #trailing>Trailing slot</template>
-          <template #body>Body slot content</template>
           <template #default>
               <p>Custom default slot content (main accordion body)</p>
           </template>
@@ -166,39 +169,9 @@ export const wikiDescriptionsAccordion: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Accordion is a vertically stacking interactive component that allows users to reveal or hide content sections.
-It consists of a header (trigger) and a body (content) that expands/collapses with a smooth animation.
-
-**Key Features:**
-1. **Header (Trigger):**
-   - Uses the \`Cell\` component structure.
-   - Supports \`label\` (title), \`description\` (subtitle), and \`icon\` (leading icon).
-   - Includes a rotating arrow indicator (\`iconArrowDown\`) to show state.
-
-2. **Animation:**
-   - Uses \`MotionTransform\` for smooth height transitions.
-   - Content is unmounted or hidden when collapsed (depending on configuration).
-
-3. **Interaction:**
-   - Toggles on click or keyboard interaction (Enter/Space).
-   - Controlled via \`v-model:open\`.
-
-**Usage Examples:**
-
-- **Basic:**
-  \`<Accordion label="Settings">
-     <p>Settings content...</p>
-   </Accordion>\`
-
-- **With Description and Icon:**
-  \`<Accordion label="Profile" description="Manage your account" icon="person">
-     <ProfileForm />
-   </Accordion>\`
-
-- **Controlled:**
-  \`<Accordion v-model:open="isOpen" label="Controlled">
-     Content
-   </Accordion>\`
+Collapsible container for progressive disclosure. Toggles content visibility to manage space and cognitive load. Use for FAQs, grouped settings, hiding secondary info, or compact dashboards.
+Header is based on a Cell component and supports label, description, and icon. Features an auto-rotating arrow indicator and smooth height transitions via MotionTransform.
+Built-in ARIA support and keyboard navigation (Space/Enter). Controlled primarily via v-model:open. Customizable with divider and header attributes through cellAttrs.
     `
   }
 }

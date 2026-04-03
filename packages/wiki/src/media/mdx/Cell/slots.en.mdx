@@ -12,29 +12,9 @@ Slot for placing additional content at the bottom of the cell (metadata, seconda
 **Parameters:**
 - `props: CellClassesSub` — object with CSS classes for cell sub-elements
 
-## CellClassesSub
+**CellClassesSub:**
 
-`CellClassesSub` — object passed to all Cell component slots, containing CSS classes for styling sub-elements.
-
-### Type Structure
-
-```typescript
-type CellClassesSub = {
-  /** CSS class for label element */
-  label: string
-
-  /** CSS class for description element */
-  description: string
-
-  /** CSS class for caption element */
-  caption: string
-
-  /** CSS class for trailing area element */
-  trailing: string
-}
-```
-
-### Properties
+Object passed to all Cell component slots, containing CSS classes for styling sub-elements.
 
 - **`label`** — CSS class for the label element (`{className}__label`)
 - **`description`** — CSS class for the description element (`{className}__description`)
@@ -44,39 +24,17 @@ type CellClassesSub = {
 ### Usage Example
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const selected = ref(false)
-const notifications = ref(5)
-</script>
-
 <template>
-  <Cell
-    label="Notifications"
-    description="You have unread messages"
-    icon="notifications"
-    :selected="selected"
-    @click="selected = !selected"
+  <Component
+    label="Interactive Cell"
+    description="This example demonstrates the usage of sub-element classes in slots."
   >
-    <template #trailing="{ trailing }">
-      <div :class="trailing">
-        <Icon name="chevron_right" />
+    <template #body="{ description }">
+      <!-- Use 'description' class to style secondary content in the body area -->
+      <div :class="description">
+        Additional actions or information can be placed here.
       </div>
     </template>
-
-    <template #body>
-      <div class="quick-actions">
-        <button @click.stop="markAllRead">Mark all as read</button>
-        <button @click.stop="clearAll">Clear all</button>
-      </div>
-    </template>
-  </Cell>
+  </Component>
 </template>
 ```
-
-In this example:
-- Each slot receives `CellClassesSub` with CSS classes for proper styling
-- `trailing` slot places interactive elements on the right side
-- `body` slot adds additional actions below the main content
-- All elements are properly integrated into the Cell structure

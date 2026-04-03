@@ -20,14 +20,14 @@ const handleTransform = (event, options) => {
 </script>
 
 <template>
-  <MotionTransform @transform="handleTransform">
+  <Component @transform="handleTransform">
     <template #head>
       <div>Header</div>
     </template>
     <template #body>
       <p>Content</p>
     </template>
-  </MotionTransform>
+  </Component>
 </template>
 ```
 

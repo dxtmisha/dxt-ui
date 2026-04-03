@@ -1,115 +1,2176 @@
-type FieldInputCheckListInclude = Record<string, any>;
-type ActionsComponentInclude = {
+1) All these methods are in the @dxtmisha/constructor library.
+2) Everything that is exported can be used.
+3) Use what is in this library if it exists; do not use other libraries if there is an analogue here. Do not create new ones if an analogue already exists here.
+
+The following is the content of "exports" from package.json:
+{
+  ".": {
+    "types": "./dist/library.d.ts",
+    "default": "./dist/library.js"
+  },
+  "./Accordion": {
+    "types": "./dist/constructors/Accordion/index.d.ts",
+    "default": "./dist/accordion.js"
+  },
+  "./ActionSheet": {
+    "types": "./dist/constructors/ActionSheet/index.d.ts",
+    "default": "./dist/actionSheet.js"
+  },
+  "./Actions": {
+    "types": "./dist/constructors/Actions/index.d.ts",
+    "default": "./dist/actions.js"
+  },
+  "./Anchor": {
+    "types": "./dist/constructors/Anchor/index.d.ts",
+    "default": "./dist/anchor.js"
+  },
+  "./Arrow": {
+    "types": "./dist/constructors/Arrow/index.d.ts",
+    "default": "./dist/arrow.js"
+  },
+  "./Badge": {
+    "types": "./dist/constructors/Badge/index.d.ts",
+    "default": "./dist/badge.js"
+  },
+  "./Bars": {
+    "types": "./dist/constructors/Bars/index.d.ts",
+    "default": "./dist/bars.js"
+  },
+  "./Block": {
+    "types": "./dist/constructors/Block/index.d.ts",
+    "default": "./dist/block.js"
+  },
+  "./Button": {
+    "types": "./dist/constructors/Button/index.d.ts",
+    "default": "./dist/button.js"
+  },
+  "./Cell": {
+    "types": "./dist/constructors/Cell/index.d.ts",
+    "default": "./dist/cell.js"
+  },
+  "./Chip": {
+    "types": "./dist/constructors/Chip/index.d.ts",
+    "default": "./dist/chip.js"
+  },
+  "./ChipGroup": {
+    "types": "./dist/constructors/ChipGroup/index.d.ts",
+    "default": "./dist/chipGroup.js"
+  },
+  "./Dialog": {
+    "types": "./dist/constructors/Dialog/index.d.ts",
+    "default": "./dist/dialog.js"
+  },
+  "./Field": {
+    "types": "./dist/constructors/Field/index.d.ts",
+    "default": "./dist/field.js"
+  },
+  "./FieldCounter": {
+    "types": "./dist/constructors/FieldCounter/index.d.ts",
+    "default": "./dist/fieldCounter.js"
+  },
+  "./FieldLabel": {
+    "types": "./dist/constructors/FieldLabel/index.d.ts",
+    "default": "./dist/fieldLabel.js"
+  },
+  "./FieldMessage": {
+    "types": "./dist/constructors/FieldMessage/index.d.ts",
+    "default": "./dist/fieldMessage.js"
+  },
+  "./Icon": {
+    "types": "./dist/constructors/Icon/index.d.ts",
+    "default": "./dist/icon.js"
+  },
+  "./Image": {
+    "types": "./dist/constructors/Image/index.d.ts",
+    "default": "./dist/image.js"
+  },
+  "./Input": {
+    "types": "./dist/constructors/Input/index.d.ts",
+    "default": "./dist/input.js"
+  },
+  "./List": {
+    "types": "./dist/constructors/List/index.d.ts",
+    "default": "./dist/list.js"
+  },
+  "./ListGroup": {
+    "types": "./dist/constructors/ListGroup/index.d.ts",
+    "default": "./dist/listGroup.js"
+  },
+  "./ListItem": {
+    "types": "./dist/constructors/ListItem/index.d.ts",
+    "default": "./dist/listItem.js"
+  },
+  "./ListMenu": {
+    "types": "./dist/constructors/ListMenu/index.d.ts",
+    "default": "./dist/listMenu.js"
+  },
+  "./Mask": {
+    "types": "./dist/constructors/Mask/index.d.ts",
+    "default": "./dist/mask.js"
+  },
+  "./Menu": {
+    "types": "./dist/constructors/Menu/index.d.ts",
+    "default": "./dist/menu.js"
+  },
+  "./Modal": {
+    "types": "./dist/constructors/Modal/index.d.ts",
+    "default": "./dist/modal.js"
+  },
+  "./MotionTransform": {
+    "types": "./dist/constructors/MotionTransform/index.d.ts",
+    "default": "./dist/motionTransform.js"
+  },
+  "./Page": {
+    "types": "./dist/constructors/Page/index.d.ts",
+    "default": "./dist/page.js"
+  },
+  "./Progress": {
+    "types": "./dist/constructors/Progress/index.d.ts",
+    "default": "./dist/progress.js"
+  },
+  "./Ripple": {
+    "types": "./dist/constructors/Ripple/index.d.ts",
+    "default": "./dist/ripple.js"
+  },
+  "./Scrollbar": {
+    "types": "./dist/constructors/Scrollbar/index.d.ts",
+    "default": "./dist/scrollbar.js"
+  },
+  "./Section": {
+    "types": "./dist/constructors/Section/index.d.ts",
+    "default": "./dist/section.js"
+  },
+  "./Select": {
+    "types": "./dist/constructors/Select/index.d.ts",
+    "default": "./dist/select.js"
+  },
+  "./SelectValue": {
+    "types": "./dist/constructors/SelectValue/index.d.ts",
+    "default": "./dist/selectValue.js"
+  },
+  "./Skeleton": {
+    "types": "./dist/constructors/Skeleton/index.d.ts",
+    "default": "./dist/skeleton.js"
+  },
+  "./TextareaAutosize": {
+    "types": "./dist/constructors/TextareaAutosize/index.d.ts",
+    "default": "./dist/textareaAutosize.js"
+  },
+  "./Tooltip": {
+    "types": "./dist/constructors/Tooltip/index.d.ts",
+    "default": "./dist/tooltip.js"
+  },
+  "./Window": {
+    "types": "./dist/constructors/Window/index.d.ts",
+    "default": "./dist/window.js"
+  },
+  "./ai-types": "./ai-types.txt",
+  "./plugin": {
+    "types": "./dist/library/plugin.d.ts",
+    "default": "./dist/plugin.js"
+  },
+  "./style.scss": "./src/library/style.scss",
+  "./Textarea": {
+    "types": "./dist/constructors/Textarea/index.d.ts",
+    "default": "./dist/textarea.js"
+  },
+  "./TabItem": {
+    "types": "./dist/constructors/TabItem/index.d.ts",
+    "default": "./dist/tabItem.js"
+  },
+  "./TabsNavigation": {
+    "types": "./dist/constructors/TabsNavigation/index.d.ts",
+    "default": "./dist/tabsNavigation.js"
+  },
+  "./HorizontalScroll": {
+    "types": "./dist/constructors/HorizontalScroll/index.d.ts",
+    "default": "./dist/horizontalScroll.js"
+  },
+  "./MotionAxis": {
+    "types": "./dist/constructors/MotionAxis/index.d.ts",
+    "default": "./dist/motionAxis.js"
+  },
+  "./Tabs": {
+    "types": "./dist/constructors/Tabs/index.d.ts",
+    "default": "./dist/tabs.js"
+  },
+  "./Checkbox": {
+    "types": "./dist/constructors/Checkbox/index.d.ts",
+    "default": "./dist/checkbox.js"
+  },
+  "./Grid": {
+    "types": "./dist/constructors/Grid/index.d.ts",
+    "default": "./dist/grid.js"
+  },
+  "./GridItem": {
+    "types": "./dist/constructors/GridItem/index.d.ts",
+    "default": "./dist/gridItem.js"
+  },
+  "./Dummy": {
+    "types": "./dist/constructors/Dummy/index.d.ts",
+    "default": "./dist/dummy.js"
+  },
+  "./Group": {
+    "types": "./dist/constructors/Group/index.d.ts",
+    "default": "./dist/group.js"
+  },
+  "./SnackbarItem": {
+    "types": "./dist/constructors/SnackbarItem/index.d.ts",
+    "default": "./dist/snackbarItem.js"
+  },
+  "./Snackbar": {
+    "types": "./dist/constructors/Snackbar/index.d.ts",
+    "default": "./dist/snackbar.js"
+  }
+}
+
+// File: classes/AriaStaticInclude.d.ts
+/**
+ * Returns static ARIA attributes.
+ */
+export declare class AriaStaticInclude {
+    /**
+     * Get role.
+     * @param role ARIA role type
+     */
+    static role(role?: RoleType): AriaList;
+    /**
+     * Get ARIA atomic attribute.
+     * @param isAtomic is atomic
+     */
+    static atomic(isAtomic?: boolean): AriaList;
+    /**
+     * Get ARIA checked attribute.
+     * @param isChecked is checked
+     */
+    static checked(isChecked?: boolean): AriaList;
+    /**
+     * Get ARIA controls attribute.
+     * @param controls ARIA controls attribute
+     */
+    static controls(controls?: string): AriaList;
+    /**
+     * Get ARIA current attribute.
+     * @param value ARIA current attribute
+     */
+    static current(value?: AriaList['aria-current']): AriaList;
+    /**
+     * Get ARIA busy attribute.
+     * @param isBusy is busy
+     */
+    static busy(isBusy?: boolean): AriaList;
+    /**
+     * Get ARIA describedby attribute.
+     * @param id Element ID
+     */
+    static describedby(id?: string): AriaList;
+    /**
+     * Get ARIA disabled attribute.
+     * @param isDisabled is disabled
+     */
+    static disabled(isDisabled?: boolean): AriaList;
+    /**
+     * Get ARIA expanded attribute.
+     * @param isExpanded is expanded
+     */
+    static expanded(isExpanded?: boolean): AriaList;
+    /**
+     * Get ARIA haspopup attribute.
+     * @param haspopup ARIA haspopup attribute
+     */
+    static haspopup(haspopup?: AriaList['aria-haspopup']): AriaList;
+    /**
+     * Get ARIA label.
+     * @param label ARIA label
+     */
+    static label(label?: string): AriaList;
+    /**
+     * Get ARIA labelledby attribute.
+     * @param id Element ID
+     */
+    static labelledby(id?: string): AriaList;
+    /**
+     * Get ARIA invalid attribute.
+     * @param isInvalid is invalid
+     */
+    static invalid(isInvalid?: boolean): AriaList;
+    /**
+     * Get control role.
+     * @param id Element ID
+     * @param controls ARIA controls attribute
+     * @param haspopup ARIA haspopup attribute
+     * @param expanded ARIA expanded state
+     */
+    static control(id?: string, controls?: string, haspopup?: AriaList['aria-haspopup'], expanded?: boolean): AriaList;
+    /**
+     * Get ARIA hidden attribute.
+     * @param isHidden is hidden
+     */
+    static hidden(isHidden?: boolean): AriaList;
+    /**
+     * Get ARIA live attribute.
+     * @param live ARIA live attribute
+     */
+    static live(live?: AriaList['aria-live']): AriaList;
+    /**
+     * Get ARIA modal attribute.
+     * @param isModal is modal
+     */
+    static ariaModal(isModal?: boolean): AriaList;
+    /**
+     * Get modal role.
+     * @param isModal is modal
+     * @param ariaLabelledby ARIA labelledby attribute
+     * @param ariaDescribedby ARIA describedby attribute
+     */
+    static modal(isModal?: boolean, ariaLabelledby?: string, ariaDescribedby?: string): AriaList;
+    /**
+     * Get ARIA multiselectable attribute.
+     * @param isMultiselectable is multiselectable
+     */
+    static multiselectable(isMultiselectable?: boolean): AriaList;
+    /**
+     * Get ARIA selected attribute.
+     * @param isSelected is selected
+     */
+    static selected(isSelected?: boolean): AriaList;
+    /**
+     * Returns ARIA value now, min and max.
+     * @param value Current value
+     * @param min Minimum value
+     * @param max Maximum value
+     */
+    static valueMinMax(value?: string | number, min?: string | number, max?: string | number): AriaList;
+    /**
+     * Returns 'true' or 'false' based on boolean.
+     * @param value boolean value
+     */
+    static isTrueOrFalse(value?: boolean): AriaTrueOrFalse | undefined;
+}
+
+
+// File: classes/CaptionInclude.d.ts
+/**
+ * Class for working with caption.
+ */
+export declare class CaptionInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param className class name
+     * @param slots object for working with slots
+     * @param skeleton optional skeleton for loading state
+     */
+    constructor(props: Readonly<CaptionProps>, className: string, slots?: CaptionSlots | undefined, skeleton?: SkeletonInclude | undefined);
+    /**
+     * True if caption is filled.
+     */
+    readonly is: ComputedRef<boolean>;
+    /**
+     * Bindings for caption element.
+     */
+    readonly binds: ComputedRef<{
+        'aria-activedescendant'?: string;
+        'aria-atomic'?: AriaTrueOrFalse;
+        'aria-autocomplete'?: "none" | "inline" | "list" | "both";
+        'aria-busy'?: AriaTrueOrFalse;
+        'aria-checked'?: AriaTrueOrFalse | "mixed";
+        'aria-colcount'?: number;
+        'aria-colindex'?: number;
+        'aria-colspan'?: number;
+        'aria-controls'?: string;
+        'aria-current'?: AriaTrueOrFalse | "page" | "step" | "location" | "date" | "time";
+        'aria-describedby'?: string;
+        'aria-details'?: string;
+        'aria-disabled'?: AriaTrueOrFalse;
+        'aria-errormessage'?: string;
+        'aria-expanded'?: AriaTrueOrFalse;
+        'aria-flowto'?: string;
+        'aria-grabbed'?: AriaTrueOrFalse;
+        'aria-haspopup'?: AriaTrueOrFalse | "dialog" | "menu" | "listbox" | "tree" | "grid";
+        'aria-hidden'?: AriaTrueOrFalse;
+        'aria-invalid'?: AriaTrueOrFalse | "grammar" | "spelling";
+        'aria-keyshortcuts'?: string;
+        'aria-label'?: string;
+        'aria-labelledby'?: string;
+        'aria-level'?: number;
+        'aria-live'?: "off" | "polite" | "assertive";
+        'aria-modal'?: AriaTrueOrFalse;
+        'aria-multiline'?: AriaTrueOrFalse;
+        'aria-multiselectable'?: AriaTrueOrFalse;
+        'aria-orientation'?: "horizontal" | "vertical" | "undefined";
+        'aria-owns'?: string;
+        'aria-placeholder'?: string;
+        'aria-posinset'?: number;
+        'aria-pressed'?: AriaTrueOrFalse | "mixed";
+        'aria-readonly'?: AriaTrueOrFalse;
+        'aria-relevant'?: "additions" | "removals" | "text" | "all" | string;
+        'aria-required'?: AriaTrueOrFalse;
+        'aria-roledescription'?: string;
+        'aria-rowcount'?: number;
+        'aria-rowindex'?: number;
+        'aria-rowspan'?: number;
+        'aria-selected'?: AriaTrueOrFalse;
+        'aria-setsize'?: number;
+        'aria-sort'?: "none" | "ascending" | "descending" | "other";
+        'aria-valuemax'?: string | number;
+        'aria-valuemin'?: string | number;
+        'aria-valuenow'?: string | number;
+        'aria-valuetext'?: string;
+        id?: string;
+        role?: RoleType;
+        tabindex?: NumberOrString;
+        class: {
+            [x: string]: boolean;
+        };
+        'data-event-type': string;
+    }>;
+    /**
+     * Renders caption element.
+     */
+    render(): VNode[];
+}
+
+
+// File: classes/DescriptionInclude.d.ts
+/**
+ * Adding description text.
+ */
+export declare class DescriptionInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param className class name
+     * @param slots object for working with slots
+     * @param skeleton optional skeleton for loading state
+     */
+    constructor(props: Readonly<DescriptionProps>, className: string, slots?: DescriptionSlots | undefined, skeleton?: SkeletonInclude | undefined);
+    /** Presence check */
+    readonly is: ComputedRef<boolean>;
+    /** Unique identifier */
+    readonly id: ComputedRef<string>;
+    /**
+     * Render description.
+     */
+    render(): VNode[];
+}
+
+
+// File: classes/EnabledInclude.d.ts
+/**
+ * Control item activity.
+ */
+export declare class EnabledInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param progress progress object
+     */
+    constructor(props: EnabledProps, progress?: ProgressInclude | undefined);
+    /** Element is active */
+    readonly isEnabled: ComputedRef<boolean>;
+    /** Status "only for reading" */
+    readonly isReadonly: ComputedRef<boolean>;
+    /** Element is disabled */
+    readonly isDisabled: ComputedRef<boolean>;
+    /** Element is disabled or empty */
+    readonly isDisabledOrUndefined: ComputedRef<boolean | undefined>;
+    /** List of aria properties */
+    readonly aria: ComputedRef<AriaList>;
+}
+
+
+// File: classes/EventClickInclude.d.ts
+/**
+ * Button events handler.
+ */
+export declare class EventClickInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param enabled activity status object
+     * @param emits call function on trigger
+     */
+    constructor(props?: EventClickProps | undefined, enabled?: EnabledInclude | undefined, emits?: ConstrEmit<EventClickEmits> | undefined);
+    /** Element bindings */
+    get binds(): {
+        onClick: (event: MouseEvent, options?: EventClickValue) => void;
+        onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
+        href?: string;
+    };
+    /** Exported values */
+    get expose(): EventClickExpose;
+    /** Returns link value */
+    getHref(): ConstrHrefProps;
+    /** Click trigger */
+    readonly onClick: (event: MouseEvent, options?: EventClickValue) => void;
+    /** Space/Enter trigger */
+    readonly onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
+}
+
+
+// File: classes/Field/FieldArrowInclude.d.ts
+/**
+ * Input arrows handler.
+ */
+export declare class FieldArrowInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param value values object
+     * @param type input type object
+     */
+    constructor(props: FieldAllProps, value: FieldValueInclude, type?: FieldTypeInclude | undefined);
+    /** Arrows enabled */
+    readonly is: ComputedRef<boolean>;
+    /** Prev button disabled */
+    readonly disabledPrevious: ComputedRef<boolean>;
+    /** Next button disabled */
+    readonly disabledNext: ComputedRef<boolean>;
+    /** Arrow type is carousel */
+    isCarousel(): boolean;
+    /** Arrow type is stepper */
+    isStepper(): boolean;
+    /** Possible to decrease */
+    isPrevious(value: number): boolean;
+    /** Possible to increase */
+    isNext(value: number): boolean;
+    /** Returns arrow type */
+    get(): FieldArrowProps['arrow'] | undefined;
+    /** Returns arrow alignment */
+    align(): string | undefined;
+    /** Decrease value */
+    previous(): this;
+    /** Increase value */
+    next(): this;
+    /** Decrease to min */
+    toMin(): this;
+    /** Increase to max */
+    toMax(): this;
+}
+
+
+// File: classes/Field/FieldAttributesInclude.d.ts
+/**
+ * Input element attributes handler.
+ */
+export declare class FieldAttributesInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param type input type object
+     * @param pattern pattern check object
+     * @param inputMode keyboard mode object
+     */
+    constructor(props: FieldAllProps, type?: FieldTypeInclude | undefined, pattern?: FieldPatternInclude | undefined, inputMode?: FieldInputModeInclude | undefined);
+    /** Verification data */
+    readonly list: ComputedRef<Record<string, any>>;
+    /** List for verification */
+    readonly listForCheck: ComputedRef<Record<string, any>>;
+    /** List for input element */
+    readonly listForInput: ComputedRef<Record<string, any>>;
+    /** List for checkbox element */
+    readonly listForCheckbox: ComputedRef<Record<string, any>>;
+}
+
+
+// File: classes/Field/FieldChangeInclude.d.ts
+/**
+ * Tracks field value change state.
+ */
+export declare class FieldChangeInclude {
+    /** Change state flag */
+    readonly item: Ref<boolean, boolean>;
+    /**
+     * Constructor
+     * @param props input data
+     */
+    constructor(props: FieldAllProps);
+    /** Value was changed */
+    is(): boolean;
+    /** Sets change state */
+    set(change: boolean): void;
+    /** Mark as changed */
+    to(): void;
+}
+
+
+// File: classes/Field/FieldCodeInclude.d.ts
+/**
+ * Process error text.
+ */
+export declare class FieldCodeInclude {
+    /**
+     * Constructor
+     * @param props input data
+     */
+    constructor(props: FieldAllProps);
+    /** Error text */
+    get(state?: ValidityState): string | undefined;
+}
+
+
+// File: classes/Field/FieldElementInclude.d.ts
+/**
+ * Input elements handler.
+ */
+export declare class FieldElementInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param element input element
+     */
+    constructor(props: FieldAllProps, element: Ref<FieldElementInput>);
+    /** Returns input element */
+    get(): HTMLInputElement | undefined;
+    /** Returns input ref */
+    getElement(): Ref<FieldElementInput>;
+    /** Find element by name/selector */
+    findByName(nameSelectors: string | HTMLInputElement): HTMLInputElement | undefined;
+    /** Clear values */
+    clear(): this;
+}
+
+
+// File: classes/Field/FieldEventInclude.d.ts
+/**
+ * Field events handler.
+ */
+export declare class FieldEventInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param change change label object
+     * @param value value object
+     * @param validation validity object
+     * @param emits call function on trigger
+     */
+    constructor(props: FieldAllProps, change: FieldChangeInclude, value: FieldValueInclude, validation?: FieldValidationInclude | undefined, emits?: ConstrEmit<FieldBasicEmits> | undefined);
+    /** Change possible */
+    isEnabled(): boolean;
+    /** Focus loss */
+    readonly onBlur: () => void;
+    /** Data change event */
+    readonly onInput: (event: InputEvent, data?: Record<string, any>) => void;
+    /** Confirm change after blur */
+    readonly onChange: (event?: InputEvent | Event) => void;
+    /** Select change */
+    readonly onSelect: (event: Event, data?: Record<string, any>) => void;
+    /** Checkbox change */
+    readonly onChecked: (event: Event) => void;
+    /** Radio change */
+    readonly onRadio: (event: Event) => void;
+    /** Clear values */
+    readonly onClear: (event: MouseEvent) => void;
+    /** Set specific value */
+    readonly onValue: (value: any) => void;
+    /** Generic trigger */
+    readonly on: <E>(event?: E, type?: string & keyof FieldBasicEmits) => this;
+}
+
+
+// File: classes/Field/FieldInputCheckInclude.d.ts
+/**
+ * Hidden input for native pattern validation.
+ */
+export declare class FieldInputCheckInclude<Value = any> {
+    readonly pattern: FieldPatternItemOrFunction;
+    readonly group: string;
+    /** Hidden element */
+    readonly input: HTMLInputElement | undefined;
+    /**
+     * Constructor
+     * @param pattern verification property
+     * @param group group name
+     * @param code error codes object
+     */
+    constructor(pattern: FieldPatternItemOrFunction, group?: string, code?: FieldCodeInclude | undefined);
+    /** Run validation */
+    check(value: Value): FieldValidationItem;
+    /** Run input validation */
+    checkByInput(input: FieldElementDom): FieldValidationItem;
+    /** Default group name */
+    static getGroupDefault(): string;
+}
+export type FieldInputCheckListInclude = Record<string, FieldInputCheckInclude>;
+
+
+// File: classes/Field/FieldInputModeInclude.d.ts
+/**
+ * Manages keyboard display type.
+ */
+export declare class FieldInputModeInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param type type object
+     */
+    constructor(props: FieldAllProps, type: FieldTypeInclude);
+    /** Keyboard name */
+    readonly item: ComputedRef<string | undefined>;
+    readonly autocomplete: ComputedRef<string | undefined>;
+}
+
+
+// File: classes/Field/FieldMatchInclude.d.ts
+/**
+ * Match value with another element.
+ */
+export declare class FieldMatchInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param element input element object
+     * @param value values object
+     * @param text texts object
+     */
+    constructor(props: FieldAllProps, element: FieldElementInclude, value: FieldValueInclude, text?: TextInclude | undefined);
+    /** Matching enabled */
+    is(): boolean;
+    /** Returns selector */
+    getSelectors(): string | HTMLInputElement | undefined;
+    /** Validation message */
+    getValidationMessage(): string;
+    /** Check match */
+    check(): FieldValidationItem | undefined;
+}
+
+
+// File: classes/Field/FieldPatternInclude.d.ts
+/**
+ * Regular expression checks handler.
+ */
+export declare class FieldPatternInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param type type object
+     */
+    constructor(props: FieldAllProps, type?: FieldTypeInclude | undefined);
+    /** Regular expressions */
+    readonly item: ComputedRef<string | undefined>;
+}
+
+
+// File: classes/Field/FieldTypeInclude.d.ts
+/**
+ * Input type handler.
+ */
+export declare class FieldTypeInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param visibility visualization object
+     */
+    constructor(props: FieldAllProps, visibility?: FieldVisibilityInclude | undefined);
+    /** Input type */
+    readonly item: ComputedRef<FieldType>;
+    /** Returns input type */
+    get(): FieldType;
+}
+
+
+// File: classes/Field/FieldValidationInclude.d.ts
+/**
+ * Validity handler.
+ */
+export declare class FieldValidationInclude {
+    /**
+     * Constructor
+     * @param props input data
+     * @param attributes input attributes object
+     * @param value values object
+     * @param change change state object
+     * @param code error codes object
+     * @param match match check object
+     */
+    constructor(props: FieldAllProps, attributes: FieldAttributesInclude, value: FieldValueInclude, change?: FieldChangeInclude | undefined, code?: FieldCodeInclude | undefined, match?: FieldMatchInclude | undefined);
+    /** Error data */
+    readonly item: ComputedRef<FieldValidationItem>;
+    /** Error string */
+    readonly message: ComputedRef<string>;
+    /** Error exists */
+    isError(): boolean;
+    /** Satisfies constraints */
+    readonly checkValidity: () => boolean;
+    /** Changes validity data */
+    set(validation: Record<string, any> | FieldValidationItem): this;
+}
+
+
+// File: classes/Field/FieldValueInclude.d.ts
+/**
+ * Input values handler.
+ */
+export declare class FieldValueInclude<Value = any> {
+    /** Current value */
+    readonly item: Ref<Value | undefined, Value | undefined>;
+    /** Value is complete */
+    readonly isFull: Ref<boolean, boolean>;
+    /**
+     * Constructor
+     * @param props input data
+     * @param refs reactive elements
+     * @param element element object
+     * @param original original values
+     */
+    constructor(props: FieldValueProps<Value>, refs: ToRefs<FieldValueProps<Value>>, element?: FieldElementInclude | undefined, original?: RefOrNormal<Value> | undefined);
+    /** Presence of values */
+    readonly is: ComputedRef<boolean>;
+    /** Any values exists */
+    readonly isValue: ComputedRef<boolean>;
+    /** Current value if complete */
+    readonly itemByFull: ComputedRef<Value | undefined>;
+    /** Value as number */
+    readonly number: ComputedRef<number>;
+    /** Value as string */
+    readonly string: ComputedRef<string>;
+    /** Value as boolean */
+    readonly boolean: ComputedRef<boolean>;
+    /** Entered length */
+    readonly length: ComputedRef<number>;
+    /** Get value */
+    get(): Value | undefined;
+    /** Get as array */
+    getToArray(): Value[];
+    /** Change value */
+    set(value: any): this;
+    /** Change by event */
+    setByEvent(event: Event): this;
+    setByEvent(value: Record<string, any>): this;
+    setByEvent(value: any): this;
+    /** Change by target */
+    setByTarget(target: HTMLInputElement): this;
+    /** Change by checked property */
+    setByChecked(event: Event): this;
+    /** Change by radio event */
+    setByRadio(event: Event): this;
+    /** Set isFull */
+    setFull(isFull: boolean): void;
+    /** Set edit state */
+    setHasEdit(hasEdit: boolean): void;
+    /** Revert to original */
+    setToOriginal(): this;
+    /** Clear values */
+    clear(): this;
+}
+
+
+// File: classes/Field/FieldVisibilityInclude.d.ts
+/**
+ * Password visibility handler.
+ */
+export declare class FieldVisibilityInclude {
+    readonly item: Ref<boolean, boolean>;
+    /** Toggle visibility */
+    toggle(): this;
+}
+
+
+// File: classes/LabelHighlightInclude.d.ts
+/**
+ * Label with text highlighting.
+ */
+export declare class LabelHighlightInclude extends LabelInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param className class name
+     * @param classesExtra additional classes
+     * @param slots object for working with slots
+     * @param elementsExtra additional elements
+     * @param skeleton optional skeleton for loading state
+     */
+    constructor(props: Readonly<LabelHighlightProps>, className: string, classesExtra?: ConstrClass | undefined, slots?: LabelHighlightSlots | undefined, elementsExtra?: (() => VNode[]) | undefined, skeleton?: SkeletonInclude | undefined);
+    /** Highlight required */
+    isHighlight(): boolean;
+}
+
+
+// File: classes/LabelInclude.d.ts
+/**
+ * Adding label text.
+ */
+export declare class LabelInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param className class name
+     * @param classesExtra additional classes
+     * @param slots object for working with slots
+     * @param elementsExtra additional elements
+     * @param labelReplacing additional elements
+     * @param alternativeSlots alternative slots
+     * @param skeleton optional skeleton for loading state
+     * @param tag tag name
+     */
+    constructor(props: Readonly<LabelProps>, className: string, classesExtra?: ConstrClass | undefined, slots?: (LabelSlots | LabelAlternativeSlots) | undefined, elementsExtra?: (() => VNode[]) | undefined, labelReplacing?: Ref<string | number | undefined> | undefined, alternativeSlots?: boolean | undefined, skeleton?: SkeletonInclude | undefined, tag?: RefOrNormal<string>);
+    /** Label presence check */
+    readonly is: ComputedRef<boolean>;
+    /** Identifier */
+    readonly id: ComputedRef<string>;
+    /** Render label */
+    render(childrenExtra?: any[], props?: Record<string, any>): VNode[];
+}
+
+
+// File: classes/LabelNumberInclude.d.ts
+/**
+ * Handles numeric labels with max constraints.
+ */
+export declare class LabelNumberInclude extends LabelInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param className class name
+     * @param classesExtra additional classes
+     * @param slots object for working with slots
+     * @param elementsExtra additional elements
+     * @param skeleton optional skeleton for loading state
+     */
+    constructor(props: Readonly<LabelNumberProps>, className: string, classesExtra?: ConstrClass | undefined, slots?: LabelNumberSlots | undefined, elementsExtra?: (() => VNode[]) | undefined, skeleton?: SkeletonInclude | undefined);
+}
+
+
+// File: classes/ModelInclude.d.ts
+/**
+ * Model synchronization manager.
+ */
+export declare class ModelInclude<Value = string> {
+    /**
+     * Constructor
+     * @param index Model index key
+     * @param emits Event emit function
+     * @param syncValue Synchronized reactive value
+     */
+    constructor(index: string, emits?: any | undefined, syncValue?: RefType<Value> | undefined);
+    /** SyncValue is mutable Ref */
+    isValue(): this is {
+        syncValue: Ref<Value>;
+    };
+    /** Get v-model bindings */
+    getBinds(): {
+        [x: string]: Value | ((value: Value) => void);
+    };
+    /** Update sync value */
+    readonly update: (value: Value) => void;
+    /** Emit update event */
+    emit(value: Value): void;
+}
+
+
+// File: classes/ModelValueInclude.d.ts
+/**
+ * Model value and click manager.
+ */
+export declare class ModelValueInclude<Value = any> {
+    readonly value: Ref<Value | undefined, Value | undefined>;
+    /**
+     * Constructor
+     * @param index identifier
+     * @param emits emits function
+     * @param event click handler
+     * @param inputValue input value ref
+     * @param readonly readonly flag
+     */
+    constructor(index: string, emits?: any | undefined, event?: EventClickInclude | undefined, inputValue?: RefType<any> | undefined, readonly?: RefType<boolean | undefined> | undefined);
+    /** Current value */
+    getValue(): Value | undefined;
+    /** Click handler */
+    readonly onClick: (event: MouseEvent, options?: EventClickValue) => void;
+}
+
+
+// File: classes/Plugin/Plugin.d.ts
+/**
+ * Vite plugin base class.
+ */
+export declare class Plugin {
+    /**
+     * Constructor
+     * @param design design name
+     * @param packageName package name
+     * @param componentsReg component search regex
+     * @param styleVarsReg variable search regex
+     * @param componentsList component list
+     * @param name plugin name
+     * @param options plugin options
+     */
+    constructor(design: string, packageName: string, componentsReg: RegExp, styleVarsReg: RegExp, componentsList: PluginComponentImports, name?: string, options?: PluginOptions);
+    /** Init plugin */
+    init(): VitePlugin;
+}
+
+
+// File: classes/Plugin/PluginCode.d.ts
+/**
+ * Plugin code handler.
+ */
+export declare class PluginCode {
+    /**
+     * Constructor
+     * @param id file ID
+     * @param code source code
+     */
+    constructor(id: string, code: string);
+    /** File is Vue */
+    isVue(): boolean;
+    /** File is SCSS */
+    isScss(): boolean;
+    /** Modified code */
+    get(): string;
+    /** File ID */
+    getId(): string;
+    /** Original code */
+    getCode(): string;
+    /** Presence check */
+    has(pattern: string | RegExp, flags?: string): boolean;
+    /** Add after <script setup> */
+    addAfterScript(code: string): this;
+    /** Add to start */
+    addStart(code: string): this;
+    /** Add to start if missing */
+    addStartIfNone(code: string, pattern?: string | RegExp): this;
+    /** Replace fragment */
+    replace(pattern: string | RegExp, replacement: string | ((substring: string, ...args: any[]) => string)): this;
+}
+
+
+// File: classes/Plugin/PluginComponents.d.ts
+/**
+ * Components connection handler.
+ */
+export declare class PluginComponents {
+    /**
+     * Constructor
+     * @param code file content
+     * @param pluginData plugin data
+     */
+    constructor(code: PluginCode, pluginData: PluginData);
+    /** Init data */
+    make(): void;
+}
+
+
+// File: classes/Plugin/PluginData.d.ts
+/**
+ * Plugin data storage.
+ */
+export declare class PluginData {
+    /**
+     * Constructor
+     * @param design design name
+     * @param packageName package name
+     * @param componentsReg component search regex
+     * @param styleVarsReg variable search regex
+     * @param componentsList components list
+     */
+    constructor(design: string, packageName: string, componentsReg: RegExp, styleVarsReg: RegExp, componentsList: PluginComponentImports);
+    /** Has component */
+    hasComponent(code: string): boolean;
+    /** Has variables */
+    hasVars(code: string): boolean;
+    /** Design name */
+    getDesign(): string;
+    /** Package name */
+    getPackageName(): string;
+    /** Components list in code */
+    getComponents(code: string): PluginComponentImports;
+    /** Variables search regex */
+    getStyleVarsReg(): RegExp;
+    /** Style modification map */
+    getStyleModification(): Record<string, string>;
+}
+
+
+// File: classes/Plugin/PluginImport.d.ts
+/**
+ * Plugin import handler.
+ */
+export declare class PluginImport {
+    /**
+     * Constructor
+     * @param packageName package name
+     * @param code file content
+     */
+    constructor(packageName: string, code: string);
+    /** File content */
+    get(): string;
+    /** Import style code */
+    importStyle(): this;
+}
+
+
+// File: classes/Plugin/PluginStyle.d.ts
+/**
+ * Transform style properties to non-standard.
+ */
+export declare class PluginStyle {
+    /**
+     * Constructor
+     * @param code file content
+     * @param data plugin data
+     */
+    constructor(code: PluginCode, data: PluginData);
+    /** Transform properties */
+    make(): this;
+}
+
+
+// File: classes/Plugin/PluginTool.d.ts
+/**
+ * Plugin data utilities.
+ */
+export declare class PluginTool {
+    /** Is user file */
+    static isSrc(id: string): boolean;
+    /** Is user JS */
+    static isJs(id: string): boolean;
+    /** Is user Vue */
+    static isVue(id: string): boolean;
+    /** Is user Style */
+    static isCss(id: string): boolean;
+    /** Is Dev mode */
+    static isDev(mode: string): boolean;
+}
+
+
+// File: classes/PrefixInclude.d.ts
+/**
+ * Working with prefix.
+ */
+export declare class PrefixInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param className class name
+     * @param slots object for working with slots
+     * @param skeleton optional skeleton for loading state
+     */
+    constructor(props: Readonly<PrefixProps>, className: string, slots?: PrefixSlots | undefined, skeleton?: SkeletonInclude | undefined);
+    /** Prefix is filled */
+    readonly is: ComputedRef<boolean>;
+    /** Unique identifier */
+    readonly id: ComputedRef<string>;
+    /** Describedby identifier */
+    readonly describedby: ComputedRef<string>;
+    /** Render prefix */
+    render(): VNode[];
+}
+
+
+// File: classes/ScrollToXInclude.d.ts
+/**
+ * Horizontal scrolling handler.
+ */
+export declare class ScrollToXInclude {
+    /**
+     * Constructor
+     * @param element element
+     */
+    constructor(element: Ref<HTMLElement | undefined>);
+    /** Element bindings */
+    readonly binds: ComputedRef<{
+        onWheelPassive: (event: WheelEvent) => void;
+    }>;
+    /** Mouse wheel handler */
+    readonly onScrollToX: (event: WheelEvent) => void;
+}
+
+
+// File: classes/SuffixInclude.d.ts
+/**
+ * Working with suffix.
+ */
+export declare class SuffixInclude {
+    /**
+     * Constructor
+     * @param props input property
+     * @param className class name
+     * @param slots object for working with slots
+     * @param skeleton optional skeleton for loading state
+     */
+    constructor(props: Readonly<SuffixProps>, className: string, slots?: SuffixSlots | undefined, skeleton?: SkeletonInclude | undefined);
+    /** Suffix is filled */
+    readonly is: ComputedRef<boolean>;
+    /** Unique identifier */
+    readonly id: ComputedRef<string>;
+    /** Describedby identifier */
+    readonly describedby: ComputedRef<string>;
+    /** Render suffix */
+    render(): VNode[];
+}
+
+
+// File: classes/TabIndexInclude.d.ts
+/**
+ * Elements focus and tabindex manager.
+ */
+export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
+    /**
+     * Constructor
+     * @param element - Reference to element
+     * @param active - Revert focus to previous
+     * @param activeOpen - Active on opening
+     * @param activeClose - Active on closing
+     */
+    constructor(element: Ref<E | undefined> | (() => E | undefined), active?: () => boolean, activeOpen?: () => boolean, activeClose?: () => boolean);
+    /** Focus element */
+    goTo(): this;
+    /** Revert focus */
+    reset(): this;
+    /** Toggle focus status */
+    toggle(status: boolean): this;
+    /** Save current focus */
+    updateOldElement(): void;
+    /** Find first focusable */
+    findFirstElement(): HTMLElement | undefined;
+    /** Find last focusable */
+    findLastElement(): HTMLElement | undefined;
+}
+
+
+// File: classes/TextInclude.d.ts
+/**
+ * Text properties manager.
+ */
+export declare class TextInclude {
+    /** Global texts list */
+    static readonly list: ShallowRef<TextList, TextList>;
+    readonly texts: Record<string, ComputedRef<string | undefined>>;
+    /**
+     * Init global texts.
+     * @param texts Texts list
+     */
+    static initText(texts: TextList): void;
+    /**
+     * Constructor
+     * @param props Component properties
+     */
+    constructor(props: TextAllPropsInclude);
+    /** Cancel text */
+    get cancel(): ComputedRef<string | undefined>;
+    /** Limit exceeded text */
+    get characterLimit(): ComputedRef<string | undefined>;
+    /** Remaining characters text */
+    get characterRemaining(): ComputedRef<string | undefined>;
+    /** Close text */
+    get close(): ComputedRef<string | undefined>;
+    /** Copied text */
+    get copiedClipboard(): ComputedRef<string | undefined>;
+    /** Decrement text */
+    get decrement(): ComputedRef<string | undefined>;
+    /** No match text */
+    get entriesMatch(): ComputedRef<string | undefined>;
+    /** Hide text */
+    get hide(): ComputedRef<string | undefined>;
+    /** Increment text */
+    get increment(): ComputedRef<string | undefined>;
+    /** Loading text */
+    get loading(): ComputedRef<string | undefined>;
+    /** Next text */
+    get next(): ComputedRef<string | undefined>;
+    /** OK text */
+    get ok(): ComputedRef<string | undefined>;
+    /** Previous text */
+    get previous(): ComputedRef<string | undefined>;
+    /** Show text */
+    get show(): ComputedRef<string | undefined>;
+    /**
+     * Get text by name.
+     * @param name property name
+     */
+    get(name: keyof TextAllPropsInclude): ComputedRef<string | undefined>;
+}
+
+
+// File: classes/TouchEventInclude.d.ts
+/**
+ * Touch/mouse gestures handler.
+ */
+export declare class TouchEventInclude {
+    /** Current touch point */
+    readonly touche: Ref<Touch | undefined, Touch | undefined>;
+    /** Touch point during move */
+    readonly toucheMove: Ref<Touch | undefined, Touch | undefined>;
+    /** Current mouse position */
+    readonly mouse: Ref<TouchEventClient | undefined, TouchEventClient | undefined>;
+    /** Mouse position during move */
+    readonly mouseMove: Ref<TouchEventClient | undefined, TouchEventClient | undefined>;
+    /**
+     * Constructor
+     * @param start touch start callback
+     * @param move touch move callback
+     * @param end touch end callback
+     * @param element optional element ref
+     */
+    constructor(start?: ((mouse: TouchEventClient, touche?: Touch) => void) | undefined, move?: TouchEventCallback | undefined, end?: TouchEventCallback | undefined, element?: Ref<HTMLElement | undefined> | undefined);
+    /** Touch handlers */
+    readonly onTouch: {
+        onTouchstart: (event: TouchEvent) => void;
+        onTouchend: (event: TouchEvent) => void;
+        onTouchcancel: (event: TouchEvent) => void;
+        onTouchmove: (event: TouchEvent) => void;
+    };
+    /** Mouse handlers */
+    readonly onMouse: {
+        onMousedown: (event: MouseEvent) => void;
+        onMouseup: (event: MouseEvent) => void;
+        onMousemove: (event: MouseEvent) => void;
+    };
+}
+
+
+// File: constructors/Accordion/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Accordion/props.d.ts
+export type AccordionPropsToken = {
+    divider?: boolean;
+};
+export type AccordionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Cell extends CellPropsBasic = CellPropsBasic, MotionTransform extends MotionTransformPropsBasic = MotionTransformPropsBasic> = LabelProps & DescriptionProps & IconLitePropsInclude<Icon> & MotionTransformPropsInclude<MotionTransform> & ModelPropsOpen & {
+    cellAttrs?: ConstrBind<Cell>;
+    iconArrowDown?: IconValue<Icon>;
+};
+/** Incoming properties */
+export type AccordionProps = AccordionPropsBasic & AccordionPropsToken;
+/** Default properties */
+export declare const defaultsAccordion: {
+    divider: boolean;
+    clickOpen: boolean;
+    autoClose: boolean;
+};
+
+
+// File: constructors/Accordion/types.d.ts
+/** Components connection interface */
+export type AccordionComponents = CellComponentInclude & MotionTransformComponentInclude;
+/** Available events */
+export type AccordionEmits = EventClickEmits & MotionTransformEmitsInclude & ModelEmitsOpen;
+/** Available properties */
+export interface AccordionExpose extends MotionTransformExposeInclude {
+}
+/** Available slots */
+export interface AccordionSlots extends CellSlotsInclude {
+    default?(props: MotionTransformControlItem): any;
+}
+/** Subclasses */
+export type AccordionClasses = {
+    main: ConstrClass;
+    head: string;
+    body: string;
+};
+
+
+// File: constructors/ActionSheet/basicTypes.d.ts
+export {};
+
+
+// File: constructors/ActionSheet/props.d.ts
+export type ActionSheetPropsToken = {};
+export type ActionSheetPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = WindowPropsInclude<Window> & BarsPropsInclude<Bars> & ActionsPropsInclude<Actions> & {
+    open?: boolean;
+    touchClose?: boolean;
+};
+/** Incoming properties */
+export type ActionSheetProps = ActionSheetPropsBasic & ActionSheetPropsToken;
+/** Default properties */
+export declare const defaultsActionSheet: {
+    barsBackHide: boolean;
+    touchClose: boolean;
+};
+
+
+// File: constructors/ActionSheet/types.d.ts
+/** Components connection interface */
+export type ActionSheetComponents = ModalComponents;
+/** Available events */
+export type ActionSheetEmits = ModalEmits;
+/** Available properties */
+export interface ActionSheetExpose extends ModalExpose {
+}
+/** Available slots */
+export interface ActionSheetSlots extends ModalSlots {
+}
+/** Subclasses */
+export type ActionSheetClasses = {
+    main: ConstrClass;
+    title: string;
+    header: string;
+    body: string;
+    footer: string;
+    touch: string;
+    tab: string;
+};
+
+
+// File: constructors/Actions/basicTypes.d.ts
+/** Component map for Actions */
+export type ActionsComponentInclude = {
     actions?: object;
 };
-type ActionsEmitsInclude = {
+/** Actions events */
+export type ActionsEmitsInclude = {
     actions: EventClickEmits['click'];
     actionsLite: EventClickEmits['clickLite'];
 };
-interface ActionsPropsInclude<Actions extends ActionsPropsBasic = ActionsPropsBasic> {
+/** Props for Actions inclusion */
+export type ActionsPropsInclude<Actions extends ActionsPropsBasic = ActionsPropsBasic> = {
+    /** Hide actions */
     actionsHide?: boolean;
+    /** Action buttons */
     actionsList?: ConstrBind<Actions['list']>;
+    /** Secondary buttons */
     actionsSecondary?: ConstrBind<Actions['listSecondary']>;
+    /** Attributes */
     actionsAttrs?: ConstrBind<Actions>;
+};
+
+
+// File: constructors/Actions/props.d.ts
+export type ActionsPropsToken = {
+    align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
+    flexible?: boolean;
+    wrap?: boolean;
+};
+export type ActionsPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic> = {
+    list?: ConstrBind<Button>[];
+    listSecondary?: ConstrBind<Button>[];
+    buttonAttrs?: ConstrBind<Button>;
+    buttonSecondaryAttrs?: ConstrBind<Button>;
+};
+/** Incoming properties */
+export type ActionsProps = ActionsPropsBasic & ActionsPropsToken;
+/** Default properties */
+export declare const defaultsActions: {
+    align: string;
+};
+
+
+// File: constructors/Actions/types.d.ts
+/** Components connection interface */
+export type ActionsComponents = ButtonComponentInclude;
+/** Available events */
+export type ActionsEmits = EventClickEmits;
+/** Available properties */
+export interface ActionsExpose {
 }
-interface AnchorScrollProps {
+/** Available slots */
+export interface ActionsSlots {
+    default?(props: any): any;
+    secondary?(props: any): any;
+}
+/** Subclasses */
+export type ActionsClasses = {
+    main: ConstrClass;
+    item: string;
+    list: string;
+    secondary: string;
+    spacer: string;
+};
+
+
+// File: constructors/Anchor/basicTypes.d.ts
+/** Anchor scroll properties */
+export type AnchorScrollProps = {
     shift?: NumberOrString;
     behavior?: ScrollIntoViewOptions['behavior'];
     block?: ScrollIntoViewOptions['block'];
     inline?: ScrollIntoViewOptions['inline'];
+};
+
+
+// File: constructors/Anchor/props.d.ts
+export type AnchorPropsToken = {};
+export type AnchorPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Tooltip extends TooltipProps = TooltipProps> = LabelProps & TooltipPropsInclude<Tooltip> & TextCopiedClipboardPropsInclude & AnchorScrollProps & {
+    hide?: boolean;
+    name?: string;
+    isCopy?: boolean;
+    iconLink?: IconValue<Icon>;
+    iconTag?: IconValue<Icon>;
+    iconContentCopy?: IconValue<Icon>;
+    delayHide?: number;
+};
+/** Incoming properties */
+export type AnchorProps = AnchorPropsBasic & AnchorPropsToken;
+/** Default properties */
+export declare const defaultsAnchor: {
+    shift: number;
+    delayHide: number;
+};
+
+
+// File: constructors/Anchor/types.d.ts
+/** Components connection interface */
+export type AnchorComponents = TooltipComponentInclude & IconComponentInclude;
+/** Available events */
+export type AnchorEmits = {};
+/** Available properties */
+export interface AnchorExpose {
+    go(): void;
 }
-enum ArrowDirection {
+/** Available slots */
+export interface AnchorSlots extends LabelSlots {
+}
+/** Subclasses */
+export type AnchorClasses = {
+    main: ConstrClass;
+    label: string;
+};
+
+
+// File: constructors/Arrow/basicTypes.d.ts
+/** Arrow direction enum */
+export declare enum ArrowDirection {
     TOP = "top",
     BOTTOM = "bottom",
     LEFT = "left",
     RIGHT = "right",
     HIDE = "hide"
 }
-type ArrowBorder = {
+export type ArrowBorder = {
     top: number;
     bottom: number;
     left: number;
     right: number;
 };
-type ArrowCenter = {
+export type ArrowCenter = {
     x: number;
     y: number;
 };
-type ArrowComponentInclude = {
+/** Component map for Arrow */
+export type ArrowComponentInclude = {
     arrow?: object;
 };
-interface ArrowPropsInclude<Arrow extends ArrowProps = ArrowProps> {
+/** Props for Arrow inclusion */
+export type ArrowPropsInclude<Arrow extends ArrowProps = ArrowProps> = {
+    /** Show arrow */
     arrowShow?: boolean;
+    /** Arrow position */
     arrowPosition?: ArrowProps['position'];
+    /** Attributes */
     arrowAttrs?: ConstrBind<Arrow>;
+};
+
+
+// File: constructors/Arrow/props.d.ts
+export type ArrowPropsToken = {
+    position?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
+    inverse?: boolean;
+};
+export type ArrowPropsBasic = {
+    elementTarget?: HTMLElement | string;
+};
+/** Incoming properties */
+export type ArrowProps = ArrowPropsBasic & ArrowPropsToken;
+/** Default properties */
+export declare const defaultsArrow: {
+    position: string;
+};
+
+
+// File: constructors/Arrow/types.d.ts
+/** Components connection interface */
+export type ArrowComponents = {};
+/** Available events */
+export type ArrowEmits = {};
+/** Available properties */
+export interface ArrowExpose {
+    update: () => void;
 }
-type BadgeComponentInclude = {
+/** Available slots */
+export interface ArrowSlots {
+}
+/** Subclasses */
+export type ArrowClasses = {
+    main: ConstrClass;
+    mask: string;
+    arrow: string;
+    arrowLine: string;
+    arrowArea: string;
+    border: string;
+    borderHidden: string;
+};
+
+
+// File: constructors/Badge/basicTypes.d.ts
+export type BadgeComponentInclude = {
     badge?: object;
 };
-interface BadgePropsInclude<Badge extends BadgePropsBasic = BadgePropsBasic> {
+export type BadgePropsInclude<Badge extends BadgePropsBasic = BadgePropsBasic> = {
     badge?: string | number | ConstrBind<Badge>;
     badgeDot?: boolean;
+};
+
+
+// File: constructors/Badge/props.d.ts
+export type BadgePropsToken = {
+    selected?: boolean;
+    hide?: boolean;
+    dot?: boolean;
+    overlap?: 'rectangular' | 'circular' | 'static';
+    vertical?: 'top' | 'center' | 'bottom';
+    horizontal?: 'right' | 'center' | 'left';
+};
+export type BadgePropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & LabelNumberProps & AriaLabelPropsInclude & {
+    dot?: boolean;
+};
+/** Incoming properties */
+export type BadgeProps = BadgePropsBasic & BadgePropsToken;
+/** Default properties */
+export declare const defaultsBadge: {
+    overlap: string;
+    vertical: string;
+    horizontal: string;
+};
+
+
+// File: constructors/Badge/types.d.ts
+/** Components connection interface */
+export type BadgeComponents = IconComponentInclude;
+/** Available events */
+export type BadgeEmits = {};
+/** Available properties */
+export interface BadgeExpose {
 }
-type BarsComponentInclude = {
+/** Available slots */
+export interface BadgeSlots extends LabelNumberSlots {
+}
+/** Subclasses */
+export type BadgeClasses = {
+    main: ConstrClass;
+    label: string;
+    icon: string;
+};
+
+
+// File: constructors/Bars/basicTypes.d.ts
+/** Component map for Bars */
+export type BarsComponentInclude = {
     bars?: object;
 };
-type BarsEmitsInclude = {
+/** Bars events */
+export type BarsEmitsInclude = {
     bars: EventClickEmits['click'];
     barsLite: EventClickEmits['clickLite'];
     barsBack: EventClickEmits['clickLite'];
 };
-interface BarsPropsInclude<Bars extends BarsPropsBasic = BarsPropsBasic> {
+/** Props for Bars inclusion */
+export type BarsPropsInclude<Bars extends BarsPropsBasic = BarsPropsBasic> = {
+    /** Label */
     barsLabel?: string | number;
+    /** Description */
     barsDescription?: string;
+    /** Hide back button */
     barsBackHide?: boolean;
+    /** Hide bars */
     barsHide?: boolean;
+    /** Button list */
     barsList?: Bars['bars'];
+    /** Attributes */
     barsAttrs?: ConstrBind<Bars>;
-}
-type ButtonComponentInclude = {
-    button?: object;
 };
-interface ButtonPropsInclude<Button extends ButtonPropsBasic = ButtonPropsBasic> {
-    buttonAttrs?: ConstrBind<Button>;
+
+
+// File: constructors/Bars/props.d.ts
+export type BarsPropsToken = {};
+export type BarsPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic> = LabelProps & DescriptionProps & SkeletonPropsInclude & TextClosePropsInclude & {
+    'action'?: boolean;
+    'backButton'?: ConstrBind<Button>;
+    'backHide'?: boolean;
+    'backActionHide'?: boolean;
+    'bars'?: ConstrBind<Button>[];
+    'actionLabel'?: LabelProps['label'];
+    'actionDescription'?: DescriptionProps['description'];
+    'actionBars'?: ConstrBind<Button>[];
+    'buttonAttrs'?: ConstrBind<Button>;
+    'iconBack'?: IconValue<Icon>;
+    'iconClose'?: IconValue<Icon>;
+    'modelAction'?: boolean;
+    'onUpdate:action'?: (value: boolean) => void;
+    'onUpdate:modelAction'?: (value: boolean) => void;
+};
+/** Incoming properties */
+export type BarsProps = BarsPropsBasic & BarsPropsToken;
+/** Default properties */
+export declare const defaultsBars: {};
+
+
+// File: constructors/Bars/types.d.ts
+/** Components connection interface */
+export type BarsComponents = ButtonComponentInclude;
+/** Available events */
+export type BarsEmits = EventClickEmits & {
+    'update:action': [value: boolean];
+    'update:modelAction': [value: boolean];
+};
+/** Available properties */
+export interface BarsExpose {
 }
-type CellClassesSub = {
+/** Available slots */
+export interface BarsSlots extends LabelSlots, DescriptionSlots {
+    bars?(props: any): any;
+    actionBars?(props: any): any;
+}
+/** Subclasses */
+export type BarsClasses = {
+    main: ConstrClass;
+    context: string;
+    label: string;
+    description: string;
+};
+
+
+// File: constructors/Block/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Block/props.d.ts
+export type BlockPropsToken = {};
+export type BlockPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = LabelProps & DescriptionProps & CaptionProps & IconPropsInclude<Icon> & {
+    headline?: string;
+    tag?: string;
+    tagHeader?: string;
+};
+/** Incoming properties */
+export type BlockProps = BlockPropsBasic & BlockPropsToken;
+/** Default properties */
+export declare const defaultsBlock: {
+    tag: string;
+    tagHeader: string;
+};
+
+
+// File: constructors/Block/types.d.ts
+/** Components connection interface */
+export type BlockComponents = IconComponentInclude;
+/** Available events */
+export type BlockEmits = {};
+/** Available properties */
+export interface BlockExpose {
+}
+/** Available slots */
+export interface BlockSlots extends LabelAlternativeSlots, DescriptionSlots, CaptionSlots {
+    /** Trailing content */
+    trailing?(props: any): any;
+    /** Headline slot */
+    headline?(props: any): any;
+    /** Default slot */
+    default?(props: any): any;
+}
+/** Subclasses */
+export type BlockClasses = {
+    main: ConstrClass;
+    headline: string;
+    header: string;
     label: string;
     description: string;
     caption: string;
+    icon: string;
+    space: string;
+    body: string;
+};
+
+
+// File: constructors/Button/basicTypes.d.ts
+/** Components required for Button */
+export type ButtonComponentInclude = {
+    button?: object;
+};
+/** Props for Button embedding */
+export type ButtonPropsInclude<Button extends ButtonPropsBasic = ButtonPropsBasic> = {
+    /** Attributes bound directly */
+    buttonAttrs?: ConstrBind<Button>;
+};
+
+
+// File: constructors/Button/props.d.ts
+export type ButtonPropsToken = {
+    focus?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    adaptive?: 'iconAlways' | 'block' | 'auto';
+    container?: boolean;
+    inverse?: boolean;
+    grid?: boolean;
+    textAlign?: 'left' | 'center' | 'right';
+};
+export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & ConstrHrefProps & AriaLabelPropsInclude & {
+    tag?: 'button' | 'a' | 'span' | string;
+    type?: 'button' | 'submit' | 'reset' | string;
+};
+/** Incoming properties */
+export type ButtonProps = ButtonPropsBasic & ButtonPropsToken;
+/** Default properties */
+export declare const defaultsButton: {};
+
+
+// File: constructors/Button/types.d.ts
+/** Components connection interface */
+export type ButtonComponents = IconComponentInclude & ProgressComponentInclude & RippleComponentInclude;
+/** Available events */
+export type ButtonEmits = EventClickEmits;
+/** Available properties */
+export interface ButtonExpose extends EventClickExpose {
+}
+/** Available slots */
+export interface ButtonSlots extends LabelSlots {
+}
+/** Subclasses */
+export type ButtonClasses = {
+    main: ConstrClass;
+    label: string;
+    icon: string;
+    trailing: string;
+    loading: string;
+};
+
+
+// File: constructors/Cell/basicTypes.d.ts
+/** CSS class names for Cell sub-elements */
+export type CellClassesSub = {
+    /** Label class */
+    label: string;
+    /** Description class */
+    description: string;
+    /** Caption class */
+    caption: string;
+    /** Trailing class */
     trailing: string;
 };
-type CellComponentInclude = {
-    cell: object;
+/** Component map for Cell */
+export type CellComponentInclude = {
+    /** Cell key */
+    cell?: object;
 };
-interface CellSlotsInclude extends LabelAlternativeSlots, DescriptionSlots, CaptionSlots {
+/** Available slots */
+export interface CellSlotsInclude extends LabelAlternativeSlots, DescriptionSlots, CaptionSlots {
     trailing?(props: CellClassesSub): any;
     body?(props: CellClassesSub): any;
 }
-type ChipComponentInclude = {
+
+
+// File: constructors/Cell/props.d.ts
+export type CellPropsToken = {
+    focus?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+    dynamic?: boolean;
+    dynamicHover?: boolean;
+    divider?: boolean;
+    dividerLabel?: 'always' | 'none';
+    iconTop?: boolean;
+};
+export type CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & CaptionProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & AriaRolePropsInclude & {
+    tag?: string;
+    divider?: boolean;
+    dynamic?: boolean;
+};
+/** Incoming properties */
+export type CellProps = CellPropsBasic & CellPropsToken;
+/** Default properties */
+export declare const defaultsCell: {
+    divider: boolean;
+    tag: string;
+};
+
+
+// File: constructors/Cell/types.d.ts
+/** Components connection interface */
+export type CellComponents = IconComponentInclude & ProgressComponentInclude & RippleComponentInclude;
+/** Available events */
+export type CellEmits = EventClickEmits;
+/** Available properties */
+export interface CellExpose extends EventClickExpose {
+}
+/** Available slots */
+export interface CellSlots extends LabelSlots, DescriptionSlots, CaptionSlots {
+    trailing?(props: CellClassesSub): any;
+    body?(props: CellClassesSub): any;
+}
+/** Subclasses */
+export type CellClasses = {
+    main: ConstrClass;
+    context: string;
+    contextTrailing: string;
+    label: string;
+    description: string;
+    caption: string;
+    icon: string;
+    trailing: string;
+    body: string;
+    loading: string;
+};
+
+
+// File: constructors/Checkbox/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Checkbox/props.d.ts
+type CheckboxPropsToken = {
+    block?: boolean;
+    adaptive?: 'rightAlways';
+    container?: boolean;
+    required?: boolean;
+    itemCenter?: boolean;
+    focus?: boolean;
+    disabled?: boolean;
+};
+export type CheckboxPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & FieldMessagePropsInclude<FieldMessage, FieldCounter> & FieldInputCheckProps & ProgressPropsInclude<Progress> & EnabledProps & ModelProps<boolean> & SkeletonPropsInclude & {
+    iconCheckbox?: string | ConstrBind<Image> | null;
+    iconIndeterminate?: string | ConstrBind<Image> | null;
+};
+/** Incoming properties */
+export type CheckboxProps = CheckboxPropsBasic & CheckboxPropsToken;
+/** Default properties */
+export declare const defaultsCheckbox: {
+    block: boolean;
+    itemCenter: boolean;
+    valueVariantHide: string;
+};
+export {};
+
+
+// File: constructors/Checkbox/types.d.ts
+/** Components connection interface */
+export type CheckboxComponents = ImageComponentInclude & FieldMessageComponentInclude & ProgressComponentInclude & RippleComponentInclude;
+/** Available events */
+export type CheckboxEmits = FieldBasicEmits<boolean>;
+/** Available properties */
+export interface CheckboxExpose extends FieldBasicExpose<boolean> {
+}
+/** Available slots */
+export interface CheckboxSlots extends LabelSlots, DescriptionSlots {
+}
+/** Subclasses */
+export type CheckboxClasses = {
+    main: ConstrClass;
+    input: string;
+    body: string;
+    item: string;
+    icon: string;
+    loading: string;
+    info: string;
+    label: string;
+};
+
+
+// File: constructors/Chip/basicTypes.d.ts
+export type ChipComponentInclude = {
     chip?: object;
 };
-interface ChipPropsInclude<Chip extends ChipPropsBasic = ChipPropsBasic> {
+export type ChipPropsInclude<Chip extends ChipPropsBasic = ChipPropsBasic> = {
     chipAttrs?: ConstrBind<Chip>;
+};
+
+
+// File: constructors/Chip/props.d.ts
+export type ChipPropsToken = {
+    focus?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    adaptive?: 'iconAlways' | 'block' | 'auto';
+    container?: boolean;
+    inverse?: boolean;
+    grid?: boolean;
+    textAlign?: 'left' | 'center' | 'right';
+};
+export type ChipPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = ButtonPropsBasic<Icon, Progress>;
+/** Incoming properties */
+export type ChipProps = ChipPropsBasic & ChipPropsToken;
+/** Default properties */
+export declare const defaultsChip: {
+    tag: string;
+};
+
+
+// File: constructors/Chip/types.d.ts
+/** Components connection interface */
+export type ChipComponents = ButtonComponents;
+/** Available events */
+export type ChipEmits = ButtonEmits;
+/** Available properties */
+export interface ChipExpose extends ButtonExpose {
 }
-type ChipGroupData<Chip extends ChipPropsBasic = ChipPropsBasic> = ListListInput<Chip>;
-type ChipGroupItem<Chip extends ChipPropsBasic = ChipPropsBasic> = ConstrBind<Chip>;
-type ChipGroupList<Chip extends ChipPropsBasic = ChipPropsBasic> = ChipGroupItem<Chip>[];
-type FieldControl = {
+/** Available slots */
+export interface ChipSlots extends ButtonSlots {
+}
+/** Subclasses */
+export type ChipClasses = {
+    main: ConstrClass;
+    label: string;
+    icon: string;
+    trailing: string;
+    loading: string;
+};
+
+
+// File: constructors/ChipGroup/basicTypes.d.ts
+export type ChipGroupData<Chip extends ChipPropsBasic = ChipPropsBasic> = ListListInput<Chip>;
+export type ChipGroupItem<Chip extends ChipPropsBasic = ChipPropsBasic> = ConstrBind<Chip>;
+export type ChipGroupList<Chip extends ChipPropsBasic = ChipPropsBasic> = ChipGroupItem<Chip>[];
+
+
+// File: constructors/ChipGroup/props.d.ts
+export type ChipGroupPropsToken = {};
+export type ChipGroupPropsBasic<Chip extends ChipPropsBasic = ChipPropsBasic> = ModelPropsSelected<ListSelectedList> & {
+    readonly?: boolean;
+    selected?: ListSelectedList;
+    list?: ChipGroupData;
+    iconWhenSelected?: boolean;
+    keyLabel?: string;
+    keyValue?: string;
+    chipAttrs?: ConstrBind<Chip>;
+};
+/** Incoming properties */
+export type ChipGroupProps = ChipGroupPropsBasic & ChipGroupPropsToken;
+/** Default properties */
+export declare const defaultsChipGroup: {
+    readonly: boolean;
+};
+
+
+// File: constructors/ChipGroup/types.d.ts
+/** Components connection interface */
+export type ChipGroupComponents = ChipComponentInclude;
+/** Available events */
+export type ChipGroupEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>;
+/** Available properties */
+export interface ChipGroupExpose {
+}
+/** Available slots */
+export interface ChipGroupSlots {
+    default?(props: any): any;
+}
+/** Subclasses */
+export type ChipGroupClasses = {
+    main: ConstrClass;
+    item: string;
+};
+
+
+// File: constructors/Dialog/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Dialog/props.d.ts
+export type DialogPropsToken = {
+    success?: boolean;
+    error?: boolean;
+    imagePosition?: 'top' | 'left';
+};
+export type DialogPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = WindowPropsInclude<Window> & BarsPropsInclude<Bars> & ActionsPropsInclude<Actions> & ImagePropsInclude<Image> & LabelProps & DescriptionProps & TextClosePropsInclude & TextOkPropsInclude & {
+    open?: boolean;
+    icon?: IconValue<Icon>;
+    buttonOk?: string | ConstrBind<Button> | null;
+    buttonClose?: string | ConstrBind<Button> | null;
+    closeButton?: boolean;
+    clickOkAndClose?: boolean;
+    iconSuccess?: IconValue<Icon>;
+    iconError?: IconValue<Icon>;
+    iconAttrs?: ConstrBind<Icon>;
+};
+/** Incoming properties */
+export type DialogProps = DialogPropsBasic & DialogPropsToken;
+/** Default properties */
+export declare const defaultsDialog: {
+    imagePosition: string;
+    barsBackHide: boolean;
+    barsHide: boolean;
+    clickOkAndClose: boolean;
+};
+
+
+// File: constructors/Dialog/types.d.ts
+/** Components connection interface */
+export type DialogComponents = ModalComponents & IconComponentInclude;
+/** Available events */
+export type DialogEmits = ModalEmits & {
+    ok: [];
+    close: [];
+};
+/** Available properties */
+export interface DialogExpose extends ModalExpose {
+}
+/** Available slots */
+export interface DialogSlots extends ModalSlots, LabelAlternativeSlots, DescriptionSlots {
+}
+/** Subclasses */
+export type DialogClasses = {
+    main: ConstrClass;
+    title: string;
+    header: string;
+    information: string;
+    icon: string;
+    label: string;
+    description: string;
+    body: string;
+    footer: string;
+};
+
+
+// File: constructors/Dummy/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Dummy/props.d.ts
+type DummyPropsToken = {};
+export type DummyPropsBasic = {};
+/** Incoming properties */
+export type DummyProps = DummyPropsBasic & DummyPropsToken;
+/** Default properties */
+export declare const defaultsDummy: {};
+export {};
+
+
+// File: constructors/Dummy/types.d.ts
+/** Components connection interface */
+export type DummyComponents = {};
+/** Available events */
+export type DummyEmits = {};
+/** Available properties */
+export interface DummyExpose {
+}
+/** Available slots */
+export interface DummySlots {
+    default?(props: any): any;
+}
+/** Subclasses */
+export type DummyClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Field/basicTypes.d.ts
+/** Slot and subcomponent control data */
+export type FieldControl = {
+    /** Label/input binding ID */
     id: string;
+    /** Input area class */
     className: string;
+    /** Native input class */
     classHidden: string;
+    /** Focus state class */
     classForFocus: string;
     binds: AriaList & {
         id: string;
-        className: string;
+        class: string;
     };
 };
-type FieldComponentInclude = {
-    field: object;
+/** Component map for Field */
+export type FieldComponentInclude = {
+    field?: object;
 };
-interface FieldSlotsInclude extends Omit<FieldSlots, 'default'> {
+/** Field slots */
+export interface FieldSlotsInclude extends Omit<FieldSlots, 'default'> {
 }
-interface FieldPropsInclude<Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends Omit<FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>, 'disabledPrevious' | 'disabledNext' | 'to' | 'value' | 'maxlength' | 'cancelShow' | 'counter' | 'counterTemplate' | 'counterTop' | 'iconArrowLeft' | 'iconArrowRight' | 'iconPlus' | 'iconMinus' | 'iconClose'> {
+/** Field inclusion props */
+export type FieldPropsInclude<Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = Omit<FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>, 'disabledPrevious' | 'disabledNext' | 'to' | 'value' | 'maxlength' | 'cancelShow' | 'counter' | 'counterTemplate' | 'counterTop' | 'iconArrowLeft' | 'iconArrowRight' | 'iconPlus' | 'iconMinus' | 'iconClose'> & {
     focus?: boolean;
     selected?: boolean;
     readonly?: boolean;
@@ -117,11 +2178,90 @@ interface FieldPropsInclude<Icon extends IconPropsBasic = IconPropsBasic, Field 
     align?: 'center' | 'right' | 'left';
     cancel?: 'auto' | 'always' | 'none';
     fieldAttrs?: ConstrBind<Field>;
-}
-type FieldCounterComponentInclude = {
-    fieldCounter: object;
 };
-interface FieldCounterPropsInclude<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> {
+
+
+// File: constructors/Field/props.d.ts
+export type FieldPropsToken = {
+    focus?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    block?: boolean;
+    isValue?: boolean;
+    basic?: boolean;
+    boxed?: boolean;
+    tonal?: boolean;
+    filled?: boolean;
+    outlined?: boolean;
+    classic?: boolean;
+    arrowCarousel?: boolean;
+    arrowStepper?: boolean;
+    arrowAlign?: 'center' | 'right' | 'left';
+    cancel?: 'auto' | 'always' | 'none';
+    align?: 'center' | 'right' | 'left';
+    width?: string | 'custom';
+};
+export type FieldPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = IconTrailingPropsInclude<Icon> & PrefixProps & SuffixProps & CaptionProps & FieldLabelPropsInclude<FieldLabel, FieldCounter> & FieldMessagePropsInclude<FieldMessage, FieldCounter> & ProgressPropsInclude<Progress> & EnabledProps & EventClickProps & SkeletonPropsInclude & TextCancelPropsInclude & {
+    disabledPrevious?: boolean;
+    disabledNext?: boolean;
+    id?: string | number;
+    counterTop?: boolean;
+    cancelShow?: boolean;
+    iconArrowLeft?: IconValue<Icon>;
+    iconArrowRight?: IconValue<Icon>;
+    iconPlus?: IconValue<Icon>;
+    iconMinus?: IconValue<Icon>;
+    iconClose?: IconValue<Icon>;
+};
+/** Incoming properties */
+export type FieldProps = FieldPropsBasic & FieldPropsToken;
+/** Default properties */
+export declare const defaultsField: {
+    arrowAlign: string;
+    cancel: string;
+};
+
+
+// File: constructors/Field/types.d.ts
+/** Components connection interface */
+export type FieldComponents = IconComponentInclude & FieldLabelComponentInclude & FieldMessageComponentInclude & ProgressComponentInclude;
+/** Available events */
+export type FieldEmits = EventClickEmits;
+/** Available properties */
+export interface FieldExpose {
+}
+/** Available slots */
+export interface FieldSlots extends CaptionSlots, PrefixSlots, SuffixSlots, FieldLabelSlotsInclude {
+    leading?(props: FieldControl): any;
+    trailing?(props: FieldControl): any;
+    default?(props: FieldControl): any;
+}
+/** Subclasses */
+export type FieldClasses = {
+    main: ConstrClass;
+    body: string;
+    bodyInput: string;
+    bodyTitle: string;
+    bodyTitleLabel: string;
+    bodyTitleLabelText: string;
+    bodyScoreboard: string;
+    bodyScoreboardLeft: string;
+    bodyScoreboardRight: string;
+    bodyScoreboardSpace: string;
+    bodyScoreboardInput: string;
+    bodyBorder: string;
+    required: string;
+};
+
+
+// File: constructors/FieldCounter/basicTypes.d.ts
+/** Component map for FieldCounter */
+export type FieldCounterComponentInclude = {
+    fieldCounter?: object;
+};
+/** FieldCounter inclusion props */
+export interface FieldCounterPropsInclude<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> {
     counter?: FieldCounterPropsBasic['counter'];
     counterShow?: boolean;
     counterTemplate?: FieldCounterPropsBasic['template'];
@@ -129,24 +2269,101 @@ interface FieldCounterPropsInclude<FieldCounter extends FieldCounterPropsBasic =
     maxlength?: FieldCounterPropsBasic['maxlength'];
     fieldCounterAttrs?: ConstrBind<FieldCounter>;
 }
-type FieldLabelComponentInclude = {
-    fieldLabel: object;
+
+
+// File: constructors/FieldCounter/props.d.ts
+export type FieldCounterPropsToken = {};
+export type FieldCounterPropsBasic = TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & {
+    counter?: string | number;
+    maxlength?: string | number;
+    /** Screen reader announcement threshold */
+    maxlengthOnce?: string | number;
+    template?: string;
+    id?: string;
 };
-interface FieldLabelSlotsInclude extends LabelAlternativeSlots {
+/** Incoming properties */
+export type FieldCounterProps = FieldCounterPropsBasic & FieldCounterPropsToken;
+/** Default properties */
+export declare const defaultsFieldCounter: {};
+
+
+// File: constructors/FieldCounter/types.d.ts
+/** Components connection interface */
+export type FieldCounterComponents = {};
+/** Available events */
+export type FieldCounterEmits = {};
+/** Available properties */
+export interface FieldCounterExpose {
 }
-interface FieldLabelPropsInclude<FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> extends LabelProps, FieldCounterPropsInclude<FieldCounter> {
+/** Available slots */
+export interface FieldCounterSlots {
+}
+/** Subclasses */
+export type FieldCounterClasses = {
+    main: ConstrClass;
+    aria: string;
+};
+
+
+// File: constructors/FieldLabel/basicTypes.d.ts
+/** Component map for FieldLabel */
+export type FieldLabelComponentInclude = {
+    fieldLabel?: object;
+};
+/** Slots contract for FieldLabelInclude */
+export interface FieldLabelSlotsInclude extends LabelAlternativeSlots {
+}
+/** FieldLabel inclusion props */
+export type FieldLabelPropsInclude<FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> = LabelProps & FieldCounterPropsInclude<FieldCounter> & {
     required?: boolean;
     fieldLabelAttrs?: ConstrBind<FieldLabel>;
+};
+
+
+// File: constructors/FieldLabel/props.d.ts
+export type FieldLabelPropsToken = {};
+export type FieldLabelPropsBasic<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & FieldCounterPropsInclude<FieldCounter> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & {
+    for?: string;
+    required?: boolean;
+};
+/** Incoming properties */
+export type FieldLabelProps = FieldLabelPropsBasic & FieldLabelPropsToken;
+/** Default properties */
+export declare const defaultsFieldLabel: {};
+
+
+// File: constructors/FieldLabel/types.d.ts
+/** Components connection interface */
+export type FieldLabelComponents = FieldCounterComponentInclude & ProgressComponentInclude;
+/** Available events */
+export type FieldLabelEmits = {};
+/** Available properties */
+export interface FieldLabelExpose {
 }
-type FieldMessageSlot = {
+/** Available slots */
+export interface FieldLabelSlots extends LabelAlternativeSlots {
+}
+/** Subclasses */
+export type FieldLabelClasses = {
+    main: ConstrClass;
+    label: string;
+    required: string;
+};
+
+
+// File: constructors/FieldMessage/basicTypes.d.ts
+/** Available slots */
+export type FieldMessageSlot = {
     message?: string;
     helperMessage?: string;
     validationMessage?: string;
 };
-type FieldMessageComponentInclude = {
-    fieldMessage: object;
+/** Component map for FieldMessage */
+export type FieldMessageComponentInclude = {
+    fieldMessage?: object;
 };
-interface FieldMessagePropsInclude<FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> extends FieldCounterPropsInclude<FieldCounter> {
+/** FieldMessage inclusion props */
+export interface FieldMessagePropsInclude<FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> extends FieldCounterPropsInclude<FieldCounter> {
     forceShowMessage?: boolean;
     disabled?: boolean;
     helperMessage?: string;
@@ -155,37 +2372,328 @@ interface FieldMessagePropsInclude<FieldMessage extends FieldMessagePropsBasic =
     helperId?: string;
     validationId?: string;
 }
-type IconEventLoad = {
+
+
+// File: constructors/FieldMessage/props.d.ts
+export type FieldMessagePropsToken = {};
+export type FieldMessagePropsBasic<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> = FieldCounterPropsInclude<FieldCounter> & SkeletonPropsInclude & {
+    forceShow?: boolean;
+    disabled?: boolean;
+    helperMessage?: string;
+    validationMessage?: string;
+    helperId?: string;
+    validationId?: string;
+};
+/** Incoming properties */
+export type FieldMessageProps = FieldMessagePropsBasic & FieldMessagePropsToken;
+/** Default properties */
+export declare const defaultsFieldMessage: {};
+
+
+// File: constructors/FieldMessage/types.d.ts
+/** Components connection interface */
+export type FieldMessageComponents = FieldCounterComponentInclude;
+/** Available events */
+export type FieldMessageEmits = {};
+/** Available properties */
+export interface FieldMessageExpose {
+}
+/** Available slots */
+export interface FieldMessageSlots {
+    /** Helper message slot */
+    helper?(props: FieldMessageSlot): any;
+    /** Error message slot */
+    validation?(props: FieldMessageSlot): any;
+}
+/** Subclasses */
+export type FieldMessageClasses = {
+    main: ConstrClass;
+    info: string;
+    error: string;
+};
+
+
+// File: constructors/Grid/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Grid/props.d.ts
+type GridPropsToken = {};
+export type GridPropsBasic = {};
+/** Incoming properties */
+export type GridProps = GridPropsBasic & GridPropsToken;
+/** Default properties */
+export declare const defaultsGrid: {};
+export {};
+
+
+// File: constructors/Grid/types.d.ts
+/** Components connection interface */
+export type GridComponents = {};
+/** Available events */
+export type GridEmits = {};
+/** Available properties */
+export interface GridExpose {
+}
+/** Available slots */
+export interface GridSlots {
+    default?(props: any): any;
+}
+/** Subclasses */
+export type GridClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/GridItem/basicTypes.d.ts
+export {};
+
+
+// File: constructors/GridItem/props.d.ts
+type GridItemPropsToken = {
+    base?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+};
+export type GridItemPropsBasic = {};
+/** Incoming properties */
+export type GridItemProps = GridItemPropsBasic & GridItemPropsToken;
+/** Default properties */
+export declare const defaultsGridItem: {
+    base: string;
+};
+export {};
+
+
+// File: constructors/GridItem/types.d.ts
+/** Components connection interface */
+export type GridItemComponents = {};
+/** Available events */
+export type GridItemEmits = {};
+/** Available properties */
+export interface GridItemExpose {
+}
+/** Available slots */
+export interface GridItemSlots {
+    default?(props: any): any;
+}
+/** Subclasses */
+export type GridItemClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Group/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Group/props.d.ts
+type GroupPropsToken = {};
+export type GroupPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = BlockPropsBasic<Icon>;
+/** Incoming properties */
+export type GroupProps = GroupPropsBasic & GroupPropsToken;
+/** Default properties */
+export declare const defaultsGroup: {
+    tag: string;
+    tagHeader: string;
+};
+export {};
+
+
+// File: constructors/Group/types.d.ts
+/** Components connection interface */
+export type GroupComponents = BlockComponents;
+/** Available events */
+export type GroupEmits = BlockEmits;
+/** Available properties */
+export interface GroupExpose extends BlockExpose {
+}
+/** Available slots */
+export interface GroupSlots extends BlockSlots {
+}
+/** Subclasses */
+export type GroupClasses = {
+    main: ConstrClass;
+    headline: string;
+    header: string;
+    label: string;
+    description: string;
+    caption: string;
+    icon: string;
+    space: string;
+    body: string;
+};
+
+
+// File: constructors/HorizontalScroll/basicTypes.d.ts
+/** Control item of horizontal scroll */
+export type HorizontalScrollControlItem = {
+    classItem: string;
+    classItemSelected: string;
+    binds: {
+        class: string;
+    };
+};
+/** Component inclusion */
+export type HorizontalScrollComponentInclude = {
+    horizontalScroll?: object;
+};
+/** Properties inclusion */
+export type HorizontalScrollPropsInclude<HorizontalScroll extends HorizontalScrollPropsBasic = HorizontalScrollPropsBasic> = {
+    horizontalScrollFlush?: boolean;
+    horizontalScrollAlign?: 'block' | 'left';
+    horizontalScrollAttrs?: ConstrBind<HorizontalScroll>;
+};
+
+
+// File: constructors/HorizontalScroll/props.d.ts
+type HorizontalScrollPropsToken = {
+    flush?: boolean;
+    align?: 'block' | 'center' | 'left' | 'right';
+};
+export type HorizontalScrollPropsBasic = {
+    flush?: boolean;
+    tag?: string;
+};
+/** Incoming properties */
+export type HorizontalScrollProps = HorizontalScrollPropsBasic & HorizontalScrollPropsToken;
+/** Default properties */
+export declare const defaultsHorizontalScroll: {
+    flush: boolean;
+    align: string;
+    tag: string;
+};
+export {};
+
+
+// File: constructors/HorizontalScroll/types.d.ts
+/** Components connection interface */
+export type HorizontalScrollComponents = {};
+/** Available events */
+export type HorizontalScrollEmits = {};
+/** Available properties */
+export interface HorizontalScrollExpose {
+    toSelected(): void;
+}
+/** Available slots */
+export interface HorizontalScrollSlots {
+    default?(props: any): any;
+}
+/** Subclasses */
+export type HorizontalScrollClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Icon/basicTypes.d.ts
+/** Loaded icon data */
+export type IconEventLoad = {
+    /** Icon is active */
     isActive: boolean;
+    /** Binds for main icon */
     iconBind: ConstrItem | undefined;
+    /** Binds for active icon */
     iconActiveBind: ConstrItem | undefined;
 };
-type IconValue<Icon extends IconPropsBasic = IconPropsBasic> = string | ConstrBind<Icon> | null;
-type IconComponentInclude = {
+/** Icon values */
+export type IconValue<Icon extends IconPropsBasic = IconPropsBasic> = string | ConstrBind<Icon> | null;
+/** Icon component inclusion */
+export type IconComponentInclude = {
+    /** Icon component */
     icon?: object;
 };
-interface IconLitePropsInclude<Icon extends IconPropsBasic = IconPropsBasic> {
+/** Basic icon properties */
+export type IconLitePropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = {
+    /** Icon prop */
     icon?: IconValue<Icon>;
-}
-interface IconPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> extends IconLitePropsInclude<Icon> {
+};
+/** Full icon properties */
+export type IconPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = IconLitePropsInclude<Icon> & {
+    /** Selection state */
     selected?: boolean;
+    /** Rotation state */
     iconTurn?: boolean;
+    /** Visibility state */
     iconHide?: boolean;
+    /** Direction state */
     iconDir?: boolean;
+    /** Palette state */
     iconPalette?: boolean;
+    /** Attributes */
     iconAttrs?: ConstrBind<Icon>;
-}
-interface IconTrailingPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> extends IconPropsInclude<Icon> {
+};
+/** Main and trailing icons properties */
+export type IconTrailingPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & {
+    /** Trailing icon prop */
     iconTrailing?: IconValue<Icon>;
+    /** Rotate trailing only */
     iconTrailingTurnOnly?: boolean;
+    /** Direction trailing only */
     iconTrailingDirOnly?: boolean;
+    /** Palette trailing only */
     iconTrailingPalette?: boolean;
+};
+
+
+// File: constructors/Icon/props.d.ts
+export type IconPropsToken = {
+    turn?: boolean;
+    disabled?: boolean;
+    hide?: boolean;
+    asPalette?: boolean;
+    dir?: boolean;
+    overlay?: boolean;
+    dynamic?: boolean;
+    start?: boolean;
+    end?: boolean;
+    high?: boolean;
+    animationType?: 'type1' | 'type2';
+    animationShow?: boolean;
+};
+export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & EventClickProps & {
+    /** Active state */
+    active?: boolean;
+    /** Main icon value */
+    icon?: ImageValue<Image>;
+    /** Active icon value */
+    iconActive?: ImageValue<Image>;
+    role?: RoleType;
+    tabindex?: number | string;
+};
+/** Incoming properties */
+export type IconProps = IconPropsBasic & IconPropsToken;
+/** Default properties */
+export declare const defaultsIcon: {
+    animationType: string;
+};
+
+
+// File: constructors/Icon/types.d.ts
+/** Components connection interface */
+export type IconComponents = ImageComponentInclude;
+/** Available events */
+export type IconEmits = ImageEmitsInclude & EventClickEmits;
+/** Available properties */
+export interface IconExpose extends EventClickExpose {
+    isActive: ComputedRef<boolean>;
 }
-enum ImageTypeValue {
+/** Available slots */
+export interface IconSlots {
+    default?(props: any): any;
+}
+/** Subclasses */
+export type IconClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Image/basicTypes.d.ts
+/** Image types */
+export declare enum ImageTypeValue {
     pdf = "pdf",
     file = "file",
+    array = "array",
     image = "image",
     flag = "flag",
+    flagCompressed = "flag-compressed",
     color = "color",
     public = "public",
     filled = "filled",
@@ -196,59 +2704,410 @@ enum ImageTypeValue {
     material = "material",
     icon = "icon"
 }
-type ImageElement = HTMLElement | undefined;
-type ImageAttrs = Record<keyof HTMLImageElement, any>;
-type ImageCoordinatorItem = [number] | [number, number] | [number, number, number] | [number, number, number, number] | Undefined;
-type ImageSize<T = number> = {
+/** Image element */
+export type ImageElement = HTMLElement | undefined;
+/** Image attributes */
+export type ImageAttrs = Record<keyof HTMLImageElement, any>;
+/** Coordinate item */
+export type ImageCoordinatorItem = [number] | [number, number] | [number, number, number] | [number, number, number, number] | Undefined;
+/** Image size */
+export type ImageSize<T = number> = {
     width: T;
     height: T;
 };
-type ImagePictureItem = Record<keyof HTMLSourceElement & 'key', any>;
-type ImagePictureList = ImagePictureItem[];
-type ImagePicture = Record<string, string> | ImagePictureList;
-type ImageItem = ImageSize & {
+/** Picture source item */
+export type ImagePictureItem = Record<keyof HTMLSourceElement & 'key', any>;
+export type ImagePictureList = ImagePictureItem[];
+export type ImagePicture = Record<string, string> | ImagePictureList;
+/** Typed arrays */
+export type ImageUint8ArrayType = Uint8Array<ArrayBuffer> | ArrayBuffer;
+export type ImageUint8ArrayItem = {
+    item: ImageUint8ArrayType;
+    type: string;
+    src: string;
+};
+export type ImageUint8ArrayCache = ImageUint8ArrayItem[];
+/** Image item meta */
+export type ImageItem = ImageSize & {
     image: HTMLImageElement;
     src: string;
 };
-type ImageTypeItem = ImageTypeValue | Undefined;
-type ImageEventItem = ImageItem | string | undefined;
-type ImageEventType = {
+export type ImageTypeItem = ImageTypeValue | Undefined;
+export type ImageEventItem = ImageItem | string | undefined;
+export type ImageEventType = {
     type: ImageTypeItem;
 };
-type ImageEventData = ImageEventType & {
+export type ImageEventData = ImageEventType & {
     image: ImageEventItem;
 };
-type ImageValue<Image extends ImagePropsBasic = ImagePropsBasic> = string | ConstrBind<Image> | null;
-type ImageComponentsInclude = {
-    image: object;
+/** Image value type */
+export type ImageValue<Image extends ImagePropsBasic = ImagePropsBasic> = string | ConstrBind<Image> | null;
+/** Component inclusion */
+export type ImageComponentInclude = {
+    image?: object;
 };
-type ImageEmitsInclude = ImageEmits;
-interface ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> {
+/** Emits inclusion */
+export type ImageEmitsInclude = ImageEmits;
+/** Props inclusion */
+export type ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> = {
     image?: string | ConstrBind<Image>;
+};
+
+
+// File: constructors/Image/props.d.ts
+export type ImagePropsToken = {
+    turn?: boolean;
+    disabled?: boolean;
+    hide?: boolean;
+    adaptive?: boolean;
+    size?: 'auto' | 'contain' | 'cover';
+};
+export type ImagePropsBasic = {
+    /** Icon name, URL, File or PDF */
+    value?: string | any;
+    /** Direct URL */
+    url?: string;
+    /** Resolution group */
+    adaptiveGroup?: string;
+    /** Forced adaptivity */
+    adaptiveAlways?: boolean;
+    /** Object width */
+    objectWidth?: string | number;
+    /** Object height */
+    objectHeight?: string | number;
+    /** Crop/position coordinates */
+    coordinator?: number[] | any;
+    /** X pos */
+    x?: string | number;
+    /** Y pos */
+    y?: string | number;
+    /** Force <img> tag */
+    tagImg?: boolean;
+    /** Source set */
+    srcset?: string | Record<string, string>;
+    /** Picture tag sources */
+    picture?: ImagePicture;
+    /** Alt text */
+    alt?: string;
+    /** Lazy loading */
+    lazy?: boolean;
+    /** Offset for preload */
+    preloadOffset?: string;
+    /** Fetch priority */
+    fetchPriority?: HTMLImageElement['fetchPriority'];
+};
+/** Incoming properties */
+export type ImageProps = ImagePropsBasic & ImagePropsToken;
+/** Default properties */
+export declare const defaultsImage: {
+    adaptiveGroup: string;
+    preloadOffset: string;
+};
+
+
+// File: constructors/Image/types.d.ts
+/** Components connection interface */
+export type ImageComponents = {};
+/** Available events */
+export type ImageEmits = {
+    load: [image: ImageEventData];
+};
+/** Available properties */
+export type ImageExpose = {
+    type: ComputedRef<ImageTypeItem>;
+    data: Ref<ImageEventItem>;
+};
+/** Available slots */
+export interface ImageSlots {
 }
-type InputComponentInclude = {
+/** Subclasses */
+export type ImageClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Input/basicTypes.d.ts
+export type InputComponentInclude = {
     input?: object;
 };
-type ListComponentInclude = {
+
+
+// File: constructors/Input/props.d.ts
+export type InputPropsToken = {};
+export type InputPropsBasic<Mask extends MaskPropsBasic = MaskPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = MaskPropsInclude<Mask> & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldInputProps<NumberOrString>;
+/** Incoming properties */
+export type InputProps = InputPropsBasic & InputPropsToken;
+/** Default properties */
+export declare const defaultsInput: {
+    type: string;
+    autocomplete: string;
+    arrow: string;
+    maskVisible: boolean;
+};
+
+
+// File: constructors/Input/types.d.ts
+/** Components connection interface */
+export type InputComponents = MaskComponentInclude & FieldComponentInclude;
+/** Available events */
+export type InputEmits = FieldBasicEmits;
+/** Available properties */
+export interface InputExpose extends FieldBasicExpose {
+}
+/** Available slots */
+export interface InputSlots extends FieldSlotsInclude {
+}
+/** Subclasses */
+export type InputClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/List/basicTypes.d.ts
+export type ListComponentInclude = {
     list?: object;
 };
-type ListGroupComponentInclude = {
+
+
+// File: constructors/List/props.d.ts
+export type ListPropsToken = {
+    axis?: 'x' | 'y';
+    divider?: boolean;
+};
+export type ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic> = AriaRolePropsInclude & AriaMultiselectablePropsInclude & {
+    focus?: ListSelectedItem;
+    selected?: ListSelectedList;
+    disabled?: boolean;
+    lite?: boolean;
+    list?: ListRecord<ListItem>;
+    liteThreshold?: number;
+    highlight?: string;
+    highlightLengthStart?: number;
+    filterMode?: boolean;
+    keyLabel?: string;
+    keyValue?: string;
+    max?: string | number;
+    tag?: 'div' | 'button' | 'a' | 'span' | string;
+    axis?: 'x' | 'y';
+    divider?: boolean;
+    itemAttrs?: ConstrBind<ListItem>;
+    itemManagementAttrs?: ConstrBind<ListItem>;
+    itemGroupAttrs?: ConstrBind<ListItem>;
+    itemMenuAttrs?: ConstrBind<ListItem>;
+    iconArrowDown?: IconValue<Icon>;
+    iconArrowRight?: IconValue<Icon>;
+    roleItem?: RoleType;
+    tabindex?: string | number;
+    control?: boolean;
+};
+/** Incoming properties */
+export type ListProps = ListPropsBasic & ListPropsToken;
+/** Default properties */
+export declare const defaultsList: {
+    axis: string;
+    keyLabel: string;
+    keyValue: string;
+    tag: string;
+    role: string;
+    tabindex: number;
+};
+
+
+// File: constructors/List/types.d.ts
+/** Components connection interface */
+export type ListComponents = ListItemComponentInclude & ListGroupComponentInclude & ListMenuComponentInclude;
+/** Available events */
+export type ListEmits = EventClickEmits & {
+    close: [];
+};
+/** Available properties */
+export interface ListExpose {
+    isSelected: ComputedRef<boolean>;
+    selectedList: ComputedRef<ListList>;
+    selectedNames: ComputedRef<ListNames>;
+    selectedValues: ComputedRef<any[]>;
+}
+/** Available slots */
+export type ListSlots = Record<string, (props: any) => any>;
+/** Subclasses */
+export type ListClasses = {
+    main: ConstrClass;
+    space: string;
+    line: string;
+    subtitle: string;
+    html: string;
+    management: string;
+    group: string;
+    menu: string;
+    menuGroup: string;
+};
+
+
+// File: constructors/ListGroup/basicTypes.d.ts
+export type ListGroupComponentInclude = {
     listGroup?: object;
 };
-interface ListGroupSlotsPropsInclude extends MotionTransformControlItem {
+export type ListGroupSlotsPropsInclude = MotionTransformControlItem & {
     open: boolean;
+};
+
+
+// File: constructors/ListGroup/props.d.ts
+export type ListGroupPropsToken = {
+    open?: boolean;
+    divider?: boolean;
+};
+export type ListGroupPropsBasic = {
+    divider?: boolean;
+};
+/** Incoming properties */
+export type ListGroupProps = ListGroupPropsBasic & ListGroupPropsToken;
+/** Default properties */
+export declare const defaultsListGroup: {};
+
+
+// File: constructors/ListGroup/types.d.ts
+/** Components connection interface */
+export type ListGroupComponents = MotionTransformComponentInclude;
+/** Available events */
+export type ListGroupEmits = {};
+/** Available properties */
+export interface ListGroupExpose {
+    open: ComputedRef<boolean>;
 }
-type ListItemComponentInclude = {
+/** Available slots */
+export interface ListGroupSlots {
+    head?(props: ListGroupSlotsPropsInclude): any;
+    list?(props: any): any;
+}
+/** Subclasses */
+export type ListGroupClasses = {
+    main: ConstrClass;
+    head: string;
+    list: string;
+};
+
+
+// File: constructors/ListItem/basicTypes.d.ts
+export type ListItemComponentInclude = {
     listItem?: object;
 };
-type ListMenuComponentInclude = {
+
+
+// File: constructors/ListItem/props.d.ts
+export type ListItemPropsToken = {
+    focus?: boolean;
+    open?: boolean;
+    selected?: boolean;
+    selectedChild?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+    iconTop?: boolean;
+    iconAlign?: 'center' | 'edge';
+    fill?: string | 'custom';
+    divider?: boolean;
+};
+export type ListItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelHighlightProps & DescriptionProps & PrefixProps & CaptionProps & SuffixProps & IconTrailingPropsInclude<Icon> & BadgePropsInclude<Badge> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EnabledProps & EventClickProps & AriaRolePropsInclude & {
+    index?: any;
+    href?: string;
+    tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string;
+    filterMode?: boolean;
+    divider?: boolean;
+    tabindex?: number | string;
+    type?: string;
+    parent?: string;
+    listId?: number;
+    search?: string;
+};
+/** Incoming properties */
+export type ListItemProps = ListItemPropsBasic & ListItemPropsToken;
+/** Default properties */
+export declare const defaultsListItem: {
+    iconAlign: string;
+    tabindex: string;
+    role: string;
+};
+
+
+// File: constructors/ListItem/types.d.ts
+/** Components connection interface */
+export type ListItemComponents = IconComponentInclude & BadgeComponentInclude & ProgressComponentInclude & RippleComponentInclude;
+/** Available events */
+export type ListItemEmits = EventClickEmits;
+/** Available properties */
+export interface ListItemExpose extends EventClickExpose {
+}
+/** Available slots */
+export interface ListItemSlots extends LabelHighlightSlots, DescriptionSlots, PrefixSlots, CaptionSlots, SuffixSlots {
+    leading?(props: any): any;
+    trailing?(props: any): any;
+    body?(props: any): any;
+}
+/** Subclasses */
+export type ListItemClasses = {
+    main: ConstrClass;
+    body: string;
+    context: string;
+    label: string;
+    highlight: string;
+    prefix: string;
+    caption: string;
+    description: string;
+    icon: string;
+    trailing: string;
+    badge: string;
+    input: string;
+};
+
+
+// File: constructors/ListMenu/basicTypes.d.ts
+export type ListMenuComponentInclude = {
     listMenu?: object;
 };
-type MaskTypeItem = GeoDate | 'text' | 'number' | 'number-format' | 'currency';
-type MaskElementInput = HTMLInputElement | undefined;
-type MaskMatchItem = RegExp | string;
-type MaskFractionItem = string | boolean | number;
-type MaskSpecialItem = {
+
+
+// File: constructors/ListMenu/props.d.ts
+export type ListMenuPropsToken = {
+    open?: boolean;
+    axis?: 'x' | 'y';
+    divider?: boolean;
+};
+export type ListMenuPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic> = WindowPropsInclude<Window>;
+/** Incoming properties */
+export type ListMenuProps = ListMenuPropsBasic & ListMenuPropsToken;
+/** Default properties */
+export declare const defaultsListMenu: {
+    autoClose: boolean;
+};
+
+
+// File: constructors/ListMenu/types.d.ts
+/** Components connection interface */
+export type ListMenuComponents = WindowComponentInclude;
+/** Available events */
+export type ListMenuEmits = WindowEmitsInclude;
+/** Available properties */
+export interface ListMenuExpose extends WindowExposeInclude {
+}
+/** Available slots */
+export interface ListMenuSlots {
+    head?(props: WindowControlItem): any;
+    list?(props: any): any;
+}
+/** Subclasses */
+export type ListMenuClasses = {
+    main: ConstrClass;
+    head: string;
+    list: string;
+};
+
+
+// File: constructors/Mask/basicTypes.d.ts
+export type MaskTypeItem = GeoDate | 'text' | 'number' | 'number-format' | 'currency';
+export type MaskElementInput = HTMLInputElement | undefined;
+export type MaskMatchItem = RegExp | string;
+export type MaskFractionItem = string | boolean | number;
+export type MaskSpecialItem = {
     defaultValue?: string;
     rubber?: boolean;
     transitionChar?: string | string[];
@@ -258,30 +3117,30 @@ type MaskSpecialItem = {
     pattern?: FieldPatternItemOrFunction;
     view?: string;
 };
-type MaskSpecialInfo = {
+export type MaskSpecialInfo = {
     index: number;
     key: number;
     char: string;
 };
-type MaskSpecialList = Record<string, MaskSpecialItem>;
-type MaskSpecialProp = string | string[] | MaskSpecialList;
-type MaskViewItem = {
+export type MaskSpecialList = Record<string, MaskSpecialItem>;
+export type MaskSpecialProp = string | string[] | MaskSpecialList;
+export type MaskViewItem = {
     className: string;
     value: string;
 };
-type MaskViewList = MaskViewItem[];
-type MaskList = string | string[];
-type MaskEventData = FieldValidationItem;
-type MaskEventSelection = {
+export type MaskViewList = MaskViewItem[];
+export type MaskList = string | string[];
+export type MaskEventData = FieldValidationItem;
+export type MaskEventSelection = {
     target: HTMLInputElement;
     start: number;
     end: number;
     length: number;
 };
-type MaskComponentInclude = {
+export type MaskComponentInclude = {
     mask?: object;
 };
-type MaskPropsInclude<Mask extends MaskPropsBasic = MaskPropsBasic> = {
+export type MaskPropsInclude<Mask extends MaskPropsBasic = MaskPropsBasic> = {
     name?: string;
     mask?: string | ConstrBind<Mask>;
     maskVisible?: boolean;
@@ -291,16 +3150,103 @@ type MaskPropsInclude<Mask extends MaskPropsBasic = MaskPropsBasic> = {
     fraction?: MaskFractionItem;
     maskAttrs?: ConstrBind<Mask>;
 };
-type MenuControlBasic = ListExpose & {
+export declare const MASK_CHAR_DELETE = "~";
+export declare const MASK_VIEW_DEFAULT = "_";
+
+
+// File: constructors/Mask/props.d.ts
+export type MaskPropsToken = {
+    visible?: boolean;
+    visiblePartly?: boolean;
+    align?: 'center' | 'left' | 'right';
+    dir?: 'ltr' | 'rtl';
+};
+export type MaskPropsBasic = {
+    name?: string;
+    value?: string | number;
+    valueDefault?: string | number;
+    currency?: string;
+    currencyHide?: boolean;
+    fullOnly?: boolean;
+    mask?: MaskList;
+    special?: MaskSpecialProp;
+    match?: MaskMatchItem;
+    groupSave?: boolean;
+    pattern?: FieldPatternItemOrFunction;
+    check?: FieldPatternItemOrFunction;
+    fraction?: MaskFractionItem;
+    type?: MaskTypeItem;
+    view?: string;
+    inputAttrs?: Partial<HTMLInputElement>;
+    language?: string;
+};
+/** Incoming properties */
+export type MaskProps = MaskPropsBasic & MaskPropsToken;
+/** Default properties */
+export declare const defaultsMask: {
+    visible: boolean;
+    special: string;
+    match: RegExp;
+    type: string;
+    groupSave: boolean;
+    view: string;
+};
+
+
+// File: constructors/Mask/types.d.ts
+/** Components connection interface */
+export type MaskComponents = {};
+/** Available events */
+export type MaskEmits = {
+    focus: [event: FocusEvent];
+    blur: [event: FocusEvent];
+    keydown: [event: KeyboardEvent];
+    keyup: [event: KeyboardEvent];
+    beforeinput: [event: InputEvent];
+    input: [
+        event: InputEvent,
+        value: FieldValidationItem
+    ];
+    inputLite: [value: FieldValidationItem];
+    change: [
+        event: InputEvent,
+        value: FieldValidationItem
+    ];
+    changeLite: [value: FieldValidationItem];
+    paste: [event: ClipboardEvent];
+    reset: [event: Event];
+};
+/** Available properties */
+export interface MaskExpose {
+    valueBasic: ComputedRef<string>;
+    value: ComputedRef<string>;
+    setValue(value: string): boolean;
+    clear(): boolean;
+}
+/** Available slots */
+export interface MaskSlots {
+}
+/** Subclasses */
+export type MaskClasses = {
+    main: ConstrClass;
+    input: string;
+    character: string;
+    characterItem: string;
+};
+
+
+// File: constructors/Menu/basicTypes.d.ts
+export type MenuControlBasic = ListExpose & {
     loading: Ref<boolean>;
     previous(): NumberOrStringOrBoolean | undefined;
     next(): NumberOrStringOrBoolean | undefined;
 };
-type MenuControlItem = MenuControlBasic & WindowControlItem;
-type MenuComponentInclude = {
+export type MenuControlItem = MenuControlBasic & WindowControlItem;
+export type MenuComponentInclude = {
     menu?: object;
 };
-interface MenuExposeInclude {
+/** Menu expose type */
+export interface MenuExposeInclude {
     open: ComputedRef<boolean>;
     setOpen(open: boolean): Promise<void>;
     toOpen: MenuExpose['toOpen'];
@@ -308,30 +3254,251 @@ interface MenuExposeInclude {
     toggle(): Promise<void>;
     menuElement: Ref<ConstrBind<MenuExpose> | undefined>;
 }
-type MenuSlotInclude = {
+export type MenuSlotInclude = {
+    /** Window title */
     title?(props: MenuControlItem): any;
+    /** Window bottom */
     footer?(props: MenuControlItem): any;
+    /** Top area */
     contextTop?(props: MenuControlItem): any;
+    /** Bottom area */
     contextBottom?(props: MenuControlItem): any;
 };
-interface MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> {
+/** Menu inclusion props */
+export type MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> = {
     disabled?: boolean;
     menuAttrs?: ConstrBind<Menu>;
+};
+
+
+// File: constructors/Menu/props.d.ts
+export type MenuPropsToken = {
+    hideList?: boolean;
+    barsAdaptive?: 'showAlways';
+};
+export type MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Window extends WindowPropsBasic = WindowPropsBasic> = BarsPropsInclude<Bars> & WindowPropsInclude<Window> & ModelPropsSelected & {
+    selected?: ListSelectedList;
+    hideList?: boolean;
+    list?: ListRecord<ListItem>;
+    liteThreshold?: number;
+    highlight?: string;
+    highlightLengthStart?: number;
+    filterMode?: boolean;
+    ajax?: string | (() => NormalOrPromise<ListRecord<ListItem>>);
+    request?: ApiFetch;
+    cache?: boolean;
+    keyLabel?: string;
+    keyValue?: string;
+    max?: string | number;
+    tag?: ListItemProps['tag'];
+    step?: string | number;
+    listAttrs?: ConstrBind<List>;
+    itemAttrs?: ConstrBind<ListItem>;
+    roleList?: RoleType;
+    roleItem?: RoleType;
+    isSelectedByValue?: boolean;
+    embedded?: boolean;
+};
+/** Incoming properties */
+export type MenuProps = MenuPropsBasic & MenuPropsToken;
+/** Default properties */
+export declare const defaultsMenu: {
+    liteThreshold: number;
+    barsHide: boolean;
+    barsBackHide: boolean;
+    tag: string;
+    step: number;
+    autoClose: boolean;
+};
+
+
+// File: constructors/Menu/types.d.ts
+/** Components connection interface */
+export type MenuComponents = ListComponentInclude & BarsComponentInclude & WindowComponentInclude;
+/** Available events */
+export type MenuEmits = BarsEmitsInclude & EventClickEmits & WindowEmitsInclude & ModelEmitsSelected & {
+    updateValue: [value?: NumberOrStringOrBoolean];
+    clickSlot: [value?: string];
+};
+/** Available properties */
+export interface MenuExpose extends WindowExposeInclude, MenuControlBasic {
 }
-type MotionTransformEmitOptions = {
+/** Available slots */
+export type MenuSlots = ListSlots & MenuSlotInclude & {
+    /** Window management slot */
+    control?(props: MenuControlItem): any;
+};
+/** Subclasses */
+export type MenuClasses = {
+    main: ConstrClass;
+    bars: string;
+    list: string;
+};
+
+
+// File: constructors/Modal/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Modal/props.d.ts
+export type ModalPropsToken = {
+    imagePosition?: 'top' | 'left';
+};
+export type ModalPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = WindowPropsInclude<Window> & BarsPropsInclude<Bars> & ActionsPropsInclude<Actions> & ImagePropsInclude<Image> & {
+    open?: boolean;
+};
+/** Incoming properties */
+export type ModalProps = ModalPropsBasic & ModalPropsToken;
+/** Default properties */
+export declare const defaultsModal: {
+    imagePosition: string;
+    barsBackHide: boolean;
+};
+
+
+// File: constructors/Modal/types.d.ts
+/** Components connection interface */
+export type ModalComponents = WindowComponentInclude & BarsComponentInclude & ActionsComponentInclude;
+/** Available events */
+export type ModalEmits = WindowEmitsInclude & BarsEmitsInclude & ActionsEmitsInclude;
+/** Available properties */
+export interface ModalExpose extends WindowExposeInclude {
+}
+/** Available slots */
+export interface ModalSlots extends WindowSlots {
+    header(props: WindowControlItem): any;
+}
+/** Subclasses */
+export type ModalClasses = {
+    main: ConstrClass;
+    title: string;
+    header: string;
+    body: string;
+    footer: string;
+};
+
+
+// File: constructors/MotionAxis/basicTypes.d.ts
+export type MotionAxisSelectedValue = string | undefined;
+export type MotionAxisClassStatus = {
+    /** Main class */
+    main: string;
+    /** Prev element class */
+    previous: string;
+    /** Prep element class */
+    preparation: string;
+    /** Active element class */
+    active: string;
+};
+export type MotionAxisEmitType = 'start' | 'end';
+export type MotionAxisEmitOptions = {
+    /** Type */
+    type: MotionAxisEmitType;
+    /** Selected */
+    selected?: MotionAxisSelectedValue;
+    /** Prev */
+    previous?: MotionAxisSelectedValue;
+    /** Prep */
+    preparation?: MotionAxisSelectedValue;
+    /** Active */
+    active?: MotionAxisSelectedValue;
+};
+export type MotionAxisComponentInclude = {
+    /** Component object */
+    motionAxis?: object;
+};
+export type MotionAxisEmitsInclude = {
+    /** Call event */
+    motionAxis: [options: MotionAxisEmitOptions];
+};
+export type MotionAxisPropsInclude<MotionAxis extends MotionAxisPropsBasic = MotionAxisPropsBasic> = {
+    /** Selected element */
+    selected?: MotionAxisSelectedValue;
+    /** Attributes */
+    motionAxisAttrs?: ConstrBind<MotionAxis>;
+};
+
+
+// File: constructors/MotionAxis/props.d.ts
+type MotionAxisPropsToken = {
+    axis?: 'x' | 'y' | 'z';
+    direction?: 'next' | 'back' | 'auto';
+};
+export type MotionAxisPropsBasic = ModelPropsSelected<MotionAxisSelectedValue> & {
+    selected?: MotionAxisSelectedValue;
+    animationHeight?: boolean;
+    inDom?: boolean;
+    inDomSlide?: string[];
+};
+/** Incoming properties */
+export type MotionAxisProps = MotionAxisPropsBasic & MotionAxisPropsToken;
+/** Default properties */
+export declare const defaultsMotionAxis: {
+    axis: string;
+    direction: string;
+};
+export {};
+
+
+// File: constructors/MotionAxis/types.d.ts
+/** Components connection interface */
+export type MotionAxisComponents = {};
+/** Available events */
+export type MotionAxisEmits = ModelEmitsSelected<MotionAxisSelectedValue> & {
+    motionAxis: [options: MotionAxisEmitOptions];
+    start: [selected: MotionAxisSelectedValue];
+    end: [selected: MotionAxisSelectedValue];
+};
+/** Available properties */
+export interface MotionAxisExpose {
+    back(): void;
+    next(): void;
+    to(selected: MotionAxisSelectedValue): void;
+    top(selected: MotionAxisSelectedValue): void;
+    right(selected: MotionAxisSelectedValue): void;
+    bottom(selected: MotionAxisSelectedValue): void;
+    left(selected: MotionAxisSelectedValue): void;
+    down(selected: MotionAxisSelectedValue): void;
+    up(selected: MotionAxisSelectedValue): void;
+}
+/** Available slots */
+export type MotionAxisSlots = {
+    [K in string]?: (props: any) => any;
+};
+/** Subclasses */
+export type MotionAxisClasses = {
+    main: ConstrClass;
+    slide: string;
+};
+
+
+// File: constructors/MotionTransform/basicTypes.d.ts
+/** MotionTransform event options */
+export type MotionTransformEmitOptions = {
+    /** Source area */
     type: 'head' | 'body' | 'top' | 'script';
+    /** Open state */
     open: boolean;
 };
-type MotionTransformClassList = {
+/** CSS classes list */
+export type MotionTransformClassList = {
+    /** Visibility */
     show: string;
+    /** Open */
     open: string;
+    /** Window mode */
     window: string;
+    /** Click feedback */
     click: string;
+    /** Ignore */
     none: string;
+    /** Global ignore */
     noneGlobal: string;
+    /** Close trigger */
     close: string;
 };
-type MotionTransformStyle = {
+/** Style variables */
+export type MotionTransformStyle = {
     contextWidth: string;
     contextHeight: string;
     headScale: string;
@@ -343,44 +3510,268 @@ type MotionTransformStyle = {
     headHeight: string;
     bodyHeight: string;
 };
-type MotionTransformControlItem = {
+/** Slot props */
+export type MotionTransformControlItem = {
+    /** Open state */
     isOpen: ComputedRef<boolean>;
+    /** Visible state */
     isShow: ComputedRef<boolean>;
+    /** Helper classes */
     classes: MotionTransformClassList;
     idControl: string;
     idBody: string;
+    /** Binding attrs */
     binds: AriaRoleControlPropsInclude;
 };
-type MotionTransformComponentInclude = {
+/** Component map for inclusion */
+export type MotionTransformComponentInclude = {
     motionTransform?: object;
 };
-type MotionTransformEmitsInclude = {
+/** Event map for inclusion */
+export type MotionTransformEmitsInclude = {
     transform: MotionTransformEmits['transform'];
     transformLite: MotionTransformEmits['transformLite'];
 };
-interface MotionTransformExposeInclude extends MotionTransformExpose {
+/** Expose inclusion interface */
+export interface MotionTransformExposeInclude extends MotionTransformExpose {
     motionTransformElement: Ref<ConstrBind<MotionTransformExpose> | undefined>;
 }
-interface MotionTransformPropsInclude<MotionTransform extends MotionTransformProps = MotionTransformProps> {
+/** Inclusion and configuration props */
+export interface MotionTransformPropsInclude<MotionTransform extends MotionTransformProps = MotionTransformProps> {
+    /** Open state */
     open?: boolean;
+    /** Click to open */
     clickOpen?: boolean;
+    /** Auto close outside */
     autoClose?: boolean;
+    /** Attributes */
     motionTransformAttrs?: ConstrBind<MotionTransform>;
 }
-type ProgressComponentInclude = {
+export declare const __MOTION_TRANSFORM_TYPE_BODY_NAME = "--sys-type-body";
+
+
+// File: constructors/MotionTransform/props.d.ts
+export type MotionTransformPropsToken = {
+    section?: boolean;
+    animationHeadPosition?: 'top' | 'toBottom';
+    adaptive?: 'planeAlways';
+};
+export type MotionTransformPropsBasic = AriaByPropsInclude & ModelPropsOpen & {
+    open?: boolean;
+    inDom?: boolean;
+    ignore?: HTMLElement | string;
+    ignoreSelector?: string;
+    clickOpen?: boolean;
+    autoClose?: boolean;
+    animationShow?: boolean;
+    tagBody?: string;
+};
+/** Incoming properties */
+export type MotionTransformProps = MotionTransformPropsBasic & MotionTransformPropsToken;
+/** Default properties */
+export declare const defaultsMotionTransform: {
+    animationHeadPosition: string;
+    clickOpen: boolean;
+    autoClose: boolean;
+    animationShow: boolean;
+    tagBody: string;
+};
+
+
+// File: constructors/MotionTransform/types.d.ts
+/** Components connection interface */
+export type MotionTransformComponents = {};
+/** Available events */
+export type MotionTransformEmits = ModelEmitsOpen & {
+    transform: [
+        event: Event | undefined,
+        options: MotionTransformEmitOptions
+    ];
+    transformLite: [
+        options: MotionTransformEmitOptions
+    ];
+};
+/** Available properties */
+export interface MotionTransformExpose {
+    /** Window visibility */
+    open: Ref<boolean>;
+    /** Shown or preparing */
+    isShow: ComputedRef<boolean>;
+    /** Sets open state */
+    setOpen(open: boolean): void;
+    /** Transition open */
+    toOpen(): void;
+    /** Transition close */
+    toClose(): void;
+    /** Toggle state */
+    toggle(): void;
+}
+/** Available slots */
+export interface MotionTransformSlots {
+    /** Controls slot */
+    head?(props: MotionTransformControlItem): any;
+    /** Content slot */
+    body?(props: MotionTransformControlItem): any;
+}
+/** Subclasses */
+export type MotionTransformClasses = {
+    main: ConstrClass;
+    context: string;
+    head: string;
+    body: string;
+    backdrop: string;
+    scrim: string;
+    clickNone: string;
+};
+
+
+// File: constructors/Page/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Page/props.d.ts
+export type PagePropsToken = {};
+export type PagePropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = BlockPropsBasic<Icon>;
+/** Incoming properties */
+export type PageProps = PagePropsBasic & PagePropsToken;
+/** Default properties */
+export declare const defaultsPage: {
+    tag: string;
+    tagHeader: string;
+};
+
+
+// File: constructors/Page/types.d.ts
+/** Components connection interface */
+export type PageComponents = BlockComponents;
+/** Available events */
+export type PageEmits = BlockEmits;
+/** Available properties */
+export interface PageExpose extends BlockExpose {
+}
+/** Available slots */
+export interface PageSlots extends BlockSlots {
+}
+/** Subclasses */
+export type PageClasses = {
+    main: ConstrClass;
+    headline: string;
+    header: string;
+    label: string;
+    description: string;
+    caption: string;
+    icon: string;
+    space: string;
+    body: string;
+};
+
+
+// File: constructors/Progress/basicTypes.d.ts
+export type ProgressComponentInclude = {
     progress?: object;
 };
-interface ProgressPropsInclude<Progress extends ProgressPropsBasic = ProgressPropsBasic> {
+export type ProgressPropsInclude<Progress extends ProgressPropsBasic = ProgressPropsBasic> = {
     loading?: boolean | ConstrBind<Progress>;
+};
+
+
+// File: constructors/Progress/props.d.ts
+export type ProgressPropsToken = {
+    point?: boolean;
+    linear?: boolean;
+    circular?: boolean;
+    indeterminate?: 'type1' | 'type2' | 'type3';
+    position?: 'top' | 'bottom' | 'static';
+    dense?: boolean;
+    inverse?: boolean;
+};
+export type ProgressPropsBasic = AriaLabelPropsInclude & TextLoadingPropsInclude & {
+    visible?: boolean;
+    value?: number | string;
+    max?: number | string;
+    linear?: boolean;
+    circular?: boolean;
+    point?: boolean;
+    delay?: number | string;
+    delayHide?: number | string;
+};
+/** Incoming properties */
+export type ProgressProps = ProgressPropsBasic & ProgressPropsToken;
+/** Default properties */
+export declare const defaultsProgress: {
+    linear: boolean;
+    indeterminate: string;
+    position: string;
+    max: number;
+    delay: number;
+    delayHide: number;
+};
+
+
+// File: constructors/Progress/types.d.ts
+/** Components connection interface */
+export type ProgressComponents = {};
+/** Available events */
+export type ProgressEmits = {};
+/** Available properties */
+export interface ProgressExpose {
 }
-type RippleComponentsInclude = {
+/** Available slots */
+export interface ProgressSlots {
+}
+/** Subclasses */
+export type ProgressClasses = {
+    main: ConstrClass;
+    circle: string;
+    circleSub: string;
+    point: string;
+};
+
+
+// File: constructors/Ripple/basicTypes.d.ts
+export type RippleComponentInclude = {
     ripple?: object;
 };
-type ScrollbarEdgeType = 'top' | 'bottom';
-type ScrollbarComponentsInclude = {
+
+
+// File: constructors/Ripple/props.d.ts
+export type RipplePropsToken = {};
+export type RipplePropsBasic = {
+    disabled?: boolean;
+};
+/** Incoming properties */
+export type RippleProps = RipplePropsBasic & RipplePropsToken;
+/** Default properties */
+export declare const defaultsRipple: {};
+
+
+// File: constructors/Ripple/types.d.ts
+/** Components connection interface */
+export type RippleComponents = {};
+/** Available events */
+export type RippleEmits = {};
+/** Available properties */
+export interface RippleExpose {
+}
+/** Available slots */
+export interface RippleSlots {
+}
+/** Subclasses */
+export type RippleClasses = {
+    main: ConstrClass;
+    item: string;
+};
+
+
+// File: constructors/Scrollbar/basicTypes.d.ts
+/** Scrollbar edge position */
+export type ScrollbarEdgeType = 'top' | 'bottom';
+/** Components connection interface */
+export type ScrollbarComponentInclude = {
     scrollbar?: object;
 };
-type ScrollbarEmitsInclude = {
+/** Prefixed scrollbar events */
+export type ScrollbarEmitsInclude = {
     scrollbarTop: ScrollbarEmits['top'];
     scrollbarReachTop: ScrollbarEmits['reachTop'];
     scrollbarLeaveTop: ScrollbarEmits['leaveTop'];
@@ -389,17 +3780,188 @@ type ScrollbarEmitsInclude = {
     scrollbarLeaveBottom: ScrollbarEmits['leaveBottom'];
     scrollbarEdge: ScrollbarEmits['edge'];
 };
-interface ScrollbarPropsInclude<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic> {
+/** Properties for inclusion */
+export type ScrollbarPropsInclude<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic> = {
     scrollbarAttrs?: ConstrBind<Scrollbar>;
+};
+
+
+// File: constructors/Scrollbar/props.d.ts
+export type ScrollbarPropsToken = {
+    visible?: boolean;
+    divider?: boolean;
+    dividerTop?: boolean;
+    dividerBottom?: boolean;
+    dividerHide?: boolean;
+    inverse?: boolean;
+    standard?: boolean;
+};
+export type ScrollbarPropsBasic = {
+    tag?: string;
+};
+/** Incoming properties */
+export type ScrollbarProps = ScrollbarPropsBasic & ScrollbarPropsToken;
+/** Default properties */
+export declare const defaultsScrollbar: {
+    tag: string;
+};
+
+
+// File: constructors/Scrollbar/types.d.ts
+/** Components connection interface */
+export type ScrollbarComponents = {};
+/** Available events */
+export type ScrollbarEmits = {
+    top: [isTop: boolean];
+    reachTop: [];
+    leaveTop: [];
+    bottom: [isBottom: boolean];
+    reachBottom: [];
+    leaveBottom: [];
+    edge: [isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType];
+};
+/** Available properties */
+export interface ScrollbarExpose {
 }
-type SelectValueComponentInclude = {
+/** Available slots */
+export interface ScrollbarSlots {
+    default?(props: any): any;
+}
+/** Subclasses */
+export type ScrollbarClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Section/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Section/props.d.ts
+export type SectionPropsToken = {};
+export type SectionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = BlockPropsBasic<Icon>;
+/** Incoming properties */
+export type SectionProps = SectionPropsBasic & SectionPropsToken;
+/** Default properties */
+export declare const defaultsSection: {
+    tag: string;
+    tagHeader: string;
+};
+
+
+// File: constructors/Section/types.d.ts
+/** Components connection interface */
+export type SectionComponents = BlockComponents;
+/** Available events */
+export type SectionEmits = BlockEmits;
+/** Available properties */
+export interface SectionExpose extends BlockExpose {
+}
+/** Available slots */
+export interface SectionSlots extends BlockSlots {
+}
+/** Subclasses */
+export type SectionClasses = {
+    main: ConstrClass;
+    headline: string;
+    header: string;
+    label: string;
+    description: string;
+    caption: string;
+    icon: string;
+    space: string;
+    body: string;
+};
+
+
+// File: constructors/Select/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Select/props.d.ts
+export type SelectPropsToken = {};
+export type SelectPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Input extends InputPropsBasic = InputPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic, Menu extends MenuPropsBasic = MenuPropsBasic> = FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldSelectProps & MenuPropsInclude<Menu> & {
+    editValue?: boolean;
+    hideList?: boolean;
+    showSearch?: boolean;
+    filterMode?: boolean;
+    iconArrowDown?: IconValue<Icon>;
+    iconSearch?: IconValue<Icon>;
+    inputSearchAttrs?: ConstrBind<Input>;
+};
+/** Incoming properties */
+export type SelectProps = SelectPropsBasic & SelectPropsToken;
+/** Default properties */
+export declare const defaultsSelect: {};
+
+
+// File: constructors/Select/types.d.ts
+/** Components connection interface */
+export type SelectComponents = MenuComponentInclude & FieldComponentInclude & SelectValueComponentInclude & InputComponentInclude;
+/** Available events */
+export type SelectEmits = FieldBasicEmits;
+/** Available properties */
+export interface SelectExpose extends FieldBasicExpose, MenuExposeInclude {
+}
+/** Available slots */
+export interface SelectSlots extends FieldSlotsInclude, MenuSlotInclude {
+}
+/** Subclasses */
+export type SelectClasses = {
+    main: ConstrClass;
+    input: string;
+};
+
+
+// File: constructors/SelectValue/basicTypes.d.ts
+/** Component inclusion */
+export type SelectValueComponentInclude = {
     selectValue?: object;
 };
-interface SelectValuePropsInclude {
+/** Inclusion props */
+export interface SelectValuePropsInclude {
     disabled?: boolean;
     selectValueAttrs?: ConstrBind<SelectValueProps>;
 }
-type SkeletonClassesList = {
+
+
+// File: constructors/SelectValue/props.d.ts
+export type SelectValuePropsToken = {};
+export type SelectValuePropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Chip extends ChipPropsBasic = ChipPropsBasic> = EnabledProps & ChipPropsInclude<Chip> & {
+    placeholder?: string;
+    value?: ListList;
+    multiple?: boolean;
+    iconShow?: boolean;
+    iconAttrs?: ConstrBind<Icon>;
+    iconCancel?: IconValue<Icon>;
+};
+/** Incoming properties */
+export type SelectValueProps = SelectValuePropsBasic & SelectValuePropsToken;
+/** Default properties */
+export declare const defaultsSelectValue: {};
+
+
+// File: constructors/SelectValue/types.d.ts
+/** Components connection interface */
+export type SelectValueComponents = ChipComponentInclude;
+/** Available events */
+export type SelectValueEmits = EventClickEmits;
+/** Available properties */
+export interface SelectValueExpose {
+}
+/** Available slots */
+export interface SelectValueSlots {
+}
+/** Subclasses */
+export type SelectValueClasses = {
+    main: ConstrClass;
+    item: string;
+    trailing: string;
+};
+
+
+// File: constructors/Skeleton/basicTypes.d.ts
+export type SkeletonClassesList = {
     classText: string;
     classTextVariant: string;
     classBackground: string;
@@ -410,26 +3972,461 @@ type SkeletonClassesList = {
     classBorderVariant: string;
     classNone: string;
 };
-interface SkeletonPropsInclude {
+export type SkeletonPropsInclude = {
     isSkeleton?: boolean;
+};
+
+
+// File: constructors/Skeleton/props.d.ts
+export type SkeletonPropsToken = {
+    active?: boolean;
+};
+export type SkeletonPropsBasic = {};
+/** Incoming properties */
+export type SkeletonProps = SkeletonPropsBasic & SkeletonPropsToken;
+/** Default properties */
+export declare const defaultsSkeleton: {};
+
+
+// File: constructors/Skeleton/types.d.ts
+/** Components connection interface */
+export type SkeletonComponents = {};
+/** Available events */
+export type SkeletonEmits = {};
+/** Available properties */
+export interface SkeletonExpose {
+    isActive: ComputedRef<boolean>;
 }
-type TooltipControlBinds = AriaList & {
+/** Available slots */
+export interface SkeletonSlots {
+    default?(props: SkeletonClassesList): any;
+}
+/** Subclasses */
+export type SkeletonClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Snackbar/basicTypes.d.ts
+export type SnackbarValue = {
+    component?: any;
+    data?: ConstrBind<SnackbarItemPropsBasic>;
+    highPriority?: boolean;
+    delay?: number;
+    value?: string;
+};
+export type SnackbarList = SnackbarValue[];
+
+
+// File: constructors/Snackbar/props.d.ts
+type SnackbarPropsToken = {
+    full?: boolean;
+    all?: boolean;
+    limit?: '1' | '2' | '4' | '6' | '8';
+    vertical?: 'top' | 'bottom';
+    horizontal?: 'right' | 'left' | 'block';
+    origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
+};
+export type SnackbarPropsBasic = {
+    delay?: number;
+};
+/** Incoming properties */
+export type SnackbarProps = SnackbarPropsBasic & SnackbarPropsToken;
+/** Default properties */
+export declare const defaultsSnackbar: {
+    delay: number;
+};
+export {};
+
+
+// File: constructors/Snackbar/types.d.ts
+/** Components connection interface */
+export type SnackbarComponents = SnackbarItemComponentInclude;
+/** Available events */
+export type SnackbarEmits = {
+    show: [value: string, item: SnackbarValue];
+    hide: [value: string, item: SnackbarValue];
+};
+/** Available properties */
+export interface SnackbarExpose {
+    isItem: ComputedRef<boolean>;
+    add(item: SnackbarValue): void;
+    remove(value: string): void;
+    clear(): void;
+}
+/** Available slots */
+export interface SnackbarSlots {
+}
+/** Subclasses */
+export type SnackbarClasses = {
+    main: ConstrClass;
+    item: string;
+    space: string;
+    priority: string;
+};
+
+
+// File: constructors/SnackbarItem/basicTypes.d.ts
+/** Required components for SnackbarItem */
+export type SnackbarItemComponentInclude = {
+    snackbarItem?: object;
+};
+/** Props for SnackbarItem embedding */
+export type SnackbarItemPropsInclude<SnackbarItemProps extends SnackbarItemPropsBasic = SnackbarItemPropsBasic> = {
+    /** Attributes bound directly */
+    snackbarItemAttrs?: ConstrBind<SnackbarItemProps>;
+};
+
+
+// File: constructors/SnackbarItem/props.d.ts
+type SnackbarItemPropsToken = {};
+export type SnackbarItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = LabelProps & DescriptionProps & IconTrailingPropsInclude<Icon> & ActionsPropsInclude<Actions> & AriaRolePropsInclude & TextClosePropsInclude & {
+    button?: string | number | ConstrBind<Button>;
+    html?: string;
+    component?: any;
+    componentProps?: object;
+    value?: string;
+    closeButton?: boolean;
+    iconClose?: IconValue<Icon>;
+};
+/** Incoming properties */
+export type SnackbarItemProps = SnackbarItemPropsBasic & SnackbarItemPropsToken;
+/** Default properties */
+export declare const defaultsSnackbarItem: {
+    closeButton: boolean;
+    role: string;
+};
+export {};
+
+
+// File: constructors/SnackbarItem/types.d.ts
+/** Components connection interface */
+export type SnackbarItemComponents = IconComponentInclude & ButtonComponentInclude & ActionsComponentInclude;
+/** Available events */
+export type SnackbarItemEmits = ActionsEmitsInclude & EventClickEmits & {
+    close: [value: string | undefined];
+};
+/** Available properties */
+export interface SnackbarItemExpose {
+}
+/** Available slots */
+export interface SnackbarItemSlots extends LabelSlots, DescriptionSlots {
+    body?(props: any): any;
+}
+/** Subclasses */
+export type SnackbarItemClasses = {
+    main: ConstrClass;
+    tool: string;
+    icon: string;
+    trailing: string;
+    context: string;
+    label: string;
+    description: string;
+    body: string;
+    button: string;
+    close: string;
+    actions: string;
+};
+
+
+// File: constructors/TabItem/basicTypes.d.ts
+export type TabItemComponentInclude = {
+    tabItem?: object;
+};
+
+
+// File: constructors/TabItem/props.d.ts
+type TabItemPropsToken = {
+    focus?: boolean;
+    open?: boolean;
+    selected?: boolean;
+    disabled?: boolean;
+    adaptive?: 'iconAlways' | 'auto';
+    container?: boolean;
+};
+export type TabItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic> = LabelProps & IconPropsInclude<Icon> & BadgePropsInclude<Badge> & SkeletonPropsInclude & EnabledProps & EventClickProps & AriaRolePropsInclude & {
+    index?: any;
+    href?: string;
+    tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string;
+};
+/** Incoming properties */
+export type TabItemProps = TabItemPropsBasic & TabItemPropsToken;
+/** Default properties */
+export declare const defaultsTabItem: {
+    role: string;
+};
+export {};
+
+
+// File: constructors/TabItem/types.d.ts
+/** Components connection interface */
+export type TabItemComponents = IconComponentInclude & BadgeComponentInclude & ProgressComponentInclude & RippleComponentInclude;
+/** Available events */
+export type TabItemEmits = EventClickEmits;
+/** Available properties */
+export interface TabItemExpose extends EventClickExpose {
+}
+/** Available slots */
+export interface TabItemSlots extends LabelSlots {
+}
+/** Subclasses */
+export type TabItemClasses = {
+    main: ConstrClass;
+    label: string;
+    icon: string;
+    badge: string;
+};
+
+
+// File: constructors/Tabs/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Tabs/props.d.ts
+type TabsPropsToken = {};
+export type TabsPropsBasic<TabItem extends TabItemPropsBasic = TabItemPropsBasic, TabsNavigation extends TabsNavigationPropsBasic = TabsNavigationPropsBasic, MotionAxis extends MotionAxisPropsBasic = MotionAxisPropsBasic> = TabsNavigationPropsInclude<TabItem, TabsNavigation> & MotionAxisPropsInclude<MotionAxis> & ModelPropsSelected<ListSelectedList>;
+/** Incoming properties */
+export type TabsProps = TabsPropsBasic & TabsPropsToken;
+/** Default properties */
+export declare const defaultsTabs: {};
+export {};
+
+
+// File: constructors/Tabs/types.d.ts
+/** Components connection interface */
+export type TabsComponents = TabsNavigationComponentInclude & MotionAxisComponentInclude;
+/** Available events */
+export type TabsEmits = TabsNavigationEmits & MotionAxisEmitsInclude & EventClickEmits & ModelEmitsSelected<ListSelectedList>;
+/** Available properties */
+export interface TabsExpose extends EventClickExpose {
+}
+/** Available slots */
+export type TabsSlots = MotionAxisSlots;
+/** Subclasses */
+export type TabsClasses = {
+    main: ConstrClass;
+    slide: string;
+};
+
+
+// File: constructors/TabsNavigation/basicTypes.d.ts
+export type TabsNavigationIdsList = Record<NumberOrString, string>;
+/** Component inclusion */
+export type TabsNavigationComponentInclude = {
+    /** TabsNavigation component */
+    tabsNavigation?: object;
+};
+/** Props inclusion */
+export type TabsNavigationPropsInclude<TabItem extends TabItemPropsBasic = TabItemPropsBasic, TabsNavigation extends TabsNavigationPropsBasic = TabsNavigationPropsBasic> = {
+    /** Tabs list or props */
+    tabs?: ListRecord<TabItem> | ConstrBind<TabsNavigation>;
+    /** Tab item attributes */
+    tabItemAttrs?: ConstrBind<TabItem>;
+    /** TabsNavigation attributes */
+    tabsNavigationAttrs?: ConstrBind<TabsNavigation>;
+};
+
+
+// File: constructors/TabsNavigation/props.d.ts
+type TabsNavigationPropsToken = {
+    divider?: boolean;
+};
+export type TabsNavigationPropsBasic<TabItem extends TabItemPropsBasic = TabItemPropsBasic> = HorizontalScrollPropsInclude & ModelPropsSelected<ListSelectedList> & {
+    selected?: ListSelectedList;
+    list?: ListRecord<TabItem>;
+    tag?: TabItem['tag'];
+    keyLabel?: string;
+    keyValue?: string;
+    itemAttrs?: ConstrBind<TabItem>;
+};
+/** Incoming properties */
+export type TabsNavigationProps = TabsNavigationPropsBasic & TabsNavigationPropsToken;
+/** Default properties */
+export declare const defaultsTabsNavigation: {
+    horizontalScrollFlush: boolean;
+    horizontalScrollAlign: string;
+};
+export {};
+
+
+// File: constructors/TabsNavigation/types.d.ts
+/** Components connection interface */
+export type TabsNavigationComponents = HorizontalScrollComponentInclude & TabItemComponentInclude;
+/** Available events */
+export type TabsNavigationEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>;
+/** Available properties */
+export interface TabsNavigationExpose {
+    ids: ComputedRef<TabsNavigationIdsList>;
+}
+/** Available slots */
+export interface TabsNavigationSlots {
+    leading?(props: any): any;
+    trailing?(props: any): any;
+}
+/** Subclasses */
+export type TabsNavigationClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/Textarea/basicTypes.d.ts
+export {};
+
+
+// File: constructors/Textarea/props.d.ts
+type TextareaPropsToken = {};
+export type TextareaPropsBasic<TextareaAutosize extends TextareaAutosizePropsBasic = TextareaAutosizePropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = TextareaAutosizePropsInclude<TextareaAutosize> & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldTextareaProps<string>;
+/** Incoming properties */
+export type TextareaProps = TextareaPropsBasic & TextareaPropsToken;
+/** Default properties */
+export declare const defaultsTextarea: {
+    cancel: string;
+    autosize: boolean;
+};
+export {};
+
+
+// File: constructors/Textarea/types.d.ts
+/** Components connection interface */
+export type TextareaComponents = FieldComponentInclude & TextareaAutosizeComponentInclude;
+/** Available events */
+export type TextareaEmits = FieldBasicEmits;
+/** Available properties */
+export interface TextareaExpose extends FieldBasicExpose {
+}
+/** Available slots */
+export interface TextareaSlots extends FieldSlotsInclude {
+}
+/** Subclasses */
+export type TextareaClasses = {
+    main: ConstrClass;
+};
+
+
+// File: constructors/TextareaAutosize/basicTypes.d.ts
+export type TextareaAutosizeComponentInclude = {
+    textareaAutosize?: object;
+};
+export type TextareaAutosizePropsInclude<TextareaAutosize extends TextareaAutosizePropsBasic = TextareaAutosizePropsBasic> = {
+    textareaAttrs?: ConstrBind<TextareaAutosize>;
+    autosize?: boolean;
+};
+
+
+// File: constructors/TextareaAutosize/props.d.ts
+export type TextareaAutosizePropsToken = {
+    autosize?: boolean;
+};
+export type TextareaAutosizePropsBasic = {
+    value?: string;
+    inputAttrs?: Record<string, any>;
+};
+/** Incoming properties */
+export type TextareaAutosizeProps = TextareaAutosizePropsBasic & TextareaAutosizePropsToken;
+/** Default properties */
+export declare const defaultsTextareaAutosize: {
+    autosize: boolean;
+};
+
+
+// File: constructors/TextareaAutosize/types.d.ts
+/** Components connection interface */
+export type TextareaAutosizeComponents = {};
+/** Available events */
+export type TextareaAutosizeEmits = {
+    input: [event: InputEvent];
+};
+/** Available properties */
+export interface TextareaAutosizeExpose {
+    value: Ref<string>;
+}
+/** Available slots */
+export interface TextareaAutosizeSlots {
+}
+/** Subclasses */
+export type TextareaAutosizeClasses = {
+    main: ConstrClass;
+    clone: string;
+};
+
+
+// File: constructors/Tooltip/basicTypes.d.ts
+export type TooltipControlBinds = AriaList & {
     class: string;
     onclick: () => void;
     onmouseover: (event: MouseEvent) => void;
     onmouseout: (event: MouseEvent) => void;
 };
-type TooltipControl = TooltipControlBinds & {
+export type TooltipControl = TooltipControlBinds & {
     open: Ref<boolean>;
     binds: TooltipControlBinds;
 };
-type TooltipComponentInclude = {
+/** Component map for Tooltip */
+export type TooltipComponentInclude = {
     tooltip?: object;
 };
-interface TooltipPropsInclude<Tooltip extends TooltipProps = TooltipProps> {
+/** Props for Tooltip inclusion */
+export type TooltipPropsInclude<Tooltip extends TooltipProps = TooltipProps> = {
+    /** Attributes */
     tooltipAttrs?: ConstrBind<Tooltip>;
+};
+
+
+// File: constructors/Tooltip/props.d.ts
+export type TooltipPropsToken = {
+    interactive?: boolean;
+    embedded?: boolean;
+};
+export type TooltipPropsBasic<Arrow extends ArrowProps = ArrowProps> = LabelProps & DescriptionProps & ArrowPropsInclude<Arrow> & {
+    open?: boolean;
+    disabled?: boolean;
+    inDom?: boolean;
+    top?: boolean;
+    indent?: number;
+    delay?: number;
+    delayHide?: number;
+    /** Display inside current parent */
+    embedded?: boolean;
+};
+/** Incoming properties */
+export type TooltipProps = TooltipPropsBasic & TooltipPropsToken;
+/** Default properties */
+export declare const defaultsTooltip: {
+    interactive: boolean;
+    indent: number;
+    delay: number;
+    delayHide: number;
+};
+
+
+// File: constructors/Tooltip/types.d.ts
+/** Components connection interface */
+export type TooltipComponents = ArrowComponentInclude;
+/** Available events */
+export type TooltipEmits = {
+    tooltip: [open: boolean];
+};
+/** Available properties */
+export interface TooltipExpose {
+    toggle(open: boolean, flash?: boolean): Promise<void>;
 }
-enum WindowStatusItem {
+/** Available slots */
+export interface TooltipSlots extends LabelSlots, DescriptionSlots {
+    control?(props: TooltipControl): any;
+    body?(): any;
+}
+/** Subclasses */
+export type TooltipClasses = {
+    main: ConstrClass;
+    label: string;
+    description: string;
+    body: string;
+};
+
+
+// File: constructors/Window/basicTypes.d.ts
+/** Window lifecycle statuses */
+export declare enum WindowStatusItem {
     display = "display",
     preparation = "preparation",
     flash = "flash",
@@ -437,7 +4434,8 @@ enum WindowStatusItem {
     hide = "hide",
     close = "close"
 }
-enum WindowStatusControlItem {
+/** Window control statuses */
+export declare enum WindowStatusControlItem {
     block = "block",
     blockChildren = "blockChildren",
     blockOther = "blockOther",
@@ -448,13 +4446,15 @@ enum WindowStatusControlItem {
     controlActive = "controlActive",
     persistent = "persistent"
 }
-type WindowEmitOptions = {
+/** Window event options */
+export type WindowEmitOptions = {
     id: string;
     element: HTMLDivElement;
     control: HTMLElement;
     open: boolean;
 };
-type WindowClassesList = {
+/** CSS classes list */
+export type WindowClassesList = {
     block: string;
     blockChildren: string;
     blockOther: string;
@@ -467,28 +4467,36 @@ type WindowClassesList = {
     controlActive: string;
     persistent: string;
 };
-type WindowEventClick = (event: MouseEvent & TouchEvent) => Promise<void>;
-type WindowControlBasic = {
+/** Click event handler */
+export type WindowEventClick = (event: MouseEvent & TouchEvent | KeyboardEvent) => Promise<void>;
+/** Interface for class inclusion */
+export type WindowControlBasic = {
     classesWindow: WindowClassesList;
 };
-type WindowControlItem = WindowControlBasic & {
+/** Window management control item */
+export type WindowControlItem = WindowControlBasic & {
     class: string;
     open: Ref<boolean>;
     onclick: WindowEventClick;
+    onKeydown: WindowEventClick;
     oncontextmenu: WindowEventClick;
     binds: AriaList & {
         class: string;
         onclick: WindowEventClick;
+        onKeydown: WindowEventClick;
         oncontextmenu: WindowEventClick;
     };
 };
-type WindowComponentInclude = {
+/** Component map for inclusion */
+export type WindowComponentInclude = {
     window?: object;
 };
-type WindowEmitsInclude = {
+/** Event map for inclusion */
+export type WindowEmitsInclude = {
     window: [options: WindowEmitOptions];
 };
-interface WindowExposeInclude {
+/** Expose inclusion interface */
+export interface WindowExposeInclude {
     id: ComputedRef<string | undefined>;
     open: ComputedRef<boolean>;
     control: ComputedRef<WindowControlItem | undefined>;
@@ -498,116 +4506,603 @@ interface WindowExposeInclude {
     toggle: WindowExpose['toggle'];
     windowElement: Ref<ConstrBind<WindowExpose> | undefined>;
 }
-interface WindowPropsInclude<Window extends WindowPropsBasic = WindowPropsBasic> {
+/** Inclusion and configuration props */
+export type WindowPropsInclude<Window extends WindowPropsBasic = WindowPropsBasic> = {
     disabled?: boolean;
     autoClose?: boolean;
     windowAttrs?: ConstrBind<Window>;
-}
-type AriaTrueOrFalse = 'true' | 'false' | boolean;
-type AriaList = {
-    'id'?: string;
-    'role'?: RoleType;
-    'tabindex'?: NumberOrString;
-    'aria-activedescendant'?: string;
-    'aria-atomic'?: AriaTrueOrFalse;
-    'aria-autocomplete'?: 'none' | 'inline' | 'list' | 'both';
-    'aria-busy'?: AriaTrueOrFalse;
-    'aria-checked'?: AriaTrueOrFalse | 'mixed';
-    'aria-colcount'?: number;
-    'aria-colindex'?: number;
-    'aria-colspan'?: number;
-    'aria-controls'?: string;
-    'aria-current'?: AriaTrueOrFalse | 'page' | 'step' | 'location' | 'date' | 'time';
-    'aria-describedby'?: string;
-    'aria-details'?: string;
-    'aria-disabled'?: AriaTrueOrFalse;
-    'aria-errormessage'?: string;
-    'aria-expanded'?: AriaTrueOrFalse;
-    'aria-flowto'?: string;
-    'aria-grabbed'?: AriaTrueOrFalse;
-    'aria-haspopup'?: AriaTrueOrFalse | 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid';
-    'aria-hidden'?: AriaTrueOrFalse;
-    'aria-invalid'?: AriaTrueOrFalse | 'grammar' | 'spelling';
-    'aria-keyshortcuts'?: string;
-    'aria-label'?: string;
-    'aria-labelledby'?: string;
-    'aria-level'?: number;
-    'aria-live'?: 'off' | 'polite' | 'assertive';
-    'aria-modal'?: AriaTrueOrFalse;
-    'aria-multiline'?: AriaTrueOrFalse;
-    'aria-multiselectable'?: AriaTrueOrFalse;
-    'aria-orientation'?: 'horizontal' | 'vertical' | 'undefined';
-    'aria-owns'?: string;
-    'aria-placeholder'?: string;
-    'aria-posinset'?: number;
-    'aria-pressed'?: AriaTrueOrFalse | 'mixed';
-    'aria-readonly'?: AriaTrueOrFalse;
-    'aria-relevant'?: 'additions' | 'removals' | 'text' | 'all' | string;
-    'aria-required'?: AriaTrueOrFalse;
-    'aria-roledescription'?: string;
-    'aria-rowcount'?: number;
-    'aria-rowindex'?: number;
-    'aria-rowspan'?: number;
-    'aria-selected'?: AriaTrueOrFalse;
-    'aria-setsize'?: number;
-    'aria-sort'?: 'none' | 'ascending' | 'descending' | 'other';
-    'aria-valuemax'?: string | number;
-    'aria-valuemin'?: string | number;
-    'aria-valuenow'?: string | number;
-    'aria-valuetext'?: string;
 };
-interface AriaRolePropsInclude {
-    role?: RoleType;
+export declare const __WINDOW_TYPE_BODY_NAME = "--sys-type-body";
+
+
+// File: constructors/Window/props.d.ts
+export type WindowPropsToken = {
+    width?: string | 'auto' | 'max' | 'custom';
+    height?: string | 'auto' | 'max' | 'custom';
+    hide?: boolean;
+    axis?: 'x' | 'y' | 'on';
+    imagePosition?: 'top' | 'left';
+    dense?: boolean;
+    alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull';
+    origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight';
+    adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static';
+    fullscreen?: boolean;
+    overscroll?: boolean;
+    closeButton?: boolean;
+    closeMobileHide?: boolean;
+    widthMatch?: boolean;
+};
+export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & ModelPropsOpen & {
+    open?: boolean;
+    disabled?: boolean;
+    preparation?(): NormalOrPromise<void>;
+    beforeOpening?(): NormalOrPromise<boolean>;
+    opening?(): NormalOrPromise<boolean>;
+    beforeClosing?(): NormalOrPromise<boolean>;
+    closing?(): NormalOrPromise<boolean>;
+    contextmenu?: boolean;
+    staticMode?: boolean;
+    overElement?: ElementOrString<HTMLElement>;
+    autoClose?: boolean;
+    persistent?: boolean;
+    flash?: boolean;
+    inDom?: boolean;
+    indent?: number;
+    divider?: boolean;
+    closeButton?: boolean;
+    iconClose?: IconValue<Icon>;
+    inert?: boolean;
+    autoTabIndex?: boolean;
+    closeOnEsc?: boolean;
+    openOnArrowDown?: boolean;
+    /** Display inside current parent */
+    embedded?: boolean;
+};
+/** Incoming properties */
+export type WindowProps = WindowPropsBasic & WindowPropsToken;
+/** Default properties */
+export declare const defaultsWindow: {
+    axis: string;
+    imagePosition: string;
+    overscroll: boolean;
+    indent: number;
+    ariaHaspopup: string;
+    role: string;
+    inert: boolean;
+    autoTabIndex: boolean;
+    closeOnEsc: boolean;
+};
+
+
+// File: constructors/Window/types.d.ts
+/** Components connection interface */
+export type WindowComponents = ScrollbarComponentInclude & ButtonComponentInclude & ImageComponentInclude;
+/** Available events */
+export type WindowEmits = ScrollbarEmitsInclude & ImageEmitsInclude & ModelEmitsOpen & {
+    window: [options: WindowEmitOptions];
+};
+/** Available properties */
+export interface WindowExpose {
+    /** Unique ID */
+    id: string;
+    /** Visibility state */
+    open: Ref<boolean>;
+    /** Management data */
+    control: ComputedRef<WindowControlItem>;
+    /** Sets open state */
+    setOpen(open: boolean): Promise<void>;
+    /** Transition open */
+    toOpen(): Promise<void>;
+    /** Transition close */
+    toClose(): Promise<void>;
+    /** Toggle visibility */
+    toggle(): Promise<void>;
 }
-interface AriaLabelPropsInclude {
-    ariaLabel?: string;
+/** Available slots */
+export interface WindowSlots {
+    /** Window management slot */
+    control?(props: WindowControlItem): any;
+    /** Header title slot */
+    title?(props: WindowControlItem): any;
+    /** Bottom footer slot */
+    footer?(props: WindowControlItem): any;
+    /** Main content slot */
+    default?(props: WindowControlItem): any;
 }
-interface AriaDescriptionPropsInclude {
-    ariaDescription?: string;
-}
-interface AriaHaspopupPropsInclude {
-    ariaHaspopup?: AriaList['aria-haspopup'];
-}
-interface AriaLivePropsInclude {
-    ariaLive?: AriaList['aria-live'];
-}
-interface AriaByPropsInclude {
+/** Subclasses */
+export type WindowClasses = {
+    main: ConstrClass;
+    body: string;
+    bodyGroup: string;
+    bodyContext: string;
+    control: string;
+    image: string;
+    close: string;
+    teleport: string;
+};
+
+
+// File: functions/getClassTagAStatic.d.ts
+/**
+ * Generates CSS class for tag 'a'.
+ * @param design design prefix
+ */
+export declare const getClassTagAStatic: (design: string) => string;
+
+
+// File: library/accordion.d.ts
+export * from '../constructors/Accordion/index';
+
+
+// File: library/actionSheet.d.ts
+export * from '../constructors/ActionSheet/index';
+
+
+// File: library/actions.d.ts
+export * from '../constructors/Actions/index';
+
+
+// File: library/anchor.d.ts
+export * from '../constructors/Anchor/index';
+
+
+// File: library/arrow.d.ts
+export * from '../constructors/Arrow/index';
+
+
+// File: library/badge.d.ts
+export * from '../constructors/Badge/index';
+
+
+// File: library/bars.d.ts
+export * from '../constructors/Bars/index';
+
+
+// File: library/block.d.ts
+export * from '../constructors/Block/index';
+
+
+// File: library/button.d.ts
+export * from '../constructors/Button/index';
+
+
+// File: library/cell.d.ts
+export * from '../constructors/Cell/index';
+
+
+// File: library/checkbox.d.ts
+export * from '../constructors/Checkbox/index';
+
+
+// File: library/chip.d.ts
+export * from '../constructors/Chip/index';
+
+
+// File: library/chipGroup.d.ts
+export * from '../constructors/ChipGroup/index';
+
+
+// File: library/dialog.d.ts
+export * from '../constructors/Dialog/index';
+
+
+// File: library/dummy.d.ts
+export * from '../constructors/Dummy/index';
+
+
+// File: library/field.d.ts
+export * from '../constructors/Field/index';
+
+
+// File: library/fieldCounter.d.ts
+export * from '../constructors/FieldCounter/index';
+
+
+// File: library/fieldLabel.d.ts
+export * from '../constructors/FieldLabel/index';
+
+
+// File: library/fieldMessage.d.ts
+export * from '../constructors/FieldMessage/index';
+
+
+// File: library/grid.d.ts
+export * from '../constructors/Grid/index';
+
+
+// File: library/gridItem.d.ts
+export * from '../constructors/GridItem/index';
+
+
+// File: library/group.d.ts
+export * from '../constructors/Group/index';
+
+
+// File: library/horizontalScroll.d.ts
+export * from '../constructors/HorizontalScroll/index';
+
+
+// File: library/icon.d.ts
+export * from '../constructors/Icon/index';
+
+
+// File: library/image.d.ts
+export * from '../constructors/Image/index';
+
+
+// File: library/input.d.ts
+export * from '../constructors/Input/index';
+
+
+// File: library/list.d.ts
+export * from '../constructors/List/index';
+
+
+// File: library/listGroup.d.ts
+export * from '../constructors/ListGroup/index';
+
+
+// File: library/listItem.d.ts
+export * from '../constructors/ListItem/index';
+
+
+// File: library/listMenu.d.ts
+export * from '../constructors/ListMenu/index';
+
+
+// File: library/mask.d.ts
+export * from '../constructors/Mask/index';
+
+
+// File: library/menu.d.ts
+export * from '../constructors/Menu/index';
+
+
+// File: library/modal.d.ts
+export * from '../constructors/Modal/index';
+
+
+// File: library/motionAxis.d.ts
+export * from '../constructors/MotionAxis/index';
+
+
+// File: library/motionTransform.d.ts
+export * from '../constructors/MotionTransform/index';
+
+
+// File: library/page.d.ts
+export * from '../constructors/Page/index';
+
+
+// File: library/plugin.d.ts
+export * from '../classes/Plugin/Plugin';
+export * from '../types/pluginTypes';
+
+
+// File: library/progress.d.ts
+export * from '../constructors/Progress/index';
+
+
+// File: library/ripple.d.ts
+export * from '../constructors/Ripple/index';
+
+
+// File: library/scrollbar.d.ts
+export * from '../constructors/Scrollbar/index';
+
+
+// File: library/section.d.ts
+export * from '../constructors/Section/index';
+
+
+// File: library/select.d.ts
+export * from '../constructors/Select/index';
+
+
+// File: library/selectValue.d.ts
+export * from '../constructors/SelectValue/index';
+
+
+// File: library/skeleton.d.ts
+export * from '../constructors/Skeleton/index';
+
+
+// File: library/snackbar.d.ts
+export * from '../constructors/Snackbar/index';
+
+
+// File: library/snackbarItem.d.ts
+export * from '../constructors/SnackbarItem/index';
+
+
+// File: library/tabItem.d.ts
+export * from '../constructors/TabItem/index';
+
+
+// File: library/tabs.d.ts
+export * from '../constructors/Tabs/index';
+
+
+// File: library/tabsNavigation.d.ts
+export * from '../constructors/TabsNavigation/index';
+
+
+// File: library/textarea.d.ts
+export * from '../constructors/Textarea/index';
+
+
+// File: library/textareaAutosize.d.ts
+export * from '../constructors/TextareaAutosize/index';
+
+
+// File: library/tooltip.d.ts
+export * from '../constructors/Tooltip/index';
+
+
+// File: library/window.d.ts
+export * from '../constructors/Window/index';
+
+
+// File: library.d.ts
+export * from './classes/AriaStaticInclude';
+export * from './classes/CaptionInclude';
+export * from './classes/DescriptionInclude';
+export * from './classes/EnabledInclude';
+export * from './classes/EventClickInclude';
+export * from './classes/Field/FieldArrowInclude';
+export * from './classes/Field/FieldAttributesInclude';
+export * from './classes/Field/FieldChangeInclude';
+export * from './classes/Field/FieldCodeInclude';
+export * from './classes/Field/FieldElementInclude';
+export * from './classes/Field/FieldEventInclude';
+export * from './classes/Field/FieldInputCheckInclude';
+export * from './classes/Field/FieldInputModeInclude';
+export * from './classes/Field/FieldMatchInclude';
+export * from './classes/Field/FieldPatternInclude';
+export * from './classes/Field/FieldTypeInclude';
+export * from './classes/Field/FieldValidationInclude';
+export * from './classes/Field/FieldValueInclude';
+export * from './classes/Field/FieldVisibilityInclude';
+export * from './classes/LabelHighlightInclude';
+export * from './classes/LabelInclude';
+export * from './classes/LabelNumberInclude';
+export * from './classes/ModelInclude';
+export * from './classes/ModelValueInclude';
+export * from './classes/Plugin/Plugin';
+export * from './classes/Plugin/PluginCode';
+export * from './classes/Plugin/PluginComponents';
+export * from './classes/Plugin/PluginData';
+export * from './classes/Plugin/PluginImport';
+export * from './classes/Plugin/PluginStyle';
+export * from './classes/Plugin/PluginTool';
+export * from './classes/PrefixInclude';
+export * from './classes/ScrollToXInclude';
+export * from './classes/SuffixInclude';
+export * from './classes/TabIndexInclude';
+export * from './classes/TextInclude';
+export * from './classes/TouchEventInclude';
+export * from './functions/getClassTagAStatic';
+export * from './types/ariaTypes';
+export * from './types/captionTypes';
+export * from './types/descriptionTypes';
+export * from './types/enabledTypes';
+export * from './types/eventClickTypes';
+export * from './types/fieldTypes';
+export * from './types/labelTypes';
+export * from './types/modelTypes';
+export * from './types/pluginTypes';
+export * from './types/prefixTypes';
+export * from './types/roleTypes';
+export * from './types/suffixTypes';
+export * from './types/textTypes';
+export * from './types/touchEventTypes';
+
+
+// File: media/styleModification.d.ts
+/** Style modifications list */
+export declare const STYLE_MODIFICATION: string[];
+
+
+// File: types/ariaTypes.d.ts
+/** ARIA true/false type */
+export type AriaTrueOrFalse = 'true' | 'false' | boolean;
+/** ARIA list type */
+export type AriaList = {
+    /** Identifies currently active element */
+    'aria-activedescendant'?: string;
+    /** Presence of changed regions */
+    'aria-atomic'?: AriaTrueOrFalse;
+    /** Input display suggestions */
+    'aria-autocomplete'?: 'none' | 'inline' | 'list' | 'both';
+    /** Element modified indicator */
+    'aria-busy'?: AriaTrueOrFalse;
+    /** Current checked state */
+    'aria-checked'?: AriaTrueOrFalse | 'mixed';
+    /** Total number of columns */
+    'aria-colcount'?: number;
+    /** Column index */
+    'aria-colindex'?: number;
+    /** Columns spanned by cell */
+    'aria-colspan'?: number;
+    /** Controlled element indicator */
+    'aria-controls'?: string;
+    /** Current item in container */
+    'aria-current'?: AriaTrueOrFalse | 'page' | 'step' | 'location' | 'date' | 'time';
+    /** Describing element */
+    'aria-describedby'?: string;
+    /** Detailed information element */
+    'aria-details'?: string;
+    /** Editable indicator */
+    'aria-disabled'?: AriaTrueOrFalse;
+    /** Error message element */
+    'aria-errormessage'?: string;
+    /** Expanded state */
+    'aria-expanded'?: AriaTrueOrFalse;
+    /** Next reading order element */
+    'aria-flowto'?: string;
+    /** Grabbed state in drag-and-drop */
+    'aria-grabbed'?: AriaTrueOrFalse;
+    /** Popup availability */
+    'aria-haspopup'?: AriaTrueOrFalse | 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid';
+    /** Accessibility API exposure */
+    'aria-hidden'?: AriaTrueOrFalse;
+    /** Value format compliance */
+    'aria-invalid'?: AriaTrueOrFalse | 'grammar' | 'spelling';
+    /** Keyboard shortcuts */
+    'aria-keyshortcuts'?: string;
+    /** Element label string */
+    'aria-label'?: string;
+    /** Labeling element */
+    'aria-labelledby'?: string;
+    /** Hierarchical level */
+    'aria-level'?: number;
+    /** Updating indicator */
+    'aria-live'?: 'off' | 'polite' | 'assertive';
+    /** Modal state */
+    'aria-modal'?: AriaTrueOrFalse;
+    /** Multiple lines input */
+    'aria-multiline'?: AriaTrueOrFalse;
+    /** Multiple items selection */
+    'aria-multiselectable'?: AriaTrueOrFalse;
+    /** Orientation mode */
+    'aria-orientation'?: 'horizontal' | 'vertical' | 'undefined';
+    /** Parent context identifier */
+    'aria-owns'?: string;
+    /** Data entry hint */
+    'aria-placeholder'?: string;
+    /** Position in set */
+    'aria-posinset'?: number;
+    /** Toggle pressed state */
+    'aria-pressed'?: AriaTrueOrFalse | 'mixed';
+    /** Editable state */
+    'aria-readonly'?: AriaTrueOrFalse;
+    /** Notification triggers */
+    'aria-relevant'?: 'additions' | 'removals' | 'text' | 'all' | string;
+    /** Required input */
+    'aria-required'?: AriaTrueOrFalse;
+    /** Human-readable role description */
+    'aria-roledescription'?: string;
+    /** Total rows number */
+    'aria-rowcount'?: number;
+    /** Row index */
+    'aria-rowindex'?: number;
+    /** Rows spanned by cell */
+    'aria-rowspan'?: number;
+    /** Selected state */
+    'aria-selected'?: AriaTrueOrFalse;
+    /** Items in current set */
+    'aria-setsize'?: number;
+    /** Sorted items indicator */
+    'aria-sort'?: 'none' | 'ascending' | 'descending' | 'other';
+    /** Maximum allowed value */
+    'aria-valuemax'?: string | number;
+    /** Minimum allowed value */
+    'aria-valuemin'?: string | number;
+    /** Current value */
+    'aria-valuenow'?: string | number;
+    /** Readable alternative of valuenow */
+    'aria-valuetext'?: string;
+    /** ID */
+    'id'?: string;
+    /** Role */
+    'role'?: RoleType;
+    /** Tabindex focus state */
+    'tabindex'?: NumberOrString;
+};
+/** ARIA atomic prop */
+export type AriaAtomicPropsInclude = {
+    ariaAtomic?: AriaList['aria-atomic'];
+};
+/** Labelledby and describedby props */
+export type AriaByPropsInclude = {
     ariaLabelledby?: string;
     ariaDescribedby?: string;
-}
-interface AriaRoleByPropsInclude extends AriaRolePropsInclude, AriaByPropsInclude {
-}
-interface AriaRoleControlPropsInclude extends AriaRolePropsInclude, AriaHaspopupPropsInclude {
+};
+/** Description prop */
+export type AriaDescriptionPropsInclude = {
+    ariaDescription?: string;
+};
+/** Haspopup prop */
+export type AriaHaspopupPropsInclude = {
+    ariaHaspopup?: AriaList['aria-haspopup'];
+};
+/** Label prop */
+export type AriaLabelPropsInclude = {
+    ariaLabel?: string;
+};
+/** Live prop */
+export type AriaLivePropsInclude = {
+    ariaLive?: AriaList['aria-live'];
+};
+/** Multiselectable prop */
+export type AriaMultiselectablePropsInclude = {
+    ariaMultiselectable?: boolean;
+};
+/** Role props with by attributes */
+export type AriaRoleByPropsInclude = AriaRolePropsInclude & AriaByPropsInclude;
+/** Control role props */
+export type AriaRoleControlPropsInclude = AriaRolePropsInclude & AriaHaspopupPropsInclude & {
     id?: string;
     ariaControls?: string;
     ariaHaspopup?: AriaList['aria-haspopup'];
     ariaExpanded?: string;
-}
-interface CaptionSlots {
+};
+/** Basic role props */
+export type AriaRolePropsInclude = {
+    role?: RoleType;
+};
+
+
+// File: types/captionTypes.d.ts
+/** Caption slots */
+export interface CaptionSlots {
     caption?(props: any): any;
 }
-interface CaptionProps {
+/** Caption props */
+export type CaptionProps = {
+    /** Caption text/number */
     caption?: string | number;
-}
-interface DescriptionExpose {
-    descriptionId: string;
-}
-interface DescriptionSlots {
+    /** Decorative indicator */
+    captionDecorative?: boolean;
+};
+
+
+// File: types/descriptionTypes.d.ts
+/** Description slots */
+export interface DescriptionSlots {
     description?(props: any): any;
 }
-interface DescriptionProps {
+/** Description props */
+export type DescriptionProps = {
+    /** Description text/number */
     description?: string | number;
-}
-interface EnabledProps {
+    /** Identifier */
+    descriptionId?: string;
+};
+
+
+// File: types/enabledTypes.d.ts
+/** Enabled/disabled state props */
+export type EnabledProps = {
+    /** Read-only state */
     readonly?: boolean;
+    /** Disabled state */
     disabled?: boolean;
-}
-type EventClickValue = {
+};
+
+
+// File: types/eventClickTypes.d.ts
+/** Click event value */
+export type EventClickValue = {
+    /** Type */
     type: string;
+    /** Value */
     value: any;
+    /** Details */
     detail: Record<string, any> | undefined;
 };
-type EventClickEmits = {
+/** Click events */
+export type EventClickEmits = {
     click: [
         event: MouseEvent,
         value: EventClickValue
@@ -616,23 +5111,38 @@ type EventClickEmits = {
         value: EventClickValue
     ];
 };
-interface EventClickExpose {
+/** Click expose */
+export interface EventClickExpose {
     value?: Ref<EventClickValue['value']>;
     detail?: Ref<EventClickValue['detail']>;
 }
-interface EventClickProps {
+/** Click props */
+export type EventClickProps = {
+    /** Target location */
     to?: string | RouteLocationRaw;
+    /** Link href */
+    href?: string;
+    /** Value */
     value?: EventClickValue['value'];
+    /** Details */
     detail?: EventClickValue['detail'];
-}
-type FieldType = 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
-type FieldElementDom = HTMLInputElement | HTMLTextAreaElement;
-type FieldElementInput = FieldElementDom | HTMLElement | Record<string, any> | undefined;
-type FieldValidityCodeItem = {
+};
+
+
+// File: types/fieldTypes.d.ts
+/** Supported field types */
+export type FieldType = 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
+/** Input/textarea element */
+export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement;
+/** Field element types */
+export type FieldElementInput = FieldElementDom | HTMLElement | Record<string, any> | undefined;
+/** Validity custom messages */
+export type FieldValidityCodeItem = {
     [K in keyof ValidityState]?: string;
 };
-type FieldValidityCode = string | FieldValidityCodeItem;
-type FieldMaskItem = {
+export type FieldValidityCode = string | FieldValidityCodeItem;
+/** Mask fragment */
+export type FieldMaskItem = {
     group: string;
     value: string;
     maxLength: number;
@@ -640,26 +5150,31 @@ type FieldMaskItem = {
     end: boolean;
     chars: string[];
 };
-type FieldMasks = Record<string, FieldMaskItem>;
-type FieldPatternElement = Partial<HTMLInputElement>;
-type FieldPatternItem = string | FieldPatternElement;
-type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem);
-type FieldPatternList = Record<string, FieldPatternItemOrFunction>;
-type FieldMatchItem = {
+export type FieldMasks = Record<string, FieldMaskItem>;
+/** Pattern element */
+export type FieldPatternElement = Partial<HTMLInputElement>;
+export type FieldPatternItem = string | FieldPatternElement;
+export type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem);
+export type FieldPatternList = Record<string, FieldPatternItemOrFunction>;
+/** Match configuration */
+export type FieldMatchItem = {
     name?: string | HTMLInputElement;
     validationMessage?: string;
 };
-type FieldMatch = string | HTMLInputElement | FieldMatchItem;
-type FieldCheckMain = {
+export type FieldMatch = string | HTMLInputElement | FieldMatchItem;
+/** Validation check data */
+export type FieldCheckMain = {
     group?: string;
     input?: FieldElementDom;
     pattern?: FieldPatternItemOrFunction;
 };
-type FieldCheckItem<Value = any> = FieldCheckMain & {
+/** Check item */
+export type FieldCheckItem<Value = any> = FieldCheckMain & {
     check(value: Value): FieldValidationItem<Value>;
 };
-type FieldCheckList = Record<string, FieldCheckItem>;
-type FieldValidationItem<Value = any> = FieldCheckMain & {
+export type FieldCheckList = Record<string, FieldCheckItem>;
+/** Validation result */
+export type FieldValidationItem<Value = any> = FieldCheckMain & {
     type?: string;
     status?: boolean;
     required?: boolean;
@@ -671,26 +5186,38 @@ type FieldValidationItem<Value = any> = FieldCheckMain & {
     valueInput?: Value;
     detail?: Record<string, any>;
 };
-type FieldBasicEmits<T = string> = ModelEmits & {
+/** Field events */
+export type FieldBasicEmits<T = any> = ModelEmits<T> & {
+    /** typing change */
     input: [event: InputEvent | Event, value: FieldValidationItem<T>];
+    /** typing lite */
     inputLite: [value: FieldValidationItem<T>];
+    /** commit value */
     change: [event: InputEvent | Event, value: FieldValidationItem<T>];
+    /** commit lite */
     changeLite: [value: FieldValidationItem<T>];
 };
-type FieldBasicExpose<T = string> = {
+export type FieldBasicExpose<T = string> = {
     value: ShallowRef<T | undefined>;
     checkValidity: () => boolean;
     validationMessage: ComputedRef<string>;
 };
-interface FieldValueProps<Value = any> extends ModelProps<Value> {
+/** Value handling props */
+export type FieldValueProps<Value = any> = ModelProps<Value> & {
+    /** Hint text */
     placeholder?: string;
+    /** Selection mode */
     multiple?: boolean;
+    /** Max length */
     maxlength?: NumberOrString;
+    /** Controlled value */
     value?: Value;
+    /** Event details */
     detail?: Record<string, any> | undefined;
-}
-interface FieldBasicProps<Value = any> extends Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> {
-    type?: 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
+};
+/** Basic input attributes */
+export type FieldBasicProps<Value = any> = Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> & {
+    type?: FieldType;
     name?: string;
     id?: string | number;
     required?: boolean;
@@ -703,136 +5230,226 @@ interface FieldBasicProps<Value = any> extends Omit<FieldValueProps<Value>, 'mul
     validationMessage?: string;
     match?: FieldMatch;
     inputAttrs?: Record<string, any>;
-}
-interface FieldStepProps {
+};
+/** Range constraints */
+export type FieldStepProps = {
     step?: NumberOrString;
     min?: NumberOrString;
     max?: NumberOrString;
-}
-interface FieldArrowProps {
+};
+/** Arrow controls */
+export type FieldArrowProps = {
     arrow?: 'auto' | 'carousel' | 'stepper' | 'none';
     arrowStep?: NumberOrString;
     arrowAlign?: 'center' | 'right' | 'left';
-}
-interface FieldLengthProps {
+};
+/** Length constraints */
+export type FieldLengthProps = {
     minlength?: NumberOrString;
     maxlength?: NumberOrString;
-}
-interface FieldPatternProps {
+};
+/** Pattern prop */
+export type FieldPatternProps = {
     pattern?: string;
-}
-interface FieldUxProps {
+};
+/** UX attributes */
+export type FieldUxProps = {
     autocomplete?: string;
     autocapitalize?: 'off' | 'none' | 'sentences' | 'words' | 'characters' | string;
     inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string;
     enterKeyHint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send' | string;
     spellcheck?: boolean | 'true' | 'false';
     autocorrect?: 'on' | 'off' | string;
-}
-interface FieldInputProps<Value = any> extends FieldBasicProps<Value>, FieldStepProps, FieldArrowProps, FieldLengthProps, FieldPatternProps, FieldUxProps {
+};
+/** Textual/numeric props */
+export type FieldInputProps<Value = any> = FieldBasicProps<Value> & FieldStepProps & FieldArrowProps & FieldLengthProps & FieldPatternProps & FieldUxProps & {
     list?: string;
     iconVisibility?: string;
     iconVisibilityOff?: string;
-}
-interface FieldInputFileProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, FieldLengthProps, FieldUxProps {
+};
+/** File props */
+export type FieldInputFileProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
     multiple?: boolean;
     accept?: string;
     capture?: string | boolean;
-}
-interface FieldInputCheckProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, FieldUxProps {
-    checked?: boolean;
+};
+/** Checkbox/radio props */
+export type FieldInputCheckProps<Value = boolean> = Omit<FieldBasicProps<Value>, 'type'> & FieldUxProps & {
+    valueVariant?: NumberOrStringOrBoolean;
+    valueVariantHide?: NumberOrStringOrBoolean;
     indeterminate?: boolean;
-}
-interface FieldTextareaProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, FieldLengthProps, FieldUxProps {
+};
+/** Textarea props */
+export type FieldTextareaProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
     rows?: NumberOrString;
     cols?: NumberOrString;
     wrap?: 'soft' | 'hard' | 'off' | string;
     fieldSizing?: 'content' | 'fixed' | string;
-}
-interface FieldSelectProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, Omit<FieldStepProps, 'min' | 'step'>, FieldArrowProps, FieldUxProps {
+};
+/** Select props */
+export type FieldSelectProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & Omit<FieldStepProps, 'min' | 'step'> & FieldArrowProps & FieldUxProps & {
     option?: ListRecord;
     multiple?: boolean;
-}
-interface FieldAllProps<Value = any> extends FieldInputProps<Value>, FieldInputFileProps<Value>, FieldInputCheckProps<Value>, FieldTextareaProps<Value>, FieldSelectProps<Value> {
-}
-interface LabelExpose {
-    labelId: string;
-}
-interface LabelSlots {
+};
+/** All properties combined */
+export type FieldAllProps<Value = any> = FieldInputProps<Value> & FieldInputFileProps<Value> & FieldInputCheckProps<Value> & FieldTextareaProps<Value> & FieldSelectProps<Value>;
+
+
+// File: types/labelTypes.d.ts
+/** Label slots */
+export interface LabelSlots {
     default?(props: any): any;
 }
-interface LabelAlternativeSlots {
+/** Alternative label slots */
+export interface LabelAlternativeSlots {
     label?(props: any): any;
 }
-interface LabelNumberSlots extends LabelSlots {
+/** Numeric label slots */
+export interface LabelNumberSlots extends LabelSlots {
 }
-interface LabelHighlightSlots extends LabelSlots {
+/** Highlighted label slots */
+export interface LabelHighlightSlots extends LabelSlots {
 }
-interface LabelProps {
+/** Label props */
+export type LabelProps = {
+    /** Label text/number */
     label?: NumberOrString;
+    /** Element ID */
     labelId?: string;
-}
-interface LabelNumberProps extends LabelProps {
+};
+/** Numeric label props */
+export type LabelNumberProps = LabelProps & {
+    /** Max value */
     labelMax?: NumberOrString;
+    /** Format numbers */
     formatting?: boolean;
-}
-interface LabelHighlightProps extends LabelProps {
+};
+/** Highlighted label props */
+export type LabelHighlightProps = LabelProps & {
+    /** Text highlight */
     highlight?: string;
+    /** Start length */
     highlightLengthStart?: number;
+    /** Value */
     value?: any;
-}
-type ModelEmits<Value = string> = {
+};
+
+
+// File: types/modelTypes.d.ts
+/** Model update events */
+export type ModelEmits<Value = string> = {
     'update:value': [value: Value];
     'update:modelValue': [value: Value];
 };
-type ModelEmitsSelected<Value = string> = {
+/** Model open events */
+export type ModelEmitsOpen<Value = boolean> = {
+    'update:open': [value: Value];
+    'update:modelOpen': [value: Value];
+};
+/** Model selection events */
+export type ModelEmitsSelected<Value = string> = {
     'update:selected': [value: Value];
     'update:modelSelected': [value: Value];
 };
-interface ModelProps<Value = string> {
+/** Model value props */
+export type ModelProps<Value = string> = {
     'modelValue'?: Value;
     'onUpdate:value'?: (value: Value) => void;
     'onUpdate:modelValue'?: (value: Value) => void;
-}
-interface ModelPropsSelected<Value = string> {
+};
+/** Model open props */
+export type ModelPropsOpen<Value = boolean> = {
+    'modelOpen'?: Value;
+    'onUpdate:open'?: (value: Value) => void;
+    'onUpdate:modelOpen'?: (value: Value) => void;
+};
+/** Model selected props */
+export type ModelPropsSelected<Value = string> = {
     'modelSelected'?: Value;
     'onUpdate:selected'?: (value: Value) => void;
     'onUpdate:modelSelected'?: (value: Value) => void;
-}
-interface PrefixSlots {
+};
+
+
+// File: types/pluginTypes.d.ts
+/** Component library item */
+export type PluginComponentItem = {
+    name: string;
+    reg: RegExp;
+};
+/** Component library lists */
+export type PluginComponentList = Record<string, PluginComponentItem>;
+export type PluginComponentImports = PluginComponentItem[];
+/** Plugin options */
+export type PluginOptions = {
+    style?: boolean;
+    component?: boolean;
+    viteOptions?: any;
+};
+
+
+// File: types/prefixTypes.d.ts
+/** Prefix slots */
+export interface PrefixSlots {
     prefix?(props: any): any;
 }
-interface PrefixProps {
+/** Prefix props */
+export type PrefixProps = {
+    /** Prefix text/number */
     prefix?: string | number;
-}
-type RoleType = string | 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'button' | 'cell' | 'checkbox' | 'columnheader' | 'combobox' | 'command' | 'comment' | 'complementary' | 'composite' | 'contentinfo' | 'definition' | 'dialog' | 'directory' | 'document' | 'feed' | 'figure' | 'form' | 'generic' | 'grid' | 'gridcell' | 'group' | 'heading' | 'img' | 'input' | 'landmark' | 'link' | 'list' | 'listbox' | 'listitem' | 'log' | 'main' | 'mark' | 'marquee' | 'math' | 'menu' | 'menubar' | 'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'meter' | 'navigation' | 'none' | 'note' | 'option' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'range' | 'region' | 'roletype' | 'row' | 'rowgroup' | 'rowheader' | 'scrollbar' | 'search' | 'searchbox' | 'section' | 'sectionhead' | 'select' | 'separator' | 'slider' | 'spinbutton' | 'status' | 'structure' | 'suggestion' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'textbox' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem' | 'widget' | 'window';
-interface SuffixSlots {
+    /** ID */
+    prefixId?: string;
+};
+
+
+// File: types/roleTypes.d.ts
+/** ARIA role type list */
+export type RoleType = string | 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'button' | 'cell' | 'checkbox' | 'columnheader' | 'combobox' | 'command' | 'comment' | 'complementary' | 'composite' | 'contentinfo' | 'definition' | 'dialog' | 'directory' | 'document' | 'feed' | 'figure' | 'form' | 'generic' | 'grid' | 'gridcell' | 'group' | 'heading' | 'img' | 'input' | 'landmark' | 'link' | 'list' | 'listbox' | 'listitem' | 'log' | 'main' | 'mark' | 'marquee' | 'math' | 'menu' | 'menubar' | 'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'meter' | 'navigation' | 'none' | 'note' | 'option' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'range' | 'region' | 'roletype' | 'row' | 'rowgroup' | 'rowheader' | 'scrollbar' | 'search' | 'searchbox' | 'section' | 'sectionhead' | 'select' | 'separator' | 'slider' | 'spinbutton' | 'status' | 'structure' | 'suggestion' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'textbox' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem' | 'widget' | 'window';
+
+
+// File: types/suffixTypes.d.ts
+/** Suffix slots */
+export interface SuffixSlots {
     suffix?(props: any): any;
 }
-interface SuffixProps {
+/** Suffix props */
+export type SuffixProps = {
+    /** Suffix text/number */
     suffix?: string | number;
-}
-type TextValue = string | (() => string) | undefined;
-type TextIndex = 'close' | 'entriesMatch' | 'ok' | string;
-type TextList = Record<TextIndex, TextValue>;
-interface TextClosePropsInclude {
-    textClose?: TextValue;
-}
-interface TextCopiedClipboardPropsInclude {
-    textCopiedClipboard?: TextValue;
-}
-interface TextEntriesMatchPropsInclude {
-    textEntriesMatch?: TextValue;
-}
-interface TextOkPropsInclude {
-    textOk?: TextValue;
-}
-interface TextAllPropsInclude extends TextClosePropsInclude, TextCopiedClipboardPropsInclude, TextEntriesMatchPropsInclude, TextOkPropsInclude {
-}
-type TouchEventTypeX = 'left' | 'right' | 'none';
-type TouchEventTypeY = 'top' | 'bottom' | 'none';
-type TouchEventClient = {
-    x: number;
-    y: number;
+    /** ID */
+    suffixId?: string;
 };
-type TouchEventCallback = (typeX: TouchEventTypeX, typeY: TouchEventTypeY, clientX: number, clientY: number, mouse?: TouchEventClient, mouseMove?: TouchEventClient, touche?: Touch, toucheMove?: Touch) => Promise<boolean> | boolean;
+
+
+// File: types/textTypes.d.ts
+/** Text data types */
+export type TextValue = string | (() => string) | undefined;
+export type TextIndex = 'cancel' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'entriesMatch' | 'hide' | 'increment' | 'loading' | 'next' | 'ok' | 'previous' | 'show' | string;
+export type TextList = Record<TextIndex, TextValue>;
+/** Text inclusion properties */
+export type TextCancelPropsInclude = { textCancel?: TextValue; };
+export type TextCharacterLimitPropsInclude = { textCharacterLimit?: TextValue; };
+export type TextCharacterRemainingPropsInclude = { textCharacterRemaining?: TextValue; };
+export type TextClosePropsInclude = { textClose?: TextValue; };
+export type TextCopiedClipboardPropsInclude = { textCopiedClipboard?: TextValue; };
+export type TextDecrementPropsInclude = { textDecrement?: TextValue; };
+export type TextEntriesMatchPropsInclude = { textEntriesMatch?: TextValue; };
+export type TextHidePropsInclude = { textHide?: TextValue; };
+export type TextIncrementPropsInclude = { textIncrement?: TextValue; };
+export type TextLoadingPropsInclude = { textLoading?: TextValue; };
+export type TextNextPropsInclude = { textNext?: TextValue; };
+export type TextOkPropsInclude = { textOk?: TextValue; };
+export type TextPreviousPropsInclude = { textPrevious?: TextValue; };
+export type TextShowPropsInclude = { textShow?: TextValue; };
+/** All text props */
+export type TextAllPropsInclude = TextCancelPropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextEntriesMatchPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextLoadingPropsInclude & TextNextPropsInclude & TextOkPropsInclude & TextPreviousPropsInclude & TextShowPropsInclude;
+
+
+// File: types/touchEventTypes.d.ts
+/** Touch/mouse gesture types */
+export type TouchEventTypeX = 'left' | 'right' | 'none';
+export type TouchEventTypeY = 'top' | 'bottom' | 'none';
+/** Coordinates */
+export type TouchEventClient = { x: number; y: number; };
+/** Callback function for gesture handling */
+export type TouchEventCallback = (typeX: TouchEventTypeX, typeY: TouchEventTypeY, clientX: number, clientY: number, mouse?: TouchEventClient, mouseMove?: TouchEventClient, touche?: Touch, toucheMove?: Touch) => Promise<boolean> | boolean;

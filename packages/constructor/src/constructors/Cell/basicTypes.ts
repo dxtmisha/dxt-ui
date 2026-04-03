@@ -33,7 +33,9 @@ export type CellComponentInclude = {
 export interface CellSlotsInclude extends LabelAlternativeSlots,
   DescriptionSlots,
   CaptionSlots {
+  /** Slot for elements on the right/ Слот для элементов справа */
   trailing?(props: CellClassesSub): any
 
+  /** Slot for the main body content/ Слот для основного контента тела */
   body?(props: CellClassesSub): any
 }

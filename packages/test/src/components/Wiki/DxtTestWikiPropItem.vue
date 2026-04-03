@@ -17,6 +17,7 @@ const props = defineProps<{
 
 defineSlots<TestWikiSlotRender>()
 
+const hide = computed(() => props.item.isHide())
 const name = computed(() => props.item.getName())
 const defaultValue = computed(() => props.item.getDefaultValue())
 const description = computed(() => props.item.getDescription())
@@ -29,7 +30,7 @@ const demoOptions = computed(() => props.item.getDemoOptions())
 </script>
 
 <template>
-  <div class="dxt-test-wiki-prop-item">
+  <div v-if="!hide" class="dxt-test-wiki-prop-item">
     <div class="dxt-test-wiki-prop-item__tilte">
       <span class="dxt-test-wiki-prop-item__name">{{ name }}:</span>
       <DxtTestWikiCode :code="type"/>

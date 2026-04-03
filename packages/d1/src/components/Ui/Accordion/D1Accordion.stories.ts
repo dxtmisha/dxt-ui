@@ -93,18 +93,22 @@ export const AccordionVModel: Story = {
       }
     },
     template: `
-        <div class="wiki-storybook-item--padding">
-          <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="open = !open">
+              Toggle ({{ open }})
+            </button>
+          </div>
+          <D1Accordion v-model:open="open" label="Settings" description="Click to expand" icon="settings">
+            <template #default>
+              <div class="wiki-storybook-item--padding">
+                <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
+                <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the accordion's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
+                <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the accordion, such as in complex forms or coordinated UI interactions.</p>
+              </div>
+            </template>
+          </D1Accordion>
         </div>
-        <D1Accordion v-model:open="open" label="Settings" description="Click to expand" icon="settings">
-          <template #default>
-            <div class="wiki-storybook-item--padding">
-              <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
-              <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the accordion's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
-              <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the accordion, such as in complex forms or coordinated UI interactions.</p>
-            </div>
-          </template>
-        </D1Accordion>
     `
   })
 }
@@ -118,7 +122,6 @@ export const AccordionSlots: Story = {
           <template #description>Custom description slot</template>
           <template #caption>Custom caption slot</template>
           <template #trailing>Trailing slot</template>
-          <template #body>Body slot content</template>
           <template #default>
               <p>Custom default slot content (main accordion body)</p>
           </template>

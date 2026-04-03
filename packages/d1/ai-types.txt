@@ -1,0 +1,1394 @@
+1) All these methods are in the @dxtmisha/d1 library.
+2) Everything that is exported can be used.
+3) Use what is in this library if it exists; do not use other libraries if there is an analogue here. Do not create new ones if an analogue already exists here.
+
+The following is the content of "exports" from package.json:
+{
+  ".": {
+    "types": "./dist/library/types.d.ts",
+    "default": "./dist/types.js"
+  },
+  "./D1Accordion": {
+    "types": "./dist/library/D1Accordion.d.ts",
+    "default": "./dist/D1Accordion.js"
+  },
+  "./D1ActionSheet": {
+    "types": "./dist/library/D1ActionSheet.d.ts",
+    "default": "./dist/D1ActionSheet.js"
+  },
+  "./D1Actions": {
+    "types": "./dist/library/D1Actions.d.ts",
+    "default": "./dist/D1Actions.js"
+  },
+  "./D1Anchor": {
+    "types": "./dist/library/D1Anchor.d.ts",
+    "default": "./dist/D1Anchor.js"
+  },
+  "./D1Arrow": {
+    "types": "./dist/library/D1Arrow.d.ts",
+    "default": "./dist/D1Arrow.js"
+  },
+  "./D1Badge": {
+    "types": "./dist/library/D1Badge.d.ts",
+    "default": "./dist/D1Badge.js"
+  },
+  "./D1Bars": {
+    "types": "./dist/library/D1Bars.d.ts",
+    "default": "./dist/D1Bars.js"
+  },
+  "./D1Block": {
+    "types": "./dist/library/D1Block.d.ts",
+    "default": "./dist/D1Block.js"
+  },
+  "./D1Button": {
+    "types": "./dist/library/D1Button.d.ts",
+    "default": "./dist/D1Button.js"
+  },
+  "./D1Cell": {
+    "types": "./dist/library/D1Cell.d.ts",
+    "default": "./dist/D1Cell.js"
+  },
+  "./D1Checkbox": {
+    "types": "./dist/library/D1Checkbox.d.ts",
+    "default": "./dist/D1Checkbox.js"
+  },
+  "./D1Chip": {
+    "types": "./dist/library/D1Chip.d.ts",
+    "default": "./dist/D1Chip.js"
+  },
+  "./D1ChipGroup": {
+    "types": "./dist/library/D1ChipGroup.d.ts",
+    "default": "./dist/D1ChipGroup.js"
+  },
+  "./D1Dialog": {
+    "types": "./dist/library/D1Dialog.d.ts",
+    "default": "./dist/D1Dialog.js"
+  },
+  "./D1Dummy": {
+    "types": "./dist/library/D1Dummy.d.ts",
+    "default": "./dist/D1Dummy.js"
+  },
+  "./D1Field": {
+    "types": "./dist/library/D1Field.d.ts",
+    "default": "./dist/D1Field.js"
+  },
+  "./D1FieldCounter": {
+    "types": "./dist/library/D1FieldCounter.d.ts",
+    "default": "./dist/D1FieldCounter.js"
+  },
+  "./D1FieldLabel": {
+    "types": "./dist/library/D1FieldLabel.d.ts",
+    "default": "./dist/D1FieldLabel.js"
+  },
+  "./D1FieldMessage": {
+    "types": "./dist/library/D1FieldMessage.d.ts",
+    "default": "./dist/D1FieldMessage.js"
+  },
+  "./D1Grid": {
+    "types": "./dist/library/D1Grid.d.ts",
+    "default": "./dist/D1Grid.js"
+  },
+  "./D1GridItem": {
+    "types": "./dist/library/D1GridItem.d.ts",
+    "default": "./dist/D1GridItem.js"
+  },
+  "./D1HorizontalScroll": {
+    "types": "./dist/library/D1HorizontalScroll.d.ts",
+    "default": "./dist/D1HorizontalScroll.js"
+  },
+  "./D1Icon": {
+    "types": "./dist/library/D1Icon.d.ts",
+    "default": "./dist/D1Icon.js"
+  },
+  "./D1Image": {
+    "types": "./dist/library/D1Image.d.ts",
+    "default": "./dist/D1Image.js"
+  },
+  "./D1Input": {
+    "types": "./dist/library/D1Input.d.ts",
+    "default": "./dist/D1Input.js"
+  },
+  "./D1List": {
+    "types": "./dist/library/D1List.d.ts",
+    "default": "./dist/D1List.js"
+  },
+  "./D1ListGroup": {
+    "types": "./dist/library/D1ListGroup.d.ts",
+    "default": "./dist/D1ListGroup.js"
+  },
+  "./D1ListItem": {
+    "types": "./dist/library/D1ListItem.d.ts",
+    "default": "./dist/D1ListItem.js"
+  },
+  "./D1ListMenu": {
+    "types": "./dist/library/D1ListMenu.d.ts",
+    "default": "./dist/D1ListMenu.js"
+  },
+  "./D1Mask": {
+    "types": "./dist/library/D1Mask.d.ts",
+    "default": "./dist/D1Mask.js"
+  },
+  "./D1Menu": {
+    "types": "./dist/library/D1Menu.d.ts",
+    "default": "./dist/D1Menu.js"
+  },
+  "./D1Modal": {
+    "types": "./dist/library/D1Modal.d.ts",
+    "default": "./dist/D1Modal.js"
+  },
+  "./D1MotionAxis": {
+    "types": "./dist/library/D1MotionAxis.d.ts",
+    "default": "./dist/D1MotionAxis.js"
+  },
+  "./D1MotionTransform": {
+    "types": "./dist/library/D1MotionTransform.d.ts",
+    "default": "./dist/D1MotionTransform.js"
+  },
+  "./D1Page": {
+    "types": "./dist/library/D1Page.d.ts",
+    "default": "./dist/D1Page.js"
+  },
+  "./D1Progress": {
+    "types": "./dist/library/D1Progress.d.ts",
+    "default": "./dist/D1Progress.js"
+  },
+  "./D1Ripple": {
+    "types": "./dist/library/D1Ripple.d.ts",
+    "default": "./dist/D1Ripple.js"
+  },
+  "./D1Scrollbar": {
+    "types": "./dist/library/D1Scrollbar.d.ts",
+    "default": "./dist/D1Scrollbar.js"
+  },
+  "./D1Section": {
+    "types": "./dist/library/D1Section.d.ts",
+    "default": "./dist/D1Section.js"
+  },
+  "./D1Select": {
+    "types": "./dist/library/D1Select.d.ts",
+    "default": "./dist/D1Select.js"
+  },
+  "./D1SelectValue": {
+    "types": "./dist/library/D1SelectValue.d.ts",
+    "default": "./dist/D1SelectValue.js"
+  },
+  "./D1Skeleton": {
+    "types": "./dist/library/D1Skeleton.d.ts",
+    "default": "./dist/D1Skeleton.js"
+  },
+  "./D1TabItem": {
+    "types": "./dist/library/D1TabItem.d.ts",
+    "default": "./dist/D1TabItem.js"
+  },
+  "./D1Tabs": {
+    "types": "./dist/library/D1Tabs.d.ts",
+    "default": "./dist/D1Tabs.js"
+  },
+  "./D1TabsNavigation": {
+    "types": "./dist/library/D1TabsNavigation.d.ts",
+    "default": "./dist/D1TabsNavigation.js"
+  },
+  "./D1Textarea": {
+    "types": "./dist/library/D1Textarea.d.ts",
+    "default": "./dist/D1Textarea.js"
+  },
+  "./D1TextareaAutosize": {
+    "types": "./dist/library/D1TextareaAutosize.d.ts",
+    "default": "./dist/D1TextareaAutosize.js"
+  },
+  "./D1Tooltip": {
+    "types": "./dist/library/D1Tooltip.d.ts",
+    "default": "./dist/D1Tooltip.js"
+  },
+  "./D1Window": {
+    "types": "./dist/library/D1Window.d.ts",
+    "default": "./dist/D1Window.js"
+  },
+  "./media": {
+    "types": "./dist/library/media.d.ts",
+    "default": "./dist/media.js"
+  },
+  "./plugin": {
+    "types": "./dist/library/plugin.d.ts",
+    "default": "./dist/plugin.js"
+  },
+  "./style.css": "./dist/style.css",
+  "./style/ui.scss": "./src/styles/Ui/main.scss",
+  "./types.d.ts": "./dist/library/types.d.ts",
+  "./D1Group": {
+    "types": "./dist/library/D1Group.d.ts",
+    "default": "./dist/D1Group.js"
+  },
+  "./ui-properties": {
+    "sass": "./ui-properties.scss",
+    "default": "./ui-properties.scss"
+  },
+  "./D1SnackbarItem": {
+    "types": "./dist/library/D1SnackbarItem.d.ts",
+    "default": "./dist/D1SnackbarItem.js"
+  },
+  "./D1Snackbar": {
+    "types": "./dist/library/D1Snackbar.d.ts",
+    "default": "./dist/D1Snackbar.js"
+  }
+}
+
+// File: components/Ui/Accordion/index.d.ts
+export type { AccordionProps } from './props';
+export declare const D1Accordion: DefineSetupFnComponent<AccordionProps, ShortEmitsToObject<AccordionEmits>, SlotsType<AccordionSlots>>;
+
+// File: components/Ui/Accordion/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {
+    divider?: boolean;
+};
+/** Incoming props */
+export type AccordionProps = AccordionPropsBasic<IconProps, CellProps, MotionTransformProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/ActionSheet/index.d.ts
+export type { ActionSheetProps } from './props';
+export declare const D1ActionSheet: DefineSetupFnComponent<ActionSheetProps, ShortEmitsToObject<ActionSheetEmits>, SlotsType<ActionSheetSlots>>;
+
+// File: components/Ui/ActionSheet/props.d.ts
+export declare const propsValues: {
+    width: string[];
+};
+export type PropsToken = {
+    width?: 'sm' | 'md' | 'lg' | 'auto';
+};
+/** Incoming props */
+export type ActionSheetProps = ActionSheetPropsBasic<WindowProps, BarsProps, ActionsProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Actions/index.d.ts
+export type { ActionsProps } from './props';
+export declare const D1Actions: DefineSetupFnComponent<ActionsProps, ShortEmitsToObject<ActionsEmits>, SlotsType<ActionsSlots>>;
+
+// File: components/Ui/Actions/props.d.ts
+export declare const propsValues: {
+    align: string[];
+    flexible: string[];
+    padding: string[];
+};
+export type PropsToken = {
+    align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
+    flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
+    wrap?: boolean;
+    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
+    paddingByIndent?: boolean;
+};
+/** Incoming props */
+export type ActionsProps = ActionsPropsBasic<ButtonProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Anchor/index.d.ts
+export type { AnchorProps } from './props';
+export declare const D1Anchor: DefineSetupFnComponent<AnchorProps, ShortEmitsToObject<AnchorEmits>, SlotsType<AnchorSlots>>;
+
+// File: components/Ui/Anchor/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type AnchorProps = AnchorPropsBasic<IconProps, TooltipProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Arrow/index.d.ts
+export type { ArrowProps } from './props';
+export declare const D1Arrow: DefineSetupFnComponent<ArrowProps, ShortEmitsToObject<ArrowEmits>, SlotsType<ArrowSlots>>;
+
+// File: components/Ui/Arrow/props.d.ts
+export declare const propsValues: {
+    position: string[];
+    size: string[];
+};
+export type PropsToken = {
+    position?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
+    inverse?: boolean;
+    size?: 'sm' | 'md' | 'lg';
+};
+/** Incoming props */
+export type ArrowProps = ArrowPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Badge/index.d.ts
+export type { BadgeProps } from './props';
+export declare const D1Badge: DefineSetupFnComponent<BadgeProps, ShortEmitsToObject<BadgeEmits>, SlotsType<BadgeSlots>>;
+
+// File: components/Ui/Badge/props.d.ts
+export declare const propsValues: {
+    overlap: string[];
+    vertical: string[];
+    horizontal: string[];
+    size: string[];
+    palette: string[];
+};
+export type PropsToken = {
+    selected?: boolean;
+    hide?: boolean;
+    dot?: boolean;
+    overlap?: 'rectangular' | 'circular' | 'static';
+    vertical?: 'top' | 'center' | 'bottom';
+    horizontal?: 'right' | 'center' | 'left';
+    primary?: boolean;
+    secondary?: boolean;
+    outline?: boolean;
+    size?: 'sm' | 'md' | 'lg' | 'none';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+/** Incoming props */
+export type BadgeProps = BadgePropsBasic<IconProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Bars/index.d.ts
+export type { BarsProps } from './props';
+export declare const D1Bars: DefineSetupFnComponent<BarsProps, ShortEmitsToObject<BarsEmits>, SlotsType<BarsSlots>>;
+
+// File: components/Ui/Bars/props.d.ts
+export declare const propsValues: {
+    padding: string[];
+};
+export type PropsToken = {
+    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
+    paddingByIndent?: boolean;
+};
+/** Incoming props */
+export type BarsProps = BarsPropsBasic<ButtonProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Block/index.d.ts
+export type { BlockProps } from './props';
+export declare const D1Block: DefineSetupFnComponent<BlockProps, ShortEmitsToObject<BlockEmits>, SlotsType<BlockSlots>>;
+
+// File: components/Ui/Block/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type BlockProps = BlockPropsBasic<IconProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Button/index.d.ts
+export type { ButtonProps } from './props';
+export declare const D1Button: DefineSetupFnComponent<ButtonProps, ShortEmitsToObject<ButtonEmits>, SlotsType<ButtonSlots>>;
+
+// File: components/Ui/Button/props.d.ts
+export declare const propsValues: {
+    adaptive: string[];
+    container: string[];
+    textAlign: string[];
+    size: string[];
+    palette: string[];
+};
+export type PropsToken = {
+    focus?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    inverse?: boolean;
+    grid?: boolean;
+    textAlign?: 'left' | 'center' | 'right';
+    primary?: boolean;
+    secondary?: boolean;
+    outline?: boolean;
+    text?: boolean;
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    roundedFull?: boolean;
+    hasLabelMinWidth?: boolean;
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+/** Incoming props */
+export type ButtonProps = ButtonPropsBasic<IconProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Cell/index.d.ts
+export type { CellProps } from './props';
+export declare const D1Cell: DefineSetupFnComponent<CellProps, ShortEmitsToObject<CellEmits>, SlotsType<CellSlots>>;
+
+// File: components/Ui/Cell/props.d.ts
+export declare const propsValues: {
+    dividerLabel: string[];
+    padding: string[];
+};
+export type PropsToken = {
+    focus?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+    dynamic?: boolean;
+    dynamicHover?: boolean;
+    divider?: boolean;
+    dividerLabel?: 'always' | 'none' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
+    iconTop?: boolean;
+    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
+    paddingByIndent?: boolean;
+};
+/** Incoming props */
+export type CellProps = CellPropsBasic<IconProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Checkbox/index.d.ts
+export type { CheckboxProps } from './props';
+export declare const D1Checkbox: DefineSetupFnComponent<CheckboxProps, ShortEmitsToObject<CheckboxEmits>, SlotsType<CheckboxSlots>>;
+
+// File: components/Ui/Checkbox/props.d.ts
+export declare const propsValues: {
+    adaptive: string[];
+    container: string[];
+};
+type PropsToken = {
+    block?: boolean;
+    adaptive?: 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
+    container?: 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
+    required?: boolean;
+    itemCenter?: boolean;
+    focus?: boolean;
+    disabled?: boolean;
+};
+/** Incoming props */
+export type CheckboxProps = CheckboxPropsBasic<IconProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Chip/index.d.ts
+export type { ChipProps } from './props';
+export declare const D1Chip: DefineSetupFnComponent<ChipProps, ShortEmitsToObject<ChipEmits>, SlotsType<ChipSlots>>;
+
+// File: components/Ui/Chip/props.d.ts
+export declare const propsValues: {
+    adaptive: string[];
+    container: string[];
+    textAlign: string[];
+    size: string[];
+    palette: string[];
+};
+export type PropsToken = {
+    focus?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    inverse?: boolean;
+    grid?: boolean;
+    textAlign?: 'left' | 'center' | 'right';
+    input?: boolean;
+    assistive?: boolean;
+    size?: 'sm' | 'md' | 'lg';
+    roundedFull?: boolean;
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+/** Incoming props */
+export type ChipProps = ChipPropsBasic<IconProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/ChipGroup/index.d.ts
+export type { ChipGroupProps } from './props';
+export declare const D1ChipGroup: DefineSetupFnComponent<ChipGroupProps, ShortEmitsToObject<ChipGroupEmits>, SlotsType<ChipGroupSlots>>;
+
+// File: components/Ui/ChipGroup/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type ChipGroupProps = ChipGroupPropsBasic<ChipProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Dialog/index.d.ts
+export type { DialogProps } from './props';
+export declare const D1Dialog: DefineSetupFnComponent<DialogProps, ShortEmitsToObject<DialogEmits>, SlotsType<DialogSlots>>;
+
+// File: components/Ui/Dialog/props.d.ts
+export declare const propsValues: {
+    imagePosition: string[];
+    width: string[];
+};
+export type PropsToken = {
+    success?: boolean;
+    error?: boolean;
+    imagePosition?: 'top' | 'left';
+    width?: 'sm' | 'md' | 'lg' | 'auto';
+};
+/** Incoming props */
+export type DialogProps = DialogPropsBasic<WindowProps, BarsProps, IconProps, ImageProps, ButtonProps, ActionsProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Dummy/index.d.ts
+export type { DummyProps } from './props';
+export declare const D1Dummy: DefineSetupFnComponent<DummyProps, ShortEmitsToObject<DummyEmits>, SlotsType<DummySlots>>;
+
+// File: components/Ui/Dummy/props.d.ts
+export declare const propsValues: {
+    size: string[];
+    palette: string[];
+};
+type PropsToken = {
+    size?: 'x' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+/** Incoming props */
+export type DummyProps = DummyPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Field/index.d.ts
+export type { FieldProps } from './props';
+export declare const D1Field: DefineSetupFnComponent<FieldProps, ShortEmitsToObject<FieldEmits>, SlotsType<FieldSlots>>;
+
+// File: components/Ui/Field/props.d.ts
+export declare const propsValues: {
+    arrowAlign: string[];
+    cancel: string[];
+    align: string[];
+    width: never[];
+    size: string[];
+};
+export type PropsToken = {
+    focus?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    block?: boolean;
+    isValue?: boolean;
+    basic?: boolean;
+    boxed?: boolean;
+    tonal?: boolean;
+    filled?: boolean;
+    outlined?: boolean;
+    classic?: boolean;
+    arrowCarousel?: boolean;
+    arrowStepper?: boolean;
+    arrowAlign?: 'center' | 'right' | 'left';
+    cancel?: 'auto' | 'always' | 'none';
+    align?: 'center' | 'right' | 'left';
+    width?: string | 'custom';
+    size?: 'sm' | 'md' | 'lg' | 'display';
+};
+/** Incoming props */
+export type FieldProps = FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/FieldCounter/index.d.ts
+export type { FieldCounterProps } from './props';
+export declare const D1FieldCounter: DefineSetupFnComponent<FieldCounterProps, ShortEmitsToObject<FieldCounterEmits>, SlotsType<FieldCounterSlots>>;
+
+// File: components/Ui/FieldCounter/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type FieldCounterProps = FieldCounterPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/FieldLabel/index.d.ts
+export type { FieldLabelProps } from './props';
+export declare const D1FieldLabel: DefineSetupFnComponent<FieldLabelProps, ShortEmitsToObject<FieldLabelEmits>, SlotsType<FieldLabelSlots>>;
+
+// File: components/Ui/FieldLabel/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type FieldLabelProps = FieldLabelPropsBasic<FieldCounterProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/FieldMessage/index.d.ts
+export type { FieldMessageProps } from './props';
+export declare const D1FieldMessage: DefineSetupFnComponent<FieldMessageProps, ShortEmitsToObject<FieldMessageEmits>, SlotsType<FieldMessageSlots>>;
+
+// File: components/Ui/FieldMessage/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type FieldMessageProps = FieldMessagePropsBasic<FieldCounterProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Grid/index.d.ts
+export type { GridProps } from './props';
+export declare const D1Grid: DefineSetupFnComponent<GridProps, ShortEmitsToObject<GridEmits>, SlotsType<GridSlots>>;
+
+// File: components/Ui/Grid/props.d.ts
+export declare const propsValues: {};
+type PropsToken = {};
+/** Incoming props */
+export type GridProps = GridPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/GridItem/index.d.ts
+export type { GridItemProps } from './props';
+export declare const D1GridItem: DefineSetupFnComponent<GridItemProps, ShortEmitsToObject<GridItemEmits>, SlotsType<GridItemSlots>>;
+
+// File: components/Ui/GridItem/props.d.ts
+export declare const propsValues: {
+    base: string[];
+    sm: string[];
+    md: string[];
+    lg: string[];
+    xl: string[];
+    xl2: string[];
+};
+type PropsToken = {
+    base?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+    sm?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+    md?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+    lg?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+    xl?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+    xl2?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+};
+/** Incoming props */
+export type GridItemProps = GridItemPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Group/index.d.ts
+export type { GroupProps } from './props';
+export declare const D1Group: DefineSetupFnComponent<GroupProps, ShortEmitsToObject<GroupEmits>, SlotsType<GroupSlots>>;
+
+// File: components/Ui/Group/props.d.ts
+export declare const propsValues: {};
+type PropsToken = {};
+/** Incoming props */
+export type GroupProps = GroupPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/HorizontalScroll/index.d.ts
+export type { HorizontalScrollProps } from './props';
+export declare const D1HorizontalScroll: DefineSetupFnComponent<HorizontalScrollProps, ShortEmitsToObject<HorizontalScrollEmits>, SlotsType<HorizontalScrollSlots>>;
+
+// File: components/Ui/HorizontalScroll/props.d.ts
+export declare const propsValues: {
+    align: string[];
+};
+type PropsToken = {
+    flush?: boolean;
+    align?: 'block' | 'center' | 'left' | 'right';
+};
+/** Incoming props */
+export type HorizontalScrollProps = HorizontalScrollPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Icon/index.d.ts
+export type { IconProps } from './props';
+export declare const D1Icon: DefineSetupFnComponent<IconProps, ShortEmitsToObject<IconEmits>, SlotsType<IconSlots>>;
+
+// File: components/Ui/Icon/props.d.ts
+export declare const propsValues: {
+    animationType: string[];
+    size: string[];
+    rounded: string[];
+};
+export type PropsToken = {
+    turn?: boolean;
+    disabled?: boolean;
+    hide?: boolean;
+    asPalette?: boolean;
+    dir?: boolean;
+    overlay?: boolean;
+    dynamic?: boolean;
+    start?: boolean;
+    end?: boolean;
+    high?: boolean;
+    animationType?: 'type1' | 'type2';
+    animationShow?: boolean;
+    square?: boolean;
+    circle?: boolean;
+    rect?: boolean;
+    size?: 'auto' | 'x' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl';
+    inverse?: boolean;
+    rounded?: 'auto' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+};
+/** Incoming props */
+export type IconProps = IconPropsBasic<ImageProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Image/index.d.ts
+export type { ImageProps } from './props';
+export declare const D1Image: DefineSetupFnComponent<ImageProps, ShortEmitsToObject<ImageEmits>, SlotsType<ImageSlots>>;
+
+// File: components/Ui/Image/props.d.ts
+export declare const propsValues: {
+    size: string[];
+};
+export type PropsToken = {
+    turn?: boolean;
+    disabled?: boolean;
+    hide?: boolean;
+    adaptive?: boolean;
+    size?: 'auto' | 'contain' | 'cover';
+};
+/** Incoming props */
+export type ImageProps = ImagePropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Input/index.d.ts
+export type { InputProps } from './props';
+export declare const D1Input: DefineSetupFnComponent<InputProps, ShortEmitsToObject<InputEmits>, SlotsType<InputSlots>>;
+
+// File: components/Ui/Input/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type InputProps = InputPropsBasic<MaskProps, IconProps, FieldProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/List/index.d.ts
+export type { ListProps } from './props';
+export declare const D1List: DefineSetupFnComponent<ListProps, ShortEmitsToObject<ListEmits>, SlotsType<ListSlots>>;
+
+// File: components/Ui/List/props.d.ts
+export declare const propsValues: {
+    axis: string[];
+};
+export type PropsToken = {
+    focus?: boolean;
+    axis?: 'x' | 'y';
+    divider?: boolean;
+};
+/** Incoming props */
+export type ListProps = ListPropsBasic<IconProps, ListItemProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/ListGroup/index.d.ts
+export type { ListGroupProps } from './props';
+export declare const D1ListGroup: DefineSetupFnComponent<ListGroupProps, ShortEmitsToObject<ListGroupEmits>, SlotsType<ListGroupSlots>>;
+
+// File: components/Ui/ListGroup/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {
+    open?: boolean;
+    divider?: boolean;
+};
+/** Incoming props */
+export type ListGroupProps = ListGroupPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/ListItem/index.d.ts
+export type { ListItemProps } from './props';
+export declare const D1ListItem: DefineSetupFnComponent<ListItemProps, ShortEmitsToObject<ListItemEmits>, SlotsType<ListItemSlots>>;
+
+// File: components/Ui/ListItem/props.d.ts
+export declare const propsValues: {
+    iconAlign: string[];
+    fill: never[];
+    size: string[];
+    palette: string[];
+};
+export type PropsToken = {
+    focus?: boolean;
+    open?: boolean;
+    selected?: boolean;
+    selectedChild?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+    iconTop?: boolean;
+    iconAlign?: 'center' | 'edge';
+    fill?: string | 'custom';
+    divider?: boolean;
+    size?: 'sm' | 'md' | 'lg';
+    dense?: boolean;
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+/** Incoming props */
+export type ListItemProps = ListItemPropsBasic<IconProps, BadgeProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/ListMenu/index.d.ts
+export type { ListMenuProps } from './props';
+export declare const D1ListMenu: DefineSetupFnComponent<ListMenuProps, ShortEmitsToObject<ListMenuEmits>, SlotsType<ListMenuSlots>>;
+
+// File: components/Ui/ListMenu/props.d.ts
+export declare const propsValues: {
+    axis: string[];
+};
+export type PropsToken = {
+    open?: boolean;
+    axis?: 'x' | 'y';
+    divider?: boolean;
+};
+/** Incoming props */
+export type ListMenuProps = ListMenuPropsBasic<WindowProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Mask/index.d.ts
+export type { MaskProps } from './props';
+export declare const D1Mask: DefineSetupFnComponent<MaskProps, ShortEmitsToObject<MaskEmits>, SlotsType<MaskSlots>>;
+
+// File: components/Ui/Mask/props.d.ts
+export declare const propsValues: {
+    align: string[];
+    dir: string[];
+};
+export type PropsToken = {
+    visible?: boolean;
+    visiblePartly?: boolean;
+    align?: 'center' | 'left' | 'right';
+    dir?: 'ltr' | 'rtl';
+};
+/** Incoming props */
+export type MaskProps = MaskPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Menu/index.d.ts
+export type { MenuProps } from './props';
+export declare const D1Menu: DefineSetupFnComponent<MenuProps, ShortEmitsToObject<MenuEmits>, SlotsType<MenuSlots>>;
+
+// File: components/Ui/Menu/props.d.ts
+export declare const propsValues: {
+    barsAdaptive: string[];
+};
+export type PropsToken = {
+    hideList?: boolean;
+    barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl';
+};
+/** Incoming props */
+export type MenuProps = MenuPropsBasic<ListProps, ListItemProps, BarsProps, WindowProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Modal/index.d.ts
+export type { ModalProps } from './props';
+export declare const D1Modal: DefineSetupFnComponent<ModalProps, ShortEmitsToObject<ModalEmits>, SlotsType<ModalSlots>>;
+
+// File: components/Ui/Modal/props.d.ts
+export declare const propsValues: {
+    imagePosition: string[];
+    width: string[];
+};
+export type PropsToken = {
+    imagePosition?: 'top' | 'left';
+    width?: 'sm' | 'md' | 'lg' | 'xl' | 'auto';
+};
+/** Incoming props */
+export type ModalProps = ModalPropsBasic<WindowProps, BarsProps, ActionsProps, ImageProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/MotionAxis/index.d.ts
+export type { MotionAxisProps } from './props';
+export declare const D1MotionAxis: DefineSetupFnComponent<MotionAxisProps, ShortEmitsToObject<MotionAxisEmits>, SlotsType<MotionAxisSlots>>;
+
+// File: components/Ui/MotionAxis/props.d.ts
+export declare const propsValues: {
+    axis: string[];
+    direction: string[];
+};
+type PropsToken = {
+    axis?: 'x' | 'y' | 'z';
+    direction?: 'next' | 'back' | 'auto';
+};
+/** Incoming props */
+export type MotionAxisProps = MotionAxisPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/MotionTransform/index.d.ts
+export type { MotionTransformProps } from './props';
+export declare const D1MotionTransform: DefineSetupFnComponent<MotionTransformProps, ShortEmitsToObject<MotionTransformEmits>, SlotsType<MotionTransformSlots>>;
+
+// File: components/Ui/MotionTransform/props.d.ts
+export declare const propsValues: {
+    animationHeadPosition: string[];
+    adaptive: string[];
+};
+export type PropsToken = {
+    section?: boolean;
+    animationHeadPosition?: 'top' | 'toBottom';
+    adaptive?: 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl';
+};
+/** Incoming props */
+export type MotionTransformProps = MotionTransformPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Page/index.d.ts
+export type { PageProps } from './props';
+export declare const D1Page: DefineSetupFnComponent<PageProps, ShortEmitsToObject<PageEmits>, SlotsType<PageSlots>>;
+
+// File: components/Ui/Page/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type PageProps = PagePropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Progress/index.d.ts
+export type { ProgressProps } from './props';
+export declare const D1Progress: DefineSetupFnComponent<ProgressProps, ShortEmitsToObject<ProgressEmits>, SlotsType<ProgressSlots>>;
+
+// File: components/Ui/Progress/props.d.ts
+export declare const propsValues: {
+    indeterminate: string[];
+    position: string[];
+    size: string[];
+    palette: string[];
+};
+export type PropsToken = {
+    point?: boolean;
+    linear?: boolean;
+    circular?: boolean;
+    indeterminate?: 'type1' | 'type2' | 'type3';
+    position?: 'top' | 'bottom' | 'static';
+    dense?: boolean;
+    inverse?: boolean;
+    size?: 'sm' | 'md' | 'lg';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+/** Incoming props */
+export type ProgressProps = ProgressPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Ripple/index.d.ts
+export type { RippleProps } from './props';
+export declare const D1Ripple: DefineSetupFnComponent<RippleProps, ShortEmitsToObject<RippleEmits>, SlotsType<RippleSlots>>;
+
+// File: components/Ui/Ripple/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type RippleProps = RipplePropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Scrollbar/index.d.ts
+export type { ScrollbarProps } from './props';
+export declare const D1Scrollbar: DefineSetupFnComponent<ScrollbarProps, ShortEmitsToObject<ScrollbarEmits>, SlotsType<ScrollbarSlots>>;
+
+// File: components/Ui/Scrollbar/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {
+    visible?: boolean;
+    divider?: boolean;
+    dividerTop?: boolean;
+    dividerBottom?: boolean;
+    dividerHide?: boolean;
+    inverse?: boolean;
+    standard?: boolean;
+};
+/** Incoming props */
+export type ScrollbarProps = ScrollbarPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Section/index.d.ts
+export type { SectionProps } from './props';
+export declare const D1Section: DefineSetupFnComponent<SectionProps, ShortEmitsToObject<SectionEmits>, SlotsType<SectionSlots>>;
+
+// File: components/Ui/Section/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type SectionProps = SectionPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Select/index.d.ts
+export type { SelectProps } from './props';
+export declare const D1Select: DefineSetupFnComponent<SelectProps, ShortEmitsToObject<SelectEmits>, SlotsType<SelectSlots>>;
+
+// File: components/Ui/Select/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type SelectProps = SelectPropsBasic<IconProps, FieldProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, InputProps, ProgressProps, MenuProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/SelectValue/index.d.ts
+export type { SelectValueProps } from './props';
+export declare const D1SelectValue: DefineSetupFnComponent<SelectValueProps, ShortEmitsToObject<SelectValueEmits>, SlotsType<SelectValueSlots>>;
+
+// File: components/Ui/SelectValue/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {};
+/** Incoming props */
+export type SelectValueProps = SelectValuePropsBasic<IconProps, ChipProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Skeleton/index.d.ts
+export type { SkeletonProps } from './props';
+export declare const D1Skeleton: DefineSetupFnComponent<SkeletonProps, ShortEmitsToObject<SkeletonEmits>, SlotsType<SkeletonSlots>>;
+
+// File: components/Ui/Skeleton/props.d.ts
+export declare const propsValues: {};
+export type PropsToken = {
+    active?: boolean;
+};
+/** Incoming props */
+export type SkeletonProps = SkeletonPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Snackbar/index.d.ts
+export type { SnackbarProps } from './props';
+export declare const D1Snackbar: DefineSetupFnComponent<SnackbarProps, ShortEmitsToObject<SnackbarEmits>, SlotsType<SnackbarSlots>>;
+
+// File: components/Ui/Snackbar/props.d.ts
+export declare const propsValues: {
+    limit: string[];
+    vertical: string[];
+    horizontal: string[];
+    origin: string[];
+};
+type PropsToken = {
+    full?: boolean;
+    all?: boolean;
+    limit?: '1' | '2' | '4' | '6' | '8';
+    vertical?: 'top' | 'bottom';
+    horizontal?: 'right' | 'left' | 'block';
+    origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
+};
+/** Incoming props */
+export type SnackbarProps = SnackbarPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/SnackbarItem/index.d.ts
+export type { SnackbarItemProps } from './props';
+export declare const D1SnackbarItem: DefineSetupFnComponent<SnackbarItemProps, ShortEmitsToObject<SnackbarItemEmits>, SlotsType<SnackbarItemSlots>>;
+
+// File: components/Ui/SnackbarItem/props.d.ts
+export declare const propsValues: {
+    palette: string[];
+};
+type PropsToken = {
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+/** Incoming props */
+export type SnackbarItemProps = SnackbarItemPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/TabItem/index.d.ts
+export type { TabItemProps } from './props';
+export declare const D1TabItem: DefineSetupFnComponent<TabItemProps, ShortEmitsToObject<TabItemEmits>, SlotsType<TabItemSlots>>;
+
+// File: components/Ui/TabItem/props.d.ts
+export declare const propsValues: {
+    adaptive: string[];
+    container: string[];
+};
+type PropsToken = {
+    focus?: boolean;
+    open?: boolean;
+    selected?: boolean;
+    disabled?: boolean;
+    adaptive?: 'iconAlways' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+};
+/** Incoming props */
+export type TabItemProps = TabItemPropsBasic<IconProps, BadgeProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Tabs/index.d.ts
+export type { TabsProps } from './props';
+export declare const D1Tabs: DefineSetupFnComponent<TabsProps, ShortEmitsToObject<TabsEmits>, SlotsType<TabsSlots>>;
+
+// File: components/Ui/Tabs/props.d.ts
+export declare const propsValues: {};
+type PropsToken = {};
+/** Incoming props */
+export type TabsProps = TabsPropsBasic<TabItemProps, TabsNavigationProps, MotionAxisProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/TabsNavigation/index.d.ts
+export type { TabsNavigationProps } from './props';
+export declare const D1TabsNavigation: DefineSetupFnComponent<TabsNavigationProps, ShortEmitsToObject<TabsNavigationEmits>, SlotsType<TabsNavigationSlots>>;
+
+// File: components/Ui/TabsNavigation/props.d.ts
+export declare const propsValues: {};
+type PropsToken = {
+    focus?: boolean;
+    divider?: boolean;
+};
+/** Incoming props */
+export type TabsNavigationProps = TabsNavigationPropsBasic<TabItemProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Textarea/index.d.ts
+export type { TextareaProps } from './props';
+export declare const D1Textarea: DefineSetupFnComponent<TextareaProps, ShortEmitsToObject<TextareaEmits>, SlotsType<TextareaSlots>>;
+
+// File: components/Ui/Textarea/props.d.ts
+export declare const propsValues: {};
+type PropsToken = {};
+/** Incoming props */
+export type TextareaProps = TextareaPropsBasic<TextareaAutosizeProps, IconProps, FieldProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/TextareaAutosize/index.d.ts
+export type { TextareaAutosizeProps } from './props';
+export declare const D1TextareaAutosize: DefineSetupFnComponent<TextareaAutosizeProps, ShortEmitsToObject<TextareaAutosizeEmits>, SlotsType<TextareaAutosizeSlots>>;
+
+// File: components/Ui/TextareaAutosize/props.d.ts
+export declare const propsValues: {
+    height: string[];
+};
+export type PropsToken = {
+    autosize?: boolean;
+    height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+};
+/** Incoming props */
+export type TextareaAutosizeProps = TextareaAutosizePropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Tooltip/index.d.ts
+export type { TooltipProps } from './props';
+export declare const D1Tooltip: DefineSetupFnComponent<TooltipProps, ShortEmitsToObject<TooltipEmits>, SlotsType<TooltipSlots>>;
+
+// File: components/Ui/Tooltip/props.d.ts
+export declare const propsValues: {
+    maxWidth: string[];
+};
+export type PropsToken = {
+    interactive?: boolean;
+    embedded?: boolean;
+    maxWidth?: 'sm' | 'md' | 'lg';
+};
+/** Incoming props */
+export type TooltipProps = TooltipPropsBasic & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: components/Ui/Window/index.d.ts
+export type { WindowProps } from './props';
+export declare const D1Window: DefineSetupFnComponent<WindowProps, ShortEmitsToObject<WindowEmits>, SlotsType<WindowSlots>>;
+
+// File: components/Ui/Window/props.d.ts
+export declare const propsValues: {
+    width: string[];
+    height: string[];
+    axis: string[];
+    imagePosition: string[];
+    alignment: string[];
+    origin: string[];
+    adaptive: string[];
+    imageSize: string[];
+};
+export type PropsToken = {
+    width?: string | 'auto' | 'max' | 'sm' | 'md' | 'lg' | 'custom';
+    height?: string | 'auto' | 'max' | 'sm' | 'md' | 'lg' | 'custom';
+    hide?: boolean;
+    axis?: 'x' | 'y' | 'on';
+    imagePosition?: 'top' | 'left';
+    dense?: boolean;
+    alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull';
+    origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight';
+    adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static' | 'actionSheet' | 'actionSheetToModal' | 'autoStaticSm' | 'autoStaticMd' | 'autoStaticLg' | 'autoStaticXl' | 'autoStatic2xl';
+    fullscreen?: boolean;
+    overscroll?: boolean;
+    closeButton?: boolean;
+    closeMobileHide?: boolean;
+    widthMatch?: boolean;
+    imageSize?: 'sm' | 'md' | 'lg' | 'quarter' | 'half';
+};
+/** Incoming props */
+export type WindowProps = WindowPropsBasic<ScrollbarProps, IconProps, ImageProps> & PropsToken;
+/** Default values */
+export declare const defaults: object;
+
+// File: library/D1Accordion.d.ts
+export * from '../components/Ui/Accordion/index.js';
+
+// File: library/D1ActionSheet.d.ts
+export * from '../components/Ui/ActionSheet/index.js';
+
+// File: library/D1Actions.d.ts
+export * from '../components/Ui/Actions/index.js';
+
+// File: library/D1Anchor.d.ts
+export * from '../components/Ui/Anchor/index.js';
+
+// File: library/D1Arrow.d.ts
+export * from '../components/Ui/Arrow/index.js';
+
+// File: library/D1Badge.d.ts
+export * from '../components/Ui/Badge/index.js';
+
+// File: library/D1Bars.d.ts
+export * from '../components/Ui/Bars/index.js';
+
+// File: library/D1Block.d.ts
+export * from '../components/Ui/Block/index.js';
+
+// File: library/D1Button.d.ts
+export * from '../components/Ui/Button/index.js';
+
+// File: library/D1Cell.d.ts
+export * from '../components/Ui/Cell/index.js';
+
+// File: library/D1Checkbox.d.ts
+export * from '../components/Ui/Checkbox/index.js';
+
+// File: library/D1Chip.d.ts
+export * from '../components/Ui/Chip/index.js';
+
+// File: library/D1ChipGroup.d.ts
+export * from '../components/Ui/ChipGroup/index.js';
+
+// File: library/D1Dialog.d.ts
+export * from '../components/Ui/Dialog/index.js';
+
+// File: library/D1Dummy.d.ts
+export * from '../components/Ui/Dummy/index.js';
+
+// File: library/D1Field.d.ts
+export * from '../components/Ui/Field/index.js';
+
+// File: library/D1FieldCounter.d.ts
+export * from '../components/Ui/FieldCounter/index.js';
+
+// File: library/D1FieldLabel.d.ts
+export * from '../components/Ui/FieldLabel/index.js';
+
+// File: library/D1FieldMessage.d.ts
+export * from '../components/Ui/FieldMessage/index.js';
+
+// File: library/D1Grid.d.ts
+export * from '../components/Ui/Grid/index.js';
+
+// File: library/D1GridItem.d.ts
+export * from '../components/Ui/GridItem/index.js';
+
+// File: library/D1Group.d.ts
+export * from '../components/Ui/Group/index.js';
+
+// File: library/D1HorizontalScroll.d.ts
+export * from '../components/Ui/HorizontalScroll/index.js';
+
+// File: library/D1Icon.d.ts
+export * from '../components/Ui/Icon/index.js';
+
+// File: library/D1Image.d.ts
+export * from '../components/Ui/Image/index.js';
+
+// File: library/D1Input.d.ts
+export * from '../components/Ui/Input/index.js';
+
+// File: library/D1List.d.ts
+export * from '../components/Ui/List/index.js';
+
+// File: library/D1ListGroup.d.ts
+export * from '../components/Ui/ListGroup/index.js';
+
+// File: library/D1ListItem.d.ts
+export * from '../components/Ui/ListItem/index.js';
+
+// File: library/D1ListMenu.d.ts
+export * from '../components/Ui/ListMenu/index.js';
+
+// File: library/D1Mask.d.ts
+export * from '../components/Ui/Mask/index.js';
+
+// File: library/D1Menu.d.ts
+export * from '../components/Ui/Menu/index.js';
+
+// File: library/D1Modal.d.ts
+export * from '../components/Ui/Modal/index.js';
+
+// File: library/D1MotionAxis.d.ts
+export * from '../components/Ui/MotionAxis/index.js';
+
+// File: library/D1MotionTransform.d.ts
+export * from '../components/Ui/MotionTransform/index.js';
+
+// File: library/D1Page.d.ts
+export * from '../components/Ui/Page/index.js';
+
+// File: library/D1Progress.d.ts
+export * from '../components/Ui/Progress/index.js';
+
+// File: library/D1Ripple.d.ts
+export * from '../components/Ui/Ripple/index.js';
+
+// File: library/D1Scrollbar.d.ts
+export * from '../components/Ui/Scrollbar/index.js';
+
+// File: library/D1Section.d.ts
+export * from '../components/Ui/Section/index.js';
+
+// File: library/D1Select.d.ts
+export * from '../components/Ui/Select/index.js';
+
+// File: library/D1SelectValue.d.ts
+export * from '../components/Ui/SelectValue/index.js';
+
+// File: library/D1Skeleton.d.ts
+export * from '../components/Ui/Skeleton/index.js';
+
+// File: library/D1Snackbar.d.ts
+export * from '../components/Ui/Snackbar/index.js';
+
+// File: library/D1SnackbarItem.d.ts
+export * from '../components/Ui/SnackbarItem/index.js';
+
+// File: library/D1TabItem.d.ts
+export * from '../components/Ui/TabItem/index.js';
+
+// File: library/D1Tabs.d.ts
+export * from '../components/Ui/Tabs/index.js';
+
+// File: library/D1TabsNavigation.d.ts
+export * from '../components/Ui/TabsNavigation/index.js';
+
+// File: library/D1Textarea.d.ts
+export * from '../components/Ui/Textarea/index.js';
+
+// File: library/D1TextareaAutosize.d.ts
+export * from '../components/Ui/TextareaAutosize/index.js';
+
+// File: library/D1Tooltip.d.ts
+export * from '../components/Ui/Tooltip/index.js';
+
+// File: library/D1Window.d.ts
+export * from '../components/Ui/Window/index.js';
+
+// File: library/design.d.ts
+export declare const designName: string;
+export declare const packageName: string;
+export declare const componentsReg: RegExp;
+export declare const styleVarsReg: RegExp;
+export declare const componentsList: PluginComponentImports;
+
+// File: library/media.d.ts
+export declare const d1MakeIcons: () => void;
+
+// File: library/plugin.d.ts
+/**
+ * Init design system Vite plugin.
+ * @param options plugin options
+ */
+export declare function uiD1VitePlugin(options?: PluginOptions): VitePlugin;

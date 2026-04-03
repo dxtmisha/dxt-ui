@@ -110,6 +110,7 @@ export type MotionTransformEmitsInclude = {
  * Интерфейс для включения expose MotionTransform
  */
 export interface MotionTransformExposeInclude extends MotionTransformExpose {
+  /** Reference to the MotionTransform component instance/ Ссылка на экземпляр компонента MotionTransform */
   motionTransformElement: Ref<ConstrBind<MotionTransformExpose> | undefined>
 }
 

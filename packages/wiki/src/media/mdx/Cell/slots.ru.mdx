@@ -12,29 +12,9 @@
 **Параметры:**
 - `props: CellClassesSub` — объект с CSS классами для под-элементов ячейки
 
-## CellClassesSub
+**CellClassesSub:**
 
-`CellClassesSub` — объект, передаваемый во все слоты компонента Cell, содержащий CSS классы для стилизации под-элементов.
-
-### Структура типа
-
-```typescript
-type CellClassesSub = {
-  /** CSS класс для элемента метки */
-  label: string
-
-  /** CSS класс для элемента описания */
-  description: string
-
-  /** CSS класс для элемента подписи */
-  caption: string
-
-  /** CSS класс для элемента области trailing */
-  trailing: string
-}
-```
-
-### Свойства
+Объект, передаваемый во все слоты компонента Cell, содержащий CSS классы для стилизации под-элементов.
 
 - **`label`** — CSS класс для элемента метки (`{className}__label`)
 - **`description`** — CSS класс для элемента описания (`{className}__description`)
@@ -44,40 +24,17 @@ type CellClassesSub = {
 ### Пример использования
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const selected = ref(false)
-const notifications = ref(5)
-</script>
-
 <template>
-  <Cell
-    label="Уведомления"
-    description="У вас есть непрочитанные сообщения"
-    icon="notifications"
-    :selected="selected"
-    @click="selected = !selected"
+  <Component
+    label="Интерактивная ячейка"
+    description="Этот пример демонстрирует использование классов под-элементов в слотах."
   >
-    <template #trailing="{ trailing }">
-      <div :class="trailing">
-        <Icon name="chevron_right" />
+    <template #body="{ description }">
+      <!-- Используйте класс 'description' для стилизации вторичного контента в области body -->
+      <div :class="description">
+        Здесь можно разместить дополнительные действия или информацию.
       </div>
     </template>
-
-    <template #body>
-      <div class="quick-actions">
-        <button @click.stop="markAllRead">Отметить все как прочитанное</button>
-        <button @click.stop="clearAll">Очистить все</button>
-      </div>
-    </template>
-  </Cell>
+  </Component>
 </template>
 ```
-
-В этом примере:
-- Каждый слот получает `CellClassesSub` с CSS классами для правильной стилизации
-- Слот `trailing` размещает интерактивные элементы справа
-- Слот `body` добавляет дополнительные действия под основным контентом
-- Все элементы корректно интегрированы в структуру Cell
-

@@ -79,7 +79,8 @@ export const wikiInformation: StorybookArgsToList = {
         ru: 'Текст описания, предоставляющий дополнительный контекст'
       },
       value: 'Here is a detailed description of the component'
-    }
+    },
+    hide: true
   },
   forceShowMessage: {
     type: StorybookControl.boolean,
@@ -148,7 +149,8 @@ export const wikiInformation: StorybookArgsToList = {
         ru: 'Текстовая метка для компонента'
       },
       value: 'Label'
-    }
+    },
+    hide: true
   },
   placeholder: {
     type: StorybookControl.string,

@@ -14,10 +14,12 @@ export type MotionTransformComponents = {};
  * Тип, описывающий доступные события.
  */
 export type MotionTransformEmits = ModelEmitsOpen & {
+    /** Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации */
     transform: [
         event: Event | undefined,
         options: MotionTransformEmitOptions
     ];
+    /** Lightweight transformation event/ Облегченное событие трансформации */
     transformLite: [
         options: MotionTransformEmitOptions
     ];
@@ -61,6 +63,7 @@ export interface MotionTransformSlots {
  * Тип, описывающий подклассы.
  */
 export type MotionTransformClasses = {
+    /** Main class/ Основной класс */
     main: ConstrClass;
     context: string;
     head: string;

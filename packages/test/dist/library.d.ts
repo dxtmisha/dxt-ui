@@ -79,11 +79,6 @@ export declare const DxtTestPage: {
         default?(_: {}): any;
     };
 });
-export declare const DxtTestScreenshot: DefineComponent<{
-    element: HTMLElement;
-}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    element: HTMLElement;
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
 export declare const UiTestContainer: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         label?: string;
@@ -221,7 +216,7 @@ export declare const DxtTestWiki: {
         design: string;
         wiki: WikiStorybook;
         component: any;
-    }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, HTMLDivElement, ComponentProvideOptions, {
+    }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
         D: {};
@@ -308,7 +303,7 @@ export declare const DxtTestWikiPossibilities: DefineComponent<{
 export declare const DxtTestWikiPropItem: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         item: WikiStorybookProp;
-    }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, HTMLDivElement, ComponentProvideOptions, {
+    }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
         D: {};
@@ -333,4 +328,5 @@ export declare const DxtTestWikiTitle: DefineComponent<{
     label: string;
     type?: string;
 }> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLHeadingElement>;
+export * from './composables/useWikiItemFocus';
 export * from './types/wikiTypes';

@@ -18,7 +18,8 @@ export const wikiHook: StorybookArgsToList = {
         en: 'Event handler called on update:modelOpen with the new boolean value',
         ru: 'Обработчик события update:modelOpen, вызывается с новым булевым значением'
       }
-    }
+    },
+    hide: true
   },
   'onUpdate:modelSelected': {
     type: StorybookControl.object,
@@ -28,7 +29,8 @@ export const wikiHook: StorybookArgsToList = {
         en: 'Event handler called on update:modelSelected with the new selected value',
         ru: 'Обработчик события update:modelSelected, вызывается с новым выбранным значением'
       }
-    }
+    },
+    hide: true
   },
   'onUpdate:modelValue': {
     type: StorybookControl.object,
@@ -38,7 +40,8 @@ export const wikiHook: StorybookArgsToList = {
         en: 'Event handler called on update:modelValue with the new value',
         ru: 'Обработчик события update:modelValue, вызывается с новым значением'
       }
-    }
+    },
+    hide: true
   },
   'onUpdate:open': {
     type: StorybookControl.object,
@@ -48,7 +51,8 @@ export const wikiHook: StorybookArgsToList = {
         en: 'Event handler called on update:open with the new boolean value',
         ru: 'Обработчик события update:open, вызывается с новым булевым значением'
       }
-    }
+    },
+    hide: true
   },
   'onUpdate:selected': {
     type: StorybookControl.object,
@@ -58,7 +62,8 @@ export const wikiHook: StorybookArgsToList = {
         en: 'Event handler called on update:selected with the new selected value',
         ru: 'Обработчик события update:selected, вызывается с новым выбранным значением'
       }
-    }
+    },
+    hide: true
   },
   'onUpdate:value': {
     type: StorybookControl.object,
@@ -68,6 +73,7 @@ export const wikiHook: StorybookArgsToList = {
         en: 'Event handler called on update:value with the new value',
         ru: 'Обработчик события update:value, вызывается с новым значением'
       }
-    }
+    },
+    hide: true
   }
 }

@@ -6,7 +6,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { DesignTypesList } from '../../types/designTypes'
 
-import { UI_FILE_AI_TYPES } from '../../config'
+import { UI_DIR_CONSTRUCTOR, UI_FILE_AI_TYPES } from '../../config'
 
 /**
  * Engine for generating compressed and AI-optimized TypeScript type definitions.
@@ -63,12 +63,14 @@ export class DesignTypes {
    */
   protected isFile(file: string): boolean {
     return file.endsWith('.d.ts')
+      && !file.endsWith('.vue.d.ts')
+      && !file.endsWith('wiki.d.ts')
+      && !file.endsWith('wikiData.d.ts')
       && (
-        !file.includes('constructors/')
-        || (
-          !file.endsWith('/props.d.ts')
-          && !file.endsWith('/types.d.ts')
-        )
+        !file.includes(`${UI_DIR_CONSTRUCTOR}/`)
+        || file.endsWith('/basicTypes.d.ts')
+        || file.endsWith('/types.d.ts')
+        || file.endsWith('/props.d.ts')
       )
   }
 
@@ -200,6 +202,7 @@ export class DesignTypes {
         + 'Remove any large Enums that add excessive length without providing critical context. '
         + 'Your goal is to create a compact, context-rich file that enables any AI coding assistant to generate high-quality code for a developer. '
         + 'Ensure that no public API surface, essential data types, or required logic is lost. '
+        + 'Do not delete any "type" definitions; they are strictly required. '
         + 'Do not delete file paths (labels starting with "// File:"). '
         + 'All instructions are mandatory and must be executed perfectly. '
         + 'Return ONLY the resulting code. No markdown code blocks, no tags, no explanations, and no additional comments from the AI. NOTHING but the pure code.'

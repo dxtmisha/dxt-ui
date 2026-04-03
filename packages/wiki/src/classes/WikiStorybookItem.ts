@@ -27,6 +27,15 @@ export class WikiStorybookItem {
   }
 
   /**
+   * Checks if the item is hidden.
+   *
+   * Проверяет, скрыт ли элемент.
+   */
+  isHide(): boolean {
+    return this.item.hide === true
+  }
+
+  /**
    * Checks if the item is a demo item.
    *
    * Проверяет, является ли элемент демонстрационным.
@@ -133,16 +142,24 @@ export class WikiStorybookItem {
    *
    * Возвращает свойство demo, если элемент является демонстрационным.
    */
-  private getDemo(): { isDemo?: boolean, demo?: any, demoOptions?: Record<string, any> } {
+  private getDemo(): {
+    isDemo?: boolean
+    demo?: any
+    demoOptions?: Record<string, any>
+    hide?: boolean
+  } {
     if (this.isDemo()) {
       return {
         isDemo: true,
         demo: this.getDemoValue(),
-        demoOptions: this.item.demoOptions
+        demoOptions: this.item.demoOptions,
+        hide: this.item.hide
       }
     }
 
-    return {}
+    return {
+      hide: this.item.hide
+    }
   }
 
   /**

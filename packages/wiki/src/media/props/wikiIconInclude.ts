@@ -33,7 +33,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for down arrow',
         ru: 'Задает иконку стрелки вниз'
       }
-    }
+    },
+    hide: true
   },
   iconArrowLeft: {
     type: StorybookControl.string,

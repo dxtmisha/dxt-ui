@@ -19,6 +19,15 @@ export class WikiStorybookProp {
   }
 
   /**
+   * Checks if the item is hidden.
+   *
+   * Проверяет, скрыт ли элемент.
+   */
+  isHide(): boolean {
+    return this.item.hide === true
+  }
+
+  /**
    * Checks if the item is a demo item.
    *
    * Проверяет, является ли элемент демонстрационным.

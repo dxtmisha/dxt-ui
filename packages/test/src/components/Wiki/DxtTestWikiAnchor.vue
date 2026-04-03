@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { forEach } from '@dxtmisha/functional'
+import { useWikiItemFocus } from '../../composables/useWikiItemFocus'
 
 defineOptions({
   name: 'DxtTestWikiAnchor'
@@ -9,6 +10,8 @@ defineOptions({
 const props = defineProps<{
   list: ({ name: string })[]
 }>()
+
+const { setFocus } = useWikiItemFocus()
 
 const anchorList = computed(() => {
   return forEach(
@@ -20,12 +23,13 @@ const anchorList = computed(() => {
 
 <template>
   <div class="dxt-test-wiki-anchor">
+    <a @click="setFocus('all')" href="#">All</a>
     <div
       v-for="item in anchorList"
       :key="item"
       class="dxt-test-wiki-anchor__item"
     >
-      <a :href="`#${item}`">{{ item }}</a>
+      <a @click="setFocus(item)" :href="`#${item}`">{{ item }}</a>
     </div>
   </div>
 </template>

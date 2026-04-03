@@ -2,10 +2,10 @@
 import { computed, provide } from 'vue'
 import { replaceComponentName } from '@dxtmisha/functional-basic'
 import { type WikiStorybook } from '@dxtmisha/wiki'
+import { useWikiItemFocus } from '../../composables/useWikiItemFocus'
 
 import DxtTestBlock from '../DxtTestBlock.vue'
 import DxtTestWikiDemo from './DxtTestWikiDemo.vue'
-import DxtTestWikiPossibilities from './DxtTestWikiPossibilities.vue'
 import DxtTestWikiTitle from './DxtTestWikiTitle.vue'
 import DxtTestWikiPropItem from './DxtTestWikiPropItem.vue'
 
@@ -25,14 +25,14 @@ defineSlots<{
   [K in string]?: TestWikiSlotRender['render']
 }>()
 
+const { focus } = useWikiItemFocus()
+
 const name = computed(() => `${props.design}${props.wiki.getName()}`)
 const propsName = computed(() => `type ${props.wiki.getName()}Props`)
 const emitsName = computed(() => `type ${props.wiki.getName()}Emits`)
 const exposeName = computed(() => `interface ${props.wiki.getName()}Expose`)
 const slotsName = computed(() => `interface ${props.wiki.getName()}Slots`)
 
-const description = computed(() => props.wiki.getDescription())
-const possibilities = computed(() => props.wiki.getPossibilities())
 const list = computed(() => props.wiki.getWikiObject())
 const values = computed(() => props.wiki.getFilteredValues())
 
@@ -58,12 +58,20 @@ provide('values', values)
 
 <template>
   <DxtTestBlock
+   v-if="focus === 'all' || focus === name"
     :title="name"
-    :description="description"
     :anchor="name"
     class="dxt-test-wiki"
   >
-    <DxtTestWikiPossibilities :possibilities="possibilities"/>
+    <template v-if="aiRender">
+      <DxtTestWikiTitle label="Demo"/>
+      <pre class="dxt-test-wiki__pre">{{ aiRender }}</pre>
+    </template>
+
+    <template v-if="aiDescription">
+      <DxtTestWikiTitle label="Description"/>
+      <pre class="dxt-test-wiki__pre">{{ aiDescription }}</pre>
+    </template>
 
     <div>
       <DxtTestWikiDemo>
@@ -77,6 +85,10 @@ provide('values', values)
     <DxtTestWikiTitle :type="exposeName" label="Expose"/>
     <DxtTestWikiTitle :type="slotsName" label="Slots"/>
     <DxtTestWikiTitle :type="propsName" label="Props"/>
+
+    <div class="dxt-test-wiki__description">
+      Enumeration of some properties
+    </div>
 
     <div class="dxt-test-wiki__props">
       <DxtTestWikiPropItem
@@ -93,16 +105,6 @@ provide('values', values)
         </template>
       </DxtTestWikiPropItem>
     </div>
-
-    <template v-if="aiRender">
-      <DxtTestWikiTitle label="Render"/>
-      <pre class="dxt-test-wiki__pre">{{ aiRender }}</pre>
-    </template>
-
-    <template v-if="aiDescription">
-      <DxtTestWikiTitle label="Description"/>
-      <pre class="dxt-test-wiki__pre">{{ aiDescription }}</pre>
-    </template>
   </DxtTestBlock>
 </template>
 
@@ -119,6 +121,14 @@ provide('values', values)
 
     font-size: 12px;
     line-height: 16px;
+  }
+
+  &__description {
+    padding-top: 8px;
+
+    font-size: 12px;
+    font-style: italic;
+    opacity: 0.6;
   }
 
   &__props {

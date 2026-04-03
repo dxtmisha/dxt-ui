@@ -1,7 +1,6 @@
 import _DxtTestBlock from './components/DxtTestBlock.vue'
 import _DxtTestButton from './components/DxtTestButton.vue'
 import _DxtTestPage from './components/DxtTestPage.vue'
-import _DxtTestScreenshot from './components/DxtTestScreenshot.vue'
 import _UiTestContainer from './components/UiTestContainer.vue'
 import _UiTestGroup from './components/UiTestGroup.vue'
 import _UiTestItemFull from './components/UiTestItemFull.vue'
@@ -20,7 +19,6 @@ import _DxtTestWikiTitle from './components/Wiki/DxtTestWikiTitle.vue'
 export const DxtTestBlock = _DxtTestBlock
 export const DxtTestButton = _DxtTestButton
 export const DxtTestPage = _DxtTestPage
-export const DxtTestScreenshot = _DxtTestScreenshot
 export const UiTestContainer = _UiTestContainer
 export const UiTestGroup = _UiTestGroup
 export const UiTestItemFull = _UiTestItemFull
@@ -34,6 +32,9 @@ export const DxtTestWikiDemo = _DxtTestWikiDemo
 export const DxtTestWikiPossibilities = _DxtTestWikiPossibilities
 export const DxtTestWikiPropItem = _DxtTestWikiPropItem
 export const DxtTestWikiTitle = _DxtTestWikiTitle
+
+// Composables
+export * from './composables/useWikiItemFocus'
 
 // Types
 export * from './types/wikiTypes'
