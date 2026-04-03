@@ -28,17 +28,24 @@ export type SelectPropsBasic<
 > = FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
   & FieldSelectProps
   & MenuPropsInclude<Menu> & {
-  // Value
+    /** Value/ Значения */
+    /** Whether the value is editable/ Редактируемое ли значение */
     editValue?: boolean
 
-    // Style
+    /** Style/ Стили */
+    /** Whether to hide the list/ Скрывать ли список */
     hideList?: boolean
+    /** Whether to show the search input/ Показывать ли поле поиска */
     showSearch?: boolean
+    /** Whether to enabled filtering mode/ Включен ли режим фильтрации */
     filterMode?: boolean
 
+    /** Icon for the down arrow/ Иконка для стрелки вниз */
     iconArrowDown?: IconValue<Icon>
+    /** Icon for the search/ Иконка для поиска */
     iconSearch?: IconValue<Icon>
 
+    /** Additional attributes for the search input/ Дополнительные атрибуты для поля поиска */
     inputSearchAttrs?: ConstrBind<Input>
   }
 

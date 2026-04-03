@@ -19,6 +19,7 @@ export type BadgePropsBasic<
   & LabelNumberProps
   & AriaLabelPropsInclude
   & {
+    /** Whether to show as a dot/ Отображать как точку */
     dot?: boolean
   }
 

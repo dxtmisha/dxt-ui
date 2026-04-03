@@ -44,21 +44,31 @@ export type ListItemPropsBasic<
   & EventClickProps
   & AriaRolePropsInclude
   & {
-    // Value
+    /** Value/ Значения */
+    /** Item index/ Индекс элемента */
     index?: any
+    /** URL address for links/ URL-адрес для ссылок */
     href?: string
 
-    // Style
+    /** Style/ Стили */
+    /** HTML tag for the list item/ HTML-тег для элемента списка */
     tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string
+    /** Whether to enable filtering mode/ Включен ли режим фильтрации */
     filterMode?: boolean
+    /** Whether to show a divider/ Показывать ли разделитель */
     divider?: boolean
 
+    /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
     tabindex?: number | string
 
-    // Technical
+    /** Technical/ Технические свойства */
+    /** Item type/ Тип элемента */
     type?: string
+    /** Parent identifier/ Идентификатор родителя */
     parent?: string
+    /** List identifier/ Идентификатор списка */
     listId?: number
+    /** Search string for highlighting/ Строка поиска для подсветки */
     search?: string
   }
 

@@ -3,6 +3,7 @@ import type { ConstrBind, ListRecord, NumberOrString } from '@dxtmisha/functiona
 import type { TabItemPropsBasic } from '../TabItem'
 import type { TabsNavigationPropsBasic } from './props'
 
+/** List of identifiers for the tabs/ Список идентификаторов для вкладок */
 export type TabsNavigationIdsList = Record<NumberOrString, string>
 
 /**

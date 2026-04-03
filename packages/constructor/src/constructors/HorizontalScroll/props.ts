@@ -6,10 +6,12 @@ type HorizontalScrollPropsToken = {
 }
 
 export type HorizontalScrollPropsBasic = {
-  // Styles
+  /** Styles/ Стили */
+  /** Whether the scroll area is flush with the edges/ Прилегает ли область прокрутки к краям */
   flush?: boolean
 
-  // Options
+  /** Options/ Опции */
+  /** HTML tag for the scroll element/ HTML-тег для элемента прокрутки */
   tag?: string
 }
 

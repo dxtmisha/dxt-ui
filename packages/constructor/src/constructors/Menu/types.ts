@@ -30,7 +30,9 @@ export type MenuEmits
     & WindowEmitsInclude
     & ModelEmitsSelected
     & {
+      /** Event for updating the value/ Событие обновления значения */
       updateValue: [value?: NumberOrStringOrBoolean]
+      /** Event for clicking on a slot/ Событие клика по слоту */
       clickSlot: [value?: string]
     }
 

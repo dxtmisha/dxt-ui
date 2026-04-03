@@ -1,6 +1,7 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { MotionAxisPropsBasic } from './props'
 
+/** Type for the selected value of the axis animation/ Тип для выбранного значения анимации оси */
 export type MotionAxisSelectedValue = string | undefined
 
 export type MotionAxisClassStatus = {
@@ -17,6 +18,7 @@ export type MotionAxisClassStatus = {
   active: string
 }
 
+/** Type for the event emission type/ Тип для типа вызова события */
 export type MotionAxisEmitType = 'start' | 'end'
 export type MotionAxisEmitOptions = {
   /** Event type/Тип события */

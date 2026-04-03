@@ -24,6 +24,7 @@ export type AnchorEmits = {}
  * Тип, описывающий доступные свойства.
  */
 export interface AnchorExpose {
+  /** Navigates to the specified target/ Переходит к указанной цели */
   go(): void
 }
 

@@ -28,6 +28,7 @@ export type WindowEmits
     & ImageEmitsInclude
     & ModelEmitsOpen
     & {
+      /** Window event triggered on state change/ Событие окна при изменении состояния */
       window: [options: WindowEmitOptions]
     }
 

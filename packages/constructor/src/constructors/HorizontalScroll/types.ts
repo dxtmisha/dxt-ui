@@ -22,6 +22,7 @@ export type HorizontalScrollEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface HorizontalScrollExpose {
+  /** Scrolls the area to the currently selected element/ Прокручивает область до текущего выбранного элемента */
   toSelected(): void
 }
 
@@ -31,6 +32,7 @@ export interface HorizontalScrollExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface HorizontalScrollSlots {
+  /** Slot for default horizontal scroll content/ Слот для основного содержимого горизонтальной прокрутки */
   default?(props: any): any
 }
 

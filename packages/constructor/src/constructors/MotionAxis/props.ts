@@ -11,14 +11,18 @@ type MotionAxisPropsToken = {
 export type MotionAxisPropsBasic
   = ModelPropsSelected<MotionAxisSelectedValue>
     & {
-      // Status
+      /** Status/ Статус */
+      /** Selected element/ Выбранный элемент */
       selected?: MotionAxisSelectedValue
 
-      // Style
+      /** Style/ Стили */
+      /** Whether to animate height change/ Анимировать ли изменение высоты */
       animationHeight?: boolean
 
-      // Options
+      /** Options/ Опции */
+      /** Whether the elements are in the DOM/ Находятся ли элементы в DOM */
       inDom?: boolean
+      /** List of elements in the DOM for slide/ Список элементов в DOM для слайда */
       inDomSlide?: string[]
     }
 

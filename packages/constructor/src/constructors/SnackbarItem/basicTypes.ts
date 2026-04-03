@@ -7,6 +7,7 @@ import type { SnackbarItemPropsBasic } from './props'
  * Интерфейс, описывающий набор компонентов, необходимых для подключения элемента снекбара.
  */
 export type SnackbarItemComponentInclude = {
+  /** SnackbarItem component configuration/ Конфигурация компонента элемента снекбара */
   snackbarItem?: object
 }
 

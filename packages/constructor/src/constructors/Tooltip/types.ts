@@ -20,6 +20,7 @@ export type TooltipComponents = ArrowComponentInclude
  * Тип, описывающий доступные события.
  */
 export type TooltipEmits = {
+  /** Event triggered when the tooltip open state changes/ Событие при изменении состояния открытости тултипа */
   tooltip: [open: boolean]
 }
 
@@ -29,6 +30,7 @@ export type TooltipEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface TooltipExpose {
+  /** Toggles the tooltip open state/ Переключает состояние открытости тултипа */
   toggle(open: boolean, flash?: boolean): Promise<void>
 }
 
@@ -38,8 +40,10 @@ export interface TooltipExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface TooltipSlots extends LabelSlots, DescriptionSlots {
+  /** Slot for the control element that triggers the tooltip/ Слот для управляющего элемента, вызывающего тултип */
   control?(props: TooltipControl): any
 
+  /** Slot for the tooltip body content/ Слот для основного содержимого тултипа */
   body?(): any
 }
 

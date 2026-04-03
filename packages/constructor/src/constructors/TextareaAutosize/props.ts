@@ -5,10 +5,12 @@ export type TextareaAutosizePropsToken = {
 }
 
 export type TextareaAutosizePropsBasic = {
-  // Value
+  /** Value/ Значения */
+  /** Current text value/ Текущее текстовое значение */
   value?: string
 
-  // Style
+  /** Style/ Стили */
+  /** Additional attributes for the textarea element/ Дополнительные атрибуты для элемента textarea */
   inputAttrs?: Record<string, any>
 }
 

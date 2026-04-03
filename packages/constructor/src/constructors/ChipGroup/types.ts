@@ -31,6 +31,7 @@ export interface ChipGroupExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ChipGroupSlots {
+  /** Slot for displaying a custom list of chips/ Слот для отображения пользовательского списка чипов */
   default?(props: any): any
 }
 

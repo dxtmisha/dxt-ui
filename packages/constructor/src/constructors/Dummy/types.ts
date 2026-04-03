@@ -32,6 +32,7 @@ export interface DummyExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface DummySlots {
+  /** Default slot for the component/ Слот по умолчанию для компонента */
   default?(props: any): any
 }
 

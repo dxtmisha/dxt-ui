@@ -18,7 +18,8 @@ export type ModalPropsBasic<
   & BarsPropsInclude<Bars>
   & ActionsPropsInclude<Actions>
   & ImagePropsInclude<Image> & {
-  // Status
+    /** Status/ Статус */
+    /** Whether the modal is open/ Открыто ли модальное окно */
     open?: boolean
   }
 

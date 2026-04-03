@@ -39,8 +39,10 @@ export type CheckboxPropsBasic<
   & ModelProps<boolean>
   & SkeletonPropsInclude
   & {
-    // Icon
+    /** Icon/ Иконка */
+    /** Icon for the checked state/ Иконка для отмеченного состояния */
     iconCheckbox?: string | ConstrBind<Image> | null
+    /** Icon for the indeterminate state/ Иконка для неопределенного состояния */
     iconIndeterminate?: string | ConstrBind<Image> | null
   }
 

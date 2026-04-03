@@ -4,6 +4,7 @@ export type RipplePropsToken = {
 }
 
 export type RipplePropsBasic = {
+  /** Whether the ripple is disabled/ Отключена ли пульсация */
   disabled?: boolean
 }
 

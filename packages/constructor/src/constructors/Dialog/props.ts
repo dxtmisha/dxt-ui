@@ -33,21 +33,30 @@ export type DialogPropsBasic<
   & DescriptionProps
   & TextClosePropsInclude
   & TextOkPropsInclude & {
-  // Status
+    /** Status/ Статус */
+    /** Whether the dialog is open/ Открыто ли диалоговое окно */
     open?: boolean
 
-    // Style
+    /** Style/ Стили */
+    /** Icon for the dialog/ Иконка для диалогового окна */
     icon?: IconValue<Icon>
 
+    /** Positive action button properties/ Свойства кнопки положительного действия */
     buttonOk?: string | ConstrBind<Button> | null
+    /** Close action button properties/ Свойства кнопки действия закрытия */
     buttonClose?: string | ConstrBind<Button> | null
 
+    /** Whether to show the close button/ Показывать ли кнопку закрытия */
     closeButton?: boolean
+    /** Whether to close the dialog upon clicking the OK button/ Закрывать ли диалоговое окно при клике на кнопку подтверждения */
     clickOkAndClose?: boolean
 
+    /** Icon for the success state/ Иконка для состояния успеха */
     iconSuccess?: IconValue<Icon>
+    /** Icon for the error state/ Иконка для состояния ошибки */
     iconError?: IconValue<Icon>
 
+    /** Additional attributes for the icon component/ Дополнительные атрибуты для компонента иконки */
     iconAttrs?: ConstrBind<Icon>
   }
 

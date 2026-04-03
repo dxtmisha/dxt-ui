@@ -11,8 +11,10 @@ export type FieldCounterPropsToken = {
 export type FieldCounterPropsBasic = TextCharacterLimitPropsInclude
   & TextCharacterRemainingPropsInclude
   & {
-    // Style
+    /** Style/ Стили */
+    /** Current counter value/ Текущее значение счетчика */
     counter?: string | number
+    /** Maximum allowed length/ Максимально допустимая длина */
     maxlength?: string | number
     /**
      * The number of characters remaining at which the screen reader starts announcing/
@@ -20,9 +22,11 @@ export type FieldCounterPropsBasic = TextCharacterLimitPropsInclude
      */
     maxlengthOnce?: string | number
 
+    /** Template for formatting the counter display/ Шаблон для форматирования отображения счетчика */
     template?: string
 
-    // Technical
+    /** Technical/ Технические свойства */
+    /** Unique identifier for the element/ Уникальный идентификатор для элемента */
     id?: string
   }
 

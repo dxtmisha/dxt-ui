@@ -36,10 +36,13 @@ export type FieldControl = {
    */
   classForFocus: string
 
+  /** Properties bound to the input element/ Свойства, привязанные к элементу ввода */
   binds:
     AriaList
     & {
+      /** Unique ID/ Уникальный идентификатор */
       id: string
+      /** Class name/ Имя класса */
       class: string
     }
 }
@@ -49,6 +52,7 @@ export type FieldControl = {
  * Интерфейс для описания, какие компоненты надо подключить для работы Field
  */
 export type FieldComponentInclude = {
+  /** Field component configuration/ Конфигурация компонента поля */
   field?: object
 }
 
@@ -93,15 +97,22 @@ export type FieldPropsInclude<
   | 'iconClose'
 >
 & {
-  // Status
+  /** Status/ Статус */
+  /** Whether the field is focused/ Сфокусировано ли поле */
   focus?: boolean
+  /** Whether the field is selected/ Выбрано ли поле */
   selected?: boolean
+  /** Whether the field is read-only/ Находится ли поле в режиме «только для чтения» */
   readonly?: boolean
+  /** Whether the field is disabled/ Отключено ли поле */
   disabled?: boolean
 
-  // Style
+  /** Style/ Стили */
+  /** Alignment of content in the field/ Выравнивание контента в поле */
   align?: 'center' | 'right' | 'left'
 
+  /** Cancellation behavior/ Поведение отмены */
   cancel?: 'auto' | 'always' | 'none'
+  /** Additional attributes for the Field component/ Дополнительные атрибуты для компонента поля */
   fieldAttrs?: ConstrBind<Field>
 }

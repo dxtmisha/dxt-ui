@@ -24,6 +24,7 @@ export type ArrowEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface ArrowExpose {
+  /** Updates the arrow's position/ Обновляет позицию стрелки */
   update: () => void
 }
 

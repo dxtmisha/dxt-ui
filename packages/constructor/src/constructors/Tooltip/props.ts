@@ -16,15 +16,22 @@ export type TooltipPropsBasic<
   & DescriptionProps
   & ArrowPropsInclude<Arrow>
   & {
-    // Status
+    /** Status/ Статусы */
+    /** Whether the tooltip is open/ Открыт ли тултип */
     open?: boolean
+    /** Whether the tooltip is disabled/ Отключен ли тултип */
     disabled?: boolean
 
-    // Style
+    /** Style/ Стили */
+    /** Whether the tooltip should always be in the DOM/ Должен ли тултип всегда находиться в DOM */
     inDom?: boolean
+    /** Whether to display the tooltip at the top by default/ Отображать ли тултип сверху по умолчанию */
     top?: boolean
+    /** Indent from the control element/ Отступ от управляющего элемента */
     indent?: number
+    /** Delay before showing the tooltip/ Задержка перед показом тултипа */
     delay?: number
+    /** Delay before hiding the tooltip/ Задержка перед скрытием тултипа */
     delayHide?: number
 
     // Technical

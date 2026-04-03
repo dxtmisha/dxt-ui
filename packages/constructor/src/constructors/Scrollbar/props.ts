@@ -11,7 +11,8 @@ export type ScrollbarPropsToken = {
 }
 
 export type ScrollbarPropsBasic = {
-  // Style
+  /** Style/ Стили */
+  /** HTML tag for the scrollbar element/ HTML-тег для элемента скроллбара */
   tag?: string
 }
 

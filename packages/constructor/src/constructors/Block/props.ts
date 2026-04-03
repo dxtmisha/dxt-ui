@@ -15,11 +15,12 @@ export type BlockPropsBasic<
   & DescriptionProps
   & CaptionProps
   & IconPropsInclude<Icon> & {
-  // Value
+    /** Secondary header or headline text/ Вторичный заголовок или текст хедлайна */
     headline?: string
 
-    // Style
+    /** HTML tag for the container/ HTML-тег для контейнера */
     tag?: string
+    /** HTML tag for the header section/ HTML-тег для секции шапки */
     tagHeader?: string
   }
 

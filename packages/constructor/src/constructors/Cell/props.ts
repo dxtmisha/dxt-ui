@@ -37,9 +37,12 @@ export type CellPropsBasic<
   & EventClickProps
   & AriaRolePropsInclude
   & {
-    // Style
+    /** Style/ Стили */
+    /** HTML tag for the cell container/ HTML-тег для контейнера ячейки */
     tag?: string
+    /** Whether to show the divider/ Показывать ли разделитель */
     divider?: boolean
+    /** Whether the cell has dynamic behavior (hover/active states)/ Имеет ли ячейка динамическое поведение (состояния ховера/активности) */
     dynamic?: boolean
   }
 

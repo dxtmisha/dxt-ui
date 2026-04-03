@@ -16,6 +16,7 @@ export type TextareaAutosizeComponents = {
  * Тип, описывающий доступные события.
  */
 export type TextareaAutosizeEmits = {
+  /** Event triggered on input/ Событие при вводе */
   input: [event: InputEvent]
 }
 
@@ -25,6 +26,7 @@ export type TextareaAutosizeEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface TextareaAutosizeExpose {
+  /** Reactive reference to the current value/ Реактивная ссылка на текущее значение */
   value: Ref<string>
 }
 

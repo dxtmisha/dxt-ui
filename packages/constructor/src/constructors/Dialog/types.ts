@@ -25,7 +25,9 @@ export type DialogComponents = ModalComponents & IconComponentInclude
 export type DialogEmits
   = ModalEmits
     & {
+      /** Event for clicking the OK button/ Событие клика на кнопку подтверждения */
       ok: []
+      /** Event for clicking the close button/ Событие клика на кнопку закрытия */
       close: []
     }
 

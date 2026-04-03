@@ -22,6 +22,7 @@ export type SkeletonEmits = {}
  * Тип, описывающий доступные свойства.
  */
 export interface SkeletonExpose {
+  /** Whether the skeleton is currently active/ Активен ли скелет в данный момент */
   isActive: ComputedRef<boolean>
 }
 
@@ -31,6 +32,7 @@ export interface SkeletonExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SkeletonSlots {
+  /** Slot for default skeleton content/ Слот для основного содержимого скелета */
   default?(props: SkeletonClassesList): any
 }
 

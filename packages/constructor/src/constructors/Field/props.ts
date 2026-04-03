@@ -53,21 +53,31 @@ export type FieldPropsBasic<
   & SkeletonPropsInclude
   & TextCancelPropsInclude
   & {
-    // Status
+    /** Status/ Статус */
+    /** Whether the previous button is disabled/ Отключена ли кнопка «Назад» */
     disabledPrevious?: boolean
+    /** Whether the next button is disabled/ Отключена ли кнопка «Вперед» */
     disabledNext?: boolean
 
-    // Style
+    /** Style/ Стили */
+    /** Unique identifier for the field/ Уникальный идентификатор для поля */
     id?: string | number
 
+    /** Whether the counter is positioned at the top/ Находится ли счетчик сверху */
     counterTop?: boolean
 
+    /** Whether to show the cancel button/ Показывать ли кнопку отмены */
     cancelShow?: boolean
 
+    /** Icon for the left arrow/ Иконка для стрелки влево */
     iconArrowLeft?: IconValue<Icon>
+    /** Icon for the right arrow/ Иконка для стрелки вправо */
     iconArrowRight?: IconValue<Icon>
+    /** Icon for the plus action/ Иконка для действия «плюс» */
     iconPlus?: IconValue<Icon>
+    /** Icon for the minus action/ Иконка для действия «минус» */
     iconMinus?: IconValue<Icon>
+    /** Icon for the close action/ Иконка для действия закрытия */
     iconClose?: IconValue<Icon>
   }
 

@@ -47,10 +47,13 @@ export interface FieldSlots extends CaptionSlots,
   PrefixSlots,
   SuffixSlots,
   FieldLabelSlotsInclude {
+  /** Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода */
   leading?(props: FieldControl): any
 
+  /** Slot for displaying content after the input area/ Слот для отображения контента после области ввода */
   trailing?(props: FieldControl): any
 
+  /** Default slot for the input element/ Слот по умолчанию для элемента ввода */
   default?(props: FieldControl): any
 }
 

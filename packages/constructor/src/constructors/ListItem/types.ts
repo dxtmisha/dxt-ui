@@ -48,10 +48,13 @@ export interface ListItemSlots extends LabelHighlightSlots,
   PrefixSlots,
   CaptionSlots,
   SuffixSlots {
+  /** Slot for the leading element/ Слот для ведущего элемента */
   leading?(props: any): any
 
+  /** Slot for the trailing element/ Слот для замыкающего элемента */
   trailing?(props: any): any
 
+  /** Slot for the list item body/ Слот для содержимого элемента списка */
   body?(props: any): any
 }
 

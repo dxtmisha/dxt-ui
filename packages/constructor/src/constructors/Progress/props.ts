@@ -16,19 +16,27 @@ export type ProgressPropsToken = {
 export type ProgressPropsBasic = AriaLabelPropsInclude
   & TextLoadingPropsInclude
   & {
-    // Status
+    /** Status/ Статус */
+    /** Whether the progress is visible/ Видим ли прогресс */
     visible?: boolean
 
-    // Value
+    /** Value/ Значения */
+    /** Current progress value/ Текущее значение прогресса */
     value?: number | string
+    /** Maximum progress value/ Максимальное значение прогресса */
     max?: number | string
 
-    // Style
+    /** Style/ Стили */
+    /** Whether to use linear progress/ Использовать ли линейный прогресс */
     linear?: boolean
+    /** Whether to use circular progress/ Использовать ли круговой прогресс */
     circular?: boolean
+    /** Whether to use point progress/ Использовать ли точечный прогресс */
     point?: boolean
 
+    /** Delay before showing/ Задержка перед показом */
     delay?: number | string
+    /** Delay before hiding/ Задержка перед скрытием */
     delayHide?: number | string
   }
 

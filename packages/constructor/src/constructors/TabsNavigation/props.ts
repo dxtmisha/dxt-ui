@@ -16,20 +16,26 @@ export type TabsNavigationPropsBasic<
 > = HorizontalScrollPropsInclude
   & ModelPropsSelected<ListSelectedList>
   & {
-  // Status
+    /** Status/ Статусы */
+    /** List of selected values/ Список выбранных значений */
     selected?: ListSelectedList
 
-    // Value
+    /** Value/ Значения */
+    /** List of tab items/ Список элементов вкладок */
     list?: ListRecord<TabItem>
 
-    // Style
+    /** Style/ Стили */
+    /** HTML tag for the tabs navigation/ HTML-тег для навигации вкладок */
     tag?: TabItem['tag']
 
-    // Options
+    /** Options/ Опции */
+    /** Key for the label/ Ключ для подписи */
     keyLabel?: string
+    /** Key for the value/ Ключ для значения */
     keyValue?: string
 
-    // Attributes
+    /** Attributes/ Атрибуты */
+    /** Additional attributes for each tab item/ Дополнительные атрибуты для каждого элемента вкладки */
     itemAttrs?: ConstrBind<TabItem>
   }
 

@@ -7,6 +7,7 @@ import type { ButtonPropsBasic } from './props'
  * Интерфейс, описывающий набор компонентов, необходимых для подключения кнопки.
  */
 export type ButtonComponentInclude = {
+  /** Button component configuration/ Конфигурация компонента кнопки */
   button?: object
 }
 

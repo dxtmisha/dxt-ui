@@ -14,10 +14,10 @@ export type ActionSheetPropsBasic<
 > = WindowPropsInclude<Window>
   & BarsPropsInclude<Bars>
   & ActionsPropsInclude<Actions> & {
-  // Status
+    /** Whether the action sheet is visible/ Открыт ли лист действий */
     open?: boolean
 
-    // Style
+    /** Whether to close the action sheet by swiping down or clicking the overlay/ Закрывать ли лист действий при свайпе вниз или клике на оверлей */
     touchClose?: boolean
   }
 

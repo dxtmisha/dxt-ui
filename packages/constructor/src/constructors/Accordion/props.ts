@@ -26,7 +26,9 @@ export type AccordionPropsBasic<
   & ModelPropsOpen
   & {
     // Style
+    /** Additional attributes for the header cell component/ Дополнительные атрибуты для компонента ячейки заголовка */
     cellAttrs?: ConstrBind<Cell>
+    /** Icon for the dropdown indicator/ Иконка для индикатора раскрывающегося списка */
     iconArrowDown?: IconValue<Icon>
   }
 

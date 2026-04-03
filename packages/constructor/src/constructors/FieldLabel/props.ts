@@ -16,10 +16,12 @@ export type FieldLabelPropsBasic<
   & ProgressPropsInclude<Progress>
   & SkeletonPropsInclude
   & {
-    // Information
+    /** Information/ Информационные свойства */
+    /** Identifier of the input element this label is for/ Идентификатор элемента ввода, к которому относится этот лейбл */
     for?: string
 
-    // Style
+    /** Style/ Стили */
+    /** Whether the field is required/ Является ли поле обязательным */
     required?: boolean
   }
 
