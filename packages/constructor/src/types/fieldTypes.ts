@@ -147,10 +147,17 @@ export type FieldBasicEmits<T = any>
       changeLite: [value: FieldValidationItem<T>]
     }
 
+/**
+ * Interface describing exposed properties for basic field functionality/
+ * Интерфейс, описывающий экспонируемые свойства для базовой функциональности поля
+ */
 export type FieldBasicExpose<T = string> = {
+  /** Reactive reference to the current value/ Реактивная ссылка на текущее значение */
   value: ShallowRef<T | undefined>
 
+  /** Checks validity of the field and returns status/ Проверяет валидность поля и возвращает статус */
   checkValidity: () => boolean
+  /** Reactive reference to the validation message/ Реактивная ссылка на сообщение валидации */
   validationMessage: ComputedRef<string>
 }
 
@@ -337,7 +344,9 @@ export type FieldInputFileProps<Value = any>
  */
 export type FieldInputCheckProps<Value = boolean>
   = Omit<FieldBasicProps<Value>, 'type'> & FieldUxProps & {
+    /** Target value for checkbox or radio when checked/ Целевое значение для чекбокса или радио при выборе */
     valueVariant?: NumberOrStringOrBoolean
+    /** Target value when unchecked/ Целевое значение при снятии выбора */
     valueVariantHide?: NumberOrStringOrBoolean
     /** Indeterminate visual state (checkbox only)/ Промежуточное визуальное состояние (только для checkbox) */
     indeterminate?: boolean

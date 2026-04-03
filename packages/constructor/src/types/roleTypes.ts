@@ -1,3 +1,4 @@
+/** List of ARIA role types/ Список типов ролей ARIA */
 export type RoleType
   = | string
     | 'alert'
