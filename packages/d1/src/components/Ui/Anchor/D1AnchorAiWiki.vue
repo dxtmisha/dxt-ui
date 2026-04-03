@@ -18,11 +18,6 @@ defineOptions({
     :component="D1Anchor"
   >
     <!-- :component-render [!] System label / Системная метка -->
-    <template #render="{ args, classDemo }">
-    <div :class="classDemo.item">
-  <D1Anchor href="#" v-bind="args"/>
-</div>
-    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

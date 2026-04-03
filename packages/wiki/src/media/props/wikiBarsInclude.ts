@@ -18,7 +18,8 @@ export const wikiBarsInclude: StorybookArgsToList = {
         en: 'Additional attributes for the bars (header toolbar) container',
         ru: 'Дополнительные атрибуты для контейнера бара (верхней панели)'
       }
-    }
+    },
+    hide: true
   },
   barsBackHide: {
     type: StorybookControl.boolean,
@@ -40,7 +41,8 @@ export const wikiBarsInclude: StorybookArgsToList = {
         ru: 'Текст описания, отображаемый в области бара (подзаголовок/подсказка)'
       },
       value: 'Welcome to the application!'
-    }
+    },
+    hide: true
   },
   barsHide: {
     type: StorybookControl.boolean,
@@ -50,7 +52,8 @@ export const wikiBarsInclude: StorybookArgsToList = {
         en: 'Hides the bars (header toolbar)',
         ru: 'Скрывает бар (верхнюю панель)'
       }
-    }
+    },
+    hide: true
   },
   barsLabel: {
     type: StorybookControl.string,
@@ -62,7 +65,8 @@ export const wikiBarsInclude: StorybookArgsToList = {
         ru: 'Метка или числовой индикатор, отображаемый в заголовке бара'
       },
       value: 'Hello friend'
-    }
+    },
+    hide: true
   },
   barsList: {
     type: StorybookControl.object,

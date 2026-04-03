@@ -94,7 +94,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for checkbox',
         ru: 'Задает иконку для чекбокса'
       }
-    }
+    },
+    hide: true
   },
   iconClose: {
     type: StorybookControl.string,
@@ -104,7 +105,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for close button',
         ru: 'Задает иконку для кнопки закрытия'
       }
-    }
+    },
+    hide: true
   },
   iconContentCopy: {
     type: StorybookControl.string,
@@ -114,7 +116,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for copy content action',
         ru: 'Задает иконку для действия копирования содержимого'
       }
-    }
+    },
+    hide: true
   },
   iconDir: {
     type: StorybookControl.boolean,
@@ -135,7 +138,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon displayed in the error state',
         ru: 'Задает иконку, отображаемую в состоянии ошибки'
       }
-    }
+    },
+    hide: true
   },
   iconHide: {
     type: StorybookControl.boolean,
@@ -156,7 +160,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for indeterminate state',
         ru: 'Задает иконку для неопределенного состояния'
       }
-    }
+    },
+    hide: true
   },
   iconLink: {
     type: StorybookControl.string,
@@ -166,7 +171,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for a link',
         ru: 'Задает иконку для ссылки'
       }
-    }
+    },
+    hide: true
   },
   iconMinus: {
     type: StorybookControl.string,
@@ -176,7 +182,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for decrement / minus action',
         ru: 'Задает иконку для действия уменьшения (минус)'
       }
-    }
+    },
+    hide: true
   },
   iconPalette: {
     type: StorybookControl.boolean,
@@ -197,7 +204,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for increment / plus action',
         ru: 'Задает иконку для действия увеличения (плюс)'
       }
-    }
+    },
+    hide: true
   },
   iconSearch: {
     type: StorybookControl.string,
@@ -209,7 +217,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         ru: 'Задает иконку для действия поиска'
       },
       value: 'search'
-    }
+    },
+    hide: true
   },
   iconShow: {
     type: StorybookControl.boolean,
@@ -229,7 +238,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon displayed in a success state',
         ru: 'Задает иконку, отображаемую в состоянии успеха'
       }
-    }
+    },
+    hide: true
   },
   iconTag: {
     type: StorybookControl.string,
@@ -239,7 +249,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for tag',
         ru: 'Задает иконку для тега'
       }
-    }
+    },
+    hide: true
   },
   iconTop: {
     type: StorybookControl.boolean,

@@ -18,7 +18,8 @@ export const wikiAnchor: StorybookArgsToList = {
         en: 'Defines the transition animation',
         ru: 'Определяет анимацию перехода'
       }
-    }
+    },
+    hide: true
   },
   'anchor.block': {
     type: StorybookControl.select,
@@ -28,7 +29,8 @@ export const wikiAnchor: StorybookArgsToList = {
         en: 'Defines vertical alignment',
         ru: 'Определяет вертикальное выравнивание'
       }
-    }
+    },
+    hide: true
   },
   'anchor.delayHide': {
     type: StorybookControl.number,
@@ -38,7 +40,8 @@ export const wikiAnchor: StorybookArgsToList = {
         en: 'Delay before hiding the element (in ms)',
         ru: 'Задержка перед скрытием элемента (в мс)'
       }
-    }
+    },
+    hide: true
   },
   'anchor.inline': {
     type: StorybookControl.select,
@@ -48,7 +51,8 @@ export const wikiAnchor: StorybookArgsToList = {
         en: 'Defines horizontal alignment',
         ru: 'Определяет горизонтальное выравнивание'
       }
-    }
+    },
+    hide: true
   },
   'anchor.isCopy': {
     type: StorybookControl.boolean,
@@ -80,6 +84,7 @@ export const wikiAnchor: StorybookArgsToList = {
         en: 'Scroll offset from the top edge (in pixels)',
         ru: 'Смещение прокрутки от верхнего края (в пикселях)'
       }
-    }
+    },
+    hide: true
   }
 }

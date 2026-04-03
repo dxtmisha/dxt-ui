@@ -18,7 +18,8 @@ export const wikiActionsInclude: StorybookArgsToList = {
         en: 'Additional attributes for the Actions component container',
         ru: 'Дополнительные атрибуты для контейнера компонента Actions'
       }
-    }
+    },
+    hide: true
   },
   actionsHide: {
     type: StorybookControl.boolean,
@@ -28,7 +29,8 @@ export const wikiActionsInclude: StorybookArgsToList = {
         en: 'Hides the actions block',
         ru: 'Скрывает блок действий'
       }
-    }
+    },
+    hide: true
   },
   actionsList: {
     type: StorybookControl.object,

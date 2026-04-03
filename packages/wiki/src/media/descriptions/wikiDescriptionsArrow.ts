@@ -185,30 +185,9 @@ export const wikiDescriptionsArrow: StorybookComponentsDescriptionItem = {
 </div>
     `,
     description: `
-Arrow is a functional component that renders a triangular pointer connecting a container (like a tooltip, popover, or dropdown) to a target element.
-It is designed to automatically blend with the parent container's styles (background, border) to create a seamless speech-bubble effect.
-
-**Key Features:**
-1. **Target Linking:** Points to a specific DOM element defined by \`elementTarget\` (selector or HTMLElement).
-2. **Auto-Positioning:** Automatically calculates the correct placement (top, bottom, left, right) relative to the container and the target.
-3. **Style Inheritance:** Inherits \`background-color\`, \`border-color\`, and \`border-width\` from the parent element to match the container's visual style perfectly.
-4. **Reactive Updates:** Updates its position when the target or container moves (often used within \`Window\` or floating UI components).
-
-**When to use:**
-- Inside **Tooltips** to point to the hovered element.
-- Inside **Popovers** or **Dropdowns** to indicate the trigger source.
-- For any floating UI that needs a directional indicator.
-
-**Usage Examples:**
-
-- **Basic Tooltip Arrow:**
-  \`<div class="tooltip">
-     Message
-     <Arrow element-target="#button-id" />
-   </div>\`
-
-- **With Auto Positioning:**
-  \`<Arrow position="auto" element-target=".target-element" />\`
+Functional directional indicator (pointer) designed to connect floating containers like tooltips, popovers, or menus with their target elements. Automatically calculates positioning and orientation to create a seamless speech-bubble or callout effect.
+Features smart auto-positioning logic, support for inverse directions, and automated style inheritance. It inherits background and border properties from its parent container (Window or custom wrapper) to ensure visual consistency without manual configuration.
+Ideal for enhanced spatial context in complex UIs. Use within floating components to clearly indicate the source of a message or action. Controlled via position and elementTarget props, with an exposed update method for manual synchronization.
     `
   }
 }

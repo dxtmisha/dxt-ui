@@ -81,7 +81,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Hides the element',
         ru: 'Скрывает элемент'
       }
-    }
+    },
+    hide: true
   },
   isValue: {
     type: StorybookControl.boolean,
@@ -113,7 +114,7 @@ export const wikiStatus: StorybookArgsToList = {
         ru: 'Переводит элемент в открытое состояние'
       }
     },
-    isDemo: true
+    hide: true
   },
   readonly: {
     type: StorybookControl.boolean,
