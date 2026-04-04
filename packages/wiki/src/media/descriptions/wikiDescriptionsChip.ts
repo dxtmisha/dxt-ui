@@ -32,56 +32,17 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
   import: [],
   stories: [
     {
-      id: 'ChipBasic',
-      name: {
-        en: 'Basic',
-        ru: 'Базовые'
-      },
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent>Chip</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <DesignComponent icon="star">Chip</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent selected>Chip</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <DesignComponent disabled>Chip</DesignComponent>
-          </div>
-        </div>
-      `
-    },
-    {
       id: 'ChipInput',
       name: {
         en: 'Input',
         ru: 'Ввод (input)'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent>Chip</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Input</div>
-            <DesignComponent input>Tag</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <DesignComponent input icon="person">Contact</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent input selected icon="tag">Keyword</DesignComponent>
-          </div>
+        <div class="wiki-storybook-flex">
+          <DesignComponent>Chip</DesignComponent>
+          <DesignComponent input>Tag</DesignComponent>
+          <DesignComponent input icon="person">Contact</DesignComponent>
+          <DesignComponent input selected icon="tag">Keyword</DesignComponent>
         </div>
       `,
       propsName: 'input'
@@ -93,23 +54,11 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
         ru: 'Вспомогательные (assistive)'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent>Chip</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Assistive</div>
-            <DesignComponent assistive>Chip</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <DesignComponent assistive icon="lightbulb">Suggestion</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent assistive selected icon="check">Recommended</DesignComponent>
-          </div>
+        <div class="wiki-storybook-flex">
+          <DesignComponent>Chip</DesignComponent>
+          <DesignComponent assistive>Chip</DesignComponent>
+          <DesignComponent assistive icon="lightbulb">Suggestion</DesignComponent>
+          <DesignComponent assistive selected icon="check">Recommended</DesignComponent>
         </div>
       `,
       propsName: 'assistive'
@@ -146,34 +95,15 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
       },
       components: ['Skeleton'],
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Basic</div>
-            <DesignSkeleton>
-              <DesignComponent>Chip</DesignComponent>
-            </DesignSkeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Active</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent isSkeleton>Chip</DesignComponent>
-            </DesignSkeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Hidden</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent>Chip</DesignComponent>
-            </DesignSkeleton>
-          </div>
-        </div>
-      `,
-      propsName: 'isSkeleton'
+        <DesignSkeleton :active="true">
+          <DesignComponent isSkeleton>Chip</DesignComponent>
+        </DesignSkeleton>
+      `
     }
   ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Chip'} type={'chip'}/>
-<Canvas of={Component.ChipBasic}/>
 
 <template prop="input">
 <StorybookDescriptions componentName={'Chip'} type={'input'}/>
@@ -186,20 +116,6 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
 </template>
 
 <StorybookDescriptions componentName={'Value'} type={'value'}/>
-
-\`\`\`html
-<DesignComponent
-  value="filter-tag"
-  :detail="{ category: 'filters', type: 'status' }"
-  @click="handleChipClick"
-/>
-
-<DesignComponent
-  :value="chipValue"
-  :detail="{ chipId: chip.id, timestamp: Date.now() }"
-  @click="handleSelection"
-/>
-\`\`\`
 
 <StorybookDescriptions componentName={'Style'} type={'adaptive'}/>
 <Canvas of={Component.ChipAdaptive}/>

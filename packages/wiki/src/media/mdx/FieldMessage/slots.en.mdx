@@ -12,34 +12,10 @@ Slot for placing validation message. Has priority over helper message.
 **Parameters:**
 - `props: FieldMessageSlot` — object with message data
 
-## FieldMessageSlot
+**FieldMessageSlot Structure:**
 
-`FieldMessageSlot` — object passed to FieldMessage component slots, containing data for displaying messages.
+Object passed to FieldMessage component slots, containing data for displaying messages.
 
-### Type Structure
-
-```typescript
-type FieldMessageSlot = {
-  /** Current displayed message */
-  message?: string
-
-  /** Helper message text */
-  helperMessage?: string
-
-  /** Validation message text */
-  validationMessage?: string
-}
-```
-
-### Properties
-
-- **`message`** — current message to display (validation or helper, depending on active slot)
-- **`helperMessage`** — helper message text from component property
-- **`validationMessage`** — validation message text from component property
-
-### Display Priority
-
-Component shows only one slot at a time:
-
-1. **Validation** — if `validationMessage` is provided or `validation` slot is defined
-2. **Helper** — if validation is absent, but `helperMessage` is provided or `helper` slot is defined
+- `message: string` — current message (validation or helper) for display in the active slot.
+- `helperMessage: string` — helper message text passed through component properties.
+- `validationMessage: string` — validation message text passed through component properties. When present, it overrides the `helperMessage`.

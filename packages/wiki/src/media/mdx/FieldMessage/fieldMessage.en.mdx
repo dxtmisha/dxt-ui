@@ -20,46 +20,18 @@ FieldMessage centralizes management of text hints and error messages in forms. T
 - Complex forms with counters and validation
 
 ```html
-<script setup>
-import { ref } from 'vue'
-import { D1FieldMessage } from '@dxtmisha/d1'
-
-const validationError = ref('')
-
-const validateInput = (value) => {
-  if (value.length < 3) {
-    validationError.value = 'Minimum 3 characters'
-  } else {
-    validationError.value = ''
-  }
-}
-</script>
-
 <template>
   <!-- Helper message -->
-  <D1FieldMessage helper="Enter your name" />
+  <Component helper="Enter your name" />
 
   <!-- Validation message -->
-  <D1FieldMessage
-    helper="Minimum 3 characters"
-    :validation="validationError"
-  />
+  <Component validation="Minimum 3 characters" />
 
-  <!-- Forced display -->
-  <D1FieldMessage
-    helper="Always visible message"
-    forceShow
-  />
-
-  <!-- With custom content via slots -->
-  <D1FieldMessage>
-    <template #helper>
-      <span class="custom-hint">💡 Hint</span>
-    </template>
-    <template #validation>
-      <span class="custom-error">⚠️ Error</span>
-    </template>
-  </D1FieldMessage>
+  <!-- Slots -->
+  <Component>
+    <template #helper>💡 Hint</template>
+    <template #validation>⚠️ Error</template>
+  </Component>
 </template>
 ```
 

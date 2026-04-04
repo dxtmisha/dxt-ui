@@ -21,44 +21,19 @@ FieldLabel provides uniform display of form field captions, automatically integr
 - Dynamic forms with skeleton loading
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const text = ref('')
-const maxLength = 100
-</script>
-
 <template>
-  <!-- Simple label -->
-  <FieldLabel label="Username" />
+  <!-- Basic label -->
+  <Component label="Username" />
 
   <!-- Required field label -->
-  <FieldLabel
-    label="Email"
-    required
-  />
+  <Component label="Email" required />
 
-  <!-- Label with character counter -->
-  <FieldLabel
-    label="Description"
-    :counter="text.length"
-    :maxlength="maxLength"
-  />
-
-  <!-- Label with progress indicator -->
-  <FieldLabel
-    label="File Upload"
+  <!-- With progress and counter -->
+  <Component
+    label="Loading"
     :progress="45"
+    :counter="10"
+    :maxlength="100"
   />
-
-  <!-- Label with slots -->
-  <FieldLabel label="Search">
-    <template #leading>
-      <Icon name="search" />
-    </template>
-    <template #trailing>
-      <Icon name="info" />
-    </template>
-  </FieldLabel>
 </template>
 ```

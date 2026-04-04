@@ -40,38 +40,6 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
   ],
   stories: [
     {
-      id: 'CheckboxBasic',
-      name: {
-        en: 'Basic',
-        ru: 'Базовые'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent label="Unchecked" />
-          <DesignComponent label="Checked" :value="true" />
-          <DesignComponent label="Indeterminate" indeterminate :value="true" />
-          <DesignComponent label="Disabled" disabled />
-          <DesignComponent label="Disabled & Checked" :value="true" disabled />
-        </div>
-      `
-    },
-    {
-      id: 'CheckboxStates',
-      name: {
-        en: 'States',
-        ru: 'Состояния'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent label="Normal" />
-          <DesignComponent label="Focus" focus />
-          <DesignComponent label="Disabled" disabled />
-          <DesignComponent label="Loading" loading />
-          <DesignComponent label="Readonly" readonly />
-        </div>
-      `
-    },
-    {
       id: 'CheckboxVModel',
       name: {
         en: 'Two-way binding (v-model)',
@@ -86,10 +54,8 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="checkboxValue = true">Check</button>
-            <button class="wiki-storybook-button" @click="checkboxValue = false">Uncheck</button>
+            <button class="wiki-storybook-button" @click="checkboxValue = !checkboxValue">Check {{ checkboxValue }}</button>
           </div>
-          <div>Value: {{ checkboxValue }}</div>
           <DesignComponent
             v-model="checkboxValue"
             label="Checkbox with v-model"
@@ -112,13 +78,28 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
           </div>
         </DesignSkeleton>
       `
+    },
+    {
+      id: 'CheckboxSlots',
+      name: {
+        en: 'Slots usage',
+        ru: 'Использование слотов'
+      },
+      template: `
+        <DesignComponent>
+          <template #default>
+            <strong>Custom label slot</strong>
+          </template>
+          <template #description>
+            <em>Custom description slot</em>
+          </template>
+        </DesignComponent>
+      `
     }
   ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Checkbox'} type={'checkbox'}/>
-<Canvas of={Component.CheckboxBasic}/>
-<Canvas of={Component.CheckboxStates}/>
 
 <StorybookDescriptions componentName={'Checkbox'} type={'value'}/>
 <StorybookDescriptions componentName={'Checkbox'} type={'indeterminate'}/>
@@ -138,6 +119,7 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Expose'} type={'validationMessage'}/>
     `,
     slots: `
+<Canvas of={Component.CheckboxSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'label'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
     `

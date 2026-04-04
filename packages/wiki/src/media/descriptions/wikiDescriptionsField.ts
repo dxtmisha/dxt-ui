@@ -41,6 +41,37 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
     `,
   stories: [
     {
+      id: 'FieldWidth',
+      name: {
+        en: 'Width',
+        ru: 'Ширина'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent label="auto">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </DesignComponent>
+          <DesignComponent width="320px" label="320px">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </DesignComponent>
+          <DesignComponent width="50%" label="50%">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </DesignComponent>
+          <DesignComponent width="min(100%,320px)" label="min(...)" >
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </DesignComponent>
+        </div>
+      `
+    },
+    {
       id: 'FieldCancel',
       name: {
         en: 'Cancel button',
@@ -53,14 +84,14 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
               <input :id="id" :class="className" value="" readonly/>
             </template>
           </DesignComponent>
-          <DesignComponent cancel="auto" :cancel-show="true" label="auto + show">
+          <DesignComponent cancel="auto" :cancel-show="true" label="auto + value">
             <template #default="{id, className}">
               <input :id="id" :class="className" value="Value" readonly/>
             </template>
           </DesignComponent>
           <DesignComponent cancel="always" label="always">
             <template #default="{id, className}">
-              <input :id="id" :class="className" value="Value" readonly/>
+              <input :id="id" :class="className" value="" readonly/>
             </template>
           </DesignComponent>
         </div>
@@ -115,68 +146,6 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'FieldValue',
-      name: {
-        en: 'Value state',
-        ru: 'Состояние значения'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent label="empty" :is-value="false">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </DesignComponent>
-          <DesignComponent label="value" :is-value="false">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="Hello" readonly/>
-            </template>
-          </DesignComponent>
-          <DesignComponent label="forced (isValue)" :is-value="true">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" placeholder="" readonly/>
-            </template>
-          </DesignComponent>
-          <DesignComponent label="value + isValue" :is-value="true">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="Data" readonly/>
-            </template>
-          </DesignComponent>
-        </div>
-      `
-    },
-    {
-      id: 'FieldWidth',
-      name: {
-        en: 'Width',
-        ru: 'Ширина'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent label="auto">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </DesignComponent>
-          <DesignComponent width="320px" label="320px">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </DesignComponent>
-          <DesignComponent width="50%" label="50%">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </DesignComponent>
-          <DesignComponent width="min(100%,320px)" label="min(...)" >
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </DesignComponent>
-        </div>
-      `
-    },
-    {
       id: 'FieldSlots',
       name: {
         en: 'Slots usage',
@@ -188,6 +157,7 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
           label="Label prop"
           icon="home"
           icon-trailing="close"
+          value="Value"
         >
           <template #default="{id, className}">
             <input :id="id" :class="className" value="Value" readonly/>
@@ -207,7 +177,6 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Field'} type={'field'}/>
 
 <StorybookDescriptions componentName={'Field'} type={'value'}/>
-<Canvas of={Component.FieldValue}/>
 
 <StorybookDescriptions componentName={'Field'} type={'width'}/>
 <Canvas of={Component.FieldWidth}/>

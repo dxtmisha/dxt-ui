@@ -20,46 +20,18 @@ FieldMessage централизует управление текстовыми 
 - Комплексные формы с счетчиками и валидацией
 
 ```html
-<script setup>
-import { ref } from 'vue'
-import { D1FieldMessage } from '@dxtmisha/d1'
-
-const validationError = ref('')
-
-const validateInput = (value) => {
-  if (value.length < 3) {
-    validationError.value = 'Минимум 3 символа'
-  } else {
-    validationError.value = ''
-  }
-}
-</script>
-
 <template>
-  <!-- Вспомогательное сообщение -->
-  <D1FieldMessage helper="Введите ваше имя" />
+  <!-- Подсказка -->
+  <Component helper="Введите ваше имя" />
 
-  <!-- Сообщение валидации -->
-  <D1FieldMessage
-    helper="Минимум 3 символа"
-    :validation="validationError"
-  />
+  <!-- Ошибка валидации -->
+  <Component validation="Минимум 3 символа" />
 
-  <!-- Принудительное отображение -->
-  <D1FieldMessage
-    helper="Всегда видимое сообщение"
-    forceShow
-  />
-
-  <!-- С кастомным контентом через слоты -->
-  <D1FieldMessage>
-    <template #helper>
-      <span class="custom-hint">💡 Подсказка</span>
-    </template>
-    <template #validation>
-      <span class="custom-error">⚠️ Ошибка</span>
-    </template>
-  </D1FieldMessage>
+  <!-- Слоты -->
+  <Component>
+    <template #helper>💡 Подсказка</template>
+    <template #validation>⚠️ Ошибка</template>
+  </Component>
 </template>
 ```
 

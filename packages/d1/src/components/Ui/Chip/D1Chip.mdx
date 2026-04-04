@@ -20,7 +20,6 @@ import {ChipWikiStorybook} from './wiki'
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 <StorybookDescriptions componentName={'Chip'} type={'chip'}/>
-<Canvas of={Chip.ChipBasic}/>
 
 <StorybookDescriptions componentName={'Chip'} type={'input'}/>
 <Canvas of={Chip.ChipInput}/>
@@ -29,20 +28,6 @@ import {ChipWikiStorybook} from './wiki'
 <Canvas of={Chip.ChipAssistive}/>
 
 <StorybookDescriptions componentName={'Value'} type={'value'}/>
-
-```html
-<D1Chip
-  value="filter-tag"
-  :detail="{ category: 'filters', type: 'status' }"
-  @click="handleChipClick"
-/>
-
-<D1Chip
-  :value="chipValue"
-  :detail="{ chipId: chip.id, timestamp: Date.now() }"
-  @click="handleSelection"
-/>
-```
 
 <StorybookDescriptions componentName={'Style'} type={'adaptive'}/>
 <Canvas of={Chip.ChipAdaptive}/>

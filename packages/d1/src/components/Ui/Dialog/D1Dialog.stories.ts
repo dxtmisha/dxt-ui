@@ -88,13 +88,17 @@ export const DialogVModel: Story = {
       }
     },
     template: `
-        <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
+          </div>
 
-        <D1Dialog
-          v-model:open="open"
-          label="Confirmation"
-          description="Are you sure you want to proceed with this action?"
-        />
+          <D1Dialog
+            v-model:open="open"
+            label="Confirmation"
+            description="Are you sure you want to proceed with this action?"
+          />
+        </div>
     `
   })
 }

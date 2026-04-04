@@ -21,42 +21,14 @@ FieldCounter обеспечивает визуальную обратную св
 - SMS-редакторы с подсчетом символов
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const message = ref('')
-const bio = ref('')
-</script>
-
 <template>
-  <!-- Только счетчик без лимита -->
-  <FieldCounter :counter="message.length" />
+  <!-- Базовый счетчик -->
+  <Component :counter="10" />
 
-  <!-- Счетчик с максимальным лимитом (формат: 50 / 200) -->
-  <FieldCounter
-    :counter="message.length"
-    :maxlength="200"
-  />
+  <!-- С лимитом -->
+  <Component :counter="10" :maxlength="100" />
 
-  <!-- Кастомный шаблон отображения -->
-  <FieldCounter
-    :counter="bio.length"
-    :maxlength="500"
-    template="Символов: [c] из [m]"
-  />
-
-  <!-- HTML в шаблоне для стилизации -->
-  <FieldCounter
-    :counter="message.length"
-    :maxlength="160"
-    template="<b>[c]</b> / [m] символов"
-  />
-
-  <!-- Условное отображение через counterShow -->
-  <FieldCounter
-    :counter="message.length"
-    :maxlength="100"
-    :counterShow="message.length > 0"
-  />
+  <!-- Кастомный шаблон -->
+  <Component :counter="5" :maxlength="50" template="[c] / [m]" />
 </template>
 ```

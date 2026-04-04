@@ -21,39 +21,14 @@ FieldCounter provides visual feedback about the number of entered characters, au
 - SMS editors with character counting
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const message = ref('')
-const bio = ref('')
-</script>
-
 <template>
-  <!-- Counter only without limit -->
-  <FieldCounter :counter="message.length" />
+  <!-- Basic counter -->
+  <Component :counter="10" />
 
-  <!-- Counter with maximum limit (format: 50 / 200) -->
-  <FieldCounter
-    :counter="message.length"
-    :maxlength="200"
-  />
+  <!-- With limit -->
+  <Component :counter="10" :maxlength="100" />
 
-  <!-- Custom display template -->
-  <FieldCounter
-    :counter="bio.length"
-    :maxlength="500"
-    template="Characters: [c] of [m]"
-  />
-
-  <!-- HTML in template for styling -->
-  <FieldCounter
-    :counter="message.length"
-    :maxlength="160"
-    template="<b>[c]</b> / [m] characters"
-  />
-
-  <!-- Conditional display via counterShow -->
-  <FieldCounter
-    :counter="message.length"
-    :maxlength="100"
-    :counterShow="message.length > 0"
+  <!-- Custom template -->
+  <Component :counter="5" :maxlength="50" template="[c] of [m]" />
+</template>
+```

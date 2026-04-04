@@ -40,36 +40,6 @@ export const Checkbox: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const CheckboxBasic: Story = {
-  name: 'Базовые',
-  render: () => ({
-    components: { D1Checkbox },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Checkbox label="Unchecked" />
-          <D1Checkbox label="Checked" :value="true" />
-          <D1Checkbox label="Indeterminate" indeterminate :value="true" />
-          <D1Checkbox label="Disabled" disabled />
-          <D1Checkbox label="Disabled & Checked" :value="true" disabled />
-        </div>
-    `
-  })
-}
-export const CheckboxStates: Story = {
-  name: 'Состояния',
-  render: () => ({
-    components: { D1Checkbox },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Checkbox label="Normal" />
-          <D1Checkbox label="Focus" focus />
-          <D1Checkbox label="Disabled" disabled />
-          <D1Checkbox label="Loading" loading />
-          <D1Checkbox label="Readonly" readonly />
-        </div>
-    `
-  })
-}
 export const CheckboxVModel: Story = {
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({
@@ -83,10 +53,8 @@ export const CheckboxVModel: Story = {
     template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="checkboxValue = true">Check</button>
-            <button class="wiki-storybook-button" @click="checkboxValue = false">Uncheck</button>
+            <button class="wiki-storybook-button" @click="checkboxValue = !checkboxValue">Check {{ checkboxValue }}</button>
           </div>
-          <div>Value: {{ checkboxValue }}</div>
           <D1Checkbox
             v-model="checkboxValue"
             label="Checkbox with v-model"
@@ -106,6 +74,22 @@ export const CheckboxSkeleton: Story = {
             <D1Checkbox isSkeleton label="Another loading checkbox" />
           </div>
         </D1Skeleton>
+    `
+  })
+}
+export const CheckboxSlots: Story = {
+  name: 'Использование слотов',
+  render: () => ({
+    components: { D1Checkbox },
+    template: `
+        <D1Checkbox>
+          <template #default>
+            <strong>Custom label slot</strong>
+          </template>
+          <template #description>
+            <em>Custom description slot</em>
+          </template>
+        </D1Checkbox>
     `
   })
 }

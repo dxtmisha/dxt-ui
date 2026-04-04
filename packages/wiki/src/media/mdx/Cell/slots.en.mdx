@@ -12,14 +12,14 @@ Slot for placing additional content at the bottom of the cell (metadata, seconda
 **Parameters:**
 - `props: CellClassesSub` — object with CSS classes for cell sub-elements
 
-**CellClassesSub:**
+**CellClassesSub Structure:**
 
-Object passed to all Cell component slots, containing CSS classes for styling sub-elements.
+Object passed to Cell component slots, containing CSS classes for styling sub-elements.
 
-- **`label`** — CSS class for the label element (`{className}__label`)
-- **`description`** — CSS class for the description element (`{className}__description`)
-- **`caption`** — CSS class for the caption element (`{className}__caption`)
-- **`trailing`** — CSS class for the trailing area element (`{className}__trailing`)
+- `label: string` — CSS class for the label element (`{className}__label`).
+- `description: string` — CSS class for the description element (`{className}__description`).
+- `caption: string` — CSS class for the caption element (`{className}__caption`).
+- `trailing: string` — CSS class for the trailing area element (`{className}__trailing`).
 
 ### Usage Example
 

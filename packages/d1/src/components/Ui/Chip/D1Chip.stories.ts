@@ -32,54 +32,16 @@ export const Chip: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const ChipBasic: Story = {
-  name: 'Базовые',
-  render: () => ({
-    components: { D1Chip },
-    template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <D1Chip>Chip</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <D1Chip icon="star">Chip</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <D1Chip selected>Chip</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <D1Chip disabled>Chip</D1Chip>
-          </div>
-        </div>
-    `
-  })
-}
 export const ChipInput: Story = {
   name: 'Ввод (input)',
   render: () => ({
     components: { D1Chip },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <D1Chip>Chip</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Input</div>
-            <D1Chip input>Tag</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <D1Chip input icon="person">Contact</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <D1Chip input selected icon="tag">Keyword</D1Chip>
-          </div>
+        <div class="wiki-storybook-flex">
+          <D1Chip>Chip</D1Chip>
+          <D1Chip input>Tag</D1Chip>
+          <D1Chip input icon="person">Contact</D1Chip>
+          <D1Chip input selected icon="tag">Keyword</D1Chip>
         </div>
     `
   })
@@ -89,23 +51,11 @@ export const ChipAssistive: Story = {
   render: () => ({
     components: { D1Chip },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <D1Chip>Chip</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Assistive</div>
-            <D1Chip assistive>Chip</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <D1Chip assistive icon="lightbulb">Suggestion</D1Chip>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <D1Chip assistive selected icon="check">Recommended</D1Chip>
-          </div>
+        <div class="wiki-storybook-flex">
+          <D1Chip>Chip</D1Chip>
+          <D1Chip assistive>Chip</D1Chip>
+          <D1Chip assistive icon="lightbulb">Suggestion</D1Chip>
+          <D1Chip assistive selected icon="check">Recommended</D1Chip>
         </div>
     `
   })
@@ -137,26 +87,9 @@ export const ChipSkeleton: Story = {
   render: () => ({
     components: { D1Chip, D1Skeleton },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Basic</div>
-            <D1Skeleton>
-              <D1Chip>Chip</D1Chip>
-            </D1Skeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Active</div>
-            <D1Skeleton :active="true">
-              <D1Chip isSkeleton>Chip</D1Chip>
-            </D1Skeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Hidden</div>
-            <D1Skeleton :active="true">
-              <D1Chip>Chip</D1Chip>
-            </D1Skeleton>
-          </div>
-        </div>
+        <D1Skeleton :active="true">
+          <D1Chip isSkeleton>Chip</D1Chip>
+        </D1Skeleton>
     `
   })
 }

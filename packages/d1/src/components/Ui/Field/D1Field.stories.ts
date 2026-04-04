@@ -43,6 +43,36 @@ export const Field: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const FieldWidth: Story = {
+  name: 'Ширина',
+  render: () => ({
+    components: { D1Field },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1Field label="auto">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </D1Field>
+          <D1Field width="320px" label="320px">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </D1Field>
+          <D1Field width="50%" label="50%">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </D1Field>
+          <D1Field width="min(100%,320px)" label="min(...)" >
+            <template #default="{id, className}">
+              <input :id="id" :class="className" value="" readonly/>
+            </template>
+          </D1Field>
+        </div>
+    `
+  })
+}
 export const FieldCancel: Story = {
   name: 'Кнопка очистки',
   render: () => ({
@@ -54,14 +84,14 @@ export const FieldCancel: Story = {
               <input :id="id" :class="className" value="" readonly/>
             </template>
           </D1Field>
-          <D1Field cancel="auto" :cancel-show="true" label="auto + show">
+          <D1Field cancel="auto" :cancel-show="true" label="auto + value">
             <template #default="{id, className}">
               <input :id="id" :class="className" value="Value" readonly/>
             </template>
           </D1Field>
           <D1Field cancel="always" label="always">
             <template #default="{id, className}">
-              <input :id="id" :class="className" value="Value" readonly/>
+              <input :id="id" :class="className" value="" readonly/>
             </template>
           </D1Field>
         </div>
@@ -113,66 +143,6 @@ export const FieldSkeleton: Story = {
     `
   })
 }
-export const FieldValue: Story = {
-  name: 'Состояние значения',
-  render: () => ({
-    components: { D1Field },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Field label="empty" :is-value="false">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </D1Field>
-          <D1Field label="value" :is-value="false">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="Hello" readonly/>
-            </template>
-          </D1Field>
-          <D1Field label="forced (isValue)" :is-value="true">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" placeholder="" readonly/>
-            </template>
-          </D1Field>
-          <D1Field label="value + isValue" :is-value="true">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="Data" readonly/>
-            </template>
-          </D1Field>
-        </div>
-    `
-  })
-}
-export const FieldWidth: Story = {
-  name: 'Ширина',
-  render: () => ({
-    components: { D1Field },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Field label="auto">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </D1Field>
-          <D1Field width="320px" label="320px">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </D1Field>
-          <D1Field width="50%" label="50%">
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </D1Field>
-          <D1Field width="min(100%,320px)" label="min(...)" >
-            <template #default="{id, className}">
-              <input :id="id" :class="className" value="" readonly/>
-            </template>
-          </D1Field>
-        </div>
-    `
-  })
-}
 export const FieldSlots: Story = {
   name: 'Использование слотов',
   render: () => ({
@@ -183,6 +153,7 @@ export const FieldSlots: Story = {
           label="Label prop"
           icon="home"
           icon-trailing="close"
+          value="Value"
         >
           <template #default="{id, className}">
             <input :id="id" :class="className" value="Value" readonly/>

@@ -50,20 +50,13 @@ export const wikiDescriptionsBlock: StorybookComponentsDescriptionItem = {
         ru: 'Базовые'
       },
       template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent>
-            Simple content wrapper
-          </DesignComponent>
-          <DesignComponent label="User Profile" description="Manage your personal information">
-            <button class="wiki-storybook-button">Edit Profile</button>
-          </DesignComponent>
-          <DesignComponent headline="Notifications" label="Settings">
-            <label><input type="checkbox" checked> Email Notifications</label>
-          </DesignComponent>
-          <DesignComponent icon="home" label="Dashboard">
-            <p>Welcome to your dashboard overview.</p>
-          </DesignComponent>
-        </div>
+        <DesignComponent
+          headline="Account Settings"
+          label="Profile Information"
+          description="Manage your personal details and public profile presence."
+        >
+          <p>Welcome to your profile overview. Here you can update your name, bio, and contact information.</p>
+        </DesignComponent>
       `
     },
     {
