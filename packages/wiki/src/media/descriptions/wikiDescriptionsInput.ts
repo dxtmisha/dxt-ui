@@ -132,9 +132,9 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       },
       template: `
         <div class="wiki-storybook-flex-column">
-          <DesignComponent type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
-          <DesignComponent type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
-          <DesignComponent type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
+          <DesignComponent type="tel" mask="+1 (***) ***-****" placeholder="+1 (555) 000-0000" label="Phone" />
+          <DesignComponent type="text" mask="**** **** **** ****" placeholder="0000 0000 0000 0000" label="Card" />
+          <DesignComponent type="tel" mask="+1 (***) ***-****" :mask-visible="false" label="No placeholder" />
         </div>
       `
     },
@@ -154,8 +154,8 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
-            <button class="wiki-storybook-button" @click="inputValue = ''">Clear</button>
+            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text {{ inputValue }}</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="inputValue = ''">Clear</button>
           </div>
           <DesignComponent
             v-model="inputValue"
@@ -163,21 +163,19 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             label="Text input"
             placeholder="Enter text"
           />
-          <div>Value: {{ inputValue }}</div>
 
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="maskValue = '2022-05-13'">Set date</button>
-            <button class="wiki-storybook-button" @click="maskValue = ''">Clear</button>
+            <button class="wiki-storybook-button" @click="maskValue = '2022-05-13'">Set date {{ maskValue }}</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="maskValue = ''">Clear</button>
           </div>
           <DesignComponent
             v-model="maskValue"
             type="date"
             label="Date input"
           />
-          <div>Mask: {{ maskValue }}</div>
 
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
+            <button class="wiki-storybook-button" @click="numberValue += 10">+10 {{ numberValue }}</button>
             <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
           </div>
           <DesignComponent
@@ -186,7 +184,6 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             label="Number input"
             :step="1"
           />
-          <div>Number: {{ numberValue }}</div>
         </div>
       `
     },

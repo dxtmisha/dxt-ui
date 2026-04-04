@@ -18,7 +18,9 @@ export type ButtonPropsToken = {
     textAlign?: 'left' | 'center' | 'right';
 };
 export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & ConstrHrefProps & AriaLabelPropsInclude & {
+    /** HTML tag for the button container/ HTML-тег для контейнера кнопки */
     tag?: 'button' | 'a' | 'span' | string;
+    /** HTML type for the button element/ HTML-тип для элемента кнопки */
     type?: 'button' | 'submit' | 'reset' | string;
 };
 /**

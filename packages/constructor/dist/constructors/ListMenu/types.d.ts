@@ -25,7 +25,9 @@ export interface ListMenuExpose extends WindowExposeInclude {
  * Тип, описывающий доступные слоты.
  */
 export interface ListMenuSlots {
+    /** Slot for the menu header/ Слот для заголовка меню */
     head?(props: WindowControlItem): any;
+    /** Slot for the menu list content/ Слот для содержимого списка меню */
     list?(props: any): any;
 }
 /**

@@ -122,9 +122,9 @@ export const InputMask: Story = {
     components: { D1Input },
     template: `
         <div class="wiki-storybook-flex-column">
-          <D1Input type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
-          <D1Input type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
-          <D1Input type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
+          <D1Input type="tel" mask="+1 (***) ***-****" placeholder="+1 (555) 000-0000" label="Phone" />
+          <D1Input type="text" mask="**** **** **** ****" placeholder="0000 0000 0000 0000" label="Card" />
+          <D1Input type="tel" mask="+1 (***) ***-****" :mask-visible="false" label="No placeholder" />
         </div>
     `
   })
@@ -143,8 +143,8 @@ export const InputVModel: Story = {
     template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
-            <button class="wiki-storybook-button" @click="inputValue = ''">Clear</button>
+            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text {{ inputValue }}</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="inputValue = ''">Clear</button>
           </div>
           <D1Input
             v-model="inputValue"
@@ -152,21 +152,19 @@ export const InputVModel: Story = {
             label="Text input"
             placeholder="Enter text"
           />
-          <div>Value: {{ inputValue }}</div>
 
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="maskValue = '2022-05-13'">Set date</button>
-            <button class="wiki-storybook-button" @click="maskValue = ''">Clear</button>
+            <button class="wiki-storybook-button" @click="maskValue = '2022-05-13'">Set date {{ maskValue }}</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="maskValue = ''">Clear</button>
           </div>
           <D1Input
             v-model="maskValue"
             type="date"
             label="Date input"
           />
-          <div>Mask: {{ maskValue }}</div>
 
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
+            <button class="wiki-storybook-button" @click="numberValue += 10">+10 {{ numberValue }}</button>
             <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
           </div>
           <D1Input
@@ -175,7 +173,6 @@ export const InputVModel: Story = {
             label="Number input"
             :step="1"
           />
-          <div>Number: {{ numberValue }}</div>
         </div>
     `
   })

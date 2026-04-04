@@ -135,6 +135,7 @@ export type WindowControlItem = WindowControlBasic & {
  * Карта компонентов для подключения компонента Window
  */
 export type WindowComponentInclude = {
+    /** Window component configuration/ Конфигурация компонента окна */
     window?: object;
 };
 /**
@@ -142,6 +143,7 @@ export type WindowComponentInclude = {
  * Карта событий для подключения Window
  */
 export type WindowEmitsInclude = {
+    /** Window event triggered on state change/ Событие окна при изменении состояния */
     window: [options: WindowEmitOptions];
 };
 /**
@@ -149,13 +151,21 @@ export type WindowEmitsInclude = {
  * Интерфейс для включения expose окна
  */
 export interface WindowExposeInclude {
+    /** Unique window identifier/ Уникальный идентификатор окна */
     id: ComputedRef<string | undefined>;
+    /** Whether the window is open/ Открыто ли окно */
     open: ComputedRef<boolean>;
+    /** Window control data/ Данные управления окном */
     control: ComputedRef<WindowControlItem | undefined>;
+    /** Sets the window open state/ Устанавливает состояние открытия окна */
     setOpen: WindowExpose['setOpen'];
+    /** Opens the window/ Открывает окно */
     toOpen: WindowExpose['toOpen'];
+    /** Closes the window/ Закрывает окно */
     toClose: WindowExpose['toClose'];
+    /** Toggles the window state/ Переключает состояние окна */
     toggle: WindowExpose['toggle'];
+    /** Reactive reference to the window element/ Реактивная ссылка на элемент окна */
     windowElement: Ref<ConstrBind<WindowExpose> | undefined>;
 }
 /**

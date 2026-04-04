@@ -20,6 +20,7 @@ export type ListGroupEmits = {};
  * Тип, описывающий доступные свойства.
  */
 export interface ListGroupExpose {
+    /** Whether the group is currently open/ Открыта ли группа в данный момент */
     open: ComputedRef<boolean>;
 }
 /**
@@ -28,7 +29,9 @@ export interface ListGroupExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ListGroupSlots {
+    /** Slot for the group header/ Слот для заголовка группы */
     head?(props: ListGroupSlotsPropsInclude): any;
+    /** Slot for the group list content/ Слот для содержимого списка группы */
     list?(props: any): any;
 }
 /**

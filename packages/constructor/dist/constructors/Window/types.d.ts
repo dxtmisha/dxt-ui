@@ -17,6 +17,7 @@ export type WindowComponents = ScrollbarComponentInclude & ButtonComponentInclud
  * Тип, описывающий доступные события.
  */
 export type WindowEmits = ScrollbarEmitsInclude & ImageEmitsInclude & ModelEmitsOpen & {
+    /** Window event triggered on state change/ Событие окна при изменении состояния */
     window: [options: WindowEmitOptions];
 };
 /**

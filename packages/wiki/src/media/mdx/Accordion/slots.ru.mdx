@@ -1,6 +1,9 @@
-### `default`
+- `default(props: MotionTransformControlItem): any` — Слот для размещения основного содержимого аккордеона, которое появляется при раскрытии секции.
 
-Слот для размещения основного содержимого аккордеона, которое появляется при раскрытии секции.
-
-**Параметры:**
-- `props: MotionTransformControlItem` — объект с данными управления состоянием (isOpen, isShow, classes)
+> **MotionTransformControlItem:**
+> - `isOpen: ComputedRef<boolean>` — реактивное состояние открытия.
+> - `isShow: ComputedRef<boolean>` — видим либо готовится к показу.
+> - `classes: MotionTransformClassList` — вспомогательные CSS‑классы.
+> - `idControl: string` — идентификатор элемента управления.
+> - `idBody: string` — идентификатор элемента тела.
+> - `binds: AriaRoleControlPropsInclude` — атрибуты привязки для доступности.

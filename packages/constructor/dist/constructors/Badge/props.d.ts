@@ -10,6 +10,7 @@ export type BadgePropsToken = {
     horizontal?: 'right' | 'center' | 'left';
 };
 export type BadgePropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & LabelNumberProps & AriaLabelPropsInclude & {
+    /** Whether to show as a dot/ Отображать как точку */
     dot?: boolean;
 };
 /**

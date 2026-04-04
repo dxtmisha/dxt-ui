@@ -14,7 +14,9 @@ export type SnackbarComponents = SnackbarItemComponentInclude;
  * Тип, описывающий доступные события.
  */
 export type SnackbarEmits = {
+    /** Event triggered when notification is shown/ Событие при показе уведомления */
     show: [value: string, item: SnackbarValue];
+    /** Event triggered when notification is hidden/ Событие при скрытии уведомления */
     hide: [value: string, item: SnackbarValue];
 };
 /**
@@ -23,9 +25,13 @@ export type SnackbarEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface SnackbarExpose {
+    /** Reactive state indicating if there are notifications/ Реактивное состояние, указывающее на наличие уведомлений */
     isItem: ComputedRef<boolean>;
+    /** Adds a new notification/ Добавляет новое уведомление */
     add(item: SnackbarValue): void;
+    /** Removes a notification by its value/ Удаляет уведомление по его значению */
     remove(value: string): void;
+    /** Clears all notifications/ Очищает все уведомления */
     clear(): void;
 }
 /**

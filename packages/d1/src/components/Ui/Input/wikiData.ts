@@ -92,10 +92,10 @@ const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'caption', description: `Caption slot/ Слот заголовка` },
   { name: 'label', description: `Label slot content/ Содержимое слота метки` },
-  { name: 'leading', properties: [{ name: 'props', type: 'FieldControl' }] },
+  { name: 'leading', description: `Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода`, properties: [{ name: 'props', type: 'FieldControl' }] },
   { name: 'prefix', description: `Prefix slot/ Слот префикса` },
   { name: 'suffix', description: `Suffix slot/ Слот суффикса` },
-  { name: 'trailing', properties: [{ name: 'props', type: 'FieldControl' }] }
+  { name: 'trailing', description: `Slot for displaying content after the input area/ Слот для отображения контента после области ввода`, properties: [{ name: 'props', type: 'FieldControl' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

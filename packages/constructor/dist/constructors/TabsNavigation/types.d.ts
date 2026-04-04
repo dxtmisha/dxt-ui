@@ -23,6 +23,7 @@ export type TabsNavigationEmits = EventClickEmits & ModelEmitsSelected<ListSelec
  * Тип, описывающий доступные свойства.
  */
 export interface TabsNavigationExpose {
+    /** Map of item values to their unique DOM identifiers/ Карта значений элементов и их уникальных DOM-идентификаторов */
     ids: ComputedRef<TabsNavigationIdsList>;
 }
 /**
@@ -31,7 +32,9 @@ export interface TabsNavigationExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface TabsNavigationSlots {
+    /** Slot for content before the tabs/ Слот для содержимого перед вкладками */
     leading?(props: any): any;
+    /** Slot for content after the tabs/ Слот для содержимого после вкладок */
     trailing?(props: any): any;
 }
 /**

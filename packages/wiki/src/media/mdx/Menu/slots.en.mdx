@@ -1,100 +1,14 @@
-### `title`
+- `title(props: MenuControlItem): any` — Slot for placing the menu window title.
+- `footer(props: MenuControlItem): any` — Slot for placing content in the bottom part of the menu window.
+- `contextTop(props: MenuControlItem): any` — Slot for placing contextual area above the menu list.
+- `contextBottom(props: MenuControlItem): any` — Slot for placing contextual area below the menu list.
 
-Slot for placing the menu window title.
-
-**Parameters:**
-- `props: MenuControlItem` — object with menu control data
-
-### `footer`
-
-Slot for placing content in the bottom part of the menu window (action buttons, information).
-
-**Parameters:**
-- `props: MenuControlItem` — object with menu control data
-
-### `contextTop`
-
-Slot for placing contextual area above the menu list (search, filters, hints).
-
-**Parameters:**
-- `props: MenuControlItem` — object with menu control data
-
-### `contextBottom`
-
-Slot for placing contextual area below the menu list (hints, final actions).
-
-**Parameters:**
-- `props: MenuControlItem` — object with menu control data
-
-```html
-<script setup>
-const handleSubmit = (values) => {
-  console.log('Selected values:', values)
-}
-</script>
-
-<template>
-  <Component>
-    <template #title="{ selectedList }">
-      <h3>Select Items</h3>
-      <span v-if="selectedList.length">
-        ({{ selectedList.length }})
-      </span>
-    </template>
-
-    <template #contextTop>
-      <input type="search" placeholder="Search items..." />
-    </template>
-
-    <template #footer="{ isSelected, selectedValues }">
-      <button @click="isOpen = false">Cancel</button>
-      <button
-        :disabled="!isSelected"
-        @click="handleSubmit(selectedValues)"
-      >
-        Apply
-      </button>
-    </template>
-  </Component>
-</template>
-```
-
-## MenuControlItem
-
-`MenuControlItem` — object passed to all Menu component slots, containing menu control data and selection information.
-
-### Type structure
-
-```typescript
-type MenuControlItem = MenuControlBasic & WindowControlItem
-
-type MenuControlBasic = ListExpose & {
-  /** Data loading state */
-  loading: Ref<boolean>
-}
-
-// Includes properties from ListExpose:
-// - isSelected: ComputedRef<boolean>
-// - selectedList: Ref<any[]>
-// - selectedNames: Ref<string[]>
-// - selectedValues: Ref<any[]>
-
-// And properties from WindowControlItem:
-// - classesWindow: WindowClassesList
-// - class: string
-// - open: Ref<boolean>
-// - onclick: (event: MouseEvent & TouchEvent) => Promise<void>
-// - oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
-// - binds: object
-```
-
-### Main properties
-
-- **`loading`** — reactive state of menu data loading
-- **`isSelected`** — computed property indicating presence of selected items
-- **`selectedList`** — reactive list of selected items
-- **`selectedNames`** — reactive list of labels of selected items
-- **`selectedValues`** — reactive array of values of selected items
-- **`open`** — reactive state of menu open/close
-- **`onclick`** — click handler for opening/closing menu
-
+> **MenuControlItem:**
+> - `loading: Ref<boolean>` — reactive state of menu data loading.
+> - `open: Ref<boolean>` — reactive state of menu open/close.
+> - `isSelected: ComputedRef<boolean>` — presence of selected items.
+> - `selectedList: Ref<any[]>` — list of selected items.
+> - `selectedNames: Ref<string[]>` — labels of selected items.
+> - `selectedValues: Ref<any[]>` — values of selected items.
+> - `onclick: (event) => Promise<void>` — click handler for opening/closing menu.
+> - `oncontextmenu: (event) => Promise<void>` — context menu handler.

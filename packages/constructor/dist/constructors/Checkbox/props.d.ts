@@ -19,7 +19,10 @@ type CheckboxPropsToken = {
     disabled?: boolean;
 };
 export type CheckboxPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & FieldMessagePropsInclude<FieldMessage, FieldCounter> & FieldInputCheckProps & ProgressPropsInclude<Progress> & EnabledProps & ModelProps<boolean> & SkeletonPropsInclude & {
+    /** Icon/ Иконка */
+    /** Icon for the checked state/ Иконка для отмеченного состояния */
     iconCheckbox?: string | ConstrBind<Image> | null;
+    /** Icon for the indeterminate state/ Иконка для неопределенного состояния */
     iconIndeterminate?: string | ConstrBind<Image> | null;
 };
 /**

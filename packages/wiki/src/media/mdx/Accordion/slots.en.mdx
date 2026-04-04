@@ -1,6 +1,9 @@
-### `default`
+- `default(props: MotionTransformControlItem): any` — Slot for placing the main accordion content that appears when the section is expanded.
 
-Slot for placing the main accordion content that appears when the section is expanded.
-
-**Parameters:**
-- `props: MotionTransformControlItem` — object with state management data (isOpen, isShow, classes)
+> **MotionTransformControlItem:**
+> - `isOpen: ComputedRef<boolean>` — reactive open state.
+> - `isShow: ComputedRef<boolean>` — visible or preparing to show.
+> - `classes: MotionTransformClassList` — helper CSS classes.
+> - `idControl: string` — identifier for the control element.
+> - `idBody: string` — identifier for the body element.
+> - `binds: AriaRoleControlPropsInclude` — binding attributes for accessibility.

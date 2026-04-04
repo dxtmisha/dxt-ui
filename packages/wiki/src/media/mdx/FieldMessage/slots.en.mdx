@@ -1,21 +1,7 @@
-### `helper`
+- `helper(props: FieldMessageSlot): any` — Slot for custom helper message content.
+- `validation(props: FieldMessageSlot): any` — Slot for custom validation message content.
 
-Slot for placing helper message. Displays only when validation message is absent.
-
-**Parameters:**
-- `props: FieldMessageSlot` — object with message data
-
-### `validation`
-
-Slot for placing validation message. Has priority over helper message.
-
-**Parameters:**
-- `props: FieldMessageSlot` — object with message data
-
-**FieldMessageSlot Structure:**
-
-Object passed to FieldMessage component slots, containing data for displaying messages.
-
-- `message: string` — current message (validation or helper) for display in the active slot.
-- `helperMessage: string` — helper message text passed through component properties.
-- `validationMessage: string` — validation message text passed through component properties. When present, it overrides the `helperMessage`.
+> **FieldMessageSlot:**
+> - `message: string` — current message (helper or validation).
+> - `helperMessage: string` — helper message text.
+> - `validationMessage: string` — validation message text.

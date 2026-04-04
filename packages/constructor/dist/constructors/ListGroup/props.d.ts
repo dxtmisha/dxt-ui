@@ -3,6 +3,7 @@ export type ListGroupPropsToken = {
     divider?: boolean;
 };
 export type ListGroupPropsBasic = {
+    /** Whether to show a divider/ Показывать ли разделитель */
     divider?: boolean;
 };
 /**

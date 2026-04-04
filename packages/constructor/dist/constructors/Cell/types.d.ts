@@ -32,7 +32,9 @@ export interface CellExpose extends EventClickExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface CellSlots extends LabelSlots, DescriptionSlots, CaptionSlots {
+    /** Slot for displaying additional content on the right side of the cell/ Слот для отображения дополнительного контента в правой части ячейки */
     trailing?(props: CellClassesSub): any;
+    /** Slot for displaying the main body content of the cell/ Слот для отображения основного содержимого тела ячейки */
     body?(props: CellClassesSub): any;
 }
 /**

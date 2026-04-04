@@ -15,7 +15,9 @@ export type BarsComponents = ButtonComponentInclude;
  * Тип, описывающий доступные события.
  */
 export type BarsEmits = EventClickEmits & {
+    /** Event for updating the action mode status/ Событие обновления статуса режима действия */
     'update:action': [value: boolean];
+    /** Event for updating the action mode model status/ Событие обновления статуса модели режима действия */
     'update:modelAction': [value: boolean];
 };
 /**
@@ -31,7 +33,9 @@ export interface BarsExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface BarsSlots extends LabelSlots, DescriptionSlots {
+    /** Slot for displaying a list of buttons/ Слот для отображения списка кнопок */
     bars?(props: any): any;
+    /** Slot for displaying a list of buttons in action mode/ Слот для отображения списка кнопок в режиме действия */
     actionBars?(props: any): any;
 }
 /**

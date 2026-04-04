@@ -26,7 +26,9 @@ export interface ActionsExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ActionsSlots {
+    /** Slot for the main list of actions/ Слот для основного списка действий */
     default?(props: any): any;
+    /** Slot for the secondary list of actions/ Слот для вторичного списка действий */
     secondary?(props: any): any;
 }
 /**

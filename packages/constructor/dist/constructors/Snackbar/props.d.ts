@@ -7,6 +7,7 @@ type SnackbarPropsToken = {
     origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
 };
 export type SnackbarPropsBasic = {
+    /** Delay before auto-closing the notification/ Задержка перед автоматическим закрытием уведомления */
     delay?: number;
 };
 /**

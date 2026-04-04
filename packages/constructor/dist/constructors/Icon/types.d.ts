@@ -20,6 +20,7 @@ export type IconEmits = ImageEmitsInclude & EventClickEmits;
  * Тип, описывающий доступные свойства.
  */
 export interface IconExpose extends EventClickExpose {
+    /** Whether the icon is currently active/ Активна ли иконка в данный момент */
     isActive: ComputedRef<boolean>;
 }
 /**
@@ -28,6 +29,7 @@ export interface IconExpose extends EventClickExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface IconSlots {
+    /** Slot for custom icon content/ Слот для пользовательского контента иконки */
     default?(props: any): any;
 }
 /**

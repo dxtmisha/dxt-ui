@@ -6,6 +6,8 @@ export type ModalPropsToken = {
     imagePosition?: 'top' | 'left';
 };
 export type ModalPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = WindowPropsInclude<Window> & BarsPropsInclude<Bars> & ActionsPropsInclude<Actions> & ImagePropsInclude<Image> & {
+    /** Status/ Статус */
+    /** Whether the modal is open/ Открыто ли модальное окно */
     open?: boolean;
 };
 /**

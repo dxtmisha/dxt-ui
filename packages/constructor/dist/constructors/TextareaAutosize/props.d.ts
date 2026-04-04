@@ -2,7 +2,11 @@ export type TextareaAutosizePropsToken = {
     autosize?: boolean;
 };
 export type TextareaAutosizePropsBasic = {
+    /** Value/ Значения */
+    /** Current text value/ Текущее текстовое значение */
     value?: string;
+    /** Style/ Стили */
+    /** Additional attributes for the textarea element/ Дополнительные атрибуты для элемента textarea */
     inputAttrs?: Record<string, any>;
 };
 /**

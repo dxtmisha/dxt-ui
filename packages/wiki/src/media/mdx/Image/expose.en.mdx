@@ -1,31 +1,12 @@
-### `type`
+- `type: ComputedRef<ImageTypeItem>` — Type of the loaded image.
 
-Type of the loaded image.
+> **ImageTypeItem values:**
+> `pdf`, `file`, `array`, `image`, `flag`, `flag-compressed`, `color`, `public`, `filled`, `outlined`, `round`, `sharp`, `two-tone`, `material`, `icon`.
 
-**Type:** `ComputedRef<ImageTypeItem>`
+- `data: Ref<ImageEventItem>` — Information about the loaded image, including its source and metadata.
 
-**Possible values:**
-
-```ts
-enum ImageTypeValue {
-  pdf = 'pdf',
-  file = 'file',
-  image = 'image',
-  flag = 'flag',
-  color = 'color',
-  public = 'public',
-  filled = 'filled',
-  outlined = 'outlined',
-  round = 'round',
-  sharp = 'sharp',
-  twoTone = 'two-tone',
-  material = 'material',
-  icon = 'icon'
-}
-```
-
-### `data`
-
-Information about the loaded image, including its dimensions and source.
-
-**Type:** `Ref<ImageEventItem>`
+> **ImageEventItem:**
+> - `src: string` — source URL.
+> - `width: number` — image width.
+> - `height: number` — image height.
+> - `image: HTMLImageElement` — DOM element of the image.

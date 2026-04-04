@@ -9,7 +9,9 @@ export type AccordionPropsToken = {
     divider?: boolean;
 };
 export type AccordionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Cell extends CellPropsBasic = CellPropsBasic, MotionTransform extends MotionTransformPropsBasic = MotionTransformPropsBasic> = LabelProps & DescriptionProps & IconLitePropsInclude<Icon> & MotionTransformPropsInclude<MotionTransform> & ModelPropsOpen & {
+    /** Additional attributes for the header cell component/ Дополнительные атрибуты для компонента ячейки заголовка */
     cellAttrs?: ConstrBind<Cell>;
+    /** Icon for the dropdown indicator/ Иконка для индикатора раскрывающегося списка */
     iconArrowDown?: IconValue<Icon>;
 };
 /**

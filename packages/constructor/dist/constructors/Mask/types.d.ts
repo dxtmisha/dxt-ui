@@ -13,22 +13,33 @@ export type MaskComponents = {};
  * Тип, описывающий доступные события.
  */
 export type MaskEmits = {
+    /** Event triggered on focus/ Событие при фокусе */
     focus: [event: FocusEvent];
+    /** Event triggered on blur/ Событие при потере фокуса */
     blur: [event: FocusEvent];
+    /** Event triggered on key down/ Событие при нажатии клавиши */
     keydown: [event: KeyboardEvent];
+    /** Event triggered on key up/ Событие при отпускании клавиши */
     keyup: [event: KeyboardEvent];
+    /** Event triggered before input/ Событие перед вводом */
     beforeinput: [event: InputEvent];
+    /** Event triggered on input/ Событие при вводе */
     input: [
         event: InputEvent,
         value: FieldValidationItem
     ];
+    /** Event triggered on simplified input/ Событие при упрощенном вводе */
     inputLite: [value: FieldValidationItem];
+    /** Event triggered on change/ Событие при изменении */
     change: [
         event: InputEvent,
         value: FieldValidationItem
     ];
+    /** Event triggered on simplified change/ Событие при упрощенном изменении */
     changeLite: [value: FieldValidationItem];
+    /** Event triggered on paste/ Событие при вставке */
     paste: [event: ClipboardEvent];
+    /** Event triggered on reset/ Событие при сбросе */
     reset: [event: Event];
 };
 /**
@@ -37,9 +48,13 @@ export type MaskEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface MaskExpose {
+    /** The raw, unformatted value/ Неотформатированное («базовое») значение */
     valueBasic: ComputedRef<string>;
+    /** The current formatted value/ Текущее отформатированное значение */
     value: ComputedRef<string>;
+    /** Sets a new value/ Устанавливает новое значение */
     setValue(value: string): boolean;
+    /** Clears the current value/ Очищает текущее значение */
     clear(): boolean;
 }
 /**

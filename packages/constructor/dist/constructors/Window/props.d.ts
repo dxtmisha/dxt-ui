@@ -22,27 +22,53 @@ export type WindowPropsToken = {
     widthMatch?: boolean;
 };
 export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & ModelPropsOpen & {
+    /** Status/ Статусы */
+    /** Whether the window is open/ Открыто ли окно */
     open?: boolean;
+    /** Whether the window is disabled/ Отключено ли окно */
     disabled?: boolean;
+    /** Hook/ Хуки */
+    /** Hook called during window preparation/ Хук, вызываемый при подготовке окна */
     preparation?(): NormalOrPromise<void>;
+    /** Hook called before the window starts opening/ Хук, вызываемый перед началом открытия окна */
     beforeOpening?(): NormalOrPromise<boolean>;
+    /** Hook called while the window is opening/ Хук, вызываемый во время открытия окна */
     opening?(): NormalOrPromise<boolean>;
+    /** Hook called before the window starts closing/ Хук, вызываемый перед началом закрытия окна */
     beforeClosing?(): NormalOrPromise<boolean>;
+    /** Hook called while the window is closing/ Хук, вызываемый во время закрытия окна */
     closing?(): NormalOrPromise<boolean>;
+    /** Style/ Стили */
+    /** Whether to enable the context menu/ Включено ли контекстное меню */
     contextmenu?: boolean;
+    /** Whether to enable static mode/ Включен ли статический режим */
     staticMode?: boolean;
+    /** The element over which the window is displayed/ Элемент, над которым отображается окно */
     overElement?: ElementOrString<HTMLElement>;
+    /** Whether to automatically close the window/ Автоматически ли закрывать окно */
     autoClose?: boolean;
+    /** Whether the window is persistent (cannot be closed by clicking outside)/ Является ли окно постоянным (нельзя закрыть кликом вне) */
     persistent?: boolean;
+    /** Whether to use a flash effect/ Использовать ли эффект вспышки */
     flash?: boolean;
+    /** Whether the window should be in the DOM/ Должно ли окно находиться в DOM */
     inDom?: boolean;
+    /** Indent from the control element/ Отступ от управляющего элемента */
     indent?: number;
+    /** Whether to show a divider/ Показывать ли разделитель */
     divider?: boolean;
+    /** Whether to show a close button/ Показывать ли кнопку закрытия */
     closeButton?: boolean;
+    /** Icon for the close button/ Иконка для кнопки закрытия */
     iconClose?: IconValue<Icon>;
+    /** Technical/ Технические */
+    /** Whether the window is inert/ Является ли окно инертным */
     inert?: boolean;
+    /** Whether to automatically manage tab index/ Автоматически ли управлять tab-index */
     autoTabIndex?: boolean;
+    /** Whether to close the window on Esc key press/ Закрывать ли окно при нажатии Esc */
     closeOnEsc?: boolean;
+    /** Whether to open the window on Arrow Down key press/ Открывать ли окно при нажатии стрелки вниз */
     openOnArrowDown?: boolean;
     /**
      * The window will be displayed inside the current parent element/

@@ -18,13 +18,18 @@ export type IconPropsToken = {
     animationShow?: boolean;
 };
 export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & EventClickProps & {
+    /** Status/ Статус */
     /** Активное состояние иконки/ Active state of the icon */
     active?: boolean;
+    /** Icon/ Иконка */
     /** Value of the main icon/ Значение основной иконки */
     icon?: ImageValue<Image>;
     /** Value of the active icon/ Значение активной иконки */
     iconActive?: ImageValue<Image>;
+    /** ARIA/ ARIA */
+    /** ARIA role for the icon/ ARIA-роль для иконки */
     role?: RoleType;
+    /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
     tabindex?: number | string;
 };
 /**

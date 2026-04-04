@@ -4,7 +4,11 @@ import { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounte
 import { SkeletonPropsInclude } from '../Skeleton';
 export type FieldLabelPropsToken = {};
 export type FieldLabelPropsBasic<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & FieldCounterPropsInclude<FieldCounter> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & {
+    /** Information/ Информационные свойства */
+    /** Identifier of the input element this label is for/ Идентификатор элемента ввода, к которому относится этот лейбл */
     for?: string;
+    /** Style/ Стили */
+    /** Whether the field is required/ Является ли поле обязательным */
     required?: boolean;
 };
 /**

@@ -1,3 +1,6 @@
+/**
+ * Slots for description functionality/ Слоты для функциональности описания
+ */
 export interface DescriptionSlots {
     /** Description slot/ Слот описания */
     description?(props: any): any;

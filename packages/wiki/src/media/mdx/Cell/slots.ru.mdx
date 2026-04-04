@@ -1,40 +1,8 @@
-### `trailing`
+- `trailing(props: CellClassesSub): any` — Слот для размещения элементов управления или индикаторов в конце ячейки (иконки, переключатели, кнопки).
+- `body(props: CellClassesSub): any` — Слот для размещения дополнительного контента в нижней части ячейки (метаданные, вторичные действия, детали).
 
-Слот для размещения элементов управления или индикаторов в конце ячейки (иконки, переключатели, кнопки).
-
-**Параметры:**
-- `props: CellClassesSub` — объект с CSS классами для под-элементов ячейки
-
-### `body`
-
-Слот для размещения дополнительного контента в нижней части ячейки (метаданные, вторичные действия, детали).
-
-**Параметры:**
-- `props: CellClassesSub` — объект с CSS классами для под-элементов ячейки
-
-**Структура CellClassesSub:**
-
-Объект, передаваемый в слоты компонента Cell, содержащий CSS-классы для стилизации под-элементов.
-
-- `label: string` — CSS-класс для элемента метки (`{className}__label`).
-- `description: string` — CSS-класс для элемента описания (`{className}__description`).
-- `caption: string` — CSS-класс для элемента подписи (`{className}__caption`).
-- `trailing: string` — CSS-класс для элемента области trailing (`{className}__trailing`).
-
-### Пример использования
-
-```html
-<template>
-  <Component
-    label="Интерактивная ячейка"
-    description="Этот пример демонстрирует использование классов под-элементов в слотах."
-  >
-    <template #body="{ description }">
-      <!-- Используйте класс 'description' для стилизации вторичного контента в области body -->
-      <div :class="description">
-        Здесь можно разместить дополнительные действия или информацию.
-      </div>
-    </template>
-  </Component>
-</template>
-```
+> **CellClassesSub:**
+> - `label: string` — CSS-класс для элемента метки (`{className}__label`).
+> - `description: string` — CSS-класс для элемента описания (`{className}__description`).
+> - `caption: string` — CSS-класс для элемента подписи (`{className}__caption`).
+> - `trailing: string` — CSS-класс для элемента области trailing (`{className}__trailing`).

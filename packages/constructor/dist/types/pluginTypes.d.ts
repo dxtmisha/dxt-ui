@@ -8,10 +8,14 @@ export type PluginComponentItem = {
 };
 /** List of library components by key / Список компонентов библиотеки по ключу */
 export type PluginComponentList = Record<string, PluginComponentItem>;
-/** List of library component imports / Список импортов компонентов библиотеки */
+/** List of library component imports/ Список импортов компонентов библиотеки */
 export type PluginComponentImports = PluginComponentItem[];
+/** Configuration options for the plugin/ Опции конфигурации для плагина */
 export type PluginOptions = {
+    /** Whether to include styles/ Включать ли стили */
     style?: boolean;
+    /** Whether to include components/ Включать ли компоненты */
     component?: boolean;
+    /** Additional Vite plugin options/ Дополнительные опции плагина Vite */
     viteOptions?: VitePlugin;
 };

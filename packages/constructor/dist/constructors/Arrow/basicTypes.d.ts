@@ -8,14 +8,22 @@ export declare enum ArrowDirection {
     RIGHT = "right",
     HIDE = "hide"
 }
+/** Arrow border offsets/ Отступы границ стрелки */
 export type ArrowBorder = {
+    /** Top offset/ Отступ сверху */
     top: number;
+    /** Bottom offset/ Отступ снизу */
     bottom: number;
+    /** Left offset/ Отступ слева */
     left: number;
+    /** Right offset/ Отступ справа */
     right: number;
 };
+/** Arrow center coordinates/ Координаты центра стрелки */
 export type ArrowCenter = {
+    /** X coordinate/ Координата X */
     x: number;
+    /** Y coordinate/ Координата Y */
     y: number;
 };
 /**
@@ -23,6 +31,7 @@ export type ArrowCenter = {
  * Карта компонентов для подключения компонента Arrow
  */
 export type ArrowComponentInclude = {
+    /** Arrow component configuration/ Конфигурация компонента стрелки */
     arrow?: object;
 };
 /**

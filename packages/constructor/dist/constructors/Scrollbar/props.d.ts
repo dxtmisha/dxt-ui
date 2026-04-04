@@ -8,6 +8,8 @@ export type ScrollbarPropsToken = {
     standard?: boolean;
 };
 export type ScrollbarPropsBasic = {
+    /** Style/ Стили */
+    /** HTML tag for the scrollbar element/ HTML-тег для элемента скроллбара */
     tag?: string;
 };
 /**

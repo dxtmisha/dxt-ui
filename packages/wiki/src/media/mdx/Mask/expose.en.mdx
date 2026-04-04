@@ -1,20 +1,3 @@
-### `value`
-
-Final formatted mask value.
-
-**Type:** `Ref<string>`
-
-### `valueBasic`
-
-Basic mask value without formatting (only entered characters).
-
-**Type:** `Ref<string>`
-
-### `set`
-
-Sets new value and reinitializes the mask.
-
-**Parameters:**
-- `value: string` — new value to set
-
-**Returns:** `boolean` — `true` if the value was changed
+- `value: Ref<string>` — Final formatted mask value.
+- `valueBasic: Ref<string>` — Basic mask value without formatting (only entered characters).
+- `set(value: string): boolean` — Sets new value and reinitializes the mask. Returns `true` if changed.

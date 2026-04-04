@@ -93,26 +93,9 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
       },
       components: ['Skeleton'],
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Basic</div>
-            <DesignSkeleton>
-              <DesignComponent icon="home"/>
-            </DesignSkeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Active</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent isSkeleton icon="home" rounded="md"/>
-            </DesignSkeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Hidden</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent icon="home"/>
-            </DesignSkeleton>
-          </div>
-        </div>
+        <DesignSkeleton :active="true">
+          <DesignComponent isSkeleton icon="home" rounded="md"/>
+        </DesignSkeleton>
       `
     }
 

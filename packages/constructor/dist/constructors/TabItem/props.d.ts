@@ -14,8 +14,13 @@ type TabItemPropsToken = {
     container?: boolean;
 };
 export type TabItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic> = LabelProps & IconPropsInclude<Icon> & BadgePropsInclude<Badge> & SkeletonPropsInclude & EnabledProps & EventClickProps & AriaRolePropsInclude & {
+    /** Value/ Значения */
+    /** Item index/ Индекс элемента */
     index?: any;
+    /** URL address for links/ URL-адрес для ссылок */
     href?: string;
+    /** Style/ Стили */
+    /** HTML tag for the tab item/ HTML-тег для элемента вкладки */
     tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string;
 };
 /**

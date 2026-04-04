@@ -1,44 +1,17 @@
-### `id`
+- `id: string` — Unique identifier of the window.
+- `open: Ref<boolean>` — Reactive state of window visibility.
+- `control: WindowControlItem` — Control item data for window management.
+    
+> **WindowControlItem:**
+> - `open: Ref<boolean>` — reactive open state.
+> - `class: string` — window CSS class.
+> - `onclick: WindowEventClick` — click event handler.
+> - `onKeydown: WindowEventClick` — keydown event handler.
+> - `oncontextmenu: WindowEventClick` — context menu event handler.
+> - `classesWindow: WindowClassesList` — list of CSS classes for window styling.
+> - `binds: Record<string, any>` — binding properties for the control element.
 
-Unique identifier of the window.
-
-**Type:** `string`
-
-### `open`
-
-Reactive state of window visibility.
-
-**Type:** `Ref<boolean>`
-
-### `control`
-
-Control item data for window management.
-
-**Type:** `WindowControlItem`
-
-### `setOpen`
-
-Sets window open state.
-
-**Parameters:**
-- `open: boolean` — new window visibility state
-
-**Returns:** `Promise<void>`
-
-### `toOpen`
-
-Transition to opening state.
-
-**Returns:** `Promise<void>`
-
-### `toClose`
-
-Transition to closing state.
-
-**Returns:** `Promise<void>`
-
-### `toggle`
-
-Toggles window visibility (opens if closed, closes if open).
-
-**Returns:** `Promise<void>`
+- `setOpen(open: boolean): Promise<void>` — Sets window open state.
+- `toOpen(): Promise<void>` — Transition to opening state.
+- `toClose(): Promise<void>` — Transition to closing state.
+- `toggle(): Promise<void>` — Toggles window visibility (opens if closed, closes if open).

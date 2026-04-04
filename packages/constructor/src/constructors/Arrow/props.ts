@@ -1,9 +1,7 @@
 /** Arrow position and direction tokens/ Токены позиционирования и направления стрелки */
 export type ArrowPropsToken = {
   // :type [!] System label / Системная метка
-  /** Arrow position relative to the target/ Позиция стрелки относительно цели */
   position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'
-  /** Whether to inverse the arrow orientation/ Инвертировать ли ориентацию стрелки */
   inverse?: boolean
   // :type [!] System label / Системная метка
 }

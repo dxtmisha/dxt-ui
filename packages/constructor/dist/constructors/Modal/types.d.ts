@@ -27,6 +27,7 @@ export interface ModalExpose extends WindowExposeInclude {
  * Тип, описывающий доступные слоты.
  */
 export interface ModalSlots extends WindowSlots {
+    /** Slot for the modal header/ Слот для заголовка модального окна */
     header(props: WindowControlItem): any;
 }
 /**

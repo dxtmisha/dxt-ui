@@ -1,63 +1,13 @@
-### `control`
+- `control(props: WindowControlItem): any` — Slot for placing window control elements (close buttons, minimize, etc.).
+- `title(props: WindowControlItem): any` — Slot for placing window title in the header.
+- `footer(props: WindowControlItem): any` — Slot for placing content at the bottom of the window (action buttons, info, etc.).
+- `default(props: WindowControlItem): any` — Main slot for placing the primary window content.
 
-Slot for placing window control elements (close buttons, minimize, etc.).
-
-**Parameters:**
-- `props: WindowControlItem` — object with window control data
-
-### `title`
-
-Slot for placing window title in the header.
-
-**Parameters:**
-- `props: WindowControlItem` — object with window control data
-
-### `footer`
-
-Slot for placing content at the bottom of the window (action buttons, info, etc.).
-
-**Parameters:**
-- `props: WindowControlItem` — object with window control data
-
-### `default`
-
-Main slot for placing the primary window content.
-
-**Parameters:**
-- `props: WindowControlItem` — object with window control data
-
-**Structure of WindowControlItem:**
-
-Object passed to all Window component slots, containing data and methods for window management.
-
-- `classesWindow: WindowClassesList` — object with CSS classes for different window states
-- `class: string` — CSS class string for the control element
-- `open: Ref<boolean>` — reactive window visibility state
-- `onclick: WindowEventClick` — click handler for toggling the window state
-- `onKeydown: WindowEventClick` — keydown event handler
-- `oncontextmenu: WindowEventClick` — context menu handler
-- `binds: object` — object with properties for binding to elements
-
-### Usage Example
-
-```html
-<template>
-  <Component>
-    <template #control="{ binds }">
-      <button v-bind="binds">Open Window</button>
-    </template>
-
-    <template #title="{ open }">
-      <h2>Title ({{ open ? 'open' : 'closed' }})</h2>
-    </template>
-
-    <template #default>
-      <p>Main window content</p>
-    </template>
-
-    <template #footer="{ onclick }">
-      <button @click="onclick">Close</button>
-    </template>
-  </Component>
-</template>
-```
+> **WindowControlItem:**
+> - `open: Ref<boolean>` — reactive open state.
+> - `class: string` — window CSS class.
+> - `onclick: WindowEventClick` — click event handler.
+> - `onKeydown: WindowEventClick` — keydown event handler.
+> - `oncontextmenu: WindowEventClick` — context menu event handler.
+> - `classesWindow: WindowClassesList` — list of CSS classes for window styling.
+> - `binds: Record<string, any>` — binding properties for the control element.

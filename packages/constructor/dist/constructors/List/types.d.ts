@@ -16,6 +16,7 @@ export type ListComponents = ListItemComponentInclude & ListGroupComponentInclud
  * Тип, описывающий доступные события.
  */
 export type ListEmits = EventClickEmits & {
+    /** Event for closing the list/ Событие закрытия списка */
     close: [];
 };
 /**
@@ -24,9 +25,13 @@ export type ListEmits = EventClickEmits & {
  * Тип, описывающий доступные свойства.
  */
 export interface ListExpose {
+    /** Whether at least one item is selected/ Выбран ли хотя бы один элемент */
     isSelected: ComputedRef<boolean>;
+    /** List of selected elements/ Список выбранных элементов */
     selectedList: ComputedRef<ListList>;
+    /** Names of selected elements/ Названия выбранных элементов */
     selectedNames: ComputedRef<ListNames>;
+    /** Values of selected elements/ Значения выбранных элементов */
     selectedValues: ComputedRef<any[]>;
 }
 /**

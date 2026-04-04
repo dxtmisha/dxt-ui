@@ -1,41 +1,10 @@
-### `default`
+- `default(props: FieldControl): any` — Слот по умолчанию для основного элемента ввода (input, select, textarea).
+- `leading(props: FieldControl): any` — Слот для отображения контента перед областью ввода.
+- `trailing(props: FieldControl): any` — Слот для отображения контента после области ввода.
 
-Слот для размещения основного элемента ввода (input, select, textarea и т.д.). Обязательный слот.
-
-**Параметры:**
-- `props: FieldControl` — объект с данными для связывания элемента ввода
-
-**Структура FieldControl:**
-
-Объект, передаваемый в слоты компонента Field, содержащий данные для корректной интеграции элементов ввода.
-
-- `id: string` — уникальный идентификатор для связывания `<label>` с элементом ввода через атрибут `for`. Обеспечивает доступность.
-- `className: string` — CSS-классы для стилизации видимого элемента ввода (input, textarea, select), обеспечивающие визуальное единообразие и состояния (focus, error и т.д.).
-- `classHidden: string` — CSS-классы для скрытия нативного элемента ввода при создании кастомных контролов (например, Checkbox или Radio), сохраняя их функциональность.
-
-### Пример использования
-
-```html
-<template>
-  <Component label="Email">
-    <template #leading>
-      <Icon name="email" />
-    </template>
-
-    <template #default="{ id, className }">
-      <input
-        :id="id"
-        :class="className"
-        type="email"
-        placeholder="example@mail.com"
-      />
-    </template>
-
-    <template #trailing>
-      <button type="button">
-        <Icon name="search" />
-      </button>
-    </template>
-  </Component>
-</template>
-```
+> **FieldControl:**
+> - `id: string` — уникальный идентификатор элемента для связывания label и input.
+> - `className: string` — CSS-классы для видимой зоны ввода.
+> - `classHidden: string` — CSS-классы для скрытого нативного элемента ввода.
+> - `classForFocus: string` — CSS-классы, применяемые при фокусировке на поле.
+> - `binds: Record<string, any>` — свойства, привязанные к элементу ввода.

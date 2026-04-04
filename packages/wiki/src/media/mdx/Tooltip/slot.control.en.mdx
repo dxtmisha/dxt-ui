@@ -1,14 +1,5 @@
-### `control`
-- `onmouseout: function` — mouseout handler
-- `onmouseover: function` — mouseover handler
-- `onclick: function` — click handler
-- `class: string` — classes for styling
-**Properties of `binds`:**
+- `control(props: TooltipControlItem): any` — Slot for the control element that triggers the tooltip.
 
-- `open: Ref<boolean>` — open state
-- `binds: object` — properties for the control element
-**Parameters:**
-
-Slot for the control element that triggers the tooltip.
-
-
+> **TooltipControlItem:**
+> - `open: Ref<boolean>` — open state.
+> - `binds: object` — properties for the control element (class, onclick, onmouseover, onmouseout).

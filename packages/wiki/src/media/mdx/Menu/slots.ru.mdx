@@ -1,100 +1,14 @@
-### `title`
+- `title(props: MenuControlItem): any` — Слот для размещения заголовка окна меню.
+- `footer(props: MenuControlItem): any` — Слот для размещения содержимого в нижней части окна меню.
+- `contextTop(props: MenuControlItem): any` — Слот для размещения контекстной области над списком меню.
+- `contextBottom(props: MenuControlItem): any` — Слот для размещения контекстной области под списком меню.
 
-Слот для размещения заголовка окна меню.
-
-**Параметры:**
-- `props: MenuControlItem` — объект с данными управления меню
-
-### `footer`
-
-Слот для размещения содержимого в нижней части окна меню (кнопки действий, информация).
-
-**Параметры:**
-- `props: MenuControlItem` — объект с данными управления меню
-
-### `contextTop`
-
-Слот для размещения контекстной области над списком меню (поиск, фильтры, подсказки).
-
-**Параметры:**
-- `props: MenuControlItem` — объект с данными управления меню
-
-### `contextBottom`
-
-Слот для размещения контекстной области под списком меню (подсказки, итоговые действия).
-
-**Параметры:**
-- `props: MenuControlItem` — объект с данными управления меню
-
-```html
-<script setup>
-const handleSubmit = (values) => {
-  console.log('Выбранные значения:', values)
-}
-</script>
-
-<template>
-  <Component>
-    <template #title="{ selectedList }">
-      <h3>Выбор элементов</h3>
-      <span v-if="selectedList.length">
-        ({{ selectedList.length }})
-      </span>
-    </template>
-
-    <template #contextTop>
-      <input type="search" placeholder="Поиск элементов..." />
-    </template>
-
-    <template #footer="{ isSelected, selectedValues }">
-      <button @click="isOpen = false">Отмена</button>
-      <button
-        :disabled="!isSelected"
-        @click="handleSubmit(selectedValues)"
-      >
-        Применить
-      </button>
-    </template>
-  </Component>
-</template>
-```
-
-## MenuControlItem
-
-`MenuControlItem` — объект, передаваемый во все слоты компонента Menu, содержащий данные для управления меню и информацию о выборе.
-
-### Структура типа
-
-```typescript
-type MenuControlItem = MenuControlBasic & WindowControlItem
-
-type MenuControlBasic = ListExpose & {
-  /** Состояние загрузки данных */
-  loading: Ref<boolean>
-}
-
-// Включает свойства из ListExpose:
-// - isSelected: ComputedRef<boolean>
-// - selectedList: Ref<any[]>
-// - selectedNames: Ref<string[]>
-// - selectedValues: Ref<any[]>
-
-// И свойства из WindowControlItem:
-// - classesWindow: WindowClassesList
-// - class: string
-// - open: Ref<boolean>
-// - onclick: (event: MouseEvent & TouchEvent) => Promise<void>
-// - oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
-// - binds: object
-```
-
-### Основные свойства
-
-- **`loading`** — реактивное состояние загрузки данных меню
-- **`isSelected`** — вычисляемое свойство, указывающее наличие выбранных элементов
-- **`selectedList`** — реактивный список выбранных элементов
-- **`selectedNames`** — реактивный список меток выбранных элементов
-- **`selectedValues`** — реактивный массив значений выбранных элементов
-- **`open`** — реактивное состояние открытия меню
-- **`onclick`** — обработчик клика для открытия/закрытия меню
-
+> **MenuControlItem:**
+> - `loading: Ref<boolean>` — состояние загрузки данных меню.
+> - `open: Ref<boolean>` — состояние открытия меню.
+> - `isSelected: ComputedRef<boolean>` — наличие выбранных элементов.
+> - `selectedList: Ref<any[]>` — список выбранных элементов.
+> - `selectedNames: Ref<string[]>` — метки выбранных элементов.
+> - `selectedValues: Ref<any[]>` — значения выбранных элементов.
+> - `onclick: (event) => Promise<void>` — обработчик клика для открытия/закрытия меню.
+> - `oncontextmenu: (event) => Promise<void>` — обработчик контекстного меню.

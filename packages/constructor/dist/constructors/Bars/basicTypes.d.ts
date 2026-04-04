@@ -6,12 +6,16 @@ import { BarsPropsBasic } from './props';
  * Карта компонентов для подключения компонента Bars
  */
 export type BarsComponentInclude = {
+    /** Bars component configuration/ Конфигурация компонента панелей */
     bars?: object;
 };
 /** Available events for Bars/ Доступные события для Bars */
 export type BarsEmitsInclude = {
+    /** Click event for bars/ Событие клика для панелей */
     bars: EventClickEmits['click'];
+    /** Simple click event for bars/ Простое событие клика для панелей */
     barsLite: EventClickEmits['clickLite'];
+    /** Back button click event for bars/ Событие клика кнопки назад для панелей */
     barsBack: EventClickEmits['clickLite'];
 };
 /**

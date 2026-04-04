@@ -1,31 +1,12 @@
-### `type`
+- `type: ComputedRef<ImageTypeItem>` — Тип загруженного изображения.
 
-Тип загруженного изображения.
+> **Значения ImageTypeItem:**
+> `pdf`, `file`, `array`, `image`, `flag`, `flag-compressed`, `color`, `public`, `filled`, `outlined`, `round`, `sharp`, `two-tone`, `material`, `icon`.
 
-**Тип:** `ComputedRef<ImageTypeItem>`
+- `data: Ref<ImageEventItem>` — Информация о загруженном изображении, включая его источник и метаданные.
 
-**Возможные значения:**
-
-```ts
-enum ImageTypeValue {
-  pdf = 'pdf',
-  file = 'file',
-  image = 'image',
-  flag = 'flag',
-  color = 'color',
-  public = 'public',
-  filled = 'filled',
-  outlined = 'outlined',
-  round = 'round',
-  sharp = 'sharp',
-  twoTone = 'two-tone',
-  material = 'material',
-  icon = 'icon'
-}
-```
-
-### `data`
-
-Информация о загруженном изображении, включая его размеры и источник.
-
-**Тип:** `Ref<ImageEventItem>`
+> **ImageEventItem:**
+> - `src: string` — URL-источник.
+> - `width: number` — ширина изображения.
+> - `height: number` — высота изображения.
+> - `image: HTMLImageElement` — DOM-элемент изображения.

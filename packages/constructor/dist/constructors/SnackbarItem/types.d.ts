@@ -17,6 +17,7 @@ export type SnackbarItemComponents = IconComponentInclude & ButtonComponentInclu
  * Тип, описывающий доступные события.
  */
 export type SnackbarItemEmits = ActionsEmitsInclude & EventClickEmits & {
+    /** Event triggered when notification is closed/ Событие при закрытии уведомления */
     close: [value: string | undefined];
 };
 /**
@@ -32,6 +33,7 @@ export interface SnackbarItemExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SnackbarItemSlots extends LabelSlots, DescriptionSlots {
+    /** Slot for the notification body/ Слот для содержимого уведомления */
     body?(props: any): any;
 }
 /**

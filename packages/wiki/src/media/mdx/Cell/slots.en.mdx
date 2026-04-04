@@ -1,40 +1,8 @@
-### `trailing`
+- `trailing(props: CellClassesSub): any` — Slot for placing control elements or indicators at the end of the cell (icons, switches, buttons).
+- `body(props: CellClassesSub): any` — Slot for placing additional content at the bottom of the cell (metadata, secondary actions, details).
 
-Slot for placing control elements or indicators at the end of the cell (icons, switches, buttons).
-
-**Parameters:**
-- `props: CellClassesSub` — object with CSS classes for cell sub-elements
-
-### `body`
-
-Slot for placing additional content at the bottom of the cell (metadata, secondary actions, details).
-
-**Parameters:**
-- `props: CellClassesSub` — object with CSS classes for cell sub-elements
-
-**CellClassesSub Structure:**
-
-Object passed to Cell component slots, containing CSS classes for styling sub-elements.
-
-- `label: string` — CSS class for the label element (`{className}__label`).
-- `description: string` — CSS class for the description element (`{className}__description`).
-- `caption: string` — CSS class for the caption element (`{className}__caption`).
-- `trailing: string` — CSS class for the trailing area element (`{className}__trailing`).
-
-### Usage Example
-
-```html
-<template>
-  <Component
-    label="Interactive Cell"
-    description="This example demonstrates the usage of sub-element classes in slots."
-  >
-    <template #body="{ description }">
-      <!-- Use 'description' class to style secondary content in the body area -->
-      <div :class="description">
-        Additional actions or information can be placed here.
-      </div>
-    </template>
-  </Component>
-</template>
-```
+> **CellClassesSub:**
+> - `label: string` — CSS class for the label element (`{className}__label`).
+> - `description: string` — CSS class for the description element (`{className}__description`).
+> - `caption: string` — CSS class for the caption element (`{className}__caption`).
+> - `trailing: string` — CSS class for the trailing area element (`{className}__trailing`).

@@ -7,6 +7,7 @@ import { FieldLabelPropsBasic } from './props';
  * Интерфейс для описания, какие компоненты надо подключить для работы FieldLabel
  */
 export type FieldLabelComponentInclude = {
+    /** FieldLabel component configuration/ Конфигурация компонента метки поля */
     fieldLabel?: object;
 };
 /**
@@ -23,6 +24,8 @@ export interface FieldLabelSlotsInclude extends LabelAlternativeSlots {
  * Свойства, которые можно передать в FieldLabelInclude
  */
 export type FieldLabelPropsInclude<FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> = LabelProps & FieldCounterPropsInclude<FieldCounter> & {
+    /** Whether the field is required/ Является ли поле обязательным */
     required?: boolean;
+    /** Additional attributes for the FieldLabel component/ Дополнительные атрибуты для компонента метки поля */
     fieldLabelAttrs?: ConstrBind<FieldLabel>;
 };

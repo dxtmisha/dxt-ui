@@ -24,6 +24,7 @@ export interface GridExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface GridSlots {
+    /** Slot for default grid content/ Слот для основного содержимого сетки */
     default?(props: any): any;
 }
 /**

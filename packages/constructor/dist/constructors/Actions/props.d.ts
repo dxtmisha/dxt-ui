@@ -6,9 +6,13 @@ export type ActionsPropsToken = {
     wrap?: boolean;
 };
 export type ActionsPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic> = {
+    /** Primary list of action configurations/ Основной список конфигураций действий */
     list?: ConstrBind<Button>[];
+    /** Secondary list of action configurations/ Вторичный список конфигураций действий */
     listSecondary?: ConstrBind<Button>[];
+    /** Shared attributes for buttons in the primary list/ Общие атрибуты для кнопок в основном списке */
     buttonAttrs?: ConstrBind<Button>;
+    /** Shared attributes for buttons in the secondary list/ Общие атрибуты для кнопок во вторичном списке */
     buttonSecondaryAttrs?: ConstrBind<Button>;
 };
 /**

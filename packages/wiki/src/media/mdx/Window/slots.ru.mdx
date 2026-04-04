@@ -1,63 +1,13 @@
-### `control`
+- `control(props: WindowControlItem): any` — Слот управления для размещения элементов управления окном (кнопки закрытия, сворачивания и т.д.).
+- `title(props: WindowControlItem): any` — Слот заголовка для размещения заголовка окна в шапке.
+- `footer(props: WindowControlItem): any` — Слот подвала для размещения содержимого в нижней части окна (кнопки действий, инфо и т.д.).
+- `default(props: WindowControlItem): any` — Основной слот для размещения главного содержимого окна.
 
-Слот для размещения элементов управления окном (кнопки закрытия, минимизации и т.д.).
-
-**Параметры:**
-- `props: WindowControlItem` — объект с данными управления окном
-
-### `title`
-
-Слот для размещения заголовка окна в шапке.
-
-**Параметры:**
-- `props: WindowControlItem` — объект с данными управления окном
-
-### `footer`
-
-Слот для размещения содержимого в нижней части окна (кнопки действий, информация и т.д.).
-
-**Параметры:**
-- `props: WindowControlItem` — объект с данными управления окном
-
-### `default`
-
-Основной слот для размещения главного содержимого окна.
-
-**Параметры:**
-- `props: WindowControlItem` — объект с данными управления окном
-
-**Структура WindowControlItem:**
-
-Объект, передаваемый во все слоты компонента Window, содержащий данные и методы для управления окном.
-
-- `classesWindow: WindowClassesList` — объект с CSS классами для различных состояний окна
-- `class: string` — строка CSS класса для элемента управления
-- `open: Ref<boolean>` — реактивное состояние открытия окна
-- `onclick: WindowEventClick` — обработчик клика для переключения состояния окна
-- `onKeydown: WindowEventClick` — обработчик события нажатия клавиши
-- `oncontextmenu: WindowEventClick` — обработчик события контекстного меню
-- `binds: object` — объект со свойствами для привязки к элементам
-
-### Пример использования
-
-```html
-<template>
-  <Component>
-    <template #control="{ binds }">
-      <button v-bind="binds">Открыть окно</button>
-    </template>
-
-    <template #title="{ open }">
-      <h2>Заголовок ({{ open ? 'открыто' : 'закрыто' }})</h2>
-    </template>
-
-    <template #default>
-      <p>Основное содержимое окна</p>
-    </template>
-
-    <template #footer="{ onclick }">
-      <button @click="onclick">Закрыть</button>
-    </template>
-  </Component>
-</template>
-```
+> **WindowControlItem:**
+> - `open: Ref<boolean>` — реактивное состояние открытия.
+> - `class: string` — CSS-класс окна.
+> - `onclick: WindowEventClick` — обработчик события клика.
+> - `onKeydown: WindowEventClick` — обработчик события нажатия клавиши.
+> - `oncontextmenu: WindowEventClick` — обработчик события контекстного меню.
+> - `classesWindow: WindowClassesList` — список CSS-классов для стилизации окна.
+> - `binds: Record<string, any>` — свойства привязки для элемента управления.

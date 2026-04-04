@@ -1,41 +1,10 @@
-### `default`
+- `default(props: FieldControl): any` — Default slot for the main input element.
+- `leading(props: FieldControl): any` — Slot for displaying content before the input area.
+- `trailing(props: FieldControl): any` — Slot for displaying content after the input area.
 
-Slot for placing the main input element (input, select, textarea, etc.). Required slot.
-
-**Parameters:**
-- `props: FieldControl` — object with data for binding the input element
-
-**FieldControl Structure:**
-
-Object passed to Field component slots, containing data for proper integration of input elements.
-
-- `id: string` — unique identifier for linking the `<label>` with the input element via the `for` attribute. Ensures accessibility.
-- `className: string` — CSS classes for styling the visible input element (input, textarea, select), ensuring visual consistency and states (focus, error, etc.).
-- `classHidden: string` — CSS classes for hiding the native input element when creating custom controls (e.g., Checkbox or Radio), while preserving their functionality.
-
-### Usage example
-
-```html
-<template>
-  <Component label="Email">
-    <template #leading>
-      <Icon name="email" />
-    </template>
-
-    <template #default="{ id, className }">
-      <input
-        :id="id"
-        :class="className"
-        type="email"
-        placeholder="example@mail.com"
-      />
-    </template>
-
-    <template #trailing>
-      <button type="button">
-        <Icon name="search" />
-      </button>
-    </template>
-  </Component>
-</template>
-```
+> **FieldControl:**
+> - `id: string` — unique identifier for binding label and input.
+> - `className: string` — CSS classes for the visible input area.
+> - `classHidden: string` — CSS classes for the hidden native input element.
+> - `classForFocus: string` — CSS classes applied when the field is focused.
+> - `binds: Record<string, any>` — properties bound to the input element.
