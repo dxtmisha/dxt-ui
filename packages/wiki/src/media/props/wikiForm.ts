@@ -51,7 +51,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Auto capitalization mode for text input (off, none, sentences, words, characters)',
         ru: 'Режим автоматической капитализации для текстового ввода (off, none, sentences, words, characters)'
       }
-    }
+    },
+    hide: true
   },
   autocomplete: {
     type: StorybookControl.string,
@@ -62,7 +63,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Autocomplete hint for browser autofill feature (e.g., email, name, tel)',
         ru: 'Подсказка автозаполнения для функции автозаполнения браузера (например, email, name, tel)'
       }
-    }
+    },
+    hide: true
   },
   autocorrect: {
     type: StorybookControl.string,
@@ -73,7 +75,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Autocorrect mode for iOS/Safari (on or off)',
         ru: 'Режим автокоррекции для iOS/Safari (on или off)'
       }
-    }
+    },
+    hide: true
   },
   autofocus: {
     type: StorybookControl.boolean,
@@ -84,7 +87,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Automatically focuses the element when the page loads',
         ru: 'Автоматически устанавливает фокус на элемент при загрузке страницы'
       }
-    }
+    },
+    hide: true
   },
   cols: {
     type: StorybookControl.number,
@@ -95,7 +99,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Specifies the visible width of the text area',
         ru: 'Указывает видимую ширину текстовой области'
       }
-    }
+    },
+    hide: true
   },
   enterKeyHint: {
     type: StorybookControl.select,
@@ -107,7 +112,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Hint for the enter key label on virtual keyboards',
         ru: 'Подсказка для метки клавиши Enter на виртуальных клавиатурах'
       }
-    }
+    },
+    hide: true
   },
   fieldSizing: {
     type: StorybookControl.select,
@@ -119,7 +125,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'CSS property that enables automatic sizing of the element based on its content',
         ru: 'CSS свойство, которое включает автоматическое изменение размера элемента в зависимости от его содержимого'
       }
-    }
+    },
+    hide: true
   },
   for: {
     type: StorybookControl.string,
@@ -130,7 +137,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'ID of the element the label is bound to',
         ru: 'ID элемента, к которому привязана метка'
       }
-    }
+    },
+    hide: true
   },
   form: {
     type: StorybookControl.string,
@@ -141,7 +149,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'ID of the form element this input belongs to',
         ru: 'ID элемента формы, к которой относится данный инпут'
       }
-    }
+    },
+    hide: true
   },
   inputMode: {
     type: StorybookControl.select,
@@ -153,7 +162,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Hint for the type of virtual keyboard to display',
         ru: 'Подсказка для типа виртуальной клавиатуры'
       }
-    }
+    },
+    hide: true
   },
   match: {
     type: StorybookControl.string,
@@ -164,7 +174,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Reference to another field for value matching validation (e.g., password confirmation)',
         ru: 'Ссылка на другое поле для валидации совпадения значений (например, подтверждение пароля)'
       }
-    }
+    },
+    hide: true
   },
   max: {
     type: StorybookControl.number,
@@ -175,7 +186,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Maximum value',
         ru: 'Максимальное значение'
       }
-    }
+    },
+    hide: true
   },
   maxlength: {
     type: StorybookControl.number,
@@ -187,7 +199,8 @@ export const wikiForm: StorybookArgsToList = {
         ru: 'Максимально допустимое количество символов'
       },
       value: 100
-    }
+    },
+    hide: true
   },
   min: {
     type: StorybookControl.number,
@@ -198,7 +211,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Minimum value',
         ru: 'Минимальное значение'
       }
-    }
+    },
+    hide: true
   },
   minlength: {
     type: StorybookControl.number,
@@ -209,7 +223,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Minimum required characters',
         ru: 'Минимально необходимое количество символов'
       }
-    }
+    },
+    hide: true
   },
   multiple: {
     type: StorybookControl.boolean,
@@ -232,7 +247,8 @@ export const wikiForm: StorybookArgsToList = {
         ru: 'Атрибут name для поля ввода'
       },
       value: 'name'
-    }
+    },
+    hide: true
   },
   pattern: {
     type: StorybookControl.string,
@@ -243,7 +259,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Regular expression pattern for input validation',
         ru: 'Регулярное выражение для валидации ввода'
       }
-    }
+    },
+    hide: true
   },
   required: {
     type: StorybookControl.boolean,
@@ -265,7 +282,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Specifies the visible height of the text area',
         ru: 'Указывает видимую высоту текстовой области'
       }
-    }
+    },
+    hide: true
   },
   spellcheck: {
     type: StorybookControl.boolean,
@@ -275,7 +293,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Enables or disables spell checking for the input',
         ru: 'Включает или отключает проверку орфографии для ввода'
       }
-    }
+    },
+    hide: true
   },
   step: {
     type: StorybookControl.number,
@@ -286,7 +305,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Step size for numeric inputs',
         ru: 'Размер шага для числовых инпутов'
       }
-    }
+    },
+    hide: true
   },
   validationCode: {
     type: StorybookControl.object,
@@ -297,6 +317,7 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Custom validation error messages or validity state map',
         ru: 'Пользовательские сообщения об ошибках валидации или карта состояний валидности'
       }
-    }
+    },
+    hide: true
   }
 }

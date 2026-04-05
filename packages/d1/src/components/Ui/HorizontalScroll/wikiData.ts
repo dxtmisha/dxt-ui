@@ -13,7 +13,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Slot for default horizontal scroll content/ Слот для основного содержимого горизонтальной прокрутки` }
+  { name: 'default' }
   // :slotsList [!] System label / Системная метка
 ]
 

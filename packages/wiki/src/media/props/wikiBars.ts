@@ -34,7 +34,8 @@ export const wikiBars: StorybookArgsToList = {
         { icon: 'edit' },
         { icon: 'delete' }
       ]
-    }
+    },
+    hide: true
   },
   'bars.actionDescription': {
     type: StorybookControl.text,
@@ -45,7 +46,8 @@ export const wikiBars: StorybookArgsToList = {
         ru: 'Описание для действия'
       },
       value: 'Select items to perform actions'
-    }
+    },
+    hide: true
   },
   'bars.actionLabel': {
     type: StorybookControl.text,
@@ -56,7 +58,8 @@ export const wikiBars: StorybookArgsToList = {
         ru: 'Метка для действия'
       },
       value: 'Action'
-    }
+    },
+    hide: true
   },
   'bars.backButton': {
     type: StorybookControl.object,
@@ -76,7 +79,8 @@ export const wikiBars: StorybookArgsToList = {
         en: 'Hide back button in action',
         ru: 'Скрыть кнопку назад в action'
       }
-    }
+    },
+    hide: true
   },
   'bars.backHide': {
     type: StorybookControl.boolean,
@@ -86,7 +90,8 @@ export const wikiBars: StorybookArgsToList = {
         en: 'Hides the back button',
         ru: 'Скрывает кнопку назад'
       }
-    }
+    },
+    hide: true
   },
   'bars.bars': {
     type: StorybookControl.object,
@@ -101,7 +106,8 @@ export const wikiBars: StorybookArgsToList = {
         { icon: 'search', label: 'Search' },
         { icon: 'settings', label: 'Settings' }
       ]
-    }
+    },
+    hide: true
   },
   'bars.modelAction': {
     type: StorybookControl.boolean,
@@ -111,7 +117,8 @@ export const wikiBars: StorybookArgsToList = {
         en: 'Two-way binding for the action state (v-model:action)',
         ru: 'Двусторонняя привязка состояния action (v-model:action)'
       }
-    }
+    },
+    hide: true
   },
   'bars.onUpdate:action': {
     type: StorybookControl.object,
@@ -121,7 +128,8 @@ export const wikiBars: StorybookArgsToList = {
         en: 'Event handler called on update:action with the new boolean value',
         ru: 'Обработчик события update:action, вызывается с новым булевым значением'
       }
-    }
+    },
+    hide: true
   },
   'bars.onUpdate:modelAction': {
     type: StorybookControl.object,
@@ -131,6 +139,7 @@ export const wikiBars: StorybookArgsToList = {
         en: 'Event handler called on update:modelAction with the new boolean value',
         ru: 'Обработчик события update:modelAction, вызывается с новым булевым значением'
       }
-    }
+    },
+    hide: true
   }
 }

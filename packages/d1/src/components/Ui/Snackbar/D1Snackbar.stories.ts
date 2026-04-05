@@ -27,35 +27,6 @@ type Story = StoryObj<typeof meta>
 
 export const Snackbar: Story = {
   // :story-main [!] System label / Системная метка
-  render: (args: any) => ({
-    components: { D1Snackbar },
-    setup: () => ({ args }),
-    template: `
-      <div class="wiki-storybook-flex-column">
-      <div class="wiki-storybook-flex">
-        <button
-          class="wiki-storybook-button"
-          @click="() => $refs.snackbar.add({ data: { label: 'Action completed', icon: 'check_circle' }, delay: 3000 })"
-        >
-          Success Message
-        </button>
-        <button
-          class="wiki-storybook-button"
-          @click="() => $refs.snackbar.add({ data: { label: 'Connection timeout', description: 'Retrying in 5s...', icon: 'error' }, highPriority: true })"
-        >
-          System Error
-        </button>
-        <button
-          class="wiki-storybook-button wiki-storybook-button--warning"
-          @click="() => $refs.snackbar.clear()"
-        >
-          Clear Queue
-        </button>
-      </div>
-      <D1Snackbar ref="snackbar" v-bind="args" />
-    </div>
-    `
-  })
   // :story-main [!] System label / Системная метка
 }
 

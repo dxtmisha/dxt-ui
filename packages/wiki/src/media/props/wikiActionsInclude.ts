@@ -45,7 +45,8 @@ export const wikiActionsInclude: StorybookArgsToList = {
         { icon: 'delete', label: 'Delete' },
         { icon: 'share', label: 'Share' }
       ]
-    }
+    },
+    hide: true
   },
   actionsSecondary: {
     type: StorybookControl.object,
@@ -59,6 +60,7 @@ export const wikiActionsInclude: StorybookArgsToList = {
         { icon: 'info', label: 'Info' },
         { icon: 'help', label: 'Help' }
       ]
-    }
+    },
+    hide: true
   }
 }

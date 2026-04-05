@@ -19,7 +19,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Cancel text',
         ru: 'Текст отмены'
       }
-    }
+    },
+    hide: true
   },
   textCharacterLimit: {
     type: StorybookControl.text,
@@ -30,7 +31,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Character limit exceeded text',
         ru: 'Текст о превышении лимита символов'
       }
-    }
+    },
+    hide: true
   },
   textCharacterRemaining: {
     type: StorybookControl.text,
@@ -41,7 +43,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Remaining characters text',
         ru: 'Текст об оставшихся символах'
       }
-    }
+    },
+    hide: true
   },
   textClose: {
     type: StorybookControl.text,
@@ -52,7 +55,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Close text',
         ru: 'Текст закрытия'
       }
-    }
+    },
+    hide: true
   },
   textCopiedClipboard: {
     type: StorybookControl.text,
@@ -63,7 +67,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Text displayed when content is copied to clipboard',
         ru: 'Текст, отображаемый при копировании содержимого в буфер обмена'
       }
-    }
+    },
+    hide: true
   },
   textDecrement: {
     type: StorybookControl.text,
@@ -74,7 +79,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Text for decreasing value',
         ru: 'Текст для уменьшения значения'
       }
-    }
+    },
+    hide: true
   },
   textEntriesMatch: {
     type: StorybookControl.text,
@@ -85,7 +91,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Text for entries mismatch validation message',
         ru: 'Текст сообщения валидации о несовпадении записей'
       }
-    }
+    },
+    hide: true
   },
   textHide: {
     type: StorybookControl.text,
@@ -96,7 +103,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Hide text',
         ru: 'Текст скрытия'
       }
-    }
+    },
+    hide: true
   },
   textIncrement: {
     type: StorybookControl.text,
@@ -107,7 +115,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Text for increasing value',
         ru: 'Текст для увеличения значения'
       }
-    }
+    },
+    hide: true
   },
   textLoading: {
     type: StorybookControl.text,
@@ -118,7 +127,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Loading text',
         ru: 'Текст загрузки'
       }
-    }
+    },
+    hide: true
   },
   textNext: {
     type: StorybookControl.text,
@@ -129,7 +139,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Next text',
         ru: 'Текст следующего'
       }
-    }
+    },
+    hide: true
   },
   textOk: {
     type: StorybookControl.text,
@@ -140,7 +151,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'OK text',
         ru: 'Текст подтверждения'
       }
-    }
+    },
+    hide: true
   },
   textPrevious: {
     type: StorybookControl.text,
@@ -151,7 +163,8 @@ export const wikiText: StorybookArgsToList = {
         en: 'Previous text',
         ru: 'Текст предыдущего'
       }
-    }
+    },
+    hide: true
   },
   textShow: {
     type: StorybookControl.text,
@@ -162,6 +175,7 @@ export const wikiText: StorybookArgsToList = {
         en: 'Show text',
         ru: 'Текст показа'
       }
-    }
+    },
+    hide: true
   }
 }

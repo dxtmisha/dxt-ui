@@ -75,12 +75,12 @@ export const TabsVModel: Story = {
     },
     template: `
         <div class="wiki-storybook-flex-column">
-          <div class="wiki-storybook-flex-align-center">
-            <span>Current value: {{ selected }}</span>
+          <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="selected = 'tab1'">Tab 1</button>
             <button class="wiki-storybook-button" @click="selected = 'tab2'">Tab 2</button>
             <button class="wiki-storybook-button" @click="selected = 'tab3'">Tab 3</button>
           </div>
+          <div>Current value: {{ selected }}</div>
 
           <D1Tabs
             :tabs="[

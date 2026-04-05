@@ -70,7 +70,7 @@ provide('values', values)
 
     <template v-if="aiDescription">
       <DxtTestWikiTitle label="Description"/>
-      <pre class="dxt-test-wiki__pre">{{ aiDescription }}</pre>
+      <div class="dxt-test-wiki__pre">{{ aiDescription }}</div>
     </template>
 
     <div>

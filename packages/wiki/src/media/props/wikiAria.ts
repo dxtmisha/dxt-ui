@@ -41,7 +41,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Defines a label for the element for screen readers',
         ru: 'Определяет метку для элемента для программ чтения с экрана'
       }
-    }
+    },
+    hide: true
   },
   ariaLabelledby: {
     type: StorybookControl.text,
@@ -96,7 +97,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Defines the role of the element for accessibility',
         ru: 'Определяет роль элемента для доступности'
       }
-    }
+    },
+    hide: true
   },
   roleItem: {
     type: StorybookControl.text,
@@ -129,6 +131,7 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Tab order position for keyboard navigation',
         ru: 'Позиция порядка табуляции для навигации с клавиатуры'
       }
-    }
+    },
+    hide: true
   }
 }

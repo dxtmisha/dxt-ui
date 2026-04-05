@@ -33,6 +33,10 @@ const code = computed(() => {
       return `&nbsp;&nbsp;${prop}<br/>`
     }
 
+    if (value === false) {
+      return `&nbsp;&nbsp;${prop}="false"<br/>`
+    }
+
     const valueString = typeof value === 'object'
       ? JSON.stringify(value)
       : String(value)

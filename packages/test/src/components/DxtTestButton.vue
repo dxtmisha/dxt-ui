@@ -31,7 +31,7 @@ defineProps<{
   }
 
   &--selected {
-    background-color: oklch(80.9% 0.105 251.813);
+    background-color: oklch(80.9% 0.105 251.813) !important;
   }
 }
 </style>

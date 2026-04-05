@@ -105,18 +105,18 @@ export const wikiOption: StorybookArgsToList = {
         ru: 'Включает динамическую реакцию на hover и focus'
       }
     },
-    isDemo: true
+    hide: true
   },
   dynamicHover: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.option,
-
       description: {
         en: 'Enables dynamic hover effect for the component',
         ru: 'Включает динамический эффект наведения для компонента'
       }
-    }
+    },
+    hide: true
   },
   filterMode: {
     type: StorybookControl.boolean,
@@ -160,7 +160,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables grid layout mode',
         ru: 'Включает режим сетки'
       }
-    }
+    },
+    hide: true
   },
   hideList: {
     type: StorybookControl.boolean,
@@ -237,7 +238,10 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Centers items inside the component',
         ru: 'Центрирует элементы внутри компонента'
       }
-    }
+    },
+    isDemo: true,
+    demo: false,
+    demoOptions: { itemCenter: false }
   },
   keyLabel: {
     type: StorybookControl.string,
@@ -248,7 +252,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Object key to use as label text',
         ru: 'Ключ объекта для использования в качестве текста метки'
       }
-    }
+    },
+    hide: true
   },
   keyValue: {
     type: StorybookControl.string,
@@ -259,7 +264,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Object key to use as value text',
         ru: 'Ключ объекта для использования в качестве текста значения'
       }
-    }
+    },
+    hide: true
   },
   labelMax: {
     type: StorybookControl.number,
@@ -322,7 +328,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Sets HTML tag for the component element',
         ru: 'Задает HTML‑тег для элемента компонента'
       }
-    }
+    },
+    hide: true
   },
   tagBody: {
     type: StorybookControl.string,
@@ -333,7 +340,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Sets HTML tag for the body/content container element',
         ru: 'Задает HTML‑тег для элемента контейнера тела/содержимого'
       }
-    }
+    },
+    hide: true
   },
   tagHeader: {
     type: StorybookControl.string,
@@ -344,7 +352,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Sets HTML tag for the header container element',
         ru: 'Задает HTML‑тег для элемента контейнера шапки'
       }
-    }
+    },
+    hide: true
   },
   template: {
     type: StorybookControl.string,
@@ -377,7 +386,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Selects the visual type/variant of the component',
         ru: 'Выбирает визуальный тип/вариант компонента'
       }
-    }
+    },
+    hide: true
   },
   vertical: {
     type: StorybookControl.select,

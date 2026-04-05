@@ -21,7 +21,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Close button configuration (string for label or full button props object, null to hide)',
         ru: 'Конфигурация кнопки закрытия (строка для метки или объект свойств кнопки, null для скрытия)'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'is close'
   },
   buttonOk: {
     type: StorybookControl.object,
@@ -32,7 +34,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'OK button configuration (string for label or full button props object, null to hide)',
         ru: 'Конфигурация кнопки OK (строка для метки или объект свойств кнопки, null для скрытия)'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'Confirm'
   },
   caption: {
     type: StorybookControl.string,
@@ -101,7 +105,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Headline text',
         ru: 'Текст заголовка'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'Headline text'
   },
   helperMessage: {
     type: StorybookControl.string,
@@ -113,7 +119,8 @@ export const wikiInformation: StorybookArgsToList = {
         ru: 'Вспомогательный текст, предоставляющий руководство или дополнительную информацию'
       },
       value: 'This is a helpful message'
-    }
+    },
+    hide: true
   },
   html: {
     type: StorybookControl.string,

@@ -55,13 +55,22 @@ export const SectionBasic: Story = {
   render: () => ({
     components: { D1Section },
     template: `
-        <D1Section
-          headline="User Profile Settings"
-          label="Personalization"
-          description="Customize your experience and notification preferences."
-        >
-          <p>This section allows you to manage your personal display settings, theme selection, and language preferences. Changes are saved automatically as you update them.</p>
-        </D1Section>
+        <div class="wiki-storybook-flex-column">
+          <D1Section>
+            <p>Generic section content without header.</p>
+          </D1Section>
+          <D1Section label="Contact Information" description="Get in touch with us">
+            <p>Email: support@example.com</p>
+            <p>Phone: +1 234 567 890</p>
+          </D1Section>
+          <D1Section headline="Our Services" label="What we do">
+            <ul>
+              <li>Web Development</li>
+              <li>Mobile Apps</li>
+              <li>UI/UX Design</li>
+            </ul>
+          </D1Section>
+        </div>
     `
   })
 }

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import {
   inArray,
+  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'

@@ -22,8 +22,8 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'hide', description: `Event triggered when notification is hidden/ Событие при скрытии уведомления`, properties: [{ name: 'value', type: 'string' }, { name: 'item', type: 'SnackbarValue' }] },
-  { name: 'show', description: `Event triggered when notification is shown/ Событие при показе уведомления`, properties: [{ name: 'value', type: 'string' }, { name: 'item', type: 'SnackbarValue' }] }
+  { name: 'hide', properties: [{ name: 'value', type: 'string' }, { name: 'item', type: 'SnackbarValue' }] },
+  { name: 'show', properties: [{ name: 'value', type: 'string' }, { name: 'item', type: 'SnackbarValue' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

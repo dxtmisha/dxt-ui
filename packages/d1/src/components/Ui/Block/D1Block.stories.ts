@@ -56,13 +56,20 @@ export const BlockBasic: Story = {
   render: () => ({
     components: { D1Block },
     template: `
-        <D1Block
-          headline="Account Settings"
-          label="Profile Information"
-          description="Manage your personal details and public profile presence."
-        >
-          <p>Welcome to your profile overview. Here you can update your name, bio, and contact information.</p>
-        </D1Block>
+        <div class="wiki-storybook-flex-column">
+          <D1Block>
+            Simple content wrapper
+          </D1Block>
+          <D1Block label="User Profile" description="Manage your personal information">
+            <button class="wiki-storybook-button">Edit Profile</button>
+          </D1Block>
+          <D1Block headline="Notifications" label="Settings">
+            <label><input type="checkbox" checked> Email Notifications</label>
+          </D1Block>
+          <D1Block icon="home" label="Dashboard">
+            <p>Welcome to your dashboard overview.</p>
+          </D1Block>
+        </div>
     `
   })
 }

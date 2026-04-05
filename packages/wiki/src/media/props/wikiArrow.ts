@@ -19,6 +19,7 @@ export const wikiArrow: StorybookArgsToList = {
         ru: 'Стрелка будет указывать на этот элемент, если установлен автоматический режим'
       },
       value: '#id-arrow-target'
-    }
+    },
+    hide: true
   }
 }

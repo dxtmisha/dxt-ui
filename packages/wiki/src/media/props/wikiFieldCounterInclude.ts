@@ -42,7 +42,8 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
         en: 'Unique identifier for the counter element',
         ru: 'Уникальный идентификатор для элемента счетчика'
       }
-    }
+    },
+    hide: true
   },
   counterTemplate: {
     type: StorybookControl.string,
@@ -82,6 +83,7 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
         en: 'Additional attributes for the field counter component',
         ru: 'Дополнительные атрибуты для компонента счетчика поля'
       }
-    }
+    },
+    hide: true
   }
 }

@@ -38,7 +38,8 @@ export const wikiListItem: StorybookArgsToList = {
         en: 'Unique identifier for the list item. Used for tracking and referencing specific items within the list structure.',
         ru: 'Уникальный идентификатор элемента списка. Используется для отслеживания и ссылки на конкретные элементы в структуре списка.'
       }
-    }
+    },
+    hide: true
   },
   'listItem.open': {
     type: StorybookControl.boolean,

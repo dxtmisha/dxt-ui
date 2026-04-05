@@ -19,6 +19,7 @@ export const wikiCheckbox: StorybookArgsToList = {
         en: 'Value of the checkbox',
         ru: 'Значение чекбокса'
       }
-    }
+    },
+    isDemo: true
   }
 }

@@ -74,7 +74,8 @@ export const wikiAnchor: StorybookArgsToList = {
         ru: 'Имя якоря для навигации внутри страницы'
       },
       value: 'name-example'
-    }
+    },
+    hide: true
   },
   'anchor.shift': {
     type: StorybookControl.number,

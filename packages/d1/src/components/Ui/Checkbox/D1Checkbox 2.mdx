@@ -1,0 +1,58 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Checkbox from './D1Checkbox.stories'
+import {CheckboxWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Checkbox}/>
+<StorybookMain
+    name={CheckboxWikiStorybook.getName()}
+    description={CheckboxWikiStorybook.getDescription()}
+    story={Checkbox.Checkbox}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Checkbox'} type={'checkbox'}/>
+
+<StorybookDescriptions componentName={'Checkbox'} type={'value'}/>
+<StorybookDescriptions componentName={'Checkbox'} type={'indeterminate'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Checkbox.CheckboxVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Checkbox.CheckboxSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'validationMessage'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Checkbox.CheckboxSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

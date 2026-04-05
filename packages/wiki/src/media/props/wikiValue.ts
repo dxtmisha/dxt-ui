@@ -60,7 +60,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Additional data is passed by the component when events are triggered',
         ru: 'Дополнительные данные, передаваемые компонентом при срабатывании событий'
       }
-    }
+    },
+    hide: true
   },
   fraction: {
     type: StorybookControl.string,
@@ -106,7 +107,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'URL or link destination',
         ru: 'URL или адрес ссылки'
       }
-    }
+    },
+    hide: true
   },
   indeterminate: {
     type: StorybookControl.boolean,
@@ -142,7 +144,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Navigation target or destination for the component',
         ru: 'Цель навигации или назначение для компонента'
       }
-    }
+    },
+    hide: true
   },
   value: {
     type: StorybookControl.string,
@@ -153,7 +156,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Current value',
         ru: 'Текущее значение'
       }
-    }
+    },
+    hide: true
   },
   valueDefault: {
     type: StorybookControl.string,
@@ -164,7 +168,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Default value for the input field',
         ru: 'Значение по умолчанию для поля ввода'
       }
-    }
+    },
+    hide: true
   },
   valueVariant: {
     type: StorybookControl.string,
@@ -175,7 +180,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Variant of the value',
         ru: 'Вариант значения'
       }
-    }
+    },
+    hide: true
   },
   valueVariantHide: {
     type: StorybookControl.string,
@@ -185,6 +191,7 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Hides the value variant',
         ru: 'Скрывает вариант значения'
       }
-    }
+    },
+    hide: true
   }
 }

@@ -201,18 +201,17 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-
       description: {
         en: 'Inverts component colors',
         ru: 'Инвертирует цвета компонента'
       }
-    }
+    },
+    isDemo: true
   },
   isSkeleton: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-
       description: {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
@@ -289,7 +288,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets a color palette for the element',
         ru: 'Задает цветовую палитру для элемента'
       }
-    }
+    },
+    isDemo: true
   },
   position: {
     type: StorybookControl.select,

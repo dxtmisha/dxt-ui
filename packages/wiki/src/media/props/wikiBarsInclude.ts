@@ -81,6 +81,7 @@ export const wikiBarsInclude: StorybookArgsToList = {
         { icon: 'search', label: 'Search' },
         { icon: 'settings', label: 'Settings' }
       ]
-    }
+    },
+    hide: true
   }
 }

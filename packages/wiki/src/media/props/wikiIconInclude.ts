@@ -11,7 +11,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         ru: 'Значение основной иконки'
       },
       value: 'home'
-    }
+    },
+    hide: true
   },
   iconAlign: {
     type: StorybookControl.select,
@@ -64,7 +65,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets additional attributes for the icon element',
         ru: 'Задает дополнительные атрибуты для элемента иконки'
       }
-    }
+    },
+    hide: true
   },
   iconBack: {
     type: StorybookControl.string,
@@ -74,7 +76,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for the back button',
         ru: 'Задает иконку для кнопки назад'
       }
-    }
+    },
+    hide: true
   },
   iconCancel: {
     type: StorybookControl.string,
@@ -128,7 +131,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Mirrors the icon depending on a site direction (RTL/LTR)',
         ru: 'Зеркально отражает иконку в зависимости от направления сайта (RTL/LTR)'
       }
-    }
+    },
+    hide: true
   },
   iconError: {
     type: StorybookControl.string,
@@ -150,7 +154,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Hides the icon',
         ru: 'Скрывает иконку'
       }
-    }
+    },
+    hide: true
   },
   iconIndeterminate: {
     type: StorybookControl.string,
@@ -285,13 +290,13 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Applies direction mirroring only to the trailing icon',
         ru: 'Применяет зеркальное отражение только к завершающей иконке'
       }
-    }
+    },
+    hide: true
   },
   iconTrailingPalette: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.icon,
-
       description: {
         en: 'Sets trailing icon color based on palette class',
         ru: 'Задает цвет завершающей иконки на основе класса палитры'
@@ -307,7 +312,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Applies rotation only to the trailing icon',
         ru: 'Применяет поворот только к завершающей иконке'
       }
-    }
+    },
+    hide: true
   },
   iconTurn: {
     type: StorybookControl.boolean,
@@ -329,7 +335,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for visibility on state (show password)',
         ru: 'Задает иконку для состояния видимости (показать пароль)'
       }
-    }
+    },
+    hide: true
   },
   iconVisibilityOff: {
     type: StorybookControl.string,
@@ -339,7 +346,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for visibility off state (hide password)',
         ru: 'Задает иконку для состояния скрытия (скрыть пароль)'
       }
-    }
+    },
+    hide: true
   },
   iconWhenSelected: {
     type: StorybookControl.boolean,

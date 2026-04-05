@@ -71,15 +71,18 @@ export const TabsNavigationVModel: Story = {
       return { list, selected }
     },
     template: `
-        <div class="wiki-storybook-flex-column">
-          <div class="wiki-storybook-flex-align-center">
-            <span>Current value: {{ selected }}</span>
-            <button class="wiki-storybook-button" @click="selected = '1'">Select Tab 1</button>
-            <button class="wiki-storybook-button" @click="selected = '2'">Select Tab 2</button>
-            <button class="wiki-storybook-button" @click="selected = '3'">Select Tab 3</button>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
+            <div class="wiki-storybook-flex wiki-storybook-gap wiki-storybook-item--padding">
+              <button class="wiki-storybook-button" @click="selected = '1'">Select Tab 1</button>
+              <button class="wiki-storybook-button" @click="selected = '2'">Select Tab 2</button>
+              <button class="wiki-storybook-button" @click="selected = '3'">Select Tab 3</button>
+            </div>
+            <div class="wiki-storybook-item--padding">
+              Current value: {{ selected }}
+            </div>
+            <D1TabsNavigation :list="list" v-model:selected="selected"/>
           </div>
-
-          <D1TabsNavigation :list="list" v-model:selected="selected"/>
         </div>
     `
   })

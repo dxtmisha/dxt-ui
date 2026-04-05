@@ -22,7 +22,8 @@ export const wikiActions: StorybookArgsToList = {
         { label: 'Ok' },
         { label: 'Cancel' }
       ]
-    }
+    },
+    hide: true
   },
   'actions.listSecondary': {
     type: StorybookControl.object,
@@ -38,6 +39,7 @@ export const wikiActions: StorybookArgsToList = {
         { icon: 'image' },
         { icon: 'tune' }
       ]
-    }
+    },
+    hide: true
   }
 }

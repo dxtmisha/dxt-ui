@@ -36,7 +36,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'load', description: `Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`, properties: [{ name: 'image', type: 'ImageEventData' }] }
+  { name: 'load', properties: [{ name: 'image', type: 'ImageEventData' }] }
   // :eventsList [!] System label / Системная метка
 ]
 
