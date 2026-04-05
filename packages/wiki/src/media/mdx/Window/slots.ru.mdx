@@ -11,3 +11,19 @@
 > - `oncontextmenu: WindowEventClick` — обработчик события контекстного меню.
 > - `classesWindow: WindowClassesList` — список CSS-классов для стилизации окна.
 > - `binds: Record<string, any>` — свойства привязки для элемента управления.
+
+> **WindowClassesList:**
+> - `block: string` — основной класс блока.
+> - `blockChildren: string` — класс дочерних элементов блока.
+> - `blockOther: string` — класс блокировки других окон.
+> - `close: string` — класс кнопки закрытия.
+> - `static: string` — класс статического позиционирования.
+> - `control: string` — класс элемента управления.
+> - `controlId: string` — класс ID управления.
+> - `controlStatic: string` — класс статического управления.
+> - `controlOpenOnly: string` — класс управления только для открытого состояния.
+> - `controlActive: string` — класс активного управления.
+> - `persistent: string` — класс постоянного окна.
+
+> **WindowEventClick:**
+> - `(event: MouseEvent & TouchEvent | KeyboardEvent) => Promise<void>` — обработчик события клика окна.

@@ -63,74 +63,6 @@ export const MotionTransform: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const MotionTransformVModel: Story = {
-  name: 'Двусторонняя привязка (v-model)',
-  render: () => ({
-    components: { D1MotionTransform },
-    setup() {
-      return {
-        open: ref(false)
-      }
-    },
-    template: `
-        <div class="wiki-storybook-item--padding">
-          <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
-        </div>
-        <D1MotionTransform v-model:open="open">
-          <template #head>
-            <div class="wiki-storybook-item--padding">
-              <h4>v-model controlled</h4>
-              <p>This component's visibility is controlled by an external ref via v-model:open.</p>
-            </div>
-          </template>
-          <template #body>
-            <div class="wiki-storybook-item--padding">
-              <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
-              <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the component's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
-              <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the MotionTransform component, such as in complex forms or coordinated UI interactions.</p>
-            </div>
-          </template>
-        </D1MotionTransform>
-    `
-  })
-}
-export const MotionTransformIgnore: Story = {
-  name: 'Зоны игнорирования',
-  render: () => ({
-    components: { D1MotionTransform },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1MotionTransform ignoreSelector=".mt-ignore">
-            <template #head>
-              <div class="wiki-storybook-item--padding">
-                <h4>Ignore zones behavior</h4>
-                <p>This text acts as the trigger that opens the content area</p>
-              </div>
-            </template>
-            <template #body>
-              <div class="wiki-storybook-item--padding">
-                <p>Clicks on elements matching <code>.mt-ignore</code> are not treated as outside and won’t trigger auto close.</p>
-                <p>This is useful for trigger buttons, helper controls, and nested interactive areas that must remain active without closing the window.</p>
-                <p>Try it: click any button with <code>.mt-ignore</code> outside or inside — the window stays open; clicks on other outside areas will close it.</p>
-                <p>Use <code>ignore</code> when you have a concrete DOM element, and <code>ignoreSelector</code> when zones are multiple or dynamic.</p>
-                <p>Keep selectors specific to avoid accidental matches and unintended auto‑close blocking.</p>
-                <ul>
-                  <li>Pattern: a trigger with class <code>.mt-ignore</code> outside and inside the window</li>
-                  <li>Expectation: clicks on the trigger are ignored by outside‑check logic, the window doesn’t close</li>
-                </ul>
-              </div>
-            </template>
-          </D1MotionTransform>
-
-          <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding mt-ignore">
-            <h5>External ignore zone</h5>
-            <p>This area has class <code>.mt-ignore</code> and demonstrates how clicks here won't close the window below.</p>
-            <button class="wiki-storybook-button">Ignored button</button>
-          </div>
-        </div>
-    `
-  })
-}
 export const MotionTransformAnimationHeadPosition: Story = {
   name: 'Анимация позиции заголовка',
   render: () => ({
@@ -179,6 +111,77 @@ export const MotionTransformAnimationHeadPosition: Story = {
                   <li>Ideal for accordion-style interfaces</li>
                   <li>Provides cohesive visual feedback</li>
                 </ul>
+              </div>
+            </template>
+          </D1MotionTransform>
+        </div>
+    `
+  })
+}
+export const MotionTransformIgnore: Story = {
+  name: 'Зоны игнорирования',
+  render: () => ({
+    components: { D1MotionTransform },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1MotionTransform ignoreSelector=".mt-ignore">
+            <template #head>
+              <div class="wiki-storybook-item--padding">
+                <h4>Ignore zones behavior</h4>
+                <p>This text acts as the trigger that opens the content area</p>
+              </div>
+            </template>
+            <template #body>
+              <div class="wiki-storybook-item--padding">
+                <p>Clicks on elements matching <code>.mt-ignore</code> are not treated as outside and won’t trigger auto close.</p>
+                <p>This is useful for trigger buttons, helper controls, and nested interactive areas that must remain active without closing the window.</p>
+                <p>Try it: click any button with <code>.mt-ignore</code> outside or inside — the window stays open; clicks on other outside areas will close it.</p>
+                <p>Use <code>ignore</code> when you have a concrete DOM element, and <code>ignoreSelector</code> when zones are multiple or dynamic.</p>
+                <p>Keep selectors specific to avoid accidental matches and unintended auto‑close blocking.</p>
+                <ul>
+                  <li>Pattern: a trigger with class <code>.mt-ignore</code> outside and inside the window</li>
+                  <li>Expectation: clicks on the trigger are ignored by outside‑check logic, the window doesn’t close</li>
+                </ul>
+              </div>
+            </template>
+          </D1MotionTransform>
+
+          <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding mt-ignore">
+            <h5>External ignore zone</h5>
+            <p>This area has class <code>.mt-ignore</code> and demonstrates how clicks here won't close the window below.</p>
+            <button class="wiki-storybook-button">Ignored button</button>
+          </div>
+        </div>
+    `
+  })
+}
+export const MotionTransformVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1MotionTransform },
+    setup() {
+      return {
+        open: ref(false)
+      }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
+          </div>
+          
+          <D1MotionTransform v-model:open="open">
+            <template #head>
+              <div class="wiki-storybook-item--padding">
+                <h4>v-model controlled</h4>
+                <p>This component's visibility is controlled by an external ref via v-model:open.</p>
+              </div>
+            </template>
+            <template #body>
+              <div class="wiki-storybook-item--padding">
+                <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
+                <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the component's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
+                <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the MotionTransform component, such as in complex forms or coordinated UI interactions.</p>
               </div>
             </template>
           </D1MotionTransform>

@@ -11,3 +11,19 @@
 > - `oncontextmenu: WindowEventClick` — context menu event handler.
 > - `classesWindow: WindowClassesList` — list of CSS classes for window styling.
 > - `binds: Record<string, any>` — binding properties for the control element.
+
+> **WindowClassesList:**
+> - `block: string` — main block class.
+> - `blockChildren: string` — block children class.
+> - `blockOther: string` — block other windows class.
+> - `close: string` — close button class.
+> - `static: string` — static positioning class.
+> - `control: string` — control element class.
+> - `controlId: string` — control ID class.
+> - `controlStatic: string` — static control class.
+> - `controlOpenOnly: string` — open-only control class.
+> - `controlActive: string` — active control class.
+> - `persistent: string` — persistent window class.
+
+> **WindowEventClick:**
+> - `(event: MouseEvent & TouchEvent | KeyboardEvent) => Promise<void>` — window event click handler.

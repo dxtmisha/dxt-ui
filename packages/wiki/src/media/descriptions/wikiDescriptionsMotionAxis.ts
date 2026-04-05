@@ -137,13 +137,11 @@ export const wikiDescriptionsMotionAxis: StorybookComponentsDescriptionItem = {
       `,
       template: `
         <div class="wiki-storybook-flex-column">
-          <div class="wiki-storybook-flex">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Current value: {{ selected }}</span>
             <button class="wiki-storybook-button" @click="selected = 'slide1'">Select Slide 1</button>
             <button class="wiki-storybook-button" @click="selected = 'slide2'">Select Slide 2</button>
             <button class="wiki-storybook-button" @click="selected = 'slide3'">Select Slide 3</button>
-          </div>
-          <div class="wiki-storybook-item--padding">
-            Current value: {{ selected }}
           </div>
 
           <DesignComponent v-model:selected="selected">

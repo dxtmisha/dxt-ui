@@ -18,11 +18,13 @@ Event triggered at the beginning and end of the transition animation.
 
 **Parameters:**
 - `options: MotionAxisEmitOptions` — object with event parameters
-  - `type: 'start' | 'end'` — event type
-  - `selected: string | number` — identifier of the selected slide
-  - `previous: string | number` — identifier of the previous slide
-  - `preparation: string | number` — identifier of the slide being prepared
-  - `active: string | number` — identifier of the active slide
+
+**Structure MotionAxisEmitOptions:**
+- `type: 'start' | 'end'` — event type
+- `selected: string | number` — identifier of the selected slide
+- `previous: string | number` — identifier of the previous slide
+- `preparation: string | number` — identifier of the slide being prepared
+- `active: string | number` — identifier of the active slide
 
 ```html
 <script setup>

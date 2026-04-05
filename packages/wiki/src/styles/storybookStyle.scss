@@ -19,6 +19,13 @@
     gap: 8px;
   }
 
+  &-flex-align-center {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
   &-flex-center {
     @include ui.flexCenter;
     gap: 8px;
