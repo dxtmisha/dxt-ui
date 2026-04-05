@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useWikiPropsHide } from '../../composables/useWikiPropsHide'
 
 import DxtTestWikiCode from './DxtTestWikiCode.vue'
 import DxtTestWikiDemo from './DxtTestWikiDemo.vue'
@@ -17,7 +18,9 @@ const props = defineProps<{
 
 defineSlots<TestWikiSlotRender>()
 
-const hide = computed(() => props.item.isHide())
+const { hide: hideProps } = useWikiPropsHide()
+
+const hide = computed(() => hideProps.value || props.item.isHide())
 const name = computed(() => props.item.getName())
 const defaultValue = computed(() => props.item.getDefaultValue())
 const description = computed(() => props.item.getDescription())

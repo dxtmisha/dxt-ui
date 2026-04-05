@@ -5,11 +5,12 @@ defineOptions({
 
 defineProps<{
   label?: string
+  selected?: boolean
 }>()
 </script>
 
 <template>
-  <button class="dxt-test-button">
+  <button class="dxt-test-button" :class="{ 'dxt-test-button--selected': selected }">
     {{ label }}
     <slot/>
   </button>
@@ -27,6 +28,10 @@ defineProps<{
 
   &:hover {
     background-color: oklch(86.9% 0.022 252.894);
+  }
+
+  &--selected {
+    background-color: oklch(80.9% 0.105 251.813);
   }
 }
 </style>

@@ -1,6 +1,7 @@
 import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 type __VLS_Props = {
     label?: string;
+    selected?: boolean;
 };
 declare function __VLS_template(): {
     attrs: Partial<{}>;
