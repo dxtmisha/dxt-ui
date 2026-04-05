@@ -62,14 +62,14 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body' },
+  { name: 'body', description: `Slot for the list item body/ Слот для содержимого элемента списка` },
   { name: 'caption', description: `Caption slot/ Слот заголовка` },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию` },
   { name: 'description', description: `Description slot/ Слот описания` },
-  { name: 'leading' },
+  { name: 'leading', description: `Slot for the leading element/ Слот для ведущего элемента` },
   { name: 'prefix', description: `Prefix slot/ Слот префикса` },
   { name: 'suffix', description: `Suffix slot/ Слот суффикса` },
-  { name: 'trailing' }
+  { name: 'trailing', description: `Slot for the trailing element/ Слот для замыкающего элемента` }
   // :slotsList [!] System label / Системная метка
 ]
 

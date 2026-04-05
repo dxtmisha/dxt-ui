@@ -33,7 +33,7 @@ const slotsNames: StorybookSlots = [
 Основной слот для главного содержимого`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
   { name: 'footer', description: `Footer slot for window bottom/
 Слот подвала для низа окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
-  { name: 'header', properties: [{ name: 'props', type: 'WindowControlItem' }] },
+  { name: 'header', description: `Slot for the modal header/ Слот для заголовка модального окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
   { name: 'title', description: `Title slot for window header/
 Слот заголовка для шапки окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] }
   // :slotsList [!] System label / Системная метка
@@ -41,12 +41,12 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'actions', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
-  { name: 'actionsLite', properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'bars', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
-  { name: 'barsBack', properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'barsLite', properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'window', properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
+  { name: 'actions', description: `Click event for actions/ Событие клика для действий`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'actionsLite', description: `Simple click event for actions/ Простое событие клика для действий`, properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'bars', description: `Click event for bars/ Событие клика для панелей`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'barsBack', description: `Back button click event for bars/ Событие клика кнопки назад для панелей`, properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'barsLite', description: `Simple click event for bars/ Простое событие клика для панелей`, properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'window', description: `Window event triggered on state change/ Событие окна при изменении состояния`, properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

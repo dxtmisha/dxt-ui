@@ -70,17 +70,17 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'load', properties: [{ name: 'image', type: 'ImageEventData' }] },
-  { name: 'scrollbarBottom', properties: [{ name: 'isBottom', type: 'boolean' }] },
-  { name: 'scrollbarEdge', properties: [{ name: 'isTop', type: 'boolean' }, { name: 'isBottom', type: 'boolean' }, { name: 'edge', type: 'ScrollbarEdgeType' }] },
-  { name: 'scrollbarLeaveBottom' },
-  { name: 'scrollbarLeaveTop' },
-  { name: 'scrollbarReachBottom' },
-  { name: 'scrollbarReachTop' },
-  { name: 'scrollbarTop', properties: [{ name: 'isTop', type: 'boolean' }] },
+  { name: 'load', description: `Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`, properties: [{ name: 'image', type: 'ImageEventData' }] },
+  { name: 'scrollbarBottom', description: `Event triggered when reaching the bottom/ Событие при достижении низа`, properties: [{ name: 'isBottom', type: 'boolean' }] },
+  { name: 'scrollbarEdge', description: `Event triggered when reaching any edge/ Событие при достижении любого края`, properties: [{ name: 'isTop', type: 'boolean' }, { name: 'isBottom', type: 'boolean' }, { name: 'edge', type: 'ScrollbarEdgeType' }] },
+  { name: 'scrollbarLeaveBottom', description: `Event triggered when leaving the bottom position/ Событие при уходе с нижней позиции` },
+  { name: 'scrollbarLeaveTop', description: `Event triggered when leaving the top position/ Событие при уходе с верхней позиции` },
+  { name: 'scrollbarReachBottom', description: `Event triggered when precisely reaching the bottom position/ Событие при точном достижении нижней позиции` },
+  { name: 'scrollbarReachTop', description: `Event triggered when precisely reaching the top position/ Событие при точном достижении верхней позиции` },
+  { name: 'scrollbarTop', description: `Event triggered when reaching the top/ Событие при достижении верха`, properties: [{ name: 'isTop', type: 'boolean' }] },
   { name: 'update:modelOpen', description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: 'value', type: 'boolean' }] },
   { name: 'update:open', description: `Update open event/ Событие обновления открытия`, properties: [{ name: 'value', type: 'boolean' }] },
-  { name: 'window', properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
+  { name: 'window', description: `Window event triggered on state change/ Событие окна при изменении состояния`, properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

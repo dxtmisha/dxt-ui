@@ -24,8 +24,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'leading' },
-  { name: 'trailing' }
+  { name: 'leading', description: `Slot for content before the tabs/ Слот для содержимого перед вкладками` },
+  { name: 'trailing', description: `Slot for content after the tabs/ Слот для содержимого после вкладок` }
   // :slotsList [!] System label / Системная метка
 ]
 

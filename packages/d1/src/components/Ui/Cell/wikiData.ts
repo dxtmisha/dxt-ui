@@ -45,11 +45,11 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body', properties: [{ name: 'props', type: 'CellClassesSub' }] },
+  { name: 'body', description: `Slot for displaying the main body content of the cell/ Слот для отображения основного содержимого тела ячейки`, properties: [{ name: 'props', type: 'CellClassesSub' }] },
   { name: 'caption', description: `Caption slot/ Слот заголовка` },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию` },
   { name: 'description', description: `Description slot/ Слот описания` },
-  { name: 'trailing', properties: [{ name: 'props', type: 'CellClassesSub' }] }
+  { name: 'trailing', description: `Slot for displaying additional content on the right side of the cell/ Слот для отображения дополнительного контента в правой части ячейки`, properties: [{ name: 'props', type: 'CellClassesSub' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

@@ -46,16 +46,20 @@ export const ListItemBasic: Story = {
   render: () => ({
     components: { D1ListItem },
     template: `
-        <D1ListItem>Simple Item</D1ListItem>
-        <D1ListItem icon="person">Item with Icon</D1ListItem>
-        <D1ListItem description="Additional information">Item with Description</D1ListItem>
-        <D1ListItem focus>Focus</D1ListItem>
-        <D1ListItem selected>Selected</D1ListItem>
-        <D1ListItem disabled>Disabled</D1ListItem>
-        <D1ListItem readonly>Readonly</D1ListItem>
-        <D1ListItem prefix="01" suffix="Info">With Prefix & Suffix</D1ListItem>
-        <D1ListItem caption="Caption" description="Description text here">Full Content</D1ListItem>
-        <D1ListItem icon="star" badge="new">Icon with Badge</D1ListItem>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <D1ListItem>Simple Item</D1ListItem>
+            <D1ListItem icon="person">Item with Icon</D1ListItem>
+            <D1ListItem description="Additional information">Item with Description</D1ListItem>
+            <D1ListItem focus>Focus</D1ListItem>
+            <D1ListItem selected>Selected</D1ListItem>
+            <D1ListItem disabled>Disabled</D1ListItem>
+            <D1ListItem readonly>Readonly</D1ListItem>
+            <D1ListItem prefix="01" suffix="Info">With Prefix & Suffix</D1ListItem>
+            <D1ListItem caption="Caption" description="Description text here">Full Content</D1ListItem>
+            <D1ListItem icon="star" badge="new">Icon with Badge</D1ListItem>
+          </div>
+        </div>
     `
   })
 }
@@ -64,10 +68,14 @@ export const ListItemHighlight: Story = {
   render: () => ({
     components: { D1ListItem },
     template: `
-        <D1ListItem highlight="search" label="Search result item"/>
-        <D1ListItem highlight="tex" :highlightLengthStart="3" label="Text with highlighting"/>
-        <D1ListItem highlight="te" :highlightLengthStart="3" label="Text without highlighting (too short)"/>
-        <D1ListItem highlight="example" :highlightLengthStart="2" label="Example text for highlighting"/>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <D1ListItem highlight="search" label="Search result item"/>
+            <D1ListItem highlight="tex" :highlightLengthStart="3" label="Text with highlighting"/>
+            <D1ListItem highlight="te" :highlightLengthStart="3" label="Text without highlighting (too short)"/>
+            <D1ListItem highlight="example" :highlightLengthStart="2" label="Example text for highlighting"/>
+          </div>
+        </div>
     `
   })
 }
@@ -76,10 +84,14 @@ export const ListItemFill: Story = {
   render: () => ({
     components: { D1ListItem },
     template: `
-        <D1ListItem label="Default fill"/>
-        <D1ListItem fill="#ff0000" label="Red fill"/>
-        <D1ListItem fill="rgb(0, 128, 255)" label="Blue fill"/>
-        <D1ListItem fill="rgba(255, 165, 0, 0.7)" label="Orange transparent fill"/>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <D1ListItem label="Default fill"/>
+            <D1ListItem fill="#ff0000" label="Red fill"/>
+            <D1ListItem fill="rgb(0, 128, 255)" label="Blue fill"/>
+            <D1ListItem fill="rgba(255, 165, 0, 0.7)" label="Orange transparent fill"/>
+          </div>
+        </div>
     `
   })
 }

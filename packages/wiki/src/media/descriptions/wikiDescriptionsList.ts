@@ -39,25 +39,6 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
   },
   stories: [
     {
-      id: 'ListHighlight',
-      name: {
-        en: 'Highlighting',
-        ru: 'Выделение'
-      },
-      template: `
-        <DesignComponent
-          :list="[
-            {label: 'Project index example', value: 'projects', icon: 'folder'},
-            {label: 'Advanced context options', value: 'experiments', icon: 'tune'},
-            {label: 'Next examination notes', value: 'example', icon: 'description'},
-            {label: 'User experience metrics', value: 'express', icon: 'insights'}
-          ]"
-          highlight="exam"
-          :highlightLengthStart="4"
-        />
-      `
-    },
-    {
       id: 'ListLiteMode',
       name: {
         en: 'Lite mode',
@@ -65,8 +46,8 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
       },
       template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Without lite</div>
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Without lite</div>
             <DesignComponent
               :liteThreshold="3"
               :list="[
@@ -78,8 +59,8 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
               ]"
             />
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">With lite</div>
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">With lite</div>
             <DesignComponent
               :lite="true"
               :liteThreshold="3"
@@ -90,6 +71,29 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
                 {label: 'Delta', value: 'd', icon: 'star'},
                 {label: 'Epsilon', value: 'e', icon: 'bolt'}
               ]"
+            />
+          </div>
+        </div>
+      `
+    },
+    {
+      id: 'ListHighlight',
+      name: {
+        en: 'Highlighting',
+        ru: 'Выделение'
+      },
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <DesignComponent
+              :list="[
+                {label: 'Project index example', value: 'projects', icon: 'folder'},
+                {label: 'Advanced context options', value: 'experiments', icon: 'tune'},
+                {label: 'Next examination notes', value: 'example', icon: 'description'},
+                {label: 'User experience metrics', value: 'express', icon: 'insights'}
+              ]"
+              highlight="exam"
+              :highlightLengthStart="4"
             />
           </div>
         </div>

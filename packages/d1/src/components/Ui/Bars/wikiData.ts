@@ -32,8 +32,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'actionBars' },
-  { name: 'bars' },
+  { name: 'actionBars', description: `Slot for displaying a list of buttons in action mode/ Слот для отображения списка кнопок в режиме действия` },
+  { name: 'bars', description: `Slot for displaying a list of buttons/ Слот для отображения списка кнопок` },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию` },
   { name: 'description', description: `Description slot/ Слот описания` }
   // :slotsList [!] System label / Системная метка
@@ -43,8 +43,8 @@ const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
   { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'update:action', properties: [{ name: 'value', type: 'boolean' }] },
-  { name: 'update:modelAction', properties: [{ name: 'value', type: 'boolean' }] }
+  { name: 'update:action', description: `Event for updating the action mode status/ Событие обновления статуса режима действия`, properties: [{ name: 'value', type: 'boolean' }] },
+  { name: 'update:modelAction', description: `Event for updating the action mode model status/ Событие обновления статуса модели режима действия`, properties: [{ name: 'value', type: 'boolean' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

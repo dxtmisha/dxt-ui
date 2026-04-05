@@ -49,16 +49,20 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
         ru: 'Базовые'
       },
       template: `
-        <DesignComponent>Simple Item</DesignComponent>
-        <DesignComponent icon="person">Item with Icon</DesignComponent>
-        <DesignComponent description="Additional information">Item with Description</DesignComponent>
-        <DesignComponent focus>Focus</DesignComponent>
-        <DesignComponent selected>Selected</DesignComponent>
-        <DesignComponent disabled>Disabled</DesignComponent>
-        <DesignComponent readonly>Readonly</DesignComponent>
-        <DesignComponent prefix="01" suffix="Info">With Prefix & Suffix</DesignComponent>
-        <DesignComponent caption="Caption" description="Description text here">Full Content</DesignComponent>
-        <DesignComponent icon="star" badge="new">Icon with Badge</DesignComponent>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <DesignComponent>Simple Item</DesignComponent>
+            <DesignComponent icon="person">Item with Icon</DesignComponent>
+            <DesignComponent description="Additional information">Item with Description</DesignComponent>
+            <DesignComponent focus>Focus</DesignComponent>
+            <DesignComponent selected>Selected</DesignComponent>
+            <DesignComponent disabled>Disabled</DesignComponent>
+            <DesignComponent readonly>Readonly</DesignComponent>
+            <DesignComponent prefix="01" suffix="Info">With Prefix & Suffix</DesignComponent>
+            <DesignComponent caption="Caption" description="Description text here">Full Content</DesignComponent>
+            <DesignComponent icon="star" badge="new">Icon with Badge</DesignComponent>
+          </div>
+        </div>
       `
     },
     {
@@ -68,10 +72,14 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
         ru: 'Выделение'
       },
       template: `
-        <DesignComponent highlight="search" label="Search result item"/>
-        <DesignComponent highlight="tex" :highlightLengthStart="3" label="Text with highlighting"/>
-        <DesignComponent highlight="te" :highlightLengthStart="3" label="Text without highlighting (too short)"/>
-        <DesignComponent highlight="example" :highlightLengthStart="2" label="Example text for highlighting"/>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <DesignComponent highlight="search" label="Search result item"/>
+            <DesignComponent highlight="tex" :highlightLengthStart="3" label="Text with highlighting"/>
+            <DesignComponent highlight="te" :highlightLengthStart="3" label="Text without highlighting (too short)"/>
+            <DesignComponent highlight="example" :highlightLengthStart="2" label="Example text for highlighting"/>
+          </div>
+        </div>
       `
     },
     {
@@ -81,10 +89,14 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
         ru: 'Заливка'
       },
       template: `
-        <DesignComponent label="Default fill"/>
-        <DesignComponent fill="#ff0000" label="Red fill"/>
-        <DesignComponent fill="rgb(0, 128, 255)" label="Blue fill"/>
-        <DesignComponent fill="rgba(255, 165, 0, 0.7)" label="Orange transparent fill"/>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <DesignComponent label="Default fill"/>
+            <DesignComponent fill="#ff0000" label="Red fill"/>
+            <DesignComponent fill="rgb(0, 128, 255)" label="Blue fill"/>
+            <DesignComponent fill="rgba(255, 165, 0, 0.7)" label="Orange transparent fill"/>
+          </div>
+        </div>
       `
     },
     {

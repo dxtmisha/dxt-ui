@@ -89,11 +89,11 @@ const slotsNames: StorybookSlots = [
   { name: 'contextTop', description: `Context slot for top area / Слот контекстной области сверху`, properties: [{ name: 'props', type: 'MenuControlItem' }] },
   { name: 'footer', description: `Footer slot for window bottom/ Слот подвала для низа окна`, properties: [{ name: 'props', type: 'MenuControlItem' }] },
   { name: 'label', description: `Label slot content/ Содержимое слота метки` },
-  { name: 'leading', properties: [{ name: 'props', type: 'FieldControl' }] },
+  { name: 'leading', description: `Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода`, properties: [{ name: 'props', type: 'FieldControl' }] },
   { name: 'prefix', description: `Prefix slot/ Слот префикса` },
   { name: 'suffix', description: `Suffix slot/ Слот суффикса` },
   { name: 'title', description: `Title slot for window title/ Слот заголовка для заголовка окна`, properties: [{ name: 'props', type: 'MenuControlItem' }] },
-  { name: 'trailing', properties: [{ name: 'props', type: 'FieldControl' }] }
+  { name: 'trailing', description: `Slot for displaying content after the input area/ Слот для отображения контента после области ввода`, properties: [{ name: 'props', type: 'FieldControl' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

@@ -16,14 +16,14 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'head', properties: [{ name: 'props', type: 'WindowControlItem' }] },
-  { name: 'list' }
+  { name: 'head', description: `Slot for the menu header/ Слот для заголовка меню`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+  { name: 'list', description: `Slot for the menu list content/ Слот для содержимого списка меню` }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'window', properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
+  { name: 'window', description: `Window event triggered on state change/ Событие окна при изменении состояния`, properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

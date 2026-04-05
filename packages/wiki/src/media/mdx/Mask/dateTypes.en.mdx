@@ -2,110 +2,37 @@
 
 Date types in Mask provide automatic formatting and validation for date and time input with localization support.
 
-**Available types:**
-
-- `date`, `datetime`, `full` — full date and time formats
-- `time`, `hour-minute`, `hour`, `minute`, `second` — time components
-- `year`, `year-month`, `month`, `day`, `day-month` — date components
-
-All date types automatically create masks according to regional settings, ignoring the `mask` property. Mask structure is determined by locale via `language` (DD.MM.YYYY for Russian, MM/DD/YYYY for English).
-
-Date validation occurs at input level — numeric values correctness is checked, number of days in month (including leap years), value ranges (months 01-12, days 01-31, hours 00-23). Time works in 24-hour format.
-
-```html
-<!-- Full date -->
-<Mask type="date" language="en-US" />
-
-<!-- Date and time -->
-<Mask type="datetime" language="en-US" />
-
-<!-- Time only -->
-<Mask type="time" />
-```
+All date types automatically create masks according to regional settings, ignoring the `mask` property. The mask is determined by locale via `language` (DD.MM.YYYY for ru). Validation checks for correct numbers, days in month, and value ranges.
 
 ### Types
 
-#### date
-
-Full date in locale format (day, month, year). Automatically generates structure according to language settings: DD.MM.YYYY for Russian, MM/DD/YYYY for English. Separator is determined by locale (dot, slash, hyphen).
-
-#### datetime
-
-Date and time in locale format. Combines date and time masks, separating them with space. Date format is determined by language, time format is usually HH:MM. Validates both date and time.
-
-#### full
-
-Full date and time with seconds. Extended version of `datetime` with seconds added to time format (HH:MM:SS).
-
-#### time
-
-Time in HH:MM:SS format. Generates mask for time input with range validation (0-23 for hours, 0-59 for minutes and seconds).
-
-#### hour-minute
-
-Hours and minutes in HH:MM format. Short version of time without seconds. Validates ranges (0-23 for hours, 0-59 for minutes).
-
-#### hour
-
-Hours only (00-23). Mask for hours input with range validation from 0 to 23.
-
-#### minute
-
-Minutes only (00-59). Mask for minutes input with range validation from 0 to 59.
-
-#### second
-
-Seconds only (00-59). Mask for seconds input with range validation from 0 to 59.
-
-#### year
-
-Year (usually 4 digits). Creates simple numeric mask for year. Format may vary depending on locale (YYYY, YY).
-
-#### year-month
-
-Year and month. Combines year and month masks. Format depends on locale (YYYY/MM, YYYY-MM).
-
-#### month
-
-Month (01-12). Mask for month input with range validation from 01 to 12.
-
-#### day
-
-Day of month (01-31). Mask for day input with range validation from 01 to 31.
-
-#### day-month
-
-Day and month. Combines day and month masks without year. Useful for birthdays, holidays.
+- `date` — full date in locale format (MM/DD/YYYY for US)
+- `datetime` — date and time (HH:MM) separated by space
+- `full` — full date and time with seconds (HH:MM:SS)
+- `time` — time in HH:MM:SS format
+- `hour-minute` — hours and minutes (HH:MM)
+- `hour`, `minute`, `second` — separate time components
+- `year`, `month`, `day` — separate date components
+- `year-month`, `day-month` — date component combinations
 
 ### Localization
 
-Formats automatically adapt to locale via the `language` property:
+Formats adapt via the `language` property:
+- `ru`, `de` — DD.MM.YYYY (31.12.2024)
+- `en-US` — MM/DD/YYYY (12/31/2024)
 
-**Russian (ru):**
-- Date format: DD.MM.YYYY
-- Separator: dot
-- Example: `31.12.2024`
-
-**English (en-US):**
-- Date format: MM/DD/YYYY
-- Separator: slash
-- Example: `12/31/2024`
-
-**German (de):**
-- Date format: DD.MM.YYYY
-- Separator: dot
-- Example: `31.12.2024`
+### Examples
 
 ```html
-<Mask type="date" language="ru" />
-<!-- Result: 31.12.2024 -->
-
+<!-- US date format -->
 <Mask type="date" language="en-US" />
-<!-- Result: 12/31/2024 -->
 
+<!-- Full date and time -->
 <Mask type="datetime" language="en-US" />
-<!-- Result: 12/31/2024 2:30 PM -->
 
+<!-- Russian date format -->
+<Mask type="date" language="ru" />
+
+<!-- Time only -->
 <Mask type="time" />
-<!-- Result: 14:30:45 -->
 ```

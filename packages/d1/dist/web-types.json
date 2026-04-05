@@ -439,6 +439,7 @@
             },
             {
               "name": "header",
+              "description": "Slot for the modal header/ Слот для заголовка модального окна",
               "vue-properties": [
                 {
                   "name": "props",
@@ -460,6 +461,7 @@
           "events": [
             {
               "name": "actions",
+              "description": "Click event for actions/ Событие клика для действий",
               "arguments": [
                 {
                   "name": "event",
@@ -473,6 +475,7 @@
             },
             {
               "name": "actionsLite",
+              "description": "Simple click event for actions/ Простое событие клика для действий",
               "arguments": [
                 {
                   "name": "value",
@@ -482,6 +485,7 @@
             },
             {
               "name": "bars",
+              "description": "Click event for bars/ Событие клика для панелей",
               "arguments": [
                 {
                   "name": "event",
@@ -495,6 +499,7 @@
             },
             {
               "name": "barsBack",
+              "description": "Back button click event for bars/ Событие клика кнопки назад для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -504,6 +509,7 @@
             },
             {
               "name": "barsLite",
+              "description": "Simple click event for bars/ Простое событие клика для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -513,6 +519,7 @@
             },
             {
               "name": "window",
+              "description": "Window event triggered on state change/ Событие окна при изменении состояния",
               "arguments": [
                 {
                   "name": "options",
@@ -609,10 +616,12 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for the main list of actions/ Слот для основного списка действий",
               "vue-properties": []
             },
             {
               "name": "secondary",
+              "description": "Slot for the secondary list of actions/ Слот для вторичного списка действий",
               "vue-properties": []
             }
           ],
@@ -1240,10 +1249,12 @@
           "slots": [
             {
               "name": "actionBars",
+              "description": "Slot for displaying a list of buttons in action mode/ Слот для отображения списка кнопок в режиме действия",
               "vue-properties": []
             },
             {
               "name": "bars",
+              "description": "Slot for displaying a list of buttons/ Слот для отображения списка кнопок",
               "vue-properties": []
             },
             {
@@ -1284,6 +1295,7 @@
             },
             {
               "name": "update:action",
+              "description": "Event for updating the action mode status/ Событие обновления статуса режима действия",
               "arguments": [
                 {
                   "name": "value",
@@ -1293,6 +1305,7 @@
             },
             {
               "name": "update:modelAction",
+              "description": "Event for updating the action mode model status/ Событие обновления статуса модели режима действия",
               "arguments": [
                 {
                   "name": "value",
@@ -2161,6 +2174,7 @@
           "slots": [
             {
               "name": "body",
+              "description": "Slot for displaying the main body content of the cell/ Слот для отображения основного содержимого тела ячейки",
               "vue-properties": [
                 {
                   "name": "props",
@@ -2185,6 +2199,7 @@
             },
             {
               "name": "trailing",
+              "description": "Slot for displaying additional content on the right side of the cell/ Слот для отображения дополнительного контента в правой части ячейки",
               "vue-properties": [
                 {
                   "name": "props",
@@ -3170,6 +3185,7 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for displaying a custom list of chips/ Слот для отображения пользовательского списка чипов",
               "vue-properties": []
             }
           ],
@@ -3545,6 +3561,7 @@
             },
             {
               "name": "header",
+              "description": "Slot for the modal header/ Слот для заголовка модального окна",
               "vue-properties": [
                 {
                   "name": "props",
@@ -3571,6 +3588,7 @@
           "events": [
             {
               "name": "actions",
+              "description": "Click event for actions/ Событие клика для действий",
               "arguments": [
                 {
                   "name": "event",
@@ -3584,6 +3602,7 @@
             },
             {
               "name": "actionsLite",
+              "description": "Simple click event for actions/ Простое событие клика для действий",
               "arguments": [
                 {
                   "name": "value",
@@ -3593,6 +3612,7 @@
             },
             {
               "name": "bars",
+              "description": "Click event for bars/ Событие клика для панелей",
               "arguments": [
                 {
                   "name": "event",
@@ -3606,6 +3626,7 @@
             },
             {
               "name": "barsBack",
+              "description": "Back button click event for bars/ Событие клика кнопки назад для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -3615,6 +3636,7 @@
             },
             {
               "name": "barsLite",
+              "description": "Simple click event for bars/ Простое событие клика для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -3624,14 +3646,17 @@
             },
             {
               "name": "close",
+              "description": "Event for clicking the close button/ Событие клика на кнопку закрытия",
               "arguments": []
             },
             {
               "name": "ok",
+              "description": "Event for clicking the OK button/ Событие клика на кнопку подтверждения",
               "arguments": []
             },
             {
               "name": "window",
+              "description": "Window event triggered on state change/ Событие окна при изменении состояния",
               "arguments": [
                 {
                   "name": "options",
@@ -3670,6 +3695,7 @@
           "slots": [
             {
               "name": "default",
+              "description": "Default slot for the component/ Слот по умолчанию для компонента",
               "vue-properties": []
             }
           ],
@@ -4274,6 +4300,7 @@
             },
             {
               "name": "default",
+              "description": "Default slot for the input element/ Слот по умолчанию для элемента ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -4288,6 +4315,7 @@
             },
             {
               "name": "leading",
+              "description": "Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -4307,6 +4335,7 @@
             },
             {
               "name": "trailing",
+              "description": "Slot for displaying content after the input area/ Слот для отображения контента после области ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -4679,6 +4708,7 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for default grid content/ Слот для основного содержимого сетки",
               "vue-properties": []
             }
           ],
@@ -4745,6 +4775,7 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for default grid item content/ Слот для основного содержимого элемента сетки",
               "vue-properties": []
             }
           ],
@@ -4968,6 +4999,7 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for default horizontal scroll content/ Слот для основного содержимого горизонтальной прокрутки",
               "vue-properties": []
             }
           ],
@@ -5237,6 +5269,7 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for custom icon content/ Слот для пользовательского контента иконки",
               "vue-properties": []
             }
           ],
@@ -5267,6 +5300,7 @@
             },
             {
               "name": "load",
+              "description": "Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения",
               "arguments": [
                 {
                   "name": "image",
@@ -5466,6 +5500,7 @@
           "events": [
             {
               "name": "load",
+              "description": "Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения",
               "arguments": [
                 {
                   "name": "image",
@@ -6162,6 +6197,7 @@
             },
             {
               "name": "leading",
+              "description": "Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -6181,6 +6217,7 @@
             },
             {
               "name": "trailing",
+              "description": "Slot for displaying content after the input area/ Слот для отображения контента после области ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -6520,6 +6557,7 @@
             },
             {
               "name": "close",
+              "description": "Event for closing the list/ Событие закрытия списка",
               "arguments": []
             }
           ]
@@ -6554,6 +6592,7 @@
           "slots": [
             {
               "name": "head",
+              "description": "Slot for the group header/ Слот для заголовка группы",
               "vue-properties": [
                 {
                   "name": "props",
@@ -6563,6 +6602,7 @@
             },
             {
               "name": "list",
+              "description": "Slot for the group list content/ Слот для содержимого списка группы",
               "vue-properties": []
             }
           ],
@@ -7020,6 +7060,7 @@
           "slots": [
             {
               "name": "body",
+              "description": "Slot for the list item body/ Слот для содержимого элемента списка",
               "vue-properties": []
             },
             {
@@ -7039,6 +7080,7 @@
             },
             {
               "name": "leading",
+              "description": "Slot for the leading element/ Слот для ведущего элемента",
               "vue-properties": []
             },
             {
@@ -7053,6 +7095,7 @@
             },
             {
               "name": "trailing",
+              "description": "Slot for the trailing element/ Слот для замыкающего элемента",
               "vue-properties": []
             }
           ],
@@ -7147,6 +7190,7 @@
           "slots": [
             {
               "name": "head",
+              "description": "Slot for the menu header/ Слот для заголовка меню",
               "vue-properties": [
                 {
                   "name": "props",
@@ -7156,12 +7200,14 @@
             },
             {
               "name": "list",
+              "description": "Slot for the menu list content/ Слот для содержимого списка меню",
               "vue-properties": []
             }
           ],
           "events": [
             {
               "name": "window",
+              "description": "Window event triggered on state change/ Событие окна при изменении состояния",
               "arguments": [
                 {
                   "name": "options",
@@ -7361,6 +7407,7 @@
           "events": [
             {
               "name": "beforeinput",
+              "description": "Event triggered before input/ Событие перед вводом",
               "arguments": [
                 {
                   "name": "event",
@@ -7370,6 +7417,7 @@
             },
             {
               "name": "blur",
+              "description": "Event triggered on blur/ Событие при потере фокуса",
               "arguments": [
                 {
                   "name": "event",
@@ -7379,6 +7427,7 @@
             },
             {
               "name": "change",
+              "description": "Event triggered on change/ Событие при изменении",
               "arguments": [
                 {
                   "name": "event",
@@ -7392,6 +7441,7 @@
             },
             {
               "name": "changeLite",
+              "description": "Event triggered on simplified change/ Событие при упрощенном изменении",
               "arguments": [
                 {
                   "name": "value",
@@ -7401,6 +7451,7 @@
             },
             {
               "name": "focus",
+              "description": "Event triggered on focus/ Событие при фокусе",
               "arguments": [
                 {
                   "name": "event",
@@ -7410,6 +7461,7 @@
             },
             {
               "name": "input",
+              "description": "Event triggered on input/ Событие при вводе",
               "arguments": [
                 {
                   "name": "event",
@@ -7423,6 +7475,7 @@
             },
             {
               "name": "inputLite",
+              "description": "Event triggered on simplified input/ Событие при упрощенном вводе",
               "arguments": [
                 {
                   "name": "value",
@@ -7432,6 +7485,7 @@
             },
             {
               "name": "keydown",
+              "description": "Event triggered on key down/ Событие при нажатии клавиши",
               "arguments": [
                 {
                   "name": "event",
@@ -7441,6 +7495,7 @@
             },
             {
               "name": "keyup",
+              "description": "Event triggered on key up/ Событие при отпускании клавиши",
               "arguments": [
                 {
                   "name": "event",
@@ -7450,6 +7505,7 @@
             },
             {
               "name": "paste",
+              "description": "Event triggered on paste/ Событие при вставке",
               "arguments": [
                 {
                   "name": "event",
@@ -7459,6 +7515,7 @@
             },
             {
               "name": "reset",
+              "description": "Event triggered on reset/ Событие при сбросе",
               "arguments": [
                 {
                   "name": "event",
@@ -7816,6 +7873,7 @@
           "events": [
             {
               "name": "bars",
+              "description": "Click event for bars/ Событие клика для панелей",
               "arguments": [
                 {
                   "name": "event",
@@ -7829,6 +7887,7 @@
             },
             {
               "name": "barsBack",
+              "description": "Back button click event for bars/ Событие клика кнопки назад для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -7838,6 +7897,7 @@
             },
             {
               "name": "barsLite",
+              "description": "Simple click event for bars/ Простое событие клика для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -7871,6 +7931,7 @@
             },
             {
               "name": "clickSlot",
+              "description": "Event for clicking on a slot/ Событие клика по слоту",
               "arguments": [
                 {
                   "name": "value?",
@@ -7900,6 +7961,7 @@
             },
             {
               "name": "updateValue",
+              "description": "Event for updating the value/ Событие обновления значения",
               "arguments": [
                 {
                   "name": "value?",
@@ -7909,6 +7971,7 @@
             },
             {
               "name": "window",
+              "description": "Window event triggered on state change/ Событие окна при изменении состояния",
               "arguments": [
                 {
                   "name": "options",
@@ -8104,6 +8167,7 @@
             },
             {
               "name": "header",
+              "description": "Slot for the modal header/ Слот для заголовка модального окна",
               "vue-properties": [
                 {
                   "name": "props",
@@ -8125,6 +8189,7 @@
           "events": [
             {
               "name": "actions",
+              "description": "Click event for actions/ Событие клика для действий",
               "arguments": [
                 {
                   "name": "event",
@@ -8138,6 +8203,7 @@
             },
             {
               "name": "actionsLite",
+              "description": "Simple click event for actions/ Простое событие клика для действий",
               "arguments": [
                 {
                   "name": "value",
@@ -8147,6 +8213,7 @@
             },
             {
               "name": "bars",
+              "description": "Click event for bars/ Событие клика для панелей",
               "arguments": [
                 {
                   "name": "event",
@@ -8160,6 +8227,7 @@
             },
             {
               "name": "barsBack",
+              "description": "Back button click event for bars/ Событие клика кнопки назад для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -8169,6 +8237,7 @@
             },
             {
               "name": "barsLite",
+              "description": "Simple click event for bars/ Простое событие клика для панелей",
               "arguments": [
                 {
                   "name": "value",
@@ -8178,6 +8247,7 @@
             },
             {
               "name": "window",
+              "description": "Window event triggered on state change/ Событие окна при изменении состояния",
               "arguments": [
                 {
                   "name": "options",
@@ -8276,6 +8346,7 @@
           "events": [
             {
               "name": "end",
+              "description": "Event triggered at the end of animation/ Событие завершения анимации",
               "arguments": [
                 {
                   "name": "selected",
@@ -8285,6 +8356,7 @@
             },
             {
               "name": "motionAxis",
+              "description": "Event for axis motion/ Событие движения оси",
               "arguments": [
                 {
                   "name": "options",
@@ -8294,6 +8366,7 @@
             },
             {
               "name": "start",
+              "description": "Event triggered at the start of animation/ Событие начала анимации",
               "arguments": [
                 {
                   "name": "selected",
@@ -8975,12 +9048,14 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for default scrollbar content/ Слот для основного содержимого скроллбара",
               "vue-properties": []
             }
           ],
           "events": [
             {
               "name": "bottom",
+              "description": "Event triggered when reaching the bottom/ Событие при достижении низа",
               "arguments": [
                 {
                   "name": "isBottom",
@@ -8990,6 +9065,7 @@
             },
             {
               "name": "edge",
+              "description": "Event triggered when reaching any edge/ Событие при достижении любого края",
               "arguments": [
                 {
                   "name": "isTop",
@@ -9007,22 +9083,27 @@
             },
             {
               "name": "leaveBottom",
+              "description": "Event triggered when leaving the bottom position/ Событие при уходе с нижней позиции",
               "arguments": []
             },
             {
               "name": "leaveTop",
+              "description": "Event triggered when leaving the top position/ Событие при уходе с верхней позиции",
               "arguments": []
             },
             {
               "name": "reachBottom",
+              "description": "Event triggered when precisely reaching the bottom position/ Событие при точном достижении нижней позиции",
               "arguments": []
             },
             {
               "name": "reachTop",
+              "description": "Event triggered when precisely reaching the top position/ Событие при точном достижении верхней позиции",
               "arguments": []
             },
             {
               "name": "top",
+              "description": "Event triggered when reaching the top/ Событие при достижении верха",
               "arguments": [
                 {
                   "name": "isTop",
@@ -9879,6 +9960,7 @@
             },
             {
               "name": "leading",
+              "description": "Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -9908,6 +9990,7 @@
             },
             {
               "name": "trailing",
+              "description": "Slot for displaying content after the input area/ Слот для отображения контента после области ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -10122,6 +10205,7 @@
           "slots": [
             {
               "name": "default",
+              "description": "Slot for default skeleton content/ Слот для основного содержимого скелета",
               "vue-properties": [
                 {
                   "name": "props",
@@ -10204,6 +10288,7 @@
           "events": [
             {
               "name": "hide",
+              "description": "Event triggered when notification is hidden/ Событие при скрытии уведомления",
               "arguments": [
                 {
                   "name": "value",
@@ -10217,6 +10302,7 @@
             },
             {
               "name": "show",
+              "description": "Event triggered when notification is shown/ Событие при показе уведомления",
               "arguments": [
                 {
                   "name": "value",
@@ -10486,6 +10572,7 @@
           "slots": [
             {
               "name": "body",
+              "description": "Slot for the notification body/ Слот для содержимого уведомления",
               "vue-properties": []
             },
             {
@@ -10502,6 +10589,7 @@
           "events": [
             {
               "name": "actions",
+              "description": "Click event for actions/ Событие клика для действий",
               "arguments": [
                 {
                   "name": "event",
@@ -10515,6 +10603,7 @@
             },
             {
               "name": "actionsLite",
+              "description": "Simple click event for actions/ Простое событие клика для действий",
               "arguments": [
                 {
                   "name": "value",
@@ -10548,6 +10637,7 @@
             },
             {
               "name": "close",
+              "description": "Event triggered when notification is closed/ Событие при закрытии уведомления",
               "arguments": [
                 {
                   "name": "value",
@@ -11071,10 +11161,12 @@
           "slots": [
             {
               "name": "leading",
+              "description": "Slot for content before the tabs/ Слот для содержимого перед вкладками",
               "vue-properties": []
             },
             {
               "name": "trailing",
+              "description": "Slot for content after the tabs/ Слот для содержимого после вкладок",
               "vue-properties": []
             }
           ],
@@ -11710,6 +11802,7 @@
             },
             {
               "name": "leading",
+              "description": "Slot for displaying content before the input area/ Слот для отображения контента перед областью ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -11729,6 +11822,7 @@
             },
             {
               "name": "trailing",
+              "description": "Slot for displaying content after the input area/ Слот для отображения контента после области ввода",
               "vue-properties": [
                 {
                   "name": "props",
@@ -11855,6 +11949,7 @@
           "events": [
             {
               "name": "input",
+              "description": "Event triggered on input/ Событие при вводе",
               "arguments": [
                 {
                   "name": "event",
@@ -12023,6 +12118,7 @@
           "slots": [
             {
               "name": "body",
+              "description": "Slot for the tooltip body content/ Слот для основного содержимого тултипа",
               "vue-properties": [
                 {
                   "name": "props",
@@ -12032,6 +12128,7 @@
             },
             {
               "name": "control",
+              "description": "Slot for the control element that triggers the tooltip/ Слот для управляющего элемента, вызывающего тултип",
               "vue-properties": [
                 {
                   "name": "props",
@@ -12053,6 +12150,7 @@
           "events": [
             {
               "name": "tooltip",
+              "description": "Event triggered when the tooltip open state changes/ Событие при изменении состояния открытости тултипа",
               "arguments": [
                 {
                   "name": "open",
@@ -12521,6 +12619,7 @@
           "events": [
             {
               "name": "load",
+              "description": "Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения",
               "arguments": [
                 {
                   "name": "image",
@@ -12530,6 +12629,7 @@
             },
             {
               "name": "scrollbarBottom",
+              "description": "Event triggered when reaching the bottom/ Событие при достижении низа",
               "arguments": [
                 {
                   "name": "isBottom",
@@ -12539,6 +12639,7 @@
             },
             {
               "name": "scrollbarEdge",
+              "description": "Event triggered when reaching any edge/ Событие при достижении любого края",
               "arguments": [
                 {
                   "name": "isTop",
@@ -12556,22 +12657,27 @@
             },
             {
               "name": "scrollbarLeaveBottom",
+              "description": "Event triggered when leaving the bottom position/ Событие при уходе с нижней позиции",
               "arguments": []
             },
             {
               "name": "scrollbarLeaveTop",
+              "description": "Event triggered when leaving the top position/ Событие при уходе с верхней позиции",
               "arguments": []
             },
             {
               "name": "scrollbarReachBottom",
+              "description": "Event triggered when precisely reaching the bottom position/ Событие при точном достижении нижней позиции",
               "arguments": []
             },
             {
               "name": "scrollbarReachTop",
+              "description": "Event triggered when precisely reaching the top position/ Событие при точном достижении верхней позиции",
               "arguments": []
             },
             {
               "name": "scrollbarTop",
+              "description": "Event triggered when reaching the top/ Событие при достижении верха",
               "arguments": [
                 {
                   "name": "isTop",
@@ -12601,6 +12707,7 @@
             },
             {
               "name": "window",
+              "description": "Window event triggered on state change/ Событие окна при изменении состояния",
               "arguments": [
                 {
                   "name": "options",

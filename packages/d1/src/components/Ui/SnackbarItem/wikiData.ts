@@ -39,7 +39,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body' },
+  { name: 'body', description: `Slot for the notification body/ Слот для содержимого уведомления` },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию` },
   { name: 'description', description: `Description slot/ Слот описания` }
   // :slotsList [!] System label / Системная метка
@@ -47,11 +47,11 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'actions', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
-  { name: 'actionsLite', properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'actions', description: `Click event for actions/ Событие клика для действий`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'actionsLite', description: `Simple click event for actions/ Простое событие клика для действий`, properties: [{ name: 'value', type: 'EventClickValue' }] },
   { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
   { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
-  { name: 'close', properties: [{ name: 'value', type: 'string' }] }
+  { name: 'close', description: `Event triggered when notification is closed/ Событие при закрытии уведомления`, properties: [{ name: 'value', type: 'string' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

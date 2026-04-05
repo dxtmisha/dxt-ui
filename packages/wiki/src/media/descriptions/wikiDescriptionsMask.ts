@@ -229,17 +229,6 @@ export const wikiDescriptionsMask: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
-    render: `
-<div :class="classDemo.item">
-  <Mask embedded :window-attrs="{open: true}" v-bind="args">
-    <template #control="{ binds }">
-      <button class="wiki-storybook-button" v-bind="binds">
-        Open Menu
-      </button>
-    </template>
-  </Mask>
-</div>
-    `,
     description: `
 Low-level input masking utility for controlling and formatting text, numeric, and date/time data entry. Intercepts input events to enforce strict patterns, automatically inserting literal characters and validating each keystroke against allowed rules.
 Features support for single or multiple patterns (auto-selection), specialized input types (currency, number-format), and locale-aware date/time validation. Includes granular control over allowed characters (match), decimal fractions, and value range constraints (min/max).

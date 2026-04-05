@@ -36,17 +36,17 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'beforeinput', properties: [{ name: 'event', type: 'InputEvent' }] },
-  { name: 'blur', properties: [{ name: 'event', type: 'FocusEvent' }] },
-  { name: 'change', properties: [{ name: 'event', type: 'InputEvent' }, { name: 'value', type: 'FieldValidationItem' }] },
-  { name: 'changeLite', properties: [{ name: 'value', type: 'FieldValidationItem' }] },
-  { name: 'focus', properties: [{ name: 'event', type: 'FocusEvent' }] },
-  { name: 'input', properties: [{ name: 'event', type: 'InputEvent' }, { name: 'value', type: 'FieldValidationItem' }] },
-  { name: 'inputLite', properties: [{ name: 'value', type: 'FieldValidationItem' }] },
-  { name: 'keydown', properties: [{ name: 'event', type: 'KeyboardEvent' }] },
-  { name: 'keyup', properties: [{ name: 'event', type: 'KeyboardEvent' }] },
-  { name: 'paste', properties: [{ name: 'event', type: 'ClipboardEvent' }] },
-  { name: 'reset', properties: [{ name: 'event', type: 'Event' }] }
+  { name: 'beforeinput', description: `Event triggered before input/ Событие перед вводом`, properties: [{ name: 'event', type: 'InputEvent' }] },
+  { name: 'blur', description: `Event triggered on blur/ Событие при потере фокуса`, properties: [{ name: 'event', type: 'FocusEvent' }] },
+  { name: 'change', description: `Event triggered on change/ Событие при изменении`, properties: [{ name: 'event', type: 'InputEvent' }, { name: 'value', type: 'FieldValidationItem' }] },
+  { name: 'changeLite', description: `Event triggered on simplified change/ Событие при упрощенном изменении`, properties: [{ name: 'value', type: 'FieldValidationItem' }] },
+  { name: 'focus', description: `Event triggered on focus/ Событие при фокусе`, properties: [{ name: 'event', type: 'FocusEvent' }] },
+  { name: 'input', description: `Event triggered on input/ Событие при вводе`, properties: [{ name: 'event', type: 'InputEvent' }, { name: 'value', type: 'FieldValidationItem' }] },
+  { name: 'inputLite', description: `Event triggered on simplified input/ Событие при упрощенном вводе`, properties: [{ name: 'value', type: 'FieldValidationItem' }] },
+  { name: 'keydown', description: `Event triggered on key down/ Событие при нажатии клавиши`, properties: [{ name: 'event', type: 'KeyboardEvent' }] },
+  { name: 'keyup', description: `Event triggered on key up/ Событие при отпускании клавиши`, properties: [{ name: 'event', type: 'KeyboardEvent' }] },
+  { name: 'paste', description: `Event triggered on paste/ Событие при вставке`, properties: [{ name: 'event', type: 'ClipboardEvent' }] },
+  { name: 'reset', description: `Event triggered on reset/ Событие при сбросе`, properties: [{ name: 'event', type: 'Event' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

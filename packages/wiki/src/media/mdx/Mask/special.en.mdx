@@ -53,151 +53,53 @@ For built-in types (`currency`, `number`, `date`, `time`), the system automatica
 
 ## MaskSpecialList
 
-`MaskSpecialList` — object with extended configuration for mask special characters, where each key corresponds to a special character in the template.
+`MaskSpecialList` is an extended configuration object that allows for fine-tuned control over the behavior of each special character in the mask. Each key in the object corresponds to one of the characters defined in the `special` property (or the default `*` character).
 
-### Type structure
+### MaskSpecialItem Properties
 
-```typescript
-type MaskSpecialList = Record<string, MaskSpecialItem>
+- `defaultValue?: string` — **initial value**. Automatically populates the group on initialization. The user can modify it if the `match` rules allow.
+- `rubber?: boolean` — **rubber mode**. Enables dynamic length for the group. In the mask template, such a group is typically represented by one or more identical characters.
+- `transitionChar?: string | string[]` — **transition character**. A specific character (e.g., space or dot) that triggers an immediate focus shift to the next part of the mask upon entry. Only for `rubber: true`.
+- `minLength?: number` — **minimum length**. Used to validate whether the group has been sufficiently filled.
+- `maxLength?: number` — **maximum length**. The limit for expansion in "rubber" groups.
+- `match?: RegExp | string` — **input filter**. A regular expression that checks *each individual* character as it is typed. Default: `[0-9]`.
+- `pattern?: string | Function` — **group validator**. A rule for validating the entire accumulated string in the group. Can be a string (regex) or a function receiving mask data.
+- `view?: string` — **visual placeholder**. The character the user sees in empty slots of this group. Default: `_`.
 
-interface MaskSpecialItem {
-  /** Default value for the group */
-  defaultValue?: string
+### How to Work with MaskSpecialList
 
-  /** Enables variable-length mode (rubber group) */
-  rubber?: boolean
+For effective use of `MaskSpecialList`, follow these simple rules:
 
-  /** Characters for automatic transition to the next group */
-  transitionChar?: string | string[]
+1.  **Character Mapping**: Every key in the `MaskSpecialList` object must be a character you used in your `mask` template. For example, if the mask is `AAA-***`, you can configure group `A` for letters and `*` for digits.
+2.  **Filter Configuration (`match`)**: Use `match` to restrict the types of characters a user can physically type. This stops letters from being entered where numbers are expected at the earliest possible stage.
+3.  **Use Rubber Groups**: If a field's length is unknown in advance (like a phone extension), set `rubber: true`. This allows the mask to expand as the user types.
+4.  **Manage Transitions**: For a better user experience, define a `transitionChar` (like a space or dot). This allows users to manually finish the current group and jump to the next one without filling the entire length.
+5.  **Default Values**: If part of the data is frequently repeated (like the current year), use `defaultValue`. This reduces the number of actions required from the user.
 
-  /** Minimum length for rubber group */
-  minLength?: number
-
-  /** Maximum length for rubber group */
-  maxLength?: number
-
-  /** Regular expression for character validation */
-  match?: RegExp | string
-
-  /** Pattern for group validation */
-  pattern?: FieldPatternItemOrFunction
-
-  /** Displayed placeholder character */
-  view?: string
-}
-```
-
-### Properties
-
-#### `defaultValue`
-
-String with the initial value for the group. Automatically inserted on initialization or when the user hasn't entered data.
-
-#### `rubber`
-
-Boolean value enabling rubber group mode with variable length. Allows users to enter from `minLength` to `maxLength` characters in one group.
-
-#### `transitionChar`
-
-Character or array of characters that complete the rubber group and move the cursor to the next part of the mask. Only works with rubber groups (`rubber: true`).
-
-#### `minLength`
-
-Minimum number of characters for rubber group. Only works with `rubber: true`.
-
-#### `maxLength`
-
-Maximum number of characters for rubber group. Only works with `rubber: true`.
-
-#### `match`
-
-Regular expression or string for validating entered characters in the group.
-
-#### `pattern`
-
-Regular expression or string for validating characters in the current group during input. Can also be a function that dynamically returns a pattern based on mask data.
-
-**Type:**
-
-```typescript
-type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem)
-type FieldPatternItem = string | Partial<HTMLInputElement>
-```
-
-Where `FieldMasks` is an object with information about all mask groups, each containing:
-- `group` — group key
-- `value` — accumulated group value
-- `maxLength` — maximum fragment length
-- `full` — fragment filled flag
-- `end` — end of input flag
-- `chars` — array of value characters
-
-#### `view`
-
-Character displayed as placeholder for unfilled group positions.
-
-### Usage example
+### Example
 
 ```html
 <script setup>
-import { ref } from 'vue'
-
-const phoneCode = ref('')
-const productCode = ref('')
-const dateValue = ref('')
+const value = ref('')
 </script>
 
 <template>
-  <!-- Phone code with variable length and auto-completion -->
+  <!-- Example of a rubber mask for an IP address -->
   <Mask
-    v-model="phoneCode"
-    mask="+* (***) *** ** **"
+    v-model="value"
+    mask="*.#.#.#"
     :special="{
-      '*': {
-        rubber: true,
-        minLength: 1,
-        maxLength: 3,
-        pattern: '\\d',
-        transitionChar: ' '
-      }
+      '*': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\d{1,3}' },
+      '#': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\d{1,3}' }
     }"
   />
 
-  <!-- Product code with variable length -->
+  <!-- Example of a mask with different group types and default values -->
   <Mask
-    v-model="productCode"
-    mask="PRD-***"
+    mask="AAA-****"
     :special="{
-      '*': {
-        rubber: true,
-        minLength: 4,
-        maxLength: 10,
-        match: /[A-Z0-9]/,
-        view: '_'
-      }
-    }"
-  />
-
-  <!-- Date with default values -->
-  <Mask
-    v-model="dateValue"
-    mask="DD/MM/YYYY"
-    :special="{
-      'D': {
-        defaultValue: '01',
-        pattern: '\\d',
-        view: '0'
-      },
-      'M': {
-        defaultValue: '01',
-        pattern: '\\d',
-        view: '0'
-      },
-      'Y': {
-        defaultValue: '2024',
-        pattern: '\\d',
-        view: '0'
-      }
+      'A': { match: /[A-Z]/, view: 'A' },
+      '*': { defaultValue: '0000', match: /[0-9]/, view: '0' }
     }"
   />
 </template>
