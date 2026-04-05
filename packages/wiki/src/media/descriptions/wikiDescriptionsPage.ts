@@ -51,19 +51,13 @@ export const wikiDescriptionsPage: StorybookComponentsDescriptionItem = {
         ru: 'Базовые'
       },
       template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent>
-            <p>Simple page content wrapper.</p>
-          </DesignComponent>
-          <DesignComponent label="Documentation" description="Learn how to use the library">
-            <p>Welcome to the documentation page.</p>
-          </DesignComponent>
-          <DesignComponent headline="Dashboard Overview" label="Analytics">
-            <div style="height: 100px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-              Chart Placeholder
-            </div>
-          </DesignComponent>
-        </div>
+        <DesignComponent
+          headline="User Dashboard"
+          label="Overview"
+          description="View your account analytics and recent activity."
+        >
+          <p>Welcome to your dashboard. Here you can find a summary of your performance and manage your account settings.</p>
+        </DesignComponent>
       `
     },
     {

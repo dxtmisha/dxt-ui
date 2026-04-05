@@ -105,38 +105,45 @@ export const SelectVModel: Story = {
   render: () => ({
     components: { D1Select },
     setup() {
-      return {
-        singleValue: ref('option2'),
-        multipleValue: ref(['option1', 'option3'])
-      }
+      const valueSingle = ref('option2')
+      const valueMultiple = ref(['option1', 'option3'])
+      const options = [
+        { label: 'First option', value: 'option1' },
+        { label: 'Second option', value: 'option2' },
+        { label: 'Third option', value: 'option3' }
+      ]
+
+      return { valueSingle, valueMultiple, options }
     },
     template: `
         <div class="wiki-storybook-flex-column">
-          <D1Select
-            v-model="singleValue"
-            type="select"
-            label="Single select"
-            arrow="carousel"
-            :option="[
-              {label: 'First option', value: 'option1'},
-              {label: 'Second option', value: 'option2'},
-              {label: 'Third option', value: 'option3'}
-            ]"
-          />
-          <div>Selected: {{ singleValue }}</div>
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueSingle }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option1'">option 1</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option2'">option 2</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option3'">option 3</button>
+          </div>
 
           <D1Select
-            v-model="multipleValue"
+            v-model="valueSingle"
+            type="select"
+            label="Single select"
+            :option="options"
+          />
+
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueMultiple }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueMultiple = ['option1', 'option2']">option 1, 2</button>
+            <button class="wiki-storybook-button wiki-storybook-button--warning" @click="valueMultiple = []">Clear</button>
+          </div>
+
+          <D1Select
+            v-model="valueMultiple"
             type="select"
             label="Multiple select"
             multiple
-            :option="[
-              {label: 'First option', value: 'option1'},
-              {label: 'Second option', value: 'option2'},
-              {label: 'Third option', value: 'option3'}
-            ]"
+            :option="options"
           />
-          <div>Selected: {{ multipleValue }}</div>
         </div>
     `
   })

@@ -29,56 +29,11 @@ export const wikiDescriptionsTextarea: StorybookComponentsDescriptionItem = {
   render: `
     <DesignComponent v-bind="args" />
   `,
-  stories: [
-    {
-      id: 'TextareaBasic',
-      name: {
-        en: 'Basic Usage',
-        ru: 'Базовое использование'
-      },
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent label="Label" placeholder="Placeholder" />
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Filled</div>
-            <DesignComponent
-              label="Label"
-              value="Modern web development relies heavily on robust form components. The Textarea component offers a flexible solution for multi-line input, adapting to user content with auto-resizing capabilities. It integrates seamlessly with validation systems and provides visual feedback through states and helper text, ensuring a smooth user experience across different devices and screen sizes."
-            />
-          </div>
-        </div>
-      `
-    },
-    {
-      id: 'TextareaAutosize',
-      name: {
-        en: 'Autosize',
-        ru: 'Авто-размер'
-      },
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Autosize (default)</div>
-            <DesignComponent label="Autosize" autosize />
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Fixed Rows</div>
-            <DesignComponent label="5 Rows" :autosize="false" rows="5" />
-          </div>
-        </div>
-      `
-    }
-  ],
+  stories: [],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Textarea'} type={'textarea'}/>
-<Canvas of={Component.TextareaBasic}/>
-
 <StorybookDescriptions componentName={'Textarea'} type={'autosize'}/>
-<Canvas of={Component.TextareaAutosize}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'input'}/>

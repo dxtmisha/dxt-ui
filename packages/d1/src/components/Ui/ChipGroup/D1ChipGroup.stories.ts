@@ -59,13 +59,13 @@ export const ChipGroupVModel: Story = {
     components: { D1ChipGroup },
     setup() {
       return {
-        selectedValue: ref('option2'),
         multipleSelected: ref(['option1', 'option3'])
       }
     },
     template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
+            <span>Current value: {{ multipleSelected }}</span>
             <button class="wiki-storybook-button" @click="multipleSelected = ['option1', 'option2']">Select 1,2</button>
             <button class="wiki-storybook-button" @click="multipleSelected = ['option1', 'option2', 'option3']">Add 3</button>
             <button class="wiki-storybook-button wiki-storybook-button--warning" @click="multipleSelected = []">Clear all</button>

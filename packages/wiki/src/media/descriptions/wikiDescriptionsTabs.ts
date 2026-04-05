@@ -73,12 +73,12 @@ export const wikiDescriptionsTabs: StorybookComponentsDescriptionItem = {
       `,
       template: `
         <div class="wiki-storybook-flex-column">
-          <div class="wiki-storybook-flex">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Current value: {{ selected }}</span>
             <button class="wiki-storybook-button" @click="selected = 'tab1'">Tab 1</button>
             <button class="wiki-storybook-button" @click="selected = 'tab2'">Tab 2</button>
             <button class="wiki-storybook-button" @click="selected = 'tab3'">Tab 3</button>
           </div>
-          <div>Current value: {{ selected }}</div>
 
           <DesignComponent
             :tabs="[

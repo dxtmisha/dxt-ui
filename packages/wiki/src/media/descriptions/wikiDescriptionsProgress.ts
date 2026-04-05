@@ -159,21 +159,26 @@ export const wikiDescriptionsProgress: StorybookComponentsDescriptionItem = {
       }
       `,
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="onClick">Visible: {{ visible }}</button>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Standard delays (360/200)</div>
-            <DesignComponent :visible="visible" circular position="static" delay="360" delayHide="200" />
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Fast appearance (100/200)</div>
-            <DesignComponent :visible="visible" linear position="static" delay="100" delayHide="200" />
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">No delays (0/0)</div>
-            <DesignComponent :visible="visible" linear position="static" delay="0" delayHide="0" />
+
+          <div>
+            <div class="wiki-storybook-group">
+              <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Standard delays (360/200)</div>
+                <DesignComponent :visible="visible" circular position="static" delay="360" delayHide="200" />
+              </div>
+              <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Fast appearance (100/200)</div>
+                <DesignComponent :visible="visible" linear position="static" delay="100" delayHide="200" />
+              </div>
+              <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">No delays (0/0)</div>
+                <DesignComponent :visible="visible" linear position="static" delay="0" delayHide="0" />
+              </div>
+            </div>
           </div>
         </div>
       `

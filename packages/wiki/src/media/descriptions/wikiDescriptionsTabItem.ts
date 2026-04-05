@@ -39,23 +39,6 @@ export const wikiDescriptionsTabItem: StorybookComponentsDescriptionItem = {
   `,
   stories: [
     {
-      id: 'TabItemBasic',
-      name: {
-        en: 'Basic Usage',
-        ru: 'Базовое использование'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-            <DesignComponent label="Tab Item" />
-            <DesignComponent label="Tab Item" icon="home" />
-            <DesignComponent label="Messages" badge="5" />
-            <DesignComponent label="Updates" badge-dot />
-            <DesignComponent label="Selected Tab" selected />
-            <DesignComponent label="Disabled Tab" disabled />
-        </div>
-      `
-    },
-    {
       id: 'TabItemSkeleton',
       name: {
         en: 'Skeleton',
@@ -72,8 +55,6 @@ export const wikiDescriptionsTabItem: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'TabItem'} type={'tabItem'}/>
-<Canvas of={Component.TabItemBasic}/>
-
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.TabItemSkeleton}/>
     `,
