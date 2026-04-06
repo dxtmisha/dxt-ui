@@ -30,7 +30,8 @@ export const wikiMotionTransform: StorybookArgsToList = {
         en: 'Enable or disable show/hide animations',
         ru: 'Включение или отключение анимаций показа/скрытия'
       }
-    }
+    },
+    hide: true
   },
   'motionTransform.autoClose': {
     type: StorybookControl.boolean,
@@ -50,7 +51,8 @@ export const wikiMotionTransform: StorybookArgsToList = {
         en: 'Element id or selector to ignore in outside click checks',
         ru: 'Идентификатор элемента или селектор, который игнорируется при проверках клика снаружи'
       }
-    }
+    },
+    hide: true
   },
   'motionTransform.ignoreSelector': {
     type: StorybookControl.string,
@@ -60,7 +62,8 @@ export const wikiMotionTransform: StorybookArgsToList = {
         en: 'CSS selector to ignore in outside click checks',
         ru: 'CSS-селектор, который игнорируется при проверках клика снаружи'
       }
-    }
+    },
+    hide: true
   },
   'motionTransform.section': {
     type: StorybookControl.boolean,

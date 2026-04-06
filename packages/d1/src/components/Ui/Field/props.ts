@@ -44,6 +44,11 @@ export type FieldProps = FieldPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsField,
+  iconArrowLeft: 'keyboard_arrow_left',
+  iconArrowRight: 'keyboard_arrow_right',
+  iconPlus: 'add',
+  iconMinus: 'remove',
+  iconClose: 'close_small',
   ...{
     // :default [!] System label / Системная метка
     classic: true,

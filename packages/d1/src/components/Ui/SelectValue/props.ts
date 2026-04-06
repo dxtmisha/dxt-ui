@@ -20,6 +20,10 @@ export type SelectValueProps = SelectValuePropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsSelectValue,
+  chipAttrs: {
+    size: 'sm'
+  },
+  iconCancel: 'close_small',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

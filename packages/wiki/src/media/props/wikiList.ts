@@ -28,7 +28,8 @@ export const wikiList: StorybookArgsToList = {
         en: 'Additional attributes to apply to each list item element. Allows customization of HTML attributes for individual list items.',
         ru: 'Дополнительные атрибуты для применения к каждому элементу списка. Позволяет настраивать HTML-атрибуты для отдельных элементов списка.'
       }
-    }
+    },
+    hide: true
   },
   'list.itemGroupAttrs': {
     type: StorybookControl.object,
@@ -38,7 +39,8 @@ export const wikiList: StorybookArgsToList = {
         en: 'Additional attributes for group container elements in the list.',
         ru: 'Дополнительные атрибуты для элементов контейнера группы в списке.'
       }
-    }
+    },
+    hide: true
   },
   'list.itemManagementAttrs': {
     type: StorybookControl.object,
@@ -48,7 +50,8 @@ export const wikiList: StorybookArgsToList = {
         en: 'Additional attributes for management control elements in the list.',
         ru: 'Дополнительные атрибуты для элементов управления в списке.'
       }
-    }
+    },
+    hide: true
   },
   'list.itemMenuAttrs': {
     type: StorybookControl.object,
@@ -58,7 +61,8 @@ export const wikiList: StorybookArgsToList = {
         en: 'Additional attributes for menu container elements in the list.',
         ru: 'Дополнительные атрибуты для элементов контейнера меню в списке.'
       }
-    }
+    },
+    hide: true
   },
   'list.list': {
     type: StorybookControl.array,

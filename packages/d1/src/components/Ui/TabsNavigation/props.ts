@@ -22,6 +22,7 @@ export type TabsNavigationProps = TabsNavigationPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsTabsNavigation,
+  divider: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

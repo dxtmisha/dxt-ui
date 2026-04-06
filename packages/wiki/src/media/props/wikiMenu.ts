@@ -21,7 +21,8 @@ export const wikiMenu: StorybookArgsToList = {
         en: 'URL or function to load menu items asynchronously. Function may return a promise.',
         ru: 'URL или функция для асинхронной загрузки пунктов меню. Функция может возвращать промис.'
       }
-    }
+    },
+    hide: true
   },
   'menu.cache': {
     type: StorybookControl.boolean,
@@ -31,7 +32,8 @@ export const wikiMenu: StorybookArgsToList = {
         en: 'Enables caching of loaded menu data to reduce network requests.',
         ru: 'Включает кэширование загруженных данных меню для уменьшения сетевых запросов.'
       }
-    }
+    },
+    hide: true
   },
   'menu.isSelectedByValue': {
     type: StorybookControl.boolean,
@@ -41,7 +43,8 @@ export const wikiMenu: StorybookArgsToList = {
         en: 'Enables v-model support for selected value with two-way data binding.',
         ru: 'Включает поддержку v-model для выбранного значения с двусторонней привязкой данных.'
       }
-    }
+    },
+    hide: true
   },
   'menu.itemAttrs': {
     type: StorybookControl.object,
@@ -51,7 +54,8 @@ export const wikiMenu: StorybookArgsToList = {
         en: 'Additional attributes applied to each menu item.',
         ru: 'Дополнительные атрибуты, применяемые к каждому пункту меню.'
       }
-    }
+    },
+    hide: true
   },
   'menu.list': wikiList['list.list'] as StorybookArgsToItem,
   'menu.listAttrs': {
@@ -62,7 +66,8 @@ export const wikiMenu: StorybookArgsToList = {
         en: 'Additional attributes applied to the menu list container.',
         ru: 'Дополнительные атрибуты, применяемые к контейнеру списка меню.'
       }
-    }
+    },
+    hide: true
   },
   'menu.liteThreshold': wikiList['list.liteThreshold'] as StorybookArgsToItem,
   'menu.request': {

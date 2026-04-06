@@ -39,7 +39,8 @@ export const wikiMotionAxis: StorybookArgsToList = {
         en: 'Animation direction',
         ru: 'Направление анимации'
       }
-    }
+    },
+    hide: true
   },
   'motionAxis.inDomSlide': {
     type: StorybookControl.object,

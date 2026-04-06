@@ -18,7 +18,8 @@ export const wikiTabsNavigation: StorybookArgsToList = {
         en: 'Attributes for each tab item',
         ru: 'Атрибуты для каждого элемента вкладки'
       }
-    }
+    },
+    hide: true
   },
   'tabsNavigation.list': {
     type: StorybookControl.object,

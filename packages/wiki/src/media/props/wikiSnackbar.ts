@@ -18,7 +18,8 @@ export const wikiSnackbar: StorybookArgsToList = {
         en: 'If enabled, multiple notifications can be displayed simultaneously',
         ru: 'Если включено, может отображаться несколько уведомлений одновременно'
       }
-    }
+    },
+    hide: true
   },
   'snackbar.delay': {
     type: StorybookControl.number,
@@ -28,7 +29,8 @@ export const wikiSnackbar: StorybookArgsToList = {
         en: 'Default display duration for notifications in milliseconds',
         ru: 'Длительность отображения уведомлений по умолчанию в миллисекундах'
       }
-    }
+    },
+    hide: true
   },
   'snackbar.full': {
     type: StorybookControl.boolean,
@@ -38,7 +40,8 @@ export const wikiSnackbar: StorybookArgsToList = {
         en: 'Expands notifications to full width, typically used on mobile devices',
         ru: 'Растягивает уведомления на всю ширину, обычно используется на мобильных устройствах'
       }
-    }
+    },
+    hide: true
   },
   'snackbar.origin': {
     type: StorybookControl.select,
@@ -49,6 +52,7 @@ export const wikiSnackbar: StorybookArgsToList = {
         ru: 'Направление, с которого начинается анимация появления уведомления'
       },
       options: ['topToBottom', 'bottomToTop', 'rightToLeft', 'leftToRight']
-    }
+    },
+    hide: true
   }
 }

@@ -235,6 +235,7 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
 Versatile high-performance container orchestration system for Modals, Popups, Dropdowns, and Cards. Automatically manages complex DOM interactions including z-index hierarchy, focus trapping, teleportation, and body scroll locking.
 Features an intelligent multi-axis positioning engine (vertical, horizontal, or overlay) with automated viewport collision detection and obstacle avoidance. Includes a full suite of lifecycle hooks, advanced animation management, and integrated support for Scrollbar and Image components within its content area.
 Controlled via the v-model:open prop and utilizing the #control, #title, #default, and #footer slots for modular layout. Use as a foundational building block for any overlaid or contextual interface requirement that exceeds the logic of standard Modal or Menu components.
-    `
+    `,
+    hide: true
   }
 }

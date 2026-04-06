@@ -20,7 +20,8 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Delay before showing the progress indicator in milliseconds',
         ru: 'Задержка перед показом индикатора прогресса в миллисекундах'
       }
-    }
+    },
+    hide: true
   },
   'progress.delayHide': {
     type: StorybookControl.number,
@@ -31,7 +32,8 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Delay before hiding the progress indicator in milliseconds',
         ru: 'Задержка перед скрытием индикатора прогресса в миллисекундах'
       }
-    }
+    },
+    hide: true
   },
   'progress.point': {
     type: StorybookControl.boolean,

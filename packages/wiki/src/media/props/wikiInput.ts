@@ -18,7 +18,8 @@ export const wikiInput: StorybookArgsToList = {
         en: 'ID of a datalist element that contains predefined autocomplete options for the input field',
         ru: 'ID элемента datalist, содержащего предопределённые варианты для автозаполнения поля ввода'
       }
-    }
+    },
+    hide: true
   },
   'input.type': {
     type: StorybookControl.select,

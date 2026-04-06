@@ -19,7 +19,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Identifies the element(s) that describe the object',
         ru: 'Определяет элемент(ы), которые описывают объект'
       }
-    }
+    },
+    hide: true
   },
   ariaHaspopup: {
     type: StorybookControl.text,
@@ -30,7 +31,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Indicates the availability and type of interactive popup element',
         ru: 'Указывает на наличие и тип интерактивного всплывающего элемента'
       }
-    }
+    },
+    hide: true
   },
   ariaLabel: {
     type: StorybookControl.text,
@@ -53,7 +55,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Identifies the element(s) that label the current element',
         ru: 'Определяет элемент(ы), которые обозначают текущий элемент'
       }
-    }
+    },
+    hide: true
   },
   ariaLive: {
     type: StorybookControl.select,
@@ -65,7 +68,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Indicates that an element will be updated, and describes the types of updates',
         ru: 'Указывает, что элемент будет обновляться, и описывает типы обновлений'
       }
-    }
+    },
+    hide: true
   },
   ariaMultiselectable: {
     type: StorybookControl.boolean,
@@ -75,7 +79,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Indicates that the user may select more than one item',
         ru: 'Указывает, что пользователь может выбрать более одного элемента'
       }
-    }
+    },
+    hide: true
   },
   polite: {
     type: StorybookControl.boolean,
@@ -86,7 +91,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Sets aria-live to "polite" for non-intrusive screen reader announcements',
         ru: 'Устанавливает aria-live в "polite" для ненавязчивых объявлений программы чтения с экрана'
       }
-    }
+    },
+    hide: true
   },
   role: {
     type: StorybookControl.text,
@@ -109,7 +115,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Defines the role of the item element for accessibility',
         ru: 'Определяет роль элемента item для доступности'
       }
-    }
+    },
+    hide: true
   },
   roleList: {
     type: StorybookControl.text,
@@ -120,7 +127,8 @@ export const wikiAria: StorybookArgsToList = {
         en: 'Defines the role of the list element for accessibility',
         ru: 'Определяет роль элемента list для доступности'
       }
-    }
+    },
+    hide: true
   },
   tabindex: {
     type: StorybookControl.number,

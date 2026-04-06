@@ -18,7 +18,8 @@ export const wikiArrowInclude: StorybookArgsToList = {
         en: 'Additional attributes for the Arrow component',
         ru: 'Дополнительные атрибуты для компонента Arrow'
       }
-    }
+    },
+    hide: true
   },
   arrowPosition: {
     type: StorybookControl.select,
@@ -30,7 +31,8 @@ export const wikiArrowInclude: StorybookArgsToList = {
       },
       options: ['auto', 'top', 'bottom', 'left', 'right'],
       defaultValue: 'auto'
-    }
+    },
+    hide: true
   },
   arrowShow: {
     type: StorybookControl.boolean,
@@ -40,6 +42,7 @@ export const wikiArrowInclude: StorybookArgsToList = {
         en: 'Show arrow',
         ru: 'Показать стрелку'
       }
-    }
+    },
+    hide: true
   }
 }

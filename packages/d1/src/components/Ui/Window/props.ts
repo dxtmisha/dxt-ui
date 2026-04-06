@@ -43,6 +43,7 @@ export type WindowProps = WindowPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsWindow,
+  iconClose: 'close',
   ...{
     // :default [!] System label / Системная метка
     width: 'md',

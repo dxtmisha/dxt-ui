@@ -91,6 +91,7 @@ export const wikiDescriptionsListMenu: StorybookComponentsDescriptionItem = {
 Specialized wrapper component for creating dropdown menus or nested navigation trees. Utilizes dynamic window positioning to display a list of actions or sub-options relative to a trigger element.
 Features an adaptive menu preset managing visibility, positioning (popover vs inline), and interaction modes. Exposes standard binds in the #head slot to automate trigger setup and ensures smooth animations during state transitions.
 Controlled via the windowAttrs prop for positioning and utilizes #head and #list slots for trigger and content. Use for context menus, account settings dropdowns, or multi-level primary navigation links.
-    `
+    `,
+    hide: true
   }
 }

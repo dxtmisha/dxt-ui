@@ -29,6 +29,8 @@ export type CheckboxProps = CheckboxPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsCheckbox,
+  iconCheckbox: 'check',
+  iconIndeterminate: 'remove',
   ...{
     // :default [!] System label / Системная метка
     block: true,

@@ -60,7 +60,8 @@ export const wikiListItem: StorybookArgsToList = {
         en: 'Identifier of the parent element in hierarchical list structure. Used for establishing parent-child relationships between list items.',
         ru: 'Идентификатор родительского элемента в иерархической структуре списка. Используется для установления связей родитель-ребенок между элементами списка.'
       }
-    }
+    },
+    hide: true
   },
   'listItem.search': {
     type: StorybookControl.string,
@@ -71,7 +72,8 @@ export const wikiListItem: StorybookArgsToList = {
         en: 'Technical property for internal search functionality',
         ru: 'Техническое свойство для внутренней функциональности поиска'
       }
-    }
+    },
+    hide: true
   },
   'listItem.selectedChild': {
     type: StorybookControl.boolean,
@@ -82,7 +84,7 @@ export const wikiListItem: StorybookArgsToList = {
         ru: 'Указывает, выбран ли какой-либо дочерний элемент данного элемента списка'
       }
     },
-    isDemo: true
+    hide: true
   },
   'listItem.type': {
     type: StorybookControl.string,
@@ -93,6 +95,7 @@ export const wikiListItem: StorybookArgsToList = {
         en: 'Technical property for internal type classification',
         ru: 'Техническое свойство для внутренней классификации типов'
       }
-    }
+    },
+    hide: true
   }
 }

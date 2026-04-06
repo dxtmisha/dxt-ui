@@ -18,6 +18,7 @@ export const wikiPropsTextarea: StorybookArgsToList = {
         en: 'Specifies how the text in a text area is to be wrapped when submitted in a form',
         ru: 'Указывает, как текст в текстовой области должен переноситься при отправке формы'
       }
-    }
+    },
+    hide: true
   }
 }

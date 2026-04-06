@@ -45,7 +45,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for the left arrow',
         ru: 'Задает иконку стрелки влево'
       }
-    }
+    },
+    hide: true
   },
   iconArrowRight: {
     type: StorybookControl.string,
@@ -55,7 +56,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for right arrow',
         ru: 'Задает иконку стрелки вправо'
       }
-    }
+    },
+    hide: true
   },
   iconAttrs: {
     type: StorybookControl.object,
@@ -87,7 +89,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Sets icon for cancel/clear action',
         ru: 'Задает иконку для действия отмены/очистки'
       }
-    }
+    },
+    hide: true
   },
   iconCheckbox: {
     type: StorybookControl.string,

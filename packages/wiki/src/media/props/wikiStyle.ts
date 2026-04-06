@@ -180,7 +180,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets the alignment of elements within the horizontal scroll container',
         ru: 'Задает выравнивание элементов внутри контейнера горизонтальной прокрутки'
       }
-    }
+    },
+    hide: true
   },
   imagePosition: {
     type: StorybookControl.select,

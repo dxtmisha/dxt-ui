@@ -26,6 +26,9 @@ export type DialogProps = DialogPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsDialog,
+  buttonClose: {
+    outline: true
+  },
   ...{
     // :default [!] System label / Системная метка
     imagePosition: 'top',

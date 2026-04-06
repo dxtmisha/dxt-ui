@@ -22,6 +22,7 @@ export type SnackbarItemProps = SnackbarItemPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsSnackbarItem,
+  iconClose: 'close',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

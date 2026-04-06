@@ -93,6 +93,7 @@ export const wikiDescriptionsListGroup: StorybookComponentsDescriptionItem = {
 Structural component for grouping related list items into collapsible/expandable hierarchies. Manages the visual nesting and visibility of child elements, providing organized categorization within dense lists.
 Features smooth height animations via MotionTransform and integrated header functionality with automatic arrow rotation. Exposes localized bindings in the #head slot to correctly link triggers with their collapsible content.
 Controlled via the open prop and utilizes #head and #list slots for content distribution. Use for navigation submenus, categorized data lists, or accordion-style expanding rows.
-    `
+    `,
+    hide: true
   }
 }

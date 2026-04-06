@@ -60,7 +60,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Component to be rendered',
         ru: 'Компонент для рендеринга'
       }
-    }
+    },
+    hide: true
   },
   componentProps: {
     type: StorybookControl.object,
@@ -71,7 +72,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Properties for the rendered component',
         ru: 'Свойства для рендеримого компонента'
       }
-    }
+    },
+    hide: true
   },
   description: {
     type: StorybookControl.string,

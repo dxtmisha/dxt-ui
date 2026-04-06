@@ -233,6 +233,7 @@ export const wikiDescriptionsMask: StorybookComponentsDescriptionItem = {
 Low-level input masking utility for controlling and formatting text, numeric, and date/time data entry. Intercepts input events to enforce strict patterns, automatically inserting literal characters and validating each keystroke against allowed rules.
 Features support for single or multiple patterns (auto-selection), specialized input types (currency, number-format), and locale-aware date/time validation. Includes granular control over allowed characters (match), decimal fractions, and value range constraints (min/max).
 Integrated primarily within the Input component; should generally not be used as a standalone element. Controlled via mask and type props, providing a foundation for phone numbers, credit card fields, and international financial inputs.
-    `
+    `,
+    hide: true
   }
 }

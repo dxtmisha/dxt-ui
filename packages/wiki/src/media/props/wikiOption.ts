@@ -42,7 +42,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Sets the axis direction for component layout or scrolling',
         ru: 'Задает направление оси для раскладки или прокрутки компонента'
       }
-    }
+    },
+    hide: true
   },
   cancel: {
     type: StorybookControl.select,
@@ -181,7 +182,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Removes borders and rounded corners to render the horizontal scroll component flush with its container',
         ru: 'Убирает границы и скругления для отображения компонента горизонтальной прокрутки вплотную к контейнеру'
       }
-    }
+    },
+    hide: true
   },
   horizontal: {
     type: StorybookControl.select,
