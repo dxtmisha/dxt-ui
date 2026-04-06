@@ -126,6 +126,8 @@ var E = class {
 	"none"
 ] }, j = {
 	...O,
+	iconBack: "arrow_back",
+	iconClose: "close",
 	paddingByIndent: !0
 }, M = /* @__PURE__ */ p({
 	name: "D1Bars",

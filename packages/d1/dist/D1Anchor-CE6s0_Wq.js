@@ -131,7 +131,12 @@ var x = class {
 			...t.current("page")
 		};
 	}
-}, O = { ...E }, k = /* @__PURE__ */ u({
+}, O = {
+	...E,
+	iconLink: "link",
+	iconTag: "tag",
+	iconContentCopy: "content_copy"
+}, k = /* @__PURE__ */ u({
 	name: "D1Anchor",
 	__name: "D1Anchor",
 	props: /* @__PURE__ */ f({

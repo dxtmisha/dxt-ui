@@ -29,7 +29,8 @@
     "dxt-ui": "dxt-ui",
     "dxt-wiki-storm": "dxt-wiki-storm",
     "dxt-types": "dxt-types",
-    "prepublishOnly": "npm run dxt-ui && npm run build && npm run dxt-wiki-storm"
+    "prepublishOnly": "npm run dxt-ui && npm run build && npm run dxt-wiki-storm",
+    "publish": "npm publish --access public"
   },
   "files": [
     "dist/",

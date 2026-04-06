@@ -4,7 +4,7 @@ import { t as n } from "./AriaStaticInclude-CS1hPGyK-CzM-g2JN.js";
 import { i as r } from "./WindowClassesInclude-zm-ITw5d-QVDLqfAL.js";
 import { t as i } from "./ListItem-BATm6Pnx.js";
 import { t as a } from "./ListGroup-DdTr-Sla.js";
-import { t as o } from "./ListMenu-BhyofHcV.js";
+import { t as o } from "./ListMenu-CnGp8MQ0.js";
 import { computed as s, createBlock as c, defineComponent as l, h as u, mergeDefaults as d, nextTick as f, onMounted as p, onUnmounted as m, openBlock as h, ref as g, toRef as _, unref as v, watch as y } from "vue";
 import { DesignConstructorAbstract as b, EventItem as x, ListDataRef as S, goScroll as C, inArray as w, isDomRuntime as T, isFilled as E, isObject as D, isSelected as O, toBinds as k } from "@dxtmisha/functional";
 //#region ../constructor/dist/list.js
@@ -456,6 +456,8 @@ var A = class {
 	}
 }, z = { axis: ["x", "y"] }, B = {
 	...L,
+	iconArrowDown: "keyboard_arrow_down",
+	iconArrowRight: "keyboard_arrow_right",
 	axis: "y"
 }, V = /* @__PURE__ */ l({
 	name: "D1List",

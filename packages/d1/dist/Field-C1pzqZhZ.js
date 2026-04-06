@@ -321,6 +321,11 @@ var B = class {
 	]
 }, q = {
 	...W,
+	iconArrowLeft: "keyboard_arrow_left",
+	iconArrowRight: "keyboard_arrow_right",
+	iconPlus: "add",
+	iconMinus: "remove",
+	iconClose: "close_small",
 	classic: !0,
 	arrowAlign: "right",
 	cancel: "auto",

@@ -836,6 +836,7 @@ var L = -1, te = class {
 	]
 }, $ = {
 	...X,
+	iconClose: "close",
 	width: "md",
 	axis: "y",
 	imagePosition: "top",

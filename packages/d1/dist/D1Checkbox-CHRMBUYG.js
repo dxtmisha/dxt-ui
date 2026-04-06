@@ -128,6 +128,8 @@ var j = class {
 	]
 }, I = {
 	...N,
+	iconCheckbox: "check",
+	iconIndeterminate: "remove",
 	block: !0,
 	itemCenter: !0
 }, L = /* @__PURE__ */ S({

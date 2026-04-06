@@ -75,6 +75,7 @@ var _ = class {
 	}
 }, b = {
 	...v,
+	iconArrowDown: "keyboard_arrow_down",
 	divider: !0
 }, x = /* @__PURE__ */ c({
 	name: "D1Accordion",

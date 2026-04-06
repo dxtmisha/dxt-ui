@@ -217,7 +217,10 @@ var O = class {
 			class: (e = this.classes) == null ? void 0 : e.value.main
 		});
 	}
-}, L = { ...F }, R = /* @__PURE__ */ l({
+}, L = {
+	...F,
+	divider: !0
+}, R = /* @__PURE__ */ l({
 	name: "D1TabsNavigation",
 	__name: "D1TabsNavigation",
 	props: /* @__PURE__ */ u({

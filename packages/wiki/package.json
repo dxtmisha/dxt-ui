@@ -25,6 +25,9 @@
   "bugs": {
     "url": "https://github.com/dxtmisha/dxt-ui/issues"
   },
+  "scripts": {
+    "publish": "npm publish --access public"
+  },
   "files": [
     "src",
     "README.md",

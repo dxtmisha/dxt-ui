@@ -77,7 +77,11 @@ var h = class {
 			class: (e = this.classes) == null ? void 0 : e.value.main
 		}, this.renderData());
 	}
-}, v = { ...g }, y = /* @__PURE__ */ s({
+}, v = {
+	...g,
+	chipAttrs: { size: "sm" },
+	iconCancel: "close_small"
+}, y = /* @__PURE__ */ s({
 	name: "D1SelectValue",
 	__name: "D1SelectValue",
 	props: /* @__PURE__ */ l({

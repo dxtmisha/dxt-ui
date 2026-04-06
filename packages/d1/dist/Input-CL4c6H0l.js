@@ -2,7 +2,7 @@ import { t as e } from "./defineProperty-hmGKPWdq-iNw-og8N.js";
 import { t } from "./TextInclude-OwyVCAbS-CAlHZ-54.js";
 import { a as n, i as r, n as i, r as a, t as o } from "./FieldInputCheckInclude-czZ02ymY-PDnVDF0p.js";
 import { a as s, i as c, n as l, o as u, r as d, s as f, t as p } from "./FieldEventInclude-DLX__9aJ-CBJRcoLp.js";
-import { n as m, t as h } from "./Field-E8ulmYHO.js";
+import { n as m, t as h } from "./Field-C1pzqZhZ.js";
 import { n as g, t as _ } from "./Mask-Ce9fhXQA.js";
 import { computed as v, createBlock as y, defineComponent as b, h as x, mergeDefaults as S, openBlock as C, unref as w } from "vue";
 import { DesignConstructorAbstract as T, anyToString as E, isObject as D, toBinds as O, toNumber as k } from "@dxtmisha/functional";
@@ -169,7 +169,11 @@ var A = class {
 			validationMessage: this.item.validation.message.value
 		});
 	}
-}, I = { ...P }, L = /* @__PURE__ */ b({
+}, I = {
+	...P,
+	iconVisibility: "visibility",
+	iconVisibilityOff: "visibility_off"
+}, L = /* @__PURE__ */ b({
 	name: "D1Input",
 	__name: "D1Input",
 	props: /* @__PURE__ */ S({

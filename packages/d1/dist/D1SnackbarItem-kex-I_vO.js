@@ -5,7 +5,7 @@ import { t as i } from "./LabelInclude-DoZ7EUYO-lGSFdcB1.js";
 import { t as a } from "./DescriptionInclude-B_Xf_j3l-DKfEbhTV.js";
 import { t as o } from "./TextInclude-OwyVCAbS-CAlHZ-54.js";
 import { t as s } from "./ActionsInclude-BzyGXlK7-COdQqPHA.js";
-import { t as c } from "./Actions-COAAvHzp.js";
+import { t as c } from "./Actions-CqJYI_bN.js";
 import { t as l } from "./Button-B1Ed8ZtL.js";
 import { t as u } from "./Icon-BClQj0Xi.js";
 import { computed as d, createBlock as f, defineComponent as p, h as m, mergeDefaults as h, openBlock as g, unref as _ } from "vue";
@@ -156,7 +156,10 @@ var C = class {
 	"stone",
 	"black",
 	"white"
-] }, O = { ...T }, k = /* @__PURE__ */ p({
+] }, O = {
+	...T,
+	iconClose: "close"
+}, k = /* @__PURE__ */ p({
 	name: "D1SnackbarItem",
 	__name: "D1SnackbarItem",
 	props: /* @__PURE__ */ h({

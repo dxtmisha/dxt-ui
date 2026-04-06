@@ -28,7 +28,8 @@
     "url": "https://github.com/dxtmisha/dxt-ui/issues"
   },
   "scripts": {
-    "library": "dxt-library"
+    "library": "dxt-library",
+    "publish": "npm publish --access public"
   },
   "files": [
     "bin/",

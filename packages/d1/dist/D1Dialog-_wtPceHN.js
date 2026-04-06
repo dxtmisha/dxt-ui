@@ -4,11 +4,11 @@ import { t as n } from "./DescriptionInclude-B_Xf_j3l-DKfEbhTV.js";
 import { t as r } from "./IconInclude-BhzGfa3o-CvSCVAc2.js";
 import { t as i } from "./TextInclude-OwyVCAbS-CAlHZ-54.js";
 import { r as a, t as o } from "./ModalDesignAbstract-BaVdtb1N-CW8RThHA.js";
-import { t as s } from "./Actions-COAAvHzp.js";
+import { t as s } from "./Actions-CqJYI_bN.js";
 import { t as c } from "./Icon-BClQj0Xi.js";
 import { i as l } from "./WindowClassesInclude-zm-ITw5d-QVDLqfAL.js";
-import { t as u } from "./Bars-CnTE-Uzk.js";
-import { t as d } from "./Window-CSPRlXz9.js";
+import { t as u } from "./Bars-Bnraxu8E.js";
+import { t as d } from "./Window-DK8KkOOD.js";
 import { computed as f, createBlock as p, defineComponent as m, h, mergeDefaults as g, openBlock as _, readonly as v, unref as y } from "vue";
 import { getBind as b, inArray as x, toBinds as S } from "@dxtmisha/functional";
 //#region ../constructor/dist/dialog.js
@@ -99,6 +99,7 @@ var C = class extends o {
 	]
 }, D = {
 	...w,
+	buttonClose: { outline: !0 },
 	imagePosition: "top",
 	width: "md"
 }, O = /* @__PURE__ */ m({

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.10.2",
+  "version": "1.10.3",
   "type": "module",
   "description": "A comprehensive library of utilities, base classes, and Vue 3 composables for reactive web development. Extends @dxtmisha/functional-basic with Composition API.",
   "keywords": [

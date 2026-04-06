@@ -1,4 +1,4 @@
-import { t as e } from "./D1Checkbox-BzOn2rnq.js";
+import { t as e } from "./D1Checkbox-CHRMBUYG.js";
 //#region src/components/Ui/Checkbox/index.ts
 var t = e;
 //#endregion

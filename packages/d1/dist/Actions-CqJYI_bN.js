@@ -87,6 +87,10 @@ var p = class {
 	]
 }, _ = {
 	...m,
+	buttonSecondaryAttrs: {
+		text: !0,
+		inverse: !0
+	},
 	align: "right",
 	paddingByIndent: !0
 }, v = /* @__PURE__ */ a({

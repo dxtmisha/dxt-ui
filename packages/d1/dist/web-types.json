@@ -52,6 +52,7 @@
             {
               "name": "icon-arrow-down",
               "description": "Sets icon for down arrow",
+              "default": "keyboard_arrow_down",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -687,6 +688,7 @@
             {
               "name": "icon-content-copy",
               "description": "Sets icon for copy content action",
+              "default": "content_copy",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -695,6 +697,7 @@
             {
               "name": "icon-link",
               "description": "Sets icon for a link",
+              "default": "link",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -703,6 +706,7 @@
             {
               "name": "icon-tag",
               "description": "Sets icon for tag",
+              "default": "tag",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -1117,6 +1121,7 @@
             {
               "name": "icon-back",
               "description": "Sets icon for the back button",
+              "default": "arrow_back",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -1125,6 +1130,7 @@
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
+              "default": "close",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -2391,6 +2397,7 @@
             {
               "name": "icon-checkbox",
               "description": "Sets icon for checkbox",
+              "default": "check",
               "value": {
                 "kind": "expression",
                 "type": "string | ConstrBind<ImagePropsBasic>"
@@ -2399,6 +2406,7 @@
             {
               "name": "icon-indeterminate",
               "description": "Sets icon for indeterminate state",
+              "default": "remove",
               "value": {
                 "kind": "expression",
                 "type": "string | ConstrBind<ImagePropsBasic>"
@@ -3913,6 +3921,7 @@
             {
               "name": "icon-arrow-left",
               "description": "Sets icon for the left arrow",
+              "default": "keyboard_arrow_left",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -3921,6 +3930,7 @@
             {
               "name": "icon-arrow-right",
               "description": "Sets icon for right arrow",
+              "default": "keyboard_arrow_right",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -3929,6 +3939,7 @@
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
+              "default": "close_small",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -3955,6 +3966,7 @@
             {
               "name": "icon-minus",
               "description": "Sets icon for decrement / minus action",
+              "default": "remove",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -3972,6 +3984,7 @@
             {
               "name": "icon-plus",
               "description": "Sets icon for increment / plus action",
+              "default": "add",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -5743,6 +5756,7 @@
             {
               "name": "icon-visibility",
               "description": "Sets icon for visibility on state (show password)",
+              "default": "visibility",
               "value": {
                 "kind": "expression",
                 "type": "string"
@@ -5751,6 +5765,7 @@
             {
               "name": "icon-visibility-off",
               "description": "Sets icon for visibility off state (hide password)",
+              "default": "visibility_off",
               "value": {
                 "kind": "expression",
                 "type": "string"
@@ -6350,6 +6365,7 @@
             {
               "name": "icon-arrow-down",
               "description": "Sets icon for down arrow",
+              "default": "keyboard_arrow_down",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -6358,6 +6374,7 @@
             {
               "name": "icon-arrow-right",
               "description": "Sets icon for right arrow",
+              "default": "keyboard_arrow_right",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -9442,6 +9459,7 @@
             {
               "name": "icon-arrow-down",
               "description": "Sets icon for down arrow",
+              "default": "keyboard_arrow_down",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -9477,6 +9495,7 @@
             {
               "name": "icon-search",
               "description": "Sets icon for search action",
+              "default": "search",
               "value": {
                 "kind": "expression",
                 "type": "string | File"
@@ -10094,6 +10113,7 @@
             {
               "name": "icon-cancel",
               "description": "Sets icon for cancel/clear action",
+              "default": "close_small",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -10403,6 +10423,7 @@
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
+              "default": "close",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -11062,7 +11083,7 @@
             {
               "name": "divider",
               "description": "Enables visual divider between elements",
-              "default": "false",
+              "default": "true",
               "value": {
                 "kind": "expression",
                 "type": "boolean"
@@ -12183,6 +12204,7 @@
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
+              "default": "close",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"

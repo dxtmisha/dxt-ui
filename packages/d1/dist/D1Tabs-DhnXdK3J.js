@@ -3,7 +3,7 @@ import { r as t } from "./D1Icon-Cb8myFDE.js";
 import { t as n } from "./ModelInclude-D8LkrhPp-CIue56kI.js";
 import { t as r } from "./AriaStaticInclude-CS1hPGyK-CzM-g2JN.js";
 import { n as i, t as a } from "./MotionAxis-pMc3mEBD.js";
-import { n as o, t as s } from "./TabsNavigation-Cz5JlhpW.js";
+import { n as o, t as s } from "./TabsNavigation-C9yDsqHB.js";
 import { computed as c, createBlock as l, defineComponent as u, h as d, mergeDefaults as f, openBlock as p, ref as m, unref as h, watch as g } from "vue";
 import { DesignConstructorAbstract as _, isSelected as v } from "@dxtmisha/functional";
 //#region ../constructor/dist/tabs.js

@@ -28,8 +28,8 @@ declare const __VLS_component: DefineComponent<DialogProps, {
     barsBack: (value: EventClickValue) => any;
     actions: (event: MouseEvent, value: EventClickValue) => any;
     actionsLite: (value: EventClickValue) => any;
-    ok: () => any;
     close: () => any;
+    ok: () => any;
 }, string, PublicProps, Readonly<DialogProps> & Readonly<{
     onWindow?: ((options: WindowEmitOptions) => any) | undefined;
     onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
@@ -37,8 +37,8 @@ declare const __VLS_component: DefineComponent<DialogProps, {
     onBarsBack?: ((value: EventClickValue) => any) | undefined;
     onActions?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onActionsLite?: ((value: EventClickValue) => any) | undefined;
-    onOk?: (() => any) | undefined;
     onClose?: (() => any) | undefined;
+    onOk?: (() => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
 export default _default;

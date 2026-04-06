@@ -2,10 +2,10 @@ import { t as e } from "./defineProperty-hmGKPWdq-iNw-og8N.js";
 import { t } from "./AriaStaticInclude-CS1hPGyK-CzM-g2JN.js";
 import { i as n, t as r } from "./FieldInputCheckInclude-czZ02ymY-PDnVDF0p.js";
 import { a as i, i as a, n as o, r as s, s as c } from "./FieldEventInclude-DLX__9aJ-CBJRcoLp.js";
-import { n as l, t as u } from "./Field-E8ulmYHO.js";
-import { t as d } from "./Input-D-hSVDRE.js";
-import { n as f, t as p } from "./Menu-BywnG9oM.js";
-import { t as m } from "./SelectValue-PyGp24Cl.js";
+import { n as l, t as u } from "./Field-C1pzqZhZ.js";
+import { t as d } from "./Input-CL4c6H0l.js";
+import { n as f, t as p } from "./Menu-D8xNCKcN.js";
+import { t as m } from "./SelectValue-lfQoqPSC.js";
 import { computed as h, createBlock as g, defineComponent as _, h as v, mergeDefaults as y, openBlock as b, ref as x, unref as S } from "vue";
 import { DesignConstructorAbstract as C, executeFunction as w, isFilled as T, toBinds as E } from "@dxtmisha/functional";
 //#region ../constructor/dist/select.js
@@ -161,7 +161,13 @@ var D = class {
 			validationMessage: this.item.validation.message.value
 		});
 	}
-}, M = { ...A }, N = /* @__PURE__ */ _({
+}, M = {
+	...A,
+	iconArrowDown: "keyboard_arrow_down",
+	iconSearch: "search",
+	menuAttrs: { itemAttrs: { dense: !0 } },
+	inputSearchAttrs: { fieldAttrs: { size: "sm" } }
+}, N = /* @__PURE__ */ _({
 	name: "D1Select",
 	__name: "D1Select",
 	props: /* @__PURE__ */ y({
