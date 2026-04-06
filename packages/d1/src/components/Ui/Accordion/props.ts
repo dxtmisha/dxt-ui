@@ -21,6 +21,7 @@ export type AccordionProps = AccordionPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsAccordion,
+  iconArrowDown: 'keyboard_arrow_down',
   ...{
     // :default [!] System label / Системная метка
     divider: true

@@ -53,7 +53,8 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Sorts the element to the beginning',
         ru: 'Сортирует элемент в начало'
       }
-    }
+    },
+    hide: true
   },
   'icon.end': {
     type: StorybookControl.boolean,
@@ -63,7 +64,8 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Sorts the element to the end',
         ru: 'Сортирует элемент в конец'
       }
-    }
+    },
+    hide: true
   },
   'icon.high': {
     type: StorybookControl.boolean,
@@ -73,7 +75,8 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Raises the element above others',
         ru: 'Поднимает элемент над другими'
       }
-    }
+    },
+    hide: true
   },
   'icon.rect': {
     type: StorybookControl.boolean,
@@ -126,7 +129,8 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Defines the animation type for hide/show transitions',
         ru: 'Определяет тип анимации при скрытии/появлении'
       }
-    }
+    },
+    hide: true
   },
   'icon.animationShow': {
     type: StorybookControl.boolean,
@@ -136,6 +140,7 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Enables animation on first appearance',
         ru: 'Включает анимацию при первом появлении'
       }
-    }
+    },
+    hide: true
   }
 }

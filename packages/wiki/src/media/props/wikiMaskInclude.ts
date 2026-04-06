@@ -19,7 +19,8 @@ export const wikiMaskInclude: StorybookArgsToList = {
         en: 'Input mask pattern or mask configuration object',
         ru: 'Паттерн маски ввода или объект конфигурации маски'
       }
-    }
+    },
+    hide: true
   },
   maskAttrs: {
     type: StorybookControl.object,
@@ -29,7 +30,8 @@ export const wikiMaskInclude: StorybookArgsToList = {
         en: 'Additional attributes for the mask component',
         ru: 'Дополнительные атрибуты для компонента маски'
       }
-    }
+    },
+    hide: true
   },
   maskNone: {
     type: StorybookControl.boolean,
@@ -39,7 +41,8 @@ export const wikiMaskInclude: StorybookArgsToList = {
         en: 'Disables the mask functionality',
         ru: 'Отключает функциональность маски'
       }
-    }
+    },
+    hide: true
   },
   maskVisible: {
     type: StorybookControl.boolean,
@@ -49,6 +52,7 @@ export const wikiMaskInclude: StorybookArgsToList = {
         en: 'Controls visibility of mask placeholder characters',
         ru: 'Управляет видимостью символов-заполнителей маски'
       }
-    }
+    },
+    hide: true
   }
 }

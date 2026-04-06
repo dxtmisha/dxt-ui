@@ -94,7 +94,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Forces display of a helper / validation message ignoring usual visibility rules',
         ru: 'Принудительно показывает сообщение (helper / validation), игнорируя обычные условия видимости'
       }
-    }
+    },
+    hide: true
   },
   headline: {
     type: StorybookControl.string,

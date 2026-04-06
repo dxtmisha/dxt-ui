@@ -22,8 +22,7 @@ export const wikiImage: StorybookArgsToList = {
       },
       value: 'rocket_launch'
     },
-    isDemo: true,
-    demo: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924'
+    hide: true
   },
   'image.url': {
     type: StorybookControl.string,
@@ -33,7 +32,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Specifies the path to the folder containing images',
         ru: 'Указывает путь к папке с изображениями'
       }
-    }
+    },
+    hide: true
   },
 
   // Adaptive
@@ -46,7 +46,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Adjusts the image size for proportional alignment with other elements',
         ru: 'Регулирует размер изображения для пропорционального выравнивания относительно других элементов'
       }
-    }
+    },
+    hide: true
   },
   'image.adaptiveAlways': {
     type: StorybookControl.boolean,
@@ -56,7 +57,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Continuously calculates the image size, even when the element is off-screen',
         ru: 'Постоянно вычисляет размер изображения, даже если элемент находится вне экрана'
       }
-    }
+    },
+    hide: true
   },
   'image.adaptiveGroup': {
     type: StorybookControl.string,
@@ -66,7 +68,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Groups elements related to adaptiveness',
         ru: 'Группирует элементы, связанные с адаптивностью'
       }
-    }
+    },
+    hide: true
   },
   'image.alt': {
     type: StorybookControl.string,
@@ -76,7 +79,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Alternative text for the image when using the img tag',
         ru: 'Альтернативный текст для изображения при использовании тега img'
       }
-    }
+    },
+    hide: true
   },
 
   // Style
@@ -101,7 +105,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Sets the priority for fetching the image',
         ru: 'Устанавливает приоритет загрузки изображения'
       }
-    }
+    },
+    hide: true
   },
   'image.lazy': {
     type: StorybookControl.boolean,
@@ -111,7 +116,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Enables lazy loading of the image using the native loading="lazy" attribute',
         ru: 'Включает ленивую загрузку изображения с использованием нативного атрибута loading="lazy"'
       }
-    }
+    },
+    hide: true
   },
   'image.objectHeight': {
     type: StorybookControl.number,
@@ -121,7 +127,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Defines the physical height of an element on the image for adaptive alignment',
         ru: 'Указывает физическую высоту элемента на изображении для адаптивного выравнивания'
       }
-    }
+    },
+    hide: true
   },
   'image.objectWidth': {
     type: StorybookControl.number,
@@ -131,7 +138,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Defines the physical width of an element on the image for adaptive alignment',
         ru: 'Указывает физическую ширину элемента на изображении для адаптивного выравнивания'
       }
-    }
+    },
+    hide: true
   },
   'image.picture': {
     type: StorybookControl.object,
@@ -153,7 +161,8 @@ export const wikiImage: StorybookArgsToList = {
         en: 'Distance from the viewport to start preloading the image',
         ru: 'Расстояние от области просмотра для начала предзагрузки изображения'
       }
-    }
+    },
+    hide: true
   },
   'image.srcset': {
     type: StorybookControl.object,

@@ -23,6 +23,8 @@ export type BarsProps = BarsPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsBars,
+  iconBack: 'arrow_back',
+  iconClose: 'close',
   ...{
     // :default [!] System label / Системная метка
     paddingByIndent: true

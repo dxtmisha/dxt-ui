@@ -28,6 +28,10 @@ export type ActionsProps = ActionsPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsActions,
+  buttonSecondaryAttrs: {
+    text: true,
+    inverse: true
+  },
   ...{
     // :default [!] System label / Системная метка
     align: 'right',
