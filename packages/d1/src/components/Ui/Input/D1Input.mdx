@@ -1,0 +1,69 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Input from './D1Input.stories'
+import {InputWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Input}/>
+<StorybookMain
+    name={InputWikiStorybook.getName()}
+    description={InputWikiStorybook.getDescription()}
+    story={Input.Input}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Input'} type={'input'}/>
+
+<StorybookDescriptions componentName={'Input'} type={'type'}/>
+<Canvas of={Input.InputTypes}/>
+
+<StorybookDescriptions componentName={'Input'} type={'number'}/>
+<Canvas of={Input.InputNumber}/>
+
+<StorybookDescriptions componentName={'Input'} type={'currency'}/>
+<Canvas of={Input.InputCurrency}/>
+
+<StorybookDescriptions componentName={'Input'} type={'date'}/>
+<Canvas of={Input.InputDate}/>
+
+<StorybookDescriptions componentName={'Input'} type={'mask'}/>
+<Canvas of={Input.InputMask}/>
+
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Input.InputVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Input.InputSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
+<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
+<StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

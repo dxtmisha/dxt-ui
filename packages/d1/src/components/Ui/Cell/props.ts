@@ -1,0 +1,43 @@
+import { type CellPropsBasic, defaultsCell } from '@dxtmisha/constructor/Cell'
+
+export const propsValues = {
+  // :values [!] System label / Системная метка
+  dividerLabel: ['always', 'none', 'adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'],
+  padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
+  // :values [!] System label / Системная метка
+}
+
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  focus?: boolean
+  selected?: boolean
+  readonly?: boolean
+  disabled?: boolean
+  dynamic?: boolean
+  dynamicHover?: boolean
+  divider?: boolean
+  dividerLabel?: 'always' | 'none' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl'
+  iconTop?: boolean
+  padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
+  paddingByIndent?: boolean
+  // :type [!] System label / Системная метка
+}
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+export type CellProps = CellPropsBasic & PropsToken
+
+/**
+ * Default value for property/ Значение по умолчанию для свойства
+ */
+export const defaults: object = {
+  ...defaultsCell,
+  ...{
+    // :default [!] System label / Системная метка
+    divider: true,
+    padding: 'none',
+    paddingByIndent: true
+    // :default [!] System label / Системная метка
+  }
+}

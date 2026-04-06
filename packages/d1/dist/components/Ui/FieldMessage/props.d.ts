@@ -1,12 +1,12 @@
 import { FieldMessagePropsBasic } from '@dxtmisha/constructor/FieldMessage';
-import { FieldCounterProps } from '../FieldCounter';
 export declare const propsValues: {};
-export type PropsToken = {};
+type PropsToken = {};
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type FieldMessageProps = FieldMessagePropsBasic<FieldCounterProps> & PropsToken;
+export type FieldMessageProps = FieldMessagePropsBasic & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

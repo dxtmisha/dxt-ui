@@ -1,0 +1,63 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as MotionTransform;
+
+@include ui.initDesignBasic('d1.motionTransform') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include MotionTransform.mixinMotionTransform;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-motionTransform-zIndex: var(--d1-sys-index-xl);
+    --d1-motionTransform-backgroundFull: var(--d1-sys-background-4);
+    --d1-motionTransform-boxShadow: var(--d1-sys-shadow-xl);
+    
+    &__scrim {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+    }
+    
+    &--adaptive {
+      &--planeAlways {
+        --sys-type-body: unset;
+      }
+      
+      &--planeSm {
+        @media screen and (min-width: 640px) {
+          --sys-type-body: unset;
+        }
+      }
+      
+      &--planeMd {
+        @media screen and (min-width: 768px) {
+          --sys-type-body: unset;
+        }
+      }
+      
+      &--planeLg {
+        @media screen and (min-width: 1024px) {
+          --sys-type-body: unset;
+        }
+      }
+      
+      &--planeXl {
+        @media screen and (min-width: 1280px) {
+          --sys-type-body: unset;
+        }
+      }
+      
+      &--plane2xl {
+        @media screen and (min-width: 1536px) {
+          --sys-type-body: unset;
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

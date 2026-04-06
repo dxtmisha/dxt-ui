@@ -1,0 +1,55 @@
+import { type FieldPropsBasic, defaultsField } from '@dxtmisha/constructor/Field'
+
+export const propsValues = {
+  // :values [!] System label / Системная метка
+  arrowAlign: ['center', 'right', 'left'],
+  cancel: ['auto', 'always', 'none'],
+  align: ['center', 'right', 'left'],
+  width: [],
+  size: ['sm', 'md', 'lg', 'display']
+  // :values [!] System label / Системная метка
+}
+
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  focus?: boolean
+  disabled?: boolean
+  selected?: boolean
+  readonly?: boolean
+  block?: boolean
+  isValue?: boolean
+  basic?: boolean
+  boxed?: boolean
+  tonal?: boolean
+  filled?: boolean
+  outlined?: boolean
+  classic?: boolean
+  arrowCarousel?: boolean
+  arrowStepper?: boolean
+  arrowAlign?: 'center' | 'right' | 'left'
+  cancel?: 'auto' | 'always' | 'none'
+  align?: 'center' | 'right' | 'left'
+  width?: string | 'custom'
+  size?: 'sm' | 'md' | 'lg' | 'display'
+  // :type [!] System label / Системная метка
+}
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+export type FieldProps = FieldPropsBasic & PropsToken
+
+/**
+ * Default value for property/ Значение по умолчанию для свойства
+ */
+export const defaults: object = {
+  ...defaultsField,
+  ...{
+    // :default [!] System label / Системная метка
+    classic: true,
+    arrowAlign: 'right',
+    cancel: 'auto',
+    size: 'md'
+    // :default [!] System label / Системная метка
+  }
+}

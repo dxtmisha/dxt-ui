@@ -1,0 +1,60 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Field from './D1Field.stories'
+import {FieldWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Field}/>
+<StorybookMain
+    name={FieldWikiStorybook.getName()}
+    description={FieldWikiStorybook.getDescription()}
+    story={Field.Field}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Field'} type={'field'}/>
+
+<StorybookDescriptions componentName={'Field'} type={'value'}/>
+
+<StorybookDescriptions componentName={'Field'} type={'width'}/>
+<Canvas of={Field.FieldWidth}/>
+
+<StorybookDescriptions componentName={'Field'} type={'cancel'}/>
+<Canvas of={Field.FieldCancel}/>
+
+<StorybookDescriptions componentName={'Field'} type={'arrows'}/>
+<Canvas of={Field.FieldNavigation}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Field.FieldSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Field.FieldSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
+<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
+<StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Field'} type={'slots'} />
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

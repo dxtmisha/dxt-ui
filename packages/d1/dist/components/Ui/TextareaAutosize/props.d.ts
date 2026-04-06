@@ -2,7 +2,7 @@ import { TextareaAutosizePropsBasic } from '@dxtmisha/constructor/TextareaAutosi
 export declare const propsValues: {
     height: string[];
 };
-export type PropsToken = {
+type PropsToken = {
     autosize?: boolean;
     height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
@@ -14,3 +14,4 @@ export type TextareaAutosizeProps = TextareaAutosizePropsBasic & PropsToken;
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

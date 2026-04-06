@@ -3,7 +3,7 @@ export declare const propsValues: {
     align: string[];
     dir: string[];
 };
-export type PropsToken = {
+type PropsToken = {
     visible?: boolean;
     visiblePartly?: boolean;
     align?: 'center' | 'left' | 'right';
@@ -17,3 +17,4 @@ export type MaskProps = MaskPropsBasic & PropsToken;
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

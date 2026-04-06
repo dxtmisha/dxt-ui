@@ -1,6 +1,6 @@
 import { ScrollbarPropsBasic } from '@dxtmisha/constructor/Scrollbar';
 export declare const propsValues: {};
-export type PropsToken = {
+type PropsToken = {
     visible?: boolean;
     divider?: boolean;
     dividerTop?: boolean;
@@ -17,3 +17,4 @@ export type ScrollbarProps = ScrollbarPropsBasic & PropsToken;
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

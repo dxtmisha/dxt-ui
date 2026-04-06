@@ -1,6 +1,6 @@
 import { SkeletonPropsBasic } from '@dxtmisha/constructor/Skeleton';
 export declare const propsValues: {};
-export type PropsToken = {
+type PropsToken = {
     active?: boolean;
 };
 /**
@@ -11,3 +11,4 @@ export type SkeletonProps = SkeletonPropsBasic & PropsToken;
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

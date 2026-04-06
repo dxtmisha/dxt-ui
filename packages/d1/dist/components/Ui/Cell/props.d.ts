@@ -1,11 +1,9 @@
 import { CellPropsBasic } from '@dxtmisha/constructor/Cell';
-import { IconProps } from '../Icon';
-import { ProgressProps } from '../Progress';
 export declare const propsValues: {
     dividerLabel: string[];
     padding: string[];
 };
-export type PropsToken = {
+type PropsToken = {
     focus?: boolean;
     selected?: boolean;
     readonly?: boolean;
@@ -21,8 +19,9 @@ export type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type CellProps = CellPropsBasic<IconProps, ProgressProps> & PropsToken;
+export type CellProps = CellPropsBasic & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

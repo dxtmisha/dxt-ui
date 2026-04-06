@@ -1,0 +1,27 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Accordion;
+
+@include ui.initDesignBasic('d1.accordion') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Accordion.mixinAccordion;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-accordion-borderWidth: var(--d1-sys-spacing-outline);
+    --d1-accordion-borderColor: var(--d1-sys-palette-outline);
+    --d1-accordion-borderOpacity: var(--d1-sys-opacity-outline);
+    
+    &__body {
+      @include ui.paddingX(#{var(--d1-layout-paddingX)});
+      @include ui.paddingY(#{var(--d1-layout-paddingY)});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

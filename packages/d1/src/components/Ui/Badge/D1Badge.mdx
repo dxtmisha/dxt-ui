@@ -1,0 +1,52 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Badge from './D1Badge.stories'
+import {BadgeWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Badge}/>
+<StorybookMain
+    name={BadgeWikiStorybook.getName()}
+    description={BadgeWikiStorybook.getDescription()}
+    story={Badge.Badge}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Badge'} type={'badge'}/>
+<Canvas of={Badge.BadgeBasic}/>
+
+<StorybookDescriptions componentName={'Badge'} type={'dot'}/>
+<Canvas of={Badge.BadgeDot}/>
+
+<StorybookDescriptions componentName={'Badge'} type={'primary'}/>
+<Canvas of={Badge.BadgePrimary}/>
+
+<StorybookDescriptions componentName={'Badge'} type={'secondary'}/>
+<Canvas of={Badge.BadgeSecondary}/>
+
+<StorybookDescriptions componentName={'Badge'} type={'outline'}/>
+<Canvas of={Badge.BadgeOutline}/>
+
+<StorybookDescriptions componentName={'Value'} type={'labelNumber'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

@@ -1,0 +1,51 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as ActionSheet;
+
+@include ui.initDesignBasic('d1.actionSheet') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ActionSheet.mixinActionSheet;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-actionSheet-paddingX: var(--d1-layout-paddingX);
+    --d1-actionSheet-paddingY: var(--d1-layout-paddingY);
+    
+    &__footer {
+      gap: var(--d1-sys-spacing-xs);
+    }
+    
+    &__tab {
+      @include ui.marginY(#{var(--d1-sys-spacing-xs)});
+      
+      @include ui.width(#{var(--d1-sys-spacing-block-xl)});
+      @include ui.height(#{var(--d1-sys-spacing-block-x)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+    }
+    
+    &--width {
+      &--sm {
+        --d1-window-width: var(--d1-ref-spacing-128);
+      }
+      
+      &--md {
+        --d1-window-width: var(--d1-ref-spacing-160);
+      }
+      
+      &--lg {
+        --d1-window-width: var(--d1-ref-spacing-192);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

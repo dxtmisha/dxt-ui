@@ -52,10 +52,9 @@
             {
               "name": "icon-arrow-down",
               "description": "Sets icon for down arrow",
-              "default": "keyboard_arrow_down",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -106,7 +105,7 @@
               "description": "Additional attributes for the Cell component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Cell>"
+                "type": "ConstrBind<CellPropsBasic>"
               }
             },
             {
@@ -114,7 +113,7 @@
               "description": "Additional attributes for the MotionTransform component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<MotionTransform>"
+                "type": "ConstrBind<MotionTransformPropsBasic>"
               }
             },
             {
@@ -301,7 +300,7 @@
               "description": "Array of primary action buttons displayed in the actions area",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions['list']>"
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
               }
             },
             {
@@ -309,7 +308,7 @@
               "description": "Array of secondary action buttons displayed in the actions area",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions['listSecondary']>"
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
               }
             },
             {
@@ -351,7 +350,7 @@
               "description": "Array of buttons displayed in the bars area (actions)",
               "value": {
                 "kind": "expression",
-                "type": "Bars['bars']"
+                "type": "ConstrBind<ButtonPropsBasic>[]"
               }
             },
             {
@@ -386,7 +385,7 @@
               "description": "Additional attributes for the Actions component container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions>"
+                "type": "ConstrBind<ActionsPropsBasic>"
               }
             },
             {
@@ -394,7 +393,7 @@
               "description": "Additional attributes for the bars (header toolbar) container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Bars>"
+                "type": "ConstrBind<BarsPropsBasic>"
               }
             },
             {
@@ -402,7 +401,7 @@
               "description": "Additional attributes for the Window root container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Window>"
+                "type": "ConstrBind<WindowPropsBasic>"
               }
             }
           ],
@@ -542,7 +541,7 @@
               "description": "Array of primary action button configurations",
               "value": {
                 "kind": "expression",
-                "type": "any[]"
+                "type": "ConstrBind<ButtonPropsBasic>[]"
               }
             },
             {
@@ -550,7 +549,7 @@
               "description": "Array of secondary action button configurations",
               "value": {
                 "kind": "expression",
-                "type": "any[]"
+                "type": "ConstrBind<ButtonPropsBasic>[]"
               }
             },
             {
@@ -601,7 +600,7 @@
               "description": "Additional attributes for button elements",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Button>"
+                "type": "ConstrBind<ButtonPropsBasic>"
               }
             },
             {
@@ -609,7 +608,7 @@
               "description": "Additional attributes for secondary button elements",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Button>"
+                "type": "ConstrBind<ButtonPropsBasic>"
               }
             }
           ],
@@ -688,28 +687,25 @@
             {
               "name": "icon-content-copy",
               "description": "Sets icon for copy content action",
-              "default": "content_copy",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
               "name": "icon-link",
               "description": "Sets icon for a link",
-              "default": "link",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
               "name": "icon-tag",
               "description": "Sets icon for tag",
-              "default": "tag",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -768,7 +764,7 @@
               "description": "Additional attributes for the Tooltip component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Tooltip>"
+                "type": "ConstrBind<TooltipProps>"
               }
             },
             {
@@ -1024,7 +1020,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -1121,19 +1117,17 @@
             {
               "name": "icon-back",
               "description": "Sets icon for the back button",
-              "default": "arrow_back",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
-              "default": "close",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -1431,7 +1425,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -1525,7 +1519,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -1808,7 +1802,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -1893,7 +1887,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -2134,7 +2128,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -2266,7 +2260,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -2397,19 +2391,17 @@
             {
               "name": "icon-checkbox",
               "description": "Sets icon for checkbox",
-              "default": "check",
               "value": {
                 "kind": "expression",
-                "type": "string | ConstrBind<Image> | null"
+                "type": "string | ConstrBind<ImagePropsBasic>"
               }
             },
             {
               "name": "icon-indeterminate",
               "description": "Sets icon for indeterminate state",
-              "default": "remove",
               "value": {
                 "kind": "expression",
-                "type": "string | ConstrBind<Image> | null"
+                "type": "string | ConstrBind<ImagePropsBasic>"
               }
             },
             {
@@ -2582,7 +2574,7 @@
               "description": "Additional attributes for the field counter component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldCounter>"
+                "type": "ConstrBind<FieldCounterPropsBasic>"
               }
             },
             {
@@ -2590,7 +2582,7 @@
               "description": "Additional attributes for the FieldMessage element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldMessage>"
+                "type": "ConstrBind<FieldMessagePropsBasic>"
               }
             },
             {
@@ -2780,7 +2772,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -3037,7 +3029,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -3170,7 +3162,7 @@
               "description": "Additional attributes for the Chip component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Chip>"
+                "type": "ConstrBind<ChipPropsBasic>"
               }
             },
             {
@@ -3334,7 +3326,7 @@
               "description": "Array of primary action buttons displayed in the actions area",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions['list']>"
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
               }
             },
             {
@@ -3342,7 +3334,7 @@
               "description": "Array of secondary action buttons displayed in the actions area",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions['listSecondary']>"
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
               }
             },
             {
@@ -3384,7 +3376,7 @@
               "description": "Array of buttons displayed in the bars area (actions)",
               "value": {
                 "kind": "expression",
-                "type": "Bars['bars']"
+                "type": "ConstrBind<ButtonPropsBasic>[]"
               }
             },
             {
@@ -3398,19 +3390,17 @@
             {
               "name": "icon-error",
               "description": "Sets icon displayed in the error state",
-              "default": "error",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
               "name": "icon-success",
               "description": "Sets icon displayed in a success state",
-              "default": "check_circle",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -3463,7 +3453,7 @@
               "description": "Additional attributes for the Actions component container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions>"
+                "type": "ConstrBind<ActionsPropsBasic>"
               }
             },
             {
@@ -3471,7 +3461,7 @@
               "description": "Additional attributes for the bars (header toolbar) container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Bars>"
+                "type": "ConstrBind<BarsPropsBasic>"
               }
             },
             {
@@ -3479,7 +3469,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -3487,7 +3477,7 @@
               "description": "Additional attributes for the Window root container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Window>"
+                "type": "ConstrBind<WindowPropsBasic>"
               }
             },
             {
@@ -3768,7 +3758,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -3923,28 +3913,25 @@
             {
               "name": "icon-arrow-left",
               "description": "Sets icon for the left arrow",
-              "default": "keyboard_arrow_left",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
               "name": "icon-arrow-right",
               "description": "Sets icon for right arrow",
-              "default": "keyboard_arrow_right",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
-              "default": "close_small",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -3968,10 +3955,9 @@
             {
               "name": "icon-minus",
               "description": "Sets icon for decrement / minus action",
-              "default": "remove",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -3986,10 +3972,9 @@
             {
               "name": "icon-plus",
               "description": "Sets icon for increment / plus action",
-              "default": "add",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -4191,7 +4176,7 @@
               "description": "Additional attributes for the field counter component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldCounter>"
+                "type": "ConstrBind<FieldCounterPropsBasic>"
               }
             },
             {
@@ -4199,7 +4184,7 @@
               "description": "Additional attributes for the FieldLabel element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldLabel>"
+                "type": "ConstrBind<FieldLabelPropsBasic>"
               }
             },
             {
@@ -4207,7 +4192,7 @@
               "description": "Additional attributes for the FieldMessage element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldMessage>"
+                "type": "ConstrBind<FieldMessagePropsBasic>"
               }
             },
             {
@@ -4215,7 +4200,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -4452,7 +4437,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -4527,7 +4512,7 @@
               "description": "Additional attributes for the field counter component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldCounter>"
+                "type": "ConstrBind<FieldCounterPropsBasic>"
               }
             },
             {
@@ -4645,7 +4630,7 @@
               "description": "Additional attributes for the field counter component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldCounter>"
+                "type": "ConstrBind<FieldCounterPropsBasic>"
               }
             },
             {
@@ -5541,7 +5526,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -5758,7 +5743,6 @@
             {
               "name": "icon-visibility",
               "description": "Sets icon for visibility on state (show password)",
-              "default": "visibility",
               "value": {
                 "kind": "expression",
                 "type": "string"
@@ -5767,7 +5751,6 @@
             {
               "name": "icon-visibility-off",
               "description": "Sets icon for visibility off state (hide password)",
-              "default": "visibility_off",
               "value": {
                 "kind": "expression",
                 "type": "string"
@@ -6043,7 +6026,7 @@
               "description": "Additional attributes for the Field component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Field>"
+                "type": "ConstrBind<FieldPropsBasic>"
               }
             },
             {
@@ -6051,7 +6034,7 @@
               "description": "Additional attributes for the field counter component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldCounter>"
+                "type": "ConstrBind<FieldCounterPropsBasic>"
               }
             },
             {
@@ -6059,7 +6042,7 @@
               "description": "Additional attributes for the FieldLabel element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldLabel>"
+                "type": "ConstrBind<FieldLabelPropsBasic>"
               }
             },
             {
@@ -6067,7 +6050,7 @@
               "description": "Additional attributes for the FieldMessage element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldMessage>"
+                "type": "ConstrBind<FieldMessagePropsBasic>"
               }
             },
             {
@@ -6075,7 +6058,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -6091,7 +6074,7 @@
               "description": "Additional attributes for the mask component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Mask>"
+                "type": "ConstrBind<MaskPropsBasic>"
               }
             },
             {
@@ -6361,25 +6344,23 @@
               "description": "Array of list items data. Contains the data for all items to be rendered in the list.",
               "value": {
                 "kind": "expression",
-                "type": "ListRecord<any>"
+                "type": "ListRecord<ListItemPropsBasic>"
               }
             },
             {
               "name": "icon-arrow-down",
               "description": "Sets icon for down arrow",
-              "default": "keyboard_arrow_down",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
               "name": "icon-arrow-right",
               "description": "Sets icon for right arrow",
-              "default": "keyboard_arrow_right",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -6404,7 +6385,7 @@
               "description": "Additional attributes to apply to each list item element. Allows customization of HTML attributes for individual list items.",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<ListItem>"
+                "type": "ConstrBind<ListItemPropsBasic>"
               }
             },
             {
@@ -6412,7 +6393,7 @@
               "description": "Additional attributes for group container elements in the list.",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<ListItem>"
+                "type": "ConstrBind<ListItemPropsBasic>"
               }
             },
             {
@@ -6420,7 +6401,7 @@
               "description": "Additional attributes for management control elements in the list.",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<ListItem>"
+                "type": "ConstrBind<ListItemPropsBasic>"
               }
             },
             {
@@ -6428,7 +6409,7 @@
               "description": "Additional attributes for menu container elements in the list.",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<ListItem>"
+                "type": "ConstrBind<ListItemPropsBasic>"
               }
             },
             {
@@ -6639,7 +6620,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -6945,7 +6926,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -7183,7 +7164,7 @@
               "description": "Additional attributes for the Window root container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Window>"
+                "type": "ConstrBind<WindowPropsBasic>"
               }
             }
           ],
@@ -7555,7 +7536,7 @@
               "description": "URL or function to load menu items asynchronously. Function may return a promise.",
               "value": {
                 "kind": "expression",
-                "type": "string | (() => NormalOrPromise<ListRecord<any>>)"
+                "type": "string | (() => NormalOrPromise<ListRecord<ListItemPropsBasic>>)"
               }
             },
             {
@@ -7579,7 +7560,7 @@
               "description": "Array of list items data. Contains the data for all items to be rendered in the list.",
               "value": {
                 "kind": "expression",
-                "type": "ListRecord<any>"
+                "type": "ListRecord<ListItemPropsBasic>"
               }
             },
             {
@@ -7629,7 +7610,7 @@
               "description": "Array of buttons displayed in the bars area (actions)",
               "value": {
                 "kind": "expression",
-                "type": "Bars['bars']"
+                "type": "ConstrBind<ButtonPropsBasic>[]"
               }
             },
             {
@@ -7678,7 +7659,7 @@
               "description": "Additional attributes applied to each menu item.",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<ListItem>"
+                "type": "ConstrBind<ListItemPropsBasic>"
               }
             },
             {
@@ -7686,7 +7667,7 @@
               "description": "Additional attributes applied to the menu list container.",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<List>"
+                "type": "ConstrBind<ListPropsBasic>"
               }
             },
             {
@@ -7764,7 +7745,7 @@
               "description": "Additional attributes for the bars (header toolbar) container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Bars>"
+                "type": "ConstrBind<BarsPropsBasic>"
               }
             },
             {
@@ -7772,7 +7753,7 @@
               "description": "Additional attributes for the Window root container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Window>"
+                "type": "ConstrBind<WindowPropsBasic>"
               }
             },
             {
@@ -8029,7 +8010,7 @@
               "description": "Array of primary action buttons displayed in the actions area",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions['list']>"
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
               }
             },
             {
@@ -8037,7 +8018,7 @@
               "description": "Array of secondary action buttons displayed in the actions area",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions['listSecondary']>"
+                "type": "ConstrBind<ConstrBind<ButtonPropsBasic>[]>"
               }
             },
             {
@@ -8079,7 +8060,7 @@
               "description": "Array of buttons displayed in the bars area (actions)",
               "value": {
                 "kind": "expression",
-                "type": "Bars['bars']"
+                "type": "ConstrBind<ButtonPropsBasic>[]"
               }
             },
             {
@@ -8114,7 +8095,7 @@
               "description": "Additional attributes for the Actions component container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Actions>"
+                "type": "ConstrBind<ActionsPropsBasic>"
               }
             },
             {
@@ -8122,7 +8103,7 @@
               "description": "Additional attributes for the bars (header toolbar) container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Bars>"
+                "type": "ConstrBind<BarsPropsBasic>"
               }
             },
             {
@@ -8130,7 +8111,7 @@
               "description": "Additional attributes for the Window root container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Window>"
+                "type": "ConstrBind<WindowPropsBasic>"
               }
             }
           ],
@@ -9323,7 +9304,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -9461,10 +9442,9 @@
             {
               "name": "icon-arrow-down",
               "description": "Sets icon for down arrow",
-              "default": "keyboard_arrow_down",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -9497,7 +9477,6 @@
             {
               "name": "icon-search",
               "description": "Sets icon for search action",
-              "default": "search",
               "value": {
                 "kind": "expression",
                 "type": "string | File"
@@ -9552,7 +9531,7 @@
               "description": "Arrow controls type for numeric input (auto, carousel, stepper, none)",
               "value": {
                 "kind": "expression",
-                "type": "auto | none | carousel | stepper"
+                "type": "none | auto | carousel | stepper"
               }
             },
             {
@@ -9724,7 +9703,7 @@
               "description": "Cancel button mode: auto (show only if cancelShow + active, no arrows) or always (force unless disabled/readonly or arrows).",
               "value": {
                 "kind": "expression",
-                "type": "auto | always | none"
+                "type": "none | auto | always"
               }
             },
             {
@@ -9768,7 +9747,7 @@
               "description": "Additional attributes for the Field component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Field>"
+                "type": "ConstrBind<FieldPropsBasic>"
               }
             },
             {
@@ -9776,7 +9755,7 @@
               "description": "Additional attributes for the field counter component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldCounter>"
+                "type": "ConstrBind<FieldCounterPropsBasic>"
               }
             },
             {
@@ -9784,7 +9763,7 @@
               "description": "Additional attributes for the FieldLabel element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldLabel>"
+                "type": "ConstrBind<FieldLabelPropsBasic>"
               }
             },
             {
@@ -9792,7 +9771,7 @@
               "description": "Additional attributes for the FieldMessage element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldMessage>"
+                "type": "ConstrBind<FieldMessagePropsBasic>"
               }
             },
             {
@@ -9800,7 +9779,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -9824,7 +9803,7 @@
               "description": "Additional attributes for the Menu root container",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Menu>"
+                "type": "ConstrBind<MenuPropsBasic>"
               }
             },
             {
@@ -10115,10 +10094,9 @@
             {
               "name": "icon-cancel",
               "description": "Sets icon for cancel/clear action",
-              "default": "close_small",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -10144,7 +10122,7 @@
               "description": "Additional attributes for the Chip component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Chip>"
+                "type": "ConstrBind<ChipPropsBasic>"
               }
             },
             {
@@ -10152,7 +10130,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             }
           ],
@@ -10425,7 +10403,6 @@
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
-              "default": "close",
               "value": {
                 "kind": "expression",
                 "type": "IconValue<IconPropsBasic>"
@@ -10839,7 +10816,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -10923,7 +10900,7 @@
               "description": "Tabs list or TabsNavigation properties",
               "value": {
                 "kind": "expression",
-                "type": "ListRecord<TabItem> | ConstrBind<TabsNavigation>"
+                "type": "ListRecord<TabItemPropsBasic> | ConstrBind<TabsNavigationPropsBasic>"
               }
             },
             {
@@ -10947,7 +10924,7 @@
               "description": "Additional attributes for the MotionAxis component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<MotionAxis>"
+                "type": "ConstrBind<MotionAxisPropsBasic>"
               }
             },
             {
@@ -10955,7 +10932,7 @@
               "description": "Additional attributes for the TabItem component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<TabItem>"
+                "type": "ConstrBind<TabItemPropsBasic>"
               }
             },
             {
@@ -10963,7 +10940,7 @@
               "description": "Additional attributes for the TabsNavigation component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<TabsNavigation>"
+                "type": "ConstrBind<TabsNavigationPropsBasic>"
               }
             },
             {
@@ -11063,7 +11040,7 @@
               "description": "List of data for generating tabs",
               "value": {
                 "kind": "expression",
-                "type": "ListRecord<any>"
+                "type": "ListRecord<TabItemPropsBasic>"
               }
             },
             {
@@ -11085,7 +11062,7 @@
             {
               "name": "divider",
               "description": "Enables visual divider between elements",
-              "default": "true",
+              "default": "false",
               "value": {
                 "kind": "expression",
                 "type": "boolean"
@@ -11146,7 +11123,7 @@
               "description": "Attributes for each tab item",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<TabItem>"
+                "type": "ConstrBind<TabItemPropsBasic>"
               }
             },
             {
@@ -11156,6 +11133,64 @@
                 "kind": "expression",
                 "type": "ListSelectedList"
               }
+            }
+          ],
+          "slots": [
+            {
+              "name": "leading",
+              "description": "Slot for content before the tabs/ Слот для содержимого перед вкладками",
+              "vue-properties": []
+            },
+            {
+              "name": "trailing",
+              "description": "Slot for content after the tabs/ Слот для содержимого после вкладок",
+              "vue-properties": []
+            }
+          ],
+          "events": [
+            {
+              "name": "click",
+              "description": "Full click event with MouseEvent/ Полное событие клика с MouseEvent",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "MouseEvent"
+                },
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "clickLite",
+              "description": "Lightweight click event/ Упрощённое событие клика",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "update:modelSelected",
+              "description": "Update model value event/ Событие обновления значения модели",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "ListSelectedList"
+                }
+              ]
+            },
+            {
+              "name": "update:selected",
+              "description": "Update value event/ Событие обновления значения",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "ListSelectedList"
+                }
+              ]
             }
           ]
         },
@@ -11190,7 +11225,7 @@
               "description": "Sets the element to a loading state",
               "value": {
                 "kind": "expression",
-                "type": "boolean | ConstrBind<Progress>"
+                "type": "boolean | ConstrBind<ProgressPropsBasic>"
               }
             },
             {
@@ -11590,7 +11625,7 @@
               "description": "Additional attributes for the Field component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Field>"
+                "type": "ConstrBind<FieldPropsBasic>"
               }
             },
             {
@@ -11598,7 +11633,7 @@
               "description": "Additional attributes for the field counter component",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldCounter>"
+                "type": "ConstrBind<FieldCounterPropsBasic>"
               }
             },
             {
@@ -11606,7 +11641,7 @@
               "description": "Additional attributes for the FieldLabel element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldLabel>"
+                "type": "ConstrBind<FieldLabelPropsBasic>"
               }
             },
             {
@@ -11614,7 +11649,7 @@
               "description": "Additional attributes for the FieldMessage element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<FieldMessage>"
+                "type": "ConstrBind<FieldMessagePropsBasic>"
               }
             },
             {
@@ -11622,7 +11657,7 @@
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Icon>"
+                "type": "ConstrBind<IconPropsBasic>"
               }
             },
             {
@@ -11638,7 +11673,7 @@
               "description": "Additional attributes for the native textarea element",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<TextareaAutosize>"
+                "type": "ConstrBind<TextareaAutosizePropsBasic>"
               }
             },
             {
@@ -12148,10 +12183,9 @@
             {
               "name": "icon-close",
               "description": "Sets icon for close button",
-              "default": "close",
               "value": {
                 "kind": "expression",
-                "type": "IconValue<Icon>"
+                "type": "IconValue<IconPropsBasic>"
               }
             },
             {
@@ -12416,7 +12450,7 @@
               "description": "Sets attributes for the internal scrollbar",
               "value": {
                 "kind": "expression",
-                "type": "ConstrBind<Scrollbar>"
+                "type": "ConstrBind<ScrollbarPropsBasic>"
               }
             },
             {

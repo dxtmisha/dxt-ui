@@ -1,0 +1,30 @@
+import { type MenuPropsBasic, defaultsMenu } from '@dxtmisha/constructor/Menu'
+
+export const propsValues = {
+  // :values [!] System label / Системная метка
+  barsAdaptive: ['showAlways', 'showSm', 'showMd', 'showLg', 'showXl', 'show2xl']
+  // :values [!] System label / Системная метка
+}
+
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  hideList?: boolean
+  barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl'
+  // :type [!] System label / Системная метка
+}
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+export type MenuProps = MenuPropsBasic & PropsToken
+
+/**
+ * Default value for property/ Значение по умолчанию для свойства
+ */
+export const defaults: object = {
+  ...defaultsMenu,
+  ...{
+    // :default [!] System label / Системная метка
+    // :default [!] System label / Системная метка
+  }
+}

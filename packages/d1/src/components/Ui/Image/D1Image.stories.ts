@@ -1,0 +1,164 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import D1Image from './D1Image.vue'
+import { ImageWikiStorybook } from './wiki'
+
+// :story-import [!] System label / Системная метка
+import { demoPdf, image1, phone1, phone2, phone3 } from '@dxtmisha/wiki/media'
+// :story-import [!] System label / Системная метка
+
+const meta = {
+  title: 'Ui/Image',
+  component: D1Image,
+  parameters: {
+    design: 'd1',
+    docs: {
+      description: {
+        component: ImageWikiStorybook.getDescription()
+      }
+    }
+  },
+  argTypes: ImageWikiStorybook.getWiki(),
+  args: ImageWikiStorybook.getValues()
+} satisfies Meta<typeof D1Image>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Image: Story = {
+  // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1Image },
+    setup: () => ({ args }),
+    template: `
+      <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm">
+        <D1Image v-bind="args"/>
+      </div>
+    `
+  })
+  // :story-main [!] System label / Системная метка
+}
+
+// :story-items [!] System label / Системная метка
+export const ImageType: Story = {
+  name: 'Тип значения',
+  render: () => ({
+    components: { D1Image },
+    setup() {
+      return {
+        image1,
+        demoPdf
+      }
+    },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
+            <div class="wiki-storybook-item__label">Icon</div>
+            <D1Image value="home"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
+            <div class="wiki-storybook-item__label">Image/ contain</div>
+            <D1Image :value="image1"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--squared--max">
+            <div class="wiki-storybook-item__label">PDF</div>
+            <D1Image :value="demoPdf"/>
+          </div>
+        </div>
+    `
+  })
+}
+export const ImageSize: Story = {
+  name: 'Отображение',
+  render: () => ({
+    components: { D1Image },
+    setup() {
+      return {
+        image1
+      }
+    },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">size: auto (default)</div>
+            <D1Image :value="image1" size="auto" tag-img/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">size: contain</div>
+            <D1Image :value="image1" size="contain" tag-img/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">size: cover</div>
+            <D1Image :value="image1" size="cover" tag-img/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">coordinator</div>
+            <D1Image :value="image1" :coordinator="[60, 10, 10, 40]" tag-img/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">x, y</div>
+            <D1Image :value="image1" x="20%" y="-10%" tag-img/>
+          </div>
+        </div>
+    `
+  })
+}
+export const ImageTagImg: Story = {
+  name: 'Использование тега img',
+  render: () => ({
+    components: { D1Image },
+    setup() {
+      return {
+        image1
+      }
+    },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">Background (default)</div>
+            <D1Image :value="image1"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + alt</div>
+            <D1Image :value="image1" tag-img alt="Example image"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + lazy + srcset</div>
+            <D1Image :value="image1" tag-img lazy alt="Responsive image" :srcset="{ '1x': image1, '2x': image1 }"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + picture</div>
+            <D1Image :value="image1" tag-img alt="Adaptive image" :picture="{ 768: image1, 1024: image1 }"/>
+          </div>
+        </div>
+    `
+  })
+}
+export const ImageAdaptive: Story = {
+  name: 'Адаптированные изображения',
+  render: () => ({
+    components: { D1Image },
+    setup() {
+      return {
+        phone1,
+        phone2,
+        phone3
+      }
+    },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <D1Image :value="phone1" adaptive object-width="76.2"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <D1Image :value="phone2" adaptive object-width="71.9"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <D1Image :value="phone3" adaptive object-width="129.9" tag-img/>
+          </div>
+        </div>
+    `
+  })
+}
+// :story-items [!] System label / Системная метка

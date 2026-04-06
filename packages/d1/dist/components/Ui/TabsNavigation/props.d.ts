@@ -1,5 +1,4 @@
 import { TabsNavigationPropsBasic } from '@dxtmisha/constructor/TabsNavigation';
-import { TabItemProps } from '../TabItem';
 export declare const propsValues: {};
 type PropsToken = {
     focus?: boolean;
@@ -8,7 +7,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TabsNavigationProps = TabsNavigationPropsBasic<TabItemProps> & PropsToken;
+export type TabsNavigationProps = TabsNavigationPropsBasic & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

@@ -2,7 +2,7 @@ import { TooltipPropsBasic } from '@dxtmisha/constructor/Tooltip';
 export declare const propsValues: {
     maxWidth: string[];
 };
-export type PropsToken = {
+type PropsToken = {
     interactive?: boolean;
     embedded?: boolean;
     maxWidth?: 'sm' | 'md' | 'lg';
@@ -15,3 +15,4 @@ export type TooltipProps = TooltipPropsBasic & PropsToken;
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

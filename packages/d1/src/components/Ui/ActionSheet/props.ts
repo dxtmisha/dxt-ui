@@ -1,0 +1,30 @@
+import { type ActionSheetPropsBasic, defaultsActionSheet } from '@dxtmisha/constructor/ActionSheet'
+
+export const propsValues = {
+  // :values [!] System label / Системная метка
+  width: ['sm', 'md', 'lg', 'auto']
+  // :values [!] System label / Системная метка
+}
+
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  width?: 'sm' | 'md' | 'lg' | 'auto'
+  // :type [!] System label / Системная метка
+}
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+export type ActionSheetProps = ActionSheetPropsBasic & PropsToken
+
+/**
+ * Default value for property/ Значение по умолчанию для свойства
+ */
+export const defaults: object = {
+  ...defaultsActionSheet,
+  ...{
+    // :default [!] System label / Системная метка
+    width: 'md'
+    // :default [!] System label / Системная метка
+  }
+}

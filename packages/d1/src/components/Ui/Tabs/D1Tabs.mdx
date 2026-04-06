@@ -1,0 +1,37 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Tabs from './D1Tabs.stories'
+import {TabsWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Tabs}/>
+<StorybookMain
+    name={TabsWikiStorybook.getName()}
+    description={TabsWikiStorybook.getDescription()}
+    story={Tabs.Tabs}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Tabs'} type={'tabs'}/>
+<Canvas of={Tabs.TabsBasic}/>
+
+<StorybookDescriptions componentName={'Tabs'} type={'v-model'}/>
+<Canvas of={Tabs.TabsVModel}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+[//]: # (:documentation-slots [!] System label / Системная метка)

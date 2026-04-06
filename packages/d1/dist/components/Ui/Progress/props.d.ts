@@ -5,7 +5,7 @@ export declare const propsValues: {
     size: string[];
     palette: string[];
 };
-export type PropsToken = {
+type PropsToken = {
     point?: boolean;
     linear?: boolean;
     circular?: boolean;
@@ -24,3 +24,4 @@ export type ProgressProps = ProgressPropsBasic & PropsToken;
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

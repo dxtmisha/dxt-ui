@@ -1,10 +1,8 @@
 import { ListPropsBasic } from '@dxtmisha/constructor/List';
-import { IconProps } from '../Icon';
-import { ListItemProps } from '../ListItem';
 export declare const propsValues: {
     axis: string[];
 };
-export type PropsToken = {
+type PropsToken = {
     focus?: boolean;
     axis?: 'x' | 'y';
     divider?: boolean;
@@ -12,8 +10,9 @@ export type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ListProps = ListPropsBasic<IconProps, ListItemProps> & PropsToken;
+export type ListProps = ListPropsBasic & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

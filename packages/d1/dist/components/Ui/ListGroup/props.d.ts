@@ -1,6 +1,6 @@
 import { ListGroupPropsBasic } from '@dxtmisha/constructor/ListGroup';
 export declare const propsValues: {};
-export type PropsToken = {
+type PropsToken = {
     open?: boolean;
     divider?: boolean;
 };
@@ -12,3 +12,4 @@ export type ListGroupProps = ListGroupPropsBasic & PropsToken;
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};

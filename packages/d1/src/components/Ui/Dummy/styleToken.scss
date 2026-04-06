@@ -1,0 +1,70 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Dummy;
+
+@include ui.initDesignBasic('d1.dummy') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Dummy.mixinDummy;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-dummy-main: var(--d-dummy);
+    
+    @include ui.paddingX(#{var(--d1-layout-paddingX)});
+    @include ui.paddingY(#{var(--d1-layout-paddingY)});
+    
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+    @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+    
+    border-radius: var(--d1-sys-rounded-lg);
+    
+    &--size {
+      &--x {
+        @include ui.height(#{var(--d1-ref-spacing-4)});
+      }
+      
+      &--xs {
+        @include ui.height(#{var(--d1-ref-spacing-8)});
+      }
+      
+      &--sm {
+        @include ui.height(#{var(--d1-ref-spacing-12)});
+      }
+      
+      &--md {
+        @include ui.height(#{var(--d1-ref-spacing-24)});
+      }
+      
+      &--lg {
+        @include ui.height(#{var(--d1-ref-spacing-36)});
+      }
+      
+      &--xl {
+        @include ui.height(#{var(--d1-ref-spacing-48)});
+      }
+      
+      &--2xl {
+        @include ui.height(#{var(--d1-ref-spacing-60)});
+      }
+      
+      &--3xl {
+        @include ui.height(#{var(--d1-ref-spacing-72)});
+      }
+      
+      &--4xl {
+        @include ui.height(#{var(--d1-ref-spacing-84)});
+      }
+      
+      &--5xl {
+        @include ui.height(#{var(--d1-ref-spacing-96)});
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

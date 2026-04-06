@@ -1,0 +1,67 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Button from './D1Button.stories'
+import {ButtonWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Button}/>
+<StorybookMain
+    name={ButtonWikiStorybook.getName()}
+    description={ButtonWikiStorybook.getDescription()}
+    story={Button.Button}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Button'} type={'button'}/>
+<Canvas of={Button.ButtonBasic}/>
+
+<StorybookDescriptions componentName={'Button'} type={'primary'}/>
+<Canvas of={Button.ButtonPrimary}/>
+
+<StorybookDescriptions componentName={'Button'} type={'secondary'}/>
+<Canvas of={Button.ButtonSecondary}/>
+
+<StorybookDescriptions componentName={'Button'} type={'outline'}/>
+<Canvas of={Button.ButtonOutline}/>
+
+<StorybookDescriptions componentName={'Button'} type={'text'}/>
+<Canvas of={Button.ButtonText}/>
+
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
+
+<StorybookDescriptions componentName={'Style'} type={'adaptive'}/>
+<Canvas of={Button.ButtonAdaptive}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Button.ButtonSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'detail'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

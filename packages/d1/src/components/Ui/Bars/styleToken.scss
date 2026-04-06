@@ -1,0 +1,94 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Bars;
+
+@include ui.initDesignBasic('d1.bars') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Bars.mixinBars;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-xs);
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+    
+    backdrop-filter: var(--d1-sys-blur-md);
+    
+    &__label {
+      padding-top: var(--d1-ref-spacing-2px);
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+      letter-spacing: var(--d1-sys-letterSpacing-none);
+    }
+    
+    &__description {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+      
+      &:first-child {
+        padding-top: var(--d1-ref-spacing-6px);
+      }
+    }
+    
+    &--action {
+      @include ui.color(#{var(--d1-sys-palette-inverseOnSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-inverseSurface)});
+      
+      & .d1-bars__description {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.color('init');
+      }
+    }
+    
+    &--padding {
+      &--sm {
+        @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+      }
+      
+      &--md {
+        @include ui.paddingX(#{var(--d1-sys-spacing-md)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+      }
+      
+      &--lg {
+        @include ui.paddingX(#{var(--d1-sys-spacing-lg)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+      }
+      
+      &--ySm {
+        @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+      }
+      
+      &--yMd {
+        @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+      }
+      
+      &--yLg {
+        @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+      }
+    }
+    
+    &--paddingByIndent {
+      @include ui.paddingX(#{var(--d1-layout-paddingX)});
+      @include ui.paddingY(#{var(--d1-layout-paddingY)});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

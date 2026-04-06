@@ -1,5 +1,4 @@
 import { BadgePropsBasic } from '@dxtmisha/constructor/Badge';
-import { IconProps } from '../Icon';
 export declare const propsValues: {
     overlap: string[];
     vertical: string[];
@@ -7,7 +6,7 @@ export declare const propsValues: {
     size: string[];
     palette: string[];
 };
-export type PropsToken = {
+type PropsToken = {
     selected?: boolean;
     hide?: boolean;
     dot?: boolean;
@@ -23,8 +22,9 @@ export type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type BadgeProps = BadgePropsBasic<IconProps> & PropsToken;
+export type BadgeProps = BadgePropsBasic & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export declare const defaults: object;
+export {};
