@@ -1,4 +1,4 @@
-import { t as e } from "./D1Scrollbar-Ewz8_xmB.js";
+import { t as e } from "./D1Scrollbar-D2_rACq8.js";
 //#region src/components/Ui/Scrollbar/index.ts
 var t = e;
 //#endregion

@@ -1,4 +1,4 @@
-import { t as e } from "./D1Select-CK4-zgly.js";
+import { t as e } from "./D1Select-DH_DsexB.js";
 //#region src/components/Ui/Select/index.ts
 var t = e;
 //#endregion

@@ -142,6 +142,123 @@
                 "type": "boolean"
               }
             }
+          ],
+          "slots": [
+            {
+              "name": "body",
+              "description": "Slot for the main body content/ Слот для основного контента тела",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "CellClassesSub"
+                }
+              ]
+            },
+            {
+              "name": "caption",
+              "description": "Caption slot/ Слот заголовка",
+              "vue-properties": []
+            },
+            {
+              "name": "default",
+              "description": "Main expandable content of the accordion/ Основное раскрывающееся содержимое аккордеона",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "MotionTransformControlItem"
+                }
+              ]
+            },
+            {
+              "name": "description",
+              "description": "Description slot/ Слот описания",
+              "vue-properties": []
+            },
+            {
+              "name": "label",
+              "description": "Label slot content/ Содержимое слота метки",
+              "vue-properties": []
+            },
+            {
+              "name": "trailing",
+              "description": "Slot for elements on the right/ Слот для элементов справа",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "CellClassesSub"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "click",
+              "description": "Full click event with MouseEvent/ Полное событие клика с MouseEvent",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "MouseEvent"
+                },
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "clickLite",
+              "description": "Lightweight click event/ Упрощённое событие клика",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "transform",
+              "description": "Transform event with native event and options/ Событие трансформации с нативным событием и опциями",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "Event"
+                },
+                {
+                  "name": "options",
+                  "type": "MotionTransformEmitOptions"
+                }
+              ]
+            },
+            {
+              "name": "transformLite",
+              "description": "Lightweight transform event with options only/ Облегчённое событие трансформации только с опциями",
+              "arguments": [
+                {
+                  "name": "options",
+                  "type": "MotionTransformEmitOptions"
+                }
+              ]
+            },
+            {
+              "name": "update:modelOpen",
+              "description": "Update model open event/ Событие обновления открытия модели",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "boolean"
+                }
+              ]
+            },
+            {
+              "name": "update:open",
+              "description": "Update open event/ Событие обновления открытия",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "boolean"
+                }
+              ]
+            }
           ]
         },
         {
@@ -287,6 +404,128 @@
                 "kind": "expression",
                 "type": "ConstrBind<Window>"
               }
+            }
+          ],
+          "slots": [
+            {
+              "name": "control",
+              "description": "Control slot for window management/\nСлот управления для управления окном",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "WindowControlItem"
+                }
+              ]
+            },
+            {
+              "name": "default",
+              "description": "Default slot for main content/\nОсновной слот для главного содержимого",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "WindowControlItem"
+                }
+              ]
+            },
+            {
+              "name": "footer",
+              "description": "Footer slot for window bottom/\nСлот подвала для низа окна",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "WindowControlItem"
+                }
+              ]
+            },
+            {
+              "name": "header",
+              "description": "Slot for the modal header/ Слот для заголовка модального окна",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "WindowControlItem"
+                }
+              ]
+            },
+            {
+              "name": "title",
+              "description": "Title slot for window header/\nСлот заголовка для шапки окна",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "WindowControlItem"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "actions",
+              "description": "Click event for actions/ Событие клика для действий",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "MouseEvent"
+                },
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "actionsLite",
+              "description": "Simple click event for actions/ Простое событие клика для действий",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "bars",
+              "description": "Click event for bars/ Событие клика для панелей",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "MouseEvent"
+                },
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "barsBack",
+              "description": "Back button click event for bars/ Событие клика кнопки назад для панелей",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "barsLite",
+              "description": "Simple click event for bars/ Простое событие клика для панелей",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "window",
+              "description": "Window event triggered on state change/ Событие окна при изменении состояния",
+              "arguments": [
+                {
+                  "name": "options",
+                  "type": "WindowEmitOptions"
+                }
+              ]
             }
           ]
         },
