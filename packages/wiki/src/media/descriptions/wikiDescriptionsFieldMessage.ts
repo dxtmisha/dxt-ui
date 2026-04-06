@@ -65,6 +65,7 @@ export const wikiDescriptionsFieldMessage: StorybookComponentsDescriptionItem = 
 Subcomponent of the Field wrapper used to display informational text, validation errors, and character counters beneath input fields. Provides critical visual feedback regarding entry status or requirements.
 Features a priority system where validation messages override helper text when an error occurs. Includes automatic status styling (red for errors) and integration with the character counter logic.
 Controlled via helperMessage and validationMessage props; linked automatically to the input via ARIA attributes. Primarily used within Field-based components; should generally not be used directly.
-    `
+    `,
+    hide: true
   }
 }

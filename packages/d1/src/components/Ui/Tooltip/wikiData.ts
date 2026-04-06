@@ -27,8 +27,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body', properties: [{ name: 'props', type: '() => any' }] },
-  { name: 'control', properties: [{ name: 'props', type: 'TooltipControl' }] },
+  { name: 'body', description: `Slot for the tooltip body content/ Слот для основного содержимого тултипа`, properties: [{ name: 'props', type: '() => any' }] },
+  { name: 'control', description: `Slot for the control element that triggers the tooltip/ Слот для управляющего элемента, вызывающего тултип`, properties: [{ name: 'props', type: 'TooltipControl' }] },
   { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию` },
   { name: 'description', description: `Description slot/ Слот описания` }
   // :slotsList [!] System label / Системная метка
@@ -36,7 +36,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'tooltip', properties: [{ name: 'open', type: 'boolean' }] }
+  { name: 'tooltip', description: `Event triggered when the tooltip open state changes/ Событие при изменении состояния открытости тултипа`, properties: [{ name: 'open', type: 'boolean' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

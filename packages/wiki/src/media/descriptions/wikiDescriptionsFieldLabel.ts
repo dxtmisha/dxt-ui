@@ -40,6 +40,7 @@ export const wikiDescriptionsFieldLabel: StorybookComponentsDescriptionItem = {
 Subcomponent of the Field wrapper responsible for rendering form field labels and required markers. Ensures consistent styling, positioning, and accessibility for all input headings.
 Features automated support for the "required" property (showing an asterisk) and works seamlessly with character counters and progress bars within the Field header.
 Controlled through the label prop or #label slot. Primarily used within Input, Textarea, and other field-based controls; should generally not be used as a standalone component.
-    `
+    `,
+    hide: true
   }
 }

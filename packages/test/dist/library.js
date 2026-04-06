@@ -174,31 +174,31 @@ ${e.join("")}
 		component: {}
 	},
 	setup(s) {
-		let l = s, { focus: d } = L(), p = t(() => `${l.design}${l.wiki.getName()}`), y = t(() => `type ${l.wiki.getName()}Props`), C = t(() => `type ${l.wiki.getName()}Emits`), w = t(() => `interface ${l.wiki.getName()}Expose`), E = t(() => `interface ${l.wiki.getName()}Slots`), D = t(() => l.wiki.getWikiObject()), O = t(() => l.wiki.getFilteredValues()), k = t(() => T(l.wiki.getAiRender(), l.wiki.getName(), p.value)), A = t(() => T(l.wiki.getAiDescription(), l.wiki.getName(), p.value));
-		return g("name", p), g("component", l.component), g("values", O), (t, s) => x(d) === "all" || x(d) === p.value ? (h(), n(j, {
+		let l = s, { focus: d } = L(), p = t(() => `${l.design}${l.wiki.getName()}`), y = t(() => `type ${l.wiki.getName()}Props`), x = t(() => `type ${l.wiki.getName()}Emits`), C = t(() => `interface ${l.wiki.getName()}Expose`), w = t(() => `interface ${l.wiki.getName()}Slots`), E = t(() => l.wiki.getWikiObject()), D = t(() => l.wiki.getFilteredValues()), O = t(() => T(l.wiki.getAiRender(), l.wiki.getName(), p.value)), k = t(() => T(l.wiki.getAiDescription(), l.wiki.getName(), p.value)), A = t(() => !l.wiki.getAiHide() && (d.value === "all" || d.value === p.value));
+		return g("name", p), g("component", l.component), g("values", D), (t, s) => A.value ? (h(), n(j, {
 			key: 0,
 			title: p.value,
 			anchor: p.value,
 			class: "dxt-test-wiki"
 		}, {
 			default: S(() => [
-				k.value ? (h(), i(e, { key: 0 }, [c(W, { label: "Demo" }), a("pre", ne, b(k.value), 1)], 64)) : r("", !0),
-				A.value ? (h(), i(e, { key: 1 }, [c(W, { label: "Description" }), a("div", re, b(A.value), 1)], 64)) : r("", !0),
+				O.value ? (h(), i(e, { key: 0 }, [c(W, { label: "Demo" }), a("pre", ne, b(O.value), 1)], 64)) : r("", !0),
+				k.value ? (h(), i(e, { key: 1 }, [c(W, { label: "Description" }), a("div", re, b(k.value), 1)], 64)) : r("", !0),
 				a("div", null, [c(H, null, o({ _: 2 }, ["render" in t.$slots ? {
 					name: "render",
 					fn: S((e) => [v(t.$slots, "render", m(u(e)))]),
 					key: "0"
 				} : void 0]), 1024)]),
 				c(W, {
-					type: C.value,
+					type: x.value,
 					label: "Emits"
 				}, null, 8, ["type"]),
 				c(W, {
-					type: w.value,
+					type: C.value,
 					label: "Expose"
 				}, null, 8, ["type"]),
 				c(W, {
-					type: E.value,
+					type: w.value,
 					label: "Slots"
 				}, null, 8, ["type"]),
 				c(W, {
@@ -206,7 +206,7 @@ ${e.join("")}
 					label: "Props"
 				}, null, 8, ["type"]),
 				s[0] || (s[0] = a("div", { class: "dxt-test-wiki__description" }, " Enumeration of some properties ", -1)),
-				a("div", ie, [(h(!0), i(e, null, _(D.value, (e, r) => (h(), n(Q, {
+				a("div", ie, [(h(!0), i(e, null, _(E.value, (e, r) => (h(), n(Q, {
 					key: r,
 					item: e,
 					class: "dxt-test-wiki__props__item"

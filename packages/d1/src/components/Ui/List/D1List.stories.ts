@@ -31,32 +31,14 @@ export const List: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const ListHighlight: Story = {
-  name: 'Выделение',
-  render: () => ({
-    components: { D1List },
-    template: `
-        <D1List
-          :list="[
-            {label: 'Project index example', value: 'projects', icon: 'folder'},
-            {label: 'Advanced context options', value: 'experiments', icon: 'tune'},
-            {label: 'Next examination notes', value: 'example', icon: 'description'},
-            {label: 'User experience metrics', value: 'express', icon: 'insights'}
-          ]"
-          highlight="exam"
-          :highlightLengthStart="4"
-        />
-    `
-  })
-}
 export const ListLiteMode: Story = {
   name: 'Облегчённый режим',
   render: () => ({
     components: { D1List },
     template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Without lite</div>
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Without lite</div>
             <D1List
               :liteThreshold="3"
               :list="[
@@ -68,8 +50,8 @@ export const ListLiteMode: Story = {
               ]"
             />
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">With lite</div>
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">With lite</div>
             <D1List
               :lite="true"
               :liteThreshold="3"
@@ -80,6 +62,28 @@ export const ListLiteMode: Story = {
                 {label: 'Delta', value: 'd', icon: 'star'},
                 {label: 'Epsilon', value: 'e', icon: 'bolt'}
               ]"
+            />
+          </div>
+        </div>
+    `
+  })
+}
+export const ListHighlight: Story = {
+  name: 'Выделение',
+  render: () => ({
+    components: { D1List },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <D1List
+              :list="[
+                {label: 'Project index example', value: 'projects', icon: 'folder'},
+                {label: 'Advanced context options', value: 'experiments', icon: 'tune'},
+                {label: 'Next examination notes', value: 'example', icon: 'description'},
+                {label: 'User experience metrics', value: 'express', icon: 'insights'}
+              ]"
+              highlight="exam"
+              :highlightLengthStart="4"
             />
           </div>
         </div>

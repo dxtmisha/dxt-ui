@@ -216,6 +216,7 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
 Foundational wrapper component for all form inputs. Provides the structural layout, styling, and state management for labels, helper messages, validation errors, icons, and progress indicators.
 Features a composable structure with prefix/suffix slots, leading/trailing icons, and a character counter. Automatically handles validation states, loading spinners, and disabled/readonly appearances.
 Integrates with native inputs via the #default slot, exposing essential bindings (id, class, aria) to maintain design consistency and accessibility. Use as a base when creating custom form controls.
-    `
+    `,
+    hide: true
   }
 }

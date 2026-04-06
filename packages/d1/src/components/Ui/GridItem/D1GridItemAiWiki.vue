@@ -18,6 +18,13 @@ defineOptions({
     :component="D1GridItem"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item" style="min-height: 48px;">
+  <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px;">
+    <D1GridItem v-bind="args">Item</D1GridItem>
+  </div>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

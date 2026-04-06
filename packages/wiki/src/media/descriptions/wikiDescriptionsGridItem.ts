@@ -39,6 +39,13 @@ export const wikiDescriptionsGridItem: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
+    render: `
+<div :class="classDemo.item" style="min-height: 48px;">
+  <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px;">
+    <GridItem v-bind="args">Item</GridItem>
+  </div>
+</div>
+    `,
     description: `
 Individual cell unit within a Grid layout, providing granular control over column spanning across various screen resolutions. Enables building complex, responsive layouts with minimal CSS.
 Features responsive span settings for all major breakpoints (base, sm, md, lg, xl, 2xl). Allows items to occupy different widths on mobile vs desktop, ensuring optimal use of screen space.

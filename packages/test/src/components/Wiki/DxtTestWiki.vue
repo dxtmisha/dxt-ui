@@ -51,6 +51,18 @@ const aiDescription = computed(
   )
 )
 
+/**
+ * Show wiki if not hidden and focus is all or component name/
+ * Показывает wiki, если он не скрыт, а фокус установлен на "all" или имя компонента
+ */
+const aiShow = computed(() =>
+  !props.wiki.getAiHide()
+  && (
+    focus.value === 'all'
+    || focus.value === name.value
+  )
+)
+
 provide('name', name)
 provide('component', props.component)
 provide('values', values)
@@ -58,7 +70,7 @@ provide('values', values)
 
 <template>
   <DxtTestBlock
-   v-if="focus === 'all' || focus === name"
+    v-if="aiShow"
     :title="name"
     :anchor="name"
     class="dxt-test-wiki"

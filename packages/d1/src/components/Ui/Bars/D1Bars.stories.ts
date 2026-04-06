@@ -73,25 +73,29 @@ export const BarsVModel: Story = {
       }
     },
     template: `
-        <button class="wiki-storybook-button" @click="isAction = !isAction">Toggle action ({{ isAction ? 'on' : 'off' }})</button>
-        <D1Bars
-          v-model:action="isAction"
-          label="Page Title"
-          description="A concise description for this example"
-          :bars="[
-            { icon: 'search' },
-            { icon: 'refresh' },
-            { icon: 'more_vert' }
-          ]"
-          action-label="2 selected"
-          action-description="Choose an action to apply"
-          :action-bars="[
-            { icon: 'share' },
-            { icon: 'edit' },
-            { icon: 'delete' }
-          ]"
-          style="margin-top: 8px;"
-        />
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="isAction = !isAction">Toggle action ({{ isAction ? 'on' : 'off' }})</button>
+          </div>
+          <D1Bars
+            v-model:action="isAction"
+            label="Page Title"
+            description="A concise description for this example"
+            :bars="[
+              { icon: 'search' },
+              { icon: 'refresh' },
+              { icon: 'more_vert' }
+            ]"
+            action-label="2 selected"
+            action-description="Choose an action to apply"
+            :action-bars="[
+              { icon: 'share' },
+              { icon: 'edit' },
+              { icon: 'delete' }
+            ]"
+            style="margin-top: 8px;"
+          />
+        </div>
     `
   })
 }
@@ -112,6 +116,30 @@ export const BarsSkeleton: Story = {
             ]"
           />
         </D1Skeleton>
+    `
+  })
+}
+export const BarsSlots: Story = {
+  name: 'Использование слотов',
+  render: () => ({
+    components: { D1Bars },
+    setup() {
+      return {
+        isAction: ref(false)
+      }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="isAction = !isAction">Toggle action ({{ isAction ? 'on' : 'off' }})</button>
+          </div>
+          <D1Bars v-model:action="isAction">
+            <template #default>Custom Label slot</template>
+            <template #description>Custom Description slot</template>
+            <template #bars>Custom Bars Slot</template>
+            <template #actionBars>Custom ActionBars Slot</template>
+          </D1Bars>
+        </div>
     `
   })
 }

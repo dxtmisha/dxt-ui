@@ -19,8 +19,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default' },
-  { name: 'secondary' }
+  { name: 'default', description: `Slot for the main list of actions/ Слот для основного списка действий` },
+  { name: 'secondary', description: `Slot for the secondary list of actions/ Слот для вторичного списка действий` }
   // :slotsList [!] System label / Системная метка
 ]
 

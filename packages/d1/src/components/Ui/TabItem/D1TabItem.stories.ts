@@ -43,22 +43,6 @@ export const TabItem: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const TabItemBasic: Story = {
-  name: 'Базовое использование',
-  render: () => ({
-    components: { D1TabItem },
-    template: `
-        <div class="wiki-storybook-flex-column">
-            <D1TabItem label="Tab Item" />
-            <D1TabItem label="Tab Item" icon="home" />
-            <D1TabItem label="Messages" badge="5" />
-            <D1TabItem label="Updates" badge-dot />
-            <D1TabItem label="Selected Tab" selected />
-            <D1TabItem label="Disabled Tab" disabled />
-        </div>
-    `
-  })
-}
 export const TabItemSkeleton: Story = {
   name: 'Скелетон',
   render: () => ({

@@ -16,7 +16,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default' }
+  { name: 'default', description: `Slot for default grid item content/ Слот для основного содержимого элемента сетки` }
   // :slotsList [!] System label / Системная метка
 ]
 

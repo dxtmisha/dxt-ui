@@ -20,7 +20,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default' }
+  { name: 'default', description: `Slot for displaying a custom list of chips/ Слот для отображения пользовательского списка чипов` }
   // :slotsList [!] System label / Системная метка
 ]
 

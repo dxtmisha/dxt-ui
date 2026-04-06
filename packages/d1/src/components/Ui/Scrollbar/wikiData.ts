@@ -18,19 +18,19 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default' }
+  { name: 'default', description: `Slot for default scrollbar content/ Слот для основного содержимого скроллбара` }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'bottom', properties: [{ name: 'isBottom', type: 'boolean' }] },
-  { name: 'edge', properties: [{ name: 'isTop', type: 'boolean' }, { name: 'isBottom', type: 'boolean' }, { name: 'edge', type: 'ScrollbarEdgeType' }] },
-  { name: 'leaveBottom' },
-  { name: 'leaveTop' },
-  { name: 'reachBottom' },
-  { name: 'reachTop' },
-  { name: 'top', properties: [{ name: 'isTop', type: 'boolean' }] }
+  { name: 'bottom', description: `Event triggered when reaching the bottom/ Событие при достижении низа`, properties: [{ name: 'isBottom', type: 'boolean' }] },
+  { name: 'edge', description: `Event triggered when reaching any edge/ Событие при достижении любого края`, properties: [{ name: 'isTop', type: 'boolean' }, { name: 'isBottom', type: 'boolean' }, { name: 'edge', type: 'ScrollbarEdgeType' }] },
+  { name: 'leaveBottom', description: `Event triggered when leaving the bottom position/ Событие при уходе с нижней позиции` },
+  { name: 'leaveTop', description: `Event triggered when leaving the top position/ Событие при уходе с верхней позиции` },
+  { name: 'reachBottom', description: `Event triggered when precisely reaching the bottom position/ Событие при точном достижении нижней позиции` },
+  { name: 'reachTop', description: `Event triggered when precisely reaching the top position/ Событие при точном достижении верхней позиции` },
+  { name: 'top', description: `Event triggered when reaching the top/ Событие при достижении верха`, properties: [{ name: 'isTop', type: 'boolean' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

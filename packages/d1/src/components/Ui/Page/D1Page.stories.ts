@@ -55,19 +55,13 @@ export const PageBasic: Story = {
   render: () => ({
     components: { D1Page },
     template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Page>
-            <p>Simple page content wrapper.</p>
-          </D1Page>
-          <D1Page label="Documentation" description="Learn how to use the library">
-            <p>Welcome to the documentation page.</p>
-          </D1Page>
-          <D1Page headline="Dashboard Overview" label="Analytics">
-            <div style="height: 100px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-              Chart Placeholder
-            </div>
-          </D1Page>
-        </div>
+        <D1Page
+          headline="User Dashboard"
+          label="Overview"
+          description="View your account analytics and recent activity."
+        >
+          <p>Welcome to your dashboard. Here you can find a summary of your performance and manage your account settings.</p>
+        </D1Page>
     `
   })
 }

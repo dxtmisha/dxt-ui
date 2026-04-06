@@ -12,8 +12,8 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'head', properties: [{ name: 'props', type: 'ListGroupSlotsPropsInclude' }] },
-  { name: 'list' }
+  { name: 'head', description: `Slot for the group header/ Слот для заголовка группы`, properties: [{ name: 'props', type: 'ListGroupSlotsPropsInclude' }] },
+  { name: 'list', description: `Slot for the group list content/ Слот для содержимого списка группы` }
   // :slotsList [!] System label / Системная метка
 ]
 

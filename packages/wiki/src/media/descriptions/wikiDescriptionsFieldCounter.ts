@@ -69,6 +69,7 @@ export const wikiDescriptionsFieldCounter: StorybookComponentsDescriptionItem = 
 Utility subcomponent for displaying character counts and input limits. Provides visual feedback to users and accessibility status to screen readers during formal data entry.
 Features customizable display templates with placeholders ([c] for counter, [m] for max) and automated visibility based on maxlength. Includes ARIA live region management for screen reader announcements.
 Integrated automatically into components like Input and Textarea; should generally not be used directly. Controlled via counter and maxlength props within the Field wrapper.
-    `
+    `,
+    hide: true
   }
 }

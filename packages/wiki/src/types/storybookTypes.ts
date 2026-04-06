@@ -103,7 +103,9 @@ export type StorybookArgsValue = Record<string, any>
 
 /** Function type for Storybook argument properties / Тип функции для свойств аргументов Storybook */
 export type StorybookArgsProp = (
+  /** Default value / Значение по умолчанию */
   defaultValue?: any,
+  /** List of properties / Список свойств */
   props?: string[]
 ) => StorybookArgsItem
 
@@ -245,9 +247,14 @@ export type StorybookComponentsDescriptionItem = {
 
   /** Prompts for AI documentation / Промпты для документации ИИ */
   ai?: {
+    /** AI-generated render example / Пример рендеринга, сгенерированный ИИ */
     render?: string
+    /** AI-generated import information / Информация об импорте, сгенерированная ИИ */
     import?: string[]
+    /** AI-generated description / Описание, сгенерированное ИИ */
     description?: string
+    /** Whether to hide AI documentation / Скрыть ли документацию ИИ */
+    hide?: boolean
   }
 }
 

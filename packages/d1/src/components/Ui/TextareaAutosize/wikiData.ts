@@ -19,7 +19,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'input', properties: [{ name: 'event', type: 'InputEvent' }] }
+  { name: 'input', description: `Event triggered on input/ Событие при вводе`, properties: [{ name: 'event', type: 'InputEvent' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

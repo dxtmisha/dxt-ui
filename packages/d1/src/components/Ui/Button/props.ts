@@ -29,6 +29,7 @@ export type PropsToken = {
   text?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   roundedFull?: boolean
+  hasLabelMinWidth?: boolean
   palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
@@ -46,7 +47,8 @@ export const defaults: object = {
   ...{
     // :default [!] System label / Системная метка
     primary: true,
-    size: 'md'
+    size: 'md',
+    hasLabelMinWidth: true
     // :default [!] System label / Системная метка
   }
 }

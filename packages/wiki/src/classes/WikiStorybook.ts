@@ -190,6 +190,15 @@ export class WikiStorybook {
   }
 
   /**
+   * Returns the AI hide of the component
+   *
+   * Возвращает AI скрыть компонента
+   */
+  getAiHide(): boolean {
+    return this.getDescriptionItem()?.ai?.hide ?? false
+  }
+
+  /**
    * Returns a wiki item by its name
    *
    * Возвращает элемент wiki по его имени
