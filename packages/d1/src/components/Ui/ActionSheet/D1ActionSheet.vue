@@ -11,6 +11,10 @@ import {
   type ActionSheetSlots
 } from '@dxtmisha/constructor/ActionSheet'
 
+import { D1Window } from '../Window'
+import { D1Bars } from '../Bars'
+import { D1Actions } from '../Actions'
+
 import { defaults, type ActionSheetProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -40,7 +44,17 @@ const design = new ActionSheetDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      window: D1Window,
+      bars: D1Bars,
+      actions: D1Actions
+    },
+    compMod: {
+      window: {
+        divider: true
+      }
+    }
   }
 )
 

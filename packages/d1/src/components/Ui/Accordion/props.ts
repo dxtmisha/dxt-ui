@@ -1,5 +1,9 @@
 import { type AccordionPropsBasic, defaultsAccordion } from '@dxtmisha/constructor/Accordion'
 
+import type { IconProps } from '../Icon'
+import type { CellProps } from '../Cell'
+import type { MotionTransformProps } from '../MotionTransform'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   // :values [!] System label / Системная метка
@@ -14,7 +18,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type AccordionProps = AccordionPropsBasic & PropsToken
+export type AccordionProps = AccordionPropsBasic<
+  IconProps,
+  CellProps,
+  MotionTransformProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
