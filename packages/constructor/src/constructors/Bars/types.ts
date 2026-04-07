@@ -19,12 +19,12 @@ export type BarsComponents = ButtonComponentInclude
  */
 export type BarsEmits
   = EventClickEmits
-  & {
+    & {
     /** Event for updating the action mode status/ Событие обновления статуса режима действия */
-    'update:action': [value: boolean]
-    /** Event for updating the action mode model status/ Событие обновления статуса модели режима действия */
-    'update:modelAction': [value: boolean]
-  }
+      'update:action': [value: boolean]
+      /** Event for updating the action mode model status/ Событие обновления статуса модели режима действия */
+      'update:modelAction': [value: boolean]
+    }
 
 /**
  * Type describing available properties.

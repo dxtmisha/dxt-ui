@@ -1,4 +1,7 @@
 import { SnackbarItemPropsBasic } from '@dxtmisha/constructor/SnackbarItem';
+import { IconProps } from '../Icon';
+import { ButtonProps } from '../Button';
+import { ActionsProps } from '../Actions';
 export declare const propsValues: {
     palette: string[];
 };
@@ -8,7 +11,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type SnackbarItemProps = SnackbarItemPropsBasic & PropsToken;
+export type SnackbarItemProps = SnackbarItemPropsBasic<IconProps, ButtonProps, ActionsProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

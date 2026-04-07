@@ -1,4 +1,6 @@
 import { TabItemPropsBasic } from '@dxtmisha/constructor/TabItem';
+import { IconProps } from '../Icon';
+import { BadgeProps } from '../Badge';
 export declare const propsValues: {
     adaptive: string[];
     container: string[];
@@ -14,7 +16,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TabItemProps = TabItemPropsBasic & PropsToken;
+export type TabItemProps = TabItemPropsBasic<IconProps, BadgeProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

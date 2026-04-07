@@ -19,7 +19,7 @@ import type { ModelEmitsOpen } from '../../types/modelTypes'
  */
 export type AccordionComponents
   = CellComponentInclude
-  & MotionTransformComponentInclude
+    & MotionTransformComponentInclude
 
 /**
  * Type describing available events.
@@ -28,8 +28,8 @@ export type AccordionComponents
  */
 export type AccordionEmits
   = EventClickEmits
-  & MotionTransformEmitsInclude
-  & ModelEmitsOpen
+    & MotionTransformEmitsInclude
+    & ModelEmitsOpen
 
 /**
  * Type describing available properties.

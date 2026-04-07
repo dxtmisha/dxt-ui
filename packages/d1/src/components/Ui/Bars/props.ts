@@ -1,5 +1,8 @@
 import { type BarsPropsBasic, defaultsBars } from '@dxtmisha/constructor/Bars'
 
+import type { IconProps } from '../Icon'
+import type { ButtonProps } from '../Button'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
@@ -16,7 +19,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type BarsProps = BarsPropsBasic & PropsToken
+export type BarsProps = BarsPropsBasic<IconProps, ButtonProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

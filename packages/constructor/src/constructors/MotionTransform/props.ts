@@ -11,31 +11,31 @@ export type MotionTransformPropsToken = {
 
 export type MotionTransformPropsBasic
   = AriaByPropsInclude
-  & ModelPropsOpen
-  & {
+    & ModelPropsOpen
+    & {
     // Status
     /** Current transformation state (v-model:open)/ Текущее состояние трансформации (v-model:open) */
-    open?: boolean
-    /** If true, ensures the body content is rendered in the DOM regardless of the open state/ Если true, гарантирует, что содержимое тела рендерится в DOM независимо от состояния открытия */
-    inDom?: boolean
+      open?: boolean
+      /** If true, ensures the body content is rendered in the DOM regardless of the open state/ Если true, гарантирует, что содержимое тела рендерится в DOM независимо от состояния открытия */
+      inDom?: boolean
 
-    // Value
-    /** Element or identifier to be excluded from the auto-close logic/ Элемент или идентификатор, который следует исключить из логики автозакрытия */
-    ignore?: HTMLElement | string
-    /** CSS selector for elements that should be ignored by the auto-close triggers/ CSS‑селектор для элементов, которые должны игнорироваться триггерами автозакрытия */
-    ignoreSelector?: string
+      // Value
+      /** Element or identifier to be excluded from the auto-close logic/ Элемент или идентификатор, который следует исключить из логики автозакрытия */
+      ignore?: HTMLElement | string
+      /** CSS selector for elements that should be ignored by the auto-close triggers/ CSS‑селектор для элементов, которые должны игнорироваться триггерами автозакрытия */
+      ignoreSelector?: string
 
-    // Style
-    /** Enables toggling the transformation state by clicking on the head element/ Включает переключение состояния трансформации при клике по элементу заголовка */
-    clickOpen?: boolean
-    /** Enables automatic state reset when clicking outside the component or pressing Escape/ Включает автоматический сброс состояния при клике вне компонента или нажатии Escape */
-    autoClose?: boolean
-    /** Enables transition animations for smooth transformation state changes/ Включает анимацию перехода для плавного изменения состояния трансформации */
-    animationShow?: boolean
+      // Style
+      /** Enables toggling the transformation state by clicking on the head element/ Включает переключение состояния трансформации при клике по элементу заголовка */
+      clickOpen?: boolean
+      /** Enables automatic state reset when clicking outside the component or pressing Escape/ Включает автоматический сброс состояния при клике вне компонента или нажатии Escape */
+      autoClose?: boolean
+      /** Enables transition animations for smooth transformation state changes/ Включает анимацию перехода для плавного изменения состояния трансформации */
+      animationShow?: boolean
 
-    /** The HTML tag for the body element/ HTML‑тег для элемента тела */
-    tagBody?: string
-  }
+      /** The HTML tag for the body element/ HTML‑тег для элемента тела */
+      tagBody?: string
+    }
 
 /**
  * Type describing incoming properties.

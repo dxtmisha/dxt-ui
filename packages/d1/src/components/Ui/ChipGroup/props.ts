@@ -1,4 +1,5 @@
 import { type ChipGroupPropsBasic, defaultsChipGroup } from '@dxtmisha/constructor/ChipGroup'
+import type { ChipProps } from '../Chip'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -13,7 +14,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ChipGroupProps = ChipGroupPropsBasic & PropsToken
+export type ChipGroupProps = ChipGroupPropsBasic<ChipProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

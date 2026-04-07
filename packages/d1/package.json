@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.52.0",
+  "version": "0.52.1",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -30,7 +30,7 @@
     "dxt-wiki-storm": "dxt-wiki-storm",
     "dxt-types": "dxt-types",
     "prepublishOnly": "npm run dxt-ui && npm run build && npm run dxt-wiki-storm",
-    "publish": "npm publish --access public"
+    "publish-to-npm": "npm publish --access public"
   },
   "files": [
     "dist/",

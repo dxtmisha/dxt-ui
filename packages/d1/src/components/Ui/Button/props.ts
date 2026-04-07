@@ -1,4 +1,6 @@
 import { type ButtonPropsBasic, defaultsButton } from '@dxtmisha/constructor/Button'
+import type { IconProps } from '../Icon'
+import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -35,7 +37,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ButtonProps = ButtonPropsBasic & PropsToken
+export type ButtonProps = ButtonPropsBasic<IconProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

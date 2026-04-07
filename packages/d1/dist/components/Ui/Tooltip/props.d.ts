@@ -1,4 +1,5 @@
 import { TooltipPropsBasic } from '@dxtmisha/constructor/Tooltip';
+import { ArrowProps } from '../Arrow';
 export declare const propsValues: {
     maxWidth: string[];
 };
@@ -10,7 +11,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TooltipProps = TooltipPropsBasic & PropsToken;
+export type TooltipProps = TooltipPropsBasic<ArrowProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

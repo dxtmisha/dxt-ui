@@ -1,4 +1,6 @@
 import { ListPropsBasic } from '@dxtmisha/constructor/List';
+import { IconProps } from '../Icon';
+import { ListItemProps } from '../ListItem';
 export declare const propsValues: {
     axis: string[];
 };
@@ -10,7 +12,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ListProps = ListPropsBasic & PropsToken;
+export type ListProps = ListPropsBasic<IconProps, ListItemProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

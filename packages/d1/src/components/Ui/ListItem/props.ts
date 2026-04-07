@@ -1,5 +1,9 @@
 import { type ListItemPropsBasic, defaultsListItem } from '@dxtmisha/constructor/ListItem'
 
+import type { IconProps } from '../Icon'
+import type { BadgeProps } from '../Badge'
+import type { ProgressProps } from '../Progress'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   iconAlign: ['center', 'edge'],
@@ -30,7 +34,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ListItemProps = ListItemPropsBasic & PropsToken
+export type ListItemProps = ListItemPropsBasic<
+  IconProps,
+  BadgeProps,
+  ProgressProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

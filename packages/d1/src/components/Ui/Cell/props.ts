@@ -1,4 +1,6 @@
 import { type CellPropsBasic, defaultsCell } from '@dxtmisha/constructor/Cell'
+import type { IconProps } from '../Icon'
+import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -26,7 +28,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type CellProps = CellPropsBasic & PropsToken
+export type CellProps = CellPropsBasic<IconProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

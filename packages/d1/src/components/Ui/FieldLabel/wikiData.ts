@@ -9,7 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'counterId', type: 'string' },
   { name: 'counterShow', type: 'boolean' },
   { name: 'counterTemplate', type: 'string' },
-  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterPropsBasic>' },
+  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounter>' },
   { name: 'for', type: 'string' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },

@@ -1,4 +1,11 @@
 import { type InputPropsBasic, defaultsInput } from '@dxtmisha/constructor/Input'
+import type { MaskProps } from '../Mask'
+import type { IconProps } from '../Icon'
+import type { FieldProps } from '../Field'
+import type { FieldLabelProps } from '../FieldLabel'
+import type { FieldMessageProps } from '../FieldMessage'
+import type { FieldCounterProps } from '../FieldCounter'
+import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -13,7 +20,15 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type InputProps = InputPropsBasic & PropsToken
+export type InputProps = InputPropsBasic<
+  MaskProps,
+  IconProps,
+  FieldProps,
+  FieldLabelProps,
+  FieldMessageProps,
+  FieldCounterProps,
+  ProgressProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

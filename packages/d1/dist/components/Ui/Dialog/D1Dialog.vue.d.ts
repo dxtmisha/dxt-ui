@@ -23,21 +23,21 @@ declare const __VLS_component: DefineComponent<DialogProps, {
     elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     window: (options: WindowEmitOptions) => any;
+    close: () => any;
     bars: (event: MouseEvent, value: EventClickValue) => any;
     barsLite: (value: EventClickValue) => any;
     barsBack: (value: EventClickValue) => any;
     actions: (event: MouseEvent, value: EventClickValue) => any;
     actionsLite: (value: EventClickValue) => any;
-    close: () => any;
     ok: () => any;
 }, string, PublicProps, Readonly<DialogProps> & Readonly<{
     onWindow?: ((options: WindowEmitOptions) => any) | undefined;
+    onClose?: (() => any) | undefined;
     onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onBarsLite?: ((value: EventClickValue) => any) | undefined;
     onBarsBack?: ((value: EventClickValue) => any) | undefined;
     onActions?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onActionsLite?: ((value: EventClickValue) => any) | undefined;
-    onClose?: (() => any) | undefined;
     onOk?: (() => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;

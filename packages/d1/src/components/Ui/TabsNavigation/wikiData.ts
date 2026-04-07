@@ -10,15 +10,15 @@ const propsNames: StorybookProps = [
   { name: 'horizontalScrollAlign', type: 'string', option: ['block', 'left'] },
   { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic>' },
   { name: 'horizontalScrollFlush', type: 'boolean' },
-  { name: 'itemAttrs', type: 'ConstrBind<TabItemPropsBasic>' },
+  { name: 'itemAttrs', type: 'ConstrBind<TabItem>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
-  { name: 'list', type: 'ListRecord<TabItemPropsBasic>' },
+  { name: 'list', type: 'ListRecord<any>' },
   { name: 'modelSelected', type: 'ListSelectedList' },
   { name: 'onUpdate:modelSelected', type: '(value: ListSelectedList) => void' },
   { name: 'onUpdate:selected', type: '(value: ListSelectedList) => void' },
   { name: 'selected', type: 'ListSelectedList' },
-  { name: 'tag', type: 'string' }
+  { name: 'tag', type: 'TabItem[\'tag\']' }
   // :propsList [!] System label / Системная метка
 ]
 

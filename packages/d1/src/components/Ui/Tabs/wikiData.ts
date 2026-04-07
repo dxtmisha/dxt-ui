@@ -6,13 +6,13 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'modelSelected', type: 'ListSelectedList' },
-  { name: 'motionAxisAttrs', type: 'ConstrBind<MotionAxisPropsBasic>' },
+  { name: 'motionAxisAttrs', type: 'ConstrBind<MotionAxis>' },
   { name: 'onUpdate:modelSelected', type: '(value: ListSelectedList) => void' },
   { name: 'onUpdate:selected', type: '(value: ListSelectedList) => void' },
   { name: 'selected', type: 'string' },
-  { name: 'tabItemAttrs', type: 'ConstrBind<TabItemPropsBasic>' },
-  { name: 'tabs', type: 'ListRecord<TabItemPropsBasic> | ConstrBind<TabsNavigationPropsBasic>' },
-  { name: 'tabsNavigationAttrs', type: 'ConstrBind<TabsNavigationPropsBasic>' }
+  { name: 'tabItemAttrs', type: 'ConstrBind<TabItem>' },
+  { name: 'tabs', type: 'ListRecord<TabItem> | ConstrBind<TabsNavigation>' },
+  { name: 'tabsNavigationAttrs', type: 'ConstrBind<TabsNavigation>' }
   // :propsList [!] System label / Системная метка
 ]
 

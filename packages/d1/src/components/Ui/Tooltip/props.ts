@@ -1,4 +1,5 @@
 import { type TooltipPropsBasic, defaultsTooltip } from '@dxtmisha/constructor/Tooltip'
+import type { ArrowProps } from '../Arrow'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -17,7 +18,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TooltipProps = TooltipPropsBasic & PropsToken
+export type TooltipProps = TooltipPropsBasic<ArrowProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

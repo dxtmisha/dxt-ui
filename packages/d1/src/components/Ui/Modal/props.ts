@@ -1,4 +1,8 @@
 import { type ModalPropsBasic, defaultsModal } from '@dxtmisha/constructor/Modal'
+import type { WindowProps } from '../Window'
+import type { BarsProps } from '../Bars'
+import type { ActionsProps } from '../Actions'
+import type { ImageProps } from '../Image'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -17,7 +21,12 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ModalProps = ModalPropsBasic & PropsToken
+export type ModalProps = ModalPropsBasic<
+  WindowProps,
+  BarsProps,
+  ActionsProps,
+  ImageProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

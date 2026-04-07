@@ -1,4 +1,10 @@
 import { DialogPropsBasic } from '@dxtmisha/constructor/Dialog';
+import { WindowProps } from '../Window';
+import { BarsProps } from '../Bars';
+import { IconProps } from '../Icon';
+import { ImageProps } from '../Image';
+import { ButtonProps } from '../Button';
+import { ActionsProps } from '../Actions';
 export declare const propsValues: {
     imagePosition: string[];
     width: string[];
@@ -12,7 +18,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type DialogProps = DialogPropsBasic & PropsToken;
+export type DialogProps = DialogPropsBasic<WindowProps, BarsProps, IconProps, ImageProps, ButtonProps, ActionsProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

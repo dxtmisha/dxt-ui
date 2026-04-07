@@ -1,5 +1,8 @@
 import { type ChipPropsBasic, defaultsChip } from '@dxtmisha/constructor/Chip'
 
+import type { IconProps } from '../Icon'
+import type { ProgressProps } from '../Progress'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   adaptive: ['iconAlways', 'block', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
@@ -32,7 +35,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ChipProps = ChipPropsBasic & PropsToken
+export type ChipProps = ChipPropsBasic<IconProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

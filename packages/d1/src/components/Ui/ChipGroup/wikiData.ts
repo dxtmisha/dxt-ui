@@ -5,7 +5,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'chipAttrs', type: 'ConstrBind<ChipPropsBasic>' },
+  { name: 'chipAttrs', type: 'ConstrBind<Chip>' },
   { name: 'iconWhenSelected', type: 'boolean' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },

@@ -1,4 +1,5 @@
 import { IconPropsBasic } from '@dxtmisha/constructor/Icon';
+import { ImageProps } from '../Image';
 export declare const propsValues: {
     animationType: string[];
     size: string[];
@@ -27,7 +28,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type IconProps = IconPropsBasic & PropsToken;
+export type IconProps = IconPropsBasic<ImageProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

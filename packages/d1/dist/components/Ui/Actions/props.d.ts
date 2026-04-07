@@ -1,4 +1,5 @@
 import { ActionsPropsBasic } from '@dxtmisha/constructor/Actions';
+import { ButtonProps } from '../Button';
 export declare const propsValues: {
     align: string[];
     flexible: string[];
@@ -14,7 +15,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ActionsProps = ActionsPropsBasic & PropsToken;
+export type ActionsProps = ActionsPropsBasic<ButtonProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

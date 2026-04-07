@@ -1,4 +1,7 @@
 import { type WindowPropsBasic, defaultsWindow } from '@dxtmisha/constructor/Window'
+import type { ScrollbarProps } from '../Scrollbar'
+import type { IconProps } from '../Icon'
+import type { ImageProps } from '../Image'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -36,7 +39,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type WindowProps = WindowPropsBasic & PropsToken
+export type WindowProps = WindowPropsBasic<
+  ScrollbarProps,
+  IconProps,
+  ImageProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

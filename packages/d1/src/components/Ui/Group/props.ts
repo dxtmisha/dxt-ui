@@ -1,4 +1,5 @@
 import { type GroupPropsBasic, defaultsGroup } from '@dxtmisha/constructor/Group'
+import type { IconProps } from '../Icon'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -13,7 +14,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type GroupProps = GroupPropsBasic & PropsToken
+export type GroupProps = GroupPropsBasic<IconProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

@@ -1,4 +1,5 @@
 import { type ActionsPropsBasic, defaultsActions } from '@dxtmisha/constructor/Actions'
+import type { ButtonProps } from '../Button'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -21,7 +22,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ActionsProps = ActionsPropsBasic & PropsToken
+export type ActionsProps = ActionsPropsBasic<ButtonProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

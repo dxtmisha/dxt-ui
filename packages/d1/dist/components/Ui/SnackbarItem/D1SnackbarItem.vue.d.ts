@@ -14,15 +14,15 @@ declare const __VLS_component: DefineComponent<SnackbarItemProps, {
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     click: (event: MouseEvent, value: EventClickValue) => any;
     clickLite: (value: EventClickValue) => any;
+    close: (value: string | undefined) => any;
     actions: (event: MouseEvent, value: EventClickValue) => any;
     actionsLite: (value: EventClickValue) => any;
-    close: (value: string | undefined) => any;
 }, string, PublicProps, Readonly<SnackbarItemProps> & Readonly<{
     onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onClickLite?: ((value: EventClickValue) => any) | undefined;
+    onClose?: ((value: string | undefined) => any) | undefined;
     onActions?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onActionsLite?: ((value: EventClickValue) => any) | undefined;
-    onClose?: ((value: string | undefined) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
 export default _default;

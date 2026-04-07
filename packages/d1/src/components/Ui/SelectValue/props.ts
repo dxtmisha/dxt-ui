@@ -1,4 +1,6 @@
 import { type SelectValuePropsBasic, defaultsSelectValue } from '@dxtmisha/constructor/SelectValue'
+import type { IconProps } from '../Icon'
+import type { ChipProps } from '../Chip'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -13,7 +15,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type SelectValueProps = SelectValuePropsBasic & PropsToken
+export type SelectValueProps = SelectValuePropsBasic<IconProps, ChipProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

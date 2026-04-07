@@ -1,4 +1,9 @@
 import { FieldPropsBasic } from '@dxtmisha/constructor/Field';
+import { IconProps } from '../Icon';
+import { FieldLabelProps } from '../FieldLabel';
+import { FieldMessageProps } from '../FieldMessage';
+import { FieldCounterProps } from '../FieldCounter';
+import { ProgressProps } from '../Progress';
 export declare const propsValues: {
     arrowAlign: string[];
     cancel: string[];
@@ -30,7 +35,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type FieldProps = FieldPropsBasic & PropsToken;
+export type FieldProps = FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken;
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

@@ -5,7 +5,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'arrowAttrs', type: 'ConstrBind<ArrowProps>' },
+  { name: 'arrowAttrs', type: 'ConstrBind<Arrow>' },
   { name: 'arrowPosition', type: 'string', option: ['auto', 'top', 'bottom', 'left', 'right'] },
   { name: 'arrowShow', type: 'boolean' },
   { name: 'delay', type: 'number' },

@@ -1,5 +1,7 @@
 import { type BadgePropsBasic, defaultsBadge } from '@dxtmisha/constructor/Badge'
 
+import type { IconProps } from '../Icon'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   overlap: ['rectangular', 'circular', 'static'],
@@ -29,7 +31,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type BadgeProps = BadgePropsBasic & PropsToken
+export type BadgeProps = BadgePropsBasic<IconProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

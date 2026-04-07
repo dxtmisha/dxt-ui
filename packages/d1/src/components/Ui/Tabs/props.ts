@@ -1,5 +1,9 @@
 import { type TabsPropsBasic, defaultsTabs } from '@dxtmisha/constructor/Tabs'
 
+import type { TabItemProps } from '../TabItem'
+import type { TabsNavigationProps } from '../TabsNavigation'
+import type { MotionAxisProps } from '../MotionAxis'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   // :values [!] System label / Системная метка
@@ -13,7 +17,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TabsProps = TabsPropsBasic & PropsToken
+export type TabsProps = TabsPropsBasic<
+  TabItemProps,
+  TabsNavigationProps,
+  MotionAxisProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

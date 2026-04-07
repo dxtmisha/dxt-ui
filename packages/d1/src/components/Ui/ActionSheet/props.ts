@@ -1,5 +1,9 @@
 import { type ActionSheetPropsBasic, defaultsActionSheet } from '@dxtmisha/constructor/ActionSheet'
 
+import type { WindowProps } from '../Window'
+import type { BarsProps } from '../Bars'
+import type { ActionsProps } from '../Actions'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   width: ['sm', 'md', 'lg', 'auto']
@@ -15,7 +19,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ActionSheetProps = ActionSheetPropsBasic & PropsToken
+export type ActionSheetProps = ActionSheetPropsBasic<
+  WindowProps,
+  BarsProps,
+  ActionsProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

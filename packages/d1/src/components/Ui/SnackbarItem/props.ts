@@ -1,5 +1,9 @@
 import { type SnackbarItemPropsBasic, defaultsSnackbarItem } from '@dxtmisha/constructor/SnackbarItem'
 
+import type { IconProps } from '../Icon'
+import type { ButtonProps } from '../Button'
+import type { ActionsProps } from '../Actions'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
@@ -15,7 +19,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type SnackbarItemProps = SnackbarItemPropsBasic & PropsToken
+export type SnackbarItemProps = SnackbarItemPropsBasic<
+  IconProps,
+  ButtonProps,
+  ActionsProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

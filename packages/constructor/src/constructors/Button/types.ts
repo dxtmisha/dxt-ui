@@ -14,8 +14,8 @@ import type { LabelSlots } from '../../types/labelTypes'
  */
 export type ButtonComponents
   = IconComponentInclude
-  & ProgressComponentInclude
-  & RippleComponentInclude
+    & ProgressComponentInclude
+    & RippleComponentInclude
 
 /**
  * Type describing available events.
