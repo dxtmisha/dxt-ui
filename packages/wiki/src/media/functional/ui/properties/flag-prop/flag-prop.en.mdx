@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Component Prop (prop)'/>
+
+# Component Prop (prop)
+
+The `_prop` flag instructs the generator that the given property should become part of the component's public interface (Props) and be available in TypeScript. This allows for controlling component styles via external parameters.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "~size": {
+      "sm": { "height": "32px" },
+      "md": { "height": "40px" },
+      "_prop": true,
+      "_default": "md"
+    }
+  }
+}
+```
+
+**Output Result (TypeScript):**
+```typescript
+type PropsToken = {
+  size?: 'sm' | 'md'
+}
+```

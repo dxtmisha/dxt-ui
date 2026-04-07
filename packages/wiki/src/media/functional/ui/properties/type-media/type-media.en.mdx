@@ -1,34 +1,56 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/# UI/properties/Adaptability'/>
+<Meta title='@dxtmisha/en/# UI/properties/types/Responsiveness (media, container)'/>
 
-# Adaptability
+# Responsiveness (media, container)
 
-The `media` and `container` types in `properties.json` seamlessly map breakpoints rendering component layout responsiveness.
+The `media` and `container` structural types manage the generation of adaptive rules (`@media` and `@container`). They enable precise scaling of the interface based on viewport dimensions or parent block constraints.
 
-## Media Queries
+The system distinguishes four primary responsiveness types, deeply integrated with the design system's breakpoints:
+- **media**: Generates a `min-width` condition (from the specified point and above). If two values are passed (e.g., `sm,md`), it generates a range: `(min-width: ...) and (max-width: ...)`.
+- **media-max**: Generates a `max-width` condition. The system automatically subtracts `1px` from the breakpoint value to prevent style overlap at the exact boundary.
+- **container** / **container-max**: Operate identically to media queries but generate `@container` rules, allowing elements to adapt to their parent container's dimensions. Requires `container-type` to be defined on the parent element.
 
-There is absolutely no need to write `@media` rules manually. Indicate `media-max` mapped specifically to JSON configurations.
+Adaptive queries can be initialized using the `|` separator shortcut (e.g., `media-max|md`) or explicitly via the `_type` property. The `value` field accepts both design tokens (sm, md, lg) and raw CSS units (768px).
+
+**Input Configuration (`properties.json`):**
 ```json
 {
-  "grid": {
-    "mobile": {
-      "_type": "media-max",
-      "value": "768px",
-      "columns": { "value": "1fr" }
+  "card": {
+    "padding": "24px",
+    
+    "media-max|md": {            // Viewport-based query (media-max)
+      "padding": "16px"
+    },
+    
+    "mobile": {                  // Explicit type declaration (explicit)
+      "_type": "container-max",  // Parent-based query (container-max)
+      "value": "400px",
+      "padding": "8px"
+    },
+    
+    "container-max|lg": {        // Container-max shortcut
+       "padding": "20px"
     }
   }
 }
 ```
-**Outputs SCSS result:**
+
+**Conceptual Compiled Output (SCSS):**
 ```scss
-@media (max-width: 768px) {
-  .grid {
-    columns: 1fr;
+.card {
+  padding: 24px;
+
+  @media (max-width: 960px) {    // media-max|md
+    padding: 16px;
+  }
+
+  @container (max-width: 400px) { // _type: container-max
+    padding: 8px;
+  }
+  
+  @container (max-width: 1200px) { // container-max|lg
+    padding: 20px;
   }
 }
 ```
-
-## Container Queries
-
-Same structure goes for handling rules isolating containers directly through the `container-max` type mappings applying container-based boundaries logic natively instead of screen width breakpoints via `@container`.

@@ -1,0 +1,103 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/# Values'/>
+
+# Working with values (Value)
+
+The `value` field in `properties.json` defines the final content of a property (color, dimension, path, etc.). The `value` content can consist of literals, dynamic references to other tokens, or system-provided markers.
+
+### Literals and Data Types
+The system supports standard JSON data types:
+- **Strings**: `"12px"`, `"relative"`, `"none"`.
+- **Numbers**: `24`, `0.5` (automatically converted to strings during compilation).
+- **Colors**: HEX formats are supported:
+    - `#FFF` / `#FFFFFF` — standard color.
+    - `#FFFFFF80` — color with alpha channel (8 characters).
+
+### References and System Markers (`{...}`)
+You can borrow values from other properties using curly braces. This mechanism enables token dependency management.
+
+#### Path Resolution Rules:
+1. **Absolute Path**: `{design.component.property}` — entire path from the root.
+2. **Relative Path (Auto-Design)**: `{primary-color}`. If the first path segment is not a registered design name, the system automatically prepends the current design name (`{current-design.primary-color}`).
+3. **Nesting**: Supports unlimited nesting through dot notation: `{base.spacing.small}`.
+
+#### Special Markers (Shortcuts):
+Special placeholders are used to shorten paths within references:
+- `?` — replaced by `[current_design].`.
+- `??` — replaced by `[current_design].[current_component].`.
+
+**Example:**
+```json
+{
+  "button": {
+    "color": "{?primary}",          // Resolves to {d1.primary}
+    "padding": "{??base-padding}"   // Resolves to {d1.button.base-padding}
+  }
+}
+```
+
+These markers enable portable configuration code that remains resilient to design or component renames.
+
+#### Expressions and Mixed Content:
+The `value` field can contain arbitrary text with one or more `{...}` references embedded within it. The system will identify and resolve each reference while preserving the surrounding text.
+
+This enables the use of tokens within CSS functions (e.g., `calc()`) or combination with native CSS variables.
+
+**Example:**
+```json
+{
+  "button": {
+    "padding": "var(--sys-height) * {sys.spacing.adaptive.md}"
+  }
+}
+```
+
+### Full Value Marker (`=`)
+If a value begins with the `=` character, the compiler treats it as a "complete" (full value). The value is passed to SCSS "as is" without any further automatic processing.
+
+This is highly useful for complex CSS functions or when raw paths must be preserved.
+
+**Usage Example:**
+```json
+{
+  "button": {
+    "color": "{?primary}",           // Reference via design marker
+    "padding": "{??base-padding}",   // Reference via component marker
+    "width": "=calc(100% - 20px)",   // Full value (no processing)
+    "border": "1px solid #00000030"  // HEX with opacity
+  }
+}
+```
+
+### Additional Meta-Parameters
+For more precise value control, special service flags (starting with `_`) can be used:
+
+- `_important: boolean` — adds the `!important` specifier to the property in CSS.
+- `_fullValue: boolean` — programmatic equivalent of the `=` marker. Disables automatic unit appending (`px`) and reference resolving `{}`.
+- `_replace: object` — allows performing text replacement in the final value using regular expressions. Accepts an object `{ pattern, flags, replace }`.
+- `_modification: boolean` — controls if the property can be modified in SCSS (defaults to `true`). If set to `false`, the property is considered static.
+
+**Usage Example:**
+```json
+{
+  "button": {
+    "width": { 
+      "value": "100%", 
+      "_important": true      // Output: width: 100% !important;
+    },
+    "padding": { 
+      "value": "16px", 
+      "_replace": {           // Output: padding: 16rem;
+        "pattern": "px", 
+        "replace": "rem", 
+        "flags": "g" 
+      }
+    },
+    "height": { 
+      "value": "calc(100vh - 20px)", 
+      "_fullValue": true      // Output: height: calc(100vh - 20px);
+    }
+  }
+}
+```

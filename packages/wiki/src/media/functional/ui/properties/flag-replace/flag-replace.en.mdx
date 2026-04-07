@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Replacement (replace)'/>
+
+# Replacement (replace)
+
+The `_replace` flag enables modification of the final value or name using regular expressions. It expects an object with `pattern`, `flags`, and `replace` fields.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "padding": {
+      "value": "12px",
+      "_replace": {
+        "pattern": "px",
+        "replace": "rem",
+        "flags": "g"
+      }
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.button {
+  padding: 12rem;
+}
+```

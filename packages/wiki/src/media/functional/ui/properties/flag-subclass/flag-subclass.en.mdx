@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Subclass (subclass)'/>
+
+# Subclass (subclass)
+
+The `_subclass: true` flag allows for explicit tagging of a node as a subclass (BEM-element). This is necessary if the node name is not automatically recognized by the parser. Properties will be automatically wrapped in a subclass selector (`&__name { ... }`).
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "my-custom-element": {
+      "_subclass": true,
+      "display": "block"
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.button {
+  &__my-custom-element {
+    display: block;
+  }
+}
+```

@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Полное значение (fullValue)'/>
+
+# Полное значение (fullValue)
+
+Флаг `_fullValue: true` отключает любой парсинг значения компилятором. Значение передается в SCSS «как есть», без добавления единиц измерения (`px`) и без поиска ссылок `{}`.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "width": {
+      "value": "calc(100% - 20px)",
+      "_fullValue": true
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.button {
+  width: calc(100% - 20px);
+}
+```

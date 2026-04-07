@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Full Name (fullName)'/>
+
+# Full Name (fullName)
+
+The `_fullName: true` flag disables the automatic generation of tree-based paths (BEM scoping). The node will be generated under the specified name, ignoring its parent context.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "my-global-class": {
+      "_fullName": true,
+      "color": "red"
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.my-global-class {
+  color: red;
+}
+```

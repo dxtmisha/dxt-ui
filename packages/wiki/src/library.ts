@@ -1,9 +1,11 @@
-// Classes
-export * from './classes/WikiStorybook'
-export * from './classes/WikiStorybookDescriptions'
-export * from './classes/WikiStorybookItem'
-export * from './classes/WikiStorybookProp'
+import { WikiStorybookDescriptions } from './classes/WikiStorybookDescriptions'
 
-// Types
-export * from './types/storybookTypes'
-export * from './types/wikiTypes'
+import { wikiDescriptions } from './media/descriptions/wikiDescriptions'
+import { wikiMdx } from './media/mdx/wikiMdx'
+
+WikiStorybookDescriptions.setWiki(
+  wikiDescriptions,
+  wikiMdx
+)
+
+export * from './library-lite'

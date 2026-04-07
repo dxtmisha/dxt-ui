@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/types/Pseudo-classes và pseudo-elements (selector, virtual)'/>
+
+# Pseudo-classes và pseudo-elements (selector, virtual)
+
+Loại cấu trúc `selector` và `virtual` được dọn đường để xử lý tạo kiểu cho các trạng thái chuẩn của trình duyệt (cụ thể là các pseudo-class như `:hover`, `:focus` rẽ nhánh kèm chuỗi pseudo-element giả như `::before`, `::after`). Bộ Compiler sẽ ngầm ghim dính bộ thuộc tính này ngược vào block cha với cú pháp SCSS siêu kinh điển (`&:` và `&::`).
+
+Lập trình viên có thể khai báo chúng qua shortcut cấp tốc `:` (dành cho selector) và `::` (dành cho virtual element). Hơn nữa, gần như toàn bộ kho từ khóa phổ thông của CSS (như `hover`, `active`, `before`) đều được trí tuệ nhân tạo của code bộ biên dịch nhận diện tự động mà không cần mồi sẵn một prefix nào cả.
+
+**File Cấu hình Đầu vào (`properties.json`):**
+> Đối với pseudo-elements (`virtual`), compiler sẽ tự động chèn sẵn tham số gốc `content: ""` vào tệp CSS, lập trình viên không cần mất công khai báo thủ công.
+```json
+{
+  "button": {
+    "padding": "12px",
+    
+    ":hover": {                  // Pseudo-class cắm cờ (selector, tiền tố :)
+      "opacity": "0.8"
+    },
+    
+    "::after": {                 // Pseudo-element cắm cờ (virtual, tiền tố ::)
+      "position": "absolute",
+      "inset": "0"
+    },
+    
+    "active": {                  // Khai báo tàng hình (tự động nội suy)
+      "transform": "scale(0.95)"
+    }
+  }
+}
+```
+
+**Kết quả Biên dịch Dự kiến (SCSS Output):**
+```scss
+.button {
+  padding: 12px;
+
+  &:hover { opacity: 0.8; }
+  
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  
+  &:active { transform: scale(0.95); }
+}
+```

@@ -1,0 +1,42 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/types/Hoạt ảnh (animate)'/>
+
+# Hoạt ảnh (animate)
+
+Type cấu trúc `animate` được trưng dụng để tạo ra các quy tắc mã nguồn `@keyframes` thuần túy của CSS. Mỗi thuộc tính đối tượng lồng bên trong sẽ được Compiler diễn giải thành một khung hình riêng biệt (frame), với các khóa đại diện cho tỷ lệ phần trăm (`0%`, `50%`, `100%`) hoặc từ khóa điều hướng (`from`, `to`).
+
+Định danh của hoạt ảnh được thiết lập tự động dựa trên cấp độ phân cấp (ghép nối cùng tiền tố của cha), đảm bảo tính duy nhất và cô lập của mã định danh bên trong hệ sinh thái `dxt-ui`.
+
+**File Cấu hình Đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "fade": {
+      "_type": "animate",
+      "from": { "opacity": "0" },
+      "to": { "opacity": "1" }
+    },
+    
+    "~loading": {
+      "animation-name": "button-fade",
+      "animation-duration": "0.3s"
+    }
+  }
+}
+```
+
+**Kết quả Biên dịch Dự kiến (SCSS Output):**
+```scss
+@keyframes button-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.button {
+  &--loading {
+    animation-name: button-fade;
+    animation-duration: 0.3s;
+  }
+}
+```

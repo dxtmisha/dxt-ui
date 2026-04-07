@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Theme (theme)'/>
+
+# Theme (theme)
+
+The `_theme` flag enables scoping of styles to a specific color theme. Styles will be generated only within the selector of the corresponding theme.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "background": {
+      "value": "#000",
+      "_theme": "dark"
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.theme--dark {
+  .button {
+    background-color: #000;
+  }
+}
+```

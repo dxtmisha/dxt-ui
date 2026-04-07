@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Замена (replace)'/>
+
+# Замена (replace)
+
+Флаг `_replace` позволяет изменять финальное значение или имя через регулярные выражения. Параметр принимает объект с полями `pattern`, `flags` и `replace`.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "padding": {
+      "value": "12px",
+      "_replace": {
+        "pattern": "px",
+        "replace": "rem",
+        "flags": "g"
+      }
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.button {
+  padding: 12rem;
+}
+```

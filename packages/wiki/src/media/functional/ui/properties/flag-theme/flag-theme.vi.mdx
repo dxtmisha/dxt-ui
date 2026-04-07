@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Chủ đề (theme)'/>
+
+# Chủ đề (theme)
+
+Cờ `_theme` cho phép giới hạn phạm vi của các kiểu cho một chủ đề màu cụ thể. Các kiểu sẽ chỉ được tạo bên trong bộ chọn của chủ đề tương ứng.
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "background": {
+      "value": "#000",
+      "_theme": "dark"
+    }
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.theme--dark {
+  .button {
+    background-color: #000;
+  }
+}
+```

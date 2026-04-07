@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Variable (var)'/>
+
+# Variable (var)
+
+The `_var: true` flag forces the compiler to generate a separate CSS variable for the node, even if it is already a standard property. This is useful for dynamic overrides via JS or facilitating inheritance.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "padding": {
+      "value": "16px",
+      "_var": true
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.button {
+  --button-padding: 16px;
+  padding: var(--button-padding);
+}
+```

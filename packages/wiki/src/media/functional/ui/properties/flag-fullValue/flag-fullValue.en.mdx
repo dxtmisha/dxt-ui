@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Full Value (fullValue)'/>
+
+# Full Value (fullValue)
+
+The `_fullValue: true` flag disables any value parsing by the compiler. The value is passed to SCSS exactly "as-is" without adding units (`px`) or resolving references `{}`.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "width": {
+      "value": "calc(100% - 20px)",
+      "_fullValue": true
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.button {
+  width: calc(100% - 20px);
+}
+```

@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Giá trị mặc định (default)'/>
+
+# Giá trị mặc định (default)
+
+Cờ `_default` xác định một giá trị dự phòng cho một thuộc tính, giá trị này được sử dụng trong `props.ts` và `defaults` của thành phần nếu không có giá trị cụ thể nào được cung cấp.
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "~size": {
+      "sm": { "height": "32px" },
+      "md": { "height": "40px" },
+      "_default": "md"
+    }
+  }
+}
+```
+
+**Kết quả (TypeScript):**
+```typescript
+export const defaults = {
+  size: 'md'
+}
+```

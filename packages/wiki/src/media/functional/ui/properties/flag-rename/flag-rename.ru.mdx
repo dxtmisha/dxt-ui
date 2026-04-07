@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Переименование (rename)'/>
+
+# Переименование (rename)
+
+Флаг `_rename` переопределяет название свойства (в CSS) или части имени класса (в SCSS) в конечном коде. Это полезно для создания алиасов или сокращений.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "backgroundItem": {
+      "value": "#FFF",
+      "_rename": "bg"
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.button__bg {
+  background-color: #FFF;
+}
+```

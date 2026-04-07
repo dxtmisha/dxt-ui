@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Значение по умолчанию (default)'/>
+
+# Значение по умолчанию (default)
+
+Флаг `_default` задает fallback-значение для свойства, которое используется в `props.ts` и `defaults` компонента, если реальное значение не было передано.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "~size": {
+      "sm": { "height": "32px" },
+      "md": { "height": "40px" },
+      "_default": "md"
+    }
+  }
+}
+```
+
+**Результат (TypeScript):**
+```typescript
+export const defaults = {
+  size: 'md'
+}
+```

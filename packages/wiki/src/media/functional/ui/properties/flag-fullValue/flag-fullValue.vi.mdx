@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Giá trị đầy đủ (fullValue)'/>
+
+# Giá trị đầy đủ (fullValue)
+
+Cờ `_fullValue: true` vô hiệu hóa bất kỳ việc phân tích cú pháp giá trị nào bởi trình biên dịch. Giá trị được chuyển đến SCSS chính xác "như hiện tại" mà không thêm đơn vị (`px`) hoặc giải quyết các tham chiếu `{}`.
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "width": {
+      "value": "calc(100% - 20px)",
+      "_fullValue": true
+    }
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.button {
+  width: calc(100% - 20px);
+}
+```

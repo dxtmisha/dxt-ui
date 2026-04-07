@@ -1,0 +1,103 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/# Giá trị'/>
+
+# Làm việc với giá trị (Value)
+
+Trường `value` trong `properties.json` xác định nội dung cuối cùng của một thuộc tính (màu sắc, kích thước, đường dẫn, v.v.). Nội dung của `value` có thể là các giá trị hằng số (literals), các tham chiếu động tới các token khác hoặc các dấu hiệu hệ thống (markers).
+
+### Hằng số và Kiểu dữ liệu
+Hệ thống hỗ trợ các kiểu dữ liệu JSON tiêu chuẩn:
+- **Chuỗi (Strings)**: `"12px"`, `"relative"`, `"none"`.
+- **Số (Numbers)**: `24`, `0.5` (tự động chuyển thành chuỗi khi biên dịch).
+- **Màu sắc**: Hỗ trợ các định dạng HEX:
+    - `#FFF` / `#FFFFFF` — màu tiêu chuẩn.
+    - `#FFFFFF80` — màu có kênh alpha (8 ký tự).
+
+### Tham chiếu và nhãn hệ thống (`{...}`)
+Bạn có thể trích xuất giá trịของ các thuộc tính khác bằng cách sử dụng dấu ngoặc nhọn. Điều này cho phép tạo ra sự phụ thuộc giữa các token.
+
+#### Quy tắc phân giải đường dẫn:
+1. **Đường dẫn tuyệt đối**: `{design.component.property}` — chỉ định đầy đủ từ gốc.
+2. **Đường dẫn tương đối (Tự động Design)**: `{primary-color}`. Nếu phân đoạn đầu tiên của đường dẫn không phải là tên design đã đăng ký, hệ thống sẽ tự động thêm tên design hiện tại (`{current-design.primary-color}`).
+3. **Phân cấp**: Hỗ trợ phân cấp vô hạn thông qua dấu chấm: `{base.spacing.small}`.
+
+#### Nhãn đặc biệt (Shortcuts):
+Các trình giữ chỗ đặc biệt được sử dụng để rút ngắn đường dẫn trong các tham chiếu:
+- `?` — được thay thế bằng `[design_hiện_tại].`.
+- `??` — được thay thế bằng `[design_hiện_tại].[component_hiện_tại].`.
+
+**Ví dụ:**
+```json
+{
+  "button": {
+    "color": "{?primary}",          // Phân giải thành {d1.primary}
+    "padding": "{??base-padding}"   // Phân giải thành {d1.button.base-padding}
+  }
+}
+```
+
+Các nhãn này giúp viết mã cấu hình có khả năng di động cao, không bị hỏng khi đổi tên thiết kế hoặc thành phần.
+
+#### Biểu thức và nội dung hỗn hợp:
+Trường `value` có thể chứa văn bản tùy ý có chứa một hoặc nhiều tham chiếu `{...}` bên trong. Hệ thống sẽ tìm và giải quyết từng tham chiếu trong khi vẫn giữ nguyên phần văn bản còn lại.
+
+Điều này cho phép sử dụng các tham chiếu bên trong các hàm CSS (ví dụ: `calc()`) hoặc kết hợp chúng với các biến CSS gốc.
+
+**Ví dụ:**
+```json
+{
+  "button": {
+    "padding": "var(--sys-height) * {sys.spacing.adaptive.md}"
+  }
+}
+```
+
+### Dấu hiệu "Giá trị đầy đủ" (`=`)
+Nếu một giá trị bắt đầu bằng ký tự `=`, trình biên dịch sẽ coi đó là "giá trị đầy đủ" (full value). Giá trị sẽ được truyền vào SCSS "nguyên bản" mà không qua bất kỳ quá trình xử lý tự động nào khác.
+
+Điều này hữu ích cho các hàm CSS phức tạp hoặc khi cần truyền các đường dẫn thô.
+
+**Ví dụ sử dụng:**
+```json
+{
+  "button": {
+    "color": "{?primary}",           // Tham chiếu qua nhãn design
+    "padding": "{??base-padding}",   // Tham chiếu qua nhãn component
+    "width": "=calc(100% - 20px)",   // Giá trị đầy đủ (không xử lý)
+    "border": "1px solid #00000030"  // HEX có độ trong suốt
+  }
+}
+```
+
+### Các tham số Meta bổ sung
+Để kiểm soát giá trị chính xác hơn, có thể sử dụng các cờ dịch vụ đặc biệt (bắt đầu bằng `_`):
+
+- `_important: boolean` — thêm chỉ thị `!important` vào thuộc tính trong CSS.
+- `_fullValue: boolean` — tương đương lập trình của dấu hiệu `=`. Vô hiệu hóa việc tự động thêm đơn vị (`px`) và giải quyết tham chiếu `{}`.
+- `_replace: object` — cho phép thực hiện thay thế văn bản trong giá trị cuối cùng bằng biểu thức chính quy. Chấp nhận một đối tượng `{ pattern, flags, replace }`.
+- `_modification: boolean` — kiểm soát xem thuộc tính có thể được sửa đổi trong SCSS hay không (mặc định là `true`). Nếu đặt thành `false`, thuộc tính được coi là tĩnh.
+
+**Ví dụ sử dụng:**
+```json
+{
+  "button": {
+    "width": { 
+      "value": "100%", 
+      "_important": true      // Kết quả: width: 100% !important;
+    },
+    "padding": { 
+      "value": "16px", 
+      "_replace": {           // Kết quả: padding: 16rem;
+        "pattern": "px", 
+        "replace": "rem", 
+        "flags": "g" 
+      }
+    },
+    "height": { 
+      "value": "calc(100vh - 20px)", 
+      "_fullValue": true      // Kết quả: height: calc(100vh - 20px);
+    }
+  }
+}
+```

@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Переменная (var)'/>
+
+# Переменная (var)
+
+Флаг `_var: true` заставляет компилятор генерировать для данного узла отдельную CSS-переменную, даже если он уже является стандартным свойством. Это полезно для создания динамических переопределений через JS или наследования.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "padding": {
+      "value": "16px",
+      "_var": true
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.button {
+  --button-padding: 16px;
+  padding: var(--button-padding);
+}
+```

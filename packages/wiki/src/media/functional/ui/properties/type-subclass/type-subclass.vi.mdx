@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/types/Lớp con (subclass)'/>
+
+# Lớp con (subclass)
+
+Type cấu trúc `subclass` được sinh ra chuyên dụng để khởi tạo các thực thể mảng lồng nhau (nested element) tuân thủ quy chuẩn hình thái BEM (Block-Element-Modifier). Phân bổ Type này sẽ cưỡng chế bộ máy Compiler xuất bản dòng mã chuỗi class CSS con trực tiếp được gắn kèm đằng sau tên định danh cha gốc (Ví dụ: biên dịch vòng lặp qua cấu trúc `&__element`).
+
+Giải pháp tối ưu và lả lướt nhất để sản sinh một class lồng con vĩnh viễn là sử dụng mã ký hiệu `#` ở tiền tố. Tuỳ nhiên đối với những cấu trúc rập khuôn cứng nhắc, thao tác cấu hình bung rộng tham số type explicit `_type: "subclass"` vẫn được trưng dụng đồng tâm hiệp lực. Cả hai giải pháp gen cùng một kết quả biên dịch hệ thống.
+
+**File Cấu hình Đầu vào (`properties.json`):**
+```json
+{
+  "card": {
+    "padding": "16px",
+    
+    "#icon": {                   // Áp dụng định danh lối tắt #
+      "width": "24px"
+    },
+    
+    "content": {                 // Phân rã cấu trúc type explicit
+      "_type": "subclass",
+      "display": "flex"
+    }
+  }
+}
+```
+
+**Kết quả Biên dịch Dự kiến (SCSS Output):**
+```scss
+.card {
+  padding: 16px;
+
+  &__icon {
+    width: 24px;
+  }
+
+  &__content {
+    display: flex;
+  }
+}
+```
+
+Sức mạnh trọng tâm của dạng thức `subclass` đảm nhận nhiệm vụ cô lập tầm vực scope CSS. Toàn bộ code gắn Subclass đóng chốt hiện tượng tranh chấp lớp class CSS trên toàn cục, ráp chặt mối nối UI phụ tùng vào thẳng lõi gốc cha.

@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Lớp con (subclass)'/>
+
+# Lớp con (subclass)
+
+Cờ `_subclass: true` cho phép gắn nhãn rõ ràng một nút là một lớp con (BEM-element). Điều này là cần thiết nếu tên nút không được trình phân tích cú pháp tự động nhận dạng. Các thuộc tính sẽ được tự động bọc trong một bộ chọn lớp con (`&__name { ... }`).
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "my-custom-element": {
+      "_subclass": true,
+      "display": "block"
+    }
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.button {
+  &__my-custom-element {
+    display: block;
+  }
+}
+```

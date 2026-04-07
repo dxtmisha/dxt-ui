@@ -1,34 +1,56 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/# UI/properties/Адаптивность'/>
+<Meta title='@dxtmisha/ru/# UI/properties/types/Адаптивность (media, container)'/>
 
-# Адаптивность: Media и Container
+# Адаптивность (media, container)
 
-Типы `media` и `container` в `properties.json` автоматически прописывают медиа-точки для адаптивной вёрстки компонентов.
+Типы `media` и `container` управляют генерацией адаптивных правил (`@media` и `@container`). Они позволяют масштабировать интерфейс в зависимости от размеров вьюпорта или родительского блока.
 
-## Медиа-запросы
+В системе выделяют четыре основных типа адаптивности, которые тесно интегрированы с точками останова (breakpoints) дизайна:
+- **media**: Генерирует условие `min-width` (от указанной точки и выше). Если передать два значения через запятую (например, `sm,md`), будет сформирован диапазон `(min-width: ...) and (max-width: ...)`.
+- **media-max**: Генерирует условие `max-width`. Система автоматически вычитает `1px` из значения точки останова, чтобы исключить наложение стилей на границе.
+- **container** / **container-max**: Работают идентично медиа-запросам, но генерируют правила `@container`, позволяя элементу адаптироваться к размеру родителя. Требуют наличия `container-type` у родительского элемента.
 
-Вам не нужно писать `@media` вручную. Задайте `media-max` и желаемую точку останова (breakpoint) напрямую в JSON.
+Объявить адаптивный запрос можно через шорткат с разделителем `|` (например, `media-max|md`) или явно через свойство `_type`. В качестве значения (`value`) принимаются как ключи дизайна (sm, md, lg), так и конкретные значения (768px).
+
+**Входная конфигурация (`properties.json`):**
 ```json
 {
-  "grid": {
-    "mobile": {
-      "_type": "media-max",
-      "value": "768px",
-      "columns": { "value": "1fr" }
+  "card": {
+    "padding": "24px",
+    
+    "media-max|md": {            // Query по ширине экрана (media-max)
+      "padding": "16px"
+    },
+    
+    "mobile": {                  // Явное объявление типа (explicit)
+      "_type": "container-max",  // Query по ширине родителя (container-max)
+      "value": "400px",
+      "padding": "8px"
+    },
+    
+    "container-max|lg": {        // Шорткат для контейнера
+       "padding": "20px"
     }
   }
 }
 ```
-**Результат:**
+
+**Ожидаемый результат генерации (SCSS):**
 ```scss
-@media (max-width: 768px) {
-  .grid {
-    columns: 1fr;
+.card {
+  padding: 24px;
+
+  @media (max-width: 960px) {    // media-max|md
+    padding: 16px;
+  }
+
+  @container (max-width: 400px) { // _type: container-max
+    padding: 8px;
+  }
+  
+  @container (max-width: 1200px) { // container-max|lg
+    padding: 20px;
   }
 }
 ```
-
-## Container Queries
-
-Аналогично работает тип `container-max`, который оборачивает вложенные свойства в правила `@container`. Это помогает стилизовать компоненты в зависимости от размеров их родительской области, а не размеров всего экрана.

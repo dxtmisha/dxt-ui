@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Подкласс (subclass)'/>
+
+# Подкласс (subclass)
+
+Флаг `_subclass: true` позволяет явно пометить узел как подкласс (BEM-элемент). Это требуется, если имя узла не распознается автоматическим парсером. Свойства будут автоматически обернуты в селектор подкласса (`&__name { ... }`).
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "my-custom-element": {
+      "_subclass": true,
+      "display": "block"
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.button {
+  &__my-custom-element {
+    display: block;
+  }
+}
+```

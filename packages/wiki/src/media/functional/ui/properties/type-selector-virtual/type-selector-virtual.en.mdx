@@ -1,0 +1,49 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/types/Pseudo-classes and pseudo-elements (selector, virtual)'/>
+
+# Pseudo-classes and pseudo-elements (selector, virtual)
+
+The `selector` and `virtual` structural types are designed to style native browser interaction states and generated elements (specifically, pseudo-classes like `:hover`, `:focus` and pseudo-elements like `::before`, `::after`). The compiler inherently binds these structures to the parent block utilizing fundamental SCSS conventions (`&:` and `&::`).
+
+These types can be initialized using the explicit shortcuts `:` (for selectors) and `::` (for virtual elements). Furthermore, the majority of standard browser keys (such as `hover`, `active`, `before`) are natively recognized and automatically parsed by the compiler without requiring strict prefixes.
+
+**Input Configuration (`properties.json`):**
+> For pseudo-elements (`virtual`), the compiler automatically injects the foundational `content: ""` property into the output, making manual declaration entirely redundant.
+```json
+{
+  "button": {
+    "padding": "12px",
+    
+    ":hover": {                  // Explicit pseudo-class (selector, : prefix)
+      "opacity": "0.8"
+    },
+    
+    "::after": {                 // Explicit pseudo-element (virtual, :: prefix)
+      "position": "absolute",
+      "inset": "0"
+    },
+    
+    "active": {                  // Implicit declaration (auto-detected)
+      "transform": "scale(0.95)"
+    }
+  }
+}
+```
+
+**Conceptual Compiled Output (SCSS):**
+```scss
+.button {
+  padding: 12px;
+
+  &:hover { opacity: 0.8; }
+  
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  
+  &:active { transform: scale(0.95); }
+}
+```

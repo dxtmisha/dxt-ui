@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Свойство компонента (prop)'/>
+
+# Свойство компонента (prop)
+
+Флаг `_prop` указывает генератору, что данное свойство должно стать частью публичного интерфейса компонента (Props) и быть доступным в TypeScript. Это позволяет управлять стилями компонента через внешние параметры.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "~size": {
+      "sm": { "height": "32px" },
+      "md": { "height": "40px" },
+      "_prop": true,
+      "_default": "md"
+    }
+  }
+}
+```
+
+**Результат (TypeScript):**
+```typescript
+type PropsToken = {
+  size?: 'sm' | 'md'
+}
+```

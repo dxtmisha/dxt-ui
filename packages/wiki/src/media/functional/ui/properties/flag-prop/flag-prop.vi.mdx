@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Thuộc tính thành phần (prop)'/>
+
+# Thuộc tính thành phần (prop)
+
+Cờ `_prop` hướng dẫn trình tạo rằng thuộc tính đã cho sẽ trở thành một phần của giao diện công khai của thành phần (Props) và có sẵn trong TypeScript. Điều này cho phép điều khiển các kiểu thành phần thông qua các tham số bên ngoài.
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "~size": {
+      "sm": { "height": "32px" },
+      "md": { "height": "40px" },
+      "_prop": true,
+      "_default": "md"
+    }
+  }
+}
+```
+
+**Kết quả (TypeScript):**
+```typescript
+type PropsToken = {
+  size?: 'sm' | 'md'
+}
+```

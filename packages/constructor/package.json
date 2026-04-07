@@ -99,6 +99,10 @@
       "types": "./dist/constructors/Cell/index.d.ts",
       "default": "./dist/cell.js"
     },
+    "./Checkbox": {
+      "types": "./dist/constructors/Checkbox/index.d.ts",
+      "default": "./dist/checkbox.js"
+    },
     "./Chip": {
       "types": "./dist/constructors/Chip/index.d.ts",
       "default": "./dist/chip.js"
@@ -110,6 +114,10 @@
     "./Dialog": {
       "types": "./dist/constructors/Dialog/index.d.ts",
       "default": "./dist/dialog.js"
+    },
+    "./Dummy": {
+      "types": "./dist/constructors/Dummy/index.d.ts",
+      "default": "./dist/dummy.js"
     },
     "./Field": {
       "types": "./dist/constructors/Field/index.d.ts",
@@ -126,6 +134,22 @@
     "./FieldMessage": {
       "types": "./dist/constructors/FieldMessage/index.d.ts",
       "default": "./dist/fieldMessage.js"
+    },
+    "./Grid": {
+      "types": "./dist/constructors/Grid/index.d.ts",
+      "default": "./dist/grid.js"
+    },
+    "./GridItem": {
+      "types": "./dist/constructors/GridItem/index.d.ts",
+      "default": "./dist/gridItem.js"
+    },
+    "./Group": {
+      "types": "./dist/constructors/Group/index.d.ts",
+      "default": "./dist/group.js"
+    },
+    "./HorizontalScroll": {
+      "types": "./dist/constructors/HorizontalScroll/index.d.ts",
+      "default": "./dist/horizontalScroll.js"
     },
     "./Icon": {
       "types": "./dist/constructors/Icon/index.d.ts",
@@ -167,6 +191,10 @@
       "types": "./dist/constructors/Modal/index.d.ts",
       "default": "./dist/modal.js"
     },
+    "./MotionAxis": {
+      "types": "./dist/constructors/MotionAxis/index.d.ts",
+      "default": "./dist/motionAxis.js"
+    },
     "./MotionTransform": {
       "types": "./dist/constructors/MotionTransform/index.d.ts",
       "default": "./dist/motionTransform.js"
@@ -203,6 +231,30 @@
       "types": "./dist/constructors/Skeleton/index.d.ts",
       "default": "./dist/skeleton.js"
     },
+    "./Snackbar": {
+      "types": "./dist/constructors/Snackbar/index.d.ts",
+      "default": "./dist/snackbar.js"
+    },
+    "./SnackbarItem": {
+      "types": "./dist/constructors/SnackbarItem/index.d.ts",
+      "default": "./dist/snackbarItem.js"
+    },
+    "./TabItem": {
+      "types": "./dist/constructors/TabItem/index.d.ts",
+      "default": "./dist/tabItem.js"
+    },
+    "./Tabs": {
+      "types": "./dist/constructors/Tabs/index.d.ts",
+      "default": "./dist/tabs.js"
+    },
+    "./TabsNavigation": {
+      "types": "./dist/constructors/TabsNavigation/index.d.ts",
+      "default": "./dist/tabsNavigation.js"
+    },
+    "./Textarea": {
+      "types": "./dist/constructors/Textarea/index.d.ts",
+      "default": "./dist/textarea.js"
+    },
     "./TextareaAutosize": {
       "types": "./dist/constructors/TextareaAutosize/index.d.ts",
       "default": "./dist/textareaAutosize.js"
@@ -220,59 +272,7 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss",
-    "./Textarea": {
-      "types": "./dist/constructors/Textarea/index.d.ts",
-      "default": "./dist/textarea.js"
-    },
-    "./TabItem": {
-      "types": "./dist/constructors/TabItem/index.d.ts",
-      "default": "./dist/tabItem.js"
-    },
-    "./TabsNavigation": {
-      "types": "./dist/constructors/TabsNavigation/index.d.ts",
-      "default": "./dist/tabsNavigation.js"
-    },
-    "./HorizontalScroll": {
-      "types": "./dist/constructors/HorizontalScroll/index.d.ts",
-      "default": "./dist/horizontalScroll.js"
-    },
-    "./MotionAxis": {
-      "types": "./dist/constructors/MotionAxis/index.d.ts",
-      "default": "./dist/motionAxis.js"
-    },
-    "./Tabs": {
-      "types": "./dist/constructors/Tabs/index.d.ts",
-      "default": "./dist/tabs.js"
-    },
-    "./Checkbox": {
-      "types": "./dist/constructors/Checkbox/index.d.ts",
-      "default": "./dist/checkbox.js"
-    },
-    "./Grid": {
-      "types": "./dist/constructors/Grid/index.d.ts",
-      "default": "./dist/grid.js"
-    },
-    "./GridItem": {
-      "types": "./dist/constructors/GridItem/index.d.ts",
-      "default": "./dist/gridItem.js"
-    },
-    "./Dummy": {
-      "types": "./dist/constructors/Dummy/index.d.ts",
-      "default": "./dist/dummy.js"
-    },
-    "./Group": {
-      "types": "./dist/constructors/Group/index.d.ts",
-      "default": "./dist/group.js"
-    },
-    "./SnackbarItem": {
-      "types": "./dist/constructors/SnackbarItem/index.d.ts",
-      "default": "./dist/snackbarItem.js"
-    },
-    "./Snackbar": {
-      "types": "./dist/constructors/Snackbar/index.d.ts",
-      "default": "./dist/snackbar.js"
-    }
+    "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

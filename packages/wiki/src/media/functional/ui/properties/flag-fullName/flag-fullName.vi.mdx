@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Tên đầy đủ (fullName)'/>
+
+# Tên đầy đủ (fullName)
+
+Cờ `_fullName: true` vô hiệu hóa việc tự động tạo các đường dẫn dựa trên cây (phạm vi BEM). Nút sẽ được tạo dưới tên được chỉ định, bỏ qua ngữ cảnh cha của nó.
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "my-global-class": {
+      "_fullName": true,
+      "color": "red"
+    }
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.my-global-class {
+  color: red;
+}
+```

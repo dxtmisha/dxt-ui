@@ -1,0 +1,42 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/types/Animation (animate)'/>
+
+# Animation (animate)
+
+The `animate` structural type is utilized to generate native CSS `@keyframes` rules. Each nested object property is interpreted as an individual animation frame (frame), where the keys serve as either percentages (`0%`, `50%`, `100%`) or keywords (`from`, `to`).
+
+The animation identifier is generated automatically based on its nesting position (utilizing parent prefixes), ensuring local name uniqueness across the `dxt-ui` design landscape.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "fade": {
+      "_type": "animate",
+      "from": { "opacity": "0" },
+      "to": { "opacity": "1" }
+    },
+    
+    "~loading": {
+      "animation-name": "button-fade",
+      "animation-duration": "0.3s"
+    }
+  }
+}
+```
+
+**Conceptual Compiled Output (SCSS):**
+```scss
+@keyframes button-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.button {
+  &--loading {
+    animation-name: button-fade;
+    animation-duration: 0.3s;
+  }
+}
+```

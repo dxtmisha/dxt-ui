@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/types/Subclass (subclass)'/>
+
+# Subclass (subclass)
+
+The `subclass` type is designated for conceptualizing nested structural blocks conforming to the BEM (Block-Element-Modifier) architectural methodology. Assigning this type forces the compiler to generate a deeply nested descendant CSS class firmly rooted to the parent identifier (e.g., `&__element`).
+
+The optimal standard practice for initiating a subclass branch utilizes the `#` prefix. For rigid and explicit structural assignments, the `subclass` type may be statically assigned utilizing the internal `_type` property. Both methodologies emit parallel internal structures.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "card": {
+    "padding": "16px",
+    
+    "#icon": {                   // Utilizing the # alias prefix
+      "width": "24px"
+    },
+    
+    "content": {                 // Explicit structural type assignment
+      "_type": "subclass",
+      "display": "flex"
+    }
+  }
+}
+```
+
+**Conceptual Compiled Output (SCSS):**
+```scss
+.card {
+  padding: 16px;
+
+  &__icon {
+    width: 24px;
+  }
+
+  &__content {
+    display: flex;
+  }
+}
+```
+
+Utilizing `subclass` explicitly governs CSS scope isolation, fundamentally averting global namespace collisions and tying dependent components intimately to the primary architectural parent.

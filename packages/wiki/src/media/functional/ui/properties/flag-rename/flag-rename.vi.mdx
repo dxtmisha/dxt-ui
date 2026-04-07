@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Đổi tên (rename)'/>
+
+# Đổi tên (rename)
+
+Cờ `_rename` ghi đè tên thuộc tính (trong CSS) hoặc một phần của tên lớp (trong SCSS) trong kết quả cuối cùng. Điều này hữu ích để tạo các bí danh hoặc tên viết tắt.
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "backgroundItem": {
+      "value": "#FFF",
+      "_rename": "bg"
+    }
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.button__bg {
+  background-color: #FFF;
+}
+```

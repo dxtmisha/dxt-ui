@@ -1,45 +1,66 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI/properties/Trạng thái và lớp con'/>
+<Meta title='@dxtmisha/vi/# UI/properties/types/Trạng thái (state)'/>
 
-# Trạng thái và lớp con
+# Trạng thái (state)
 
-Type JSON phân khúc `state` và `subclass` hỗ trợ tổ chức cấu trúc component lồng nhau dễ học.
+Type cấu trúc `state` được sinh ra để đặc tả các luồng biến thể, chế độ tương tác phụ trợ, hoặc lưới modifier đa dạng (như size grid). Phân bổ Type này sẽ ấn định cỗ máy Compiler gen dòng mã class CSS modifier tuân thủ nguyên lý BEM đính trực tiếp vào block cha (Ví dụ: `&--primary` hoặc chuỗi phức hợp `&--size-sm`).
 
-## Subclass
+Lập trình viên có thể khởi tạo state bằng mã phím tắt rút gọn `~` hoặc ghim cứng bằng lệnh qua định danh tham số `_type: "state"`. Trong lõi `dxt-ui`, mọi state khởi tạo sẽ tự động rễ bám sâu vào lớp type (`props.ts`) lẫn luồng chốt class binding reactive của Vue.
 
-Cấu trúc logic lồng cho phần tử theo Element cấp (chuẩn hóa tương tự BEM method).
-```json
-{
-  "card": {
-    "header": {
-      "_type": "subclass",
-      "fontSize": { "value": "20px" }
-    }
-  }
-}
-```
-**Biên dịch chuẩn SCSS Output:**
-```scss
-.card__header { font-size: 20px; }
-```
+Bên trong hệ sinh thái của compiler, chúng ta phân tách làm hai thủ pháp chủ đạo:
+- **Trạng thái đơn lẻ:** Được trưng dụng cho các cờ boolean cơ sở (Ví dụ: thiết lập `~primary`). Compiler sẽ đúc thẳng tắp ra class modifier gốc (`&--primary`).
+- **Trạng thái gom nhóm đa cực:** Được trưng dụng cho bộ thông số nhiều lớp giá trị (Ví dụ: scale `~size`). Các nhánh lồng bên trong sẽ ép dính thành chuỗi modifier ghép nối tiếp (`&--size-sm`).
 
-## Áp dụng State
+> Khóa `_default` xác định giá trị cơ sở mặc định trong quá trình khởi tạo component. Cờ Boolean nhận trạng thái `true`, trong khi các tham số nhóm yêu cầu chuỗi định danh của node mục tiêu (ví dụ: `"md"`). Compiler sẽ tự động dịch chuyển thiết lập này thành giá trị ẩn định trong cấu hình `props.ts`.
 
-Dùng khi tạo logic phân nhánh (Modifier hoặc pseudo class component):
+
+**File Cấu hình Đầu vào (`properties.json`):**
 ```json
 {
   "button": {
-    "hover": {
+    "padding": "12px",
+    
+    "~primary": {                // Trạng thái cục bộ (lối tắt ~)
+      "background-color": "blue",
+      "_default": true           // Cấu hình cờ boolean mặc định
+    },
+    
+    "disabled": {                // Khai báo explicit state
       "_type": "state",
-      "background": { "value": "red" }
+      "opacity": "0.5"
+    },
+    
+    "~size": {                   // Gom nhóm trạng thái đa cực
+      "sm": { "height": "32px" },
+      "md": { "height": "40px" },
+      "_default": "md"           // Cấu hình string mặc định
     }
   }
 }
 ```
-**Biên dịch chuẩn SCSS Output:**
+
+**Kết quả Biên dịch Dự kiến (SCSS Output):**
 ```scss
 .button {
-  &:hover { background: red; }
+  padding: 12px;
+
+  &--primary { background-color: blue; }
+  &--disabled { opacity: 0.5; }
+  &--size-sm { height: 32px; }
+  &--size-md { height: 40px; }
 }
+```
+
+**Đồng bộ Tích hợp Vue (`props.ts` và `Component.vue`):**
+```typescript
+// --- props.ts ---
+primary?: boolean
+disabled?: boolean
+size?: 'sm' | 'md'
+
+// --- Component.vue (dynamic class bindings) ---
+'d1-button--primary': props.primary,
+'d1-button--disabled': props.disabled,
+[`d1-button--size--${props.size}`]: inArray(propsValues.size, props.size)
 ```

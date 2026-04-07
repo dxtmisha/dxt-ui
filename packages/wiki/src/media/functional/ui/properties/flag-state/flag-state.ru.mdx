@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Состояние (state)'/>
+
+# Состояние (state)
+
+Флаг `_state: true` позволяет явно пометить узел как состояние (псевдокласс). Это требуется, если имя узла не распознается автоматическим парсером. Свойства будут автоматически обернуты в селектор состояния (`&:name { ... }`).
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "my-custom-state": {
+      "_state": true,
+      "opacity": "0.5"
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.button {
+  &:my-custom-state {
+    opacity: 0.5;
+  }
+}
+```

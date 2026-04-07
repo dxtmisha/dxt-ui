@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Полное имя (fullName)'/>
+
+# Полное имя (fullName)
+
+Флаг `_fullName: true` отключает автоматическое формирование древовидных путей (BEM). Узел будет сгенерирован под указанным именем без учета родительских контекстов.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "my-global-class": {
+      "_fullName": true,
+      "color": "red"
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.my-global-class {
+  color: red;
+}
+```

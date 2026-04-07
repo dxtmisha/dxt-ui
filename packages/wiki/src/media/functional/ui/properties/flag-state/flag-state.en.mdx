@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/State (state)'/>
+
+# State (state)
+
+The `_state: true` flag allows for explicit tagging of a node as a state (pseudo-class). This is necessary if the node name is not automatically recognized by the parser. Properties will be automatically wrapped in a state selector (`&:name { ... }`).
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "my-custom-state": {
+      "_state": true,
+      "opacity": "0.5"
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.button {
+  &:my-custom-state {
+    opacity: 0.5;
+  }
+}
+```

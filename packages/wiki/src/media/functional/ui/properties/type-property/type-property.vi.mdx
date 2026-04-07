@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/types/Thuộc tính (property)'/>
+
+# Thuộc tính (property)
+
+Kiểu kiến trúc `property` đóng vai trò là nền tảng cốt lõi cơ sở của bộ máy generator. Việc thiết lập type này chỉ đạo trực tiếp compiler tiến hành kết xuất node mục tiêu thành một quy chuẩn thuộc tính Native CSS phổ quát đi kèm giá trị.
+
+> **Nhận diện Tự động Phân bổ:** Nếu không khai báo rõ tham số `_type` và bộ Parser không quét ra bất kỳ mã alias phím tắt nào gắn ở tiền tố key, hệ thống sẽ **tự động fallback mặc định** gán node đó thành chuẩn `property`.
+
+## Khai báo Tiêu chuẩn (Ngầm định tĩnh)
+
+Trong phần lớn nhu cầu sử dụng, việc gọi khai báo mảng `property` thủ công hoàn toàn thừa thãi. Bạn chỉ việc truyền vô một cặp key-value cơ bản (dạng số hoặc chuỗi literal), bộ máy Engine tự ngầm nắm thóp và xuất ra thuộc tính CSS tuần tự.
+
+**File Cấu hình Đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "padding": "12px 16px",
+    "border-radius": "8px"
+  }
+}
+```
+
+**Kết quả Biên dịch Dự kiến (SCSS Output):**
+```scss
+.button {
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+```
+
+## Khai báo Cấu trúc Mở rộng (Cứng type `property`)
+
+Việc ép thẳng tham số mảng khai báo type thủ công chỉ được trưng dụng một khi tham số node vượt quy chuẩn primitive, đòi hỏi khai báo mảng object sâu lồng các flag logic của compiler (chẳng hạn ép cờ `_var: true` hoặc kích nổ bộ thay tên `_rename`), nhưng vẫn một mực bám lấy kết xuất là thuộc tính gốc của CSS.
+
+**File Cấu hình Đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "custom-offset": {
+      "_type": "property",
+      "value": "24px",
+      "_rename": "margin-bottom"
+    }
+  }
+}
+```
+
+**Kết quả Biên dịch Dự kiến (SCSS Output):**
+```scss
+.button {
+  margin-bottom: 24px;
+}
+```
+
+Kiểu phân bổ `property` là trọng điểm cấu trúc mọi file cục diện style nội tại của `dxt-ui`, tạo móng CSS vững chắc trước khi những tầng nâng cao (logic BEM, media query, variable động) nhào lộn xâm nhập.

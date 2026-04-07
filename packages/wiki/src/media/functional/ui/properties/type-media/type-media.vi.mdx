@@ -1,34 +1,56 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI/properties/Tính thích ứng'/>
+<Meta title='@dxtmisha/vi/# UI/properties/types/Tính tương thích (media, container)'/>
 
-# Tính thích ứng
+# Tính tương thích (media, container)
 
-Type `media` và `container` sử dụng Responsive Breakpoints bằng thông số logic tùy chỉnh JSON.
+Các loại cấu trúc `media` và `container` điều phối việc khởi tạo các quy tắc thích nghi (`@media` và `@container`). Chúng cho phép co giãn giao diện linh hoạt dựa trên kích thước khung nhìn (viewport) hoặc giới hạn của khối cha (parent block).
 
-## Tương tác Media
+Hệ thống phân tách làm bốn dạng thức thích nghi chủ đạo, được tích hợp sâu với các điểm dừng (breakpoints) của thiết kế:
+- **media**: Khởi tạo điều kiện `min-width` (từ điểm chỉ định trở lên). Nếu truyền hai giá trị (ví dụ `sm,md`), hệ thống sẽ tạo dải giới hạn `(min-width: ...) and (max-width: ...)`.
+- **media-max**: Khởi tạo điều kiện `max-width`. Hệ thống tự động trừ đi `1px` từ giá trị breakpoint để tránh xung đột render tại ranh giới chính xác.
+- **container** / **container-max**: Vận hành tương tự media query nhưng xuất ra các quy tắc `@container`, cho phép phần tử co giãn theo kích thước của khối cha. Yêu cầu phần tử cha phải được thiết lập `container-type`.
 
-Thay vì ghi `@media` thủ công trên tệp CSS, bạn nên chèn giá trị thuộc `media-max` vào logic.
+Truy vấn thích ứng có thể được thiết lập thông qua phím tắt sử dụng ký tự phân tách `|` (ví dụ: `media-max|md`) hoặc khai báo tường minh qua thuộc tính `_type`. Giá trị (`value`) chấp nhận cả các điểm dừng được định danh trong hệ thống thiết kế (md, lg) lẫn các đơn vị CSS thô (768px).
+
+**File Cấu hình Đầu vào (`properties.json`):**
 ```json
 {
-  "grid": {
-    "mobile": {
-      "_type": "media-max",
-      "value": "768px",
-      "columns": { "value": "1fr" }
+  "card": {
+    "padding": "24px",
+    
+    "media-max|md": {            // Truy vấn dựa trên Viewport (media-max)
+      "padding": "16px"
+    },
+    
+    "mobile": {                  // Khai báo loại tường minh (explicit)
+      "_type": "container-max",  // Truy vấn dựa trên Parent (container-max)
+      "value": "400px",
+      "padding": "8px"
+    },
+    
+    "container-max|lg": {        // Phím tắt container-max
+       "padding": "20px"
     }
   }
 }
 ```
-**SCSS Output:**
+
+**Kết quả Biên dịch Dự kiến (SCSS Output):**
 ```scss
-@media (max-width: 768px) {
-  .grid {
-    columns: 1fr;
+.card {
+  padding: 24px;
+
+  @media (max-width: 960px) {    // media-max|md
+    padding: 16px;
+  }
+
+  @container (max-width: 400px) { // _type: container-max
+    padding: 8px;
+  }
+  
+  @container (max-width: 1200px) { // container-max|lg
+    padding: 20px;
   }
 }
 ```
-
-## Container Queries
-
-Thay cho đo lường thiết bị gốc, Component Responsive sẽ xài chuẩn `container-max` bằng khung nội hàm component (`@container`) thích ứng chuẩn giao tiếp thông qua khung đo khu vực bọc bên ngoài.

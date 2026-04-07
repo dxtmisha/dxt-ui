@@ -1,0 +1,26 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/flags/Renaming (rename)'/>
+
+# Renaming (rename)
+
+The `_rename` flag overrides the property name (in CSS) or a portion of the class name (in SCSS) in the final output. This is useful for creating aliases or shorthand names.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "backgroundItem": {
+      "value": "#FFF",
+      "_rename": "bg"
+    }
+  }
+}
+```
+
+**Output Result (SCSS):**
+```scss
+.button__bg {
+  background-color: #FFF;
+}
+```

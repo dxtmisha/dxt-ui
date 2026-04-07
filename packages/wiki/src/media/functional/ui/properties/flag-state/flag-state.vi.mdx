@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/flags/Trạng thái (state)'/>
+
+# Trạng thái (state)
+
+Cờ `_state: true` cho phép gắn nhãn rõ ràng một nút là một trạng thái (pseudo-class). Điều này là cần thiết nếu tên nút không được trình phân tích cú pháp tự động nhận dạng. Các thuộc tính sẽ được tự động bọc trong một bộ chọn trạng thái (`&:name { ... }`).
+
+**Cấu hình đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "my-custom-state": {
+      "_state": true,
+      "opacity": "0.5"
+    }
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.button {
+  &:my-custom-state {
+    opacity: 0.5;
+  }
+}
+```

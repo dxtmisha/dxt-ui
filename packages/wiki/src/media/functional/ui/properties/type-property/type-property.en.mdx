@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/types/Properties (property)'/>
+
+# Property (property)
+
+The `property` structural type serves as the foundational base for the generator. It instructs the compiler to assemble the target node into a standard native CSS property with its corresponding literal value.
+
+> **Implicit Auto-detection:** If no explicit `_type` is declared and the parser matching engine detects no symbolic aliases in the node key, the system **automatically and natively defaults** to the `property` type.
+
+## Standard Assignment (Implicit)
+
+In the vast majority of configurations, explicitly declaring the `property` type is redundant. Passing a primitive key-value pair (string or number) inherently forces the engine to compile a standard CSS property.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "padding": "12px 16px",
+    "border-radius": "8px"
+  }
+}
+```
+
+**Conceptual Compiled Output (SCSS):**
+```scss
+.button {
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+```
+
+## Expanded Assignment (Explicit `property` type)
+
+Declaring the type explicitly becomes mandatory when the value demands a complex object architecture utilizing compiler configuration logic (such as passing the `_var: true` modifier to initialize a variable alongside it, or utilizing internal `_rename` logic), all while maintaining the core structural behavior of a native CSS property.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "custom-offset": {
+      "_type": "property",
+      "value": "24px",
+      "_rename": "margin-bottom"
+    }
+  }
+}
+```
+
+**Conceptual Compiled Output (SCSS):**
+```scss
+.button {
+  margin-bottom: 24px;
+}
+```
+
+The `property` type fundamentally drives all localized stylesheet generations inside `dxt-ui`, laying the pure CSS architectural groundwork preceding any BEM logic, media query compilation, or dynamic variable evaluations.

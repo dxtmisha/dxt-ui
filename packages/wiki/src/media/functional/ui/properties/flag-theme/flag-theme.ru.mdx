@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/flags/Тема (theme)'/>
+
+# Тема (theme)
+
+Флаг `_theme` позволяет ограничить область действия стилей конкретной цветовой темой. Стили будут сгенерированы только внутри селектора соответствующей темы.
+
+**Входная конфигурация (`properties.json`):**
+```json
+{
+  "button": {
+    "background": {
+      "value": "#000",
+      "_theme": "dark"
+    }
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.theme--dark {
+  .button {
+    background-color: #000;
+  }
+}
+```
