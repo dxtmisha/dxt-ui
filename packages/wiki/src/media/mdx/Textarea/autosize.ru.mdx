@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Автоматическое изменение размера
 
 Свойство `autosize` управляет автоматическим изменением высоты текстового поля в зависимости от содержимого.
@@ -9,7 +11,8 @@
 
 Когда `autosize` включен, `Textarea` будет динамически изменять свою высоту, чтобы вместить весь введенный текст.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -32,4 +35,6 @@ const text = ref('')
     rows="5"
   />
 </template>
-```
+  `}
+    language="html"
+/>

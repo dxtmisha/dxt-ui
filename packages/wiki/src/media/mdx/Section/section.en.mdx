@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 A semantic container component designed for grouping related content. It uses the `<section>` tag by default.
@@ -19,7 +21,8 @@ Section provides capabilities for displaying headlines, labels, descriptions, ca
 - Information blocks with second-level headings
 - Landing page sections
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 </script>
@@ -33,6 +36,8 @@ import { ref } from 'vue'
     <p>Main section content...</p>
   </Section>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Section is the semantically correct choice for dividing a page into large logical blocks.

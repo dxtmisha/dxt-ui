@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Input character validation
 
 The `match` property defines a regular expression for checking the validity of entered characters.
@@ -9,7 +11,8 @@ The `match` property defines a regular expression for checking the validity of e
 
 Checks each character during input. Characters that don't match the expression are ignored. Local `match` in group settings (`special[group].match`) takes priority over global. Differs from `pattern` in that `match` is a simple regular expression check, while `pattern` can be a function with access to mask state.
 
-```html
+<Source
+    code={`
 <!-- Digits only (default) -->
 <Mask mask="***-***" />
 
@@ -25,4 +28,6 @@ Checks each character during input. Characters that don't match the expression a
     '#': { match: /[A-Z]/ }
   }"
 />
-```
+  `}
+    language="html"
+/>

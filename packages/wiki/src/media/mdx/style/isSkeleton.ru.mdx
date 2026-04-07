@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Режим скелетона
 
 Свойство `isSkeleton` определяет поведение элемента при взаимодействии с родительским компонентом Skeleton.
@@ -9,7 +11,8 @@
 
 Работает в паре с компонентом Skeleton для управления видимостью и режимом отображения дочерних элементов. При `active=false` у родительского Skeleton все дочерние элементы отображаются нормально независимо от значения `isSkeleton`. При `active=true` элементы с `isSkeleton=true` показываются как скелетон-заглушки, а элементы с `isSkeleton=false` скрываются полностью.
 
-```html
+<Source
+    code={`
 <!-- Элемент будет отображаться как скелетон -->
 <Skeleton active>
   <Component isSkeleton text="Загрузка..." />
@@ -19,4 +22,6 @@
 <Skeleton active>
   <Component :isSkeleton="false" text="Скрытый текст" />
 </Skeleton>
-```
+  `}
+    language="html"
+/>

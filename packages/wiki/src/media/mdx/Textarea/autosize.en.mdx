@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Automatic Resizing
 
 The `autosize` property controls the automatic resizing of the textarea height based on its content.
@@ -9,7 +11,8 @@ The `autosize` property controls the automatic resizing of the textarea height b
 
 When `autosize` is enabled, the `Textarea` will dynamically adjust its height to fit all entered text.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -32,4 +35,6 @@ const text = ref('')
     rows="5"
   />
 </template>
-```
+  `}
+    language="html"
+/>

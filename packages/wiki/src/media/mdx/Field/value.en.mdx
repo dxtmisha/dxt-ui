@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Value state
 
 Properties `value` and `isValue` are designed to control the visual filled state of the field independently of the actual content.
@@ -9,7 +11,8 @@ Properties `value` and `isValue` are designed to control the visual filled state
 
 Properties work together: `Field` reads `value` reactively through `focusValue` for visual purposes (displaying text in scoreboard, caption handling), but does not manage it directly or validate it. If the real value is non-empty, the field automatically receives the visual "filled" state regardless of `isValue`. When the value is empty, the `isValue = true` flag forcibly activates the visual filled mode (floating label, corresponding classes), which is useful for preloads, masks, or delayed data insertion.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -46,4 +49,6 @@ const isLoading = ref(true)
     </template>
   </Field>
 </template>
-```
+  `}
+    language="html"
+/>

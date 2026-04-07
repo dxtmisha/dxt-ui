@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `start`
 
 Event triggered at the beginning of the transition animation.
@@ -26,7 +28,8 @@ Event triggered at the beginning and end of the transition animation.
 - `preparation: string | number` — identifier of the slide being prepared
 - `active: string | number` — identifier of the active slide
 
-```html
+<Source
+    code={`
 <script setup>
 const handleStart = (selected) => {
   console.log('Animation started to slide:', selected)
@@ -50,4 +53,6 @@ const handleMotionAxis = (options) => {
     <!-- Slides -->
   </MotionAxis>
 </template>
-```
+  `}
+    language="html"
+/>

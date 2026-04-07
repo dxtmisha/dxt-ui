@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Container for organizing action buttons with support for primary and secondary grouping, various alignment modes, and adaptive behavior.
 
 Actions centralizes the management of interactive button placement in dialogs, forms, and panels, automatically distributes space between groups, supports flexible adaptation to available space, and provides a unified API for creating consistent action sets. It serves as a fundamental component for building user interfaces with clear button hierarchy.
@@ -20,7 +22,8 @@ Actions centralizes the management of interactive button placement in dialogs, f
 - Control panels with primary and auxiliary actions
 - Adaptive interfaces with automatic restructuring on mobile devices
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 import { Actions } from '@dxtmisha/constructor'
@@ -43,6 +46,8 @@ const handleSave = async () => {
     ]"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Actions is a smart container: it automatically manages button placement, adapts to screen size, and provides visual hierarchy between primary and secondary actions.

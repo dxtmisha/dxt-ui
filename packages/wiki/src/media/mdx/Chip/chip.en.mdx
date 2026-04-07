@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 Compact interactive element for representing input, attributes, actions, and filters in the user interface.
@@ -24,7 +26,8 @@ Chip provides a unified component for displaying discrete information in a compa
 - Assistive elements (hints, recommendations)
 - Selectable options in forms and lists
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -70,6 +73,8 @@ const toggleFilter = (filter) => {
     Active
   </Chip>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Chip inherits all Button functionality, including events, icons, and progress indicators, while adding specialized styling for compact interface elements.

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `input`
 
 Event fires when the value in the input field changes, passing the original DOM event and validation data.
@@ -21,7 +23,8 @@ Event fires when the value in the input field changes, passing the original DOM 
 - `valueInput: any | undefined` — entered value
 - `detail: Record<string, any> | undefined` — additional data
 
-```html
+<Source
+    code={`
 <script setup>
 const handleInput = (event, value) => {
   console.log('DOM event:', event)
@@ -41,7 +44,9 @@ const handleInput = (event, value) => {
     @input="handleInput"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `inputLite`
 
@@ -60,7 +65,8 @@ Event fires when input is completed and focus is lost, passing the original DOM 
 
 **FieldValidationItem structure:** same as for `input` event
 
-```html
+<Source
+    code={`
 <script setup>
 const handleChange = (event, value) => {
   console.log('DOM event:', event)
@@ -79,7 +85,9 @@ const handleChange = (event, value) => {
     @change="handleChange"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `changeLite`
 

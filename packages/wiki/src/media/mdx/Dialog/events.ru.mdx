@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 
 ### `ok`
 
@@ -6,7 +8,8 @@
 **Параметры:**
 Событие не передаёт параметров.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -28,7 +31,9 @@ const handleOk = () => {
     @ok="handleOk"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `close`
 
@@ -37,7 +42,8 @@ const handleOk = () => {
 **Параметры:**
 Событие не передаёт параметров.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -57,7 +63,9 @@ const handleClose = () => {
     @close="handleClose"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Кнопки можно настроить через свойства `buttonOk` и `buttonClose`, либо скрыть, передав `null`.
 

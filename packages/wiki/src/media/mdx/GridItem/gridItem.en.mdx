@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Individual item within a Grid component. Controls how many columns the element should take across different screen sizes.
 
 **Key Features:**
@@ -6,7 +8,8 @@ Individual item within a Grid component. Controls how many columns the element s
 - Built-in responsive support for all major breakpoints
 - Granular control over layout density
 
-```html
+<Source
+    code={`
 <script setup>
 </script>
 
@@ -20,6 +23,8 @@ Individual item within a Grid component. Controls how many columns the element s
     <GridItem base="12" sm="6" lg="3">Responsive item</GridItem>
   </Grid>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > GridItem allows for granular control over element sizing within a Grid container, enabling complex responsive layouts with zero custom CSS.

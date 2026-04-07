@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Menu item navigation
 
 Methods `previous()` and `next()` are designed for programmatic movement through menu items based on current selection and the `step` property.
@@ -10,7 +12,8 @@ Methods `previous()` and `next()` are designed for programmatic movement through
 
 The methods work together with reactive `selected` state: calling `previous()` or `next()` automatically calculates the new position relative to the currently selected item. If no item is selected, the methods select the first available item. When reaching list boundaries (first or last item), navigation stops at the boundary item, preventing overflow beyond the list.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -51,6 +54,8 @@ const selected = ref('item2')
     :step="2"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 

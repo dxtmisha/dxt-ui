@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for displaying pop-up tooltips that provide additional information about an element on hover or focus.
 
 Tooltip is automatically positioned relative to the target element and can contain a text description or custom content. The component supports configuring show and hide delays, and can be equipped with an indicator (arrow) for visual connection.
@@ -18,7 +20,8 @@ Tooltip is automatically positioned relative to the target element and can conta
 - Contextual hints for input fields
 - Additional information in the interface
 
-```html
+<Source
+    code={`
 <script setup>
 import { Tooltip } from 'dxt-ui'
 </script>
@@ -30,5 +33,7 @@ import { Tooltip } from 'dxt-ui'
     </Tooltip>
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating a horizontally scrollable container with support for smooth scrolling and automatic positioning.
 
 HorizontalScroll provides a convenient way to display content that exceeds the screen width, such as image galleries, card lists, or navigation menus. The component supports automatic scrolling to the selected element upon initialization and provides methods for programmatic scroll control.
@@ -19,7 +21,8 @@ HorizontalScroll provides a convenient way to display content that exceeds the s
 - Tag or category lists
 - Timelines and step sequences
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -59,4 +62,6 @@ const items = ref([
   justify-content: center;
 }
 </style>
-```
+  `}
+    language="html"
+/>

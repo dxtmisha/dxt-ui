@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 A basic Dummy placeholder component for interface prototyping and visual testing. Allows you to quickly create blocks of specific sizes and colors.
 
 Dummy is designed as a tool for developers to help structure views before actual components are implemented.
@@ -14,7 +16,8 @@ Dummy is designed as a tool for developers to help structure views before actual
 - Visual testing of spacing and alignment
 - Placeholders for components not yet implemented
 
-```html
+<Source
+    code={`
 <script setup>
 </script>
 
@@ -30,6 +33,8 @@ Dummy is designed as a tool for developers to help structure views before actual
     <Dummy size="sm" palette="red" />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Dummy is designed as a universal utility component for visual planning of interface structure.

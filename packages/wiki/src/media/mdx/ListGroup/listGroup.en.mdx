@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for grouping and organizing list items with collapsible structure.
 
 ListGroup is an auxiliary component for List, managing hierarchical content organization with expand/collapse functionality. The component integrates with MotionTransform for smooth animations, supports unlimited nesting levels, and provides convenient navigation through structured data.
@@ -20,7 +22,8 @@ ListGroup is an auxiliary component for List, managing hierarchical content orga
 - Multi-level menus and catalogs
 - FAQ sections with expandable answers
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -53,4 +56,6 @@ const isOpen = ref(true)
     </ListGroup>
   </List>
 </template>
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Adaptive layout behavior
 
 The `flexible` property determines automatic switching to block mode when space is limited.
@@ -9,11 +11,14 @@ The `flexible` property determines automatic switching to block mode when space 
 
 Automatically applies `align="block"` property when available space becomes smaller than a defined breakpoint. With `adaptive` it tracks screen width through media queries, with `container` it adapts to parent container size. Suitable for creating adaptive interfaces that display correctly on both desktop and mobile devices without additional code.
 
-```html
+<Source
+    code={`
 <!-- Automatic transition on narrow screens -->
 <Actions flexible="adaptive" :list="[...]" />
 
 <!-- Adapts to parent size -->
 <Actions flexible="container" :list="[...]" />
-```
+  `}
+    language="html"
+/>
 

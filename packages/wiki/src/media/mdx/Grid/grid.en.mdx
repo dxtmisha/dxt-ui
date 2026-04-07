@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Layout component for creating grid structures with customizable columns.
 
 **Key Features:**
@@ -6,7 +8,8 @@ Layout component for creating grid structures with customizable columns.
 - Gap customization
 - Responsive layout building
 
-```html
+<Source
+    code={`
 <script setup>
 </script>
 
@@ -16,6 +19,8 @@ Layout component for creating grid structures with customizable columns.
     <GridItem columnBase="6">Item 2</GridItem>
   </Grid>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Grid is the foundation for creating aligned and structured layouts across different screen sizes.

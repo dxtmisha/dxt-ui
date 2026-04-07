@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Outline buttons
 
 Button component supports outline mode through the `outline` property. In this mode, buttons have a minimalist visual style with transparent background and colored border:
@@ -9,8 +11,11 @@ Button component supports outline mode through the `outline` property. In this m
 
 Outline mode is especially useful for creating tertiary actions, filter controls, and secondary options in cards or lists that need to be accessible without excessive visual noise.
 
-```html
+<Source
+    code={`
 <Button outline icon="filter">Filter</Button>
 <Button outline icon="sort">Sort</Button>
 <Button outline>More options</Button>
-```
+  `}
+    language="html"
+/>

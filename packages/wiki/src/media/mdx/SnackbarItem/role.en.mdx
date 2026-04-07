@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## ARIA Role
 
 The `role` property allows you to override the default ARIA role for the notification element. The default role is `status`.
@@ -7,7 +9,8 @@ The `role` property allows you to override the default ARIA role for the notific
  - `alert` — use for critical errors or warnings requiring immediate attention. Screen readers will interrupt the current task to announce this notification.
  - `log` — use if notifications represent a sequential log of events.
 
-```html
+<Source
+    code={`
 <template>
   <!-- Standard notification -->
   <SnackbarItem label="Download complete" role="status" />
@@ -15,4 +18,6 @@ The `role` property allows you to override the default ARIA role for the notific
   <!-- Critical error -->
   <SnackbarItem label="Connection error!" role="alert" />
 </template>
-```
+  `}
+    language="html"
+/>

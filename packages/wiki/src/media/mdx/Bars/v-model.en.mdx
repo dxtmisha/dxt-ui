@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## State management via v-model
 
 Two-way binding of action mode state via `v-model:action`.
@@ -5,7 +7,8 @@ Two-way binding of action mode state via `v-model:action`.
 **Parameters:**
 - `action: boolean` — action mode state of the bar
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -25,4 +28,6 @@ const isAction = ref(false)
     </template>
   </Bars>
 </template>
-```
+  `}
+    language="html"
+/>

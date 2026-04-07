@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Компонент для создания горизонтальной навигации с вкладками.
 
 TabsNavigation управляет списком вкладок, их выбором и прокруткой. Поддерживает различные стили отображения, управление с клавиатуры и адаптивность.
@@ -18,7 +20,8 @@ TabsNavigation управляет списком вкладок, их выбор
 - Фильтрация контента по категориям
 - Главное меню приложения (в стиле вкладок)
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -37,4 +40,6 @@ const tabs = [
     horizontal-scroll-align="center"
   />
 </template>
-```
+  `}
+    language="html"
+/>

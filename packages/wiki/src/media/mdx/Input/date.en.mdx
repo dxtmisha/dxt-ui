@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Date and Time Formatting
 
 Properties `type`, `language`, and `mask` are designed to manage date and time input and formatting with automatic localization and masking.
@@ -12,7 +14,8 @@ Properties `type`, `language`, and `mask` are designed to manage date and time i
 
 Properties work together: `type="date"` automatically activates date input mode with localized formatting. `language` determines the order of date components (day/month/year or month/day/year) and separators. `type="datetime"` adds time input to the date. Types `year-month`, `time`, and `hour-minute` allow input of specific components only. Properties `min` and `max` restrict the range of allowed values. You can override the automatic mask via the `mask` property for custom formatting.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 const dateValue = ref('2024-03-15')
@@ -50,4 +53,6 @@ const yearMonthValue = ref('2024-03')
     label="Date in 2024"
   />
 </template>
-```
+  `}
+    language="html"
+/>

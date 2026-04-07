@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 A versatile structural component that serves as a container with support for labels, descriptions, captions, icons, and headlines.
@@ -20,7 +22,8 @@ Block provides a flexible foundation for building complex interface components, 
 - Sections with headers and descriptions
 - Basic building block for other components
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 </script>
@@ -36,7 +39,9 @@ import { ref } from 'vue'
     Main block content
   </Block>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Block is a fundamental component for creating structured interfaces.
 

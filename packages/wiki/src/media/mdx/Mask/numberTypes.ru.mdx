@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Числовые типы масок
 
 Числовые типы в Mask обеспечивают специализированное форматирование и валидацию для работы с числами, валютами и финансовыми данными.
@@ -26,7 +28,8 @@
 
 ### Примеры
 
-```html
+<Source
+    code={`
 <!-- Форматированное число -->
 <Mask type="number-format" language="ru" :fraction="2" />
 
@@ -35,4 +38,6 @@
 
 <!-- Валюта без символа -->
 <Mask type="currency" currency="USD" :currencyHide="true" />
-```
+  `}
+    language="html"
+/>

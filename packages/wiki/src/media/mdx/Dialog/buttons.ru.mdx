@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Кнопки действий
 
 Свойства `buttonOk`, `buttonClose` и `actionsList` управляют кнопками действий в диалоговом окне через встроенный компонент Actions.
@@ -11,7 +13,8 @@
 
 При `clickOkAndClose="true"` кнопка OK автоматически закрывает диалог после нажатия.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 </script>
@@ -41,5 +44,7 @@ import { ref } from 'vue'
     label="Сохранение"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

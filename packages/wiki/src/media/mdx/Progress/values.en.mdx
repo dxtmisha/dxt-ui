@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Progress Value Management
 
 The `value` and `max` properties work together to determine the state of process execution. They establish the current value and upper limit for calculating the completion percentage of an operation.
@@ -9,7 +11,8 @@ The `value` and `max` properties work together to determine the state of process
 
 Completion percentage is calculated automatically: `(value / max) * 100`. The `value` is automatically constrained to the range from 0 to `max`. When `max` changes, the percentage display is recalculated proportionally. Use `max="100"` for percentage display or set it equal to the actual number of steps in the process.
 
-```html
+<Source
+    code={`
 <!-- Standard percentage scale -->
 <Progress :value="75" :max="100" />
 
@@ -21,4 +24,6 @@ Completion percentage is calculated automatically: `(value / max) * 100`. The `v
 
 <!-- Custom scale -->
 <Progress :value="completedTasks" :max="1000" />
-```
+  `}
+    language="html"
+/>

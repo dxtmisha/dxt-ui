@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating anchor links with smooth scrolling and URL copying capabilities.
 
 Anchor provides interactive anchor links for navigating through page sections. The component automatically handles clicks, updates the URL address, supports smooth scrolling with customizable offset, and integrates with Tooltip for displaying copy notifications. It can work both in regular navigation mode and in link copying mode to clipboard.
@@ -20,7 +22,8 @@ Anchor provides interactive anchor links for navigating through page sections. T
 - "Share link to section" buttons
 - Creating invisible anchor points for programmatic navigation
 
-```html
+<Source
+    code={`
 <template>
   <!-- Regular anchor -->
   <Anchor name="section-1" text="Go to section" />
@@ -31,4 +34,6 @@ Anchor provides interactive anchor links for navigating through page sections. T
   <!-- Hidden anchor -->
   <Anchor name="section-3" hide />
 </template>
-```
+  `}
+    language="html"
+/>

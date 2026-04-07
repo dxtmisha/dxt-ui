@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `window`
 
 Event fires when the window state changes (open/close).
@@ -11,7 +13,8 @@ Event fires when the window state changes (open/close).
 - `control: HTMLElement` — control DOM element
 - `open: boolean` — window open state (`true` - open, `false` - closed)
 
-```html
+<Source
+    code={`
 <script setup>
 const handleWindow = (options) => {
   console.log('Window ID:', options.id)
@@ -28,4 +31,6 @@ const handleWindow = (options) => {
     </template>
   </Component>
 </template>
-```
+  `}
+    language="html"
+/>

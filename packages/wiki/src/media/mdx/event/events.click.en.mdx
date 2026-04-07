@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `click`
 
 Event fires when clicking on the component, passing the original DOM event and component data.
@@ -11,7 +13,8 @@ Event fires when clicking on the component, passing the original DOM event and c
 - `value: any` — component value
 - `detail: Record<string, any> | undefined` — additional event data
 
-```html
+<Source
+    code={`
 <script setup>
 const handleClick = (event, value) => {
   console.log('DOM event:', event)
@@ -26,7 +29,9 @@ const handleClick = (event, value) => {
     <button data-event-type="action">Click me</button>
   </Component>
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `clickLite`
 

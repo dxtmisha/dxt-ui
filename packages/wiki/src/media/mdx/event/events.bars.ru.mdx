@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `bars`
 
 Событие срабатывает при клике на элемент панели Bars, передавая оригинальное DOM событие и данные о клике.
@@ -11,7 +13,8 @@
 - `value: any` — произвольное значение кнопки
 - `detail: Record<string, any> | undefined` — дополнительные данные события
 
-```html
+<Source
+    code={`
 <script setup>
 const handleBars = (event, value) => {
   console.log('DOM событие:', event)
@@ -30,7 +33,9 @@ const handleBars = (event, value) => {
     <button data-event-type="back">Назад</button>
   </Bars>
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `barsLite`
 

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Mask types
 
 The `type` property defines the mask operation mode and automatically generates the appropriate structure for different data types.
@@ -10,7 +12,8 @@ The `type` property defines the mask operation mode and automatically generates 
 
 When using `text`, explicit structure specification via the `mask` property is required. Specialized numeric types automatically create rubber masks with thousand separators, validation, and formatting according to regional settings (`language`). Date types generate masks according to local formats with validation of entered values correctness. When a specialized type is activated, the `mask` property is ignored, and the mask structure is formed automatically based on `language`, `currency`, and `fraction`.
 
-```html
+<Source
+    code={`
 <!-- Text mask -->
 <Mask mask="+1 (***) ***-****" type="text" />
 
@@ -19,4 +22,6 @@ When using `text`, explicit structure specification via the `mask` property is r
 
 <!-- Date mask -->
 <Mask type="date" language="en-US" />
-```
+  `}
+    language="html"
+/>

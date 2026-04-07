@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `actions`
 
 Event fires when clicking on an action button in the Actions component, passing the original DOM event and click data.
@@ -11,7 +13,8 @@ Event fires when clicking on an action button in the Actions component, passing 
 - `value: any` — arbitrary button value
 - `detail: Record<string, any> | undefined` — additional event data
 
-```html
+<Source
+    code={`
 <script setup>
 const handleActions = (event, value) => {
   console.log('DOM event:', event)
@@ -31,7 +34,9 @@ const handleActions = (event, value) => {
     { text: 'Confirm', type: 'confirm' }
   ]" />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `actionsLite`
 

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for customizing scrollbar appearance and managing visual dividers at scrollable area boundaries.
 
 Scrollbar hides the browser's standard scrollbar and provides visual feedback when reaching the top or bottom of content through divider lines. The component automatically detects scrollbar width and adapts display for systems without visible scrollbars (e.g., macOS with trackpad).
@@ -18,7 +20,8 @@ Scrollbar hides the browser's standard scrollbar and provides visual feedback wh
 - Fixed-height areas with vertical scrolling
 - Visual content separation during scrolling
 
-```html
+<Source
+    code={`
 <script setup>
 const handleReachBottom = () => {
   // Load more data
@@ -36,4 +39,6 @@ const handleReachBottom = () => {
     </div>
   </Scrollbar>
 </template>
-```
+  `}
+    language="html"
+/>

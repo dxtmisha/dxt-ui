@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Color Palette
 
 Property `asPalette` enables color scheme inheritance from the parent element while maintaining base saturation.
@@ -11,7 +13,10 @@ Allows automatic color adaptation to placement context. The element adopts the p
 - `false` (default) — uses its own color scheme
 - `true` — inherits palette from parent element
 
-```html
+<Source
+    code={`
 <!-- Inherit palette from parent -->
 <Component asPalette />
-```
+  `}
+    language="html"
+/>

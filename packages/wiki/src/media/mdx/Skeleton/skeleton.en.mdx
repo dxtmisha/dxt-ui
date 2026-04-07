@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating animated interface placeholders during content loading.
 
 Skeleton provides smooth transitions between loading state and real content display. The component automatically manages child element visibility through the `active` property and supports a CSS class system for creating various types of placeholders.
@@ -18,7 +20,8 @@ Skeleton provides smooth transitions between loading state and real content disp
 - Text blocks during loading
 - Complex forms with multiple fields
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -42,4 +45,6 @@ setTimeout(() => {
     <p>{{ user.description }}</p>
   </Skeleton>
 </template>
-```
+  `}
+    language="html"
+/>

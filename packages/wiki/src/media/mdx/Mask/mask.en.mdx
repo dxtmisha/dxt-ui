@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Mask template
 
 The `mask` property defines a template for structured data input with automatic real-time formatting.
@@ -9,7 +11,8 @@ The `mask` property defines a template for structured data input with automatic 
 
 The template uses two types of characters: special characters (default `*`) denote positions for user input, while literal characters are inserted automatically and cannot be changed. The component automatically adds separators during typing and restricts input to only allowed characters in corresponding positions. When using an array of masks, the system automatically selects the most suitable template based on entered data. Works together with the validation system through `pattern` and `check` properties. For built-in types (`currency`, `number`, `date`), masks are generated automatically based on regional settings.
 
-```html
+<Source
+    code={`
 <!-- Russian phone -->
 <Mask mask="+7 *** *** ** **" />
 
@@ -18,4 +21,6 @@ The template uses two types of characters: special characters (default `*`) deno
 
 <!-- Multiple formats -->
 <Mask :mask="['+7 *** *** ** **', '8 *** *** ** **']" />
-```
+  `}
+    language="html"
+/>

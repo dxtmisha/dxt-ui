@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Mask visibility control
 
 The `visible` and `visiblePartly` properties are designed for managing the display of mask placeholder characters and overall component visibility.
@@ -9,7 +11,8 @@ The `visible` and `visiblePartly` properties are designed for managing the displ
 
 Properties work together: when `visible: false`, the mask component is completely hidden, including all placeholder characters. When `visiblePartly: true` is activated, only filled mask positions are displayed, hiding empty placeholder characters. If `visible` is set to `false`, the `visiblePartly` property is ignored. Visibility changes don't affect validation logic and data processing, allowing creation of adaptive interfaces with conditional or abbreviated mask display.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -37,4 +40,6 @@ const compactMode = ref(false)
     :visiblePartly="compactMode"
   />
 </template>
-```
+  `}
+    language="html"
+/>

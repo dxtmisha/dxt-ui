@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Managing action button groups
 
 The `list` and `listSecondary` properties work together to organize buttons in the Actions container. They manage the rendering of primary and secondary button groups with automatic attribute application and visual separation.
@@ -9,7 +11,8 @@ The `list` and `listSecondary` properties work together to organize buttons in t
 
 Each array element represents an object with button configuration, supporting all Button component properties (label, icon, disabled, primary, loading, and others). The component automatically applies base attributes from `buttonAttrs` to primary buttons and from `buttonSecondaryAttrs` to secondary ones. Secondary buttons are positioned separately with an automatic spacer and are hidden in `align="center"` and `align="block"` modes. Use `list` for primary actions and `listSecondary` for destructive or less important operations.
 
-```html
+<Source
+    code={`
 <!-- Primary buttons -->
 <Actions
   :list="[
@@ -47,4 +50,6 @@ Each array element represents an object with button configuration, supporting al
   ]"
   :button-secondary-attrs="{ size: 'small', text: true }"
 />
-```
+  `}
+    language="html"
+/>

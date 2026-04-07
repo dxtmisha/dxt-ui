@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 
 ### `ok`
 
@@ -6,7 +8,8 @@ Event fires when the confirmation (OK) button in the dialog is clicked.
 **Parameters:**
 Event does not pass parameters.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -28,7 +31,9 @@ const handleOk = () => {
     @ok="handleOk"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `close`
 
@@ -37,7 +42,8 @@ Event fires when the close button in the dialog is clicked.
 **Parameters:**
 Event does not pass parameters.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -57,7 +63,9 @@ const handleClose = () => {
     @close="handleClose"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Buttons can be configured via `buttonOk` and `buttonClose` properties, or hidden by passing `null`.
 

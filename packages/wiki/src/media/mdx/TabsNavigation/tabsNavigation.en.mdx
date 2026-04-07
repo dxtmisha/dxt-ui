@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating horizontal navigation with tabs.
 
 TabsNavigation manages a list of tabs, their selection, and scrolling. It supports various display styles, keyboard control, and responsiveness.
@@ -18,7 +20,8 @@ TabsNavigation manages a list of tabs, their selection, and scrolling. It suppor
 - Content filtering by categories
 - Main application menu (tab style)
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -37,4 +40,6 @@ const tabs = [
     horizontal-scroll-align="center"
   />
 </template>
-```
+  `}
+    language="html"
+/>

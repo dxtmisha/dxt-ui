@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## State Management via v-model
 
 Two-way binding of the selected tab via `v-model:selected`.
@@ -5,7 +7,8 @@ Two-way binding of the selected tab via `v-model:selected`.
 **Parameters:**
 - `selected: any` — the value of the selected tab
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -24,4 +27,6 @@ const selectedTab = ref('home')
     <template #profile>Profile Content</template>
   </Tabs>
 </template>
-```
+  `}
+    language="html"
+/>

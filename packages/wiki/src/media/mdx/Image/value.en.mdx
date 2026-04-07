@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Main value
 
 The `value` property defines the image content. This universal property supports multiple source types for maximum flexibility.
@@ -11,7 +13,8 @@ The `value` property defines the image content. This universal property supports
 
 The component automatically detects the source type and selects the optimal display method. When passing a File object, the content is read and previewed. The property is reactive and supports dynamic updates.
 
-```html
+<Source
+    code={`
 <!-- Icon by name -->
 <Image value="icon-user" />
 
@@ -20,4 +23,6 @@ The component automatically detects the source type and selects the optimal disp
 
 <!-- User file -->
 <Image :value="fileFromInput" />
-```
+  `}
+    language="html"
+/>

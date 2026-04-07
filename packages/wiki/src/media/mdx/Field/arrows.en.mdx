@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Navigation and arrows
 
 Properties `arrowCarousel`, `arrowStepper`, `arrowAlign`, `disabledPrevious`, and `disabledNext` are designed to control built-in navigation elements.
@@ -12,7 +14,8 @@ Properties `arrowCarousel`, `arrowStepper`, `arrowAlign`, `disabledPrevious`, an
 
 Properties work together: only one arrow mode is active — if `arrowCarousel = true`, the `arrowStepper` mode is ignored and vice versa. When navigation mode is active, the clear button (`cancel`) is automatically hidden, as the control area takes priority. The `disabledPrevious` and `disabledNext` flags apply only to the currently active arrow mode.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -88,4 +91,6 @@ const count = ref(5)
     </template>
   </Field>
 </template>
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating dropdown selection lists with search, filtering, multiple selection, and validation support.
 
 Select is a complete selection element that combines Field, Menu, SelectValue, and Input components to create an advanced selection interface. The component automatically displays selected values as text or chips (for multiple selection), provides built-in search and option filtering, supports AJAX data loading with caching. It integrates with all Field component features including validation, labels, counters, and messages.
@@ -27,7 +29,8 @@ Select is a complete selection element that combines Field, Menu, SelectValue, a
 - Forms with validation of selected values
 - Combo boxes with editing capability
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -66,4 +69,6 @@ const languages = [
     :option="languages"
   />
 </template>
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `actions`
 
 Событие срабатывает при клике на кнопку действия в компоненте Actions, передавая оригинальное DOM событие и данные о клике.
@@ -11,7 +13,8 @@
 - `value: any` — произвольное значение кнопки
 - `detail: Record<string, any> | undefined` — дополнительные данные события
 
-```html
+<Source
+    code={`
 <script setup>
 const handleActions = (event, value) => {
   console.log('DOM событие:', event)
@@ -31,7 +34,9 @@ const handleActions = (event, value) => {
     { text: 'Подтвердить', type: 'confirm' }
   ]" />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `actionsLite`
 

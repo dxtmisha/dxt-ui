@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Основные бейджи (primary)
 
 Компонент Badge поддерживает основной режим через свойство `primary`. В этом режиме бейджи имеют наиболее заметный визуальный стиль с яркими цветами бренда:
@@ -9,8 +11,11 @@
 
 Primary режим особенно полезен для создания критических индикаторов уведомлений, активных статусов и высокоприоритетных маркеров, которые требуют немедленного внимания пользователя в интерфейсе.
 
-```html
+<Source
+    code={`
 <Badge primary overlap="static">5</Badge>
 <Badge primary overlap="static" icon="warning">Важно</Badge>
 <Badge primary dot overlap="static"/>
-```
+  `}
+    language="html"
+/>

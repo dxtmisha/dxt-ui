@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Action mode
 
 Properties `action`, `actionLabel`, `actionDescription`, and `actionBars` are designed for switching Bars into contextual action mode when selecting items or performing bulk operations.
@@ -11,7 +13,8 @@ Properties `action`, `actionLabel`, `actionDescription`, and `actionBars` are de
 
 Properties work together: when `action = true`, the component replaces standard content (label, description, bars) with action variants (actionLabel, actionDescription, actionBars). The back button automatically transforms into an exit button (iconClose) for leaving action mode. All shared button attributes from `buttonAttrs` apply to `actionBars`, maintaining consistent styling. Action mode is typically controlled by external selection state and is used for temporary focused operations with the ability to exit back to normal view.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref, computed } from 'vue'
 
@@ -49,7 +52,7 @@ const handleDelete = () => {
       { icon: 'add', label: 'Add' },
       { icon: 'search', label: 'Search' }
     ]"
-    :action-label="`${selectedItems.length} selected`"
+    :action-label="\`\${selectedItems.length} selected\`"
     action-description="Choose an action to apply"
     :action-bars="[
       { icon: 'share', onClick: handleShare },
@@ -74,11 +77,13 @@ const handleDelete = () => {
   <Bars
     v-model:action="actionMode"
     label="Messages"
-    :action-label="`${selectedItems.length} messages`"
+    :action-label="\`\${selectedItems.length} messages\`"
     :action-bars="[
       { icon: 'mark_email_read' },
       { icon: 'delete' }
     ]"
   />
 </template>
-```
+  `}
+    language="html"
+/>

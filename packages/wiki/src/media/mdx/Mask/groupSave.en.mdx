@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Preserving groups on deletion
 
 The `groupSave` property controls behavior when deleting characters in a mask with multiple types of special characters.
@@ -9,7 +11,8 @@ The `groupSave` property controls behavior when deleting characters in a mask wi
 
 With `groupSave: true` and different groups ahead, the character is not physically deleted but marked with a deletion marker, preserving the mask structure. With `false`, characters are deleted completely, which can lead to "collapsing" of groups and loss of structure. Only works for fixed (non-rubber) groups of special characters.
 
-```html
+<Source
+    code={`
 <!-- Preserve group structure (default) -->
 <Mask
   mask="***-###"
@@ -23,4 +26,6 @@ With `groupSave: true` and different groups ahead, the character is not physical
   :special="['*', '#']"
   :groupSave="false"
 />
-```
+  `}
+    language="html"
+/>

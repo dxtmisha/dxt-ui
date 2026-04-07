@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Input chips (input)
 
 The Chip component supports input mode through the `input` property. In this mode, chips have an input field style and represent discrete information entered by the user:
@@ -9,8 +11,11 @@ The Chip component supports input mode through the `input` property. In this mod
 
 Input mode is especially useful for displaying data that users have actively entered or selected, making them visually distinct from static interface elements.
 
-```html
+<Source
+    code={`
 <Chip input icon="person">Contact</Chip>
 <Chip input icon="tag">Tag</Chip>
 <Chip input selected>Selected</Chip>
-```
+  `}
+    language="html"
+/>

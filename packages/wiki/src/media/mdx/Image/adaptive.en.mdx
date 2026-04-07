@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Adaptive scaling
 
 The `adaptive`, `adaptiveGroup`, `adaptiveAlways`, `objectWidth`, and `objectHeight` properties control automatic image scaling to ensure visual consistency of physical object sizes across different images.
@@ -20,7 +22,8 @@ Elements with the same `adaptiveGroup` value scale synchronously, ensuring consi
 
 For performance optimization, scaling calculations are performed only for visible elements within the viewport plus a small margin. If an element is outside the visible area, calculations are paused until the element appears on screen. The `adaptiveAlways` property disables this optimization and forces the component to constantly recalculate the scale regardless of element visibility.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -72,4 +75,6 @@ const phone3 = ref('/images/phone-model-c.png')
     :value="phone1"
   />
 </template>
-```
+  `}
+    language="html"
+/>

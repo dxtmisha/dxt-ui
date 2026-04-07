@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Scroll Settings
 
 The `behavior`, `block`, `inline`, and `shift` properties control the scrolling behavior to the element when navigating via an anchor.
@@ -13,7 +15,8 @@ The `behavior`, `block`, `inline`, and `shift` properties control the scrolling 
 
 These properties allow you to customize exactly how the page scrolls to the target element. For example, you can enable smooth scrolling or change the positioning of the element on the screen after scrolling.
 
-```html
+<Source
+    code={`
 <template>
   <Anchor
     href="#target"
@@ -31,4 +34,6 @@ These properties allow you to customize exactly how the page scrolls to the targ
     Go with offset
   </Anchor>
 </template>
-```
+  `}
+    language="html"
+/>

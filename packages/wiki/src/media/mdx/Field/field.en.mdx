@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Base container for form controls that composes label, messages, counter, icons, and progress into a unified structure.
 
 Field centralizes the visual representation management of input fields, handles focus and validation states, coordinates auxiliary element positioning, and provides a consistent API for building any type of inputs. It serves as the fundamental foundation for creating consistent forms with slot support, control icons, and subcomponent integration.
@@ -20,7 +22,8 @@ Field centralizes the visual representation management of input fields, handles 
 - Creating fields with validation and character counters
 - Developing component libraries with consistent UI
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 import { Field } from '@dxtmisha/constructor'
@@ -47,6 +50,8 @@ const value = ref('')
     </template>
   </Field>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Field is a constructor container: it does not handle data input directly, but organizes structure, classes, and auxiliary element display for any type of input fields.

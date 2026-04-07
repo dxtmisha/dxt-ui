@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Adding Notifications
 
 The primary interaction with the `Snackbar` component occurs through the `add` method, which is used to dynamically push new messages into the queue.
@@ -6,14 +8,17 @@ The primary interaction with the `Snackbar` component occurs through the `add` m
 
 The component instance (via `ref`) provides a `data` object containing the `add(item: SnackbarValue)` method. The `item` parameter determines the configuration and behavior of the new notification.
 
-```typescript
+<Source
+    code={`
 snackbar.value?.data.add({
   data: {
     label: 'Notification Title',
     description: 'Description of the occurring event'
   }
 })
-```
+  `}
+    language="typescript"
+/>
 
 ### SnackbarValue Structure
 
@@ -29,7 +34,8 @@ The configuration object includes the following properties:
 
 For notifications with non-standard layouts, you can pass your own component via the `component` property. All properties specified in the `data` object will be passed to your component as `props`.
 
-```typescript
+<Source
+    code={`
 import MyAlert from './MyAlert.vue'
 
 snackbar.value?.data.add({
@@ -39,6 +45,8 @@ snackbar.value?.data.add({
     message: 'This is a message with custom styling'
   }
 })
-```
+  `}
+    language="typescript"
+/>
 
 The `highPriority` property is recommended for critical system notifications or authorization errors, ensuring they reliably catch the user's attention and are displayed separately from the general message flow.

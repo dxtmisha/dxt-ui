@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Using the img tag
 
 The `tagImg`, `srcset`, `picture`, `alt`, `lazy`, `preloadOffset` and `fetchPriority` properties are designed to control the image display mode using the HTML `<img>` tag instead of a background image.
@@ -24,7 +26,8 @@ The `preloadOffset` property defines the pixel offset for preloading images when
 
 The `fetchPriority` property allows you to control the browser's image loading priority. It accepts three values: `high` — high priority for critical images (such as hero images or main banners), `low` — low priority for secondary images, `auto` — the browser determines the priority automatically (default value). Proper use of this property helps optimize page loading by ensuring fast loading of important content.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -101,5 +104,7 @@ const productImage = ref('/images/product.jpg')
     }"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

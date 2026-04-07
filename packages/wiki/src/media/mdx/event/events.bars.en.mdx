@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `bars`
 
 Event fires when clicking on a Bars panel element, passing the original DOM event and click data.
@@ -11,7 +13,8 @@ Event fires when clicking on a Bars panel element, passing the original DOM even
 - `value: any` — arbitrary button value
 - `detail: Record<string, any> | undefined` — additional event data
 
-```html
+<Source
+    code={`
 <script setup>
 const handleBars = (event, value) => {
   console.log('DOM event:', event)
@@ -30,7 +33,9 @@ const handleBars = (event, value) => {
     <button data-event-type="back">Back</button>
   </Bars>
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `barsLite`
 

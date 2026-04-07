@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 Versatile bar component for application headers, toolbars, and contextual action bars with support for navigation, action buttons, and bulk operation modes.
@@ -26,7 +28,8 @@ Bars provides a comprehensive solution for creating consistent top-level interfa
 - List headers with bulk action support
 - Multi-selection interfaces with action mode
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -67,7 +70,7 @@ const handleDelete = () => {
       v-model:action="actionMode"
       label="Contacts"
       description="Manage your contacts"
-      :action-label="`${selectedCount} selected`"
+      :action-label="\`\${selectedCount} selected\`"
       action-description="Choose an action"
       icon-back="arrow_back"
       icon-close="close"
@@ -92,6 +95,8 @@ const handleDelete = () => {
     />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Bars is designed as a top-level UI component for creating consistent application headers, toolbars, and contextual action interfaces with comprehensive navigation, action management, and bulk operation support.

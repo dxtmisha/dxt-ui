@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Clear button
 
 Properties `cancel` and `cancelShow` are designed to control the display of the field clear icon.
@@ -9,7 +11,8 @@ Properties `cancel` and `cancelShow` are designed to control the display of the 
 
 Properties work together: if `cancel` is set to `auto`, the clear icon is displayed only when the conditions `cancelShow = true` are met, the field is active (not `disabled`/`readonly`), and arrow mode (`arrowCarousel`/`arrowStepper`) is not enabled. When `cancel = always`, the icon is displayed forcibly (except for `disabled`/`readonly` or active arrows), the `cancelShow` value is ignored. Arrow modes take priority over the clear button — when navigation is active, cancel is hidden regardless of settings.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref, computed } from 'vue'
 
@@ -51,4 +54,6 @@ const hasValue = computed(() => value.value.length > 0)
     </template>
   </Field>
 </template>
-```
+  `}
+    language="html"
+/>

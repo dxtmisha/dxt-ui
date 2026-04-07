@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `window`
 
 Событие срабатывает при изменении состояния окна (открытие/закрытие).
@@ -11,7 +13,8 @@
 - `control: HTMLElement` — DOM элемент управления
 - `open: boolean` — состояние открытия окна (`true` - открыто, `false` - закрыто)
 
-```html
+<Source
+    code={`
 <script setup>
 const handleWindow = (options) => {
   console.log('ID окна:', options.id)
@@ -28,4 +31,6 @@ const handleWindow = (options) => {
     </template>
   </Component>
 </template>
-```
+  `}
+    language="html"
+/>

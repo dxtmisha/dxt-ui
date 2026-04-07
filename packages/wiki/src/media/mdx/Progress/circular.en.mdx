@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Circular Progress and Related Parameters
 
 The `circular` property enables circular progress indicator display mode as a ring indicator. For optimal control over appearance and behavior, it is recommended to use it together with additional properties.
@@ -9,7 +11,8 @@ The `circular` property enables circular progress indicator display mode as a ri
 
 The `circular` property activates a ring progress indicator that fills around the circumference proportionally to the current value. `dense` removes padding, making the indicator more compact for placement in limited space.
 
-```html
+<Source
+    code={`
 <!-- Basic circular progress -->
 <Progress circular />
 
@@ -21,4 +24,6 @@ The `circular` property activates a ring progress indicator that fills around th
 
 <!-- Compact with value -->
 <Progress circular dense :value="50" />
-```
+  `}
+    language="html"
+/>

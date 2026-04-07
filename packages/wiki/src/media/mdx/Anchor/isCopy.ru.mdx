@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Копирование ссылки
 
 Свойство `isCopy` переключает компонент в режим копирования ссылки на якорь в буфер обмена.
@@ -11,7 +13,8 @@
 
 При включённом `isCopy` клик по компоненту не выполняет прокрутку к якорю, а копирует полную ссылку (включая origin и pathname) в буфер обмена. После копирования автоматически открывается Tooltip с уведомлением, который закрывается через время, указанное в `delayHide`. Иконка меняется с `iconTag` на `iconContentCopy` для визуального подтверждения действия.
 
-```html
+<Source
+    code={`
 <template>
   <!-- Базовый режим -->
   <Anchor name="section" text="Скопировать ссылку" isCopy />
@@ -19,5 +22,7 @@
   <!-- С кастомными иконками -->
   <Anchor name="heading" isCopy iconTag="share" iconContentCopy="check" />
 </template>
-```
+  `}
+    language="html"
+/>
 

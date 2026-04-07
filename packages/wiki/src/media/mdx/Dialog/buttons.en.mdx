@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Action buttons
 
 Properties `buttonOk`, `buttonClose`, and `actionsList` control action buttons in the dialog window through the built-in Actions component.
@@ -11,7 +13,8 @@ Properties `buttonOk`, `buttonClose`, and `actionsList` control action buttons i
 
 With `clickOkAndClose="true"` OK button automatically closes the dialog after clicking.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 </script>
@@ -41,5 +44,7 @@ import { ref } from 'vue'
     label="Save"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

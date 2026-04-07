@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating mobile-optimized action panels that slide up from the bottom of the screen with smooth animation.
 
 ActionSheet is a specialized wrapper over the Window component with a preset `actionSheet` adaptive mode. The component automatically positions itself at the bottom of the screen and slides up when opened, following iOS and Material Design mobile interface patterns. Supports swipe gestures for closing, integration with the Bars component for the header, and automatic focus management.
@@ -21,7 +23,8 @@ ActionSheet is a specialized wrapper over the Window component with a preset `ac
 - Context menus for touch interfaces
 - Confirmations and notifications
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -57,5 +60,7 @@ const handleAction = (action) => {
     </template>
   </ActionSheet>
 </template>
-```
+  `}
+    language="html"
+/>
 

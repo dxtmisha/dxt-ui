@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 A versatile component for creating tabs, menu items, and navigation links with icon and badge support.
 
 TabItem combines the functionality of a button, link, and list item. It supports various states (active, disabled), can display icons to the left and right of the text, and integrates with the Badge component to show notifications or counters. The component automatically manages ARIA attributes to ensure accessibility.
@@ -20,7 +22,8 @@ TabItem combines the functionality of a button, link, and list item. It supports
 - Sidebar navigation menus
 - Links with icons and counters
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -49,4 +52,6 @@ const activeTab = ref('home')
     />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>

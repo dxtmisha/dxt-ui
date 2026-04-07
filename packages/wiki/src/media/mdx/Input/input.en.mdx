@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Text input field component with validation, masking and formatting support.
 
 Input provides a flexible interface for entering various types of data: text, numbers, email, passwords, phones, URLs, dates and time. The component automatically applies appropriate validation, formatting and keyboard based on the specified type. Supports masking for structured input (phones, dates, custom patterns), currency and number formatting, password visibility control and integration with the Field component for consistent styling.
@@ -25,7 +27,8 @@ Input provides a flexible interface for entering various types of data: text, nu
 - Formatted input (phones, dates, cards)
 - Currency fields with automatic formatting
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -68,7 +71,9 @@ const handleInput = (event, validation) => {
     />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 Компонент текстового поля ввода с поддержкой валидации, маскирования и форматирования.
 
 Input предоставляет гибкий интерфейс для ввода данных различных типов: текст, числа, email, пароли, телефоны, URL, даты и время. Компонент автоматически применяет соответствующую валидацию, форматирование и клавиатуру в зависимости от указанного типа. Поддерживает маскирование для структурированного ввода (телефоны, даты, кастомные паттерны), форматирование валют и чисел, управление видимостью пароля и интеграцию с компонентом Field для единообразной стилизации.
@@ -96,7 +101,8 @@ Input предоставляет гибкий интерфейс для ввод
 - Форматированный ввод (телефоны, даты, карты)
 - Валютные поля с автоматическим форматированием
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -139,5 +145,7 @@ const handleInput = (event, validation) => {
     />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 

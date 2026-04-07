@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Value Management
 
 The `value`, `valueVariant`, and `valueVariantHide` properties are designed for managing checkbox values during form submission and two-way data binding.
@@ -10,7 +12,8 @@ The `value`, `valueVariant`, and `valueVariantHide` properties are designed for 
 
 Properties work together: `value` determines the current checkbox state and works with `v-model` for two-way binding. `valueVariant` allows setting a custom value for the checked state (e.g., "yes", "1", "active"), which will be passed during form submission. `valueVariantHide` automatically creates a hidden input field with the specified value, which is submitted when the checkbox is unchecked, ensuring data presence in the form even with an inactive checkbox.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -61,4 +64,6 @@ const handleSubmit = () => {
   <!-- Only sent when checked: optional=enabled -->
   <!-- When unchecked field is not sent -->
 </template>
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Secondary buttons
 
 Button component supports secondary mode through the `secondary` property. In this mode, buttons have a less prominent visual style for alternative or supporting actions:
@@ -9,8 +11,11 @@ Button component supports secondary mode through the `secondary` property. In th
 
 Secondary mode is especially useful for creating cancel buttons, reset actions, and alternative choices that support the main flow without competing for primary attention in the interface.
 
-```html
+<Source
+    code={`
 <Button secondary icon="close">Cancel</Button>
 <Button secondary icon="refresh">Reset</Button>
 <Button secondary>Skip</Button>
-```
+  `}
+    language="html"
+/>

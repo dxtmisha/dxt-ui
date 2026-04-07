@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 A structural component designed to group related content with support for headers, descriptions, and flexible layout options. It is a semantic alias for the Block component, with a default header level of h4.
@@ -19,7 +21,8 @@ Group provides a standardized way to organize information within a page or anoth
 - Organizing complex forms into thematic areas
 - Creating structured content blocks with smaller headers
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 </script>
@@ -35,6 +38,8 @@ import { ref } from 'vue'
     Main group content goes here
   </Group>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Group is an ideal choice for creating semantic sub-structures within your application.

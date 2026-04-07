@@ -1,5 +1,5 @@
 import { n as e, t } from "./storybookTypes-RNr8gPGw.js";
-import { n, t as r } from "./WikiStorybookDescriptions-BrwsRAKT.js";
+import { n, t as r } from "./WikiStorybookDescriptions-IKMchHA-.js";
 import { Geo as i, forEach as a, isArray as o, isObjectNotArray as s, toCamelCase as c } from "@dxtmisha/functional";
 import { isString as l, toKebabCase as u } from "@dxtmisha/functional-basic";
 //#region src/classes/WikiStorybookItem.ts

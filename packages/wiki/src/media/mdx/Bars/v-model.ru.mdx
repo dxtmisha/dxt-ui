@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Управление состоянием через v-model
 
 Двусторонняя привязка состояния action-режима через `v-model:action`.
@@ -5,7 +7,8 @@
 **Параметры:**
 - `action: boolean` — состояние action-режима панели
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -25,4 +28,6 @@ const isAction = ref(false)
     </template>
   </Bars>
 </template>
-```
+  `}
+    language="html"
+/>

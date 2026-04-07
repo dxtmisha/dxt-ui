@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 Compact visual indicator for displaying status, notification counts, or markers on interface elements with support for various display modes and automatic overflow management.
@@ -26,7 +28,8 @@ Badge provides a universal solution for creating informative indicators with fle
 - Visual hints about available updates
 - Numeric indicators on tabs and menu items
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -84,6 +87,8 @@ const addToCart = () => {
     </div>
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Badge is designed as a universal UI component for creating compact visual indicators with comprehensive support for various content types, automatic display management, and flexible positioning settings.

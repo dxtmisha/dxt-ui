@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for displaying a graphical indicator (arrow) used to visually link floating elements to their target.
 
 Arrow provides automatic or manual positioning of the indicator. It is often used within Tooltip, Popover, and Dropdown components to indicate the direction towards the trigger or target element. The component supports adaptation to various sizes and styles, and can dynamically update its position.
@@ -18,7 +20,8 @@ Arrow provides automatic or manual positioning of the indicator. It is often use
 - Visual links in tour guides
 - Directional indicators in the interface
 
-```html
+<Source
+    code={`
 <script setup>
 import { Arrow } from 'dxt-ui'
 </script>
@@ -29,5 +32,7 @@ import { Arrow } from 'dxt-ui'
     <Arrow position="top" />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 

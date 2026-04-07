@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Custom Display Templates
 
 The `template` property allows you to customize the counter display format using placeholders.
@@ -9,7 +11,8 @@ The `template` property allows you to customize the counter display format using
 
 Uses string interpolation to replace placeholders with actual counter values. Supports HTML markup inside the template for customizing styles of individual parts. When no template is provided, the component automatically determines the format: displays "50 / 100" when `maxlength` is present or just "50" when it's absent.
 
-```html
+<Source
+    code={`
 <!-- Descriptive format -->
 <FieldCounter
   :counter="75"
@@ -36,4 +39,6 @@ Uses string interpolation to replace placeholders with actual counter values. Su
   :counter="42"
   template="Characters entered: [c]"
 />
-```
+  `}
+    language="html"
+/>

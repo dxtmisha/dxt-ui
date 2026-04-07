@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Text buttons
 
 Button component supports text mode through the `text` property. In this mode, buttons have a minimalist text-only style resembling links for the most unobtrusive actions:
@@ -9,8 +11,11 @@ Button component supports text mode through the `text` property. In this mode, b
 
 Text mode is especially useful for creating tertiary actions, inline navigation links, and supplementary options within text content or footers that need to be accessible without drawing excessive attention.
 
-```html
+<Source
+    code={`
 <Button text icon="info">Learn more</Button>
 <Button text icon="help">Help</Button>
 <Button text>Read details</Button>
-```
+  `}
+    language="html"
+/>

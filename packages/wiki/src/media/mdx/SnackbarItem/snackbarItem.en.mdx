@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 The component represents an individual notification card inside the `Snackbar`. It is responsible for the visual presentation of a message, including titles, text, icons, and actions.
@@ -16,7 +18,8 @@ The component represents an individual notification card inside the `Snackbar`. 
 - Notifications with "Undo" or "Retry" buttons
 - Cards with status icons (Success, Error, Info)
 
-```html
+<Source
+    code={`
 <template>
   <!-- Basic Usage -->
   <SnackbarItem
@@ -39,6 +42,8 @@ The component represents an individual notification card inside the `Snackbar`. 
     </div>
   </SnackbarItem>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > SnackbarItem is typically not used on its own but is rendered automatically by the `Snackbar` component based on a provided list of data.

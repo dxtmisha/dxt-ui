@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for organizing transitions between elements (slides).
 
 MotionAxis allows animating content changes along X, Y, Z axes with slide effects. Supports automatic animation direction detection, container height management, and lazy loading (DOM).
@@ -18,7 +20,8 @@ MotionAxis allows animating content changes along X, Y, Z axes with slide effect
 - Image galleries
 - Onboarding screens
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -40,4 +43,6 @@ const selected = ref('slide1')
     </template>
   </MotionAxis>
 </template>
-```
+  `}
+    language="html"
+/>

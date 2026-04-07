@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Working with Numbers
 
 Properties `type`, `fraction`, `language`, `min`, `max`, `step`, `arrow`, `arrowStep`, and `align` are designed to manage numeric value input and formatting with localization support and interactive control elements.
@@ -16,7 +18,8 @@ Properties `type`, `fraction`, `language`, `min`, `max`, `step`, `arrow`, `arrow
 
 Properties work together: `type` defines the base input mode, where `number` activates simple numeric input with basic validation without formatting, and `number-format` enables automatic formatting with thousands separators and decimal places depending on locale. `language` defines regional rules for thousands separators (space, comma, period) and decimal separator (period or comma). Properties `min` and `max` activate built-in range validation. `step` defines increment/decrement magnitude when using arrow keys up/down and Page Up/Down. Properties `arrow` and `arrowStep` add visual control elements (± buttons or < > arrows) with customizable step size, where if `arrowStep` is not specified, `step` value is used. `align` controls arrows placement in the input field.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 const value = ref('1234567.89')
@@ -38,4 +41,6 @@ const value = ref('1234567.89')
   <!-- With center alignment -->
   <Input v-model="value" type="number-format" align="center" :fraction="2" label="Centered" />
 </template>
-```
+  `}
+    language="html"
+/>

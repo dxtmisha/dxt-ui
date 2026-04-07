@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `updateValue`
 
 Event fires when the selected value in the menu changes.
@@ -5,7 +7,8 @@ Event fires when the selected value in the menu changes.
 **Parameters:**
 - `value?: NumberOrStringOrBoolean` — new selected value
 
-```html
+<Source
+    code={`
 <script setup>
 const handleUpdateValue = (value) => {
   console.log('New value:', value)
@@ -25,5 +28,7 @@ const handleUpdateValue = (value) => {
     </template>
   </Menu>
 </template>
-```
+  `}
+    language="html"
+/>
 

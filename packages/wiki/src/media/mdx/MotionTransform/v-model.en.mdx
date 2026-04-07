@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## State Management via v-model
 
 Two-way binding of component open state via `v-model:open`.
@@ -5,7 +7,8 @@ Two-way binding of component open state via `v-model:open`.
 **Parameters:**
 - `open: boolean` — component open state
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -16,4 +19,6 @@ const isOpen = ref(false)
   <button @click="isOpen = true">Open</button>
   <Component v-model:open="isOpen"/>
 </template>
-```
+  `}
+    language="html"
+/>

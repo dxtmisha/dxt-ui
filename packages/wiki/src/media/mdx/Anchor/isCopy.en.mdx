@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Copy link
 
 The `isCopy` property switches the component to anchor link copying mode to clipboard.
@@ -11,7 +13,8 @@ The `isCopy` property switches the component to anchor link copying mode to clip
 
 When `isCopy` is enabled, clicking the component doesn't scroll to the anchor but copies the full link (including origin and pathname) to clipboard. After copying, a Tooltip with notification automatically opens and closes after the time specified in `delayHide`. The icon changes from `iconTag` to `iconContentCopy` for visual confirmation of the action.
 
-```html
+<Source
+    code={`
 <template>
   <!-- Basic mode -->
   <Anchor name="section" text="Copy link" isCopy />
@@ -19,5 +22,7 @@ When `isCopy` is enabled, clicking the component doesn't scroll to the anchor bu
   <!-- With custom icons -->
   <Anchor name="heading" isCopy iconTag="share" iconContentCopy="check" />
 </template>
-```
+  `}
+    language="html"
+/>
 

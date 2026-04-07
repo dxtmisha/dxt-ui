@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for displaying input field labels with support for required indicator, character counter, and progress indicator.
 
 FieldLabel provides uniform display of form field captions, automatically integrates with FieldCounter for character counting and Progress for loading indication. The component supports skeleton loading, customizable slots, and ensures consistent visual styling of form elements.
@@ -20,7 +22,8 @@ FieldLabel provides uniform display of form field captions, automatically integr
 - Forms with file upload progress indication
 - Dynamic forms with skeleton loading
 
-```html
+<Source
+    code={`
 <template>
   <!-- Basic label -->
   <Component label="Username" />
@@ -36,4 +39,6 @@ FieldLabel provides uniform display of form field captions, automatically integr
     :maxlength="100"
   />
 </template>
-```
+  `}
+    language="html"
+/>

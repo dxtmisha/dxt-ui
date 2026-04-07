@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for displaying helper and validation messages below form fields.
 
 FieldMessage centralizes management of text hints and error messages in forms. The component automatically determines display priority (validation errors take precedence over hints), supports forced display via forceShow, and integrates with input fields and character counters. It provides a flexible slot system for customization and works with both static and reactive values.
@@ -19,7 +21,8 @@ FieldMessage centralizes management of text hints and error messages in forms. T
 - Dynamic messages with reactive content
 - Complex forms with counters and validation
 
-```html
+<Source
+    code={`
 <template>
   <!-- Helper message -->
   <Component helper="Enter your name" />
@@ -33,6 +36,8 @@ FieldMessage centralizes management of text hints and error messages in forms. T
     <template #validation>⚠️ Error</template>
   </Component>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > The component focuses on text messages and should be used together with input control elements.

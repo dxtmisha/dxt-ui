@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for displaying selected values in selection controls with support for single and multiple modes.
 
 SelectValue manages the visualization of selected items, automatically switching between text display for single selection and chips for multiple selection. The component integrates with the event system to handle user actions, supports icon display, placeholders, and cancel buttons for selections.
@@ -20,7 +22,8 @@ SelectValue manages the visualization of selected items, automatically switching
 - Displaying tags and categories
 - Representing selected elements in forms
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -60,5 +63,7 @@ const handleClick = (event) => {
     placeholder="Select a value"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

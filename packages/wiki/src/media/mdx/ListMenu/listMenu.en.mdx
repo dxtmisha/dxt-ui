@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating nested menus and organizing navigation elements with expandable structure.
 
 ListMenu is an auxiliary component for List, managing hierarchical menu structure with open/close submenu functionality. The component integrates with Window for positioning dropdown submenus, supports multiple nesting levels, and provides smooth navigation through tree-like data structures.
@@ -20,7 +22,8 @@ ListMenu is an auxiliary component for List, managing hierarchical menu structur
 - Context menus with submenus
 - Navigation panels with grouping
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -60,4 +63,6 @@ const menuItems = ref([
     </template>
   </List>
 </template>
-```
+  `}
+    language="html"
+/>

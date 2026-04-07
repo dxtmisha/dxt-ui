@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating interactive list items with flexible content structure and multiple display areas.
 
 ListItem provides uniform presentation of items in lists, menus, and navigation structures. The component supports labels, descriptions, icons, status badges, interactive states (focus, selection, disabled), loading with progress and skeleton, and ripple effect for enhanced feedback.
@@ -21,7 +23,8 @@ ListItem provides uniform presentation of items in lists, menus, and navigation 
 - Contact lists and catalogs
 - Mobile interfaces and action lists
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -52,4 +55,6 @@ const handleClick = (item) => {
     </ListItem>
   </List>
 </template>
-```
+  `}
+    language="html"
+/>

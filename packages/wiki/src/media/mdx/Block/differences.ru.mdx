@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Различия между Page, Section, Block и Group
 
 Все компоненты построены на базе **Block** и различаются семантикой и уровнями заголовков:
@@ -16,7 +18,8 @@
 
 ### Пример иерархии
 
-```html
+<Source
+    code={`
 <Page headline="Личный кабинет">
   <Section label="Профиль пользователя" description="Управление персональными данными" icon="person">
     <Block label="Основная информация">
@@ -44,4 +47,6 @@
     </Block>
   </Section>
 </Page>
-```
+  `}
+    language="html"
+/>

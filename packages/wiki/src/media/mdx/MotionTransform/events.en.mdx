@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `transform`
 
 Event fires when MotionTransform state changes with full event context.
@@ -10,7 +12,8 @@ Event fires when MotionTransform state changes with full event context.
 - `type: 'head' | 'body' | 'top' | 'script'` — area type that initiated the event
 - `open: boolean` — current open state (`true` - open, `false` - closed)
 
-```html
+<Source
+    code={`
 <script setup>
 const handleTransform = (event, options) => {
   console.log('Event:', event)
@@ -29,7 +32,9 @@ const handleTransform = (event, options) => {
     </template>
   </Component>
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `transformLite`
 

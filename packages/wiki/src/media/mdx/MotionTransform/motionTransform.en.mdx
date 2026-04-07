@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Low-level utility for managing element transforms, state transitions, and interaction flows in components with window-like behavior.
 
 MotionTransform centralizes management of open/show/teleport states, measures element sizes, updates CSS variables, and coordinates events to create smooth and predictable animations. Provides unified API for component visibility control, click handling, and automatic closing with support for ignore zones.
@@ -19,7 +21,8 @@ MotionTransform centralizes management of open/show/teleport states, measures el
 - State coordination in popup elements
 - Component library development with window-like behavior
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 import { MotionTransform } from '@dxtmisha/constructor'
@@ -46,6 +49,8 @@ const isShow = motion.state.isShow
     <!-- Content with managed transform -->
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > This is a low-level utility for component library development, not intended for direct use in applications.

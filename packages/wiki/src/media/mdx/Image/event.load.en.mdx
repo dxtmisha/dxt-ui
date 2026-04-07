@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `load`
 
 Event fires after the image is loaded.
@@ -15,7 +17,8 @@ Event fires after the image is loaded.
 - `image: HTMLImageElement` — image DOM element
 - `src: string` — image source (URL)
 
-```html
+<Source
+    code={`
 <script setup>
 const handleLoad = (data) => {
   console.log('Image type:', data.type)
@@ -36,4 +39,6 @@ const handleLoad = (data) => {
     @load="handleLoad"
   />
 </template>
-```
+  `}
+    language="html"
+/>

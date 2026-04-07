@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Numeric mask types
 
 Numeric types in Mask provide specialized formatting and validation for working with numbers, currencies, and financial data.
@@ -26,7 +28,8 @@ Formats adapt via the `language` property:
 
 ### Examples
 
-```html
+<Source
+    code={`
 <!-- Formatted number -->
 <Mask type="number-format" language="en-US" :fraction="2" />
 
@@ -35,4 +38,6 @@ Formats adapt via the `language` property:
 
 <!-- Currency without symbol -->
 <Mask type="currency" currency="USD" :currencyHide="true" />
-```
+  `}
+    language="html"
+/>

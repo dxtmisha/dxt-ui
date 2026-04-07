@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 A top-level semantic container component designed to wrap the main content of a page. It uses the `<main>` tag by default.
@@ -19,7 +21,8 @@ Page provides capabilities for displaying main headlines, labels, descriptions, 
 - Article or documentation page
 - Root element for routed components (views)
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 </script>
@@ -33,6 +36,8 @@ import { ref } from 'vue'
     <p>Unique page content...</p>
   </Page>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Page should be used once per page (or per active view) and should not include repeated navigation elements.

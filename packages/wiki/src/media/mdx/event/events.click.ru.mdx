@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `click`
 
 Событие срабатывает при клике на компонент, передавая оригинальное DOM событие и данные компонента.
@@ -11,7 +13,8 @@
 - `value: any` — значение компонента
 - `detail: Record<string, any> | undefined` — дополнительные данные события
 
-```html
+<Source
+    code={`
 <script setup>
 const handleClick = (event, value) => {
   console.log('DOM событие:', event)
@@ -26,7 +29,9 @@ const handleClick = (event, value) => {
     <button data-event-type="action">Нажми меня</button>
   </Component>
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `clickLite`
 

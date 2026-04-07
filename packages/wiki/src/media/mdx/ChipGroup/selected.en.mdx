@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Selection Management
 
 Properties `selected` and `iconWhenSelected` are designed for managing chip selection state.
@@ -9,7 +11,8 @@ Properties `selected` and `iconWhenSelected` are designed for managing chip sele
 
 The `selected` property determines which chips will be highlighted. Accepts a single value for single selection or an array of values for multiple selection. Values are matched with list items by their index or value if the list contains simple data types.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -46,5 +49,7 @@ const selected = ref(['option1'])
     :icon-when-selected="true"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

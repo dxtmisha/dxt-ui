@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## AJAX Menu Loading
 
 The `ajax`, `request`, and `cache` properties are designed for managing asynchronous loading and caching of menu data.
@@ -10,7 +12,8 @@ The `ajax`, `request`, and `cache` properties are designed for managing asynchro
 
 Properties work together: if `ajax` is not specified or equals `false`, the menu uses local data. When `ajax` is activated (URL string or `true`), `request` defines HTTP request parameters (method, headers, body), and `cache` manages data persistence. When `cache` is enabled, repeated menu openings use saved data instead of new requests, reducing server load.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -46,4 +49,6 @@ const isOpen = ref(false)
     }"
   />
 </template>
-```
+  `}
+    language="html"
+/>

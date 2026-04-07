@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Direction
 
 Property `dir` controls mirroring of the element based on text direction (LTR/RTL).
@@ -11,7 +13,10 @@ Automatically inverts the visual representation when switching between left-to-r
 - `false` (default) — standard display
 - `true` — enables text direction adaptation
 
-```html
+<Source
+    code={`
 <!-- Text direction adaptation -->
 <Component dir />
-```
+  `}
+    language="html"
+/>

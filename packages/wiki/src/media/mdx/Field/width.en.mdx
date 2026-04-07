@@ -1,4 +1,5 @@
-````markdown
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Field width
 
 Property `width` defines the horizontal size of the Field container.
@@ -11,7 +12,8 @@ Property `width` defines the horizontal size of the Field container.
 
 Controls the fixed or relative width of the field, applying the value directly without additional wrappers. When the property is not set, the width remains flexible and depends on the parent container. When the `block` property is active (set to `true`), the field takes 100% width regardless of the specified `width` value, with block mode taking priority.
 
-```html
+<Source
+    code={`
 <!-- Automatic width -->
 <Field label="auto" />
 
@@ -24,5 +26,6 @@ Controls the fixed or relative width of the field, applying the value directly w
 <!-- CSS functions -->
 <Field width="min(100%, 320px)" label="min(...)" />
 <Field width="clamp(240px, 40vw, 480px)" label="clamp(...)" />
-```
-````
+  `}
+    language="html"
+/>

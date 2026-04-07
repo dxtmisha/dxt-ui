@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `input`
 
 Событие срабатывает при изменении значения в поле ввода, передавая оригинальное DOM событие и данные валидации.
@@ -21,7 +23,8 @@
 - `valueInput: any | undefined` — введённое значение
 - `detail: Record<string, any> | undefined` — дополнительные данные
 
-```html
+<Source
+    code={`
 <script setup>
 const handleInput = (event, value) => {
   console.log('DOM событие:', event)
@@ -40,7 +43,9 @@ const handleInput = (event, value) => {
     @input="handleInput"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `inputLite`
 
@@ -59,7 +64,8 @@ const handleInput = (event, value) => {
 
 **Структура FieldValidationItem:** такая же как у события `input`
 
-```html
+<Source
+    code={`
 <script setup>
 const handleChange = (event, value) => {
   console.log('DOM событие:', event)
@@ -77,7 +83,9 @@ const handleChange = (event, value) => {
     @change="handleChange"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `changeLite`
 

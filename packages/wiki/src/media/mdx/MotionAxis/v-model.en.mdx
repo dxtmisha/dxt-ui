@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## State Management via v-model
 
 Two-way binding of the selected slide via `v-model:selected`.
@@ -5,7 +7,8 @@ Two-way binding of the selected slide via `v-model:selected`.
 **Parameters:**
 - `selected: string | number` — identifier of the selected slide
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -27,4 +30,6 @@ const selected = ref('slide1')
     </template>
   </MotionAxis>
 </template>
-```
+  `}
+    language="html"
+/>

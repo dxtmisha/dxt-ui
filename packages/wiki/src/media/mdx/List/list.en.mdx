@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 A component for creating interactive lists with support for hierarchical data, keyboard navigation, and search functionality.
 
 List manages the display of structured data with navigation capabilities, item selection, and interaction through keyboard and mouse. The component supports various item types (regular items, groups, menus, dividers, subtitles, HTML content), automatically handles complex hierarchical structures, and provides intuitive navigation. The built-in search system works in real-time with match highlighting across the entire data hierarchy.
@@ -24,7 +26,8 @@ List manages the display of structured data with navigation capabilities, item s
 - File and folder lists
 - Filters with multiple selection
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -61,4 +64,6 @@ const handleClick = (event) => {
     @click="handleClick"
   />
 </template>
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Управление выбором
 
 Свойства `selected` и `iconWhenSelected` предназначены для управления состоянием выбора чипов.
@@ -9,7 +11,8 @@
 
 Свойство `selected` определяет, какие чипы будут выделены. Принимает одно значение для единичного выбора или массив значений для множественного выбора. Значения сопоставляются с элементами списка по их индексу или значению, если список содержит простые типы данных.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -46,5 +49,7 @@ const selected = ref(['option1'])
     :icon-when-selected="true"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## State Management via v-model
 
 Two-way binding of window open state via `v-model:open`.
@@ -5,7 +7,8 @@ Two-way binding of window open state via `v-model:open`.
 **Parameters:**
 - `open: boolean` — window open state
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -22,4 +25,6 @@ const isOpen = ref(false)
     </template>
   </Window>
 </template>
-```
+  `}
+    language="html"
+/>

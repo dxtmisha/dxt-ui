@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Linear Progress and Related Parameters
 
 The `linear` property enables linear progress indicator display mode as a horizontal bar. For complete control over behavior and appearance, it is recommended to use it together with additional properties.
@@ -10,7 +12,8 @@ The `linear` property enables linear progress indicator display mode as a horizo
 
 The `linear` property activates a horizontal progress bar that fills proportionally to the current value. `position` controls the placement: `'top'` places it at the top of the container, `'bottom'` at the bottom, `'static'` in the normal document flow. `point` adds a visual marker at the end of the filled portion.
 
-```html
+<Source
+    code={`
 <!-- Basic linear progress -->
 <Progress linear />
 
@@ -22,4 +25,6 @@ The `linear` property activates a horizontal progress bar that fills proportiona
 
 <!-- With specific value -->
 <Progress linear position="top" point :value="65" />
-```
+  `}
+    language="html"
+/>

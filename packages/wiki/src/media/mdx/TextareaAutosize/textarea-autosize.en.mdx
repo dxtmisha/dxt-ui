@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Text field component that automatically adjusts its height based on content.
 
 TextareaAutosize provides a multi-line text field that dynamically changes its height depending on the amount of entered text. The component uses a hidden clone element for precise height calculation, taking into account all padding and styles of the original textarea. This ensures smooth and natural behavior when entering text without manual height adjustment.
@@ -21,7 +23,8 @@ TextareaAutosize provides a multi-line text field that dynamically changes its h
 - Forms with dynamic content
 - Multi-line fields in adaptive interfaces
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -61,5 +64,7 @@ const handleInput = (event) => {
     />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>
 

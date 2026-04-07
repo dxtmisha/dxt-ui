@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Differences between Page, Section, Block, and Group
 
 All components are built on top of **Block** and differ in semantics and header levels:
@@ -16,7 +18,8 @@ An auxiliary component for combining small thematic elements into logical groups
 
 ### Hierarchy Example
 
-```html
+<Source
+    code={`
 <Page headline="User Account">
   <Section label="User Profile" description="Manage personal data" icon="person">
     <Block label="Basic Information">
@@ -44,4 +47,6 @@ An auxiliary component for combining small thematic elements into logical groups
     </Block>
   </Section>
 </Page>
-```
+  `}
+    language="html"
+/>

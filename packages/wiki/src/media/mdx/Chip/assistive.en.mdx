@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Assistive chips (assistive)
 
 The Chip component supports assistive mode through the `assistive` property. In this mode, chips have a special visual style to help users complete tasks:
@@ -9,8 +11,11 @@ The Chip component supports assistive mode through the `assistive` property. In 
 
 Assistive mode is especially useful for creating hint systems, recommendations, and helper actions that guide users to the right solutions without excessive visual noise.
 
-```html
+<Source
+    code={`
 <Chip assistive icon="lightbulb">Recommendation</Chip>
 <Chip assistive icon="check">Hint</Chip>
 <Chip assistive>Auto-complete</Chip>
-```
+  `}
+    language="html"
+/>

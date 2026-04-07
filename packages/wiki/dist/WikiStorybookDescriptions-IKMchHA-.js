@@ -1,38 +1,38 @@
 import { t as e } from "./wikiDescriptions-Cv4WzSNL.js";
 import { Geo as t, executeFunction as n, isObjectNotArray as r } from "@dxtmisha/functional";
 import { Fragment as i, jsx as a, jsxs as o } from "react/jsx-runtime";
-import { Source as ee } from "@storybook/addon-docs/blocks";
+import { Source as s } from "@storybook/addon-docs/blocks";
 //#region \0@oxc-project+runtime@0.123.0/helpers/typeof.js
-function s(e) {
+function c(e) {
 	"@babel/helpers - typeof";
-	return s = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return c = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, s(e);
+	}, c(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.123.0/helpers/toPrimitive.js
-function te(e, t) {
-	if (s(e) != "object" || !e) return e;
+function ee(e, t) {
+	if (c(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (s(r) != "object") return r;
+		if (c(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.123.0/helpers/toPropertyKey.js
-function ne(e) {
-	var t = te(e, "string");
-	return s(t) == "symbol" ? t : t + "";
+function te(e) {
+	var t = ee(e, "string");
+	return c(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.123.0/helpers/defineProperty.js
-function c(e, t, n) {
-	return (t = ne(t)) in e ? Object.defineProperty(e, t, {
+function l(e, t, n) {
+	return (t = te(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -41,14 +41,13 @@ function c(e, t, n) {
 }
 //#endregion
 //#region src/media/mdx/event/events.actions.en.mdx
-function l(e) {
+function ne(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -87,10 +86,10 @@ function l(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleActions = (event, value) => {\n  console.log('DOM event:', event)\n  console.log('Action type:', value.type)\n  console.log('Value:', value.value)\n  console.log('Details:', value.detail)\n\n  if (value.type === 'confirm') {\n    console.log('Confirm button pressed')\n  }\n}\n<\/script>\n\n<template>\n  <Actions @actions=\"handleActions\" :list=\"[\n    { text: 'Cancel', type: 'cancel' },\n    { text: 'Confirm', type: 'confirm' }\n  ]\" />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleActions = (event, value) => {\nconsole.log('DOM event:', event)\nconsole.log('Action type:', value.type)\nconsole.log('Value:', value.value)\nconsole.log('Details:', value.detail)\n\nif (value.type === 'confirm') {\n  console.log('Confirm button pressed')\n}\n}\n<\/script>\n\n<template>\n<Actions @actions=\"handleActions\" :list=\"[\n  { text: 'Cancel', type: 'cancel' },\n  { text: 'Confirm', type: 'confirm' }\n]\" />\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "actionsLite" }) }),
 		"\n",
@@ -119,8 +118,8 @@ function re(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? a(t, {
 		...e,
-		children: a(l, { ...e })
-	}) : l(e);
+		children: a(ne, { ...e })
+	}) : ne(e);
 }
 //#endregion
 //#region src/media/mdx/event/events.actions.ru.mdx
@@ -131,7 +130,6 @@ function u(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -170,10 +168,10 @@ function u(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleActions = (event, value) => {\n  console.log('DOM событие:', event)\n  console.log('Тип действия:', value.type)\n  console.log('Значение:', value.value)\n  console.log('Детали:', value.detail)\n\n  if (value.type === 'confirm') {\n    console.log('Нажата кнопка \"Подтвердить\"')\n  }\n}\n<\/script>\n\n<template>\n  <Actions @actions=\"handleActions\" :list=\"[\n    { text: 'Отмена', type: 'cancel' },\n    { text: 'Подтвердить', type: 'confirm' }\n  ]\" />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleActions = (event, value) => {\nconsole.log('DOM событие:', event)\nconsole.log('Тип действия:', value.type)\nconsole.log('Значение:', value.value)\nconsole.log('Детали:', value.detail)\n\nif (value.type === 'confirm') {\n  console.log('Нажата кнопка \"Подтвердить\"')\n}\n}\n<\/script>\n\n<template>\n<Actions @actions=\"handleActions\" :list=\"[\n  { text: 'Отмена', type: 'cancel' },\n  { text: 'Подтвердить', type: 'confirm' }\n]\" />\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "actionsLite" }) }),
 		"\n",
@@ -214,7 +212,6 @@ function d(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -251,10 +248,10 @@ function d(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleBars = (event, value) => {\n  console.log('DOM event:', event)\n  console.log('Button type:', value.type)\n  console.log('Value:', value.value)\n  console.log('Details:', value.detail)\n\n  if (value.type === 'back') {\n    console.log('Back button pressed')\n  }\n}\n<\/script>\n\n<template>\n  <Bars @bars=\"handleBars\">\n    <button data-event-type=\"back\">Back</button>\n  </Bars>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleBars = (event, value) => {\nconsole.log('DOM event:', event)\nconsole.log('Button type:', value.type)\nconsole.log('Value:', value.value)\nconsole.log('Details:', value.detail)\n\nif (value.type === 'back') {\n  console.log('Back button pressed')\n}\n}\n<\/script>\n\n<template>\n<Bars @bars=\"handleBars\">\n  <button data-event-type=\"back\">Back</button>\n</Bars>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "barsLite" }) }),
 		"\n",
@@ -307,7 +304,6 @@ function f(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -344,10 +340,10 @@ function f(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleBars = (event, value) => {\n  console.log('DOM событие:', event)\n  console.log('Тип кнопки:', value.type)\n  console.log('Значение:', value.value)\n  console.log('Детали:', value.detail)\n\n  if (value.type === 'back') {\n    console.log('Нажата кнопка \"Назад\"')\n  }\n}\n<\/script>\n\n<template>\n  <Bars @bars=\"handleBars\">\n    <button data-event-type=\"back\">Назад</button>\n  </Bars>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleBars = (event, value) => {\nconsole.log('DOM событие:', event)\nconsole.log('Тип кнопки:', value.type)\nconsole.log('Значение:', value.value)\nconsole.log('Детали:', value.detail)\n\nif (value.type === 'back') {\n  console.log('Нажата кнопка \"Назад\"')\n}\n}\n<\/script>\n\n<template>\n<Bars @bars=\"handleBars\">\n  <button data-event-type=\"back\">Назад</button>\n</Bars>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "barsLite" }) }),
 		"\n",
@@ -497,7 +493,6 @@ function h(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -534,10 +529,10 @@ function h(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleClick = (event, value) => {\n  console.log('DOM event:', event)\n  console.log('Click type:', value.type)\n  console.log('Value:', value.value)\n  console.log('Details:', value.detail)\n}\n<\/script>\n\n<template>\n  <Component @click=\"handleClick\">\n    <button data-event-type=\"action\">Click me</button>\n  </Component>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleClick = (event, value) => {\nconsole.log('DOM event:', event)\nconsole.log('Click type:', value.type)\nconsole.log('Value:', value.value)\nconsole.log('Details:', value.detail)\n}\n<\/script>\n\n<template>\n<Component @click=\"handleClick\">\n  <button data-event-type=\"action\">Click me</button>\n</Component>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "clickLite" }) }),
 		"\n",
@@ -567,7 +562,6 @@ function g(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -604,10 +598,10 @@ function g(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleClick = (event, value) => {\n  console.log('DOM событие:', event)\n  console.log('Тип клика:', value.type)\n  console.log('Значение:', value.value)\n  console.log('Детали:', value.detail)\n}\n<\/script>\n\n<template>\n  <Component @click=\"handleClick\">\n    <button data-event-type=\"action\">Нажми меня</button>\n  </Component>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleClick = (event, value) => {\nconsole.log('DOM событие:', event)\nconsole.log('Тип клика:', value.type)\nconsole.log('Значение:', value.value)\nconsole.log('Детали:', value.detail)\n}\n<\/script>\n\n<template>\n<Component @click=\"handleClick\">\n  <button data-event-type=\"action\">Нажми меня</button>\n</Component>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "clickLite" }) }),
 		"\n",
@@ -727,7 +721,6 @@ function y(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -779,10 +772,10 @@ function y(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleInput = (event, value) => {\n  console.log('DOM event:', event)\n  console.log('Value:', value.value)\n  console.log('Validation:', value.status)\n  console.log('Complete:', value.isFull)\n\n  if (!value.status) {\n    console.log('Error:', value.validationMessage)\n  }\n}\n<\/script>\n\n<template>\n  <Mask\n    mask=\"+1 (***) ***-****\"\n    @input=\"handleInput\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleInput = (event, value) => {\nconsole.log('DOM event:', event)\nconsole.log('Value:', value.value)\nconsole.log('Validation:', value.status)\nconsole.log('Complete:', value.isFull)\n\nif (!value.status) {\n  console.log('Error:', value.validationMessage)\n}\n}\n<\/script>\n\n<template>\n<Mask\n  mask=\"+1 (***) ***-****\"\n  @input=\"handleInput\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "inputLite" }) }),
 		"\n",
@@ -817,10 +810,10 @@ function y(e) {
 			" event"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleChange = (event, value) => {\n  console.log('DOM event:', event)\n  console.log('Final value:', value.value)\n\n  if (value.status && value.isFull) {\n    // Submit data to server\n    submitForm(value.value)\n  }\n}\n<\/script>\n\n<template>\n  <Mask\n    mask=\"+1 (***) ***-****\"\n    @change=\"handleChange\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleChange = (event, value) => {\nconsole.log('DOM event:', event)\nconsole.log('Final value:', value.value)\n\nif (value.status && value.isFull) {\n  // Submit data to server\n  submitForm(value.value)\n}\n}\n<\/script>\n\n<template>\n<Mask\n  mask=\"+1 (***) ***-****\"\n  @change=\"handleChange\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "changeLite" }) }),
 		"\n",
@@ -850,7 +843,6 @@ function b(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -902,10 +894,10 @@ function b(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleInput = (event, value) => {\n  console.log('DOM событие:', event)\n  console.log('Значение:', value.value)\n  console.log('Валидация:', value.status)\n  console.log('Заполнено:', value.isFull)\n\n  if (!value.status) {\n    console.log('Ошибка:', value.validationMessage)\n  }\n}\n<\/script>\n\n<template>\n  <Component\n    @input=\"handleInput\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleInput = (event, value) => {\nconsole.log('DOM событие:', event)\nconsole.log('Значение:', value.value)\nconsole.log('Валидация:', value.status)\nconsole.log('Заполнено:', value.isFull)\n\nif (!value.status) {\n  console.log('Ошибка:', value.validationMessage)\n}\n}\n<\/script>\n\n<template>\n<Component\n  @input=\"handleInput\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "inputLite" }) }),
 		"\n",
@@ -939,10 +931,10 @@ function b(e) {
 			a(t.code, { children: "input" })
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleChange = (event, value) => {\n  console.log('DOM событие:', event)\n  console.log('Финальное значение:', value.value)\n\n  if (value.status && value.isFull) {\n    // Отправка данных на сервер\n    submitForm(value.value)\n  }\n}\n<\/script>\n\n<template>\n  <Component\n    @change=\"handleChange\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleChange = (event, value) => {\nconsole.log('DOM событие:', event)\nconsole.log('Финальное значение:', value.value)\n\nif (value.status && value.isFull) {\n  // Отправка данных на сервер\n  submitForm(value.value)\n}\n}\n<\/script>\n\n<template>\n<Component\n  @change=\"handleChange\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "changeLite" }) }),
 		"\n",
@@ -2587,7 +2579,6 @@ function Ut(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -2615,10 +2606,10 @@ function Ut(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Inherit palette from parent -->\n<Component asPalette />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Inherit palette from parent -->\n<Component asPalette />\n",
+			language: "html"
+		})
 	] });
 }
 function Wt(e = {}) {
@@ -2636,7 +2627,6 @@ function Gt(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -2664,10 +2654,10 @@ function Gt(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Наследование палитры от родителя -->\n<Component asPalette />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Наследование палитры от родителя -->\n<Component asPalette />\n",
+			language: "html"
+		})
 	] });
 }
 function Kt(e = {}) {
@@ -2685,7 +2675,6 @@ function qt(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -2713,10 +2702,10 @@ function qt(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Text direction adaptation -->\n<Component dir />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Text direction adaptation -->\n<Component dir />\n",
+			language: "html"
+		})
 	] });
 }
 function Jt(e = {}) {
@@ -2734,7 +2723,6 @@ function Yt(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -2762,10 +2750,10 @@ function Yt(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Адаптация под направление текста -->\n<Component dir />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Адаптация под направление текста -->\n<Component dir />\n",
+			language: "html"
+		})
 	] });
 }
 function Xt(e = {}) {
@@ -2783,7 +2771,6 @@ function Zt(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -2821,10 +2808,10 @@ function Zt(e) {
 			" are completely hidden."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Element will display as skeleton -->\n<Skeleton active>\n  <Component isSkeleton text=\"Loading...\" />\n</Skeleton>\n\n<!-- Element will be hidden -->\n<Skeleton active>\n  <Component :isSkeleton=\"false\" text=\"Hidden text\" />\n</Skeleton>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Element will display as skeleton -->\n<Skeleton active>\n<Component isSkeleton text=\"Loading...\" />\n</Skeleton>\n\n<!-- Element will be hidden -->\n<Skeleton active>\n<Component :isSkeleton=\"false\" text=\"Hidden text\" />\n</Skeleton>\n",
+			language: "html"
+		})
 	] });
 }
 function Qt(e = {}) {
@@ -2842,7 +2829,6 @@ function $t(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -2880,10 +2866,10 @@ function $t(e) {
 			" скрываются полностью."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Элемент будет отображаться как скелетон -->\n<Skeleton active>\n  <Component isSkeleton text=\"Загрузка...\" />\n</Skeleton>\n\n<!-- Элемент будет скрыт -->\n<Skeleton active>\n  <Component :isSkeleton=\"false\" text=\"Скрытый текст\" />\n</Skeleton>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Элемент будет отображаться как скелетон -->\n<Skeleton active>\n<Component isSkeleton text=\"Загрузка...\" />\n</Skeleton>\n\n<!-- Элемент будет скрыт -->\n<Skeleton active>\n<Component :isSkeleton=\"false\" text=\"Скрытый текст\" />\n</Skeleton>\n",
+			language: "html"
+		})
 	] });
 }
 function en(e = {}) {
@@ -2924,7 +2910,6 @@ function nn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -2964,10 +2949,10 @@ function nn(e) {
 			" to prevent excessive highlighting with short queries."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Standard search with highlighting from 2 characters -->\n<List :list=\"items\" highlight=\"text\" />\n\n<!-- Search with highlighting from 3 characters -->\n<List :list=\"items\" highlight=\"abc\" :highlightLengthStart=\"3\" />\n\n<!-- Dynamic search with v-model -->\n<List :list=\"items\" :highlight=\"searchQuery\" :highlightLengthStart=\"1\" />\n\n<!-- Search without minimum threshold -->\n<List :list=\"products\" :highlight=\"filter\" :highlightLengthStart=\"0\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Standard search with highlighting from 2 characters -->\n<List :list=\"items\" highlight=\"text\" />\n\n<!-- Search with highlighting from 3 characters -->\n<List :list=\"items\" highlight=\"abc\" :highlightLengthStart=\"3\" />\n\n<!-- Dynamic search with v-model -->\n<List :list=\"items\" :highlight=\"searchQuery\" :highlightLengthStart=\"1\" />\n\n<!-- Search without minimum threshold -->\n<List :list=\"products\" :highlight=\"filter\" :highlightLengthStart=\"0\" />\n",
+			language: "html"
+		})
 	] });
 }
 function rn(e = {}) {
@@ -2985,7 +2970,6 @@ function an(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3025,10 +3009,10 @@ function an(e) {
 			" для предотвращения чрезмерного выделения при коротких запросах."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Стандартный поиск с выделением от 2 символов -->\n<List :list=\"items\" highlight=\"текст\" />\n\n<!-- Поиск с выделением от 3 символов -->\n<List :list=\"items\" highlight=\"abc\" :highlightLengthStart=\"3\" />\n\n<!-- Динамический поиск с v-model -->\n<List :list=\"items\" :highlight=\"searchQuery\" :highlightLengthStart=\"1\" />\n\n<!-- Поиск без минимального порога -->\n<List :list=\"products\" :highlight=\"filter\" :highlightLengthStart=\"0\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Стандартный поиск с выделением от 2 символов -->\n<List :list=\"items\" highlight=\"текст\" />\n\n<!-- Поиск с выделением от 3 символов -->\n<List :list=\"items\" highlight=\"abc\" :highlightLengthStart=\"3\" />\n\n<!-- Динамический поиск с v-model -->\n<List :list=\"items\" :highlight=\"searchQuery\" :highlightLengthStart=\"1\" />\n\n<!-- Поиск без минимального порога -->\n<List :list=\"products\" :highlight=\"filter\" :highlightLengthStart=\"0\" />\n",
+			language: "html"
+		})
 	] });
 }
 function on(e = {}) {
@@ -3046,7 +3030,6 @@ function sn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3086,10 +3069,10 @@ function sn(e) {
 			" property controls number formatting according to user regional settings, ensuring correct display of separators and numeric formats."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst count = ref(5)\nconst largeNumber = ref(1234)\n<\/script>\n\n<template>\n  <!-- Basic usage with text -->\n  <Component label=\"Text\" />\n\n  <!-- Numeric value -->\n  <Component :label=\"count\" />\n\n  <!-- Maximum value limitation -->\n  <Component :label=\"150\" :label-max=\"99\" />\n  <!-- Displays: 99+ -->\n\n  <!-- With number formatting -->\n  <Component\n    :label=\"largeNumber\"\n    :formatting=\"true\"\n  />\n  <!-- Displays: 1,234 (depending on locale) -->\n\n  <!-- Combined usage -->\n  <Component\n    :label=\"999\"\n    :label-max=\"99\"\n    :formatting=\"true\"\n  />\n  <!-- Displays: 99+ -->\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst count = ref(5)\nconst largeNumber = ref(1234)\n<\/script>\n\n<template>\n<!-- Basic usage with text -->\n<Component label=\"Text\" />\n\n<!-- Numeric value -->\n<Component :label=\"count\" />\n\n<!-- Maximum value limitation -->\n<Component :label=\"150\" :label-max=\"99\" />\n<!-- Displays: 99+ -->\n\n<!-- With number formatting -->\n<Component\n  :label=\"largeNumber\"\n  :formatting=\"true\"\n/>\n<!-- Displays: 1,234 (depending on locale) -->\n\n<!-- Combined usage -->\n<Component\n  :label=\"999\"\n  :label-max=\"99\"\n  :formatting=\"true\"\n/>\n<!-- Displays: 99+ -->\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function cn(e = {}) {
@@ -3107,7 +3090,6 @@ function ln(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3147,10 +3129,10 @@ function ln(e) {
 			" контролирует форматирование чисел согласно региональным настройкам пользователя, обеспечивая корректное отображение разделителей и числовых форматов."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst count = ref(5)\nconst largeNumber = ref(1234)\n<\/script>\n\n<template>\n  <!-- Базовое использование с текстом -->\n  <Component label=\"Текст\" />\n\n  <!-- Числовое значение -->\n  <Component :label=\"count\" />\n\n  <!-- Ограничение максимального значения -->\n  <Component :label=\"150\" :label-max=\"99\" />\n  <!-- Отобразит: 99+ -->\n\n  <!-- С форматированием чисел -->\n  <Component\n    :label=\"largeNumber\"\n    :formatting=\"true\"\n  />\n  <!-- Отобразит: 1 234 (в зависимости от локали) -->\n\n  <!-- Комбинированное использование -->\n  <Component\n    :label=\"999\"\n    :label-max=\"99\"\n    :formatting=\"true\"\n  />\n  <!-- Отобразит: 99+ -->\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst count = ref(5)\nconst largeNumber = ref(1234)\n<\/script>\n\n<template>\n<!-- Базовое использование с текстом -->\n<Component label=\"Текст\" />\n\n<!-- Числовое значение -->\n<Component :label=\"count\" />\n\n<!-- Ограничение максимального значения -->\n<Component :label=\"150\" :label-max=\"99\" />\n<!-- Отобразит: 99+ -->\n\n<!-- С форматированием чисел -->\n<Component\n  :label=\"largeNumber\"\n  :formatting=\"true\"\n/>\n<!-- Отобразит: 1 234 (в зависимости от локали) -->\n\n<!-- Комбинированное использование -->\n<Component\n  :label=\"999\"\n  :label-max=\"99\"\n  :formatting=\"true\"\n/>\n<!-- Отобразит: 99+ -->\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function un(e = {}) {
@@ -3270,7 +3252,6 @@ function hn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3294,10 +3275,10 @@ function hn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\n<\/script>\n\n<template>\n  <div>\n    <button @click=\"value = 'Example'\">Set value</button>\n    <button @click=\"value = ''\">Clear</button>\n  </div>\n\n  <Component v-model=\"value\" />\n\n  <div>Current value: {{ value }}</div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\n<\/script>\n\n<template>\n<div>\n  <button @click=\"value = 'Example'\">Set value</button>\n  <button @click=\"value = ''\">Clear</button>\n</div>\n\n<Component v-model=\"value\" />\n\n<div>Current value: {{ value }}</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function gn(e = {}) {
@@ -3315,7 +3296,6 @@ function _n(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3339,10 +3319,10 @@ function _n(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\n<\/script>\n\n<template>\n  <div>\n    <button @click=\"value = 'Пример'\">Установить значение</button>\n    <button @click=\"value = ''\">Очистить</button>\n  </div>\n\n  <Component v-model=\"value\" />\n\n  <div>Текущее значение: {{ value }}</div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\n<\/script>\n\n<template>\n<div>\n  <button @click=\"value = 'Пример'\">Установить значение</button>\n  <button @click=\"value = ''\">Очистить</button>\n</div>\n\n<Component v-model=\"value\" />\n\n<div>Текущее значение: {{ value }}</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function vn(e = {}) {
@@ -3360,7 +3340,6 @@ function yn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3384,10 +3363,10 @@ function yn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('')\n<\/script>\n\n<template>\n  <div>\n    <button @click=\"selected = 'option1'\">Select Option 1</button>\n    <button @click=\"selected = 'option2'\">Select Option 2</button>\n    <button @click=\"selected = undefined\">Clear</button>\n  </div>\n\n  <Component v-model:selected=\"selected\" :list=\"['Option 1', 'Option 2', 'Option 3']\" />\n\n  <div>Current selected value: {{ selected }}</div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('')\n<\/script>\n\n<template>\n<div>\n  <button @click=\"selected = 'option1'\">Select Option 1</button>\n  <button @click=\"selected = 'option2'\">Select Option 2</button>\n  <button @click=\"selected = undefined\">Clear</button>\n</div>\n\n<Component v-model:selected=\"selected\" :list=\"['Option 1', 'Option 2', 'Option 3']\" />\n\n<div>Current selected value: {{ selected }}</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function bn(e = {}) {
@@ -3405,7 +3384,6 @@ function xn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3429,10 +3407,10 @@ function xn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('')\n<\/script>\n\n<template>\n  <div>\n    <button @click=\"selected = 'option1'\">Выбрать Option 1</button>\n    <button @click=\"selected = 'option2'\">Выбрать Option 2</button>\n    <button @click=\"selected = undefined\">Очистить</button>\n  </div>\n\n  <Component v-model:selected=\"selected\" :list=\"['Option 1', 'Option 2', 'Option 3']\" />\n\n  <div>Текущее выбранное значение: {{ selected }}</div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('')\n<\/script>\n\n<template>\n<div>\n  <button @click=\"selected = 'option1'\">Выбрать Option 1</button>\n  <button @click=\"selected = 'option2'\">Выбрать Option 2</button>\n  <button @click=\"selected = undefined\">Очистить</button>\n</div>\n\n<Component v-model:selected=\"selected\" :list=\"['Option 1', 'Option 2', 'Option 3']\" />\n\n<div>Текущее выбранное значение: {{ selected }}</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Sn(e = {}) {
@@ -3474,11 +3452,9 @@ var Cn = {
 function wn(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3526,10 +3502,10 @@ function wn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <!-- Basic accordion -->\n  <Accordion label=\"Question 1\">\n    <p>Answer to the question.</p>\n  </Accordion>\n\n  <!-- With state management -->\n  <Accordion\n    v-model:open=\"isOpen\"\n    label=\"Settings\"\n    icon=\"settings\"\n  >\n    <p>Settings content.</p>\n  </Accordion>\n\n  <!-- With custom header -->\n  <Accordion>\n    <template #head>\n      <div>Custom header</div>\n    </template>\n    <template #default>\n      <p>Section content.</p>\n    </template>\n  </Accordion>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<!-- Basic accordion -->\n<Accordion label=\"Question 1\">\n  <p>Answer to the question.</p>\n</Accordion>\n\n<!-- With state management -->\n<Accordion\n  v-model:open=\"isOpen\"\n  label=\"Settings\"\n  icon=\"settings\"\n>\n  <p>Settings content.</p>\n</Accordion>\n\n<!-- With custom header -->\n<Accordion>\n  <template #head>\n    <div>Custom header</div>\n  </template>\n  <template #default>\n    <p>Section content.</p>\n  </template>\n</Accordion>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -3550,11 +3526,9 @@ function Tn(e = {}) {
 function En(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3602,10 +3576,10 @@ function En(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <!-- Базовый аккордеон -->\n  <Accordion label=\"Вопрос 1\">\n    <p>Ответ на вопрос.</p>\n  </Accordion>\n\n  <!-- С управлением состоянием -->\n  <Accordion\n    v-model:open=\"isOpen\"\n    label=\"Настройки\"\n    icon=\"settings\"\n  >\n    <p>Содержимое настроек.</p>\n  </Accordion>\n\n  <!-- С кастомным заголовком -->\n  <Accordion>\n    <template #head>\n      <div>Свой заголовок</div>\n    </template>\n    <template #default>\n      <p>Содержимое секции.</p>\n    </template>\n  </Accordion>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<!-- Базовый аккордеон -->\n<Accordion label=\"Вопрос 1\">\n  <p>Ответ на вопрос.</p>\n</Accordion>\n\n<!-- С управлением состоянием -->\n<Accordion\n  v-model:open=\"isOpen\"\n  label=\"Настройки\"\n  icon=\"settings\"\n>\n  <p>Содержимое настроек.</p>\n</Accordion>\n\n<!-- С кастомным заголовком -->\n<Accordion>\n  <template #head>\n    <div>Свой заголовок</div>\n  </template>\n  <template #default>\n    <p>Содержимое секции.</p>\n  </template>\n</Accordion>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -3739,10 +3713,8 @@ var Mn = {
 function Nn(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3788,10 +3760,10 @@ function Nn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { Actions } from '@dxtmisha/constructor'\n\nconst isLoading = ref(false)\n\nconst handleSave = async () => {\n  isLoading.value = true\n  await saveData()\n  isLoading.value = false\n}\n<\/script>\n\n<template>\n  <Actions\n    align=\"right\"\n    :list=\"[\n      { label: 'Cancel' },\n      { label: 'Save', primary: true, loading: isLoading }\n    ]\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { Actions } from '@dxtmisha/constructor'\n\nconst isLoading = ref(false)\n\nconst handleSave = async () => {\nisLoading.value = true\nawait saveData()\nisLoading.value = false\n}\n<\/script>\n\n<template>\n<Actions\n  align=\"right\"\n  :list=\"[\n    { label: 'Cancel' },\n    { label: 'Save', primary: true, loading: isLoading }\n  ]\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -3812,10 +3784,8 @@ function Pn(e = {}) {
 function Fn(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3861,10 +3831,10 @@ function Fn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { Actions } from '@dxtmisha/constructor'\n\nconst isLoading = ref(false)\n\nconst handleSave = async () => {\n  isLoading.value = true\n  await saveData()\n  isLoading.value = false\n}\n<\/script>\n\n<template>\n  <Actions\n    align=\"right\"\n    :list=\"[\n      { label: 'Отмена' },\n      { label: 'Сохранить', primary: true, loading: isLoading }\n    ]\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { Actions } from '@dxtmisha/constructor'\n\nconst isLoading = ref(false)\n\nconst handleSave = async () => {\nisLoading.value = true\nawait saveData()\nisLoading.value = false\n}\n<\/script>\n\n<template>\n<Actions\n  align=\"right\"\n  :list=\"[\n    { label: 'Отмена' },\n    { label: 'Сохранить', primary: true, loading: isLoading }\n  ]\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -3888,7 +3858,6 @@ function Ln(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3922,10 +3891,10 @@ function Ln(e) {
 			" it adapts to parent container size. Suitable for creating adaptive interfaces that display correctly on both desktop and mobile devices without additional code."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Automatic transition on narrow screens -->\n<Actions flexible=\"adaptive\" :list=\"[...]\" />\n\n<!-- Adapts to parent size -->\n<Actions flexible=\"container\" :list=\"[...]\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Automatic transition on narrow screens -->\n<Actions flexible=\"adaptive\" :list=\"[...]\" />\n\n<!-- Adapts to parent size -->\n<Actions flexible=\"container\" :list=\"[...]\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Rn(e = {}) {
@@ -3943,7 +3912,6 @@ function zn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -3977,10 +3945,10 @@ function zn(e) {
 			" адаптируется к размеру родительского контейнера. Подходит для создания адаптивных интерфейсов, которые корректно отображаются как на десктопе, так и на мобильных устройствах без дополнительного кода."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Автоматический переход на узких экранах -->\n<Actions flexible=\"adaptive\" :list=\"[...]\" />\n\n<!-- Адаптация к размеру родителя -->\n<Actions flexible=\"container\" :list=\"[...]\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Автоматический переход на узких экранах -->\n<Actions flexible=\"adaptive\" :list=\"[...]\" />\n\n<!-- Адаптация к размеру родителя -->\n<Actions flexible=\"container\" :list=\"[...]\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Bn(e = {}) {
@@ -3998,7 +3966,6 @@ function Vn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4040,10 +4007,10 @@ function Vn(e) {
 			" for destructive or less important operations."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Primary buttons -->\n<Actions\n  :list=\"[\n    { label: 'Cancel', onClick: () => close() },\n    { label: 'Save', primary: true, onClick: () => save() }\n  ]\"\n/>\n\n<!-- Primary and secondary buttons -->\n<Actions\n  :list=\"[\n    { label: 'Cancel' },\n    { label: 'Save', primary: true }\n  ]\"\n  :list-secondary=\"[\n    { label: 'Delete', text: true, icon: 'delete', palette: 'error' }\n  ]\"\n/>\n\n<!-- Buttons with dynamic state -->\n<Actions\n  :list=\"[\n    { label: 'Cancel', disabled: isProcessing },\n    { label: 'Save', primary: true, loading: isLoading }\n  ]\"\n  :button-attrs=\"{ size: 'medium' }\"\n/>\n\n<!-- Secondary buttons with settings -->\n<Actions\n  :list=\"[{ label: 'Close' }]\"\n  :list-secondary=\"[\n    { label: 'Export', icon: 'download' },\n    { label: 'Help', icon: 'help' }\n  ]\"\n  :button-secondary-attrs=\"{ size: 'small', text: true }\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Primary buttons -->\n<Actions\n:list=\"[\n  { label: 'Cancel', onClick: () => close() },\n  { label: 'Save', primary: true, onClick: () => save() }\n]\"\n/>\n\n<!-- Primary and secondary buttons -->\n<Actions\n:list=\"[\n  { label: 'Cancel' },\n  { label: 'Save', primary: true }\n]\"\n:list-secondary=\"[\n  { label: 'Delete', text: true, icon: 'delete', palette: 'error' }\n]\"\n/>\n\n<!-- Buttons with dynamic state -->\n<Actions\n:list=\"[\n  { label: 'Cancel', disabled: isProcessing },\n  { label: 'Save', primary: true, loading: isLoading }\n]\"\n:button-attrs=\"{ size: 'medium' }\"\n/>\n\n<!-- Secondary buttons with settings -->\n<Actions\n:list=\"[{ label: 'Close' }]\"\n:list-secondary=\"[\n  { label: 'Export', icon: 'download' },\n  { label: 'Help', icon: 'help' }\n]\"\n:button-secondary-attrs=\"{ size: 'small', text: true }\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Hn(e = {}) {
@@ -4061,7 +4028,6 @@ function Un(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4103,10 +4069,10 @@ function Un(e) {
 			" для деструктивных или менее важных операций."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Основные кнопки -->\n<Actions\n  :list=\"[\n    { label: 'Отмена', onClick: () => close() },\n    { label: 'Сохранить', primary: true, onClick: () => save() }\n  ]\"\n/>\n\n<!-- Основные и вторичные кнопки -->\n<Actions\n  :list=\"[\n    { label: 'Отмена' },\n    { label: 'Сохранить', primary: true }\n  ]\"\n  :list-secondary=\"[\n    { label: 'Удалить', text: true, icon: 'delete', palette: 'error' }\n  ]\"\n/>\n\n<!-- Кнопки с динамическим состоянием -->\n<Actions\n  :list=\"[\n    { label: 'Отмена', disabled: isProcessing },\n    { label: 'Сохранить', primary: true, loading: isLoading }\n  ]\"\n  :button-attrs=\"{ size: 'medium' }\"\n/>\n\n<!-- Вторичные кнопки с настройками -->\n<Actions\n  :list=\"[{ label: 'Закрыть' }]\"\n  :list-secondary=\"[\n    { label: 'Экспорт', icon: 'download' },\n    { label: 'Справка', icon: 'help' }\n  ]\"\n  :button-secondary-attrs=\"{ size: 'small', text: true }\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Основные кнопки -->\n<Actions\n:list=\"[\n  { label: 'Отмена', onClick: () => close() },\n  { label: 'Сохранить', primary: true, onClick: () => save() }\n]\"\n/>\n\n<!-- Основные и вторичные кнопки -->\n<Actions\n:list=\"[\n  { label: 'Отмена' },\n  { label: 'Сохранить', primary: true }\n]\"\n:list-secondary=\"[\n  { label: 'Удалить', text: true, icon: 'delete', palette: 'error' }\n]\"\n/>\n\n<!-- Кнопки с динамическим состоянием -->\n<Actions\n:list=\"[\n  { label: 'Отмена', disabled: isProcessing },\n  { label: 'Сохранить', primary: true, loading: isLoading }\n]\"\n:button-attrs=\"{ size: 'medium' }\"\n/>\n\n<!-- Вторичные кнопки с настройками -->\n<Actions\n:list=\"[{ label: 'Закрыть' }]\"\n:list-secondary=\"[\n  { label: 'Экспорт', icon: 'download' },\n  { label: 'Справка', icon: 'help' }\n]\"\n:button-secondary-attrs=\"{ size: 'small', text: true }\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Wn(e = {}) {
@@ -4142,7 +4108,6 @@ function Kn(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4194,10 +4159,10 @@ function Kn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleAction = (action) => {\n  console.log('Selected action:', action)\n  isOpen.value = false\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Open Actions</button>\n\n  <ActionSheet\n    v-model:open=\"isOpen\"\n    :touchClose=\"true\"\n  >\n    <template #title>\n      <h3>Choose Action</h3>\n    </template>\n\n    <template #default>\n      <div class=\"action-list\">\n        <button @click=\"handleAction('share')\">Share</button>\n        <button @click=\"handleAction('copy')\">Copy Link</button>\n        <button @click=\"handleAction('download')\">Download</button>\n      </div>\n    </template>\n\n    <template #footer>\n      <button @click=\"isOpen = false\">Cancel</button>\n    </template>\n  </ActionSheet>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleAction = (action) => {\nconsole.log('Selected action:', action)\nisOpen.value = false\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Open Actions</button>\n\n<ActionSheet\n  v-model:open=\"isOpen\"\n  :touchClose=\"true\"\n>\n  <template #title>\n    <h3>Choose Action</h3>\n  </template>\n\n  <template #default>\n    <div class=\"action-list\">\n      <button @click=\"handleAction('share')\">Share</button>\n      <button @click=\"handleAction('copy')\">Copy Link</button>\n      <button @click=\"handleAction('download')\">Download</button>\n    </div>\n  </template>\n\n  <template #footer>\n    <button @click=\"isOpen = false\">Cancel</button>\n  </template>\n</ActionSheet>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function qn(e = {}) {
@@ -4214,7 +4179,6 @@ function Jn(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4266,10 +4230,10 @@ function Jn(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleAction = (action) => {\n  console.log('Выбрано действие:', action)\n  isOpen.value = false\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Открыть действия</button>\n\n  <ActionSheet\n    v-model:open=\"isOpen\"\n    :touchClose=\"true\"\n  >\n    <template #title>\n      <h3>Выберите действие</h3>\n    </template>\n\n    <template #default>\n      <div class=\"action-list\">\n        <button @click=\"handleAction('share')\">Поделиться</button>\n        <button @click=\"handleAction('copy')\">Копировать ссылку</button>\n        <button @click=\"handleAction('download')\">Скачать</button>\n      </div>\n    </template>\n\n    <template #footer>\n      <button @click=\"isOpen = false\">Отмена</button>\n    </template>\n  </ActionSheet>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleAction = (action) => {\nconsole.log('Выбрано действие:', action)\nisOpen.value = false\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Открыть действия</button>\n\n<ActionSheet\n  v-model:open=\"isOpen\"\n  :touchClose=\"true\"\n>\n  <template #title>\n    <h3>Выберите действие</h3>\n  </template>\n\n  <template #default>\n    <div class=\"action-list\">\n      <button @click=\"handleAction('share')\">Поделиться</button>\n      <button @click=\"handleAction('copy')\">Копировать ссылку</button>\n      <button @click=\"handleAction('download')\">Скачать</button>\n    </div>\n  </template>\n\n  <template #footer>\n    <button @click=\"isOpen = false\">Отмена</button>\n  </template>\n</ActionSheet>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Yn(e = {}) {
@@ -4287,7 +4251,6 @@ function Xn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4313,10 +4276,10 @@ function Xn(e) {
 		"\n",
 		a(t.p, { children: "When enabled, a special tab indicator (drag handle) is displayed in the header area, which users can pull down to close the panel. This follows iOS and Material Design mobile interface patterns, providing intuitive interaction on touch devices." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- With gesture closing enabled -->\n<ActionSheet :touchClose=\"true\" />\n\n<!-- Without gesture closing -->\n<ActionSheet :touchClose=\"false\" />\n"
-		}) }),
+		a(s, {
+			code: "\n<!-- With gesture closing enabled -->\n<ActionSheet :touchClose=\"true\" />\n\n<!-- Without gesture closing -->\n<ActionSheet :touchClose=\"false\" />\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.p, { children: "The closing gesture is triggered by swiping down in the header area. The component automatically manages touch events and closing animation, ensuring smooth follow-through with the user's finger movement." })
 	] });
@@ -4336,7 +4299,6 @@ function Qn(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4362,10 +4324,10 @@ function Qn(e) {
 		"\n",
 		a(t.p, { children: "При включенном свойстве в области заголовка отображается специальная tab-полоска (индикатор перетаскивания), за которую пользователь может потянуть вниз для закрытия панели. Это следует паттернам мобильных интерфейсов iOS и Material Design, обеспечивая интуитивное взаимодействие на сенсорных устройствах." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- С возможностью закрытия жестом -->\n<ActionSheet :touchClose=\"true\" />\n\n<!-- Без возможности закрытия жестом -->\n<ActionSheet :touchClose=\"false\" />\n"
-		}) }),
+		a(s, {
+			code: "\n<!-- С возможностью закрытия жестом -->\n<ActionSheet :touchClose=\"true\" />\n\n<!-- Без возможности закрытия жестом -->\n<ActionSheet :touchClose=\"false\" />\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.p, { children: "Жест закрытия срабатывает при свайпе вниз в области заголовка. Компонент автоматически управляет touch-событиями и анимацией закрытия, обеспечивая плавное следование за пальцем пользователя." })
 	] });
@@ -4396,10 +4358,8 @@ var er = {
 //#region src/media/mdx/Anchor/anchor.en.mdx
 function tr(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4445,10 +4405,10 @@ function tr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Regular anchor -->\n  <Anchor name=\"section-1\" text=\"Go to section\" />\n\n  <!-- With copy mode -->\n  <Anchor name=\"section-2\" text=\"Copy link\" isCopy />\n\n  <!-- Hidden anchor -->\n  <Anchor name=\"section-3\" hide />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Regular anchor -->\n<Anchor name=\"section-1\" text=\"Go to section\" />\n\n<!-- With copy mode -->\n<Anchor name=\"section-2\" text=\"Copy link\" isCopy />\n\n<!-- Hidden anchor -->\n<Anchor name=\"section-3\" hide />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function nr(e = {}) {
@@ -4462,10 +4422,8 @@ function nr(e = {}) {
 //#region src/media/mdx/Anchor/anchor.ru.mdx
 function rr(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4511,10 +4469,10 @@ function rr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Обычный якорь -->\n  <Anchor name=\"section-1\" text=\"Перейти к разделу\" />\n\n  <!-- С копированием -->\n  <Anchor name=\"section-2\" text=\"Скопировать ссылку\" isCopy />\n\n  <!-- Скрытый якорь -->\n  <Anchor name=\"section-3\" hide />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Обычный якорь -->\n<Anchor name=\"section-1\" text=\"Перейти к разделу\" />\n\n<!-- С копированием -->\n<Anchor name=\"section-2\" text=\"Скопировать ссылку\" isCopy />\n\n<!-- Скрытый якорь -->\n<Anchor name=\"section-3\" hide />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ir(e = {}) {
@@ -4598,7 +4556,6 @@ function lr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4635,10 +4592,10 @@ function lr(e) {
 			" element without text, icons, or styling. This is useful for creating invisible navigation points that can be programmatically scrolled to or used as target elements for other anchors. The hidden anchor remains in the DOM and is accessible for navigation via URL hash or scroll methods."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Hidden anchor in section -->\n  <section>\n    <Anchor name=\"section-start\" hide />\n    <h2>Section heading</h2>\n  </section>\n\n  <!-- Combination of hidden and visible -->\n  <h3>\n    <Anchor name=\"heading\" hide />\n    Heading\n    <Anchor name=\"heading\" isCopy iconTag=\"link\" />\n  </h3>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Hidden anchor in section -->\n<section>\n  <Anchor name=\"section-start\" hide />\n  <h2>Section heading</h2>\n</section>\n\n<!-- Combination of hidden and visible -->\n<h3>\n  <Anchor name=\"heading\" hide />\n  Heading\n  <Anchor name=\"heading\" isCopy iconTag=\"link\" />\n</h3>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ur(e = {}) {
@@ -4656,7 +4613,6 @@ function dr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4693,10 +4649,10 @@ function dr(e) {
 			" без текста, иконок и стилей оформления. Это полезно для создания невидимых точек навигации, к которым можно программно прокручивать страницу или использовать их как целевые элементы для других якорей. Скрытый якорь остаётся в DOM и доступен для навигации через URL хеш или методы прокрутки."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Скрытый якорь в секции -->\n  <section>\n    <Anchor name=\"section-start\" hide />\n    <h2>Заголовок раздела</h2>\n  </section>\n\n  <!-- Комбинация скрытого и видимого -->\n  <h3>\n    <Anchor name=\"heading\" hide />\n    Заголовок\n    <Anchor name=\"heading\" isCopy iconTag=\"link\" />\n  </h3>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Скрытый якорь в секции -->\n<section>\n  <Anchor name=\"section-start\" hide />\n  <h2>Заголовок раздела</h2>\n</section>\n\n<!-- Комбинация скрытого и видимого -->\n<h3>\n  <Anchor name=\"heading\" hide />\n  Заголовок\n  <Anchor name=\"heading\" isCopy iconTag=\"link\" />\n</h3>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function fr(e = {}) {
@@ -4714,7 +4670,6 @@ function pr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4764,10 +4719,10 @@ function pr(e) {
 			" for visual confirmation of the action."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Basic mode -->\n  <Anchor name=\"section\" text=\"Copy link\" isCopy />\n\n  <!-- With custom icons -->\n  <Anchor name=\"heading\" isCopy iconTag=\"share\" iconContentCopy=\"check\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Basic mode -->\n<Anchor name=\"section\" text=\"Copy link\" isCopy />\n\n<!-- With custom icons -->\n<Anchor name=\"heading\" isCopy iconTag=\"share\" iconContentCopy=\"check\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function mr(e = {}) {
@@ -4785,7 +4740,6 @@ function hr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4835,10 +4789,10 @@ function hr(e) {
 			" для визуального подтверждения действия."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Базовый режим -->\n  <Anchor name=\"section\" text=\"Скопировать ссылку\" isCopy />\n\n  <!-- С кастомными иконками -->\n  <Anchor name=\"heading\" isCopy iconTag=\"share\" iconContentCopy=\"check\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Базовый режим -->\n<Anchor name=\"section\" text=\"Скопировать ссылку\" isCopy />\n\n<!-- С кастомными иконками -->\n<Anchor name=\"heading\" isCopy iconTag=\"share\" iconContentCopy=\"check\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function gr(e = {}) {
@@ -4857,7 +4811,6 @@ function _r(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -4943,10 +4896,10 @@ function _r(e) {
 		"\n",
 		a(t.p, { children: "These properties allow you to customize exactly how the page scrolls to the target element. For example, you can enable smooth scrolling or change the positioning of the element on the screen after scrolling." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <Anchor\n    href=\"#target\"\n    behavior=\"smooth\"\n    block=\"center\"\n    inline=\"nearest\"\n  >\n    Go to element\n  </Anchor>\n\n  <Anchor\n    href=\"#target\"\n    :shift=\"100\"\n  >\n    Go with offset\n  </Anchor>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<Anchor\n  href=\"#target\"\n  behavior=\"smooth\"\n  block=\"center\"\n  inline=\"nearest\"\n>\n  Go to element\n</Anchor>\n\n<Anchor\n  href=\"#target\"\n  :shift=\"100\"\n>\n  Go with offset\n</Anchor>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function vr(e = {}) {
@@ -4965,7 +4918,6 @@ function yr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5051,10 +5003,10 @@ function yr(e) {
 		"\n",
 		a(t.p, { children: "Эти свойства позволяют настроить, как именно страница будет прокручиваться к целевому элементу. Например, можно сделать плавную прокрутку или изменить позиционирование элемента на экране после прокрутки." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <Anchor\n    href=\"#target\"\n    behavior=\"smooth\"\n    block=\"center\"\n    inline=\"nearest\"\n  >\n    Перейти к элементу\n  </Anchor>\n\n  <Anchor\n    href=\"#target\"\n    :shift=\"100\"\n  >\n    Перейти со смещением\n  </Anchor>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<Anchor\n  href=\"#target\"\n  behavior=\"smooth\"\n  block=\"center\"\n  inline=\"nearest\"\n>\n  Перейти к элементу\n</Anchor>\n\n<Anchor\n  href=\"#target\"\n  :shift=\"100\"\n>\n  Перейти со смещением\n</Anchor>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function br(e = {}) {
@@ -5095,10 +5047,8 @@ var xr = {
 //#region src/media/mdx/Arrow/arrow.en.mdx
 function Sr(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5140,10 +5090,10 @@ function Sr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { Arrow } from 'dxt-ui'\n<\/script>\n\n<template>\n  <div class=\"relative p-4 border rounded\">\n    Content with arrow\n    <Arrow position=\"top\" />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { Arrow } from 'dxt-ui'\n<\/script>\n\n<template>\n<div class=\"relative p-4 border rounded\">\n  Content with arrow\n  <Arrow position=\"top\" />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Cr(e = {}) {
@@ -5157,10 +5107,8 @@ function Cr(e = {}) {
 //#region src/media/mdx/Arrow/arrow.ru.mdx
 function wr(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5202,10 +5150,10 @@ function wr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { Arrow } from 'dxt-ui'\n<\/script>\n\n<template>\n  <div class=\"relative p-4 border rounded\">\n    Контент с указателем\n    <Arrow position=\"top\" />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { Arrow } from 'dxt-ui'\n<\/script>\n\n<template>\n<div class=\"relative p-4 border rounded\">\n  Контент с указателем\n  <Arrow position=\"top\" />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Tr(e = {}) {
@@ -5229,11 +5177,9 @@ var Er = {
 function Dr(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5289,10 +5235,10 @@ function Dr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst cartCount = ref(5)\nconst unreadMessages = ref(127)\nconst isOnline = ref(true)\n\nconst addToCart = () => {\n  cartCount.value++\n}\n<\/script>\n\n<template>\n  <div class=\"badge-examples\">\n    <!-- Basic badge with number -->\n    <div style=\"position: relative; display: inline-block;\">\n      <IconButton icon=\"shopping_cart\" @click=\"addToCart\"/>\n      <Badge :label=\"cartCount\"/>\n    </div>\n\n    <!-- Badge with maximum value limit -->\n    <div style=\"position: relative; display: inline-block;\">\n      <IconButton icon=\"notifications\"/>\n      <Badge :label=\"unreadMessages\" :label-max=\"99\"/>\n    </div>\n\n    <!-- Dot status indicator -->\n    <div style=\"position: relative; display: inline-block;\">\n      <Avatar src=\"/user-avatar.jpg\"/>\n      <Badge\n        dot\n        :selected=\"isOnline\"\n        overlap=\"circular\"\n      />\n    </div>\n\n    <!-- Badge with icon and text -->\n    <div style=\"position: relative; display: inline-block;\">\n      <Button>Profile</Button>\n      <Badge\n        icon=\"verified\"\n        label=\"Pro\"\n        overlap=\"static\"\n      />\n    </div>\n\n    <!-- Badge with custom positioning -->\n    <div style=\"position: relative; display: inline-block;\">\n      <Card>Content</Card>\n      <Badge\n        label=\"New\"\n        vertical=\"bottom\"\n        horizontal=\"left\"\n      />\n    </div>\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst cartCount = ref(5)\nconst unreadMessages = ref(127)\nconst isOnline = ref(true)\n\nconst addToCart = () => {\ncartCount.value++\n}\n<\/script>\n\n<template>\n<div class=\"badge-examples\">\n  <!-- Basic badge with number -->\n  <div style=\"position: relative; display: inline-block;\">\n    <IconButton icon=\"shopping_cart\" @click=\"addToCart\"/>\n    <Badge :label=\"cartCount\"/>\n  </div>\n\n  <!-- Badge with maximum value limit -->\n  <div style=\"position: relative; display: inline-block;\">\n    <IconButton icon=\"notifications\"/>\n    <Badge :label=\"unreadMessages\" :label-max=\"99\"/>\n  </div>\n\n  <!-- Dot status indicator -->\n  <div style=\"position: relative; display: inline-block;\">\n    <Avatar src=\"/user-avatar.jpg\"/>\n    <Badge\n      dot\n      :selected=\"isOnline\"\n      overlap=\"circular\"\n    />\n  </div>\n\n  <!-- Badge with icon and text -->\n  <div style=\"position: relative; display: inline-block;\">\n    <Button>Profile</Button>\n    <Badge\n      icon=\"verified\"\n      label=\"Pro\"\n      overlap=\"static\"\n    />\n  </div>\n\n  <!-- Badge with custom positioning -->\n  <div style=\"position: relative; display: inline-block;\">\n    <Card>Content</Card>\n    <Badge\n      label=\"New\"\n      vertical=\"bottom\"\n      horizontal=\"left\"\n    />\n  </div>\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -5313,11 +5259,9 @@ function Or(e = {}) {
 function kr(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5373,10 +5317,10 @@ function kr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst cartCount = ref(5)\nconst unreadMessages = ref(127)\nconst isOnline = ref(true)\n\nconst addToCart = () => {\n  cartCount.value++\n}\n<\/script>\n\n<template>\n  <div class=\"badge-examples\">\n    <!-- Базовый бейдж с числом -->\n    <div style=\"position: relative; display: inline-block;\">\n      <IconButton icon=\"shopping_cart\" @click=\"addToCart\"/>\n      <Badge :label=\"cartCount\"/>\n    </div>\n\n    <!-- Бейдж с ограничением максимального значения -->\n    <div style=\"position: relative; display: inline-block;\">\n      <IconButton icon=\"notifications\"/>\n      <Badge :label=\"unreadMessages\" :label-max=\"99\"/>\n    </div>\n\n    <!-- Точечный индикатор статуса -->\n    <div style=\"position: relative; display: inline-block;\">\n      <Avatar src=\"/user-avatar.jpg\"/>\n      <Badge\n        dot\n        :selected=\"isOnline\"\n        overlap=\"circular\"\n      />\n    </div>\n\n    <!-- Бейдж с иконкой и текстом -->\n    <div style=\"position: relative; display: inline-block;\">\n      <Button>Профиль</Button>\n      <Badge\n        icon=\"verified\"\n        label=\"Pro\"\n        overlap=\"static\"\n      />\n    </div>\n\n    <!-- Бейдж с кастомным позиционированием -->\n    <div style=\"position: relative; display: inline-block;\">\n      <Card>Контент</Card>\n      <Badge\n        label=\"Новое\"\n        vertical=\"bottom\"\n        horizontal=\"left\"\n      />\n    </div>\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst cartCount = ref(5)\nconst unreadMessages = ref(127)\nconst isOnline = ref(true)\n\nconst addToCart = () => {\ncartCount.value++\n}\n<\/script>\n\n<template>\n<div class=\"badge-examples\">\n  <!-- Базовый бейдж с числом -->\n  <div style=\"position: relative; display: inline-block;\">\n    <IconButton icon=\"shopping_cart\" @click=\"addToCart\"/>\n    <Badge :label=\"cartCount\"/>\n  </div>\n\n  <!-- Бейдж с ограничением максимального значения -->\n  <div style=\"position: relative; display: inline-block;\">\n    <IconButton icon=\"notifications\"/>\n    <Badge :label=\"unreadMessages\" :label-max=\"99\"/>\n  </div>\n\n  <!-- Точечный индикатор статуса -->\n  <div style=\"position: relative; display: inline-block;\">\n    <Avatar src=\"/user-avatar.jpg\"/>\n    <Badge\n      dot\n      :selected=\"isOnline\"\n      overlap=\"circular\"\n    />\n  </div>\n\n  <!-- Бейдж с иконкой и текстом -->\n  <div style=\"position: relative; display: inline-block;\">\n    <Button>Профиль</Button>\n    <Badge\n      icon=\"verified\"\n      label=\"Pro\"\n      overlap=\"static\"\n    />\n  </div>\n\n  <!-- Бейдж с кастомным позиционированием -->\n  <div style=\"position: relative; display: inline-block;\">\n    <Card>Контент</Card>\n    <Badge\n      label=\"Новое\"\n      vertical=\"bottom\"\n      horizontal=\"left\"\n    />\n  </div>\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -5400,7 +5344,6 @@ function jr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5430,10 +5373,10 @@ function jr(e) {
 			" property is activated, any text content or numeric values are ignored, displaying only the color indicator."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Standard Badge with content -->\n<Badge label=\"5\" />\n\n<!-- Dot indicator -->\n<Badge dot />\n\n<!-- Dot indicator for online status -->\n<Badge dot :selected=\"isOnline\" overlap=\"circular\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Standard Badge with content -->\n<Badge label=\"5\" />\n\n<!-- Dot indicator -->\n<Badge dot />\n\n<!-- Dot indicator for online status -->\n<Badge dot :selected=\"isOnline\" overlap=\"circular\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Mr(e = {}) {
@@ -5451,7 +5394,6 @@ function Nr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5481,10 +5423,10 @@ function Nr(e) {
 			" любое текстовое содержимое или числовые значения игнорируются, отображается только цветовой индикатор."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Стандартный Badge с контентом -->\n<Badge label=\"5\" />\n\n<!-- Точечный индикатор -->\n<Badge dot />\n\n<!-- Точечный индикатор статуса онлайн -->\n<Badge dot :selected=\"isOnline\" overlap=\"circular\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Стандартный Badge с контентом -->\n<Badge label=\"5\" />\n\n<!-- Точечный индикатор -->\n<Badge dot />\n\n<!-- Точечный индикатор статуса онлайн -->\n<Badge dot :selected=\"isOnline\" overlap=\"circular\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Pr(e = {}) {
@@ -5502,7 +5444,6 @@ function Fr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5530,10 +5471,10 @@ function Fr(e) {
 		"\n",
 		a(t.p, { children: "Outline mode is especially useful for creating secondary indicators, informational labels, and status markers that should be noticeable but not dominant in the interface's visual hierarchy." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Badge outline overlap=\"static\">99+</Badge>\n<Badge outline overlap=\"static\" icon=\"info\">Info</Badge>\n<Badge outline dot overlap=\"static\"/>\n"
-		}) })
+		a(s, {
+			code: "\n<Badge outline overlap=\"static\">99+</Badge>\n<Badge outline overlap=\"static\" icon=\"info\">Info</Badge>\n<Badge outline dot overlap=\"static\"/>\n",
+			language: "html"
+		})
 	] });
 }
 function Ir(e = {}) {
@@ -5551,7 +5492,6 @@ function Lr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5579,10 +5519,10 @@ function Lr(e) {
 		"\n",
 		a(t.p, { children: "Outline режим особенно полезен для создания второстепенных индикаторов, информационных меток и статусных маркеров, которые должны быть заметными, но не доминирующими в визуальной иерархии интерфейса." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Badge outline overlap=\"static\">99+</Badge>\n<Badge outline overlap=\"static\" icon=\"info\">Инфо</Badge>\n<Badge outline dot overlap=\"static\"/>\n"
-		}) })
+		a(s, {
+			code: "\n<Badge outline overlap=\"static\">99+</Badge>\n<Badge outline overlap=\"static\" icon=\"info\">Инфо</Badge>\n<Badge outline dot overlap=\"static\"/>\n",
+			language: "html"
+		})
 	] });
 }
 function Rr(e = {}) {
@@ -5600,7 +5540,6 @@ function zr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5628,10 +5567,10 @@ function zr(e) {
 		"\n",
 		a(t.p, { children: "Primary mode is especially useful for creating critical notification indicators, active statuses, and high-priority markers that require immediate user attention in the interface." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Badge primary overlap=\"static\">5</Badge>\n<Badge primary overlap=\"static\" icon=\"warning\">Important</Badge>\n<Badge primary dot overlap=\"static\"/>\n"
-		}) })
+		a(s, {
+			code: "\n<Badge primary overlap=\"static\">5</Badge>\n<Badge primary overlap=\"static\" icon=\"warning\">Important</Badge>\n<Badge primary dot overlap=\"static\"/>\n",
+			language: "html"
+		})
 	] });
 }
 function Br(e = {}) {
@@ -5649,7 +5588,6 @@ function Vr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5677,10 +5615,10 @@ function Vr(e) {
 		"\n",
 		a(t.p, { children: "Primary режим особенно полезен для создания критических индикаторов уведомлений, активных статусов и высокоприоритетных маркеров, которые требуют немедленного внимания пользователя в интерфейсе." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Badge primary overlap=\"static\">5</Badge>\n<Badge primary overlap=\"static\" icon=\"warning\">Важно</Badge>\n<Badge primary dot overlap=\"static\"/>\n"
-		}) })
+		a(s, {
+			code: "\n<Badge primary overlap=\"static\">5</Badge>\n<Badge primary overlap=\"static\" icon=\"warning\">Важно</Badge>\n<Badge primary dot overlap=\"static\"/>\n",
+			language: "html"
+		})
 	] });
 }
 function Hr(e = {}) {
@@ -5698,7 +5636,6 @@ function Ur(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5726,10 +5663,10 @@ function Ur(e) {
 		"\n",
 		a(t.p, { children: "Secondary mode is especially useful for creating supporting information indicators, status updates, and categorical labels that are important but don't require critical attention in the visual hierarchy." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Badge secondary overlap=\"static\">12</Badge>\n<Badge secondary overlap=\"static\" icon=\"info\">Updated</Badge>\n<Badge secondary dot overlap=\"static\"/>\n"
-		}) })
+		a(s, {
+			code: "\n<Badge secondary overlap=\"static\">12</Badge>\n<Badge secondary overlap=\"static\" icon=\"info\">Updated</Badge>\n<Badge secondary dot overlap=\"static\"/>\n",
+			language: "html"
+		})
 	] });
 }
 function Wr(e = {}) {
@@ -5747,7 +5684,6 @@ function Gr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5775,10 +5711,10 @@ function Gr(e) {
 		"\n",
 		a(t.p, { children: "Secondary режим особенно полезен для создания поддерживающих индикаторов информации, статусных обновлений и категориальных меток, которые важны, но не требуют критического внимания в визуальной иерархии." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Badge secondary overlap=\"static\">12</Badge>\n<Badge secondary overlap=\"static\" icon=\"info\">Обновлено</Badge>\n<Badge secondary dot overlap=\"static\"/>\n"
-		}) })
+		a(s, {
+			code: "\n<Badge secondary overlap=\"static\">12</Badge>\n<Badge secondary overlap=\"static\" icon=\"info\">Обновлено</Badge>\n<Badge secondary dot overlap=\"static\"/>\n",
+			language: "html"
+		})
 	] });
 }
 function Kr(e = {}) {
@@ -5820,11 +5756,9 @@ var qr = {
 function Jr(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5880,10 +5814,10 @@ function Jr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst actionMode = ref(false)\nconst selectedCount = ref(0)\n\nconst handleSearch = () => {\n  console.log('Search clicked')\n}\n\nconst handleFilter = () => {\n  console.log('Filter clicked')\n}\n\nconst handleDelete = () => {\n  console.log('Delete selected items')\n  actionMode.value = false\n  selectedCount.value = 0\n}\n<\/script>\n\n<template>\n  <div class=\"app-layout\">\n    <!-- Standard header with navigation and actions -->\n    <Bars\n      label=\"Messages\"\n      description=\"Your conversations\"\n      icon-back=\"arrow_back\"\n      :bars=\"[\n        { icon: 'search', onClick: handleSearch },\n        { icon: 'filter_list', onClick: handleFilter },\n        { icon: 'more_vert' }\n      ]\"\n    />\n\n    <!-- Header with action mode for bulk operations -->\n    <Bars\n      v-model:action=\"actionMode\"\n      label=\"Contacts\"\n      description=\"Manage your contacts\"\n      :action-label=\"`${selectedCount} selected`\"\n      action-description=\"Choose an action\"\n      icon-back=\"arrow_back\"\n      icon-close=\"close\"\n      :bars=\"[\n        { icon: 'add' },\n        { icon: 'search' }\n      ]\"\n      :action-bars=\"[\n        { icon: 'share' },\n        { icon: 'delete', onClick: handleDelete }\n      ]\"\n    />\n\n    <!-- Toolbar with custom button attributes -->\n    <Bars\n      label=\"Settings\"\n      :button-attrs=\"{ secondary: true }\"\n      :bars=\"[\n        { icon: 'sync', label: 'Sync' },\n        { icon: 'info', label: 'Info' }\n      ]\"\n    />\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst actionMode = ref(false)\nconst selectedCount = ref(0)\n\nconst handleSearch = () => {\nconsole.log('Search clicked')\n}\n\nconst handleFilter = () => {\nconsole.log('Filter clicked')\n}\n\nconst handleDelete = () => {\nconsole.log('Delete selected items')\nactionMode.value = false\nselectedCount.value = 0\n}\n<\/script>\n\n<template>\n<div class=\"app-layout\">\n  <!-- Standard header with navigation and actions -->\n  <Bars\n    label=\"Messages\"\n    description=\"Your conversations\"\n    icon-back=\"arrow_back\"\n    :bars=\"[\n      { icon: 'search', onClick: handleSearch },\n      { icon: 'filter_list', onClick: handleFilter },\n      { icon: 'more_vert' }\n    ]\"\n  />\n\n  <!-- Header with action mode for bulk operations -->\n  <Bars\n    v-model:action=\"actionMode\"\n    label=\"Contacts\"\n    description=\"Manage your contacts\"\n    :action-label=\"`${selectedCount} selected`\"\n    action-description=\"Choose an action\"\n    icon-back=\"arrow_back\"\n    icon-close=\"close\"\n    :bars=\"[\n      { icon: 'add' },\n      { icon: 'search' }\n    ]\"\n    :action-bars=\"[\n      { icon: 'share' },\n      { icon: 'delete', onClick: handleDelete }\n    ]\"\n  />\n\n  <!-- Toolbar with custom button attributes -->\n  <Bars\n    label=\"Settings\"\n    :button-attrs=\"{ secondary: true }\"\n    :bars=\"[\n      { icon: 'sync', label: 'Sync' },\n      { icon: 'info', label: 'Info' }\n    ]\"\n  />\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -5904,11 +5838,9 @@ function Yr(e = {}) {
 function Xr(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -5964,10 +5896,10 @@ function Xr(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst actionMode = ref(false)\nconst selectedCount = ref(0)\n\nconst handleSearch = () => {\n  console.log('Нажат поиск')\n}\n\nconst handleFilter = () => {\n  console.log('Нажат фильтр')\n}\n\nconst handleDelete = () => {\n  console.log('Удалить выбранные элементы')\n  actionMode.value = false\n  selectedCount.value = 0\n}\n<\/script>\n\n<template>\n  <div class=\"app-layout\">\n    <!-- Стандартный заголовок с навигацией и действиями -->\n    <Bars\n      label=\"Сообщения\"\n      description=\"Ваши беседы\"\n      icon-back=\"arrow_back\"\n      :bars=\"[\n        { icon: 'search', onClick: handleSearch },\n        { icon: 'filter_list', onClick: handleFilter },\n        { icon: 'more_vert' }\n      ]\"\n    />\n\n    <!-- Заголовок с режимом действий для массовых операций -->\n    <Bars\n      v-model:action=\"actionMode\"\n      label=\"Контакты\"\n      description=\"Управление контактами\"\n      :action-label=\"`Выбрано: ${selectedCount}`\"\n      action-description=\"Выберите действие\"\n      icon-back=\"arrow_back\"\n      icon-close=\"close\"\n      :bars=\"[\n        { icon: 'add' },\n        { icon: 'search' }\n      ]\"\n      :action-bars=\"[\n        { icon: 'share' },\n        { icon: 'delete', onClick: handleDelete }\n      ]\"\n    />\n\n    <!-- Панель инструментов с пользовательскими атрибутами кнопок -->\n    <Bars\n      label=\"Настройки\"\n      :button-attrs=\"{ secondary: true }\"\n      :bars=\"[\n        { icon: 'sync', label: 'Синхр.' },\n        { icon: 'info', label: 'Инфо' }\n      ]\"\n    />\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst actionMode = ref(false)\nconst selectedCount = ref(0)\n\nconst handleSearch = () => {\nconsole.log('Нажат поиск')\n}\n\nconst handleFilter = () => {\nconsole.log('Нажат фильтр')\n}\n\nconst handleDelete = () => {\nconsole.log('Удалить выбранные элементы')\nactionMode.value = false\nselectedCount.value = 0\n}\n<\/script>\n\n<template>\n<div class=\"app-layout\">\n  <!-- Стандартный заголовок с навигацией и действиями -->\n  <Bars\n    label=\"Сообщения\"\n    description=\"Ваши беседы\"\n    icon-back=\"arrow_back\"\n    :bars=\"[\n      { icon: 'search', onClick: handleSearch },\n      { icon: 'filter_list', onClick: handleFilter },\n      { icon: 'more_vert' }\n    ]\"\n  />\n\n  <!-- Заголовок с режимом действий для массовых операций -->\n  <Bars\n    v-model:action=\"actionMode\"\n    label=\"Контакты\"\n    description=\"Управление контактами\"\n    :action-label=\"`Выбрано: ${selectedCount}`\"\n    action-description=\"Выберите действие\"\n    icon-back=\"arrow_back\"\n    icon-close=\"close\"\n    :bars=\"[\n      { icon: 'add' },\n      { icon: 'search' }\n    ]\"\n    :action-bars=\"[\n      { icon: 'share' },\n      { icon: 'delete', onClick: handleDelete }\n    ]\"\n  />\n\n  <!-- Панель инструментов с пользовательскими атрибутами кнопок -->\n  <Bars\n    label=\"Настройки\"\n    :button-attrs=\"{ secondary: true }\"\n    :bars=\"[\n      { icon: 'sync', label: 'Синхр.' },\n      { icon: 'info', label: 'Инфо' }\n    ]\"\n  />\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -5991,7 +5923,6 @@ function Qr(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6035,10 +5966,10 @@ function Qr(e) {
 			", maintaining consistent styling. Action mode is typically controlled by external selection state and is used for temporary focused operations with the ability to exit back to normal view."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref, computed } from 'vue'\n\nconst selectedItems = ref([])\nconst actionMode = computed(() => selectedItems.value.length > 0)\n\nconst handleSelect = (id) => {\n  const index = selectedItems.value.indexOf(id)\n  if (index > -1) {\n    selectedItems.value.splice(index, 1)\n  } else {\n    selectedItems.value.push(id)\n  }\n}\n\nconst handleShare = () => {\n  console.log('Share selected:', selectedItems.value)\n}\n\nconst handleDelete = () => {\n  console.log('Delete selected:', selectedItems.value)\n  selectedItems.value = []\n}\n<\/script>\n\n<template>\n  <!-- Standard mode with regular navigation -->\n  <Bars\n    :action=\"actionMode\"\n    label=\"Contacts\"\n    description=\"Manage your contacts\"\n    icon-back=\"arrow_back\"\n    icon-close=\"close\"\n    :bars=\"[\n      { icon: 'add', label: 'Add' },\n      { icon: 'search', label: 'Search' }\n    ]\"\n    :action-label=\"`${selectedItems.length} selected`\"\n    action-description=\"Choose an action to apply\"\n    :action-bars=\"[\n      { icon: 'share', onClick: handleShare },\n      { icon: 'delete', onClick: handleDelete }\n    ]\"\n  />\n\n  <!-- Action mode always active -->\n  <Bars\n    action\n    action-label=\"5 items selected\"\n    action-description=\"Select an action\"\n    icon-close=\"close\"\n    :action-bars=\"[\n      { icon: 'edit', label: 'Edit' },\n      { icon: 'archive', label: 'Archive' },\n      { icon: 'delete', label: 'Delete' }\n    ]\"\n  />\n\n  <!-- With v-model for two-way binding -->\n  <Bars\n    v-model:action=\"actionMode\"\n    label=\"Messages\"\n    :action-label=\"`${selectedItems.length} messages`\"\n    :action-bars=\"[\n      { icon: 'mark_email_read' },\n      { icon: 'delete' }\n    ]\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref, computed } from 'vue'\n\nconst selectedItems = ref([])\nconst actionMode = computed(() => selectedItems.value.length > 0)\n\nconst handleSelect = (id) => {\nconst index = selectedItems.value.indexOf(id)\nif (index > -1) {\n  selectedItems.value.splice(index, 1)\n} else {\n  selectedItems.value.push(id)\n}\n}\n\nconst handleShare = () => {\nconsole.log('Share selected:', selectedItems.value)\n}\n\nconst handleDelete = () => {\nconsole.log('Delete selected:', selectedItems.value)\nselectedItems.value = []\n}\n<\/script>\n\n<template>\n<!-- Standard mode with regular navigation -->\n<Bars\n  :action=\"actionMode\"\n  label=\"Contacts\"\n  description=\"Manage your contacts\"\n  icon-back=\"arrow_back\"\n  icon-close=\"close\"\n  :bars=\"[\n    { icon: 'add', label: 'Add' },\n    { icon: 'search', label: 'Search' }\n  ]\"\n  :action-label=\"`${selectedItems.length} selected`\"\n  action-description=\"Choose an action to apply\"\n  :action-bars=\"[\n    { icon: 'share', onClick: handleShare },\n    { icon: 'delete', onClick: handleDelete }\n  ]\"\n/>\n\n<!-- Action mode always active -->\n<Bars\n  action\n  action-label=\"5 items selected\"\n  action-description=\"Select an action\"\n  icon-close=\"close\"\n  :action-bars=\"[\n    { icon: 'edit', label: 'Edit' },\n    { icon: 'archive', label: 'Archive' },\n    { icon: 'delete', label: 'Delete' }\n  ]\"\n/>\n\n<!-- With v-model for two-way binding -->\n<Bars\n  v-model:action=\"actionMode\"\n  label=\"Messages\"\n  :action-label=\"`${selectedItems.length} messages`\"\n  :action-bars=\"[\n    { icon: 'mark_email_read' },\n    { icon: 'delete' }\n  ]\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function $r(e = {}) {
@@ -6056,7 +5987,6 @@ function ei(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6100,10 +6030,10 @@ function ei(e) {
 			", сохраняя согласованную стилизацию. Режим действий обычно контролируется внешним состоянием выбора и используется для временных фокусированных операций с возможностью выхода обратно в обычный вид."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref, computed } from 'vue'\n\nconst selectedItems = ref([])\nconst actionMode = computed(() => selectedItems.value.length > 0)\n\nconst handleSelect = (id) => {\n  const index = selectedItems.value.indexOf(id)\n  if (index > -1) {\n    selectedItems.value.splice(index, 1)\n  } else {\n    selectedItems.value.push(id)\n  }\n}\n\nconst handleShare = () => {\n  console.log('Поделиться выбранными:', selectedItems.value)\n}\n\nconst handleDelete = () => {\n  console.log('Удалить выбранные:', selectedItems.value)\n  selectedItems.value = []\n}\n<\/script>\n\n<template>\n  <!-- Стандартный режим с обычной навигацией -->\n  <Bars\n    :action=\"actionMode\"\n    label=\"Контакты\"\n    description=\"Управление контактами\"\n    icon-back=\"arrow_back\"\n    icon-close=\"close\"\n    :bars=\"[\n      { icon: 'add', label: 'Добавить' },\n      { icon: 'search', label: 'Поиск' }\n    ]\"\n    :action-label=\"`Выбрано: ${selectedItems.length}`\"\n    action-description=\"Выберите действие\"\n    :action-bars=\"[\n      { icon: 'share', onClick: handleShare },\n      { icon: 'delete', onClick: handleDelete }\n    ]\"\n  />\n\n  <!-- Режим действий всегда активен -->\n  <Bars\n    action\n    action-label=\"Выбрано 5 элементов\"\n    action-description=\"Выберите действие\"\n    icon-close=\"close\"\n    :action-bars=\"[\n      { icon: 'edit', label: 'Изменить' },\n      { icon: 'archive', label: 'Архивировать' },\n      { icon: 'delete', label: 'Удалить' }\n    ]\"\n  />\n\n  <!-- С v-model для двусторонней привязки -->\n  <Bars\n    v-model:action=\"actionMode\"\n    label=\"Сообщения\"\n    :action-label=\"`Сообщений: ${selectedItems.length}`\"\n    :action-bars=\"[\n      { icon: 'mark_email_read' },\n      { icon: 'delete' }\n    ]\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref, computed } from 'vue'\n\nconst selectedItems = ref([])\nconst actionMode = computed(() => selectedItems.value.length > 0)\n\nconst handleSelect = (id) => {\nconst index = selectedItems.value.indexOf(id)\nif (index > -1) {\n  selectedItems.value.splice(index, 1)\n} else {\n  selectedItems.value.push(id)\n}\n}\n\nconst handleShare = () => {\nconsole.log('Поделиться выбранными:', selectedItems.value)\n}\n\nconst handleDelete = () => {\nconsole.log('Удалить выбранные:', selectedItems.value)\nselectedItems.value = []\n}\n<\/script>\n\n<template>\n<!-- Стандартный режим с обычной навигацией -->\n<Bars\n  :action=\"actionMode\"\n  label=\"Контакты\"\n  description=\"Управление контактами\"\n  icon-back=\"arrow_back\"\n  icon-close=\"close\"\n  :bars=\"[\n    { icon: 'add', label: 'Добавить' },\n    { icon: 'search', label: 'Поиск' }\n  ]\"\n  :action-label=\"`Выбрано: ${selectedItems.length}`\"\n  action-description=\"Выберите действие\"\n  :action-bars=\"[\n    { icon: 'share', onClick: handleShare },\n    { icon: 'delete', onClick: handleDelete }\n  ]\"\n/>\n\n<!-- Режим действий всегда активен -->\n<Bars\n  action\n  action-label=\"Выбрано 5 элементов\"\n  action-description=\"Выберите действие\"\n  icon-close=\"close\"\n  :action-bars=\"[\n    { icon: 'edit', label: 'Изменить' },\n    { icon: 'archive', label: 'Архивировать' },\n    { icon: 'delete', label: 'Удалить' }\n  ]\"\n/>\n\n<!-- С v-model для двусторонней привязки -->\n<Bars\n  v-model:action=\"actionMode\"\n  label=\"Сообщения\"\n  :action-label=\"`Сообщений: ${selectedItems.length}`\"\n  :action-bars=\"[\n    { icon: 'mark_email_read' },\n    { icon: 'delete' }\n  ]\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ti(e = {}) {
@@ -6169,7 +6099,6 @@ function oi(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6191,10 +6120,10 @@ function oi(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isAction = ref(false)\n<\/script>\n\n<template>\n  <button @click=\"isAction = true\">Enable action mode</button>\n\n  <Bars v-model:action=\"isAction\">\n    <template #bars>\n      <Button>Regular button</Button>\n    </template>\n    <template #actionBars>\n      <Button>Action button</Button>\n      <Button @click=\"isAction = false\">Close</Button>\n    </template>\n  </Bars>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isAction = ref(false)\n<\/script>\n\n<template>\n<button @click=\"isAction = true\">Enable action mode</button>\n\n<Bars v-model:action=\"isAction\">\n  <template #bars>\n    <Button>Regular button</Button>\n  </template>\n  <template #actionBars>\n    <Button>Action button</Button>\n    <Button @click=\"isAction = false\">Close</Button>\n  </template>\n</Bars>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function si(e = {}) {
@@ -6212,7 +6141,6 @@ function ci(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6234,10 +6162,10 @@ function ci(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isAction = ref(false)\n<\/script>\n\n<template>\n  <button @click=\"isAction = true\">Включить action-режим</button>\n\n  <Bars v-model:action=\"isAction\">\n    <template #bars>\n      <Button>Обычная кнопка</Button>\n    </template>\n    <template #actionBars>\n      <Button>Action-кнопка</Button>\n      <Button @click=\"isAction = false\">Закрыть</Button>\n    </template>\n  </Bars>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isAction = ref(false)\n<\/script>\n\n<template>\n<button @click=\"isAction = true\">Включить action-режим</button>\n\n<Bars v-model:action=\"isAction\">\n  <template #bars>\n    <Button>Обычная кнопка</Button>\n  </template>\n  <template #actionBars>\n    <Button>Action-кнопка</Button>\n    <Button @click=\"isAction = false\">Закрыть</Button>\n  </template>\n</Bars>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function li(e = {}) {
@@ -6275,11 +6203,9 @@ var ui = {
 function di(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6323,10 +6249,10 @@ function di(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Block\n    headline=\"Block Headline\"\n    label=\"Label\"\n    description=\"Block description with detailed information\"\n    caption=\"Caption\"\n    icon=\"info\"\n  >\n    Main block content\n  </Block>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Block\n  headline=\"Block Headline\"\n  label=\"Label\"\n  description=\"Block description with detailed information\"\n  caption=\"Caption\"\n  icon=\"info\"\n>\n  Main block content\n</Block>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -6347,11 +6273,9 @@ function fi(e = {}) {
 function pi(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6395,10 +6319,10 @@ function pi(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Block\n    headline=\"Заголовок блока\"\n    label=\"Метка\"\n    description=\"Описание блока с подробной информацией\"\n    caption=\"Подпись\"\n    icon=\"info\"\n  >\n    Основной контент блока\n  </Block>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Block\n  headline=\"Заголовок блока\"\n  label=\"Метка\"\n  description=\"Описание блока с подробной информацией\"\n  caption=\"Подпись\"\n  icon=\"info\"\n>\n  Основной контент блока\n</Block>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -6422,7 +6346,6 @@ function hi(e) {
 		h2: "h2",
 		h3: "h3",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		...e.components
 	};
@@ -6477,10 +6400,10 @@ function hi(e) {
 		"\n",
 		a(t.h3, { children: "Hierarchy Example" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Page headline=\"User Account\">\n  <Section label=\"User Profile\" description=\"Manage personal data\" icon=\"person\">\n    <Block label=\"Basic Information\">\n      <p>Configure your display name and bio for other users.</p>\n      \n      <Group label=\"Contact Details\">\n        <p>Email: user@example.com</p>\n        <p>Phone: +7 (999) 000-00-00</p>\n      </Group>\n    </Block>\n    \n    <Block label=\"Security\" description=\"Password and authentication settings\">\n      <p>Regular password updates improve your account security.</p>\n    </Block>\n  </Section>\n\n  <Section label=\"Notifications\" icon=\"notifications\">\n    <Block label=\"Subscriptions\">\n      <Group label=\"Email\">\n        <p>Weekly news and promotions.</p>\n      </Group>\n      <Group label=\"SMS\">\n        <p>Critical system messages only.</p>\n      </Group>\n    </Block>\n  </Section>\n</Page>\n"
-		}) })
+		a(s, {
+			code: "\n<Page headline=\"User Account\">\n<Section label=\"User Profile\" description=\"Manage personal data\" icon=\"person\">\n  <Block label=\"Basic Information\">\n    <p>Configure your display name and bio for other users.</p>\n    \n    <Group label=\"Contact Details\">\n      <p>Email: user@example.com</p>\n      <p>Phone: +7 (999) 000-00-00</p>\n    </Group>\n  </Block>\n  \n  <Block label=\"Security\" description=\"Password and authentication settings\">\n    <p>Regular password updates improve your account security.</p>\n  </Block>\n</Section>\n\n<Section label=\"Notifications\" icon=\"notifications\">\n  <Block label=\"Subscriptions\">\n    <Group label=\"Email\">\n      <p>Weekly news and promotions.</p>\n    </Group>\n    <Group label=\"SMS\">\n      <p>Critical system messages only.</p>\n    </Group>\n  </Block>\n</Section>\n</Page>\n",
+			language: "html"
+		})
 	] });
 }
 function gi(e = {}) {
@@ -6498,7 +6421,6 @@ function _i(e) {
 		h2: "h2",
 		h3: "h3",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		...e.components
 	};
@@ -6553,10 +6475,10 @@ function _i(e) {
 		"\n",
 		a(t.h3, { children: "Пример иерархии" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Page headline=\"Личный кабинет\">\n  <Section label=\"Профиль пользователя\" description=\"Управление персональными данными\" icon=\"person\">\n    <Block label=\"Основная информация\">\n      <p>Настройте свое отображаемое имя и биографию для других пользователей.</p>\n      \n      <Group label=\"Контактные данные\">\n        <p>Email: user@example.com</p>\n        <p>Телефон: +7 (999) 000-00-00</p>\n      </Group>\n    </Block>\n    \n    <Block label=\"Безопасность\" description=\"Настройки пароля и аутентификации\">\n      <p>Регулярное обновление пароля повышает защищенность вашего аккаунта.</p>\n    </Block>\n  </Section>\n\n  <Section label=\"Уведомления\" icon=\"notifications\">\n    <Block label=\"Рассылки\">\n      <Group label=\"Email\">\n        <p>Еженедельные новости и акции.</p>\n      </Group>\n      <Group label=\"SMS\">\n        <p>Только критические системные сообщения.</p>\n      </Group>\n    </Block>\n  </Section>\n</Page>\n"
-		}) })
+		a(s, {
+			code: "\n<Page headline=\"Личный кабинет\">\n<Section label=\"Профиль пользователя\" description=\"Управление персональными данными\" icon=\"person\">\n  <Block label=\"Основная информация\">\n    <p>Настройте свое отображаемое имя и биографию для других пользователей.</p>\n    \n    <Group label=\"Контактные данные\">\n      <p>Email: user@example.com</p>\n      <p>Телефон: +7 (999) 000-00-00</p>\n    </Group>\n  </Block>\n  \n  <Block label=\"Безопасность\" description=\"Настройки пароля и аутентификации\">\n    <p>Регулярное обновление пароля повышает защищенность вашего аккаунта.</p>\n  </Block>\n</Section>\n\n<Section label=\"Уведомления\" icon=\"notifications\">\n  <Block label=\"Рассылки\">\n    <Group label=\"Email\">\n      <p>Еженедельные новости и акции.</p>\n    </Group>\n    <Group label=\"SMS\">\n      <p>Только критические системные сообщения.</p>\n    </Group>\n  </Block>\n</Section>\n</Page>\n",
+			language: "html"
+		})
 	] });
 }
 function vi(e = {}) {
@@ -6743,7 +6665,6 @@ function wi(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6771,10 +6692,10 @@ function wi(e) {
 		"\n",
 		a(t.p, { children: "Primary mode is especially useful for creating main call-to-action buttons, form submissions, and confirmation actions that require user attention and should be immediately recognizable in the interface." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button primary icon=\"send\">Submit</Button>\n<Button primary icon=\"save\">Save</Button>\n<Button primary>Confirm</Button>\n"
-		}) })
+		a(s, {
+			code: "\n<Button primary icon=\"send\">Submit</Button>\n<Button primary icon=\"save\">Save</Button>\n<Button primary>Confirm</Button>\n",
+			language: "html"
+		})
 	] });
 }
 function Ti(e = {}) {
@@ -6792,7 +6713,6 @@ function Ei(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6820,10 +6740,10 @@ function Ei(e) {
 		"\n",
 		a(t.p, { children: "Primary режим особенно полезен для создания основных кнопок призыва к действию, отправки форм и подтверждающих действий, которые требуют внимания пользователя и должны быть сразу узнаваемы в интерфейсе." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button primary icon=\"send\">Отправить</Button>\n<Button primary icon=\"save\">Сохранить</Button>\n<Button primary>Подтвердить</Button>\n"
-		}) })
+		a(s, {
+			code: "\n<Button primary icon=\"send\">Отправить</Button>\n<Button primary icon=\"save\">Сохранить</Button>\n<Button primary>Подтвердить</Button>\n",
+			language: "html"
+		})
 	] });
 }
 function Di(e = {}) {
@@ -6841,7 +6761,6 @@ function Oi(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6869,10 +6788,10 @@ function Oi(e) {
 		"\n",
 		a(t.p, { children: "Secondary mode is especially useful for creating cancel buttons, reset actions, and alternative choices that support the main flow without competing for primary attention in the interface." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button secondary icon=\"close\">Cancel</Button>\n<Button secondary icon=\"refresh\">Reset</Button>\n<Button secondary>Skip</Button>\n"
-		}) })
+		a(s, {
+			code: "\n<Button secondary icon=\"close\">Cancel</Button>\n<Button secondary icon=\"refresh\">Reset</Button>\n<Button secondary>Skip</Button>\n",
+			language: "html"
+		})
 	] });
 }
 function ki(e = {}) {
@@ -6890,7 +6809,6 @@ function Ai(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6918,10 +6836,10 @@ function Ai(e) {
 		"\n",
 		a(t.p, { children: "Secondary режим особенно полезен для создания кнопок отмены, действий сброса и альтернативных вариантов выбора, которые поддерживают основной поток без конкуренции за первичное внимание в интерфейсе." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button secondary icon=\"close\">Отмена</Button>\n<Button secondary icon=\"refresh\">Сброс</Button>\n<Button secondary>Пропустить</Button>\n"
-		}) })
+		a(s, {
+			code: "\n<Button secondary icon=\"close\">Отмена</Button>\n<Button secondary icon=\"refresh\">Сброс</Button>\n<Button secondary>Пропустить</Button>\n",
+			language: "html"
+		})
 	] });
 }
 function ji(e = {}) {
@@ -6939,7 +6857,6 @@ function Mi(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -6967,10 +6884,10 @@ function Mi(e) {
 		"\n",
 		a(t.p, { children: "Outline mode is especially useful for creating tertiary actions, filter controls, and secondary options in cards or lists that need to be accessible without excessive visual noise." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button outline icon=\"filter\">Filter</Button>\n<Button outline icon=\"sort\">Sort</Button>\n<Button outline>More options</Button>\n"
-		}) })
+		a(s, {
+			code: "\n<Button outline icon=\"filter\">Filter</Button>\n<Button outline icon=\"sort\">Sort</Button>\n<Button outline>More options</Button>\n",
+			language: "html"
+		})
 	] });
 }
 function Ni(e = {}) {
@@ -6988,7 +6905,6 @@ function Pi(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7016,15 +6932,10 @@ function Pi(e) {
 		"\n",
 		a(t.p, { children: "Outline режим особенно полезен для создания третичных действий, элементов управления фильтрами и второстепенных опций в карточках или списках, которые должны быть доступны без излишнего визуального шума." }),
 		"\n",
-		a(ee, {
+		a(s, {
 			code: "\n<Button outline icon=\"filter\">Фильтр</Button>\n<Button outline icon=\"sort\">Сортировка</Button>\n<Button outline>Дополнительно</Button>\n",
 			language: "html"
-		}),
-		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button outline icon=\"filter\">Фильтр</Button>\n<Button outline icon=\"sort\">Сортировка</Button>\n<Button outline>Дополнительно</Button>\n"
-		}) })
+		})
 	] });
 }
 function Fi(e = {}) {
@@ -7042,7 +6953,6 @@ function Ii(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7070,10 +6980,10 @@ function Ii(e) {
 		"\n",
 		a(t.p, { children: "Text mode is especially useful for creating tertiary actions, inline navigation links, and supplementary options within text content or footers that need to be accessible without drawing excessive attention." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button text icon=\"info\">Learn more</Button>\n<Button text icon=\"help\">Help</Button>\n<Button text>Read details</Button>\n"
-		}) })
+		a(s, {
+			code: "\n<Button text icon=\"info\">Learn more</Button>\n<Button text icon=\"help\">Help</Button>\n<Button text>Read details</Button>\n",
+			language: "html"
+		})
 	] });
 }
 function Li(e = {}) {
@@ -7091,7 +7001,6 @@ function Ri(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7119,10 +7028,10 @@ function Ri(e) {
 		"\n",
 		a(t.p, { children: "Text режим особенно полезен для создания третичных действий, встроенных навигационных ссылок и дополнительных опций внутри текстового контента или футеров, которые должны быть доступны без привлечения чрезмерного внимания." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Button text icon=\"info\">Узнать больше</Button>\n<Button text icon=\"help\">Справка</Button>\n<Button text>Читать детали</Button>\n"
-		}) })
+		a(s, {
+			code: "\n<Button text icon=\"info\">Узнать больше</Button>\n<Button text icon=\"help\">Справка</Button>\n<Button text>Читать детали</Button>\n",
+			language: "html"
+		})
 	] });
 }
 function zi(e = {}) {
@@ -7164,11 +7073,9 @@ var Bi = {
 function Vi(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7220,10 +7127,10 @@ function Vi(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(false)\nconst loading = ref(false)\n\nconst handleClick = () => {\n  console.log('Cell clicked')\n  selected.value = !selected.value\n}\n<\/script>\n\n<template>\n  <Cell\n    label=\"Notification Settings\"\n    description=\"Manage how you receive notifications\"\n    caption=\"Updated today\"\n    icon=\"notifications\"\n    :selected=\"selected\"\n    :skeleton=\"loading\"\n    @click=\"handleClick\"\n  >\n    <template #trailing>\n      <Icon name=\"chevron_right\" />\n    </template>\n  </Cell>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(false)\nconst loading = ref(false)\n\nconst handleClick = () => {\nconsole.log('Cell clicked')\nselected.value = !selected.value\n}\n<\/script>\n\n<template>\n<Cell\n  label=\"Notification Settings\"\n  description=\"Manage how you receive notifications\"\n  caption=\"Updated today\"\n  icon=\"notifications\"\n  :selected=\"selected\"\n  :skeleton=\"loading\"\n  @click=\"handleClick\"\n>\n  <template #trailing>\n    <Icon name=\"chevron_right\" />\n  </template>\n</Cell>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -7244,11 +7151,9 @@ function Hi(e = {}) {
 function Ui(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7300,10 +7205,10 @@ function Ui(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(false)\nconst loading = ref(false)\n\nconst handleClick = () => {\n  console.log('Ячейка нажата')\n  selected.value = !selected.value\n}\n<\/script>\n\n<template>\n  <Cell\n    label=\"Настройки уведомлений\"\n    description=\"Управление способами получения уведомлений\"\n    caption=\"Обновлено сегодня\"\n    icon=\"notifications\"\n    :selected=\"selected\"\n    :skeleton=\"loading\"\n    @click=\"handleClick\"\n  >\n    <template #trailing>\n      <Icon name=\"chevron_right\" />\n    </template>\n  </Cell>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(false)\nconst loading = ref(false)\n\nconst handleClick = () => {\nconsole.log('Ячейка нажата')\nselected.value = !selected.value\n}\n<\/script>\n\n<template>\n<Cell\n  label=\"Настройки уведомлений\"\n  description=\"Управление способами получения уведомлений\"\n  caption=\"Обновлено сегодня\"\n  icon=\"notifications\"\n  :selected=\"selected\"\n  :skeleton=\"loading\"\n  @click=\"handleClick\"\n>\n  <template #trailing>\n    <Icon name=\"chevron_right\" />\n  </template>\n</Cell>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -7598,7 +7503,6 @@ function ea(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7631,10 +7535,10 @@ function ea(e) {
 		"\n",
 		a(t.p, { children: "The indeterminate state is typically used for parent checkboxes in a group when only some child elements are selected." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref, computed } from 'vue'\n\nconst items = ref([\n  { id: 1, label: 'Item 1', checked: true },\n  { id: 2, label: 'Item 2', checked: false },\n  { id: 3, label: 'Item 3', checked: true }\n])\n\nconst allChecked = computed({\n  get: () => items.value.every(item => item.checked),\n  set: (value) => {\n    items.value.forEach(item => item.checked = value)\n  }\n})\n\nconst indeterminate = computed(() => {\n  const checkedCount = items.value.filter(item => item.checked).length\n  return checkedCount > 0 && checkedCount < items.value.length\n})\n<\/script>\n\n<template>\n  <!-- Parent checkbox with partial selection indicator -->\n  <Checkbox\n    v-model=\"allChecked\"\n    :indeterminate=\"indeterminate\"\n    label=\"Select all\"\n  />\n\n  <!-- Child checkboxes -->\n  <div style=\"margin-left: 24px\">\n    <Checkbox\n      v-for=\"item in items\"\n      :key=\"item.id\"\n      v-model=\"item.checked\"\n      :label=\"item.label\"\n    />\n  </div>\n\n  <!-- Using with custom icon -->\n  <Checkbox\n    indeterminate\n    iconIndeterminate=\"remove\"\n    label=\"Partially selected\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref, computed } from 'vue'\n\nconst items = ref([\n{ id: 1, label: 'Item 1', checked: true },\n{ id: 2, label: 'Item 2', checked: false },\n{ id: 3, label: 'Item 3', checked: true }\n])\n\nconst allChecked = computed({\nget: () => items.value.every(item => item.checked),\nset: (value) => {\n  items.value.forEach(item => item.checked = value)\n}\n})\n\nconst indeterminate = computed(() => {\nconst checkedCount = items.value.filter(item => item.checked).length\nreturn checkedCount > 0 && checkedCount < items.value.length\n})\n<\/script>\n\n<template>\n<!-- Parent checkbox with partial selection indicator -->\n<Checkbox\n  v-model=\"allChecked\"\n  :indeterminate=\"indeterminate\"\n  label=\"Select all\"\n/>\n\n<!-- Child checkboxes -->\n<div style=\"margin-left: 24px\">\n  <Checkbox\n    v-for=\"item in items\"\n    :key=\"item.id\"\n    v-model=\"item.checked\"\n    :label=\"item.label\"\n  />\n</div>\n\n<!-- Using with custom icon -->\n<Checkbox\n  indeterminate\n  iconIndeterminate=\"remove\"\n  label=\"Partially selected\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ta(e = {}) {
@@ -7652,7 +7556,6 @@ function na(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7685,10 +7588,10 @@ function na(e) {
 		"\n",
 		a(t.p, { children: "Неопределённое состояние обычно используется для родительских чекбоксов в группе, когда выбраны только некоторые дочерние элементы." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref, computed } from 'vue'\n\nconst items = ref([\n  { id: 1, label: 'Пункт 1', checked: true },\n  { id: 2, label: 'Пункт 2', checked: false },\n  { id: 3, label: 'Пункт 3', checked: true }\n])\n\nconst allChecked = computed({\n  get: () => items.value.every(item => item.checked),\n  set: (value) => {\n    items.value.forEach(item => item.checked = value)\n  }\n})\n\nconst indeterminate = computed(() => {\n  const checkedCount = items.value.filter(item => item.checked).length\n  return checkedCount > 0 && checkedCount < items.value.length\n})\n<\/script>\n\n<template>\n  <!-- Родительский чекбокс с индикатором частичного выбора -->\n  <Checkbox\n    v-model=\"allChecked\"\n    :indeterminate=\"indeterminate\"\n    label=\"Выбрать все\"\n  />\n\n  <!-- Дочерние чекбоксы -->\n  <div style=\"margin-left: 24px\">\n    <Checkbox\n      v-for=\"item in items\"\n      :key=\"item.id\"\n      v-model=\"item.checked\"\n      :label=\"item.label\"\n    />\n  </div>\n\n  <!-- Использование с пользовательской иконкой -->\n  <Checkbox\n    indeterminate\n    iconIndeterminate=\"remove\"\n    label=\"Частично выбрано\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref, computed } from 'vue'\n\nconst items = ref([\n{ id: 1, label: 'Пункт 1', checked: true },\n{ id: 2, label: 'Пункт 2', checked: false },\n{ id: 3, label: 'Пункт 3', checked: true }\n])\n\nconst allChecked = computed({\nget: () => items.value.every(item => item.checked),\nset: (value) => {\n  items.value.forEach(item => item.checked = value)\n}\n})\n\nconst indeterminate = computed(() => {\nconst checkedCount = items.value.filter(item => item.checked).length\nreturn checkedCount > 0 && checkedCount < items.value.length\n})\n<\/script>\n\n<template>\n<!-- Родительский чекбокс с индикатором частичного выбора -->\n<Checkbox\n  v-model=\"allChecked\"\n  :indeterminate=\"indeterminate\"\n  label=\"Выбрать все\"\n/>\n\n<!-- Дочерние чекбоксы -->\n<div style=\"margin-left: 24px\">\n  <Checkbox\n    v-for=\"item in items\"\n    :key=\"item.id\"\n    v-model=\"item.checked\"\n    :label=\"item.label\"\n  />\n</div>\n\n<!-- Использование с пользовательской иконкой -->\n<Checkbox\n  indeterminate\n  iconIndeterminate=\"remove\"\n  label=\"Частично выбрано\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ra(e = {}) {
@@ -7706,7 +7609,6 @@ function ia(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7748,10 +7650,10 @@ function ia(e) {
 			" automatically creates a hidden input field with the specified value, which is submitted when the checkbox is unchecked, ensuring data presence in the form even with an inactive checkbox."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst agreed = ref(false)\nconst formData = ref({})\n\nconst handleSubmit = () => {\n  console.log('Form data:', formData.value)\n}\n<\/script>\n\n<template>\n  <!-- Standard usage with boolean -->\n  <Checkbox\n    v-model=\"agreed\"\n    name=\"terms\"\n    label=\"I agree to the terms\"\n  />\n  <!-- value: true/false -->\n\n  <!-- Custom values for form -->\n  <Checkbox\n    name=\"subscribe\"\n    label=\"Subscribe to newsletter\"\n    valueVariant=\"yes\"\n    valueVariantHide=\"no\"\n  />\n  <!-- When checked sends: subscribe=yes -->\n  <!-- When unchecked sends: subscribe=no -->\n\n  <!-- Numeric values -->\n  <Checkbox\n    name=\"notification\"\n    label=\"Enable notifications\"\n    valueVariant=\"1\"\n    valueVariantHide=\"0\"\n  />\n  <!-- When checked sends: notification=1 -->\n  <!-- When unchecked sends: notification=0 -->\n\n  <!-- Without hidden value -->\n  <Checkbox\n    name=\"optional\"\n    label=\"Optional setting\"\n    valueVariant=\"enabled\"\n    :valueVariantHide=\"null\"\n  />\n  <!-- Only sent when checked: optional=enabled -->\n  <!-- When unchecked field is not sent -->\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst agreed = ref(false)\nconst formData = ref({})\n\nconst handleSubmit = () => {\nconsole.log('Form data:', formData.value)\n}\n<\/script>\n\n<template>\n<!-- Standard usage with boolean -->\n<Checkbox\n  v-model=\"agreed\"\n  name=\"terms\"\n  label=\"I agree to the terms\"\n/>\n<!-- value: true/false -->\n\n<!-- Custom values for form -->\n<Checkbox\n  name=\"subscribe\"\n  label=\"Subscribe to newsletter\"\n  valueVariant=\"yes\"\n  valueVariantHide=\"no\"\n/>\n<!-- When checked sends: subscribe=yes -->\n<!-- When unchecked sends: subscribe=no -->\n\n<!-- Numeric values -->\n<Checkbox\n  name=\"notification\"\n  label=\"Enable notifications\"\n  valueVariant=\"1\"\n  valueVariantHide=\"0\"\n/>\n<!-- When checked sends: notification=1 -->\n<!-- When unchecked sends: notification=0 -->\n\n<!-- Without hidden value -->\n<Checkbox\n  name=\"optional\"\n  label=\"Optional setting\"\n  valueVariant=\"enabled\"\n  :valueVariantHide=\"null\"\n/>\n<!-- Only sent when checked: optional=enabled -->\n<!-- When unchecked field is not sent -->\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function aa(e = {}) {
@@ -7769,7 +7671,6 @@ function oa(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7811,10 +7712,10 @@ function oa(e) {
 			" автоматически создаёт скрытое поле input с указанным значением, которое отправляется, когда чекбокс не отмечен, обеспечивая наличие данных в форме даже при неактивном чекбоксе."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst agreed = ref(false)\nconst formData = ref({})\n\nconst handleSubmit = () => {\n  console.log('Form data:', formData.value)\n}\n<\/script>\n\n<template>\n  <!-- Стандартное использование с boolean -->\n  <Checkbox\n    v-model=\"agreed\"\n    name=\"terms\"\n    label=\"Согласен с условиями\"\n  />\n  <!-- value: true/false -->\n\n  <!-- Пользовательские значения для формы -->\n  <Checkbox\n    name=\"subscribe\"\n    label=\"Подписаться на рассылку\"\n    valueVariant=\"yes\"\n    valueVariantHide=\"no\"\n  />\n  <!-- При отметке отправит: subscribe=yes -->\n  <!-- Без отметки отправит: subscribe=no -->\n\n  <!-- Числовые значения -->\n  <Checkbox\n    name=\"notification\"\n    label=\"Включить уведомления\"\n    valueVariant=\"1\"\n    valueVariantHide=\"0\"\n  />\n  <!-- При отметке отправит: notification=1 -->\n  <!-- Без отметки отправит: notification=0 -->\n\n  <!-- Без скрытого значения -->\n  <Checkbox\n    name=\"optional\"\n    label=\"Опциональная настройка\"\n    valueVariant=\"enabled\"\n    :valueVariantHide=\"null\"\n  />\n  <!-- Отправляется только при отметке: optional=enabled -->\n  <!-- Без отметки поле не отправляется -->\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst agreed = ref(false)\nconst formData = ref({})\n\nconst handleSubmit = () => {\nconsole.log('Form data:', formData.value)\n}\n<\/script>\n\n<template>\n<!-- Стандартное использование с boolean -->\n<Checkbox\n  v-model=\"agreed\"\n  name=\"terms\"\n  label=\"Согласен с условиями\"\n/>\n<!-- value: true/false -->\n\n<!-- Пользовательские значения для формы -->\n<Checkbox\n  name=\"subscribe\"\n  label=\"Подписаться на рассылку\"\n  valueVariant=\"yes\"\n  valueVariantHide=\"no\"\n/>\n<!-- При отметке отправит: subscribe=yes -->\n<!-- Без отметки отправит: subscribe=no -->\n\n<!-- Числовые значения -->\n<Checkbox\n  name=\"notification\"\n  label=\"Включить уведомления\"\n  valueVariant=\"1\"\n  valueVariantHide=\"0\"\n/>\n<!-- При отметке отправит: notification=1 -->\n<!-- Без отметки отправит: notification=0 -->\n\n<!-- Без скрытого значения -->\n<Checkbox\n  name=\"optional\"\n  label=\"Опциональная настройка\"\n  valueVariant=\"enabled\"\n  :valueVariantHide=\"null\"\n/>\n<!-- Отправляется только при отметке: optional=enabled -->\n<!-- Без отметки поле не отправляется -->\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function sa(e = {}) {
@@ -7848,11 +7749,9 @@ var ca = {
 function la(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7904,10 +7803,10 @@ function la(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedFilters = ref(['active', 'verified'])\nconst tags = ref(['Vue', 'TypeScript', 'UI'])\n\nconst toggleFilter = (filter) => {\n  const index = selectedFilters.value.indexOf(filter)\n  if (index > -1) {\n    selectedFilters.value.splice(index, 1)\n  } else {\n    selectedFilters.value.push(filter)\n  }\n}\n<\/script>\n\n<template>\n  <!-- Basic chip -->\n  <Chip>Standard</Chip>\n\n  <!-- Input chip for user input -->\n  <Chip input icon=\"person\">Contact</Chip>\n\n  <!-- Assistive chip for hints -->\n  <Chip assistive icon=\"lightbulb\">Recommendation</Chip>\n\n  <!-- Filters with selection state -->\n  <Chip\n    v-for=\"filter in ['active', 'pending', 'verified']\"\n    :key=\"filter\"\n    :selected=\"selectedFilters.includes(filter)\"\n    @click=\"toggleFilter(filter)\"\n  >\n    {{ filter }}\n  </Chip>\n\n  <!-- With data passing -->\n  <Chip\n    value=\"filter-tag\"\n    :detail=\"{ category: 'status', type: 'active' }\"\n    @click=\"handleChipClick\"\n  >\n    Active\n  </Chip>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedFilters = ref(['active', 'verified'])\nconst tags = ref(['Vue', 'TypeScript', 'UI'])\n\nconst toggleFilter = (filter) => {\nconst index = selectedFilters.value.indexOf(filter)\nif (index > -1) {\n  selectedFilters.value.splice(index, 1)\n} else {\n  selectedFilters.value.push(filter)\n}\n}\n<\/script>\n\n<template>\n<!-- Basic chip -->\n<Chip>Standard</Chip>\n\n<!-- Input chip for user input -->\n<Chip input icon=\"person\">Contact</Chip>\n\n<!-- Assistive chip for hints -->\n<Chip assistive icon=\"lightbulb\">Recommendation</Chip>\n\n<!-- Filters with selection state -->\n<Chip\n  v-for=\"filter in ['active', 'pending', 'verified']\"\n  :key=\"filter\"\n  :selected=\"selectedFilters.includes(filter)\"\n  @click=\"toggleFilter(filter)\"\n>\n  {{ filter }}\n</Chip>\n\n<!-- With data passing -->\n<Chip\n  value=\"filter-tag\"\n  :detail=\"{ category: 'status', type: 'active' }\"\n  @click=\"handleChipClick\"\n>\n  Active\n</Chip>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -7928,11 +7827,9 @@ function ua(e = {}) {
 function da(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -7984,10 +7881,10 @@ function da(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedFilters = ref(['active', 'verified'])\nconst tags = ref(['Vue', 'TypeScript', 'UI'])\n\nconst toggleFilter = (filter) => {\n  const index = selectedFilters.value.indexOf(filter)\n  if (index > -1) {\n    selectedFilters.value.splice(index, 1)\n  } else {\n    selectedFilters.value.push(filter)\n  }\n}\n<\/script>\n\n<template>\n  <!-- Базовый чип -->\n  <Chip>Стандарт</Chip>\n\n  <!-- Input чип для пользовательского ввода -->\n  <Chip input icon=\"person\">Контакт</Chip>\n\n  <!-- Assistive чип для подсказок -->\n  <Chip assistive icon=\"lightbulb\">Рекомендация</Chip>\n\n  <!-- Фильтры с состоянием выбора -->\n  <Chip\n    v-for=\"filter in ['active', 'pending', 'verified']\"\n    :key=\"filter\"\n    :selected=\"selectedFilters.includes(filter)\"\n    @click=\"toggleFilter(filter)\"\n  >\n    {{ filter }}\n  </Chip>\n\n  <!-- С передачей данных -->\n  <Chip\n    value=\"filter-tag\"\n    :detail=\"{ category: 'status', type: 'active' }\"\n    @click=\"handleChipClick\"\n  >\n    Активный\n  </Chip>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedFilters = ref(['active', 'verified'])\nconst tags = ref(['Vue', 'TypeScript', 'UI'])\n\nconst toggleFilter = (filter) => {\nconst index = selectedFilters.value.indexOf(filter)\nif (index > -1) {\n  selectedFilters.value.splice(index, 1)\n} else {\n  selectedFilters.value.push(filter)\n}\n}\n<\/script>\n\n<template>\n<!-- Базовый чип -->\n<Chip>Стандарт</Chip>\n\n<!-- Input чип для пользовательского ввода -->\n<Chip input icon=\"person\">Контакт</Chip>\n\n<!-- Assistive чип для подсказок -->\n<Chip assistive icon=\"lightbulb\">Рекомендация</Chip>\n\n<!-- Фильтры с состоянием выбора -->\n<Chip\n  v-for=\"filter in ['active', 'pending', 'verified']\"\n  :key=\"filter\"\n  :selected=\"selectedFilters.includes(filter)\"\n  @click=\"toggleFilter(filter)\"\n>\n  {{ filter }}\n</Chip>\n\n<!-- С передачей данных -->\n<Chip\n  value=\"filter-tag\"\n  :detail=\"{ category: 'status', type: 'active' }\"\n  @click=\"handleChipClick\"\n>\n  Активный\n</Chip>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -8011,7 +7908,6 @@ function pa(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8039,10 +7935,10 @@ function pa(e) {
 		"\n",
 		a(t.p, { children: "Assistive mode is especially useful for creating hint systems, recommendations, and helper actions that guide users to the right solutions without excessive visual noise." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Chip assistive icon=\"lightbulb\">Recommendation</Chip>\n<Chip assistive icon=\"check\">Hint</Chip>\n<Chip assistive>Auto-complete</Chip>\n"
-		}) })
+		a(s, {
+			code: "\n<Chip assistive icon=\"lightbulb\">Recommendation</Chip>\n<Chip assistive icon=\"check\">Hint</Chip>\n<Chip assistive>Auto-complete</Chip>\n",
+			language: "html"
+		})
 	] });
 }
 function ma(e = {}) {
@@ -8060,7 +7956,6 @@ function ha(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8088,10 +7983,10 @@ function ha(e) {
 		"\n",
 		a(t.p, { children: "Assistive режим особенно полезен для создания систем подсказок, рекомендаций и вспомогательных действий, которые направляют пользователя к нужным решениям без излишнего визуального шума." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Chip assistive icon=\"lightbulb\">Рекомендация</Chip>\n<Chip assistive icon=\"check\">Подсказка</Chip>\n<Chip assistive>Автодополнение</Chip>\n"
-		}) })
+		a(s, {
+			code: "\n<Chip assistive icon=\"lightbulb\">Рекомендация</Chip>\n<Chip assistive icon=\"check\">Подсказка</Chip>\n<Chip assistive>Автодополнение</Chip>\n",
+			language: "html"
+		})
 	] });
 }
 function ga(e = {}) {
@@ -8109,7 +8004,6 @@ function _a(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8137,10 +8031,10 @@ function _a(e) {
 		"\n",
 		a(t.p, { children: "Input mode is especially useful for displaying data that users have actively entered or selected, making them visually distinct from static interface elements." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Chip input icon=\"person\">Contact</Chip>\n<Chip input icon=\"tag\">Tag</Chip>\n<Chip input selected>Selected</Chip>\n"
-		}) })
+		a(s, {
+			code: "\n<Chip input icon=\"person\">Contact</Chip>\n<Chip input icon=\"tag\">Tag</Chip>\n<Chip input selected>Selected</Chip>\n",
+			language: "html"
+		})
 	] });
 }
 function va(e = {}) {
@@ -8158,7 +8052,6 @@ function ya(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8186,10 +8079,10 @@ function ya(e) {
 		"\n",
 		a(t.p, { children: "Input режим особенно полезен для отображения данных, которые пользователь активно вводил или выбирал, делая их визуально отличимыми от статических элементов интерфейса." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<Chip input icon=\"person\">Контакт</Chip>\n<Chip input icon=\"tag\">Тег</Chip>\n<Chip input selected>Выбранный</Chip>\n"
-		}) })
+		a(s, {
+			code: "\n<Chip input icon=\"person\">Контакт</Chip>\n<Chip input icon=\"tag\">Тег</Chip>\n<Chip input selected>Выбранный</Chip>\n",
+			language: "html"
+		})
 	] });
 }
 function ba(e = {}) {
@@ -8222,10 +8115,8 @@ var xa = {
 //#region src/media/mdx/ChipGroup/chipGroup.en.mdx
 function Sa(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8273,10 +8164,10 @@ function Sa(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n\nconst options = [\n  { value: 'option1', label: 'Option 1', icon: 'star' },\n  { value: 'option2', label: 'Option 2', icon: 'favorite' },\n  { value: 'option3', label: 'Option 3', icon: 'bookmark' }\n]\n\nconst handleClick = (event) => {\n  console.log('Chip clicked:', event)\n}\n<\/script>\n\n<template>\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"options\"\n    key-value=\"value\"\n    key-label=\"label\"\n    :icon-when-selected=\"true\"\n    @click=\"handleClick\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n\nconst options = [\n{ value: 'option1', label: 'Option 1', icon: 'star' },\n{ value: 'option2', label: 'Option 2', icon: 'favorite' },\n{ value: 'option3', label: 'Option 3', icon: 'bookmark' }\n]\n\nconst handleClick = (event) => {\nconsole.log('Chip clicked:', event)\n}\n<\/script>\n\n<template>\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"options\"\n  key-value=\"value\"\n  key-label=\"label\"\n  :icon-when-selected=\"true\"\n  @click=\"handleClick\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ca(e = {}) {
@@ -8290,10 +8181,8 @@ function Ca(e = {}) {
 //#region src/media/mdx/ChipGroup/chipGroup.ru.mdx
 function wa(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8341,10 +8230,10 @@ function wa(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n\nconst options = [\n  { value: 'option1', label: 'Опция 1', icon: 'star' },\n  { value: 'option2', label: 'Опция 2', icon: 'favorite' },\n  { value: 'option3', label: 'Опция 3', icon: 'bookmark' }\n]\n\nconst handleClick = (event) => {\n  console.log('Чип нажат:', event)\n}\n<\/script>\n\n<template>\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"options\"\n    key-value=\"value\"\n    key-label=\"label\"\n    :icon-when-selected=\"true\"\n    @click=\"handleClick\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n\nconst options = [\n{ value: 'option1', label: 'Опция 1', icon: 'star' },\n{ value: 'option2', label: 'Опция 2', icon: 'favorite' },\n{ value: 'option3', label: 'Опция 3', icon: 'bookmark' }\n]\n\nconst handleClick = (event) => {\nconsole.log('Чип нажат:', event)\n}\n<\/script>\n\n<template>\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"options\"\n  key-value=\"value\"\n  key-label=\"label\"\n  :icon-when-selected=\"true\"\n  @click=\"handleClick\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ta(e = {}) {
@@ -8362,7 +8251,6 @@ function Ea(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8399,10 +8287,10 @@ function Ea(e) {
 			" property determines which chips will be highlighted. Accepts a single value for single selection or an array of values for multiple selection. Values are matched with list items by their index or value if the list contains simple data types."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n<\/script>\n\n<template>\n  <!-- Simple array selection -->\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"['Option 1', 'Option 2']\"\n  />\n\n  <!-- Object array with keys -->\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"[\n      { id: 'option1', name: 'First Option' },\n      { id: 'option2', name: 'Second Option' }\n    ]\"\n    key-value=\"id\"\n    key-label=\"name\"\n  />\n\n  <!-- Icons only when selected -->\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"[\n      { id: 'option1', name: 'Option 1', icon: 'check' },\n      { id: 'option2', name: 'Option 2', icon: 'check' }\n    ]\"\n    key-value=\"id\"\n    key-label=\"name\"\n    :icon-when-selected=\"true\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n<\/script>\n\n<template>\n<!-- Simple array selection -->\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"['Option 1', 'Option 2']\"\n/>\n\n<!-- Object array with keys -->\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"[\n    { id: 'option1', name: 'First Option' },\n    { id: 'option2', name: 'Second Option' }\n  ]\"\n  key-value=\"id\"\n  key-label=\"name\"\n/>\n\n<!-- Icons only when selected -->\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"[\n    { id: 'option1', name: 'Option 1', icon: 'check' },\n    { id: 'option2', name: 'Option 2', icon: 'check' }\n  ]\"\n  key-value=\"id\"\n  key-label=\"name\"\n  :icon-when-selected=\"true\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Da(e = {}) {
@@ -8420,7 +8308,6 @@ function Oa(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8457,10 +8344,10 @@ function Oa(e) {
 			" определяет, какие чипы будут выделены. Принимает одно значение для единичного выбора или массив значений для множественного выбора. Значения сопоставляются с элементами списка по их индексу или значению, если список содержит простые типы данных."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n<\/script>\n\n<template>\n  <!-- Выбор из простого массива -->\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"['Опция 1', 'Опция 2']\"\n  />\n\n  <!-- Массив объектов с ключами -->\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"[\n      { id: 'option1', name: 'Первая опция' },\n      { id: 'option2', name: 'Вторая опция' }\n    ]\"\n    key-value=\"id\"\n    key-label=\"name\"\n  />\n\n  <!-- Иконки только при выборе -->\n  <ChipGroup\n    v-model:selected=\"selected\"\n    :list=\"[\n      { id: 'option1', name: 'Опция 1', icon: 'check' },\n      { id: 'option2', name: 'Опция 2', icon: 'check' }\n    ]\"\n    key-value=\"id\"\n    key-label=\"name\"\n    :icon-when-selected=\"true\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['option1'])\n<\/script>\n\n<template>\n<!-- Выбор из простого массива -->\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"['Опция 1', 'Опция 2']\"\n/>\n\n<!-- Массив объектов с ключами -->\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"[\n    { id: 'option1', name: 'Первая опция' },\n    { id: 'option2', name: 'Вторая опция' }\n  ]\"\n  key-value=\"id\"\n  key-label=\"name\"\n/>\n\n<!-- Иконки только при выборе -->\n<ChipGroup\n  v-model:selected=\"selected\"\n  :list=\"[\n    { id: 'option1', name: 'Опция 1', icon: 'check' },\n    { id: 'option2', name: 'Опция 2', icon: 'check' }\n  ]\"\n  key-value=\"id\"\n  key-label=\"name\"\n  :icon-when-selected=\"true\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ka(e = {}) {
@@ -8489,10 +8376,8 @@ var Aa = {
 //#region src/media/mdx/Dialog/dialog.en.mdx
 function ja(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8544,10 +8429,10 @@ function ja(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst showSuccess = ref(false)\n\nconst handleConfirm = () => {\n  console.log('Action confirmed')\n  isOpen.value = false\n  showSuccess.value = true\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Open Dialog</button>\n\n  <Dialog\n    v-model:open=\"isOpen\"\n    label=\"Confirmation\"\n    description=\"Are you sure you want to perform this action?\"\n    @ok=\"handleConfirm\"\n    @close=\"isOpen = false\"\n  >\n    <template #default>\n      <div class=\"additional-info\">\n        Additional information can be placed here.\n      </div>\n    </template>\n  </Dialog>\n\n  <Dialog\n    v-model:open=\"showSuccess\"\n    :success=\"true\"\n    label=\"Success\"\n    description=\"Your action has been completed successfully.\"\n    :buttonClose=\"null\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst showSuccess = ref(false)\n\nconst handleConfirm = () => {\nconsole.log('Action confirmed')\nisOpen.value = false\nshowSuccess.value = true\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Open Dialog</button>\n\n<Dialog\n  v-model:open=\"isOpen\"\n  label=\"Confirmation\"\n  description=\"Are you sure you want to perform this action?\"\n  @ok=\"handleConfirm\"\n  @close=\"isOpen = false\"\n>\n  <template #default>\n    <div class=\"additional-info\">\n      Additional information can be placed here.\n    </div>\n  </template>\n</Dialog>\n\n<Dialog\n  v-model:open=\"showSuccess\"\n  :success=\"true\"\n  label=\"Success\"\n  description=\"Your action has been completed successfully.\"\n  :buttonClose=\"null\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ma(e = {}) {
@@ -8561,10 +8446,8 @@ function Ma(e = {}) {
 //#region src/media/mdx/Dialog/dialog.ru.mdx
 function Na(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8616,10 +8499,10 @@ function Na(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst showSuccess = ref(false)\n\nconst handleConfirm = () => {\n  console.log('Действие подтверждено')\n  isOpen.value = false\n  showSuccess.value = true\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Открыть диалог</button>\n\n  <Dialog\n    v-model:open=\"isOpen\"\n    label=\"Подтверждение\"\n    description=\"Вы уверены, что хотите выполнить это действие?\"\n    @ok=\"handleConfirm\"\n    @close=\"isOpen = false\"\n  >\n    <template #default>\n      <div class=\"additional-info\">\n        Дополнительная информация может быть размещена здесь.\n      </div>\n    </template>\n  </Dialog>\n\n  <Dialog\n    v-model:open=\"showSuccess\"\n    :success=\"true\"\n    label=\"Успешно\"\n    description=\"Ваше действие выполнено успешно.\"\n    :buttonClose=\"null\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst showSuccess = ref(false)\n\nconst handleConfirm = () => {\nconsole.log('Действие подтверждено')\nisOpen.value = false\nshowSuccess.value = true\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Открыть диалог</button>\n\n<Dialog\n  v-model:open=\"isOpen\"\n  label=\"Подтверждение\"\n  description=\"Вы уверены, что хотите выполнить это действие?\"\n  @ok=\"handleConfirm\"\n  @close=\"isOpen = false\"\n>\n  <template #default>\n    <div class=\"additional-info\">\n      Дополнительная информация может быть размещена здесь.\n    </div>\n  </template>\n</Dialog>\n\n<Dialog\n  v-model:open=\"showSuccess\"\n  :success=\"true\"\n  label=\"Успешно\"\n  description=\"Ваше действие выполнено успешно.\"\n  :buttonClose=\"null\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Pa(e = {}) {
@@ -8637,7 +8520,6 @@ function Fa(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8693,10 +8575,10 @@ function Fa(e) {
 			" allow overriding standard icons with custom ones, providing flexibility in visual design of dialog messages."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showSuccess = ref(false)\nconst showError = ref(false)\n<\/script>\n\n<template>\n  <!-- Success dialog -->\n  <Dialog\n    v-model:open=\"showSuccess\"\n    :success=\"true\"\n    label=\"Operation completed\"\n    description=\"Your changes have been saved successfully.\"\n  />\n\n  <!-- Error dialog -->\n  <Dialog\n    v-model:open=\"showError\"\n    :error=\"true\"\n    label=\"Operation failed\"\n    description=\"Unable to complete the operation. Please try again.\"\n  />\n\n  <!-- With custom icons -->\n  <Dialog\n    v-model:open=\"showSuccess\"\n    :success=\"true\"\n    iconSuccess=\"done_all\"\n    label=\"All done\"\n    description=\"Process completed successfully.\"\n  />\n\n  <!-- Error with custom icon -->\n  <Dialog\n    v-model:open=\"showError\"\n    :error=\"true\"\n    iconError=\"warning\"\n    label=\"Warning\"\n    description=\"Issues detected during data processing.\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showSuccess = ref(false)\nconst showError = ref(false)\n<\/script>\n\n<template>\n<!-- Success dialog -->\n<Dialog\n  v-model:open=\"showSuccess\"\n  :success=\"true\"\n  label=\"Operation completed\"\n  description=\"Your changes have been saved successfully.\"\n/>\n\n<!-- Error dialog -->\n<Dialog\n  v-model:open=\"showError\"\n  :error=\"true\"\n  label=\"Operation failed\"\n  description=\"Unable to complete the operation. Please try again.\"\n/>\n\n<!-- With custom icons -->\n<Dialog\n  v-model:open=\"showSuccess\"\n  :success=\"true\"\n  iconSuccess=\"done_all\"\n  label=\"All done\"\n  description=\"Process completed successfully.\"\n/>\n\n<!-- Error with custom icon -->\n<Dialog\n  v-model:open=\"showError\"\n  :error=\"true\"\n  iconError=\"warning\"\n  label=\"Warning\"\n  description=\"Issues detected during data processing.\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ia(e = {}) {
@@ -8714,7 +8596,6 @@ function La(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8770,10 +8651,10 @@ function La(e) {
 			" позволяют переопределить стандартные иконки на пользовательские, обеспечивая гибкость визуального оформления диалоговых сообщений."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showSuccess = ref(false)\nconst showError = ref(false)\n<\/script>\n\n<template>\n  <!-- Диалог успеха -->\n  <Dialog\n    v-model:open=\"showSuccess\"\n    :success=\"true\"\n    label=\"Операция выполнена\"\n    description=\"Ваши изменения успешно сохранены.\"\n  />\n\n  <!-- Диалог ошибки -->\n  <Dialog\n    v-model:open=\"showError\"\n    :error=\"true\"\n    label=\"Ошибка выполнения\"\n    description=\"Не удалось выполнить операцию. Попробуйте ещё раз.\"\n  />\n\n  <!-- С пользовательскими иконками -->\n  <Dialog\n    v-model:open=\"showSuccess\"\n    :success=\"true\"\n    iconSuccess=\"done_all\"\n    label=\"Всё готово\"\n    description=\"Процесс завершён успешно.\"\n  />\n\n  <!-- Ошибка с кастомной иконкой -->\n  <Dialog\n    v-model:open=\"showError\"\n    :error=\"true\"\n    iconError=\"warning\"\n    label=\"Внимание\"\n    description=\"Обнаружены проблемы при обработке данных.\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showSuccess = ref(false)\nconst showError = ref(false)\n<\/script>\n\n<template>\n<!-- Диалог успеха -->\n<Dialog\n  v-model:open=\"showSuccess\"\n  :success=\"true\"\n  label=\"Операция выполнена\"\n  description=\"Ваши изменения успешно сохранены.\"\n/>\n\n<!-- Диалог ошибки -->\n<Dialog\n  v-model:open=\"showError\"\n  :error=\"true\"\n  label=\"Ошибка выполнения\"\n  description=\"Не удалось выполнить операцию. Попробуйте ещё раз.\"\n/>\n\n<!-- С пользовательскими иконками -->\n<Dialog\n  v-model:open=\"showSuccess\"\n  :success=\"true\"\n  iconSuccess=\"done_all\"\n  label=\"Всё готово\"\n  description=\"Процесс завершён успешно.\"\n/>\n\n<!-- Ошибка с кастомной иконкой -->\n<Dialog\n  v-model:open=\"showError\"\n  :error=\"true\"\n  iconError=\"warning\"\n  label=\"Внимание\"\n  description=\"Обнаружены проблемы при обработке данных.\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ra(e = {}) {
@@ -8791,7 +8672,6 @@ function za(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8829,10 +8709,10 @@ function za(e) {
 			" OK button automatically closes the dialog after clicking."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <!-- Basic usage -->\n  <Dialog\n    buttonOk=\"Confirm\"\n    buttonClose=\"Cancel\"\n    label=\"Delete file\"\n    @ok=\"handleDelete\"\n  />\n\n  <!-- Hide close button -->\n  <Dialog\n    buttonOk=\"Got it\"\n    :buttonClose=\"null\"\n    label=\"Information\"\n  />\n\n  <!-- Using actionsList -->\n  <Dialog\n    :actionsList=\"[\n      { label: 'Save', onClick: handleSave },\n      { label: 'Cancel', outline: true, onClick: handleCancel }\n    ]\"\n    label=\"Save\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<!-- Basic usage -->\n<Dialog\n  buttonOk=\"Confirm\"\n  buttonClose=\"Cancel\"\n  label=\"Delete file\"\n  @ok=\"handleDelete\"\n/>\n\n<!-- Hide close button -->\n<Dialog\n  buttonOk=\"Got it\"\n  :buttonClose=\"null\"\n  label=\"Information\"\n/>\n\n<!-- Using actionsList -->\n<Dialog\n  :actionsList=\"[\n    { label: 'Save', onClick: handleSave },\n    { label: 'Cancel', outline: true, onClick: handleCancel }\n  ]\"\n  label=\"Save\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ba(e = {}) {
@@ -8850,7 +8730,6 @@ function Va(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -8888,10 +8767,10 @@ function Va(e) {
 			" кнопка OK автоматически закрывает диалог после нажатия."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <!-- Базовое использование -->\n  <Dialog\n    buttonOk=\"Подтвердить\"\n    buttonClose=\"Отмена\"\n    label=\"Удаление файла\"\n    @ok=\"handleDelete\"\n  />\n\n  <!-- Скрытие кнопки закрытия -->\n  <Dialog\n    buttonOk=\"Понятно\"\n    :buttonClose=\"null\"\n    label=\"Информация\"\n  />\n\n  <!-- Использование actionsList -->\n  <Dialog\n    :actionsList=\"[\n      { label: 'Сохранить', onClick: handleSave },\n      { label: 'Отмена', outline: true, onClick: handleCancel }\n    ]\"\n    label=\"Сохранение\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<!-- Базовое использование -->\n<Dialog\n  buttonOk=\"Подтвердить\"\n  buttonClose=\"Отмена\"\n  label=\"Удаление файла\"\n  @ok=\"handleDelete\"\n/>\n\n<!-- Скрытие кнопки закрытия -->\n<Dialog\n  buttonOk=\"Понятно\"\n  :buttonClose=\"null\"\n  label=\"Информация\"\n/>\n\n<!-- Использование actionsList -->\n<Dialog\n  :actionsList=\"[\n    { label: 'Сохранить', onClick: handleSave },\n    { label: 'Отмена', outline: true, onClick: handleCancel }\n  ]\"\n  label=\"Сохранение\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ha(e = {}) {
@@ -8909,7 +8788,6 @@ function Ua(e) {
 		code: "code",
 		h3: "h3",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		...e.components
 	};
@@ -8920,10 +8798,10 @@ function Ua(e) {
 		"\n",
 		o(t.p, { children: [a(t.strong, { children: "Parameters:" }), "\nEvent does not pass parameters."] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleOk = () => {\n  console.log('User confirmed action')\n  showDialog.value = false\n  // Execute action after confirmation\n}\n<\/script>\n\n<template>\n  <Dialog\n    v-model:open=\"showDialog\"\n    buttonOk=\"Confirm\"\n    label=\"Delete file\"\n    description=\"Are you sure you want to delete this file?\"\n    @ok=\"handleOk\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleOk = () => {\nconsole.log('User confirmed action')\nshowDialog.value = false\n// Execute action after confirmation\n}\n<\/script>\n\n<template>\n<Dialog\n  v-model:open=\"showDialog\"\n  buttonOk=\"Confirm\"\n  label=\"Delete file\"\n  description=\"Are you sure you want to delete this file?\"\n  @ok=\"handleOk\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "close" }) }),
 		"\n",
@@ -8931,10 +8809,10 @@ function Ua(e) {
 		"\n",
 		o(t.p, { children: [a(t.strong, { children: "Parameters:" }), "\nEvent does not pass parameters."] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleClose = () => {\n  console.log('User cancelled action')\n  showDialog.value = false\n}\n<\/script>\n\n<template>\n  <Dialog\n    v-model:open=\"showDialog\"\n    buttonClose=\"Cancel\"\n    label=\"Confirmation\"\n    @close=\"handleClose\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleClose = () => {\nconsole.log('User cancelled action')\nshowDialog.value = false\n}\n<\/script>\n\n<template>\n<Dialog\n  v-model:open=\"showDialog\"\n  buttonClose=\"Cancel\"\n  label=\"Confirmation\"\n  @close=\"handleClose\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -8966,7 +8844,6 @@ function Ga(e) {
 		code: "code",
 		h3: "h3",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		...e.components
 	};
@@ -8977,10 +8854,10 @@ function Ga(e) {
 		"\n",
 		o(t.p, { children: [a(t.strong, { children: "Параметры:" }), "\nСобытие не передаёт параметров."] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleOk = () => {\n  console.log('Пользователь подтвердил действие')\n  showDialog.value = false\n  // Выполнение действия после подтверждения\n}\n<\/script>\n\n<template>\n  <Dialog\n    v-model:open=\"showDialog\"\n    buttonOk=\"Подтвердить\"\n    label=\"Удаление файла\"\n    description=\"Вы действительно хотите удалить этот файл?\"\n    @ok=\"handleOk\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleOk = () => {\nconsole.log('Пользователь подтвердил действие')\nshowDialog.value = false\n// Выполнение действия после подтверждения\n}\n<\/script>\n\n<template>\n<Dialog\n  v-model:open=\"showDialog\"\n  buttonOk=\"Подтвердить\"\n  label=\"Удаление файла\"\n  description=\"Вы действительно хотите удалить этот файл?\"\n  @ok=\"handleOk\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "close" }) }),
 		"\n",
@@ -8988,10 +8865,10 @@ function Ga(e) {
 		"\n",
 		o(t.p, { children: [a(t.strong, { children: "Параметры:" }), "\nСобытие не передаёт параметров."] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleClose = () => {\n  console.log('Пользователь отменил действие')\n  showDialog.value = false\n}\n<\/script>\n\n<template>\n  <Dialog\n    v-model:open=\"showDialog\"\n    buttonClose=\"Отмена\"\n    label=\"Подтверждение\"\n    @close=\"handleClose\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showDialog = ref(false)\n\nconst handleClose = () => {\nconsole.log('Пользователь отменил действие')\nshowDialog.value = false\n}\n<\/script>\n\n<template>\n<Dialog\n  v-model:open=\"showDialog\"\n  buttonClose=\"Отмена\"\n  label=\"Подтверждение\"\n  @close=\"handleClose\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -9043,10 +8920,8 @@ var qa = {
 function Ja(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9080,10 +8955,10 @@ function Ja(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\n<\/script>\n\n<template>\n  <div class=\"dummy-examples\" style=\"display: flex; gap: 16px; flex-direction: column;\">\n    <!-- Basic Dummy -->\n    <Dummy />\n\n    <!-- Custom Size and Palette -->\n    <Dummy size=\"lg\" palette=\"blue\" />\n\n    <!-- Small Red Dummy -->\n    <Dummy size=\"sm\" palette=\"red\" />\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\n<\/script>\n\n<template>\n<div class=\"dummy-examples\" style=\"display: flex; gap: 16px; flex-direction: column;\">\n  <!-- Basic Dummy -->\n  <Dummy />\n\n  <!-- Custom Size and Palette -->\n  <Dummy size=\"lg\" palette=\"blue\" />\n\n  <!-- Small Red Dummy -->\n  <Dummy size=\"sm\" palette=\"red\" />\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -9104,10 +8979,8 @@ function Ya(e = {}) {
 function Xa(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9141,10 +9014,10 @@ function Xa(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\n<\/script>\n\n<template>\n  <div class=\"dummy-examples\" style=\"display: flex; gap: 16px; flex-direction: column;\">\n    <!-- Базовая заглушка -->\n    <Dummy />\n\n    <!-- Настройка размера и палитры -->\n    <Dummy size=\"lg\" palette=\"blue\" />\n\n    <!-- Маленькая красная заглушка -->\n    <Dummy size=\"sm\" palette=\"red\" />\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\n<\/script>\n\n<template>\n<div class=\"dummy-examples\" style=\"display: flex; gap: 16px; flex-direction: column;\">\n  <!-- Базовая заглушка -->\n  <Dummy />\n\n  <!-- Настройка размера и палитры -->\n  <Dummy size=\"lg\" palette=\"blue\" />\n\n  <!-- Маленькая красная заглушка -->\n  <Dummy size=\"sm\" palette=\"red\" />\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -9174,10 +9047,8 @@ var Qa = {
 function $a(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9223,10 +9094,10 @@ function $a(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { Field } from '@dxtmisha/constructor'\n\nconst value = ref('')\n\n// Field provides structure and management\n<\/script>\n\n<template>\n  <Field\n    label=\"Username\"\n    helper-message=\"Enter your name\"\n    :counter=\"value.length\"\n    counter-max=\"50\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        v-model=\"value\"\n        maxlength=\"50\"\n      />\n    </template>\n  </Field>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { Field } from '@dxtmisha/constructor'\n\nconst value = ref('')\n\n// Field provides structure and management\n<\/script>\n\n<template>\n<Field\n  label=\"Username\"\n  helper-message=\"Enter your name\"\n  :counter=\"value.length\"\n  counter-max=\"50\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      v-model=\"value\"\n      maxlength=\"50\"\n    />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -9247,10 +9118,8 @@ function eo(e = {}) {
 function to(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9296,10 +9165,10 @@ function to(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { Field } from '@dxtmisha/constructor'\n\nconst value = ref('')\n\n// Field предоставляет структуру и управление\n<\/script>\n\n<template>\n  <Field\n    label=\"Имя пользователя\"\n    helper-message=\"Введите ваше имя\"\n    :counter=\"value.length\"\n    counter-max=\"50\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        v-model=\"value\"\n        maxlength=\"50\"\n      />\n    </template>\n  </Field>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { Field } from '@dxtmisha/constructor'\n\nconst value = ref('')\n\n// Field предоставляет структуру и управление\n<\/script>\n\n<template>\n<Field\n  label=\"Имя пользователя\"\n  helper-message=\"Введите ваше имя\"\n  :counter=\"value.length\"\n  counter-max=\"50\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      v-model=\"value\"\n      maxlength=\"50\"\n    />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -9323,7 +9192,6 @@ function ro(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9387,10 +9255,10 @@ function ro(e) {
 			" value is ignored. Arrow modes take priority over the clear button — when navigation is active, cancel is hidden regardless of settings."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref, computed } from 'vue'\n\nconst value = ref('')\nconst hasValue = computed(() => value.value.length > 0)\n<\/script>\n\n<template>\n  <!-- Automatic mode with condition -->\n  <Field\n    label=\"Search\"\n    cancel=\"auto\"\n    :cancel-show=\"hasValue\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- Forced display -->\n  <Field\n    label=\"Filter\"\n    cancel=\"always\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- With event handler -->\n  <Field\n    label=\"Input\"\n    cancel=\"auto\"\n    :cancel-show=\"hasValue\"\n    @click=\"value = ''\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref, computed } from 'vue'\n\nconst value = ref('')\nconst hasValue = computed(() => value.value.length > 0)\n<\/script>\n\n<template>\n<!-- Automatic mode with condition -->\n<Field\n  label=\"Search\"\n  cancel=\"auto\"\n  :cancel-show=\"hasValue\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- Forced display -->\n<Field\n  label=\"Filter\"\n  cancel=\"always\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- With event handler -->\n<Field\n  label=\"Input\"\n  cancel=\"auto\"\n  :cancel-show=\"hasValue\"\n  @click=\"value = ''\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function io(e = {}) {
@@ -9408,7 +9276,6 @@ function ao(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9471,10 +9338,10 @@ function ao(e) {
 			" игнорируется. Режимы стрелок имеют приоритет над кнопкой очистки — при активной навигации cancel скрывается независимо от настроек."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref, computed } from 'vue'\n\nconst value = ref('')\nconst hasValue = computed(() => value.value.length > 0)\n<\/script>\n\n<template>\n  <!-- Автоматический режим с условием -->\n  <Field\n    label=\"Поиск\"\n    cancel=\"auto\"\n    :cancel-show=\"hasValue\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- Принудительный показ -->\n  <Field\n    label=\"Фильтр\"\n    cancel=\"always\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- С обработчиком события -->\n  <Field\n    label=\"Ввод\"\n    cancel=\"auto\"\n    :cancel-show=\"hasValue\"\n    @click=\"value = ''\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref, computed } from 'vue'\n\nconst value = ref('')\nconst hasValue = computed(() => value.value.length > 0)\n<\/script>\n\n<template>\n<!-- Автоматический режим с условием -->\n<Field\n  label=\"Поиск\"\n  cancel=\"auto\"\n  :cancel-show=\"hasValue\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- Принудительный показ -->\n<Field\n  label=\"Фильтр\"\n  cancel=\"always\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- С обработчиком события -->\n<Field\n  label=\"Ввод\"\n  cancel=\"auto\"\n  :cancel-show=\"hasValue\"\n  @click=\"value = ''\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function oo(e = {}) {
@@ -9492,7 +9359,6 @@ function so(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9553,10 +9419,10 @@ function so(e) {
 			" flags apply only to the currently active arrow mode."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst currentIndex = ref(0)\nconst items = ['Item 1', 'Item 2', 'Item 3']\nconst count = ref(5)\n<\/script>\n\n<template>\n  <!-- Carousel with navigation -->\n  <Field\n    label=\"Item\"\n    arrow-carousel\n    :disabled-previous=\"currentIndex === 0\"\n    :disabled-next=\"currentIndex === items.length - 1\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"items[currentIndex]\"\n        readonly\n      />\n    </template>\n  </Field>\n\n  <!-- Numeric stepper -->\n  <Field\n    label=\"Quantity\"\n    arrow-stepper\n    :disabled-previous=\"count <= 0\"\n    :disabled-next=\"count >= 99\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"count\"\n        readonly\n      />\n    </template>\n  </Field>\n\n  <!-- Stepper with left-aligned arrows -->\n  <Field\n    label=\"Value\"\n    arrow-stepper\n    arrow-align=\"left\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"count\"\n        readonly\n      />\n    </template>\n  </Field>\n\n  <!-- Stepper with centered arrows -->\n  <Field\n    label=\"Value\"\n    arrow-stepper\n    arrow-align=\"center\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"count\"\n        readonly\n      />\n    </template>\n  </Field>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst currentIndex = ref(0)\nconst items = ['Item 1', 'Item 2', 'Item 3']\nconst count = ref(5)\n<\/script>\n\n<template>\n<!-- Carousel with navigation -->\n<Field\n  label=\"Item\"\n  arrow-carousel\n  :disabled-previous=\"currentIndex === 0\"\n  :disabled-next=\"currentIndex === items.length - 1\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"items[currentIndex]\"\n      readonly\n    />\n  </template>\n</Field>\n\n<!-- Numeric stepper -->\n<Field\n  label=\"Quantity\"\n  arrow-stepper\n  :disabled-previous=\"count <= 0\"\n  :disabled-next=\"count >= 99\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"count\"\n      readonly\n    />\n  </template>\n</Field>\n\n<!-- Stepper with left-aligned arrows -->\n<Field\n  label=\"Value\"\n  arrow-stepper\n  arrow-align=\"left\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"count\"\n      readonly\n    />\n  </template>\n</Field>\n\n<!-- Stepper with centered arrows -->\n<Field\n  label=\"Value\"\n  arrow-stepper\n  arrow-align=\"center\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"count\"\n      readonly\n    />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function co(e = {}) {
@@ -9574,7 +9440,6 @@ function lo(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9635,10 +9500,10 @@ function lo(e) {
 			" применяются только к текущему активному режиму стрелок."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst currentIndex = ref(0)\nconst items = ['Item 1', 'Item 2', 'Item 3']\nconst count = ref(5)\n<\/script>\n\n<template>\n  <!-- Карусель с навигацией -->\n  <Field\n    label=\"Элемент\"\n    arrow-carousel\n    :disabled-previous=\"currentIndex === 0\"\n    :disabled-next=\"currentIndex === items.length - 1\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"items[currentIndex]\"\n        readonly\n      />\n    </template>\n  </Field>\n\n  <!-- Числовой степпер -->\n  <Field\n    label=\"Количество\"\n    arrow-stepper\n    :disabled-previous=\"count <= 0\"\n    :disabled-next=\"count >= 99\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"count\"\n        readonly\n      />\n    </template>\n  </Field>\n\n  <!-- Степпер со стрелками слева -->\n  <Field\n    label=\"Значение\"\n    arrow-stepper\n    arrow-align=\"left\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"count\"\n        readonly\n      />\n    </template>\n  </Field>\n\n  <!-- Степпер с центрированными стрелками -->\n  <Field\n    label=\"Значение\"\n    arrow-stepper\n    arrow-align=\"center\"\n  >\n    <template #default=\"{ id, className }\">\n      <input\n        :id=\"id\"\n        :class=\"className\"\n        :value=\"count\"\n        readonly\n      />\n    </template>\n  </Field>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst currentIndex = ref(0)\nconst items = ['Item 1', 'Item 2', 'Item 3']\nconst count = ref(5)\n<\/script>\n\n<template>\n<!-- Карусель с навигацией -->\n<Field\n  label=\"Элемент\"\n  arrow-carousel\n  :disabled-previous=\"currentIndex === 0\"\n  :disabled-next=\"currentIndex === items.length - 1\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"items[currentIndex]\"\n      readonly\n    />\n  </template>\n</Field>\n\n<!-- Числовой степпер -->\n<Field\n  label=\"Количество\"\n  arrow-stepper\n  :disabled-previous=\"count <= 0\"\n  :disabled-next=\"count >= 99\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"count\"\n      readonly\n    />\n  </template>\n</Field>\n\n<!-- Степпер со стрелками слева -->\n<Field\n  label=\"Значение\"\n  arrow-stepper\n  arrow-align=\"left\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"count\"\n      readonly\n    />\n  </template>\n</Field>\n\n<!-- Степпер с центрированными стрелками -->\n<Field\n  label=\"Значение\"\n  arrow-stepper\n  arrow-align=\"center\"\n>\n  <template #default=\"{ id, className }\">\n    <input\n      :id=\"id\"\n      :class=\"className\"\n      :value=\"count\"\n      readonly\n    />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function uo(e = {}) {
@@ -9656,7 +9521,6 @@ function fo(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9696,10 +9560,10 @@ function fo(e) {
 			" flag forcibly activates the visual filled mode (floating label, corresponding classes), which is useful for preloads, masks, or delayed data insertion."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\nconst isLoading = ref(true)\n<\/script>\n\n<template>\n  <!-- Normal behavior -->\n  <Field label=\"Name\">\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- Forced \"filled\" state -->\n  <Field\n    label=\"Email\"\n    :value=\"value\"\n    :is-value=\"true\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- Preload with visual state -->\n  <Field\n    label=\"Data\"\n    :is-value=\"isLoading\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\nconst isLoading = ref(true)\n<\/script>\n\n<template>\n<!-- Normal behavior -->\n<Field label=\"Name\">\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- Forced \"filled\" state -->\n<Field\n  label=\"Email\"\n  :value=\"value\"\n  :is-value=\"true\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- Preload with visual state -->\n<Field\n  label=\"Data\"\n  :is-value=\"isLoading\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function po(e = {}) {
@@ -9717,7 +9581,6 @@ function mo(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9757,10 +9620,10 @@ function mo(e) {
 			" принудительно активирует визуальный режим заполненности (плавающая метка, соответствующие классы), что полезно для прелоадов, масок или отложенной подстановки данных."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\nconst isLoading = ref(true)\n<\/script>\n\n<template>\n  <!-- Обычное поведение -->\n  <Field label=\"Имя\">\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- Принудительное состояние \"заполнено\" -->\n  <Field\n    label=\"Email\"\n    :value=\"value\"\n    :is-value=\"true\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n\n  <!-- Прелоад с визуальным состоянием -->\n  <Field\n    label=\"Данные\"\n    :is-value=\"isLoading\"\n  >\n    <template #default=\"{ id, className }\">\n      <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n    </template>\n  </Field>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst value = ref('')\nconst isLoading = ref(true)\n<\/script>\n\n<template>\n<!-- Обычное поведение -->\n<Field label=\"Имя\">\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- Принудительное состояние \"заполнено\" -->\n<Field\n  label=\"Email\"\n  :value=\"value\"\n  :is-value=\"true\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n\n<!-- Прелоад с визуальным состоянием -->\n<Field\n  label=\"Данные\"\n  :is-value=\"isLoading\"\n>\n  <template #default=\"{ id, className }\">\n    <input :id=\"id\" :class=\"className\" v-model=\"value\" />\n  </template>\n</Field>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ho(e = {}) {
@@ -9775,13 +9638,69 @@ function ho(e = {}) {
 function go(e) {
 	let t = {
 		code: "code",
-		pre: "pre",
+		h2: "h2",
+		li: "li",
+		p: "p",
+		strong: "strong",
+		ul: "ul",
 		...e.components
 	};
-	return a(t.pre, { children: a(t.code, {
-		className: "language-markdown",
-		children: "## Field width\n\nProperty `width` defines the horizontal size of the Field container.\n\n**Possible values:**\n\n- any valid CSS value (`'320px'`, `'48rem'`, `'50%'`, `'min(100%,320px)'`, `'clamp(240px,40vw,480px)'`)\n- design system tokens (e.g., `'sm'`, `'md'`, `'lg'` if supported)\n- `'custom'` — internal technical marker (not used directly)\n\nControls the fixed or relative width of the field, applying the value directly without additional wrappers. When the property is not set, the width remains flexible and depends on the parent container. When the `block` property is active (set to `true`), the field takes 100% width regardless of the specified `width` value, with block mode taking priority.\n\n```html\n<!-- Automatic width -->\n<Field label=\"auto\" />\n\n<!-- Fixed width -->\n<Field width=\"320px\" label=\"320px\" />\n\n<!-- Relative width -->\n<Field width=\"50%\" label=\"50%\" />\n\n<!-- CSS functions -->\n<Field width=\"min(100%, 320px)\" label=\"min(...)\" />\n<Field width=\"clamp(240px, 40vw, 480px)\" label=\"clamp(...)\" />\n```\n"
-	}) });
+	return o(i, { children: [
+		a(t.h2, { children: "Field width" }),
+		"\n",
+		o(t.p, { children: [
+			"Property ",
+			a(t.code, { children: "width" }),
+			" defines the horizontal size of the Field container."
+		] }),
+		"\n",
+		a(t.p, { children: a(t.strong, { children: "Possible values:" }) }),
+		"\n",
+		o(t.ul, { children: [
+			"\n",
+			o(t.li, { children: [
+				"any valid CSS value (",
+				a(t.code, { children: "'320px'" }),
+				", ",
+				a(t.code, { children: "'48rem'" }),
+				", ",
+				a(t.code, { children: "'50%'" }),
+				", ",
+				a(t.code, { children: "'min(100%,320px)'" }),
+				", ",
+				a(t.code, { children: "'clamp(240px,40vw,480px)'" }),
+				")"
+			] }),
+			"\n",
+			o(t.li, { children: [
+				"design system tokens (e.g., ",
+				a(t.code, { children: "'sm'" }),
+				", ",
+				a(t.code, { children: "'md'" }),
+				", ",
+				a(t.code, { children: "'lg'" }),
+				" if supported)"
+			] }),
+			"\n",
+			o(t.li, { children: [a(t.code, { children: "'custom'" }), " — internal technical marker (not used directly)"] }),
+			"\n"
+		] }),
+		"\n",
+		o(t.p, { children: [
+			"Controls the fixed or relative width of the field, applying the value directly without additional wrappers. When the property is not set, the width remains flexible and depends on the parent container. When the ",
+			a(t.code, { children: "block" }),
+			" property is active (set to ",
+			a(t.code, { children: "true" }),
+			"), the field takes 100% width regardless of the specified ",
+			a(t.code, { children: "width" }),
+			" value, with block mode taking priority."
+		] }),
+		"\n",
+		a(s, {
+			code: "\n<!-- Automatic width -->\n<Field label=\"auto\" />\n\n<!-- Fixed width -->\n<Field width=\"320px\" label=\"320px\" />\n\n<!-- Relative width -->\n<Field width=\"50%\" label=\"50%\" />\n\n<!-- CSS functions -->\n<Field width=\"min(100%, 320px)\" label=\"min(...)\" />\n<Field width=\"clamp(240px, 40vw, 480px)\" label=\"clamp(...)\" />\n",
+			language: "html"
+		})
+	] });
 }
 function _o(e = {}) {
 	let { wrapper: t } = e.components || {};
@@ -9798,7 +9717,6 @@ function vo(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -9854,10 +9772,10 @@ function vo(e) {
 			", приоритет имеет блочный режим."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Автоматическая ширина -->\n<Field label=\"auto\" />\n\n<!-- Фиксированная ширина -->\n<Field width=\"320px\" label=\"320px\" />\n\n<!-- Относительная ширина -->\n<Field width=\"50%\" label=\"50%\" />\n\n<!-- CSS-функции -->\n<Field width=\"min(100%, 320px)\" label=\"min(...)\" />\n<Field width=\"clamp(240px, 40vw, 480px)\" label=\"clamp(...)\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Автоматическая ширина -->\n<Field label=\"auto\" />\n\n<!-- Фиксированная ширина -->\n<Field width=\"320px\" label=\"320px\" />\n\n<!-- Относительная ширина -->\n<Field width=\"50%\" label=\"50%\" />\n\n<!-- CSS-функции -->\n<Field width=\"min(100%, 320px)\" label=\"min(...)\" />\n<Field width=\"clamp(240px, 40vw, 480px)\" label=\"clamp(...)\" />\n",
+			language: "html"
+		})
 	] });
 }
 function yo(e = {}) {
@@ -10004,10 +9922,8 @@ var wo = {
 //#region src/media/mdx/FieldCounter/fieldCounter.en.mdx
 function To(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10053,10 +9969,10 @@ function To(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Basic counter -->\n  <Component :counter=\"10\" />\n\n  <!-- With limit -->\n  <Component :counter=\"10\" :maxlength=\"100\" />\n\n  <!-- Custom template -->\n  <Component :counter=\"5\" :maxlength=\"50\" template=\"[c] of [m]\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Basic counter -->\n<Component :counter=\"10\" />\n\n<!-- With limit -->\n<Component :counter=\"10\" :maxlength=\"100\" />\n\n<!-- Custom template -->\n<Component :counter=\"5\" :maxlength=\"50\" template=\"[c] of [m]\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Eo(e = {}) {
@@ -10070,10 +9986,8 @@ function Eo(e = {}) {
 //#region src/media/mdx/FieldCounter/fieldCounter.ru.mdx
 function Do(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10119,10 +10033,10 @@ function Do(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Базовый счетчик -->\n  <Component :counter=\"10\" />\n\n  <!-- С лимитом -->\n  <Component :counter=\"10\" :maxlength=\"100\" />\n\n  <!-- Кастомный шаблон -->\n  <Component :counter=\"5\" :maxlength=\"50\" template=\"[c] / [m]\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Базовый счетчик -->\n<Component :counter=\"10\" />\n\n<!-- С лимитом -->\n<Component :counter=\"10\" :maxlength=\"100\" />\n\n<!-- Кастомный шаблон -->\n<Component :counter=\"5\" :maxlength=\"50\" template=\"[c] / [m]\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Oo(e = {}) {
@@ -10140,7 +10054,6 @@ function ko(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10170,10 +10083,10 @@ function ko(e) {
 			" is present or just \"50\" when it's absent."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Descriptive format -->\n<FieldCounter\n  :counter=\"75\"\n  :maxlength=\"150\"\n  template=\"Characters: [c] of [m]\"\n/>\n\n<!-- Compact format -->\n<FieldCounter\n  :counter=\"42\"\n  :maxlength=\"100\"\n  template=\"[c]/[m]\"\n/>\n\n<!-- With HTML for styling -->\n<FieldCounter\n  :counter=\"75\"\n  :maxlength=\"150\"\n  template=\"<b>[c]</b> of <i>[m]</i> characters\"\n/>\n\n<!-- Current counter only with text -->\n<FieldCounter\n  :counter=\"42\"\n  template=\"Characters entered: [c]\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Descriptive format -->\n<FieldCounter\n:counter=\"75\"\n:maxlength=\"150\"\ntemplate=\"Characters: [c] of [m]\"\n/>\n\n<!-- Compact format -->\n<FieldCounter\n:counter=\"42\"\n:maxlength=\"100\"\ntemplate=\"[c]/[m]\"\n/>\n\n<!-- With HTML for styling -->\n<FieldCounter\n:counter=\"75\"\n:maxlength=\"150\"\ntemplate=\"<b>[c]</b> of <i>[m]</i> characters\"\n/>\n\n<!-- Current counter only with text -->\n<FieldCounter\n:counter=\"42\"\ntemplate=\"Characters entered: [c]\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Ao(e = {}) {
@@ -10191,7 +10104,6 @@ function jo(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10221,10 +10133,10 @@ function jo(e) {
 			" или просто \"50\" при его отсутствии."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Описательный формат -->\n<FieldCounter\n  :counter=\"75\"\n  :maxlength=\"150\"\n  template=\"Символов: [c] из [m]\"\n/>\n\n<!-- Компактный формат -->\n<FieldCounter\n  :counter=\"42\"\n  :maxlength=\"100\"\n  template=\"[c]/[m]\"\n/>\n\n<!-- С HTML для стилизации -->\n<FieldCounter\n  :counter=\"75\"\n  :maxlength=\"150\"\n  template=\"<b>[c]</b> из <i>[m]</i> символов\"\n/>\n\n<!-- Только текущий счетчик с текстом -->\n<FieldCounter\n  :counter=\"42\"\n  template=\"Введено символов: [c]\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Описательный формат -->\n<FieldCounter\n:counter=\"75\"\n:maxlength=\"150\"\ntemplate=\"Символов: [c] из [m]\"\n/>\n\n<!-- Компактный формат -->\n<FieldCounter\n:counter=\"42\"\n:maxlength=\"100\"\ntemplate=\"[c]/[m]\"\n/>\n\n<!-- С HTML для стилизации -->\n<FieldCounter\n:counter=\"75\"\n:maxlength=\"150\"\ntemplate=\"<b>[c]</b> из <i>[m]</i> символов\"\n/>\n\n<!-- Только текущий счетчик с текстом -->\n<FieldCounter\n:counter=\"42\"\ntemplate=\"Введено символов: [c]\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Mo(e = {}) {
@@ -10253,10 +10165,8 @@ var No = {
 //#region src/media/mdx/FieldLabel/fieldLabel.en.mdx
 function Po(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10302,10 +10212,10 @@ function Po(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Basic label -->\n  <Component label=\"Username\" />\n\n  <!-- Required field label -->\n  <Component label=\"Email\" required />\n\n  <!-- With progress and counter -->\n  <Component\n    label=\"Loading\"\n    :progress=\"45\"\n    :counter=\"10\"\n    :maxlength=\"100\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Basic label -->\n<Component label=\"Username\" />\n\n<!-- Required field label -->\n<Component label=\"Email\" required />\n\n<!-- With progress and counter -->\n<Component\n  label=\"Loading\"\n  :progress=\"45\"\n  :counter=\"10\"\n  :maxlength=\"100\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Fo(e = {}) {
@@ -10319,10 +10229,8 @@ function Fo(e = {}) {
 //#region src/media/mdx/FieldLabel/fieldLabel.ru.mdx
 function Io(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10368,10 +10276,10 @@ function Io(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Базовая метка -->\n  <Component label=\"Username\" />\n\n  <!-- Обязательное поле -->\n  <Component label=\"Email\" required />\n\n  <!-- С прогрессом и счетчиком -->\n  <Component\n    label=\"Загрузка\"\n    :progress=\"45\"\n    :counter=\"10\"\n    :maxlength=\"100\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Базовая метка -->\n<Component label=\"Username\" />\n\n<!-- Обязательное поле -->\n<Component label=\"Email\" required />\n\n<!-- С прогрессом и счетчиком -->\n<Component\n  label=\"Загрузка\"\n  :progress=\"45\"\n  :counter=\"10\"\n  :maxlength=\"100\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Lo(e = {}) {
@@ -10395,10 +10303,8 @@ var Ro = {
 function zo(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10442,10 +10348,10 @@ function zo(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Helper message -->\n  <Component helper=\"Enter your name\" />\n\n  <!-- Validation message -->\n  <Component validation=\"Minimum 3 characters\" />\n\n  <!-- Slots -->\n  <Component>\n    <template #helper>💡 Hint</template>\n    <template #validation>⚠️ Error</template>\n  </Component>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<template>\n<!-- Helper message -->\n<Component helper=\"Enter your name\" />\n\n<!-- Validation message -->\n<Component validation=\"Minimum 3 characters\" />\n\n<!-- Slots -->\n<Component>\n  <template #helper>💡 Hint</template>\n  <template #validation>⚠️ Error</template>\n</Component>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -10466,10 +10372,8 @@ function Bo(e = {}) {
 function Vo(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10513,10 +10417,10 @@ function Vo(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Подсказка -->\n  <Component helper=\"Введите ваше имя\" />\n\n  <!-- Ошибка валидации -->\n  <Component validation=\"Минимум 3 символа\" />\n\n  <!-- Слоты -->\n  <Component>\n    <template #helper>💡 Подсказка</template>\n    <template #validation>⚠️ Ошибка</template>\n  </Component>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<template>\n<!-- Подсказка -->\n<Component helper=\"Введите ваше имя\" />\n\n<!-- Ошибка валидации -->\n<Component validation=\"Минимум 3 символа\" />\n\n<!-- Слоты -->\n<Component>\n  <template #helper>💡 Подсказка</template>\n  <template #validation>⚠️ Ошибка</template>\n</Component>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -10642,10 +10546,8 @@ var qo = {
 function Jo(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10665,10 +10567,10 @@ function Jo(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\n<\/script>\n\n<template>\n  <Grid>\n    <GridItem columnBase=\"6\">Item 1</GridItem>\n    <GridItem columnBase=\"6\">Item 2</GridItem>\n  </Grid>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\n<\/script>\n\n<template>\n<Grid>\n  <GridItem columnBase=\"6\">Item 1</GridItem>\n  <GridItem columnBase=\"6\">Item 2</GridItem>\n</Grid>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -10689,11 +10591,9 @@ function Yo(e = {}) {
 function Xo(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10715,10 +10615,10 @@ function Xo(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\n<\/script>\n\n<template>\n  <Grid>\n    <GridItem columnBase=\"6\">Элемент 1</GridItem>\n    <GridItem columnBase=\"6\">Элемент 2</GridItem>\n  </Grid>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\n<\/script>\n\n<template>\n<Grid>\n  <GridItem columnBase=\"6\">Элемент 1</GridItem>\n  <GridItem columnBase=\"6\">Элемент 2</GridItem>\n</Grid>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -10748,10 +10648,8 @@ var Qo = {
 function $o(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10771,10 +10669,10 @@ function $o(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\n<\/script>\n\n<template>\n  <Grid>\n    <!-- Full width on mobile, half on desktop -->\n    <GridItem base=\"12\" md=\"6\">Item 1</GridItem>\n    <GridItem base=\"12\" md=\"6\">Item 2</GridItem>\n\n    <!-- Different spans for different screen sizes -->\n    <GridItem base=\"12\" sm=\"6\" lg=\"3\">Responsive item</GridItem>\n  </Grid>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\n<\/script>\n\n<template>\n<Grid>\n  <!-- Full width on mobile, half on desktop -->\n  <GridItem base=\"12\" md=\"6\">Item 1</GridItem>\n  <GridItem base=\"12\" md=\"6\">Item 2</GridItem>\n\n  <!-- Different spans for different screen sizes -->\n  <GridItem base=\"12\" sm=\"6\" lg=\"3\">Responsive item</GridItem>\n</Grid>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -10795,11 +10693,9 @@ function es(e = {}) {
 function ts(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10821,10 +10717,10 @@ function ts(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\n<\/script>\n\n<template>\n  <Grid>\n    <!-- Полная ширина на мобильных, половина на десктопе -->\n    <GridItem base=\"12\" md=\"6\">Элемент 1</GridItem>\n    <GridItem base=\"12\" md=\"6\">Элемент 2</GridItem>\n\n    <!-- Различный охват для разных размеров экрана -->\n    <GridItem base=\"12\" sm=\"6\" lg=\"3\">Адаптивный элемент</GridItem>\n  </Grid>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\n<\/script>\n\n<template>\n<Grid>\n  <!-- Полная ширина на мобильных, половина на десктопе -->\n  <GridItem base=\"12\" md=\"6\">Элемент 1</GridItem>\n  <GridItem base=\"12\" md=\"6\">Элемент 2</GridItem>\n\n  <!-- Различный охват для разных размеров экрана -->\n  <GridItem base=\"12\" sm=\"6\" lg=\"3\">Адаптивный элемент</GridItem>\n</Grid>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -10858,7 +10754,6 @@ function is(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10908,10 +10803,10 @@ function is(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Group\n    headline=\"Group Headline\"\n    label=\"Group Label\"\n    description=\"Detailed description for the group content\"\n    caption=\"Auxiliary text\"\n    icon=\"folder\"\n  >\n    Main group content goes here\n  </Group>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Group\n  headline=\"Group Headline\"\n  label=\"Group Label\"\n  description=\"Detailed description for the group content\"\n  caption=\"Auxiliary text\"\n  icon=\"folder\"\n>\n  Main group content goes here\n</Group>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -10936,7 +10831,6 @@ function os(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -10982,10 +10876,10 @@ function os(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Group\n    headline=\"Заголовок группы\"\n    label=\"Метка группы\"\n    description=\"Подробное описание для содержимого группы\"\n    caption=\"Вспомогательный текст\"\n    icon=\"folder\"\n  >\n    Основной контент группы располагается здесь\n  </Group>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Group\n  headline=\"Заголовок группы\"\n  label=\"Метка группы\"\n  description=\"Подробное описание для содержимого группы\"\n  caption=\"Вспомогательный текст\"\n  icon=\"folder\"\n>\n  Основной контент группы располагается здесь\n</Group>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -11058,10 +10952,8 @@ function fs(e = {}) {
 //#region src/media/mdx/HorizontalScroll/horizontalScroll.en.mdx
 function ps(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11105,10 +10997,10 @@ function ps(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n  { id: 1, title: 'Item 1' },\n  { id: 2, title: 'Item 2' },\n  { id: 3, title: 'Item 3' },\n  { id: 4, title: 'Item 4' },\n  { id: 5, title: 'Item 5' }\n])\n<\/script>\n\n<template>\n  <HorizontalScroll>\n    <template #default=\"{ binds }\">\n      <div\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        v-bind=\"binds\"\n        class=\"scroll-item\"\n      >\n        {{ item.title }}\n      </div>\n    </template>\n  </HorizontalScroll>\n</template>\n\n<style scoped>\n.scroll-item {\n  min-width: 150px;\n  height: 100px;\n  margin-right: 16px;\n  background: #f5f5f5;\n  border-radius: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n</style>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n{ id: 1, title: 'Item 1' },\n{ id: 2, title: 'Item 2' },\n{ id: 3, title: 'Item 3' },\n{ id: 4, title: 'Item 4' },\n{ id: 5, title: 'Item 5' }\n])\n<\/script>\n\n<template>\n<HorizontalScroll>\n  <template #default=\"{ binds }\">\n    <div\n      v-for=\"item in items\"\n      :key=\"item.id\"\n      v-bind=\"binds\"\n      class=\"scroll-item\"\n    >\n      {{ item.title }}\n    </div>\n  </template>\n</HorizontalScroll>\n</template>\n\n<style scoped>\n.scroll-item {\nmin-width: 150px;\nheight: 100px;\nmargin-right: 16px;\nbackground: #f5f5f5;\nborder-radius: 8px;\ndisplay: flex;\nalign-items: center;\njustify-content: center;\n}\n</style>\n",
+			language: "html"
+		})
 	] });
 }
 function ms(e = {}) {
@@ -11122,10 +11014,8 @@ function ms(e = {}) {
 //#region src/media/mdx/HorizontalScroll/horizontalScroll.ru.mdx
 function hs(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11169,10 +11059,10 @@ function hs(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n  { id: 1, title: 'Элемент 1' },\n  { id: 2, title: 'Элемент 2' },\n  { id: 3, title: 'Элемент 3' },\n  { id: 4, title: 'Элемент 4' },\n  { id: 5, title: 'Элемент 5' }\n])\n<\/script>\n\n<template>\n  <HorizontalScroll>\n    <template #default=\"{ binds }\">\n      <div\n        v-for=\"item in items\"\n        :key=\"item.id\"\n        v-bind=\"binds\"\n        class=\"scroll-item\"\n      >\n        {{ item.title }}\n      </div>\n    </template>\n  </HorizontalScroll>\n</template>\n\n<style scoped>\n.scroll-item {\n  min-width: 150px;\n  height: 100px;\n  margin-right: 16px;\n  background: #f5f5f5;\n  border-radius: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n</style>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n{ id: 1, title: 'Элемент 1' },\n{ id: 2, title: 'Элемент 2' },\n{ id: 3, title: 'Элемент 3' },\n{ id: 4, title: 'Элемент 4' },\n{ id: 5, title: 'Элемент 5' }\n])\n<\/script>\n\n<template>\n<HorizontalScroll>\n  <template #default=\"{ binds }\">\n    <div\n      v-for=\"item in items\"\n      :key=\"item.id\"\n      v-bind=\"binds\"\n      class=\"scroll-item\"\n    >\n      {{ item.title }}\n    </div>\n  </template>\n</HorizontalScroll>\n</template>\n\n<style scoped>\n.scroll-item {\nmin-width: 150px;\nheight: 100px;\nmargin-right: 16px;\nbackground: #f5f5f5;\nborder-radius: 8px;\ndisplay: flex;\nalign-items: center;\njustify-content: center;\n}\n</style>\n",
+			language: "html"
+		})
 	] });
 }
 function gs(e = {}) {
@@ -11190,7 +11080,6 @@ function _s(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11222,10 +11111,10 @@ function _s(e) {
 			") is added to the component, which changes its appearance (e.g., background color, border, or text) to highlight it among other elements. This is useful for implementing selection lists, active input fields, or other interactive elements where it is necessary to visually indicate the user's current choice."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isSelected = ref(true)\n<\/script>\n\n<template>\n  <!-- Selected state -->\n  <Textarea\n    v-model=\"value\"\n    :selected=\"isSelected\"\n    label=\"Active field\"\n  />\n\n  <!-- Normal state -->\n  <Textarea\n    v-model=\"value2\"\n    :selected=\"false\"\n    label=\"Normal field\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isSelected = ref(true)\n<\/script>\n\n<template>\n<!-- Selected state -->\n<Textarea\n  v-model=\"value\"\n  :selected=\"isSelected\"\n  label=\"Active field\"\n/>\n\n<!-- Normal state -->\n<Textarea\n  v-model=\"value2\"\n  :selected=\"false\"\n  label=\"Normal field\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function vs(e = {}) {
@@ -11243,7 +11132,6 @@ function ys(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11275,10 +11163,10 @@ function ys(e) {
 			"), который изменяет его внешний вид (например, цвет фона, границы или текста), чтобы выделить его среди других элементов. Это полезно для реализации списков выбора, активных полей ввода или других интерактивных элементов, где необходимо визуально обозначить текущий выбор пользователя."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isSelected = ref(true)\n<\/script>\n\n<template>\n  <!-- Выбранное состояние -->\n  <Textarea\n    v-model=\"value\"\n    :selected=\"isSelected\"\n    label=\"Активное поле\"\n  />\n\n  <!-- Обычное состояние -->\n  <Textarea\n    v-model=\"value2\"\n    :selected=\"false\"\n    label=\"Обычное поле\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isSelected = ref(true)\n<\/script>\n\n<template>\n<!-- Выбранное состояние -->\n<Textarea\n  v-model=\"value\"\n  :selected=\"isSelected\"\n  label=\"Активное поле\"\n/>\n\n<!-- Обычное состояние -->\n<Textarea\n  v-model=\"value2\"\n  :selected=\"false\"\n  label=\"Обычное поле\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function bs(e = {}) {
@@ -11317,7 +11205,6 @@ function Ss(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11438,10 +11325,10 @@ function Ss(e) {
 		"\n",
 		a(t.h3, { children: "Usage Example" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { D1Icon } from '@dxtmisha/d1'\n\nconst isActive = ref(false)\n<\/script>\n\n<template>\n  <!-- Normal icon -->\n  <D1Icon icon=\"home\" />\n\n  <!-- Active icon -->\n  <!-- `favorite` will be displayed because active=true -->\n  <D1Icon icon=\"favorite_border\" icon-active=\"favorite\" :active=\"true\" />\n\n  <!-- Dynamic state toggle -->\n  <D1Icon\n    icon=\"visibility\"\n    icon-active=\"visibility_off\"\n    :active=\"isVisible\"\n    @click=\"isVisible = !isVisible\"\n  />\n\n  <D1Icon\n    icon=\"home\"\n    icon-active=\"favorite\"\n    :active=\"isActive\"\n    turn=\"90\"\n    @load=\"onIconLoad\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { D1Icon } from '@dxtmisha/d1'\n\nconst isActive = ref(false)\n<\/script>\n\n<template>\n<!-- Normal icon -->\n<D1Icon icon=\"home\" />\n\n<!-- Active icon -->\n<!-- `favorite` will be displayed because active=true -->\n<D1Icon icon=\"favorite_border\" icon-active=\"favorite\" :active=\"true\" />\n\n<!-- Dynamic state toggle -->\n<D1Icon\n  icon=\"visibility\"\n  icon-active=\"visibility_off\"\n  :active=\"isVisible\"\n  @click=\"isVisible = !isVisible\"\n/>\n\n<D1Icon\n  icon=\"home\"\n  icon-active=\"favorite\"\n  :active=\"isActive\"\n  turn=\"90\"\n  @load=\"onIconLoad\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -11474,7 +11361,6 @@ function ws(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11518,10 +11404,10 @@ function ws(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { D1Icon } from '@dxtmisha/d1'\n\nconst isActive = ref(false)\n<\/script>\n\n<template>\n  <D1Icon\n    icon=\"home\"\n    icon-active=\"favorite\"\n    :active=\"isActive\"\n    turn=\"90\"\n    @load=\"onIconLoad\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { D1Icon } from '@dxtmisha/d1'\n\nconst isActive = ref(false)\n<\/script>\n\n<template>\n<D1Icon\n  icon=\"home\"\n  icon-active=\"favorite\"\n  :active=\"isActive\"\n  turn=\"90\"\n  @load=\"onIconLoad\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -11626,7 +11512,6 @@ function js(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11682,10 +11567,10 @@ function js(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { Image } from '@dxtmisha/constructor'\n\nconst imageUrl = ref('https://example.com/image.jpg')\n<\/script>\n\n<template>\n  <!-- Background image with cropping -->\n  <Image\n    :value=\"imageUrl\"\n    size=\"cover\"\n    :coordinator=\"[10, 10, 10, 10]\"\n  />\n\n  <!-- SEO-friendly image -->\n  <Image\n    :value=\"imageUrl\"\n    tag-img\n    alt=\"Description\"\n  />\n\n  <!-- Material Design Icon -->\n  <Image value=\"filled-home\" />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { Image } from '@dxtmisha/constructor'\n\nconst imageUrl = ref('https://example.com/image.jpg')\n<\/script>\n\n<template>\n<!-- Background image with cropping -->\n<Image\n  :value=\"imageUrl\"\n  size=\"cover\"\n  :coordinator=\"[10, 10, 10, 10]\"\n/>\n\n<!-- SEO-friendly image -->\n<Image\n  :value=\"imageUrl\"\n  tag-img\n  alt=\"Description\"\n/>\n\n<!-- Material Design Icon -->\n<Image value=\"filled-home\" />\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -11709,7 +11594,6 @@ function Ns(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11765,10 +11649,10 @@ function Ns(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { Image } from '@dxtmisha/constructor'\n\nconst imageUrl = ref('https://example.com/image.jpg')\n<\/script>\n\n<template>\n  <!-- Фоновое изображение с кадрированием -->\n  <Image\n    :value=\"imageUrl\"\n    size=\"cover\"\n    :coordinator=\"[10, 10, 10, 10]\"\n  />\n\n  <!-- SEO-дружественное изображение -->\n  <Image\n    :value=\"imageUrl\"\n    tag-img\n    alt=\"Описание\"\n  />\n\n  <!-- Иконка Material Design -->\n  <Image value=\"filled-home\" />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { Image } from '@dxtmisha/constructor'\n\nconst imageUrl = ref('https://example.com/image.jpg')\n<\/script>\n\n<template>\n<!-- Фоновое изображение с кадрированием -->\n<Image\n  :value=\"imageUrl\"\n  size=\"cover\"\n  :coordinator=\"[10, 10, 10, 10]\"\n/>\n\n<!-- SEO-дружественное изображение -->\n<Image\n  :value=\"imageUrl\"\n  tag-img\n  alt=\"Описание\"\n/>\n\n<!-- Иконка Material Design -->\n<Image value=\"filled-home\" />\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -11792,7 +11676,6 @@ function Fs(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11826,10 +11709,10 @@ function Fs(e) {
 		"\n",
 		a(t.p, { children: "The component automatically detects the source type and selects the optimal display method. When passing a File object, the content is read and previewed. The property is reactive and supports dynamic updates." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Icon by name -->\n<Image value=\"icon-user\" />\n\n<!-- Image by URL -->\n<Image value=\"https://example.com/image.png\" />\n\n<!-- User file -->\n<Image :value=\"fileFromInput\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Icon by name -->\n<Image value=\"icon-user\" />\n\n<!-- Image by URL -->\n<Image value=\"https://example.com/image.png\" />\n\n<!-- User file -->\n<Image :value=\"fileFromInput\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Is(e = {}) {
@@ -11847,7 +11730,6 @@ function Ls(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11881,10 +11763,10 @@ function Ls(e) {
 		"\n",
 		a(t.p, { children: "Компонент автоматически определяет тип источника и выбирает оптимальный способ отображения. При передаче объекта File происходит чтение и предпросмотр содержимого. Свойство реактивно и поддерживает динамическое обновление." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Иконка по имени -->\n<Image value=\"icon-user\" />\n\n<!-- Изображение по URL -->\n<Image value=\"https://example.com/image.png\" />\n\n<!-- Файл от пользователя -->\n<Image :value=\"fileFromInput\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Иконка по имени -->\n<Image value=\"icon-user\" />\n\n<!-- Изображение по URL -->\n<Image value=\"https://example.com/image.png\" />\n\n<!-- Файл от пользователя -->\n<Image :value=\"fileFromInput\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Rs(e = {}) {
@@ -11902,7 +11784,6 @@ function zs(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -11968,10 +11849,10 @@ function zs(e) {
 			" parameters shift the image relative to the container for precise positioning."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Scaling mode -->\n<Image value=\"image.png\" size=\"contain\" />\n\n<!-- Cropping by coordinates -->\n<Image value=\"image.png\" :coordinator=\"[10, 20, 100, 80]\" />\n\n<!-- Position offset -->\n<Image value=\"image.png\" x=\"15\" y=\"-10\" />\n\n<!-- Combined parameters -->\n<Image\n  value=\"image.png\"\n  size=\"cover\"\n  :coordinator=\"[0, 0, 100, 50]\"\n  x=\"10\"\n  y=\"5\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Scaling mode -->\n<Image value=\"image.png\" size=\"contain\" />\n\n<!-- Cropping by coordinates -->\n<Image value=\"image.png\" :coordinator=\"[10, 20, 100, 80]\" />\n\n<!-- Position offset -->\n<Image value=\"image.png\" x=\"15\" y=\"-10\" />\n\n<!-- Combined parameters -->\n<Image\nvalue=\"image.png\"\nsize=\"cover\"\n:coordinator=\"[0, 0, 100, 50]\"\nx=\"10\"\ny=\"5\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Bs(e = {}) {
@@ -11989,7 +11870,6 @@ function Vs(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12055,10 +11935,10 @@ function Vs(e) {
 			" смещают изображение относительно контейнера для точного позиционирования."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Режим масштабирования -->\n<Image value=\"image.png\" size=\"contain\" />\n\n<!-- Обрезка по координатам -->\n<Image value=\"image.png\" :coordinator=\"[10, 20, 100, 80]\" />\n\n<!-- Смещение позиции -->\n<Image value=\"image.png\" x=\"15\" y=\"-10\" />\n\n<!-- Комбинация параметров -->\n<Image\n  value=\"image.png\"\n  size=\"cover\"\n  :coordinator=\"[0, 0, 100, 50]\"\n  x=\"10\"\n  y=\"5\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Режим масштабирования -->\n<Image value=\"image.png\" size=\"contain\" />\n\n<!-- Обрезка по координатам -->\n<Image value=\"image.png\" :coordinator=\"[10, 20, 100, 80]\" />\n\n<!-- Смещение позиции -->\n<Image value=\"image.png\" x=\"15\" y=\"-10\" />\n\n<!-- Комбинация параметров -->\n<Image\nvalue=\"image.png\"\nsize=\"cover\"\n:coordinator=\"[0, 0, 100, 50]\"\nx=\"10\"\ny=\"5\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Hs(e = {}) {
@@ -12076,7 +11956,6 @@ function Us(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12153,10 +12032,10 @@ function Us(e) {
 			" property disables this optimization and forces the component to constantly recalculate the scale regardless of element visibility."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst phone1 = ref('/images/phone-model-a.png')\nconst phone2 = ref('/images/phone-model-b.png')\nconst phone3 = ref('/images/phone-model-c.png')\n<\/script>\n\n<template>\n  <!-- Basic usage with object width -->\n  <Image\n    :value=\"phone1\"\n    adaptive\n    object-width=\"76.2\"\n  />\n\n  <!-- Multiple images in one group -->\n  <Image\n    :value=\"phone1\"\n    adaptive\n    adaptive-group=\"phones\"\n    object-width=\"76.2\"\n  />\n  <Image\n    :value=\"phone2\"\n    adaptive\n    adaptive-group=\"phones\"\n    object-width=\"71.9\"\n  />\n  <Image\n    :value=\"phone3\"\n    adaptive\n    adaptive-group=\"phones\"\n    object-width=\"129.9\"\n  />\n\n  <!-- With height instead of width -->\n  <Image\n    adaptive\n    object-height=\"154.8\"\n    :value=\"phone1\"\n  />\n\n  <!-- Constant scaling -->\n  <Image\n    adaptive\n    adaptive-always\n    object-width=\"76.2\"\n    :value=\"phone1\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst phone1 = ref('/images/phone-model-a.png')\nconst phone2 = ref('/images/phone-model-b.png')\nconst phone3 = ref('/images/phone-model-c.png')\n<\/script>\n\n<template>\n<!-- Basic usage with object width -->\n<Image\n  :value=\"phone1\"\n  adaptive\n  object-width=\"76.2\"\n/>\n\n<!-- Multiple images in one group -->\n<Image\n  :value=\"phone1\"\n  adaptive\n  adaptive-group=\"phones\"\n  object-width=\"76.2\"\n/>\n<Image\n  :value=\"phone2\"\n  adaptive\n  adaptive-group=\"phones\"\n  object-width=\"71.9\"\n/>\n<Image\n  :value=\"phone3\"\n  adaptive\n  adaptive-group=\"phones\"\n  object-width=\"129.9\"\n/>\n\n<!-- With height instead of width -->\n<Image\n  adaptive\n  object-height=\"154.8\"\n  :value=\"phone1\"\n/>\n\n<!-- Constant scaling -->\n<Image\n  adaptive\n  adaptive-always\n  object-width=\"76.2\"\n  :value=\"phone1\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ws(e = {}) {
@@ -12174,7 +12053,6 @@ function Gs(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12251,10 +12129,10 @@ function Gs(e) {
 			" отключает эту оптимизацию и заставляет компонент постоянно пересчитывать масштаб независимо от видимости элемента."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst phone1 = ref('/images/phone-model-a.png')\nconst phone2 = ref('/images/phone-model-b.png')\nconst phone3 = ref('/images/phone-model-c.png')\n<\/script>\n\n<template>\n  <!-- Базовое использование с шириной объекта -->\n  <Image\n    :value=\"phone1\"\n    adaptive\n    object-width=\"76.2\"\n  />\n\n  <!-- Несколько изображений в одной группе -->\n  <Image\n    :value=\"phone1\"\n    adaptive\n    adaptive-group=\"phones\"\n    object-width=\"76.2\"\n  />\n  <Image\n    :value=\"phone2\"\n    adaptive\n    adaptive-group=\"phones\"\n    object-width=\"71.9\"\n  />\n  <Image\n    :value=\"phone3\"\n    adaptive\n    adaptive-group=\"phones\"\n    object-width=\"129.9\"\n  />\n\n  <!-- С высотой вместо ширины -->\n  <Image\n    adaptive\n    object-height=\"154.8\"\n    :value=\"phone1\"\n  />\n\n  <!-- Постоянное масштабирование -->\n  <Image\n    adaptive\n    adaptive-always\n    object-width=\"76.2\"\n    :value=\"phone1\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst phone1 = ref('/images/phone-model-a.png')\nconst phone2 = ref('/images/phone-model-b.png')\nconst phone3 = ref('/images/phone-model-c.png')\n<\/script>\n\n<template>\n<!-- Базовое использование с шириной объекта -->\n<Image\n  :value=\"phone1\"\n  adaptive\n  object-width=\"76.2\"\n/>\n\n<!-- Несколько изображений в одной группе -->\n<Image\n  :value=\"phone1\"\n  adaptive\n  adaptive-group=\"phones\"\n  object-width=\"76.2\"\n/>\n<Image\n  :value=\"phone2\"\n  adaptive\n  adaptive-group=\"phones\"\n  object-width=\"71.9\"\n/>\n<Image\n  :value=\"phone3\"\n  adaptive\n  adaptive-group=\"phones\"\n  object-width=\"129.9\"\n/>\n\n<!-- С высотой вместо ширины -->\n<Image\n  adaptive\n  object-height=\"154.8\"\n  :value=\"phone1\"\n/>\n\n<!-- Постоянное масштабирование -->\n<Image\n  adaptive\n  adaptive-always\n  object-width=\"76.2\"\n  :value=\"phone1\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ks(e = {}) {
@@ -12272,7 +12150,6 @@ function qs(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12418,10 +12295,10 @@ function qs(e) {
 			" — the browser determines the priority automatically (default value). Proper use of this property helps optimize page loading by ensuring fast loading of important content."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst productImage = ref('/images/product.jpg')\n<\/script>\n\n<template>\n  <!-- Basic usage -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Product description\"\n  />\n\n  <!-- With lazy loading -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Product\"\n    lazy\n  />\n\n  <!-- With srcset object -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Responsive image\"\n    :srcset=\"{\n      '1x': '/images/product.jpg',\n      '2x': '/images/product@2x.jpg'\n    }\"\n  />\n\n  <!-- With picture for different screen sizes -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Responsive image for different devices\"\n    :picture=\"{\n      768: '/images/product-tablet.jpg',\n      1024: '/images/product-desktop.jpg'\n    }\"\n  />\n\n  <!-- With preload offset configuration -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Image with early preload\"\n    lazy\n    preload-offset=\"2048px\"\n  />\n\n  <!-- With high loading priority -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Main page image\"\n    fetch-priority=\"high\"\n  />\n\n  <!-- Complex example -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Responsive product image\"\n    lazy\n    preload-offset=\"1536px\"\n    fetch-priority=\"low\"\n    :srcset=\"{\n      '1x': '/images/product.jpg',\n      '2x': '/images/product@2x.jpg',\n      '3x': '/images/product@3x.jpg'\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst productImage = ref('/images/product.jpg')\n<\/script>\n\n<template>\n<!-- Basic usage -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Product description\"\n/>\n\n<!-- With lazy loading -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Product\"\n  lazy\n/>\n\n<!-- With srcset object -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Responsive image\"\n  :srcset=\"{\n    '1x': '/images/product.jpg',\n    '2x': '/images/product@2x.jpg'\n  }\"\n/>\n\n<!-- With picture for different screen sizes -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Responsive image for different devices\"\n  :picture=\"{\n    768: '/images/product-tablet.jpg',\n    1024: '/images/product-desktop.jpg'\n  }\"\n/>\n\n<!-- With preload offset configuration -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Image with early preload\"\n  lazy\n  preload-offset=\"2048px\"\n/>\n\n<!-- With high loading priority -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Main page image\"\n  fetch-priority=\"high\"\n/>\n\n<!-- Complex example -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Responsive product image\"\n  lazy\n  preload-offset=\"1536px\"\n  fetch-priority=\"low\"\n  :srcset=\"{\n    '1x': '/images/product.jpg',\n    '2x': '/images/product@2x.jpg',\n    '3x': '/images/product@3x.jpg'\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Js(e = {}) {
@@ -12439,7 +12316,6 @@ function Ys(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12584,10 +12460,10 @@ function Ys(e) {
 			" — браузер самостоятельно определяет приоритет (значение по умолчанию). Правильное использование этого свойства помогает оптимизировать загрузку страницы, обеспечивая быструю загрузку важного контента."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst productImage = ref('/images/product.jpg')\n<\/script>\n\n<template>\n  <!-- Базовое использование -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Описание продукта\"\n  />\n\n  <!-- С ленивой загрузкой -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Товар\"\n    lazy\n  />\n\n  <!-- С srcset объектом -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Адаптивное изображение\"\n    :srcset=\"{\n      '1x': '/images/product.jpg',\n      '2x': '/images/product@2x.jpg'\n    }\"\n  />\n\n  <!-- С picture для разных размеров экрана -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Адаптивное изображение для разных устройств\"\n    :picture=\"{\n      768: '/images/product-tablet.jpg',\n      1024: '/images/product-desktop.jpg'\n    }\"\n  />\n\n  <!-- С настройкой предзагрузки -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Изображение с ранней предзагрузкой\"\n    lazy\n    preload-offset=\"2048px\"\n  />\n\n  <!-- С высоким приоритетом загрузки -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Главное изображение страницы\"\n    fetch-priority=\"high\"\n  />\n\n  <!-- Комплексный пример -->\n  <Image\n    :value=\"productImage\"\n    tag-img\n    alt=\"Адаптивное изображение товара\"\n    lazy\n    preload-offset=\"1536px\"\n    fetch-priority=\"low\"\n    :srcset=\"{\n      '1x': '/images/product.jpg',\n      '2x': '/images/product@2x.jpg',\n      '3x': '/images/product@3x.jpg'\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst productImage = ref('/images/product.jpg')\n<\/script>\n\n<template>\n<!-- Базовое использование -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Описание продукта\"\n/>\n\n<!-- С ленивой загрузкой -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Товар\"\n  lazy\n/>\n\n<!-- С srcset объектом -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Адаптивное изображение\"\n  :srcset=\"{\n    '1x': '/images/product.jpg',\n    '2x': '/images/product@2x.jpg'\n  }\"\n/>\n\n<!-- С picture для разных размеров экрана -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Адаптивное изображение для разных устройств\"\n  :picture=\"{\n    768: '/images/product-tablet.jpg',\n    1024: '/images/product-desktop.jpg'\n  }\"\n/>\n\n<!-- С настройкой предзагрузки -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Изображение с ранней предзагрузкой\"\n  lazy\n  preload-offset=\"2048px\"\n/>\n\n<!-- С высоким приоритетом загрузки -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Главное изображение страницы\"\n  fetch-priority=\"high\"\n/>\n\n<!-- Комплексный пример -->\n<Image\n  :value=\"productImage\"\n  tag-img\n  alt=\"Адаптивное изображение товара\"\n  lazy\n  preload-offset=\"1536px\"\n  fetch-priority=\"low\"\n  :srcset=\"{\n    '1x': '/images/product.jpg',\n    '2x': '/images/product@2x.jpg',\n    '3x': '/images/product@3x.jpg'\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Xs(e = {}) {
@@ -12605,7 +12481,6 @@ function Zs(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12651,10 +12526,10 @@ function Zs(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Standard US flag -->\n  <Image value=\"flag-us\" />\n\n  <!-- Compressed Germany flag -->\n  <Image value=\"f-de\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Standard US flag -->\n<Image value=\"flag-us\" />\n\n<!-- Compressed Germany flag -->\n<Image value=\"f-de\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Qs(e = {}) {
@@ -12672,7 +12547,6 @@ function $s(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12718,10 +12592,10 @@ function $s(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Стандартный флаг США -->\n  <Image value=\"flag-us\" />\n\n  <!-- Сжатый флаг Германии -->\n  <Image value=\"f-de\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Стандартный флаг США -->\n<Image value=\"flag-us\" />\n\n<!-- Сжатый флаг Германии -->\n<Image value=\"f-de\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ec(e = {}) {
@@ -12739,7 +12613,6 @@ function tc(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12803,10 +12676,10 @@ function tc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleLoad = (data) => {\n  console.log('Image type:', data.type)\n\n  if (typeof data.image === 'object' && data.image) {\n    console.log('Width:', data.image.width)\n    console.log('Height:', data.image.height)\n    console.log('URL:', data.image.src)\n  } else {\n    console.log('Image URL:', data.image)\n  }\n}\n<\/script>\n\n<template>\n  <Image\n    src=\"/path/to/image.jpg\"\n    @load=\"handleLoad\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleLoad = (data) => {\nconsole.log('Image type:', data.type)\n\nif (typeof data.image === 'object' && data.image) {\n  console.log('Width:', data.image.width)\n  console.log('Height:', data.image.height)\n  console.log('URL:', data.image.src)\n} else {\n  console.log('Image URL:', data.image)\n}\n}\n<\/script>\n\n<template>\n<Image\n  src=\"/path/to/image.jpg\"\n  @load=\"handleLoad\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function nc(e = {}) {
@@ -12824,7 +12697,6 @@ function rc(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -12888,10 +12760,10 @@ function rc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleLoad = (data) => {\n  console.log('Тип изображения:', data.type)\n\n  if (typeof data.image === 'object' && data.image) {\n    console.log('Ширина:', data.image.width)\n    console.log('Высота:', data.image.height)\n    console.log('URL:', data.image.src)\n  } else {\n    console.log('URL изображения:', data.image)\n  }\n}\n<\/script>\n\n<template>\n  <Image\n    src=\"/path/to/image.jpg\"\n    @load=\"handleLoad\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleLoad = (data) => {\nconsole.log('Тип изображения:', data.type)\n\nif (typeof data.image === 'object' && data.image) {\n  console.log('Ширина:', data.image.width)\n  console.log('Высота:', data.image.height)\n  console.log('URL:', data.image.src)\n} else {\n  console.log('URL изображения:', data.image)\n}\n}\n<\/script>\n\n<template>\n<Image\n  src=\"/path/to/image.jpg\"\n  @load=\"handleLoad\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ic(e = {}) {
@@ -13128,7 +13000,6 @@ function uc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13212,10 +13083,10 @@ function uc(e) {
 			", overriding the default value."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234.56')\n<\/script>\n\n<template>\n  <!-- Standard currency input -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" label=\"Price\" />\n\n  <!-- Currency with Russian locale -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"RUB\" language=\"ru-RU\" label=\"Salary\" />\n\n  <!-- Currency without symbol -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"EUR\" currency-hide language=\"de-DE\" label=\"Amount\" />\n\n  <!-- Currency with three decimals -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" :fraction=\"3\" label=\"Precise Amount\" />\n\n  <!-- Number formatting only -->\n  <Input v-model=\"value\" type=\"number-format\" language=\"ru-RU\" label=\"Number\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234.56')\n<\/script>\n\n<template>\n<!-- Standard currency input -->\n<Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" label=\"Price\" />\n\n<!-- Currency with Russian locale -->\n<Input v-model=\"value\" type=\"currency\" currency=\"RUB\" language=\"ru-RU\" label=\"Salary\" />\n\n<!-- Currency without symbol -->\n<Input v-model=\"value\" type=\"currency\" currency=\"EUR\" currency-hide language=\"de-DE\" label=\"Amount\" />\n\n<!-- Currency with three decimals -->\n<Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" :fraction=\"3\" label=\"Precise Amount\" />\n\n<!-- Number formatting only -->\n<Input v-model=\"value\" type=\"number-format\" language=\"ru-RU\" label=\"Number\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function dc(e = {}) {
@@ -13233,7 +13104,6 @@ function fc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13317,10 +13187,10 @@ function fc(e) {
 			", перезаписав значение по умолчанию."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234.56')\n<\/script>\n\n<template>\n  <!-- Стандартный валютный инпут -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" label=\"Цена\" />\n\n  <!-- Валюта с русской локалью -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"RUB\" language=\"ru-RU\" label=\"Зарплата\" />\n\n  <!-- Валюта без символа -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"EUR\" currency-hide language=\"de-DE\" label=\"Сумма\" />\n\n  <!-- Валюта с тремя знаками -->\n  <Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" :fraction=\"3\" label=\"Точная сумма\" />\n\n  <!-- Только числовое форматирование -->\n  <Input v-model=\"value\" type=\"number-format\" language=\"ru-RU\" label=\"Число\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234.56')\n<\/script>\n\n<template>\n<!-- Стандартный валютный инпут -->\n<Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" label=\"Цена\" />\n\n<!-- Валюта с русской локалью -->\n<Input v-model=\"value\" type=\"currency\" currency=\"RUB\" language=\"ru-RU\" label=\"Зарплата\" />\n\n<!-- Валюта без символа -->\n<Input v-model=\"value\" type=\"currency\" currency=\"EUR\" currency-hide language=\"de-DE\" label=\"Сумма\" />\n\n<!-- Валюта с тремя знаками -->\n<Input v-model=\"value\" type=\"currency\" currency=\"USD\" language=\"en-US\" :fraction=\"3\" label=\"Точная сумма\" />\n\n<!-- Только числовое форматирование -->\n<Input v-model=\"value\" type=\"number-format\" language=\"ru-RU\" label=\"Число\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function pc(e = {}) {
@@ -13338,7 +13208,6 @@ function mc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13414,10 +13283,10 @@ function mc(e) {
 			" property for custom formatting."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst dateValue = ref('2024-03-15')\nconst datetimeValue = ref('2024-03-15T14:30:00')\nconst timeValue = ref('14:30')\nconst yearMonthValue = ref('2024-03')\n<\/script>\n\n<template>\n  <!-- Standard date input -->\n  <Input v-model=\"dateValue\" type=\"date\" language=\"en-US\" label=\"Date\" />\n\n  <!-- Date with Russian locale -->\n  <Input v-model=\"dateValue\" type=\"date\" language=\"ru-RU\" label=\"Дата\" />\n\n  <!-- Date and time -->\n  <Input v-model=\"datetimeValue\" type=\"datetime\" language=\"en-US\" label=\"Date and Time\" />\n\n  <!-- Time only -->\n  <Input v-model=\"timeValue\" type=\"time\" language=\"en-US\" label=\"Time\" />\n\n  <!-- Hours and minutes -->\n  <Input v-model=\"timeValue\" type=\"hour-minute\" language=\"en-US\" label=\"Hours:Minutes\" />\n\n  <!-- Year and month -->\n  <Input v-model=\"yearMonthValue\" type=\"year-month\" language=\"en-US\" label=\"Period\" />\n\n  <!-- Date with constraints -->\n  <Input\n    v-model=\"dateValue\"\n    type=\"date\"\n    language=\"en-US\"\n    min=\"2024-01-01\"\n    max=\"2024-12-31\"\n    label=\"Date in 2024\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst dateValue = ref('2024-03-15')\nconst datetimeValue = ref('2024-03-15T14:30:00')\nconst timeValue = ref('14:30')\nconst yearMonthValue = ref('2024-03')\n<\/script>\n\n<template>\n<!-- Standard date input -->\n<Input v-model=\"dateValue\" type=\"date\" language=\"en-US\" label=\"Date\" />\n\n<!-- Date with Russian locale -->\n<Input v-model=\"dateValue\" type=\"date\" language=\"ru-RU\" label=\"Дата\" />\n\n<!-- Date and time -->\n<Input v-model=\"datetimeValue\" type=\"datetime\" language=\"en-US\" label=\"Date and Time\" />\n\n<!-- Time only -->\n<Input v-model=\"timeValue\" type=\"time\" language=\"en-US\" label=\"Time\" />\n\n<!-- Hours and minutes -->\n<Input v-model=\"timeValue\" type=\"hour-minute\" language=\"en-US\" label=\"Hours:Minutes\" />\n\n<!-- Year and month -->\n<Input v-model=\"yearMonthValue\" type=\"year-month\" language=\"en-US\" label=\"Period\" />\n\n<!-- Date with constraints -->\n<Input\n  v-model=\"dateValue\"\n  type=\"date\"\n  language=\"en-US\"\n  min=\"2024-01-01\"\n  max=\"2024-12-31\"\n  label=\"Date in 2024\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function hc(e = {}) {
@@ -13435,7 +13304,6 @@ function gc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13511,10 +13379,10 @@ function gc(e) {
 			" для кастомного форматирования."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst dateValue = ref('2024-03-15')\nconst datetimeValue = ref('2024-03-15T14:30:00')\nconst timeValue = ref('14:30')\nconst yearMonthValue = ref('2024-03')\n<\/script>\n\n<template>\n  <!-- Стандартный ввод даты -->\n  <Input v-model=\"dateValue\" type=\"date\" language=\"ru-RU\" label=\"Дата\" />\n\n  <!-- Дата с английской локалью -->\n  <Input v-model=\"dateValue\" type=\"date\" language=\"en-US\" label=\"Date\" />\n\n  <!-- Дата и время -->\n  <Input v-model=\"datetimeValue\" type=\"datetime\" language=\"ru-RU\" label=\"Дата и время\" />\n\n  <!-- Только время -->\n  <Input v-model=\"timeValue\" type=\"time\" language=\"ru-RU\" label=\"Время\" />\n\n  <!-- Часы и минуты -->\n  <Input v-model=\"timeValue\" type=\"hour-minute\" language=\"ru-RU\" label=\"Часы:Минуты\" />\n\n  <!-- Год и месяц -->\n  <Input v-model=\"yearMonthValue\" type=\"year-month\" language=\"ru-RU\" label=\"Период\" />\n\n  <!-- Дата с ограничениями -->\n  <Input\n    v-model=\"dateValue\"\n    type=\"date\"\n    language=\"ru-RU\"\n    min=\"2024-01-01\"\n    max=\"2024-12-31\"\n    label=\"Дата в 2024 году\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst dateValue = ref('2024-03-15')\nconst datetimeValue = ref('2024-03-15T14:30:00')\nconst timeValue = ref('14:30')\nconst yearMonthValue = ref('2024-03')\n<\/script>\n\n<template>\n<!-- Стандартный ввод даты -->\n<Input v-model=\"dateValue\" type=\"date\" language=\"ru-RU\" label=\"Дата\" />\n\n<!-- Дата с английской локалью -->\n<Input v-model=\"dateValue\" type=\"date\" language=\"en-US\" label=\"Date\" />\n\n<!-- Дата и время -->\n<Input v-model=\"datetimeValue\" type=\"datetime\" language=\"ru-RU\" label=\"Дата и время\" />\n\n<!-- Только время -->\n<Input v-model=\"timeValue\" type=\"time\" language=\"ru-RU\" label=\"Время\" />\n\n<!-- Часы и минуты -->\n<Input v-model=\"timeValue\" type=\"hour-minute\" language=\"ru-RU\" label=\"Часы:Минуты\" />\n\n<!-- Год и месяц -->\n<Input v-model=\"yearMonthValue\" type=\"year-month\" language=\"ru-RU\" label=\"Период\" />\n\n<!-- Дата с ограничениями -->\n<Input\n  v-model=\"dateValue\"\n  type=\"date\"\n  language=\"ru-RU\"\n  min=\"2024-01-01\"\n  max=\"2024-12-31\"\n  label=\"Дата в 2024 году\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function _c(e = {}) {
@@ -13528,10 +13396,8 @@ function _c(e = {}) {
 //#region src/media/mdx/Input/input.en.mdx
 function vc(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13587,10 +13453,10 @@ function vc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst email = ref('')\nconst password = ref('')\n\nconst handleInput = (event, validation) => {\n  console.log('Input value:', validation.value)\n  console.log('Valid:', validation.status)\n}\n<\/script>\n\n<template>\n  <div class=\"form\">\n    <Input\n      v-model=\"email\"\n      type=\"email\"\n      label=\"Email\"\n      placeholder=\"example@mail.com\"\n      required\n      @input=\"handleInput\"\n    />\n\n    <Input\n      v-model=\"password\"\n      type=\"password\"\n      label=\"Password\"\n      placeholder=\"Enter password\"\n      minlength=\"8\"\n      required\n      iconVisibility=\"visibility\"\n      iconVisibilityOff=\"visibility_off\"\n    />\n\n    <Input\n      type=\"currency\"\n      label=\"Price\"\n      currency=\"USD\"\n      language=\"en-US\"\n    />\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst email = ref('')\nconst password = ref('')\n\nconst handleInput = (event, validation) => {\nconsole.log('Input value:', validation.value)\nconsole.log('Valid:', validation.status)\n}\n<\/script>\n\n<template>\n<div class=\"form\">\n  <Input\n    v-model=\"email\"\n    type=\"email\"\n    label=\"Email\"\n    placeholder=\"example@mail.com\"\n    required\n    @input=\"handleInput\"\n  />\n\n  <Input\n    v-model=\"password\"\n    type=\"password\"\n    label=\"Password\"\n    placeholder=\"Enter password\"\n    minlength=\"8\"\n    required\n    iconVisibility=\"visibility\"\n    iconVisibilityOff=\"visibility_off\"\n  />\n\n  <Input\n    type=\"currency\"\n    label=\"Price\"\n    currency=\"USD\"\n    language=\"en-US\"\n  />\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.p, { children: "Компонент текстового поля ввода с поддержкой валидации, маскирования и форматирования." }),
 		"\n",
@@ -13642,10 +13508,10 @@ function vc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst email = ref('')\nconst password = ref('')\n\nconst handleInput = (event, validation) => {\n  console.log('Введённое значение:', validation.value)\n  console.log('Валидно:', validation.status)\n}\n<\/script>\n\n<template>\n  <div class=\"form\">\n    <Input\n      v-model=\"email\"\n      type=\"email\"\n      label=\"Email\"\n      placeholder=\"example@mail.com\"\n      required\n      @input=\"handleInput\"\n    />\n\n    <Input\n      v-model=\"password\"\n      type=\"password\"\n      label=\"Пароль\"\n      placeholder=\"Введите пароль\"\n      minlength=\"8\"\n      required\n      iconVisibility=\"visibility\"\n      iconVisibilityOff=\"visibility_off\"\n    />\n\n    <Input\n      type=\"currency\"\n      label=\"Цена\"\n      currency=\"RUB\"\n      language=\"ru-RU\"\n    />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst email = ref('')\nconst password = ref('')\n\nconst handleInput = (event, validation) => {\nconsole.log('Введённое значение:', validation.value)\nconsole.log('Валидно:', validation.status)\n}\n<\/script>\n\n<template>\n<div class=\"form\">\n  <Input\n    v-model=\"email\"\n    type=\"email\"\n    label=\"Email\"\n    placeholder=\"example@mail.com\"\n    required\n    @input=\"handleInput\"\n  />\n\n  <Input\n    v-model=\"password\"\n    type=\"password\"\n    label=\"Пароль\"\n    placeholder=\"Введите пароль\"\n    minlength=\"8\"\n    required\n    iconVisibility=\"visibility\"\n    iconVisibilityOff=\"visibility_off\"\n  />\n\n  <Input\n    type=\"currency\"\n    label=\"Цена\"\n    currency=\"RUB\"\n    language=\"ru-RU\"\n  />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function yc(e = {}) {
@@ -13659,10 +13525,8 @@ function yc(e = {}) {
 //#region src/media/mdx/Input/input.ru.mdx
 function bc(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13718,10 +13582,10 @@ function bc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst email = ref('')\nconst password = ref('')\n\nconst handleInput = (event, validation) => {\n  console.log('Введённое значение:', validation.value)\n  console.log('Валидно:', validation.status)\n}\n<\/script>\n\n<template>\n  <div class=\"form\">\n    <Input\n      v-model=\"email\"\n      type=\"email\"\n      label=\"Email\"\n      placeholder=\"example@mail.com\"\n      required\n      @input=\"handleInput\"\n    />\n\n    <Input\n      v-model=\"password\"\n      type=\"password\"\n      label=\"Пароль\"\n      placeholder=\"Введите пароль\"\n      minlength=\"8\"\n      required\n      iconVisibility=\"visibility\"\n      iconVisibilityOff=\"visibility_off\"\n    />\n\n    <Input\n      type=\"currency\"\n      label=\"Цена\"\n      currency=\"RUB\"\n      language=\"ru-RU\"\n    />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst email = ref('')\nconst password = ref('')\n\nconst handleInput = (event, validation) => {\nconsole.log('Введённое значение:', validation.value)\nconsole.log('Валидно:', validation.status)\n}\n<\/script>\n\n<template>\n<div class=\"form\">\n  <Input\n    v-model=\"email\"\n    type=\"email\"\n    label=\"Email\"\n    placeholder=\"example@mail.com\"\n    required\n    @input=\"handleInput\"\n  />\n\n  <Input\n    v-model=\"password\"\n    type=\"password\"\n    label=\"Пароль\"\n    placeholder=\"Введите пароль\"\n    minlength=\"8\"\n    required\n    iconVisibility=\"visibility\"\n    iconVisibilityOff=\"visibility_off\"\n  />\n\n  <Input\n    type=\"currency\"\n    label=\"Цена\"\n    currency=\"RUB\"\n    language=\"ru-RU\"\n  />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function xc(e = {}) {
@@ -13739,7 +13603,6 @@ function Sc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13813,10 +13676,10 @@ function Sc(e) {
 			")."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst value = ref('')\n<\/script>\n\n<template>\n  <!-- US Phone -->\n  <Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" placeholder=\"+1 (555) 000-0000\" label=\"Phone\" />\n\n  <!-- Credit Card -->\n  <Input v-model=\"value\" type=\"text\" mask=\"#### #### #### ####\" placeholder=\"0000 0000 0000 0000\" label=\"Card\" />\n\n  <!-- Without placeholder display -->\n  <Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" :mask-visible=\"false\" label=\"No placeholder\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst value = ref('')\n<\/script>\n\n<template>\n<!-- US Phone -->\n<Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" placeholder=\"+1 (555) 000-0000\" label=\"Phone\" />\n\n<!-- Credit Card -->\n<Input v-model=\"value\" type=\"text\" mask=\"#### #### #### ####\" placeholder=\"0000 0000 0000 0000\" label=\"Card\" />\n\n<!-- Without placeholder display -->\n<Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" :mask-visible=\"false\" label=\"No placeholder\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Cc(e = {}) {
@@ -13834,7 +13697,6 @@ function wc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -13908,10 +13770,10 @@ function wc(e) {
 			")."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst value = ref('')\n<\/script>\n\n<template>\n  <!-- Телефон США -->\n  <Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" placeholder=\"+1 (555) 000-0000\" label=\"Телефон\" />\n\n  <!-- Кредитная карта -->\n  <Input v-model=\"value\" type=\"text\" mask=\"#### #### #### ####\" placeholder=\"0000 0000 0000 0000\" label=\"Карта\" />\n\n  <!-- Без отображения символов-заполнителей -->\n  <Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" :mask-visible=\"false\" label=\"Без заполнителя\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst value = ref('')\n<\/script>\n\n<template>\n<!-- Телефон США -->\n<Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" placeholder=\"+1 (555) 000-0000\" label=\"Телефон\" />\n\n<!-- Кредитная карта -->\n<Input v-model=\"value\" type=\"text\" mask=\"#### #### #### ####\" placeholder=\"0000 0000 0000 0000\" label=\"Карта\" />\n\n<!-- Без отображения символов-заполнителей -->\n<Input v-model=\"value\" type=\"tel\" mask=\"+1 (###) ###-####\" :mask-visible=\"false\" label=\"Без заполнителя\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Tc(e = {}) {
@@ -13929,7 +13791,6 @@ function Ec(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14050,10 +13911,10 @@ function Ec(e) {
 			" controls arrows placement in the input field."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234567.89')\n<\/script>\n\n<template>\n  <!-- Simple numeric input -->\n  <Input v-model=\"value\" type=\"number\" label=\"Number\" />\n\n  <!-- Formatted number with locale -->\n  <Input v-model=\"value\" type=\"number-format\" language=\"en-US\" label=\"Formatted\" />\n\n  <!-- With range constraints -->\n  <Input v-model=\"value\" type=\"number\" :min=\"0\" :max=\"100\" label=\"From 0 to 100\" />\n\n  <!-- With step and stepper arrows -->\n  <Input v-model=\"value\" type=\"number\" arrow=\"stepper\" :step=\"5\" :arrow-step=\"10\" label=\"Step 5/10\" />\n\n  <!-- With center alignment -->\n  <Input v-model=\"value\" type=\"number-format\" align=\"center\" :fraction=\"2\" label=\"Centered\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234567.89')\n<\/script>\n\n<template>\n<!-- Simple numeric input -->\n<Input v-model=\"value\" type=\"number\" label=\"Number\" />\n\n<!-- Formatted number with locale -->\n<Input v-model=\"value\" type=\"number-format\" language=\"en-US\" label=\"Formatted\" />\n\n<!-- With range constraints -->\n<Input v-model=\"value\" type=\"number\" :min=\"0\" :max=\"100\" label=\"From 0 to 100\" />\n\n<!-- With step and stepper arrows -->\n<Input v-model=\"value\" type=\"number\" arrow=\"stepper\" :step=\"5\" :arrow-step=\"10\" label=\"Step 5/10\" />\n\n<!-- With center alignment -->\n<Input v-model=\"value\" type=\"number-format\" align=\"center\" :fraction=\"2\" label=\"Centered\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Dc(e = {}) {
@@ -14071,7 +13932,6 @@ function Oc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14192,10 +14052,10 @@ function Oc(e) {
 			" управляет расположением стрелок в поле ввода."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234567.89')\n<\/script>\n\n<template>\n  <!-- Простой числовой ввод -->\n  <Input v-model=\"value\" type=\"number\" label=\"Число\" />\n\n  <!-- Форматированное число с локалью -->\n  <Input v-model=\"value\" type=\"number-format\" language=\"ru-RU\" label=\"Форматированное\" />\n\n  <!-- С ограничениями диапазона -->\n  <Input v-model=\"value\" type=\"number\" :min=\"0\" :max=\"100\" label=\"От 0 до 100\" />\n\n  <!-- С шагом и стрелками stepper -->\n  <Input v-model=\"value\" type=\"number\" arrow=\"stepper\" :step=\"5\" :arrow-step=\"10\" label=\"Шаг 5/10\" />\n\n  <!-- С выравниванием по центру -->\n  <Input v-model=\"value\" type=\"number-format\" align=\"center\" :fraction=\"2\" label=\"По центру\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nconst value = ref('1234567.89')\n<\/script>\n\n<template>\n<!-- Простой числовой ввод -->\n<Input v-model=\"value\" type=\"number\" label=\"Число\" />\n\n<!-- Форматированное число с локалью -->\n<Input v-model=\"value\" type=\"number-format\" language=\"ru-RU\" label=\"Форматированное\" />\n\n<!-- С ограничениями диапазона -->\n<Input v-model=\"value\" type=\"number\" :min=\"0\" :max=\"100\" label=\"От 0 до 100\" />\n\n<!-- С шагом и стрелками stepper -->\n<Input v-model=\"value\" type=\"number\" arrow=\"stepper\" :step=\"5\" :arrow-step=\"10\" label=\"Шаг 5/10\" />\n\n<!-- С выравниванием по центру -->\n<Input v-model=\"value\" type=\"number-format\" align=\"center\" :fraction=\"2\" label=\"По центру\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function kc(e = {}) {
@@ -14434,10 +14294,8 @@ var Pc = {
 //#region src/media/mdx/List/list.en.mdx
 function Fc(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14491,10 +14349,10 @@ function Fc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['item2'])\nconst focus = ref(null)\n\nconst listData = ref([\n  { label: 'First item', value: 'item1' },\n  { label: 'Second item', value: 'item2' },\n  { type: 'line' },\n  { type: 'subtitle', label: 'Item group' },\n  {\n    label: 'Group with submenu',\n    value: 'group1',\n    type: 'group',\n    list: [\n      { label: 'Nested item 1', value: 'nested1' },\n      { label: 'Nested item 2', value: 'nested2' }\n    ]\n  }\n])\n\nconst handleClick = (event) => {\n  console.log('Item clicked:', event.detail.value)\n}\n<\/script>\n\n<template>\n  <List\n    v-model:selected=\"selected\"\n    v-model:focus=\"focus\"\n    :list=\"listData\"\n    highlight=\"text\"\n    @click=\"handleClick\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['item2'])\nconst focus = ref(null)\n\nconst listData = ref([\n{ label: 'First item', value: 'item1' },\n{ label: 'Second item', value: 'item2' },\n{ type: 'line' },\n{ type: 'subtitle', label: 'Item group' },\n{\n  label: 'Group with submenu',\n  value: 'group1',\n  type: 'group',\n  list: [\n    { label: 'Nested item 1', value: 'nested1' },\n    { label: 'Nested item 2', value: 'nested2' }\n  ]\n}\n])\n\nconst handleClick = (event) => {\nconsole.log('Item clicked:', event.detail.value)\n}\n<\/script>\n\n<template>\n<List\n  v-model:selected=\"selected\"\n  v-model:focus=\"focus\"\n  :list=\"listData\"\n  highlight=\"text\"\n  @click=\"handleClick\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ic(e = {}) {
@@ -14508,10 +14366,8 @@ function Ic(e = {}) {
 //#region src/media/mdx/List/list.ru.mdx
 function Lc(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14565,10 +14421,10 @@ function Lc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['item2'])\nconst focus = ref(null)\n\nconst listData = ref([\n  { label: 'Первый элемент', value: 'item1' },\n  { label: 'Второй элемент', value: 'item2' },\n  { type: 'line' },\n  { type: 'subtitle', label: 'Группа элементов' },\n  {\n    label: 'Группа с подменю',\n    value: 'group1',\n    type: 'group',\n    list: [\n      { label: 'Вложенный элемент 1', value: 'nested1' },\n      { label: 'Вложенный элемент 2', value: 'nested2' }\n    ]\n  }\n])\n\nconst handleClick = (event) => {\n  console.log('Клик по элементу:', event.detail.value)\n}\n<\/script>\n\n<template>\n  <List\n    v-model:selected=\"selected\"\n    v-model:focus=\"focus\"\n    :list=\"listData\"\n    highlight=\"text\"\n    @click=\"handleClick\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref(['item2'])\nconst focus = ref(null)\n\nconst listData = ref([\n{ label: 'Первый элемент', value: 'item1' },\n{ label: 'Второй элемент', value: 'item2' },\n{ type: 'line' },\n{ type: 'subtitle', label: 'Группа элементов' },\n{\n  label: 'Группа с подменю',\n  value: 'group1',\n  type: 'group',\n  list: [\n    { label: 'Вложенный элемент 1', value: 'nested1' },\n    { label: 'Вложенный элемент 2', value: 'nested2' }\n  ]\n}\n])\n\nconst handleClick = (event) => {\nconsole.log('Клик по элементу:', event.detail.value)\n}\n<\/script>\n\n<template>\n<List\n  v-model:selected=\"selected\"\n  v-model:focus=\"focus\"\n  :list=\"listData\"\n  highlight=\"text\"\n  @click=\"handleClick\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Rc(e = {}) {
@@ -14586,7 +14442,6 @@ function zc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14624,10 +14479,10 @@ function zc(e) {
 			" for working with dynamic data of variable size."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Automatic mode switching -->\n<List :list=\"items\" :lite=\"true\" :liteThreshold=\"50\" />\n\n<!-- Always full mode -->\n<List :list=\"items\" :lite=\"false\" />\n\n<!-- Lightweight mode for large catalogs -->\n<List :list=\"products\" :lite=\"true\" :liteThreshold=\"100\" />\n\n<!-- Custom threshold for mobile devices -->\n<List :list=\"data\" :lite=\"true\" :liteThreshold=\"30\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Automatic mode switching -->\n<List :list=\"items\" :lite=\"true\" :liteThreshold=\"50\" />\n\n<!-- Always full mode -->\n<List :list=\"items\" :lite=\"false\" />\n\n<!-- Lightweight mode for large catalogs -->\n<List :list=\"products\" :lite=\"true\" :liteThreshold=\"100\" />\n\n<!-- Custom threshold for mobile devices -->\n<List :list=\"data\" :lite=\"true\" :liteThreshold=\"30\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Bc(e = {}) {
@@ -14645,7 +14500,6 @@ function Vc(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14683,10 +14537,10 @@ function Vc(e) {
 			" для работы с динамическими данными переменного размера."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Автоматическое переключение режима -->\n<List :list=\"items\" :lite=\"true\" :liteThreshold=\"50\" />\n\n<!-- Всегда полный режим -->\n<List :list=\"items\" :lite=\"false\" />\n\n<!-- Облегченный режим для больших каталогов -->\n<List :list=\"products\" :lite=\"true\" :liteThreshold=\"100\" />\n\n<!-- Пользовательский порог для мобильных устройств -->\n<List :list=\"data\" :lite=\"true\" :liteThreshold=\"30\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Автоматическое переключение режима -->\n<List :list=\"items\" :lite=\"true\" :liteThreshold=\"50\" />\n\n<!-- Всегда полный режим -->\n<List :list=\"items\" :lite=\"false\" />\n\n<!-- Облегченный режим для больших каталогов -->\n<List :list=\"products\" :lite=\"true\" :liteThreshold=\"100\" />\n\n<!-- Пользовательский порог для мобильных устройств -->\n<List :list=\"data\" :lite=\"true\" :liteThreshold=\"30\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Hc(e = {}) {
@@ -14875,10 +14729,8 @@ var Zc = {
 //#region src/media/mdx/ListGroup/listGroup.en.mdx
 function Qc(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14924,10 +14776,10 @@ function Qc(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst items = [\n  { text: 'Item 1', value: '1' },\n  { text: 'Item 2', value: '2' },\n  { text: 'Item 3', value: '3' }\n]\n\nconst isOpen = ref(true)\n<\/script>\n\n<template>\n  <List>\n    <ListGroup v-model:open=\"isOpen\">\n      <template #head=\"{ open }\">\n        <div class=\"group-header\">\n          <span>{{ open ? '▼' : '▶' }}</span>\n          <span>Group Items</span>\n        </div>\n      </template>\n\n      <template #list>\n        <ListItem\n          v-for=\"item in items\"\n          :key=\"item.value\"\n          :text=\"item.text\"\n        />\n      </template>\n    </ListGroup>\n  </List>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst items = [\n{ text: 'Item 1', value: '1' },\n{ text: 'Item 2', value: '2' },\n{ text: 'Item 3', value: '3' }\n]\n\nconst isOpen = ref(true)\n<\/script>\n\n<template>\n<List>\n  <ListGroup v-model:open=\"isOpen\">\n    <template #head=\"{ open }\">\n      <div class=\"group-header\">\n        <span>{{ open ? '▼' : '▶' }}</span>\n        <span>Group Items</span>\n      </div>\n    </template>\n\n    <template #list>\n      <ListItem\n        v-for=\"item in items\"\n        :key=\"item.value\"\n        :text=\"item.text\"\n      />\n    </template>\n  </ListGroup>\n</List>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function $c(e = {}) {
@@ -14941,10 +14793,8 @@ function $c(e = {}) {
 //#region src/media/mdx/ListGroup/listGroup.ru.mdx
 function el(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -14990,10 +14840,10 @@ function el(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst items = [\n  { text: 'Элемент 1', value: '1' },\n  { text: 'Элемент 2', value: '2' },\n  { text: 'Элемент 3', value: '3' }\n]\n\nconst isOpen = ref(true)\n<\/script>\n\n<template>\n  <List>\n    <ListGroup v-model:open=\"isOpen\">\n      <template #head=\"{ open }\">\n        <div class=\"group-header\">\n          <span>{{ open ? '▼' : '▶' }}</span>\n          <span>Группа элементов</span>\n        </div>\n      </template>\n\n      <template #list>\n        <ListItem\n          v-for=\"item in items\"\n          :key=\"item.value\"\n          :text=\"item.text\"\n        />\n      </template>\n    </ListGroup>\n  </List>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst items = [\n{ text: 'Элемент 1', value: '1' },\n{ text: 'Элемент 2', value: '2' },\n{ text: 'Элемент 3', value: '3' }\n]\n\nconst isOpen = ref(true)\n<\/script>\n\n<template>\n<List>\n  <ListGroup v-model:open=\"isOpen\">\n    <template #head=\"{ open }\">\n      <div class=\"group-header\">\n        <span>{{ open ? '▼' : '▶' }}</span>\n        <span>Группа элементов</span>\n      </div>\n    </template>\n\n    <template #list>\n      <ListItem\n        v-for=\"item in items\"\n        :key=\"item.value\"\n        :text=\"item.text\"\n      />\n    </template>\n  </ListGroup>\n</List>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function tl(e = {}) {
@@ -15070,10 +14920,8 @@ var ol = {
 //#region src/media/mdx/ListItem/basic.en.mdx
 function sl(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15121,10 +14969,10 @@ function sl(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n  { text: 'List item 1', value: '1', selected: false },\n  { text: 'List item 2', value: '2', selected: true },\n  { text: 'List item 3', value: '3', selected: false }\n])\n\nconst handleClick = (item) => {\n  item.selected = !item.selected\n  console.log('Item selected:', item.text)\n}\n<\/script>\n\n<template>\n  <List>\n    <ListItem\n      v-for=\"item in items\"\n      :key=\"item.value\"\n      :text=\"item.text\"\n      :selected=\"item.selected\"\n      @click=\"handleClick(item)\"\n    >\n      <template #prefix>\n        <Icon name=\"check\" v-if=\"item.selected\" />\n      </template>\n    </ListItem>\n  </List>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n{ text: 'List item 1', value: '1', selected: false },\n{ text: 'List item 2', value: '2', selected: true },\n{ text: 'List item 3', value: '3', selected: false }\n])\n\nconst handleClick = (item) => {\nitem.selected = !item.selected\nconsole.log('Item selected:', item.text)\n}\n<\/script>\n\n<template>\n<List>\n  <ListItem\n    v-for=\"item in items\"\n    :key=\"item.value\"\n    :text=\"item.text\"\n    :selected=\"item.selected\"\n    @click=\"handleClick(item)\"\n  >\n    <template #prefix>\n      <Icon name=\"check\" v-if=\"item.selected\" />\n    </template>\n  </ListItem>\n</List>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function cl(e = {}) {
@@ -15138,10 +14986,8 @@ function cl(e = {}) {
 //#region src/media/mdx/ListItem/basic.ru.mdx
 function ll(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15189,10 +15035,10 @@ function ll(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n  { text: 'Элемент списка 1', value: '1', selected: false },\n  { text: 'Элемент списка 2', value: '2', selected: true },\n  { text: 'Элемент списка 3', value: '3', selected: false }\n])\n\nconst handleClick = (item) => {\n  item.selected = !item.selected\n  console.log('Элемент выбран:', item.text)\n}\n<\/script>\n\n<template>\n  <List>\n    <ListItem\n      v-for=\"item in items\"\n      :key=\"item.value\"\n      :text=\"item.text\"\n      :selected=\"item.selected\"\n      @click=\"handleClick(item)\"\n    >\n      <template #prefix>\n        <Icon name=\"check\" v-if=\"item.selected\" />\n      </template>\n    </ListItem>\n  </List>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst items = ref([\n{ text: 'Элемент списка 1', value: '1', selected: false },\n{ text: 'Элемент списка 2', value: '2', selected: true },\n{ text: 'Элемент списка 3', value: '3', selected: false }\n])\n\nconst handleClick = (item) => {\nitem.selected = !item.selected\nconsole.log('Элемент выбран:', item.text)\n}\n<\/script>\n\n<template>\n<List>\n  <ListItem\n    v-for=\"item in items\"\n    :key=\"item.value\"\n    :text=\"item.text\"\n    :selected=\"item.selected\"\n    @click=\"handleClick(item)\"\n  >\n    <template #prefix>\n      <Icon name=\"check\" v-if=\"item.selected\" />\n    </template>\n  </ListItem>\n</List>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ul(e = {}) {
@@ -15210,7 +15056,6 @@ function dl(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15273,10 +15118,10 @@ function dl(e) {
 		"\n",
 		a(t.p, { children: "Accepts any standard CSS color format. The property provides a flexible way to customize the visual presentation of list items, allowing you to create color schemes and highlight important elements. The value is applied as background-color to the component's root element." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Red background -->\n<ListItem fill=\"#FF0000\" text=\"Item with red background\" />\n\n<!-- Semi-transparent blue -->\n<ListItem fill=\"rgba(52, 152, 219, 0.3)\" text=\"Semi-transparent item\" />\n\n<!-- Named color -->\n<ListItem fill=\"lightblue\" text=\"Light blue item\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Red background -->\n<ListItem fill=\"#FF0000\" text=\"Item with red background\" />\n\n<!-- Semi-transparent blue -->\n<ListItem fill=\"rgba(52, 152, 219, 0.3)\" text=\"Semi-transparent item\" />\n\n<!-- Named color -->\n<ListItem fill=\"lightblue\" text=\"Light blue item\" />\n",
+			language: "html"
+		})
 	] });
 }
 function fl(e = {}) {
@@ -15294,7 +15139,6 @@ function pl(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15357,10 +15201,10 @@ function pl(e) {
 		"\n",
 		a(t.p, { children: "Принимает любой стандартный CSS-формат цвета. Свойство предоставляет гибкий способ настройки визуального представления элементов списка, позволяя создавать цветовые схемы и выделять важные элементы. Значение применяется как background-color к корневому элементу компонента." }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Красный фон -->\n<ListItem fill=\"#FF0000\" text=\"Элемент с красным фоном\" />\n\n<!-- Полупрозрачный синий -->\n<ListItem fill=\"rgba(52, 152, 219, 0.3)\" text=\"Полупрозрачный элемент\" />\n\n<!-- Именованный цвет -->\n<ListItem fill=\"lightblue\" text=\"Светло-голубой элемент\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Красный фон -->\n<ListItem fill=\"#FF0000\" text=\"Элемент с красным фоном\" />\n\n<!-- Полупрозрачный синий -->\n<ListItem fill=\"rgba(52, 152, 219, 0.3)\" text=\"Полупрозрачный элемент\" />\n\n<!-- Именованный цвет -->\n<ListItem fill=\"lightblue\" text=\"Светло-голубой элемент\" />\n",
+			language: "html"
+		})
 	] });
 }
 function ml(e = {}) {
@@ -15441,10 +15285,8 @@ var yl = {
 //#region src/media/mdx/ListMenu/listMenu.en.mdx
 function bl(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15490,10 +15332,10 @@ function bl(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst menuItems = ref([\n  {\n    text: 'Home',\n    value: 'home'\n  },\n  {\n    text: 'Products',\n    value: 'products',\n    sublist: [\n      { text: 'Category 1', value: 'cat1' },\n      { text: 'Category 2', value: 'cat2' }\n    ]\n  },\n  {\n    text: 'About',\n    value: 'about'\n  }\n])\n<\/script>\n\n<template>\n  <List :items=\"menuItems\">\n    <template #item=\"{ item }\">\n      <ListMenu\n        v-if=\"item.sublist\"\n        :items=\"item.sublist\"\n        :axis=\"'y'\"\n      >\n        <template #default>\n          {{ item.text }}\n        </template>\n      </ListMenu>\n      <div v-else>{{ item.text }}</div>\n    </template>\n  </List>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst menuItems = ref([\n{\n  text: 'Home',\n  value: 'home'\n},\n{\n  text: 'Products',\n  value: 'products',\n  sublist: [\n    { text: 'Category 1', value: 'cat1' },\n    { text: 'Category 2', value: 'cat2' }\n  ]\n},\n{\n  text: 'About',\n  value: 'about'\n}\n])\n<\/script>\n\n<template>\n<List :items=\"menuItems\">\n  <template #item=\"{ item }\">\n    <ListMenu\n      v-if=\"item.sublist\"\n      :items=\"item.sublist\"\n      :axis=\"'y'\"\n    >\n      <template #default>\n        {{ item.text }}\n      </template>\n    </ListMenu>\n    <div v-else>{{ item.text }}</div>\n  </template>\n</List>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function xl(e = {}) {
@@ -15507,10 +15349,8 @@ function xl(e = {}) {
 //#region src/media/mdx/ListMenu/listMenu.ru.mdx
 function Sl(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15556,10 +15396,10 @@ function Sl(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst menuItems = ref([\n  {\n    text: 'Главная',\n    value: 'home'\n  },\n  {\n    text: 'Продукты',\n    value: 'products',\n    sublist: [\n      { text: 'Категория 1', value: 'cat1' },\n      { text: 'Категория 2', value: 'cat2' }\n    ]\n  },\n  {\n    text: 'О нас',\n    value: 'about'\n  }\n])\n<\/script>\n\n<template>\n  <List :items=\"menuItems\">\n    <template #item=\"{ item }\">\n      <ListMenu\n        v-if=\"item.sublist\"\n        :items=\"item.sublist\"\n        :axis=\"'y'\"\n      >\n        <template #default>\n          {{ item.text }}\n        </template>\n      </ListMenu>\n      <div v-else>{{ item.text }}</div>\n    </template>\n  </List>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst menuItems = ref([\n{\n  text: 'Главная',\n  value: 'home'\n},\n{\n  text: 'Продукты',\n  value: 'products',\n  sublist: [\n    { text: 'Категория 1', value: 'cat1' },\n    { text: 'Категория 2', value: 'cat2' }\n  ]\n},\n{\n  text: 'О нас',\n  value: 'about'\n}\n])\n<\/script>\n\n<template>\n<List :items=\"menuItems\">\n  <template #item=\"{ item }\">\n    <ListMenu\n      v-if=\"item.sublist\"\n      :items=\"item.sublist\"\n      :axis=\"'y'\"\n    >\n      <template #default>\n        {{ item.text }}\n      </template>\n    </ListMenu>\n    <div v-else>{{ item.text }}</div>\n  </template>\n</List>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Cl(e = {}) {
@@ -15585,7 +15425,6 @@ function Tl(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15652,10 +15491,10 @@ function Tl(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\nconst date = ref('')\nconst amount = ref('')\n\nconst handleInput = (value) => {\n  console.log('Entered value:', value)\n}\n<\/script>\n\n<template>\n  <!-- Russian phone -->\n  <Mask\n    v-model=\"phone\"\n    mask=\"+7 *** *** ** **\"\n    placeholder=\"Enter phone number\"\n    @input=\"handleInput\"\n  />\n\n  <!-- Bank card -->\n  <Mask\n    v-model=\"cardNumber\"\n    mask=\"**** **** **** ****\"\n    placeholder=\"0000 0000 0000 0000\"\n  />\n\n  <!-- Multiple phone formats -->\n  <Mask\n    v-model=\"phone\"\n    :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\"\n  />\n\n  <!-- Date with built-in type -->\n  <Mask\n    v-model=\"date\"\n    type=\"date\"\n    pattern=\"DD.MM.YYYY\"\n  />\n\n  <!-- Currency -->\n  <Mask\n    v-model=\"amount\"\n    type=\"currency\"\n    currency=\"RUB\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\nconst date = ref('')\nconst amount = ref('')\n\nconst handleInput = (value) => {\nconsole.log('Entered value:', value)\n}\n<\/script>\n\n<template>\n<!-- Russian phone -->\n<Mask\n  v-model=\"phone\"\n  mask=\"+7 *** *** ** **\"\n  placeholder=\"Enter phone number\"\n  @input=\"handleInput\"\n/>\n\n<!-- Bank card -->\n<Mask\n  v-model=\"cardNumber\"\n  mask=\"**** **** **** ****\"\n  placeholder=\"0000 0000 0000 0000\"\n/>\n\n<!-- Multiple phone formats -->\n<Mask\n  v-model=\"phone\"\n  :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\"\n/>\n\n<!-- Date with built-in type -->\n<Mask\n  v-model=\"date\"\n  type=\"date\"\n  pattern=\"DD.MM.YYYY\"\n/>\n\n<!-- Currency -->\n<Mask\n  v-model=\"amount\"\n  type=\"currency\"\n  currency=\"RUB\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function El(e = {}) {
@@ -15672,7 +15511,6 @@ function Dl(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -15735,10 +15573,10 @@ function Dl(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\nconst date = ref('')\nconst amount = ref('')\n\nconst handleInput = (value) => {\n  console.log('Введено значение:', value)\n}\n<\/script>\n\n<template>\n  <!-- Российский телефон -->\n  <Mask\n    v-model=\"phone\"\n    mask=\"+7 *** *** ** **\"\n    placeholder=\"Введите номер телефона\"\n    @input=\"handleInput\"\n  />\n\n  <!-- Банковская карта -->\n  <Mask\n    v-model=\"cardNumber\"\n    mask=\"**** **** **** ****\"\n    placeholder=\"0000 0000 0000 0000\"\n  />\n\n  <!-- Множественные форматы телефонов -->\n  <Mask\n    v-model=\"phone\"\n    :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\"\n  />\n\n  <!-- Дата с встроенным типом -->\n  <Mask\n    v-model=\"date\"\n    type=\"date\"\n    pattern=\"DD.MM.YYYY\"\n  />\n\n  <!-- Валюта -->\n  <Mask\n    v-model=\"amount\"\n    type=\"currency\"\n    currency=\"RUB\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\nconst date = ref('')\nconst amount = ref('')\n\nconst handleInput = (value) => {\nconsole.log('Введено значение:', value)\n}\n<\/script>\n\n<template>\n<!-- Российский телефон -->\n<Mask\n  v-model=\"phone\"\n  mask=\"+7 *** *** ** **\"\n  placeholder=\"Введите номер телефона\"\n  @input=\"handleInput\"\n/>\n\n<!-- Банковская карта -->\n<Mask\n  v-model=\"cardNumber\"\n  mask=\"**** **** **** ****\"\n  placeholder=\"0000 0000 0000 0000\"\n/>\n\n<!-- Множественные форматы телефонов -->\n<Mask\n  v-model=\"phone\"\n  :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\"\n/>\n\n<!-- Дата с встроенным типом -->\n<Mask\n  v-model=\"date\"\n  type=\"date\"\n  pattern=\"DD.MM.YYYY\"\n/>\n\n<!-- Валюта -->\n<Mask\n  v-model=\"amount\"\n  type=\"currency\"\n  currency=\"RUB\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Ol(e = {}) {
@@ -15757,7 +15595,6 @@ function kl(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		ul: "ul",
 		...e.components
 	};
@@ -15838,10 +15675,10 @@ function kl(e) {
 		"\n",
 		a(t.h3, { children: "Examples" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- US date format -->\n<Mask type=\"date\" language=\"en-US\" />\n\n<!-- Full date and time -->\n<Mask type=\"datetime\" language=\"en-US\" />\n\n<!-- Russian date format -->\n<Mask type=\"date\" language=\"ru\" />\n\n<!-- Time only -->\n<Mask type=\"time\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- US date format -->\n<Mask type=\"date\" language=\"en-US\" />\n\n<!-- Full date and time -->\n<Mask type=\"datetime\" language=\"en-US\" />\n\n<!-- Russian date format -->\n<Mask type=\"date\" language=\"ru\" />\n\n<!-- Time only -->\n<Mask type=\"time\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Al(e = {}) {
@@ -15860,7 +15697,6 @@ function jl(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		ul: "ul",
 		...e.components
 	};
@@ -15941,10 +15777,10 @@ function jl(e) {
 		"\n",
 		a(t.h3, { children: "Примеры" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Русский формат даты -->\n<Mask type=\"date\" language=\"ru\" />\n\n<!-- Полная дата и время -->\n<Mask type=\"datetime\" language=\"ru\" />\n\n<!-- Английский формат даты -->\n<Mask type=\"date\" language=\"en-US\" />\n\n<!-- Только время -->\n<Mask type=\"time\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Русский формат даты -->\n<Mask type=\"date\" language=\"ru\" />\n\n<!-- Полная дата и время -->\n<Mask type=\"datetime\" language=\"ru\" />\n\n<!-- Английский формат даты -->\n<Mask type=\"date\" language=\"en-US\" />\n\n<!-- Только время -->\n<Mask type=\"time\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Ml(e = {}) {
@@ -16024,7 +15860,6 @@ function Ll(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16056,10 +15891,10 @@ function Ll(e) {
 			", characters are deleted completely, which can lead to \"collapsing\" of groups and loss of structure. Only works for fixed (non-rubber) groups of special characters."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Preserve group structure (default) -->\n<Mask\n  mask=\"***-###\"\n  :special=\"['*', '#']\"\n  groupSave\n/>\n\n<!-- Without structure preservation -->\n<Mask\n  mask=\"***-###\"\n  :special=\"['*', '#']\"\n  :groupSave=\"false\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Preserve group structure (default) -->\n<Mask\nmask=\"***-###\"\n:special=\"['*', '#']\"\ngroupSave\n/>\n\n<!-- Without structure preservation -->\n<Mask\nmask=\"***-###\"\n:special=\"['*', '#']\"\n:groupSave=\"false\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Rl(e = {}) {
@@ -16077,7 +15912,6 @@ function zl(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16109,10 +15943,10 @@ function zl(e) {
 			" символы удаляются полностью, что может привести к \"схлопыванию\" групп и потере структуры. Работает только для фиксированных (не резиновых) групп специальных символов."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Сохранение структуры групп (по умолчанию) -->\n<Mask\n  mask=\"***-###\"\n  :special=\"['*', '#']\"\n  groupSave\n/>\n\n<!-- Без сохранения структуры -->\n<Mask\n  mask=\"***-###\"\n  :special=\"['*', '#']\"\n  :groupSave=\"false\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Сохранение структуры групп (по умолчанию) -->\n<Mask\nmask=\"***-###\"\n:special=\"['*', '#']\"\ngroupSave\n/>\n\n<!-- Без сохранения структуры -->\n<Mask\nmask=\"***-###\"\n:special=\"['*', '#']\"\n:groupSave=\"false\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Bl(e = {}) {
@@ -16130,7 +15964,6 @@ function Vl(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16170,10 +16003,10 @@ function Vl(e) {
 			"), masks are generated automatically based on regional settings."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Russian phone -->\n<Mask mask=\"+7 *** *** ** **\" />\n\n<!-- Bank card -->\n<Mask mask=\"**** **** **** ****\" />\n\n<!-- Multiple formats -->\n<Mask :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Russian phone -->\n<Mask mask=\"+7 *** *** ** **\" />\n\n<!-- Bank card -->\n<Mask mask=\"**** **** **** ****\" />\n\n<!-- Multiple formats -->\n<Mask :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Hl(e = {}) {
@@ -16191,7 +16024,6 @@ function Ul(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16231,10 +16063,10 @@ function Ul(e) {
 			") маски генерируются автоматически на основе региональных настроек."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Российский телефон -->\n<Mask mask=\"+7 *** *** ** **\" />\n\n<!-- Банковская карта -->\n<Mask mask=\"**** **** **** ****\" />\n\n<!-- Множественные форматы -->\n<Mask :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Российский телефон -->\n<Mask mask=\"+7 *** *** ** **\" />\n\n<!-- Банковская карта -->\n<Mask mask=\"**** **** **** ****\" />\n\n<!-- Множественные форматы -->\n<Mask :mask=\"['+7 *** *** ** **', '8 *** *** ** **']\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Wl(e = {}) {
@@ -16252,7 +16084,6 @@ function Gl(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16295,10 +16126,10 @@ function Gl(e) {
 			" can be a function with access to mask state."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Digits only (default) -->\n<Mask mask=\"***-***\" />\n\n<!-- HEX characters -->\n<Mask mask=\"***-***\" :match=\"/[A-F0-9]/i\" />\n\n<!-- Different rules for groups -->\n<Mask\n  mask=\"***-###\"\n  match=\"\\\\d\"\n  :special=\"{\n    '*': {},\n    '#': { match: /[A-Z]/ }\n  }\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Digits only (default) -->\n<Mask mask=\"***-***\" />\n\n<!-- HEX characters -->\n<Mask mask=\"***-***\" :match=\"/[A-F0-9]/i\" />\n\n<!-- Different rules for groups -->\n<Mask\nmask=\"***-###\"\nmatch=\"\\d\"\n:special=\"{\n  '*': {},\n  '#': { match: /[A-Z]/ }\n}\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Kl(e = {}) {
@@ -16316,7 +16147,6 @@ function ql(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16359,10 +16189,10 @@ function ql(e) {
 			" может быть функцией с доступом к состоянию маски."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Только цифры (по умолчанию) -->\n<Mask mask=\"***-***\" />\n\n<!-- HEX-символы -->\n<Mask mask=\"***-***\" :match=\"/[A-F0-9]/i\" />\n\n<!-- Разные правила для групп -->\n<Mask\n  mask=\"***-###\"\n  match=\"\\\\d\"\n  :special=\"{\n    '*': {},\n    '#': { match: /[A-Z]/ }\n  }\"\n/>\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Только цифры (по умолчанию) -->\n<Mask mask=\"***-***\" />\n\n<!-- HEX-символы -->\n<Mask mask=\"***-***\" :match=\"/[A-F0-9]/i\" />\n\n<!-- Разные правила для групп -->\n<Mask\nmask=\"***-###\"\nmatch=\"\\d\"\n:special=\"{\n  '*': {},\n  '#': { match: /[A-Z]/ }\n}\"\n/>\n",
+			language: "html"
+		})
 	] });
 }
 function Jl(e = {}) {
@@ -16381,7 +16211,6 @@ function Yl(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		ul: "ul",
 		...e.components
 	};
@@ -16473,10 +16302,10 @@ function Yl(e) {
 		"\n",
 		a(t.h3, { children: "Examples" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Formatted number -->\n<Mask type=\"number-format\" language=\"en-US\" :fraction=\"2\" />\n\n<!-- Currency -->\n<Mask type=\"currency\" currency=\"USD\" language=\"en-US\" />\n\n<!-- Currency without symbol -->\n<Mask type=\"currency\" currency=\"USD\" :currencyHide=\"true\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Formatted number -->\n<Mask type=\"number-format\" language=\"en-US\" :fraction=\"2\" />\n\n<!-- Currency -->\n<Mask type=\"currency\" currency=\"USD\" language=\"en-US\" />\n\n<!-- Currency without symbol -->\n<Mask type=\"currency\" currency=\"USD\" :currencyHide=\"true\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Xl(e = {}) {
@@ -16495,7 +16324,6 @@ function Zl(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		ul: "ul",
 		...e.components
 	};
@@ -16587,10 +16415,10 @@ function Zl(e) {
 		"\n",
 		a(t.h3, { children: "Примеры" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Форматированное число -->\n<Mask type=\"number-format\" language=\"ru\" :fraction=\"2\" />\n\n<!-- Валюта -->\n<Mask type=\"currency\" currency=\"RUB\" language=\"ru\" />\n\n<!-- Валюта без символа -->\n<Mask type=\"currency\" currency=\"USD\" :currencyHide=\"true\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Форматированное число -->\n<Mask type=\"number-format\" language=\"ru\" :fraction=\"2\" />\n\n<!-- Валюта -->\n<Mask type=\"currency\" currency=\"RUB\" language=\"ru\" />\n\n<!-- Валюта без символа -->\n<Mask type=\"currency\" currency=\"USD\" :currencyHide=\"true\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Ql(e = {}) {
@@ -16608,7 +16436,6 @@ function $l(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16642,10 +16469,10 @@ function $l(e) {
 			" performs final validation of the entire value, providing an additional layer of verification for complex business logic. Both properties are optional and can be used independently or together for multi-level protection against incorrect data."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\n<\/script>\n\n<template>\n  <!-- Pattern for groups: digits only -->\n  <Mask\n    v-model=\"phone\"\n    mask=\"+7 (***) ***-**-**\"\n    pattern=\"\\\\d\"\n  />\n\n  <!-- Pattern with function for different groups -->\n  <Mask\n    v-model=\"phone\"\n    mask=\"DD/MM/YYYY\"\n    :special=\"{\n      'D': {\n        pattern: (masks) => {\n          const value = masks['D']?.value || ''\n          if (value === '0') return '[1-9]'\n          if (value === '3') return '[0-1]'\n          return '\\\\d'\n        }\n      },\n      'M': {\n        pattern: (masks) => {\n          const value = masks['M']?.value || ''\n          if (value === '0') return '[1-9]'\n          if (value === '1') return '[0-2]'\n          return '\\\\d'\n        }\n      },\n      'Y': { pattern: '\\\\d' }\n    }\"\n  />\n\n  <!-- Check for final validation -->\n  <Mask\n    v-model=\"cardNumber\"\n    mask=\"**** **** **** ****\"\n    pattern=\"\\\\d\"\n    :check=\"(maskData) => {\n      const number = maskData.value.replace(/\\s/g, '')\n      return isValidLuhn(number) ? {} : {\n        validationMessage: 'Invalid card number'\n      }\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\n<\/script>\n\n<template>\n<!-- Pattern for groups: digits only -->\n<Mask\n  v-model=\"phone\"\n  mask=\"+7 (***) ***-**-**\"\n  pattern=\"\\d\"\n/>\n\n<!-- Pattern with function for different groups -->\n<Mask\n  v-model=\"phone\"\n  mask=\"DD/MM/YYYY\"\n  :special=\"{\n    'D': {\n      pattern: (masks) => {\n        const value = masks['D']?.value || ''\n        if (value === '0') return '[1-9]'\n        if (value === '3') return '[0-1]'\n        return '\\d'\n      }\n    },\n    'M': {\n      pattern: (masks) => {\n        const value = masks['M']?.value || ''\n        if (value === '0') return '[1-9]'\n        if (value === '1') return '[0-2]'\n        return '\\d'\n      }\n    },\n    'Y': { pattern: '\\d' }\n  }\"\n/>\n\n<!-- Check for final validation -->\n<Mask\n  v-model=\"cardNumber\"\n  mask=\"**** **** **** ****\"\n  pattern=\"\\d\"\n  :check=\"(maskData) => {\n    const number = maskData.value.replace(/s/g, '')\n    return isValidLuhn(number) ? {} : {\n      validationMessage: 'Invalid card number'\n    }\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function eu(e = {}) {
@@ -16663,7 +16490,6 @@ function tu(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16697,10 +16523,10 @@ function tu(e) {
 			" выполняет финальную валидацию всего значения, обеспечивая дополнительный слой проверки для сложной бизнес-логики. Оба свойства опциональны и могут использоваться независимо или совместно для многоуровневой защиты от некорректных данных."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\n<\/script>\n\n<template>\n  <!-- Pattern для групп: только цифры -->\n  <Mask\n    v-model=\"phone\"\n    mask=\"+7 (***) ***-**-**\"\n    pattern=\"\\\\d\"\n  />\n\n  <!-- Pattern с функцией для разных групп -->\n  <Mask\n    v-model=\"phone\"\n    mask=\"DD/MM/YYYY\"\n    :special=\"{\n      'D': {\n        pattern: (masks) => {\n          const value = masks['D']?.value || ''\n          if (value === '0') return '[1-9]'\n          if (value === '3') return '[0-1]'\n          return '\\\\d'\n        }\n      },\n      'M': {\n        pattern: (masks) => {\n          const value = masks['M']?.value || ''\n          if (value === '0') return '[1-9]'\n          if (value === '1') return '[0-2]'\n          return '\\\\d'\n        }\n      },\n      'Y': { pattern: '\\\\d' }\n    }\"\n  />\n\n  <!-- Check для финальной валидации -->\n  <Mask\n    v-model=\"cardNumber\"\n    mask=\"**** **** **** ****\"\n    pattern=\"\\\\d\"\n    :check=\"(maskData) => {\n      const number = maskData.value.replace(/\\s/g, '')\n      return isValidLuhn(number) ? {} : {\n        validationMessage: 'Неверный номер карты'\n      }\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst phone = ref('')\nconst cardNumber = ref('')\n<\/script>\n\n<template>\n<!-- Pattern для групп: только цифры -->\n<Mask\n  v-model=\"phone\"\n  mask=\"+7 (***) ***-**-**\"\n  pattern=\"\\d\"\n/>\n\n<!-- Pattern с функцией для разных групп -->\n<Mask\n  v-model=\"phone\"\n  mask=\"DD/MM/YYYY\"\n  :special=\"{\n    'D': {\n      pattern: (masks) => {\n        const value = masks['D']?.value || ''\n        if (value === '0') return '[1-9]'\n        if (value === '3') return '[0-1]'\n        return '\\d'\n      }\n    },\n    'M': {\n      pattern: (masks) => {\n        const value = masks['M']?.value || ''\n        if (value === '0') return '[1-9]'\n        if (value === '1') return '[0-2]'\n        return '\\d'\n      }\n    },\n    'Y': { pattern: '\\d' }\n  }\"\n/>\n\n<!-- Check для финальной валидации -->\n<Mask\n  v-model=\"cardNumber\"\n  mask=\"**** **** **** ****\"\n  pattern=\"\\d\"\n  :check=\"(maskData) => {\n    const number = maskData.value.replace(/s/g, '')\n    return isValidLuhn(number) ? {} : {\n      validationMessage: 'Неверный номер карты'\n    }\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function nu(e = {}) {
@@ -16722,7 +16548,6 @@ function ru(e) {
 		li: "li",
 		ol: "ol",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -16792,10 +16617,10 @@ function ru(e) {
 			" value."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Simple special character -->\n<Mask mask=\"***-***\" special=\"*\" />\n\n<!-- Multiple group types -->\n<Mask mask=\"AA*-###\" :special=\"['A', '*', '#']\" />\n\n<!-- Extended configuration -->\n<Mask\n  mask=\"***-***\"\n  :special=\"{\n    '*': {\n      pattern: '\\\\d',\n      view: '_',\n      rubber: true,\n      minLength: 2,\n      maxLength: 8,\n      transitionChar: ' '\n    }\n  }\"\n/>\n\n<!-- Groups with default values -->\n<Mask\n  mask=\"DD/MM/YYYY\"\n  :special=\"{\n    'D': { defaultValue: '01', pattern: '\\\\d' },\n    'M': { defaultValue: '01', pattern: '\\\\d' },\n    'Y': { defaultValue: '2024', pattern: '\\\\d' }\n  }\"\n/>\n"
-		}) }),
+		a(s, {
+			code: "\n<!-- Simple special character -->\n<Mask mask=\"***-***\" special=\"*\" />\n\n<!-- Multiple group types -->\n<Mask mask=\"AA*-###\" :special=\"['A', '*', '#']\" />\n\n<!-- Extended configuration -->\n<Mask\nmask=\"***-***\"\n:special=\"{\n  '*': {\n    pattern: '\\d',\n    view: '_',\n    rubber: true,\n    minLength: 2,\n    maxLength: 8,\n    transitionChar: ' '\n  }\n}\"\n/>\n\n<!-- Groups with default values -->\n<Mask\nmask=\"DD/MM/YYYY\"\n:special=\"{\n  'D': { defaultValue: '01', pattern: '\\d' },\n  'M': { defaultValue: '01', pattern: '\\d' },\n  'Y': { defaultValue: '2024', pattern: '\\d' }\n}\"\n/>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h2, { children: "MaskSpecialList" }),
 		"\n",
@@ -16941,10 +16766,10 @@ function ru(e) {
 		"\n",
 		a(t.h3, { children: "Example" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst value = ref('')\n<\/script>\n\n<template>\n  <!-- Example of a rubber mask for an IP address -->\n  <Mask\n    v-model=\"value\"\n    mask=\"*.#.#.#\"\n    :special=\"{\n      '*': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\\\d{1,3}' },\n      '#': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\\\d{1,3}' }\n    }\"\n  />\n\n  <!-- Example of a mask with different group types and default values -->\n  <Mask\n    mask=\"AAA-****\"\n    :special=\"{\n      'A': { match: /[A-Z]/, view: 'A' },\n      '*': { defaultValue: '0000', match: /[0-9]/, view: '0' }\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst value = ref('')\n<\/script>\n\n<template>\n<!-- Example of a rubber mask for an IP address -->\n<Mask\n  v-model=\"value\"\n  mask=\"*.#.#.#\"\n  :special=\"{\n    '*': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\d{1,3}' },\n    '#': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\d{1,3}' }\n  }\"\n/>\n\n<!-- Example of a mask with different group types and default values -->\n<Mask\n  mask=\"AAA-****\"\n  :special=\"{\n    'A': { match: /[A-Z]/, view: 'A' },\n    '*': { defaultValue: '0000', match: /[0-9]/, view: '0' }\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function iu(e = {}) {
@@ -16966,7 +16791,6 @@ function au(e) {
 		li: "li",
 		ol: "ol",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17036,10 +16860,10 @@ function au(e) {
 			"."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Простой специальный символ -->\n<Mask mask=\"***-***\" special=\"*\" />\n\n<!-- Несколько типов групп -->\n<Mask mask=\"AA*-###\" :special=\"['A', '*', '#']\" />\n\n<!-- Расширенная конфигурация -->\n<Mask\n  mask=\"***-***\"\n  :special=\"{\n    '*': {\n      pattern: '\\\\d',\n      view: '_',\n      rubber: true,\n      minLength: 2,\n      maxLength: 8,\n      transitionChar: ' '\n    }\n  }\"\n/>\n\n<!-- Группы с значениями по умолчанию -->\n<Mask\n  mask=\"DD/MM/YYYY\"\n  :special=\"{\n    'D': { defaultValue: '01', pattern: '\\\\d' },\n    'M': { defaultValue: '01', pattern: '\\\\d' },\n    'Y': { defaultValue: '2024', pattern: '\\\\d' }\n  }\"\n/>\n"
-		}) }),
+		a(s, {
+			code: "\n<!-- Простой специальный символ -->\n<Mask mask=\"***-***\" special=\"*\" />\n\n<!-- Несколько типов групп -->\n<Mask mask=\"AA*-###\" :special=\"['A', '*', '#']\" />\n\n<!-- Расширенная конфигурация -->\n<Mask\nmask=\"***-***\"\n:special=\"{\n  '*': {\n    pattern: '\\d',\n    view: '_',\n    rubber: true,\n    minLength: 2,\n    maxLength: 8,\n    transitionChar: ' '\n  }\n}\"\n/>\n\n<!-- Группы с значениями по умолчанию -->\n<Mask\nmask=\"DD/MM/YYYY\"\n:special=\"{\n  'D': { defaultValue: '01', pattern: '\\d' },\n  'M': { defaultValue: '01', pattern: '\\d' },\n  'Y': { defaultValue: '2024', pattern: '\\d' }\n}\"\n/>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h2, { children: "MaskSpecialList" }),
 		"\n",
@@ -17185,10 +17009,10 @@ function au(e) {
 		"\n",
 		a(t.h3, { children: "Пример" }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst value = ref('')\n<\/script>\n\n<template>\n  <!-- Пример резиновой маски для IP-адреса -->\n  <Mask\n    v-model=\"value\"\n    mask=\"*.#.#.#\"\n    :special=\"{\n      '*': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\\\d{1,3}' },\n      '#': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\\\d{1,3}' }\n    }\"\n  />\n\n  <!-- Пример маски с разными типами групп и значениями по умолчанию -->\n  <Mask\n    mask=\"AAA-****\"\n    :special=\"{\n      'A': { match: /[A-Z]/, view: 'A' },\n      '*': { defaultValue: '0000', match: /[0-9]/, view: '0' }\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst value = ref('')\n<\/script>\n\n<template>\n<!-- Пример резиновой маски для IP-адреса -->\n<Mask\n  v-model=\"value\"\n  mask=\"*.#.#.#\"\n  :special=\"{\n    '*': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\d{1,3}' },\n    '#': { rubber: true, maxLength: 3, transitionChar: '.', pattern: '\\d{1,3}' }\n  }\"\n/>\n\n<!-- Пример маски с разными типами групп и значениями по умолчанию -->\n<Mask\n  mask=\"AAA-****\"\n  :special=\"{\n    'A': { match: /[A-Z]/, view: 'A' },\n    '*': { defaultValue: '0000', match: /[0-9]/, view: '0' }\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ou(e = {}) {
@@ -17206,7 +17030,6 @@ function su(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17272,10 +17095,10 @@ function su(e) {
 			"."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Text mask -->\n<Mask mask=\"+1 (***) ***-****\" type=\"text\" />\n\n<!-- Currency mask -->\n<Mask type=\"currency\" currency=\"USD\" language=\"en-US\" />\n\n<!-- Date mask -->\n<Mask type=\"date\" language=\"en-US\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Text mask -->\n<Mask mask=\"+1 (***) ***-****\" type=\"text\" />\n\n<!-- Currency mask -->\n<Mask type=\"currency\" currency=\"USD\" language=\"en-US\" />\n\n<!-- Date mask -->\n<Mask type=\"date\" language=\"en-US\" />\n",
+			language: "html"
+		})
 	] });
 }
 function cu(e = {}) {
@@ -17293,7 +17116,6 @@ function lu(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17359,10 +17181,10 @@ function lu(e) {
 			"."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Текстовая маска -->\n<Mask mask=\"+7 (***) ***-**-**\" type=\"text\" />\n\n<!-- Валютная маска -->\n<Mask type=\"currency\" currency=\"RUB\" language=\"ru\" />\n\n<!-- Маска даты -->\n<Mask type=\"date\" language=\"ru\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Текстовая маска -->\n<Mask mask=\"+7 (***) ***-**-**\" type=\"text\" />\n\n<!-- Валютная маска -->\n<Mask type=\"currency\" currency=\"RUB\" language=\"ru\" />\n\n<!-- Маска даты -->\n<Mask type=\"date\" language=\"ru\" />\n",
+			language: "html"
+		})
 	] });
 }
 function uu(e = {}) {
@@ -17380,7 +17202,6 @@ function du(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17420,10 +17241,10 @@ function du(e) {
 			" property is ignored. Visibility changes don't affect validation logic and data processing, allowing creation of adaptive interfaces with conditional or abbreviated mask display."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showMask = ref(true)\nconst compactMode = ref(false)\n<\/script>\n\n<template>\n  <!-- Complete mask hiding -->\n  <Mask\n    mask=\"+1 (***) ***-****\"\n    :visible=\"false\"\n  />\n\n  <!-- Show only filled positions -->\n  <Mask\n    mask=\"+1 (***) ***-****\"\n    :visiblePartly=\"true\"\n  />\n\n  <!-- Conditional display with partial visibility -->\n  <Mask\n    mask=\"+1 (***) ***-****\"\n    :visible=\"showMask\"\n    :visiblePartly=\"compactMode\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showMask = ref(true)\nconst compactMode = ref(false)\n<\/script>\n\n<template>\n<!-- Complete mask hiding -->\n<Mask\n  mask=\"+1 (***) ***-****\"\n  :visible=\"false\"\n/>\n\n<!-- Show only filled positions -->\n<Mask\n  mask=\"+1 (***) ***-****\"\n  :visiblePartly=\"true\"\n/>\n\n<!-- Conditional display with partial visibility -->\n<Mask\n  mask=\"+1 (***) ***-****\"\n  :visible=\"showMask\"\n  :visiblePartly=\"compactMode\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function fu(e = {}) {
@@ -17441,7 +17262,6 @@ function pu(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17481,10 +17301,10 @@ function pu(e) {
 			" игнорируется. Изменение видимости не влияет на логику валидации и обработку данных, позволяя создавать адаптивные интерфейсы с условным или сокращённым отображением маски."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst showMask = ref(true)\nconst compactMode = ref(false)\n<\/script>\n\n<template>\n  <!-- Полное скрытие маски -->\n  <Mask\n    mask=\"+7 (***) ***-**-**\"\n    :visible=\"false\"\n  />\n\n  <!-- Показ только заполненных позиций -->\n  <Mask\n    mask=\"+7 (***) ***-**-**\"\n    :visiblePartly=\"true\"\n  />\n\n  <!-- Условное отображение с частичной видимостью -->\n  <Mask\n    mask=\"+7 (***) ***-**-**\"\n    :visible=\"showMask\"\n    :visiblePartly=\"compactMode\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst showMask = ref(true)\nconst compactMode = ref(false)\n<\/script>\n\n<template>\n<!-- Полное скрытие маски -->\n<Mask\n  mask=\"+7 (***) ***-**-**\"\n  :visible=\"false\"\n/>\n\n<!-- Показ только заполненных позиций -->\n<Mask\n  mask=\"+7 (***) ***-**-**\"\n  :visiblePartly=\"true\"\n/>\n\n<!-- Условное отображение с частичной видимостью -->\n<Mask\n  mask=\"+7 (***) ***-**-**\"\n  :visible=\"showMask\"\n  :visiblePartly=\"compactMode\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function mu(e = {}) {
@@ -17553,7 +17373,6 @@ function gu(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17606,10 +17425,10 @@ function gu(e) {
 			" is enabled, repeated menu openings use saved data instead of new requests, reducing server load."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <!-- Loading with URL -->\n  <Menu\n    v-model:open=\"isOpen\"\n    ajax=\"/api/menu-items\"\n    :cache=\"true\"\n  />\n\n  <!-- With request settings -->\n  <Menu\n    v-model:open=\"isOpen\"\n    ajax=\"/api/menu\"\n    :request=\"{\n      method: 'POST',\n      headers: { 'X-Custom': 'value' },\n      auth: true\n    }\"\n    :cache=\"true\"\n  />\n\n  <!-- Loading function -->\n  <Menu\n    v-model:open=\"isOpen\"\n    :ajax=\"async () => {\n      const response = await fetch('/api/menu')\n      return response.json()\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<!-- Loading with URL -->\n<Menu\n  v-model:open=\"isOpen\"\n  ajax=\"/api/menu-items\"\n  :cache=\"true\"\n/>\n\n<!-- With request settings -->\n<Menu\n  v-model:open=\"isOpen\"\n  ajax=\"/api/menu\"\n  :request=\"{\n    method: 'POST',\n    headers: { 'X-Custom': 'value' },\n    auth: true\n  }\"\n  :cache=\"true\"\n/>\n\n<!-- Loading function -->\n<Menu\n  v-model:open=\"isOpen\"\n  :ajax=\"async () => {\n    const response = await fetch('/api/menu')\n    return response.json()\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function _u(e = {}) {
@@ -17627,7 +17446,6 @@ function vu(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17680,10 +17498,10 @@ function vu(e) {
 			" повторные открытия меню используют сохранённые данные вместо новых запросов, снижая нагрузку на сервер."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <!-- Загрузка с URL -->\n  <Menu\n    v-model:open=\"isOpen\"\n    ajax=\"/api/menu-items\"\n    :cache=\"true\"\n  />\n\n  <!-- С настройками запроса -->\n  <Menu\n    v-model:open=\"isOpen\"\n    ajax=\"/api/menu\"\n    :request=\"{\n      method: 'POST',\n      headers: { 'X-Custom': 'value' },\n      auth: true\n    }\"\n    :cache=\"true\"\n  />\n\n  <!-- Функция загрузки -->\n  <Menu\n    v-model:open=\"isOpen\"\n    :ajax=\"async () => {\n      const response = await fetch('/api/menu')\n      return response.json()\n    }\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<!-- Загрузка с URL -->\n<Menu\n  v-model:open=\"isOpen\"\n  ajax=\"/api/menu-items\"\n  :cache=\"true\"\n/>\n\n<!-- С настройками запроса -->\n<Menu\n  v-model:open=\"isOpen\"\n  ajax=\"/api/menu\"\n  :request=\"{\n    method: 'POST',\n    headers: { 'X-Custom': 'value' },\n    auth: true\n  }\"\n  :cache=\"true\"\n/>\n\n<!-- Функция загрузки -->\n<Menu\n  v-model:open=\"isOpen\"\n  :ajax=\"async () => {\n    const response = await fetch('/api/menu')\n    return response.json()\n  }\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function yu(e = {}) {
@@ -17701,7 +17519,6 @@ function bu(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17719,10 +17536,10 @@ function bu(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleUpdateValue = (value) => {\n  console.log('New value:', value)\n  console.log('Value type:', typeof value)\n}\n<\/script>\n\n<template>\n  <Menu\n    :isSelectedByValue=\"true\"\n    @updateValue=\"handleUpdateValue\"\n  >\n    <template #default>\n      <MenuItem value=\"item1\">Menu Item 1</MenuItem>\n      <MenuItem value=\"item2\">Menu Item 2</MenuItem>\n      <MenuItem value=\"item3\">Menu Item 3</MenuItem>\n    </template>\n  </Menu>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleUpdateValue = (value) => {\nconsole.log('New value:', value)\nconsole.log('Value type:', typeof value)\n}\n<\/script>\n\n<template>\n<Menu\n  :isSelectedByValue=\"true\"\n  @updateValue=\"handleUpdateValue\"\n>\n  <template #default>\n    <MenuItem value=\"item1\">Menu Item 1</MenuItem>\n    <MenuItem value=\"item2\">Menu Item 2</MenuItem>\n    <MenuItem value=\"item3\">Menu Item 3</MenuItem>\n  </template>\n</Menu>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function xu(e = {}) {
@@ -17740,7 +17557,6 @@ function Su(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17758,10 +17574,10 @@ function Su(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleUpdateValue = (value) => {\n  console.log('Новое значение:', value)\n  console.log('Тип значения:', typeof value)\n}\n<\/script>\n\n<template>\n  <Menu\n    :isSelectedByValue=\"true\"\n    @updateValue=\"handleUpdateValue\"\n  >\n    <template #default>\n      <MenuItem value=\"item1\">Пункт меню 1</MenuItem>\n      <MenuItem value=\"item2\">Пункт меню 2</MenuItem>\n      <MenuItem value=\"item3\">Пункт меню 3</MenuItem>\n    </template>\n  </Menu>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleUpdateValue = (value) => {\nconsole.log('Новое значение:', value)\nconsole.log('Тип значения:', typeof value)\n}\n<\/script>\n\n<template>\n<Menu\n  :isSelectedByValue=\"true\"\n  @updateValue=\"handleUpdateValue\"\n>\n  <template #default>\n    <MenuItem value=\"item1\">Пункт меню 1</MenuItem>\n    <MenuItem value=\"item2\">Пункт меню 2</MenuItem>\n    <MenuItem value=\"item3\">Пункт меню 3</MenuItem>\n  </template>\n</Menu>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Cu(e = {}) {
@@ -17843,10 +17659,8 @@ function Du(e = {}) {
 //#region src/media/mdx/Menu/menu.en.mdx
 function Ou(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17896,10 +17710,10 @@ function Ou(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst menuItems = ref([\n  { label: 'Create', value: 'create', icon: 'add' },\n  { label: 'Edit', value: 'edit', icon: 'edit' },\n  { label: 'Delete', value: 'delete', icon: 'delete' },\n  {\n    label: 'Export',\n    value: 'export',\n    children: [\n      { label: 'PDF', value: 'pdf' },\n      { label: 'Excel', value: 'excel' },\n      { label: 'CSV', value: 'csv' }\n    ]\n  }\n])\n\nconst handleClick = (value) => {\n  console.log('Selected item:', value)\n  isOpen.value = false\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Open menu</button>\n\n  <Menu\n    v-model:open=\"isOpen\"\n    :list=\"menuItems\"\n    @click=\"handleClick\"\n  >\n    <template #control=\"{ onclick }\">\n      <button @click=\"onclick\">Actions</button>\n    </template>\n  </Menu>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst menuItems = ref([\n{ label: 'Create', value: 'create', icon: 'add' },\n{ label: 'Edit', value: 'edit', icon: 'edit' },\n{ label: 'Delete', value: 'delete', icon: 'delete' },\n{\n  label: 'Export',\n  value: 'export',\n  children: [\n    { label: 'PDF', value: 'pdf' },\n    { label: 'Excel', value: 'excel' },\n    { label: 'CSV', value: 'csv' }\n  ]\n}\n])\n\nconst handleClick = (value) => {\nconsole.log('Selected item:', value)\nisOpen.value = false\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Open menu</button>\n\n<Menu\n  v-model:open=\"isOpen\"\n  :list=\"menuItems\"\n  @click=\"handleClick\"\n>\n  <template #control=\"{ onclick }\">\n    <button @click=\"onclick\">Actions</button>\n  </template>\n</Menu>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ku(e = {}) {
@@ -17913,10 +17727,8 @@ function ku(e = {}) {
 //#region src/media/mdx/Menu/menu.ru.mdx
 function Au(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -17966,10 +17778,10 @@ function Au(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst menuItems = ref([\n  { label: 'Создать', value: 'create', icon: 'add' },\n  { label: 'Редактировать', value: 'edit', icon: 'edit' },\n  { label: 'Удалить', value: 'delete', icon: 'delete' },\n  {\n    label: 'Экспорт',\n    value: 'export',\n    children: [\n      { label: 'PDF', value: 'pdf' },\n      { label: 'Excel', value: 'excel' },\n      { label: 'CSV', value: 'csv' }\n    ]\n  }\n])\n\nconst handleClick = (value) => {\n  console.log('Выбран пункт:', value)\n  isOpen.value = false\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Открыть меню</button>\n\n  <Menu\n    v-model:open=\"isOpen\"\n    :list=\"menuItems\"\n    @click=\"handleClick\"\n  >\n    <template #control=\"{ onclick }\">\n      <button @click=\"onclick\">Действия</button>\n    </template>\n  </Menu>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\nconst menuItems = ref([\n{ label: 'Создать', value: 'create', icon: 'add' },\n{ label: 'Редактировать', value: 'edit', icon: 'edit' },\n{ label: 'Удалить', value: 'delete', icon: 'delete' },\n{\n  label: 'Экспорт',\n  value: 'export',\n  children: [\n    { label: 'PDF', value: 'pdf' },\n    { label: 'Excel', value: 'excel' },\n    { label: 'CSV', value: 'csv' }\n  ]\n}\n])\n\nconst handleClick = (value) => {\nconsole.log('Выбран пункт:', value)\nisOpen.value = false\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Открыть меню</button>\n\n<Menu\n  v-model:open=\"isOpen\"\n  :list=\"menuItems\"\n  @click=\"handleClick\"\n>\n  <template #control=\"{ onclick }\">\n    <button @click=\"onclick\">Действия</button>\n  </template>\n</Menu>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ju(e = {}) {
@@ -17987,7 +17799,6 @@ function Mu(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -18037,10 +17848,10 @@ function Mu(e) {
 			" automatically calculates the new position relative to the currently selected item. If no item is selected, the methods select the first available item. When reaching list boundaries (first or last item), navigation stops at the boundary item, preventing overflow beyond the list."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst menuRef = ref()\nconst selected = ref('item2')\n<\/script>\n\n<template>\n  <!-- Call via ref -->\n  <button @click=\"menuRef?.previous()\">Previous</button>\n  <button @click=\"menuRef?.next()\">Next</button>\n\n  <Menu\n    ref=\"menuRef\"\n    v-model:selected=\"selected\"\n    :list=\"[\n      { label: 'Item 1', value: 'item1' },\n      { label: 'Item 2', value: 'item2' },\n      { label: 'Item 3', value: 'item3' }\n    ]\"\n    :step=\"1\"\n  />\n\n  <!-- Navigation in control slot -->\n  <Menu v-model:selected=\"selected\" :list=\"items\">\n    <template #control=\"{ previous, next, selectedNames }\">\n      <button @click=\"previous\">◀</button>\n      <span>{{ selectedNames[0] }}</span>\n      <button @click=\"next\">▶</button>\n    </template>\n  </Menu>\n\n  <!-- With custom step -->\n  <Menu\n    ref=\"menuRef\"\n    v-model:selected=\"selected\"\n    :list=\"items\"\n    :step=\"2\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst menuRef = ref()\nconst selected = ref('item2')\n<\/script>\n\n<template>\n<!-- Call via ref -->\n<button @click=\"menuRef?.previous()\">Previous</button>\n<button @click=\"menuRef?.next()\">Next</button>\n\n<Menu\n  ref=\"menuRef\"\n  v-model:selected=\"selected\"\n  :list=\"[\n    { label: 'Item 1', value: 'item1' },\n    { label: 'Item 2', value: 'item2' },\n    { label: 'Item 3', value: 'item3' }\n  ]\"\n  :step=\"1\"\n/>\n\n<!-- Navigation in control slot -->\n<Menu v-model:selected=\"selected\" :list=\"items\">\n  <template #control=\"{ previous, next, selectedNames }\">\n    <button @click=\"previous\">◀</button>\n    <span>{{ selectedNames[0] }}</span>\n    <button @click=\"next\">▶</button>\n  </template>\n</Menu>\n\n<!-- With custom step -->\n<Menu\n  ref=\"menuRef\"\n  v-model:selected=\"selected\"\n  :list=\"items\"\n  :step=\"2\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Nu(e = {}) {
@@ -18058,7 +17869,6 @@ function Pu(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -18108,10 +17918,10 @@ function Pu(e) {
 			" происходит автоматический расчёт новой позиции относительно текущего выделенного элемента. Если элемент не выбран, методы выбирают первый доступный элемент. При достижении границ списка (первый или последний элемент) навигация останавливается на граничном элементе, предотвращая выход за пределы списка."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst menuRef = ref()\nconst selected = ref('item2')\n<\/script>\n\n<template>\n  <!-- Вызов через ref -->\n  <button @click=\"menuRef?.previous()\">Назад</button>\n  <button @click=\"menuRef?.next()\">Вперед</button>\n\n  <Menu\n    ref=\"menuRef\"\n    v-model:selected=\"selected\"\n    :list=\"[\n      { label: 'Элемент 1', value: 'item1' },\n      { label: 'Элемент 2', value: 'item2' },\n      { label: 'Элемент 3', value: 'item3' }\n    ]\"\n    :step=\"1\"\n  />\n\n  <!-- Навигация в слоте control -->\n  <Menu v-model:selected=\"selected\" :list=\"items\">\n    <template #control=\"{ previous, next, selectedNames }\">\n      <button @click=\"previous\">◀</button>\n      <span>{{ selectedNames[0] }}</span>\n      <button @click=\"next\">▶</button>\n    </template>\n  </Menu>\n\n  <!-- С пользовательским шагом -->\n  <Menu\n    ref=\"menuRef\"\n    v-model:selected=\"selected\"\n    :list=\"items\"\n    :step=\"2\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst menuRef = ref()\nconst selected = ref('item2')\n<\/script>\n\n<template>\n<!-- Вызов через ref -->\n<button @click=\"menuRef?.previous()\">Назад</button>\n<button @click=\"menuRef?.next()\">Вперед</button>\n\n<Menu\n  ref=\"menuRef\"\n  v-model:selected=\"selected\"\n  :list=\"[\n    { label: 'Элемент 1', value: 'item1' },\n    { label: 'Элемент 2', value: 'item2' },\n    { label: 'Элемент 3', value: 'item3' }\n  ]\"\n  :step=\"1\"\n/>\n\n<!-- Навигация в слоте control -->\n<Menu v-model:selected=\"selected\" :list=\"items\">\n  <template #control=\"{ previous, next, selectedNames }\">\n    <button @click=\"previous\">◀</button>\n    <span>{{ selectedNames[0] }}</span>\n    <button @click=\"next\">▶</button>\n  </template>\n</Menu>\n\n<!-- С пользовательским шагом -->\n<Menu\n  ref=\"menuRef\"\n  v-model:selected=\"selected\"\n  :list=\"items\"\n  :step=\"2\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Fu(e = {}) {
@@ -18814,7 +18624,6 @@ function Yu(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -18874,10 +18683,10 @@ function Yu(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isModalOpen = ref(false)\n\nconst handleBeforeClosing = async () => {\n  // Check before closing\n  return confirm('Close modal window?')\n}\n<\/script>\n\n<template>\n  <button @click=\"isModalOpen = true\">Open Modal</button>\n\n  <Modal\n    v-model:open=\"isModalOpen\"\n    :beforeClosing=\"handleBeforeClosing\"\n    closeButton\n  >\n    <template #title>\n      <h2>Confirm Action</h2>\n    </template>\n\n    <template #default>\n      <p>Are you sure you want to perform this action?</p>\n      <p>This action cannot be undone.</p>\n    </template>\n\n    <template #footer=\"{ classesModal }\">\n      <button :class=\"classesModal.close\">Cancel</button>\n      <button @click=\"performAction\">Confirm</button>\n    </template>\n  </Modal>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isModalOpen = ref(false)\n\nconst handleBeforeClosing = async () => {\n// Check before closing\nreturn confirm('Close modal window?')\n}\n<\/script>\n\n<template>\n<button @click=\"isModalOpen = true\">Open Modal</button>\n\n<Modal\n  v-model:open=\"isModalOpen\"\n  :beforeClosing=\"handleBeforeClosing\"\n  closeButton\n>\n  <template #title>\n    <h2>Confirm Action</h2>\n  </template>\n\n  <template #default>\n    <p>Are you sure you want to perform this action?</p>\n    <p>This action cannot be undone.</p>\n  </template>\n\n  <template #footer=\"{ classesModal }\">\n    <button :class=\"classesModal.close\">Cancel</button>\n    <button @click=\"performAction\">Confirm</button>\n  </template>\n</Modal>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Xu(e = {}) {
@@ -18894,7 +18703,6 @@ function Zu(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -18954,10 +18762,10 @@ function Zu(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isModalOpen = ref(false)\n\nconst handleBeforeClosing = async () => {\n  // Проверка перед закрытием\n  return confirm('Закрыть модальное окно?')\n}\n<\/script>\n\n<template>\n  <button @click=\"isModalOpen = true\">Открыть модальное окно</button>\n\n  <Modal\n    v-model:open=\"isModalOpen\"\n    :beforeClosing=\"handleBeforeClosing\"\n    closeButton\n  >\n    <template #title>\n      <h2>Подтверждение действия</h2>\n    </template>\n\n    <template #default>\n      <p>Вы уверены, что хотите выполнить это действие?</p>\n      <p>Это действие нельзя будет отменить.</p>\n    </template>\n\n    <template #footer=\"{ classesModal }\">\n      <button :class=\"classesModal.close\">Отмена</button>\n      <button @click=\"performAction\">Подтвердить</button>\n    </template>\n  </Modal>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isModalOpen = ref(false)\n\nconst handleBeforeClosing = async () => {\n// Проверка перед закрытием\nreturn confirm('Закрыть модальное окно?')\n}\n<\/script>\n\n<template>\n<button @click=\"isModalOpen = true\">Открыть модальное окно</button>\n\n<Modal\n  v-model:open=\"isModalOpen\"\n  :beforeClosing=\"handleBeforeClosing\"\n  closeButton\n>\n  <template #title>\n    <h2>Подтверждение действия</h2>\n  </template>\n\n  <template #default>\n    <p>Вы уверены, что хотите выполнить это действие?</p>\n    <p>Это действие нельзя будет отменить.</p>\n  </template>\n\n  <template #footer=\"{ classesModal }\">\n    <button :class=\"classesModal.close\">Отмена</button>\n    <button @click=\"performAction\">Подтвердить</button>\n  </template>\n</Modal>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Qu(e = {}) {
@@ -18992,7 +18800,6 @@ function ed(e) {
 		li: "li",
 		ol: "ol",
 		p: "p",
-		pre: "pre",
 		...e.components
 	};
 	return o(i, { children: [
@@ -19024,10 +18831,10 @@ function ed(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<div class=\"d1-tabs__scroll\">\n  <Tabs ... />\n</div>\n"
-		}) }),
+		a(s, {
+			code: "\n<div class=\"d1-tabs__scroll\">\n<Tabs ... />\n</div>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.p, { children: [
 			"During the animation, the component will automatically add the ",
@@ -19055,7 +18862,6 @@ function nd(e) {
 		li: "li",
 		ol: "ol",
 		p: "p",
-		pre: "pre",
 		...e.components
 	};
 	return o(i, { children: [
@@ -19087,10 +18893,10 @@ function nd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<div class=\"d1-tabs__scroll\">\n  <Tabs ... />\n</div>\n"
-		}) }),
+		a(s, {
+			code: "\n<div class=\"d1-tabs__scroll\">\n<Tabs ... />\n</div>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.p, { children: [
 			"Во время анимации компонент автоматически добавит класс ",
@@ -19116,7 +18922,6 @@ function id(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19174,10 +18979,10 @@ function id(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleStart = (selected) => {\n  console.log('Animation started to slide:', selected)\n}\n\nconst handleEnd = (selected) => {\n  console.log('Animation ended on slide:', selected)\n}\n\nconst handleMotionAxis = (options) => {\n  console.log('MotionAxis event:', options)\n}\n<\/script>\n\n<template>\n  <MotionAxis\n    @start=\"handleStart\"\n    @end=\"handleEnd\"\n    @motionAxis=\"handleMotionAxis\"\n  >\n    <!-- Slides -->\n  </MotionAxis>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleStart = (selected) => {\nconsole.log('Animation started to slide:', selected)\n}\n\nconst handleEnd = (selected) => {\nconsole.log('Animation ended on slide:', selected)\n}\n\nconst handleMotionAxis = (options) => {\nconsole.log('MotionAxis event:', options)\n}\n<\/script>\n\n<template>\n<MotionAxis\n  @start=\"handleStart\"\n  @end=\"handleEnd\"\n  @motionAxis=\"handleMotionAxis\"\n>\n  <!-- Slides -->\n</MotionAxis>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ad(e = {}) {
@@ -19195,7 +19000,6 @@ function od(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19253,10 +19057,10 @@ function od(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleStart = (selected) => {\n  console.log('Начало анимации к слайду:', selected)\n}\n\nconst handleEnd = (selected) => {\n  console.log('Завершение анимации на слайде:', selected)\n}\n\nconst handleMotionAxis = (options) => {\n  console.log('Событие MotionAxis:', options)\n}\n<\/script>\n\n<template>\n  <MotionAxis\n    @start=\"handleStart\"\n    @end=\"handleEnd\"\n    @motionAxis=\"handleMotionAxis\"\n  >\n    <!-- Слайды -->\n  </MotionAxis>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleStart = (selected) => {\nconsole.log('Начало анимации к слайду:', selected)\n}\n\nconst handleEnd = (selected) => {\nconsole.log('Завершение анимации на слайде:', selected)\n}\n\nconst handleMotionAxis = (options) => {\nconsole.log('Событие MotionAxis:', options)\n}\n<\/script>\n\n<template>\n<MotionAxis\n  @start=\"handleStart\"\n  @end=\"handleEnd\"\n  @motionAxis=\"handleMotionAxis\"\n>\n  <!-- Слайды -->\n</MotionAxis>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function sd(e = {}) {
@@ -19346,10 +19150,8 @@ function dd(e = {}) {
 //#region src/media/mdx/MotionAxis/motionAxis.en.mdx
 function fd(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19391,10 +19193,10 @@ function fd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n  <div class=\"buttons\">\n    <button @click=\"selected = 'slide1'\">Slide 1</button>\n    <button @click=\"selected = 'slide2'\">Slide 2</button>\n  </div>\n\n  <MotionAxis :selected=\"selected\">\n    <template #slide1>\n      <div class=\"slide\">Slide 1 Content</div>\n    </template>\n    <template #slide2>\n      <div class=\"slide\">Slide 2 Content</div>\n    </template>\n  </MotionAxis>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n<div class=\"buttons\">\n  <button @click=\"selected = 'slide1'\">Slide 1</button>\n  <button @click=\"selected = 'slide2'\">Slide 2</button>\n</div>\n\n<MotionAxis :selected=\"selected\">\n  <template #slide1>\n    <div class=\"slide\">Slide 1 Content</div>\n  </template>\n  <template #slide2>\n    <div class=\"slide\">Slide 2 Content</div>\n  </template>\n</MotionAxis>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function pd(e = {}) {
@@ -19408,10 +19210,8 @@ function pd(e = {}) {
 //#region src/media/mdx/MotionAxis/motionAxis.ru.mdx
 function md(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19453,10 +19253,10 @@ function md(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n  <div class=\"buttons\">\n    <button @click=\"selected = 'slide1'\">Слайд 1</button>\n    <button @click=\"selected = 'slide2'\">Слайд 2</button>\n  </div>\n\n  <MotionAxis :selected=\"selected\">\n    <template #slide1>\n      <div class=\"slide\">Контент слайда 1</div>\n    </template>\n    <template #slide2>\n      <div class=\"slide\">Контент слайда 2</div>\n    </template>\n  </MotionAxis>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n<div class=\"buttons\">\n  <button @click=\"selected = 'slide1'\">Слайд 1</button>\n  <button @click=\"selected = 'slide2'\">Слайд 2</button>\n</div>\n\n<MotionAxis :selected=\"selected\">\n  <template #slide1>\n    <div class=\"slide\">Контент слайда 1</div>\n  </template>\n  <template #slide2>\n    <div class=\"slide\">Контент слайда 2</div>\n  </template>\n</MotionAxis>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function hd(e = {}) {
@@ -19528,7 +19328,6 @@ function bd(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19550,10 +19349,10 @@ function bd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n  <div class=\"buttons\">\n    <button @click=\"selected = 'slide1'\">Slide 1</button>\n    <button @click=\"selected = 'slide2'\">Slide 2</button>\n  </div>\n\n  <MotionAxis v-model:selected=\"selected\">\n    <template #slide1>\n      <div>Slide 1 Content</div>\n    </template>\n    <template #slide2>\n      <div>Slide 2 Content</div>\n    </template>\n  </MotionAxis>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n<div class=\"buttons\">\n  <button @click=\"selected = 'slide1'\">Slide 1</button>\n  <button @click=\"selected = 'slide2'\">Slide 2</button>\n</div>\n\n<MotionAxis v-model:selected=\"selected\">\n  <template #slide1>\n    <div>Slide 1 Content</div>\n  </template>\n  <template #slide2>\n    <div>Slide 2 Content</div>\n  </template>\n</MotionAxis>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function xd(e = {}) {
@@ -19571,7 +19370,6 @@ function Sd(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19593,10 +19391,10 @@ function Sd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n  <div class=\"buttons\">\n    <button @click=\"selected = 'slide1'\">Слайд 1</button>\n    <button @click=\"selected = 'slide2'\">Слайд 2</button>\n  </div>\n\n  <MotionAxis v-model:selected=\"selected\">\n    <template #slide1>\n      <div>Контент слайда 1</div>\n    </template>\n    <template #slide2>\n      <div>Контент слайда 2</div>\n    </template>\n  </MotionAxis>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('slide1')\n<\/script>\n\n<template>\n<div class=\"buttons\">\n  <button @click=\"selected = 'slide1'\">Слайд 1</button>\n  <button @click=\"selected = 'slide2'\">Слайд 2</button>\n</div>\n\n<MotionAxis v-model:selected=\"selected\">\n  <template #slide1>\n    <div>Контент слайда 1</div>\n  </template>\n  <template #slide2>\n    <div>Контент слайда 2</div>\n  </template>\n</MotionAxis>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Cd(e = {}) {
@@ -19645,7 +19443,6 @@ function Td(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19679,10 +19476,10 @@ function Td(e) {
 			" parameter is ignored and does not affect animation behavior."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Head stays at top -->\n<MotionTransform animationHeadPosition=\"top\" />\n\n<!-- Head moves down with content -->\n<MotionTransform animationHeadPosition=\"toBottom\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Head stays at top -->\n<MotionTransform animationHeadPosition=\"top\" />\n\n<!-- Head moves down with content -->\n<MotionTransform animationHeadPosition=\"toBottom\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Ed(e = {}) {
@@ -19700,7 +19497,6 @@ function Dd(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19734,10 +19530,10 @@ function Dd(e) {
 			" игнорируется и не влияет на поведение анимации."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Head остается вверху -->\n<MotionTransform animationHeadPosition=\"top\" />\n\n<!-- Head движется вниз с контентом -->\n<MotionTransform animationHeadPosition=\"toBottom\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Head остается вверху -->\n<MotionTransform animationHeadPosition=\"top\" />\n\n<!-- Head движется вниз с контентом -->\n<MotionTransform animationHeadPosition=\"toBottom\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Od(e = {}) {
@@ -19909,7 +19705,6 @@ function Nd(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -19946,10 +19741,10 @@ function Nd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleTransform = (event, options) => {\n  console.log('Event:', event)\n  console.log('Type:', options.type)\n  console.log('Open state:', options.open)\n}\n<\/script>\n\n<template>\n  <Component @transform=\"handleTransform\">\n    <template #head>\n      <div>Header</div>\n    </template>\n    <template #body>\n      <p>Content</p>\n    </template>\n  </Component>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleTransform = (event, options) => {\nconsole.log('Event:', event)\nconsole.log('Type:', options.type)\nconsole.log('Open state:', options.open)\n}\n<\/script>\n\n<template>\n<Component @transform=\"handleTransform\">\n  <template #head>\n    <div>Header</div>\n  </template>\n  <template #body>\n    <p>Content</p>\n  </template>\n</Component>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "transformLite" }) }),
 		"\n",
@@ -19979,7 +19774,6 @@ function Fd(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20016,10 +19810,10 @@ function Fd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleTransform = (event, options) => {\n  console.log('Событие:', event)\n  console.log('Тип:', options.type)\n  console.log('Состояние открытия:', options.open)\n}\n<\/script>\n\n<template>\n  <Component @transform=\"handleTransform\">\n    <template #head>\n      <div>Заголовок</div>\n    </template>\n    <template #body>\n      <p>Содержимое</p>\n    </template>\n  </Component>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nconst handleTransform = (event, options) => {\nconsole.log('Событие:', event)\nconsole.log('Тип:', options.type)\nconsole.log('Состояние открытия:', options.open)\n}\n<\/script>\n\n<template>\n<Component @transform=\"handleTransform\">\n  <template #head>\n    <div>Заголовок</div>\n  </template>\n  <template #body>\n    <p>Содержимое</p>\n  </template>\n</Component>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		a(t.h3, { children: a(t.code, { children: "transformLite" }) }),
 		"\n",
@@ -20211,7 +20005,6 @@ function Gd(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20239,10 +20032,10 @@ function Gd(e) {
 			" is more flexible, can match multiple elements with a single selector, better suited for dynamic content. Use for trigger buttons, helper controls, and nested interactive areas."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst triggerButton = ref()\n<\/script>\n\n<template>\n  <!-- Ignoring specific element -->\n  <MotionTransform :ignore=\"triggerButton\" />\n\n  <!-- Ignoring by selector -->\n  <MotionTransform ignoreSelector=\".trigger-button\" />\n\n  <!-- Combining both properties -->\n  <MotionTransform\n    :ignore=\"triggerButton\"\n    ignoreSelector=\".helper-controls\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst triggerButton = ref()\n<\/script>\n\n<template>\n<!-- Ignoring specific element -->\n<MotionTransform :ignore=\"triggerButton\" />\n\n<!-- Ignoring by selector -->\n<MotionTransform ignoreSelector=\".trigger-button\" />\n\n<!-- Combining both properties -->\n<MotionTransform\n  :ignore=\"triggerButton\"\n  ignoreSelector=\".helper-controls\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Kd(e = {}) {
@@ -20260,7 +20053,6 @@ function qd(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20288,10 +20080,10 @@ function qd(e) {
 			" более гибкий, может соответствовать нескольким элементам одним селектором, лучше подходит для динамического контента. Используйте для кнопок-триггеров, вспомогательных элементов и вложенных интерактивных областей."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst triggerButton = ref()\n<\/script>\n\n<template>\n  <!-- Игнорирование конкретного элемента -->\n  <MotionTransform :ignore=\"triggerButton\" />\n\n  <!-- Игнорирование по селектору -->\n  <MotionTransform ignoreSelector=\".trigger-button\" />\n\n  <!-- Комбинация обоих свойств -->\n  <MotionTransform\n    :ignore=\"triggerButton\"\n    ignoreSelector=\".helper-controls\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst triggerButton = ref()\n<\/script>\n\n<template>\n<!-- Игнорирование конкретного элемента -->\n<MotionTransform :ignore=\"triggerButton\" />\n\n<!-- Игнорирование по селектору -->\n<MotionTransform ignoreSelector=\".trigger-button\" />\n\n<!-- Комбинация обоих свойств -->\n<MotionTransform\n  :ignore=\"triggerButton\"\n  ignoreSelector=\".helper-controls\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Jd(e = {}) {
@@ -20306,10 +20098,8 @@ function Jd(e = {}) {
 function Yd(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20353,10 +20143,10 @@ function Yd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { MotionTransform } from '@dxtmisha/constructor'\n\nconst element = ref()\nconst elementContext = ref()\n\nconst motion = new MotionTransform(\n  { open: false, autoClose: true },\n  // ...other params\n)\n\n// Programmatic control\nmotion.go.toOpen()\nmotion.go.toClose()\n\n// State access\nconst isOpen = motion.state.isOpen\nconst isShow = motion.state.isShow\n<\/script>\n\n<template>\n  <div ref=\"element\">\n    <!-- Content with managed transform -->\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { MotionTransform } from '@dxtmisha/constructor'\n\nconst element = ref()\nconst elementContext = ref()\n\nconst motion = new MotionTransform(\n{ open: false, autoClose: true },\n// ...other params\n)\n\n// Programmatic control\nmotion.go.toOpen()\nmotion.go.toClose()\n\n// State access\nconst isOpen = motion.state.isOpen\nconst isShow = motion.state.isShow\n<\/script>\n\n<template>\n<div ref=\"element\">\n  <!-- Content with managed transform -->\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -20377,10 +20167,8 @@ function Xd(e = {}) {
 function Zd(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20424,10 +20212,10 @@ function Zd(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\nimport { MotionTransform } from '@dxtmisha/constructor'\n\nconst element = ref()\nconst elementContext = ref()\n\nconst motion = new MotionTransform(\n  { open: false, autoClose: true },\n  // ...other params\n)\n\n// Программное управление\nmotion.go.toOpen()\nmotion.go.toClose()\n\n// Доступ к состояниям\nconst isOpen = motion.state.isOpen\nconst isShow = motion.state.isShow\n<\/script>\n\n<template>\n  <div ref=\"element\">\n    <!-- Контент с управляемой трансформацией -->\n  </div>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\nimport { MotionTransform } from '@dxtmisha/constructor'\n\nconst element = ref()\nconst elementContext = ref()\n\nconst motion = new MotionTransform(\n{ open: false, autoClose: true },\n// ...other params\n)\n\n// Программное управление\nmotion.go.toOpen()\nmotion.go.toClose()\n\n// Доступ к состояниям\nconst isOpen = motion.state.isOpen\nconst isShow = motion.state.isShow\n<\/script>\n\n<template>\n<div ref=\"element\">\n  <!-- Контент с управляемой трансформацией -->\n</div>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -20533,7 +20321,6 @@ function rf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20555,10 +20342,10 @@ function rf(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Open</button>\n  <Component v-model:open=\"isOpen\"/>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Open</button>\n<Component v-model:open=\"isOpen\"/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function af(e = {}) {
@@ -20576,7 +20363,6 @@ function of(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20598,10 +20384,10 @@ function of(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Открыть</button>\n  <Component v-model:open=\"isOpen\"/>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Открыть</button>\n<Component v-model:open=\"isOpen\"/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function sf(e = {}) {
@@ -20663,7 +20449,6 @@ function lf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20721,10 +20506,10 @@ function lf(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Page\n    headline=\"Main Page Title\"\n    label=\"Category\"\n    description=\"Brief description of the page content\"\n  >\n    <p>Unique page content...</p>\n  </Page>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Page\n  headline=\"Main Page Title\"\n  label=\"Category\"\n  description=\"Brief description of the page content\"\n>\n  <p>Unique page content...</p>\n</Page>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -20749,7 +20534,6 @@ function df(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20807,10 +20591,10 @@ function df(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Page\n    headline=\"Главный заголовок страницы\"\n    label=\"Категория\"\n    description=\"Краткое описание содержимого страницы\"\n  >\n    <p>Уникальный контент страницы...</p>\n  </Page>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Page\n  headline=\"Главный заголовок страницы\"\n  label=\"Категория\"\n  description=\"Краткое описание содержимого страницы\"\n>\n  <p>Уникальный контент страницы...</p>\n</Page>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -20843,7 +20627,6 @@ function mf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20875,10 +20658,10 @@ function mf(e) {
 			" removes padding, making the indicator more compact for placement in limited space."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Basic circular progress -->\n<Progress circular />\n\n<!-- Compact circular progress -->\n<Progress circular dense />\n\n<!-- With specific value -->\n<Progress circular :value=\"75\" />\n\n<!-- Compact with value -->\n<Progress circular dense :value=\"50\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Basic circular progress -->\n<Progress circular />\n\n<!-- Compact circular progress -->\n<Progress circular dense />\n\n<!-- With specific value -->\n<Progress circular :value=\"75\" />\n\n<!-- Compact with value -->\n<Progress circular dense :value=\"50\" />\n",
+			language: "html"
+		})
 	] });
 }
 function hf(e = {}) {
@@ -20896,7 +20679,6 @@ function gf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20928,10 +20710,10 @@ function gf(e) {
 			" убирает padding, делая индикатор более компактным для размещения в ограниченном пространстве."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Базовый круглый прогресс -->\n<Progress circular />\n\n<!-- Компактный круглый прогресс -->\n<Progress circular dense />\n\n<!-- С определенным значением -->\n<Progress circular :value=\"75\" />\n\n<!-- Компактный со значением -->\n<Progress circular dense :value=\"50\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Базовый круглый прогресс -->\n<Progress circular />\n\n<!-- Компактный круглый прогресс -->\n<Progress circular dense />\n\n<!-- С определенным значением -->\n<Progress circular :value=\"75\" />\n\n<!-- Компактный со значением -->\n<Progress circular dense :value=\"50\" />\n",
+			language: "html"
+		})
 	] });
 }
 function _f(e = {}) {
@@ -20949,7 +20731,6 @@ function vf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -20991,10 +20772,10 @@ function vf(e) {
 			" for rapid operations where the indicator might interfere with perception. Decrease for long operations where immediate feedback is important."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Standard delays -->\n<Progress delay=\"360\" delayHide=\"200\" />\n\n<!-- Fast appearance -->\n<Progress delay=\"100\" delayHide=\"200\" />\n\n<!-- Slow appearance -->\n<Progress delay=\"800\" delayHide=\"300\" />\n\n<!-- No delays -->\n<Progress delay=\"0\" delayHide=\"0\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Standard delays -->\n<Progress delay=\"360\" delayHide=\"200\" />\n\n<!-- Fast appearance -->\n<Progress delay=\"100\" delayHide=\"200\" />\n\n<!-- Slow appearance -->\n<Progress delay=\"800\" delayHide=\"300\" />\n\n<!-- No delays -->\n<Progress delay=\"0\" delayHide=\"0\" />\n",
+			language: "html"
+		})
 	] });
 }
 function yf(e = {}) {
@@ -21012,7 +20793,6 @@ function bf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21054,10 +20834,10 @@ function bf(e) {
 			" для очень быстрых операций, где индикатор может помешать восприятию. Уменьшайте для долгих операций, где важна немедленная обратная связь."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Стандартные задержки -->\n<Progress delay=\"360\" delayHide=\"200\" />\n\n<!-- Быстрое появление -->\n<Progress delay=\"100\" delayHide=\"200\" />\n\n<!-- Медленное появление -->\n<Progress delay=\"800\" delayHide=\"300\" />\n\n<!-- Без задержек -->\n<Progress delay=\"0\" delayHide=\"0\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Стандартные задержки -->\n<Progress delay=\"360\" delayHide=\"200\" />\n\n<!-- Быстрое появление -->\n<Progress delay=\"100\" delayHide=\"200\" />\n\n<!-- Медленное появление -->\n<Progress delay=\"800\" delayHide=\"300\" />\n\n<!-- Без задержек -->\n<Progress delay=\"0\" delayHide=\"0\" />\n",
+			language: "html"
+		})
 	] });
 }
 function xf(e = {}) {
@@ -21075,7 +20855,6 @@ function Sf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21127,10 +20906,10 @@ function Sf(e) {
 			" adds a visual marker at the end of the filled portion."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Basic linear progress -->\n<Progress linear />\n\n<!-- With bottom positioning -->\n<Progress linear position=\"bottom\" />\n\n<!-- With point in static position -->\n<Progress linear position=\"static\" point />\n\n<!-- With specific value -->\n<Progress linear position=\"top\" point :value=\"65\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Basic linear progress -->\n<Progress linear />\n\n<!-- With bottom positioning -->\n<Progress linear position=\"bottom\" />\n\n<!-- With point in static position -->\n<Progress linear position=\"static\" point />\n\n<!-- With specific value -->\n<Progress linear position=\"top\" point :value=\"65\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Cf(e = {}) {
@@ -21148,7 +20927,6 @@ function wf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21200,10 +20978,10 @@ function wf(e) {
 			" добавляет визуальный маркер на конце заполненной части."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Базовый линейный прогресс -->\n<Progress linear />\n\n<!-- С позиционированием снизу -->\n<Progress linear position=\"bottom\" />\n\n<!-- С точкой в статичной позиции -->\n<Progress linear position=\"static\" point />\n\n<!-- С определенным значением -->\n<Progress linear position=\"top\" point :value=\"65\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Базовый линейный прогресс -->\n<Progress linear />\n\n<!-- С позиционированием снизу -->\n<Progress linear position=\"bottom\" />\n\n<!-- С точкой в статичной позиции -->\n<Progress linear position=\"static\" point />\n\n<!-- С определенным значением -->\n<Progress linear position=\"top\" point :value=\"65\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Tf(e = {}) {
@@ -21217,10 +20995,8 @@ function Tf(e = {}) {
 //#region src/media/mdx/Progress/progress.en.mdx
 function Ef(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21270,10 +21046,10 @@ function Ef(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst progress = ref(0)\nconst loading = ref(false)\n\nconst startLoading = () => {\n  loading.value = true\n  progress.value = 0\n\n  const interval = setInterval(() => {\n    progress.value += 10\n    if (progress.value >= 100) {\n      clearInterval(interval)\n      loading.value = false\n    }\n  }, 500)\n}\n<\/script>\n\n<template>\n  <button @click=\"startLoading\">Start Loading</button>\n\n  <!-- Linear indicator with determinate value -->\n  <Progress\n    :visible=\"loading\"\n    :value=\"progress\"\n    linear\n    position=\"top\"\n  />\n\n  <!-- Circular indicator -->\n  <Progress\n    :visible=\"loading\"\n    :value=\"progress\"\n    circular\n  />\n\n  <!-- Indeterminate indicator -->\n  <Progress\n    :visible=\"loading\"\n    linear\n    indeterminate=\"type1\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst progress = ref(0)\nconst loading = ref(false)\n\nconst startLoading = () => {\nloading.value = true\nprogress.value = 0\n\nconst interval = setInterval(() => {\n  progress.value += 10\n  if (progress.value >= 100) {\n    clearInterval(interval)\n    loading.value = false\n  }\n}, 500)\n}\n<\/script>\n\n<template>\n<button @click=\"startLoading\">Start Loading</button>\n\n<!-- Linear indicator with determinate value -->\n<Progress\n  :visible=\"loading\"\n  :value=\"progress\"\n  linear\n  position=\"top\"\n/>\n\n<!-- Circular indicator -->\n<Progress\n  :visible=\"loading\"\n  :value=\"progress\"\n  circular\n/>\n\n<!-- Indeterminate indicator -->\n<Progress\n  :visible=\"loading\"\n  linear\n  indeterminate=\"type1\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Df(e = {}) {
@@ -21287,10 +21063,8 @@ function Df(e = {}) {
 //#region src/media/mdx/Progress/progress.ru.mdx
 function Of(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21340,10 +21114,10 @@ function Of(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst progress = ref(0)\nconst loading = ref(false)\n\nconst startLoading = () => {\n  loading.value = true\n  progress.value = 0\n\n  const interval = setInterval(() => {\n    progress.value += 10\n    if (progress.value >= 100) {\n      clearInterval(interval)\n      loading.value = false\n    }\n  }, 500)\n}\n<\/script>\n\n<template>\n  <button @click=\"startLoading\">Начать загрузку</button>\n\n  <!-- Линейный индикатор с определенным значением -->\n  <Progress\n    :visible=\"loading\"\n    :value=\"progress\"\n    linear\n    position=\"top\"\n  />\n\n  <!-- Круговой индикатор -->\n  <Progress\n    :visible=\"loading\"\n    :value=\"progress\"\n    circular\n  />\n\n  <!-- Неопределенный индикатор -->\n  <Progress\n    :visible=\"loading\"\n    linear\n    indeterminate=\"type1\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst progress = ref(0)\nconst loading = ref(false)\n\nconst startLoading = () => {\nloading.value = true\nprogress.value = 0\n\nconst interval = setInterval(() => {\n  progress.value += 10\n  if (progress.value >= 100) {\n    clearInterval(interval)\n    loading.value = false\n  }\n}, 500)\n}\n<\/script>\n\n<template>\n<button @click=\"startLoading\">Начать загрузку</button>\n\n<!-- Линейный индикатор с определенным значением -->\n<Progress\n  :visible=\"loading\"\n  :value=\"progress\"\n  linear\n  position=\"top\"\n/>\n\n<!-- Круговой индикатор -->\n<Progress\n  :visible=\"loading\"\n  :value=\"progress\"\n  circular\n/>\n\n<!-- Неопределенный индикатор -->\n<Progress\n  :visible=\"loading\"\n  linear\n  indeterminate=\"type1\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function kf(e = {}) {
@@ -21361,7 +21135,6 @@ function Af(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21405,10 +21178,10 @@ function Af(e) {
 			" for percentage display or set it equal to the actual number of steps in the process."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Standard percentage scale -->\n<Progress :value=\"75\" :max=\"100\" />\n\n<!-- File loading progress -->\n<Progress :value=\"loadedFiles\" :max=\"totalFiles\" />\n\n<!-- Dynamic updates -->\n<Progress :value=\"currentStep\" :max=\"totalSteps\" />\n\n<!-- Custom scale -->\n<Progress :value=\"completedTasks\" :max=\"1000\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Standard percentage scale -->\n<Progress :value=\"75\" :max=\"100\" />\n\n<!-- File loading progress -->\n<Progress :value=\"loadedFiles\" :max=\"totalFiles\" />\n\n<!-- Dynamic updates -->\n<Progress :value=\"currentStep\" :max=\"totalSteps\" />\n\n<!-- Custom scale -->\n<Progress :value=\"completedTasks\" :max=\"1000\" />\n",
+			language: "html"
+		})
 	] });
 }
 function jf(e = {}) {
@@ -21426,7 +21199,6 @@ function Mf(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21470,10 +21242,10 @@ function Mf(e) {
 			" для процентного отображения или устанавливайте равным реальному количеству шагов в процессе."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<!-- Стандартная процентная шкала -->\n<Progress :value=\"75\" :max=\"100\" />\n\n<!-- Прогресс загрузки файлов -->\n<Progress :value=\"loadedFiles\" :max=\"totalFiles\" />\n\n<!-- Динамическое обновление -->\n<Progress :value=\"currentStep\" :max=\"totalSteps\" />\n\n<!-- Пользовательская шкала -->\n<Progress :value=\"completedTasks\" :max=\"1000\" />\n"
-		}) })
+		a(s, {
+			code: "\n<!-- Стандартная процентная шкала -->\n<Progress :value=\"75\" :max=\"100\" />\n\n<!-- Прогресс загрузки файлов -->\n<Progress :value=\"loadedFiles\" :max=\"totalFiles\" />\n\n<!-- Динамическое обновление -->\n<Progress :value=\"currentStep\" :max=\"totalSteps\" />\n\n<!-- Пользовательская шкала -->\n<Progress :value=\"completedTasks\" :max=\"1000\" />\n",
+			language: "html"
+		})
 	] });
 }
 function Nf(e = {}) {
@@ -21517,7 +21289,6 @@ function Ff(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21563,10 +21334,10 @@ function Ff(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Button with ripple effect -->\n  <button style=\"position: relative;\">\n    Click me\n    <Ripple />\n  </button>\n\n  <!-- Disabled effect -->\n  <button style=\"position: relative;\">\n    No effect\n    <Ripple :disabled=\"true\" />\n  </button>\n\n  <!-- Card with effect -->\n  <div class=\"card\" style=\"position: relative; cursor: pointer;\">\n    <h3>Interactive card</h3>\n    <p>Card content</p>\n    <Ripple />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Button with ripple effect -->\n<button style=\"position: relative;\">\n  Click me\n  <Ripple />\n</button>\n\n<!-- Disabled effect -->\n<button style=\"position: relative;\">\n  No effect\n  <Ripple :disabled=\"true\" />\n</button>\n\n<!-- Card with effect -->\n<div class=\"card\" style=\"position: relative; cursor: pointer;\">\n  <h3>Interactive card</h3>\n  <p>Card content</p>\n  <Ripple />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function If(e = {}) {
@@ -21583,7 +21354,6 @@ function Lf(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -21625,10 +21395,10 @@ function Lf(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Кнопка с эффектом волны -->\n  <button style=\"position: relative;\">\n    Нажми меня\n    <Ripple />\n  </button>\n\n  <!-- Отключенный эффект -->\n  <button style=\"position: relative;\">\n    Без эффекта\n    <Ripple :disabled=\"true\" />\n  </button>\n\n  <!-- Карточка с эффектом -->\n  <div class=\"card\" style=\"position: relative; cursor: pointer;\">\n    <h3>Интерактивная карточка</h3>\n    <p>Содержимое карточки</p>\n    <Ripple />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Кнопка с эффектом волны -->\n<button style=\"position: relative;\">\n  Нажми меня\n  <Ripple />\n</button>\n\n<!-- Отключенный эффект -->\n<button style=\"position: relative;\">\n  Без эффекта\n  <Ripple :disabled=\"true\" />\n</button>\n\n<!-- Карточка с эффектом -->\n<div class=\"card\" style=\"position: relative; cursor: pointer;\">\n  <h3>Интерактивная карточка</h3>\n  <p>Содержимое карточки</p>\n  <Ripple />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Rf(e = {}) {
@@ -22042,7 +21812,6 @@ function Jf(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22088,10 +21857,10 @@ function Jf(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleReachBottom = () => {\n  // Load more data\n  loadMoreItems()\n}\n<\/script>\n\n<template>\n  <Scrollbar\n    divider\n    @reach-bottom=\"handleReachBottom\"\n  >\n    <div class=\"content\">\n      <!-- Scrollable content -->\n    </div>\n  </Scrollbar>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleReachBottom = () => {\n// Load more data\nloadMoreItems()\n}\n<\/script>\n\n<template>\n<Scrollbar\n  divider\n  @reach-bottom=\"handleReachBottom\"\n>\n  <div class=\"content\">\n    <!-- Scrollable content -->\n  </div>\n</Scrollbar>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Yf(e = {}) {
@@ -22108,7 +21877,6 @@ function Xf(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22150,10 +21918,10 @@ function Xf(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleReachBottom = () => {\n  // Загрузка дополнительных данных\n  loadMoreItems()\n}\n<\/script>\n\n<template>\n  <Scrollbar\n    divider\n    @reach-bottom=\"handleReachBottom\"\n  >\n    <div class=\"content\">\n      <!-- Прокручиваемое содержимое -->\n    </div>\n  </Scrollbar>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleReachBottom = () => {\n// Загрузка дополнительных данных\nloadMoreItems()\n}\n<\/script>\n\n<template>\n<Scrollbar\n  divider\n  @reach-bottom=\"handleReachBottom\"\n>\n  <div class=\"content\">\n    <!-- Прокручиваемое содержимое -->\n  </div>\n</Scrollbar>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Zf(e = {}) {
@@ -22191,7 +21959,6 @@ function $f(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22249,10 +22016,10 @@ function $f(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Section\n    headline=\"Section Headline\"\n    label=\"Label\"\n    description=\"Description of this section's content\"\n  >\n    <p>Main section content...</p>\n  </Section>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Section\n  headline=\"Section Headline\"\n  label=\"Label\"\n  description=\"Description of this section's content\"\n>\n  <p>Main section content...</p>\n</Section>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -22277,7 +22044,6 @@ function tp(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22335,10 +22101,10 @@ function tp(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n  <Section\n    headline=\"Заголовок секции\"\n    label=\"Метка\"\n    description=\"Описание содержимого данной секции\"\n  >\n    <p>Основной контент секции...</p>\n  </Section>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n<\/script>\n\n<template>\n<Section\n  headline=\"Заголовок секции\"\n  label=\"Метка\"\n  description=\"Описание содержимого данной секции\"\n>\n  <p>Основной контент секции...</p>\n</Section>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -22367,10 +22133,8 @@ var rp = {
 //#region src/media/mdx/Select/select.en.mdx
 function ip(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22430,10 +22194,10 @@ function ip(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedCountry = ref('us')\nconst selectedLanguages = ref(['js', 'ts'])\n\nconst countries = [\n  { label: 'Russia', value: 'ru' },\n  { label: 'USA', value: 'us' },\n  { label: 'Germany', value: 'de' }\n]\n\nconst languages = [\n  { label: 'JavaScript', value: 'js' },\n  { label: 'TypeScript', value: 'ts' },\n  { label: 'Python', value: 'py' }\n]\n<\/script>\n\n<template>\n  <!-- Simple selection -->\n  <Select\n    v-model=\"selectedCountry\"\n    label=\"Country\"\n    placeholder=\"Choose a country\"\n    :option=\"countries\"\n  />\n\n  <!-- Multiple selection -->\n  <Select\n    v-model=\"selectedLanguages\"\n    label=\"Programming languages\"\n    :multiple=\"true\"\n    :max=\"3\"\n    helper-message=\"Select up to 3 languages\"\n    :option=\"languages\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedCountry = ref('us')\nconst selectedLanguages = ref(['js', 'ts'])\n\nconst countries = [\n{ label: 'Russia', value: 'ru' },\n{ label: 'USA', value: 'us' },\n{ label: 'Germany', value: 'de' }\n]\n\nconst languages = [\n{ label: 'JavaScript', value: 'js' },\n{ label: 'TypeScript', value: 'ts' },\n{ label: 'Python', value: 'py' }\n]\n<\/script>\n\n<template>\n<!-- Simple selection -->\n<Select\n  v-model=\"selectedCountry\"\n  label=\"Country\"\n  placeholder=\"Choose a country\"\n  :option=\"countries\"\n/>\n\n<!-- Multiple selection -->\n<Select\n  v-model=\"selectedLanguages\"\n  label=\"Programming languages\"\n  :multiple=\"true\"\n  :max=\"3\"\n  helper-message=\"Select up to 3 languages\"\n  :option=\"languages\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ap(e = {}) {
@@ -22447,10 +22211,8 @@ function ap(e = {}) {
 //#region src/media/mdx/Select/select.ru.mdx
 function op(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22510,10 +22272,10 @@ function op(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedCountry = ref('ru')\nconst selectedLanguages = ref(['js', 'ts'])\n\nconst countries = [\n  { label: 'Россия', value: 'ru' },\n  { label: 'США', value: 'us' },\n  { label: 'Германия', value: 'de' }\n]\n\nconst languages = [\n  { label: 'JavaScript', value: 'js' },\n  { label: 'TypeScript', value: 'ts' },\n  { label: 'Python', value: 'py' }\n]\n<\/script>\n\n<template>\n  <!-- Простой выбор -->\n  <Select\n    v-model=\"selectedCountry\"\n    label=\"Страна\"\n    placeholder=\"Выберите страну\"\n    :option=\"countries\"\n  />\n\n  <!-- Множественный выбор -->\n  <Select\n    v-model=\"selectedLanguages\"\n    label=\"Языки программирования\"\n    :multiple=\"true\"\n    :max=\"3\"\n    helper-message=\"Выберите до 3 языков\"\n    :option=\"languages\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedCountry = ref('ru')\nconst selectedLanguages = ref(['js', 'ts'])\n\nconst countries = [\n{ label: 'Россия', value: 'ru' },\n{ label: 'США', value: 'us' },\n{ label: 'Германия', value: 'de' }\n]\n\nconst languages = [\n{ label: 'JavaScript', value: 'js' },\n{ label: 'TypeScript', value: 'ts' },\n{ label: 'Python', value: 'py' }\n]\n<\/script>\n\n<template>\n<!-- Простой выбор -->\n<Select\n  v-model=\"selectedCountry\"\n  label=\"Страна\"\n  placeholder=\"Выберите страну\"\n  :option=\"countries\"\n/>\n\n<!-- Множественный выбор -->\n<Select\n  v-model=\"selectedLanguages\"\n  label=\"Языки программирования\"\n  :multiple=\"true\"\n  :max=\"3\"\n  helper-message=\"Выберите до 3 языков\"\n  :option=\"languages\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function sp(e = {}) {
@@ -22536,10 +22298,8 @@ var cp = {
 //#region src/media/mdx/SelectValue/selectValue.en.mdx
 function lp(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22585,10 +22345,10 @@ function lp(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedSingle = ref([\n  { label: 'JavaScript', value: 'js', icon: 'code', index: '1' }\n])\n\nconst selectedMultiple = ref([\n  { label: 'React', value: 'react', icon: 'favorite', index: '1' },\n  { label: 'Vue.js', value: 'vue', icon: 'star', index: '2' }\n])\n\nconst handleClick = (event) => {\n  console.log('Element clicked:', event)\n}\n<\/script>\n\n<template>\n  <!-- Single selection -->\n  <SelectValue\n    :value=\"selectedSingle\"\n    :icon-show=\"true\"\n    @click=\"handleClick\"\n  />\n\n  <!-- Multiple selection with chips -->\n  <SelectValue\n    :value=\"selectedMultiple\"\n    :multiple=\"true\"\n    :icon-show=\"true\"\n    icon-cancel=\"close\"\n    @click=\"handleClick\"\n  />\n\n  <!-- With placeholder -->\n  <SelectValue\n    placeholder=\"Select a value\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedSingle = ref([\n{ label: 'JavaScript', value: 'js', icon: 'code', index: '1' }\n])\n\nconst selectedMultiple = ref([\n{ label: 'React', value: 'react', icon: 'favorite', index: '1' },\n{ label: 'Vue.js', value: 'vue', icon: 'star', index: '2' }\n])\n\nconst handleClick = (event) => {\nconsole.log('Element clicked:', event)\n}\n<\/script>\n\n<template>\n<!-- Single selection -->\n<SelectValue\n  :value=\"selectedSingle\"\n  :icon-show=\"true\"\n  @click=\"handleClick\"\n/>\n\n<!-- Multiple selection with chips -->\n<SelectValue\n  :value=\"selectedMultiple\"\n  :multiple=\"true\"\n  :icon-show=\"true\"\n  icon-cancel=\"close\"\n  @click=\"handleClick\"\n/>\n\n<!-- With placeholder -->\n<SelectValue\n  placeholder=\"Select a value\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function up(e = {}) {
@@ -22602,10 +22362,8 @@ function up(e = {}) {
 //#region src/media/mdx/SelectValue/selectValue.ru.mdx
 function dp(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22651,10 +22409,10 @@ function dp(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedSingle = ref([\n  { label: 'JavaScript', value: 'js', icon: 'code', index: '1' }\n])\n\nconst selectedMultiple = ref([\n  { label: 'React', value: 'react', icon: 'favorite', index: '1' },\n  { label: 'Vue.js', value: 'vue', icon: 'star', index: '2' }\n])\n\nconst handleClick = (event) => {\n  console.log('Клик по элементу:', event)\n}\n<\/script>\n\n<template>\n  <!-- Одиночный выбор -->\n  <SelectValue\n    :value=\"selectedSingle\"\n    :icon-show=\"true\"\n    @click=\"handleClick\"\n  />\n\n  <!-- Множественный выбор с чипами -->\n  <SelectValue\n    :value=\"selectedMultiple\"\n    :multiple=\"true\"\n    :icon-show=\"true\"\n    icon-cancel=\"close\"\n    @click=\"handleClick\"\n  />\n\n  <!-- С плейсхолдером -->\n  <SelectValue\n    placeholder=\"Выберите значение\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedSingle = ref([\n{ label: 'JavaScript', value: 'js', icon: 'code', index: '1' }\n])\n\nconst selectedMultiple = ref([\n{ label: 'React', value: 'react', icon: 'favorite', index: '1' },\n{ label: 'Vue.js', value: 'vue', icon: 'star', index: '2' }\n])\n\nconst handleClick = (event) => {\nconsole.log('Клик по элементу:', event)\n}\n<\/script>\n\n<template>\n<!-- Одиночный выбор -->\n<SelectValue\n  :value=\"selectedSingle\"\n  :icon-show=\"true\"\n  @click=\"handleClick\"\n/>\n\n<!-- Множественный выбор с чипами -->\n<SelectValue\n  :value=\"selectedMultiple\"\n  :multiple=\"true\"\n  :icon-show=\"true\"\n  icon-cancel=\"close\"\n  @click=\"handleClick\"\n/>\n\n<!-- С плейсхолдером -->\n<SelectValue\n  placeholder=\"Выберите значение\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function fp(e = {}) {
@@ -22680,7 +22438,6 @@ function mp(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22730,10 +22487,10 @@ function mp(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isLoading = ref(true)\n\nsetTimeout(() => {\n  isLoading.value = false\n}, 2000)\n<\/script>\n\n<template>\n  <Skeleton :active=\"isLoading\">\n    <!-- Placeholders visible during loading -->\n    <div class=\"skeleton__background avatar\"></div>\n    <div class=\"skeleton__text title\"></div>\n    <div class=\"skeleton__textVariant subtitle\"></div>\n\n    <!-- Real content -->\n    <img src=\"/avatar.jpg\" alt=\"User avatar\" />\n    <h3>{{ user.name }}</h3>\n    <p>{{ user.description }}</p>\n  </Skeleton>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isLoading = ref(true)\n\nsetTimeout(() => {\nisLoading.value = false\n}, 2000)\n<\/script>\n\n<template>\n<Skeleton :active=\"isLoading\">\n  <!-- Placeholders visible during loading -->\n  <div class=\"skeleton__background avatar\"></div>\n  <div class=\"skeleton__text title\"></div>\n  <div class=\"skeleton__textVariant subtitle\"></div>\n\n  <!-- Real content -->\n  <img src=\"/avatar.jpg\" alt=\"User avatar\" />\n  <h3>{{ user.name }}</h3>\n  <p>{{ user.description }}</p>\n</Skeleton>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function hp(e = {}) {
@@ -22750,7 +22507,6 @@ function gp(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -22796,10 +22552,10 @@ function gp(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isLoading = ref(true)\n\nsetTimeout(() => {\n  isLoading.value = false\n}, 2000)\n<\/script>\n\n<template>\n  <Skeleton :active=\"isLoading\">\n    <!-- Заглушки, видимые во время загрузки -->\n    <div class=\"skeleton__background avatar\"></div>\n    <div class=\"skeleton__text title\"></div>\n    <div class=\"skeleton__textVariant subtitle\"></div>\n\n    <!-- Реальный контент -->\n    <img src=\"/avatar.jpg\" alt=\"Аватар пользователя\" />\n    <h3>{{ user.name }}</h3>\n    <p>{{ user.description }}</p>\n  </Skeleton>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isLoading = ref(true)\n\nsetTimeout(() => {\nisLoading.value = false\n}, 2000)\n<\/script>\n\n<template>\n<Skeleton :active=\"isLoading\">\n  <!-- Заглушки, видимые во время загрузки -->\n  <div class=\"skeleton__background avatar\"></div>\n  <div class=\"skeleton__text title\"></div>\n  <div class=\"skeleton__textVariant subtitle\"></div>\n\n  <!-- Реальный контент -->\n  <img src=\"/avatar.jpg\" alt=\"Аватар пользователя\" />\n  <h3>{{ user.name }}</h3>\n  <p>{{ user.description }}</p>\n</Skeleton>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function _p(e = {}) {
@@ -23119,7 +22875,6 @@ function jp(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -23149,10 +22904,10 @@ function jp(e) {
 			" parameter determines the configuration and behavior of the new notification."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-typescript",
-			children: "snackbar.value?.data.add({\n  data: {\n    label: 'Notification Title',\n    description: 'Description of the occurring event'\n  }\n})\n"
-		}) }),
+		a(s, {
+			code: "\nsnackbar.value?.data.add({\ndata: {\n  label: 'Notification Title',\n  description: 'Description of the occurring event'\n}\n})\n",
+			language: "typescript"
+		}),
 		"\n",
 		a(t.h3, { children: "SnackbarValue Structure" }),
 		"\n",
@@ -23227,10 +22982,10 @@ function jp(e) {
 			"."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-typescript",
-			children: "import MyAlert from './MyAlert.vue'\n\nsnackbar.value?.data.add({\n  component: MyAlert,\n  data: {\n    title: 'Warning!',\n    message: 'This is a message with custom styling'\n  }\n})\n"
-		}) }),
+		a(s, {
+			code: "\nimport MyAlert from './MyAlert.vue'\n\nsnackbar.value?.data.add({\ncomponent: MyAlert,\ndata: {\n  title: 'Warning!',\n  message: 'This is a message with custom styling'\n}\n})\n",
+			language: "typescript"
+		}),
 		"\n",
 		o(t.p, { children: [
 			"The ",
@@ -23255,7 +23010,6 @@ function Np(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -23283,10 +23037,10 @@ function Np(e) {
 			" определяет конфигурацию и поведение добавляемого уведомления."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-typescript",
-			children: "snackbar.value?.data.add({\n  data: {\n    label: 'Заголовок уведомления',\n    description: 'Описание происходящего события'\n  }\n})\n"
-		}) }),
+		a(s, {
+			code: "\nsnackbar.value?.data.add({\ndata: {\n  label: 'Заголовок уведомления',\n  description: 'Описание происходящего события'\n}\n})\n",
+			language: "typescript"
+		}),
 		"\n",
 		a(t.h3, { children: "Структура SnackbarValue" }),
 		"\n",
@@ -23361,10 +23115,10 @@ function Np(e) {
 			"."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-typescript",
-			children: "import MyAlert from './MyAlert.vue'\n\nsnackbar.value?.data.add({\n  component: MyAlert,\n  data: {\n    title: 'Внимание!',\n    message: 'Это сообщение в кастомном стиле'\n  }\n})\n"
-		}) }),
+		a(s, {
+			code: "\nimport MyAlert from './MyAlert.vue'\n\nsnackbar.value?.data.add({\ncomponent: MyAlert,\ndata: {\n  title: 'Внимание!',\n  message: 'Это сообщение в кастомном стиле'\n}\n})\n",
+			language: "typescript"
+		}),
 		"\n",
 		o(t.p, { children: [
 			"Свойство ",
@@ -23551,11 +23305,9 @@ function Rp(e = {}) {
 function zp(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -23593,10 +23345,10 @@ function zp(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst snackbar = ref(null)\n\nconst addMessage = () => {\n  snackbar.value?.data.add({\n    label: 'Notification Title',\n    description: 'Description of the event that occurred in the app.',\n    button: 'Ok'\n  })\n}\n<\/script>\n\n<template>\n  <Button label=\"Show Notification\" @click=\"addMessage\" />\n\n  <Snackbar\n    ref=\"snackbar\"\n    vertical=\"bottom\"\n    horizontal=\"right\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst snackbar = ref(null)\n\nconst addMessage = () => {\nsnackbar.value?.data.add({\n  label: 'Notification Title',\n  description: 'Description of the event that occurred in the app.',\n  button: 'Ok'\n})\n}\n<\/script>\n\n<template>\n<Button label=\"Show Notification\" @click=\"addMessage\" />\n\n<Snackbar\n  ref=\"snackbar\"\n  vertical=\"bottom\"\n  horizontal=\"right\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -23617,11 +23369,9 @@ function Bp(e = {}) {
 function Vp(e) {
 	let t = {
 		blockquote: "blockquote",
-		code: "code",
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -23659,10 +23409,10 @@ function Vp(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst snackbar = ref(null)\n\nconst addMessage = () => {\n  snackbar.value?.data.add({\n    label: 'Заголовок уведомления',\n    description: 'Описание события, которое произошло в приложении.',\n    button: 'Ок'\n  })\n}\n<\/script>\n\n<template>\n  <Button label=\"Показать уведомление\" @click=\"addMessage\" />\n\n  <Snackbar\n    ref=\"snackbar\"\n    vertical=\"bottom\"\n    horizontal=\"right\"\n  />\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst snackbar = ref(null)\n\nconst addMessage = () => {\nsnackbar.value?.data.add({\n  label: 'Заголовок уведомления',\n  description: 'Описание события, которое произошло в приложении.',\n  button: 'Ок'\n})\n}\n<\/script>\n\n<template>\n<Button label=\"Показать уведомление\" @click=\"addMessage\" />\n\n<Snackbar\n  ref=\"snackbar\"\n  vertical=\"bottom\"\n  horizontal=\"right\"\n/>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -24134,7 +23884,6 @@ function mm(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24176,10 +23925,10 @@ function mm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Basic Usage -->\n  <SnackbarItem\n    label=\"Message sent successfully\"\n    icon=\"check\"\n  />\n\n  <!-- With Action Button -->\n  <SnackbarItem\n    description=\"Your subscription expires in 3 days.\"\n    button=\"Renew\"\n    @click=\"onRenew\"\n  />\n\n  <!-- With Custom Content -->\n  <SnackbarItem>\n    <div class=\"custom-content\">\n      <strong>Attention!</strong>\n      <p>An unexpected server error occurred.</p>\n    </div>\n  </SnackbarItem>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<template>\n<!-- Basic Usage -->\n<SnackbarItem\n  label=\"Message sent successfully\"\n  icon=\"check\"\n/>\n\n<!-- With Action Button -->\n<SnackbarItem\n  description=\"Your subscription expires in 3 days.\"\n  button=\"Renew\"\n  @click=\"onRenew\"\n/>\n\n<!-- With Custom Content -->\n<SnackbarItem>\n  <div class=\"custom-content\">\n    <strong>Attention!</strong>\n    <p>An unexpected server error occurred.</p>\n  </div>\n</SnackbarItem>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -24208,7 +23957,6 @@ function gm(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24250,10 +23998,10 @@ function gm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Базовое использование -->\n  <SnackbarItem\n    label=\"Сообщение успешно отправлено\"\n    icon=\"check\"\n  />\n\n  <!-- С кнопкой действия -->\n  <SnackbarItem\n    description=\"Ваша подписка истекает через 3 дня.\"\n    button=\"Продлить\"\n    @click=\"onRenew\"\n  />\n\n  <!-- С пользовательским контентом -->\n  <SnackbarItem>\n    <div class=\"custom-content\">\n      <strong>Внимание!</strong>\n      <p>Произошла непредвиденная ошибка на сервере.</p>\n    </div>\n  </SnackbarItem>\n</template>\n"
-		}) }),
+		a(s, {
+			code: "\n<template>\n<!-- Базовое использование -->\n<SnackbarItem\n  label=\"Сообщение успешно отправлено\"\n  icon=\"check\"\n/>\n\n<!-- С кнопкой действия -->\n<SnackbarItem\n  description=\"Ваша подписка истекает через 3 дня.\"\n  button=\"Продлить\"\n  @click=\"onRenew\"\n/>\n\n<!-- С пользовательским контентом -->\n<SnackbarItem>\n  <div class=\"custom-content\">\n    <strong>Внимание!</strong>\n    <p>Произошла непредвиденная ошибка на сервере.</p>\n  </div>\n</SnackbarItem>\n</template>\n",
+			language: "html"
+		}),
 		"\n",
 		o(t.blockquote, { children: [
 			"\n",
@@ -24445,7 +24193,6 @@ function Em(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24468,10 +24215,10 @@ function Em(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst onClose = (value) => {\n  console.log('Element closed:', value)\n}\n<\/script>\n\n<template>\n  <SnackbarItem value=\"item-1\" @close=\"onClose\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst onClose = (value) => {\nconsole.log('Element closed:', value)\n}\n<\/script>\n\n<template>\n<SnackbarItem value=\"item-1\" @close=\"onClose\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Dm(e = {}) {
@@ -24489,7 +24236,6 @@ function Om(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24512,10 +24258,10 @@ function Om(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst onClose = (value) => {\n  console.log('Элемент закрыт:', value)\n}\n<\/script>\n\n<template>\n  <SnackbarItem value=\"item-1\" @close=\"onClose\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst onClose = (value) => {\nconsole.log('Элемент закрыт:', value)\n}\n<\/script>\n\n<template>\n<SnackbarItem value=\"item-1\" @close=\"onClose\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function km(e = {}) {
@@ -24533,7 +24279,6 @@ function Am(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24561,10 +24306,10 @@ function Am(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Standard notification -->\n  <SnackbarItem label=\"Download complete\" role=\"status\" />\n\n  <!-- Critical error -->\n  <SnackbarItem label=\"Connection error!\" role=\"alert\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Standard notification -->\n<SnackbarItem label=\"Download complete\" role=\"status\" />\n\n<!-- Critical error -->\n<SnackbarItem label=\"Connection error!\" role=\"alert\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function jm(e = {}) {
@@ -24582,7 +24327,6 @@ function Mm(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24610,10 +24354,10 @@ function Mm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<template>\n  <!-- Стандартное уведомление -->\n  <SnackbarItem label=\"Загрузка завершена\" role=\"status\" />\n\n  <!-- Критическая ошибка -->\n  <SnackbarItem label=\"Ошибка соединения!\" role=\"alert\" />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<template>\n<!-- Стандартное уведомление -->\n<SnackbarItem label=\"Загрузка завершена\" role=\"status\" />\n\n<!-- Критическая ошибка -->\n<SnackbarItem label=\"Ошибка соединения!\" role=\"alert\" />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Nm(e = {}) {
@@ -24654,10 +24398,8 @@ var Pm = {
 //#region src/media/mdx/TabItem/tabItem.en.mdx
 function Fm(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24703,10 +24445,10 @@ function Fm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst activeTab = ref('home')\n<\/script>\n\n<template>\n  <div class=\"tabs\">\n    <TabItem\n      label=\"Home\"\n      icon=\"home\"\n      :selected=\"activeTab === 'home'\"\n      @click=\"activeTab = 'home'\"\n    />\n    <TabItem\n      label=\"Messages\"\n      icon=\"mail\"\n      badge=\"5\"\n      :selected=\"activeTab === 'messages'\"\n      @click=\"activeTab = 'messages'\"\n    />\n    <TabItem\n      label=\"Settings\"\n      icon=\"settings\"\n      disabled\n    />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst activeTab = ref('home')\n<\/script>\n\n<template>\n<div class=\"tabs\">\n  <TabItem\n    label=\"Home\"\n    icon=\"home\"\n    :selected=\"activeTab === 'home'\"\n    @click=\"activeTab = 'home'\"\n  />\n  <TabItem\n    label=\"Messages\"\n    icon=\"mail\"\n    badge=\"5\"\n    :selected=\"activeTab === 'messages'\"\n    @click=\"activeTab = 'messages'\"\n  />\n  <TabItem\n    label=\"Settings\"\n    icon=\"settings\"\n    disabled\n  />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Im(e = {}) {
@@ -24720,10 +24462,8 @@ function Im(e = {}) {
 //#region src/media/mdx/TabItem/tabItem.ru.mdx
 function Lm(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24769,10 +24509,10 @@ function Lm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst activeTab = ref('home')\n<\/script>\n\n<template>\n  <TabItem\n      label=\"Главная\"\n      icon=\"home\"\n      :selected=\"activeTab === 'home'\"\n      @click=\"activeTab = 'home'\"\n    />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst activeTab = ref('home')\n<\/script>\n\n<template>\n<TabItem\n    label=\"Главная\"\n    icon=\"home\"\n    :selected=\"activeTab === 'home'\"\n    @click=\"activeTab = 'home'\"\n  />\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Rm(e = {}) {
@@ -24795,10 +24535,8 @@ var zm = {
 //#region src/media/mdx/Tabs/tabs.en.mdx
 function Bm(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24838,10 +24576,10 @@ function Bm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('tab1')\nconst tabs = [\n  { text: 'Tab 1', value: 'tab1' },\n  { text: 'Tab 2', value: 'tab2' },\n  { text: 'Tab 3', value: 'tab3' }\n]\n<\/script>\n\n<template>\n  <Tabs\n    v-model:selected=\"selected\"\n    :list=\"tabs\"\n  >\n    <template #default=\"{ item }\">\n      <div class=\"p-4\">\n        Content for {{ item.text }}\n      </div>\n    </template>\n  </Tabs>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('tab1')\nconst tabs = [\n{ text: 'Tab 1', value: 'tab1' },\n{ text: 'Tab 2', value: 'tab2' },\n{ text: 'Tab 3', value: 'tab3' }\n]\n<\/script>\n\n<template>\n<Tabs\n  v-model:selected=\"selected\"\n  :list=\"tabs\"\n>\n  <template #default=\"{ item }\">\n    <div class=\"p-4\">\n      Content for {{ item.text }}\n    </div>\n  </template>\n</Tabs>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Vm(e = {}) {
@@ -24855,10 +24593,8 @@ function Vm(e = {}) {
 //#region src/media/mdx/Tabs/tabs.ru.mdx
 function Hm(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24898,10 +24634,10 @@ function Hm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('tab1')\nconst tabs = [\n  { text: 'Вкладка 1', value: 'tab1' },\n  { text: 'Вкладка 2', value: 'tab2' },\n  { text: 'Вкладка 3', value: 'tab3' }\n]\n<\/script>\n\n<template>\n  <Tabs\n    v-model:selected=\"selected\"\n    :list=\"tabs\"\n  >\n    <template #default=\"{ item }\">\n      <div class=\"p-4\">\n        Контент для {{ item.text }}\n      </div>\n    </template>\n  </Tabs>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selected = ref('tab1')\nconst tabs = [\n{ text: 'Вкладка 1', value: 'tab1' },\n{ text: 'Вкладка 2', value: 'tab2' },\n{ text: 'Вкладка 3', value: 'tab3' }\n]\n<\/script>\n\n<template>\n<Tabs\n  v-model:selected=\"selected\"\n  :list=\"tabs\"\n>\n  <template #default=\"{ item }\">\n    <div class=\"p-4\">\n      Контент для {{ item.text }}\n    </div>\n  </template>\n</Tabs>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Um(e = {}) {
@@ -24919,7 +24655,6 @@ function Wm(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24941,10 +24676,10 @@ function Wm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\n<\/script>\n\n<template>\n  <Tabs\n    v-model:selected=\"selectedTab\"\n    :tabs=\"[\n      { label: 'Home', value: 'home' },\n      { label: 'Profile', value: 'profile' }\n    ]\"\n  >\n    <template #home>Home Content</template>\n    <template #profile>Profile Content</template>\n  </Tabs>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\n<\/script>\n\n<template>\n<Tabs\n  v-model:selected=\"selectedTab\"\n  :tabs=\"[\n    { label: 'Home', value: 'home' },\n    { label: 'Profile', value: 'profile' }\n  ]\"\n>\n  <template #home>Home Content</template>\n  <template #profile>Profile Content</template>\n</Tabs>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Gm(e = {}) {
@@ -24962,7 +24697,6 @@ function Km(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -24984,10 +24718,10 @@ function Km(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\n<\/script>\n\n<template>\n  <Tabs\n    v-model:selected=\"selectedTab\"\n    :tabs=\"[\n      { label: 'Home', value: 'home' },\n      { label: 'Profile', value: 'profile' }\n    ]\"\n  >\n    <template #home>Home Content</template>\n    <template #profile>Profile Content</template>\n  </Tabs>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\n<\/script>\n\n<template>\n<Tabs\n  v-model:selected=\"selectedTab\"\n  :tabs=\"[\n    { label: 'Home', value: 'home' },\n    { label: 'Profile', value: 'profile' }\n  ]\"\n>\n  <template #home>Home Content</template>\n  <template #profile>Profile Content</template>\n</Tabs>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function qm(e = {}) {
@@ -25019,7 +24753,6 @@ function Ym(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25061,10 +24794,10 @@ function Ym(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n  { label: 'Home', value: 'home', icon: 'home' },\n  { label: 'Profile', value: 'profile', icon: 'person' },\n  { label: 'Settings', value: 'settings', icon: 'settings' }\n]\n<\/script>\n\n<template>\n  <TabsNavigation\n    v-model:selected=\"selectedTab\"\n    :list=\"tabs\"\n    horizontal-scroll-align=\"center\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n{ label: 'Home', value: 'home', icon: 'home' },\n{ label: 'Profile', value: 'profile', icon: 'person' },\n{ label: 'Settings', value: 'settings', icon: 'settings' }\n]\n<\/script>\n\n<template>\n<TabsNavigation\n  v-model:selected=\"selectedTab\"\n  :list=\"tabs\"\n  horizontal-scroll-align=\"center\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Xm(e = {}) {
@@ -25081,7 +24814,6 @@ function Zm(e) {
 		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25123,10 +24855,10 @@ function Zm(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n  { label: 'Главная', value: 'home', icon: 'home' },\n  { label: 'Профиль', value: 'profile', icon: 'person' },\n  { label: 'Настройки', value: 'settings', icon: 'settings' }\n]\n<\/script>\n\n<template>\n  <TabsNavigation\n    v-model:selected=\"selectedTab\"\n    :list=\"tabs\"\n    horizontal-scroll-align=\"center\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n{ label: 'Главная', value: 'home', icon: 'home' },\n{ label: 'Профиль', value: 'profile', icon: 'person' },\n{ label: 'Настройки', value: 'settings', icon: 'settings' }\n]\n<\/script>\n\n<template>\n<TabsNavigation\n  v-model:selected=\"selectedTab\"\n  :list=\"tabs\"\n  horizontal-scroll-align=\"center\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Qm(e = {}) {
@@ -25144,7 +24876,6 @@ function $m(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25166,10 +24897,10 @@ function $m(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n  { label: 'Home', value: 'home' },\n  { label: 'Profile', value: 'profile' }\n]\n<\/script>\n\n<template>\n  <p>Selected: {{ selectedTab }}</p>\n\n  <TabsNavigation\n    v-model:selected=\"selectedTab\"\n    :list=\"tabs\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n{ label: 'Home', value: 'home' },\n{ label: 'Profile', value: 'profile' }\n]\n<\/script>\n\n<template>\n<p>Selected: {{ selectedTab }}</p>\n\n<TabsNavigation\n  v-model:selected=\"selectedTab\"\n  :list=\"tabs\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function eh(e = {}) {
@@ -25187,7 +24918,6 @@ function th(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25209,10 +24939,10 @@ function th(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n  { label: 'Главная', value: 'home' },\n  { label: 'Профиль', value: 'profile' }\n]\n<\/script>\n\n<template>\n  <p>Выбрано: {{ selectedTab }}</p>\n\n  <TabsNavigation\n    v-model:selected=\"selectedTab\"\n    :list=\"tabs\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst selectedTab = ref('home')\nconst tabs = [\n{ label: 'Главная', value: 'home' },\n{ label: 'Профиль', value: 'profile' }\n]\n<\/script>\n\n<template>\n<p>Выбрано: {{ selectedTab }}</p>\n\n<TabsNavigation\n  v-model:selected=\"selectedTab\"\n  :list=\"tabs\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function nh(e = {}) {
@@ -25245,7 +24975,6 @@ function ih(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25282,10 +25011,10 @@ function ih(e) {
 			" will dynamically adjust its height to fit all entered text."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst text = ref('')\n<\/script>\n\n<template>\n  <!-- Default automatic resizing -->\n  <Textarea\n    v-model=\"text\"\n    label=\"Comment\"\n    placeholder=\"Enter text...\"\n  />\n\n  <!-- Disabled auto-resizing -->\n  <Textarea\n    v-model=\"text\"\n    label=\"Fixed size\"\n    :autosize=\"false\"\n    rows=\"5\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst text = ref('')\n<\/script>\n\n<template>\n<!-- Default automatic resizing -->\n<Textarea\n  v-model=\"text\"\n  label=\"Comment\"\n  placeholder=\"Enter text...\"\n/>\n\n<!-- Disabled auto-resizing -->\n<Textarea\n  v-model=\"text\"\n  label=\"Fixed size\"\n  :autosize=\"false\"\n  rows=\"5\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ah(e = {}) {
@@ -25303,7 +25032,6 @@ function oh(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25340,10 +25068,10 @@ function oh(e) {
 			" будет динамически изменять свою высоту, чтобы вместить весь введенный текст."
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst text = ref('')\n<\/script>\n\n<template>\n  <!-- Автоматическое изменение размера по умолчанию -->\n  <Textarea\n    v-model=\"text\"\n    label=\"Комментарий\"\n    placeholder=\"Введите текст...\"\n  />\n\n  <!-- Отключенное авто-изменение размера -->\n  <Textarea\n    v-model=\"text\"\n    label=\"Фиксированный размер\"\n    :autosize=\"false\"\n    rows=\"5\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst text = ref('')\n<\/script>\n\n<template>\n<!-- Автоматическое изменение размера по умолчанию -->\n<Textarea\n  v-model=\"text\"\n  label=\"Комментарий\"\n  placeholder=\"Введите текст...\"\n/>\n\n<!-- Отключенное авто-изменение размера -->\n<Textarea\n  v-model=\"text\"\n  label=\"Фиксированный размер\"\n  :autosize=\"false\"\n  rows=\"5\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function sh(e = {}) {
@@ -25357,10 +25085,8 @@ function sh(e = {}) {
 //#region src/media/mdx/Textarea/textarea.en.mdx
 function ch(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25404,10 +25130,10 @@ function ch(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst comment = ref('')\n<\/script>\n\n<template>\n  <Textarea\n    v-model=\"comment\"\n    label=\"Your comment\"\n    placeholder=\"Enter text...\"\n    autosize\n    counter\n    :maxlength=\"500\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst comment = ref('')\n<\/script>\n\n<template>\n<Textarea\n  v-model=\"comment\"\n  label=\"Your comment\"\n  placeholder=\"Enter text...\"\n  autosize\n  counter\n  :maxlength=\"500\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function lh(e = {}) {
@@ -25421,10 +25147,8 @@ function lh(e = {}) {
 //#region src/media/mdx/Textarea/textarea.ru.mdx
 function uh(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25468,10 +25192,10 @@ function uh(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst comment = ref('')\n<\/script>\n\n<template>\n  <Textarea\n    v-model=\"comment\"\n    label=\"Ваш комментарий\"\n    placeholder=\"Введите текст...\"\n    autosize\n    counter\n    :maxlength=\"500\"\n  />\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst comment = ref('')\n<\/script>\n\n<template>\n<Textarea\n  v-model=\"comment\"\n  label=\"Ваш комментарий\"\n  placeholder=\"Введите текст...\"\n  autosize\n  counter\n  :maxlength=\"500\"\n/>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function dh(e = {}) {
@@ -25500,10 +25224,8 @@ var fh = {
 //#region src/media/mdx/TextareaAutosize/textarea-autosize.en.mdx
 function ph(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25551,10 +25273,10 @@ function ph(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst message = ref('')\n\nconst handleInput = (event) => {\n  console.log('Current value:', event.target.value)\n}\n<\/script>\n\n<template>\n  <div class=\"form\">\n    <TextareaAutosize\n      v-model=\"message\"\n      :inputAttrs=\"{\n        placeholder: 'Enter your message...',\n        maxlength: 500\n      }\"\n      @input=\"handleInput\"\n    />\n\n    <TextareaAutosize\n      value=\"Text field with fixed height\"\n      :autosize=\"false\"\n      :inputAttrs=\"{\n        placeholder: 'Height does not change',\n        rows: 3\n      }\"\n    />\n\n    <TextareaAutosize\n      :inputAttrs=\"{\n        placeholder: 'Comment',\n        'aria-label': 'Comment field',\n        required: true\n      }\"\n    />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst message = ref('')\n\nconst handleInput = (event) => {\nconsole.log('Current value:', event.target.value)\n}\n<\/script>\n\n<template>\n<div class=\"form\">\n  <TextareaAutosize\n    v-model=\"message\"\n    :inputAttrs=\"{\n      placeholder: 'Enter your message...',\n      maxlength: 500\n    }\"\n    @input=\"handleInput\"\n  />\n\n  <TextareaAutosize\n    value=\"Text field with fixed height\"\n    :autosize=\"false\"\n    :inputAttrs=\"{\n      placeholder: 'Height does not change',\n      rows: 3\n    }\"\n  />\n\n  <TextareaAutosize\n    :inputAttrs=\"{\n      placeholder: 'Comment',\n      'aria-label': 'Comment field',\n      required: true\n    }\"\n  />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function mh(e = {}) {
@@ -25568,10 +25290,8 @@ function mh(e = {}) {
 //#region src/media/mdx/TextareaAutosize/textarea-autosize.ru.mdx
 function hh(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25619,10 +25339,10 @@ function hh(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst message = ref('')\n\nconst handleInput = (event) => {\n  console.log('Текущее значение:', event.target.value)\n}\n<\/script>\n\n<template>\n  <div class=\"form\">\n    <TextareaAutosize\n      v-model=\"message\"\n      :inputAttrs=\"{\n        placeholder: 'Введите ваше сообщение...',\n        maxlength: 500\n      }\"\n      @input=\"handleInput\"\n    />\n\n    <TextareaAutosize\n      value=\"Текстовое поле с фиксированной высотой\"\n      :autosize=\"false\"\n      :inputAttrs=\"{\n        placeholder: 'Высота не изменяется',\n        rows: 3\n      }\"\n    />\n\n    <TextareaAutosize\n      :inputAttrs=\"{\n        placeholder: 'Комментарий',\n        'aria-label': 'Поле комментария',\n        required: true\n      }\"\n    />\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst message = ref('')\n\nconst handleInput = (event) => {\nconsole.log('Текущее значение:', event.target.value)\n}\n<\/script>\n\n<template>\n<div class=\"form\">\n  <TextareaAutosize\n    v-model=\"message\"\n    :inputAttrs=\"{\n      placeholder: 'Введите ваше сообщение...',\n      maxlength: 500\n    }\"\n    @input=\"handleInput\"\n  />\n\n  <TextareaAutosize\n    value=\"Текстовое поле с фиксированной высотой\"\n    :autosize=\"false\"\n    :inputAttrs=\"{\n      placeholder: 'Высота не изменяется',\n      rows: 3\n    }\"\n  />\n\n  <TextareaAutosize\n    :inputAttrs=\"{\n      placeholder: 'Комментарий',\n      'aria-label': 'Поле комментария',\n      required: true\n    }\"\n  />\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function gh(e = {}) {
@@ -25645,10 +25365,8 @@ var _h = {
 //#region src/media/mdx/Tooltip/tooltip.en.mdx
 function vh(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25690,10 +25408,10 @@ function vh(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { Tooltip } from 'dxt-ui'\n<\/script>\n\n<template>\n  <div class=\"p-4\">\n    <Tooltip label=\"Tooltip text\">\n      <button>Hover me</button>\n    </Tooltip>\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { Tooltip } from 'dxt-ui'\n<\/script>\n\n<template>\n<div class=\"p-4\">\n  <Tooltip label=\"Tooltip text\">\n    <button>Hover me</button>\n  </Tooltip>\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function yh(e = {}) {
@@ -25707,10 +25425,8 @@ function yh(e = {}) {
 //#region src/media/mdx/Tooltip/tooltip.ru.mdx
 function bh(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -25752,10 +25468,10 @@ function bh(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { Tooltip } from 'dxt-ui'\n<\/script>\n\n<template>\n  <div class=\"p-4\">\n    <Tooltip label=\"Подсказка\">\n      <button>Наведи на меня</button>\n    </Tooltip>\n  </div>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { Tooltip } from 'dxt-ui'\n<\/script>\n\n<template>\n<div class=\"p-4\">\n  <Tooltip label=\"Подсказка\">\n    <button>Наведи на меня</button>\n  </Tooltip>\n</div>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function xh(e = {}) {
@@ -26208,7 +25924,6 @@ function zh(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -26247,10 +25962,10 @@ function zh(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleWindow = (options) => {\n  console.log('Window ID:', options.id)\n  console.log('Window is open:', options.open)\n  console.log('Window element:', options.element)\n  console.log('Control element:', options.control)\n}\n<\/script>\n\n<template>\n  <Component @window=\"handleWindow\">\n    <template #default>\n      <p>Window content</p>\n    </template>\n  </Component>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleWindow = (options) => {\nconsole.log('Window ID:', options.id)\nconsole.log('Window is open:', options.open)\nconsole.log('Window element:', options.element)\nconsole.log('Control element:', options.control)\n}\n<\/script>\n\n<template>\n<Component @window=\"handleWindow\">\n  <template #default>\n    <p>Window content</p>\n  </template>\n</Component>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Bh(e = {}) {
@@ -26268,7 +25983,6 @@ function Vh(e) {
 		h3: "h3",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -26307,10 +26021,10 @@ function Vh(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nconst handleWindow = (options) => {\n  console.log('ID окна:', options.id)\n  console.log('Окно открыто:', options.open)\n  console.log('Элемент окна:', options.element)\n  console.log('Элемент управления:', options.control)\n}\n<\/script>\n\n<template>\n  <Component @window=\"handleWindow\">\n    <template #default>\n      <p>Содержимое окна</p>\n    </template>\n  </Component>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nconst handleWindow = (options) => {\nconsole.log('ID окна:', options.id)\nconsole.log('Окно открыто:', options.open)\nconsole.log('Элемент окна:', options.element)\nconsole.log('Элемент управления:', options.control)\n}\n<\/script>\n\n<template>\n<Component @window=\"handleWindow\">\n  <template #default>\n    <p>Содержимое окна</p>\n  </template>\n</Component>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function Hh(e = {}) {
@@ -26924,7 +26638,6 @@ function ag(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -26946,10 +26659,10 @@ function ag(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Open</button>\n\n  <Window v-model:open=\"isOpen\">\n    <template #default>\n      <p>Window content</p>\n      <button @click=\"isOpen = false\">Close</button>\n    </template>\n  </Window>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Open</button>\n\n<Window v-model:open=\"isOpen\">\n  <template #default>\n    <p>Window content</p>\n    <button @click=\"isOpen = false\">Close</button>\n  </template>\n</Window>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function og(e = {}) {
@@ -26967,7 +26680,6 @@ function sg(e) {
 		h2: "h2",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -26989,10 +26701,10 @@ function sg(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Открыть</button>\n\n  <Window v-model:open=\"isOpen\">\n    <template #default>\n      <p>Содержимое окна</p>\n      <button @click=\"isOpen = false\">Закрыть</button>\n    </template>\n  </Window>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Открыть</button>\n\n<Window v-model:open=\"isOpen\">\n  <template #default>\n    <p>Содержимое окна</p>\n    <button @click=\"isOpen = false\">Закрыть</button>\n  </template>\n</Window>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function cg(e = {}) {
@@ -27006,10 +26718,8 @@ function cg(e = {}) {
 //#region src/media/mdx/Window/window.en.mdx
 function lg(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -27055,10 +26765,10 @@ function lg(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleWindow = (options) => {\n  console.log('Window state:', options.open ? 'open' : 'closed')\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Open Window</button>\n\n  <Window\n    v-model:open=\"isOpen\"\n    adaptive=\"modal\"\n    @window=\"handleWindow\"\n  >\n    <template #title>\n      <h2>Window Title</h2>\n    </template>\n\n    <template #default>\n      <p>Modal window content</p>\n    </template>\n\n    <template #footer>\n      <button @click=\"isOpen = false\">Close</button>\n    </template>\n  </Window>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleWindow = (options) => {\nconsole.log('Window state:', options.open ? 'open' : 'closed')\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Open Window</button>\n\n<Window\n  v-model:open=\"isOpen\"\n  adaptive=\"modal\"\n  @window=\"handleWindow\"\n>\n  <template #title>\n    <h2>Window Title</h2>\n  </template>\n\n  <template #default>\n    <p>Modal window content</p>\n  </template>\n\n  <template #footer>\n    <button @click=\"isOpen = false\">Close</button>\n  </template>\n</Window>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function ug(e = {}) {
@@ -27072,10 +26782,8 @@ function ug(e = {}) {
 //#region src/media/mdx/Window/window.ru.mdx
 function dg(e) {
 	let t = {
-		code: "code",
 		li: "li",
 		p: "p",
-		pre: "pre",
 		strong: "strong",
 		ul: "ul",
 		...e.components
@@ -27121,10 +26829,10 @@ function dg(e) {
 			"\n"
 		] }),
 		"\n",
-		a(t.pre, { children: a(t.code, {
-			className: "language-html",
-			children: "<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleWindow = (options) => {\n  console.log('Состояние окна:', options.open ? 'открыто' : 'закрыто')\n}\n<\/script>\n\n<template>\n  <button @click=\"isOpen = true\">Открыть окно</button>\n\n  <Window\n    v-model:open=\"isOpen\"\n    adaptive=\"modal\"\n    @window=\"handleWindow\"\n  >\n    <template #title>\n      <h2>Заголовок окна</h2>\n    </template>\n\n    <template #default>\n      <p>Содержимое модального окна</p>\n    </template>\n\n    <template #footer>\n      <button @click=\"isOpen = false\">Закрыть</button>\n    </template>\n  </Window>\n</template>\n"
-		}) })
+		a(s, {
+			code: "\n<script setup>\nimport { ref } from 'vue'\n\nconst isOpen = ref(false)\n\nconst handleWindow = (options) => {\nconsole.log('Состояние окна:', options.open ? 'открыто' : 'закрыто')\n}\n<\/script>\n\n<template>\n<button @click=\"isOpen = true\">Открыть окно</button>\n\n<Window\n  v-model:open=\"isOpen\"\n  adaptive=\"modal\"\n  @window=\"handleWindow\"\n>\n  <template #title>\n    <h2>Заголовок окна</h2>\n  </template>\n\n  <template #default>\n    <p>Содержимое модального окна</p>\n  </template>\n\n  <template #footer>\n    <button @click=\"isOpen = false\">Закрыть</button>\n  </template>\n</Window>\n</template>\n",
+			language: "html"
+		})
 	] });
 }
 function fg(e = {}) {
@@ -27236,7 +26944,7 @@ var pg = [
 	}
 ], mg = class {
 	constructor(t) {
-		c(this, "item", void 0), c(this, "mdx", void 0), this.item = e.find((e) => e.name === t), this.mdx = pg.find((e) => e.name === t);
+		l(this, "item", void 0), l(this, "mdx", void 0), this.item = e.find((e) => e.name === t), this.mdx = pg.find((e) => e.name === t);
 	}
 	getItem() {
 		return this.item;
@@ -27248,4 +26956,4 @@ var pg = [
 	}
 };
 //#endregion
-export { c as n, mg as t };
+export { l as n, mg as t };

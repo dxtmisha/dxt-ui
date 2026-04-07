@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `transform`
 
 Событие срабатывает при изменении состояния MotionTransform с полным контекстом события.
@@ -10,7 +12,8 @@
 - `type: 'head' | 'body' | 'top' | 'script'` — тип области, которая инициировала событие
 - `open: boolean` — текущее состояние открытия (`true` - открыто, `false` - закрыто)
 
-```html
+<Source
+    code={`
 <script setup>
 const handleTransform = (event, options) => {
   console.log('Событие:', event)
@@ -29,7 +32,9 @@ const handleTransform = (event, options) => {
     </template>
   </Component>
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### `transformLite`
 

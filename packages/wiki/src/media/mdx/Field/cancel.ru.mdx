@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Кнопка очистки
 
 Свойства `cancel` и `cancelShow` предназначены для управления отображением иконки очистки поля.
@@ -9,7 +11,8 @@
 
 Свойства работают совместно: если `cancel` установлен в `auto`, иконка очистки отображается только при выполнении условий `cancelShow = true`, поле активно (не `disabled`/`readonly`) и не включён режим стрелок (`arrowCarousel`/`arrowStepper`). При `cancel = always` иконка отображается принудительно (кроме случаев `disabled`/`readonly` или активных стрелок), значение `cancelShow` игнорируется. Режимы стрелок имеют приоритет над кнопкой очистки — при активной навигации cancel скрывается независимо от настроек.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref, computed } from 'vue'
 
@@ -51,4 +54,6 @@ const hasValue = computed(() => value.value.length > 0)
     </template>
   </Field>
 </template>
-```
+  `}
+    language="html"
+/>

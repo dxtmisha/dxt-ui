@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating modal dialog windows with icon support, titles, and predefined action buttons.
 
 Dialog is a specialized wrapper over the Modal component with additional capabilities for displaying informational messages, confirmations, and notifications. The component automatically displays an information block with icon, title, and description, and provides predefined OK and Close buttons. Supports success and error states with automatic icon switching, image positioning, and full content customization.
@@ -23,7 +25,8 @@ Dialog is a specialized wrapper over the Modal component with additional capabil
 - Warnings and alerts
 - Simple forms with minimal fields
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -62,5 +65,7 @@ const handleConfirm = () => {
     :buttonClose="null"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

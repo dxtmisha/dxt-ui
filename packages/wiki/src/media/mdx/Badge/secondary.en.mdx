@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Secondary badges (secondary)
 
 The Badge component supports secondary mode via the `secondary` property. In this mode, badges have a balanced visual style between primary and outline variants:
@@ -9,8 +11,11 @@ The Badge component supports secondary mode via the `secondary` property. In thi
 
 Secondary mode is especially useful for creating supporting information indicators, status updates, and categorical labels that are important but don't require critical attention in the visual hierarchy.
 
-```html
+<Source
+    code={`
 <Badge secondary overlap="static">12</Badge>
 <Badge secondary overlap="static" icon="info">Updated</Badge>
 <Badge secondary dot overlap="static"/>
-```
+  `}
+    language="html"
+/>

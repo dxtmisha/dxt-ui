@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Ignore zones
 
 Properties that exclude elements from outside-click checks and auto-close logic.
@@ -9,7 +11,8 @@ Properties that exclude elements from outside-click checks and auto-close logic.
 
 Both properties work together during outside-click evaluation. `ignore` is more precise and faster for single elements, can reference a specific DOM element directly. `ignoreSelector` is more flexible, can match multiple elements with a single selector, better suited for dynamic content. Use for trigger buttons, helper controls, and nested interactive areas.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -29,4 +32,6 @@ const triggerButton = ref()
     ignoreSelector=".helper-controls"
   />
 </template>
-```
+  `}
+    language="html"
+/>

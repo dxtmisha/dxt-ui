@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Input Masking
 
 Properties `mask`, `maskVisible`, `maskNone`, and `maskAttrs` are designed to manage formatted input with automatic separator insertion and character control at specified positions.
@@ -11,7 +13,8 @@ Properties `mask`, `maskVisible`, `maskNone`, and `maskAttrs` are designed to ma
 
 Properties work together: `mask` defines the formatting structure, where special character (default `*`) defines positions for digit input, and other characters (spaces, brackets, hyphens) are automatically inserted as fixed separators. `maskVisible` controls the display of unfilled positions, where when set to `true` they are displayed with placeholder characters `_`, and when `false` only entered characters with separators are shown. `maskNone` allows completely disabling masking logic, converting the field to a regular text input. `maskAttrs` provides access to extended settings, allowing configuration of special characters (`special`), regular expressions for validation (`match`), custom placeholder characters (`view`), validation patterns (`pattern`), and rubber groups (`rubber`).
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 const value = ref('')
@@ -27,4 +30,6 @@ const value = ref('')
   <!-- Without placeholder display -->
   <Input v-model="value" type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
 </template>
-```
+  `}
+    language="html"
+/>

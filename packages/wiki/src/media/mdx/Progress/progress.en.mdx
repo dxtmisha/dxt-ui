@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for visual representation of operation progress, data loading, and long-running processes.
 
 Progress provides flexible options for indicating completion status: linear and circular progress bars, minimalist point indicators. The component automatically manages visibility with customizable appearance and hiding delays, supports both determinate progress values and indeterminate states for operations with unknown completion time.
@@ -22,7 +24,8 @@ Progress provides flexible options for indicating completion status: linear and 
 - Progress bars in forms and wizards
 - Background process indication
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -68,4 +71,6 @@ const startLoading = () => {
     indeterminate="type1"
   />
 </template>
-```
+  `}
+    language="html"
+/>

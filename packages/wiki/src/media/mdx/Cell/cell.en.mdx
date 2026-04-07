@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 Universal container component for displaying structured content with labels, descriptions, and interactive actions in lists and interface elements.
@@ -24,7 +26,8 @@ Cell provides a consistent way to represent information blocks with support for 
 - Data tables and structured information displays
 - Mobile-first interface components
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -52,6 +55,8 @@ const handleClick = () => {
     </template>
   </Cell>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Cell is designed as a universal building block for creating consistent list-based interfaces with rich content and interactive states.

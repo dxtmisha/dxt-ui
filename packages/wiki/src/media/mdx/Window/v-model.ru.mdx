@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Управление состоянием через v-model
 
 Двусторонняя привязка состояния открытия окна через `v-model:open`.
@@ -5,7 +7,8 @@
 **Параметры:**
 - `open: boolean` — состояние открытия окна
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -22,4 +25,6 @@ const isOpen = ref(false)
     </template>
   </Window>
 </template>
-```
+  `}
+    language="html"
+/>

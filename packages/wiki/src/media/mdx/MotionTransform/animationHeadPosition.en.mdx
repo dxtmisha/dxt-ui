@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Head position animation
 
 The `animationHeadPosition` property controls how the Head area behaves during show/hide animations.
@@ -9,10 +11,13 @@ The `animationHeadPosition` property controls how the Head area behaves during s
 
 Synchronizes header movement with content animation using CSS transforms for smooth transitions. Suitable for collapsing layouts when the header should travel with expanding content. When the `section` property is enabled (set to `true`), the `animationHeadPosition` parameter is ignored and does not affect animation behavior.
 
-```html
+<Source
+    code={`
 <!-- Head stays at top -->
 <MotionTransform animationHeadPosition="top" />
 
 <!-- Head moves down with content -->
 <MotionTransform animationHeadPosition="toBottom" />
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Managing list performance
 
 The `lite` and `liteThreshold` properties work together to optimize rendering of large lists. They enable a lightweight display mode that reduces visual complexity and improves performance when the threshold number of items is exceeded.
@@ -9,7 +11,8 @@ The `lite` and `liteThreshold` properties work together to optimize rendering of
 
 Display mode is determined automatically: when `lite=false`, the list always renders in full mode. When `lite=true`, the component compares the total item count with `liteThreshold`. If the item count does not exceed the threshold, full mode with extended visualization is used. When the threshold is exceeded, lightweight mode is activated to reduce rendering load. Use `lite` for working with dynamic data of variable size.
 
-```html
+<Source
+    code={`
 <!-- Automatic mode switching -->
 <List :list="items" :lite="true" :liteThreshold="50" />
 
@@ -21,4 +24,6 @@ Display mode is determined automatically: when `lite=false`, the list always ren
 
 <!-- Custom threshold for mobile devices -->
 <List :list="data" :lite="true" :liteThreshold="30" />
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Progress Delay Management
 
 The `delay` and `delayHide` properties control timing parameters for showing and hiding the progress indicator. These properties allow creating a smoother user experience by avoiding flickers during fast operations.
@@ -9,7 +11,8 @@ The `delay` and `delayHide` properties control timing parameters for showing and
 
 The standard `delay="360"` value is proven in practice and suitable for most cases. Increase `delay` for rapid operations where the indicator might interfere with perception. Decrease for long operations where immediate feedback is important.
 
-```html
+<Source
+    code={`
 <!-- Standard delays -->
 <Progress delay="360" delayHide="200" />
 
@@ -21,4 +24,6 @@ The standard `delay="360"` value is proven in practice and suitable for most cas
 
 <!-- No delays -->
 <Progress delay="0" delayHide="0" />
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `close`
 
 The event is triggered when the element is closed (clicking the close button or programmatic closing).
@@ -5,7 +7,8 @@ The event is triggered when the element is closed (clicking the close button or 
 **Parameters:**
 - `value: string | undefined` — element identification (the value of the `value` property)
 
-```html
+<Source
+    code={`
 <script setup>
 const onClose = (value) => {
   console.log('Element closed:', value)
@@ -15,4 +18,6 @@ const onClose = (value) => {
 <template>
   <SnackbarItem value="item-1" @close="onClose" />
 </template>
-```
+  `}
+    language="html"
+/>

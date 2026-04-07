@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Icon State Management
 
 A component for displaying icons with support for active state, rotation, loading, and skeleton integration.
@@ -40,7 +42,8 @@ Icon provides a unified interface for working with icons in the design system, s
 
 ### Usage Example
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 import { D1Icon } from '@dxtmisha/d1'
@@ -53,7 +56,7 @@ const isActive = ref(false)
   <D1Icon icon="home" />
 
   <!-- Active icon -->
-  <!-- `favorite` will be displayed because active=true -->
+  <!-- \`favorite\` will be displayed because active=true -->
   <D1Icon icon="favorite_border" icon-active="favorite" :active="true" />
 
   <!-- Dynamic state toggle -->
@@ -72,6 +75,8 @@ const isActive = ref(false)
     @load="onIconLoad"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 > The Icon component can be used both standalone and as part of other UI components through the `icon`, `icon-trailing`, and `icon-active` properties.

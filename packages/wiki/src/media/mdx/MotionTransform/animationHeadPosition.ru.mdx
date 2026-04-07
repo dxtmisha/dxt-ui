@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Анимация позиции заголовка
 
 Свойство `animationHeadPosition` определяет поведение области Head во время анимаций показа/скрытия.
@@ -9,10 +11,13 @@
 
 Синхронизирует движение заголовка с анимацией контента, используя CSS-трансформации для плавных переходов. Подходит для сворачиваемых макетов, когда заголовок должен перемещаться вместе с разворачивающимся содержимым. При включенном свойстве `section` (установлено в `true`) параметр `animationHeadPosition` игнорируется и не влияет на поведение анимации.
 
-```html
+<Source
+    code={`
 <!-- Head остается вверху -->
 <MotionTransform animationHeadPosition="top" />
 
 <!-- Head движется вниз с контентом -->
 <MotionTransform animationHeadPosition="toBottom" />
-```
+  `}
+    language="html"
+/>

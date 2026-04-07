@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 A component used to display temporary notifications (snackbars) in various parts of the screen. Snackbars provide brief messages about app processes at the bottom or top of the screen.
@@ -17,7 +19,8 @@ Snackbar manages a message queue, automatically hiding notifications after a spe
 - Informing about errors or warnings
 - Real-time system notifications
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -41,6 +44,8 @@ const addMessage = () => {
     horizontal="right"
   />
 </template>
-```
+  `}
+    language="html"
+/>
 
 > It is recommended to use Snackbar for non-critical information that does not require immediate user action.

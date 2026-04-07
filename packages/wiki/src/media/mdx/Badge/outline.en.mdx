@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Outline badges (outline)
 
 The Badge component supports outline mode via the `outline` property. In this mode, badges have a minimalist visual style with transparent background and colored border:
@@ -9,8 +11,11 @@ The Badge component supports outline mode via the `outline` property. In this mo
 
 Outline mode is especially useful for creating secondary indicators, informational labels, and status markers that should be noticeable but not dominant in the interface's visual hierarchy.
 
-```html
+<Source
+    code={`
 <Badge outline overlap="static">99+</Badge>
 <Badge outline overlap="static" icon="info">Info</Badge>
 <Badge outline dot overlap="static"/>
-```
+  `}
+    language="html"
+/>

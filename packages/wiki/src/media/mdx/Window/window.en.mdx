@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating modal windows, dialogs, and popup elements with flexible positioning and adaptive behavior.
 
 Window manages content display on top of the main interface, supports various positioning types (modal windows, dropdown menus, action sheets), open/close animations, and event system integration. The component automatically handles outside clicks, focus management, and adaptation to different screen sizes.
@@ -20,7 +22,8 @@ Window manages content display on top of the main interface, supports various po
 - Action sheets for mobile interfaces
 - Tooltips and dialogs
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -52,4 +55,6 @@ const handleWindow = (options) => {
     </template>
   </Window>
 </template>
-```
+  `}
+    language="html"
+/>

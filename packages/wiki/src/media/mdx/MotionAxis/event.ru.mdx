@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `start`
 
 Событие срабатывает в начале анимации перехода.
@@ -26,7 +28,8 @@
 - `preparation: string | number` — идентификатор подготавливаемого слайда
 - `active: string | number` — идентификатор активного слайда
 
-```html
+<Source
+    code={`
 <script setup>
 const handleStart = (selected) => {
   console.log('Начало анимации к слайду:', selected)
@@ -50,4 +53,6 @@ const handleMotionAxis = (options) => {
     <!-- Слайды -->
   </MotionAxis>
 </template>
-```
+  `}
+    language="html"
+/>

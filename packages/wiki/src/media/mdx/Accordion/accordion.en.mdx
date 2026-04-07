@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Description
 
 Expandable container for organizing content with smooth opening and closing animations, simplifying information structuring in the interface.
@@ -22,7 +24,8 @@ Accordion allows creating expandable sections with automatic animations, interac
 - Information blocks
 - Menus with subsections
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -54,6 +57,8 @@ const isOpen = ref(false)
     </template>
   </Accordion>
 </template>
-```
+  `}
+    language="html"
+/>
 
 > Accordion is a component for creating expandable sections with animation support, state management, and flexible customization.

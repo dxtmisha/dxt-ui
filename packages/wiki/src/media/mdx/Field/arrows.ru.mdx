@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Навигация и стрелки
 
 Свойства `arrowCarousel`, `arrowStepper`, `arrowAlign`, `disabledPrevious` и `disabledNext` предназначены для управления встроенными элементами навигации.
@@ -12,7 +14,8 @@
 
 Свойства работают совместно: активен только один режим стрелок — если `arrowCarousel = true`, режим `arrowStepper` игнорируется и наоборот. При активном режиме навигации кнопка очистки (`cancel`) автоматически скрывается, так как область управления имеет приоритет. Флаги `disabledPrevious` и `disabledNext` применяются только к текущему активному режиму стрелок.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -88,4 +91,6 @@ const count = ref(5)
     </template>
   </Field>
 </template>
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating popup menus, dropdown lists, and context menus with navigation and action support.
 
 Menu combines the functionality of Window (positioning and visibility management), Bars (action and tool panel), and List (displaying items, groups, and nested submenus). The component provides keyboard navigation, nested structure support, asynchronous data loading, optimized rendering mode for large lists, and full control over open/close state.
@@ -22,7 +24,8 @@ Menu combines the functionality of Window (positioning and visibility management
 - Multi-level navigation menus
 - Menus with dynamic data loading
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -61,4 +64,6 @@ const handleClick = (value) => {
     </template>
   </Menu>
 </template>
-```
+  `}
+    language="html"
+/>

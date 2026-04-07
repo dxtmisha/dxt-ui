@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Managing search and highlighting
 
 The `highlight` and `highlightLengthStart` properties work together to control match highlighting when searching through list items. They set the search string and minimum query length for activating visual highlighting of found fragments.
@@ -9,7 +11,8 @@ The `highlight` and `highlightLengthStart` properties work together to control m
 
 Match highlighting is activated automatically: when the `highlight` length is less than `highlightLengthStart`, search works but visual highlighting is not applied. When the minimum length is reached, the component begins highlighting found fragments across the entire list hierarchy. Search works in real-time and considers nested items in groups and menus. Use `highlightLengthStart` to prevent excessive highlighting with short queries.
 
-```html
+<Source
+    code={`
 <!-- Standard search with highlighting from 2 characters -->
 <List :list="items" highlight="text" />
 
@@ -21,5 +24,7 @@ Match highlighting is activated automatically: when the `highlight` length is le
 
 <!-- Search without minimum threshold -->
 <List :list="products" :highlight="filter" :highlightLengthStart="0" />
-```
+  `}
+    language="html"
+/>
 

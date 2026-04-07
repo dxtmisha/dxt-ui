@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Контурные бейджи (outline)
 
 Компонент Badge поддерживает контурный режим через свойство `outline`. В этом режиме бейджи имеют минималистичный визуальный стиль с прозрачным фоном и цветной границей:
@@ -9,8 +11,11 @@
 
 Outline режим особенно полезен для создания второстепенных индикаторов, информационных меток и статусных маркеров, которые должны быть заметными, но не доминирующими в визуальной иерархии интерфейса.
 
-```html
+<Source
+    code={`
 <Badge outline overlap="static">99+</Badge>
 <Badge outline overlap="static" icon="info">Инфо</Badge>
 <Badge outline dot overlap="static"/>
-```
+  `}
+    language="html"
+/>

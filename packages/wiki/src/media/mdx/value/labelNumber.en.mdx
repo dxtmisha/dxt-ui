@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Working with text labels and numbers
 
 The `label`, `labelMax`, and `formatting` properties are designed to manage the display of textual and numerical content in interface components.
@@ -10,7 +12,8 @@ The `label`, `labelMax`, and `formatting` properties are designed to manage the 
 
 Properties work together for flexible content management: `label` accepts both textual and numeric values. When a number is passed, automatic processing is applied with localization consideration. The `labelMax` property limits the display of large numbers — when the value is exceeded, a "+" symbol is added (e.g., "99+"). The `formatting` property controls number formatting according to user regional settings, ensuring correct display of separators and numeric formats.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -44,4 +47,6 @@ const largeNumber = ref(1234)
   />
   <!-- Displays: 99+ -->
 </template>
-```
+  `}
+    language="html"
+/>

@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Success and error states
 
 Properties `success`, `error`, `iconSuccess` and `iconError` are designed to control the visual state of the dialog and automatically display corresponding icons.
@@ -11,7 +13,8 @@ Properties `success`, `error`, `iconSuccess` and `iconError` are designed to con
 
 Properties work together: if `success` or `error` are not set or equal to `false`, the dialog is displayed in a neutral state. When `success="true"` is activated, the component automatically displays the success icon from `iconSuccess`. When `error="true"` is activated, the error icon from `iconError` is displayed. Properties `iconSuccess` and `iconError` allow overriding standard icons with custom ones, providing flexibility in visual design of dialog messages.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -54,5 +57,7 @@ const showError = ref(false)
     description="Issues detected during data processing."
   />
 </template>
-```
+  `}
+    language="html"
+/>
 

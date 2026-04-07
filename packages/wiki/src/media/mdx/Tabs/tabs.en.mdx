@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating tabs with navigation and animated content switching.
 
 Tabs combines a navigation bar (TabsNavigation) and a content area (MotionAxis), ensuring synchronized switching between tabs. The component supports horizontal scrolling of headers, various display styles, and content transition animations.
@@ -17,7 +19,8 @@ Tabs combines a navigation bar (TabsNavigation) and a content area (MotionAxis),
 - Navigation within modal windows or cards
 - Creating step-by-step wizards
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -41,4 +44,6 @@ const tabs = [
     </template>
   </Tabs>
 </template>
-```
+  `}
+    language="html"
+/>

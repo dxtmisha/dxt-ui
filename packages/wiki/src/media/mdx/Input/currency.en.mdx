@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Currency Formatting
 
 Properties `type`, `currency`, `currencyHide`, `language`, and `fraction` are designed to manage currency value formatting with automatic currency symbol insertion and localization.
@@ -12,7 +14,8 @@ Properties `type`, `currency`, `currencyHide`, `language`, and `fraction` are de
 
 Properties work together: `type="currency"` automatically activates currency formatting mode with two decimal places. `currency` defines the symbol appended to the formatted number (`$`, `€`, `₽`). When `currencyHide` is set, currency symbol is not displayed, but number formatting is preserved. Property `language` affects thousand separators, decimal separator, and currency symbol position. Number of decimal places can be changed via `fraction`, overriding the default value.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 const value = ref('1234.56')
@@ -34,5 +37,7 @@ const value = ref('1234.56')
   <!-- Number formatting only -->
   <Input v-model="value" type="number-format" language="ru-RU" label="Number" />
 </template>
-```
+  `}
+    language="html"
+/>
 

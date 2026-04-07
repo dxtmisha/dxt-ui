@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Режим действий
 
 Свойства `action`, `actionLabel`, `actionDescription` и `actionBars` предназначены для переключения Bars в контекстный режим действий при выборе элементов или выполнении массовых операций.
@@ -11,7 +13,8 @@
 
 Свойства работают совместно: когда `action = true`, компонент заменяет стандартный контент (label, description, bars) на варианты для действий (actionLabel, actionDescription, actionBars). Кнопка назад автоматически трансформируется в кнопку выхода (iconClose) для возврата из режима действий. Все общие атрибуты кнопок из `buttonAttrs` применяются к `actionBars`, сохраняя согласованную стилизацию. Режим действий обычно контролируется внешним состоянием выбора и используется для временных фокусированных операций с возможностью выхода обратно в обычный вид.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref, computed } from 'vue'
 
@@ -49,7 +52,7 @@ const handleDelete = () => {
       { icon: 'add', label: 'Добавить' },
       { icon: 'search', label: 'Поиск' }
     ]"
-    :action-label="`Выбрано: ${selectedItems.length}`"
+    :action-label="\`Выбрано: \${selectedItems.length}\`"
     action-description="Выберите действие"
     :action-bars="[
       { icon: 'share', onClick: handleShare },
@@ -74,11 +77,13 @@ const handleDelete = () => {
   <Bars
     v-model:action="actionMode"
     label="Сообщения"
-    :action-label="`Сообщений: ${selectedItems.length}`"
+    :action-label="\`Сообщений: \${selectedItems.length}\`"
     :action-bars="[
       { icon: 'mark_email_read' },
       { icon: 'delete' }
     ]"
   />
 </template>
-```
+  `}
+    language="html"
+/>

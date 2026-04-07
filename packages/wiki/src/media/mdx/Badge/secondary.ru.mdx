@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Второстепенные бейджи (secondary)
 
 Компонент Badge поддерживает второстепенный режим через свойство `secondary`. В этом режиме бейджи имеют сбалансированный визуальный стиль между primary и outline вариантами:
@@ -9,8 +11,11 @@
 
 Secondary режим особенно полезен для создания поддерживающих индикаторов информации, статусных обновлений и категориальных меток, которые важны, но не требуют критического внимания в визуальной иерархии.
 
-```html
+<Source
+    code={`
 <Badge secondary overlap="static">12</Badge>
 <Badge secondary overlap="static" icon="info">Обновлено</Badge>
 <Badge secondary dot overlap="static"/>
-```
+  `}
+    language="html"
+/>

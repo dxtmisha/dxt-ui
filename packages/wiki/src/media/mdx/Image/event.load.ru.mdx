@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `load`
 
 Событие срабатывает после загрузки изображения.
@@ -15,7 +17,8 @@
 - `image: HTMLImageElement` — DOM элемент изображения
 - `src: string` — источник изображения (URL)
 
-```html
+<Source
+    code={`
 <script setup>
 const handleLoad = (data) => {
   console.log('Тип изображения:', data.type)
@@ -36,4 +39,6 @@ const handleLoad = (data) => {
     @load="handleLoad"
   />
 </template>
-```
+  `}
+    language="html"
+/>

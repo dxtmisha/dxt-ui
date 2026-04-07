@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Dot indicator
 
 The `dot` property transforms Badge into a compact circular indicator without text content, used for simple visual status notifications.
@@ -9,7 +11,8 @@ The `dot` property transforms Badge into a compact circular indicator without te
 
 Creates a minimalist visual marker for indicating states, activity, or notifications without displaying specific values. Ideal for user presence indicators (online/offline), unread notification markers, and status dots on interface elements. When the `dot` property is activated, any text content or numeric values are ignored, displaying only the color indicator.
 
-```html
+<Source
+    code={`
 <!-- Standard Badge with content -->
 <Badge label="5" />
 
@@ -18,4 +21,6 @@ Creates a minimalist visual marker for indicating states, activity, or notificat
 
 <!-- Dot indicator for online status -->
 <Badge dot :selected="isOnline" overlap="circular" />
-```
+  `}
+    language="html"
+/>

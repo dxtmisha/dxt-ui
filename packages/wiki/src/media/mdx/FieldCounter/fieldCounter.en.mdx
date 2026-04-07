@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for displaying character count and input limits in form fields with customizable formatting templates.
 
 FieldCounter provides visual feedback about the number of entered characters, automatically formats display depending on the presence of a maximum limit, and supports flexible customization through templates with placeholders. The component integrates with text fields and text areas, providing users with information about restrictions and remaining input space.
@@ -20,7 +22,8 @@ FieldCounter provides visual feedback about the number of entered characters, au
 - Forms with minimum/maximum length requirements
 - SMS editors with character counting
 
-```html
+<Source
+    code={`
 <template>
   <!-- Basic counter -->
   <Component :counter="10" />
@@ -31,4 +34,6 @@ FieldCounter provides visual feedback about the number of entered characters, au
   <!-- Custom template -->
   <Component :counter="5" :maxlength="50" template="[c] of [m]" />
 </template>
-```
+  `}
+    language="html"
+/>

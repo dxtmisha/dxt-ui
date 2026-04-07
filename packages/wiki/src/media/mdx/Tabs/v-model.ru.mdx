@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Управление состоянием через v-model
 
 Двусторонняя привязка выбранной вкладки через `v-model:selected`.
@@ -5,7 +7,8 @@
 **Параметры:**
 - `selected: any` — значение выбранной вкладки
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -24,4 +27,6 @@ const selectedTab = ref('home')
     <template #profile>Profile Content</template>
   </Tabs>
 </template>
-```
+  `}
+    language="html"
+/>

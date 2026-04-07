@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 A component for creating input fields with automatic data formatting according to a specified pattern in real-time.
 
 Mask provides structured input with support for various formats (phones, bank cards, dates, currencies, numbers). The component automatically adds separators and literal characters during typing, restricts input to only allowed characters, supports multiple patterns with automatic selection of the most suitable one, works together with the validation system through `pattern` and `check`, and provides built-in mask types for common data formats.
@@ -23,7 +25,8 @@ Mask provides structured input with support for various formats (phones, bank ca
 - Currency amounts with formatting
 - Numeric values with separators
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -73,4 +76,6 @@ const handleInput = (value) => {
     currency="RUB"
   />
 </template>
-```
+  `}
+    language="html"
+/>

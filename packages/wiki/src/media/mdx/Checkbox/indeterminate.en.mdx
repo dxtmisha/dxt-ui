@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Indeterminate state
 
 The `indeterminate` property controls the third checkbox state — indeterminate (partially selected). This state is visually displayed as a horizontal line instead of a checkmark.
@@ -10,7 +12,8 @@ The `indeterminate` property controls the third checkbox state — indeterminate
 
 The indeterminate state is typically used for parent checkboxes in a group when only some child elements are selected.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref, computed } from 'vue'
 
@@ -58,4 +61,6 @@ const indeterminate = computed(() => {
     label="Partially selected"
   />
 </template>
-```
+  `}
+    language="html"
+/>

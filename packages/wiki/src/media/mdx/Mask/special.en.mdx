@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Special characters
 
 The `special` property defines special characters to denote user input positions in the mask and configure their extended behavior.
@@ -18,7 +20,8 @@ Object notation `MaskSpecialList` (see [detailed description below](#maskspecial
 
 For built-in types (`currency`, `number`, `date`, `time`), the system automatically generates special characters considering regional settings, ignoring the user-defined `special` value.
 
-```html
+<Source
+    code={`
 <!-- Simple special character -->
 <Mask mask="***-***" special="*" />
 
@@ -49,7 +52,9 @@ For built-in types (`currency`, `number`, `date`, `time`), the system automatica
     'Y': { defaultValue: '2024', pattern: '\\d' }
   }"
 />
-```
+  `}
+    language="html"
+/>
 
 ## MaskSpecialList
 
@@ -78,7 +83,8 @@ For effective use of `MaskSpecialList`, follow these simple rules:
 
 ### Example
 
-```html
+<Source
+    code={`
 <script setup>
 const value = ref('')
 </script>
@@ -103,4 +109,6 @@ const value = ref('')
     }"
   />
 </template>
-```
+  `}
+    language="html"
+/>

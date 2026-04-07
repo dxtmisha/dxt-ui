@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Primary buttons
 
 Button component supports primary mode through the `primary` property. In this mode, buttons have a distinctive visual style for the most important actions:
@@ -9,8 +11,11 @@ Button component supports primary mode through the `primary` property. In this m
 
 Primary mode is especially useful for creating main call-to-action buttons, form submissions, and confirmation actions that require user attention and should be immediately recognizable in the interface.
 
-```html
+<Source
+    code={`
 <Button primary icon="send">Submit</Button>
 <Button primary icon="save">Save</Button>
 <Button primary>Confirm</Button>
-```
+  `}
+    language="html"
+/>

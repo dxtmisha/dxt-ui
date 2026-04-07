@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Flags
 
 The `Image` component supports displaying country flags. A special format for the `value` property is used for this purpose.
@@ -12,7 +14,8 @@ The `Image` component supports displaying country flags. A special format for th
 - Automatic flag type detection by prefix
 - Support for all countries according to ISO 3166-1 alpha-2 standard
 
-```html
+<Source
+    code={`
 <template>
   <!-- Standard US flag -->
   <Image value="flag-us" />
@@ -20,4 +23,6 @@ The `Image` component supports displaying country flags. A special format for th
   <!-- Compressed Germany flag -->
   <Image value="f-de" />
 </template>
-```
+  `}
+    language="html"
+/>

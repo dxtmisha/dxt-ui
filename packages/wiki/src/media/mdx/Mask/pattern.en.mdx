@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Validation and patterns
 
 The `pattern` and `check` properties are designed for managing input validation in the mask.
@@ -9,7 +11,8 @@ The `pattern` and `check` properties are designed for managing input validation 
 
 Properties work sequentially: `pattern` validates entered values at the mask group level, highlighting validation errors after input. Characters are entered into the field, but when they don't match the pattern, an error message is displayed. Each group (defined by special characters) receives its own pattern. After the mask is fully filled, `check` performs final validation of the entire value, providing an additional layer of verification for complex business logic. Both properties are optional and can be used independently or together for multi-level protection against incorrect data.
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -63,4 +66,6 @@ const cardNumber = ref('')
     }"
   />
 </template>
-```
+  `}
+    language="html"
+/>

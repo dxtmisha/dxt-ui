@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Universal component for displaying images, icons, flags, and PDF documents with advanced size, positioning, and adaptability controls.
 
 Image provides a flexible API for working with various types of visual content. The component automatically detects the source type (image, icon, color, file), selects the optimal rendering method (`<img>`, `background-image`, `<picture>`, `<object>`, or icon font), and supports advanced cropping and adaptation features.
@@ -20,7 +22,8 @@ Image provides a flexible API for working with various types of visual content. 
 - Background images with complex positioning
 - Displaying country flags via CSS sprites
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 import { Image } from '@dxtmisha/constructor'
@@ -46,6 +49,8 @@ const imageUrl = ref('https://example.com/image.jpg')
   <!-- Material Design Icon -->
   <Image value="filled-home" />
 </template>
-```
+  `}
+    language="html"
+/>
 
 > The component automatically manages content type and optimizes display based on the source.

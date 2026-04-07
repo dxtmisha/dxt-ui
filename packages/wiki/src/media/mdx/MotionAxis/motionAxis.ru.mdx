@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Компонент для организации переходов между элементами (слайдами).
 
 MotionAxis позволяет анимировать смену контента по осям X, Y, Z с эффектами сдвига. Поддерживает автоматическое определение направления анимации, управление высотой контейнера и ленивую загрузку (DOM).
@@ -18,7 +20,8 @@ MotionAxis позволяет анимировать смену контента
 - Галереи изображений
 - Онбординг экраны
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -40,4 +43,6 @@ const selected = ref('slide1')
     </template>
   </MotionAxis>
 </template>
-```
+  `}
+    language="html"
+/>

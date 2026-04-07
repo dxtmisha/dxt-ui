@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Skeleton mode
 
 The `isSkeleton` property defines element behavior when interacting with the parent Skeleton component.
@@ -9,7 +11,8 @@ The `isSkeleton` property defines element behavior when interacting with the par
 
 Works in conjunction with the Skeleton component to control visibility and display mode of child elements. When parent Skeleton has `active=false`, all child elements display normally regardless of `isSkeleton` value. When `active=true`, elements with `isSkeleton=true` are shown as skeleton placeholders, while elements with `isSkeleton=false` are completely hidden.
 
-```html
+<Source
+    code={`
 <!-- Element will display as skeleton -->
 <Skeleton active>
   <Component isSkeleton text="Loading..." />
@@ -19,4 +22,6 @@ Works in conjunction with the Skeleton component to control visibility and displ
 <Skeleton active>
   <Component :isSkeleton="false" text="Hidden text" />
 </Skeleton>
-```
+  `}
+    language="html"
+/>

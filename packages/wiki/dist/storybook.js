@@ -1,4 +1,4 @@
-import { t as e } from "./WikiStorybookDescriptions-BrwsRAKT.js";
+import { t as e } from "./WikiStorybookDescriptions-IKMchHA-.js";
 import { Fragment as t, jsx as n, jsxs as r } from "react/jsx-runtime";
 import { Canvas as i, Controls as a, Subtitle as o, Title as s } from "@storybook/addon-docs/blocks";
 import "react";

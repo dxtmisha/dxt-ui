@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Date and time types
 
 Date types in Mask provide automatic formatting and validation for date and time input with localization support.
@@ -23,7 +25,8 @@ Formats adapt via the `language` property:
 
 ### Examples
 
-```html
+<Source
+    code={`
 <!-- US date format -->
 <Mask type="date" language="en-US" />
 
@@ -35,4 +38,6 @@ Formats adapt via the `language` property:
 
 <!-- Time only -->
 <Mask type="time" />
-```
+  `}
+    language="html"
+/>

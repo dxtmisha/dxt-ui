@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Image display control
 
 The `size`, `coordinator`, `x`, and `y` properties allow you to precisely control image scaling, visible area, and positioning within the container.
@@ -11,7 +13,8 @@ The `size`, `coordinator`, `x`, and `y` properties allow you to precisely contro
 
 Properties work together or individually. The `size` value defines the scaling mode: `auto` uses the original size, `contain` fits the image completely, `cover` fills the container with possible cropping. The `coordinator` property sets the visible area by cropping the image at specified coordinates. The `x` and `y` parameters shift the image relative to the container for precise positioning.
 
-```html
+<Source
+    code={`
 <!-- Scaling mode -->
 <Image value="image.png" size="contain" />
 
@@ -29,4 +32,6 @@ Properties work together or individually. The `size` value defines the scaling m
   x="10"
   y="5"
 />
-```
+  `}
+    language="html"
+/>

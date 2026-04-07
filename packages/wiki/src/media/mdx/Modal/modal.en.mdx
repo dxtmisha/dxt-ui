@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 A simplified wrapper over the Window component for creating modal dialogs with preconfigured centered positioning settings.
 
 Modal is a specialized component that uses Window with a fixed `adaptive: 'modal'` mode. It is designed to display content that requires immediate user attention, blocking interaction with the main interface. The component automatically centers content, adds a semi-transparent backdrop (overlay), and manages focus.
@@ -25,7 +27,8 @@ Modal is a Window with preset `adaptive: 'modal'`, which simplifies usage for st
 - Viewing detailed information
 - Multi-step wizards
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -60,4 +63,6 @@ const handleBeforeClosing = async () => {
     </template>
   </Modal>
 </template>
-```
+  `}
+    language="html"
+/>

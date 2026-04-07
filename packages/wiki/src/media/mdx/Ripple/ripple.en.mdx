@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for creating animated wave effect on element click.
 
 Ripple provides visual feedback during user interaction with interactive elements, automatically tracking clicks and generating an animated wave expanding from the touch point. The effect enhances user experience by making the interface more responsive and modern.
@@ -18,7 +20,8 @@ Ripple provides visual feedback during user interaction with interactive element
 - Menu and navigation elements
 - Interactive icons
 
-```html
+<Source
+    code={`
 <template>
   <!-- Button with ripple effect -->
   <button style="position: relative;">
@@ -39,4 +42,6 @@ Ripple provides visual feedback during user interaction with interactive element
     <Ripple />
   </div>
 </template>
-```
+  `}
+    language="html"
+/>

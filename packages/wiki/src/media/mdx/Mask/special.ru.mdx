@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Специальные символы
 
 Свойство `special` определяет специальные символы для обозначения мест пользовательского ввода в маске и настройку их расширенного поведения.
@@ -18,7 +20,8 @@
 
 Для встроенных типов (`currency`, `number`, `date`, `time`) система автоматически генерирует специальные символы с учётом региональных настроек, игнорируя пользовательское значение `special`.
 
-```html
+<Source
+    code={`
 <!-- Простой специальный символ -->
 <Mask mask="***-***" special="*" />
 
@@ -49,7 +52,9 @@
     'Y': { defaultValue: '2024', pattern: '\\d' }
   }"
 />
-```
+  `}
+    language="html"
+/>
 
 ## MaskSpecialList
 
@@ -78,7 +83,8 @@
 
 ### Пример
 
-```html
+<Source
+    code={`
 <script setup>
 const value = ref('')
 </script>
@@ -103,4 +109,6 @@ const value = ref('')
     }"
   />
 </template>
-```
+  `}
+    language="html"
+/>

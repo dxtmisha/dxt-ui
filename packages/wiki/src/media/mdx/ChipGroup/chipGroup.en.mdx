@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 Component for managing a collection of chips with selection functionality and flexible data binding.
 
 ChipGroup renders multiple Chip components from a data array, handles single or multiple selection states, and provides customization options for each chip. The component supports dynamic list rendering, conditional icon display based on selection, and flexible data structure mapping through key properties.
@@ -21,7 +23,8 @@ ChipGroup renders multiple Chip components from a data array, handles single or 
 - Status or type selectors
 - Dynamic lists with selection
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -48,4 +51,6 @@ const handleClick = (event) => {
     @click="handleClick"
   />
 </template>
-```
+  `}
+    language="html"
+/>

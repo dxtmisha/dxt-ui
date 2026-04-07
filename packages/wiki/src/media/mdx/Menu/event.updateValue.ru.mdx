@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ### `updateValue`
 
 Событие срабатывает при изменении выбранного значения в меню.
@@ -5,7 +7,8 @@
 **Параметры:**
 - `value?: NumberOrStringOrBoolean` — новое выбранное значение
 
-```html
+<Source
+    code={`
 <script setup>
 const handleUpdateValue = (value) => {
   console.log('Новое значение:', value)
@@ -25,6 +28,8 @@ const handleUpdateValue = (value) => {
     </template>
   </Menu>
 </template>
-```
+  `}
+    language="html"
+/>
 
 

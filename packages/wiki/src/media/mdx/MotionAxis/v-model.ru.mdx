@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Управление состоянием через v-model
 
 Двусторонняя привязка выбранного слайда через `v-model:selected`.
@@ -5,7 +7,8 @@
 **Параметры:**
 - `selected: string | number` — идентификатор выбранного слайда
 
-```html
+<Source
+    code={`
 <script setup>
 import { ref } from 'vue'
 
@@ -27,4 +30,6 @@ const selected = ref('slide1')
     </template>
   </MotionAxis>
 </template>
-```
+  `}
+    language="html"
+/>

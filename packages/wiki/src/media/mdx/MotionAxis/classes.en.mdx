@@ -1,3 +1,5 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
 ## Scroll Management during Animation
 
 The component automatically manages scroll visibility during transition animations to prevent content jumps.
@@ -9,10 +11,13 @@ To enable this feature, add the `*__scroll` class to the parent container that h
 1.  Wrap the component in a scrollable container.
 2.  Add the `*__scroll` class to this container (where `*` is the component class name, e.g., `d1-tabs__scroll`).
 
-```html
+<Source
+    code={`
 <div class="d1-tabs__scroll">
   <Tabs ... />
 </div>
-```
+  `}
+    language="html"
+/>
 
 During the animation, the component will automatically add the `*__scroll--hidden` class (which applies `overflow: hidden`) to this container, and remove it after the animation ends.
