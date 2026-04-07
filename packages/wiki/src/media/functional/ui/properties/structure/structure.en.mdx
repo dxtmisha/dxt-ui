@@ -1,0 +1,155 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/Structure description'/>
+
+# Structure description
+
+The `properties.json` configuration acts completely as a tree structure. Object keys on every depth boundary act as explicit names (selectors), and bottom leaf-nodes act as actual style setups (known as `PropertyItem`). Any standard CSS property explicitly defined as a key naturally generates valid CSS mapping formatting. 
+
+The following structure demonstrates the definition of base styles, state modifiers (`hover`, `disabled`), and stylistic variations that compile into Vue Props.
+
+```json
+{
+  "padding": "var(--sys-height) * {sys.spacing.adaptive.md}",
+  
+  "hover": {
+    "gradient-opacity": "{sys.opacity.hover}"
+  },
+
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}"
+  },
+
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "palette-background": "{sys.palette.primary}",
+    "active": {
+      "box-shadow": "{sys.shadow.lg}"
+    },
+    "_category": "style",
+    "_default": true
+  },
+
+  "~size": {
+    "sm": {
+      "height": "{ref.spacing.10}"
+    },
+    "md": {
+      "height": "{ref.spacing.12}"
+    },
+    "_default": "md"
+  }
+}
+```
+
+The properties generator processes the JSON schema via the following compilation rules:
+1. Physical style keys (e.g., `padding`) are inherently generated inside the `.component` CSS layout block.
+2. System token linkages wrapped in `{...}` are correctly resolved into their designated design system CSS variables.
+3. Property variations mapped with the `~` prefix are concurrently compiled into structural CSS modifiers (e.g., `--primary`) and exported into the component's TypeScript interface.
+
+Generated SCSS compilation:
+```scss
+.component {
+  padding: calc(var(--sys-height) * var(--sys-spacing-adaptive-md));
+
+  /* Pseudo-classes states */
+  &:hover {
+    --component-gradient-opacity: var(--sys-opacity-hover);
+  }
+  &:disabled {
+    color: var(--sys-palette-onSurface);
+    --component-color-opacity: var(--sys-opacity-surface-disabled);
+  }
+
+  /* Modification category "style": --primary */
+  &--primary {
+    color: var(--sys-palette-onPrimary);
+    background-color: var(--sys-palette-primary);
+    
+    &:active {
+      box-shadow: var(--sys-shadow-lg);
+    }
+  }
+
+  /* Modifiers groups "size" */
+  &--size-sm { height: var(--ref-spacing-10); }
+  &--size-md { height: var(--ref-spacing-12); }
+}
+```
+
+Generated Vue Props interface (`props.ts`):
+```typescript
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  primary?: boolean
+  size?: 'sm' | 'md'
+  // :type [!] System label / Системная метка
+}
+
+export const defaults: object = {
+  // :default [!] System label / Системная метка
+  primary: true,
+  size: 'md'
+  // :default [!] System label / Системная метка
+}
+```
+
+Generated Vue class binding logic:
+```typescript
+const classesToken = computed<ConstrClasses>(() => ({
+  main: {
+    // :classes-values [!] System label / Системная метка
+    'component': true,
+    'component--primary': props.primary,
+    [`component--size--${props.size}`]: inArray(propsValues.size, props.size)
+    // :classes-values [!] System label / Системная метка
+  }
+}))
+```
+
+## Key Hierarchy
+
+Normally the depth pattern follows:
+1. Root Domain node — `[Design / Global scope Name]` (e.g. `ui`, `d1`)
+2. Element node — `[Component Name]` (e.g. `component`)
+3. Logic node — `[Styles, sub-components, properties attributes]` (e.g. `background`, `size`, `hover`, `--padding`)
+
+## Inter-Links Mapping
+
+Values wrapped in curly braces (e.g., `"{sys.palette.primary}"` or `"{ref.spacing.10}"`) allow you to dynamically reference design system tokens. During compilation, they are substituted with their actual CSS variables or mapped absolute values automatically.
+
+## Service flags
+
+All configuration keys managing the generator processes start with a bottom underscore `_`.
+
+### Fundamental Identifiers
+
+- `_type: string` — Maps the output generator rendering component rule (`var`, `state`, `subclass`, `media`).
+- `_category: string` — Provides metadata classification tagging for sortings explicitly.
+
+### Behaviors modifications
+
+- `_var: boolean` — Signals generator building mapping local CSS variable format explicitly for node (`--name: value`).
+- `_state: boolean` — Tags current processing node matching internal `state` processing rendering setup layout block configuration.
+- `_subclass: boolean` — Sets local component identifying subclass nested properties.
+- `_prop: boolean` — Includes the node processing result towards `props.ts` generation exporting value via Vue/React.
+- `_theme: string` — Anchors processing layout styles to specified color theme processing dynamically.
+
+### Parsing and parameters
+
+- `_rename: string` — Overrides output strings variable representation. (Key `backgroundItem` with `_rename: "bg"` outputs `.component__bg`).
+- `_replace: string` — Allows replacing the pattern via internal RegEx match configurations.
+- `_fullName: string` — Ignores standard tree names scoping mapping explicit structure strings exactly.
+- `_fullValue: string` — Outputs precise variable processing strings avoiding numbers/px suffix parsing parameters.
+- `_default: any` — Outputs parameter configurations applying exact properties as fallback mechanism natively values outputs logic setups.
+
+### Structure Architecture Configs
+
+- `_important: boolean` — Extends parameter applying matching output rendering value logic via `!important`.
+- `_modification: boolean` — Modifies structure explicitly rendering variations handling element structures specifically.
+- `_drag: string` — Points pipeline pulling sub-tree data replacing into different configurations path branches automatically logic processing setups configurations.
+- `_dragSetting: boolean` — Pushes internal nested processing setups propagating settings internally towards leaf nodes.
+- `_settingClone: boolean` — Clones the current configuration settings propagating them into nested levels.
+- `_style: boolean` — Outputs local structural CSS layouts variables explicitly inline styles layouts structures parameters correctly.
+- `_remove: boolean` — Filters out current processing element structure completely erasing node output mapping rendering format.

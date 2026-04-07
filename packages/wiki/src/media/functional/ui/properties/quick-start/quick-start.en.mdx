@@ -1,0 +1,78 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/Quick start'/>
+
+# Quick Start
+
+This guide covers the basics of onboarding your UI components onto the properties generation pipeline via `properties.json`.
+
+## 1. Setting Up Base Styles
+
+The simplest configuration pattern maps flat JSON keys directly to native CSS attributes. Let's declare standard background and padding values:
+
+```json
+{
+  "background-color": "#cccccc",
+  "padding": "12px 24px"
+}
+```
+
+During compilation, the pipeline processes this directly into functional SCSS layout classes binding to your setup namespace automatically:
+```scss
+.component {
+  background-color: #cccccc;
+  padding: 12px 24px;
+}
+```
+
+## 2. Emitting CSS Variables
+
+Whenever an attribute must be dynamically manipulatable client-side (e.g. for custom scripting or interactive theming modes), utilize an object declaration bearing the `_var: true` flag.
+
+```json
+{
+  "border-radius": {
+    "_var": true,
+    "value": "8px"
+  }
+}
+```
+
+Result pipeline mapping:
+```scss
+.component {
+  --component-border-radius: 8px;
+  border-radius: var(--component-border-radius);
+}
+```
+
+## 3. Pseudo-classes and Variations
+
+The generator inherently orchestrates logic-grouped structures into valid CSS pseudo-classes or exported modifier variants natively:
+
+```json
+{
+  "hover": {
+    "background-color": "#aaaaaa"
+  },
+  "~active": {
+    "background-color": "#555555"
+  }
+}
+```
+
+Compiled bindings logic:
+```scss
+.component {
+  &:hover {
+    background-color: #aaaaaa;
+  }
+  
+  /* BEM modifier mapped via TypeScript Props */
+  &--active {
+    background-color: #555555;
+  }
+}
+```
+
+> **Note:** To leverage deep referencing design tokens (`{sys...}`) and systematic TypeScript props interfaces exports, review the full **Structure description** documentation.

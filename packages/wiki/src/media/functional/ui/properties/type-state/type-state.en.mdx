@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/States and subclasses'/>
+
+# States and subclasses
+
+The `state` and `subclass` types within `properties.json` assist in organizing nested component elements and variations without duplication.
+
+## Utilizing subclass
+
+It's geared to style inner areas of a given component natively, comparable with BEM elements.
+```json
+{
+  "card": {
+    "header": {
+      "_type": "subclass",
+      "fontSize": { "value": "20px" }
+    }
+  }
+}
+```
+**SCSS Output:**
+```scss
+.card__header { font-size: 20px; }
+```
+
+## Using state
+
+Recommended for state modifiers:
+```json
+{
+  "button": {
+    "hover": {
+      "_type": "state",
+      "background": { "value": "red" }
+    }
+  }
+}
+```
+**SCSS Output:**
+```scss
+.button {
+  &:hover { background: red; }
+}
+```

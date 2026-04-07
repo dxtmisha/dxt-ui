@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/Адаптивность'/>
+
+# Адаптивность: Media и Container
+
+Типы `media` и `container` в `properties.json` автоматически прописывают медиа-точки для адаптивной вёрстки компонентов.
+
+## Медиа-запросы
+
+Вам не нужно писать `@media` вручную. Задайте `media-max` и желаемую точку останова (breakpoint) напрямую в JSON.
+```json
+{
+  "grid": {
+    "mobile": {
+      "_type": "media-max",
+      "value": "768px",
+      "columns": { "value": "1fr" }
+    }
+  }
+}
+```
+**Результат:**
+```scss
+@media (max-width: 768px) {
+  .grid {
+    columns: 1fr;
+  }
+}
+```
+
+## Container Queries
+
+Аналогично работает тип `container-max`, который оборачивает вложенные свойства в правила `@container`. Это помогает стилизовать компоненты в зависимости от размеров их родительской области, а не размеров всего экрана.

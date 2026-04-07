@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/Состояния и подклассы'/>
+
+# Состояния и подклассы
+
+Типы `state` и `subclass` в `properties.json` помогают структурировать вложенные компоненты и вариации.
+
+## Использование subclass
+
+Позволяет стилизовать вложенные части компонента. Аналог БЭМ-элемента.
+```json
+{
+  "card": {
+    "header": {
+      "_type": "subclass",
+      "fontSize": { "value": "20px" }
+    }
+  }
+}
+```
+Выведет:
+```scss
+.card__header { font-size: 20px; }
+```
+
+## Использование state
+
+Применяется для псевдоклассов и состояний.
+```json
+{
+  "button": {
+    "hover": {
+      "_type": "state",
+      "background": { "value": "red" }
+    }
+  }
+}
+```
+Выведет:
+```scss
+.button {
+  &:hover { background: red; }
+}
+```

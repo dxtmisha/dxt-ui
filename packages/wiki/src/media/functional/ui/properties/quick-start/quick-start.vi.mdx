@@ -1,0 +1,78 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/Bắt đầu nhanh'/>
+
+# Bắt đầu nhanh
+
+Hướng dẫn này cung cấp nền tảng thiết lập gen-code cơ bản cho Component UI của bạn thông qua tệp hệ thống `properties.json`.
+
+## 1. Thiết lập CSS cơ bản
+
+Cấu hình dạng sơ cấp trực tiếp dựa dẫm vào gốc thuộc tính HTML CSS thông dụng làm khoá mã. Thiết đặt thử màu nền (background) và mã tuỳ chỉnh viền viền (padding):
+
+```json
+{
+  "background-color": "#cccccc",
+  "padding": "12px 24px"
+}
+```
+
+Máy biên dịch framework tiến hành trích xuất tự động qua block code hệ quy chiếu SCSS chuẩn của module (khóa parent):
+```scss
+.component {
+  background-color: #cccccc;
+  padding: 12px 24px;
+}
+```
+
+## 2. Khai báo biến CSS Variables Động
+
+Để đảm bảo giá trị giao diện có thể dễ dàng gọi tự động phục vụ đổi tham số Theme linh động ngay trên client, khai báo cấu trúc theo chuẩn Object mở rộng gắn cờ thuộc tính `_var: true`.
+
+```json
+{
+  "border-radius": {
+    "_var": true,
+    "value": "8px"
+  }
+}
+```
+
+Kết quả gen-code block SCSS:
+```scss
+.component {
+  --component-border-radius: 8px;
+  border-radius: var(--component-border-radius);
+}
+```
+
+## 3. Tổ hợp Trạng thái và Modifiers BEM
+
+Tiến trình phân bổ tự động nội suy nhóm mảng cho phần nhánh cấp thấp thành Pseudo-classes chuột hay các biến thể modifiers class:
+
+```json
+{
+  "hover": {
+    "background-color": "#aaaaaa"
+  },
+  "~active": {
+    "background-color": "#555555"
+  }
+}
+```
+
+Thành phẩm sau quy trình module framework nhận được:
+```scss
+.component {
+  &:hover {
+    background-color: #aaaaaa;
+  }
+  
+  /* Chuỗi BEM modifier tự động chuẩn bị map prop TypeScript */
+  &--active {
+    background-color: #555555;
+  }
+}
+```
+
+> **Ghi chú quan trọng:** Để phát huy sức mạnh gán biến ảo Token-System format (`{sys...}`) bằng cơ chế kết xuất nhanh Interface Types, bạn hãy tra cứu sâu thư viện **Mô tả cấu trúc**.

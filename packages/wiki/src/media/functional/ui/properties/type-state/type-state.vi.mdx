@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/Trạng thái và lớp con'/>
+
+# Trạng thái và lớp con
+
+Type JSON phân khúc `state` và `subclass` hỗ trợ tổ chức cấu trúc component lồng nhau dễ học.
+
+## Subclass
+
+Cấu trúc logic lồng cho phần tử theo Element cấp (chuẩn hóa tương tự BEM method).
+```json
+{
+  "card": {
+    "header": {
+      "_type": "subclass",
+      "fontSize": { "value": "20px" }
+    }
+  }
+}
+```
+**Biên dịch chuẩn SCSS Output:**
+```scss
+.card__header { font-size: 20px; }
+```
+
+## Áp dụng State
+
+Dùng khi tạo logic phân nhánh (Modifier hoặc pseudo class component):
+```json
+{
+  "button": {
+    "hover": {
+      "_type": "state",
+      "background": { "value": "red" }
+    }
+  }
+}
+```
+**Biên dịch chuẩn SCSS Output:**
+```scss
+.button {
+  &:hover { background: red; }
+}
+```

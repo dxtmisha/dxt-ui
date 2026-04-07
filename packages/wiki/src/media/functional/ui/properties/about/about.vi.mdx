@@ -1,0 +1,20 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/! Về module'/>
+
+# Properties
+
+Module `Properties` phục vụ cho việc quản lý khai báo các style của hệ thống thiết kế thông qua cấu hình JSON. Nhờ đó, người phát triển component không còn phải code SCSS cho các trạng thái, media-query hay biến theo cách thủ công — thay vào đó, toàn bộ design-token được khai báo tại tệp `properties.json`.
+
+## Tại sao cần có tệp này?
+
+Trong bất kì thư viện UI component có quy mô nào, vấn đề phổ biến nhất là quản lý khoảng cách, màu sắc và trạng thái (hover, focus, disabled). Tệp cấu hình `properties.json` cho phép:
+- Quản lý tập trung mọi token một cách dễ hiểu nằm ngay cạnh component.
+- Tự động sinh ra props chặt chẽ cho Vue/React.
+- Lấy SCSS class, biến và theme dựng sẵn mà không cần lặp code.
+
+## Các khái niệm cơ bản
+
+- **Token**: Đơn vị khai báo style trong cấu hình đối tượng.
+- **Tính lồng nhau**: Cấu trúc lồng của JSON sẽ ánh xạ vào các lớp CSS lồng nhau khi render.
+- **Phân loại**: Khai báo JSON chia thành nhiều loại: `var`, `state`, `media`, v.v... định hướng chính xác kết quả đầu ra.

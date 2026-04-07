@@ -1,0 +1,63 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/Biến'/>
+
+# Biến (var)
+
+Engine phân giải và xuất code properties cung cấp hai cơ chế chủ đạo nhằm thao tác Mảng CSS Custom Properties (biến hệ thống): khai báo biến minh bạch qua định danh kiểu `var`, và kết xuất song song mã thuộc tính CSS đi kèm cùng biến ẩn qua thiết lập cờ `_var: true`.
+
+## Khai báo Cấu hình Tiêu chuẩn (Type `var`)
+
+Lệnh gọi thiết lập Type `var` (hoặc thông qua phím tắt ký tự `$`) trực tiếp ra lệnh cho compiler loại bỏ hoàn toàn tiến trình sinh thành thuộc tính CSS tĩnh phổ thông. Node mục tiêu sẽ được ép khung đúc toàn diện thuần túy thành CSS variable, khu biệt gọn trong Scope Module Component sở hữu.
+
+> **Kế thừa Di truyền:** Đặc tính Type `var` có khả năng lan truyền. Nếu bạn cấu hình định danh node cấp cha là `var` (hoặc thông qua phím tắt tiền tố `$`), toàn bộ các node con lồng bên trong sẽ tự động kế thừa di truyền hệ Type tương ứng. Bạn không cần thiết lập thủ công lại cụm `var` cho từng nhánh con cấp dưới.
+
+**File Cấu hình Đầu vào (`properties.json`):**
+```json
+{
+  "card": {
+    "padding": {
+      "_type": "var",
+      "value": "16px"
+    }
+  }
+}
+```
+*(Sử dụng lối tắt `$padding: "16px"` trả về kết quả mảng y hệt mà không cần khai báo type cụ thể).*
+
+**Kết quả Biên dịch Dự kiến (SCSS):** 
+```scss
+.card {
+  --card-padding: 16px;
+}
+```
+
+## Khai báo Luồng Song song (Cờ `_var`)
+
+Kiến trúc UI Component thường xuyên đòi hỏi phải định hình giao diện theo quy chuẩn CSS properties thông thường nhưng lại phải nối sâu các thông số vào một bộ khung chứa CSS variable để tiện tùy biến (nhúng giao diện Theme hoặc thay đổi trạng thái động ở Vue).
+
+Giải pháp là cờ cấu hình `_var: true`. Tham số này bảo lưu loại hình định danh kiến trúc gốc của node (mặc định thuộc base `property`), đồng thời bắt buộc compiler chạy lệnh phân giải thành hai khâu kết xuất:
+1. Sinh biên dịch một biến Custom CSS lưu giữ chuỗi giá trị (literal string/value).
+2. Dựng thiết lập Property thuộc tính CSS tĩnh nhưng được trỏ thẳng hàm để lấy dữ liệu cấp phát từ hàm `var()`.
+
+**File Cấu hình Đầu vào (`properties.json`):**
+```json
+{
+  "button": {
+    "background": {
+      "_var": true,
+      "value": "blue"
+    }
+  }
+}
+```
+
+**Kết quả Biên dịch Dự kiến (SCSS):**
+```scss
+.button {
+  --button-background: blue;
+  background: var(--button-background);
+}
+```
+
+Triển khai cấu trúc cờ `_var: true` loại trừ sự lặp đi lặp lại quy trình sao chép code cứng rườm rà. Chốt chặn thiết lập đảm bảo quá trình đồng bộ code tự động khi xử lý Property tĩnh và vòng lặp gán biến nội vi ngay trong quy trình Properties.

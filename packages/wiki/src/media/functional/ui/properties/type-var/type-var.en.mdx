@@ -1,0 +1,63 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/Variables'/>
+
+# Variables (var)
+
+The property generation engine provides two distinct methodologies for managing CSS Custom Properties (variables): explicit variable declaration utilizing the structural `var` type, and combinatorial generation encompassing both properties and variables via the `_var: true` boolean flag.
+
+## Declarative Assignment (Type `var`)
+
+Assigning the `var` type (or utilizing its symbolic alias `$`) instructs the compiler to bypass standard CSS property generation. The target node is compiled strictly as a native CSS variable injected securely into the local compilation scope of the component.
+
+> **Type Inheritance:** The `var` type propagates structurally. If a parent node is declared as `var` (or prefixed with `$`), all structurally nested child nodes will inherently adopt the exact same type. There is no need to iteratively declare `var` on succeeding descendants.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "card": {
+    "padding": {
+      "_type": "var",
+      "value": "16px"
+    }
+  }
+}
+```
+*(Deploying the symbol alias `$padding: "16px"` yields an identical output structural tree).*
+
+**Conceptual Compiled Output (SCSS):** 
+```scss
+.card {
+  --card-padding: 16px;
+}
+```
+
+## Combinatorial Generation (Flag `_var`)
+
+Component architectures frequently require rendering a conventional physical CSS attribute while abstracting its core value strictly behind a dynamic CSS variable (vital for theming integrations or dynamic Vue runtime bindings).
+
+This is achieved securely using the configuration flag `_var: true`. This modifier retains the target node's designated structure type (inherently `property` unless overridden), coercing the compiler to execute a dual-stage emission:
+1. Formulating and compiling a robust CSS variable initialized with the active literal value.
+2. Formulating the target physical CSS property, structurally pointing its value to the evaluated `var()` function output.
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "background": {
+      "_var": true,
+      "value": "blue"
+    }
+  }
+}
+```
+
+**Conceptual Compiled Output (SCSS):**
+```scss
+.button {
+  --button-background: blue;
+  background: var(--button-background);
+}
+```
+
+Effectively, deploying the `_var: true` modifier permanently mitigates manual assignment repetition, automating the structural linkage between dynamic CSS variables and literal CSS properties inside configuration trees.

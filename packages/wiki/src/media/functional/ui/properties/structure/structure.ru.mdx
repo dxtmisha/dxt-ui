@@ -1,0 +1,155 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/properties/Описание структуры'/>
+
+# Описание структуры
+
+Файл `properties.json` имеет древовидную структуру. Ключи на каждом уровне могут выступать в качестве имен (селекторов) или служебных настроек. Само значение (листовой узел) представляет собой конфигурационный объект `PropertyItem`. Любое стандартное CSS свойство, указанное как ключ, будет преобразовано в правильный CSS синтаксис.
+
+Ниже приведена базовая структура, демонстрирующая определение стилей, модификаторов состояний (`hover`, `disabled`) и вариаций, которые транслируются во Vue Props.
+
+```json
+{
+  "padding": "var(--sys-height) * {sys.spacing.adaptive.md}",
+  
+  "hover": {
+    "gradient-opacity": "{sys.opacity.hover}"
+  },
+
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}"
+  },
+
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "palette-background": "{sys.palette.primary}",
+    "active": {
+      "box-shadow": "{sys.shadow.lg}"
+    },
+    "_category": "style",
+    "_default": true
+  },
+
+  "~size": {
+    "sm": {
+      "height": "{ref.spacing.10}"
+    },
+    "md": {
+      "height": "{ref.spacing.12}"
+    },
+    "_default": "md"
+  }
+}
+```
+
+Генератор свойств обрабатывает данную структуру по следующим правилам компиляции:
+1. Ключи физических свойств (например, `padding`) генерируются как свойства CSS-класса `.component`.
+2. Ссылки на дизайн-токены в формате `{...}` разрешаются в соответствующие CSS-переменные дизайн-системы.
+3. Вариации свойств, отмеченные префиксом `~`, преобразуются в CSS-модификаторы (например, `--primary`) и транслируются в интерфейс компонента (props TypeScript).
+
+Сгенерированный SCSS-код:
+```scss
+.component {
+  padding: calc(var(--sys-height) * var(--sys-spacing-adaptive-md));
+
+  /* Псевдоклассы состояний */
+  &:hover {
+    --component-gradient-opacity: var(--sys-opacity-hover);
+  }
+  &:disabled {
+    color: var(--sys-palette-onSurface);
+    --component-color-opacity: var(--sys-opacity-surface-disabled);
+  }
+
+  /* Модификатор категории "style": --primary */
+  &--primary {
+    color: var(--sys-palette-onPrimary);
+    background-color: var(--sys-palette-primary);
+    
+    &:active {
+      box-shadow: var(--sys-shadow-lg);
+    }
+  }
+
+  /* Модификаторы группы "size" */
+  &--size-sm { height: var(--ref-spacing-10); }
+  &--size-md { height: var(--ref-spacing-12); }
+}
+```
+
+Сгенерированный интерфейс Vue Props (`props.ts`):
+```typescript
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  primary?: boolean
+  size?: 'sm' | 'md'
+  // :type [!] System label / Системная метка
+}
+
+export const defaults: object = {
+  // :default [!] System label / Системная метка
+  primary: true,
+  size: 'md'
+  // :default [!] System label / Системная метка
+}
+```
+
+Сгенерированная логика привязки классов:
+```typescript
+const classesToken = computed<ConstrClasses>(() => ({
+  main: {
+    // :classes-values [!] System label / Системная метка
+    'component': true,
+    'component--primary': props.primary,
+    [`component--size--${props.size}`]: inArray(propsValues.size, props.size)
+    // :classes-values [!] System label / Системная метка
+  }
+}))
+```
+
+## Иерархия ключей
+
+Стандартный паттерн иерархии ключей:
+1. Корневой узел — `[Название группы или дизайна]` (например, `ui`, `d1`)
+2. Подузел — `[Название компонента]` (например, `component`)
+3. Элементы — `[Физические CSS-свойства или вложенные классы]` (например, `background`, `size`, `hover`, `--padding`)
+
+## Использование ссылок
+
+Значения, обёрнутые в фигурные скобки (например, `"{sys.palette.primary}"` или `"{ref.spacing.10}"`), позволяют динамически ссылаться на дизайн-токены системы. При сборке генератор автоматически заменяет их на реальные CSS-переменные или абсолютные значения.
+
+## Служебные флаги
+
+Специальные ключи конфигурации (флаги) используются для управления генерацией стилей. Все они начинаются со знака подчеркивания `_`.
+
+### Основные идентификаторы
+
+- `_type: string` — Определяет тип компонента или правила генерации (`var`, `state`, `subclass`, `media` и т.д.).
+- `_category: string` — Дополнительный определитель категории для сортировки или фильтрации.
+
+### Модификаторы поведения
+
+- `_var: boolean` — Заставляет генератор дополнительно создать CSS переменную `--name: value` для узла.
+- `_state: boolean` — Помечает текущий узел как состояние (аналог `_type: "state"`).
+- `_subclass: boolean` — Помечает текущий узел как подкласс.
+- `_prop: boolean` — Указывает, что это значение следует экспортировать как Vue/React Prop (реактивное свойство) в `props.ts`.
+- `_theme: string` — Привязывает текущие стили к конкретной теме.
+
+### Инструменты значений
+
+- `_rename: string` — Переопределяет название свойства или класса в конечном коде. (Например, ключ `backgroundItem`, но с `_rename: "bg"` класс выйдет `.component__bg`).
+- `_replace: string` — Позволяет полностью заменить финальное имя или структуру через шаблонное регулярное выражение.
+- `_fullName: string` — Жёстко задаёт полное название для CSS-класса/переменной, игнорируя древовидный контекст.
+- `_fullValue: string` — Выводит значение "как есть", игнорируя парсинг чисел и пикселей.
+- `_default: any` — Разрешает назначить базовое значение (fallback) для компонента.
+
+### Управление структурой
+
+- `_important: boolean` — Добавляет спецификатор `!important` к правилу.
+- `_modification: boolean` — Используется для обозначения свойств-модификаторов.
+- `_drag: string` — Перетаскивает (внедряет) этот узел в другое место дерева во время сборки. Полезно для алиасов.
+- `_dragSetting: boolean` — Включает перенос (наследование) внутренних настроек узла в его дочерние элементы.
+- `_settingClone: boolean` — Клонирует текущие настройки конфигурации и распространяет их на вложенные уровни.
+- `_style: boolean` — Принудительно генерирует инлайн-стиль вместо класса.
+- `_remove: boolean` — Исключает данный узел из финальной генерации в SCSS/JS файлы.

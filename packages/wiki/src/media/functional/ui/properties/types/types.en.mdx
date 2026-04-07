@@ -1,0 +1,128 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/properties/# Types'/>
+
+# Types (\_type)
+
+The `_type` meta-parameter defines the architectural classification of a configuration node. It dictates the structural pipeline by instructing the assembly engine on how to process the current node (e.g., as a CSS variable, media query, pseudo-element, or BEM modifier). Declaring the correct type is critical for the accurate generation of SCSS mixins and TypeScript interfaces.
+
+## Default Behavior and Auto-detection
+If `_type` is omitted, the interpreter invokes an automatic inference module (`Automatcher`):
+
+1. **Key Recognition:** The engine scans the property name for registered symbolic aliases or prefix patterns formatted as `[type]|[property_name]`. Upon detection, the extracted type is dynamically assigned to the node.
+2. **Pass-through (Bypass):** Nodes lacking system prefixes retain an `undefined` state for `_type`. These nodes bypass structural TS converters and pass directly into the global SCSS map generation phase, where they are rendered universally as standard CSS physical key-value properties.
+
+## Supported Types (PropertyType)
+The system supports a comprehensive set of structural specificators (`_type`) resolving any compilation requirement:
+
+### Base Properties & Variables
+- `property` — Defines a standard physical CSS style property.
+- `var` — Declares the node specifically to generate as a custom CSS variable (custom property).
+
+### Architectural Nodes
+- `design` — The system name of the root design structure.
+- `component` — Base designation of the UI component governing SCSS map hierarchies.
+- `class` — Binds an explicit, custom CSS class name to the active structural node.
+- `theme` — Specifies the branch properties are overrides utilized for generating themed classes.
+
+### Elements & Modifiers (BEM)
+- `subclass` — Identifies a BEM element (subclass) structurally nested within the core block.
+- `state` — Defines variations or additional states of the element (e.g., BEM modifiers).
+- `virtual` — Defines a virtual pseudo-element mapping (`::before`, `::after`).
+- `selector` — Defines sub-properties and pseudo-classes of the element (e.g., `:hover`, `:focus`).
+
+### Adaptability (Responsive & Container)
+- `media` / `media-max` — Structures properties mapped directly into viewport `@media` queries (scaling via min-width / max-width).
+- `media-group` / `media-max-group` — Wraps extensive property lists actively into isolated media group clusters.
+- `container`, `container-max`... — Equivalents to media rules but specifically tracking native `@container` contextual queries.
+
+### Animations
+- `animate` — Designates a block compiling native CSS animation attributes.
+- `animate-frame` — Represents a localized percentage structural frame bound inside `@keyframes`.
+
+### Logic & Scoped Merging
+- `link` — Defines an active dynamic link parsing and inheriting native property trees from another structural segment.
+- `link-class` — Acts as a structural link pointing towards an element specifically to resolve and copy its class mapping.
+- `file` — References an external physical configuration `.json` file for deep merging logic.
+- `mixin` — Designated purely as an accessory utility mixin block; explicitly pruned from finalizing CSS outputs natively.
+
+### SCSS Integration & Exclusions
+- `scss` — Evaluates the node actively targeting native SCSS scope parameters / nested builds.
+- `root` — Declares the node globally, forcing structure layout surfacing natively via SCSS `@at-root`.
+- `none` — Mutes the node entirely, aggressively dropping it from any output stream generation.
+- `other` — Natively functions identically to `none`; an internalized fallback flag for undefined states.
+
+## Simplified Syntax (Aliases)
+To prevent deep nesting hierarchies and redundant `{"_type": "..."}` bindings for every node, the system natively implements shorthand prefix aliasing built directly into the key nomenclature. The compiler automatically identifies the prefix and assigns the corresponding structural `_type`.
+
+### 1. Dedicated Symbol Prefixes (SYMBOLS)
+Frequently invoked architectural node types are securely bound to rapid symbol aliases. Prepending these characters dictates the node configuration:
+
+- `$` *(maps to `var`)* — System variable declaration (Example: `"$border"`).
+- `#` *(maps to `subclass`)* — Nested BEM element block (Example: `"#icon"`).
+- `~` *(maps to `state`)* — Element variations and additional states (Example: `"~primary"`).
+- `:` *(maps to `selector`)* — Element sub-properties and pseudo-classes (Example: `":hover"`).
+- `::` *(maps to `virtual`)* — Virtual pseudo-element targeting (Example: `"::after"`).
+- `@` *(maps to `link`)* — Scoped architectural tree linking.
+- `@@` *(maps to `link-class`)* — Explicit class-oriented structural referencing.
+- `&` *(maps to `scss`)* — Contextual native SCSS selection.
+- `&&` *(maps to `root`)* — Globals lifting via native `@at-root` SCSS scope breaking.
+- `--` *(maps to `none`)* — Pruned ignore forcing node exclusion from all system-generated outputs.
+
+### 2. Universal Pipe Syntax (`|`)
+For dynamic structure types lacking hardcoded symbolic shortcuts (e.g., `media` or `container-group`), the compiler parses a delimited string syntax: `[type]|[property_name]`.
+
+- Lexical sequences preceding the `|` delimiter are actively mapped via string parsing as the strict systemic `_type`.
+- **Example:** The string format `"media-group|adaptive-block"` explicitly executes mapping assigning the type natively as `media-group`.
+
+## Compilation Example
+
+**Input Configuration (`properties.json`):**
+```json
+{
+  "padding": "12px",             // Fallback type (property)
+  
+  "sm": {                        // Explicit type assignment (media)
+    "_type": "media",
+    "padding": "16px"
+  },
+
+  "$border": "8px",              // Alias: var
+  
+  "#icon": {                     // Alias: subclass
+    "width": "24px"
+  },
+  
+  ":hover": {                    // Alias: selector
+    "background-color": "#aaaaaa"
+  },
+  
+  "~primary": {                  // Alias: state
+    "color": "#ff0000"
+  }
+}
+```
+
+**Conceptual Compiled Output (SCSS):**
+```scss
+.component-name {
+  padding: 12px;
+  --sys-[component]-border: 8px;
+
+  @media (min-width: 576px) {  /* sm branch (media) */
+    padding: 16px;
+  }
+
+  &__icon {                    /* #icon branch (subclass) */
+    width: 24px;
+  }
+
+  &:hover {                    /* :hover branch (selector) */
+    background-color: #aaaaaa;
+  }
+
+  &--primary {                 /* ~primary branch (state) */
+    color: #ff0000;
+  }
+}
+```

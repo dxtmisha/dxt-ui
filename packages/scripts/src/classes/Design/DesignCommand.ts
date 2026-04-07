@@ -11,7 +11,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignStructure } from './DesignStructure'
 import { DesignReplace } from './DesignReplace'
 
-import { UI_FILE_PACKAGE, UI_KEY_CONSTRUCTOR } from '../../config'
+import { UI_FILE_PACKAGE } from '../../config'
 
 const dirnamePath = hasNativeDirname()
   ? __dirname
@@ -117,11 +117,7 @@ export abstract class DesignCommand {
    */
   protected getStructure(): DesignStructure {
     if (!this.structure) {
-      const [design, component] = this.getCommand().split('.', 2)
-      this.structure = new DesignStructure(
-        design ?? UI_KEY_CONSTRUCTOR,
-        component ?? 'component'
-      )
+      this.structure = new DesignStructure(this.getCommand())
     }
 
     return this.structure

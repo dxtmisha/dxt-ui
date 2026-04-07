@@ -1,0 +1,155 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/properties/Mô tả cấu trúc'/>
+
+# Mô tả cấu trúc
+
+Cấu hình `properties.json` thiết lập chuẩn dạng nhánh cây, bao gồm hệ thống module các khóa làm phân tử lựa chọn và thuộc tính setup cấu trúc thông số đối tượng `PropertyItem`. Mọi thuộc tính CSS được khai báo dưới dạng khóa sẽ tự động kết xuất ra mã CSS tương ứng.
+
+Cấu trúc cơ bản sau đây minh họa cách khai báo giao diện CSS gốc, kết hợp trạng thái tương tác (`hover`, `disabled`), và bộ biến thể động tự động kết xuất qua Vue Props.
+
+```json
+{
+  "padding": "var(--sys-height) * {sys.spacing.adaptive.md}",
+  
+  "hover": {
+    "gradient-opacity": "{sys.opacity.hover}"
+  },
+
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}"
+  },
+
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "palette-background": "{sys.palette.primary}",
+    "active": {
+      "box-shadow": "{sys.shadow.lg}"
+    },
+    "_category": "style",
+    "_default": true
+  },
+
+  "~size": {
+    "sm": {
+      "height": "{ref.spacing.10}"
+    },
+    "md": {
+      "height": "{ref.spacing.12}"
+    },
+    "_default": "md"
+  }
+}
+```
+
+Trình phân tích properties (Generator) xử lý file JSON theo bộ quy tắc biên dịch cụ thể:
+1. Thông số thuộc tính thuần CSS (ví dụ `padding`) xuất thẳng vào class `.component`.
+2. Giá trị tham chiếu Design Tokens dạng ngoặc `{...}` được truy xuất qua biến chuẩn CSS định nghĩa sẵn theo hệ thống.
+3. Nhóm biến thể sử dụng chỉ dấu tiền tố `~` trực tiếp sinh mảng modifier của SCSS class (như `--primary`), đồng hành trích xuất thành thuộc tính Component (props TypeScript).
+
+Kết xuất chuỗi mã SCSS:
+```scss
+.component {
+  padding: calc(var(--sys-height) * var(--sys-spacing-adaptive-md));
+
+  /* Pseudo-classes states */
+  &:hover {
+    --component-gradient-opacity: var(--sys-opacity-hover);
+  }
+  &:disabled {
+    color: var(--sys-palette-onSurface);
+    --component-color-opacity: var(--sys-opacity-surface-disabled);
+  }
+
+  /* Modifiers danh mục "style": --primary */
+  &--primary {
+    color: var(--sys-palette-onPrimary);
+    background-color: var(--sys-palette-primary);
+    
+    &:active {
+      box-shadow: var(--sys-shadow-lg);
+    }
+  }
+
+  /* Các modifiers chuỗi kích cỡ "size" */
+  &--size-sm { height: var(--ref-spacing-10); }
+  &--size-md { height: var(--ref-spacing-12); }
+}
+```
+
+Kết xuất Vue Props interface (`props.ts`):
+```typescript
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  primary?: boolean
+  size?: 'sm' | 'md'
+  // :type [!] System label / Системная метка
+}
+
+export const defaults: object = {
+  // :default [!] System label / Системная метка
+  primary: true,
+  size: 'md'
+  // :default [!] System label / Системная метка
+}
+```
+
+Kết xuất logic gán class động Vue:
+```typescript
+const classesToken = computed<ConstrClasses>(() => ({
+  main: {
+    // :classes-values [!] System label / Системная метка
+    'component': true,
+    'component--primary': props.primary,
+    [`component--size--${props.size}`]: inArray(propsValues.size, props.size)
+    // :classes-values [!] System label / Системная метка
+  }
+}))
+```
+
+## Khởi xướng phân nhánh cấu hình
+
+Bố cục thứ bậc thiết đặt thường làm theo cú pháp chuẩn:
+1. Thẻ Gốc — `[Tên Domain gốc hay Group]` (như `ui`, `d1`)
+2. Thẻ Cấp Độ Con — `[Tên thành phần Component UI]` (như `component`)
+3. Thông số xử lý — `[Thuộc tính thành phần, CSS rules, hay state]` (như `background`, `size`, `hover`, `--padding`)
+
+## Ràng buộc tham chiếu (Links)
+
+Các giá trị được bọc trong các dấu ngoặc nhọn (ví dụ: `"{sys.palette.primary}"` hay `"{ref.spacing.10}"`) cho phép bạn tham chiếu động đến các token của design system. Khi build, chúng tự động chuyển đổi thành CSS variable hoặc mã màu gốc tương ứng từ hệ thống.
+
+## Các tuỳ chọn cờ (Flags)
+
+Tất cả thẻ thuộc thông số khai báo đóng vai trò quyết định đến cách framework làm việc với node đều bắt đầu nhờ một gạch dưới `_`.
+
+### Thẻ phân loại chính
+
+- `_type: string` — Quy định phương thức framework biến đổi code (`var`, `state`, `subclass`, `media` v.v..).
+- `_category: string` — Cung cấp tuỳ chọn sắp xếp lọc bộ xử lý phân cấp.
+
+### Thuộc tính hành vi
+
+- `_var: boolean` — Ép hệ thống tạo riêng cho node một variable kiểu dạng `--name: value`.
+- `_state: boolean` — Định thẻ cho giao diện làm component theo chuẩn logic rendering của State format nội bộ (như kiểu `_type: "state"`).
+- `_subclass: boolean` — Quy ước thẻ như phân nhánh phân cấp nhánh con phụ subclass nội tạng layout render logic module nội tại.
+- `_prop: boolean` — Lấy nhánh này cho luồng tự tạo code `props.ts` áp dụng Vue/React props truyền dữ liệu lập trình thông số xử lý code logic thành phần.
+- `_theme: string` — Cột bộ layout tương đương giao diện phân nhóm cho việc đổi màu Theme format động.
+
+### Override thay thế giá trị tên gọi
+
+- `_rename: string` — Ép class khi xuất có một tên khác (ví dụ khoá `backgroundItem` thêm thuộc tính flag `_rename: "bg"` sẽ cho ra css `.component__bg`).
+- `_replace: string` — Tính năng ghi đè qua bộ lệnh Pattern match biểu thức regex text tuỳ biến thông qua kịch bản cho thuộc tính code logic text tuỳ chọn.
+- `_fullName: string` — Định nghĩa tên cuối cố định không màng ngữ cảnh JSON tree path logic.
+- `_fullValue: string` — Giá trị thuần tuyệt đối bỏ qua khả năng tự gán hậu tố px của JS plugin CSS.
+- `_default: any` — Giá trị dùng để backup cấu trúc cho component lỡ không mang biến khai báo chuẩn.
+
+### Quản trị hoạt động và cấu trúc
+
+- `_important: boolean` — CSS `!important`.
+- `_modification: boolean` — Quản lý logic class component modifier áp dụng mã tuỳ chỉnh form module class render output component.
+- `_drag: string` — Gắp cả cụm nội dung tree path nhét qua ngách khác của chuỗi quá trình build (giống Alias).
+- `_dragSetting: boolean` — Đẩy thiết lập nội bộ hoặc cấu trúc thừa kế truyền cập nhật xuống các node con tự động.
+- `_settingClone: boolean` — Dùng để copy lặp toàn bộ thuộc tính cấu hình từ node cha tới trực tiếp node con lồng chép dữ liệu nhanh lẹ.
+- `_style: boolean` — Gen cấu trúc làm inline style format biến inline layout thay vì render CSS file class riêng.
+- `_remove: boolean` — Ra lệnh bộ máy SCSS xoá bỏ nhánh cấu hình không gán xuất ra CSS document.
