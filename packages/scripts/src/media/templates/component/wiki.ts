@@ -1,4 +1,4 @@
-// :component.once import { WikiStorybook } from '@dxtmisha/wiki'
+// :component.once import { WikiStorybook } from '@dxtmisha/wiki/lite'
 // :component.once import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
 // :component.once import { ComponentWikiData } from './wikiData'

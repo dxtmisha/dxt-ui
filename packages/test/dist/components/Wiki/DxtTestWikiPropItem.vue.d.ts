@@ -1,4 +1,4 @@
-import { WikiStorybookProp } from '@dxtmisha/wiki';
+import { WikiStorybookProp } from '@dxtmisha/wiki/lite';
 import { TestWikiSlotRender } from '../../types/wikiTypes';
 import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 type __VLS_Props = {

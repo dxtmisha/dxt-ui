@@ -1,20 +1,21 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/# UI/properties/! About the module'/>
+<Meta title='@dxtmisha/en/# UI/properties/! About properties.json'/>
 
-# Properties
+# Configuration (properties.json)
 
-The `Properties` module is designed for declarative management of design system styles using JSON configurations. Component developers no longer need to manually write SCSS code for states, media queries, and variables—instead, all design tokens are described in a `properties.json` file.
+The `properties.json` file is a declarative manifest of your component. In it, you describe the structure, styles, states, and parameters, which are then automatically transformed into production-ready SCSS code and typed TypeScript interfaces (`props.ts`).
 
-## Why do we need this file?
+## How to work with this file?
 
-In every scalable UI component library, there is a common problem of managing spacing, colors, and states (hover, focus, disabled). Creating a `properties.json` file allows to:
-- Centralize all tokens in one clear place next to the component.
-- Automatically generate typed props for Vue/React from it.
-- Obtain ready-to-use SCSS classes, variables, and themes without code duplication.
+Instead of manually writing hundreds of lines of CSS for every pseudo-class or media query, you populate a **property tree**. The system analyzes this file and performs all the routine work for you:
+- **Style Generation (SCSS)**: Creates BEM-style classes, variables, and themes.
+- **Interface Generation (Props)**: Forms public component properties for Vue/React.
+- **Synchronization**: Ensures that styles and the programmatic interface always correspond to each other.
 
-## Core Concepts
+## Core Concept
 
-- **Token**: A unit of style in the configuration object.
-- **Nesting**: The JSON structure determines the nesting of descendant CSS classes.
-- **Typing**: The JSON configuration is strictly divided by types: `var`, `state`, `media`, etc., which tells the generator exactly how the token will work in the output.
+1.  **Tokens**: JSON tree nodes representing specific CSS properties or nested objects.
+2.  **Types & Flags (_type, _var...)**: Service parameters defining the node processing logic (generating variables, states, or exporting to Props).
+3.  **Links**: The `{...}` system for inheriting values from other tokens or global design variables.
+4.  **Markers & Shortcuts**: Special prefixes (`~`, `group|`) and link placeholders (`?`, `??`) that accelerate the creation of complex configurations.

@@ -1,78 +1,108 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/# UI/properties/Quick start'/>
+<Meta title='@dxtmisha/en/# UI/properties/! Quick start'/>
 
 # Quick Start
 
-This guide covers the basics of onboarding your UI components onto the properties generation pipeline via `properties.json`.
+This guide helps you quickly master working with the `properties.json` file using a typical UI component as an example. The file serves as the **single source of truth** — both styles (SCSS) and the programmatic interface (TypeScript Props) are generated from it.
 
-## 1. Setting Up Base Styles
+## 1. Base Properties and Tokens
 
-The simplest configuration pattern maps flat JSON keys directly to native CSS attributes. Let's declare standard background and padding values:
-
-```json
-{
-  "background-color": "#cccccc",
-  "padding": "12px 24px"
-}
-```
-
-During compilation, the pipeline processes this directly into functional SCSS layout classes binding to your setup namespace automatically:
-```scss
-.component {
-  background-color: #cccccc;
-  padding: 12px 24px;
-}
-```
-
-## 2. Emitting CSS Variables
-
-Whenever an attribute must be dynamically manipulatable client-side (e.g. for custom scripting or interactive theming modes), utilize an object declaration bearing the `_var: true` flag.
+Instead of fixed values (HEX, px), always use the design token system `{sys...}`. This ensures theme support and consistency.
 
 ```json
 {
-  "border-radius": {
-    "_var": true,
-    "value": "8px"
-  }
+  "padding": "{sys.spacing.md}",
+  "background-color": "{sys.palette.surface}",
+  "border-radius": "{sys.rounded.md}"
 }
 ```
 
-Result pipeline mapping:
+**Result (SCSS):**
 ```scss
 .component {
-  --component-border-radius: 8px;
-  border-radius: var(--component-border-radius);
+  padding: var(--sys-spacing-md);
+  background-color: var(--sys-palette-surface);
+  border-radius: var(--sys-rounded-md);
 }
 ```
 
-## 3. Pseudo-classes and Variations
+## 2. States
 
-The generator inherently orchestrates logic-grouped structures into valid CSS pseudo-classes or exported modifier variants natively:
+Use reserved keys to describe interactivity (hover, focus, active, disabled).
 
 ```json
 {
   "hover": {
-    "background-color": "#aaaaaa"
+    "background-color": "{sys.palette.surfaceVariant}"
   },
-  "~active": {
-    "background-color": "#555555"
+  "disabled": {
+    "opacity": "{sys.opacity.disabled}",
+    "cursor": "not-allowed"
   }
 }
 ```
 
-Compiled bindings logic:
+**Result (SCSS):**
 ```scss
 .component {
-  &:hover {
-    background-color: #aaaaaa;
-  }
-  
-  /* BEM modifier mapped via TypeScript Props */
-  &--active {
-    background-color: #555555;
+  &:hover { background-color: var(--sys-palette-surfaceVariant); }
+  &:disabled { 
+    opacity: var(--sys-opacity-disabled);
+    cursor: not-allowed;
   }
 }
 ```
 
-> **Note:** To leverage deep referencing design tokens (`{sys...}`) and systematic TypeScript props interfaces exports, review the full **Structure description** documentation.
+## 3. Modifiers (Marker `~`)
+
+To create a variation of a component (e.g., `primary` or `secondary`), use the `~` prefix. These keys are automatically transformed into **Props** in Vue/React and BEM modifiers in CSS.
+
+```json
+{
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "background-color": "{sys.palette.primary}",
+    "_default": true
+  }
+}
+```
+
+**Result (SCSS):**
+```scss
+.component {
+  &--primary {
+    color: var(--sys-palette-onPrimary);
+    background-color: var(--sys-palette-primary);
+  }
+}
+```
+
+**Result (TypeScript Props):**
+```typescript
+type PropsToken = {
+  primary?: boolean // Generated automatically
+}
+```
+
+## 4. Custom Variables (`_var`)
+
+If you need a property to be available as a CSS variable for external control or use in scripts, add the `_var: true` flag.
+
+```json
+{
+  "height": {
+    "value": "48px",
+    "_var": true
+  }
+}
+```
+
+**Result (SCSS):**
+```scss
+.component {
+  --component-height: 48px;
+  height: var(--component-height);
+}
+```
+

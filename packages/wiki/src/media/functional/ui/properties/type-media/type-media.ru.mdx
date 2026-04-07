@@ -54,3 +54,32 @@ import {Meta} from '@storybook/addon-docs/blocks'
   }
 }
 ```
+
+### Групповое формирование (Media Group)
+
+Специальные типы `media-group`, `media-max-group`, `container-group` и `container-max-group` позволяют автоматически генерировать набор адаптивных правил для всех доступных точек останова (breakpoints), определенных в системе.
+
+Это избавляет от необходимости вручную прописывать каждый медиа-запрос, если логика адаптации одинакова для разных размеров, но должна быть инкапсулирована в отдельные селекторы.
+
+**Пример конфигурации (`properties.json`):**
+```json
+{
+  "button": {
+    "group|icon": {
+      "_type": "media-group",
+      "padding": "8px"
+    }
+  }
+}
+```
+
+**Результат генерации (SCSS):**
+При использовании `media-group` система создаст вложенные классы для каждого брейкпоинта, добавляя суффикс (например, `iconSm`, `iconMd`):
+```scss
+.button {
+  &--iconSm { @media (min-width: 640px) { padding: 8px; } }
+  &--iconMd { @media (min-width: 768px) { padding: 8px; } }
+  &--iconLg { @media (min-width: 1024px) { padding: 8px; } }
+  // и так далее для всех точек останова...
+}
+```

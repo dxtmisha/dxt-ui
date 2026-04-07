@@ -1,78 +1,108 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI/properties/Bắt đầu nhanh'/>
+<Meta title='@dxtmisha/vi/# UI/properties/! Bắt đầu nhanh'/>
 
 # Bắt đầu nhanh
 
-Hướng dẫn này cung cấp nền tảng thiết lập gen-code cơ bản cho Component UI của bạn thông qua tệp hệ thống `properties.json`.
+Hướng dẫn này giúp bạn nhanh chóng nắm vững cách làm việc với tệp `properties.json` thông qua ví dụ về một UI component điển hình. Tệp này đóng vai trò là **nguồn chân lý duy nhất (single source of truth)** — từ đó cả style (SCSS) và giao diện lập trình (TypeScript Props) đều được tạo ra tự động.
 
-## 1. Thiết lập CSS cơ bản
+## 1. Thuộc tính cơ bản và Tokens
 
-Cấu hình dạng sơ cấp trực tiếp dựa dẫm vào gốc thuộc tính HTML CSS thông dụng làm khoá mã. Thiết đặt thử màu nền (background) và mã tuỳ chỉnh viền viền (padding):
-
-```json
-{
-  "background-color": "#cccccc",
-  "padding": "12px 24px"
-}
-```
-
-Máy biên dịch framework tiến hành trích xuất tự động qua block code hệ quy chiếu SCSS chuẩn của module (khóa parent):
-```scss
-.component {
-  background-color: #cccccc;
-  padding: 12px 24px;
-}
-```
-
-## 2. Khai báo biến CSS Variables Động
-
-Để đảm bảo giá trị giao diện có thể dễ dàng gọi tự động phục vụ đổi tham số Theme linh động ngay trên client, khai báo cấu trúc theo chuẩn Object mở rộng gắn cờ thuộc tính `_var: true`.
+Thay vì sử dụng các giá trị cố định (HEX, px), hãy luôn sử dụng hệ thống design token `{sys...}`. Điều này đảm bảo hỗ trợ thay đổi giao diện (themes) và tính nhất quán của thiết kế.
 
 ```json
 {
-  "border-radius": {
-    "_var": true,
-    "value": "8px"
-  }
+  "padding": "{sys.spacing.md}",
+  "background-color": "{sys.palette.surface}",
+  "border-radius": "{sys.rounded.md}"
 }
 ```
 
-Kết quả gen-code block SCSS:
+**Kết quả (SCSS):**
 ```scss
 .component {
-  --component-border-radius: 8px;
-  border-radius: var(--component-border-radius);
+  padding: var(--sys-spacing-md);
+  background-color: var(--sys-palette-surface);
+  border-radius: var(--sys-rounded-md);
 }
 ```
 
-## 3. Tổ hợp Trạng thái và Modifiers BEM
+## 2. Các trạng thái (States)
 
-Tiến trình phân bổ tự động nội suy nhóm mảng cho phần nhánh cấp thấp thành Pseudo-classes chuột hay các biến thể modifiers class:
+Sử dụng các khóa đã được quy định sẵn để mô tả tính tương tác (hover, focus, active, disabled).
 
 ```json
 {
   "hover": {
-    "background-color": "#aaaaaa"
+    "background-color": "{sys.palette.surfaceVariant}"
   },
-  "~active": {
-    "background-color": "#555555"
+  "disabled": {
+    "opacity": "{sys.opacity.disabled}",
+    "cursor": "not-allowed"
   }
 }
 ```
 
-Thành phẩm sau quy trình module framework nhận được:
+**Kết quả (SCSS):**
 ```scss
 .component {
-  &:hover {
-    background-color: #aaaaaa;
-  }
-  
-  /* Chuỗi BEM modifier tự động chuẩn bị map prop TypeScript */
-  &--active {
-    background-color: #555555;
+  &:hover { background-color: var(--sys-palette-surfaceVariant); }
+  &:disabled { 
+    opacity: var(--sys-opacity-disabled);
+    cursor: not-allowed;
   }
 }
 ```
 
-> **Ghi chú quan trọng:** Để phát huy sức mạnh gán biến ảo Token-System format (`{sys...}`) bằng cơ chế kết xuất nhanh Interface Types, bạn hãy tra cứu sâu thư viện **Mô tả cấu trúc**.
+## 3. Các biến thể (Dấu hiệu `~`)
+
+Để tạo ra một biến thể của component (ví dụ: `primary` hoặc `secondary`), hãy sử dụng tiền tố `~`. Các khóa này sẽ tự động được chuyển đổi thành **Props** trong Vue/React và các BEM modifiers trong CSS.
+
+```json
+{
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "background-color": "{sys.palette.primary}",
+    "_default": true
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.component {
+  &--primary {
+    color: var(--sys-palette-onPrimary);
+    background-color: var(--sys-palette-primary);
+  }
+}
+```
+
+**Kết quả (TypeScript Props):**
+```typescript
+type PropsToken = {
+  primary?: boolean // Được tạo tự động
+}
+```
+
+## 4. Các biến tùy chỉnh (`_var`)
+
+Nếu bạn cần một thuộc tính có sẵn dưới dạng biến CSS để điều khiển từ bên ngoài hoặc sử dụng trong script, hãy thêm cờ `_var: true`.
+
+```json
+{
+  "height": {
+    "value": "48px",
+    "_var": true
+  }
+}
+```
+
+**Kết quả (SCSS):**
+```scss
+.component {
+  --component-height: 48px;
+  height: var(--component-height);
+}
+```
+

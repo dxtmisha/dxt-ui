@@ -5,7 +5,7 @@ import { useWikiPropsHide } from '../../composables/useWikiPropsHide'
 import DxtTestWikiCode from './DxtTestWikiCode.vue'
 import DxtTestWikiDemo from './DxtTestWikiDemo.vue'
 
-import type { WikiStorybookProp } from '@dxtmisha/wiki'
+import type { WikiStorybookProp } from '@dxtmisha/wiki/lite'
 import type { TestWikiSlotRender } from '../../types/wikiTypes'
 
 defineOptions({

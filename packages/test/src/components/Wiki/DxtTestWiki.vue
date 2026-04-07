@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
 import { replaceComponentName } from '@dxtmisha/functional-basic'
-import { type WikiStorybook } from '@dxtmisha/wiki'
+import { type WikiStorybook } from '@dxtmisha/wiki/lite'
 import { useWikiItemFocus } from '../../composables/useWikiItemFocus'
 
 import DxtTestBlock from '../DxtTestBlock.vue'

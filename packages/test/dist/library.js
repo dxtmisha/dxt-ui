@@ -1,6 +1,6 @@
 import { Fragment as e, computed as t, createBlock as n, createCommentVNode as r, createElementBlock as i, createElementVNode as a, createSlots as o, createTextVNode as s, createVNode as c, defineComponent as l, guardReactiveProps as u, inject as d, mergeProps as f, normalizeClass as p, normalizeProps as m, openBlock as h, provide as g, renderList as _, renderSlot as v, resolveDynamicComponent as y, toDisplayString as b, unref as x, withCtx as S } from "vue";
 import { encodeAttribute as C, forEach as w, replaceComponentName as T } from "@dxtmisha/functional-basic";
-import "@dxtmisha/wiki";
+import "@dxtmisha/wiki/lite";
 import { executeUseLocal as E, forEach as D, useSessionRef as O } from "@dxtmisha/functional";
 //#region src/components/DxtTestBlock.vue?vue&type=script&setup=true&lang.ts
 var k = ["id"], A = {

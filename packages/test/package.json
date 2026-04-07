@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/test",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "author": "dxtmisha@gmail.com",
   "license": "MIT",
@@ -22,7 +22,7 @@
     "library": "dxt-library",
     "wiki": "dxt-ai-doc src/storybook",
     "prepublishOnly": "dxt-library && npm run build",
-    "publish": "npm publish --access public"
+    "publish-to-npm": "npm publish --access public"
   },
   "files": [
     "dist",

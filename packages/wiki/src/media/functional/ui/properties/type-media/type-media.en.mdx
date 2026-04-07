@@ -54,3 +54,32 @@ Adaptive queries can be initialized using the `|` separator shortcut (e.g., `med
   }
 }
 ```
+
+### Group Formation (Media Group)
+
+The specialized types `media-group`, `media-max-group`, `container-group`, and `container-max-group` allow for the automatic generation of a set of adaptive rules for all available breakpoints defined in the system.
+
+This eliminates the need to manually write each media query when the adaptation logic is the same for different sizes but must be encapsulated into separate selectors.
+
+**Example Configuration (`properties.json`):**
+```json
+{
+  "button": {
+    "group|icon": {
+      "_type": "media-group",
+      "padding": "8px"
+    }
+  }
+}
+```
+
+**Compiled Output (SCSS):**
+When using `media-group`, the system creates nested classes for each breakpoint by adding a suffix (e.g., `iconSm`, `iconMd`):
+```scss
+.button {
+  &--iconSm { @media (min-width: 640px) { padding: 8px; } }
+  &--iconMd { @media (min-width: 768px) { padding: 8px; } }
+  &--iconLg { @media (min-width: 1024px) { padding: 8px; } }
+  // and so on for all breakpoints...
+}
+```

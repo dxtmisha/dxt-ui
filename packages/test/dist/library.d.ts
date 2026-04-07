@@ -1,5 +1,5 @@
 import { CreateComponentPublicInstanceWithMixins, ComponentOptionsMixin, PublicProps, GlobalComponents, GlobalDirectives, ComponentProvideOptions, ComponentOptionsBase, VNodeProps, AllowedComponentProps, ComponentCustomProps, DefineComponent } from 'vue';
-import { WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki';
+import { WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki/lite';
 import { TestWikiDemoClasses, TestWikiSlotRender } from './library';
 export declare const DxtTestBlock: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{

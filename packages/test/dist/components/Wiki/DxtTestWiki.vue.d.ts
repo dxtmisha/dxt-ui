@@ -1,4 +1,4 @@
-import { WikiStorybook } from '@dxtmisha/wiki';
+import { WikiStorybook } from '@dxtmisha/wiki/lite';
 import { TestWikiDemoClasses } from '../../library';
 import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 type __VLS_Props = {
