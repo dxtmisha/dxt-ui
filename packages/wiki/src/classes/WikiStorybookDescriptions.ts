@@ -1,11 +1,12 @@
 import { executeFunction, Geo, isObjectNotArray } from '@dxtmisha/functional'
 
 import type {
-  StorybookComponentsDescription,
   StorybookComponentsDescriptionItem,
-  StorybookComponentsMdx,
   StorybookComponentsMdxItem
 } from '../types/storybookTypes'
+
+import { wikiDescriptions } from '../media/descriptions/wikiDescriptions'
+import { wikiMdx } from '../media/mdx/wikiMdx'
 
 /**
  * Class for working with Storybook component descriptions in the wiki
@@ -16,31 +17,13 @@ export class WikiStorybookDescriptions {
   private readonly item?: StorybookComponentsDescriptionItem
   private readonly mdx?: StorybookComponentsMdxItem
 
-  private static wikiDescriptions?: StorybookComponentsDescription
-  private static wikiMdx?: StorybookComponentsMdx
-
-  /**
-   * Set the wiki descriptions and mdx
-   *
-   * Устанавливает описания вики и mdx
-   * @param descriptions - Descriptions of the components/ Описания компонентов
-   * @param mdx - MDX descriptions of the components/ Описания компонентов в формате MDX
-   */
-  static setWiki(
-    descriptions?: StorybookComponentsDescription,
-    mdx?: StorybookComponentsMdx
-  ) {
-    this.wikiDescriptions = descriptions
-    this.wikiMdx = mdx
-  }
-
   /**
    * Constructor
    * @param name - Name of the component to find in the descriptions/ Имя компонента для поиска в описаниях
    */
   constructor(name: string) {
-    this.item = WikiStorybookDescriptions.wikiDescriptions?.find(item => item.name === name)
-    this.mdx = WikiStorybookDescriptions.wikiMdx?.find(item => item.name === name)
+    this.item = wikiDescriptions.find(item => item.name === name)
+    this.mdx = wikiMdx.find(item => item.name === name)
   }
 
   /**

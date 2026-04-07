@@ -1,4 +1,4 @@
-// :component.once import { type StorybookProps, type StorybookSlots, type WikiDataItem } from '@dxtmisha/wiki/lite'
+// :component.once import { type StorybookProps, type StorybookSlots, type WikiDataItem } from '@dxtmisha/wiki'
 
 // :component.once import { wiki[Design] } from '../../../wiki/wiki'
 // :component.once import { defaults } from './props'
