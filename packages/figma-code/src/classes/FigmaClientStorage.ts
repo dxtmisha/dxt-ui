@@ -1,12 +1,5 @@
-import { executeFunction, getCurrentTime, isNull } from '@dxtmisha/functional-basic'
-
-/** Type for storing data in Figma Client Storage/ Тип для хранения данных в Figma Client Storage */
-type FigmaClientStorageValue<T> = {
-  /** Value/ Значение */
-  value: T
-  /** Age/ Возраст */
-  age: number
-}
+import { executeFunction } from '@dxtmisha/functional-basic'
+import { FigmaStorageData, type FigmaStorageDataValue } from './FigmaStorageData'
 
 /**
  * Class for working with Figma client storage (clientStorage).
@@ -14,11 +7,7 @@ type FigmaClientStorageValue<T> = {
  * Класс для работы с клиентским хранилищем Figma (clientStorage).
  */
 export class FigmaClientStorage<T> {
-  /** Current value in the instance/ Текущее значение в экземпляре */
-  protected value?: T
-
-  /** Value update time/ Время обновления значения */
-  protected age?: number
+  protected data: FigmaStorageData<T>
 
   /**
    * Constructor
@@ -29,6 +18,7 @@ export class FigmaClientStorage<T> {
     protected readonly name: string,
     protected readonly cache?: number
   ) {
+    this.data = new FigmaStorageData<T>(name, cache)
   }
 
   /**
@@ -40,11 +30,8 @@ export class FigmaClientStorage<T> {
   async get(defaultValue?: T | (() => T | Promise<T>)): Promise<T | undefined> {
     await this.make()
 
-    if (
-      this.value !== undefined
-      && this.isCache()
-    ) {
-      return this.value
+    if (this.data.isValue()) {
+      return this.data.get()
     }
 
     if (defaultValue !== undefined) {
@@ -55,16 +42,6 @@ export class FigmaClientStorage<T> {
   }
 
   /**
-   * Getting the storage key name.
-   *
-   * Получение имени ключа в хранилище.
-   * @returns storage key name/ имя ключа в хранилище
-   */
-  getName(): string {
-    return this.name
-  }
-
-  /**
    * Changing data in storage.
    *
    * Изменение данных в хранилище.
@@ -72,19 +49,14 @@ export class FigmaClientStorage<T> {
    * @returns current value/ текущее значение
    */
   async set(value?: T | (() => T | Promise<T>)): Promise<T | undefined> {
-    this.value = await executeFunction(value)
-    this.age = this.getTime()
+    this.data.update(await executeFunction(value))
 
-    if (this.value === undefined) {
-      await this.remove()
-    } else {
-      await figma.clientStorage.setAsync(
-        this.getName(),
-        this.toValue()
-      )
-    }
+    await figma.clientStorage.setAsync(
+      this.data.getName(),
+      this.data.toValue()
+    )
 
-    return this.value
+    return this.data.get()
   }
 
   /**
@@ -94,35 +66,11 @@ export class FigmaClientStorage<T> {
    * @returns current instance/ текущий экземпляр
    */
   async remove(): Promise<this> {
-    this.value = undefined
-    this.age = undefined
+    this.data.remove()
 
-    await figma.clientStorage.deleteAsync(this.getName())
+    await figma.clientStorage.deleteAsync(this.data.getName())
 
     return this
-  }
-
-  /**
-   * Checks for storage time limit.
-   *
-   * Проверяет на лимит времени хранения.
-   */
-  protected isCache() {
-    return isNull(this.cache)
-      || (
-        this.age
-        && this.age + (this.cache * 1000) >= this.getTime()
-      )
-  }
-
-  /**
-   * Getting the current time.
-   *
-   * Получение текущего времени.
-   * @returns current time/ текущее время
-   */
-  protected getTime(): number {
-    return getCurrentTime()
   }
 
   /**
@@ -131,8 +79,8 @@ export class FigmaClientStorage<T> {
    * Получение данных из хранилища.
    * @returns data from storage/ данные из хранилища
    */
-  protected async getValue(): Promise<FigmaClientStorageValue<T> | undefined> {
-    return await figma.clientStorage.getAsync(this.getName())
+  protected async getValue(): Promise<FigmaStorageDataValue<T> | undefined> {
+    return await figma.clientStorage.getAsync(this.data.getName())
   }
 
   /**
@@ -142,28 +90,12 @@ export class FigmaClientStorage<T> {
    * @returns current instance/ текущий экземпляр
    */
   protected async make(): Promise<this> {
-    if (this.value === undefined) {
-      const value = await this.getValue()
-
-      if (value) {
-        this.value = value.value
-        this.age = value.age
-      }
+    if (this.data.isNull()) {
+      this.data.setByObject(
+        await this.getValue()
+      )
     }
 
     return this
-  }
-
-  /**
-   * Converting data for storage.
-   *
-   * Преобразование данных для хранения.
-   * @returns data for storage/ данные для хранения
-   */
-  protected toValue(): FigmaClientStorageValue<T> {
-    return {
-      value: this.value as T,
-      age: this.age as number
-    }
   }
 }

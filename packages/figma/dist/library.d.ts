@@ -146,6 +146,18 @@ export declare class FigmaUiMessenger extends FigmaPostAbstract {
 export declare function sendSelectionFrame(id?: string): void;
 
 /**
+ * Message name for getting the client storage/
+ * Имя сообщения для получения клиентского хранилища
+ */
+export declare const UI_FIGMA_CLIENT_STORAGE_GET = "ui-figma-client-storage-get";
+
+/**
+ * Message name for setting the client storage/
+ * Имя сообщения для установки клиентского хранилища
+ */
+export declare const UI_FIGMA_CLIENT_STORAGE_SET = "ui-figma-client-storage-set";
+
+/**
  * Message name for setting the selection of frames/
  * Имя сообщения для установки выборки фреймов
  */
@@ -168,6 +180,18 @@ export declare const UI_FIGMA_FRAMES_SELECTED_ADD_NAME = "ui-figma-frames-select
  * Имя сообщения для отправки выбранных фреймов
  */
 export declare const UI_FIGMA_FRAMES_SELECTED_POST_NAME = "ui-figma-frames-selected";
+
+/**
+ * Message name for getting the storage/
+ * Имя сообщения для получения хранилища
+ */
+export declare const UI_FIGMA_STORAGE_GET = "ui-figma-storage-get";
+
+/**
+ * Message name for setting the storage/
+ * Имя сообщения для установки хранилища
+ */
+export declare const UI_FIGMA_STORAGE_SET = "ui-figma-storage-set";
 
 /**
  * Represents a simplified Figma frame item for the UI/

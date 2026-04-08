@@ -1,5 +1,5 @@
 import { random as e } from "@dxtmisha/functional-basic";
-//#region \0@oxc-project+runtime@0.120.0/helpers/typeof.js
+//#region \0@oxc-project+runtime@0.123.0/helpers/typeof.js
 function t(e) {
 	"@babel/helpers - typeof";
 	return t = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
@@ -9,7 +9,7 @@ function t(e) {
 	}, t(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.120.0/helpers/toPrimitive.js
+//#region \0@oxc-project+runtime@0.123.0/helpers/toPrimitive.js
 function n(e, n) {
 	if (t(e) != "object" || !e) return e;
 	var r = e[Symbol.toPrimitive];
@@ -21,13 +21,13 @@ function n(e, n) {
 	return (n === "string" ? String : Number)(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.120.0/helpers/toPropertyKey.js
+//#region \0@oxc-project+runtime@0.123.0/helpers/toPropertyKey.js
 function r(e) {
 	var r = n(e, "string");
 	return t(r) == "symbol" ? r : r + "";
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.120.0/helpers/defineProperty.js
+//#region \0@oxc-project+runtime@0.123.0/helpers/defineProperty.js
 function i(e, t, n) {
 	return (t = r(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
@@ -98,10 +98,10 @@ function l() {
 }
 //#endregion
 //#region src/types/framesTypes.ts
-var u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add", p = "ui-figma-frame-set-selection";
+var u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add", p = "ui-figma-frame-set-selection", m = "ui-figma-client-storage-get", h = "ui-figma-client-storage-set", g = "ui-figma-storage-get", _ = "ui-figma-storage-set";
 //#endregion
 //#region src/functions/addFramesSelected.ts
-function m(e, t) {
+function v(e, t) {
 	l().post(f, {
 		id: e,
 		selected: t
@@ -109,42 +109,42 @@ function m(e, t) {
 }
 //#endregion
 //#region src/functions/fetchFramesSelected.ts
-var h, g = !1;
-function _(e) {
-	if (h) {
-		e(h);
+var y, b = !1;
+function x(e) {
+	if (y) {
+		e(y);
 		return;
 	}
-	if (g) {
-		setTimeout(() => _(e), 160);
+	if (b) {
+		setTimeout(() => x(e), 160);
 		return;
 	}
-	g = !0, l().add(d, (t) => {
-		h = t, g = !1, e(h);
+	b = !0, l().add(d, (t) => {
+		y = t, b = !1, e(y);
 	}).post(d);
 }
 //#endregion
 //#region src/functions/fetchTopLevelFrames.ts
-var v, y = !1;
-function b(e) {
-	if (v) {
-		e(v);
+var S, C = !1;
+function w(e) {
+	if (S) {
+		e(S);
 		return;
 	}
-	if (y) {
-		setTimeout(() => b(e), 160);
+	if (C) {
+		setTimeout(() => w(e), 160);
 		return;
 	}
-	y = !0;
+	C = !0;
 	let t = l(), n = (r) => {
-		v = r, v.length > 0 && (e(v), t.remove(u, n), y = !1);
+		S = r, S.length > 0 && (e(S), t.remove(u, n), C = !1);
 	};
 	t.add(u, n).post(u);
 }
 //#endregion
 //#region src/functions/sendSelectionFrame.ts
-function x(e) {
+function T(e) {
 	l().post(p, { id: e });
 }
 //#endregion
-export { o as FigmaPostAbstract, a as FigmaPostCode, s as FigmaUiMessenger, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as UI_FIGMA_FRAME_SET_SELECTION, m as addFramesSelected, _ as fetchFramesSelected, b as fetchTopLevelFrames, x as sendSelectionFrame, l as useFigmaUiMessenger };
+export { o as FigmaPostAbstract, a as FigmaPostCode, s as FigmaUiMessenger, m as UI_FIGMA_CLIENT_STORAGE_GET, h as UI_FIGMA_CLIENT_STORAGE_SET, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as UI_FIGMA_FRAME_SET_SELECTION, g as UI_FIGMA_STORAGE_GET, _ as UI_FIGMA_STORAGE_SET, v as addFramesSelected, x as fetchFramesSelected, w as fetchTopLevelFrames, T as sendSelectionFrame, l as useFigmaUiMessenger };

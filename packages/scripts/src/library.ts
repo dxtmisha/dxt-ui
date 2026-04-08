@@ -33,6 +33,7 @@ export * from './functions/getConfigAi'
 export * from './functions/getDirname'
 export * from './functions/getPackageJson'
 export * from './functions/hasNativeDirname'
+export * from './functions/takeScreenshot'
 
 // Types
 export * from './types/aiTypes'
@@ -41,4 +42,5 @@ export * from './types/designTypes'
 export * from './types/gitTypes'
 export * from './types/libraryTypes'
 export * from './types/propertyTypes'
+export * from './types/screenshotTypes'
 export * from './types/webTypes'

@@ -1,4 +1,7 @@
 import { FigmaStorage } from '../classes/FigmaStorage'
+import type { UiFigmaNode } from '../types/figmaTypes'
+
+const items: Record<string, FigmaStorage<any>> = {}
 
 /**
  * Getting a class for working with Figma storage (PluginData).
@@ -10,7 +13,7 @@ import { FigmaStorage } from '../classes/FigmaStorage'
  */
 export function useFigmaStorage<T>(
   name: string,
-  item: PluginDataMixin = figma.root,
+  item: UiFigmaNode = figma.root,
   cache?: number
 ): FigmaStorage<T> {
   const id = 'id' in item ? item.id : 'root'
@@ -20,10 +23,8 @@ export function useFigmaStorage<T>(
     return items[key] as FigmaStorage<T>
   }
 
-  const storage = new FigmaStorage<T>(name, item, cache)
+  const storage = new FigmaStorage<T>(name, item as PluginDataMixin, cache)
 
   items[key] = storage
   return storage
 }
-
-const items: Record<string, FigmaStorage<any>> = {}

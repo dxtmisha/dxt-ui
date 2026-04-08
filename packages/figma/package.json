@@ -12,7 +12,7 @@
     "library": "dxt-library",
     "dxt-types": "dxt-types",
     "prepublishOnly": "npm run library && npm run build",
-    "public": "npm publish --access public"
+    "public-to-npm": "npm publish --access public"
   },
   "files": [
     "dist",

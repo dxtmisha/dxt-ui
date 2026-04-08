@@ -40,3 +40,27 @@ export const UI_FIGMA_FRAMES_SELECTED_ADD_NAME = 'ui-figma-frames-selected-add'
  * Имя сообщения для установки выборки фреймов
  */
 export const UI_FIGMA_FRAME_SET_SELECTION = 'ui-figma-frame-set-selection'
+
+/**
+ * Message name for getting the client storage/
+ * Имя сообщения для получения клиентского хранилища
+ */
+export const UI_FIGMA_CLIENT_STORAGE_GET = 'ui-figma-client-storage-get'
+
+/**
+ * Message name for setting the client storage/
+ * Имя сообщения для установки клиентского хранилища
+ */
+export const UI_FIGMA_CLIENT_STORAGE_SET = 'ui-figma-client-storage-set'
+
+/**
+ * Message name for getting the storage/
+ * Имя сообщения для получения хранилища
+ */
+export const UI_FIGMA_STORAGE_GET = 'ui-figma-storage-get'
+
+/**
+ * Message name for setting the storage/
+ * Имя сообщения для установки хранилища
+ */
+export const UI_FIGMA_STORAGE_SET = 'ui-figma-storage-set'

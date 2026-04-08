@@ -1,12 +1,5 @@
-import { executeFunction, getCurrentTime, isNull } from '@dxtmisha/functional-basic'
-
-/** Type for storing data in Figma/ Тип для хранения данных в Figma */
-type FigmaStorageValue<T> = {
-  /** Value/ Значение */
-  value: T
-  /** Age/ Возраст */
-  age: number
-}
+import { executeFunction } from '@dxtmisha/functional-basic'
+import { FigmaStorageData, type FigmaStorageDataValue } from './FigmaStorageData'
 
 /**
  * Class for working with Figma storage (PluginData).
@@ -14,11 +7,7 @@ type FigmaStorageValue<T> = {
  * Класс для работы с хранилищем Figma (PluginData).
  */
 export class FigmaStorage<T> {
-  /** Current value in the instance/ Текущее значение в экземпляре */
-  protected value?: T
-
-  /** Value update time/ Время обновления значения */
-  protected age?: number
+  protected data: FigmaStorageData<T>
 
   /**
    * Constructor
@@ -31,6 +20,7 @@ export class FigmaStorage<T> {
     protected readonly item: PluginDataMixin = figma.root,
     protected readonly cache?: number
   ) {
+    this.data = new FigmaStorageData<T>(name, cache)
   }
 
   /**
@@ -42,11 +32,8 @@ export class FigmaStorage<T> {
   get(defaultValue?: T | (() => T)): T | undefined {
     this.make()
 
-    if (
-      this.value !== undefined
-      && this.isCache()
-    ) {
-      return this.value
+    if (this.data.isValue()) {
+      return this.data.get()
     }
 
     if (defaultValue !== undefined) {
@@ -57,16 +44,6 @@ export class FigmaStorage<T> {
   }
 
   /**
-   * Getting the storage key name.
-   *
-   * Получение имени ключа в хранилище.
-   * @returns storage key name/ имя ключа в хранилище
-   */
-  getName(): string {
-    return this.name
-  }
-
-  /**
    * Changing data in storage.
    *
    * Изменение данных в хранилище.
@@ -74,19 +51,14 @@ export class FigmaStorage<T> {
    * @returns current value/ текущее значение
    */
   set(value?: T | (() => T)): T | undefined {
-    this.value = executeFunction(value)
-    this.age = this.getTime()
+    this.data.update(executeFunction(value))
 
-    if (this.value === undefined) {
-      this.remove()
-    } else {
-      this.item.setPluginData(
-        this.getName(),
-        this.toValue()
-      )
-    }
+    this.item.setPluginData(
+      this.data.getName(),
+      JSON.stringify(this.data.toValue())
+    )
 
-    return this.value
+    return this.data.get()
   }
 
   /**
@@ -96,35 +68,11 @@ export class FigmaStorage<T> {
    * @returns current instance/ текущий экземпляр
    */
   remove(): this {
-    this.value = undefined
-    this.age = undefined
+    this.data.remove()
 
-    this.item.setPluginData(this.getName(), '')
+    this.item.setPluginData(this.data.getName(), '')
 
     return this
-  }
-
-  /**
-   * Checks for storage time limit.
-   *
-   * Проверяет на лимит времени хранения.
-   */
-  protected isCache() {
-    return isNull(this.cache)
-      || (
-        this.age
-        && this.age + (this.cache * 1000) >= this.getTime()
-      )
-  }
-
-  /**
-   * Getting the current time.
-   *
-   * Получение текущего времени.
-   * @returns current time/ текущее время
-   */
-  protected getTime(): number {
-    return getCurrentTime()
   }
 
   /**
@@ -133,14 +81,14 @@ export class FigmaStorage<T> {
    * Получение данных из хранилища.
    * @returns data from storage/ данные из хранилища
    */
-  protected getValue(): FigmaStorageValue<T> | undefined {
-    const value = this.item.getPluginData(this.getName())
+  protected getValue(): FigmaStorageDataValue<T> | undefined {
+    const value = this.item.getPluginData(this.data.getName())
 
     if (value) {
       try {
         return JSON.parse(value)
       } catch (e) {
-        console.error('FigmaStorage', this.getName(), e)
+        console.error('FigmaStorage', this.data.getName(), e)
       }
     }
 
@@ -154,28 +102,10 @@ export class FigmaStorage<T> {
    * @returns current instance/ текущий экземпляр
    */
   protected make(): this {
-    if (this.value === undefined) {
-      const value = this.getValue()
-
-      if (value) {
-        this.value = value.value
-        this.age = value.age
-      }
+    if (this.data.isNull()) {
+      this.data.setByObject(this.getValue())
     }
 
     return this
-  }
-
-  /**
-   * Converting data to a string for storage.
-   *
-   * Преобразование данных в строку для хранения.
-   * @returns string for storage/ строка для хранения
-   */
-  protected toValue(): string {
-    return JSON.stringify({
-      value: this.value,
-      age: this.age
-    })
   }
 }

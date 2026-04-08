@@ -72,5 +72,7 @@
     "typescript": "^5.0.0",
     "vue": "^3.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "puppeteer": "^23.0.0"
+  }
 }

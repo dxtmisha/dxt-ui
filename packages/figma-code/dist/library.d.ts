@@ -1,5 +1,74 @@
+import { AiAbstract } from '@dxtmisha/scripts/ai';
 import { FigmaPostAbstract } from '@dxtmisha/figma';
 import { UiFigmaFramesList } from '@dxtmisha/figma';
+
+/** Client storage messenger data/ Данные сообщения клиентского хранилища */
+export declare type ClientStorageMessengerData = {
+    name: string;
+    value: any;
+};
+
+export declare class FigmaAiText {
+    protected readonly ai: AiAbstract;
+    protected readonly data: UiFigmaMessageTexts;
+    constructor(ai: AiAbstract, data: UiFigmaMessageTexts);
+    make(): Promise<this>;
+    protected makeImage(): this;
+    protected initTexts(): string;
+}
+
+/**
+ * Class for working with Figma client storage (clientStorage).
+ *
+ * Класс для работы с клиентским хранилищем Figma (clientStorage).
+ */
+export declare class FigmaClientStorage<T> {
+    protected readonly name: string;
+    protected readonly cache?: number | undefined;
+    protected data: FigmaStorageData<T>;
+    /**
+     * Constructor
+     * @param name value name/ название значения
+     * @param cache cache time/ время кэширования
+     */
+    constructor(name: string, cache?: number | undefined);
+    /**
+     * Getting data from storage.
+     *
+     * Получение данных из хранилища.
+     * @param defaultValue default value/ значение по умолчанию
+     */
+    get(defaultValue?: T | (() => T | Promise<T>)): Promise<T | undefined>;
+    /**
+     * Changing data in storage.
+     *
+     * Изменение данных в хранилище.
+     * @param value new values/ новые значения
+     * @returns current value/ текущее значение
+     */
+    set(value?: T | (() => T | Promise<T>)): Promise<T | undefined>;
+    /**
+     * Removing data from storage.
+     *
+     * Удаление данных из хранилища.
+     * @returns current instance/ текущий экземпляр
+     */
+    remove(): Promise<this>;
+    /**
+     * Getting data from storage.
+     *
+     * Получение данных из хранилища.
+     * @returns data from storage/ данные из хранилища
+     */
+    protected getValue(): Promise<FigmaStorageDataValue<T> | undefined>;
+    /**
+     * Making an instance from storage data.
+     *
+     * Создание экземпляра из данных хранилища.
+     * @returns current instance/ текущий экземпляр
+     */
+    protected make(): Promise<this>;
+}
 
 /**
  * Class for working with Figma frames and their elements.
@@ -247,7 +316,7 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      *
      * Возвращает тип узла.
      */
-    getType(): "SLICE" | "FRAME" | "GROUP" | "COMPONENT_SET" | "COMPONENT" | "INSTANCE" | "BOOLEAN_OPERATION" | "VECTOR" | "STAR" | "LINE" | "ELLIPSE" | "POLYGON" | "RECTANGLE" | "TEXT" | "TEXT_PATH" | "TRANSFORM_GROUP" | "STICKY" | "CONNECTOR" | "SHAPE_WITH_TEXT" | "CODE_BLOCK" | "STAMP" | "WIDGET" | "EMBED" | "LINK_UNFURL" | "MEDIA" | "SECTION" | "HIGHLIGHT" | "WASHI_TAPE" | "TABLE" | "SLIDE" | "SLIDE_ROW" | "SLIDE_GRID" | "INTERACTIVE_SLIDE_ELEMENT" | "DOCUMENT" | "PAGE" | undefined;
+    getType(): "SLICE" | "FRAME" | "GROUP" | "COMPONENT_SET" | "COMPONENT" | "INSTANCE" | "BOOLEAN_OPERATION" | "VECTOR" | "STAR" | "LINE" | "ELLIPSE" | "POLYGON" | "RECTANGLE" | "TEXT" | "TEXT_PATH" | "TRANSFORM_GROUP" | "STICKY" | "CONNECTOR" | "SHAPE_WITH_TEXT" | "CODE_BLOCK" | "STAMP" | "WIDGET" | "EMBED" | "LINK_UNFURL" | "MEDIA" | "SECTION" | "HIGHLIGHT" | "WASHI_TAPE" | "TABLE" | "SLIDE" | "SLIDE_ROW" | "SLIDE_GRID" | "SLOT" | "INTERACTIVE_SLIDE_ELEMENT" | "DOCUMENT" | "PAGE" | undefined;
     /**
      * Returns the parent node.
      *
@@ -301,13 +370,13 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      *
      * Экспортирует узел в формате JPG.
      */
-    exportJpg(): Promise<Uint8Array<ArrayBufferLike> | "">;
+    exportJpg(): Promise<"" | Uint8Array<ArrayBufferLike>>;
     /**
      * Exports the node as JSON.
      *
      * Экспортирует узел в формате JSON.
      */
-    exportJson(): Promise<Uint8Array<ArrayBufferLike> | "">;
+    exportJson(): Promise<"" | Uint8Array<ArrayBufferLike>>;
     /**
      * Returns the text content of the node.
      *
@@ -339,7 +408,7 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      * Экспортирует узел в указанном формате.
      * @param formatSettings format settings/ настройки формата
      */
-    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<Uint8Array<ArrayBufferLike> | "">;
+    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<"" | Uint8Array<ArrayBufferLike>>;
 }
 
 /**
@@ -373,10 +442,7 @@ export declare class FigmaStorage<T> {
     protected readonly name: string;
     protected readonly item: PluginDataMixin;
     protected readonly cache?: number | undefined;
-    /** Current value in the instance/ Текущее значение в экземпляре */
-    protected value?: T;
-    /** Value update time/ Время обновления значения */
-    protected age?: number;
+    protected data: FigmaStorageData<T>;
     /**
      * Constructor
      * @param name value name/ название значения
@@ -391,13 +457,6 @@ export declare class FigmaStorage<T> {
      * @param defaultValue default value/ значение по умолчанию
      */
     get(defaultValue?: T | (() => T)): T | undefined;
-    /**
-     * Getting the storage key name.
-     *
-     * Получение имени ключа в хранилище.
-     * @returns storage key name/ имя ключа в хранилище
-     */
-    getName(): string;
     /**
      * Changing data in storage.
      *
@@ -414,25 +473,12 @@ export declare class FigmaStorage<T> {
      */
     remove(): this;
     /**
-     * Checks for storage time limit.
-     *
-     * Проверяет на лимит времени хранения.
-     */
-    protected isCache(): boolean | 0 | undefined;
-    /**
-     * Getting the current time.
-     *
-     * Получение текущего времени.
-     * @returns current time/ текущее время
-     */
-    protected getTime(): number;
-    /**
      * Getting data from storage.
      *
      * Получение данных из хранилища.
      * @returns data from storage/ данные из хранилища
      */
-    protected getValue(): FigmaStorageValue<T> | undefined;
+    protected getValue(): FigmaStorageDataValue<T> | undefined;
     /**
      * Making an instance from storage data.
      *
@@ -440,17 +486,121 @@ export declare class FigmaStorage<T> {
      * @returns current instance/ текущий экземпляр
      */
     protected make(): this;
-    /**
-     * Converting data to a string for storage.
-     *
-     * Преобразование данных в строку для хранения.
-     * @returns string for storage/ строка для хранения
-     */
-    protected toValue(): string;
 }
 
-/** Type for storing data in Figma/ Тип для хранения данных в Figma */
-declare type FigmaStorageValue<T> = {
+/**
+ * Class for managing Figma storage data.
+ *
+ * Класс для управления данными хранилища Figma.
+ * @template T type of data/ тип данных
+ */
+export declare class FigmaStorageData<T> {
+    protected readonly name: string;
+    protected readonly cache?: number | undefined;
+    /** Current value in the instance/ Текущее значение в экземпляре */
+    protected value?: T;
+    /** Value update time/ Время обновления значения */
+    protected age?: number;
+    /**
+     * Constructor
+     * @param name value name/ название значения
+     * @param cache cache time/ время кэширования
+     */
+    constructor(name: string, cache?: number | undefined);
+    /**
+     * Checks if the value is null or undefined.
+     *
+     * Проверяет, является ли значение null или undefined.
+     */
+    isNull(): boolean;
+    /**
+     * Checks for storage time limit.
+     *
+     * Проверяет на лимит времени хранения.
+     */
+    isCache(): boolean;
+    /**
+     * Checks if the value is defined and within the cache limit.
+     *
+     * Проверяет, определено ли значение и находится ли оно в пределах лимита кэша.
+     */
+    isValue(): boolean;
+    /**
+     * Returns the current value.
+     *
+     * Возвращает текущее значение.
+     */
+    get(): T | undefined;
+    /**
+     * Returns the update time of the value.
+     *
+     * Возвращает время обновления значения.
+     */
+    getAge(): number | undefined;
+    /**
+     * Returns the storage key name.
+     *
+     * Возвращает имя ключа в хранилище.
+     */
+    getName(): string;
+    /**
+     * Returns the cache time.
+     *
+     * Возвращает время кэширования.
+     */
+    getCache(): number | undefined;
+    /**
+     * Sets the value and age.
+     *
+     * Устанавливает значение и время.
+     * @param value new value/ новое значение
+     * @param age update time/ время обновления
+     */
+    set(value?: T, age?: number): this;
+    /**
+     * Sets data from a FigmaStorageDataValue object.
+     *
+     * Устанавливает данные из объекта FigmaStorageDataValue.
+     * @param value data object/ объект данных
+     */
+    setByObject(value?: FigmaStorageDataValue<T>): this;
+    /**
+     * Sets the value.
+     *
+     * Устанавливает значение.
+     * @param value new value/ новое значение
+     */
+    setValue(value?: T): this;
+    /**
+     * Sets the update time.
+     *
+     * Устанавливает время обновления.
+     * @param age update time/ время обновления
+     */
+    setAge(age?: number): this;
+    /**
+     * Updates the value and sets the current time as age.
+     *
+     * Обновляет значение и устанавливает текущее время.
+     * @param value new value/ новое значение
+     */
+    update(value?: T): this;
+    /**
+     * Removes the data.
+     *
+     * Удаляет данные.
+     */
+    remove(): this;
+    /**
+     * Converts data to a FigmaStorageDataValue object for storage.
+     *
+     * Преобразует данные в объект FigmaStorageDataValue для хранения.
+     */
+    toValue(): FigmaStorageDataValue<T>;
+}
+
+/** Type for storing data in Figma Storage/ Тип для хранения данных в Figma Storage */
+export declare type FigmaStorageDataValue<T> = {
     /** Value/ Значение */
     value: T;
     /** Age/ Возраст */
@@ -493,7 +643,15 @@ export declare class FigmaTopLevelFrames {
  * Возвращает узел Figma по идентификатору.
  * @param id node ID/ идентификатор узла
  */
-export declare function getFigmaItemById(id: string): Promise<FigmaItem | undefined>;
+export declare function getFigmaItemById<T extends UiFigmaNode = UiFigmaNode>(id: string): Promise<FigmaItem<T> | undefined>;
+
+/**
+ * Returns the Figma node used for storage by ID or figma.root.
+ *
+ * Возвращает узел Figma, используемый для хранения, по идентификатору или figma.root.
+ * @param id node ID/ идентификатор узла
+ */
+export declare function getFigmaItemByIdOrRoot<T extends UiFigmaNode = UiFigmaNode>(id?: string): Promise<T>;
 
 /**
  * Sets up a listener for selection changes in Figma and sends text elements to the UI.
@@ -503,11 +661,32 @@ export declare function getFigmaItemById(id: string): Promise<FigmaItem | undefi
 export declare const makeFigmaTexts: () => void;
 
 /**
+ * Sets up the client storage by message.
+ *
+ * Устанавливает клиентское хранилище по сообщению.
+ */
+export declare function setupClientStorage(): void;
+
+/**
  * Sets up the selection by message.
  *
  * Устанавливает выборку по сообщению.
  */
 export declare function setupSelectionByMessage(): void;
+
+/**
+ * Sets up the storage by message.
+ *
+ * Устанавливает хранилище по сообщению.
+ */
+export declare function setupStorage(): void;
+
+/** Storage messenger data/ Данные сообщения хранилища */
+export declare type StorageMessengerData = {
+    id?: string;
+    name: string;
+    value: any;
+};
 
 /**
  * Moves the view to the specified item and selects it.
@@ -553,6 +732,15 @@ export declare type UiFigmaMessageTexts = {
 export declare type UiFigmaNode = ChildrenMixin | SceneNode | DefaultShapeMixin | DocumentNode | PageNode | FrameNode | SectionNode | TextNode | BaseNode;
 
 /**
+ * Getting a class for working with Figma client storage (clientStorage).
+ *
+ * Получение класса для работы с клиентским хранилищем Figma (clientStorage).
+ * @param name value name/ название значения
+ * @param cache cache time/ время кэширования
+ */
+export declare function useFigmaClientStorage<T>(name: string, cache?: number): FigmaClientStorage<T>;
+
+/**
  * Composable for accessing the FigmaPluginMessenger singleton.
  * Initializes the messenger on first call.
  *
@@ -570,6 +758,6 @@ export declare function useFigmaPluginMessenger(): FigmaPluginMessenger;
  * @param item object for storing data/ объект для хранения данных
  * @param cache cache time/ время кэширования
  */
-export declare function useFigmaStorage<T>(name: string, item?: PluginDataMixin, cache?: number): FigmaStorage<T>;
+export declare function useFigmaStorage<T>(name: string, item?: UiFigmaNode, cache?: number): FigmaStorage<T>;
 
 export { }
