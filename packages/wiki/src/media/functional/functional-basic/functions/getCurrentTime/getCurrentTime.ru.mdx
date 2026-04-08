@@ -1,0 +1,17 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getCurrentTime - Получение текущего времени'/>
+
+# `getCurrentTime`
+
+Возвращает текущее время в миллисекундах. Функция является оберткой над `new Date().getTime()` и позволяет быстро получить временную метку (timestamp).
+
+**Возвращает:**
+Текущее время в миллисекундах (number).
+
+```typescript
+import { getCurrentTime } from '@dxtmisha/functional-basic'
+
+const time = getCurrentTime()
+// Результат: 1710498600000 (пример)
+```

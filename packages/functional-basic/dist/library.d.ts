@@ -3740,6 +3740,13 @@ export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>,
 export declare function getCurrentDate(format?: GeoDate): string;
 
 /**
+ * Returns the current time in milliseconds.
+ *
+ * Возвращает текущее время в миллисекундах.
+ */
+export declare function getCurrentTime(): number;
+
+/**
  * Returns the first Element in the document that matches the specified selector or the element.
  *
  * Возвращает первый Element документа, который соответствует указанному селектору или саму element.

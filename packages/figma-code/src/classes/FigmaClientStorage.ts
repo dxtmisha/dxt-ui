@@ -1,7 +1,7 @@
 import { executeFunction, getCurrentTime, isNull } from '@dxtmisha/functional-basic'
 
-/** Type for storing data in Figma/ Тип для хранения данных в Figma */
-type FigmaStorageValue<T> = {
+/** Type for storing data in Figma Client Storage/ Тип для хранения данных в Figma Client Storage */
+type FigmaClientStorageValue<T> = {
   /** Value/ Значение */
   value: T
   /** Age/ Возраст */
@@ -9,11 +9,11 @@ type FigmaStorageValue<T> = {
 }
 
 /**
- * Class for working with Figma storage (PluginData).
+ * Class for working with Figma client storage (clientStorage).
  *
- * Класс для работы с хранилищем Figma (PluginData).
+ * Класс для работы с клиентским хранилищем Figma (clientStorage).
  */
-export class FigmaStorage<T> {
+export class FigmaClientStorage<T> {
   /** Current value in the instance/ Текущее значение в экземпляре */
   protected value?: T
 
@@ -23,12 +23,10 @@ export class FigmaStorage<T> {
   /**
    * Constructor
    * @param name value name/ название значения
-   * @param item object for storing data/ объект для хранения данных
    * @param cache cache time/ время кэширования
    */
   constructor(
     protected readonly name: string,
-    protected readonly item: PluginDataMixin = figma.root,
     protected readonly cache?: number
   ) {
   }
@@ -39,8 +37,8 @@ export class FigmaStorage<T> {
    * Получение данных из хранилища.
    * @param defaultValue default value/ значение по умолчанию
    */
-  get(defaultValue?: T | (() => T)): T | undefined {
-    this.make()
+  async get(defaultValue?: T | (() => T | Promise<T>)): Promise<T | undefined> {
+    await this.make()
 
     if (
       this.value !== undefined
@@ -50,7 +48,7 @@ export class FigmaStorage<T> {
     }
 
     if (defaultValue !== undefined) {
-      return this.set(defaultValue)
+      return await this.set(defaultValue)
     }
 
     return undefined
@@ -73,14 +71,14 @@ export class FigmaStorage<T> {
    * @param value new values/ новые значения
    * @returns current value/ текущее значение
    */
-  set(value?: T | (() => T)): T | undefined {
-    this.value = executeFunction(value)
+  async set(value?: T | (() => T | Promise<T>)): Promise<T | undefined> {
+    this.value = await executeFunction(value)
     this.age = this.getTime()
 
     if (this.value === undefined) {
-      this.remove()
+      await this.remove()
     } else {
-      this.item.setPluginData(
+      await figma.clientStorage.setAsync(
         this.getName(),
         this.toValue()
       )
@@ -95,11 +93,11 @@ export class FigmaStorage<T> {
    * Удаление данных из хранилища.
    * @returns current instance/ текущий экземпляр
    */
-  remove(): this {
+  async remove(): Promise<this> {
     this.value = undefined
     this.age = undefined
 
-    this.item.setPluginData(this.getName(), '')
+    await figma.clientStorage.deleteAsync(this.getName())
 
     return this
   }
@@ -133,18 +131,8 @@ export class FigmaStorage<T> {
    * Получение данных из хранилища.
    * @returns data from storage/ данные из хранилища
    */
-  protected getValue(): FigmaStorageValue<T> | undefined {
-    const value = this.item.getPluginData(this.getName())
-
-    if (value) {
-      try {
-        return JSON.parse(value)
-      } catch (e) {
-        console.error('FigmaStorage', this.getName(), e)
-      }
-    }
-
-    return undefined
+  protected async getValue(): Promise<FigmaClientStorageValue<T> | undefined> {
+    return await figma.clientStorage.getAsync(this.getName())
   }
 
   /**
@@ -153,9 +141,9 @@ export class FigmaStorage<T> {
    * Создание экземпляра из данных хранилища.
    * @returns current instance/ текущий экземпляр
    */
-  protected make(): this {
+  protected async make(): Promise<this> {
     if (this.value === undefined) {
-      const value = this.getValue()
+      const value = await this.getValue()
 
       if (value) {
         this.value = value.value
@@ -167,15 +155,15 @@ export class FigmaStorage<T> {
   }
 
   /**
-   * Converting data to a string for storage.
+   * Converting data for storage.
    *
-   * Преобразование данных в строку для хранения.
-   * @returns string for storage/ строка для хранения
+   * Преобразование данных для хранения.
+   * @returns data for storage/ данные для хранения
    */
-  protected toValue(): string {
-    return JSON.stringify({
-      value: this.value,
-      age: this.age
-    })
+  protected toValue(): FigmaClientStorageValue<T> {
+    return {
+      value: this.value as T,
+      age: this.age as number
+    }
   }
 }
