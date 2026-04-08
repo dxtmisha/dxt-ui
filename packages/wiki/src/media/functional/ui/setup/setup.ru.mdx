@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI/# Подготовка проекта'/>
+
+# Подготовка проекта
+
+Перед началом проектирования компонентов необходимо подготовить рабочую среду и настроить конфигурационные файлы. Система требует наличия ключевых пакетов экосистемы и специфических настроек сборщика.
+
+## 1. Установка зависимостей
+
+Установите полный набор необходимых пакетов `@dxtmisha` с помощью пакетного менеджера:
+
+```bash
+npm install @dxtmisha/configuration @dxtmisha/constructor @dxtmisha/functional @dxtmisha/functional-basic @dxtmisha/media @dxtmisha/styles @dxtmisha/scripts @dxtmisha/test @dxtmisha/wiki
+```
+
+## 2. Конфигурация проекта (design.config.json)
+
+Создайте файл `design.config.json` в корневом каталоге проекта. Этот файл определяет глобальные параметры вашей дизайн-системы, такие как название проекта и язык документации.
+
+```json
+{
+  "project": "Ui",
+  "name": "my-design",
+  "wikiLanguage": "ru"
+}
+```
+
+*Примечание: Вы можете использовать свойство `"extends"` для наследования конфигурации от других пакетов.*
+
+## 3. Настройка Vite (vite.config.ts)
+
+Для корректной сборки рекомендуется использовать предустановленный объект `viteComponents` из пакета `@dxtmisha/configuration`. Он содержит все необходимые плагины и настройки для работы с компонентами и документацией.
+
+```typescript
+import { viteComponents } from '@dxtmisha/configuration/viteComponents'
+
+// https://vite.dev/config/
+export default viteComponents
+```
+
+## 4. Настройка TypeScript (tsconfig.app.json)
+
+Добавьте поддержку MDX-файлов в конфигурацию TypeScript. Для этого необходимо добавить `@types/mdx` в массив `types` секции `compilerOptions`.
+
+```json
+{
+  "compilerOptions": {
+    "types": [
+      "@types/mdx"
+    ]
+  }
+}
+```
+
+## 5. Добавление команд запуска (package.json)
+
+Добавьте следующие скрипты в ваш `package.json` для автоматизации процессов генерации кода, документации и типизации:
+
+```json
+{
+  "scripts": {
+    "ui": "dxt-ui",
+    "wiki-storm": "dxt-wiki-storm",
+    "types": "dxt-types"
+  }
+}
+```
+
+- **ui**: Запускает основной цикл генерации UI-компонентов.
+- **wiki-storm**: Генерирует и обновляет файлы для Wiki/Storybook.
+- **types**: Обновляет типы данных на основе текущей конфигурации.

@@ -1,0 +1,104 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/# Tạo và quản lý thành phần'/>
+
+# Tạo và quản lý thành phần
+
+Quy trình phát triển trong hệ thống **DXT UI** được tự động hóa tối đa bằng các mã lệnh tạo mã. Ý tưởng cốt lõi là nhà phát triển mô tả siêu dữ liệu của thành phần, và hệ thống sẽ tự động tạo và cập nhật các tệp cần thiết (props, styles, templates).
+
+```bash
+npm run ui
+npm run ui [ComponentName]
+```
+
+Lệnh `npm run ui` là công cụ chính để làm việc với các thành phần. Nó tự động quét các thư mục, tìm các thư mục mới hoặc bị thay đổi và đồng bộ hóa tất cả các tệp liên quan (`props.ts`, `styleToken.scss`, `.vue`) dựa trên dữ liệu trong `properties.json`.
+
+- Để tạo hoặc cập nhật một thành phần cụ thể, chỉ cần chạy lệnh sau khi thực hiện thay đổi đối với thư mục của nó.
+- Để xây dựng lại hoàn toàn thư viện và cập nhật tất cả các xuất bản (exports), hãy chạy lệnh mà không có tham số.
+
+## Tạo một thành phần mới
+
+Để tạo một thành phần mới từ đầu, hãy làm theo các bước sau:
+
+1. **Tạo thư mục**: Trong thư mục `src/components/Ui/` (hoặc trong dự án của bạn), hãy tạo một thư mục mới với tên của thành phần (ví dụ: `MyButton`).
+2. **Khởi tạo thành phần**: Thực thi lệnh `ui` (hoặc `npm run ui`). Mã lệnh sẽ tự động phát hiện thư mục mới và tạo các tệp cần thiết bên trong đó.
+
+```bash
+npm run ui
+```
+
+Hệ thống sẽ tạo tệp `properties.json` với cấu trúc cơ bản, cùng với tất cả các tệp hỗ trợ (props, styles, vue).
+
+3. **Điền các thuộc tính**: Chỉnh sửa tệp `properties.json` đã tạo bằng cách thêm các bộ sửa đổi và token.
+4. **Đồng bộ hóa các thay đổi**: Chạy lại lệnh `ui` để cập nhật tất cả các tệp liên quan dựa trên các thay đổi của bạn.
+
+```bash
+npm run ui
+```
+
+### Kết quả tạo mã
+Hệ thống sẽ tự động tạo các tệp sau dựa trên siêu dữ liệu của bạn và constructor đã chọn:
+- `props.ts` — các thuộc tính được định kiểu mở rộng từ constructor và xác định các giá trị mặc định.
+- `styleToken.scss` — các SCSS token và mixin.
+- `DesignComponent.vue` — thành phần Vue chính với logic khởi tạo.
+- `index.ts`, `wiki.ts`, `stories.ts` — các tệp xuất bản, tài liệu và câu chuyện (stories).
+
+
+Trong tệp `.vue` được tạo, khi khởi tạo lớp `Design` (ví dụ: `BarsDesign`), bạn có thể truyền một đối tượng `components`. Điều này cho phép bạn kết nối các thành phần con cần thiết để thành phần hiện tại hoạt động (ví dụ: các biểu tượng hoặc chỉ báo tiến trình).
+
+> Chỉ kết nối các thành phần thực sự được sử dụng. Nếu một thành phần phụ thuộc (ví dụ: `ripple`) không cần thiết trong việc triển khai của bạn, nó có thể được bỏ qua khỏi đối tượng.
+
+Để quản lý các thuộc tính của thành phần con, hãy sử dụng tham số `compMod`. Điều này cho phép bạn truyền các giá trị mặc định cho các pro của các phần tử bên trong (ví dụ: đặt kích thước hoặc kiểu nút bên trong một bảng điều khiển điều hướng).
+
+```typescript
+const design = new BarsDesign('my.bars', props, {
+  emits,
+  classes: classesToken,
+  components: {
+    button: MyButton
+  },
+  compMod: {
+    button: {
+      text: true,
+      size: 'xs',
+      inverse: true
+    }
+  }
+})
+
+### Làm việc với Props và các giá trị mặc định
+
+Tệp `props.ts` chứa một đối tượng `defaults` kết hợp các giá trị tiêu chuẩn từ constructor với các cài đặt cụ thể cho thành phần của bạn.
+
+Ví dụ trong tệp `props.ts`:
+```typescript
+export const defaults: object = {
+  ...defaultsBars,
+  iconBack: 'arrow_back',
+  paddingByIndent: true
+}
+```
+
+
+## Cập nhật một thành phần
+
+Nếu bạn cần thay đổi các thuộc tính của thành phần (thêm một bộ sửa đổi, thay đổi một token hoặc giá trị CSS), hãy tuân theo quy tắc **"Nguồn dữ liệu duy nhất" (Source of Truth)**:
+
+1. Chỉnh sửa tệp `properties.json`.
+2. Chạy lại lệnh:
+   ```bash
+   npm run ui MyButton
+   ```
+
+Mã lệnh sẽ tự động cập nhật `props.ts` (thêm các kiểu mới), `styleToken.scss` (cập nhật biến) và các bản mẫu trong khi vẫn duy trì tính toàn vẹn của kiến trúc.
+
+## Xây dựng lại toàn bộ thư viện
+
+Khi làm việc đồng thời trên nhiều thành phần hoặc nếu bạn muốn cập nhật các xuất bản thư viện toàn cầu (media, plugin, type), hãy sử dụng lệnh `ui` mà không cần đối số:
+
+```bash
+npm run ui
+```
+
+
+

@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/# Chuẩn bị dự án'/>
+
+# Chuẩn bị dự án
+
+Trước khi bạn bắt đầu thiết kế các thành phần, bạn cần chuẩn bị môi trường làm việc và cấu hình các tệp tin dự án. Hệ thống yêu cầu các gói cốt lõi trong hệ sinh thái và các cài đặt trình biên dịch cụ thể.
+
+## 1. Cài đặt các thành phần phụ thuộc
+
+Cài đặt đầy đủ các gói `@dxtmisha` cần thiết bằng cách sử dụng trình quản lý gói của bạn:
+
+```bash
+npm install @dxtmisha/configuration @dxtmisha/constructor @dxtmisha/functional @dxtmisha/functional-basic @dxtmisha/media @dxtmisha/styles @dxtmisha/scripts @dxtmisha/test @dxtmisha/wiki
+```
+
+## 2. Cấu hình dự án (design.config.json)
+
+Tạo một tệp `design.config.json` trong thư mục gốc của dự án. Tệp này xác định các tham số toàn cầu cho hệ thống thiết kế của bạn, như tên dự án và ngôn ngữ tài liệu.
+
+```json
+{
+  "project": "Ui",
+  "name": "my-design",
+  "wikiLanguage": "vi"
+}
+```
+
+*Lưu ý: Bạn có thể sử dụng thuộc tính `"extends"` để kế thừa cấu hình từ các gói khác.*
+
+## 3. Cấu hình Vite (vite.config.ts)
+
+Để xây dựng đúng cách, khuyến nghị sử dụng đối tượng `viteComponents` đã được định nghĩa sẵn từ gói `@dxtmisha/configuration`. Nó chứa tất cả các plugin và cài đặt cần thiết để làm việc với các thành phần và tài liệu.
+
+```typescript
+import { viteComponents } from '@dxtmisha/configuration/viteComponents'
+
+// https://vite.dev/config/
+export default viteComponents
+```
+
+## 4. Cấu hình TypeScript (tsconfig.app.json)
+
+Thêm hỗ trợ loại tệp MDX vào cấu hình TypeScript của bạn. Để thực hiện việc này, hãy thêm `@types/mdx` vào mảng `types` trong phần `compilerOptions`.
+
+```json
+{
+  "compilerOptions": {
+    "types": [
+      "@types/mdx"
+    ]
+  }
+}
+```
+
+## 5. Thêm các lệnh thực thi (package.json)
+
+Thêm các mã lệnh sau vào tệp `package.json` của bạn để tự động hóa quá trình tạo mã, tài liệu và định kiểu:
+
+```json
+{
+  "scripts": {
+    "ui": "dxt-ui",
+    "wiki-storm": "dxt-wiki-storm",
+    "types": "dxt-types"
+  }
+}
+```
+
+- **ui**: Khởi chạy chu kỳ tạo thành phần giao diện người dùng (UI) chính.
+- **wiki-storm**: Tạo và cập nhật các tệp cho Wiki/Storybook.
+- **types**: Cập nhật các kiểu dữ liệu dựa trên cấu hình hiện tại.

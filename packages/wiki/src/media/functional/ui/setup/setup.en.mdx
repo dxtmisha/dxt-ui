@@ -1,0 +1,72 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/# Project Setup'/>
+
+# Project Setup
+
+Before you start designing components, you need to prepare the work environment and configure the project files. The system requires key ecosystem packages and specific builder settings.
+
+## 1. Installing Dependencies
+
+Install the full set of necessary `@dxtmisha` packages using your package manager:
+
+```bash
+npm install @dxtmisha/configuration @dxtmisha/constructor @dxtmisha/functional @dxtmisha/functional-basic @dxtmisha/media @dxtmisha/styles @dxtmisha/scripts @dxtmisha/test @dxtmisha/wiki
+```
+
+## 2. Project Configuration (design.config.json)
+
+Create a `design.config.json` file in the root directory of your project. This file defines global parameters for your design system, such as project name and documentation language.
+
+```json
+{
+  "project": "Ui",
+  "name": "my-design",
+  "wikiLanguage": "en"
+}
+```
+
+*Note: You can use the `"extends"` property to inherit configuration from other packages.*
+
+## 3. Configuring Vite (vite.config.ts)
+
+For correct building, it is recommended to use the pre-defined `viteComponents` object from the `@dxtmisha/configuration` package. It contains all necessary plugins and settings for working with components and documentation.
+
+```typescript
+import { viteComponents } from '@dxtmisha/configuration/viteComponents'
+
+// https://vite.dev/config/
+export default viteComponents
+```
+
+## 4. Configuring TypeScript (tsconfig.app.json)
+
+Add MDX file support to your TypeScript configuration. To do this, add `@types/mdx` to the `types` array in the `compilerOptions` section.
+
+```json
+{
+  "compilerOptions": {
+    "types": [
+      "@types/mdx"
+    ]
+  }
+}
+```
+
+## 5. Adding Run Commands (package.json)
+
+Add the following scripts to your `package.json` to automate code generation, documentation, and typing processes:
+
+```json
+{
+  "scripts": {
+    "ui": "dxt-ui",
+    "wiki-storm": "dxt-wiki-storm",
+    "types": "dxt-types"
+  }
+}
+```
+
+- **ui**: Launches the main UI component generation cycle.
+- **wiki-storm**: Generates and updates files for Wiki/Storybook.
+- **types**: Updates data types based on the current configuration.

@@ -1,0 +1,114 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI/# Cấu hình dữ liệu Wiki'/>
+
+# Cấu hình dữ liệu Wiki
+
+Để quản lý dữ liệu demo và các đối số Storybook trong một dự án cụ thể (ví dụ: `d1`), tệp `src/wiki/wiki.ts` được sử dụng. Tệp này cho phép bạn bổ sung hoặc ghi đè các cài đặt Wiki toàn cầu được định nghĩa trong gói chính `@dxtmisha/wiki`.
+
+### Tại sao điều này lại cần thiết?
+Tệp `wiki.ts` phục vụ như một điểm cấu hình trung tâm cho:
+- Ghi đè các giá trị mặc định toàn cầu cho các đối số Storybook (ví dụ: văn bản nút hoặc biểu tượng).
+- Cấu hình danh sách lựa chọn (options) cho các tài nguyên cụ thể của dự án.
+- Thêm dữ liệu demo độc nhất không có trong thư viện cơ sở.
+
+### Cách làm việc với tệp
+Trong mỗi gói thành phần (ví dụ: `@dxtmisha/d1`), tệp `src/wiki/wiki.ts` xuất bản một đối tượng kiểu `StorybookArgsToList`. Đối tượng này nhập dữ liệu `wiki` cơ sở và sửa đổi chúng khi cần thiết.
+
+```typescript
+import { StorybookControl, StorybookCategory, type StorybookArgsToList } from '@dxtmisha/wiki'
+import { wiki } from '@dxtmisha/wiki/media'
+
+export const wikiD1: StorybookArgsToList = {
+  // 1. Kế thừa: Ghi đè đối số hiện có 'image.value'
+  'image.value': {
+    ...wiki['image.value'],
+    options: {
+      ...wiki['image.value']?.options,
+      value: 'mail-01'
+    }
+  },
+
+  // 2. Tham số mới: Tạo một thuộc tính hoàn toàn mới
+  'my.new.parameter': {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.technical,
+      description: 'Mô tả của một tham số hoàn toàn mới không có trong cơ sở',
+      value: 'Giá trị mặc định'
+    }
+  }
+}
+```
+
+
+
+## Nguyên tắc đặt tên khóa
+
+Việc lựa chọn tên khóa trong đối tượng `wiki` xác định phạm vi áp dụng của các cài đặt:
+
+#### Thuộc tính toàn cầu
+Nếu khóa chỉ bao gồm tên thuộc tính (ví dụ: `value`, `size`, `text`), các cài đặt được coi là **toàn cầu** (global). Chúng được tự động áp dụng cho tất cả các thành phần trong hệ thống có thuộc tính đó. Điều này hữu ích để xác định các mô tả hoặc kiểu điều khiển đồng nhất cho toàn bộ thư viện.
+
+#### Thuộc tính cụ thể
+Nếu khóa chứa dấu chấm, nó được hiểu là `[TênThànhPhần].[TênThuộcTính]` (ví dụ: `button.size`, `input.value`).
+- Các cài đặt **chỉ được áp dụng cho thành phần được chỉ định**.
+- Các giá trị này được ưu tiên hơn các cài đặt toàn cầu.
+- Cho phép xác định hành vi hoặc giá trị mặc định duy nhất cho một phần tử cụ thể mà không ảnh hưởng đến các phần tử khác.
+
+## Cấu trúc kiểu dữ liệu
+
+Để cấu hình chính xác tệp `wiki.ts`, điều quan trọng là phải hiểu cấu trúc của các kiểu dữ liệu được sử dụng. Dưới đây là mô tả chi tiết về kiểu `StorybookArgsToList` chính và các thành phần của nó.
+
+### `StorybookArgsToList`
+
+Đây là một kiểu bản ghi (`Record`) được sử dụng để cấu hình các đối số.
+
+- **Khóa (Key)**: Tên đối số (chuỗi).
+- **Giá trị (Value)**: Một đối tượng kiểu `StorybookArgsToItem`.
+
+---
+
+### `StorybookArgsToItem`
+
+Mô tả cấu hình của một điều khiển Storybook cụ thể.
+
+- `type: StorybookControl` — xác định kiểu giao diện để điều khiển giá trị (trường văn bản, hộp kiểm, v.v.).
+- `options: StorybookArgsToOptionsByType` — một đối tượng cho các cài đặt hành vi và hiển thị nâng cao.
+- `isDemo?: boolean` — chỉ ra rằng tham số này chỉ dành cho mục đích demo.
+- `demo?: any` — dữ liệu demo sẽ được thay thế trong các ví dụ.
+- `hide?: boolean` — cho phép ẩn tham số khỏi bảng đối số nếu nó thuần túy mang tính kỹ thuật.
+
+---
+
+### `StorybookArgsToOptionsByType`
+
+Một đối tượng để cấu hình siêu dữ liệu và các ràng buộc của đối số.
+
+- `category?: StorybookCategory` — tên danh mục để nhóm trong bảng (sử dụng các giá trị từ enum `StorybookCategory`).
+- `value?: any` — giá trị hiện tại của đối số.
+- `defaultValue?: string | number | boolean` — giá trị sẽ được hiển thị là "mặc định" trong tài liệu.
+- `description?: string | Record<string, string>` — mô tả của thuộc tính. Có thể là một chuỗi hoặc một đối tượng cho các ngôn ngữ khác nhau.
+- `options?: string[] | Record<string, string>` — danh sách các tùy chọn có sẵn để lựa chọn (có liên quan đến các kiểu `select` hoặc `radio`).
+- `min?: number` / `max?: number` — giá trị tối thiểu và tối đa cho các điều khiển số.
+- `order?: number` — chỉ số số để sắp xếp các đối số trong danh sách.
+
+---
+
+### Các Enum
+
+#### `StorybookControl`
+Xác định kiểu hiển thị của điều khiển:
+- `text` — trường văn bản.
+- `boolean` — hộp kiểm (true/false).
+- `number` — nhập số.
+- `select` — danh sách thả xuống (yêu cầu điền `options`).
+- `object` — trình chỉnh sửa cho các đối tượng JSON.
+
+#### `StorybookCategory`
+Được sử dụng để nhóm các thuộc tính vào các khối logic:
+- `Values` — các giá trị chính.
+- `Styles` — các tham số ngoại hình.
+- `Technical` — các cài đặt kỹ thuật và nội bộ.
+- `Adaptive` — các tham số về khả năng đáp ứng.
+- `Status` — các trạng thái của thành phần.

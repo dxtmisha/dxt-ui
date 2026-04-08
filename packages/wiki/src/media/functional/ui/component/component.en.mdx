@@ -1,0 +1,104 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/# Creating and Managing Components'/>
+
+# Creating and Managing Components
+
+The development process in the **DXT UI** system is as automated as possible using code generation scripts. The core idea is that the developer describes the component metadata, and the system automatically creates and updates the necessary files (props, styles, templates).
+
+```bash
+npm run ui
+npm run ui [ComponentName]
+```
+
+The `npm run ui` command is the main tool for working with components. It automatically scans directories, finds new or modified folders, and synchronizes all related files (`props.ts`, `styleToken.scss`, `.vue`) based on the data in `properties.json`.
+
+- To create or update a specific component, simply run the command after making changes to its folder.
+- To fully rebuild the library and update all exports, run the command without parameters.
+
+## Creating a New Component
+
+To create a new component from scratch, follow these steps:
+
+1. **Create Directory**: In the `src/components/Ui/` folder (or in your project), create a new folder with the name of the component (e.g., `MyButton`).
+2. **Run Initialization**: Execute the `ui` command (or `npm run ui`). The script will automatically detect the new folder and create the necessary files inside it.
+
+```bash
+npm run ui
+```
+
+The system will create a `properties.json` file with a basic structure, along with all supporting files (props, styles, vue).
+
+3. **Fill Properties**: Edit the created `properties.json` file by adding modifiers and tokens.
+4. **Synchronize Changes**: Run the `ui` command again to update all associated files based on your changes.
+
+```bash
+npm run ui
+```
+
+### Generation Result
+The system will automatically create the following files based on your metadata and the selected constructor:
+- `props.ts` — typed properties extending the constructor and defining default values.
+- `styleToken.scss` — SCSS tokens and mixins.
+- `DesignComponent.vue` — main Vue component with initialization logic.
+- `index.ts`, `wiki.ts`, `stories.ts` — export, documentation, and stories files.
+
+
+In the generated `.vue` file, when initializing the `Design` class (e.g., `BarsDesign`), you can pass a `components` object. This allows you to connect child components required for the current one to function (e.g., icons or progress indicators).
+
+> Only connect the components that are actually used. If a dependent component (e.g., `ripple`) is not needed in your implementation, it can simply be omitted from the object.
+
+To manage the properties of child components, use the `compMod` parameter. This allows you to pass default values for the props of internal elements (e.g., setting the size or style of a button within a navigation bar).
+
+```typescript
+const design = new BarsDesign('my.bars', props, {
+  emits,
+  classes: classesToken,
+  components: {
+    button: MyButton
+  },
+  compMod: {
+    button: {
+      text: true,
+      size: 'xs',
+      inverse: true
+    }
+  }
+})
+
+### Working with Props and Defaults
+
+The `props.ts` file contains a `defaults` object that combines standard values from the constructor with settings specific to your component.
+
+Example in the `props.ts` file:
+```typescript
+export const defaults: object = {
+  ...defaultsBars,
+  iconBack: 'arrow_back',
+  paddingByIndent: true
+}
+```
+
+
+## Updating a Component
+
+If you need to change component properties (add a modifier, change a token, or a CSS value), follow the **"Source of Truth"** rule:
+
+1. Edit the `properties.json` file.
+2. Run the command again:
+   ```bash
+   npm run ui MyButton
+   ```
+
+The script will automatically update `props.ts` (adding new types), `styleToken.scss` (updating variables), and templates while maintaining architectural integrity.
+
+## Rebuilding the Entire Library
+
+When working on several components at once or if you want to update global library exports (media, plugins, types), use the `ui` command without arguments:
+
+```bash
+npm run ui
+```
+
+
+
