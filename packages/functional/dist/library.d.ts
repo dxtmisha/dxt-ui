@@ -192,7 +192,7 @@ export declare type ConstrClasses = {
 export declare type ConstrClassList = Record<string, ConstrClass>;
 
 /** Object type for CSS class names with boolean values/ Тип объекта для CSS классов с булевыми значениями */
-export declare type ConstrClassObject = Record<string, boolean>;
+export declare type ConstrClassObject = Record<string, boolean | undefined>;
 
 /** Generic record type for constructor components/ Дженерик тип записи для компонентов конструктора */
 export declare type ConstrComponent = Record<string, any>;

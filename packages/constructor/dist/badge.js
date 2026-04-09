@@ -1,8 +1,8 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
-import { t } from "./defineProperty-hmGKPWdq.js";
-import { t as n } from "./LabelNumberInclude-VVGMvwYq.js";
-import { t as r } from "./IconInclude-BhzGfa3o.js";
-import { t as i } from "./BadgeInclude-DISlNqBJ.js";
+import { t } from "./defineProperty-DblGXmzD.js";
+import { t as n } from "./LabelNumberInclude-Dxv-JWQZ.js";
+import { t as r } from "./IconInclude-CG1A2rFq.js";
+import { t as i } from "./BadgeInclude-BMxXPn3m.js";
 import { computed as a, h as o } from "vue";
 import { DesignConstructorAbstract as s, isFilled as c } from "@dxtmisha/functional";
 //#region src/constructors/Badge/Badge.ts

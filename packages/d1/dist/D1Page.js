@@ -1,4 +1,4 @@
-import { t as e } from "./D1Page-DQ3kxE4W.js";
+import { t as e } from "./D1Page-TNRND-Ov.js";
 //#region src/components/Ui/Page/index.ts
 var t = e;
 //#endregion

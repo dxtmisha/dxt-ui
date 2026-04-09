@@ -2506,16 +2506,18 @@ export declare function eventStopPropagation(event: Event): void;
  *
  * Выполняется функция и возвращает ее результат. Или возвращает входные данные, если это не функция
  * @param callback function or any value/ функция или любое значение
+ * @param args arguments of the function/ аргументы функции
  */
-export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>): T;
+export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
 
 /**
  * Returns the execution result of an asynchronous function.
  *
  * Возвращает выполнение асинхронной функции.
  * @param callback function or any value/ функция или любое значение
+ * @param args arguments of the function/ аргументы функции
  */
-export declare function executePromise<T>(callback: (() => Promise<T>) | (() => T) | T): Promise<T>;
+export declare function executePromise<T>(callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T, ...args: any[]): Promise<T>;
 
 /**
  * The function performs the specified function once for each element in the object.
@@ -6374,6 +6376,73 @@ export declare function sleep(ms: number): Promise<void>;
  * @param indexStart index at which to start changing the array/ индекс, по которому начинает изменять массив
  */
 export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
+
+/**
+ * A class for working with callback lists for storage.
+ *
+ * Класс для работы со списками обратных вызовов для хранилища.
+ */
+export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
+    protected name: string;
+    protected group: string;
+    /**
+     * Returns an instance of the class by name.
+     *
+     * Возвращает экземпляр класса по названию.
+     * @param name storage name/ название хранилища
+     * @param group storage group/ группа хранилища
+     */
+    static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
+    protected callbacks: Callback[];
+    protected loading: boolean;
+    /**
+     * Constructor for initialization.
+     *
+     * Конструктор для инициализации.
+     * @param name storage name/ название хранилища
+     * @param group storage group/ группа хранилища
+     */
+    constructor(name: string, group?: string);
+    /**
+     * Returns the storage name.
+     *
+     * Возвращает название хранилища.
+     */
+    getName(): string;
+    /**
+     * Returns the loading state.
+     *
+     * Возвращает состояние загрузки.
+     */
+    getLoading(): boolean;
+    /**
+     * Adds a callback to the list.
+     *
+     * Добавляет обратный вызов в список.
+     * @param callback function for callbacks/ функция для обратных вызовов
+     */
+    addCallback(callback: Callback): this;
+    /**
+     * Removes a callback from the list.
+     *
+     * Удаляет обратный вызов из списка.
+     * @param callback function for callbacks/ функция для обратных вызовов
+     */
+    removeCallback(callback: Callback): this;
+    /**
+     * Preparation of data before launch.
+     *
+     * Подготовка данных перед запуском.
+     */
+    preparation(): this;
+    /**
+     * Execution of all callbacks.
+     *
+     * Выполнение всех обратных вызовов.
+     * @param value storage data/ данные хранилища
+     */
+    run(value: T): Promise<this>;
+}
 
 /**
  * The method creates a string of length count, consisting of the characters value.

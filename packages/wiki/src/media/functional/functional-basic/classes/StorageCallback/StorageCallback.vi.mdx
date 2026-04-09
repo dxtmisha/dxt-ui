@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/StorageCallback - Storage Callbacks'/>
+
+# Lớp StorageCallback
+
+Một lớp tiện ích để quản lý các nhóm hàm callback liên kết với các khóa lưu trữ cụ thể. Nó cho phép nhiều thành phần hoặc chức năng phản hồi các thay đổi hoặc kích hoạt lưu trữ một cách phối hợp, bất đồng bộ.
+
+## Các đặc điểm chính
+
+- **Các thực thể có tên** — thực hiện mô hình singleton, trong đó các thực thể được truy xuất theo tên và nhóm, đảm bảo rằng các phần khác nhau của ứng dụng chia sẻ cùng một danh sách callback cho cùng một tài nguyên.
+- **Phân tách theo nhóm** — cho phép tách biệt các danh sách callback theo nhóm (ví dụ: 'main', 'global', 'local'), ngăn chặn xung đột tên giữa các mô-đun khác nhau.
+- **Thực thi bất đồng bộ** — hỗ trợ các callback dựa trên `Promise` và thực thi chúng theo trình tự trong quá trình `run`.
+- **Theo dõi trạng thái tải** — cung cấp cờ `loading` có sẵn, được quản lý tự động trong giai đoạn thực thi callback.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm tạo `StorageCallback(name, group)` hoặc sử dụng phương thức tĩnh `getInstance(name, group)`.
+
+### Các ràng buộc Generic
+
+Để đảm bảo kiểu dữ liệu nghiêm ngặt, lớp hỗ trợ các generic sau:
+- `T = any` — Kiểu dữ liệu được truyền cho các callback.
+- `Callback = (value: T) => void | Promise<void>` — Cấu trúc hàm callback.
+
+**Tham số:**
+- `name: string` — định danh duy nhất cho mục nhập lưu trữ.
+- `group: string = 'main'` — phân loại tùy chọn để ngăn chặn xung đột tên.
+
+```typescript
+import { StorageCallback } from '@dxtmisha/functional-basic'
+
+// 1. Khởi tạo đơn giản (nhóm mặc định là 'main')
+const storage = new StorageCallback('user-data')
+
+// 2. Sử dụng phương thức tĩnh getInstance
+const sharedStorage = StorageCallback.getInstance('settings', 'global')
+
+// 3. Sử dụng generic để kiểm soát kiểu dữ liệu
+const numberStorage = new StorageCallback<number>('counter')
+numberStorage.addCallback((val) => console.log(val + 1))
+```
+
+## Các phương thức
+
+### Thông tin
+
+- `getName(): string` — trả về tên của thực thể lưu trữ.
+- `getLoading(): boolean` — trả về trạng thái tải hiện tại.
+
+### Quản lý
+
+- `addCallback(callback: Callback): this` — thêm một callback mới vào danh sách thực thi.
+- `removeCallback(callback: Callback): this` — xóa một callback cụ thể khỏi danh sách.
+
+### Điều khiển (Control)
+
+- `preparation(): this` — chuẩn bị trạng thái trước khi thực thi (đặt `loading` thành `true`).
+- `run(value: T): Promise<this>` — thực thi tất cả các callback theo trình tự với giá trị được cung cấp.

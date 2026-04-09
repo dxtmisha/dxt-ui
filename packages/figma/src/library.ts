@@ -7,10 +7,10 @@ export * from './classes/FigmaUiMessenger'
 export * from './composables/useFigmaUiMessenger'
 
 // Functions
-export * from './functions/addFramesSelected'
 export * from './functions/fetchFramesSelected'
 export * from './functions/fetchTopLevelFrames'
-export * from './functions/sendSelectionFrame'
+export * from './functions/sendFrameSelection'
+export * from './functions/sendFramesSelected'
 
 // Types
 export * from './types/figmaMessengerTypes'

@@ -1,4 +1,4 @@
-import { t as e } from "./D1Select-BjQq_CxR.js";
+import { t as e } from "./D1Select-DTd1m1Bi.js";
 //#region src/components/Ui/Select/index.ts
 var t = e;
 //#endregion

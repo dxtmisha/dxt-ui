@@ -98,53 +98,50 @@ function l() {
 }
 //#endregion
 //#region src/types/framesTypes.ts
-var u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add", p = "ui-figma-frame-set-selection", m = "ui-figma-client-storage-get", h = "ui-figma-client-storage-set", g = "ui-figma-storage-get", _ = "ui-figma-storage-set";
+var u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add", p = "ui-figma-frame-set-selection", m = "ui-figma-client-storage-get", h = "ui-figma-client-storage-set", g = "ui-figma-storage-get", _ = "ui-figma-storage-set", v, y = !1;
+function b(e) {
+	if (v) {
+		e(v);
+		return;
+	}
+	if (y) {
+		setTimeout(() => b(e), 160);
+		return;
+	}
+	y = !0, l().add(d, (t) => {
+		v = t, y = !1, e(v);
+	}).post(d);
+}
 //#endregion
-//#region src/functions/addFramesSelected.ts
-function v(e, t) {
+//#region src/functions/fetchTopLevelFrames.ts
+var x, S = !1;
+function C(e) {
+	if (x) {
+		e(x);
+		return;
+	}
+	if (S) {
+		setTimeout(() => C(e), 160);
+		return;
+	}
+	S = !0;
+	let t = l(), n = (r) => {
+		x = r, x.length > 0 && (e(x), t.remove(u, n), S = !1);
+	};
+	t.add(u, n).post(u);
+}
+//#endregion
+//#region src/functions/sendFrameSelection.ts
+function w(e) {
+	l().post(p, { id: e });
+}
+//#endregion
+//#region src/functions/sendFramesSelected.ts
+function T(e, t) {
 	l().post(f, {
 		id: e,
 		selected: t
 	});
 }
 //#endregion
-//#region src/functions/fetchFramesSelected.ts
-var y, b = !1;
-function x(e) {
-	if (y) {
-		e(y);
-		return;
-	}
-	if (b) {
-		setTimeout(() => x(e), 160);
-		return;
-	}
-	b = !0, l().add(d, (t) => {
-		y = t, b = !1, e(y);
-	}).post(d);
-}
-//#endregion
-//#region src/functions/fetchTopLevelFrames.ts
-var S, C = !1;
-function w(e) {
-	if (S) {
-		e(S);
-		return;
-	}
-	if (C) {
-		setTimeout(() => w(e), 160);
-		return;
-	}
-	C = !0;
-	let t = l(), n = (r) => {
-		S = r, S.length > 0 && (e(S), t.remove(u, n), C = !1);
-	};
-	t.add(u, n).post(u);
-}
-//#endregion
-//#region src/functions/sendSelectionFrame.ts
-function T(e) {
-	l().post(p, { id: e });
-}
-//#endregion
-export { o as FigmaPostAbstract, a as FigmaPostCode, s as FigmaUiMessenger, m as UI_FIGMA_CLIENT_STORAGE_GET, h as UI_FIGMA_CLIENT_STORAGE_SET, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as UI_FIGMA_FRAME_SET_SELECTION, g as UI_FIGMA_STORAGE_GET, _ as UI_FIGMA_STORAGE_SET, v as addFramesSelected, x as fetchFramesSelected, w as fetchTopLevelFrames, T as sendSelectionFrame, l as useFigmaUiMessenger };
+export { o as FigmaPostAbstract, a as FigmaPostCode, s as FigmaUiMessenger, m as UI_FIGMA_CLIENT_STORAGE_GET, h as UI_FIGMA_CLIENT_STORAGE_SET, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as UI_FIGMA_FRAME_SET_SELECTION, g as UI_FIGMA_STORAGE_GET, _ as UI_FIGMA_STORAGE_SET, b as fetchFramesSelected, C as fetchTopLevelFrames, w as sendFrameSelection, T as sendFramesSelected, l as useFigmaUiMessenger };

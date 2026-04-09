@@ -45,7 +45,7 @@ export type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<
 }>>
 
 /** Object type for CSS class names with boolean values/ Тип объекта для CSS классов с булевыми значениями */
-export type ConstrClassObject = Record<string, boolean>
+export type ConstrClassObject = Record<string, boolean | undefined>
 
 /**
  * Constructor class type supporting strings, arrays, and objects/

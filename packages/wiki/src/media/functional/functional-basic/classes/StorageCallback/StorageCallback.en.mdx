@@ -1,0 +1,59 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/StorageCallback - Storage Callbacks'/>
+
+# StorageCallback Class
+
+A utility class for managing groups of callback functions associated with specific storage keys. It ensures that multiple components or functions can react to storage changes or triggers in a coordinated, asynchronous manner.
+
+## Key Features
+
+- **Named Instances** — facilitates a singleton-like pattern where instances are retrieved by name and group, ensuring different parts of the application share the same callback list for the same resource.
+- **Group Separation** — allows segregating callback lists by group (e.g., 'main', 'global', 'local'), preventing name collisions between different modules.
+- **Asynchronous Execution** — supports `Promise`-based callbacks and executes them sequentially during the `run` process.
+- **Loading State Tracking** — provides a built-in `loading` flag that is automatically managed during the callback execution phase.
+
+## Initialization
+
+To initialize the object, call the `StorageCallback(name, group)` constructor or use the static method `getInstance(name, group)`.
+
+### Generic Constraints
+
+To ensure strict typing, the class supports the following generics:
+- `T = any` — The type of data passed to callbacks.
+- `Callback = (value: T) => void | Promise<void>` — The structure of the callback function.
+
+**Parameters:**
+- `name: string` — a unique identifier for the storage entry.
+- `group: string = 'main'` — optional category to prevent name collisions.
+
+```typescript
+import { StorageCallback } from '@dxtmisha/functional-basic'
+
+// 1. Simple initialization (group defaults to 'main')
+const storage = new StorageCallback('user-data')
+
+// 2. Using the singleton-like getInstance method
+const sharedStorage = StorageCallback.getInstance('settings', 'global')
+
+// 3. Using generics for strict typing
+const numberStorage = new StorageCallback<number>('counter')
+numberStorage.addCallback((val) => console.log(val + 1))
+```
+
+## Methods
+
+### Information
+
+- `getName(): string` — returns the storage instance name.
+- `getLoading(): boolean` — returns the current loading state.
+
+### Management
+
+- `addCallback(callback: Callback): this` — adds a new callback to the execution list.
+- `removeCallback(callback: Callback): this` — removes a specific callback from the list.
+
+### Control
+
+- `preparation(): this` — prepares the state before execution (sets `loading` to `true`).
+- `run(value: T): Promise<this>` — executes all callbacks sequentially with the provided value.

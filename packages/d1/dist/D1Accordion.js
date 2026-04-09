@@ -1,4 +1,4 @@
-import { t as e } from "./D1Accordion-CUXbu4r8.js";
+import { t as e } from "./D1Accordion-COToB77X.js";
 //#region src/components/Ui/Accordion/index.ts
 var t = e;
 //#endregion

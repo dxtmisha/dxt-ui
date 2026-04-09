@@ -7,7 +7,11 @@ import { type FunctionArgs } from '../types/basicTypes'
  *
  * Выполняется функция и возвращает ее результат. Или возвращает входные данные, если это не функция
  * @param callback function or any value/ функция или любое значение
+ * @param args arguments of the function/ аргументы функции
  */
-export function executeFunction<T>(callback: T | FunctionArgs<any, T>): T {
-  return isFunction(callback) ? callback() : callback
+export function executeFunction<T>(
+  callback: T | FunctionArgs<any, T>,
+  ...args: any[]
+): T {
+  return isFunction(callback) ? callback(...args) : callback
 }

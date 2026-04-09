@@ -11,7 +11,8 @@ const item = executeUse(() => {
   /** Translations / Переводы */
   const translate = useTranslateRef([
     'translate-key_creation',
-    'translate-localization'
+    'translate-localization',
+    'translate-settings'
   ] as const)
 
   /** List of pages / Список страниц */
@@ -25,6 +26,10 @@ const item = executeUse(() => {
         {
           label: translate.value['translate-localization'],
           value: 'localization'
+        },
+        {
+          label: translate.value['translate-settings'],
+          value: 'settings'
         }
       ]
     },

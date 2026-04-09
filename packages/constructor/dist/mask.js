@@ -1,7 +1,7 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
-import { t } from "./defineProperty-hmGKPWdq.js";
-import { t as n } from "./FieldInputCheckInclude-czZ02ymY.js";
-import { t as r } from "./MaskInclude-DuE6XcDZ.js";
+import { t } from "./defineProperty-DblGXmzD.js";
+import { t as n } from "./FieldInputCheckInclude-DbHUdZcj.js";
+import { t as r } from "./MaskInclude-wNyyGR3g.js";
 import { computed as i, h as a, ref as o, watch as s } from "vue";
 import { Datetime as c, DesignConstructorAbstract as l, GeoIntl as u, GeoRef as d, anyToString as f, eventStopPropagation as p, forEach as m, getClipboardData as h, getColumn as g, getExp as _, getMaxLengthAllArray as v, isArray as y, isFilled as ee, isFloat as b, isObject as x, isObjectNotArray as S, isSelected as C, isString as w, replaceRecursive as T, strFill as E, toArray as D, toBinds as O, writeClipboardData as k } from "@dxtmisha/functional";
 //#region src/constructors/Mask/MaskType.ts
@@ -243,7 +243,7 @@ var A = class {
 		}))), t(this, "view", i(() => this.type.isNumber() ? "⁠" : "0")), t(this, "fraction", i(() => {
 			if (this.type.isCurrency()) return 2;
 			let e = this.props.fraction;
-			return typeof e == "number" ? e : typeof e == "string" && e.match(/[0-9]+/) ? Number(e) : this.rubberItem.is("f") ? this.rubberItem.getByIndex("f") + 1 : e === !0 ? 1 : 0;
+			return typeof e == "number" ? e : typeof e == "string" && e.match(/[0-9]+/) ? Number(e) : this.rubberItem.is("f") ? this.rubberItem.getByIndex("f") + 1 : +(e === !0);
 		})), t(this, "mask", i(() => this.type.isCurrency() ? this.toSpecial(this.getCurrency()) : this.type.isNumberFormat() ? this.toSpecial(this.getNumberFormat()) : this.toSpecial(this.getNumber()))), this.props = e, this.type = n, this.rubberItem = r;
 	}
 	isFractionRubber() {
@@ -544,7 +544,7 @@ var A = class {
 		return this.mask.get(this.selection.getNext());
 	}
 	add(e) {
-		return this.item.value.splice(this.selection.get(), this.isCharDelete() ? 1 : 0, e), this.selection.goNext().resetImmediate(), this.updateLength(), this;
+		return this.item.value.splice(this.selection.get(), +!!this.isCharDelete(), e), this.selection.goNext().resetImmediate(), this.updateLength(), this;
 	}
 	pop() {
 		let e = this.selection.get() - 1;

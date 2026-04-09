@@ -1,2 +1,2 @@
-import { t as e } from "./TextareaAutosize-C5qvZcw4.js";
+import { t as e } from "./TextareaAutosize-Cr3k3t0V.js";
 export { e as D1TextareaAutosize };

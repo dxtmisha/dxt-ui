@@ -84,7 +84,7 @@ export declare class CaptionInclude {
         role?: RoleType;
         tabindex?: NumberOrString;
         class: {
-            [x: string]: boolean;
+            [x: string]: boolean | undefined;
         };
         'data-event-type': string;
     }>;

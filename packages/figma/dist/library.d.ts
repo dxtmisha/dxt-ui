@@ -1,13 +1,4 @@
 /**
- * Sends the selected frames to the Figma plugin.
- *
- * Отправляет выбранные фреймы в плагин Figma.
- * @param id The ID of the frame / Идентификатор фрейма
- * @param selected The selection state of the frame / Состояние выбора фрейма
- */
-export declare function addFramesSelected(id: string, selected: boolean): void;
-
-/**
  * Fetches the selected frames from the Figma plugin.
  *
  * Получает выбранные фреймы из плагина Figma.
@@ -143,7 +134,16 @@ export declare class FigmaUiMessenger extends FigmaPostAbstract {
  * Отправка выделенного фрейма в UI
  * @param id - Frame ID / ID фрейма
  */
-export declare function sendSelectionFrame(id?: string): void;
+export declare function sendFrameSelection(id?: string): void;
+
+/**
+ * Sends the selected frames to the Figma plugin.
+ *
+ * Отправляет выбранные фреймы в плагин Figma.
+ * @param id The ID of the frame / Идентификатор фрейма
+ * @param selected The selection state of the frame / Состояние выбора фрейма
+ */
+export declare function sendFramesSelected(id: string, selected: boolean): void;
 
 /**
  * Message name for getting the client storage/

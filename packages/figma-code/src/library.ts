@@ -1,5 +1,5 @@
 // Classes
-export * from './classes/FigmaAiText'
+// export * from './classes/FigmaAiText'
 export * from './classes/FigmaClientStorage'
 export * from './classes/FigmaFrame'
 export * from './classes/FigmaFramesSelected'
@@ -19,7 +19,7 @@ export * from './functions/getFigmaItemById'
 export * from './functions/getFigmaItemByIdOrRoot'
 export * from './functions/makeFigmaTexts'
 export * from './functions/setupClientStorage'
-export * from './functions/setupSelectionByMessage'
+export * from './functions/setupFrameSelection'
 export * from './functions/setupStorage'
 export * from './functions/toFrameSelection'
 

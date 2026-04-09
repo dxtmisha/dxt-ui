@@ -1,4 +1,3 @@
-import { AiAbstract } from '@dxtmisha/scripts/ai';
 import { FigmaPostAbstract } from '@dxtmisha/figma';
 import { UiFigmaFramesList } from '@dxtmisha/figma';
 
@@ -7,15 +6,6 @@ export declare type ClientStorageMessengerData = {
     name: string;
     value: any;
 };
-
-export declare class FigmaAiText {
-    protected readonly ai: AiAbstract;
-    protected readonly data: UiFigmaMessageTexts;
-    constructor(ai: AiAbstract, data: UiFigmaMessageTexts);
-    make(): Promise<this>;
-    protected makeImage(): this;
-    protected initTexts(): string;
-}
 
 /**
  * Class for working with Figma client storage (clientStorage).
@@ -370,13 +360,13 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      *
      * Экспортирует узел в формате JPG.
      */
-    exportJpg(): Promise<"" | Uint8Array<ArrayBufferLike>>;
+    exportJpg(): Promise<Uint8Array<ArrayBufferLike> | "">;
     /**
      * Exports the node as JSON.
      *
      * Экспортирует узел в формате JSON.
      */
-    exportJson(): Promise<"" | Uint8Array<ArrayBufferLike>>;
+    exportJson(): Promise<Uint8Array<ArrayBufferLike> | "">;
     /**
      * Returns the text content of the node.
      *
@@ -408,7 +398,7 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
      * Экспортирует узел в указанном формате.
      * @param formatSettings format settings/ настройки формата
      */
-    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<"" | Uint8Array<ArrayBufferLike>>;
+    protected exportItem(formatSettings: UiFigmaExportFormat | ExportSettings): Promise<Uint8Array<ArrayBufferLike> | "">;
 }
 
 /**
@@ -672,7 +662,7 @@ export declare function setupClientStorage(): void;
  *
  * Устанавливает выборку по сообщению.
  */
-export declare function setupSelectionByMessage(): void;
+export declare function setupFrameSelectionByMessage(): void;
 
 /**
  * Sets up the storage by message.
