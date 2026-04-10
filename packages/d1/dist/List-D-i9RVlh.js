@@ -509,7 +509,6 @@ var A = class {
 			emits: r,
 			classes: s(() => ({ main: {
 				"d1-list": !0,
-				"d1-list--focus": l.focus,
 				[`d1-list--axis--${l.axis}`]: w(z.axis, l.axis),
 				"d1-list--divider": l.divider
 			} })),

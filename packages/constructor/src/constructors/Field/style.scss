@@ -142,7 +142,8 @@
         -webkit-appearance: none;
       }
 
-      &:focus {
+      &:focus,
+      &:focus-visible {
         outline: none;
       }
     }
@@ -364,11 +365,15 @@
     @extend #{$this}--isValue;
   }
 
-  @include ui.focus($this) {
+  &:has(input:focus-visible) {
     @include ui.subclass('body') {
       outline-width: ui.v('??focusWithin.outlineWidth');
       @include ui.outlineColor(ui.v('??focusWithin.outlineColor'), ui.v('??focusWithin.outlineOpacity'));
+    }
+  }
 
+  @include ui.focus($this) {
+    @include ui.subclass('body') {
       &__title {
         @include ui.color(ui.v('??focusWithin.color'), ui.v('??focusWithin.colorOpacity'));
       }

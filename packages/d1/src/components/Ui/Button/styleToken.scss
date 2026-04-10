@@ -24,11 +24,6 @@
     
     @include ui.focus {
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
-      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
-      
-      outline-width: var(--d1-ref-spacing-1);
-      outline-style: solid;
-      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
     }
     
     @include ui.hover {
@@ -48,6 +43,14 @@
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
       
       transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    &:focus-visible {
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      outline-style: solid;
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
     }
     
     &--adaptive {

@@ -5,7 +5,6 @@ export declare const propsValues: {
     axis: string[];
 };
 type PropsToken = {
-    focus?: boolean;
     axis?: 'x' | 'y';
     divider?: boolean;
 };

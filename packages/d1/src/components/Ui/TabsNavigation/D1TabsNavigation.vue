@@ -27,7 +27,6 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-tabsNavigation': true,
-    'd1-tabsNavigation--focus': props.focus,
     'd1-tabsNavigation--divider': props.divider
     // :classes-values [!] System label / Системная метка
   }

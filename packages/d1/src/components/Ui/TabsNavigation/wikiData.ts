@@ -6,7 +6,6 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'divider', type: 'boolean' },
-  { name: 'focus', type: 'boolean' },
   { name: 'horizontalScrollAlign', type: 'string', option: ['block', 'left'] },
   { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic>' },
   { name: 'horizontalScrollFlush', type: 'boolean' },

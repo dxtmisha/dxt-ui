@@ -15,10 +15,12 @@
     "link|caption": "{??caption}"
   },
   "~dynamic": {
+    "focus-visible": {
+      "outline": "{outline.md}"
+    },
     "focus": {
       "gradient": "var(--sys-color)",
-      "gradient-opacity": "{sys.opacity.focus}",
-      "outline": "{outline.md}"
+      "gradient-opacity": "{sys.opacity.focus}"
     },
     "hover": {
       "gradient": "var(--sys-color)",

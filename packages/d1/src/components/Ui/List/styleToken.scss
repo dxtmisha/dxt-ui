@@ -40,7 +40,7 @@
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
     }
     
-    @include ui.focus {
+    &:focus-visible {
       @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
       
       outline-width: var(--d1-ref-spacing-1);

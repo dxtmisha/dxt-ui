@@ -2,7 +2,7 @@
   "main": "{d.tabsNavigation}",
   "gap": "{sys.spacing.x}",
   "paddingY": "{sys.spacing.x}",
-  "focus": {
+  "focus-visible": {
     "outline": "{outline.md}"
   },
   "~divider": {

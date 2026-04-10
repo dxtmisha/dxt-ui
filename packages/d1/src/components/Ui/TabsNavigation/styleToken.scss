@@ -15,7 +15,7 @@
     
     @include ui.paddingY(#{var(--d1-sys-spacing-x)});
     
-    @include ui.focus {
+    &:focus-visible {
       @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
       
       outline-width: var(--d1-ref-spacing-1);

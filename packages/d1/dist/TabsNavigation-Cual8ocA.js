@@ -241,7 +241,6 @@ var O = class {
 		keyLabel: {},
 		keyValue: {},
 		itemAttrs: {},
-		focus: { type: Boolean },
 		divider: { type: Boolean }
 	}, L),
 	emits: [
@@ -255,7 +254,6 @@ var O = class {
 			emits: r,
 			classes: s(() => ({ main: {
 				"d1-tabsNavigation": !0,
-				"d1-tabsNavigation--focus": i.focus,
 				"d1-tabsNavigation--divider": i.divider
 			} })),
 			styles: s(() => ({})),
