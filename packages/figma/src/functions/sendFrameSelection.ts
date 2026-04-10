@@ -1,4 +1,5 @@
-import { UI_FIGMA_FRAME_SET_SELECTION, useFigmaUiMessenger } from '../library'
+import { FigmaUiMessenger } from '../classes/FigmaUiMessenger'
+import { UI_FIGMA_FRAME_SET_SELECTION } from '../types/framesTypes'
 
 /**
  * Send selection frame to UI
@@ -7,6 +8,7 @@ import { UI_FIGMA_FRAME_SET_SELECTION, useFigmaUiMessenger } from '../library'
  * @param id - Frame ID / ID фрейма
  */
 export function sendFrameSelection(id?: string) {
-  useFigmaUiMessenger()
+  FigmaUiMessenger
+    .getInstance()
     .post(UI_FIGMA_FRAME_SET_SELECTION, { id })
 }

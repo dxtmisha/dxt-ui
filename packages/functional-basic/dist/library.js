@@ -3000,25 +3000,31 @@ var ut = class {
 		if (n in mt) return mt[n];
 		mt[n] = this;
 	}
+	isLoading() {
+		return this.loading;
+	}
 	getName() {
 		return this.name;
 	}
 	getLoading() {
 		return this.loading;
 	}
-	addCallback(e) {
-		return this.callbacks.push(e), this;
+	addCallback(e, t) {
+		return this.callbacks.push({
+			callback: e,
+			isOnce: t
+		}), this;
 	}
 	removeCallback(e) {
-		return this.callbacks = this.callbacks.filter((t) => t !== e), this;
+		return this.callbacks = this.callbacks.filter((t) => t.callback !== e), this;
 	}
 	preparation() {
 		return this.loading = !0, this;
 	}
 	async run(e) {
-		this.preparation();
-		for (let t of this.callbacks) await me(t, e);
-		return this.loading = !1, this;
+		this.loading = !1;
+		for (let { callback: t, isOnce: n } of this.callbacks) await me(t, e), n && this.removeCallback(t);
+		return this;
 	}
 }, mt = {}, ht = [
 	"d",

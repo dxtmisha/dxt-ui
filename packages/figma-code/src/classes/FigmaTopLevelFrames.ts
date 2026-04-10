@@ -1,6 +1,6 @@
 import { UI_FIGMA_FRAMES_POST_NAME, type UiFigmaFramesList } from '@dxtmisha/figma'
 import { FigmaFrame } from './FigmaFrame'
-import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
+import { FigmaPluginMessenger } from './FigmaPluginMessenger'
 
 /**
  * Class for managing and sending the list of top-level frames in the Figma plugin.
@@ -40,7 +40,7 @@ export class FigmaTopLevelFrames {
    */
   static send() {
     /** Plugin messenger instance for communication / Экземпляр мессенджера плагина для связи */
-    const messenger = useFigmaPluginMessenger()
+    const messenger = FigmaPluginMessenger.getInstance()
 
     messenger.add(UI_FIGMA_FRAMES_POST_NAME, () => {
       this

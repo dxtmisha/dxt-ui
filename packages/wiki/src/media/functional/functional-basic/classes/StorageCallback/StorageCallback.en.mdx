@@ -46,14 +46,52 @@ numberStorage.addCallback((val) => console.log(val + 1))
 ### Information
 
 - `getName(): string` — returns the storage instance name.
-- `getLoading(): boolean` — returns the current loading state.
+- `isLoading(): boolean` — returns the current loading state.
+- `getLoading(): boolean` — returns the current loading state (alias for `isLoading`).
 
 ### Management
 
-- `addCallback(callback: Callback): this` — adds a new callback to the execution list.
+- `addCallback(callback: Callback, isOnce?: boolean): this` — adds a new callback to the execution list. If `isOnce: true`, the callback will be removed after the first execution.
 - `removeCallback(callback: Callback): this` — removes a specific callback from the list.
 
 ### Control
 
-- `preparation(): this` — prepares the state before execution (sets `loading` to `true`).
-- `run(value: T): Promise<this>` — executes all callbacks sequentially with the provided value.
+- `preparation(): this` — prepares the state before execution (sets `loading` to `true`). Should be called manually when starting an asynchronous process.
+- `run(value: T): Promise<this>` — executes all callbacks sequentially with the provided value. Sets `loading` back to `false` at the start of execution.
+
+## Usage Examples
+
+### Manual Loading Management
+
+When data is fetched asynchronously from an external source (e.g., Figma storage), you can manage the `loading` state manually to coordinate multiple requests.
+
+```typescript
+const storage = new StorageCallback('figma-data')
+
+// 1. Check if it is not already loading
+if (!storage.isLoading()) {
+  // 2. Set loading state to true
+  storage.preparation()
+  
+  // 3. Request the data
+  fetchFromFigma((data) => {
+    // 4. Run callbacks (run will reset loading to false)
+    storage.run(data)
+  })
+}
+```
+
+### One-time Callback
+
+If you only need a function to trigger once (e.g., for initial data hydration), use the `isOnce` flag.
+
+```typescript
+const storage = new StorageCallback('initial-data')
+
+storage.addCallback((data) => {
+  console.log('Executed once:', data)
+}, true)
+
+await storage.run('update 1') // 'Executed once: update 1'
+await storage.run('update 2') // (no output, callback removed)
+```

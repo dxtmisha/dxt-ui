@@ -1,33 +1,31 @@
 import { StorageCallback } from '@dxtmisha/functional-basic'
 import { FigmaUiMessenger } from '../classes/FigmaUiMessenger'
 
-import { UI_FIGMA_STORAGE_GET } from '../types/framesTypes'
-import type { StorageMessengerData } from '../types/storageTypes'
+import { UI_FIGMA_CLIENT_STORAGE_GET } from '../types/framesTypes'
+import type { ClientStorageMessengerData } from '../types/storageTypes'
 
 /** Is initialized / Инициализировано */
 let isInit: boolean = false
 
 /**
- * Fetch storage data.
+ * Fetch client storage data.
  *
- * Получить данные хранилища.
+ * Получить данные клиентского хранилища.
  * @param name Storage name / Имя хранилища
  * @param callback Callback function / Функция обратного вызова
- * @param id Storage id / Идентификатор хранилища
  * @param defaultValue Default value / Значение по умолчанию
  * @param isOnce Call only once / Вызвать только один раз
  */
-export function fetchStorage<T>(
+export function fetchClientStorage<T>(
   name: string,
   callback: (value: T) => void,
-  id?: string,
   defaultValue?: T,
   isOnce: boolean = true
 ) {
   initMessenger()
 
   /** Storage callback / Колбэк хранилища */
-  const storageCallback = getStorageCallback<T>(name, id)
+  const storageCallback = getStorageCallback<T>(name)
 
   storageCallback
     .addCallback(callback, isOnce)
@@ -37,40 +35,37 @@ export function fetchStorage<T>(
 
     FigmaUiMessenger
       .getInstance()
-      .post(UI_FIGMA_STORAGE_GET, {
+      .post(UI_FIGMA_CLIENT_STORAGE_GET, {
         name,
-        id,
         defaultValue
       })
   }
 }
 
 /**
- * Get storage key.
+ * Get client storage key.
  *
- * Получить ключ хранилища.
+ * Получить ключ клиентского хранилища.
  * @param name Storage name / Имя хранилища
- * @param id Storage id / Идентификатор хранилища
  * @returns Storage key / Ключ хранилища
  */
-const getKey = (name: string, id?: string) =>
-  `figma:storage:${id ? `${name}:${id}` : name}`
+const getKey = (name: string) =>
+  `figma:client-storage:${name}`
 
 /**
- * Get storage callback.
+ * Get client storage callback instance.
  *
- * Получить колбэк хранилища.
+ * Получить экземпляр колбэка клиентского хранилища.
  * @param name Storage name / Имя хранилища
- * @param id Storage id / Идентификатор хранилища
  * @returns Storage callback / Колбэк хранилища
  */
-const getStorageCallback = <T>(name: string, id?: string) =>
-  StorageCallback.getInstance<T>(getKey(name, id))
+const getStorageCallback = <T>(name: string) =>
+  StorageCallback.getInstance<T>(getKey(name))
 
 /**
- * Initialize messenger.
+ * Initialize messenger for client storage.
  *
- * Инициализировать мессенджер.
+ * Инициализировать мессенджер для клиентского хранилища.
  */
 const initMessenger = () => {
   if (isInit) {
@@ -83,8 +78,8 @@ const initMessenger = () => {
   const messenger = FigmaUiMessenger.getInstance()
 
   messenger
-    .add(UI_FIGMA_STORAGE_GET, (data: StorageMessengerData) => {
-      getStorageCallback(data.name, data.id)
+    .add(UI_FIGMA_CLIENT_STORAGE_GET, (data: ClientStorageMessengerData) => {
+      getStorageCallback(data.name)
         .run(data.value)
     })
 }

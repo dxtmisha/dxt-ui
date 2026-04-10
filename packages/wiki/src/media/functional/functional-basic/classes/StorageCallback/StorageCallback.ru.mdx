@@ -46,14 +46,52 @@ numberStorage.addCallback((val) => console.log(val + 1))
 ### Информация
 
 - `getName(): string` — возвращает имя экземпляра хранилища.
-- `getLoading(): boolean` — возвращает текущее состояние загрузки.
+- `isLoading(): boolean` — возвращает текущее состояние загрузки.
+- `getLoading(): boolean` — возвращает текущее состояние загрузки (аналог `isLoading`).
 
 ### Управление
 
-- `addCallback(callback: Callback): this` — добавляет новый обратный вызов в список выполнения.
+- `addCallback(callback: Callback, isOnce?: boolean): this` — добавляет новый обратный вызов в список выполнения. При `isOnce: true` callback будет удален после первого выполнения.
 - `removeCallback(callback: Callback): this` — удаляет конкретный обратный вызов из списка.
 
 ### Управление процессом (Control)
 
-- `preparation(): this` — подготавливает состояние перед выполнением (устанавливает `loading` в `true`).
-- `run(value: T): Promise<this>` — последовательно выполняет все обратные вызовы с переданным значением.
+- `preparation(): this` — подготавливает состояние перед выполнением (устанавливает `loading` в `true`). Используется вручную при запуске асинхронных операций.
+- `run(value: T): Promise<this>` — последовательно выполняет все обратные вызовы с переданным значением. В начале выполнения устанавливает `loading` в `false`.
+
+## Примеры использования
+
+### Ручное управление состоянием загрузки
+
+Если данные загружаются асинхронно из внешнего источника (например, Figma storage), вы можете управлять состоянием `loading` вручную.
+
+```typescript
+const storage = new StorageCallback('figma-data')
+
+// 1. Проверяем, не идет ли уже загрузка
+if (!storage.isLoading()) {
+  // 2. Устанавливаем состояние загрузки
+  storage.preparation()
+  
+  // 3. Запрашиваем данные
+  fetchFromFigma((data) => {
+    // 4. Выполняем колбэки (run сбросит loading в false)
+    storage.run(data)
+  })
+}
+```
+
+### Одноразовый обратный вызов
+
+Если вам нужно, чтобы функция сработала только один раз (например, для начальной загрузки данных), используйте флаг `isOnce`.
+
+```typescript
+const storage = new StorageCallback('initial-data')
+
+storage.addCallback((data) => {
+  console.log('Выполнено один раз:', data)
+}, true)
+
+await storage.run('update 1') // 'Выполнено один раз: update 1'
+await storage.run('update 2') // (ничего не выводится, callback удален)
+```

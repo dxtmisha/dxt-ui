@@ -1,4 +1,4 @@
-import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
+import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
 
 import { FigmaFrame } from '../classes/FigmaFrame'
 
@@ -13,10 +13,12 @@ export const makeFigmaTexts = () => {
   figma.on('selectionchange', async () => {
     const frame = new FigmaFrame(figma.currentPage, true)
 
-    useFigmaPluginMessenger().post(FIGMA_MESSAGE_TEXTS, {
-      frame,
-      texts: frame.getTexts(),
-      screenshot: await frame.screenshot()
-    })
+    FigmaPluginMessenger
+      .getInstance()
+      .post(FIGMA_MESSAGE_TEXTS, {
+        frame,
+        texts: frame.getTexts(),
+        screenshot: await frame.screenshot()
+      })
   })
 }

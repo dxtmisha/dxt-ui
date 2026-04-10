@@ -1,3 +1,20 @@
+/** Client storage messenger data/ Данные сообщения клиентского хранилища */
+export declare type ClientStorageMessengerData<T = any> = {
+    name: string;
+    value: T;
+};
+
+/**
+ * Fetch client storage data.
+ *
+ * Получить данные клиентского хранилища.
+ * @param name Storage name / Имя хранилища
+ * @param callback Callback function / Функция обратного вызова
+ * @param defaultValue Default value / Значение по умолчанию
+ * @param isOnce Call only once / Вызвать только один раз
+ */
+export declare function fetchClientStorage<T>(name: string, callback: (value: T) => void, defaultValue?: T, isOnce?: boolean): void;
+
 /**
  * Fetches the selected frames from the Figma plugin.
  *
@@ -5,6 +22,18 @@
  * @param callback The function to call once the frames are received / Функция, вызываемая после получения выбранных фреймов
  */
 export declare function fetchFramesSelected(callback: (selected: string[]) => void): void;
+
+/**
+ * Fetch storage data.
+ *
+ * Получить данные хранилища.
+ * @param name Storage name / Имя хранилища
+ * @param callback Callback function / Функция обратного вызова
+ * @param id Storage id / Идентификатор хранилища
+ * @param defaultValue Default value / Значение по умолчанию
+ * @param isOnce Call only once / Вызвать только один раз
+ */
+export declare function fetchStorage<T>(name: string, callback: (value: T) => void, id?: string, defaultValue?: T, isOnce?: boolean): void;
 
 /**
  * Fetches the top-level frames from the Figma plugin.
@@ -113,6 +142,13 @@ export declare class FigmaPostCode {
  */
 export declare class FigmaUiMessenger extends FigmaPostAbstract {
     /**
+     * Getting an instance of the class for working with Figma UI messenger (frontend).
+     *
+     * Получение экземпляра класса для работы с мессенджером UI Figma (frontend).
+     * @returns current instance/ текущий экземпляр
+     */
+    static getInstance(): FigmaUiMessenger;
+    /**
      * Sends a message to the Figma plugin.
      *
      * Отправляет сообщение в плагин Figma.
@@ -127,6 +163,15 @@ export declare class FigmaUiMessenger extends FigmaPostAbstract {
      */
     protected prepare(): void;
 }
+
+/**
+ * Sends the client storage data to the Figma plugin.
+ *
+ * Отправляет данные клиентского хранилища в плагин Figma.
+ * @param name The name of the storage / Название хранилища
+ * @param value The value to store / Значение для хранения
+ */
+export declare function sendClientStorage<T>(name: string, value: T): void;
 
 /**
  * Send selection frame to UI
@@ -144,6 +189,23 @@ export declare function sendFrameSelection(id?: string): void;
  * @param selected The selection state of the frame / Состояние выбора фрейма
  */
 export declare function sendFramesSelected(id: string, selected: boolean): void;
+
+/**
+ * Sends the storage data to the Figma plugin.
+ *
+ * Отправляет данные хранилища в плагин Figma.
+ * @param name The name of the storage / Название хранилища
+ * @param value The value to store / Значение для хранения
+ * @param id The ID of the object / Идентификатор объекта
+ */
+export declare function sendStorage<T>(name: string, value: T, id?: string): void;
+
+/** Storage messenger data/ Данные сообщения хранилища */
+export declare type StorageMessengerData<T = any> = {
+    id?: string;
+    name: string;
+    value: T;
+};
 
 /**
  * Message name for getting the client storage/
@@ -258,15 +320,5 @@ export declare type UiFigmaMessengerItem = {
  * Список элементов сообщений
  */
 export declare type UiFigmaMessengerList = Record<string, UiFigmaMessengerItem>;
-
-/**
- * Composable for accessing the FigmaUiMessenger singleton.
- * Initializes the messenger on first call.
- *
- * Композиция для доступа к синглтону FigmaUiMessenger.
- * Инициализирует мессенджер при первом вызове.
- * @returns FigmaUiMessenger
- */
-export declare function useFigmaUiMessenger(): FigmaUiMessenger;
 
 export { }

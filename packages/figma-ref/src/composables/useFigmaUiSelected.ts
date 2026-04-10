@@ -1,5 +1,5 @@
 import { computed, shallowRef } from 'vue'
-import { addFramesSelected, fetchFramesSelected } from '@dxtmisha/figma'
+import { sendFramesSelected, fetchFramesSelected } from '@dxtmisha/figma'
 
 /** Cached list of selected frames / Кэшированный список выбранных фреймов */
 const item = shallowRef<string[] | undefined>()
@@ -59,7 +59,7 @@ export function useFigmaUiSelected() {
      * @param selected Selection state / Состояние выбора
      */
     toggleSelected(id: string, selected: boolean) {
-      addFramesSelected(id, selected)
+      sendFramesSelected(id, selected)
     }
   }
 }

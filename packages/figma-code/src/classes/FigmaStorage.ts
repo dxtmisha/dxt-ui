@@ -1,5 +1,8 @@
 import { executeFunction } from '@dxtmisha/functional-basic'
 import { FigmaStorageData, type FigmaStorageDataValue } from './FigmaStorageData'
+import { getFigmaItemByIdOrRoot } from '../functions/getFigmaItemByIdOrRoot'
+
+import type { UiFigmaNode } from '../types/figmaTypes'
 
 /**
  * Class for working with Figma storage (PluginData).
@@ -7,6 +10,47 @@ import { FigmaStorageData, type FigmaStorageDataValue } from './FigmaStorageData
  * Класс для работы с хранилищем Figma (PluginData).
  */
 export class FigmaStorage<T> {
+  /**
+   * Getting an instance of the class for working with Figma storage (PluginData).
+   *
+   * Получение экземпляра класса для работы с хранилищем Figma (PluginData).
+   * @param name value name/ название значения
+   * @param item object for storing data/ объект для хранения данных
+   * @returns current instance/ текущий экземпляр
+   */
+  static getInstance<T>(
+    name: string,
+    item: UiFigmaNode = figma.root
+  ) {
+    const id = 'id' in item ? item.id : 'root'
+    const key = `${id}:${name}`
+
+    if (key in items) {
+      return items[key] as FigmaStorage<T>
+    }
+
+    const storage = new FigmaStorage<T>(name, item as PluginDataMixin)
+
+    items[key] = storage
+    return storage
+  }
+
+  /**
+   * Getting an instance of the class for working with Figma storage (PluginData).
+   *
+   * Получение экземпляра класса для работы с хранилищем Figma (PluginData).
+   * @param name value name/ название значения
+   * @param id object id/ id объекта
+   * @returns current instance/ текущий экземпляр
+   */
+  static async getInstanceById<T>(
+    name: string,
+    id?: string
+  ) {
+    const item = await getFigmaItemByIdOrRoot(id)
+    return FigmaStorage.getInstance<T>(name, item)
+  }
+
   protected data: FigmaStorageData<T>
 
   /**
@@ -109,3 +153,5 @@ export class FigmaStorage<T> {
     return this
   }
 }
+
+const items: Record<string, FigmaStorage<any>> = {}

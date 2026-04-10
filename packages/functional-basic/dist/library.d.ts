@@ -6393,7 +6393,10 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      * @param group storage group/ группа хранилища
      */
     static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
-    protected callbacks: Callback[];
+    protected callbacks: {
+        callback: Callback;
+        isOnce?: boolean;
+    }[];
     protected loading: boolean;
     /**
      * Constructor for initialization.
@@ -6403,6 +6406,12 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      * @param group storage group/ группа хранилища
      */
     constructor(name: string, group?: string);
+    /**
+     * Returns the loading state.
+     *
+     * Возвращает состояние загрузки.
+     */
+    isLoading(): boolean;
     /**
      * Returns the storage name.
      *
@@ -6420,8 +6429,9 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      *
      * Добавляет обратный вызов в список.
      * @param callback function for callbacks/ функция для обратных вызовов
+     * @param isOnce whether the callback should only be called once/ является ли колбэк одноразовым
      */
-    addCallback(callback: Callback): this;
+    addCallback(callback: Callback, isOnce?: boolean): this;
     /**
      * Removes a callback from the list.
      *

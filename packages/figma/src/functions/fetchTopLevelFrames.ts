@@ -1,4 +1,4 @@
-import { useFigmaUiMessenger } from '../composables/useFigmaUiMessenger'
+import { FigmaUiMessenger } from '../classes/FigmaUiMessenger'
 import { UI_FIGMA_FRAMES_POST_NAME, type UiFigmaFramesList } from '../types/framesTypes'
 
 /** Cached list of top-level frames / Кэшированный список фреймов верхнего уровня */
@@ -29,7 +29,7 @@ export function fetchTopLevelFrames(
   loading = true
 
   /** The messenger instance for bidirectional communication / Экземпляр мессенджера для двусторонней связи */
-  const messenger = useFigmaUiMessenger()
+  const messenger = FigmaUiMessenger.getInstance()
 
   /**
    * The callback function that updates the frames state and notifies the requester.

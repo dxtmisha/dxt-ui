@@ -1,13 +1,7 @@
-import { UI_FIGMA_CLIENT_STORAGE_GET, UI_FIGMA_CLIENT_STORAGE_SET } from '@dxtmisha/figma'
+import { UI_FIGMA_CLIENT_STORAGE_GET, UI_FIGMA_CLIENT_STORAGE_SET, type ClientStorageMessengerData } from '@dxtmisha/figma'
 
-import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
-import { useFigmaClientStorage } from '../composables/useFigmaClientStorage'
-
-/** Client storage messenger data/ Данные сообщения клиентского хранилища */
-export type ClientStorageMessengerData = {
-  name: string
-  value: any
-}
+import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
+import { FigmaClientStorage } from '../classes/FigmaClientStorage'
 
 /**
  * Sets up the client storage by message.
@@ -16,7 +10,7 @@ export type ClientStorageMessengerData = {
  */
 export function setupClientStorage() {
   /** Message instance/ Экземпляр сообщения */
-  const message = useFigmaPluginMessenger()
+  const message = FigmaPluginMessenger.getInstance()
 
   /**
    * Posting data to the UI.
@@ -36,12 +30,12 @@ export function setupClientStorage() {
   message.add(
     UI_FIGMA_CLIENT_STORAGE_GET,
     async ({ name, value }: ClientStorageMessengerData) => {
-      post(name, await useFigmaClientStorage(name).get(value))
+      post(name, await FigmaClientStorage.getInstance(name).get(value))
     })
 
   message.add(
     UI_FIGMA_CLIENT_STORAGE_SET,
     async ({ name, value }: ClientStorageMessengerData) => {
-      post(name, await useFigmaClientStorage(name).set(value))
+      post(name, await FigmaClientStorage.getInstance(name).set(value))
     })
 }

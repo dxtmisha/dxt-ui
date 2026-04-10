@@ -1,5 +1,5 @@
 import { FigmaPostCode } from '@dxtmisha/figma'
-import { FigmaFramesSelected, FigmaTopLevelFrames, setupClientStorage, setupSelectionByMessage } from '@dxtmisha/figma-code'
+import { FigmaFramesSelected, FigmaTopLevelFrames, setupClientStorage, setupFrameSelectionByMessage, setupStorage } from '@dxtmisha/figma-code'
 
 import manifest from '../manifest.json'
 
@@ -10,8 +10,9 @@ switch (figma.mode) {
     FigmaTopLevelFrames.send()
     FigmaFramesSelected.send()
 
-    setupSelectionByMessage()
+    setupStorage()
     setupClientStorage()
+    setupFrameSelectionByMessage()
 
     figma.showUI(__html__)
     break

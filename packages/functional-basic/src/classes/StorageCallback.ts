@@ -23,7 +23,7 @@ export class StorageCallback<
     return new StorageCallback<T>(name, group)
   }
 
-  protected callbacks: Callback[] = []
+  protected callbacks: { callback: Callback, isOnce?: boolean }[] = []
   protected loading: boolean = false
 
   /**
@@ -44,6 +44,15 @@ export class StorageCallback<
     }
 
     items[key] = this as StorageCallback
+  }
+
+  /**
+   * Returns the loading state.
+   *
+   * Возвращает состояние загрузки.
+   */
+  isLoading(): boolean {
+    return this.loading
   }
 
   /**
@@ -69,9 +78,16 @@ export class StorageCallback<
    *
    * Добавляет обратный вызов в список.
    * @param callback function for callbacks/ функция для обратных вызовов
+   * @param isOnce whether the callback should only be called once/ является ли колбэк одноразовым
    */
-  addCallback(callback: Callback): this {
-    this.callbacks.push(callback)
+  addCallback(
+    callback: Callback,
+    isOnce?: boolean
+  ): this {
+    this.callbacks.push({
+      callback,
+      isOnce
+    })
     return this
   }
 
@@ -82,7 +98,7 @@ export class StorageCallback<
    * @param callback function for callbacks/ функция для обратных вызовов
    */
   removeCallback(callback: Callback): this {
-    this.callbacks = this.callbacks.filter(item => item !== callback)
+    this.callbacks = this.callbacks.filter(item => item.callback !== callback)
     return this
   }
 
@@ -103,13 +119,15 @@ export class StorageCallback<
    * @param value storage data/ данные хранилища
    */
   async run(value: T): Promise<this> {
-    this.preparation()
-
-    for (const callback of this.callbacks) {
-      await executePromise(callback, value)
-    }
-
     this.loading = false
+
+    for (const { callback, isOnce } of this.callbacks) {
+      await executePromise(callback, value)
+
+      if (isOnce) {
+        this.removeCallback(callback)
+      }
+    }
 
     return this
   }

@@ -1,5 +1,5 @@
 import { UI_FIGMA_FRAMES_SELECTED_ADD_NAME, UI_FIGMA_FRAMES_SELECTED_POST_NAME } from '@dxtmisha/figma'
-import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
+import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
 import { FigmaStorage } from './FigmaStorage'
 
 /**
@@ -91,7 +91,7 @@ export class FigmaFramesSelected {
    * Настраивает связь через мессенджер плагина для управления состоянием выбора.
    */
   static send() {
-    const messenger = useFigmaPluginMessenger()
+    const messenger = FigmaPluginMessenger.getInstance()
 
     messenger.add(
       UI_FIGMA_FRAMES_SELECTED_POST_NAME,
@@ -131,7 +131,8 @@ export class FigmaFramesSelected {
    * Публикует текущий список выбора в интерфейс Figma.
    */
   protected static post() {
-    useFigmaPluginMessenger()
+    FigmaPluginMessenger
+      .getInstance()
       .post(UI_FIGMA_FRAMES_SELECTED_POST_NAME, this.get())
   }
 }

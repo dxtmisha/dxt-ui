@@ -1,3 +1,10 @@
 // Classes
 export * from './classes/Ai/AiAbstract'
 export * from './classes/Ai/AiGoogleLite'
+export * from './classes/Ai/AiGoogle'
+export * from './classes/Ai/AiGoogleCliLite'
+export * from './classes/Ai/AiGoogleCli'
+export * from './classes/Ai/AiClaudeLite'
+export * from './classes/Ai/AiClaude'
+export * from './classes/Ai/AiClaudeCliLite'
+export * from './classes/Ai/AiClaudeCli'

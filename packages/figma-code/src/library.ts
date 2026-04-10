@@ -9,11 +9,6 @@ export * from './classes/FigmaStorage'
 export * from './classes/FigmaStorageData'
 export * from './classes/FigmaTopLevelFrames'
 
-// Composables
-export * from './composables/useFigmaClientStorage'
-export * from './composables/useFigmaPluginMessenger'
-export * from './composables/useFigmaStorage'
-
 // Functions
 export * from './functions/getFigmaItemById'
 export * from './functions/getFigmaItemByIdOrRoot'

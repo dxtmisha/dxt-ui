@@ -1,5 +1,5 @@
 import { UI_FIGMA_FRAME_SET_SELECTION } from '@dxtmisha/figma'
-import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
+import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
 import { toFrameSelection } from './toFrameSelection'
 
 /**
@@ -8,7 +8,7 @@ import { toFrameSelection } from './toFrameSelection'
  * Устанавливает выборку по сообщению.
  */
 export function setupFrameSelectionByMessage() {
-  const message = useFigmaPluginMessenger()
+  const message = FigmaPluginMessenger.getInstance()
 
   message.add(UI_FIGMA_FRAME_SET_SELECTION, ({ id }: { id: string }) => {
     toFrameSelection(id)

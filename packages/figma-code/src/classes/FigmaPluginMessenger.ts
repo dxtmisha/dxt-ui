@@ -7,6 +7,23 @@ import { FigmaPostAbstract, FigmaPostCode, type UiFigmaMessengerData } from '@dx
  */
 export class FigmaPluginMessenger extends FigmaPostAbstract {
   /**
+   * Getting an instance of the class for working with Figma plugin messenger (backend).
+   *
+   * Получение экземпляра класса для работы с мессенджером плагина Figma (backend).
+   * @returns current instance/ текущий экземпляр
+   */
+  static getInstance() {
+    if (item) {
+      return item
+    }
+
+    item = new FigmaPluginMessenger()
+    item.make()
+
+    return item
+  }
+
+  /**
    * Sends a message to the Figma UI.
    *
    * Отправляет сообщение в UI Figma.
@@ -33,3 +50,5 @@ export class FigmaPluginMessenger extends FigmaPostAbstract {
     figma.ui.onmessage = (message: UiFigmaMessengerData) => this.onMessage(message)
   }
 }
+
+let item: FigmaPluginMessenger | undefined

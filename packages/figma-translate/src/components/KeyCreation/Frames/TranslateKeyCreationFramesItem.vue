@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sendSelectionFrame } from '@dxtmisha/figma'
+import { sendFrameSelection } from '@dxtmisha/figma'
 import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
 
 import type { FieldValidationItem } from '@dxtmisha/constructor'
@@ -35,7 +35,7 @@ const onChange = ({ value }: FieldValidationItem<boolean>) => {
  * Отправляет состояние выбора текущего фрейма в плагин.
  */
 const onSelection = () => {
-  sendSelectionFrame(props.id)
+  sendFrameSelection(props.id)
 }
 </script>
 

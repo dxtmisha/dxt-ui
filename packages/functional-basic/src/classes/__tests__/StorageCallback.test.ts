@@ -3,7 +3,7 @@ import { StorageCallback } from '../StorageCallback'
 
 describe('StorageCallback', () => {
   beforeEach(() => {
-    // Clear the internal items map if possible, but since it's a private constant in the module, 
+    // Clear the internal items map if possible, but since it's a private constant in the module,
     // we should use different names for each test if they need isolated state.
   })
 
@@ -38,6 +38,16 @@ describe('StorageCallback', () => {
     expect(s1).toBe(s3)
   })
 
+  it('should return current loading state (isLoading and getLoading)', () => {
+    const storage = new StorageCallback('loading-check')
+    expect(storage.isLoading()).toBe(false)
+    expect(storage.getLoading()).toBe(false)
+
+    storage.preparation()
+    expect(storage.isLoading()).toBe(true)
+    expect(storage.getLoading()).toBe(true)
+  })
+
   it('should manage callbacks correctly', async () => {
     const storage = new StorageCallback('callback-test')
     const cb1 = vi.fn()
@@ -68,14 +78,19 @@ describe('StorageCallback', () => {
       await promise
     })
 
-    expect(storage.getLoading()).toBe(false)
+    expect(storage.isLoading()).toBe(false)
     
+    // Now preparation must be called manually before run
+    storage.preparation()
+    expect(storage.isLoading()).toBe(true)
+
     const runPromise = storage.run('test')
-    expect(storage.getLoading()).toBe(true)
+    // Run clears loading immediately at the start in the current implementation
+    expect(storage.isLoading()).toBe(false)
 
     resolveCb()
     await runPromise
-    expect(storage.getLoading()).toBe(false)
+    expect(storage.isLoading()).toBe(false)
   })
 
   it('should execute callbacks sequentially and wait for promises', async () => {
@@ -92,5 +107,23 @@ describe('StorageCallback', () => {
 
     await storage.run('any')
     expect(results).toEqual([1, 2])
+  })
+
+  it('should handle isOnce correctly', async () => {
+    const storage = new StorageCallback('once-test')
+    const cbOnce = vi.fn()
+    const cbRegular = vi.fn()
+
+    storage.addCallback(cbOnce, true)
+    storage.addCallback(cbRegular)
+
+    await storage.run('first')
+    expect(cbOnce).toHaveBeenCalledWith('first')
+    expect(cbRegular).toHaveBeenCalledWith('first')
+
+    await storage.run('second')
+    expect(cbOnce).toHaveBeenCalledTimes(1) // Should not be called again
+    expect(cbRegular).toHaveBeenCalledWith('second')
+    expect(cbRegular).toHaveBeenCalledTimes(2)
   })
 })

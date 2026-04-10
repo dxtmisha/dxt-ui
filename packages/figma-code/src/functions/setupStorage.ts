@@ -1,15 +1,7 @@
-import { UI_FIGMA_STORAGE_GET, UI_FIGMA_STORAGE_SET } from '@dxtmisha/figma'
-import { getFigmaItemByIdOrRoot } from './getFigmaItemByIdOrRoot'
+import { UI_FIGMA_STORAGE_GET, UI_FIGMA_STORAGE_SET, type StorageMessengerData } from '@dxtmisha/figma'
 
-import { useFigmaPluginMessenger } from '../composables/useFigmaPluginMessenger'
-import { useFigmaStorage } from '../composables/useFigmaStorage'
-
-/** Storage messenger data/ Данные сообщения хранилища */
-export type StorageMessengerData = {
-  id?: string
-  name: string
-  value: any
-}
+import { FigmaPluginMessenger } from '../classes/FigmaPluginMessenger'
+import { FigmaStorage } from '../classes/FigmaStorage'
 
 /**
  * Sets up the storage by message.
@@ -18,20 +10,7 @@ export type StorageMessengerData = {
  */
 export function setupStorage() {
   /** Message instance/ Экземпляр сообщения */
-  const message = useFigmaPluginMessenger()
-
-  /**
-   * Get storage.
-   *
-   * Получить хранилище.
-   * @param name storage name/ название хранилища
-   * @param id object id/ id объекта
-   * @returns storage/ хранилище
-   */
-  const getStorage = async (name: string, id?: string) => {
-    const item = await getFigmaItemByIdOrRoot(id)
-    return useFigmaStorage(name, item)
-  }
+  const message = FigmaPluginMessenger.getInstance()
 
   /**
    * Posting data to the UI.
@@ -41,23 +20,14 @@ export function setupStorage() {
    * @param value value/ значение
    * @param id object id/ id объекта
    */
-  const post = (
-    name: string,
-    value: any,
-    id?: string
-  ) => message.post(
-    UI_FIGMA_STORAGE_GET,
-    {
-      id,
-      name,
-      value
-    }
-  )
+  const post = (name: string, value: any, id?: string) =>
+    message.post(UI_FIGMA_STORAGE_GET, { name, value, id })
 
   message.add(
     UI_FIGMA_STORAGE_GET,
-    async ({ id, name, value }: StorageMessengerData) => {
-      const readingValue = (await getStorage(name, id)).get(value)
+    async (data: StorageMessengerData) => {
+      const { name, value, id } = data ?? {}
+      const readingValue = (await FigmaStorage.getInstanceById(name, id)).get(value)
 
       post(name, readingValue, id)
     }
@@ -65,8 +35,9 @@ export function setupStorage() {
 
   message.add(
     UI_FIGMA_STORAGE_SET,
-    async ({ id, name, value }: StorageMessengerData) => {
-      const writingValue = (await getStorage(name, id)).set(value)
+    async (data: StorageMessengerData) => {
+      const { name, value, id } = data ?? {}
+      const writingValue = (await FigmaStorage.getInstanceById(name, id)).set(value)
 
       post(name, writingValue, id)
     }

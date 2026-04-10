@@ -1,4 +1,4 @@
-import { useFigmaUiMessenger } from '../composables/useFigmaUiMessenger'
+import { FigmaUiMessenger } from '../classes/FigmaUiMessenger'
 import { UI_FIGMA_FRAMES_SELECTED_POST_NAME } from '../types/framesTypes'
 
 /** Cached list of selected frames / Кэшированный список выбранных фреймов */
@@ -29,7 +29,7 @@ export function fetchFramesSelected(
   loading = true
 
   /** The messenger instance for bidirectional communication / Экземпляр мессенджера для двусторонней связи */
-  const messenger = useFigmaUiMessenger()
+  const messenger = FigmaUiMessenger.getInstance()
 
   /**
    * The callback function that updates the selected frames state and notifies the requester.

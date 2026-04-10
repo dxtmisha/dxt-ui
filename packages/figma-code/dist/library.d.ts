@@ -1,12 +1,6 @@
 import { FigmaPostAbstract } from '@dxtmisha/figma';
 import { UiFigmaFramesList } from '@dxtmisha/figma';
 
-/** Client storage messenger data/ Данные сообщения клиентского хранилища */
-export declare type ClientStorageMessengerData = {
-    name: string;
-    value: any;
-};
-
 /**
  * Class for working with Figma client storage (clientStorage).
  *
@@ -15,6 +9,14 @@ export declare type ClientStorageMessengerData = {
 export declare class FigmaClientStorage<T> {
     protected readonly name: string;
     protected readonly cache?: number | undefined;
+    /**
+     * Getting an instance of the class for working with Figma client storage (clientStorage).
+     *
+     * Получение экземпляра класса для работы с клиентским хранилищем Figma (clientStorage).
+     * @param name value name/ название значения
+     * @returns current instance/ текущий экземпляр
+     */
+    static getInstance<T>(name: string): FigmaClientStorage<T>;
     protected data: FigmaStorageData<T>;
     /**
      * Constructor
@@ -408,6 +410,13 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
  */
 export declare class FigmaPluginMessenger extends FigmaPostAbstract {
     /**
+     * Getting an instance of the class for working with Figma plugin messenger (backend).
+     *
+     * Получение экземпляра класса для работы с мессенджером плагина Figma (backend).
+     * @returns current instance/ текущий экземпляр
+     */
+    static getInstance(): FigmaPluginMessenger;
+    /**
      * Sends a message to the Figma UI.
      *
      * Отправляет сообщение в UI Figma.
@@ -432,6 +441,24 @@ export declare class FigmaStorage<T> {
     protected readonly name: string;
     protected readonly item: PluginDataMixin;
     protected readonly cache?: number | undefined;
+    /**
+     * Getting an instance of the class for working with Figma storage (PluginData).
+     *
+     * Получение экземпляра класса для работы с хранилищем Figma (PluginData).
+     * @param name value name/ название значения
+     * @param item object for storing data/ объект для хранения данных
+     * @returns current instance/ текущий экземпляр
+     */
+    static getInstance<T>(name: string, item?: UiFigmaNode): FigmaStorage<T>;
+    /**
+     * Getting an instance of the class for working with Figma storage (PluginData).
+     *
+     * Получение экземпляра класса для работы с хранилищем Figma (PluginData).
+     * @param name value name/ название значения
+     * @param id object id/ id объекта
+     * @returns current instance/ текущий экземпляр
+     */
+    static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>;
     protected data: FigmaStorageData<T>;
     /**
      * Constructor
@@ -671,13 +698,6 @@ export declare function setupFrameSelectionByMessage(): void;
  */
 export declare function setupStorage(): void;
 
-/** Storage messenger data/ Данные сообщения хранилища */
-export declare type StorageMessengerData = {
-    id?: string;
-    name: string;
-    value: any;
-};
-
 /**
  * Moves the view to the specified item and selects it.
  *
@@ -720,34 +740,5 @@ export declare type UiFigmaMessageTexts = {
  * Тип для узлов Figma
  */
 export declare type UiFigmaNode = ChildrenMixin | SceneNode | DefaultShapeMixin | DocumentNode | PageNode | FrameNode | SectionNode | TextNode | BaseNode;
-
-/**
- * Getting a class for working with Figma client storage (clientStorage).
- *
- * Получение класса для работы с клиентским хранилищем Figma (clientStorage).
- * @param name value name/ название значения
- * @param cache cache time/ время кэширования
- */
-export declare function useFigmaClientStorage<T>(name: string, cache?: number): FigmaClientStorage<T>;
-
-/**
- * Composable for accessing the FigmaPluginMessenger singleton.
- * Initializes the messenger on first call.
- *
- * Композиция для доступа к синглтону FigmaPluginMessenger.
- * Инициализирует мессенджер при первом вызове.
- * @returns FigmaPluginMessenger
- */
-export declare function useFigmaPluginMessenger(): FigmaPluginMessenger;
-
-/**
- * Getting a class for working with Figma storage (PluginData).
- *
- * Получение класса для работы с хранилищем Figma (PluginData).
- * @param name value name/ название значения
- * @param item object for storing data/ объект для хранения данных
- * @param cache cache time/ время кэширования
- */
-export declare function useFigmaStorage<T>(name: string, item?: UiFigmaNode, cache?: number): FigmaStorage<T>;
 
 export { }

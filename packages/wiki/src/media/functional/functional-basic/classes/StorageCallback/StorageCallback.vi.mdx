@@ -46,14 +46,52 @@ numberStorage.addCallback((val) => console.log(val + 1))
 ### Thông tin
 
 - `getName(): string` — trả về tên của thực thể lưu trữ.
-- `getLoading(): boolean` — trả về trạng thái tải hiện tại.
+- `isLoading(): boolean` — trả về trạng thái tải hiện tại.
+- `getLoading(): boolean` — trả về trạng thái tải hiện tại (tương tự `isLoading`).
 
 ### Quản lý
 
-- `addCallback(callback: Callback): this` — thêm một callback mới vào danh sách thực thi.
+- `addCallback(callback: Callback, isOnce?: boolean): this` — thêm một callback mới vào danh sách thực thi. Nếu `isOnce: true`, callback sẽ bị xóa sau lần thực thi đầu tiên.
 - `removeCallback(callback: Callback): this` — xóa một callback cụ thể khỏi danh sách.
 
 ### Điều khiển (Control)
 
-- `preparation(): this` — chuẩn bị trạng thái trước khi thực thi (đặt `loading` thành `true`).
-- `run(value: T): Promise<this>` — thực thi tất cả các callback theo trình tự với giá trị được cung cấp.
+- `preparation(): this` — chuẩn bị trạng thái trước khi thực thi (đặt `loading` thành `true`). Được sử dụng thủ công khi bắt đầu các hoạt động bất đồng bộ.
+- `run(value: T): Promise<this>` — thực thi tất cả các callback theo trình tự với giá trị được cung cấp. Đặt `loading` về `false` khi bắt đầu thực thi.
+
+## Ví dụ sử dụng
+
+### Quản lý trạng thái tải thủ công
+
+Khi dữ liệu được lấy bất đồng bộ từ nguồn bên ngoài (ví dụ: Figma storage), bạn có thể quản lý trạng thái `loading` thủ công để điều phối nhiều yêu cầu.
+
+```typescript
+const storage = new StorageCallback('figma-data')
+
+// 1. Kiểm tra nếu không phải đang tải
+if (!storage.isLoading()) {
+  // 2. Thiết lập trạng thái đang tải
+  storage.preparation()
+  
+  // 3. Yêu cầu dữ liệu
+  fetchFromFigma((data) => {
+    // 4. Thực thi callback (run sẽ đưa loading về false)
+    storage.run(data)
+  })
+}
+```
+
+### Callback một lần
+
+Nếu bạn chỉ cần một hàm kích hoạt một lần (ví dụ: để nạp dữ liệu ban đầu), hãy sử dụng cờ `isOnce`.
+
+```typescript
+const storage = new StorageCallback('initial-data')
+
+storage.addCallback((data) => {
+  console.log('Đã thực thi một lần:', data)
+}, true)
+
+await storage.run('update 1') // 'Đã thực thi một lần: update 1'
+await storage.run('update 2') // (không có đầu ra, callback đã bị xóa)
+```

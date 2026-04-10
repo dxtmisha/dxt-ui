@@ -7,6 +7,24 @@ import { FigmaStorageData, type FigmaStorageDataValue } from './FigmaStorageData
  * Класс для работы с клиентским хранилищем Figma (clientStorage).
  */
 export class FigmaClientStorage<T> {
+  /**
+   * Getting an instance of the class for working with Figma client storage (clientStorage).
+   *
+   * Получение экземпляра класса для работы с клиентским хранилищем Figma (clientStorage).
+   * @param name value name/ название значения
+   * @returns current instance/ текущий экземпляр
+   */
+  static getInstance<T>(name: string) {
+    if (name in items) {
+      return items[name] as FigmaClientStorage<T>
+    }
+
+    const storage = new FigmaClientStorage<T>(name)
+
+    items[name] = storage
+    return storage
+  }
+
   protected data: FigmaStorageData<T>
 
   /**
@@ -99,3 +117,5 @@ export class FigmaClientStorage<T> {
     return this
   }
 }
+
+const items: Record<string, FigmaClientStorage<any>> = {}

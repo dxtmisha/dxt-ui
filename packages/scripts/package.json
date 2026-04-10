@@ -74,5 +74,9 @@
   },
   "dependencies": {
     "puppeteer": "^23.0.0"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@google/genai": "^1.0.0"
   }
 }

@@ -8,6 +8,23 @@ import { FigmaPostCode } from './FigmaPostCode'
  */
 export class FigmaUiMessenger extends FigmaPostAbstract {
   /**
+   * Getting an instance of the class for working with Figma UI messenger (frontend).
+   *
+   * Получение экземпляра класса для работы с мессенджером UI Figma (frontend).
+   * @returns current instance/ текущий экземпляр
+   */
+  static getInstance() {
+    if (item) {
+      return item
+    }
+
+    item = new FigmaUiMessenger()
+    item.make()
+
+    return item
+  }
+
+  /**
    * Sends a message to the Figma plugin.
    *
    * Отправляет сообщение в плагин Figma.
@@ -39,3 +56,5 @@ export class FigmaUiMessenger extends FigmaPostAbstract {
     )
   }
 }
+
+let item: FigmaUiMessenger | undefined

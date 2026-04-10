@@ -1,4 +1,4 @@
-import { useFigmaUiMessenger } from '../composables/useFigmaUiMessenger'
+import { FigmaUiMessenger } from '../classes/FigmaUiMessenger'
 import { UI_FIGMA_FRAMES_SELECTED_ADD_NAME } from '../types/framesTypes'
 
 /**
@@ -12,6 +12,7 @@ export function sendFramesSelected(
   id: string,
   selected: boolean
 ): void {
-  useFigmaUiMessenger()
+  FigmaUiMessenger
+    .getInstance()
     .post(UI_FIGMA_FRAMES_SELECTED_ADD_NAME, { id, selected })
 }

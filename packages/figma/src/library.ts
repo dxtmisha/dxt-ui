@@ -3,15 +3,17 @@ export * from './classes/FigmaPostAbstract'
 export * from './classes/FigmaPostCode'
 export * from './classes/FigmaUiMessenger'
 
-// Composables
-export * from './composables/useFigmaUiMessenger'
-
 // Functions
+export * from './functions/fetchClientStorage'
 export * from './functions/fetchFramesSelected'
+export * from './functions/fetchStorage'
 export * from './functions/fetchTopLevelFrames'
+export * from './functions/sendClientStorage'
 export * from './functions/sendFrameSelection'
 export * from './functions/sendFramesSelected'
+export * from './functions/sendStorage'
 
 // Types
 export * from './types/figmaMessengerTypes'
 export * from './types/framesTypes'
+export * from './types/storageTypes'

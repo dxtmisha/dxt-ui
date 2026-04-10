@@ -67,6 +67,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.3",
     "@dxtmisha/configuration": "workspace:*",
     "@dxtmisha/constructor": "workspace:*",
     "@dxtmisha/figma": "workspace:*",
