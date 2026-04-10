@@ -12,7 +12,7 @@ import { fetchClientStorage, sendClientStorage } from '@dxtmisha/figma'
  */
 export function useFigmaClientStorage<T = any>(
   name: string,
-  defaultValue: T
+  defaultValue?: T
 ) {
   /** Value from storage / Значение из хранилища */
   let storageValue: T | undefined = undefined

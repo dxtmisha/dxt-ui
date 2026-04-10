@@ -71,7 +71,7 @@ if (isFilled(value)) { /* ... */ }
 
 Full API reference, examples, and guides:
 
-**[📖 https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)**
+**[📖 https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-functional-basic-about-the-library--docs](https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-functional-basic-about-the-library--docs)**
 
 ## Difference from @dxtmisha/functional
 

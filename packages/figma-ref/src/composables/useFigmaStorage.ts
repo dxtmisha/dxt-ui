@@ -13,7 +13,7 @@ import { fetchStorage, sendStorage } from '@dxtmisha/figma'
  */
 export function useFigmaStorage<T = any>(
   name: string,
-  defaultValue: T,
+  defaultValue?: T,
   id?: string
 ) {
   /** Value from storage / Значение из хранилища */

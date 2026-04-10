@@ -23,7 +23,7 @@
     text-decoration: none;
   }
 
-  @include ui.focus {
+  &:focus-visible {
     outline-style: solid;
   }
 

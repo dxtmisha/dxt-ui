@@ -64,7 +64,7 @@ export default {
 
 Full API reference, examples, and guides:
 
-**[📖 https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)**
+**[📖 https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-functional-about-library--docs](https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-functional-about-library--docs)**
 
 ## Difference from @dxtmisha/functional-basic
 

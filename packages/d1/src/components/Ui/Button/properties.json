@@ -4,9 +4,11 @@
   "gradient": "var(--sys-color)",
   "gradient-opacity": "0",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.md}",
-  "focus": {
-    "gradient-opacity": "{sys.opacity.focus}",
+  "focus-visible": {
     "outline": "{outline.md}"
+  },
+  "focus": {
+    "gradient-opacity": "{sys.opacity.focus}"
   },
   "hover": {
     "gradient-opacity": "{sys.opacity.hover}"

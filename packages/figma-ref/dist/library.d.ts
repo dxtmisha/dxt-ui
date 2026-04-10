@@ -11,7 +11,7 @@ import { UiFigmaFramesList } from '@dxtmisha/figma';
  * @returns An object containing the storage value and a loading state /
  * Объект, содержащий значение хранилища и состояние загрузки
  */
-export declare function useFigmaClientStorage<T = any>(name: string, defaultValue: T): {
+export declare function useFigmaClientStorage<T = any>(name: string, defaultValue?: T): {
     item: ShallowRef<T | undefined, T | undefined>;
     loading: ShallowRef<boolean, boolean>;
 };
@@ -26,7 +26,7 @@ export declare function useFigmaClientStorage<T = any>(name: string, defaultValu
  * @returns An object containing the storage value and a loading state /
  * Объект, содержащий значение хранилища и состояние загрузки
  */
-export declare function useFigmaStorage<T = any>(name: string, defaultValue: T, id?: string): {
+export declare function useFigmaStorage<T = any>(name: string, defaultValue?: T, id?: string): {
     item: ShallowRef<T | undefined, T | undefined>;
     loading: ShallowRef<boolean, boolean>;
 };
