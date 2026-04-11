@@ -8,6 +8,8 @@ Trong môi trường trình duyệt, tạo một phần tử HTML mới với th
 
 Hàm này kiểm tra sự tồn tại của môi trường DOM thông qua `isDomRuntime()`. Nếu mã không chạy trong trình duyệt (ví dụ: trên máy chủ trong quá trình SSR), hàm sẽ trả về `undefined`.
 
+> **Cảnh báo (SSR):** Khi chạy trên máy chủ, hàm luôn trả về `undefined`. Nếu bạn sử dụng nó trong logic hiển thị của component, nó có thể dẫn đến lỗi không khớp hyradtion (hydration mismatch). Bạn nên gọi hàm này trong các hook vòng đời chỉ chạy trên client (ví dụ: `onMounted` trong Vue hoặc `useEffect` trong React).
+
 **Tham số:**
 - `parentElement?: HTMLElement` — Phần tử mẹ sẽ chứa nút DOM mới.
 - `tagName: string = 'div'` — Chuỗi xác định loại phần tử sẽ được tạo (mặc định là `'div'`).

@@ -15,12 +15,12 @@ describe('encodeAttribute', () => {
     expect(encodeAttribute('He said "it\'s fine"')).toBe('He said &quot;it&#39;s fine&quot;')
   })
 
-  it('should trim whitespace from the ends', () => {
-    expect(encodeAttribute('  \t hello world \n ')).toBe('hello world')
+  it('should preserve whitespace at the ends', () => {
+    expect(encodeAttribute('  hello world  ')).toBe('  hello world  ')
   })
 
-  it('should handle strings without any special characters safely', () => {
-    expect(encodeAttribute('Regular text')).toBe('Regular text')
+  it('should handle non-string input (numbers) safely', () => {
+    expect(encodeAttribute(123 as any)).toBe('123')
   })
 
   it('should handle an empty string', () => {

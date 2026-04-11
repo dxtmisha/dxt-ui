@@ -16,10 +16,10 @@ import { isObject } from './isObject'
 export function forEach<
   T,
   R,
-  D extends T[] | Record<string, T> | Map<string, T> = T[] | Record<string, T> | Map<string, T>,
-  K = D extends T[] ? number : string
+  D extends T[] | Record<string, T> | Map<string, T> | Set<T> = T[] | Record<string, T> | Map<string, T> | Set<T>,
+  K = D extends T[] ? number : (D extends Set<T> ? T : string)
 >(
-  data: D & (T[] | Record<string, T> | Map<string, T>),
+  data: D & (T[] | Record<string, T> | Map<string, T> | Set<T>),
   callback: (item: T, key: K, dataMain: typeof data) => R,
   saveUndefined?: boolean
 ): R[] {
@@ -51,6 +51,8 @@ export function forEach<
 
     if (data instanceof Map) {
       data.forEach((item: T, key) => push(item, key as K, data))
+    } else if (data instanceof Set) {
+      data.forEach((item: T) => push(item, item as unknown as K, data))
     } else if (Array.isArray(data)) {
       data.forEach((item: T, key) => push(item, key as K, data))
     } else {

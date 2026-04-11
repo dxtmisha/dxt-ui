@@ -4,12 +4,25 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `copyObject`
 
-Creates a deep copy of objects and arrays containing basic data types.
+Creates a deep copy of objects and arrays.
 
-This is useful when you need to avoid mutating the original state. Keep in mind that it does not copy functions, symbols, or `undefined` values, and it cannot handle circular references (under the hood it uses `JSON.parse(JSON.stringify(value))`).
+The function supports two operation modes, toggled by the `simplified` parameter.
 
-**Parameters:**
+### Parameters
+
 - `value: T` — The object or value to be copied.
+- `simplified: boolean = true` — Cloning mode:
+    - `true` (default): Uses `JSON.parse(JSON.stringify(value))`.
+    - `false`: Uses the modern `structuredClone` API.
+- `options?: StructuredSerializeOptions` — Options for `structuredClone` (only used when `simplified: false`). For example, for passing transferable objects.
+
+### Key Features
+
+1.  **Flexibility**: Choose between performance and full type support.
+2.  **SSR Safe**: Both methods work on the server and in the browser.
+3.  **Isolation**: Creates a fully independent copy of nested structures.
+
+---
 
 **Returns:**
 `T` — A new copy of the object.
@@ -17,11 +30,17 @@ This is useful when you need to avoid mutating the original state. Keep in mind 
 ```typescript
 import { copyObject } from '@dxtmisha/functional-basic'
 
-const original = { name: 'John', details: { age: 30 } }
-const copy = copyObject(original)
+const original = { 
+  name: 'John', 
+  date: new Date(),
+  tags: new Set(['admin'])
+}
 
-copy.details.age = 31
+// Simplified mode (default) - date becomes a string, tags becomes an empty {}
+const simpleCopy = copyObject(original)
 
-console.log(original.details.age) // 30 (the original object did not change)
-console.log(copy.details.age) // 31
+// Full mode - all types are preserved
+const fullCopy = copyObject(original, false)
 ```
+
+> Use `simplified: true` (default) for working with simple data from APIs. Switch to `false` only if you need to preserve specific JS objects or handle complex recursive structures.

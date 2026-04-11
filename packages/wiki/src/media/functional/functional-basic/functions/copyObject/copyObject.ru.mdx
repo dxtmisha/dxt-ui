@@ -4,12 +4,25 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `copyObject`
 
-Создает глубокую копию (deep copy) объектов и массивов, содержащих базовые типы данных.
+Создает глубокую копию (deep copy) объектов и массивов.
 
-Это полезно, когда нужно избежать мутаций исходного состояния. Однако следует помнить, что утилита не копирует функции, символы, значения `undefined` и не может обработать циклические ссылки (внутри используется `JSON.parse(JSON.stringify(value))`).
+Функция поддерживает два режима работы, переключаемых параметром `simplified`.
 
-**Параметры:**
+### Параметры
+
 - `value: T` — Объект или значение, которое необходимо скопировать.
+- `simplified: boolean = true` — Режим копирования:
+    - `true` (по умолчанию): Использует `JSON.parse(JSON.stringify(value))`.
+    - `false`: Использует `structuredClone`. Поддерживает почти все типы данных.
+- `options?: StructuredSerializeOptions` — Опции для `structuredClone` (используются только при `simplified: false`). Например, для передачи отчуждаемых объектов (transferables).
+
+### Ключевые особенности
+
+1.  **Гибкость**: Выбор между производительностью и полнотой поддержки типов.
+2.  **SSR Безопасность**: Оба метода работают как на сервере, так и на клиенте.
+3.  **Изоляция**: Создает полную независимую копию вложенных структур.
+
+---
 
 **Возвращает:**
 `T` — Новая копия объекта.
@@ -17,11 +30,17 @@ import { Meta } from '@storybook/addon-docs/blocks'
 ```typescript
 import { copyObject } from '@dxtmisha/functional-basic'
 
-const original = { name: 'John', details: { age: 30 } }
-const copy = copyObject(original)
+const original = { 
+  name: 'John', 
+  date: new Date(),
+  tags: new Set(['admin'])
+}
 
-copy.details.age = 31
+// Упрощенный режим (по умолчанию) - date станет строкой, tags будет пустым {}
+const simpleCopy = copyObject(original)
 
-console.log(original.details.age) // 30 (исходный объект не изменился)
-console.log(copy.details.age) // 31
+// Полный режим - все типы сохранятся
+const fullCopy = copyObject(original, false)
 ```
+
+> Используйте `simplified: true` (по умолчанию) для работы с простыми данными из API. Переключайтесь на `false` только если вам нужно сохранить специфические объекты JS или обработать сложные рекурсивные структуры.

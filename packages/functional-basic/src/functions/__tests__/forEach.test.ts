@@ -19,9 +19,17 @@ describe('forEach', () => {
     expect(result).toEqual([2, 4])
     expect(callback).toHaveBeenCalledTimes(2)
   })
-
   it('should iterate over a Map', () => {
     const data = new Map([['a', 1], ['b', 2]])
+    const callback = vi.fn(item => item * 2)
+    const result = forEach(data, callback)
+
+    expect(result).toEqual([2, 4])
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('should iterate over a Set', () => {
+    const data = new Set([1, 2])
     const callback = vi.fn(item => item * 2)
     const result = forEach(data, callback)
 

@@ -6,13 +6,11 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Mã hóa các ký tự đặc biệt trong chuỗi (`&`, `<`, `>`, `"`, `'`) thành các thực thể HTML tương ứng (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`). Điều này là cần thiết để chèn văn bản người dùng hoặc văn bản động vào thuộc tính HTML một cách an toàn nhằm phòng chống tấn công XSS.
 
-Hơn nữa, hàm cũng loại bỏ các khoảng trắng ở hai đầu chuỗi bằng phương thức `.trim()`.
-
 **Tham số:**
 - `text: string` — Chuỗi cần được mã hóa.
 
 **Trả về:**
-`string` — Chuỗi đã được mã hóa và xóa khoảng trắng dư thừa ở hai đầu.
+`string` — Chuỗi đã được mã hóa.
 
 ```typescript
 import { encodeAttribute } from '@dxtmisha/functional-basic'

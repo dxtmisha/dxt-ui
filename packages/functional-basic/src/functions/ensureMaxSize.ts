@@ -1,5 +1,6 @@
 import { blobToBase64 } from './blobToBase64'
 import { getElementImage } from './getElementImage'
+import { isDomRuntime } from './isDomRuntime'
 import { resizeImageByMax } from './resizeImageByMax'
 
 /**
@@ -17,6 +18,11 @@ export async function ensureMaxSize(
   type: string = 'image/jpeg'
 ): Promise<string> {
   return new Promise((resolve) => {
+    if (!isDomRuntime()) {
+      resolve('')
+      return
+    }
+
     const blob = new Blob([file as any], { type })
     const data = URL.createObjectURL(blob)
     const image = getElementImage(data)

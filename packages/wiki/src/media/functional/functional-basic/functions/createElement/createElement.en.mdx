@@ -8,6 +8,8 @@ In a browser environment, creates a new HTML element with the specified tag name
 
 The function relies on `isDomRuntime()` to verify the presence of a DOM environment. If the code executes outside the browser (e.g., during SSR on the server), the function will return `undefined`.
 
+> **Warning (SSR):** When running on the server, the function always returns `undefined`. If you use it within a component's rendering logic, it may lead to hydration mismatches. It is recommended to call this function only inside lifecycle hooks that run exclusively on the client (e.g., `onMounted` in Vue or `useEffect` in React).
+
 **Parameters:**
 - `parentElement?: HTMLElement` — The parent element into which the new node will be inserted.
 - `tagName: string = 'div'` — A string specifying the type of element to create (defaults to `'div'`).
