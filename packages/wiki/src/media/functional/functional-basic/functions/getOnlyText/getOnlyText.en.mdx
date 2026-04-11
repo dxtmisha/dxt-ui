@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getOnlyText - Extraction of letters, numbers and spaces from a string'/>
+
+# `getOnlyText`
+
+A utility that extracts only letters, numbers, and spaces from any given input, removing punctuation, special characters, and other symbols.
+
+This is useful for cleaning up user input or preparing text for simplified processing where only alphanumeric content and basic spacing are required.
+
+**Parameters:**
+- `text: any` — The value to process.
+
+**Returns:**
+`string` — A string containing only the characters that are letters, numbers, or spaces.
+
+```typescript
+import { getOnlyText } from '@dxtmisha/functional-basic'
+
+console.log(getOnlyText('Hello, World!')) // 'Hello World'
+console.log(getOnlyText('Price: $100.00')) // 'Price 10000'
+console.log(getOnlyText('Text with symbols: #@!%')) // 'Text with symbols'
+console.log(getOnlyText(12345)) // '12345'
+console.log(getOnlyText(null)) // ''
+```

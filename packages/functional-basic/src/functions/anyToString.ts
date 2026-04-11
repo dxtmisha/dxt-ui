@@ -6,9 +6,9 @@ import { isString } from './isString'
  * Conversion of a value to a string.
  *
  * Преобразование значения в строку.
- * @param value values for conversion/ значения для преобразования
- * @param isArrayString if true, then arrays will be converted to strings/
- * если true, то массивы будут преобразованы в строки
+ * @param value values for conversion / значения для преобразования
+ * @param isArrayString if true, then arrays will be converted to strings / если true, то массивы будут преобразованы в строки
+ * @returns string representation of the passed value / строковое представление переданного значения
  */
 export function anyToString<V>(
   value: V,

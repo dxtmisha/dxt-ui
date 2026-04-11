@@ -22,11 +22,6 @@ export function isFilled<T>(
     }
 
     switch (typeof value) {
-      case 'bigint':
-      case 'number':
-        return value !== 0
-      case 'boolean':
-        return value
       case 'function':
       case 'symbol':
         return true
@@ -35,11 +30,16 @@ export function isFilled<T>(
           return value.length > 0
         }
 
+        if (
+          value instanceof Map
+          || value instanceof Set
+        ) {
+          return value.size > 0
+        }
+
         return Object.values(value).some(item => !isNull(item))
       case 'string':
-        return !['', 'undefined', 'null', '0', 'false', '[]'].includes(value)
-      case 'undefined':
-        return false
+        return !['', 'undefined', 'null', '0', 'false', '[]'].includes(value.trim())
       default:
         return Boolean(value)
     }

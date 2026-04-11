@@ -37,4 +37,19 @@ describe('addTagHighlightMatch', () => {
     const result = addTagHighlightMatch(12345 as any, '23')
     expect(result).toBe('1<span class="sys-highlight-match">23</span>45')
   })
+
+  it('should escape HTML characters when shouldEscape is true', () => {
+    const result = addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
+    expect(result).toBe('&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;')
+  })
+
+  it('should escape whole string when shouldEscape is true and no search match', () => {
+    const result = addTagHighlightMatch('<b>bold</b>', 'none', 'sys-highlight-match', true)
+    expect(result).toBe('&lt;b&gt;bold&lt;/b&gt;')
+  })
+
+  it('should handle special characters in search and escape them correctly', () => {
+    const result = addTagHighlightMatch('price > 10', '>', 'sys-highlight-match', true)
+    expect(result).toBe('price <span class="sys-highlight-match">&gt;</span> 10')
+  })
 })

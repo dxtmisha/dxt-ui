@@ -7,9 +7,9 @@ import { resizeImageByMax } from './resizeImageByMax'
  *
  * Гарантирует, что изображение не превышает максимальный размер, изменяя его размер при необходимости.
  * @param file image file as Uint8Array / файл изображения в виде Uint8Array
- * @param compress maximum size as a fraction of the original size (default is 0.7)/
- * максимальный размер в виде доли от оригинального размера (по умолчанию 0.7)
- * @param type image type (default is 'image/jpeg') / тип изображения (по умолчанию 'image/jpeg')
+ * @param compress maximum size as a fraction of the original size / максимальный размер в виде доли от оригинального размера
+ * @param type image type / тип изображения
+ * @returns promise with the resized image data as base64 / промис с данными измененного изображения в формате base64
  */
 export async function ensureMaxSize(
   file: Uint8Array,

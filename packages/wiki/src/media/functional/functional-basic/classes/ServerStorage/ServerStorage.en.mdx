@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ServerStorage - SSR Data Isolation'/>
+
+# ServerStorage Class
+
+`ServerStorage` is designed for secure data storage in an SSR (Server-Side Rendering) environment.
+
+The class addresses the challenge of state sharing between parallel requests on the server by binding data to the current HTTP request context via a listener function. In the browser, it automatically switches to using a regular static object.
+
+```typescript
+import { ServerStorage } from '@dxtmisha/functional'
+
+// Retrieving data with a default value fallback
+const settings = ServerStorage.get('user-settings', () => ({
+  theme: 'dark'
+}))
+
+// Modifying data
+ServerStorage.set('user-settings', () => ({ theme: 'light' }))
+```
+
+## Methods
+
+### Initialization
+
+- `init(listener: () => Record<string, any>): ServerStorage` — Sets the listener function that returns the context object for storing data on the server. Should be called once at the application entry point.
+
+### Data Management
+
+- `get<T>(key: string, defaultValue: () => T): T` — Returns the value for a given key. If missing, calls `defaultValue`, stores the result, and returns it.
+- `set<T>(key: string, value: () => T): T` — Overwrites the value for a given key and returns the result of the `value` function.
+
+## Initialization in SSR (Nuxt)
+
+To ensure data isolation on the server, initialize the class, for example, in a plugin:
+
+```typescript
+export default defineNuxtPlugin((nuxtApp) => {
+  ServerStorage.init(() => nuxtApp.ssrContext?.payload || {})
+})
+```
+
+> **Important:** Using `ServerStorage` is critical when developing universal classes and functions that store state, to prevent data leakage between users in SSR.

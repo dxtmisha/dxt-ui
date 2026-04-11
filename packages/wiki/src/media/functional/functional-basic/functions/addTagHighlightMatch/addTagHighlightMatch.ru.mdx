@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/addTagHighlightMatch - Подсветка совпадений в строке'/>
 
@@ -10,15 +10,18 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `value: string` — Исходная строка для обработки.
 - `search?: string` — Строка поиска (одно или несколько слов через пробел).
 - `className: string = 'sys-highlight-match'` — CSS-класс, который будет добавлен к тегу `<span>`.
+- `shouldEscape: boolean = false` — Нужно ли экранировать строку перед добавлением подсветки.
 
 **Возвращает:**
 `string` — Строка с добавленными HTML-тегами для подсветки.
 
-```typescript
+<Source
+  language='typescript'
+  code={`
 import { addTagHighlightMatch } from '@dxtmisha/functional-basic'
 
 // Подсветка одного слова
-addTagHighlightMatch('Hello world', 'hello') 
+addTagHighlightMatch('Hello world', 'hello')
 // '<span class="sys-highlight-match">Hello</span> world'
 
 // Подсветка нескольких слов (OR-логика)
@@ -28,4 +31,9 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 // Кастомный класс
 addTagHighlightMatch('Test', 'test', 'text-red')
 // '<span class="text-red">Test</span>'
-```
+
+// С экранированием
+addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
+// '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
+  `}
+/>

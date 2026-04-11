@@ -5,6 +5,7 @@ import { isFilled } from './isFilled'
  *
  * Делает первую букву строки заглавной.
  * @param value string to capitalize / строка для капитализации
+ * @returns capitalized string / капитализированная строка
  */
 export function capitalize(value: string): string {
   if (isFilled(value)) {

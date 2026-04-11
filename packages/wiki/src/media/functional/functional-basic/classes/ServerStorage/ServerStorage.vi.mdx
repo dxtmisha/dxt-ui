@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ServerStorage - Cách ly dữ liệu trong SSR'/>
+
+# Lớp ServerStorage
+
+`ServerStorage` được thiết kế để lưu trữ dữ liệu an toàn trong môi trường SSR (Server-Side Rendering).
+
+Lớp này giải quyết vấn đề chia sẻ trạng thái giữa các yêu cầu song song trên máy chủ bằng cách liên kết dữ liệu với ngữ cảnh yêu cầu HTTP hiện tại thông qua một hàm lắng nghe. Trong trình duyệt, nó tự động chuyển sang sử dụng một đối tượng tĩnh thông thường.
+
+```typescript
+import { ServerStorage } from '@dxtmisha/functional'
+
+// Lấy dữ liệu với giá trị mặc định nếu không tồn tại
+const settings = ServerStorage.get('user-settings', () => ({
+  theme: 'dark'
+}))
+
+// Thay đổi dữ liệu
+ServerStorage.set('user-settings', () => ({ theme: 'light' }))
+```
+
+## Phương thức
+
+### Khởi tạo
+
+- `init(listener: () => Record<string, any>): ServerStorage` — Thiết lập hàm lắng nghe trả về đối tượng ngữ cảnh để lưu trữ dữ liệu trên máy chủ. Nên được gọi một lần tại điểm bắt đầu của ứng dụng.
+
+### Quản lý dữ liệu
+
+- `get<T>(key: string, defaultValue: () => T): T` — Trả về giá trị theo khóa. Nếu thiếu, gọi factory `defaultValue`, lưu kết quả và trả về.
+- `set<T>(key: string, value: () => T): T` — Ghi đè giá trị theo khóa và trả về kết quả của hàm `value`.
+
+## Khởi tạo trong SSR (Nuxt)
+
+Để đảm bảo cách ly dữ liệu trên máy chủ, hãy khởi tạo lớp, ví dụ trong một plugin:
+
+```typescript
+export default defineNuxtPlugin((nuxtApp) => {
+  ServerStorage.init(() => nuxtApp.ssrContext?.payload || {})
+})
+```
+
+> **Quan trọng:** Việc sử dụng `ServerStorage` là cực kỳ quan trọng khi phát triển các lớp và hàm dùng chung có lưu trữ trạng thái, nhằm ngăn ngừa rò rỉ dữ liệu giữa các người dùng trong môi trường SSR.

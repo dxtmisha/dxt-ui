@@ -79,7 +79,7 @@ describe('StorageCallback', () => {
     })
 
     expect(storage.isLoading()).toBe(false)
-    
+
     // Now preparation must be called manually before run
     storage.preparation()
     expect(storage.isLoading()).toBe(true)

@@ -2,7 +2,8 @@
  * Convert a Blob to a Base64 string.
  *
  * Преобразует Blob в строку Base64.
- * @param blob The Blob to convert/ Blob для преобразования
+ * @param blob The Blob to convert / Blob для преобразования
+ * @returns promise with the base64 string or ArrayBuffer / промис со строкой base64 или ArrayBuffer
  */
 export function blobToBase64(blob: Blob): Promise<string | ArrayBuffer | null> {
   return new Promise((resolve, reject) => {

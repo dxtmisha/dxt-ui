@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getOnlyText - Извлечение букв, цифр и пробелов из строки'/>
+
+# `getOnlyText`
+
+Утилита, которая возвращает из строки только буквы, цифры и пробелы, удаляя знаки препинания, специальные символы и прочие знаки.
+
+Это полезно для очистки пользовательского ввода или подготовки текста к упрощенной обработке, когда требуется только алфавитно-цифровое содержимое.
+
+**Параметры:**
+- `text: any` — Текст для обработки.
+
+**Возвращает:**
+`string` — Строка, содержащая только буквы, цифры или пробелы.
+
+```typescript
+import { getOnlyText } from '@dxtmisha/functional-basic'
+
+console.log(getOnlyText('Hello, World!')) // 'Hello World'
+console.log(getOnlyText('Цена: 100 руб.')) // 'Цена 100 руб'
+console.log(getOnlyText('Текст с символами: #@!%')) // 'Текст с символами'
+console.log(getOnlyText(12345)) // '12345'
+console.log(getOnlyText(null)) // ''
+```

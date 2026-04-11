@@ -1,5 +1,6 @@
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { ApiInstance } from './ApiInstance'
+import { ServerStorage } from './ServerStorage'
 
 import {
   type ApiConfig,
@@ -51,15 +52,13 @@ import {
  * ```
  */
 export class Api {
-  protected static item = new ApiInstance()
-
   /**
    * Is the server local.
    *
    * Является ли сервер локальный.
    */
   static isLocalhost(): boolean {
-    return this.item.isLocalhost()
+    return this.getItem().isLocalhost()
   }
 
   /**
@@ -68,7 +67,7 @@ export class Api {
    * Возвращает инстанс класса.
    */
   static getItem(): ApiInstance {
-    return this.item
+    return ServerStorage.get('__dxt_api_instance__', () => new ApiInstance())
   }
 
   /**
@@ -77,7 +76,7 @@ export class Api {
    * Возвращает статус последнего запроса.
    */
   static getStatus() {
-    return this.item.getStatus()
+    return this.getItem().getStatus()
   }
 
   /**
@@ -86,7 +85,7 @@ export class Api {
    * Получение обработчика ответа.
    */
   static getResponse() {
-    return this.item.getResponse()
+    return this.getItem().getResponse()
   }
 
   /**
@@ -97,7 +96,7 @@ export class Api {
    * @param api adding a path to the site’s API/ добавление пути к API сайта
    */
   static getUrl(path: string, api: boolean = true): string {
-    return this.item.getUrl(path, api)
+    return this.getItem().getUrl(path, api)
   }
 
   /**
@@ -111,7 +110,7 @@ export class Api {
     request: ApiFetch['request'] = {},
     method = ApiMethodItem.get
   ): string | FormData | undefined {
-    return this.item.getBody(request, method)
+    return this.getItem().getBody(request, method)
   }
 
   /**
@@ -127,7 +126,7 @@ export class Api {
     path: string = '',
     method = ApiMethodItem.get
   ): string {
-    return this.item.getBodyForGet(request, path, method)
+    return this.getItem().getBodyForGet(request, path, method)
   }
 
   /**
@@ -136,7 +135,7 @@ export class Api {
    * Изменяет данные заголовка по умолчанию.
    */
   static setHeaders(headers: Record<string, string>): Api {
-    this.item.setHeaders(headers)
+    this.getItem().setHeaders(headers)
     return Api
   }
 
@@ -146,7 +145,7 @@ export class Api {
    * Изменяет данные запроса по умолчанию.
    */
   static setRequestDefault(request: Record<string, any>): Api {
-    this.item.setRequestDefault(request)
+    this.getItem().setRequestDefault(request)
     return Api
   }
 
@@ -157,7 +156,7 @@ export class Api {
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(url: string): Api {
-    this.item.setUrl(url)
+    this.getItem().setUrl(url)
     return Api
   }
 
@@ -168,7 +167,7 @@ export class Api {
    * @param callback function for call/ функция для вызова
    */
   static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api {
-    this.item.setPreparation(callback)
+    this.getItem().setPreparation(callback)
     return Api
   }
 
@@ -179,7 +178,7 @@ export class Api {
    * @param callback function for call/ функция для вызова
    */
   static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api {
-    this.item.setEnd(callback)
+    this.getItem().setEnd(callback)
     return Api
   }
 
@@ -190,7 +189,7 @@ export class Api {
    * @param timeout timeout in milliseconds/ таймаут в миллисекундах
    */
   static setTimeout(timeout: number): Api {
-    this.item.setTimeout(timeout)
+    this.getItem().setTimeout(timeout)
     return Api
   }
 
@@ -240,7 +239,7 @@ export class Api {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request<T>(pathRequest: string | ApiFetch): Promise<T> {
-    return this.item.request<T>(pathRequest)
+    return this.getItem().request<T>(pathRequest)
   }
 
   /**
@@ -250,7 +249,7 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static get<T>(request: ApiFetch): Promise<T> {
-    return this.item.get<T>(request)
+    return this.getItem().get<T>(request)
   }
 
   /**
@@ -260,7 +259,7 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static post<T>(request: ApiFetch): Promise<T> {
-    return this.item.post<T>(request)
+    return this.getItem().post<T>(request)
   }
 
   /**
@@ -270,7 +269,7 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static put<T>(request: ApiFetch): Promise<T> {
-    return this.item.put<T>(request)
+    return this.getItem().put<T>(request)
   }
 
   /**
@@ -280,6 +279,6 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static delete<T>(request: ApiFetch): Promise<T> {
-    return this.item.delete<T>(request)
+    return this.getItem().delete<T>(request)
   }
 }

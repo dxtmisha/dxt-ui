@@ -3,6 +3,7 @@
  *
  * Кодирует специальные символы в строке для безопасного использования в HTML-атрибутах.
  * @param text text to encode / текст для кодирования
+ * @returns encoded text / закодированный текст
  */
 export function encodeAttribute(text: string): string {
   return text

@@ -5,7 +5,8 @@ import type { GeoDate } from '../types/geoTypes'
  * Returns the current date in the specified format.
  *
  * Возвращает текущую дату в указанном формате.
- * @param format type of date format for output/ тип формата даты вывода
+ * @param format type of date format for output / тип формата даты вывода
+ * @returns formatted current date / текущая дата в указанном формате
  */
 export function getCurrentDate(format: GeoDate = 'datetime'): string {
   return new Datetime(undefined, format).standard()

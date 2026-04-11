@@ -395,6 +395,18 @@
       &.d1-button--selected {
         @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
       }
+      
+      &.d1-button--inverse {
+        & .d1-button__label {
+          @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+          @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+        }
+        
+        & .d1-button__icon {
+          @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+          @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+        }
+      }
     }
     
     &--secondary {

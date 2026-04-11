@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/ServerStorage - Изоляция данных в SSR'/>
+
+# Класс ServerStorage
+
+`ServerStorage` предназначен для безопасного хранения данных в среде SSR (Server-Side Rendering).
+
+Класс решает проблему разделения состояния между параллельными запросами на сервере, привязывая данные к контексту текущего HTTP-запроса через функцию-слушатель. В браузере автоматически переключается на использование обычного статического объекта.
+
+```typescript
+import { ServerStorage } from '@dxtmisha/functional'
+
+// Получение данных с созданием значения по умолчанию
+const settings = ServerStorage.get('user-settings', () => ({
+  theme: 'dark'
+}))
+
+// Изменение данных
+ServerStorage.set('user-settings', () => ({ theme: 'light' }))
+```
+
+## Методы
+
+### Инициализация
+
+- `init(listener: () => Record<string, any>): ServerStorage` — Устанавливает функцию-слушатель, которая возвращает объект контекста для хранения данных на сервере. Вызывается один раз в точке входа приложения.
+
+### Управление данными
+
+- `get<T>(key: string, defaultValue: () => T): T` — Возвращает значение по ключу. Если значение отсутствует, вызывает `defaultValue`, сохраняет результат и возвращает его.
+- `set<T>(key: string, value: () => T): T` — Перезаписывает значение по ключу и возвращает результат выполнения функции `value`.
+
+## Инициализация в SSR (Nuxt)
+
+Для изоляции данных на сервере необходимо инициализировать класс, например, через плагин:
+
+```typescript
+export default defineNuxtPlugin((nuxtApp) => {
+  ServerStorage.init(() => nuxtApp.ssrContext?.payload || {})
+})
+```
+
+> **Важно:** Использование `ServerStorage` критически важно при разработке универсальных классов и функций, хранящих состояние, для предотвращения утечки данных между пользователями в SSR.

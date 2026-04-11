@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/addTagHighlightMatch - Làm nổi bật các kết quả khớp trong chuỗi'/>
 
@@ -10,15 +10,18 @@ Tiện ích để làm nổi bật các kết quả khớp trong một chuỗi b
 - `value: string` — Chuỗi ban đầu để xử lý.
 - `search?: string` — Chuỗi tìm kiếm (một hoặc nhiều từ phân tách bằng dấu cách).
 - `className: string = 'sys-highlight-match'` — Class CSS sẽ được thêm vào thẻ `<span>`.
+- `shouldEscape: boolean = false` — Có nên thoát chuỗi trước khi thêm làm nổi bật hay không.
 
 **Trả về:**
 `string` — Chuỗi với các thẻ HTML được thêm vào để làm nổi bật.
 
-```typescript
+<Source
+  language='typescript'
+  code={`
 import { addTagHighlightMatch } from '@dxtmisha/functional-basic'
 
 // Làm nổi bật một từ đơn
-addTagHighlightMatch('Hello world', 'hello') 
+addTagHighlightMatch('Hello world', 'hello')
 // '<span class="sys-highlight-match">Hello</span> world'
 
 // Làm nổi bật nhiều từ (logic OR)
@@ -28,4 +31,9 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 // Class tùy chỉnh
 addTagHighlightMatch('Test', 'test', 'text-red')
 // '<span class="text-red">Test</span>'
-```
+
+// Với thoát chuỗi (escaping)
+addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
+// '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
+  `}
+/>

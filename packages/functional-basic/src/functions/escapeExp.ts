@@ -5,5 +5,5 @@
  * @param value string to escape / строка для экранирования
  */
 export function escapeExp(value: string): string {
-  return value.replace(/([[\]\\^$.?*+(){}/|])/g, '\\$1')
+  return String(value).replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')
 }

@@ -226,13 +226,15 @@ export class Geo {
    * @param save save the result/ сохранить результат
    */
   static set(code: string, save?: boolean): void {
-    this.location = code
+    if (isDomRuntime()) {
+      this.location = code
 
-    this.item = this.getByCode(this.location)
-    this.language = this.findLanguage(this.location)
+      this.item = this.getByCode(this.location)
+      this.language = this.findLanguage(this.location)
 
-    if (save) {
-      this.storage.set(this.location)
+      if (save) {
+        this.storage.set(this.location)
+      }
     }
   }
 
@@ -243,7 +245,9 @@ export class Geo {
    * @param timezone new time zone/ новая временная зона
    */
   static setTimezone(timezone: number) {
-    this.timezone = timezone
+    if (isDomRuntime()) {
+      this.timezone = timezone
+    }
   }
 
   /**

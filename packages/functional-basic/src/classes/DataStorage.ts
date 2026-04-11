@@ -43,15 +43,17 @@ export class DataStorage<T> {
     private isSession = false,
     private errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
-    const nameCache = `${isSession ? 'session' : 'storage'}#${name}`
+    if (isDomRuntime()) {
+      const nameCache = `${isSession ? 'session' : 'storage'}#${name}`
 
-    if (nameCache in items) {
-      return items[nameCache] as DataStorage<T>
+      if (nameCache in items) {
+        return items[nameCache] as DataStorage<T>
+      }
+
+      this.make()
+
+      items[nameCache] = this
     }
-
-    this.make()
-
-    items[nameCache] = this
   }
 
   /**
@@ -65,6 +67,10 @@ export class DataStorage<T> {
     defaultValue?: T | (() => T),
     cache?: number
   ): T | undefined {
+    if (!isDomRuntime()) {
+      return executeFunction(defaultValue)
+    }
+
     if (
       this.value !== null
       && this.value !== undefined
@@ -87,6 +93,10 @@ export class DataStorage<T> {
    * @param value new values/ новые значения
    */
   set(value?: T | (() => T)): T | undefined {
+    if (!isDomRuntime()) {
+      return executeFunction(value)
+    }
+
     this.value = executeFunction(value)
     this.age = new Date().getTime()
 
@@ -108,10 +118,12 @@ export class DataStorage<T> {
    * Удаление данных из хранилища.
    */
   remove(): this {
-    this.value = undefined
-    this.age = undefined
+    if (isDomRuntime()) {
+      this.value = undefined
+      this.age = undefined
 
-    this.getMethod()?.removeItem(this.getIndex())
+      this.getMethod()?.removeItem(this.getIndex())
+    }
 
     return this
   }
@@ -122,7 +134,10 @@ export class DataStorage<T> {
    * Очистка всех данных из хранилища.
    */
   update(): this {
-    this.make()
+    if (isDomRuntime()) {
+      this.make()
+    }
+
     return this
   }
 

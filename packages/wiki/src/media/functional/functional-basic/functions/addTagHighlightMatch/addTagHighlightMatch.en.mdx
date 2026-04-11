@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/addTagHighlightMatch - Highlight matches in a string'/>
 
@@ -10,15 +10,18 @@ A utility for highlighting matches in a string by wrapping them in a `<span>` HT
 - `value: string` — The initial string to process.
 - `search?: string` — The search string (one or more words separated by spaces).
 - `className: string = 'sys-highlight-match'` — The CSS class to be added to the `<span>` tag.
+- `shouldEscape: boolean = false` — Whether to escape the string before adding highlighting.
 
 **Returns:**
 `string` — The string with HTML tags added for highlighting.
 
-```typescript
+<Source
+  language='typescript'
+  code={`
 import { addTagHighlightMatch } from '@dxtmisha/functional-basic'
 
 // Highlight a single word
-addTagHighlightMatch('Hello world', 'hello') 
+addTagHighlightMatch('Hello world', 'hello')
 // '<span class="sys-highlight-match">Hello</span> world'
 
 // Highlight multiple words (OR logic)
@@ -28,4 +31,9 @@ addTagHighlightMatch('Apple and Banana', 'apple banana')
 // Custom class
 addTagHighlightMatch('Test', 'test', 'text-red')
 // '<span class="text-red">Test</span>'
-```
+
+// With escaping
+addTagHighlightMatch('<b>bold</b>', 'bold', 'sys-highlight-match', true)
+// '&lt;b&gt;<span class="sys-highlight-match">bold</span>&lt;/b&gt;'
+  `}
+/>

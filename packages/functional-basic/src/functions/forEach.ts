@@ -1,16 +1,17 @@
 import { isObject } from './isObject'
 
 /**
- * The function performs the specified function once for each element in the object.
- * And returns an array with the results of executing the function.
+ * The function performs the specified function once for each element in the object
+ * and returns an array with the results of executing the function.
  *
- * Функция выполняет указанную функцию один раз для каждого элемента в объекте.
- * И возвращает массив с результатами выполнения функции.
- * @param data object for iteration/ объект для перебора
- * @param callback a function to execute for each element in the array/
+ * Функция выполняет указанную функцию один раз для каждого элемента в объекте
+ * и возвращает массив с результатами выполнения функции.
+ * @param data object for iteration / объект для перебора
+ * @param callback a function to execute for each element in the array /
  * функция, которая будет вызвана для каждого элемента
- * @param saveUndefined if true, the function will return an array with undefined values/
+ * @param saveUndefined if true, the function will return an array with undefined values /
  * если true, функция вернет массив с undefined значениями
+ * @returns returns an array with the results of executing the function / возвращает массив с результатами выполнения функции
  */
 export function forEach<
   T,
@@ -25,21 +26,42 @@ export function forEach<
   if (isObject(data)) {
     const returnData: R[] = []
 
+    /**
+     * Internal function for adding data to an array.
+     *
+     * Внутренняя функция для добавления данных в массив.
+     * @param item current element/ текущий элемент
+     * @param key key of the element/ ключ элемента
+     * @param data object for iteration/ объект для перебора
+     */
+    const push = (
+      item: T,
+      key: K,
+      data: D
+    ) => {
+      const value = callback(item, key, data)
+
+      if (
+        saveUndefined
+        || value !== undefined
+      ) {
+        returnData.push(value)
+      }
+    }
+
     if (data instanceof Map) {
-      data.forEach((item: T, key) => returnData.push(callback(item, key as K, data)))
+      data.forEach((item: T, key) => push(item, key as K, data))
     } else if (Array.isArray(data)) {
-      data.forEach((item: T, key) => returnData.push(callback(item, key as K, data)))
+      data.forEach((item: T, key) => push(item, key as K, data))
     } else {
-      Object.entries(data).forEach(
-        ([key, item]) => returnData.push(callback(item, key as K, data))
-      )
+      for (const key in data) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          push(data[key] as T, key as unknown as K, data)
+        }
+      }
     }
 
-    if (saveUndefined) {
-      return returnData
-    }
-
-    return returnData.filter((item: R | undefined) => item !== undefined)
+    return returnData
   }
 
   return []

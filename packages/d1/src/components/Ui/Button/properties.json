@@ -38,6 +38,16 @@
       "background-opacity": "{sys.opacity.disabled}",
       "box-shadow": "none"
     },
+    "~inverse": {
+      "#label": {
+        "color": "{sys.palette.onPrimary}",
+        "color-opacity": "{sys.opacity.primary.high}"
+      },
+      "#icon": {
+        "color": "{sys.palette.onPrimary}",
+        "color-opacity": "{sys.opacity.primary.high}"
+      }
+    },
     "_category": "style",
     "_default": true
   },

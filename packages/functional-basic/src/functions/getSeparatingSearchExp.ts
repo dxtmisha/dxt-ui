@@ -1,4 +1,5 @@
 import { escapeExp } from './escapeExp'
+import { isFilled } from './isFilled'
 import { forEach } from './forEach'
 
 /**
@@ -8,8 +9,15 @@ import { forEach } from './forEach'
  * @param search search string / строка поиска
  */
 export function getSeparatingSearchExp(search: string): RegExp {
+  if (!isFilled(search)) {
+    return /(?!)/ig
+  }
+
   const list: string = forEach(
-    search.split(' '),
+    String(search)
+      .replace(/\s+/ig, ' ')
+      .trim()
+      .split(' '),
     text => escapeExp(text)
   )
     .join('|')
