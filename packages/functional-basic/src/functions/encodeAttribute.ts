@@ -6,7 +6,7 @@
  * @returns encoded text / закодированный текст
  */
 export function encodeAttribute(text: string): string {
-  return text
+  return String(text)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')

@@ -1,0 +1,34 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getArrayHighlightMatch - Structured highlight matches'/>
+
+# `getArrayHighlightMatch`
+
+A utility for splitting a string into an array of objects for highlighting matches. Each object contains the `text` and a boolean `isMatch` indicating if it matches the search query. This is useful for UI frameworks like Vue or React to render highlighted text without using `v-html`.
+
+**Parameters:**
+- `value: string` — The initial string to process.
+- `search?: string` — The search string (supports space-separated multi-word search).
+
+**Returns:**
+`{ text: string, isMatch: boolean }[]` — An array of text segments with match status.
+
+<Source
+  language='typescript'
+  code={`
+import { getArrayHighlightMatch } from '@dxtmisha/functional-basic'
+
+const result = getArrayHighlightMatch('Hello world', 'hello')
+/*
+[
+  { text: 'Hello', isMatch: true },
+  { text: ' world', isMatch: false }
+]
+*/
+
+// Example in Vue template:
+// <template v-for="item in getArrayHighlightMatch(text, search)">
+//   <span :class="{ 'sys-highlight-match': item.isMatch }">{{ item.text }}</span>
+// </template>
+  `}
+/>

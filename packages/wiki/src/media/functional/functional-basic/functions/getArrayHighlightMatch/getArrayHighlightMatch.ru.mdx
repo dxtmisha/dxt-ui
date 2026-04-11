@@ -1,0 +1,34 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getArrayHighlightMatch - Структурированное выделение совпадений'/>
+
+# `getArrayHighlightMatch`
+
+Утилита для разделения строки на массив объектов для выделения совпадений. Каждый объект содержит `text` и логическое значение `isMatch`, указывающее, соответствует ли фрагмент поисковому запросу. Это полезно для UI-фреймворков (Vue, React), чтобы отрисовывать подсвеченный текст без использования `v-html`.
+
+**Параметры:**
+- `value: string` — Исходная строка для обработки.
+- `search?: string` — Строка поиска (поддерживает поиск по нескольким словам через пробел).
+
+**Возвращает:**
+`{ text: string, isMatch: boolean }[]` — Массив текстовых сегментов со статусом совпадения.
+
+<Source
+  language='typescript'
+  code={`
+import { getArrayHighlightMatch } from '@dxtmisha/functional-basic'
+
+const result = getArrayHighlightMatch('Привет мир', 'привет')
+/*
+[
+  { text: 'Привет', isMatch: true },
+  { text: ' мир', isMatch: false }
+]
+*/
+
+// Пример в шаблоне Vue:
+// <template v-for="item in getArrayHighlightMatch(text, search)">
+//   <span :class="{ 'sys-highlight-match': item.isMatch }">{{ item.text }}</span>
+// </template>
+  `}
+/>

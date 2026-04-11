@@ -23,8 +23,10 @@ export function addTagHighlightMatch(
   className: string = 'sys-highlight-match',
   shouldEscape: boolean = false
 ): string {
+  const valueForSearch = String(value)
+
   if (search) {
-    let text = String(value).replace(
+    let text = valueForSearch.replace(
       getSeparatingSearchExp(search),
       `${TAG_START}$1${TAG_END}`
     )
@@ -38,5 +40,5 @@ export function addTagHighlightMatch(
       .replace(new RegExp(TAG_END, 'g'), '</span>')
   }
 
-  return shouldEscape ? encodeAttribute(value) : value
+  return shouldEscape ? encodeAttribute(valueForSearch) : valueForSearch
 }

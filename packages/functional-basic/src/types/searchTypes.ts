@@ -67,3 +67,11 @@ export type SearchCacheItem<T extends SearchItem> = {
 
 /** Search cache list / Список кэша поиска */
 export type SearchCache<T extends SearchItem> = SearchCacheItem<T>[]
+
+/** Highlight match item type / Тип элемента подсветки совпадения */
+export type HighlightMatchItem = {
+  /** Text segment / Текстовый сегмент */
+  text: string
+  /** Whether the segment matches the search query / Соответствует ли сегмент поисковому запросу */
+  isMatch: boolean
+}

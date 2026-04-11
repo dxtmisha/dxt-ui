@@ -1,0 +1,35 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getArrayHighlightMatch - Làm nổi bật kết quả khớp dạng cấu trúc'/>
+
+# `getArrayHighlightMatch`
+
+Tiện ích để chia một chuỗi thành một mảng các đối tượng để làm nổi bật các kết quả khớp. Mỗi đối tượng chứa `text` và giá trị boolean `isMatch` cho biết đoạn văn bản đó có khớp với truy vấn tìm kiếm hay không. Điều này rất hữu ích cho các UI framework như Vue hoặc React để hiển thị văn bản được làm nổi bật mà không cần dùng `v-html`.
+
+**Tham số:**
+- `value: string` — Chuỗi ban đầu để xử lý.
+- `search?: string` — Chuỗi tìm kiếm (hỗ trợ tìm kiếm nhiều từ phân tách bằng dấu cách).
+
+**Trả về:**
+`{ text: string, isMatch: boolean }[]` — Một mảng các đoạn văn bản với trạng thái khớp.
+
+<Source
+  language='typescript'
+  code={`
+import { getArrayHighlightMatch } from '@dxtmisha/functional-basic'
+
+const result = getArrayHighlightMatch('Xin chào thế giới', 'chào')
+/*
+[
+  { text: 'Xin ', isMatch: false },
+  { text: 'chào', isMatch: true },
+  { text: ' thế giới', isMatch: false }
+]
+*/
+
+// Ví dụ trong Vue template:
+// <template v-for="item in getArrayHighlightMatch(text, search)">
+//   <span :class="{ 'sys-highlight-match': item.isMatch }">{{ item.text }}</span>
+// </template>
+  `}
+/>
