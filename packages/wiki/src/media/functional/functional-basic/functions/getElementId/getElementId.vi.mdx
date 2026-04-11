@@ -18,15 +18,29 @@ Ngoài ra, hàm cho phép đính kèm một bộ chọn CSS vào chuỗi trả v
 ```typescript
 import { getElementId } from '@dxtmisha/functional-basic'
 
-// Phần tử ban đầu không có ID
+// Phần tử không có ID
 const div = document.createElement('div')
 console.log(div.id) // ''
 
 const id = getElementId(div)
-console.log(id) // Ví dụ: 'id-123456'
-console.log(div.id) // 'id-123456' (tự động được gán)
+console.log(id) // Ví dụ: 'id-100000'
+console.log(div.id) // 'id-100000' (được gán tự động)
 
 // Sử dụng bộ chọn bổ sung
 const selector = getElementId(div, ' > span.active')
-console.log(selector) // '#id-123456 > span.active'
+console.log(selector) // '#id-100000 > span.active'
+```
+
+## `initGetElementId`
+
+Khởi tạo hàm để sử dụng trong môi trường SSR. Điều này là cần thiết để đảm bảo tính đồng bộ của các ID được tạo ra giữa máy chủ và máy khách.
+
+Khi sử dụng **Vue 3.5+**, khuyến nghị sử dụng hàm `useId()` có sẵn.
+
+```typescript
+import { useId } from 'vue'
+import { initGetElementId } from '@dxtmisha/functional-basic'
+
+// Khởi tạo (ví dụ: trong một plugin hoặc thành phần gốc)
+initGetElementId(() => useId())
 ```

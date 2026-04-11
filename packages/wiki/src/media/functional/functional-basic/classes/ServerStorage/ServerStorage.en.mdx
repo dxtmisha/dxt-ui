@@ -1,44 +1,96 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/functional-basic/Classes/ServerStorage - SSR Data Isolation'/>
+<Meta title='@dxtmisha/en/functional-basic/Classes/ServerStorage - Data Isolation in SSR'/>
 
 # ServerStorage Class
 
-`ServerStorage` is designed for secure data storage in an SSR (Server-Side Rendering) environment.
+`ServerStorage` is a mechanism for managing **isolated global state** in applications with SSR (Server-Side Rendering) support.
 
-The class addresses the challenge of state sharing between parallel requests on the server by binding data to the current HTTP request context via a listener function. In the browser, it automatically switches to using a regular static object.
+The class allows you to work with data as easily as with static variables, but ensures that user data on the server does not intermingle between parallel requests.
+
+## Key Features
+
+1.  **Request Isolation**: Data on the server is bound to the context of the current HTTP request.
+2.  **Hydration**: Ability to automatically transfer state from the server to the client via JSON.
+3.  **Security**: Automatic XSS escaping during data transfer.
 
 ```typescript
-import { ServerStorage } from '@dxtmisha/functional'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 
-// Retrieving data with a default value fallback
-const settings = ServerStorage.get('user-settings', () => ({
-  theme: 'dark'
-}))
+// Save data with a hydration flag (will be available on the client)
+ServerStorage.set('theme', () => 'dark', true)
 
-// Modifying data
-ServerStorage.set('user-settings', () => ({ theme: 'light' }))
+// Retrieve data
+const theme = ServerStorage.get('theme') // 'dark'
 ```
 
 ## Methods
 
-### Initialization
+### `init`
+```typescript
+static init(listener: () => Record<string, any>): typeof ServerStorage
+```
+Initializes the storage with a context listener. On the server, this listener should return an object unique to each request.
 
-- `init(listener: () => Record<string, any>): ServerStorage` — Sets the listener function that returns the context object for storing data on the server. Should be called once at the application entry point.
+### `get`
+```typescript
+static get<T = any>(key: string, defaultValue?: () => T, hydration: boolean = false): T
+```
+Retrieves a value by key.
+- `defaultValue`: if the key is not found, this function is called, the result is saved and returned.
+- `hydration`: if `true`, the value will be included in the JSON for the client.
 
-### Data Management
+### `set`
+```typescript
+static set<T = any>(key: string, value: () => T, hydration: boolean = false): T
+```
+Saves a value to the storage.
 
-- `get<T>(key: string, defaultValue: () => T): T` — Returns the value for a given key. If missing, calls `defaultValue`, stores the result, and returns it.
-- `set<T>(key: string, value: () => T): T` — Overwrites the value for a given key and returns the result of the `value` function.
+### `has`
+```typescript
+static has(key: string): boolean
+```
+Checks for the existence of a key in the current context.
 
-## Initialization in SSR (Nuxt)
+### `toString`
+```typescript
+static toString(): string
+```
+Generates an HTML `<script type="application/json">` tag containing all data marked for hydration. This method is called on the server within the page template.
 
-To ensure data isolation on the server, initialize the class, for example, in a plugin:
+---
+
+## Isolation in SSR (Vue / Nuxt)
+
+To work correctly on the server, you must pass the request context. In Vue 3.5+, this can be done via `useId` or a specific context object.
 
 ```typescript
-export default defineNuxtPlugin((nuxtApp) => {
-  ServerStorage.init(() => nuxtApp.ssrContext?.payload || {})
+import { useId } from 'vue'
+import { ServerStorage } from '@dxtmisha/functional-basic'
+
+// Initialization (e.g., in a plugin or root component)
+ServerStorage.init(() => {
+  // On the server, return an object bound to the request
+  // On the client, this can be just a global object
+  return typeof window === 'undefined' ? (globalContext || {}) : window
 })
 ```
 
-> **Important:** Using `ServerStorage` is critical when developing universal classes and functions that store state, to prevent data leakage between users in SSR.
+## Hydration (Transferring Data to Client)
+
+To make data set on the server "come alive" in the browser:
+
+1.  On the server, insert the result of `ServerStorage.toString()` into the HTML (usually before the closing `</body>`).
+```html
+<!-- Server output -->
+<body>
+  <div id="app">...</div>
+  <script id="__ui:server:storage:id__" type="application/json">{"theme":"dark"}</script>
+</body>
+```
+
+2.  In the browser, upon the first call to `get()` or `has()`, the class will automatically find this script and restore all values.
+
+---
+
+> **Important:** `ServerStorage` automatically escapes the `</script>` sequence within your data, preventing XSS attacks during hydration.

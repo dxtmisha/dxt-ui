@@ -47,17 +47,22 @@ export const applyTemplate = (
   }
 
   if (isObjectNotArray(replacement)) {
-    forEach(replacement, (value, key) => {
-      content = content
-        .replace(
-          new RegExp(`(?:\\[|\\{)${key}(?:\\]|\\})(.*?)(?:\\[|\\{)\\/${key}(?:\\]|\\})`, 'g'),
-          (_: string, content: string) => {
-            return String(value).replace(/(?:\[|\{)content(?:\]|\})/g, content)
-          }
-        )
-        .replace(new RegExp(`(?:\\[|\\{)${key}(?:\\]|\\})`, 'g'), String(value))
-    })
-  }
+    content = content.replace(
+      /[[{](.*?)[\]}](.*?)[[{]\/\1[\]}]/g,
+      (all: string, key: string, content: string) => {
+        const value = replacement[key]
+        return value
+          ? String(value).replace(/[[{]content[\]}]/g, () => content)
+          : all
+      }
+    )
 
+    content = content.replace(
+      /[[{](.*?)[\]}]/g,
+      (all: string, key: string) => {
+        return String(replacement[key] ?? all)
+      }
+    )
+  }
   return content
 }

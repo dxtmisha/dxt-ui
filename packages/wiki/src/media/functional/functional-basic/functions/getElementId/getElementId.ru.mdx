@@ -23,10 +23,24 @@ const div = document.createElement('div')
 console.log(div.id) // ''
 
 const id = getElementId(div)
-console.log(id) // Например: 'id-123456'
-console.log(div.id) // 'id-123456' (назначился автоматически)
+console.log(id) // Например: 'id-100000'
+console.log(div.id) // 'id-100000' (назначился автоматически)
 
 // Использование дополнительного селектора
 const selector = getElementId(div, ' > span.active')
-console.log(selector) // '#id-123456 > span.active'
+console.log(selector) // '#id-100000 > span.active'
+```
+
+## `initGetElementId`
+
+Инициализирует функцию для работы в SSR-окружении. Это необходимо для обеспечения синхронности генерируемых ID между сервером и клиентом.
+
+При использовании **Vue 3.5+** рекомендуется использовать встроенную функцию `useId()`.
+
+```typescript
+import { useId } from 'vue'
+import { initGetElementId } from '@dxtmisha/functional-basic'
+
+// Инициализация (например, в плагине или в корневом компоненте)
+initGetElementId(() => useId())
 ```

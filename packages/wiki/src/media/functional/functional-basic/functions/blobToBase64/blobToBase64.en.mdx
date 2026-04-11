@@ -10,6 +10,7 @@ This is useful when preparing local files (e.g., user-uploaded images) for in-br
 
 **Parameters:**
 - `blob: Blob` — The `Blob` (or `File`) object to convert.
+- `clean: boolean` — (optional) If `true`, removes the Data URL prefix (e.g., `data:image/png;base64,`). Default is `false`.
 
 **Returns:**
 `Promise<string | ArrayBuffer | null>` — Returns a promise that resolves with the Base64 string (Data URL) or rejects with an error if reading fails.
@@ -19,8 +20,13 @@ import { blobToBase64 } from '@dxtmisha/functional-basic'
 
 async function uploadFile(file: File) {
   try {
-    const base64String = await blobToBase64(file)
-    console.log(base64String) // 'data:image/png;base64,iVBORw0KGgo...'
+    // Default: returns Data URL
+    const dataUrl = await blobToBase64(file)
+    console.log(dataUrl) // 'data:image/png;base64,iVBORw0KGgo...'
+
+    // With clean = true: returns raw Base64
+    const rawBase64 = await blobToBase64(file, true)
+    console.log(rawBase64) // 'iVBORw0KGgo...'
   } catch (error) {
     console.error('Error reading the file', error)
   }

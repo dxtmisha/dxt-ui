@@ -10,6 +10,7 @@ Hàm chuyển đổi bất đồng bộ các đối tượng `Blob` hoặc `File
 
 **Tham số:**
 - `blob: Blob` — Đối tượng `Blob` (hoặc `File`) cần chuyển đổi.
+- `clean: boolean` — (tùy chọn) Nếu `true`, loại bỏ tiền tố Data URL (ví dụ: `data:image/png;base64,`). Mặc định là `false`.
 
 **Trả về:**
 `Promise<string | ArrayBuffer | null>` — Trả về một promise sẽ được hoàn thành với chuỗi Base64 (Data URL) hoặc bị từ chối với một lỗi nếu việc đọc tệp thất bại.
@@ -19,8 +20,13 @@ import { blobToBase64 } from '@dxtmisha/functional-basic'
 
 async function uploadFile(file: File) {
   try {
-    const base64String = await blobToBase64(file)
-    console.log(base64String) // 'data:image/png;base64,iVBORw0KGgo...'
+    // Mặc định: trả về Data URL
+    const dataUrl = await blobToBase64(file)
+    console.log(dataUrl) // 'data:image/png;base64,iVBORw0KGgo...'
+
+    // Với clean = true: trả về Base64 gốc
+    const rawBase64 = await blobToBase64(file, true)
+    console.log(rawBase64) // 'iVBORw0KGgo...'
   } catch (error) {
     console.error('Lỗi khi đọc tệp', error)
   }

@@ -4,41 +4,93 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ServerStorage
 
-`ServerStorage` được thiết kế để lưu trữ dữ liệu an toàn trong môi trường SSR (Server-Side Rendering).
+`ServerStorage` là một cơ chế để quản lý **trạng thái toàn cục được cách ly** trong các ứng dụng hỗ trợ SSR (Server-Side Rendering).
 
-Lớp này giải quyết vấn đề chia sẻ trạng thái giữa các yêu cầu song song trên máy chủ bằng cách liên kết dữ liệu với ngữ cảnh yêu cầu HTTP hiện tại thông qua một hàm lắng nghe. Trong trình duyệt, nó tự động chuyển sang sử dụng một đối tượng tĩnh thông thường.
+Lớp này cho phép bạn làm việc với dữ liệu dễ dàng như với các biến tĩnh (static), nhưng đảm bảo rằng dữ liệu người dùng trên máy chủ không bị trộn lẫn giữa các yêu cầu song song.
+
+## Các tính năng chính
+
+1.  **Cách ly yêu cầu**: Dữ liệu trên máy chủ được liên kết với ngữ cảnh của yêu cầu HTTP hiện tại.
+2.  **Hydration**: Khả năng tự động chuyển trạng thái từ máy chủ sang máy khách thông qua JSON.
+3.  **Bảo mật**: Tự động thoát (escape) XSS trong quá trình truyền dữ liệu.
 
 ```typescript
-import { ServerStorage } from '@dxtmisha/functional'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 
-// Lấy dữ liệu với giá trị mặc định nếu không tồn tại
-const settings = ServerStorage.get('user-settings', () => ({
-  theme: 'dark'
-}))
+// Lưu dữ liệu với cờ hydration (sẽ có sẵn trên máy khách)
+ServerStorage.set('theme', () => 'dark', true)
 
-// Thay đổi dữ liệu
-ServerStorage.set('user-settings', () => ({ theme: 'light' }))
+// Truy xuất dữ liệu
+const theme = ServerStorage.get('theme') // 'dark'
 ```
 
 ## Phương thức
 
-### Khởi tạo
+### `init`
+```typescript
+static init(listener: () => Record<string, any>): typeof ServerStorage
+```
+Khởi tạo kho lưu trữ với một bộ lắng nghe ngữ cảnh. Trên máy chủ, bộ lắng nghe này sẽ trả về một đối tượng duy nhất cho mỗi yêu cầu.
 
-- `init(listener: () => Record<string, any>): ServerStorage` — Thiết lập hàm lắng nghe trả về đối tượng ngữ cảnh để lưu trữ dữ liệu trên máy chủ. Nên được gọi một lần tại điểm bắt đầu của ứng dụng.
+### `get`
+```typescript
+static get<T = any>(key: string, defaultValue?: () => T, hydration: boolean = false): T
+```
+Truy xuất giá trị theo khóa.
+- `defaultValue`: nếu không tìm thấy khóa, hàm này sẽ được gọi, kết quả được lưu lại và trả về.
+- `hydration`: nếu là `true`, giá trị sẽ được bao gồm trong JSON để gửi xuống máy khách.
 
-### Quản lý dữ liệu
+### `set`
+```typescript
+static set<T = any>(key: string, value: () => T, hydration: boolean = false): T
+```
+Lưu một giá trị vào kho lưu trữ.
 
-- `get<T>(key: string, defaultValue: () => T): T` — Trả về giá trị theo khóa. Nếu thiếu, gọi factory `defaultValue`, lưu kết quả và trả về.
-- `set<T>(key: string, value: () => T): T` — Ghi đè giá trị theo khóa và trả về kết quả của hàm `value`.
+### `has`
+```typescript
+static has(key: string): boolean
+```
+Kiểm tra sự tồn tại của một khóa trong ngữ cảnh hiện tại.
 
-## Khởi tạo trong SSR (Nuxt)
+### `toString`
+```typescript
+static toString(): string
+```
+Tạo một thẻ HTML `<script type="application/json">` chứa tất cả dữ liệu được đánh dấu để hydration. Phương thức này được gọi trên máy chủ trong mẫu trang (page template).
 
-Để đảm bảo cách ly dữ liệu trên máy chủ, hãy khởi tạo lớp, ví dụ trong một plugin:
+---
+
+## Cách ly trong SSR (Vue / Nuxt)
+
+Để hoạt động chính xác trên máy chủ, bạn phải truyền ngữ cảnh yêu cầu. Trong Vue 3.5+, việc này có thể được thực hiện thông qua `useId` hoặc một đối tượng ngữ cảnh cụ thể.
 
 ```typescript
-export default defineNuxtPlugin((nuxtApp) => {
-  ServerStorage.init(() => nuxtApp.ssrContext?.payload || {})
+import { useId } from 'vue'
+import { ServerStorage } from '@dxtmisha/functional-basic'
+
+// Khởi tạo (ví dụ: trong một plugin hoặc thành phần gốc)
+ServerStorage.init(() => {
+  // Trên máy chủ, trả về một đối tượng liên kết với yêu cầu
+  // Trên máy khách, đây có thể chỉ là một đối tượng toàn cục
+  return typeof window === 'undefined' ? (globalContext || {}) : window
 })
 ```
 
-> **Quan trọng:** Việc sử dụng `ServerStorage` là cực kỳ quan trọng khi phát triển các lớp và hàm dùng chung có lưu trữ trạng thái, nhằm ngăn ngừa rò rỉ dữ liệu giữa các người dùng trong môi trường SSR.
+## Hydration (Chuyển dữ liệu sang máy khách)
+
+Để làm cho dữ liệu được thiết lập trên máy chủ "sống lại" trong trình duyệt:
+
+1.  Trên máy chủ, chèn kết quả của `ServerStorage.toString()` vào HTML (thường là trước thẻ đóng `</body>`).
+```html
+<!-- Server output -->
+<body>
+  <div id="app">...</div>
+  <script id="__ui:server:storage:id__" type="application/json">{"theme":"dark"}</script>
+</body>
+```
+
+2.  Trong trình duyệt, sau lần gọi đầu tiên đến `get()` hoặc `has()`, lớp sẽ tự động tìm đoạn mã này và khôi phục tất cả các giá trị.
+
+---
+
+> **Quan trọng:** `ServerStorage` tự động thoát (escape) chuỗi `</script>` trong dữ liệu của bạn, ngăn chặn các cuộc tấn công XSS trong quá trình hydration.

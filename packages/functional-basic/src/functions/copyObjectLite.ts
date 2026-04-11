@@ -10,9 +10,5 @@ export function copyObjectLite<T, R = T>(
   value: T,
   source?: any
 ): R {
-  if (source) {
-    return Object.assign({}, value, source)
-  }
-
-  return Object.assign({}, value) as R
+  return Object.assign({}, value, source) as R
 }

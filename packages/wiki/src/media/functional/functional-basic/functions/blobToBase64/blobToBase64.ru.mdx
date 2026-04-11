@@ -10,6 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `blob: Blob` — Объект `Blob` (или `File`), который необходимо преобразовать.
+- `clean: boolean` — (опционально) Если `true`, удаляет префикс Data URL (например, `data:image/png;base64,`). По умолчанию `false`.
 
 **Возвращает:**
 `Promise<string | ArrayBuffer | null>` — Возвращает промис, который разрешается в строку Base64 (Data URL) или отклоняется в случае ошибки чтения.
@@ -19,8 +20,13 @@ import { blobToBase64 } from '@dxtmisha/functional-basic'
 
 async function uploadFile(file: File) {
   try {
-    const base64String = await blobToBase64(file)
-    console.log(base64String) // 'data:image/png;base64,iVBORw0KGgo...'
+    // По умолчанию: возвращает Data URL
+    const dataUrl = await blobToBase64(file)
+    console.log(dataUrl) // 'data:image/png;base64,iVBORw0KGgo...'
+
+    // С параметром clean = true: возвращает чистый Base64
+    const rawBase64 = await blobToBase64(file, true)
+    console.log(rawBase64) // 'iVBORw0KGgo...'
   } catch (error) {
     console.error('Ошибка при чтении файла', error)
   }

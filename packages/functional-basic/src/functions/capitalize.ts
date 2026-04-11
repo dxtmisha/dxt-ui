@@ -1,4 +1,4 @@
-import { isFilled } from './isFilled'
+import { isString } from './isString'
 
 /**
  * Capitalizes the first letter of a string.
@@ -8,8 +8,12 @@ import { isFilled } from './isFilled'
  * @returns capitalized string / капитализированная строка
  */
 export function capitalize(value: string): string {
-  if (isFilled(value)) {
-    return value.charAt(0).toUpperCase() + value.slice(1)
+  if (
+    isString(value)
+    && value.length > 0
+  ) {
+    const [first, ...text] = value
+    return first.toUpperCase() + text.join('')
   }
 
   return value

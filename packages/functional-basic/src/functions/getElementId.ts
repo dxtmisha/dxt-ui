@@ -1,18 +1,35 @@
 import { getElement } from './getElement'
 import { isFilled } from './isFilled'
-import { random } from './random'
 
 import {
   type ElementOrString,
   type ElementOrWindow
 } from '../types/basicTypes'
+import { ServerStorage } from '../classes/ServerStorage'
 
 /**
- * Counter generator of ID number of element.
- *
- * Счетчик генератор номера ID элемента.
+ * Listener that returns the current request context/
+ * Слушатель, возвращающий контекст текущего запроса
  */
-let idLast = random(100000, 900000)
+let listener: () => string | number
+
+/**
+ * Returns the next ID.
+ *
+ * Возвращает следующий ID.
+ * @returns next ID / следующий ID
+ */
+const getNextId = () => {
+  const contextId = listener?.()
+
+  if (contextId) {
+    return `id-server-${contextId}`
+  }
+
+  const id = ServerStorage.get<{ id: number }>('__dxt_getElementId__', () => ({ id: 100000 }))
+
+  return `id-${id.id++}`
+}
 
 /**
  * Returns the identifier (ID) of the element or creates it if the element has no ID.
@@ -26,15 +43,38 @@ export function getElementId<E extends ElementOrWindow>(
   element?: ElementOrString<E>,
   selector?: string
 ): string {
-  const item = getElement(element)
+  if (element) {
+    const item = getElement(element)
 
-  if (item) {
-    if (!isFilled(item.id)) {
-      item.setAttribute('id', `id-${idLast++}`)
+    if (item) {
+      if (!isFilled(item.id)) {
+        item.setAttribute('id', getNextId())
+      }
+
+      return selector ? `#${item.id}${selector}`.trim() : item.id
     }
-
-    return selector ? `#${item.id}${selector}`.trim() : item.id
   }
 
-  return `id-${idLast++}`
+  return getNextId()
+}
+
+/**
+ * Initializes the getElementId function with a listener.
+ *
+ * Инициализирует функцию getElementId слушателем.
+ * @param newListener listener that returns the current request context / слушатель, возвращающий контекст текущего запроса
+ * @warning Initialization is mandatory for correct functioning of SSR on both server and client sides./
+ * Инициализация обязательна для корректной работы SSR как на стороне сервера, так и на стороне клиента.
+ * @example
+ * ```typescript
+ * import { useId } from 'vue'
+ * import { initGetElementId } from '@dxtmisha/functional-basic'
+ *
+ * initGetElementId(() => useId())
+ * ```
+ */
+export function initGetElementId(newListener: () => string | number) {
+  if (!listener) {
+    listener = newListener
+  }
 }
