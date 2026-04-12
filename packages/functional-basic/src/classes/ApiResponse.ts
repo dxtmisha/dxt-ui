@@ -119,6 +119,10 @@ export class ApiResponse {
    * @param apiFetch property of the request/ свойство запроса
    */
   async emulator<T>(apiFetch: ApiFetch): Promise<T | undefined> {
+    if (!isDomRuntime()) {
+      return undefined
+    }
+
     const {
       path = '',
       method = ApiMethodItem.get,

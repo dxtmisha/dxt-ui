@@ -89,6 +89,15 @@ export class Api {
   }
 
   /**
+   * Returns a string representation of the hydration data for the client.
+   *
+   * Возвращает строковое представление данных гидратации для клиента.
+   */
+  static getHydrationScript(): string {
+    return this.getItem().getHydrationScript()
+  }
+
+  /**
    * Getting the full path to the request script.
    *
    * Получение полного пути к скрипту запроса.

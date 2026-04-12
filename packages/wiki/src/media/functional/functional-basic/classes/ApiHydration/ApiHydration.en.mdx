@@ -1,0 +1,67 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiHydration - API Data Hydration'/>
+
+# ApiHydration Class
+
+A class for collecting API data for hydration on the client side during SSR (Server-Side Rendering). It allows the server to capture API responses during the initial render and pass them to the client, preventing redundant network requests when the application initializes in the browser.
+
+## Key Features
+
+- **SSR Optimization** — reduces the number of requests after the page loads by reusing server-side data.
+- **Data Capture** — automatically collects successful API responses marked for global use.
+- **HTML Embedding** — generates a safe `<script>` tag with JSON-serialized data for embedding in the document.
+- **Client Synchronization** — allows `ApiResponse` to load hydrated data automatically on the client side.
+
+## Initialization
+
+To initialize the object, call the `ApiHydration()` constructor.
+
+```typescript
+import { ApiHydration } from '@dxtmisha/functional'
+
+// 1. Initialize instance
+const apiHydration = new ApiHydration()
+
+// 2. Capture a response (usually handled by ApiInstance internally)
+apiHydration.toClient({
+  path: 'user/profile',
+  method: 'GET',
+  global: true
+}, { id: 1, name: 'Admin' })
+```
+
+## Methods
+
+- `initResponse(response: ApiResponse): void` — Initializes the `ApiResponse` instance with hydration data if running in a DOM environment.
+- `toClient<T>(apiFetch: ApiFetch, response: T): void` — Saves the API response for client-side hydration. Only works on the server for global requests.
+- `toString(): string` — Returns a string representation of the hydration data (as a `<script>` tag) for inclusion in the HTML document.
+
+## SSR Setup Guide
+
+To implement hydration correctly, follow these steps to bridge the server and client data.
+
+### 1. Server-Side Execution (SSR)
+While rendering the page on the server, all API requests made through `ApiInstance` (with `global: true`) are automatically captured by the `ApiHydration` manager.
+
+### 2. Injecting Data into HTML
+Before sending the response to the client, you must inject the captured data into your HTML template using `getHydrationScript()`.
+
+```typescript
+// Example for an SSR framework or template engine
+const html = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>My App</title>
+      ${Api.getHydrationScript()}
+    </head>
+    <body>
+      <div id="app">${renderedApp}</div>
+    </body>
+  </html>
+`;
+```
+
+### 3. Client-Side Hydration
+When the application initializes on the client, the `ApiInstance` constructor automatically detects the script tag and populates the `ApiResponse` mock cache. Subsequent calls to the same API endpoints will then return the hydrated data instantly without making a network request.

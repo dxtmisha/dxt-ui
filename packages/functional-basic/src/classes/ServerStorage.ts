@@ -1,7 +1,7 @@
 import { forEach } from '../functions/forEach'
 import { getElementSafeScript } from '../functions/getElementSafeScript'
+import { getHydrationData } from '../functions/getHydrationData'
 import { isDomRuntime } from '../functions/isDomRuntime'
-import { isObjectNotArray } from '../functions/isObjectNotArray'
 
 /** Item stored in the server storage/ Элемент, хранящийся в серверном хранилище */
 type ServerStorageItem = {
@@ -143,25 +143,16 @@ export class ServerStorage {
    */
   protected static getStorageDom(): ServerStorageList {
     if (!this.storage) {
-      const script = document.getElementById(SERVER_STORAGE_ID)
+      const data = getHydrationData<Record<string, any>>(SERVER_STORAGE_ID, {})
+
       this.storage = {}
 
-      if (script) {
-        try {
-          const json = JSON.parse(script.textContent || '{}') as Record<string, any>
-
-          if (isObjectNotArray(json)) {
-            forEach(json, (value, name) => {
-              this.storage![name] = {
-                value,
-                hydration: true
-              }
-            })
-          }
-        } catch (error) {
-          console.error('[ServerStorage] Failed to parse storage:', error)
+      forEach(data, (value, name) => {
+        this.storage![name] = {
+          value,
+          hydration: true
         }
-      }
+      })
     }
 
     return this.storage

@@ -14,11 +14,12 @@ import { type LoadingInstance } from './LoadingInstance'
 import { ErrorCenter } from './ErrorCenter'
 import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
-import { ApiHeaders } from './ApiHeaders'
 import { ApiDefault } from './ApiDefault'
+import { ApiHeaders } from './ApiHeaders'
+import { ApiHydration } from './ApiHydration'
+import { ApiPreparation } from './ApiPreparation'
 import { ApiStatus } from './ApiStatus'
 import { ApiResponse } from './ApiResponse'
-import { ApiPreparation } from './ApiPreparation'
 
 import {
   type ApiData,
@@ -43,6 +44,8 @@ export type ApiInstanceOptions = {
   loadingClass?: LoadingInstance
   /** Instance of error handler/ Экземпляр обработчика ошибок */
   errorCenterClass?: ErrorCenterInstance
+  /** Class for working with hydration/ Класс для работы с гидратацией */
+  hydrationClass?: typeof ApiHydration
 }
 
 /**
@@ -144,6 +147,9 @@ export class ApiInstance {
   /** Error handler / Обработчик ошибок */
   protected errorCenter: ErrorCenterInstance
 
+  /** Hydration handler / Обработчик гидратации */
+  protected hydration: ApiHydration
+
   /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
   protected timeout: number = 16000
 
@@ -163,7 +169,8 @@ export class ApiInstance {
       responseClass = ApiResponse,
       preparationClass = ApiPreparation,
       loadingClass = Loading.getItem(),
-      errorCenterClass = ErrorCenter.getItem()
+      errorCenterClass = ErrorCenter.getItem(),
+      hydrationClass = ApiHydration
     } = options
 
     this.headers = new headersClass()
@@ -173,6 +180,9 @@ export class ApiInstance {
     this.preparation = new preparationClass()
     this.loading = loadingClass
     this.errorCenter = errorCenterClass
+    this.hydration = new hydrationClass()
+
+    this.hydration.initResponse(this.response)
   }
 
   /**
@@ -200,6 +210,15 @@ export class ApiInstance {
    */
   getResponse() {
     return this.response
+  }
+
+  /**
+   * Getting the hydration handler.
+   *
+   * Получение обработчика гидратации.
+   */
+  getHydration() {
+    return this.hydration
   }
 
   /**
@@ -268,6 +287,15 @@ export class ApiInstance {
     }
 
     return ''
+  }
+
+  /**
+   * Returns a string representation of the hydration data for the client.
+   *
+   * Возвращает строковое представление данных гидратации для клиента.
+   */
+  getHydrationScript(): string {
+    return this.hydration.toString()
   }
 
   /**
@@ -502,10 +530,14 @@ export class ApiInstance {
     status.setLastResponse(data)
     this.status.setLastResponse(data)
 
-    return this.makeStatus(
+    const responseData = this.makeStatus(
       this.makeData(data, toData),
       status
     )
+
+    this.hydration.toClient(apiFetch, responseData)
+
+    return responseData
   }
 
   /**
