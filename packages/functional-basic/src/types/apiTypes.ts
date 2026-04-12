@@ -4,6 +4,12 @@
  */
 export enum ApiMethodItem {
   /**
+   * HTTP DELETE — used to delete resources.
+   * HTTP DELETE — используется для удаления ресурсов.
+   */
+  delete = 'DELETE',
+
+  /**
    * HTTP GET — used to retrieve resources (no request body).
    * HTTP GET — используется для получения ресурсов (без тела запроса).
    */
@@ -19,23 +25,25 @@ export enum ApiMethodItem {
    * HTTP PUT — used to update/replace resources.
    * HTTP PUT — используется для обновления/замены ресурсов.
    */
-  put = 'PUT',
-
-  /**
-   * HTTP DELETE — used to delete resources.
-   * HTTP DELETE — используется для удаления ресурсов.
-   */
-  delete = 'DELETE'
+  put = 'PUT'
 }
 
 /**
- * Supported HTTP methods type/ Тип HTTP-методов
- * (derived from ApiMethodItem enum)/ (получен из перечисления ApiMethodItem)
+ * Saved value in cache/ Сохраненное значение в кэше
  */
-export type ApiMethod = string & ApiMethodItem
+export type ApiCacheItem<T = any> = {
+  /** Saved value / Сохраненное значение */
+  value: T
+  /** Age of the cache / Возраст кэша */
+  age?: number
+  /** Cache age in seconds / Возраст кэша в секундах */
+  cacheAge: number
+}
 
-/** API status type/ Тип статуса API */
-export type ApiStatusType = 'success' | 'error' | 'warning' | 'info'
+/**
+ * List of saved values in cache/ Список сохраненных значений в кэше
+ */
+export type ApiCacheList = Record<string, ApiCacheItem>
 
 /**
  * API configuration/ Конфигурация API
@@ -56,6 +64,34 @@ export type ApiConfig = {
   /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
   timeout?: number
 }
+
+/**
+ * Shape of API response data wrapper/ Структура обёртки данных ответа API
+ */
+export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>
+
+/**
+ * Type of API response data item/ Тип элемента данных ответа API
+ */
+export type ApiDataItem<T = any>
+  = T
+  & {
+    /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
+    data?: T
+    /** Success flag/ Флаг успешности */
+    success?: boolean
+    /** Status/ Статус */
+    status?: ApiStatusType
+    /** Message/ Сообщение */
+    message?: string
+    /** Status object/ Объект статуса */
+    statusObject?: ApiStatusItem
+  }
+
+/**
+ * Default API request data type/ Тип данных запроса API по умолчанию
+ */
+export type ApiDefaultValue = Record<string, any>
 
 /**
  * Options for making API requests/ Опции для выполнения API-запросов
@@ -126,6 +162,41 @@ export type ApiFetch = {
 }
 
 /**
+ * Type of API hydration item/ Тип элемента гидратации API
+ */
+export type ApiHydrationItem = {
+  /** Path string or RegExp to match request URL/ Путь или RegExp для сопоставления URL */
+  path: string
+  /** Expected HTTP method/ Ожидаемый HTTP метод */
+  method: ApiMethod
+  /** Expected request payload or special marker '*any'/ Ожидаемая нагрузка запроса или маркер '*any' */
+  request?: ApiFetch['request']
+  /** Static response or factory function/ Статический ответ или функция, возвращающая ответ */
+  response: any
+}
+
+/**
+ * List of API hydration items/ Список элементов гидратации API
+ */
+export type ApiHydrationList = ApiHydrationItem[]
+
+/**
+ * Supported HTTP methods type/ Тип HTTP-методов
+ * (derived from ApiMethodItem enum)/ (получен из перечисления ApiMethodItem)
+ */
+export type ApiMethod = string & ApiMethodItem
+
+/**
+ * Result of global preparation/end hooks/ Результат глобальных хуков
+ */
+export type ApiPreparationEnd = {
+  /** Reset flag to indicate state reset/ Флаг сброса состояния */
+  reset?: boolean
+  /** Arbitrary data returned by hook/ Произвольные данные, возвращаемые хуком */
+  data?: any
+}
+
+/**
  * Mock API response descriptor/ Описание мок-ответа API
  */
 export type ApiResponseItem = {
@@ -145,44 +216,6 @@ export type ApiResponseItem = {
   lag?: any
 }
 
-/**
- * Type of API response data item/ Тип элемента данных ответа API
- */
-export type ApiDataItem<T = any>
-  = T
-  & {
-    /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-    data?: T
-    /** Success flag/ Флаг успешности */
-    success?: boolean
-    /** Status/ Статус */
-    status?: ApiStatusType
-    /** Message/ Сообщение */
-    message?: string
-    /** Status object/ Объект статуса */
-    statusObject?: ApiStatusItem
-  }
-
-/**
- * Shape of API response data wrapper/ Структура обёртки данных ответа API
- */
-export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>
-
-/**
- * Result of global preparation/end hooks/ Результат глобальных хуков
- */
-export type ApiPreparationEnd = {
-  /** Reset flag to indicate state reset/ Флаг сброса состояния */
-  reset?: boolean
-  /** Arbitrary data returned by hook/ Произвольные данные, возвращаемые хуком */
-  data?: any
-}
-
-/**
- * Default API request data type/ Тип данных запроса API по умолчанию
- */
-export type ApiDefaultValue = Record<string, any>
-
 export type ApiStatusItem = {
   /** HTTP status code/ Код статуса HTTP */
   status?: number
@@ -198,21 +231,5 @@ export type ApiStatusItem = {
   lastMessage?: string
 }
 
-/**
- * Type of API hydration item/ Тип элемента гидратации API
- */
-export type ApiHydrationItem = {
-  /** Path string or RegExp to match request URL/ Путь или RegExp для сопоставления URL */
-  path: string
-  /** Expected HTTP method/ Ожидаемый HTTP метод */
-  method: ApiMethod
-  /** Expected request payload or special marker '*any'/ Ожидаемая нагрузка запроса или маркер '*any' */
-  request?: ApiFetch['request']
-  /** Static response or factory function/ Статический ответ или функция, возвращающая ответ */
-  response: any
-}
-
-/**
- * List of API hydration items/ Список элементов гидратации API
- */
-export type ApiHydrationList = ApiHydrationItem[]
+/** API status type/ Тип статуса API */
+export type ApiStatusType = 'success' | 'error' | 'warning' | 'info'
