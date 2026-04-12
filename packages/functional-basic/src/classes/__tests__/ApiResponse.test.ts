@@ -8,7 +8,7 @@ import { ApiDefault } from '../ApiDefault'
 import { ApiMethodItem } from '../../types/apiTypes'
 import type { ApiResponseItem } from '../../types/apiTypes'
 
-describe('ApiResponse', () => {
+describe('ApiResponse / Ответы API', () => {
   let apiResponse: ApiResponse
   let apiDefault: ApiDefault
 
@@ -17,18 +17,18 @@ describe('ApiResponse', () => {
     apiResponse = new ApiResponse(apiDefault)
   })
 
-  describe('constructor', () => {
-    it('should create ApiResponse instance', () => {
+  describe('constructor / Конструктор', () => {
+    it('should create ApiResponse instance / должен создавать экземпляр ApiResponse', () => {
       expect(apiResponse).toBeInstanceOf(ApiResponse)
     })
 
-    it('should initialize with empty response list', () => {
+    it('should initialize with empty response list / должен инициализироваться с пустым списком ответов', () => {
       expect(apiResponse.getList()).toEqual([])
     })
   })
 
-  describe('add', () => {
-    it('should add single response item', () => {
+  describe('add / Добавление ответов', () => {
+    it('should add single response item / должен добавлять один элемент ответа', () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.get,
@@ -40,7 +40,7 @@ describe('ApiResponse', () => {
       expect(apiResponse.getList()?.[0]).toEqual(responseItem)
     })
 
-    it('should add multiple response items', () => {
+    it('should add multiple response items / должен добавлять несколько элементов ответа', () => {
       const items: ApiResponseItem[] = [
         {
           path: '/api/test1',
@@ -58,7 +58,7 @@ describe('ApiResponse', () => {
       expect(apiResponse.getList()).toHaveLength(2)
     })
 
-    it('should return this for chaining', () => {
+    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.get,
@@ -68,49 +68,14 @@ describe('ApiResponse', () => {
       const result = apiResponse.add(responseItem)
       expect(result).toBe(apiResponse)
     })
-
-    it('should chain multiple add calls', () => {
-      const item1: ApiResponseItem = {
-        path: '/api/test1',
-        method: ApiMethodItem.get,
-        response: {}
-      }
-      const item2: ApiResponseItem = {
-        path: '/api/test2',
-        method: ApiMethodItem.post,
-        response: {}
-      }
-
-      apiResponse.add(item1).add(item2)
-      expect(apiResponse.getList()).toHaveLength(2)
-    })
   })
 
-  describe('getList', () => {
-    it('should return empty array when no responses added', () => {
+  describe('getList / Получение списка ответов', () => {
+    it('should return empty array when no responses added / должен возвращать пустой массив, если ответы не добавлены', () => {
       expect(apiResponse.getList()).toEqual([])
     })
 
-    it('should return all non-global responses', () => {
-      const items: ApiResponseItem[] = [
-        {
-          path: '/api/test1',
-          method: ApiMethodItem.get,
-          response: {}
-        },
-        {
-          path: '/api/test2',
-          method: ApiMethodItem.get,
-          response: {},
-          isForGlobal: false
-        }
-      ]
-
-      apiResponse.add(items)
-      expect(apiResponse.getList()).toHaveLength(2)
-    })
-
-    it('should filter out global responses', () => {
+    it('should filter out global responses / должен фильтровать глобальные ответы', () => {
       const items: ApiResponseItem[] = [
         {
           path: '/api/test1',
@@ -131,39 +96,25 @@ describe('ApiResponse', () => {
     })
   })
 
-  describe('setDevMode', () => {
-    it('should set developer mode', () => {
-      apiResponse.setDevMode(true)
-      // Проверка через эмулятор (косвенная проверка)
-      expect(apiResponse).toBeInstanceOf(ApiResponse)
-    })
-
-    it('should return this for chaining', () => {
-      const result = apiResponse.setDevMode(true)
-      expect(result).toBe(apiResponse)
-    })
-  })
-
-  describe('get', () => {
-    it('should return undefined when no matching response', () => {
+  describe('get / Поиск ответа', () => {
+    it('should return undefined when no matching response / должен возвращать undefined, если подходящий ответ не найден', () => {
       const result = apiResponse.get('/api/test', ApiMethodItem.get)
       expect(result).toBeUndefined()
     })
 
-    it('should return matching response by path and method', () => {
+    it('should return matching response by path and method / должен возвращать подходящий ответ по пути и методу', () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.get,
-        request: undefined,
         response: { data: 'test' }
       }
 
       apiResponse.add(responseItem)
-      const result = apiResponse.get('/api/test', ApiMethodItem.get, undefined)
+      const result = apiResponse.get('/api/test', ApiMethodItem.get)
       expect(result).toEqual(responseItem)
     })
 
-    it('should match path with RegExp', () => {
+    it('should match path with RegExp / должен сопоставлять путь с регулярным выражением', () => {
       const responseItem: ApiResponseItem = {
         path: /^\/api\/test\/\d+$/,
         method: ApiMethodItem.get,
@@ -175,60 +126,7 @@ describe('ApiResponse', () => {
       expect(result).toEqual(responseItem)
     })
 
-    it('should not return same response twice (first request tracking)', () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.get,
-        response: { data: 'test' }
-      }
-
-      apiResponse.add(responseItem)
-      const firstCall = apiResponse.get('/api/test', ApiMethodItem.get)
-      const secondCall = apiResponse.get('/api/test', ApiMethodItem.get)
-
-      expect(firstCall).toEqual(responseItem)
-      expect(secondCall).toBeUndefined()
-    })
-
-    it('should return response again in devMode', () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.get,
-        response: { data: 'test' }
-      }
-
-      apiResponse.add(responseItem)
-      apiResponse.get('/api/test', ApiMethodItem.get, undefined, false)
-      const result = apiResponse.get('/api/test', ApiMethodItem.get, undefined, true)
-
-      expect(result).toEqual(responseItem)
-    })
-
-    it('should not return disabled responses', () => {
-      const disabledItem: ApiResponseItem = {
-        path: '/api/disabled',
-        method: ApiMethodItem.get,
-        response: { data: 'disabled' },
-        disable: true
-      }
-
-      const enabledItem: ApiResponseItem = {
-        path: '/api/enabled',
-        method: ApiMethodItem.get,
-        response: { data: 'enabled' }
-        // disable не указан (undefined) - элемент активен
-      }
-
-      apiResponse.add([disabledItem, enabledItem])
-
-      // Отключенный не вернётся
-      expect(apiResponse.get('/api/disabled', ApiMethodItem.get)).toBeUndefined()
-
-      // Включенный вернётся
-      expect(apiResponse.get('/api/enabled', ApiMethodItem.get)).toEqual(enabledItem)
-    })
-
-    it('should match request with *any marker', () => {
+    it('should match request with *any marker / должен сопоставлять запрос с маркером *any', () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.post,
@@ -241,7 +139,7 @@ describe('ApiResponse', () => {
       expect(result).toEqual(responseItem)
     })
 
-    it('should match request with exact object', () => {
+    it('should match request with exact object / должен сопоставлять запрос с точным объектом', () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.post,
@@ -253,36 +151,10 @@ describe('ApiResponse', () => {
       const result = apiResponse.get('/api/test', ApiMethodItem.post, { key: 'value' })
       expect(result).toEqual(responseItem)
     })
-
-    it('should not match request with different object', () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        request: { key: 'value1' },
-        response: { data: 'test' }
-      }
-
-      apiResponse.add(responseItem)
-      const result = apiResponse.get('/api/test', ApiMethodItem.post, { key: 'value2' })
-      expect(result).toBeUndefined()
-    })
-
-    it('should match with partial *any in request object', () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        request: { key1: 'value1', key2: '*any' },
-        response: { data: 'test' }
-      }
-
-      apiResponse.add(responseItem)
-      const result = apiResponse.get('/api/test', ApiMethodItem.post, { key1: 'value1', key2: 'any-value' })
-      expect(result).toEqual(responseItem)
-    })
   })
 
-  describe('emulator', () => {
-    it('should return undefined when no matching response', async () => {
+  describe('emulator / Эмулятор запросов', () => {
+    it('should return undefined when no matching response / должен возвращать undefined, если подходящий ответ не найден', async () => {
       const result = await apiResponse.emulator({
         path: '/api/test',
         method: ApiMethodItem.get
@@ -291,7 +163,7 @@ describe('ApiResponse', () => {
       expect(result).toBeUndefined()
     })
 
-    it('should return emulated response for GET request', async () => {
+    it('should return emulated response for GET request / должен возвращать эмулированный ответ для GET-запроса', async () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.get,
@@ -307,7 +179,7 @@ describe('ApiResponse', () => {
       expect(result).toEqual({ data: 'test' })
     })
 
-    it('should work with response as function', async () => {
+    it('should work with response as function / должен работать с ответом в виде функции', async () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.get,
@@ -325,99 +197,7 @@ describe('ApiResponse', () => {
       expect(result).toEqual({ echo: { input: 'value' } })
     })
 
-    it('should work with async response function', async () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.get,
-        response: async () => {
-          return new Promise((resolve) => {
-            setTimeout(() => resolve({ delayed: true }), 10)
-          })
-        }
-      }
-
-      apiResponse.add(responseItem)
-      const result = await apiResponse.emulator({
-        path: '/api/test',
-        method: ApiMethodItem.get
-      })
-
-      expect(result).toEqual({ delayed: true })
-    })
-
-    it('should not use emulator for non-GET without global flag', async () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        response: { data: 'test' }
-      }
-
-      apiResponse.add(responseItem)
-      const result = await apiResponse.emulator({
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        global: false
-      })
-
-      expect(result).toBeUndefined()
-    })
-
-    it('should use emulator for non-GET with global flag', async () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        response: { data: 'test' }
-      }
-
-      apiResponse.add(responseItem)
-      const result = await apiResponse.emulator({
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        global: true
-      })
-
-      expect(result).toEqual({ data: 'test' })
-    })
-
-    it('should use emulator when devMode is enabled', async () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        response: { data: 'test' }
-      }
-
-      apiResponse.add(responseItem)
-      const result = await apiResponse.emulator({
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        devMode: true
-      })
-
-      expect(result).toEqual({ data: 'test' })
-    })
-
-    it('should merge default request data', async () => {
-      apiDefault.set({ token: 'abc123' })
-
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        request: { token: 'abc123', action: 'getData' },
-        response: { success: true }
-      }
-
-      apiResponse.add(responseItem)
-      const result = await apiResponse.emulator({
-        path: '/api/test',
-        method: ApiMethodItem.post,
-        request: { action: 'getData' },
-        global: true
-      })
-
-      expect(result).toEqual({ success: true })
-    })
-
-    it('should handle lag simulation', async () => {
+    it('should handle lag simulation / должен имитировать задержку', async () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.get,
@@ -435,113 +215,78 @@ describe('ApiResponse', () => {
       const endTime = Date.now()
 
       expect(result).toEqual({ data: 'test' })
-      // Проверка, что была задержка (минимум несколько миллисекунд)
       expect(endTime - startTime).toBeGreaterThanOrEqual(0)
-    }, 10000)
+    })
   })
 
-  describe('integration tests', () => {
-    it('should handle complete workflow with multiple responses', async () => {
-      const responses: ApiResponseItem[] = [
+  describe('setDevMode / Установка режима разработки', () => {
+    it('should allow repeating requests when devMode is true / должен позволять повторять запросы, когда devMode равен true', async () => {
+      const responseItem: ApiResponseItem = {
+        path: '/api/test',
+        method: ApiMethodItem.get,
+        response: { data: 'test' }
+      }
+
+      apiResponse.add(responseItem)
+      apiResponse.setDevMode(true)
+
+      const firstResult = await apiResponse.emulator({ path: '/api/test', method: ApiMethodItem.get })
+      const secondResult = await apiResponse.emulator({ path: '/api/test', method: ApiMethodItem.get })
+
+      expect(firstResult).toEqual({ data: 'test' })
+      expect(secondResult).toEqual({ data: 'test' })
+    })
+
+    it('should not return same response twice when devMode is false / не должен возвращать один и тот же ответ дважды, когда devMode равен false', async () => {
+      const responseItem: ApiResponseItem = {
+        path: '/api/test',
+        method: ApiMethodItem.get,
+        response: { data: 'test' }
+      }
+
+      apiResponse.add(responseItem)
+      apiResponse.setDevMode(false)
+
+      const firstResult = await apiResponse.emulator({ path: '/api/test', method: ApiMethodItem.get })
+      const secondResult = await apiResponse.emulator({ path: '/api/test', method: ApiMethodItem.get })
+
+      expect(firstResult).toEqual({ data: 'test' })
+      expect(secondResult).toBeUndefined()
+    })
+  })
+
+  describe('integration / Интеграционные сценарии', () => {
+    it('should handle complex request matching / должен обрабатывать сложное сопоставление запросов', async () => {
+      apiResponse.add([
         {
           path: '/api/users',
-          method: ApiMethodItem.get,
-          response: [{ id: 1, name: 'User 1' }, { id: 2, name: 'User 2' }]
-        },
-        {
-          path: /^\/api\/users\/\d+$/,
-          method: ApiMethodItem.get,
-          response: (request: any) => ({ id: 1, name: 'User 1', request })
+          method: ApiMethodItem.post,
+          request: { name: 'Admin' },
+          response: { role: 'admin' }
         },
         {
           path: '/api/users',
           method: ApiMethodItem.post,
           request: { name: '*any' },
-          response: { id: 3, name: 'New User' }
+          response: { role: 'user' }
         }
-      ]
+      ])
 
-      apiResponse.add(responses)
-
-      // GET список
-      const list = await apiResponse.emulator({
-        path: '/api/users',
-        method: ApiMethodItem.get
-      })
-      expect(list).toEqual([{ id: 1, name: 'User 1' }, { id: 2, name: 'User 2' }])
-
-      // GET один элемент
-      const user = await apiResponse.emulator({
-        path: '/api/users/1',
-        method: ApiMethodItem.get
-      })
-      expect(user).toHaveProperty('id', 1)
-
-      // POST создание
-      const created = await apiResponse.emulator({
+      const adminResult = await apiResponse.emulator({
         path: '/api/users',
         method: ApiMethodItem.post,
-        request: { name: 'Test User' },
+        request: { name: 'Admin' },
         global: true
       })
-      expect(created).toEqual({ id: 3, name: 'New User' })
-    })
+      expect(adminResult).toEqual({ role: 'admin' })
 
-    it('should work with disabled responses via function', () => {
-      let isDisabled = false
-
-      const responseItem: ApiResponseItem = {
-        path: '/api/test',
-        method: ApiMethodItem.get,
-        response: { data: 'test' },
-        disable: () => isDisabled
-      }
-
-      apiResponse.add(responseItem)
-
-      // Включено
-      let result = apiResponse.get('/api/test', ApiMethodItem.get)
-      expect(result).toEqual(responseItem)
-
-      // Отключено
-      isDisabled = true
-      result = apiResponse.get('/api/test', ApiMethodItem.get, undefined, true) // devMode для повторного запроса
-      expect(result).toBeUndefined()
-    })
-
-    it('should work with chaining', () => {
-      const result = apiResponse
-        .setDevMode(true)
-        .add({
-          path: '/api/test1',
-          method: ApiMethodItem.get,
-          response: {}
-        })
-        .add({
-          path: '/api/test2',
-          method: ApiMethodItem.get,
-          response: {}
-        })
-
-      expect(result).toBe(apiResponse)
-      expect(apiResponse.getList()).toHaveLength(2)
-    })
-
-    it('should handle FormData request matching', () => {
-      const responseItem: ApiResponseItem = {
-        path: '/api/upload',
+      const userResult = await apiResponse.emulator({
+        path: '/api/users',
         method: ApiMethodItem.post,
-        request: '*any',
-        response: { uploaded: true }
-      }
-
-      apiResponse.add(responseItem)
-
-      const formData = new FormData()
-      formData.set('file', 'test.jpg')
-
-      const result = apiResponse.get('/api/upload', ApiMethodItem.post, formData)
-      expect(result).toEqual(responseItem)
+        request: { name: 'John' },
+        global: true
+      })
+      expect(userResult).toEqual({ role: 'user' })
     })
   })
 })

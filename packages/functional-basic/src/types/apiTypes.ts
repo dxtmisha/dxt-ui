@@ -25,7 +25,13 @@ export enum ApiMethodItem {
    * HTTP PUT — used to update/replace resources.
    * HTTP PUT — используется для обновления/замены ресурсов.
    */
-  put = 'PUT'
+  put = 'PUT',
+
+  /**
+   * HTTP PATCH — used to partially update resources.
+   * HTTP PATCH — используется для частичного обновления ресурсов.
+   */
+  patch = 'PATCH'
 }
 
 /**

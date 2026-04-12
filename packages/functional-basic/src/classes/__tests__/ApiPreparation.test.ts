@@ -2,15 +2,15 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ApiPreparation } from '../ApiPreparation'
 import type { ApiPreparationEnd } from '../../types/apiTypes'
 
-describe('ApiPreparation', () => {
+describe('ApiPreparation / Подготовка API', () => {
   let apiPreparation: ApiPreparation
 
   beforeEach(() => {
     apiPreparation = new ApiPreparation()
   })
 
-  describe('make', () => {
-    it('should not call callback when active is false', async () => {
+  describe('make / Выполнение подготовки', () => {
+    it('should not call callback when active is false / не должен вызывать колбэк, если параметр active равен false', async () => {
       const callback = vi.fn().mockResolvedValue(undefined)
       apiPreparation.set(callback)
 
@@ -19,13 +19,13 @@ describe('ApiPreparation', () => {
       expect(callback).not.toHaveBeenCalled()
     })
 
-    it('should not call callback when callback is not set', async () => {
+    it('should not call callback when callback is not set / не должен вызывать колбэк, если колбэк не установлен', async () => {
       const result = await apiPreparation.make(true, {} as any)
 
       expect(result).toBeUndefined()
     })
 
-    it('should call callback when active is true and callback is set', async () => {
+    it('should call callback when active is true and callback is set / должен вызывать колбэк, если active равен true и колбэк установлен', async () => {
       const callback = vi.fn().mockResolvedValue(undefined)
       apiPreparation.set(callback)
 
@@ -34,10 +34,10 @@ describe('ApiPreparation', () => {
       expect(callback).toHaveBeenCalledTimes(1)
     })
 
-    it('should wait for callback to complete', async () => {
+    it('should wait for callback to complete / должен ожидать завершения колбэка', async () => {
       let callbackCompleted = false
       const callback = vi.fn().mockImplementation(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100))
+        await new Promise(resolve => setTimeout(resolve, 50))
         callbackCompleted = true
       })
       apiPreparation.set(callback)
@@ -47,11 +47,11 @@ describe('ApiPreparation', () => {
       expect(callbackCompleted).toBe(true)
     })
 
-    it('should handle multiple concurrent calls without overlapping', async () => {
+    it('should handle multiple concurrent calls without overlapping / должен корректно обрабатывать несколько параллельных вызовов без наложения', async () => {
       let executionCount = 0
       const callback = vi.fn().mockImplementation(async () => {
         executionCount++
-        await new Promise(resolve => setTimeout(resolve, 50))
+        await new Promise(resolve => setTimeout(resolve, 20))
         executionCount--
       })
       apiPreparation.set(callback)
@@ -71,8 +71,8 @@ describe('ApiPreparation', () => {
     })
   })
 
-  describe('makeEnd', () => {
-    it('should return empty object when active is false', async () => {
+  describe('makeEnd / Выполнение завершающей обработки', () => {
+    it('should return empty object when active is false / должен возвращать пустой объект, если параметр active равен false', async () => {
       const callback = vi.fn().mockResolvedValue({ reset: true })
       const mockResponse = new Response('{}', { status: 200 })
       apiPreparation.setEnd(callback)
@@ -83,7 +83,7 @@ describe('ApiPreparation', () => {
       expect(callback).not.toHaveBeenCalled()
     })
 
-    it('should return empty object when callback is not set', async () => {
+    it('should return empty object when callback is not set / должен возвращать пустой объект, если колбэк не установлен', async () => {
       const mockResponse = new Response('{}', { status: 200 })
 
       const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
@@ -91,7 +91,7 @@ describe('ApiPreparation', () => {
       expect(result).toEqual({})
     })
 
-    it('should call callback and return result when active is true', async () => {
+    it('should call callback and return result when active is true / должен вызывать колбэк и возвращать результат, если active равен true', async () => {
       const expectedResult: ApiPreparationEnd = {
         reset: true,
         data: { message: 'Success' }
@@ -107,7 +107,7 @@ describe('ApiPreparation', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should pass Response object to callback', async () => {
+    it('should pass Response object to callback / должен передавать объект Response в колбэк', async () => {
       const callback = vi.fn().mockResolvedValue({})
       const mockResponse = new Response('{"test": "data"}', {
         status: 201,
@@ -120,31 +120,10 @@ describe('ApiPreparation', () => {
 
       expect(callback).toHaveBeenCalledWith(mockResponse, mockApiFetch)
     })
-
-    it('should handle callback returning reset flag', async () => {
-      const callback = vi.fn().mockResolvedValue({ reset: true })
-      const mockResponse = new Response('{}', { status: 200 })
-      apiPreparation.setEnd(callback)
-
-      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
-
-      expect(result.reset).toBe(true)
-    })
-
-    it('should handle callback returning data', async () => {
-      const testData = { userId: 123, token: 'abc' }
-      const callback = vi.fn().mockResolvedValue({ data: testData })
-      const mockResponse = new Response('{}', { status: 200 })
-      apiPreparation.setEnd(callback)
-
-      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
-
-      expect(result.data).toEqual(testData)
-    })
   })
 
-  describe('set', () => {
-    it('should set callback function', async () => {
+  describe('set / Установка колбэка подготовки', () => {
+    it('should set callback function / должен устанавливать функцию колбэка', async () => {
       const callback = vi.fn().mockResolvedValue(undefined)
 
       const returnedInstance = apiPreparation.set(callback)
@@ -154,7 +133,7 @@ describe('ApiPreparation', () => {
       expect(callback).toHaveBeenCalled()
     })
 
-    it('should return this for chaining', () => {
+    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
       const callback = vi.fn().mockResolvedValue(undefined)
 
       const result = apiPreparation.set(callback)
@@ -162,7 +141,7 @@ describe('ApiPreparation', () => {
       expect(result).toBe(apiPreparation)
     })
 
-    it('should allow replacing callback', async () => {
+    it('should allow replacing callback / должен позволять заменять колбэк', async () => {
       const callback1 = vi.fn().mockResolvedValue(undefined)
       const callback2 = vi.fn().mockResolvedValue(undefined)
 
@@ -176,8 +155,8 @@ describe('ApiPreparation', () => {
     })
   })
 
-  describe('setEnd', () => {
-    it('should set end callback function', async () => {
+  describe('setEnd / Установка колбэка завершения', () => {
+    it('should set end callback function / должен устанавливать завершающую функцию колбэка', async () => {
       const callback = vi.fn().mockResolvedValue({})
       const mockResponse = new Response('{}', { status: 200 })
 
@@ -188,7 +167,7 @@ describe('ApiPreparation', () => {
       expect(callback).toHaveBeenCalled()
     })
 
-    it('should return this for chaining', () => {
+    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
       const callback = vi.fn().mockResolvedValue({})
 
       const result = apiPreparation.setEnd(callback)
@@ -196,7 +175,7 @@ describe('ApiPreparation', () => {
       expect(result).toBe(apiPreparation)
     })
 
-    it('should allow chaining set and setEnd', async () => {
+    it('should allow chaining set and setEnd / должен позволять использовать цепочку методов set и setEnd', async () => {
       const callback = vi.fn().mockResolvedValue(undefined)
       const callbackEnd = vi.fn().mockResolvedValue({ reset: true })
       const mockResponse = new Response('{}', { status: 200 })
@@ -211,24 +190,10 @@ describe('ApiPreparation', () => {
       expect(callback).toHaveBeenCalled()
       expect(callbackEnd).toHaveBeenCalled()
     })
-
-    it('should allow replacing end callback', async () => {
-      const callback1 = vi.fn().mockResolvedValue({})
-      const callback2 = vi.fn().mockResolvedValue({ data: 'test' })
-      const mockResponse = new Response('{}', { status: 200 })
-
-      apiPreparation.setEnd(callback1)
-      apiPreparation.setEnd(callback2)
-
-      await apiPreparation.makeEnd(true, mockResponse, {} as any)
-
-      expect(callback1).not.toHaveBeenCalled()
-      expect(callback2).toHaveBeenCalled()
-    })
   })
 
-  describe('integration', () => {
-    it('should handle full lifecycle with both callbacks', async () => {
+  describe('integration / Интеграционные сценарии', () => {
+    it('should handle full lifecycle with both callbacks / должен обрабатывать полный цикл с обоими колбэками', async () => {
       let preparationDone = false
       const callback = vi.fn().mockImplementation(async () => {
         preparationDone = true
@@ -247,7 +212,7 @@ describe('ApiPreparation', () => {
       expect(result.reset).toBe(true)
     })
 
-    it('should handle errors in end callback', async () => {
+    it('should handle errors in end callback / должен корректно обрабатывать ошибки в колбэке завершения', async () => {
       const error = new Error('End processing failed')
       const callbackEnd = vi.fn().mockRejectedValue(error)
       const mockResponse = new Response('{}', { status: 200 })

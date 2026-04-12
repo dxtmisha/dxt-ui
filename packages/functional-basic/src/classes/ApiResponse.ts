@@ -126,7 +126,7 @@ export class ApiResponse {
     const {
       path = '',
       method = ApiMethodItem.get,
-      global,
+      global = method === ApiMethodItem.get,
       devMode = false
     } = apiFetch
 

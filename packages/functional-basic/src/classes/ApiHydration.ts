@@ -44,7 +44,7 @@ export class ApiHydration {
       path,
       method = ApiMethodItem.get,
       request,
-      global
+      global = method === ApiMethodItem.get
     } = apiFetch
 
     if (

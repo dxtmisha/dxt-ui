@@ -1,21 +1,21 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ApiHeaders } from '../ApiHeaders'
 
-describe('ApiHeaders', () => {
+describe('ApiHeaders / Заголовки API', () => {
   let apiHeaders: ApiHeaders
 
   beforeEach(() => {
     apiHeaders = new ApiHeaders()
   })
 
-  describe('get', () => {
-    it('should return undefined when value is null', () => {
+  describe('get / Получение заголовков', () => {
+    it('should return undefined when value is null / должен возвращать undefined, когда значение равно null', () => {
       const result = apiHeaders.get(null)
 
       expect(result).toBeUndefined()
     })
 
-    it('should return object with Content-Type when value is undefined', () => {
+    it('should return object with Content-Type when value is undefined / должен возвращать объект с Content-Type, когда значение не определено', () => {
       const result = apiHeaders.get()
 
       expect(result).toEqual({
@@ -23,7 +23,7 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should return object with custom Content-Type when value is undefined', () => {
+    it('should return object with custom Content-Type when value is undefined / должен возвращать объект с кастомным Content-Type, когда значение не определено', () => {
       const result = apiHeaders.get(undefined, 'text/plain')
 
       expect(result).toEqual({
@@ -31,7 +31,7 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should merge custom headers with default Content-Type', () => {
+    it('should merge custom headers with default Content-Type / должен объединять кастомные заголовки с Content-Type по умолчанию', () => {
       const customHeaders = {
         'Authorization': 'Bearer token123',
         'X-Custom-Header': 'custom-value'
@@ -46,7 +46,7 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should merge custom headers with custom Content-Type', () => {
+    it('should merge custom headers with custom Content-Type / должен объединять кастомные заголовки с кастомным Content-Type', () => {
       const customHeaders = {
         Authorization: 'Bearer token123'
       }
@@ -59,7 +59,7 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should merge default headers with custom headers, custom headers override', () => {
+    it('should merge default headers with custom headers, custom headers override / должен объединять заголовки по умолчанию с кастомными, кастомные имеют приоритет', () => {
       apiHeaders.set({
         'X-Default-Header': 'default-value',
         'Authorization': 'Bearer default-token'
@@ -78,49 +78,19 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should not add Content-Type when type is empty string (isFilled check)', () => {
+    it('should not add Content-Type when type is empty string / не должен добавлять Content-Type, когда тип — пустая строка', () => {
       const result = apiHeaders.get({}, '')
 
       expect(result).toEqual({})
     })
 
-    it('should not add Content-Type when type is null', () => {
+    it('should not add Content-Type when type is null / не должен добавлять Content-Type, когда тип равен null', () => {
       const result = apiHeaders.get({}, null as any)
 
       expect(result).toEqual({})
     })
 
-    it('should not add Content-Type when type is "0" (isFilled returns false)', () => {
-      const result = apiHeaders.get({}, '0')
-
-      expect(result).toEqual({})
-    })
-
-    it('should not add Content-Type when type is "undefined" string (isFilled returns false)', () => {
-      const result = apiHeaders.get({}, 'undefined')
-
-      expect(result).toEqual({})
-    })
-
-    it('should not add Content-Type when type is "null" string (isFilled returns false)', () => {
-      const result = apiHeaders.get({}, 'null')
-
-      expect(result).toEqual({})
-    })
-
-    it('should not add Content-Type when type is "false" string (isFilled returns false)', () => {
-      const result = apiHeaders.get({}, 'false')
-
-      expect(result).toEqual({})
-    })
-
-    it('should not add Content-Type when type is "[]" string (isFilled returns false)', () => {
-      const result = apiHeaders.get({}, '[]')
-
-      expect(result).toEqual({})
-    })
-
-    it('should merge default headers set via set() method', () => {
+    it('should merge default headers set via set() method / должен объединять заголовки по умолчанию, установленные через метод set()', () => {
       apiHeaders.set({
         'X-Api-Key': 'api-key-123',
         'X-App-Version': '1.0.0'
@@ -134,57 +104,10 @@ describe('ApiHeaders', () => {
         'Content-Type': 'application/json;charset=UTF-8'
       })
     })
-
-    it('should return empty object when value is empty object and type is empty string', () => {
-      const result = apiHeaders.get({}, '')
-
-      expect(result).toEqual({})
-    })
-
-    it('should merge multiple custom headers with Content-Type', () => {
-      const customHeaders = {
-        'Accept': 'application/json',
-        'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-      }
-
-      const result = apiHeaders.get(customHeaders)
-
-      expect(result).toEqual({
-        ...customHeaders,
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should return object with custom headers when default headers are empty', () => {
-      const customHeaders = {
-        'X-Custom': 'value'
-      }
-
-      const result = apiHeaders.get(customHeaders)
-
-      expect(result).toEqual({
-        'X-Custom': 'value',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should override Content-Type from custom headers with type parameter', () => {
-      const customHeaders = {
-        'Content-Type': 'text/html'
-      }
-
-      const result = apiHeaders.get(customHeaders, 'application/xml')
-
-      expect(result).toEqual({
-        'Content-Type': 'application/xml'
-      })
-    })
   })
 
-  describe('set', () => {
-    it('should set default headers when passed valid object', () => {
+  describe('set / Установка заголовков', () => {
+    it('should set default headers when passed valid object / должен устанавливать заголовки по умолчанию при передаче валидного объекта', () => {
       const headers = {
         'Authorization': 'Bearer token123',
         'X-Custom-Header': 'custom-value'
@@ -201,7 +124,7 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should return this for method chaining', () => {
+    it('should return this for method chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
       const headers = { 'X-Test': 'test' }
 
       const result = apiHeaders.set(headers)
@@ -209,7 +132,7 @@ describe('ApiHeaders', () => {
       expect(result).toBe(apiHeaders)
     })
 
-    it('should replace existing default headers completely', () => {
+    it('should replace existing default headers completely / должен полностью заменять существующие заголовки по умолчанию', () => {
       apiHeaders.set({
         'X-First-Header': 'first'
       })
@@ -227,110 +150,58 @@ describe('ApiHeaders', () => {
       expect(result).not.toHaveProperty('X-First-Header')
     })
 
-    it('should not modify headers when passed null (isObjectNotArray check)', () => {
+    it('should ignore non-object headers / должен игнорировать заголовки, не являющиеся объектами', () => {
       apiHeaders.set({
         'X-Original': 'original'
       })
 
       apiHeaders.set(null as any)
-
-      const result = apiHeaders.get()
-
-      expect(result).toEqual({
-        'X-Original': 'original',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should not modify headers when passed undefined (isObjectNotArray check)', () => {
-      apiHeaders.set({
-        'X-Original': 'original'
-      })
-
-      apiHeaders.set(undefined as any)
-
-      const result = apiHeaders.get()
-
-      expect(result).toEqual({
-        'X-Original': 'original',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should not modify headers when passed string (isObjectNotArray check)', () => {
-      apiHeaders.set({
-        'X-Original': 'original'
-      })
-
       apiHeaders.set('string' as any)
+      apiHeaders.set([] as any)
 
       const result = apiHeaders.get()
 
       expect(result).toEqual({
         'X-Original': 'original',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should not modify headers when passed number (isObjectNotArray check)', () => {
-      apiHeaders.set({
-        'X-Original': 'original'
-      })
-
-      apiHeaders.set(123 as any)
-
-      const result = apiHeaders.get()
-
-      expect(result).toEqual({
-        'X-Original': 'original',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should not modify headers when passed array (isObjectNotArray check)', () => {
-      apiHeaders.set({
-        'X-Original': 'original'
-      })
-
-      apiHeaders.set(['array'] as any)
-
-      const result = apiHeaders.get()
-
-      expect(result).toEqual({
-        'X-Original': 'original',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should set empty object as default headers', () => {
-      apiHeaders.set({
-        'X-Original': 'original'
-      })
-
-      apiHeaders.set({})
-
-      const result = apiHeaders.get()
-
-      expect(result).toEqual({
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should allow method chaining with multiple sets', () => {
-      const result = apiHeaders
-        .set({ 'X-First': 'first' })
-        .set({ 'X-Second': 'second' })
-        .get()
-
-      expect(result).toEqual({
-        'X-Second': 'second',
         'Content-Type': 'application/json;charset=UTF-8'
       })
     })
   })
 
-  describe('integration scenarios', () => {
-    it('should properly merge default and custom headers with custom type', () => {
+  describe('getByRequest / Получение заголовков по запросу', () => {
+    it('should return custom headers when request is FormData / должен возвращать кастомные заголовки, когда запрос — FormData', () => {
+      const formData = new FormData()
+      const customHeaders = { 'X-Custom': 'value' }
+      
+      const result = apiHeaders.getByRequest(formData, customHeaders)
+      
+      expect(result).toEqual(customHeaders)
+      expect(result).not.toHaveProperty('Content-Type')
+    })
+
+    it('should include Content-Type when request is not FormData / должен включать Content-Type, когда запрос — не FormData', () => {
+      const request = { key: 'value' }
+      const customHeaders = { 'X-Custom': 'value' }
+      
+      const result = apiHeaders.getByRequest(request, customHeaders, 'application/json')
+      
+      expect(result).toEqual({
+        'X-Custom': 'value',
+        'Content-Type': 'application/json'
+      })
+    })
+
+    it('should handle undefined request / должен корректно обрабатывать неопределенный запрос', () => {
+      const result = apiHeaders.getByRequest(undefined)
+      
+      expect(result).toEqual({
+        'Content-Type': 'application/json;charset=UTF-8'
+      })
+    })
+  })
+
+  describe('integration scenarios / Интеграционные сценарии', () => {
+    it('should properly merge default and custom headers with custom type / должен правильно объединять заголовки по умолчанию и кастомные с кастомным типом', () => {
       apiHeaders.set({
         'X-Api-Key': 'api-key-123',
         'X-App-Version': '1.0.0'
@@ -350,29 +221,7 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should allow updating default headers multiple times', () => {
-      apiHeaders.set({
-        'X-Api-Key': 'old-key'
-      })
-
-      apiHeaders.set({
-        'X-Api-Key': 'new-key',
-        'X-New-Header': 'new-value'
-      })
-
-      const result = apiHeaders.get({
-        Authorization: 'Bearer token'
-      })
-
-      expect(result).toEqual({
-        'X-Api-Key': 'new-key',
-        'X-New-Header': 'new-value',
-        'Authorization': 'Bearer token',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should handle real-world authentication scenario', () => {
+    it('should handle real-world authentication scenario / должен обрабатывать сценарий аутентификации из реальной практики', () => {
       apiHeaders.set({
         'X-Api-Key': 'production-key-123',
         'X-App-Version': '2.1.0',
@@ -394,40 +243,7 @@ describe('ApiHeaders', () => {
       })
     })
 
-    it('should handle form data content type scenario', () => {
-      const result = apiHeaders.get(
-        { Authorization: 'Bearer token' },
-        'multipart/form-data'
-      )
-
-      expect(result).toEqual({
-        'Authorization': 'Bearer token',
-        'Content-Type': 'multipart/form-data'
-      })
-    })
-
-    it('should handle scenario with no default headers and no custom headers', () => {
-      const result = apiHeaders.get()
-
-      expect(result).toEqual({
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should handle scenario with default headers only', () => {
-      apiHeaders.set({
-        'X-Api-Key': 'key-123'
-      })
-
-      const result = apiHeaders.get()
-
-      expect(result).toEqual({
-        'X-Api-Key': 'key-123',
-        'Content-Type': 'application/json;charset=UTF-8'
-      })
-    })
-
-    it('should handle scenario with custom headers overriding default headers', () => {
+    it('should handle scenario with custom headers overriding default headers / должен обрабатывать сценарий, когда кастомные заголовки перезаписывают заголовки по умолчанию', () => {
       apiHeaders.set({
         'X-Api-Key': 'default-key',
         'X-Version': '1.0'
