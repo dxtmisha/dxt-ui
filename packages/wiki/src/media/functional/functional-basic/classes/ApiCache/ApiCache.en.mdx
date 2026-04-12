@@ -1,0 +1,94 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiCache - API Response Caching'/>
+
+# ApiCache Class
+
+A class for caching API responses. It allows storing query results in memory or an external storage, preventing redundant network calls within a specified period. In the current implementation, caching is active only on the server side (SSR) to speed up rendering and reduce API load during concurrent requests.
+
+## Key Features
+
+- **Automated Key Management** — generates unique cache keys based on request parameters (path, method, request, etc.).
+- **Flexible TTL (Time To Live)** — allows setting the storage duration for each request individually or using a default (24 hours).
+- **SSR Optimization** — prevents unnecessary API calls in the Node.js environment. Disabled by default in the browser.
+- **Listener Support** — ability to connect external storage (e.g., `ServerStorage` or a database) via callback functions.
+- **Background Cleanup** — automatically removes expired entries when accessing the cache.
+
+## Initialization
+
+Usually, an `ApiCache` instance is created and managed internally by `ApiInstance`, but it can also be used independently.
+
+```typescript
+import { ApiCache } from '@dxtmisha/functional-basic'
+
+// 1. Create an instance
+const apiCache = new ApiCache()
+
+// 2. Optional binding to external storage
+apiCache.init(
+  (key) => myStorage.get(key),
+  (key, value) => myStorage.set(key, value),
+  (key) => myStorage.remove(key)
+)
+```
+
+### Working with External Storage (Nitro Example)
+
+By default, `ApiCache` stores data in the process's RAM. While fast, it has several limitations:
+1. **Data loss** on server process restart.
+2. **Lack of synchronization** — in a clustered environment, each server instance will have its own independent cache.
+3. **Cold starts** — in serverless environments (Vercel, AWS Lambda), memory can be cleared between calls.
+
+This is exactly why the `init` method is needed. It allows you to "plug in" any external storage (Redis, file system, database) under the hood of `ApiCache` that supports asynchronous operations.
+
+Below is an example of using `ApiCache` with Nitro (Nuxt's engine) through the built-in `useStorage` mechanism:
+
+```typescript
+// server/plugins/api-cache.ts
+export default defineNitroPlugin(() => {
+  const cache = Api.getCache()
+  const storage = useStorage('cache') // Nitro Cache region
+
+  cache.init(
+    async (key) => await storage.getItem(key),
+    async (key, value) => await storage.setItem(key, value),
+    async (key) => await storage.removeItem(key)
+  )
+})
+```
+
+Since the `ApiCache` methods are now asynchronous, they correctly wait for operations from external systems.
+
+### init Parameters
+
+The `init` method takes three callbacks for integration with external storage:
+- `getListener: (key: string) => any` — function for retrieving data. Should return a cache record object or `undefined`.
+- `setListener: (key: string, value: ApiCacheItem) => void` — function for saving data. Called for each cache write.
+- `removeListener: (key: string) => void` — function for removing data. Called on expiration or manual removal.
+
+## Methods
+
+### Core Methods
+- `get<T>(key: string): T | undefined` — Retrieve data by key.
+- `getByFetch<T>(fetch: ApiFetch): T | undefined` — Retrieve data based on API request parameters.
+- `set<T>(key: string, value: T, age?: number): this` — Store data in the cache.
+- `setByFetch<T>(fetch: ApiFetch, value: T): this` — Store data based on request parameters.
+- `remove(key: string): this` — Remove an entry from the cache.
+
+### Integration with ApiInstance
+When using through `ApiInstance`, simply specify the `cache` parameter in seconds:
+
+```typescript
+// Data will be cached for 60 seconds on the server side
+const data = await Api.get({
+  path: 'v1/products',
+  cache: 60
+})
+```
+
+## How It Works (SSR)
+
+1. **Initial Request**: `ApiInstance` checks `ApiCache` for data. If missing, a real network request is performed.
+2. **Saving**: Upon a successful response, data is stored in `ApiCache` with the specified TTL.
+3. **Repeat Request**: If the same request occurs within the TTL, `ApiInstance` instantly returns data from the cache without a network call.
+4. **Validation**: `ApiCache` constantly checks data expiration (`cacheAge` + `age`). If expired, the entry is considered invalid and will be removed.

@@ -14,6 +14,7 @@ import { type LoadingInstance } from './LoadingInstance'
 import { ErrorCenter } from './ErrorCenter'
 import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
+import { ApiCache } from './ApiCache'
 import { ApiDefault } from './ApiDefault'
 import { ApiHeaders } from './ApiHeaders'
 import { ApiHydration } from './ApiHydration'
@@ -191,7 +192,7 @@ export class ApiInstance {
    * Является ли сервер локальный.
    */
   isLocalhost(): boolean {
-    return typeof location === 'undefined' || location.hostname === 'localhost'
+    return typeof location !== 'undefined' && location.hostname === 'localhost'
   }
 
   /**
@@ -456,13 +457,20 @@ export class ApiInstance {
       retryDelay = 64,
       queryReturn = undefined,
       globalPreparation = true,
-      globalEnd = true
+      globalEnd = true,
+      endResetLimit = 8
     } = apiFetch
 
     const emulator = await this.response.emulator<T>(apiFetch)
 
     if (emulator) {
       return emulator
+    }
+
+    const cache = await ApiCache.getByFetch<T>(apiFetch)
+
+    if (cache) {
+      return cache
     }
 
     const status = new ApiStatus()
@@ -494,12 +502,15 @@ export class ApiInstance {
       }
 
       if (
-        end?.reset
+        (end?.reset && retryCount < endResetLimit)
         || retryCount < retry
       ) {
         await sleep(this.getRetryDelay(retryCount, retryDelay))
 
-        this.loading.hide()
+        if (!hideLoading) {
+          this.loading.hide()
+        }
+
         return await this.fetch(apiFetch, retryCount + 1)
       }
 
@@ -523,10 +534,6 @@ export class ApiInstance {
       throw e
     }
 
-    if (!hideLoading) {
-      this.loading.hide()
-    }
-
     status.setLastResponse(data)
     this.status.setLastResponse(data)
 
@@ -535,7 +542,12 @@ export class ApiInstance {
       status
     )
 
+    if (!hideLoading) {
+      this.loading.hide()
+    }
+
     this.hydration.toClient(apiFetch, responseData)
+    await ApiCache.setByFetch(apiFetch, responseData)
 
     return responseData
   }
@@ -595,7 +607,7 @@ export class ApiInstance {
     })
 
     if (fetchHeaders) {
-      fetchInit.headers = fetchHeaders
+      fetchInit.headers = copyObjectLite(fetchHeaders, init?.headers)
     }
 
     const timeoutId = this.initController(apiFetch, fetchInit)
@@ -753,6 +765,7 @@ export class ApiInstance {
       timeout
       && !controller
       && typeof AbortSignal !== 'undefined'
+      && typeof AbortSignal.timeout === 'function'
     ) {
       fetchInit.signal = AbortSignal.timeout(timeout)
       return undefined

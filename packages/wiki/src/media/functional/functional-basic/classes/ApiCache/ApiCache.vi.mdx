@@ -1,0 +1,94 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiCache - Bộ nhớ đệm (Caching) phản hồi API'/>
+
+# Lớp ApiCache
+
+Lớp dùng để lưu trữ dữ liệu phản hồi (caching) từ API. Nó cho phép lưu kết quả các truy vấn vào bộ nhớ hoặc kho lưu trữ bên ngoài, ngăn chặn các cuộc gọi mạng dư thừa trong một khoảng thời gian xác định. Trong triển khai hiện tại, caching chỉ hoạt động ở phía máy chủ (SSR) để tăng tốc độ hiển thị trang và giảm tải cho API khi có nhiều yêu cầu đồng thời.
+
+## Các tính năng chính
+
+- **Quản lý khóa tự động** — tạo các khóa cache (cache key) duy nhất dựa trên các tham số yêu cầu (path, method, request, v.v.).
+- **Thời gian sống linh hoạt (TTL)** — cho phép thiết lập thời gian lưu trữ riêng cho từng yêu cầu hoặc sử dụng giá trị mặc định (24 giờ).
+- **Tối ưu hóa SSR** — ngăn chặn các cuộc gọi API không cần thiết trong môi trường Node.js. Mặc định bị tắt trong trình duyệt.
+- **Hỗ trợ Listener** — khả năng kết nối với kho lưu trữ bên ngoài (ví dụ: `ServerStorage` hoặc cơ sở dữ liệu) thông qua các hàm callback.
+- **Tự động làm sạch** — tự động xóa các bản ghi đã hết hạn khi truy cập vào bộ nhớ đệm.
+
+## Khởi tạo
+
+Thông thường, một phiên bản `ApiCache` được tạo và quản lý nội bộ bởi `ApiInstance`, nhưng nó cũng có thể được sử dụng độc lập.
+
+```typescript
+import { ApiCache } from '@dxtmisha/functional-basic'
+
+// 1. Tạo một phiên bản (instance)
+const apiCache = new ApiCache()
+
+// 2. Tùy chọn kết nối với kho lưu trữ bên ngoài
+apiCache.init(
+  (key) => myStorage.get(key),
+  (key, value) => myStorage.set(key, value),
+  (key) => myStorage.remove(key)
+)
+```
+
+### Làm việc với kho lưu trữ bên ngoài (Ví dụ với Nitro)
+
+Mặc định, `ApiCache` lưu trữ dữ liệu trong RAM của tiến trình. Cách này nhanh nhưng có một số hạn chế:
+1. **Mất dữ liệu** khi tiến trình máy chủ khởi động lại.
+2. **Thiếu sự đồng bộ** — trong môi trường cluster, mỗi phiên bản máy chủ sẽ có bộ nhớ đệm độc lập riêng.
+3. **Cold starts** — trong các môi trường serverless (Vercel, AWS Lambda), bộ nhớ có thể bị xóa giữa các lần gọi.
+
+Đây chính là lý do phương thức `init` cần thiết. Nó cho phép bạn "cắm" bất kỳ kho lưu trữ bên ngoài nào (Redis, hệ thống tệp, cơ sở dữ liệu) vào bên dưới `ApiCache`, hỗ trợ các thao tác bất đồng bộ.
+
+Dưới đây là ví dụ sử dụng `ApiCache` cùng với Nitro (động cơ của Nuxt) thông qua cơ chế `useStorage` có sẵn:
+
+```typescript
+// server/plugins/api-cache.ts
+export default defineNitroPlugin(() => {
+  const cache = Api.getCache()
+  const storage = useStorage('cache') // Vùng cache trong Nitro
+
+  cache.init(
+    async (key) => await storage.getItem(key),
+    async (key, value) => await storage.setItem(key, value),
+    async (key) => await storage.removeItem(key)
+  )
+})
+```
+
+Nhờ việc các phương thức của `ApiCache` hiện đã là bất đồng bộ (asynchronous), chúng sẽ đợi các thao tác từ hệ thống bên ngoài hoàn thành một cách chính xác.
+
+### Các tham số của init
+
+Phương thức `init` nhận vào ba hàm callback để tích hợp với bộ nhớ ngoài:
+- `getListener: (key: string) => any` — hàm để lấy dữ liệu. Nên trả về một đối tượng bản ghi cache hoặc `undefined`.
+- `setListener: (key: string, value: ApiCacheItem) => void` — hàm để lưu dữ liệu. Được gọi mỗi khi ghi vào cache.
+- `removeListener: (key: string) => void` — hàm để xóa dữ liệu. Được gọi khi hết hạn hoặc khi xóa thủ công.
+
+## Các phương thức
+
+### Phương thức chính
+- `get<T>(key: string): T | undefined` — Lấy dữ liệu theo khóa.
+- `getByFetch<T>(fetch: ApiFetch): T | undefined` — Lấy dữ liệu dựa trên các tham số của yêu cầu API.
+- `set<T>(key: string, value: T, age?: number): this` — Lưu dữ liệu vào bộ nhớ đệm.
+- `setByFetch<T>(fetch: ApiFetch, value: T): this` — Lưu dữ liệu dựa trên các tham số yêu cầu.
+- `remove(key: string): this` — Xóa một bản ghi khỏi bộ nhớ đệm.
+
+### Tích hợp với ApiInstance
+Khi sử dụng thông qua `ApiInstance`, chỉ cần chỉ định tham số `cache` tính bằng giây:
+
+```typescript
+// Dữ liệu sẽ được lưu cache trong 60 giây ở phía máy chủ
+const data = await Api.get({
+  path: 'v1/products',
+  cache: 60
+})
+```
+
+## Cách thức hoạt động (SSR)
+
+1. **Yêu cầu đầu tiên**: `ApiInstance` kiểm tra `ApiCache` để xem có dữ liệu hay không. Nếu không có, một yêu cầu mạng thực tế sẽ được thực hiện.
+2. **Lưu trữ**: Sau khi nhận được phản hồi thành công, dữ liệu được lưu vào `ApiCache` với TTL đã chỉ định.
+3. **Yêu cầu lặp lại**: Nếu cùng một yêu cầu xảy ra trong khoảng thời gian TTL, `ApiInstance` sẽ ngay lập tức trả về dữ liệu từ bộ nhớ đệm mà không cần gọi mạng.
+4. **Kiểm tra tính hợp lệ**: `ApiCache` liên tục kiểm tra thời gian hết hạn của dữ liệu (`cacheAge` + `age`). Nếu đã hết hạn, bản ghi được coi là không hợp lệ và sẽ bị xóa.

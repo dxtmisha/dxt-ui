@@ -59,7 +59,7 @@ export type ApiConfig = {
   /** Function to call before request/ Функция для вызова перед запросом */
   preparation?: (apiFetch: ApiFetch) => Promise<void>
   /** Function to call after request/ Функция для вызова после запроса */
-  end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>
+  end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>
 
   /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
   timeout?: number
@@ -159,6 +159,15 @@ export type ApiFetch = {
 
   /** AbortController for canceling the request/ AbortController для отмены запроса */
   controller?: AbortController
+
+  /** Cache age in seconds/ Возраст кэша в секундах */
+  cache?: number
+
+  /** Cache ID for grouping/ ID кэша для группировки */
+  cacheId?: number | string
+
+  /** Limit of end reset/ Лимит сброса end */
+  endResetLimit?: number
 }
 
 /**

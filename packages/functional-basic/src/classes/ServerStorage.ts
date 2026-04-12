@@ -126,7 +126,8 @@ export class ServerStorage {
         + 'Isolation failed: data will not be saved for this request.'
       )
 
-      return {}
+      this.storage = {}
+      return this.storage
     }
 
     if (!(SERVER_STORAGE_KEY in context)) {

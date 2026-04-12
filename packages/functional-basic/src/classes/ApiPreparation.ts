@@ -44,16 +44,11 @@ export class ApiPreparation {
     query: Response,
     apiFetch: ApiFetch
   ): Promise<ApiPreparationEnd> {
-    let data: ApiPreparationEnd = {}
-
-    if (
-      active
-      && this.callbackEnd
-    ) {
-      data = await this.callbackEnd(query, apiFetch)
+    if (active && this.callbackEnd) {
+      return await this.callbackEnd(query, apiFetch)
     }
 
-    return data
+    return {}
   }
 
   /**
@@ -83,37 +78,29 @@ export class ApiPreparation {
    *
    * Выполнить подготовку.
    * @param apiFetch request options/ опции запроса
+   * @param limit limit of attempts/ лимит попыток
    */
-  protected async go(apiFetch: ApiFetch) {
+  protected async go(apiFetch: ApiFetch, limit: number = 32) {
     return new Promise<void>((resolve) => {
-      if (this.loading) {
-        setTimeout(() => this.go(apiFetch).then(resolve), 160)
+      if (
+        this.loading
+        && limit > 0
+      ) {
+        setTimeout(() => this.go(apiFetch, limit - 1).then(resolve), 160)
       } else if (this.callback) {
         this.loading = true
-        this.callback(apiFetch).then(() => {
-          this.loading = false
-          resolve()
-        })
+        this.callback(apiFetch)
+          .then(() => {
+            this.loading = false
+            resolve()
+          })
+          .catch(() => {
+            this.loading = false
+            resolve()
+          })
       } else {
         resolve()
       }
     })
-  }
-
-  /**
-   * Analysis of the request after execution.
-   *
-   * Анализ запроса после выполнения.
-   * @param query data received in the request/ данные, полученные в запросе
-   * @param apiFetch request options/ опции запроса
-   */
-  protected async end(query: Response, apiFetch: ApiFetch) {
-    let data: ApiPreparationEnd = {}
-
-    if (this.callbackEnd) {
-      data = await this.callbackEnd(query, apiFetch)
-    }
-
-    return data
   }
 }

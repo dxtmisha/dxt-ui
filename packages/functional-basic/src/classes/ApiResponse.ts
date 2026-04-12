@@ -126,7 +126,7 @@ export class ApiResponse {
     const {
       path = '',
       method = ApiMethodItem.get,
-      global = method === ApiMethodItem.get,
+      global,
       devMode = false
     } = apiFetch
 
@@ -214,7 +214,7 @@ export class ApiResponse {
   protected isResponse(
     item: ApiResponseItem,
     request?: ApiFetch['request']
-  ) {
+  ): boolean {
     const requestItem = this.requestDefault.request(item?.request)
 
     return request === requestItem
@@ -291,12 +291,11 @@ export class ApiResponse {
    * Отключить загрузку для эмуляции запроса.
    */
   protected stopResponseLoading() {
-    this.loading = setTimeout(() => {
-      this.loading = undefined
-
-      if (isDomRuntime()) {
+    if (isDomRuntime()) {
+      this.loading = setTimeout(() => {
+        this.loading = undefined
         document.body.classList.remove(CLASS_RESPONSE_LOADING)
-      }
-    }, 1200)
+      }, 1200)
+    }
   }
 }
