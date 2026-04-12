@@ -34,9 +34,9 @@ export class ApiCache {
    * @param removeListener Storage mechanism for removing data / механизм хранения для удаления данных
    */
   init(
-    getListener?: (key: string) => any,
-    setListener?: (key: string, value: any) => void,
-    removeListener?: (key: string) => void
+    getListener: (key: string) => any,
+    setListener: (key: string, value: any) => void,
+    removeListener: (key: string) => void
   ): this {
     this.getListener = getListener
     this.setListener = setListener
@@ -84,6 +84,19 @@ export class ApiCache {
     this.setItemOrListener(key, item)
 
     return this
+  }
+
+  /**
+   * Saving data to cache using fetch options.
+   *
+   * Сохранение данных в кэш с использованием опций fetch.
+   * @param fetch fetch options / опции fetch
+   * @param value data to be stored / данные для хранения
+   * @param age cache age / возраст кэша
+   */
+  setByFetch<T>(fetch: ApiFetch, value: T, age?: number): this {
+    const key = this.generateKey(fetch)
+    return this.set(key, value, age)
   }
 
   /**
@@ -167,6 +180,12 @@ export class ApiCache {
     return undefined
   }
 
+  /**
+   * Getting list of cache items.
+   *
+   * Получение списка элементов кэша.
+   * @returns list of cache items / список элементов кэша
+   */
   protected getList(): ApiCacheList {
     if (!this.items) {
       this.items = {}
