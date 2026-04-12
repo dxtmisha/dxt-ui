@@ -1,5 +1,6 @@
-import { isDomRuntime } from '../functions/isDomRuntime'
 import { forEach } from '../functions/forEach'
+import { getElementSafeScript } from '../functions/getElementSafeScript'
+import { isDomRuntime } from '../functions/isDomRuntime'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
 /** Item stored in the server storage/ Элемент, хранящийся в серверном хранилище */
@@ -104,15 +105,14 @@ export class ServerStorage {
    * Возвращает строковое представление хранилища для гидратации.
    */
   static toString(): string {
-    let json = JSON.stringify(this.getDataForHydration())
-
-    if (json.includes('</script>')) {
-      json = json.replace(/<\/script>/g, '<\\/script>')
-    }
-
-    return `<script id="${SERVER_STORAGE_ID}" type="application/json">${json}</script>`
+    return getElementSafeScript(SERVER_STORAGE_ID, this.getDataForHydration())
   }
 
+  /**
+   * Returns storage.
+   *
+   * Возвращает хранилище.
+   */
   protected static getStorage(): ServerStorageList {
     if (isDomRuntime()) {
       return this.getStorageDom()

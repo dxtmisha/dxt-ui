@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A versatile wrapper around the native JavaScript `Date` object, designed to simplify working with dates and times. It combines formatting capabilities, calculations (date navigation), and cloning, relying on `Geo` and `GeoIntl` localization settings.
 
+> **Warning (SSR):** Creating a `Datetime` instance without a specific date (using the current time) for rendering in SSR may lead to hydration mismatches because the time or time zone on the server may differ from the time on the client.
+
 ## Key Features
 
 - **Simplified Management** — intuitive methods for date navigation (moving to the start of the month, incrementing days, etc.).

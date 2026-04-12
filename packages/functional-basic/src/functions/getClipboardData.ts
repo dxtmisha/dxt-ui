@@ -1,3 +1,5 @@
+import { isDomRuntime } from './isDomRuntime'
+
 /**
  * The method retrieves drag data (as a string) for the specified type.
  * If the drag operation does not include data, this method returns an empty string.
@@ -7,5 +9,9 @@
  * @returns data from the clipboard / данные из буфера обмена
  */
 export async function getClipboardData(event?: ClipboardEvent): Promise<string> {
-  return event?.clipboardData?.getData('text') ?? (await navigator.clipboard.readText() || '')
+  if (isDomRuntime()) {
+    return event?.clipboardData?.getData('text') ?? (await navigator.clipboard.readText() || '')
+  }
+
+  return ''
 }

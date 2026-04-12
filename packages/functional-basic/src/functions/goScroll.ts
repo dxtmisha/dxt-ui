@@ -1,3 +1,5 @@
+import { isDomRuntime } from './isDomRuntime'
+
 const INDENT = 0
 
 /**
@@ -14,6 +16,10 @@ export function goScroll(
   elementTo: HTMLElement | undefined,
   elementCenter?: HTMLElement
 ) {
+  if (!isDomRuntime()) {
+    return
+  }
+
   const element = elementTo?.closest<HTMLElement>(selector)
 
   if (

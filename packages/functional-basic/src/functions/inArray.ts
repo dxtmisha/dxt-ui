@@ -6,5 +6,5 @@
  * @param value value to be checked/ проверяемое значение
  */
 export function inArray<T>(array: T[], value: T): boolean {
-  return array.indexOf(value) !== -1
+  return array.includes(value)
 }

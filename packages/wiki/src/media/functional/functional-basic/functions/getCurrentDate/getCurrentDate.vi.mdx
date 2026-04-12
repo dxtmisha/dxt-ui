@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Trả về ngày hiện tại theo định dạng được chỉ định. Hàm này là một wrapper bao quanh lớp `Datetime` và cho phép bạn nhanh chóng lấy chuỗi thời gian hiện tại đã được định dạng.
 
+> **Cảnh báo (SSR):** Việc sử dụng hàm này để render trong SSR có thể dẫn đến lỗi hydration mismatch vì thời gian hoặc múi giờ trên máy chủ có thể khác với thời gian trên máy khách. Khuyến khích chỉ sử dụng hàm này bên trong các hook phía máy khách (ví dụ: `onMounted` trong Vue hoặc `useEffect` trong React).
+
 **Tham số:**
 - `format: GeoDate` — loại định dạng ngày đầu ra (mặc định là `'datetime'`). Hỗ trợ các giá trị: `'date'`, `'time'`, `'datetime'`, `'full'` và các giá trị khác.
 

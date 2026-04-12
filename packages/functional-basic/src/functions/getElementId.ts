@@ -1,11 +1,12 @@
 import { getElement } from './getElement'
 import { isFilled } from './isFilled'
 
+import { ServerStorage } from '../classes/ServerStorage'
+
 import {
   type ElementOrString,
   type ElementOrWindow
 } from '../types/basicTypes'
-import { ServerStorage } from '../classes/ServerStorage'
 
 /**
  * Listener that returns the current request context/

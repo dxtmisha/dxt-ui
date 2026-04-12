@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getElementSafeScript - Generation of a safe script for hydration'/>
+
+# `getElementSafeScript`
+
+A utility for generating a safe `<script type="application/json">` tag, which is used for transferring data from the server to the client (hydration).
+
+This function automatically serializes data into JSON and escapes closing `</script>` tags, preventing XSS attacks and HTML parsing errors when embedding data.
+
+**Parameters:**
+- `id: string` — The unique identifier (ID) for the script tag.
+- `data: any` — The data that needs to be serialized and stored in the tag.
+
+**Returns:**
+`string` — A string containing the ready HTML script tag.
+
+```typescript
+import { getElementSafeScript } from '@dxtmisha/functional-basic'
+
+const data = { 
+  user: 'Misha', 
+  content: '</script><script>alert(1)</script>' 
+}
+
+console.log(getElementSafeScript('hydration-data', data))
+// Result:
+// <script id="hydration-data" type="application/json">
+//   {"user":"Misha","content":"<\\/script><script>alert(1)<\\/script>"}
+// </script>
+```

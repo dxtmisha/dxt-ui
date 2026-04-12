@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getElementSafeScript - Tạo một script an toàn cho hydration'/>
+
+# `getElementSafeScript`
+
+Một tiện ích để tạo thẻ `<script type="application/json">` an toàn, được sử dụng để chuyển dữ liệu từ máy chủ sang máy khách (hydration).
+
+Hàm này tự động tuần tự hóa dữ liệu thành JSON và thoát các thẻ đóng `</script>`, ngăn chặn các cuộc tấn công XSS và lỗi phân tích cú pháp HTML khi nhúng dữ liệu.
+
+**Tham số:**
+- `id: string` — Mã định danh duy nhất (ID) cho thẻ script.
+- `data: any` — Dữ liệu cần được tuần tự hóa và lưu trữ trong thẻ.
+
+**Trả về:**
+`string` — Một chuỗi chứa thẻ script HTML đã sẵn sàng.
+
+```typescript
+import { getElementSafeScript } from '@dxtmisha/functional-basic'
+
+const data = { 
+  user: 'Misha', 
+  content: '</script><script>alert(1)</script>' 
+}
+
+console.log(getElementSafeScript('hydration-data', data))
+// Kết quả:
+// <script id="hydration-data" type="application/json">
+//   {"user":"Misha","content":"<\\/script><script>alert(1)<\\/script>"}
+// </script>
+```

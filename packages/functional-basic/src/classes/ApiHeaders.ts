@@ -2,6 +2,8 @@ import { copyObjectLite } from '../functions/copyObjectLite'
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
+import type { ApiFetch } from '../types/apiTypes'
+
 /**
  * Class for managing HTTP request headers.
  *
@@ -20,7 +22,7 @@ export class ApiHeaders {
    */
   get(
     value?: Record<string, string> | null,
-    type = 'application/json;charset=UTF-8'
+    type: string | undefined | null = 'application/json;charset=UTF-8'
   ): Record<string, string> | undefined {
     if (value !== null) {
       const headers = copyObjectLite(
@@ -36,6 +38,26 @@ export class ApiHeaders {
     }
 
     return undefined
+  }
+
+  /**
+   * Getting the header for the request.
+   *
+   * Получение заголовка для запроса.
+   * @param request request data/ данные запроса
+   * @param value list of headers/ список заголовков
+   * @param type type of request/ тип запроса
+   */
+  getByRequest(
+    request: ApiFetch['request'],
+    value?: Record<string, string> | null,
+    type = 'application/json;charset=UTF-8'
+  ): Record<string, string> | undefined {
+    if (request instanceof FormData) {
+      return this.get(value, null)
+    }
+
+    return this.get(value, type)
   }
 
   /**

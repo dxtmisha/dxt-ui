@@ -556,7 +556,7 @@ export class ApiInstance {
 
     const pathFinal = pathFull ?? this.getUrl(path, api)
     const url = `${pathFinal}${this.getBodyForGet(request, pathFinal, method)}`
-    const fetchHeaders = this.headers.get(headers, type)
+    const fetchHeaders = this.headers.getByRequest(apiFetch.request, headers, type)
     const fetchInit = copyObjectLite(init, {
       method,
       body: this.getBody(request, method)

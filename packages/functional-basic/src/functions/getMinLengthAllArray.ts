@@ -1,4 +1,5 @@
 import { getLengthOfAllArray } from './getLengthOfAllArray'
+import { isFilled } from './isFilled'
 
 import { type ObjectOrArray } from '../types/basicTypes'
 
@@ -9,5 +10,15 @@ import { type ObjectOrArray } from '../types/basicTypes'
  * @param data array with data/ массив с данными
  */
 export function getMinLengthAllArray(data: ObjectOrArray<string>): number {
-  return Math.min(...getLengthOfAllArray(data))
+  if (!isFilled(data)) {
+    return 0
+  }
+
+  const lengths = getLengthOfAllArray(data)
+
+  if (lengths.length > 10_000) {
+    return lengths.reduce((min, current) => Math.min(min, current))
+  }
+
+  return Math.min(...lengths)
 }

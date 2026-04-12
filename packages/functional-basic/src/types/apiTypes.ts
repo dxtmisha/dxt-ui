@@ -150,18 +150,18 @@ export type ApiResponseItem = {
  */
 export type ApiDataItem<T = any>
   = T
-    & {
+  & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-      data?: T
-      /** Success flag/ Флаг успешности */
-      success?: boolean
-      /** Status/ Статус */
-      status?: ApiStatusType
-      /** Message/ Сообщение */
-      message?: string
-      /** Status object/ Объект статуса */
-      statusObject?: ApiStatusItem
-    }
+    data?: T
+    /** Success flag/ Флаг успешности */
+    success?: boolean
+    /** Status/ Статус */
+    status?: ApiStatusType
+    /** Message/ Сообщение */
+    message?: string
+    /** Status object/ Объект статуса */
+    statusObject?: ApiStatusItem
+  }
 
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API
@@ -197,3 +197,22 @@ export type ApiStatusItem = {
   /** Last message/ Последнее сообщение */
   lastMessage?: string
 }
+
+/**
+ * Type of API hydration item/ Тип элемента гидратации API
+ */
+export type ApiHydrationItem = {
+  /** Path string or RegExp to match request URL/ Путь или RegExp для сопоставления URL */
+  path: string
+  /** Expected HTTP method/ Ожидаемый HTTP метод */
+  method: ApiMethod
+  /** Expected request payload or special marker '*any'/ Ожидаемая нагрузка запроса или маркер '*any' */
+  request?: ApiFetch['request']
+  /** Static response or factory function/ Статический ответ или функция, возвращающая ответ */
+  response: any
+}
+
+/**
+ * List of API hydration items/ Список элементов гидратации API
+ */
+export type ApiHydrationList = ApiHydrationItem[]

@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Returns the current date in the specified format. The function is a wrapper around the `Datetime` class and allows you to quickly get a formatted string of the current time.
 
+> **Warning (SSR):** Using this function for rendering in SSR may lead to hydration mismatches because the time or time zone on the server may differ from the time on the client. It is recommended to use this function inside client-side hooks only (e.g., `onMounted` in Vue or `useEffect` in React).
+
 **Parameters:**
 - `format: GeoDate` — type of date format for output (default `'datetime'`). Supports values: `'date'`, `'time'`, `'datetime'`, `'full'`, and others.
 

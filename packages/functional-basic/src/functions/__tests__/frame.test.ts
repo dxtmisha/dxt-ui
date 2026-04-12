@@ -40,6 +40,20 @@ describe('frame', () => {
     expect(callbackFn).toHaveBeenCalledTimes(1)
   })
 
+  it('should not loop in SSR even if next returns true', () => {
+    const callbackFn = vi.fn()
+    const nextFn = vi.fn(() => true)
+    const endFn = vi.fn()
+    vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(false)
+
+    frame(callbackFn, nextFn, endFn)
+
+    expect(mockRequestAnimationFrame).not.toHaveBeenCalled()
+    expect(callbackFn).toHaveBeenCalledTimes(1)
+    expect(nextFn).not.toHaveBeenCalled()
+    expect(endFn).toHaveBeenCalledTimes(1)
+  })
+
   it('should loop if next returns true', () => {
     vi.spyOn(domRuntime, 'isDomRuntime').mockReturnValue(true)
     const callbackFn = vi.fn()

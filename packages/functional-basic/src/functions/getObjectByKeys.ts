@@ -5,11 +5,14 @@
  * @param data object with data/ объект с данными
  * @param keys list of keys/ список ключей
  */
-export function getObjectByKeys(
-  data: Record<string, any>,
-  keys: string[]
-) {
-  const returnData: Record<string, any> = {}
+export function getObjectByKeys<
+  T extends Record<string, any>,
+  K extends keyof T
+>(
+  data: T,
+  keys: K[]
+): Pick<T, K> {
+  const returnData = {} as Pick<T, K>
 
   keys.forEach((key) => {
     if (

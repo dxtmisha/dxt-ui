@@ -17,7 +17,7 @@ export function forEach<
   T,
   R,
   D extends T[] | Record<string, T> | Map<string, T> | Set<T> = T[] | Record<string, T> | Map<string, T> | Set<T>,
-  K = D extends T[] ? number : (D extends Set<T> ? T : string)
+  K = D extends T[] ? number : string
 >(
   data: D & (T[] | Record<string, T> | Map<string, T> | Set<T>),
   callback: (item: T, key: K, dataMain: typeof data) => R,

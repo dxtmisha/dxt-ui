@@ -11,8 +11,13 @@ describe('getMinLengthAllArray', () => {
     expect(getMinLengthAllArray(['short', '', 'longest'])).toBe(0)
   })
 
-  it('should return Infinity if an empty array is passed', () => {
-    // Math.min() with no arguments returns Infinity
-    expect(getMinLengthAllArray([])).toBe(Infinity)
+  it('should return 0 if an empty array is passed', () => {
+    expect(getMinLengthAllArray([])).toBe(0)
+  })
+
+  it('should return the length of the shortest string in a large array (>10,000)', () => {
+    const data = new Array(11000).fill('aaaa')
+    data[5000] = 'abc'
+    expect(getMinLengthAllArray(data)).toBe(3)
   })
 })

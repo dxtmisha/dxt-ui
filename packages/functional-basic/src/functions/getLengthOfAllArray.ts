@@ -9,5 +9,5 @@ import { type ObjectOrArray } from '../types/basicTypes'
  * @param value input value/ входное значение
  */
 export function getLengthOfAllArray(value: ObjectOrArray<string>): number[] {
-  return forEach<string, number>(value, item => item.length)
+  return forEach<string, number>(value, item => item?.length ?? 0)
 }

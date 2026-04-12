@@ -1,4 +1,5 @@
 import { copyObjectLite } from '../functions/copyObjectLite'
+import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
 import { type ApiDefaultValue, type ApiFetch } from '../types/apiTypes'
@@ -41,7 +42,7 @@ export class ApiDefault {
   ): ApiFetch['request'] {
     const value = this.get()
 
-    if (value) {
+    if (isFilled(value)) {
       if (request instanceof FormData) {
         this.addByFormData(request, value)
       } else if (isObjectNotArray(request)) {

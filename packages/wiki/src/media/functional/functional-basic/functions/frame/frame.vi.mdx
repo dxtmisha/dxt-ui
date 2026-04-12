@@ -6,12 +6,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Tiện ích này sẽ gọi vòng lặp `requestAnimationFrame` để thực hiện hoạt ảnh theo từng khung hình (frame-by-frame) trong trình duyệt.
 
-Trình duyệt tự động tối ưu hóa tốc độ khung hình (thường là 60 FPS) và dừng hoạt ảnh khi tab không hoạt động, giúp hiển thị mượt mà. Trong các môi trường không có DOM (chẳng hạn như SSR), `requestAnimationFrame` sẽ không được sử dụng và hàm chỉ thực thi lệnh callback một lần đồng bộ.
+Trình duyệt tự động tối ưu hóa tốc độ khung hình (thường là 60 FPS) và dừng hoạt ảnh khi tab không hoạt động, giúp hiển thị mượt mà.
+
+**Hành vi trong SSR:**
+Trong các môi trường không có DOM (chẳng hạn như SSR), `requestAnimationFrame` sẽ không được sử dụng. Hàm thực thi `callback` một lần đồng bộ và gọi ngay lập tức hàm `end` (vòng lặp qua `next` không được bắt đầu) để ngăn chặn tràn ngăn xếp (stack overflow) và chặn luồng trên máy chủ (server thread blocking).
 
 **Tham số:**
-- `callback: () => void` — Hàm được gọi khi đến thời điểm cập nhật hoạt ảnh cho lần vẽ lại tiếp theo.
-- `next?: () => boolean` — Hàm điều kiện. Nếu trả về `true`, vòng lặp hoạt ảnh tiếp tục. Nếu trả về `false`, vòng lặp dừng lại.
-- `end?: () => void` — Hàm được thực thi một lần khi vòng lặp hoạt ảnh dừng lại (nghĩa là `next` trả về false).
+- `callback: () => void` — Hàm được gọi để cập nhật hoạt ảnh.
+- `next?: () => boolean` — Hàm điều kiện. Nếu trả về `true` (chỉ trong trình duyệt), vòng lặp hoạt ảnh tiếp tục.
+- `end?: () => void` — Hàm được thực thi một lần khi vòng lặp hoạt ảnh kết thúc.
 
 **Trả về:**
 `void`

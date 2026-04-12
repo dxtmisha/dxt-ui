@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một bộ khung lớp bao quanh đối tượng `Date` nguyên bản của JavaScript, được thiết kế để đơn giản hóa việc làm việc với ngày tháng và thời gian. Nó kết hợp các khả năng định dạng, tính toán (điều hướng ngày tháng) và sao chép, dựa trên các thiết lập địa phương hóa của `Geo` и `GeoIntl`.
 
+> **Cảnh báo (SSR):** Việc tạo một thực thể `Datetime` mà không có ngày cụ thể (sử dụng thời gian hiện tại) để render trong SSR có thể dẫn đến lỗi hydration mismatch vì thời gian hoặc múi giờ trên máy chủ có thể khác với thời gian trên máy khách.
+
 ## Tính năng chính
 
 - **Quản lý đơn giản** — các phương thức trực quan để điều hướng ngày tháng (chuyển đến đầu tháng, tăng thêm ngày, v.v.).

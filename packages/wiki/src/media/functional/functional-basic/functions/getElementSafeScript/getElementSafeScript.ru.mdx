@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getElementSafeScript - Генерация безопасного скрипта для гидратации'/>
+
+# `getElementSafeScript`
+
+Утилита для генерации безопасного тега `<script type="application/json">`, который используется для передачи данных с сервера на клиент (гидратации).
+
+Эта функция автоматически сериализует данные в JSON и экранирует закрывающие теги `</script>`, предотвращая XSS-атаки и ошибки парсинга HTML при встраивании данных.
+
+**Параметры:**
+- `id: string` — Уникальный идентификатор (ID) тега скрипта.
+- `data: any` — Данные, которые необходимо сериализовать и сохранить в теге.
+
+**Возвращает:**
+`string` — Готовая строка с HTML-тегом скрипта.
+
+```typescript
+import { getElementSafeScript } from '@dxtmisha/functional-basic'
+
+const data = { 
+  user: 'Misha', 
+  content: '</script><script>alert(1)</script>' 
+}
+
+console.log(getElementSafeScript('hydration-data', data))
+// Результат:
+// <script id="hydration-data" type="application/json">
+//   {"user":"Misha","content":"<\\/script><script>alert(1)<\\/script>"}
+// </script>
+```

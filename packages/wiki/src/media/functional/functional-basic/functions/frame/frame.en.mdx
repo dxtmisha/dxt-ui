@@ -6,12 +6,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 A utility that cyclically calls `requestAnimationFrame` to perform frame-by-frame animation in the browser.
 
-It's useful for creating smooth animations because the browser automatically optimizes the frame rate (typically 60 FPS) and pauses the animation when the tab is inactive. In non-DOM environments (such as SSR), `requestAnimationFrame` is not used, and the function executes the callback synchronously to prevent crashing.
+It's useful for creating smooth animations because the browser automatically optimizes the frame rate (typically 60 FPS) and pauses the animation when the tab is inactive.
+
+**SSR Behavior:**
+In non-DOM environments (such as SSR), `requestAnimationFrame` is not used. The function executes the `callback` once synchronously and immediately calls `end` (the loop via `next` is not started) to prevent stack overflow and thread blocking on the server.
 
 **Parameters:**
-- `callback: () => void` — The function to call when it's time to update your animation for the repaint.
-- `next?: () => boolean` — A condition function. If it returns `true`, the animation loop continues. If `false`, the loop stops.
-- `end?: () => void` — A callback function that is executed once the animation loop ends (when `next` returns `false`).
+- `callback: () => void` — The function to call to update your animation.
+- `next?: () => boolean` — A condition function. If it returns `true` (only in browser), the animation loop continues.
+- `end?: () => void` — A callback function that is executed once the animation loop ends.
 
 **Returns:**
 `void`

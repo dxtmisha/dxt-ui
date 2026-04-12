@@ -4,7 +4,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # `getCurrentTime`
 
-Returns the current time in milliseconds. The function is a wrapper around `new Date().getTime()` and allows you to quickly get a timestamp.
+Returns the current time in milliseconds.
+
+> **Warning (SSR):** Using this function for rendering in SSR will almost certainly lead to hydration mismatches because the timestamp on the server will differ from the timestamp on the client.
+
+The function is a wrapper around `Date.now()` and allows you to quickly get a timestamp.
 
 **Returns:**
 Current time in milliseconds (number).

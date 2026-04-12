@@ -16,7 +16,10 @@ export function frame(
   const init = () => {
     callback()
 
-    if (next?.()) {
+    if (
+      isDomRuntime()
+      && next?.()
+    ) {
       frame(callback, next, end)
     } else {
       end?.()

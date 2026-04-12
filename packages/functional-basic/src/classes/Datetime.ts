@@ -16,6 +16,15 @@ import {
  * A class for working with dates.
  *
  * Класс для работы с датами.
+ *
+ * @remarks
+ * Creating a `Datetime` instance without a specific date (using the current time)
+ * for rendering in SSR may lead to hydration mismatches because the time or time zone
+ * on the server may differ from the time on the client.
+ *
+ * Создание экземпляра `Datetime` без указания конкретной даты (использование текущего времени)
+ * для отрисовки в SSR может привести к ошибкам гидратации, так как время или часовой пояс
+ * сервера могут отличаться от времени на стороне клиента.
  */
 export class Datetime {
   protected date: Date
