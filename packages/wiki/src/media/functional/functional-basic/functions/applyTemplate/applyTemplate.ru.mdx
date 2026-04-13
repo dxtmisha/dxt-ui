@@ -1,35 +1,47 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/applyTemplate - Применение шаблона к тексту'/>
 
 # `applyTemplate`
 
-Утилита для динамического формирования текста на основе шаблонов. Это полезно для задач локализации (i18n), генерации системных сообщений или подстановки пользовательских данных в строковые константы.
-
-Она поддерживает:
-- Позиционные маркеры (`%d`, `%e` и т.д.) для подстановки значений из массива по порядку.
-- Именованные маркеры (`[key]`, `{key}`) для подстановки значений из объекта по ключам.
-- Парные теги (`[key]контент[/key]`, `{key}контент{/key}`) для оборачивания контента в HTML-теги или другие конструкции (слово `[content]` внутри переданного значения заменяется на содержимое тега).
+Утилита для замены меток в тексте на значения из объекта или массива.
 
 **Параметры:**
 - `text: string` — Исходный текст с шаблоном.
-- `replacement: Record<string, string | number> | string[]` — Объект или массив со значениями для подстановки. По умолчанию `{}`.
+- `replacement: Record<string, string | number | boolean> | string[]` — Объект или массив со значениями.
+
+**Форматы замены (replacement)**
+- **Массив**: Используется для позиционных меток `%d`, `%e`, `%f` и далее по алфавиту.
+- **Объект**: Используется для именованных меток в скобках `[key]` или `{key}`, а также для парных тегов `[tag]текст[/tag]`.
 
 **Возвращает:**
 `string` — Текст с подставленными значениями.
 
-```typescript
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
 import { applyTemplate } from '@dxtmisha/functional-basic'
 
-// Позиционные маркеры
-console.log(applyTemplate('Привет, %d %e!', ['Иван', 'Иванов'])) // 'Привет, Иван Иванов!'
+// 1. Позиционные маркеры (массив)
+applyTemplate('Привет, %d %e!', ['Иван', 'Иванов']) // 'Привет, Иван Иванов!'
 
-// Именованные маркеры
-console.log(applyTemplate('Привет, [name]!', { name: 'Иван' })) // 'Привет, Иван!'
-console.log(applyTemplate('Привет, {name}!', { name: 'Иван' })) // 'Привет, Иван!'
+// 2. Именованные маркеры (объект)
+applyTemplate('Цена: [price] {currency}', { price: 100, currency: 'USD' }) // 'Цена: 100 USD'
 
-// Обёртка с парными тегами и контентом
-console.log(applyTemplate('Нажми [link]здесь[/link]', { link: '<a href="#">[content]</a>' }))
-console.log(applyTemplate('Нажми {link}здесь{/link}', { link: '<a href="#">{content}</a>' }))
-// 'Нажми <a href="#">здесь</a>'
-```
+// 3. Обработка 0 и false
+applyTemplate('Значение: [val]', { val: 0 })      // 'Значение: 0'
+applyTemplate('Статус: [val]', { val: false })    // 'Статус: false'
+
+// 4. Пропуск отсутствующих ключей
+applyTemplate('Отсутствует: [none]', {})           // 'Отсутствует: [none]'
+
+// 5. Парные теги с подстановкой контента
+const tags = { link: '<a href="https://google.com">[content]</a>' }
+applyTemplate('Нажми [link]здесь[/link]', tags)  // 'Нажми <a href="https://google.com">здесь</a>'
+
+// 6. Макросы списка (выход за границы)
+applyTemplate('Список: %d, %e, %f', ['A', 'B'])  // 'Список: A, B, '
+  `}
+/>

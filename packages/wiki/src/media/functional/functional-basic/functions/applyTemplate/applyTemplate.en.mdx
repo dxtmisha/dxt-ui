@@ -1,35 +1,47 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/applyTemplate - Applying a template to text'/>
 
 # `applyTemplate`
 
-A utility for dynamic text generation based on templates. This is useful for localization (i18n) tasks, generating system messages, or inserting user data into string constants.
-
-It supports:
-- Positional markers (`%d`, `%e`, etc.) to substitute values from an array in order.
-- Named markers (`[key]`, `{key}`) to substitute values from an object by keys.
-- Paired tags (`[key]content[/key]`, `{key}content{/key}`) to wrap content in HTML tags or other constructs (the word `[content]` inside the passed value is replaced by the tag's generic content).
+A utility for replacing markers in text with values from an object or an array.
 
 **Parameters:**
 - `text: string` — The original text containing template markers.
-- `replacement: Record<string, string | number> | string[]` — An object or array containing values for substitution. Defaults to `{}`.
+- `replacement: Record<string, string | number | boolean> | string[]` — An object or array containing values.
+
+**Replacement formats (replacement)**
+- **Array**: Used for positional markers like `%d`, `%e`, `%f`, and so on (alphabetically).
+- **Object**: Used for named markers in brackets `[key]` or `{key}`, as well as paired tags `[tag]text[/tag]`.
 
 **Returns:**
 `string` — The text with substituted values.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { applyTemplate } from '@dxtmisha/functional-basic'
 
-// Positional markers
-console.log(applyTemplate('Hello, %d %e!', ['John', 'Doe'])) // 'Hello, John Doe!'
+// 1. Positional markers (array)
+applyTemplate('Hello, %d %e!', ['John', 'Doe']) // 'Hello, John Doe!'
 
-// Named markers
-console.log(applyTemplate('Hello, [name]!', { name: 'John' })) // 'Hello, John!'
-console.log(applyTemplate('Hello, {name}!', { name: 'John' })) // 'Hello, John!'
+// 2. Named markers (object)
+applyTemplate('Price: [price] {currency}', { price: 100, currency: 'USD' }) // 'Price: 100 USD'
 
-// Wrapped tags with content substitution
-console.log(applyTemplate('Click [link]here[/link]', { link: '<a href="#">[content]</a>' }))
-console.log(applyTemplate('Click {link}here{/link}', { link: '<a href="#">{content}</a>' }))
-// 'Click <a href="#">here</a>'
-```
+// 3. Handling 0 and false
+applyTemplate('Value: [val]', { val: 0 })      // 'Value: 0'
+applyTemplate('Status: [val]', { val: false })    // 'Status: false'
+
+// 4. Skipping missing keys
+applyTemplate('Missing: [none]', {})           // 'Missing: [none]'
+
+// 5. Paired tags with content substitution
+const tags = { link: '<a href="https://google.com">[content]</a>' }
+applyTemplate('Click [link]here[/link]', tags)  // 'Click <a href="https://google.com">here</a>'
+
+// 6. List macros (handling out-of-bounds)
+applyTemplate('Macros: %d, %e, %f', ['A', 'B'])  // 'Macros: A, B, '
+  `}
+/>

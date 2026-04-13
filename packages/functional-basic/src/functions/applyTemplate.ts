@@ -39,26 +39,19 @@ const expListMacros = new RegExp(`%(${LIST_NAME.join('|')})`, 'g')
  */
 export const applyTemplate = (
   text: string,
-  replacement: Record<string, string | number> | string[] = {}
+  replacement: Record<string, string | number | boolean> | string[] = {}
 ) => {
   let content = String(text)
 
-  if (text.match(/%[a-z]/)) {
+  if (
+    Array.isArray(replacement)
+    && text.match(/%[a-z]/)
+  ) {
     content = content.replace(expListMacros, (all, key) => {
       const index = LIST_NAME.indexOf(key)
 
-      if (
-        Array.isArray(replacement)
-        && index !== -1
-      ) {
-        return String(replacement[index])
-      }
-
-      if (
-        isObjectNotArray(replacement)
-        && key in replacement
-      ) {
-        return String(replacement[key])
+      if (index !== -1) {
+        return String(replacement?.[index] ?? '')
       }
 
       return all
@@ -69,19 +62,26 @@ export const applyTemplate = (
     content = content.replace(
       /[[{](.*?)[\]}](.*?)[[{]\/\1[\]}]/g,
       (all: string, key: string, content: string) => {
-        const value = replacement[key]
-        return value
-          ? String(value).replace(/[[{]content[\]}]/g, () => content)
-          : all
+        if (key in replacement) {
+          return String(replacement[key] ?? '')
+            .replace(/[[{]content[\]}]/g, () => content)
+        }
+
+        return all
       }
     )
 
     content = content.replace(
       /[[{](.*?)[\]}]/g,
       (all: string, key: string) => {
-        return String(replacement[key] ?? all)
+        if (key in replacement) {
+          return String(replacement[key] ?? '')
+        }
+
+        return all
       }
     )
   }
+
   return content
 }

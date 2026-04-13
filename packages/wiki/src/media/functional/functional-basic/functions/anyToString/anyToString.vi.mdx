@@ -1,33 +1,43 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/anyToString - Chuyển đổi một giá trị thành chuỗi'/>
 
 # `anyToString`
 
-Một tiện ích chuyển đổi an toàn bất kỳ dữ liệu đầu vào nào thành kiểu chuỗi.
-
-Điều này rất hữu ích khi xuất dữ liệu ra giao diện mà không biết trước kiểu của biến (đối tượng, mảng, boolean hoặc null).
+Một tiện ích chuyển đổi an toàn bất kỳ dữ liệu đầu vào nào thành kiểu chuỗi. Điều này rất hữu ích khi xuất dữ liệu ra giao diện mà không biết trước kiểu của biến (đối tượng, mảng, boolean hoặc null).
 
 **Tham số:**
 - `value: V` — Giá trị cần chuyển đổi.
-- `isArrayString: boolean` (tùy chọn, mặc định: `true`) — Nếu `true`, các mảng nguyên thủy sẽ được nối với nhau bằng dấu phẩy. Nếu `false`, chúng sẽ được chuyển đổi thành chuỗi JSON.
+- `isArrayString: boolean = true` — Nếu `true`, các mảng nguyên thủy sẽ được nối với nhau bằng dấu phẩy. Nếu `false`, chúng sẽ được chuyển đổi thành chuỗi JSON.
+- `trim: boolean = true` — Nếu `true`, loại bỏ khoảng trắng dư thừa (chỉ dành cho chuỗi).
 
 **Trả về:**
 `string` — Biểu diễn chuỗi của giá trị.
 
-```typescript
+<Source
+  language='typescript'
+  code={`
 import { anyToString } from '@dxtmisha/functional-basic'
 
-console.log(anyToString(' test ')) // 'test' (đã trimmed)
-console.log(anyToString([1, 2, 3])) // '1,2,3' (isArrayString = true)
-console.log(anyToString([1, 2, 3], false)) // '[1,2,3]' (isArrayString = false)
+// Chuỗi (Strings)
+anyToString('  Hello  ')               // 'Hello'
+anyToString('  Hello  ', true, false)  // '  Hello  '
 
-console.log(anyToString([[1], [2]])) // '[[1],[2]]' (các mảng lồng nhau sẽ được chuyển thành JSON)
-console.log(anyToString([{ a: 1 }, 2])) // '[{"a":1},2]' (các mảng chứa đối tượng sẽ được chuyển thành JSON)
+// Mảng (Arrays)
+anyToString([1, 2, 3])                 // '1,2,3'
+anyToString([1, 2, 3], false)          // '[1,2,3]'
 
-console.log(anyToString({ a: 1 })) // '{"a":1}'
-console.log(anyToString(true)) // '1'
-console.log(anyToString(false)) // '0'
-console.log(anyToString(123)) // '123'
-console.log(anyToString(null)) // ''
-```
+// Đối tượng (Objects)
+anyToString({ a: 1 })                  // '{"a":1}'
+
+// Giá trị Boolean (chuyển đổi thành 1/0)
+anyToString(true)                      // '1'
+anyToString(false)                     // '0'
+
+// Các kiểu khác
+anyToString(123)                       // '123'
+anyToString(null)                      // ''
+anyToString(undefined)                 // ''
+anyToString(Symbol('test'))            // 'Symbol(test)'
+  `}
+/>

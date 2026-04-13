@@ -1,33 +1,43 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/anyToString - Преобразование значения в строку'/>
 
 # `anyToString`
 
-Утилита, которая безопасно приводит любые входящие данные к строковому типу.
-
-Это полезно при выводе данных в интерфейс, когда заранее неизвестен тип переменной (объект, массив, boolean или null).
+Утилита, которая безопасно приводит любые входящие данные к строковому типу. Это полезно при выводе данных в интерфейс, когда заранее неизвестен тип переменной (объект, массив, boolean или null).
 
 **Параметры:**
-- `value: V` — Значения для преобразования.
-- `isArrayString: boolean` (необязательно, по умолчанию: `true`) — Если `true`, массивы примитивов будут объединены через запятую. Если `false`, они будут преобразованы в строку JSON.
+- `value: V` — Значение для преобразования.
+- `isArrayString: boolean = true` — Если `true`, массивы примитивов объединяются через запятую. Если `false`, преобразуются в JSON.
+- `trim: boolean = true` — Если `true`, обрезает лишние пробелы (только для строк).
 
 **Возвращает:**
-`string` — Строковое представление переданного значения.
+`string` — Строковое представление значения.
 
-```typescript
+<Source
+  language='typescript'
+  code={`
 import { anyToString } from '@dxtmisha/functional-basic'
 
-console.log(anyToString(' test ')) // 'test' (trimmed)
-console.log(anyToString([1, 2, 3])) // '1,2,3' (isArrayString = true)
-console.log(anyToString([1, 2, 3], false)) // '[1,2,3]' (isArrayString = false)
+// Строки
+anyToString('  Hello  ')               // 'Hello'
+anyToString('  Hello  ', true, false)  // '  Hello  '
 
-console.log(anyToString([[1], [2]])) // '[[1],[2]]' (вложенные массивы превращаются в JSON)
-console.log(anyToString([{ a: 1 }, 2])) // '[{"a":1},2]' (массивы с объектами превращаются в JSON)
+// Массивы
+anyToString([1, 2, 3])                 // '1,2,3'
+anyToString([1, 2, 3], false)          // '[1,2,3]'
 
-console.log(anyToString({ a: 1 })) // '{"a":1}'
-console.log(anyToString(true)) // '1'
-console.log(anyToString(false)) // '0'
-console.log(anyToString(123)) // '123'
-console.log(anyToString(null)) // ''
-```
+// Объекты
+anyToString({ a: 1 })                  // '{"a":1}'
+
+// Булевы значения (преобразование в 1/0)
+anyToString(true)                      // '1'
+anyToString(false)                     // '0'
+
+// Другие типы
+anyToString(123)                       // '123'
+anyToString(null)                      // ''
+anyToString(undefined)                 // ''
+anyToString(Symbol('test'))            // 'Symbol(test)'
+  `}
+/>

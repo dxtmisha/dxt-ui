@@ -7,6 +7,10 @@ describe('anyToString', () => {
     expect(anyToString('test')).toBe('test')
   })
 
+  it('should NOT trim the string if trim is false', () => {
+    expect(anyToString(' test ', true, false)).toBe(' test ')
+  })
+
   it('should join an array with commas if it contains no objects and isArrayString is true', () => {
     expect(anyToString([1, 2, 3])).toBe('1,2,3')
     expect(anyToString(['a', 'b'])).toBe('a,b')
@@ -39,9 +43,29 @@ describe('anyToString', () => {
     expect(anyToString(false)).toBe('0')
   })
 
+  it('should handle BigInt values', () => {
+    expect(anyToString(BigInt(123))).toBe('123')
+  })
+
+  it('should handle Symbol values', () => {
+    const sym = Symbol('test')
+    expect(anyToString(sym)).toBe('Symbol(test)')
+  })
+
+  it('should handle functions', () => {
+    const fn = () => 'test'
+    expect(anyToString(fn)).toContain('() =>')
+  })
+
   it('should return fallback toString() of the value if appropriate', () => {
     expect(anyToString(123)).toBe('123')
     expect(anyToString(0)).toBe('0')
+  })
+
+  it('should handle circular references by falling back to String()', () => {
+    const obj: any = { a: 1 }
+    obj.self = obj
+    expect(anyToString(obj)).toBe('[object Object]')
   })
 
   it('should return an empty string for null or undefined', () => {
