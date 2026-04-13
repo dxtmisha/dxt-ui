@@ -1,46 +1,31 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/copyObject - Copy an object'/>
 
 # `copyObject`
 
-Creates a deep copy of objects and arrays.
+Creates a deep copy of an object for independent data management. The goal of the method is to obtain a completely separate instance of the data to prevent unintended mutations in the original object.
 
-The function supports two operation modes, toggled by the `simplified` parameter.
-
-### Parameters
-
-- `value: T` — The object or value to be copied.
-- `simplified: boolean = true` — Cloning mode:
-    - `true` (default): Uses `JSON.parse(JSON.stringify(value))`.
-    - `false`: Uses the modern `structuredClone` API.
-- `options?: StructuredSerializeOptions` — Options for `structuredClone` (only used when `simplified: false`). For example, for passing transferable objects.
-
-### Key Features
-
-1.  **Flexibility**: Choose between performance and full type support.
-2.  **SSR Safe**: Both methods work on the server and in the browser.
-3.  **Isolation**: Creates a fully independent copy of nested structures.
-
----
+**Parameters:**
+- `value: T` — The object or array to be copied.
 
 **Returns:**
 `T` — A new copy of the object.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { copyObject } from '@dxtmisha/functional-basic'
 
 const original = { 
   name: 'John', 
-  date: new Date(),
-  tags: new Set(['admin'])
+  age: 30,
+  details: { role: 'admin' }
 }
 
-// Simplified mode (default) - date becomes a string, tags becomes an empty {}
-const simpleCopy = copyObject(original)
-
-// Full mode - all types are preserved
-const fullCopy = copyObject(original, false)
-```
-
-> Use `simplified: true` (default) for working with simple data from APIs. Switch to `false` only if you need to preserve specific JS objects or handle complex recursive structures.
+const copy = copyObject(original)
+// copy is a completely new object for independent management
+  `}
+/>

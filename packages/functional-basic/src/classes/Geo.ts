@@ -1,18 +1,10 @@
-import { copyObject } from '../functions/copyObject'
-import { copyObjectLite } from '../functions/copyObjectLite'
-import { isDomRuntime } from '../functions/isDomRuntime'
-import { isSelected } from '../functions/isSelected'
-
-import { DataStorage } from './DataStorage'
-
-import { geo } from '@dxtmisha/media'
+import { GeoInstance } from './GeoInstance'
+import { ServerStorage } from './ServerStorage'
 
 import {
   type GeoItem,
   type GeoItemFull
 } from '../types/geoTypes'
-
-const STORAGE_NAME_CODE = 'geo-code'
 
 /**
  * Base class for working with geographic data.
@@ -20,13 +12,14 @@ const STORAGE_NAME_CODE = 'geo-code'
  * Базовый класс для работы с географическими данными.
  */
 export class Geo {
-  private static storage = new DataStorage<string>(STORAGE_NAME_CODE)
-  private static location: string
-
-  private static item: GeoItemFull
-  private static language: string
-
-  private static timezone: number = new Date().getTimezoneOffset()
+  /**
+   * Returns the instance of the class.
+   *
+   * Возвращает инстанс класса.
+   */
+  static getItem(): GeoInstance {
+    return ServerStorage.get('__dxt_geo_instance__', () => new GeoInstance())
+  }
 
   /**
    * Information about the current country.
@@ -34,7 +27,7 @@ export class Geo {
    * Информация об текущей стране.
    */
   static get(): GeoItemFull {
-    return this.item
+    return this.getItem().get()
   }
 
   /**
@@ -43,7 +36,7 @@ export class Geo {
    * Текущая страна.
    */
   static getCountry(): string {
-    return this.item.country
+    return this.getItem().getCountry()
   }
 
   /**
@@ -52,7 +45,7 @@ export class Geo {
    * Текущий язык.
    */
   static getLanguage(): string {
-    return this.language
+    return this.getItem().getLanguage()
   }
 
   /**
@@ -61,7 +54,7 @@ export class Geo {
    * Полный формат согласно стандарту.
    */
   static getStandard(): string {
-    return this.item.standard
+    return this.getItem().getStandard()
   }
 
   /**
@@ -70,7 +63,7 @@ export class Geo {
    * Возвращает первый день недели.
    */
   static getFirstDay(): string {
-    return this.item.firstDay
+    return this.getItem().getFirstDay()
   }
 
   /**
@@ -79,7 +72,7 @@ export class Geo {
    * Полный формат.
    */
   static getLocation(): string {
-    return this.location
+    return this.getItem().getLocation()
   }
 
   /**
@@ -87,10 +80,8 @@ export class Geo {
    *
    * Получение обработанных данных.
    */
-  static getItem(): GeoItemFull {
-    return copyObjectLite(this.item, {
-      language: this.language
-    })
+  static getItemFull(): GeoItemFull {
+    return this.getItem().getItem()
   }
 
   /**
@@ -99,7 +90,7 @@ export class Geo {
    * Возвращает полный список стран.
    */
   static getList(): GeoItem[] {
-    return geo
+    return this.getItem().getList()
   }
 
   /**
@@ -110,23 +101,7 @@ export class Geo {
    * код страны, полный вид язык-страна или один из них
    */
   static getByCode(code?: string): GeoItemFull {
-    let item: GeoItem | undefined
-
-    if (code) {
-      if (code.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/)) {
-        item = this.getByCodeFull(code)
-      }
-
-      if (!item && code.match(/[A-Z]{2}/)) {
-        item = this.getByCountry(this.toCountry(code))
-      }
-
-      if (!item && code.match(/[a-z]{2}/)) {
-        item = this.getByLanguage(this.toLanguage(code))
-      }
-    }
-
-    return this.toFull(copyObject(item ?? this.getList()[0] as GeoItem))
+    return this.getItem().getByCode(code)
   }
 
   /**
@@ -136,12 +111,7 @@ export class Geo {
    * @param code string in the form of language-country/ строка в виде язык-страна
    */
   static getByCodeFull(code: string): GeoItem | undefined {
-    return this.getList().find(
-      item => isSelected(code, [
-        `${item.language}-${item.country}`,
-        `${item.country}-${item.language}`
-      ])
-    )
+    return this.getItem().getByCodeFull(code)
   }
 
   /**
@@ -151,10 +121,7 @@ export class Geo {
    * @param country country/ страна
    */
   static getByCountry(country: string): GeoItem | undefined {
-    return this.getList().find((item) => {
-      return item.country === country
-        || item?.countryAlternative?.find(countryAlternative => countryAlternative === country)
-    })
+    return this.getItem().getByCountry(country)
   }
 
   /**
@@ -164,10 +131,7 @@ export class Geo {
    * @param language language/ язык
    */
   static getByLanguage(language: string): GeoItem | undefined {
-    return this.getList().find((item) => {
-      return item.language === language
-        || item?.languageAlternative?.find(languageAlternative => languageAlternative === language)
-    })
+    return this.getItem().getByLanguage(language)
   }
 
   /**
@@ -176,7 +140,7 @@ export class Geo {
    * Получение временной зоны по умолчанию
    */
   static getTimezone(): number {
-    return this.timezone
+    return this.getItem().getTimezone()
   }
 
   /**
@@ -185,14 +149,7 @@ export class Geo {
    * Получение временной зоны по умолчанию (отформатированный вид).
    */
   static getTimezoneFormat(): string {
-    const hours = Math.abs(Math.trunc(this.timezone / 60)).toString().padStart(2, '0')
-    const minutes = Math.abs(this.timezone % 60).toString().padStart(2, '0')
-
-    if (this.timezone >= 0) {
-      return `-${hours}:${minutes}`
-    }
-
-    return `+${hours}:${minutes}`
+    return this.getItem().getTimezoneFormat()
   }
 
   /**
@@ -203,7 +160,7 @@ export class Geo {
    * код страны, полный вид язык-страна или один из них
    */
   static find(code: string): GeoItemFull {
-    return this.getByCode(code)
+    return this.getItem().find(code)
   }
 
   /**
@@ -214,7 +171,7 @@ export class Geo {
    * объект с данными об текущей стране
    */
   static toStandard(item: GeoItem) {
-    return `${item.language}-${item.country}`
+    return this.getItem().toStandard(item)
   }
 
   /**
@@ -226,16 +183,7 @@ export class Geo {
    * @param save save the result/ сохранить результат
    */
   static set(code: string, save?: boolean): void {
-    if (isDomRuntime()) {
-      this.location = code
-
-      this.item = this.getByCode(this.location)
-      this.language = this.findLanguage(this.location)
-
-      if (save) {
-        this.storage.set(this.location)
-      }
-    }
+    this.getItem().set(code, save)
   }
 
   /**
@@ -245,79 +193,6 @@ export class Geo {
    * @param timezone new time zone/ новая временная зона
    */
   static setTimezone(timezone: number) {
-    if (isDomRuntime()) {
-      this.timezone = timezone
-    }
-  }
-
-  /**
-   * Determines the current location.
-   *
-   * Определяет текущую локацию.
-   */
-  private static findLocation(): string {
-    return (
-      isDomRuntime() && (
-        this.storage.get()
-        || document.querySelector('html')?.lang
-        || navigator.language
-        || navigator.languages[0]
-        || 'en-GB'
-      )
-    ) || 'en-GB'
-  }
-
-  /**
-   * Determines the current language.
-   *
-   * Определяет текущий язык.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
-   */
-  private static findLanguage(code?: string): string {
-    if (code && code.match(/[a-z]{2}/)) {
-      return this.toLanguage(code)
-    }
-
-    return this.item.language
-  }
-
-  /**
-   * Returns the country code by its full language-country.
-   *
-   * Возвращает код страны по ее полному язык-страна.
-   * @param code country code/ код страна
-   */
-  private static toCountry(code: string): string {
-    return code.replace(/[^A-Z]+/g, '')
-  }
-
-  /**
-   * Returns the language code by its full language-country.<br>
-   * Возвращает код языка по его полному язык-страна.
-   * @param code country code/ код страна
-   */
-  private static toLanguage(code: string): string {
-    return code.replace(/[^a-z]+/g, '')
-  }
-
-  /**
-   * Adding missing data.<br>
-   * Добавление недостающих данных.
-   * @param item object with data about the current country/
-   * объект с данными об текущей стране
-   */
-  private static toFull(item: GeoItem): GeoItemFull {
-    return copyObjectLite(item, {
-      standard: this.toStandard(item),
-      firstDay: item?.firstDay || 'Mo'
-    })
-  }
-
-  static {
-    this.location = this.findLocation()
-
-    this.language = this.findLanguage(this.location)
-    this.item = this.getByCode(this.location)
+    this.getItem().setTimezone(timezone)
   }
 }

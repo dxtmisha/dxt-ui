@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/blobToBase64 - Преобразование Blob в Base64'/>
 
@@ -6,29 +6,37 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Асинхронно преобразует объекты `Blob` или `File` в строку формата Base64 (Data URL).
 
-Это полезно при подготовке локальных файлов (например, загруженных пользователем изображений) для их предпросмотра в браузере или отправки на сервер в строковом формате.
-
 **Параметры:**
-- `blob: Blob` — Объект `Blob` (или `File`), который необходимо преобразовать.
-- `clean: boolean` — (опционально) Если `true`, удаляет префикс Data URL (например, `data:image/png;base64,`). По умолчанию `false`.
+- `blob: Blob` — Объект `Blob` (или `File`) для преобразования.
+- `clean: boolean = false` — Если `true`, удаляет префикс Data URL (например, `data:image/png;base64,`).
+
+**Среда выполнения:**
+Утилита автоматически определяет доступный метод конвертации:
+- **Браузер**: Использует `FileReader` для чтения содержимого.
+- **Сервер (SSR)**: Использует `Buffer` и асинхронный метод `blob.arrayBuffer()`.
 
 **Возвращает:**
-`Promise<string | ArrayBuffer | null>` — Возвращает промис, который разрешается в строку Base64 (Data URL) или отклоняется в случае ошибки чтения.
+`Promise<string | undefined>` — Строка Base64 или `undefined`, если конвертация невозможна.
 
-```typescript
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
 import { blobToBase64 } from '@dxtmisha/functional-basic'
 
-async function uploadFile(file: File) {
-  try {
-    // По умолчанию: возвращает Data URL
-    const dataUrl = await blobToBase64(file)
-    console.log(dataUrl) // 'data:image/png;base64,iVBORw0KGgo...'
+// 1. По умолчанию (возвращает Data URL)
+const dataUrl = await blobToBase64(file)
+// 'data:image/png;base64,iVBORw0KGgo...'
 
-    // С параметром clean = true: возвращает чистый Base64
-    const rawBase64 = await blobToBase64(file, true)
-    console.log(rawBase64) // 'iVBORw0KGgo...'
-  } catch (error) {
-    console.error('Ошибка при чтении файла', error)
-  }
+// 2. Чистый Base64 (без префикса)
+const rawBase64 = await blobToBase64(file, true)
+// 'iVBORw0KGgo...'
+
+// 3. Обработка случая недоступности API
+const result = await blobToBase64(blob)
+if (result) {
+  // работа со строкой
 }
-```
+  `}
+/>

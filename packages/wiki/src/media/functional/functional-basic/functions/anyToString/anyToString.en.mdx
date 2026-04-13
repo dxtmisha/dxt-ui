@@ -4,40 +4,48 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `anyToString`
 
-A utility that safely converts any input data into a string type. This is useful when outputting data to the interface when the variable type (object, array, boolean, or null) is not known in advance.
+A utility for safely converting any input data into a string type.
 
 **Parameters:**
 - `value: V` — The value for conversion.
-- `isArrayString: boolean = true` — If `true`, primitive arrays are joined by commas. If `false`, they are stringified as JSON.
+- `isArrayString: boolean = true` — If `true`, primitive arrays are joined by commas.
 - `trim: boolean = true` — If `true`, trims leading and trailing whitespace (only for strings).
+
+**Conversion Rules:**
+- **Strings**: Returned as is (with `trim` if enabled).
+- **Arrays**: If `isArrayString: true` and no objects are in the array, elements are joined by commas. Otherwise, JSON stringified.
+- **Objects**: Converted to JSON. In case of error (e.g., circular reference), returns standard `toString()`.
+- **Boolean**: `true` converts to `'1'`, `false` to `'0'`.
+- **Other types**: `null` and `undefined` result in an empty string. Others call `toString()`.
 
 **Returns:**
 `string` — The string representation of the value.
+
+## Examples
 
 <Source
   language='typescript'
   code={`
 import { anyToString } from '@dxtmisha/functional-basic'
 
-// Strings
+// 1. Strings
 anyToString('  Hello  ')               // 'Hello'
 anyToString('  Hello  ', true, false)  // '  Hello  '
 
-// Arrays
+// 2. Arrays
 anyToString([1, 2, 3])                 // '1,2,3'
 anyToString([1, 2, 3], false)          // '[1,2,3]'
 
-// Objects
+// 3. Objects
 anyToString({ a: 1 })                  // '{"a":1}'
 
-// Boolean values (legacy-compatible 1/0 conversion)
+// 4. Boolean values (1/0 conversion)
 anyToString(true)                      // '1'
 anyToString(false)                     // '0'
 
-// Other types
-anyToString(123)                       // '123'
+// 5. Empty values and types
 anyToString(null)                      // ''
-anyToString(undefined)                 // ''
+anyToString(123)                       // '123'
 anyToString(Symbol('test'))            // 'Symbol(test)'
   `}
 />

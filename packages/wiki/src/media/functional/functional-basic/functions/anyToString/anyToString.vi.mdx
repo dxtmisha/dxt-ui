@@ -4,40 +4,48 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 # `anyToString`
 
-Một tiện ích chuyển đổi an toàn bất kỳ dữ liệu đầu vào nào thành kiểu chuỗi. Điều này rất hữu ích khi xuất dữ liệu ra giao diện mà không biết trước kiểu của biến (đối tượng, mảng, boolean hoặc null).
+Tiện ích để chuyển đổi an toàn bất kỳ dữ liệu đầu vào nào thành kiểu chuỗi.
 
 **Tham số:**
 - `value: V` — Giá trị cần chuyển đổi.
-- `isArrayString: boolean = true` — Nếu `true`, các mảng nguyên thủy sẽ được nối với nhau bằng dấu phẩy. Nếu `false`, chúng sẽ được chuyển đổi thành chuỗi JSON.
+- `isArrayString: boolean = true` — Nếu `true`, các mảng nguyên thủy sẽ được nối với nhau bằng dấu phẩy.
 - `trim: boolean = true` — Nếu `true`, loại bỏ khoảng trắng dư thừa (chỉ dành cho chuỗi).
+
+**Quy tắc chuyển đổi:**
+- **Chuỗi**: Trả về nguyên bản (có `trim` nếu được bật).
+- **Mảng**: Nếu `isArrayString: true` và không có đối tượng trong mảng, các phần tử sẽ được nối bằng dấu phẩy. Ngược lại — chuyển thành chuỗi JSON.
+- **Đối tượng**: Chuyển đổi thành JSON. Trong trường hợp lỗi (ví dụ: tham chiếu vòng), trả về `toString()` tiêu chuẩn.
+- **Boolean**: `true` chuyển thành `'1'`, `false` thành `'0'`.
+- **Các kiểu khác**: `null` và `undefined` trả về chuỗi rỗng. Các kiểu khác gọi `toString()`.
 
 **Trả về:**
 `string` — Biểu diễn chuỗi của giá trị.
+
+## Ví dụ
 
 <Source
   language='typescript'
   code={`
 import { anyToString } from '@dxtmisha/functional-basic'
 
-// Chuỗi (Strings)
+// 1. Chuỗi (Strings)
 anyToString('  Hello  ')               // 'Hello'
 anyToString('  Hello  ', true, false)  // '  Hello  '
 
-// Mảng (Arrays)
+// 2. Mảng (Arrays)
 anyToString([1, 2, 3])                 // '1,2,3'
 anyToString([1, 2, 3], false)          // '[1,2,3]'
 
-// Đối tượng (Objects)
+// 3. Đối tượng (Objects)
 anyToString({ a: 1 })                  // '{"a":1}'
 
-// Giá trị Boolean (chuyển đổi thành 1/0)
+// 4. Giá trị Boolean (chuyển đổi thành 1/0)
 anyToString(true)                      // '1'
 anyToString(false)                     // '0'
 
-// Các kiểu khác
-anyToString(123)                       // '123'
+// 5. Giá trị rỗng và các kiểu khác
 anyToString(null)                      // ''
-anyToString(undefined)                 // ''
+anyToString(123)                       // '123'
 anyToString(Symbol('test'))            // 'Symbol(test)'
   `}
 />

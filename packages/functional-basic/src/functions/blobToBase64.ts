@@ -1,3 +1,5 @@
+import { isDomRuntime } from './isDomRuntime'
+
 /**
  * Check if Buffer is available.
  *
@@ -15,13 +17,13 @@ const isBuffer = (): boolean => typeof getBuffer() !== 'undefined'
 const getBuffer = () => (globalThis as any)?.Buffer
 
 /**
- * Get base64 from array buffer using Uint8Array.
+ * Get base64 from Blob using FileReader.
  *
- * Получает base64 из array buffer с помощью Uint8Array.
- * @param arrayBuffer The array buffer to convert / Array buffer для преобразования
+ * Получает base64 из Blob с помощью FileReader.
+ * @param blob The blob to convert / Blob для преобразования
  * @returns base64 string / строка base64
  */
-const getDataByUint = async (blob: Blob): Promise<string> => {
+const getDataByFileReader = async (blob: Blob): Promise<string> => {
   return new Promise((resolve, reject) => {
     if (typeof FileReader !== 'undefined') {
       const reader = new FileReader()
@@ -32,22 +34,15 @@ const getDataByUint = async (blob: Blob): Promise<string> => {
           return
         }
 
-        const base64: string = (reader.result as string).split(',')[1]
+        const base64: string = (reader.result as string)
+          .replace(/^data:.*?,/, '')
+
         resolve(base64)
       }
       reader.onerror = reject
       reader.readAsDataURL(blob)
     } else {
-      blob.arrayBuffer()
-        .then((arrayBuffer) => {
-          const uint8Array = new Uint8Array(arrayBuffer)
-          let binary = ''
-
-          uint8Array.forEach(byte => (binary += String.fromCharCode(byte)))
-
-          resolve(btoa(binary))
-        })
-        .catch(reject)
+      reject()
     }
   })
 }
@@ -70,15 +65,19 @@ const getDataByBuffer = (arrayBuffer: ArrayBuffer): string => {
  * Преобразует Blob в строку Base64.
  * @param blob The Blob to convert / Blob для преобразования
  * @param clean if true, removes the data URL prefix / если true, удаляет префикс data URL
- * @returns promise with the base64 string or ArrayBuffer / промис со строкой base64 или ArrayBuffer
+ * @returns promise with the base64 string or undefined / промис со строкой base64 или undefined
  */
 export async function blobToBase64(
   blob: Blob,
   clean: boolean = false
-): Promise<string | ArrayBuffer | null> {
-  const base64: string = isBuffer()
-    ? getDataByBuffer(await blob.arrayBuffer())
-    : await getDataByUint(blob)
+): Promise<string | undefined> {
+  const base64: string | undefined = isDomRuntime()
+    ? (await getDataByFileReader(blob))
+    : (isBuffer() ? getDataByBuffer(await blob.arrayBuffer()) : undefined)
+
+  if (!base64) {
+    return undefined
+  }
 
   if (!clean) {
     return `data:${blob.type};base64,${base64}`

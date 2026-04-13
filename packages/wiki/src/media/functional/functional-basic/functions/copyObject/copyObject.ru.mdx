@@ -1,46 +1,31 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Functions/copyObject - Копирование объекта'/>
 
 # `copyObject`
 
-Создает глубокую копию (deep copy) объектов и массивов.
+Создает глубокую копию объекта для независимого управления данными. Цель метода — получить полностью новый отдельный экземпляр данных во избежание нежелательных мутаций в исходном объекте.
 
-Функция поддерживает два режима работы, переключаемых параметром `simplified`.
-
-### Параметры
-
-- `value: T` — Объект или значение, которое необходимо скопировать.
-- `simplified: boolean = true` — Режим копирования:
-    - `true` (по умолчанию): Использует `JSON.parse(JSON.stringify(value))`.
-    - `false`: Использует `structuredClone`. Поддерживает почти все типы данных.
-- `options?: StructuredSerializeOptions` — Опции для `structuredClone` (используются только при `simplified: false`). Например, для передачи отчуждаемых объектов (transferables).
-
-### Ключевые особенности
-
-1.  **Гибкость**: Выбор между производительностью и полнотой поддержки типов.
-2.  **SSR Безопасность**: Оба метода работают как на сервере, так и на клиенте.
-3.  **Изоляция**: Создает полную независимую копию вложенных структур.
-
----
+**Параметры:**
+- `value: T` — Объект или массив, который необходимо скопировать.
 
 **Возвращает:**
 `T` — Новая копия объекта.
 
-```typescript
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
 import { copyObject } from '@dxtmisha/functional-basic'
 
 const original = { 
   name: 'John', 
-  date: new Date(),
-  tags: new Set(['admin'])
+  age: 30,
+  details: { role: 'admin' }
 }
 
-// Упрощенный режим (по умолчанию) - date станет строкой, tags будет пустым {}
-const simpleCopy = copyObject(original)
-
-// Полный режим - все типы сохранятся
-const fullCopy = copyObject(original, false)
-```
-
-> Используйте `simplified: true` (по умолчанию) для работы с простыми данными из API. Переключайтесь на `false` только если вам нужно сохранить специфические объекты JS или обработать сложные рекурсивные структуры.
+const copy = copyObject(original)
+// copy — это полностью новый экземпляр для независимого управления
+  `}
+/>

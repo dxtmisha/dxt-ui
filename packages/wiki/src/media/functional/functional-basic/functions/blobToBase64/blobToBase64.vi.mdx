@@ -1,34 +1,42 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/blobToBase64 - Chuyển đổi Blob thành Base64'/>
 
 # `blobToBase64`
 
-Hàm chuyển đổi bất đồng bộ các đối tượng `Blob` hoặc `File` thành chuỗi kiểu Base64 (Data URL).
-
-Điều này hữu ích khi chuẩn bị các tệp cục bộ (ví dụ: hình ảnh do người dùng tải lên) để xem trước trực tiếp trên trình duyệt hoặc gửi dạng chuỗi văn bản lên máy chủ.
+Chuyển đổi bất đồng bộ các đối tượng `Blob` hoặc `File` thành chuỗi định dạng Base64 (Data URL).
 
 **Tham số:**
 - `blob: Blob` — Đối tượng `Blob` (hoặc `File`) cần chuyển đổi.
-- `clean: boolean` — (tùy chọn) Nếu `true`, loại bỏ tiền tố Data URL (ví dụ: `data:image/png;base64,`). Mặc định là `false`.
+- `clean: boolean = false` — Nếu `true`, loại bỏ tiền tố Data URL (ví dụ: `data:image/png;base64,`).
+
+**Môi trường thực thi:**
+Tiện ích tự động xác định phương pháp chuyển đổi khả dụng:
+- **Trình duyệt**: Sử dụng `FileReader` để đọc nội dung.
+- **Máy chủ (SSR)**: Sử dụng `Buffer` và phương thức bất đồng bộ `blob.arrayBuffer()`.
 
 **Trả về:**
-`Promise<string | ArrayBuffer | null>` — Trả về một promise sẽ được hoàn thành với chuỗi Base64 (Data URL) hoặc bị từ chối với một lỗi nếu việc đọc tệp thất bại.
+`Promise<string | undefined>` — Chuỗi Base64 hoặc `undefined` nếu không thể chuyển đổi.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { blobToBase64 } from '@dxtmisha/functional-basic'
 
-async function uploadFile(file: File) {
-  try {
-    // Mặc định: trả về Data URL
-    const dataUrl = await blobToBase64(file)
-    console.log(dataUrl) // 'data:image/png;base64,iVBORw0KGgo...'
+// 1. Mặc định (trả về Data URL)
+const dataUrl = await blobToBase64(file)
+// 'data:image/png;base64,iVBORw0KGgo...'
 
-    // Với clean = true: trả về Base64 gốc
-    const rawBase64 = await blobToBase64(file, true)
-    console.log(rawBase64) // 'iVBORw0KGgo...'
-  } catch (error) {
-    console.error('Lỗi khi đọc tệp', error)
-  }
+// 2. Base64 thô (không có tiền tố)
+const rawBase64 = await blobToBase64(file, true)
+// 'iVBORw0KGgo...'
+
+// 3. Xử lý trường hợp API không khả dụng
+const result = await blobToBase64(blob)
+if (result) {
+  // làm việc với chuỗi
 }
-```
+  `}
+/>

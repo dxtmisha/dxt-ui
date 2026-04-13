@@ -1,46 +1,31 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/copyObject - Sao chép đối tượng'/>
 
 # `copyObject`
 
-Tạo bản sao sâu (deep copy) của các đối tượng và mảng.
+Tạo bản sao sâu của đối tượng để quản lý dữ liệu độc lập. Mục tiêu của phương thức là có được một phiên bản riêng biệt hoàn toàn mới của dữ liệu để tránh các thay đổi ngoài ý muốn đối với đối tượng gốc.
 
-Hàm hỗ trợ hai chế độ hoạt động, được chuyển đổi qua tham số `simplified`.
-
-### Tham số
-
-- `value: T` — Đối tượng hoặc giá trị cần sao chép.
-- `simplified: boolean = true` — Chế độ sao chép:
-    - `true` (mặc định): Sử dụng `JSON.parse(JSON.stringify(value))`.
-    - `false`: Sử dụng API `structuredClone`. Hỗ trợ hầu hết các kiểu dữ liệu.
-- `options?: StructuredSerializeOptions` — Các tùy chọn cho `structuredClone` (chỉ được sử dụng khi `simplified: false`). Ví dụ, để truyền các đối tượng có thể chuyển nhượng (transferables).
-
-### Các tính năng chính
-
-1.  **Linh hoạt**: Lựa chọn giữa hiệu suất và việc hỗ trợ đầy đủ kiểu dữ liệu.
-2.  **An toàn SSR**: Cả hai phương thức đều hoạt động trên máy chủ và trình duyệt.
-3.  **Cách ly**: Tạo ra một bản sao hoàn toàn độc lập của các cấu trúc phân cấp.
-
----
+**Tham số:**
+- `value: T` — Đối tượng hoặc mảng cần sao chép.
 
 **Trả về:**
 `T` — Bản sao mới của đối tượng.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { copyObject } from '@dxtmisha/functional-basic'
 
 const original = { 
   name: 'John', 
-  date: new Date(),
-  tags: new Set(['admin'])
+  age: 30,
+  details: { role: 'admin' }
 }
 
-// Chế độ đơn giản (mặc định) - date trở thành chuỗi, tags trở thành {} trống
-const simpleCopy = copyObject(original)
-
-// Chế độ đầy đủ - tất cả các kiểu dữ liệu được giữ nguyên
-const fullCopy = copyObject(original, false)
-```
-
-> Sử dụng `simplified: true` (mặc định) khi làm việc với dữ liệu đơn giản từ API. Chỉ chuyển sang `false` nếu bạn cần giữ nguyên các đối tượng JS cụ thể hoặc xử lý các cấu trúc đệ quy phức tạp.
+const copy = copyObject(original)
+// copy là một phiên bản hoàn toàn mới để quản lý độc lập
+  `}
+/>
