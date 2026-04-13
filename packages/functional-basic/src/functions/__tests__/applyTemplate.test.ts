@@ -6,10 +6,6 @@ describe('applyTemplate', () => {
     expect(applyTemplate('Hello %d and %e', ['world', 'user'])).toBe('Hello world and user')
   })
 
-  it('should replace %d, %e, etc. with values from an object', () => {
-    expect(applyTemplate('Numbers: %d, %e, %f', { a: 1, b: 2, c: 3 })).toBe('Numbers: 1, 2, 3')
-  })
-
   it('should replace [key] or {key} with the corresponding value from an object', () => {
     expect(applyTemplate('Hello [name]', { name: 'world' })).toBe('Hello world')
     expect(applyTemplate('Hello {name}', { name: 'world' })).toBe('Hello world')

@@ -8,26 +8,32 @@ import { isString } from './isString'
  * Преобразование значения в строку.
  * @param value values for conversion / значения для преобразования
  * @param isArrayString if true, then arrays will be converted to strings / если true, то массивы будут преобразованы в строки
+ * @param trim if true, then the resulting string will be trimmed / если true, то результирующая строка будет обрезана
  * @returns string representation of the passed value / строковое представление переданного значения
  */
 export function anyToString<V>(
   value: V,
-  isArrayString: boolean = true
+  isArrayString: boolean = true,
+  trim: boolean = true
 ): string {
   if (isString(value)) {
-    return value.trim()
+    return trim ? value.trim() : value
   }
 
   if (
     isArray(value)
-    && value.findIndex(item => isObject(item)) === -1
+    && !value.some(item => isObject(item))
     && isArrayString
   ) {
     return value.join(',')
   }
 
   if (isObject(value)) {
-    return JSON.stringify(value)
+    try {
+      return JSON.stringify(value)
+    } catch {
+      return String(value)
+    }
   }
 
   if (value === true) {

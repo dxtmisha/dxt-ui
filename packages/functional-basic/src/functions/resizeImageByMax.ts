@@ -1,4 +1,5 @@
 import { getElementImage } from './getElementImage'
+import { isDomRuntime } from './isDomRuntime'
 
 /**
  * Resize type for image scaling.
@@ -47,7 +48,8 @@ export function resizeImageByMax(
   const element = getElementImage(image)
 
   if (
-    element
+    isDomRuntime()
+    && element
     && (
       (element.naturalWidth > maxSize && (type === 'auto' || type === 'width'))
       || (element.naturalHeight > maxSize && (type === 'auto' || type === 'height'))

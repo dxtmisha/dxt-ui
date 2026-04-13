@@ -21,13 +21,35 @@ const getBuffer = () => (globalThis as any)?.Buffer
  * @param arrayBuffer The array buffer to convert / Array buffer для преобразования
  * @returns base64 string / строка base64
  */
-const getDataByUint = (arrayBuffer: ArrayBuffer): string => {
-  const uint8Array = new Uint8Array(arrayBuffer)
-  let binary = ''
+const getDataByUint = async (blob: Blob): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    if (typeof FileReader !== 'undefined') {
+      const reader = new FileReader()
 
-  uint8Array.forEach(byte => (binary += String.fromCharCode(byte)))
+      reader.onloadend = () => {
+        if (!reader?.result) {
+          reject(new Error('Failed to read blob'))
+          return
+        }
 
-  return btoa(binary)
+        const base64: string = (reader.result as string).split(',')[1]
+        resolve(base64)
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    } else {
+      blob.arrayBuffer()
+        .then((arrayBuffer) => {
+          const uint8Array = new Uint8Array(arrayBuffer)
+          let binary = ''
+
+          uint8Array.forEach(byte => (binary += String.fromCharCode(byte)))
+
+          resolve(btoa(binary))
+        })
+        .catch(reject)
+    }
+  })
 }
 
 /**
@@ -54,10 +76,9 @@ export async function blobToBase64(
   blob: Blob,
   clean: boolean = false
 ): Promise<string | ArrayBuffer | null> {
-  const arrayBuffer = await blob.arrayBuffer()
   const base64: string = isBuffer()
-    ? getDataByBuffer(arrayBuffer)
-    : getDataByUint(arrayBuffer)
+    ? getDataByBuffer(await blob.arrayBuffer())
+    : await getDataByUint(blob)
 
   if (!clean) {
     return `data:${blob.type};base64,${base64}`

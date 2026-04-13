@@ -1,6 +1,4 @@
 import { escapeExp } from './escapeExp'
-import { isFilled } from './isFilled'
-import { forEach } from './forEach'
 
 /**
  * Creates a case-insensitive regular expression for a search by words (separating by space).
@@ -9,17 +7,18 @@ import { forEach } from './forEach'
  * @param search search string / строка поиска
  */
 export function getSeparatingSearchExp(search: string): RegExp {
-  if (!isFilled(search)) {
+  if (
+    !search
+    || search.length === 0
+  ) {
     return /(?!)/ig
   }
 
-  const list: string = forEach(
-    String(search)
-      .replace(/\s+/ig, ' ')
-      .trim()
-      .split(' '),
-    text => escapeExp(text)
-  )
+  const list: string = String(search)
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .map(escapeExp)
     .join('|')
 
   return new RegExp(`(${list})`, 'ig')

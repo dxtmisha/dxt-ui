@@ -1,7 +1,6 @@
-import { forEach } from './forEach'
 import { isObjectNotArray } from './isObjectNotArray'
 
-const LIST_NAME = [
+const LIST_NAME: string[] = [
   'd',
   'e',
   'f',
@@ -24,6 +23,12 @@ const LIST_NAME = [
 ]
 
 /**
+ * Regular expression for matching list macros /
+ * Регулярное выражение для сопоставления макросов списка
+ */
+const expListMacros = new RegExp(`%(${LIST_NAME.join('|')})`, 'g')
+
+/**
  * Applies a template to the text, replacing keys with values from the replacement object
  *
  * Применяет шаблон к тексту, заменяя ключи на значения из объекта замены
@@ -39,10 +44,24 @@ export const applyTemplate = (
   let content = String(text)
 
   if (text.match(/%[a-z]/)) {
-    let code = 0
+    content = content.replace(expListMacros, (all, key) => {
+      const index = LIST_NAME.indexOf(key)
 
-    forEach(replacement, (value) => {
-      content = content.replace(new RegExp(`%${LIST_NAME[code++]}`, 'g'), String(value))
+      if (
+        Array.isArray(replacement)
+        && index !== -1
+      ) {
+        return String(replacement[index])
+      }
+
+      if (
+        isObjectNotArray(replacement)
+        && key in replacement
+      ) {
+        return String(replacement[key])
+      }
+
+      return all
     })
   }
 

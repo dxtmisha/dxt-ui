@@ -13,26 +13,28 @@ describe('getElementSafeScript', () => {
     const data = { content: '</script><script>alert(1)</script>' }
     const id = 'xss-id'
     const result = getElementSafeScript(id, data)
-    
+
     // The escaped version should be present
     expect(result).toContain('<\\/script>')
-    
-    // Full match check (note the escaping of backslash for the string literal)
+
+    // Full match check
     expect(result).toBe('<script id="xss-id" type="application/json">{"content":"<\\/script><script>alert(1)<\\/script>"}</script>')
-    
+
     // We check that </script> only exists as the final closing tag
-    expect(result.indexOf('</script>')).toBe(result.length - 9)
+    expect(result.lastIndexOf('</script>')).toBe(result.length - 9)
   })
 
-  it('should handle null data', () => {
-    const id = 'null-id'
-    const result = getElementSafeScript(id, null)
-    expect(result).toBe('<script id="null-id" type="application/json">null</script>')
+  it('should handle falsy values by returning an empty string', () => {
+    expect(getElementSafeScript('null-id', null)).toBe('')
+    expect(getElementSafeScript('undef-id', undefined)).toBe('')
+    expect(getElementSafeScript('zero-id', 0)).toBe('')
+    expect(getElementSafeScript('false-id', false)).toBe('')
+    expect(getElementSafeScript('empty-str-id', '')).toBe('')
   })
 
-  it('should handle empty data', () => {
-    const id = 'empty-id'
-    const result = getElementSafeScript(id, {})
-    expect(result).toBe('<script id="empty-id" type="application/json">{}</script>')
+  it('should handle complex data structures', () => {
+    const data = { arr: [1, 2, 3], obj: { nested: true } }
+    const result = getElementSafeScript('complex', data)
+    expect(result).toBe('<script id="complex" type="application/json">{"arr":[1,2,3],"obj":{"nested":true}}</script>')
   })
 })

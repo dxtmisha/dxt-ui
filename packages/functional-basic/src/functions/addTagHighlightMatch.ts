@@ -3,10 +3,12 @@ import { getSeparatingSearchExp } from './getSeparatingSearchExp'
 import { random } from './random'
 
 /** Unique tag for highlighting the match in the string / Уникальный тег для выделения совпадения в строке */
-const TAG_START = `span_${random(100000, 999999)}`
+const TAG_START = `___HIGHLIGHT_START_${random(100_000, 999_999)}___`
 
 /** Unique tag for highlighting the match in the string / Уникальный тег для выделения совпадения в строке */
-const TAG_END = `span_${random(100000, 999999)}`
+const TAG_END = `___HIGHLIGHT_END_${random(100_000, 999_999)}___`
+
+const expTag = new RegExp(`${TAG_START}|${TAG_END}`, 'g')
 
 /**
  * Adds a tag to highlight the match in the string.
@@ -36,8 +38,7 @@ export function addTagHighlightMatch(
     }
 
     return text
-      .replace(new RegExp(TAG_START, 'g'), `<span class="${className}">`)
-      .replace(new RegExp(TAG_END, 'g'), '</span>')
+      .replace(expTag, text => text === TAG_START ? `<span class="${className}">` : '</span>')
   }
 
   return shouldEscape ? encodeAttribute(valueForSearch) : valueForSearch
