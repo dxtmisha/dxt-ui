@@ -1,59 +1,124 @@
-// @vitest-environment jsdom
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+/** @vitest-environment jsdom */
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { Geo } from '../Geo'
+import { ServerStorage } from '../ServerStorage'
+import { isDomRuntime } from '../../functions/isDomRuntime'
+
+vi.mock('../../functions/isDomRuntime', () => ({
+  isDomRuntime: vi.fn()
+}))
 
 describe('Geo', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
-    Geo.setTimezone(0)
+    localStorage.clear()
+
+    // Reset ServerStorage to ensure fresh DataStorage Registry for each test
+    // This is crucial because Geo holds state via ServerStorage
+    const storageClass = ServerStorage as any
+    storageClass.storage = undefined
+    storageClass.listener = undefined
+    ServerStorage.init(() => ({})) // Initialize context to suppress warnings
+
+    // Clear any previous HTML lang setting
+    document.documentElement.setAttribute('lang', '')
   })
 
-  it('should retrieve location default based on runtime environment (en-GB)', () => {
-    // defaults to en-GB if nothing else matches
-    const location = Geo.getLocation()
-    expect(location).toBeTruthy()
-    expect(typeof location).toBe('string')
+  afterEach(() => {
+    vi.clearAllMocks()
   })
 
-  it('should retrieve country data', () => {
-    const item = Geo.get()
-    expect(item).toBeTruthy()
-    expect(item.country).toBeTruthy()
+  describe('SSR and Browser Isolation', () => {
+    it('should default to "en-GB" in SSR environment', () => {
+      vi.mocked(isDomRuntime).mockReturnValue(false)
+      expect(Geo.getLocation()).toBe('en-GB')
+    })
+
+    it('should detect locale from localStorage in browser context', () => {
+      vi.mocked(isDomRuntime).mockReturnValue(true)
+      localStorage.setItem('ui-storage__geo-code', JSON.stringify({
+        value: 'ru-RU',
+        age: Date.now()
+      }))
+      expect(Geo.getLocation()).toBe('ru-RU')
+    })
   })
 
-  it('should get standard form', () => {
-    const standard = Geo.getStandard()
-    expect(standard).toContain('-') // e.g. en-GB
+  describe('Data Retrieval', () => {
+    it('should find item by full code (language-country)', () => {
+      const res = Geo.getByCode('ru-RU')
+      expect(res.language).toBe('ru')
+      expect(res.country).toBe('RU')
+      expect(res.standard).toBe('ru-RU')
+    })
+
+    it('should handle non-standard codes in getByCode (returning static base info)', () => {
+      // en-VN should find Vietnam record (vi-VN)
+      const res = Geo.getByCode('en-VN')
+      expect(res.country).toBe('VN')
+      expect(res.language).toBe('vi')
+      expect(res.standard).toBe('vi-VN')
+    })
+
+    it('should return default item for invalid code', () => {
+      const res = Geo.getByCode('invalid-code')
+      expect(res).toBeDefined()
+      // Fallback is typically the first item (en-US)
+      expect(res.standard).toBe('en-US')
+    })
   })
 
-  it('should set timezone and format correctly', () => {
-    Geo.setTimezone(-120) // +02:00
-    expect(Geo.getTimezoneFormat()).toBe('+02:00')
+  describe('State Management (Setters & Getters)', () => {
+    it('should update state and reflect custom language in getStandard()', () => {
+      Geo.set('en-VN')
+      expect(Geo.getLocation()).toBe('en-VN')
+      expect(Geo.getLanguage()).toBe('en')
+      expect(Geo.getCountry()).toBe('VN')
+      // Dynamic standard reflects the override
+      expect(Geo.getStandard()).toBe('en-VN')
+    })
 
-    Geo.setTimezone(330) // -05:30
-    expect(Geo.getTimezoneFormat()).toBe('-05:30')
+    it('should persist changes to localStorage when requested', () => {
+      vi.mocked(isDomRuntime).mockReturnValue(true)
+      Geo.set('de-DE', true)
+      
+      const stored = localStorage.getItem('ui-storage__geo-code')
+      expect(stored).toContain('de-DE')
+    })
   })
 
-  it('should change location via a set', () => {
-    Geo.set('ru-RU')
-    expect(Geo.getLocation()).toBe('ru-RU')
-    expect(Geo.getLanguage()).toBe('ru')
-    expect(Geo.getCountry()).toBe('RU')
+  describe('Timezone Handling', () => {
+    it('should format positive offsets correctly (UTC+3)', () => {
+      Geo.setTimezone(-180)
+      expect(Geo.getTimezone()).toBe(-180)
+      expect(Geo.getTimezoneFormat()).toBe('+03:00')
+    })
+
+    it('should format negative offsets correctly (UTC-5)', () => {
+      Geo.setTimezone(300)
+      expect(Geo.getTimezoneFormat()).toBe('-05:00')
+    })
+
+    it('should handle complex offsets (UTC+5:30)', () => {
+      Geo.setTimezone(-330)
+      expect(Geo.getTimezoneFormat()).toBe('+05:30')
+    })
   })
 
-  it('should find full data by country code', () => {
-    const res = Geo.getByCode('US')
-    expect(res.country).toBe('US')
-    expect(res.language).toBe('en') // typically US defaults to English in list
-  })
+  describe('Instance Isolation', () => {
+    it('should provide a unique instance for each request context via getItem()', () => {
+      vi.mocked(isDomRuntime).mockReturnValue(false) // Simulate SSR for clean default
+      const instance1 = Geo.getItem()
+      instance1.set('fr-FR')
 
-  it('should find full data by language code', () => {
-    const res = Geo.getByCode('fr')
-    expect(res.language).toBe('fr')
-  })
+      // Mock a new context in ServerStorage
+      const storageClass = ServerStorage as any
+      storageClass.storage = undefined
+      ServerStorage.init(() => ({}))
 
-  it('should return the default item when code is not found', () => {
-    const res = Geo.getByCode('zz-ZZ')
-    expect(res).toBeTruthy() // Returns fallback from a list
+      const instance2 = Geo.getItem()
+      expect(instance2.getLocation()).not.toBe('fr-FR')
+      expect(instance2.getLocation()).toBe('en-GB') // Default for SSR
+    })
   })
 })

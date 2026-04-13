@@ -8,11 +8,11 @@ A static utility class for centralized management of the application's geographi
 
 ## Key Features
 
-- **Auto-Detection** — intelligently identifies the user's locale via `navigator.language` or HTML attributes if not explicitly defined.
+- **Auto-Detection** — intelligently identifies the user's locale via storage or environment defaults.
 - **Persistence** — utilizes `DataStorage` to save and restore user-selected language and country preferences.
 - **Media Database Integration** — provides access to a comprehensive database of countries and languages from the `@dxtmisha/media` library.
-- **Global Time Management** — centralized setting and retrieval of time zone offsets for correct date handling.
-- **Static Access** — all methods are static, eliminating the need for instantiation (`new Geo()`).
+- **Global Time Management** — centralized setting and retrieval of time zone offsets.
+- **Static Access** — all methods are static, providing a convenient global interface without manual instantiation.
 
 ## Basic Usage
 

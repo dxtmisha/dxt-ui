@@ -7,190 +7,205 @@ import {
 } from '../types/geoTypes'
 
 /**
- * Base class for working with geographic data.
+ * Static class for working with geographical data.
+ * Provides a centralized interface for managing locale, country, and time zone.
  *
- * Базовый класс для работы с географическими данными.
+ * Статический класс для работы с географическими данными.
+ * Предоставляет централизованный интерфейс для управления локалью, страной и часовым поясом.
  */
 export class Geo {
   /**
-   * Returns the instance of the class.
+   * Returns a request-isolated instance of GeoInstance.
    *
-   * Возвращает инстанс класса.
+   * Возвращает изолированный в рамках запроса экземпляр GeoInstance.
+   * @returns GeoInstance instance / экземпляр GeoInstance
    */
   static getItem(): GeoInstance {
     return ServerStorage.get('__dxt_geo_instance__', () => new GeoInstance())
   }
 
   /**
-   * Information about the current country.
+   * Returns information about the current country and language.
    *
-   * Информация об текущей стране.
+   * Возвращает информацию о текущей стране и языке.
+   * @returns current geo item / данные о текущей гео-позиции
    */
   static get(): GeoItemFull {
     return this.getItem().get()
   }
 
   /**
-   * Current country.
+   * Returns the 2-letter code of the current country.
    *
-   * Текущая страна.
+   * Возвращает 2-буквенный код текущей страны.
+   * @returns country code / код страны
    */
   static getCountry(): string {
     return this.getItem().getCountry()
   }
 
   /**
-   * Current language.
+   * Returns the 2-letter code of the current language.
    *
-   * Текущий язык.
+   * Возвращает 2-буквенный код текущего языка.
+   * @returns language code / код языка
    */
   static getLanguage(): string {
     return this.getItem().getLanguage()
   }
 
   /**
-   * Full format according to the standard.
+   * Returns the combined locale string in the standard format (e.g., 'en-US').
    *
-   * Полный формат согласно стандарту.
+   * Возвращает комбинированную строку локали в стандартном формате (например, 'ru-RU').
+   * @returns standard locale string / стандартная строка локали
    */
   static getStandard(): string {
     return this.getItem().getStandard()
   }
 
   /**
-   * Returns the first day of the week.
+   * Returns the code for the first day of the week for the current locale.
    *
-   * Возвращает первый день недели.
+   * Возвращает код первого дня недели для текущей локали.
+   * @returns first day of the week / первый день недели
    */
   static getFirstDay(): string {
     return this.getItem().getFirstDay()
   }
 
   /**
-   * Full format.
+   * Returns the current location string.
    *
-   * Полный формат.
+   * Возвращает текущую строку местоположения.
+   * @returns location string / строка местоположения
    */
   static getLocation(): string {
     return this.getItem().getLocation()
   }
 
   /**
-   * Obtaining processed data.
+   * Returns fully processed geo data updated with the current language.
    *
-   * Получение обработанных данных.
+   * Возвращает полностью обработанные гео-данные с учетом текущего языка.
+   * @returns full geo item data / полные данные гео-объекта
    */
   static getItemFull(): GeoItemFull {
     return this.getItem().getItem()
   }
 
   /**
-   * Returns the full list of countries.
+   * Returns the complete list of available countries and regions.
    *
-   * Возвращает полный список стран.
+   * Возвращает полный список доступных стран и регионов.
+   * @returns list of geo items / список гео-объектов
    */
   static getList(): GeoItem[] {
     return this.getItem().getList()
   }
 
   /**
-   * Returns the data about the country by its full code.
+   * Returns geo data by country or language code from the global database.
    *
-   * Возвращает данные о стране по ее полному коду.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * Возвращает гео-данные по коду страны или языка из глобальной базы данных.
+   * @param code country or language code / код страны или языка
+   * @returns full geo data / полные гео-данные
    */
   static getByCode(code?: string): GeoItemFull {
     return this.getItem().getByCode(code)
   }
 
   /**
-   * Returns the full data by language and country.
+   * Returns exact geo data by searching for the full locale match (e.g., 'en-US').
    *
-   * Возвращает полные данные по языку и стране.
-   * @param code string in the form of language-country/ строка в виде язык-страна
+   * Возвращает точные гео-данные по поиску полного совпадения локали (например, 'ru-RU').
+   * @param code full locale string / полная строка локали
+   * @returns geo item or undefined / гео-объект или undefined
    */
   static getByCodeFull(code: string): GeoItem | undefined {
     return this.getItem().getByCodeFull(code)
   }
 
   /**
-   * Returns the full data by country.
+   * Returns geo data for a specific country by its code.
    *
-   * Возвращает полные данные по стране.
-   * @param country country/ страна
+   * Возвращает гео-данные для конкретной страны по её коду.
+   * @param country country code / код страны
+   * @returns geo item or undefined / гео-объект или undefined
    */
   static getByCountry(country: string): GeoItem | undefined {
     return this.getItem().getByCountry(country)
   }
 
   /**
-   * Returns the full data by language.
+   * Returns geo data for a specific language by its code.
    *
-   * Возвращает полные данные по языку.
-   * @param language language/ язык
+   * Возвращает гео-данные для конкретного языка по его коду.
+   * @param language language code / код языка
+   * @returns geo item or undefined / гео-объект или undefined
    */
   static getByLanguage(language: string): GeoItem | undefined {
     return this.getItem().getByLanguage(language)
   }
 
   /**
-   * Retrieving the default timezone.
+   * Returns the time zone offset in minutes for the current context.
    *
-   * Получение временной зоны по умолчанию
+   * Возвращает смещение часового пояса в минутах для текущего контекста.
+   * @returns timezone offset / смещение часового пояса
    */
   static getTimezone(): number {
     return this.getItem().getTimezone()
   }
 
   /**
-   * Retrieving the default timezone (formatted view).
+   * Returns the formatted time zone string (e.g., '+00:00') for the current context.
    *
-   * Получение временной зоны по умолчанию (отформатированный вид).
+   * Возвращает отформатированную строку часового пояса (например, '+03:00') для текущего контекста.
+   * @returns formatted timezone / отформатированная временная зона
    */
   static getTimezoneFormat(): string {
     return this.getItem().getTimezoneFormat()
   }
 
   /**
-   * Determines the current country by its full name.
+   * Finds or determines the geo data for a given code. Alias for getByCode.
    *
-   * Определяет текущую страну по ее полному названию.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * Находит или определяет гео-данные для заданного кода. Алиас для getByCode.
+   * @param code country or language code / код страны или языка
+   * @returns full geo data / полные гео-данные
    */
   static find(code: string): GeoItemFull {
     return this.getItem().find(code)
   }
 
   /**
-   * Returns a complete string with the country code and language.
+   * Returns a standard concatenated string for a geo item (e.g., 'en-US').
    *
-   * Возвращает полную строку с кодом страны и языка.
-   * @param item object with data about the current country/
-   * объект с данными об текущей стране
+   * Возвращает стандартную объединенную строку для гео-объекта (например, 'ru-RU').
+   * @param item geo item data / данные гео-объекта
+   * @returns standard string / стандартная строка
    */
   static toStandard(item: GeoItem) {
     return this.getItem().toStandard(item)
   }
 
   /**
-   * Changes the data by the full code.
+   * Sets the current geographical location. Updates the instance state.
    *
-   * Изменяет данные по полному коду.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
-   * @param save save the result/ сохранить результат
+   * Устанавливает текущее географическое положение. Обновляет состояние инстанса.
+   * @param code location code / код локации
+   * @param save whether to persist the change in storage / сохранять ли изменения в хранилище
    */
   static set(code: string, save?: boolean): void {
     this.getItem().set(code, save)
   }
 
   /**
-   * Changing the default timezone for transmitted dates.
+   * Sets a custom time zone offset for the current context.
    *
-   * Изменение временной зоны по умолчанию для отправляемых дат
-   * @param timezone new time zone/ новая временная зона
+   * Устанавливает кастомное смещение часового пояса для текущего контекста.
+   * @param timezone timezone offset in minutes / смещение часового пояса в минутах
    */
   static setTimezone(timezone: number) {
     this.getItem().setTimezone(timezone)

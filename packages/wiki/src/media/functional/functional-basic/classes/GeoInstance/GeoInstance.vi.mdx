@@ -1,0 +1,81 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoInstance - Đối Tượng Dữ Liệu Địa Lý'/>
+
+# Lớp GeoInstance
+
+Một lớp dựa trên đối tượng (instance-based) để quản lý dữ liệu địa lý. Nó xử lý các mã ngôn ngữ (ISO 639-1), mã quốc gia (ISO 3166-1 alpha-2), múi giờ và địa phương hóa. Khác với lớp tĩnh `Geo`, `GeoInstance` cho phép tạo các đối tượng độc lập với trạng thái riêng, điều này đặc biệt hữu ích cho việc cô lập yêu cầu (request isolation) trong môi trường SSR hoặc các ứng dụng đa ngữ cảnh.
+
+## Tính năng chính
+
+- **Hướng đối tượng** — cho phép tạo nhiều phiên bản (instances) với các cấu hình khác nhau.
+- **Tự động phát hiện** — xác định thông minh địa phương (locale) thông qua bộ nhớ lưu trữ hoặc các mặc định của môi trường khi khởi tạo.
+- **Tích hợp cơ sở dữ liệu truyền thông** — cung cấp quyền truy cập vào cơ sở dữ liệu toàn diện về các quốc gia và ngôn ngữ từ thư viện `@dxtmisha/media`.
+- **Quản lý thời gian linh hoạt** — thiết lập và truy xuất độ lệch múi giờ ở cấp độ đối tượng.
+
+## Cách sử dụng cơ bản
+
+Bạn có thể tạo một đối tượng mới của lớp để quản lý một ngữ cảnh địa lý cụ thể.
+
+```javascript
+import { GeoInstance } from '@dxtmisha/functional-basic'
+
+const geo = new GeoInstance()
+
+// Lấy mã ngôn ngữ hiện tại
+console.log(geo.getLanguage()) // ví dụ: 'vi'
+
+// Thiết lập địa phương mới cho đối tượng này
+geo.set('en-US')
+
+// Lấy múi giờ đã định dạng
+console.log(geo.getTimezoneFormat()) // ví dụ: '+07:00'
+```
+
+## Phương pháp
+
+### Thông tin chung
+
+- `get(): GeoItemFull` — Trả về đối tượng dữ liệu đầy đủ cho quốc gia và ngôn ngữ hiện tại.
+- `getCountry(): string` — Trả về mã 2 chữ cái của quốc gia hiện tại (viết hoa).
+- `getLanguage(): string` — Trả về mã 2 chữ cái của ngôn ngữ hiện tại (viết thường).
+- `getStandard(): string` — Trả về chuỗi địa phương kết hợp (ví dụ: `'vi-VN'`).
+- `getFirstDay(): string` — Trả về mã cho ngày đầu tiên của tuần của địa phương hiện tại.
+- `getLocation(): string` — Trả về địa phương hiện đang được thiết lập dưới dạng chuỗi.
+- `getItem(): GeoItemFull` — Trả về một bản sao của đối tượng cài đặt hiện tại, có tính đến ngôn ngữ.
+- `getTimezone(): number` — Trả về độ lệch múi giờ tính bằng phút.
+- `getTimezoneFormat(): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`).
+
+### Danh sách và Tìm kiếm
+
+- `getList(): GeoItem[]` — Trả về danh sách đầy đủ các quốc gia và ngôn ngữ có sẵn.
+- `getByCode(code?: string): GeoItemFull` — Tìm kiếm dữ liệu theo mã ngôn ngữ hoặc quốc gia (thông tin cơ bản).
+- `getByCodeFull(code: string): GeoItem | undefined` — Tìm kiếm kết quả khớp chính xác theo mã địa phương đầy đủ.
+- `getByCountry(country: string): GeoItem | undefined` — Tìm kiếm dữ liệu theo mã quốc gia.
+- `getByLanguage(language: string): GeoItem | undefined` — Tìm kiếm dữ liệu theo mã ngôn ngữ.
+- `find(code: string): GeoItemFull` — Một bí danh cho phương thức `getByCode`.
+
+### Thao tác dữ liệu (Setters)
+
+- `set(code: string, save?: boolean): void` — Thiết lập địa phương cho đối tượng hiện tại.
+- `setTimezone(timezone: number): void` — Thiết lập độ lệch múi giờ tùy chỉnh tính bằng phút.
+
+### Tiện ích
+
+- `toStandard(item: GeoItem): string` — Tạo chuỗi `'ngôn ngữ-quốc gia'` tiêu chuẩn từ đối tượng `GeoItem`.
+
+## Ví dụ
+
+### Ngữ cảnh độc lập
+```javascript
+import { GeoInstance } from '@dxtmisha/functional-basic'
+
+const geoVI = new GeoInstance()
+geoVI.set('vi-VN')
+
+const geoEN = new GeoInstance()
+geoEN.set('en-US')
+
+console.log(geoVI.getLanguage()) // 'vi'
+console.log(geoEN.getLanguage()) // 'en'
+```

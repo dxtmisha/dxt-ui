@@ -1,4 +1,4 @@
-// @vitest-environment jsdom
+ч// @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { DataStorage } from '../DataStorage'
 

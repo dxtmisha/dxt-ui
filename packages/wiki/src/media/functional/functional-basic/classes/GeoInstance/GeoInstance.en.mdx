@@ -1,0 +1,81 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/GeoInstance - Geographic Data Instance'/>
+
+# GeoInstance Class
+
+An instance-based class for managing geographical data. It handles language codes (ISO 639-1), country codes (ISO 3166-1 alpha-2), time zones, and localization. Unlike the static `Geo` class, `GeoInstance` allows creating independent objects with their own state, which is particularly useful for request isolation in SSR or multi-context environments.
+
+## Key Features
+
+- **Object-Oriented** — allows creating multiple instances with different configurations.
+- **Auto-Detection** — intelligently identifies the locale via storage or environment defaults during initialization.
+- **Media Database Integration** — provides access to a comprehensive database of countries and languages from the `@dxtmisha/media` library.
+- **Dynamic Time Management** — instance-level setting and retrieval of time zone offsets.
+
+## Basic Usage
+
+You can create a new instance of the class to manage a specific geographic context.
+
+```javascript
+import { GeoInstance } from '@dxtmisha/functional-basic'
+
+const geo = new GeoInstance()
+
+// Get the current language code
+console.log(geo.getLanguage()) // e.g., 'en'
+
+// Set a new locale for this instance
+geo.set('fr-FR')
+
+// Get the formatted time zone
+console.log(geo.getTimezoneFormat()) // e.g., '+00:00'
+```
+
+## Methods
+
+### General Information
+
+- `get(): GeoItemFull` — Returns the full data object for the current country and language.
+- `getCountry(): string` — Returns the 2-letter code of the current country (uppercase).
+- `getLanguage(): string` — Returns the 2-letter code of the current language (lowercase).
+- `getStandard(): string` — Returns the combined locale string (e.g., `'en-US'`).
+- `getFirstDay(): string` — Returns the code for the first day of the week for the current locale.
+- `getLocation(): string` — Returns the currently set locale as a string.
+- `getItem(): GeoItemFull` — Returns a copy of the current settings object, accounting for the language.
+- `getTimezone(): number` — Returns the time zone offset in minutes.
+- `getTimezoneFormat(): string` — Returns the time zone offset in string format (e.g., `'+03:00'`).
+
+### Lists and Search
+
+- `getList(): GeoItem[]` — Returns the full list of available countries and languages.
+- `getByCode(code?: string): GeoItemFull` — Searches for data by language or country code (base info).
+- `getByCodeFull(code: string): GeoItem | undefined` — Searches for an exact match by full locale code.
+- `getByCountry(country: string): GeoItem | undefined` — Searches for data by country code.
+- `getByLanguage(language: string): GeoItem | undefined` — Searches for data by language code.
+- `find(code: string): GeoItemFull` — An alias for the `getByCode` method.
+
+### Data Manipulation (Setters)
+
+- `set(code: string, save?: boolean): void` — Sets the locale for the current instance.
+- `setTimezone(timezone: number): void` — Sets a custom time zone offset in minutes.
+
+### Utilities
+
+- `toStandard(item: GeoItem): string` — Generates a standard `'language-country'` string from a `GeoItem` object.
+
+## Examples
+
+### Isolated Contexts
+```javascript
+import { GeoInstance } from '@dxtmisha/functional-basic'
+
+const geoEN = new GeoInstance()
+geoEN.set('en-US')
+
+const geoRU = new GeoInstance()
+geoRU.set('ru-RU')
+
+console.log(geoEN.getLanguage()) // 'en'
+console.log(geoRU.getLanguage()) // 'ru'
+```

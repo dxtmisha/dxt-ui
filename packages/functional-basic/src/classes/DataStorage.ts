@@ -2,21 +2,40 @@ import { executeFunction } from '../functions/executeFunction'
 import { isDomData } from '../functions/isDomData'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isNull } from '../functions/isNull'
+
 import { ErrorCenter } from './ErrorCenter'
-import type { ErrorCenterInstance } from './ErrorCenterInstance'
+import { type ErrorCenterInstance } from './ErrorCenterInstance'
+import { ServerStorage } from './ServerStorage'
 
 type DataStorageValue<T> = {
   value: T
   age: number
 }
 
-const items: Record<string, DataStorage<any>> = {}
+/**
+ * Default prefix for storage keys/
+ * Префикс по умолчанию для ключей хранилища
+ */
 let prefix: string = 'ui-storage'
 
 /**
- * Class for working with localStorage.
+ * Returns a list of active DataStorage instances for the current request context.
  *
- * Класс для работы с localStorage.
+ * Возвращает список активных экземпляров DataStorage для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, DataStorage<unknown>>>(
+    '__dxt_data_storage__',
+    () => ({})
+  )
+}
+
+/**
+ * Class for working with localStorage and sessionStorage.
+ * Includes support for prefixes, expiration time, and request isolation in SSR.
+ *
+ * Класс для работы с localStorage и sessionStorage.
+ * Включает поддержку префиксов, времени жизни данных и изоляцию запросов в SSR.
  */
 export class DataStorage<T> {
   /**
@@ -29,12 +48,23 @@ export class DataStorage<T> {
     prefix = newPrefix
   }
 
+  /**
+   * The current value stored in memory/
+   * Текущее значение, хранящееся в памяти
+   */
   private value?: T
+
+  /**
+   * The timestamp of when the value was last saved/
+   * Временная метка последнего сохранения значения
+   */
   private age?: number
 
   /**
-   * Constructor
-   * @param name value name/ название значения
+   * Constructor.
+   *
+   * Конструктор.
+   * @param name value name / название значения
    * @param isSession should we use a session/ использовать ли сессию
    * @param errorCenter error center instance/ экземпляр центра ошибок
    */
@@ -43,37 +73,32 @@ export class DataStorage<T> {
     private isSession = false,
     private errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
-    if (isDomRuntime()) {
-      const nameCache = `${isSession ? 'session' : 'storage'}#${name}`
+    const nameCache = `${isSession ? 'session' : 'storage'}#${name}`
+    const items = getItems()
 
-      if (nameCache in items) {
-        return items[nameCache] as DataStorage<T>
-      }
-
-      this.make()
-
-      items[nameCache] = this
+    if (nameCache in items) {
+      return items[nameCache] as DataStorage<T>
     }
+
+    this.make()
+
+    items[nameCache] = this
   }
 
   /**
-   * Getting data from local storage.
+   * Getting data from storage.
    *
-   * Получение данных из локального хранилища.
+   * Получение данных из хранилища.
    * @param defaultValue default value/ значение по умолчанию
-   * @param cache cache time/ время кэширования
+   * @param cache cache time in seconds / время кэширования в секундах
+   * @returns stored value or default value / сохраненное значение или значение по умолчанию
    */
   get(
     defaultValue?: T | (() => T),
     cache?: number
   ): T | undefined {
-    if (!isDomRuntime()) {
-      return executeFunction(defaultValue)
-    }
-
     if (
-      this.value !== null
-      && this.value !== undefined
+      !isNull(this.value)
       && this.isCache(cache)
     ) {
       return this.value
@@ -91,22 +116,23 @@ export class DataStorage<T> {
    *
    * Изменение данных в хранилище.
    * @param value new values/ новые значения
+   * @returns the set value / установленное значение
    */
   set(value?: T | (() => T)): T | undefined {
-    if (!isDomRuntime()) {
-      return executeFunction(value)
-    }
-
     this.value = executeFunction(value)
-    this.age = new Date().getTime()
+    this.age = Date.now()
 
     if (this.value === undefined) {
       this.remove()
     } else {
-      this.getMethod()?.setItem(this.getIndex(), JSON.stringify({
-        value: this.value,
-        age: this.age
-      } as DataStorageValue<T>))
+      this.getMethod()
+        ?.setItem(
+          this.getIndex(),
+          JSON.stringify({
+            value: this.value,
+            age: this.age
+          } as DataStorageValue<T>)
+        )
     }
 
     return this.value
@@ -116,48 +142,47 @@ export class DataStorage<T> {
    * Removing data from storage.
    *
    * Удаление данных из хранилища.
+   * @returns this instance / текущий экземпляр
    */
   remove(): this {
-    if (isDomRuntime()) {
-      this.value = undefined
-      this.age = undefined
+    this.value = undefined
+    this.age = undefined
 
-      this.getMethod()?.removeItem(this.getIndex())
-    }
+    this.getMethod()?.removeItem(this.getIndex())
 
     return this
   }
 
   /**
-   * Clearing all data from storage.
+   * Syncing data from storage.
    *
-   * Очистка всех данных из хранилища.
+   * Синхронизация данных из хранилища.
+   * @returns this instance / текущий экземпляр
    */
   update(): this {
-    if (isDomRuntime()) {
-      this.make()
-    }
-
+    this.make()
     return this
   }
 
   /**
    * Checks for storage time limit.
    *
-   * Проверяет на лимит времени хранения.
-   * @param cache cache time/ время кэширования
+   * Проверяет данные на истечение срока хранения (кэша).
+   * @param cache cache time in seconds / время кэширования в секундах
+   * @returns true if data is valid / true, если данные актуальны
    */
   private isCache(cache?: number) {
     return isNull(cache) || (
       this.age
-      && this.age + (cache * 1000) >= new Date().getTime()
+      && this.age + (cache * 1000) >= Date.now()
     )
   }
 
   /**
-   * Returns an object for working with storage.
+   * Returns an object for working with storage (localStorage or sessionStorage).
    *
-   * Возвращает объект для работы с хранилищем.
+   * Возвращает объект для работы с хранилищем (localStorage или sessionStorage).
+   * @returns Storage object or undefined / объект Storage или undefined
    */
   private getMethod(): Storage | undefined {
     if (
@@ -177,21 +202,24 @@ export class DataStorage<T> {
   }
 
   /**
-   * Getting the storage key name.
+   * Getting the storage key name with prefix.
    *
-   * Получение имени ключа в хранилище.
+   * Получение имени ключа в хранилище с учетом префикса.
+   * @returns key name / имя ключа
    */
   private getIndex(): string {
     return `${prefix}__${this.name}`
   }
 
   /**
-   * Getting data from storage.
+   * Getting raw data from storage.
    *
-   * Получение данных из хранилища.
+   * Получение "сырых" данных из хранилища.
+   * @returns parsed data or undefined / распарсенные данные или undefined
    */
   private getValue(): DataStorageValue<T> | undefined {
-    const value = this.getMethod()?.getItem(this.getIndex())
+    const value = this.getMethod()
+      ?.getItem(this.getIndex())
 
     if (value) {
       try {
@@ -209,9 +237,10 @@ export class DataStorage<T> {
   }
 
   /**
-   * Filling in the data from storage.
+   * Filling in the data from storage into memory.
    *
-   * Заполнение данными из хранилища.
+   * Заполнение данных из хранилища в память.
+   * @returns this instance / текущий экземпляр
    */
   private make(): this {
     const value = this.getValue()

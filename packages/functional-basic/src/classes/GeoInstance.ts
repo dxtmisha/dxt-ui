@@ -1,5 +1,3 @@
-import { copyObject } from '../functions/copyObject'
-import { copyObjectLite } from '../functions/copyObjectLite'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isSelected } from '../functions/isSelected'
 
@@ -16,180 +14,229 @@ const STORAGE_NAME_CODE = 'geo-code'
 
 /**
  * Base class for working with geographic data.
+ * Includes methods for determining location, language, and time zone.
  *
  * Базовый класс для работы с географическими данными.
+ * Включает методы для определения местоположения, языка и часового пояса.
  */
 export class GeoInstance {
+  /**
+   * Data storage instance for geo code/
+   * Экземпляр хранилища данных для гео-кода
+   */
   private storage = new DataStorage<string>(STORAGE_NAME_CODE)
+
+  /**
+   * Current location code (e.g., 'en-GB')/
+   * Текущий код локации (например, 'en-GB')
+   */
   private location: string
 
+  /**
+   * Detailed data about the current country/
+   * Детальные данные о текущей стране
+   */
   private item: GeoItemFull
+
+  /**
+   * Current language code/
+   * Текущий код языка
+   */
   private language: string
 
+  /**
+   * Current time zone offset in minutes/
+   * Текущее смещение часового пояса в минутах
+   */
   private timezone: number = new Date().getTimezoneOffset()
 
+  /**
+   * Constructor.
+   * Initializes the location and related data.
+   *
+   * Конструктор.
+   * Инициализирует местоположение и связанные с ним данные.
+   */
   constructor() {
     this.location = this.findLocation()
 
-    this.language = this.findLanguage(this.location)
     this.item = this.getByCode(this.location)
+    this.language = this.findLanguage(this.location)
   }
 
   /**
-   * Information about the current country.
+   * Getting information about the current country.
    *
-   * Информация об текущей стране.
+   * Получение информации о текущей стране.
+   * @returns object with geo data / объект с гео-данными
    */
   get(): GeoItemFull {
     return this.item
   }
 
   /**
-   * Current country.
+   * Getting the current country code.
    *
-   * Текущая страна.
+   * Получение текущего кода страны.
+   * @returns country code / код страны
    */
   getCountry(): string {
     return this.item.country
   }
 
   /**
-   * Current language.
+   * Getting the current language code.
    *
-   * Текущий язык.
+   * Получение текущего кода языка.
+   * @returns language code / код языка
    */
   getLanguage(): string {
     return this.language
   }
 
   /**
-   * Full format according to the standard.
+   * Getting the full format according to the standard (language-country).
    *
-   * Полный формат согласно стандарту.
+   * Получение полного формата согласно стандарту (язык-страна).
+   * @returns standard string / строка стандарта
    */
   getStandard(): string {
-    return this.item.standard
+    return this.getItem().standard
   }
 
   /**
-   * Returns the first day of the week.
+   * Getting the first day of the week for the current country.
    *
-   * Возвращает первый день недели.
+   * Получение первого дня недели для текущей страны.
+   * @returns first day of the week / первый день недели
    */
   getFirstDay(): string {
     return this.item.firstDay
   }
 
   /**
-   * Full format.
+   * Getting the current location string.
    *
-   * Полный формат.
+   * Получение строки текущего местоположения.
+   * @returns location string / строка местоположения
    */
   getLocation(): string {
     return this.location
   }
 
   /**
-   * Obtaining processed data.
+   * Getting processed data including the current language.
    *
-   * Получение обработанных данных.
+   * Получение обработанных данных, включая текущий язык.
+   * @returns full geo item data / полные данные гео-объекта
    */
   getItem(): GeoItemFull {
-    return copyObjectLite(this.item, {
-      language: this.language
-    })
+    return {
+      ...this.item,
+      language: this.language,
+      standard: `${this.language}-${this.item.country}`
+    }
   }
 
   /**
-   * Returns the full list of countries.
+   * Returns the full list of available countries.
    *
-   * Возвращает полный список стран.
+   * Возвращает полный список доступных стран.
+   * @returns list of geo items / список гео-объектов
    */
   getList(): GeoItem[] {
     return geo
   }
 
   /**
-   * Returns the data about the country by its full code.
+   * Returns data about the country by its code.
    *
-   * Возвращает данные о стране по ее полному коду.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * Возвращает данные о стране по ее коду.
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
+   * @returns full geo data / полные гео-данные
    */
   getByCode(code?: string): GeoItemFull {
     let item: GeoItem | undefined
 
     if (code) {
-      if (code.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/)) {
+      if (/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/.test(code)) {
         item = this.getByCodeFull(code)
       }
 
-      if (!item && code.match(/[A-Z]{2}/)) {
+      if (!item && /[A-Z]{2}/.test(code)) {
         item = this.getByCountry(this.toCountry(code))
       }
 
-      if (!item && code.match(/[a-z]{2}/)) {
+      if (!item && /[a-z]{2}/.test(code)) {
         item = this.getByLanguage(this.toLanguage(code))
       }
     }
 
-    return this.toFull(copyObject(item ?? this.getList()[0] as GeoItem))
+    return this.toFull(item ?? this.getList()[0] as GeoItem)
   }
 
   /**
-   * Returns the full data by language and country.
+   * Returns full data by language and country combination.
    *
-   * Возвращает полные данные по языку и стране.
-   * @param code string in the form of language-country/ строка в виде язык-страна
+   * Возвращает полные данные по комбинации языка и страны.
+   * @param code string in the form of language-country / строка в виде язык-страна
+   * @returns geo item or undefined / гео-объект или undefined
    */
   getByCodeFull(code: string): GeoItem | undefined {
-    return this.getList().find(
-      item => isSelected(code, [
-        `${item.language}-${item.country}`,
-        `${item.country}-${item.language}`
-      ])
-    )
+    return this.getList()
+      .find(
+        item => isSelected(code, [
+          `${item.language}-${item.country}`,
+          `${item.country}-${item.language}`
+        ])
+      )
   }
 
   /**
-   * Returns the full data by country.
+   * Returns full data by country code.
    *
-   * Возвращает полные данные по стране.
-   * @param country country/ страна
+   * Возвращает полные данные по коду страны.
+   * @param country country code / код страны
+   * @returns geo item or undefined / гео-объект или undefined
    */
   getByCountry(country: string): GeoItem | undefined {
-    return this.getList().find((item) => {
-      return item.country === country
-        || item?.countryAlternative?.find(countryAlternative => countryAlternative === country)
-    })
+    return this.getList()
+      .find((item) => {
+        return item.country === country
+          || item?.countryAlternative?.find(countryAlternative => countryAlternative === country)
+      })
   }
 
   /**
-   * Returns the full data by language.
+   * Returns full data by language code.
    *
-   * Возвращает полные данные по языку.
-   * @param language language/ язык
+   * Возвращает полные данные по коду языка.
+   * @param language language code / код языка
+   * @returns geo item or undefined / гео-объект или undefined
    */
   getByLanguage(language: string): GeoItem | undefined {
-    return this.getList().find((item) => {
-      return item.language === language
-        || item?.languageAlternative?.find(languageAlternative => languageAlternative === language)
-    })
+    return this.getList()
+      .find((item) => {
+        return item.language === language
+          || item?.languageAlternative?.find(languageAlternative => languageAlternative === language)
+      })
   }
 
   /**
-   * Retrieving the default timezone.
+   * Returns the current time zone offset in minutes.
    *
-   * Получение временной зоны по умолчанию
+   * Возвращает текущее смещение часового пояса в минутах.
+   * @returns timezone offset / смещение часового пояса
    */
   getTimezone(): number {
     return this.timezone
   }
 
   /**
-   * Retrieving the default timezone (formatted view).
+   * Returns the current time zone offset in a formatted string (e.g., '+03:00').
    *
-   * Получение временной зоны по умолчанию (отформатированный вид).
+   * Возвращает текущее смещение часового пояса в виде отформатированной строки (например, '+03:00').
+   * @returns formatted timezone string / отформатированная строка часового пояса
    */
   getTimezoneFormat(): string {
     const hours = Math.abs(Math.trunc(this.timezone / 60)).toString().padStart(2, '0')
@@ -203,64 +250,60 @@ export class GeoInstance {
   }
 
   /**
-   * Determines the current country by its full name.
+   * Finds the country data by its code or name.
    *
-   * Определяет текущую страну по ее полному названию.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * Ищет данные о стране по ее коду или названию.
+   * @param code country code / код страны
+   * @returns full geo data / полные гео-данные
    */
   find(code: string): GeoItemFull {
     return this.getByCode(code)
   }
 
   /**
-   * Returns a complete string with the country code and language.
+   * Converts a geo item to its standard string representation (language-country).
    *
-   * Возвращает полную строку с кодом страны и языка.
-   * @param item object with data about the current country/
-   * объект с данными об текущей стране
+   * Преобразует гео-объект в его стандартное строковое представление (язык-страна).
+   * @param item geo item data / данные гео-объекта
+   * @returns standard code string / строка стандартного кода
    */
   toStandard(item: GeoItem) {
     return `${item.language}-${item.country}`
   }
 
   /**
-   * Changes the data by the full code.
+   * Updates the current location and related data.
    *
-   * Изменяет данные по полному коду.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
-   * @param save save the result/ сохранить результат
+   * Обновляет текущее местоположение и связанные с ним данные.
+   * @param code country code / код страны
+   * @param save whether to save the location in storage / нужно ли сохранять местоположение в хранилище
    */
   set(code: string, save?: boolean): void {
-    if (isDomRuntime()) {
-      this.location = code
+    this.location = code
 
-      this.item = this.getByCode(this.location)
-      this.language = this.findLanguage(this.location)
+    this.item = this.getByCode(this.location)
+    this.language = this.findLanguage(this.location)
 
-      if (save) {
-        this.storage.set(this.location)
-      }
+    if (save) {
+      this.storage.set(this.location)
     }
   }
 
   /**
-   * Changing the default timezone for transmitted dates.
+   * Updates the default time zone offset.
    *
-   * Изменение временной зоны по умолчанию для отправляемых дат
-   * @param timezone new time zone/ новая временная зона
+   * Обновляет смещение часового пояса по умолчанию.
+   * @param timezone new time zone offset / новое смещение часового пояса
    */
   setTimezone(timezone: number) {
-    if (isDomRuntime()) {
-      this.timezone = timezone
-    }
+    this.timezone = timezone
   }
 
   /**
-   * Determines the current location.
+   * Internal method to determine the initial location.
    *
-   * Определяет текущую локацию.
+   * Внутренний метод для определения начального местоположения.
+   * @returns initial location code / начальный код локации
    */
   private findLocation(): string {
     return (
@@ -275,14 +318,14 @@ export class GeoInstance {
   }
 
   /**
-   * Determines the current language.
+   * Internal method to determine the language from the provided code.
    *
-   * Определяет текущий язык.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * Внутренний метод для определения языка по предоставленному коду.
+   * @param code location or language code / код локации или языка
+   * @returns language code / код языка
    */
   private findLanguage(code?: string): string {
-    if (code && code.match(/[a-z]{2}/)) {
+    if (code && /[a-z]{2}/.test(code)) {
       return this.toLanguage(code)
     }
 
@@ -290,34 +333,39 @@ export class GeoInstance {
   }
 
   /**
-   * Returns the country code by its full language-country.
+   * Internal method to extract country code from a location string.
    *
-   * Возвращает код страны по ее полному язык-страна.
-   * @param code country code/ код страна
+   * Внутренний метод для извлечения кода страны из строки локации.
+   * @param code combined string / комбинированная строка
+   * @returns country code / код страны
    */
   private toCountry(code: string): string {
     return code.replace(/[^A-Z]+/g, '')
   }
 
   /**
-   * Returns the language code by its full language-country.<br>
-   * Возвращает код языка по его полному язык-страна.
-   * @param code country code/ код страна
+   * Internal method to extract language code from a location string.
+   *
+   * Внутренний метод для извлечения кода языка из строки локации.
+   * @param code combined string / комбинированная строка
+   * @returns language code / код языка
    */
   private toLanguage(code: string): string {
     return code.replace(/[^a-z]+/g, '')
   }
 
   /**
-   * Adding missing data.<br>
-   * Добавление недостающих данных.
-   * @param item object with data about the current country/
-   * объект с данными об текущей стране
+   * Internal method to fill missing fields in a geo item.
+   *
+   * Внутренний метод для заполнения отсутствующих полей в гео-объекте.
+   * @param item basic geo item / базовый гео-объект
+   * @returns full geo item data / полные данные гео-объекта
    */
   private toFull(item: GeoItem): GeoItemFull {
-    return copyObjectLite(item, {
+    return {
+      ...item,
       standard: this.toStandard(item),
       firstDay: item?.firstDay || 'Mo'
-    })
+    }
   }
 }

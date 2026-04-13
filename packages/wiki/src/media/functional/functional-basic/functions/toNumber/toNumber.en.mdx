@@ -1,21 +1,37 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Functions/toNumber - Converting a value to a number'/>
 
 # `toNumber`
 
-Extracts a numeric value from a string or a number. The function removes extra characters and correctly handles various thousands and decimal separators (spaces, commas, periods).
+Converts a string or number into a finite floating-point number. The function is designed to handle various formatting styles, including thousands separators and different decimal markers.
 
 **Parameters:**
-- `value?: T` — The input value (a string or a number).
+- `value?: NumberOrString` — The input value for conversion.
 
 **Returns:**
-`number` — The transformed float number. If the value is empty or invalid, `0` is returned.
+`number` — The parsed float number or `0` if conversion fails or the value is non-finite.
 
-```typescript
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { toNumber } from '@dxtmisha/functional-basic'
 
-console.log(toNumber('1 250,50')) // 1250.5
-console.log(toNumber('1,000,000.99')) // 1000000.99
-console.log(toNumber('abc-12.5')) // 12.5
-```
+// 1. Handling various separators
+toNumber('1 250,50')       // 1250.5
+toNumber('1,000,000.99')   // 1000000.99
+toNumber('1.250,50')       // 1250.5
+
+// 2. Stripping non-numeric characters
+toNumber('abc-12.5')       // -12.5
+toNumber('$1,234.56')      // 1234.56
+
+// 3. Numbers and special values
+toNumber(123.45)           // 123.45
+toNumber(-0)               // 0 (normalized)
+toNumber(Infinity)         // 0
+toNumber(undefined)        // 0
+  `}
+/>

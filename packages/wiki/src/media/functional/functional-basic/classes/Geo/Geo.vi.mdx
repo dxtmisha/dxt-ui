@@ -8,11 +8,11 @@ Một lớp tiện ích tĩnh (static class) để quản lý tập trung dữ l
 
 ## Tính năng chính
 
-- **Tự động phát hiện** — xác định thông minh địa phương (locale) của người dùng thông qua `navigator.language` hoặc các thuộc tính HTML nếu không được xác định rõ ràng.
-- **Lưu trữ lâu dài** — sử dụng `DataStorage` để lưu và khôi phục các tùy chọn ngôn ngữ và quốc gia do người dùng chọn.
-- **Tích hợp cơ sở dữ liệu truyền thông** — cung cấp quyền truy cập vào cơ sở dữ liệu toàn diện về các quốc gia và ngôn ngữ từ thư viện `@dxtmisha/media`.
-- **Quản lý thời gian toàn cầu** — thiết lập và truy xuất tập trung các độ lệch múi giờ để xử lý ngày tháng chính xác.
-- **Truy cập tĩnh** — tất cả các phương thức đều là tĩnh, loại bỏ nhu cầu khởi tạo (`new Geo()`).
+- **Tự động phát hiện** — xác định thông minh địa phương (locale) thông qua bộ nhớ hoặc mặc định của môi trường.
+- **Lưu trữ lâu dài** — sử dụng `DataStorage` để lưu và khôi phục các tùy chọn của người dùng.
+- **Tích hợp cơ sở dữ liệu truyền thông** — cung cấp quyền truy cập vào cơ sở dữ liệu quốc gia và ngôn ngữ từ thư viện `@dxtmisha/media`.
+- **Quản lý thời gian toàn cầu** — thiết lập và truy xuất tập trung các độ lệch múi giờ.
+- **Truy cập tĩnh** — cung cấp giao diện toàn cầu thuận tiện mà không cần khởi tạo thủ công.
 
 ## Cách sử dụng cơ bản
 

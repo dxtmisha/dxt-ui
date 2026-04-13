@@ -12,6 +12,13 @@ Một lớp linh hoạt để tương tác với `localStorage` và `sessionStor
 - **Bộ nhớ đệm Dựa trên Thời gian** — cho phép lưu các đối tượng cùng với mốc thời gian và tôn trọng các ràng buộc về tuổi đời (age) của dữ liệu trong quá trình truy xuất.
 - **Quản lý Tiền tố** — hỗ trợ cả tiền tố toàn cục và riêng biệt để cách ly cũng như gom nhóm các khóa trong `localStorage`.
 - **Tối ưu Bô nhớ** — tạo ra các singleton cho những khóa giống nhau nhằm tránh các thao tác đọc đĩa bị lặp lại.
+- **Hỗ trợ SSR** — sử dụng cơ chế cách ly theo từng request trong quá trình render phía server để ngăn chặn rò rỉ dữ liệu giữa các phiên làm việc song song.
+
+## SSR và Hydration
+
+Lớp `DataStorage` hoàn toàn tương thích với Server-Side Rendering (SSR). Nó sử dụng một registry đặc biệt để cách ly các instance giữa các HTTP request khác nhau trên server.
+
+> Để tránh lỗi hydration (khi HTML render từ server khác với client), bạn nên gọi phương thức `get()` bên trong `useEffect` hoặc các hook chỉ chạy ở client. Trên server, `get()` sẽ luôn trả về `undefined` (hoặc `defaultValue`) vì `localStorage` không khả dụng.
 
 ## Khởi tạo
 
@@ -30,8 +37,6 @@ const settings = new DataStorage('settings')
 // 2. Tạo một thực thể cho sessionStorage
 const session = new DataStorage('user_session', true)
 ```
-
-## Cách sử dụng Cơ bản
 
 ## Cấu hình toàn cục
 
@@ -72,5 +77,5 @@ settings.set({ theme: 'dark', notifications: true })
 
 ## Các phương thức bổ sung
 
-- `remove(): this` — Xóa bỏ chính xác khóa lưu trữ tương ứng từ phần môi trường phần mềm `localStorage` hoặc `sessionStorage`, đồng thời lập tức dọn sạch dữ liệu khối nhớ hiện tại.
+- `remove(): this` — Xóa bỏ chính xác khóa lưu trữ tương ứng từ phần môi trường phần mềm `localStorage` или `sessionStorage`, đồng thời lập tức dọn sạch dữ liệu khối nhớ hiện tại.
 - `update(): this` — Buộc bộ đệm đối tượng trong bộ nhớ tự đồng bộ lại thật khít so với dữ liệu rỗng hiện hành bên trong các hàm Storage API vật lý.

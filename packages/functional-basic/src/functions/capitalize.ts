@@ -1,5 +1,5 @@
-import { Geo } from '../library'
 import { isString } from './isString'
+import { Geo } from '../classes/Geo'
 
 /**
  * Capitalizes the first letter of a string.

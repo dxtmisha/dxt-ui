@@ -1,21 +1,37 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Functions/toNumber - Chuyển đổi giá trị sang kiểu số'/>
 
 # `toNumber`
 
-Trích xuất giá trị số từ một chuỗi hoặc một số. Hàm loại bỏ các ký tự thừa và xử lý chính xác các ký hiệu phân cách phần nghìn và phần thập phân khác nhau (khoảng trắng, dấu phẩy, dấu chấm).
+Chuyển đổi một chuỗi hoặc một số thành một số thực (float) hữu hạn. Hàm được thiết kế để xử lý nhiều kiểu định dạng khác nhau, bao gồm các ký tự phân cách phần nghìn và các dấu thập phân khác nhau.
 
 **Tham số:**
-- `value?: T` — Giá trị đầu vào (chuỗi hoặc số).
+- `value?: NumberOrString` — Giá trị đầu vào cần chuyển đổi.
 
 **Trả về:**
-`number` — Số thực (float) sau khi chuyển đổi. Nếu giá trị trống hoặc không hợp lệ, hàm trả về `0`.
+`number` — Số thực sau khi phân tách hoặc `0` nếu chuyển đổi thất bại hoặc giá trị là vô hạn.
 
-```typescript
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { toNumber } from '@dxtmisha/functional-basic'
 
-console.log(toNumber('1 250,50')) // 1250.5
-console.log(toNumber('1,000,000.99')) // 1000000.99
-console.log(toNumber('abc-12.5')) // 12.5
-```
+// 1. Xử lý các loại dấu phân cách
+toNumber('1 250,50')       // 1250.5
+toNumber('1,000,000.99')   // 1000000.99
+toNumber('1.250,50')       // 1250.5
+
+// 2. Loại bỏ các ký tự không phải số
+toNumber('abc-12.5')       // -12.5
+toNumber('$1,234.56')      // 1234.56
+
+// 3. Số và các giá trị đặc biệt
+toNumber(123.45)           // 123.45
+toNumber(-0)               // 0 (đã chuẩn hóa)
+toNumber(Infinity)         // 0
+toNumber(undefined)        // 0
+  `}
+/>
