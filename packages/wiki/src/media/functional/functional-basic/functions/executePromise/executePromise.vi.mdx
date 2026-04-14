@@ -4,29 +4,30 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `executePromise`
 
-Một tiện ích thực thi an toàn một hàm và/hoặc chờ đợi kết quả bất đồng bộ (Promise) được hoàn thành.
+Một tiện ích mạnh mẽ để thực thi và chờ đợi kết quả từ các nguồn linh hoạt một cách an toàn. Nó xử lý các giá trị đồng bộ, Promise và các hàm (cả đồng bộ và bất đồng bộ) bằng cách đảm bảo kết quả cuối cùng luôn được giải quyết và trả về dưới dạng Promise.
 
-Bản chất bên trong, nó sử dụng tiện ích `executeFunction`. Nếu truyền vào một hàm trả về một Promise, `executePromise` sẽ thực thi hàm đó và đợi `Promise` hoàn thành. Nếu truyền vào một giá trị đồng bộ hoặc một hàm thông thường trả về giá trị đồng bộ, tiện ích sẽ trả về ngay kết quả đó.
+Bên dưới, nó tận dụng `executeFunction` để thực thi các hàm và sau đó đảm bảo rằng nếu kết quả là một `Promise`, nó sẽ được chờ đợi (await) đúng cách.
 
 **Tham số:**
-- `callback: (() => Promise<T>) | (() => T) | T` — Một giá trị, một `Promise`, hoặc một hàm có thể trả về một `Promise` hoặc một giá trị thông thường.
+- `callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T` — Nguồn để thực thi hoặc giải quyết.
+- `...args: any[]` (tùy chọn) — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
 
 **Trả về:**
-`Promise<T>` — Một promise sẽ được hoàn thành với giá trị được cung cấp hoặc được tính toán.
+`Promise<T>` — Một promise giải quyết thành giá trị cuối cùng được tính toán hoặc được cung cấp.
 
 ```typescript
 import { executePromise } from '@dxtmisha/functional-basic'
 
-// Với hàm async
-const fetchData = async () => {
-  return await fetch('/api/data').then(res => res.json())
+// 1. Chờ đợi một hàm bất đồng bộ
+const fetchData = async (id: number) => {
+  return await fetch(`/api/user/${id}`).then(res => res.json())
 }
-const result1 = await executePromise(fetchData)
+const user = await executePromise(fetchData, 123)
 
-// Với hàm đồng bộ
-const staticData = () => 'Dữ liệu đồng bộ'
-const result2 = await executePromise(staticData)
+// 2. Xử lý một hàm đồng bộ
+const getName = () => 'John Doe'
+const name = await executePromise(getName) // trả về Promise giải quyết thành 'John Doe'
 
-// Với giá trị tĩnh
-const result3 = await executePromise('Dữ liệu')
+// 3. Giải quyết một giá trị tĩnh
+const result = await executePromise('Dữ liệu tức thời')
 ```

@@ -20,8 +20,10 @@ export function getElement<
 >(
   element?: ElementOrString<E>
 ): R | undefined {
-  if (!isDomRuntime()) {
-    return undefined
+  if (
+    !isDomRuntime()
+  ) {
+    return isString(element) ? undefined : element as (R | undefined)
   }
 
   if (isWindow(element)) {

@@ -4,29 +4,30 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `executePromise`
 
-A utility that safely executes a function and/or awaits the resolution of an asynchronous result (Promise).
+A robust utility for safely executing and awaiting results from flexible sources. It handles synchronous values, Promises, and functions (both synchronous and asynchronous) by ensuring the final result is always resolved and returned as a Promise.
 
-Under the hood, it uses the `executeFunction` utility. If passed a function returning a Promise, `executePromise` executes it and waits for the `Promise` to resolve. If a synchronous value or a regular function returning a synchronous value is passed, the utility immediately returns that result.
+Under the hood, it leverages `executeFunction` to resolve callables and then ensures that if the result is a `Promise`, it is properly awaited.
 
 **Parameters:**
-- `callback: (() => Promise<T>) | (() => T) | T` — A value, a `Promise`, or a function capable of returning a `Promise` or a plain value.
+- `callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T` — The source to execute or resolve.
+- `...args: any[]` (optional) — Arguments to pass to the function if `callback` is callable.
 
 **Returns:**
-`Promise<T>` — A promise resolving to the provided or computed value.
+`Promise<T>` — A promise that resolves to the final computed or provided value.
 
 ```typescript
 import { executePromise } from '@dxtmisha/functional-basic'
 
-// With an async function
-const fetchData = async () => {
-  return await fetch('/api/data').then(res => res.json())
+// 1. Awaiting an async function
+const fetchData = async (id: number) => {
+  return await fetch(`/api/user/${id}`).then(res => res.json())
 }
-const result1 = await executePromise(fetchData)
+const user = await executePromise(fetchData, 123)
 
-// With a synchronous function
-const staticData = () => 'Sync data'
-const result2 = await executePromise(staticData)
+// 2. Handling a synchronous function
+const getName = () => 'John Doe'
+const name = await executePromise(getName) // returns Promise resolving to 'John Doe'
 
-// With a static value
-const result3 = await executePromise('Data')
+// 3. Resolving a static value
+const result = await executePromise('Immediate Data')
 ```

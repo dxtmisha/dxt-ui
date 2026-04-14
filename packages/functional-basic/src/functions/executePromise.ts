@@ -1,11 +1,14 @@
 import { executeFunction } from './executeFunction'
 
 /**
- * Returns the execution result of an asynchronous function.
+ * Safely executes a function and awaits its result if it returns a Promise.
+ * If the provided value is a static value or a synchronous function, it returns the result immediately wrapped in a Promise.
  *
- * Возвращает выполнение асинхронной функции.
- * @param callback function or any value/ функция или любое значение
- * @param args arguments of the function/ аргументы функции
+ * Безопасно выполняет функцию и ожидает её результат, если она возвращает Promise.
+ * Если переданное значение является статическим или синхронной функцией, возвращает результат немедленно, обернутым в Promise.
+ * @param callback function, Promise or any value / функция, Promise или любое значение
+ * @param args arguments of the function / аргументы функции
+ * @returns promise resolving to the execution result / промис, разрешающийся результатом выполнения
  */
 export async function executePromise<T>(
   callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T,

@@ -1,4 +1,3 @@
-import { isString } from './isString'
 import { Geo } from '../classes/Geo'
 
 /**
@@ -13,16 +12,15 @@ export function capitalize(
   value: string,
   isLocale: boolean = false
 ): string {
-  if (
-    isString(value)
-    && value.length > 0
-  ) {
+  const text = String(value)
+
+  if (text.length > 0) {
     if (isLocale) {
-      return value.charAt(0).toLocaleUpperCase(Geo.getLocation()) + value.slice(1)
+      return text.charAt(0).toLocaleUpperCase(Geo.getLocation()) + text.slice(1)
     }
 
-    return value.charAt(0).toUpperCase() + value.slice(1)
+    return text.charAt(0).toUpperCase() + text.slice(1)
   }
 
-  return value
+  return text
 }

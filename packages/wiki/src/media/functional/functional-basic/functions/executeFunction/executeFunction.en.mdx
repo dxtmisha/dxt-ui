@@ -4,25 +4,28 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `executeFunction`
 
-A utility that checks the provided argument. If the argument is a function, it executes the function and returns its result. Otherwise, it simply returns the provided argument as is.
+A flexible utility designed to handle arguments that can be either a static value or a function. If the provided argument is a function, `executeFunction` invokes it with the specified arguments and returns the result. Otherwise, it returns the argument itself.
 
-This is extremely useful for handling arguments that can flexibly be either a static value or a function that calculates the value on demand (such as lazy evaluation or dynamic defaults).
+This pattern is highly effective for implementing lazy evaluation, dynamic default values, or configuration properties that can be either fixed or computed.
 
 **Parameters:**
-- `callback: T | FunctionArgs<any, T>` — A value of any type, or a function that returns a value of type `T`.
+- `callback: T | ((...args: any[]) => T)` — The value to process. Can be a literal value or a function returning type `T`.
+- `...args: any[]` (optional) — Arguments to pass to the function if `callback` is callable.
 
 **Returns:**
-`T` — The result of the function execution, or the raw value provided.
+`T` — The result of the function execution or the raw value.
 
 ```typescript
 import { executeFunction } from '@dxtmisha/functional-basic'
 
-// Passing a static value
+// 1. Static value handling
 console.log(executeFunction('Hello')) // 'Hello'
 
-// Passing a function
-const lazyValue = () => {
-  return 'Loaded lazily'
-}
-console.log(executeFunction(lazyValue)) // 'Loaded lazily'
+// 2. Dynamic execution
+const getLabel = (prefix: string) => `${prefix}: Dynamic Label`
+console.log(executeFunction(getLabel, 'Admin')) // 'Admin: Dynamic Label'
+
+// 3. Conditional logic in caller
+const value = Math.random() > 0.5 ? 'Static' : () => 'Computed'
+console.log(executeFunction(value)) // either 'Static' or 'Computed'
 ```

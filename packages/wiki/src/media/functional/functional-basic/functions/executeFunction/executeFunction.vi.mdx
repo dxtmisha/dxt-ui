@@ -4,12 +4,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `executeFunction`
 
-Tiện ích kiểm tra đối số được cung cấp. Nếu đối số đó là một hàm, nó sẽ thực thi hàm và trả về kết quả của hàm đó. Trong trường hợp ngược lại, nó đơn giản trả về đối số đầu vào (giữ nguyên).
+Một tiện ích linh hoạt được thiết kế để xử lý các đối số có thể là giá trị tĩnh hoặc hàm. Nếu đối số được cung cấp là một hàm, `executeFunction` sẽ gọi hàm đó với các đối số đã chỉ định và trả về kết quả. Nếu không, nó sẽ trả về chính đối số đó.
 
-Điều này rất hữu ích cho các tham số có thể linh hoạt chấp nhận một giá trị tĩnh hoặc một hàm tính toán giá trị đó theo yêu cầu (ví dụ như khởi tạo chậm/lazy evaluation hoặc giá trị mặc định động).
+Mô hình này rất hiệu quả để triển khai tính toán lười biếng (lazy evaluation), các giá trị mặc định động hoặc các thuộc tính cấu hình có thể cố định hoặc được tính toán.
 
 **Tham số:**
-- `callback: T | FunctionArgs<any, T>` — Giá trị của bất kỳ loại nào, hoặc một hàm trả về giá trị kiểu `T`.
+- `callback: T | ((...args: any[]) => T)` — Giá trị cần xử lý. Có thể là một giá trị cụ thể hoặc một hàm trả về kiểu `T`.
+- `...args: any[]` (tùy chọn) — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
 
 **Trả về:**
 `T` — Kết quả của việc thực thi hàm hoặc chính giá trị ban đầu.
@@ -17,12 +18,14 @@ Tiện ích kiểm tra đối số được cung cấp. Nếu đối số đó l
 ```typescript
 import { executeFunction } from '@dxtmisha/functional-basic'
 
-// Truyền một giá trị tĩnh
+// 1. Xử lý giá trị tĩnh
 console.log(executeFunction('Xin chào')) // 'Xin chào'
 
-// Truyền một hàm
-const lazyValue = () => {
-  return 'Được tải lazy'
-}
-console.log(executeFunction(lazyValue)) // 'Được tải lazy'
+// 2. Thực thi động
+const getLabel = (prefix: string) => `${prefix}: Nhãn động`
+console.log(executeFunction(getLabel, 'Admin')) // 'Admin: Nhãn động'
+
+// 3. Logic điều kiện trong cuộc gọi
+const value = Math.random() > 0.5 ? 'Tĩnh' : () => 'Đã tính toán'
+console.log(executeFunction(value)) // 'Tĩnh' hoặc 'Đã tính toán'
 ```

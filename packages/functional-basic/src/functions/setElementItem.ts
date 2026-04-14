@@ -47,7 +47,7 @@ export function setElementItem<
       ) {
         item.setAttribute(index.toString(), newValue)
       } else {
-        (item as any)[index] = executeFunction(value)
+        (item as any)[index] = newValue
       }
     }
   }

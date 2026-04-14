@@ -49,12 +49,12 @@ export function forEach<
       }
     }
 
-    if (data instanceof Map) {
+    if (Array.isArray(data)) {
+      data.forEach((item: T, key) => push(item, key as K, data))
+    } else if (data instanceof Map) {
       data.forEach((item: T, key) => push(item, key as K, data))
     } else if (data instanceof Set) {
       data.forEach((item: T) => push(item, item as unknown as K, data))
-    } else if (Array.isArray(data)) {
-      data.forEach((item: T, key) => push(item, key as K, data))
     } else {
       for (const key in data) {
         if (Object.prototype.hasOwnProperty.call(data, key)) {

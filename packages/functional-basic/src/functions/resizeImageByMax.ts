@@ -50,6 +50,8 @@ export function resizeImageByMax(
   if (
     isDomRuntime()
     && element
+    && element.naturalWidth
+    && element.naturalHeight
     && (
       (element.naturalWidth > maxSize && (type === 'auto' || type === 'width'))
       || (element.naturalHeight > maxSize && (type === 'auto' || type === 'height'))

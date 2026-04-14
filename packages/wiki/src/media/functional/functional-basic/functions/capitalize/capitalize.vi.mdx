@@ -4,18 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `capitalize`
 
-Viết hoa chữ cái đầu tiên của một chuỗi. Trả về cùng một chuỗi nếu ký tự đầu tiên không phải là chữ cái hoặc nếu chuỗi trống.
+Viết hoa chữ cái đầu tiên của một chuỗi. Trả về cùng một chuỗi nếu nó trống. Hàm này mạnh mẽ và an toàn cho các đầu vào không phải chuỗi.
 
 **Tham số:**
 - `value: string` — Chuỗi gốc cần viết hoa.
+- `isLocale: boolean` (tùy chọn) — Nếu là `true`, sử dụng địa phương (locale) toàn cục hiện tại (thông qua `Geo.getLocation()`) cho các quy tắc viết hoa.
 
 **Trả về:**
 `string` — Chuỗi với chữ cái đầu tiên được viết hoa.
 
 ```typescript
-import { capitalize } from '@dxtmisha/functional-basic'
+import { capitalize, Geo } from '@dxtmisha/functional-basic'
 
 console.log(capitalize('hello')) // 'Hello'
-console.log(capitalize('Hello')) // 'Hello'
 console.log(capitalize('123'))   // '123'
+
+// Viết hoa theo ngữ cảnh địa phương (ví dụ: đối với tiếng Thổ Nhĩ Kỳ 'i' -> 'İ')
+Geo.set('tr-TR')
+console.log(capitalize('i', true)) // 'İ'
 ```

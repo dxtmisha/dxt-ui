@@ -37,6 +37,7 @@ export async function ensureMaxSize(
         )
 
         resolve(value ?? '')
+        URL.revokeObjectURL(data)
       }
     } else {
       blobToBase64(blob).then(file => resolve(String(file ?? '')))

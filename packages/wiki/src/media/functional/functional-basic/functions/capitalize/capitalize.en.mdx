@@ -4,18 +4,22 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `capitalize`
 
-Capitalizes the first letter of a string. Returns the same string if the first character is not a letter or if the string is empty.
+Capitalizes the first letter of a string. Returns the same string if it is empty. The function is robust and safe for non-string inputs.
 
 **Parameters:**
 - `value: string` — The original string to capitalize.
+- `isLocale: boolean` (optional) — If `true`, uses the current global locale (via `Geo.getLocation()`) for capitalization rules.
 
 **Returns:**
 `string` — The string with the first letter capitalized.
 
 ```typescript
-import { capitalize } from '@dxtmisha/functional-basic'
+import { capitalize, Geo } from '@dxtmisha/functional-basic'
 
 console.log(capitalize('hello')) // 'Hello'
-console.log(capitalize('Hello')) // 'Hello'
 console.log(capitalize('123'))   // '123'
+
+// Locale-aware capitalization (e.g., for Turkish 'i' -> 'İ')
+Geo.set('tr-TR')
+console.log(capitalize('i', true)) // 'İ'
 ```

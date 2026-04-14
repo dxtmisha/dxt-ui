@@ -1,32 +1,33 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/functional-basic/Functions/executePromise - Выполнение Promise или функции'/>
+<Meta title='@dxtmisha/ru/functional-basic/Functions/executePromise - Выполнить Promise или функцию'/>
 
 # `executePromise`
 
-Утилита, которая безопасно выполняет функцию и/или дожидается разрешения асинхронного результата (Promise).
+Надежная утилита для безопасного выполнения и ожидания результатов из различных источников. Она обрабатывает синхронные значения, промисы (Promises) и функции (как синхронные, так и асинхронные), гарантируя, что конечный результат всегда будет разрешен и возвращен в виде промиса.
 
-Внутри используется функция `executeFunction`. Если передан аргумент в виде функции возвращающей промис, `executePromise` выполнит эту функцию и дождётся выполнения `Promise`. Если будет передано синхронное значение или обычная функция, возвращающая синхронное значение, утилита сразу вернёт этот результат.
+Внутренне она использует `executeFunction` для вызова функций, а затем проверяет, является ли результат промисом, чтобы дождаться его завершения.
 
 **Параметры:**
-- `callback: (() => Promise<T>) | (() => T) | T` — Значение, `Promise` или функция, способная вернуть `Promise` или обычное значение.
+- `callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T` — Источник для выполнения или разрешения.
+- `...args: any[]` (опционально) — Аргументы, которые будут переданы в функцию, если `callback` является вызываемым.
 
 **Возвращает:**
-`Promise<T>` — Промис, разрешающийся в переданное или вычисленное значение.
+`Promise<T>` — Промис, разрешающийся финальным вычисленным или предоставленным значением.
 
 ```typescript
 import { executePromise } from '@dxtmisha/functional-basic'
 
-// С асинхронной функцией
-const fetchData = async () => {
-  return await fetch('/api/data').then(res => res.json())
+// 1. Ожидание асинхронной функции
+const fetchData = async (id: number) => {
+  return await fetch(`/api/user/${id}`).then(res => res.json())
 }
-const result1 = await executePromise(fetchData)
+const user = await executePromise(fetchData, 123)
 
-// С обычной функцией
-const staticData = () => 'Синхронные данные'
-const result2 = await executePromise(staticData)
+// 2. Обработка синхронной функции
+const getName = () => 'Иван Иванов'
+const name = await executePromise(getName) // возвращает Promise, разрешающийся в 'Иван Иванов'
 
-// Со статическим значением
-const result3 = await executePromise('Данные')
+// 3. Разрешение статического значения
+const result = await executePromise('Мгновенные данные')
 ```
