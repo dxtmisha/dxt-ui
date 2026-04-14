@@ -163,12 +163,12 @@ export class GeoInstance {
         item = this.getByCodeFull(code)
       }
 
-      if (!item && /[A-Z]{2}/.test(code)) {
-        item = this.getByCountry(this.toCountry(code))
-      }
-
       if (!item && /[a-z]{2}/.test(code)) {
         item = this.getByLanguage(this.toLanguage(code))
+      }
+
+      if (!item && /[A-Z]{2}/.test(code)) {
+        item = this.getByCountry(this.toCountry(code))
       }
     }
 
