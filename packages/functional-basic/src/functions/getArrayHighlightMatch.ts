@@ -1,4 +1,7 @@
 import { getSeparatingSearchExp } from './getSeparatingSearchExp'
+import { isFilled } from './isFilled'
+import { toString } from './toString'
+
 import { type HighlightMatchItem } from '../types/searchTypes'
 
 /**
@@ -10,11 +13,14 @@ import { type HighlightMatchItem } from '../types/searchTypes'
  */
 export function getArrayHighlightMatch(
   value: string,
-  search?: string
+  search?: string | RegExp
 ): HighlightMatchItem[] {
-  const text = String(value)
+  const text = toString(value)
 
-  if (search) {
+  if (
+    isFilled(text)
+    && isFilled(search)
+  ) {
     const result: HighlightMatchItem[] = []
     const exp = getSeparatingSearchExp(search)
     let lastIndex = 0

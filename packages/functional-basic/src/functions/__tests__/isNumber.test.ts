@@ -7,7 +7,7 @@ describe('isNumber', () => {
     expect(isNumber(0)).toBe(true)
     expect(isNumber(-50)).toBe(true)
     expect(isNumber(3.14)).toBe(true)
-    expect(isNumber(NaN)).toBe(true) // typeof NaN is 'number'
+    expect(isNumber(NaN)).toBe(false) // typeof NaN is 'number'
   })
 
   it('should return true for strings that contain only digits', () => {

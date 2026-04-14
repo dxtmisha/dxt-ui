@@ -63,4 +63,28 @@ describe('getArrayHighlightMatch', () => {
       { text: 'world', isMatch: true }
     ])
   })
+
+  it('should handle matches at the very beginning', () => {
+    const result = getArrayHighlightMatch('apple pie', 'apple')
+    expect(result).toEqual([
+      { text: 'apple', isMatch: true },
+      { text: ' pie', isMatch: false }
+    ])
+  })
+
+  it('should handle consecutive matches', () => {
+    const result = getArrayHighlightMatch('appleapple', 'apple')
+    expect(result).toEqual([
+      { text: 'apple', isMatch: true },
+      { text: 'apple', isMatch: true }
+    ])
+  })
+
+  it('should support global RegExp as search parameter', () => {
+    const result = getArrayHighlightMatch('hello world', /hello/ig)
+    expect(result).toEqual([
+      { text: 'hello', isMatch: true },
+      { text: ' world', isMatch: false }
+    ])
+  })
 })

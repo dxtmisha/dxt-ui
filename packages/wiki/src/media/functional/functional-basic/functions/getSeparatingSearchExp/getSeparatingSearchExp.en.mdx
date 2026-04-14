@@ -9,10 +9,11 @@ A utility that builds a case-insensitive global `RegExp` for searching strings c
 Each word is split by spaces, escaped, and joined with the OR operator `|`. This is useful when you want to find a match for at least one of the entered words.
 
 **Parameters:**
-- `search: string` — A search string consisting of one or more space-separated words.
+- `search: string | RegExp` — A search string consisting of one or more space-separated words, or a `RegExp` object.
+- `limit: number = 128` — The maximum allowed length of the search string (ignored if a `RegExp` is passed).
 
 **Returns:**
-`RegExp` — A regular expression with flags `ig` (global, case-insensitive).
+`RegExp` — A regular expression with flags `ig` (global, case-insensitive). If the search string is empty or exceeds the limit, a regex that matches nothing is returned.
 
 ```typescript
 import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'

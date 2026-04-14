@@ -8,7 +8,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `value: string` — Исходная строка для обработки.
-- `search?: string` — Строка поиска (одно или несколько слов через пробел).
+- `search?: string | RegExp` — Строка поиска (одно или несколько слов через пробел) или регулярное выражение.
 - `className: string = 'sys-highlight-match'` — CSS-класс, который будет добавлен к тегу `<span>`.
 - `shouldEscape: boolean = false` — Нужно ли экранировать строку перед добавлением подсветки.
 

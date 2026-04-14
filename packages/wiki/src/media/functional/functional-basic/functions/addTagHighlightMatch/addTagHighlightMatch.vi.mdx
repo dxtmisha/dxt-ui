@@ -8,7 +8,7 @@ Tiện ích để làm nổi bật các kết quả khớp trong một chuỗi b
 
 **Tham số:**
 - `value: string` — Chuỗi ban đầu để xử lý.
-- `search?: string` — Chuỗi tìm kiếm (một hoặc nhiều từ phân tách bằng dấu cách).
+- `search?: string | RegExp` — Chuỗi tìm kiếm (một hoặc nhiều từ phân tách bằng dấu cách) hoặc biễu thức chính quy.
 - `className: string = 'sys-highlight-match'` — Class CSS sẽ được thêm vào thẻ `<span>`.
 - `shouldEscape: boolean = false` — Có nên thoát chuỗi trước khi thêm làm nổi bật hay không.
 

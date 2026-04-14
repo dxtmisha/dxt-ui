@@ -52,4 +52,18 @@ describe('addTagHighlightMatch', () => {
     const result = addTagHighlightMatch('price > 10', '>', 'sys-highlight-match', true)
     expect(result).toBe('price <span class="sys-highlight-match">&gt;</span> 10')
   })
+
+  it('should support RegExp as search parameter', () => {
+    const result = addTagHighlightMatch('hello world', /(hello)/i)
+    expect(result).toBe('<span class="sys-highlight-match">hello</span> world')
+  })
+
+  it('should return empty string if input is empty', () => {
+    expect(addTagHighlightMatch('', 'test')).toBe('')
+  })
+
+  it('should handle values that look like tags', () => {
+    const result = addTagHighlightMatch('TAG_START and TAG_END', 'TAG')
+    expect(result).toBe('<span class="sys-highlight-match">TAG</span>_START and <span class="sys-highlight-match">TAG</span>_END')
+  })
 })

@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toString - Преобразование значения в строку'/>
+
+# `toString`
+
+Утилита для преобразования значения в строку. Возвращает пустую строку, если значение равно null или undefined.
+
+**Параметры:**
+- `value: string | null | undefined` — Значение для преобразования.
+
+**Возвращает:**
+`string` — Строковое представление значения.
+
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { toString } from '@dxtmisha/functional-basic'
+
+toString('Привет')        // 'Привет'
+toString(null)            // ''
+toString(undefined)       // ''
+
+  `}
+/>

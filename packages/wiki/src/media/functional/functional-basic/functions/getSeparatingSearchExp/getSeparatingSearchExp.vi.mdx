@@ -9,10 +9,11 @@ Tiện ích tạo một `RegExp` toàn cục, không phân biệt chữ hoa/thư
 Mỗi từ được tách bởi dấu cách, escape và nối với nhau bằng toán tử OR `|`. Điều này hữu ích khi bạn muốn tìm kết quả khớp với ít nhất một trong các từ đã nhập.
 
 **Tham số:**
-- `search: string` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách.
+- `search: string | RegExp` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi dấu cách, hoặc đối tượng `RegExp`.
+- `limit: number = 128` — Độ dài tối đa cho phép của chuỗi tìm kiếm (bị bỏ qua nếu một `RegExp` được truyền vào).
 
 **Trả về:**
-`RegExp` — Biểu thức chính quy với cờ `ig` (toàn cục, không phân biệt chữ hoa/thường).
+`RegExp` — Biễu thức chính quy với cờ `ig` (toàn cục, không phân biệt chữ hoa/thường). Nếu chuỗi tìm kiếm trống hoặc vượt quá giới hạn, một regex không khớp với bất kỳ thứ gì sẽ được trả về.
 
 ```typescript
 import { getSeparatingSearchExp } from '@dxtmisha/functional-basic'

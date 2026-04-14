@@ -8,7 +8,7 @@ A utility for highlighting matches in a string by wrapping them in a `<span>` HT
 
 **Parameters:**
 - `value: string` — The initial string to process.
-- `search?: string` — The search string (one or more words separated by spaces).
+- `search?: string | RegExp` — The search string (one or more words separated by spaces) or a regular expression.
 - `className: string = 'sys-highlight-match'` — The CSS class to be added to the `<span>` tag.
 - `shouldEscape: boolean = false` — Whether to escape the string before adding highlighting.
 

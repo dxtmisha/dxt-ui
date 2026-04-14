@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toString - Chuyển đổi một giá trị thành chuỗi'/>
+
+# `toString`
+
+Một tiện ích để chuyển đổi một giá trị thành chuỗi. Trả về một chuỗi rỗng nếu giá trị là null hoặc undefined.
+
+**Tham số:**
+- `value: string | null | undefined` — Giá trị cần chuyển đổi.
+
+**Trả về:**
+`string` — Biểu diễn chuỗi của giá trị.
+
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { toString } from '@dxtmisha/functional-basic'
+
+toString('Xin chào')      // 'Xin chào'
+toString(null)            // ''
+toString(undefined)       // ''
+
+  `}
+/>

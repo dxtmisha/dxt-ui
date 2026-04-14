@@ -30,6 +30,10 @@ export function isFilled<T>(
           return value.length > 0
         }
 
+        if (value instanceof RegExp) {
+          return true
+        }
+
         if (
           value instanceof Map
           || value instanceof Set
