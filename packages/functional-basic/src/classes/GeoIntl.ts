@@ -31,6 +31,37 @@ import {
  */
 export class GeoIntl {
   /**
+   * Checks if an instance of the class exists for the specified country code.
+   *
+   * Проверяет, существует ли экземпляр класса для указанного кода страны.
+   * @param code country code, full form language-country or one of them/
+   * код страны, полный вид язык-страна или один из них
+   */
+  static isItem(
+    code: string = Geo.getLocation()
+  ): boolean {
+    const location = this.getLocation(code)
+    return location in items
+  }
+
+  /**
+   * Returns the standard location code.
+   *
+   * Возвращает стандартный код местоположения.
+   * @param code country code, full form language-country or one of them/
+   * код страны, полный вид язык-страна или один из них
+   */
+  static getLocation(code: string = Geo.getLocation()) {
+    if (code in locations) {
+      return locations[code]
+    }
+
+    const geo = Geo.find(code)
+    locations[code] = geo.standard
+    return geo.standard
+  }
+
+  /**
    * Returns an instance of the class according to the specified country code.
    *
    * Возвращает экземпляр класса по указанному коду страны.
@@ -38,6 +69,12 @@ export class GeoIntl {
    * код страны, полный вид язык-страна или один из них
    */
   static getInstance(code: string = Geo.getLocation()) {
+    const location = this.getLocation(code)
+
+    if (location in items) {
+      return items[location]
+    }
+
     return new GeoIntl(code)
   }
 
@@ -54,13 +91,13 @@ export class GeoIntl {
     private errorCenter: ErrorCenterInstance = ErrorCenter.getItem()
   ) {
     this.geo = Geo.find(code)
-
     const location = this.getLocation()
 
     if (location in items) {
-      return items[location] as GeoIntl
+      return items[location]
     }
 
+    locations[code] = location
     items[location] = this
   }
 
@@ -903,4 +940,5 @@ export class GeoIntl {
   }
 }
 
+const locations: Record<string, string> = {}
 const items: Record<string, GeoIntl> = {}

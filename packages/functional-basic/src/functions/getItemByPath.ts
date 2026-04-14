@@ -13,7 +13,7 @@ export function getItemByPath<
   T extends Record<string, any>,
   R = string
 >(item: T, path: string): R | undefined {
-  if (!isFilled(path)) {
+  if (!isFilled(path, true)) {
     return undefined
   }
 
@@ -29,5 +29,5 @@ export function getItemByPath<
     return getItemByPath(item[column], paths[1])
   }
 
-  return (isFilled(column) && item?.[column]) ?? undefined
+  return item?.[column] ?? undefined
 }

@@ -1,4 +1,7 @@
 import { forEach } from './forEach'
+import { isArray } from './isArray'
+import { isObject } from './isObject'
+import { toString } from './toString'
 
 /**
  * Returns a string in the form of key-value.
@@ -9,12 +12,25 @@ import { forEach } from './forEach'
  * @param separator variable delimiter sign/ знак разделения переменных
  */
 export function getRequestString(
-  request: Record<string, any>,
+  request: Record<string, any> | any[],
   sign: string = '=',
-  separator: string = '&'
+  separator: string = '&',
+  subKey?: string
 ): string {
   return forEach(request,
-    (item, name) => `${name}${sign}${encodeURIComponent(String(item).trim())}`
+    (item, name) => {
+      const transformationName = encodeURIComponent(toString(name).trim())
+
+      if (transformationName !== '') {
+        const key = subKey ? `${subKey}[${isArray(request) ? '' : transformationName}]` : transformationName
+
+        if (isObject(item)) {
+          return getRequestString(item, sign, separator, key)
+        }
+
+        return `${key}${sign}${encodeURIComponent(toString(item))}`
+      }
+    }
   )
     .sort()
     .join(separator)

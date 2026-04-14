@@ -23,7 +23,7 @@ export class ErrorCenter {
     code: string,
     group?: string
   ): boolean {
-    return this.item.has(code, group)
+    return this.getItem().has(code, group)
   }
 
   /**
@@ -37,13 +37,14 @@ export class ErrorCenter {
     code: string,
     group?: string
   ): ErrorCenterCauseItem | undefined {
-    return this.item.get(code, group)
+    return this.getItem().get(code, group)
   }
 
   /**
-   * Returns the instance of the class.
+   * Returns a request-isolated instance of ErrorCenterInstance.
    *
-   * Возвращает инстанс класса.
+   * Возвращает изолированный в рамках запроса экземпляр ErrorCenterInstance.
+   * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
    */
   static getItem(): ErrorCenterInstance {
     return this.item
@@ -56,7 +57,7 @@ export class ErrorCenter {
    * @param cause error cause item / элемент причины ошибки
    */
   static add(cause: ErrorCenterCauseItem): ErrorCenter {
-    this.item.add(cause)
+    this.getItem().add(cause)
     return this
   }
 
@@ -67,7 +68,7 @@ export class ErrorCenter {
    * @param causes error causes list / список причин ошибок
    */
   static addList(causes: ErrorCenterCauseList): ErrorCenter {
-    this.item.addList(causes)
+    this.getItem().addList(causes)
     return this
   }
 
@@ -82,7 +83,7 @@ export class ErrorCenter {
     group: ErrorCenterGroup,
     handler: ErrorCenterHandlerCallback
   ): ErrorCenter {
-    this.item.addHandler(group, handler)
+    this.getItem().addHandler(group, handler)
     return this
   }
 
@@ -93,7 +94,7 @@ export class ErrorCenter {
    * @param handlers handlers list / список обработчиков
    */
   static addHandlerList(handlers: ErrorCenterHandlerList): ErrorCenter {
-    this.item.addHandlerList(handlers)
+    this.getItem().addHandlerList(handlers)
     return this
   }
 
@@ -104,7 +105,7 @@ export class ErrorCenter {
    * @param cause error cause details / детали причины ошибки
    */
   static on(cause: ErrorCenterCauseItem): ErrorCenter {
-    this.item.on(cause)
+    this.getItem().on(cause)
     return this
   }
 }

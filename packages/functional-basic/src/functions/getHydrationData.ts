@@ -1,3 +1,5 @@
+import { ErrorCenter } from '../classes/ErrorCenter'
+
 /**
  * Retrieves and parses JSON data from a script tag in the DOM.
  *
@@ -13,7 +15,11 @@ export function getHydrationData<T>(id: string, defaultValue: T): T {
       try {
         return JSON.parse(script.textContent || '') as T
       } catch (error) {
-        console.error(`[Hydration] Failed to parse data for ID "${id}":`, error)
+        ErrorCenter.on({
+          group: 'hydration',
+          code: 'error',
+          details: { id, error }
+        })
       }
     }
   }

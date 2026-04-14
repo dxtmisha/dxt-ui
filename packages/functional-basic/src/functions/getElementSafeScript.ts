@@ -6,15 +6,8 @@
  * @param data data to be stored / данные для хранения
  */
 export function getElementSafeScript(id: string, data: any): string {
-  if (!data) {
-    return ''
-  }
+  const safeId = id.replace(/"/g, '&quot;')
+  const json = JSON.stringify(data).replace(/<\/(script)>/gi, '<\\/$1>')
 
-  let json = JSON.stringify(data)
-
-  if (json?.match(/<\/script>/i)) {
-    json = json.replace(/<\/script>/gi, '<\\/script>')
-  }
-
-  return `<script id="${id}" type="application/json">${json}</script>`
+  return `<script id="${safeId}" type="application/json">${json}</script>`
 }

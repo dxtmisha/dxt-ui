@@ -6,6 +6,6 @@
  * @returns string representation of the value / строковое представление значения
  */
 
-export function toString(value: string | null | undefined): string {
+export function toString<T>(value: T): string {
   return String(value ?? '')
 }

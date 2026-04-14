@@ -1,6 +1,8 @@
 import { getCurrentTime } from '../functions/getCurrentTime'
 import { isDomRuntime } from '../functions/isDomRuntime'
 
+import { ErrorCenter } from './ErrorCenter'
+
 import type { ApiCacheItem, ApiCacheList, ApiFetch } from '../types/apiTypes'
 
 /**
@@ -70,9 +72,14 @@ export class ApiCache {
   static async get<T>(key: string): Promise<T | undefined> {
     const item: ApiCacheItem<T> | undefined = await this.getItemOrListener(key)
 
-    this.clearOld().catch((error) => {
-      console.error('[ApiCache] Ошибка фоновой очистки:', error)
-    })
+    this.clearOld()
+      .catch((error) => {
+        ErrorCenter.on({
+          group: 'api',
+          code: 'cacheClear',
+          details: error
+        })
+      })
 
     return item?.value
   }

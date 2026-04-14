@@ -3,6 +3,8 @@ import { getElementSafeScript } from '../functions/getElementSafeScript'
 import { getHydrationData } from '../functions/getHydrationData'
 import { isDomRuntime } from '../functions/isDomRuntime'
 
+import { ErrorCenter } from './ErrorCenter'
+
 /** Item stored in the server storage/ Элемент, хранящийся в серверном хранилище */
 type ServerStorageItem = {
   value: any
@@ -121,10 +123,10 @@ export class ServerStorage {
     const context = this.listener?.()
 
     if (!context) {
-      console.error(
-        '[ServerStorage] Context is missing (is init() called?). '
-        + 'Isolation failed: data will not be saved for this request.'
-      )
+      ErrorCenter.on({
+        group: 'storage',
+        code: 'context'
+      })
 
       this.storage = {}
       return this.storage

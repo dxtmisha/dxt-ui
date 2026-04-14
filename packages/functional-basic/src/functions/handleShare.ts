@@ -1,4 +1,5 @@
 import { isShare } from './isShare'
+import { ErrorCenter } from '../classes/ErrorCenter'
 
 /**
  * The method invokes the native sharing mechanism of the device as part of the Web Share API.
@@ -19,7 +20,11 @@ export async function handleShare(data: ShareData): Promise<boolean> {
       await navigator.share(data)
       return true
     } catch (error) {
-      console.error('handleShare error:', error)
+      ErrorCenter.on({
+        group: 'share',
+        code: 'error',
+        details: error
+      })
     }
   }
 

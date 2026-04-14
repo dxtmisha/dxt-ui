@@ -1,4 +1,3 @@
-import { isDomRuntime } from '../functions/isDomRuntime'
 import { toDate } from '../functions/toDate'
 
 import { Geo } from './Geo'
@@ -51,7 +50,7 @@ export class Datetime {
    * Возвращает объект для работы с форматированием.
    */
   getIntl(): GeoIntl {
-    return new GeoIntl(this.code)
+    return GeoIntl.getInstance(this.code)
   }
 
   /**
@@ -887,19 +886,10 @@ export class Datetime {
    * @param hour hour/ час
    */
   protected toTimeZoneHourFormat(hour: number): string {
-    if (isDomRuntime()) {
-      this.getIntl()
-        .number(Math.trunc(hour), {
-          signDisplay: 'always',
-          minimumIntegerDigits: 2
-        })
-    }
-
-    let numberHour = Math.trunc(hour).toString()
-
-    if (numberHour.length < 2) {
-      numberHour = `0${numberHour}`
-    }
+    const numberHour = Math.trunc(hour)
+      .toString()
+      .replace('-', '')
+      .padStart(2, '0')
 
     return `${hour >= 0 ? '+' : '-'}${numberHour}`
   }

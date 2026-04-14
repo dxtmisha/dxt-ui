@@ -1,3 +1,5 @@
+import { isObjectNotArray } from './isObjectNotArray'
+
 /**
  * Returns a new object with keys from the keys list.
  *
@@ -14,14 +16,16 @@ export function getObjectByKeys<
 ): Pick<T, K> {
   const returnData = {} as Pick<T, K>
 
-  keys.forEach((key) => {
-    if (
-      key in data
-      && data[key] !== undefined
-    ) {
-      returnData[key] = data[key]
-    }
-  })
+  if (isObjectNotArray(data)) {
+    keys.forEach((key) => {
+      if (
+        key in data
+        && data[key] !== undefined
+      ) {
+        returnData[key] = data[key]
+      }
+    })
+  }
 
   return returnData
 }

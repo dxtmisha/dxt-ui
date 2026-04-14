@@ -1,4 +1,5 @@
 import { isDomRuntime } from './isDomRuntime'
+import { ErrorCenter } from '../classes/ErrorCenter'
 import { type FunctionArgs } from '../types/basicTypes'
 
 /**
@@ -39,7 +40,11 @@ export function transformation(value: any, isFunction = false): any {
           try {
             return JSON.parse(item)
           } catch (e) {
-            console.error('transformation: JSON error', e)
+            ErrorCenter.on({
+              group: 'transformation',
+              code: 'error',
+              details: e
+            })
           }
         } else if (/^[0-9]+\.[0-9.]+$/.exec(item)) {
           return parseFloat(item)
