@@ -47,7 +47,17 @@ function calculateHeavyData(id) {
 const res1 = calculateHeavyData(5) 
 
 // File B.js
-// Same function, same id. It hits the global cache.
 // Will NOT log 'Calculating...', instantly returns 500
 const res2 = calculateHeavyData(5) 
 ```
+
+### `getAsync`
+
+Asynchronous version of the `get()` method. Useful when the callback function returns a `Promise`.
+
+**Parameters:**
+- `name: string` — a unique identifier for the specific global cache entry.
+- `callback: () => Promise<T> | T` — the asynchronous function that computes the value.
+- `comparison?: any[]` — optional array of dependencies. Passing a new array (where values or length differ) invalidates the cache and forces a recalculation.
+
+**Returns:** `Promise<T>` — a promise that resolves to the cached or computed value.

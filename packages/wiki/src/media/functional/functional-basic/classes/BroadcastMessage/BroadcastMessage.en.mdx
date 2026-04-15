@@ -14,6 +14,7 @@ A class for handling cross-tab or cross-window messaging using the `BroadcastCha
 - **Prefixed Names** — automatically adds a unique prefix to channel names to avoid collisions with other applications.
 - **Type Safety** — supports TypeScript generics for message payload typing.
 - **ErrorCenter Integration** — centralized error reporting when the `BroadcastChannel` fails to initialize.
+- **Resource Management** — includes a `destroy()` method to close the channel and free system resources.
 - **Direct Access** — provide access to the underlying `BroadcastChannel` instance when needed.
 
 ## Initialization
@@ -64,6 +65,7 @@ messenger.post({ type: 'UPDATE', payload: { id: 123 } })
 - `getChannel(): BroadcastChannel | undefined` — Returns the underlying `BroadcastChannel` instance (or `undefined` if not in DOM runtime).
 - `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Updates or sets the callback function for receiving messages.
 - `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Updates or sets the callback function for message errors.
+- `destroy(): void` — Closes the channel and stops listening for messages.
 
 ## Examples
 

@@ -1,0 +1,46 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/CookieBlockInstance - Phiên bản trạng thái truy cập Cookie'/>
+
+# Lớp CookieBlockInstance
+
+Lớp `CookieBlockInstance` chịu trách nhiệm quản lý trạng thái truy cập cookie ở cấp độ phiên bản (instance). Nó cung cấp một trạng thái cục bộ để chặn hoặc cho phép các thao tác cookie, điều này rất quan trọng để cách ly các yêu cầu trong Server-Side Rendering (SSR) hoặc khi cần nhiều ngữ cảnh độc lập.
+
+## Các tính năng chính
+
+- **Dựa trên phiên bản (Instance-Based)** — cho phép tạo các phiên bản riêng biệt với trạng thái chặn của riêng chúng.
+- **Tích hợp DataStorage** — tự động lưu trữ trạng thái chặn bằng cách sử dụng lớp `DataStorage`.
+- **Tương thích với SSR** — được thiết kế để hoạt động trơn tru trong môi trường phía máy chủ bằng cách tận dụng mô hình singleton-mỗi-yêu-cầu khi được bao bọc bởi `CookieBlock`.
+
+## Cách sử dụng cơ bản
+
+Mặc dù `CookieBlockInstance` có thể được sử dụng trực tiếp, nhưng thông thường nó được truy cập thông qua lớp bọc tĩnh `CookieBlock`. Tuy nhiên, đối với logic chuyên biệt, bạn có thể khởi tạo nó theo cách thủ công:
+
+```javascript
+import { CookieBlockInstance } from '@dxtmisha/functional-basic'
+
+const cookieBlock = new CookieBlockInstance()
+
+// Lấy trạng thái hiện tại
+console.log(cookieBlock.get()) // false (mặc định)
+
+// Đặt trạng thái thành bị chặn
+cookieBlock.set(true)
+
+console.log(cookieBlock.get()) // true
+```
+
+## Các phương thức
+
+### `get(): boolean`
+
+Trả về trạng thái truy cập cookie hiện tại.
+
+- **Trả về**: `true` nếu cookie bị chặn, `false` nếu ngược lại.
+
+### `set(value: boolean): void`
+
+Cập nhật trạng thái truy cập cookie.
+
+- **Tham số**: 
+    - `value: boolean` — trạng thái mới cần thiết lập.

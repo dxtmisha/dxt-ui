@@ -14,6 +14,7 @@ Một lớp để xử lý việc truyền tin giữa các tab hoặc cửa sổ
 - **Tiền tố tên kênh** — tự động thêm tiền tố duy nhất vào tên kênh để tránh xung đột với các ứng dụng khác.
 - **An toàn kiểu dữ liệu** — hỗ trợ Generic trong TypeScript để định nghĩa kiểu dữ liệu của thông điệp.
 - **Tích hợp ErrorCenter** — báo cáo lỗi tập trung khi `BroadcastChannel` không khởi tạo được.
+- **Quản lý tài nguyên** — bao gồm phương thức `destroy()` để đóng kênh và giải phóng tài nguyên hệ thống.
 - **Truy cập trực tiếp** — cung cấp quyền truy cập vào thực thể `BroadcastChannel` gốc khi cần thiết.
 
 ## Khởi tạo
@@ -64,6 +65,7 @@ messenger.post({ type: 'UPDATE', payload: { id: 123 } })
 - `getChannel(): BroadcastChannel | undefined` — Trả về thực thể `BroadcastChannel` gốc (hoặc `undefined` nếu ngoài môi trường DOM).
 - `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Cập nhật hoặc thiết lập hàm callback để nhận thông điệp.
 - `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Cập nhật hoặc thiết lập hàm callback cho các lỗi thông điệp.
+- `destroy(): void` — Đóng kênh và dừng lắng nghe các thông điệp.
 
 ## Các ví dụ điển hình
 

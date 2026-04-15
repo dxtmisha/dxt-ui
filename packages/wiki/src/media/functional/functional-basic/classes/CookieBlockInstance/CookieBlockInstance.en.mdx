@@ -1,0 +1,46 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/CookieBlockInstance - Cookie Access Status Instance'/>
+
+# CookieBlockInstance Class
+
+The `CookieBlockInstance` class is responsible for managing the cookie access status at the instance level. It provides a localized state for blocking or allowing cookie operations, which is essential for request isolation in Server-Side Rendering (SSR) or when multiple independent contexts are required.
+
+## Key Features
+
+- **Instance-Based** — allows creating separate instances with their own block status.
+- **DataStorage Integration** — automatically persists the block status using the `DataStorage` class.
+- **SSR Compatible** — designed to work seamlessly in server-side environments by leveraging the singleton-per-request pattern when wrapped by `CookieBlock`.
+
+## Basic Usage
+
+While `CookieBlockInstance` can be used directly, it is typically accessed through the static `CookieBlock` wrapper. However, for specialized logic, you can instantiate it manually:
+
+```javascript
+import { CookieBlockInstance } from '@dxtmisha/functional-basic'
+
+const cookieBlock = new CookieBlockInstance()
+
+// Get the current status
+console.log(cookieBlock.get()) // false (default)
+
+// Set status to blocked
+cookieBlock.set(true)
+
+console.log(cookieBlock.get()) // true
+```
+
+## Methods
+
+### `get(): boolean`
+
+Returns the current cookie access status.
+
+- **Returns**: `true` if cookies are blocked, `false` otherwise.
+
+### `set(value: boolean): void`
+
+Updates the cookie access status.
+
+- **Parameters**: 
+    - `value: boolean` — the new status to set.

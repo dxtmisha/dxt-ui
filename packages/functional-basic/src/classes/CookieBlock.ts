@@ -1,6 +1,5 @@
-import { DataStorage } from './DataStorage'
-
-const STORAGE_NAME_BLOCK = 'cookie-block'
+import { CookieBlockInstance } from './CookieBlockInstance'
+import { ServerStorage } from './ServerStorage'
 
 /**
  * Class for changing cookie access status.
@@ -8,7 +7,15 @@ const STORAGE_NAME_BLOCK = 'cookie-block'
  * Класс для изменения статуса доступа к куки.
  */
 export class CookieBlock {
-  static storage = new DataStorage<boolean>(STORAGE_NAME_BLOCK)
+  /**
+   * Returns a request-isolated instance of CookieBlockInstance.
+   *
+   * Возвращает изолированный в рамках запроса экземпляр CookieBlockInstance.
+   * @returns CookieBlockInstance instance / экземпляр CookieBlockInstance
+   */
+  static getItem(): CookieBlockInstance {
+    return ServerStorage.get('__dxt_cookie_block__', () => new CookieBlockInstance())
+  }
 
   /**
    * Obtaining status.
@@ -16,7 +23,7 @@ export class CookieBlock {
    * Получение статуса.
    */
   static get(): boolean {
-    return this.storage.get() ?? false
+    return this.getItem().get()
   }
 
   /**
@@ -26,6 +33,6 @@ export class CookieBlock {
    * @param value value to be changed/ значение, на которое будет изменен
    */
   static set(value: boolean): void {
-    this.storage.set(value)
+    this.getItem().set(value)
   }
 }

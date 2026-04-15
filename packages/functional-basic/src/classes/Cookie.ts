@@ -5,6 +5,7 @@ import { isFilled } from '../functions/isFilled'
 import { transformation } from '../functions/transformation'
 
 import { CookieBlock } from './CookieBlock'
+import { ServerStorage } from './ServerStorage'
 
 type CookieSameSite = 'strict' | 'lax'
 
@@ -17,6 +18,18 @@ export type CookieOptions = {
 const cookie: Record<string, any> = {}
 
 /**
+ * Returns a list of active Cookie instances for the current request context.
+ *
+ * Возвращает список активных экземпляров Cookie для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, Cookie<unknown>>>(
+    '__dxt_cookie_items__',
+    () => ({})
+  )
+}
+
+/**
  * Class for working with cookies.
  *
  * Класс для управления Cookie.
@@ -25,7 +38,13 @@ export class Cookie<T> {
   value?: T | string
   private options: CookieOptions = {}
 
+  /**
+   * Constructor
+   * @param name cookie name/ название cookie
+   */
   constructor(private name: string) {
+    const items = getItems()
+
     if (name in items) {
       return items[name] as Cookie<T>
     }
@@ -136,5 +155,3 @@ export class Cookie<T> {
     }
   }
 }
-
-const items: Record<string, Cookie<any>> = {}

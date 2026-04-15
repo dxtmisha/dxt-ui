@@ -59,6 +59,13 @@ describe('BroadcastMessage', () => {
     expect(postMessageMock).toHaveBeenCalledWith(message)
   })
 
+  it('should close the channel and clear it upon destroy()', () => {
+    const bm = new BroadcastMessage(channelName)
+    bm.destroy()
+    expect(closeMock).toHaveBeenCalled()
+    expect(bm.getChannel()).toBeUndefined()
+  })
+
   it('should call callback when a message is received', () => {
     const callback = vi.fn()
     const bm = new BroadcastMessage<string>(channelName, callback)

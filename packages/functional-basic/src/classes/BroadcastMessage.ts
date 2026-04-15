@@ -85,6 +85,16 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
+   * Closes the channel and stops listening for messages.
+   *
+   * Закрывает канал и прекращает прослушивание сообщений.
+   */
+  destroy(): void {
+    this.channel?.close()
+    this.channel = undefined
+  }
+
+  /**
    * Update state on message received.
    *
    * Обновление состояния при получении сообщения.

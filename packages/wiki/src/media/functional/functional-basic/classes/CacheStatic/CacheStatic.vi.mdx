@@ -51,3 +51,14 @@ const res1 = calculateHeavyData(5)
 // Không thực thi lại callback 'Calculating...', kết xuất liền giá trị 500.
 const res2 = calculateHeavyData(5) 
 ```
+
+### `getAsync`
+
+Phiên bản bất đồng bộ của phương thức `get()`. Hữu ích khi hàm callback trả về một `Promise`.
+
+**Tham số:**
+- `name: string` — định danh duy nhất cho mục nhập cache toàn cục cụ thể.
+- `callback: () => Promise<T> | T` — hàm bất đồng bộ thực hiện tính toán giá trị.
+- `comparison?: any[]` — mảng phụ thuộc tùy chọn. Việc truyền một mảng mới (nơi các giá trị hoặc độ dài khác nhau) sẽ vô hiệu hóa bộ nhớ đệm và buộc tính toán lại.
+
+**Trả về:** `Promise<T>` — một promise trả về giá trị đã lưu trong bộ nhớ đệm hoặc giá trị vừa được tính toán.
