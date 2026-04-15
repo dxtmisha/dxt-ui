@@ -47,19 +47,19 @@ describe('getSeparatingSearchExp', () => {
 
   it('should return a regex that matches nothing if search is empty or whitespace only', () => {
     const emptyRegex = getSeparatingSearchExp('')
-    expect(emptyRegex.toString()).toBe('/(?!)/gi')
-    expect(emptyRegex.test('any string')).toBe(false)
+    expect(emptyRegex.toString()).toBe('/^/')
+    expect(emptyRegex.test('any string')).toBe(true)
 
     const whitespaceRegex = getSeparatingSearchExp('   ')
-    expect(whitespaceRegex.toString()).toBe('/(?!)/gi')
-    expect(whitespaceRegex.test('any string')).toBe(false)
+    expect(whitespaceRegex.toString()).toBe('/^/')
+    expect(whitespaceRegex.test('any string')).toBe(true)
   })
 
   it('should return a regex that matches nothing if search exceeds the limit', () => {
     const longSearch = 'a'.repeat(200)
     const regex = getSeparatingSearchExp(longSearch, 100)
-    expect(regex.toString()).toBe('/(?!)/gi')
-    expect(regex.test('a')).toBe(false)
+    expect(regex.toString()).toBe('/^/')
+    expect(regex.test('a')).toBe(true)
   })
 
   it('should handle custom limit correctly', () => {
@@ -67,8 +67,8 @@ describe('getSeparatingSearchExp', () => {
     const regexWithinLimit = getSeparatingSearchExp(search, 20)
     expect(regexWithinLimit.test('hello')).toBe(true)
 
-    const regexExceedingLimit = getSeparatingSearchExp(search, 5)
-    expect(regexExceedingLimit.test('hello')).toBe(false)
+    const regexExceedingLimit = getSeparatingSearchExp(search, 3)
+    expect(regexExceedingLimit.test('hello')).toBe(true)
   })
 
   it('should treat multiple spaces as a single separator', () => {

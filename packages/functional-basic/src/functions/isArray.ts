@@ -7,9 +7,3 @@
 export function isArray<T, R>(value: T): value is Extract<T, R[]> {
   return Array.isArray(value)
 }
-
-const a: string[] | string = ['a', 'v']
-
-if (isArray(a)) {
-  console.log('a', a)
-}

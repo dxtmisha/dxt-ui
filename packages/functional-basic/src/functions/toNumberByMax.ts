@@ -3,12 +3,13 @@ import { toNumber } from './toNumber'
 import { GeoIntl } from '../classes/GeoIntl'
 
 /**
- * Converts the data into a number, taking into account the maximum permissible value.<br>
+ * Converts the data into a number, taking into account the maximum permissible value.
+ *
  * Преобразует данные в число с учетом максимально допустимого значения.
- * @param value input value /<br>входное значение
- * @param max maximum achievable value /<br>максимально достижимое значение
- * @param formatting format the number /<br>форматировать число
- * @param language formatting language /<br>язык форматирования
+ * @param value input value / входное значение
+ * @param max maximum achievable value / максимально достижимое значение
+ * @param formatting format the number / форматировать число
+ * @param language formatting language / язык форматирования
  */
 export function toNumberByMax(
   value: string | number,

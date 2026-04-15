@@ -64,6 +64,24 @@ export class ApiCache {
   }
 
   /**
+   * Resets the cache by clearing all in-memory items and resetting listeners.
+   *
+   * Сбрасывает кэш, очищая все элементы в памяти и сбрасывая слушатели.
+   */
+  static reset(): typeof ApiCache {
+    this.items = undefined
+    this.itemsInfo = undefined
+
+    this.getListener = undefined
+    this.setListener = undefined
+    this.removeListener = undefined
+
+    this.stepAgeClearOld = API_CACHE_STEP_AGE_CLEAR_OLD
+
+    return this
+  }
+
+  /**
    * Getting data from cache.
    *
    * Получение данных из кэша.

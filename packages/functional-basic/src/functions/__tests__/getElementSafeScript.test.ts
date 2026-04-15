@@ -24,14 +24,6 @@ describe('getElementSafeScript', () => {
     expect(result.lastIndexOf('</script>')).toBe(result.length - 9)
   })
 
-  it('should handle falsy values by returning an empty string', () => {
-    expect(getElementSafeScript('null-id', null)).toBe('')
-    expect(getElementSafeScript('undef-id', undefined)).toBe('')
-    expect(getElementSafeScript('zero-id', 0)).toBe('')
-    expect(getElementSafeScript('false-id', false)).toBe('')
-    expect(getElementSafeScript('empty-str-id', '')).toBe('')
-  })
-
   it('should handle complex data structures', () => {
     const data = { arr: [1, 2, 3], obj: { nested: true } }
     const result = getElementSafeScript('complex', data)

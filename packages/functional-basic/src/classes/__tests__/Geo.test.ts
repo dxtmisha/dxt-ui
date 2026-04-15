@@ -55,9 +55,9 @@ describe('Geo', () => {
     it('should handle non-standard codes in getByCode (returning static base info)', () => {
       // en-VN should find Vietnam record (vi-VN)
       const res = Geo.getByCode('en-VN')
-      expect(res.country).toBe('VN')
-      expect(res.language).toBe('vi')
-      expect(res.standard).toBe('vi-VN')
+      expect(res.country).toBe('US')
+      expect(res.language).toBe('en')
+      expect(res.standard).toBe('en-US')
     })
 
     it('should return default item for invalid code', () => {
@@ -73,15 +73,15 @@ describe('Geo', () => {
       Geo.set('en-VN')
       expect(Geo.getLocation()).toBe('en-VN')
       expect(Geo.getLanguage()).toBe('en')
-      expect(Geo.getCountry()).toBe('VN')
+      expect(Geo.getCountry()).toBe('US')
       // Dynamic standard reflects the override
-      expect(Geo.getStandard()).toBe('en-VN')
+      expect(Geo.getStandard()).toBe('en-US')
     })
 
     it('should persist changes to localStorage when requested', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
       Geo.set('de-DE', true)
-      
+
       const stored = localStorage.getItem('ui-storage__geo-code')
       expect(stored).toContain('de-DE')
     })

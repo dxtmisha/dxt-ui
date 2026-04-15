@@ -128,7 +128,10 @@ export class ServerStorage {
         code: 'context'
       })
 
-      this.storage = {}
+      if (!this.storage) {
+        this.storage = {}
+      }
+
       return this.storage
     }
 

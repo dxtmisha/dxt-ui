@@ -33,11 +33,8 @@ globalThis.fetch = mockFetch
 
 // Spy on ErrorCenterInstance.on to verify error handling
 let errorCenterSpy: ReturnType<typeof vi.spyOn>
-
 /**
  * Creates a mock Response object for fetch.
- *
- * Создаёт мок-объект Response для fetch.
  */
 function createMockResponse(options: {
   status?: number
@@ -64,7 +61,7 @@ function createMockResponse(options: {
   }
 }
 
-describe('ApiInstance / Экземпляр API', () => {
+describe('ApiInstance', () => {
   let api: ApiInstance
 
   beforeEach(() => {
@@ -92,18 +89,18 @@ describe('ApiInstance / Экземпляр API', () => {
   // Constructor and DI
   // ─────────────────────────────────────────────
 
-  describe('constructor / Конструктор', () => {
-    it('should use the default url "/api/" when no argument is provided / должен использовать URL по умолчанию "/api/", если аргумент не передан', () => {
+  describe('constructor', () => {
+    it('should use the default url "/api/" when no argument is provided', () => {
       const defaultApi = new ApiInstance()
       expect(defaultApi.getUrl('test')).toContain('/api/test')
     })
 
-    it('should use custom url when provided / должен использовать кастомный URL, если он передан', () => {
+    it('should use custom url when provided', () => {
       const customApi = new ApiInstance('/v2/')
       expect(customApi.getUrl('users')).toBe('/v2/users')
     })
 
-    it('should accept custom headersClass in options / должен принимать кастомный headersClass в опциях', () => {
+    it('should accept custom headersClass in options', () => {
       class CustomHeaders extends ApiHeaders {
         get() {
           return { 'X-Custom': 'yes' } as Record<string, string>
@@ -114,55 +111,55 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(customApi.headers).toBeInstanceOf(CustomHeaders)
     })
 
-    it('should accept custom requestDefaultClass in options / должен принимать кастомный requestDefaultClass в опциях', () => {
-      class CustomDefault extends ApiDefault {}
+    it('should accept custom requestDefaultClass in options', () => {
+      class CustomDefault extends ApiDefault { }
       const customApi = new ApiInstance('/api/', { requestDefaultClass: CustomDefault })
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(customApi.requestDefault).toBeInstanceOf(CustomDefault)
     })
 
-    it('should accept custom statusClass in options / должен принимать кастомный statusClass в опциях', () => {
-      class CustomStatus extends ApiStatus {}
+    it('should accept custom statusClass in options', () => {
+      class CustomStatus extends ApiStatus { }
       const customApi = new ApiInstance('/api/', { statusClass: CustomStatus })
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(customApi.status).toBeInstanceOf(CustomStatus)
     })
 
-    it('should accept custom responseClass in options / должен принимать кастомный responseClass в опциях', () => {
-      class CustomResponse extends ApiResponse {}
+    it('should accept custom responseClass in options', () => {
+      class CustomResponse extends ApiResponse { }
       const customApi = new ApiInstance('/api/', { responseClass: CustomResponse })
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(customApi.response).toBeInstanceOf(CustomResponse)
     })
 
-    it('should accept custom preparationClass in options / должен принимать кастомный preparationClass в опциях', () => {
-      class CustomPreparation extends ApiPreparation {}
+    it('should accept custom preparationClass in options', () => {
+      class CustomPreparation extends ApiPreparation { }
       const customApi = new ApiInstance('/api/', { preparationClass: CustomPreparation })
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(customApi.preparation).toBeInstanceOf(CustomPreparation)
     })
 
-    it('should accept custom loadingClass in options / должен принимать кастомный loadingClass в опциях', () => {
+    it('should accept custom loadingClass in options', () => {
       const customLoading = new LoadingInstance('custom-event')
       const customApi = new ApiInstance('/api/', { loadingClass: customLoading })
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(customApi.loading).toBe(customLoading)
     })
 
-    it('should accept custom errorCenterClass in options / должен принимать кастомный errorCenterClass в опциях', () => {
+    it('should accept custom errorCenterClass in options', () => {
       const customErrorCenter = new ErrorCenterInstance(errorCauseList)
       const customApi = new ApiInstance('/api/', { errorCenterClass: customErrorCenter })
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(customApi.errorCenter).toBe(customErrorCenter)
     })
 
-    it('should use Loading.getItem() by default for loading / должен использовать Loading.getItem() по умолчанию для загрузки', () => {
+    it('should use Loading.getItem() by default for loading', () => {
       const defaultApi = new ApiInstance()
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(defaultApi.loading).toBe(Loading.getItem())
     })
 
-    it('should use ErrorCenter.getItem() by default for errorCenter / должен использовать ErrorCenter.getItem() по умолчанию для ErrorCenter', () => {
+    it('should use ErrorCenter.getItem() by default for errorCenter', () => {
       const defaultApi = new ApiInstance()
       // @ts-expect-error: Accessing protected member for testing purposes
       expect(defaultApi.errorCenter).toBe(ErrorCenter.getItem())
@@ -173,8 +170,8 @@ describe('ApiInstance / Экземпляр API', () => {
   // Loading lifecycle
   // ─────────────────────────────────────────────
 
-  describe('loading lifecycle / Жизненный цикл загрузки', () => {
-    it('should call loading.show() and loading.hide() on successful request / должен вызывать loading.show() и loading.hide() при успешном запросе', async () => {
+  describe('loading lifecycle', () => {
+    it('should call loading.show() and loading.hide() on successful request', async () => {
       const loading = Loading.getItem()
       const showSpy = vi.spyOn(loading, 'show')
       const hideSpy = vi.spyOn(loading, 'hide')
@@ -184,7 +181,7 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(loading.get()).toBe(0)
     })
 
-    it('should call loading.show() and loading.hide() on failed request / должен вызывать loading.show() и loading.hide() при неудачном запросе', async () => {
+    it('should call loading.show() and loading.hide() on failed request', async () => {
       const loading = Loading.getItem()
       const showSpy = vi.spyOn(loading, 'show')
       const hideSpy = vi.spyOn(loading, 'hide')
@@ -195,7 +192,7 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(loading.get()).toBe(0)
     })
 
-    it('should not call loading operations when hideLoading is true / не должен выполнять операции загрузки, когда hideLoading равно true', async () => {
+    it('should not call loading operations when hideLoading is true', async () => {
       const loading = Loading.getItem()
       const showSpy = vi.spyOn(loading, 'show')
       const hideSpy = vi.spyOn(loading, 'hide')
@@ -204,7 +201,7 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(hideSpy).not.toHaveBeenCalled()
     })
 
-    it('should use custom LoadingInstance if provided / должен использовать кастомный LoadingInstance, если он передан', async () => {
+    it('should use custom LoadingInstance if provided', async () => {
       const customLoading = new LoadingInstance('custom-event')
       const showSpy = vi.spyOn(customLoading, 'show')
       const hideSpy = vi.spyOn(customLoading, 'hide')
@@ -216,7 +213,7 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(Loading.is()).toBe(false)
     })
 
-    it('should hide loading before retrying when `end.reset` is true / должен скрывать загрузку перед повтором запроса, если `end.reset` равно true', async () => {
+    it('should hide loading before retrying when `end.reset` is true', async () => {
       const loading = Loading.getItem()
       let callCount = 0
       api.setEnd(async () => {
@@ -231,7 +228,7 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(loading.get()).toBe(0)
     })
 
-    it('should not hide loading on error when hideLoading is true / не должен скрывать загрузку при ошибке, если hideLoading равно true', async () => {
+    it('should not hide loading on error when hideLoading is true', async () => {
       const loading = Loading.getItem()
       const hideSpy = vi.spyOn(loading, 'hide')
       mockFetch.mockRejectedValueOnce(new Error('fail'))
@@ -244,27 +241,27 @@ describe('ApiInstance / Экземпляр API', () => {
   // Configuration methods
   // ─────────────────────────────────────────────
 
-  describe('configuration methods / Методы конфигурации', () => {
-    describe('setUrl / Установка URL', () => {
-      it('should set base URL and return instance for chaining / должен устанавливать базовый URL и возвращать экземпляр для цепочки', () => {
+  describe('configuration methods', () => {
+    describe('setUrl', () => {
+      it('should set base URL and return instance for chaining', () => {
         const result = api.setUrl('/custom-api/')
         expect(result).toBe(api)
       })
 
-      it('should use custom URL in requests / должен использовать кастомный URL в запросах', async () => {
+      it('should use custom URL in requests', async () => {
         api.setUrl('/custom/')
         await api.get({ path: 'test' })
         expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/custom/test'), expect.any(Object))
       })
     })
 
-    describe('setHeaders / Установка заголовков', () => {
-      it('should set default headers and return the instance for chaining / должен устанавливать заголовки по умолчанию и возвращать экземпляр для цепочки', () => {
+    describe('setHeaders', () => {
+      it('should set default headers and return the instance for chaining', () => {
         const result = api.setHeaders({ 'X-Custom-Header': 'test-value' })
         expect(result).toBe(api)
       })
 
-      it('should include default headers in requests / должен включать заголовки по умолчанию в запросы', async () => {
+      it('should include default headers in requests', async () => {
         api.setHeaders({ 'X-Api-Key': 'test-key-123' })
         await api.get({ path: 'test' })
         const fetchCall = mockFetch.mock.calls[0]
@@ -272,13 +269,13 @@ describe('ApiInstance / Экземпляр API', () => {
       })
     })
 
-    describe('setRequestDefault / Установка параметров по умолчанию', () => {
-      it('should set default request data and return an instance for chaining / должен устанавливать данные запроса по умолчанию и возвращать экземпляр для цепочки', () => {
+    describe('setRequestDefault', () => {
+      it('should set default request data and return an instance for chaining', () => {
         const result = api.setRequestDefault({ userId: '123', token: 'abc' })
         expect(result).toBe(api)
       })
 
-      it('should merge default request data with a custom request / должен объединять параметры по умолчанию с кастомными в запросе', async () => {
+      it('should merge default request data with a custom request', async () => {
         api.setRequestDefault({ apiKey: 'default-key' })
         mockFetch.mockResolvedValueOnce(createMockResponse())
         await api.post({ path: 'test', request: { customData: 'value' } })
@@ -287,14 +284,14 @@ describe('ApiInstance / Экземпляр API', () => {
       })
     })
 
-    describe('setPreparation / Установка подготовки', () => {
-      it('should set a preparation callback and return the instance / должен устанавливать колбэк подготовки и возвращать экземпляр', () => {
+    describe('setPreparation', () => {
+      it('should set a preparation callback and return the instance', () => {
         const callback = vi.fn().mockResolvedValue(undefined)
         const result = api.setPreparation(callback)
         expect(result).toBe(api)
       })
 
-      it('should call preparation callback before request / должен вызывать колбэк подготовки перед запросом', async () => {
+      it('should call preparation callback before request', async () => {
         const preparationCallback = vi.fn().mockResolvedValue(undefined)
         api.setPreparation(preparationCallback)
         await api.get({ path: 'test' })
@@ -302,21 +299,21 @@ describe('ApiInstance / Экземпляр API', () => {
       })
     })
 
-    describe('setEnd / Установка завершения', () => {
-      it('should set an end callback and return the instance / должен устанавливать завершающий колбэк и возвращать экземпляр', () => {
+    describe('setEnd', () => {
+      it('should set an end callback and return the instance', () => {
         const callback = vi.fn().mockResolvedValue({})
         const result = api.setEnd(callback)
         expect(result).toBe(api)
       })
 
-      it('should call end callback after request / должен вызывать завершающий колбэк после запроса', async () => {
+      it('should call end callback after request', async () => {
         const endCallback = vi.fn().mockResolvedValue({})
         api.setEnd(endCallback)
         await api.get({ path: 'test' })
         expect(endCallback).toHaveBeenCalled()
       })
 
-      it('should retry the request when the end callback returns a reset flag / должен повторять запрос, когда завершающий колбэк возвращает флаг reset', async () => {
+      it('should retry the request when the end callback returns a reset flag', async () => {
         let callCount = 0
         const endCallback = vi.fn().mockImplementation(async () => {
           callCount++
@@ -329,8 +326,8 @@ describe('ApiInstance / Экземпляр API', () => {
       })
     })
 
-    describe('retry logic / Логика повторов', () => {
-      it('should return a jittered delay from getRetryDelay / должен возвращать задержку с джиттером через getRetryDelay', () => {
+    describe('retry logic', () => {
+      it('should return a jittered delay from getRetryDelay', () => {
         const retryDelay = 100
         const retryCount = 2
         // @ts-expect-error: accessing protected member
@@ -339,7 +336,7 @@ describe('ApiInstance / Экземпляр API', () => {
         expect(delay).toBe(retryDelay)
       })
 
-      it('should retry the request when the `retry` property is set / должен повторять запрос, когда установлено свойство `retry`', async () => {
+      it('should retry the request when the `retry` property is set', async () => {
         mockFetch
           .mockResolvedValueOnce(createMockResponse({ status: 500, json: { error: 'Fail 1' } }))
           .mockResolvedValueOnce(createMockResponse({ status: 500, json: { error: 'Fail 2' } }))
@@ -350,14 +347,14 @@ describe('ApiInstance / Экземпляр API', () => {
         expect(result).toBe('success')
       })
 
-      it('should return last failed attempt after exceeding retries / должен возвращать последнюю неудачную попытку после превышения числа повторов', async () => {
+      it('should return last failed attempt after exceeding retries', async () => {
         mockFetch.mockResolvedValue(createMockResponse({ status: 500, json: { error: 'Persistent fail' } }))
         const result = await api.get({ path: 'test', retry: 2 })
         expect(mockFetch).toHaveBeenCalledTimes(3)
         expect(result).toEqual(expect.objectContaining({ error: 'Persistent fail' }))
       })
 
-      it('should calculate delay using getRetryDelay on each retry / должен вычислять задержку через getRetryDelay при каждом повторе', async () => {
+      it('should calculate delay using getRetryDelay on each retry', async () => {
         mockFetch
           .mockResolvedValueOnce(createMockResponse({ status: 500 }))
           .mockResolvedValueOnce(createMockResponse({ status: 500 }))
@@ -374,100 +371,100 @@ describe('ApiInstance / Экземпляр API', () => {
   // Utility methods
   // ─────────────────────────────────────────────
 
-  describe('utility methods / Утилитарные методы', () => {
-    describe('isLocalhost / Проверка на localhost', () => {
-      it('should return true when the hostname is localhost / должен возвращать true, если хост — localhost', () => {
+  describe('utility methods', () => {
+    describe('isLocalhost', () => {
+      it('should return true when the hostname is localhost', () => {
         Object.defineProperty(window, 'location', { value: { hostname: 'localhost' }, writable: true, configurable: true })
         expect(api.isLocalhost()).toBe(true)
       })
 
-      it('should return false when the hostname is not localhost / должен возвращать false, если хост — не localhost', () => {
+      it('should return false when the hostname is not localhost', () => {
         Object.defineProperty(window, 'location', { value: { hostname: 'example.com' }, writable: true, configurable: true })
         expect(api.isLocalhost()).toBe(false)
       })
     })
 
-    describe('getUrl / Получение URL', () => {
-      it('should return a path with an API prefix by default / должен возвращать путь с префиксом API по умолчанию', () => {
+    describe('getUrl', () => {
+      it('should return a path with an API prefix by default', () => {
         api.setUrl('/api/')
         expect(api.getUrl('users')).toBe('/api/users')
       })
 
-      it('should return the path without API prefix when api is false / должен возвращать путь без префикса API, если api равно false', () => {
+      it('should return the path without API prefix when api is false', () => {
         expect(api.getUrl('/custom/path', false)).toBe('/custom/path')
       })
 
-      it('should replace {locale} placeholder / должен заменять плейсхолдер {locale}', () => {
+      it('should replace {locale} placeholder', () => {
         expect(api.getUrl('data/{locale}/info')).toMatch(/data\/\w{2}-\w{2}\/info/)
       })
 
-      it('should replace {country} placeholder / должен заменять плейсхолдер {country}', () => {
+      it('should replace {country} placeholder', () => {
         expect(api.getUrl('data/{country}/info')).toMatch(/data\/\w{2}\/info/)
       })
 
-      it('should replace {language} placeholder / должен заменять плейсхолдер {language}', () => {
+      it('should replace {language} placeholder', () => {
         expect(api.getUrl('data/{language}/info')).toMatch(/data\/\w{2}\/info/)
       })
     })
 
-    describe('getBody / Получение тела запроса', () => {
-      it('should return undefined for GET method / должен возвращать undefined для метода GET', () => {
+    describe('getBody', () => {
+      it('should return undefined for GET method', () => {
         expect(api.getBody({ key: 'value' }, ApiMethodItem.get)).toBeUndefined()
       })
 
-      it('should return JSON string for a POST method with an object / должен возвращать JSON-строку для метода POST с объектом', () => {
+      it('should return JSON string for a POST method with an object', () => {
         expect(api.getBody({ key: 'value' }, ApiMethodItem.post)).toBe('{"key":"value"}')
       })
 
-      it('should return FormData as is / должен возвращать FormData как есть', () => {
+      it('should return FormData as is', () => {
         const formData = new FormData()
         formData.append('key', 'value')
         expect(api.getBody(formData, ApiMethodItem.post)).toBe(formData)
       })
 
-      it('should return string as is for the POST method / должен возвращать строку как есть для метода POST', () => {
+      it('should return string as is for the POST method', () => {
         expect(api.getBody('custom-string', ApiMethodItem.post)).toBe('custom-string')
       })
 
-      it('should return undefined for empty request / должен возвращать undefined для пустого запроса', () => {
+      it('should return undefined for empty request', () => {
         expect(api.getBody({}, ApiMethodItem.post)).toBeUndefined()
       })
 
-      it('should return undefined when called with no arguments / должен возвращать undefined при вызове без аргументов', () => {
+      it('should return undefined when called with no arguments', () => {
         expect(api.getBody()).toBeUndefined()
       })
 
-      it('should return JSON string for PUT method / должен возвращать JSON-строку для метода PUT', () => {
+      it('should return JSON string for PUT method', () => {
         expect(api.getBody({ key: 'value' }, ApiMethodItem.put)).toBe('{"key":"value"}')
       })
 
-      it('should return JSON string for DELETE method with data / должен возвращать JSON-строку для метода DELETE с данными', () => {
+      it('should return JSON string for DELETE method with data', () => {
         expect(api.getBody({ id: 1 }, ApiMethodItem.delete)).toBe('{"id":1}')
       })
     })
 
-    describe('getBodyForGet / Подготовка тела для GET', () => {
-      it('should return the query string for GET method / должен возвращать строку запроса для метода GET', () => {
+    describe('getBodyForGet', () => {
+      it('should return the query string for GET method', () => {
         const body = api.getBodyForGet({ key: 'value', id: 123 }, '/path', ApiMethodItem.get)
         expect(body).toContain('?')
         expect(body).toContain('key=value')
         expect(body).toContain('id=123')
       })
 
-      it('should use & when a path already has a query string / должен использовать & если путь уже содержит строку запроса', () => {
+      it('should use & when a path already has a query string', () => {
         const body = api.getBodyForGet({ key: 'value' }, '/path?existing=param', ApiMethodItem.get)
         expect(body).toMatch(/^&/)
       })
 
-      it('should return empty string for non-GET methods / должен возвращать пустую строку для методов, отличных от GET', () => {
+      it('should return empty string for non-GET methods', () => {
         expect(api.getBodyForGet({ key: 'value' }, '/path', ApiMethodItem.post)).toBe('')
       })
 
-      it('should return an empty string for an empty request / должен возвращать пустую строку для пустого запроса', () => {
+      it('should return an empty string for an empty request', () => {
         expect(api.getBodyForGet({}, '/path', ApiMethodItem.get)).toBe('')
       })
 
-      it('should handle string request for GET method / должен обрабатывать строковый запрос для метода GET', () => {
+      it('should handle string request for GET method', () => {
         expect(api.getBodyForGet('key=value', '/path', ApiMethodItem.get)).toContain('key=value')
       })
     })
@@ -477,14 +474,14 @@ describe('ApiInstance / Экземпляр API', () => {
   // HTTP method shortcuts
   // ─────────────────────────────────────────────
 
-  describe('HTTP method shortcuts / Сокращения HTTP-методов', () => {
+  describe('HTTP method shortcuts', () => {
     describe('get', () => {
-      it('should make a GET request / должен выполнять GET-запрос', async () => {
+      it('should make a GET request', async () => {
         await api.get({ path: 'test' })
         expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.get }))
       })
 
-      it('should append a query string to URL for GET request / должен добавлять строку запроса к URL для GET-запроса', async () => {
+      it('should append a query string to URL for GET request', async () => {
         await api.get({ path: 'test', request: { id: '123', name: 'test' } })
         const url = mockFetch.mock.calls?.[0]?.[0]
         expect(url).toContain('?')
@@ -494,12 +491,12 @@ describe('ApiInstance / Экземпляр API', () => {
     })
 
     describe('post', () => {
-      it('should make a POST request / должен выполнять POST-запрос', async () => {
+      it('should make a POST request', async () => {
         await api.post({ path: 'test', request: { data: 'value' } })
         expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.post, body: expect.any(String) }))
       })
 
-      it('should send request data in the body / должен отправлять данные запроса в теле', async () => {
+      it('should send request data in the body', async () => {
         await api.post({ path: 'test', request: { key: 'value' } })
         const body = mockFetch.mock.calls?.[0]?.[1].body
         expect(JSON.parse(body)).toEqual({ key: 'value' })
@@ -507,23 +504,16 @@ describe('ApiInstance / Экземпляр API', () => {
     })
 
     describe('put', () => {
-      it('should make a PUT request / должен выполнять PUT-запрос', async () => {
+      it('should make a PUT request', async () => {
         await api.put({ path: 'test', request: { data: 'value' } })
         expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.put }))
       })
     })
 
     describe('delete', () => {
-      it('should make a DELETE request / должен выполнять DELETE-запрос', async () => {
+      it('should make a DELETE request', async () => {
         await api.delete({ path: 'test' })
         expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.delete }))
-      })
-    })
-
-    describe('patch', () => {
-      it('should make a PATCH request / должен выполнять PATCH-запрос', async () => {
-        await api.patch({ path: 'test', request: { data: 'value' } })
-        expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.patch }))
       })
     })
   })
@@ -532,52 +522,52 @@ describe('ApiInstance / Экземпляр API', () => {
   // request
   // ─────────────────────────────────────────────
 
-  describe('request / Запрос', () => {
-    it('should accept string as a path / должен принимать строку в качестве пути', async () => {
+  describe('request', () => {
+    it('should accept string as a path', async () => {
       await api.request('test/path')
       expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test/path'), expect.any(Object))
     })
 
-    it('should accept ApiFetch object / должен принимать объект ApiFetch', async () => {
+    it('should accept ApiFetch object', async () => {
       await api.request({ path: 'test', method: ApiMethodItem.post, request: { data: 'value' } })
       expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.post }))
     })
 
-    it('should return parsed JSON data by default (toData = true) / должен возвращать распарсенные JSON-данные по умолчанию', async () => {
+    it('should return parsed JSON data by default (toData = true)', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: { id: 1, name: 'test' }, success: true } }))
       const result = await api.request<{ id: number, name: string }>({ path: 'test' })
       expect(result).toEqual(expect.objectContaining({ id: 1, name: 'test', success: true }))
     })
 
-    it('should return a full response when toData is false / должен возвращать полный ответ, когда toData равно false', async () => {
+    it('should return a full response when toData is false', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: 'test', success: true, meta: { count: 10 } } }))
       const result = await api.request({ path: 'test', toData: false })
       expect(result).toEqual(expect.objectContaining({ data: 'test', success: true, meta: { count: 10 } }))
     })
 
-    it('should use custom headers / должен использовать кастомные заголовки', async () => {
+    it('should use custom headers', async () => {
       await api.request({ path: 'test', headers: { Authorization: 'Bearer custom-token' } })
       const headers = mockFetch.mock.calls?.[0]?.[1].headers
       expect(headers.Authorization).toBe('Bearer custom-token')
     })
 
-    it('should use a custom content type / должен использовать кастомный content type', async () => {
+    it('should use a custom content type', async () => {
       await api.request({ path: 'test', type: 'application/xml' })
       const headers = mockFetch.mock.calls?.[0]?.[1].headers
       expect(headers['Content-Type']).toBe('application/xml')
     })
 
-    it('should use pathFull when provided / должен использовать путь pathFull, если он передан', async () => {
+    it('should use pathFull when provided', async () => {
       await api.request({ pathFull: 'https://external-api.com/data' })
       expect(mockFetch).toHaveBeenCalledWith('https://external-api.com/data', expect.any(Object))
     })
 
-    it('should pass custom init options to fetch / должен передавать кастомные опции инициализации в fetch', async () => {
+    it('should pass custom init options to fetch', async () => {
       await api.request({ path: 'test', init: { credentials: 'include', mode: 'cors' } })
       expect(mockFetch).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ credentials: 'include', mode: 'cors' }))
     })
 
-    it('should skip api prefix when api is false / должен пропускать префикс API, если api равно false', async () => {
+    it('should skip api prefix when api is false', async () => {
       await api.request({ path: '/absolute/path', api: false })
       const url = mockFetch.mock.calls[0][0]
       expect(url).not.toContain('/api/')
@@ -588,57 +578,57 @@ describe('ApiInstance / Экземпляр API', () => {
   // Error handling
   // ─────────────────────────────────────────────
 
-  describe('error handling / Обработка ошибок', () => {
-    it('should report network error to ErrorCenter / должен сообщать о сетевой ошибке в ErrorCenter', async () => {
+  describe('error handling', () => {
+    it('should report network error to ErrorCenter', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'))
       await expect(api.request({ path: 'test' })).rejects.toThrow('Network error')
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api', code: 'unknown' }))
     })
 
-    it('should not report an error when hideError is true / не должен сообщать об ошибке, когда hideError равно true', async () => {
+    it('should not report an error when hideError is true', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'))
       await expect(api.request({ path: 'test', hideError: true })).rejects.toThrow('Network error')
       expect(errorCenterSpy).not.toHaveBeenCalled()
     })
 
-    it('should set error status on failure / должен устанавливать статус ошибки при неудаче', async () => {
+    it('should set error status on failure', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Request failed'))
       await expect(api.request({ path: 'test' })).rejects.toThrow('Request failed')
       expect(api.getStatus().getError()).toContain('Request failed')
     })
 
-    it('should report 404 to ErrorCenter with notFound code / должен сообщать о 404 в ErrorCenter с кодом notFound', async () => {
+    it('should report 404 to ErrorCenter with notFound code', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ status: 404, statusText: 'Not Found', json: { error: 'Not found' } }))
       await api.request({ path: 'test' })
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api', code: 'notFound' }))
     })
 
-    it('should report 500 to ErrorCenter with server code / должен сообщать о 500 в ErrorCenter с кодом server', async () => {
+    it('should report 500 to ErrorCenter with server code', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ status: 500, statusText: 'Internal Server Error', json: { error: 'Server error' } }))
       await api.request({ path: 'test' })
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api', code: 'server' }))
     })
 
-    it('should report other 4xx/5xx statuses to ErrorCenter with api-server group / должен сообщать о других статусах 4xx/5xx в ErrorCenter с группой api-server', async () => {
+    it('should report other 4xx/5xx statuses to ErrorCenter with api-server group', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ status: 403, statusText: 'Forbidden', json: { error: 'Forbidden' } }))
       await api.request({ path: 'test' })
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api-server', code: '403' }))
     })
 
-    it('should not report a query error when hideError is true / не должен сообщать об ошибке запроса, когда hideError равно true', async () => {
+    it('should not report a query error when hideError is true', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ status: 500, statusText: 'Server Error', json: {} }))
       await api.request({ path: 'test', hideError: true })
       expect(errorCenterSpy).not.toHaveBeenCalled()
     })
 
-    it('should handle TimeoutError via ErrorCenter with timeout code / должен обрабатывать TimeoutError в ErrorCenter с кодом timeout', async () => {
+    it('should handle TimeoutError via ErrorCenter with timeout code', async () => {
       const timeoutError = new DOMException('Timeout', 'TimeoutError')
       mockFetch.mockRejectedValueOnce(timeoutError)
       await expect(api.request({ path: 'test' })).rejects.toThrow()
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api', code: 'timeout' }))
     })
 
-    it('should use custom errorCenterInstance from options for reporting errors / должен использовать кастомный ErrorCenterInstance из опций', async () => {
+    it('should use custom errorCenterInstance from options for reporting errors', async () => {
       const customErrorCenter = new ErrorCenterInstance(errorCauseList)
       const customSpy = vi.spyOn(customErrorCenter, 'on')
       const customApi = new ApiInstance('/api/', { errorCenterClass: customErrorCenter })
@@ -648,7 +638,7 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(errorCenterSpy).not.toHaveBeenCalled()
     })
 
-    it('should not report AbortError to ErrorCenter / не должен сообщать об AbortError в ErrorCenter', async () => {
+    it('should not report AbortError to ErrorCenter', async () => {
       mockFetch.mockRejectedValueOnce(new DOMException('Aborted', 'AbortError'))
       await expect(api.request({ path: 'test' })).rejects.toThrow()
       expect(errorCenterSpy).not.toHaveBeenCalled()
@@ -659,8 +649,8 @@ describe('ApiInstance / Экземпляр API', () => {
   // Status tracking
   // ─────────────────────────────────────────────
 
-  describe('status tracking / Отслеживание статуса', () => {
-    it('should update the status on a successful request / должен обновлять статус при успешном запросе', async () => {
+  describe('status tracking', () => {
+    it('should update the status on a successful request', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ status: 200, statusText: 'OK', json: { data: 'test' } }))
       await api.request({ path: 'test' })
       const status = api.getStatus()
@@ -668,7 +658,7 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(status.getStatusText()).toBe('OK')
     })
 
-    it('should update the status on 404 response / должен обновлять статус при 404', async () => {
+    it('should update the status on 404 response', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ status: 404, statusText: 'Not Found', json: { error: 'Not found' } }))
       await api.request({ path: 'test' })
       const status = api.getStatus()
@@ -676,14 +666,14 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(status.getStatusText()).toBe('Not Found')
     })
 
-    it('should store last response / должен сохранять последний ответ', async () => {
+    it('should store last response', async () => {
       const responseData = { data: { id: 1, name: 'test' }, success: true }
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: responseData }))
       await api.request({ path: 'test' })
       expect(api.getStatus().getResponse()).toMatchObject(responseData)
     })
 
-    it('should update the error status on exception / должен обновлять статус ошибки при исключении', async () => {
+    it('should update the error status on exception', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Connection refused'))
       await expect(api.request({ path: 'test' })).rejects.toThrow()
       expect(api.getStatus().getError()).toContain('Connection refused')
@@ -694,8 +684,8 @@ describe('ApiInstance / Экземпляр API', () => {
   // Custom response processing
   // ─────────────────────────────────────────────
 
-  describe('custom response processing / Кастомная обработка ответа', () => {
-    it('should use queryReturn callback when provided / должен использовать колбэк queryReturn, если он передан', async () => {
+  describe('custom response processing', () => {
+    it('should use queryReturn callback when provided', async () => {
       const customCallback = vi.fn().mockResolvedValue({ customData: 'processed' })
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: 'original' } }))
       const result = await api.request({ path: 'test', queryReturn: customCallback })
@@ -703,12 +693,12 @@ describe('ApiInstance / Экземпляр API', () => {
       expect(result).toEqual(expect.objectContaining({ customData: 'processed' }))
     })
 
-    it('should handle text responses / должен обрабатывать текстовые ответы', async () => {
+    it('should handle text responses', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ contentType: 'text/plain', text: 'plain text response' }))
       expect(await api.request({ path: 'test' })).toBe('plain text response')
     })
 
-    it('should use data from end callback when provided / должен использовать данные из колбэка end, если они переданы', async () => {
+    it('should use data from end callback when provided', async () => {
       api.setEnd(vi.fn().mockResolvedValue({ data: { customData: 'from-end-callback' } }))
       const result = await api.request({ path: 'test' })
       expect(result).toEqual(expect.objectContaining({ customData: 'from-end-callback' }))
@@ -719,29 +709,29 @@ describe('ApiInstance / Экземпляр API', () => {
   // Preparation lifecycle
   // ─────────────────────────────────────────────
 
-  describe('preparation lifecycle / Жизненный цикл подготовки', () => {
-    it('should not call global preparation when globalPreparation is false / не должен вызывать глобальную подготовку, когда globalPreparation равно false', async () => {
+  describe('preparation lifecycle', () => {
+    it('should not call global preparation when globalPreparation is false', async () => {
       const preparationCallback = vi.fn().mockResolvedValue(undefined)
       api.setPreparation(preparationCallback)
       await api.request({ path: 'test', globalPreparation: false })
       expect(preparationCallback).not.toHaveBeenCalled()
     })
 
-    it('should not call the global end when globalEnd is false / не должен вызывать глобальный колбэк завершения, когда globalEnd равно false', async () => {
+    it('should not call the global end when globalEnd is false', async () => {
       const endCallback = vi.fn().mockResolvedValue({})
       api.setEnd(endCallback)
       await api.request({ path: 'test', globalEnd: false })
       expect(endCallback).not.toHaveBeenCalled()
     })
 
-    it('should call preparation with the apiFetch object / должен вызывать подготовку с объектом apiFetch', async () => {
+    it('should call preparation with the apiFetch object', async () => {
       const preparationCallback = vi.fn().mockResolvedValue(undefined)
       api.setPreparation(preparationCallback)
       await api.request({ path: 'test', method: ApiMethodItem.post as any })
       expect(preparationCallback).toHaveBeenCalledWith(expect.objectContaining({ path: 'test' }))
     })
 
-    it('should call end with the response and apiFetch objects / должен вызывать колбэк завершения с объектами ответа и apiFetch', async () => {
+    it('should call end with the response and apiFetch objects', async () => {
       const endCallback = vi.fn().mockResolvedValue({})
       api.setEnd(endCallback)
       await api.request({ path: 'test' })
@@ -755,37 +745,37 @@ describe('ApiInstance / Экземпляр API', () => {
   // makeData transformation
   // ─────────────────────────────────────────────
 
-  describe('makeData transformation / Трансформация данных (через toData)', () => {
-    it('should extract a data field and merge success/status/message / должен извлекать поле data и объединять success/status/message', async () => {
+  describe('makeData transformation (via toData)', () => {
+    it('should extract a data field and merge success/status/message', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: { id: 1 }, success: true, status: 'success', message: 'Created successfully' } }))
       const result = await api.request<{ id: number }>({ path: 'test' })
       expect(result).toEqual(expect.objectContaining({ id: 1, success: true, status: 'success', message: 'Created successfully' }))
     })
 
-    it('should return raw data when the data field is not an object / должен возвращать сырые данные, если поле data не является объектом', async () => {
+    it('should return raw data when the data field is not an object', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: 42, success: true } }))
       expect(await api.request({ path: 'test' })).toBe(42)
     })
 
-    it('should return array data as-is / должен возвращать данные-массив как есть', async () => {
+    it('should return array data as-is', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: [1, 2, 3], success: true } }))
       expect(await api.request<number[]>({ path: 'test' })).toEqual([1, 2, 3])
     })
 
-    it('should not overwrite the success field if already present in data / не должен перезаписывать поле success, если оно уже есть в данных', async () => {
+    it('should not overwrite the success field if already present in data', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: { id: 1, success: false }, success: true } }))
       const result = await api.request<{ id: number, success: boolean }>({ path: 'test' })
       expect(result.success).toBe(false)
     })
 
-    it('should return a full response when toData is false / должен возвращать полный ответ, когда toData равно false', async () => {
+    it('should return a full response when toData is false', async () => {
       const responseData = { data: { id: 1 }, success: true, extra: 'field' }
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: responseData }))
       const result = await api.request({ path: 'test', toData: false })
       expect(result).toEqual(expect.objectContaining({ data: { id: 1 }, success: true, extra: 'field' }))
     })
 
-    it('should handle null `data.data` gracefully / должен корректно обрабатывать null в `data.data`', async () => {
+    it('should handle null `data.data` gracefully', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: null, success: true } }))
       const result = await api.request({ path: 'test' })
       expect(result).toEqual(expect.objectContaining({ success: true, statusObject: expect.objectContaining({ status: 200 }) }))
@@ -796,15 +786,15 @@ describe('ApiInstance / Экземпляр API', () => {
   // makeStatus — statusObject injection
   // ─────────────────────────────────────────────
 
-  describe('makeStatus / Добавление statusObject', () => {
-    it('should append statusObject to object responses / должен добавлять statusObject к ответам-объектам', async () => {
+  describe('makeStatus', () => {
+    it('should append statusObject to object responses', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: { id: 1 }, success: true } }))
       const result = await api.request<{ id: number }>({ path: 'test' })
       expect(result).toHaveProperty('statusObject')
       expect((result as any).statusObject).toEqual(expect.objectContaining({ status: 200, statusText: 'OK' }))
     })
 
-    it('should not append statusObject to non-object responses / не должен добавлять statusObject к ответам, не являющимся объектами', async () => {
+    it('should not append statusObject to non-object responses', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ json: { data: 42, success: true } }))
       expect(await api.request({ path: 'test' })).toBe(42)
     })
@@ -814,25 +804,25 @@ describe('ApiInstance / Экземпляр API', () => {
   // initController — timeout and abort
   // ─────────────────────────────────────────────
 
-  describe('initController / Инициализация контроллера (таймаут и отмена)', () => {
-    it('should set signal when timeout only is provided / должен устанавливать сигнал при наличии только таймаута', async () => {
+  describe('initController (timeout and abort)', () => {
+    it('should set signal when timeout only is provided', async () => {
       await api.request({ path: 'test', timeout: 5000 })
       expect(mockFetch.mock.calls[0][1].signal).toBeDefined()
     })
 
-    it('should set signal when controller only is provided / должен устанавливать сигнал при наличии только контроллера', async () => {
+    it('should set signal when controller only is provided', async () => {
       const controller = new AbortController()
       await api.request({ path: 'test', controller })
       expect(mockFetch.mock.calls[0][1].signal).toBe(controller.signal)
     })
 
-    it('should use controller signal when both timeout and controller are provided / должен использовать сигнал контроллера, если переданы и таймаут, и контроллер', async () => {
+    it('should use controller signal when both timeout and controller are provided', async () => {
       const controller = new AbortController()
       await api.request({ path: 'test', timeout: 5000, controller })
       expect(mockFetch.mock.calls[0][1].signal).toBe(controller.signal)
     })
 
-    it('should not set signal when neither timeout nor controller are provided and timeout is 0 / не должен устанавливать сигнал, если не переданы ни таймаут, ни контроллер, а таймаут равен 0', async () => {
+    it('should not set signal when neither timeout nor controller are provided and timeout is 0', async () => {
       await api.request({ path: 'test', timeout: 0 })
       expect(mockFetch.mock.calls[0][1].signal).toBeUndefined()
     })
@@ -842,8 +832,8 @@ describe('ApiInstance / Экземпляр API', () => {
   // Emulator (via ApiResponse)
   // ─────────────────────────────────────────────
 
-  describe('emulator integration / Интеграция эмулятора', () => {
-    it('should return an emulated response if available / должен возвращать эмулированный ответ, если он доступен', async () => {
+  describe('emulator integration', () => {
+    it('should return an emulated response if available', async () => {
       api.getResponse().add({ path: 'emulated', method: ApiMethodItem.get as any, response: { data: 'emulated-data', success: true } })
       expect(await api.get({ path: 'emulated' })).toEqual(expect.objectContaining({ data: 'emulated-data' }))
       expect(mockFetch).not.toHaveBeenCalled()
@@ -854,14 +844,14 @@ describe('ApiInstance / Экземпляр API', () => {
   // getStatus and getResponse accessors
   // ─────────────────────────────────────────────
 
-  describe('getStatus and getResponse / Геттеры статуса и ответов', () => {
-    it('should return a status instance / должен возвращать экземпляр статуса', () => {
+  describe('getStatus and getResponse', () => {
+    it('should return a status instance', () => {
       const status = api.getStatus()
       expect(status).toBeDefined()
       expect(typeof status.getStatus).toBe('function')
     })
 
-    it('should return a response instance / должен возвращать экземпляр ответов', () => {
+    it('should return a response instance', () => {
       const response = api.getResponse()
       expect(response).toBeDefined()
       expect(typeof response.emulator).toBe('function')
@@ -872,8 +862,8 @@ describe('ApiInstance / Экземпляр API', () => {
   // Headers with null
   // ─────────────────────────────────────────────
 
-  describe('header null handling / Обработка null в заголовках', () => {
-    it('should not include headers when the header option is null / не должен включать заголовки, если опция headers равна null', async () => {
+  describe('header null handling', () => {
+    it('should not include headers when the header option is null', async () => {
       await api.request({ path: 'test', headers: null })
       expect(mockFetch.mock.calls[0][1].headers).toBeUndefined()
     })
@@ -883,8 +873,8 @@ describe('ApiInstance / Экземпляр API', () => {
   // FormData request integration
   // ─────────────────────────────────────────────
 
-  describe('FormData request / Запрос с FormData', () => {
-    it('should send FormData as a body for POST request / должен отправлять FormData в теле POST-запроса', async () => {
+  describe('FormData request', () => {
+    it('should send FormData as a body for POST request', async () => {
       const formData = new FormData()
       formData.append('file', 'content')
       await api.post({ path: 'upload', request: formData })

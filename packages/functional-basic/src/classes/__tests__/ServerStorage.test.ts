@@ -1,6 +1,7 @@
 /** @vitest-environment jsdom */
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { ServerStorage } from '../ServerStorage'
+import { ErrorCenter } from '../ErrorCenter'
 import { isDomRuntime } from '../../functions/isDomRuntime'
 
 vi.mock('../../functions/isDomRuntime', () => ({
@@ -9,9 +10,12 @@ vi.mock('../../functions/isDomRuntime', () => ({
 
 describe('ServerStorage', () => {
   const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  let errorCenterSpy: ReturnType<typeof vi.spyOn>
   const ssrContext: Record<string, any> = {}
 
   beforeEach(() => {
+    // Spy on the default ErrorCenter instance's on method
+    errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
     // Use any cast to safely reset protected static properties in tests
     const storageClass = ServerStorage as any
     storageClass.storage = undefined
@@ -87,7 +91,10 @@ describe('ServerStorage', () => {
     it('should warn and return empty object if context is missing', () => {
       const res = ServerStorage.get('anything', () => 'value')
       expect(res).toBe('value')
-      expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('Context is missing'))
+      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
+        group: 'storage',
+        code: 'context'
+      }))
     })
   })
 
@@ -150,11 +157,11 @@ describe('ServerStorage', () => {
 
       const value = ServerStorage.get('test', () => 'fallback')
       expect(value).toBe('fallback')
-      // Check that console.error was called with the message as the first argument
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Failed to parse storage'),
-        expect.anything()
-      )
+      // Check that ErrorCenter was notified of the hydration error
+      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
+        group: 'hydration',
+        code: 'error'
+      }))
     })
   })
 })

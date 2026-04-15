@@ -26,13 +26,13 @@ export const isApiSuccess = <T>(
       || data?.success
       || (
         data?.statusObject?.status
-        && String(data.statusObject.status).match(/^2/)
+        && /^2/.test(String(data.statusObject.status))
       )
       || (
         !('status' in data)
         && !('success' in data)
         && !('statusObject' in data)
-        && String(Api.getStatus().getStatus()).match(/^2/)
+        && /^2/.test(String(Api.getStatus().getStatus()))
       )
     )
   )
