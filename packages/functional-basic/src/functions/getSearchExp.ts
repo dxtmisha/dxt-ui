@@ -1,5 +1,7 @@
 import { escapeExp } from './escapeExp'
 import { isFilled } from './isFilled'
+import { toString } from './toString'
+import { isString } from './isString.ts'
 
 /**
  * Builds a case-insensitive global `RegExp` for multi-word "contains all words" search.
@@ -10,19 +12,31 @@ import { isFilled } from './isFilled'
  * Каждое слово из строки поиска экранируется и оборачивается в lookahead `(?=.*?слово)`,
  * поэтому результат совпадает только если строка содержит все слова (в любом порядке).
  * @param search search string with one or more space-separated words / строка поиска с одним или несколькими словами через пробел
+ * @param limit maximum search string length / максимальная длина строки поиска
  */
-export function getSearchExp(search: string): RegExp {
-  let exp = ''
+export function getSearchExp(
+  search: string,
+  limit: number = 128
+): RegExp {
+  if (
+    !isString(search)
+    || search.trim().length === 0
+    || search.length > limit
+  ) {
+    return /^/
+  }
 
-  search
+  const exp: string[] = []
+
+  toString(search)
     .split(' ')
     .forEach((item) => {
       const text = escapeExp(item).trim()
 
       if (isFilled(text)) {
-        exp += `(?=.*?${text})`
+        exp.push(`(?=.*?${text})`)
       }
     })
 
-  return new RegExp(`^${exp}`, 'ig')
+  return new RegExp(`^${exp.join('')}`, 'i')
 }

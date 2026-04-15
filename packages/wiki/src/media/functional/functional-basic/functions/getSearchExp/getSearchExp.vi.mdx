@@ -6,25 +6,32 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Tiện ích tạo một `RegExp` không phân biệt chữ hoa/thường, khớp với chuỗi chứa **tất cả** các từ trong chuỗi tìm kiếm (theo bất kỳ thứ tự nào).
 
-Mỗi từ được tách bởi khoảng trắng, escape và bọc trong lookahead `(?=.*?từ)`. Rất phù hợp để xây dựng tính năng tìm kiếm trực tiếp hoặc lọc theo nhiều từ.
+Mỗi từ được tách bởi khoảng trắng, escape và bọc trong positive lookahead `(?=.*?từ)`. Rất phù hợp để xây dựng tính năng tìm kiếm trực tiếp hoặc lọc theo nhiều từ.
 
 **Tham số:**
 - `search: string` — Chuỗi tìm kiếm gồm một hoặc nhiều từ phân cách bởi khoảng trắng.
+- `limit: number` (tùy chọn, mặc định: `128`) — Độ dài tối đa cho phép của chuỗi tìm kiếm.
 
 **Trả về:**
-`RegExp` — Biểu thức chính quy với cờ `ig` (toàn cục, không phân biệt chữ hoa/thường).
+`RegExp` — Biểu thức chính quy với cờ `i` (không phân biệt chữ hoa/thường).
+- Nếu chuỗi `search` trống, không phải là chuỗi hoặc vượt quá `limit`, nó trả về `/^/` (khớp với vị trí bắt đầu của bất kỳ chuỗi nào).
 
 ```typescript
 import { getSearchExp } from '@dxtmisha/functional-basic'
 
+// Cách dùng cơ bản
 const regex = getSearchExp('foo bar')
 
 regex.test('foo bar baz')  // true  — chứa cả hai từ
 regex.test('bar foo')      // true  — thứ tự không quan trọng
-regex.test('foo only')     // false — thiếu từ bar
+regex.test('foo only')     // false — thiếu từ "bar"
 
 // Các ký tự đặc biệt được escape tự động
-const regex2 = getSearchExp('price $10.00')
-regex2.test('price $10.00') // true
-regex2.test('price X10Y00') // false
+const regex2 = getSearchExp('giá $10.00')
+regex2.test('giá $10.00') // true
+regex2.test('giá X10Y00') // false
+
+// Sử dụng giới hạn tùy chỉnh
+const regex3 = getSearchExp('một chuỗi tìm kiếm rất dài', 10)
+regex3.test('bất kỳ chuỗi nào') // true — trả về /^/ vì độ dài tìm kiếm > 10
 ```

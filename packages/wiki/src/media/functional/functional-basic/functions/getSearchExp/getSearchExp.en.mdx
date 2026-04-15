@@ -4,27 +4,34 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getSearchExp`
 
-A utility that builds a case-insensitive global `RegExp` matching strings that contain **all** words from the search string (in any order).
+A utility that builds a case-insensitive `RegExp` matching strings that contain **all** words from the search string (in any order).
 
-Each word is split by spaces, escaped, and wrapped in a lookahead `(?=.*?word)`. This makes it ideal for live search or multi-word filtering UIs.
+Each word is split by spaces, escaped, and wrapped in a positive lookahead `(?=.*?word)`. This makes it ideal for live search or multi-word filtering UIs.
 
 **Parameters:**
 - `search: string` — A search string consisting of one or more space-separated words.
+- `limit: number` (optional, default: `128`) — The maximum allowed length of the search string.
 
 **Returns:**
-`RegExp` — A regular expression with flags `ig` (global, case-insensitive).
+`RegExp` — A regular expression with the `i` flag (case-insensitive).
+- If the `search` string is empty, not a string, or exceeds the `limit`, it returns `/^/` (matching the start of any string).
 
 ```typescript
 import { getSearchExp } from '@dxtmisha/functional-basic'
 
+// Basic usage
 const regex = getSearchExp('foo bar')
 
 regex.test('foo bar baz')  // true  — contains both words
 regex.test('bar foo')      // true  — order doesn't matter
-regex.test('foo only')     // false — word bar is missing
+regex.test('foo only')     // false — word "bar" is missing
 
 // Special characters are escaped automatically
 const regex2 = getSearchExp('price $10.00')
 regex2.test('price $10.00') // true
 regex2.test('price X10Y00') // false
+
+// Using a custom limit
+const regex3 = getSearchExp('very long search string', 10)
+regex3.test('any string')   // true — returns /^/ because search length > 10
 ```

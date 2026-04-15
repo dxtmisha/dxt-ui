@@ -37,10 +37,4 @@ describe('getSearchExp', () => {
     expect(regex.test('anything')).toBe(true)
     expect(regex.test('')).toBe(true)
   })
-
-  it('should have global and case-insensitive flags', () => {
-    const regex = getSearchExp('test')
-    expect(regex.flags).toContain('g')
-    expect(regex.flags).toContain('i')
-  })
 })

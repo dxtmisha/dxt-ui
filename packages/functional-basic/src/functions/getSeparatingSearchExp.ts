@@ -21,7 +21,7 @@ export function getSeparatingSearchExp(
     || search.trim().length === 0
     || search.length > limit
   ) {
-    return /(?!)/ig
+    return /^/
   }
 
   const list: string = String(search)
