@@ -172,9 +172,9 @@ describe('ApiHeaders / Заголовки API', () => {
     it('should return custom headers when request is FormData / должен возвращать кастомные заголовки, когда запрос — FormData', () => {
       const formData = new FormData()
       const customHeaders = { 'X-Custom': 'value' }
-      
+
       const result = apiHeaders.getByRequest(formData, customHeaders)
-      
+
       expect(result).toEqual(customHeaders)
       expect(result).not.toHaveProperty('Content-Type')
     })
@@ -182,9 +182,9 @@ describe('ApiHeaders / Заголовки API', () => {
     it('should include Content-Type when request is not FormData / должен включать Content-Type, когда запрос — не FormData', () => {
       const request = { key: 'value' }
       const customHeaders = { 'X-Custom': 'value' }
-      
+
       const result = apiHeaders.getByRequest(request, customHeaders, 'application/json')
-      
+
       expect(result).toEqual({
         'X-Custom': 'value',
         'Content-Type': 'application/json'
@@ -193,7 +193,7 @@ describe('ApiHeaders / Заголовки API', () => {
 
     it('should handle undefined request / должен корректно обрабатывать неопределенный запрос', () => {
       const result = apiHeaders.getByRequest(undefined)
-      
+
       expect(result).toEqual({
         'Content-Type': 'application/json;charset=UTF-8'
       })

@@ -81,18 +81,18 @@ export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>
  */
 export type ApiDataItem<T = any>
   = T
-  & {
+    & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-    data?: T
-    /** Success flag/ Флаг успешности */
-    success?: boolean
-    /** Status/ Статус */
-    status?: ApiStatusType
-    /** Message/ Сообщение */
-    message?: string
-    /** Status object/ Объект статуса */
-    statusObject?: ApiStatusItem
-  }
+      data?: T
+      /** Success flag/ Флаг успешности */
+      success?: boolean
+      /** Status/ Статус */
+      status?: ApiStatusType
+      /** Message/ Сообщение */
+      message?: string
+      /** Status object/ Объект статуса */
+      statusObject?: ApiStatusItem
+    }
 
 /**
  * Default API request data type/ Тип данных запроса API по умолчанию

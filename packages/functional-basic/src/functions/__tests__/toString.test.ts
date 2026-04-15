@@ -12,4 +12,3 @@ describe('toString', () => {
     expect(toString(undefined)).toBe('')
   })
 })
-

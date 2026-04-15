@@ -39,7 +39,7 @@ describe('capitalize', () => {
       // Mock Geo.getLocation to return a specific locale
       // We use Turkish ('tr-TR') because it has a unique rule for 'i' -> 'İ'
       vi.spyOn(Geo, 'getLocation').mockReturnValue('tr-TR')
-      
+
       const res = capitalize('i', true)
       // In Turkish, lowercase 'i' becomes 'İ' (with a dot)
       expect(res).toBe('İ')
@@ -47,7 +47,7 @@ describe('capitalize', () => {
 
     it('should use standard toUpperCase when isLocale is false (even if locale is set)', () => {
       vi.spyOn(Geo, 'getLocation').mockReturnValue('tr-TR')
-      
+
       const res = capitalize('i', false)
       // Standard toUpperCase for 'i' is 'I'
       expect(res).toBe('I')
