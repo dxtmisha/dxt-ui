@@ -1,4 +1,5 @@
 import { isArray } from './isArray'
+import { isNull } from './isNull'
 import { isObject } from './isObject'
 import { isString } from './isString'
 
@@ -18,6 +19,10 @@ export function anyToString<V>(
 ): string {
   if (isString(value)) {
     return trim ? value.trim() : value
+  }
+
+  if (isNull(value)) {
+    return ''
   }
 
   if (

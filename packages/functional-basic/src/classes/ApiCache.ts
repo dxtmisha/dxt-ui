@@ -55,12 +55,10 @@ export class ApiCache {
     getListener: (key: string) => Promise<ApiCacheItem | undefined>,
     setListener: (key: string, value: ApiCacheItem) => Promise<void>,
     removeListener: (key: string) => Promise<void>
-  ): typeof ApiCache {
+  ): void {
     this.getListener = getListener
     this.setListener = setListener
     this.removeListener = removeListener
-
-    return this
   }
 
   /**

@@ -1,21 +1,7 @@
 import { executeFunction } from '../functions/executeFunction'
-import { isDomData } from '../functions/isDomData'
-import { isDomRuntime } from '../functions/isDomRuntime'
-import { isFilled } from '../functions/isFilled'
-import { transformation } from '../functions/transformation'
 
-import { CookieBlock } from './CookieBlock'
+import { type CookieOptions, CookieStorage } from './CookieStorage'
 import { ServerStorage } from './ServerStorage'
-
-type CookieSameSite = 'strict' | 'lax'
-
-export type CookieOptions = {
-  age?: number
-  sameSite?: CookieSameSite
-  arguments?: string[]
-}
-
-const cookie: Record<string, any> = {}
 
 /**
  * Returns a list of active Cookie instances for the current request context.
@@ -35,7 +21,25 @@ const getItems = () => {
  * Класс для управления Cookie.
  */
 export class Cookie<T> {
+  /**
+   * Returns an instance of the class according to the specified cookie name.
+   *
+   * Возвращает экземпляр класса по указанному имени cookie.
+   * @param name cookie name/ название cookie
+   */
+  static getInstance<T>(name: string) {
+    const items = getItems()
+
+    if (name in items) {
+      return items[name] as Cookie<T>
+    }
+
+    return new Cookie<T>(name)
+  }
+
+  /** Cookie value / Значение cookie */
   value?: T | string
+  /** Cookie options / Параметры cookie */
   private options: CookieOptions = {}
 
   /**
@@ -49,7 +53,7 @@ export class Cookie<T> {
       return items[name] as Cookie<T>
     }
 
-    this.value = cookie?.[name]
+    this.value = CookieStorage.get<T>(this.name)
     items[name] = this
   }
 
@@ -86,8 +90,8 @@ export class Cookie<T> {
     options?: CookieOptions
   ): void {
     this.value = executeFunction(value)
-    Object.assign(this.options, options)
 
+    Object.assign(this.options, options)
     this.update()
   }
 
@@ -101,57 +105,15 @@ export class Cookie<T> {
   }
 
   /**
-   * Returns cache time.
-   *
-   * Возвращает время кэширования.
-   */
-  private getAge(): number {
-    return this.options?.age ?? (7 * 24 * 60 * 60)
-  }
-
-  /**
    * Update cookie data.
    *
    * Обновление данных cookie.
    */
   private update(): void {
-    if (
-      isDomRuntime()
-      && !isDomData()
-      && !CookieBlock.get()
-    ) {
-      const value = String(this.value ?? '')
-
-      document.cookie = [
-        `${encodeURIComponent(this.name)}=${encodeURIComponent(value)}`,
-        `max-age=${value === '' ? '-1' : this.getAge()}`,
-        `SameSite=${this.options?.sameSite ?? 'strict'}`,
-        ...(this.options?.arguments ?? [])
-      ].join('; ')
-    }
-  }
-
-  /**
-   * Update data from cookies.
-   *
-   * Обновляет данные из cookies.
-   */
-  static updateData() {
-    for (const item of document.cookie.split(';')) {
-      const [key, value] = item.trim().split('=')
-
-      if (key && isFilled(value)) {
-        cookie[key] = transformation(value)
-      }
-    }
-  }
-
-  static {
-    if (
-      isDomRuntime()
-      && !isDomData()
-    ) {
-      this.updateData()
-    }
+    CookieStorage.set(
+      this.name,
+      this.value,
+      this.options
+    )
   }
 }

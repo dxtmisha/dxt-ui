@@ -4,6 +4,7 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { Cookie } from '../Cookie'
+import { CookieStorage } from '../CookieStorage'
 import { CookieBlock } from '../CookieBlock'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 import * as isDomDataModule from '../../functions/isDomData'
@@ -122,7 +123,7 @@ describe('Cookie', () => {
       document.cookie = 'another=val2'
 
       // Call updateData explicitly
-      Cookie.updateData()
+      CookieStorage.updateData()
 
       const cookie1 = new Cookie('staticParse')
       const cookie2 = new Cookie('another')
