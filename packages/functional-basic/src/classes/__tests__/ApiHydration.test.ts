@@ -9,7 +9,7 @@ vi.mock('../../functions/isDomRuntime', () => ({
   isDomRuntime: vi.fn()
 }))
 
-describe('ApiHydration / Гидратация API', () => {
+describe('ApiHydration / API Hydration', () => {
   let apiHydration: ApiHydration
 
   beforeEach(() => {
@@ -17,8 +17,8 @@ describe('ApiHydration / Гидратация API', () => {
     apiHydration = new ApiHydration()
   })
 
-  describe('toClient / Передача на клиент', () => {
-    it('should push data to list when global is true and isDomRuntime is false / должен добавлять данные в список, когда global равно true и isDomRuntime равно false', () => {
+  describe('toClient / Transfer to client', () => {
+    it('should push data to list when global is true and isDomRuntime is false', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
 
       const apiFetch = {
@@ -38,7 +38,7 @@ describe('ApiHydration / Гидратация API', () => {
       })
     })
 
-    it('should not push data to list when global is false / не должен добавлять данные в список, когда global равно false', () => {
+    it('should not push data to list when global is false', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
 
       const apiFetch = {
@@ -53,7 +53,7 @@ describe('ApiHydration / Гидратация API', () => {
       expect((apiHydration as any).list).toHaveLength(0)
     })
 
-    it('should not push data to list when isDomRuntime is true / не должен добавлять данные в список, когда isDomRuntime равно true', () => {
+    it('should not push data to list when isDomRuntime is true', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
 
       const apiFetch = {
@@ -69,8 +69,8 @@ describe('ApiHydration / Гидратация API', () => {
     })
   })
 
-  describe('toString / Преобразование в строку', () => {
-    it('should return script tag with json data / должен возвращать тег script с данными JSON', () => {
+  describe('toString / Convert to string', () => {
+    it('should return script tag with json data', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
 
       apiHydration.toClient({ path: 'a', global: true }, { b: 1 })
@@ -82,14 +82,14 @@ describe('ApiHydration / Гидратация API', () => {
       expect(result).toContain('</script>')
     })
 
-    it('should return empty script tag when list is empty / должен возвращать пустой тег script, когда список пуст', () => {
+    it('should return empty script tag when list is empty', () => {
       const result = apiHydration.toString()
       expect(result).toContain('[]')
     })
   })
 
-  describe('initResponse / Инициализация ответа', () => {
-    it('should add hydration data to response when isDomRuntime is true / должен добавлять данные гидратации в ответ, если isDomRuntime равно true', () => {
+  describe('initResponse / Initialize response', () => {
+    it('should add hydration data to response when isDomRuntime is true', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
 
       const apiDefault = new ApiDefault()
@@ -105,7 +105,7 @@ describe('ApiHydration / Гидратация API', () => {
       expect(addSpy).toHaveBeenCalledWith(mockData)
     })
 
-    it('should not add hydration data to response when isDomRuntime is false / не должен добавлять данные гидратации в ответ, если isDomRuntime равно false', () => {
+    it('should not add hydration data to response when isDomRuntime is false', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
 
       const apiDefault = new ApiDefault()

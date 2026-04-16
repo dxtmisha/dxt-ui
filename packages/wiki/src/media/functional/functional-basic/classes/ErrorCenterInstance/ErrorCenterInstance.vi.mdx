@@ -16,6 +16,17 @@ Trong khi `ErrorCenter` cung cấp một lớp tĩnh toàn cục, `ErrorCenterIn
 - **Nguyên nhân định nghĩa trước** — Có thể được khởi tạo với một danh sách các nguyên nhân lỗi mặc định.
 - **Chainable API** — Hỗ trợ cấu hình linh hoạt để thêm nguyên nhân và trình xử lý.
 
+## Các phương thức hành động
+
+### `on`
+
+Kích hoạt xử lý lỗi. Nó tìm kiếm dữ liệu đã đăng ký cho mã lỗi đầu vào, hợp nhất dữ liệu đó với nguyên nhân `cause` dựa trên mức độ ưu tiên, và chuyển nó cho trình xử lý nội bộ. Theo mặc định, `cause` đầu vào sẽ ghi đè dữ liệu đã lưu trữ, nhưng bạn có thể sử dụng trường `priority` để bảo vệ các giá trị cụ thể.
+
+**Tham số:**
+- `cause: ErrorCenterCauseItem` — Thông tin lỗi cần kích hoạt.
+
+**Trả về:** `this`
+
 ## Các phương thức kiểm tra
 
 - `has(code: string, group?: string): boolean` — Kiểm tra xem một nguyên nhân lỗi có tồn tại trong bộ lưu trữ không.
@@ -28,28 +39,35 @@ Trong khi `ErrorCenter` cung cấp một lớp tĩnh toàn cục, `ErrorCenterIn
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Đăng ký một trình xử lý cho nhóm cụ thể.
 - `addHandlerList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
 
-## Các phương thức hành động
-
-### `on`
-
-Kích hoạt xử lý lỗi. Nó tìm kiếm dữ liệu đã đăng ký cho mã lỗi đầu vào, hợp nhất dữ liệu đó với nguyên nhân `cause`, và chuyển nó cho trình xử lý nội bộ.
-
-**Tham số:**
-- `cause: ErrorCenterCauseItem` — Thông tin lỗi cần kích hoạt.
-
-**Trả về:** `this`
-
 ## Các kiểu dữ liệu
 
-### `ErrorCenterCauseItem`
+#### `ErrorCenterGroup`
+Định danh nhóm lỗi.
+- `string | undefined` — Tên chuỗi cho nhóm, hoặc `undefined` cho trình xử lý toàn cục/mặc định.
 
-Đối tượng chính được sử dụng để xác định nguyên nhân gây lỗi trong thực thể này.
+#### `ErrorCenterCauseItem`
+Thông tin chi tiết về nguyên nhân lỗi.
+- `group?: ErrorCenterGroup` — Nhóm mà lỗi này thuộc về.
+- `code: string` — Mã lỗi duy nhất (ví dụ: '404', 'AUTH_ERROR').
+- `priority?: number` — Mức độ ưu tiên được sử dụng để hợp nhất nhiều lỗi (mặc định: `500`).
+- `label?: string` — Tên ngắn gọn, dễ hiểu cho lỗi.
+- `message?: string` — Thông báo lỗi mô tả.
+- `details?: any` — Bất kỳ bối cảnh bổ sung hoặc dữ liệu lỗi thô nào.
 
-- `group?: ErrorCenterGroup` — danh mục/nhóm mà lỗi thuộc về.
-- `code: string` — mã định danh duy nhất cho lỗi.
-- `label?: string` — tên lỗi dễ đọc cho người dùng.
-- `message?: string` — mô tả chi tiết về lỗi.
-- `details?: any` — đối tượng tùy chọn cho các dữ liệu bổ sung.
+#### `ErrorCenterCauseList`
+Một mảng các đối tượng `ErrorCenterCauseItem`.
+
+#### `ErrorCenterHandlerCallback`
+Hàm cho các callback xử lý lỗi.
+- `(cause: ErrorCenterCauseItem) => void` — Nhận đối tượng nguyên nhân lỗi khi được kích hoạt.
+
+#### `ErrorCenterHandlerItem`
+Một đối tượng lưu trữ nội bộ ánh xạ một nhóm tới các trình xử lý của nó.
+- `group?: ErrorCenterGroup` — Nhóm lỗi mục tiêu.
+- `handlers: ErrorCenterHandlerCallback[]` — Danh sách các hàm callback cho nhóm này.
+
+#### `ErrorCenterHandlerList`
+Một mảng các đối tượng `ErrorCenterHandlerItem` được sử dụng để đăng ký hàng loạt.
 
 ## Hướng dẫn: Quản lý nguyên nhân lỗi và bộ lắng nghe
 

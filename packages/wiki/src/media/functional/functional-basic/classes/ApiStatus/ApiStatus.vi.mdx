@@ -4,50 +4,54 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ApiStatus
 
-Một lớp chuyên biệt dùng để theo dõi và quản lý các trạng thái của một yêu cầu API. Nó nắm giữ cục diện trạng thái HTTP hiện tại, thông báo báo lỗi, và hệ thống phân tích phản hồi data trả về, cho phép ứng dụng phản ứng kịp thời với những diễn biến theo thời gian thực chuẩn xác.
+Một lớp chuyên dụng để theo dõi và quản lý trạng thái của một yêu cầu API. Nó lưu trữ an toàn trạng thái HTTP hiện tại, thông điệp lỗi và nội dung phản hồi đã được phân tích cú pháp, cho phép các ứng dụng phản ứng với những thay đổi trong thời gian thực bằng cách sử dụng các trừu tượng trạng thái.
+
+> `ApiStatus` là một **lớp bổ trợ** (auxiliary class), được thiết kế để theo dõi trạng thái yêu cầu. Trong hầu hết các trường hợp, bạn nên tương tác với trạng thái yêu cầu thông qua thuộc tính `status` của kết quả `ApiInstance` hoặc luồng thực thi `Api` toàn cục.
 
 ## Các tính năng chính
 
-- **Trạng thái tập trung** — lưu giữ tất cả những yếu tố liên đới kết quả trả về của một API: mã luồng sự kiện HTTP, thông báo đặc quyền, giao thức đối tượng gốc...
-- **Nối tuyến API (Chainable API)** — bộ thiết lập trả về đối tượng luồng `this`, cho phép ghép nối và biến chuyển trạng thái nhiều cấp tiện lợi.
-- **Giải mã văn bản tự động** — thuật toán thiết lập cố gắng tự thân đọc hàm và bóc tách thư mục mang tên `message` thông dụng dưới tầng mã trực tiếp trích lấy từ chuỗi dữ liệu chủ lưu server.
+- **Trạng thái tập trung** — lưu giữ mọi thứ liên quan đến kết quả của một cuộc gọi API: trạng thái HTTP, văn bản tùy chỉnh, dữ liệu phản hồi thô và các thông điệp được tạo ra.
+- **Chainable API** — các phương thức thiết lập (setters) trả về `this`, cho phép xâu chuỗi nhiều thay đổi trạng thái một cách thanh lịch.
+- **Tự động trích xuất thông điệp** — cố gắng phân tích và lấy các trường `message` có thể đọc được trực tiếp từ các phản hồi có cấu trúc của máy chủ.
 
-## Khởi tạo
+## Các phương thức hành động
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `ApiStatus()`.
+### `getResponse`
 
-```typescript
-import { ApiStatus } from '@dxtmisha/functional'
+Trả về dữ liệu thô từ yêu cầu thành công cuối cùng.
 
-// 1. Khởi tạo đơn giản
-const apiStatus = new ApiStatus()
+**Trả về:** `T | undefined` — Dữ liệu phản hồi đã phân tích cú pháp.
 
-// 2. Thiết lập trạng thái phản hồi
-apiStatus.setStatus(200, 'OK')
+### `getMessage`
 
-// 3. Thiết lập dữ liệu phản hồi và tự động trích xuất thông báo
-apiStatus.setLastResponse({
-  status: 'success',
-  message: 'Dữ liệu đã được tải thành công',
-  data: { id: 1 }
-})
-```
+Trả về thông điệp máy chủ được lấy từ phản hồi thành công hoặc thông điệp được thiết lập thủ công.
 
-## Các phương thức
+**Trả về:** `string` — Thông điệp có thể đọc được.
 
-### Các phương thức lấy giá trị
-- `get(): ApiStatusItem` — Trả về mảng dữ liệu hiện thể trạng thái đầy đủ của đợt truy vấn cuối cùng.
-- `getStatus(): number | undefined` — Trả về số hạng trạng thái HTTP (như `200`, `404`).
-- `getStatusText(): string | undefined` — Trả về thông báo phân tích hiện trạng thái bằng mã lệnh chữ (ví dụ: `"OK"`).
-- `getStatusType(): ApiStatusType | undefined` — Trả về loại giao thức đối tượng xác thực kiểm duyệt chuỗi mới nhất.
-- `getError(): string | undefined` — Trả về dải cấu trúc lỗi đã được chủ ý ghi hình trước đó.
-- `getResponse<T>(): T | undefined` — Xuất thông tin gói cơ sở tài liệu gốc từ lệnh truy xuất gọi API thành công mới đây.
-- `getMessage(): string` — Lôi trực xuất lấy thông báo hệ thống được server kéo thả trong gói thành công.
+## Các phương thức kiểm tra
 
-### Các phương thức thiết lập giá trị
-- `set(data: ApiStatusItem): this` — Thiết lập cùng lúc hàng loạt thông số hiện trạng vào máy móc.
-- `setStatus(status?: number, statusText?: string): this` — Nạp mã thông số báo HTTP và chuỗi mã số xác nhận tùy chọn vào guồng.
-- `setError(error?: string): this` — Khóa ghi lại thông báo tình trạng bị sập hầm mạng khi lệnh fetch cự tuyệt.
-- `setLastResponse(response?: any): this` — Gắn lưu hoàn chỉnh nguyên vẹn một chuỗi kết xuất server và đồng bộ tự nhận dạng mảng `.message`.
-- `setLastStatus(status?: ApiStatusType): this` — Trực tiếp định danh loại trạng thái cho tác vụ kết thúc chót.
-- `setLastMessage(message?: string): this` — Chủ định ép điền thông số hoặc đánh đè lên mã phản hồi `message`.
+- `get(): ApiStatusItem` — Trả về đối tượng dữ liệu trạng thái đầy đủ.
+- `getStatus(): number | undefined` — Trả về mã trạng thái HTTP (ví dụ: `200`).
+- `getStatusText(): string | undefined` — Trả về văn bản trạng thái (ví dụ: `"OK"`).
+- `getStatusType(): ApiStatusType | undefined` — Trả về loại xác thực trạng thái cuối cùng.
+- `getError(): string | undefined` — Trả về thông điệp lỗi đã ghi lại.
+
+## Cấu hình
+
+- `set(data: ApiStatusItem): this` — Thiết lập nhiều trường trạng thái cùng một lúc.
+- `setStatus(status?: number, statusText?: string): this` — Thiết lập mã và văn bản trạng thái HTTP.
+- `setError(error?: string): this` — Ghi lại một chuỗi thông điệp lỗi.
+- `setLastResponse(response?: any): this` — Ghi lại phản hồi máy chủ và trích xuất siêu dữ liệu liên quan.
+- `setLastStatus(status?: ApiStatusType): this` — Thiết lập loại trạng thái API tùy chỉnh.
+- `setLastMessage(message?: string): this` — Ghi lại một thông điệp một cách rõ ràng.
+
+## Các kiểu dữ liệu
+
+#### `ApiStatusItem`
+Một đại diện đầy đủ của trạng thái yêu cầu.
+- `status: number | undefined` — Mã trạng thái HTTP.
+- `statusText: string | undefined` — Văn bản trạng thái HTTP.
+- `statusType: ApiStatusType | undefined` — Danh mục xác thực.
+- `error: string | undefined` — Thông điệp lỗi.
+- `response: any` — Dữ liệu phản hồi thô.
+- `message: string` — Thông điệp hiển thị đã trích xuất.

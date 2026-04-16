@@ -1,79 +1,80 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/functional-basic/Classes/Api - Управление запросами'/>
+<Meta title='@dxtmisha/ru/functional-basic/Classes/Api - Управление запросами (Static)'/>
 
 # Класс Api
 
-`Api` — это статичная обертка над инстансом `ApiInstance`.
+Класс `Api` является **основным классом (статическим)** и служит главной точкой входа для управления HTTP-запросами. Он представляет собой статическую обертку над глобально управляемым `ApiInstance`, предоставляя чистый интерфейс на основе синглтона для стандартных сетевых операций.
 
-Все вызовы методов `Api` автоматически делегируются внутреннему глобальному объекту `ApiInstance`. Это позволяет работать с HTTP запросами без необходимости самостоятельного создания инстансов:
+## Ключевые особенности
 
-```typescript
-import { Api } from '@dxtmisha/functional'
+- **Статический интерфейс** — выполнение стандартных HTTP-операций (`GET`, `POST` и т. д.) без необходимости ручного создания экземпляров.
+- **Глобальные хуки жизненного цикла** — настройте подготовку и анализ запросов один раз для всего приложения.
+- **Изоляция в SSR** — использует `ServerStorage` для управления изоляцией отдельных экземпляров во время рендеринга на стороне сервера.
+- **Упрощенная настройка** — предоставляет унифицированный метод `setConfig` для одновременного применения нескольких слоев конфигурации.
 
-// Эти вызовы обращаются к одному и тому же глобальному инстансу под капотом
-Api.setUrl('https://api.example.com/v1/')
-Api.setHeaders({ 'Authorization': 'Bearer token123' })
+## Методы действий
 
-const data = await Api.get({ path: 'users' })
-```
+### Действие
 
-## Методы
+Методы для выполнения физических сетевых запросов.
 
-### Доступ к инстансу
+- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Основной исполнитель; принимает строку пути или объект конфигурации.
+- `get<T>(request: ApiFetch): Promise<T>` — Отправляет GET-запрос.
+- `post<T>(request: ApiFetch): Promise<T>` — Отправляет POST-запрос.
+- `put<T>(request: ApiFetch): Promise<T>` — Отправляет PUT-запрос.
+- `patch<T>(request: ApiFetch): Promise<T>` — Отправляет PATCH-запрос.
+- `delete<T>(request: ApiFetch): Promise<T>` — Отправляет DELETE-запрос.
 
-- `getItem(): ApiInstance` — Возвращает внутренний объект `ApiInstance`, используемый всеми статическими методами.
+### Проверка
 
-### Информационные методы
+- `isLocalhost(): boolean` — Проверяет, запущена ли среда на локальном сервере разработки.
 
-- `isLocalhost(): boolean` — Возвращает `true`, если код работает на локальном сервере разработки.
-- `getStatus(): ApiStatus` — Возвращает менеджер `ApiStatus` для отслеживания состояния и ошибок последнего запроса.
-- `getResponse(): ApiResponse` — Возвращает менеджер ответов/эмуляции `ApiResponse`.
-- `getUrl(path: string, api?: boolean): string` — Возвращает полный URL запроса. Динамические заполнители `{locale}`, `{country}`, `{language}` заменяются автоматически.
-- `getBody(request?, method?): string | FormData | undefined` — Возвращает данные для тела запроса.
-- `getBodyForGet(request, path?, method?): string` — Возвращает строку параметров запроса для метода GET.
+### Конфигурация
 
-### Методы конфигурации
+Методы возвращают класс `Api` для цепочки вызовов.
 
-Все методы конфигурации возвращают сам класс `Api` для цепочечного вызова:
+- `setUrl(url: string): Api` — Изменяет базовый URL API.
+- `setHeaders(headers: Record<string, string>): Api` — Устанавливает заголовки запроса по умолчанию.
+- `setRequestDefault(request: Record<string, any>): Api` — Устанавливает данные тела запроса по умолчанию.
+- `setPreparation(callback): Api` — Регистрирует хук, запускаемый перед каждым включенным запросом.
+- `setEnd(callback): Api` — Регистрирует хук, запускаемый после каждого включенного ответа.
+- `setTimeout(timeout: number): Api` — Изменяет глобальный таймаут запроса.
+- `setConfig(config?: ApiConfig): Api` — Применяет полный объект конфигурации.
 
-- `setUrl(url: string): Api` — Устанавливает базовый URL для всех запросов.
-- `setHeaders(headers: Record<string, string>): Api` — Устанавливает заголовки по умолчанию для всех запросов.
-- `setRequestDefault(request: Record<string, any>): Api` — Устанавливает данные запроса по умолчанию, объединяемые с каждым телом запроса.
-- `setPreparation(callback): Api` — Устанавливает функцию обратного вызова, выполняемую перед каждым запросом.
-- `setEnd(callback): Api` — Устанавливает функцию обратного вызова, выполняемую после каждого запроса.
-- `setConfig(config?: ApiConfig): Api` — Применяет полный объект конфигурации сразу (`urlRoot`, `headers`, `requestDefault`, `preparation`, `end`).
+### Вспомогательные
 
-### Методы запросов
+- `getStatus(): ApiStatus` — Доступ к менеджеру статуса последнего запроса.
+- `getResponse(): ApiResponse` — Доступ к менеджеру ответов/эмуляции.
+- `getHydration(): ApiHydration` — Доступ к менеджеру гидратации.
+- `getHydrationScript(): string` — Возвращает блок скрипта для гидратации SSR-клиент.
+- `getUrl(path: string, api?: boolean): string` — Возвращает полностью разрешенный URL с токенами локализации.
+- `getBody(request?, method?): string | FormData | undefined` — Подготавливает тело запроса.
+- `getBodyForGet(request, path?, method?): string` — Подготавливает строку запроса.
+- `getItem(): ApiInstance` — Возвращает базовый объект `ApiInstance`.
 
-- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Основной исполнитель запросов. Принимает строку пути или объект конфигурации `ApiFetch`.
-- `get<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP GET запрос.
-- `post<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP POST запрос.
-- `put<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP PUT запрос.
-- `patch<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP PATCH запрос.
-- `delete<T>(request: ApiFetch): Promise<T>` — Отправляет HTTP DELETE запрос.
+## Типы
 
-## setConfig
+### ApiConfig
 
-Метод `setConfig` позволяет применить несколько параметров конфигурации одновременно с помощью объекта `ApiConfig`:
+- `urlRoot: string` — базовый URL для API.
+- `headers: Record<string, string>` — заголовки запроса по умолчанию.
+- `requestDefault: Record<string, any>` — данные запроса по умолчанию.
+- `preparation: (apiFetch: ApiFetch) => Promise<void>` — входной хук.
+- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — выходной хук.
+- `timeout: number` — глобальный таймаут в миллисекундах.
 
-```typescript
-import { Api } from '@dxtmisha/functional'
+## Прокси-архитектура
 
-Api.setConfig({
-  urlRoot: 'https://api.example.com/v1/',
-  headers: { 'Authorization': 'Bearer token123' },
-  requestDefault: { source: 'webapp' },
-  preparation: async (apiFetch) => {
-    console.log('Подготовка:', apiFetch.path)
-  },
-  end: async (response, apiFetch) => {
-    if (response.status === 401) {
-      return { reset: true }
-    }
-    return {}
-  }
-})
-```
+Класс `Api` работает как **статический прокси**. Все вызовы методов перенаправляются на внутренний `ApiInstance`.
 
-> **Важно:** Полный список параметров (`ApiFetch`), хуков (Lifecycle Hooks), эмуляции ответов и структуры данных ответа описан в документации базового класса **ApiInstance**.
+### Управление экземпляром
+
+Внутренний менеджер хранится в `ServerStorage` под уникальным ключом (`__dxt_api_instance__`). Эта архитектура решает две основные проблемы:
+
+1.  **Потокобезопасность в SSR**: Во время рендеринга на стороне сервера `ServerStorage` гарантирует, что каждый входящий запрос имеет свою собственную изолированную конфигурацию и состояние API, предотвращая утечку данных между пользователями.
+2.  **Простота синглтона на клиенте**: На стороне клиента он ведет себя как настоящий синглтон, позволяя настроить API в точке входа и использовать его где угодно без передачи экземпляров.
+
+### Делегирование
+
+Хотя `Api` является предпочтительным интерфейсом для стандартной логики приложения, основная логика (повторы, гидратация, джиттер) находится внутри `ApiInstance`. Для сложных сценариев, включающих несколько базовых URL-адресов или разные наборы заголовков одновременно, вы можете создавать экземпляры `ApiInstance` напрямую.

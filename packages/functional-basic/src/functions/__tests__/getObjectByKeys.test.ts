@@ -9,6 +9,8 @@ describe('getObjectByKeys', () => {
 
   it('should ignore keys that do not exist in the source object', () => {
     const data = { x: 10, y: 20 }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     expect(getObjectByKeys(data, ['x', 'z'])).toEqual({ x: 10 })
   })
 
@@ -24,6 +26,8 @@ describe('getObjectByKeys', () => {
 
   it('should return an empty object if no matching keys are found', () => {
     const data = { a: 1, b: 2 }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     expect(getObjectByKeys(data, ['c', 'd'])).toEqual({})
   })
 

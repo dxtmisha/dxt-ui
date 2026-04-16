@@ -1,4 +1,3 @@
-import { copyObjectLite } from '../functions/copyObjectLite'
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
@@ -27,8 +26,8 @@ export class ApiDefault {
    *
    * Получает данные запроса по умолчанию.
    */
-  get(): ApiDefaultValue {
-    return this.value as ApiDefaultValue
+  get(): ApiDefaultValue | undefined {
+    return this.value
   }
 
   /**
@@ -46,7 +45,10 @@ export class ApiDefault {
       if (request instanceof FormData) {
         this.addByFormData(request, value)
       } else if (isObjectNotArray(request)) {
-        return copyObjectLite(value, request)
+        return {
+          ...value,
+          ...request
+        }
       }
     }
 
@@ -57,9 +59,11 @@ export class ApiDefault {
    * Modifies the default request data.
    *
    * Изменяет данные запроса по умолчанию.
+   * @param request default request data/ данные запроса по умолчанию
    */
-  set(request: ApiDefaultValue) {
+  set(request: ApiDefaultValue): this {
     this.value = request
+    return this
   }
 
   /**
@@ -72,11 +76,14 @@ export class ApiDefault {
   protected addByFormData(
     request: FormData,
     value: ApiDefaultValue
-  ) {
-    for (const name in value) {
-      if (!request.has(name)) {
-        request.set(name, value[name])
-      }
-    }
+  ): this {
+    Object.entries(value)
+      .forEach(([name, value]) => {
+        if (!request.has(name)) {
+          request.set(name, value)
+        }
+      })
+
+    return this
   }
 }

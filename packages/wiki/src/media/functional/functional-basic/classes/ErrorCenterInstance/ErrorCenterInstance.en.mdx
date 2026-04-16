@@ -16,6 +16,17 @@ While `ErrorCenter` provides a global static bridge, `ErrorCenterInstance` can b
 - **Predefined Causes** — Can be initialized with a list of default error causes.
 - **Chainable Methods** — Supports fluent configuration for adding causes and handlers.
 
+## Action Methods
+
+### `on`
+
+Triggers error handling. It looks up the pre-registered data for the provided error code, merges it with the input `cause` based on priority, and passes it to the internal handler. By default, the input `cause` overrides stored data, but you can use the `priority` field to protect specific values.
+
+**Parameters:**
+- `cause: ErrorCenterCauseItem` — The error information to trigger.
+
+**Returns:** `this`
+
 ## Check Methods
 
 - `has(code: string, group?: string): boolean` — Checks if a cause exists in the instance's registry.
@@ -28,28 +39,35 @@ While `ErrorCenter` provides a global static bridge, `ErrorCenterInstance` can b
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Registers a callback for a specific error group.
 - `addHandlerList(handlers: ErrorCenterHandlerList): this` — Registers a collection of handlers.
 
-## Action Methods
-
-### `on`
-
-Triggers error handling. It looks up the pre-registered data for the provided error code, merges it with the input `cause`, and passes it to the internal handler.
-
-**Parameters:**
-- `cause: ErrorCenterCauseItem` — The error information to trigger.
-
-**Returns:** `this`
-
 ## Types
 
-### `ErrorCenterCauseItem`
+#### `ErrorCenterGroup`
+Represents an error group identifier.
+- `string | undefined` — A string name for the group, or `undefined` for a global/default handler.
 
-The main object used to define an error cause in this instance.
+#### `ErrorCenterCauseItem`
+Detailed information about an error cause.
+- `group?: ErrorCenterGroup` — The group this error belongs to.
+- `code: string` — A unique error code (e.g., '404', 'AUTH_ERROR').
+- `priority?: number` — Importance level used for merging multiple errors (default: `500`).
+- `label?: string` — A short, human-readable name for the error.
+- `message?: string` — A descriptive error message.
+- `details?: any` — Any additional context or raw error data.
 
-- `group?: ErrorCenterGroup` — The category/group the error belongs to.
-- `code: string` — Unique identifier for the error.
-- `label?: string` — Human-readable name of the error.
-- `message?: string` — Detailed description of the error.
-- `details?: any` — Optional object for additional context or technical data.
+#### `ErrorCenterCauseList`
+An array of `ErrorCenterCauseItem` objects.
+
+#### `ErrorCenterHandlerCallback`
+The function signature for error handling callbacks.
+- `(cause: ErrorCenterCauseItem) => void` — Receives the error cause object when triggered.
+
+#### `ErrorCenterHandlerItem`
+An internal storage object mapping a group to its handlers.
+- `group?: ErrorCenterGroup` — The targeted error group.
+- `handlers: ErrorCenterHandlerCallback[]` — List of callback functions for this group.
+
+#### `ErrorCenterHandlerList`
+An array of `ErrorCenterHandlerItem` objects used for batch registration.
 
 ## Guide: Managing Errors and Listeners
 

@@ -89,6 +89,15 @@ export class Api {
   }
 
   /**
+   * Getting the hydration handler.
+   *
+   * Получение обработчика гидратации.
+   */
+  static getHydration() {
+    return this.getItem().getHydration()
+  }
+
+  /**
    * Returns a string representation of the hydration data for the client.
    *
    * Возвращает строковое представление данных гидратации для клиента.
@@ -245,57 +254,57 @@ export class Api {
    * To execute a request.
    *
    * Выполнить запрос.
-   * @param pathRequest query string or list of parameters/ строка запроса или список параметров
+   * @param pathRequest path or configuration/ путь или конфигурация запроса
    */
   static async request<T>(pathRequest: string | ApiFetch): Promise<T> {
     return this.getItem().request<T>(pathRequest)
   }
 
   /**
-   * Sends a get method request.
+   * Sends a GET method request.
    *
-   * Отправляет запрос метода get.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода GET.
+   * @param request fetch configuration/ конфигурация запроса
    */
   static get<T>(request: ApiFetch): Promise<T> {
     return this.getItem().get<T>(request)
   }
 
   /**
-   * Sends a post method request.
+   * Sends a POST method request.
    *
-   * Отправляет запрос метода post.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода POST.
+   * @param request fetch configuration/ конфигурация запроса
    */
   static post<T>(request: ApiFetch): Promise<T> {
     return this.getItem().post<T>(request)
   }
 
   /**
-   * Sends a put method request.
+   * Sends a PUT method request.
    *
-   * Отправляет запрос метода put.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода PUT.
+   * @param request fetch configuration/ конфигурация запроса
    */
   static put<T>(request: ApiFetch): Promise<T> {
     return this.getItem().put<T>(request)
   }
 
   /**
-   * Sends a patch method request.
+   * Sends a PATCH method request.
    *
-   * Отправляет запрос метода patch.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода PATCH.
+   * @param request fetch configuration/ конфигурация запроса
    */
   static patch<T>(request: ApiFetch): Promise<T> {
     return this.getItem().patch<T>(request)
   }
 
   /**
-   * Sends a delete method request.
+   * Sends a DELETE method request.
    *
-   * Отправляет запрос метода delete.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода DELETE.
+   * @param request fetch configuration/ конфигурация запроса
    */
   static delete<T>(request: ApiFetch): Promise<T> {
     return this.getItem().delete<T>(request)

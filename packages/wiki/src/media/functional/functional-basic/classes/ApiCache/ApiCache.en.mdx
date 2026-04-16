@@ -6,89 +6,102 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A class for caching API responses. It allows storing query results in memory or an external storage, preventing redundant network calls within a specified period. In the current implementation, caching is active only on the server side (SSR) to speed up rendering and reduce API load during concurrent requests.
 
+> `ApiCache` is an **auxiliary class**, designed for low-level cache management. In most cases, it is recommended to interact with caching through the `cache` parameter in `ApiInstance` or the global `Api` object.
+
 ## Key Features
 
-- **Automated Key Management** — generates unique cache keys based on request parameters (path, method, request, etc.).
+- **Automated Key Management** — generates unique cache keys based on request parameters (path, method, body, etc.).
 - **Flexible TTL (Time To Live)** — allows setting the storage duration for each request individually or using a default (24 hours).
 - **SSR Optimization** — prevents unnecessary API calls in the Node.js environment. Disabled by default in the browser.
-- **Listener Support** — ability to connect external storage (e.g., `ServerStorage` or a database) via callback functions.
+- **Listener Support** — ability to connect external storage (e.g., Redis, Nitro Storage) via callback functions.
 - **Background Cleanup** — automatically removes expired entries when accessing the cache.
 
-## Initialization
+## Action Methods
 
-Usually, an `ApiCache` instance is created and managed internally by `ApiInstance`, but it can also be used independently.
+- `get<T>(key: string): Promise<T | undefined>` — Retrieves a value from the cache.
+- `getByFetch<T>(fetch: ApiFetch): Promise<T | undefined>` — Retrieves a value using request options as the key source.
+- `set<T>(key: string, value: T, age?: number): Promise<void>` — Stores a value in the cache.
+- `setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>` — Stores a value using request options.
+- `remove(key: string): Promise<void>` — Manually removes an entry.
+
+## Configuration
+
+- `init(getListener, setListener, removeListener, cacheStepAgeClearOld?): void` — Configures the cache with storage listeners.
+- `reset(): typeof ApiCache` — Clears in-memory items and detaches listeners.
+
+## Types
+
+#### `ApiCacheItem<T>`
+The structure of a cached record.
+- `value: T` — The cached data.
+- `age: number` — TTL in seconds.
+- `cacheAge: number` — Creation timestamp (ms).
+
+#### `ApiCacheList`
+An internal dictionary for in-memory storage fallback.
+- `[key: string]: ApiCacheItem` — Key-value pairs of cached items.
+
+## Initialization and External Storage
+
+By default, `ApiCache` stores records in the process RAM. While this is fast, it has limitations in production environments:
+1. **Cluster Synchronization**: In a multi-instance setup, caches are not shared between processes.
+2. **Process Restarts**: Memory is cleared whenever the server restarts or a serverless function "cold starts".
+3. **Memory Limits**: Storing large amounts of data in RAM can lead to increased memory consumption.
+
+To solve these issues, you must initialize `ApiCache` with the `init` method, providing listeners that bridge it to an external storage mechanism.
+
+> Important: You must call `ApiCache.init()` during your application's bootstrap phase (before the first API request) to ensure the cache is correctly configured.
+
+### Node.js (Custom Storage)
+
+In a standard Node.js environment, you can use listeners to interact with a centralized database or a persistent cache like Redis.
 
 ```typescript
 import { ApiCache } from '@dxtmisha/functional-basic'
 
-// 1. Create an instance
-const apiCache = new ApiCache()
-
-// 2. Optional binding to external storage
-apiCache.init(
-  (key) => myStorage.get(key),
-  (key, value) => myStorage.set(key, value),
-  (key) => myStorage.remove(key)
+// Configuration with storage listeners
+ApiCache.init(
+  // 1. Get data from external storage
+  async (key) => await myExternalStorage.get(key),
+  
+  // 2. Save data to external storage
+  async (key, value) => {
+    await myExternalStorage.put(key, value)
+    return true // Return true to indicate successful external storage
+  },
+  
+  // 3. Remove data from external storage
+  async (key) => {
+    await myExternalStorage.delete(key)
+    return true
+  },
+  
+  // 4. Optional: threshold for background cleanup trigger
+  16384
 )
 ```
 
-### Working with External Storage (Nitro Example)
+### Nuxt / Nitro
 
-By default, `ApiCache` stores data in the process's RAM. While fast, it has several limitations:
-1. **Data loss** on server process restart.
-2. **Lack of synchronization** — in a clustered environment, each server instance will have its own independent cache.
-3. **Cold starts** — in serverless environments (Vercel, AWS Lambda), memory can be cleared between calls.
-
-This is exactly why the `init` method is needed. It allows you to "plug in" any external storage (Redis, file system, database) under the hood of `ApiCache` that supports asynchronous operations.
-
-Below is an example of using `ApiCache` with Nitro (Nuxt's engine) through the built-in `useStorage` mechanism:
+In Nuxt/Nitro, the recommended approach is to use the built-in `useStorage` helper within a server plugin. This allows you to leverage Redis, FS, or other Nitro-supported storage drivers.
 
 ```typescript
 // server/plugins/api-cache.ts
+import { ApiCache } from '@dxtmisha/functional-basic'
+
 export default defineNitroPlugin(() => {
-  const cache = Api.getCache()
   const storage = useStorage('cache') // Nitro Cache region
 
-  cache.init(
+  ApiCache.init(
     async (key) => await storage.getItem(key),
-    async (key, value) => await storage.setItem(key, value),
-    async (key) => await storage.removeItem(key)
+    async (key, value) => {
+      await storage.setItem(key, value)
+      return true
+    },
+    async (key) => {
+      await storage.removeItem(key)
+      return true
+    }
   )
 })
 ```
-
-Since the `ApiCache` methods are now asynchronous, they correctly wait for operations from external systems.
-
-### init Parameters
-
-The `init` method takes three callbacks for integration with external storage:
-- `getListener: (key: string) => any` — function for retrieving data. Should return a cache record object or `undefined`.
-- `setListener: (key: string, value: ApiCacheItem) => void` — function for saving data. Called for each cache write.
-- `removeListener: (key: string) => void` — function for removing data. Called on expiration or manual removal.
-
-## Methods
-
-### Core Methods
-- `get<T>(key: string): T | undefined` — Retrieve data by key.
-- `getByFetch<T>(fetch: ApiFetch): T | undefined` — Retrieve data based on API request parameters.
-- `set<T>(key: string, value: T, age?: number): this` — Store data in the cache.
-- `setByFetch<T>(fetch: ApiFetch, value: T): this` — Store data based on request parameters.
-- `remove(key: string): this` — Remove an entry from the cache.
-
-### Integration with ApiInstance
-When using through `ApiInstance`, simply specify the `cache` parameter in seconds:
-
-```typescript
-// Data will be cached for 60 seconds on the server side
-const data = await Api.get({
-  path: 'v1/products',
-  cache: 60
-})
-```
-
-## How It Works (SSR)
-
-1. **Initial Request**: `ApiInstance` checks `ApiCache` for data. If missing, a real network request is performed.
-2. **Saving**: Upon a successful response, data is stored in `ApiCache` with the specified TTL.
-3. **Repeat Request**: If the same request occurs within the TTL, `ApiInstance` instantly returns data from the cache without a network call.
-4. **Validation**: `ApiCache` constantly checks data expiration (`cacheAge` + `age`). If expired, the entry is considered invalid and will be removed.

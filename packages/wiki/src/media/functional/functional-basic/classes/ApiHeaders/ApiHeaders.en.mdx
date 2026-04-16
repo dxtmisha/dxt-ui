@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A class for managing and merging HTTP request headers. It handles default application-wide headers, custom headers for specific requests, and default `Content-Type` assignment.
 
+> `ApiHeaders` is an **auxiliary class**, designed for managing HTTP headers. In most cases, it is recommended to define global headers through the `headers` parameter in the global `Api` configuration.
+
 ## Key Features
 
 - **Default Headers** — set global headers like `Authorization` or `X-App-Version` once.
@@ -13,25 +15,35 @@ A class for managing and merging HTTP request headers. It handles default applic
 - **Safe Merging** — merges multiple header sources without mutating the original objects.
 - **Validation** — ensures only valid objects are processed as headers.
 
-## Initialization
+## Action Methods
 
-To initialize the object, call the `ApiHeaders()` constructor.
+### `get`
 
-```typescript
-import { ApiHeaders } from '@dxtmisha/functional'
+Intersects default headers with custom ones and injects `Content-Type`. If the `value` parameter is `null`, headers are disabled.
 
-// 1. Simple initialization
-const apiHeaders = new ApiHeaders()
+**Parameters:**
+- `value?: Record<string, string> | null` — Custom headers to merge with defaults.
+- `type: string | undefined | null` — The `Content-Type` to set (defaults to `application/json;charset=UTF-8`).
 
-// 2. Setting default headers
-apiHeaders.set({ 'X-App-Platform': 'web' })
+**Returns:** `Record<string, string> | undefined` — The merged headers object.
 
-// 3. Getting headers for a request
-const headers = apiHeaders.get({ 'Authorization': 'Bearer token123' })
-// Result: { 'X-App-Platform': 'web', 'Authorization': 'Bearer token123', 'Content-Type': 'application/json;charset=UTF-8' }
-```
+### `getByRequest`
 
-## Methods
+A specialized version of `get` that adjusts headers based on the request type. Specifically, it ensures `Content-Type` is not manually set for `FormData` to allow correct boundary generation.
 
-- `get(value?: Record<string, string> | null, type = 'application/json;charset=UTF-8'): Record<string, string> | undefined` — Intersects default headers with custom ones and injects `Content-Type`.
+**Parameters:**
+- `request: ApiFetch['request']` — The request payload (Object, FormData, or String).
+- `value?: Record<string, string> | null` — Custom headers.
+- `type: string` — The desired `Content-Type`.
+
+**Returns:** `Record<string, string> | undefined` — The processed headers object.
+
+## Configuration
+
 - `set(headers: Record<string, string>): this` — Sets or updates the default headers object.
+
+## Types
+
+#### `ApiHeadersValue`
+A plain object representing HTTP headers.
+- `[key: string]: string` — Key-value pairs where key is the header name and value is the header content.

@@ -6,48 +6,52 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A class dedicated to tracking and managing the state of an API request. It securely holds the current HTTP status, error messages, and the parsed response body, allowing applications to react to real-time changes utilizing state abstractions.
 
+> `ApiStatus` is an **auxiliary class**, designed for tracking request states. In most cases, it is recommended to interact with request status through the `status` property of the `ApiInstance` result or the global `Api` execution flow.
+
 ## Key Features
 
 - **Centralized State** — holds everything related to the result of an API call: HTTP status, custom texts, raw response data, and generated messages.
 - **Chainable API** — setters return `this`, allowing multiple state changes to be chained elegantly.
 - **Automatic Message Extraction** — intelligently attempts to parse and pull human-readable `message` fields directly from structured server responses.
 
-## Initialization
+## Action Methods
 
-To initialize the object, call the `ApiStatus()` constructor.
+### `getResponse`
 
-```typescript
-import { ApiStatus } from '@dxtmisha/functional'
+Returns the raw data payload from the last successful request.
 
-// 1. Simple initialization
-const apiStatus = new ApiStatus()
+**Returns:** `T | undefined` — The parsed response data.
 
-// 2. Setting response status
-apiStatus.setStatus(200, 'OK')
+### `getMessage`
 
-// 3. Setting response data and automatic message extraction
-apiStatus.setLastResponse({
-  status: 'success',
-  message: 'Data retrieved successfully',
-  data: { id: 1 }
-})
-```
+Returns the server message pulled from a successful response or a manually set message.
 
-## Methods
+**Returns:** `string` — The human-readable message.
 
-### Value Retrieval Methods
-- `get(): ApiStatusItem` — Returns the complete status data object of the last response.
-- `getStatus(): number | undefined` — Returns the HTTP status code (e.g., `200`, `404`).
-- `getStatusText(): string | undefined` — Returns the status text message string (e.g., `"OK"`, `"Not Found"`).
+## Check Methods
+
+- `get(): ApiStatusItem` — Returns the complete status data object.
+- `getStatus(): number | undefined` — Returns the HTTP status code (e.g., `200`).
+- `getStatusText(): string | undefined` — Returns the status text (e.g., `"OK"`).
 - `getStatusType(): ApiStatusType | undefined` — Returns the last status validation type.
-- `getError(): string | undefined` — Returns the explicitly recorded error message.
-- `getResponse<T>(): T | undefined` — Returns the raw data payload from the last successful request.
-- `getMessage(): string` — Returns the server message pulled from a successful response.
+- `getError(): string | undefined` — Returns the recorded error message.
 
-### Value Setting Methods
+## Configuration
+
 - `set(data: ApiStatusItem): this` — Sets multiple status fields at once.
-- `setStatus(status?: number, statusText?: string): this` — Sets the HTTP status code and an optional text explanation.
-- `setError(error?: string): this` — Records an error message string when a request fails or is rejected.
-- `setLastResponse(response?: any): this` — Records a server response completely and optionally updates related statuses (like extraction of `.message`).
-- `setLastStatus(status?: ApiStatusType): this` — Sets the final custom API status type.
-- `setLastMessage(message?: string): this` — Forcibly overrides or explicitly records a message.
+- `setStatus(status?: number, statusText?: string): this` — Sets the HTTP status code and text.
+- `setError(error?: string): this` — Records an error message string.
+- `setLastResponse(response?: any): this` — Records a server response and extracts related metadata.
+- `setLastStatus(status?: ApiStatusType): this` — Sets the custom API status type.
+- `setLastMessage(message?: string): this` — Explicitly records a message.
+
+## Types
+
+#### `ApiStatusItem`
+A complete representation of a request status.
+- `status: number | undefined` — HTTP status code.
+- `statusText: string | undefined` — HTTP status text.
+- `statusType: ApiStatusType | undefined` — Validation category.
+- `error: string | undefined` — Error message.
+- `response: any` — Raw response data.
+- `message: string` — Extracted display message.

@@ -1,79 +1,80 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Classes/Api - Quản lý yêu cầu (Request)'/>
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Api - Quản lý yêu cầu (Static)'/>
 
 # Lớp Api
 
-`Api` là một lớp tĩnh (static wrapper) bao bọc xung quanh một đối tượng `ApiInstance`.
+Lớp `Api` là **Lớp chính (Tĩnh)** và đóng vai trò là điểm truy cập chính để quản lý các yêu cầu HTTP. Nó là một wrapper tĩnh bao quanh một `ApiInstance` được quản lý toàn cục, cung cấp một giao diện singleton sạch sẽ cho các hoạt động mạng tiêu chuẩn.
 
-Mọi phương thức của lớp `Api` đều được tự động ủy quyền (delegate) cho một đối tượng `ApiInstance` chung (global object) bên trong. Điều này cho phép bạn làm việc với các yêu cầu HTTP mà không cần phải tự khởi tạo (instantiate) các đối tượng:
+## Các tính năng chính
 
-```typescript
-import { Api } from '@dxtmisha/functional'
+- **Giao diện tĩnh** — thực hiện các hoạt động HTTP tiêu chuẩn (`GET`, `POST`, v.v.) mà không cần khởi tạo thủ công.
+- **Hook vòng đời toàn cục** — cấu hình việc chuẩn bị và phân tích yêu cầu một lần cho toàn bộ ứng dụng.
+- **Cách ly SSR** — sử dụng `ServerStorage` để quản lý việc cách ly các instance riêng lẻ trong quá trình render phía máy chủ.
+- **Thiết lập đơn giản** — cung cấp phương thức `setConfig` thống nhất để áp dụng nhiều lớp cấu hình cùng một lúc.
 
-// Các lệnh gọi này tương tác với cùng một đối tượng toàn phần (global instance) bên dưới
-Api.setUrl('https://api.example.com/v1/')
-Api.setHeaders({ 'Authorization': 'Bearer token123' })
+## Các phương thức hành động
 
-const data = await Api.get({ path: 'users' })
-```
+### Hành động
 
-## Các phương thức
+Các phương thức để thực hiện các yêu cầu mạng vật lý.
 
-### Truy cập instance
+- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Trình thực thi cốt lõi; chấp nhận một chuỗi đường dẫn hoặc đối tượng cấu hình.
+- `get<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu GET.
+- `post<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu POST.
+- `put<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu PUT.
+- `patch<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu PATCH.
+- `delete<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu DELETE.
 
-- `getItem(): ApiInstance` — Trả về đối tượng `ApiInstance` nội bộ được sử dụng bởi tất cả các phương thức tĩnh.
+### Kiểm tra
 
-### Phương thức thông tin
+- `isLocalhost(): boolean` — Kiểm tra xem môi trường hiện tại có phải là máy chủ phát triển cục bộ hay không.
 
-- `isLocalhost(): boolean` — Trả về `true` nếu mã đang chạy trên máy chủ phát triển cục bộ.
-- `getStatus(): ApiStatus` — Trả về trình quản lý `ApiStatus` để theo dõi trạng thái và lỗi của yêu cầu cuối cùng.
-- `getResponse(): ApiResponse` — Trả về trình quản lý phản hồi/mô phỏng `ApiResponse`.
-- `getUrl(path: string, api?: boolean): string` — Trả về URL đầy đủ cho yêu cầu. Các trình giữ chỗ động `{locale}`, `{country}`, `{language}` được thay thế tự động.
-- `getBody(request?, method?): string | FormData | undefined` — Trả về dữ liệu cho phần thân (body) của yêu cầu.
-- `getBodyForGet(request, path?, method?): string` — Trả về chuỗi tham số truy vấn (query string) cho phương thức GET.
+### Cấu hình
 
-### Phương thức cấu hình
+Các phương thức trả về lớp `Api` để cho phép tạo chuỗi lệnh.
 
-Tất cả các phương thức cấu hình đều trả về chính lớp `Api` để hỗ trợ chuỗi lệnh (chaining):
+- `setUrl(url: string): Api` — Thay đổi URL base của API.
+- `setHeaders(headers: Record<string, string>): Api` — Thiết lập các header yêu cầu mặc định.
+- `setRequestDefault(request: Record<string, any>): Api` — Thiết lập dữ liệu body yêu cầu mặc định.
+- `setPreparation(callback): Api` — Đăng ký một hook để chạy trước mỗi yêu cầu được bật.
+- `setEnd(callback): Api` — Đăng ký một hook để chạy sau mỗi phản hồi được bật.
+- `setTimeout(timeout: number): Api` — Thay đổi timeout yêu cầu toàn cục.
+- `setConfig(config?: ApiConfig): Api` — Áp dụng một đối tượng cấu hình đầy đủ.
 
-- `setUrl(url: string): Api` — Đặt URL cơ sở cho tất cả các yêu cầu.
-- `setHeaders(headers: Record<string, string>): Api` — Đặt các headers mặc định cho tất cả các yêu cầu.
-- `setRequestDefault(request: Record<string, any>): Api` — Đặt dữ liệu yêu cầu mặc định được hợp nhất vào mọi thân yêu cầu (request body).
-- `setPreparation(callback): Api` — Đặt hàm callback được thực thi trước mỗi yêu cầu.
-- `setEnd(callback): Api` — Đặt hàm callback được thực thi sau mỗi yêu cầu.
-- `setConfig(config?: ApiConfig): Api` — Áp dụng toàn bộ đối tượng cấu hình cùng một lúc (`urlRoot`, `headers`, `requestDefault`, `preparation`, `end`).
+### Phụ trợ
 
-### Phương thức yêu cầu
+- `getStatus(): ApiStatus` — Truy cập trình quản lý trạng thái cho yêu cầu cuối cùng.
+- `getResponse(): ApiResponse` — Truy cập trình quản lý phản hồi/mô phỏng.
+- `getHydration(): ApiHydration` — Truy cập trình quản lý hydration.
+- `getHydrationScript(): string` — Trả về khối script để hydration từ SSR sang client.
+- `getUrl(path: string, api?: boolean): string` — Trả về URL đã được phân giải đầy đủ với các token bản địa hóa.
+- `getBody(request?, method?): string | FormData | undefined` — Chuẩn bị body yêu cầu.
+- `getBodyForGet(request, path?, method?): string` — Chuẩn bị chuỗi truy vấn (query string).
+- `getItem(): ApiInstance` — Trả về đối tượng `ApiInstance` cơ sở.
 
-- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Trình thực thi yêu cầu chính. Chấp nhận chuỗi đường dẫn hoặc đối tượng cấu hình `ApiFetch`.
-- `get<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP GET.
-- `post<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP POST.
-- `put<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP PUT.
-- `patch<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP PATCH.
-- `delete<T>(request: ApiFetch): Promise<T>` — Gửi yêu cầu HTTP DELETE.
+## Các kiểu dữ liệu (Types)
 
-## setConfig
+### ApiConfig
 
-Phương thức `setConfig` cho phép áp dụng nhiều tùy chọn cấu hình cùng lúc bằng đối tượng `ApiConfig`:
+- `urlRoot: string` — URL base cho API.
+- `headers: Record<string, string>` — các header yêu cầu mặc định.
+- `requestDefault: Record<string, any>` — dữ liệu yêu cầu mặc định.
+- `preparation: (apiFetch: ApiFetch) => Promise<void>` — hook đầu vào (entry hook).
+- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — hook đầu ra (exit hook).
+- `timeout: number` — timeout toàn cục tính bằng mili giây.
 
-```typescript
-import { Api } from '@dxtmisha/functional'
+## Kiến trúc Proxy
 
-Api.setConfig({
-  urlRoot: 'https://api.example.com/v1/',
-  headers: { 'Authorization': 'Bearer token123' },
-  requestDefault: { source: 'webapp' },
-  preparation: async (apiFetch) => {
-    console.log('Chuẩn bị:', apiFetch.path)
-  },
-  end: async (response, apiFetch) => {
-    if (response.status === 401) {
-      return { reset: true }
-    }
-    return {}
-  }
-})
-```
+Lớp `Api` hoạt động như một **Proxy tĩnh**. Tất cả các lệnh gọi phương thức đều được chuyển hướng đến một `ApiInstance` nội bộ.
 
-> **Quan trọng:** Toàn bộ danh sách đầy đủ về các tùy chọn `ApiFetch`, hook vòng đời, mô phỏng phản hồi và cấu trúc dữ liệu phản hồi đã được ghi chép chi tiết tại tài liệu gốc của lớp **ApiInstance**.
+### Quản lý Instance
+
+Trình quản lý nội bộ được lưu trữ trong `ServerStorage` bằng một khóa duy nhất (`__dxt_api_instance__`). Kiến trúc này giải quyết hai vấn đề lớn:
+
+1.  **An toàn luồng trong SSR**: Trong quá trình render phía máy chủ, `ServerStorage` đảm bảo rằng mỗi yêu cầu đến có cấu hình và trạng thái API riêng biệt, ngăn chặn rò rỉ dữ liệu giữa các người dùng.
+2.  **Sự đơn giản của Singleton trên Client**: Ở phía client, nó hoạt động như một singleton thực sự, cho phép bạn cấu hình API tại điểm truy cập và sử dụng nó ở bất cứ đâu mà không cần truyền instance.
+
+### Ủy quyền (Delegation)
+
+Mặc dù `Api` là giao diện được ưu tiên cho logic ứng dụng tiêu chuẩn, nhưng logic cốt lõi (thử lại, logic hydration, jitter) nằm bên trong `ApiInstance`. Đối với các tình huống nâng cao liên quan đến nhiều URL base hoặc các bộ header khác nhau đồng thời, bạn có thể khởi tạo `ApiInstance` trực tiếp.

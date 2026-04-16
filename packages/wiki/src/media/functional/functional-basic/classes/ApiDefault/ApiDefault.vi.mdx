@@ -4,45 +4,39 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ApiDefault
 
-Một lớp để quản lý dữ liệu mặc định cho các yêu cầu API. Nó cho phép thiết lập các tham số cơ bản cần được bao gồm trong mọi yêu cầu, hỗ trợ cả đối tượng thông thường và `FormData`.
+Một lớp để quản lý dữ liệu mặc định cho các yêu cầu API. Nó cho phép thiết lập các tham số cơ bản cần được bao gồm trong mọi yêu cầu, hỗ trợ cả đối tượng thông thường và `FormData`. Điều này hữu ích để định nghĩa tập trung các trường chung như token, ID ứng dụng hoặc cài đặt ngôn ngữ.
+
+> `ApiDefault` là một **lớp bổ trợ** (auxiliary class), được thiết kế để quản lý các giá trị mặc định của yêu cầu. Trong hầu hết các trường hợp, bạn nên định nghĩa chúng thông qua tham số `requestDefault` trong cấu hình `Api` toàn cục.
 
 ## Các tính năng chính
 
-- **Mặc định hóa tập trung** — định nghĩa các tham số chung (như token hoặc ngôn ngữ) một lần cho tất cả các cuộc gọi API.
-- **Hỗ trợ nhiều định dạng** — hoạt động mượt mà với cả đối tượng JavaScript thuần túy và `FormData`.
-- **Gộp dữ liệu thông minh** — gộp các giá trị mặc định với dữ liệu cụ thể của yêu cầu, ưu tiên dữ liệu yêu cầu thực tế nếu có sự trùng lặp khóa.
-- **Kiểm tra dễ dàng** — các phương thức đơn giản để kiểm tra xem dữ liệu mặc định đã được thiết lập hay chưa.
+- **Mặc định hóa tập trung** — Định nghĩa các tham số chung một lần cho tất cả các cuộc gọi API.
+- **Hỗ trợ nhiều định dạng** — Hoạt động mượt mà với cả đối tượng JavaScript thuần túy và `FormData`.
+- **Gộp dữ liệu thông minh** — Gộp các giá trị mặc định với dữ liệu cụ thể của yêu cầu, ưu tiên dữ liệu yêu cầu thực tế nếu có sự trùng lặp khóa.
+- **Chainable API** — Hỗ trợ giao diện linh hoạt (chaining) để thiết lập các tham số.
 
-## Khởi tạo
+## Các phương thức hành động
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `ApiDefault()`.
+### `request`
 
-```typescript
-import { ApiDefault } from '@dxtmisha/functional'
+Gộp dữ liệu mặc định đã lưu vào một đối tượng yêu cầu hoặc thực thể `FormData` được cung cấp. Nếu đầu vào là một đối tượng thuần túy, nó sẽ trả về một đối tượng mới đã được gộp. Nếu đầu vào là `FormData`, nó sẽ thêm trực tiếp các khóa còn thiếu vào thực thể đó.
 
-// 1. Khởi tạo đơn giản
-const apiDefault = new ApiDefault()
+**Tham số:**
+- `request: ApiFetch['request']` — Dữ liệu yêu cầu gốc (Đối tượng, FormData hoặc Chuỗi).
 
-// 2. Thiết lập dữ liệu mặc định
-apiDefault.set({ lang: 'vi', version: 'v1' })
+**Trả về:** `ApiFetch['request']` — Dữ liệu yêu cầu đã được chuyển đổi.
 
-// 3. Ví dụ sử dụng với một đối tượng yêu cầu
-const requestData = { user_id: 5 }
-const mergedRequest = apiDefault.request(requestData)
-// Kết quả: { lang: 'vi', version: 'v1', user_id: 5 }
-
-// 4. Ví dụ sử dụng với FormData
-const fd = new FormData()
-fd.append('photo', fileBlob)
-apiDefault.request(fd)
-// Kết quả: fd bây giờ chứa 'lang' và 'version' nếu chúng bị thiếu
-```
-
-## Các phương thức
+## Các phương thức kiểm tra
 
 - `is(): boolean` — Kiểm tra xem dữ liệu mặc định đã được thiết lập chưa.
-- `get(): ApiDefaultValue` — Trả về dữ liệu mặc định hiện tại.
-- `request(request: ApiFetch['request']): ApiFetch['request']` — Gộp dữ liệu mặc định đã lưu vào một đối tượng yêu cầu hoặc biến biểu mẫu `FormData` được cung cấp.
-- `set(request: ApiDefaultValue)` — Thiết lập dữ liệu mặc định cho các yêu cầu.
+- `get(): ApiDefaultValue | undefined` — Trả về đối tượng dữ liệu mặc định hiện tại.
 
+## Cấu hình
 
+- `set(request: ApiDefaultValue): this` — Thiết lập dữ liệu mặc định cho tất cả các yêu cầu trong tương lai.
+
+## Các kiểu dữ liệu
+
+#### `ApiDefaultValue`
+Một đối tượng thuần túy đại diện cho các tham số mặc định.
+- `[key: string]: any` — Các cặp khóa-giá trị được sử dụng làm mặc định.

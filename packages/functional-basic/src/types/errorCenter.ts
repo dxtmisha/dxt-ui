@@ -11,6 +11,8 @@ export type ErrorCenterCauseItem = {
   group?: ErrorCenterGroup
   /** Error code / Код ошибки */
   code: string
+  /** Priority / Приоритет */
+  priority?: number
   /** Error label / Название ошибки */
   label?: string
   /** Error message / Сообщение ошибки */

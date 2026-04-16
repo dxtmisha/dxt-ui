@@ -1,79 +1,80 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/functional-basic/Classes/Api - Request Management'/>
+<Meta title='@dxtmisha/en/functional-basic/Classes/Api - Request Management (Static)'/>
 
 # Api Class
 
-`Api` is a static wrapper class around the `ApiInstance` instance for efficient network request operations.
+The `Api` class is a **Primary Class (Static)** and serves as the main entry point for managing HTTP requests. It is a static wrapper around a globally managed `ApiInstance`, providing a clean, singleton-based interface for standard network operations.
 
-All methods of the `Api` class are automatically delegated to an internal global `ApiInstance` object. This allows you to work with HTTP requests without the need to manually instantiate objects:
+## Key Features
 
-```typescript
-import { Api } from '@dxtmisha/functional'
+- **Static Interface** — perform standard HTTP operations (`GET`, `POST`, etc.) without manual instantiation.
+- **Global Lifecycle Hooks** — configure request preparation and analysis once for the entire application.
+- **SSR Isolation** — utilizes `ServerStorage` to manage individual instance isolation during server-side rendering.
+- **Simplified Setup** — provides a unified `setConfig` method to apply multiple configuration layers at once.
 
-// These calls interact with the same global instance under the hood
-Api.setUrl('https://api.example.com/v1/')
-Api.setHeaders({ 'Authorization': 'Bearer token123' })
+## Action Methods
 
-const data = await Api.get({ path: 'users' })
-```
+### Action
 
-## Methods
+Methods for performing physical network requests.
 
-### Instance Access
+- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Core executor; accepts a path string or configuration object.
+- `get<T>(request: ApiFetch): Promise<T>` — Sends a GET request.
+- `post<T>(request: ApiFetch): Promise<T>` — Sends a POST request.
+- `put<T>(request: ApiFetch): Promise<T>` — Sends a PUT request.
+- `patch<T>(request: ApiFetch): Promise<T>` — Sends a PATCH request.
+- `delete<T>(request: ApiFetch): Promise<T>` — Sends a DELETE request.
 
-- `getItem(): ApiInstance` — Returns the internal `ApiInstance` object used by all static method delegations.
+### Check
 
-### Information Methods
+- `isLocalhost(): boolean` — Checks if the current environment is a local development server.
 
-- `isLocalhost(): boolean` — Returns `true` if the code is running on a local development server.
-- `getStatus(): ApiStatus` — Returns the `ApiStatus` manager for tracking the state and errors of the last request.
-- `getResponse(): ApiResponse` — Returns the responses/emulation manager `ApiResponse`.
-- `getUrl(path: string, api?: boolean): string` — Returns the full URL for the request. Dynamic placeholders `{locale}`, `{country}`, `{language}` are automatically replaced.
-- `getBody(request?, method?): string | FormData | undefined` — Returns data for the request body.
-- `getBodyForGet(request, path?, method?): string` — Returns the query string for GET method requests.
+### Configuration
 
-### Configuration Methods
+Methods return the `Api` class for chaining execution.
 
-All configuration methods return the `Api` class itself for chaining:
+- `setUrl(url: string): Api` — Changes the base API URL.
+- `setHeaders(headers: Record<string, string>): Api` — Sets default request headers.
+- `setRequestDefault(request: Record<string, any>): Api` — Sets default request body data.
+- `setPreparation(callback): Api` — Registers a hook to run before every enabled request.
+- `setEnd(callback): Api` — Registers a hook to run after every enabled response.
+- `setTimeout(timeout: number): Api` — Changes the global request timeout.
+- `setConfig(config?: ApiConfig): Api` — Applies a complete configuration object.
 
-- `setUrl(url: string): Api` — Sets the base URL for all requests.
-- `setHeaders(headers: Record<string, string>): Api` — Sets default headers for all requests.
-- `setRequestDefault(request: Record<string, any>): Api` — Sets default request data merged into every request body.
-- `setPreparation(callback): Api` — Sets a callback function executed before each request.
-- `setEnd(callback): Api` — Sets a callback function executed after each request.
-- `setConfig(config?: ApiConfig): Api` — Applies a full configuration object at once (`urlRoot`, `headers`, `requestDefault`, `preparation`, `end`).
+### Auxiliary
 
-### Request Methods
+- `getStatus(): ApiStatus` — Accesses the status manager for the last request.
+- `getResponse(): ApiResponse` — Accesses the response/emulation manager.
+- `getHydration(): ApiHydration` — Accesses the hydration manager.
+- `getHydrationScript(): string` — Returns the script block for SSR-to-client hydration.
+- `getUrl(path: string, api?: boolean): string` — Returns the fully resolved URL with localization tokens.
+- `getBody(request, method?): string | FormData | undefined` — Prepares the request body.
+- `getBodyForGet(request, path?, method?): string` — Prepares the query string.
+- `getItem(): ApiInstance` — Returns the underlying `ApiInstance` object.
 
-- `request<T>(pathRequest: string | ApiFetch): Promise<T>` — Core request executor. Accepts a string path or an `ApiFetch` configuration object.
-- `get<T>(request: ApiFetch): Promise<T>` — Sends an HTTP GET request.
-- `post<T>(request: ApiFetch): Promise<T>` — Sends an HTTP POST request.
-- `put<T>(request: ApiFetch): Promise<T>` — Sends an HTTP PUT request.
-- `patch<T>(request: ApiFetch): Promise<T>` — Sends an HTTP PATCH request.
-- `delete<T>(request: ApiFetch): Promise<T>` — Sends an HTTP DELETE request.
+## Types
 
-## setConfig
+### ApiConfig
 
-The `setConfig` method allows applying multiple configuration options at once using an `ApiConfig` object:
+- `urlRoot: string` — the base URL for the API.
+- `headers: Record<string, string>` — default request headers.
+- `requestDefault: Record<string, any>` — default request data.
+- `preparation: (apiFetch: ApiFetch) => Promise<void>` — entry hook.
+- `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — exit hook.
+- `timeout: number` — global timeout in milliseconds.
 
-```typescript
-import { Api } from '@dxtmisha/functional'
+## Proxy Architecture
 
-Api.setConfig({
-  urlRoot: 'https://api.example.com/v1/',
-  headers: { 'Authorization': 'Bearer token123' },
-  requestDefault: { source: 'webapp' },
-  preparation: async (apiFetch) => {
-    console.log('Preparing:', apiFetch.path)
-  },
-  end: async (response, apiFetch) => {
-    if (response.status === 401) {
-      return { reset: true }
-    }
-    return {}
-  }
-})
-```
+The `Api` class operates as a **Static Proxy**. All method calls are redirected to an internal `ApiInstance`.
 
-> **Important:** The exhaustive details on `ApiFetch` options, lifecycle hooks, response emulation, and response data structure are documented in the core **ApiInstance** documentation.
+### Instance Management
+
+The internal manager is stored in `ServerStorage` using a unique key (`__dxt_api_instance__`). This architecture solves two major problems:
+
+1.  **Thread Safety in SSR**: During server-side rendering, `ServerStorage` ensures that each incoming request has its own isolated API configuration and state, preventing data leaks between users.
+2.  **Singleton Simplicity on Client**: On the client side, it behaves as a true singleton, allowing you to configure the API in your entry point and use it anywhere without passing instances.
+
+### Delegation
+
+While `Api` is the preferred interface for standard application logic, the core logic (retries, hydration logic, jitter) resides within `ApiInstance`. For advanced scenarios involving multiple base URLs or different header sets simultaneously, you may instantiate `ApiInstance` directly.

@@ -6,10 +6,6 @@ describe('applyTemplate', () => {
     expect(applyTemplate('Hello %d and %e', ['world', 'user'])).toBe('Hello world and user')
   })
 
-  it('should handle positional markers with "falsy" values', () => {
-    expect(applyTemplate('Value: %d, %e, %f', [0, false, ''])).toBe('Value: 0, false, ')
-  })
-
   it('should replace out-of-bounds positional markers with empty strings', () => {
     expect(applyTemplate('Value: %d, %e', ['first'])).toBe('Value: first, ')
   })

@@ -4,45 +4,39 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # ApiDefault Class
 
-A class for managing default data for API requests. It allows setting base parameters that should be included in every request, supporting both standard objects and `FormData`.
+A class for managing default data for API requests. It allows setting base parameters that should be included in every request, supporting both standard objects and `FormData`. This is useful for centrally defining common fields such as tokens, application IDs, or localization settings.
+
+> `ApiDefault` is an **auxiliary class**, designed for managing request defaults. In most cases, it is recommended to define these through the `requestDefault` parameter in the global `Api` configuration.
 
 ## Key Features
 
-- **Centralized Defaults** — define common parameters (like tokens or locale) once for all API calls.
-- **Support for Multiple Formats** — works seamlessly with both plain JavaScript objects and `FormData`.
-- **Intelligent Merging** — merges defaults with request-specific data, prioritizing the actual request data if keys overlap.
-- **Easy Checks** — simple methods to check if any default data is currently set.
+- **Centralized Defaults** — Define common parameters once for all API calls.
+- **Support for Multiple Formats** — Works seamlessly with both plain JavaScript objects and `FormData`.
+- **Intelligent Merging** — Merges defaults with request-specific data, prioritizing the actual request data if keys overlap.
+- **Chainable API** — Supports a fluent interface for setting parameters.
 
-## Initialization
+## Action Methods
 
-To initialize the object, call the `ApiDefault()` constructor.
+### `request`
 
-```typescript
-import { ApiDefault } from '@dxtmisha/functional'
+Merges the stored default data into a provided request object or `FormData` instance. If the input is a plain object, it returns a new merged object. If the input is `FormData`, it adds missing keys directly to the instance.
 
-// 1. Simple initialization
-const apiDefault = new ApiDefault()
+**Parameters:**
+- `request: ApiFetch['request']` — The original request data (Object, FormData, or String).
 
-// 2. Setting default data
-apiDefault.set({ lang: 'en', version: 'v1' })
+**Returns:** `ApiFetch['request']` — The transformed request data.
 
-// 3. Example usage with a request object
-const requestData = { user_id: 5 }
-const mergedRequest = apiDefault.request(requestData)
-// Result: { lang: 'en', version: 'v1', user_id: 5 }
-
-// 4. Example usage with FormData
-const fd = new FormData()
-fd.append('photo', fileBlob)
-apiDefault.request(fd)
-// Result: fd now contains 'lang' and 'version' if they were missing
-```
-
-## Methods
+## Check Methods
 
 - `is(): boolean` — Checks if any default data has been set.
-- `get(): ApiDefaultValue` — Returns the current default data.
-- `request(request: ApiFetch['request']): ApiFetch['request']` — Merges the stored default data into a provided request object or `FormData` instance.
-- `set(request: ApiDefaultValue)` — Sets the default data object for requests.
+- `get(): ApiDefaultValue | undefined` — Returns the current default data object.
 
+## Configuration
 
+- `set(request: ApiDefaultValue): this` — Sets the default data for all future requests.
+
+## Types
+
+#### `ApiDefaultValue`
+A plain object representing default parameters.
+- `[key: string]: any` — Key-value pairs to be used as defaults.

@@ -128,24 +128,4 @@ Phương thức này tạo ra một thẻ script đặc biệt:
 </script>
 ```
 
-### 3. Khôi phục tự động
 
-Khi ứng dụng của bạn khởi động trong trình duyệt, lệnh gọi đầu tiên đến `ServerStorage.get()` hoặc `ServerStorage.has()` sẽ kích hoạt tính năng tự động tìm kiếm tập lệnh hydration.
-
-- Thư viện tìm thấy tập lệnh bằng ID duy nhất của nó.
-- Nó phân tích dữ liệu JSON.
-- Nó khôi phục các giá trị vào ngữ cảnh lưu trữ phía máy khách.
-
-```typescript
-// Lấy trên máy khách (tự động khôi phục từ tập lệnh)
-const settings = ServerStorage.get('userSettings') // { fontSize: 16 }
-```
-
-### Bảo mật & Bảo vệ XSS
-
-`ServerStorage` cung cấp khả năng bảo vệ tích hợp chống lại Cross-Site Scripting (XSS) trong quá trình hydration.
-
-- Tất cả dữ liệu được truyền tới `toString()` đều được tuần tự hóa một cách an toàn.
-- Thư viện tự động thoát (escape) chuỗi ký tự `</script>` trong dữ liệu của bạn. Điều này ngăn chặn các tải trọng độc hại đóng thẻ script sớm và thực thi mã tùy ý.
-
-> Quan trọng: Luôn sử dụng `ServerStorage.toString()` thay vì tuần tự hóa dữ liệu theo cách thủ công để đảm bảo các biện pháp bảo mật này được áp dụng.

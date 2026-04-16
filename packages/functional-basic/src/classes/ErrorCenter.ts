@@ -13,6 +13,16 @@ export class ErrorCenter {
   protected static item = new ErrorCenterInstance(errorCauseList)
 
   /**
+   * Returns a request-isolated instance of ErrorCenterInstance.
+   *
+   * Возвращает изолированный в рамках запроса экземпляр ErrorCenterInstance.
+   * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
+   */
+  static getItem(): ErrorCenterInstance {
+    return this.item
+  }
+
+  /**
    * Checks if a cause with specific code exists.
    *
    * Проверяет наличие причины с конкретным кодом.
@@ -41,24 +51,13 @@ export class ErrorCenter {
   }
 
   /**
-   * Returns a request-isolated instance of ErrorCenterInstance.
-   *
-   * Возвращает изолированный в рамках запроса экземпляр ErrorCenterInstance.
-   * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
-   */
-  static getItem(): ErrorCenterInstance {
-    return this.item
-  }
-
-  /**
    * Adds an error cause to the storage.
    *
    * Добавляет причину ошибки в хранилище.
    * @param cause error cause item / элемент причины ошибки
    */
-  static add(cause: ErrorCenterCauseItem): ErrorCenter {
+  static add(cause: ErrorCenterCauseItem): void {
     this.getItem().add(cause)
-    return this
   }
 
   /**
@@ -67,9 +66,8 @@ export class ErrorCenter {
    * Добавляет список причин ошибок в хранилище.
    * @param causes error causes list / список причин ошибок
    */
-  static addList(causes: ErrorCenterCauseList): ErrorCenter {
+  static addList(causes: ErrorCenterCauseList): void {
     this.getItem().addList(causes)
-    return this
   }
 
   /**
@@ -82,9 +80,8 @@ export class ErrorCenter {
   static addHandler(
     group: ErrorCenterGroup,
     handler: ErrorCenterHandlerCallback
-  ): ErrorCenter {
+  ): void {
     this.getItem().addHandler(group, handler)
-    return this
   }
 
   /**
@@ -93,9 +90,8 @@ export class ErrorCenter {
    * Регистрирует список обработчиков.
    * @param handlers handlers list / список обработчиков
    */
-  static addHandlerList(handlers: ErrorCenterHandlerList): ErrorCenter {
+  static addHandlerList(handlers: ErrorCenterHandlerList): void {
     this.getItem().addHandlerList(handlers)
-    return this
   }
 
   /**
@@ -104,8 +100,7 @@ export class ErrorCenter {
    * Вызывает обработку ошибки для группы.
    * @param cause error cause details / детали причины ошибки
    */
-  static on(cause: ErrorCenterCauseItem): ErrorCenter {
+  static on(cause: ErrorCenterCauseItem): void {
     this.getItem().on(cause)
-    return this
   }
 }

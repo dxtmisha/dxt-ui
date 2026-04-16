@@ -1,4 +1,3 @@
-import { isDomRuntime } from '../functions/isDomRuntime'
 import type { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerItem, ErrorCenterHandlerList } from '../types/errorCenter'
 
 /**
@@ -91,15 +90,13 @@ export class ErrorCenterHandler {
    * @param cause error cause details / детали причины ошибки
    */
   on(cause: ErrorCenterCauseItem): this {
-    if (isDomRuntime()) {
-      const item = this.get(cause.group) ?? this.get(undefined)
+    const item = this.get(cause.group) ?? this.get(undefined)
 
-      if (item) {
-        item.handlers.forEach(handler => handler(cause))
-      }
-
-      this.toConsole(cause)
+    if (item) {
+      item.handlers.forEach(handler => handler(cause))
     }
+
+    this.toConsole(cause)
 
     return this
   }

@@ -128,24 +128,4 @@ This method generates a special script tag:
 </script>
 ```
 
-### 3. Automatic Restoration
 
-When your application starts in the browser, the first call to `ServerStorage.get()` or `ServerStorage.has()` will trigger an automatic search for the hydration script.
-
-- The library finds the script by its unique ID.
-- It parses the JSON data.
-- It restores the values into the client-side storage context.
-
-```typescript
-// Get on client (automatically restored from script)
-const settings = ServerStorage.get('userSettings') // { fontSize: 16 }
-```
-
-### Security & XSS Protection
-
-`ServerStorage` provides built-in protection against Cross-Site Scripting (XSS) during hydration.
-
-- All data passed to `toString()` is safely serialized.
-- The library automatically escapes the `</script>` character sequence within your data. This prevents malicious payloads from prematurely closing the script tag and executing arbitrary code.
-
-> Important: Always use `ServerStorage.toString()` rather than manually serializing the data to ensure these security measures are applied.

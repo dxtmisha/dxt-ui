@@ -4,40 +4,49 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # ApiPreparation Class
 
-A class specifically designed to handle tasks and side effects immediately running before and after an API request execution. It serves to intercept requests globally via tracking hooks (`callback` and `callbackEnd`), perform state manipulations, or trigger global logic like loading indicators.
+A specialized class designed to handle tasks and side effects immediately before and after an API request execution. It serves to intercept requests globally via tracking hooks, enabling state manipulation or triggering of global logic like token refreshes or logging.
+
+> `ApiPreparation` is an **auxiliary class**, designed for managing request lifecycles. In most cases, it is recommended to interact with hooks through the `setPreparation` and `setEnd` methods of the main `Api` instance.
 
 ## Key Features
 
-- **Pre-request Execution** — hook into the API lifecycle immediately before the actual `fetch` call is made.
-- **Post-request Analysis** — execute logic exactly after a request completes, with proper access to the `Response` object and the original request configuration.
-- **Concurrency Control** — ensures overlapping hooks are resolved collectively without collision.
-- **Data Injection** — post-request hooks optionally return data or a `reset` flag that can manipulate downstream handlers.
+- **Sequential Execution** — ensures that preparation hooks resolve one at a time, preventing collisions during concurrent operations (e.g., duplicate token refreshes).
+- **Global Interception** — provides a single point of entry and exit for all network traffic initiated by its parent manager.
+- **Request Replay** — post-request hooks can signal the system to automatically retry a request after state changes.
 
-## Initialization
+## Action Methods
 
-To initialize the object, call the `ApiPreparation()` constructor.
+### `make`
 
-```typescript
-import { ApiPreparation } from '@dxtmisha/functional'
+Executes the registered preparation callback. If another preparation is currently in progress, it waits for it to complete.
 
-// 1. Simple initialization
-const preparation = new ApiPreparation()
+**Parameters:**
+- `active: boolean` — Whether the hook is enabled for the current request.
+- `apiFetch: ApiFetch` — The configuration for the upcoming request.
 
-// 2. Setting pre-request callback
-preparation.set(async (apiFetch) => {
-  console.log('Preparing request to:', apiFetch.path)
-})
+**Returns:** `Promise<void>`
 
-// 3. Setting post-request callback
-preparation.setEnd(async (query, apiFetch) => {
-  console.log('Request finished with status:', query.status)
-  return { reset: false }
-})
-```
+### `makeEnd`
 
-## Methods
+Executes the registered analysis callback after a request completes.
 
-- `make(active: boolean, apiFetch: ApiFetch): Promise<void>` — Executes the preparation callback before executing the request.
-- `makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>` — Executes analysis logically after the request finishes.
-- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Connects a callback function triggered right before a request execution.
-- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Connects a callback function executed after request termination.
+**Parameters:**
+- `active: boolean` — Whether the hook is enabled for the current request.
+- `query: Response` — The native Fetch API response object.
+- `apiFetch: ApiFetch` — The configuration used for the request.
+
+**Returns:** `Promise<ApiPreparationEnd>` — An object controlling the next steps (e.g., reset, data injection).
+
+## Configuration
+
+- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Registers a function to run before every enabled request.
+- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Registers a function to run after every enabled response.
+
+## Guide: Mechanics of Hooks
+
+The following rules and conditions define how the preparation system synchronizes and manages lifecycle hooks:
+
+- **Synchronization** — the system uses a polling mechanism (160ms interval) to ensure that only one `setPreparation` hook executes at a time. If multiple requests start concurrently, subsequent calls will wait up to 32 polling attempts (~5 seconds) for the first one to finish.
+- **Context Injection** — the `apiFetch` object is passed to the hooks by reference. Modifying its properties (like headers or request body) inside `setPreparation` directly affects the physical network call that follows.
+- **Flow Control (Reset)** — the `setEnd` hook can return `{ reset: true }`. When this flag is detected, the `ApiInstance` will abort the current request chain and immediately restart it from the preparation phase. This is primarily used for silent, automatic token refreshing.
+- **Execution Scope** — hooks only run if they are explicitly enabled in the request configuration. By default, `globalPreparation` and `globalEnd` are set to true in `ApiFetch`.

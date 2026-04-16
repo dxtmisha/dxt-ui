@@ -1,67 +1,53 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiHydration - Đồng bộ dữ liệu API (Hydration)'/>
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiHydration - Giảm tải dữ liệu API'/>
 
 # Lớp ApiHydration
 
-Một lớp dùng để thu thập dữ liệu API phục vụ cho việc đồng bộ (hydration) ở phía client trong quá trình SSR (Server-Side Rendering). Nó cho phép máy chủ chụp lại các phản hồi API trong lần kết xuất đầu tiên và chuyển chúng tới client, giúp ngăn chặn các yêu cầu mạng dư thừa khi ứng dụng khởi tạo trong trình duyệt.
+Một lớp để thu thập dữ liệu API cho việc "hydrat hóa" (hydration) phía máy khách trong quá trình SSR (Server-Side Rendering). Nó cho phép máy chủ ghi lại các phản hồi API trong lần render đầu tiên và chuyển chúng đến máy khách, ngăn chặn các yêu cầu mạng dư thừa khi ứng dụng khởi tạo trong trình duyệt.
+
+> `ApiHydration` là một **lớp bổ trợ** (auxiliary class), được thiết kế để quản lý dữ liệu SSR. Trong hầu hết các trường hợp, bạn nên tương tác với việc hydrat hóa thông qua đối tượng `Api` toàn cục bằng các phương thức như `Api.getHydrationScript()`.
 
 ## Các tính năng chính
 
-- **Tối ưu hóa SSR** — giảm số lượng yêu cầu sau khi tải trang bằng cách tái sử dụng dữ liệu từ phía máy chủ.
+- **Tối ưu hóa SSR** — giảm số lượng yêu cầu sau khi tải trang bằng cách sử dụng lại dữ liệu từ phía máy chủ.
 - **Thu thập dữ liệu** — tự động thu thập các phản hồi API thành công được đánh dấu để sử dụng toàn cục.
-- **Nhúng HTML** — tạo thẻ `<script>` an toàn với dữ liệu được định dạng JSON để nhúng vào tài liệu.
-- **Đồng bộ hóa Client** — cho phép `ApiResponse` tự động tải dữ liệu đã đồng bộ ở phía client.
+- **Nhúng HTML** — tạo một thẻ `<script>` an toàn với dữ liệu đã được JSON-serial hóa để nhúng vào tài liệu.
+- **Đồng bộ hóa máy khách** — cho phép `ApiResponse` tự động tải dữ liệu đã hydrat hóa ở phía máy khách.
 
-## Khởi tạo
+## Các phương thức hành động
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `ApiHydration()`.
+### `toClient`
 
-```typescript
-import { ApiHydration } from '@dxtmisha/functional'
+Lưu phản hồi API để hydrat hóa phía máy khách. Phương thức này chỉ thực thi trên máy chủ và chỉ dành cho các yêu cầu đã đặt `global` là true.
 
-// 1. Khởi tạo thực thể
-const apiHydration = new ApiHydration()
+**Tham số:**
+- `apiFetch: ApiFetch` — Cấu hình yêu cầu API.
+- `response: T` — Dữ liệu phản hồi sẽ được chuyển đến máy khách.
 
-// 2. Thu thập phản hồi (thường do ApiInstance xử lý nội bộ)
-apiHydration.toClient({
-  path: 'user/profile',
-  method: 'GET',
-  global: true
-}, { id: 1, name: 'Admin' })
-```
+### `toString`
 
-## Các phương thức
+Trả về chuỗi đại diện cho dữ liệu hydrat hóa đã thu thập, được bọc trong một thẻ `<script>` an toàn với ID duy nhất.
 
-- `initResponse(response: ApiResponse): void` — Khởi tạo thực thể `ApiResponse` với dữ liệu đồng bộ nếu đang chạy trong môi trường DOM.
-- `toClient<T>(apiFetch: ApiFetch, response: T): void` — Lưu phản hồi API để đồng bộ phía client. Chỉ hoạt động trên máy chủ cho các yêu cầu toàn cục.
-- `toString(): string` — Trả về chuỗi đại diện của dữ liệu đồng bộ (dưới dạng thẻ `<script>`) để đưa vào tài liệu HTML.
+**Trả về:** `string` — Thẻ script HTML đã được định dạng.
 
-## Hướng dẫn thiết lập SSR
+## Configuration
 
-Để thực hiện đồng bộ (hydration) một cách chính xác, hãy làm theo các bước sau để kết nối dữ liệu giữa máy chủ và trình duyệt.
+- `initResponse(response: ApiResponse): void` — Initializes the `ApiResponse` instance with hydration data if running in a DOM environment.
 
-### 1. Thực thi phía Máy chủ (SSR)
-Trong khi kết xuất trang trên máy chủ, tất cả các yêu cầu API được thực hiện thông qua `ApiInstance` (với thuộc tính `global: true`) sẽ tự động được trình quản lý `ApiHydration` ghi lại.
+## Các kiểu dữ liệu
 
-### 2. Nhúng dữ liệu vào HTML
-Trước khi gửi phản hồi tới client, bạn phải nhúng dữ liệu đã thu thập vào mẫu HTML của mình bằng cách sử dụng `getHydrationScript()`.
+#### `ApiHydrationList`
+Danh sách các phản hồi API đã thu thập để hydrat hóa.
+- `path: string` — Đường dẫn endpoint API.
+- `method: ApiMethodItem` — Phương thức HTTP đã sử dụng.
+- `request: any` — Dữ liệu yêu cầu.
+- `response: any` — Dữ liệu phản hồi từ máy chủ.
 
-```typescript
-// Ví dụ cho một SSR framework hoặc template engine
-const html = `
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <title>Ứng dụng của tôi</title>
-      ${Api.getHydrationScript()}
-    </head>
-    <body>
-      <div id="app">${renderedApp}</div>
-    </body>
-  </html>
-`;
-```
+## Hướng dẫn: Cơ chế Hydrat hóa
 
-### 3. Đồng bộ hóa phía Client
-Khi ứng dụng khởi tạo trên client, hàm khởi tạo của `ApiInstance` sẽ tự động phát hiện thẻ script và điền vào bộ nhớ cache giả lập của `ApiResponse`. Các lệnh gọi tiếp theo tới cùng một endpoint API sẽ trả về dữ liệu đã đồng bộ ngay lập tức mà không cần thực hiện yêu cầu mạng thực tế.
+Các quy tắc và điều kiện sau đây xác định cách hệ thống hydrat hóa thu thập và chuyển dữ liệu giữa máy chủ và trình duyệt:
+
+- **Cờ toàn cục** — chỉ các yêu cầu có thuộc tính `global` được đặt thành `true` mới được ghi lại để hydrat hóa.
+- **Xử lý tự động** — cờ `global` được tự động đặt thành `true` cho tất cả các yêu cầu `GET`. Các phương thức khác yêu cầu bật thủ công.
+- **Thực thi phía máy chủ** — việc thu thập dữ liệu chỉ xảy ra ở phía máy chủ (nơi `isDomRuntime()` trả về false).

@@ -6,32 +6,44 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một lớp để quản lý và gộp các tiêu đề (headers) yêu cầu HTTP. Nó xử lý các tiêu đề mặc định cho toàn bộ ứng dụng, tiêu đề tùy chỉnh cho các yêu cầu cụ thể và việc tự động gán `Content-Type`.
 
+> `ApiHeaders` là một **lớp bổ trợ** (auxiliary class), được thiết kế để quản lý các tiêu đề HTTP. Trong hầu hết các trường hợp, bạn nên định nghĩa các tiêu đề toàn cục thông qua tham số `headers` trong cấu hình `Api` toàn cục.
+
 ## Các tính năng chính
 
-- **Tiêu đề mặc định** — thiết lập các tiêu đề chung một lần duy nhất, ví dụ như `Authorization` hoặc `X-App-Version`.
-- **Content-Type Động** — tự động quản lý tiêu đề `Content-Type` (mặc định là `application/json;charset=UTF-8`).
-- **Gộp an toàn** — gộp nhiều nguồn tiêu đề khác nhau mà không làm thay đổi các đối tượng gốc.
-- **Xác thực đầu vào** — đảm bảo chỉ các đối tượng hợp lệ mới được xử lý dưới dạng tiêu đề.
+- **Tiêu đề mặc định** — Thiết lập các tiêu đề chung một lần duy nhất, ví dụ như `Authorization` hoặc `X-App-Version`.
+- **Content-Type động** — Tự động quản lý tiêu đề `Content-Type` (mặc định là `application/json;charset=UTF-8`).
+- **Gộp an toàn** — Gộp nhiều nguồn tiêu đề khác nhau mà không làm thay đổi các đối tượng gốc.
+- **Xác thực** — Đảm bảo chỉ các đối tượng hợp lệ mới được xử lý dưới dạng tiêu đề.
 
-## Khởi tạo
+## Các phương thức hành động
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `ApiHeaders()`.
+### `get`
 
-```typescript
-import { ApiHeaders } from '@dxtmisha/functional'
+Giao thoa tiêu đề mặc định với những tiêu đề tùy chỉnh và tiêm `Content-Type`. Nếu tham số `value` là `null`, các tiêu đề sẽ bị tắt.
 
-// 1. Khởi tạo đơn giản
-const apiHeaders = new ApiHeaders()
+**Tham số:**
+- `value?: Record<string, string> | null` — Các tiêu đề tùy chỉnh để gộp với mặc định.
+- `type: string | undefined | null` — Giá trị `Content-Type` (mặc định là `application/json;charset=UTF-8`).
 
-// 2. Thiết lập các tiêu đề mặc định
-apiHeaders.set({ 'X-App-Platform': 'web' })
+**Trả về:** `Record<string, string> | undefined` — Đối tượng tiêu đề đã được gộp.
 
-// 3. Lấy các tiêu đề cho yêu cầu
-const headers = apiHeaders.get({ 'Authorization': 'Bearer token123' })
-// Kết quả: { 'X-App-Platform': 'web', 'Authorization': 'Bearer token123', 'Content-Type': 'application/json;charset=UTF-8' }
-```
+### `getByRequest`
 
-## Các phương thức
+Một phiên bản chuyên biệt của `get` để điều chỉnh tiêu đề dựa trên loại yêu cầu. Cụ thể, nó đảm bảo `Content-Type` không được thiết lập thủ công cho `FormData` để cho phép tạo boundary chính xác.
 
-- `get(value?: Record<string, string> | null, type = 'application/json;charset=UTF-8'): Record<string, string> | undefined` — Giao thoa tiêu đề mặc định với những tiêu đề tùy chỉnh được truyền vào và tiêm `Content-Type`.
-- `set(headers: Record<string, string>): this` — Thiết lập hoặc cập nhật mảng đối tượng tiêu đề mặc định.
+**Tham số:**
+- `request: ApiFetch['request']` — Dữ liệu yêu cầu (Đối tượng, FormData hoặc Chuỗi).
+- `value?: Record<string, string> | null` — Các tiêu đề tùy chỉnh.
+- `type: string` — `Content-Type` mong muốn.
+
+**Trả về:** `Record<string, string> | undefined` — Đối tượng tiêu đề đã được xử lý.
+
+## Cấu hình
+
+- `set(headers: Record<string, string>): this` — Thiết lập hoặc cập nhật đối tượng tiêu đề mặc định.
+
+## Các kiểu dữ liệu
+
+#### `ApiHeadersValue`
+Một đối tượng thuần túy đại diện cho các tiêu đề HTTP.
+- `[key: string]: string` — Các cặp khóa-giá trị trong đó khóa là tên tiêu đề và giá trị là nội dung tiêu đề.

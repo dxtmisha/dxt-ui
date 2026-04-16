@@ -13,24 +13,7 @@ The class follows the "Static Bridge" pattern, delegating all operations to a si
 - **Static Access** — Global access to error management without the need for manual instantiation.
 - **Centralized Registry** — Stores standardized error causes (labels and messages) for consistent UI feedback.
 - **Group-Based Handling** — Allows registering multiple callbacks for specific error categories.
-- **Chainable API** — Methods for adding causes and handlers support fluent interface design.
 - **Predefined Defaults** — Comes pre-configured with standard network error causes (`timeout`, `offline`, `notFound`, etc.).
-
-## Check Methods
-
-- `has(code: string, group?: string): boolean` — Checks if an error cause exists in the registry.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Retrieves the full error cause object.
-
-## Instance Retrieval
-
-- `getItem(): ErrorCenterInstance` — Returns the underlying instance used by the static wrapper.
-
-## Configuration
-
-- `add(cause: ErrorCenterCauseItem): this` — Adds a single error cause to the global storage.
-- `addList(causes: ErrorCenterCauseList): this` — Adds multiple error causes to the registry at once.
-- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Registers a callback function for a specific group.
-- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Registers a batch of handlers.
 
 ## Action Methods
 
@@ -41,33 +24,86 @@ Triggers error handling for the specified cause. It merges the provided cause wi
 **Parameters:**
 - `cause: ErrorCenterCauseItem` — The cause to trigger. Only `code` and `group` are required if the cause was previously registered via `add()`.
 
-**Returns:** `this`
+**Returns:** `void`
+
+## Check Methods
+
+- `has(code: string, group?: string): boolean` — Checks if an error cause exists in the registry.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Retrieves the full error cause object.
+
+## Configuration
+
+- `add(cause: ErrorCenterCauseItem): void` — Adds a single error cause to the global storage.
+- `addList(causes: ErrorCenterCauseList): void` — Adds multiple error causes to the registry at once.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Registers a callback function for a specific group.
+- `addHandlerList(handlers: ErrorCenterHandlerList): void` — Registers a batch of handlers.
+
+## Instance Retrieval
+
+- `getItem(): ErrorCenterInstance` — Returns the underlying instance used by the static wrapper.
 
 ## Types
 
-### `ErrorCenterCauseItem`
+#### `ErrorCenterGroup`
+Represents an error group identifier.
+- `string | undefined` — A string name for the group, or `undefined` for a global/default handler.
 
-The main object used to define an error cause.
+#### `ErrorCenterCauseItem`
+Detailed information about an error cause.
+- `group?: ErrorCenterGroup` — The group this error belongs to.
+- `code: string` — A unique error code (e.g., '404', 'AUTH_ERROR').
+- `priority?: number` — Importance level used for merging multiple errors (default: `500`).
+- `label?: string` — A short, human-readable name for the error.
+- `message?: string` — A descriptive error message.
+- `details?: any` — Any additional context or raw error data.
 
-- `group?: ErrorCenterGroup` — The category/group the error belongs to.
-- `code: string` — Unique identifier for the error.
-- `label?: string` — Human-readable name of the error.
-- `message?: string` — Detailed description of the error.
-- `details?: any` — Optional object for additional context or technical data.
+#### `ErrorCenterCauseList`
+An array of `ErrorCenterCauseItem` objects.
 
-### `ErrorCenterGroup`
+#### `ErrorCenterHandlerCallback`
+The function signature for error handling callbacks.
+- `(cause: ErrorCenterCauseItem) => void` — Receives the error cause object when triggered.
 
-A simple type definition for categorizing errors: `string | undefined`.
+#### `ErrorCenterHandlerItem`
+An internal storage object mapping a group to its handlers.
+- `group?: ErrorCenterGroup` — The targeted error group.
+- `handlers: ErrorCenterHandlerCallback[]` — List of callback functions for this group.
+
+#### `ErrorCenterHandlerList`
+An array of `ErrorCenterHandlerItem` objects used for batch registration.
 
 ## Default Error Causes
 
-The `ErrorCenter` is automatically populated with these standard network-related causes:
+`ErrorCenter` is pre-populated with common error causes across different functional areas. These are defined in `@dxtmisha/functional-basic/media/errorCauseList`.
 
-- `unknown` — **Unknown Error**: An unexpected error occurred. Please try again.
-- `timeout` — **Request Timeout**: The request took too long. Please check your connection.
-- `offline` — **No Connection**: You are offline. Please check your internet connection.
-- `notFound` — **Not Found**: The requested resource could not be found.
-- `server` — **Server Error**: Internal server error occurred.
+### API (`group: 'api'`)
+- **`unknown`** — **Unknown Error**: An unexpected error occurred. Please try again later.
+- **`timeout`** — **Request Timeout**: The request took too long. Please check your connection.
+- **`offline`** — **No Connection**: You are offline. Please check your network.
+- **`notFound`** — **Resource Not Found**: The requested resource could not be found on the server.
+- **`server`** — **Internal Server Error**: Something went wrong on the server.
+- **`cacheClear`** — **Cache Clearing Error**: An error occurred during background cache cleaning.
+
+### Internationalization (`group: 'intl'`)
+- **`datetime`** — **Intl Datetime Error**: Failure in date or time formatting logic.
+- **`display`** — **Intl Display Error**: Failure in formatting display names or regions.
+- **`number`** — **Intl Number Error**: Failure in number or currency formatting.
+- **`plural`** — **Intl Plural Error**: Failure in pluralization rules logic.
+- **`relative`** — **Intl Relative Error**: Failure in relative time formatting.
+
+### Storage (`group: 'storage'`)
+- **`context`** — **Context Missing Error**: Storage context is missing (likely `init()` not called). Data isolation for this request failed.
+- **`error`** — **Storage Error**: General failure when reading from or writing to storage.
+
+### Other Groups
+- **Broadcast** (`group: 'broadcast'`)
+    - **`error`**: Unexpected error in `BroadcastChannel` communication.
+- **Hydration** (`group: 'hydration'`)
+    - **`error`**: Failure during client-side hydration.
+- **Share** (`group: 'share'`)
+    - **`error`**: Unexpected failure during the sharing process.
+- **Transformation** (`group: 'transformation'`)
+    - **`error`**: Failure during data transformation or formatting.
 
 ## Usage Example
 

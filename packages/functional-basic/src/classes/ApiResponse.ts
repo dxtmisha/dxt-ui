@@ -115,7 +115,9 @@ export class ApiResponse {
   }
 
   /**
-   * Выполнение эмулятора, если доступно
+   * Execution of the emulator if available.
+   *
+   * Выполнение эмулятора, если доступно.
    * @param apiFetch property of the request/ свойство запроса
    */
   async emulator<T>(apiFetch: ApiFetch): Promise<T | undefined> {
@@ -175,7 +177,7 @@ export class ApiResponse {
     return path === item.path
       || Boolean(
         item.path instanceof RegExp
-        && path.match(item.path)
+        && item.path.test(path)
       )
   }
 
@@ -227,18 +229,16 @@ export class ApiResponse {
         && !(request instanceof FormData)
         && !(requestItem instanceof FormData)
         && Object.values(request).length === Object.values(requestItem).length
-        && Object.entries(requestItem).reduce(
-          (accum, [key, value]) => (accum && (value === request?.[key] || value === '*any')),
-          true
-        )
+        && Object.entries(requestItem)
+          .every(([key, value]) => value === request?.[key] || value === '*any')
       )
   }
 
   /**
-   * Emulates an execution request.
+   * Emulates an execution request (internal fetch).
    *
-   * Эмулирует запрос выполнения.
-   * @param response Data for pre-request/ Данные для пред-запроса
+   * Эмулирует запрос выполнения (внутренний fetch).
+   * @param response response item for emulation/ элемент ответа для эмуляции
    * @param request data for the request/ данные для запроса
    */
   protected fetch<T>(
@@ -295,7 +295,7 @@ export class ApiResponse {
       this.loading = setTimeout(() => {
         this.loading = undefined
         document.body.classList.remove(CLASS_RESPONSE_LOADING)
-      }, 1200)
+      }, 2400)
     }
   }
 }

@@ -1,4 +1,3 @@
-import { copyObjectLite } from '../functions/copyObjectLite'
 import { getRequestString } from '../functions/getRequestString'
 import { isArray } from '../functions/isArray'
 import { isFilled } from '../functions/isFilled'
@@ -367,7 +366,7 @@ export class ApiInstance {
    * To execute a request.
    *
    * Выполнить запрос.
-   * @param pathRequest query string or list of parameters/ строка запроса или список параметров
+   * @param pathRequest path or configuration/ путь или конфигурация запроса
    */
   async request<T>(pathRequest: string | ApiFetch): Promise<T> {
     if (isString(pathRequest)) {
@@ -380,63 +379,68 @@ export class ApiInstance {
   }
 
   /**
-   * Sends a get method request.
+   * Sends a GET method request.
    *
-   * Отправляет запрос метода get.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода GET.
+   * @param request fetch configuration/ конфигурация запроса
    */
   get<T>(request: ApiFetch): Promise<T> {
-    return this.request(copyObjectLite(request, {
+    return this.request({
+      ...request,
       method: ApiMethodItem.get
-    }))
+    })
   }
 
   /**
-   * Sends a post method request.
+   * Sends a POST method request.
    *
-   * Отправляет запрос метода post.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода POST.
+   * @param request fetch configuration/ конфигурация запроса
    */
   post<T>(request: ApiFetch): Promise<T> {
-    return this.request(copyObjectLite(request, {
+    return this.request({
+      ...request,
       method: ApiMethodItem.post
-    }))
+    })
   }
 
   /**
-   * Sends a put method request.
+   * Sends a PUT method request.
    *
-   * Отправляет запрос метода put.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода PUT.
+   * @param request fetch configuration/ конфигурация запроса
    */
   put<T>(request: ApiFetch): Promise<T> {
-    return this.request(copyObjectLite(request, {
+    return this.request({
+      ...request,
       method: ApiMethodItem.put
-    }))
+    })
   }
 
   /**
-   * Sends a patch method request.
+   * Sends a PATCH method request.
    *
-   * Отправляет запрос метода patch.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода PATCH.
+   * @param request fetch configuration/ конфигурация запроса
    */
   patch<T>(request: ApiFetch): Promise<T> {
-    return this.request(copyObjectLite(request, {
+    return this.request({
+      ...request,
       method: ApiMethodItem.patch
-    }))
+    })
   }
 
   /**
-   * Sends a delete method request.
+   * Sends a DELETE method request.
    *
-   * Отправляет запрос метода delete.
-   * @param request list of parameters/ список параметров
+   * Отправляет запрос метода DELETE.
+   * @param request fetch configuration/ конфигурация запроса
    */
   delete<T>(request: ApiFetch): Promise<T> {
-    return this.request(copyObjectLite(request, {
+    return this.request({
+      ...request,
       method: ApiMethodItem.delete
-    }))
+    })
   }
 
   /**
@@ -482,6 +486,7 @@ export class ApiInstance {
     const cache = await ApiCache.getByFetch<T>(apiFetch)
 
     if (cache) {
+      this.hydration.toClient(apiFetch, cache)
       return cache
     }
 
@@ -613,13 +618,17 @@ export class ApiInstance {
     const pathFinal = pathFull ?? this.getUrl(path, api)
     const url = `${pathFinal}${this.getBodyForGet(request, pathFinal, method)}`
     const fetchHeaders = this.headers.getByRequest(apiFetch.request, headers, type)
-    const fetchInit = copyObjectLite(init, {
+    const fetchInit = {
+      ...init,
       method,
       body: this.getBody(request, method)
-    })
+    }
 
     if (fetchHeaders) {
-      fetchInit.headers = copyObjectLite(fetchHeaders, init?.headers)
+      fetchInit.headers = {
+        ...fetchHeaders,
+        ...(init.headers ?? {})
+      }
     }
 
     const timeoutId = this.initController(apiFetch, fetchInit)
@@ -658,7 +667,8 @@ export class ApiInstance {
       return data.data as any
     }
 
-    const item: ApiData<T & Record<string, any>> = copyObjectLite(data.data)
+    const item: ApiData<T & Record<string, any>>
+      = { ...data.data } as ApiData<T & Record<string, any>>
 
     if (
       'success' in data
@@ -742,6 +752,12 @@ export class ApiInstance {
    */
   protected makeErrorQuery(query: Response): void {
     switch (query.status) {
+      case 401:
+        this.errorCenter.on({ group: 'api', code: 'unauthorized', details: query })
+        break
+      case 403:
+        this.errorCenter.on({ group: 'api', code: 'forbidden', details: query })
+        break
       case 404:
         this.errorCenter.on({ group: 'api', code: 'notFound', details: query })
         break

@@ -6,23 +6,15 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một lớp tiện ích cốt lõi để quản lý và kích hoạt các trình xử lý lỗi dựa trên các nhóm đã được định nghĩa. Nó cho phép các chiến lược phản hồi lỗi linh hoạt, chẳng hạn như hiển thị thông báo toàn cục cho các lỗi API trong khi thực hiện ghi nhật ký âm thầm cho các tác vụ nền.
 
+> `ErrorCenterHandler` là một **lớp phụ trợ** được thiết kế để quản lý việc điều phối các trình xử lý cấp thấp. Trong hầu hết các trường hợp, bạn nên tương tác với lỗi thông qua `ErrorCenter` hoặc `ErrorCenterInstance`.
+
 ## Các tính năng chính
 
 - **Đăng ký trình xử lý** — Dễ dàng thêm nhiều hàm gọi lại cho các nhóm lỗi cụ thể.
 - **Lọc theo nhóm** — Nhắm mục tiêu các danh mục lỗi cụ thể (ví dụ: `api`, `auth`, `validation`).
 - **Dự phòng toàn cục** — Hỗ trợ trình xử lý cho nhóm `undefined` để bắt bất kỳ lỗi nào không có trình xử lý cụ thể.
 - **Thực thi tuần tự** — Kích hoạt tất cả các hàm gọi lại theo thứ tự chúng được thêm vào.
-- **Tích hợp ghi nhật ký** — Tự động xuất chi tiết lỗi ra console trình duyệt.
-
-## Các phương thức kiểm tra
-
-- `has(group: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý nào được đăng ký cho một nhóm không.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Truy xuất ánh xạ trình xử lý cho một nhóm.
-
-## Cấu hình
-
-- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Thêm một hàm gọi lại cho một nhóm.
-- `addList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
+- **Tích hợp ghi nhật ký** — Tự động xuất chi tiết lỗi ra console.
 
 ## Các phương thức hành động
 
@@ -35,13 +27,45 @@ Kích hoạt tất cả các trình xử lý đã đăng ký cho nhóm của ngu
 
 **Trả về:** `this`
 
+## Các phương thức kiểm tra
+
+- `has(group: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý nào được đăng ký cho một nhóm không.
+- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Truy xuất ánh xạ trình xử lý cho một nhóm.
+
+## Cấu hình
+
+- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Thêm một hàm gọi lại cho một nhóm.
+- `addList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
+
 ## Các kiểu dữ liệu
 
-### `ErrorCenterHandlerCallback`
+#### `ErrorCenterGroup`
+Định danh nhóm lỗi.
+- `string | undefined` — Tên chuỗi cho nhóm, hoặc `undefined` cho trình xử lý toàn cục/mặc định.
 
+#### `ErrorCenterCauseItem`
+Thông tin chi tiết về nguyên nhân lỗi.
+- `group?: ErrorCenterGroup` — Nhóm mà lỗi này thuộc về.
+- `code: string` — Mã lỗi duy nhất (ví dụ: '404', 'AUTH_ERROR').
+- `priority?: number` — Mức độ ưu tiên được sử dụng để hợp nhất nhiều lỗi.
+- `label?: string` — Tên ngắn gọn, dễ hiểu cho lỗi.
+- `message?: string` — Thông báo lỗi mô tả.
+- `details?: any` — Bất kỳ bối cảnh bổ sung hoặc dữ liệu lỗi thô nào.
+
+#### `ErrorCenterCauseList`
+Một mảng các đối tượng `ErrorCenterCauseItem`.
+
+#### `ErrorCenterHandlerCallback`
 Hàm cho các callback xử lý lỗi.
+- `(cause: ErrorCenterCauseItem) => void` — Nhận đối tượng nguyên nhân lỗi khi được kích hoạt.
 
-- `(cause: ErrorCenterCauseItem) => void` — Nhận đối tượng nguyên nhân lỗi đã được hợp nhất.
+#### `ErrorCenterHandlerItem`
+Một đối tượng lưu trữ nội bộ ánh xạ một nhóm tới các trình xử lý của nó.
+- `group?: ErrorCenterGroup` — Nhóm lỗi mục tiêu.
+- `handlers: ErrorCenterHandlerCallback[]` — Danh sách các hàm callback cho nhóm này.
+
+#### `ErrorCenterHandlerList`
+Một mảng các đối tượng `ErrorCenterHandlerItem` được sử dụng để đăng ký hàng loạt.
 
 ## Ví dụ sử dụng
 

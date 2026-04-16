@@ -19,28 +19,32 @@ describe('ErrorCenter', () => {
 
   it('should add and check for causes via static methods', () => {
     const cause: ErrorCenterCauseItem = { code: 'C1', group: 'G1', label: 'L1' }
-    ErrorCenter.add(cause)
+    const result = ErrorCenter.add(cause)
 
+    expect(result).toBeUndefined()
     expect(ErrorCenter.has('C1', 'G1')).toBe(true)
     expect(ErrorCenter.get('C1', 'G1')).toEqual(cause)
   })
 
   it('should add a list of causes via static methods', () => {
-    ErrorCenter.addList([
+    const result = ErrorCenter.addList([
       { code: 'C1', group: 'G1' },
       { code: 'C2', group: 'G1' }
     ])
+    expect(result).toBeUndefined()
     expect(ErrorCenter.has('C1', 'G1')).toBe(true)
     expect(ErrorCenter.has('C2', 'G1')).toBe(true)
   })
 
   it('should add handlers and handle errors via static methods', () => {
     const callback = vi.fn()
-    ErrorCenter.addHandler('G1', callback)
+    const resultAdd = ErrorCenter.addHandler('G1', callback)
 
     const cause: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', message: 'Static test' }
-    ErrorCenter.on(cause)
+    const resultOn = ErrorCenter.on(cause)
 
+    expect(resultAdd).toBeUndefined()
+    expect(resultOn).toBeUndefined()
     expect(callback).toHaveBeenCalledWith(cause)
   })
 
@@ -49,7 +53,9 @@ describe('ErrorCenter', () => {
       { group: 'G1', handlers: [vi.fn()] },
       { group: 'G2', handlers: [vi.fn()] }
     ]
-    ErrorCenter.addHandlerList(list)
+    const result = ErrorCenter.addHandlerList(list)
+    expect(result).toBeUndefined()
+
     // @ts-expect-error: Accessing protected member
     expect(ErrorCenter.getItem().handler.has('G1')).toBe(true)
     // @ts-expect-error: Accessing protected member

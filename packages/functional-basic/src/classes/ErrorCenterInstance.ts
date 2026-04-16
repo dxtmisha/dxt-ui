@@ -124,6 +124,13 @@ export class ErrorCenterInstance {
     const causeMain = this.get(cause.code, cause.group)
 
     if (causeMain) {
+      if ((causeMain.priority ?? 500) > (cause.priority ?? 500)) {
+        return {
+          ...cause,
+          ...causeMain
+        }
+      }
+
       return {
         ...causeMain,
         ...cause

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ApiDefault } from '../ApiDefault'
 
-describe('ApiDefault / Параметры запроса по умолчанию', () => {
+describe('ApiDefault / Default request parameters', () => {
   let apiDefault: ApiDefault
 
   beforeEach(() => {
@@ -12,17 +12,17 @@ describe('ApiDefault / Параметры запроса по умолчанию
   // Presence Checks
   // ─────────────────────────────────────────────
 
-  describe('is / Проверка наличия данных', () => {
-    it('should return false when no default data is set / должен возвращать false, если данные по умолчанию не установлены', () => {
+  describe('is / Data presence check', () => {
+    it('should return false when no default data is set', () => {
       expect(apiDefault.is()).toBe(false)
     })
 
-    it('should return true when default data is set / должен возвращать true, если данные по умолчанию установлены', () => {
+    it('should return true when default data is set', () => {
       apiDefault.set({ key: 'value' })
       expect(apiDefault.is()).toBe(true)
     })
 
-    it('should return false after setting undefined / должен возвращать false после установки undefined', () => {
+    it('should return false after setting undefined', () => {
       apiDefault.set({ key: 'value' })
       apiDefault.set(undefined as any)
       expect(apiDefault.is()).toBe(false)
@@ -33,39 +33,44 @@ describe('ApiDefault / Параметры запроса по умолчанию
   // Data Accessors
   // ─────────────────────────────────────────────
 
-  describe('get / Получение данных', () => {
-    it('should return undefined when no default data is set / должен возвращать undefined, если данные по умолчанию не установлены', () => {
+  describe('get / Get data', () => {
+    it('should return undefined when no default data is set', () => {
       expect(apiDefault.get()).toBeUndefined()
     })
 
-    it('should return the default data / должен возвращать данные по умолчанию', () => {
+    it('should return the default data', () => {
       const data = { foo: 'bar', num: 42 }
       apiDefault.set(data)
       expect(apiDefault.get()).toEqual(data)
     })
 
-    it('should return the same reference / должен возвращать ту же ссылку на объект', () => {
+    it('should return the same reference', () => {
       const data = { key: 'value' }
       apiDefault.set(data)
       expect(apiDefault.get()).toBe(data)
     })
   })
 
-  describe('set / Установка данных', () => {
-    it('should set default data / должен устанавливать данные по умолчанию', () => {
+  describe('set / Set data', () => {
+    it('should set default data', () => {
       const data = { test: 'data' }
       apiDefault.set(data)
       expect(apiDefault.get()).toEqual(data)
     })
 
-    it('should overwrite existing default data / должен перезаписывать существующие данные по умолчанию', () => {
+    it('should overwrite existing default data', () => {
       apiDefault.set({ old: 'data' })
       const newData = { new: 'data' }
       apiDefault.set(newData)
       expect(apiDefault.get()).toEqual(newData)
     })
 
-    it('should accept complex objects / должен принимать сложные объекты', () => {
+    it('should return this for chainability', () => {
+      const result = apiDefault.set({ key: 'value' })
+      expect(result).toBe(apiDefault)
+    })
+
+    it('should accept complex objects', () => {
       const complexData = {
         string: 'text',
         number: 123,
@@ -82,13 +87,13 @@ describe('ApiDefault / Параметры запроса по умолчанию
   // Request Transformation
   // ─────────────────────────────────────────────
 
-  describe('request / Обработка запроса', () => {
-    it('should return original request when no defaults are set / должен возвращать исходный запрос, когда данные по умолчанию не установлены', () => {
+  describe('request / Request processing', () => {
+    it('should return original request when no defaults are set', () => {
       const request = { key: 'value' }
       expect(apiDefault.request(request)).toEqual(request)
     })
 
-    it('should merge defaults with object request / должен объединять данные по умолчанию с объектом запроса', () => {
+    it('should merge defaults with object request', () => {
       apiDefault.set({ default1: 'value1', default2: 'value2' })
       const request = { custom: 'data' }
       const result = apiDefault.request(request)
@@ -100,7 +105,7 @@ describe('ApiDefault / Параметры запроса по умолчанию
       })
     })
 
-    it('should prioritize request data over defaults / должен отдавать приоритет данным запроса перед данными по умолчанию', () => {
+    it('should prioritize request data over defaults', () => {
       apiDefault.set({ key: 'default' })
       const request = { key: 'custom' }
       const result = apiDefault.request(request)
@@ -108,7 +113,7 @@ describe('ApiDefault / Параметры запроса по умолчанию
       expect(result).toEqual({ key: 'custom' })
     })
 
-    it('should handle FormData requests / должен обрабатывать запросы FormData', () => {
+    it('should handle FormData requests', () => {
       apiDefault.set({ defaultKey: 'defaultValue' })
       const formData = new FormData()
       formData.set('existingKey', 'existingValue')
@@ -120,7 +125,7 @@ describe('ApiDefault / Параметры запроса по умолчанию
       expect(result.get('defaultKey')).toBe('defaultValue')
     })
 
-    it('should not overwrite existing FormData entries / не должен перезаписывать существующие записи FormData', () => {
+    it('should not overwrite existing FormData entries', () => {
       apiDefault.set({ key: 'default' })
       const formData = new FormData()
       formData.set('key', 'existing')
@@ -130,7 +135,7 @@ describe('ApiDefault / Параметры запроса по умолчанию
       expect(result.get('key')).toBe('existing')
     })
 
-    it('should return FormData as-is when no defaults set / должен возвращать FormData как есть, когда данные по умолчанию не установлены', () => {
+    it('should return FormData as-is when no defaults set', () => {
       const formData = new FormData()
       formData.set('key', 'value')
 
@@ -140,19 +145,19 @@ describe('ApiDefault / Параметры запроса по умолчанию
       expect((result as FormData).get('key')).toBe('value')
     })
 
-    it('should handle string request without modification / должен возвращать строковый запрос без изменений', () => {
+    it('should handle string request without modification', () => {
       apiDefault.set({ key: 'value' })
       const stringRequest = 'some-string-data'
 
       expect(apiDefault.request(stringRequest)).toBe(stringRequest)
     })
 
-    it('should handle undefined request / должен корректно обрабатывать undefined запрос', () => {
+    it('should handle undefined request', () => {
       apiDefault.set({ key: 'value' })
       expect(apiDefault.request(undefined)).toBeUndefined()
     })
 
-    it('should handle array request without modification / должен возвращать массив без изменений', () => {
+    it('should handle array request without modification', () => {
       apiDefault.set({ key: 'value' })
       const arrayRequest = [1, 2, 3]
 
@@ -164,8 +169,8 @@ describe('ApiDefault / Параметры запроса по умолчанию
   // Interals & Integration
   // ─────────────────────────────────────────────
 
-  describe('FormData integration / Интеграция с FormData', () => {
-    it('should add default values to FormData via request / должен добавлять значения по умолчанию в FormData через метод request', () => {
+  describe('FormData integration', () => {
+    it('should add default values to FormData via request', () => {
       apiDefault.set({ key1: 'value1', key2: 'value2' })
       const formData = new FormData()
 
@@ -176,15 +181,12 @@ describe('ApiDefault / Параметры запроса по умолчанию
     })
   })
 
-  describe('integration workflow / Рабочий процесс интеграции', () => {
-    it('should handle complete workflow / должен обрабатывать полный жизненный цикл', () => {
-      // Установка дефолтных данных
+  describe('integration workflow', () => {
+    it('should handle complete workflow', () => {
       apiDefault.set({ token: 'abc123', userId: '42' })
 
-      // Проверка наличия
       expect(apiDefault.is()).toBe(true)
 
-      // Добавление к обычному объекту запроса
       const objectRequest = { action: 'getData' }
       const mergedObject = apiDefault.request(objectRequest)
       expect(mergedObject).toEqual({
@@ -193,7 +195,6 @@ describe('ApiDefault / Параметры запроса по умолчанию
         action: 'getData'
       })
 
-      // Добавление к FormData
       const formData = new FormData()
       formData.set('file', 'test.jpg')
       const mergedFormData = apiDefault.request(formData) as FormData

@@ -13,24 +13,7 @@ Lớp này tuân theo mô hình "Static Bridge", chuyển giao tất cả các h
 - **Truy cập tĩnh** — Truy cập toàn cầu vào quản lý lỗi mà không cần khởi tạo thủ công.
 - **Bộ lưu trữ tập trung** — Lưu trữ các nguyên nhân lỗi được tiêu chuẩn hóa để phản hồi UI nhất quán.
 - **Xử lý theo nhóm** — Cho phép đăng ký nhiều hàm gọi lại cho các danh mục lỗi cụ thể.
-- **Chainable API** — Các phương thức thêm nguyên nhân và trình xử lý hỗ trợ thiết kế giao diện linh hoạt.
 - **Giá trị mặc định** — Đi kèm với các nguyên nhân lỗi mạng tiêu chuẩn (`timeout`, `offline`, `notFound`, v.v.).
-
-## Các phương thức kiểm tra
-
-- `has(code: string, group?: string): boolean` — Kiểm tra xem một nguyên nhân lỗi có tồn tại trong bộ lưu trữ hay không.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Truy xuất đối tượng nguyên nhân lỗi đầy đủ.
-
-## Truy xuất thực thể
-
-- `getItem(): ErrorCenterInstance` — Trả về thực thể nền tảng được sử dụng bởi lớp tĩnh.
-
-## Cấu hình
-
-- `add(cause: ErrorCenterCauseItem): this` — Thêm một nguyên nhân lỗi duy nhất vào bộ lưu trữ toàn cầu.
-- `addList(causes: ErrorCenterCauseList): this` — Thêm nhiều nguyên nhân lỗi vào bộ lưu trữ cùng một lúc.
-- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Đăng ký một hàm gọi lại cho một nhóm lỗi cụ thể.
-- `addHandlerList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
 
 ## Các phương thức hành động
 
@@ -41,33 +24,86 @@ Kích hoạt xử lý lỗi cho nguyên nhân được chỉ định. Nó tìm k
 **Tham số:**
 - `cause: ErrorCenterCauseItem` — Nguyên nhân lỗi cần kích hoạt. Chỉ cần cung cấp mã và nhóm nếu nguyên nhân đó đã được đăng ký trước đó qua `add()`.
 
-**Trả về:** `this`
+**Trả về:** `void`
+
+## Các phương thức kiểm tra
+
+- `has(code: string, group?: string): boolean` — Kiểm tra xem một nguyên nhân lỗi có tồn tại trong bộ lưu trữ hay không.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Truy xuất đối tượng nguyên nhân lỗi đầy đủ.
+
+## Cấu hình
+
+- `add(cause: ErrorCenterCauseItem): void` — Thêm một nguyên nhân lỗi duy nhất vào bộ lưu trữ toàn cầu.
+- `addList(causes: ErrorCenterCauseList): void` — Thêm nhiều nguyên nhân lỗi vào bộ lưu trữ cùng một lúc.
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Đăng ký một hàm gọi lại cho một nhóm lỗi cụ thể.
+- `addHandlerList(handlers: ErrorCenterHandlerList): void` — Đăng ký một loạt các trình xử lý.
+
+## Truy xuất thực thể
+
+- `getItem(): ErrorCenterInstance` — Trả về thực thể nền tảng được sử dụng bởi lớp tĩnh.
 
 ## Các kiểu dữ liệu
 
-### `ErrorCenterCauseItem`
+#### `ErrorCenterGroup`
+Định danh nhóm lỗi.
+- `string | undefined` — Tên chuỗi cho nhóm, hoặc `undefined` cho trình xử lý toàn cục/mặc định.
 
-Đối tượng chính được sử dụng để xác định nguyên nhân gây lỗi.
+#### `ErrorCenterCauseItem`
+Thông tin chi tiết về nguyên nhân lỗi.
+- `group?: ErrorCenterGroup` — Nhóm mà lỗi này thuộc về.
+- `code: string` — Mã lỗi duy nhất (ví dụ: '404', 'AUTH_ERROR').
+- `priority?: number` — Mức độ ưu tiên được sử dụng để hợp nhất nhiều lỗi (mặc định: `500`).
+- `label?: string` — Tên ngắn gọn, dễ hiểu cho lỗi.
+- `message?: string` — Thông báo lỗi mô tả.
+- `details?: any` — Bất kỳ bối cảnh bổ sung hoặc dữ liệu lỗi thô nào.
 
-- `group?: ErrorCenterGroup` — danh mục/nhóm mà lỗi thuộc về.
-- `code: string` — mã định danh duy nhất cho lỗi.
-- `label?: string` — tên lỗi dễ đọc cho người dùng.
-- `message?: string` — mô tả chi tiết về lỗi.
-- `details?: any` — đối tượng tùy chọn cho các dữ liệu bổ sung.
+#### `ErrorCenterCauseList`
+Một mảng các đối tượng `ErrorCenterCauseItem`.
 
-### `ErrorCenterGroup`
+#### `ErrorCenterHandlerCallback`
+Hàm cho các callback xử lý lỗi.
+- `(cause: ErrorCenterCauseItem) => void` — Nhận đối tượng nguyên nhân lỗi khi được kích hoạt.
 
-Định nghĩa kiểu đơn giản để phân loại lỗi: `string | undefined`.
+#### `ErrorCenterHandlerItem`
+Một đối tượng lưu trữ nội bộ ánh xạ một nhóm tới các trình xử lý của nó.
+- `group?: ErrorCenterGroup` — Nhóm lỗi mục tiêu.
+- `handlers: ErrorCenterHandlerCallback[]` — Danh sách các hàm callback cho nhóm này.
+
+#### `ErrorCenterHandlerList`
+Một mảng các đối tượng `ErrorCenterHandlerItem` được sử dụng để đăng ký hàng loạt.
 
 ## Các nguyên nhân lỗi mặc định
 
-`ErrorCenter` được điền sẵn tự động với các nguyên nhân mạng tiêu chuẩn sau:
+`ErrorCenter` được điền sẵn các nguyên nhân lỗi phổ biến trong các lĩnh vực chức năng khác nhau. Những nguyên nhân này được định nghĩa trong `@dxtmisha/functional-basic/media/errorCauseList`.
 
-- `unknown` — **Lỗi không xác định**: Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.
-- `timeout` — **Yêu cầu hết hạn**: Yêu cầu mất quá nhiều thời gian. Vui lòng kiểm tra kết nối.
-- `offline` — **Không có kết nối**: Bạn đang ngoại tuyến. Vui lòng kiểm tra mạng.
-- `notFound` — **Không tìm thấy**: Tài nguyên được yêu cầu không thể tìm thấy.
-- `server` — **Lỗi máy chủ**: Đã xảy ra lỗi nội bộ máy chủ.
+### API (`group: 'api'`)
+- **`unknown`** — **Lỗi không xác định**: Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.
+- **`timeout`** — **Yêu cầu hết hạn**: Yêu cầu mất quá nhiều thời gian. Vui lòng kiểm tra kết nối.
+- **`offline`** — **Không có kết nối**: Bạn đang ngoại tuyến. Vui lòng kiểm tra mạng.
+- **`notFound`** — **Không tìm thấy**: Tài nguyên được yêu cầu không thể tìm thấy trên máy chủ.
+- **`server`** — **Lỗi máy chủ**: Đã xảy ra lỗi nội bộ máy chủ.
+- **`cacheClear`** — **Lỗi xóa bộ nhớ đệm**: Đã xảy ra lỗi trong quá trình xóa bộ nhớ đệm chạy ngầm.
+
+### Quốc tế hóa (`group: 'intl'`)
+- **`datetime`** — **Lỗi Intl Datetime**: Lỗi trong logic định dạng ngày hoặc giờ.
+- **`display`** — **Lỗi Intl Display**: Lỗi khi định dạng tên hiển thị hoặc vùng/quốc gia.
+- **`number`** — **Lỗi Intl Number**: Lỗi khi định dạng số hoặc tiền tệ.
+- **`plural`** — **Lỗi Intl Plural**: Lỗi trong logic quy tắc số nhiều.
+- **`relative`** — **Lỗi Intl Relative**: Lỗi khi định dạng thời gian tương đối.
+
+### Lưu trữ (`group: 'storage'`)
+- **`context`** — **Lỗi thiếu ngữ cảnh**: Ngữ cảnh lưu trữ bị thiếu (có thể do chưa gọi `init()`). Việc cách ly dữ liệu cho yêu cầu này đã thất bại.
+- **`error`** — **Lỗi lưu trữ**: Lỗi chung khi đọc hoặc ghi vào bộ nhớ lưu trữ.
+
+### Các nhóm khác
+- **Broadcast** (`group: 'broadcast'`)
+    - **`error`**: Lỗi không mong muốn trong giao tiếp `BroadcastChannel`.
+- **Hydration** (`group: 'hydration'`)
+    - **`error`**: Lỗi trong quá trình hydration dữ liệu phía client.
+- **Share** (`group: 'share'`)
+    - **`error`**: Lỗi không mong muốn trong quá trình chia sẻ (sharing).
+- **Transformation** (`group: 'transformation'`)
+    - **`error`**: Lỗi trong quá trình chuyển đổi hoặc định dạng dữ liệu.
 
 ## Ví dụ sử dụng
 

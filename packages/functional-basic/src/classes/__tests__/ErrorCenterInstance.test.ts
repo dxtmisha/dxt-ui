@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ErrorCenterHandler } from '../ErrorCenterHandler'
 import { ErrorCenterInstance } from '../ErrorCenterInstance'
@@ -56,6 +55,52 @@ describe('ErrorCenterInstance', () => {
       group: 'G1',
       label: 'Stored Label',
       message: 'New Message'
+    })
+  })
+
+  it('should respect priority when merging (stored cause wins if higher priority)', () => {
+    const storedCause: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', label: 'Protected Label', priority: 1000 }
+    instance.add(storedCause)
+
+    const handlerCallback = vi.fn()
+    instance.addHandler('G1', handlerCallback)
+
+    const triggerCause: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', label: 'Attempted Override', priority: 500 }
+    instance.on(triggerCause)
+
+    expect(handlerCallback).toHaveBeenCalledWith({
+      code: 'ERR',
+      group: 'G1',
+      label: 'Protected Label',
+      priority: 1000
+    })
+  })
+
+  it('should respect priority when merging (trigger wins if higher or equal priority)', () => {
+    const storedCause: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', label: 'Base Label', priority: 500 }
+    instance.add(storedCause)
+
+    const handlerCallback = vi.fn()
+    instance.addHandler('G1', handlerCallback)
+
+    const triggerCause1: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', label: 'Better Label', priority: 1000 }
+    instance.on(triggerCause1)
+
+    expect(handlerCallback).toHaveBeenCalledWith({
+      code: 'ERR',
+      group: 'G1',
+      label: 'Better Label',
+      priority: 1000
+    })
+
+    const triggerCause2: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', label: 'Equal Label', priority: 500 }
+    instance.on(triggerCause2)
+
+    expect(handlerCallback).toHaveBeenLastCalledWith({
+      code: 'ERR',
+      group: 'G1',
+      label: 'Equal Label',
+      priority: 500
     })
   })
 

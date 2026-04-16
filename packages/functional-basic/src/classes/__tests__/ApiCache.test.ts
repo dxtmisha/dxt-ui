@@ -2,21 +2,17 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ApiCache } from '../ApiCache'
 import { ApiMethodItem } from '../../types/apiTypes'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
-import * as getCurrentTimeModule from '../../functions/getCurrentTime'
 
 vi.mock('../../functions/isDomRuntime', () => ({
   isDomRuntime: vi.fn()
 }))
 
-vi.mock('../../functions/getCurrentTime', () => ({
-  getCurrentTime: vi.fn()
-}))
-
 describe('ApiCache', () => {
   beforeEach(() => {
+    vi.useFakeTimers()
     vi.clearAllMocks()
     ApiCache.reset()
-    vi.mocked(getCurrentTimeModule.getCurrentTime).mockReturnValue(1000)
+    vi.setSystemTime(new Date(1000))
   })
 
   // ─────────────────────────────────────────────
@@ -24,17 +20,18 @@ describe('ApiCache', () => {
   // ─────────────────────────────────────────────
 
   describe('init', () => {
-    it('should initialize with listeners', () => {
+    it('should initialize with listeners and custom step age', () => {
       const get = vi.fn()
-      const set = vi.fn()
-      const remove = vi.fn()
+      const set = vi.fn().mockResolvedValue(true)
+      const remove = vi.fn().mockResolvedValue(true)
 
-      ApiCache.init(get, set, remove)
+      ApiCache.init(get, set, remove, 10)
 
       // Accessing private members via any for testing
       expect((ApiCache as any).getListener).toBe(get)
       expect((ApiCache as any).setListener).toBe(set)
       expect((ApiCache as any).removeListener).toBe(remove)
+      expect((ApiCache as any).cacheStepAgeClearOld).toBe(10)
     })
   })
 
@@ -54,9 +51,9 @@ describe('ApiCache', () => {
 
     it('should use listeners when provided', async () => {
       const mockItem = { value: 'from-listener', age: 60, cacheAge: 1000 }
-      const get = vi.fn().mockReturnValue(mockItem)
-      const set = vi.fn()
-      const remove = vi.fn()
+      const get = vi.fn().mockResolvedValue(mockItem)
+      const set = vi.fn().mockResolvedValue(true)
+      const remove = vi.fn().mockResolvedValue(true)
 
       ApiCache.init(get, set, remove)
 
@@ -135,13 +132,13 @@ describe('ApiCache', () => {
     })
 
     it('should return true if item is within age limit', () => {
-      vi.mocked(getCurrentTimeModule.getCurrentTime).mockReturnValue(1500)
+      vi.setSystemTime(new Date(1500))
       const item = { value: 'test', age: 1, cacheAge: 1000 } // age 1s = 1000ms. limit = 1000 + 1000 = 2000. 1500 < 2000.
       expect((ApiCache as any).isAge(item)).toBe(true)
     })
 
     it('should return false if item is expired', () => {
-      vi.mocked(getCurrentTimeModule.getCurrentTime).mockReturnValue(3000)
+      vi.setSystemTime(new Date(3000))
       const item = { value: 'test', age: 1, cacheAge: 1000 } // limit = 2000. 3000 > 2000.
       expect((ApiCache as any).isAge(item)).toBe(false)
     })
@@ -160,8 +157,8 @@ describe('ApiCache', () => {
     })
 
     it('should call removeListener if provided', async () => {
-      const remove = vi.fn()
-      ApiCache.init(vi.fn(), vi.fn(), remove)
+      const remove = vi.fn().mockResolvedValue(true)
+      ApiCache.init(vi.fn(), vi.fn().mockResolvedValue(true), remove)
       await ApiCache.remove('some-key')
       expect(remove).toHaveBeenCalledWith('some-key')
     })
@@ -194,13 +191,47 @@ describe('ApiCache', () => {
   describe('reset', () => {
     it('should clear all items and listeners', async () => {
       const get = vi.fn()
-      ApiCache.init(get, vi.fn(), vi.fn())
+      ApiCache.init(get, vi.fn().mockResolvedValue(true), vi.fn().mockResolvedValue(true))
       await ApiCache.set('key', 'val')
 
       ApiCache.reset()
 
       expect((ApiCache as any).getListener).toBeUndefined()
       expect(await ApiCache.get('key')).toBeUndefined()
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // Throttling
+  // ─────────────────────────────────────────────
+
+  describe('clearOld throttling', () => {
+    it('should only clear old items every cacheStepAgeClearOld calls', async () => {
+      ApiCache.init(vi.fn(), vi.fn().mockResolvedValue(true), vi.fn().mockResolvedValue(true), 2)
+
+      // Add an expired item directly
+      // @ts-ignore
+      ApiCache.getList()['old'] = { value: 'val', age: 10, cacheAge: 0 }
+
+      // Date.now() is 1000. age 10 means it expires at 10010.
+      // It's definitely expired since 0 + 10*1000 = 10000. 1000 < 10000 is NOT expired.
+      // Wait, 0 + 10s = 10000ms. If Date.now() is 11000, it's expired.
+      vi.setSystemTime(20000)
+
+      // 1st call: stepAgeClearOld 2 -> 1
+      await ApiCache.get('any')
+      // @ts-ignore
+      expect(ApiCache.getList()['old']).toBeDefined()
+
+      // 2nd call: stepAgeClearOld 1 -> 0
+      await ApiCache.get('any')
+      // @ts-ignore
+      expect(ApiCache.getList()['old']).toBeDefined()
+
+      // 3rd call: stepAgeClearOld 0 -> trigger -> set to 2
+      await ApiCache.get('any')
+      // @ts-ignore
+      expect(ApiCache.getList()['old']).toBeUndefined()
     })
   })
 })

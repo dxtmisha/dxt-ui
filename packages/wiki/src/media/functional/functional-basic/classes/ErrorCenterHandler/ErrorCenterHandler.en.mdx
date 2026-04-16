@@ -6,23 +6,15 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A core utility class for managing and triggering error handlers based on defined groups. It allows for flexible error response strategies, such as showing global notifications for API errors while performing silent logging for background tasks.
 
+> `ErrorCenterHandler` is an **auxiliary class** designed to manage lower-level handler coordination. In most cases, it is recommended to interact with errors through `ErrorCenter` or `ErrorCenterInstance`.
+
 ## Key Features
 
 - **Handler Registration** — Easily add multiple callback functions to specific error groups.
 - **Group Filtering** — Target specific categories of errors (e.g., `api`, `auth`, `validation`).
 - **Global Fallback** — Support for an `undefined` group handler that catches any error without a specific handler.
 - **Sequential Execution** — Triggers all registered callbacks for a group in the order they were added.
-- **Integrated Logging** — Automatically outputs error details to the browser console for debugging.
-
-## Check Methods
-
-- `has(group: ErrorCenterGroup): boolean` — Checks if any handlers are registered for a specific group.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Retrieves the handler mapping for a group.
-
-## Configuration
-
-- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Adds a single callback function to a group.
-- `addList(handlers: ErrorCenterHandlerList): this` — Registers a batch of handlers.
+- **Integrated Logging** — Automatically outputs error details to the console for debugging.
 
 ## Action Methods
 
@@ -35,13 +27,45 @@ Triggers all registered handlers for the provided error cause's group. If no spe
 
 **Returns:** `this`
 
+## Check Methods
+
+- `has(group: ErrorCenterGroup): boolean` — Checks if any handlers are registered for a specific group.
+- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Retrieves the handler mapping for a group.
+
+## Configuration
+
+- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Adds a single callback function to a group.
+- `addList(handlers: ErrorCenterHandlerList): this` — Registers a batch of handlers.
+
 ## Types
 
-### `ErrorCenterHandlerCallback`
+#### `ErrorCenterGroup`
+Represents an error group identifier.
+- `string | undefined` — A string name for the group, or `undefined` for a global/default handler.
 
+#### `ErrorCenterCauseItem`
+Detailed information about an error cause.
+- `group?: ErrorCenterGroup` — The group this error belongs to.
+- `code: string` — A unique error code (e.g., '404', 'AUTH_ERROR').
+- `priority?: number` — Importance level used for merging multiple errors.
+- `label?: string` — A short, human-readable name for the error.
+- `message?: string` — A descriptive error message.
+- `details?: any` — Any additional context or raw error data.
+
+#### `ErrorCenterCauseList`
+An array of `ErrorCenterCauseItem` objects.
+
+#### `ErrorCenterHandlerCallback`
 The function signature for error handling callbacks.
+- `(cause: ErrorCenterCauseItem) => void` — Receives the error cause object when triggered.
 
-- `(cause: ErrorCenterCauseItem) => void` — Receives the merged error cause object.
+#### `ErrorCenterHandlerItem`
+An internal storage object mapping a group to its handlers.
+- `group?: ErrorCenterGroup` — The targeted error group.
+- `handlers: ErrorCenterHandlerCallback[]` — List of callback functions for this group.
+
+#### `ErrorCenterHandlerList`
+An array of `ErrorCenterHandlerItem` objects used for batch registration.
 
 ## Usage Example
 

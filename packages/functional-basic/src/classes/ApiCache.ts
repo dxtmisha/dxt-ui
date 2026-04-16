@@ -1,21 +1,13 @@
-import { getCurrentTime } from '../functions/getCurrentTime'
 import { isDomRuntime } from '../functions/isDomRuntime'
-
 import { ErrorCenter } from './ErrorCenter'
 
 import type { ApiCacheItem, ApiCacheList, ApiFetch } from '../types/apiTypes'
 
 /**
  * Default cache age in seconds (24 hours)/
- * Значение кэша по умолчанию в секундах (24 часа)
+ * Значение возраста кэша по умолчанию в секундах (24 часа)
  */
 const API_CACHE_DEFAULT_AGE = 24 * 60 * 60
-
-/**
- * Step age for clearing old cache in seconds (1 minute)/
- * Шаг возраста для очистки старого кэша в секундах (1 минута)
- */
-const API_CACHE_STEP_AGE_CLEAR_OLD = 16_384
 
 /**
  * Class for caching API responses.
@@ -25,8 +17,6 @@ const API_CACHE_STEP_AGE_CLEAR_OLD = 16_384
 export class ApiCache {
   /** Cache storage / Кэш хранилища */
   protected static items?: ApiCacheList
-  /** Cache storage info / Кэш хранилища информации */
-  protected static itemsInfo?: ApiCacheList
 
   /** Storage mechanism for getting data / механизм хранения для получения данных */
   protected static getListener?: (key: string) => Promise<ApiCacheItem | undefined>
@@ -35,13 +25,19 @@ export class ApiCache {
   protected static setListener?: (
     key: string,
     value: ApiCacheItem
-  ) => Promise<void>
+  ) => Promise<boolean>
 
   /** Storage mechanism for removing data / механизм хранения для удаления данных */
-  protected static removeListener?: (key: string) => Promise<void>
+  protected static removeListener?: (key: string) => Promise<boolean>
 
-  /** Step age for clearing old cache in seconds (1 minute)/ Шаг возраста для очистки старого кэша в секундах (1 минута) */
-  protected static stepAgeClearOld: number = API_CACHE_STEP_AGE_CLEAR_OLD
+  /**
+   * Number of data retrieval requests before starting the cleaning of old cache/
+   * Количество запросов получения данных перед началом очистки старого кэша
+   */
+  protected static cacheStepAgeClearOld = 16_384
+
+  /** Number of data retrieval requests before starting the cleaning of old cache/ Количество запросов получения данных перед началом очистки старого кэша */
+  protected static stepAgeClearOld: number = this.cacheStepAgeClearOld
 
   /**
    * Initializes the storage with listeners.
@@ -50,15 +46,22 @@ export class ApiCache {
    * @param getListener Storage mechanism for getting data / механизм хранения для получения данных
    * @param setListener Storage mechanism for setting data / механизм хранения для сохранения данных
    * @param removeListener Storage mechanism for removing data / механизм хранения для удаления данных
+   * @param cacheStepAgeClearOld Number of data retrieval requests before starting the cleaning of old cache / количество запросов получения данных перед началом очистки старого кэша
    */
   static init(
     getListener: (key: string) => Promise<ApiCacheItem | undefined>,
-    setListener: (key: string, value: ApiCacheItem) => Promise<void>,
-    removeListener: (key: string) => Promise<void>
+    setListener: (key: string, value: ApiCacheItem) => Promise<boolean>,
+    removeListener: (key: string) => Promise<boolean>,
+    cacheStepAgeClearOld?: number
   ): void {
     this.getListener = getListener
     this.setListener = setListener
     this.removeListener = removeListener
+
+    if (cacheStepAgeClearOld) {
+      this.cacheStepAgeClearOld = cacheStepAgeClearOld
+      this.stepAgeClearOld = cacheStepAgeClearOld
+    }
   }
 
   /**
@@ -68,13 +71,12 @@ export class ApiCache {
    */
   static reset(): typeof ApiCache {
     this.items = undefined
-    this.itemsInfo = undefined
 
     this.getListener = undefined
     this.setListener = undefined
     this.removeListener = undefined
 
-    this.stepAgeClearOld = API_CACHE_STEP_AGE_CLEAR_OLD
+    this.stepAgeClearOld = this.cacheStepAgeClearOld
 
     return this
   }
@@ -127,16 +129,14 @@ export class ApiCache {
     key: string,
     value: T,
     age: number = API_CACHE_DEFAULT_AGE
-  ): Promise<typeof ApiCache> {
+  ): Promise<void> {
     const item: ApiCacheItem<T> = {
       value,
       age,
-      cacheAge: getCurrentTime()
+      cacheAge: Date.now()
     }
 
     await this.setItemOrListener(key, item)
-
-    return this
   }
 
   /**
@@ -146,13 +146,11 @@ export class ApiCache {
    * @param fetch fetch options / опции fetch
    * @param value data to be stored / данные для хранения
    */
-  static async setByFetch<T>(fetch: ApiFetch, value: T): Promise<typeof ApiCache> {
+  static async setByFetch<T>(fetch: ApiFetch, value: T): Promise<void> {
     if (this.isCache(fetch)) {
       const key = this.generateKey(fetch)
       await this.set(key, value, fetch.cache)
     }
-
-    return this
   }
 
   /**
@@ -161,9 +159,8 @@ export class ApiCache {
    * Удаление данных из кэша.
    * @param key cache key / ключ кэша
    */
-  static async remove(key: string): Promise<typeof ApiCache> {
+  static async remove(key: string): Promise<void> {
     await this.removeItemOrListener(key)
-    return this
   }
 
   /**
@@ -197,7 +194,7 @@ export class ApiCache {
       return true
     }
 
-    return (item.age * 1000) + item.cacheAge >= getCurrentTime()
+    return (item.age * 1000) + item.cacheAge >= Date.now()
   }
 
   /**
@@ -208,16 +205,6 @@ export class ApiCache {
    */
   protected static isItem(key: string): boolean {
     return key in this.getList()
-  }
-
-  /**
-   * Checks if the key exists in the cache info.
-   *
-   * Проверяет, существует ли ключ в информации о кэше.
-   * @param key cache key / ключ кэша
-   */
-  protected static isItemInfo(key: string): boolean {
-    return key in this.getListInfo()
   }
 
   /**
@@ -273,39 +260,21 @@ export class ApiCache {
   }
 
   /**
-   * Getting list of cache items info.
-   *
-   * Получение списка информации об элементах кэша.
-   * @returns list of cache items info / список информации об элементах кэша
-   */
-  protected static getListInfo(): ApiCacheList {
-    if (!this.itemsInfo) {
-      this.itemsInfo = {}
-    }
-
-    return this.itemsInfo
-  }
-
-  /**
    * Saving data to cache using listener.
    *
    * Сохранение данных в кэш с использованием слушателя.
    * @param key cache key / ключ кэша
    * @param value data to be stored / данные для хранения
    */
-  protected static async setItemOrListener(key: string, value: ApiCacheItem): Promise<typeof ApiCache> {
-    if (this.setListener) {
-      await this.setListener(key, value)
-      this.getListInfo()[key] = {
-        value: undefined,
-        age: value.age,
-        cacheAge: value.cacheAge
-      }
-    } else {
-      this.getList()[key] = value
-    }
+  protected static async setItemOrListener(key: string, value: ApiCacheItem): Promise<void> {
+    const status = this.setListener
+      ? await this.setListener(key, value)
+      : false
 
-    return this
+    this.getList()[key] = {
+      ...value,
+      value: status ? undefined : value.value
+    }
   }
 
   /**
@@ -314,18 +283,14 @@ export class ApiCache {
    * Удаление данных из кэша с использованием слушателя.
    * @param key cache key / ключ кэша
    */
-  protected static async removeItemOrListener(key: string): Promise<typeof ApiCache> {
+  protected static async removeItemOrListener(key: string): Promise<void> {
     if (this.removeListener) {
       await this.removeListener(key)
-
-      if (this.isItemInfo(key)) {
-        delete this.getListInfo()[key]
-      }
-    } else if (this.isItem(key)) {
-      delete this.getList()[key]
     }
 
-    return this
+    if (this.isItem(key)) {
+      delete this.getList()[key]
+    }
   }
 
   /**
@@ -338,21 +303,14 @@ export class ApiCache {
       return this
     }
 
-    const list = [
-      this.items,
-      this.itemsInfo
-    ]
+    this.stepAgeClearOld = this.cacheStepAgeClearOld
 
-    this.stepAgeClearOld = API_CACHE_STEP_AGE_CLEAR_OLD
+    if (this.items) {
+      for (const key in this.items) {
+        const item = this.items[key]
 
-    for (const items of list) {
-      if (items) {
-        for (const key in items) {
-          const item = items[key]
-
-          if (!this.isAge(item)) {
-            await this.removeItemOrListener(key)
-          }
+        if (!this.isAge(item)) {
+          await this.removeItemOrListener(key)
         }
       }
     }

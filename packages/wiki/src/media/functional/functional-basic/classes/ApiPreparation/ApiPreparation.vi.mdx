@@ -4,40 +4,49 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ApiPreparation
 
-Một lớp được thiết kế đặc biệt để xử lý các tác vụ và hiệu ứng phụ (side effects) chạy ngay trước và sau khi thực thi một yêu cầu API. Nó đóng vai trò cung cấp các siêu liên kết điểm chốt (`callback` và `callbackEnd`) để chặn hoặc theo dõi các yêu cầu, thực hiện thao tác hay kích hoạt xử lý giao diện như đồ họa tải trang.
+Một lớp chuyên dụng được thiết kế để xử lý các tác vụ và hiệu ứng phụ ngay trước và sau khi thực thi một yêu cầu API. Nó phục vụ việc chặn các yêu cầu trên toàn cục thông qua các hook theo dõi, cho phép thao tác trạng thái hoặc kích hoạt logic toàn cục như làm mới token hoặc ghi log.
+
+> `ApiPreparation` là một **lớp bổ trợ** (auxiliary class), được thiết kế để quản lý vòng đời yêu cầu. Trong hầu hết các trường hợp, bạn nên tương tác với các hook thông qua các phương thức `setPreparation` và `setEnd` của thực thể `Api` chính.
 
 ## Các tính năng chính
 
-- **Thực thi trước yêu cầu (Pre-request Execution)** — can thiệp vào vòng đời API ngay trước thời điểm tiến hành gọi `fetch` vật lý thực tế.
-- **Phân tích sau yêu cầu (Post-request Analysis)** — kích hoạt chạy logic ngay khi yêu cầu truy vấn hoàn tất, có khả năng kết nối tới các thông số `Response` trả về cộng với cấu hình truy vấn ban đầu.
-- **Kiểm soát động (Concurrency Control)** — đảm bảo các hook chồng chéo được xử lý hợp lý mà không bị tắt nghẽn.
-- **Móc nối dữ liệu (Data Injection)** — các hook nối mạng có đặc quyền trả về dữ liệu hoặc một cờ tín hiệu `reset` nhằm thao túng hay ngắt phiên xử lý phản hồi API toàn cục sau đó.
+- **Thực thi tuần tự** — đảm bảo rằng các hook chuẩn bị được giải quyết từng cái một, ngăn chặn xung đột trong các hoạt động đồng thời (ví dụ: làm mới token bị trùng lặp).
+- **Chặn luồng toàn cục** — cung cấp một điểm vào và ra duy nhất cho tất cả lưu lượng mạng được khởi tạo bởi trình quản lý cha của nó.
+- **Phát lại yêu cầu** — các hook sau yêu cầu có thể báo hiệu hệ thống tự động thử lại một yêu cầu sau khi trạng thái thay đổi.
 
-## Khởi tạo
+## Các phương thức hành động
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `ApiPreparation()`.
+### `make`
 
-```typescript
-import { ApiPreparation } from '@dxtmisha/functional'
+Thực thi callback chuẩn bị đã đăng ký. Nếu một quá trình chuẩn bị khác đang diễn ra, nó sẽ đợi cho đến khi hoàn thành.
 
-// 1. Khởi tạo đơn giản
-const preparation = new ApiPreparation()
+**Tham số:**
+- `active: boolean` — Hook có được bật cho yêu cầu hiện tại hay không.
+- `apiFetch: ApiFetch` — Cấu hình cho yêu cầu sắp tới.
 
-// 2. Thiết lập callback trước yêu cầu
-preparation.set(async (apiFetch) => {
-  console.log('Đang chuẩn bị yêu cầu tới:', apiFetch.path)
-})
+**Trả về:** `Promise<void>`
 
-// 3. Thiết lập callback sau yêu cầu
-preparation.setEnd(async (query, apiFetch) => {
-  console.log('Yêu cầu đã hoàn tất với trạng thái:', query.status)
-  return { reset: false }
-})
-```
+### `makeEnd`
 
-## Các phương thức
+Thực thi callback phân tích đã đăng ký sau khi một yêu cầu hoàn thành.
 
-- `make(active: boolean, apiFetch: ApiFetch): Promise<void>` — Thực thi vòng lặp chuẩn bị ngay trước thời khắc truy vấn vận hành.
-- `makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>` — Thực thi tính chất phân tích vòng lặp móc nối sau khi liên kết server đóng băng.
-- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Cách đấu nối một hàm tuỳ chỉnh thiết lập logic chạy tuần tự trước một yêu cầu.
-- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Thiết lập một hàm vòng sự kiện được kích hoạt tức thì sau khi một phiên yêu cầu khép lại.
+**Tham số:**
+- `active: boolean` — Hook có được bật cho yêu cầu hiện tại hay không.
+- `query: Response` — Đối tượng phản hồi Fetch API gốc.
+- `apiFetch: ApiFetch` — Cấu hình đã được sử dụng cho yêu cầu.
+
+**Trả về:** `Promise<ApiPreparationEnd>` — Một đối tượng điều khiển các bước tiếp theo (ví dụ: reset, tiêm dữ liệu).
+
+## Cấu hình
+
+- `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Đăng ký một hàm sẽ chạy trước mọi yêu cầu được bật.
+- `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Đăng ký một hàm sẽ chạy sau mọi phản hồi được bật.
+
+## Hướng dẫn: Cơ chế của Hook
+
+Các quy tắc và điều kiện sau đây xác định cách hệ thống chuẩn bị đồng bộ hóa và quản lý các hook vòng đời:
+
+- **Đồng bộ hóa** — hệ thống sử dụng cơ chế thăm dò (khoảng thời gian 160ms) để đảm bảo rằng chỉ có một hook `setPreparation` thực thi tại một thời điểm. Nếu nhiều yêu cầu bắt đầu đồng thời, các cuộc gọi tiếp theo sẽ đợi tối đa 32 lần thăm dò (~5 giây) để cuộc gọi đầu tiên hoàn thành.
+- **Tiêm ngữ cảnh** — đối tượng `apiFetch` được truyền vào các hook theo dạng tham chiếu. Việc sửa đổi các thuộc tính của nó (như tiêu đề hoặc thân yêu cầu) bên trong `setPreparation` sẽ ảnh hưởng trực tiếp đến lệnh gọi mạng vật lý ngay sau đó.
+- **Điều khiển luồng (Reset)** — hook `setEnd` có thể trả về `{ reset: true }`. Khi cờ này được phát hiện, `ApiInstance` sẽ hủy chuỗi yêu cầu hiện tại và khởi động lại nó ngay lập tức từ giai đoạn chuẩn bị. Điều này chủ yếu được sử dụng để làm mới token tự động và thầm lặng.
+- **Phạm vi thực thi** — các hook chỉ chạy nếu chúng được bật rõ ràng trong cấu hình yêu cầu. Theo mặc định, `globalPreparation` và `globalEnd` được đặt thành true trong `ApiFetch`.

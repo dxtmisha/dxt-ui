@@ -1,19 +1,19 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ApiStatus } from '../ApiStatus'
 
-describe('ApiStatus / Статус API', () => {
+describe('ApiStatus / API Status', () => {
   let apiStatus: ApiStatus
 
   beforeEach(() => {
     apiStatus = new ApiStatus()
   })
 
-  describe('get / Получение всех данных статуса', () => {
-    it('should return undefined when no status data is set / должен возвращать undefined, если данные статуса не установлены', () => {
+  describe('get / Get all status data', () => {
+    it('should return undefined when no status data is set', () => {
       expect(apiStatus.get()).toBeUndefined()
     })
 
-    it('should return the status data / должен возвращать данные статуса', () => {
+    it('should return the status data', () => {
       const statusData = {
         status: 200,
         statusText: 'OK',
@@ -26,63 +26,63 @@ describe('ApiStatus / Статус API', () => {
     })
   })
 
-  describe('getStatus / Получение кода статуса', () => {
-    it('should return undefined when no status code is set / должен возвращать undefined, если код статуса не установлен', () => {
+  describe('getStatus / Get status code', () => {
+    it('should return undefined when no status code is set', () => {
       expect(apiStatus.getStatus()).toBeUndefined()
     })
 
-    it('should return the status code / должен возвращать код статуса', () => {
+    it('should return the status code', () => {
       apiStatus.setStatus(200)
       expect(apiStatus.getStatus()).toBe(200)
     })
 
-    it('should return updated status code / должен возвращать обновленный код статуса', () => {
+    it('should return updated status code', () => {
       apiStatus.setStatus(200)
       apiStatus.setStatus(404)
       expect(apiStatus.getStatus()).toBe(404)
     })
   })
 
-  describe('getStatusText / Получение текста статуса', () => {
-    it('should return undefined when no status text is set / должен возвращать undefined, если текст статуса не установлен', () => {
+  describe('getStatusText / Get status text', () => {
+    it('should return undefined when no status text is set', () => {
       expect(apiStatus.getStatusText()).toBeUndefined()
     })
 
-    it('should return the status text / должен возвращать текст статуса', () => {
+    it('should return the status text', () => {
       apiStatus.setStatus(200, 'OK')
       expect(apiStatus.getStatusText()).toBe('OK')
     })
   })
 
-  describe('getError / Получение ошибки', () => {
-    it('should return undefined when no error is set / должен возвращать undefined, если ошибка не установлена', () => {
+  describe('getError / Get error', () => {
+    it('should return undefined when no error is set', () => {
       expect(apiStatus.getError()).toBeUndefined()
     })
 
-    it('should return the error message / должен возвращать сообщение об ошибке', () => {
+    it('should return the error message', () => {
       apiStatus.setError('Something went wrong')
       expect(apiStatus.getError()).toBe('Something went wrong')
     })
 
-    it('should clear error when set to undefined / должен очищать ошибку при установке в undefined', () => {
+    it('should clear error when set to undefined', () => {
       apiStatus.setError('Error')
       apiStatus.setError(undefined)
       expect(apiStatus.getError()).toBeUndefined()
     })
   })
 
-  describe('getResponse / Получение последнего ответа', () => {
-    it('should return undefined when no response is set / должен возвращать undefined, если ответ не установлен', () => {
+  describe('getResponse / Get last response', () => {
+    it('should return undefined when no response is set', () => {
       expect(apiStatus.getResponse()).toBeUndefined()
     })
 
-    it('should return the last response data / должен возвращать данные последнего ответа', () => {
+    it('should return the last response data', () => {
       const responseData = { id: 1, name: 'Test' }
       apiStatus.setLastResponse(responseData)
       expect(apiStatus.getResponse()).toEqual(responseData)
     })
 
-    it('should work with generic type / должен работать с типизированным результатом', () => {
+    it('should work with generic type', () => {
       interface UserResponse {
         userId: number
         username: string
@@ -97,17 +97,17 @@ describe('ApiStatus / Статус API', () => {
     })
   })
 
-  describe('getMessage / Получение сообщения', () => {
-    it('should return empty string when no message is set / должен возвращать пустую строку, если сообщение не установлено', () => {
+  describe('getMessage / Get message', () => {
+    it('should return empty string when no message is set', () => {
       expect(apiStatus.getMessage()).toBe('')
     })
 
-    it('should return the last message / должен возвращать последнее сообщение', () => {
+    it('should return the last message', () => {
       apiStatus.setLastMessage('Operation successful')
       expect(apiStatus.getMessage()).toBe('Operation successful')
     })
 
-    it('should extract message from response with message field / должен извлекать сообщение из поля message в ответе', () => {
+    it('should extract message from response with message field', () => {
       const response = {
         message: 'Auto-extracted message',
         data: 'some data'
@@ -117,8 +117,8 @@ describe('ApiStatus / Статус API', () => {
     })
   })
 
-  describe('set / Установка нескольких полей статуса', () => {
-    it('should set all status fields / должен устанавливать все поля статуса', () => {
+  describe('set / Set multiple status fields', () => {
+    it('should set all status fields', () => {
       const statusData = {
         status: 201,
         statusText: 'Created',
@@ -136,45 +136,45 @@ describe('ApiStatus / Статус API', () => {
       expect(apiStatus.getMessage()).toBe('Resource created')
     })
 
-    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
+    it('should return this for chaining', () => {
       const result = apiStatus.set({ status: 200 })
       expect(result).toBe(apiStatus)
     })
   })
 
-  describe('setStatus / Установка кода и текста статуса', () => {
-    it('should set status code and text / должен устанавливать код и текст статуса', () => {
+  describe('setStatus / Set status code and text', () => {
+    it('should set status code and text', () => {
       apiStatus.setStatus(404, 'Not Found')
       expect(apiStatus.getStatus()).toBe(404)
       expect(apiStatus.getStatusText()).toBe('Not Found')
     })
 
-    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
+    it('should return this for chaining', () => {
       const result = apiStatus.setStatus(200, 'OK')
       expect(result).toBe(apiStatus)
     })
   })
 
-  describe('setError / Установка ошибки', () => {
-    it('should set error message / должен устанавливать сообщение об ошибке', () => {
+  describe('setError / Set error', () => {
+    it('should set error message', () => {
       apiStatus.setError('Network error')
       expect(apiStatus.getError()).toBe('Network error')
     })
 
-    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
+    it('should return this for chaining', () => {
       const result = apiStatus.setError('Error')
       expect(result).toBe(apiStatus)
     })
   })
 
-  describe('setLastResponse / Установка последнего ответа', () => {
-    it('should set last response data / должен устанавливать данные последнего ответа', () => {
+  describe('setLastResponse / Set last response', () => {
+    it('should set last response data', () => {
       const data = { id: 1, name: 'Test' }
       apiStatus.setLastResponse(data)
       expect(apiStatus.getResponse()).toEqual(data)
     })
 
-    it('should auto-extract message from response / должен автоматически извлекать сообщение из ответа', () => {
+    it('should auto-extract message from response', () => {
       apiStatus.setLastResponse({
         message: 'Extracted message',
         data: 'test'
@@ -182,26 +182,26 @@ describe('ApiStatus / Статус API', () => {
       expect(apiStatus.getMessage()).toBe('Extracted message')
     })
 
-    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
+    it('should return this for chaining', () => {
       const result = apiStatus.setLastResponse({ data: 'test' })
       expect(result).toBe(apiStatus)
     })
   })
 
-  describe('setLastMessage / Установка последнего сообщения', () => {
-    it('should set last message / должен устанавливать последнее сообщение', () => {
+  describe('setLastMessage / Set last message', () => {
+    it('should set last message', () => {
       apiStatus.setLastMessage('Custom message')
       expect(apiStatus.getMessage()).toBe('Custom message')
     })
 
-    it('should return this for chaining / должен возвращать этот экземпляр для цепочки вызовов', () => {
+    it('should return this for chaining', () => {
       const result = apiStatus.setLastMessage('Message')
       expect(result).toBe(apiStatus)
     })
   })
 
-  describe('integration / Интеграционные сценарии', () => {
-    it('should handle complete workflow / должен обрабатывать полный жизненный цикл данных', () => {
+  describe('integration / Integration scenarios', () => {
+    it('should handle complete workflow', () => {
       // Успешный запрос
       apiStatus
         .setStatus(200, 'OK')

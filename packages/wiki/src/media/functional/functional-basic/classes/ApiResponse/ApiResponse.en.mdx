@@ -4,7 +4,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # ApiResponse Class
 
-A manager class for intercepting, caching, and emulating API responses. It allows you to intercept outgoing API requests and return predefined mock data instead of triggering actual physical network traffic. Crucial during early UI development, automated unit testing, or offline development environments.
+A manager class for intercepting, caching, and emulating API responses. It allows you to intercept outgoing API requests and return predefined mock data instead of triggering actual physical network traffic.
+
+> `ApiResponse` is an **auxiliary class**, designed for API emulation and mocking. In most cases, it is recommended to register mock responses through the `response` parameter in the global `Api` configuration.
 
 ## Key Features
 
@@ -13,34 +15,45 @@ A manager class for intercepting, caching, and emulating API responses. It allow
 - **Network Lag Simulation** — built-in system specifically tailored for simulating actual latency ping scenarios (randomized offset timers).
 - **Developer Mode** — prints useful debug information in browser consoles showing which payload mapped directly to a specific fallback mock point.
 
-## Initialization
+## Action Methods
 
-To initialize the object, call the `ApiResponse(requestDefault)` constructor.
+### `emulator`
+
+Core engine loop that validates request configurations and executes matched routing latency mock responses. This method only runs in DOM environments.
 
 **Parameters:**
-- `requestDefault: ApiDefault` — an instance for processing default request parameters.
+- `apiFetch: ApiFetch` — The properties of the request to emulate.
 
-```typescript
-import { ApiResponse, ApiDefault } from '@dxtmisha/functional'
+**Returns:** `Promise<T | undefined>` — The emulated response data.
 
-// 1. Initialize dependencies
-const apiDefault = new ApiDefault()
+## Check Methods
 
-// 2. Create emulator instance
-const apiResponse = new ApiResponse(apiDefault)
+- `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Synchronously checks for a matching cached mock request.
+- `getList(): (ApiResponseItem & Record<string, any>)[]` — Returns a list of all registered emulator configurations.
 
-// 3. Adding a mock response
-apiResponse.add({
-  path: 'user/get',
-  method: 'get',
-  response: { id: 1, name: 'Admin' }
-})
-```
+## Configuration
 
-## Methods
+- `add(response: ApiResponseItem | ApiResponseItem[]): this` — Adds mock response objects to the local registry.
+- `setDevMode(devMode: boolean): this` — Toggles the development debug log mode.
 
-- `get(path: string = '', method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Synchronously checks for a global matching cached mock request and returns its configuration.
-- `getList(): (ApiResponseItem & Record<string, any>)[]` — Returns a flat list of all currently registered emulator mock configurations.
-- `add(response: ApiResponseItem | ApiResponseItem[]): this` — Connects routing pathways and attaches fallback mock-response objects to the local registry.
-- `setDevMode(devMode: boolean): this` — Sets the development output log mode on/off natively.
-- `emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>` — Core engine loop validating configurations and executing matched routing latency mock responses recursively.
+## Types
+
+#### `ApiResponseItem`
+An object defining a mock response configuration.
+- `path: string | RegExp` — The matching URL path or pattern.
+- `method: ApiMethod` — The HTTP method (GET, POST, etc.).
+- `response: any | ((request?: any) => any)` — The mock data or a function returning it.
+- `request?: any` — Optional request payload to match against.
+- `lag?: boolean` — Whether to simulate network latency.
+- `disable?: boolean | (() => boolean)` — Condition to disable the mock.
+
+## Guide: API Emulation
+
+The following rules and conditions define how the emulation system intercepts and mocks network requests:
+
+- **Mock Registration** — responses added via `add()` take precedence and are checked before any real network call is initiated.
+- **Matching Criteria** — a mock is triggered only if the path (string or RegExp), HTTP method, and request body all match the configuration.
+- **Body Wildcards** — using `*any` as the request value allows the mock to match any payload, bypassing deep object comparison.
+- **Dynamic Data** — the `response` property can be a function, allowing you to generate dynamic mock data based on the incoming request parameters.
+- **Latency Simulation** — setting `lag: true` adds a random delay (0-2000ms) and triggers the common loading state (`d-response-loading` class on body).
+- **Match Persistence** — by default, an emulator configuration matches only once unless `devMode` is enabled, preventing duplicate mock triggers for the same state.

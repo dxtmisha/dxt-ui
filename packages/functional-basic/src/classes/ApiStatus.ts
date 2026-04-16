@@ -10,12 +10,12 @@ export class ApiStatus {
   protected value?: ApiStatusItem
 
   /**
-   * Last response data
+   * Returns the last status item data.
    *
-   * Данные последнего ответа
+   * Возвращает данные последнего элемента статуса.
    */
-  get(): ApiStatusItem {
-    return this.value as ApiStatusItem
+  get(): ApiStatusItem | undefined {
+    return this.value
   }
 
   /**
@@ -133,9 +133,9 @@ export class ApiStatus {
   }
 
   /**
-   * Sets the data of the last response.
+   * Sets the data of the last response and automatically extracts status/message if object.
    *
-   * Устанавливает данные последнего ответа.
+   * Устанавливает данные последнего ответа и автоматически извлекает статус/сообщение, если это объект.
    * @param response response data/ данные ответа
    */
   setLastResponse(response?: any): this {

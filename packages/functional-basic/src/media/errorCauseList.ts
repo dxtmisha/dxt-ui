@@ -8,6 +8,13 @@ export const errorCauseList: ErrorCenterCauseList = [
     label: 'Cache Clearing Error',
     message: 'An error occurred during background cache cleaning.'
   },
+  // Forbidden error (403) / Доступ запрещен (403)
+  {
+    group: 'api',
+    code: 'forbidden',
+    label: 'Forbidden',
+    message: 'You do not have the necessary permissions to access this resource.'
+  },
   // Resource not found (404) / Ресурс не найден (404)
   {
     group: 'api',
@@ -35,6 +42,13 @@ export const errorCauseList: ErrorCenterCauseList = [
     code: 'timeout',
     label: 'Request Timeout',
     message: 'The request took too long to complete. Please check your connection.'
+  },
+  // Unauthorized error (401) / Ошибка авторизации (401)
+  {
+    group: 'api',
+    code: 'unauthorized',
+    label: 'Unauthorized access',
+    message: 'Your session has expired or you do not have permission to access this resource.'
   },
   // Unknown API error / Неизвестная ошибка API
   {

@@ -16,7 +16,7 @@ describe('ServerStorage', () => {
   beforeEach(() => {
     // Spy on the default ErrorCenter instance's on method
     errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
-    
+
     ServerStorage.reset()
 
     // Clear SSR context
