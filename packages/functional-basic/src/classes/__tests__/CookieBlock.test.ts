@@ -1,8 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { CookieBlock } from '../CookieBlock'
+import { ServerStorage } from '../ServerStorage'
 
 describe('CookieBlock', () => {
   beforeEach(() => {
+    ServerStorage.reset()
     // Reset the internal storage back to default before each test
     CookieBlock.set(false)
   })

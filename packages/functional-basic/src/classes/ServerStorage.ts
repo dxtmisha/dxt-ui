@@ -41,6 +41,16 @@ export class ServerStorage {
   }
 
   /**
+   * Resets the storage.
+   *
+   * Сбрасывает хранилище.
+   */
+  static reset(): void {
+    this.storage = undefined
+    this.listener = undefined
+  }
+
+  /**
    * Checks if a value exists in storage.
    *
    * Проверяет наличие значения в хранилище.

@@ -10,7 +10,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Ключевые особенности
 
-- **CRUD методы** — удобные алиасы `get`, `post`, `put`, `delete` для работы с HTTP-запросами
+- **CRUD методы** — удобные алиасы `get`, `post`, `put`, `patch`, `delete` для работы с HTTP-запросами
 - **Глобальная конфигурация** — установка базового URL, заголовков и параметров по умолчанию для всех запросов
 - **Хуки жизненного цикла** — возможность задать функции, выполняемые до (`setPreparation`) и после (`setEnd`) каждого запроса
 - **Отслеживание статуса** — доступ к статусу и ошибкам последнего запроса через `ApiStatus`
@@ -75,6 +75,15 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 **Возвращает:** `Promise<T>`
 
+### `patch`
+
+Отправляет запрос методом `PATCH`. Используется для частичного обновления данных ресурса.
+
+**Параметры:**
+- `request: ApiFetch` — конфигурационный объект запроса, содержащий частичные данные для обновления.
+
+**Возвращает:** `Promise<T>`
+
 ### `delete`
 
 Отправляет запрос методом `DELETE`. Применяется для удаления данных из системы.
@@ -107,13 +116,13 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Объект ApiFetch
 
-`ApiFetch` — главный конфигурационный объект, передаваемый в методы `request`, `get`, `post`, `put`, `delete`. Все поля опциональны:
+`ApiFetch` — главный конфигурационный объект, передаваемый в методы `request`, `get`, `post`, `put`, `patch`, `delete`. Все поля опциональны:
 
 - `path?: string` — путь к endpoint-скрипту относительно базового URL (например: `'users/list'`).
 - `pathFull?: string` — полный URL запроса. Если указан, игнорирует `api` и `path`.
 - `api?: boolean` — добавлять ли базовый URL перед `path`. По умолчанию: `true`.
-- `method?: ApiMethod` — HTTP-метод (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). По умолчанию: `'GET'`.
-- `request?: FormData | Record<string, any> | string` — тело запроса (для POST/PUT) или query-параметры (для GET). Передается как JSON или `FormData`.
+- `method?: ApiMethod` — HTTP-метод (`'GET'`, `'POST'`, `'PUT'`, `'PATCH'`, `'DELETE'`). По умолчанию: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — тело запроса (для POST/PUT/PATCH) или query-параметры (for GET). Передается как JSON или `FormData`.
 - `headers?: Record<string, string> | null` — дополнительные заголовки запроса. `null` — отключить все заголовки.
 - `type?: string` — значение `Content-Type`. По умолчанию: `'application/json;charset=UTF-8'`.
 - `auth?: boolean` — добавить заголовки аутентификации.
@@ -255,7 +264,7 @@ api.setEnd(async (response, apiFetch) => {
 
 **Важные поля `ApiResponseItem`:**
 - `path` — Строка (точное совпадение) или Регулярное выражение (`RegExp`) для перехвата пути.
-- `method` — HTTP метод (`ApiMethodItem.get`, `post` и т.д.).
+- `method` — HTTP метод (`ApiMethodItem.get`, `post`, `put`, `patch` и т.д.).
 - `request` — (Опционально) Фильтр по телу запроса. Можно использовать специальный маркер `'*any'`, чтобы перехватывать любые данные.
 - `response` — Статический объект с данными ответа _или_ функция `(request) => any`, генерирующая ответ динамически на основе параметров запроса.
 - `disable` — (Опционально) Отключить этот мок (boolean или callback).

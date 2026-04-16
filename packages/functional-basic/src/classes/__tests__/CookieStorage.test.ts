@@ -4,6 +4,8 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { CookieStorage } from '../CookieStorage'
+import { CookieBlock } from '../CookieBlock'
+import { ServerStorage } from '../ServerStorage'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 import * as isDomDataModule from '../../functions/isDomData'
 
@@ -16,6 +18,8 @@ describe('CookieStorage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     CookieStorage.reset()
+    ServerStorage.reset()
+    CookieBlock.set(false)
     vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
     vi.mocked(isDomDataModule.isDomData).mockReturnValue(false)
 
@@ -84,6 +88,23 @@ describe('CookieStorage', () => {
       const result = CookieStorage.get('newKey', 'defaultValue')
       expect(result).toBe('defaultValue')
       expect(CookieStorage.get('newKey')).toBe('defaultValue')
+    })
+
+    it('should transform values in get', () => {
+      CookieStorage.set('boolKey', 'true')
+      expect(CookieStorage.get('boolKey')).toBe(true)
+
+      CookieStorage.set('numKey', '123')
+      expect(CookieStorage.get('numKey')).toBe(123)
+    })
+
+    it('should return value but not persist if CookieBlock is active', () => {
+      CookieBlock.set(true)
+      const result = CookieStorage.set('blockedKey', 'blockedValue')
+
+      expect(result).toBe('blockedValue')
+      expect(CookieStorage.get('blockedKey')).toBeUndefined()
+      expect(cookieSpy).not.toHaveBeenCalled()
     })
   })
 

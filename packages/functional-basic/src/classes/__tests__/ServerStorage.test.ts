@@ -16,10 +16,8 @@ describe('ServerStorage', () => {
   beforeEach(() => {
     // Spy on the default ErrorCenter instance's on method
     errorCenterSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
-    // Use any cast to safely reset protected static properties in tests
-    const storageClass = ServerStorage as any
-    storageClass.storage = undefined
-    storageClass.listener = undefined
+    
+    ServerStorage.reset()
 
     // Clear SSR context
     for (const key in ssrContext) delete ssrContext[key]
@@ -45,6 +43,12 @@ describe('ServerStorage', () => {
       expect(ServerStorage.get('test')).toBe(value)
     })
 
+    it('should set value without hydration by default', () => {
+      ServerStorage.set('noHydrate', () => 'data')
+      // @ts-ignore: testing internal state
+      expect((ServerStorage as any).getStorage().noHydrate.hydration).toBe(false)
+    })
+
     it('should identify existing keys with has()', () => {
       ServerStorage.set('exists', () => true)
       expect(ServerStorage.has('exists')).toBe(true)
@@ -60,6 +64,38 @@ describe('ServerStorage', () => {
       expect(result).toBe(defaultValue)
       expect(factory).toHaveBeenCalled()
       expect(ServerStorage.get('missing')).toBe(defaultValue)
+    })
+
+    it('should return undefined if key missing and no factory provided', () => {
+      expect(ServerStorage.get('missing-no-factory')).toBeUndefined()
+    })
+  })
+
+  describe('Initialization and Reset', () => {
+    it('should initialize once and return early on subsequent calls', () => {
+      const firstListener = vi.fn()
+      const secondListener = vi.fn()
+
+      const res1 = ServerStorage.init(firstListener)
+      const res2 = ServerStorage.init(secondListener)
+
+      expect(res1).toBe(ServerStorage)
+      expect(res2).toBe(ServerStorage)
+
+      // @ts-ignore: checking internal state
+      expect((ServerStorage as any).listener).toBe(firstListener)
+    })
+
+    it('should clear all data and listeners on reset()', () => {
+      ServerStorage.init(() => ({}))
+      ServerStorage.set('test', () => 'val')
+
+      ServerStorage.reset()
+
+      // @ts-ignore
+      expect((ServerStorage as any).listener).toBeUndefined()
+      // @ts-ignore
+      expect((ServerStorage as any).storage).toBeUndefined()
     })
   })
 

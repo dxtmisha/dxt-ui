@@ -27,7 +27,7 @@ import {
  * Класс для работы с HTTP-запросами.
  *
  * Является статической оберткой над {@link ApiInstance}, предоставляя удобный интерфейс для:
- * - Выполнения стандартных HTTP-запросов (GET, POST, PUT, DELETE).
+ * - Выполнения стандартных HTTP-запросов (GET, POST, PUT, PATCH, DELETE).
  * - Глобальной настройки (URL, заголовки, параметры).
  * - Хуков жизненного цикла (`setPreparation`, `setEnd`).
  * - Автоматических повторов и обработки сессий (Refresh Token).
@@ -279,6 +279,16 @@ export class Api {
    */
   static put<T>(request: ApiFetch): Promise<T> {
     return this.getItem().put<T>(request)
+  }
+
+  /**
+   * Sends a patch method request.
+   *
+   * Отправляет запрос метода patch.
+   * @param request list of parameters/ список параметров
+   */
+  static patch<T>(request: ApiFetch): Promise<T> {
+    return this.getItem().patch<T>(request)
   }
 
   /**

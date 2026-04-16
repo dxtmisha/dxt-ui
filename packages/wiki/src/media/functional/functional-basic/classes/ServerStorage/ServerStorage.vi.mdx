@@ -10,9 +10,9 @@ Lớp này cho phép bạn làm việc với dữ liệu dễ dàng như với c
 
 ## Các tính năng chính
 
-1.  **Cách ly yêu cầu**: Dữ liệu trên máy chủ được liên kết với ngữ cảnh của yêu cầu HTTP hiện tại.
-2.  **Hydration**: Khả năng tự động chuyển trạng thái từ máy chủ sang máy khách thông qua JSON.
-3.  **Bảo mật**: Tự động thoát (escape) XSS trong quá trình truyền dữ liệu.
+- **Cách ly yêu cầu** — dữ liệu trên máy chủ được liên kết với ngữ cảnh của yêu cầu hiện tại.
+- **Hydration** — khả năng tự động chuyển trạng thái từ máy chủ sang máy khách thông qua JSON.
+- **Bảo mật** — tự động thoát (escape) XSS trong quá trình truyền dữ liệu.
 
 ```typescript
 import { ServerStorage } from '@dxtmisha/functional-basic'
@@ -24,73 +24,128 @@ ServerStorage.set('theme', () => 'dark', true)
 const theme = ServerStorage.get('theme') // 'dark'
 ```
 
-## Phương thức
-
-### `init`
-```typescript
-static init(listener: () => Record<string, any>): typeof ServerStorage
-```
-Khởi tạo kho lưu trữ với một bộ lắng nghe ngữ cảnh. Trên máy chủ, bộ lắng nghe này sẽ trả về một đối tượng duy nhất cho mỗi yêu cầu.
+## Các phương thức truy cập dữ liệu
 
 ### `get`
-```typescript
-static get<T = any>(key: string, defaultValue?: () => T, hydration: boolean = false): T
-```
-Truy xuất giá trị theo khóa.
-- `defaultValue`: nếu không tìm thấy khóa, hàm này sẽ được gọi, kết quả được lưu lại và trả về.
-- `hydration`: nếu là `true`, giá trị sẽ được bao gồm trong JSON để gửi xuống máy khách.
+
+Truy xuất giá trị theo khóa. Nếu không tìm thấy, nó sẽ tạo giá trị mới bằng cách sử dụng factory giá trị mặc định.
+
+**Tham số:**
+- `key: string` — khóa lưu trữ duy nhất.
+- `defaultValue?: () => T` — hàm trả về giá trị mặc định nếu không tìm thấy.
+- `hydration: boolean` — nếu là `true`, giá trị sẽ được bao gồm trong JSON cho máy khách (mặc định: `false`).
+
+**Trả về:** `T`
 
 ### `set`
-```typescript
-static set<T = any>(key: string, value: () => T, hydration: boolean = false): T
-```
+
 Lưu một giá trị vào kho lưu trữ.
 
-### `has`
+**Tham số:**
+- `key: string` — khóa lưu trữ duy nhất.
+- `value: () => T` — hàm trả về giá trị để lưu.
+- `hydration: boolean` — nếu là `true`, giá trị sẽ được bao gồm trong JSON cho máy khách (mặc định: `false`).
+
+**Trả về:** `T`
+
+## Các phương thức tiện ích và vòng đời
+
+- `init(listener: () => Record<string, any>): typeof ServerStorage` — Khởi tạo kho lưu trữ với bộ lắng nghe ngữ cảnh. Trên máy chủ, bộ lắng nghe này sẽ trả về một đối tượng duy nhất cho mỗi yêu cầu.
+- `has(key: string): boolean` — Kiếm tra sự tồn tại của một khóa trong ngữ cảnh hiện tại.
+- `reset(): void` — Đặt lại kho lưu trữ, xóa tất cả dữ liệu đã lưu và bộ lắng nghe. Hữu ích cho việc dọn dẹp.
+- `toString(): string` — Tạo một thẻ HTML `<script type="application/json">` chứa tất cả dữ liệu được đánh dấu để hydration.
+
+## Cách ly trong SSR
+
+Trong các ứng dụng phía máy khách thông thường, trạng thái toàn cục thuộc về một người dùng duy nhất. Tuy nhiên, trong môi trường SSR, một quy trình Node.js xử lý nhiều yêu cầu đồng thời. Để ngăn chặn dữ liệu của người dùng này "rò rỉ" sang yêu cầu của người dùng khác (Ô nhiễm trạng thái), `ServerStorage` phải được cách ly chính xác.
+
+Để đạt được điều này, bạn phải khởi tạo `ServerStorage` bằng phương thức `init`. Phương thức này chấp nhận một hàm lắng nghe trả về một đối tượng dữ liệu duy nhất cho ngữ cảnh yêu cầu hiện tại.
+
+> Quan trọng: Việc cách ly chính xác là cực kỳ quan trọng đối với bảo mật. Nếu không được cấu hình, dữ liệu từ người dùng này có thể được cung cấp cho người dùng khác.
+
+### Node.js (AsyncLocalStorage)
+
+Cách được khuyến nghị cho Node.js là sử dụng `AsyncLocalStorage` để lưu trữ ngữ cảnh trong suốt một yêu cầu không đồng bộ.
+
 ```typescript
-static has(key: string): boolean
-```
-Kiểm tra sự tồn tại của một khóa trong ngữ cảnh hiện tại.
-
-### `toString`
-```typescript
-static toString(): string
-```
-Tạo một thẻ HTML `<script type="application/json">` chứa tất cả dữ liệu được đánh dấu để hydration. Phương thức này được gọi trên máy chủ trong mẫu trang (page template).
-
----
-
-## Cách ly trong SSR (Vue / Nuxt)
-
-Để hoạt động chính xác trên máy chủ, bạn phải truyền ngữ cảnh yêu cầu. Trong Vue 3.5+, việc này có thể được thực hiện thông qua `useId` hoặc một đối tượng ngữ cảnh cụ thể.
-
-```typescript
-import { useId } from 'vue'
+import { AsyncLocalStorage } from 'node:async_hooks'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
-// Khởi tạo (ví dụ: trong một plugin hoặc thành phần gốc)
-ServerStorage.init(() => {
-  // Trên máy chủ, trả về một đối tượng liên kết với yêu cầu
-  // Trên máy khách, đây có thể chỉ là một đối tượng toàn cục
-  return typeof window === 'undefined' ? (globalContext || {}) : window
+const als = new AsyncLocalStorage<Record<string, any>>()
+
+// Khởi tạo
+ServerStorage.init(() => als.getStore() || {})
+
+// Sử dụng trong máy chủ
+http.createServer((req, res) => {
+  als.run({}, () => {
+    // Tất cả các lệnh gọi đến ServerStorage bên trong khối này sẽ được cách ly
+    ServerStorage.set('requestId', () => req.id)
+  })
+})
+```
+
+### Nuxt / Nitro
+
+Trong Nuxt/Nitro, việc cách ly được quản lý thông qua ngữ cảnh sự kiện `h3` bằng cách sử dụng `useEvent()` bên trong một plugin máy chủ.
+
+```typescript
+// server/plugins/server-storage.ts
+import { ServerStorage } from '@dxtmisha/functional-basic'
+
+export default defineNitroPlugin(() => {
+  ServerStorage.init(() => {
+    try {
+      return useEvent().context
+    } catch {
+      return {}
+    }
+  })
 })
 ```
 
 ## Hydration (Chuyển dữ liệu sang máy khách)
 
-Để làm cho dữ liệu được thiết lập trên máy chủ "sống lại" trong trình duyệt:
+Hydration là quá trình chuyển trạng thái ứng dụng được thiết lập trên máy chủ sang máy khách. Điều này cho phép trình duyệt tiếp tục công việc từ nơi máy chủ dừng lại, đảm bảo tính nhất quán và ngăn chặn việc tìm kiếm dữ liệu thừa hoặc hiện tượng "nhấp nháy" (flickering) trong quá trình tải trang.
 
-1.  Trên máy chủ, chèn kết quả của `ServerStorage.toString()` vào HTML (thường là trước thẻ đóng `</body>`).
-```html
-<!-- Server output -->
-<body>
-  <div id="app">...</div>
-  <script id="__ui:server:storage:id__" type="application/json">{"theme":"dark"}</script>
-</body>
+### 1. Xác định dữ liệu để Hydration
+
+Khi sử dụng `set()` hoặc `get()`, hãy truyền `true` làm tham số thứ ba (`hydration`). Chỉ những giá trị được đánh dấu theo cách này mới được chuyển sang máy khách.
+
+```typescript
+// Thiết lập trên máy chủ
+ServerStorage.set('userSettings', () => ({ fontSize: 16 }), true)
 ```
 
-2.  Trong trình duyệt, sau lần gọi đầu tiên đến `get()` hoặc `has()`, lớp sẽ tự động tìm đoạn mã này và khôi phục tất cả các giá trị.
+### 2. Chèn trạng thái vào HTML
 
----
+Trên máy chủ, bạn phải gọi `ServerStorage.toString()` và chèn kết quả của nó vào mẫu trang của bạn (thường ở cuối thẻ `<body>`, trước các tập lệnh ứng dụng của bạn).
 
-> **Quan trọng:** `ServerStorage` tự động thoát (escape) chuỗi `</script>` trong dữ liệu của bạn, ngăn chặn các cuộc tấn công XSS trong quá trình hydration.
+Phương thức này tạo ra một thẻ script đặc biệt:
+```html
+<script id="__ui:server:storage:id__" type="application/json">
+  {"userSettings":{"fontSize":16}}
+</script>
+```
+
+### 3. Khôi phục tự động
+
+Khi ứng dụng của bạn khởi động trong trình duyệt, lệnh gọi đầu tiên đến `ServerStorage.get()` hoặc `ServerStorage.has()` sẽ kích hoạt tính năng tự động tìm kiếm tập lệnh hydration.
+
+- Thư viện tìm thấy tập lệnh bằng ID duy nhất của nó.
+- Nó phân tích dữ liệu JSON.
+- Nó khôi phục các giá trị vào ngữ cảnh lưu trữ phía máy khách.
+
+```typescript
+// Lấy trên máy khách (tự động khôi phục từ tập lệnh)
+const settings = ServerStorage.get('userSettings') // { fontSize: 16 }
+```
+
+### Bảo mật & Bảo vệ XSS
+
+`ServerStorage` cung cấp khả năng bảo vệ tích hợp chống lại Cross-Site Scripting (XSS) trong quá trình hydration.
+
+- Tất cả dữ liệu được truyền tới `toString()` đều được tuần tự hóa một cách an toàn.
+- Thư viện tự động thoát (escape) chuỗi ký tự `</script>` trong dữ liệu của bạn. Điều này ngăn chặn các tải trọng độc hại đóng thẻ script sớm và thực thi mã tùy ý.
+
+> Quan trọng: Luôn sử dụng `ServerStorage.toString()` thay vì tuần tự hóa dữ liệu theo cách thủ công để đảm bảo các biện pháp bảo mật này được áp dụng.

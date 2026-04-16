@@ -441,6 +441,10 @@ describe('ApiInstance', () => {
       it('should return JSON string for DELETE method with data', () => {
         expect(api.getBody({ id: 1 }, ApiMethodItem.delete)).toBe('{"id":1}')
       })
+
+      it('should return JSON string for PATCH method', () => {
+        expect(api.getBody({ key: 'value' }, ApiMethodItem.patch)).toBe('{"key":"value"}')
+      })
     })
 
     describe('getBodyForGet', () => {
@@ -514,6 +518,13 @@ describe('ApiInstance', () => {
       it('should make a DELETE request', async () => {
         await api.delete({ path: 'test' })
         expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.delete }))
+      })
+    })
+
+    describe('patch', () => {
+      it('should make a PATCH request', async () => {
+        await api.patch({ path: 'test', request: { data: 'value' } })
+        expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/api/test'), expect.objectContaining({ method: ApiMethodItem.patch }))
       })
     })
   })

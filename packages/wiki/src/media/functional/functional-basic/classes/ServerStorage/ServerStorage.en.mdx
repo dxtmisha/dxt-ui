@@ -10,9 +10,9 @@ The class allows you to work with data as easily as with static variables, but e
 
 ## Key Features
 
-1.  **Request Isolation**: Data on the server is bound to the context of the current HTTP request.
-2.  **Hydration**: Ability to automatically transfer state from the server to the client via JSON.
-3.  **Security**: Automatic XSS escaping during data transfer.
+- **Request Isolation** — data on the server is bound to the context of the current human or machine request.
+- **Hydration** — ability to automatically transfer state from the server to the client via JSON.
+- **Security** — automatic XSS escaping during data transfer.
 
 ```typescript
 import { ServerStorage } from '@dxtmisha/functional-basic'
@@ -24,73 +24,128 @@ ServerStorage.set('theme', () => 'dark', true)
 const theme = ServerStorage.get('theme') // 'dark'
 ```
 
-## Methods
-
-### `init`
-```typescript
-static init(listener: () => Record<string, any>): typeof ServerStorage
-```
-Initializes the storage with a context listener. On the server, this listener should return an object unique to each request.
+## Data Access Methods
 
 ### `get`
-```typescript
-static get<T = any>(key: string, defaultValue?: () => T, hydration: boolean = false): T
-```
-Retrieves a value by key.
-- `defaultValue`: if the key is not found, this function is called, the result is saved and returned.
-- `hydration`: if `true`, the value will be included in the JSON for the client.
+
+Retrieves a value by key. If it doesn't exist, creates it using the default value factory.
+
+**Parameters:**
+- `key: string` — unique storage key.
+- `defaultValue?: () => T` — function that returns the default value if not found.
+- `hydration: boolean` — if `true`, the value will be included in the JSON for the client (default: `false`).
+
+**Returns:** `T`
 
 ### `set`
-```typescript
-static set<T = any>(key: string, value: () => T, hydration: boolean = false): T
-```
+
 Saves a value to the storage.
 
-### `has`
+**Parameters:**
+- `key: string` — unique storage key.
+- `value: () => T` — function that returns the value to save.
+- `hydration: boolean` — if `true`, the value will be included in the JSON for the client (default: `false`).
+
+**Returns:** `T`
+
+## Utility & Lifecycle Methods
+
+- `init(listener: () => Record<string, any>): typeof ServerStorage` — Initializes the storage with a context listener. On the server, this listener should return an object unique to each request.
+- `has(key: string): boolean` — Checks for the existence of a key in the current context.
+- `reset(): void` — Resets the storage, clearing all stored data and the listener. Useful for performing cleanup.
+- `toString(): string` — Generates an HTML `<script type="application/json">` tag containing all data marked for hydration.
+
+## Isolation in SSR
+
+In standard client-side applications, global state belongs to a single user. However, in an SSR environment, one Node.js process handles many concurrent requests simultaneously. To prevent user data from "leaking" between these requests (State Pollution), `ServerStorage` must be correctly isolated.
+
+To achieve this, you must initialize `ServerStorage` with the `init` method. This method accepts a listener function that returns a data object unique to the current request context.
+
+> Important: Correct isolation is critical for security. If not configured, data from one user could be served to another.
+
+### Node.js (AsyncLocalStorage)
+
+The recommended way for Node.js is to use `AsyncLocalStorage` to store context throughout an asynchronous request.
+
 ```typescript
-static has(key: string): boolean
-```
-Checks for the existence of a key in the current context.
-
-### `toString`
-```typescript
-static toString(): string
-```
-Generates an HTML `<script type="application/json">` tag containing all data marked for hydration. This method is called on the server within the page template.
-
----
-
-## Isolation in SSR (Vue / Nuxt)
-
-To work correctly on the server, you must pass the request context. In Vue 3.5+, this can be done via `useId` or a specific context object.
-
-```typescript
-import { useId } from 'vue'
+import { AsyncLocalStorage } from 'node:async_hooks'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
-// Initialization (e.g., in a plugin or root component)
-ServerStorage.init(() => {
-  // On the server, return an object bound to the request
-  // On the client, this can be just a global object
-  return typeof window === 'undefined' ? (globalContext || {}) : window
+const als = new AsyncLocalStorage<Record<string, any>>()
+
+// Initialization
+ServerStorage.init(() => als.getStore() || {})
+
+// Usage in server
+http.createServer((req, res) => {
+  als.run({}, () => {
+    // All calls to ServerStorage inside this block will be isolated
+    ServerStorage.set('requestId', () => req.id)
+  })
+})
+```
+
+### Nuxt / Nitro
+
+In Nuxt/Nitro, isolation is managed via the `h3` event context using `useEvent()` within a server plugin.
+
+```typescript
+// server/plugins/server-storage.ts
+import { ServerStorage } from '@dxtmisha/functional-basic'
+
+export default defineNitroPlugin(() => {
+  ServerStorage.init(() => {
+    try {
+      return useEvent().context
+    } catch {
+      return {}
+    }
+  })
 })
 ```
 
 ## Hydration (Transferring Data to Client)
 
-To make data set on the server "come alive" in the browser:
+Hydration is the process of transferring the application state set on the server to the client. This allows the browser to pick up where the server left off, ensuring consistency and preventing redundant data fetching or "flickering" during page load.
 
-1.  On the server, insert the result of `ServerStorage.toString()` into the HTML (usually before the closing `</body>`).
-```html
-<!-- Server output -->
-<body>
-  <div id="app">...</div>
-  <script id="__ui:server:storage:id__" type="application/json">{"theme":"dark"}</script>
-</body>
+### 1. Identify Data for Hydration
+
+When using `set()` or `get()`, pass `true` as the third parameter (`hydration`). Only values marked this way will be transferred to the client.
+
+```typescript
+// Set on server
+ServerStorage.set('userSettings', () => ({ fontSize: 16 }), true)
 ```
 
-2.  In the browser, upon the first call to `get()` or `has()`, the class will automatically find this script and restore all values.
+### 2. Injecting State into HTML
 
----
+On the server, you must call `ServerStorage.toString()` and insert its result into your page template (usually at the very end of the `<body>` tag, before your application scripts).
 
-> **Important:** `ServerStorage` automatically escapes the `</script>` sequence within your data, preventing XSS attacks during hydration.
+This method generates a special script tag:
+```html
+<script id="__ui:server:storage:id__" type="application/json">
+  {"userSettings":{"fontSize":16}}
+</script>
+```
+
+### 3. Automatic Restoration
+
+When your application starts in the browser, the first call to `ServerStorage.get()` or `ServerStorage.has()` will trigger an automatic search for the hydration script.
+
+- The library finds the script by its unique ID.
+- It parses the JSON data.
+- It restores the values into the client-side storage context.
+
+```typescript
+// Get on client (automatically restored from script)
+const settings = ServerStorage.get('userSettings') // { fontSize: 16 }
+```
+
+### Security & XSS Protection
+
+`ServerStorage` provides built-in protection against Cross-Site Scripting (XSS) during hydration.
+
+- All data passed to `toString()` is safely serialized.
+- The library automatically escapes the `</script>` character sequence within your data. This prevents malicious payloads from prematurely closing the script tag and executing arbitrary code.
+
+> Important: Always use `ServerStorage.toString()` rather than manually serializing the data to ensure these security measures are applied.

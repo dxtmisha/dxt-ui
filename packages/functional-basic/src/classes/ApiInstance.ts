@@ -57,7 +57,7 @@ export type ApiInstanceOptions = {
  * and global loading/error management. It is used as the base for the static {@link Api} class.
  *
  * ### Key Features:
- * - **CRUD operations**: Support for `GET`, `POST`, `PUT`, `DELETE` methods with full type support.
+ * - **CRUD operations**: Support for `GET`, `POST`, `PUT`, `PATCH`, `DELETE` methods with full type support.
  * - **Lifecycle Hooks**: `setPreparation` (before request) and `setEnd` (after response) callbacks.
  * - **Automatic Retries**: Built-in support for request repetition with randomized delays (jitter).
  * - **Data Processing**: Intelligent JSON/FormData parsing and automatic payload extraction.
@@ -74,7 +74,7 @@ export type ApiInstanceOptions = {
  * и глобальное управление индикацией загрузки и ошибками. Используется как основа для статического класса {@link Api}.
  *
  * ### Ключевые особенности:
- * - **CRUD операции**: Поддержка методов `GET`, `POST`, `PUT`, `DELETE` с полной типизацией.
+ * - **CRUD операции**: Поддержка методов `GET`, `POST`, `PUT`, `PATCH`, `DELETE` с полной типизацией.
  * - **Хуки жизненного цикла**: Колбэки `setPreparation` (до запроса) и `setEnd` (после ответа).
  * - **Автоматические повторы**: Встроенная поддержка повтора запросов с джиттером.
  * - **Обработка данных**: Интеллектуальный парсинг JSON/FormData и извлечение полезной нагрузки.
@@ -412,6 +412,18 @@ export class ApiInstance {
   put<T>(request: ApiFetch): Promise<T> {
     return this.request(copyObjectLite(request, {
       method: ApiMethodItem.put
+    }))
+  }
+
+  /**
+   * Sends a patch method request.
+   *
+   * Отправляет запрос метода patch.
+   * @param request list of parameters/ список параметров
+   */
+  patch<T>(request: ApiFetch): Promise<T> {
+    return this.request(copyObjectLite(request, {
+      method: ApiMethodItem.patch
     }))
   }
 

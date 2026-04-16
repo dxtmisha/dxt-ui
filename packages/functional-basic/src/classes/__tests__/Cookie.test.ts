@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { Cookie } from '../Cookie'
 import { CookieStorage } from '../CookieStorage'
 import { CookieBlock } from '../CookieBlock'
+import { ServerStorage } from '../ServerStorage'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 import * as isDomDataModule from '../../functions/isDomData'
 
@@ -18,9 +19,13 @@ describe('Cookie', () => {
     vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
     vi.mocked(isDomDataModule.isDomData).mockReturnValue(false)
     CookieBlock.set(false)
+    ServerStorage.reset()
+    CookieStorage.reset()
 
     // Clear document.cookie before each test
-    document.cookie = ''
+    if (typeof document !== 'undefined') {
+      document.cookie = ''
+    }
   })
 
   afterEach(() => {
@@ -36,6 +41,19 @@ describe('Cookie', () => {
     const cookie1 = new Cookie('sharedName')
     const cookie2 = new Cookie('sharedName')
     expect(cookie1).toBe(cookie2)
+  })
+
+  describe('getInstance', () => {
+    it('should return an existing instance if available', () => {
+      const cookie1 = new Cookie('existingInstance')
+      const cookie2 = Cookie.getInstance('existingInstance')
+      expect(cookie1).toBe(cookie2)
+    })
+
+    it('should create a new instance if it does not exist', () => {
+      const cookie = Cookie.getInstance('newInstance')
+      expect(cookie).toBeInstanceOf(Cookie)
+    })
   })
 
   describe('get', () => {
@@ -97,6 +115,15 @@ describe('Cookie', () => {
       expect(document.cookie).not.toContain('blockedUpdate=val')
     })
 
+    it('should update and merge options in set', () => {
+      const cookie = new Cookie('optsMerge')
+      cookie.set('val', { age: 100 })
+      cookie.set('val', { sameSite: 'lax' })
+
+      // @ts-ignore: testing private options
+      expect(cookie.options).toEqual({ age: 100, sameSite: 'lax' })
+    })
+
     it('should not update DOM if not in DOM runtime', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
       const cookie = new Cookie('noDomUpdate')
@@ -117,13 +144,13 @@ describe('Cookie', () => {
     })
   })
 
-  describe('updateData (static)', () => {
+  describe('update (static)', () => {
     it('should parse `document.cookie` into memory', () => {
       document.cookie = 'staticParse=val1'
       document.cookie = 'another=val2'
 
-      // Call updateData explicitly
-      CookieStorage.updateData()
+      // Call update explicitly
+      CookieStorage.update()
 
       const cookie1 = new Cookie('staticParse')
       const cookie2 = new Cookie('another')

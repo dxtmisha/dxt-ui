@@ -10,7 +10,7 @@ It includes tight integration with dependency classes: `ApiStatus`, `ApiResponse
 
 ## Key Features
 
-- **CRUD Methods** — convenient aliases `get`, `post`, `put`, `delete` for handling HTTP requests
+- **CRUD Methods** — convenient aliases `get`, `post`, `put`, `patch`, `delete` for handling HTTP requests
 - **Global Configuration** — setting base URL, default headers, and parameters for all requests
 - **Lifecycle Hooks** — ability to set custom callback functions executed before (`setPreparation`) and after (`setEnd`) each request
 - **Status Tracking** — access to the status and errors of the last request via `ApiStatus`
@@ -75,6 +75,15 @@ Directs object modifications over target remote points using typical system envi
 
 **Returns:** `Promise<T>`
 
+### `patch`
+
+Initiates partial resource updates using the standard HTTP `PATCH` method.
+
+**Parameters:**
+- `request: ApiFetch` — request configuration including partial payload data.
+
+**Returns:** `Promise<T>`
+
 ### `delete`
 
 Forwards structural clearance/purge request using classic URL targeted HTTP `DELETE`.
@@ -107,13 +116,13 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 
 ## ApiFetch Object
 
-`ApiFetch` is the main configuration object passed to all request methods (`request`, `get`, `post`, `put`, `delete`). All fields are optional:
+`ApiFetch` is the main configuration object passed to all request methods (`request`, `get`, `post`, `put`, `patch`, `delete`). All fields are optional:
 
 - `path?: string` — endpoint path relative to the base URL (e.g. `'users/list'`).
 - `pathFull?: string` — full request URL. If provided, overrides `api` and `path`.
 - `api?: boolean` — whether to prepend the base URL before `path`. Default: `true`.
-- `method?: ApiMethod` — HTTP method (`'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Default: `'GET'`.
-- `request?: FormData | Record<string, any> | string` — request body (for POST/PUT) or query parameters (for GET). Serialized as JSON or `FormData`.
+- `method?: ApiMethod` — HTTP method (`'GET'`, `'POST'`, `'PUT'`, `'PATCH'`, `'DELETE'`). Default: `'GET'`.
+- `request?: FormData | Record<string, any> | string` — request body (for POST/PUT/PATCH) or query parameters (for GET). Serialized as JSON or `FormData`.
 - `headers?: Record<string, string> | null` — additional request headers. Pass `null` to disable all headers.
 - `type?: string` — `Content-Type` header value. Default: `'application/json;charset=UTF-8'`.
 - `auth?: boolean` — include authentication headers.
@@ -255,7 +264,7 @@ The `add` method accepts an `ApiResponseItem` object or an array of such objects
 
 **Key `ApiResponseItem` fields:**
 - `path` — String (exact match) or Regular Expression (`RegExp`) to intercept the request URL.
-- `method` — HTTP method (`ApiMethodItem.get`, `post`, etc.).
+- `method` — HTTP method (`ApiMethodItem.get`, `post`, `put`, `patch`, etc.).
 - `request` — (Optional) Request body filter. You can use the special marker `'*any'` to bypass payload validation and capture all requests to this path.
 - `response` — Static data object _or_ a dynamic factory function `(request) => any` that generates a response based on the incoming request payload.
 - `disable` — (Optional) Disable this mock (boolean or callback).
