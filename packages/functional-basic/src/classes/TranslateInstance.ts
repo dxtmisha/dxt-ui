@@ -8,6 +8,7 @@ import { Api } from './Api'
 import { TranslateFile } from './TranslateFile'
 
 import { TRANSLATE_GLOBAL_PREFIX, TRANSLATE_TIME_OUT, type TranslateCode, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
+import { ErrorCenter, isApiSuccess } from '../library'
 
 /**
  * Class for getting the translated text.
@@ -378,8 +379,17 @@ export class TranslateInstance {
         [this.propsName]: this.cache
       },
       toData: true,
+      timeout: 12_000,
       global: true
     }))
+
+    if (!isApiSuccess(data)) {
+      ErrorCenter.on({
+        group: 'translate',
+        code: 'error',
+        details: data
+      })
+    }
 
     return data ?? {}
   }
