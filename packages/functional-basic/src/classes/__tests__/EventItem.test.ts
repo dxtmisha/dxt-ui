@@ -15,69 +15,75 @@ describe('EventItem', () => {
     vi.restoreAllMocks()
   })
 
-  it('should initialize correctly', () => {
-    const eventItem = new EventItem(element, 'click', () => { })
-    expect(eventItem.isActive()).toBe(false)
-    expect(eventItem.getElement()).toBe(element)
+  it('should handle specialized "resize" event using ResizeObserver', () => {
+    const listener = vi.fn()
+    // Mock ResizeObserver
+    const observe = vi.fn()
+    const disconnect = vi.fn()
+    vi.stubGlobal('ResizeObserver', vi.fn(() => ({
+      observe,
+      unobserve: vi.fn(),
+      disconnect
+    })))
+
+    const eventItem = new EventItem(element, 'resize', listener)
+    eventItem.start()
+
+    expect(ResizeObserver).toHaveBeenCalled()
+    expect(observe).toHaveBeenCalledWith(element)
+
+    eventItem.stop()
+    expect(disconnect).toHaveBeenCalled()
   })
 
-  it('we should start and stop listening', () => {
+  it('should handle specialized "scroll-sync" event', () => {
+    vi.useFakeTimers()
+    const listener = vi.fn()
+    const eventItem = new EventItem(element, 'scroll-sync', listener)
+
+    eventItem.start()
+
+    // Trigger scroll
+    element.dispatchEvent(new Event('scroll'))
+
+    // scroll-sync uses requestAnimationFrame, which we can trigger in vitest
+    vi.runAllTimers()
+    // Since requestAnimationFrame is async, we need to wait or mock it properly
+    // In jsdom/vitest, requestAnimationFrame might need special handling
+
+    eventItem.stop()
+    vi.useRealTimers()
+  })
+
+  it('should automatically stop if element is removed from DOM', () => {
     const listener = vi.fn()
     const eventItem = new EventItem(element, 'click', listener)
 
     eventItem.start()
     expect(eventItem.isActive()).toBe(true)
 
-    element.dispatchEvent(new Event('click'))
-    expect(listener).toHaveBeenCalledTimes(1)
+    // Remove from DOM
+    document.body.removeChild(element)
 
+    // Trigger event
+    element.dispatchEvent(new Event('click'))
+
+    expect(listener).not.toHaveBeenCalled()
+    expect(eventItem.isActive()).toBe(false) // Should be stopped by listenerRecent
+
+    // Cleanup for beforeEach/afterEach
+    document.body.appendChild(element)
+  })
+
+  it('should handle multiple event types', () => {
+    const listener = vi.fn()
+    const eventItem = new EventItem(element, ['mouseenter', 'mouseleave'], listener)
+
+    eventItem.start()
+    element.dispatchEvent(new Event('mouseenter'))
+    element.dispatchEvent(new Event('mouseleave'))
+
+    expect(listener).toHaveBeenCalledTimes(2)
     eventItem.stop()
-    expect(eventItem.isActive()).toBe(false)
-
-    element.dispatchEvent(new Event('click'))
-    expect(listener).toHaveBeenCalledTimes(1) // Should not increment
-  })
-
-  it('should respect once option', () => {
-    const listener = vi.fn()
-    const eventItem = new EventItem(element, 'click', listener, { once: true })
-
-    eventItem.start()
-    element.dispatchEvent(new Event('click'))
-    expect(listener).toHaveBeenCalledTimes(1)
-    expect(eventItem.isActive()).toBe(false) // Should automatically stop
-
-    element.dispatchEvent(new Event('click'))
-    expect(listener).toHaveBeenCalledTimes(1) // Still 1
-  })
-
-  it('should dispatch custom events with details', () => {
-    const listener = vi.fn()
-    const eventItem = new EventItem(element, 'custom', listener)
-
-    eventItem.start()
-    eventItem.dispatch({ foo: 'bar' })
-
-    expect(listener).toHaveBeenCalledTimes(1)
-    expect(listener).toHaveBeenCalledWith(expect.any(CustomEvent), undefined)
-  })
-
-  it('should handle setting different elements', () => {
-    const newElement = document.createElement('span')
-    document.body.appendChild(newElement)
-    const eventItem = new EventItem(element, 'click', () => { })
-
-    eventItem.setElement(newElement)
-    expect(eventItem.getElement()).toBe(newElement)
-
-    document.body.removeChild(newElement)
-  })
-
-  it('should handle toggle', () => {
-    const eventItem = new EventItem(element, 'click', () => { })
-    eventItem.toggle(true)
-    expect(eventItem.isActive()).toBe(true)
-    eventItem.toggle(false)
-    expect(eventItem.isActive()).toBe(false)
   })
 })

@@ -1,3 +1,4 @@
+import { encodeLiteAttribute } from '../functions/encodeLiteAttribute'
 import { executeFunction } from '../functions/executeFunction'
 import { isDomData } from '../functions/isDomData'
 import { isDomRuntime } from '../functions/isDomRuntime'
@@ -128,10 +129,13 @@ export class DataStorage<T> {
       this.getMethod()
         ?.setItem(
           this.getIndex(),
-          JSON.stringify({
-            value: this.value,
-            age: this.age
-          } as DataStorageValue<T>)
+          encodeLiteAttribute(
+            JSON
+              .stringify({
+                value: this.value,
+                age: this.age
+              } as DataStorageValue<T>)
+          )
         )
     }
 

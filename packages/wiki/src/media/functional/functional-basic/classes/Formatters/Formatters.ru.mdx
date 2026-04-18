@@ -21,8 +21,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### Ограничения дженериков (Generic Constraints)
 
 - `Options extends FormattersOptionsList` — тип параметров форматирования.
-- `List extends FormattersList<FormattersListItem> | FormattersListItem` — тип входных данных (массив или один элемент).
-- `Item extends (List extends any[] ? List[number] : List)` — тип одного элемента в списке.
+- `List extends FormattersListProp` — тип входных данных (массив или один элемент).
+- `Item extends FormattersItemProp<List>` — тип одного элемента в списке.
 
 **Параметры:**
 - `options: Options` — параметры форматирования для каждого столбца/свойства.
@@ -44,31 +44,17 @@ const options = {
   user: {
     type: 'name',
     options: { lastPropName: 'surname', firstPropName: 'name' }
-  },
-  weight: { 
-    type: 'unit', 
-    options: { unit: 'kilogram' } 
-  },
-  count: { 
-    type: 'plural', 
-    options: { words: 'яблоко|яблока|яблок' } 
-  },
-  status: {
-    transformation: (value: number) => value === 1 ? 'Активен' : 'Неактивен'
   }
 }
 
-// 2. Исходные данные (может быть массивом или одним объектом)
+// 2. Исходные данные
 const data = [
   {
     price: 100,
     currency: 'RUB',
     created: '2024-03-07T12:00:00',
     name: 'Иван',
-    surname: 'Иванов',
-    weight: 75,
-    count: 5,
-    status: 1
+    surname: 'Иванов'
   }
 ]
 
@@ -76,93 +62,95 @@ const data = [
 const formatter = new Formatters(options, data)
 ```
 
-## Обработка данных
+## Методы
 
-### `to`
+### Обработка
+- `to(): FormattersReturn<List, Options>` — Обрабатывает данные и возвращает результат. Если на вход был массив, возвращает новый массив обогащенных элементов. Если был один элемент — один объект. Добавляет свойства с суффиксом `Format`.
 
-Обрабатывает данные и возвращает результат. Если на вход был передан массив, метод возвращает новый массив обогащенных элементов. Если был один элемент — возвращает один обогащенный элемент.
+### Настройка
+- `setList(list?: List): this` — Обновляет данные для форматирования. Поддерживает чейнинг.
 
-**Возвращает:** `FormattersListColumns<Item, Options> | FormattersListColumnItem<Item, Options>` — обогащенные данные с дополнительными свойствами `*Format`.
-
-```javascript
-const result = formatter.to()
-/*
-Результат (если массив): [
-  { 
-    id: 101, 
-    price: 100, 
-    currency: 'RUB', 
-    priceFormat: '100,00 ₽', 
-    status: 1, 
-    statusFormat: 'Активен',
-    ... 
-  }
-]
-
-Результат (если один объект): { 
-  price: 100, 
-  priceFormat: '100,00 ₽', 
-  ... 
-}
-*/
-```
-
-## Получение и управление данными
-
-- `is(): boolean` — Проверяет, установлен ли список/элемент.
-- `isArray(): boolean` — Проверяет, являются ли текущие данные массивом.
+### Информация
+- `is(): boolean` — Проверяет, установлены ли данные для обработки.
+- `isArray(): boolean` — Являются ли текущие данные массивом.
 - `length(): number` — Возвращает количество записей в списке.
-- `getList(): Item[]` — Возвращает текущий список данных в виде массива.
-- `getOptions(): Options` — Возвращает текущую карту конфигурации форматирования.
-- `setList(list?: List): this` — Обновляет данные для форматирования и возвращает экземпляр класса для цепочки вызовов.
+- `getList(): FormattersList<Item>` — Возвращает текущий список в виде массива.
+- `getOptions(): Options` — Возвращает текущую конфигурацию форматирования.
 
-## Структура конфигурации
+## Типы и параметры форматирования
 
-Объект конфигурации, передаваемый в конструктор, представляет собой карту, где каждый ключ соответствует имени свойства в ваших данных. Каждое значение должно соответствовать структуре `FormattersOptionsItem`.
+Конфигурация `FormattersOptionsList` — это словарь, где ключи соответствуют именам свойств в данных (поддерживается точечная нотация `path.to.prop`), а значения — объекту `FormattersOptionsItem`.
 
-### Основная структура элемента
+### Общая структура `FormattersOptionsItem`
+- `type?: FormattersType` — Тип форматировщика.
+- `transformation?: (value, item, options) => string` — Кастомная функция преобразования.
+- `options?: Options` — Объект параметров, структура которого зависит от выбранного `type`.
 
+### Подробное описание типов
+
+#### 1. Валюта (`currency`)
+Используется для локализованного отображения денежных значений.
+- `currencyPropName?: string` — Имя свойства в элементе, из которого берется код валюты (по умолчанию `currency`).
+- `options?: string | Intl.NumberFormatOptions` — Можно передать фиксированный код (например, `'USD'`) или объект настроек `Intl.NumberFormat`.
+- `numberOnly?: boolean` — Если `true`, возвращает только отформатированное число без символа валюты.
+
+#### 2. Дата (`date`)
+Форматирование дат и времени через `GeoIntl`.
+- `type?: GeoDate` — Предустановленный формат:
+    - `full` — Полная дата и время.
+    - `datetime` — Дата и время (без секунд).
+    - `date` — Только дата.
+    - `time` — Только время.
+    - `year-month`, `year`, `month`, `day`, `day-month`, `hour-minute`.
+- `options?: Intl.DateTimeFormatOptions` — Стандартные параметры `Intl` (например, `month: 'long'`).
+- `hour24?: boolean` — Если `true`, принудительно включает 24-часовой режим.
+
+#### 3. Имя (`name`)
+Склеивает ФИО в правильном порядке.
+- `lastPropName?: string` — Поле для фамилии (по умолчанию `lastName`).
+- `firstPropName?: string` — Поле для имени (по умолчанию `firstName`).
+- `surname?: string` — Поле для отчества (по умолчанию `surname`).
+- `short?: boolean` — Если `true`, выводит фамилию и инициалы (например, «Иванов И. И.»).
+
+#### 4. Число (`number`)
+Обычное форматирование чисел с разделением разрядов.
+- `options?: Intl.NumberFormatOptions` — Параметры `Intl` (количество знаков после запятой, стиль и т.д.).
+
+#### 5. Множественное число (`plural`)
+Выбор правильной формы слова в зависимости от числа.
+- `words: string` — Формы слова через разделитель `|`.
+    - Для русского: `"яблоко|яблока|яблок"`.
+    - Для английского: `"apple|apples"`.
+- `options?: Intl.PluralRulesOptions` — Настройки правил плюрализации.
+- `optionsNumber?: Intl.NumberFormatOptions` — Настройки форматирования самого числа, которое выводится перед словом.
+
+#### 6. Единица измерения (`unit`)
+Добавление единиц измерения (км, кг, л).
+- `unit: string` — Код единицы измерения (например, `'kilometer'`, `'kilogram'`, `'liter'`).
+- `options?: Intl.NumberFormatOptions` — Параметры форматирования числовой части.
+
+## Примеры
+
+### Использование точечной нотации (Dot Notation)
 ```typescript
-{
-  // 1. Укажите тип форматирования
-  type: 'currency' | 'date' | 'name' | 'number' | 'plural' | 'unit',
-
-  // 2. Передайте параметры, специфичные для типа, здесь
-  options: { ... },
-
-  // 3. Или используйте собственную функцию (перекрывает логику типа)
-  transformation: (value, item, options) => string
+const options = {
+  'user.profile.age': { type: 'number' }
 }
+const data = { user: { profile: { age: 25 } } }
+const formatter = new Formatters(options, data)
+
+const result = formatter.to()
+// result.userProfileAgeFormat === "25"
 ```
 
-## Специфичные параметры
-
-Ниже приведены параметры, доступные внутри свойства **`options`** для каждого типа.
-
-### Валюта (`currency`)
-- `currencyPropName?: string` — Свойство в элементе, содержащее код валюты (по умолчанию `item.currency`).
-- `options?: string | Intl.NumberFormatOptions` — Фиксированный код валюты или полные параметры `Intl`.
-- `numberOnly?: boolean` — Если `true`, возвращает только отформатированное число без символа.
-
-### Дата (`date`)
-- `type?: GeoDate` — Предустановленный тип: `full`, `datetime`, `date`, `year-month`, `year`, `month`, `day`, `day-month`, `time`, `hour-minute`, `hour`, `minute`, `second`.
-- `options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Дополнительные параметры `Intl` или стиль месяца.
-- `hour24?: boolean` — Принудительно использует 24-часовой формат, если `true`.
-
-### Имя (`name`)
-- `lastPropName?: string` — Поле для фамилии (по умолчанию: `lastName`).
-- `firstPropName?: string` — Поле для имени (по умолчанию: `firstName`).
-- `surname?: string` — Поле для отчества (по умолчанию: `surname`).
-- `short?: boolean` — Использовать ли краткий формат (инициалы).
-
-### Число (`number`)
-- `options?: Intl.NumberFormatOptions` — Стандартные параметры чисел `Intl`.
-
-### Множественное число (`plural`)
-- `words: string` — Формы слов, разделенные `|` (например, `"яблоко|яблока|яблок"`).
-- `options?: Intl.PluralRulesOptions` — Настройки правил множественного числа.
-- `optionsNumber?: Intl.NumberFormatOptions` — Форматирование самого числа.
-
-### Единица измерения (`unit`)
-- `unit: string | Intl.NumberFormatOptions` — Единица измерения для отображения (например, `'kilometer'`, `'kilogram'`).
-
+### Кастомная трансформация
+```typescript
+const options = {
+  status: {
+    // Пользовательская функция имеет приоритет над type
+    transformation: (value, item) => {
+       return value === 'active' ? `✅ ${item.name} в сети` : '❌ Оффлайн'
+    }
+  }
+}
+```

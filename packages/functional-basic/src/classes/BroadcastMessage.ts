@@ -6,7 +6,7 @@ import { ErrorCenter } from './ErrorCenter'
 import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
 /**
- * A class to handle BroadcastChannel messaging.
+ * Class for working with BroadcastChannel messages.
  *
  * Класс для работы с сообщениями BroadcastChannel.
  */
@@ -14,11 +14,13 @@ export class BroadcastMessage<Message = any> {
   protected channel?: BroadcastChannel
 
   /**
-   * Constructor
-   * @param name channel name/ название канала
-   * @param callback callback on message received/ колбэк на получение сообщения
-   * @param callbackError callback on message error/ колбэк на ошибку сообщения
-   * @param errorCenter error center instance/ экземпляр центра ошибок
+   * Constructor that initializes the broadcast channel with event handlers.
+   *
+   * Конструктор, инициализирующий канал вещания с обработчиками событий.
+   * @param name unique identifier for the broadcast channel / уникальный идентификатор для канала вещания
+   * @param callback function called when a message is received / функция, вызываемая при получении сообщения
+   * @param callbackError function called when a message error occurs / функция, вызываемая при возникновении ошибки сообщения
+   * @param errorCenter ErrorCenter instance for error reporting / экземпляр ErrorCenter для отчета об ошибках
    */
   constructor(
     name: string,
@@ -42,20 +44,21 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
-   * Get the channel.
+   * Gets the BroadcastChannel instance if available.
    *
-   * Получить канал.
-   * @returns channel/ канал
+   * Получает экземпляр BroadcastChannel, если он доступен.
+   * @returns BroadcastChannel instance or undefined if not in DOM runtime / экземпляр BroadcastChannel или undefined, если не в среде DOM
    */
   getChannel(): BroadcastChannel | undefined {
     return this.channel
   }
 
   /**
-   * Send a message to the channel.
+   * Sends a message through the broadcast channel.
    *
-   * Отправить сообщение в канал.
-   * @param message message to send/ сообщение для отправки
+   * Отправляет сообщение через канал вещания.
+   * @param message message data to send / данные сообщения для отправки
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
   post(message: Message): this {
     this.channel?.postMessage(message)
@@ -63,10 +66,11 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
-   * Set the callback function to be called when a message is received.
+   * Sets the callback function to be executed when a message is received.
    *
-   * Установить функцию колбэка, которая будет вызвана при получении сообщения.
-   * @param callback callback function/ функция колбэка
+   * Устанавливает функцию обратного вызова, выполняемую при получении сообщения.
+   * @param callback function to execute on message received / функция для выполнения при получении сообщения
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
   setCallback(callback: (event: MessageEvent<Message>) => void): this {
     this.callback = callback
@@ -74,10 +78,11 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
-   * Set the callback function to be called when a message error occurs.
+   * Sets the error callback function to be executed when a message error occurs.
    *
-   * Установить функцию колбэка, которая будет вызвана при возникновении ошибки сообщения.
-   * @param callbackError callback function/ функция колбэка
+   * Устанавливает функцию обратного вызова для обработки ошибок сообщений.
+   * @param callbackError function to execute on message error / функция для выполнения при ошибке сообщения
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
   setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this {
     this.callbackError = callbackError
@@ -85,20 +90,24 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
-   * Closes the channel and stops listening for messages.
+   * Closes the broadcast channel and stops listening for messages.
    *
-   * Закрывает канал и прекращает прослушивание сообщений.
+   * Закрывает канал вещания и прекращает прослушивание сообщений.
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
-  destroy(): void {
+  destroy(): this {
     this.channel?.close()
     this.channel = undefined
+
+    return this
   }
 
   /**
-   * Update state on message received.
+   * Updates state when a message is received.
    *
-   * Обновление состояния при получении сообщения.
-   * @param event message event/ событие сообщения
+   * Обновляет состояние при получении сообщения.
+   * @param event message event object / объект события сообщения
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
   protected readonly update = (event: MessageEvent<Message>): this => {
     this.callback?.(event)
@@ -106,10 +115,11 @@ export class BroadcastMessage<Message = any> {
   }
 
   /**
-   * Update error state on message error.
+   * Updates error state when a message error occurs.
    *
-   * Обновление состояния ошибки при получении ошибки сообщения.
-   * @param event message error event/ событие ошибки сообщения
+   * Обновляет состояние ошибки при возникновении ошибки сообщения.
+   * @param event message error event object / объект события ошибки сообщения
+   * @returns this instance for chaining / этот экземпляр для цепочки вызовов
    */
   protected readonly updateError = (event: MessageEvent<Message>): this => {
     this.callbackError?.(event)
@@ -118,9 +128,15 @@ export class BroadcastMessage<Message = any> {
 }
 
 /**
- * Generates a random name and saves it in local storage.
+ * Generates a persistent random name for the broadcast channel.
  *
- * Генерирует случайное имя и сохраняет его в локальном хранилище.
+ * Генерирует постоянное случайное имя для канала вещания.
+ * BroadcastChannel requires unique channel names across the same origin.
+ * This utility ensures each broadcast instance gets a unique channel name.
+ *
+ * BroadcastChannel требует уникальные имена каналов в рамках одного источника.
+ * Эта утилита обеспечивает, что каждый экземпляр вещания получает уникальное имя канала.
+ * @returns generated unique channel name / сгенерированное уникальное имя канала
  */
-const getBroadcastName = () => new DataStorage('__broadcast-name')
+const getBroadcastName = () => new DataStorage('__ui:broadcast-name__')
   .get(() => `name_${random(1_000_000, 9_999_999)}`)

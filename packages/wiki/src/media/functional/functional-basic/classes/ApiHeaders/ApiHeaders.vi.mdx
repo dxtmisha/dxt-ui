@@ -15,9 +15,11 @@ Một lớp để quản lý và gộp các tiêu đề (headers) yêu cầu HTT
 - **Gộp an toàn** — Gộp nhiều nguồn tiêu đề khác nhau mà không làm thay đổi các đối tượng gốc.
 - **Xác thực** — Đảm bảo chỉ các đối tượng hợp lệ mới được xử lý dưới dạng tiêu đề.
 
-## Các phương thức hành động
+## Các phương thức
 
-### `get`
+### Hành động
+
+#### `get`
 
 Giao thoa tiêu đề mặc định với những tiêu đề tùy chỉnh và tiêm `Content-Type`. Nếu tham số `value` là `null`, các tiêu đề sẽ bị tắt.
 
@@ -27,7 +29,7 @@ Giao thoa tiêu đề mặc định với những tiêu đề tùy chỉnh và t
 
 **Trả về:** `Record<string, string> | undefined` — Đối tượng tiêu đề đã được gộp.
 
-### `getByRequest`
+#### `getByRequest`
 
 Một phiên bản chuyên biệt của `get` để điều chỉnh tiêu đề dựa trên loại yêu cầu. Cụ thể, nó đảm bảo `Content-Type` không được thiết lập thủ công cho `FormData` để cho phép tạo boundary chính xác.
 
@@ -38,7 +40,7 @@ Một phiên bản chuyên biệt của `get` để điều chỉnh tiêu đề 
 
 **Trả về:** `Record<string, string> | undefined` — Đối tượng tiêu đề đã được xử lý.
 
-## Cấu hình
+### Cấu hình
 
 - `set(headers: Record<string, string>): this` — Thiết lập hoặc cập nhật đối tượng tiêu đề mặc định.
 

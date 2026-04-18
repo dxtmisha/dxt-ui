@@ -20,8 +20,8 @@ export class Geo {
    * Возвращает изолированный в рамках запроса экземпляр GeoInstance.
    * @returns GeoInstance instance / экземпляр GeoInstance
    */
-  static getItem(): GeoInstance {
-    return ServerStorage.get('__dxt_geo_instance__', () => new GeoInstance())
+  static getObject(): GeoInstance {
+    return ServerStorage.get('__ui:geo-instance__', () => new GeoInstance())
   }
 
   /**
@@ -31,7 +31,7 @@ export class Geo {
    * @returns current geo item / данные о текущей гео-позиции
    */
   static get(): GeoItemFull {
-    return this.getItem().get()
+    return this.getObject().get()
   }
 
   /**
@@ -41,7 +41,7 @@ export class Geo {
    * @returns country code / код страны
    */
   static getCountry(): string {
-    return this.getItem().getCountry()
+    return this.getObject().getCountry()
   }
 
   /**
@@ -51,7 +51,7 @@ export class Geo {
    * @returns language code / код языка
    */
   static getLanguage(): string {
-    return this.getItem().getLanguage()
+    return this.getObject().getLanguage()
   }
 
   /**
@@ -61,7 +61,7 @@ export class Geo {
    * @returns standard locale string / стандартная строка локали
    */
   static getStandard(): string {
-    return this.getItem().getStandard()
+    return this.getObject().getStandard()
   }
 
   /**
@@ -71,7 +71,7 @@ export class Geo {
    * @returns first day of the week / первый день недели
    */
   static getFirstDay(): string {
-    return this.getItem().getFirstDay()
+    return this.getObject().getFirstDay()
   }
 
   /**
@@ -81,7 +81,7 @@ export class Geo {
    * @returns location string / строка местоположения
    */
   static getLocation(): string {
-    return this.getItem().getLocation()
+    return this.getObject().getLocation()
   }
 
   /**
@@ -90,8 +90,8 @@ export class Geo {
    * Возвращает полностью обработанные гео-данные с учетом текущего языка.
    * @returns full geo item data / полные данные гео-объекта
    */
-  static getItemFull(): GeoItemFull {
-    return this.getItem().getItem()
+  static getItem(): GeoItemFull {
+    return this.getObject().getItem()
   }
 
   /**
@@ -101,7 +101,7 @@ export class Geo {
    * @returns list of geo items / список гео-объектов
    */
   static getList(): GeoItem[] {
-    return this.getItem().getList()
+    return this.getObject().getList()
   }
 
   /**
@@ -112,7 +112,7 @@ export class Geo {
    * @returns full geo data / полные гео-данные
    */
   static getByCode(code?: string): GeoItemFull {
-    return this.getItem().getByCode(code)
+    return this.getObject().getByCode(code)
   }
 
   /**
@@ -123,7 +123,7 @@ export class Geo {
    * @returns geo item or undefined / гео-объект или undefined
    */
   static getByCodeFull(code: string): GeoItem | undefined {
-    return this.getItem().getByCodeFull(code)
+    return this.getObject().getByCodeFull(code)
   }
 
   /**
@@ -134,7 +134,7 @@ export class Geo {
    * @returns geo item or undefined / гео-объект или undefined
    */
   static getByCountry(country: string): GeoItem | undefined {
-    return this.getItem().getByCountry(country)
+    return this.getObject().getByCountry(country)
   }
 
   /**
@@ -145,7 +145,7 @@ export class Geo {
    * @returns geo item or undefined / гео-объект или undefined
    */
   static getByLanguage(language: string): GeoItem | undefined {
-    return this.getItem().getByLanguage(language)
+    return this.getObject().getByLanguage(language)
   }
 
   /**
@@ -155,7 +155,7 @@ export class Geo {
    * @returns timezone offset / смещение часового пояса
    */
   static getTimezone(): number {
-    return this.getItem().getTimezone()
+    return this.getObject().getTimezone()
   }
 
   /**
@@ -165,7 +165,7 @@ export class Geo {
    * @returns formatted timezone / отформатированная временная зона
    */
   static getTimezoneFormat(): string {
-    return this.getItem().getTimezoneFormat()
+    return this.getObject().getTimezoneFormat()
   }
 
   /**
@@ -176,7 +176,7 @@ export class Geo {
    * @returns full geo data / полные гео-данные
    */
   static find(code: string): GeoItemFull {
-    return this.getItem().find(code)
+    return this.getObject().find(code)
   }
 
   /**
@@ -186,8 +186,8 @@ export class Geo {
    * @param item geo item data / данные гео-объекта
    * @returns standard string / стандартная строка
    */
-  static toStandard(item: GeoItem) {
-    return this.getItem().toStandard(item)
+  static toStandard(item: GeoItem): string {
+    return this.getObject().toStandard(item)
   }
 
   /**
@@ -198,7 +198,7 @@ export class Geo {
    * @param save whether to persist the change in storage / сохранять ли изменения в хранилище
    */
   static set(code: string, save?: boolean): void {
-    this.getItem().set(code, save)
+    this.getObject().set(code, save)
   }
 
   /**
@@ -208,6 +208,6 @@ export class Geo {
    * @param timezone timezone offset in minutes / смещение часового пояса в минутах
    */
   static setTimezone(timezone: number) {
-    this.getItem().setTimezone(timezone)
+    this.getObject().setTimezone(timezone)
   }
 }

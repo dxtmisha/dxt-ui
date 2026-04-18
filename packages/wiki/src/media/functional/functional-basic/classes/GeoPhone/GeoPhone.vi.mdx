@@ -1,139 +1,89 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoPhone - Mặt nạ số điện thoại'/>
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoPhone - Mặt nạ điện thoại'/>
 
 # Lớp GeoPhone
 
-Lớp chuyên biệt để lưu trữ và xử lý các mặt nạ số điện thoại quốc tế. Nó cung cấp một hệ thống mạnh mẽ để xác định thông tin vị trí địa lý của quốc gia từ các chuỗi số điện thoại, định dạng số thô thành các đặc tả mặt nạ địa phương và quản lý bản đồ mã điện thoại quốc tế dựa trên cấu trúc cây tiền tố (prefix-tree).
+Lớp chuyên biệt để lưu trữ và xử lý mặt nạ số điện thoại quốc tế. Cung cấp cơ chế xác định quốc gia theo chuỗi số điện thoại, định dạng số thô thành mặt nạ được bản địa hóa và quản lý bản đồ mã điện thoại phức tạp dựa trên cây tiền tố (Trie). Lớp này được tích hợp chặt chẽ với dữ liệu địa lý `Geo`, cho phép tự động xác định mặt nạ dựa trên ngôn ngữ hiện tại của người dùng hoặc mã quốc gia được cung cấp.
 
-Lớp này tích hợp sâu với dữ liệu địa lý `Geo` để cung cấp khả năng tự động phân giải mặt nạ dựa trên vùng locale hiện tại của người dùng hoặc các mã quốc gia cụ thể.
+## Tính năng chính
 
-## Các tính năng chính
+- **Khớp tự động** — Tự động xác định quốc gia và mẫu mặt nạ phù hợp thông qua tìm kiếm đệ quy trong cây tiền tố.
+- **Tối ưu hóa cây tiền tố** — Sử dụng cấu trúc `map` chuyên biệt (Trie) để tìm kiếm hiệu suất cao.
+- **Bình thường hóa thông minh** — Tự động xử lý các biến thể quay số khu vực như số 0 ở đầu hoặc tiền tố quốc gia.
+- **Định dạng tiêu chuẩn** — Chuyển đổi các chuỗi số thô thành định dạng dễ đọc.
 
-- **Tự động khớp (Auto Mapping)** — Tự động phân giải quốc gia và mẫu mặt nạ phù hợp một cách động thông qua tra cứu cây tiền tố đệ quy.
-- **Tối ưu hóa Cây Tiền tố (Prefix Tree)** — Sử dụng cấu trúc `map` chuyên biệt (Prefix Tree) để tìm kiếm hiệu quả và hiệu suất cao trên các kế hoạch đánh số quốc tế.
-- **Chuẩn hóa Thông minh** — Tự động xử lý các biến thể quay số theo vùng, chẳng hạn như số 0 ở đầu hoặc các tiền tố quốc gia (ví dụ: số '8' của Nga).
-- **Định dạng Chuẩn hóa** — Chuyển đổi các chuỗi số thô thành các định dạng điện thoại dễ đọc, phù hợp với các tiêu chuẩn viễn thông quốc tế.
+## Cách sử dụng cơ bản
 
-## Các phương thức Tìm kiếm
-
-### `getByPhone`
-
-Phương thức định danh chính phân tích một chuỗi số điện thoại để trích xuất thông tin địa lý và mặt nạ đánh số phù hợp nhất.
-
-**Tham số:**
-- `phone: string` — Số điện thoại mục tiêu cần phân tích (chấp nhận các chuỗi thô hoặc đã được định dạng một phần).
-
-**Trả về:** `GeoPhoneMapInfo` — Một đối tượng cấu trúc chứa mục `GeoPhoneMap` khớp được và phần số đã được chuẩn hóa của điện thoại.
+Bạn có thể sử dụng các phương thức tĩnh của lớp để xác định nhanh quốc gia theo số điện thoại hoặc định dạng.
 
 ```javascript
 import { GeoPhone } from '@dxtmisha/functional-basic'
 
+// Xác định quốc gia theo số điện thoại
 const info = GeoPhone.getByPhone('84901234567')
-// trả về:
-// { 
-//   item: { info: { phone: 84, ... }, mask: ['+84 ** **** ****'], ... },
-//   phone: '901234567' 
-// }
+console.log(info.item?.value) // 'VN'
+
+// Định dạng theo mặt nạ
+const formatted = GeoPhone.toMask('901234567', ['+** (***) ***-***'])
+console.log(formatted) // '+84 (901) 234-567'
 ```
 
-### `get`
+## Các phương thức
 
-Truy xuất siêu dữ liệu điện thoại đã địa phương hóa được liên kết với một mã quốc gia cụ thể.
+### Thông tin
 
-**Tham số:**
-- `code: string` — Mã quốc gia tiêu chuẩn ISO 3166 (ví dụ: `'VN'`, `'RU'`, `'US'`).
+- `getList(): GeoPhoneValue[]` — Trả về danh sách phẳng đầy đủ, đã được sắp xếp của tất cả dữ liệu meta điện thoại quốc tế.
+- `getMap(): Record<string, GeoPhoneMap>` — Trả về nút gốc của cây tiền tố nội bộ được sử dụng để tìm kiếm.
 
-**Trả về:** `GeoPhoneValue | undefined` — Siêu dữ liệu thô của quốc gia, hoặc `undefined` nếu không tìm thấy trong bộ dữ liệu.
+### Lựa chọn
 
-```javascript
-GeoPhone.get('VN') 
-// { phone: 84, within: 0, mask: ['+** ** **** ****'], value: 'VN' }
-```
+- `get(code: string): GeoPhoneValue | undefined` — Lấy dữ liệu meta điện thoại liên kết với một mã quốc gia cụ thể.
+- `getByPhone(phone: string): GeoPhoneMapInfo` — Phân tích chuỗi số điện thoại để trích xuất thông tin và mặt nạ phù hợp.
+- `getByCode(code: string): GeoPhoneMap | undefined` — Trả về thông tin mặt nạ đầy đủ cho một mã nhất định.
 
-### `getByCode`
+### Phụ trợ
 
-Phương thức truy xuất mở rộng trả về dữ liệu mặt nạ đầy đủ bao gồm cả nút cây tìm kiếm cho một mã quốc gia nhất định.
+- `toMask(phone: string, masks?: string[]): string | undefined` — Chuyển đổi chuỗi số điện thoại thô thành phiên bản đã định dạng.
+- `removeZero(phone: string): string` — Bình thường hóa biểu diễn nội bộ của số bằng cách loại bỏ các số 0 ở đầu hoặc điều chỉnh tiền tố khu vực.
 
-**Tham số:**
-- `code: string` — Chuỗi mã quốc gia mục tiêu.
-
-**Trả về:** `GeoPhoneMap | undefined` — Đối tượng nút bản đồ đầy đủ cho mã được yêu cầu.
-
-```javascript
-GeoPhone.getByCode('US')
-// { info: { phone: 1, ... }, mask: ['1 (***) ***-****'], ... }
-```
-
-## Các phương thức Truy cập Dữ liệu
-
-- `getList(): GeoPhoneValue[]` — Trả về danh sách phẳng đầy đủ, đã được sắp xếp của tất cả siêu dữ liệu điện thoại quốc tế đã đăng ký.
-- `getMap(): Record<string, GeoPhoneMap>` — Trả về nút gốc của cây tiền tố nội bộ được sử dụng để định danh số điện thoại tốc độ cao.
-
-## Các phương thức Định dạng & Tiện ích
-
-### `toMask`
-
-Chuyển đổi một chuỗi số điện thoại thô thành phiên bản đã được định dạng dựa trên một tập hợp các mặt nạ cụ thể.
-
-**Tham số:**
-- `phone: string` — Đầu vào số thô.
-- `masks?: string[]` — Một mảng các chuỗi mặt nạ hợp lệ để lặp qua nhằm tìm kiếm sự phù hợp.
-
-**Trả về:** `string | undefined` — Chuỗi đã được định dạng cho người dùng, hoặc `undefined` nếu không có độ dài mặt nạ nào khớp với đầu vào.
-
-```javascript
-GeoPhone.toMask('901234567', ['+** ** **** ****']) 
-// '+84 90 1234 567'
-```
-
-### `removeZero`
-
-Chuẩn hóa biểu diễn số nội bộ bằng cách loại bỏ các số 0 ở đầu hoặc sửa các tiền tố quay số vùng để đảm bảo logic tìm kiếm nhất quán.
-
-**Tham số:**
-- `phone: string` — Chuỗi số điện thoại đầu vào.
-
-**Trả về:** `string` — Chuỗi số đã được chuẩn hóa.
-
-```javascript
-GeoPhone.removeZero('0901234567')  // '901234567'
-GeoPhone.removeZero('89001234567') // '9001234567'
-```
-
-## Các đối tượng GeoPhone
+## Kiểu dữ liệu
 
 ### `GeoPhoneValue`
 Cấu trúc siêu dữ liệu cơ bản cho cấu hình điện thoại của mỗi quốc gia:
-- `phone: number` — Mã quay số (ví dụ: `84`).
-- `within: number` — Mã quy tắc quay số nội bộ.
-- `mask: string[]` — Mảng các mẫu mặt nạ.
-- `value: string` — Định danh quốc gia.
+- `phone: number` — Mã điện thoại quốc gia (ví dụ: `84`).
+- `within: number` — Mã quy tắc gọi nội bộ (dùng để chọn ký tự đặc biệt trong mặt nạ).
+- `mask: string[]` — Mảng các mẫu mặt nạ được gán cho quốc gia.
+- `value: string` — Mã định danh quốc gia (ISO 3166).
 
 ### `GeoPhoneMap`
-Một nút trong cây tiền tố nội bộ:
-- `items: GeoPhoneValue[]` — Danh sách các mục thuộc nhánh này.
-- `info: GeoPhoneValue | undefined` — Giá trị khớp tại nút số cụ thể này.
-- `next: Record<string, GeoPhoneMap>` — Con trỏ đến các chữ số tiếp theo trong cây.
+Một nút trong cây tiền tố nội bộ (Trie) được sử dụng để tìm kiếm:
+- `items: GeoPhoneValue[]` — Danh sách tất cả các mục có sẵn trong nhánh này của cây.
+- `info: GeoPhoneValue | undefined` — Dữ liệu meta điện thoại nếu nút hiện tại là một mã đầy đủ.
+- `value: string | undefined` — Mã định danh quốc gia cho nút này.
+- `mask: string[]` — Mảng các mặt nạ với các ký tự nội bộ đã được thay thế (`~`, `=`, `$`).
+- `maskFull: string[]` — Mặt nạ đầy đủ bao gồm cả mã quốc tế.
+- `next: Record<string, GeoPhoneMap>` — Con trỏ đến các chữ số tiếp theo trong cây tìm kiếm.
+
+### `GeoPhoneMapInfo`
+Kết quả của phương thức tìm kiếm `getByPhone`:
+- `item?: GeoPhoneMap` — Nút cây tìm thấy với thông tin quốc gia và mặt nạ.
+- `phone?: string` — Phần còn lại của số sau khi tách mã quốc gia.
 
 ## Ví dụ
 
+### Logic ký tự nội bộ (Within)
+Logic nội bộ của lớp sẽ thay thế dấu "sao" đầu tiên trong mặt nạ bằng một ký tự đặc biệt tùy thuộc vào quy tắc khu vực:
+- `~` — cho Nga (mã nội bộ 8).
+- `=` — cho các khu vực mặc định/khác (ví dụ: Việt Nam, Hoa Kỳ).
+
 ```javascript
-import { GeoPhone } from '@dxtmisha/functional'
+const mapInfo = GeoPhone.getByCode('RU')
+console.log(mapInfo.mask[0]) // '~ (***) ***-**-**'
+```
 
-// 1. Định danh quốc gia bằng số điện thoại
-const lookup = GeoPhone.getByPhone('+84901234567')
-if (lookup.item) {
-    console.log('Quốc gia:', lookup.item.value) // 'VN'
-    console.log('Mặt nạ chính:', lookup.item.mask[0])
-}
-
-// 2. Định dạng thủ công
-const formatted = GeoPhone.toMask('442071234567', ['+** (**) **** ****'])
-console.log(formatted) // '+44 (20) 7123 4567'
-
-// 3. Chuẩn hóa đầu vào để tìm kiếm
-const rawInput = '0084901234567'
-const normalized = GeoPhone.removeZero(rawInput.replace(/^00/, ''))
-console.log(normalized) // '84901234567'
+### Nhiều mặt nạ
+```javascript
+const masks = ['+** (***) ***-***', '+** (***) ***-**-**']
+console.log(GeoPhone.toMask('84901234567', masks)) // 11 số -> '+84 (901) 234-567'
 ```

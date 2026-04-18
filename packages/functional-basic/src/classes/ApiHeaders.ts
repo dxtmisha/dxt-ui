@@ -13,11 +13,12 @@ export class ApiHeaders {
   protected headers: Record<string, string> = {}
 
   /**
-   * Getting the header for the request.
+   * Gets the headers for the request.
    *
-   * Получение заголовка для запроса.
+   * Получает заголовки для запроса.
    * @param value list of headers/ список заголовков
-   * @param type type of request (default: application/json;charset=UTF-8)/ тип запроса (по умолчанию: application/json;charset=UTF-8)
+   * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+   * @returns merged headers or undefined / объединенные заголовки или undefined
    */
   get(
     value?: Record<string, string> | null,
@@ -41,12 +42,13 @@ export class ApiHeaders {
   }
 
   /**
-   * Getting the header for the request.
+   * Gets the headers for the request based on request type.
    *
-   * Получение заголовка для запроса.
+   * Получает заголовки для запроса на основе типа запроса.
    * @param request request data/ данные запроса
    * @param value list of headers/ список заголовков
-   * @param type type of request (default: application/json;charset=UTF-8)/ тип запроса (по умолчанию: application/json;charset=UTF-8)
+   * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+   * @returns merged headers or undefined / объединенные заголовки или undefined
    */
   getByRequest(
     request: ApiFetch['request'],
@@ -61,10 +63,11 @@ export class ApiHeaders {
   }
 
   /**
-   * Modifies the default header data.
+   * Sets the default headers.
    *
-   * Изменяет данные заголовка по умолчанию.
+   * Устанавливает заголовки по умолчанию.
    * @param headers list of default headers/ список заголовков по умолчанию
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   set(headers: Record<string, string>): this {
     if (isObjectNotArray(headers)) {

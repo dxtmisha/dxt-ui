@@ -14,9 +14,11 @@ A specialized class designed to handle tasks and side effects immediately before
 - **Global Interception** — provides a single point of entry and exit for all network traffic initiated by its parent manager.
 - **Request Replay** — post-request hooks can signal the system to automatically retry a request after state changes.
 
-## Action Methods
+## Methods
 
-### `make`
+### Action
+
+#### `make`
 
 Executes the registered preparation callback. If another preparation is currently in progress, it waits for it to complete.
 
@@ -26,7 +28,7 @@ Executes the registered preparation callback. If another preparation is currentl
 
 **Returns:** `Promise<void>`
 
-### `makeEnd`
+#### `makeEnd`
 
 Executes the registered analysis callback after a request completes.
 
@@ -37,10 +39,17 @@ Executes the registered analysis callback after a request completes.
 
 **Returns:** `Promise<ApiPreparationEnd>` — An object controlling the next steps (e.g., reset, data injection).
 
-## Configuration
+### Configuration
 
 - `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Registers a function to run before every enabled request.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Registers a function to run after every enabled response.
+
+## Types
+
+#### `ApiPreparationEnd`
+Result of the analysis hook execution.
+- `reset?: boolean` — If true, the request will be aborted and restarted.
+- `data?: any` — Custom data to pass along.
 
 ## Guide: Mechanics of Hooks
 

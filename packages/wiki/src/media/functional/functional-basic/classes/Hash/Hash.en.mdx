@@ -4,7 +4,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Hash Class
 
-A static class for managing data stored in the URL hash (`#`). It automatically synchronizes application state with the URL — every `set` call updates the browser's hash string, while the `hashchange` event refreshes the internal state.
+A static facade class for managing data stored in the URL hash (`#`). It delegates execution to the `HashInstance` class, providing centralized access and state isolation (e.g., for SSR).
+
+It automatically synchronizes application state with the URL — every `set` call updates the browser's hash string, while the `hashchange` event refreshes the internal state.
 
 ## Key Features
 
@@ -12,10 +14,11 @@ A static class for managing data stored in the URL hash (`#`). It automatically 
 - **Reactivity via Watchers** — The `addWatch` method allows subscribing to changes on a specific variable.
 - **Auto-initialization** — When the page loads, data is automatically read from the URL.
 - **Smart Typing** — Values are deserialized from a string: numbers, booleans, and objects are restored to their original types.
+- **SSR Isolation** — `ServerStorage` ensures a unique data instance for each request on the server.
 
 ## Initialization
 
-The class is static and initializes automatically on page load — reading the current URL hash string.
+The class is static and initializes automatically upon the first access.
 
 ```javascript
 // URL: https://myapp.com/#page=2;filter=active
@@ -28,11 +31,19 @@ const filter = Hash.get('filter') // 'active' (string)
 
 ## Methods
 
-- `get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a hash variable. If the value doesn't exist, it is set using `defaultValue` (which can be a function).
-- `set<T>(name: string, callback: T | (() => T)): void` — Sets a variable's value and updates the URL hash. If the value hasn't changed, no update occurs.
-- `addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific hash variable.
-- `removeWatch<T>(name: string, callback: (value: T) => void): void` — Unsubscribes from changes for a specific variable.
-- `reload(): void` — Reads the current URL hash and synchronizes it with the internal state.
+### Instance
+- `static getItem(): HashInstance` — Returns the current `HashInstance` (isolated for the current request).
+
+### Reading and Writing
+- `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a hash variable.
+- `static set<T>(name: string, callback: T | (() => T)): void` — Sets a variable's value and updates the URL hash.
+
+### Watchers
+- `static addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific hash variable.
+- `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Unsubscribes from changes for a specific variable.
+
+### Management
+- `static reload(): void` — Forces synchronization of the state with the current URL hash.
 
 ## Examples
 

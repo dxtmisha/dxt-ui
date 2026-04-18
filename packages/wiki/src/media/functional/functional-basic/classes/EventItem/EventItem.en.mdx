@@ -4,31 +4,31 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # EventItem Class
 
-A powerful wrapper for managing event listeners on DOM elements or the `window` object. This class simplifies the lifecycle of events (adding, removing, toggling), supports automatic DOM presence checks, and provides built-in optimization for heavy events like `resize` and `scroll`.
+A powerful wrapper for managing event listeners on DOM elements or the `window` object. The class simplifies working with the event lifecycle (add, remove, toggle), supports automatic checking of the element's presence in the DOM, and provides built-in optimization for heavy events such as `resize` and `scroll`.
 
 ## Key Features
 
-- **Lifecycle Management** — convenient `start`, `stop`, `toggle`, and `reset` methods for precise control over event listening.
-- **DOM Safety** — automatic `isInDom` check before executing the listener (can be configured with a control element).
-- **ResizeObserver Support** — built-in handling of the `resize` event for any HTML element using the modern API.
-- **Scroll Optimization** — special `scroll-sync` event type using `requestAnimationFrame` for high performance.
-- **Chaining and Flexibility** — support for method chaining and dynamic target, type, or listener replacement.
-- **Custom Data** — ability to pass and dispatch custom data via `CustomEvent`.
+- **Lifecycle Management** — convenient `start`, `stop`, `toggle`, and `reset` methods to control event listening.
+- **DOM Safety** — automatic `isInDom` check before executing the handler (a control element can be configured).
+- **ResizeObserver Support** — built-in handling of the `resize` event for any HTML elements via a modern API.
+- **Scroll Optimization** — a special `scroll-sync` event type using `requestAnimationFrame` for high performance.
+- **Chaining and Flexibility** — support for call chaining and dynamic changing of the target, type, or event handler.
+- **Custom Data** — the ability to pass and dispatch custom data via `CustomEvent`.
 
 ## Initialization
 
-To initialize the object, call the `EventItem(elementSelector, type, listener, options, detail)` constructor.
+To initialize the object, call the constructor `EventItem(elementSelector, type, listener, options, detail)`.
 
 ### Generic Constraints
 
 To ensure strict typing, the class supports the following generics:
-- `E extends ElementOrWindow` — The type of the element on which events are listened to.
-- `O extends Event` — The event object type.
-- `D extends Record<string, any>` — The structure for additional data.
+- `E extends ElementOrWindow` — The type of element on which events are listened.
+- `O extends Event` — The type of the event object.
+- `D extends Record<string, any>` — The structure of additional data.
 
 **Parameters:**
-- `elementSelector?: ElementOrString<E>` — the target element where the listener is attached.
-- `type: string | string[] = 'click'` — the event type, an array of types, or special types (`'resize'`, `'scroll-sync'`).
+- `elementSelector?: ElementOrString<E>` — the target element on which the listener is attached.
+- `type: string | string[] = 'click'` — event type, array of types, or special types (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — the event handler function.
 - `options?: EventOptions` — standard `addEventListener` options.
 - `detail?: D` — custom data that will be available in the handler.
@@ -36,7 +36,7 @@ To ensure strict typing, the class supports the following generics:
 ```typescript
 import { EventItem } from '@dxtmisha/functional-basic'
 
-// 1. Simple initialization
+// 1. Basic initialization
 const myEvent = new EventItem(
   '.my-button', 
   'click', 
@@ -49,13 +49,13 @@ const customEvent = new EventItem<Window, MouseEvent, MyData>(
   window,
   'mousedown',
   (event, detail) => {
-    console.log('Window clicked, data ID:', detail?.id)
+    console.log('Window click, data ID:', detail?.id)
   },
   { passive: true },
   { id: 42 }
 )
 
-// 3. Activating listeners
+// 3. Activating listening
 myEvent.start()
 customEvent.start()
 ```
@@ -72,27 +72,48 @@ customEvent.start()
 All methods in this group support chaining and automatically call `reset()` if the event is active.
 
 - `setElement(elementSelector?: ElementOrString): this` — Changes the target element.
-- `setElementControl(elementSelector?: ElementOrString): this` — Sets a control element (if missing in DOM, the event won't trigger).
+- `setElementControl(elementSelector?: ElementOrString): this` — Sets the control element (if it is not in the DOM, the event will not fire).
 - `setType(type: string | string[]): this` — Changes the event type.
-- `setListener(listener: Function): this` — Changes the callback function.
-- `setOptions(options?: EventOptions): this` — Changes the listener options.
-- `setDetail(detail?: D): this` — Changes the custom detail data.
+- `setListener(listener: Function): this` — Changes the handler function.
+- `setOptions(options?: EventOptions): this` — Changes the listener parameters.
+- `setDetail(detail?: D): this` — Changes the custom event data.
 
-### Control
+### Management
 
-- `start(): this` — Starts listening for events.
-- `stop(): this` — Stops listening for events.
-- `toggle(activity: boolean): this` — Enables or disables listening based on the flag.
+- `start(): this` — Starts event listening.
+- `stop(): this` — Stops event listening.
+- `toggle(activity: boolean): this` — Enables or disables listening depending on the flag.
 - `reset(): this` — Restarts the event (useful after changing settings).
-- `dispatch(detail?: D): this` — Triggers the event on the target element with data transmission.
+- `dispatch(detail?: D): this` — Triggers the event on the target element with data transfer.
+
+## Types
+
+#### `ElementOrWindow`
+Element on which an event can be attached: `HTMLElement | Window`.
+
+#### `ElementOrString<E>`
+Type for passing an element or its selector: `E | string`.
+
+#### `EventListenerDetail<O, D>`
+Event listener function: `(event: O, detail?: D) => void`.
+
+#### `EventOptions`
+Listening options: `AddEventListenerOptions | boolean | undefined`.
+
+#### `EventActivityItem<E>`
+Internal interface for tracking active listeners.
+- `element: E | undefined` — Target element.
+- `type: string` — Event type.
+- `listener?: (event: any) => void` — Active function.
+- `observer?: ResizeObserver` — Observer instance (for `resize`).
 
 ## Special Events
 
 ### `resize`
-If the event type is set to `resize`, the class automatically uses `ResizeObserver` to track element size changes (even if it's not the `window`).
+If the event type is set to `resize`, the class automatically uses `ResizeObserver` to track changes in the size of the element (even if it is not `window`).
 
 ### `scroll-sync`
-A special type for optimized scrolling. It uses `requestAnimationFrame` internally, preventing redundant handler calls and improving performance.
+A special type for optimized scrolling. Internally uses `requestAnimationFrame`, preventing unnecessary handler calls and increasing performance.
 
 ## Examples
 
@@ -104,7 +125,7 @@ const tracker = new EventItem('.item-1', 'mousemove', (e) => {
 
 tracker.start()
 
-// ... later switch to another element
+// ... switch to another element later
 tracker.setElement('.item-2')
 ```
 

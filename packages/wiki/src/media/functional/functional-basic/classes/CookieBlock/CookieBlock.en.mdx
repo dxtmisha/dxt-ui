@@ -4,54 +4,73 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # CookieBlock Class
 
-A static utility class that serves as a global "kill switch" for DOM cookie modifications. It provides a simple boolean state that other classes, specifically `Cookie`, check before attempting to write to `document.cookie`.
+A static utility class that serves as a global "kill switch" for DOM cookie modifications. Provides a simple boolean state that other classes, specifically `Cookie`, check before attempting to write to `document.cookie`.
+
+Includes tight integration with `ServerStorage` for request-level state isolation in SSR environments.
 
 ## Key Features
 
-- **Global Truth** — a single configuration point to halt cookie operations application-wide.
-- **Privacy Compliance** — extremely useful for implementing "Cookie Consent" banners. Simply set the block to `true` until the user explicitly accepts all cookies.
-- **DataStorage Backed** — uses the `DataStorage` abstraction internally to maintain the blocked state reliably.
+- **Global Truth** — a single configuration point to halt cookie operations application-wide
+- **Privacy Compliance** — extremely useful for implementing "Cookie Consent" banners
+- **SSR Compatible** — uses `ServerStorage` to reliably maintain the blocked state in isolated request contexts
 
+## Static Methods
 
-Since all methods are `static`, you interact with the class directly.
+### Action
 
-## Access Management
+#### `set`
 
-### `get`
-
-Use the `get()` method to read the current blocking status. This returns a boolean.
-
-**Returns:** `boolean` — `true` if cookie writing is blocked.
-
-```javascript
-if (CookieBlock.get()) {
-  console.log('Cookie writes are currently blocked by user settings.')
-}
-```
-
-### `set`
-
-Use the `set()` method to enable or disable cookie writing capabilities.
+Enables or disables cookie writing capabilities. When set to `true`, all write operations will only save data in memory without touching `document.cookie`.
 
 **Parameters:**
-- `value: boolean` — `true` to block cookie writes, `false` to allow them.
+- `value: boolean` — `true` to block cookie writes, `false` to allow them
 
-```javascript
+### Check
+
+- `get(): boolean` — Returns the current blocking status. `true` if cookie writing is blocked
+
+## Examples
+
+### Basic Usage
+
+```typescript
 import { CookieBlock } from '@dxtmisha/functional'
 
 // Block all future DOM cookie writes
 CookieBlock.set(true)
 
+if (CookieBlock.get()) {
+  console.log('Cookie writes are currently blocked')
+}
+
 // Allow DOM cookie writes (default behavior)
 CookieBlock.set(false)
+```
+
+### Cookie Consent Banner Implementation
+
+```typescript
+import { CookieBlock, Cookie } from '@dxtmisha/functional'
+
+// Block cookies on app load
+CookieBlock.set(true)
+
+// After user accepts cookies
+function onCookieConsentAccepted() {
+  CookieBlock.set(false)
+  
+  // Now we can set cookies
+  const theme = new Cookie('theme')
+  theme.set('dark')
+}
 ```
 
 ## How It Interacts With `Cookie`
 
 The core `Cookie` class strictly monitors this block. If `CookieBlock.get()` returns `true`:
 
-1.  Your application logic can still technically call `cookieInstance.set('value')`.
-2.  The `Cookie` instance will update its *internal memory storage* to the new value.
-3.  The `Cookie` instance **will silently refuse** to execute the actual `document.cookie = ...` DOM write. 
+1. Your application logic can still technically call `cookieInstance.set('value')`
+2. The `Cookie` instance will update its *internal memory storage* to the new value
+3. The `Cookie` instance **will silently refuse** to execute the actual `document.cookie = ...` DOM write
 
 This guarantees your app doesn't break from undefined reads in memory while strictly honoring the browser's disk persistence settings.

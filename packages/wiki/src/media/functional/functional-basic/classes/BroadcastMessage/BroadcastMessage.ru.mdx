@@ -4,18 +4,17 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс BroadcastMessage
 
-Класс для работы с сообщениями между вкладками или окнами с использованием API `BroadcastChannel`. Предоставляет простой интерфейс для отправки и получения сообщений с поддержкой колбэков, обработки ошибок и проверкой среды выполнения.
+Класс для работы с сообщениями между различными контекстами браузера (вкладками, окнами, iframe) с использованием API `BroadcastChannel`. Предоставляет удобный интерфейс для отправки и получения данных с автоматическим управлением жизненным циклом канала и обработкой ошибок.
+
+Включает автоматическое префиксное именование для предотвращения конфликтов и интегрируется с `ErrorCenter` для мониторинга сбоев инициализации.
 
 ## Ключевые особенности
 
-- **Межконтекстное взаимодействие** — простая отправка сообщений между различными вкладками браузера, окнами или iframe одного и того же источника (origin).
-- **На основе колбэков** — регистрация функций обратного вызова для автоматической обработки входящих сообщений и ошибок.
-- **Учет среды выполнения** — автоматическая проверка наличия DOM перед инициализацией, что предотвращает ошибки в средах, отличных от браузера.
-- **Префиксы имен** — автоматическое добавление уникального префикса к именам каналов во избежание конфликтов с другими приложениями.
-- **Типизация** — поддержка универсальных типов (generics) TypeScript для полезной нагрузки сообщений.
-- **Интеграция с ErrorCenter** — централизованная отчетность об ошибках в случае сбоя инициализации `BroadcastChannel`.
-- **Управление ресурсами** — включает метод `destroy()` для закрытия канала и освобождения системных ресурсов.
-- **Прямой доступ** — предоставление доступа к базовому экземпляру `BroadcastChannel` при необходимости.
+- **Межконтекстное взаимодействие** — простая синхронизация данных между всеми окнами одного и того же источника (origin).
+- **На основе колбэков** — автоматическая обработка входящих сообщений и ошибок через регистрируемые функции обратного вызова.
+- **Безопасность выполнения** — встроенная проверка среды DOM предотвращает ошибки при серверном рендеринге (SSR).
+- **Изоляция каналов** — автоматическое добавление уникального префикса к именам каналов через `DataStorage`.
+- **Строгая типизация** — полная поддержка TypeScript дженериков для обеспечения целостности данных сообщения.
 
 ## Инициализация
 
@@ -27,27 +26,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `name: string` — уникальное имя канала связи.
-- `callback?: (event: MessageEvent<Message>) => void` — функция обратного вызова, выполняемая при получении сообщения.
-- `callbackError?: (event: MessageEvent<Message>) => void` — функция обратного вызова, выполняемая при возникновении ошибки сообщения.
-- `errorCenter: ErrorCenterInstance` — экземпляр центра ошибок для вызова событий (по умолчанию: `ErrorCenter.getItem()`).
+- `callback?: (event: MessageEvent<Message>) => void` — функция обратного вызова при получении сообщения.
+- `callbackError?: (event: MessageEvent<Message>) => void` — функция обратного вызова при ошибке сообщения.
+- `errorCenter: ErrorCenterInstance` — экземпляр центра ошибок (по умолчанию: `ErrorCenter.getItem()`).
 
 ```typescript
-import { BroadcastMessage } from '@dxtmisha/functional'
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
 
-// 1. Инициализация с обработкой входящих данных
-const messenger = new BroadcastMessage(
+const messenger = new BroadcastMessage<string>(
   'my-channel',
-  (event) => console.log('Получено:', event.data),
-  (error) => console.error('Ошибка:', error)
+  (event) => console.log('Получено:', event.data)
 )
-
-// 2. Отправка сообщения
-messenger.post({ type: 'UPDATE', value: 100 })
 ```
 
-## Отправка сообщений
+## Методы
 
-### `post`
+### Действие
+
+#### `post`
 
 Отправляет сообщение всем слушателям в том же канале.
 
@@ -56,52 +52,47 @@ messenger.post({ type: 'UPDATE', value: 100 })
 
 **Возвращает:** `this` — для цепочки вызовов.
 
-```javascript
-messenger.post({ type: 'UPDATE', payload: { id: 123 } })
-```
+#### `destroy`
 
-## Настройка и доступ
+Закрывает канал и прекращает прослушивание сообщений.
 
-- `getChannel(): BroadcastChannel | undefined` — Возвращает базовый экземпляр `BroadcastChannel` (или `undefined` вне среды браузера).
-- `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Обновляет или устанавливает функцию обратного вызова для получения сообщений.
-- `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Обновляет или устанавливает функцию обратного вызова для ошибок сообщений.
-- `destroy(): void` — Закрывает канал и прекращает прослушивание сообщений.
+**Возвращает:** `this` — для цепочки вызовов.
+
+### Настройка и доступ
+
+- `getChannel(): BroadcastChannel | undefined` — Возвращает базовый экземпляр `BroadcastChannel`.
+- `setCallback(callback: Function): this` — Обновляет функцию обработки входящих сообщений.
+- `setCallbackError(callbackError: Function): this` — Обновляет функцию обработки ошибок.
 
 ## Примеры
 
 ### Синхронизация состояния между вкладками
 
-```javascript
+```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'
 
-// Во вкладке А и вкладке Б
-const authChannel = new BroadcastMessage('auth-status', (event) => {
+// Во всех вкладках приложения
+const authChannel = new BroadcastMessage<string>('auth-status', (event) => {
   if (event.data === 'LOGOUT') {
     authModule.clearSession()
-    window.location.href = '/login'
+    window.location.reload()
   }
 })
 
-// При выходе пользователя из системы во вкладке А
+// При выходе пользователя в одной из вкладок
 function onLogout() {
   authChannel.post('LOGOUT')
 }
 ```
 
-### Простая система уведомлений с обработкой ошибок
+### Обновление обработчика на лету
 
-```javascript
-const notifications = new BroadcastMessage(
-  'notifications',
-  (event) => showToast(event.data.message),
-  (error) => console.error('Не удалось получить уведомление:', error)
-)
+```typescript
+const messenger = new BroadcastMessage('data-sync')
 
-// Обновление обработчика ошибок позже
-notifications.setCallbackError((error) => {
-  logToService(error)
+messenger.setCallback((event) => {
+  console.log('Данные получены:', event.data)
 })
 
-// Вызов уведомления из любой части приложения
-notifications.post({ message: 'Получено новое сообщение!' })
+messenger.post({ id: 1, status: 'active' })
 ```

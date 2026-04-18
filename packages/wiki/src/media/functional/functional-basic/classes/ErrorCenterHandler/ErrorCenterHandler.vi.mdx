@@ -2,92 +2,72 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Classes/ErrorCenterHandler - Quản lý trình xử lý'/>
 
-# ErrorCenterHandler
+# Lớp ErrorCenterHandler
 
-Một lớp tiện ích cốt lõi để quản lý và kích hoạt các trình xử lý lỗi dựa trên các nhóm đã được định nghĩa. Nó cho phép các chiến lược phản hồi lỗi linh hoạt, chẳng hạn như hiển thị thông báo toàn cục cho các lỗi API trong khi thực hiện ghi nhật ký âm thầm cho các tác vụ nền.
-
-> `ErrorCenterHandler` là một **lớp phụ trợ** được thiết kế để quản lý việc điều phối các trình xử lý cấp thấp. Trong hầu hết các trường hợp, bạn nên tương tác với lỗi thông qua `ErrorCenter` hoặc `ErrorCenterInstance`.
+`ErrorCenterHandler` là trình quản lý để quản lý các hàm callback (trình xử lý). Nó cho phép bạn liên kết logic với các nhóm lỗi cụ thể và thực thi nó khi có sự kiện tương ứng xảy ra.
 
 ## Các tính năng chính
 
-- **Đăng ký trình xử lý** — Dễ dàng thêm nhiều hàm gọi lại cho các nhóm lỗi cụ thể.
-- **Lọc theo nhóm** — Nhắm mục tiêu các danh mục lỗi cụ thể (ví dụ: `api`, `auth`, `validation`).
-- **Dự phòng toàn cục** — Hỗ trợ trình xử lý cho nhóm `undefined` để bắt bất kỳ lỗi nào không có trình xử lý cụ thể.
-- **Thực thi tuần tự** — Kích hoạt tất cả các hàm gọi lại theo thứ tự chúng được thêm vào.
-- **Tích hợp ghi nhật ký** — Tự động xuất chi tiết lỗi ra console.
+- **Đăng ký trình xử lý** — thêm thuận tiện các hàm callback vào các nhóm cụ thể.
+- **Trình xử lý toàn cục** — hỗ trợ nhóm `undefined`, nhóm này bắt bất kỳ lỗi nào không có trình xử lý cụ thể.
+- **Thực thi tuần tự** — kích hoạt tất cả các hàm đã đăng ký theo thứ tự chúng được thêm vào.
+- **Ghi log tích hợp** — tự động xuất chi tiết lỗi ra console.
 
-## Các phương thức hành động
+## Khởi tạo
 
-### `on`
-
-Kích hoạt tất cả các trình xử lý đã đăng ký cho nhóm của nguyên nhân lỗi được cung cấp. Nếu không tìm thấy trình xử lý cụ thể nào, nó sẽ quay về các trình xử lý được đăng ký cho nhóm `undefined` (nếu có). Luôn xuất chi tiết lỗi ra bảng điều khiển nội bộ.
+Để tạo một thực thể, sử dụng constructor `ErrorCenterHandler(handlers)`.
 
 **Tham số:**
-- `cause: ErrorCenterCauseItem` — Chi tiết lỗi để chuyển cho các trình xử lý.
+- `handlers?: ErrorCenterHandlerList` — danh sách trình xử lý ban đầu.
 
-**Trả về:** `this`
+```typescript
+import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
 
-## Các phương thức kiểm tra
+const handlers = new ErrorCenterHandler([
+  {
+    group: 'api',
+    handlers: [(cause) => console.log('Lỗi API:', cause.code)]
+  }
+]);
+```
 
-- `has(group: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý nào được đăng ký cho một nhóm không.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Truy xuất ánh xạ trình xử lý cho một nhóm.
+## Các phương thức
 
-## Cấu hình
+### Hành động
+- `on(cause: ErrorCenterCauseItem): this` — Kích hoạt chuỗi trình xử lý. Luôn xuất lỗi ra console qua `console.error`.
 
-- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Thêm một hàm gọi lại cho một nhóm.
-- `addList(handlers: ErrorCenterHandlerList): this` — Đăng ký một loạt các trình xử lý.
+### Xác minh
+- `has(group: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý cho một nhóm không.
+- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Trả về danh sách các hàm cho một nhóm.
+
+### Cấu hình
+- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Thêm một hàm vào một nhóm.
+- `addList(handlers: ErrorCenterHandlerList): this` — Đăng ký hàng loạt các trình xử lý.
 
 ## Các kiểu dữ liệu
 
 #### `ErrorCenterGroup`
-Định danh nhóm lỗi.
-- `string | undefined` — Tên chuỗi cho nhóm, hoặc `undefined` cho trình xử lý toàn cục/mặc định.
-
-#### `ErrorCenterCauseItem`
-Thông tin chi tiết về nguyên nhân lỗi.
-- `group?: ErrorCenterGroup` — Nhóm mà lỗi này thuộc về.
-- `code: string` — Mã lỗi duy nhất (ví dụ: '404', 'AUTH_ERROR').
-- `priority?: number` — Mức độ ưu tiên được sử dụng để hợp nhất nhiều lỗi.
-- `label?: string` — Tên ngắn gọn, dễ hiểu cho lỗi.
-- `message?: string` — Thông báo lỗi mô tả.
-- `details?: any` — Bất kỳ bối cảnh bổ sung hoặc dữ liệu lỗi thô nào.
-
-#### `ErrorCenterCauseList`
-Một mảng các đối tượng `ErrorCenterCauseItem`.
+Tên nhóm (`string`) hoặc `undefined` để chặn toàn cục.
 
 #### `ErrorCenterHandlerCallback`
-Hàm cho các callback xử lý lỗi.
-- `(cause: ErrorCenterCauseItem) => void` — Nhận đối tượng nguyên nhân lỗi khi được kích hoạt.
+Hàm callback: `(cause: ErrorCenterCauseItem) => void`.
 
 #### `ErrorCenterHandlerItem`
-Một đối tượng lưu trữ nội bộ ánh xạ một nhóm tới các trình xử lý của nó.
-- `group?: ErrorCenterGroup` — Nhóm lỗi mục tiêu.
-- `handlers: ErrorCenterHandlerCallback[]` — Danh sách các hàm callback cho nhóm này.
+Liên kết giữa một nhóm và một mảng các hàm của nó.
+- `group?: ErrorCenterGroup` — nhóm mục tiêu.
+- `handlers: ErrorCenterHandlerCallback[]` — danh sách các hàm.
 
-#### `ErrorCenterHandlerList`
-Một mảng các đối tượng `ErrorCenterHandlerItem` được sử dụng để đăng ký hàng loạt.
+## Ví dụ
 
-## Ví dụ sử dụng
+### Trình quản lý cô lập cho một mô-đun
+```typescript
+const uploadHandlers = new ErrorCenterHandler();
 
-```javascript
-import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
+uploadHandlers.add('upload', (cause) => {
+  if (cause.code === 'retry') {
+    restartUpload();
+  }
+});
 
-const handlerManager = new ErrorCenterHandler()
-
-// 1. Đăng ký trình xử lý cho nhóm cụ thể
-handlerManager.add('api', (cause) => {
-  console.log('[API Handler]', cause.message)
-})
-
-// 2. Đăng ký trình xử lý dự phòng toàn cục
-handlerManager.add(undefined, (cause) => {
-  console.error('[Global Fallback]', cause.code)
-})
-
-// 3. Kích hoạt một lỗi
-handlerManager.on({
-  group: 'api',
-  code: '500',
-  message: 'Lỗi máy chủ nội bộ'
-})
+uploadHandlers.on({ group: 'upload', code: 'retry' });
 ```

@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # ApiCache Class
 
-A class for caching API responses. It allows storing query results in memory or an external storage, preventing redundant network calls within a specified period. In the current implementation, caching is active only on the server side (SSR) to speed up rendering and reduce API load during concurrent requests.
+A class for caching API responses. It allows storing query results in memory or an external storage, preventing redundant network calls within a specified period. In the current implementation, caching is active by default only on the server side (SSR) to speed up rendering and reduce API load during concurrent requests.
 
 > `ApiCache` is an **auxiliary class**, designed for low-level cache management. In most cases, it is recommended to interact with caching through the `cache` parameter in `ApiInstance` or the global `Api` object.
 
@@ -12,11 +12,15 @@ A class for caching API responses. It allows storing query results in memory or 
 
 - **Automated Key Management** — generates unique cache keys based on request parameters (path, method, body, etc.).
 - **Flexible TTL (Time To Live)** — allows setting the storage duration for each request individually or using a default (24 hours).
-- **SSR Optimization** — prevents unnecessary API calls in the Node.js environment. Disabled by default in the browser.
+- **SSR Optimization** — prevents unnecessary API calls in the Node.js environment. Disabled by default in the browser (only works if explicitly enabled through configuration parameters).
 - **Listener Support** — ability to connect external storage (e.g., Redis, Nitro Storage) via callback functions.
 - **Background Cleanup** — automatically removes expired entries when accessing the cache.
 
-## Action Methods
+## Methods
+
+### Action
+
+Methods for managing cache entries.
 
 - `get<T>(key: string): Promise<T | undefined>` — Retrieves a value from the cache.
 - `getByFetch<T>(fetch: ApiFetch): Promise<T | undefined>` — Retrieves a value using request options as the key source.
@@ -24,10 +28,10 @@ A class for caching API responses. It allows storing query results in memory or 
 - `setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>` — Stores a value using request options.
 - `remove(key: string): Promise<void>` — Manually removes an entry.
 
-## Configuration
+### Configuration
 
 - `init(getListener, setListener, removeListener, cacheStepAgeClearOld?): void` — Configures the cache with storage listeners.
-- `reset(): typeof ApiCache` — Clears in-memory items and detaches listeners.
+- `reset(): void` — Clears in-memory items and detaches listeners.
 
 ## Types
 
@@ -43,7 +47,7 @@ An internal dictionary for in-memory storage fallback.
 
 ## Initialization and External Storage
 
-By default, `ApiCache` stores records in the process RAM. While this is fast, it has limitations in production environments:
+By default, `ApiCache` stores records in the process RAM and works only on the server side. While this is fast, it has limitations in production environments:
 1. **Cluster Synchronization**: In a multi-instance setup, caches are not shared between processes.
 2. **Process Restarts**: Memory is cleared whenever the server restarts or a serverless function "cold starts".
 3. **Memory Limits**: Storing large amounts of data in RAM can lead to increased memory consumption.

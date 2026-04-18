@@ -86,6 +86,27 @@ customEvent.start()
 - `reset(): this` — Перезапускает событие (полезно после смены настроек).
 - `dispatch(detail?: D): this` — Вызывает событие на целевом элементе с передачей данных.
 
+## Типы
+
+#### `ElementOrWindow`
+Элемент, на котором может висеть событие: `HTMLElement | Window`.
+
+#### `ElementOrString<E>`
+Тип для передачи элемента или его селектора: `E | string`.
+
+#### `EventListenerDetail<O, D>`
+Функция-обработчик события: `(event: O, detail?: D) => void`.
+
+#### `EventOptions`
+Опции прослушивания: `AddEventListenerOptions | boolean | undefined`.
+
+#### `EventActivityItem<E>`
+Внутренний интерфейс для отслеживания активных слушателей.
+- `element: E | undefined` — Целевой элемент.
+- `type: string` — Тип события.
+- `listener?: (event: any) => void` — Активная функция.
+- `observer?: ResizeObserver` — Инстанс наблюдателя (для `resize`).
+
 ## Специальные события
 
 ### `resize`

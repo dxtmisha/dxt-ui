@@ -1,93 +1,79 @@
-import { executeFunction } from '../functions/executeFunction'
-import { forEach } from '../functions/forEach'
-import { getRequestString } from '../functions/getRequestString'
-import { isDomRuntime } from '../functions/isDomRuntime'
-import { transformation } from '../functions/transformation'
+import { HashInstance } from './HashInstance'
+import { ServerStorage } from './ServerStorage'
 
 /**
- * Working with data stored in hash.
+ * Static class for working with data stored in the URL hash.
+ * Provides a centralized interface delegating to HashInstance.
  *
- * Работа с данными сохраненными в хеш.
+ * Статический класс для работы с данными, сохранёнными в хеше URL.
+ * Предоставляет централизованный интерфейс, делегируя вызовы HashInstance.
  */
 export class Hash {
-  private static hash: Record<string, any> = {}
-  private static watch: Record<string, ((value: any) => void)[]> = {}
-  private static block = false
+  /**
+   * Returns a request-isolated instance of HashInstance.
+   *
+   * Возвращает изолированный в рамках запроса экземпляр HashInstance.
+   * @returns HashInstance instance / экземпляр HashInstance
+   */
+  static getItem(): HashInstance {
+    return ServerStorage.get('__ui:hash-instance__', () => new HashInstance())
+  }
 
   /**
    * Get data from hash.
    *
    * Получение данных из хэша.
-   * @param name variable names/ названия переменных
-   * @param defaultValue value or function to change data/ значение или функция для изменения данных
+   * @param name variable name / название переменной
+   * @param defaultValue value or function to change data / значение или функция для изменения данных
+   * @returns stored value / сохранённое значение
    */
   static get<T>(
     name: string,
     defaultValue?: T | (() => T)
   ): T {
-    if (
-      !(name in this.hash)
-      && defaultValue
-    ) {
-      this.set(name, defaultValue)
-    }
-
-    return this.hash[name]
+    return this.getItem().get(name, defaultValue)
   }
 
   /**
    * Change data in hash.
    *
    * Изменение данных в хэше.
-   * @param name variable names/ названия переменных
-   * @param callback value or function to change data/ значение или функция для изменения данных
+   * @param name variable name / название переменной
+   * @param callback value or function to change data / значение или функция для изменения данных
    */
   static set<T>(
     name: string,
     callback: T | (() => T)
   ): void {
-    const value = executeFunction(callback)
-
-    if (value !== this.hash?.[name]) {
-      this.hash[name] = value
-      this.update()
-    }
+    this.getItem().set(name, callback)
   }
 
   /**
    * Adding an event when data is changed.
    *
    * Добавление события при изменении данных.
-   * @param name variable names/ названия переменных
-   * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+   * @param name variable name / название переменной
+   * @param callback the function is called when the data is changed / функция вызывается при изменении данных
    */
   static addWatch<T>(
     name: string,
     callback: (value: T) => void
   ): void {
-    if (name in this.watch) {
-      this.watch[name]?.push(callback)
-    } else {
-      this.watch[name] = [callback]
-    }
+    this.getItem().addWatch(name, callback)
   }
 
   /**
    * Removing an event when data is changed.
    *
    * Удаление события при изменении данных.
-   * @param name variable names/ названия переменных
-   * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+   * @param name variable name / название переменной
+   * @param callback the function is called when the data is changed / функция вызывается при изменении данных
    */
   static removeWatch<T>(
     name: string,
     callback: (value: T) => void
   ): void {
-    const list = this.watch?.[name]
-
-    if (list) {
-      this.watch[name] = list.filter(item => item !== callback)
-    }
+    this.getItem().removeWatch(name, callback)
   }
 
   /**
@@ -96,65 +82,6 @@ export class Hash {
    * Обновление переменной хэша из строки URL.
    */
   static reload(): void {
-    if (!this.block) {
-      const location = this.getLocation()
-
-      this.makeWatch(location)
-      this.hash = location
-    }
-  }
-
-  /**
-   * Obtaining data from the URL string.
-   *
-   * Получение данных из строки URL.
-   */
-  private static getLocation(): Record<string, any> {
-    const hash: Record<string, any> = {}
-
-    location.hash.replace(
-      /([\w-]+)[:=]([^;]+)/ig,
-      (...item: string[]) => {
-        hash[String(item[1])] = transformation(item[2])
-        return ''
-      }
-    )
-
-    return hash
-  }
-
-  /**
-   * Update hash string in URL.
-   *
-   * Обновление строки хэша в URL.
-   */
-  private static update(): void {
-    this.block = true
-    history.replaceState(null, '', `#${getRequestString(this.hash, '=', ';')}`)
-
-    requestAnimationFrame(() => {
-      this.block = false
-    })
-  }
-
-  /**
-   * Calling all functions whose data has changed.
-   *
-   * Вызов всех функций, у которых были изменены данные.
-   * @param location fresh data/ свежий данные
-   */
-  private static makeWatch(location: Record<string, any>): void {
-    forEach(this.watch, (item, name) => {
-      if (this.hash?.[name] !== location?.[name]) {
-        item.forEach(callback => callback(location[name]))
-      }
-    })
-  }
-
-  static {
-    if (isDomRuntime()) {
-      this.reload()
-      addEventListener('hashchange', () => this.reload())
-    }
+    this.getItem().reload()
   }
 }

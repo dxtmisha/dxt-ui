@@ -4,6 +4,8 @@
  * @enum {string}
  */
 export enum MetaTag {
+  /** Page title/ Заголовок страницы */
+  title = 'title',
   /** Page description/ Описание страницы */
   description = 'description',
   /** Keywords/ Ключевые слова */

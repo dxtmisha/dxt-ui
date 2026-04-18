@@ -10,7 +10,7 @@ import {
   type GeoItemFull
 } from '../types/geoTypes'
 
-const STORAGE_NAME_CODE = 'geo-code'
+const STORAGE_NAME_CODE = '__ui:geo-code__'
 
 /**
  * Base class for working with geographic data.
@@ -203,7 +203,7 @@ export class GeoInstance {
     return this.getList()
       .find((item) => {
         return item.country === country
-          || item?.countryAlternative?.find(countryAlternative => countryAlternative === country)
+          || item?.countryAlternative?.includes(country)
       })
   }
 
@@ -218,7 +218,7 @@ export class GeoInstance {
     return this.getList()
       .find((item) => {
         return item.language === language
-          || item?.languageAlternative?.find(languageAlternative => languageAlternative === language)
+          || item?.languageAlternative?.includes(language)
       })
   }
 

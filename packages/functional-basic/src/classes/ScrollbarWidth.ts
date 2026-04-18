@@ -1,4 +1,5 @@
 import { createElement } from '../functions/createElement'
+import { isDomRuntime } from '../functions/isDomRuntime'
 
 import { DataStorage } from './DataStorage'
 
@@ -8,7 +9,6 @@ import { DataStorage } from './DataStorage'
  * Класс для получения ширины скролла.
  */
 export class ScrollbarWidth {
-  private static storage = new DataStorage<number>('scrollbar', true)
   private static calculate: boolean = false
 
   /**
@@ -28,7 +28,11 @@ export class ScrollbarWidth {
    * Возвращает ширину скролла.
    */
   static async get(): Promise<number> {
-    const width = this.storage.get() ?? -1
+    if (!isDomRuntime()) {
+      return 0
+    }
+
+    const width = this.getStorage().get() ?? -1
 
     if (
       !this.calculate
@@ -36,7 +40,7 @@ export class ScrollbarWidth {
     ) {
       const newWidth = await this.init()
 
-      this.storage.set(newWidth)
+      this.getStorage().set(newWidth)
       return newWidth
     }
 
@@ -49,7 +53,7 @@ export class ScrollbarWidth {
    * Возвращает хранилище.
    */
   static getStorage(): DataStorage<number> {
-    return this.storage
+    return new DataStorage<number>('__ui:scrollbar__', true)
   }
 
   /**

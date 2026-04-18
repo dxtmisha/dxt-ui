@@ -2,130 +2,125 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Classes/ErrorCenter - Error Management'/>
 
-# ErrorCenter
+# ErrorCenter Class
 
-A static wrapper for `ErrorCenterInstance` providing centralized management for error storage, retrieval, and event-based handling. It acts as a global registry for error causes and provides a mechanism to register and trigger custom handlers for different error groups.
+`ErrorCenter` is the central tool for managing all errors in the application. It allows you to register possible error causes in one place, configure the reaction to them (e.g., showing notifications), and trigger them from any part of the code.
 
-The class follows the "Static Bridge" pattern, delegating all operations to a singleton instance while maintaining a clean, globally accessible API.
+The class acts as a static bridge (Static Bridge), directing all requests to a single `ErrorCenterInstance`.
 
-## Key Features
+## Methods
 
-- **Static Access** — Global access to error management without the need for manual instantiation.
-- **Centralized Registry** — Stores standardized error causes (labels and messages) for consistent UI feedback.
-- **Group-Based Handling** — Allows registering multiple callbacks for specific error categories.
-- **Predefined Defaults** — Comes pre-configured with standard network error causes (`timeout`, `offline`, `notFound`, etc.).
+### Action
+- `on(cause: ErrorCenterCauseItem): void` — Starts the processing. Searches the registry, merges data, and calls the appropriate callbacks.
 
-## Action Methods
+### Verification
+- `has(code: string, group?: string): boolean` — Checks if an error is registered.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Returns error data from the registry.
 
-### `on`
+### Configuration
+- `add(cause: ErrorCenterCauseItem): void` — Adds a single error cause.
+- `addList(causes: ErrorCenterCauseList): void` — Adds a list of errors (batch registration).
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Registers a reaction to a group of errors.
+- `addHandlerList(handlers: ErrorCenterHandlerList): void` — Batch registration of several handlers.
 
-Triggers error handling for the specified cause. It merges the provided cause with stored data (if any), executes all registered handlers for the group, and logs the error to the console.
-
-**Parameters:**
-- `cause: ErrorCenterCauseItem` — The cause to trigger. Only `code` and `group` are required if the cause was previously registered via `add()`.
-
-**Returns:** `void`
-
-## Check Methods
-
-- `has(code: string, group?: string): boolean` — Checks if an error cause exists in the registry.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Retrieves the full error cause object.
-
-## Configuration
-
-- `add(cause: ErrorCenterCauseItem): void` — Adds a single error cause to the global storage.
-- `addList(causes: ErrorCenterCauseList): void` — Adds multiple error causes to the registry at once.
-- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Registers a callback function for a specific group.
-- `addHandlerList(handlers: ErrorCenterHandlerList): void` — Registers a batch of handlers.
-
-## Instance Retrieval
-
-- `getItem(): ErrorCenterInstance` — Returns the underlying instance used by the static wrapper.
+### Auxiliary
+- `getItem(): ErrorCenterInstance` — Returns the internal instance of the class.
 
 ## Types
 
 #### `ErrorCenterGroup`
-Represents an error group identifier.
-- `string | undefined` — A string name for the group, or `undefined` for a global/default handler.
+Group name (e.g., 'api', 'auth') or `undefined` for a general handler.
 
 #### `ErrorCenterCauseItem`
-Detailed information about an error cause.
-- `group?: ErrorCenterGroup` — The group this error belongs to.
-- `code: string` — A unique error code (e.g., '404', 'AUTH_ERROR').
-- `priority?: number` — Importance level used for merging multiple errors (default: `500`).
-- `label?: string` — A short, human-readable name for the error.
-- `message?: string` — A descriptive error message.
-- `details?: any` — Any additional context or raw error data.
+Object describing an error: `group`, `code` (required), `priority`, `label`, `message`, `details`.
 
-#### `ErrorCenterCauseList`
-An array of `ErrorCenterCauseItem` objects.
+## Usage Guide
 
-#### `ErrorCenterHandlerCallback`
-The function signature for error handling callbacks.
-- `(cause: ErrorCenterCauseItem) => void` — Receives the error cause object when triggered.
-
-#### `ErrorCenterHandlerItem`
-An internal storage object mapping a group to its handlers.
-- `group?: ErrorCenterGroup` — The targeted error group.
-- `handlers: ErrorCenterHandlerCallback[]` — List of callback functions for this group.
-
-#### `ErrorCenterHandlerList`
-An array of `ErrorCenterHandlerItem` objects used for batch registration.
-
-## Default Error Causes
-
-`ErrorCenter` is pre-populated with common error causes across different functional areas. These are defined in `@dxtmisha/functional-basic/media/errorCauseList`.
-
-### API (`group: 'api'`)
-- **`unknown`** — **Unknown Error**: An unexpected error occurred. Please try again later.
-- **`timeout`** — **Request Timeout**: The request took too long. Please check your connection.
-- **`offline`** — **No Connection**: You are offline. Please check your network.
-- **`notFound`** — **Resource Not Found**: The requested resource could not be found on the server.
-- **`server`** — **Internal Server Error**: Something went wrong on the server.
-- **`cacheClear`** — **Cache Clearing Error**: An error occurred during background cache cleaning.
-
-### Internationalization (`group: 'intl'`)
-- **`datetime`** — **Intl Datetime Error**: Failure in date or time formatting logic.
-- **`display`** — **Intl Display Error**: Failure in formatting display names or regions.
-- **`number`** — **Intl Number Error**: Failure in number or currency formatting.
-- **`plural`** — **Intl Plural Error**: Failure in pluralization rules logic.
-- **`relative`** — **Intl Relative Error**: Failure in relative time formatting.
-
-### Storage (`group: 'storage'`)
-- **`context`** — **Context Missing Error**: Storage context is missing (likely `init()` not called). Data isolation for this request failed.
-- **`error`** — **Storage Error**: General failure when reading from or writing to storage.
-
-### Other Groups
-- **Broadcast** (`group: 'broadcast'`)
-    - **`error`**: Unexpected error in `BroadcastChannel` communication.
-- **Hydration** (`group: 'hydration'`)
-    - **`error`**: Failure during client-side hydration.
-- **Share** (`group: 'share'`)
-    - **`error`**: Unexpected failure during the sharing process.
-- **Transformation** (`group: 'transformation'`)
-    - **`error`**: Failure during data transformation or formatting.
-
-## Usage Example
-
-```javascript
-import { ErrorCenter } from '@dxtmisha/functional-basic'
-
-// 1. Configure global handlers
-ErrorCenter.addHandler('api', (cause) => {
-  notification.error({
-    title: cause.label,
-    message: cause.message
-  })
-})
-
-// 2. Register specific error causes
+### Step 1: Registration (Registry)
+Create an error dictionary to store texts separately from the code.
+```typescript
 ErrorCenter.add({
   group: 'auth',
-  code: 'token_expired',
-  label: 'Session Expired',
-  message: 'Your session has timed out. Please log in again.'
+  code: 'LOGIN_FAILED',
+  label: 'Login Failed',
+  message: 'Invalid password.'
 })
+```
 
-// 3. Trigger errors via code and group
-ErrorCenter.on({ group: 'auth', code: 'token_expired' })
+### Step 2: Subscription (Handlers)
+Specify how the application should react to an error group.
+```typescript
+ErrorCenter.addHandler('auth', (cause) => {
+  alert(cause.message);
+});
+```
+
+### Step 3: Execution (Execution)
+Trigger the error by its code and group.
+```typescript
+ErrorCenter.on({ group: 'auth', code: 'LOGIN_FAILED' });
+```
+
+## Standard Error Causes
+
+The class already contains pre-defined descriptions for common situations.
+
+#### API Group (`api`)
+Used for network request errors.
+- **forbidden** — Forbidden (403).
+- **notFound** — Resource not found (404).
+- **offline** — No internet connection.
+- **server** — Internal server error (500).
+- **timeout** — Request timeout.
+- **unauthorized** — Authorization error (401).
+- **unknown** — Unknown error.
+- **cacheClear**, **cacheGet**, **cacheRemove**, **cacheSet** — Cache errors.
+
+#### Intl Group (`intl`)
+Errors during data formatting (dates, numbers, etc.).
+- **datetime**, **display**, **number**, **plural**, **relative**.
+- **invalid** — Invalid date or incorrect format.
+
+#### Storage Group (`storage`)
+Errors during interaction with local or server storage.
+- **context** — Missing context.
+- **error** — General read/write failure.
+
+#### Other Groups
+These groups use a universal error code `error`. Triggering is done via `ErrorCenter.on({ group: 'group_name', code: 'error' })`.
+- **broadcast** — Errors in data exchange between browser tabs.
+- **hydration** — Error during data synchronization between server and client.
+- **share** — Error when trying to share content (Sharing API).
+- **transformation** — Error during data transformation or parsing.
+
+## Examples
+
+### Integration with Notification System
+```typescript
+import { ErrorCenter } from '@dxtmisha/functional-basic'
+
+// Set up once at app startup
+ErrorCenter.addHandler('api', (cause) => {
+  Toast.show(cause.label || 'Error', cause.message);
+});
+
+// Use in any service
+async function loadData() {
+  try {
+    const data = await fetch('/api');
+  } catch (e) {
+    ErrorCenter.on({ group: 'api', code: 'server', details: e });
+  }
+}
+```
+
+### Working with Custom Groups
+```typescript
+// On-the-fly registration
+ErrorCenter.on({
+  group: 'upload',
+  code: 'SIZE_LIMIT',
+  label: 'File Too Large',
+  message: 'Max 5MB'
+});
 ```

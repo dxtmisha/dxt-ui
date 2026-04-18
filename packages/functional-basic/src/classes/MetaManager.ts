@@ -1,5 +1,6 @@
 import { createElement } from '../functions/createElement'
 import { encodeAttribute } from '../functions/encodeAttribute'
+import { encodeLiteAttribute } from '../functions/encodeLiteAttribute'
 import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
 
@@ -149,22 +150,33 @@ export class MetaManager<
    * @param name meta tag name / имя мета-тега
    */
   protected setMeta(name: Key): this {
-    const element = this.findMetaElement(name)
+    if (!isDomRuntime()) {
+      return this
+    }
+
     const content = this.items[name] ?? ''
+
+    if (name === 'title') {
+      document.title = content
+      return this
+    }
+
+    const element = this.findMetaElement(name)
 
     if (element) {
       element.content = content
-    } else if (isDomRuntime()) {
-      const options: Record<string, string> = { content }
-
-      if (this.isProperty) {
-        options.property = name
-      } else {
-        options.name = name
-      }
-
-      createElement(document.head, 'meta', options)
+      return this
     }
+
+    const options: Record<string, string> = { content }
+
+    if (this.isProperty) {
+      options.property = name
+    } else {
+      options.name = name
+    }
+
+    createElement(document.head, 'meta', options)
 
     return this
   }
@@ -176,7 +188,13 @@ export class MetaManager<
    * @param name meta tag name / имя мета-тега
    */
   protected toHtmlString(name: Key): string {
-    const content = encodeAttribute(this.items[name] ?? '')
+    const value = this.items[name] ?? ''
+
+    if (name === 'title') {
+      return `<title>${encodeLiteAttribute(value)}</title>`
+    }
+
+    const content = encodeAttribute(value)
 
     if (content) {
       return `<meta ${this.getAttributeName()}="${name}" content="${content}">`

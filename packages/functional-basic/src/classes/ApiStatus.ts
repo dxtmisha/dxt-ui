@@ -2,9 +2,9 @@ import { isObjectNotArray } from '../functions/isObjectNotArray'
 import type { ApiStatusItem, ApiStatusType } from '../types/apiTypes'
 
 /**
- * API status class
+ * Class for managing API request status.
  *
- * Класс статуса API
+ * Класс для управления статусом запросов API.
  */
 export class ApiStatus {
   protected value?: ApiStatusItem
@@ -13,6 +13,7 @@ export class ApiStatus {
    * Returns the last status item data.
    *
    * Возвращает данные последнего элемента статуса.
+   * @returns status item or undefined / элемент статуса или undefined
    */
   get(): ApiStatusItem | undefined {
     return this.value
@@ -22,6 +23,7 @@ export class ApiStatus {
    * Returns the execution status code.
    *
    * Возвращает код статуса выполнения.
+   * @returns HTTP status code or undefined / код статуса HTTP или undefined
    */
   getStatus(): number | undefined {
     return this.get()?.status
@@ -31,6 +33,7 @@ export class ApiStatus {
    * Returns the execution status text.
    *
    * Возвращает текст статуса выполнения.
+   * @returns status text or undefined / текст статуса или undefined
    */
   getStatusText(): string | undefined {
     return this.get()?.statusText
@@ -40,6 +43,7 @@ export class ApiStatus {
    * Returns the last status type.
    *
    * Возвращает последний тип статуса.
+   * @returns status type or undefined / тип статуса или undefined
    */
   getStatusType(): ApiStatusType | undefined {
     return this.get()?.lastStatus
@@ -49,6 +53,7 @@ export class ApiStatus {
    * Returns the script execution error.
    *
    * Возвращает ошибку выполнения скрипта.
+   * @returns error message or undefined / сообщение об ошибке или undefined
    */
   getError(): string | undefined {
     return this.get()?.error
@@ -58,6 +63,7 @@ export class ApiStatus {
    * Returns the data of the last request.
    *
    * Возвращает данные последнего запроса.
+   * @returns last response data or undefined / данные последнего ответа или undefined
    */
   getResponse<T>(): T | undefined {
     return this.get()?.lastResponse
@@ -67,6 +73,7 @@ export class ApiStatus {
    * Returns messages from the last request.
    *
    * Возвращает сообщения от последнего запроса.
+   * @returns message string / строка сообщения
    */
   getMessage(): string {
     return this.get()?.lastMessage || ''
@@ -77,6 +84,7 @@ export class ApiStatus {
    *
    * Устанавливает данные элемента статуса.
    * @param data status item data/ данные элемента статуса
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   set(data: ApiStatusItem): this {
     if ('status' in data) {
@@ -99,6 +107,10 @@ export class ApiStatus {
       this.setValue('lastMessage', data.lastMessage)
     }
 
+    if ('lastStatus' in data) {
+      this.setValue('lastStatus', data.lastStatus)
+    }
+
     return this
   }
 
@@ -106,8 +118,9 @@ export class ApiStatus {
    * Sets the status code and optional status text.
    *
    * Устанавливает код статуса и необязательный текст статуса.
-   * @param status status code/ код статуса
-   * @param statusText optional status text/ необязательный текст статуса
+   * @param status status code / код статуса
+   * @param statusText optional status text / необязательный текст статуса
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   setStatus(
     status?: number,
@@ -126,6 +139,7 @@ export class ApiStatus {
    *
    * Устанавливает сообщение об ошибке.
    * @param error error message/ сообщение об ошибке
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   setError(error?: string): this {
     this.set({ error })
@@ -137,6 +151,7 @@ export class ApiStatus {
    *
    * Устанавливает данные последнего ответа и автоматически извлекает статус/сообщение, если это объект.
    * @param response response data/ данные ответа
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   setLastResponse(response?: any): this {
     if (
@@ -161,6 +176,7 @@ export class ApiStatus {
    *
    * Устанавливает последний статус.
    * @param status status/ статус
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   setLastStatus(status?: ApiStatusType): this {
     this.set({ lastStatus: status })
@@ -172,6 +188,7 @@ export class ApiStatus {
    *
    * Устанавливает сообщения от последнего запроса.
    * @param message message text/ текст сообщения
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   setLastMessage(message?: string): this {
     this.set({ lastMessage: message })

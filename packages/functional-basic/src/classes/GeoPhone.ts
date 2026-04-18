@@ -198,7 +198,7 @@ export class GeoPhone {
     const list = forEach(Geo.getList(), (item) => {
       if (item?.phoneMask) {
         return {
-          phone: (item?.phoneCode && Number(item.phoneCode.replace(/[^0-9]+/, ''))) || undefined,
+          phone: (item?.phoneCode && Number(item.phoneCode.replace(/[^0-9]+/g, ''))) || undefined,
           within: item?.phoneWithin || 0,
           mask: toArray(item.phoneMask),
           value: item.country

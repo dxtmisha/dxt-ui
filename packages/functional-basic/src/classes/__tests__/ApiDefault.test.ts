@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ApiDefault } from '../ApiDefault'
 
-describe('ApiDefault / Default request parameters', () => {
+describe('ApiDefault', () => {
   let apiDefault: ApiDefault
 
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('ApiDefault / Default request parameters', () => {
   // Presence Checks
   // ─────────────────────────────────────────────
 
-  describe('is / Data presence check', () => {
+  describe('is', () => {
     it('should return false when no default data is set', () => {
       expect(apiDefault.is()).toBe(false)
     })
@@ -33,7 +33,7 @@ describe('ApiDefault / Default request parameters', () => {
   // Data Accessors
   // ─────────────────────────────────────────────
 
-  describe('get / Get data', () => {
+  describe('get', () => {
     it('should return undefined when no default data is set', () => {
       expect(apiDefault.get()).toBeUndefined()
     })
@@ -51,7 +51,7 @@ describe('ApiDefault / Default request parameters', () => {
     })
   })
 
-  describe('set / Set data', () => {
+  describe('set', () => {
     it('should set default data', () => {
       const data = { test: 'data' }
       apiDefault.set(data)
@@ -87,7 +87,7 @@ describe('ApiDefault / Default request parameters', () => {
   // Request Transformation
   // ─────────────────────────────────────────────
 
-  describe('request / Request processing', () => {
+  describe('request', () => {
     it('should return original request when no defaults are set', () => {
       const request = { key: 'value' }
       expect(apiDefault.request(request)).toEqual(request)
@@ -166,7 +166,7 @@ describe('ApiDefault / Default request parameters', () => {
   })
 
   // ─────────────────────────────────────────────
-  // Interals & Integration
+  // Internals & Integration
   // ─────────────────────────────────────────────
 
   describe('FormData integration', () => {

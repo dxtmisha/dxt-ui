@@ -31,6 +31,7 @@ export class ErrorCenterInstance {
    * Проверяет наличие причины с конкретным кодом.
    * @param code error code / код ошибки
    * @param group error group / группа ошибки
+   * @returns true if cause exists / true, если причина существует
    */
   has(
     code: string,
@@ -45,6 +46,7 @@ export class ErrorCenterInstance {
    * Получает конкретную причину ошибки по коду и группе.
    * @param code error code / код ошибки
    * @param group error group / группа ошибки
+   * @returns error cause item or undefined / элемент причины ошибки или undefined
    */
   get(
     code: string,
@@ -60,6 +62,7 @@ export class ErrorCenterInstance {
    *
    * Добавляет причину ошибки в хранилище.
    * @param cause error cause item / элемент причины ошибки
+   * @returns this
    */
   add(cause: ErrorCenterCauseItem): this {
     this.causes.unshift(cause)
@@ -71,6 +74,7 @@ export class ErrorCenterInstance {
    *
    * Добавляет список причин ошибок в хранилище.
    * @param causes error causes list / список причин ошибок
+   * @returns this
    */
   addList(causes: ErrorCenterCauseList): this {
     this.causes.unshift(...causes)
@@ -83,6 +87,7 @@ export class ErrorCenterInstance {
    * Регистрирует новый обработчик.
    * @param group target group / целевая группа
    * @param handler handler callback / обратный вызов обработчика
+   * @returns this
    */
   addHandler(
     group: ErrorCenterGroup,
@@ -97,6 +102,7 @@ export class ErrorCenterInstance {
    *
    * Регистрирует список обработчиков.
    * @param handlers handlers list / список обработчиков
+   * @returns this
    */
   addHandlerList(handlers: ErrorCenterHandlerList): this {
     this.handler.addList(handlers)
@@ -108,6 +114,7 @@ export class ErrorCenterInstance {
    *
    * Вызывает обработку ошибки для группы.
    * @param cause error cause details / детали причины ошибки
+   * @returns this
    */
   on(cause: ErrorCenterCauseItem): this {
     this.handler.on(this.assign(cause))

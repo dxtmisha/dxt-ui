@@ -169,6 +169,8 @@ export type ApiFetch = {
   /** Cache age in seconds/ Возраст кэша в секундах */
   cache?: number
 
+  enableClientCache?: boolean
+
   /** Cache ID for grouping/ ID кэша для группировки */
   cacheId?: number | string
 

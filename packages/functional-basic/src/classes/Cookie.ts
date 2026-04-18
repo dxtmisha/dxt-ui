@@ -10,7 +10,7 @@ import { ServerStorage } from './ServerStorage'
  */
 const getItems = () => {
   return ServerStorage.get<Record<string, Cookie<unknown>>>(
-    '__dxt_cookie_items__',
+    '__ui:cookie-items__',
     () => ({})
   )
 }
@@ -28,17 +28,11 @@ export class Cookie<T> {
    * @param name cookie name/ название cookie
    */
   static getInstance<T>(name: string) {
-    const items = getItems()
-
-    if (name in items) {
-      return items[name] as Cookie<T>
-    }
-
-    return new Cookie<T>(name)
+    return getItems()?.[name] ?? new Cookie<T>(name)
   }
 
   /** Cookie value / Значение cookie */
-  value?: T | string
+  private value?: T | string
   /** Cookie options / Параметры cookie */
   private options: CookieOptions = {}
 

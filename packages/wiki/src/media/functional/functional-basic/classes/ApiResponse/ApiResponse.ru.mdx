@@ -15,9 +15,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Симуляция задержки сети** — встроенная система для имитации сетевых задержек с помощью рандомизированных таймеров.
 - **Режим разработчика** — выводит полезную отладочную информацию в консоль браузера, показывая, какие данные сопоставились с конкретным моком.
 
-## Методы действий
+## Инициализация
 
-### `emulator`
+Для инициализации объекта вызовите конструктор `ApiResponse(requestDefault)`.
+
+**Параметры:**
+- `requestDefault: ApiDefault` — класс запросов по умолчанию, используемый для конфигурации и хранения.
+
+```typescript
+import { ApiResponse } from '@dxtmisha/functional-basic'
+
+const apiResponse = new ApiResponse(myApiDefault)
+```
+
+## Методы
+
+### Действие
+
+#### `emulator`
 
 Основной цикл движка, который проверяет конфигурации запросов и выполняет соответствующие эмулированные ответы. Этот метод работает только в среде DOM.
 
@@ -26,12 +41,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 **Возвращает:** `Promise<T | undefined>` — Данные эмулированного ответа.
 
-## Методы проверки
+### Проверка
 
 - `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Синхронно проверяет наличие подходящего мок-запроса в кэше.
 - `getList(): (ApiResponseItem & Record<string, any>)[]` — Возвращает список всех зарегистрированных конфигураций эмулятора.
 
-## Конфигурация
+### Конфигурация
 
 - `add(response: ApiResponseItem | ApiResponseItem[]): this` — Добавляет объекты мок-ответов в локальный реестр.
 - `setDevMode(devMode: boolean): this` — Включает или выключает режим отладочного вывода в консоль.
@@ -43,9 +58,10 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `path: string | RegExp` — Путь или шаблон URL.
 - `method: ApiMethod` — HTTP-метод (GET, POST и т.д.).
 - `response: any | ((request?: any) => any)` — Данные мока или функция для их генерации.
-- `request?: any` — Опциональные данные запроса для сопоставления.
+- `request?: ApiFetch['request'] | '*any'` — Опциональные данные запроса для сопоставления.
 - `lag?: boolean` — Нужно ли имитировать задержку сети.
-- `disable?: boolean | (() => boolean)` — Условие для отключения мока.
+- `disable?: any` — Условие для отключения мока (boolean или функция).
+- `isForGlobal?: boolean` — Пометить как глобальный мок (скрыт из getList).
 
 ## Руководство: Эмуляция API
 

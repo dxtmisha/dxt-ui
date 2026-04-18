@@ -13,7 +13,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Изоляция в SSR** — использует `ServerStorage` для управления изоляцией отдельных экземпляров во время рендеринга на стороне сервера.
 - **Упрощенная настройка** — предоставляет унифицированный метод `setConfig` для одновременного применения нескольких слоев конфигурации.
 
-## Методы действий
+## Методы
 
 ### Действие
 
@@ -32,15 +32,13 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Конфигурация
 
-Методы возвращают класс `Api` для цепочки вызовов.
-
-- `setUrl(url: string): Api` — Изменяет базовый URL API.
-- `setHeaders(headers: Record<string, string>): Api` — Устанавливает заголовки запроса по умолчанию.
-- `setRequestDefault(request: Record<string, any>): Api` — Устанавливает данные тела запроса по умолчанию.
-- `setPreparation(callback): Api` — Регистрирует хук, запускаемый перед каждым включенным запросом.
-- `setEnd(callback): Api` — Регистрирует хук, запускаемый после каждого включенного ответа.
-- `setTimeout(timeout: number): Api` — Изменяет глобальный таймаут запроса.
-- `setConfig(config?: ApiConfig): Api` — Применяет полный объект конфигурации.
+- `setUrl(url: string): void` — Изменяет базовый URL API.
+- `setHeaders(headers: Record<string, string>): void` — Устанавливает заголовки запроса по умолчанию.
+- `setRequestDefault(request: Record<string, any>): void` — Устанавливает данные тела запроса по умолчанию.
+- `setPreparation(callback): void` — Регистрирует хук, запускаемый перед каждым включенным запросом.
+- `setEnd(callback): void` — Регистрирует хук, запускаемый после каждого включенного ответа.
+- `setTimeout(timeout: number): void` — Изменяет глобальный таймаут запроса.
+- `setConfig(config?: ApiConfig): void` — Применяет полный объект конфигурации.
 
 ### Вспомогательные
 
@@ -48,7 +46,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `getResponse(): ApiResponse` — Доступ к менеджеру ответов/эмуляции.
 - `getHydration(): ApiHydration` — Доступ к менеджеру гидратации.
 - `getHydrationScript(): string` — Возвращает блок скрипта для гидратации SSR-клиент.
-- `getUrl(path: string, api?: boolean): string` — Возвращает полностью разрешенный URL с токенами локализации.
+- `getUrl(path: string, api?: boolean): string` — Возвращает полностью разрешенный URL с подстановкой плейсхолдеров `{locale}`, `{country}`, `{language}`.
 - `getBody(request?, method?): string | FormData | undefined` — Подготавливает тело запроса.
 - `getBodyForGet(request, path?, method?): string` — Подготавливает строку запроса.
 - `getItem(): ApiInstance` — Возвращает базовый объект `ApiInstance`.

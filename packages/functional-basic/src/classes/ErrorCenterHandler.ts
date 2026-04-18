@@ -26,6 +26,7 @@ export class ErrorCenterHandler {
    *
    * Проверяет наличие обработчиков для группы.
    * @param group error group / группа ошибки
+   * @returns true if handlers exist / true, если обработчики существуют
    */
   has(group: ErrorCenterGroup): boolean {
     return Boolean(this.get(group))
@@ -36,6 +37,7 @@ export class ErrorCenterHandler {
    *
    * Получает обработчики для группы.
    * @param group error group / группа ошибки
+   * @returns handler item or undefined / элемент обработчика или undefined
    */
   get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined {
     return this.handlers.find(cause => cause.group === group)
@@ -47,6 +49,7 @@ export class ErrorCenterHandler {
    * Добавляет обработчик для определенной группы.
    * @param group error group / группа ошибки
    * @param handler callback function / функция обратного вызова
+   * @returns this
    */
   add(
     group: ErrorCenterGroup,
@@ -71,6 +74,7 @@ export class ErrorCenterHandler {
    *
    * Добавляет список обработчиков по группам.
    * @param handlers handlers list / список обработчиков
+   * @returns this
    */
   addList(
     handlers: ErrorCenterHandlerList
@@ -88,6 +92,7 @@ export class ErrorCenterHandler {
    *
    * Вызывает обработчики для группы и выводит ошибку в консоль.
    * @param cause error cause details / детали причины ошибки
+   * @returns this
    */
   on(cause: ErrorCenterCauseItem): this {
     const item = this.get(cause.group) ?? this.get(undefined)
@@ -106,6 +111,7 @@ export class ErrorCenterHandler {
    *
    * Выводит причину ошибки в консоль.
    * @param cause error details / детали ошибки
+   * @returns this
    */
   protected toConsole(
     cause: ErrorCenterCauseItem

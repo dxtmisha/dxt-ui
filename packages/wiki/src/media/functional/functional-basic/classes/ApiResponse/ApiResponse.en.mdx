@@ -15,9 +15,24 @@ A manager class for intercepting, caching, and emulating API responses. It allow
 - **Network Lag Simulation** — built-in system specifically tailored for simulating actual latency ping scenarios (randomized offset timers).
 - **Developer Mode** — prints useful debug information in browser consoles showing which payload mapped directly to a specific fallback mock point.
 
-## Action Methods
+## Initialization
 
-### `emulator`
+To initialize the object, call the constructor `ApiResponse(requestDefault)`.
+
+**Parameters:**
+- `requestDefault: ApiDefault` — default request class used for configuration and storage.
+
+```typescript
+import { ApiResponse } from '@dxtmisha/functional-basic'
+
+const apiResponse = new ApiResponse(myApiDefault)
+```
+
+## Methods
+
+### Action
+
+#### `emulator`
 
 Core engine loop that validates request configurations and executes matched routing latency mock responses. This method only runs in DOM environments.
 
@@ -26,12 +41,12 @@ Core engine loop that validates request configurations and executes matched rout
 
 **Returns:** `Promise<T | undefined>` — The emulated response data.
 
-## Check Methods
+### Check
 
 - `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Synchronously checks for a matching cached mock request.
 - `getList(): (ApiResponseItem & Record<string, any>)[]` — Returns a list of all registered emulator configurations.
 
-## Configuration
+### Configuration
 
 - `add(response: ApiResponseItem | ApiResponseItem[]): this` — Adds mock response objects to the local registry.
 - `setDevMode(devMode: boolean): this` — Toggles the development debug log mode.
@@ -43,9 +58,10 @@ An object defining a mock response configuration.
 - `path: string | RegExp` — The matching URL path or pattern.
 - `method: ApiMethod` — The HTTP method (GET, POST, etc.).
 - `response: any | ((request?: any) => any)` — The mock data or a function returning it.
-- `request?: any` — Optional request payload to match against.
+- `request?: ApiFetch['request'] | '*any'` — Optional request payload to match against.
 - `lag?: boolean` — Whether to simulate network latency.
-- `disable?: boolean | (() => boolean)` — Condition to disable the mock.
+- `disable?: any` — Condition to disable the mock (boolean or function).
+- `isForGlobal?: boolean` — Mark as global mock (hidden from getList).
 
 ## Guide: API Emulation
 

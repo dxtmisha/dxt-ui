@@ -6,6 +6,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A versatile class for interacting with the browser's `localStorage` and `sessionStorage`. It features built-in prefixes, cache expiration, memory caching for active instances, and automatic JSON serialization.
 
+> `DataStorage` is an **auxiliary class**, designed for low-level interaction with browser storage. In most cases, it is recommended to use higher-level classes like `Cookie` or `Api` for specific data needs.
+
 ## Key Features
 
 - **Automatic Serialization** — seamlessly handles JSON parsing and stringifying for stored configurations and objects.
@@ -24,12 +26,17 @@ The `DataStorage` class is fully compatible with Server-Side Rendering (SSR). It
 
 To initialize the object, call the `DataStorage(name, isSession)` constructor.
 
+### Generic Constraints
+
+The class supports the following generic to ensure strict typing of the stored value:
+- `T` — The type of the value being stored.
+
 **Parameters:**
 - `name: string` — the name of the storage key.
 - `isSession: boolean = false` — whether to use `sessionStorage` (defaults to `localStorage`).
 
 ```typescript
-import { DataStorage } from '@dxtmisha/functional'
+import { DataStorage } from '@dxtmisha/functional-basic'
 
 // 1. Create an instance for localStorage
 const settings = new DataStorage('settings')
@@ -38,23 +45,25 @@ const settings = new DataStorage('settings')
 const session = new DataStorage('user_session', true)
 ```
 
-## Global Settings
+## Methods
 
-- `setPrefix(newPrefix: string): void` (static) — Changes the global prefix applied to new instances attempting to use `localStorage`. The default prefix is `ui-storage`.
+### Storage Access
 
-## Data Management
+- `get(defaultValue?: T | (() => T), cache?: number): T | undefined` — Retrieves the currently saved value. If a cache time is provided, it returns `undefined` if the data is stale.
+- `set(value?: T | (() => T)): T | undefined` — Sets or updates the value in the storage mechanism. Passing `undefined` deletes the item.
+- `remove(): this` — Clears the corresponding key from the storage environment and the memory instance.
+- `update(): this` — Forces the memory instance to synchronize with the current raw data inside the physical Storage APIs.
 
-### `get`
+### Configuration
 
-Retrieves the currently saved structured configuration.
+- `static setPrefix(newPrefix: string): void` — Changes the global prefix applied to new instances. The default prefix is `ui-storage`.
 
-**Parameters:**
-- `defaultValue?: T | (() => T)` — a fallback value to return if the storage is empty.
-- `cache?: number` — maximum allowed age (in seconds). If the data is older, it behaves as if nothing was stored.
+## Examples
 
-**Returns:** `T | undefined` — the stored value or `undefined`.
-
+### Using Default Values and Cache
 ```javascript
+const settings = new DataStorage('user_settings')
+
 // Get data, falling back to an empty object if not found
 const currentSettings = settings.get({})
 
@@ -62,20 +71,11 @@ const currentSettings = settings.get({})
 const cachedItem = settings.get(undefined, 60)
 ```
 
-### `set`
-
-Sets or updates the value in the storage mechanism.
-
-**Parameters:**
-- `value?: T | (() => T)` — the value to save. Passing `undefined` will delete the item from storage.
-
-**Returns:** `T | undefined` — the stored value.
-
+### Manual Synchronization
 ```javascript
-settings.set({ theme: 'dark', notifications: true })
+const storage = new DataStorage('shared_data')
+
+// ... data might be changed in another tab or part of the app
+storage.update() // Sync memory instance with disk
+console.log(storage.get())
 ```
-
-## Additional Methods
-
-- `remove(): this` — Clears the corresponding key actively from the `localStorage` or `sessionStorage` environments, and immediately unsets the existing memory instance.
-- `update(): this` — Forces the memory instance to synchronize tightly with the current raw data inside the physical Storage APIs.

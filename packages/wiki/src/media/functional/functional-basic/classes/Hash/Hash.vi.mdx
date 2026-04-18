@@ -4,7 +4,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Hash
 
-Một lớp tĩnh để quản lý dữ liệu được lưu trữ trong URL hash (`#`). Tự động đồng bộ hóa trạng thái ứng dụng với URL — mỗi lần gọi `set` sẽ cập nhật chuỗi hash trên trình duyệt, và sự kiện `hashchange` sẽ làm mới trạng thái nội bộ.
+Một lớp facade tĩnh để quản lý dữ liệu được lưu trữ trong URL hash (`#`). Nó ủy quyền thực thi cho lớp `HashInstance`, cung cấp khả năng truy cập tập trung и cách ly trạng thái (ví dụ: cho SSR).
+
+Nó tự động đồng bộ hóa trạng thái ứng dụng với URL — mỗi lần gọi `set` sẽ cập nhật chuỗi hash trên trình duyệt, và sự kiện `hashchange` sẽ làm mới trạng thái nội bộ.
 
 ## Tính năng chính
 
@@ -12,10 +14,11 @@ Một lớp tĩnh để quản lý dữ liệu được lưu trữ trong URL has
 - **Phản hồi qua Watcher** — Phương thức `addWatch` cho phép đăng ký theo dõi thay đổi của một biến cụ thể.
 - **Tự động khởi tạo** — Khi tải trang, dữ liệu được tự động đọc từ URL.
 - **Phân tích kiểu thông minh** — Giá trị được giải mã từ chuỗi: số, boolean và đối tượng được khôi phục về kiểu gốc.
+- **Cách ly SSR** — `ServerStorage` đảm bảo mỗi yêu cầu trên máy chủ có một phiên bản dữ liệu riêng.
 
 ## Khởi tạo
 
-Lớp này là tĩnh và khởi tạo tự động khi tải trang — đọc chuỗi hash URL hiện tại.
+Lớp này là tĩnh và khởi tạo tự động khi truy cập lần đầu.
 
 ```javascript
 // URL: https://myapp.com/#page=2;filter=active
@@ -28,11 +31,19 @@ const filter = Hash.get('filter') // 'active' (string)
 
 ## Phương thức
 
-- `get<T>(name: string, defaultValue?: T | (() => T)): T` — Trả về giá trị của biến hash. Nếu không có giá trị, nó được thiết lập qua `defaultValue` (có thể là hàm).
-- `set<T>(name: string, callback: T | (() => T)): void` — Thiết lập giá trị của biến và cập nhật URL hash. Nếu giá trị không thay đổi, không có cập nhật nào xảy ra.
-- `addWatch<T>(name: string, callback: (value: T) => void): void` — Đăng ký theo dõi thay đổi của một biến hash cụ thể.
-- `removeWatch<T>(name: string, callback: (value: T) => void): void` — Hủy đăng ký theo dõi thay đổi của một biến.
-- `reload(): void` — Đọc URL hash hiện tại và đồng bộ hóa với trạng thái nội bộ.
+### Phiên bản
+- `static getItem(): HashInstance` — Trả về phiên bản `HashInstance` hiện tại (được cách ly cho yêu cầu hiện tại).
+
+### Đọc и Ghi
+- `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Trả về giá trị của biến hash.
+- `static set<T>(name: string, callback: T | (() => T)): void` — Thiết lập giá trị của biến и cập nhật URL hash.
+
+### Theo dõi (Watchers)
+- `static addWatch<T>(name: string, callback: (value: T) => void): void` — Đăng ký theo dõi thay đổi của một biến hash cụ thể.
+- `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Hủy đăng ký theo dõi thay đổi của một biến.
+
+### Quản lý
+- `static reload(): void` — Ép buộc đồng bộ hóa trạng thái với URL hash hiện tại.
 
 ## Ví dụ
 

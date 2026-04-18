@@ -8,6 +8,27 @@ export const errorCauseList: ErrorCenterCauseList = [
     label: 'Cache Clearing Error',
     message: 'An error occurred during background cache cleaning.'
   },
+  // ApiCache get error / Ошибка получения из кэша
+  {
+    group: 'api',
+    code: 'cacheGet',
+    label: 'Cache Get Error',
+    message: 'Failed to retrieve data from the cache.'
+  },
+  // ApiCache remove error / Ошибка удаления из кэша
+  {
+    group: 'api',
+    code: 'cacheRemove',
+    label: 'Cache Remove Error',
+    message: 'Failed to remove data from the cache.'
+  },
+  // ApiCache set error / Ошибка сохранения в кэш
+  {
+    group: 'api',
+    code: 'cacheSet',
+    label: 'Cache Set Error',
+    message: 'Failed to save data to cache.'
+  },
   // Forbidden error (403) / Доступ запрещен (403)
   {
     group: 'api',
@@ -48,7 +69,7 @@ export const errorCauseList: ErrorCenterCauseList = [
     group: 'api',
     code: 'unauthorized',
     label: 'Unauthorized access',
-    message: 'Your session has expired or you do not have permission to access this resource.'
+    message: 'Your session has expired, or you do not have permission to access this resource.'
   },
   // Unknown API error / Неизвестная ошибка API
   {
@@ -80,6 +101,13 @@ export const errorCauseList: ErrorCenterCauseList = [
     code: 'datetime',
     label: 'Intl Datetime Error',
     message: 'An unexpected error occurred. Please try again later.'
+  },
+  // Intl invalid date error / Ошибка невалидной даты
+  {
+    group: 'intl',
+    code: 'invalid',
+    label: 'Invalid Date',
+    message: 'The provided date is invalid or in an incorrect format.'
   },
   // Intl display error / Ошибка Intl display
   {

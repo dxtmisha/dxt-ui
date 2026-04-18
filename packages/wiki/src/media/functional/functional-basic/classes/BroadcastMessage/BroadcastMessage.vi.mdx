@@ -1,107 +1,98 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Classes/BroadcastMessage - Truyền tin BroadcastChannel'/>
+<Meta title='@dxtmisha/vi/functional-basic/Classes/BroadcastMessage - Tin nhắn BroadcastChannel'/>
 
 # Lớp BroadcastMessage
 
-Một lớp để xử lý việc truyền tin giữa các tab hoặc cửa sổ khác nhau bằng cách sử dụng API `BroadcastChannel`. Nó cung cấp một giao diện đơn giản để gửi và nhận thông điệp với sự hỗ trợ của hàm callback, xử lý lỗi và khả năng nhận diện môi trường thực thi.
+Lớp để xử lý tin nhắn giữa các ngữ cảnh trình duyệt khác nhau (tab, cửa sổ, iframe) bằng cách sử dụng API `BroadcastChannel`. Nó cung cấp một giao diện thuận tiện để gửi và nhận dữ liệu với việc quản lý vòng đời kênh tự động và xử lý lỗi.
+
+Bao gồm tính năng đặt tên tiền tố tự động để ngăn chặn xung đột và tích hợp với `ErrorCenter` để theo dõi các lỗi khởi tạo.
 
 ## Các tính năng chính
 
-- **Giao tiếp đa ngữ cảnh** — dễ dàng gửi thông điệp giữa các tab trình duyệt, cửa sổ hoặc iframe khác nhau trên cùng một origin.
-- **Dựa trên Callback** — đăng ký các hàm callback để tự động xử lý các thông điệp đến và lỗi.
-- **Nhận diện môi trường** — tự động kiểm tra môi trường DOM trước khi khởi tạo, giúp ngăn chặn lỗi trong các môi trường không phải trình duyệt.
-- **Tiền tố tên kênh** — tự động thêm tiền tố duy nhất vào tên kênh để tránh xung đột với các ứng dụng khác.
-- **An toàn kiểu dữ liệu** — hỗ trợ Generic trong TypeScript để định nghĩa kiểu dữ liệu của thông điệp.
-- **Tích hợp ErrorCenter** — báo cáo lỗi tập trung khi `BroadcastChannel` không khởi tạo được.
-- **Quản lý tài nguyên** — bao gồm phương thức `destroy()` để đóng kênh và giải phóng tài nguyên hệ thống.
-- **Truy cập trực tiếp** — cung cấp quyền truy cập vào thực thể `BroadcastChannel` gốc khi cần thiết.
+- **Giao tiếp đa ngữ cảnh** — đồng bộ hóa dữ liệu đơn giản giữa tất cả các cửa sổ của cùng một nguồn (origin).
+- **Dựa trên Callback** — tự động xử lý các tin nhắn đến và lỗi thông qua các hàm callback đã đăng ký.
+- **An toàn khi thực thi** — kiểm tra môi trường DOM tích hợp giúp ngăn chặn lỗi trong quá trình Server-Side Rendering (SSR).
+- **Cô lập kênh** — tự động thêm tiền tố duy nhất cho tên kênh thông qua `DataStorage`.
+- **Kiểu dữ liệu mạnh mẽ** — hỗ trợ đầy đủ TypeScript generics để đảm bảo tính toàn vẹn của dữ liệu tin nhắn.
 
 ## Khởi tạo
 
 Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `BroadcastMessage(name, callback, callbackError, errorCenter)`.
 
-### Generic Constraints
+### Ràng buộc Generic (Generic Constraints)
 
-- `Message = any` — kiểu dữ liệu của tải trọng thông điệp.
+- `Message = any` — kiểu của tải trọng tin nhắn.
 
 **Tham số:**
-- `name: string` — tên duy nhất của kênh truyền tin.
-- `callback?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi nhận được thông điệp.
-- `callbackError?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi xảy ra lỗi thông điệp.
-- `errorCenter: ErrorCenterInstance` — thực thể của trung tâm lỗi để kích hoạt các sự kiện (mặc định: `ErrorCenter.getItem()`).
+- `name: string` — tên kênh duy nhất.
+- `callback?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi nhận được tin nhắn.
+- `callbackError?: (event: MessageEvent<Message>) => void` — hàm callback được thực thi khi xảy ra lỗi tin nhắn.
+- `errorCenter: ErrorCenterInstance` — thực thể trung tâm lỗi (mặc định: `ErrorCenter.getItem()`).
 
 ```typescript
-import { BroadcastMessage } from '@dxtmisha/functional'
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
 
-// 1. Khởi tạo với việc xử lý dữ liệu đến
-const messenger = new BroadcastMessage(
+const messenger = new BroadcastMessage<string>(
   'my-channel',
-  (event) => console.log('Đã nhận:', event.data),
-  (error) => console.error('Lỗi:', error)
+  (event) => console.log('Nhận được:', event.data)
 )
-
-// 2. Gửi một thông điệp
-messenger.post({ type: 'UPDATE', value: 100 })
 ```
 
-## Gửi thông điệp
+## Các phương thức
 
-### `post`
+### Hành động
 
-Gửi một thông điệp đến tất cả các trình lắng nghe trên cùng một kênh.
+#### `post`
+
+Gửi tin nhắn đến tất cả những người đang lắng nghe trong kênh đã cho.
 
 **Tham số:**
 - `message: Message` — dữ liệu cần gửi.
 
-**Trả về:** `this` — để hỗ trợ gọi chuỗi phương thức (method chaining).
+**Trả về:** `this` — để nối chuỗi cuộc gọi.
 
-```javascript
-messenger.post({ type: 'UPDATE', payload: { id: 123 } })
-```
+#### `destroy`
 
-## Cấu hình và Truy cập
+Đóng kênh và ngừng lắng nghe tin nhắn.
 
-- `getChannel(): BroadcastChannel | undefined` — Trả về thực thể `BroadcastChannel` gốc (hoặc `undefined` nếu ngoài môi trường DOM).
-- `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Cập nhật hoặc thiết lập hàm callback để nhận thông điệp.
-- `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Cập nhật hoặc thiết lập hàm callback cho các lỗi thông điệp.
-- `destroy(): void` — Đóng kênh và dừng lắng nghe các thông điệp.
+**Trả về:** `this` — để nối chuỗi cuộc gọi.
 
-## Các ví dụ điển hình
+### Cấu hình và Truy cập
 
-### Đồng bộ hóa trạng thái giữa các tab
+- `getChannel(): BroadcastChannel | undefined` — Trả về thực thể `BroadcastChannel` cơ bản.
+- `setCallback(callback: Function): this` — Cập nhật hàm xử lý tin nhắn đến.
+- `setCallbackError(callbackError: Function): this` — Cập nhật hàm xử lý lỗi tin nhắn.
 
-```javascript
+## Ví dụ
+
+### Đồng bộ hóa trạng thái giữa các Tab
+
+```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'
 
-// Trong Tab A và Tab B
-const authChannel = new BroadcastMessage('auth-status', (event) => {
+// Trong tất cả các tab của ứng dụng
+const authChannel = new BroadcastMessage<string>('auth-status', (event) => {
   if (event.data === 'LOGOUT') {
     authModule.clearSession()
-    window.location.href = '/login'
+    window.location.reload()
   }
 })
 
-// Khi người dùng đăng xuất ở Tab A
+// Khi người dùng đăng xuất ở một trong các tab
 function onLogout() {
   authChannel.post('LOGOUT')
 }
 ```
 
-### Hệ thống thông báo đơn giản với xử lý lỗi
+### Cập nhật trình xử lý dữ liệu tức thì
 
-```javascript
-const notifications = new BroadcastMessage(
-  'notifications',
-  (event) => showToast(event.data.message),
-  (error) => console.error('Không thể nhận thông báo:', error)
-)
+```typescript
+const messenger = new BroadcastMessage('data-sync')
 
-// Cập nhật trình xử lý lỗi sau này
-notifications.setCallbackError((error) => {
-  logToService(error)
+messenger.setCallback((event) => {
+  console.log('Dữ liệu mới nhận được:', event.data)
 })
 
-// Kích hoạt thông báo từ bất kỳ đâu trong ứng dụng
-notifications.post({ message: 'Đã nhận tin nhắn mới!' })
+messenger.post({ id: 1, status: 'active' })
 ```

@@ -220,25 +220,24 @@ export class GeoIntl {
     short?: boolean
   ): string {
     const nameFormat = this.geo?.nameFormat ?? 'fl'
+    const firstText = short ? first[0].toUpperCase() + '.' : first
+    const surnameText = short ? surname?.[0].toUpperCase() + '.' : surname
+
     let fullName
 
     switch (nameFormat) {
       case 'fsl':
-        fullName = `${first}${surname ? ` ${surname}` : ''} ${last}`
+        fullName = `${firstText}${surnameText ? ` ${surnameText}` : ''} ${last}`
         break
       case 'lf':
-        fullName = `${last} ${first}`
+        fullName = `${last} ${firstText}`
         break
       case 'lsf':
-        fullName = `${last}${surname ? ` ${surname}` : ''} ${first}`
+        fullName = `${last}${surnameText ? ` ${surnameText}` : ''} ${firstText}`
         break
       default:
-        fullName = `${first} ${last}`
+        fullName = `${firstText} ${last}`
         break
-    }
-
-    if (short) {
-      return fullName.replace(/ (.)[^ ]+/ig, ' $1.')
     }
 
     return fullName
@@ -726,7 +725,7 @@ export class GeoIntl {
     try {
       if (this.hasIntlDateTimeFormat()) {
         const date = new Date()
-        const format = Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
+        const format = new Intl.DateTimeFormat(this.getLocation(), { month: style || 'long' })
 
         for (let i = 0; i < 12; i++) {
           date.setMonth(i)
@@ -761,7 +760,7 @@ export class GeoIntl {
   ): string {
     try {
       if (this.hasIntlDateTimeFormat()) {
-        return Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
+        return new Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
           .format(toDate(value))
       }
     } catch (e) {
@@ -792,7 +791,7 @@ export class GeoIntl {
     try {
       if (this.hasIntlDateTimeFormat()) {
         const date = new Date()
-        const format = Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
+        const format = new Intl.DateTimeFormat(this.getLocation(), { weekday: style || 'long' })
         const current = date.getDay() + (this.geo.firstDay === 'Mo' ? -1 : 1)
 
         date.setDate(date.getDate() - current)

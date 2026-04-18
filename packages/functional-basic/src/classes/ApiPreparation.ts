@@ -16,11 +16,12 @@ export class ApiPreparation {
   protected loading = false
 
   /**
-   * Preparation before executing the request.
+   * Executes preparation before the request.
    *
-   * Подготовка перед выполнением запроса.
+   * Выполняет подготовку перед выполнением запроса.
    * @param active is preparation active/ активна ли подготовка
    * @param apiFetch request options/ опции запроса
+   * @returns Promise<void> / Promise без возвращаемого значения
    */
   async make(active: boolean, apiFetch: ApiFetch) {
     if (
@@ -32,12 +33,13 @@ export class ApiPreparation {
   }
 
   /**
-   * Analysis of the request after execution.
+   * Analyzes the request after execution.
    *
-   * Анализ запроса после выполнения.
+   * Анализирует запрос после выполнения.
    * @param active is preparation active/ активна ли подготовка
    * @param query data received in the request/ данные, полученные в запросе
    * @param apiFetch request options/ опции запроса
+   * @returns preparation end data/ данные завершения подготовки
    */
   async makeEnd(
     active: boolean,
@@ -52,10 +54,10 @@ export class ApiPreparation {
   }
 
   /**
-   * The function is modified for a call before the request.
+   * Modifies the function to be called before the request.
    *
-   * Изменить функцию перед запросом.
-   * @param callback function for call/ функция для вызова
+   * Изменяет функцию для вызова перед запросом.
+   * @param callback function to call before request/ функция для вызова перед запросом
    */
   set(callback: (apiFetch: ApiFetch) => Promise<void>): this {
     this.callback = callback
@@ -63,10 +65,10 @@ export class ApiPreparation {
   }
 
   /**
-   * Modify the function after the request.
+   * Modifies the function to be called after the request.
    *
-   * Изменить функцию после запроса.
-   * @param callback function for call/ функция для вызова
+   * Изменяет функцию для вызова после запроса.
+   * @param callback function to call after request/ функция для вызова после запроса
    */
   setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
     this.callbackEnd = callback
@@ -78,7 +80,7 @@ export class ApiPreparation {
    *
    * Выполнить подготовку.
    * @param apiFetch request options/ опции запроса
-   * @param limit limit of attempts/ лимит попыток
+   * @param limit limit of retry attempts/ лимит попыток повтора
    */
   protected async go(apiFetch: ApiFetch, limit: number = 32) {
     return new Promise<void>((resolve) => {

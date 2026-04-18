@@ -31,6 +31,8 @@
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
   "dependencies": {
+    "@dxtmisha/functional-basic": "*",
+    "h3": "^2.0.1-rc.20",
     "nitropack": "^2.13.3"
   },
   "devDependencies": {}

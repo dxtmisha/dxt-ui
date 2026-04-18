@@ -1,4 +1,5 @@
 import { LoadingInstance, type LoadingDetail } from './LoadingInstance'
+import { ServerStorage } from './ServerStorage'
 
 import {
   type ElementOrString,
@@ -11,16 +12,13 @@ import {
  * Класс для работы с глобальной загрузкой.
  */
 export class Loading {
-  /** Instance of the loading class / Экземпляр класса загрузки */
-  protected static item = new LoadingInstance()
-
   /**
    * Check if the loader is active now.
    *
    * Проверить, активен ли сейчас загрузчик.
    */
   static is(): boolean {
-    return this.item.is()
+    return this.getItem().is()
   }
 
   /**
@@ -29,16 +27,17 @@ export class Loading {
    * Получить текущее значение загрузки.
    */
   static get(): number {
-    return this.item.get()
+    return this.getItem().get()
   }
 
   /**
-   * Get instance of the loading class.
+   * Returns a request-isolated instance of LoadingInstance.
    *
-   * Получить экземпляр класса загрузки.
+   * Возвращает изолированный в рамках запроса экземпляр LoadingInstance.
+   * @returns LoadingInstance instance / экземпляр LoadingInstance
    */
   static getItem(): LoadingInstance {
-    return this.item
+    return ServerStorage.get('__ui:loading-instance__', () => new LoadingInstance())
   }
 
   /**
@@ -47,7 +46,7 @@ export class Loading {
    * Показывает загрузчик.
    */
   static show(): void {
-    this.item.show()
+    this.getItem().show()
   }
 
   /**
@@ -56,7 +55,7 @@ export class Loading {
    * Скрывает загрузчик.
    */
   static hide(): void {
-    this.item.hide()
+    this.getItem().hide()
   }
 
   /**
@@ -72,7 +71,7 @@ export class Loading {
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
   ) {
-    this.item.registrationEvent(listener, element)
+    this.getItem().registrationEvent(listener, element)
   }
 
   /**
@@ -88,6 +87,6 @@ export class Loading {
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
   ) {
-    this.item.unregistrationEvent(listener, element)
+    this.getItem().unregistrationEvent(listener, element)
   }
 }

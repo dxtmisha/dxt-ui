@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/HashInstance - URL Hash Instance'/>
+
+# HashInstance Class
+
+`HashInstance` is the core class that implements the logic for managing data in the URL hash. It provides state storage, mechanisms for subscribing to changes, and synchronization with the browser API.
+
+You can use this class directly if you need isolated hash management separate from the global `Hash` state.
+
+## Key Features
+
+- **Isolated State** — Stores its own set of hash variables.
+- **Chainable API** — Most methods return `this`, allowing for concise code.
+- **Automatic Synchronization** — Upon initialization, it reads data from the URL and subscribes to the `hashchange` event.
+- **SSR Compatibility** — Works safely in server-side environments using stubs for DOM APIs.
+
+## Initialization
+
+To create an instance, use the `HashInstance()` constructor.
+
+```typescript
+import { HashInstance } from '@dxtmisha/functional-basic'
+
+const myHash = new HashInstance()
+```
+
+## Methods
+
+### Reading and Writing
+- `get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a variable. If it doesn't exist, sets `defaultValue` and returns it.
+- `set<T>(name: string, callback: T | (() => T)): this` — Updates the variable's value and synchronizes the URL.
+
+### Watchers
+- `addWatch<T>(name: string, callback: (value: T) => void): this` — Adds a handler for variable changes.
+- `removeWatch<T>(name: string, callback: (value: T) => void): this` — Removes a handler.
+
+### Management
+- `reload(): this` — Refreshes the internal state from the current URL hash.
+
+## Examples
+
+### Using an Isolated Instance
+```typescript
+const searchHash = new HashInstance()
+
+// Subscribe
+searchHash.addWatch('query', (q) => {
+  console.log('Search:', q)
+})
+
+// Set value (will update URL)
+searchHash.set('query', 'smartphones')
+```

@@ -13,7 +13,7 @@ The `Api` class is a **Primary Class (Static)** and serves as the main entry poi
 - **SSR Isolation** — utilizes `ServerStorage` to manage individual instance isolation during server-side rendering.
 - **Simplified Setup** — provides a unified `setConfig` method to apply multiple configuration layers at once.
 
-## Action Methods
+## Methods
 
 ### Action
 
@@ -32,15 +32,13 @@ Methods for performing physical network requests.
 
 ### Configuration
 
-Methods return the `Api` class for chaining execution.
-
-- `setUrl(url: string): Api` — Changes the base API URL.
-- `setHeaders(headers: Record<string, string>): Api` — Sets default request headers.
-- `setRequestDefault(request: Record<string, any>): Api` — Sets default request body data.
-- `setPreparation(callback): Api` — Registers a hook to run before every enabled request.
-- `setEnd(callback): Api` — Registers a hook to run after every enabled response.
-- `setTimeout(timeout: number): Api` — Changes the global request timeout.
-- `setConfig(config?: ApiConfig): Api` — Applies a complete configuration object.
+- `setUrl(url: string): void` — Changes the base API URL.
+- `setHeaders(headers: Record<string, string>): void` — Sets default request headers.
+- `setRequestDefault(request: Record<string, any>): void` — Sets default request body data.
+- `setPreparation(callback): void` — Registers a hook to run before every enabled request.
+- `setEnd(callback): void` — Registers a hook to run after every enabled response.
+- `setTimeout(timeout: number): void` — Changes the global request timeout.
+- `setConfig(config?: ApiConfig): void` — Applies a complete configuration object.
 
 ### Auxiliary
 
@@ -48,7 +46,7 @@ Methods return the `Api` class for chaining execution.
 - `getResponse(): ApiResponse` — Accesses the response/emulation manager.
 - `getHydration(): ApiHydration` — Accesses the hydration manager.
 - `getHydrationScript(): string` — Returns the script block for SSR-to-client hydration.
-- `getUrl(path: string, api?: boolean): string` — Returns the fully resolved URL with localization tokens.
+- `getUrl(path: string, api?: boolean): string` — Returns the fully resolved URL with `{locale}`, `{country}`, `{language}` placeholder substitution.
 - `getBody(request, method?): string | FormData | undefined` — Prepares the request body.
 - `getBodyForGet(request, path?, method?): string` — Prepares the query string.
 - `getItem(): ApiInstance` — Returns the underlying `ApiInstance` object.

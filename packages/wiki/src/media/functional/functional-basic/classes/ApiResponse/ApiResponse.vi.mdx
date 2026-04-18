@@ -15,9 +15,24 @@ Một lớp quản lý để chặn, lưu trữ và giả lập các phản hồ
 - **Mô phỏng độ trễ mạng** — hệ thống tích hợp được thiết kế riêng để mô phỏng các kịch bản độ trễ thực tế (bộ hẹn giờ bù ngẫu nhiên).
 - **Chế độ nhà phát triển** — in các thông tin gỡ lỗi hữu ích trong console trình duyệt cho biết dữ liệu nào đã khớp trực tiếp với một điểm mock cụ thể.
 
-## Các phương thức hành động
+## Khởi tạo
 
-### `emulator`
+Để khởi tạo đối tượng, hãy gọi hàm dựng `ApiResponse(requestDefault)`.
+
+**Tham số:**
+- `requestDefault: ApiDefault` — lớp yêu cầu mặc định được sử dụng để cấu hình và lưu trữ.
+
+```typescript
+import { ApiResponse } from '@dxtmisha/functional-basic'
+
+const apiResponse = new ApiResponse(myApiDefault)
+```
+
+## Các phương thức
+
+### Hành động
+
+#### `emulator`
 
 Vòng lặp công cụ chính để xác thực các cấu hình yêu cầu và thực thi các phản hồi mock có độ trễ tương ứng. Phương thức này chỉ chạy trong môi trường DOM.
 
@@ -26,12 +41,12 @@ Vòng lặp công cụ chính để xác thực các cấu hình yêu cầu và 
 
 **Trả về:** `Promise<T | undefined>` — Dữ liệu phản hồi đã giả lập.
 
-## Các phương thức kiểm tra
+### Kiểm tra
 
 - `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Kiểm tra đồng bộ một yêu cầu mock đã lưu khớp với các tham số.
 - `getList(): (ApiResponseItem & Record<string, any>)[]` — Trả về danh sách tất cả các cấu hình giả lập đã đăng ký.
 
-## Cấu hình
+### Cấu hình
 
 - `add(response: ApiResponseItem | ApiResponseItem[]): this` — Thêm các đối tượng phản hồi mock vào bộ đăng ký cục bộ.
 - `setDevMode(devMode: boolean): this` — Bật/tắt chế độ nhật ký gỡ lỗi phát triển.
@@ -43,9 +58,10 @@ Một đối tượng định nghĩa cấu hình phản hồi mock.
 - `path: string | RegExp` — Đường dẫn hoặc mẫu URL khớp.
 - `method: ApiMethod` — Phương thức HTTP (GET, POST, v.v.).
 - `response: any | ((request?: any) => any)` — Dữ liệu mock hoặc hàm trả về dữ liệu đó.
-- `request?: any` — Dữ liệu yêu cầu tùy chọn để khớp.
+- `request?: ApiFetch['request'] | '*any'` — Dữ liệu yêu cầu tùy chọn để khớp.
 - `lag?: boolean` — Có mô phỏng độ trễ mạng hay không.
-- `disable?: boolean | (() => boolean)` — Điều kiện để vô hiệu hóa mock.
+- `disable?: any` — Điều kiện để vô hiệu hóa mock (boolean hoặc hàm).
+- `isForGlobal?: boolean` — Đánh dấu là mock toàn cục (ẩn khỏi getList).
 
 ## Hướng dẫn: Giả lập API
 

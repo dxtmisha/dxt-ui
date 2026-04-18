@@ -620,10 +620,22 @@ describe('ApiInstance', () => {
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api', code: 'server' }))
     })
 
-    it('should report other 4xx/5xx statuses to ErrorCenter with api-server group', async () => {
+    it('should report 401 to ErrorCenter with unauthorized code', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({ status: 401, statusText: 'Unauthorized', json: { error: 'Unauthorized' } }))
+      await api.request({ path: 'test' })
+      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api', code: 'unauthorized' }))
+    })
+
+    it('should report 403 to ErrorCenter with forbidden code', async () => {
       mockFetch.mockResolvedValueOnce(createMockResponse({ status: 403, statusText: 'Forbidden', json: { error: 'Forbidden' } }))
       await api.request({ path: 'test' })
-      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api-server', code: '403' }))
+      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api', code: 'forbidden' }))
+    })
+
+    it('should report other 4xx/5xx statuses to ErrorCenter with api-server group', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse({ status: 402, statusText: 'Payment Required', json: { error: 'Payment required' } }))
+      await api.request({ path: 'test' })
+      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({ group: 'api-server', code: '402' }))
     })
 
     it('should not report a query error when hideError is true', async () => {

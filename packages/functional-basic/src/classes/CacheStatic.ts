@@ -5,6 +5,7 @@ import { ServerStorage } from './ServerStorage'
  * Class for working with fast cache during code execution.
  *
  * Класс для работы с быстрым кэшем во время выполнения кода.
+ * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class CacheStatic {
   /**
@@ -13,7 +14,7 @@ export class CacheStatic {
    * Возвращает инстанс класса.
    */
   protected static getItem(): Cache {
-    return ServerStorage.get('__dxt_cache_static__', () => new Cache())
+    return ServerStorage.get('__ui:cache-static__', () => new Cache())
   }
 
   /**

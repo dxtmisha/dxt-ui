@@ -4,34 +4,34 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Formatters Class
 
-A specialized class for formatting lists of data based on provided configuration. It acts as a bridge between raw data and localized, human-readable strings, leveraging the `GeoIntl` singleton for consistent formatting across different locales.
+A specialized class for formatting data lists based on a provided configuration. It serves as a bridge between raw data and localized, human-readable strings, utilizing the `GeoIntl` singleton for consistent formatting across different locales.
 
 ## Key Features
 
-- **Declarative Configuration** — Define formatting rules once and apply them to an entire dataset.
-- **Support for Multiple Types** — Built-in support for currency, dates, names, numbers, plurals, and units.
-- **Custom Transformations** — Ability to provide custom functions for unique formatting needs.
-- **Type Safety** — Full TypeScript support for items, options, and resulting formatted lists.
-- **Automatic Key Generation** — Automatically adds formatted values to items with a `Format` suffix (e.g., `price` becomes `priceFormat`).
+- **Declarative Configuration** — Define formatting rules once and apply them to the entire dataset.
+- **Support for Multiple Types** — Built-in support for currencies, dates, names, numbers, plurals, and units.
+- **Custom Transformations** — The ability to provide your own functions for unique formatting needs.
+- **Typing** — Full TypeScript support for items, parameters, and resulting formatted lists.
+- **Automatic Key Generation** — Automatically adds formatted values to items with the `Format` suffix (e.g., `price` becomes `priceFormat`).
 
 ## Initialization
 
-To initialize the object, call the `Formatters(options, list)` constructor.
+To initialize the object, call the constructor `Formatters(options, list)`.
 
 ### Generic Constraints
 
-- `Options extends FormattersOptionsList` — type of formatting options.
-- `List extends FormattersList<FormattersListItem> | FormattersListItem` — type of the input data (array or single item).
-- `Item extends (List extends any[] ? List[number] : List)` — type of a single item in the list.
+- `Options extends FormattersOptionsList` — type of formatting parameters.
+- `List extends FormattersListProp` — type of input data (array or single item).
+- `Item extends FormattersItemProp<List>` — type of a single item in the list.
 
 **Parameters:**
-- `options: Options` — formatting options for each column/property.
-- `list?: List` — initial list of data to format.
+- `options: Options` — formatting parameters for each column/property.
+- `list?: List` — initial data list for formatting.
 
 ```typescript
 import { Formatters } from '@dxtmisha/functional-basic'
 
-// 1. Define formatting options
+// 1. Defining formatting parameters
 const options = {
   price: { 
     type: 'currency', 
@@ -44,31 +44,17 @@ const options = {
   user: {
     type: 'name',
     options: { lastPropName: 'surname', firstPropName: 'name' }
-  },
-  weight: { 
-    type: 'unit', 
-    options: { unit: 'kilogram' } 
-  },
-  count: { 
-    type: 'plural', 
-    options: { words: 'apple|apples' } 
-  },
-  status: {
-    transformation: (value: number) => value === 1 ? 'Active' : 'Inactive'
   }
 }
 
-// 2. Initial data (can be an array or a single object)
+// 2. Raw data
 const data = [
   {
     price: 100,
     currency: 'USD',
     created: '2024-03-07T12:00:00',
     name: 'John',
-    surname: 'Doe',
-    weight: 75,
-    count: 5,
-    status: 1
+    surname: 'Doe'
   }
 ]
 
@@ -76,93 +62,95 @@ const data = [
 const formatter = new Formatters(options, data)
 ```
 
-## Processing Data
+## Methods
 
-### `to`
+### Processing
+- `to(): FormattersReturn<List, Options>` — Processes the data and returns the result. If the input was an array, returns a new array of enriched items. If it was a single item — a single object. Adds properties with the `Format` suffix.
 
-Processes the data and returns the result. If the input was an array, it returns a new array of enriched items. If the input was a single item, it returns that single enriched item.
+### Configuration
+- `setList(list?: List): this` — Updates the data for formatting. Supports chaining.
 
-**Returns:** `FormattersListColumns<Item, Options> | FormattersListColumnItem<Item, Options>` — enriched data with additional `*Format` properties.
-
-```javascript
-const result = formatter.to()
-/*
-Result (if array): [
-  { 
-    id: 101, 
-    price: 100, 
-    currency: 'USD', 
-    priceFormat: '$100.00', 
-    status: 1, 
-    statusFormat: 'Active',
-    ... 
-  }
-]
-
-Result (if single item): { 
-  price: 100, 
-  priceFormat: '$100.00', 
-  ... 
-}
-*/
-```
-
-## Retrieval and Data Management
-
-- `is(): boolean` — Checks if the list/item is set.
-- `isArray(): boolean` — Checks if the current data is an array.
+### Information
+- `is(): boolean` — Checks if data is set for processing.
+- `isArray(): boolean` — Whether the current data is an array.
 - `length(): number` — Returns the count of records in the list.
-- `getList(): Item[]` — Returns the current list of data as an array.
-- `getOptions(): Options` — Returns the current formatting configuration mapping.
-- `setList(list?: List): this` — Updates the data and returns the instance for chaining.
+- `getList(): FormattersList<Item>` — Returns the current list as an array.
+- `getOptions(): Options` — Returns the current formatting configuration.
 
-## Configuration Structure
+## Formatting Types and Parameters
 
-The configuration object passed to the constructor is a map where each key corresponds to a property name in your data. Each value must follow the `FormattersOptionsItem` structure.
+The `FormattersOptionsList` configuration is a dictionary where keys correspond to property names in the data (dot notation `path.to.prop` is supported), and values are `FormattersOptionsItem` objects.
 
-### Main Item Structure
+### General Structure of `FormattersOptionsItem`
+- `type?: FormattersType` — Formatter type.
+- `transformation?: (value, item, options) => string` — Custom transformation function.
+- `options?: Options` — Parameter object, the structure of which depends on the selected `type`.
 
+### Detailed Type Description
+
+#### 1. Currency (`currency`)
+Used for localized display of monetary values.
+- `currencyPropName?: string` — Property name in the item from which the currency code is taken (default is `currency`).
+- `options?: string | Intl.NumberFormatOptions` — You can pass a fixed code (e.g., `'USD'`) or an `Intl.NumberFormat` settings object.
+- `numberOnly?: boolean` — If `true`, returns only the formatted number without the currency symbol.
+
+#### 2. Date (`date`)
+Formatting dates and times via `GeoIntl`.
+- `type?: GeoDate` — Preset format:
+    - `full` — Full date and time.
+    - `datetime` — Date and time (without seconds).
+    - `date` — Date only.
+    - `time` — Time only.
+    - `year-month`, `year`, `month`, `day`, `day-month`, `hour-minute`.
+- `options?: Intl.DateTimeFormatOptions` — Standard `Intl` parameters (e.g., `month: 'long'`).
+- `hour24?: boolean` — If `true`, forces 24-hour mode.
+
+#### 3. Name (`name`)
+Combines full name parts in the correct order.
+- `lastPropName?: string` — Field for the last name (default is `lastName`).
+- `firstPropName?: string` — Field for the first name (default is `firstName`).
+- `surname?: string` — Field for the middle name/surname (default is `surname`).
+- `short?: boolean` — If `true`, outputs the last name and initials (e.g., "Doe J.").
+
+#### 4. Number (`number`)
+Standard number formatting with digit separation.
+- `options?: Intl.NumberFormatOptions` — `Intl` parameters (number of decimal places, style, etc.).
+
+#### 5. Plural (`plural`)
+Choosing the correct word form depending on the number.
+- `words: string` — Word forms via the `|` separator.
+    - For English: `"apple|apples"`.
+    - For Russian: `"яблоко|яблока|яблок"`.
+- `options?: Intl.PluralRulesOptions` — Pluralization rule settings.
+- `optionsNumber?: Intl.NumberFormatOptions` — Settings for formatting the number itself that is output before the word.
+
+#### 6. Unit (`unit`)
+Adding units of measurement (km, kg, l).
+- `unit: string` — Unit of measurement code (e.g., `'kilometer'`, `'kilogram'`, `'liter'`).
+- `options?: Intl.NumberFormatOptions` — Formatting parameters for the numeric part.
+
+## Examples
+
+### Using Dot Notation
 ```typescript
-{
-  // 1. Specify the formatting type
-  type: 'currency' | 'date' | 'name' | 'number' | 'plural' | 'unit',
-
-  // 2. Pass type-specific parameters here
-  options: { ... },
-
-  // 3. Or use a custom function (overrides type-specific logic)
-  transformation: (value, item, options) => string
+const options = {
+  'user.profile.age': { type: 'number' }
 }
+const data = { user: { profile: { age: 25 } } }
+const formatter = new Formatters(options, data)
+
+const result = formatter.to()
+// result.userProfileAgeFormat === "25"
 ```
 
-## Specific Parameters
-
-Below are the parameters available within the **`options`** property for each type.
-
-### Currency (`currency`)
-- `currencyPropName?: string` — Property in the item containing the currency code (defaults to `item.currency`).
-- `options?: string | Intl.NumberFormatOptions` — Fixed currency code or full `Intl` options.
-- `numberOnly?: boolean` — If `true`, returns only the formatted number without the symbol.
-
-### Date (`date`)
-- `type?: GeoDate` — Preset type: `full`, `datetime`, `date`, `year-month`, `year`, `month`, `day`, `day-month`, `time`, `hour-minute`, `hour`, `minute`, `second`.
-- `options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — Additional `Intl` date options or month style.
-- `hour24?: boolean` — Forces 24-hour format if `true`.
-
-### Name (`name`)
-- `lastPropName?: string` — Field for last name (default: `lastName`).
-- `firstPropName?: string` — Field for first name (default: `firstName`).
-- `surname?: string` — Field for surname (default: `surname`).
-- `short?: boolean` — Whether to use short format (initials).
-
-### Number (`number`)
-- `options?: Intl.NumberFormatOptions` — Standard `Intl` number options.
-
-### Plural (`plural`)
-- `words: string` — Word forms separated by `|` (e.g., `"apple|apples"`).
-- `options?: Intl.PluralRulesOptions` — Plural rule settings.
-- `optionsNumber?: Intl.NumberFormatOptions` — Formatting for the number itself.
-
-### Unit (`unit`)
-- `unit: string | Intl.NumberFormatOptions` — The unit to display (e.g., `'kilometer'`, `'kilogram'`).
-
+### Custom Transformation
+```typescript
+const options = {
+  status: {
+    // Custom function takes precedence over type
+    transformation: (value, item) => {
+       return value === 'active' ? `✅ ${item.name} is online` : '❌ Offline'
+    }
+  }
+}
+```

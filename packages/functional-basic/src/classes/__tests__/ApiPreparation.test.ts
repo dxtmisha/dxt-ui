@@ -2,14 +2,14 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ApiPreparation } from '../ApiPreparation'
 import type { ApiPreparationEnd } from '../../types/apiTypes'
 
-describe('ApiPreparation / API Preparation', () => {
+describe('ApiPreparation', () => {
   let apiPreparation: ApiPreparation
 
   beforeEach(() => {
     apiPreparation = new ApiPreparation()
   })
 
-  describe('make / Execute preparation', () => {
+  describe('make', () => {
     it('should not call callback when active is false', async () => {
       const callback = vi.fn().mockResolvedValue(undefined)
       apiPreparation.set(callback)
@@ -71,7 +71,7 @@ describe('ApiPreparation / API Preparation', () => {
     })
   })
 
-  describe('makeEnd / Execute end processing', () => {
+  describe('makeEnd', () => {
     it('should return empty object when active is false', async () => {
       const callback = vi.fn().mockResolvedValue({ reset: true })
       const mockResponse = new Response('{}', { status: 200 })
@@ -122,7 +122,7 @@ describe('ApiPreparation / API Preparation', () => {
     })
   })
 
-  describe('set / Set preparation callback', () => {
+  describe('set', () => {
     it('should set callback function', async () => {
       const callback = vi.fn().mockResolvedValue(undefined)
 
@@ -155,7 +155,7 @@ describe('ApiPreparation / API Preparation', () => {
     })
   })
 
-  describe('setEnd / Set end callback', () => {
+  describe('setEnd', () => {
     it('should set end callback function', async () => {
       const callback = vi.fn().mockResolvedValue({})
       const mockResponse = new Response('{}', { status: 200 })
@@ -192,7 +192,7 @@ describe('ApiPreparation / API Preparation', () => {
     })
   })
 
-  describe('integration / Integration scenarios', () => {
+  describe('integration scenarios', () => {
     it('should handle full lifecycle with both callbacks', async () => {
       let preparationDone = false
       const callback = vi.fn().mockImplementation(async () => {

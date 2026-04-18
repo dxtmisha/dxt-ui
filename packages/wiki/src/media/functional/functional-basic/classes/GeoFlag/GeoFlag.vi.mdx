@@ -1,79 +1,122 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoFlag - Cờ Quốc gia'/>
+<Meta title='@dxtmisha/vi/functional-basic/Classes/GeoFlag - Cờ các quốc gia'/>
 
 # Lớp GeoFlag
 
-Một lớp dành cho việc làm việc với cờ quốc gia. Cung cấp giao diện thuận tiện để truy xuất biểu tượng cờ, tên quốc gia và ngôn ngữ đã được bản địa hóa dựa trên mã quốc gia hoặc ngôn ngữ. Sử dụng `Geo` và `GeoIntl` để phân giải các tên gọi đã được bản địa hóa.
+Một lớp để làm việc với cờ các quốc gia và thông tin địa lý. Nó cung cấp một giao diện thuận tiện để lấy các biểu tượng cờ, tên quốc gia và ngôn ngữ đã được bản địa hóa. Nó sử dụng các singleton `Geo` và `GeoIntl` để giải quyết dữ liệu một cách chính xác dựa trên ngôn ngữ hiện tại.
 
-## Tính năng chính
+## Các tính năng chính
 
-- **Từ điển cờ** — Từ điển tĩnh (`flags`) tích hợp sẵn, ánh xạ mã quốc gia ISO 3166-1 alpha-2 tới tên biểu tượng.
-- **Tên gọi đã bản địa hóa** — Trả về tên quốc gia và ngôn ngữ theo ngôn ngữ giao diện hiện tại.
-- **Tên gọi dân tộc** — Phương thức `getNational` trả về tên quốc gia theo ngôn ngữ của chính nước đó.
-- **Lọc linh hoạt** — Các phương thức danh sách hỗ trợ lọc theo mảng mã quốc gia.
+- **Từ điển cờ** — danh sách `flags` tĩnh tích hợp ánh xạ mã ISO 3166-1 alpha-2 với tên biểu tượng.
+- **Dữ liệu được bản địa hóa** — tự động dịch tên quốc gia và ngôn ngữ sang ngôn ngữ giao diện hiện tại.
+- **Hỗ trợ quốc gia** — khả năng lấy tên quốc gia bằng ngôn ngữ "gốc" của họ (ví dụ: "Nhật Bản" và "日本" đồng thời).
+- **Khả năng mở rộng** — hỗ trợ lọc và lấy danh sách đầy đủ cho các bộ chọn quốc gia.
 
 ## Khởi tạo
 
-Tạo một thực thể `GeoFlag` mới với mã quốc gia hoặc ngôn ngữ tùy chọn.
+Để tạo một thực thể, hãy sử dụng constructor `GeoFlag(code)`.
 
 **Tham số:**
-- `code?: string` — Mã quốc gia hoặc ngôn ngữ (ví dụ: `'VN'`, `'vi-VN'`). Mặc định sử dụng ngôn ngữ hiện tại từ `Geo`.
+- `code?: string` — mã quốc gia hoặc ngôn ngữ (ví dụ: `'VN'`, `'vi-VN'`). Nếu không được chỉ định, ngôn ngữ hiện tại từ hệ thống `Geo` sẽ được sử dụng.
 
 ```javascript
 import { GeoFlag } from '@dxtmisha/functional-basic'
 
-// Tạo với ngôn ngữ hiện tại
+// Với ngôn ngữ hiện tại
 const flag = new GeoFlag()
 
-// Tạo cho một quốc gia cụ thể
+// Cho một quốc gia cụ thể
 const vnFlag = new GeoFlag('vi-VN')
 ```
 
-## Phương thức
+## Các phương thức
 
-### Truy xuất dữ liệu
+### Lấy dữ liệu
+- `get(code?: string): GeoFlagItem | undefined` — Trả về một đối tượng dữ liệu đầy đủ về một quốc gia.
+- `getFlag(code?: string): string | undefined` — Trả về chỉ định danh biểu tượng cờ (ví dụ: `'f-vn'`).
 
-- `get(code?: string): GeoFlagItem | undefined` — Trả về đối tượng dữ liệu đầy đủ về một quốc gia: ngôn ngữ, mã quốc gia, tiêu chuẩn và tên biểu tượng cờ. Nếu không có mã, sử dụng mã từ constructor.
-- `getFlag(code?: string): string | undefined` — Chỉ trả về tên biểu tượng cờ của quốc gia được chỉ định.
-- `getList(codes?: string[]): GeoFlagItem[]` — Trả về mảng các đối tượng dữ liệu cờ. Nếu `codes` không được cung cấp, trả về tất cả các quốc gia từ từ điển.
-- `getNational(codes?: string[]): GeoFlagNational[]` — Tương tự `getList`, nhưng bổ sung tên quốc gia theo ngôn ngữ của chính nước đó.
+### Danh sách
+- `getList(codes?: string[]): GeoFlagItem[]` — Trả về một mảng dữ liệu quốc gia.
+- `getNational(codes?: string[]): GeoFlagNational[]` — Trả về danh sách các quốc gia với tên quốc gia gốc.
 
-### Thay đổi dữ liệu
+### Cấu hình
+- `setCode(code: string): this` — Thay đổi ngôn ngữ cơ sở cho thực thể hiện tại.
 
-- `setCode(code: string): this` — Thay đổi mã quốc gia cho thực thể hiện tại.
+## Các phương thức danh sách
+
+Sự khác biệt chính giữa các phương thức nằm ở ngôn ngữ mà tên quốc gia và ngôn ngữ được trả về:
+
+*   **`getList`** — trả về tên chỉ bằng ngôn ngữ được thiết lập trong thực thể lớp (ví dụ: tất cả bằng tiếng Việt).
+*   **`getNational`** — trả về tên bằng ngôn ngữ giao diện của bạn + thêm tên gốc bằng ngôn ngữ của chính quốc gia đó (ví dụ: "Nhật Bản" và "日本").
+
+### Ví dụ về sự khác biệt trong kết quả:
+
+```javascript
+const geo = new GeoFlag('vi-VN') // Ngôn ngữ tiếng Việt được thiết lập
+
+// 1. getList chỉ trả về bản dịch
+const list = geo.getList(['JP']) 
+/* 
+[{ country: 'Nhật Bản', ... }] 
+*/
+
+// 2. getNational trả về bản dịch + tên gốc
+const national = geo.getNational(['JP']) 
+/* 
+[{ 
+  country: 'Nhật Bản', 
+  nationalCountry: '日本', 
+  ... 
+}] 
+*/
+```
+
+## Các kiểu dữ liệu
+
+### `GeoFlagItem`
+Đối tượng thông tin cờ cơ bản.
+- `country`: string — Tên quốc gia đã được bản địa hóa.
+- `language`: string — Tên ngôn ngữ đã được bản địa hóa.
+- `standard`: string — Tiêu chuẩn ngôn ngữ đầy đủ (ví dụ: `vi-VN`).
+- `icon`: string — Tên biểu tượng cờ (tiền tố `f-`).
+- `label`: string — Nhãn hiển thị (mặc định khớp với `country`).
+- `value`: string — Mã quốc gia (ISO alpha-2).
+
+### `GeoFlagNational`
+Mở rộng `GeoFlagItem` với các trường bổ sung:
+- `nationalCountry`: string — Tên quốc gia bằng ngôn ngữ gốc.
+- `nationalLanguage`: string — Tên ngôn ngữ bằng ngôn ngữ gốc.
+- `description`: string — Mô tả ngắn gọn (sao chép `nationalCountry`).
 
 ## Ví dụ
 
-### Hiển thị cờ cho quốc gia hiện tại
+### Danh sách các quốc gia phổ biến với tên quốc gia gốc
 ```javascript
-import { GeoFlag } from '@dxtmisha/functional-basic'
+const geo = new GeoFlag('vi-VN')
+const list = geo.getNational(['VN', 'CN', 'JP'])
 
-const flag = new GeoFlag()
-const item = flag.get()
-
-console.log(item?.icon)    // 'f-vn'
-console.log(item?.country) // 'Việt Nam'
-```
-
-### Danh sách tất cả quốc gia với cờ
-```javascript
-const flag = new GeoFlag('vi-VN')
-const countries = flag.getList()
-
-countries.forEach(item => {
-  console.log(`${item.icon}: ${item.country}`)
-})
-// 'f-us: Hoa Kỳ', 'f-fr: Pháp', ...
-```
-
-### Danh sách với tên gọi dân tộc
-```javascript
-// Trả về tên quốc gia bằng cả ngôn ngữ của bạn và ngôn ngữ của chính nước đó
-const national = new GeoFlag('vi-VN').getNational(['US', 'JP', 'RU'])
-
-national.forEach(item => {
-  console.log(`${item.country} (${item.nationalCountry})`)
-})
-// Hoa Kỳ (United States), Nhật Bản (日本), Nga (Россия)
+/* 
+Kết quả:
+[
+  { 
+    country: 'Việt Nam', 
+    nationalCountry: 'Việt Nam', 
+    icon: 'f-vn', 
+    ... 
+  },
+  { 
+    country: 'Trung Quốc', 
+    nationalCountry: '中国', 
+    icon: 'f-cn', 
+    ... 
+  },
+  { 
+    country: 'Nhật Bản', 
+    nationalCountry: '日本', 
+    icon: 'f-jp', 
+    ... 
+  }
+]
+*/
 ```

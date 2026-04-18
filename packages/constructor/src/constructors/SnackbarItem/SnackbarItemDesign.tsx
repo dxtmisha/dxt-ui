@@ -128,8 +128,7 @@ export class SnackbarItemDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        ...AriaStaticInclude.role(this.props.role),
-        ...AriaStaticInclude.atomic(true)
+        ...this.item.ariaBind.value
       },
       [
         ...this.renderMain(),

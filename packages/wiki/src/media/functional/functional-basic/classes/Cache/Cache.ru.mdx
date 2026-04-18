@@ -26,9 +26,11 @@ const cache = new Cache()
 const user = cache.get('user', () => 'Admin', [1])
 ```
 
-## Получение данных
+## Методы
 
-### `get`
+### Действие
+
+#### `get`
 
 Используйте метод `get()` для получения кэшированного значения или его вычисления, если оно не существует или устарело.
 
@@ -53,7 +55,7 @@ const unchanged = cache.get('user', () => `Пользователь ${++counter}
 const changed = cache.get('user', () => `Пользователь ${++counter}`, [2])
 ```
 
-### `getAsync`
+#### `getAsync`
 
 Работает идентично `get()`, но предназначен для асинхронных вызовов.
 
@@ -81,4 +83,3 @@ const u1Cached = await fetchUser(5)
 // Зависимость `id` изменилась (5 !== 6), снова идет в сеть
 const u2 = await fetchUser(6)
 ```
-

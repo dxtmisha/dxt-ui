@@ -48,7 +48,7 @@ const fromTs = new Datetime(1710460800000)
 - `getHoursType(): GeoHours` — Определяет формат часов (12 или 24) для текущей локали.
 - `getHour24(): boolean` — Возвращает текущую настройку отображения 24-часового формата.
 - `getTimeZoneOffset(): number` — Возвращает смещение часового пояса в минутах.
-- `getTimeZone(style?: GeoTimeZoneStyle): string` — Возвращает часовой пояс (поддерживает стили `minute`, `hour`, `RFC`).
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Возвращает часовой пояс (поддерживает стили `minute`, `hour`, `RFC`; по умолчанию формат с двоеточием).
 - `getFirstDayCode(): GeoFirstDay` — Возвращает код первого дня недели (0 для воскресенья, 1 для понедельника, 6 для субботы).
 
 ### Получение значений
@@ -59,7 +59,7 @@ const fromTs = new Datetime(1710460800000)
 - `getHour(): number` — Возвращает часы.
 - `getMinute(): number` — Возвращает минуты.
 - `getSecond(): number` — Возвращает секунды.
-- `getMaxDay(): number` — Возвращает количество дней в текущем месяце.
+- `getMaxDay(): number` — Возвращает число последнего дня текущего месяца (28-31).
 
 ### Установка значений
 
@@ -94,7 +94,7 @@ const fromTs = new Datetime(1710460800000)
 - `moveWeekdayFirst(): this` — Переход к первому дню текущей недели.
 - `moveWeekdayLast(): this` — Переход к последнему дню текущей недели.
 - `moveWeekdayFirstByMonth(): this` — Переход к первому дню первой недели месяца.
-- `moveWeekdayLastByMonth(): this` — Переход к первому дню первой полной недели следующего месяца.
+- `moveWeekdayLastByMonth(): this` — Переход к последнему дню последней недели текущего месяца.
 - `moveWeekdayNext(): this` — Смещение на одну неделю вперед.
 - `moveWeekdayPrevious(): this` — Смещение на одну неделю назад.
 - `moveDayFirst(): this` — Переход к первому числу текущего месяца.
@@ -115,7 +115,7 @@ const fromTs = new Datetime(1710460800000)
 - `cloneWeekdayFirst(): Datetime` — Копия, установленная на начало текущей недели.
 - `cloneWeekdayLast(): Datetime` — Копия, установленная на конец текущей недели.
 - `cloneWeekdayFirstByMonth(): Datetime` — Копия на начало первой недели месяца.
-- `cloneWeekdayLastByMonth(): Datetime` — Копия на начало последней недели месяца.
+- `cloneWeekdayLastByMonth(): Datetime` — Копия на конец последней недели месяца.
 - `cloneWeekdayNext(): Datetime` — Копия со сдвигом на неделю вперед.
 - `cloneWeekdayPrevious(): Datetime` — Копия со сдвигом на неделю назад.
 - `cloneDayFirst(): Datetime` — Копия на первое число текущего месяца.

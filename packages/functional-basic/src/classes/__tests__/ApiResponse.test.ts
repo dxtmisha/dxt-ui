@@ -2,13 +2,13 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ApiResponse } from '../ApiResponse'
 import { ApiDefault } from '../ApiDefault'
 import { ApiMethodItem } from '../../types/apiTypes'
 import type { ApiResponseItem } from '../../types/apiTypes'
 
-describe('ApiResponse / API Responses', () => {
+describe('ApiResponse', () => {
   let apiResponse: ApiResponse
   let apiDefault: ApiDefault
 
@@ -17,7 +17,7 @@ describe('ApiResponse / API Responses', () => {
     apiResponse = new ApiResponse(apiDefault)
   })
 
-  describe('constructor / Constructor', () => {
+  describe('constructor', () => {
     it('should create ApiResponse instance', () => {
       expect(apiResponse).toBeInstanceOf(ApiResponse)
     })
@@ -27,7 +27,7 @@ describe('ApiResponse / API Responses', () => {
     })
   })
 
-  describe('add / Add responses', () => {
+  describe('add', () => {
     it('should add single response item', () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
@@ -70,7 +70,7 @@ describe('ApiResponse / API Responses', () => {
     })
   })
 
-  describe('getList / Get response list', () => {
+  describe('getList', () => {
     it('should return empty array when no responses added', () => {
       expect(apiResponse.getList()).toEqual([])
     })
@@ -96,7 +96,7 @@ describe('ApiResponse / API Responses', () => {
     })
   })
 
-  describe('get / Find response', () => {
+  describe('get', () => {
     it('should return undefined when no matching response', () => {
       const result = apiResponse.get('/api/test', ApiMethodItem.get)
       expect(result).toBeUndefined()
@@ -151,9 +151,35 @@ describe('ApiResponse / API Responses', () => {
       const result = apiResponse.get('/api/test', ApiMethodItem.post, { key: 'value' })
       expect(result).toEqual(responseItem)
     })
+
+    it('should return undefined if response is disabled', () => {
+      const responseItem: ApiResponseItem = {
+        path: '/api/test',
+        method: ApiMethodItem.get,
+        response: { data: 'test' },
+        disable: true
+      }
+
+      apiResponse.add(responseItem)
+      const result = apiResponse.get('/api/test', ApiMethodItem.get)
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined if response is disabled via function', () => {
+      const responseItem: ApiResponseItem = {
+        path: '/api/test',
+        method: ApiMethodItem.get,
+        response: { data: 'test' },
+        disable: () => true
+      }
+
+      apiResponse.add(responseItem)
+      const result = apiResponse.get('/api/test', ApiMethodItem.get)
+      expect(result).toBeUndefined()
+    })
   })
 
-  describe('emulator / Request emulator', () => {
+  describe('emulator', () => {
     it('should return undefined when no matching response', async () => {
       const result = await apiResponse.emulator({
         path: '/api/test',
@@ -219,7 +245,7 @@ describe('ApiResponse / API Responses', () => {
     })
   })
 
-  describe('setDevMode / Set development mode', () => {
+  describe('setDevMode', () => {
     it('should allow repeating requests when devMode is true', async () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
@@ -255,7 +281,7 @@ describe('ApiResponse / API Responses', () => {
     })
   })
 
-  describe('integration / Integration scenarios', () => {
+  describe('integration scenarios', () => {
     it('should handle complex request matching', async () => {
       apiResponse.add([
         {

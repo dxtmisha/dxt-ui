@@ -2,92 +2,72 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/functional-basic/Classes/ErrorCenterHandler - Управление обработчиками'/>
 
-# ErrorCenterHandler
+# Класс ErrorCenterHandler
 
-Основной вспомогательный класс для управления и вызова обработчиков ошибок на основе определенных групп. Он позволяет реализовывать гибкие стратегии реагирования на ошибки, такие как отображение глобальных уведомлений для ошибок API при выполнении скрытого логирования для фоновых задач.
-
-> `ErrorCenterHandler` является **вспомогательным классом**, предназначенным для низкоуровневой координации обработчиков. В большинстве случаев рекомендуется взаимодействовать с ошибками через `ErrorCenter` или `ErrorCenterInstance`.
+`ErrorCenterHandler` — это менеджер для управления функциями обратного вызова (обработчиками). Он позволяет привязывать логику к определенным группам ошибок и выполнять её, когда происходит соответствующее событие.
 
 ## Ключевые особенности
 
-- **Регистрация обработчиков** — Удобное добавление нескольких функций обратного вызова к конкретным группам.
-- **Групповая фильтрация** — Возможность нацеливаться на конкретные категории ошибок.
-- **Глобальный обработчик** — Поддержка группы `undefined`, которая перехватывает любую ошибку без специфического обработчика.
-- **Последовательное выполнение** — Запускает все зарегистрированные функции в порядке их добавления.
-- **Интегрированное логирование** — Автоматически выводит детали ошибки в консоль.
+- **Регистрация обработчиков** — удобное добавление функций обратного вызова к конкретным группам.
+- **Глобальный обработчик** — поддержка группы `undefined`, которая перехватывает любую ошибку без специфического обработчика.
+- **Последовательное выполнение** — запускает все зарегистрированные функции в порядке их добавления.
+- **Интегрированное логирование** — автоматически выводит детали ошибки в консоль.
 
-## Методы действий
+## Инициализация
 
-### `on`
-
-Запускает все зарегистрированные обработчики для группы предоставленной причины ошибки. Если специфические обработчики не найдены, метод переходит к обработчикам, зарегистрированным для группы `undefined` (если они есть). Всегда выводит детали ошибки в консоль внутри.
+Для создания экземпляра используйте конструктор `ErrorCenterHandler(handlers)`.
 
 **Параметры:**
-- `cause: ErrorCenterCauseItem` — Детали ошибки для передачи обработчикам.
+- `handlers?: ErrorCenterHandlerList` — начальный список обработчиков.
 
-**Возвращает:** `this`
+```typescript
+import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
 
-## Методы проверки
+const handlers = new ErrorCenterHandler([
+  {
+    group: 'api',
+    handlers: [(cause) => console.log('API Error:', cause.code)]
+  }
+]);
+```
 
-- `has(group: ErrorCenterGroup): boolean` — Проверяет, зарегистрированы ли обработчики для группы.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Извлекает элемент обработчика для группы.
+## Методы
 
-## Конфигурация
+### Действие
+- `on(cause: ErrorCenterCauseItem): this` — Запускает цепочку обработчиков. Всегда выводит ошибку в консоль через `console.error`.
 
-- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Добавляет одну функцию обратного вызова в группу.
-- `addList(handlers: ErrorCenterHandlerList): this` — Регистрирует пакет обработчиков.
+### Проверка
+- `has(group: ErrorCenterGroup): boolean` — Проверяет, есть ли обработчики для группы.
+- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Возвращает список функций для группы.
+
+### Конфигурация
+- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Добавляет одну функцию в группу.
+- `addList(handlers: ErrorCenterHandlerList): this` — Пакетная регистрация обработчиков.
 
 ## Типы
 
 #### `ErrorCenterGroup`
-Идентификатор группы ошибок.
-- `string | undefined` — строковое имя группы или `undefined` для глобального обработчика по умолчанию.
-
-#### `ErrorCenterCauseItem`
-Детальная информация о причине ошибки.
-- `group?: ErrorCenterGroup` — Группа, к которой относится эта ошибка.
-- `code: string` — Уникальный код ошибки (например, '404', 'AUTH_ERROR').
-- `priority?: number` — Уровень приоритета, используемый для объединения нескольких ошибок.
-- `label?: string` — Краткое, понятное человеку название ошибки.
-- `message?: string` — Описательное сообщение об ошибке.
-- `details?: any` — Любой дополнительный контекст или исходные данные ошибки.
-
-#### `ErrorCenterCauseList`
-Массив объектов `ErrorCenterCauseItem`.
+Имя группы (`string`) или `undefined` для глобального перехвата.
 
 #### `ErrorCenterHandlerCallback`
-Сигнатура функции для обратных вызовов обработки ошибок.
-- `(cause: ErrorCenterCauseItem) => void` — получает объект причины ошибки при вызове.
+Функция обратного вызова: `(cause: ErrorCenterCauseItem) => void`.
 
 #### `ErrorCenterHandlerItem`
-Внутренний объект хранения, связывающий группу с её обработчиками.
-- `group?: ErrorCenterGroup` — Целевая группа ошибок.
-- `handlers: ErrorCenterHandlerCallback[]` — Список функций обратного вызова для этой группы.
+Связка группы и массива её функций.
+- `group?: ErrorCenterGroup` — целевая группа.
+- `handlers: ErrorCenterHandlerCallback[]` — список функций.
 
-#### `ErrorCenterHandlerList`
-Массив объектов `ErrorCenterHandlerItem`, используемый для пакетной регистрации.
+## Примеры
 
-## Пример использования
+### Изолированный менеджер для модуля
+```typescript
+const uploadHandlers = new ErrorCenterHandler();
 
-```javascript
-import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
+uploadHandlers.add('upload', (cause) => {
+  if (cause.code === 'retry') {
+    restartUpload();
+  }
+});
 
-const handlerManager = new ErrorCenterHandler()
-
-// 1. Регистрация обработчика конкретной группы
-handlerManager.add('api', (cause) => {
-  console.log('[API Handler]', cause.message)
-})
-
-// 2. Регистрация глобального обработчика
-handlerManager.add(undefined, (cause) => {
-  console.error('[Global Fallback]', cause.code)
-})
-
-// 3. Вызов ошибки
-handlerManager.on({
-  group: 'api',
-  code: '500',
-  message: 'Внутренняя ошибка сервера'
-})
+uploadHandlers.on({ group: 'upload', code: 'retry' });
 ```

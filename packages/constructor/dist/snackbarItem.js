@@ -1,28 +1,40 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
-import { t } from "./defineProperty-DblGXmzD.js";
-import { t as n } from "./TextInclude-B_Uojln0.js";
-import { t as r } from "./EventClickInclude-DD8vmJTE.js";
-import { t as i } from "./ActionsInclude-BMkv6Ls5.js";
-import { t as a } from "./LabelInclude-WVa57XLq.js";
-import { t as o } from "./DescriptionInclude-CLl_BuFh.js";
-import { t as s } from "./IconTrailingInclude-kVq5wBb9.js";
-import { t as c } from "./ButtonInclude-CYdZAMPS.js";
+import { t } from "./defineProperty-Bjg6wMoX.js";
+import { t as n } from "./TextInclude-B27ZUWoc.js";
+import { t as r } from "./EventClickInclude-DB06AUmN.js";
+import { t as i } from "./ActionsInclude-BaEbgPCO.js";
+import { t as a } from "./LabelInclude-B8iRBQY-.js";
+import { t as o } from "./DescriptionInclude-DuvOVxTq.js";
+import { t as s } from "./IconTrailingInclude-BKjKR263.js";
+import { t as c } from "./ButtonInclude-CZhIyEy5.js";
 import { computed as l, h as u } from "vue";
 import { DesignConstructorAbstract as d } from "@dxtmisha/functional";
 //#region src/constructors/SnackbarItem/SnackbarItem.ts
 var f = class {
-	constructor(e, u, d, f, p, m, h, g, _) {
-		t(this, "label", void 0), t(this, "description", void 0), t(this, "event", void 0), t(this, "icon", void 0), t(this, "button", void 0), t(this, "actions", void 0), t(this, "text", void 0), t(this, "onClose", () => {
+	constructor(u, d, f, p, m, h, g, _, v) {
+		t(this, "label", void 0), t(this, "description", void 0), t(this, "event", void 0), t(this, "icon", void 0), t(this, "button", void 0), t(this, "actions", void 0), t(this, "text", void 0), t(this, "ariaBind", l(() => {
+			let t = {
+				...e.atomic(!0),
+				...e.role(this.props.role),
+				...e.live(this.props.ariaLive)
+			};
+			return this.props.success ? {
+				...t,
+				...e.live("polite"),
+				...e.role("status")
+			} : this.props.error ? {
+				...t,
+				...e.live("assertive"),
+				...e.role("alert")
+			} : t;
+		})), t(this, "onClose", () => {
 			var e;
 			return (e = this.emits) == null ? void 0 : e.call(this, "close", this.props.value);
-		}), this.props = e, this.refs = u, this.element = d, this.classDesign = f, this.className = p, this.components = m, this.slots = h, this.emits = g;
-		let { ActionsConstructor: v = i, ButtonConstructor: y = c, DescriptionConstructor: b = o, EventConstructor: x = r, IconConstructor: S = s, LabelConstructor: C = a, TextConstructor: w = n } = _ == null ? {} : _;
-		this.label = new C(e, p, void 0, h), this.description = new b(e, p, h), this.event = new x(void 0, void 0, g), this.icon = new S(e, p, m), this.button = new y(l(() => this.props.button), p, m, void 0, { onClick: this.event.onClick }), this.actions = new v(e, p, m, g, { align: "left" }), this.text = new w(e);
+		}), this.props = u, this.refs = d, this.element = f, this.classDesign = p, this.className = m, this.components = h, this.slots = g, this.emits = _;
+		let { ActionsConstructor: y = i, ButtonConstructor: b = c, DescriptionConstructor: x = o, EventConstructor: S = r, IconConstructor: C = s, LabelConstructor: w = a, TextConstructor: T = n } = v == null ? {} : v;
+		this.label = new w(u, m, void 0, g), this.description = new x(u, m, g), this.event = new S(void 0, void 0, _), this.icon = new C(u, m, h), this.button = new b(l(() => this.props.button), m, h, void 0, { onClick: this.event.onClick }), this.actions = new y(u, m, h, _, { align: "left" }), this.text = new T(u);
 	}
-}, p = {
-	closeButton: !0,
-	role: "status"
-}, m = class extends d {
+}, p = { closeButton: !0 }, m = class extends d {
 	constructor(n, r, i, a = f) {
 		super(n, r, i), t(this, "item", void 0), t(this, "renderMain", () => {
 			var e, t;
@@ -106,12 +118,11 @@ var f = class {
 		return {};
 	}
 	initRender() {
-		var t;
+		var e;
 		return u("div", {
 			...this.getAttrs(),
-			class: (t = this.classes) == null ? void 0 : t.value.main,
-			...e.role(this.props.role),
-			...e.atomic(!0)
+			class: (e = this.classes) == null ? void 0 : e.value.main,
+			...this.item.ariaBind.value
 		}, [...this.renderMain(), ...this.item.actions.render()]);
 	}
 };

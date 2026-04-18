@@ -15,9 +15,11 @@ A class for managing and merging HTTP request headers. It handles default applic
 - **Safe Merging** — merges multiple header sources without mutating the original objects.
 - **Validation** — ensures only valid objects are processed as headers.
 
-## Action Methods
+## Methods
 
-### `get`
+### Action
+
+#### `get`
 
 Intersects default headers with custom ones and injects `Content-Type`. If the `value` parameter is `null`, headers are disabled.
 
@@ -27,7 +29,7 @@ Intersects default headers with custom ones and injects `Content-Type`. If the `
 
 **Returns:** `Record<string, string> | undefined` — The merged headers object.
 
-### `getByRequest`
+#### `getByRequest`
 
 A specialized version of `get` that adjusts headers based on the request type. Specifically, it ensures `Content-Type` is not manually set for `FormData` to allow correct boundary generation.
 
@@ -38,7 +40,7 @@ A specialized version of `get` that adjusts headers based on the request type. S
 
 **Returns:** `Record<string, string> | undefined` — The processed headers object.
 
-## Configuration
+### Configuration
 
 - `set(headers: Record<string, string>): this` — Sets or updates the default headers object.
 

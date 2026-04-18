@@ -1,5 +1,4 @@
 import { forEach } from '../functions/forEach'
-import { isDomRuntime } from '../functions/isDomRuntime'
 import { isFunction } from '../functions/isFunction'
 
 import { Api } from './Api'
@@ -12,7 +11,6 @@ export type IconsConfig = {
   list?: Record<string, IconsItem>
 }
 
-const ICONS_KEY = '__UI_ICON'
 const ICONS_WAIT = 320
 const ICONS_LOAD = '--LOAD--'
 
@@ -24,16 +22,6 @@ const ICONS_LOAD = '--LOAD--'
 export class Icons {
   protected static icons: Record<string, IconsItem> = {}
   protected static url: string = '/icons/'
-
-  static {
-    if (isDomRuntime()) {
-      if (!(ICONS_KEY in window)) {
-        (window as any)[ICONS_KEY] = {}
-      }
-
-      this.icons = (window as any)[ICONS_KEY]
-    }
-  }
 
   /**
    * Checks if the given icon is in the list of connected icons.

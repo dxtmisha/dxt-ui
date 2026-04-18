@@ -16,6 +16,7 @@ export class ApiDefault {
    * Checks if default request data exists.
    *
    * Проверяет, существуют ли данные запроса по умолчанию.
+   * @returns true if default data exists / true, если данные по умолчанию существуют
    */
   is(): boolean {
     return Boolean(this.value)
@@ -25,6 +26,7 @@ export class ApiDefault {
    * Gets the default request data.
    *
    * Получает данные запроса по умолчанию.
+   * @returns default request data or undefined / данные запроса по умолчанию или undefined
    */
   get(): ApiDefaultValue | undefined {
     return this.value
@@ -35,6 +37,7 @@ export class ApiDefault {
    *
    * Добавляет данные по умолчанию к запросу.
    * @param request request data/ данные запроса
+   * @returns merged request data with defaults / объединенные данные запроса с значениями по умолчанию
    */
   request(
     request: ApiFetch['request']
@@ -56,10 +59,11 @@ export class ApiDefault {
   }
 
   /**
-   * Modifies the default request data.
+   * Sets the default request data.
    *
-   * Изменяет данные запроса по умолчанию.
+   * Устанавливает данные запроса по умолчанию.
    * @param request default request data/ данные запроса по умолчанию
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   set(request: ApiDefaultValue): this {
     this.value = request
@@ -72,6 +76,7 @@ export class ApiDefault {
    * Добавляет данные по умолчанию к запросу FormData.
    * @param request FormData request/ запрос FormData
    * @param value default values/ значения по умолчанию
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   protected addByFormData(
     request: FormData,

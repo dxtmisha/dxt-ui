@@ -15,9 +15,11 @@ Một lớp để thu thập dữ liệu API cho việc "hydrat hóa" (hydration
 - **Nhúng HTML** — tạo một thẻ `<script>` an toàn với dữ liệu đã được JSON-serial hóa để nhúng vào tài liệu.
 - **Đồng bộ hóa máy khách** — cho phép `ApiResponse` tự động tải dữ liệu đã hydrat hóa ở phía máy khách.
 
-## Các phương thức hành động
+## Các phương thức
 
-### `toClient`
+### Hành động
+
+#### `toClient`
 
 Lưu phản hồi API để hydrat hóa phía máy khách. Phương thức này chỉ thực thi trên máy chủ và chỉ dành cho các yêu cầu đã đặt `global` là true.
 
@@ -25,15 +27,15 @@ Lưu phản hồi API để hydrat hóa phía máy khách. Phương thức này 
 - `apiFetch: ApiFetch` — Cấu hình yêu cầu API.
 - `response: T` — Dữ liệu phản hồi sẽ được chuyển đến máy khách.
 
-### `toString`
+#### `toString`
 
 Trả về chuỗi đại diện cho dữ liệu hydrat hóa đã thu thập, được bọc trong một thẻ `<script>` an toàn với ID duy nhất.
 
 **Trả về:** `string` — Thẻ script HTML đã được định dạng.
 
-## Configuration
+### Cấu hình
 
-- `initResponse(response: ApiResponse): void` — Initializes the `ApiResponse` instance with hydration data if running in a DOM environment.
+- `initResponse(response: ApiResponse): void` — Khởi tạo thực thể `ApiResponse` với dữ liệu hydrat hóa nếu đang chạy trong môi trường DOM.
 
 ## Các kiểu dữ liệu
 

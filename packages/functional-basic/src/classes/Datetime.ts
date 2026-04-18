@@ -1,5 +1,6 @@
 import { toDate } from '../functions/toDate'
 
+import { ErrorCenter } from './ErrorCenter'
 import { Geo } from './Geo'
 import { GeoIntl } from './GeoIntl'
 
@@ -42,6 +43,13 @@ export class Datetime {
     protected code: string = Geo.getLocation()
   ) {
     this.date = toDate(date)
+
+    if (isNaN(this.date.getTime())) {
+      ErrorCenter.on({
+        group: 'intl',
+        code: 'invalid'
+      })
+    }
   }
 
   /**
@@ -87,9 +95,9 @@ export class Datetime {
   }
 
   /**
-   * Whether to use 12-hour time.
+   * Whether to use 24-hour time format.
    *
-   * Использовать ли 12-часовой формат времени.
+   * Использовать ли 24-часовой формат времени.
    */
   getHour24(): boolean {
     return this.hour24
@@ -165,10 +173,10 @@ export class Datetime {
 
   /**
    * The method returns the month in the specified date according to local time,
-   * as a zero-based value.
+   * as a one-based value (1-12).
    *
    * Метод возвращает месяц указанной даты по местному времени, нумерация
-   * месяцев начинается с нуля для первого месяца в году.
+   * месяцев начинается с единицы (1-12).
    */
   getMonth(): number {
     return this.date.getMonth() + 1
@@ -211,12 +219,12 @@ export class Datetime {
   }
 
   /**
-   * Returns the last day of the week.
+   * Returns the last day of the month as a number.
    *
-   * Возвращает последний день недели.
+   * Возвращает последний день месяца в виде числа.
    */
   getMaxDay(): number {
-    return this.getMonth() > 0 ? this.cloneDayLast().getDay() : 0
+    return this.cloneDayLast().getDay()
   }
 
   /**
@@ -242,7 +250,7 @@ export class Datetime {
    * Returns the formatted year.
    *
    * Возвращает отформатированный год.
-   * @param style the representation of the month/ представление месяца
+   * @param style the representation of the year/ представление года
    */
   localeYear(
     style: Intl.DateTimeFormatOptions['year'] = 'numeric'
@@ -266,7 +274,7 @@ export class Datetime {
    * Returns the formatted day.
    *
    * Возвращает отформатированный день.
-   * @param style the representation of the month/ представление месяца
+   * @param style the representation of the day/ представление дня
    */
   localeDay(
     style: Intl.DateTimeFormatOptions['day'] = 'numeric'
@@ -278,7 +286,7 @@ export class Datetime {
    * Returns the formatted hour.
    *
    * Возвращает отформатированный час.
-   * @param style the representation of the month/ представление месяца
+   * @param style the representation of the hour/ представление часа
    */
   localeHour(
     style: Intl.DateTimeFormatOptions['hour'] = 'numeric'
@@ -290,7 +298,7 @@ export class Datetime {
    * Returns the formatted minute.
    *
    * Возвращает отформатированную минуту.
-   * @param style the representation of the month/ представление месяца
+   * @param style the representation of the minute/ представление минуты
    */
   localeMinute(
     style: Intl.DateTimeFormatOptions['minute'] = 'numeric'
@@ -302,7 +310,7 @@ export class Datetime {
    * Returns the formatted second.
    *
    * Возвращает отформатированную секунду.
-   * @param style the representation of the month/ представление месяца
+   * @param style the representation of the second/ представление секунды
    */
   localeSecond(
     style: Intl.DateTimeFormatOptions['second'] = 'numeric'
@@ -375,11 +383,11 @@ export class Datetime {
   }
 
   /**
-   * Whether to use 12-hour time.
+   * Whether to use a 24-hour time format.
    *
-   * Использовать ли 12-часовой формат времени.
-   * @param value If true, output the 12-hour time format/
-   * если true, выводить 12-часовой формат времени
+   * Использовать ли 24-часовой формат времени.
+   * @param value If true, output the 24-hour time format/
+   * если true, выводить 24-часовой формат времени
    */
   setHour24(value: boolean): this {
     this.hour24 = value
@@ -555,9 +563,9 @@ export class Datetime {
   }
 
   /**
-   * Translate to the first month.
+   * Sets the date to January (first month).
    *
-   * Переводить на первый месяц.
+   * Устанавливает дату на январь (первый месяц).
    */
   moveMonthFirst(): this {
     this.setMonth(1)
@@ -565,9 +573,9 @@ export class Datetime {
   }
 
   /**
-   * Translate to the first month.
+   * Sets the date to December (last month).
    *
-   * Переводить на первый месяц.
+   * Устанавливает дату на декабрь (последний месяц).
    */
   moveMonthLast(): this {
     this.setMonth(12)
@@ -740,9 +748,9 @@ export class Datetime {
   }
 
   /**
-   * Clone the GeoDate object and set the month to January.
+   * Clone the Datetime object and set the month to January.
    *
-   * Клонировать объект GeoDate и установить месяц на январь.
+   * Клонировать объект Datetime и установить месяц на январь.
    */
   cloneMonthFirst(): Datetime {
     return this.cloneClass()

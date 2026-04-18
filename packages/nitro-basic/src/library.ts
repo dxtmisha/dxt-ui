@@ -1,0 +1,5 @@
+export { initBasic } from './functions/initBasic'
+export { initServerStorage } from './functions/initServerStorage'
+export { initApiCache } from './functions/initApiCache'
+export { initCookieStorage } from './functions/initCookieStorage'
+export { default as basicPlugin } from './functions/basic-plugin'

@@ -86,7 +86,7 @@
     "@dxtmisha/styles": "workspace:*",
     "@dxtmisha/wiki": "workspace:*",
     "sass": "^1.99.0",
-    "typescript": "^6.0.2",
+    "typescript": "^5.9.3",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"
   },

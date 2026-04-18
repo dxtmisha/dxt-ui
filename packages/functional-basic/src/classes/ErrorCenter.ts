@@ -28,6 +28,7 @@ export class ErrorCenter {
    * Проверяет наличие причины с конкретным кодом.
    * @param code error code / код ошибки
    * @param group error group / группа ошибки
+   * @returns true if cause exists / true, если причина существует
    */
   static has(
     code: string,
@@ -42,6 +43,7 @@ export class ErrorCenter {
    * Получает конкретную причину ошибки по коду и группе.
    * @param code error code / код ошибки
    * @param group error group / группа ошибки
+   * @returns error cause item or undefined / элемент причины ошибки или undefined
    */
   static get(
     code: string,

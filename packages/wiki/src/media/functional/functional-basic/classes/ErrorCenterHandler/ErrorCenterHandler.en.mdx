@@ -2,92 +2,72 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/en/functional-basic/Classes/ErrorCenterHandler - Handler Management'/>
 
-# ErrorCenterHandler
+# ErrorCenterHandler Class
 
-A core utility class for managing and triggering error handlers based on defined groups. It allows for flexible error response strategies, such as showing global notifications for API errors while performing silent logging for background tasks.
-
-> `ErrorCenterHandler` is an **auxiliary class** designed to manage lower-level handler coordination. In most cases, it is recommended to interact with errors through `ErrorCenter` or `ErrorCenterInstance`.
+`ErrorCenterHandler` is a manager for handling callback functions (handlers). It allows you to bind logic to specific error groups and execute it when a corresponding event occurs.
 
 ## Key Features
 
-- **Handler Registration** — Easily add multiple callback functions to specific error groups.
-- **Group Filtering** — Target specific categories of errors (e.g., `api`, `auth`, `validation`).
-- **Global Fallback** — Support for an `undefined` group handler that catches any error without a specific handler.
-- **Sequential Execution** — Triggers all registered callbacks for a group in the order they were added.
-- **Integrated Logging** — Automatically outputs error details to the console for debugging.
+- **Handler Registration** — convenient addition of callback functions to specific groups.
+- **Global Handler** — support for the `undefined` group, which catches any error without a specific handler.
+- **Sequential Execution** — triggers all registered functions in the order they were added.
+- **Integrated Logging** — automatically outputs error details to the console.
 
-## Action Methods
+## Initialization
 
-### `on`
-
-Triggers all registered handlers for the provided error cause's group. If no specific handlers are found, it falls back to the handlers registered for the `undefined` group (if any). Always logs the error details to the console internally.
+To create an instance, use the constructor `ErrorCenterHandler(handlers)`.
 
 **Parameters:**
-- `cause: ErrorCenterCauseItem` — The error details to pass to handlers.
+- `handlers?: ErrorCenterHandlerList` — initial list of handlers.
 
-**Returns:** `this`
+```typescript
+import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
 
-## Check Methods
+const handlers = new ErrorCenterHandler([
+  {
+    group: 'api',
+    handlers: [(cause) => console.log('API Error:', cause.code)]
+  }
+]);
+```
 
-- `has(group: ErrorCenterGroup): boolean` — Checks if any handlers are registered for a specific group.
-- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Retrieves the handler mapping for a group.
+## Methods
 
-## Configuration
+### Action
+- `on(cause: ErrorCenterCauseItem): this` — Triggers the chain of handlers. Always outputs an error to the console via `console.error`.
 
-- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Adds a single callback function to a group.
-- `addList(handlers: ErrorCenterHandlerList): this` — Registers a batch of handlers.
+### Verification
+- `has(group: ErrorCenterGroup): boolean` — Checks if there are handlers for a group.
+- `get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined` — Returns a list of functions for a group.
+
+### Configuration
+- `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Adds a single function to a group.
+- `addList(handlers: ErrorCenterHandlerList): this` — Batch registration of handlers.
 
 ## Types
 
 #### `ErrorCenterGroup`
-Represents an error group identifier.
-- `string | undefined` — A string name for the group, or `undefined` for a global/default handler.
-
-#### `ErrorCenterCauseItem`
-Detailed information about an error cause.
-- `group?: ErrorCenterGroup` — The group this error belongs to.
-- `code: string` — A unique error code (e.g., '404', 'AUTH_ERROR').
-- `priority?: number` — Importance level used for merging multiple errors.
-- `label?: string` — A short, human-readable name for the error.
-- `message?: string` — A descriptive error message.
-- `details?: any` — Any additional context or raw error data.
-
-#### `ErrorCenterCauseList`
-An array of `ErrorCenterCauseItem` objects.
+Group name (`string`) or `undefined` for global interception.
 
 #### `ErrorCenterHandlerCallback`
-The function signature for error handling callbacks.
-- `(cause: ErrorCenterCauseItem) => void` — Receives the error cause object when triggered.
+Callback function: `(cause: ErrorCenterCauseItem) => void`.
 
 #### `ErrorCenterHandlerItem`
-An internal storage object mapping a group to its handlers.
-- `group?: ErrorCenterGroup` — The targeted error group.
-- `handlers: ErrorCenterHandlerCallback[]` — List of callback functions for this group.
+Link between a group and an array of its functions.
+- `group?: ErrorCenterGroup` — target group.
+- `handlers: ErrorCenterHandlerCallback[]` — list of functions.
 
-#### `ErrorCenterHandlerList`
-An array of `ErrorCenterHandlerItem` objects used for batch registration.
+## Examples
 
-## Usage Example
+### Isolated Manager for a Module
+```typescript
+const uploadHandlers = new ErrorCenterHandler();
 
-```javascript
-import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
+uploadHandlers.add('upload', (cause) => {
+  if (cause.code === 'retry') {
+    restartUpload();
+  }
+});
 
-const handlerManager = new ErrorCenterHandler()
-
-// 1. Register a specific group handler
-handlerManager.add('api', (cause) => {
-  console.log('[API Handler]', cause.message)
-})
-
-// 2. Register a global fallback handler
-handlerManager.add(undefined, (cause) => {
-  console.error('[Global Fallback]', cause.code)
-})
-
-// 3. Triggering an error
-handlerManager.on({
-  group: 'api',
-  code: '500',
-  message: 'Internal Server Error'
-})
+uploadHandlers.on({ group: 'upload', code: 'retry' });
 ```

@@ -177,11 +177,18 @@ export class EventItem<
    * Checks whether event listening is currently enabled.
    *
    * Проверяет, включено ли сейчас прослушивание события.
+   * @returns true if active / true, если активно
    */
   isActive(): boolean {
     return this.activity
   }
 
+  /**
+   * Returns the target element.
+   *
+   * Возвращает целевой элемент.
+   * @returns target element / целевой элемент
+   */
   getElement(): E | undefined {
     return this.element
   }
@@ -190,7 +197,8 @@ export class EventItem<
    * Change of an element for tracking.
    *
    * Изменение элемента для прослеживания.
-   * @param elementSelector element/ элемент
+   * @param elementSelector target element or selector / целевой элемент или селектор
+   * @returns this
    */
   setElement(elementSelector?: ElementOrString<E>): this {
     const element = getElementOrWindow(elementSelector)
@@ -206,10 +214,11 @@ export class EventItem<
   }
 
   /**
-   * Modifies the object that receives the notification.
+   * Modifies the control element for DOM safety checks.
    *
-   * Модифицирует объект, который получает уведомление.
-   * @param elementSelector element/ элемент
+   * Модифицирует контрольный элемент для проверки безопасности DOM.
+   * @param elementSelector control element or selector / контрольный элемент или селектор
+   * @returns this
    */
   setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this {
     this.elementControl = getElement(elementSelector)
@@ -226,7 +235,8 @@ export class EventItem<
    * Changes the type of the handled event.
    *
    * Изменяет тип обрабатываемого события.
-   * @param type type/ тип
+   * @param type event type or array of types / тип события или массив типов
+   * @returns this
    */
   setType(type: string | string[]): this {
     this.type = toArray(type)
@@ -236,10 +246,11 @@ export class EventItem<
   }
 
   /**
-   * Modifies the object that receives the notification.
+   * Modifies the listener function.
    *
-   * Модифицирует объект, который получает уведомление.
-   * @param listener
+   * Модифицирует функцию-слушатель.
+   * @param listener new listener function / новая функция-слушатель
+   * @returns this
    */
   setListener(listener: EventListenerDetail<O, D>): this {
     this.listener = listener
@@ -247,10 +258,11 @@ export class EventItem<
   }
 
   /**
-   * Modifying the options object that defines the characteristics of an object.
+   * Modifying the options object that defines the characteristics of the event listener.
    *
-   * Изменение объекта options, который определяет характеристики объекта.
-   * @param options
+   * Изменение объекта options, который определяет характеристики слушателя событий.
+   * @param options event listener options / опции слушателя событий
+   * @returns this
    */
   setOptions(options?: EventOptions): this {
     this.options = options
@@ -260,10 +272,11 @@ export class EventItem<
   }
 
   /**
-   * Modifying a dependent value for the dispatch method.
+   * Modifying the additional data provided to the listener.
    *
-   * Изменение зависимого значения для метода dispatch.
-   * @param detail
+   * Изменение дополнительных данных, передаваемых слушателю.
+   * @param detail custom data / пользовательские данные
+   * @returns this
    */
   setDetail(detail?: D): this {
     this.detail = detail
@@ -277,6 +290,7 @@ export class EventItem<
    * Инициирует события на целевом элементе, опционально с новым значением detail.
    * Этот метод вручную запускает диспетчеризацию `CustomEvent` для всех указанных типов.
    * @param detail the value to be passed as the event detail / значение, которое будет передано как detail события
+   * @returns this
    */
   dispatch(detail: D | undefined = this.detail): this {
     this.type.forEach(
@@ -287,9 +301,10 @@ export class EventItem<
   }
 
   /**
-   * Starting event listening.
+   * Starts event listening.
    *
    * Запуск прослушивания события.
+   * @returns this
    */
   start(): this {
     if (!this.activity) {
@@ -316,9 +331,10 @@ export class EventItem<
   }
 
   /**
-   * Stopping event listening.
+   * Stops event listening.
    *
    * Остановка прослушивания события.
+   * @returns this
    */
   stop(): this {
     if (this.activity) {
@@ -353,9 +369,10 @@ export class EventItem<
   }
 
   /**
-   * Overloads the listening events.
+   * Overloads the listening events (stops and starts again if active).
    *
-   * Перегружает события прослушивания.
+   * Перегружает события прослушивания (останавливает и запускает заново, если активно).
+   * @returns this
    */
   reset() {
     if (this.activity) {

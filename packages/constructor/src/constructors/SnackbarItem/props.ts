@@ -1,6 +1,6 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
-import type { AriaRolePropsInclude } from '../../types/ariaTypes'
+import type { AriaLivePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
 import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { TextClosePropsInclude } from '../../types/textTypes'
@@ -11,6 +11,8 @@ import type { IconPropsBasic, IconTrailingPropsInclude, IconValue } from '../Ico
 
 type SnackbarItemPropsToken = {
   // :type [!] System label / Системная метка
+  success?: boolean
+  error?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -23,6 +25,7 @@ export type SnackbarItemPropsBasic<
   & IconTrailingPropsInclude<Icon>
   & ActionsPropsInclude<Actions>
   & AriaRolePropsInclude
+  & AriaLivePropsInclude
   & TextClosePropsInclude
   & {
     /** Value/ Значения */
@@ -59,7 +62,6 @@ export type SnackbarItemProps = SnackbarItemPropsBasic & SnackbarItemPropsToken
  */
 export const defaultsSnackbarItem = {
   closeButton: true,
-  role: 'status',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

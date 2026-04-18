@@ -13,6 +13,16 @@ describe('GeoIntl', () => {
   })
 
   describe('Initialization & Caching', () => {
+    it('isItem should return true for existing items', () => {
+      new GeoIntl('fr-FR')
+      expect(GeoIntl.isItem('fr-FR')).toBe(true)
+    })
+
+    it('static getLocation should return standard code with language priority', () => {
+      // en-VN should find en-US because language is prioritized
+      expect(GeoIntl.getLocation('en-VN')).toBe('en-US')
+    })
+
     it('getInstance should return a GeoIntl instance', () => {
       const instance = GeoIntl.getInstance('en-US')
       expect(instance).toBeInstanceOf(GeoIntl)
@@ -22,8 +32,6 @@ describe('GeoIntl', () => {
     it('should cache instances by location (standard) in the constructor', () => {
       const instance1 = new GeoIntl('en-US')
       const instance2 = new GeoIntl('en-US')
-      // Due to: if (location in items) { return items[location] }
-      // The constructor returns the cached instance if it exists.
       expect(instance1).toBe(instance2)
     })
 
@@ -70,13 +78,11 @@ describe('GeoIntl', () => {
     })
 
     it('should include surname if provided', () => {
-      // Default uses 'fl' -> first last (no surname in default case 'fl' as per current code)
-      // Actually, default 'fl' calls `fullName = `${first} ${last}``
       expect(intl.fullName('Doe', 'John', 'Smith')).toBe('John Doe')
     })
 
     it('should abbreviate names when short=true', () => {
-      expect(intl.fullName('Doe', 'John', undefined, true)).toBe('John D.')
+      expect(intl.fullName('Doe', 'John', undefined, true)).toBe('J. Doe')
     })
   })
 
@@ -103,6 +109,10 @@ describe('GeoIntl', () => {
       expect(intl.currency(10, 'USD')).toContain('$10.00')
     })
 
+    it('currency should parse currency code from string', () => {
+      expect(intl.currency('100EUR')).toContain('€100.00')
+    })
+
     it('currency with numberOnly returns only value', () => {
       expect(intl.currency(10, 'USD', true)).toBe('10.00')
     })
@@ -113,6 +123,14 @@ describe('GeoIntl', () => {
 
     it('unit formats with unit label', () => {
       expect(intl.unit(50, 'celsius')).toContain('50°C')
+    })
+
+    it('unit should parse unit from string', () => {
+      expect(intl.unit('25kilogram')).toContain('25 kg')
+    })
+
+    it('unit should fallback to parsed number if unit is invalid', () => {
+      expect(intl.unit('50invalid')).toBe('50')
     })
 
     it('sizeFile auto-upgrades through units', () => {

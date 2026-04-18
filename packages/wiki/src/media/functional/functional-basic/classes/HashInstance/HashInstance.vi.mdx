@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/HashInstance - Phiên bản URL Hash'/>
+
+# Lớp HashInstance
+
+`HashInstance` là lớp cốt lõi triển khai logic quản lý dữ liệu trong URL hash. Nó cung cấp khả năng lưu trữ trạng thái, các cơ chế để đăng ký theo dõi thay đổi và đồng bộ hóa với browser API.
+
+Bạn có thể sử dụng lớp này trực tiếp nếu cần quản lý hash riêng biệt, tách rời khỏi trạng thái `Hash` toàn cục.
+
+## Tính năng chính
+
+- **Trạng thái biệt lập** — Lưu trữ bộ biến hash riêng của nó.
+- **Chainable API** — Hầu hết các phương thức trả về `this`, cho phép viết mã ngắn gọn.
+- **Đồng bộ hóa tự động** — Khi khởi tạo, nó đọc dữ liệu từ URL và đăng ký sự kiện `hashchange`.
+- **Tương thích SSR** — Hoạt động an toàn trong môi trường máy chủ bằng cách sử dụng các bản giả cho DOM API.
+
+## Khởi tạo
+
+Để tạo một phiên bản, hãy sử dụng hàm khởi tạo `HashInstance()`.
+
+```typescript
+import { HashInstance } from '@dxtmisha/functional-basic'
+
+const myHash = new HashInstance()
+```
+
+## Phương thức
+
+### Đọc và Ghi
+- `get<T>(name: string, defaultValue?: T | (() => T)): T` — Trả về giá trị của một biến. Nếu nó không tồn tại, thiết lập `defaultValue` và trả về nó.
+- `set<T>(name: string, callback: T | (() => T)): this` — Cập nhật giá trị của biến và đồng bộ hóa URL.
+
+### Theo dõi (Watchers)
+- `addWatch<T>(name: string, callback: (value: T) => void): this` — Thêm bộ xử lý cho các thay đổi của biến.
+- `removeWatch<T>(name: string, callback: (value: T) => void): this` — Xóa bộ xử lý.
+
+### Quản lý
+- `reload(): this` — Làm mới trạng thái nội bộ từ URL hash hiện tại.
+
+## Ví dụ
+
+### Sử dụng một phiên bản biệt lập
+```typescript
+const searchHash = new HashInstance()
+
+// Đăng ký theo dõi
+searchHash.addWatch('query', (q) => {
+  console.log('Tìm kiếm:', q)
+})
+
+// Thiết lập giá trị (sẽ cập nhật URL)
+searchHash.set('query', 'smartphones')
+```

@@ -14,9 +14,11 @@ Một lớp chuyên dụng được thiết kế để xử lý các tác vụ v
 - **Chặn luồng toàn cục** — cung cấp một điểm vào và ra duy nhất cho tất cả lưu lượng mạng được khởi tạo bởi trình quản lý cha của nó.
 - **Phát lại yêu cầu** — các hook sau yêu cầu có thể báo hiệu hệ thống tự động thử lại một yêu cầu sau khi trạng thái thay đổi.
 
-## Các phương thức hành động
+## Các phương thức
 
-### `make`
+### Hành động
+
+#### `make`
 
 Thực thi callback chuẩn bị đã đăng ký. Nếu một quá trình chuẩn bị khác đang diễn ra, nó sẽ đợi cho đến khi hoàn thành.
 
@@ -26,7 +28,7 @@ Thực thi callback chuẩn bị đã đăng ký. Nếu một quá trình chuẩ
 
 **Trả về:** `Promise<void>`
 
-### `makeEnd`
+#### `makeEnd`
 
 Thực thi callback phân tích đã đăng ký sau khi một yêu cầu hoàn thành.
 
@@ -37,10 +39,17 @@ Thực thi callback phân tích đã đăng ký sau khi một yêu cầu hoàn t
 
 **Trả về:** `Promise<ApiPreparationEnd>` — Một đối tượng điều khiển các bước tiếp theo (ví dụ: reset, tiêm dữ liệu).
 
-## Cấu hình
+### Cấu hình
 
 - `set(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Đăng ký một hàm sẽ chạy trước mọi yêu cầu được bật.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Đăng ký một hàm sẽ chạy sau mọi phản hồi được bật.
+
+## Các kiểu dữ liệu
+
+#### `ApiPreparationEnd`
+Kết quả thực thi của hook phân tích.
+- `reset?: boolean` — Nếu true, yêu cầu sẽ bị hủy và khởi động lại.
+- `data?: any` — Dữ liệu tùy chỉnh để truyền đi.
 
 ## Hướng dẫn: Cơ chế của Hook
 

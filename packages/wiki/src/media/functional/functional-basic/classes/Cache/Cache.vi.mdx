@@ -4,13 +4,13 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp Cache
 
-Một cơ chế caching dựa trên lưu trữ bộ nhớ nhẹ. Chức năng này cung cấp cách làm hiệu quả để thực thi các tác vụ hay hàm tìm nạp dữ liệu tiêu tốn năng lượng hoạt động và thời gian chỉ khi thực sự cần thiết, phụ thuộc vào "mảng so sánh" (comparison array) để tiến hành invalidation cache cũng như việc tính toán ghi đè lại.
+Một cơ chế lưu trữ đệm trong bộ nhớ (memory-based) nhẹ nhàng. Nó cung cấp một cách hiệu quả để thực thi các hàm truy xuất dữ liệu tốn kém chỉ khi cần thiết, dựa trên "mảng so sánh" (comparison arrays) để kích hoạt việc hủy bỏ và tính toán lại bộ nhớ đệm.
 
 ## Các tính năng chính
 
-- **Thực thi trên nhu cầu (On-Demand Evaluation)** — các function chỉ chạy khi không tìm thấy bộ nhớ cache mong muốn do rỗng hoặc vô hiệu (invalidation).
-- **Vô hiệu qua phép so sánh mảng** — Cache module sẽ tự vô hiệu và tiến hành nạp lại hoàn toàn dữ liệu vào array nếu giá trị phần tử thuộc mảng nhận chỉ định không giống với lúc lưu. Chức năng khá giống dependency arrays ở `useEffect` hoặc `useMemo` của React.
-- **Hỗ trợ chạy Async** — quá trình đồng bộ hoạt động dựa vào cách kết nối của phương pháp `Promise`.
+- **Đánh giá theo yêu cầu** — các hàm chỉ được thực thi khi giá trị được lưu trong bộ nhớ đệm bị thiếu hoặc bị hủy bỏ.
+- **Hủy bỏ theo mảng so sánh** — tự động tính toán lại bộ nhớ đệm nếu mảng phụ thuộc được cung cấp thay đổi (tương tự như mảng phụ thuộc của `useMemo` hoặc `useEffect` trong React).
+- **Hỗ trợ không đồng bộ** — hoạt động liền mạch với việc truy xuất dữ liệu dựa trên `Promise`.
 
 ## Khởi tạo
 
@@ -26,43 +26,45 @@ const cache = new Cache()
 const user = cache.get('user', () => 'Admin', [1])
 ```
 
-## Lấy dữ liệu
+## Các phương thức
 
-### `get`
+### Hành động
 
-Sử dụng phương thức `get()` kết nối trực tiếp với giá trị cache được gắn cố định hoặc thay mới ngay nếu dữ liệu hiện thuộc trạng thái lưu đã ngừng hoạt động/quá hạn/bị lỗi (stale block).
+#### `get`
+
+Sử dụng phương thức `get()` để truy xuất một giá trị được lưu trong bộ nhớ đệm hoặc tính toán nó nếu nó không tồn tại hoặc đã cũ.
 
 **Tham số:**
-- `name: string` — mã định danh để nạp bộ nhớ đệm cache.
-- `callback: () => T` — đoạn code (function) định nghĩa cho mảng trả về (value computation).
-- `comparison?: any[]` — thiết lập phụ array lưu trữ độ gắn kết. Nếu nhận thấy biến bên mảng khác hoàn toàn sau bước thực hiện lấy cache gần nhất thì class tự reset tính hợp lệ và cho hàm `callback` rà lại quá trình khởi tạo một lần nữa.
+- `name: string` — một mã định danh duy nhất cho mục nhập bộ nhớ đệm.
+- `callback: () => T` — hàm tính toán giá trị.
+- `comparison?: any[]` — mảng phụ thuộc tùy chọn. Nếu bất kỳ giá trị nào trong mảng này thay đổi so với lần gọi cuối cùng, bộ nhớ đệm sẽ bị hủy và `callback` sẽ chạy lại.
 
-**Trả về:** `T` — dữ liệu cache.
+**Trả về:** `T` — giá trị đã lưu đệm hoặc giá trị mới được tính toán.
 
 ```javascript
 let counter = 0
 
-// Tính và thiết lập cache nhận: "User 1"
+// Sẽ đánh giá và lưu trữ "User 1"
 const user1 = cache.get('user', () => `User ${++counter}`, [1])
 
-// KHÔNG CHẠY CODE, chỉ kéo cache được ghi từ "User 1"
+// KHÔNG đánh giá lại, trả về "User 1" đã lưu đệm
 const unchanged = cache.get('user', () => `User ${++counter}`, [1])
 
-// Mảng gắn kết thay đổi từ [1] sang [2]
-// Xóa cache và nạp vào: "User 2"
+// Mảng phụ thuộc thay đổi từ [1] thành [2]
+// Sẽ đánh giá lại và lưu trữ "User 2"
 const changed = cache.get('user', () => `User ${++counter}`, [2])
 ```
 
-### `getAsync`
+#### `getAsync`
 
-Tương tự như `get()` nhưng cấu hình định hướng đến Async calls.
+Hoạt động tương tự như `get()`, nhưng được thiết kế cho các cuộc gọi không đồng bộ.
 
 **Tham số:**
-- `name: string` — mã định danh bộ nhớ.
-- `callback: () => Promise<T>` — hàm bất đồng bộ trả về kết quả.
-- `comparison?: any[]` — danh sách các đối tượng kèm theo.
+- `name: string` — một mã định danh duy nhất cho mục nhập bộ nhớ đệm.
+- `callback: () => Promise<T>` — hàm không đồng bộ tính toán giá trị.
+- `comparison?: any[]` — mảng phụ thuộc tùy chọn.
 
-**Trả về:** `Promise<T>` — dữ liệu `Promise` được tạo mới hoặc lấy từ cache.
+**Trả về:** `Promise<T>` — giá trị không đồng bộ đã lưu đệm hoặc giá trị mới được tính toán.
 
 ```javascript
 async function fetchUser(id) {
@@ -72,13 +74,12 @@ async function fetchUser(id) {
   }, [id])
 }
 
-// Bắn thông tin vào luồng network ban đầu
+// Cuộc gọi đầu tiên truy cập mạng
 const u1 = await fetchUser(5)
 
-// Chạy lại hàm cũ gọi trực tiếp từ cache đã tạo
+// Cuộc gọi thứ hai trả về dữ liệu đã lưu đệm ngay lập tức (không truy cập mạng)
 const u1Cached = await fetchUser(5)
 
-// Tham số gắn kết biến đổi `id` đã chạy (5 !== 6), bắn luồng lên node mới
+// Phụ thuộc `id` thay đổi (5 !== 6), truy cập mạng một lần nữa
 const u2 = await fetchUser(6)
 ```
-

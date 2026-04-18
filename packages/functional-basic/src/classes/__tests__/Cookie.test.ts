@@ -120,7 +120,7 @@ describe('Cookie', () => {
       cookie.set('val', { age: 100 })
       cookie.set('val', { sameSite: 'lax' })
 
-      // @ts-ignore: testing private options
+      // @ts-expect-error: testing private options
       expect(cookie.options).toEqual({ age: 100, sameSite: 'lax' })
     })
 
@@ -130,6 +130,15 @@ describe('Cookie', () => {
       cookie.set('val')
 
       expect(document.cookie).not.toContain('noDomUpdate=val')
+    })
+
+    it('should filter out non-string arguments', () => {
+      const cookie = new Cookie('filteredArgs')
+      cookie.set('val', { arguments: ['Secure', 123, 'Path=/'] })
+
+      expect(document.cookie).toContain('Secure')
+      expect(document.cookie).toContain('Path=/')
+      // Non-string arguments should be filtered out
     })
   })
 

@@ -9,7 +9,7 @@ vi.mock('../../functions/isDomRuntime', () => ({
   isDomRuntime: vi.fn()
 }))
 
-describe('ApiHydration / API Hydration', () => {
+describe('ApiHydration', () => {
   let apiHydration: ApiHydration
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('ApiHydration / API Hydration', () => {
     apiHydration = new ApiHydration()
   })
 
-  describe('toClient / Transfer to client', () => {
+  describe('toClient', () => {
     it('should push data to list when global is true and isDomRuntime is false', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
 
@@ -69,7 +69,7 @@ describe('ApiHydration / API Hydration', () => {
     })
   })
 
-  describe('toString / Convert to string', () => {
+  describe('toString', () => {
     it('should return script tag with json data', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
 
@@ -88,7 +88,7 @@ describe('ApiHydration / API Hydration', () => {
     })
   })
 
-  describe('initResponse / Initialize response', () => {
+  describe('initResponse', () => {
     it('should add hydration data to response when isDomRuntime is true', () => {
       vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
 

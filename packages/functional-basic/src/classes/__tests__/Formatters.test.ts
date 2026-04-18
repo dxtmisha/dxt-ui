@@ -210,5 +210,25 @@ describe('Formatters', () => {
       const formatters = new Formatters(unitOptions, unitList)
       expect(formatters.to()![0]!.mFormat).toBe('5 m')
     })
+
+    it('should handle dot notation in keys', () => {
+      const dotOptions = {
+        'user.name': { type: FormattersType.name }
+      }
+      const dotList = [
+        {
+          user: {
+            name: 'John', // This is actually handled by getItemByPath
+            firstName: 'John',
+            lastName: 'Doe'
+          }
+        }
+      ]
+      // Formatters.ts uses getItemByPath(item, column)
+      // and toCamelCase(column) for the format key.
+      const formatters = new Formatters(dotOptions, dotList as any)
+      const result = formatters.to()![0]!
+      expect(result.userNameFormat).toBe('John Doe')
+    })
   })
 })

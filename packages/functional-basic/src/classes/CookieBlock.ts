@@ -14,7 +14,7 @@ export class CookieBlock {
    * @returns CookieBlockInstance instance / экземпляр CookieBlockInstance
    */
   static getItem(): CookieBlockInstance {
-    return ServerStorage.get('__dxt_cookie_block__', () => new CookieBlockInstance())
+    return ServerStorage.get('__ui:cookie-block__', () => new CookieBlockInstance())
   }
 
   /**

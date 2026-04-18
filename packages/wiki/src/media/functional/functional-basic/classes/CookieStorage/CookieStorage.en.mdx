@@ -1,0 +1,110 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/CookieStorage - Cookie Storage'/>
+
+# CookieStorage Class
+
+A class for managing cookie storage with support for custom listeners. Provides a low-level interface for working with cookies in different environments (DOM, SSR) with automatic type parsing and secure data handling.
+
+Includes tight integration with `CookieBlock` for access control and supports URL-encoded value decoding.
+
+## Key Features
+
+- **Flexible Storage** — supports in-memory storage and external storage mechanisms through listeners
+- **Automatic Parsing** — intelligently converts string values to appropriate data types
+- **Block Integration** — respects global write blocking via `CookieBlock`
+- **Environment Awareness** — automatically detects DOM environment and adapts behavior
+- **URL Decoding** — automatically decodes names and values when reading from DOM
+
+## Static Methods
+
+### Action
+
+#### `get`
+
+Retrieves a cookie value by name with automatic type conversion. If the value doesn't exist and a default is provided, it will be set and stored.
+
+**Parameters:**
+- `name: string` — the cookie name
+- `defaultValue?: T | (() => T)` — default value or function returning the value
+
+**Returns:** `T | undefined` — the converted cookie value or default value
+
+#### `set`
+
+Stores a cookie value with specified options and automatically updates both memory and DOM. If blocking is active via `CookieBlock`, the value is stored in memory only.
+
+**Parameters:**
+- `name: string` — the cookie name
+- `value: T | (() => T)` — the value or a function returning the value
+- `options?: CookieOptions` — additional cookie options
+
+**Returns:** `T` — the stored value
+
+#### `remove`
+
+Removes a cookie by setting an empty value and negative expiration. Equivalent to calling `set(name, '', { age: -1 })`.
+
+**Parameters:**
+- `name: string` — the cookie name
+
+### Configuration
+
+- `init(getListener, setListener)` — Initializes the storage with custom listeners for reading and writing data
+- `reset()` — Resets the storage by clearing all in-memory items and removing listeners
+
+### Auxiliary
+
+- `update()` — Updates in-memory data by parsing values from `document.cookie`
+
+## Types
+
+### `CookieOptions`
+
+Configuration object for cookie parameters:
+
+- `age?: number` — lifetime in seconds (Max-Age attribute)
+- `sameSite?: 'strict' | 'lax'` — SameSite policy
+- `arguments?: string[]` — additional directives for the cookie string
+
+## Built-in Type Conversion
+
+`CookieStorage` automatically converts string values when reading:
+
+- `'undefined'` → `undefined`
+- `'null'` → `null`
+- `'true'` → `true`
+- `'false'` → `false`
+- `'123'` → `123` (number)
+- `'{"key":"value"}'` → `{key: 'value'}` (JSON object)
+
+## Examples
+
+### Basic Usage
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Get with default value
+const theme = CookieStorage.get<string>('theme', 'dark')
+
+// Store value
+CookieStorage.set('user', 'john', {
+  age: 3600,
+  sameSite: 'lax'
+})
+
+// Remove
+CookieStorage.remove('user')
+```
+
+### Initialize with External Storage
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+CookieStorage.init(
+  (key) => myStorage.get(key),
+  (key, value, options) => myStorage.set(key, value, options)
+)
+```

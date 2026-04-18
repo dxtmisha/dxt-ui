@@ -1,12 +1,12 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
-import { t } from "./defineProperty-DblGXmzD.js";
-import { t as n } from "./EnabledInclude-P7JjCq8R.js";
-import { t as r } from "./EventClickInclude-DD8vmJTE.js";
-import { t as i } from "./SkeletonInclude-BH3L9LJu.js";
-import { t as a } from "./LabelInclude-WVa57XLq.js";
-import { t as o } from "./IconTrailingInclude-kVq5wBb9.js";
-import { t as s } from "./BadgeInclude-BMxXPn3m.js";
-import { t as c } from "./RippleInclude-BWYGlzoj.js";
+import { t } from "./defineProperty-Bjg6wMoX.js";
+import { t as n } from "./EnabledInclude-DziteWbw.js";
+import { t as r } from "./EventClickInclude-DB06AUmN.js";
+import { t as i } from "./SkeletonInclude-Cl99MbTo.js";
+import { t as a } from "./LabelInclude-B8iRBQY-.js";
+import { t as o } from "./IconTrailingInclude-BKjKR263.js";
+import { t as s } from "./BadgeInclude-Bo3X5s9Z.js";
+import { t as c } from "./RippleInclude-zKT0ltrM.js";
 import { computed as l, h as u } from "vue";
 import { DesignConstructorAbstract as d } from "@dxtmisha/functional";
 //#region src/constructors/TabItem/TabItem.ts

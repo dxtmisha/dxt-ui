@@ -118,10 +118,11 @@ describe('BroadcastMessage', () => {
     expect(newCallbackError).toHaveBeenCalledWith(event)
   })
 
-  it('should return this from post(), setCallback() and setCallbackError() for chaining', () => {
+  it('should return this from post(), setCallback(), setCallbackError() and destroy() for chaining', () => {
     const bm = new BroadcastMessage<string>(channelName)
     expect(bm.post('msg')).toBe(bm)
     expect(bm.setCallback(vi.fn())).toBe(bm)
     expect(bm.setCallbackError(vi.fn())).toBe(bm)
+    expect(bm.destroy()).toBe(bm)
   })
 })

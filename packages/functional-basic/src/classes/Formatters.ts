@@ -39,9 +39,8 @@ export class Formatters<
    * Constructor
    *
    * Конструктор
-   * @param options formatting options for each column/ property/
-   * параметры форматирования для каждого столбца/свойства
-   * @param list initial list of data to format/ начальный список данных для форматирования
+   * @param options formatting options for each column/property / параметры форматирования для каждого столбца/свойства
+   * @param list initial list of data to format / начальный список данных для форматирования
    */
   constructor(
     protected options: Options,
@@ -52,7 +51,7 @@ export class Formatters<
    * Checks if the list is set.
    *
    * Проверяет, установлен ли список.
-   * @returns true if the list is set, false otherwise/ true, если список установлен, иначе false
+   * @returns true if the list is set / true, если список установлен
    */
   is(): boolean {
     return Boolean(this.list)
@@ -62,7 +61,7 @@ export class Formatters<
    * Checks if the list is an array.
    *
    * Проверяет, является ли список массивом.
-   * @returns true if the list is an array, false otherwise/ true, если список является массивом, иначе false
+   * @returns true if the list is an array / true, если список является массивом
    */
   isArray(): this is this & { list: FormattersList<Item> } {
     return Array.isArray(this.list)
@@ -72,7 +71,7 @@ export class Formatters<
    * Returns the count of records in the list.
    *
    * Возвращает количество записей в списке.
-   * @returns count of records/ количество записей
+   * @returns count of records / количество записей
    */
   length(): number {
     if (this.list) {
@@ -87,10 +86,10 @@ export class Formatters<
   }
 
   /**
-   * Returns the current list of data.
+   * Returns the current list of data as an array.
    *
-   * Возвращает текущий список данных.
-   * @returns the list of data or undefined if not set/ список данных или undefined, если не задан
+   * Возвращает текущий список данных в виде массива.
+   * @returns the list of data / список данных
    */
   getList(): FormattersList<Item> {
     if (this.list) {
@@ -104,7 +103,7 @@ export class Formatters<
    * Returns the current formatting options.
    *
    * Возвращает текущие параметры форматирования.
-   * @returns formatting options/ параметры форматирования
+   * @returns formatting options / параметры форматирования
    */
   getOptions(): Options {
     return this.options
@@ -114,8 +113,8 @@ export class Formatters<
    * Sets the list of data to be formatted.
    *
    * Устанавливает список данных для форматирования.
-   * @param list list of data/ список данных
-   * @returns the Formatters instance for chaining/ экземпляр Formatters для цепочки вызовов
+   * @param list list of data / список данных
+   * @returns this
    */
   setList(list?: List): this {
     this.list = list
@@ -128,8 +127,7 @@ export class Formatters<
    *
    * Форматирует весь список или один элемент на основе предоставленных параметров.
    * Добавляет отформатированные значения с суффиксом 'Format' к каждому элементу.
-   * @returns formatted data (list or single item) with additional formatted columns /
-   * отформатированные данные (список или один элемент) с дополнительными отформатированными столбцами
+   * @returns formatted data (list or single item) / отформатированные данные (список или один элемент)
    */
   to(): FormattersReturn<List, Options> {
     const list = forEach(this.getList(), (item) => {

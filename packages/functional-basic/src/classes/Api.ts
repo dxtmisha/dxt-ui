@@ -12,86 +12,54 @@ import {
 /**
  * Class for working with HTTP requests.
  *
- * It is a static wrapper over {@link ApiInstance}, providing a convenient interface for:
- * - Performing standard HTTP requests (GET, POST, PUT, DELETE).
- * - Global configuration (URL, headers, defaults).
- * - Request lifecycle hooks (`setPreparation`, `setEnd`).
- * - Automatic retries and session handling (Refresh Token).
- * - Data processing and JSON parsing.
- * - Localization support (`{locale}`, `{country}`, `{language}`).
- * - Error handling and {@link ErrorCenter} integration.
- * - Response emulation via {@link ApiResponse}.
- *
- * ---
- *
  * Класс для работы с HTTP-запросами.
- *
- * Является статической оберткой над {@link ApiInstance}, предоставляя удобный интерфейс для:
- * - Выполнения стандартных HTTP-запросов (GET, POST, PUT, PATCH, DELETE).
- * - Глобальной настройки (URL, заголовки, параметры).
- * - Хуков жизненного цикла (`setPreparation`, `setEnd`).
- * - Автоматических повторов и обработки сессий (Refresh Token).
- * - Обработки данных и парсинга JSON.
- * - Поддержки локализации в URL (`{locale}`, `{country}`, `{language}`).
- * - Обработки ошибок и интеграции с {@link ErrorCenter}.
- * - Эмуляции ответов через {@link ApiResponse}.
- *
- * ---
- *
- * ### Usage Examples / Примеры использования:
- *
- * #### 1. Global Setup / Глобальная настройка
- * ```typescript
- * Api.setUrl('https://api.example.com/v1/')
- *    .setHeaders({ 'Authorization': 'Bearer token' });
- * ```
- *
- * #### 2. Basic Request / Базовый запрос
- * ```typescript
- * const data = await Api.get<User>({ path: 'profile' });
- * ```
  */
 export class Api {
   /**
-   * Is the server local.
+   * Checks if the server is running on localhost.
    *
-   * Является ли сервер локальный.
+   * Проверяет, работает ли сервер на localhost.
+   * @returns true if server is localhost / true, если сервер является локальным
    */
   static isLocalhost(): boolean {
     return this.getItem().isLocalhost()
   }
 
   /**
-   * Returns the instance of the class.
+   * Returns the singleton instance of the ApiInstance class.
    *
-   * Возвращает инстанс класса.
+   * Возвращает синглтон-экземпляр класса ApiInstance.
+   * @returns ApiInstance singleton / синглтон ApiInstance
    */
   static getItem(): ApiInstance {
-    return ServerStorage.get('__dxt_api_instance__', () => new ApiInstance())
+    return ServerStorage.get('__ui:api-instance__', () => new ApiInstance())
   }
 
   /**
    * Returns the status of the last request.
    *
    * Возвращает статус последнего запроса.
+   * @returns ApiStatus instance / экземпляр ApiStatus
    */
   static getStatus() {
     return this.getItem().getStatus()
   }
 
   /**
-   * Getting the response handler.
+   * Gets the response handler.
    *
-   * Получение обработчика ответа.
+   * Получает обработчик ответа.
+   * @returns ApiResponse instance / экземпляр ApiResponse
    */
   static getResponse() {
     return this.getItem().getResponse()
   }
 
   /**
-   * Getting the hydration handler.
+   * Gets the hydration handler.
    *
-   * Получение обработчика гидратации.
+   * Получает обработчик гидратации.
+   * @returns ApiHydration instance / экземпляр ApiHydration
    */
   static getHydration() {
     return this.getItem().getHydration()
@@ -101,28 +69,31 @@ export class Api {
    * Returns a string representation of the hydration data for the client.
    *
    * Возвращает строковое представление данных гидратации для клиента.
+   * @returns HTML script element string / строка HTML элемента script
    */
   static getHydrationScript(): string {
     return this.getItem().getHydrationScript()
   }
 
   /**
-   * Getting the full path to the request script.
+   * Gets the full path to the request script.
    *
-   * Получение полного пути к скрипту запроса.
-   * @param path path to the script/ путь к скрипту
-   * @param api adding a path to the site’s API/ добавление пути к API сайта
+   * Получает полный путь к скрипту запроса.
+   * @param path path to the script / путь к скрипту
+   * @param api whether to prepend base API URL / нужно ли добавить базовый URL API
+   * @returns full URL / полный URL
    */
   static getUrl(path: string, api: boolean = true): string {
     return this.getItem().getUrl(path, api)
   }
 
   /**
-   * Getting data for the body.
+   * Gets data for the request body.
    *
-   * Получение данных для тела.
-   * @param request this request/ данный запрос
-   * @param method method for request/ метод запрос
+   * Получает данные для тела запроса.
+   * @param request request data / данные запроса
+   * @param method HTTP method / HTTP метод
+   * @returns body data for non-GET requests or FormData / данные тела для не-GET запросов или FormData
    */
   static getBody(
     request: ApiFetch['request'] = {},
@@ -132,12 +103,13 @@ export class Api {
   }
 
   /**
-   * Getting data for the body of the get method.
+   * Gets query string for GET method requests.
    *
-   * Получение данных для тела метода get.
-   * @param request this request/ данный запрос
-   * @param path path to request/ путь к запрос
-   * @param method method for request/ метод запрос
+   * Получает строку запроса для GET-методов.
+   * @param request request data / данные запроса
+   * @param path path to request / путь к запросу
+   * @param method HTTP method / HTTP метод
+   * @returns query string for GET requests / строка запроса для GET-запросов
    */
   static getBodyForGet(
     request: ApiFetch['request'],
@@ -151,73 +123,69 @@ export class Api {
    * Modifies the default header data.
    *
    * Изменяет данные заголовка по умолчанию.
+   * @param headers default headers / заголовки по умолчанию
    */
-  static setHeaders(headers: Record<string, string>): Api {
+  static setHeaders(headers: Record<string, string>): void {
     this.getItem().setHeaders(headers)
-    return Api
   }
 
   /**
    * Modifies the default request data.
    *
    * Изменяет данные запроса по умолчанию.
+   * @param request default request data / данные запроса по умолчанию
    */
-  static setRequestDefault(request: Record<string, any>): Api {
+  static setRequestDefault(request: Record<string, any>): void {
     this.getItem().setRequestDefault(request)
-    return Api
   }
 
   /**
-   * Change the base path to the script.
+   * Changes the base path to the script.
    *
-   * Изменить базовый путь к скрипту.
-   * @param url path to the script/ путь к скрипту
+   * Изменяет базовый путь к скрипту.
+   * @param url path to the script / путь к скрипту
    */
-  static setUrl(url: string): Api {
+  static setUrl(url: string): void {
     this.getItem().setUrl(url)
-    return Api
   }
 
   /**
-   * The function is modified for a call before the request.
+   * Modifies the function to be called before the request.
    *
-   * Изменить функцию перед запросом.
-   * @param callback function for call/ функция для вызова
+   * Изменяет функцию для вызова перед запросом.
+   * @param callback function to call before request / функция для вызова перед запросом
    */
-  static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api {
+  static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void {
     this.getItem().setPreparation(callback)
-    return Api
   }
 
   /**
-   * Modify the function after the request.
+   * Modifies the function to be called after the request.
    *
-   * Изменить функцию после запроса.
-   * @param callback function for call/ функция для вызова
+   * Изменяет функцию для вызова после запроса.
+   * @param callback function to call after request / функция для вызова после запроса
    */
-  static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api {
+  static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void {
     this.getItem().setEnd(callback)
-    return Api
   }
 
   /**
-   * Change the timeout for the request in milliseconds.
+   * Changes the timeout for the request in milliseconds.
    *
-   * Изменить таймаут запроса в миллисекундах.
-   * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+   * Изменяет таймаут запроса в миллисекундах.
+   * @param timeout timeout in milliseconds / таймаут в миллисекундах
    */
-  static setTimeout(timeout: number): Api {
+  static setTimeout(timeout: number): void {
     this.getItem().setTimeout(timeout)
-    return Api
   }
 
   /**
-   * Set config for API.
+   * Sets multiple API configuration options at once.
    *
-   * Установить конфигурацию для API.
-   * @param config config for API/ конфигурация для API
+   * Устанавливает несколько опций конфигурации API одновременно.
+   * @param config configuration object / объект конфигурации
    */
-  static setConfig(config?: ApiConfig): Api {
+  static setConfig(config?: ApiConfig): void {
     if (
       config
       && isObjectNotArray(config)
@@ -246,15 +214,14 @@ export class Api {
         this.setTimeout(config.timeout)
       }
     }
-
-    return this
   }
 
   /**
-   * To execute a request.
+   * Executes a request with the given path or configuration.
    *
-   * Выполнить запрос.
-   * @param pathRequest path or configuration/ путь или конфигурация запроса
+   * Выполняет запрос с указанным путем или конфигурацией.
+   * @param pathRequest path or configuration / путь или конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   static async request<T>(pathRequest: string | ApiFetch): Promise<T> {
     return this.getItem().request<T>(pathRequest)
@@ -264,7 +231,8 @@ export class Api {
    * Sends a GET method request.
    *
    * Отправляет запрос метода GET.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   static get<T>(request: ApiFetch): Promise<T> {
     return this.getItem().get<T>(request)
@@ -274,7 +242,8 @@ export class Api {
    * Sends a POST method request.
    *
    * Отправляет запрос метода POST.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   static post<T>(request: ApiFetch): Promise<T> {
     return this.getItem().post<T>(request)
@@ -284,7 +253,8 @@ export class Api {
    * Sends a PUT method request.
    *
    * Отправляет запрос метода PUT.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   static put<T>(request: ApiFetch): Promise<T> {
     return this.getItem().put<T>(request)
@@ -294,7 +264,8 @@ export class Api {
    * Sends a PATCH method request.
    *
    * Отправляет запрос метода PATCH.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   static patch<T>(request: ApiFetch): Promise<T> {
     return this.getItem().patch<T>(request)
@@ -304,7 +275,8 @@ export class Api {
    * Sends a DELETE method request.
    *
    * Отправляет запрос метода DELETE.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   static delete<T>(request: ApiFetch): Promise<T> {
     return this.getItem().delete<T>(request)

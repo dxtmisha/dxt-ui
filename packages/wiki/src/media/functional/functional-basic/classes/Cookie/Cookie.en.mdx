@@ -4,84 +4,128 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Cookie Class
 
-A seamless, stateful wrapper for managing browser cookies. It automatically syncs between memory and the `document.cookie` DOM API, allowing you to reactively set, retrieve, and delete cookies while ensuring consistent fallback values.
+A seamless wrapper for managing browser cookies. Automatically syncs between memory and the `document.cookie` DOM API, allowing reactive setting, retrieval, and deletion of cookies while ensuring consistent fallback values.
+
+Includes tight integration with `CookieStorage` for low-level management and respects global blocking via `CookieBlock`.
 
 ## Key Features
 
-- **Memory Sync** — maintains an in-memory record of cookies to prevent unnecessary DOM traversals. Automatically parses `document.cookie` on startup.
-- **Environment Aware** — detects if it is running in a DOM environment. In SSR (Server-Side Rendering) or testing (non-DOM), it elegantly degrades to memory-only storage without throwing errors.
-- **Global Blocking Control** — integrates securely with `CookieBlock`. If cookie writing is globally disabled (e.g., due to user privacy consent), the `Cookie` class respects this and suspends all outgoing DOM changes.
-- **Default/Fallback Logic** — getting a value can lazily initialize it with a default standard if it doesn't already exist.
+- **Memory Sync** — maintains an in-memory record of cookies to prevent unnecessary DOM traversals
+- **Environment Aware** — detects if running in a DOM environment. In SSR or testing, elegantly degrades to memory-only storage
+- **Global Blocking Control** — integrates securely with `CookieBlock`. If cookie writing is globally disabled, the class respects this and suspends all DOM changes
+- **Default/Fallback Logic** — getting a value can lazily initialize it with a default if it doesn't already exist
 
-## Initialization
+## Constructor
 
-To initialize the object, call the `Cookie(name)` constructor.
+A `Cookie` instance can be created to manage a specific cookie. If an instance with the same name already exists, it will be returned.
 
 **Parameters:**
-- `name: string` — the name of the cookie you want to manage.
+- `name: string` — the cookie name to manage
+
+## Methods
+
+### Action
+
+#### `get`
+
+Reads the cookie value. If the value doesn't exist and a default is provided, it will be saved and returned. Supports functions for lazy default value computation.
+
+**Parameters:**
+- `defaultValue?: T | string | (() => T | string)` — default value or function returning the value
+- `options?: CookieOptions` — cookie options (used when setting default value)
+
+**Returns:** `T | string | undefined` — the cookie value or the assigned default
+
+#### `set`
+
+Stores or updates a cookie value with specified options. Supports functions for dynamic value computation. If blocking is active via `CookieBlock`, the value is stored in memory only.
+
+**Parameters:**
+- `value?: T | string | (() => T | string)` — the value to store or a function returning the value
+- `options?: CookieOptions` — cookie options (lifetime, SameSite, additional arguments)
+
+**Returns:** `this` — for method chaining
+
+#### `remove`
+
+Removes a cookie by overwriting it with an empty string and setting Max-Age to `-1`, instructing the browser to instantly delete the record.
+
+**Returns:** `this` — for method chaining
+
+### Static Methods
+
+- `getInstance<T>(name: string): Cookie<T>` — Returns an existing instance or creates a new one by name
+
+### Auxiliary
+
+- `CookieStorage.update()` — Updates data from `document.cookie`
+
+## Types
+
+### `CookieOptions`
+
+Configuration object for cookie parameters:
+
+- `age?: number` — lifetime in seconds (Max-Age attribute). Default: 7 days (604800 sec)
+- `sameSite?: 'strict' | 'lax'` — SameSite policy. Default: `'strict'`
+- `arguments?: string[]` — additional directives appended to the cookie string
+
+## Examples
+
+### Basic Usage
 
 ```typescript
 import { Cookie } from '@dxtmisha/functional'
 
-// 1. Initialize wrapper for the 'theme' cookie
+// Create instance to manage 'theme' cookie
 const themeCookie = new Cookie('theme')
-```
 
-## Data Management
+// Read with default value
+const currentTheme = themeCookie.get('dark')
 
-### `get`
+// Set value
+themeCookie.set('light')
 
-Use `get()` to read the cookie. If you pass a default value to `get()`, it will simultaneously save that default if the cookie was previously unset.
-
-**Parameters:**
-- `value?: T | string | (() => T | string)` — optional default value or a function returning it.
-
-**Returns:** `T | string | undefined` — the value from the cookie, or the assigned default.
-
-```javascript
-// Will read 'theme', OR set and return 'dark' if it doesn't exist
-const currentTheme = themeCookie.get('dark') 
-```
-
-### `set`
-
-Use `set()` to override or create new data. Options allow you to control standard cookie attributes like `age` (Max-Age cache duration in seconds) or `sameSite` policy.
-
-**Parameters:**
-- `value: T | string | (() => T | string)` — the value to store, or a function returning the value.
-- `options?: CookieOptions` — configuration for the cookie lifetime and security.
-
-```javascript
-const userPrefs = new Cookie('preferences')
-
-// Set a simple string
-userPrefs.set('{"compact": true}')
-
-// Set with advanced options
-userPrefs.set('{"compact": true}', {
+// Set with options
+themeCookie.set('dark', {
   age: 60 * 60 * 24 * 30, // 30 days
   sameSite: 'lax'
 })
+
+// Remove
+themeCookie.remove()
 ```
 
-### `remove`
+### Using getInstance
 
-Removing a cookie overwrites it with an empty string and sets its Max-Age to `-1`, instructing the browser to instantly delete the record.
+```typescript
+import { Cookie } from '@dxtmisha/functional'
 
-```javascript
-userPrefs.remove()
+// Get or create instance
+const cookie = Cookie.getInstance<string>('user')
+
+// All getInstance calls with the same name return the same instance
+const sameCookie = Cookie.getInstance<string>('user')
+
+console.log(cookie === sameCookie) // true
 ```
 
-## Synchronization
+### CookieBlock Integration
 
-- `updateData(): void` (static) — Updates data from `document.cookie`.
+```typescript
+import { Cookie, CookieBlock } from '@dxtmisha/functional'
 
-## CookieOptions
+// Block all write operations
+CookieBlock.set(true)
 
-`CookieOptions` is a configuration object for the `get` and `set` methods:
+const cookie = new Cookie('blocked')
 
-- `age?: number` — cookie lifetime in **seconds** (`Max-Age` attribute). Default: 7 days (604800 sec). Automatically set to `-1` when deleting via `remove()`.
-- `sameSite?: 'strict' | 'lax'` — the `SameSite` policy. Default: `'strict'` (cookie is only sent on same-site navigations). `'lax'` also allows sending on cross-site GET requests.
-- `arguments?: string[]` — additional directives appended to the cookie string (e.g. `'Secure'`, `'Path=/'`, `'Domain=.myapp.com'`).
+// Value is saved in memory, but not in DOM
+cookie.set('value')
 
+// Unblock
+CookieBlock.set(false)
 
+// Now writes work normally
+cookie.set('newValue')
+```

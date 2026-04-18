@@ -6,12 +6,14 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một lớp linh hoạt để tương tác với `localStorage` và `sessionStorage` của trình duyệt. Nó bao gồm các tiền tố được tích hợp sẵn, thời gian hết hạn bộ đệm (cache), lưu vào bộ nhớ đệm (memory caching) cho các bản sao hoạt động và chuyển đổi JSON tự động.
 
+> `DataStorage` là một **lớp phụ trợ**, được thiết kế để tương tác cấp thấp với bộ nhớ trình duyệt. Trong hầu hết các trường hợp, bạn nên sử dụng các lớp cấp cao hơn như `Cookie` hoặc `Api` cho các nhu cầu dữ liệu cụ thể.
+
 ## Tính năng chính
 
 - **Chuyển đổi Tự động** — tự động xử lý phân tích và chuyển đổi chuỗi JSON cho các cấu hình và đối tượng được lưu trữ.
 - **Bộ nhớ đệm Dựa trên Thời gian** — cho phép lưu các đối tượng cùng với mốc thời gian và tôn trọng các ràng buộc về tuổi đời (age) của dữ liệu trong quá trình truy xuất.
 - **Quản lý Tiền tố** — hỗ trợ cả tiền tố toàn cục và riêng biệt để cách ly cũng như gom nhóm các khóa trong `localStorage`.
-- **Tối ưu Bô nhớ** — tạo ra các singleton cho những khóa giống nhau nhằm tránh các thao tác đọc đĩa bị lặp lại.
+- **Tối ưu Bộ nhớ** — tạo ra các singleton cho những khóa giống nhau nhằm tránh các thao tác đọc đĩa bị lặp lại.
 - **Hỗ trợ SSR** — sử dụng cơ chế cách ly theo từng request trong quá trình render phía server để ngăn chặn rò rỉ dữ liệu giữa các phiên làm việc song song.
 
 ## SSR và Hydration
@@ -24,12 +26,17 @@ Lớp `DataStorage` hoàn toàn tương thích với Server-Side Rendering (SSR)
 
 Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `DataStorage(name, isSession)`.
 
+### Ràng buộc Generic (Generic Constraints)
+
+Lớp hỗ trợ generic sau để đảm bảo kiểm soát kiểu dữ liệu nghiêm ngặt cho giá trị được lưu trữ:
+- `T` — Kiểu dữ liệu của giá trị được lưu trữ.
+
 **Tham số:**
 - `name: string` — tên của khóa lưu trữ.
 - `isSession: boolean = false` — có sử dụng `sessionStorage` hay không (mặc định là `localStorage`).
 
 ```typescript
-import { DataStorage } from '@dxtmisha/functional'
+import { DataStorage } from '@dxtmisha/functional-basic'
 
 // 1. Tạo một thực thể cho localStorage
 const settings = new DataStorage('settings')
@@ -38,23 +45,25 @@ const settings = new DataStorage('settings')
 const session = new DataStorage('user_session', true)
 ```
 
-## Cấu hình toàn cục
+## Các phương thức
 
-- `setPrefix(newPrefix: string): void` (static) — Thay đổi tên tiền tố toàn cục áp dụng cho những instance mới đang định dùng môi trường `localStorage`. Giá trị tiền tố mặc định là `ui-storage`.
+### Truy cập Bộ lưu trữ
 
-## Quản lý dữ liệu
+- `get(defaultValue?: T | (() => T), cache?: number): T | undefined` — Truy xuất giá trị hiện được lưu trữ. Nếu thời gian cache được cung cấp, nó sẽ trả về `undefined` nếu dữ liệu đã quá hạn.
+- `set(value?: T | (() => T)): T | undefined` — Thiết lập hoặc cập nhật giá trị trong cơ chế lưu trữ. Truyền `undefined` sẽ xóa mục đó.
+- `remove(): this` — Xóa khóa tương ứng khỏi môi trường lưu trữ và thực thể trong bộ nhớ.
+- `update(): this` — Buộc thực thể bộ nhớ phải đồng bộ hóa với dữ liệu thô hiện tại bên trong các Storage API vật lý.
 
-### `get`
+### Cấu hình
 
-Truy xuất cấu hình đã phân tích hiện tại được lưu lại từ trước.
+- `static setPrefix(newPrefix: string): void` — Thay đổi tiền tố toàn cục áp dụng cho các thực thể mới. Tiền tố mặc định là `ui-storage`.
 
-**Tham số:**
-- `defaultValue?: T | (() => T)` — giá trị dự phòng được trả về nếu bên trong bộ lưu trữ trống rỗng.
-- `cache?: number` — độ tuổi tối đa cho phép (tính bằng giây). Nếu dữ liệu đã cũ hơn mức này, nó sẽ cư xử như thể không có gì được lưu trữ.
+## Ví dụ
 
-**Trả về:** `T | undefined` — giá trị được lưu trữ hoặc `undefined`.
-
+### Sử dụng Giá trị Mặc định và Cache
 ```javascript
+const settings = new DataStorage('user_settings')
+
 // Lấy dữ liệu, trả về object rỗng nếu không tìm thấy
 const currentSettings = settings.get({})
 
@@ -62,20 +71,11 @@ const currentSettings = settings.get({})
 const cachedItem = settings.get(undefined, 60)
 ```
 
-### `set`
-
-Thiết lập hoặc cập nhật một giá trị trong cơ chế lưu trữ.
-
-**Tham số:**
-- `value?: T | (() => T)` — giá trị muốn lưu. Việc truyền `undefined` sẽ loại bỏ mục đó khỏi kho lưu trữ.
-
-**Trả về:** `T | undefined` — giá trị được lưu trữ.
-
+### Đồng bộ hóa Thủ công
 ```javascript
-settings.set({ theme: 'dark', notifications: true })
+const storage = new DataStorage('shared_data')
+
+// ... dữ liệu có thể đã thay đổi trong một tab khác hoặc phần khác của ứng dụng
+storage.update() // Đồng bộ hóa bộ nhớ với ổ đĩa
+console.log(storage.get())
 ```
-
-## Các phương thức bổ sung
-
-- `remove(): this` — Xóa bỏ chính xác khóa lưu trữ tương ứng từ phần môi trường phần mềm `localStorage` или `sessionStorage`, đồng thời lập tức dọn sạch dữ liệu khối nhớ hiện tại.
-- `update(): this` — Buộc bộ đệm đối tượng trong bộ nhớ tự đồng bộ lại thật khít so với dữ liệu rỗng hiện hành bên trong các hàm Storage API vật lý.

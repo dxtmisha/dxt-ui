@@ -1,0 +1,110 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/CookieStorage - Lưu trữ Cookie'/>
+
+# Lớp CookieStorage
+
+Lớp quản lý lưu trữ cookie với hỗ trợ người nghe tùy chỉnh. Cung cấp giao diện cấp thấp để làm việc với cookie trong các môi trường khác nhau (DOM, SSR) với phân tích tự động kiểu và xử lý dữ liệu an toàn.
+
+Bao gồm tích hợp chặt chẽ với `CookieBlock` để kiểm soát truy cập và hỗ trợ giải mã các giá trị đã được mã hóa URL.
+
+## Các tính năng chính
+
+- **Lưu trữ linh hoạt** — hỗ trợ bộ nhớ quy trình và cơ chế lưu trữ bên ngoài thông qua người nghe
+- **Phân tích tự động** — chuyển đổi thông minh các giá trị chuỗi thành các loại dữ liệu tương ứng
+- **Tích hợp chặn** — tôn trọng chặn ghi toàn cầu qua `CookieBlock`
+- **Nhận thức môi trường** — tự động phát hiện môi trường DOM và thích ứng hành vi
+- **Giải mã URL** — tự động giải mã tên và giá trị khi đọc từ DOM
+
+## Phương thức tĩnh
+
+### Hành động
+
+#### `get`
+
+Lấy giá trị cookie theo tên với chuyển đổi kiểu tự động. Nếu giá trị không tồn tại và có chỉ định giá trị mặc định, nó sẽ được thiết lập và lưu trữ.
+
+**Tham số:**
+- `name: string` — tên cookie
+- `defaultValue?: T | (() => T)` — giá trị mặc định hoặc hàm trả về giá trị
+
+**Trả về:** `T | undefined` — giá trị cookie đã chuyển đổi hoặc giá trị mặc định
+
+#### `set`
+
+Lưu giá trị cookie với các tham số được chỉ định và cập nhật tự động trong bộ nhớ và DOM. Nếu chặn đang hoạt động qua `CookieBlock`, giá trị chỉ được lưu trong bộ nhớ.
+
+**Tham số:**
+- `name: string` — tên cookie
+- `value: T | (() => T)` — giá trị hoặc hàm trả về giá trị
+- `options?: CookieOptions` — tham số cookie bổ sung
+
+**Trả về:** `T` — giá trị đã lưu
+
+#### `remove`
+
+Xóa cookie bằng cách đặt giá trị rỗng và thời hạn hết hạn âm. Tương đương với việc gọi `set(name, '', { age: -1 })`.
+
+**Tham số:**
+- `name: string` — tên cookie
+
+### Cấu hình
+
+- `init(getListener, setListener)` — Khởi tạo lưu trữ với người nghe tùy chỉnh để đọc và ghi dữ liệu
+- `reset()` — Đặt lại lưu trữ bằng cách xóa tất cả phần tử trong bộ nhớ và xóa người nghe
+
+### Hỗ trợ
+
+- `update()` — Cập nhật dữ liệu trong bộ nhớ bằng cách phân tích giá trị từ `document.cookie`
+
+## Các loại
+
+### `CookieOptions`
+
+Đối tượng cấu hình cho tham số cookie:
+
+- `age?: number` — thời gian tồn tại tính bằng giây (thuộc tính Max-Age)
+- `sameSite?: 'strict' | 'lax'` — chính sách SameSite
+- `arguments?: string[]` — các chỉ thị bổ sung cho chuỗi cookie
+
+## Chuyển đổi loại tích hợp
+
+`CookieStorage` tự động chuyển đổi các giá trị chuỗi khi đọc:
+
+- `'undefined'` → `undefined`
+- `'null'` → `null`
+- `'true'` → `true`
+- `'false'` → `false`
+- `'123'` → `123` (số)
+- `'{"key":"value"}'` → `{key: 'value'}` (đối tượng JSON)
+
+## Ví dụ
+
+### Sử dụng cơ bản
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Lấy với giá trị mặc định
+const theme = CookieStorage.get<string>('theme', 'dark')
+
+// Lưu giá trị
+CookieStorage.set('user', 'john', {
+  age: 3600,
+  sameSite: 'lax'
+})
+
+// Xóa
+CookieStorage.remove('user')
+```
+
+### Khởi tạo với lưu trữ bên ngoài
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+CookieStorage.init(
+  (key) => myStorage.get(key),
+  (key, value, options) => myStorage.set(key, value, options)
+)
+```

@@ -6,17 +6,34 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 The `CookieBlockInstance` class is responsible for managing the cookie access status at the instance level. It provides a localized state for blocking or allowing cookie operations, which is essential for request isolation in Server-Side Rendering (SSR) or when multiple independent contexts are required.
 
+Includes tight integration with `DataStorage` for reliable state persistence.
+
 ## Key Features
 
-- **Instance-Based** — allows creating separate instances with their own block status.
-- **DataStorage Integration** — automatically persists the block status using the `DataStorage` class.
-- **SSR Compatible** — designed to work seamlessly in server-side environments by leveraging the singleton-per-request pattern when wrapped by `CookieBlock`.
+- **Instance-Based** — allows creating separate instances with their own block status
+- **DataStorage Integration** — automatically persists the block status using the `DataStorage` class
+- **SSR Compatible** — designed to work seamlessly in server-side environments by leveraging the singleton-per-request pattern when wrapped by `CookieBlock`
 
-## Basic Usage
+## Methods
 
-While `CookieBlockInstance` can be used directly, it is typically accessed through the static `CookieBlock` wrapper. However, for specialized logic, you can instantiate it manually:
+### Action
 
-```javascript
+#### `set`
+
+Updates the cookie access status. When set to `true`, blocks all cookie write operations within this instance's context.
+
+**Parameters:**
+- `value: boolean` — the new status to set
+
+### Check
+
+- `get(): boolean` — Returns the current cookie access status. `true` if cookies are blocked, `false` otherwise
+
+## Examples
+
+### Basic Usage
+
+```typescript
 import { CookieBlockInstance } from '@dxtmisha/functional-basic'
 
 const cookieBlock = new CookieBlockInstance()
@@ -28,19 +45,40 @@ console.log(cookieBlock.get()) // false (default)
 cookieBlock.set(true)
 
 console.log(cookieBlock.get()) // true
+
+// Unblock
+cookieBlock.set(false)
+
+console.log(cookieBlock.get()) // false
 ```
 
-## Methods
+### Using via CookieBlock
 
-### `get(): boolean`
+While `CookieBlockInstance` can be used directly, it is typically accessed through the static `CookieBlock` wrapper:
 
-Returns the current cookie access status.
+```typescript
+import { CookieBlock } from '@dxtmisha/functional-basic'
 
-- **Returns**: `true` if cookies are blocked, `false` otherwise.
+// CookieBlock automatically creates an isolated instance for each request
+CookieBlock.set(true)
 
-### `set(value: boolean): void`
+// Status is accessible through static methods
+if (CookieBlock.get()) {
+  console.log('Cookies are blocked in the current context')
+}
+```
 
-Updates the cookie access status.
+### Independent Contexts
 
-- **Parameters**: 
-    - `value: boolean` — the new status to set.
+```typescript
+import { CookieBlockInstance } from '@dxtmisha/functional-basic'
+
+// Create independent instances
+const block1 = new CookieBlockInstance()
+const block2 = new CookieBlockInstance()
+
+block1.set(true)
+
+console.log(block1.get()) // true
+console.log(block2.get()) // false (independent instance)
+```

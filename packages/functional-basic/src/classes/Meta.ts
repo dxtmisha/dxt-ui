@@ -55,11 +55,16 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Получает заголовок страницы без суффикса.
    */
   getTitle(): string {
-    if (!isDomRuntime()) {
-      return ''
+    let title = this.get(MetaTag.title)
+
+    if (
+      !isFilled(title)
+      && isDomRuntime()
+    ) {
+      title = document.title
     }
 
-    return document.title
+    return title
       .replace(this.getSuffix(), '')
       .trim()
   }
@@ -143,17 +148,19 @@ export class Meta extends MetaManager<MetaTag[]> {
    * @param title page title / заголовок страницы
    */
   setTitle(title: string): this {
-    if (isDomRuntime()) {
-      const fullTitle = isFilled(title)
-        ? `${title}${this.getSuffix()}`
-        : this.suffix
-          ? this.suffix
-          : ''
+    const fullTitle = isFilled(title)
+      ? `${title}${this.getSuffix()}`
+      : this.suffix
+        ? this.suffix
+        : ''
 
+    if (isDomRuntime()) {
       document.title = fullTitle
-      this.og.setTitle(fullTitle)
-      this.twitter.setTitle(fullTitle)
     }
+
+    this.set(MetaTag.title, fullTitle)
+    this.og.setTitle(fullTitle)
+    this.twitter.setTitle(fullTitle)
 
     return this
   }

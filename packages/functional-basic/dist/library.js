@@ -624,62 +624,62 @@ var ge = "ui-storage", _e = () => w.get("__dxt_data_storage__", () => ({})), T =
 		};
 	}
 }, E = class {
-	static getItem() {
+	static getObject() {
 		return w.get("__dxt_geo_instance__", () => new ye());
 	}
 	static get() {
-		return this.getItem().get();
+		return this.getObject().get();
 	}
 	static getCountry() {
-		return this.getItem().getCountry();
+		return this.getObject().getCountry();
 	}
 	static getLanguage() {
-		return this.getItem().getLanguage();
+		return this.getObject().getLanguage();
 	}
 	static getStandard() {
-		return this.getItem().getStandard();
+		return this.getObject().getStandard();
 	}
 	static getFirstDay() {
-		return this.getItem().getFirstDay();
+		return this.getObject().getFirstDay();
 	}
 	static getLocation() {
-		return this.getItem().getLocation();
+		return this.getObject().getLocation();
 	}
-	static getItemFull() {
-		return this.getItem().getItem();
+	static getItem() {
+		return this.getObject().getItem();
 	}
 	static getList() {
-		return this.getItem().getList();
+		return this.getObject().getList();
 	}
 	static getByCode(e) {
-		return this.getItem().getByCode(e);
+		return this.getObject().getByCode(e);
 	}
 	static getByCodeFull(e) {
-		return this.getItem().getByCodeFull(e);
+		return this.getObject().getByCodeFull(e);
 	}
 	static getByCountry(e) {
-		return this.getItem().getByCountry(e);
+		return this.getObject().getByCountry(e);
 	}
 	static getByLanguage(e) {
-		return this.getItem().getByLanguage(e);
+		return this.getObject().getByLanguage(e);
 	}
 	static getTimezone() {
-		return this.getItem().getTimezone();
+		return this.getObject().getTimezone();
 	}
 	static getTimezoneFormat() {
-		return this.getItem().getTimezoneFormat();
+		return this.getObject().getTimezoneFormat();
 	}
 	static find(e) {
-		return this.getItem().find(e);
+		return this.getObject().find(e);
 	}
 	static toStandard(e) {
-		return this.getItem().toStandard(e);
+		return this.getObject().toStandard(e);
 	}
 	static set(e, t) {
-		this.getItem().set(e, t);
+		this.getObject().set(e, t);
 	}
 	static setTimezone(e) {
-		this.getItem().setTimezone(e);
+		this.getObject().setTimezone(e);
 	}
 };
 //#endregion
@@ -872,7 +872,7 @@ var Ee, De = 1440 * 60, A = class {
 		this.getListener = e, this.setListener = t, this.removeListener = n, r && (this.cacheStepAgeClearOld = r, this.stepAgeClearOld = r);
 	}
 	static reset() {
-		return this.items = void 0, this.getListener = void 0, this.setListener = void 0, this.removeListener = void 0, this.stepAgeClearOld = this.cacheStepAgeClearOld, this;
+		this.items = void 0, this.getListener = void 0, this.setListener = void 0, this.removeListener = void 0, this.stepAgeClearOld = this.cacheStepAgeClearOld;
 	}
 	static async get(e) {
 		let t = await this.getItemOrListener(e);
@@ -907,9 +907,8 @@ var Ee, De = 1440 * 60, A = class {
 		await this.removeItemOrListener(e);
 	}
 	static isCache(e) {
-		if (p()) return !1;
-		let { cache: t } = e;
-		return !!t;
+		let { cache: t, enableClientCache: n } = e;
+		return p() && !n ? !1 : !!t;
 	}
 	static isAge(e) {
 		return e ? e.age ? e.age * 1e3 + e.cacheAge >= Date.now() : !0 : !1;
@@ -948,12 +947,10 @@ var Ee, De = 1440 * 60, A = class {
 		this.removeListener && await this.removeListener(e), this.isItem(e) && delete this.getList()[e];
 	}
 	static async clearOld() {
-		if (this.stepAgeClearOld-- > 0) return this;
-		if (this.stepAgeClearOld = this.cacheStepAgeClearOld, this.items) for (let e in this.items) {
+		if (!(this.stepAgeClearOld-- > 0) && (this.stepAgeClearOld = this.cacheStepAgeClearOld, this.items)) for (let e in this.items) {
 			let t = this.items[e];
 			this.isAge(t) || await this.removeItemOrListener(e);
 		}
-		return this;
 	}
 };
 Ee = A, S(A, "items", void 0), S(A, "getListener", void 0), S(A, "setListener", void 0), S(A, "removeListener", void 0), S(A, "cacheStepAgeClearOld", 16384), S(A, "stepAgeClearOld", Ee.cacheStepAgeClearOld);
@@ -1183,7 +1180,7 @@ var Fe = "d-response-loading", Ie = class {
 		this.headers = new n(), this.requestDefault = new r(), this.status = new i(), this.response = new a(this.requestDefault), this.preparation = new o(), this.loading = s, this.errorCenter = c, this.hydration = new l(), this.hydration.initResponse(this.response);
 	}
 	isLocalhost() {
-		return typeof location < "u" && location.hostname === "localhost";
+		return p() && typeof location < "u" && location.hostname === "localhost";
 	}
 	getStatus() {
 		return this.status;
@@ -1396,7 +1393,7 @@ var Fe = "d-response-loading", Ie = class {
 			}, n);
 		}
 	}
-}, M = class e {
+}, M = class {
 	static isLocalhost() {
 		return this.getItem().isLocalhost();
 	}
@@ -1424,26 +1421,26 @@ var Fe = "d-response-loading", Ie = class {
 	static getBodyForGet(e, t = "", n = j.get) {
 		return this.getItem().getBodyForGet(e, t, n);
 	}
-	static setHeaders(t) {
-		return this.getItem().setHeaders(t), e;
+	static setHeaders(e) {
+		this.getItem().setHeaders(e);
 	}
-	static setRequestDefault(t) {
-		return this.getItem().setRequestDefault(t), e;
+	static setRequestDefault(e) {
+		this.getItem().setRequestDefault(e);
 	}
-	static setUrl(t) {
-		return this.getItem().setUrl(t), e;
+	static setUrl(e) {
+		this.getItem().setUrl(e);
 	}
-	static setPreparation(t) {
-		return this.getItem().setPreparation(t), e;
+	static setPreparation(e) {
+		this.getItem().setPreparation(e);
 	}
-	static setEnd(t) {
-		return this.getItem().setEnd(t), e;
+	static setEnd(e) {
+		this.getItem().setEnd(e);
 	}
-	static setTimeout(t) {
-		return this.getItem().setTimeout(t), e;
+	static setTimeout(e) {
+		this.getItem().setTimeout(e);
 	}
 	static setConfig(e) {
-		return e && n(e) && (e.urlRoot && this.setUrl(e.urlRoot), e.headers && this.setHeaders(e.headers), e.requestDefault && this.setRequestDefault(e.requestDefault), e.preparation && this.setPreparation(e.preparation), e.end && this.setEnd(e.end), e.timeout && this.setTimeout(e.timeout)), this;
+		e && n(e) && (e.urlRoot && this.setUrl(e.urlRoot), e.headers && this.setHeaders(e.headers), e.requestDefault && this.setRequestDefault(e.requestDefault), e.preparation && this.setPreparation(e.preparation), e.end && this.setEnd(e.end), e.timeout && this.setTimeout(e.timeout));
 	}
 	static async request(e) {
 		return this.getItem().request(e);
@@ -1496,7 +1493,7 @@ var Fe = "d-response-loading", Ie = class {
 	}
 	destroy() {
 		var e;
-		(e = this.channel) == null || e.close(), this.channel = void 0;
+		return (e = this.channel) == null || e.close(), this.channel = void 0, this;
 	}
 }, ze = () => new T("__broadcast-name").get(() => `name_${d(1e6, 9999999)}`), Be = class {
 	constructor(e) {
@@ -1605,7 +1602,7 @@ var Ge = "cookie-block", Ke = class {
 		return (e = this.storage.get()) == null ? !1 : e;
 	}
 	set(e) {
-		this.storage.set(e);
+		return this.storage.set(e), this;
 	}
 }, qe = class {
 	static getItem() {
@@ -1667,8 +1664,8 @@ S(P, "items", void 0), S(P, "getListener", void 0), S(P, "setListener", void 0);
 //#region src/classes/Cookie.ts
 var Je = () => w.get("__dxt_cookie_items__", () => ({})), Ye = class e {
 	static getInstance(t) {
-		let n = Je();
-		return t in n ? n[t] : new e(t);
+		var n, r;
+		return (n = (r = Je()) == null ? void 0 : r[t]) == null ? new e(t) : n;
 	}
 	constructor(e) {
 		S(this, "value", void 0), S(this, "options", {}), this.name = e;
@@ -1680,13 +1677,13 @@ var Je = () => w.get("__dxt_cookie_items__", () => ({})), Ye = class e {
 		return this.value === void 0 && e && this.set(e, t), this.value;
 	}
 	set(e, t) {
-		this.value = b(e), Object.assign(this.options, t), this.update();
+		return this.value = b(e), Object.assign(this.options, t), this.update(), this;
 	}
 	remove() {
-		this.set("");
+		return this.set(""), this;
 	}
 	update() {
-		P.set(this.name, this.value, this.options);
+		return P.set(this.name, this.value, this.options), this;
 	}
 };
 //#endregion

@@ -27,103 +27,32 @@ import {
   ApiMethodItem,
   type ApiPreparationEnd
 } from '../types/apiTypes'
+import { isDomRuntime } from '../functions/isDomRuntime.ts'
 
-/** Options for the API instance/ Опции для экземпляра API */
+/** Options for the API instance / Опции для экземпляра API */
 export type ApiInstanceOptions = {
-  /** Class for working with headers/ Класс для работы с заголовками */
+  /** Class for working with headers / Класс для работы с заголовками */
   headersClass?: typeof ApiHeaders
-  /** Class for working with default request parameters/ Класс для работы с параметрами запроса по умолчанию */
+  /** Class for working with default request parameters / Класс для работы с параметрами запроса по умолчанию */
   requestDefaultClass?: typeof ApiDefault
-  /** Class for working with status/ Класс для работы со статусом */
+  /** Class for working with status / Класс для работы со статусом */
   statusClass?: typeof ApiStatus
-  /** Class for working with response/ Класс для работы с ответом */
+  /** Class for working with response / Класс для работы с ответом */
   responseClass?: typeof ApiResponse
-  /** Class for working with preparation/ Класс для работы с модификацией запроса */
+  /** Class for working with preparation / Класс для работы с модификацией запроса */
   preparationClass?: typeof ApiPreparation
-  /** Instance of loading handler/ Экземпляр обработчика загрузки */
+  /** Instance of loading handler / Экземпляр обработчика загрузки */
   loadingClass?: LoadingInstance
-  /** Instance of error handler/ Экземпляр обработчика ошибок */
+  /** Instance of error handler / Экземпляр обработчика ошибок */
   errorCenterClass?: ErrorCenterInstance
-  /** Class for working with hydration/ Класс для работы с гидратацией */
+  /** Class for working with hydration / Класс для работы с гидратацией */
   hydrationClass?: typeof ApiHydration
 }
 
 /**
  * Core class for managing HTTP requests using the Fetch API.
  *
- * `ApiInstance` is a powerful and flexible engine for network communication, designed to handle
- * complex scenarios like automatic token refreshing, request retries, response emulation,
- * and global loading/error management. It is used as the base for the static {@link Api} class.
- *
- * ### Key Features:
- * - **CRUD operations**: Support for `GET`, `POST`, `PUT`, `PATCH`, `DELETE` methods with full type support.
- * - **Lifecycle Hooks**: `setPreparation` (before request) and `setEnd` (after response) callbacks.
- * - **Automatic Retries**: Built-in support for request repetition with randomized delays (jitter).
- * - **Data Processing**: Intelligent JSON/FormData parsing and automatic payload extraction.
- * - **Response Emulation**: Intercept and mock requests using the {@link ApiResponse} manager.
- * - **Localization**: Automated substitution of `{locale}`, `{country}`, and `{language}` in URLs.
- * - **Integration**: Seamless connectivity with {@link Loading} and {@link ErrorCenter} components.
- *
- * ---
- *
  * Основной класс для управления HTTP-запросами через Fetch API.
- *
- * `ApiInstance` — это мощный и гибкий движок для сетевого взаимодействия, разработанный для решения
- * сложных задач, таких как автоматическое обновление токенов, повторы запросов, эмуляция ответов
- * и глобальное управление индикацией загрузки и ошибками. Используется как основа для статического класса {@link Api}.
- *
- * ### Ключевые особенности:
- * - **CRUD операции**: Поддержка методов `GET`, `POST`, `PUT`, `PATCH`, `DELETE` с полной типизацией.
- * - **Хуки жизненного цикла**: Колбэки `setPreparation` (до запроса) и `setEnd` (после ответа).
- * - **Автоматические повторы**: Встроенная поддержка повтора запросов с джиттером.
- * - **Обработка данных**: Интеллектуальный парсинг JSON/FormData и извлечение полезной нагрузки.
- * - **Эмуляция ответов**: Перехват и подмена запросов через менеджер {@link ApiResponse}.
- * - **Локализация**: Автоматическая подстановка плейсхолдеров `{locale}`, `{country}` и `{language}`.
- * - **Интеграция**: Бесшовная связь с компонентами {@link Loading} и {@link ErrorCenter}.
- *
- * ---
- *
- * ### Usage Examples / Примеры использования:
- *
- * #### 1. Initialization and Configuration / Инициализация и настройка
- * ```typescript
- * const api = new ApiInstance('https://api.example.com/v1/');
- * api.setHeaders({ 'Accept-Language': 'en' })
- *    .setTimeout(10000);
- * ```
- *
- * #### 2. Simple Request / Простой запрос
- * ```typescript
- * const users = await api.get<User[]>({ path: 'users' });
- * ```
- *
- * #### 3. Lifecycle Hooks: Auth & Refresh Token / Хуки жизненного цикла: Авторизация и Refresh Token
- * ```typescript
- * // Preparation hook for adding tokens / Хук подготовки для добавления токенов
- * api.setPreparation(async (apiFetch) => {
- *   const token = localStorage.getItem('token');
- *   if (token) apiFetch.headers = { ...apiFetch.headers, Authorization: `Bearer ${token}` };
- * });
- *
- * // End hook for token refresh / Хук завершения для обновления токена
- * api.setEnd(async (response, apiFetch) => {
- *   if (response.status === 401) {
- *     const refreshed = await refreshToken();
- *     if (refreshed) return { reset: true }; // Retries the request / Повтор запроса
- *   }
- *   return {};
- * });
- * ```
- *
- * #### 4. Response Emulation (Mocking) / Эмуляция ответов (Моки)
- * ```typescript
- * api.getResponse().add({
- *   path: 'profile',
- *   method: 'GET',
- *   response: { id: 1, name: 'John Doe' },
- *   lag: true // simulate network delay / имитация задержки сети
- * });
- * ```
  */
 export class ApiInstance {
   /** Headers / Заголовки */
@@ -150,13 +79,13 @@ export class ApiInstance {
   /** Hydration handler / Обработчик гидратации */
   protected hydration: ApiHydration
 
-  /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
+  /** Timeout for the request in milliseconds / Таймаут запроса в миллисекундах */
   protected timeout: number = 16000
 
   /**
    * Constructor
-   * @param url base path to the script/ базовый путь к скрипту
-   * @param options options for the API instance/ опции для экземпляра API
+   * @param url base path to the script / базовый путь к скрипту
+   * @param options options for the API instance / опции для экземпляра API
    */
   constructor(
     protected url: string = '/api/',
@@ -186,47 +115,54 @@ export class ApiInstance {
   }
 
   /**
-   * Is the server local.
+   * Checks if the server is running on localhost.
    *
-   * Является ли сервер локальный.
+   * Проверяет, работает ли сервер на localhost.
+   * @returns true if server is localhost / true, если сервер является локальным
    */
   isLocalhost(): boolean {
-    return typeof location !== 'undefined' && location.hostname === 'localhost'
+    return isDomRuntime()
+      && typeof location !== 'undefined'
+      && location.hostname === 'localhost'
   }
 
   /**
    * Returns the status of the last request.
    *
    * Возвращает статус последнего запроса.
+   * @returns ApiStatus instance / экземпляр ApiStatus
    */
   getStatus() {
     return this.status
   }
 
   /**
-   * Getting the response handler.
+   * Gets the response handler.
    *
-   * Получение обработчика ответа.
+   * Получает обработчик ответа.
+   * @returns ApiResponse instance / экземпляр ApiResponse
    */
   getResponse() {
     return this.response
   }
 
   /**
-   * Getting the hydration handler.
+   * Gets the hydration handler.
    *
-   * Получение обработчика гидратации.
+   * Получает обработчик гидратации.
+   * @returns ApiHydration instance / экземпляр ApiHydration
    */
   getHydration() {
     return this.hydration
   }
 
   /**
-   * Getting the full path to the request script.
+   * Gets the full path to the request script.
    *
-   * Получение полного пути к скрипту запроса.
-   * @param path path to the script/ путь к скрипту
-   * @param api adding a path to the site’s API/ добавление пути к API сайта
+   * Получает полный путь к скрипту запроса.
+   * @param path path to the script / путь к скрипту
+   * @param api whether to prepend base API URL / нужно ли добавить базовый URL API
+   * @returns full URL / полный URL
    */
   getUrl(path: string, api: boolean = true): string {
     return `${api ? this.url : ''}${path}`
@@ -236,11 +172,12 @@ export class ApiInstance {
   }
 
   /**
-   * Getting data for the body.
+   * Gets data for the request body.
    *
-   * Получение данных для тела.
-   * @param request this request/ данный запрос
-   * @param method method for request/ метод запрос
+   * Получает данные для тела запроса.
+   * @param request request data / данные запроса
+   * @param method HTTP method / HTTP метод
+   * @returns body data for non-GET requests or FormData / данные тела для не-GET запросов или FormData
    */
   getBody(
     request: ApiFetch['request'] = {},
@@ -265,12 +202,13 @@ export class ApiInstance {
   }
 
   /**
-   * Getting data for the body of the get method.
+   * Gets query string for GET method requests.
    *
-   * Получение данных для тела метода get.
-   * @param request this request/ данный запрос
-   * @param path path to request/ путь к запрос
-   * @param method method for request/ метод запрос
+   * Получает строку запроса для GET-методов.
+   * @param request request data / данные запроса
+   * @param path path to request / путь к запросу
+   * @param method HTTP method / HTTP метод
+   * @returns query string for GET requests / строка запроса для GET-запросов
    */
   getBodyForGet(
     request: ApiFetch['request'],
@@ -293,6 +231,7 @@ export class ApiInstance {
    * Returns a string representation of the hydration data for the client.
    *
    * Возвращает строковое представление данных гидратации для клиента.
+   * @returns HTML script element string / строка HTML элемента script
    */
   getHydrationScript(): string {
     return this.hydration.toString()
@@ -302,6 +241,7 @@ export class ApiInstance {
    * Modifies the default header data.
    *
    * Изменяет данные заголовка по умолчанию.
+   * @param headers default headers / заголовки по умолчанию
    */
   setHeaders(headers: Record<string, string>): this {
     this.headers.set(headers)
@@ -312,6 +252,7 @@ export class ApiInstance {
    * Modifies the default request data.
    *
    * Изменяет данные запроса по умолчанию.
+   * @param request default request data / данные запроса по умолчанию
    */
   setRequestDefault(request: Record<string, any>): this {
     this.requestDefault.set(request)
@@ -319,10 +260,10 @@ export class ApiInstance {
   }
 
   /**
-   * Change the base path to the script.
+   * Changes the base path to the script.
    *
-   * Изменить базовый путь к скрипту.
-   * @param url path to the script/ путь к скрипту
+   * Изменяет базовый путь к скрипту.
+   * @param url path to the script / путь к скрипту
    */
   setUrl(url: string): this {
     this.url = url
@@ -330,10 +271,10 @@ export class ApiInstance {
   }
 
   /**
-   * The function is modified for a call before the request.
+   * Modifies the function to be called before the request.
    *
-   * Изменить функцию перед запросом.
-   * @param callback function for call/ функция для вызова
+   * Изменяет функцию для вызова перед запросом.
+   * @param callback function to call before request / функция для вызова перед запросом
    */
   setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this {
     this.preparation.set(callback)
@@ -341,10 +282,10 @@ export class ApiInstance {
   }
 
   /**
-   * Modify the function after the request.
+   * Modifies the function to be called after the request.
    *
-   * Изменить функцию после запроса.
-   * @param callback function for call/ функция для вызова
+   * Изменяет функцию для вызова после запроса.
+   * @param callback function to call after request / функция для вызова после запроса
    */
   setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
     this.preparation.setEnd(callback)
@@ -352,10 +293,10 @@ export class ApiInstance {
   }
 
   /**
-   * Change the timeout for the request in milliseconds.
+   * Changes the timeout for the request in milliseconds.
    *
-   * Изменить таймаут запроса в миллисекундах.
-   * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+   * Изменяет таймаут запроса в миллисекундах.
+   * @param timeout timeout in milliseconds / таймаут в миллисекундах
    */
   setTimeout(timeout: number): this {
     this.timeout = timeout
@@ -363,10 +304,11 @@ export class ApiInstance {
   }
 
   /**
-   * To execute a request.
+   * Executes a request with the given path or configuration.
    *
-   * Выполнить запрос.
-   * @param pathRequest path or configuration/ путь или конфигурация запроса
+   * Выполняет запрос с указанным путем или конфигурацией.
+   * @param pathRequest path or configuration / путь или конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   async request<T>(pathRequest: string | ApiFetch): Promise<T> {
     if (isString(pathRequest)) {
@@ -382,7 +324,8 @@ export class ApiInstance {
    * Sends a GET method request.
    *
    * Отправляет запрос метода GET.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   get<T>(request: ApiFetch): Promise<T> {
     return this.request({
@@ -395,7 +338,8 @@ export class ApiInstance {
    * Sends a POST method request.
    *
    * Отправляет запрос метода POST.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   post<T>(request: ApiFetch): Promise<T> {
     return this.request({
@@ -408,7 +352,8 @@ export class ApiInstance {
    * Sends a PUT method request.
    *
    * Отправляет запрос метода PUT.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   put<T>(request: ApiFetch): Promise<T> {
     return this.request({
@@ -421,7 +366,8 @@ export class ApiInstance {
    * Sends a PATCH method request.
    *
    * Отправляет запрос метода PATCH.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   patch<T>(request: ApiFetch): Promise<T> {
     return this.request({
@@ -434,7 +380,8 @@ export class ApiInstance {
    * Sends a DELETE method request.
    *
    * Отправляет запрос метода DELETE.
-   * @param request fetch configuration/ конфигурация запроса
+   * @param request fetch configuration / конфигурация запроса
+   * @returns Promise with response data / Promise с данными ответа
    */
   delete<T>(request: ApiFetch): Promise<T> {
     return this.request({
@@ -444,22 +391,23 @@ export class ApiInstance {
   }
 
   /**
-   * Get retry delay.
+   * Gets retry delay with jitter.
    *
-   * Получить задержку повтора.
-   * @param retryCount count of retries/ количество повторов
-   * @param retryDelay delay between retries/ задержка между повторами
+   * Получает задержку повтора с джиттером.
+   * @param retryCount count of retries / количество повторов
+   * @param retryDelay base delay between retries / базовая задержка между повторами
+   * @returns delay in milliseconds / задержка в миллисекундах
    */
   protected getRetryDelay(retryCount: number, retryDelay: number): number {
     return random(retryDelay, retryDelay + (retryCount * retryDelay))
   }
 
   /**
-   * To execute a request.
+   * Execute API request with retry support.
    *
-   * Выполнить запрос.
-   * @param apiFetch property of the request/ свойство запроса
-   * @param retryCount count of retries/ количество повторов
+   * Выполнить запрос API с поддержкой повторов.
+   * @param apiFetch fetch configuration / конфигурация запроса
+   * @param retryCount current retry count / текущий счетчик повторов
    */
   protected async fetch<T>(
     apiFetch: ApiFetch,
@@ -570,12 +518,13 @@ export class ApiInstance {
   }
 
   /**
-   * Reading data from the response.
+   * Reads data from the response.
    *
-   * Чтение данных из ответа.
-   * @param query response from the server/ ответ от сервера
-   * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
-   * @param end finalization data/ данные финализации
+   * Читает данные из ответа.
+   * @param query response from the server / ответ от сервера
+   * @param queryReturn custom function for reading data / кастомная функция для чтения данных
+   * @param end finalization data / данные финализации
+   * @returns parsed API data / распарсенные данные API
    */
   protected async readData<T>(
     query: Response,
@@ -598,10 +547,11 @@ export class ApiInstance {
   }
 
   /**
-   * Executing the request.
+   * Executing the HTTP request.
    *
-   * Выполнение запроса.
-   * @param apiFetch property of the request/ свойство запроса
+   * Выполнение HTTP-запроса.
+   * @param apiFetch fetch configuration / конфигурация запроса
+   * @returns object containing response and optional timeout ID / объект, содержащий ответ и опциональный ID таймера
    */
   protected async makeQuery(apiFetch: ApiFetch): Promise<{ query: Response, timeoutId: any }> {
     const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
@@ -643,8 +593,9 @@ export class ApiInstance {
    * Transforms data if needed.
    *
    * Преобразует данные, если нужно.
-   * @param data data for transformation/ данные для преобразования
-   * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
+   * @param data data for transformation / данные для преобразования
+   * @param toData is it necessary to process the data / нужно ли обрабатывать данные
+   * @returns transformed data / преобразованные данные
    */
   protected makeData<T>(
     data: ApiData<T>,
@@ -698,8 +649,9 @@ export class ApiInstance {
    * Appends the status object to the response data if possible.
    *
    * Добавляет объект статуса к данным ответа, если это возможно.
-   * @param data response data/ данные ответа
-   * @param status status object/ объект статуса
+   * @param data response data / данные ответа
+   * @param status status object / объект статуса
+   * @returns data with status object appended / данные с добавленным объектом статуса
    */
   protected makeStatus<T>(
     data: ApiData<T>,
@@ -722,8 +674,8 @@ export class ApiInstance {
    * Processing an error.
    *
    * Обработка ошибки.
-   * @param error error object/ объект ошибки
-   * @param group error group/ группа ошибки
+   * @param error error object / объект ошибки
+   * @param group error group for error center (default: 'api') / группа ошибки для центра ошибок (по умолчанию: 'api')
    */
   protected makeError(
     error: Record<string, any> & { name: string },
@@ -745,10 +697,10 @@ export class ApiInstance {
   }
 
   /**
-   * Processing an error query.
+   * Processes an error response.
    *
-   * Обработка ошибки запроса.
-   * @param query error query/ ошибка запроса
+   * Обрабатывает ошибку ответа.
+   * @param query error response / ответ с ошибкой
    */
   protected makeErrorQuery(query: Response): void {
     switch (query.status) {
@@ -774,11 +726,12 @@ export class ApiInstance {
   }
 
   /**
-   * Initialize controller for request.
+   * Initialize controller for request with timeout support.
    *
-   * Инициализация контроллера для запроса.
-   * @param apiFetch request options/ опции запроса
-   * @param fetchInit request initialization/ инициализация запроса
+   * Инициализация контроллера для запроса с поддержкой таймаута.
+   * @param apiFetch request options / опции запроса
+   * @param fetchInit request initialization object / объект инициализации запроса
+   * @returns timeout ID for manual cancellation or undefined / ID таймера для ручной отмены или undefined
    */
   protected initController(
     apiFetch: ApiFetch,

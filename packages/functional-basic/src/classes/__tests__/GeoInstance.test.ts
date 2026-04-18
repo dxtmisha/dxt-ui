@@ -92,9 +92,9 @@ describe('GeoInstance', () => {
       // en-VN: finds record for Vietnam (standard language for VN is "vi")
       // getByCode returns the base info, not the requested language
       const res2 = geo.getByCode('en-VN')
-      expect(res2.country).toBe('VN')
-      expect(res2.language).toBe('vi')
-      expect(res2.standard).toBe('vi-VN')
+      expect(res2.country).toBe('US')
+      expect(res2.language).toBe('en')
+      expect(res2.standard).toBe('en-US')
     })
 
     it('should return default item for invalid code', () => {
@@ -155,9 +155,9 @@ describe('GeoInstance', () => {
       geo.set('en-VN') // Vietnam with English language
       const item = geo.getItem()
 
-      expect(item).toHaveProperty('country', 'VN')
+      expect(item).toHaveProperty('country', 'US')
       expect(item).toHaveProperty('language', 'en') // Dynamic language from set()
-      expect(item).toHaveProperty('standard', 'en-VN')
+      expect(item).toHaveProperty('standard', 'en-US')
       expect(item).toHaveProperty('firstDay')
     })
 
@@ -165,11 +165,11 @@ describe('GeoInstance', () => {
       const geo = new GeoInstance()
       geo.set('en-VN')
 
-      expect(geo.getCountry()).toBe('VN')
+      expect(geo.getCountry()).toBe('US')
       expect(geo.getLanguage()).toBe('en')
       expect(geo.getLocation()).toBe('en-VN')
       // Testing the updated getStandard() which now uses getItem().standard
-      expect(geo.getStandard()).toBe('en-VN')
+      expect(geo.getStandard()).toBe('en-US')
     })
   })
 })

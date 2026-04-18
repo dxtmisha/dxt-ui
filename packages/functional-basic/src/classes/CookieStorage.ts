@@ -7,6 +7,7 @@ import { strSplit } from '../functions/strSplit'
 import { transformation } from '../functions/transformation'
 
 import { CookieBlock } from './CookieBlock'
+import { ServerStorage } from './ServerStorage'
 
 /**
  * Cookie sameSite attribute / Атрибут sameSite cookie
@@ -22,8 +23,11 @@ export type CookieOptions = {
   /** SameSite attribute / Атрибут SameSite */
   sameSite?: CookieSameSite
   /** Additional arguments / Дополнительные аргументы */
-  arguments?: string[]
+  arguments?: string[] | Record<string, string | number | boolean>
 }
+
+/** Server storage key / Ключ серверного хранилища */
+const SERVER_STORAGE_KEY = '__ui:cookie-storage__'
 
 /**
  * Class for managing cookie storage with support for custom listeners.
@@ -33,9 +37,6 @@ export type CookieOptions = {
  * Полезен для консистентной работы с cookie в различных окружениях (DOM, SSR).
  */
 export class CookieStorage {
-  /** Memory storage for cookies / Хранилище cookie в памяти */
-  protected static items?: Record<string, any>
-
   /** Storage mechanism for getting data / механизм хранения для получения данных */
   protected static getListener?: (key: string) => any | undefined
 
@@ -67,7 +68,6 @@ export class CookieStorage {
    * Сбрасывает хранилище, очищая все элементы в памяти и сбрасывая слушатели.
    */
   static reset(): void {
-    this.items = undefined
     this.getListener = undefined
     this.setListener = undefined
   }
@@ -77,6 +77,7 @@ export class CookieStorage {
    *
    * Получение данных из хранилища.
    * @param name cookie name / имя cookie
+   * @param defaultValue default value / значение по умолчанию
    */
   static get<T>(
     name: string,
@@ -102,7 +103,6 @@ export class CookieStorage {
    * Сохранение данных в хранилище.
    * @param name cookie name / имя cookie
    * @param value data to be stored / данные для хранения
-   * @param age cache age / возраст кэша
    * @param options additional parameters / дополнительные параметры
    */
   static set<T>(
@@ -130,9 +130,9 @@ export class CookieStorage {
       if (this.hasDom()) {
         document.cookie = [
           `${encodeURIComponent(name)}=${encodeURIComponent(stringValue)}`,
-          `max-age=${stringValue === '' ? '-1' : options?.age ?? (7 * 24 * 60 * 60)}`,
-          `SameSite=${options?.sameSite ?? 'strict'}`,
-          ...(options?.arguments ?? [])
+          this.toMaxAge(stringValue, options?.age),
+          this.toSameSite(options?.sameSite),
+          ...this.toArguments(options?.arguments)
         ].join('; ')
       }
     }
@@ -156,7 +156,10 @@ export class CookieStorage {
    * Обновляет данные из cookies.
    */
   static update(): void {
-    this.initItems()
+    if (isDomRuntime()) {
+      ServerStorage.remove(SERVER_STORAGE_KEY)
+      this.initItems()
+    }
   }
 
   /**
@@ -176,25 +179,74 @@ export class CookieStorage {
    * Инициализирует хранилище, если оно не инициализировано.
    */
   protected static initItems(): Record<string, any> {
-    if (this.items) {
-      return this.items
-    }
+    return ServerStorage.get(SERVER_STORAGE_KEY, () => {
+      const items: Record<string, any> = {}
 
-    this.items = {}
+      if (this.hasDom()) {
+        for (const item of document.cookie.split(';')) {
+          const [key, value] = strSplit(item.trim(), '=', 2)
 
-    if (this.hasDom()) {
-      for (const item of document.cookie.split(';')) {
-        const [key, value] = strSplit(item.trim(), '=', 2)
-
-        if (
-          key
-          && isFilled(value)
-        ) {
-          this.items[key] = value
+          if (
+            key
+            && isFilled(value)
+          ) {
+            items[key] = value
+          }
         }
       }
+
+      return items
+    })
+  }
+
+  /**
+   * Converts the value to a string for the max-age attribute.
+   *
+   * Преобразует значение в строку для атрибута max-age.
+   * @param stringValue cookie value / значение cookie
+   * @param age cache age / возраст кэша
+   */
+  protected static toMaxAge(
+    stringValue: string,
+    age?: CookieOptions['age']
+  ): string {
+    const ageValue = stringValue === ''
+      ? -1
+      : age ?? (7 * 24 * 60 * 60)
+
+    return `max-age=${ageValue}`
+  }
+
+  /**
+   * Converts the value to a string for the SameSite attribute.
+   *
+   * Преобразует значение в строку для атрибута SameSite.
+   * @param sameSite SameSite attribute / атрибут SameSite
+   */
+  protected static toSameSite(
+    sameSite?: CookieOptions['sameSite']
+  ): string {
+    return `SameSite=${sameSite ?? 'strict'}`
+  }
+
+  /**
+   * Converts additional arguments to an array of strings.
+   *
+   * Преобразует дополнительные аргументы в массив строк.
+   * @param args additional arguments / дополнительные аргументы
+   */
+  protected static toArguments(
+    args?: CookieOptions['arguments']
+  ): string[] {
+    if (args === undefined) {
+      return []
     }
 
-    return this.items
+    if (Array.isArray(args)) {
+      return args
+    }
+
+    return Object.entries(args)
+      .map(([key, value]) => `${key}=${anyToString(value)}`)
   }
 }

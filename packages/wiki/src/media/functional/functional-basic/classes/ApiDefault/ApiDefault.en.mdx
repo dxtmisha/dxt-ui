@@ -15,9 +15,11 @@ A class for managing default data for API requests. It allows setting base param
 - **Intelligent Merging** — Merges defaults with request-specific data, prioritizing the actual request data if keys overlap.
 - **Chainable API** — Supports a fluent interface for setting parameters.
 
-## Action Methods
+## Methods
 
-### `request`
+### Action
+
+#### `request`
 
 Merges the stored default data into a provided request object or `FormData` instance. If the input is a plain object, it returns a new merged object. If the input is `FormData`, it adds missing keys directly to the instance.
 
@@ -26,12 +28,12 @@ Merges the stored default data into a provided request object or `FormData` inst
 
 **Returns:** `ApiFetch['request']` — The transformed request data.
 
-## Check Methods
+### Check
 
 - `is(): boolean` — Checks if any default data has been set.
 - `get(): ApiDefaultValue | undefined` — Returns the current default data object.
 
-## Configuration
+### Configuration
 
 - `set(request: ApiDefaultValue): this` — Sets the default data for all future requests.
 

@@ -4,6 +4,7 @@ import { CacheItem } from './CacheItem'
  * Simple class for caching.
  *
  * Простой класс для кэширования.
+ * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class Cache {
   private cache: Record<string, CacheItem<any>> = {}

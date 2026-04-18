@@ -26,9 +26,11 @@ const cache = new Cache()
 const user = cache.get('user', () => 'Admin', [1])
 ```
 
-## Data Retrieval
+## Methods
 
-### `get`
+### Action
+
+#### `get`
 
 Use the `get()` method to retrieve a cached value or calculate it if it doesn't exist or is stale.
 
@@ -53,7 +55,7 @@ const unchanged = cache.get('user', () => `User ${++counter}`, [1])
 const changed = cache.get('user', () => `User ${++counter}`, [2])
 ```
 
-### `getAsync`
+#### `getAsync`
 
 Functions identically to `get()`, but designed for async calls.
 
@@ -81,4 +83,3 @@ const u1Cached = await fetchUser(5)
 // Dependency `id` changed (5 !== 6), hits the network again
 const u2 = await fetchUser(6)
 ```
-

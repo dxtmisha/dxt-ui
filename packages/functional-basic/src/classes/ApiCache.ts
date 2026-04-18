@@ -46,7 +46,8 @@ export class ApiCache {
    * @param getListener Storage mechanism for getting data / механизм хранения для получения данных
    * @param setListener Storage mechanism for setting data / механизм хранения для сохранения данных
    * @param removeListener Storage mechanism for removing data / механизм хранения для удаления данных
-   * @param cacheStepAgeClearOld Number of data retrieval requests before starting the cleaning of old cache / количество запросов получения данных перед началом очистки старого кэша
+   * @param cacheStepAgeClearOld Number of data retrieval requests before starting the cleaning of old cache /
+   * количество запросов получения данных перед началом очистки старого кэша
    */
   static init(
     getListener: (key: string) => Promise<ApiCacheItem | undefined>,
@@ -68,8 +69,9 @@ export class ApiCache {
    * Resets the cache by clearing all in-memory items and resetting listeners.
    *
    * Сбрасывает кэш, очищая все элементы в памяти и сбрасывая слушатели.
+   * @returns void / ничего не возвращает
    */
-  static reset(): typeof ApiCache {
+  static reset(): void {
     this.items = undefined
 
     this.getListener = undefined
@@ -77,14 +79,12 @@ export class ApiCache {
     this.removeListener = undefined
 
     this.stepAgeClearOld = this.cacheStepAgeClearOld
-
-    return this
   }
 
   /**
-   * Getting data from cache.
+   * Gets data from cache.
    *
-   * Получение данных из кэша.
+   * Получает данные из кэша.
    * @param key cache key / ключ кэша
    */
   static async get<T>(key: string): Promise<T | undefined> {
@@ -103,9 +103,9 @@ export class ApiCache {
   }
 
   /**
-   * Getting data from cache using fetch options.
+   * Gets data from cache using fetch options.
    *
-   * Получение данных из кэша с использованием опций fetch.
+   * Получает данные из кэша с использованием опций fetch.
    * @param fetch fetch options / опции fetch
    */
   static async getByFetch<T>(fetch: ApiFetch): Promise<T | undefined> {
@@ -118,12 +118,12 @@ export class ApiCache {
   }
 
   /**
-   * Saving data to cache.
+   * Saves data to cache.
    *
-   * Сохранение данных в кэш.
+   * Сохраняет данные в кэш.
    * @param key cache key / ключ кэша
    * @param value data to be stored / данные для хранения
-   * @param age cache age / возраст кэша
+   * @param age cache age in seconds / возраст кэша в секундах
    */
   static async set<T>(
     key: string,
@@ -140,9 +140,9 @@ export class ApiCache {
   }
 
   /**
-   * Saving data to cache using fetch options.
+   * Saves data to cache using fetch options.
    *
-   * Сохранение данных в кэш с использованием опций fetch.
+   * Сохраняет данные в кэш с использованием опций fetch.
    * @param fetch fetch options / опции fetch
    * @param value data to be stored / данные для хранения
    */
@@ -154,9 +154,9 @@ export class ApiCache {
   }
 
   /**
-   * Removing data from cache.
+   * Removes data from cache.
    *
-   * Удаление данных из кэша.
+   * Удаляет данные из кэша.
    * @param key cache key / ключ кэша
    */
   static async remove(key: string): Promise<void> {
@@ -168,21 +168,25 @@ export class ApiCache {
    *
    * Проверяет, включен ли кэш.
    * @param fetch fetch options / опции fetch
+   * @returns true if cache is enabled / true, если кэш включен
    */
   protected static isCache(fetch: ApiFetch): boolean {
-    if (isDomRuntime()) {
+    const { cache, enableClientCache } = fetch
+
+    if (
+      isDomRuntime()
+      && !enableClientCache
+    ) {
       return false
     }
-
-    const { cache } = fetch
 
     return Boolean(cache)
   }
 
   /**
-   * Checks for storage time limit.
+   * Checks if cache item is still valid (not expired).
    *
-   * Проверяет на лимит времени хранения.
+   * Проверяет, действителен ли элемент кэша (не истек ли срок действия).
    * @param item cache item / элемент кэша
    */
   protected static isAge(item?: ApiCacheItem): boolean {
@@ -202,16 +206,18 @@ export class ApiCache {
    *
    * Проверяет, существует ли ключ в кэше.
    * @param key cache key / ключ кэша
+   * @returns true if key exists / true, если ключ существует
    */
   protected static isItem(key: string): boolean {
     return key in this.getList()
   }
 
   /**
-   * Generate cache key from fetch options.
+   * Generates cache key from fetch options.
    *
-   * Генерация ключа кэша из опций fetch.
+   * Генерирует ключ кэша из опций fetch.
    * @param fetch fetch options / опции fetch
+   * @returns cache key string / строка ключа кэша
    */
   protected static generateKey(fetch: ApiFetch): string {
     return JSON.stringify({
@@ -228,10 +234,11 @@ export class ApiCache {
   }
 
   /**
-   * Getting data from cache using listener.
+   * Gets data from cache using listener.
    *
-   * Получение данных из кэша с использованием слушателя.
+   * Получает данные из кэша с использованием слушателя.
    * @param key cache key / ключ кэша
+   * @returns cache item or undefined / элемент кэша или undefined
    */
   protected static async getItemOrListener(key: string): Promise<ApiCacheItem | undefined> {
     const item = this.getListener
@@ -246,9 +253,9 @@ export class ApiCache {
   }
 
   /**
-   * Getting list of cache items.
+   * Gets list of cache items.
    *
-   * Получение списка элементов кэша.
+   * Получает список элементов кэша.
    * @returns list of cache items / список элементов кэша
    */
   protected static getList(): ApiCacheList {
@@ -260,11 +267,12 @@ export class ApiCache {
   }
 
   /**
-   * Saving data to cache using listener.
+   * Saves data to cache using listener.
    *
-   * Сохранение данных в кэш с использованием слушателя.
+   * Сохраняет данные в кэш с использованием слушателя.
    * @param key cache key / ключ кэша
    * @param value data to be stored / данные для хранения
+   * @returns Promise<void> / Promise без возвращаемого значения
    */
   protected static async setItemOrListener(key: string, value: ApiCacheItem): Promise<void> {
     const status = this.setListener
@@ -278,10 +286,11 @@ export class ApiCache {
   }
 
   /**
-   * Removing data from cache using listener.
+   * Removes data from cache using listener.
    *
-   * Удаление данных из кэша с использованием слушателя.
+   * Удаляет данные из кэша с использованием слушателя.
    * @param key cache key / ключ кэша
+   * @returns Promise<void> / Promise без возвращаемого значения
    */
   protected static async removeItemOrListener(key: string): Promise<void> {
     if (this.removeListener) {
@@ -294,13 +303,14 @@ export class ApiCache {
   }
 
   /**
-   * Clear old in-memory cache data.
+   * Clears old in-memory cache data.
    *
-   * Очистить старый кэш в памяти.
+   * Очищает старый кэш в памяти.
+   * @returns Promise<void> / Promise без возвращаемого значения
    */
-  protected static async clearOld(): Promise<typeof ApiCache> {
+  protected static async clearOld(): Promise<void> {
     if (this.stepAgeClearOld-- > 0) {
-      return this
+      return
     }
 
     this.stepAgeClearOld = this.cacheStepAgeClearOld
@@ -314,7 +324,5 @@ export class ApiCache {
         }
       }
     }
-
-    return this
   }
 }

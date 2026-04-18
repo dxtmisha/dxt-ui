@@ -39,7 +39,7 @@ export class ApiResponse {
 
   /**
    * Constructor
-   * @param requestDefault default request processor/ процессор запросов по умолчанию
+   * @param requestDefault default request class/ класс запросов по умолчанию
    */
   constructor(
     protected readonly requestDefault: ApiDefault
@@ -54,6 +54,7 @@ export class ApiResponse {
    * @param method request method/ метод запроса
    * @param request data for the request/ данные для запроса
    * @param devMode is it developer mode/ является ли режим разработчика
+   * @returns cached response item or undefined / кешированный элемент ответа или undefined
    */
   get(
     path: string = '',
@@ -82,18 +83,18 @@ export class ApiResponse {
   }
 
   /**
-   * Returns a list of data about the emulator.
+   * Returns a list of cached API responses (excluding global responses).
    *
-   * Возвращает список данных об эмуляторе.
+   * Возвращает список кешированных ответов API (исключая глобальные ответы).
    */
   getList(): (ApiResponseItem & Record<string, any>)[] {
     return this.response.filter(item => item.isForGlobal !== true)
   }
 
   /**
-   * Adding cached requests.
+   * Adds cached requests.
    *
-   * Добавление кешированных запросов.
+   * Добавляет кешированные запросы.
    * @param response data for caching/ данные для кеширования
    */
   add(
@@ -108,6 +109,7 @@ export class ApiResponse {
    *
    * Устанавливает режим разработчика.
    * @param devMode is it developer mode/ является ли режим разработчика
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   setDevMode(devMode: boolean): this {
     this.devMode = devMode
@@ -115,10 +117,11 @@ export class ApiResponse {
   }
 
   /**
-   * Execution of the emulator if available.
+   * Executes the emulator if available.
    *
-   * Выполнение эмулятора, если доступно.
-   * @param apiFetch property of the request/ свойство запроса
+   * Выполняет эмулятор, если доступно.
+   * @param apiFetch fetch configuration/ конфигурация запроса
+   * @returns emulated response or undefined / эмулированный ответ или undefined
    */
   async emulator<T>(apiFetch: ApiFetch): Promise<T | undefined> {
     if (!isDomRuntime()) {
@@ -158,6 +161,7 @@ export class ApiResponse {
    *
    * Проверяет, отключен ли кешированный элемент.
    * @param item cached item/ кешированный элемент
+   * @returns true if item is disabled / true, если элемент отключен
    */
   protected isDisable(item: ApiResponseItem): boolean {
     return Boolean(executeFunction(item?.disable))
@@ -169,6 +173,7 @@ export class ApiResponse {
    * Проверяет, совпадает ли путь с кешированным.
    * @param item cached item/ кешированный элемент
    * @param path request path/ путь запроса
+   * @returns true if paths match / true, если пути совпадают
    */
   protected isPath(
     item: ApiResponseItem,
@@ -186,6 +191,7 @@ export class ApiResponse {
    *
    * Проверяет, является ли режимом разработчика.
    * @param devMode is it developer mode/ является ли режим разработчика
+   * @returns true if in dev mode / true, если в режиме разработчика
    */
   protected isDevMode(devMode?: boolean): boolean {
     return devMode || this.devMode
@@ -197,6 +203,7 @@ export class ApiResponse {
    * Проверяет, является ли это первым запросом.
    * @param item cached item/ кешированный элемент
    * @param devMode is it developer mode/ является ли режим разработчика
+   * @returns true if this is the first request / true, если это первый запрос
    */
   protected isFirst(
     item: ApiResponseItem,
@@ -212,6 +219,7 @@ export class ApiResponse {
    * Проверяет, совпадает ли запрос с кешированным.
    * @param item cached item/ кешированный элемент
    * @param request request data/ данные запроса
+   * @returns true if requests match / true, если запросы совпадают
    */
   protected isResponse(
     item: ApiResponseItem,
@@ -240,6 +248,7 @@ export class ApiResponse {
    * Эмулирует запрос выполнения (внутренний fetch).
    * @param response response item for emulation/ элемент ответа для эмуляции
    * @param request data for the request/ данные для запроса
+   * @returns Promise with emulated response data / Promise с эмулированными данными ответа
    */
   protected fetch<T>(
     response: ApiResponseItem,
@@ -271,9 +280,9 @@ export class ApiResponse {
   }
 
   /**
-   * Enable loading for request emulation.
+   * Enables loading for request emulation.
    *
-   * Включить загрузку для эмуляции запроса.
+   * Включает загрузку для эмуляции запроса.
    */
   protected startResponseLoading() {
     if (this.loading) {
@@ -286,9 +295,9 @@ export class ApiResponse {
   }
 
   /**
-   * Disable loading for request emulation.
+   * Disables loading for request emulation.
    *
-   * Отключить загрузку для эмуляции запроса.
+   * Отключает загрузку для эмуляции запроса.
    */
   protected stopResponseLoading() {
     if (isDomRuntime()) {

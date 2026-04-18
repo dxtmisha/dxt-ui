@@ -14,7 +14,9 @@ It includes tight integration with dependency classes: `ApiStatus`, `ApiResponse
 - **Global Configuration** — setting base URL, default headers, and parameters for all requests
 - **Lifecycle Hooks** — ability to set custom callback functions executed before (`setPreparation`) and after (`setEnd`) each request
 - **Status Tracking** — access to the status and errors of the last request via `ApiStatus`
-- **Caching & Emulation** — managing mock responses and caching via `ApiResponse`
+- **Hydration** — transferring data from server to client (SSR) for instant rendering
+- **Caching** — saving responses in internal or external storage via `ApiCache`
+- **Response Emulation** — flexible management of mock data via `ApiResponse`
 - **Automatic Parsing** — converting the request body into JSON/FormData and automatically extracting data from JSON responses
 - **Geolocation** — automatic substitution of `{locale}`, `{country}`, `{language}` placeholders into request paths
 
@@ -35,10 +37,13 @@ The `ApiInstance` can be configured during initialization with custom dependency
 - `preparationClass?: typeof ApiPreparation` — class for lifecycle hook management.
 - `loadingClass?: LoadingInstance` — instance of the loading indicator manager (defaults to `Loading.getItem()`).
 - `errorCenterClass?: ErrorCenterInstance` — instance of the error center for triggering events (defaults to `ErrorCenter.getItem()`).
+- `hydrationClass?: typeof ApiHydration` — class for SSR hydration management.
 
-## API Calling Methods
+## Methods
 
-### `request`
+### Action
+
+#### `request`
 
 Core executor sequence method managing pure physical network fetch pipelines. Should a solitary string serve as param context, default `GET` assumptions trigger automatically.
 In case of network failures (e.g., 500 status), the method explicitly throws an exception (`throw e`), allowing errors to be natively intercepted in `try/catch`. If the server returns a JSON object, the system automatically injects a `statusObject` field (instance of request status) to the returned payload.
@@ -48,58 +53,21 @@ In case of network failures (e.g., 500 status), the method explicitly throws an 
 
 **Returns:** `Promise<ApiData<T>>` — decoded endpoint structural response formatted interface (including `data`, `statusObject`, etc., when returning an object payload).
 
-### `get`
+### Shorthand
 
-Dispatches a basic query through HTTP `GET` methodologies natively optimizing inputs payload onto string search parameters formats automatically.
+- `get(request: ApiFetch): Promise<T>` — Dispatches a basic query through HTTP `GET` methodologies natively optimizing inputs payload onto string search parameters formats automatically.
+- `post(request: ApiFetch): Promise<T>` — Transfers query packets across standard REST/GraphQL pipelines formatted onto the HTTP `POST` specification.
+- `put(request: ApiFetch): Promise<T>` — Directs object modifications over target remote points using typical system environment HTTP `PUT`.
+- `patch(request: ApiFetch): Promise<T>` — Initiates partial resource updates using the standard HTTP `PATCH` method.
+- `delete(request: ApiFetch): Promise<T>` — Forwards structural clearance/purge request using classic URL targeted HTTP `DELETE`.
 
-**Parameters:**
-- `request: ApiFetch` — fetch execution configuration property mapping (`path`, `request` body, and so on).
-
-**Returns:** `Promise<T>`
-
-### `post`
-
-Transfers query packets across standard REST/GraphQL pipelines formatted onto the HTTP `POST` specification.
-
-**Parameters:**
-- `request: ApiFetch` — parameters interface structure container including URL pointing directives.
-
-**Returns:** `Promise<T>`
-
-### `put`
-
-Directs object modifications over target remote points using typical system environment HTTP `PUT`.
-
-**Parameters:**
-- `request: ApiFetch` — query options mapped against backend routing.
-
-**Returns:** `Promise<T>`
-
-### `patch`
-
-Initiates partial resource updates using the standard HTTP `PATCH` method.
-
-**Parameters:**
-- `request: ApiFetch` — request configuration including partial payload data.
-
-**Returns:** `Promise<T>`
-
-### `delete`
-
-Forwards structural clearance/purge request using classic URL targeted HTTP `DELETE`.
-
-**Parameters:**
-- `request: ApiFetch` — arguments package structure wrapper.
-
-**Returns:** `Promise<T>`
-
-## Instance Retrieval Methods
+### Check
 
 - `isLocalhost(): boolean` — Returns `true` if the code is running on a local development server.
 - `getStatus(): ApiStatus` — Returns the `ApiStatus` manager for tracking the state, errors, and complete response object of the last network request.
 - `getResponse(): ApiResponse` — Returns the responses/emulation manager `ApiResponse` for controlling mock-responses.
 
-## Configuration Methods
+### Configuration
 
 Methods to configure the API (support chaining, returning the `ApiInstance` object):
 - `setHeaders(headers: Record<string, string>): this` — Applies universal headers injected automatically toward outbound fetch activities.
@@ -108,11 +76,13 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Connects a custom hook function actively running just _before_ execution trigger occurs.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Sets the hook triggered exactly _after_ network response returns.
 
-## Request Preparation Methods
+### Auxiliary
 
-- `getUrl(path: string, api?: boolean): string` — Generates the full target URL referencing the script, handling dynamic geography variables.
+- `getUrl(path: string, api?: boolean): string` — Generates the full target URL referencing the script, handling `{locale}`, `{country}`, `{language}` placeholder substitution.
 - `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Creates data to be passed into the request physical body.
 - `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Forms query parameters specifically for HTTP arguments assigned into the URL directly used when sending `GET` queries.
+- `getHydration(): ApiHydration` — Returns the hydration manager.
+- `getHydrationScript(): string` — Returns a string representation of the hydration data for the client.
 
 ## ApiFetch Object
 
@@ -134,8 +104,8 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `globalEnd?: boolean` — whether to run the global `setEnd` hook after the response. Default: `true`.
 - `queryReturn?: (query: Response) => Promise<any>` — custom response processor instead of the default JSON reader.
 - `init?: RequestInit` — additional options passed directly to native `fetch()` (CORS, cache mode, etc.).
-- `timeout?: number` — request timeout in milliseconds. Default: `16000`ms.
-- `controller?: AbortController` — controller for canceling the request.
+- `timeout?: number` — request timeout in milliseconds. Default: `16000`ms (only used if `controller` is not provided).
+- `controller?: AbortController` — controller for canceling the request. If provided, timeout is ignored.
 - `retry?: number` — number of retries on failure.
 - `retryDelay?: number` — base delay between retries in milliseconds. Default: `64`ms.
 
@@ -254,7 +224,80 @@ You can selectively disable global hooks in the `ApiFetch` object:
 - `globalPreparation: false` — skip the `setPreparation` hook execution.
 - `globalEnd: false` — skip the `setEnd` hook execution.
 
-## Response Emulation (ApiResponse)
+## Hydration
+
+Hydration is a mechanism for transferring data obtained during Server-Side Rendering (SSR) to the client side. This avoids re-executing the same network requests immediately after the page loads in the browser, which significantly speeds up rendering and reduces server load.
+
+### How it works
+
+1. **Server-side (SSR):**
+   - All executed requests (usually `GET` methods with `global: true`) are automatically saved in the hydration list.
+   - After the page is formed, you need to call `api.getHydrationScript()` and insert the resulting string into the HTML template (usually at the end of the `<body>` tag).
+
+2. **Client-side (Browser):**
+   - When an `ApiInstance` is created, it automatically looks for the hydration script on the page.
+   - Found data is loaded into the system and substituted for the first call of similar requests.
+   - Thus, the client code receives data instantly without waiting for a network response.
+
+### Usage Example (SSR)
+
+```javascript
+// On the server
+const api = new ApiInstance();
+await api.get({ path: 'settings' });
+
+// In the page template (e.g., at the end of body)
+// The method returns a string: <script id="__ui:api:hydration:id__" type="application/json">[...]</script>
+const hydrationScript = api.getHydrationScript();
+```
+
+
+## Caching
+
+The library provides a built-in mechanism for caching responses, allowing you to save request results in memory or in external storage (e.g., `LocalStorage`).
+
+### Key Features
+
+- **Time to Live (TTL)** — for each request, you can specify the cache validity time in seconds.
+- **External Storage** — ability to integrate with any asynchronous data storage.
+- **Automatic Cleanup** — old data is removed from memory when limits are exceeded.
+
+### Setting up External Storage
+
+By default, the cache works only in RAM and is reset when the page is reloaded. To save data long-term, you need to initialize `ApiCache` with your own listeners (for example, using `LocalStorage` or `IndexedDB`):
+
+```javascript
+import { ApiCache, DataStorage } from '@dxtmisha/functional';
+
+// Example of initialization using LocalStorage via DataStorage wrapper
+ApiCache.init(
+  async (key) => DataStorage.get(key),
+  async (key, value) => {
+    DataStorage.set(key, value);
+    return true;
+  },
+  async (key) => {
+    DataStorage.remove(key);
+    return true;
+  }
+);
+```
+
+### Usage in Requests
+
+To enable caching, just pass the time in seconds in the `cache` field of the `ApiFetch` object:
+
+```javascript
+// Cache response for 1 hour (3600 seconds)
+const data = await api.get({
+  path: 'catalog/list',
+  cache: 3600
+});
+```
+
+If the data is in the cache and its lifetime has not expired, the library will return it instantly without performing a real request to the server.
+
+## Response Emulation
 
 The emulator manager `ApiResponse` (accessible via `api.getResponse()`) allows configuring mock responses for specified paths. This is incredibly useful during frontend UI development without a completely ready backend API or for writing test fixtures.
 

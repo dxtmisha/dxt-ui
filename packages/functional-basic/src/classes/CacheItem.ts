@@ -2,6 +2,7 @@
  * Class for managing a single caching value.
  *
  * Класс для управления одним значением кэширования.
+ * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class CacheItem<T> {
   private cache?: T

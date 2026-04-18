@@ -108,7 +108,7 @@ describe('Geo', () => {
   describe('Instance Isolation', () => {
     it('should provide a unique instance for each request context via getItem()', () => {
       vi.mocked(isDomRuntime).mockReturnValue(false) // Simulate SSR for clean default
-      const instance1 = Geo.getItem()
+      const instance1 = Geo.getObject()
       instance1.set('fr-FR')
 
       // Mock a new context in ServerStorage
@@ -116,7 +116,7 @@ describe('Geo', () => {
       storageClass.storage = undefined
       ServerStorage.init(() => ({}))
 
-      const instance2 = Geo.getItem()
+      const instance2 = Geo.getObject()
       expect(instance2.getLocation()).not.toBe('fr-FR')
       expect(instance2.getLocation()).toBe('en-GB') // Default for SSR
     })

@@ -15,9 +15,11 @@ A class for collecting API data for hydration on the client side during SSR (Ser
 - **HTML Embedding** — generates a safe `<script>` tag with JSON-serialized data for embedding in the document.
 - **Client Synchronization** — allows `ApiResponse` to load hydrated data automatically on the client side.
 
-## Action Methods
+## Methods
 
-### `toClient`
+### Action
+
+#### `toClient`
 
 Saves the API response for client-side hydration. This method only executes on the server and only for requests where `global` is set to true.
 
@@ -25,13 +27,13 @@ Saves the API response for client-side hydration. This method only executes on t
 - `apiFetch: ApiFetch` — The API request configuration.
 - `response: T` — The data payload to be hydrated on the client.
 
-### `toString`
+#### `toString`
 
 Returns a string representation of the captured hydration data, wrapped in a safe `<script>` tag with a unique ID.
 
 **Returns:** `string` — The formatted HTML script tag.
 
-## Configuration
+### Configuration
 
 - `initResponse(response: ApiResponse): void` — Initializes the `ApiResponse` instance with hydration data if running in a DOM environment.
 
@@ -43,6 +45,7 @@ A list of captured API responses for hydration.
 - `method: ApiMethodItem` — The HTTP method used.
 - `request: any` — The request payload.
 - `response: any` — The server response data.
+- `global?: boolean` — Global usage flag.
 
 ## Guide: Hydration Mechanics
 

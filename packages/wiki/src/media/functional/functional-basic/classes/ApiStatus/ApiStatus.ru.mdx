@@ -14,34 +14,27 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Chainable API** — сеттеры возвращают `this`, что позволяет элегантно выстраивать цепочки изменений состояния.
 - **Автоматическое извлечение сообщений** — интеллектуально пытается разобрать и извлечь человекочитаемые поля `message` напрямую из структурированных ответов сервера.
 
-## Методы действий
+## Методы
 
-### `getResponse`
+### Действие
 
-Возвращает необработанный объем данных из последнего успешного запроса.
+- `getResponse<T>(): T | undefined` — Возвращает необработанный объем данных из последнего успешного запроса.
+- `getMessage(): string` — Возвращает сообщение сервера, извлеченное из успешного ответа, или сообщение, установленное вручную.
 
-**Возвращает:** `T | undefined` — Распарсенные данные ответа.
+### Проверка
 
-### `getMessage`
-
-Возвращает сообщение сервера, извлеченное из успешного ответа, или сообщение, установленное вручную.
-
-**Возвращает:** `string` — Человекочитаемое сообщение.
-
-## Методы проверки
-
-- `get(): ApiStatusItem` — Возвращает полный объект данных статуса.
+- `get(): ApiStatusItem | undefined` — Возвращает полный объект данных статуса.
 - `getStatus(): number | undefined` — Возвращает код HTTP-статуса (например, `200`).
 - `getStatusText(): string | undefined` — Возвращает текст статуса (например, `"OK"`).
 - `getStatusType(): ApiStatusType | undefined` — Возвращает последний тип валидации статуса.
 - `getError(): string | undefined` — Возвращает записанное сообщение об ошибке.
 
-## Конфигурация
+### Конфигурация
 
 - `set(data: ApiStatusItem): this` — Устанавливает несколько полей статуса одновременно.
 - `setStatus(status?: number, statusText?: string): this` — Устанавливает код и текст HTTP-статуса.
 - `setError(error?: string): this` — Записывает строку сообщения об ошибке.
-- `setLastResponse(response?: any): this` — Записывает ответ сервера и извлекает связанные метаданные.
+- `setLastResponse(response?: any): this` — Записывает ответ сервера и автоматически извлекает `message` и `status`, если они есть.
 - `setLastStatus(status?: ApiStatusType): this` — Устанавливает пользовательский тип статуса API.
 - `setLastMessage(message?: string): this` — Явно записывает сообщение.
 
@@ -49,9 +42,9 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 #### `ApiStatusItem`
 Полное представление статуса запроса.
-- `status: number | undefined` — Код HTTP-статуса.
-- `statusText: string | undefined` — Текст HTTP-статуса.
-- `statusType: ApiStatusType | undefined` — Категория валидации.
-- `error: string | undefined` — Сообщение об ошибке.
-- `response: any` — Необработанные данные ответа.
-- `message: string` — Извлеченное сообщение для отображения.
+- `status?: number` — Код HTTP-статуса.
+- `statusText?: string` — Текст HTTP-статуса.
+- `error?: string` — Сообщение об ошибке.
+- `lastResponse?: any` — Данные последнего ответа.
+- `lastStatus?: ApiStatusType` — Последний тип статуса.
+- `lastMessage?: string` — Последнее сообщение.

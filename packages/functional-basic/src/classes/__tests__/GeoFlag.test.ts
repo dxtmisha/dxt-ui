@@ -74,11 +74,20 @@ describe('GeoFlag', () => {
 
   it('should return national names for countries', () => {
     const flag = new GeoFlag('en-US')
-    const national = flag.getNational(['FR', 'JP'])
+    const national = flag.getNational(['RU', 'VN'])
 
     expect(national).toHaveLength(2)
-    expect(national[0]).toHaveProperty('nationalCountry')
-    expect(national[0]).toHaveProperty('nationalLanguage')
+
+    // RU check
+    expect(national[0]?.value).toBe('RU')
+    expect(national[0]?.country).toBe('Russia') // in en-US
+    expect(national[0]?.nationalCountry).toBe('Россия') // in ru-RU (standard for RU)
+    expect(national[0]?.nationalLanguage).toBe('русский')
+
+    // VN check
+    expect(national[1]?.value).toBe('VN')
+    expect(national[1]?.nationalCountry).toBe('Việt Nam')
+    expect(national[1]?.nationalLanguage).toBe('Tiếng Việt')
   })
 
   it('should update code via setCode', () => {

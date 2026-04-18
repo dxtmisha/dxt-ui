@@ -84,6 +84,15 @@ describe('CookieStorage', () => {
       expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('secure'))
     })
 
+    it('should filter out non-string arguments', () => {
+      CookieStorage.set('key', 'val', {
+        arguments: ['Secure', 123, 'Path=/', null, undefined]
+      })
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Secure'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Path=/'))
+      // Non-string arguments should be filtered out
+    })
+
     it('should handle defaultValue with side effect', () => {
       const result = CookieStorage.get('newKey', 'defaultValue')
       expect(result).toBe('defaultValue')
@@ -133,6 +142,17 @@ describe('CookieStorage', () => {
 
       expect(CookieStorage.get('key1')).toBe('val1')
       expect(CookieStorage.get('key2')).toBe('val=with=equals')
+    })
+
+    it('should decode URL-encoded cookie names and values', () => {
+      cookieSpy.mockRestore()
+      document.cookie = 'encoded%20name=encoded%20value'
+      document.cookie = 'test%3Dkey=test%3Dvalue'
+
+      CookieStorage.update()
+
+      expect(CookieStorage.get('encoded name')).toBe('encoded value')
+      expect(CookieStorage.get('test=key')).toBe('test=value')
     })
   })
 

@@ -109,6 +109,27 @@ describe('ApiCache', () => {
       expect(await ApiCache.getByFetch(apiFetch)).toBeUndefined()
     })
 
+    it('should return cached data when enableClientCache is true even in DOM runtime', async () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
+      const apiFetchWithCache = { ...apiFetch, enableClientCache: true }
+      await ApiCache.setByFetch(apiFetchWithCache, { some: 'data' })
+      expect(await ApiCache.getByFetch(apiFetchWithCache)).toEqual({ some: 'data' })
+    })
+
+    it('should return undefined when enableClientCache is false and isDomRuntime is true', async () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
+      const apiFetchNoCache = { ...apiFetch, enableClientCache: false }
+      await ApiCache.setByFetch(apiFetchNoCache, { some: 'data' })
+      expect(await ApiCache.getByFetch(apiFetchNoCache)).toBeUndefined()
+    })
+
+    it('should work with enableClientCache when isDomRuntime is false', async () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+      const apiFetchWithCache = { ...apiFetch, enableClientCache: true }
+      await ApiCache.setByFetch(apiFetchWithCache, { some: 'data' })
+      expect(await ApiCache.getByFetch(apiFetchWithCache)).toEqual({ some: 'data' })
+    })
+
     it('should handle POST requests if global is true', async () => {
       const postFetch = {
         path: 'post-path',
@@ -186,6 +207,20 @@ describe('ApiCache', () => {
       const key2 = (ApiCache as any).generateKey({ path: 'a', method: ApiMethodItem.get, request: { id: 2 } })
       expect(key1).not.toBe(key2)
     })
+
+    it('should include cacheId in key generation when provided', () => {
+      const key1 = (ApiCache as any).generateKey({ path: 'a', method: ApiMethodItem.get, cacheId: 'v1' })
+      const key2 = (ApiCache as any).generateKey({ path: 'a', method: ApiMethodItem.get, cacheId: 'v2' })
+      expect(key1).not.toBe(key2)
+      expect(key1).toContain('v1')
+      expect(key2).toContain('v2')
+    })
+
+    it('should generate same key when cacheId is not provided', () => {
+      const key1 = (ApiCache as any).generateKey({ path: 'a', method: ApiMethodItem.get })
+      const key2 = (ApiCache as any).generateKey({ path: 'a', method: ApiMethodItem.get, cacheId: undefined })
+      expect(key1).toBe(key2)
+    })
   })
 
   describe('reset', () => {
@@ -214,8 +249,6 @@ describe('ApiCache', () => {
       ApiCache.getList()['old'] = { value: 'val', age: 10, cacheAge: 0 }
 
       // Date.now() is 1000. age 10 means it expires at 10010.
-      // It's definitely expired since 0 + 10*1000 = 10000. 1000 < 10000 is NOT expired.
-      // Wait, 0 + 10s = 10000ms. If Date.now() is 11000, it's expired.
       vi.setSystemTime(20000)
 
       // 1st call: stepAgeClearOld 2 -> 1

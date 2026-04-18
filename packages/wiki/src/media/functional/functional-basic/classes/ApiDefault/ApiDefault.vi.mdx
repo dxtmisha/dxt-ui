@@ -15,9 +15,11 @@ Một lớp để quản lý dữ liệu mặc định cho các yêu cầu API. 
 - **Gộp dữ liệu thông minh** — Gộp các giá trị mặc định với dữ liệu cụ thể của yêu cầu, ưu tiên dữ liệu yêu cầu thực tế nếu có sự trùng lặp khóa.
 - **Chainable API** — Hỗ trợ giao diện linh hoạt (chaining) để thiết lập các tham số.
 
-## Các phương thức hành động
+## Các phương thức
 
-### `request`
+### Hành động
+
+#### `request`
 
 Gộp dữ liệu mặc định đã lưu vào một đối tượng yêu cầu hoặc thực thể `FormData` được cung cấp. Nếu đầu vào là một đối tượng thuần túy, nó sẽ trả về một đối tượng mới đã được gộp. Nếu đầu vào là `FormData`, nó sẽ thêm trực tiếp các khóa còn thiếu vào thực thể đó.
 
@@ -26,12 +28,12 @@ Gộp dữ liệu mặc định đã lưu vào một đối tượng yêu cầu 
 
 **Trả về:** `ApiFetch['request']` — Dữ liệu yêu cầu đã được chuyển đổi.
 
-## Các phương thức kiểm tra
+### Kiểm tra
 
 - `is(): boolean` — Kiểm tra xem dữ liệu mặc định đã được thiết lập chưa.
 - `get(): ApiDefaultValue | undefined` — Trả về đối tượng dữ liệu mặc định hiện tại.
 
-## Cấu hình
+### Cấu hình
 
 - `set(request: ApiDefaultValue): this` — Thiết lập dữ liệu mặc định cho tất cả các yêu cầu trong tương lai.
 

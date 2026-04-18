@@ -48,7 +48,7 @@ const fromTs = new Datetime(1710460800000)
 - `getHoursType(): GeoHours` — Xác định định dạng giờ (12 hoặc 24) cho địa phương hiện tại.
 - `getHour24(): boolean` — Trả về thiết lập hiện tại cho việc hiển thị định dạng 24 giờ.
 - `getTimeZoneOffset(): number` — Trả về độ lệch múi giờ tính bằng phút.
-- `getTimeZone(style?: GeoTimeZoneStyle): string` — Trả về múi giờ (hỗ trợ các kiểu `minute`, `hour`, `RFC`).
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Trả về múi giờ (hỗ trợ các kiểu `minute`, `hour`, `RFC`; định dạng mặc định với dấu hai chấm).
 - `getFirstDayCode(): GeoFirstDay` — Trả về mã cho ngày đầu tiên của tuần (0 cho Chủ Nhật, 1 cho Thứ Hai, 6 cho Thứ Bảy).
 
 ### Lấy giá trị
@@ -59,7 +59,7 @@ const fromTs = new Datetime(1710460800000)
 - `getHour(): number` — Trả về giờ.
 - `getMinute(): number` — Trả về phút.
 - `getSecond(): number` — Trả về giây.
-- `getMaxDay(): number` — Trả về số ngày trong tháng hiện tại.
+- `getMaxDay(): number` — Trả về số của ngày cuối cùng trong tháng hiện tại (28-31).
 
 ### Thiết lập giá trị
 
@@ -94,7 +94,7 @@ Thay đổi đối tượng `Datetime` hiện tại.
 - `moveWeekdayFirst(): this` — Chuyển đến ngày đầu tiên của tuần hiện tại.
 - `moveWeekdayLast(): this` — Chuyển đến ngày cuối cùng của tuần hiện tại.
 - `moveWeekdayFirstByMonth(): this` — Chuyển đến ngày đầu tiên của tuần đầu tiên trong tháng.
-- `moveWeekdayLastByMonth(): this` — Chuyển đến ngày đầu tiên của tuần đầy đủ đầu tiên của tháng tiếp theo.
+- `moveWeekdayLastByMonth(): this` — Chuyển đến ngày cuối cùng của tuần cuối cùng trong tháng hiện tại.
 - `moveWeekdayNext(): this` — Dịch chuyển một tuần về phía trước.
 - `moveWeekdayPrevious(): this` — Dịch chuyển một tuần về phía sau.
 - `moveDayFirst(): this` — Chuyển đến ngày đầu tiên của tháng hiện tại.
@@ -115,7 +115,7 @@ Tạo bản sao của dữ liệu.
 - `cloneWeekdayFirst(): Datetime` — Sao chép được thiết lập vào đầu tuần hiện tại.
 - `cloneWeekdayLast(): Datetime` — Sao chép được thiết lập vào cuối tuần hiện tại.
 - `cloneWeekdayFirstByMonth(): Datetime` — Sao chép đến đầu tuần đầu tiên của tháng.
-- `cloneWeekdayLastByMonth(): Datetime` — Sao chép đến đầu tuần cuối cùng của tháng.
+- `cloneWeekdayLastByMonth(): Datetime` — Sao chép đến cuối tuần cuối cùng của tháng.
 - `cloneWeekdayNext(): Datetime` — Sao chép với việc dịch chuyển một tuần về phía trước.
 - `cloneWeekdayPrevious(): Datetime` — Sao chép với việc dịch chuyển một tuần về phía sau.
 - `cloneDayFirst(): Datetime` — Sao chép đến ngày đầu tiên của tháng hiện tại.

@@ -1,100 +1,42 @@
-// @vitest-environment jsdom
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { Hash } from '../Hash'
+import { HashInstance } from '../HashInstance'
 
 describe('Hash', () => {
-  beforeEach(() => {
-    // Reset hash before each test by clearing the private state
-    // We need to reset location.hash
-    window.location.hash = ''
-    ;(Hash as any).hash = {}
-    ;(Hash as any).watch = {}
+  it('должен возвращать экземпляр HashInstance', () => {
+    const instance = Hash.getItem()
+    expect(instance).toBeInstanceOf(HashInstance)
   })
 
-  it('should set and get a value', () => {
-    Hash.set('page', 2)
-    expect(Hash.get('page')).toBe(2)
-  })
+  it('методы фасада должны корректно делегировать вызовы в HashInstance', () => {
+    const instance = Hash.getItem()
+    
+    // Перехватываем методы инстанса
+    const getSpy = vi.spyOn(instance, 'get').mockReturnValue('mockedValue')
+    const setSpy = vi.spyOn(instance, 'set').mockReturnThis()
+    const addWatchSpy = vi.spyOn(instance, 'addWatch').mockReturnThis()
+    const removeWatchSpy = vi.spyOn(instance, 'removeWatch').mockReturnThis()
+    const reloadSpy = vi.spyOn(instance, 'reload').mockReturnThis()
 
-  it('should return a default value when the key is not present', () => {
-    const value = Hash.get('missing', 'default')
-    expect(value).toBe('default')
-  })
+    // Проверяем get
+    const result = Hash.get('testKey', 'default')
+    expect(getSpy).toHaveBeenCalledWith('testKey', 'default')
+    expect(result).toBe('mockedValue')
 
-  it('should return a default value from a function', () => {
-    const value = Hash.get('fromFn', () => 99)
-    expect(value).toBe(99)
-  })
+    // Проверяем set
+    Hash.set('testKey', 'newValue')
+    expect(setSpy).toHaveBeenCalledWith('testKey', 'newValue')
 
-  it('should not update if the value has not changed', () => {
-    Hash.set('key', 'value')
+    // Проверяем watchers
+    const cb = () => {}
+    Hash.addWatch('testKey', cb)
+    expect(addWatchSpy).toHaveBeenCalledWith('testKey', cb)
 
-    const updateSpy = vi.spyOn(history, 'replaceState')
-    Hash.set('key', 'value') // same value
+    Hash.removeWatch('testKey', cb)
+    expect(removeWatchSpy).toHaveBeenCalledWith('testKey', cb)
 
-    expect(updateSpy).not.toHaveBeenCalled()
-    updateSpy.mockRestore()
-  })
-
-  it('should update URL hash when the value changes', () => {
-    const replaceStateSpy = vi.spyOn(history, 'replaceState')
-    Hash.set('filter', 'active')
-
-    expect(replaceStateSpy).toHaveBeenCalledTimes(1)
-    replaceStateSpy.mockRestore()
-  })
-
-  it('should set value using a function callback', () => {
-    Hash.set('counter', 5)
-    Hash.set('counter', () => 10)
-    expect(Hash.get('counter')).toBe(10)
-  })
-
-  it('should call watcher when the value changes', () => {
-    const callback = vi.fn()
-    Hash.addWatch<string>('color', callback)
-
-    // Simulate a hashchange with a new value
-    ;(Hash as any).hash = { color: 'blue' }
-    ;(Hash as any).makeWatch({ color: 'red' })
-
-    expect(callback).toHaveBeenCalledWith('red')
-  })
-
-  it('should not call watcher if the value is unchanged', () => {
-    const callback = vi.fn()
-    Hash.addWatch<string>('shape', callback)
-    ;(Hash as any).hash = { shape: 'circle' }
-    ;(Hash as any).makeWatch({ shape: 'circle' })
-
-    expect(callback).not.toHaveBeenCalled()
-  })
-
-  it('should support multiple watchers for the same key', () => {
-    const cb1 = vi.fn()
-    const cb2 = vi.fn()
-    Hash.addWatch('x', cb1)
-    Hash.addWatch('x', cb2)
-    ;(Hash as any).hash = { x: 1 }
-    ;(Hash as any).makeWatch({ x: 2 })
-
-    expect(cb1).toHaveBeenCalledWith(2)
-    expect(cb2).toHaveBeenCalledWith(2)
-  })
-
-  it('should remove watcher', () => {
-    const callback = vi.fn()
-    Hash.addWatch('y', callback)
-    Hash.removeWatch('y', callback)
-
-    ;(Hash as any).hash = { y: 1 }
-    ;(Hash as any).makeWatch({ y: 2 })
-
-    expect(callback).not.toHaveBeenCalled()
-  })
-
-  it('should reload without throwing (jsdom has a static `location.hash`)', () => {
-    // jsdom does not allow writing to `location.hash`, so we just verify reload() runs cleanly
-    expect(() => Hash.reload()).not.toThrow()
+    // Проверяем reload
+    Hash.reload()
+    expect(reloadSpy).toHaveBeenCalled()
   })
 })

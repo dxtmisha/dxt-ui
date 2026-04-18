@@ -1,6 +1,4 @@
-import { copyObjectLite } from '../functions/copyObjectLite'
-
-let global: Record<string, any>
+import { ServerStorage } from './ServerStorage'
 
 /**
  * Static utility class for storing and retrieving application-wide global data.
@@ -9,13 +7,22 @@ let global: Record<string, any>
  */
 export class Global {
   /**
+   * Returns the instance of the class.
+   *
+   * Возвращает инстанс класса.
+   */
+  static getItem() {
+    return ServerStorage.get('__ui:global-instance__', () => ({} as Record<string, any>))
+  }
+
+  /**
    * Returns the value by its name.
    *
    * Возвращает значение по его имени.
    * @param name property name/ название свойства
    */
   static get<R = any>(name: string): R {
-    return global && global?.[name]
+    return this.getItem()?.[name]
   }
 
   /**
@@ -25,10 +32,12 @@ export class Global {
    * @param data global data/ глобальные данные
    */
   static add(data: Record<string, any>) {
-    if (global !== undefined) {
+    const dataStorage = this.getItem()
+
+    if (Object.keys(dataStorage).length > 0) {
       return
     }
 
-    global = copyObjectLite(data)
+    Object.assign(dataStorage, data)
   }
 }

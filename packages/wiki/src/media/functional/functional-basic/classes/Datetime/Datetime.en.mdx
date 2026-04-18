@@ -48,7 +48,7 @@ const fromTs = new Datetime(1710460800000)
 - `getHoursType(): GeoHours` — Determines the hour format (12 or 24) for the current locale.
 - `getHour24(): boolean` — Returns the current setting for displaying the 24-hour format.
 - `getTimeZoneOffset(): number` — Returns the time zone offset in minutes.
-- `getTimeZone(style?: GeoTimeZoneStyle): string` — Returns the time zone (supports `minute`, `hour`, `RFC` styles).
+- `getTimeZone(style?: GeoTimeZoneStyle): string` — Returns the time zone (supports `minute`, `hour`, `RFC` styles; default format with colon).
 - `getFirstDayCode(): GeoFirstDay` — Returns the code for the first day of the week (0 for Sunday, 1 for Monday, 6 for Saturday).
 
 ### Value Retrieval
@@ -59,7 +59,7 @@ const fromTs = new Datetime(1710460800000)
 - `getHour(): number` — Returns the hours.
 - `getMinute(): number` — Returns the minutes.
 - `getSecond(): number` — Returns the seconds.
-- `getMaxDay(): number` — Returns the number of days in the current month.
+- `getMaxDay(): number` — Returns the number of the last day of the current month (28-31).
 
 ### Value Setting
 
@@ -94,7 +94,7 @@ Modify the current `Datetime` object.
 - `moveWeekdayFirst(): this` — Move to the first day of the current week.
 - `moveWeekdayLast(): this` — Move to the last day of the current week.
 - `moveWeekdayFirstByMonth(): this` — Move to the first day of the first week of the month.
-- `moveWeekdayLastByMonth(): this` — Move to the first day of the first full week of the next month.
+- `moveWeekdayLastByMonth(): this` — Move to the last day of the last week of the current month.
 - `moveWeekdayNext(): this` — Shift one week forward.
 - `moveWeekdayPrevious(): this` — Shift one week backward.
 - `moveDayFirst(): this` — Move to the first day of the current month.
@@ -115,7 +115,7 @@ Create copies of the data.
 - `cloneWeekdayFirst(): Datetime` — Copy set to the beginning of the current week.
 - `cloneWeekdayLast(): Datetime` — Copy set to the end of the current week.
 - `cloneWeekdayFirstByMonth(): Datetime` — Copy to the beginning of the first week of the month.
-- `cloneWeekdayLastByMonth(): Datetime` — Copy to the beginning of the last week of the month.
+- `cloneWeekdayLastByMonth(): Datetime` — Copy to the end of the last week of the month.
 - `cloneWeekdayNext(): Datetime` — Copy with a shift of one week forward.
 - `cloneWeekdayPrevious(): Datetime` — Copy with a shift of one week backward.
 - `cloneDayFirst(): Datetime` — Copy to the first day of the current month.

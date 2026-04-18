@@ -8,7 +8,7 @@ Một lớp dựa trên đối tượng (instance-based) để quản lý dữ l
 
 ## Tính năng chính
 
-- **Hướng đối tượng** — cho phép tạo nhiều phiên bản (instances) với các cấu hình khác nhau.
+- **Hướng đối tượng** — cho phép tạo nhiều phiên bản (instances) with các cấu hình khác nhau.
 - **Tự động phát hiện** — xác định thông minh địa phương (locale) thông qua bộ nhớ lưu trữ hoặc các mặc định của môi trường khi khởi tạo.
 - **Tích hợp cơ sở dữ liệu truyền thông** — cung cấp quyền truy cập vào cơ sở dữ liệu toàn diện về các quốc gia và ngôn ngữ từ thư viện `@dxtmisha/media`.
 - **Quản lý thời gian linh hoạt** — thiết lập và truy xuất độ lệch múi giờ ở cấp độ đối tượng.
@@ -32,35 +32,35 @@ geo.set('en-US')
 console.log(geo.getTimezoneFormat()) // ví dụ: '+07:00'
 ```
 
-## Phương pháp
+## Các phương thức
 
-### Thông tin chung
+### Thông tin
 
 - `get(): GeoItemFull` — Trả về đối tượng dữ liệu đầy đủ cho quốc gia và ngôn ngữ hiện tại.
+- `getItem(): GeoItemFull` — Trả về một bản sao của đối tượng cài đặt hiện tại, có tính đến ngôn ngữ động.
 - `getCountry(): string` — Trả về mã 2 chữ cái của quốc gia hiện tại (viết hoa).
 - `getLanguage(): string` — Trả về mã 2 chữ cái của ngôn ngữ hiện tại (viết thường).
-- `getStandard(): string` — Trả về chuỗi địa phương kết hợp (ví dụ: `'vi-VN'`).
-- `getFirstDay(): string` — Trả về mã cho ngày đầu tiên của tuần của địa phương hiện tại.
-- `getLocation(): string` — Trả về địa phương hiện đang được thiết lập dưới dạng chuỗi.
-- `getItem(): GeoItemFull` — Trả về một bản sao của đối tượng cài đặt hiện tại, có tính đến ngôn ngữ.
+- `getStandard(): string` — Trả về chuỗi địa phương kết hợp dựa trên cài đặt hiện tại (ví dụ: `'en-VN'`).
+- `getLocation(): string` — Trả về chuỗi địa phương thô hiện đang được thiết lập.
+- `getFirstDay(): string` — Trả về mã cho ngày đầu tiên của tuần của địa phương hiện tại (ví dụ: `'Mo'`).
 - `getTimezone(): number` — Trả về độ lệch múi giờ tính bằng phút.
 - `getTimezoneFormat(): string` — Trả về độ lệch múi giờ ở định dạng chuỗi (ví dụ: `'+07:00'`).
 
-### Danh sách và Tìm kiếm
+### Lựa chọn
 
 - `getList(): GeoItem[]` — Trả về danh sách đầy đủ các quốc gia và ngôn ngữ có sẵn.
-- `getByCode(code?: string): GeoItemFull` — Tìm kiếm dữ liệu theo mã ngôn ngữ hoặc quốc gia (thông tin cơ bản).
-- `getByCodeFull(code: string): GeoItem | undefined` — Tìm kiếm kết quả khớp chính xác theo mã địa phương đầy đủ.
-- `getByCountry(country: string): GeoItem | undefined` — Tìm kiếm dữ liệu theo mã quốc gia.
-- `getByLanguage(language: string): GeoItem | undefined` — Tìm kiếm dữ liệu theo mã ngôn ngữ.
 - `find(code: string): GeoItemFull` — Một bí danh cho phương thức `getByCode`.
+- `getByCode(code?: string): GeoItemFull` — Tìm kiếm dữ liệu theo mã. **Ưu tiên: Ngôn ngữ trước**, sau đó đến Quốc gia. Nếu cung cấp mã `en-VN`, nó sẽ trả về bản ghi cho tiếng Anh (`en-US`).
+- `getByCodeFull(code: string): GeoItem | undefined` — Tìm kiếm kết quả khớp chính xác theo mã địa phương đầy đủ (ví dụ: `vi-VN`).
+- `getByCountry(country: string): GeoItem | undefined` — Tìm kiếm dữ liệu cụ thể theo mã quốc gia.
+- `getByLanguage(language: string): GeoItem | undefined` — Tìm kiếm dữ liệu cụ thể theo mã ngôn ngữ.
 
-### Thao tác dữ liệu (Setters)
+### Cấu hình
 
 - `set(code: string, save?: boolean): void` — Thiết lập địa phương cho đối tượng hiện tại.
 - `setTimezone(timezone: number): void` — Thiết lập độ lệch múi giờ tùy chỉnh tính bằng phút.
 
-### Tiện ích
+### Phụ trợ
 
 - `toStandard(item: GeoItem): string` — Tạo chuỗi `'ngôn ngữ-quốc gia'` tiêu chuẩn từ đối tượng `GeoItem`.
 

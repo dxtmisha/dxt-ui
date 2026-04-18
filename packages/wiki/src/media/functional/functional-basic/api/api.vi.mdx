@@ -6,6 +6,17 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Lớp `Api` là công cụ trung tâm để thực hiện các yêu cầu HTTP. Nó cung cấp một giao diện đơn giản cho các phương thức phổ biến và quản lý các cài đặt toàn cục như URL cơ sở, tiêu đề mặc định và các hook vòng đời.
 
+### Các khả năng chính
+
+Lớp cung cấp một bộ công cụ toàn diện để quản lý tương tác mạng:
+- **Các phương thức CRUD** — thực hiện các yêu cầu `GET`, `POST`, `PUT`, `PATCH`, `DELETE`.
+- **Cấu hình toàn cục** — thiết lập URL cơ sở, tiêu đề và tham số.
+- **Hook vòng đời** — xử lý các sự kiện trước và sau yêu cầu (ví dụ: cho Refresh Token).
+- **Hydration (SSR)** — chuyển dữ liệu từ máy chủ sang máy khách để ngăn chặn các yêu cầu trùng lặp.
+- **Bộ nhớ đệm (Caching)** — lưu các phản hồi trong bộ nhớ hoặc bộ nhớ ngoài (LocalStorage).
+- **Giả lập phản hồi** — tạo dữ liệu giả để phát triển và kiểm thử.
+- **Quản lý tải và lỗi** — tích hợp với các thành phần chỉ báo toàn cục và trung tâm lỗi.
+
 ## Cách dùng cơ bản
 
 Cách đơn giản nhất để thực hiện yêu cầu là sử dụng các phương thức tĩnh `get`, `post`, `put`, hoặc `delete`. Tất cả các phương thức đều hỗ trợ định nghĩa kiểu dữ liệu (typing) thông qua Generic.
@@ -82,6 +93,40 @@ Api.setEnd(async (response, apiFetch) => {
   
   return {} // Tiếp tục xử lý tiêu chuẩn
 })
+```
+
+## Hydration
+
+Hydration cho phép chuyển dữ liệu thu được trong quá trình server-side rendering (SSR) sang phía máy khách. Điều này ngăn chặn việc thực hiện lại các yêu cầu tương tự ngay sau khi trang tải xong.
+
+1. **Trên máy chủ**: Thực hiện các yêu cầu cần thiết và lấy script qua `Api.getHydrationScript()`.
+2. **Trong mẫu (Template)**: Chèn chuỗi kết quả vào HTML.
+3. **Trên máy khách**: Khi khởi tạo `Api`, dữ liệu sẽ tự động được tải vào trình quản lý phản hồi.
+
+```javascript
+// Ví dụ SSR
+await Api.get({ path: 'settings' });
+const hydrationScript = Api.getHydrationScript(); // <script>...</script>
+```
+
+## Bộ nhớ đệm (Caching)
+
+Lớp `Api` hỗ trợ tự động lưu bộ nhớ đệm cho các phản hồi. Bạn có thể sử dụng bộ nhớ trong tích hợp hoặc kết nối bộ nhớ ngoài (ví dụ: `LocalStorage`).
+
+```javascript
+import { ApiCache, DataStorage } from '@dxtmisha/functional-basic';
+
+// Kết nối bộ nhớ ngoài (tùy chọn)
+ApiCache.init(
+  async (key) => DataStorage.get(key),
+  async (key, value) => DataStorage.set(key, value)
+);
+
+// Sử dụng trong một yêu cầu
+const data = await Api.get({
+  path: 'catalog/list',
+  cache: 3600 // Lưu bộ nhớ đệm trong 1 giờ (tính bằng giây)
+});
 ```
 
 ## Giả lập phản hồi

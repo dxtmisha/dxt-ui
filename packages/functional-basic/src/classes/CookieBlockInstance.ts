@@ -1,7 +1,7 @@
 import { DataStorage } from './DataStorage'
 
 /** Storage name for cookie block / Имя хранилища для блокировки cookie */
-const STORAGE_NAME_BLOCK = 'cookie-block'
+const STORAGE_NAME_BLOCK = '__ui:cookie-block__'
 
 /**
  * Class for changing cookie access status.

@@ -2,130 +2,125 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/vi/functional-basic/Classes/ErrorCenter - Quản lý lỗi'/>
 
-# ErrorCenter
+# Lớp ErrorCenter
 
-Một lớp tĩnh (static wrapper) cho `ErrorCenterInstance` cung cấp quản lý tập trung cho việc lưu trữ, truy xuất và xử lý lỗi dựa trên sự kiện. Nó đóng vai trò như một bộ lưu trữ toàn cầu cho các nguyên nhân gây lỗi và cung cấp cơ chế để đăng ký cũng như kích hoạt các trình xử lý tùy chỉnh cho các nhóm lỗi khác nhau.
+`ErrorCenter` là công cụ trung tâm để quản lý tất cả các lỗi trong ứng dụng. Nó cho phép bạn đăng ký các nguyên nhân lỗi có thể xảy ra ở một nơi, cấu hình phản ứng với chúng (ví dụ: hiển thị thông báo) và kích hoạt chúng từ bất kỳ phần nào của mã.
 
-Lớp này tuân theo mô hình "Static Bridge", chuyển giao tất cả các hoạt động cho một thực thể duy nhất (singleton instance) trong khi vẫn duy trì một API sạch sẽ, có thể truy cập toàn cầu.
+Lớp này hoạt động như một vỏ bọc tĩnh (Static Bridge), chuyển tất cả các yêu cầu đến một `ErrorCenterInstance` duy nhất.
 
-## Các tính năng chính
+## Các phương thức
 
-- **Truy cập tĩnh** — Truy cập toàn cầu vào quản lý lỗi mà không cần khởi tạo thủ công.
-- **Bộ lưu trữ tập trung** — Lưu trữ các nguyên nhân lỗi được tiêu chuẩn hóa để phản hồi UI nhất quán.
-- **Xử lý theo nhóm** — Cho phép đăng ký nhiều hàm gọi lại cho các danh mục lỗi cụ thể.
-- **Giá trị mặc định** — Đi kèm với các nguyên nhân lỗi mạng tiêu chuẩn (`timeout`, `offline`, `notFound`, v.v.).
+### Hành động
+- `on(cause: ErrorCenterCauseItem): void` — Bắt đầu quá trình xử lý. Tìm kiếm dữ liệu trong sổ đăng ký, hợp nhất chúng và gọi các callback thích hợp.
 
-## Các phương thức hành động
+### Xác minh
+- `has(code: string, group?: string): boolean` — Kiểm tra xem lỗi đã được đăng ký chưa.
+- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Trả về dữ liệu lỗi từ sổ đăng ký.
 
-### `on`
+### Cấu hình
+- `add(cause: ErrorCenterCauseItem): void` — Thêm một nguyên nhân lỗi.
+- `addList(causes: ErrorCenterCauseList): void` — Thêm một danh sách lỗi (đăng ký hàng loạt).
+- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Đăng ký phản ứng cho một nhóm lỗi.
+- `addHandlerList(handlers: ErrorCenterHandlerList): void` — Đăng ký hàng loạt nhiều trình xử lý.
 
-Kích hoạt xử lý lỗi cho nguyên nhân được chỉ định. Nó tìm kiếm dữ liệu đã đăng ký trước đó cho mã lỗi (nếu có), hợp nhất với nguyên nhân đầu vào (`cause`), thực thi tất cả các trình xử lý đã đăng ký cho nhóm đó và ghi lỗi vào bảng điều khiển (console).
-
-**Tham số:**
-- `cause: ErrorCenterCauseItem` — Nguyên nhân lỗi cần kích hoạt. Chỉ cần cung cấp mã và nhóm nếu nguyên nhân đó đã được đăng ký trước đó qua `add()`.
-
-**Trả về:** `void`
-
-## Các phương thức kiểm tra
-
-- `has(code: string, group?: string): boolean` — Kiểm tra xem một nguyên nhân lỗi có tồn tại trong bộ lưu trữ hay không.
-- `get(code: string, group?: string): ErrorCenterCauseItem | undefined` — Truy xuất đối tượng nguyên nhân lỗi đầy đủ.
-
-## Cấu hình
-
-- `add(cause: ErrorCenterCauseItem): void` — Thêm một nguyên nhân lỗi duy nhất vào bộ lưu trữ toàn cầu.
-- `addList(causes: ErrorCenterCauseList): void` — Thêm nhiều nguyên nhân lỗi vào bộ lưu trữ cùng một lúc.
-- `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Đăng ký một hàm gọi lại cho một nhóm lỗi cụ thể.
-- `addHandlerList(handlers: ErrorCenterHandlerList): void` — Đăng ký một loạt các trình xử lý.
-
-## Truy xuất thực thể
-
-- `getItem(): ErrorCenterInstance` — Trả về thực thể nền tảng được sử dụng bởi lớp tĩnh.
+### Bổ trợ
+- `getItem(): ErrorCenterInstance` — Trả về thực thể nội bộ của lớp.
 
 ## Các kiểu dữ liệu
 
 #### `ErrorCenterGroup`
-Định danh nhóm lỗi.
-- `string | undefined` — Tên chuỗi cho nhóm, hoặc `undefined` cho trình xử lý toàn cục/mặc định.
+Tên nhóm (ví dụ: 'api', 'auth') hoặc `undefined` cho trình xử lý chung.
 
 #### `ErrorCenterCauseItem`
-Thông tin chi tiết về nguyên nhân lỗi.
-- `group?: ErrorCenterGroup` — Nhóm mà lỗi này thuộc về.
-- `code: string` — Mã lỗi duy nhất (ví dụ: '404', 'AUTH_ERROR').
-- `priority?: number` — Mức độ ưu tiên được sử dụng để hợp nhất nhiều lỗi (mặc định: `500`).
-- `label?: string` — Tên ngắn gọn, dễ hiểu cho lỗi.
-- `message?: string` — Thông báo lỗi mô tả.
-- `details?: any` — Bất kỳ bối cảnh bổ sung hoặc dữ liệu lỗi thô nào.
+Đối tượng mô tả lỗi: `group`, `code` (bắt buộc), `priority`, `label`, `message`, `details`.
 
-#### `ErrorCenterCauseList`
-Một mảng các đối tượng `ErrorCenterCauseItem`.
+## Hướng dẫn sử dụng
 
-#### `ErrorCenterHandlerCallback`
-Hàm cho các callback xử lý lỗi.
-- `(cause: ErrorCenterCauseItem) => void` — Nhận đối tượng nguyên nhân lỗi khi được kích hoạt.
-
-#### `ErrorCenterHandlerItem`
-Một đối tượng lưu trữ nội bộ ánh xạ một nhóm tới các trình xử lý của nó.
-- `group?: ErrorCenterGroup` — Nhóm lỗi mục tiêu.
-- `handlers: ErrorCenterHandlerCallback[]` — Danh sách các hàm callback cho nhóm này.
-
-#### `ErrorCenterHandlerList`
-Một mảng các đối tượng `ErrorCenterHandlerItem` được sử dụng để đăng ký hàng loạt.
-
-## Các nguyên nhân lỗi mặc định
-
-`ErrorCenter` được điền sẵn các nguyên nhân lỗi phổ biến trong các lĩnh vực chức năng khác nhau. Những nguyên nhân này được định nghĩa trong `@dxtmisha/functional-basic/media/errorCauseList`.
-
-### API (`group: 'api'`)
-- **`unknown`** — **Lỗi không xác định**: Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.
-- **`timeout`** — **Yêu cầu hết hạn**: Yêu cầu mất quá nhiều thời gian. Vui lòng kiểm tra kết nối.
-- **`offline`** — **Không có kết nối**: Bạn đang ngoại tuyến. Vui lòng kiểm tra mạng.
-- **`notFound`** — **Không tìm thấy**: Tài nguyên được yêu cầu không thể tìm thấy trên máy chủ.
-- **`server`** — **Lỗi máy chủ**: Đã xảy ra lỗi nội bộ máy chủ.
-- **`cacheClear`** — **Lỗi xóa bộ nhớ đệm**: Đã xảy ra lỗi trong quá trình xóa bộ nhớ đệm chạy ngầm.
-
-### Quốc tế hóa (`group: 'intl'`)
-- **`datetime`** — **Lỗi Intl Datetime**: Lỗi trong logic định dạng ngày hoặc giờ.
-- **`display`** — **Lỗi Intl Display**: Lỗi khi định dạng tên hiển thị hoặc vùng/quốc gia.
-- **`number`** — **Lỗi Intl Number**: Lỗi khi định dạng số hoặc tiền tệ.
-- **`plural`** — **Lỗi Intl Plural**: Lỗi trong logic quy tắc số nhiều.
-- **`relative`** — **Lỗi Intl Relative**: Lỗi khi định dạng thời gian tương đối.
-
-### Lưu trữ (`group: 'storage'`)
-- **`context`** — **Lỗi thiếu ngữ cảnh**: Ngữ cảnh lưu trữ bị thiếu (có thể do chưa gọi `init()`). Việc cách ly dữ liệu cho yêu cầu này đã thất bại.
-- **`error`** — **Lỗi lưu trữ**: Lỗi chung khi đọc hoặc ghi vào bộ nhớ lưu trữ.
-
-### Các nhóm khác
-- **Broadcast** (`group: 'broadcast'`)
-    - **`error`**: Lỗi không mong muốn trong giao tiếp `BroadcastChannel`.
-- **Hydration** (`group: 'hydration'`)
-    - **`error`**: Lỗi trong quá trình hydration dữ liệu phía client.
-- **Share** (`group: 'share'`)
-    - **`error`**: Lỗi không mong muốn trong quá trình chia sẻ (sharing).
-- **Transformation** (`group: 'transformation'`)
-    - **`error`**: Lỗi trong quá trình chuyển đổi hoặc định dạng dữ liệu.
-
-## Ví dụ sử dụng
-
-```javascript
-import { ErrorCenter } from '@dxtmisha/functional-basic'
-
-// 1. Cấu hình trình xử lý toàn cục
-ErrorCenter.addHandler('api', (cause) => {
-  notification.error({
-    title: cause.label,
-    message: cause.message
-  })
-})
-
-// 2. Đăng ký các nguyên nhân lỗi cụ thể
+### Bước 1: Đăng ký (Registry)
+Lập một từ điển lỗi để lưu trữ văn bản tách biệt với mã.
+```typescript
 ErrorCenter.add({
   group: 'auth',
-  code: 'token_expired',
-  label: 'Phiên làm việc hết hạn',
-  message: 'Vui lòng đăng nhập lại.'
+  code: 'LOGIN_FAILED',
+  label: 'Đăng nhập thất bại',
+  message: 'Mật khẩu không hợp lệ.'
 })
+```
 
-// 3. Kích hoạt lỗi qua mã và nhóm
-ErrorCenter.on({ group: 'auth', code: 'token_expired' })
+### Bước 2: Đăng ký nhận lỗi (Handlers)
+Chỉ định cách ứng dụng sẽ phản ứng với một nhóm lỗi.
+```typescript
+ErrorCenter.addHandler('auth', (cause) => {
+  alert(cause.message);
+});
+```
+
+### Bước 3: Kích hoạt (Execution)
+Kích hoạt lỗi bằng mã và nhóm của nó.
+```typescript
+ErrorCenter.on({ group: 'auth', code: 'LOGIN_FAILED' });
+```
+
+## Nguyên nhân lỗi tiêu chuẩn
+
+Lớp đã chứa các mô tả sẵn có cho các tình huống phổ biến.
+
+#### Nhóm API (`api`)
+Được sử dụng cho các lỗi yêu cầu mạng.
+- **forbidden** — Truy cập bị cấm (403).
+- **notFound** — Không tìm thấy tài nguyên (404).
+- **offline** — Không có kết nối internet.
+- **server** — Lỗi máy chủ nội bộ (500).
+- **timeout** — Hết thời gian yêu cầu.
+- **unauthorized** — Lỗi xác thực (401).
+- **unknown** — Lỗi không xác định.
+- **cacheClear**, **cacheGet**, **cacheRemove**, **cacheSet** — Lỗi khi làm việc với bộ nhớ đệm.
+
+#### Nhóm Intl (`intl`)
+Lỗi trong quá trình định dạng dữ liệu (ngày tháng, số, v.v.).
+- **datetime**, **display**, **number**, **plural**, **relative**.
+- **invalid** — Ngày không hợp lệ hoặc định dạng sai.
+
+#### Nhóm Storage (`storage`)
+Lỗi khi tương tác với bộ lưu trữ cục bộ hoặc máy chủ.
+- **context** — Thiếu ngữ cảnh.
+- **error** — Lỗi đọc/ghi chung.
+
+#### Các nhóm khác
+Các nhóm này sử dụng mã lỗi chung `error`. Việc kích hoạt được thực hiện thông qua `ErrorCenter.on({ group: 'tên_nhóm', code: 'error' })`.
+- **broadcast** — Lỗi trong việc trao đổi dữ liệu giữa các tab trình duyệt.
+- **hydration** — Lỗi trong quá trình đồng bộ hóa dữ liệu giữa máy chủ và máy khách.
+- **share** — Lỗi khi cố gắng chia sẻ nội dung (Sharing API).
+- **transformation** — Lỗi trong quá trình chuyển đổi hoặc phân tích cú pháp dữ liệu.
+
+## Ví dụ
+
+### Tích hợp với hệ thống thông báo
+```typescript
+import { ErrorCenter } from '@dxtmisha/functional-basic'
+
+// Thiết lập một lần khi khởi động ứng dụng
+ErrorCenter.addHandler('api', (cause) => {
+  Toast.show(cause.label || 'Lỗi', cause.message);
+});
+
+// Sử dụng trong bất kỳ dịch vụ nào
+async function loadData() {
+  try {
+    const data = await fetch('/api');
+  } catch (e) {
+    ErrorCenter.on({ group: 'api', code: 'server', details: e });
+  }
+}
+```
+
+### Làm việc với các nhóm tùy chỉnh
+```typescript
+// Đăng ký tức thì
+ErrorCenter.on({
+  group: 'upload',
+  code: 'SIZE_LIMIT',
+  label: 'Tệp quá lớn',
+  message: 'Tối đa 5MB'
+});
 ```

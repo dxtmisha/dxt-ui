@@ -6,82 +6,126 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Lớp bao đóng cho phép các developer quản trị trực tiếp vùng Browser Cookie. Hệ thống `Cookie` tự cấu hình tính đồng bộ xuyên suốt từ bộ đệm của website (memory record) sang môi trường DOM API `document.cookie`, giúp cho tiến trình thao tác và tạo lập biến theo chuẩn reactive được đáp ứng đầy đủ với các chức năng dự phòng linh hoạt.
 
+Bao gồm tích hợp chặt chẽ với `CookieStorage` để quản lý cấp thấp và tôn trọng chặn toàn cầu qua `CookieBlock`.
+
 ## Các tính năng chính
 
-- **Đồng bộ hóa Không Gian Bộ Nhớ (Memory Sync)** — lưu giữ cấu trúc ảo cho trình quản lý trạng thái tại server cache, tránh tạo quá nhiều truy vấn lên cấu trúc DOM của cookie. Khi khởi tạo tiến trình nó lập tức bắt/nắm bắt vòng dữ liệu đầu tư của mã node `document.cookie`.
-- **Thiết Lập Theo Vùng Môi Trường (Environment Aware)** — có khả năng định vị khu sinh thái DOM. Với vùng Render SSR (Server-Side Rendering) hoặc Unit Test, tính năng bắt cookie vẫn giả lập môi trường ảo dựa trên biến cache để tránh phát sinh bug văng lỗi gián đoạn do không truy vấn được DOM window.
-- **Tính Năng Chặn Toàn Quyền (Global Cookie Blocking)** — kế nối bảo mật theo bộ thư viện của quy chế `CookieBlock`. Nếu website đánh mã dừng cấp quyền hoạt động cookie theo chính sách riêng tư bảo vệ người dùng, Class Cookie sẽ dừng tất cả chức năng sinh tác dữ liệu lên DOM theo đúng giao thức.
-- **Hỗ Trợ Luồng Code Default (Fallback/Default)** — cho phép nạp biến đệm vào làm dữ liệu phụ và sinh cấu trúc từ giá trị phụ đó khi giá trị thật vẫn đang bị mất/rỗng.
+- **Đồng bộ hóa Không Gian Bộ Nhớ (Memory Sync)** — lưu giữ cấu trúc ảo cho trình quản lý trạng thái tại server cache, tránh tạo quá nhiều truy vấn lên cấu trúc DOM của cookie. Khi khởi tạo tiến trình nó lập tức bắt/nắm bắt vòng dữ liệu đầu tư của mã node `document.cookie`
+- **Thiết Lập Theo Vùng Môi Trường (Environment Aware)** — có khả năng định vị khu sinh thái DOM. Với vùng Render SSR (Server-Side Rendering) hoặc Unit Test, tính năng bắt cookie vẫn giả lập môi trường ảo dựa trên biến cache để tránh phát sinh bug văng lỗi gián đoạn do không truy vấn được DOM window
+- **Tính Năng Chặn Toàn Quyền (Global Cookie Blocking)** — kế nối bảo mật theo bộ thư viện của quy chế `CookieBlock`. Nếu website đánh mã dừng cấp quyền hoạt động cookie theo chính sách riêng tư bảo vệ người dùng, Class Cookie sẽ dừng tất cả chức năng sinh tác dữ liệu lên DOM theo đúng giao thức
+- **Hỗ Trợ Luồng Code Default (Fallback/Default)** — cho phép nạp biến đệm vào làm dữ liệu phụ và sinh cấu trúc từ giá trị phụ đó khi giá trị thật vẫn đang bị mất/rỗng
 
-## Khởi tạo
+## Constructor
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `Cookie(name)`.
+Phiên bản `Cookie` có thể được tạo để quản lý cookie cụ thể. Nếu phiên bản với cùng tên đã tồn tại, phiên bản hiện có sẽ được trả về.
 
 **Tham số:**
-- `name: string` — tên của cookie bạn muốn quản lý.
+- `name: string` — tên cookie để quản lý
+
+## Phương thức
+
+### Hành động
+
+#### `get`
+
+Khi chạy `get()`, nếu cung cấp một đoạn code tĩnh phụ, class sẽ so khớp. Trường hợp lúc này không thấy thông số cookie trên hệ điều hành, đoạn code tĩnh lập tức ghi vào cấu trúc và lưu lại lên trình duyệt. Hỗ trợ các hàm để tính toán giá trị mặc định một cách lười.
+
+**Tham số:**
+- `defaultValue?: T | string | (() => T | string)` — cấu trúc dự phòng mặc định hoặc callback function
+- `options?: CookieOptions` — tham số cookie (sử dụng khi đặt giá trị mặc định)
+
+**Trả về:** `T | string | undefined` — biến lấy từ cookie hoặc dữ liệu phụ trợ
+
+#### `set`
+
+Sử dụng `set()` để nạp hoặc làm đệm chèn đè lên biến trước. Những chuẩn tham số bổ sung còn quản lý cả chuẩn cookie thông dụng là `age` (Max-Age cache thiết đặt quy đổi theo giây) và trạng thái của các `sameSite`. Nếu chặn đang hoạt động qua `CookieBlock`, giá trị chỉ được lưu trong bộ nhớ.
+
+**Tham số:**
+- `value?: T | string | (() => T | string)` — tham chiếu dùng đăng ký tạo vào cookie, hoặc trỏ lên một mảng rỗng để tính function tạo cấu trúc thay vì nhập chay string
+- `options?: CookieOptions` — phần tham số hỗ trợ định tuổi tồn tại và cấu hình thông số cấp quyền mở rộng của cookie
+
+**Trả về:** `this` — để chuỗi phương thức
+
+#### `remove`
+
+Tập lệnh thực thi việc đẩy một mảng thông số rỗng bằng string trắng vào vùng cookie, sau đó cập nhật vòng đời thuộc tính Max-Age thành `-1`. Lúc này máy khách sẽ hiểu trình truy xuất cần dừng hoạt động, đẩy lùi chu kỳ hết hạn và loại cookie ngay rực khắc.
+
+**Trả về:** `this` — để chuỗi phương thức
+
+### Phương thức tĩnh
+
+- `getInstance<T>(name: string): Cookie<T>` — Trả về phiên bản hiện có hoặc tạo mới theo tên
+
+### Hỗ trợ
+
+- `CookieStorage.update()` — Cập nhật dữ liệu từ thư mục `document.cookie` nằm trên browser
+
+## Các loại
+
+### `CookieOptions`
+
+Đối tượng cấu hình cho các phương thức `get` và `set`:
+
+- `age?: number` — thời gian sống của cookie tính bằng **giây** (thuộc tính `Max-Age`). Mặc định: 7 ngày (604800 giây). Tự động đặt thành `-1` khi xóa qua `remove()`
+- `sameSite?: 'strict' | 'lax'` — chính sách `SameSite`. Mặc định: `'strict'` (cookie chỉ được gửi khi điều hướng trong cùng trang web). `'lax'` cũng cho phép gửi khi điều hướng từ liên kết ngoài (GET request)
+- `arguments?: string[]` — các chỉ thị bổ sung được nối vào chuỗi cookie (ví dụ: `'Secure'`, `'Path=/'`, `'Domain=.myapp.com'`)
+
+## Ví dụ
+
+### Sử dụng cơ bản
 
 ```typescript
 import { Cookie } from '@dxtmisha/functional'
 
-// 1. Mảng giao tiếp lấy biến 'theme' cookie
+// Mảng giao tiếp lấy biến 'theme' cookie
 const themeCookie = new Cookie('theme')
-```
 
-## Quản lý dữ liệu
-
-### `get`
-
-Khi chạy `get()`, nếu cung cấp một đoạn code tĩnh phụ, class sẽ so khớp. Trường hợp lúc này không thấy thông số cookie trên hệ điều hành, đoạn code tĩnh lập tức ghi vào cấu trúc và lưu lại lên trình duyệt.
-
-**Tham số:**
-- `value?: T | string | (() => T | string)` — cấu trúc dự phòng mặc định hoặc callback function.
-
-**Trả về:** `T | string | undefined` — biến lấy từ cookie hoặc dữ liệu phụ trợ.
-
-```javascript
 // Tìm hệ thống node 'theme', HOẶC gán/đóng gói 'dark' trả lại cho giá trị nếu web rỗng
-const currentTheme = themeCookie.get('dark') 
-```
-
-### `set`
-
-Sử dụng `set()` để nạp hoặc làm đệm chèn đè lên biến trước. Những chuẩn tham số bổ sung còn quản lý cả chuẩn cookie thông dụng là `age` (Max-Age cache thiết đặt quy đổi theo giây) và trạng thái của các `sameSite`.
-
-**Tham số:**
-- `value: T | string | (() => T | string)` — tham chiếu dùng đăng ký tạo vào cookie, hoặc trỏ lên một mảng rỗng để tính function tạo cấu trúc thay vì nhập chay string.
-- `options?: CookieOptions` — phần tham số hỗ trợ định tuổi tồn tại và cấu hình thông số cấp quyền mở rộng của cookie.
-
-```javascript
-const userPrefs = new Cookie('preferences')
+const currentTheme = themeCookie.get('dark')
 
 // Cấu trúc text / string đơn thuần
-userPrefs.set('{"compact": true}')
+themeCookie.set('light')
 
 // Trỏ cấu hình tuỳ chỉnh đa hệ
-userPrefs.set('{"compact": true}', {
+themeCookie.set('dark', {
   age: 60 * 60 * 24 * 30, // Xử lý cache quy về 30 ngày vòng lặp
   sameSite: 'lax'
 })
+
+// Xóa
+themeCookie.remove()
 ```
 
-### `remove`
+### Sử dụng getInstance
 
-Tập lệnh thực thi việc đẩy một mảng thông số rỗng bằng string trắng vào vùng cookie, sau đó cập nhật vòng đời thuộc tính Max-Age thành `-1`. Lúc này máy khách sẽ hiểu trình truy xuất cần dừng hoạt động, đẩy lùi chu kỳ hết hạn và loại cookie ngay rức khắc.
+```typescript
+import { Cookie } from '@dxtmisha/functional'
 
-```javascript
-userPrefs.remove()
+// Lấy hoặc tạo phiên bản
+const cookie = Cookie.getInstance<string>('user')
+
+// Tất cả các cuộc gọi getInstance với cùng một tên trả về cùng một phiên bản
+const sameCookie = Cookie.getInstance<string>('user')
+
+console.log(cookie === sameCookie) // true
 ```
 
-## Đồng bộ hóa
+### Tích hợp với CookieBlock
 
-- `updateData(): void` (static) — Lệnh tĩnh giúp cập nhật dữ liệu từ thư mục `document.cookie` nằm trên browser.
+```typescript
+import { Cookie, CookieBlock } from '@dxtmisha/functional'
 
-## CookieOptions
+// Chặn tất cả hoạt động ghi
+CookieBlock.set(true)
 
-`CookieOptions` là đối tượng cấu hình cho các phương thức `get` và `set`:
+const cookie = new Cookie('blocked')
 
-- `age?: number` — thời gian sống của cookie tính bằng **giây** (thuộc tính `Max-Age`). Mặc định: 7 ngày (604800 giây). Tự động đặt thành `-1` khi xóa qua `remove()`.
-- `sameSite?: 'strict' | 'lax'` — chính sách `SameSite`. Mặc định: `'strict'` (cookie chỉ được gửi khi điều hướng trong cùng trang web). `'lax'` cũng cho phép gửi khi điều hướng từ liên kết ngoài (GET request).
-- `arguments?: string[]` — các chỉ thị bổ sung được nối vào chuỗi cookie (ví dụ: `'Secure'`, `'Path=/'`, `'Domain=.myapp.com'`).
+// Giá trị được lưu trong bộ nhớ, nhưng không phải DOM
+cookie.set('value')
 
+// Mở chặn
+CookieBlock.set(false)
 
+// Bây giờ ghi hoạt động bình thường
+cookie.set('newValue')
+```

@@ -12,7 +12,7 @@ import { Geo, type GeoItemFull } from '@dxtmisha/functional-basic'
  * Реактивный класс для работы с географическими данными.
  */
 export class GeoRef {
-  private static readonly item = shallowRef(Geo.get())
+  private static readonly item = shallowRef(Geo.getItem())
 
   private static readonly country = computed<string>(() => this.item.value.country)
   private static readonly language = computed<string>(() => this.item.value.language)

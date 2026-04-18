@@ -14,34 +14,27 @@ A class dedicated to tracking and managing the state of an API request. It secur
 - **Chainable API** — setters return `this`, allowing multiple state changes to be chained elegantly.
 - **Automatic Message Extraction** — intelligently attempts to parse and pull human-readable `message` fields directly from structured server responses.
 
-## Action Methods
+## Methods
 
-### `getResponse`
+### Action
 
-Returns the raw data payload from the last successful request.
+- `getResponse<T>(): T | undefined` — Returns the raw data payload from the last successful request.
+- `getMessage(): string` — Returns the server message pulled from a successful response or a manually set message.
 
-**Returns:** `T | undefined` — The parsed response data.
+### Check
 
-### `getMessage`
-
-Returns the server message pulled from a successful response or a manually set message.
-
-**Returns:** `string` — The human-readable message.
-
-## Check Methods
-
-- `get(): ApiStatusItem` — Returns the complete status data object.
+- `get(): ApiStatusItem | undefined` — Returns the complete status data object.
 - `getStatus(): number | undefined` — Returns the HTTP status code (e.g., `200`).
 - `getStatusText(): string | undefined` — Returns the status text (e.g., `"OK"`).
 - `getStatusType(): ApiStatusType | undefined` — Returns the last status validation type.
 - `getError(): string | undefined` — Returns the recorded error message.
 
-## Configuration
+### Configuration
 
 - `set(data: ApiStatusItem): this` — Sets multiple status fields at once.
 - `setStatus(status?: number, statusText?: string): this` — Sets the HTTP status code and text.
 - `setError(error?: string): this` — Records an error message string.
-- `setLastResponse(response?: any): this` — Records a server response and extracts related metadata.
+- `setLastResponse(response?: any): this` — Records a server response and automatically extracts `message` and `status` if present.
 - `setLastStatus(status?: ApiStatusType): this` — Sets the custom API status type.
 - `setLastMessage(message?: string): this` — Explicitly records a message.
 
@@ -49,9 +42,9 @@ Returns the server message pulled from a successful response or a manually set m
 
 #### `ApiStatusItem`
 A complete representation of a request status.
-- `status: number | undefined` — HTTP status code.
-- `statusText: string | undefined` — HTTP status text.
-- `statusType: ApiStatusType | undefined` — Validation category.
-- `error: string | undefined` — Error message.
-- `response: any` — Raw response data.
-- `message: string` — Extracted display message.
+- `status?: number` — HTTP status code.
+- `statusText?: string` — HTTP status text.
+- `error?: string` — Error message.
+- `lastResponse?: any` — Last response data.
+- `lastStatus?: ApiStatusType` — Last status type.
+- `lastMessage?: string` — Last message.

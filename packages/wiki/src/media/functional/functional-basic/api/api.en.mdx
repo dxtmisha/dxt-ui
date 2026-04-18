@@ -6,6 +6,17 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 The `Api` class is a central utility for making HTTP requests. It provides a simple interface for common methods and manages global settings like base URL, default headers, and lifecycle hooks.
 
+### Key Capabilities
+
+The class provides a comprehensive set of tools for managing network communication:
+- **CRUD Methods** — execution of `GET`, `POST`, `PUT`, `PATCH`, `DELETE` requests.
+- **Global Configuration** — setting up base URLs, headers, and parameters.
+- **Lifecycle Hooks** — handling events before and after the request (e.g., for Refresh Token).
+- **Hydration (SSR)** — transferring data from server to client to prevent duplicate requests.
+- **Caching** — saving responses in memory or external storage (LocalStorage).
+- **Response Emulation** — creating mock data for development and testing.
+- **Loading and Error Management** — integration with global indicator components and error centers.
+
 ## Basic Usage
 
 The simplest way to make a request is by using the static methods `get`, `post`, `put`, or `delete`. All methods support response typing via Generics.
@@ -82,6 +93,40 @@ Api.setEnd(async (response, apiFetch) => {
   
   return {} // Continue with standard processing
 })
+```
+
+## Hydration
+
+Hydration allows transferring data obtained during server-side rendering (SSR) to the client side. This prevents the same requests from being executed again immediately after the page loads.
+
+1. **On the Server**: Perform the necessary requests and get the script via `Api.getHydrationScript()`.
+2. **In the Template**: Insert the resulting string into the HTML.
+3. **On the Client**: Upon `Api` initialization, the data will be automatically loaded into the response manager.
+
+```javascript
+// SSR Example
+await Api.get({ path: 'settings' });
+const hydrationScript = Api.getHydrationScript(); // <script>...</script>
+```
+
+## Caching
+
+The `Api` class supports automatic response caching. You can use either the built-in in-memory storage or connect external storage (e.g., `LocalStorage`).
+
+```javascript
+import { ApiCache, DataStorage } from '@dxtmisha/functional-basic';
+
+// Connecting external storage (optional)
+ApiCache.init(
+  async (key) => DataStorage.get(key),
+  async (key, value) => DataStorage.set(key, value)
+);
+
+// Usage in a request
+const data = await Api.get({
+  path: 'catalog/list',
+  cache: 3600 // Cache for 1 hour (in seconds)
+});
 ```
 
 ## Response Emulation

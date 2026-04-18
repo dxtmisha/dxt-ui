@@ -1,6 +1,7 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -106,6 +107,33 @@ export class SnackbarItem {
 
     this.text = new TextConstructor(props)
   }
+
+  /** ARIA bind for snackbar item/ ARIA привязка для элемента снекбара */
+  readonly ariaBind = computed(() => {
+    const aria = {
+      ...AriaStaticInclude.atomic(true),
+      ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.live(this.props.ariaLive)
+    }
+
+    if (this.props.success) {
+      return {
+        ...aria,
+        ...AriaStaticInclude.live('polite'),
+        ...AriaStaticInclude.role('status')
+      }
+    }
+
+    if (this.props.error) {
+      return {
+        ...aria,
+        ...AriaStaticInclude.live('assertive'),
+        ...AriaStaticInclude.role('alert')
+      }
+    }
+
+    return aria
+  })
 
   /**
    * Events on close button click.

@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ApiHeaders } from '../ApiHeaders'
 
-describe('ApiHeaders / API Headers', () => {
+describe('ApiHeaders', () => {
   let apiHeaders: ApiHeaders
 
   beforeEach(() => {
     apiHeaders = new ApiHeaders()
   })
 
-  describe('get / Get headers', () => {
+  describe('get', () => {
     it('should return undefined when value is null', () => {
       const result = apiHeaders.get(null)
 
@@ -106,7 +106,7 @@ describe('ApiHeaders / API Headers', () => {
     })
   })
 
-  describe('set / Set headers', () => {
+  describe('set', () => {
     it('should set default headers when passed valid object', () => {
       const headers = {
         'Authorization': 'Bearer token123',
@@ -168,7 +168,7 @@ describe('ApiHeaders / API Headers', () => {
     })
   })
 
-  describe('getByRequest / Get headers by request', () => {
+  describe('getByRequest', () => {
     it('should return custom headers when request is FormData', () => {
       const formData = new FormData()
       const customHeaders = { 'X-Custom': 'value' }

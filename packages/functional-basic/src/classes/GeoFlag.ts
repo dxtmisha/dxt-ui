@@ -12,11 +12,17 @@ import {
 export const GEO_FLAG_ICON_NAME = 'f'
 
 /**
- * Class for working with Flags.
+ * Class for working with flags and geographic information.
+ * Provides methods for retrieving country names, languages, and flag icons.
  *
- * Класс для работы с Флагами.
+ * Класс для работы с флагами и географической информацией.
+ * Предоставляет методы для получения названий стран, языков и иконок флагов.
  */
 export class GeoFlag {
+  /**
+   * Mapping of country codes to flag icon names/
+   * Словарь соответствия кодов стран названиям иконок флагов
+   */
   static flags: Record<string, string> = {
     AD: `${GEO_FLAG_ICON_NAME}-ad`,
     AE: `${GEO_FLAG_ICON_NAME}-ae`,
@@ -263,7 +269,9 @@ export class GeoFlag {
 
   /**
    * Constructor
-   * @param code country and language code/ код страны и языка
+   *
+   * Конструктор
+   * @param code country and language code / код страны и языка
    */
   constructor(
     protected code: string = Geo.getLocation()
@@ -274,7 +282,8 @@ export class GeoFlag {
    * Returns information about the country and its flag.
    *
    * Возвращает информацию о стране и её флаге.
-   * @param code country code/ код страны
+   * @param code country code / код страны
+   * @returns country information / информация о стране
    */
   get(code = this.code): GeoFlagItem | undefined {
     const data = Geo.find(code)
@@ -296,30 +305,35 @@ export class GeoFlag {
   }
 
   /**
-   * Getting a link to the flag.
+   * Returns the identifier of the flag icon.
    *
-   * Получение ссылки на флаг.
-   * @param code country code/ код страны
+   * Возвращает идентификатор иконки флага.
+   * @param code country code / код страны
+   * @returns flag icon identifier / идентификатор иконки флага
    */
   getFlag(code = this.code): string | undefined {
     return this.get(code)?.icon
   }
 
   /**
-   * Getting a list of countries by an array of codes.
+   * Returns a list of countries based on the provided codes.
+   * If no codes are provided, returns all available countries.
    *
-   * Получение списка стран по массиву с кодами.
-   * @param codes country code/ код страны
+   * Возвращает список стран на основе предоставленных кодов.
+   * Если коды не переданы, возвращает все доступные страны.
+   * @param codes array of country codes / массив кодов стран
+   * @returns list of countries / список стран
    */
   getList(codes?: string[]): GeoFlagItem[] {
     return forEach(this.getCodes(codes), code => this.get(code)) as GeoFlagItem[]
   }
 
   /**
-   * Getting a list of countries by an array of codes in national language.
+   * Returns a list of countries in their national languages.
    *
-   * Получение списка стран по массиву с кодами на национальный язык.
-   * @param codes country code/ код страны.
+   * Возвращает список стран на их национальных языках.
+   * @param codes array of country codes / массив кодов стран
+   * @returns list of countries with national names / список стран с национальными названиями
    */
   getNational(codes?: string[]): GeoFlagNational[] {
     return forEach(this.getList(codes), (item) => {
@@ -335,10 +349,11 @@ export class GeoFlag {
   }
 
   /**
-   * To change the location.
+   * Changes the current locale/location.
    *
-   * Изменить местоположение.
-   * @param code country and language code/ код страны и языка
+   * Изменяет текущую локаль/местоположение.
+   * @param code country and language code / код страны и языка
+   * @returns this
    */
   setCode(code: string): this {
     this.code = code
@@ -346,19 +361,23 @@ export class GeoFlag {
   }
 
   /**
-   * Returns a special object for formatting.
+   * Returns a special object for formatting and translations.
    *
-   * Возвращает специальный объект для работы с форматированием.
+   * Возвращает специальный объект для работы с форматированием и переводами.
+   * @protected
+   * @returns GeoIntl instance / экземпляр GeoIntl
    */
   protected getLocation() {
     return new GeoIntl(this.code)
   }
 
   /**
-   * Returns a list of countries to retrieve data from.
+   * Returns a list of country codes to retrieve data from.
    *
-   * Возвращает список стран для получения данных.
-   * @param codes country code/ код страны
+   * Возвращает список кодов стран для получения данных.
+   * @param codes optional array of codes / опциональный массив кодов
+   * @protected
+   * @returns array of codes / массив кодов
    */
   protected getCodes(codes?: string[]): string[] {
     return codes ?? Object.keys(GeoFlag.flags)

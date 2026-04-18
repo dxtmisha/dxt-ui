@@ -4,104 +4,95 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # BroadcastMessage Class
 
-A class for handling cross-tab or cross-window messaging using the `BroadcastChannel` API. It provides a simple interface to send and receive messages with optional callback support, error handling, and environment-aware initialization.
+A class for handling messaging between different browser contexts (tabs, windows, iframes) using the `BroadcastChannel` API. It provides a convenient interface for sending and receiving data with automatic channel lifecycle management and error handling.
+
+Features automatic prefix naming to prevent conflicts and integrates with `ErrorCenter` for monitoring initialization failures.
 
 ## Key Features
 
-- **Cross-context Communication** — easily send messages between different browser tabs, windows, or iframes on the same origin.
-- **Callback Based** — register callbacks to handle incoming messages and errors automatically.
-- **Environment Aware** — automatically checks for DOM runtime before initializing, preventing errors in non-browser environments.
-- **Prefixed Names** — automatically adds a unique prefix to channel names to avoid collisions with other applications.
-- **Type Safety** — supports TypeScript generics for message payload typing.
-- **ErrorCenter Integration** — centralized error reporting when the `BroadcastChannel` fails to initialize.
-- **Resource Management** — includes a `destroy()` method to close the channel and free system resources.
-- **Direct Access** — provide access to the underlying `BroadcastChannel` instance when needed.
+- **Cross-Context Communication** — simple data synchronization between all windows of the same origin.
+- **Callback-Based** — automatic processing of incoming messages and errors through registered callback functions.
+- **Runtime Safety** — built-in DOM environment checking prevents errors during Server-Side Rendering (SSR).
+- **Channel Isolation** — automatic unique prefixing for channel names via `DataStorage`.
+- **Strong Typing** — full TypeScript generics support to ensure message data integrity.
 
 ## Initialization
 
-To initialize the object, call the `BroadcastMessage(name, callback, callbackError, errorCenter)` constructor.
+To initialize the object, call the constructor `BroadcastMessage(name, callback, callbackError, errorCenter)`.
 
 ### Generic Constraints
 
 - `Message = any` — the type of the message payload.
 
 **Parameters:**
-- `name: string` — unique name of the communication channel.
+- `name: string` — unique channel name.
 - `callback?: (event: MessageEvent<Message>) => void` — callback function executed when a message is received.
 - `callbackError?: (event: MessageEvent<Message>) => void` — callback function executed when a message error occurs.
-- `errorCenter: ErrorCenterInstance` — instance of the error center for triggering events (defaults to `ErrorCenter.getItem()`).
+- `errorCenter: ErrorCenterInstance` — error center instance (defaults to: `ErrorCenter.getItem()`).
+
+```typescript
+import { BroadcastMessage } from '@dxtmisha/functional-basic'
+
+const messenger = new BroadcastMessage<string>(
+  'my-channel',
+  (event) => console.log('Received:', event.data)
+)
+```
+
+## Methods
+
+### Action
+
+#### `post`
+
+Sends a message to all listeners in the same channel.
+
+**Parameters:**
+- `message: Message` — data to send.
+
+**Returns:** `this` — for call chaining.
+
+#### `destroy`
+
+Closes the channel and stops listening for messages.
+
+**Returns:** `this` — for call chaining.
+
+### Configuration and Access
+
+- `getChannel(): BroadcastChannel | undefined` — Returns the underlying `BroadcastChannel` instance.
+- `setCallback(callback: Function): this` — Updates the function for processing incoming messages.
+- `setCallbackError(callbackError: Function): this` — Updates the function for processing message errors.
+
+## Examples
+
+### Syncing State Between Tabs
 
 ```typescript
 import { BroadcastMessage } from '@dxtmisha/functional'
 
-// 1. Initialization with incoming data handling
-const messenger = new BroadcastMessage(
-  'my-channel',
-  (event) => console.log('Received:', event.data),
-  (error) => console.error('Error:', error)
-)
-
-// 2. Sending a message
-messenger.post({ type: 'UPDATE', value: 100 })
-```
-
-## Sending Messages
-
-### `post`
-
-Sends a message to all listeners on the same channel.
-
-**Parameters:**
-- `message: Message` — the data to send.
-
-**Returns:** `this` — for method chaining.
-
-```javascript
-messenger.post({ type: 'UPDATE', payload: { id: 123 } })
-```
-
-## Configuration & Access
-
-- `getChannel(): BroadcastChannel | undefined` — Returns the underlying `BroadcastChannel` instance (or `undefined` if not in DOM runtime).
-- `setCallback(callback: (event: MessageEvent<Message>) => void): this` — Updates or sets the callback function for receiving messages.
-- `setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this` — Updates or sets the callback function for message errors.
-- `destroy(): void` — Closes the channel and stops listening for messages.
-
-## Examples
-
-### Synchronizing State Across Tabs
-
-```javascript
-import { BroadcastMessage } from '@dxtmisha/functional'
-
-// In Tab A and Tab B
-const authChannel = new BroadcastMessage('auth-status', (event) => {
+// In all application tabs
+const authChannel = new BroadcastMessage<string>('auth-status', (event) => {
   if (event.data === 'LOGOUT') {
     authModule.clearSession()
-    window.location.href = '/login'
+    window.location.reload()
   }
 })
 
-// When user logs out in Tab A
+// When a user logs out in one of the tabs
 function onLogout() {
   authChannel.post('LOGOUT')
 }
 ```
 
-### Simple Notification System with Error Handling
+### Updating Data Handler on the Fly
 
-```javascript
-const notifications = new BroadcastMessage(
-  'notifications',
-  (event) => showToast(event.data.message),
-  (error) => console.error('Failed to receive notification:', error)
-)
+```typescript
+const messenger = new BroadcastMessage('data-sync')
 
-// Update error handler later
-notifications.setCallbackError((error) => {
-  logToService(error)
+messenger.setCallback((event) => {
+  console.log('New data received:', event.data)
 })
 
-// Trigger notification from anywhere in the app
-notifications.post({ message: 'New message received!' })
+messenger.post({ id: 1, status: 'active' })
 ```

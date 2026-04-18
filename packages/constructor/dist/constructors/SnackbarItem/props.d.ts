@@ -1,13 +1,16 @@
 import { ConstrBind } from '@dxtmisha/functional';
-import { AriaRolePropsInclude } from '../../types/ariaTypes';
+import { AriaLivePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes';
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { TextClosePropsInclude } from '../../types/textTypes';
 import { ActionsPropsBasic, ActionsPropsInclude } from '../Actions';
 import { ButtonPropsBasic } from '../Button';
 import { IconPropsBasic, IconTrailingPropsInclude, IconValue } from '../Icon';
-type SnackbarItemPropsToken = {};
-export type SnackbarItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = LabelProps & DescriptionProps & IconTrailingPropsInclude<Icon> & ActionsPropsInclude<Actions> & AriaRolePropsInclude & TextClosePropsInclude & {
+type SnackbarItemPropsToken = {
+    success?: boolean;
+    error?: boolean;
+};
+export type SnackbarItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = LabelProps & DescriptionProps & IconTrailingPropsInclude<Icon> & ActionsPropsInclude<Actions> & AriaRolePropsInclude & AriaLivePropsInclude & TextClosePropsInclude & {
     /** Value/ Значения */
     /** Button configuration or text/ Конфигурация или текст кнопки */
     button?: string | number | ConstrBind<Button>;
@@ -38,6 +41,5 @@ export type SnackbarItemProps = SnackbarItemPropsBasic & SnackbarItemPropsToken;
  */
 export declare const defaultsSnackbarItem: {
     closeButton: boolean;
-    role: string;
 };
 export {};

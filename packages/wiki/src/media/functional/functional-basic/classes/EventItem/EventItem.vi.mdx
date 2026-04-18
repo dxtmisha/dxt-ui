@@ -1,34 +1,34 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/functional-basic/Classes/EventItem - Quản lý Sự kiện Nâng cao'/>
+<Meta title='@dxtmisha/vi/functional-basic/Classes/EventItem - Quản lý sự kiện nâng cao'/>
 
 # Lớp EventItem
 
-Một bộ khung (wrapper) mạnh mẽ để quản lý các trình lắng nghe sự kiện (event listeners) trên các phần tử DOM hoặc đối tượng `window`. Lớp này đơn giản hóa vòng đời của sự kiện (thêm, xóa, bật/tắt), hỗ trợ kiểm tra sự tồn tại của phần tử trong DOM và cung cấp các tối ưu hóa tích hợp cho các sự kiện nặng như `resize` và `scroll`.
+Một vỏ bọc mạnh mẽ để quản lý các trình lắng nghe sự kiện trên các phần tử DOM hoặc đối tượng `window`. Lớp này đơn giản hóa việc làm việc với vòng đời sự kiện (thêm, xóa, chuyển đổi), hỗ trợ tự động kiểm tra sự hiện diện của phần tử trong DOM và cung cấp tối ưu hóa tích hợp cho các sự kiện nặng như `resize` và `scroll`.
 
-## Tính năng chính
+## Các tính năng chính
 
-- **Quản lý vòng đời** — các phương thức `start`, `stop`, `toggle` và `reset` tiện lợi để kiểm soát chính xác việc lắng nghe sự kiện.
-- **An toàn DOM** — tự động kiểm tra `isInDom` trước khi thực hiện trình xử lý (có thể cấu hình phần tử kiểm soát).
-- **Hỗ trợ ResizeObserver** — xử lý tích hợp sự kiện `resize` cho bất kỳ phần tử HTML nào bằng API hiện đại.
-- **Tối ưu hóa cuộn** — loại sự kiện đặc biệt `scroll-sync` sử dụng `requestAnimationFrame` để đạt hiệu suất cao.
-- **Chuỗi lệnh và linh hoạt** — hỗ trợ chuỗi lệnh (chaining) và thay đổi động mục tiêu, loại hoặc trình xử lý sự kiện.
-- **Dữ liệu tùy chỉnh** — khả năng truyền và phát tán dữ liệu tùy chỉnh thông qua `CustomEvent`.
+- **Quản lý vòng đời** — các phương thức `start`, `stop`, `toggle` và `reset` thuận tiện để kiểm soát việc lắng nghe sự kiện.
+- **An toàn DOM** — tự động kiểm tra `isInDom` trước khi thực thi trình xử lý (có thể cấu hình phần tử điều khiển).
+- **Hỗ trợ ResizeObserver** — xử lý tích hợp sự kiện `resize` cho bất kỳ phần tử HTML nào thông qua API hiện đại.
+- **Tối ưu hóa cuộn** — kiểu sự kiện `scroll-sync` đặc biệt sử dụng `requestAnimationFrame` cho hiệu suất cao.
+- **Chaining và linh hoạt** — hỗ trợ nối chuỗi cuộc gọi và thay đổi động đích, kiểu hoặc trình xử lý sự kiện.
+- **Dữ liệu tùy chỉnh** — khả năng truyền và điều phối dữ liệu tùy chỉnh thông qua `CustomEvent`.
 
 ## Khởi tạo
 
-Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `EventItem(elementSelector, type, listener, options, detail)`.
+Để khởi tạo đối tượng, hãy gọi constructor `EventItem(elementSelector, type, listener, options, detail)`.
 
-### Ràng buộc Generic (Generic Constraints)
+### Các ràng buộc Generic (Generic Constraints)
 
-Để đảm bảo định kiểu nghiêm ngặt, lớp này hỗ trợ các generic sau:
-- `E extends ElementOrWindow` — Kiểu của phần tử nơi các sự kiện được lắng nghe.
-- `O extends Event` — Kiểu đối tượng sự kiện.
-- `D extends Record<string, any>` — Cấu trúc dữ liệu bổ sung.
+Để đảm bảo kiểu nghiêm ngặt, lớp hỗ trợ các generic sau:
+- `E extends ElementOrWindow` — Kiểu phần tử mà các sự kiện được lắng nghe.
+- `O extends Event` — Kiểu của đối tượng sự kiện.
+- `D extends Record<string, any>` — Cấu trúc của dữ liệu bổ sung.
 
 **Tham số:**
-- `elementSelector?: ElementOrString<E>` — phần tử đích nơi trình lắng nghe được gắn vào.
-- `type: string | string[] = 'click'` — loại sự kiện, một mảng các loại hoặc các loại đặc biệt (`'resize'`, `'scroll-sync'`).
+- `elementSelector?: ElementOrString<E>` — phần tử đích mà trình lắng nghe được đính kèm.
+- `type: string | string[] = 'click'` — kiểu sự kiện, mảng các kiểu hoặc các kiểu đặc biệt (`'resize'`, `'scroll-sync'`).
 - `listener?: EventListenerDetail<O, D>` — hàm xử lý sự kiện.
 - `options?: EventOptions` — các tùy chọn `addEventListener` tiêu chuẩn.
 - `detail?: D` — dữ liệu tùy chỉnh sẽ có sẵn trong trình xử lý.
@@ -36,63 +36,84 @@ Một bộ khung (wrapper) mạnh mẽ để quản lý các trình lắng nghe 
 ```typescript
 import { EventItem } from '@dxtmisha/functional-basic'
 
-// 1. Khởi tạo đơn giản
+// 1. Khởi tạo cơ bản
 const myEvent = new EventItem(
   '.my-button', 
   'click', 
-  (event) => console.log('Sự kiện được kích hoạt:', event.type)
+  (event) => console.log('Sự kiện đã kích hoạt:', event.type)
 )
 
-// 2. Sử dụng generic để định kiểu nghiêm ngặt
+// 2. Sử dụng generic cho kiểu nghiêm ngặt
 interface MyData { id: number }
 const customEvent = new EventItem<Window, MouseEvent, MyData>(
   window,
   'mousedown',
   (event, detail) => {
-    console.log('Cửa sổ được nhấn, ID dữ liệu:', detail?.id)
+    console.log('Nhấp vào cửa sổ, ID dữ liệu:', detail?.id)
   },
   { passive: true },
   { id: 42 }
 )
 
-// 3. Kích hoạt trình lắng nghe
+// 3. Kích hoạt lắng nghe
 myEvent.start()
 customEvent.start()
 ```
 
-## Phương thức
+## Các phương thức
 
 ### Thông tin
 
-- `isActive(): boolean` — Kiểm tra xem việc lắng nghe sự kiện có đang hoạt động hay không.
-- `getElement(): E | undefined` — Trả về phần tử mục tiêu hiện tại.
+- `isActive(): boolean` — Kiểm tra xem việc lắng nghe sự kiện hiện có đang hoạt động hay không.
+- `getElement(): E | undefined` — Trả về phần tử đích hiện tại.
 
 ### Cấu hình (Setters)
 
-Tất cả các phương thức trong nhóm này đều hỗ trợ chuỗi lệnh và tự động gọi `reset()` nếu sự kiện đang hoạt động.
+Tất cả các phương thức trong nhóm này đều hỗ trợ nối chuỗi và tự động gọi `reset()` nếu sự kiện đang hoạt động.
 
-- `setElement(elementSelector?: ElementOrString): this` — Thay đổi phần tử mục tiêu.
-- `setElementControl(elementSelector?: ElementOrString): this` — Thiết lập phần tử kiểm soát (nếu thiếu trong DOM, sự kiện sẽ không kích hoạt).
-- `setType(type: string | string[]): this` — Thay đổi loại sự kiện.
+- `setElement(elementSelector?: ElementOrString): this` — Thay đổi phần tử đích.
+- `setElementControl(elementSelector?: ElementOrString): this` — Thiết lập phần tử điều khiển (nếu nó không có trong DOM, sự kiện sẽ không kích hoạt).
+- `setType(type: string | string[]): this` — Thay đổi kiểu sự kiện.
 - `setListener(listener: Function): this` — Thay đổi hàm xử lý.
-- `setOptions(options?: EventOptions): this` — Thay đổi các tùy chọn của trình lắng nghe.
-- `setDetail(detail?: D): this` — Thay đổi dữ liệu tùy chỉnh của sự kiện.
+- `setOptions(options?: EventOptions): this` — Thay đổi các tham số trình lắng nghe.
+- `setDetail(detail?: D): this` — Thay đổi dữ liệu sự kiện tùy chỉnh.
 
-### Điều khiển
+### Quản lý
 
-- `start(): this` — Bắt đầu lắng nghe các sự kiện.
-- `stop(): this` — Dừng lắng nghe các sự kiện.
-- `toggle(activity: boolean): this` — Bật hoặc tắt việc lắng nghe dựa trên cờ hiệu.
+- `start(): this` — Bắt đầu lắng nghe sự kiện.
+- `stop(): this` — Dừng lắng nghe sự kiện.
+- `toggle(activity: boolean): this` — Bật hoặc tắt lắng nghe tùy thuộc vào cờ.
 - `reset(): this` — Khởi động lại sự kiện (hữu ích sau khi thay đổi cài đặt).
-- `dispatch(detail?: D): this` — Kích hoạt sự kiện trên phần tử mục tiêu với việc truyền dữ liệu.
+- `dispatch(detail?: D): this` — Kích hoạt sự kiện trên phần tử đích với việc truyền dữ liệu.
+
+## Các kiểu dữ liệu
+
+#### `ElementOrWindow`
+Phần tử mà sự kiện có thể được đính kèm: `HTMLElement | Window`.
+
+#### `ElementOrString<E>`
+Kiểu để truyền một phần tử hoặc bộ chọn của nó: `E | string`.
+
+#### `EventListenerDetail<O, D>`
+Hàm lắng nghe sự kiện: `(event: O, detail?: D) => void`.
+
+#### `EventOptions`
+Các tùy chọn lắng nghe: `AddEventListenerOptions | boolean | undefined`.
+
+#### `EventActivityItem<E>`
+Giao diện nội bộ để theo dõi các trình lắng nghe đang hoạt động.
+- `element: E | undefined` — Phần tử đích.
+- `type: string` — Kiểu sự kiện.
+- `listener?: (event: any) => void` — Hàm đang hoạt động.
+- `observer?: ResizeObserver` — Thực thể observer (cho `resize`).
 
 ## Các sự kiện đặc biệt
 
 ### `resize`
-Nếu loại sự kiện được đặt là `resize`, lớp sẽ tự động sử dụng `ResizeObserver` để theo dõi các thay đổi kích thước của phần tử (ngay cả khi đó không phải là `window`).
+Nếu kiểu sự kiện được đặt thành `resize`, lớp sẽ tự động sử dụng `ResizeObserver` để theo dõi những thay đổi về kích thước của phần tử (ngay cả khi đó không phải là `window`).
 
 ### `scroll-sync`
-Một loại đặc biệt để tối ưu hóa việc cuộn. Nó sử dụng `requestAnimationFrame` nội bộ, ngăn chặn các cuộc gọi trình xử lý dư thừa và cải thiện hiệu suất.
+Một kiểu đặc biệt cho việc cuộn tối ưu hóa. Bên trong sử dụng `requestAnimationFrame`, ngăn chặn các cuộc gọi trình xử lý không cần thiết và tăng hiệu suất.
 
 ## Ví dụ
 
@@ -104,20 +125,20 @@ const tracker = new EventItem('.item-1', 'mousemove', (e) => {
 
 tracker.start()
 
-// ... sau đó chuyển sang phần tử khác
+// ... chuyển sang phần tử khác sau đó
 tracker.setElement('.item-2')
 ```
 
-### Sử dụng CustomEvent với Dữ liệu
+### Sử dụng CustomEvent với dữ liệu
 ```javascript
 const emitter = new EventItem(window, 'my-custom-event')
 
 emitter.setListener((e, detail) => {
-  console.log('Dữ liệu nhận được:', e.detail) // dữ liệu từ CustomEvent
+  console.log('Dữ liệu đã nhận:', e.detail) // dữ liệu từ CustomEvent
 })
 
 emitter.start()
 
-// Phát tán sự kiện
+// Điều phối sự kiện
 emitter.dispatch({ userId: 123, action: 'refresh' })
 ```

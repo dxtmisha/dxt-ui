@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ApiStatus } from '../ApiStatus'
 
-describe('ApiStatus / API Status', () => {
+describe('ApiStatus', () => {
   let apiStatus: ApiStatus
 
   beforeEach(() => {
     apiStatus = new ApiStatus()
   })
 
-  describe('get / Get all status data', () => {
+  describe('get', () => {
     it('should return undefined when no status data is set', () => {
       expect(apiStatus.get()).toBeUndefined()
     })
@@ -26,7 +26,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('getStatus / Get status code', () => {
+  describe('getStatus', () => {
     it('should return undefined when no status code is set', () => {
       expect(apiStatus.getStatus()).toBeUndefined()
     })
@@ -43,7 +43,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('getStatusText / Get status text', () => {
+  describe('getStatusText', () => {
     it('should return undefined when no status text is set', () => {
       expect(apiStatus.getStatusText()).toBeUndefined()
     })
@@ -54,7 +54,24 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('getError / Get error', () => {
+  describe('getStatusType', () => {
+    it('should return undefined when no status type is set', () => {
+      expect(apiStatus.getStatusType()).toBeUndefined()
+    })
+
+    it('should return status type', () => {
+      apiStatus.setLastStatus('success')
+      expect(apiStatus.getStatusType()).toBe('success')
+    })
+
+    it('should return updated status type', () => {
+      apiStatus.setLastStatus('success')
+      apiStatus.setLastStatus('error')
+      expect(apiStatus.getStatusType()).toBe('error')
+    })
+  })
+
+  describe('getError', () => {
     it('should return undefined when no error is set', () => {
       expect(apiStatus.getError()).toBeUndefined()
     })
@@ -71,7 +88,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('getResponse / Get last response', () => {
+  describe('getResponse', () => {
     it('should return undefined when no response is set', () => {
       expect(apiStatus.getResponse()).toBeUndefined()
     })
@@ -97,7 +114,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('getMessage / Get message', () => {
+  describe('getMessage', () => {
     it('should return empty string when no message is set', () => {
       expect(apiStatus.getMessage()).toBe('')
     })
@@ -117,7 +134,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('set / Set multiple status fields', () => {
+  describe('set', () => {
     it('should set all status fields', () => {
       const statusData = {
         status: 201,
@@ -142,7 +159,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('setStatus / Set status code and text', () => {
+  describe('setStatus', () => {
     it('should set status code and text', () => {
       apiStatus.setStatus(404, 'Not Found')
       expect(apiStatus.getStatus()).toBe(404)
@@ -155,7 +172,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('setError / Set error', () => {
+  describe('setError', () => {
     it('should set error message', () => {
       apiStatus.setError('Network error')
       expect(apiStatus.getError()).toBe('Network error')
@@ -167,7 +184,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('setLastResponse / Set last response', () => {
+  describe('setLastResponse', () => {
     it('should set last response data', () => {
       const data = { id: 1, name: 'Test' }
       apiStatus.setLastResponse(data)
@@ -188,7 +205,7 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('setLastMessage / Set last message', () => {
+  describe('setLastMessage', () => {
     it('should set last message', () => {
       apiStatus.setLastMessage('Custom message')
       expect(apiStatus.getMessage()).toBe('Custom message')
@@ -200,9 +217,9 @@ describe('ApiStatus / API Status', () => {
     })
   })
 
-  describe('integration / Integration scenarios', () => {
+  describe('integration scenarios', () => {
     it('should handle complete workflow', () => {
-      // Успешный запрос
+      // Successful request
       apiStatus
         .setStatus(200, 'OK')
         .setLastResponse({
@@ -219,7 +236,7 @@ describe('ApiStatus / API Status', () => {
       })
       expect(apiStatus.getError()).toBeUndefined()
 
-      // Запрос с ошибкой
+      // Request with error
       apiStatus
         .setStatus(500, 'Internal Server Error')
         .setError('Database connection failed')

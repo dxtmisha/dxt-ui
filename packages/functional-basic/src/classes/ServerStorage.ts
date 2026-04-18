@@ -12,7 +12,10 @@ type ServerStorageItem = {
 }
 type ServerStorageList = Record<string, ServerStorageItem>
 
-const SERVER_STORAGE_KEY = '__dxt_server_storage__'
+/** Server storage key / Ключ серверного хранилища */
+const SERVER_STORAGE_KEY = '__ui:server-storage__'
+
+/** Server storage script id / Идентификатор скрипта серверного хранилища */
 const SERVER_STORAGE_ID = '__ui:server:storage:id__'
 
 /**
@@ -109,6 +112,20 @@ export class ServerStorage {
       hydration
     }
     return newValue
+  }
+
+  /**
+   * Removes a value from storage.
+   *
+   * Удаляет значение из хранилища.
+   * @param key unique storage key / уникальный ключ хранилища
+   */
+  static remove(key: string): void {
+    const storage = this.getStorage()
+
+    if (key in storage) {
+      delete storage[key]
+    }
   }
 
   /**
