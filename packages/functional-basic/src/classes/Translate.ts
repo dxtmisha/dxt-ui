@@ -1,4 +1,5 @@
 import { TranslateInstance } from './TranslateInstance'
+import { ServerStorage } from './ServerStorage'
 
 import { type TranslateCode, type TranslateConfig, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
 
@@ -8,8 +9,6 @@ import { type TranslateCode, type TranslateConfig, type TranslateDataFile, type 
  * Класс для получения переведенного текста.
  */
 export class Translate {
-  protected static item = new TranslateInstance()
-
   /**
    * Getting the translation text by its code.
    *
@@ -21,16 +20,17 @@ export class Translate {
     name: string,
     replacement?: string[] | Record<string, string | number>
   ): Promise<string> {
-    return this.item.get(name, replacement)
+    return this.getItem().get(name, replacement)
   }
 
   /**
-   * Returns an instance of the class.
+   * Returns a request-isolated instance of TranslateInstance.
    *
-   * Возвращает экземпляр класса.
+   * Возвращает изолированный в рамках запроса экземпляр TranslateInstance.
+   * @returns TranslateInstance instance / экземпляр TranslateInstance
    */
   static getItem(): TranslateInstance {
-    return this.item
+    return ServerStorage.get('__ui:translate-instance__', () => new TranslateInstance())
   }
 
   /**
@@ -48,7 +48,7 @@ export class Translate {
     first: boolean = false,
     replacement?: string[] | Record<string, string | number>
   ): string {
-    return this.item.getSync(name, first, replacement)
+    return this.getItem().getSync(name, first, replacement)
   }
 
   /**
@@ -58,7 +58,7 @@ export class Translate {
    * @param names list of codes to get translations/ список кодов для получения переводов
    */
   static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>> {
-    return this.item.getList(names)
+    return this.getItem().getList(names)
   }
 
   /**
@@ -70,7 +70,7 @@ export class Translate {
    * если установлено false, возвращает пустую строку, если нет текста
    */
   static getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {
-    return this.item.getListSync(names, first)
+    return this.getItem().getListSync(names, first)
   }
 
   /**
@@ -80,7 +80,7 @@ export class Translate {
    * @param names list of codes to get translations/ список кодов для получения переводов
    */
   static async add(names: string | string[]): Promise<void> {
-    await this.item.add(names)
+    await this.getItem().add(names)
   }
 
   /**
@@ -90,7 +90,7 @@ export class Translate {
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static addSync(data: Record<string, string>): void {
-    this.item.addSync(data)
+    this.getItem().addSync(data)
   }
 
   /**
@@ -100,7 +100,7 @@ export class Translate {
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(data: Record<string, string>): Promise<void> {
-    await this.item.addNormalOrSync(data)
+    await this.getItem().addNormalOrSync(data)
   }
 
   /**
@@ -110,7 +110,7 @@ export class Translate {
    * @param data list of texts by location/ список текстов по местоположению
    */
   static addSyncByLocation(data: Record<string, Record<string, string>>): void {
-    this.item.addSyncByLocation(data)
+    this.getItem().addSyncByLocation(data)
   }
 
   /**
@@ -120,7 +120,7 @@ export class Translate {
    * @param data file with translations/ файл с переводами
    */
   static addSyncByFile(data: TranslateDataFile): void {
-    this.item.addSyncByFile(data)
+    this.getItem().addSyncByFile(data)
   }
 
   /**
@@ -129,9 +129,8 @@ export class Translate {
    * Изменить путь к скрипту для получения перевода.
    * @param url path to the script/ путь к скрипту
    */
-  static setUrl(url: string): Translate {
-    this.item.setUrl(url)
-    return this
+  static setUrl(url: string): void {
+    this.getItem().setUrl(url)
   }
 
   /**
@@ -140,9 +139,8 @@ export class Translate {
    * Изменить имя свойства для получения перевода.
    * @param name property name/ имя свойства
    */
-  static setPropsName(name: string): Translate {
-    this.item.setPropsName(name)
-    return this
+  static setPropsName(name: string): void {
+    this.getItem().setPropsName(name)
   }
 
   /**
@@ -151,9 +149,8 @@ export class Translate {
    * Изменить режим чтения из API.
    * @param value read mode/ режим чтения
    */
-  static setReadApi(value: boolean): Translate {
-    this.item.setReadApi(value)
-    return this
+  static setReadApi(value: boolean): void {
+    this.getItem().setReadApi(value)
   }
 
   /**
@@ -162,19 +159,17 @@ export class Translate {
    * Установить конфигурацию для перевода.
    * @param config configuration/ конфигурация
    */
-  static setConfig(config: TranslateConfig): Translate {
+  static setConfig(config: TranslateConfig): void {
     if (config.url) {
-      this.item.setUrl(config.url)
+      this.getItem().setUrl(config.url)
     }
 
     if (config.propsName) {
-      this.item.setPropsName(config.propsName)
+      this.getItem().setPropsName(config.propsName)
     }
 
     if (typeof config.readApi === 'boolean') {
-      this.item.setReadApi(config.readApi)
+      this.getItem().setReadApi(config.readApi)
     }
-
-    return this
   }
 }

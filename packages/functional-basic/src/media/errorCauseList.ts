@@ -175,5 +175,13 @@ export const errorCauseList: ErrorCenterCauseList = [
     code: 'error',
     label: 'Transformation Error',
     message: 'An error occurred during data transformation.'
+  },
+
+  // Translate loading error / Ошибка загрузки перевода
+  {
+    group: 'translate',
+    code: 'error',
+    label: 'Translate Error',
+    message: 'An error occurred while loading translations.'
   }
 ]
