@@ -6,5 +6,9 @@
  * @param value current value/ текущее значение
  */
 export function toPercent(maxValue: number, value: number): number {
+  if (maxValue === 0) {
+    return value
+  }
+
   return 1 / maxValue * value
 }

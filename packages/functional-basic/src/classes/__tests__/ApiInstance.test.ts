@@ -904,4 +904,77 @@ describe('ApiInstance', () => {
       expect(mockFetch.mock.calls[0][1].body).toBe(formData)
     })
   })
+
+  // ─────────────────────────────────────────────
+  // Cache parameters
+  // ─────────────────────────────────────────────
+
+  describe('cache parameters', () => {
+    it('should respect enableClientCache parameter', async () => {
+      await api.get({ path: 'test', enableClientCache: true, cache: 60 })
+      // Request should be made (not cached)
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    it('should use cacheId for cache grouping', async () => {
+      await api.get({ path: 'test', cacheId: 'group1', cache: 60 })
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // Auth parameter
+  // ─────────────────────────────────────────────
+
+  describe('auth parameter', () => {
+    it('should include auth headers when auth is true', async () => {
+      await api.get({ path: 'test', auth: true })
+      const headers = mockFetch.mock.calls[0][1].headers
+      // Auth headers should be included (implementation-specific)
+      expect(headers).toBeDefined()
+    })
+  })
+
+  // ─────────────────────────────────────────────
+  // endResetLimit parameter
+  // ─────────────────────────────────────────────
+
+  describe('endResetLimit parameter', () => {
+    it('should respect endResetLimit for retries', async () => {
+      let callCount = 0
+      api.setEnd(async () => {
+        callCount++
+        return { reset: true }
+      })
+
+      mockFetch
+        .mockResolvedValueOnce(createMockResponse({ status: 500 }))
+        .mockResolvedValueOnce(createMockResponse({ status: 500 }))
+        .mockResolvedValueOnce(createMockResponse())
+        .mockResolvedValueOnce(createMockResponse())
+        .mockResolvedValueOnce(createMockResponse())
+
+      // endResetLimit of 4 should allow 4 resets
+      await api.get({ path: 'test', endResetLimit: 4 })
+
+      // Should have called fetch 5 times (1 initial + 4 resets)
+      expect(mockFetch).toHaveBeenCalledTimes(5)
+    })
+
+    it('should stop retrying after endResetLimit is reached', async () => {
+      let callCount = 0
+      api.setEnd(async () => {
+        callCount++
+        return { reset: true }
+      })
+
+      mockFetch.mockResolvedValue(createMockResponse({ status: 500 }))
+
+      // endResetLimit of 2 should allow only 2 resets
+      await api.get({ path: 'test', endResetLimit: 2 })
+
+      // Should have called fetch 3 times (1 initial + 2 resets)
+      expect(mockFetch).toHaveBeenCalledTimes(3)
+    })
+  })
 })

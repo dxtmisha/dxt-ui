@@ -87,6 +87,14 @@ export const errorCauseList: ErrorCenterCauseList = [
     message: 'An unexpected error occurred. Please try again later.'
   },
 
+  // Clipboard error / Ошибка буфера обмена
+  {
+    group: 'clipboard',
+    code: 'error',
+    label: 'Clipboard Error',
+    message: 'An unexpected error occurred while accessing the clipboard.'
+  },
+
   // Hydration error / Ошибка гидратации
   {
     group: 'hydration',

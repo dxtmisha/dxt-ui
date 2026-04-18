@@ -1,4 +1,5 @@
 import { isDomRuntime } from './isDomRuntime'
+import { ErrorCenter } from '../classes/ErrorCenter'
 
 /**
  * The method retrieves drag data (as a string) for the specified type.
@@ -10,7 +11,15 @@ import { isDomRuntime } from './isDomRuntime'
  */
 export async function getClipboardData(event?: ClipboardEvent): Promise<string> {
   if (isDomRuntime()) {
-    return event?.clipboardData?.getData('text') ?? (await navigator.clipboard.readText() || '')
+    try {
+      return event?.clipboardData?.getData('text') ?? (await navigator.clipboard.readText() || '')
+    } catch (error) {
+      ErrorCenter.on({
+        group: 'clipboard',
+        code: 'error',
+        details: error
+      })
+    }
   }
 
   return ''

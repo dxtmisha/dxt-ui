@@ -16,5 +16,5 @@ const list: Record<string, string> = {
  * @returns encoded text / закодированный текст
  */
 export function encodeLiteAttribute(text: string): string {
-  return String(text).replace(/[<>]/g, match => list?.[match] ?? match)
+  return String(text).replace(/[<>&]/g, match => list?.[match] ?? match)
 }

@@ -2,28 +2,30 @@ import { Cache } from './Cache'
 import { ServerStorage } from './ServerStorage'
 
 /**
- * Class for working with fast cache during code execution.
+ * Static cache class that uses ServerStorage for persistent caching across the application.
  *
- * Класс для работы с быстрым кэшем во время выполнения кода.
+ * Статический класс кэша, использующий ServerStorage для постоянного кэширования в приложении.
  * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class CacheStatic {
   /**
-   * Returns the instance of the class.
+   * Retrieves the Cache instance from ServerStorage.
    *
-   * Возвращает инстанс класса.
+   * Получает экземпляр Cache из ServerStorage.
+   * @returns Cache instance for static caching / Экземпляр Cache для статического кэширования
    */
   protected static getItem(): Cache {
     return ServerStorage.get('__ui:cache-static__', () => new Cache())
   }
 
   /**
-   * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+   * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
-   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
-   * @param name cache name/ название кэша
-   * @param callback function for the cache/ функция для кэша
-   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+   * @param name - Unique cache key / Уникальный ключ кэша
+   * @param callback - Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
+   * @param comparison - Optional array for cache invalidation / Опциональный массив для инвалидации кэша
+   * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
    */
   static get<T>(
     name: string,
@@ -34,12 +36,13 @@ export class CacheStatic {
   }
 
   /**
-   * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+   * Asynchronously returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
-   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
-   * @param name cache name/ название кэша
-   * @param callback function for the cache/ функция для кэша
-   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   * Асинхронно возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+   * @param name - Unique cache key / Уникальный ключ кэша
+   * @param callback - Async function to compute the value if not cached / Асинхронная функция для вычисления значения
+   * @param comparison - Optional array for cache invalidation / Опциональный массив для инвалидации кэша
+   * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
    */
   static async getAsync<T>(
     name: string,

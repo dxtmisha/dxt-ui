@@ -44,6 +44,7 @@ export class DataStorage<T> {
    *
    * Изменение префикса в названиях ключей. Вызывать нужно в начале кода.
    * @param newPrefix new prefix/ новый префикс
+   * @returns void
    */
   static setPrefix(newPrefix: string): void {
     prefix = newPrefix

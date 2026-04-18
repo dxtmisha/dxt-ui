@@ -9,7 +9,7 @@ import type { ApiFetch } from '../types/apiTypes'
  * Класс для управления заголовками HTTP-запросов.
  */
 export class ApiHeaders {
-  /** Default headers/ Заголовки по умолчанию */
+  /** Default headers / Заголовки по умолчанию */
   protected headers: Record<string, string> = {}
 
   /**

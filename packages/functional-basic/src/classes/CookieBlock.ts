@@ -21,6 +21,7 @@ export class CookieBlock {
    * Obtaining status.
    *
    * Получение статуса.
+   * @returns boolean current block status/ текущий статус блокировки
    */
   static get(): boolean {
     return this.getItem().get()
@@ -31,6 +32,7 @@ export class CookieBlock {
    *
    * Изменение статуса.
    * @param value value to be changed/ значение, на которое будет изменен
+   * @returns void
    */
   static set(value: boolean): void {
     this.getItem().set(value)

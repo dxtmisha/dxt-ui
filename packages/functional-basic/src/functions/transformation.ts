@@ -46,9 +46,9 @@ export function transformation(value: any, isFunction = false): any {
               details: e
             })
           }
-        } else if (/^[0-9]+\.[0-9.]+$/.exec(item)) {
+        } else if (/^-?[0-9]+\.[0-9]+$/.exec(item)) {
           return parseFloat(item)
-        } else if (/^[0-9]+$/.exec(item)) {
+        } else if (/^-?[0-9]+$/.exec(item)) {
           return parseInt(item, 10)
         } else if (
           isFunction

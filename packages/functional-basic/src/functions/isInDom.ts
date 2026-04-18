@@ -11,5 +11,6 @@ import {
  * @param element selectors for matching or an Element/ селекторов для сопоставления или Element
  */
 export function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean {
-  return Boolean(getElement(element)?.closest('html'))
+  return (element as HTMLElement)?.isConnected
+    || Boolean(getElement(element)?.closest('html'))
 }

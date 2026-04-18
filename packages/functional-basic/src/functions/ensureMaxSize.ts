@@ -39,6 +39,11 @@ export async function ensureMaxSize(
         resolve(value ?? '')
         URL.revokeObjectURL(data)
       }
+
+      image.onerror = () => {
+        URL.revokeObjectURL(data)
+        resolve('')
+      }
     } else {
       blobToBase64(blob).then(file => resolve(String(file ?? '')))
     }

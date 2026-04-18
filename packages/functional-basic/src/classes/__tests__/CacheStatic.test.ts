@@ -7,7 +7,7 @@ describe('CacheStatic', () => {
     it('should use ServerStorage to retrieve the instance', () => {
       const spy = vi.spyOn(ServerStorage, 'get')
       CacheStatic.get('testServerStorage', () => 'value')
-      expect(spy).toHaveBeenCalledWith('__dxt_cache_static__', expect.any(Function))
+      expect(spy).toHaveBeenCalledWith('__ui:cache-static__', expect.any(Function))
       spy.mockRestore()
     })
   })
@@ -63,6 +63,18 @@ describe('CacheStatic', () => {
 
       expect(result).toBe('asyncData2')
       expect(callback).toHaveBeenCalledTimes(1)
+    })
+
+    it('should recalculate async if comparison changes', async () => {
+      let counter = 0
+      const callback = vi.fn().mockImplementation(async () => ++counter)
+
+      const res1 = await CacheStatic.getAsync('asyncKeyMulti', callback, [1])
+      const res2 = await CacheStatic.getAsync('asyncKeyMulti', callback, [2])
+
+      expect(res1).toBe(1)
+      expect(res2).toBe(2)
+      expect(callback).toHaveBeenCalledTimes(2)
     })
   })
 })

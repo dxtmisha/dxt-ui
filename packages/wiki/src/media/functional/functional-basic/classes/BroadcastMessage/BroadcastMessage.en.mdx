@@ -43,20 +43,8 @@ const messenger = new BroadcastMessage<string>(
 
 ### Action
 
-#### `post`
-
-Sends a message to all listeners in the same channel.
-
-**Parameters:**
-- `message: Message` — data to send.
-
-**Returns:** `this` — for call chaining.
-
-#### `destroy`
-
-Closes the channel and stops listening for messages.
-
-**Returns:** `this` — for call chaining.
+- `post(message: Message): this` — Sends a message to all listeners in the same channel.
+- `destroy(): this` — Closes the channel and stops listening for messages.
 
 ### Configuration and Access
 

@@ -1,7 +1,7 @@
 /**
- * Class for managing a single caching value.
+ * Class for managing a single cached value with dependency tracking.
  *
- * Класс для управления одним значением кэширования.
+ * Класс для управления одним кэшированным значением с отслеживанием зависимостей.
  * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class CacheItem<T> {
@@ -10,8 +10,10 @@ export class CacheItem<T> {
   private comparisons: any[] = []
 
   /**
-   * Constructor
-   * @param callback function for the cache/ функция для кэша
+   * Creates a new CacheItem instance.
+   *
+   * Создает новый экземпляр CacheItem.
+   * @param callback - Function to compute the cached value / Функция для вычисления кэшированного значения
    */
   constructor(
     private readonly callback: () => T
@@ -19,10 +21,11 @@ export class CacheItem<T> {
   }
 
   /**
-   * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+   * Returns the cached value. Recomputes if the comparison array has changed.
    *
-   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
-   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   * Возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
+   * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
+   * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
    */
   getCache(comparison: any[]): T {
     if (this.isUpdate(comparison)) {
@@ -34,19 +37,21 @@ export class CacheItem<T> {
   }
 
   /**
-   * Getting the previous value of the cache.
+   * Returns the previous cached value before the last recalculation.
    *
-   * Получение предыдущего значения кэша.
+   * Возвращает предыдущее кэшированное значение до последнего пересчета.
+   * @returns The previous cached value, or undefined if no recalculation has occurred / Предыдущее кэшированное значение, или undefined если пересчет не происходил
    */
   getCacheOld(): T | undefined {
     return this.cacheOld
   }
 
   /**
-   * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+   * Asynchronously returns the cached value. Recomputes if the comparison array has changed.
    *
-   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
-   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   * Асинхронно возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
+   * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
+   * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
    */
   async getCacheAsync(comparison: any[]): Promise<T> {
     if (this.isUpdate(comparison)) {
@@ -58,28 +63,29 @@ export class CacheItem<T> {
   }
 
   /**
-   * Overwrites or adds new values for the cache.
+   * Executes the callback and stores the result in cache.
    *
-   * Перезаписывает или добавляет новые значения для кэша.
+   * Выполняет callback и сохраняет результат в кэш.
    */
   private setCache(): void {
     this.cache = this.callback()
   }
 
   /**
-   * Overwrites or adds new values for the cache (Async).
+   * Asynchronously executes the callback and stores the result in cache.
    *
-   * Перезаписывает или добавляет новые значения для кэша (Async).
+   * Асинхронно выполняет callback и сохраняет результат в кэш.
    */
   private async setCacheAsync(): Promise<void> {
     this.cache = await this.callback()
   }
 
   /**
-   * Checking additional data.
+   * Determines if the cache should be updated based on comparison array changes.
    *
-   * Проверка дополнительных данных.
-   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   * Определяет, следует ли обновить кэш на основе изменений в массиве comparison.
+   * @param comparison - New comparison array to compare against / Новый массив comparison для сравнения
+   * @returns True if cache should be updated, false otherwise / True, если кэш нужно обновить, иначе false
    */
   private isUpdate(comparison: any[]): boolean {
     if (

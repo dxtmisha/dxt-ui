@@ -53,6 +53,17 @@ describe('Cache', () => {
       expect(res2).toBe(2)
       expect(callback).toHaveBeenCalledTimes(2)
     })
+
+    it('should not recalculate if comparison array is undefined and called again', () => {
+      const cache = new Cache()
+      const callback = vi.fn().mockReturnValue('data')
+
+      cache.get('myKey', callback)
+      const result = cache.get('myKey', callback)
+
+      expect(result).toBe('data')
+      expect(callback).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('getAsync', () => {
@@ -84,6 +95,19 @@ describe('Cache', () => {
 
       const res1 = await cache.getAsync('myKeyAsync', callback, ['a'])
       const res2 = await cache.getAsync('myKeyAsync', callback, ['b'])
+
+      expect(res1).toBe(1)
+      expect(res2).toBe(2)
+      expect(callback).toHaveBeenCalledTimes(2)
+    })
+
+    it('should work with undefined and null in comparison', async () => {
+      const cache = new Cache()
+      let counter = 0
+      const callback = vi.fn().mockImplementation(() => ++counter)
+
+      const res1 = cache.get('key', callback, [undefined])
+      const res2 = cache.get('key', callback, [null])
 
       expect(res1).toBe(1)
       expect(res2).toBe(2)

@@ -43,20 +43,8 @@ const messenger = new BroadcastMessage<string>(
 
 ### Hành động
 
-#### `post`
-
-Gửi tin nhắn đến tất cả những người đang lắng nghe trong kênh đã cho.
-
-**Tham số:**
-- `message: Message` — dữ liệu cần gửi.
-
-**Trả về:** `this` — để nối chuỗi cuộc gọi.
-
-#### `destroy`
-
-Đóng kênh và ngừng lắng nghe tin nhắn.
-
-**Trả về:** `this` — để nối chuỗi cuộc gọi.
+- `post(message: Message): this` — Gửi tin nhắn đến tất cả những người đang lắng nghe trong kênh đã cho.
+- `destroy(): this` — Đóng kênh và ngừng lắng nghe tin nhắn.
 
 ### Cấu hình và Truy cập
 

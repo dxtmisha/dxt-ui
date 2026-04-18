@@ -9,7 +9,7 @@ import { type ApiDefaultValue, type ApiFetch } from '../types/apiTypes'
  * Класс для работы с данными запроса API по умолчанию.
  */
 export class ApiDefault {
-  /** Default request data/ Данные запроса по умолчанию */
+  /** Default request data / Данные запроса по умолчанию */
   protected value?: ApiDefaultValue
 
   /**
@@ -36,7 +36,7 @@ export class ApiDefault {
    * Adds default data to the request.
    *
    * Добавляет данные по умолчанию к запросу.
-   * @param request request data/ данные запроса
+   * @param request request data / данные запроса
    * @returns merged request data with defaults / объединенные данные запроса с значениями по умолчанию
    */
   request(
@@ -62,7 +62,7 @@ export class ApiDefault {
    * Sets the default request data.
    *
    * Устанавливает данные запроса по умолчанию.
-   * @param request default request data/ данные запроса по умолчанию
+   * @param request default request data / данные запроса по умолчанию
    * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   set(request: ApiDefaultValue): this {
@@ -74,8 +74,8 @@ export class ApiDefault {
    * Adds default data to FormData request.
    *
    * Добавляет данные по умолчанию к запросу FormData.
-   * @param request FormData request/ запрос FormData
-   * @param value default values/ значения по умолчанию
+   * @param request FormData request / запрос FormData
+   * @param value default values / значения по умолчанию
    * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   protected addByFormData(

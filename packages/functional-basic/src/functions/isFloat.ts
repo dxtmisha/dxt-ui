@@ -9,7 +9,7 @@ export function isFloat(value: any): boolean {
     case 'number':
       return true
     case 'string':
-      return Boolean(value.match(/^([0-9]+|[0-9]+\.[0-9]+)$/))
+      return /^-?\d+(\.\d+)?$/.test(value)
     default:
       return false
   }

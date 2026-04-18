@@ -435,4 +435,215 @@ describe('Datetime', () => {
       expect(dt3.getMonth()).toBe(3)
     })
   })
+
+  describe('Clone Methods Extended', () => {
+    it('should clone and preserve basic properties', () => {
+      const dt = new Datetime('2024-06-15', 'datetime', 'en-US')
+
+      const cloned = dt.cloneClass()
+
+      expect(cloned).not.toBe(dt)
+      expect(cloned.getDate().getTime()).toBe(dt.getDate().getTime())
+      expect(cloned.getType()).toBe(dt.getType())
+    })
+
+    it('should clone weekday methods correctly', () => {
+      const dt = new Datetime('2024-06-15') // Saturday
+
+      const firstWeekday = dt.cloneWeekdayFirst()
+      const lastWeekday = dt.cloneWeekdayLast()
+      const nextWeek = dt.cloneWeekdayNext()
+      const prevWeek = dt.cloneWeekdayPrevious()
+
+      // Original should remain unchanged
+      expect(dt.getDay()).toBe(15)
+
+      // Clones should have different dates
+      expect(firstWeekday.getDate().getTime()).not.toBe(dt.getDate().getTime())
+      expect(lastWeekday.getDate().getTime()).not.toBe(dt.getDate().getTime())
+      expect(nextWeek.getDate().getTime()).not.toBe(dt.getDate().getTime())
+      expect(prevWeek.getDate().getTime()).not.toBe(dt.getDate().getTime())
+    })
+
+    it('should clone weekday by month methods correctly', () => {
+      const dt = new Datetime('2024-06-15')
+
+      const firstWeekdayByMonth = dt.cloneWeekdayFirstByMonth()
+      const lastWeekdayByMonth = dt.cloneWeekdayLastByMonth()
+
+      expect(firstWeekdayByMonth.getMonth()).toBe(5) // June is 5 in 0-indexed
+      // Last weekday by month can spill into next month, so we just check it's not the original
+      expect(lastWeekdayByMonth.getDate().getTime()).not.toBe(dt.getDate().getTime())
+
+      // Original should remain unchanged
+      expect(dt.getDay()).toBe(15)
+    })
+  })
+
+  describe('Extended Move Methods', () => {
+    it('should handle complex move operations', () => {
+      const dt = new Datetime('2024-06-15')
+
+      // Move to first day of first week of month
+      dt.moveWeekdayFirstByMonth()
+      // Should be in first week, but exact day depends on locale settings
+      expect(dt.getDay()).toBeGreaterThan(0) // Should have moved from day 15
+
+      // Move to last day of last week of month
+      const dt2 = new Datetime('2024-06-15')
+      dt2.moveWeekdayLastByMonth()
+      expect(dt2.getDay()).toBeGreaterThanOrEqual(1) // Should have moved
+    })
+
+    it('should handle hour/minute/second movements with overflow', () => {
+      const dt = new Datetime('2024-06-15 23:59:59')
+
+      dt.moveBySecond(2)
+      expect(dt.getSecond()).toBe(1)
+      expect(dt.getMinute()).toBe(0)
+      expect(dt.getHour()).toBe(0)
+
+      const dt2 = new Datetime('2024-06-15 00:00:00')
+      dt2.moveBySecond(-1)
+      expect(dt2.getSecond()).toBe(59)
+      expect(dt2.getMinute()).toBe(59)
+      expect(dt2.getHour()).toBe(23)
+    })
+  })
+
+  describe('Standard Format Extended', () => {
+    it('should format different types correctly', () => {
+      const dt = new Datetime('2024-06-15T10:30:00')
+
+      dt.setType('date')
+      expect(dt.standard(false)).toContain('2024-06-15')
+
+      dt.setType('datetime')
+      expect(dt.standard(false)).toContain('2024-06-15T')
+      expect(dt.standard(false)).toContain('10:30')
+
+      dt.setType('time')
+      expect(dt.standard(false)).toContain('T10:30')
+    })
+
+    it('should handle hour-minute type', () => {
+      const dt = new Datetime('2024-06-15T10:30:00')
+      dt.setType('hour-minute')
+      const formatted = dt.standard(false)
+      expect(formatted).toContain('T')
+      expect(formatted).toContain('10:30')
+    })
+  })
+
+  describe('Locale Methods Extended', () => {
+    it('should handle different style options', () => {
+      const dt = new Datetime('2024-06-15')
+
+      const longMonth = dt.localeMonth('long')
+      const shortMonth = dt.localeMonth('short')
+      const narrowMonth = dt.localeMonth('narrow')
+
+      expect(typeof longMonth).toBe('string')
+      expect(typeof shortMonth).toBe('string')
+      expect(typeof narrowMonth).toBe('string')
+
+      // Different styles should generally produce different results
+      expect(longMonth).not.toBe(shortMonth)
+    })
+
+    it('should handle different locale codes', () => {
+      const dt = new Datetime('2024-06-15')
+
+      dt.setCode('en-US')
+      const enDate = dt.locale('full')
+
+      dt.setCode('ru-RU')
+      const ruDate = dt.locale('full')
+
+      // Different locales should produce different formats
+      expect(enDate).not.toBe(ruDate)
+    })
+  })
+
+  describe('Watch Functionality Extended', () => {
+    it('should call watch function with correct parameters', () => {
+      const dt = new Datetime('2024-06-15')
+      const watchFn = vi.fn()
+
+      dt.setWatch(watchFn)
+      dt.setYear(2025)
+
+      expect(watchFn).toHaveBeenCalledWith(
+        expect.any(Date),
+        'date',
+        false
+      )
+    })
+
+    it('should call watch function on multiple updates', () => {
+      const dt = new Datetime('2024-06-15')
+      const watchFn = vi.fn()
+
+      dt.setWatch(watchFn)
+      dt.setYear(2025)
+      dt.setMonth(7)
+      dt.setDay(20)
+
+      expect(watchFn).toHaveBeenCalledTimes(3)
+    })
+
+    it('should not call watch function when no changes made', () => {
+      const dt = new Datetime('2024-06-15')
+      const watchFn = vi.fn()
+
+      dt.setWatch(watchFn)
+      // Don't make any changes
+
+      expect(watchFn).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Time Zone Extended', () => {
+    it('should handle different time zone styles', () => {
+      const dt = new Datetime('2024-06-15T10:30:00')
+
+      const minuteStyle = dt.getTimeZone('minute')
+      const hourStyle = dt.getTimeZone('hour')
+      const rfcStyle = dt.getTimeZone('RFC')
+      const defaultStyle = dt.getTimeZone()
+
+      expect(typeof minuteStyle).toBe('string')
+      expect(typeof hourStyle).toBe('string')
+      expect(typeof rfcStyle).toBe('string')
+      expect(typeof defaultStyle).toBe('string')
+      expect(defaultStyle).toContain(':')
+    })
+  })
+
+  describe('First Day Code', () => {
+    it('should return valid first day codes', () => {
+      const dt = new Datetime('2024-06-15')
+
+      const firstDayCode = dt.getFirstDayCode()
+
+      // Should return 0 (Sunday), 1 (Monday), or 6 (Saturday)
+      expect([0, 1, 6]).toContain(firstDayCode)
+    })
+  })
+
+  describe('Max Day', () => {
+    it('should return correct max day for each month', () => {
+      const jan = new Datetime('2024-01-15')
+      expect(jan.getMaxDay()).toBe(31)
+
+      const febLeap = new Datetime('2024-02-15')
+      expect(febLeap.getMaxDay()).toBe(29)
+
+      const febNonLeap = new Datetime('2023-02-15')
+      expect(febNonLeap.getMaxDay()).toBe(28)
+
+      const apr = new Datetime('2024-04-15')
+      expect(apr.getMaxDay()).toBe(30)
+    })
+  })
 })

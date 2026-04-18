@@ -65,6 +65,27 @@ describe('CacheItem', () => {
 
       expect(callback).toHaveBeenCalledTimes(1)
     })
+
+    it('should treat different object references as different comparisons', () => {
+      const callback = vi.fn().mockReturnValue('computed')
+      const item = new CacheItem(callback)
+
+      item.getCache([{}])
+      item.getCache([{}])
+
+      expect(callback).toHaveBeenCalledTimes(2)
+    })
+
+    it('should treat same object reference as identical comparison', () => {
+      const callback = vi.fn().mockReturnValue('computed')
+      const item = new CacheItem(callback)
+      const obj = {}
+
+      item.getCache([obj])
+      item.getCache([obj])
+
+      expect(callback).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('getCacheOld', () => {
@@ -124,6 +145,17 @@ describe('CacheItem', () => {
       expect(res1).toBe('val1')
       expect(res2).toBe('val2')
       expect(callback).toHaveBeenCalledTimes(2)
+      expect(item.getCacheOld()).toBe('val1')
+    })
+
+    it('should update getCacheOld after async recalculation', async () => {
+      let counter = 0
+      const callback = vi.fn().mockImplementation(() => `val${++counter}`)
+      const item = new CacheItem(callback)
+
+      await item.getCacheAsync([1]) // cache: val1, old: undefined
+      await item.getCacheAsync([2]) // cache: val2, old: val1
+
       expect(item.getCacheOld()).toBe('val1')
     })
   })

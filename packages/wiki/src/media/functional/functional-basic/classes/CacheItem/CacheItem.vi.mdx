@@ -4,6 +4,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp CacheItem
 
+> **⚠️ Đã lỗi thời** — Lớp này đã lỗi thời và không nên được sử dụng.
+
 Hệ thống cốt lõi quản lý từng mục lưu trữ bộ nhớ đệm (cache) riêng biệt. Trong khi `Cache` và `CacheStatic` cung cấp các giao diện công khai để truy xuất dữ liệu cache trong toàn bộ ứng dụng, thì lớp `CacheItem` đảm nhận việc quản lý an toàn vòng đời, lưu trữ và các quy tắc vô hiệu hóa (invalidation) cho từng giá trị cụ thể.
 
 > `CacheItem` là một **lớp phụ trợ**, được thiết kế để quản lý nội bộ các mục lưu trữ bộ nhớ đệm riêng lẻ. Trong hầu hết các trường hợp, bạn nên tương tác với bộ nhớ đệm thông qua các lớp `Cache` hoặc `CacheStatic`.

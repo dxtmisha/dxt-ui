@@ -78,6 +78,7 @@ export class Cookie<T> {
    * Обновляет данные cookie.
    * @param value value or function to change data/ значение или функция для изменения данных
    * @param options additional parameters/ дополнительные параметры
+   * @returns void
    */
   set(
     value?: T | string | (() => (T | string)),
@@ -93,6 +94,7 @@ export class Cookie<T> {
    * Delete cookie data.
    *
    * Удаление данных из cookie.
+   * @returns void
    */
   remove() {
     this.set('')

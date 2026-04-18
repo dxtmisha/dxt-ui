@@ -22,6 +22,7 @@ export class ApiHydration {
    *
    * Инициализирует ответ данными гидратации.
    * @param response API response / ответ API
+   * @returns void / ничего не возвращает
    */
   initResponse(response: ApiResponse) {
     if (isDomRuntime()) {
@@ -35,6 +36,7 @@ export class ApiHydration {
    * Сохраняет ответ API для гидратации на стороне клиента.
    * @param apiFetch API request configuration / конфигурация запроса API
    * @param response API response data / данные ответа API
+   * @returns void / ничего не возвращает
    */
   toClient<T>(
     apiFetch: ApiFetch,

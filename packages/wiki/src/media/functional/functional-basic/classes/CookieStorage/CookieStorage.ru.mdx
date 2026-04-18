@@ -108,3 +108,46 @@ CookieStorage.init(
   (key, value, options) => myStorage.set(key, value, options)
 )
 ```
+
+### Обновление и сброс
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Обновить данные в памяти из document.cookie
+// Полезно, когда куки были установлены внешне
+CookieStorage.update()
+
+// Сбросить хранилище (очистить слушатели и данные в памяти)
+// Полезно для тестирования или очистки
+CookieStorage.reset()
+```
+
+### Полный рабочий процесс
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Инициализация с пользовательским хранилищем
+CookieStorage.init(
+  (key) => redis.get(key),
+  (key, value, options) => redis.set(key, value, options)
+)
+
+// Установка значения с параметрами
+CookieStorage.set('user', 'john', {
+  age: 3600,           // 1 час
+  sameSite: 'lax',     // Политика SameSite
+  arguments: ['Secure', 'Path=/'] // Дополнительные директивы
+})
+
+// Получение значения с преобразованием типа
+const user = CookieStorage.get<string>('user')
+
+// Обновление из внешнего источника
+CookieStorage.update()
+
+// Очистка
+CookieStorage.remove('user')
+CookieStorage.reset()
+```

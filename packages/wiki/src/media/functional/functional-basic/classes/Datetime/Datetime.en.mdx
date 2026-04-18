@@ -6,8 +6,6 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A versatile wrapper around the native JavaScript `Date` object, designed to simplify working with dates and times. It combines formatting capabilities, calculations (date navigation), and cloning, relying on `Geo` and `GeoIntl` localization settings.
 
-> **Warning (SSR):** Creating a `Datetime` instance without a specific date (using the current time) for rendering in SSR may lead to hydration mismatches because the time or time zone on the server may differ from the time on the client.
-
 ## Key Features
 
 - **Simplified Management** — intuitive methods for date navigation (moving to the start of the month, incrementing days, etc.).
@@ -159,6 +157,38 @@ Returns the date in ISO 8601 format (YYYY-MM-DDTHH:mm:ss±HH:mm).
 ```javascript
 dt.standard() // "2024-03-15T00:00:00+03:00"
 dt.standard(false) // "2024-03-15T00:00:00"
+```
+
+## SSR and Hydration
+
+> **Warning (SSR):** Creating a `Datetime` instance without a specific date (using the current time) for rendering in SSR may lead to hydration mismatches because the time or time zone on the server may differ from the time on the client.
+
+### Recommended Practices
+
+When using `Datetime` in SSR environments:
+
+1. **Always provide specific dates**: Pass explicit dates to the constructor instead of relying on the current time.
+
+2. **Use server-side date initialization**: Initialize dates on the server with specific values to ensure consistency.
+
+3. **Client-side only for dynamic dates**: For dates that need to show the current time, initialize them only on the client side (e.g., in `useEffect`).
+
+4. **Consider timezone differences**: Be aware that server and client timezones may differ, affecting date calculations and formatting.
+
+### Example of Safe SSR Usage
+
+```javascript
+// ✅ Good: Specific date for SSR
+const serverDate = new Datetime('2024-03-15')
+
+// ✅ Good: Initialize on client for current time
+useEffect(() => {
+  const now = new Datetime()
+  setCurrentTime(now.locale('datetime'))
+}, [])
+
+// ❌ Avoid: Current time in SSR
+const now = new Datetime() // May cause hydration mismatch
 ```
 
 ## Usage Examples

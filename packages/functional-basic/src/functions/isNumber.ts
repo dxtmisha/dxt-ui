@@ -2,7 +2,7 @@
  * Regular expression for checking if the value is a number/
  * Регулярное выражение для проверки, является ли значение числом
  */
-const numberRegExp = /^[-]?[0-9]+(\.[0-9]+)?$/
+const numberRegExp = /^-?[0-9]+(\.[0-9]+)?$/
 
 /**
  * Checks if the value is a number.

@@ -56,6 +56,7 @@ export class Datetime {
    * Returns an object for working with formatting.
    *
    * Возвращает объект для работы с форматированием.
+   * @returns GeoIntl formatting object/ объект форматирования
    */
   getIntl(): GeoIntl {
     return GeoIntl.getInstance(this.code)
@@ -65,6 +66,7 @@ export class Datetime {
    * Returns a Date object.
    *
    * Возвращает объект Date.
+   * @returns Date date object/ объект даты
    */
   getDate(): Date {
     return this.date
@@ -74,6 +76,7 @@ export class Datetime {
    * Returns the type of data output.
    *
    * Возвращает тип вывода данных.
+   * @returns string output type/ тип вывода
    */
   getType(): string {
     return this.type
@@ -83,6 +86,7 @@ export class Datetime {
    * Returns the format of hours.
    *
    * Возвращает формат часов.
+   * @returns GeoHours hour format/ формат часов
    */
   getHoursType(): GeoHours {
     const date = this.clone()
@@ -98,6 +102,7 @@ export class Datetime {
    * Whether to use 24-hour time format.
    *
    * Использовать ли 24-часовой формат времени.
+   * @returns boolean 24-hour format flag/ флаг 24-часового формата
    */
   getHour24(): boolean {
     return this.hour24
@@ -110,6 +115,7 @@ export class Datetime {
    *
    * Метод возвращает смещение часового пояса относительно часового пояса UTC
    * в минутах для текущей локали.
+   * @returns number time zone offset in minutes/ смещение часового пояса в минутах
    */
   getTimeZoneOffset(): number {
     return this.date.getTimezoneOffset()
@@ -120,6 +126,7 @@ export class Datetime {
    *
    * Возвращает временную зону в виде строки.
    * @param style the style of the returned data/ стиль возвращаемых данных
+   * @returns string time zone string/ строка временной зоны
    */
   getTimeZone(style?: GeoTimeZoneStyle): string {
     const offset = this.getTimeZoneOffset()
@@ -149,6 +156,7 @@ export class Datetime {
    * Returns the code of the first day of the week.
    *
    * Возвращает код первого дня недели.
+   * @returns GeoFirstDay first day code/ код первого дня недели
    */
   getFirstDayCode(): GeoFirstDay {
     const value = this.getIntl().getFirstDay()
@@ -166,6 +174,7 @@ export class Datetime {
    * The method returns the year of the specified date according to local time.
    *
    * Метод возвращает год указанной даты по местному времени.
+   * @returns number year/ год
    */
   getYear(): number {
     return this.date.getFullYear()
@@ -177,6 +186,7 @@ export class Datetime {
    *
    * Метод возвращает месяц указанной даты по местному времени, нумерация
    * месяцев начинается с единицы (1-12).
+   * @returns number month (1-12)/ месяц (1-12)
    */
   getMonth(): number {
     return this.date.getMonth() + 1
@@ -186,6 +196,7 @@ export class Datetime {
    * The method returns the day of the month for the specified date according to local time.
    *
    * Метод возвращает день месяца указанной даты по местному времени
+   * @returns number day of month (1-31)/ день месяца (1-31)
    */
   getDay(): number {
     return this.date.getDate()
@@ -195,6 +206,7 @@ export class Datetime {
    * The method returns the hour for the specified date, according to local time.
    *
    * Метод возвращает часы указанной даты по местному времени.
+   * @returns number hours (0-23)/ часы (0-23)
    */
   getHour(): number {
     return this.date.getHours()
@@ -204,6 +216,7 @@ export class Datetime {
    * The method returns the minutes in the specified date according to local time.
    *
    * Метод возвращает минуты указанной даты по местному времени.
+   * @returns number minutes (0-59)/ минуты (0-59)
    */
   getMinute(): number {
     return this.date.getMinutes()
@@ -213,6 +226,7 @@ export class Datetime {
    * The method returns the seconds in the specified date according to local time.
    *
    * Метод возвращает секунды указанной даты по местному времени.
+   * @returns number seconds (0-59)/ секунды (0-59)
    */
   getSecond(): number {
     return this.date.getSeconds()
@@ -222,6 +236,7 @@ export class Datetime {
    * Returns the last day of the month as a number.
    *
    * Возвращает последний день месяца в виде числа.
+   * @returns number last day of month (28-31)/ последний день месяца (28-31)
    */
   getMaxDay(): number {
     return this.cloneDayLast().getDay()
@@ -233,6 +248,7 @@ export class Datetime {
    * Конструктором объектов, включающих языка-зависимое форматирование даты и времени.
    * @param type type of date format for output/ тип формата даты вывода
    * @param styleOptions the representation of the month/ представление месяца
+   * @returns string formatted date string/ отформатированная строка даты
    */
   locale(
     type: GeoDate = this.type,
@@ -251,6 +267,7 @@ export class Datetime {
    *
    * Возвращает отформатированный год.
    * @param style the representation of the year/ представление года
+   * @returns string formatted year/ отформатированный год
    */
   localeYear(
     style: Intl.DateTimeFormatOptions['year'] = 'numeric'
@@ -263,6 +280,7 @@ export class Datetime {
    *
    * Возвращает отформатированный месяц.
    * @param style the representation of the month/ представление месяца
+   * @returns string formatted month/ отформатированный месяц
    */
   localeMonth(
     style: Intl.DateTimeFormatOptions['month'] = 'long'
@@ -275,6 +293,7 @@ export class Datetime {
    *
    * Возвращает отформатированный день.
    * @param style the representation of the day/ представление дня
+   * @returns string formatted day/ отформатированный день
    */
   localeDay(
     style: Intl.DateTimeFormatOptions['day'] = 'numeric'
@@ -287,6 +306,7 @@ export class Datetime {
    *
    * Возвращает отформатированный час.
    * @param style the representation of the hour/ представление часа
+   * @returns string formatted hour/ отформатированный час
    */
   localeHour(
     style: Intl.DateTimeFormatOptions['hour'] = 'numeric'
@@ -299,6 +319,7 @@ export class Datetime {
    *
    * Возвращает отформатированную минуту.
    * @param style the representation of the minute/ представление минуты
+   * @returns string formatted minute/ отформатированная минута
    */
   localeMinute(
     style: Intl.DateTimeFormatOptions['minute'] = 'numeric'
@@ -311,6 +332,7 @@ export class Datetime {
    *
    * Возвращает отформатированную секунду.
    * @param style the representation of the second/ представление секунды
+   * @returns string formatted second/ отформатированная секунда
    */
   localeSecond(
     style: Intl.DateTimeFormatOptions['second'] = 'numeric'
@@ -323,6 +345,7 @@ export class Datetime {
    *
    * Вывод стандартных данных.
    * @param timeZone add time zone/ добавить временную зону
+   * @returns string standard format string/ строка в стандартном формате
    */
   standard(timeZone = true as boolean): string {
     const geo = new Datetime(this.date, this.type, 'en-GB')
@@ -729,6 +752,7 @@ export class Datetime {
    * Clone the Date object.
    *
    * Клонировать объект Date.
+   * @returns Date cloned Date object/ клонированный объект Date
    */
   clone(): Date {
     return new Date(this.date)
@@ -738,6 +762,7 @@ export class Datetime {
    * Clone the GeoDate object.
    *
    * Клонировать объект GeoDate.
+   * @returns Datetime cloned Datetime object/ клонированный объект Datetime
    */
   cloneClass(): Datetime {
     return new (this.constructor as typeof Datetime)(
@@ -751,6 +776,7 @@ export class Datetime {
    * Clone the Datetime object and set the month to January.
    *
    * Клонировать объект Datetime и установить месяц на январь.
+   * @returns Datetime cloned Datetime with January month/ клонированный Datetime с январем
    */
   cloneMonthFirst(): Datetime {
     return this.cloneClass()
@@ -761,6 +787,7 @@ export class Datetime {
    * Clone the GeoDate object and move the month to the end of the year.
    *
    * Клонировать объект GeoDate и перевести месяц на конец года.
+   * @returns Datetime cloned Datetime with December month/ клонированный Datetime с декабрем
    */
   cloneMonthLast(): Datetime {
     return this.cloneClass()
@@ -771,6 +798,7 @@ export class Datetime {
    * Clone the GeoDate object and transfer it one month ahead.
    *
    * Клонировать объект GeoDate и перевести на 1 месяц вперед.
+   * @returns Datetime cloned Datetime with next month/ клонированный Datetime со следующим месяцем
    */
   cloneMonthNext(): Datetime {
     return this.cloneClass()
@@ -781,6 +809,7 @@ export class Datetime {
    * Clone the GeoDate object and transfer it one month back.
    *
    * Клонировать объект GeoDate и перевести на 1 месяц назад.
+   * @returns Datetime cloned Datetime with previous month/ клонированный Datetime с предыдущим месяцем
    */
   cloneMonthPrevious(): Datetime {
     return this.cloneClass()
@@ -791,6 +820,7 @@ export class Datetime {
    * Returns the first day of the week according to the current date.
    *
    * Возвращает первый день недели по текущей дате.
+   * @returns Datetime cloned Datetime with first day of week/ клонированный Datetime с первым днем недели
    */
   cloneWeekdayFirst(): Datetime {
     return this.cloneClass()
@@ -801,6 +831,7 @@ export class Datetime {
    * Returns the last day of the week according to the current date.
    *
    * Возвращает последний день недели по текущей дате.
+   * @returns Datetime cloned Datetime with last day of week/ клонированный Datetime с последним днем недели
    */
   cloneWeekdayLast(): Datetime {
     return this.cloneClass()
@@ -811,6 +842,7 @@ export class Datetime {
    * Returns the first day of the week according to the current month.
    *
    * Возвращает первый день недели по текущему месяцу.
+   * @returns Datetime cloned Datetime with first day of week in month/ клонированный Datetime с первым днем недели в месяце
    */
   cloneWeekdayFirstByMonth(): Datetime {
     return this.cloneClass()
@@ -821,6 +853,7 @@ export class Datetime {
    * Returns the last day of the week according to the current month.
    *
    * Возвращает последний день недели по текущему месяцу.
+   * @returns Datetime cloned Datetime with last day of week in month/ клонированный Datetime с последним днем недели в месяце
    */
   cloneWeekdayLastByMonth(): Datetime {
     return this.cloneClass()
@@ -831,6 +864,7 @@ export class Datetime {
    * Returns the next week according to the current date.
    *
    * Возвращает следующую неделю по текущей дате.
+   * @returns Datetime cloned Datetime with next week/ клонированный Datetime со следующей неделей
    */
   cloneWeekdayNext(): Datetime {
     return this.cloneClass()
@@ -841,6 +875,7 @@ export class Datetime {
    * Returns the previous week according to the current date.
    *
    * Возвращает предыдущую неделю по текущей дате.
+   * @returns Datetime cloned Datetime with previous week/ клонированный Datetime с предыдущей неделей
    */
   cloneWeekdayPrevious(): Datetime {
     return this.cloneClass()
@@ -851,6 +886,7 @@ export class Datetime {
    * Clone the GeoDate object and move the day to the beginning of the month.
    *
    * Клонировать объект GeoDate и перевести день на начало месяца.
+   * @returns Datetime cloned Datetime with first day of month/ клонированный Datetime с первым днем месяца
    */
   cloneDayFirst(): Datetime {
     return this.cloneClass()
@@ -861,6 +897,7 @@ export class Datetime {
    * Clone the GeoDate object and move the day to the end of the month.
    *
    * Клонировать объект GeoDate и перевести день на конец месяца.
+   * @returns Datetime cloned Datetime with last day of month/ клонированный Datetime с последним днем месяца
    */
   cloneDayLast(): Datetime {
     return this.cloneClass()
@@ -871,6 +908,7 @@ export class Datetime {
    * Clone the GeoDate object and move by 1 day.
    *
    * Клонировать объект GeoDate и перевести на 1 день.
+   * @returns Datetime cloned Datetime with next day/ клонированный Datetime со следующим днем
    */
   cloneDayNext(): Datetime {
     return this.cloneClass()
@@ -881,6 +919,7 @@ export class Datetime {
    * Clone the GeoDate object and go back by 1 day.
    *
    * Клонировать объект GeoDate и вернуться на 1 день.
+   * @returns Datetime cloned Datetime with previous day/ клонированный Datetime с предыдущим днем
    */
   cloneDayPrevious(): Datetime {
     return this.cloneClass()
@@ -892,6 +931,7 @@ export class Datetime {
    *
    * Возвращает часовой формат временной зоны.
    * @param hour hour/ час
+   * @returns string formatted hour/ форматированный час
    */
   protected toTimeZoneHourFormat(hour: number): string {
     const numberHour = Math.trunc(hour)
@@ -906,6 +946,7 @@ export class Datetime {
    * Updating all values.
    *
    * Обновление всех значений.
+   * @returns this instance/ текущий экземпляр
    */
   protected update(): this {
     this.watch?.(

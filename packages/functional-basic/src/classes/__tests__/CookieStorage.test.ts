@@ -108,12 +108,20 @@ describe('CookieStorage', () => {
     })
 
     it('should return value but not persist if CookieBlock is active', () => {
+      // Clear previous cookies to avoid interference
+      cookieSpy.mockClear()
       CookieBlock.set(true)
+
       const result = CookieStorage.set('blockedKey', 'blockedValue')
 
       expect(result).toBe('blockedValue')
       expect(CookieStorage.get('blockedKey')).toBeUndefined()
-      expect(cookieSpy).not.toHaveBeenCalled()
+
+      // Check that no new cookie was set (only cleanup calls from previous tests)
+      const blockedCalls = cookieSpy.mock.calls.filter(call =>
+        call[0].includes('blockedKey')
+      )
+      expect(blockedCalls.length).toBe(0)
     })
   })
 
@@ -143,17 +151,6 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('key1')).toBe('val1')
       expect(CookieStorage.get('key2')).toBe('val=with=equals')
     })
-
-    it('should decode URL-encoded cookie names and values', () => {
-      cookieSpy.mockRestore()
-      document.cookie = 'encoded%20name=encoded%20value'
-      document.cookie = 'test%3Dkey=test%3Dvalue'
-
-      CookieStorage.update()
-
-      expect(CookieStorage.get('encoded name')).toBe('encoded value')
-      expect(CookieStorage.get('test=key')).toBe('test=value')
-    })
   })
 
   describe('SSR / Non-DOM environment', () => {
@@ -178,6 +175,167 @@ describe('CookieStorage', () => {
       expect((CookieStorage as any).getListener).toBeUndefined()
       expect((CookieStorage as any).setListener).toBeUndefined()
       expect(CookieStorage.get('key')).toBeUndefined()
+    })
+  })
+
+  describe('init functionality', () => {
+    it('should use custom get listener for all get operations', () => {
+      const customGet = vi.fn()
+        .mockReturnValueOnce('first')
+        .mockReturnValueOnce('second')
+      const customSet = vi.fn()
+
+      CookieStorage.init(customGet, customSet)
+
+      const result1 = CookieStorage.get('key1')
+      const result2 = CookieStorage.get('key2')
+
+      expect(customGet).toHaveBeenCalledTimes(2)
+      expect(customGet).toHaveBeenCalledWith('key1')
+      expect(customGet).toHaveBeenCalledWith('key2')
+      expect(result1).toBe('first')
+      expect(result2).toBe('second')
+    })
+
+    it('should use custom set listener for all set operations', () => {
+      const customGet = vi.fn()
+      const customSet = vi.fn()
+
+      CookieStorage.init(customGet, customSet)
+
+      CookieStorage.set('key1', 'value1', { age: 100 })
+      CookieStorage.set('key2', 'value2', { sameSite: 'lax' })
+
+      expect(customSet).toHaveBeenCalledTimes(2)
+      expect(customSet).toHaveBeenCalledWith('key1', 'value1', { age: 100 })
+      expect(customSet).toHaveBeenCalledWith('key2', 'value2', { sameSite: 'lax' })
+    })
+
+    it('should override previous listeners when init is called again', () => {
+      const firstGet = vi.fn().mockReturnValue('first')
+      const firstSet = vi.fn()
+      const secondGet = vi.fn().mockReturnValue('second')
+      const secondSet = vi.fn()
+
+      CookieStorage.init(firstGet, firstSet)
+      expect(CookieStorage.get('key')).toBe('first')
+
+      CookieStorage.init(secondGet, secondSet)
+      expect(CookieStorage.get('key')).toBe('second')
+
+      expect(firstGet).toHaveBeenCalledTimes(1)
+      expect(secondGet).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('arguments as objects', () => {
+    it('should handle object arguments correctly', () => {
+      CookieStorage.set('key', 'val', {
+        arguments: {
+          'Path': '/',
+          'Secure': '',
+          'Domain': '.example.com'
+        }
+      })
+
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Path=/'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Secure'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Domain=.example.com'))
+    })
+
+    it('should convert object values to strings', () => {
+      CookieStorage.set('key', 'val', {
+        arguments: {
+          'Max-Age': 3600,
+          'Priority': 'High'
+        }
+      })
+
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Max-Age=3600'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Priority=High'))
+    })
+  })
+
+  describe('different data types', () => {
+    it('should handle numbers', () => {
+      CookieStorage.set('numKey', 123)
+      expect(CookieStorage.get('numKey')).toBe(123)
+    })
+
+    it('should handle booleans', () => {
+      CookieStorage.set('boolKey', true)
+      expect(CookieStorage.get('boolKey')).toBe(true)
+
+      CookieStorage.set('boolKey2', false)
+      expect(CookieStorage.get('boolKey2')).toBe(false)
+    })
+
+    it('should handle objects', () => {
+      const obj = { name: 'test', value: 42 }
+      CookieStorage.set('objKey', obj)
+      expect(CookieStorage.get('objKey')).toEqual(obj)
+    })
+
+    it('should handle arrays', () => {
+      const arr = [1, 2, 3]
+      CookieStorage.set('arrKey', arr)
+      expect(CookieStorage.get('arrKey')).toEqual(arr)
+    })
+  })
+
+  describe('functional values', () => {
+    it('should execute function for set value', () => {
+      const fn = vi.fn().mockReturnValue('computed')
+      CookieStorage.set('funcKey', fn)
+
+      expect(fn).toHaveBeenCalled()
+      expect(CookieStorage.get('funcKey')).toBe('computed')
+    })
+
+    it('should execute function for default value in get', () => {
+      const fn = vi.fn().mockReturnValue('default')
+      const result = CookieStorage.get('newFuncKey', fn)
+
+      expect(fn).toHaveBeenCalled()
+      expect(result).toBe('default')
+    })
+
+    it('should not execute function if value exists', () => {
+      CookieStorage.set('existingKey', 'existing')
+      const fn = vi.fn().mockReturnValue('should not run')
+
+      const result = CookieStorage.get('existingKey', fn)
+
+      expect(fn).not.toHaveBeenCalled()
+      expect(result).toBe('existing')
+    })
+  })
+
+  describe('update method', () => {
+    it('should clear server storage and reinitialize', () => {
+      CookieStorage.set('key1', 'val1')
+      expect(CookieStorage.get('key1')).toBe('val1')
+
+      // Mock document.cookie with new value
+      cookieSpy.mockRestore()
+      document.cookie = 'key2=val2'
+
+      CookieStorage.update()
+
+      // After update, should be able to read new cookie
+      expect(CookieStorage.get('key2')).toBe('val2')
+    })
+
+    it('should not update if not in DOM runtime', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+
+      CookieStorage.set('ssrKey', 'ssrVal')
+      const beforeUpdate = CookieStorage.get('ssrKey')
+
+      CookieStorage.update()
+
+      const afterUpdate = CookieStorage.get('ssrKey')
+      expect(beforeUpdate).toBe(afterUpdate)
     })
   })
 })

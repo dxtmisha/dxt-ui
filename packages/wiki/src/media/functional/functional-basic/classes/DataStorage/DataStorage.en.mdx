@@ -16,12 +16,6 @@ A versatile class for interacting with the browser's `localStorage` and `session
 - **Memory Efficiency** — creates singletons for identical keys, avoiding duplicate reads from disk.
 - **SSR Ready** — uses request-specific isolation during server-side rendering to prevent data leaks between parallel requests.
 
-## SSR and Hydration
-
-The `DataStorage` class is fully compatible with Server-Side Rendering (SSR). It uses a special registry to isolate instances between different HTTP requests on the server.
-
-> To avoid hydration mismatches (when the server-rendered HTML differs from the client-rendered one), it is recommended to call `get()` inside `useEffect` or other client-only hooks. On the server, `get()` will return `undefined` (or the `defaultValue`), as `localStorage` is not available.
-
 ## Initialization
 
 To initialize the object, call the `DataStorage(name, isSession)` constructor.
@@ -57,6 +51,12 @@ const session = new DataStorage('user_session', true)
 ### Configuration
 
 - `static setPrefix(newPrefix: string): void` — Changes the global prefix applied to new instances. The default prefix is `ui-storage`.
+
+## SSR and Hydration
+
+The `DataStorage` class is fully compatible with Server-Side Rendering (SSR). It uses a special registry to isolate instances between different HTTP requests on the server.
+
+> To avoid hydration mismatches (when the server-rendered HTML differs from the client-rendered one), it is recommended to call `get()` inside `useEffect` or other client-only hooks. On the server, `get()` will return `undefined` (or the `defaultValue`), as `localStorage` is not available.
 
 ## Examples
 

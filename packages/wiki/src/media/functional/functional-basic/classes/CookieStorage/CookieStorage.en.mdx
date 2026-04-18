@@ -108,3 +108,46 @@ CookieStorage.init(
   (key, value, options) => myStorage.set(key, value, options)
 )
 ```
+
+### Update and Reset
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Update in-memory data from document.cookie
+// Useful when cookies were set externally
+CookieStorage.update()
+
+// Reset storage (clear listeners and in-memory data)
+// Useful for testing or cleanup
+CookieStorage.reset()
+```
+
+### Complete Workflow
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Initialize with custom storage
+CookieStorage.init(
+  (key) => redis.get(key),
+  (key, value, options) => redis.set(key, value, options)
+)
+
+// Set value with options
+CookieStorage.set('user', 'john', {
+  age: 3600,           // 1 hour
+  sameSite: 'lax',     // SameSite policy
+  arguments: ['Secure', 'Path=/'] // Additional directives
+})
+
+// Get with type conversion
+const user = CookieStorage.get<string>('user')
+
+// Update from external source
+CookieStorage.update()
+
+// Clean up
+CookieStorage.remove('user')
+CookieStorage.reset()
+```

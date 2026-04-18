@@ -44,13 +44,13 @@ Stores or updates a cookie value with specified options. Supports functions for 
 - `value?: T | string | (() => T | string)` — the value to store or a function returning the value
 - `options?: CookieOptions` — cookie options (lifetime, SameSite, additional arguments)
 
-**Returns:** `this` — for method chaining
+**Returns:** `void`
 
 #### `remove`
 
 Removes a cookie by overwriting it with an empty string and setting Max-Age to `-1`, instructing the browser to instantly delete the record.
 
-**Returns:** `this` — for method chaining
+**Returns:** `void`
 
 ### Static Methods
 

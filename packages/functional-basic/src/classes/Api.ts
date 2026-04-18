@@ -124,6 +124,7 @@ export class Api {
    *
    * Изменяет данные заголовка по умолчанию.
    * @param headers default headers / заголовки по умолчанию
+   * @returns void / ничего не возвращает
    */
   static setHeaders(headers: Record<string, string>): void {
     this.getItem().setHeaders(headers)
@@ -134,6 +135,7 @@ export class Api {
    *
    * Изменяет данные запроса по умолчанию.
    * @param request default request data / данные запроса по умолчанию
+   * @returns void / ничего не возвращает
    */
   static setRequestDefault(request: Record<string, any>): void {
     this.getItem().setRequestDefault(request)
@@ -144,6 +146,7 @@ export class Api {
    *
    * Изменяет базовый путь к скрипту.
    * @param url path to the script / путь к скрипту
+   * @returns void / ничего не возвращает
    */
   static setUrl(url: string): void {
     this.getItem().setUrl(url)
@@ -154,6 +157,7 @@ export class Api {
    *
    * Изменяет функцию для вызова перед запросом.
    * @param callback function to call before request / функция для вызова перед запросом
+   * @returns void / ничего не возвращает
    */
   static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void {
     this.getItem().setPreparation(callback)
@@ -164,6 +168,7 @@ export class Api {
    *
    * Изменяет функцию для вызова после запроса.
    * @param callback function to call after request / функция для вызова после запроса
+   * @returns void / ничего не возвращает
    */
   static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void {
     this.getItem().setEnd(callback)
@@ -174,6 +179,7 @@ export class Api {
    *
    * Изменяет таймаут запроса в миллисекундах.
    * @param timeout timeout in milliseconds / таймаут в миллисекундах
+   * @returns void / ничего не возвращает
    */
   static setTimeout(timeout: number): void {
     this.getItem().setTimeout(timeout)
@@ -184,6 +190,7 @@ export class Api {
    *
    * Устанавливает несколько опций конфигурации API одновременно.
    * @param config configuration object / объект конфигурации
+   * @returns void / ничего не возвращает
    */
   static setConfig(config?: ApiConfig): void {
     if (

@@ -11,7 +11,7 @@ export async function writeClipboardData(text: string) {
     try {
       await navigator.clipboard.writeText(text)
     } catch (_) {
-      document?.execCommand(text)
+      document?.execCommand('copy', false, text)
     }
   }
 }

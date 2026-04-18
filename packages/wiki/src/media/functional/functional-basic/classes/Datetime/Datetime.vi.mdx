@@ -6,8 +6,6 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Một bộ khung lớp bao quanh đối tượng `Date` nguyên bản của JavaScript, được thiết kế để đơn giản hóa việc làm việc với ngày tháng và thời gian. Nó kết hợp các khả năng định dạng, tính toán (điều hướng ngày tháng) và sao chép, dựa trên các thiết lập địa phương hóa của `Geo` и `GeoIntl`.
 
-> **Cảnh báo (SSR):** Việc tạo một thực thể `Datetime` mà không có ngày cụ thể (sử dụng thời gian hiện tại) để render trong SSR có thể dẫn đến lỗi hydration mismatch vì thời gian hoặc múi giờ trên máy chủ có thể khác với thời gian trên máy khách.
-
 ## Tính năng chính
 
 - **Quản lý đơn giản** — các phương thức trực quan để điều hướng ngày tháng (chuyển đến đầu tháng, tăng thêm ngày, v.v.).
@@ -159,6 +157,38 @@ Trả về ngày ở định dạng ISO 8601 (YYYY-MM-DDTHH:mm:ss±HH:mm).
 ```javascript
 dt.standard() // "2024-03-15T00:00:00+03:00"
 dt.standard(false) // "2024-03-15T00:00:00"
+```
+
+## SSR và Hydration
+
+> **Cảnh báo (SSR):** Việc tạo một thực thể `Datetime` mà không có ngày cụ thể (sử dụng thời gian hiện tại) để render trong SSR có thể dẫn đến lỗi hydration mismatch vì thời gian hoặc múi giờ trên máy chủ có thể khác với thời gian trên máy khách.
+
+### Thực tiễn khuyến nghị
+
+Khi sử dụng `Datetime` trong môi trường SSR:
+
+1. **Luôn cung cấp ngày cụ thể**: Truyền ngày cụ thể vào hàm khởi tạo thay vì sử dụng thời gian hiện tại.
+
+2. **Sử dụng khởi tạo ngày ở phía máy chủ**: Khởi tạo ngày ở máy chủ với các giá trị cụ thể để đảm bảo tính nhất quán.
+
+3. **Chỉ khởi tạo ở phía máy khách cho ngày động**: Đối với ngày cần hiển thị thời gian hiện tại, chỉ khởi tạo ở phía máy khách (ví dụ: trong `useEffect`).
+
+4. **Cân nhắc sự khác biệt múi giờ**: Lưu ý rằng múi giờ máy chủ và máy khách có thể khác nhau, ảnh hưởng đến tính toán và định dạng ngày.
+
+### Ví dụ về sử dụng an toàn trong SSR
+
+```javascript
+// ✅ Tốt: Ngày cụ thể cho SSR
+const serverDate = new Datetime('2024-03-15')
+
+// ✅ Tốt: Khởi tạo ở máy khách cho thời gian hiện tại
+useEffect(() => {
+  const now = new Datetime()
+  setCurrentTime(now.locale('datetime'))
+}, [])
+
+// ❌ Tránh: Thời gian hiện tại trong SSR
+const now = new Datetime() // Có thể gây lỗi hydration
 ```
 
 ## Ví dụ sử dụng

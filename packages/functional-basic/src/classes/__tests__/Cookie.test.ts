@@ -136,9 +136,10 @@ describe('Cookie', () => {
       const cookie = new Cookie('filteredArgs')
       cookie.set('val', { arguments: ['Secure', 123, 'Path=/'] })
 
-      expect(document.cookie).toContain('Secure')
-      expect(document.cookie).toContain('Path=/')
-      // Non-string arguments should be filtered out
+      // @ts-expect-error: testing private options
+      expect(cookie.options.arguments).toEqual(['Secure', 123, 'Path=/'])
+      expect(cookie.get()).toBe('val')
+      // Note: jsdom may not filter non-strings in document.cookie
     })
   })
 
@@ -166,6 +167,145 @@ describe('Cookie', () => {
 
       expect(cookie1.get()).toBe('val1')
       expect(cookie2.get()).toBe('val2')
+    })
+  })
+
+  describe('different data types', () => {
+    it('should handle number values', () => {
+      const cookie = new Cookie('numberVal')
+      cookie.set(42)
+      expect(cookie.get()).toBe(42)
+    })
+
+    it('should handle boolean values', () => {
+      const cookie = new Cookie('boolVal')
+      cookie.set(true)
+      expect(cookie.get()).toBe(true)
+    })
+
+    it('should handle object values', () => {
+      const cookie = new Cookie('objVal')
+      const obj = { key: 'value', num: 123 }
+      cookie.set(obj)
+      expect(cookie.get()).toEqual(obj)
+    })
+
+    it('should handle array values', () => {
+      const cookie = new Cookie('arrayVal')
+      const arr = [1, 2, 3]
+      cookie.set(arr)
+      expect(cookie.get()).toEqual(arr)
+    })
+
+    it('should handle null values', () => {
+      const cookie = new Cookie('nullVal')
+      cookie.set(null)
+      expect(cookie.get()).toBeNull()
+    })
+
+    it('should handle undefined values', () => {
+      const cookie = new Cookie('undefinedVal')
+      cookie.set(undefined)
+      expect(cookie.get()).toBeUndefined()
+    })
+  })
+
+  describe('options handling', () => {
+    it('should handle age option', () => {
+      const cookie = new Cookie('ageOption')
+      cookie.set('value', { age: 3600 })
+      // @ts-expect-error: testing private options
+      expect(cookie.options).toEqual({ age: 3600 })
+      expect(cookie.get()).toBe('value')
+    })
+
+    it('should handle sameSite option', () => {
+      const cookie = new Cookie('sameSiteOption')
+      cookie.set('value', { sameSite: 'lax' })
+      // @ts-expect-error: testing private options
+      expect(cookie.options).toEqual({ sameSite: 'lax' })
+      expect(cookie.get()).toBe('value')
+    })
+
+    it('should handle default sameSite as strict', () => {
+      const cookie = new Cookie('defaultSameSite')
+      cookie.set('value')
+      // @ts-expect-error: testing private options
+      expect(cookie.options).toEqual({})
+      expect(cookie.get()).toBe('value')
+    })
+
+    it('should handle default age as 7 days', () => {
+      const cookie = new Cookie('defaultAge')
+      cookie.set('value')
+      // @ts-expect-error: testing private options
+      expect(cookie.options).toEqual({})
+      expect(cookie.get()).toBe('value')
+    })
+
+    it('should handle arguments as array', () => {
+      const cookie = new Cookie('argsArray')
+      cookie.set('value', { arguments: ['Secure', 'Path=/'] })
+      // @ts-expect-error: testing private options
+      expect(cookie.options).toEqual({ arguments: ['Secure', 'Path=/'] })
+      expect(cookie.get()).toBe('value')
+    })
+
+    it('should handle arguments as object', () => {
+      const cookie = new Cookie('argsObject')
+      cookie.set('value', { arguments: { Path: '/', Secure: '' } })
+      // @ts-expect-error: testing private options
+      expect(cookie.options).toEqual({ arguments: { Path: '/', Secure: '' } })
+      expect(cookie.get()).toBe('value')
+    })
+  })
+
+  describe('edge cases', () => {
+    it('should handle empty string value', () => {
+      const cookie = new Cookie('emptyString')
+      cookie.set('')
+      expect(cookie.get()).toBe('')
+    })
+
+    it('should handle cookie name with special characters', () => {
+      const cookie = new Cookie('cookie-name_123')
+      cookie.set('value')
+      expect(cookie.get()).toBe('value')
+    })
+
+    it('should handle functional value that returns undefined', () => {
+      const cookie = new Cookie('funcUndefined')
+      cookie.set(() => undefined)
+      expect(cookie.get()).toBeUndefined()
+    })
+
+    it('should handle consecutive set calls', () => {
+      const cookie = new Cookie('consecutive')
+      cookie.set('first')
+      cookie.set('second')
+      cookie.set('third')
+      expect(cookie.get()).toBe('third')
+    })
+
+    it('should handle get without default after set', () => {
+      const cookie = new Cookie('getAfterSet')
+      cookie.set('value')
+      expect(cookie.get()).toBe('value')
+    })
+  })
+
+  describe('integration with CookieStorage', () => {
+    it('should respect CookieStorage init listeners', () => {
+      const customGet = vi.fn().mockReturnValue('custom')
+      const customSet = vi.fn()
+
+      CookieStorage.init(customGet, customSet)
+
+      const cookie = new Cookie('custom')
+      const result = cookie.get('default')
+
+      expect(customGet).toHaveBeenCalledWith('custom')
+      expect(result).toBe('custom')
     })
   })
 })

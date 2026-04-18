@@ -78,6 +78,7 @@ export class CookieStorage {
    * Получение данных из хранилища.
    * @param name cookie name / имя cookie
    * @param defaultValue default value / значение по умолчанию
+   * @returns T | undefined cookie value or default/ значение cookie или значение по умолчанию
    */
   static get<T>(
     name: string,
@@ -104,6 +105,7 @@ export class CookieStorage {
    * @param name cookie name / имя cookie
    * @param value data to be stored / данные для хранения
    * @param options additional parameters / дополнительные параметры
+   * @returns T stored value/ сохраненное значение
    */
   static set<T>(
     name: string,
@@ -145,6 +147,7 @@ export class CookieStorage {
    *
    * Удаление данных из хранилища.
    * @param name cookie name / имя cookie
+   * @returns void
    */
   static remove(name: string): void {
     this.set(name, '', { age: -1 })

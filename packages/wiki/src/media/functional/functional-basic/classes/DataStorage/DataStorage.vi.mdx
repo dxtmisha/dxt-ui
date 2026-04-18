@@ -16,12 +16,6 @@ Một lớp linh hoạt để tương tác với `localStorage` và `sessionStor
 - **Tối ưu Bộ nhớ** — tạo ra các singleton cho những khóa giống nhau nhằm tránh các thao tác đọc đĩa bị lặp lại.
 - **Hỗ trợ SSR** — sử dụng cơ chế cách ly theo từng request trong quá trình render phía server để ngăn chặn rò rỉ dữ liệu giữa các phiên làm việc song song.
 
-## SSR và Hydration
-
-Lớp `DataStorage` hoàn toàn tương thích với Server-Side Rendering (SSR). Nó sử dụng một registry đặc biệt để cách ly các instance giữa các HTTP request khác nhau trên server.
-
-> Để tránh lỗi hydration (khi HTML render từ server khác với client), bạn nên gọi phương thức `get()` bên trong `useEffect` hoặc các hook chỉ chạy ở client. Trên server, `get()` sẽ luôn trả về `undefined` (hoặc `defaultValue`) vì `localStorage` không khả dụng.
-
 ## Khởi tạo
 
 Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `DataStorage(name, isSession)`.
@@ -57,6 +51,12 @@ const session = new DataStorage('user_session', true)
 ### Cấu hình
 
 - `static setPrefix(newPrefix: string): void` — Thay đổi tiền tố toàn cục áp dụng cho các thực thể mới. Tiền tố mặc định là `ui-storage`.
+
+## SSR và Hydration
+
+Lớp `DataStorage` hoàn toàn tương thích với Server-Side Rendering (SSR). Nó sử dụng một registry đặc biệt để cách ly các instance giữa các HTTP request khác nhau trên server.
+
+> Để tránh lỗi hydration (khi HTML render từ server khác với client), bạn nên gọi phương thức `get()` bên trong `useEffect` hoặc các hook chỉ chạy ở client. Trên server, `get()` sẽ luôn trả về `undefined` (hoặc `defaultValue`) vì `localStorage` không khả dụng.
 
 ## Ví dụ
 

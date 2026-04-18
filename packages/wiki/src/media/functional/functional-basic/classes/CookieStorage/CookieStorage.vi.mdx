@@ -108,3 +108,46 @@ CookieStorage.init(
   (key, value, options) => myStorage.set(key, value, options)
 )
 ```
+
+### Cập nhật và đặt lại
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Cập nhật dữ liệu trong bộ nhớ từ document.cookie
+// Hữu ích khi cookie được đặt từ bên ngoài
+CookieStorage.update()
+
+// Đặt lại lưu trữ (xóa người nghe và dữ liệu trong bộ nhớ)
+// Hữu ích cho kiểm thử hoặc dọn dẹp
+CookieStorage.reset()
+```
+
+### Quy trình làm việc hoàn chỉnh
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Khởi tạo với lưu trữ tùy chỉnh
+CookieStorage.init(
+  (key) => redis.get(key),
+  (key, value, options) => redis.set(key, value, options)
+)
+
+// Đặt giá trị với các tùy chọn
+CookieStorage.set('user', 'john', {
+  age: 3600,           // 1 giờ
+  sameSite: 'lax',     // Chính sách SameSite
+  arguments: ['Secure', 'Path=/'] // Các chỉ thị bổ sung
+})
+
+// Nhận giá trị với chuyển đổi loại
+const user = CookieStorage.get<string>('user')
+
+// Cập nhật từ nguồn bên ngoài
+CookieStorage.update()
+
+// Dọn dẹp
+CookieStorage.remove('user')
+CookieStorage.reset()
+```

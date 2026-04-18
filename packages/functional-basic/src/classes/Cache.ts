@@ -1,21 +1,22 @@
 import { CacheItem } from './CacheItem'
 
 /**
- * Simple class for caching.
+ * Simple in-memory cache class that stores computed values by key.
  *
- * Простой класс для кэширования.
+ * Простой класс для in-memory кэширования, который хранит вычисленные значения по ключу.
  * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class Cache {
   private cache: Record<string, CacheItem<any>> = {}
 
   /**
-   * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+   * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
-   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
-   * @param name cache name/ название кэша
-   * @param callback function for the cache/ функция для кэша
-   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+   * @param name - Unique cache key / Уникальный ключ кэша
+   * @param callback - Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
+   * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+   * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
    */
   get<T>(
     name: string,
@@ -26,12 +27,13 @@ export class Cache {
   }
 
   /**
-   * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+   * Asynchronously returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
-   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
-   * @param name cache name/ название кэша
-   * @param callback function for the cache/ функция для кэша
-   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   * Асинхронно возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+   * @param name - Unique cache key / Уникальный ключ кэша
+   * @param callback - Async function to compute the value if not cached / Асинхронная функция для вычисления значения, если его нет в кэше
+   * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+   * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
    */
   async getAsync<T>(
     name: string,
@@ -42,11 +44,12 @@ export class Cache {
   }
 
   /**
-   * Returns an instance of the object for working with the cache element.
+   * Gets or creates a CacheItem instance for the given name.
    *
-   * Возвращает экземпляр объекта для работы с элементом кэша.
-   * @param name cache name/ название кэша
-   * @param callback function for the cache/ функция для кэша
+   * Получает или создает экземпляр CacheItem для указанного имени.
+   * @param name - Unique cache key / Уникальный ключ кэша
+   * @param callback - Function to compute the value / Функция для вычисления значения
+   * @returns CacheItem instance for the cache key / Экземпляр CacheItem для ключа кэша
    */
   private getCacheItem<T>(
     name: string,
