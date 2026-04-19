@@ -10,14 +10,14 @@ describe('MetaManager', () => {
   const metaTags = ['description', 'keywords', 'author'] as const
 
   beforeEach(() => {
-    // Очистка DOM перед каждым тестом
+    // Clear DOM before each test
     document.head.innerHTML = ''
 
     manager = new MetaManager(metaTags)
   })
 
   afterEach(() => {
-    // Очистка после тестов
+    // Clear after tests
     document.head.innerHTML = ''
   })
 
@@ -34,7 +34,7 @@ describe('MetaManager', () => {
     })
 
     it('should read existing meta tags from DOM on initialization', () => {
-      // Создаем мета-теги в DOM перед инициализацией
+      // Create meta tags in DOM before initialization
       const descMeta = document.createElement('meta')
       descMeta.setAttribute('name', 'description')
       descMeta.setAttribute('content', 'Existing description')
@@ -45,10 +45,10 @@ describe('MetaManager', () => {
       keywordsMeta.setAttribute('content', 'existing, keywords')
       document.head.appendChild(keywordsMeta)
 
-      // Создаем новый экземпляр
+      // Create new instance
       const newManager = new MetaManager(metaTags)
 
-      // Должен прочитать существующие теги
+      // Should read existing tags
       expect(newManager.get('description')).toBe('Existing description')
       expect(newManager.get('keywords')).toBe('existing, keywords')
     })
@@ -85,7 +85,7 @@ describe('MetaManager', () => {
 
     it('should return readonly array', () => {
       const list = manager.getListMeta()
-      expect(list).toBe(metaTags) // Должна быть та же ссылка
+      expect(list).toBe(metaTags) // Should be the same reference
     })
   })
 
@@ -158,17 +158,17 @@ describe('MetaManager', () => {
     })
 
     it('should update existing meta tag in DOM', () => {
-      // Первая установка
+      // First installation
       manager.set('description', 'First value')
 
       const firstElements = document.querySelectorAll('meta[name="description"]')
       expect(firstElements.length).toBe(1)
 
-      // Обновление
+      // Update
       manager.set('description', 'Second value')
 
       const secondElements = document.querySelectorAll('meta[name="description"]')
-      expect(secondElements.length).toBe(1) // Не должно создавать дубликат
+      expect(secondElements.length).toBe(1) // Should not create duplicate
       expect(secondElements?.[0]?.getAttribute('content')).toBe('Second value')
     })
 
@@ -231,7 +231,7 @@ describe('MetaManager', () => {
       })
 
       expect(manager.get('description')).toBe('Updated')
-      expect(manager.get('keywords')).toBe('Initial keys') // Не должно измениться
+      expect(manager.get('keywords')).toBe('Initial keys') // Should not change
     })
 
     it('should return this for chaining', () => {
@@ -377,10 +377,10 @@ describe('MetaManager', () => {
     })
 
     it('should handle unicode characters', () => {
-      manager.set('description', 'Описание на русском 🎉')
+      manager.set('description', 'Russian Description 🎉')
       manager.set('keywords', '中文, 日本語, 한국어')
 
-      expect(manager.get('description')).toBe('Описание на русском 🎉')
+      expect(manager.get('description')).toBe('Russian Description 🎉')
       expect(manager.get('keywords')).toBe('中文, 日本語, 한국어')
     })
 
@@ -403,7 +403,7 @@ describe('MetaManager', () => {
 
       expect(manager.get('description')).toBe('Value 99')
 
-      // Должен быть только один элемент в DOM
+      // Should be only one element in DOM
       const elements = document.querySelectorAll('meta[name="description"]')
       expect(elements.length).toBe(1)
     })
@@ -430,13 +430,13 @@ describe('MetaManager', () => {
     })
 
     it('should not create duplicate tags', () => {
-      // Создаем существующий тег
+      // Create existing tag
       const existingMeta = document.createElement('meta')
       existingMeta.setAttribute('name', 'description')
       existingMeta.setAttribute('content', 'Existing')
       document.head.appendChild(existingMeta)
 
-      // Создаем менеджер и обновляем
+      // Create manager and update
       const newManager = new MetaManager(metaTags)
       newManager.set('description', 'Updated')
 
@@ -455,10 +455,10 @@ describe('MetaManager', () => {
 
       const html = manager.html()
 
-      // HTML должен быть валидным
+      // HTML should be valid
       expect(html).toMatch(/<meta [^>]+>/g)
 
-      // Должен содержать все теги
+      // Should contain all tags
       expect(html.split('<meta').length - 1).toBe(3)
     })
 
@@ -467,7 +467,7 @@ describe('MetaManager', () => {
 
       const html = manager.html()
 
-      // HTML должен быть безопасным
+      // HTML should be safe
       expect(html).not.toContain('"quotes"')
       expect(html).toContain('&quot;quotes&quot;')
       expect(html).not.toContain('<html>')
@@ -477,7 +477,7 @@ describe('MetaManager', () => {
 
   describe('TypeScript types', () => {
     it('should only allow setting defined meta tags', () => {
-      // Эти должны работать
+      // These should work
       manager.set('description', 'test')
       manager.set('keywords', 'test')
       manager.set('author', 'test')
@@ -502,16 +502,16 @@ describe('MetaManager', () => {
 
   describe('integration scenarios', () => {
     it('should work with complex real-world scenario', () => {
-      // Инициализация с существующими тегами
+      // Initialization with existing tags
       const initialDesc = document.createElement('meta')
       initialDesc.setAttribute('name', 'description')
       initialDesc.setAttribute('content', 'Initial page description')
       document.head.appendChild(initialDesc)
 
-      // Создание менеджера
+      // Manager creation
       const pageManager = new MetaManager(['description', 'keywords', 'author', 'robots'] as const)
 
-      // Массовое обновление
+      // Bulk update
       pageManager.setByList({
         description: 'Updated description',
         keywords: 'web, development, javascript',
@@ -519,22 +519,22 @@ describe('MetaManager', () => {
         robots: 'index, follow'
       })
 
-      // Проверка внутреннего состояния
+      // Internal state check
       expect(pageManager.get('description')).toBe('Updated description')
       expect(pageManager.get('keywords')).toBe('web, development, javascript')
 
-      // Проверка DOM
+      // DOM check
       expect(document.querySelector('meta[name="description"]')?.getAttribute('content'))
         .toBe('Updated description')
 
-      // Генерация HTML для SSR
+      // HTML generation for SSR
       const html = pageManager.html()
       expect(html).toContain('name="description"')
       expect(html).toContain('name="keywords"')
       expect(html).toContain('name="author"')
       expect(html).toContain('name="robots"')
 
-      // Количество тегов в DOM должно соответствовать
+      // Tag count in DOM should match
       const metaTags = document.querySelectorAll('meta[name]')
       expect(metaTags.length).toBe(4)
     })
@@ -542,29 +542,29 @@ describe('MetaManager', () => {
 
   describe('SSR environment (without DOM)', () => {
     it('should work without DOM runtime', () => {
-      // Сохраняем оригинальные глобальные объекты
+      // Save original global objects
       const originalDocument = globalThis.document
       const originalWindow = globalThis.window
 
-      // Удаляем document и window для эмуляции SSR окружения
+      // Remove document and window to emulate SSR environment
       delete (globalThis as any).document
       delete (globalThis as any).window
 
       try {
-        // Создание менеджера без DOM
+        // Manager creation without DOM
         const ssrManager = new MetaManager(['description', 'keywords', 'author'] as const)
 
-        // Установка значений должна работать
+        // Setting values should work
         ssrManager.set('description', 'SSR Description')
         ssrManager.set('keywords', 'ssr, test, server')
         ssrManager.set('author', 'SSR Author')
 
-        // Внутреннее состояние должно обновляться
+        // Internal state should be updated
         expect(ssrManager.get('description')).toBe('SSR Description')
         expect(ssrManager.get('keywords')).toBe('ssr, test, server')
         expect(ssrManager.get('author')).toBe('SSR Author')
 
-        // Массовое обновление должно работать
+        // Bulk update should work
         ssrManager.setByList({
           description: 'Updated SSR Description',
           keywords: 'updated, ssr'
@@ -573,7 +573,7 @@ describe('MetaManager', () => {
         expect(ssrManager.get('description')).toBe('Updated SSR Description')
         expect(ssrManager.get('keywords')).toBe('updated, ssr')
 
-        // Генерация HTML должна работать
+        // HTML generation should work
         const html = ssrManager.html()
         expect(html).toBeTruthy()
         expect(html).toContain('name="description"')
@@ -583,7 +583,7 @@ describe('MetaManager', () => {
         expect(html).toContain('name="author"')
         expect(html).toContain('content="SSR Author"')
       } finally {
-        // Восстанавливаем глобальные объекты
+        // Restore global objects
         if (originalDocument) {
           (globalThis as any).document = originalDocument
         }
@@ -608,14 +608,14 @@ describe('MetaManager', () => {
 
         const html = ssrManager.html()
 
-        // Проверяем валидность HTML
+        // Check HTML validity
         expect(html).toMatch(/<meta name="[^"]+" content="[^"]+">/)
 
-        // Проверяем количество тегов
+        // Check tag count
         const metaTagsCount = (html.match(/<meta/g) || []).length
         expect(metaTagsCount).toBe(3)
 
-        // Проверяем структуру каждого тега
+        // Check each tag structure
         expect(html).toContain('<meta name="description" content="Server-side rendered page">')
         expect(html).toContain('<meta name="keywords" content="ssr, node, server">')
         expect(html).toContain('<meta name="robots" content="index, follow">')
@@ -637,13 +637,13 @@ describe('MetaManager', () => {
 
         const html = ssrManager.html()
 
-        // Должно экранировать спецсимволы
+        // Should escape special characters
         expect(html).toContain('&quot;')
         expect(html).toContain('&amp;')
         expect(html).toContain('&lt;')
         expect(html).toContain('&gt;')
 
-        // Не должно содержать неэкранированные символы
+        // Should not contain unescaped characters
         expect(html).not.toContain('"quotes"')
         expect(html).not.toContain('& <html>')
       } finally {
@@ -665,12 +665,12 @@ describe('MetaManager', () => {
 
         const html = ogManager.html()
 
-        // Должен использовать property вместо name
+        // Should use property instead of name
         expect(html).toContain('property="og:title"')
         expect(html).toContain('property="og:description"')
         expect(html).not.toContain('name="og:title"')
 
-        // Проверяем контент
+        // Check content
         expect(html).toContain('content="Open Graph Title"')
         expect(html).toContain('content="Open Graph Description"')
       } finally {
@@ -687,15 +687,15 @@ describe('MetaManager', () => {
       try {
         const ssrManager = new MetaManager(['description'] as const)
 
-        // Не должно вызывать ошибку
+        // Should not throw an error
         expect(() => {
           ssrManager.set('description', 'Test')
         }).not.toThrow()
 
-        // Внутреннее состояние должно обновиться
+        // Internal state should update
         expect(ssrManager.get('description')).toBe('Test')
 
-        // HTML должен генерироваться
+        // HTML should be generated
         const html = ssrManager.html()
         expect(html).toContain('content="Test"')
       } finally {
@@ -737,7 +737,7 @@ describe('MetaManager', () => {
       try {
         const ssrManager = new MetaManager(['description', 'keywords', 'author'] as const)
 
-        // Все должно быть пустым при инициализации
+        // All should be empty on initialization
         expect(ssrManager.get('description')).toBe('')
         expect(ssrManager.get('keywords')).toBe('')
         expect(ssrManager.get('author')).toBe('')
@@ -781,12 +781,12 @@ describe('MetaManager', () => {
       delete (globalThis as any).document
 
       try {
-        // Создание менеджера на сервере
+        // Manager creation on server
         const ssrManager = new MetaManager(
           ['description', 'keywords', 'author', 'robots', 'viewport'] as const
         )
 
-        // Настройка мета-тегов
+        // Meta tag configuration
         ssrManager.setByList({
           description: 'Complete SSR page description',
           keywords: 'ssr, server, node, express',
@@ -795,21 +795,21 @@ describe('MetaManager', () => {
           viewport: 'width=device-width, initial-scale=1'
         })
 
-        // Генерация HTML для вставки в шаблон
+        // HTML generation for template insertion
         const metaTags = ssrManager.html()
 
-        // Проверяем, что HTML готов для SSR
+        // Check that HTML is ready for SSR
         expect(metaTags).toBeTruthy()
         expect(typeof metaTags).toBe('string')
 
-        // Проверяем наличие всех тегов
+        // Check for presence of all tags
         expect(metaTags).toContain('name="description"')
         expect(metaTags).toContain('name="keywords"')
         expect(metaTags).toContain('name="author"')
         expect(metaTags).toContain('name="robots"')
         expect(metaTags).toContain('name="viewport"')
 
-        // Проверяем, что можно вставить в HTML шаблон
+        // Check if it can be inserted into HTML template
         const htmlTemplate = `
           <!DOCTYPE html>
           <html>

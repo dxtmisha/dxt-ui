@@ -10,14 +10,14 @@ describe('MetaOg', () => {
   let metaOg: MetaOg
 
   beforeEach(() => {
-    // Очистка DOM перед каждым тестом
+    // Clear DOM before each test
     document.head.innerHTML = ''
 
     metaOg = new MetaOg()
   })
 
   afterEach(() => {
-    // Очистка после тестов
+    // Clear after tests
     document.head.innerHTML = ''
   })
 
@@ -48,7 +48,7 @@ describe('MetaOg', () => {
     })
 
     it('should read existing OG tags from DOM on initialization', () => {
-      // Создаем OG теги в DOM
+      // Create OG tags in DOM
       const titleMeta = document.createElement('meta')
       titleMeta.setAttribute('property', 'og:title')
       titleMeta.setAttribute('content', 'Existing Title')
@@ -59,10 +59,10 @@ describe('MetaOg', () => {
       descMeta.setAttribute('content', 'Existing Description')
       document.head.appendChild(descMeta)
 
-      // Создаем новый экземпляр
+      // Create new instance
       const newMetaOg = new MetaOg()
 
-      // Должен прочитать существующие теги
+      // Should read existing tags
       expect(newMetaOg.getTitle()).toBe('Existing Title')
       expect(newMetaOg.getDescription()).toBe('Existing Description')
     })
@@ -455,10 +455,10 @@ describe('MetaOg', () => {
 
   describe('edge cases', () => {
     it('should handle unicode characters', () => {
-      metaOg.setTitle('Заголовок на русском 🎉')
+      metaOg.setTitle('Russian Title 🎉')
       metaOg.setDescription('描述中文 日本語')
 
-      expect(metaOg.getTitle()).toBe('Заголовок на русском 🎉')
+      expect(metaOg.getTitle()).toBe('Russian Title 🎉')
       expect(metaOg.getDescription()).toBe('描述中文 日本語')
     })
 

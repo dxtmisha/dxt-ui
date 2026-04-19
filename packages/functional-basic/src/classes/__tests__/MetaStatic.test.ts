@@ -10,15 +10,15 @@ import { ServerStorage } from '../ServerStorage'
 
 describe('MetaStatic', () => {
   beforeEach(() => {
-    // Очистка DOM перед каждым тестом
+    // Clear DOM before each test
     document.head.innerHTML = ''
     document.title = ''
-    // Сброс хранилища, чтобы каждый тест работал с чистым экземпляром
+    // Reset storage so each test works with a clean instance
     ServerStorage.set('__ui:meta-instance__', () => new Meta())
   })
 
   afterEach(() => {
-    // Очистка после тестов
+    // Clear after tests
     document.head.innerHTML = ''
     document.title = ''
   })

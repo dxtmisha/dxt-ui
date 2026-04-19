@@ -10,14 +10,14 @@ describe('MetaTwitter', () => {
   let metaTwitter: MetaTwitter
 
   beforeEach(() => {
-    // Очистка DOM перед каждым тестом
+    // Clear DOM before each test
     document.head.innerHTML = ''
 
     metaTwitter = new MetaTwitter()
   })
 
   afterEach(() => {
-    // Очистка после тестов
+    // Clear after tests
     document.head.innerHTML = ''
   })
 
@@ -39,7 +39,7 @@ describe('MetaTwitter', () => {
     })
 
     it('should read existing Twitter tags from DOM on initialization', () => {
-      // Создаем Twitter теги в DOM
+      // Create Twitter tags in DOM
       const titleMeta = document.createElement('meta')
       titleMeta.setAttribute('name', 'twitter:title')
       titleMeta.setAttribute('content', 'Existing Twitter Title')
@@ -50,10 +50,10 @@ describe('MetaTwitter', () => {
       descMeta.setAttribute('content', 'Existing Twitter Description')
       document.head.appendChild(descMeta)
 
-      // Создаем новый экземпляр
+      // Create new instance
       const newMetaTwitter = new MetaTwitter()
 
-      // Должен прочитать существующие теги
+      // Should read existing tags
       expect(newMetaTwitter.getTitle()).toBe('Existing Twitter Title')
       expect(newMetaTwitter.getDescription()).toBe('Existing Twitter Description')
     })

@@ -10,7 +10,7 @@ describe('Meta', () => {
   let meta: Meta
 
   beforeEach(() => {
-    // Очистка DOM перед каждым тестом
+    // Clear DOM before each test
     document.head.innerHTML = ''
     document.title = ''
 
@@ -18,7 +18,7 @@ describe('Meta', () => {
   })
 
   afterEach(() => {
-    // Очистка после тестов
+    // Clear after tests
     document.head.innerHTML = ''
     document.title = ''
   })
@@ -249,7 +249,7 @@ describe('Meta', () => {
     it('should not sync description to OG or Twitter automatically', () => {
       meta.setDescription('Standard description')
 
-      // setDescription не синхронизирует с OG и Twitter
+      // setDescription does not sync with OG and Twitter
       expect(meta.getDescription()).toBe('Standard description')
       expect(meta.getOg().getDescription()).toBe('')
       expect(meta.getTwitter().getDescription()).toBe('')
@@ -466,7 +466,7 @@ describe('Meta', () => {
 
       const html = meta.html()
 
-      // Должен содержать теги из Meta, MetaOg и MetaTwitter
+      // Should contain tags from Meta, MetaOg and MetaTwitter
       expect(html).toContain('name="description"')
       expect(html).toContain('property="og:image"')
       expect(html).toContain('name="twitter:image"')
@@ -553,10 +553,10 @@ describe('Meta', () => {
     })
 
     it('should handle unicode characters', () => {
-      meta.setTitle('Заголовок на русском 🎉')
+      meta.setTitle('Russian Title 🎉')
       meta.setDescription('描述中文 日本語')
 
-      expect(meta.getTitle()).toBe('Заголовок на русском 🎉')
+      expect(meta.getTitle()).toBe('Russian Title 🎉')
       expect(meta.getDescription()).toBe('描述中文 日本語')
     })
 
@@ -568,24 +568,24 @@ describe('Meta', () => {
 
   describe('DOM synchronization', () => {
     it('should update existing meta tags', () => {
-      // Создаем начальный тег
+      // Create initial tag
       const initialMeta = document.createElement('meta')
       initialMeta.setAttribute('name', 'description')
       initialMeta.setAttribute('content', 'Initial content')
       document.head.appendChild(initialMeta)
 
-      // Создаем новый экземпляр Meta
+      // Create new Meta instance
       const newMeta = new Meta()
       newMeta.setDescription('Updated content')
 
-      // Должен обновить существующий тег, а не создать новый
+      // Should update existing tag instead of creating a new one
       const metaTags = document.querySelectorAll('meta[name="description"]')
       expect(metaTags.length).toBe(1)
       expect(metaTags?.[0]?.getAttribute('content')).toBe('Updated content')
     })
 
     it('should read existing meta tags on initialization', () => {
-      // Устанавливаем теги в DOM
+      // Set tags in DOM
       const descMeta = document.createElement('meta')
       descMeta.setAttribute('name', 'description')
       descMeta.setAttribute('content', 'Existing description')
@@ -596,10 +596,10 @@ describe('Meta', () => {
       keywordsMeta.setAttribute('content', 'existing, keywords')
       document.head.appendChild(keywordsMeta)
 
-      // Создаем новый экземпляр
+      // Create new instance
       const newMeta = new Meta()
 
-      // Должен прочитать существующие теги
+      // Should read existing tags
       expect(newMeta.getDescription()).toBe('Existing description')
       expect(newMeta.getKeywords()).toBe('existing, keywords')
     })
@@ -616,10 +616,10 @@ describe('Meta', () => {
 
       const html = meta.html()
 
-      // HTML должен быть валидным
+      // HTML should be valid
       expect(html).toMatch(/<meta [^>]+>/g)
 
-      // Должен содержать все необходимые атрибуты
+      // Should contain all necessary attributes
       expect(html).toContain('name="description"')
       expect(html).toContain('name="keywords"')
       expect(html).toContain('property="og:image"')
