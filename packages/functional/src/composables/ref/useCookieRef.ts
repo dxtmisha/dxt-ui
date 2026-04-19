@@ -2,10 +2,22 @@ import {
   type Ref,
   watch
 } from 'vue'
-import { Cookie, type CookieOptions } from '@dxtmisha/functional-basic'
+import { Cookie, type CookieOptions, ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 import { useBroadcastValueRef } from './useBroadcastValueRef'
+
+/**
+ * Returns a list of active CookieRef instances for the current request context.
+ *
+ * Возвращает список активных экземпляров CookieRef для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, Ref<any>>>(
+    '__ui:cookie-ref__',
+    () => ({})
+  )
+}
 
 /**
  * Creates a reactive variable to manage cookies.
@@ -20,6 +32,8 @@ export function useCookieRef<T>(
   defaultValue?: T | string | (() => (T | string)),
   options?: CookieOptions
 ): Ref<T | string | undefined> {
+  const items = getItems()
+
   if (name in items) {
     return items[name] as Ref<T | string | undefined>
   }
@@ -39,5 +53,3 @@ export function useCookieRef<T>(
   items[name] = item
   return item as Ref<T>
 }
-
-const items: Record<string, Ref<any>> = {}

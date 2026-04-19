@@ -1,6 +1,18 @@
 import { ref, type Ref, watch } from 'vue'
-import { DataStorage } from '@dxtmisha/functional-basic'
+import { DataStorage, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
+
+/**
+ * Returns a list of active SessionRef instances for the current request context.
+ *
+ * Возвращает список активных экземпляров SessionRef для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, Ref<any>>>(
+    '__ui:session-ref__',
+    () => ({})
+  )
+}
 
 /**
  * Creates a reactive variable to manage session storage.
@@ -13,6 +25,8 @@ export function useSessionRef<T>(
   name: string,
   defaultValue?: T | (() => T)
 ): Ref<T | undefined> {
+  const items = getItems()
+
   if (name in items) {
     return items[name] as Ref<T | undefined>
   }
@@ -27,5 +41,3 @@ export function useSessionRef<T>(
   items[name] = item
   return item as Ref<T>
 }
-
-const items: Record<string, Ref<any>> = {}

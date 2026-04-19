@@ -1,8 +1,20 @@
 import { ref, type Ref, watch } from 'vue'
-import { BroadcastMessage, executeFunction } from '@dxtmisha/functional-basic'
+import { BroadcastMessage, executeFunction, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 type BroadcastValueItem<T> = T | string | undefined
+
+/**
+ * Returns a list of active BroadcastValueRef instances for the current request context.
+ *
+ * Возвращает список активных экземпляров BroadcastValueRef для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, Ref>>(
+    '__ui:broadcast-value-ref__',
+    () => ({})
+  )
+}
 
 /**
  * Creates a reactive variable to manage data between browser tabs.
@@ -16,6 +28,7 @@ export function useBroadcastValueRef<T>(
   defaultValue?: T | string | (() => (T | string))
 ): Ref<BroadcastValueItem<T>> {
   const fullName = `broadcast--${name}`
+  const items = getItems()
 
   if (fullName in items) {
     return items[fullName] as Ref<BroadcastValueItem<T>>
@@ -38,5 +51,3 @@ export function useBroadcastValueRef<T>(
   items[fullName] = item
   return item as Ref<BroadcastValueItem<T>>
 }
-
-const items: Record<string, Ref<any>> = {}

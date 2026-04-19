@@ -1,6 +1,18 @@
 import { ref, type Ref, watch } from 'vue'
-import { DataStorage, isDomRuntime } from '@dxtmisha/functional-basic'
+import { DataStorage, isDomRuntime, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
+
+/**
+ * Returns a list of active StorageRef instances for the current request context.
+ *
+ * Возвращает список активных экземпляров StorageRef для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, Ref<any>>>(
+    '__ui:storage-ref__',
+    () => ({})
+  )
+}
 
 /**
  * Creates a reactive variable to manage a local storage.
@@ -15,6 +27,8 @@ export function useStorageRef<T>(
   defaultValue?: T | (() => T),
   cache?: number
 ): Ref<T | undefined> {
+  const items = getItems()
+
   if (name in items) {
     return items[name] as Ref<T | undefined>
   }
@@ -36,5 +50,3 @@ export function useStorageRef<T>(
   items[name] = item
   return item as Ref<T>
 }
-
-const items: Record<string, Ref<any>> = {}

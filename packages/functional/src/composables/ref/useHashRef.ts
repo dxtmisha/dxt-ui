@@ -4,8 +4,20 @@ import {
   shallowRef,
   watch
 } from 'vue'
-import { Hash } from '@dxtmisha/functional-basic'
+import { Hash, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
+
+/**
+ * Returns a list of active HashRef instances for the current request context.
+ *
+ * Возвращает список активных экземпляров HashRef для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, Ref>>(
+    '__ui:hash-ref__',
+    () => ({})
+  )
+}
 
 /**
  * Creates a reactive variable to manage the hash.
@@ -18,6 +30,8 @@ export function useHashRef<T>(
   name: string,
   defaultValue?: T | (() => T)
 ): ShallowRef<T> {
+  const items = getItems()
+
   if (name in items) {
     return items[name] as ShallowRef<T>
   }
@@ -35,5 +49,3 @@ export function useHashRef<T>(
   items[name] = item
   return item
 }
-
-const items: Record<string, Ref<any>> = {}

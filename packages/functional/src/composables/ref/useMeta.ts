@@ -1,14 +1,14 @@
 import { ref, watch } from 'vue'
 import { Meta, MetaRobots } from '@dxtmisha/functional-basic'
 
-import { executeUseGlobal } from '../../functions/executeUse'
+import { executeUseLocal } from '../../functions/executeUse'
 
 /**
  * Singleton instance for meta tags management.
  *
  * Singleton экземпляр для управления мета-тегами.
  */
-const item = executeUseGlobal(() => {
+const item = executeUseLocal(() => {
   const meta: Meta = new Meta()
 
   /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */

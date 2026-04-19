@@ -4,7 +4,11 @@ import {
   type Ref,
   shallowRef
 } from 'vue'
-import { Geo, type GeoItemFull } from '@dxtmisha/functional-basic'
+import {
+  Geo,
+  type GeoItemFull,
+  ServerStorage
+} from '@dxtmisha/functional-basic'
 
 /**
  * Reactive class for working with geographic data.
@@ -12,12 +16,10 @@ import { Geo, type GeoItemFull } from '@dxtmisha/functional-basic'
  * Реактивный класс для работы с географическими данными.
  */
 export class GeoRef {
-  private static readonly item = shallowRef(Geo.getItem())
-
-  private static readonly country = computed<string>(() => this.item.value.country)
-  private static readonly language = computed<string>(() => this.item.value.language)
-  private static readonly standard = computed<string>(() => this.item.value.standard)
-  private static readonly firstDay = computed<string>(() => this.item.value.firstDay)
+  private static readonly country = computed<string>(() => this.get().value.country)
+  private static readonly language = computed<string>(() => this.get().value.language)
+  private static readonly standard = computed<string>(() => this.get().value.standard)
+  private static readonly firstDay = computed<string>(() => this.get().value.firstDay)
 
   /**
    * Information about the current country.
@@ -26,7 +28,10 @@ export class GeoRef {
    * @returns reactive object with full geographic information/ реактивный объект с полной географической информацией
    */
   static get(): Ref<GeoItemFull> {
-    return this.item
+    return ServerStorage.get(
+      '__ui:geo-ref__',
+      () => shallowRef(Geo.getItem())
+    )
   }
 
   /**
@@ -80,6 +85,6 @@ export class GeoRef {
    */
   static set(code: string): void {
     Geo.set(code, true)
-    this.item.value = Geo.getItem()
+    this.get().value = Geo.getItem()
   }
 }

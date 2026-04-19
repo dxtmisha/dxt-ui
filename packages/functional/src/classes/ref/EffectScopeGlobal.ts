@@ -1,4 +1,5 @@
 import { EffectScope, effectScope } from 'vue'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 
 /**
  * Global effect scope class.
@@ -6,13 +7,6 @@ import { EffectScope, effectScope } from 'vue'
  * Глобальный класс для области действия эффекта.
  */
 export class EffectScopeGlobal {
-  /**
-   * Effect scope instance.
-   *
-   * Экземпляр области действия эффекта.
-   */
-  private static scope: EffectScope | undefined
-
   /**
    * Runs a function within the global scope.
    *
@@ -31,10 +25,9 @@ export class EffectScopeGlobal {
    * @returns the global effect scope instance/ экземпляр глобальной области действия эффекта
    */
   private static getScope(): EffectScope {
-    if (!this.scope) {
-      this.scope = effectScope(true)
-    }
-
-    return this.scope
+    return ServerStorage.get<EffectScope>(
+      '__ui:effect-scope-global__',
+      () => effectScope(true)
+    )
   }
 }

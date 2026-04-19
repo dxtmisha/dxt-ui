@@ -1,14 +1,12 @@
 import {
   customRef,
   watchEffect,
-  effectScope,
   type Ref,
   ref
 } from 'vue'
 import { executePromise } from '@dxtmisha/functional-basic'
 
-/** Effect scope for computed eternity/ Эффектный scope для вычисляемого вечения */
-const scope = effectScope()
+import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
 
 /**
  * Creates a computed property that is computed on demand and cached.
@@ -48,7 +46,7 @@ export function computedEternity<T>(
       if (!ready) {
         ready = true
 
-        scope.run(() => {
+        EffectScopeGlobal.run(() => {
           watchEffect(async () => await reading())
         })
       }

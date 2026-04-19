@@ -1,7 +1,10 @@
 import type { RouteLocationRaw, Router } from 'vue-router'
-import { isObjectNotArray, isString } from '@dxtmisha/functional-basic'
+import { isObjectNotArray, isString, ServerStorage } from '@dxtmisha/functional-basic'
 
 import type { ConstrHrefProps } from '../../types/constructorTypes'
+
+/** Server storage key / Ключ серверного хранилища */
+const ROUTER_ITEM_REF_KEY = '__ui:router-item-ref__'
 
 /**
  * Router management class.
@@ -9,15 +12,13 @@ import type { ConstrHrefProps } from '../../types/constructorTypes'
  * Класс управления роутером.
  */
 export class RouterItemRef {
-  protected static router?: Router
-
   /**
    * Get router instance.
    *
    * Получить экземпляр роутера.
    */
   static get() {
-    return this.router
+    return ServerStorage.get<Router>(ROUTER_ITEM_REF_KEY)
   }
 
   /**
@@ -33,7 +34,7 @@ export class RouterItemRef {
     params?: any,
     query?: any
   ): string | undefined {
-    return this.router?.resolve({ name, params, query }).href
+    return this.get()?.resolve({ name, params, query }).href
   }
 
   /**
@@ -67,8 +68,10 @@ export class RouterItemRef {
    * @param to new path/ новый путь
    */
   static push(to: string | RouteLocationRaw) {
-    if (this.router) {
-      this.router.push(to).then()
+    const router = this.get()
+
+    if (router) {
+      router.push(to).then()
     }
   }
 
@@ -79,7 +82,7 @@ export class RouterItemRef {
    * @param router router instance/ экземпляр роутера
    */
   static set(router: Router) {
-    this.router = router
+    ServerStorage.set<Router>(ROUTER_ITEM_REF_KEY, () => router)
   }
 
   /**
@@ -89,7 +92,7 @@ export class RouterItemRef {
    * @param router router instance/ экземпляр роутера
    */
   static setOneTime(router: Router) {
-    if (!this.router) {
+    if (!this.get()) {
       this.set(router)
     }
   }

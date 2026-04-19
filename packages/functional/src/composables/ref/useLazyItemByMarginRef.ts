@@ -1,3 +1,4 @@
+import { ServerStorage } from '@dxtmisha/functional-basic'
 import { useLazyRef } from './useLazyRef'
 import type { RefType } from '../../types/refTypes'
 
@@ -6,8 +7,17 @@ export type LazyItemByMargin = {
   item: any
 }
 
-/** List of lazy items by margin/ Список ленивых элементов по отступу */
-const items: LazyItemByMargin[] = []
+/**
+ * Returns a list of lazy items by margin for the current request context.
+ *
+ * Возвращает список ленивых элементов по отступу для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<LazyItemByMargin[]>(
+    '__ui:lazy-item-by-margin-ref__',
+    () => []
+  )
+}
 
 /**
  * Getting a lazy item by root margin.
@@ -16,6 +26,7 @@ const items: LazyItemByMargin[] = []
  * @param rootMargin root margin for IntersectionObserver/ отступ для IntersectionObserver
  */
 const getItemByMargin = (rootMargin: string) => {
+  const items = getItems()
   const item = items.find(item => item.rootMargin === rootMargin)
 
   if (item) {

@@ -56,7 +56,7 @@ import type {
  * @param action common callback executed after any successful mutation / общий коллбэк после любой успешной мутации
  * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
  *
- * @returns {object} reactive API management interface / реактивный интерфейс управления API
+ * @returns reactive API management interface / реактивный интерфейс управления API
  *
  * @note This hook is recommended to be used in tandem with `executeUse` for centralized state management.
  * By wrapping `useApiManagementRef` in `executeUseProvide` or `executeUseGlobal`, you can ensure
@@ -225,7 +225,9 @@ export function useApiManagementRef<
       action?.()
 
       if (isApiSuccess(data)) {
-        request.reset()
+        request
+          .reset()
+          .then()
       }
     }
 
