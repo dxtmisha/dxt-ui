@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiDataReturn - API Response Data Processing'/>
+
+# ApiDataReturn Class
+
+A class for handling and processing data received from an API request. It transforms raw response data into a structured format, extracts metadata, and maps content according to the requested configuration.
+
+> `ApiDataReturn` is an **auxiliary class**, designed for handling and formatting API response data. In most cases, it is recommended to interact with results through the response returned by `ApiInstance` methods or the global `Api` object.
+
+## Key Features
+
+- **Automated Parsing** — intelligently parses JSON responses or returns raw text based on Content-Type headers.
+- **Data Normalization** — ensures that the returned object follows a consistent structure, even if the server response varies.
+- **Metadata Extraction** — automatically extracts common fields like `success`, `status`, `code`, and `message` from the root of the response and merges them into the data object.
+- **Flexible Configuration** — supports custom processing logic via `queryReturn` and controls whether to unwrap the `data` field using `toData`.
+
+## Methods
+
+### Action
+
+- `async init(): Promise<this>` — Initializes the class by reading and parsing data from the response object.
+- `get(): ApiData<T>` — Returns the processed and formatted data.
+- `getAndStatus(status: ApiStatus): ApiData<T>` — Returns the processed data injected with a `statusObject` from the provided status instance.
+- `getData(): ApiData<T> | undefined` — Returns the raw, unformatted data as initially read from the response.
+
+## Internal Logic (Protected)
+
+- `readData<T>(): Promise<ApiData<T>>` — Low-level method that reads the response body and parses it as JSON or text.
+- `initData(): ApiData<T>` — Formats the raw data according to configuration, handling property unwrapping.
+- `initItem(data: Record<string, any>): ApiData<T>` — Merges metadata fields from the response root into the main data object.
+
