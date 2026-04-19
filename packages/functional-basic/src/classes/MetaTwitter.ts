@@ -16,6 +16,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the Twitter Card type.
    *
    * Получает тип Twitter Card.
+   * @returns card type / тип карточки
    */
   getCard(): MetaTwitterCard {
     return this.get(MetaTwitterTag.card) as MetaTwitterCard
@@ -25,6 +26,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the website or brand @username.
    *
    * Получает аккаунт сайта или бренда (@username).
+   * @returns @username / аккаунт
    */
   getSite(): string {
     return this.get(MetaTwitterTag.site)
@@ -34,6 +36,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the content creator @username.
    *
    * Получает автора контента (@username).
+   * @returns @username / аккаунт автора
    */
   getCreator(): string {
     return this.get(MetaTwitterTag.creator)
@@ -43,6 +46,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the page URL.
    *
    * Получает URL страницы.
+   * @returns URL / URL
    */
   getUrl(): string {
     return this.get(MetaTwitterTag.url)
@@ -52,6 +56,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the card title.
    *
    * Получает заголовок карточки.
+   * @returns title / заголовок
    */
   getTitle(): string {
     return this.get(MetaTwitterTag.title)
@@ -61,6 +66,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the card description.
    *
    * Получает описание карточки.
+   * @returns description / описание
    */
   getDescription(): string {
     return this.get(MetaTwitterTag.description)
@@ -70,6 +76,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the card image URL.
    *
    * Получает URL изображения карточки.
+   * @returns image URL / URL изображения
    */
   getImage(): string {
     return this.get(MetaTwitterTag.image)
@@ -80,6 +87,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    *
    * Устанавливает тип Twitter Card.
    * @param card card type / тип карточки
+   * @returns current instance / текущий экземпляр
    */
   setCard(card: MetaTwitterCard): this {
     this.set(MetaTwitterTag.card, card)
@@ -91,6 +99,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    *
    * Устанавливает аккаунт сайта или бренда (@username).
    * @param site @username / аккаунт
+   * @returns current instance / текущий экземпляр
    */
   setSite(site: string): this {
     this.set(MetaTwitterTag.site, site)
@@ -102,6 +111,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    *
    * Устанавливает автора контента (@username).
    * @param creator @username / аккаунт автора
+   * @returns current instance / текущий экземпляр
    */
   setCreator(creator: string): this {
     this.set(MetaTwitterTag.creator, creator)
@@ -113,6 +123,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    *
    * Устанавливает URL страницы.
    * @param url URL / URL
+   * @returns current instance / текущий экземпляр
    */
   setUrl(url: string): this {
     this.set(MetaTwitterTag.url, url)
@@ -124,6 +135,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    *
    * Устанавливает заголовок карточки.
    * @param title title / заголовок
+   * @returns current instance / текущий экземпляр
    */
   setTitle(title: string): this {
     this.set(MetaTwitterTag.title, title)
@@ -135,6 +147,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    *
    * Устанавливает описание карточки.
    * @param description description / описание
+   * @returns current instance / текущий экземпляр
    */
   setDescription(description: string): this {
     this.set(MetaTwitterTag.description, description)
@@ -146,6 +159,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    *
    * Устанавливает URL изображения карточки.
    * @param image image URL / URL изображения
+   * @returns current instance / текущий экземпляр
    */
   setImage(image: string): this {
     this.set(MetaTwitterTag.image, image)

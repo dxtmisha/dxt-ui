@@ -13,9 +13,9 @@ export class Cache {
    * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
    * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
-   * @param name - Unique cache key / Уникальный ключ кэша
-   * @param callback - Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
-   * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+   * @param name Unique cache key / Уникальный ключ кэша
+   * @param callback Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
+   * @param comparison Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
    * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
    */
   get<T>(
@@ -30,9 +30,9 @@ export class Cache {
    * Asynchronously returns a cached value for the given name. If not cached, executes the callback and stores the result.
    *
    * Асинхронно возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
-   * @param name - Unique cache key / Уникальный ключ кэша
-   * @param callback - Async function to compute the value if not cached / Асинхронная функция для вычисления значения, если его нет в кэше
-   * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+   * @param name Unique cache key / Уникальный ключ кэша
+   * @param callback Async function to compute the value if not cached / Асинхронная или синхронная функция для вычисления значения, если его нет в кэше
+   * @param comparison Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
    * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
    */
   async getAsync<T>(

@@ -76,9 +76,9 @@ export class Datetime {
    * Returns the type of data output.
    *
    * Возвращает тип вывода данных.
-   * @returns string output type/ тип вывода
+   * @returns GeoDate output type/ тип вывода
    */
-  getType(): string {
+  getType(): GeoDate {
     return this.type
   }
 
@@ -174,7 +174,7 @@ export class Datetime {
    * The method returns the year of the specified date according to local time.
    *
    * Метод возвращает год указанной даты по местному времени.
-   * @returns number year/ год
+   * @returns year / год
    */
   getYear(): number {
     return this.date.getFullYear()
@@ -186,7 +186,7 @@ export class Datetime {
    *
    * Метод возвращает месяц указанной даты по местному времени, нумерация
    * месяцев начинается с единицы (1-12).
-   * @returns number month (1-12)/ месяц (1-12)
+   * @returns month (1-12) / месяц (1-12)
    */
   getMonth(): number {
     return this.date.getMonth() + 1
@@ -196,7 +196,7 @@ export class Datetime {
    * The method returns the day of the month for the specified date according to local time.
    *
    * Метод возвращает день месяца указанной даты по местному времени
-   * @returns number day of month (1-31)/ день месяца (1-31)
+   * @returns day of month (1-31) / день месяца (1-31)
    */
   getDay(): number {
     return this.date.getDate()
@@ -206,7 +206,7 @@ export class Datetime {
    * The method returns the hour for the specified date, according to local time.
    *
    * Метод возвращает часы указанной даты по местному времени.
-   * @returns number hours (0-23)/ часы (0-23)
+   * @returns hours (0-23) / часы (0-23)
    */
   getHour(): number {
     return this.date.getHours()
@@ -216,7 +216,7 @@ export class Datetime {
    * The method returns the minutes in the specified date according to local time.
    *
    * Метод возвращает минуты указанной даты по местному времени.
-   * @returns number minutes (0-59)/ минуты (0-59)
+   * @returns minutes (0-59) / минуты (0-59)
    */
   getMinute(): number {
     return this.date.getMinutes()
@@ -226,7 +226,7 @@ export class Datetime {
    * The method returns the seconds in the specified date according to local time.
    *
    * Метод возвращает секунды указанной даты по местному времени.
-   * @returns number seconds (0-59)/ секунды (0-59)
+   * @returns seconds (0-59) / секунды (0-59)
    */
   getSecond(): number {
     return this.date.getSeconds()
@@ -236,7 +236,7 @@ export class Datetime {
    * Returns the last day of the month as a number.
    *
    * Возвращает последний день месяца в виде числа.
-   * @returns number last day of month (28-31)/ последний день месяца (28-31)
+   * @returns last day of month (28-31) / последний день месяца (28-31)
    */
   getMaxDay(): number {
     return this.cloneDayLast().getDay()
@@ -344,10 +344,10 @@ export class Datetime {
    * Output of standard data.
    *
    * Вывод стандартных данных.
-   * @param timeZone add time zone/ добавить временную зону
-   * @returns string standard format string/ строка в стандартном формате
+   * @param timeZone add time zone (default: true) / добавить временную зону (по умолчанию: true)
+   * @returns standard format string / строка в стандартном формате
    */
-  standard(timeZone = true as boolean): string {
+  standard(timeZone = true): string {
     const geo = new Datetime(this.date, this.type, 'en-GB')
     const date: string[] = []
     let time: string | undefined
@@ -382,8 +382,9 @@ export class Datetime {
    * Change the date completely.
    *
    * Изменять полностью дату.
-   * @param value an integer value representing the number/
+   * @param value an integer value representing the number /
    * целочисленное значение, представляющее число
+   * @returns this instance / текущий экземпляр
    */
   setDate(value: NumberOrStringOrDate): this {
     this.date = toDate(value)
@@ -396,7 +397,8 @@ export class Datetime {
    * Change the type of data output.
    *
    * Изменить тип вывода данных.
-   * @param value type of output/ тип вывод
+   * @param value type of output / тип вывод
+   * @returns this instance / текущий экземпляр
    */
   setType(value: GeoDate): this {
     this.type = value
@@ -409,8 +411,9 @@ export class Datetime {
    * Whether to use a 24-hour time format.
    *
    * Использовать ли 24-часовой формат времени.
-   * @param value If true, output the 24-hour time format/
+   * @param value If true, output the 24-hour time format /
    * если true, выводить 24-часовой формат времени
+   * @returns this instance / текущий экземпляр
    */
   setHour24(value: boolean): this {
     this.hour24 = value
@@ -423,7 +426,8 @@ export class Datetime {
    * To change the location.
    *
    * Изменить местоположение.
-   * @param code country and language code/ код страны и языка
+   * @param code country and language code / код страны и языка
+   * @returns this instance / текущий экземпляр
    */
   setCode(code: string): this {
     this.code = code
@@ -434,7 +438,8 @@ export class Datetime {
    * The function is called when the data is updated.
    *
    * Функция вызывается при обновлении данных.
-   * @param watch the function calls/ функция вызывает
+   * @param watch the function calls / функция вызывает
+   * @returns this instance / текущий экземпляр
    */
   setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this {
     this.watch = watch
@@ -445,7 +450,8 @@ export class Datetime {
    * The method sets the full year for a specified date according to local time.
    *
    * Метод устанавливает полный год указанной даты по местному времени.
-   * @param value value/ значения
+   * @param value value / значения
+   * @returns this instance / текущий экземпляр
    */
   setYear(value: number): this {
     this.date.setFullYear(value)
@@ -458,7 +464,8 @@ export class Datetime {
    * The method sets the month for a specified date according to the currently set year.
    *
    * Метод устанавливает месяц указанной даты по местному времени.
-   * @param value value/ значения
+   * @param value month (1-12) / месяц (1-12)
+   * @returns this instance / текущий экземпляр
    */
   setMonth(value: number): this {
     this.date.setMonth(value - 1)
@@ -471,7 +478,8 @@ export class Datetime {
    * The method changes the day of the month of a given Date instance, based on local time.
    *
    * Метод устанавливает день месяца указанной даты по местному времени.
-   * @param value value/ значения
+   * @param value value / значения
+   * @returns this instance / текущий экземпляр
    */
   setDay(value: number): this {
     this.date.setDate(value)
@@ -484,7 +492,8 @@ export class Datetime {
    * The method sets the hours for a specified date according to local time.
    *
    * Метод устанавливает часы указанной даты по местному времени.
-   * @param value value/ значения
+   * @param value value / значения
+   * @returns this instance / текущий экземпляр
    */
   setHour(value: number): this {
     this.date.setHours(value)
@@ -498,6 +507,7 @@ export class Datetime {
    *
    * Метод устанавливает минуты указанной даты по местному времени
    * @param value value / значения
+   * @returns this instance / текущий экземпляр
    */
   setMinute(value: number): this {
     this.date.setMinutes(value)
@@ -510,7 +520,8 @@ export class Datetime {
    * The method sets the seconds for a specified date according to local time.
    *
    * Метод устанавливает секунды указанной даты по местному времени.
-   * @param value value/ значения
+   * @param value value / значения
+   * @returns this instance / текущий экземпляр
    */
   setSecond(value: number): this {
     this.date.setSeconds(value)
@@ -523,7 +534,8 @@ export class Datetime {
    * Shift the date by a given value in years.
    *
    * Сдвинуть дату на заданное значение в годах.
-   * @param value values for moving/ значения для перемещения
+   * @param value values for moving / значения для перемещения
+   * @returns this instance / текущий экземпляр
    */
   moveByYear(value: number): this {
     this.setYear(this.date.getFullYear() + value)
@@ -534,7 +546,8 @@ export class Datetime {
    * Shift the date by a given value in months.
    *
    * Сдвинуть дату на заданное значение в месяцах.
-   * @param value values for moving/ значения для перемещения
+   * @param value values for moving (in months) / значения для перемещения (в месяцах)
+   * @returns this instance / текущий экземпляр
    */
   moveByMonth(value: number): this {
     this.setMonth(this.date.getMonth() + 1 + value)
@@ -545,7 +558,8 @@ export class Datetime {
    * Shift the date by a given value in days.
    *
    * Сдвинуть дату на заданное значение в днях.
-   * @param value values for moving/ значения для перемещения
+   * @param value values for moving / значения для перемещения
+   * @returns this instance / текущий экземпляр
    */
   moveByDay(value: number): this {
     this.setDay(this.date.getDate() + value)
@@ -556,7 +570,8 @@ export class Datetime {
    * Shift the date by a given value in hours.
    *
    * Сдвинуть дату на заданное значение в часах.
-   * @param value values for moving/ значения для перемещения
+   * @param value values for moving / значения для перемещения
+   * @returns this instance / текущий экземпляр
    */
   moveByHour(value: number): this {
     this.setHour(this.date.getHours() + value)
@@ -567,7 +582,8 @@ export class Datetime {
    * Shift the date by a given value in minutes.
    *
    * Сдвинуть дату на заданное значение в минутах.
-   * @param value values for moving/ значения для перемещения
+   * @param value values for moving / значения для перемещения
+   * @returns this instance / текущий экземпляр
    */
   moveByMinute(value: number): this {
     this.setMinute(this.date.getMinutes() + value)
@@ -578,7 +594,8 @@ export class Datetime {
    * Shift the date by a given value in seconds.
    *
    * Сдвинуть дату на заданное значение в секундах.
-   * @param value values for moving/ значения для перемещения
+   * @param value values for moving / значения для перемещения
+   * @returns this instance / текущий экземпляр
    */
   moveBySecond(value: number): this {
     this.setSecond(this.date.getSeconds() + value)
@@ -589,6 +606,7 @@ export class Datetime {
    * Sets the date to January (first month).
    *
    * Устанавливает дату на январь (первый месяц).
+   * @returns this instance / текущий экземпляр
    */
   moveMonthFirst(): this {
     this.setMonth(1)
@@ -599,6 +617,7 @@ export class Datetime {
    * Sets the date to December (last month).
    *
    * Устанавливает дату на декабрь (последний месяц).
+   * @returns this instance / текущий экземпляр
    */
   moveMonthLast(): this {
     this.setMonth(12)
@@ -609,6 +628,7 @@ export class Datetime {
    * Translate to the first day of the next month.
    *
    * Переводить на первый день следующего месяца.
+   * @returns this instance / текущий экземпляр
    */
   moveMonthNext(): this {
     this.setDay(1)
@@ -621,6 +641,7 @@ export class Datetime {
    * Translate to the first day of the previous month.
    *
    * Переводить на первый день предыдущего месяца.
+   * @returns this instance / текущий экземпляр
    */
   moveMonthPrevious(): this {
     this.setDay(1)
@@ -633,6 +654,7 @@ export class Datetime {
    * Translate to the first day of the week.
    *
    * Переводить на первый день недели.
+   * @returns this instance / текущий экземпляр
    */
   moveWeekdayFirst(): this {
     const weekday = this.date.getDay()
@@ -649,6 +671,7 @@ export class Datetime {
    * Translate to the last day of the week.
    *
    * Переводить на последний день недели.
+   * @returns this instance / текущий экземпляр
    */
   moveWeekdayLast(): this {
     this.moveWeekdayFirst()
@@ -661,6 +684,7 @@ export class Datetime {
    * Translate to the first day of the first week of the month.
    *
    * Переводить на первый день первой недели месяца.
+   * @returns this instance / текущий экземпляр
    */
   moveWeekdayFirstByMonth(): this {
     this.moveDayFirst()
@@ -673,6 +697,7 @@ export class Datetime {
    * Translate to the first day of the first full week of the following month.
    *
    * Переводить на первый день первой полной недели следующего месяца.
+   * @returns this instance / текущий экземпляр
    */
   moveWeekdayLastByMonth(): this {
     this.moveDayLast()
@@ -685,6 +710,7 @@ export class Datetime {
    * Translate to the next week.
    *
    * Переводить на следующую неделю.
+   * @returns this instance / текущий экземпляр
    */
   moveWeekdayNext(): this {
     this.moveWeekdayFirst()
@@ -697,6 +723,7 @@ export class Datetime {
    * Translate to the previous week.
    *
    * Переводить на предыдущую неделю.
+   * @returns this instance / текущий экземпляр
    */
   moveWeekdayPrevious(): this {
     this.moveWeekdayFirst()
@@ -709,6 +736,7 @@ export class Datetime {
    * Translate to the first day of the month.
    *
    * Переводить на первый день месяца.
+   * @returns this instance / текущий экземпляр
    */
   moveDayFirst(): this {
     this.setDay(1)
@@ -719,6 +747,7 @@ export class Datetime {
    * Translate to the last day of the month.
    *
    * Переводить на последний день месяца.
+   * @returns this instance / текущий экземпляр
    */
   moveDayLast(): this {
     this.setDay(1)
@@ -732,6 +761,7 @@ export class Datetime {
    * Translate to the next day.
    *
    * Переводить на следующий день.
+   * @returns this instance / текущий экземпляр
    */
   moveDayNext(): this {
     this.moveByDay(+1)
@@ -742,6 +772,7 @@ export class Datetime {
    * Translate to the previous day.
    *
    * Переводить на предыдущий день.
+   * @returns this instance / текущий экземпляр
    */
   moveDayPrevious(): this {
     this.moveByDay(-1)

@@ -53,6 +53,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the page title without suffix.
    *
    * Получает заголовок страницы без суффикса.
+   * @returns title without suffix/ заголовок без суффикса
    */
   getTitle(): string {
     let title = this.get(MetaTag.title)
@@ -73,6 +74,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the keywords meta tag.
    *
    * Получает мета-тег keywords.
+   * @returns keywords content/ содержимое keywords
    */
   getKeywords(): string {
     return this.get(MetaTag.keywords)
@@ -82,6 +84,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the description meta tag.
    *
    * Получает мета-тег description.
+   * @returns description content / содержимое description
    */
   getDescription(): string {
     return this.get(MetaTag.description)
@@ -91,6 +94,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the Open Graph image URL.
    *
    * Получает URL изображения Open Graph.
+   * @returns image URL / URL изображения
    */
   getImage(): string {
     return this.og.getImage()
@@ -100,6 +104,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the canonical URL.
    *
    * Получает канонический URL.
+   * @returns canonical URL / канонический URL
    */
   getCanonical(): string {
     return this.get(MetaTag.canonical)
@@ -109,6 +114,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the robots meta tag value.
    *
    * Получает значение мета-тега robots.
+   * @returns robots directive/ директива robots
    */
   getRobots(): MetaRobots {
     return this.get(MetaTag.robots) as MetaRobots
@@ -118,6 +124,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the author meta tag.
    *
    * Получает мета-тег author.
+   * @returns author name / имя автора
    */
   getAuthor(): string {
     return this.get(MetaTag.author)
@@ -127,6 +134,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the Open Graph site name.
    *
    * Получает название сайта Open Graph.
+   * @returns site name / название сайта
    */
   getSiteName(): string {
     return this.og.getSiteName()
@@ -136,6 +144,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Gets the Open Graph locale.
    *
    * Получает локаль Open Graph.
+   * @returns locale / локаль
    */
   getLocale(): string {
     return this.og.getLocale()
@@ -262,6 +271,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает суффикс для добавления к заголовку страницы.
    * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
+   * @returns void
    */
   setSuffix(suffix?: string) {
     this.suffix = suffix
@@ -271,6 +281,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    * Generates the complete HTML for all meta-tags including Open Graph and Twitter Card.
    *
    * Генерирует полный HTML для всех мета-тегов, включая Open Graph и Twitter Card.
+   * @returns complete HTML string/ полная HTML-строка
    */
   html(): string {
     return `${super.html()}${this.og.html()}${this.twitter.html()}`

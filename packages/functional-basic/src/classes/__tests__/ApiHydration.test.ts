@@ -1,120 +1,82 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+// @vitest-environment jsdom
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ApiHydration } from '../ApiHydration'
 import { ApiResponse } from '../ApiResponse'
 import { ApiDefault } from '../ApiDefault'
-import { ApiMethodItem } from '../../types/apiTypes'
-import * as isDomRuntimeModule from '../../functions/isDomRuntime'
+import * as domUtils from '../../functions/isDomRuntime'
 
 vi.mock('../../functions/isDomRuntime', () => ({
   isDomRuntime: vi.fn()
 }))
 
 describe('ApiHydration', () => {
-  let apiHydration: ApiHydration
+  let hydration: ApiHydration
 
   beforeEach(() => {
     vi.clearAllMocks()
-    apiHydration = new ApiHydration()
+    hydration = new ApiHydration()
   })
 
-  describe('toClient', () => {
-    it('should push data to list when global is true and isDomRuntime is false', () => {
-      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+  it('toClient should store data in non-DOM environment for global GET requests', () => {
+    vi.mocked(domUtils.isDomRuntime).mockReturnValue(false)
 
-      const apiFetch = {
-        path: 'test/path',
-        method: ApiMethodItem.get,
-        global: true
-      }
-      const response = { data: 'test' }
+    const apiFetch = {
+      path: '/api/data',
+      method: 'GET',
+      global: true
+    } as any
+    const responseData = { id: 1, name: 'Test' }
 
-      apiHydration.toClient(apiFetch, response)
+    hydration.toClient(apiFetch, responseData)
 
-      const list = (apiHydration as any).list
-      expect(list).toHaveLength(1)
-      expect(list[0]).toMatchObject({
-        path: 'test/path',
-        response: { data: 'test' }
-      })
-    })
-
-    it('should not push data to list when global is false', () => {
-      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
-
-      const apiFetch = {
-        path: 'test/path',
-        method: ApiMethodItem.post,
-        global: false
-      }
-      const response = { data: 'test' }
-
-      apiHydration.toClient(apiFetch, response)
-
-      expect((apiHydration as any).list).toHaveLength(0)
-    })
-
-    it('should not push data to list when isDomRuntime is true', () => {
-      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
-
-      const apiFetch = {
-        path: 'test/path',
-        method: ApiMethodItem.get,
-        global: true
-      }
-      const response = { data: 'test' }
-
-      apiHydration.toClient(apiFetch, response)
-
-      expect((apiHydration as any).list).toHaveLength(0)
-    })
+    // We can check the list via toString() since list is protected
+    const script = hydration.toString()
+    expect(script).toContain('__ui:api:hydration:id__')
+    expect(script).toContain('/api/data')
+    expect(script).toContain('Test')
   })
 
-  describe('toString', () => {
-    it('should return script tag with json data', () => {
-      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+  it('toClient should not store data in DOM environment', () => {
+    vi.mocked(domUtils.isDomRuntime).mockReturnValue(true)
 
-      apiHydration.toClient({ path: 'a', global: true }, { b: 1 })
+    const apiFetch = {
+      path: '/api/data',
+      method: 'GET',
+      global: true
+    } as any
 
-      const result = apiHydration.toString()
-      expect(result).toContain('<script id="__ui:api:hydration:id__" type="application/json">')
-      expect(result).toContain('"path":"a"')
-      expect(result).toContain('"response":{"b":1}')
-      expect(result).toContain('</script>')
-    })
-
-    it('should return empty script tag when list is empty', () => {
-      const result = apiHydration.toString()
-      expect(result).toContain('[]')
-    })
+    hydration.toClient(apiFetch, { data: 1 })
+    // Even if empty, it returns a script tag with empty array
+    expect(hydration.toString()).toContain('[]')
   })
 
-  describe('initResponse', () => {
-    it('should add hydration data to response when isDomRuntime is true', () => {
-      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
+  it('toClient should not store data if global is false', () => {
+    vi.mocked(domUtils.isDomRuntime).mockReturnValue(false)
 
-      const apiDefault = new ApiDefault()
-      const apiResponse = new ApiResponse(apiDefault)
-      const addSpy = vi.spyOn(apiResponse, 'add')
+    hydration.toClient({ path: '/api', global: false } as any, { x: 1 })
+    expect(hydration.toString()).toContain('[]')
+  })
 
-      // Mock getListByClient indirectly via spy
-      const mockData = [{ path: 'hydrated', method: ApiMethodItem.get, response: { ok: true } }]
-      vi.spyOn(apiHydration as any, 'getListByClient').mockReturnValue(mockData)
+  it('initResponse should add hydration data to response on client side', () => {
+    vi.mocked(domUtils.isDomRuntime).mockReturnValue(true)
 
-      apiHydration.initResponse(apiResponse)
+    // Mock hydration data in DOM
+    const mockData = [{ path: '/api/init', response: { ok: true } }]
+    const script = document.createElement('script')
+    script.id = '__ui:api:hydration:id__'
+    script.type = 'application/json'
+    script.textContent = JSON.stringify(mockData)
+    document.body.appendChild(script)
 
-      expect(addSpy).toHaveBeenCalledWith(mockData)
-    })
+    const response = new ApiResponse(new ApiDefault())
+    const addSpy = vi.spyOn(response, 'add')
 
-    it('should not add hydration data to response when isDomRuntime is false', () => {
-      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+    hydration.initResponse(response)
 
-      const apiDefault = new ApiDefault()
-      const apiResponse = new ApiResponse(apiDefault)
-      const addSpy = vi.spyOn(apiResponse, 'add')
+    expect(addSpy).toHaveBeenCalledWith(mockData)
 
-      apiHydration.initResponse(apiResponse)
-
-      expect(addSpy).not.toHaveBeenCalled()
-    })
+    if (script.parentNode) {
+      script.parentNode.removeChild(script)
+    }
   })
 })

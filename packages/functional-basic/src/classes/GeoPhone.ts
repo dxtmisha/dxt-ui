@@ -192,7 +192,7 @@ export class GeoPhone {
   /**
    * Creating a list for the map.
    *
-   * Формирование списка для карты.
+   * Формирование списка данных.
    */
   protected static makeList(): void {
     const list = forEach(Geo.getList(), (item) => {
@@ -257,10 +257,11 @@ export class GeoPhone {
   }
 
   /**
-   * The method parses a string argument and returns a floating point number.
+   * The method parses a string argument and returns an array of numbers as strings.
    *
-   * Метод принимает строку в качестве аргумента и возвращает десятичное число.
+   * Метод принимает строку в качестве аргумента и возвращает массив цифр в виде строк.
    * @param value the value to parse/ текстовая строка
+   * @returns array of numbers/ массив цифр
    */
   protected static toNumber(value: string): string[] {
     return value

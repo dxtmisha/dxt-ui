@@ -83,6 +83,7 @@ export class LoadingInstance {
    * Shows the loader.
    *
    * Показывает загрузчик.
+   * @returns void
    */
   show(): void {
     this.value++
@@ -93,6 +94,7 @@ export class LoadingInstance {
    * Hides the loader.
    *
    * Скрывает загрузчик.
+   * @returns void
    */
   hide(): void {
     if (this.is()) {
@@ -109,6 +111,7 @@ export class LoadingInstance {
    * Event interface) when an event of the specified type occurs/ объект, который принимает
    * уведомление, когда событие указанного типа произошло
    * @param element element/ элемент
+   * @returns void
    */
   registrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
@@ -135,6 +138,7 @@ export class LoadingInstance {
    * Event interface) when an event of the specified type occurs/ объект, который принимает
    * уведомление, когда событие указанного типа произошло
    * @param element element/ элемент
+   * @returns void
    */
   unregistrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,

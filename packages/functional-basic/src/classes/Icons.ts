@@ -40,8 +40,9 @@ export class Icons {
    * @param index icon name/ название иконки
    * @param url path to the storage location of the icon, if the icon does not exist/
    * путь к месту хранения иконки, если иконка не существует
-   * @param wait waiting time for picture loading/
-   * время ожидания загрузки картинки
+   * @param wait waiting time for picture loading (ms)/
+   * время ожидания загрузки картинки (мс)
+   * @returns icon path or content/ путь к иконке или контент
    */
   static async get(
     index: string,
@@ -75,6 +76,7 @@ export class Icons {
    * Returns a list of names of all registered icons.
    *
    * Возвращает список названий всех зарегистрированных иконок.
+   * @returns list of icon names/ список названий иконок
    */
   static getNameList(): string[] {
     return forEach(this.icons, (_, name) => {
@@ -86,6 +88,7 @@ export class Icons {
    * Returns a global link.
    *
    * Возвращает глобальную ссылку.
+   * @returns string global link/ глобальная ссылка
    */
   static getUrlGlobal() {
     return `${Api.isLocalhost() ? '' : ''}${this.url}`
@@ -160,10 +163,11 @@ export class Icons {
   }
 
   /**
-   * Returns the icon name.
+   * Returns the icon name with the prefix.
    *
-   * Возвращает название иконки.
+   * Возвращает название иконки с префиксом.
    * @param index icon name/ название иконки
+   * @returns icon name with prefix/ название иконки с префиксом
    */
   protected static getName(index: string): string {
     return `@${index}`
@@ -173,6 +177,7 @@ export class Icons {
    * Script execution delay.
    *
    * Задержка выполнения скрипта.
+   * @returns Promise<void> Promise for delay/ Promise для задержки
    */
   protected static wait(): Promise<void> {
     return new Promise(resolve => setTimeout(() => resolve(), ICONS_WAIT))

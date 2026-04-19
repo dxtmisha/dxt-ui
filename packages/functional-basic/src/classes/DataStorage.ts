@@ -91,7 +91,7 @@ export class DataStorage<T> {
    * Getting data from storage.
    *
    * Получение данных из хранилища.
-   * @param defaultValue default value/ значение по умолчанию
+   * @param defaultValue default value / значение по умолчанию
    * @param cache cache time in seconds / время кэширования в секундах
    * @returns stored value or default value / сохраненное значение или значение по умолчанию
    */
@@ -117,7 +117,7 @@ export class DataStorage<T> {
    * Changing data in storage.
    *
    * Изменение данных в хранилище.
-   * @param value new values/ новые значения
+   * @param value new values / новые значения
    * @returns the set value / установленное значение
    */
   set(value?: T | (() => T)): T | undefined {
@@ -147,7 +147,7 @@ export class DataStorage<T> {
    * Removing data from storage.
    *
    * Удаление данных из хранилища.
-   * @returns this instance / текущий экземпляр
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   remove(): this {
     this.value = undefined

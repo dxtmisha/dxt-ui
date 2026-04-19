@@ -29,9 +29,9 @@ export class SearchListItem {
   }
 
   /**
-   * Checks if a search should be performed based on the current value and options.
+   * Checks if the value is filled and the length is greater than or equal to the limit.
    *
-   * Проверяет, следует ли выполнять поиск на основе текущего значения и опций.
+   * Проверяет, заполнено ли значение и длина больше или равна лимиту.
    * @returns boolean/ логическое значение
    */
   isSearch(): boolean {

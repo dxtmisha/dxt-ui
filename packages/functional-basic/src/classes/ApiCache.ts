@@ -274,7 +274,7 @@ export class ApiCache {
    * Сохраняет данные в кэш с использованием слушателя.
    * @param key cache key / ключ кэша
    * @param value data to be stored / данные для хранения
-   * @returns Promise<void> / Promise без возвращаемого значения (сохраняет данные в кэш или через listener)
+   * @returns Promise<void>
    */
   protected static async setItemOrListener(key: string, value: ApiCacheItem): Promise<void> {
     const status = this.setListener
@@ -292,7 +292,7 @@ export class ApiCache {
    *
    * Удаляет данные из кэша с использованием слушателя.
    * @param key cache key / ключ кэша
-   * @returns Promise<void> / Promise без возвращаемого значения (удаляет данные из кэша или через listener)
+   * @returns Promise<void>
    */
   protected static async removeItemOrListener(key: string): Promise<void> {
     if (this.removeListener) {

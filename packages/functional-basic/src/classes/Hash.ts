@@ -80,6 +80,7 @@ export class Hash {
    * Update hash variable from URL string.
    *
    * Обновление переменной хэша из строки URL.
+   * @returns void
    */
   static reload(): void {
     this.getItem().reload()

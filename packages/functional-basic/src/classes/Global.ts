@@ -10,6 +10,7 @@ export class Global {
    * Returns the instance of the class.
    *
    * Возвращает инстанс класса.
+   * @returns global data storage / хранилище глобальных данных
    */
   static getItem() {
     return ServerStorage.get('__ui:global-instance__', () => ({} as Record<string, any>))
@@ -30,6 +31,7 @@ export class Global {
    *
    * Добавляет данные, этот метод работает только 1 раз.
    * @param data global data/ глобальные данные
+   * @returns void
    */
   static add(data: Record<string, any>) {
     const dataStorage = this.getItem()

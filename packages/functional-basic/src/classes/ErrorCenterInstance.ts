@@ -62,7 +62,7 @@ export class ErrorCenterInstance {
    *
    * Добавляет причину ошибки в хранилище.
    * @param cause error cause item / элемент причины ошибки
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   add(cause: ErrorCenterCauseItem): this {
     this.causes.unshift(cause)
@@ -74,7 +74,7 @@ export class ErrorCenterInstance {
    *
    * Добавляет список причин ошибок в хранилище.
    * @param causes error causes list / список причин ошибок
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   addList(causes: ErrorCenterCauseList): this {
     this.causes.unshift(...causes)
@@ -87,7 +87,7 @@ export class ErrorCenterInstance {
    * Регистрирует новый обработчик.
    * @param group target group / целевая группа
    * @param handler handler callback / обратный вызов обработчика
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   addHandler(
     group: ErrorCenterGroup,
@@ -102,7 +102,7 @@ export class ErrorCenterInstance {
    *
    * Регистрирует список обработчиков.
    * @param handlers handlers list / список обработчиков
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   addHandlerList(handlers: ErrorCenterHandlerList): this {
     this.handler.addList(handlers)
@@ -114,7 +114,7 @@ export class ErrorCenterInstance {
    *
    * Вызывает обработку ошибки для группы.
    * @param cause error cause details / детали причины ошибки
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   on(cause: ErrorCenterCauseItem): this {
     this.handler.on(this.assign(cause))
@@ -126,6 +126,7 @@ export class ErrorCenterInstance {
    *
    * Объединяет предоставленную причину с сохраненными данными причины.
    * @param cause input cause / входная причина
+   * @returns merged error cause / объединенная причина ошибки
    */
   protected assign(cause: ErrorCenterCauseItem) {
     const causeMain = this.get(cause.code, cause.group)

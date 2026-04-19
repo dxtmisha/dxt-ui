@@ -44,7 +44,7 @@ export class HashInstance {
    * Изменение данных в хэше.
    * @param name variable name / название переменной
    * @param callback value or function to change data / значение или функция для изменения данных
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   set<T>(
     name: string,
@@ -66,7 +66,7 @@ export class HashInstance {
    * Добавление события при изменении данных.
    * @param name variable name / название переменной
    * @param callback the function is called when the data is changed / функция вызывается при изменении данных
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   addWatch<T>(
     name: string,
@@ -87,7 +87,7 @@ export class HashInstance {
    * Удаление события при изменении данных.
    * @param name variable name / название переменной
    * @param callback the function is called when the data is changed / функция вызывается при изменении данных
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   removeWatch<T>(
     name: string,
@@ -106,7 +106,7 @@ export class HashInstance {
    * Update hash variable from URL string.
    *
    * Обновление переменной хэша из строки URL.
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   reload(): this {
     if (this.block) {
@@ -122,6 +122,7 @@ export class HashInstance {
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
+   * @returns Record<string, any> hash data / данные хэша
    */
   private getLocation(): Record<string, any> {
     const hash: Record<string, any> = {}
@@ -141,6 +142,7 @@ export class HashInstance {
    * Returns the hash object, initializing if needed.
    *
    * Возвращает объект хэша, инициализируя при необходимости.
+   * @returns Record<string, any> hash object / объект хэша
    */
   private getHash(): Record<string, any> {
     if (!this.hash) {
@@ -154,6 +156,7 @@ export class HashInstance {
    * Initializes hash data and registers the hashchange listener.
    *
    * Инициализирует данные хэша и регистрирует слушатель hashchange.
+   * @returns this instance / текущий экземпляр
    */
   private init(): this {
     this.initData()
@@ -169,6 +172,7 @@ export class HashInstance {
    * Reads hash data from the URL and triggers watchers.
    *
    * Считывает данные хэша из URL и вызывает наблюдателей.
+   * @returns this instance / текущий экземпляр
    */
   private initData(): this {
     const location = this.getLocation()

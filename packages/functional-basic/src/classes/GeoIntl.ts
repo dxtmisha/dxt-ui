@@ -23,7 +23,7 @@ import {
  * they comprise the ECMAScript Internationalization API, which provides language sensitive
  * string comparison, number formatting, date and time formatting, and more
  *
- * Объект Intl является пространством имён для API интернационализации ECMAScript, предоставляющим
+ * Объект Intl является пространством имён для API интернационализации ECMАСcript, предоставляющим
  * языка-зависимое сравнение строк, форматирование чисел и дат со временем. Конструкторы объектов
  * Collator, NumberFormat и DateTimeFormat являются свойствами объекта Intl. На этой странице
  * описаны эти свойства, а также общая функциональность конструкторов интернационализации и других
@@ -171,7 +171,8 @@ export class GeoIntl {
    *
    * Получить отображаемые имена языка.
    * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param style the formatting style to use/ используемый стиль форматирования
+   * @param style the formatting style to display names/ используемый стиль отображения имен
+   * @returns display name of language/ отображаемое имя языка
    */
   languageName(
     value?: string,
@@ -190,7 +191,8 @@ export class GeoIntl {
    *
    * Получить отображаемые имена региона.
    * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param style the formatting style to use/ используемый стиль форматирования
+   * @param style the formatting style to display names/ используемый стиль отображения имен
+   * @returns display name of region/ отображаемое имя региона
    */
   countryName(
     value?: string,
@@ -519,6 +521,7 @@ export class GeoIntl {
    * @param type type of data format/ тип формата data
    * @param styleOptions the representation of the month/ представление месяца
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
+   * @returns formatted date and time/ отформатированная дата и время
    */
   date(
     value: NumberOrStringOrDate,
@@ -550,6 +553,7 @@ export class GeoIntl {
    * @param styleOptions the length of the internationalized message/
    * длина интернационализированного сообщения
    * @param todayValue current day/ текущий день
+   * @returns formatted relative time/ отформатированное относительное время
    */
   relative(
     value: NumberOrStringOrDate,
@@ -683,10 +687,12 @@ export class GeoIntl {
   }
 
   /**
-   * Names of months.<br>
+   * Names of months.
+   *
    * Названия месяцев.
    * @param value the date to format/ дата для форматирования
    * @param style the representation of the month/ представление месяца
+   * @returns month name/ название месяца
    */
   month(
     value?: NumberOrStringOrDate,
@@ -713,6 +719,7 @@ export class GeoIntl {
    *
    * Массив в список месяцев.
    * @param style the representation of the month/ представление месяца
+   * @returns list of months (1-12)/ список месяцев (1-12)
    */
   months(
     style?: Intl.DateTimeFormatOptions['month']
@@ -753,6 +760,7 @@ export class GeoIntl {
    * Возвращает названия дней недели.
    * @param value the date to format/ дата для форматирования
    * @param style the representation of the weekday/ представление о дне недели
+   * @returns weekday name/ название дня недели
    */
   weekday(
     value?: NumberOrStringOrDate,
@@ -775,10 +783,11 @@ export class GeoIntl {
   }
 
   /**
-   * An array of the list of names of the days of the week.
+   * Array of the list of names of the days of the week.
    *
    * Массив из списка названий дней недели.
    * @param style the representation of the weekday/ представление о дне недели
+   * @returns list of weekdays (0-6)/ список дней недели (0-6)
    */
   weekdays(
     style?: Intl.DateTimeFormatOptions['weekday']
@@ -823,6 +832,7 @@ export class GeoIntl {
    *
    * Время.
    * @param value the date to format/ дата для форматирования
+   * @returns formatted time/ отформатированное время
    */
   time(value: NumberOrStringOrDate): string {
     return this.date(value, 'time')
@@ -834,6 +844,7 @@ export class GeoIntl {
    * Сортирует строки с учетом особенностей стран.
    * @param data an array with data/ массив с данными
    * @param compareFn a function for sorting/ функция для сортировки
+   * @returns sorted array/ отсортированный массив
    */
   sort<T>(
     data: T[],

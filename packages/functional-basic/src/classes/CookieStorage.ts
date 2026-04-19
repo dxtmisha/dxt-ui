@@ -105,7 +105,7 @@ export class CookieStorage {
    * @param name cookie name / имя cookie
    * @param value data to be stored / данные для хранения
    * @param options additional parameters / дополнительные параметры
-   * @returns T stored value/ сохраненное значение
+   * @returns stored value / сохраненное значение
    */
   static set<T>(
     name: string,
@@ -207,7 +207,7 @@ export class CookieStorage {
    *
    * Преобразует значение в строку для атрибута max-age.
    * @param stringValue cookie value / значение cookie
-   * @param age cache age / возраст кэша
+   * @param age cache age (default: 7 days) / возраст кэша (по умолчанию: 7 дней)
    */
   protected static toMaxAge(
     stringValue: string,

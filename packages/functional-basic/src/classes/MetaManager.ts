@@ -37,6 +37,7 @@ export class MetaManager<
    * Returns the list of meta tag names.
    *
    * Возвращает список имен мета-тегов.
+   * @returns list of meta tag names/ список имен мета-тегов
    */
   getListMeta(): T {
     return this.listMeta
@@ -47,6 +48,7 @@ export class MetaManager<
    *
    * Получает содержимое мета-тега по имени.
    * @param name meta tag name / имя мета-тега
+   * @returns meta tag content/ содержимое мета-тега
    */
   get(name: Key): string {
     return this.items[name] ?? ''
@@ -56,6 +58,7 @@ export class MetaManager<
    * Returns all meta tags.
    *
    * Возвращает все мета-теги.
+   * @returns object with all meta tags/ объект со всеми мета-тегами
    */
   getItems(): MetaList<T> {
     return this.items
@@ -65,6 +68,7 @@ export class MetaManager<
    * Returns all meta tags as HTML string.
    *
    * Возвращает все мета-теги в виде HTML-строки.
+   * @returns HTML string/ HTML-строка
    */
   html(): string {
     const code = forEach(
@@ -110,6 +114,7 @@ export class MetaManager<
    * Returns the attribute name for meta tags.
    *
    * Возвращает имя атрибута для мета-тегов.
+   * @returns attribute name / имя атрибута
    */
   protected getAttributeName(): string {
     return this.isProperty ? 'property' : 'name'
@@ -120,6 +125,7 @@ export class MetaManager<
    *
    * Находит мета-элемент в DOM.
    * @param name meta tag name / имя мета-тега
+   * @returns meta element if found, or undefined / мета-элемент, если найден, иначе undefined
    */
   protected findMetaElement(name: string): HTMLMetaElement | undefined {
     if (!isDomRuntime()) {
@@ -137,6 +143,7 @@ export class MetaManager<
    * Устанавливает содержимое мета-тега во внутреннем хранилище.
    * @param name meta tag name / имя мета-тега
    * @param content meta tag content / содержимое мета-тега
+   * @returns current instance / текущий экземпляр
    */
   protected setItem(name: Key, content: string): this {
     this.items[name] = content
@@ -148,6 +155,7 @@ export class MetaManager<
    *
    * Устанавливает или создает мета-тег в DOM.
    * @param name meta tag name / имя мета-тега
+   * @returns current instance / текущий экземпляр
    */
   protected setMeta(name: Key): this {
     if (!isDomRuntime()) {
@@ -186,6 +194,7 @@ export class MetaManager<
    *
    * Преобразует мета-тег в HTML-строку.
    * @param name meta tag name / имя мета-тега
+   * @returns HTML string / HTML-строка
    */
   protected toHtmlString(name: Key): string {
     const value = this.items[name] ?? ''
@@ -207,6 +216,7 @@ export class MetaManager<
    * Updates meta tags data from the DOM.
    *
    * Обновляет данные мета-тегов из DOM.
+   * @returns current instance / текущий экземпляр
    */
   protected update(): this {
     this.listMeta.forEach((name) => {

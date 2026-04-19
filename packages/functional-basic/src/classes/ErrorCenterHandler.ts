@@ -49,7 +49,7 @@ export class ErrorCenterHandler {
    * Добавляет обработчик для определенной группы.
    * @param group error group / группа ошибки
    * @param handler callback function / функция обратного вызова
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   add(
     group: ErrorCenterGroup,
@@ -74,7 +74,7 @@ export class ErrorCenterHandler {
    *
    * Добавляет список обработчиков по группам.
    * @param handlers handlers list / список обработчиков
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   addList(
     handlers: ErrorCenterHandlerList
@@ -92,7 +92,7 @@ export class ErrorCenterHandler {
    *
    * Вызывает обработчики для группы и выводит ошибку в консоль.
    * @param cause error cause details / детали причины ошибки
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   on(cause: ErrorCenterCauseItem): this {
     const item = this.get(cause.group) ?? this.get(undefined)
@@ -111,7 +111,7 @@ export class ErrorCenterHandler {
    *
    * Выводит причину ошибки в консоль.
    * @param cause error details / детали ошибки
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   protected toConsole(
     cause: ErrorCenterCauseItem

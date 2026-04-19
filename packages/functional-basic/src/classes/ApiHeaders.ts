@@ -16,8 +16,8 @@ export class ApiHeaders {
    * Gets the headers for the request.
    *
    * Получает заголовки для запроса.
-   * @param value list of headers/ список заголовков
-   * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+   * @param value list of headers / список заголовков
+   * @param type Content-Type header value / значение заголовка Content-Type
    * @returns merged headers or undefined / объединенные заголовки или undefined
    */
   get(
@@ -45,9 +45,9 @@ export class ApiHeaders {
    * Gets the headers for the request based on request type.
    *
    * Получает заголовки для запроса на основе типа запроса.
-   * @param request request data/ данные запроса
-   * @param value list of headers/ список заголовков
-   * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+   * @param request request data / данные запроса
+   * @param value list of headers / список заголовков
+   * @param type Content-Type header value / значение заголовка Content-Type
    * @returns merged headers or undefined / объединенные заголовки или undefined
    */
   getByRequest(

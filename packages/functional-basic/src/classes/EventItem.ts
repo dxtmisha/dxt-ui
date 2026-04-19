@@ -199,7 +199,7 @@ export class EventItem<
    *
    * Изменение элемента для прослеживания.
    * @param elementSelector target element or selector / целевой элемент или селектор
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   setElement(elementSelector?: ElementOrString<E>): this {
     const element = getElementOrWindow(elementSelector)
@@ -219,7 +219,7 @@ export class EventItem<
    *
    * Модифицирует контрольный элемент для проверки безопасности DOM.
    * @param elementSelector control element or selector / контрольный элемент или селектор
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this {
     this.elementControl = getElement(elementSelector)
@@ -237,7 +237,7 @@ export class EventItem<
    *
    * Изменяет тип обрабатываемого события.
    * @param type event type or array of types / тип события или массив типов
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   setType(type: string | string[]): this {
     this.type = toArray(type)
@@ -251,7 +251,7 @@ export class EventItem<
    *
    * Модифицирует функцию-слушатель.
    * @param listener new listener function / новая функция-слушатель
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   setListener(listener: EventListenerDetail<O, D>): this {
     this.listener = listener
@@ -263,7 +263,7 @@ export class EventItem<
    *
    * Изменение объекта options, который определяет характеристики слушателя событий.
    * @param options event listener options / опции слушателя событий
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   setOptions(options?: EventOptions): this {
     this.options = options
@@ -277,7 +277,7 @@ export class EventItem<
    *
    * Изменение дополнительных данных, передаваемых слушателю.
    * @param detail custom data / пользовательские данные
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   setDetail(detail?: D): this {
     this.detail = detail
@@ -291,7 +291,7 @@ export class EventItem<
    * Инициирует события на целевом элементе, опционально с новым значением detail.
    * Этот метод вручную запускает диспетчеризацию `CustomEvent` для всех указанных типов.
    * @param detail the value to be passed as the event detail / значение, которое будет передано как detail события
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   dispatch(detail: D | undefined = this.detail): this {
     this.type.forEach(
@@ -305,7 +305,7 @@ export class EventItem<
    * Starts event listening.
    *
    * Запуск прослушивания события.
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   start(): this {
     if (
@@ -338,7 +338,7 @@ export class EventItem<
    * Stops event listening.
    *
    * Остановка прослушивания события.
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   stop(): this {
     if (this.activity) {
@@ -367,6 +367,7 @@ export class EventItem<
    *
    * Переключение состояния работы события.
    * @param activity event activation/ активация события
+   * @returns this instance / текущий экземпляр
    */
   toggle(activity: boolean): this {
     return activity ? this.start() : this.stop()
@@ -376,7 +377,7 @@ export class EventItem<
    * Overloads the listening events (stops and starts again if active).
    *
    * Перегружает события прослушивания (останавливает и запускает заново, если активно).
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   reset() {
     if (this.activity) {

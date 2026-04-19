@@ -53,7 +53,7 @@ export class ApiResponse {
    * @param path link to the request / ссылка на запрос
    * @param method request method / метод запроса
    * @param request data for the request / данные для запроса
-   * @param devMode is it developer mode / является ли режим разработчика
+   * @param devMode optional developer mode flag / необязательный флаг режима разработчика
    * @returns cached response item or undefined / кешированный элемент ответа или undefined
    */
   get(
@@ -218,7 +218,7 @@ export class ApiResponse {
    *
    * Проверяет, совпадает ли запрос с кешированным.
    * @param item cached item / кешированный элемент
-   * @param request request data/ данные запроса
+   * @param request request data / данные запроса
    * @returns true if requests match / true, если запросы совпадают
    */
   protected isResponse(

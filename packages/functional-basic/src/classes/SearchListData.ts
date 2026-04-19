@@ -127,7 +127,7 @@ export class SearchListData<
    * @param item original item/ исходный элемент
    * @returns cache item or undefined/ кэшированный элемент или undefined
    */
-  findCacheItem(item: T) {
+  findCacheItem(item: T): SearchCacheItem<T> | undefined {
     return this.getCache().find(cache => cache.item === item)
   }
 
@@ -143,7 +143,7 @@ export class SearchListData<
       item: SearchCacheItem<T>['item'],
       value: SearchCacheItem<T>['value']
     ) => SearchFormatItem<T, K> | undefined
-  ) {
+  ): SearchFormatList<T, K> {
     const list: SearchFormatList<T, K> = []
 
     if (this.isList()) {
@@ -201,7 +201,7 @@ export class SearchListData<
    * @param column column path/ путь к столбцу
    * @returns property name/ имя свойства
    */
-  protected getColumnName(column: string) {
+  protected getColumnName(column: string): string {
     return column.replace(
       /\.([a-z0-9])/ig,
       (_: string, char: string) => char.toUpperCase()
@@ -215,7 +215,7 @@ export class SearchListData<
    * @param value value to highlight/ значение для выделения
    * @returns highlighted string/ выделенная строка
    */
-  protected addTag(value: any) {
+  protected addTag(value: any): string {
     return addTagHighlightMatch(
       anyToString(value),
       this.item.get(),
@@ -262,8 +262,9 @@ export class SearchListData<
    * Initializes the search cache.
    *
    * Инициализирует кэш поиска.
+   * @returns void
    */
-  protected initCache() {
+  protected initCache(): void {
     this.listCache = this.generateCache()
   }
 
@@ -271,8 +272,9 @@ export class SearchListData<
    * Resets the search cache.
    *
    * Сбрасывает кэш поиска.
+   * @returns void
    */
-  protected resetCache() {
+  protected resetCache(): void {
     this.listCache = undefined
   }
 }

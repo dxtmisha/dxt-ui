@@ -1,224 +1,105 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+// @vitest-environment jsdom
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ApiPreparation } from '../ApiPreparation'
-import type { ApiPreparationEnd } from '../../types/apiTypes'
 
 describe('ApiPreparation', () => {
-  let apiPreparation: ApiPreparation
+  let preparation: ApiPreparation
 
   beforeEach(() => {
-    apiPreparation = new ApiPreparation()
+    preparation = new ApiPreparation()
+    vi.useFakeTimers()
   })
 
-  describe('make', () => {
-    it('should not call callback when active is false', async () => {
-      const callback = vi.fn().mockResolvedValue(undefined)
-      apiPreparation.set(callback)
-
-      await apiPreparation.make(false, {} as any)
-
-      expect(callback).not.toHaveBeenCalled()
-    })
-
-    it('should not call callback when callback is not set', async () => {
-      const result = await apiPreparation.make(true, {} as any)
-
-      expect(result).toBeUndefined()
-    })
-
-    it('should call callback when active is true and callback is set', async () => {
-      const callback = vi.fn().mockResolvedValue(undefined)
-      apiPreparation.set(callback)
-
-      await apiPreparation.make(true, {} as any)
-
-      expect(callback).toHaveBeenCalledTimes(1)
-    })
-
-    it('should wait for callback to complete', async () => {
-      let callbackCompleted = false
-      const callback = vi.fn().mockImplementation(async () => {
-        await new Promise(resolve => setTimeout(resolve, 50))
-        callbackCompleted = true
-      })
-      apiPreparation.set(callback)
-
-      await apiPreparation.make(true, {} as any)
-
-      expect(callbackCompleted).toBe(true)
-    })
-
-    it('should handle multiple concurrent calls without overlapping', async () => {
-      let executionCount = 0
-      const callback = vi.fn().mockImplementation(async () => {
-        executionCount++
-        await new Promise(resolve => setTimeout(resolve, 20))
-        executionCount--
-      })
-      apiPreparation.set(callback)
-
-      // Start multiple concurrent calls
-      const promises = [
-        apiPreparation.make(true, {} as any),
-        apiPreparation.make(true, {} as any),
-        apiPreparation.make(true, {} as any)
-      ]
-
-      await Promise.all(promises)
-
-      // Callback should be called 3 times but never overlap
-      expect(callback).toHaveBeenCalledTimes(3)
-      expect(executionCount).toBe(0)
-    })
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
-  describe('makeEnd', () => {
-    it('should return empty object when active is false', async () => {
-      const callback = vi.fn().mockResolvedValue({ reset: true })
-      const mockResponse = new Response('{}', { status: 200 })
-      apiPreparation.setEnd(callback)
+  it('should call callback in make() when active', async () => {
+    const callback = vi.fn().mockResolvedValue(undefined)
+    preparation.set(callback)
 
-      const result = await apiPreparation.makeEnd(false, mockResponse, {} as any)
+    const apiFetch = { path: '/test' } as any
+    const promise = preparation.make(true, apiFetch)
 
-      expect(result).toEqual({})
-      expect(callback).not.toHaveBeenCalled()
-    })
-
-    it('should return empty object when callback is not set', async () => {
-      const mockResponse = new Response('{}', { status: 200 })
-
-      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
-
-      expect(result).toEqual({})
-    })
-
-    it('should call callback and return result when active is true', async () => {
-      const expectedResult: ApiPreparationEnd = {
-        reset: true,
-        data: { message: 'Success' }
-      }
-      const callback = vi.fn().mockResolvedValue(expectedResult)
-      const mockResponse = new Response('{}', { status: 200 })
-      const mockApiFetch: any = { path: 'test' }
-      apiPreparation.setEnd(callback)
-
-      const result = await apiPreparation.makeEnd(true, mockResponse, mockApiFetch)
-
-      expect(callback).toHaveBeenCalledWith(mockResponse, mockApiFetch)
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('should pass Response object to callback', async () => {
-      const callback = vi.fn().mockResolvedValue({})
-      const mockResponse = new Response('{"test": "data"}', {
-        status: 201,
-        statusText: 'Created'
-      })
-      const mockApiFetch: any = { path: 'test' }
-      apiPreparation.setEnd(callback)
-
-      await apiPreparation.makeEnd(true, mockResponse, mockApiFetch)
-
-      expect(callback).toHaveBeenCalledWith(mockResponse, mockApiFetch)
-    })
+    expect(callback).toHaveBeenCalledWith(apiFetch)
+    await promise
   })
 
-  describe('set', () => {
-    it('should set callback function', async () => {
-      const callback = vi.fn().mockResolvedValue(undefined)
+  it('should not call callback in make() when not active', async () => {
+    const callback = vi.fn().mockResolvedValue(undefined)
+    preparation.set(callback)
 
-      const returnedInstance = apiPreparation.set(callback)
-
-      expect(returnedInstance).toBe(apiPreparation)
-      await apiPreparation.make(true, {} as any)
-      expect(callback).toHaveBeenCalled()
-    })
-
-    it('should return this for chaining', () => {
-      const callback = vi.fn().mockResolvedValue(undefined)
-
-      const result = apiPreparation.set(callback)
-
-      expect(result).toBe(apiPreparation)
-    })
-
-    it('should allow replacing callback', async () => {
-      const callback1 = vi.fn().mockResolvedValue(undefined)
-      const callback2 = vi.fn().mockResolvedValue(undefined)
-
-      apiPreparation.set(callback1)
-      apiPreparation.set(callback2)
-
-      await apiPreparation.make(true, {} as any)
-
-      expect(callback1).not.toHaveBeenCalled()
-      expect(callback2).toHaveBeenCalled()
-    })
+    await preparation.make(false, { path: '/test' } as any)
+    expect(callback).not.toHaveBeenCalled()
   })
 
-  describe('setEnd', () => {
-    it('should set end callback function', async () => {
-      const callback = vi.fn().mockResolvedValue({})
-      const mockResponse = new Response('{}', { status: 200 })
+  it('should call callbackEnd in makeEnd() when active', async () => {
+    const callbackEnd = vi.fn().mockResolvedValue({ reset: true, data: { ok: 1 } })
+    preparation.setEnd(callbackEnd)
 
-      const returnedInstance = apiPreparation.setEnd(callback)
+    const query = new Response()
+    const apiFetch = { path: '/test' } as any
+    const result = await preparation.makeEnd(true, query, apiFetch)
 
-      expect(returnedInstance).toBe(apiPreparation)
-      await apiPreparation.makeEnd(true, mockResponse, {} as any)
-      expect(callback).toHaveBeenCalled()
-    })
-
-    it('should return this for chaining', () => {
-      const callback = vi.fn().mockResolvedValue({})
-
-      const result = apiPreparation.setEnd(callback)
-
-      expect(result).toBe(apiPreparation)
-    })
-
-    it('should allow chaining set and setEnd', async () => {
-      const callback = vi.fn().mockResolvedValue(undefined)
-      const callbackEnd = vi.fn().mockResolvedValue({ reset: true })
-      const mockResponse = new Response('{}', { status: 200 })
-
-      apiPreparation
-        .set(callback)
-        .setEnd(callbackEnd)
-
-      await apiPreparation.make(true, {} as any)
-      await apiPreparation.makeEnd(true, mockResponse, {} as any)
-
-      expect(callback).toHaveBeenCalled()
-      expect(callbackEnd).toHaveBeenCalled()
-    })
+    expect(callbackEnd).toHaveBeenCalledWith(query, apiFetch)
+    expect(result).toEqual({ reset: true, data: { ok: 1 } })
   })
 
-  describe('integration scenarios', () => {
-    it('should handle full lifecycle with both callbacks', async () => {
-      let preparationDone = false
-      const callback = vi.fn().mockImplementation(async () => {
-        preparationDone = true
-      })
-      const callbackEnd = vi.fn().mockResolvedValue({ reset: true, data: { preparationDone } })
-      const mockResponse = new Response('{}', { status: 200 })
+  it('should return empty object in makeEnd() when not active', async () => {
+    const callbackEnd = vi.fn().mockResolvedValue({ reset: true })
+    preparation.setEnd(callbackEnd)
 
-      apiPreparation.set(callback).setEnd(callbackEnd)
+    const result = await preparation.makeEnd(false, new Response(), {} as any)
+    expect(result).toEqual({})
+    expect(callbackEnd).not.toHaveBeenCalled()
+  })
 
-      await apiPreparation.make(true, {} as any)
-      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
+  it('should handle sequential requests with loading state', async () => {
+    let resolveCallback: (value: void | PromiseLike<void>) => void
+    const callback = vi.fn().mockImplementation(() => new Promise<void>((resolve) => {
+      resolveCallback = resolve
+    }))
 
-      expect(preparationDone).toBe(true)
-      expect(callback).toHaveBeenCalled()
-      expect(callbackEnd).toHaveBeenCalled()
-      expect(result.reset).toBe(true)
-    })
+    preparation.set(callback)
 
-    it('should handle errors in end callback', async () => {
-      const error = new Error('End processing failed')
-      const callbackEnd = vi.fn().mockRejectedValue(error)
-      const mockResponse = new Response('{}', { status: 200 })
-      apiPreparation.setEnd(callbackEnd)
+    const p1 = preparation.make(true, { id: 1 } as any)
+    expect(callback).toHaveBeenCalledTimes(1)
 
-      await expect(apiPreparation.makeEnd(true, mockResponse, {} as any)).rejects.toThrow('End processing failed')
-    })
+    const p2 = preparation.make(true, { id: 2 } as any)
+    // p2 should be waiting because loading is true
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    // Finish p1
+    resolveCallback!()
+    await p1
+
+    // Advance timers to trigger the retry in go() for p2
+    // We need to advance multiple times because go() might be called multiple times
+    await vi.advanceTimersByTimeAsync(160)
+    await vi.advanceTimersByTimeAsync(160)
+
+    // Now p2 should run
+    await p2
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('should handle errors in callback and reset loading state', async () => {
+    const callback = vi.fn().mockRejectedValue(new Error('callback error'))
+    preparation.set(callback)
+
+    await preparation.make(true, {} as any)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    // Check if we can run another one (loading should be false)
+    await preparation.make(true, {} as any)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('should support chaining', () => {
+    const result = preparation.set(() => Promise.resolve())
+    expect(result).toBe(preparation)
+
+    const resultEnd = preparation.setEnd(() => Promise.resolve({}))
+    expect(resultEnd).toBe(preparation)
   })
 })

@@ -208,7 +208,7 @@ export class ApiInstance {
    * @param request request data / данные запроса
    * @param path path to request / путь к запросу
    * @param method HTTP method / HTTP метод
-   * @returns query string for GET requests / строка запроса для GET-запросов
+   * @returns query string with prefix (? or &) / строка запроса с префиксом (? или &)
    */
   getBodyForGet(
     request: ApiFetch['request'],
@@ -734,7 +734,7 @@ export class ApiInstance {
    * Инициализация контроллера для запроса с поддержкой таймаута.
    * @param apiFetch request options / опции запроса
    * @param fetchInit request initialization object / объект инициализации запроса
-   * @returns timeout ID for manual cancellation or undefined / ID таймера для ручной отмены или undefined
+   * @returns timeout ID (from setTimeout) or undefined / ID таймера (от setTimeout) или undefined
    */
   protected initController(
     apiFetch: ApiFetch,

@@ -147,10 +147,10 @@ export class ApiStatus {
   }
 
   /**
-   * Sets the data of the last response and automatically extracts status/message if object.
+   * Sets the data of the last response and automatically extracts status/message if it's an object.
    *
    * Устанавливает данные последнего ответа и автоматически извлекает статус / сообщение, если это объект.
-   * @param response response data/ данные ответа
+   * @param response response data / данные ответа
    * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
   setLastResponse(response?: any): this {

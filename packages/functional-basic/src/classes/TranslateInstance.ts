@@ -52,6 +52,7 @@ export class TranslateInstance {
    * Получение текста перевода по его коду.
    * @param name code name/ название кода
    * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
+   * @returns translation text / текст перевода
    */
   async get(
     name: string,
@@ -79,6 +80,7 @@ export class TranslateInstance {
    * если установлено false, возвращает пустую строку, если нет текста
    * @param replacement If set, replaces the text with the specified values/
    * если установлено, заменяет текст на указанные значения
+   * @returns translation text / текст перевода
    */
   getSync(
     name: string,
@@ -99,6 +101,7 @@ export class TranslateInstance {
    *
    * Получение списка переводов по массиву кодов текста.
    * @param names list of codes to get translations/ список кодов для получения переводов
+   * @returns object with translations / объект с переводами
    */
   getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>> {
     return new Promise((resolve) => {
@@ -128,6 +131,7 @@ export class TranslateInstance {
    * @param names list of codes to get translations/ список кодов для получения переводов
    * @param first If set to false, returns an empty string if there is no text/
    * если установлено false, возвращает пустую строку, если нет текста
+   * @returns object with translations / объект с переводами
    */
   getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {
     const list: Record<string, string> = {}
@@ -147,6 +151,7 @@ export class TranslateInstance {
    *
    * Добавлен список переведенных текстов.
    * @param names list of codes to get translations/ список кодов для получения переводов
+   * @returns promise resolving when translations are added / промис, разрешающийся после добавления переводов
    */
   add(names: string | string[]): Promise<void> {
     return new Promise((resolve) => {
@@ -195,6 +200,7 @@ export class TranslateInstance {
    *
    * Добавление данных в виде запроса или напрямую, в зависимости от среды выполнения.
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
+   * @returns promise / промис
    */
   async addNormalOrSync(data: Record<string, string>): Promise<void> {
     if (isFilled(data)) {
@@ -280,6 +286,7 @@ export class TranslateInstance {
    *
    * Проверяет наличие перевода по коду с учетом запасных вариантов.
    * @param name code name/ название кода
+   * @returns boolean / логическое значение
    */
   protected hasName(name: string): boolean {
     return (this.getName(name) in this.data)
@@ -292,6 +299,7 @@ export class TranslateInstance {
    *
    * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
    * @param name code name/ название кода
+   * @returns translation text or undefined / текст перевода или undefined
    */
   protected getText(name: string): string | undefined {
     const fullName = this.getName(name)
@@ -320,6 +328,7 @@ export class TranslateInstance {
    *
    * Получение полного названия для перевода.
    * @param name code name/ название кода
+   * @returns full title / полное название
    */
   protected getName(name: string): string {
     return `${this.files.getLocation()}-${name}`
@@ -330,6 +339,7 @@ export class TranslateInstance {
    *
    * Получение названия для перевода по языку.
    * @param name code name/ название кода
+   * @returns title by language / название по языку
    */
   protected getNameByLanguage(name: string): string {
     return `${this.files.getLanguage()}-${name}`
@@ -340,6 +350,7 @@ export class TranslateInstance {
    *
    * Получение названия для перевода глобально.
    * @param name code name/ название кода
+   * @returns global title / глобальное название
    */
   protected getNameByGlobal(name: string): string {
     return `${TRANSLATE_GLOBAL_PREFIX}-${name}`
@@ -350,6 +361,7 @@ export class TranslateInstance {
    *
    * Возвращает список имен, которых еще нет в списке.
    * @param names list of codes to get translations/ список кодов для получения переводов
+   * @returns list of missing names / список отсутствующих имен
    */
   protected getNamesNone(names: string | string[]): string[] {
     const data: string[] = []
@@ -371,6 +383,7 @@ export class TranslateInstance {
    * Getting the list of translations from the server.
    *
    * Получение списка переводов с сервера.
+   * @returns promise with record of translations / промис с записью переводов
    */
   protected async getResponse(): Promise<Record<string, string>> {
     const data = (await Api.get<Record<string, string>>({
@@ -401,6 +414,7 @@ export class TranslateInstance {
    * Заменяет текст на указанные значения.
    * @param text text to replace/ текст для замены
    * @param replacement values for replacement/ значения для замены
+   * @returns replaced text / замененный текст
    */
   protected replacement(
     text: string,
@@ -417,6 +431,7 @@ export class TranslateInstance {
    * Adding translation data from the server.
    *
    * Добавление данных по переводу с сервера.
+   * @returns promise / промис
    */
   protected async make(): Promise<void> {
     let list: Record<string, string> | undefined

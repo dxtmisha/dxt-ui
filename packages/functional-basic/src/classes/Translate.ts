@@ -15,6 +15,7 @@ export class Translate {
    * Получение текста перевода по его коду.
    * @param name code name/ название кода
    * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
+   * @returns translation text / текст перевода
    */
   static async get(
     name: string,
@@ -42,6 +43,7 @@ export class Translate {
    * если установлено false, возвращает пустую строку, если нет текста
    * @param replacement If set, replaces the text with the specified values/
    * если установлено, заменяет текст на указанные значения
+   * @returns translation text / текст перевода
    */
   static getSync(
     name: string,
@@ -56,6 +58,7 @@ export class Translate {
    *
    * Получение списка переводов по массиву кодов текста.
    * @param names list of codes to get translations/ список кодов для получения переводов
+   * @returns object with translations / объект с переводами
    */
   static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>> {
     return this.getItem().getList(names)
@@ -68,6 +71,7 @@ export class Translate {
    * @param names list of codes to get translations/ список кодов для получения переводов
    * @param first If set to false, returns an empty string if there is no text/
    * если установлено false, возвращает пустую строку, если нет текста
+   * @returns object with translations / объект с переводами
    */
   static getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {
     return this.getItem().getListSync(names, first)

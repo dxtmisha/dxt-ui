@@ -55,8 +55,9 @@ export class Cookie<T> {
    * Get data or update if none.
    *
    * Получает данные или обновляет, если их нет.
-   * @param defaultValue value or function to change data/ значение или функция для изменения данных
-   * @param options additional parameters/ дополнительные параметры
+   * @param defaultValue value or function to change data / значение или функция для изменения данных
+   * @param options additional parameters / дополнительные параметры
+   * @returns cookie value / значение cookie
    */
   get(
     defaultValue?: T | string | (() => (T | string)),
@@ -76,9 +77,8 @@ export class Cookie<T> {
    * Updates cookie data.
    *
    * Обновляет данные cookie.
-   * @param value value or function to change data/ значение или функция для изменения данных
-   * @param options additional parameters/ дополнительные параметры
-   * @returns void
+   * @param value value or function to change data / значение или функция для изменения данных
+   * @param options additional parameters / дополнительные параметры
    */
   set(
     value?: T | string | (() => (T | string)),
@@ -94,7 +94,6 @@ export class Cookie<T> {
    * Delete cookie data.
    *
    * Удаление данных из cookie.
-   * @returns void
    */
   remove() {
     this.set('')

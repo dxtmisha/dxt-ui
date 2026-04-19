@@ -26,9 +26,9 @@ import {
  * Class for formatting a list of data based on provided options.
  *
  * Класс для форматирования списка данных на основе предоставленных параметров.
- * @template Options - type of formatting options / тип параметров форматирования.
- * @template List - type of the list of items (can be an array or a single item) / тип списка элементов (может быть массивом или одним элементом).
- * @template Item - type of a single item in the list / тип одного элемента в списке.
+ * @template Options type of formatting options / тип параметров форматирования.
+ * @template List type of the list of items (can be an array or a single item) / тип списка элементов (может быть массивом или одним элементом).
+ * @template Item type of a single item in the list / тип одного элемента в списке.
  */
 export class Formatters<
   Options extends FormattersOptionsList = FormattersOptionsList,
@@ -114,7 +114,7 @@ export class Formatters<
    *
    * Устанавливает список данных для форматирования.
    * @param list list of data / список данных
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   setList(list?: List): this {
     this.list = list
@@ -127,7 +127,7 @@ export class Formatters<
    *
    * Форматирует весь список или один элемент на основе предоставленных параметров.
    * Добавляет отформатированные значения с суффиксом 'Format' к каждому элементу.
-   * @returns formatted data (list or single item) / отформатированные данные (список или один элемент)
+   * @returns FormattersReturn<List, Options> formatted data (list or single item) / отформатированные данные (список или один элемент)
    */
   to(): FormattersReturn<List, Options> {
     const list = forEach(this.getList(), (item) => {
@@ -148,7 +148,8 @@ export class Formatters<
    * Generates formatted data for a single item based on options.
    *
    * Генерирует отформатированные данные для одного элемента на основе параметров.
-   * @param item item to format/ элемент для форматирования
+   * @param item item to format / элемент для форматирования
+   * @returns object with formatted fields / объект с отформатированными полями
    * @protected
    */
   protected getFormatData(item: Item) {

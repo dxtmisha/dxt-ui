@@ -115,9 +115,9 @@ export class SearchList<
   }
 
   /**
-   * Sets a new list of items.
+   * Sets a new list of items and resets the cache.
    *
-   * Устанавливает новый список элементов.
+   * Устанавливает новый список элементов и сбрасывает кэш.
    * @param list new list/ новый список
    * @returns this instance/ данный экземпляр
    */
@@ -127,9 +127,9 @@ export class SearchList<
   }
 
   /**
-   * Sets new search columns.
+   * Sets new search columns and resets the cache.
    *
-   * Устанавливает новые столбцы поиска.
+   * Устанавливает новые столбцы поиска и сбрасывает кэш.
    * @param columns new columns/ новые столбцы
    * @returns this instance/ данный экземпляр
    */
@@ -196,6 +196,9 @@ export class SearchList<
    *
    * Обратный вызов для обработки элементов при активном поиске.
    * Проверяет выбор и обрабатывает опцию "возвращать всё".
+   * @param item item / элемент
+   * @param value search value / значение поиска
+   * @returns formatted item or undefined / отформатированный элемент или undefined
    */
   protected readonly callbackToSelection = (
     item: SearchCacheItem<T>['item'],
@@ -214,6 +217,8 @@ export class SearchList<
    * Callback for processing items when no search is active.
    *
    * Обратный вызов для обработки элементов, когда поиск не активен.
+   * @param item item / элемент
+   * @returns formatted item / отформатированный элемент
    */
   protected readonly callbackToNone = (
     item: SearchCacheItem<T>['item']

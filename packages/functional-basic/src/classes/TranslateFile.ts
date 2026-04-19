@@ -37,9 +37,10 @@ export class TranslateFile {
   }
 
   /**
-   * Checks if there are files for the current location.
+   * Checks if there are files for the current location or language.
    *
-   * Проверяет, есть ли файлы для текущего местоположения.
+   * Проверяет, есть ли файлы для текущего местоположения или языка.
+   * @returns boolean / логическое значение
    */
   isFile(): boolean {
     return Object.keys(this.files).length > 0
@@ -50,6 +51,7 @@ export class TranslateFile {
    * Returns the location.
    *
    * Возвращает местоположение.
+   * @returns location / местоположение
    */
   getLocation(): string {
     return executeFunction(this.location)
@@ -59,6 +61,7 @@ export class TranslateFile {
    * Returns the language.
    *
    * Возвращает язык.
+   * @returns language / язык
    */
   getLanguage(): string {
     return executeFunction(this.language)
@@ -68,6 +71,7 @@ export class TranslateFile {
    * Returns a list of translations from the file for the current location.
    *
    * Возвращает список переводов из файла для текущего местоположения.
+   * @returns promise with list of translations / промис со списком переводов
    */
   async getList(): Promise<TranslateDataFileList | undefined> {
     const index = this.getIndex()
@@ -98,6 +102,7 @@ export class TranslateFile {
    * Returns the key for the current location from the list of files.
    *
    * Возвращает ключ для текущего местоположения из списка файлов.
+   * @returns file key or undefined / ключ файла или undefined
    */
   protected getIndex(): string | undefined {
     const location = this.getLocation()
@@ -124,6 +129,7 @@ export class TranslateFile {
    *
    * Возвращает список переводов из кэша.
    * @param index file key/ ключ файла
+   * @returns list of translations or undefined / список переводов или undefined
    */
   protected getByData(index: string): TranslateDataFileList | undefined {
     if (index in this.data) {
@@ -138,6 +144,7 @@ export class TranslateFile {
    *
    * Возвращает список переводов из файла и кэширует результат.
    * @param index file key/ ключ файла
+   * @returns promise with list of translations or undefined / промис со списком переводов или undefined
    */
   protected async getByFile(index: string): Promise<TranslateDataFileList | undefined> {
     if (index in this.files) {

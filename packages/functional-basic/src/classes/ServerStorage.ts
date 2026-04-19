@@ -34,6 +34,7 @@ export class ServerStorage {
    *
    * Инициализирует хранилище слушателем контекста.
    * @param listener function that returns the current request context / функция, возвращающая контекст текущего запроса
+   * @returns this instance / текущий класс
    */
   static init(listener: () => Record<string, any>) {
     if (!this.listener) {
@@ -58,6 +59,7 @@ export class ServerStorage {
    *
    * Проверяет наличие значения в хранилище.
    * @param key unique storage key / уникальный ключ хранилища
+   * @returns boolean / логическое значение
    */
   static has(key: string): boolean {
     const storage = this.getStorage()
@@ -71,7 +73,8 @@ export class ServerStorage {
    * Извлекает значение из хранилища. Если оно не существует, создает его с помощью фабрики значений по умолчанию.
    * @param key unique storage key / уникальный ключ хранилища
    * @param defaultValue function that returns the default value if not found / функция, возвращающая значение по умолчанию, если оно не найдено
-   * @param hydration whether the value is hydrated / является ли значение гидратированным
+   * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
+   * @returns stored value / сохраненное значение
    */
   static get<T = any>(
     key: string,
@@ -97,7 +100,8 @@ export class ServerStorage {
    * Сохраняет значение в хранилище.
    * @param key unique storage key / уникальный ключ хранилища
    * @param value function that returns the value to save / функция, возвращающая значение для сохранения
-   * @param hydration whether the value is hydrated / является ли значение гидратированным
+   * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
+   * @returns saved value / сохраненное значение
    */
   static set<T = any>(
     key: string,
@@ -132,6 +136,7 @@ export class ServerStorage {
    * Returns a string representation of the storage for hydration.
    *
    * Возвращает строковое представление хранилища для гидратации.
+   * @returns script tag string / строка тега скрипта
    */
   static toString(): string {
     return getElementSafeScript(SERVER_STORAGE_ID, this.getDataForHydration())
@@ -141,6 +146,7 @@ export class ServerStorage {
    * Returns storage.
    *
    * Возвращает хранилище.
+   * @returns storage list / список хранилища
    */
   protected static getStorage(): ServerStorageList {
     if (isDomRuntime()) {
@@ -173,6 +179,7 @@ export class ServerStorage {
    * Returns storage from DOM.
    *
    * Возвращает хранилище из DOM.
+   * @returns storage list from DOM / список хранилища из DOM
    */
   protected static getStorageDom(): ServerStorageList {
     if (!this.storage) {
@@ -195,6 +202,7 @@ export class ServerStorage {
    * Returns data for hydration.
    *
    * Возвращает данные для гидратации.
+   * @returns record of hydration data / запись данных гидратации
    */
   protected static getDataForHydration(): Record<string, any> {
     const storage = this.getStorage()

@@ -34,7 +34,7 @@ export class SearchListMatcher {
    * Проверяет, инициализирован ли сопоставитель.
    * @returns boolean/ логическое значение
    */
-  is() {
+  is(): boolean {
     return Boolean(this.matcher)
   }
 
@@ -67,6 +67,7 @@ export class SearchListMatcher {
    * Updates the matcher based on the current item value and options.
    *
    * Обновляет сопоставитель на основе текущего значения элемента и опций.
+   * @returns void
    */
   update(): void {
     this.initMatcher()
@@ -76,6 +77,7 @@ export class SearchListMatcher {
    * Initializes or resets the regular expression matcher.
    *
    * Инициализирует или сбрасывает сопоставитель регулярных выражений.
+   * @returns void
    */
   protected initMatcher(): void {
     if (this.item.is()) {

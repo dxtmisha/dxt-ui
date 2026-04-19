@@ -275,7 +275,7 @@ export class GeoInstance {
    * Updates the current location and related data.
    *
    * Обновляет текущее местоположение и связанные с ним данные.
-   * @param code country code / код страны
+   * @param code location code (e.g., 'en-GB') / код локации (например, 'en-GB')
    * @param save whether to save the location in storage / нужно ли сохранять местоположение в хранилище
    */
   set(code: string, save?: boolean): void {

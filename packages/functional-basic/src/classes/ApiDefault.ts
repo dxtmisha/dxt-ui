@@ -37,7 +37,7 @@ export class ApiDefault {
    *
    * Добавляет данные по умолчанию к запросу.
    * @param request request data / данные запроса
-   * @returns merged request data with defaults / объединенные данные запроса с значениями по умолчанию
+   * @returns merged request data / объединенные данные запроса
    */
   request(
     request: ApiFetch['request']
