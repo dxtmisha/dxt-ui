@@ -5,20 +5,20 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'divider', type: 'boolean' },
-  { name: 'dividerBottom', type: 'boolean' },
-  { name: 'dividerHide', type: 'boolean' },
-  { name: 'dividerTop', type: 'boolean' },
-  { name: 'inverse', type: 'boolean' },
-  { name: 'standard', type: 'boolean' },
-  { name: 'tag', type: 'string' },
-  { name: 'visible', type: 'boolean' }
+  { name: 'divider', type: 'boolean | undefined' },
+  { name: 'dividerBottom', type: 'boolean | undefined' },
+  { name: 'dividerHide', type: 'boolean | undefined' },
+  { name: 'dividerTop', type: 'boolean | undefined' },
+  { name: 'inverse', type: 'boolean | undefined' },
+  { name: 'standard', type: 'boolean | undefined' },
+  { name: 'tag', type: 'string | undefined' },
+  { name: 'visible', type: 'boolean | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Slot for default scrollbar content/ Слот для основного содержимого скроллбара` }
+  { name: 'default', description: `Slot for default scrollbar content/ Слот для основного содержимого скроллбара`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

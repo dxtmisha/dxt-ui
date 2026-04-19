@@ -6,36 +6,36 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'adaptive', type: 'string', option: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
-  { name: 'badge', type: 'string | number | ConstrBind<Badge>' },
-  { name: 'badgeDot', type: 'boolean' },
+  { name: 'badge', type: 'string | number | ConstrBind<BadgeProps> | undefined' },
+  { name: 'badgeDot', type: 'boolean | undefined' },
   { name: 'container', type: 'string', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
-  { name: 'detail', type: 'Record<string, any>' },
-  { name: 'disabled', type: 'boolean' },
-  { name: 'focus', type: 'boolean' },
-  { name: 'href', type: 'string' },
-  { name: 'icon', type: 'IconValue<Icon>' },
-  { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
-  { name: 'iconDir', type: 'boolean' },
-  { name: 'iconHide', type: 'boolean' },
-  { name: 'iconPalette', type: 'boolean' },
-  { name: 'iconTurn', type: 'boolean' },
+  { name: 'detail', type: 'Record<string, any> | undefined' },
+  { name: 'disabled', type: 'boolean | undefined' },
+  { name: 'focus', type: 'boolean | undefined' },
+  { name: 'href', type: 'string | undefined' },
+  { name: 'icon', type: 'IconValue<IconProps> | undefined' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconProps> | undefined' },
+  { name: 'iconDir', type: 'boolean | undefined' },
+  { name: 'iconHide', type: 'boolean | undefined' },
+  { name: 'iconPalette', type: 'boolean | undefined' },
+  { name: 'iconTurn', type: 'boolean | undefined' },
   { name: 'index', type: 'any' },
-  { name: 'isSkeleton', type: 'boolean' },
-  { name: 'label', type: 'NumberOrString' },
-  { name: 'labelId', type: 'string' },
-  { name: 'open', type: 'boolean' },
-  { name: 'readonly', type: 'boolean' },
-  { name: 'role', type: 'string' },
-  { name: 'selected', type: 'boolean' },
-  { name: 'tag', type: 'string', option: ['button', 'a', 'span', 'li', 'div'] },
-  { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
+  { name: 'isSkeleton', type: 'boolean | undefined' },
+  { name: 'label', type: 'NumberOrString | undefined' },
+  { name: 'labelId', type: 'string | undefined' },
+  { name: 'open', type: 'boolean | undefined' },
+  { name: 'readonly', type: 'boolean | undefined' },
+  { name: 'role', type: 'string | undefined' },
+  { name: 'selected', type: 'boolean | undefined' },
+  { name: 'tag', type: 'string | undefined', option: ['button', 'a', 'span', 'li', 'div'] },
+  { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric | undefined' },
   { name: 'value', type: 'EventClickValue[\'value\']' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию` }
+  { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

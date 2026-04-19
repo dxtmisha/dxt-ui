@@ -25,6 +25,13 @@ export function initApiCache(
   const getKey = (key: string) => `Ui_ApiCache_${key}`
 
   ApiCache.init(
+    /**
+     * Get item from cache.
+     *
+     * Получить элемент из кэша.
+     * @param key Cache key / Ключ кэша
+     * @returns Cache item or undefined / Элемент кэша или undefined
+     */
     async (key: string) => {
       try {
         return (await storage.getItem<ApiCacheItem>(getKey(key))) ?? undefined
@@ -39,6 +46,14 @@ export function initApiCache(
       }
     },
 
+    /**
+     * Set item to cache.
+     *
+     * Установить элемент в кэш.
+     * @param key Cache key / Ключ кэша
+     * @param value Cache item / Элемент кэша
+     * @returns Promise with success status / Promise со статусом успеха
+     */
     async (key: string, value: ApiCacheItem) => {
       try {
         await storage.setItem(getKey(key), value)
@@ -54,6 +69,13 @@ export function initApiCache(
       }
     },
 
+    /**
+     * Remove item from cache.
+     *
+     * Удалить элемент из кэша.
+     * @param key Cache key / Ключ кэша
+     * @returns Promise with success status / Promise со статусом успеха
+     */
     async (key: string) => {
       try {
         await storage.removeItem(getKey(key))

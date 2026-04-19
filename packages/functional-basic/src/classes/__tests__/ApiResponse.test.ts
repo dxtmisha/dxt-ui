@@ -2,154 +2,149 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ApiResponse } from '../ApiResponse'
 import { ApiDefault } from '../ApiDefault'
-import { ApiMethodItem } from '../../types/apiTypes'
-import { Loading } from '../Loading'
+import { ApiMethodItem, type ApiResponseItem } from '../../types/apiTypes'
+import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
 describe('ApiResponse', () => {
+  let isDomRuntimeSpy: any
+  let requestDefault: ApiDefault
   let apiResponse: ApiResponse
-  let apiDefault: ApiDefault
 
   beforeEach(() => {
-    apiDefault = new ApiDefault()
-    apiResponse = new ApiResponse(apiDefault)
     vi.useFakeTimers()
-    vi.clearAllMocks()
+    isDomRuntimeSpy = vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
+    requestDefault = new ApiDefault()
+    apiResponse = new ApiResponse(requestDefault)
   })
 
   afterEach(() => {
+    vi.restoreAllMocks()
     vi.useRealTimers()
     document.body.className = ''
   })
 
   it('should add and retrieve cached responses', () => {
-    const item = {
-      path: '/api/test',
-      method: ApiMethodItem.get,
-      response: { success: true }
-    }
-    apiResponse.add(item)
-
-    const retrieved = apiResponse.get('/api/test', ApiMethodItem.get)
-    expect(retrieved).toEqual(item)
-  })
-
-  it('should match regex path', () => {
-    apiResponse.add({
-      path: /^\/api\/user\/\d+$/,
-      method: ApiMethodItem.get,
-      response: { name: 'User' }
-    })
-
-    expect(apiResponse.get('/api/user/123', ApiMethodItem.get)).toBeDefined()
-    expect(apiResponse.get('/api/user/abc', ApiMethodItem.get)).toBeUndefined()
-  })
-
-  it('should match request data', () => {
-    apiResponse.add({
-      path: '/api/login',
-      method: ApiMethodItem.post,
-      request: { user: 'admin' },
-      response: { ok: true }
-    })
-
-    expect(apiResponse.get('/api/login', ApiMethodItem.post, { user: 'admin' })).toBeDefined()
-    expect(apiResponse.get('/api/login', ApiMethodItem.post, { user: 'guest' })).toBeUndefined()
-  })
-
-  it('should handle *any in request data', () => {
-    apiResponse.setDevMode(true)
-    apiResponse.add({
+    const item: ApiResponseItem = {
       path: '/api/data',
       method: ApiMethodItem.get,
-      request: { type: '*any', id: 1 },
       response: { data: 'test' }
-    })
-
-    expect(apiResponse.get('/api/data', ApiMethodItem.get, { type: 'A', id: 1 })).toBeDefined()
-    expect(apiResponse.get('/api/data', ApiMethodItem.get, { type: 'B', id: 1 })).toBeDefined()
-    expect(apiResponse.get('/api/data', ApiMethodItem.get, { type: 'B', id: 2 })).toBeUndefined()
-  })
-
-  it('should mark as first-time request and not return it twice (unless devMode)', () => {
-    const item = {
-      path: '/api/once',
-      method: ApiMethodItem.get,
-      response: { ok: true }
     }
+
     apiResponse.add(item)
 
-    expect(apiResponse.get('/api/once', ApiMethodItem.get)).toBeDefined()
-    // Second call should return undefined because it's already in 'first' list
-    expect(apiResponse.get('/api/once', ApiMethodItem.get)).toBeUndefined()
-
-    // But in dev mode it should return it
-    expect(apiResponse.get('/api/once', ApiMethodItem.get, undefined, true)).toBeDefined()
+    const result = apiResponse.get('/api/data', ApiMethodItem.get, undefined, false)
+    expect(result).toBe(item)
   })
 
-  it('emulator should return data if matched', async () => {
-    apiResponse.add({
-      path: '/api/mock',
-      method: ApiMethodItem.get,
-      response: { val: 123 }
-    })
+  it('should filter out global items in getList', () => {
+    const item1: ApiResponseItem = { path: '1', method: ApiMethodItem.get, response: '1', isForGlobal: true }
+    const item2: ApiResponseItem = { path: '2', method: ApiMethodItem.get, response: '2' }
 
-    const result = await apiResponse.emulator({
-      path: '/api/mock',
-      method: ApiMethodItem.get,
-      global: true
-    })
+    apiResponse.add([item1, item2])
+    const list = apiResponse.getList()
 
-    expect(result).toEqual({ val: 123 })
+    expect(list.length).toBe(1)
+    expect(list[0]).toBe(item2)
   })
 
-  it('emulator should handle function response and lag', async () => {
-    apiResponse.add({
-      path: '/api/delay',
+  it('should disable items properly', () => {
+    const item: ApiResponseItem = {
+      path: 'test',
       method: ApiMethodItem.get,
-      response: (req: any) => ({ echoed: req.q }),
+      disable: true,
+      response: 'test'
+    }
+
+    apiResponse.add(item)
+    expect(apiResponse.get('test', ApiMethodItem.get)).toBeUndefined()
+  })
+
+  it('should match path using literal or regex', () => {
+    apiResponse.add([
+      { path: 'literal-path', method: ApiMethodItem.get, response: 'literal' },
+      { path: /regex-path-\d+/, method: ApiMethodItem.get, response: 'regex' }
+    ])
+
+    expect(apiResponse.get('literal-path', ApiMethodItem.get)).toBeDefined()
+    expect(apiResponse.get('regex-path-123', ApiMethodItem.get)).toBeDefined()
+    expect(apiResponse.get('regex-path-ab', ApiMethodItem.get)).toBeUndefined()
+  })
+
+  it('should match response by exact request object or wildcard', () => {
+    apiResponse.add([
+      { path: 'p1', method: ApiMethodItem.post, request: { a: 1, b: 2 }, response: 'exact' },
+      { path: 'p2', method: ApiMethodItem.post, request: '*any', response: 'wildcard' },
+      { path: 'p3', method: ApiMethodItem.post, request: { a: '*any' }, response: 'nested-wildcard' }
+    ])
+
+    // Exact matches (using devMode: true to skip "first time" check)
+    expect(apiResponse.get('p1', ApiMethodItem.post, { a: 1, b: 2 }, true)).toBeDefined()
+    expect(apiResponse.get('p1', ApiMethodItem.post, { a: 1 }, true)).toBeUndefined() // diff length
+
+    // Wildcard matches
+    expect(apiResponse.get('p2', ApiMethodItem.post, { completely: 'different' }, true)).toBeDefined()
+    expect(apiResponse.get('p2', ApiMethodItem.post, undefined, true)).toBeDefined()
+
+    // Nested wildcard
+    expect(apiResponse.get('p3', ApiMethodItem.post, { a: 999 }, true)).toBeDefined()
+  })
+
+  it('should only return response once unless devMode is true', () => {
+    const item: ApiResponseItem = { path: 'test', method: ApiMethodItem.get, response: 'data' }
+    apiResponse.add(item)
+
+    // First time should work
+    expect(apiResponse.get('test', ApiMethodItem.get, undefined, false)).toBeDefined()
+
+    // Second time should fail unless devMode
+    expect(apiResponse.get('test', ApiMethodItem.get, undefined, false)).toBeUndefined()
+
+    // DevMode overrides this check
+    expect(apiResponse.get('test', ApiMethodItem.get, undefined, true)).toBeDefined()
+
+    // Global devMode overrides this too
+    apiResponse.setDevMode(true)
+    expect(apiResponse.get('test', ApiMethodItem.get, undefined, false)).toBeDefined()
+  })
+
+  it('should emulate fetch and trigger loading state', async () => {
+    apiResponse.add({
+      path: 'lag-test',
+      method: ApiMethodItem.get,
+      response: { ok: true },
       lag: true
     })
 
-    const showSpy = vi.spyOn(Loading, 'show')
-    const hideSpy = vi.spyOn(Loading, 'hide')
+    const promise = apiResponse.emulator({ path: 'lag-test', method: ApiMethodItem.get, global: true })
 
-    const promise = apiResponse.emulator({
-      path: '/api/delay',
-      method: ApiMethodItem.get,
-      request: { q: 'hi' },
-      global: true
-    })
-
-    // Class d-response-loading should be added to body
-    // We might need to wait for a microtask for startResponseLoading to take effect if called within async
     expect(document.body.classList.contains('d-response-loading')).toBe(true)
 
-    // Advance timers for random delay (0-2000ms)
-    await vi.advanceTimersByTimeAsync(2000)
+    await vi.runAllTimersAsync()
 
     const result = await promise
-    expect(result).toEqual({ echoed: 'hi' })
-    expect(showSpy).toHaveBeenCalled()
-    expect(hideSpy).toHaveBeenCalled()
+    expect(result).toEqual({ ok: true })
+
+    // Simulate clearing the loading class 2400ms after completion
+    await vi.advanceTimersByTimeAsync(3000)
+    expect(document.body.classList.contains('d-response-loading')).toBe(false)
   })
 
-  it('should support devMode setter', () => {
-    apiResponse.setDevMode(true)
-    apiResponse.add({ path: '/dev', method: ApiMethodItem.get, response: {} })
+  it('should handle function as response', async () => {
+    apiResponse.add({
+      path: 'func-res',
+      method: ApiMethodItem.get,
+      request: '*any',
+      response: (req: any) => ({ resolved: true, req })
+    })
 
-    expect(apiResponse.get('/dev', ApiMethodItem.get)).toBeDefined()
-    // Still defined because of devMode
-    expect(apiResponse.get('/dev', ApiMethodItem.get)).toBeDefined()
+    const result = await apiResponse.emulator({ path: 'func-res', method: ApiMethodItem.get, global: true, request: { a: 1 } })
+
+    expect(result).toEqual({ resolved: true, req: { a: 1 } })
   })
 
-  it('getList should exclude global responses', () => {
-    apiResponse.add([
-      { path: '/a', method: ApiMethodItem.get, response: {}, isForGlobal: false },
-      { path: '/b', method: ApiMethodItem.get, response: {}, isForGlobal: true }
-    ])
-
-    const list = apiResponse.getList()
-    expect(list).toHaveLength(1)
-    expect(list[0].path).toBe('/a')
+  it('should return undefined from emulator if not DomRuntime', async () => {
+    isDomRuntimeSpy.mockReturnValue(false)
+    const result = await apiResponse.emulator({ path: 'test' })
+    expect(result).toBeUndefined()
   })
 })

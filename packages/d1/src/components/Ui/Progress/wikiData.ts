@@ -5,22 +5,22 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'ariaLabel', type: 'string' },
-  { name: 'circular', type: 'boolean' },
-  { name: 'delay', type: 'string | number' },
-  { name: 'delayHide', type: 'string | number' },
-  { name: 'dense', type: 'boolean' },
+  { name: 'ariaLabel', type: 'string | undefined' },
+  { name: 'circular', type: 'boolean | undefined' },
+  { name: 'delay', type: 'string | number | undefined' },
+  { name: 'delayHide', type: 'string | number | undefined' },
+  { name: 'dense', type: 'boolean | undefined' },
   { name: 'indeterminate', type: 'string', option: ['type1', 'type2', 'type3'] },
-  { name: 'inverse', type: 'boolean' },
-  { name: 'linear', type: 'boolean' },
-  { name: 'max', type: 'string | number' },
+  { name: 'inverse', type: 'boolean | undefined' },
+  { name: 'linear', type: 'boolean | undefined' },
+  { name: 'max', type: 'string | number | undefined' },
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
-  { name: 'point', type: 'boolean' },
+  { name: 'point', type: 'boolean | undefined' },
   { name: 'position', type: 'string', option: ['top', 'bottom', 'static'] },
   { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] },
   { name: 'textLoading', type: 'TextValue' },
-  { name: 'value', type: 'string | number' },
-  { name: 'visible', type: 'boolean' }
+  { name: 'value', type: 'string | number | undefined' },
+  { name: 'visible', type: 'boolean | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 

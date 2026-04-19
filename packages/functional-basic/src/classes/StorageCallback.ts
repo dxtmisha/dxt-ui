@@ -1,4 +1,17 @@
 import { executePromise } from '../functions/executePromise'
+import { ServerStorage } from './ServerStorage'
+
+/**
+ * Returns a list of active StorageCallback instances for the current request context.
+ *
+ * Возвращает список активных экземпляров StorageCallback для контекста текущего запроса.
+ */
+const getItems = () => {
+  return ServerStorage.get<Record<string, StorageCallback>>(
+    '__ui:storage-callback__',
+    () => ({})
+  )
+}
 
 /**
  * A class for working with callback lists for storage.
@@ -39,6 +52,7 @@ export class StorageCallback<
     protected group: string = 'main'
   ) {
     const key = `${group}:${name}`
+    const items = getItems()
 
     if (key in items) {
       return items[key] as StorageCallback<T, Callback>
@@ -140,5 +154,3 @@ export class StorageCallback<
     return this
   }
 }
-
-const items: Record<string, StorageCallback> = {}

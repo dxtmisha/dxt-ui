@@ -1,0 +1,78 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/MetaStatic - Управление мета-тегами (Static)'/>
+
+# Класс MetaStatic
+
+Класс `MetaStatic` является **статической точкой входа** для управления мета-тегами страницы, данными Open Graph (OG) и Twitter Card. Он представляет собой статическую обертку над глобально управляемым экземпляром `Meta`, предоставляя удобный синглтон-интерфейс для SEO и социальных сетей.
+
+## Ключевые особенности
+
+- **Статический интерфейс** — управление заголовками, описаниями и другими данными без необходимости ручного создания экземпляров.
+- **Единое управление** — автоматическая синхронизация заголовков и другой информации между стандартными мета-тегами, OG и Twitter.
+- **Изоляция в SSR** — использует `ServerStorage` для обеспечения изоляции данных между запросами во время рендеринга на стороне сервера.
+- **Fluent API** — поддержка цепочки вызовов (method chaining) в методах установки.
+
+## Методы
+
+### Доступ
+
+- `getItem(): Meta` — Возвращает базовый экземпляр класса `Meta`.
+- `getOg(): MetaOg` — Получает экземпляр `MetaOg` для расширенных операций с Open Graph.
+- `getTwitter(): MetaTwitter` — Получает экземпляр `MetaTwitter` для расширенных операций с Twitter Card.
+
+### Получение (Getters)
+
+- `getTitle(): string` — Возвращает текущий заголовок (без суффикса).
+- `getDescription(): string` — Возвращает содержимое мета-тега description.
+- `getKeywords(): string` — Возвращает список ключевых слов.
+- `getImage(): string` — Возвращает URL изображения (из настроек OG).
+- `getCanonical(): string` — Возвращает канонический URL.
+- `getRobots(): MetaRobots` — Возвращает текущую директиву robots.
+- `getAuthor(): string` — Возвращает имя автора.
+- `getSiteName(): string` — Возвращает название сайта (из настроек OG).
+- `getLocale(): string` — Возвращает локаль (из настроек OG).
+
+### Установка (Setters)
+
+Все методы установки возвращают `typeof MetaStatic` для поддержки цепочки вызовов.
+
+- `setTitle(title: string): typeof MetaStatic` — Устанавливает заголовок страницы и обновляет заголовки OG/Twitter.
+- `setDescription(description: string): typeof MetaStatic` — Устанавливает мета-тег description.
+- `setKeywords(keywords: string | string[]): typeof MetaStatic` — Устанавливает ключевые слова (строка или массив).
+- `setImage(image: string): typeof MetaStatic` — Устанавливает изображение для OG и Twitter.
+- `setCanonical(canonical: string): typeof MetaStatic` — Устанавливает канонический URL и обновляет URL для OG/Twitter.
+- `setRobots(robots: MetaRobots): typeof MetaStatic` — Устанавливает директиву robots.
+- `setAuthor(author: string): typeof MetaStatic` — Устанавливает мета-тег author.
+- `setSiteName(siteName: string): typeof MetaStatic` — Устанавливает название сайта для OG и Twitter.
+- `setLocale(locale: string): typeof MetaStatic` — Устанавливает локаль для Open Graph.
+- `setSuffix(suffix?: string): typeof MetaStatic` — Устанавливает суффикс (например, " | Мой Сайт"), добавляемый к заголовкам.
+
+### Вывод
+
+- `html(): string` — Генерирует полную строку HTML-тегов для всех управляемых свойств.
+
+## Архитектура
+
+`MetaStatic` работает как **статический прокси**. Все вызовы методов перенаправляются на внутренний экземпляр `Meta`, который управляется через `ServerStorage`.
+
+### Изоляция запросов (SSR)
+
+Благодаря использованию `ServerStorage`, `MetaStatic` гарантирует, что при рендеринге на стороне сервера (SSR) информация одного запроса не попадет в другой. Каждый запрос получает свой изолированный контекст.
+
+### Примеры
+
+```typescript
+import { MetaStatic } from '@dxtmisha/functional-basic';
+
+MetaStatic
+  .setSuffix('Мой Интернет Магазин')
+  .setTitle('Летняя коллекция')
+  .setDescription('Ознакомьтесь с нашими новинками.')
+  .setImage('https://example.com/cover.jpg')
+  .setLocale('ru_RU');
+
+console.log(MetaStatic.getTitle()); // "Летняя коллекция"
+document.title; // "Летняя коллекция - Мой Интернет Магазин"
+```
+

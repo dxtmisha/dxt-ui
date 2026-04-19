@@ -5,19 +5,19 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'autoClose', type: 'boolean' },
+  { name: 'autoClose', type: 'boolean | undefined' },
   { name: 'axis', type: 'string', option: ['x', 'y'] },
-  { name: 'disabled', type: 'boolean' },
-  { name: 'divider', type: 'boolean' },
-  { name: 'open', type: 'boolean' },
-  { name: 'windowAttrs', type: 'ConstrBind<Window>' }
+  { name: 'disabled', type: 'boolean | undefined' },
+  { name: 'divider', type: 'boolean | undefined' },
+  { name: 'open', type: 'boolean | undefined' },
+  { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'head', description: `Slot for the menu header/ Слот для заголовка меню`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
-  { name: 'list', description: `Slot for the menu list content/ Слот для содержимого списка меню` }
+  { name: 'head', description: `Slot for the menu header/ Слот для заголовка меню`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
+  { name: 'list', description: `Slot for the menu list content/ Слот для содержимого списка меню`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

@@ -1,0 +1,78 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/MetaStatic - Quản lý Meta Tags (Static)'/>
+
+# Class MetaStatic
+
+Lớp `MetaStatic` là **điểm truy cập tĩnh** để quản lý các thẻ meta của trang, dữ liệu Open Graph (OG) và Twitter Card. Nó hoạt động như một lớp vỏ bọc tĩnh (static wrapper) xung quanh một thực thể `Meta` được quản lý toàn cục, cung cấp một giao diện singleton sạch sẽ để quản lý SEO và chia sẻ mạng xã hội.
+
+## Các tính năng chính
+
+- **Giao diện tĩnh** — Quản lý tiêu đề trang, mô tả và nhiều thứ khác mà không cần khởi tạo thủ công.
+- **Quản lý thống nhất** — Tự động đồng bộ hóa tiêu đề và các thông tin khác trên các thẻ meta tiêu chuẩn, OG và Twitter.
+- **Cách ly trong SSR** — Sử dụng `ServerStorage` để xử lý cách ly thực thể trong quá trình render phía máy chủ (server-side rendering).
+- **Fluent API** — Hỗ trợ kỹ thuật method chaining cho các phương thức thiết lập (setter).
+
+## Các phương thức
+
+### Truy cập
+
+- `getItem(): Meta` — Trả về thực thể `Meta` cơ sở.
+- `getOg(): MetaOg` — Lấy thực thể `MetaOg` cho các thao tác Open Graph nâng cao.
+- `getTwitter(): MetaTwitter` — Lấy thực thể `MetaTwitter` cho các thao tác Twitter Card nâng cao.
+
+### Lấy dữ liệu (Getters)
+
+- `getTitle(): string` — Lấy tiêu đề trang hiện tại (không bao gồm hậu tố).
+- `getDescription(): string` — Lấy nội dung thẻ meta description.
+- `getKeywords(): string` — Lấy các từ khóa hiện tại.
+- `getImage(): string` — Lấy URL hình ảnh (từ cài đặt OG).
+- `getCanonical(): string` — Lấy URL chuẩn (canonical).
+- `getRobots(): MetaRobots` — Lấy chỉ thị robots hiện tại.
+- `getAuthor(): string` — Lấy tên tác giả.
+- `getSiteName(): string` — Lấy tên trang web (từ cài đặt OG).
+- `getLocale(): string` — Lấy mã ngôn ngữ/khu vực (từ cài đặt OG).
+
+### Thiết lập (Setters)
+
+Tất cả các phương thức thiết lập đều trả về `typeof MetaStatic` để hỗ trợ method chaining.
+
+- `setTitle(title: string): typeof MetaStatic` — Thiết lập tiêu đề trang và cập nhật tiêu đề OG/Twitter.
+- `setDescription(description: string): typeof MetaStatic` — Thiết lập thẻ meta description.
+- `setKeywords(keywords: string | string[]): typeof MetaStatic` — Thiết lập từ khóa (chuỗi hoặc mảng).
+- `setImage(image: string): typeof MetaStatic` — Thiết lập hình ảnh cho OG và Twitter.
+- `setCanonical(canonical: string): typeof MetaStatic` — Thiết lập URL chuẩn và cập nhật URL cho OG/Twitter.
+- `setRobots(robots: MetaRobots): typeof MetaStatic` — Thiết lập chỉ thị robots.
+- `setAuthor(author: string): typeof MetaStatic` — Thiết lập thẻ meta author.
+- `setSiteName(siteName: string): typeof MetaStatic` — Thiết lập tên trang web cho OG và Twitter.
+- `setLocale(locale: string): typeof MetaStatic` — Thiết lập mã ngôn ngữ cho Open Graph.
+- `setSuffix(suffix?: string): typeof MetaStatic` — Thiết lập hậu tố (ví dụ: " | My Site") được thêm vào cuối tiêu đề.
+
+### Đầu ra
+
+- `html(): string` — Tạo ra một chuỗi đầy đủ các thẻ HTML meta cho tất cả các thuộc tính được quản lý.
+
+## Kiến trúc
+
+`MetaStatic` hoạt động như một **proxy tĩnh**. Tất cả các cuộc gọi phương thức được chuyển tiếp đến một thực thể `Meta` nội bộ được quản lý thông qua `ServerStorage`.
+
+### Cách ly yêu cầu (SSR)
+
+Bằng cách sử dụng `ServerStorage`, `MetaStatic` đảm bảo rằng trong quá trình Render phía máy chủ (SSR), thông tin meta của một yêu cầu không bị rò rỉ sang yêu cầu khác. Mỗi yêu cầu có một bối cảnh cách ly riêng.
+
+### Ví dụ
+
+```typescript
+import { MetaStatic } from '@dxtmisha/functional-basic';
+
+MetaStatic
+  .setSuffix('Cửa hàng trực tuyến của tôi')
+  .setTitle('Bộ sưu tập mùa hè')
+  .setDescription('Khám phá các sản phẩm mới nhất của chúng tôi.')
+  .setImage('https://example.com/cover.jpg')
+  .setLocale('vi_VN');
+
+console.log(MetaStatic.getTitle()); // "Bộ sưu tập mùa hè"
+document.title; // "Bộ sưu tập mùa hè - Cửa hàng trực tuyến của tôi"
+```
+

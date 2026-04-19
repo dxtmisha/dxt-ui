@@ -5,11 +5,11 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'counter', type: 'string | number' },
-  { name: 'id', type: 'string' },
-  { name: 'maxlength', type: 'string | number' },
-  { name: 'maxlengthOnce', type: 'string | number' },
-  { name: 'template', type: 'string' },
+  { name: 'counter', type: 'string | number | undefined' },
+  { name: 'id', type: 'string | undefined' },
+  { name: 'maxlength', type: 'string | number | undefined' },
+  { name: 'maxlengthOnce', type: 'string | number | undefined' },
+  { name: 'template', type: 'string | undefined' },
   { name: 'textCharacterLimit', type: 'TextValue' },
   { name: 'textCharacterRemaining', type: 'TextValue' }
   // :propsList [!] System label / Системная метка

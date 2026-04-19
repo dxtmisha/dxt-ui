@@ -1,5 +1,4 @@
 import { TranslateInstance } from './TranslateInstance'
-import { ServerStorage } from './ServerStorage'
 
 import { type TranslateCode, type TranslateConfig, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
 
@@ -9,6 +8,8 @@ import { type TranslateCode, type TranslateConfig, type TranslateDataFile, type 
  * Класс для получения переведенного текста.
  */
 export class Translate {
+  protected static item?: TranslateInstance
+
   /**
    * Getting the translation text by its code.
    *
@@ -31,7 +32,11 @@ export class Translate {
    * @returns TranslateInstance instance / экземпляр TranslateInstance
    */
   static getItem(): TranslateInstance {
-    return ServerStorage.get('__ui:translate-instance__', () => new TranslateInstance())
+    if (!this.item) {
+      this.item = new TranslateInstance()
+    }
+
+    return this.item
   }
 
   /**

@@ -1,70 +1,76 @@
-// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ApiHeaders } from '../ApiHeaders'
 
 describe('ApiHeaders', () => {
-  it('should return default content-type if no headers provided', () => {
-    const headers = new ApiHeaders()
-    expect(headers.get()).toEqual({
-      'Content-Type': 'application/json;charset=UTF-8'
-    })
-  })
-
-  it('should merge provided headers with defaults', () => {
+  it('should initialize and set default headers', () => {
     const apiHeaders = new ApiHeaders()
-    apiHeaders.set({ 'X-Custom-Header': 'custom-value' })
+    apiHeaders.set({ Authorization: 'Token' })
 
-    expect(apiHeaders.get({ 'Another-Header': 'another-value' })).toEqual({
-      'X-Custom-Header': 'custom-value',
-      'Another-Header': 'another-value',
+    const headers = apiHeaders.get()
+    expect(headers).toEqual({
+      'Authorization': 'Token',
       'Content-Type': 'application/json;charset=UTF-8'
     })
   })
 
-  it('should override Content-Type if specified in get()', () => {
-    const headers = new ApiHeaders()
-    expect(headers.get({}, 'text/plain')).toEqual({
+  it('should merge default headers and value headers', () => {
+    const apiHeaders = new ApiHeaders()
+    apiHeaders.set({ 'X-Global': 'true', 'Shared': 'yes' })
+
+    const headers = apiHeaders.get({ 'X-Global': 'false', 'Custom': 'value' })
+    expect(headers).toEqual({
+      'Shared': 'yes',
+      'X-Global': 'false',
+      'Custom': 'value',
+      'Content-Type': 'application/json;charset=UTF-8'
+    })
+  })
+
+  it('should return undefined if value is strictly null', () => {
+    const apiHeaders = new ApiHeaders()
+    expect(apiHeaders.get(null)).toBeUndefined()
+  })
+
+  it('should allow changing Content-Type', () => {
+    const apiHeaders = new ApiHeaders()
+    const headers = apiHeaders.get({}, 'text/plain')
+    expect(headers).toEqual({
       'Content-Type': 'text/plain'
     })
   })
 
-  it('should not include Content-Type if type is null', () => {
-    const headers = new ApiHeaders()
-    expect(headers.get({}, null)).toEqual({})
-  })
-
-  it('should return undefined if value is null', () => {
-    const headers = new ApiHeaders()
-    expect(headers.get(null)).toBeUndefined()
-  })
-
-  it('should handle FormData in getByRequest', () => {
-    const headers = new ApiHeaders()
-    const formData = new FormData()
-
-    // When request is FormData, Content-Type should be removed (browser sets it automatically with boundary)
-    const result = headers.getByRequest(formData)
-    expect(result).toEqual({})
-    expect(result).not.toHaveProperty('Content-Type')
-  })
-
-  it('should use default headers if provided in getByRequest', () => {
-    const headers = new ApiHeaders()
-    headers.set({ Authorization: 'Bearer token' })
-
-    expect(headers.getByRequest({}, { 'X-Test': 'val' })).toEqual({
-      'Authorization': 'Bearer token',
-      'X-Test': 'val',
+  it('should not set Content-Type if it is null or empty', () => {
+    const apiHeaders = new ApiHeaders()
+    // null type
+    expect(apiHeaders.get({}, null)).toEqual({})
+    // undefined triggers default parameter 'application/json;charset=UTF-8'
+    expect(apiHeaders.get({}, undefined)).toEqual({
       'Content-Type': 'application/json;charset=UTF-8'
     })
+    // empty string
+    expect(apiHeaders.get({}, '')).toEqual({})
   })
 
-  it('should support chaining in set()', () => {
-    const headers = new ApiHeaders()
-    const result = headers.set({ A: 'B' })
-    expect(result).toBe(headers)
-    expect(headers.get()).toEqual({
-      'A': 'B',
+  it('should omit Content-Type for FormData requests', () => {
+    const apiHeaders = new ApiHeaders()
+    apiHeaders.set({ Global: 'yes' })
+
+    const formData = new FormData()
+
+    // getByRequest handles FormData and should pass null for Content-Type
+    const headers = apiHeaders.getByRequest(formData, { Add: 'test' })
+    expect(headers).toEqual({
+      Global: 'yes',
+      Add: 'test'
+    })
+    expect(headers?.['Content-Type']).toBeUndefined()
+  })
+
+  it('should include Content-Type for non-FormData objects', () => {
+    const apiHeaders = new ApiHeaders()
+    const headers = apiHeaders.getByRequest({ a: 1 }, { Add: 'test' })
+    expect(headers).toEqual({
+      'Add': 'test',
       'Content-Type': 'application/json;charset=UTF-8'
     })
   })

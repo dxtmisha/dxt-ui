@@ -1,0 +1,78 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/MetaStatic - Meta Tags Management (Static)'/>
+
+# Class MetaStatic
+
+The `MetaStatic` class is a **static entry point** for managing page meta tags, Open Graph (OG), and Twitter Card data. It acts as a static wrapper around a globally managed `Meta` instance, providing a clean singleton interface for SEO and social sharing management.
+
+## Key Features
+
+- **Static Interface** — Manage page titles, descriptions, and more without manual instantiation.
+- **Unified Management** — Automatically syncs titles and other information across standard meta, OG, and Twitter.
+- **SSR Isolation** — Uses `ServerStorage` to handle instance isolation during server-side rendering.
+- **Fluent API** — Support for method chaining in setter methods.
+
+## Methods
+
+### Access
+
+- `getItem(): Meta` — Returns the underlying `Meta` instance.
+- `getOg(): MetaOg` — Gets the MetaOg instance for advanced Open Graph operations.
+- `getTwitter(): MetaTwitter` — Gets the MetaTwitter instance for advanced Twitter Card operations.
+
+### Getters
+
+- `getTitle(): string` — Gets the current page title (without suffix).
+- `getDescription(): string` — Gets the current description meta tag.
+- `getKeywords(): string` — Gets the current keywords.
+- `getImage(): string` — Gets the image URL (from OG settings).
+- `getCanonical(): string` — Gets the canonical URL.
+- `getRobots(): MetaRobots` — Gets the current robots directive.
+- `getAuthor(): string` — Gets the author name.
+- `getSiteName(): string` — Gets the site name (from OG settings).
+- `getLocale(): string` — Gets the locale (from OG settings).
+
+### Setters
+
+All setter methods return `typeof MetaStatic` to support method chaining.
+
+- `setTitle(title: string): typeof MetaStatic` — Sets the page title and updates OG/Twitter titles.
+- `setDescription(description: string): typeof MetaStatic` — Sets the description meta tag.
+- `setKeywords(keywords: string | string[]): typeof MetaStatic` — Sets the keywords (string or array).
+- `setImage(image: string): typeof MetaStatic` — Sets the image for OG and Twitter.
+- `setCanonical(canonical: string): typeof MetaStatic` — Sets the canonical URL and updates OG/Twitter URLs.
+- `setRobots(robots: MetaRobots): typeof MetaStatic` — Sets the robots directive.
+- `setAuthor(author: string): typeof MetaStatic` — Sets the author meta tag.
+- `setSiteName(siteName: string): typeof MetaStatic` — Sets the site name for OG and Twitter.
+- `setLocale(locale: string): typeof MetaStatic` — Sets the locale for Open Graph.
+- `setSuffix(suffix?: string): typeof MetaStatic` — Sets a suffix (e.g., " | My Site") appended to titles.
+
+### Output
+
+- `html(): string` — Generates a complete string of HTML meta tags for all managed properties.
+
+## Architecture
+
+`MetaStatic` works as a **static proxy**. All calls are forwarded to an internal `Meta` instance managed via `ServerStorage`.
+
+### Request Isolation (SSR)
+
+By using `ServerStorage`, `MetaStatic` ensures that during Server-Side Rendering (SSR), meta information for one request does not leak into another. Each request gets its own isolated context.
+
+### Examples
+
+```typescript
+import { MetaStatic } from '@dxtmisha/functional-basic';
+
+MetaStatic
+  .setSuffix('My Online Store')
+  .setTitle('Summer Collection')
+  .setDescription('Explore our new arrivals.')
+  .setImage('https://example.com/cover.jpg')
+  .setLocale('en_US');
+
+console.log(MetaStatic.getTitle()); // "Summer Collection"
+document.title; // "Summer Collection - My Online Store"
+```
+

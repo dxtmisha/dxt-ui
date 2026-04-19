@@ -1,82 +1,106 @@
-// @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ApiHydration } from '../ApiHydration'
 import { ApiResponse } from '../ApiResponse'
+import * as isDomRuntimeModule from '../../functions/isDomRuntime'
+import * as getElementSafeScriptModule from '../../functions/getElementSafeScript'
+import * as getHydrationDataModule from '../../functions/getHydrationData'
+import { ApiMethodItem } from '../../types/apiTypes'
 import { ApiDefault } from '../ApiDefault'
-import * as domUtils from '../../functions/isDomRuntime'
-
-vi.mock('../../functions/isDomRuntime', () => ({
-  isDomRuntime: vi.fn()
-}))
 
 describe('ApiHydration', () => {
-  let hydration: ApiHydration
+  let isDomRuntimeSpy: any
+  let getHydrationDataSpy: any
+  let getElementSafeScriptSpy: any
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    hydration = new ApiHydration()
+    isDomRuntimeSpy = vi.spyOn(isDomRuntimeModule, 'isDomRuntime')
+    getHydrationDataSpy = vi.spyOn(getHydrationDataModule, 'getHydrationData')
+    getElementSafeScriptSpy = vi.spyOn(getElementSafeScriptModule, 'getElementSafeScript')
   })
 
-  it('toClient should store data in non-DOM environment for global GET requests', () => {
-    vi.mocked(domUtils.isDomRuntime).mockReturnValue(false)
-
-    const apiFetch = {
-      path: '/api/data',
-      method: 'GET',
-      global: true
-    } as any
-    const responseData = { id: 1, name: 'Test' }
-
-    hydration.toClient(apiFetch, responseData)
-
-    // We can check the list via toString() since list is protected
-    const script = hydration.toString()
-    expect(script).toContain('__ui:api:hydration:id__')
-    expect(script).toContain('/api/data')
-    expect(script).toContain('Test')
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('toClient should not store data in DOM environment', () => {
-    vi.mocked(domUtils.isDomRuntime).mockReturnValue(true)
+  it('should initialize response when in DOM runtime', () => {
+    isDomRuntimeSpy.mockReturnValue(true)
+    const mockList = [{ path: 'test', method: ApiMethodItem.get, response: 'data' }]
+    getHydrationDataSpy.mockReturnValue(mockList)
 
-    const apiFetch = {
-      path: '/api/data',
-      method: 'GET',
-      global: true
-    } as any
-
-    hydration.toClient(apiFetch, { data: 1 })
-    // Even if empty, it returns a script tag with empty array
-    expect(hydration.toString()).toContain('[]')
-  })
-
-  it('toClient should not store data if global is false', () => {
-    vi.mocked(domUtils.isDomRuntime).mockReturnValue(false)
-
-    hydration.toClient({ path: '/api', global: false } as any, { x: 1 })
-    expect(hydration.toString()).toContain('[]')
-  })
-
-  it('initResponse should add hydration data to response on client side', () => {
-    vi.mocked(domUtils.isDomRuntime).mockReturnValue(true)
-
-    // Mock hydration data in DOM
-    const mockData = [{ path: '/api/init', response: { ok: true } }]
-    const script = document.createElement('script')
-    script.id = '__ui:api:hydration:id__'
-    script.type = 'application/json'
-    script.textContent = JSON.stringify(mockData)
-    document.body.appendChild(script)
-
+    // We need an actual ApiResponse to test add() method call
     const response = new ApiResponse(new ApiDefault())
     const addSpy = vi.spyOn(response, 'add')
 
+    const hydration = new ApiHydration()
     hydration.initResponse(response)
 
-    expect(addSpy).toHaveBeenCalledWith(mockData)
+    expect(isDomRuntimeSpy).toHaveBeenCalled()
+    expect(getHydrationDataSpy).toHaveBeenCalledWith('__ui:api:hydration:id__', [])
+    expect(addSpy).toHaveBeenCalledWith(mockList)
+  })
 
-    if (script.parentNode) {
-      script.parentNode.removeChild(script)
-    }
+  it('should NOT initialize response when NOT in DOM runtime', () => {
+    isDomRuntimeSpy.mockReturnValue(false)
+    const response = new ApiResponse(new ApiDefault())
+    const addSpy = vi.spyOn(response, 'add')
+
+    const hydration = new ApiHydration()
+    hydration.initResponse(response)
+
+    expect(addSpy).not.toHaveBeenCalled()
+  })
+
+  it('should push into list for toClient when NOT in DOM runtime', () => {
+    isDomRuntimeSpy.mockReturnValue(false) // SSR
+
+    const hydration = new ApiHydration()
+    hydration.toClient({ path: 'my-path' }, { someData: 1 })
+
+    // Check list internals by checking toString effect or using bracket access
+    getElementSafeScriptSpy.mockImplementation((_: string, list: any) => JSON.stringify(list))
+
+    const result = hydration.toString()
+    expect(result).toContain('my-path')
+    expect(result).toContain('someData')
+  })
+
+  it('should NOT push into list for toClient when in DOM runtime', () => {
+    isDomRuntimeSpy.mockReturnValue(true) // Client side
+
+    const hydration = new ApiHydration()
+    hydration.toClient({ path: 'my-path' }, { someData: 1 })
+
+    getElementSafeScriptSpy.mockImplementation((_: string, list: any) => JSON.stringify(list))
+    const result = hydration.toString()
+    expect(result).toBe('[]') // empty list
+  })
+
+  it('should NOT push into list if global is false', () => {
+    isDomRuntimeSpy.mockReturnValue(false)
+
+    const hydration = new ApiHydration()
+    hydration.toClient({ path: 'my-path', global: false }, { someData: 1 })
+
+    getElementSafeScriptSpy.mockImplementation((_: string, list: any) => JSON.stringify(list))
+    expect(hydration.toString()).toBe('[]')
+  })
+
+  it('should NOT push into list if path is empty', () => {
+    isDomRuntimeSpy.mockReturnValue(false)
+
+    const hydration = new ApiHydration()
+    hydration.toClient({ path: '' }, { someData: 1 })
+
+    getElementSafeScriptSpy.mockImplementation((_: string, list: any) => JSON.stringify(list))
+    expect(hydration.toString()).toBe('[]')
+  })
+
+  it('should call getElementSafeScript on toString()', () => {
+    getElementSafeScriptSpy.mockReturnValue('<script>...</script>')
+    const hydration = new ApiHydration()
+
+    const str = hydration.toString()
+    expect(str).toBe('<script>...</script>')
+    expect(getElementSafeScriptSpy).toHaveBeenCalledWith('__ui:api:hydration:id__', [])
   })
 })

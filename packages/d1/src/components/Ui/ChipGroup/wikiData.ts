@@ -5,22 +5,22 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'chipAttrs', type: 'ConstrBind<Chip>' },
-  { name: 'iconWhenSelected', type: 'boolean' },
-  { name: 'keyLabel', type: 'string' },
-  { name: 'keyValue', type: 'string' },
-  { name: 'list', type: 'ChipGroupData' },
-  { name: 'modelSelected', type: 'ListSelectedList' },
-  { name: 'onUpdate:modelSelected', type: '(value: ListSelectedList) => void' },
-  { name: 'onUpdate:selected', type: '(value: ListSelectedList) => void' },
-  { name: 'readonly', type: 'boolean' },
-  { name: 'selected', type: 'ListSelectedList' }
+  { name: 'chipAttrs', type: 'ConstrBind<ChipProps> | undefined' },
+  { name: 'iconWhenSelected', type: 'boolean | undefined' },
+  { name: 'keyLabel', type: 'string | undefined' },
+  { name: 'keyValue', type: 'string | undefined' },
+  { name: 'list', type: 'ChipGroupData | undefined' },
+  { name: 'modelSelected', type: 'ListSelectedList | undefined' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
+  { name: 'readonly', type: 'boolean | undefined' },
+  { name: 'selected', type: 'ListSelectedList | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Slot for displaying a custom list of chips/ Слот для отображения пользовательского списка чипов` }
+  { name: 'default', description: `Slot for displaying a custom list of chips/ Слот для отображения пользовательского списка чипов`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

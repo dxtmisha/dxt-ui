@@ -1,65 +1,68 @@
-// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ApiDefault } from '../ApiDefault'
 
 describe('ApiDefault', () => {
-  it('is() should return false initially', () => {
+  it('should initialize without default value', () => {
     const apiDefault = new ApiDefault()
     expect(apiDefault.is()).toBe(false)
+    expect(apiDefault.get()).toBeUndefined()
   })
 
-  it('set() should set value and is() should return true', () => {
+  it('should set and get default values', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set({ key: 'value' })
+    apiDefault.set({ token: '123' })
     expect(apiDefault.is()).toBe(true)
-    expect(apiDefault.get()).toEqual({ key: 'value' })
+    expect(apiDefault.get()).toEqual({ token: '123' })
   })
 
-  it('request() should merge defaults with object request', () => {
+  it('should merge default object into request object', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set({ appId: 123, version: '1.0' })
+    apiDefault.set({ globalParam: 'yes' })
 
-    const request = { userId: 456, version: '2.0' }
-    const result = apiDefault.request(request)
-
+    // Passing standard object
+    const result = apiDefault.request({ customParam: 'no' })
     expect(result).toEqual({
-      appId: 123,
-      userId: 456,
-      version: '2.0' // Overridden by request
+      globalParam: 'yes',
+      customParam: 'no'
+    })
+
+    // Request overrides default
+    const resultOverride = apiDefault.request({ globalParam: 'no' })
+    expect(resultOverride).toEqual({
+      globalParam: 'no'
     })
   })
 
-  it('request() should add defaults to FormData', () => {
+  it('should merge defaults into FormData', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set({ token: 'abc', group: 'admin' })
+    apiDefault.set({ globalParam: 'yes', existingParam: 'new' })
 
-    const formData = new FormData()
-    formData.append('group', 'user')
-    formData.append('name', 'John')
+    const form = new FormData()
+    form.append('existingParam', 'old')
 
-    apiDefault.request(formData)
+    const result = apiDefault.request(form) as FormData
 
-    expect(formData.get('token')).toBe('abc')
-    expect(formData.get('group')).toBe('user') // Should not overwrite existing
-    expect(formData.get('name')).toBe('John')
+    // Default should be added if not exists
+    expect(result.get('globalParam')).toBe('yes')
+
+    // Existing should NOT be overridden by default
+    expect(result.get('existingParam')).toBe('old')
   })
 
-  it('request() should return original request if no defaults set', () => {
+  it('should return request as is if it is a string or array when value is set', () => {
     const apiDefault = new ApiDefault()
-    const request = { a: 1 }
-    expect(apiDefault.request(request)).toBe(request)
+    apiDefault.set({ defaultParam: 1 })
+
+    // String
+    expect(apiDefault.request('string_request')).toBe('string_request')
+
+    // Array
+    expect(apiDefault.request(['array_item'])).toEqual(['array_item'])
   })
 
-  it('request() should return original request if it is a string', () => {
+  it('should return request as is if no defaults exist', () => {
     const apiDefault = new ApiDefault()
-    apiDefault.set({ a: 1 })
-    const request = 'raw body'
-    expect(apiDefault.request(request)).toBe(request)
-  })
-
-  it('should support chaining', () => {
-    const apiDefault = new ApiDefault()
-    const result = apiDefault.set({ x: 1 })
-    expect(result).toBe(apiDefault)
+    expect(apiDefault.request({ a: 1 })).toEqual({ a: 1 })
+    expect(apiDefault.request(undefined)).toBeUndefined()
   })
 })

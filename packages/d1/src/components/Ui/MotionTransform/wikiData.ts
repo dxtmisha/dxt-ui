@@ -7,33 +7,33 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'adaptive', type: 'string', option: ['planeAlways', 'planeSm', 'planeMd', 'planeLg', 'planeXl', 'plane2xl'] },
   { name: 'animationHeadPosition', type: 'string', option: ['top', 'toBottom'] },
-  { name: 'animationShow', type: 'boolean' },
-  { name: 'ariaDescribedby', type: 'string' },
-  { name: 'ariaLabelledby', type: 'string' },
-  { name: 'autoClose', type: 'boolean' },
-  { name: 'clickOpen', type: 'boolean' },
-  { name: 'ignore', type: 'string | HTMLElement' },
-  { name: 'ignoreSelector', type: 'string' },
-  { name: 'inDom', type: 'boolean' },
-  { name: 'modelOpen', type: 'boolean' },
-  { name: 'onUpdate:modelOpen', type: '(value: boolean) => void' },
-  { name: 'onUpdate:open', type: '(value: boolean) => void' },
-  { name: 'open', type: 'boolean' },
-  { name: 'section', type: 'boolean' },
-  { name: 'tagBody', type: 'string' }
+  { name: 'animationShow', type: 'boolean | undefined' },
+  { name: 'ariaDescribedby', type: 'string | undefined' },
+  { name: 'ariaLabelledby', type: 'string | undefined' },
+  { name: 'autoClose', type: 'boolean | undefined' },
+  { name: 'clickOpen', type: 'boolean | undefined' },
+  { name: 'ignore', type: 'string | HTMLElement | undefined' },
+  { name: 'ignoreSelector', type: 'string | undefined' },
+  { name: 'inDom', type: 'boolean | undefined' },
+  { name: 'modelOpen', type: 'boolean | undefined' },
+  { name: 'onUpdate:modelOpen', type: '((value: boolean) => void) | undefined' },
+  { name: 'onUpdate:open', type: '((value: boolean) => void) | undefined' },
+  { name: 'open', type: 'boolean | undefined' },
+  { name: 'section', type: 'boolean | undefined' },
+  { name: 'tagBody', type: 'string | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'body', description: `Body slot for content/ Слот тела для содержимого`, properties: [{ name: 'props', type: 'MotionTransformControlItem' }] },
-  { name: 'head', description: `Head slot for controls/ Слот шапки для элементов управления`, properties: [{ name: 'props', type: 'MotionTransformControlItem' }] }
+  { name: 'body', description: `Body slot for content/ Слот тела для содержимого`, properties: [{ name: 'props', type: '(MotionTransformControlItem) | undefined' }] },
+  { name: 'head', description: `Head slot for controls/ Слот шапки для элементов управления`, properties: [{ name: 'props', type: '(MotionTransformControlItem) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'transform', description: `Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации`, properties: [{ name: 'event', type: 'Event' }, { name: 'options', type: 'MotionTransformEmitOptions' }] },
+  { name: 'transform', description: `Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации`, properties: [{ name: 'event', type: 'Event | undefined' }, { name: 'options', type: 'MotionTransformEmitOptions' }] },
   { name: 'transformLite', description: `Lightweight transformation event/ Облегченное событие трансформации`, properties: [{ name: 'options', type: 'MotionTransformEmitOptions' }] },
   { name: 'update:modelOpen', description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: 'value', type: 'boolean' }] },
   { name: 'update:open', description: `Update open event/ Событие обновления открытия`, properties: [{ name: 'value', type: 'boolean' }] }

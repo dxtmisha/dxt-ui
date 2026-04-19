@@ -5,15 +5,15 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'animationHeight', type: 'boolean' },
+  { name: 'animationHeight', type: 'boolean | undefined' },
   { name: 'axis', type: 'string', option: ['x', 'y', 'z'] },
   { name: 'direction', type: 'string', option: ['next', 'back', 'auto'] },
-  { name: 'inDom', type: 'boolean' },
-  { name: 'inDomSlide', type: 'string[]' },
-  { name: 'modelSelected', type: 'string' },
-  { name: 'onUpdate:modelSelected', type: '(value: string) => void' },
-  { name: 'onUpdate:selected', type: '(value: string) => void' },
-  { name: 'selected', type: 'string' }
+  { name: 'inDom', type: 'boolean | undefined' },
+  { name: 'inDomSlide', type: 'string[] | undefined' },
+  { name: 'modelSelected', type: 'MotionAxisSelectedValue' },
+  { name: 'onUpdate:modelSelected', type: '((value: MotionAxisSelectedValue) => void) | undefined' },
+  { name: 'onUpdate:selected', type: '((value: MotionAxisSelectedValue) => void) | undefined' },
+  { name: 'selected', type: 'MotionAxisSelectedValue' }
   // :propsList [!] System label / Системная метка
 ]
 
@@ -24,11 +24,11 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'end', description: `Event triggered at the end of animation/ Событие завершения анимации`, properties: [{ name: 'selected', type: 'string' }] },
+  { name: 'end', description: `Event triggered at the end of animation/ Событие завершения анимации`, properties: [{ name: 'selected', type: 'MotionAxisSelectedValue' }] },
   { name: 'motionAxis', description: `Event for axis motion/ Событие движения оси`, properties: [{ name: 'options', type: 'MotionAxisEmitOptions' }] },
-  { name: 'start', description: `Event triggered at the start of animation/ Событие начала анимации`, properties: [{ name: 'selected', type: 'string' }] },
-  { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'string' }] },
-  { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'string' }] }
+  { name: 'start', description: `Event triggered at the start of animation/ Событие начала анимации`, properties: [{ name: 'selected', type: 'MotionAxisSelectedValue' }] },
+  { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'MotionAxisSelectedValue' }] },
+  { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'MotionAxisSelectedValue' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

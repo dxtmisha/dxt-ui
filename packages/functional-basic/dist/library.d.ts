@@ -335,7 +335,7 @@ export declare class ApiCache {
      * Сохраняет данные в кэш с использованием слушателя.
      * @param key cache key / ключ кэша
      * @param value data to be stored / данные для хранения
-     * @returns Promise<void> / Promise без возвращаемого значения (сохраняет данные в кэш или через listener)
+     * @returns Promise<void>
      */
     protected static setItemOrListener(key: string, value: ApiCacheItem): Promise<void>;
     /**
@@ -343,7 +343,7 @@ export declare class ApiCache {
      *
      * Удаляет данные из кэша с использованием слушателя.
      * @param key cache key / ключ кэша
-     * @returns Promise<void> / Promise без возвращаемого значения (удаляет данные из кэша или через listener)
+     * @returns Promise<void>
      */
     protected static removeItemOrListener(key: string): Promise<void>;
     /**
@@ -438,7 +438,7 @@ export declare class ApiDefault {
      *
      * Добавляет данные по умолчанию к запросу.
      * @param request request data / данные запроса
-     * @returns merged request data with defaults / объединенные данные запроса с значениями по умолчанию
+     * @returns merged request data / объединенные данные запроса
      */
     request(request: ApiFetch['request']): ApiFetch['request'];
     /**
@@ -532,8 +532,8 @@ export declare class ApiHeaders {
      * Gets the headers for the request.
      *
      * Получает заголовки для запроса.
-     * @param value list of headers/ список заголовков
-     * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+     * @param value list of headers / список заголовков
+     * @param type Content-Type header value / значение заголовка Content-Type
      * @returns merged headers or undefined / объединенные заголовки или undefined
      */
     get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
@@ -541,9 +541,9 @@ export declare class ApiHeaders {
      * Gets the headers for the request based on request type.
      *
      * Получает заголовки для запроса на основе типа запроса.
-     * @param request request data/ данные запроса
-     * @param value list of headers/ список заголовков
-     * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+     * @param request request data / данные запроса
+     * @param value list of headers / список заголовков
+     * @param type Content-Type header value / значение заголовка Content-Type
      * @returns merged headers or undefined / объединенные заголовки или undefined
      */
     getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
@@ -698,7 +698,7 @@ export declare class ApiInstance {
      * @param request request data / данные запроса
      * @param path path to request / путь к запросу
      * @param method HTTP method / HTTP метод
-     * @returns query string for GET requests / строка запроса для GET-запросов
+     * @returns query string with prefix (? or &) / строка запроса с префиксом (? или &)
      */
     getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
     /**
@@ -877,7 +877,7 @@ export declare class ApiInstance {
      * Инициализация контроллера для запроса с поддержкой таймаута.
      * @param apiFetch request options / опции запроса
      * @param fetchInit request initialization object / объект инициализации запроса
-     * @returns timeout ID for manual cancellation or undefined / ID таймера для ручной отмены или undefined
+     * @returns timeout ID (from setTimeout) or undefined / ID таймера (от setTimeout) или undefined
      */
     protected initController(apiFetch: ApiFetch, fetchInit: RequestInit): any;
 }
@@ -1035,7 +1035,7 @@ export declare class ApiResponse {
      * @param path link to the request / ссылка на запрос
      * @param method request method / метод запроса
      * @param request data for the request / данные для запроса
-     * @param devMode is it developer mode / является ли режим разработчика
+     * @param devMode optional developer mode flag / необязательный флаг режима разработчика
      * @returns cached response item or undefined / кешированный элемент ответа или undefined
      */
     get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
@@ -1107,7 +1107,7 @@ export declare class ApiResponse {
      *
      * Проверяет, совпадает ли запрос с кешированным.
      * @param item cached item / кешированный элемент
-     * @param request request data/ данные запроса
+     * @param request request data / данные запроса
      * @returns true if requests match / true, если запросы совпадают
      */
     protected isResponse(item: ApiResponseItem, request?: ApiFetch['request']): boolean;
@@ -1236,10 +1236,10 @@ export declare class ApiStatus {
      */
     setError(error?: string): this;
     /**
-     * Sets the data of the last response and automatically extracts status/message if object.
+     * Sets the data of the last response and automatically extracts status/message if it's an object.
      *
      * Устанавливает данные последнего ответа и автоматически извлекает статус / сообщение, если это объект.
-     * @param response response data/ данные ответа
+     * @param response response data / данные ответа
      * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setLastResponse(response?: any): this;
@@ -1411,9 +1411,9 @@ declare class Cache_2 {
      * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
      *
      * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
-     * @param name - Unique cache key / Уникальный ключ кэша
-     * @param callback - Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
-     * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+     * @param name Unique cache key / Уникальный ключ кэша
+     * @param callback Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
+     * @param comparison Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
      * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
      */
     get<T>(name: string, callback: () => T, comparison?: any[]): T;
@@ -1421,9 +1421,9 @@ declare class Cache_2 {
      * Asynchronously returns a cached value for the given name. If not cached, executes the callback and stores the result.
      *
      * Асинхронно возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
-     * @param name - Unique cache key / Уникальный ключ кэша
-     * @param callback - Async function to compute the value if not cached / Асинхронная функция для вычисления значения, если его нет в кэше
-     * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+     * @param name Unique cache key / Уникальный ключ кэша
+     * @param callback Async function to compute the value if not cached / Асинхронная или синхронная функция для вычисления значения, если его нет в кэше
+     * @param comparison Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
      * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
      */
     getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
@@ -1575,24 +1575,23 @@ export declare class Cookie<T> {
      * Get data or update if none.
      *
      * Получает данные или обновляет, если их нет.
-     * @param defaultValue value or function to change data/ значение или функция для изменения данных
-     * @param options additional parameters/ дополнительные параметры
+     * @param defaultValue value or function to change data / значение или функция для изменения данных
+     * @param options additional parameters / дополнительные параметры
+     * @returns cookie value / значение cookie
      */
     get(defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): string | T | undefined;
     /**
      * Updates cookie data.
      *
      * Обновляет данные cookie.
-     * @param value value or function to change data/ значение или функция для изменения данных
-     * @param options additional parameters/ дополнительные параметры
-     * @returns void
+     * @param value value or function to change data / значение или функция для изменения данных
+     * @param options additional parameters / дополнительные параметры
      */
     set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
     /**
      * Delete cookie data.
      *
      * Удаление данных из cookie.
-     * @returns void
      */
     remove(): void;
     /**
@@ -1717,7 +1716,7 @@ export declare class CookieStorage {
      * @param name cookie name / имя cookie
      * @param value data to be stored / данные для хранения
      * @param options additional parameters / дополнительные параметры
-     * @returns T stored value/ сохраненное значение
+     * @returns stored value / сохраненное значение
      */
     static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
     /**
@@ -1752,7 +1751,7 @@ export declare class CookieStorage {
      *
      * Преобразует значение в строку для атрибута max-age.
      * @param stringValue cookie value / значение cookie
-     * @param age cache age / возраст кэша
+     * @param age cache age (default: 7 days) / возраст кэша (по умолчанию: 7 дней)
      */
     protected static toMaxAge(stringValue: string, age?: CookieOptions['age']): string;
     /**
@@ -1856,7 +1855,7 @@ export declare class DataStorage<T> {
      * Getting data from storage.
      *
      * Получение данных из хранилища.
-     * @param defaultValue default value/ значение по умолчанию
+     * @param defaultValue default value / значение по умолчанию
      * @param cache cache time in seconds / время кэширования в секундах
      * @returns stored value or default value / сохраненное значение или значение по умолчанию
      */
@@ -1865,7 +1864,7 @@ export declare class DataStorage<T> {
      * Changing data in storage.
      *
      * Изменение данных в хранилище.
-     * @param value new values/ новые значения
+     * @param value new values / новые значения
      * @returns the set value / установленное значение
      */
     set(value?: T | (() => T)): T | undefined;
@@ -1873,7 +1872,7 @@ export declare class DataStorage<T> {
      * Removing data from storage.
      *
      * Удаление данных из хранилища.
-     * @returns this instance / текущий экземпляр
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     remove(): this;
     /**
@@ -1966,9 +1965,9 @@ export declare class Datetime {
      * Returns the type of data output.
      *
      * Возвращает тип вывода данных.
-     * @returns string output type/ тип вывода
+     * @returns GeoDate output type/ тип вывода
      */
-    getType(): string;
+    getType(): GeoDate;
     /**
      * Returns the format of hours.
      *
@@ -2012,7 +2011,7 @@ export declare class Datetime {
      * The method returns the year of the specified date according to local time.
      *
      * Метод возвращает год указанной даты по местному времени.
-     * @returns number year/ год
+     * @returns year / год
      */
     getYear(): number;
     /**
@@ -2021,42 +2020,42 @@ export declare class Datetime {
      *
      * Метод возвращает месяц указанной даты по местному времени, нумерация
      * месяцев начинается с единицы (1-12).
-     * @returns number month (1-12)/ месяц (1-12)
+     * @returns month (1-12) / месяц (1-12)
      */
     getMonth(): number;
     /**
      * The method returns the day of the month for the specified date according to local time.
      *
      * Метод возвращает день месяца указанной даты по местному времени
-     * @returns number day of month (1-31)/ день месяца (1-31)
+     * @returns day of month (1-31) / день месяца (1-31)
      */
     getDay(): number;
     /**
      * The method returns the hour for the specified date, according to local time.
      *
      * Метод возвращает часы указанной даты по местному времени.
-     * @returns number hours (0-23)/ часы (0-23)
+     * @returns hours (0-23) / часы (0-23)
      */
     getHour(): number;
     /**
      * The method returns the minutes in the specified date according to local time.
      *
      * Метод возвращает минуты указанной даты по местному времени.
-     * @returns number minutes (0-59)/ минуты (0-59)
+     * @returns minutes (0-59) / минуты (0-59)
      */
     getMinute(): number;
     /**
      * The method returns the seconds in the specified date according to local time.
      *
      * Метод возвращает секунды указанной даты по местному времени.
-     * @returns number seconds (0-59)/ секунды (0-59)
+     * @returns seconds (0-59) / секунды (0-59)
      */
     getSecond(): number;
     /**
      * Returns the last day of the month as a number.
      *
      * Возвращает последний день месяца в виде числа.
-     * @returns number last day of month (28-31)/ последний день месяца (28-31)
+     * @returns last day of month (28-31) / последний день месяца (28-31)
      */
     getMaxDay(): number;
     /**
@@ -2120,73 +2119,82 @@ export declare class Datetime {
      * Output of standard data.
      *
      * Вывод стандартных данных.
-     * @param timeZone add time zone/ добавить временную зону
-     * @returns string standard format string/ строка в стандартном формате
+     * @param timeZone add time zone (default: true) / добавить временную зону (по умолчанию: true)
+     * @returns standard format string / строка в стандартном формате
      */
     standard(timeZone?: boolean): string;
     /**
      * Change the date completely.
      *
      * Изменять полностью дату.
-     * @param value an integer value representing the number/
+     * @param value an integer value representing the number /
      * целочисленное значение, представляющее число
+     * @returns this instance / текущий экземпляр
      */
     setDate(value: NumberOrStringOrDate): this;
     /**
      * Change the type of data output.
      *
      * Изменить тип вывода данных.
-     * @param value type of output/ тип вывод
+     * @param value type of output / тип вывод
+     * @returns this instance / текущий экземпляр
      */
     setType(value: GeoDate): this;
     /**
      * Whether to use a 24-hour time format.
      *
      * Использовать ли 24-часовой формат времени.
-     * @param value If true, output the 24-hour time format/
+     * @param value If true, output the 24-hour time format /
      * если true, выводить 24-часовой формат времени
+     * @returns this instance / текущий экземпляр
      */
     setHour24(value: boolean): this;
     /**
      * To change the location.
      *
      * Изменить местоположение.
-     * @param code country and language code/ код страны и языка
+     * @param code country and language code / код страны и языка
+     * @returns this instance / текущий экземпляр
      */
     setCode(code: string): this;
     /**
      * The function is called when the data is updated.
      *
      * Функция вызывается при обновлении данных.
-     * @param watch the function calls/ функция вызывает
+     * @param watch the function calls / функция вызывает
+     * @returns this instance / текущий экземпляр
      */
     setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this;
     /**
      * The method sets the full year for a specified date according to local time.
      *
      * Метод устанавливает полный год указанной даты по местному времени.
-     * @param value value/ значения
+     * @param value value / значения
+     * @returns this instance / текущий экземпляр
      */
     setYear(value: number): this;
     /**
      * The method sets the month for a specified date according to the currently set year.
      *
      * Метод устанавливает месяц указанной даты по местному времени.
-     * @param value value/ значения
+     * @param value month (1-12) / месяц (1-12)
+     * @returns this instance / текущий экземпляр
      */
     setMonth(value: number): this;
     /**
      * The method changes the day of the month of a given Date instance, based on local time.
      *
      * Метод устанавливает день месяца указанной даты по местному времени.
-     * @param value value/ значения
+     * @param value value / значения
+     * @returns this instance / текущий экземпляр
      */
     setDay(value: number): this;
     /**
      * The method sets the hours for a specified date according to local time.
      *
      * Метод устанавливает часы указанной даты по местному времени.
-     * @param value value/ значения
+     * @param value value / значения
+     * @returns this instance / текущий экземпляр
      */
     setHour(value: number): this;
     /**
@@ -2194,139 +2202,161 @@ export declare class Datetime {
      *
      * Метод устанавливает минуты указанной даты по местному времени
      * @param value value / значения
+     * @returns this instance / текущий экземпляр
      */
     setMinute(value: number): this;
     /**
      * The method sets the seconds for a specified date according to local time.
      *
      * Метод устанавливает секунды указанной даты по местному времени.
-     * @param value value/ значения
+     * @param value value / значения
+     * @returns this instance / текущий экземпляр
      */
     setSecond(value: number): this;
     /**
      * Shift the date by a given value in years.
      *
      * Сдвинуть дату на заданное значение в годах.
-     * @param value values for moving/ значения для перемещения
+     * @param value values for moving / значения для перемещения
+     * @returns this instance / текущий экземпляр
      */
     moveByYear(value: number): this;
     /**
      * Shift the date by a given value in months.
      *
      * Сдвинуть дату на заданное значение в месяцах.
-     * @param value values for moving/ значения для перемещения
+     * @param value values for moving (in months) / значения для перемещения (в месяцах)
+     * @returns this instance / текущий экземпляр
      */
     moveByMonth(value: number): this;
     /**
      * Shift the date by a given value in days.
      *
      * Сдвинуть дату на заданное значение в днях.
-     * @param value values for moving/ значения для перемещения
+     * @param value values for moving / значения для перемещения
+     * @returns this instance / текущий экземпляр
      */
     moveByDay(value: number): this;
     /**
      * Shift the date by a given value in hours.
      *
      * Сдвинуть дату на заданное значение в часах.
-     * @param value values for moving/ значения для перемещения
+     * @param value values for moving / значения для перемещения
+     * @returns this instance / текущий экземпляр
      */
     moveByHour(value: number): this;
     /**
      * Shift the date by a given value in minutes.
      *
      * Сдвинуть дату на заданное значение в минутах.
-     * @param value values for moving/ значения для перемещения
+     * @param value values for moving / значения для перемещения
+     * @returns this instance / текущий экземпляр
      */
     moveByMinute(value: number): this;
     /**
      * Shift the date by a given value in seconds.
      *
      * Сдвинуть дату на заданное значение в секундах.
-     * @param value values for moving/ значения для перемещения
+     * @param value values for moving / значения для перемещения
+     * @returns this instance / текущий экземпляр
      */
     moveBySecond(value: number): this;
     /**
      * Sets the date to January (first month).
      *
      * Устанавливает дату на январь (первый месяц).
+     * @returns this instance / текущий экземпляр
      */
     moveMonthFirst(): this;
     /**
      * Sets the date to December (last month).
      *
      * Устанавливает дату на декабрь (последний месяц).
+     * @returns this instance / текущий экземпляр
      */
     moveMonthLast(): this;
     /**
      * Translate to the first day of the next month.
      *
      * Переводить на первый день следующего месяца.
+     * @returns this instance / текущий экземпляр
      */
     moveMonthNext(): this;
     /**
      * Translate to the first day of the previous month.
      *
      * Переводить на первый день предыдущего месяца.
+     * @returns this instance / текущий экземпляр
      */
     moveMonthPrevious(): this;
     /**
      * Translate to the first day of the week.
      *
      * Переводить на первый день недели.
+     * @returns this instance / текущий экземпляр
      */
     moveWeekdayFirst(): this;
     /**
      * Translate to the last day of the week.
      *
      * Переводить на последний день недели.
+     * @returns this instance / текущий экземпляр
      */
     moveWeekdayLast(): this;
     /**
      * Translate to the first day of the first week of the month.
      *
      * Переводить на первый день первой недели месяца.
+     * @returns this instance / текущий экземпляр
      */
     moveWeekdayFirstByMonth(): this;
     /**
      * Translate to the first day of the first full week of the following month.
      *
      * Переводить на первый день первой полной недели следующего месяца.
+     * @returns this instance / текущий экземпляр
      */
     moveWeekdayLastByMonth(): this;
     /**
      * Translate to the next week.
      *
      * Переводить на следующую неделю.
+     * @returns this instance / текущий экземпляр
      */
     moveWeekdayNext(): this;
     /**
      * Translate to the previous week.
      *
      * Переводить на предыдущую неделю.
+     * @returns this instance / текущий экземпляр
      */
     moveWeekdayPrevious(): this;
     /**
      * Translate to the first day of the month.
      *
      * Переводить на первый день месяца.
+     * @returns this instance / текущий экземпляр
      */
     moveDayFirst(): this;
     /**
      * Translate to the last day of the month.
      *
      * Переводить на последний день месяца.
+     * @returns this instance / текущий экземпляр
      */
     moveDayLast(): this;
     /**
      * Translate to the next day.
      *
      * Переводить на следующий день.
+     * @returns this instance / текущий экземпляр
      */
     moveDayNext(): this;
     /**
      * Translate to the previous day.
      *
      * Переводить на предыдущий день.
+     * @returns this instance / текущий экземпляр
      */
     moveDayPrevious(): this;
     /**
@@ -2657,7 +2687,7 @@ export declare class ErrorCenterHandler {
      * Добавляет обработчик для определенной группы.
      * @param group error group / группа ошибки
      * @param handler callback function / функция обратного вызова
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
     /**
@@ -2665,7 +2695,7 @@ export declare class ErrorCenterHandler {
      *
      * Добавляет список обработчиков по группам.
      * @param handlers handlers list / список обработчиков
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     addList(handlers: ErrorCenterHandlerList): this;
     /**
@@ -2673,7 +2703,7 @@ export declare class ErrorCenterHandler {
      *
      * Вызывает обработчики для группы и выводит ошибку в консоль.
      * @param cause error cause details / детали причины ошибки
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     on(cause: ErrorCenterCauseItem): this;
     /**
@@ -2681,7 +2711,7 @@ export declare class ErrorCenterHandler {
      *
      * Выводит причину ошибки в консоль.
      * @param cause error details / детали ошибки
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     protected toConsole(cause: ErrorCenterCauseItem): this;
 }
@@ -2744,7 +2774,7 @@ export declare class ErrorCenterInstance {
      *
      * Добавляет причину ошибки в хранилище.
      * @param cause error cause item / элемент причины ошибки
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     add(cause: ErrorCenterCauseItem): this;
     /**
@@ -2752,7 +2782,7 @@ export declare class ErrorCenterInstance {
      *
      * Добавляет список причин ошибок в хранилище.
      * @param causes error causes list / список причин ошибок
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     addList(causes: ErrorCenterCauseList): this;
     /**
@@ -2761,7 +2791,7 @@ export declare class ErrorCenterInstance {
      * Регистрирует новый обработчик.
      * @param group target group / целевая группа
      * @param handler handler callback / обратный вызов обработчика
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
     /**
@@ -2769,7 +2799,7 @@ export declare class ErrorCenterInstance {
      *
      * Регистрирует список обработчиков.
      * @param handlers handlers list / список обработчиков
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     addHandlerList(handlers: ErrorCenterHandlerList): this;
     /**
@@ -2777,7 +2807,7 @@ export declare class ErrorCenterInstance {
      *
      * Вызывает обработку ошибки для группы.
      * @param cause error cause details / детали причины ошибки
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     on(cause: ErrorCenterCauseItem): this;
     /**
@@ -2785,6 +2815,7 @@ export declare class ErrorCenterInstance {
      *
      * Объединяет предоставленную причину с сохраненными данными причины.
      * @param cause input cause / входная причина
+     * @returns merged error cause / объединенная причина ошибки
      */
     protected assign(cause: ErrorCenterCauseItem): ErrorCenterCauseItem;
 }
@@ -2961,7 +2992,7 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      *
      * Изменение элемента для прослеживания.
      * @param elementSelector target element or selector / целевой элемент или селектор
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     setElement(elementSelector?: ElementOrString<E>): this;
     /**
@@ -2969,7 +3000,7 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      *
      * Модифицирует контрольный элемент для проверки безопасности DOM.
      * @param elementSelector control element or selector / контрольный элемент или селектор
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
     /**
@@ -2977,7 +3008,7 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      *
      * Изменяет тип обрабатываемого события.
      * @param type event type or array of types / тип события или массив типов
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     setType(type: string | string[]): this;
     /**
@@ -2985,7 +3016,7 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      *
      * Модифицирует функцию-слушатель.
      * @param listener new listener function / новая функция-слушатель
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     setListener(listener: EventListenerDetail<O, D>): this;
     /**
@@ -2993,7 +3024,7 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      *
      * Изменение объекта options, который определяет характеристики слушателя событий.
      * @param options event listener options / опции слушателя событий
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     setOptions(options?: EventOptions): this;
     /**
@@ -3001,7 +3032,7 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      *
      * Изменение дополнительных данных, передаваемых слушателю.
      * @param detail custom data / пользовательские данные
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     setDetail(detail?: D): this;
     /**
@@ -3011,21 +3042,21 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      * Инициирует события на целевом элементе, опционально с новым значением detail.
      * Этот метод вручную запускает диспетчеризацию `CustomEvent` для всех указанных типов.
      * @param detail the value to be passed as the event detail / значение, которое будет передано как detail события
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     dispatch(detail?: D | undefined): this;
     /**
      * Starts event listening.
      *
      * Запуск прослушивания события.
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     start(): this;
     /**
      * Stops event listening.
      *
      * Остановка прослушивания события.
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     stop(): this;
     /**
@@ -3033,13 +3064,14 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      *
      * Переключение состояния работы события.
      * @param activity event activation/ активация события
+     * @returns this instance / текущий экземпляр
      */
     toggle(activity: boolean): this;
     /**
      * Overloads the listening events (stops and starts again if active).
      *
      * Перегружает события прослушивания (останавливает и запускает заново, если активно).
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     reset(): this;
     /**
@@ -3122,9 +3154,9 @@ export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<st
  * Class for formatting a list of data based on provided options.
  *
  * Класс для форматирования списка данных на основе предоставленных параметров.
- * @template Options - type of formatting options / тип параметров форматирования.
- * @template List - type of the list of items (can be an array or a single item) / тип списка элементов (может быть массивом или одним элементом).
- * @template Item - type of a single item in the list / тип одного элемента в списке.
+ * @template Options type of formatting options / тип параметров форматирования.
+ * @template List type of the list of items (can be an array or a single item) / тип списка элементов (может быть массивом или одним элементом).
+ * @template Item type of a single item in the list / тип одного элемента в списке.
  */
 export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
     protected options: Options;
@@ -3179,7 +3211,7 @@ export declare class Formatters<Options extends FormattersOptionsList = Formatte
      *
      * Устанавливает список данных для форматирования.
      * @param list list of data / список данных
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     setList(list?: List): this;
     /**
@@ -3188,14 +3220,15 @@ export declare class Formatters<Options extends FormattersOptionsList = Formatte
      *
      * Форматирует весь список или один элемент на основе предоставленных параметров.
      * Добавляет отформатированные значения с суффиксом 'Format' к каждому элементу.
-     * @returns formatted data (list or single item) / отформатированные данные (список или один элемент)
+     * @returns FormattersReturn<List, Options> formatted data (list or single item) / отформатированные данные (список или один элемент)
      */
     to(): FormattersReturn<List, Options>;
     /**
      * Generates formatted data for a single item based on options.
      *
      * Генерирует отформатированные данные для одного элемента на основе параметров.
-     * @param item item to format/ элемент для форматирования
+     * @param item item to format / элемент для форматирования
+     * @returns object with formatted fields / объект с отформатированными полями
      * @protected
      */
     protected getFormatData(item: Item): Record<string, string>;
@@ -4006,7 +4039,7 @@ export declare class GeoInstance {
      * Updates the current location and related data.
      *
      * Обновляет текущее местоположение и связанные с ним данные.
-     * @param code country code / код страны
+     * @param code location code (e.g., 'en-GB') / код локации (например, 'en-GB')
      * @param save whether to save the location in storage / нужно ли сохранять местоположение в хранилище
      */
     set(code: string, save?: boolean): void;
@@ -4064,7 +4097,7 @@ export declare class GeoInstance {
  * they comprise the ECMAScript Internationalization API, which provides language sensitive
  * string comparison, number formatting, date and time formatting, and more
  *
- * Объект Intl является пространством имён для API интернационализации ECMAScript, предоставляющим
+ * Объект Intl является пространством имён для API интернационализации ECMАСcript, предоставляющим
  * языка-зависимое сравнение строк, форматирование чисел и дат со временем. Конструкторы объектов
  * Collator, NumberFormat и DateTimeFormat являются свойствами объекта Intl. На этой странице
  * описаны эти свойства, а также общая функциональность конструкторов интернационализации и других
@@ -4130,7 +4163,8 @@ export declare class GeoIntl {
      *
      * Получить отображаемые имена языка.
      * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-     * @param style the formatting style to use/ используемый стиль форматирования
+     * @param style the formatting style to display names/ используемый стиль отображения имен
+     * @returns display name of language/ отображаемое имя языка
      */
     languageName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
     /**
@@ -4138,7 +4172,8 @@ export declare class GeoIntl {
      *
      * Получить отображаемые имена региона.
      * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-     * @param style the formatting style to use/ используемый стиль форматирования
+     * @param style the formatting style to display names/ используемый стиль отображения имен
+     * @returns display name of region/ отображаемое имя региона
      */
     countryName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
     /**
@@ -4237,6 +4272,7 @@ export declare class GeoIntl {
      * @param type type of data format/ тип формата data
      * @param styleOptions the representation of the month/ представление месяца
      * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
+     * @returns formatted date and time/ отформатированная дата и время
      */
     date(value: NumberOrStringOrDate, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): string;
     /**
@@ -4247,6 +4283,7 @@ export declare class GeoIntl {
      * @param styleOptions the length of the internationalized message/
      * длина интернационализированного сообщения
      * @param todayValue current day/ текущий день
+     * @returns formatted relative time/ отформатированное относительное время
      */
     relative(value: NumberOrStringOrDate, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): string;
     /**
@@ -4276,10 +4313,12 @@ export declare class GeoIntl {
      */
     relativeByValue(value: NumberOrString, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): string;
     /**
-     * Names of months.<br>
+     * Names of months.
+     *
      * Названия месяцев.
      * @param value the date to format/ дата для форматирования
      * @param style the representation of the month/ представление месяца
+     * @returns month name/ название месяца
      */
     month(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['month']): string;
     /**
@@ -4287,6 +4326,7 @@ export declare class GeoIntl {
      *
      * Массив в список месяцев.
      * @param style the representation of the month/ представление месяца
+     * @returns list of months (1-12)/ список месяцев (1-12)
      */
     months(style?: Intl.DateTimeFormatOptions['month']): ItemValue<number | undefined>[];
     /**
@@ -4295,13 +4335,15 @@ export declare class GeoIntl {
      * Возвращает названия дней недели.
      * @param value the date to format/ дата для форматирования
      * @param style the representation of the weekday/ представление о дне недели
+     * @returns weekday name/ название дня недели
      */
     weekday(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['weekday']): string;
     /**
-     * An array of the list of names of the days of the week.
+     * Array of the list of names of the days of the week.
      *
      * Массив из списка названий дней недели.
      * @param style the representation of the weekday/ представление о дне недели
+     * @returns list of weekdays (0-6)/ список дней недели (0-6)
      */
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ItemValue<number | undefined>[];
     /**
@@ -4309,6 +4351,7 @@ export declare class GeoIntl {
      *
      * Время.
      * @param value the date to format/ дата для форматирования
+     * @returns formatted time/ отформатированное время
      */
     time(value: NumberOrStringOrDate): string;
     /**
@@ -4317,6 +4360,7 @@ export declare class GeoIntl {
      * Сортирует строки с учетом особенностей стран.
      * @param data an array with data/ массив с данными
      * @param compareFn a function for sorting/ функция для сортировки
+     * @returns sorted array/ отсортированный массив
      */
     sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
     /**
@@ -4454,7 +4498,7 @@ export declare class GeoPhone {
     /**
      * Creating a list for the map.
      *
-     * Формирование списка для карты.
+     * Формирование списка данных.
      */
     protected static makeList(): void;
     /**
@@ -4464,10 +4508,11 @@ export declare class GeoPhone {
      */
     protected static makeMap(): void;
     /**
-     * The method parses a string argument and returns a floating point number.
+     * The method parses a string argument and returns an array of numbers as strings.
      *
-     * Метод принимает строку в качестве аргумента и возвращает десятичное число.
+     * Метод принимает строку в качестве аргумента и возвращает массив цифр в виде строк.
      * @param value the value to parse/ текстовая строка
+     * @returns array of numbers/ массив цифр
      */
     protected static toNumber(value: string): string[];
     /**
@@ -4865,6 +4910,7 @@ export declare class Global {
      * Returns the instance of the class.
      *
      * Возвращает инстанс класса.
+     * @returns global data storage / хранилище глобальных данных
      */
     static getItem(): Record<string, any>;
     /**
@@ -4879,6 +4925,7 @@ export declare class Global {
      *
      * Добавляет данные, этот метод работает только 1 раз.
      * @param data global data/ глобальные данные
+     * @returns void
      */
     static add(data: Record<string, any>): void;
 }
@@ -4979,6 +5026,7 @@ export declare class Hash {
      * Update hash variable from URL string.
      *
      * Обновление переменной хэша из строки URL.
+     * @returns void
      */
     static reload(): void;
 }
@@ -5007,7 +5055,7 @@ export declare class HashInstance {
      * Изменение данных в хэше.
      * @param name variable name / название переменной
      * @param callback value or function to change data / значение или функция для изменения данных
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     set<T>(name: string, callback: T | (() => T)): this;
     /**
@@ -5016,7 +5064,7 @@ export declare class HashInstance {
      * Добавление события при изменении данных.
      * @param name variable name / название переменной
      * @param callback the function is called when the data is changed / функция вызывается при изменении данных
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     addWatch<T>(name: string, callback: (value: T) => void): this;
     /**
@@ -5025,38 +5073,42 @@ export declare class HashInstance {
      * Удаление события при изменении данных.
      * @param name variable name / название переменной
      * @param callback the function is called when the data is changed / функция вызывается при изменении данных
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     removeWatch<T>(name: string, callback: (value: T) => void): this;
     /**
      * Update hash variable from URL string.
      *
      * Обновление переменной хэша из строки URL.
-     * @returns this
+     * @returns this instance / текущий экземпляр
      */
     reload(): this;
     /**
      * Obtaining data from the URL string.
      *
      * Получение данных из строки URL.
+     * @returns Record<string, any> hash data / данные хэша
      */
     private getLocation;
     /**
      * Returns the hash object, initializing if needed.
      *
      * Возвращает объект хэша, инициализируя при необходимости.
+     * @returns Record<string, any> hash object / объект хэша
      */
     private getHash;
     /**
      * Initializes hash data and registers the hashchange listener.
      *
      * Инициализирует данные хэша и регистрирует слушатель hashchange.
+     * @returns this instance / текущий экземпляр
      */
     private init;
     /**
      * Reads hash data from the URL and triggers watchers.
      *
      * Считывает данные хэша из URL и вызывает наблюдателей.
+     * @returns this instance / текущий экземпляр
      */
     private initData;
     /**
@@ -5104,20 +5156,23 @@ export declare class Icons {
      * @param index icon name/ название иконки
      * @param url path to the storage location of the icon, if the icon does not exist/
      * путь к месту хранения иконки, если иконка не существует
-     * @param wait waiting time for picture loading/
-     * время ожидания загрузки картинки
+     * @param wait waiting time for picture loading (ms)/
+     * время ожидания загрузки картинки (мс)
+     * @returns icon path or content/ путь к иконке или контент
      */
     static get(index: string, url?: string, wait?: number): Promise<string>;
     /**
      * Returns a list of names of all registered icons.
      *
      * Возвращает список названий всех зарегистрированных иконок.
+     * @returns list of icon names/ список названий иконок
      */
     static getNameList(): string[];
     /**
      * Returns a global link.
      *
      * Возвращает глобальную ссылку.
+     * @returns string global link/ глобальная ссылка
      */
     static getUrlGlobal(): string;
     /**
@@ -5165,16 +5220,18 @@ export declare class Icons {
      */
     static setConfig(config: IconsConfig): void;
     /**
-     * Returns the icon name.
+     * Returns the icon name with the prefix.
      *
-     * Возвращает название иконки.
+     * Возвращает название иконки с префиксом.
      * @param index icon name/ название иконки
+     * @returns icon name with prefix/ название иконки с префиксом
      */
     protected static getName(index: string): string;
     /**
      * Script execution delay.
      *
      * Задержка выполнения скрипта.
+     * @returns Promise<void> Promise for delay/ Promise для задержки
      */
     protected static wait(): Promise<void>;
 }
@@ -5503,12 +5560,14 @@ export declare class Loading {
      * Check if the loader is active now.
      *
      * Проверить, активен ли сейчас загрузчик.
+     * @returns boolean/ логическое значение
      */
     static is(): boolean;
     /**
      * Get current loading value.
      *
      * Получить текущее значение загрузки.
+     * @returns current loading value/ текущее значение загрузки
      */
     static get(): number;
     /**
@@ -5522,12 +5581,14 @@ export declare class Loading {
      * Shows the loader.
      *
      * Показывает загрузчик.
+     * @returns void
      */
     static show(): void;
     /**
      * Hides the loader.
      *
      * Скрывает загрузчик.
+     * @returns void
      */
     static hide(): void;
     /**
@@ -5538,6 +5599,7 @@ export declare class Loading {
      * Event interface) when an event of the specified type occurs/ объект, который принимает
      * уведомление, когда событие указанного типа произошло
      * @param element element/ элемент
+     * @returns void
      */
     static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     /**
@@ -5548,6 +5610,7 @@ export declare class Loading {
      * Event interface) when an event of the specified type occurs/ объект, который принимает
      * уведомление, когда событие указанного типа произошло
      * @param element element/ элемент
+     * @returns void
      */
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
@@ -5598,12 +5661,14 @@ export declare class LoadingInstance {
      * Shows the loader.
      *
      * Показывает загрузчик.
+     * @returns void
      */
     show(): void;
     /**
      * Hides the loader.
      *
      * Скрывает загрузчик.
+     * @returns void
      */
     hide(): void;
     /**
@@ -5614,6 +5679,7 @@ export declare class LoadingInstance {
      * Event interface) when an event of the specified type occurs/ объект, который принимает
      * уведомление, когда событие указанного типа произошло
      * @param element element/ элемент
+     * @returns void
      */
     registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     /**
@@ -5624,6 +5690,7 @@ export declare class LoadingInstance {
      * Event interface) when an event of the specified type occurs/ объект, который принимает
      * уведомление, когда событие указанного типа произошло
      * @param element element/ элемент
+     * @returns void
      */
     unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     /**
@@ -5679,54 +5746,63 @@ export declare class Meta extends MetaManager<MetaTag[]> {
      * Gets the page title without suffix.
      *
      * Получает заголовок страницы без суффикса.
+     * @returns title without suffix/ заголовок без суффикса
      */
     getTitle(): string;
     /**
      * Gets the keywords meta tag.
      *
      * Получает мета-тег keywords.
+     * @returns keywords content/ содержимое keywords
      */
     getKeywords(): string;
     /**
      * Gets the description meta tag.
      *
      * Получает мета-тег description.
+     * @returns description content / содержимое description
      */
     getDescription(): string;
     /**
      * Gets the Open Graph image URL.
      *
      * Получает URL изображения Open Graph.
+     * @returns image URL / URL изображения
      */
     getImage(): string;
     /**
      * Gets the canonical URL.
      *
      * Получает канонический URL.
+     * @returns canonical URL / канонический URL
      */
     getCanonical(): string;
     /**
      * Gets the robots meta tag value.
      *
      * Получает значение мета-тега robots.
+     * @returns robots directive/ директива robots
      */
     getRobots(): MetaRobots;
     /**
      * Gets the author meta tag.
      *
      * Получает мета-тег author.
+     * @returns author name / имя автора
      */
     getAuthor(): string;
     /**
      * Gets the Open Graph site name.
      *
      * Получает название сайта Open Graph.
+     * @returns site name / название сайта
      */
     getSiteName(): string;
     /**
      * Gets the Open Graph locale.
      *
      * Получает локаль Open Graph.
+     * @returns locale / локаль
      */
     getLocale(): string;
     /**
@@ -5797,12 +5873,14 @@ export declare class Meta extends MetaManager<MetaTag[]> {
      *
      * Устанавливает суффикс для добавления к заголовку страницы.
      * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
+     * @returns void
      */
     setSuffix(suffix?: string): void;
     /**
      * Generates the complete HTML for all meta-tags including Open Graph and Twitter Card.
      *
      * Генерирует полный HTML для всех мета-тегов, включая Open Graph и Twitter Card.
+     * @returns complete HTML string/ полная HTML-строка
      */
     html(): string;
     /**
@@ -5838,6 +5916,7 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      * Returns the list of meta tag names.
      *
      * Возвращает список имен мета-тегов.
+     * @returns list of meta tag names/ список имен мета-тегов
      */
     getListMeta(): T;
     /**
@@ -5845,18 +5924,21 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      *
      * Получает содержимое мета-тега по имени.
      * @param name meta tag name / имя мета-тега
+     * @returns meta tag content/ содержимое мета-тега
      */
     get(name: Key): string;
     /**
      * Returns all meta tags.
      *
      * Возвращает все мета-теги.
+     * @returns object with all meta tags/ объект со всеми мета-тегами
      */
     getItems(): MetaList<T>;
     /**
      * Returns all meta tags as HTML string.
      *
      * Возвращает все мета-теги в виде HTML-строки.
+     * @returns HTML string/ HTML-строка
      */
     html(): string;
     /**
@@ -5878,6 +5960,7 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      * Returns the attribute name for meta tags.
      *
      * Возвращает имя атрибута для мета-тегов.
+     * @returns attribute name / имя атрибута
      */
     protected getAttributeName(): string;
     /**
@@ -5885,6 +5968,7 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      *
      * Находит мета-элемент в DOM.
      * @param name meta tag name / имя мета-тега
+     * @returns meta element if found, or undefined / мета-элемент, если найден, иначе undefined
      */
     protected findMetaElement(name: string): HTMLMetaElement | undefined;
     /**
@@ -5893,6 +5977,7 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      * Устанавливает содержимое мета-тега во внутреннем хранилище.
      * @param name meta tag name / имя мета-тега
      * @param content meta tag content / содержимое мета-тега
+     * @returns current instance / текущий экземпляр
      */
     protected setItem(name: Key, content: string): this;
     /**
@@ -5900,6 +5985,7 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      *
      * Устанавливает или создает мета-тег в DOM.
      * @param name meta tag name / имя мета-тега
+     * @returns current instance / текущий экземпляр
      */
     protected setMeta(name: Key): this;
     /**
@@ -5907,12 +5993,14 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      *
      * Преобразует мета-тег в HTML-строку.
      * @param name meta tag name / имя мета-тега
+     * @returns HTML string / HTML-строка
      */
     protected toHtmlString(name: Key): string;
     /**
      * Updates meta tags data from the DOM.
      *
      * Обновляет данные мета-тегов из DOM.
+     * @returns current instance / текущий экземпляр
      */
     protected update(): this;
 }
@@ -5928,42 +6016,49 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      * Gets the Open Graph title.
      *
      * Получает заголовок Open Graph.
+     * @returns title / заголовок
      */
     getTitle(): string;
     /**
      * Gets the Open Graph type.
      *
      * Получает тип Open Graph.
+     * @returns type / тип
      */
     getType(): MetaOpenGraphType;
     /**
      * Gets the Open Graph URL.
      *
      * Получает URL Open Graph.
+     * @returns URL / URL
      */
     getUrl(): string;
     /**
      * Gets the Open Graph image URL.
      *
      * Получает URL изображения Open Graph.
+     * @returns image URL / URL изображения
      */
     getImage(): string;
     /**
      * Gets the Open Graph description.
      *
      * Получает описание Open Graph.
+     * @returns description / описание
      */
     getDescription(): string;
     /**
      * Gets the Open Graph locale.
      *
      * Получает локаль Open Graph.
+     * @returns locale / локаль
      */
     getLocale(): string;
     /**
      * Gets the Open Graph site name.
      *
      * Получает название сайта Open Graph.
+     * @returns site name / название сайта
      */
     getSiteName(): string;
     /**
@@ -5971,6 +6066,7 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      *
      * Устанавливает заголовок Open Graph.
      * @param title title / заголовок
+     * @returns current instance / текущий экземпляр
      */
     setTitle(title: string): this;
     /**
@@ -5978,6 +6074,7 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      *
      * Устанавливает тип Open Graph.
      * @param type type / тип
+     * @returns current instance / текущий экземпляр
      */
     setType(type: MetaOpenGraphType): this;
     /**
@@ -5985,6 +6082,7 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      *
      * Устанавливает URL Open Graph.
      * @param url URL / URL
+     * @returns current instance / текущий экземпляр
      */
     setUrl(url: string): this;
     /**
@@ -5992,6 +6090,7 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      *
      * Устанавливает URL изображения Open Graph.
      * @param url image URL / URL изображения
+     * @returns current instance / текущий экземпляр
      */
     setImage(url: string): this;
     /**
@@ -5999,6 +6098,7 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      *
      * Устанавливает описание Open Graph.
      * @param description description / описание
+     * @returns current instance / текущий экземпляр
      */
     setDescription(description: string): this;
     /**
@@ -6006,6 +6106,7 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      *
      * Устанавливает локаль Open Graph.
      * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+     * @returns current instance / текущий экземпляр
      */
     setLocale(locale: string): this;
     /**
@@ -6013,6 +6114,7 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
      *
      * Устанавливает название сайта Open Graph.
      * @param siteName site name / название сайта
+     * @returns current instance / текущий экземпляр
      */
     setSiteName(siteName: string): this;
 }
@@ -6433,6 +6535,175 @@ export declare enum MetaRobots {
 }
 
 /**
+ * Static class for managing meta tags.
+ *
+ * Статичный класс для управления мета-тегами.
+ */
+export declare class MetaStatic {
+    /**
+     * Returns the singleton instance of the Meta class.
+     *
+     * Возвращает синглтон-экземпляр класса Meta.
+     * @returns Meta singleton / синглтон Meta
+     */
+    static getItem(): Meta;
+    /**
+     * Gets the MetaOg instance for advanced Open Graph operations.
+     *
+     * Получает экземпляр MetaOg для расширенных операций с Open Graph.
+     * @returns MetaOg instance / экземпляр MetaOg
+     */
+    static getOg(): MetaOg;
+    /**
+     * Gets the MetaTwitter instance for advanced Twitter Card operations.
+     *
+     * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
+     * @returns MetaTwitter instance / экземпляр MetaTwitter
+     */
+    static getTwitter(): MetaTwitter;
+    /**
+     * Gets the page title without suffix.
+     *
+     * Получает заголовок страницы без суффикса.
+     * @returns title without suffix / заголовок без суффикса
+     */
+    static getTitle(): string;
+    /**
+     * Gets the keywords meta tag.
+     *
+     * Получает мета-тег keywords.
+     * @returns keywords content / содержимое keywords
+     */
+    static getKeywords(): string;
+    /**
+     * Gets the description meta tag.
+     *
+     * Получает мета-тег description.
+     * @returns description content / содержимое description
+     */
+    static getDescription(): string;
+    /**
+     * Gets the Open Graph image URL.
+     *
+     * Получает URL изображения Open Graph.
+     * @returns image URL / URL изображения
+     */
+    static getImage(): string;
+    /**
+     * Gets the canonical URL.
+     *
+     * Получает канонический URL.
+     * @returns canonical URL / канонический URL
+     */
+    static getCanonical(): string;
+    /**
+     * Gets the robots meta tag value.
+     *
+     * Получает значение мета-тега robots.
+     * @returns robots directive / директива robots
+     */
+    static getRobots(): MetaRobots;
+    /**
+     * Gets the author meta tag.
+     *
+     * Получает мета-тег author.
+     * @returns author name / имя автора
+     */
+    static getAuthor(): string;
+    /**
+     * Gets the Open Graph site name.
+     *
+     * Получает название сайта Open Graph.
+     * @returns site name / название сайта
+     */
+    static getSiteName(): string;
+    /**
+     * Gets the Open Graph locale.
+     *
+     * Получает локаль Open Graph.
+     * @returns locale / локаль
+     */
+    static getLocale(): string;
+    /**
+     * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
+     *
+     * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
+     * @param title page title / заголовок страницы
+     */
+    static setTitle(title: string): typeof MetaStatic;
+    /**
+     * Sets the keywords meta tag.
+     *
+     * Устанавливает мета-тег keywords.
+     * @param keywords keywords as string or array / ключевые слова в виде строки или массива
+     */
+    static setKeywords(keywords: string | string[]): typeof MetaStatic;
+    /**
+     * Sets the description meta tag.
+     *
+     * Устанавливает мета-тег description.
+     * @param description page description / описание страницы
+     */
+    static setDescription(description: string): typeof MetaStatic;
+    /**
+     * Sets the image for Open Graph and Twitter Card.
+     *
+     * Устанавливает изображение для Open Graph и Twitter Card.
+     * @param image image URL / URL изображения
+     */
+    static setImage(image: string): typeof MetaStatic;
+    /**
+     * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
+     *
+     * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
+     * @param canonical canonical URL / канонический URL
+     */
+    static setCanonical(canonical: string): typeof MetaStatic;
+    /**
+     * Sets the robots meta tag.
+     *
+     * Устанавливает мета-тег robots.
+     * @param robots robots directive / директива robots
+     */
+    static setRobots(robots: MetaRobots): typeof MetaStatic;
+    /**
+     * Sets the author meta tag.
+     *
+     * Устанавливает мета-тег author.
+     * @param author author name / имя автора
+     */
+    static setAuthor(author: string): typeof MetaStatic;
+    /**
+     * Sets the site name for Open Graph and Twitter Card.
+     *
+     * Устанавливает название сайта для Open Graph и Twitter Card.
+     * @param siteName site name / название сайта
+     */
+    static setSiteName(siteName: string): typeof MetaStatic;
+    /**
+     * Sets the locale for Open Graph.
+     *
+     * Устанавливает локаль для Open Graph.
+     * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+     */
+    static setLocale(locale: string): typeof MetaStatic;
+    /**
+     * Sets the suffix to append to page title.
+     *
+     * Устанавливает суффикс для добавления к заголовку страницы.
+     * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
+     */
+    static setSuffix(suffix?: string): typeof MetaStatic;
+    /**
+     * Generates the complete HTML for all meta-tags including Open Graph and Twitter Card.
+     *
+     * Генерирует полный HTML для всех мета-тегов, включая Open Graph и Twitter Card.
+     * @returns complete HTML string / полная HTML-строка
+     */
+    static html(): string;
+}
+
+/**
  * Standard HTML meta tags/
  * Стандартные HTML мета-теги
  * @enum {string}
@@ -6463,42 +6734,49 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      * Gets the Twitter Card type.
      *
      * Получает тип Twitter Card.
+     * @returns card type / тип карточки
      */
     getCard(): MetaTwitterCard;
     /**
      * Gets the website or brand @username.
      *
      * Получает аккаунт сайта или бренда (@username).
+     * @returns @username / аккаунт
      */
     getSite(): string;
     /**
      * Gets the content creator @username.
      *
      * Получает автора контента (@username).
+     * @returns @username / аккаунт автора
      */
     getCreator(): string;
     /**
      * Gets the page URL.
      *
      * Получает URL страницы.
+     * @returns URL / URL
      */
     getUrl(): string;
     /**
      * Gets the card title.
      *
      * Получает заголовок карточки.
+     * @returns title / заголовок
      */
     getTitle(): string;
     /**
      * Gets the card description.
      *
      * Получает описание карточки.
+     * @returns description / описание
      */
     getDescription(): string;
     /**
      * Gets the card image URL.
      *
      * Получает URL изображения карточки.
+     * @returns image URL / URL изображения
      */
     getImage(): string;
     /**
@@ -6506,6 +6784,7 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      *
      * Устанавливает тип Twitter Card.
      * @param card card type / тип карточки
+     * @returns current instance / текущий экземпляр
      */
     setCard(card: MetaTwitterCard): this;
     /**
@@ -6513,6 +6792,7 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      *
      * Устанавливает аккаунт сайта или бренда (@username).
      * @param site @username / аккаунт
+     * @returns current instance / текущий экземпляр
      */
     setSite(site: string): this;
     /**
@@ -6520,6 +6800,7 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      *
      * Устанавливает автора контента (@username).
      * @param creator @username / аккаунт автора
+     * @returns current instance / текущий экземпляр
      */
     setCreator(creator: string): this;
     /**
@@ -6527,6 +6808,7 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      *
      * Устанавливает URL страницы.
      * @param url URL / URL
+     * @returns current instance / текущий экземпляр
      */
     setUrl(url: string): this;
     /**
@@ -6534,6 +6816,7 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      *
      * Устанавливает заголовок карточки.
      * @param title title / заголовок
+     * @returns current instance / текущий экземпляр
      */
     setTitle(title: string): this;
     /**
@@ -6541,6 +6824,7 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      *
      * Устанавливает описание карточки.
      * @param description description / описание
+     * @returns current instance / текущий экземпляр
      */
     setDescription(description: string): this;
     /**
@@ -6548,6 +6832,7 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
      *
      * Устанавливает URL изображения карточки.
      * @param image image URL / URL изображения
+     * @returns current instance / текущий экземпляр
      */
     setImage(image: string): this;
 }
@@ -6831,36 +7116,42 @@ export declare class ScrollbarWidth {
      * Checks whether to enable scroll hiding.
      *
      * Проверяет, надо ли включить скрытие скролла.
+     * @returns boolean indicating if scroll hiding is enabled/ логическое значение, указывающее, включено ли скрытие скролла
      */
     static is(): Promise<boolean>;
     /**
      * Returns the width of the scroll.
      *
      * Возвращает ширину скролла.
+     * @returns scrollbar width in pixels/ ширина скролла в пикселях
      */
     static get(): Promise<number>;
     /**
-     * Returns the storage.
+     * Returns the storage for scroll width.
      *
-     * Возвращает хранилище.
+     * Возвращает хранилище для ширины скролла.
+     * @returns DataStorage instance/ экземпляр DataStorage
      */
     static getStorage(): DataStorage<number>;
     /**
-     * Returns the calculate flag.
+     * Returns the calculate flag, indicating if width calculation is in progress.
      *
-     * Возвращает флаг вычисления.
+     * Возвращает флаг вычисления, указывающий, идет ли расчет ширины.
+     * @returns calculation flag/ флаг вычисления
      */
     static getCalculate(): boolean;
     /**
      * Creates elements to check the width of the scroll.
      *
      * Создает элементы для проверки ширины скролла.
+     * @returns created element / созданный элемент
      */
     private static createElement;
     /**
      * Initialization of data to check the width of the scroll.
      *
      * Инициализация данных для проверки ширины скролла.
+     * @returns a promise that resolves with the scrollbar width / промис, который разрешается шириной скролла
      */
     private static init;
 }
@@ -6971,17 +7262,17 @@ export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>
      */
     getOptions(): SearchListOptions;
     /**
-     * Sets a new list of items.
+     * Sets a new list of items and resets the cache.
      *
-     * Устанавливает новый список элементов.
+     * Устанавливает новый список элементов и сбрасывает кэш.
      * @param list new list/ новый список
      * @returns this instance/ данный экземпляр
      */
     setList(list: SearchListValue<T>): this;
     /**
-     * Sets new search columns.
+     * Sets new search columns and resets the cache.
      *
-     * Устанавливает новые столбцы поиска.
+     * Устанавливает новые столбцы поиска и сбрасывает кэш.
      * @param columns new columns/ новые столбцы
      * @returns this instance/ данный экземпляр
      */
@@ -7015,12 +7306,17 @@ export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>
      *
      * Обратный вызов для обработки элементов при активном поиске.
      * Проверяет выбор и обрабатывает опцию "возвращать всё".
+     * @param item item / элемент
+     * @param value search value / значение поиска
+     * @returns formatted item or undefined / отформатированный элемент или undefined
      */
     protected readonly callbackToSelection: (item: SearchCacheItem<T>["item"], value: SearchCacheItem<T>["value"]) => SearchFormatItem<T, K> | undefined;
     /**
      * Callback for processing items when no search is active.
      *
      * Обратный вызов для обработки элементов, когда поиск не активен.
+     * @param item item / элемент
+     * @returns formatted item / отформатированный элемент
      */
     protected readonly callbackToNone: (item: SearchCacheItem<T>["item"]) => SearchFormatItem<T, K>;
 }
@@ -7154,12 +7450,14 @@ export declare class SearchListData<T extends SearchItem, K extends SearchColumn
      * Initializes the search cache.
      *
      * Инициализирует кэш поиска.
+     * @returns void
      */
     protected initCache(): void;
     /**
      * Resets the search cache.
      *
      * Сбрасывает кэш поиска.
+     * @returns void
      */
     protected resetCache(): void;
 }
@@ -7190,9 +7488,9 @@ export declare class SearchListItem {
         value: string;
     };
     /**
-     * Checks if a search should be performed based on the current value and options.
+     * Checks if the value is filled and the length is greater than or equal to the limit.
      *
-     * Проверяет, следует ли выполнять поиск на основе текущего значения и опций.
+     * Проверяет, заполнено ли значение и длина больше или равна лимиту.
      * @returns boolean/ логическое значение
      */
     isSearch(): boolean;
@@ -7256,12 +7554,14 @@ export declare class SearchListMatcher {
      * Updates the matcher based on the current item value and options.
      *
      * Обновляет сопоставитель на основе текущего значения элемента и опций.
+     * @returns void
      */
     update(): void;
     /**
      * Initializes or resets the regular expression matcher.
      *
      * Инициализирует или сбрасывает сопоставитель регулярных выражений.
+     * @returns void
      */
     protected initMatcher(): void;
 }
@@ -7369,11 +7669,13 @@ export declare function secondToTime(second: number | string | undefined, hasHou
 export declare class ServerStorage {
     protected static storage?: ServerStorageList;
     protected static listener?: () => Record<string, any>;
+    protected static hideError?: boolean;
     /**
      * Initializes the storage with a context listener.
      *
      * Инициализирует хранилище слушателем контекста.
      * @param listener function that returns the current request context / функция, возвращающая контекст текущего запроса
+     * @returns this instance / текущий класс
      */
     static init(listener: () => Record<string, any>): typeof ServerStorage;
     /**
@@ -7387,6 +7689,7 @@ export declare class ServerStorage {
      *
      * Проверяет наличие значения в хранилище.
      * @param key unique storage key / уникальный ключ хранилища
+     * @returns boolean / логическое значение
      */
     static has(key: string): boolean;
     /**
@@ -7395,7 +7698,8 @@ export declare class ServerStorage {
      * Извлекает значение из хранилища. Если оно не существует, создает его с помощью фабрики значений по умолчанию.
      * @param key unique storage key / уникальный ключ хранилища
      * @param defaultValue function that returns the default value if not found / функция, возвращающая значение по умолчанию, если оно не найдено
-     * @param hydration whether the value is hydrated / является ли значение гидратированным
+     * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
+     * @returns stored value / сохраненное значение
      */
     static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
     /**
@@ -7404,9 +7708,17 @@ export declare class ServerStorage {
      * Сохраняет значение в хранилище.
      * @param key unique storage key / уникальный ключ хранилища
      * @param value function that returns the value to save / функция, возвращающая значение для сохранения
-     * @param hydration whether the value is hydrated / является ли значение гидратированным
+     * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
+     * @returns saved value / сохраненное значение
      */
     static set<T = any>(key: string, value: () => T, hydration?: boolean): T;
+    /**
+     * Sets the visibility of error messages.
+     *
+     * Устанавливает видимость сообщений об ошибках.
+     * @param hide boolean value to hide or show errors / логическое значение для скрытия или отображения ошибок
+     */
+    static setErrorStatus(hide: boolean): void;
     /**
      * Removes a value from storage.
      *
@@ -7418,24 +7730,28 @@ export declare class ServerStorage {
      * Returns a string representation of the storage for hydration.
      *
      * Возвращает строковое представление хранилища для гидратации.
+     * @returns script tag string / строка тега скрипта
      */
     static toString(): string;
     /**
      * Returns storage.
      *
      * Возвращает хранилище.
+     * @returns storage list / список хранилища
      */
     protected static getStorage(): ServerStorageList;
     /**
      * Returns storage from DOM.
      *
      * Возвращает хранилище из DOM.
+     * @returns storage list from DOM / список хранилища из DOM
      */
     protected static getStorageDom(): ServerStorageList;
     /**
      * Returns data for hydration.
      *
      * Возвращает данные для гидратации.
+     * @returns record of hydration data / запись данных гидратации
      */
     protected static getDataForHydration(): Record<string, any>;
 }
@@ -7514,6 +7830,7 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      * Возвращает экземпляр класса по названию.
      * @param name storage name/ название хранилища
      * @param group storage group/ группа хранилища
+     * @returns StorageCallback instance / экземпляр StorageCallback
      */
     static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
     protected callbacks: {
@@ -7533,18 +7850,21 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      * Returns the loading state.
      *
      * Возвращает состояние загрузки.
+     * @returns loading state / состояние загрузки
      */
     isLoading(): boolean;
     /**
      * Returns the storage name.
      *
      * Возвращает название хранилища.
+     * @returns storage name / название хранилища
      */
     getName(): string;
     /**
      * Returns the loading state.
      *
      * Возвращает состояние загрузки.
+     * @returns loading state / состояние загрузки
      */
     getLoading(): boolean;
     /**
@@ -7553,6 +7873,7 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      * Добавляет обратный вызов в список.
      * @param callback function for callbacks/ функция для обратных вызовов
      * @param isOnce whether the callback should only be called once/ является ли колбэк одноразовым
+     * @returns this instance / текущий экземпляр
      */
     addCallback(callback: Callback, isOnce?: boolean): this;
     /**
@@ -7560,12 +7881,14 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      *
      * Удаляет обратный вызов из списка.
      * @param callback function for callbacks/ функция для обратных вызовов
+     * @returns this instance / текущий экземпляр
      */
     removeCallback(callback: Callback): this;
     /**
      * Preparation of data before launch.
      *
      * Подготовка данных перед запуском.
+     * @returns this instance / текущий экземпляр
      */
     preparation(): this;
     /**
@@ -7573,6 +7896,7 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
      *
      * Выполнение всех обратных вызовов.
      * @param value storage data/ данные хранилища
+     * @returns this instance / текущий экземпляр
      */
     run(value: T): Promise<this>;
 }
@@ -7750,12 +8074,14 @@ export declare function transformation(value: any, isFunction?: boolean): any;
  * Класс для получения переведенного текста.
  */
 export declare class Translate {
+    protected static item?: TranslateInstance;
     /**
      * Getting the translation text by its code.
      *
      * Получение текста перевода по его коду.
      * @param name code name/ название кода
      * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
+     * @returns translation text / текст перевода
      */
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
     /**
@@ -7774,6 +8100,7 @@ export declare class Translate {
      * если установлено false, возвращает пустую строку, если нет текста
      * @param replacement If set, replaces the text with the specified values/
      * если установлено, заменяет текст на указанные значения
+     * @returns translation text / текст перевода
      */
     static getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
     /**
@@ -7781,6 +8108,7 @@ export declare class Translate {
      *
      * Получение списка переводов по массиву кодов текста.
      * @param names list of codes to get translations/ список кодов для получения переводов
+     * @returns object with translations / объект с переводами
      */
     static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
     /**
@@ -7790,6 +8118,7 @@ export declare class Translate {
      * @param names list of codes to get translations/ список кодов для получения переводов
      * @param first If set to false, returns an empty string if there is no text/
      * если установлено false, возвращает пустую строку, если нет текста
+     * @returns object with translations / объект с переводами
      */
     static getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
     /**
@@ -7928,27 +8257,31 @@ export declare class TranslateFile {
      */
     constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
     /**
-     * Checks if there are files for the current location.
+     * Checks if there are files for the current location or language.
      *
-     * Проверяет, есть ли файлы для текущего местоположения.
+     * Проверяет, есть ли файлы для текущего местоположения или языка.
+     * @returns boolean / логическое значение
      */
     isFile(): boolean;
     /**
      * Returns the location.
      *
      * Возвращает местоположение.
+     * @returns location / местоположение
      */
     getLocation(): string;
     /**
      * Returns the language.
      *
      * Возвращает язык.
+     * @returns language / язык
      */
     getLanguage(): string;
     /**
      * Returns a list of translations from the file for the current location.
      *
      * Возвращает список переводов из файла для текущего местоположения.
+     * @returns promise with list of translations / промис со списком переводов
      */
     getList(): Promise<TranslateDataFileList | undefined>;
     /**
@@ -7962,6 +8295,7 @@ export declare class TranslateFile {
      * Returns the key for the current location from the list of files.
      *
      * Возвращает ключ для текущего местоположения из списка файлов.
+     * @returns file key or undefined / ключ файла или undefined
      */
     protected getIndex(): string | undefined;
     /**
@@ -7969,6 +8303,7 @@ export declare class TranslateFile {
      *
      * Возвращает список переводов из кэша.
      * @param index file key/ ключ файла
+     * @returns list of translations or undefined / список переводов или undefined
      */
     protected getByData(index: string): TranslateDataFileList | undefined;
     /**
@@ -7976,6 +8311,7 @@ export declare class TranslateFile {
      *
      * Возвращает список переводов из файла и кэширует результат.
      * @param index file key/ ключ файла
+     * @returns promise with list of translations or undefined / промис со списком переводов или undefined
      */
     protected getByFile(index: string): Promise<TranslateDataFileList | undefined>;
 }
@@ -8014,6 +8350,7 @@ export declare class TranslateInstance {
      * Получение текста перевода по его коду.
      * @param name code name/ название кода
      * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
+     * @returns translation text / текст перевода
      */
     get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
     /**
@@ -8025,6 +8362,7 @@ export declare class TranslateInstance {
      * если установлено false, возвращает пустую строку, если нет текста
      * @param replacement If set, replaces the text with the specified values/
      * если установлено, заменяет текст на указанные значения
+     * @returns translation text / текст перевода
      */
     getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
     /**
@@ -8032,6 +8370,7 @@ export declare class TranslateInstance {
      *
      * Получение списка переводов по массиву кодов текста.
      * @param names list of codes to get translations/ список кодов для получения переводов
+     * @returns object with translations / объект с переводами
      */
     getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
     /**
@@ -8041,6 +8380,7 @@ export declare class TranslateInstance {
      * @param names list of codes to get translations/ список кодов для получения переводов
      * @param first If set to false, returns an empty string if there is no text/
      * если установлено false, возвращает пустую строку, если нет текста
+     * @returns object with translations / объект с переводами
      */
     getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
     /**
@@ -8048,6 +8388,7 @@ export declare class TranslateInstance {
      *
      * Добавлен список переведенных текстов.
      * @param names list of codes to get translations/ список кодов для получения переводов
+     * @returns promise resolving when translations are added / промис, разрешающийся после добавления переводов
      */
     add(names: string | string[]): Promise<void>;
     /**
@@ -8062,6 +8403,7 @@ export declare class TranslateInstance {
      *
      * Добавление данных в виде запроса или напрямую, в зависимости от среды выполнения.
      * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
+     * @returns promise / промис
      */
     addNormalOrSync(data: Record<string, string>): Promise<void>;
     /**
@@ -8104,6 +8446,7 @@ export declare class TranslateInstance {
      *
      * Проверяет наличие перевода по коду с учетом запасных вариантов.
      * @param name code name/ название кода
+     * @returns boolean / логическое значение
      */
     protected hasName(name: string): boolean;
     /**
@@ -8111,6 +8454,7 @@ export declare class TranslateInstance {
      *
      * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
      * @param name code name/ название кода
+     * @returns translation text or undefined / текст перевода или undefined
      */
     protected getText(name: string): string | undefined;
     /**
@@ -8118,6 +8462,7 @@ export declare class TranslateInstance {
      *
      * Получение полного названия для перевода.
      * @param name code name/ название кода
+     * @returns full title / полное название
      */
     protected getName(name: string): string;
     /**
@@ -8125,6 +8470,7 @@ export declare class TranslateInstance {
      *
      * Получение названия для перевода по языку.
      * @param name code name/ название кода
+     * @returns title by language / название по языку
      */
     protected getNameByLanguage(name: string): string;
     /**
@@ -8132,6 +8478,7 @@ export declare class TranslateInstance {
      *
      * Получение названия для перевода глобально.
      * @param name code name/ название кода
+     * @returns global title / глобальное название
      */
     protected getNameByGlobal(name: string): string;
     /**
@@ -8139,12 +8486,14 @@ export declare class TranslateInstance {
      *
      * Возвращает список имен, которых еще нет в списке.
      * @param names list of codes to get translations/ список кодов для получения переводов
+     * @returns list of missing names / список отсутствующих имен
      */
     protected getNamesNone(names: string | string[]): string[];
     /**
      * Getting the list of translations from the server.
      *
      * Получение списка переводов с сервера.
+     * @returns promise with record of translations / промис с записью переводов
      */
     protected getResponse(): Promise<Record<string, string>>;
     /**
@@ -8153,12 +8502,14 @@ export declare class TranslateInstance {
      * Заменяет текст на указанные значения.
      * @param text text to replace/ текст для замены
      * @param replacement values for replacement/ значения для замены
+     * @returns replaced text / замененный текст
      */
     protected replacement(text: string, replacement?: string[] | Record<string, string | number>): any;
     /**
      * Adding translation data from the server.
      *
      * Добавление данных по переводу с сервера.
+     * @returns promise / промис
      */
     protected make(): Promise<void>;
     /**

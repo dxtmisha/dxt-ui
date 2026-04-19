@@ -5,15 +5,15 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'chipAttrs', type: 'ConstrBind<Chip>' },
-  { name: 'disabled', type: 'boolean' },
-  { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
-  { name: 'iconCancel', type: 'IconValue<Icon>' },
-  { name: 'iconShow', type: 'boolean' },
-  { name: 'multiple', type: 'boolean' },
-  { name: 'placeholder', type: 'string' },
-  { name: 'readonly', type: 'boolean' },
-  { name: 'value', type: 'ListList' }
+  { name: 'chipAttrs', type: 'ConstrBind<ChipProps> | undefined' },
+  { name: 'disabled', type: 'boolean | undefined' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconProps> | undefined' },
+  { name: 'iconCancel', type: 'IconValue<IconProps> | undefined' },
+  { name: 'iconShow', type: 'boolean | undefined' },
+  { name: 'multiple', type: 'boolean | undefined' },
+  { name: 'placeholder', type: 'string | undefined' },
+  { name: 'readonly', type: 'boolean | undefined' },
+  { name: 'value', type: 'ListList | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 

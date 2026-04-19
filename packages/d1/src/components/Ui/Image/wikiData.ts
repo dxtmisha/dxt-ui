@@ -5,27 +5,27 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'adaptive', type: 'boolean' },
-  { name: 'adaptiveAlways', type: 'boolean' },
-  { name: 'adaptiveGroup', type: 'string' },
-  { name: 'alt', type: 'string' },
+  { name: 'adaptive', type: 'boolean | undefined' },
+  { name: 'adaptiveAlways', type: 'boolean | undefined' },
+  { name: 'adaptiveGroup', type: 'string | undefined' },
+  { name: 'alt', type: 'string | undefined' },
   { name: 'coordinator', type: 'number[] | any' },
-  { name: 'disabled', type: 'boolean' },
+  { name: 'disabled', type: 'boolean | undefined' },
   { name: 'fetchPriority', type: 'string', option: ['auto', 'high', 'low'] },
-  { name: 'hide', type: 'boolean' },
-  { name: 'lazy', type: 'boolean' },
-  { name: 'objectHeight', type: 'string | number' },
-  { name: 'objectWidth', type: 'string | number' },
-  { name: 'picture', type: 'ImagePicture' },
-  { name: 'preloadOffset', type: 'string' },
+  { name: 'hide', type: 'boolean | undefined' },
+  { name: 'lazy', type: 'boolean | undefined' },
+  { name: 'objectHeight', type: 'string | number | undefined' },
+  { name: 'objectWidth', type: 'string | number | undefined' },
+  { name: 'picture', type: 'ImagePicture | undefined' },
+  { name: 'preloadOffset', type: 'string | undefined' },
   { name: 'size', type: 'string', option: ['auto', 'contain', 'cover'] },
-  { name: 'srcset', type: 'string | Record<string, string>' },
-  { name: 'tagImg', type: 'boolean' },
-  { name: 'turn', type: 'boolean' },
-  { name: 'url', type: 'string' },
+  { name: 'srcset', type: 'string | Record<string, string> | undefined' },
+  { name: 'tagImg', type: 'boolean | undefined' },
+  { name: 'turn', type: 'boolean | undefined' },
+  { name: 'url', type: 'string | undefined' },
   { name: 'value', type: 'string | any' },
-  { name: 'x', type: 'string | number' },
-  { name: 'y', type: 'string | number' }
+  { name: 'x', type: 'string | number | undefined' },
+  { name: 'y', type: 'string | number | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 

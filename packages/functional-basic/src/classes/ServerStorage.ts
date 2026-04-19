@@ -28,6 +28,7 @@ const SERVER_STORAGE_ID = '__ui:server:storage:id__'
 export class ServerStorage {
   protected static storage?: ServerStorageList
   protected static listener?: () => Record<string, any>
+  protected static hideError?: boolean
 
   /**
    * Initializes the storage with a context listener.
@@ -119,6 +120,16 @@ export class ServerStorage {
   }
 
   /**
+   * Sets the visibility of error messages.
+   *
+   * Устанавливает видимость сообщений об ошибках.
+   * @param hide boolean value to hide or show errors / логическое значение для скрытия или отображения ошибок
+   */
+  static setErrorStatus(hide: boolean): void {
+    this.hideError = hide
+  }
+
+  /**
    * Removes a value from storage.
    *
    * Удаляет значение из хранилища.
@@ -156,10 +167,12 @@ export class ServerStorage {
     const context = this.listener?.()
 
     if (!context) {
-      ErrorCenter.on({
-        group: 'storage',
-        code: 'context'
-      })
+      if (!this.hideError) {
+        ErrorCenter.on({
+          group: 'storage',
+          code: 'context'
+        })
+      }
 
       if (!this.storage) {
         this.storage = {}

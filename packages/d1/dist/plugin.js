@@ -1,8 +1,8 @@
-import { t as e } from "./defineProperty-DblGXmzD-DcKtCVOT.js";
+import { t as e } from "./defineProperty-Bjg6wMoX-PyV0_eg3.js";
 import { componentsList as t, componentsReg as n, packageName as r, styleVarsReg as i } from "./design.js";
 import { isFilled as a } from "@dxtmisha/functional";
 import { toCamelCase as o, toKebabCase as s } from "@dxtmisha/functional-basic";
-//#region ../constructor/dist/Plugin-BgqJaz-I.js
+//#region ../constructor/dist/Plugin-D89XKCrg.js
 var c = class {
 	static isSrc(e) {
 		return !!(e.match(/\/src\//i) && !e.match(/\/node_modules\//i));

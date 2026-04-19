@@ -27,7 +27,7 @@ const getNextId = () => {
     return `id-server-${contextId}`
   }
 
-  const id = ServerStorage.get<{ id: number }>('__dxt_getElementId__', () => ({ id: 100000 }))
+  const id = ServerStorage.get<{ id: number }>('__ui:getElementId__', () => ({ id: 100000 }))
 
   return `id-${id.id++}`
 }

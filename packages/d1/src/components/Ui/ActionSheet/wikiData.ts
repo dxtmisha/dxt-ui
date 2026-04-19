@@ -5,36 +5,36 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'actionsAttrs', type: 'ConstrBind<Actions>' },
-  { name: 'actionsHide', type: 'boolean' },
-  { name: 'actionsList', type: 'ConstrBind<Actions[\'list\']>' },
-  { name: 'actionsSecondary', type: 'ConstrBind<Actions[\'listSecondary\']>' },
-  { name: 'autoClose', type: 'boolean' },
-  { name: 'barsAttrs', type: 'ConstrBind<Bars>' },
-  { name: 'barsBackHide', type: 'boolean' },
-  { name: 'barsDescription', type: 'string' },
-  { name: 'barsHide', type: 'boolean' },
-  { name: 'barsLabel', type: 'string | number' },
-  { name: 'barsList', type: 'Bars[\'bars\']' },
-  { name: 'disabled', type: 'boolean' },
-  { name: 'open', type: 'boolean' },
-  { name: 'touchClose', type: 'boolean' },
+  { name: 'actionsAttrs', type: 'ConstrBind<ActionsProps> | undefined' },
+  { name: 'actionsHide', type: 'boolean | undefined' },
+  { name: 'actionsList', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
+  { name: 'actionsSecondary', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
+  { name: 'autoClose', type: 'boolean | undefined' },
+  { name: 'barsAttrs', type: 'ConstrBind<BarsProps> | undefined' },
+  { name: 'barsBackHide', type: 'boolean | undefined' },
+  { name: 'barsDescription', type: 'string | undefined' },
+  { name: 'barsHide', type: 'boolean | undefined' },
+  { name: 'barsLabel', type: 'string | number | undefined' },
+  { name: 'barsList', type: 'ConstrBind<ButtonProps>[] | undefined' },
+  { name: 'disabled', type: 'boolean | undefined' },
+  { name: 'open', type: 'boolean | undefined' },
+  { name: 'touchClose', type: 'boolean | undefined' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
-  { name: 'windowAttrs', type: 'ConstrBind<Window>' }
+  { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'control', description: `Control slot for window management/
-Слот управления для управления окном`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+Слот управления для управления окном`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'default', description: `Default slot for main content/
-Основной слот для главного содержимого`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+Основной слот для главного содержимого`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'footer', description: `Footer slot for window bottom/
-Слот подвала для низа окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+Слот подвала для низа окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'header', description: `Slot for the modal header/ Слот для заголовка модального окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
   { name: 'title', description: `Title slot for window header/
-Слот заголовка для шапки окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] }
+Слот заголовка для шапки окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

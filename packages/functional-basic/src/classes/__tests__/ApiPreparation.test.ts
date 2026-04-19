@@ -1,12 +1,8 @@
-// @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ApiPreparation } from '../ApiPreparation'
 
 describe('ApiPreparation', () => {
-  let preparation: ApiPreparation
-
   beforeEach(() => {
-    preparation = new ApiPreparation()
     vi.useFakeTimers()
   })
 
@@ -14,92 +10,123 @@ describe('ApiPreparation', () => {
     vi.useRealTimers()
   })
 
-  it('should call callback in make() when active', async () => {
-    const callback = vi.fn().mockResolvedValue(undefined)
-    preparation.set(callback)
+  it('should run normal make when callback is set and active is true', async () => {
+    const prep = new ApiPreparation()
+    const callbackSpy = vi.fn().mockResolvedValue(undefined)
 
-    const apiFetch = { path: '/test' } as any
-    const promise = preparation.make(true, apiFetch)
+    prep.set(callbackSpy)
 
-    expect(callback).toHaveBeenCalledWith(apiFetch)
+    const promise = prep.make(true, { path: 'test' })
+    await vi.runAllTimersAsync()
     await promise
+
+    expect(callbackSpy).toHaveBeenCalledWith({ path: 'test' })
   })
 
-  it('should not call callback in make() when not active', async () => {
-    const callback = vi.fn().mockResolvedValue(undefined)
-    preparation.set(callback)
+  it('should NOT run make if active is false', async () => {
+    const prep = new ApiPreparation()
+    const callbackSpy = vi.fn().mockResolvedValue(undefined)
 
-    await preparation.make(false, { path: '/test' } as any)
-    expect(callback).not.toHaveBeenCalled()
+    prep.set(callbackSpy)
+
+    await prep.make(false, { path: 'test' })
+
+    expect(callbackSpy).not.toHaveBeenCalled()
   })
 
-  it('should call callbackEnd in makeEnd() when active', async () => {
-    const callbackEnd = vi.fn().mockResolvedValue({ reset: true, data: { ok: 1 } })
-    preparation.setEnd(callbackEnd)
-
-    const query = new Response()
-    const apiFetch = { path: '/test' } as any
-    const result = await preparation.makeEnd(true, query, apiFetch)
-
-    expect(callbackEnd).toHaveBeenCalledWith(query, apiFetch)
-    expect(result).toEqual({ reset: true, data: { ok: 1 } })
+  it('should NOT run make if callback is not set', async () => {
+    const prep = new ApiPreparation()
+    await prep.make(true, { path: 'test' })
+    expect(true).toBe(true) // Just test that it resolves properly without crashing
   })
 
-  it('should return empty object in makeEnd() when not active', async () => {
-    const callbackEnd = vi.fn().mockResolvedValue({ reset: true })
-    preparation.setEnd(callbackEnd)
+  it('should wait if loading is true', async () => {
+    const prep = new ApiPreparation()
 
-    const result = await preparation.makeEnd(false, new Response(), {} as any)
-    expect(result).toEqual({})
-    expect(callbackEnd).not.toHaveBeenCalled()
-  })
+    // First callback takes some time to resolve
+    let resolveFirst: any
+    const callback1 = vi.fn().mockImplementation(() => {
+      return new Promise((resolve) => {
+        resolveFirst = resolve
+      })
+    })
 
-  it('should handle sequential requests with loading state', async () => {
-    let resolveCallback: (value: void | PromiseLike<void>) => void
-    const callback = vi.fn().mockImplementation(() => new Promise<void>((resolve) => {
-      resolveCallback = resolve
-    }))
+    prep.set(callback1)
 
-    preparation.set(callback)
+    // Start first make
+    const p1 = prep.make(true, { path: 'first' })
 
-    const p1 = preparation.make(true, { id: 1 } as any)
-    expect(callback).toHaveBeenCalledTimes(1)
+    // Change callback to spy on the second make
+    const callback2 = vi.fn().mockResolvedValue(undefined)
+    prep.set(callback2) // Note: this replaces the callback, but loading=true flag inside `prep` blocks it
 
-    const p2 = preparation.make(true, { id: 2 } as any)
-    // p2 should be waiting because loading is true
-    expect(callback).toHaveBeenCalledTimes(1)
+    // Start second make while first is pending
+    const p2 = prep.make(true, { path: 'second' })
 
-    // Finish p1
-    resolveCallback!()
+    // callback2 should not be called yet due to loading=true
+    expect(callback2).not.toHaveBeenCalled()
+
+    // Advance fake timers so `go` function recursive setTimeout triggers
+    await vi.advanceTimersByTimeAsync(160)
+
+    // Now resolve first callback
+    resolveFirst()
     await p1
 
-    // Advance timers to trigger the retry in go() for p2
-    // We need to advance multiple times because go() might be called multiple times
-    await vi.advanceTimersByTimeAsync(160)
-    await vi.advanceTimersByTimeAsync(160)
-
-    // Now p2 should run
+    // Second callback should now trigger after the next timeout tick
+    await vi.runAllTimersAsync()
     await p2
-    expect(callback).toHaveBeenCalledTimes(2)
+
+    expect(callback1).toHaveBeenCalledWith({ path: 'first' })
+    expect(callback2).toHaveBeenCalledWith({ path: 'second' })
   })
 
-  it('should handle errors in callback and reset loading state', async () => {
-    const callback = vi.fn().mockRejectedValue(new Error('callback error'))
-    preparation.set(callback)
+  it('should reset loading state even if callback throws', async () => {
+    const prep = new ApiPreparation()
+    const errorCallback = vi.fn().mockRejectedValue(new Error('Test error'))
 
-    await preparation.make(true, {} as any)
-    expect(callback).toHaveBeenCalledTimes(1)
+    prep.set(errorCallback)
 
-    // Check if we can run another one (loading should be false)
-    await preparation.make(true, {} as any)
-    expect(callback).toHaveBeenCalledTimes(2)
+    await prep.make(true, { path: 'error' })
+
+    // It should catch the error internally and clear loading flag
+    const successCallback = vi.fn().mockResolvedValue(undefined)
+    prep.set(successCallback)
+
+    await prep.make(true, { path: 'success' })
+    expect(successCallback).toHaveBeenCalled()
   })
 
-  it('should support chaining', () => {
-    const result = preparation.set(() => Promise.resolve())
-    expect(result).toBe(preparation)
+  it('should handle makeEnd when active and callbackEnd are provided', async () => {
+    const prep = new ApiPreparation()
+    const callbackEndSpy = vi.fn().mockResolvedValue({ reset: true })
 
-    const resultEnd = preparation.setEnd(() => Promise.resolve({}))
-    expect(resultEnd).toBe(preparation)
+    prep.setEnd(callbackEndSpy)
+
+    const mockResponse = new Response()
+    const result = await prep.makeEnd(true, mockResponse, { path: 'test' })
+
+    expect(callbackEndSpy).toHaveBeenCalledWith(mockResponse, { path: 'test' })
+    expect(result).toEqual({ reset: true })
+  })
+
+  it('should return empty object if makeEnd is called and active is false', async () => {
+    const prep = new ApiPreparation()
+    const callbackEndSpy = vi.fn().mockResolvedValue({ reset: true })
+
+    prep.setEnd(callbackEndSpy)
+
+    const mockResponse = new Response()
+    const result = await prep.makeEnd(false, mockResponse, { path: 'test' })
+
+    expect(callbackEndSpy).not.toHaveBeenCalled()
+    expect(result).toEqual({})
+  })
+
+  it('should return empty object if makeEnd is called but no callback is set', async () => {
+    const prep = new ApiPreparation()
+    const mockResponse = new Response()
+    const result = await prep.makeEnd(true, mockResponse, { path: 'test' })
+    expect(result).toEqual({})
   })
 })

@@ -45,7 +45,6 @@ describe('ServerStorage', () => {
 
     it('should set value without hydration by default', () => {
       ServerStorage.set('noHydrate', () => 'data')
-      // @ts-ignore: testing internal state
       expect((ServerStorage as any).getStorage().noHydrate.hydration).toBe(false)
     })
 
@@ -82,7 +81,6 @@ describe('ServerStorage', () => {
       expect(res1).toBe(ServerStorage)
       expect(res2).toBe(ServerStorage)
 
-      // @ts-ignore: checking internal state
       expect((ServerStorage as any).listener).toBe(firstListener)
     })
 
@@ -92,45 +90,42 @@ describe('ServerStorage', () => {
 
       ServerStorage.reset()
 
-      // @ts-ignore
       expect((ServerStorage as any).listener).toBeUndefined()
-      // @ts-ignore
       expect((ServerStorage as any).storage).toBeUndefined()
     })
   })
 
-  describe('SSR Isolation', () => {
+  describe('Error Handling', () => {
     beforeEach(() => {
       vi.mocked(isDomRuntime).mockReturnValue(false)
     })
 
-    it('should isolate data per context listener', () => {
-      const context1 = {}
-      const context2 = {}
-      let currentContext = context1
+    it('should notify ErrorCenter if context is missing and hideError is false', () => {
+      ServerStorage.setErrorStatus(false)
+      ServerStorage.get('missing-context-test')
 
-      ServerStorage.init(() => currentContext)
-
-      ServerStorage.set('token', () => 'user1-token')
-
-      currentContext = context2
-      expect(ServerStorage.get('token')).toBeUndefined()
-      ServerStorage.set('token', () => 'user2-token')
-
-      currentContext = context1
-      expect(ServerStorage.get('token')).toBe('user1-token')
-
-      currentContext = context2
-      expect(ServerStorage.get('token')).toBe('user2-token')
-    })
-
-    it('should warn and return empty object if context is missing', () => {
-      const res = ServerStorage.get('anything', () => 'value')
-      expect(res).toBe('value')
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
         group: 'storage',
         code: 'context'
       }))
+    })
+
+    it('should NOT notify ErrorCenter if context is missing and hideError is true', () => {
+      ServerStorage.setErrorStatus(true)
+      ServerStorage.get('hidden-error-test')
+
+      expect(errorCenterSpy).not.toHaveBeenCalledWith(expect.objectContaining({
+        group: 'storage',
+        code: 'context'
+      }))
+    })
+
+    it('should update error status via setErrorStatus()', () => {
+      ServerStorage.setErrorStatus(true)
+      expect((ServerStorage as any).hideError).toBe(true)
+
+      ServerStorage.setErrorStatus(false)
+      expect((ServerStorage as any).hideError).toBe(false)
     })
   })
 
@@ -197,6 +192,42 @@ describe('ServerStorage', () => {
       expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
         group: 'hydration',
         code: 'error'
+      }))
+    })
+  })
+
+  describe('SSR Isolation', () => {
+    beforeEach(() => {
+      vi.mocked(isDomRuntime).mockReturnValue(false)
+    })
+
+    it('should isolate data per context listener', () => {
+      const context1 = {}
+      const context2 = {}
+      let currentContext = context1
+
+      ServerStorage.init(() => currentContext)
+
+      ServerStorage.set('token', () => 'user1-token')
+
+      currentContext = context2
+      expect(ServerStorage.get('token')).toBeUndefined()
+      ServerStorage.set('token', () => 'user2-token')
+
+      currentContext = context1
+      expect(ServerStorage.get('token')).toBe('user1-token')
+
+      currentContext = context2
+      expect(ServerStorage.get('token')).toBe('user2-token')
+    })
+
+    it('should warn and return empty object if context is missing', () => {
+      ServerStorage.setErrorStatus(false)
+      const res = ServerStorage.get('anything', () => 'value')
+      expect(res).toBe('value')
+      expect(errorCenterSpy).toHaveBeenCalledWith(expect.objectContaining({
+        group: 'storage',
+        code: 'context'
       }))
     })
   })

@@ -12,7 +12,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Default slot for the component/ Слот по умолчанию для компонента` }
+  { name: 'default', description: `Default slot for the component/ Слот по умолчанию для компонента`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

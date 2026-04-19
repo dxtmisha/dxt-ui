@@ -1,4 +1,4 @@
-import { t as e } from "./D1Group-BEvEXKUJ.js";
+import { t as e } from "./D1Group-CKjApfvV.js";
 //#region src/components/Ui/Group/index.ts
 var t = e;
 //#endregion

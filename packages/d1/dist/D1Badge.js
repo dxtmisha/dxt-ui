@@ -1,4 +1,4 @@
-import { t as e } from "./D1Badge-C05NOGli.js";
+import { t as e } from "./D1Badge-DIFPKilo.js";
 //#region src/components/Ui/Badge/index.ts
 var t = e;
 //#endregion

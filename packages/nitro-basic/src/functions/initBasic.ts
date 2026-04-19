@@ -6,6 +6,13 @@ import { initCookieStorage } from './initCookieStorage'
 
 import type { NitroAppBasicConfig } from '../types/nitroAppTypes'
 
+/**
+ * Initialize basic functions for Nitro.
+ *
+ * Инициализация базовых функций для Nitro.
+ * @param nitroApp Nitro application instance / Экземпляр приложения Nitro
+ * @param config Configuration / Конфигурация
+ */
 export function initBasic(
   nitroApp: NitroApp,
   config: NitroAppBasicConfig = {}

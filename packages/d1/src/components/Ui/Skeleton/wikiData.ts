@@ -5,13 +5,13 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'active', type: 'boolean' }
+  { name: 'active', type: 'boolean | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Slot for default skeleton content/ Слот для основного содержимого скелета`, properties: [{ name: 'props', type: 'SkeletonClassesList' }] }
+  { name: 'default', description: `Slot for default skeleton content/ Слот для основного содержимого скелета`, properties: [{ name: 'props', type: '(SkeletonClassesList) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

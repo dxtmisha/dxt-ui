@@ -6,6 +6,8 @@ import { type CookieOptions, CookieStorage, isObjectNotArray } from '@dxtmisha/f
  *
  * Инициализация хранилища cookie.
  * @param event H3 event / Событие H3
+ * @param ageDefault Default cookie age in seconds / Срок жизни cookie по умолчанию в секундах
+ * @param sameSiteDefault Default SameSite attribute / Атрибут SameSite по умолчанию
  */
 export function initCookieStorage(
   event: H3Event,

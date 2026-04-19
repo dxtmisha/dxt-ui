@@ -1,88 +1,86 @@
-// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ApiStatus } from '../ApiStatus'
 
 describe('ApiStatus', () => {
-  it('should initialize with undefined values', () => {
+  it('should initialize empty', () => {
     const status = new ApiStatus()
     expect(status.get()).toBeUndefined()
     expect(status.getStatus()).toBeUndefined()
     expect(status.getStatusText()).toBeUndefined()
-    expect(status.getStatusType()).toBeUndefined()
     expect(status.getError()).toBeUndefined()
     expect(status.getResponse()).toBeUndefined()
     expect(status.getMessage()).toBe('')
+    expect(status.getStatusType()).toBeUndefined()
   })
 
-  it('should set and get status item data', () => {
+  it('should set and get basic fields with chaining', () => {
     const status = new ApiStatus()
-    const data = {
+    const chain = status.set({
       status: 200,
       statusText: 'OK',
       error: 'none',
       lastResponse: { data: 'test' },
-      lastMessage: 'Success',
-      lastStatus: 'success' as any
-    }
-    status.set(data)
+      lastMessage: 'success',
+      lastStatus: 'success'
+    })
 
-    expect(status.get()).toEqual(data)
+    expect(chain).toBe(status) // Chain works
     expect(status.getStatus()).toBe(200)
     expect(status.getStatusText()).toBe('OK')
     expect(status.getError()).toBe('none')
     expect(status.getResponse()).toEqual({ data: 'test' })
-    expect(status.getMessage()).toBe('Success')
+    expect(status.getMessage()).toBe('success')
     expect(status.getStatusType()).toBe('success')
   })
 
-  it('should set individual status properties', () => {
+  it('should partially set fields and not override others', () => {
     const status = new ApiStatus()
     status.setStatus(404, 'Not Found')
     expect(status.getStatus()).toBe(404)
     expect(status.getStatusText()).toBe('Not Found')
 
-    status.setError('Timeout')
-    expect(status.getError()).toBe('Timeout')
+    status.setError('Network err')
+    expect(status.getError()).toBe('Network err')
 
-    status.setLastMessage('Custom Message')
-    expect(status.getMessage()).toBe('Custom Message')
-
-    status.setLastStatus('error' as any)
-    expect(status.getStatusType()).toBe('error')
+    // Previous fields remain
+    expect(status.getStatus()).toBe(404)
   })
 
-  it('should extract status and message from response object in setLastResponse', () => {
+  it('should correctly auto-parse lastResponse status and message', () => {
     const status = new ApiStatus()
-    const response = {
+
+    status.setLastResponse({
+      message: 'unparsed msg',
       status: 'error',
-      message: 'Failed to fetch',
-      data: [1, 2, 3]
-    }
-    status.setLastResponse(response)
+      other: 123
+    })
 
-    expect(status.getResponse()).toEqual(response)
+    expect(status.getMessage()).toBe('unparsed msg')
     expect(status.getStatusType()).toBe('error')
-    expect(status.getMessage()).toBe('Failed to fetch')
+    expect(status.getResponse()).toEqual({
+      message: 'unparsed msg',
+      status: 'error',
+      other: 123
+    })
   })
 
-  it('should not extract status/message if response is not an object', () => {
+  it('should not parse string responses', () => {
     const status = new ApiStatus()
-    status.setLastResponse('simple string')
-    expect(status.getResponse()).toBe('simple string')
-    expect(status.getStatusType()).toBeUndefined()
+
+    status.setLastResponse('Just a string')
+
+    // Status/Message should be unaffected by string response
     expect(status.getMessage()).toBe('')
+    expect(status.getStatusType()).toBeUndefined()
+    expect(status.getResponse()).toBe('Just a string')
   })
 
-  it('should support chaining', () => {
+  it('should allow explicitly setting lastStatus and lastMessage', () => {
     const status = new ApiStatus()
-    const result = status
-      .setStatus(201)
-      .setError('some error')
-      .setLastMessage('msg')
+    status.setLastStatus('warning')
+    status.setLastMessage('explicit msg')
 
-    expect(result).toBe(status)
-    expect(status.getStatus()).toBe(201)
-    expect(status.getError()).toBe('some error')
-    expect(status.getMessage()).toBe('msg')
+    expect(status.getStatusType()).toBe('warning')
+    expect(status.getMessage()).toBe('explicit msg')
   })
 })

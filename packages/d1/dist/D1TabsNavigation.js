@@ -1,2 +1,2 @@
-import { t as e } from "./TabsNavigation-Cual8ocA.js";
+import { t as e } from "./TabsNavigation-Cn-RHuYS.js";
 export { e as D1TabsNavigation };

@@ -5,9 +5,9 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'all', type: 'boolean' },
-  { name: 'delay', type: 'number' },
-  { name: 'full', type: 'boolean' },
+  { name: 'all', type: 'boolean | undefined' },
+  { name: 'delay', type: 'number | undefined' },
+  { name: 'full', type: 'boolean | undefined' },
   { name: 'horizontal', type: 'string', option: ['right', 'left', 'block'] },
   { name: 'limit', type: 'string', option: ['1', '2', '4', '6', '8'] },
   { name: 'origin', type: 'string', option: ['topToBottom', 'bottomToTop', 'rightToLeft', 'leftToRight'] },

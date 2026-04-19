@@ -5,37 +5,37 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'action', type: 'boolean' },
-  { name: 'actionBars', type: 'any[]' },
-  { name: 'actionDescription', type: 'string | number' },
-  { name: 'actionLabel', type: 'NumberOrString' },
-  { name: 'backActionHide', type: 'boolean' },
-  { name: 'backButton', type: 'ConstrBind<Button>' },
-  { name: 'backHide', type: 'boolean' },
-  { name: 'bars', type: 'any[]' },
-  { name: 'buttonAttrs', type: 'ConstrBind<Button>' },
-  { name: 'description', type: 'string | number' },
-  { name: 'descriptionId', type: 'string' },
-  { name: 'iconBack', type: 'IconValue<Icon>' },
-  { name: 'iconClose', type: 'IconValue<Icon>' },
-  { name: 'isSkeleton', type: 'boolean' },
-  { name: 'label', type: 'NumberOrString' },
-  { name: 'labelId', type: 'string' },
-  { name: 'modelAction', type: 'boolean' },
-  { name: 'onUpdate:action', type: '(value: boolean) => void' },
-  { name: 'onUpdate:modelAction', type: '(value: boolean) => void' },
+  { name: 'action', type: 'boolean | undefined' },
+  { name: 'actionBars', type: 'ConstrBind<ButtonProps>[] | undefined' },
+  { name: 'actionDescription', type: 'string | number | undefined' },
+  { name: 'actionLabel', type: 'NumberOrString | undefined' },
+  { name: 'backActionHide', type: 'boolean | undefined' },
+  { name: 'backButton', type: 'ConstrBind<ButtonProps> | undefined' },
+  { name: 'backHide', type: 'boolean | undefined' },
+  { name: 'bars', type: 'ConstrBind<ButtonProps>[] | undefined' },
+  { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps> | undefined' },
+  { name: 'description', type: 'string | number | undefined' },
+  { name: 'descriptionId', type: 'string | undefined' },
+  { name: 'iconBack', type: 'IconValue<IconProps> | undefined' },
+  { name: 'iconClose', type: 'IconValue<IconProps> | undefined' },
+  { name: 'isSkeleton', type: 'boolean | undefined' },
+  { name: 'label', type: 'NumberOrString | undefined' },
+  { name: 'labelId', type: 'string | undefined' },
+  { name: 'modelAction', type: 'boolean | undefined' },
+  { name: 'onUpdate:action', type: '((value: boolean) => void) | undefined' },
+  { name: 'onUpdate:modelAction', type: '((value: boolean) => void) | undefined' },
   { name: 'padding', type: 'string', option: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none'] },
-  { name: 'paddingByIndent', type: 'boolean' },
+  { name: 'paddingByIndent', type: 'boolean | undefined' },
   { name: 'textClose', type: 'TextValue' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'actionBars', description: `Slot for displaying a list of buttons in action mode/ Слот для отображения списка кнопок в режиме действия` },
-  { name: 'bars', description: `Slot for displaying a list of buttons/ Слот для отображения списка кнопок` },
-  { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию` },
-  { name: 'description', description: `Description slot/ Слот описания` }
+  { name: 'actionBars', description: `Slot for displaying a list of buttons in action mode/ Слот для отображения списка кнопок в режиме действия`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'bars', description: `Slot for displaying a list of buttons/ Слот для отображения списка кнопок`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

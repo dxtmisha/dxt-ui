@@ -1,4 +1,4 @@
-import { t as e } from "./D1Grid-B3gNSCRP.js";
+import { t as e } from "./D1Grid-BeoUiOEA.js";
 //#region src/components/Ui/Grid/index.ts
 var t = e;
 //#endregion

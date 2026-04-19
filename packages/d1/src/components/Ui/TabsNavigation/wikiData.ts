@@ -5,26 +5,26 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'divider', type: 'boolean' },
+  { name: 'divider', type: 'boolean | undefined' },
   { name: 'horizontalScrollAlign', type: 'string', option: ['block', 'left'] },
-  { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic>' },
-  { name: 'horizontalScrollFlush', type: 'boolean' },
-  { name: 'itemAttrs', type: 'ConstrBind<TabItem>' },
-  { name: 'keyLabel', type: 'string' },
-  { name: 'keyValue', type: 'string' },
-  { name: 'list', type: 'ListRecord<any>' },
-  { name: 'modelSelected', type: 'ListSelectedList' },
-  { name: 'onUpdate:modelSelected', type: '(value: ListSelectedList) => void' },
-  { name: 'onUpdate:selected', type: '(value: ListSelectedList) => void' },
-  { name: 'selected', type: 'ListSelectedList' },
-  { name: 'tag', type: 'TabItem[\'tag\']' }
+  { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic> | undefined' },
+  { name: 'horizontalScrollFlush', type: 'boolean | undefined' },
+  { name: 'itemAttrs', type: 'ConstrBind<TabItemProps> | undefined' },
+  { name: 'keyLabel', type: 'string | undefined' },
+  { name: 'keyValue', type: 'string | undefined' },
+  { name: 'list', type: 'ListRecord<TabItemProps> | undefined' },
+  { name: 'modelSelected', type: 'ListSelectedList | undefined' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
+  { name: 'selected', type: 'ListSelectedList | undefined' },
+  { name: 'tag', type: 'string | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'leading', description: `Slot for content before the tabs/ Слот для содержимого перед вкладками` },
-  { name: 'trailing', description: `Slot for content after the tabs/ Слот для содержимого после вкладок` }
+  { name: 'leading', description: `Slot for content before the tabs/ Слот для содержимого перед вкладками`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'trailing', description: `Slot for content after the tabs/ Слот для содержимого после вкладок`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

@@ -26,7 +26,7 @@ let prefix: string = 'ui-storage'
  */
 const getItems = () => {
   return ServerStorage.get<Record<string, DataStorage<unknown>>>(
-    '__dxt_data_storage__',
+    '__ui:data-storage__',
     () => ({})
   )
 }
@@ -224,7 +224,7 @@ export class DataStorage<T> {
    */
   private getValue(): DataStorageValue<T> | undefined {
     const value = this.getMethod()
-      ?.getItem(this.getIndex())
+      ?.getItem?.(this.getIndex())
 
     if (value) {
       try {

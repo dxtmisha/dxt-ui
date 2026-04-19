@@ -5,55 +5,55 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'actionsAttrs', type: 'ConstrBind<Actions>' },
-  { name: 'actionsHide', type: 'boolean' },
-  { name: 'actionsList', type: 'ConstrBind<Actions[\'list\']>' },
-  { name: 'actionsSecondary', type: 'ConstrBind<Actions[\'listSecondary\']>' },
-  { name: 'autoClose', type: 'boolean' },
-  { name: 'barsAttrs', type: 'ConstrBind<Bars>' },
-  { name: 'barsBackHide', type: 'boolean' },
-  { name: 'barsDescription', type: 'string' },
-  { name: 'barsHide', type: 'boolean' },
-  { name: 'barsLabel', type: 'string | number' },
-  { name: 'barsList', type: 'Bars[\'bars\']' },
-  { name: 'buttonClose', type: 'string | ConstrBind<Button> | null' },
-  { name: 'buttonOk', type: 'string | ConstrBind<Button> | null' },
-  { name: 'clickOkAndClose', type: 'boolean' },
-  { name: 'closeButton', type: 'boolean' },
-  { name: 'description', type: 'string | number' },
-  { name: 'descriptionId', type: 'string' },
-  { name: 'disabled', type: 'boolean' },
-  { name: 'error', type: 'boolean' },
-  { name: 'icon', type: 'IconValue<Icon>' },
-  { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
-  { name: 'iconError', type: 'IconValue<Icon>' },
-  { name: 'iconSuccess', type: 'IconValue<Icon>' },
-  { name: 'image', type: 'string | ConstrBind<Image>' },
+  { name: 'actionsAttrs', type: 'ConstrBind<ActionsProps> | undefined' },
+  { name: 'actionsHide', type: 'boolean | undefined' },
+  { name: 'actionsList', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
+  { name: 'actionsSecondary', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
+  { name: 'autoClose', type: 'boolean | undefined' },
+  { name: 'barsAttrs', type: 'ConstrBind<BarsProps> | undefined' },
+  { name: 'barsBackHide', type: 'boolean | undefined' },
+  { name: 'barsDescription', type: 'string | undefined' },
+  { name: 'barsHide', type: 'boolean | undefined' },
+  { name: 'barsLabel', type: 'string | number | undefined' },
+  { name: 'barsList', type: 'ConstrBind<ButtonProps>[] | undefined' },
+  { name: 'buttonClose', type: 'string | ConstrBind<ButtonProps> | null | undefined' },
+  { name: 'buttonOk', type: 'string | ConstrBind<ButtonProps> | null | undefined' },
+  { name: 'clickOkAndClose', type: 'boolean | undefined' },
+  { name: 'closeButton', type: 'boolean | undefined' },
+  { name: 'description', type: 'string | number | undefined' },
+  { name: 'descriptionId', type: 'string | undefined' },
+  { name: 'disabled', type: 'boolean | undefined' },
+  { name: 'error', type: 'boolean | undefined' },
+  { name: 'icon', type: 'IconValue<IconProps> | undefined' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconProps> | undefined' },
+  { name: 'iconError', type: 'IconValue<IconProps> | undefined' },
+  { name: 'iconSuccess', type: 'IconValue<IconProps> | undefined' },
+  { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
-  { name: 'label', type: 'NumberOrString' },
-  { name: 'labelId', type: 'string' },
-  { name: 'open', type: 'boolean' },
-  { name: 'success', type: 'boolean' },
+  { name: 'label', type: 'NumberOrString | undefined' },
+  { name: 'labelId', type: 'string | undefined' },
+  { name: 'open', type: 'boolean | undefined' },
+  { name: 'success', type: 'boolean | undefined' },
   { name: 'textClose', type: 'TextValue' },
   { name: 'textOk', type: 'TextValue' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
-  { name: 'windowAttrs', type: 'ConstrBind<Window>' }
+  { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'control', description: `Control slot for window management/
-Слот управления для управления окном`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+Слот управления для управления окном`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'default', description: `Default slot for main content/
-Основной слот для главного содержимого`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
-  { name: 'description', description: `Description slot/ Слот описания` },
+Основной слот для главного содержимого`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
+  { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'footer', description: `Footer slot for window bottom/
-Слот подвала для низа окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
+Слот подвала для низа окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] },
   { name: 'header', description: `Slot for the modal header/ Слот для заголовка модального окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] },
-  { name: 'label', description: `Label slot content/ Содержимое слота метки` },
+  { name: 'label', description: `Label slot content/ Содержимое слота метки`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'title', description: `Title slot for window header/
-Слот заголовка для шапки окна`, properties: [{ name: 'props', type: 'WindowControlItem' }] }
+Слот заголовка для шапки окна`, properties: [{ name: 'props', type: '(WindowControlItem) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
