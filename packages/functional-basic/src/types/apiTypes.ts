@@ -77,19 +77,28 @@ export type ApiConfig = {
 export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>
 
 /**
+ * API response validation result/ Результат валидации ответа API
+ */
+export type ApiDataValidation = {
+  /** Status/ Статус */
+  status?: ApiStatusType
+  /** Code / Код */
+  code?: string | number
+  /** Message/ Сообщение */
+  message?: string
+}
+
+/**
  * Type of API response data item/ Тип элемента данных ответа API
  */
 export type ApiDataItem<T = any>
   = T
+    & ApiDataValidation
     & {
-    /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
+      /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
       data?: T
       /** Success flag/ Флаг успешности */
       success?: boolean
-      /** Status/ Статус */
-      status?: ApiStatusType
-      /** Message/ Сообщение */
-      message?: string
       /** Status object/ Объект статуса */
       statusObject?: ApiStatusItem
     }
@@ -149,7 +158,7 @@ export type ApiFetch = {
   retryDelay?: number
 
   /** Custom response processor/ Пользовательский процессор ответа */
-  queryReturn?: (query: Response) => Promise<any>
+  queryReturn?: (query: Response) => Promise<any | ApiDataValidation>
 
   /** Run global preparation hooks/ Запускать глобальные хуки подготовки */
   globalPreparation?: boolean
@@ -244,6 +253,8 @@ export type ApiStatusItem = {
   lastResponse?: any
   /** Last status/ Последний статус */
   lastStatus?: ApiStatusType
+  /** Last code / Последний код */
+  lastCode?: string
   /** Last message/ Последнее сообщение */
   lastMessage?: string
 }

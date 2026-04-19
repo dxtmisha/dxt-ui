@@ -1,8 +1,6 @@
 import { getRequestString } from '../functions/getRequestString'
-import { isArray } from '../functions/isArray'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isFilled } from '../functions/isFilled'
-import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isOnLine } from '../functions/isOnLine'
 import { isString } from '../functions/isString'
 import { random } from '../functions/random'
@@ -15,6 +13,7 @@ import { ErrorCenter } from './ErrorCenter'
 import type { ErrorCenterInstance } from './ErrorCenterInstance'
 
 import { ApiCache } from './ApiCache'
+import { ApiDataReturn } from './ApiDataReturn'
 import { ApiDefault } from './ApiDefault'
 import { ApiHeaders } from './ApiHeaders'
 import { ApiHydration } from './ApiHydration'
@@ -23,7 +22,6 @@ import { ApiStatus } from './ApiStatus'
 import { ApiResponse } from './ApiResponse'
 
 import {
-  type ApiData,
   type ApiFetch,
   ApiMethodItem,
   type ApiPreparationEnd
@@ -414,12 +412,10 @@ export class ApiInstance {
     retryCount: number = 0
   ): Promise<T> {
     const {
-      toData = true,
       hideError = false,
       hideLoading = false,
       retry = 0,
       retryDelay = 64,
-      queryReturn = undefined,
       globalPreparation = true,
       globalEnd = true,
       endResetLimit = 8
@@ -439,7 +435,7 @@ export class ApiInstance {
     }
 
     const status = new ApiStatus()
-    let data: ApiData<T>
+    let dataReturn: ApiDataReturn<T>
 
     if (!hideLoading) {
       this.loading.show()
@@ -479,11 +475,8 @@ export class ApiInstance {
         return await this.fetch(apiFetch, retryCount + 1)
       }
 
-      data = await this.readData<T>(
-        query,
-        queryReturn,
-        end
-      )
+      dataReturn = new ApiDataReturn(apiFetch, query, end)
+      await dataReturn.init()
     } catch (e) {
       if (!hideError) {
         this.makeError(e as { name: string })
@@ -499,13 +492,10 @@ export class ApiInstance {
       throw e
     }
 
-    status.setLastResponse(data)
-    this.status.setLastResponse(data)
+    status.setLastResponse(dataReturn.getData())
+    this.status.setLastResponse(dataReturn.getData())
 
-    const responseData = this.makeStatus(
-      this.makeData(data, toData),
-      status
-    )
+    const responseData = dataReturn.getAndStatus(status)
 
     if (!hideLoading) {
       this.loading.hide()
@@ -515,35 +505,6 @@ export class ApiInstance {
     await ApiCache.setByFetch(apiFetch, responseData)
 
     return responseData
-  }
-
-  /**
-   * Reads data from the response.
-   *
-   * Читает данные из ответа.
-   * @param query response from the server / ответ от сервера
-   * @param queryReturn custom function for reading data / кастомная функция для чтения данных
-   * @param end finalization data / данные финализации
-   * @returns parsed API data / распарсенные данные API
-   */
-  protected async readData<T>(
-    query: Response,
-    queryReturn: ApiFetch['queryReturn'],
-    end: ApiPreparationEnd
-  ): Promise<ApiData<T>> {
-    if (queryReturn) {
-      return await queryReturn(query)
-    }
-
-    if ('data' in end) {
-      return end.data
-    }
-
-    if ((query.headers.get('Content-Type') ?? '').match('application/json')) {
-      return await query.json()
-    }
-
-    return { data: await query.text() } as ApiData<T>
   }
 
   /**
@@ -587,90 +548,6 @@ export class ApiInstance {
       query: await fetch(url, fetchInit),
       timeoutId
     }
-  }
-
-  /**
-   * Transforms data if needed.
-   *
-   * Преобразует данные, если нужно.
-   * @param data data for transformation / данные для преобразования
-   * @param toData is it necessary to process the data / нужно ли обрабатывать данные
-   * @returns transformed data / преобразованные данные
-   */
-  protected makeData<T>(
-    data: ApiData<T>,
-    toData: boolean
-  ): ApiData<T> {
-    if (
-      !toData
-      || !data
-      || !isObjectNotArray(data)
-      || !('data' in data)
-    ) {
-      return data
-    }
-
-    if (
-      data.data !== null
-      && typeof data.data !== 'object'
-    ) {
-      return data.data as any
-    }
-
-    if (isArray(data.data)) {
-      return data.data as any
-    }
-
-    const item: ApiData<T & Record<string, any>>
-      = { ...data.data } as ApiData<T & Record<string, any>>
-
-    if (
-      'success' in data
-      && !('success' in item)
-    ) {
-      item.success = data.success
-    }
-
-    if (
-      'status' in data
-      && !('status' in item)
-    ) {
-      item.status = data.status
-    }
-
-    if (
-      'message' in data
-      && !('message' in item)
-    ) {
-      item.message = data.message
-    }
-
-    return item
-  }
-
-  /**
-   * Appends the status object to the response data if possible.
-   *
-   * Добавляет объект статуса к данным ответа, если это возможно.
-   * @param data response data / данные ответа
-   * @param status status object / объект статуса
-   * @returns data with status object appended / данные с добавленным объектом статуса
-   */
-  protected makeStatus<T>(
-    data: ApiData<T>,
-    status: ApiStatus
-  ): ApiData<T> {
-    if (
-      data
-      && isObjectNotArray(data)
-    ) {
-      return {
-        ...data,
-        statusObject: status.get()
-      }
-    }
-
-    return data
   }
 
   /**

@@ -1,15 +1,24 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { Hash } from '../Hash'
 import { HashInstance } from '../HashInstance'
+import { ServerStorage } from '../ServerStorage'
 
 describe('Hash', () => {
-  it('должен возвращать экземпляр HashInstance', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+    vi.spyOn(ServerStorage, 'get').mockImplementation((_, cb) => cb ? cb() : undefined)
+  })
+
+  it('должен возвращать экземпляр HashInstance через ServerStorage', () => {
+    const storageSpy = vi.spyOn(ServerStorage, 'get')
     const instance = Hash.getItem()
     expect(instance).toBeInstanceOf(HashInstance)
+    expect(storageSpy).toHaveBeenCalledWith('__ui:hash-instance__', expect.any(Function))
   })
 
   it('методы фасада должны корректно делегировать вызовы в HashInstance', () => {
     const instance = Hash.getItem()
+    vi.spyOn(ServerStorage, 'get').mockReturnValue(instance)
 
     // Перехватываем методы инстанса
     const getSpy = vi.spyOn(instance, 'get').mockReturnValue('mockedValue')

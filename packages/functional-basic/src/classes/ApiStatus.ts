@@ -50,6 +50,16 @@ export class ApiStatus {
   }
 
   /**
+   * Returns the execution status code (string or number from response).
+   *
+   * Возвращает код статуса выполнения (строка или число из ответа).
+   * @returns status code or undefined / код статуса или undefined
+   */
+  getCode(): string | undefined {
+    return this.get()?.lastCode
+  }
+
+  /**
    * Returns the script execution error.
    *
    * Возвращает ошибку выполнения скрипта.
@@ -111,6 +121,10 @@ export class ApiStatus {
       this.setValue('lastStatus', data.lastStatus)
     }
 
+    if ('lastCode' in data) {
+      this.setValue('lastCode', data.lastCode)
+    }
+
     return this
   }
 
@@ -165,6 +179,10 @@ export class ApiStatus {
       if ('status' in response) {
         this.setLastStatus(String(response.status) as ApiStatusType)
       }
+
+      if ('code' in response) {
+        this.setLastCode(String(response.code))
+      }
     }
 
     this.set({ lastResponse: response })
@@ -180,6 +198,18 @@ export class ApiStatus {
    */
   setLastStatus(status?: ApiStatusType): this {
     this.set({ lastStatus: status })
+    return this
+  }
+
+  /**
+   * Sets the last execution code.
+   *
+   * Устанавливает последний код выполнения.
+   * @param code status code / код статуса
+   * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+   */
+  setLastCode(code?: string): this {
+    this.set({ lastCode: code })
     return this
   }
 

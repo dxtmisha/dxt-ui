@@ -13,6 +13,7 @@ export class HashInstance {
   private hash?: Record<string, any>
   private watch: Record<string, ((value: any) => void)[]> = {}
   private block = false
+  private time?: any
 
   /**
    * Get data from hash.
@@ -190,15 +191,16 @@ export class HashInstance {
    */
   private update(): this {
     if (isDomRuntime()) {
+      clearTimeout(this.time)
       this.block = true
 
       try {
         const hash = this.getHash()
         history.replaceState(null, '', `#${getRequestString(hash, '=', ';')}`)
       } finally {
-        requestAnimationFrame(() => {
+        this.time = setTimeout(() => {
           this.block = false
-        })
+        }, 120)
       }
     }
 
