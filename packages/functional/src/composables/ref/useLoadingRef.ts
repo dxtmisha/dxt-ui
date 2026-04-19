@@ -1,5 +1,5 @@
 import { shallowRef } from 'vue'
-import { Loading } from '@dxtmisha/functional-basic'
+import { isDomRuntime, Loading } from '@dxtmisha/functional-basic'
 
 /**
  * Returns the loading status.
@@ -9,9 +9,11 @@ import { Loading } from '@dxtmisha/functional-basic'
 export function useLoadingRef() {
   const item = shallowRef(Loading.is())
 
-  Loading.registrationEvent(({ detail }) => {
-    item.value = detail.loading
-  })
+  if (isDomRuntime()) {
+    Loading.registrationEvent(({ detail }) => {
+      item.value = detail.loading
+    })
+  }
 
   return item
 }

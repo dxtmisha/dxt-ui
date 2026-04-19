@@ -1,5 +1,5 @@
 import { ref, type Ref, watch } from 'vue'
-import { BroadcastMessage, executeFunction, ServerStorage } from '@dxtmisha/functional-basic'
+import { BroadcastMessage, executeFunction, isDomRuntime, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 type BroadcastValueItem<T> = T | string | undefined
@@ -35,18 +35,21 @@ export function useBroadcastValueRef<T>(
   }
 
   const item = ref<BroadcastValueItem<T>>(executeFunction(defaultValue))
-  const broadcast = new BroadcastMessage(
-    fullName,
-    (event) => {
-      if (item.value !== event.data.message) {
-        item.value = event.data.message
-      }
-    }
-  )
 
-  EffectScopeGlobal.run(() => {
-    watch(item, value => broadcast.post({ message: value }))
-  })
+  if (isDomRuntime()) {
+    const broadcast = new BroadcastMessage(
+      fullName,
+      (event) => {
+        if (item.value !== event.data.message) {
+          item.value = event.data.message
+        }
+      }
+    )
+
+    EffectScopeGlobal.run(() => {
+      watch(item, value => broadcast.post({ message: value }))
+    })
+  }
 
   items[fullName] = item
   return item as Ref<BroadcastValueItem<T>>

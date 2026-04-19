@@ -1,5 +1,6 @@
 import { ref, watch, type Ref } from 'vue'
 import {
+  isDomRuntime,
   SearchList,
   type SearchColumns,
   type SearchItem
@@ -36,7 +37,7 @@ export function useSearchValueRef<
   watch(search, (_, __, onCleanup) => {
     const delay = item.getOptions().getDelay()
 
-    if (delay) {
+    if (delay && isDomRuntime()) {
       loading.value = true
 
       timeout = setTimeout(() => {

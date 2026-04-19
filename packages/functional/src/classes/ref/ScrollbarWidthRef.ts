@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { ScrollbarWidth } from '@dxtmisha/functional-basic'
+import { isDomRuntime, ScrollbarWidth } from '@dxtmisha/functional-basic'
 
 /**
  * Class for getting the scroll width as a reactive item.
@@ -17,13 +17,15 @@ export class ScrollbarWidthRef {
    * Constructor
    */
   constructor() {
-    ScrollbarWidth.is().then((is) => {
-      this.item.value = is
-    })
+    if (isDomRuntime()) {
+      ScrollbarWidth.is().then((is) => {
+        this.item.value = is
+      })
 
-    ScrollbarWidth.get().then((width) => {
-      this.width.value = width
-    })
+      ScrollbarWidth.get().then((width) => {
+        this.width.value = width
+      })
+    }
   }
 
   /**

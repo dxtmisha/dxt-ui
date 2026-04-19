@@ -4,7 +4,7 @@ import {
   shallowRef,
   watch
 } from 'vue'
-import { Hash, ServerStorage } from '@dxtmisha/functional-basic'
+import { Hash, isDomRuntime, ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../../classes/ref/EffectScopeGlobal'
 
 /**
@@ -38,13 +38,15 @@ export function useHashRef<T>(
 
   const item = shallowRef<T>(Hash.get(name, defaultValue))
 
-  EffectScopeGlobal.run(() => {
-    watch(item, (value: T) => Hash.set(name, value))
-  })
+  if (isDomRuntime()) {
+    EffectScopeGlobal.run(() => {
+      watch(item, (value: T) => Hash.set(name, value))
+    })
 
-  Hash.addWatch(name, (value: T) => {
-    item.value = value
-  })
+    Hash.addWatch(name, (value: T) => {
+      item.value = value
+    })
+  }
 
   items[name] = item
   return item

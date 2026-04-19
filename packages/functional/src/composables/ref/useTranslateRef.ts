@@ -3,7 +3,7 @@ import {
   shallowRef,
   watch
 } from 'vue'
-import { Translate, type TranslateInstance, type TranslateList } from '@dxtmisha/functional-basic'
+import { isDomRuntime, Translate, type TranslateInstance, type TranslateList } from '@dxtmisha/functional-basic'
 
 import { GeoRef } from '../../classes/ref/GeoRef'
 
@@ -52,15 +52,17 @@ export function useTranslateRef<
     translate.value = { ...await translateInstance.getList(names) }
   }
 
-  watch(GeoRef.getLanguage(), update)
+  if (isDomRuntime()) {
+    watch(GeoRef.getLanguage(), update)
 
-  for (const key in translate.value) {
-    if (
-      translate.value[key] === key
-      || translate.value[key] === ' '
-    ) {
-      update().then()
-      break
+    for (const key in translate.value) {
+      if (
+        translate.value[key] === key
+        || translate.value[key] === ' '
+      ) {
+        update().then()
+        break
+      }
     }
   }
 
