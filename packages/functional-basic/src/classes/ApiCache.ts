@@ -226,7 +226,6 @@ export class ApiCache {
     return JSON.stringify({
       api: fetch.api,
       auth: fetch.auth,
-      init: fetch.init,
       method: fetch.method,
       path: fetch.path,
       pathFull: fetch.pathFull,

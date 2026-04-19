@@ -110,7 +110,7 @@ export class HashInstance {
    */
   reload(): this {
     if (this.block) {
-      requestAnimationFrame(() => this.reload())
+      setTimeout(() => this.reload(), 32)
     } else {
       this.initData()
     }

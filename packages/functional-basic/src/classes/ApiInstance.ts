@@ -610,7 +610,10 @@ export class ApiInstance {
       return data
     }
 
-    if (data.data !== null && typeof data.data !== 'object') {
+    if (
+      data.data !== null
+      && typeof data.data !== 'object'
+    ) {
       return data.data as any
     }
 

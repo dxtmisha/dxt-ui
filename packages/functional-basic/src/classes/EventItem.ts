@@ -1,5 +1,6 @@
 import { getElement } from '../functions/getElement'
 import { getElementOrWindow } from '../functions/getElementOrWindow'
+import { isDomRuntime } from '../functions/isDomRuntime'
 import { isInDom } from '../functions/isInDom'
 import { isNull } from '../functions/isNull'
 import { isObject } from '../functions/isObject'
@@ -307,7 +308,10 @@ export class EventItem<
    * @returns this
    */
   start(): this {
-    if (!this.activity) {
+    if (
+      !this.activity
+      && isDomRuntime()
+    ) {
       this.activity = true
       this.activityItems = []
 
@@ -389,7 +393,7 @@ export class EventItem<
    * Проверяет, существует ли объект ResizeObserver.
    */
   protected isObserver(): boolean {
-    return 'ResizeObserver' in window
+    return isDomRuntime() && 'ResizeObserver' in window
   }
 
   /**
