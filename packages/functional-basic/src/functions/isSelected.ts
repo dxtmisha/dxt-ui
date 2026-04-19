@@ -8,6 +8,7 @@ import { toNumber } from './toNumber'
  * Проверяет, есть ли value в массиве selected или равен ли value selected, если selected - строка.
  * @param value input value/ входное значение
  * @param selected array or string for comparison/ массив или строка для сравнения
+ * @returns true if selected / true, если выбрано
  */
 export function isSelected<T, S>(
   value: T,

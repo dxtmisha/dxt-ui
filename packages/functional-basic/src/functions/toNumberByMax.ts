@@ -10,6 +10,7 @@ import { GeoIntl } from '../classes/GeoIntl'
  * @param max maximum achievable value / максимально достижимое значение
  * @param formatting format the number / форматировать число
  * @param language formatting language / язык форматирования
+ * @returns formatted number string or number/ форматированная строка числа или число
  */
 export function toNumberByMax(
   value: string | number,

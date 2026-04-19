@@ -16,6 +16,7 @@ import {
  * @param element checked element/ проверяемый элемент
  * @param index index at which we retrieve values/ индекс, по которому получаем значения
  * @param value new value/ новое значение
+ * @returns modified element/ измененный элемент
  */
 export function setElementItem<
   E extends ElementOrWindow,

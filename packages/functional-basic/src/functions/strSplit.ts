@@ -9,6 +9,7 @@ import { anyToString } from './anyToString'
  * @param value input value/ входное значение
  * @param separator separator/ разделитель
  * @param limit limit/ лимит
+ * @returns split array/ разделенный массив
  */
 export function strSplit(
   value: number | string,

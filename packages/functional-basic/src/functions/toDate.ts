@@ -6,6 +6,7 @@ import { Geo } from '../classes/Geo'
  *
  * Преобразование в объект Date.
  * @param value input value/ входное значение
+ * @returns date object/ объект даты
  */
 export function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date {
   if (value instanceof Date) {

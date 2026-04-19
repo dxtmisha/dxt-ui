@@ -10,6 +10,7 @@ import type { ApiData } from '../types/apiTypes'
  *
  * Проверяет, является ли ответ API успешным.
  * @param data API response data/ данные ответа API
+ * @returns true if successful / true, если успешно
  */
 export const isApiSuccess = <T>(
   data: ApiData<T>

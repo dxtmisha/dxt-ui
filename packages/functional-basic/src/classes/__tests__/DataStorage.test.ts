@@ -229,7 +229,7 @@ describe('DataStorage', () => {
     })
 
     it('should handle large data objects', () => {
-      const storage = new DataStorage('test-large-data')
+      const storage = new DataStorage<Record<string, any>>('test-large-data')
       const largeObj = { data: Array(1000).fill('item').map((item, i) => `${item}-${i}`) }
       storage.set(largeObj)
       const retrieved = storage.get()

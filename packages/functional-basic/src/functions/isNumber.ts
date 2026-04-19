@@ -9,6 +9,7 @@ const numberRegExp = /^-?[0-9]+(\.[0-9]+)?$/
  *
  * Проверяет, является ли значение числом.
  * @param value values for checking/ значения для проверки
+ * @returns true if number / true, если число
  */
 export function isNumber(value: any): boolean {
   switch (typeof value) {

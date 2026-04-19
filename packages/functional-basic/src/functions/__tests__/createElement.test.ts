@@ -71,15 +71,30 @@ describe('createElement', () => {
     expect(el?.nextElementSibling).toBe(refElement)
   })
 
-  it('should return undefined if not in a DOM environment', () => {
-    // Mock isDomRuntime returning false temporarily
-    vi.doMock('../isDomRuntime', () => ({
-      isDomRuntime: () => false
-    }))
+  it('should work correctly with no parentElement', () => {
+    const el = createElement(undefined, 'span')
 
-    // We need to re-import the module because it imports isDomRuntime at the top level
-    // For simplicity in this test structure, we'll verify it relies on isDomRuntime
-    // This is hard to fully test without breaking other tests due to module caching,
-    // so we're relying on the implementation detail checking isDomRuntime().
+    expect(el).toBeInstanceOf(HTMLSpanElement)
+    expect(el?.tagName.toLowerCase()).toBe('span')
+  })
+
+  it('should work correctly with no options', () => {
+    const el = createElement(parentElement, 'div')
+
+    expect(el).toBeInstanceOf(HTMLDivElement)
+    expect(el?.id).toBe('')
+    expect(el?.className).toBe('')
+    expect(el?.innerHTML).toBe('')
+  })
+
+  it('should handle function options with no parentElement', () => {
+    const mockOptionsFn = vi.fn((el: HTMLElement) => {
+      el.id = 'no-parent-id'
+    })
+
+    const el = createElement<HTMLDivElement>(undefined, 'div', mockOptionsFn)
+
+    expect(mockOptionsFn).toHaveBeenCalledWith(el)
+    expect(el?.id).toBe('no-parent-id')
   })
 })

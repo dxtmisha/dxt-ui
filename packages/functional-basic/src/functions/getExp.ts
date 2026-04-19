@@ -11,6 +11,7 @@ import { escapeExp } from './escapeExp'
  * m - сопоставление по нескольким строкам.
  * @param pattern Regular expression text in which the value :value will be replaced with the optimized value of value/
  * Текст регулярного выражения, в котором значение :value заменится на оптимизированное значение value
+ * @returns regular expression / регулярное выражение
  */
 export function getExp(
   value: string,

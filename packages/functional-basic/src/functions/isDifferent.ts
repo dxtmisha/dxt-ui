@@ -8,6 +8,7 @@ import { type ObjectItem } from '../types/basicTypes'
  * Проверяет, различаются ли значения двух объектов.
  * @param value current values/ текущие значения
  * @param old old values/ старые значения
+ * @returns true if different / true, если отличаются
  */
 export function isDifferent<T>(
   value: ObjectItem<T>,

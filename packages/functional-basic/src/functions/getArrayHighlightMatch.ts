@@ -10,6 +10,7 @@ import { type HighlightMatchItem } from '../types/searchTypes'
  * Разделяет строку на массив объектов для выделения совпадений.
  * @param value initial string / исходная строка
  * @param search search string / строка поиска
+ * @returns array of objects with text and match flag / массив объектов с текстом и флагом совпадения
  */
 export function getArrayHighlightMatch(
   value: string,

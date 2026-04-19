@@ -1,14 +1,15 @@
 import { applyTemplate } from '../functions/applyTemplate'
 import { forEach } from '../functions/forEach'
+import { isApiSuccess } from '../functions/isApiSuccess'
 import { isFilled } from '../functions/isFilled'
 import { isString } from '../functions/isString'
 import { toArray } from '../functions/toArray'
 
 import { Api } from './Api'
+import { ErrorCenter } from './ErrorCenter'
 import { TranslateFile } from './TranslateFile'
 
 import { TRANSLATE_GLOBAL_PREFIX, TRANSLATE_TIME_OUT, type TranslateCode, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
-import { ErrorCenter, isApiSuccess } from '../library'
 
 /**
  * Class for getting the translated text.

@@ -17,6 +17,7 @@ import {
  * @param array the target object/ целевой объект
  * @param replacement the source object/ исходные объекты
  * @param indexStart index at which to start changing the array/ индекс, по которому начинает изменять массив
+ * @returns modified array/ измененный массив
  */
 export function splice<I>(
   array: ObjectItem<I>,

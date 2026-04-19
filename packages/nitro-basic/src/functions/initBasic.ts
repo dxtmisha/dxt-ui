@@ -17,11 +17,11 @@ export function initBasic(
     config.api?.cacheStepAgeClearOld
   )
 
-  initCookieStorage(config.cookie)
-
-  nitroApp.hooks.hook('request', (event) => {
-
+  nitroApp.hooks.hook('request', (event: any) => {
+    initCookieStorage(
+      event,
+      config.cookie?.age,
+      config.cookie?.sameSite
+    )
   })
-
-  console.log('initBasic')
 }

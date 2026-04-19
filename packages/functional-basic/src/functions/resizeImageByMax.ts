@@ -38,6 +38,7 @@ function isByWidth(
  * @param type resize type (auto, width, height) / тип изменения размера (auto, width, height)
  * @param typeData optional data type for the resulting image /
  * необязательный тип данных для результирующего изображения
+ * @returns base64 image string or undefined / строка base64 изображения или undefined
  */
 export function resizeImageByMax(
   image: HTMLImageElement | string,

@@ -5,6 +5,7 @@ import { isObjectNotArray } from './isObjectNotArray'
  *
  * Возвращает объект, если заданы значения объекта.
  * @param value let’s assume that this is an object/ предположим, что это объект
+ * @returns object or empty object/ объект или пустой объект
  */
 export function getObjectOrNone<T>(value: T): T & Record<string, any> {
   return isObjectNotArray(value) ? value : {} as T & Record<string, any>

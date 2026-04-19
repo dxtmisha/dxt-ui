@@ -4,6 +4,7 @@
  * Генерирует случайное число.
  * @param min the lowest value to return/ наименьшее значение
  * @param max the highest value to return/ наибольшее значение
+ * @returns random number/ случайное число
  */
 export function random(min: number, max: number): number {
   return Math.floor((Math.random() * (max - min + 1)) + min)

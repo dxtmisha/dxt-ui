@@ -31,13 +31,30 @@ describe('domQuerySelector', () => {
     expect(el).toBeUndefined()
   })
 
-  it('should return undefined if not in a DOM environment', () => {
-    vi.doMock('../isDomRuntime', () => ({
-      isDomRuntime: () => false
-    }))
+  it('should return correct element when matching by id', () => {
+    const el = domQuerySelector('#first')
+    expect(el?.id).toBe('first')
+    expect(el?.textContent).toBe('First')
+  })
 
-    // Test implicitly relies on isDomRuntime behavior
-    // Actual mocking of module imports in vitest can be tricky without isolated modules,
-    // so we assume the implementation does the check.
+  it('should return correct element when matching by tag', () => {
+    const el = domQuerySelector('div .test-class')
+    expect(el?.id).toBe('first')
+    expect(el?.textContent).toBe('First')
+  })
+
+  it('should handle complex selectors', () => {
+    const el = domQuerySelector('.test-class#second')
+    expect(el?.id).toBe('second')
+    expect(el?.textContent).toBe('Second')
+  })
+
+  it('should work with different element types', () => {
+    const button = document.createElement('button')
+    button.className = 'btn-test'
+    container.appendChild(button)
+
+    const el = domQuerySelector<HTMLButtonElement>('.btn-test')
+    expect(el).toBeInstanceOf(HTMLButtonElement)
   })
 })

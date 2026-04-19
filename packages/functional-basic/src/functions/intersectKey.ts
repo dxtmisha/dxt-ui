@@ -7,6 +7,7 @@ import { isObject } from './isObject'
  * Вычислить пересечение массивов, сравнивая ключи.
  * @param data the array with master keys to check/ основной проверяемый массив
  * @param comparison arrays to compare keys against/ массивы, с которыми идёт сравнение
+ * @returns object with intersected keys/ объект с пересекающимися ключами
  */
 export function intersectKey<
   T,

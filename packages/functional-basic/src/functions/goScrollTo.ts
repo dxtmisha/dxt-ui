@@ -7,6 +7,7 @@ import { isDomRuntime } from './isDomRuntime'
  * @param element container element/ элемент контейнера
  * @param elementTo target element/ целевой элемент
  * @param behavior scroll behavior/ режим прокрутки
+ * @returns void / ничего не возвращает
  */
 export function goScrollTo(
   element?: HTMLElement,

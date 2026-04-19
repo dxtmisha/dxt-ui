@@ -1,7 +1,7 @@
 import { escapeExp } from './escapeExp'
 import { isFilled } from './isFilled'
+import { isString } from './isString'
 import { toString } from './toString'
-import { isString } from './isString.ts'
 
 /**
  * Builds a case-insensitive global `RegExp` for multi-word "contains all words" search.

@@ -86,7 +86,7 @@ describe('CookieStorage', () => {
 
     it('should filter out non-string arguments', () => {
       CookieStorage.set('key', 'val', {
-        arguments: ['Secure', 123, 'Path=/', null, undefined]
+        arguments: ['Secure', 123, 'Path=/', null as any, undefined as any]
       })
       expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Secure'))
       expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Path=/'))
@@ -118,7 +118,7 @@ describe('CookieStorage', () => {
       expect(CookieStorage.get('blockedKey')).toBeUndefined()
 
       // Check that no new cookie was set (only cleanup calls from previous tests)
-      const blockedCalls = cookieSpy.mock.calls.filter(call =>
+      const blockedCalls = cookieSpy.mock.calls.filter((call: any) =>
         call[0].includes('blockedKey')
       )
       expect(blockedCalls.length).toBe(0)
@@ -232,9 +232,9 @@ describe('CookieStorage', () => {
     it('should handle object arguments correctly', () => {
       CookieStorage.set('key', 'val', {
         arguments: {
-          'Path': '/',
-          'Secure': '',
-          'Domain': '.example.com'
+          Path: '/',
+          Secure: '',
+          Domain: '.example.com'
         }
       })
 

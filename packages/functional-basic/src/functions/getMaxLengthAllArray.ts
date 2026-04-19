@@ -8,6 +8,7 @@ import { type ObjectOrArray } from '../types/basicTypes'
  *
  * Ищет самую длинную строку в массиве и возвращает её длину.
  * @param data array with data/ массив с данными
+ * @returns length of the longest string/ длина самой длинной строки
  */
 export function getMaxLengthAllArray(data: ObjectOrArray<string>): number {
   if (!isFilled(data)) {

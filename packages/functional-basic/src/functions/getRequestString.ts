@@ -10,6 +10,8 @@ import { toString } from './toString'
  * @param request data for conversion/ данные для преобразования
  * @param sign delimiter sign of key and value/ знак разделения ключа и значения
  * @param separator variable delimiter sign/ знак разделения переменных
+ * @param subKey nested key for array elements/ вложенный ключ для элементов массива
+ * @returns formatted request string/ форматированная строка запроса
  */
 export function getRequestString(
   request: Record<string, any> | any[],

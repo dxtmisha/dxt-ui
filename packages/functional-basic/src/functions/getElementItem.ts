@@ -13,6 +13,7 @@ import {
  * @param index index at which we retrieve values/ индекс, по которому получаем значения
  * @param defaultValue returns this parameter if the value is missing/ возвращает этот параметр,
  * если значение отсутствует
+ * @returns element value or default value / значение элемента или значение по умолчанию
  */
 export function getElementItem<
   T extends ElementOrWindow,

@@ -10,6 +10,7 @@ import { isArray } from './isArray'
  * @param maxlength maximum values/ максимальные значения
  * @param alwaysChange updating values in any case/ обновление значений при любом случае
  * @param notEmpty do not make the values empty/ не делать значения пустыми
+ * @returns modified values/ измененные значения
  */
 export function setValues<T>(
   selected: T | T[] | undefined,

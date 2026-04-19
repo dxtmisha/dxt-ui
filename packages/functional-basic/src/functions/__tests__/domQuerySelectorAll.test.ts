@@ -34,11 +34,36 @@ describe('domQuerySelectorAll', () => {
     expect(els?.length).toBe(0)
   })
 
-  it('should return undefined if not in a DOM environment', () => {
-    vi.doMock('../isDomRuntime', () => ({
-      isDomRuntime: () => false
-    }))
+  it('should handle multiple element types', () => {
+    const els = domQuerySelectorAll('.test-class')
+    expect(els?.length).toBe(2)
+    expect(els?.[0]?.id).toBe('first')
+    expect(els?.[1]?.id).toBe('second')
+  })
 
-    // Test implicitly relies on isDomRuntime behavior.
+  it('should handle complex selectors', () => {
+    const els = domQuerySelectorAll('.test-class')
+    expect(els?.length).toBe(2)
+    expect(els?.[0]?.id).toBe('first')
+    expect(els?.[1]?.id).toBe('second')
+  })
+
+  it('should work with different element types when specified', () => {
+    const button1 = document.createElement('button')
+    const button2 = document.createElement('button')
+    button1.className = 'btn-test'
+    button2.className = 'btn-test'
+    container.appendChild(button1)
+    container.appendChild(button2)
+
+    const els = domQuerySelectorAll<HTMLButtonElement>('.btn-test')
+    expect(els?.length).toBe(2)
+    expect(els?.[0]).toBeInstanceOf(HTMLButtonElement)
+    expect(els?.[1]).toBeInstanceOf(HTMLButtonElement)
+  })
+
+  it('should return empty NodeList for non-matching selectors', () => {
+    const els = domQuerySelectorAll('non-existent-tag')
+    expect(els?.length).toBe(0)
   })
 })

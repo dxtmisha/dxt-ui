@@ -29,4 +29,55 @@ describe('executeFunction', () => {
     expect(executeFunction(null)).toBeNull()
     expect(executeFunction(undefined)).toBeUndefined()
   })
+
+  it('should execute function with multiple arguments', () => {
+    const fn = (a: number, b: number, c: string) => `${a + b} ${c}`
+    expect(executeFunction(fn, 2, 3, 'test')).toBe('5 test')
+  })
+
+  it('should execute function with single argument', () => {
+    const fn = (value: string) => value.toUpperCase()
+    expect(executeFunction(fn, 'hello')).toBe('HELLO')
+  })
+
+  it('should execute function with array argument', () => {
+    const fn = (arr: number[]) => arr.reduce((sum, num) => sum + num, 0)
+    expect(executeFunction(fn, [1, 2, 3, 4, 5])).toBe(15)
+  })
+
+  it('should execute function with object argument', () => {
+    const fn = (obj: any) => obj.name.toUpperCase()
+    expect(executeFunction(fn, { name: 'test' })).toBe('TEST')
+  })
+
+  it('should execute function with no arguments', () => {
+    const fn = () => 'no args'
+    expect(executeFunction(fn)).toBe('no args')
+  })
+
+  it('should ignore extra arguments when value is not a function', () => {
+    expect(executeFunction('static value', 1, 2, 3)).toBe('static value')
+    expect(executeFunction(42, 'extra')).toBe(42)
+  })
+
+  it('should handle functions that return undefined', () => {
+    const fn = () => undefined
+    expect(executeFunction(fn)).toBeUndefined()
+  })
+
+  it('should handle functions that return complex types', () => {
+    const fn = () => ({ key: 'value', nested: { prop: 123 } })
+    const result = executeFunction(fn)
+    expect(result).toEqual({ key: 'value', nested: { prop: 123 } })
+  })
+
+  it('should handle functions that return arrays', () => {
+    const fn = () => [1, 2, 3, 4, 5]
+    expect(executeFunction(fn)).toEqual([1, 2, 3, 4, 5])
+  })
+
+  it('should handle arrow functions correctly', () => {
+    const fn = (x: number) => x * 2
+    expect(executeFunction(fn, 5)).toBe(10)
+  })
 })

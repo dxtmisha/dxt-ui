@@ -1,5 +1,6 @@
 import { getRequestString } from '../functions/getRequestString'
 import { isArray } from '../functions/isArray'
+import { isDomRuntime } from '../functions/isDomRuntime'
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isOnLine } from '../functions/isOnLine'
@@ -27,7 +28,6 @@ import {
   ApiMethodItem,
   type ApiPreparationEnd
 } from '../types/apiTypes'
-import { isDomRuntime } from '../functions/isDomRuntime.ts'
 
 /** Options for the API instance / Опции для экземпляра API */
 export type ApiInstanceOptions = {

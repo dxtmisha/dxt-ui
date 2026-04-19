@@ -20,6 +20,7 @@ const expTag = new RegExp(`${TAG_START}|${TAG_END}`, 'g')
  * @param search search string or RegExp / строка поиска или регулярное выражение
  * @param className highlighting class / класс выделения
  * @param shouldEscape should escape the string / нужно ли экранировать строку
+ * @returns string with highlighting / строка с выделением
  */
 export function addTagHighlightMatch(
   value: string,

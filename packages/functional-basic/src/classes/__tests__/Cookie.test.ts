@@ -134,7 +134,7 @@ describe('Cookie', () => {
 
     it('should filter out non-string arguments', () => {
       const cookie = new Cookie('filteredArgs')
-      cookie.set('val', { arguments: ['Secure', 123, 'Path=/'] })
+      cookie.set('val', { arguments: ['Secure', 123 as any, 'Path=/'] })
 
       // @ts-expect-error: testing private options
       expect(cookie.options.arguments).toEqual(['Secure', 123, 'Path=/'])

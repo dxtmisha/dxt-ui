@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { HashInstance } from '../HashInstance'
-import { isDomRuntime } from '../../functions/isDomRuntime'
 
 // Мокаем isDomRuntime, чтобы контролировать окружение
 vi.mock('../../functions/isDomRuntime', () => ({
@@ -12,7 +11,7 @@ describe('HashInstance', () => {
 
   beforeEach(() => {
     hashInstance = new HashInstance()
-    
+
     // Очищаем DOM API перед каждым тестом
     if (typeof window !== 'undefined') {
       window.location.hash = ''
@@ -32,9 +31,9 @@ describe('HashInstance', () => {
   it('должен вызывать обработчики при изменении значения (watch)', () => {
     const callback = vi.fn()
     hashInstance.addWatch('watchKey', callback)
-    
+
     hashInstance.set('watchKey', 'newValue')
-    
+
     // Эмуляция reload, который должен триггерить вызовы
     // Для этого нужно, чтобы в location.hash появилось значение
     if (typeof window !== 'undefined') {
@@ -48,9 +47,9 @@ describe('HashInstance', () => {
     const callback = vi.fn()
     hashInstance.addWatch('removeKey', callback)
     hashInstance.removeWatch('removeKey', callback)
-    
+
     hashInstance.set('removeKey', 'value2')
-    
+
     if (typeof window !== 'undefined') {
       window.location.hash = '#removeKey=value2'
       hashInstance.reload()

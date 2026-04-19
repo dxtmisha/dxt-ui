@@ -1,21 +1,17 @@
 import { getCookie, type H3Event, setCookie } from 'h3'
-import { type CookieOptions, CookieStorage } from '@dxtmisha/functional-basic'
-
-import type { NitroAppBasicConfig } from '../types/nitroAppTypes'
-import { useEvent } from 'nitropack/runtime'
+import { type CookieOptions, CookieStorage, isObjectNotArray } from '@dxtmisha/functional-basic'
 
 /**
  * Initialize cookie storage.
  *
  * Инициализация хранилища cookie.
- * @param config Cookie configuration / Конфигурация cookie
+ * @param event H3 event / Событие H3
  */
 export function initCookieStorage(
   event: H3Event,
-  config?: NitroAppBasicConfig['cookie']
+  ageDefault: number = 7 * 24 * 60 * 60,
+  sameSiteDefault: 'strict' | 'lax' = 'strict'
 ): void {
-  const cookieConfig = config ?? {}
-
   /**
    * Get cookie from request headers.
    *
@@ -40,17 +36,23 @@ export function initCookieStorage(
     value: string,
     options?: CookieOptions
   ): void => {
+    const cookieOptions: Record<string, string | number | boolean | undefined> = {
+      maxAge: options?.age ?? ageDefault,
+      sameSite: options?.sameSite ?? sameSiteDefault
+    }
+
+    if (
+      options?.arguments
+      && isObjectNotArray(options?.arguments)
+    ) {
+      Object.assign(cookieOptions, options?.arguments)
+    }
+
     setCookie(
       event,
       key,
       value,
-      {
-        maxAge: options?.age ?? (7 * 24 * 60 * 60),
-        sameSite: options?.sameSite ?? 'strict',
-      }
-      options?.age ?? cookieConfig?.age ?? (7 * 24 * 60 * 60),
-      options?.sameSite ?? cookieConfig?.sameSite ?? 'strict',
-      ...(options?.arguments ?? [])
+      cookieOptions
     )
   }
 

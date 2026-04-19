@@ -6,6 +6,7 @@ import { isInput } from './isInput'
  * Проверяет, является ли нажатая клавиша Enter или Space.
  * @param event event object/ объект события
  * @param isInputElement whether the element is an input element/ является ли элемент полем ввода
+ * @returns true if enter pressed / true, если нажат enter
  */
 export const isEnter = (
   event: KeyboardEvent,

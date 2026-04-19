@@ -6,6 +6,7 @@ import { isString } from './isString'
  *
  * Получить элемент изображения из HTMLImageElement или строкового источника.
  * @param image image element or string source/ элемент изображения или строковый источник
+ * @returns HTMLImageElement or undefined / HTMLImageElement или undefined
  */
 export function getElementImage(
   image: HTMLImageElement | string

@@ -7,6 +7,7 @@ import { ErrorCenter } from '../classes/ErrorCenter'
  * @param id script tag ID / ID тега скрипта
  * @param defaultValue default value if not found or invalid / значение по умолчанию, если не найдено или невалидно
  * @param remove remove script after reading / удалить скрипт после чтения
+ * @returns parsed data or default value / распарсенные данные или значение по умолчанию
  */
 export function getHydrationData<T>(
   id: string,

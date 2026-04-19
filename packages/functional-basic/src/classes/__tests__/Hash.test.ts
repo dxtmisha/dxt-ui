@@ -10,7 +10,7 @@ describe('Hash', () => {
 
   it('методы фасада должны корректно делегировать вызовы в HashInstance', () => {
     const instance = Hash.getItem()
-    
+
     // Перехватываем методы инстанса
     const getSpy = vi.spyOn(instance, 'get').mockReturnValue('mockedValue')
     const setSpy = vi.spyOn(instance, 'set').mockReturnThis()

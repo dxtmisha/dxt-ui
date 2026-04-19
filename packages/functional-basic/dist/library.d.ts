@@ -6,6 +6,7 @@
  * @param search search string or RegExp / строка поиска или регулярное выражение
  * @param className highlighting class / класс выделения
  * @param shouldEscape should escape the string / нужно ли экранировать строку
+ * @returns string with highlighting / строка с выделением
  */
 export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
 
@@ -23,194 +24,181 @@ export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?:
 /**
  * Class for working with HTTP requests.
  *
- * It is a static wrapper over {@link ApiInstance}, providing a convenient interface for:
- * - Performing standard HTTP requests (GET, POST, PUT, DELETE).
- * - Global configuration (URL, headers, defaults).
- * - Request lifecycle hooks (`setPreparation`, `setEnd`).
- * - Automatic retries and session handling (Refresh Token).
- * - Data processing and JSON parsing.
- * - Localization support (`{locale}`, `{country}`, `{language}`).
- * - Error handling and {@link ErrorCenter} integration.
- * - Response emulation via {@link ApiResponse}.
- *
- * ---
- *
  * Класс для работы с HTTP-запросами.
- *
- * Является статической оберткой над {@link ApiInstance}, предоставляя удобный интерфейс для:
- * - Выполнения стандартных HTTP-запросов (GET, POST, PUT, PATCH, DELETE).
- * - Глобальной настройки (URL, заголовки, параметры).
- * - Хуков жизненного цикла (`setPreparation`, `setEnd`).
- * - Автоматических повторов и обработки сессий (Refresh Token).
- * - Обработки данных и парсинга JSON.
- * - Поддержки локализации в URL (`{locale}`, `{country}`, `{language}`).
- * - Обработки ошибок и интеграции с {@link ErrorCenter}.
- * - Эмуляции ответов через {@link ApiResponse}.
- *
- * ---
- *
- * ### Usage Examples / Примеры использования:
- *
- * #### 1. Global Setup / Глобальная настройка
- * ```typescript
- * Api.setUrl('https://api.example.com/v1/')
- *    .setHeaders({ 'Authorization': 'Bearer token' });
- * ```
- *
- * #### 2. Basic Request / Базовый запрос
- * ```typescript
- * const data = await Api.get<User>({ path: 'profile' });
- * ```
  */
 export declare class Api {
     /**
-     * Is the server local.
+     * Checks if the server is running on localhost.
      *
-     * Является ли сервер локальный.
+     * Проверяет, работает ли сервер на localhost.
+     * @returns true if server is localhost / true, если сервер является локальным
      */
     static isLocalhost(): boolean;
     /**
-     * Returns the instance of the class.
+     * Returns the singleton instance of the ApiInstance class.
      *
-     * Возвращает инстанс класса.
+     * Возвращает синглтон-экземпляр класса ApiInstance.
+     * @returns ApiInstance singleton / синглтон ApiInstance
      */
     static getItem(): ApiInstance;
     /**
      * Returns the status of the last request.
      *
      * Возвращает статус последнего запроса.
+     * @returns ApiStatus instance / экземпляр ApiStatus
      */
     static getStatus(): ApiStatus;
     /**
-     * Getting the response handler.
+     * Gets the response handler.
      *
-     * Получение обработчика ответа.
+     * Получает обработчик ответа.
+     * @returns ApiResponse instance / экземпляр ApiResponse
      */
     static getResponse(): ApiResponse;
     /**
-     * Getting the hydration handler.
+     * Gets the hydration handler.
      *
-     * Получение обработчика гидратации.
+     * Получает обработчик гидратации.
+     * @returns ApiHydration instance / экземпляр ApiHydration
      */
     static getHydration(): ApiHydration;
     /**
      * Returns a string representation of the hydration data for the client.
      *
      * Возвращает строковое представление данных гидратации для клиента.
+     * @returns HTML script element string / строка HTML элемента script
      */
     static getHydrationScript(): string;
     /**
-     * Getting the full path to the request script.
+     * Gets the full path to the request script.
      *
-     * Получение полного пути к скрипту запроса.
-     * @param path path to the script/ путь к скрипту
-     * @param api adding a path to the site’s API/ добавление пути к API сайта
+     * Получает полный путь к скрипту запроса.
+     * @param path path to the script / путь к скрипту
+     * @param api whether to prepend base API URL / нужно ли добавить базовый URL API
+     * @returns full URL / полный URL
      */
     static getUrl(path: string, api?: boolean): string;
     /**
-     * Getting data for the body.
+     * Gets data for the request body.
      *
-     * Получение данных для тела.
-     * @param request this request/ данный запрос
-     * @param method method for request/ метод запрос
+     * Получает данные для тела запроса.
+     * @param request request data / данные запроса
+     * @param method HTTP method / HTTP метод
+     * @returns body data for non-GET requests or FormData / данные тела для не-GET запросов или FormData
      */
     static getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
     /**
-     * Getting data for the body of the get method.
+     * Gets query string for GET method requests.
      *
-     * Получение данных для тела метода get.
-     * @param request this request/ данный запрос
-     * @param path path to request/ путь к запрос
-     * @param method method for request/ метод запрос
+     * Получает строку запроса для GET-методов.
+     * @param request request data / данные запроса
+     * @param path path to request / путь к запросу
+     * @param method HTTP method / HTTP метод
+     * @returns query string for GET requests / строка запроса для GET-запросов
      */
     static getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
     /**
      * Modifies the default header data.
      *
      * Изменяет данные заголовка по умолчанию.
+     * @param headers default headers / заголовки по умолчанию
+     * @returns void / ничего не возвращает
      */
     static setHeaders(headers: Record<string, string>): void;
     /**
      * Modifies the default request data.
      *
      * Изменяет данные запроса по умолчанию.
+     * @param request default request data / данные запроса по умолчанию
+     * @returns void / ничего не возвращает
      */
     static setRequestDefault(request: Record<string, any>): void;
     /**
-     * Change the base path to the script.
+     * Changes the base path to the script.
      *
-     * Изменить базовый путь к скрипту.
-     * @param url path to the script/ путь к скрипту
+     * Изменяет базовый путь к скрипту.
+     * @param url path to the script / путь к скрипту
+     * @returns void / ничего не возвращает
      */
     static setUrl(url: string): void;
     /**
-     * The function is modified for a call before the request.
+     * Modifies the function to be called before the request.
      *
-     * Изменить функцию перед запросом.
-     * @param callback function for call/ функция для вызова
+     * Изменяет функцию для вызова перед запросом.
+     * @param callback function to call before request / функция для вызова перед запросом
+     * @returns void / ничего не возвращает
      */
     static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void;
     /**
-     * Modify the function after the request.
+     * Modifies the function to be called after the request.
      *
-     * Изменить функцию после запроса.
-     * @param callback function for call/ функция для вызова
+     * Изменяет функцию для вызова после запроса.
+     * @param callback function to call after request / функция для вызова после запроса
+     * @returns void / ничего не возвращает
      */
     static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void;
     /**
-     * Change the timeout for the request in milliseconds.
+     * Changes the timeout for the request in milliseconds.
      *
-     * Изменить таймаут запроса в миллисекундах.
-     * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+     * Изменяет таймаут запроса в миллисекундах.
+     * @param timeout timeout in milliseconds / таймаут в миллисекундах
+     * @returns void / ничего не возвращает
      */
     static setTimeout(timeout: number): void;
     /**
-     * Set config for API.
+     * Sets multiple API configuration options at once.
      *
-     * Установить конфигурацию для API.
-     * @param config config for API/ конфигурация для API
+     * Устанавливает несколько опций конфигурации API одновременно.
+     * @param config configuration object / объект конфигурации
+     * @returns void / ничего не возвращает
      */
     static setConfig(config?: ApiConfig): void;
     /**
-     * To execute a request.
+     * Executes a request with the given path or configuration.
      *
-     * Выполнить запрос.
-     * @param pathRequest path or configuration/ путь или конфигурация запроса
+     * Выполняет запрос с указанным путем или конфигурацией.
+     * @param pathRequest path or configuration / путь или конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     static request<T>(pathRequest: string | ApiFetch): Promise<T>;
     /**
      * Sends a GET method request.
      *
      * Отправляет запрос метода GET.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     static get<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a POST method request.
      *
      * Отправляет запрос метода POST.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     static post<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a PUT method request.
      *
      * Отправляет запрос метода PUT.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     static put<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a PATCH method request.
      *
      * Отправляет запрос метода PATCH.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     static patch<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a DELETE method request.
      *
      * Отправляет запрос метода DELETE.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     static delete<T>(request: ApiFetch): Promise<T>;
 }
@@ -221,7 +209,7 @@ export declare class Api {
  * Класс для кэширования ответов API.
  */
 export declare class ApiCache {
-    /** Cache storage / Кэш хранилища */
+    /** Cache storage / Кэш-хранилища */
     protected static items?: ApiCacheList;
     /** Storage mechanism for getting data / механизм хранения для получения данных */
     protected static getListener?: (key: string) => Promise<ApiCacheItem | undefined>;
@@ -234,7 +222,7 @@ export declare class ApiCache {
      * Количество запросов получения данных перед началом очистки старого кэша
      */
     protected static cacheStepAgeClearOld: number;
-    /** Number of data retrieval requests before starting the cleaning of old cache/ Количество запросов получения данных перед началом очистки старого кэша */
+    /** Number of data retrieval requests before starting the cleaning of old cache / Количество запросов получения данных перед началом очистки старого кэша */
     protected static stepAgeClearOld: number;
     /**
      * Initializes the storage with listeners.
@@ -250,44 +238,49 @@ export declare class ApiCache {
      * Resets the cache by clearing all in-memory items and resetting listeners.
      *
      * Сбрасывает кэш, очищая все элементы в памяти и сбрасывая слушатели.
+     * @returns void / ничего не возвращает
      */
     static reset(): void;
     /**
-     * Getting data from cache.
+     * Gets data from cache.
      *
-     * Получение данных из кэша.
+     * Получает данные из кэша.
      * @param key cache key / ключ кэша
+     * @returns T | undefined / данные из кэша или undefined
      */
     static get<T>(key: string): Promise<T | undefined>;
     /**
-     * Getting data from cache using fetch options.
+     * Gets data from cache using fetch options.
      *
-     * Получение данных из кэша с использованием опций fetch.
+     * Получает данные из кэша с использованием опций fetch.
      * @param fetch fetch options / опции fetch
+     * @returns T | undefined / данные из кэша или undefined
      */
     static getByFetch<T>(fetch: ApiFetch): Promise<T | undefined>;
     /**
-     * Saving data to cache.
+     * Saves data to cache.
      *
-     * Сохранение данных в кэш.
+     * Сохраняет данные в кэш.
      * @param key cache key / ключ кэша
      * @param value data to be stored / данные для хранения
-     * @param age cache age / возраст кэша
+     * @param age cache age in seconds / возраст кэша в секундах
      */
     static set<T>(key: string, value: T, age?: number): Promise<void>;
     /**
-     * Saving data to cache using fetch options.
+     * Saves data to cache using fetch options.
      *
-     * Сохранение данных в кэш с использованием опций fetch.
+     * Сохраняет данные в кэш с использованием опций fetch.
      * @param fetch fetch options / опции fetch
      * @param value data to be stored / данные для хранения
+     * @returns Promise<void> / Promise без возвращаемого значения
      */
     static setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>;
     /**
-     * Removing data from cache.
+     * Removes data from cache.
      *
-     * Удаление данных из кэша.
+     * Удаляет данные из кэша.
      * @param key cache key / ключ кэша
+     * @returns Promise<void> / Promise без возвращаемого значения
      */
     static remove(key: string): Promise<void>;
     /**
@@ -295,12 +288,13 @@ export declare class ApiCache {
      *
      * Проверяет, включен ли кэш.
      * @param fetch fetch options / опции fetch
+     * @returns true if cache is enabled / true, если кэш включен
      */
     protected static isCache(fetch: ApiFetch): boolean;
     /**
-     * Checks for storage time limit.
+     * Checks if cache item is still valid (not expired).
      *
-     * Проверяет на лимит времени хранения.
+     * Проверяет, действителен ли элемент кэша (не истек ли срок действия).
      * @param item cache item / элемент кэша
      */
     protected static isAge(item?: ApiCacheItem): boolean;
@@ -309,48 +303,54 @@ export declare class ApiCache {
      *
      * Проверяет, существует ли ключ в кэше.
      * @param key cache key / ключ кэша
+     * @returns true if key exists / true, если ключ существует
      */
     protected static isItem(key: string): boolean;
     /**
-     * Generate cache key from fetch options.
+     * Generates cache key from fetch options.
      *
-     * Генерация ключа кэша из опций fetch.
+     * Генерирует ключ кэша из опций fetch.
      * @param fetch fetch options / опции fetch
+     * @returns cache key string / строка ключа кэша (JSON.stringify)
      */
     protected static generateKey(fetch: ApiFetch): string;
     /**
-     * Getting data from cache using listener.
+     * Gets data from cache using listener.
      *
-     * Получение данных из кэша с использованием слушателя.
+     * Получает данные из кэша с использованием слушателя.
      * @param key cache key / ключ кэша
+     * @returns cache item or undefined / элемент кэша или undefined (если не существует или истек срок действия)
      */
     protected static getItemOrListener(key: string): Promise<ApiCacheItem | undefined>;
     /**
-     * Getting list of cache items.
+     * Gets list of cache items.
      *
-     * Получение списка элементов кэша.
+     * Получает список элементов кэша.
      * @returns list of cache items / список элементов кэша
      */
     protected static getList(): ApiCacheList;
     /**
-     * Saving data to cache using listener.
+     * Saves data to cache using listener.
      *
-     * Сохранение данных в кэш с использованием слушателя.
+     * Сохраняет данные в кэш с использованием слушателя.
      * @param key cache key / ключ кэша
      * @param value data to be stored / данные для хранения
+     * @returns Promise<void> / Promise без возвращаемого значения (сохраняет данные в кэш или через listener)
      */
     protected static setItemOrListener(key: string, value: ApiCacheItem): Promise<void>;
     /**
-     * Removing data from cache using listener.
+     * Removes data from cache using listener.
      *
-     * Удаление данных из кэша с использованием слушателя.
+     * Удаляет данные из кэша с использованием слушателя.
      * @param key cache key / ключ кэша
+     * @returns Promise<void> / Promise без возвращаемого значения (удаляет данные из кэша или через listener)
      */
     protected static removeItemOrListener(key: string): Promise<void>;
     /**
-     * Clear old in-memory cache data.
+     * Clears old in-memory cache data.
      *
-     * Очистить старый кэш в памяти.
+     * Очищает старый кэш в памяти.
+     * @returns Promise<void> / Promise без возвращаемого значения (удаляет устаревшие элементы из кэша)
      */
     protected static clearOld(): Promise<void>;
 }
@@ -417,40 +417,45 @@ export declare type ApiDataItem<T = any> = T & {
  * Класс для работы с данными запроса API по умолчанию.
  */
 export declare class ApiDefault {
-    /** Default request data/ Данные запроса по умолчанию */
+    /** Default request data / Данные запроса по умолчанию */
     protected value?: ApiDefaultValue;
     /**
      * Checks if default request data exists.
      *
      * Проверяет, существуют ли данные запроса по умолчанию.
+     * @returns true if default data exists / true, если данные по умолчанию существуют
      */
     is(): boolean;
     /**
      * Gets the default request data.
      *
      * Получает данные запроса по умолчанию.
+     * @returns default request data or undefined / данные запроса по умолчанию или undefined
      */
     get(): ApiDefaultValue | undefined;
     /**
      * Adds default data to the request.
      *
      * Добавляет данные по умолчанию к запросу.
-     * @param request request data/ данные запроса
+     * @param request request data / данные запроса
+     * @returns merged request data with defaults / объединенные данные запроса с значениями по умолчанию
      */
     request(request: ApiFetch['request']): ApiFetch['request'];
     /**
-     * Modifies the default request data.
+     * Sets the default request data.
      *
-     * Изменяет данные запроса по умолчанию.
-     * @param request default request data/ данные запроса по умолчанию
+     * Устанавливает данные запроса по умолчанию.
+     * @param request default request data / данные запроса по умолчанию
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     set(request: ApiDefaultValue): this;
     /**
      * Adds default data to FormData request.
      *
      * Добавляет данные по умолчанию к запросу FormData.
-     * @param request FormData request/ запрос FormData
-     * @param value default values/ значения по умолчанию
+     * @param request FormData request / запрос FormData
+     * @param value default values / значения по умолчанию
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     protected addByFormData(request: FormData, value: ApiDefaultValue): this;
 }
@@ -521,30 +526,33 @@ export declare type ApiFetch = {
  * Класс для управления заголовками HTTP-запросов.
  */
 export declare class ApiHeaders {
-    /** Default headers/ Заголовки по умолчанию */
+    /** Default headers / Заголовки по умолчанию */
     protected headers: Record<string, string>;
     /**
-     * Getting the header for the request.
+     * Gets the headers for the request.
      *
-     * Получение заголовка для запроса.
+     * Получает заголовки для запроса.
      * @param value list of headers/ список заголовков
-     * @param type type of request (default: application/json;charset=UTF-8)/ тип запроса (по умолчанию: application/json;charset=UTF-8)
+     * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+     * @returns merged headers or undefined / объединенные заголовки или undefined
      */
     get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
     /**
-     * Getting the header for the request.
+     * Gets the headers for the request based on request type.
      *
-     * Получение заголовка для запроса.
+     * Получает заголовки для запроса на основе типа запроса.
      * @param request request data/ данные запроса
      * @param value list of headers/ список заголовков
-     * @param type type of request (default: application/json;charset=UTF-8)/ тип запроса (по умолчанию: application/json;charset=UTF-8)
+     * @param type Content-Type header value (default: application/json;charset=UTF-8)/ значение заголовка Content-Type (по умолчанию: application/json;charset=UTF-8)
+     * @returns merged headers or undefined / объединенные заголовки или undefined
      */
     getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
     /**
-     * Modifies the default header data.
+     * Sets the default headers.
      *
-     * Изменяет данные заголовка по умолчанию.
+     * Устанавливает заголовки по умолчанию.
      * @param headers list of default headers/ список заголовков по умолчанию
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     set(headers: Record<string, string>): this;
 }
@@ -561,6 +569,7 @@ export declare class ApiHydration {
      *
      * Инициализирует ответ данными гидратации.
      * @param response API response / ответ API
+     * @returns void / ничего не возвращает
      */
     initResponse(response: ApiResponse): void;
     /**
@@ -569,6 +578,7 @@ export declare class ApiHydration {
      * Сохраняет ответ API для гидратации на стороне клиента.
      * @param apiFetch API request configuration / конфигурация запроса API
      * @param response API response data / данные ответа API
+     * @returns void / ничего не возвращает
      */
     toClient<T>(apiFetch: ApiFetch, response: T): void;
     /**
@@ -607,79 +617,7 @@ export declare type ApiHydrationList = ApiHydrationItem[];
 /**
  * Core class for managing HTTP requests using the Fetch API.
  *
- * `ApiInstance` is a powerful and flexible engine for network communication, designed to handle
- * complex scenarios like automatic token refreshing, request retries, response emulation,
- * and global loading/error management. It is used as the base for the static {@link Api} class.
- *
- * ### Key Features:
- * - **CRUD operations**: Support for `GET`, `POST`, `PUT`, `PATCH`, `DELETE` methods with full type support.
- * - **Lifecycle Hooks**: `setPreparation` (before request) and `setEnd` (after response) callbacks.
- * - **Automatic Retries**: Built-in support for request repetition with randomized delays (jitter).
- * - **Data Processing**: Intelligent JSON/FormData parsing and automatic payload extraction.
- * - **Response Emulation**: Intercept and mock requests using the {@link ApiResponse} manager.
- * - **Localization**: Automated substitution of `{locale}`, `{country}`, and `{language}` in URLs.
- * - **Integration**: Seamless connectivity with {@link Loading} and {@link ErrorCenter} components.
- *
- * ---
- *
  * Основной класс для управления HTTP-запросами через Fetch API.
- *
- * `ApiInstance` — это мощный и гибкий движок для сетевого взаимодействия, разработанный для решения
- * сложных задач, таких как автоматическое обновление токенов, повторы запросов, эмуляция ответов
- * и глобальное управление индикацией загрузки и ошибками. Используется как основа для статического класса {@link Api}.
- *
- * ### Ключевые особенности:
- * - **CRUD операции**: Поддержка методов `GET`, `POST`, `PUT`, `PATCH`, `DELETE` с полной типизацией.
- * - **Хуки жизненного цикла**: Колбэки `setPreparation` (до запроса) и `setEnd` (после ответа).
- * - **Автоматические повторы**: Встроенная поддержка повтора запросов с джиттером.
- * - **Обработка данных**: Интеллектуальный парсинг JSON/FormData и извлечение полезной нагрузки.
- * - **Эмуляция ответов**: Перехват и подмена запросов через менеджер {@link ApiResponse}.
- * - **Локализация**: Автоматическая подстановка плейсхолдеров `{locale}`, `{country}` и `{language}`.
- * - **Интеграция**: Бесшовная связь с компонентами {@link Loading} и {@link ErrorCenter}.
- *
- * ---
- *
- * ### Usage Examples / Примеры использования:
- *
- * #### 1. Initialization and Configuration / Инициализация и настройка
- * ```typescript
- * const api = new ApiInstance('https://api.example.com/v1/');
- * api.setHeaders({ 'Accept-Language': 'en' })
- *    .setTimeout(10000);
- * ```
- *
- * #### 2. Simple Request / Простой запрос
- * ```typescript
- * const users = await api.get<User[]>({ path: 'users' });
- * ```
- *
- * #### 3. Lifecycle Hooks: Auth & Refresh Token / Хуки жизненного цикла: Авторизация и Refresh Token
- * ```typescript
- * // Preparation hook for adding tokens / Хук подготовки для добавления токенов
- * api.setPreparation(async (apiFetch) => {
- *   const token = localStorage.getItem('token');
- *   if (token) apiFetch.headers = { ...apiFetch.headers, Authorization: `Bearer ${token}` };
- * });
- *
- * // End hook for token refresh / Хук завершения для обновления токена
- * api.setEnd(async (response, apiFetch) => {
- *   if (response.status === 401) {
- *     const refreshed = await refreshToken();
- *     if (refreshed) return { reset: true }; // Retries the request / Повтор запроса
- *   }
- *   return {};
- * });
- * ```
- *
- * #### 4. Response Emulation (Mocking) / Эмуляция ответов (Моки)
- * ```typescript
- * api.getResponse().add({
- *   path: 'profile',
- *   method: 'GET',
- *   response: { id: 1, name: 'John Doe' },
- *   lag: true // simulate network delay / имитация задержки сети
- * });
- * ```
  */
 export declare class ApiInstance {
     protected url: string;
@@ -699,181 +637,200 @@ export declare class ApiInstance {
     protected errorCenter: ErrorCenterInstance;
     /** Hydration handler / Обработчик гидратации */
     protected hydration: ApiHydration;
-    /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
+    /** Timeout for the request in milliseconds / Таймаут запроса в миллисекундах */
     protected timeout: number;
     /**
      * Constructor
-     * @param url base path to the script/ базовый путь к скрипту
-     * @param options options for the API instance/ опции для экземпляра API
+     * @param url base path to the script / базовый путь к скрипту
+     * @param options options for the API instance / опции для экземпляра API
      */
     constructor(url?: string, options?: ApiInstanceOptions);
     /**
-     * Is the server local.
+     * Checks if the server is running on localhost.
      *
-     * Является ли сервер локальный.
+     * Проверяет, работает ли сервер на localhost.
+     * @returns true if server is localhost / true, если сервер является локальным
      */
     isLocalhost(): boolean;
     /**
      * Returns the status of the last request.
      *
      * Возвращает статус последнего запроса.
+     * @returns ApiStatus instance / экземпляр ApiStatus
      */
     getStatus(): ApiStatus;
     /**
-     * Getting the response handler.
+     * Gets the response handler.
      *
-     * Получение обработчика ответа.
+     * Получает обработчик ответа.
+     * @returns ApiResponse instance / экземпляр ApiResponse
      */
     getResponse(): ApiResponse;
     /**
-     * Getting the hydration handler.
+     * Gets the hydration handler.
      *
-     * Получение обработчика гидратации.
+     * Получает обработчик гидратации.
+     * @returns ApiHydration instance / экземпляр ApiHydration
      */
     getHydration(): ApiHydration;
     /**
-     * Getting the full path to the request script.
+     * Gets the full path to the request script.
      *
-     * Получение полного пути к скрипту запроса.
-     * @param path path to the script/ путь к скрипту
-     * @param api adding a path to the site’s API/ добавление пути к API сайта
+     * Получает полный путь к скрипту запроса.
+     * @param path path to the script / путь к скрипту
+     * @param api whether to prepend base API URL / нужно ли добавить базовый URL API
+     * @returns full URL / полный URL
      */
     getUrl(path: string, api?: boolean): string;
     /**
-     * Getting data for the body.
+     * Gets data for the request body.
      *
-     * Получение данных для тела.
-     * @param request this request/ данный запрос
-     * @param method method for request/ метод запрос
+     * Получает данные для тела запроса.
+     * @param request request data / данные запроса
+     * @param method HTTP method / HTTP метод
+     * @returns body data for non-GET requests or FormData / данные тела для не-GET запросов или FormData
      */
     getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
     /**
-     * Getting data for the body of the get method.
+     * Gets query string for GET method requests.
      *
-     * Получение данных для тела метода get.
-     * @param request this request/ данный запрос
-     * @param path path to request/ путь к запрос
-     * @param method method for request/ метод запрос
+     * Получает строку запроса для GET-методов.
+     * @param request request data / данные запроса
+     * @param path path to request / путь к запросу
+     * @param method HTTP method / HTTP метод
+     * @returns query string for GET requests / строка запроса для GET-запросов
      */
     getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
     /**
      * Returns a string representation of the hydration data for the client.
      *
      * Возвращает строковое представление данных гидратации для клиента.
+     * @returns HTML script element string / строка HTML элемента script
      */
     getHydrationScript(): string;
     /**
      * Modifies the default header data.
      *
      * Изменяет данные заголовка по умолчанию.
+     * @param headers default headers / заголовки по умолчанию
      */
     setHeaders(headers: Record<string, string>): this;
     /**
      * Modifies the default request data.
      *
      * Изменяет данные запроса по умолчанию.
+     * @param request default request data / данные запроса по умолчанию
      */
     setRequestDefault(request: Record<string, any>): this;
     /**
-     * Change the base path to the script.
+     * Changes the base path to the script.
      *
-     * Изменить базовый путь к скрипту.
-     * @param url path to the script/ путь к скрипту
+     * Изменяет базовый путь к скрипту.
+     * @param url path to the script / путь к скрипту
      */
     setUrl(url: string): this;
     /**
-     * The function is modified for a call before the request.
+     * Modifies the function to be called before the request.
      *
-     * Изменить функцию перед запросом.
-     * @param callback function for call/ функция для вызова
+     * Изменяет функцию для вызова перед запросом.
+     * @param callback function to call before request / функция для вызова перед запросом
      */
     setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
     /**
-     * Modify the function after the request.
+     * Modifies the function to be called after the request.
      *
-     * Изменить функцию после запроса.
-     * @param callback function for call/ функция для вызова
+     * Изменяет функцию для вызова после запроса.
+     * @param callback function to call after request / функция для вызова после запроса
      */
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
     /**
-     * Change the timeout for the request in milliseconds.
+     * Changes the timeout for the request in milliseconds.
      *
-     * Изменить таймаут запроса в миллисекундах.
-     * @param timeout timeout in milliseconds/ таймаут в миллисекундах
+     * Изменяет таймаут запроса в миллисекундах.
+     * @param timeout timeout in milliseconds / таймаут в миллисекундах
      */
     setTimeout(timeout: number): this;
     /**
-     * To execute a request.
+     * Executes a request with the given path or configuration.
      *
-     * Выполнить запрос.
-     * @param pathRequest path or configuration/ путь или конфигурация запроса
+     * Выполняет запрос с указанным путем или конфигурацией.
+     * @param pathRequest path or configuration / путь или конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     request<T>(pathRequest: string | ApiFetch): Promise<T>;
     /**
      * Sends a GET method request.
      *
      * Отправляет запрос метода GET.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     get<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a POST method request.
      *
      * Отправляет запрос метода POST.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     post<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a PUT method request.
      *
      * Отправляет запрос метода PUT.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     put<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a PATCH method request.
      *
      * Отправляет запрос метода PATCH.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     patch<T>(request: ApiFetch): Promise<T>;
     /**
      * Sends a DELETE method request.
      *
      * Отправляет запрос метода DELETE.
-     * @param request fetch configuration/ конфигурация запроса
+     * @param request fetch configuration / конфигурация запроса
+     * @returns Promise with response data / Promise с данными ответа
      */
     delete<T>(request: ApiFetch): Promise<T>;
     /**
-     * Get retry delay.
+     * Gets retry delay with jitter.
      *
-     * Получить задержку повтора.
-     * @param retryCount count of retries/ количество повторов
-     * @param retryDelay delay between retries/ задержка между повторами
+     * Получает задержку повтора с джиттером.
+     * @param retryCount count of retries / количество повторов
+     * @param retryDelay base delay between retries / базовая задержка между повторами
+     * @returns delay in milliseconds / задержка в миллисекундах
      */
     protected getRetryDelay(retryCount: number, retryDelay: number): number;
     /**
-     * To execute a request.
+     * Execute API request with retry support.
      *
-     * Выполнить запрос.
-     * @param apiFetch property of the request/ свойство запроса
-     * @param retryCount count of retries/ количество повторов
+     * Выполнить запрос API с поддержкой повторов.
+     * @param apiFetch fetch configuration / конфигурация запроса
+     * @param retryCount current retry count / текущий счетчик повторов
      */
     protected fetch<T>(apiFetch: ApiFetch, retryCount?: number): Promise<T>;
     /**
-     * Reading data from the response.
+     * Reads data from the response.
      *
-     * Чтение данных из ответа.
-     * @param query response from the server/ ответ от сервера
-     * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
-     * @param end finalization data/ данные финализации
+     * Читает данные из ответа.
+     * @param query response from the server / ответ от сервера
+     * @param queryReturn custom function for reading data / кастомная функция для чтения данных
+     * @param end finalization data / данные финализации
+     * @returns parsed API data / распарсенные данные API
      */
     protected readData<T>(query: Response, queryReturn: ApiFetch['queryReturn'], end: ApiPreparationEnd): Promise<ApiData<T>>;
     /**
-     * Executing the request.
+     * Executing the HTTP request.
      *
-     * Выполнение запроса.
-     * @param apiFetch property of the request/ свойство запроса
+     * Выполнение HTTP-запроса.
+     * @param apiFetch fetch configuration / конфигурация запроса
+     * @returns object containing response and optional timeout ID / объект, содержащий ответ и опциональный ID таймера
      */
     protected makeQuery(apiFetch: ApiFetch): Promise<{
         query: Response;
@@ -883,62 +840,65 @@ export declare class ApiInstance {
      * Transforms data if needed.
      *
      * Преобразует данные, если нужно.
-     * @param data data for transformation/ данные для преобразования
-     * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
+     * @param data data for transformation / данные для преобразования
+     * @param toData is it necessary to process the data / нужно ли обрабатывать данные
+     * @returns transformed data / преобразованные данные
      */
     protected makeData<T>(data: ApiData<T>, toData: boolean): ApiData<T>;
     /**
      * Appends the status object to the response data if possible.
      *
      * Добавляет объект статуса к данным ответа, если это возможно.
-     * @param data response data/ данные ответа
-     * @param status status object/ объект статуса
+     * @param data response data / данные ответа
+     * @param status status object / объект статуса
+     * @returns data with status object appended / данные с добавленным объектом статуса
      */
     protected makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
     /**
      * Processing an error.
      *
      * Обработка ошибки.
-     * @param error error object/ объект ошибки
-     * @param group error group/ группа ошибки
+     * @param error error object / объект ошибки
+     * @param group error group for error center (default: 'api') / группа ошибки для центра ошибок (по умолчанию: 'api')
      */
     protected makeError(error: Record<string, any> & {
         name: string;
     }, group?: string): void;
     /**
-     * Processing an error query.
+     * Processes an error response.
      *
-     * Обработка ошибки запроса.
-     * @param query error query/ ошибка запроса
+     * Обрабатывает ошибку ответа.
+     * @param query error response / ответ с ошибкой
      */
     protected makeErrorQuery(query: Response): void;
     /**
-     * Initialize controller for request.
+     * Initialize controller for request with timeout support.
      *
-     * Инициализация контроллера для запроса.
-     * @param apiFetch request options/ опции запроса
-     * @param fetchInit request initialization/ инициализация запроса
+     * Инициализация контроллера для запроса с поддержкой таймаута.
+     * @param apiFetch request options / опции запроса
+     * @param fetchInit request initialization object / объект инициализации запроса
+     * @returns timeout ID for manual cancellation or undefined / ID таймера для ручной отмены или undefined
      */
     protected initController(apiFetch: ApiFetch, fetchInit: RequestInit): any;
 }
 
-/** Options for the API instance/ Опции для экземпляра API */
+/** Options for the API instance / Опции для экземпляра API */
 export declare type ApiInstanceOptions = {
-    /** Class for working with headers/ Класс для работы с заголовками */
+    /** Class for working with headers / Класс для работы с заголовками */
     headersClass?: typeof ApiHeaders;
-    /** Class for working with default request parameters/ Класс для работы с параметрами запроса по умолчанию */
+    /** Class for working with default request parameters / Класс для работы с параметрами запроса по умолчанию */
     requestDefaultClass?: typeof ApiDefault;
-    /** Class for working with status/ Класс для работы со статусом */
+    /** Class for working with status / Класс для работы со статусом */
     statusClass?: typeof ApiStatus;
-    /** Class for working with response/ Класс для работы с ответом */
+    /** Class for working with response / Класс для работы с ответом */
     responseClass?: typeof ApiResponse;
-    /** Class for working with preparation/ Класс для работы с модификацией запроса */
+    /** Class for working with preparation / Класс для работы с модификацией запроса */
     preparationClass?: typeof ApiPreparation;
-    /** Instance of loading handler/ Экземпляр обработчика загрузки */
+    /** Instance of loading handler / Экземпляр обработчика загрузки */
     loadingClass?: LoadingInstance;
-    /** Instance of error handler/ Экземпляр обработчика ошибок */
+    /** Instance of error handler / Экземпляр обработчика ошибок */
     errorCenterClass?: ErrorCenterInstance;
-    /** Class for working with hydration/ Класс для работы с гидратацией */
+    /** Class for working with hydration / Класс для работы с гидратацией */
     hydrationClass?: typeof ApiHydration;
 };
 
@@ -986,49 +946,54 @@ export declare enum ApiMethodItem {
  * Класс для подготовки запросов.
  */
 export declare class ApiPreparation {
-    /** Function for call before the request/ Функция для вызова перед запросом */
+    /** Function for call before the request / Функция для вызова перед запросом */
     protected callback?: (apiFetch: ApiFetch) => Promise<void>;
-    /** Function for call after the request/ Функция для вызова после запроса */
+    /** Function for call after the request / Функция для вызова после запроса */
     protected callbackEnd?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
-    /** Is the preparation in progress/ Идет ли подготовка */
+    /** Is the preparation in progress / Идет ли подготовка */
     protected loading: boolean;
     /**
-     * Preparation before executing the request.
+     * Executes preparation before the request.
      *
-     * Подготовка перед выполнением запроса.
-     * @param active is preparation active/ активна ли подготовка
-     * @param apiFetch request options/ опции запроса
+     * Выполняет подготовку перед выполнением запроса.
+     * @param active is preparation active / активна ли подготовка
+     * @param apiFetch request options / опции запроса
+     * @returns Promise<void> / Promise без возвращаемого значения
      */
     make(active: boolean, apiFetch: ApiFetch): Promise<void>;
     /**
-     * Analysis of the request after execution.
+     * Analyzes the request after execution.
      *
-     * Анализ запроса после выполнения.
-     * @param active is preparation active/ активна ли подготовка
-     * @param query data received in the request/ данные, полученные в запросе
-     * @param apiFetch request options/ опции запроса
+     * Анализирует запрос после выполнения.
+     * @param active is preparation active / активна ли подготовка
+     * @param query data received in the request / данные, полученные в запросе
+     * @param apiFetch request options / опции запроса
+     * @returns preparation end data / данные завершения подготовки
      */
     makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
     /**
-     * The function is modified for a call before the request.
+     * Modifies the function to be called before the request.
      *
-     * Изменить функцию перед запросом.
-     * @param callback function for call/ функция для вызова
+     * Изменяет функцию для вызова перед запросом.
+     * @param callback function to call before request / функция для вызова перед запросом
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
     /**
-     * Modify the function after the request.
+     * Modifies the function to be called after the request.
      *
-     * Изменить функцию после запроса.
-     * @param callback function for call/ функция для вызова
+     * Изменяет функцию для вызова после запроса.
+     * @param callback function to call after request / функция для вызова после запроса
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
     /**
      * To execute preparation.
      *
      * Выполнить подготовку.
-     * @param apiFetch request options/ опции запроса
-     * @param limit limit of attempts/ лимит попыток
+     * @param apiFetch request options / опции запроса
+     * @param limit limit of retry attempts / лимит попыток повтора
+     * @returns Promise<void> / Promise без возвращаемого значения
      */
     protected go(apiFetch: ApiFetch, limit?: number): Promise<void>;
 }
@@ -1050,112 +1015,121 @@ export declare type ApiPreparationEnd = {
  */
 export declare class ApiResponse {
     protected readonly requestDefault: ApiDefault;
-    /** List of first-time API requests/ Список первичных API запросов */
+    /** List of first-time API requests / Список первичных API запросов */
     protected readonly first: ApiResponseItem[];
-    /** Cached responses/ Кешированные ответы */
+    /** Cached responses / Кешированные ответы */
     protected readonly response: ApiResponseItem[];
-    /** Loading instance/ Экземпляр загрузки */
+    /** Loading instance / Экземпляр загрузки */
     protected loading?: any;
-    /** Developer mode flag/ Флаг режима разработчика */
+    /** Developer mode flag / Флаг режима разработчика */
     protected devMode: boolean;
     /**
      * Constructor
-     * @param requestDefault default request processor/ процессор запросов по умолчанию
+     * @param requestDefault default request class/ класс запросов по умолчанию
      */
     constructor(requestDefault: ApiDefault);
     /**
      * Checks if there is a global cached request, if there is, returns it.
      *
      * Проверяет, есть ли глобальный кешированный запрос, если есть, возвращает его.
-     * @param path link to the request/ ссылка на запрос
-     * @param method request method/ метод запроса
-     * @param request data for the request/ данные для запроса
-     * @param devMode is it developer mode/ является ли режим разработчика
+     * @param path link to the request / ссылка на запрос
+     * @param method request method / метод запроса
+     * @param request data for the request / данные для запроса
+     * @param devMode is it developer mode / является ли режим разработчика
+     * @returns cached response item or undefined / кешированный элемент ответа или undefined
      */
     get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
     /**
-     * Returns a list of data about the emulator.
+     * Returns a list of cached API responses (excluding global responses).
      *
-     * Возвращает список данных об эмуляторе.
+     * Возвращает список кешированных ответов API (исключая глобальные ответы).
      */
     getList(): (ApiResponseItem & Record<string, any>)[];
     /**
-     * Adding cached requests.
+     * Adds cached requests.
      *
-     * Добавление кешированных запросов.
-     * @param response data for caching/ данные для кеширования
+     * Добавляет кешированные запросы.
+     * @param response data for caching / данные для кеширования
      */
     add(response: ApiResponseItem | ApiResponseItem[]): this;
     /**
      * Sets developer mode.
      *
      * Устанавливает режим разработчика.
-     * @param devMode is it developer mode/ является ли режим разработчика
+     * @param devMode is it developer mode / является ли режим разработчика
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setDevMode(devMode: boolean): this;
     /**
-     * Execution of the emulator if available.
+     * Executes the emulator if available.
      *
-     * Выполнение эмулятора, если доступно.
-     * @param apiFetch property of the request/ свойство запроса
+     * Выполняет эмулятор, если доступно.
+     * @param apiFetch fetch configuration / конфигурация запроса
+     * @returns emulated response or undefined / эмулированный ответ или undefined
      */
     emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
     /**
      * Checks if the cached item is disabled.
      *
      * Проверяет, отключен ли кешированный элемент.
-     * @param item cached item/ кешированный элемент
+     * @param item cached item / кешированный элемент
+     * @returns true if item is disabled / true, если элемент отключен
      */
     protected isDisable(item: ApiResponseItem): boolean;
     /**
      * Checks if the path matches the cached one.
      *
      * Проверяет, совпадает ли путь с кешированным.
-     * @param item cached item/ кешированный элемент
-     * @param path request path/ путь запроса
+     * @param item cached item / кешированный элемент
+     * @param path request path / путь запроса
+     * @returns true if paths match / true, если пути совпадают
      */
     protected isPath(item: ApiResponseItem, path: string): boolean;
     /**
      * Checks if it is developer mode.
      *
      * Проверяет, является ли режимом разработчика.
-     * @param devMode is it developer mode/ является ли режим разработчика
+     * @param devMode is it developer mode / является ли режим разработчика
+     * @returns true if in dev mode / true, если в режиме разработчика
      */
     protected isDevMode(devMode?: boolean): boolean;
     /**
      * Checks if this is the first request.
      *
      * Проверяет, является ли это первым запросом.
-     * @param item cached item/ кешированный элемент
-     * @param devMode is it developer mode/ является ли режим разработчика
+     * @param item cached item / кешированный элемент
+     * @param devMode is it developer mode / является ли режим разработчика
+     * @returns true if this is the first request / true, если это первый запрос
      */
     protected isFirst(item: ApiResponseItem, devMode?: boolean): boolean;
     /**
      * Checks if the request matches the cached one.
      *
      * Проверяет, совпадает ли запрос с кешированным.
-     * @param item cached item/ кешированный элемент
+     * @param item cached item / кешированный элемент
      * @param request request data/ данные запроса
+     * @returns true if requests match / true, если запросы совпадают
      */
     protected isResponse(item: ApiResponseItem, request?: ApiFetch['request']): boolean;
     /**
      * Emulates an execution request (internal fetch).
      *
      * Эмулирует запрос выполнения (внутренний fetch).
-     * @param response response item for emulation/ элемент ответа для эмуляции
-     * @param request data for the request/ данные для запроса
+     * @param response response item for emulation / элемент ответа для эмуляции
+     * @param request data for the request / данные для запроса
+     * @returns Promise with emulated response data / Promise с эмулированными данными ответа
      */
     protected fetch<T>(response: ApiResponseItem, request?: ApiFetch['request']): Promise<T>;
     /**
-     * Enable loading for request emulation.
+     * Enables loading for request emulation.
      *
-     * Включить загрузку для эмуляции запроса.
+     * Включает загрузку для эмуляции запроса.
      */
     protected startResponseLoading(): void;
     /**
-     * Disable loading for request emulation.
+     * Disables loading for request emulation.
      *
-     * Отключить загрузку для эмуляции запроса.
+     * Отключает загрузку для эмуляции запроса.
      */
     protected stopResponseLoading(): void;
 }
@@ -1181,9 +1155,9 @@ export declare type ApiResponseItem = {
 };
 
 /**
- * API status class
+ * Class for managing API request status.
  *
- * Класс статуса API
+ * Класс для управления статусом запросов API.
  */
 export declare class ApiStatus {
     protected value?: ApiStatusItem;
@@ -1191,42 +1165,49 @@ export declare class ApiStatus {
      * Returns the last status item data.
      *
      * Возвращает данные последнего элемента статуса.
+     * @returns status item or undefined / элемент статуса или undefined
      */
     get(): ApiStatusItem | undefined;
     /**
      * Returns the execution status code.
      *
      * Возвращает код статуса выполнения.
+     * @returns HTTP status code or undefined / код статуса HTTP или undefined
      */
     getStatus(): number | undefined;
     /**
      * Returns the execution status text.
      *
      * Возвращает текст статуса выполнения.
+     * @returns status text or undefined / текст статуса или undefined
      */
     getStatusText(): string | undefined;
     /**
      * Returns the last status type.
      *
      * Возвращает последний тип статуса.
+     * @returns status type or undefined / тип статуса или undefined
      */
     getStatusType(): ApiStatusType | undefined;
     /**
      * Returns the script execution error.
      *
      * Возвращает ошибку выполнения скрипта.
+     * @returns error message or undefined / сообщение об ошибке или undefined
      */
     getError(): string | undefined;
     /**
      * Returns the data of the last request.
      *
      * Возвращает данные последнего запроса.
+     * @returns last response data or undefined / данные последнего ответа или undefined
      */
     getResponse<T>(): T | undefined;
     /**
      * Returns messages from the last request.
      *
      * Возвращает сообщения от последнего запроса.
+     * @returns message string / строка сообщения
      */
     getMessage(): string;
     /**
@@ -1234,14 +1215,16 @@ export declare class ApiStatus {
      *
      * Устанавливает данные элемента статуса.
      * @param data status item data/ данные элемента статуса
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     set(data: ApiStatusItem): this;
     /**
      * Sets the status code and optional status text.
      *
      * Устанавливает код статуса и необязательный текст статуса.
-     * @param status status code/ код статуса
-     * @param statusText optional status text/ необязательный текст статуса
+     * @param status status code / код статуса
+     * @param statusText optional status text / необязательный текст статуса
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setStatus(status?: number, statusText?: string): this;
     /**
@@ -1249,13 +1232,15 @@ export declare class ApiStatus {
      *
      * Устанавливает сообщение об ошибке.
      * @param error error message/ сообщение об ошибке
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setError(error?: string): this;
     /**
      * Sets the data of the last response and automatically extracts status/message if object.
      *
-     * Устанавливает данные последнего ответа и автоматически извлекает статус/сообщение, если это объект.
+     * Устанавливает данные последнего ответа и автоматически извлекает статус / сообщение, если это объект.
      * @param response response data/ данные ответа
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setLastResponse(response?: any): this;
     /**
@@ -1263,6 +1248,7 @@ export declare class ApiStatus {
      *
      * Устанавливает последний статус.
      * @param status status/ статус
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setLastStatus(status?: ApiStatusType): this;
     /**
@@ -1270,6 +1256,7 @@ export declare class ApiStatus {
      *
      * Устанавливает сообщения от последнего запроса.
      * @param message message text/ текст сообщения
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
      */
     setLastMessage(message?: string): this;
     /**
@@ -1338,7 +1325,7 @@ export declare function arrFill<T>(value: T, count: number): T[];
 export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
 
 /**
- * A class to handle BroadcastChannel messaging.
+ * Class for working with BroadcastChannel messages.
  *
  * Класс для работы с сообщениями BroadcastChannel.
  */
@@ -1347,103 +1334,116 @@ export declare class BroadcastMessage<Message = any> {
     protected callbackError?: ((event: MessageEvent<Message>) => void) | undefined;
     protected channel?: BroadcastChannel;
     /**
-     * Constructor
-     * @param name channel name/ название канала
-     * @param callback callback on message received/ колбэк на получение сообщения
-     * @param callbackError callback on message error/ колбэк на ошибку сообщения
-     * @param errorCenter error center instance/ экземпляр центра ошибок
+     * Constructor that initializes the broadcast channel with event handlers.
+     *
+     * Конструктор, инициализирующий канал вещания с обработчиками событий.
+     * @param name unique identifier for the broadcast channel / уникальный идентификатор для канала вещания
+     * @param callback function called when a message is received / функция, вызываемая при получении сообщения
+     * @param callbackError function called when a message error occurs / функция, вызываемая при возникновении ошибки сообщения
+     * @param errorCenter ErrorCenter instance for error reporting / экземпляр ErrorCenter для отчета об ошибках
      */
     constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
     /**
-     * Get the channel.
+     * Gets the BroadcastChannel instance if available.
      *
-     * Получить канал.
-     * @returns channel/ канал
+     * Получает экземпляр BroadcastChannel, если он доступен.
+     * @returns BroadcastChannel instance or undefined if not in DOM runtime / экземпляр BroadcastChannel или undefined, если не в среде DOM
      */
     getChannel(): BroadcastChannel | undefined;
     /**
-     * Send a message to the channel.
+     * Sends a message through the broadcast channel.
      *
-     * Отправить сообщение в канал.
-     * @param message message to send/ сообщение для отправки
+     * Отправляет сообщение через канал вещания.
+     * @param message message data to send / данные сообщения для отправки
+     * @returns this instance for chaining / этот экземпляр для цепочки вызовов
      */
     post(message: Message): this;
     /**
-     * Set the callback function to be called when a message is received.
+     * Sets the callback function to be executed when a message is received.
      *
-     * Установить функцию колбэка, которая будет вызвана при получении сообщения.
-     * @param callback callback function/ функция колбэка
+     * Устанавливает функцию обратного вызова, выполняемую при получении сообщения.
+     * @param callback function to execute on message received / функция для выполнения при получении сообщения
+     * @returns this instance for chaining / этот экземпляр для цепочки вызовов
      */
     setCallback(callback: (event: MessageEvent<Message>) => void): this;
     /**
-     * Set the callback function to be called when a message error occurs.
+     * Sets the error callback function to be executed when a message error occurs.
      *
-     * Установить функцию колбэка, которая будет вызвана при возникновении ошибки сообщения.
-     * @param callbackError callback function/ функция колбэка
+     * Устанавливает функцию обратного вызова для обработки ошибок сообщений.
+     * @param callbackError function to execute on message error / функция для выполнения при ошибке сообщения
+     * @returns this instance for chaining / этот экземпляр для цепочки вызовов
      */
     setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
     /**
-     * Closes the channel and stops listening for messages.
+     * Closes the broadcast channel and stops listening for messages.
      *
-     * Закрывает канал и прекращает прослушивание сообщений.
+     * Закрывает канал вещания и прекращает прослушивание сообщений.
+     * @returns this instance for chaining / этот экземпляр для цепочки вызовов
      */
     destroy(): this;
     /**
-     * Update state on message received.
+     * Updates state when a message is received.
      *
-     * Обновление состояния при получении сообщения.
-     * @param event message event/ событие сообщения
+     * Обновляет состояние при получении сообщения.
+     * @param event message event object / объект события сообщения
+     * @returns this instance for chaining / этот экземпляр для цепочки вызовов
      */
     protected readonly update: (event: MessageEvent<Message>) => this;
     /**
-     * Update error state on message error.
+     * Updates error state when a message error occurs.
      *
-     * Обновление состояния ошибки при получении ошибки сообщения.
-     * @param event message error event/ событие ошибки сообщения
+     * Обновляет состояние ошибки при возникновении ошибки сообщения.
+     * @param event message error event object / объект события ошибки сообщения
+     * @returns this instance for chaining / этот экземпляр для цепочки вызовов
      */
     protected readonly updateError: (event: MessageEvent<Message>) => this;
 }
 
 /**
- * Simple class for caching.
+ * Simple in-memory cache class that stores computed values by key.
  *
- * Простой класс для кэширования.
+ * Простой класс для in-memory кэширования, который хранит вычисленные значения по ключу.
+ * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 declare class Cache_2 {
     private cache;
     /**
-     * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+     * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
      *
-     * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
-     * @param name cache name/ название кэша
-     * @param callback function for the cache/ функция для кэша
-     * @param comparison additional data for comparison/ дополнительные данные для сравнения
+     * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+     * @param name - Unique cache key / Уникальный ключ кэша
+     * @param callback - Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
+     * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+     * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
      */
     get<T>(name: string, callback: () => T, comparison?: any[]): T;
     /**
-     * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+     * Asynchronously returns a cached value for the given name. If not cached, executes the callback and stores the result.
      *
-     * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
-     * @param name cache name/ название кэша
-     * @param callback function for the cache/ функция для кэша
-     * @param comparison additional data for comparison/ дополнительные данные для сравнения
+     * Асинхронно возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+     * @param name - Unique cache key / Уникальный ключ кэша
+     * @param callback - Async function to compute the value if not cached / Асинхронная функция для вычисления значения, если его нет в кэше
+     * @param comparison - Optional array for cache invalidation. If provided, the cache is invalidated when any element changes / Опциональный массив для инвалидации кэша. Если предоставлен, кэш сбрасывается при изменении любого элемента
+     * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
      */
     getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
     /**
-     * Returns an instance of the object for working with the cache element.
+     * Gets or creates a CacheItem instance for the given name.
      *
-     * Возвращает экземпляр объекта для работы с элементом кэша.
-     * @param name cache name/ название кэша
-     * @param callback function for the cache/ функция для кэша
+     * Получает или создает экземпляр CacheItem для указанного имени.
+     * @param name - Unique cache key / Уникальный ключ кэша
+     * @param callback - Function to compute the value / Функция для вычисления значения
+     * @returns CacheItem instance for the cache key / Экземпляр CacheItem для ключа кэша
      */
     private getCacheItem;
 }
 export { Cache_2 as Cache }
 
 /**
- * Class for managing a single caching value.
+ * Class for managing a single cached value with dependency tracking.
  *
- * Класс для управления одним значением кэширования.
+ * Класс для управления одним кэшированным значением с отслеживанием зависимостей.
+ * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export declare class CacheItem<T> {
     private readonly callback;
@@ -1451,79 +1451,89 @@ export declare class CacheItem<T> {
     private cacheOld?;
     private comparisons;
     /**
-     * Constructor
-     * @param callback function for the cache/ функция для кэша
+     * Creates a new CacheItem instance.
+     *
+     * Создает новый экземпляр CacheItem.
+     * @param callback - Function to compute the cached value / Функция для вычисления кэшированного значения
      */
     constructor(callback: () => T);
     /**
-     * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+     * Returns the cached value. Recomputes if the comparison array has changed.
      *
-     * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
-     * @param comparison additional data for comparison/ дополнительные данные для сравнения
+     * Возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
+     * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
+     * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
      */
     getCache(comparison: any[]): T;
     /**
-     * Getting the previous value of the cache.
+     * Returns the previous cached value before the last recalculation.
      *
-     * Получение предыдущего значения кэша.
+     * Возвращает предыдущее кэшированное значение до последнего пересчета.
+     * @returns The previous cached value, or undefined if no recalculation has occurred / Предыдущее кэшированное значение, или undefined если пересчет не происходил
      */
     getCacheOld(): T | undefined;
     /**
-     * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+     * Asynchronously returns the cached value. Recomputes if the comparison array has changed.
      *
-     * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
-     * @param comparison additional data for comparison/ дополнительные данные для сравнения
+     * Асинхронно возвращает кэшированное значение. Пересчитывает, если массив comparison изменился.
+     * @param comparison - Array of values to track for cache invalidation / Массив значений для отслеживания инвалидации кэша
+     * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
      */
     getCacheAsync(comparison: any[]): Promise<T>;
     /**
-     * Overwrites or adds new values for the cache.
+     * Executes the callback and stores the result in cache.
      *
-     * Перезаписывает или добавляет новые значения для кэша.
+     * Выполняет callback и сохраняет результат в кэш.
      */
     private setCache;
     /**
-     * Overwrites or adds new values for the cache (Async).
+     * Asynchronously executes the callback and stores the result in cache.
      *
-     * Перезаписывает или добавляет новые значения для кэша (Async).
+     * Асинхронно выполняет callback и сохраняет результат в кэш.
      */
     private setCacheAsync;
     /**
-     * Checking additional data.
+     * Determines if the cache should be updated based on comparison array changes.
      *
-     * Проверка дополнительных данных.
-     * @param comparison additional data for comparison/ дополнительные данные для сравнения
+     * Определяет, следует ли обновить кэш на основе изменений в массиве comparison.
+     * @param comparison - New comparison array to compare against / Новый массив comparison для сравнения
+     * @returns True if cache should be updated, false otherwise / True, если кэш нужно обновить, иначе false
      */
     private isUpdate;
 }
 
 /**
- * Class for working with fast cache during code execution.
+ * Static cache class that uses ServerStorage for persistent caching across the application.
  *
- * Класс для работы с быстрым кэшем во время выполнения кода.
+ * Статический класс кэша, использующий ServerStorage для постоянного кэширования в приложении.
+ * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export declare class CacheStatic {
     /**
-     * Returns the instance of the class.
+     * Retrieves the Cache instance from ServerStorage.
      *
-     * Возвращает инстанс класса.
+     * Получает экземпляр Cache из ServerStorage.
+     * @returns Cache instance for static caching / Экземпляр Cache для статического кэширования
      */
     protected static getItem(): Cache_2;
     /**
-     * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+     * Returns a cached value for the given name. If not cached, executes the callback and stores the result.
      *
-     * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
-     * @param name cache name/ название кэша
-     * @param callback function for the cache/ функция для кэша
-     * @param comparison additional data for comparison/ дополнительные данные для сравнения
+     * Возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+     * @param name - Unique cache key / Уникальный ключ кэша
+     * @param callback - Function to compute the value if not cached / Функция для вычисления значения, если его нет в кэше
+     * @param comparison - Optional array for cache invalidation / Опциональный массив для инвалидации кэша
+     * @returns The cached or newly computed value / Кэшированное или новое вычисленное значение
      */
     static get<T>(name: string, callback: () => T, comparison?: any[]): T;
     /**
-     * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+     * Asynchronously returns a cached value for the given name. If not cached, executes the callback and stores the result.
      *
-     * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
-     * @param name cache name/ название кэша
-     * @param callback function for the cache/ функция для кэша
-     * @param comparison additional data for comparison/ дополнительные данные для сравнения
+     * Асинхронно возвращает кэшированное значение для указанного имени. Если нет кэша, выполняет callback и сохраняет результат.
+     * @param name - Unique cache key / Уникальный ключ кэша
+     * @param callback - Async function to compute the value if not cached / Асинхронная функция для вычисления значения
+     * @param comparison - Optional array for cache invalidation / Опциональный массив для инвалидации кэша
+     * @returns Promise resolving to the cached or newly computed value / Promise, разрешающийся в кэшированное или новое вычисленное значение
      */
     static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
@@ -1553,7 +1563,7 @@ export declare class Cookie<T> {
      */
     static getInstance<T>(name: string): Cookie<unknown>;
     /** Cookie value / Значение cookie */
-    value?: T | string;
+    private value?;
     /** Cookie options / Параметры cookie */
     private options;
     /**
@@ -1575,14 +1585,16 @@ export declare class Cookie<T> {
      * Обновляет данные cookie.
      * @param value value or function to change data/ значение или функция для изменения данных
      * @param options additional parameters/ дополнительные параметры
+     * @returns void
      */
-    set(value?: T | string | (() => (T | string)), options?: CookieOptions): this;
+    set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
     /**
      * Delete cookie data.
      *
      * Удаление данных из cookie.
+     * @returns void
      */
-    remove(): this;
+    remove(): void;
     /**
      * Update cookie data.
      *
@@ -1608,6 +1620,7 @@ export declare class CookieBlock {
      * Obtaining status.
      *
      * Получение статуса.
+     * @returns boolean current block status/ текущий статус блокировки
      */
     static get(): boolean;
     /**
@@ -1615,6 +1628,7 @@ export declare class CookieBlock {
      *
      * Изменение статуса.
      * @param value value to be changed/ значение, на которое будет изменен
+     * @returns void
      */
     static set(value: boolean): void;
 }
@@ -1630,6 +1644,7 @@ export declare class CookieBlockInstance {
      * Obtaining status.
      *
      * Получение статуса.
+     * @returns boolean current block status/ текущий статус блокировки
      */
     get(): boolean;
     /**
@@ -1637,8 +1652,9 @@ export declare class CookieBlockInstance {
      *
      * Изменение статуса.
      * @param value value to be changed/ значение, на которое будет изменен
+     * @returns void
      */
-    set(value: boolean): this;
+    set(value: boolean): void;
 }
 
 /**
@@ -1650,7 +1666,7 @@ export declare type CookieOptions = {
     /** SameSite attribute / Атрибут SameSite */
     sameSite?: CookieSameSite_2;
     /** Additional arguments / Дополнительные аргументы */
-    arguments?: string[];
+    arguments?: string[] | Record<string, string | number | boolean>;
 };
 
 /**
@@ -1667,8 +1683,6 @@ export { CookieSameSite_2 as CookieSameSite }
  * Полезен для консистентной работы с cookie в различных окружениях (DOM, SSR).
  */
 export declare class CookieStorage {
-    /** Memory storage for cookies / Хранилище cookie в памяти */
-    protected static items?: Record<string, any>;
     /** Storage mechanism for getting data / механизм хранения для получения данных */
     protected static getListener?: (key: string) => any | undefined;
     /** Storage mechanism for setting data / механизм хранения для сохранения данных */
@@ -1692,6 +1706,8 @@ export declare class CookieStorage {
      *
      * Получение данных из хранилища.
      * @param name cookie name / имя cookie
+     * @param defaultValue default value / значение по умолчанию
+     * @returns T | undefined cookie value or default/ значение cookie или значение по умолчанию
      */
     static get<T>(name: string, defaultValue?: T | (() => T)): T | undefined;
     /**
@@ -1700,8 +1716,8 @@ export declare class CookieStorage {
      * Сохранение данных в хранилище.
      * @param name cookie name / имя cookie
      * @param value data to be stored / данные для хранения
-     * @param age cache age / возраст кэша
      * @param options additional parameters / дополнительные параметры
+     * @returns T stored value/ сохраненное значение
      */
     static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
     /**
@@ -1709,6 +1725,7 @@ export declare class CookieStorage {
      *
      * Удаление данных из хранилища.
      * @param name cookie name / имя cookie
+     * @returns void
      */
     static remove(name: string): void;
     /**
@@ -1730,6 +1747,28 @@ export declare class CookieStorage {
      * Инициализирует хранилище, если оно не инициализировано.
      */
     protected static initItems(): Record<string, any>;
+    /**
+     * Converts the value to a string for the max-age attribute.
+     *
+     * Преобразует значение в строку для атрибута max-age.
+     * @param stringValue cookie value / значение cookie
+     * @param age cache age / возраст кэша
+     */
+    protected static toMaxAge(stringValue: string, age?: CookieOptions['age']): string;
+    /**
+     * Converts the value to a string for the SameSite attribute.
+     *
+     * Преобразует значение в строку для атрибута SameSite.
+     * @param sameSite SameSite attribute / атрибут SameSite
+     */
+    protected static toSameSite(sameSite?: CookieOptions['sameSite']): string;
+    /**
+     * Converts additional arguments to an array of strings.
+     *
+     * Преобразует дополнительные аргументы в массив строк.
+     * @param args additional arguments / дополнительные аргументы
+     */
+    protected static toArguments(args?: CookieOptions['arguments']): string[];
 }
 
 /**
@@ -1791,6 +1830,7 @@ export declare class DataStorage<T> {
      *
      * Изменение префикса в названиях ключей. Вызывать нужно в начале кода.
      * @param newPrefix new prefix/ новый префикс
+     * @returns void
      */
     static setPrefix(newPrefix: string): void;
     /**
@@ -1912,30 +1952,35 @@ export declare class Datetime {
      * Returns an object for working with formatting.
      *
      * Возвращает объект для работы с форматированием.
+     * @returns GeoIntl formatting object/ объект форматирования
      */
     getIntl(): GeoIntl;
     /**
      * Returns a Date object.
      *
      * Возвращает объект Date.
+     * @returns Date date object/ объект даты
      */
     getDate(): Date;
     /**
      * Returns the type of data output.
      *
      * Возвращает тип вывода данных.
+     * @returns string output type/ тип вывода
      */
     getType(): string;
     /**
      * Returns the format of hours.
      *
      * Возвращает формат часов.
+     * @returns GeoHours hour format/ формат часов
      */
     getHoursType(): GeoHours;
     /**
-     * Whether to use 12-hour time.
+     * Whether to use 24-hour time format.
      *
-     * Использовать ли 12-часовой формат времени.
+     * Использовать ли 24-часовой формат времени.
+     * @returns boolean 24-hour format flag/ флаг 24-часового формата
      */
     getHour24(): boolean;
     /**
@@ -1945,6 +1990,7 @@ export declare class Datetime {
      *
      * Метод возвращает смещение часового пояса относительно часового пояса UTC
      * в минутах для текущей локали.
+     * @returns number time zone offset in minutes/ смещение часового пояса в минутах
      */
     getTimeZoneOffset(): number;
     /**
@@ -1952,56 +1998,65 @@ export declare class Datetime {
      *
      * Возвращает временную зону в виде строки.
      * @param style the style of the returned data/ стиль возвращаемых данных
+     * @returns string time zone string/ строка временной зоны
      */
     getTimeZone(style?: GeoTimeZoneStyle): string;
     /**
      * Returns the code of the first day of the week.
      *
      * Возвращает код первого дня недели.
+     * @returns GeoFirstDay first day code/ код первого дня недели
      */
     getFirstDayCode(): GeoFirstDay;
     /**
      * The method returns the year of the specified date according to local time.
      *
      * Метод возвращает год указанной даты по местному времени.
+     * @returns number year/ год
      */
     getYear(): number;
     /**
      * The method returns the month in the specified date according to local time,
-     * as a zero-based value.
+     * as a one-based value (1-12).
      *
      * Метод возвращает месяц указанной даты по местному времени, нумерация
-     * месяцев начинается с нуля для первого месяца в году.
+     * месяцев начинается с единицы (1-12).
+     * @returns number month (1-12)/ месяц (1-12)
      */
     getMonth(): number;
     /**
      * The method returns the day of the month for the specified date according to local time.
      *
      * Метод возвращает день месяца указанной даты по местному времени
+     * @returns number day of month (1-31)/ день месяца (1-31)
      */
     getDay(): number;
     /**
      * The method returns the hour for the specified date, according to local time.
      *
      * Метод возвращает часы указанной даты по местному времени.
+     * @returns number hours (0-23)/ часы (0-23)
      */
     getHour(): number;
     /**
      * The method returns the minutes in the specified date according to local time.
      *
      * Метод возвращает минуты указанной даты по местному времени.
+     * @returns number minutes (0-59)/ минуты (0-59)
      */
     getMinute(): number;
     /**
      * The method returns the seconds in the specified date according to local time.
      *
      * Метод возвращает секунды указанной даты по местному времени.
+     * @returns number seconds (0-59)/ секунды (0-59)
      */
     getSecond(): number;
     /**
-     * Returns the last day of the week.
+     * Returns the last day of the month as a number.
      *
-     * Возвращает последний день недели.
+     * Возвращает последний день месяца в виде числа.
+     * @returns number last day of month (28-31)/ последний день месяца (28-31)
      */
     getMaxDay(): number;
     /**
@@ -2010,13 +2065,15 @@ export declare class Datetime {
      * Конструктором объектов, включающих языка-зависимое форматирование даты и времени.
      * @param type type of date format for output/ тип формата даты вывода
      * @param styleOptions the representation of the month/ представление месяца
+     * @returns string formatted date string/ отформатированная строка даты
      */
     locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): string;
     /**
      * Returns the formatted year.
      *
      * Возвращает отформатированный год.
-     * @param style the representation of the month/ представление месяца
+     * @param style the representation of the year/ представление года
+     * @returns string formatted year/ отформатированный год
      */
     localeYear(style?: Intl.DateTimeFormatOptions['year']): string;
     /**
@@ -2024,34 +2081,39 @@ export declare class Datetime {
      *
      * Возвращает отформатированный месяц.
      * @param style the representation of the month/ представление месяца
+     * @returns string formatted month/ отформатированный месяц
      */
     localeMonth(style?: Intl.DateTimeFormatOptions['month']): string;
     /**
      * Returns the formatted day.
      *
      * Возвращает отформатированный день.
-     * @param style the representation of the month/ представление месяца
+     * @param style the representation of the day/ представление дня
+     * @returns string formatted day/ отформатированный день
      */
     localeDay(style?: Intl.DateTimeFormatOptions['day']): string;
     /**
      * Returns the formatted hour.
      *
      * Возвращает отформатированный час.
-     * @param style the representation of the month/ представление месяца
+     * @param style the representation of the hour/ представление часа
+     * @returns string formatted hour/ отформатированный час
      */
     localeHour(style?: Intl.DateTimeFormatOptions['hour']): string;
     /**
      * Returns the formatted minute.
      *
      * Возвращает отформатированную минуту.
-     * @param style the representation of the month/ представление месяца
+     * @param style the representation of the minute/ представление минуты
+     * @returns string formatted minute/ отформатированная минута
      */
     localeMinute(style?: Intl.DateTimeFormatOptions['minute']): string;
     /**
      * Returns the formatted second.
      *
      * Возвращает отформатированную секунду.
-     * @param style the representation of the month/ представление месяца
+     * @param style the representation of the second/ представление секунды
+     * @returns string formatted second/ отформатированная секунда
      */
     localeSecond(style?: Intl.DateTimeFormatOptions['second']): string;
     /**
@@ -2059,6 +2121,7 @@ export declare class Datetime {
      *
      * Вывод стандартных данных.
      * @param timeZone add time zone/ добавить временную зону
+     * @returns string standard format string/ строка в стандартном формате
      */
     standard(timeZone?: boolean): string;
     /**
@@ -2077,11 +2140,11 @@ export declare class Datetime {
      */
     setType(value: GeoDate): this;
     /**
-     * Whether to use 12-hour time.
+     * Whether to use a 24-hour time format.
      *
-     * Использовать ли 12-часовой формат времени.
-     * @param value If true, output the 12-hour time format/
-     * если true, выводить 12-часовой формат времени
+     * Использовать ли 24-часовой формат времени.
+     * @param value If true, output the 24-hour time format/
+     * если true, выводить 24-часовой формат времени
      */
     setHour24(value: boolean): this;
     /**
@@ -2183,15 +2246,15 @@ export declare class Datetime {
      */
     moveBySecond(value: number): this;
     /**
-     * Translate to the first month.
+     * Sets the date to January (first month).
      *
-     * Переводить на первый месяц.
+     * Устанавливает дату на январь (первый месяц).
      */
     moveMonthFirst(): this;
     /**
-     * Translate to the first month.
+     * Sets the date to December (last month).
      *
-     * Переводить на первый месяц.
+     * Устанавливает дату на декабрь (последний месяц).
      */
     moveMonthLast(): this;
     /**
@@ -2270,96 +2333,112 @@ export declare class Datetime {
      * Clone the Date object.
      *
      * Клонировать объект Date.
+     * @returns Date cloned Date object/ клонированный объект Date
      */
     clone(): Date;
     /**
      * Clone the GeoDate object.
      *
      * Клонировать объект GeoDate.
+     * @returns Datetime cloned Datetime object/ клонированный объект Datetime
      */
     cloneClass(): Datetime;
     /**
-     * Clone the GeoDate object and set the month to January.
+     * Clone the Datetime object and set the month to January.
      *
-     * Клонировать объект GeoDate и установить месяц на январь.
+     * Клонировать объект Datetime и установить месяц на январь.
+     * @returns Datetime cloned Datetime with January month/ клонированный Datetime с январем
      */
     cloneMonthFirst(): Datetime;
     /**
      * Clone the GeoDate object and move the month to the end of the year.
      *
      * Клонировать объект GeoDate и перевести месяц на конец года.
+     * @returns Datetime cloned Datetime with December month/ клонированный Datetime с декабрем
      */
     cloneMonthLast(): Datetime;
     /**
      * Clone the GeoDate object and transfer it one month ahead.
      *
      * Клонировать объект GeoDate и перевести на 1 месяц вперед.
+     * @returns Datetime cloned Datetime with next month/ клонированный Datetime со следующим месяцем
      */
     cloneMonthNext(): Datetime;
     /**
      * Clone the GeoDate object and transfer it one month back.
      *
      * Клонировать объект GeoDate и перевести на 1 месяц назад.
+     * @returns Datetime cloned Datetime with previous month/ клонированный Datetime с предыдущим месяцем
      */
     cloneMonthPrevious(): Datetime;
     /**
      * Returns the first day of the week according to the current date.
      *
      * Возвращает первый день недели по текущей дате.
+     * @returns Datetime cloned Datetime with first day of week/ клонированный Datetime с первым днем недели
      */
     cloneWeekdayFirst(): Datetime;
     /**
      * Returns the last day of the week according to the current date.
      *
      * Возвращает последний день недели по текущей дате.
+     * @returns Datetime cloned Datetime with last day of week/ клонированный Datetime с последним днем недели
      */
     cloneWeekdayLast(): Datetime;
     /**
      * Returns the first day of the week according to the current month.
      *
      * Возвращает первый день недели по текущему месяцу.
+     * @returns Datetime cloned Datetime with first day of week in month/ клонированный Datetime с первым днем недели в месяце
      */
     cloneWeekdayFirstByMonth(): Datetime;
     /**
      * Returns the last day of the week according to the current month.
      *
      * Возвращает последний день недели по текущему месяцу.
+     * @returns Datetime cloned Datetime with last day of week in month/ клонированный Datetime с последним днем недели в месяце
      */
     cloneWeekdayLastByMonth(): Datetime;
     /**
      * Returns the next week according to the current date.
      *
      * Возвращает следующую неделю по текущей дате.
+     * @returns Datetime cloned Datetime with next week/ клонированный Datetime со следующей неделей
      */
     cloneWeekdayNext(): Datetime;
     /**
      * Returns the previous week according to the current date.
      *
      * Возвращает предыдущую неделю по текущей дате.
+     * @returns Datetime cloned Datetime with previous week/ клонированный Datetime с предыдущей неделей
      */
     cloneWeekdayPrevious(): Datetime;
     /**
      * Clone the GeoDate object and move the day to the beginning of the month.
      *
      * Клонировать объект GeoDate и перевести день на начало месяца.
+     * @returns Datetime cloned Datetime with first day of month/ клонированный Datetime с первым днем месяца
      */
     cloneDayFirst(): Datetime;
     /**
      * Clone the GeoDate object and move the day to the end of the month.
      *
      * Клонировать объект GeoDate и перевести день на конец месяца.
+     * @returns Datetime cloned Datetime with last day of month/ клонированный Datetime с последним днем месяца
      */
     cloneDayLast(): Datetime;
     /**
      * Clone the GeoDate object and move by 1 day.
      *
      * Клонировать объект GeoDate и перевести на 1 день.
+     * @returns Datetime cloned Datetime with next day/ клонированный Datetime со следующим днем
      */
     cloneDayNext(): Datetime;
     /**
      * Clone the GeoDate object and go back by 1 day.
      *
      * Клонировать объект GeoDate и вернуться на 1 день.
+     * @returns Datetime cloned Datetime with previous day/ клонированный Datetime с предыдущим днем
      */
     cloneDayPrevious(): Datetime;
     /**
@@ -2367,12 +2446,14 @@ export declare class Datetime {
      *
      * Возвращает часовой формат временной зоны.
      * @param hour hour/ час
+     * @returns string formatted hour/ форматированный час
      */
     protected toTimeZoneHourFormat(hour: number): string;
     /**
      * Updating all values.
      *
      * Обновление всех значений.
+     * @returns this instance/ текущий экземпляр
      */
     protected update(): this;
 }
@@ -2423,6 +2504,15 @@ export declare type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'nul
 export declare function encodeAttribute(text: string): string;
 
 /**
+ * Encodes special characters in a string for safe use in HTML attributes.
+ *
+ * Кодирует специальные символы в строке для безопасного использования в HTML-атрибутах.
+ * @param text text to encode / текст для кодирования
+ * @returns encoded text / закодированный текст
+ */
+export declare function encodeLiteAttribute(text: string): string;
+
+/**
  * Ensures that an image does not exceed the maximum size by resizing it if needed.
  *
  * Гарантирует, что изображение не превышает максимальный размер, изменяя его размер при необходимости.
@@ -2454,6 +2544,7 @@ export declare class ErrorCenter {
      * Проверяет наличие причины с конкретным кодом.
      * @param code error code / код ошибки
      * @param group error group / группа ошибки
+     * @returns true if cause exists / true, если причина существует
      */
     static has(code: string, group?: string): boolean;
     /**
@@ -2462,6 +2553,7 @@ export declare class ErrorCenter {
      * Получает конкретную причину ошибки по коду и группе.
      * @param code error code / код ошибки
      * @param group error group / группа ошибки
+     * @returns error cause item or undefined / элемент причины ошибки или undefined
      */
     static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
     /**
@@ -2548,6 +2640,7 @@ export declare class ErrorCenterHandler {
      *
      * Проверяет наличие обработчиков для группы.
      * @param group error group / группа ошибки
+     * @returns true if handlers exist / true, если обработчики существуют
      */
     has(group: ErrorCenterGroup): boolean;
     /**
@@ -2555,6 +2648,7 @@ export declare class ErrorCenterHandler {
      *
      * Получает обработчики для группы.
      * @param group error group / группа ошибки
+     * @returns handler item or undefined / элемент обработчика или undefined
      */
     get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
     /**
@@ -2563,6 +2657,7 @@ export declare class ErrorCenterHandler {
      * Добавляет обработчик для определенной группы.
      * @param group error group / группа ошибки
      * @param handler callback function / функция обратного вызова
+     * @returns this
      */
     add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
     /**
@@ -2570,6 +2665,7 @@ export declare class ErrorCenterHandler {
      *
      * Добавляет список обработчиков по группам.
      * @param handlers handlers list / список обработчиков
+     * @returns this
      */
     addList(handlers: ErrorCenterHandlerList): this;
     /**
@@ -2577,6 +2673,7 @@ export declare class ErrorCenterHandler {
      *
      * Вызывает обработчики для группы и выводит ошибку в консоль.
      * @param cause error cause details / детали причины ошибки
+     * @returns this
      */
     on(cause: ErrorCenterCauseItem): this;
     /**
@@ -2584,6 +2681,7 @@ export declare class ErrorCenterHandler {
      *
      * Выводит причину ошибки в консоль.
      * @param cause error details / детали ошибки
+     * @returns this
      */
     protected toConsole(cause: ErrorCenterCauseItem): this;
 }
@@ -2629,6 +2727,7 @@ export declare class ErrorCenterInstance {
      * Проверяет наличие причины с конкретным кодом.
      * @param code error code / код ошибки
      * @param group error group / группа ошибки
+     * @returns true if cause exists / true, если причина существует
      */
     has(code: string, group?: string): boolean;
     /**
@@ -2637,6 +2736,7 @@ export declare class ErrorCenterInstance {
      * Получает конкретную причину ошибки по коду и группе.
      * @param code error code / код ошибки
      * @param group error group / группа ошибки
+     * @returns error cause item or undefined / элемент причины ошибки или undefined
      */
     get(code: string, group?: string): ErrorCenterCauseItem | undefined;
     /**
@@ -2644,6 +2744,7 @@ export declare class ErrorCenterInstance {
      *
      * Добавляет причину ошибки в хранилище.
      * @param cause error cause item / элемент причины ошибки
+     * @returns this
      */
     add(cause: ErrorCenterCauseItem): this;
     /**
@@ -2651,6 +2752,7 @@ export declare class ErrorCenterInstance {
      *
      * Добавляет список причин ошибок в хранилище.
      * @param causes error causes list / список причин ошибок
+     * @returns this
      */
     addList(causes: ErrorCenterCauseList): this;
     /**
@@ -2659,6 +2761,7 @@ export declare class ErrorCenterInstance {
      * Регистрирует новый обработчик.
      * @param group target group / целевая группа
      * @param handler handler callback / обратный вызов обработчика
+     * @returns this
      */
     addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
     /**
@@ -2666,6 +2769,7 @@ export declare class ErrorCenterInstance {
      *
      * Регистрирует список обработчиков.
      * @param handlers handlers list / список обработчиков
+     * @returns this
      */
     addHandlerList(handlers: ErrorCenterHandlerList): this;
     /**
@@ -2673,6 +2777,7 @@ export declare class ErrorCenterInstance {
      *
      * Вызывает обработку ошибки для группы.
      * @param cause error cause details / детали причины ошибки
+     * @returns this
      */
     on(cause: ErrorCenterCauseItem): this;
     /**
@@ -2841,49 +2946,62 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      * Checks whether event listening is currently enabled.
      *
      * Проверяет, включено ли сейчас прослушивание события.
+     * @returns true if active / true, если активно
      */
     isActive(): boolean;
+    /**
+     * Returns the target element.
+     *
+     * Возвращает целевой элемент.
+     * @returns target element / целевой элемент
+     */
     getElement(): E | undefined;
     /**
      * Change of an element for tracking.
      *
      * Изменение элемента для прослеживания.
-     * @param elementSelector element/ элемент
+     * @param elementSelector target element or selector / целевой элемент или селектор
+     * @returns this
      */
     setElement(elementSelector?: ElementOrString<E>): this;
     /**
-     * Modifies the object that receives the notification.
+     * Modifies the control element for DOM safety checks.
      *
-     * Модифицирует объект, который получает уведомление.
-     * @param elementSelector element/ элемент
+     * Модифицирует контрольный элемент для проверки безопасности DOM.
+     * @param elementSelector control element or selector / контрольный элемент или селектор
+     * @returns this
      */
     setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
     /**
      * Changes the type of the handled event.
      *
      * Изменяет тип обрабатываемого события.
-     * @param type type/ тип
+     * @param type event type or array of types / тип события или массив типов
+     * @returns this
      */
     setType(type: string | string[]): this;
     /**
-     * Modifies the object that receives the notification.
+     * Modifies the listener function.
      *
-     * Модифицирует объект, который получает уведомление.
-     * @param listener
+     * Модифицирует функцию-слушатель.
+     * @param listener new listener function / новая функция-слушатель
+     * @returns this
      */
     setListener(listener: EventListenerDetail<O, D>): this;
     /**
-     * Modifying the options object that defines the characteristics of an object.
+     * Modifying the options object that defines the characteristics of the event listener.
      *
-     * Изменение объекта options, который определяет характеристики объекта.
-     * @param options
+     * Изменение объекта options, который определяет характеристики слушателя событий.
+     * @param options event listener options / опции слушателя событий
+     * @returns this
      */
     setOptions(options?: EventOptions): this;
     /**
-     * Modifying a dependent value for the dispatch method.
+     * Modifying the additional data provided to the listener.
      *
-     * Изменение зависимого значения для метода dispatch.
-     * @param detail
+     * Изменение дополнительных данных, передаваемых слушателю.
+     * @param detail custom data / пользовательские данные
+     * @returns this
      */
     setDetail(detail?: D): this;
     /**
@@ -2893,18 +3011,21 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      * Инициирует события на целевом элементе, опционально с новым значением detail.
      * Этот метод вручную запускает диспетчеризацию `CustomEvent` для всех указанных типов.
      * @param detail the value to be passed as the event detail / значение, которое будет передано как detail события
+     * @returns this
      */
     dispatch(detail?: D | undefined): this;
     /**
-     * Starting event listening.
+     * Starts event listening.
      *
      * Запуск прослушивания события.
+     * @returns this
      */
     start(): this;
     /**
-     * Stopping event listening.
+     * Stops event listening.
      *
      * Остановка прослушивания события.
+     * @returns this
      */
     stop(): this;
     /**
@@ -2915,9 +3036,10 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
      */
     toggle(activity: boolean): this;
     /**
-     * Overloads the listening events.
+     * Overloads the listening events (stops and starts again if active).
      *
-     * Перегружает события прослушивания.
+     * Перегружает события прослушивания (останавливает и запускает заново, если активно).
+     * @returns this
      */
     reset(): this;
     /**
@@ -2965,7 +3087,7 @@ export declare function eventStopPropagation(event: Event): void;
  * Поддерживает передачу произвольных аргументов в функцию обратного вызова.
  * @param callback function or any value / функция или любое значение
  * @param args arguments of the function / аргументы функции
- * @returns result of the execution or the value itself / результат выполения или само значение
+ * @returns result of the execution or the value itself / результат выполнения или само значение
  */
 export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
 
@@ -3011,23 +3133,22 @@ export declare class Formatters<Options extends FormattersOptionsList = Formatte
      * Constructor
      *
      * Конструктор
-     * @param options formatting options for each column/ property/
-     * параметры форматирования для каждого столбца/свойства
-     * @param list initial list of data to format/ начальный список данных для форматирования
+     * @param options formatting options for each column/property / параметры форматирования для каждого столбца/свойства
+     * @param list initial list of data to format / начальный список данных для форматирования
      */
     constructor(options: Options, list?: List | undefined);
     /**
      * Checks if the list is set.
      *
      * Проверяет, установлен ли список.
-     * @returns true if the list is set, false otherwise/ true, если список установлен, иначе false
+     * @returns true if the list is set / true, если список установлен
      */
     is(): boolean;
     /**
      * Checks if the list is an array.
      *
      * Проверяет, является ли список массивом.
-     * @returns true if the list is an array, false otherwise/ true, если список является массивом, иначе false
+     * @returns true if the list is an array / true, если список является массивом
      */
     isArray(): this is this & {
         list: FormattersList<Item>;
@@ -3036,29 +3157,29 @@ export declare class Formatters<Options extends FormattersOptionsList = Formatte
      * Returns the count of records in the list.
      *
      * Возвращает количество записей в списке.
-     * @returns count of records/ количество записей
+     * @returns count of records / количество записей
      */
     length(): number;
     /**
-     * Returns the current list of data.
+     * Returns the current list of data as an array.
      *
-     * Возвращает текущий список данных.
-     * @returns the list of data or undefined if not set/ список данных или undefined, если не задан
+     * Возвращает текущий список данных в виде массива.
+     * @returns the list of data / список данных
      */
     getList(): FormattersList<Item>;
     /**
      * Returns the current formatting options.
      *
      * Возвращает текущие параметры форматирования.
-     * @returns formatting options/ параметры форматирования
+     * @returns formatting options / параметры форматирования
      */
     getOptions(): Options;
     /**
      * Sets the list of data to be formatted.
      *
      * Устанавливает список данных для форматирования.
-     * @param list list of data/ список данных
-     * @returns the Formatters instance for chaining/ экземпляр Formatters для цепочки вызовов
+     * @param list list of data / список данных
+     * @returns this
      */
     setList(list?: List): this;
     /**
@@ -3067,8 +3188,7 @@ export declare class Formatters<Options extends FormattersOptionsList = Formatte
      *
      * Форматирует весь список или один элемент на основе предоставленных параметров.
      * Добавляет отформатированные значения с суффиксом 'Format' к каждому элементу.
-     * @returns formatted data (list or single item) with additional formatted columns /
-     * отформатированные данные (список или один элемент) с дополнительными отформатированными столбцами
+     * @returns formatted data (list or single item) / отформатированные данные (список или один элемент)
      */
     to(): FormattersReturn<List, Options>;
     /**
@@ -3409,6 +3529,7 @@ export declare enum FormattersType {
  * @param callback the function to call when it's time to update your animation / функция, которая будет вызвана, когда придёт время обновить вашу анимацию
  * @param next function that determines repetition / функция, которая определяет повторность
  * @param end function that is executed if the animation stops / функция, которая выполняется, если останавливается анимация
+ * @returns animation ID or undefined / ID анимации или undefined
  */
 export declare function frame(callback: () => void, next?: () => boolean, end?: () => void): void;
 
@@ -3595,64 +3716,83 @@ export declare type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'yea
 export declare type GeoFirstDay = 1 | 6 | 0;
 
 /**
- * Class for working with Flags.
+ * Class for working with flags and geographic information.
+ * Provides methods for retrieving country names, languages, and flag icons.
  *
- * Класс для работы с Флагами.
+ * Класс для работы с флагами и географической информацией.
+ * Предоставляет методы для получения названий стран, языков и иконок флагов.
  */
 export declare class GeoFlag {
     protected code: string;
+    /**
+     * Mapping of country codes to flag icon names/
+     * Словарь соответствия кодов стран названиям иконок флагов
+     */
     static flags: Record<string, string>;
     /**
      * Constructor
-     * @param code country and language code/ код страны и языка
+     *
+     * Конструктор
+     * @param code country and language code / код страны и языка
      */
     constructor(code?: string);
     /**
      * Returns information about the country and its flag.
      *
      * Возвращает информацию о стране и её флаге.
-     * @param code country code/ код страны
+     * @param code country code / код страны
+     * @returns country information / информация о стране
      */
     get(code?: string): GeoFlagItem | undefined;
     /**
-     * Getting a link to the flag.
+     * Returns the identifier of the flag icon.
      *
-     * Получение ссылки на флаг.
-     * @param code country code/ код страны
+     * Возвращает идентификатор иконки флага.
+     * @param code country code / код страны
+     * @returns flag icon identifier / идентификатор иконки флага
      */
     getFlag(code?: string): string | undefined;
     /**
-     * Getting a list of countries by an array of codes.
+     * Returns a list of countries based on the provided codes.
+     * If no codes are provided, returns all available countries.
      *
-     * Получение списка стран по массиву с кодами.
-     * @param codes country code/ код страны
+     * Возвращает список стран на основе предоставленных кодов.
+     * Если коды не переданы, возвращает все доступные страны.
+     * @param codes array of country codes / массив кодов стран
+     * @returns list of countries / список стран
      */
     getList(codes?: string[]): GeoFlagItem[];
     /**
-     * Getting a list of countries by an array of codes in national language.
+     * Returns a list of countries in their national languages.
      *
-     * Получение списка стран по массиву с кодами на национальный язык.
-     * @param codes country code/ код страны.
+     * Возвращает список стран на их национальных языках.
+     * @param codes array of country codes / массив кодов стран
+     * @returns list of countries with national names / список стран с национальными названиями
      */
     getNational(codes?: string[]): GeoFlagNational[];
     /**
-     * To change the location.
+     * Changes the current locale/location.
      *
-     * Изменить местоположение.
-     * @param code country and language code/ код страны и языка
+     * Изменяет текущую локаль/местоположение.
+     * @param code country and language code / код страны и языка
+     * @returns this
      */
     setCode(code: string): this;
     /**
-     * Returns a special object for formatting.
+     * Returns a special object for formatting and translations.
      *
-     * Возвращает специальный объект для работы с форматированием.
+     * Возвращает специальный объект для работы с форматированием и переводами.
+     * @protected
+     * @returns GeoIntl instance / экземпляр GeoIntl
      */
     protected getLocation(): GeoIntl;
     /**
-     * Returns a list of countries to retrieve data from.
+     * Returns a list of country codes to retrieve data from.
      *
-     * Возвращает список стран для получения данных.
-     * @param codes country code/ код страны
+     * Возвращает список кодов стран для получения данных.
+     * @param codes optional array of codes / опциональный массив кодов
+     * @protected
+     * @returns array of codes / массив кодов
      */
     protected getCodes(codes?: string[]): string[];
     /**
@@ -4378,6 +4518,7 @@ export declare type GeoTimeZoneStyle = 'minute' | 'hour' | 'ISO8601' | 'RFC';
  * Разделяет строку на массив объектов для выделения совпадений.
  * @param value initial string / исходная строка
  * @param search search string / строка поиска
+ * @returns array of objects with text and match flag / массив объектов с текстом и флагом совпадения
  */
 export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];
 
@@ -4469,6 +4610,7 @@ export declare function getElementId<E extends ElementOrWindow>(element?: Elemen
  *
  * Получить элемент изображения из HTMLImageElement или строкового источника.
  * @param image image element or string source/ элемент изображения или строковый источник
+ * @returns HTMLImageElement or undefined / HTMLImageElement или undefined
  */
 export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
 
@@ -4480,6 +4622,7 @@ export declare function getElementImage(image: HTMLImageElement | string): HTMLI
  * @param index index at which we retrieve values/ индекс, по которому получаем значения
  * @param defaultValue returns this parameter if the value is missing/ возвращает этот параметр,
  * если значение отсутствует
+ * @returns element value or default value / значение элемента или значение по умолчанию
  */
 export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
 
@@ -4497,6 +4640,7 @@ export declare function getElementOrWindow<E extends ElementOrWindow>(element?: 
  * Генерирует безопасный тег скрипта для гидратации данных.
  * @param id script tag ID / ID тега скрипта
  * @param data data to be stored / данные для хранения
+ * @returns generated script tag string / сгенерированная строка тега скрипта
  */
 export declare function getElementSafeScript(id: string, data: any): string;
 
@@ -4505,6 +4649,7 @@ export declare function getElementSafeScript(id: string, data: any): string;
  *
  * Создает регистронезависимое регулярное выражение для точного совпадения фразы (без якорей).
  * @param search search string / строка поиска
+ * @returns regular expression for exact search / регулярное выражение для точного поиска
  */
 export declare function getExactSearchExp(search: string): RegExp;
 
@@ -4519,6 +4664,7 @@ export declare function getExactSearchExp(search: string): RegExp;
  * m - сопоставление по нескольким строкам.
  * @param pattern Regular expression text in which the value :value will be replaced with the optimized value of value/
  * Текст регулярного выражения, в котором значение :value заменится на оптимизированное значение value
+ * @returns regular expression / регулярное выражение
  */
 export declare function getExp(value: string, flags?: string, pattern?: string): RegExp;
 
@@ -4529,6 +4675,7 @@ export declare function getExp(value: string, flags?: string, pattern?: string):
  * @param id script tag ID / ID тега скрипта
  * @param defaultValue default value if not found or invalid / значение по умолчанию, если не найдено или невалидно
  * @param remove remove script after reading / удалить скрипт после чтения
+ * @returns parsed data or default value / распарсенные данные или значение по умолчанию
  */
 export declare function getHydrationData<T>(id: string, defaultValue: T, remove?: boolean): T;
 
@@ -4538,6 +4685,7 @@ export declare function getHydrationData<T>(id: string, defaultValue: T, remove?
  * Возвращает данные по их пути.
  * @param item object for work/ объект для работы
  * @param path data path/ путь к данным
+ * @returns data by path or undefined / данные по пути или undefined
  */
 export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
 
@@ -4546,6 +4694,7 @@ export declare function getItemByPath<T extends Record<string, any>, R = string>
  *
  * Возвращает нажатую клавишу.
  * @param event event object/ объект события
+ * @returns pressed key / нажатая клавиша
  */
 export declare function getKey(event: KeyboardEvent): string;
 
@@ -4562,6 +4711,7 @@ export declare function getLengthOfAllArray(value: ObjectOrArray<string>): numbe
  *
  * Ищет самую длинную строку в массиве и возвращает её длину.
  * @param data array with data/ массив с данными
+ * @returns length of the longest string/ длина самой длинной строки
  */
 export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;
 
@@ -4578,6 +4728,7 @@ export declare function getMinLengthAllArray(data: ObjectOrArray<string>): numbe
  *
  * Возвращает позицию курсора мыши или место нажатия.
  * @param event event object/ объект события
+ * @returns coordinates of the mouse cursor / координаты курсора мыши
  */
 export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;
 
@@ -4586,6 +4737,7 @@ export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoo
  *
  * Возвращает позицию курсора мыши или место нажатия (X).
  * @param event event object/ объект события
+ * @returns X coordinate / координата X
  */
 export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
 
@@ -4594,6 +4746,7 @@ export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
  *
  * Возвращает позицию курсора мыши или место нажатия (Y).
  * @param event event object/ объект события
+ * @returns Y coordinate / координата Y
  */
 export declare function getMouseClientY(event: MouseEvent & TouchEvent): number;
 
@@ -4612,6 +4765,7 @@ export declare function getObjectByKeys<T extends Record<string, any>, K extends
  * Удаляет из объекта все свойства, принадлежащие к типу исключения.
  * @param data object for processing/ объект для обработки
  * @param exception exception value/ значение для исключения
+ * @returns object without exception values/ объект без исключенных значений
  */
 export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
 
@@ -4620,6 +4774,7 @@ export declare function getObjectNoUndefined<T extends Record<string | number, a
  *
  * Возвращает объект, если заданы значения объекта.
  * @param value let’s assume that this is an object/ предположим, что это объект
+ * @returns object or empty object/ объект или пустой объект
  */
 export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
 
@@ -4628,6 +4783,7 @@ export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
  *
  * Возвращает из строки только буквы, цифры и пробелы.
  * @param text text for processing / текст для обработки
+ * @returns cleaned text without special characters / очищенный текст без специальных символов
  */
 export declare function getOnlyText(text: any): string;
 
@@ -4640,6 +4796,7 @@ export declare function getOnlyText(text: any): string;
  * @param symbol symbol for replacing a letter/ символ для замены буквы
  * @param lengthMin minimum word length/ минимальная длина слова
  * @param lengthMax maximum word length/ максимальная длина слова
+ * @returns generated text/ сгенерированный текст
  */
 export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
 
@@ -4650,6 +4807,8 @@ export declare function getRandomText(min: number, max: number, symbol?: string,
  * @param request data for conversion/ данные для преобразования
  * @param sign delimiter sign of key and value/ знак разделения ключа и значения
  * @param separator variable delimiter sign/ знак разделения переменных
+ * @param subKey nested key for array elements/ вложенный ключ для элементов массива
+ * @returns formatted request string/ форматированная строка запроса
  */
 export declare function getRequestString(request: Record<string, any> | any[], sign?: string, separator?: string, subKey?: string): string;
 
@@ -4682,6 +4841,7 @@ export declare function getSeparatingSearchExp(search: string | RegExp, limit?: 
  * Возвращает единицу измерения для 1 шага
  * @param min minimum value/ минимальное значение
  * @param max maximum value/ максимальное значение
+ * @returns step value in percent/ значение шага в процентах
  */
 export declare function getStepPercent(min: number | undefined, max: number): number;
 
@@ -4691,6 +4851,7 @@ export declare function getStepPercent(min: number | undefined, max: number): nu
  * Возвращает единицу измерения одного шага относительно заданного значения
  * @param min minimum value/ минимальное значение
  * @param max maximum value/ максимальное значение
+ * @returns step value / значение шага
  */
 export declare function getStepValue(min: number | undefined, max: number): number;
 
@@ -4700,6 +4861,12 @@ export declare function getStepValue(min: number | undefined, max: number): numb
  * Статический служебный класс для хранения и получения глобальных данных приложения.
  */
 export declare class Global {
+    /**
+     * Returns the instance of the class.
+     *
+     * Возвращает инстанс класса.
+     */
+    static getItem(): Record<string, any>;
     /**
      * Returns the value by its name.
      *
@@ -4734,6 +4901,7 @@ export declare function goScroll(selector: string, elementTo: HTMLElement | unde
  * @param element target element / целевой элемент
  * @param options scroll options / параметры прокрутки
  * @param shift shift from the top / смещение сверху
+ * @returns void / ничего не возвращает
  */
 export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
 
@@ -4744,6 +4912,7 @@ export declare function goScrollSmooth<E extends HTMLElement>(element: E, option
  * @param element container element/ элемент контейнера
  * @param elementTo target element/ целевой элемент
  * @param behavior scroll behavior/ режим прокрутки
+ * @returns void / ничего не возвращает
  */
 export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
 
@@ -4759,44 +4928,51 @@ export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElemen
 export declare function handleShare(data: ShareData): Promise<boolean>;
 
 /**
- * Working with data stored in hash.
+ * Static class for working with data stored in the URL hash.
+ * Provides a centralized interface delegating to HashInstance.
  *
- * Работа с данными сохраненными в хеш.
+ * Статический класс для работы с данными, сохранёнными в хеше URL.
+ * Предоставляет централизованный интерфейс, делегируя вызовы HashInstance.
  */
 export declare class Hash {
-    private static hash;
-    private static watch;
-    private static block;
+    /**
+     * Returns a request-isolated instance of HashInstance.
+     *
+     * Возвращает изолированный в рамках запроса экземпляр HashInstance.
+     * @returns HashInstance instance / экземпляр HashInstance
+     */
+    static getItem(): HashInstance;
     /**
      * Get data from hash.
      *
      * Получение данных из хэша.
-     * @param name variable names/ названия переменных
-     * @param defaultValue value or function to change data/ значение или функция для изменения данных
+     * @param name variable name / название переменной
+     * @param defaultValue value or function to change data / значение или функция для изменения данных
+     * @returns stored value / сохранённое значение
      */
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
     /**
      * Change data in hash.
      *
      * Изменение данных в хэше.
-     * @param name variable names/ названия переменных
-     * @param callback value or function to change data/ значение или функция для изменения данных
+     * @param name variable name / название переменной
+     * @param callback value or function to change data / значение или функция для изменения данных
      */
     static set<T>(name: string, callback: T | (() => T)): void;
     /**
      * Adding an event when data is changed.
      *
      * Добавление события при изменении данных.
-     * @param name variable names/ названия переменных
-     * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+     * @param name variable name / название переменной
+     * @param callback the function is called when the data is changed / функция вызывается при изменении данных
      */
     static addWatch<T>(name: string, callback: (value: T) => void): void;
     /**
      * Removing an event when data is changed.
      *
      * Удаление события при изменении данных.
-     * @param name variable names/ названия переменных
-     * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+     * @param name variable name / название переменной
+     * @param callback the function is called when the data is changed / функция вызывается при изменении данных
      */
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
     /**
@@ -4805,25 +4981,97 @@ export declare class Hash {
      * Обновление переменной хэша из строки URL.
      */
     static reload(): void;
+}
+
+/**
+ * Class for working with data stored in the URL hash.
+ *
+ * Класс для работы с данными, сохранёнными в хеше URL.
+ */
+export declare class HashInstance {
+    private hash?;
+    private watch;
+    private block;
+    /**
+     * Get data from hash.
+     *
+     * Получение данных из хэша.
+     * @param name variable name / название переменной
+     * @param defaultValue value or function to change data / значение или функция для изменения данных
+     * @returns stored value / сохранённое значение
+     */
+    get<T>(name: string, defaultValue?: T | (() => T)): T;
+    /**
+     * Change data in hash.
+     *
+     * Изменение данных в хэше.
+     * @param name variable name / название переменной
+     * @param callback value or function to change data / значение или функция для изменения данных
+     * @returns this
+     */
+    set<T>(name: string, callback: T | (() => T)): this;
+    /**
+     * Adding an event when data is changed.
+     *
+     * Добавление события при изменении данных.
+     * @param name variable name / название переменной
+     * @param callback the function is called when the data is changed / функция вызывается при изменении данных
+     * @returns this
+     */
+    addWatch<T>(name: string, callback: (value: T) => void): this;
+    /**
+     * Removing an event when data is changed.
+     *
+     * Удаление события при изменении данных.
+     * @param name variable name / название переменной
+     * @param callback the function is called when the data is changed / функция вызывается при изменении данных
+     * @returns this
+     */
+    removeWatch<T>(name: string, callback: (value: T) => void): this;
+    /**
+     * Update hash variable from URL string.
+     *
+     * Обновление переменной хэша из строки URL.
+     * @returns this
+     */
+    reload(): this;
     /**
      * Obtaining data from the URL string.
      *
      * Получение данных из строки URL.
      */
-    private static getLocation;
+    private getLocation;
+    /**
+     * Returns the hash object, initializing if needed.
+     *
+     * Возвращает объект хэша, инициализируя при необходимости.
+     */
+    private getHash;
+    /**
+     * Initializes hash data and registers the hashchange listener.
+     *
+     * Инициализирует данные хэша и регистрирует слушатель hashchange.
+     */
+    private init;
+    /**
+     * Reads hash data from the URL and triggers watchers.
+     *
+     * Считывает данные хэша из URL и вызывает наблюдателей.
+     */
+    private initData;
     /**
      * Update hash string in URL.
      *
      * Обновление строки хэша в URL.
      */
-    private static update;
+    private update;
     /**
      * Calling all functions whose data has changed.
      *
      * Вызов всех функций, у которых были изменены данные.
-     * @param location fresh data/ свежий данные
+     * @param location fresh data / свежие данные
      */
-    private static makeWatch;
+    private makeWatch;
 }
 
 /** Highlight match item type / Тип элемента подсветки совпадения */
@@ -4954,6 +5202,7 @@ export declare type ImageCoordinator = {
  * Проверяет, есть ли значение в текущем массиве.
  * @param array array for checking/ массив для проверки
  * @param value value to be checked/ проверяемое значение
+ * @returns true if in array / true, если в массиве
  */
 export declare function inArray<T>(array: T[], value: T): boolean;
 
@@ -4978,6 +5227,7 @@ export declare function initGetElementId(newListener: () => string | number): vo
  * Initialization of data for scroll control.
  *
  * Инициализация данных для управления скроллом.
+ * @returns promise without return value / промис без возвращаемого значения
  */
 export declare function initScrollbarOffset(): Promise<void>;
 
@@ -4987,6 +5237,7 @@ export declare function initScrollbarOffset(): Promise<void>;
  * Вычислить пересечение массивов, сравнивая ключи.
  * @param data the array with master keys to check/ основной проверяемый массив
  * @param comparison arrays to compare keys against/ массивы, с которыми идёт сравнение
+ * @returns object with intersected keys/ объект с пересекающимися ключами
  */
 export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
 
@@ -4995,6 +5246,7 @@ export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof 
  *
  * Проверяет, является ли ответ API успешным.
  * @param data API response data/ данные ответа API
+ * @returns true if successful / true, если успешно
  */
 export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
 
@@ -5003,6 +5255,7 @@ export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
  *
  * Проверяет, являются ли значения массивами.
  * @param value input value/ входное значение
+ * @returns true if array / true, если массив
  */
 export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
 
@@ -5012,6 +5265,7 @@ export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
  * Проверяет, различаются ли значения двух объектов.
  * @param value current values/ текущие значения
  * @param old old values/ старые значения
+ * @returns true if different / true, если отличаются
  */
 export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
 
@@ -5019,6 +5273,7 @@ export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>)
  * Checks if the current environment is a data URL.
  *
  * Проверяет, является ли текущая среда URL-адресом данных.
+ * @returns true if in data URL / true, если в data URL
  */
 export declare function isDomData(): boolean;
 
@@ -5050,6 +5305,7 @@ export declare function isElementVisible<E extends ElementOrWindow>(elementSelec
  * Проверяет, является ли нажатая клавиша Enter или Space.
  * @param event event object/ объект события
  * @param isInputElement whether the element is an input element/ является ли элемент полем ввода
+ * @returns true if enter pressed / true, если нажат enter
  */
 export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
 
@@ -5059,6 +5315,7 @@ export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) =
  * Проверяет, заполнено ли поле.
  * @param value input value/ входное значение
  * @param zeroTrue if true, '0' is considered filled/ если true, то '0' считается заполненным
+ * @returns true if filled / true, если заполнено
  */
 export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;
 
@@ -5067,6 +5324,7 @@ export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Excl
  *
  * Проверяет, является ли значение числом или дробным числом.
  * @param value values for checking/ значения для проверки
+ * @returns true if number/ true, если число
  */
 export declare function isFloat(value: any): boolean;
 
@@ -5075,6 +5333,7 @@ export declare function isFloat(value: any): boolean;
  *
  * Проверяет, является ли функция обратного вызова.
  * @param callback the value being checked/ проверяемое значение
+ * @returns true if function / true, если функция
  */
 export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
 
@@ -5083,6 +5342,7 @@ export declare function isFunction<T>(callback: T): callback is Extract<T, Funct
  *
  * Проверяет, находится ли еще элемент в дереве DOM.
  * @param element selectors for matching or an Element/ селекторов для сопоставления или Element
+ * @returns true if in DOM / true, если в DOM
  */
 export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
 
@@ -5091,6 +5351,7 @@ export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrSt
  *
  * Проверяет, является ли элемент полем ввода или редактируемым.
  * @param element element to check/ проверяемый элемент
+ * @returns true if input element / true, если элемент ввода
  */
 export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
 
@@ -5100,6 +5361,7 @@ export declare const isInput: (element: HTMLElement | EventTarget | null) => boo
  * Проверяет, лежит ли значение между целыми числами.
  * @param value input value/ входное значение
  * @param between value for rounding/ значение для округления
+ * @returns true if between integers / true, если между целыми числами
  */
 export declare function isIntegerBetween(value: number, between: number): boolean;
 
@@ -5108,6 +5370,7 @@ export declare function isIntegerBetween(value: number, between: number): boolea
  *
  * Является ли переменная равной null или undefined.
  * @param value input value/ входное значение
+ * @returns true if null or undefined / true, если null или undefined
  */
 export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
 
@@ -5116,6 +5379,7 @@ export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
  *
  * Проверяет, является ли значение числом.
  * @param value values for checking/ значения для проверки
+ * @returns true if number / true, если число
  */
 export declare function isNumber(value: any): boolean;
 
@@ -5124,6 +5388,7 @@ export declare function isNumber(value: any): boolean;
  *
  * Проверяет, является ли значение объектом.
  * @param value input value/ входное значение
+ * @returns true if object/ true, если объект
  */
 export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;
 
@@ -5132,6 +5397,7 @@ export declare function isObject<T>(value: T): value is Extract<T, Record<any, a
  *
  * Проверяет, является ли значение объектом и не является массивом.
  * @param value input value/ входное значение
+ * @returns true if object and not array/ true, если объект и не массив
  */
 export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
 
@@ -5149,6 +5415,7 @@ export declare function isOnLine(): boolean;
  * Проверяет, есть ли value в массиве selected или равен ли value selected, если selected - строка.
  * @param value input value/ входное значение
  * @param selected array or string for comparison/ массив или строка для сравнения
+ * @returns true if selected / true, если выбрано
  */
 export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;
 
@@ -5158,6 +5425,7 @@ export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boole
  * Проверка свойства isSelected для всех значений списка.
  * @param values list of values for comparison/ список значений для сравнения
  * @param selected array or string for comparison/ массив или строка для сравнения
+ * @returns true if all selected / true, если все выбраны
  */
 export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
 
@@ -5174,6 +5442,7 @@ export declare function isShare(): boolean;
  *
  * Проверяет, является ли значение типом строки.
  * @param value input value/ входное значение
+ * @returns true if string / true, если строка
  */
 export declare function isString<T>(value: T): value is Extract<T, string>;
 
@@ -5230,8 +5499,6 @@ export declare type ItemValue<V> = {
  * Класс для работы с глобальной загрузкой.
  */
 export declare class Loading {
-    /** Instance of the loading class / Экземпляр класса загрузки */
-    protected static item: LoadingInstance;
     /**
      * Check if the loader is active now.
      *
@@ -5245,9 +5512,10 @@ export declare class Loading {
      */
     static get(): number;
     /**
-     * Get instance of the loading class.
+     * Returns a request-isolated instance of LoadingInstance.
      *
-     * Получить экземпляр класса загрузки.
+     * Возвращает изолированный в рамках запроса экземпляр LoadingInstance.
+     * @returns LoadingInstance instance / экземпляр LoadingInstance
      */
     static getItem(): LoadingInstance;
     /**
@@ -6170,6 +6438,8 @@ export declare enum MetaRobots {
  * @enum {string}
  */
 export declare enum MetaTag {
+    /** Page title/ Заголовок страницы */
+    title = "title",
     /** Page description/ Описание страницы */
     description = "description",
     /** Keywords/ Ключевые слова */
@@ -6485,6 +6755,7 @@ export declare type ObjectOrArray<T = any> = T[] | ObjectItem<T>;
  * Генерирует случайное число.
  * @param min the lowest value to return/ наименьшее значение
  * @param max the highest value to return/ наибольшее значение
+ * @returns random number/ случайное число
  */
 export declare function random(min: number, max: number): number;
 
@@ -6494,6 +6765,7 @@ export declare function random(min: number, max: number): number;
  * Убирает общий префикс из основной строки.
  * @param mainStr - The main string / Основная строка
  * @param prefix - The prefix string to remove / Строка префикса для удаления
+ * @returns string without prefix / строка без префикса
  */
 export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
 
@@ -6514,6 +6786,7 @@ export declare const replaceComponentName: (text: string | undefined, name: stri
  * @param array the array in which elements are replaced/ массив, элементы которого будут заменены
  * @param replacement arrays from which elements will be extracted/ массивы, из которых будут браться элементы для замены
  * @param isMerge merge one or more arrays/ сливает один или большее количество массивов
+ * @returns merged object/ объединенный объект
  */
 export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
 
@@ -6523,6 +6796,7 @@ export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: 
  * Замена значения из replaces в value.
  * @param value template string/ строка шаблона
  * @param replaces object with data for replacement/ объект с данными для замены
+ * @returns replaced string/ замененная строка
  */
 export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
 
@@ -6535,6 +6809,7 @@ export declare function replaceTemplate(value: string, replaces: Record<string, 
  * @param type resize type (auto, width, height) / тип изменения размера (auto, width, height)
  * @param typeData optional data type for the resulting image /
  * необязательный тип данных для результирующего изображения
+ * @returns base64 image string or undefined / строка base64 изображения или undefined
  */
 export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string): string | undefined;
 
@@ -6551,7 +6826,6 @@ declare type ResizeImageByMaxType = 'auto' | 'width' | 'height';
  * Класс для получения ширины скролла.
  */
 export declare class ScrollbarWidth {
-    private static storage;
     private static calculate;
     /**
      * Checks whether to enable scroll hiding.
@@ -7080,8 +7354,10 @@ export declare type SearchOptions = {
  *
  * Преобразовывает секунды в строку с временем.
  * @param second specified seconds/ указанные секунды
+ * @param hasHour whether to include hours/ нужно ли указывать часы
+ * @returns string formatted time/ форматированная строка с временем
  */
-export declare function secondToTime(second: number | string | undefined): string;
+export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
 
 /**
  * Class for managing data storage during server-side rendering (SSR).
@@ -7132,6 +7408,13 @@ export declare class ServerStorage {
      */
     static set<T = any>(key: string, value: () => T, hydration?: boolean): T;
     /**
+     * Removes a value from storage.
+     *
+     * Удаляет значение из хранилища.
+     * @param key unique storage key / уникальный ключ хранилища
+     */
+    static remove(key: string): void;
+    /**
      * Returns a string representation of the storage for hydration.
      *
      * Возвращает строковое представление хранилища для гидратации.
@@ -7172,6 +7455,7 @@ declare type ServerStorageList = Record<string, ServerStorageItem>;
  * @param element checked element/ проверяемый элемент
  * @param index index at which we retrieve values/ индекс, по которому получаем значения
  * @param value new value/ новое значение
+ * @returns modified element/ измененный элемент
  */
 export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
 
@@ -7185,6 +7469,7 @@ export declare function setElementItem<E extends ElementOrWindow, K extends keyo
  * @param maxlength maximum values/ максимальные значения
  * @param alwaysChange updating values in any case/ обновление значений при любом случае
  * @param notEmpty do not make the values empty/ не делать значения пустыми
+ * @returns modified values/ измененные значения
  */
 export declare function setValues<T>(selected: T | T[] | undefined, value: any, { multiple, maxlength, alwaysChange, notEmpty }: {
     multiple?: boolean | undefined;
@@ -7198,6 +7483,7 @@ export declare function setValues<T>(selected: T | T[] | undefined, value: any, 
  *
  * Приостановить выполнение на указанное количество миллисекунд.
  * @param ms milliseconds/ миллисекунды
+ * @returns promise that resolves after delay/ промис, который разрешается после задержки
  */
 export declare function sleep(ms: number): Promise<void>;
 
@@ -7210,6 +7496,7 @@ export declare function sleep(ms: number): Promise<void>;
  * @param array the target object/ целевой объект
  * @param replacement the source object/ исходные объекты
  * @param indexStart index at which to start changing the array/ индекс, по которому начинает изменять массив
+ * @returns modified array/ измененный массив
  */
 export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
 
@@ -7296,6 +7583,7 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
  * Метод создает строку длиной count, состоящую из символов value.
  * @param value character for filling/ символ для заполнения
  * @param count length of the string/ длина строки
+ * @returns filled string/ заполненная строка
  */
 export declare function strFill(value: string, count: number): string;
 
@@ -7308,6 +7596,7 @@ export declare function strFill(value: string, count: number): string;
  * @param value input value/ входное значение
  * @param separator separator/ разделитель
  * @param limit limit/ лимит
+ * @returns split array/ разделенный массив
  */
 export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
 
@@ -7334,6 +7623,7 @@ export declare function toArray<T>(value: T): T extends any[] ? T : [T];
  *
  * Преобразование строки в Camel Case (upper).
  * @param value input value/ входное значение
+ * @returns camel case string/ строка в camel case
  */
 export declare function toCamelCase(value: string): string;
 
@@ -7342,6 +7632,7 @@ export declare function toCamelCase(value: string): string;
  *
  * Преобразование строки в Camel Case (+ первая буква).
  * @param value input value/ входное значение
+ * @returns camel case string with first letter uppercase / строка в camel case с первой заглавной буквой
  */
 export declare function toCamelCaseFirst(value: string): string;
 
@@ -7350,6 +7641,7 @@ export declare function toCamelCaseFirst(value: string): string;
  *
  * Преобразование в объект Date.
  * @param value input value/ входное значение
+ * @returns date object/ объект даты
  */
 export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
 
@@ -7396,6 +7688,7 @@ export declare function toNumber(value?: NumberOrString): number;
  * @param max maximum achievable value / максимально достижимое значение
  * @param formatting format the number / форматировать число
  * @param language formatting language / язык форматирования
+ * @returns formatted number string or number/ форматированная строка числа или число
  */
 export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
 
@@ -7405,6 +7698,7 @@ export declare function toNumberByMax(value: string | number, max?: string | num
  * Преобразует значения в проценты
  * @param maxValue maximum value/ максимальное значение
  * @param value current value/ текущее значение
+ * @returns percentage value / значение в процентах
  */
 export declare function toPercent(maxValue: number, value: number): number;
 
@@ -7414,6 +7708,7 @@ export declare function toPercent(maxValue: number, value: number): number;
  * Преобразует значения в проценты (трёхзначный)
  * @param maxValue maximum value/ максимальное значение
  * @param value current value/ текущее значение
+ * @returns percentage value * 100 / значение в процентах * 100
  */
 export declare function toPercentBy100(maxValue: number, value: number): number;
 
@@ -7455,7 +7750,6 @@ export declare function transformation(value: any, isFunction?: boolean): any;
  * Класс для получения переведенного текста.
  */
 export declare class Translate {
-    protected static item: TranslateInstance;
     /**
      * Getting the translation text by its code.
      *
@@ -7465,9 +7759,10 @@ export declare class Translate {
      */
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
     /**
-     * Returns an instance of the class.
+     * Returns a request-isolated instance of TranslateInstance.
      *
-     * Возвращает экземпляр класса.
+     * Возвращает изолированный в рамках запроса экземпляр TranslateInstance.
+     * @returns TranslateInstance instance / экземпляр TranslateInstance
      */
     static getItem(): TranslateInstance;
     /**
@@ -7538,28 +7833,28 @@ export declare class Translate {
      * Изменить путь к скрипту для получения перевода.
      * @param url path to the script/ путь к скрипту
      */
-    static setUrl(url: string): Translate;
+    static setUrl(url: string): void;
     /**
      * Change the name of the property to get the translation.
      *
      * Изменить имя свойства для получения перевода.
      * @param name property name/ имя свойства
      */
-    static setPropsName(name: string): Translate;
+    static setPropsName(name: string): void;
     /**
      * Change the read mode from the API.
      *
      * Изменить режим чтения из API.
      * @param value read mode/ режим чтения
      */
-    static setReadApi(value: boolean): Translate;
+    static setReadApi(value: boolean): void;
     /**
      * Set the configuration for the translation.
      *
      * Установить конфигурацию для перевода.
      * @param config configuration/ конфигурация
      */
-    static setConfig(config: TranslateConfig): Translate;
+    static setConfig(config: TranslateConfig): void;
 }
 
 /**
@@ -7906,6 +8201,7 @@ export declare type Undefined = undefined | null;
  *
  * Удаляет повторяющиеся записи в массиве.
  * @param value input value/ входное значение
+ * @returns array without duplicates / массив без дубликатов
  */
 export declare function uniqueArray<T>(value: T[]): T[];
 
@@ -7914,6 +8210,7 @@ export declare function uniqueArray<T>(value: T[]): T[];
  *
  * Записывает данные в буфер.
  * @param text text for recording/ текст для записи
+ * @returns promise without return value / промис без возвращаемого значения
  */
 export declare function writeClipboardData(text: string): Promise<void>;
 

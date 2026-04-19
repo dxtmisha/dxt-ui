@@ -5,6 +5,7 @@ import { type FunctionArgs } from '../types/basicTypes'
  *
  * Проверяет, является ли функция обратного вызова.
  * @param callback the value being checked/ проверяемое значение
+ * @returns true if function / true, если функция
  */
 export function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>> {
   return callback instanceof Function || typeof callback === 'function'

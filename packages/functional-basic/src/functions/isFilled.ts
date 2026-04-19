@@ -8,6 +8,7 @@ import { type EmptyValue } from '../types/basicTypes'
  * Проверяет, заполнено ли поле.
  * @param value input value/ входное значение
  * @param zeroTrue if true, '0' is considered filled/ если true, то '0' считается заполненным
+ * @returns true if filled / true, если заполнено
  */
 export function isFilled<T>(
   value: T,

@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { ApiResponse } from '../ApiResponse'
 import { ApiDefault } from '../ApiDefault'
 import { ApiMethodItem } from '../../types/apiTypes'

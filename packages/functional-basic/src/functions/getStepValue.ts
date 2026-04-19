@@ -4,6 +4,7 @@
  * Возвращает единицу измерения одного шага относительно заданного значения
  * @param min minimum value/ минимальное значение
  * @param max maximum value/ максимальное значение
+ * @returns step value / значение шага
  */
 export function getStepValue(
   min: number | undefined,

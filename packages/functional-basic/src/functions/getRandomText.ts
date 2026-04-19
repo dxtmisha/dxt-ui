@@ -10,6 +10,7 @@ import { strFill } from './strFill'
  * @param symbol symbol for replacing a letter/ символ для замены буквы
  * @param lengthMin minimum word length/ минимальная длина слова
  * @param lengthMax maximum word length/ максимальная длина слова
+ * @returns generated text/ сгенерированный текст
  */
 export function getRandomText(
   min: number,

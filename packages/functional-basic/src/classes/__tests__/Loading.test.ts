@@ -441,7 +441,7 @@ describe('Loading', () => {
 
     it('should handle event registration with null element', () => {
       const listener = vi.fn()
-      Loading.registrationEvent(listener, null)
+      Loading.registrationEvent(listener, null as any)
 
       Loading.show()
 

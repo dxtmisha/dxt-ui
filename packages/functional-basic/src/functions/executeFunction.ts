@@ -10,7 +10,7 @@ import { type FunctionArgs } from '../types/basicTypes'
  * Поддерживает передачу произвольных аргументов в функцию обратного вызова.
  * @param callback function or any value / функция или любое значение
  * @param args arguments of the function / аргументы функции
- * @returns result of the execution or the value itself / результат выполения или само значение
+ * @returns result of the execution or the value itself / результат выполнения или само значение
  */
 export function executeFunction<T>(
   callback: T | FunctionArgs<any, T>,
