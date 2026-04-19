@@ -1,6 +1,7 @@
 // Classes
 export * from './classes/Api'
 export * from './classes/ApiCache'
+export * from './classes/ApiDataReturn'
 export * from './classes/ApiDefault'
 export * from './classes/ApiHeaders'
 export * from './classes/ApiHydration'

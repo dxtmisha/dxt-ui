@@ -127,6 +127,87 @@ describe('useApiManagementRef', () => {
     })
   })
 
+  describe('utility properties', () => {
+    it('should expose starting, reading and loading from useApiRef', async () => {
+      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise(resolve => {
+        setTimeout(() => resolve({ data: 'ok' }), 50)
+      }))
+
+      const { starting, reading, loading, list } = useApiManagementRef({ path: 'test/path' })
+
+      expect(starting.value).toBe(true)
+      expect(reading.value).toBe(false)
+      expect(loading.value).toBe(false)
+
+      // trigger fetch
+      expect(list.value).toBeUndefined()
+      await new Promise(r => setTimeout(r, 0))
+
+      expect(loading.value).toBe(true)
+      expect(reading.value).toBe(true)
+
+      await new Promise(r => setTimeout(r, 60))
+
+      expect(starting.value).toBe(false)
+      expect(loading.value).toBe(false)
+      expect(reading.value).toBe(true)
+    })
+
+    it('should return correct length and lengthData', async () => {
+      vi.mocked(mockApiInstance.request).mockResolvedValue([{ id: 1 }, { id: 2 }])
+
+      const { length, lengthData, list } = useApiManagementRef(
+        { path: 'test/path' },
+        undefined,
+        {
+          columns: ['id'] as any,
+          value: ref('1'),
+          options: { limit: 1 } // Set limit to 1 so '1' triggers search
+        }
+      )
+
+      // trigger fetch
+      expect(list.value).toBeUndefined()
+      await new Promise(r => setTimeout(r, 0))
+
+      expect(lengthData.value).toBe(2)
+      expect(length.value).toBe(1) // searched list
+    })
+
+    it('should expose mutation loading states', async () => {
+      vi.mocked(mockApiInstance.request).mockResolvedValue([{ id: 1 }])
+
+      const { loadingPost, loadingPut, loadingDelete, sendPost, list } = useApiManagementRef(
+        { path: 'test/path' },
+        undefined,
+        undefined,
+        { path: 'test/post' },
+        { path: 'test/put' },
+        { path: 'test/delete' }
+      )
+
+      // trigger GET
+      expect(list.value).toBeUndefined()
+      await new Promise(r => setTimeout(r, 0))
+
+      expect(loadingPost!.value).toBe(false)
+      expect(loadingPut!.value).toBe(false)
+      expect(loadingDelete!.value).toBe(false)
+
+      // trigger POST
+      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise(resolve => {
+        setTimeout(() => resolve({ success: true }), 50)
+      }))
+
+      sendPost()
+      await new Promise(r => setTimeout(r, 10))
+      expect(loadingPost!.value).toBe(true)
+
+      await new Promise(r => setTimeout(r, 50))
+      expect(loadingPost!.value).toBe(false)
+    })
+  })
+
   describe('Success-based reset', () => {
     it('should trigger reset if mutation succeeds via apiInstance', async () => {
       vi.mocked(mockApiInstance.request)
@@ -151,5 +232,33 @@ describe('useApiManagementRef', () => {
 
       expect(mockApiInstance.request).toHaveBeenCalledTimes(2) // 1 POST + 1 GET (reset)
     })
+
+    it('should trigger action and reset on successful mutation', async () => {
+      const action = vi.fn()
+      vi.mocked(mockApiInstance.request)
+        .mockResolvedValueOnce([{ id: 1 }]) // initial GET
+        .mockResolvedValueOnce({ status: 'success' }) // POST success
+        .mockResolvedValueOnce([{ id: 1 }, { id: 2 }]) // GET after reset
+
+      const { sendPost, list } = useApiManagementRef(
+        { path: 'test/get' },
+        undefined,
+        undefined,
+        { path: 'test/post' },
+        undefined,
+        undefined,
+        action
+      )
+
+      // init
+      expect(list.value).toBeUndefined()
+      await new Promise(r => setTimeout(r, 0))
+
+      await sendPost()
+
+      expect(action).toHaveBeenCalled()
+      expect(mockApiInstance.request).toHaveBeenCalledTimes(3) // GET, POST, GET(reset)
+    })
   })
 })
+import { ref } from 'vue'

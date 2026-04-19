@@ -398,17 +398,100 @@ export declare type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
 /**
  * Type of API response data item/ Тип элемента данных ответа API
  */
-export declare type ApiDataItem<T = any> = T & {
+export declare type ApiDataItem<T = any> = T & ApiDataValidation & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
     data?: T;
     /** Success flag/ Флаг успешности */
     success?: boolean;
-    /** Status/ Статус */
-    status?: ApiStatusType;
-    /** Message/ Сообщение */
-    message?: string;
     /** Status object/ Объект статуса */
     statusObject?: ApiStatusItem;
+};
+
+/**
+ * Class for handling and processing data returned from an API request.
+ *
+ * Класс для обработки и подготовки данных, полученных в результате запроса к API.
+ */
+export declare class ApiDataReturn<T = any> {
+    protected readonly apiFetch: ApiFetch;
+    protected readonly query: Response;
+    protected readonly end: ApiPreparationEnd;
+    /**
+     * Raw data received from the API/
+     * Исходные данные, полученные от API
+     */
+    protected data?: ApiData<T>;
+    /**
+     * Processed data ready for use/
+     * Обработанные данные, готовые к использованию
+     */
+    protected dataMod?: ApiData<T>;
+    /**
+     * Constructor for ApiDataReturn.
+     *
+     * Конструктор ApiDataReturn.
+     * @param apiFetch API fetch configuration / конфигурация запроса API
+     * @param query response object / объект ответа
+     * @param end preparation end data / данные завершения подготовки
+     */
+    constructor(apiFetch: ApiFetch, query: Response, end: ApiPreparationEnd);
+    /**
+     * Initializes the class by reading data from the response.
+     *
+     * Инициализирует класс, считывая данные из ответа.
+     */
+    init(): Promise<this>;
+    /**
+     * Returns processed data.
+     *
+     * Возвращает обработанные данные.
+     */
+    get(): ApiData<T>;
+    /**
+     * Returns processed data along with the status object.
+     *
+     * Возвращает обработанные данные вместе с объектом статуса.
+     * @param status API status instance / экземпляр статуса API
+     */
+    getAndStatus(status: ApiStatus): ApiData<T>;
+    /**
+     * Returns raw data received from the API.
+     *
+     * Возвращает исходные данные, полученные от API.
+     */
+    getData(): ApiData<T> | undefined;
+    /**
+     * Reads and parses data from the response.
+     *
+     * Считывает и анализирует данные из ответа.
+     */
+    protected readData<T>(): Promise<ApiData<T>>;
+    /**
+     * Prepares and formats the raw data.
+     *
+     * Подготавливает и форматирует исходные данные.
+     */
+    protected initData(): ApiData<T>;
+    /**
+     * Initializes the result item and merges metadata (success, status, code, message) from raw data.
+     *
+     * Инициализирует результирующий объект и переносит метаданные (success, status, code, message) из исходных данных.
+     * @param data raw response data / исходные данные ответа
+     * @returns initialized data with metadata / инициализированные данные с метаданными
+     */
+    protected initItem(data: Record<string, any>): ApiData<T>;
+}
+
+/**
+ * API response validation result/ Результат валидации ответа API
+ */
+export declare type ApiDataValidation = {
+    /** Status/ Статус */
+    status?: ApiStatusType;
+    /** Code / Код */
+    code?: string | number;
+    /** Message/ Сообщение */
+    message?: string;
 };
 
 /**
@@ -500,7 +583,7 @@ export declare type ApiFetch = {
     /** Retry delay in milliseconds/ Задержка повтора в миллисекундах */
     retryDelay?: number;
     /** Custom response processor/ Пользовательский процессор ответа */
-    queryReturn?: (query: Response) => Promise<any>;
+    queryReturn?: (query: Response) => Promise<any | ApiDataValidation>;
     /** Run global preparation hooks/ Запускать глобальные хуки подготовки */
     globalPreparation?: boolean;
     /** Run global end hooks/ Запускать глобальные хуки завершения */
@@ -816,16 +899,6 @@ export declare class ApiInstance {
      */
     protected fetch<T>(apiFetch: ApiFetch, retryCount?: number): Promise<T>;
     /**
-     * Reads data from the response.
-     *
-     * Читает данные из ответа.
-     * @param query response from the server / ответ от сервера
-     * @param queryReturn custom function for reading data / кастомная функция для чтения данных
-     * @param end finalization data / данные финализации
-     * @returns parsed API data / распарсенные данные API
-     */
-    protected readData<T>(query: Response, queryReturn: ApiFetch['queryReturn'], end: ApiPreparationEnd): Promise<ApiData<T>>;
-    /**
      * Executing the HTTP request.
      *
      * Выполнение HTTP-запроса.
@@ -836,24 +909,6 @@ export declare class ApiInstance {
         query: Response;
         timeoutId: any;
     }>;
-    /**
-     * Transforms data if needed.
-     *
-     * Преобразует данные, если нужно.
-     * @param data data for transformation / данные для преобразования
-     * @param toData is it necessary to process the data / нужно ли обрабатывать данные
-     * @returns transformed data / преобразованные данные
-     */
-    protected makeData<T>(data: ApiData<T>, toData: boolean): ApiData<T>;
-    /**
-     * Appends the status object to the response data if possible.
-     *
-     * Добавляет объект статуса к данным ответа, если это возможно.
-     * @param data response data / данные ответа
-     * @param status status object / объект статуса
-     * @returns data with status object appended / данные с добавленным объектом статуса
-     */
-    protected makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
     /**
      * Processing an error.
      *
@@ -1190,6 +1245,13 @@ export declare class ApiStatus {
      */
     getStatusType(): ApiStatusType | undefined;
     /**
+     * Returns the execution status code (string or number from response).
+     *
+     * Возвращает код статуса выполнения (строка или число из ответа).
+     * @returns status code or undefined / код статуса или undefined
+     */
+    getCode(): string | undefined;
+    /**
      * Returns the script execution error.
      *
      * Возвращает ошибку выполнения скрипта.
@@ -1252,6 +1314,14 @@ export declare class ApiStatus {
      */
     setLastStatus(status?: ApiStatusType): this;
     /**
+     * Sets the last execution code.
+     *
+     * Устанавливает последний код выполнения.
+     * @param code status code / код статуса
+     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+     */
+    setLastCode(code?: string): this;
+    /**
      * Sets messages from the last request.
      *
      * Устанавливает сообщения от последнего запроса.
@@ -1280,6 +1350,8 @@ export declare type ApiStatusItem = {
     lastResponse?: any;
     /** Last status/ Последний статус */
     lastStatus?: ApiStatusType;
+    /** Last code / Последний код */
+    lastCode?: string;
     /** Last message/ Последнее сообщение */
     lastMessage?: string;
 };
@@ -5040,6 +5112,7 @@ export declare class HashInstance {
     private hash?;
     private watch;
     private block;
+    private time?;
     /**
      * Get data from hash.
      *

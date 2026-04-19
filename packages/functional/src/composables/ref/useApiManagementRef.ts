@@ -126,6 +126,7 @@ export function useApiManagementRef<
     reactivity,
     conditions,
     transformation,
+    validateResponseContract,
     typeData,
     unmounted,
     skeleton
@@ -150,6 +151,7 @@ export function useApiManagementRef<
     reactivity,
     conditions,
     transformation,
+    validateResponseContract,
     unmounted,
     apiInstance
   )

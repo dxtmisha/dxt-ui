@@ -110,78 +110,78 @@ function h(e) {
 }
 //#endregion
 //#region src/functions/toNumber.ts
-var g = /[^-+\d., ]+/g, ee = /( [0-9]{3}[ ,.]|[0-9] [0-9])/, te = / /g, _ = /,/g, ne = /,[0-9]{3}[,.]/, re = /[.][0-9]{3}[,.]/, ie = /[.]/g;
-function v(e) {
+var ee = /[^-+\d., ]+/g, te = /( [0-9]{3}[ ,.]|[0-9] [0-9])/, ne = / /g, g = /,/g, re = /,[0-9]{3}[,.]/, ie = /[.][0-9]{3}[,.]/, ae = /[.]/g;
+function _(e) {
 	if (typeof e == "number") return Number.isFinite(e) && e || 0;
 	if (!e) return 0;
-	let t = e.replace(g, "");
-	return t = ee.test(t) ? t.replace(te, "").replace(_, ".") : ne.test(t) ? t.replace(_, "") : re.test(t) ? t.replace(ie, "").replace(_, ".") : t.replace(_, "."), parseFloat(t) || 0;
+	let t = e.replace(ee, "");
+	return t = te.test(t) ? t.replace(ne, "").replace(g, ".") : re.test(t) ? t.replace(g, "") : ie.test(t) ? t.replace(ae, "").replace(g, ".") : t.replace(g, "."), parseFloat(t) || 0;
 }
 //#endregion
 //#region src/functions/isSelected.ts
-function y(e, t) {
-	return c(e) ? !1 : Array.isArray(t) ? t.includes(e) : h(e) && h(t) ? v(e) === v(t) : e === t;
+function v(e, t) {
+	return c(e) ? !1 : Array.isArray(t) ? t.includes(e) : h(e) && h(t) ? _(e) === _(t) : e === t;
 }
 //#endregion
 //#region src/functions/encodeLiteAttribute.ts
-var ae = {
+var oe = {
 	"<": "&lt;",
 	">": "&gt;",
 	"&": "&amp;"
 };
-function oe(e) {
+function se(e) {
 	return String(e).replace(/[<>&]/g, (e) => {
 		var t;
-		return (t = ae == null ? void 0 : ae[e]) == null ? e : t;
+		return (t = oe == null ? void 0 : oe[e]) == null ? e : t;
 	});
 }
 //#endregion
 //#region src/functions/isFunction.ts
-function b(e) {
+function y(e) {
 	return e instanceof Function || typeof e == "function";
 }
 //#endregion
 //#region src/functions/executeFunction.ts
-function x(e, ...t) {
-	return b(e) ? e(...t) : e;
+function b(e, ...t) {
+	return y(e) ? e(...t) : e;
 }
 //#endregion
 //#region src/functions/isDomData.ts
-function se() {
+function ce() {
 	return s() && location.href.startsWith("data:");
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/typeof.js
-function S(e) {
+function x(e) {
 	"@babel/helpers - typeof";
-	return S = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return x = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, S(e);
+	}, x(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/toPrimitive.js
-function ce(e, t) {
-	if (S(e) != "object" || !e) return e;
+function le(e, t) {
+	if (x(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (S(r) != "object") return r;
+		if (x(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/toPropertyKey.js
-function le(e) {
-	var t = ce(e, "string");
-	return S(t) == "symbol" ? t : t + "";
+function ue(e) {
+	var t = le(e, "string");
+	return x(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/defineProperty.js
-function C(e, t, n) {
-	return (t = le(t)) in e ? Object.defineProperty(e, t, {
+function S(e, t, n) {
+	return (t = ue(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -190,9 +190,9 @@ function C(e, t, n) {
 }
 //#endregion
 //#region src/classes/ErrorCenterHandler.ts
-var ue = class {
+var de = class {
 	constructor(e) {
-		C(this, "handlers", []), e && this.addList(e);
+		S(this, "handlers", []), e && this.addList(e);
 	}
 	has(e) {
 		return !!this.get(e);
@@ -218,9 +218,9 @@ var ue = class {
 	toConsole(e) {
 		return console.error(`Error Center: ${e.code}`), console.error(e.message), this;
 	}
-}, de = class {
-	constructor(e, t = new ue()) {
-		C(this, "causes", []), this.handler = t, e && this.addList(e);
+}, fe = class {
+	constructor(e, t = new de()) {
+		S(this, "causes", []), this.handler = t, e && this.addList(e);
 	}
 	has(e, t) {
 		return !!this.get(e, t);
@@ -257,7 +257,7 @@ var ue = class {
 		}
 		return e;
 	}
-}, fe = [
+}, pe = [
 	{
 		group: "api",
 		code: "cacheClear",
@@ -408,7 +408,7 @@ var ue = class {
 		label: "Translate Error",
 		message: "An error occurred while loading translations."
 	}
-], w = class {
+], C = class {
 	static getItem() {
 		return this.item;
 	}
@@ -434,22 +434,22 @@ var ue = class {
 		this.getItem().on(e);
 	}
 };
-C(w, "item", new de(fe));
+S(C, "item", new fe(pe));
 //#endregion
 //#region src/functions/getElementSafeScript.ts
-function pe(e, t) {
+function me(e, t) {
 	return `<script id="${e.replace(/"/g, "&quot;")}" type="application/json">${JSON.stringify(t).replace(/<\/(script)>/gi, "<\\/$1>")}<\/script>`;
 }
 //#endregion
 //#region src/functions/getHydrationData.ts
-function me(e, t, n = !0) {
+function he(e, t, n = !0) {
 	if (typeof document < "u") {
 		let t = document.getElementById(e);
 		if (t) try {
 			let e = JSON.parse(t.textContent || "");
 			return n && t.remove(), e;
 		} catch (t) {
-			w.on({
+			C.on({
 				group: "hydration",
 				code: "error",
 				details: {
@@ -463,7 +463,7 @@ function me(e, t, n = !0) {
 }
 //#endregion
 //#region src/classes/ServerStorage.ts
-var he = "__ui:server-storage__", ge = "__ui:server:storage:id__", T = class {
+var w = "__ui:server-storage__", ge = "__ui:server:storage:id__", T = class {
 	static init(e) {
 		return this.listener || (this.listener = e), this;
 	}
@@ -493,20 +493,20 @@ var he = "__ui:server-storage__", ge = "__ui:server:storage:id__", T = class {
 		e in t && delete t[e];
 	}
 	static toString() {
-		return pe(ge, this.getDataForHydration());
+		return me(ge, this.getDataForHydration());
 	}
 	static getStorage() {
 		var e;
 		if (s()) return this.getStorageDom();
 		let t = (e = this.listener) == null ? void 0 : e.call(this);
-		return t ? (he in t || (t[he] = {}), t[he]) : (this.hideError || w.on({
+		return t ? (w in t || (t[w] = {}), t[w]) : (this.hideError || C.on({
 			group: "storage",
 			code: "context"
 		}), this.storage || (this.storage = {}), this.storage);
 	}
 	static getStorageDom() {
 		if (!this.storage) {
-			let e = me(ge, {});
+			let e = he(ge, {});
 			this.storage = {}, r(e, (e, t) => {
 				this.storage[t] = {
 					value: e,
@@ -523,15 +523,15 @@ var he = "__ui:server-storage__", ge = "__ui:server:storage:id__", T = class {
 		}), t;
 	}
 };
-C(T, "storage", void 0), C(T, "listener", void 0), C(T, "hideError", void 0);
+S(T, "storage", void 0), S(T, "listener", void 0), S(T, "hideError", void 0);
 //#endregion
 //#region src/classes/DataStorage.ts
 var _e = "ui-storage", ve = () => T.get("__ui:data-storage__", () => ({})), E = class {
 	static setPrefix(e) {
 		_e = e;
 	}
-	constructor(e, t = !1, n = w.getItem()) {
-		C(this, "value", void 0), C(this, "age", void 0), this.name = e, this.isSession = t, this.errorCenter = n;
+	constructor(e, t = !1, n = C.getItem()) {
+		S(this, "value", void 0), S(this, "age", void 0), this.name = e, this.isSession = t, this.errorCenter = n;
 		let r = `${t ? "session" : "storage"}#${e}`, i = ve();
 		if (r in i) return i[r];
 		this.make(), i[r] = this;
@@ -541,10 +541,10 @@ var _e = "ui-storage", ve = () => T.get("__ui:data-storage__", () => ({})), E = 
 		if (e !== void 0) return this.set(e);
 	}
 	set(e) {
-		if (this.value = x(e), this.age = Date.now(), this.value === void 0) this.remove();
+		if (this.value = b(e), this.age = Date.now(), this.value === void 0) this.remove();
 		else {
 			var t;
-			(t = this.getMethod()) == null || t.setItem(this.getIndex(), oe(JSON.stringify({
+			(t = this.getMethod()) == null || t.setItem(this.getIndex(), se(JSON.stringify({
 				value: this.value,
 				age: this.age
 			})));
@@ -562,7 +562,7 @@ var _e = "ui-storage", ve = () => T.get("__ui:data-storage__", () => ({})), E = 
 		return c(e) || this.age && this.age + e * 1e3 >= Date.now();
 	}
 	getMethod() {
-		if (s() && !se()) {
+		if (s() && !ce()) {
 			var e, t;
 			let n = this.isSession ? (e = window) == null ? void 0 : e.sessionStorage : (t = window) == null ? void 0 : t.localStorage;
 			if (n) return n;
@@ -590,7 +590,7 @@ var _e = "ui-storage", ve = () => T.get("__ui:data-storage__", () => ({})), E = 
 	}
 }, ye = "__ui:geo-code__", be = class {
 	constructor() {
-		C(this, "storage", new E(ye)), C(this, "location", void 0), C(this, "item", void 0), C(this, "language", void 0), C(this, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), this.location = this.findLocation(), this.item = this.getByCode(this.location), this.language = this.findLanguage(this.location);
+		S(this, "storage", new E(ye)), S(this, "location", void 0), S(this, "item", void 0), S(this, "language", void 0), S(this, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), this.location = this.findLocation(), this.item = this.getByCode(this.location), this.language = this.findLanguage(this.location);
 	}
 	get() {
 		return this.item;
@@ -626,7 +626,7 @@ var _e = "ui-storage", ve = () => T.get("__ui:data-storage__", () => ({})), E = 
 		return e && (/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/.test(e) && (n = this.getByCodeFull(e)), !n && /[a-z]{2}/.test(e) && (n = this.getByLanguage(this.toLanguage(e))), !n && /[A-Z]{2}/.test(e) && (n = this.getByCountry(this.toCountry(e)))), this.toFull((t = n) == null ? this.getList()[0] : t);
 	}
 	getByCodeFull(e) {
-		return this.getList().find((t) => y(e, [`${t.language}-${t.country}`, `${t.country}-${t.language}`]));
+		return this.getList().find((t) => v(e, [`${t.language}-${t.country}`, `${t.country}-${t.language}`]));
 	}
 	getByCountry(e) {
 		return this.getList().find((t) => {
@@ -774,12 +774,12 @@ function k(e) {
 //#region src/classes/EventItem.ts
 var we = class {
 	constructor(e, n = ["click"], r, i, a) {
-		C(this, "element", void 0), C(this, "elementControl", void 0), C(this, "elementControlEdit", void 0), C(this, "type", void 0), C(this, "listenerRecent", (e) => {
+		S(this, "element", void 0), S(this, "elementControl", void 0), S(this, "elementControlEdit", void 0), S(this, "type", void 0), S(this, "listenerRecent", (e) => {
 			if (Ce(this.elementControl)) {
 				var n, r;
 				(n = this.listener) == null || n.call(this.element, e, this.detail), t(this.options) && (r = this.options) != null && r.once && this.stop();
 			} else this.stop();
-		}), C(this, "activity", !1), C(this, "activityItems", []), this.listener = r, this.options = i, this.detail = a, this.element = Se(e), this.elementControl = O(e), this.type = k(n);
+		}), S(this, "activity", !1), S(this, "activityItems", []), this.listener = r, this.options = i, this.detail = a, this.element = Se(e), this.elementControl = O(e), this.type = k(n);
 	}
 	isActive() {
 		return this.activity;
@@ -866,7 +866,7 @@ var we = class {
 	}
 }, Te = "ui-loading", Ee = class {
 	constructor(e = Te) {
-		C(this, "value", 0), C(this, "event", void 0), C(this, "registrationList", []), this.eventName = e, s() && (this.event = new we(window, this.eventName));
+		S(this, "value", 0), S(this, "event", void 0), S(this, "registrationList", []), this.eventName = e, s() && (this.event = new we(window, this.eventName));
 	}
 	is() {
 		return this.value > 0;
@@ -929,7 +929,7 @@ var we = class {
 	static async get(e) {
 		let t = await this.getItemOrListener(e);
 		return this.clearOld().catch((e) => {
-			w.on({
+			C.on({
 				group: "api",
 				code: "cacheClear",
 				details: e
@@ -1004,14 +1004,116 @@ var we = class {
 		}
 	}
 };
-De = j, C(j, "items", void 0), C(j, "getListener", void 0), C(j, "setListener", void 0), C(j, "removeListener", void 0), C(j, "cacheStepAgeClearOld", 16384), C(j, "stepAgeClearOld", De.cacheStepAgeClearOld);
+De = j, S(j, "items", void 0), S(j, "getListener", void 0), S(j, "setListener", void 0), S(j, "removeListener", void 0), S(j, "cacheStepAgeClearOld", 16384), S(j, "stepAgeClearOld", De.cacheStepAgeClearOld);
 //#endregion
-//#region src/types/apiTypes.ts
-var M = /* @__PURE__ */ function(e) {
-	return e.delete = "DELETE", e.get = "GET", e.post = "POST", e.put = "PUT", e.patch = "PATCH", e;
-}({}), ke = class {
+//#region src/classes/ApiStatus.ts
+var ke = class {
 	constructor() {
-		C(this, "value", void 0);
+		S(this, "value", void 0);
+	}
+	get() {
+		return this.value;
+	}
+	getStatus() {
+		var e;
+		return (e = this.get()) == null ? void 0 : e.status;
+	}
+	getStatusText() {
+		var e;
+		return (e = this.get()) == null ? void 0 : e.statusText;
+	}
+	getStatusType() {
+		var e;
+		return (e = this.get()) == null ? void 0 : e.lastStatus;
+	}
+	getCode() {
+		var e;
+		return (e = this.get()) == null ? void 0 : e.lastCode;
+	}
+	getError() {
+		var e;
+		return (e = this.get()) == null ? void 0 : e.error;
+	}
+	getResponse() {
+		var e;
+		return (e = this.get()) == null ? void 0 : e.lastResponse;
+	}
+	getMessage() {
+		var e;
+		return ((e = this.get()) == null ? void 0 : e.lastMessage) || "";
+	}
+	set(e) {
+		return "status" in e && this.setValue("status", e.status), "statusText" in e && this.setValue("statusText", e.statusText), "error" in e && this.setValue("error", e.error), "lastResponse" in e && this.setValue("lastResponse", e.lastResponse), "lastMessage" in e && this.setValue("lastMessage", e.lastMessage), "lastStatus" in e && this.setValue("lastStatus", e.lastStatus), "lastCode" in e && this.setValue("lastCode", e.lastCode), this;
+	}
+	setStatus(e, t) {
+		return this.set({
+			status: e,
+			statusText: t
+		}), this;
+	}
+	setError(e) {
+		return this.set({ error: e }), this;
+	}
+	setLastResponse(e) {
+		return e && n(e) && ("message" in e && this.setLastMessage(String(e.message)), "status" in e && this.setLastStatus(String(e.status)), "code" in e && this.setLastCode(String(e.code))), this.set({ lastResponse: e }), this;
+	}
+	setLastStatus(e) {
+		return this.set({ lastStatus: e }), this;
+	}
+	setLastCode(e) {
+		return this.set({ lastCode: e }), this;
+	}
+	setLastMessage(e) {
+		return this.set({ lastMessage: e }), this;
+	}
+	setValue(e, t) {
+		this.value || (this.value = {}), this.value[e] = t;
+	}
+}, Ae = [
+	"success",
+	"status",
+	"code",
+	"message"
+], je = class {
+	constructor(e, t, n) {
+		S(this, "data", void 0), S(this, "dataMod", void 0), this.apiFetch = e, this.query = t, this.end = n;
+	}
+	async init() {
+		return this.data = await this.readData(), this;
+	}
+	get() {
+		return this.dataMod || (this.dataMod = this.initData()), this.dataMod;
+	}
+	getAndStatus(e) {
+		let t = this.get();
+		return t && n(t) ? {
+			...t,
+			statusObject: e.get()
+		} : t;
+	}
+	getData() {
+		return this.data;
+	}
+	async readData() {
+		var e;
+		let { queryReturn: t } = this.apiFetch, n = this.query;
+		return t ? await t(n) : "data" in this.end ? this.end.data : ((e = n.headers.get("Content-Type")) == null ? "" : e).includes("application/json") ? await n.json() : { data: await n.text() };
+	}
+	initData() {
+		let { toData: e = !0 } = this.apiFetch, t = this.getData();
+		return t ? !e || !t || !n(t) || !("data" in t) ? t : t.data !== null && typeof t.data != "object" || i(t.data) ? t.data : this.initItem(t) : {};
+	}
+	initItem(e) {
+		let t = { ...e.data };
+		return Ae.forEach((n) => {
+			n in e && !(n in t) && (t[n] = e[n]);
+		}), t;
+	}
+}, M = /* @__PURE__ */ function(e) {
+	return e.delete = "DELETE", e.get = "GET", e.post = "POST", e.put = "PUT", e.patch = "PATCH", e;
+}({}), Me = class {
+	constructor() {
+		S(this, "value", void 0);
 	}
 	is() {
 		return !!this.value;
@@ -1038,9 +1140,9 @@ var M = /* @__PURE__ */ function(e) {
 			e.has(t) || e.set(t, n);
 		}), this;
 	}
-}, Ae = class {
+}, Ne = class {
 	constructor() {
-		C(this, "headers", {});
+		S(this, "headers", {});
 	}
 	get(e, t = "application/json;charset=UTF-8") {
 		if (e === null) return;
@@ -1053,9 +1155,9 @@ var M = /* @__PURE__ */ function(e) {
 	set(e) {
 		return n(e) && (this.headers = e), this;
 	}
-}, je = "__ui:api:hydration:id__", Me = class {
+}, Pe = "__ui:api:hydration:id__", Fe = class {
 	constructor() {
-		C(this, "list", []);
+		S(this, "list", []);
 	}
 	initResponse(e) {
 		s() && e.add(this.getListByClient());
@@ -1070,14 +1172,14 @@ var M = /* @__PURE__ */ function(e) {
 		});
 	}
 	toString() {
-		return pe(je, this.list);
+		return me(Pe, this.list);
 	}
 	getListByClient() {
-		return me(je, []);
+		return he(Pe, []);
 	}
-}, Ne = class {
+}, Ie = class {
 	constructor() {
-		C(this, "callback", void 0), C(this, "callbackEnd", void 0), C(this, "loading", !1);
+		S(this, "callback", void 0), S(this, "callbackEnd", void 0), S(this, "loading", !1);
 	}
 	async make(e, t) {
 		if (e && this.callback) return this.go(t);
@@ -1100,73 +1202,18 @@ var M = /* @__PURE__ */ function(e) {
 			})) : n();
 		});
 	}
-}, N = class {
-	constructor() {
-		C(this, "value", void 0);
-	}
-	get() {
-		return this.value;
-	}
-	getStatus() {
-		var e;
-		return (e = this.get()) == null ? void 0 : e.status;
-	}
-	getStatusText() {
-		var e;
-		return (e = this.get()) == null ? void 0 : e.statusText;
-	}
-	getStatusType() {
-		var e;
-		return (e = this.get()) == null ? void 0 : e.lastStatus;
-	}
-	getError() {
-		var e;
-		return (e = this.get()) == null ? void 0 : e.error;
-	}
-	getResponse() {
-		var e;
-		return (e = this.get()) == null ? void 0 : e.lastResponse;
-	}
-	getMessage() {
-		var e;
-		return ((e = this.get()) == null ? void 0 : e.lastMessage) || "";
-	}
-	set(e) {
-		return "status" in e && this.setValue("status", e.status), "statusText" in e && this.setValue("statusText", e.statusText), "error" in e && this.setValue("error", e.error), "lastResponse" in e && this.setValue("lastResponse", e.lastResponse), "lastMessage" in e && this.setValue("lastMessage", e.lastMessage), "lastStatus" in e && this.setValue("lastStatus", e.lastStatus), this;
-	}
-	setStatus(e, t) {
-		return this.set({
-			status: e,
-			statusText: t
-		}), this;
-	}
-	setError(e) {
-		return this.set({ error: e }), this;
-	}
-	setLastResponse(e) {
-		return e && n(e) && ("message" in e && this.setLastMessage(String(e.message)), "status" in e && this.setLastStatus(String(e.status))), this.set({ lastResponse: e }), this;
-	}
-	setLastStatus(e) {
-		return this.set({ lastStatus: e }), this;
-	}
-	setLastMessage(e) {
-		return this.set({ lastMessage: e }), this;
-	}
-	setValue(e, t) {
-		this.value || (this.value = {}), this.value[e] = t;
-	}
 };
 //#endregion
 //#region src/functions/executePromise.ts
-async function Pe(e, ...t) {
-	let n = x(e, ...t);
+async function Le(e, ...t) {
+	let n = b(e, ...t);
 	return n instanceof Promise ? await n : n;
 }
 //#endregion
 //#region src/classes/ApiResponse.ts
-var Fe = "d-response-loading", Ie = class {
+var Re = "d-response-loading", ze = class {
 	constructor(e) {
-		C(this, "first", []), C(this, "response", []), C(this, "loading", void 0), C(this, "devMode", !1), this.requestDefault = e;
+		S(this, "first", []), S(this, "response", []), S(this, "loading", void 0), S(this, "devMode", !1), this.requestDefault = e;
 	}
 	get(e = "", t, n, r) {
 		return this.response.find((i) => !this.isDisable(i) && this.isPath(i, e) && t === i.method && this.isFirst(i, r) && this.isResponse(i, n) ? (this.isDevMode(r) && console.warn(`Response type: ${i.path}`), this.first.push(i), !0) : !1);
@@ -1192,7 +1239,7 @@ var Fe = "d-response-loading", Ie = class {
 		}
 	}
 	isDisable(e) {
-		return !!x(e == null ? void 0 : e.disable);
+		return !!b(e == null ? void 0 : e.disable);
 	}
 	isPath(e, t) {
 		return t === e.path || !!(e.path instanceof RegExp && e.path.test(t));
@@ -1209,7 +1256,7 @@ var Fe = "d-response-loading", Ie = class {
 	}
 	fetch(e, t) {
 		return this.startResponseLoading(), new Promise((n) => {
-			Pe(b(e.response) ? e.response(t) : e.response).then((t) => {
+			Le(y(e.response) ? e.response(t) : e.response).then((t) => {
 				e != null && e.lag ? (A.show(), setTimeout(() => {
 					this.stopResponseLoading(), n(t), A.hide();
 				}, f(0, 2e3))) : (this.stopResponseLoading(), n(t));
@@ -1217,17 +1264,17 @@ var Fe = "d-response-loading", Ie = class {
 		});
 	}
 	startResponseLoading() {
-		this.loading && clearTimeout(this.loading), s() && document.body.classList.add(Fe);
+		this.loading && clearTimeout(this.loading), s() && document.body.classList.add(Re);
 	}
 	stopResponseLoading() {
 		s() && (this.loading = setTimeout(() => {
-			this.loading = void 0, document.body.classList.remove(Fe);
+			this.loading = void 0, document.body.classList.remove(Re);
 		}, 2400));
 	}
-}, Le = class {
+}, Be = class {
 	constructor(e = "/api/", t = {}) {
-		C(this, "headers", void 0), C(this, "requestDefault", void 0), C(this, "status", void 0), C(this, "response", void 0), C(this, "preparation", void 0), C(this, "loading", void 0), C(this, "errorCenter", void 0), C(this, "hydration", void 0), C(this, "timeout", 16e3), this.url = e;
-		let { headersClass: n = Ae, requestDefaultClass: r = ke, statusClass: i = N, responseClass: a = Ie, preparationClass: o = Ne, loadingClass: s = A.getItem(), errorCenterClass: c = w.getItem(), hydrationClass: l = Me } = t;
+		S(this, "headers", void 0), S(this, "requestDefault", void 0), S(this, "status", void 0), S(this, "response", void 0), S(this, "preparation", void 0), S(this, "loading", void 0), S(this, "errorCenter", void 0), S(this, "hydration", void 0), S(this, "timeout", 16e3), this.url = e;
+		let { headersClass: n = Ne, requestDefaultClass: r = Me, statusClass: i = ke, responseClass: a = ze, preparationClass: o = Ie, loadingClass: s = A.getItem(), errorCenterClass: c = C.getItem(), hydrationClass: l = Fe } = t;
 		this.headers = new n(), this.requestDefault = new r(), this.status = new i(), this.response = new a(this.requestDefault), this.preparation = new o(), this.loading = s, this.errorCenter = c, this.hydration = new l(), this.hydration.initResponse(this.response);
 	}
 	isLocalhost() {
@@ -1314,29 +1361,25 @@ var Fe = "d-response-loading", Ie = class {
 		return f(t, t + e * t);
 	}
 	async fetch(e, t = 0) {
-		let { toData: n = !0, hideError: r = !1, hideLoading: i = !1, retry: a = 0, retryDelay: o = 64, queryReturn: s = void 0, globalPreparation: c = !0, globalEnd: l = !0, endResetLimit: u = 8 } = e, d = await this.response.emulator(e);
-		if (d) return d;
-		let f = await j.getByFetch(e);
-		if (f) return this.hydration.toClient(e, f), f;
-		let m = new N(), h;
-		i || this.loading.show();
+		let { hideError: n = !1, hideLoading: r = !1, retry: i = 0, retryDelay: a = 64, globalPreparation: o = !0, globalEnd: s = !0, endResetLimit: c = 8 } = e, l = await this.response.emulator(e);
+		if (l) return l;
+		let u = await j.getByFetch(e);
+		if (u) return this.hydration.toClient(e, u), u;
+		let d = new ke(), f;
+		r || this.loading.show();
 		try {
-			await this.preparation.make(c, e);
-			let { query: n, timeoutId: d } = await this.makeQuery(e);
-			d && clearTimeout(d);
-			let f = await this.preparation.makeEnd(l, n, e);
-			if (m.setStatus(n.status, n.statusText), this.status.setStatus(n.status, n.statusText), !r && n.status >= 400 && this.makeErrorQuery(n), f != null && f.reset && t < u || t < a) return await p(this.getRetryDelay(t, o)), i || this.loading.hide(), await this.fetch(e, t + 1);
-			h = await this.readData(n, s, f);
+			await this.preparation.make(o, e);
+			let { query: l, timeoutId: u } = await this.makeQuery(e);
+			u && clearTimeout(u);
+			let m = await this.preparation.makeEnd(s, l, e);
+			if (d.setStatus(l.status, l.statusText), this.status.setStatus(l.status, l.statusText), !n && l.status >= 400 && this.makeErrorQuery(l), m != null && m.reset && t < c || t < i) return await p(this.getRetryDelay(t, a)), r || this.loading.hide(), await this.fetch(e, t + 1);
+			f = new je(e, l, m), await f.init();
 		} catch (e) {
-			throw r || this.makeError(e), m.setError(String(e)), this.status.setError(String(e)), i || this.loading.hide(), e;
+			throw n || this.makeError(e), d.setError(String(e)), this.status.setError(String(e)), r || this.loading.hide(), e;
 		}
-		m.setLastResponse(h), this.status.setLastResponse(h);
-		let g = this.makeStatus(this.makeData(h, n), m);
-		return i || this.loading.hide(), this.hydration.toClient(e, g), await j.setByFetch(e, g), g;
-	}
-	async readData(e, t, n) {
-		var r;
-		return t ? await t(e) : "data" in n ? n.data : ((r = e.headers.get("Content-Type")) == null ? "" : r).match("application/json") ? await e.json() : { data: await e.text() };
+		d.setLastResponse(f.getData()), this.status.setLastResponse(f.getData());
+		let m = f.getAndStatus(d);
+		return r || this.loading.hide(), this.hydration.toClient(e, m), await j.setByFetch(e, m), m;
 	}
 	async makeQuery(e) {
 		let t = this.requestDefault.request(e.request), { api: n = !0, path: r = "", pathFull: i = void 0, method: a = M.get, headers: o = {}, type: s = "application/json;charset=UTF-8", init: c = {} } = e, l = i == null ? this.getUrl(r, n) : i, u = `${l}${this.getBodyForGet(t, l, a)}`, d = this.headers.getByRequest(e.request, o, s), f = {
@@ -1356,18 +1399,6 @@ var Fe = "d-response-loading", Ie = class {
 			query: await fetch(u, f),
 			timeoutId: m
 		};
-	}
-	makeData(e, t) {
-		if (!t || !e || !n(e) || !("data" in e)) return e;
-		if (e.data !== null && typeof e.data != "object" || i(e.data)) return e.data;
-		let r = { ...e.data };
-		return "success" in e && !("success" in r) && (r.success = e.success), "status" in e && !("status" in r) && (r.status = e.status), "message" in e && !("message" in r) && (r.message = e.message), r;
-	}
-	makeStatus(e, t) {
-		return e && n(e) ? {
-			...e,
-			statusObject: t.get()
-		} : e;
 	}
 	makeError(e, t = "api") {
 		switch (e.name) {
@@ -1444,12 +1475,12 @@ var Fe = "d-response-loading", Ie = class {
 			}, n);
 		}
 	}
-}, P = class {
+}, N = class {
 	static isLocalhost() {
 		return this.getItem().isLocalhost();
 	}
 	static getItem() {
-		return T.get("__ui:api-instance__", () => new Le());
+		return T.get("__ui:api-instance__", () => new Be());
 	}
 	static getStatus() {
 		return this.getItem().getStatus();
@@ -1511,16 +1542,16 @@ var Fe = "d-response-loading", Ie = class {
 	static delete(e) {
 		return this.getItem().delete(e);
 	}
-}, Re = class {
-	constructor(e, t, n, r = w.getItem()) {
-		if (C(this, "channel", void 0), C(this, "update", (e) => {
+}, Ve = class {
+	constructor(e, t, n, r = C.getItem()) {
+		if (S(this, "channel", void 0), S(this, "update", (e) => {
 			var t;
 			return (t = this.callback) == null || t.call(this, e), this;
-		}), C(this, "updateError", (e) => {
+		}), S(this, "updateError", (e) => {
 			var t;
 			return (t = this.callbackError) == null || t.call(this, e), this;
 		}), this.callback = t, this.callbackError = n, s()) try {
-			this.channel = new BroadcastChannel(`${ze()}__${e}`), this.channel.onmessage = this.update, this.channel.onmessageerror = this.updateError;
+			this.channel = new BroadcastChannel(`${He()}__${e}`), this.channel.onmessage = this.update, this.channel.onmessageerror = this.updateError;
 		} catch (e) {
 			r.on({
 				group: "broadcast",
@@ -1546,9 +1577,9 @@ var Fe = "d-response-loading", Ie = class {
 		var e;
 		return (e = this.channel) == null || e.close(), this.channel = void 0, this;
 	}
-}, ze = () => new E("__ui:broadcast-name__").get(() => `name_${f(1e6, 9999999)}`), Be = class {
+}, He = () => new E("__ui:broadcast-name__").get(() => `name_${f(1e6, 9999999)}`), Ue = class {
 	constructor(e) {
-		C(this, "cache", void 0), C(this, "cacheOld", void 0), C(this, "comparisons", []), this.callback = e;
+		S(this, "cache", void 0), S(this, "cacheOld", void 0), S(this, "comparisons", []), this.callback = e;
 	}
 	getCache(e) {
 		return this.isUpdate(e) && (this.cacheOld = this.cache, this.setCache()), this.cache;
@@ -1568,9 +1599,9 @@ var Fe = "d-response-loading", Ie = class {
 	isUpdate(e) {
 		return this.cache === void 0 || this.comparisons.length !== e.length || this.comparisons.findIndex((t, n) => t !== e[n]) >= 0 ? (this.comparisons = [...e], !0) : !1;
 	}
-}, Ve = class {
+}, We = class {
 	constructor() {
-		C(this, "cache", {});
+		S(this, "cache", {});
 	}
 	get(e, t, n) {
 		return this.getCacheItem(e, t).getCache(n == null ? [] : n);
@@ -1579,11 +1610,11 @@ var Fe = "d-response-loading", Ie = class {
 		return await this.getCacheItem(e, t).getCacheAsync(n == null ? [] : n);
 	}
 	getCacheItem(e, t) {
-		return e in this.cache || (this.cache[e] = new Be(t)), this.cache[e];
+		return e in this.cache || (this.cache[e] = new Ue(t)), this.cache[e];
 	}
-}, He = class {
+}, Ge = class {
 	static getItem() {
-		return T.get("__ui:cache-static__", () => new Ve());
+		return T.get("__ui:cache-static__", () => new We());
 	}
 	static get(e, t, n) {
 		return this.getItem().get(e, t, n);
@@ -1594,7 +1625,7 @@ var Fe = "d-response-loading", Ie = class {
 };
 //#endregion
 //#region src/functions/anyToString.ts
-function F(e, n = !0, r = !0) {
+function P(e, n = !0, r = !0) {
 	var a;
 	if (d(e)) return r ? e.trim() : e;
 	if (c(e)) return "";
@@ -1608,15 +1639,15 @@ function F(e, n = !0, r = !0) {
 }
 //#endregion
 //#region src/functions/strSplit.ts
-function Ue(e, t, n) {
-	let r = F(e);
+function F(e, t, n) {
+	let r = P(e);
 	if (!n || n <= 0) return r.split(t);
 	let i = r.split(t, n), a = r.split(t);
 	return i.length === a.length ? i : (i.pop(), [...i, a.slice(n - 1).join(t)]);
 }
 //#endregion
 //#region src/functions/transformation.ts
-function We(e, t = !1) {
+function I(e, t = !1) {
 	if (typeof e == "string") {
 		let r = e.trim();
 		switch (r) {
@@ -1629,7 +1660,7 @@ function We(e, t = !1) {
 				if (/^[{[]/.exec(r)) try {
 					return JSON.parse(r);
 				} catch (e) {
-					w.on({
+					C.on({
 						group: "transformation",
 						code: "error",
 						details: e
@@ -1644,9 +1675,9 @@ function We(e, t = !1) {
 }
 //#endregion
 //#region src/classes/CookieBlockInstance.ts
-var Ge = "__ui:cookie-block__", Ke = class {
+var Ke = "__ui:cookie-block__", qe = class {
 	constructor() {
-		C(this, "storage", new E(Ge));
+		S(this, "storage", new E(Ke));
 	}
 	get() {
 		var e;
@@ -1655,9 +1686,9 @@ var Ge = "__ui:cookie-block__", Ke = class {
 	set(e) {
 		this.storage.set(e);
 	}
-}, qe = class {
+}, Je = class {
 	static getItem() {
-		return T.get("__ui:cookie-block__", () => new Ke());
+		return T.get("__ui:cookie-block__", () => new qe());
 	}
 	static get() {
 		return this.getItem().get();
@@ -1665,7 +1696,7 @@ var Ge = "__ui:cookie-block__", Ke = class {
 	static set(e) {
 		this.getItem().set(e);
 	}
-}, Je = "__ui:cookie-storage__", I = class {
+}, Ye = "__ui:cookie-storage__", L = class {
 	static init(e, t) {
 		this.getListener = e, this.setListener = t;
 	}
@@ -1674,12 +1705,12 @@ var Ge = "__ui:cookie-block__", Ke = class {
 	}
 	static get(e, t) {
 		let n = this.getListener ? this.getListener(e) : this.initItems()[e];
-		return n === void 0 && t !== void 0 ? this.set(e, t) : We(n);
+		return n === void 0 && t !== void 0 ? this.set(e, t) : I(n);
 	}
 	static set(e, t, n) {
-		let r = x(t);
-		if (qe.get()) return r;
-		let i = F(r, !1);
+		let r = b(t);
+		if (Je.get()) return r;
+		let i = P(r, !1);
 		return this.setListener ? this.setListener(e, i, n) : (this.initItems()[e] = i === "" ? void 0 : r, this.hasDom() && (document.cookie = [
 			`${encodeURIComponent(e)}=${encodeURIComponent(i)}`,
 			this.toMaxAge(i, n == null ? void 0 : n.age),
@@ -1691,16 +1722,16 @@ var Ge = "__ui:cookie-block__", Ke = class {
 		this.set(e, "", { age: -1 });
 	}
 	static update() {
-		s() && (T.remove(Je), this.initItems());
+		s() && (T.remove(Ye), this.initItems());
 	}
 	static hasDom() {
-		return s() && !se();
+		return s() && !ce();
 	}
 	static initItems() {
-		return T.get(Je, () => {
+		return T.get(Ye, () => {
 			let e = {};
 			if (this.hasDom()) for (let t of document.cookie.split(";")) {
-				let [n, r] = Ue(t.trim(), "=", 2);
+				let [n, r] = F(t.trim(), "=", 2);
 				n && l(r) && (e[n] = r);
 			}
 			return e;
@@ -1713,39 +1744,39 @@ var Ge = "__ui:cookie-block__", Ke = class {
 		return `SameSite=${e == null ? "strict" : e}`;
 	}
 	static toArguments(e) {
-		return e === void 0 ? [] : Array.isArray(e) ? e : Object.entries(e).map(([e, t]) => `${e}=${F(t)}`);
+		return e === void 0 ? [] : Array.isArray(e) ? e : Object.entries(e).map(([e, t]) => `${e}=${P(t)}`);
 	}
 };
-C(I, "getListener", void 0), C(I, "setListener", void 0);
+S(L, "getListener", void 0), S(L, "setListener", void 0);
 //#endregion
 //#region src/classes/Cookie.ts
-var Ye = () => T.get("__ui:cookie-items__", () => ({})), Xe = class e {
+var Xe = () => T.get("__ui:cookie-items__", () => ({})), Ze = class e {
 	static getInstance(t) {
 		var n, r;
-		return (n = (r = Ye()) == null ? void 0 : r[t]) == null ? new e(t) : n;
+		return (n = (r = Xe()) == null ? void 0 : r[t]) == null ? new e(t) : n;
 	}
 	constructor(e) {
-		C(this, "value", void 0), C(this, "options", {}), this.name = e;
-		let t = Ye();
+		S(this, "value", void 0), S(this, "options", {}), this.name = e;
+		let t = Xe();
 		if (e in t) return t[e];
-		this.value = I.get(this.name), t[e] = this;
+		this.value = L.get(this.name), t[e] = this;
 	}
 	get(e, t) {
 		return this.value === void 0 && e && this.set(e, t), this.value;
 	}
 	set(e, t) {
-		this.value = x(e), Object.assign(this.options, t), this.update();
+		this.value = b(e), Object.assign(this.options, t), this.update();
 	}
 	remove() {
 		this.set("");
 	}
 	update() {
-		I.set(this.name, this.value, this.options);
+		L.set(this.name, this.value, this.options);
 	}
 };
 //#endregion
 //#region src/functions/toDate.ts
-function L(e) {
+function R(e) {
 	var t, n, r, i, a, o, s, l;
 	if (e instanceof Date) return e;
 	if (c(e)) return /* @__PURE__ */ new Date();
@@ -1757,29 +1788,29 @@ function L(e) {
 }
 //#endregion
 //#region src/functions/getColumn.ts
-function Ze(e, t) {
+function Qe(e, t) {
 	return r(e, (e) => e == null ? void 0 : e[t], !0);
 }
 //#endregion
 //#region src/classes/GeoIntl.ts
-var R = class e {
+var z = class e {
 	static isItem(e = D.getLocation()) {
-		return this.getLocation(e) in B;
+		return this.getLocation(e) in V;
 	}
 	static getLocation(e = D.getLocation()) {
-		if (e in z) return z[e];
+		if (e in B) return B[e];
 		let t = D.find(e);
-		return z[e] = t.standard, t.standard;
+		return B[e] = t.standard, t.standard;
 	}
 	static getInstance(t = D.getLocation()) {
 		let n = this.getLocation(t);
-		return n in B ? B[n] : new e(t);
+		return n in V ? V[n] : new e(t);
 	}
-	constructor(e = D.getLocation(), t = w.getItem()) {
-		C(this, "geo", void 0), this.errorCenter = t, this.geo = D.find(e);
+	constructor(e = D.getLocation(), t = C.getItem()) {
+		S(this, "geo", void 0), this.errorCenter = t, this.geo = D.find(e);
 		let n = this.getLocation();
-		if (n in B) return B[n];
-		z[e] = n, B[n] = this;
+		if (n in V) return V[n];
+		B[e] = n, V[n] = this;
 	}
 	getLocation() {
 		return this.geo.standard;
@@ -1840,7 +1871,7 @@ var R = class e {
 	}
 	number(e, t) {
 		var n, r;
-		return ((n = this.numberObject(t)) == null || (r = n.format) == null ? void 0 : r.call(n, v(e))) || e.toString();
+		return ((n = this.numberObject(t)) == null || (r = n.format) == null ? void 0 : r.call(n, _(e))) || e.toString();
 	}
 	decimal() {
 		var e, t, n;
@@ -1854,7 +1885,7 @@ var R = class e {
 		}, i = e.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...e) => (r.currency = String(e[2]).toUpperCase(), String(e[1])));
 		if (n) {
 			let t = this.numberObject(r);
-			return t ? Ze(t.formatToParts(v(e)).filter((e) => ["literal", "currency"].indexOf(e.type) === -1), "value").join("") : e.toString();
+			return t ? Qe(t.formatToParts(_(e)).filter((e) => ["literal", "currency"].indexOf(e.type) === -1), "value").join("") : e.toString();
 		} else if ("currency" in r) return this.number(typeof e == "number" ? e : i, r);
 		else return this.number(typeof e == "number" ? e : i, {
 			...r,
@@ -1877,7 +1908,7 @@ var R = class e {
 		return this.number(r, n);
 	}
 	sizeFile(e, t = "byte") {
-		let n = v(e);
+		let n = _(e);
 		if (n > 1024 && d(t)) switch (t) {
 			case "byte": return this.sizeFile(n / 1024, "kilobyte");
 			case "kilobyte": return this.sizeFile(n / 1024, "megabyte");
@@ -1894,11 +1925,11 @@ var R = class e {
 		});
 	}
 	percentBy100(e, t) {
-		return this.percent(v(e) / 100, t);
+		return this.percent(_(e) / 100, t);
 	}
 	plural(e, t, n, r) {
 		var i;
-		let a = v(e), o = t.split("|");
+		let a = _(e), o = t.split("|");
 		if (o.length > 1) try {
 			if (typeof Intl < "u") {
 				var s;
@@ -1935,18 +1966,18 @@ var R = class e {
 		return `${this.number(a, r)} ${(i = o == null ? void 0 : o[0]) == null ? "" : i}`.trim();
 	}
 	date(e, t, n, r) {
-		let i = L(e), a = typeof n == "string", o = this.dateOptions(t, a ? n : "short");
+		let i = R(e), a = typeof n == "string", o = this.dateOptions(t, a ? n : "short");
 		return r && (o.hour12 = !1), a || Object.assign(o, n), i.toLocaleString(this.getLocation(), o);
 	}
 	relative(e, t, n) {
-		let r = L(e), i = n || /* @__PURE__ */ new Date(), a = {
+		let r = R(e), i = n || /* @__PURE__ */ new Date(), a = {
 			numeric: "auto",
 			...typeof t == "string" ? { style: t } : t || {}
 		}, o = "second", s = (r.getTime() - i.getTime()) / 1e3;
 		return Math.abs(s) >= 60 && (o = "minute", s /= 60, Math.abs(s) >= 60 && (o = "hour", s /= 60, Math.abs(s) >= 24 && (o = "day", s /= 24, Math.abs(s) >= 30 && (o = "month", s /= 30, Math.abs(s) >= 12 && (o = "year", s /= 12))))), this.relativeByValue(s, o, a);
 	}
 	relativeLimit(e, t, n, r, i, a, o) {
-		let s = L(e), c = n || /* @__PURE__ */ new Date(), l = new Date(c), u = new Date(c);
+		let s = R(e), c = n || /* @__PURE__ */ new Date(), l = new Date(c), u = new Date(c);
 		return l.setDate(c.getDate() - t), u.setDate(c.getDate() + t), s >= l && s <= u ? this.relative(s, r, c) : this.date(s, a, i, o);
 	}
 	relativeByValue(e, t, n) {
@@ -1955,7 +1986,7 @@ var R = class e {
 			...typeof n == "string" ? { style: n } : n || {}
 		};
 		try {
-			if (this.hasIntl() && Intl.RelativeTimeFormat !== void 0) return new Intl.RelativeTimeFormat(this.getLocation(), r).format(Math.round(v(e)), t);
+			if (this.hasIntl() && Intl.RelativeTimeFormat !== void 0) return new Intl.RelativeTimeFormat(this.getLocation(), r).format(Math.round(_(e)), t);
 		} catch (e) {
 			this.errorCenter.on({
 				group: "intl",
@@ -1967,7 +1998,7 @@ var R = class e {
 	}
 	month(e, t) {
 		try {
-			if (this.hasIntlDateTimeFormat()) return Intl.DateTimeFormat(this.getLocation(), { month: t || "long" }).format(L(e));
+			if (this.hasIntlDateTimeFormat()) return Intl.DateTimeFormat(this.getLocation(), { month: t || "long" }).format(R(e));
 		} catch (e) {
 			this.errorCenter.on({
 				group: "intl",
@@ -2001,7 +2032,7 @@ var R = class e {
 	}
 	weekday(e, t) {
 		try {
-			if (this.hasIntlDateTimeFormat()) return new Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }).format(L(e));
+			if (this.hasIntlDateTimeFormat()) return new Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }).format(R(e));
 		} catch (e) {
 			this.errorCenter.on({
 				group: "intl",
@@ -2103,15 +2134,15 @@ var R = class e {
 			"second"
 		].indexOf(e) !== -1 && (n.second = "2-digit")), n;
 	}
-}, z = {}, B = {}, Qe = class e {
+}, B = {}, V = {}, $e = class e {
 	constructor(e, t = "date", n = D.getLocation()) {
-		C(this, "date", void 0), C(this, "hour24", !1), C(this, "watch", void 0), this.type = t, this.code = n, this.date = L(e), isNaN(this.date.getTime()) && w.on({
+		S(this, "date", void 0), S(this, "hour24", !1), S(this, "watch", void 0), this.type = t, this.code = n, this.date = R(e), isNaN(this.date.getTime()) && C.on({
 			group: "intl",
 			code: "invalid"
 		});
 	}
 	getIntl() {
-		return R.getInstance(this.code);
+		return z.getInstance(this.code);
 	}
 	getDate() {
 		return this.date;
@@ -2214,7 +2245,7 @@ var R = class e {
 		].indexOf(this.type) !== -1 && (i = n.locale("time"))), `${r.join("-")}${i ? `T${i}${t ? n.getTimeZone() : ""}` : ""}`;
 	}
 	setDate(e) {
-		return this.date = L(e), this.update(), this;
+		return this.date = R(e), this.update(), this;
 	}
 	setType(e) {
 		return this.type = e, this.update(), this;
@@ -2366,22 +2397,22 @@ var R = class e {
 };
 //#endregion
 //#region src/functions/getItemByPath.ts
-function V(e, n) {
+function H(e, n) {
 	var r;
 	if (!l(n, !0)) return;
-	let i = Ue(n, ".", 2), a = i[0];
-	return a && e != null && e[a] && t(e[a]) && i != null && i[1] ? V(e[a], i[1]) : (r = e == null ? void 0 : e[a]) == null ? void 0 : r;
+	let i = F(n, ".", 2), a = i[0];
+	return a && e != null && e[a] && t(e[a]) && i != null && i[1] ? H(e[a], i[1]) : (r = e == null ? void 0 : e[a]) == null ? void 0 : r;
 }
 //#endregion
 //#region src/functions/toCamelCase.ts
-function $e(e) {
+function et(e) {
 	return e.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (e) => `${e.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...e) => `${String(e[1]).toUpperCase()}`).replace(/^([A-Z])/, (e) => `${e.toLowerCase()}`);
 }
 //#endregion
 //#region src/types/formattersTypes.ts
-var H = /* @__PURE__ */ function(e) {
+var U = /* @__PURE__ */ function(e) {
 	return e.currency = "currency", e.date = "date", e.name = "name", e.number = "number", e.plural = "plural", e.unit = "unit", e;
-}({}), et = class {
+}({}), tt = class {
 	constructor(e, t) {
 		this.options = e, this.list = t;
 	}
@@ -2413,45 +2444,45 @@ var H = /* @__PURE__ */ function(e) {
 	getFormatData(e) {
 		let t = {};
 		return r(this.options, (n, r) => {
-			let i = `${$e(r)}Format`, a = V(e, r);
+			let i = `${et(r)}Format`, a = H(e, r);
 			n != null && n.transformation ? l(a) ? t[i] = n.transformation(a, e, n.options) : t[i] = "" : t[i] = this.transformation(a, e, n.type, n.options);
 		}), t;
 	}
 	transformation(e, t, n, r) {
-		if (l(e) || n === H.name) switch (n) {
-			case H.currency: return this.formatCurrency(e, t, r);
-			case H.date: return this.formatDate(e, r);
-			case H.name: return this.formatName(t, r);
-			case H.number: return this.formatNumber(e, r);
-			case H.plural: return this.formatPlural(e, r);
-			case H.unit: return this.formatUnit(e, r);
+		if (l(e) || n === U.name) switch (n) {
+			case U.currency: return this.formatCurrency(e, t, r);
+			case U.date: return this.formatDate(e, r);
+			case U.name: return this.formatName(t, r);
+			case U.number: return this.formatNumber(e, r);
+			case U.plural: return this.formatPlural(e, r);
+			case U.unit: return this.formatUnit(e, r);
 			default: return String(e);
 		}
 		return "";
 	}
 	formatCurrency(e, t, n) {
 		var r;
-		let i = n != null && n.currencyPropName ? V(t, n.currencyPropName) : t == null ? void 0 : t.currency;
-		return R.getInstance().currency(e, (r = n == null ? void 0 : n.options) == null ? i : r, n == null ? void 0 : n.numberOnly);
+		let i = n != null && n.currencyPropName ? H(t, n.currencyPropName) : t == null ? void 0 : t.currency;
+		return z.getInstance().currency(e, (r = n == null ? void 0 : n.options) == null ? i : r, n == null ? void 0 : n.numberOnly);
 	}
 	formatDate(e, t) {
-		return R.getInstance().date(e, t == null ? void 0 : t.type, t == null ? void 0 : t.options, t == null ? void 0 : t.hour24);
+		return z.getInstance().date(e, t == null ? void 0 : t.type, t == null ? void 0 : t.options, t == null ? void 0 : t.hour24);
 	}
 	formatName(e, t) {
 		var n, r, i;
-		let a = V(e, (n = t == null ? void 0 : t.lastPropName) == null ? "lastName" : n), o = V(e, (r = t == null ? void 0 : t.firstPropName) == null ? "firstName" : r), s = V(e, (i = t == null ? void 0 : t.surname) == null ? "surname" : i);
-		return a && o ? R.getInstance().fullName(a, o, s, t == null ? void 0 : t.short) : "";
+		let a = H(e, (n = t == null ? void 0 : t.lastPropName) == null ? "lastName" : n), o = H(e, (r = t == null ? void 0 : t.firstPropName) == null ? "firstName" : r), s = H(e, (i = t == null ? void 0 : t.surname) == null ? "surname" : i);
+		return a && o ? z.getInstance().fullName(a, o, s, t == null ? void 0 : t.short) : "";
 	}
 	formatNumber(e, t) {
-		return R.getInstance().number(e, t == null ? void 0 : t.options);
+		return z.getInstance().number(e, t == null ? void 0 : t.options);
 	}
 	formatPlural(e, t) {
-		return t && t.words ? R.getInstance().plural(e, t == null ? void 0 : t.words, t == null ? void 0 : t.options, t == null ? void 0 : t.optionsNumber) : e;
+		return t && t.words ? z.getInstance().plural(e, t == null ? void 0 : t.words, t == null ? void 0 : t.options, t == null ? void 0 : t.optionsNumber) : e;
 	}
 	formatUnit(e, t) {
-		return t && t.unit ? R.getInstance().unit(e, t.unit) : e;
+		return t && t.unit ? z.getInstance().unit(e, t.unit) : e;
 	}
-}, tt = "f", nt = class e {
+}, nt = "f", rt = class e {
 	constructor(e = D.getLocation()) {
 		this.code = e;
 	}
@@ -2492,7 +2523,7 @@ var H = /* @__PURE__ */ function(e) {
 		return this.code = e, this;
 	}
 	getLocation() {
-		return new R(this.code);
+		return new z(this.code);
 	}
 	getCodes(t) {
 		return t == null ? Object.keys(e.flags) : t;
@@ -2504,7 +2535,7 @@ var H = /* @__PURE__ */ function(e) {
 		return this.getLocation().countryName(e.country);
 	}
 };
-C(nt, "flags", {
+S(rt, "flags", {
 	AD: "f-ad",
 	AE: "f-ae",
 	AF: "f-af",
@@ -2749,7 +2780,7 @@ C(nt, "flags", {
 });
 //#endregion
 //#region src/classes/GeoPhone.ts
-var rt = class {
+var it = class {
 	static get(e) {
 		return this.getList().find((t) => e === t.value);
 	}
@@ -2847,10 +2878,10 @@ var rt = class {
 		return e.replace(/\*/, this.getWithinSymbol(t));
 	}
 };
-C(rt, "list", void 0), C(rt, "map", void 0);
+S(it, "list", void 0), S(it, "map", void 0);
 //#endregion
 //#region src/classes/Global.ts
-var it = class {
+var at = class {
 	static getItem() {
 		return T.get("__ui:global-instance__", () => ({}));
 	}
@@ -2862,9 +2893,9 @@ var it = class {
 		let t = this.getItem();
 		Object.keys(t).length > 0 || Object.assign(t, e);
 	}
-}, at = class {
+}, ot = class {
 	constructor() {
-		C(this, "hash", void 0), C(this, "watch", {}), C(this, "block", !1);
+		S(this, "hash", void 0), S(this, "watch", {}), S(this, "block", !1), S(this, "time", void 0);
 	}
 	get(e, t) {
 		let n = this.getHash();
@@ -2872,7 +2903,7 @@ var it = class {
 	}
 	set(e, t) {
 		var n;
-		let r = x(t);
+		let r = b(t);
 		return r !== ((n = this.hash) == null ? void 0 : n[e]) && (this.getHash()[e] = r, this.update()), this;
 	}
 	addWatch(e, t) {
@@ -2894,7 +2925,7 @@ var it = class {
 		let e = {};
 		if (s()) {
 			let t = location.hash.matchAll(/([\w-]+)[:=]([^;]+)/gi);
-			for (let n of t) e[n[1]] = We(n[2]);
+			for (let n of t) e[n[1]] = I(n[2]);
 		}
 		return e;
 	}
@@ -2910,14 +2941,14 @@ var it = class {
 	}
 	update() {
 		if (s()) {
-			this.block = !0;
+			clearTimeout(this.time), this.block = !0;
 			try {
 				let e = this.getHash();
 				history.replaceState(null, "", `#${o(e, "=", ";")}`);
 			} finally {
-				requestAnimationFrame(() => {
+				this.time = setTimeout(() => {
 					this.block = !1;
-				});
+				}, 120);
 			}
 		}
 		return this;
@@ -2928,9 +2959,9 @@ var it = class {
 			((r = this.hash) == null ? void 0 : r[n]) !== (e == null ? void 0 : e[n]) && t.forEach((t) => t(e[n]));
 		}), this;
 	}
-}, ot = class {
+}, st = class {
 	static getItem() {
-		return T.get("__ui:hash-instance__", () => new at());
+		return T.get("__ui:hash-instance__", () => new ot());
 	}
 	static get(e, t) {
 		return this.getItem().get(e, t);
@@ -2947,26 +2978,26 @@ var it = class {
 	static reload() {
 		this.getItem().reload();
 	}
-}, st = 320, ct = "--LOAD--", lt = class {
+}, ct = 320, lt = "--LOAD--", ut = class {
 	static is(e) {
 		return e in this.icons || this.getName(e) in this.icons;
 	}
 	static async get(e, t = "", n = 1e3 * 60 * 3) {
 		var r, i, a, o;
 		let s = (r = (i = (a = this.icons) == null ? void 0 : a[this.getName(e)]) == null ? (o = this.icons) == null ? void 0 : o[e] : i) == null ? `${e.replace(/^@/, t == null ? this.url : t)}.svg` : r;
-		return typeof s == "string" ? s === ct && n > 0 ? (await this.wait(), this.get(e, t, n - st)) : s : b(s) ? await s() : await s;
+		return typeof s == "string" ? s === lt && n > 0 ? (await this.wait(), this.get(e, t, n - ct)) : s : y(s) ? await s() : await s;
 	}
 	static getNameList() {
 		return r(this.icons, (e, t) => t.replace(/^@/, ""));
 	}
 	static getUrlGlobal() {
-		return `${P.isLocalhost(), ""}${this.url}`;
+		return `${N.isLocalhost(), ""}${this.url}`;
 	}
 	static add(e, t) {
 		this.icons[this.getName(e)] = t;
 	}
 	static addLoad(e) {
-		this.icons[this.getName(e)] = ct;
+		this.icons[this.getName(e)] = lt;
 	}
 	static addGlobal(e, t) {
 		this.icons[this.getName(e)] = `${this.getUrlGlobal()}${t}`;
@@ -2984,27 +3015,27 @@ var it = class {
 		return `@${e}`;
 	}
 	static wait() {
-		return new Promise((e) => setTimeout(() => e(), st));
+		return new Promise((e) => setTimeout(() => e(), ct));
 	}
 };
-C(lt, "icons", {}), C(lt, "url", "/icons/");
+S(ut, "icons", {}), S(ut, "url", "/icons/");
 //#endregion
 //#region src/functions/getElementItem.ts
-function ut(e, t, n) {
+function dt(e, t, n) {
 	var r, i;
 	return (r = (i = O(e)) == null ? void 0 : i[t]) == null ? n : r;
 }
 //#endregion
 //#region src/functions/setElementItem.ts
-function dt(e, n, i) {
+function ft(e, n, i) {
 	let a = O(e);
 	if (a) {
-		let e = ut(a, n);
+		let e = dt(a, n);
 		if (t(e) && t(i)) r(i, (t, n) => {
-			e[n] = x(t);
+			e[n] = b(t);
 		});
 		else {
-			let e = x(i);
+			let e = b(i);
 			!(n in a) && typeof e == "string" ? a.setAttribute(n.toString(), e) : a[n] = e;
 		}
 	}
@@ -3012,33 +3043,33 @@ function dt(e, n, i) {
 }
 //#endregion
 //#region src/functions/createElement.ts
-function U(e, t = "div", i, a) {
+function W(e, t = "div", i, a) {
 	if (!s()) return;
 	let o = document.createElement(t);
 	return typeof i == "function" ? i(o) : n(i) && r(i, (e, t) => {
-		dt(o, t, e);
+		ft(o, t, e);
 	}), e == null || e.insertBefore(o, a == null ? null : a), o;
 }
 //#endregion
 //#region src/functions/encodeAttribute.ts
-var ft = {
+var pt = {
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;",
 	"'": "&#39;"
 };
-function W(e) {
+function G(e) {
 	return String(e).replace(/[&<>"']/g, (e) => {
 		var t;
-		return (t = ft == null ? void 0 : ft[e]) == null ? e : t;
+		return (t = pt == null ? void 0 : pt[e]) == null ? e : t;
 	});
 }
 //#endregion
 //#region src/classes/MetaManager.ts
-var G = class {
+var K = class {
 	constructor(e, t = !1) {
-		C(this, "items", {}), this.listMeta = e, this.isProperty = t, this.update();
+		S(this, "items", {}), this.listMeta = e, this.isProperty = t, this.update();
 	}
 	getListMeta() {
 		return this.listMeta;
@@ -3078,13 +3109,13 @@ var G = class {
 		let r = this.findMetaElement(e);
 		if (r) return r.content = n, this;
 		let i = { content: n };
-		return this.isProperty ? i.property = e : i.name = e, U(document.head, "meta", i), this;
+		return this.isProperty ? i.property = e : i.name = e, W(document.head, "meta", i), this;
 	}
 	toHtmlString(e) {
 		var t;
 		let n = (t = this.items[e]) == null ? "" : t;
-		if (e === "title") return `<title>${oe(n)}</title>`;
-		let r = W(n);
+		if (e === "title") return `<title>${se(n)}</title>`;
+		let r = G(n);
 		return r ? `<meta ${this.getAttributeName()}="${e}" content="${r}">` : "";
 	}
 	update() {
@@ -3093,121 +3124,121 @@ var G = class {
 			this.items[e] = (t = (n = this.findMetaElement(e)) == null ? void 0 : n.content) == null ? "" : t;
 		}), this;
 	}
-}, K = /* @__PURE__ */ function(e) {
+}, q = /* @__PURE__ */ function(e) {
 	return e.title = "title", e.description = "description", e.keywords = "keywords", e.canonical = "canonical", e.robots = "robots", e.author = "author", e;
-}({}), pt = /* @__PURE__ */ function(e) {
-	return e.indexFollow = "index, follow", e.noIndexFollow = "noindex, follow", e.indexNoFollow = "index, nofollow", e.noIndexNoFollow = "noindex, nofollow", e.noArchive = "noarchive", e.noSnippet = "nosnippet", e.noImageIndex = "noimageindex", e.images = "images", e.noTranslate = "notranslate", e.noPreview = "nopreview", e.textOnly = "textonly", e.noIndexSubpages = "noindex, noarchive", e.none = "none", e;
-}({}), q = /* @__PURE__ */ function(e) {
-	return e.title = "og:title", e.type = "og:type", e.url = "og:url", e.image = "og:image", e.description = "og:description", e.locale = "og:locale", e.siteName = "og:site_name", e.localeAlternate = "og:locale:alternate", e.imageUrl = "og:image:url", e.imageSecureUrl = "og:image:secure_url", e.imageType = "og:image:type", e.imageWidth = "og:image:width", e.imageHeight = "og:image:height", e.imageAlt = "og:image:alt", e.video = "og:video", e.videoUrl = "og:video:url", e.videoSecureUrl = "og:video:secure_url", e.videoType = "og:video:type", e.videoWidth = "og:video:width", e.videoHeight = "og:video:height", e.audio = "og:audio", e.audioSecureUrl = "og:audio:secure_url", e.audioType = "og:audio:type", e.articlePublishedTime = "article:published_time", e.articleModifiedTime = "article:modified_time", e.articleExpirationTime = "article:expiration_time", e.articleAuthor = "article:author", e.articleSection = "article:section", e.articleTag = "article:tag", e.bookAuthor = "book:author", e.bookIsbn = "book:isbn", e.bookReleaseDate = "book:release_date", e.bookTag = "book:tag", e.musicDuration = "music:duration", e.musicAlbum = "music:album", e.musicAlbumDisc = "music:album:disc", e.musicAlbumTrack = "music:album:track", e.musicMusician = "music:musician", e.musicSong = "music:song", e.musicSongDisc = "music:song:disc", e.musicSongTrack = "music:song:track", e.musicReleaseDate = "music:release_date", e.musicCreator = "music:creator", e.videoActor = "video:actor", e.videoActorRole = "video:actor:role", e.videoDirector = "video:director", e.videoWriter = "video:writer", e.videoDuration = "video:duration", e.videoReleaseDate = "video:release_date", e.videoTag = "video:tag", e.videoSeries = "video:series", e.profileFirstName = "profile:first_name", e.profileLastName = "profile:last_name", e.profileUsername = "profile:username", e.profileGender = "profile:gender", e.productBrand = "product:brand", e.productAvailability = "product:availability", e.productCondition = "product:condition", e.productPriceAmount = "product:price:amount", e.productPriceCurrency = "product:price:currency", e.productRetailerItemId = "product:retailer_item_id", e.productCategory = "product:category", e.productEan = "product:ean", e.productIsbn = "product:isbn", e.productMfrPartNo = "product:mfr_part_no", e.productUpc = "product:upc", e.productWeightValue = "product:weight:value", e.productWeightUnits = "product:weight:units", e.productColor = "product:color", e.productMaterial = "product:material", e.productPattern = "product:pattern", e.productAgeGroup = "product:age_group", e.productGender = "product:gender", e;
 }({}), mt = /* @__PURE__ */ function(e) {
-	return e.website = "website", e.article = "article", e.video = "video.other", e.videoTvShow = "video.tv_show", e.videoEpisode = "video.episode", e.videoMovie = "video.movie", e.musicAlbum = "music.album", e.musicPlaylist = "music.playlist", e.musicSong = "music.song", e.musicRadioStation = "music.radio_station", e.app = "app", e.product = "product", e.business = "business.business", e.place = "place", e.event = "event", e.profile = "profile", e.book = "book", e;
-}({}), ht = /* @__PURE__ */ function(e) {
-	return e.inStock = "in stock", e.outOfStock = "out of stock", e.preorder = "preorder", e.backorder = "backorder", e.discontinued = "discontinued", e.pending = "pending", e;
-}({}), gt = /* @__PURE__ */ function(e) {
-	return e.new = "new", e.used = "used", e.refurbished = "refurbished", e;
-}({}), _t = /* @__PURE__ */ function(e) {
-	return e.newborn = "newborn", e.infant = "infant", e.toddler = "toddler", e.kids = "kids", e.adult = "adult", e;
-}({}), vt = /* @__PURE__ */ function(e) {
-	return e.female = "female", e.male = "male", e.unisex = "unisex", e;
+	return e.indexFollow = "index, follow", e.noIndexFollow = "noindex, follow", e.indexNoFollow = "index, nofollow", e.noIndexNoFollow = "noindex, nofollow", e.noArchive = "noarchive", e.noSnippet = "nosnippet", e.noImageIndex = "noimageindex", e.images = "images", e.noTranslate = "notranslate", e.noPreview = "nopreview", e.textOnly = "textonly", e.noIndexSubpages = "noindex, noarchive", e.none = "none", e;
 }({}), J = /* @__PURE__ */ function(e) {
-	return e.card = "twitter:card", e.site = "twitter:site", e.creator = "twitter:creator", e.url = "twitter:url", e.title = "twitter:title", e.description = "twitter:description", e.image = "twitter:image", e.imageAlt = "twitter:image:alt", e.imageSrc = "twitter:image:src", e.imageWidth = "twitter:image:width", e.imageHeight = "twitter:image:height", e.label1 = "twitter:label1", e.data1 = "twitter:data1", e.label2 = "twitter:label2", e.data2 = "twitter:data2", e.appNameIphone = "twitter:app:name:iphone", e.appIdIphone = "twitter:app:id:iphone", e.appUrlIphone = "twitter:app:url:iphone", e.appNameIpad = "twitter:app:name:ipad", e.appIdIpad = "twitter:app:id:ipad", e.appUrlIpad = "twitter:app:url:ipad", e.appNameGooglePlay = "twitter:app:name:googleplay", e.appIdGooglePlay = "twitter:app:id:googleplay", e.appUrlGooglePlay = "twitter:app:url:googleplay", e.player = "twitter:player", e.playerWidth = "twitter:player:width", e.playerHeight = "twitter:player:height", e.playerStream = "twitter:player:stream", e.playerStreamContentType = "twitter:player:stream:content_type", e;
+	return e.title = "og:title", e.type = "og:type", e.url = "og:url", e.image = "og:image", e.description = "og:description", e.locale = "og:locale", e.siteName = "og:site_name", e.localeAlternate = "og:locale:alternate", e.imageUrl = "og:image:url", e.imageSecureUrl = "og:image:secure_url", e.imageType = "og:image:type", e.imageWidth = "og:image:width", e.imageHeight = "og:image:height", e.imageAlt = "og:image:alt", e.video = "og:video", e.videoUrl = "og:video:url", e.videoSecureUrl = "og:video:secure_url", e.videoType = "og:video:type", e.videoWidth = "og:video:width", e.videoHeight = "og:video:height", e.audio = "og:audio", e.audioSecureUrl = "og:audio:secure_url", e.audioType = "og:audio:type", e.articlePublishedTime = "article:published_time", e.articleModifiedTime = "article:modified_time", e.articleExpirationTime = "article:expiration_time", e.articleAuthor = "article:author", e.articleSection = "article:section", e.articleTag = "article:tag", e.bookAuthor = "book:author", e.bookIsbn = "book:isbn", e.bookReleaseDate = "book:release_date", e.bookTag = "book:tag", e.musicDuration = "music:duration", e.musicAlbum = "music:album", e.musicAlbumDisc = "music:album:disc", e.musicAlbumTrack = "music:album:track", e.musicMusician = "music:musician", e.musicSong = "music:song", e.musicSongDisc = "music:song:disc", e.musicSongTrack = "music:song:track", e.musicReleaseDate = "music:release_date", e.musicCreator = "music:creator", e.videoActor = "video:actor", e.videoActorRole = "video:actor:role", e.videoDirector = "video:director", e.videoWriter = "video:writer", e.videoDuration = "video:duration", e.videoReleaseDate = "video:release_date", e.videoTag = "video:tag", e.videoSeries = "video:series", e.profileFirstName = "profile:first_name", e.profileLastName = "profile:last_name", e.profileUsername = "profile:username", e.profileGender = "profile:gender", e.productBrand = "product:brand", e.productAvailability = "product:availability", e.productCondition = "product:condition", e.productPriceAmount = "product:price:amount", e.productPriceCurrency = "product:price:currency", e.productRetailerItemId = "product:retailer_item_id", e.productCategory = "product:category", e.productEan = "product:ean", e.productIsbn = "product:isbn", e.productMfrPartNo = "product:mfr_part_no", e.productUpc = "product:upc", e.productWeightValue = "product:weight:value", e.productWeightUnits = "product:weight:units", e.productColor = "product:color", e.productMaterial = "product:material", e.productPattern = "product:pattern", e.productAgeGroup = "product:age_group", e.productGender = "product:gender", e;
+}({}), ht = /* @__PURE__ */ function(e) {
+	return e.website = "website", e.article = "article", e.video = "video.other", e.videoTvShow = "video.tv_show", e.videoEpisode = "video.episode", e.videoMovie = "video.movie", e.musicAlbum = "music.album", e.musicPlaylist = "music.playlist", e.musicSong = "music.song", e.musicRadioStation = "music.radio_station", e.app = "app", e.product = "product", e.business = "business.business", e.place = "place", e.event = "event", e.profile = "profile", e.book = "book", e;
+}({}), gt = /* @__PURE__ */ function(e) {
+	return e.inStock = "in stock", e.outOfStock = "out of stock", e.preorder = "preorder", e.backorder = "backorder", e.discontinued = "discontinued", e.pending = "pending", e;
+}({}), _t = /* @__PURE__ */ function(e) {
+	return e.new = "new", e.used = "used", e.refurbished = "refurbished", e;
+}({}), vt = /* @__PURE__ */ function(e) {
+	return e.newborn = "newborn", e.infant = "infant", e.toddler = "toddler", e.kids = "kids", e.adult = "adult", e;
 }({}), yt = /* @__PURE__ */ function(e) {
+	return e.female = "female", e.male = "male", e.unisex = "unisex", e;
+}({}), Y = /* @__PURE__ */ function(e) {
+	return e.card = "twitter:card", e.site = "twitter:site", e.creator = "twitter:creator", e.url = "twitter:url", e.title = "twitter:title", e.description = "twitter:description", e.image = "twitter:image", e.imageAlt = "twitter:image:alt", e.imageSrc = "twitter:image:src", e.imageWidth = "twitter:image:width", e.imageHeight = "twitter:image:height", e.label1 = "twitter:label1", e.data1 = "twitter:data1", e.label2 = "twitter:label2", e.data2 = "twitter:data2", e.appNameIphone = "twitter:app:name:iphone", e.appIdIphone = "twitter:app:id:iphone", e.appUrlIphone = "twitter:app:url:iphone", e.appNameIpad = "twitter:app:name:ipad", e.appIdIpad = "twitter:app:id:ipad", e.appUrlIpad = "twitter:app:url:ipad", e.appNameGooglePlay = "twitter:app:name:googleplay", e.appIdGooglePlay = "twitter:app:id:googleplay", e.appUrlGooglePlay = "twitter:app:url:googleplay", e.player = "twitter:player", e.playerWidth = "twitter:player:width", e.playerHeight = "twitter:player:height", e.playerStream = "twitter:player:stream", e.playerStreamContentType = "twitter:player:stream:content_type", e;
+}({}), bt = /* @__PURE__ */ function(e) {
 	return e.summary = "summary", e.summaryLargeImage = "summary_large_image", e.app = "app", e.player = "player", e.product = "product", e.gallery = "gallery", e.photo = "photo", e.leadGeneration = "lead_generation", e.audio = "audio", e.poll = "poll", e;
-}({}), bt = class extends G {
+}({}), xt = class extends K {
 	constructor() {
-		super(Object.values(q), !0);
-	}
-	getTitle() {
-		return this.get(q.title);
-	}
-	getType() {
-		return this.get(q.type);
-	}
-	getUrl() {
-		return this.get(q.url);
-	}
-	getImage() {
-		return this.get(q.image);
-	}
-	getDescription() {
-		return this.get(q.description);
-	}
-	getLocale() {
-		return this.get(q.locale);
-	}
-	getSiteName() {
-		return this.get(q.siteName);
-	}
-	setTitle(e) {
-		return this.set(q.title, e);
-	}
-	setType(e) {
-		return this.set(q.type, e);
-	}
-	setUrl(e) {
-		return this.set(q.url, e);
-	}
-	setImage(e) {
-		return this.set(q.image, e);
-	}
-	setDescription(e) {
-		return this.set(q.description, e);
-	}
-	setLocale(e) {
-		return this.set(q.locale, e);
-	}
-	setSiteName(e) {
-		return this.set(q.siteName, e);
-	}
-}, xt = class extends G {
-	constructor() {
-		super(Object.values(J));
-	}
-	getCard() {
-		return this.get(J.card);
-	}
-	getSite() {
-		return this.get(J.site);
-	}
-	getCreator() {
-		return this.get(J.creator);
-	}
-	getUrl() {
-		return this.get(J.url);
+		super(Object.values(J), !0);
 	}
 	getTitle() {
 		return this.get(J.title);
 	}
-	getDescription() {
-		return this.get(J.description);
+	getType() {
+		return this.get(J.type);
+	}
+	getUrl() {
+		return this.get(J.url);
 	}
 	getImage() {
 		return this.get(J.image);
 	}
-	setCard(e) {
-		return this.set(J.card, e), this;
+	getDescription() {
+		return this.get(J.description);
 	}
-	setSite(e) {
-		return this.set(J.site, e), this;
+	getLocale() {
+		return this.get(J.locale);
 	}
-	setCreator(e) {
-		return this.set(J.creator, e), this;
-	}
-	setUrl(e) {
-		return this.set(J.url, e), this;
+	getSiteName() {
+		return this.get(J.siteName);
 	}
 	setTitle(e) {
-		return this.set(J.title, e), this;
+		return this.set(J.title, e);
 	}
-	setDescription(e) {
-		return this.set(J.description, e), this;
+	setType(e) {
+		return this.set(J.type, e);
+	}
+	setUrl(e) {
+		return this.set(J.url, e);
 	}
 	setImage(e) {
-		return this.set(J.image, e), this;
+		return this.set(J.image, e);
 	}
-}, St = class extends G {
+	setDescription(e) {
+		return this.set(J.description, e);
+	}
+	setLocale(e) {
+		return this.set(J.locale, e);
+	}
+	setSiteName(e) {
+		return this.set(J.siteName, e);
+	}
+}, St = class extends K {
 	constructor() {
-		super(Object.values(K)), C(this, "suffix", void 0), C(this, "og", void 0), C(this, "twitter", void 0), this.og = new bt(), this.twitter = new xt();
+		super(Object.values(Y));
+	}
+	getCard() {
+		return this.get(Y.card);
+	}
+	getSite() {
+		return this.get(Y.site);
+	}
+	getCreator() {
+		return this.get(Y.creator);
+	}
+	getUrl() {
+		return this.get(Y.url);
+	}
+	getTitle() {
+		return this.get(Y.title);
+	}
+	getDescription() {
+		return this.get(Y.description);
+	}
+	getImage() {
+		return this.get(Y.image);
+	}
+	setCard(e) {
+		return this.set(Y.card, e), this;
+	}
+	setSite(e) {
+		return this.set(Y.site, e), this;
+	}
+	setCreator(e) {
+		return this.set(Y.creator, e), this;
+	}
+	setUrl(e) {
+		return this.set(Y.url, e), this;
+	}
+	setTitle(e) {
+		return this.set(Y.title, e), this;
+	}
+	setDescription(e) {
+		return this.set(Y.description, e), this;
+	}
+	setImage(e) {
+		return this.set(Y.image, e), this;
+	}
+}, Ct = class extends K {
+	constructor() {
+		super(Object.values(q)), S(this, "suffix", void 0), S(this, "og", void 0), S(this, "twitter", void 0), this.og = new xt(), this.twitter = new St();
 	}
 	getOg() {
 		return this.og;
@@ -3216,26 +3247,26 @@ var G = class {
 		return this.twitter;
 	}
 	getTitle() {
-		let e = this.get(K.title);
+		let e = this.get(q.title);
 		return !l(e) && s() && (e = document.title), e.replace(this.getSuffix(), "").trim();
 	}
 	getKeywords() {
-		return this.get(K.keywords);
+		return this.get(q.keywords);
 	}
 	getDescription() {
-		return this.get(K.description);
+		return this.get(q.description);
 	}
 	getImage() {
 		return this.og.getImage();
 	}
 	getCanonical() {
-		return this.get(K.canonical);
+		return this.get(q.canonical);
 	}
 	getRobots() {
-		return this.get(K.robots);
+		return this.get(q.robots);
 	}
 	getAuthor() {
-		return this.get(K.author);
+		return this.get(q.author);
 	}
 	getSiteName() {
 		return this.og.getSiteName();
@@ -3245,25 +3276,25 @@ var G = class {
 	}
 	setTitle(e) {
 		let t = l(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
-		return s() && (document.title = t), this.set(K.title, t), this.og.setTitle(t), this.twitter.setTitle(t), this;
+		return s() && (document.title = t), this.set(q.title, t), this.og.setTitle(t), this.twitter.setTitle(t), this;
 	}
 	setKeywords(e) {
-		return this.set(K.keywords, k(e).join(", ")), this;
+		return this.set(q.keywords, k(e).join(", ")), this;
 	}
 	setDescription(e) {
-		return this.set(K.description, e), this;
+		return this.set(q.description, e), this;
 	}
 	setImage(e) {
 		return this.og.setImage(e), this.twitter.setImage(e), this;
 	}
 	setCanonical(e) {
-		return this.set(K.canonical, e), this.og.setUrl(e), this.twitter.setUrl(e), this;
+		return this.set(q.canonical, e), this.og.setUrl(e), this.twitter.setUrl(e), this;
 	}
 	setRobots(e) {
-		return this.set(K.robots, e), this;
+		return this.set(q.robots, e), this;
 	}
 	setAuthor(e) {
-		return this.set(K.author, e), this;
+		return this.set(q.author, e), this;
 	}
 	setSiteName(e) {
 		return this.og.setSiteName(e), this.twitter.setSite(e), this;
@@ -3280,9 +3311,9 @@ var G = class {
 	getSuffix() {
 		return l(this.suffix) ? ` - ${this.suffix}` : "";
 	}
-}, Ct = class {
+}, wt = class {
 	static getItem() {
-		return T.get("__ui:meta-instance__", () => new St());
+		return T.get("__ui:meta-instance__", () => new Ct());
 	}
 	static getOg() {
 		return this.getItem().getOg();
@@ -3350,7 +3381,7 @@ var G = class {
 	static html() {
 		return this.getItem().html();
 	}
-}, wt = class {
+}, Tt = class {
 	static async is() {
 		let e = await this.get();
 		return e !== -1 && e <= 8;
@@ -3372,8 +3403,8 @@ var G = class {
 		return this.calculate;
 	}
 	static createElement() {
-		return U(document.body, "div", (e) => {
-			e.style.height = "24px", e.style.overflowY = "scroll", e.style.position = "fixed", e.style.width = "100%", U(e, "div", (e) => {
+		return W(document.body, "div", (e) => {
+			e.style.height = "24px", e.style.overflowY = "scroll", e.style.position = "fixed", e.style.width = "100%", W(e, "div", (e) => {
 				e.style.height = "100px";
 			});
 		});
@@ -3388,36 +3419,36 @@ var G = class {
 		});
 	}
 };
-C(wt, "calculate", !1);
+S(Tt, "calculate", !1);
 //#endregion
 //#region src/functions/escapeExp.ts
-function Y(e) {
+function X(e) {
 	return String(e).replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 }
 //#endregion
 //#region src/functions/getSeparatingSearchExp.ts
-function Tt(e, t = 128) {
+function Et(e, t = 128) {
 	if (e instanceof RegExp) return e;
 	if (!e || e.trim().length === 0 || e.length > t) return /^/;
-	let n = String(e).replace(/\s+/g, " ").trim().split(" ").map(Y).join("|");
+	let n = String(e).replace(/\s+/g, " ").trim().split(" ").map(X).join("|");
 	return RegExp(`(${n})`, "ig");
 }
 //#endregion
 //#region src/functions/addTagHighlightMatch.ts
-var Et = `___HIGHLIGHT_START_${f(1e5, 999999)}___`, Dt = `___HIGHLIGHT_END_${f(1e5, 999999)}___`, Ot = RegExp(`${Et}|${Dt}`, "g");
-function kt(e, t, n = "sys-highlight-match", r = !1) {
+var Dt = `___HIGHLIGHT_START_${f(1e5, 999999)}___`, Ot = `___HIGHLIGHT_END_${f(1e5, 999999)}___`, kt = RegExp(`${Dt}|${Ot}`, "g");
+function At(e, t, n = "sys-highlight-match", r = !1) {
 	let i = a(e);
 	if (l(i) && l(t)) {
-		let e = i.replace(Tt(t), `${Et}$1${Dt}`);
-		return r && (e = W(e)), e.replace(Ot, (e) => e === Et ? `<span class="${n}">` : "</span>");
+		let e = i.replace(Et(t), `${Dt}$1${Ot}`);
+		return r && (e = G(e)), e.replace(kt, (e) => e === Dt ? `<span class="${n}">` : "</span>");
 	}
-	return r ? W(i) : i;
+	return r ? G(i) : i;
 }
 //#endregion
 //#region src/classes/SearchListData.ts
-var At = class {
+var jt = class {
 	constructor(e, t, n, r) {
-		C(this, "listCache", void 0), this.list = e, this.columns = t, this.item = n, this.options = r;
+		S(this, "listCache", void 0), this.list = e, this.columns = t, this.item = n, this.options = r;
 	}
 	is() {
 		return !!(this.list && this.columns);
@@ -3454,8 +3485,8 @@ var At = class {
 	toFormatItem(e, t) {
 		let n = {};
 		return this.columns && this.columns.forEach((r) => {
-			let i = this.getColumnName(r), a = V(e, r);
-			n[i] = l(a) && t ? this.addTag(a) : F(a);
+			let i = this.getColumnName(r), a = H(e, r);
+			n[i] = l(a) && t ? this.addTag(a) : P(a);
 		}), {
 			...e,
 			...n,
@@ -3466,7 +3497,7 @@ var At = class {
 		return e.replace(/\.([a-z0-9])/gi, (e, t) => t.toUpperCase()) + "Search";
 	}
 	addTag(e) {
-		return kt(F(e), this.item.get(), this.options.getClassName());
+		return At(P(e), this.item.get(), this.options.getClassName());
 	}
 	generateCache() {
 		if (!this.isList()) return [];
@@ -3474,8 +3505,8 @@ var At = class {
 		for (let t of this.list) {
 			let n = "";
 			if (this.columns) for (let e of this.columns) {
-				let r = V(t, e);
-				l(r) && (n += ` ${F(r)}`);
+				let r = H(t, e);
+				l(r) && (n += ` ${P(r)}`);
 			}
 			e.push({
 				item: t,
@@ -3490,7 +3521,7 @@ var At = class {
 	resetCache() {
 		this.listCache = void 0;
 	}
-}, jt = class {
+}, Mt = class {
 	constructor(e, t) {
 		this.value = e, this.options = t;
 	}
@@ -3510,30 +3541,30 @@ var At = class {
 };
 //#endregion
 //#region src/functions/getExp.ts
-function Mt(e, t = "ig", n = ":value") {
-	let r = Y(e);
+function Nt(e, t = "ig", n = ":value") {
+	let r = X(e);
 	return new RegExp(n.replace(/:value/g, r), t);
 }
 //#endregion
 //#region src/functions/getExactSearchExp.ts
-function Nt(e) {
-	return Mt(e, "i", "(:value)");
+function Pt(e) {
+	return Nt(e, "i", "(:value)");
 }
 //#endregion
 //#region src/functions/getSearchExp.ts
-function Pt(e, t = 128) {
+function Ft(e, t = 128) {
 	if (!d(e) || e.trim().length === 0 || e.length > t) return /^/;
 	let n = [];
 	return a(e).split(" ").forEach((e) => {
-		let t = Y(e).trim();
+		let t = X(e).trim();
 		l(t) && n.push(`(?=.*?${t})`);
 	}), RegExp(`^${n.join("")}`, "i");
 }
 //#endregion
 //#region src/classes/SearchListMatcher.ts
-var Ft = class {
+var It = class {
 	constructor(e, t) {
-		C(this, "matcher", void 0), this.item = e, this.options = t, this.initMatcher();
+		S(this, "matcher", void 0), this.item = e, this.options = t, this.initMatcher();
 	}
 	is() {
 		return !!this.matcher;
@@ -3548,9 +3579,9 @@ var Ft = class {
 		this.initMatcher();
 	}
 	initMatcher() {
-		this.item.is() ? this.matcher = this.options.getFindExactMatch() ? Nt(this.item.get()) : Pt(this.item.get()) : this.matcher = void 0;
+		this.item.is() ? this.matcher = this.options.getFindExactMatch() ? Pt(this.item.get()) : Ft(this.item.get()) : this.matcher = void 0;
 	}
-}, It = class {
+}, Lt = class {
 	constructor(e) {
 		this.options = e;
 	}
@@ -3580,12 +3611,12 @@ var Ft = class {
 	setOptions(e) {
 		return this.options = e, this;
 	}
-}, Lt = class {
+}, Rt = class {
 	constructor(e, t, n, r) {
-		C(this, "options", void 0), C(this, "item", void 0), C(this, "matcher", void 0), C(this, "data", void 0), C(this, "callbackToSelection", (e, t) => {
+		S(this, "options", void 0), S(this, "item", void 0), S(this, "matcher", void 0), S(this, "data", void 0), S(this, "callbackToSelection", (e, t) => {
 			if (this.matcher.isSelection(t)) return this.data.toFormatItem(e, !0);
 			if (this.options.getReturnEverything()) return this.data.toFormatItem(e, !1);
-		}), C(this, "callbackToNone", (e) => this.data.toFormatItem(e, !1)), this.options = new It(r), this.item = new jt(n, this.options), this.matcher = new Ft(this.item, this.options), this.data = new At(e, t, this.item, this.options);
+		}), S(this, "callbackToNone", (e) => this.data.toFormatItem(e, !1)), this.options = new Lt(r), this.item = new Mt(n, this.options), this.matcher = new It(this.item, this.options), this.data = new jt(e, t, this.item, this.options);
 	}
 	getData() {
 		return this.data;
@@ -3622,13 +3653,13 @@ var Ft = class {
 		let e = this.data.getList();
 		return e ? r(e, this.callbackToNone) : [];
 	}
-}, Rt = () => T.get("__ui:storage-callback__", () => ({})), zt = class e {
+}, zt = () => T.get("__ui:storage-callback__", () => ({})), Bt = class e {
 	static getInstance(t, n = "main") {
 		return new e(t, n);
 	}
 	constructor(e, t = "main") {
-		C(this, "callbacks", []), C(this, "loading", !1), this.name = e, this.group = t;
-		let n = `${t}:${e}`, r = Rt();
+		S(this, "callbacks", []), S(this, "loading", !1), this.name = e, this.group = t;
+		let n = `${t}:${e}`, r = zt();
 		if (n in r) return r[n];
 		r[n] = this;
 	}
@@ -3655,10 +3686,10 @@ var Ft = class {
 	}
 	async run(e) {
 		this.loading = !1;
-		for (let { callback: t, isOnce: n } of this.callbacks) await Pe(t, e), n && this.removeCallback(t);
+		for (let { callback: t, isOnce: n } of this.callbacks) await Le(t, e), n && this.removeCallback(t);
 		return this;
 	}
-}, Bt = [
+}, Vt = [
 	"d",
 	"e",
 	"f",
@@ -3678,10 +3709,10 @@ var Ft = class {
 	"t",
 	"u",
 	"v"
-], Vt = RegExp(`%(${Bt.join("|")})`, "g"), Ht = (e, t = {}) => {
+], Ht = RegExp(`%(${Vt.join("|")})`, "g"), Ut = (e, t = {}) => {
 	let r = String(e);
-	return Array.isArray(t) && e.match(/%[a-z]/) && (r = r.replace(Vt, (e, n) => {
-		let r = Bt.indexOf(n);
+	return Array.isArray(t) && e.match(/%[a-z]/) && (r = r.replace(Ht, (e, n) => {
+		let r = Vt.indexOf(n);
 		if (r !== -1) {
 			var i;
 			return String((i = t == null ? void 0 : t[r]) == null ? "" : i);
@@ -3700,21 +3731,21 @@ var Ft = class {
 		}
 		return e;
 	})), r;
-}, Ut = (e) => {
+}, Wt = (e) => {
 	var t;
-	return i(e) ? !0 : !!(e && n(e) && ((e == null ? void 0 : e.status) === "success" || e != null && e.success || !(e == null || (t = e.statusObject) == null) && t.status && /^2/.test(String(e.statusObject.status)) || !("status" in e) && !("success" in e) && !("statusObject" in e) && /^2/.test(String(P.getStatus().getStatus()))));
-}, Wt = "global", Gt = 160, Kt = class {
+	return i(e) ? !0 : !!(e && n(e) && ((e == null ? void 0 : e.status) === "success" || e != null && e.success || !(e == null || (t = e.statusObject) == null) && t.status && /^2/.test(String(e.statusObject.status)) || !("status" in e) && !("success" in e) && !("statusObject" in e) && /^2/.test(String(N.getStatus().getStatus()))));
+}, Gt = "global", Kt = 160, qt = class {
 	constructor(e, t = () => D.getLanguage(), n = () => D.getLocation()) {
-		C(this, "files", {}), C(this, "data", {}), this.language = t, this.location = n, e && this.add(e);
+		S(this, "files", {}), S(this, "data", {}), this.language = t, this.location = n, e && this.add(e);
 	}
 	isFile() {
 		return Object.keys(this.files).length > 0 && this.getIndex() !== void 0;
 	}
 	getLocation() {
-		return x(this.location);
+		return b(this.location);
 	}
 	getLanguage() {
-		return x(this.language);
+		return b(this.language);
 	}
 	async getList() {
 		let e = this.getIndex();
@@ -3725,7 +3756,7 @@ var Ft = class {
 	}
 	add(e) {
 		r(e, (e, t) => {
-			b(e) && (this.files[t] = e);
+			y(e) && (this.files[t] = e);
 		});
 	}
 	getIndex() {
@@ -3733,25 +3764,25 @@ var Ft = class {
 		if (e in this.files) return e;
 		let t = this.getLanguage();
 		if (t in this.files) return t;
-		if ("global" in this.files) return Wt;
+		if ("global" in this.files) return Gt;
 	}
 	getByData(e) {
 		if (e in this.data) return this.data[e];
 	}
 	async getByFile(e) {
 		if (e in this.files) {
-			let t = await x(this.files[e]);
+			let t = await b(this.files[e]);
 			return t && (this.data[e] = t), t;
 		}
 	}
-}, qt = class {
-	constructor(e = "/api/translate", t = "list", n = new Kt()) {
-		C(this, "data", {}), C(this, "cache", []), C(this, "resolveList", []), C(this, "timeout", void 0), C(this, "isReadApi", !0), this.url = e, this.propsName = t, this.files = n;
+}, Jt = class {
+	constructor(e = "/api/translate", t = "list", n = new qt()) {
+		S(this, "data", {}), S(this, "cache", []), S(this, "resolveList", []), S(this, "timeout", void 0), S(this, "isReadApi", !0), this.url = e, this.propsName = t, this.files = n;
 	}
 	async get(e, t) {
 		var n;
 		let r = this.getText(e);
-		return r ? this.replacement(r, t) : (P.isLocalhost() || await this.add(e), this.replacement((n = this.getText(e)) == null ? e : n));
+		return r ? this.replacement(r, t) : (N.isLocalhost() || await this.add(e), this.replacement((n = this.getText(e)) == null ? e : n));
 	}
 	getSync(e, t = !1, n) {
 		let r = this.getText(e);
@@ -3792,7 +3823,7 @@ var Ft = class {
 		});
 	}
 	async addNormalOrSync(e) {
-		if (l(e)) if (P.isLocalhost()) this.addSync(e);
+		if (l(e)) if (N.isLocalhost()) this.addSync(e);
 		else {
 			let t = Object.keys(e);
 			t.length > 0 && await this.add(t);
@@ -3834,7 +3865,7 @@ var Ft = class {
 		return `${this.files.getLanguage()}-${e}`;
 	}
 	getNameByGlobal(e) {
-		return `${Wt}-${e}`;
+		return `${Gt}-${e}`;
 	}
 	getNamesNone(e) {
 		let t = [];
@@ -3843,7 +3874,7 @@ var Ft = class {
 		}), t;
 	}
 	async getResponse() {
-		let e = await P.get({
+		let e = await N.get({
 			api: !1,
 			path: this.url,
 			request: { [this.propsName]: this.cache },
@@ -3851,14 +3882,14 @@ var Ft = class {
 			timeout: 12e3,
 			global: !0
 		});
-		return Ut(e) || w.on({
+		return Wt(e) || C.on({
 			group: "translate",
 			code: "error",
 			details: e
 		}), e == null ? {} : e;
 	}
 	replacement(e, t) {
-		return t ? Ht(e, t) : e;
+		return t ? Ut(e, t) : e;
 	}
 	async make() {
 		let e;
@@ -3870,12 +3901,12 @@ var Ft = class {
 			this.data[this.getName(t)] = (n = e == null ? void 0 : e[t]) == null ? "" : n;
 		}), this.cache = [];
 	}
-}, Jt = class {
+}, Yt = class {
 	static async get(e, t) {
 		return this.getItem().get(e, t);
 	}
 	static getItem() {
-		return this.item || (this.item = new qt()), this.item;
+		return this.item || (this.item = new Jt()), this.item;
 	}
 	static getSync(e, t = !1, n) {
 		return this.getItem().getSync(e, t, n);
@@ -3914,18 +3945,18 @@ var Ft = class {
 		e.url && this.getItem().setUrl(e.url), e.propsName && this.getItem().setPropsName(e.propsName), typeof e.readApi == "boolean" && this.getItem().setReadApi(e.readApi);
 	}
 };
-C(Jt, "item", void 0);
+S(Yt, "item", void 0);
 //#endregion
 //#region src/functions/arrFill.ts
-function Yt(e, t) {
+function Xt(e, t) {
 	return Array(t).fill(e);
 }
 //#endregion
 //#region src/functions/blobToBase64.ts
-var Xt = () => Zt() !== void 0, Zt = () => {
+var Zt = () => Qt() !== void 0, Qt = () => {
 	var e;
 	return (e = globalThis) == null ? void 0 : e.Buffer;
-}, Qt = async (e) => new Promise((t, n) => {
+}, $t = async (e) => new Promise((t, n) => {
 	if (typeof FileReader < "u") {
 		let r = new FileReader();
 		r.onloadend = () => {
@@ -3936,33 +3967,33 @@ var Xt = () => Zt() !== void 0, Zt = () => {
 			t(r.result.replace(/^data:.*?,/, ""));
 		}, r.onerror = n, r.readAsDataURL(e);
 	} else n();
-}), $t = (e) => {
+}), en = (e) => {
 	var t;
 	return ((t = globalThis) == null ? void 0 : t.Buffer).from(e).toString("base64");
 };
-async function en(e, t = !1) {
-	let n = s() ? await Qt(e) : Xt() ? $t(await e.arrayBuffer()) : void 0;
+async function tn(e, t = !1) {
+	let n = s() ? await $t(e) : Zt() ? en(await e.arrayBuffer()) : void 0;
 	if (n) return t ? n : `data:${e.type};base64,${n}`;
 }
 //#endregion
 //#region src/functions/capitalize.ts
-function tn(e, t = !1) {
+function nn(e, t = !1) {
 	let n = String(e);
 	return n.length > 0 ? t ? n.charAt(0).toLocaleUpperCase(D.getLocation()) + n.slice(1) : n.charAt(0).toUpperCase() + n.slice(1) : n;
 }
 //#endregion
 //#region src/functions/copyObject.ts
-function X(e) {
+function Z(e) {
 	return JSON.parse(JSON.stringify(e));
 }
 //#endregion
 //#region src/functions/copyObjectLite.ts
-function nn(e, t) {
+function rn(e, t) {
 	return Object.assign({}, e, t);
 }
 //#endregion
 //#region src/functions/domQuerySelector.ts
-function rn(e) {
+function an(e) {
 	if (s()) {
 		var t;
 		return (t = document.querySelector(e)) == null ? void 0 : t;
@@ -3970,67 +4001,67 @@ function rn(e) {
 }
 //#endregion
 //#region src/functions/domQuerySelectorAll.ts
-function an(e) {
+function on(e) {
 	if (s()) return document.querySelectorAll(e);
 }
 //#endregion
 //#region src/functions/getElementImage.ts
-function Z(e) {
-	return d(e) ? U(void 0, "img", { src: e }) : e;
+function sn(e) {
+	return d(e) ? W(void 0, "img", { src: e }) : e;
 }
 //#endregion
 //#region src/functions/resizeImageByMax.ts
-function on(e, t = "auto") {
+function cn(e, t = "auto") {
 	switch (t) {
 		case "auto": return e.naturalWidth >= e.naturalHeight;
 		case "width": return !0;
 		case "height": return !1;
 	}
 }
-function sn(e, t, n = "auto", r) {
-	let i = Z(e);
+function ln(e, t, n = "auto", r) {
+	let i = sn(e);
 	if (s() && i && i.naturalWidth && i.naturalHeight && (i.naturalWidth > t && (n === "auto" || n === "width") || i.naturalHeight > t && (n === "auto" || n === "height"))) {
 		var a;
-		let e = on(i, n), o = (a = document.createElement("canvas")) == null ? void 0 : a.getContext("2d");
+		let e = cn(i, n), o = (a = document.createElement("canvas")) == null ? void 0 : a.getContext("2d");
 		if (o) return o.canvas.width = e ? t : i.naturalWidth / i.naturalHeight * t, o.canvas.height = e ? i.naturalHeight / i.naturalWidth * t : t, o.drawImage(i, 0, 0, o.canvas.width, o.canvas.height), o.canvas.toDataURL(r);
 	}
 }
 //#endregion
 //#region src/functions/ensureMaxSize.ts
-async function cn(e, t = .56, n = "image/jpeg") {
+async function un(e, t = .56, n = "image/jpeg") {
 	return new Promise((r) => {
 		if (!s()) {
 			r("");
 			return;
 		}
-		let i = new Blob([e], { type: n }), a = URL.createObjectURL(i), o = Z(a);
+		let i = new Blob([e], { type: n }), a = URL.createObjectURL(i), o = sn(a);
 		o ? (o.onload = () => {
-			let e = sn(o, t * o.naturalWidth, "width", n);
+			let e = ln(o, t * o.naturalWidth, "width", n);
 			r(e == null ? "" : e), URL.revokeObjectURL(a);
 		}, o.onerror = () => {
 			URL.revokeObjectURL(a), r("");
-		}) : en(i).then((e) => r(String(e == null ? "" : e)));
+		}) : tn(i).then((e) => r(String(e == null ? "" : e)));
 	});
 }
 //#endregion
 //#region src/functions/eventStopPropagation.ts
-function ln(e) {
+function dn(e) {
 	e.preventDefault(), e.stopPropagation();
 }
 //#endregion
 //#region src/functions/frame.ts
-function un(e, t, n) {
+function fn(e, t, n) {
 	let r = () => {
-		e(), s() && t != null && t() ? un(e, t, n) : n == null || n();
+		e(), s() && t != null && t() ? fn(e, t, n) : n == null || n();
 	};
 	s() ? requestAnimationFrame(r) : r();
 }
 //#endregion
 //#region src/functions/getArrayHighlightMatch.ts
-function dn(e, t) {
+function pn(e, t) {
 	let n = a(e);
 	if (l(n) && l(t)) {
-		let e = [], r = Tt(t), i = 0, a;
+		let e = [], r = Et(t), i = 0, a;
 		for (; (a = r.exec(n)) !== null && a.index !== r.lastIndex;) a.index > i && e.push({
 			text: n.substring(i, a.index),
 			isMatch: !1
@@ -4050,7 +4081,7 @@ function dn(e, t) {
 }
 //#endregion
 //#region src/functions/getAttributes.ts
-function fn(e) {
+function mn(e) {
 	let t = {}, n = O(e);
 	if (n) for (let e of n.attributes) {
 		var r;
@@ -4060,12 +4091,12 @@ function fn(e) {
 }
 //#endregion
 //#region src/functions/getClipboardData.ts
-async function pn(e) {
+async function hn(e) {
 	if (s()) try {
 		var t, n;
 		return (t = e == null || (n = e.clipboardData) == null ? void 0 : n.getData("text")) == null ? await navigator.clipboard.readText() || "" : t;
 	} catch (e) {
-		w.on({
+		C.on({
 			group: "clipboard",
 			code: "error",
 			details: e
@@ -4075,41 +4106,41 @@ async function pn(e) {
 }
 //#endregion
 //#region src/functions/getCurrentDate.ts
-function mn(e = "datetime") {
-	return new Qe(void 0, e).standard();
+function gn(e = "datetime") {
+	return new $e(void 0, e).standard();
 }
 //#endregion
 //#region src/functions/getCurrentTime.ts
-function hn() {
+function _n() {
 	return Date.now();
 }
 //#endregion
 //#region src/functions/getElementId.ts
-var Q, gn = () => {
+var Q, vn = () => {
 	let e = Q == null ? void 0 : Q();
 	if (e) return `id-server-${e}`;
 	let t = T.get("__ui:getElementId__", () => ({ id: 1e5 }));
 	return `id-${t.id++}`;
 };
-function _n(e, t) {
+function yn(e, t) {
 	if (e) {
 		let n = O(e);
-		if (n) return l(n.id) || n.setAttribute("id", gn()), t ? `#${n.id}${t}`.trim() : n.id;
+		if (n) return l(n.id) || n.setAttribute("id", vn()), t ? `#${n.id}${t}`.trim() : n.id;
 	}
-	return gn();
+	return vn();
 }
-function vn(e) {
+function bn(e) {
 	Q || (Q = e);
 }
 //#endregion
 //#region src/functions/getKey.ts
-function yn(e) {
+function xn(e) {
 	var t, n, r;
 	return (t = (n = e == null ? void 0 : e.key) == null ? e == null ? void 0 : e.code : n) == null ? e == null || (r = e.keyCode) == null ? void 0 : r.toString() : t;
 }
 //#endregion
 //#region src/functions/getLengthOfAllArray.ts
-function bn(e) {
+function Sn(e) {
 	return r(e, (e) => {
 		var t;
 		return (t = e == null ? void 0 : e.length) == null ? 0 : t;
@@ -4117,41 +4148,41 @@ function bn(e) {
 }
 //#endregion
 //#region src/functions/getMaxLengthAllArray.ts
-function xn(e) {
+function Cn(e) {
 	if (!l(e)) return 0;
-	let t = bn(e);
+	let t = Sn(e);
 	return t.length > 1e4 ? t.reduce((e, t) => Math.max(e, t)) : Math.max(...t);
 }
 //#endregion
 //#region src/functions/getMinLengthAllArray.ts
-function Sn(e) {
+function wn(e) {
 	if (!l(e)) return 0;
-	let t = bn(e);
+	let t = Sn(e);
 	return t.length > 1e4 ? t.reduce((e, t) => Math.min(e, t)) : Math.min(...t);
 }
 //#endregion
 //#region src/functions/getMouseClientX.ts
-function Cn(e) {
+function Tn(e) {
 	var t, n;
 	return (e == null ? void 0 : e.clientX) || (e == null || (t = e.targetTouches) == null || (t = t[0]) == null ? void 0 : t.clientX) || (e == null || (n = e.touches) == null || (n = n[0]) == null ? void 0 : n.clientX) || 0;
 }
 //#endregion
 //#region src/functions/getMouseClientY.ts
-function wn(e) {
+function En(e) {
 	var t, n;
 	return (e == null ? void 0 : e.clientY) || (e == null || (t = e.targetTouches) == null || (t = t[0]) == null ? void 0 : t.clientY) || (e == null || (n = e.touches) == null || (n = n[0]) == null ? void 0 : n.clientY) || 0;
 }
 //#endregion
 //#region src/functions/getMouseClient.ts
-function Tn(e) {
+function Dn(e) {
 	return {
-		x: Cn(e),
-		y: wn(e)
+		x: Tn(e),
+		y: En(e)
 	};
 }
 //#endregion
 //#region src/functions/getObjectByKeys.ts
-function En(e, t) {
+function On(e, t) {
 	let r = {};
 	return n(e) && t.forEach((t) => {
 		t in e && e[t] !== void 0 && (r[t] = e[t]);
@@ -4159,7 +4190,7 @@ function En(e, t) {
 }
 //#endregion
 //#region src/functions/getObjectNoUndefined.ts
-function Dn(e, t = void 0) {
+function kn(e, t = void 0) {
 	let n = {};
 	return r(e, (e, r) => {
 		e !== t && (n[r] = e);
@@ -4167,42 +4198,42 @@ function Dn(e, t = void 0) {
 }
 //#endregion
 //#region src/functions/getObjectOrNone.ts
-function On(e) {
+function An(e) {
 	return n(e) ? e : {};
 }
 //#endregion
 //#region src/functions/getOnlyText.ts
-function kn(e) {
-	return F(e).replace(/[^\p{L}\p{N}\s]+/gu, "").trim();
+function jn(e) {
+	return P(e).replace(/[^\p{L}\p{N}\s]+/gu, "").trim();
 }
 //#endregion
 //#region src/functions/strFill.ts
-function An(e, t) {
+function Mn(e, t) {
 	return String(e).repeat(t);
 }
 //#endregion
 //#region src/functions/getRandomText.ts
-function jn(e, t, n = "#", r = 2, i = 12) {
+function Nn(e, t, n = "#", r = 2, i = 12) {
 	let a = f(e, t), o = [];
-	for (let e = 0; e < a; e++) o.push(An(n, f(r, i)));
+	for (let e = 0; e < a; e++) o.push(Mn(n, f(r, i)));
 	return o.join(" ");
 }
 //#endregion
 //#region src/functions/getStepPercent.ts
-function Mn(e, t) {
+function Pn(e, t) {
 	let n = e == null ? 0 : e;
 	return t > n ? 100 / (t - n) : 0;
 }
 //#endregion
 //#region src/functions/getStepValue.ts
-function Nn(e, t) {
+function Fn(e, t) {
 	let n = e == null ? 0 : e;
 	return t > n ? (t - n) / 100 : 0;
 }
 //#endregion
 //#region src/functions/goScroll.ts
-var Pn = 0;
-function Fn(e, t, n) {
+var In = 0;
+function Ln(e, t, n) {
 	if (!s()) return;
 	let r = t == null ? void 0 : t.closest(e);
 	if (t && r && r.scrollHeight !== r.offsetHeight) {
@@ -4210,12 +4241,12 @@ function Fn(e, t, n) {
 		if (n) {
 			let a = n.getBoundingClientRect();
 			r.scrollTop = t.offsetTop - (a.top - e.top) - (a.height / 2 - i.height / 2), r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = t.offsetTop + t.offsetHeight - r.offsetHeight);
-		} else r.scrollTop > t.offsetTop ? r.scrollTop = i.top - e.top - Pn : r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = i.top - e.top + i.height - e.height + Pn);
+		} else r.scrollTop > t.offsetTop ? r.scrollTop = i.top - e.top - In : r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = i.top - e.top + i.height - e.height + In);
 	}
 }
 //#endregion
 //#region src/functions/goScrollSmooth.ts
-function In(e, t, n = 0) {
+function Rn(e, t, n = 0) {
 	if (!s()) return;
 	let r = (t == null ? void 0 : t.behavior) || "smooth";
 	if ("scrollIntoView" in e && !n) {
@@ -4237,7 +4268,7 @@ function In(e, t, n = 0) {
 }
 //#endregion
 //#region src/functions/goScrollTo.ts
-function Ln(e, t, n = "smooth") {
+function zn(e, t, n = "smooth") {
 	if (!s() || !e || !t) return;
 	let r = e.getBoundingClientRect(), i = t.getBoundingClientRect();
 	e.scrollBy({
@@ -4248,16 +4279,16 @@ function Ln(e, t, n = "smooth") {
 }
 //#endregion
 //#region src/functions/isShare.ts
-function Rn() {
+function Bn() {
 	return s() && typeof navigator < "u" && !!navigator.share;
 }
 //#endregion
 //#region src/functions/handleShare.ts
-async function zn(e) {
-	if (Rn() && navigator.canShare && navigator.canShare(e)) try {
+async function Vn(e) {
+	if (Bn() && navigator.canShare && navigator.canShare(e)) try {
 		return await navigator.share(e), !0;
 	} catch (e) {
-		w.on({
+		C.on({
 			group: "share",
 			code: "error",
 			details: e
@@ -4267,20 +4298,20 @@ async function zn(e) {
 }
 //#endregion
 //#region src/functions/inArray.ts
-function Bn(e, t) {
+function Hn(e, t) {
 	return e.includes(t);
 }
 //#endregion
 //#region src/functions/initScrollbarOffset.ts
-async function Vn() {
+async function Un() {
 	if (s()) {
-		let e = await wt.get();
+		let e = await Tt.get();
 		document.body.style.setProperty("--sys-scrollbar-offset", `${e}px`);
 	}
 }
 //#endregion
 //#region src/functions/intersectKey.ts
-function Hn(e, n) {
+function Wn(e, n) {
 	let i = {};
 	return t(e) && t(n) && r(e, (e, t) => {
 		t in n && (i[t] = e);
@@ -4288,7 +4319,7 @@ function Hn(e, n) {
 }
 //#endregion
 //#region src/functions/isDifferent.ts
-function Un(e, t) {
+function Gn(e, t) {
 	let n = Object.keys(e).length !== Object.keys(t).length;
 	return n || r(e, (e, r) => {
 		e !== (t == null ? void 0 : t[r]) && (n = !0);
@@ -4296,7 +4327,7 @@ function Un(e, t) {
 }
 //#endregion
 //#region src/functions/isElementVisible.ts
-function Wn(e) {
+function Kn(e) {
 	if (!s()) return !1;
 	let t = O(e);
 	if (!t || "isConnected" in t && t.isConnected === !1) return !1;
@@ -4305,16 +4336,16 @@ function Wn(e) {
 }
 //#endregion
 //#region src/functions/isInput.ts
-var Gn = (e) => {
+var qn = (e) => {
 	if (e instanceof HTMLElement) {
 		let t = e.tagName.toLowerCase();
 		return !!(t === "input" || t === "textarea" || t === "select" || e.isContentEditable || e.getAttribute("contenteditable") === "true");
 	}
 	return !1;
-}, Kn = (e, t) => e.code === "Space" || e.code === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 13 || e.keyCode === 32 ? t === void 0 ? !Gn(e.target) : !t : !1;
+}, Jn = (e, t) => e.code === "Space" || e.code === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 13 || e.keyCode === 32 ? t === void 0 ? !qn(e.target) : !t : !1;
 //#endregion
 //#region src/functions/isFloat.ts
-function qn(e) {
+function Yn(e) {
 	switch (typeof e) {
 		case "number": return !0;
 		case "string": return /^-?\d+(\.\d+)?$/.test(e);
@@ -4323,18 +4354,18 @@ function qn(e) {
 }
 //#endregion
 //#region src/functions/isIntegerBetween.ts
-function Jn(e, t) {
+function Xn(e, t) {
 	let n = Math.floor(t);
 	return e >= n && e < n + 1;
 }
 //#endregion
 //#region src/functions/isSelectedByList.ts
-function Yn(e, t) {
-	return Array.isArray(e) ? e.every((e) => y(e, t)) : y(e, t);
+function Zn(e, t) {
+	return Array.isArray(e) ? e.every((e) => v(e, t)) : v(e, t);
 }
 //#endregion
 //#region src/functions/removeCommonPrefix.ts
-function Xn(e, t) {
+function Qn(e, t) {
 	if (e.startsWith(t)) return e.slice(t.length).trim();
 	let n = 0;
 	for (; e[n] === t[n] && n < e.length && n < t.length;) n++;
@@ -4342,36 +4373,36 @@ function Xn(e, t) {
 }
 //#endregion
 //#region src/functions/replaceComponentName.ts
-var Zn = (e, t, n) => {
+var $n = (e, t, n) => {
 	var r;
 	return e == null || (r = e.replace(RegExp(`<${t}`, "ig"), `<${n}`)) == null || (r = r.replace(RegExp(`</${t}`, "ig"), `</${n}`)) == null ? void 0 : r.trim();
 };
 //#endregion
 //#region src/functions/uniqueArray.ts
-function Qn(e) {
+function er(e) {
 	return [...new Set(e)];
 }
 //#endregion
 //#region src/functions/replaceRecursive.ts
 function $(e, n, i = !0) {
-	let a = X(e);
+	let a = Z(e);
 	return t(e) && t(n) && r(n, (n, r) => {
 		let o = e == null ? void 0 : e[r];
-		t(o) && t(n) ? i && Array.isArray(o) && Array.isArray(n) ? a[r] = X(Qn([...o, ...n])) : a[r] = $(Array.isArray(o) ? { ...o } : o, n, i) : a[r] = t(n) ? X(n) : n;
+		t(o) && t(n) ? i && Array.isArray(o) && Array.isArray(n) ? a[r] = Z(er([...o, ...n])) : a[r] = $(Array.isArray(o) ? { ...o } : o, n, i) : a[r] = t(n) ? Z(n) : n;
 	}), a;
 }
 //#endregion
 //#region src/functions/replaceTemplate.ts
-function $n(e, t) {
+function tr(e, t) {
 	let n = e;
 	return r(t, (e, t) => {
-		n = n.replace(Mt(`[${t}]`), x(e));
+		n = n.replace(Nt(`[${t}]`), b(e));
 	}), n;
 }
 //#endregion
 //#region src/functions/secondToTime.ts
-function er(e, t) {
-	let n = v(e);
+function nr(e, t) {
+	let n = _(e);
 	if (n > 0) {
 		let e = String(Math.floor(n / 60)).padStart(2, "0"), r = String(n % 60).padStart(2, "0");
 		return t && Number(e) >= 60 ? `${String(Math.floor(Number(e) / 60)).padStart(2, "0")}:${String(Number(e) % 60).padStart(2, "0")}:${r}` : `${e}:${r}`;
@@ -4380,7 +4411,7 @@ function er(e, t) {
 }
 //#endregion
 //#region src/functions/setValues.ts
-function tr(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: a = !0, notEmpty: o = !1 }) {
+function rr(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: a = !0, notEmpty: o = !1 }) {
 	if (n) {
 		if (i(e)) {
 			let n = e.indexOf(t), i = [...e];
@@ -4392,48 +4423,48 @@ function tr(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: a = !0, no
 }
 //#endregion
 //#region src/functions/splice.ts
-function nr(e, n, i) {
+function ir(e, n, i) {
 	if (t(e) && t(n)) {
 		if (i) {
 			let a = {}, o = !1;
 			return r(e, (e, r) => {
-				!o && (i === r || i === e) ? (o = !0, a = $(a, n)) : o ? a = $(a, { [r]: e }) : a[r] = t(e) ? X(e) : e;
+				!o && (i === r || i === e) ? (o = !0, a = $(a, n)) : o ? a = $(a, { [r]: e }) : a[r] = t(e) ? Z(e) : e;
 			}), o ? a : $(e, n);
 		}
 		if (t(n)) return $(e, n);
 	}
-	return X(e);
+	return Z(e);
 }
 //#endregion
 //#region src/functions/toCamelCaseFirst.ts
-function rr(e) {
-	return $e(e).replace(/^([a-z])/, (e) => `${e.toUpperCase()}`);
+function ar(e) {
+	return et(e).replace(/^([a-z])/, (e) => `${e.toUpperCase()}`);
 }
 //#endregion
 //#region src/functions/toKebabCase.ts
-function ir(e) {
+function or(e) {
 	return e.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (e) => `${e.toLowerCase()}`).replace(/^[A-Z]/, (e) => e.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (e) => `-${e.toLowerCase()}`).replace(/[A-Z]/g, (e) => e.toLowerCase());
 }
 //#endregion
 //#region src/functions/toNumberByMax.ts
-function ar(e, t, n, r) {
-	let i = v(e), a = v(t);
-	return t && a < i ? `${or(a, n, r)}+` : or(i, n, r);
+function sr(e, t, n, r) {
+	let i = _(e), a = _(t);
+	return t && a < i ? `${cr(a, n, r)}+` : cr(i, n, r);
 }
-var or = (e, t, n) => t ? new R(n).number(e) : e;
+var cr = (e, t, n) => t ? new z(n).number(e) : e;
 //#endregion
 //#region src/functions/toPercent.ts
-function sr(e, t) {
+function lr(e, t) {
 	return e === 0 ? t : 1 / e * t;
 }
 //#endregion
 //#region src/functions/toPercentBy100.ts
-function cr(e, t) {
-	return sr(e, t) * 100;
+function ur(e, t) {
+	return lr(e, t) * 100;
 }
 //#endregion
 //#region src/functions/uint8ArrayToBase64.ts
-function lr(e) {
+function dr(e) {
 	let t = "";
 	for (let n of e) t += String.fromCharCode(n);
 	if (s()) return window.btoa(t);
@@ -4445,7 +4476,7 @@ function lr(e) {
 }
 //#endregion
 //#region src/functions/writeClipboardData.ts
-async function ur(e) {
+async function fr(e) {
 	if (s()) try {
 		await navigator.clipboard.writeText(e);
 	} catch (n) {
@@ -4454,4 +4485,4 @@ async function ur(e) {
 	}
 }
 //#endregion
-export { P as Api, j as ApiCache, ke as ApiDefault, Ae as ApiHeaders, Me as ApiHydration, Le as ApiInstance, M as ApiMethodItem, Ne as ApiPreparation, Ie as ApiResponse, N as ApiStatus, Re as BroadcastMessage, Ve as Cache, Be as CacheItem, He as CacheStatic, Xe as Cookie, qe as CookieBlock, Ke as CookieBlockInstance, I as CookieStorage, E as DataStorage, Qe as Datetime, w as ErrorCenter, ue as ErrorCenterHandler, de as ErrorCenterInstance, we as EventItem, et as Formatters, H as FormattersType, tt as GEO_FLAG_ICON_NAME, D as Geo, nt as GeoFlag, be as GeoInstance, R as GeoIntl, rt as GeoPhone, it as Global, ot as Hash, at as HashInstance, lt as Icons, A as Loading, Ee as LoadingInstance, St as Meta, G as MetaManager, bt as MetaOg, _t as MetaOpenGraphAge, ht as MetaOpenGraphAvailability, gt as MetaOpenGraphCondition, vt as MetaOpenGraphGender, q as MetaOpenGraphTag, mt as MetaOpenGraphType, pt as MetaRobots, Ct as MetaStatic, K as MetaTag, xt as MetaTwitter, yt as MetaTwitterCard, J as MetaTwitterTag, wt as ScrollbarWidth, Lt as SearchList, At as SearchListData, jt as SearchListItem, Ft as SearchListMatcher, It as SearchListOptions, T as ServerStorage, zt as StorageCallback, Wt as TRANSLATE_GLOBAL_PREFIX, Gt as TRANSLATE_TIME_OUT, Jt as Translate, Kt as TranslateFile, qt as TranslateInstance, kt as addTagHighlightMatch, F as anyToString, Ht as applyTemplate, Yt as arrFill, en as blobToBase64, tn as capitalize, X as copyObject, nn as copyObjectLite, U as createElement, rn as domQuerySelector, an as domQuerySelectorAll, W as encodeAttribute, oe as encodeLiteAttribute, cn as ensureMaxSize, Y as escapeExp, ln as eventStopPropagation, x as executeFunction, Pe as executePromise, r as forEach, un as frame, dn as getArrayHighlightMatch, fn as getAttributes, pn as getClipboardData, Ze as getColumn, mn as getCurrentDate, hn as getCurrentTime, O as getElement, _n as getElementId, Z as getElementImage, ut as getElementItem, Se as getElementOrWindow, pe as getElementSafeScript, Nt as getExactSearchExp, Mt as getExp, me as getHydrationData, V as getItemByPath, yn as getKey, bn as getLengthOfAllArray, xn as getMaxLengthAllArray, Sn as getMinLengthAllArray, Tn as getMouseClient, Cn as getMouseClientX, wn as getMouseClientY, En as getObjectByKeys, Dn as getObjectNoUndefined, On as getObjectOrNone, kn as getOnlyText, jn as getRandomText, o as getRequestString, Pt as getSearchExp, Tt as getSeparatingSearchExp, Mn as getStepPercent, Nn as getStepValue, Fn as goScroll, In as goScrollSmooth, Ln as goScrollTo, zn as handleShare, Bn as inArray, vn as initGetElementId, Vn as initScrollbarOffset, Hn as intersectKey, Ut as isApiSuccess, i as isArray, Un as isDifferent, se as isDomData, s as isDomRuntime, Wn as isElementVisible, Kn as isEnter, l as isFilled, qn as isFloat, b as isFunction, Ce as isInDom, Gn as isInput, Jn as isIntegerBetween, c as isNull, h as isNumber, t as isObject, n as isObjectNotArray, u as isOnLine, y as isSelected, Yn as isSelectedByList, Rn as isShare, d as isString, xe as isWindow, f as random, Xn as removeCommonPrefix, Zn as replaceComponentName, $ as replaceRecursive, $n as replaceTemplate, sn as resizeImageByMax, er as secondToTime, dt as setElementItem, tr as setValues, p as sleep, nr as splice, An as strFill, Ue as strSplit, k as toArray, $e as toCamelCase, rr as toCamelCaseFirst, L as toDate, ir as toKebabCase, v as toNumber, ar as toNumberByMax, sr as toPercent, cr as toPercentBy100, a as toString, We as transformation, lr as uint8ArrayToBase64, Qn as uniqueArray, ur as writeClipboardData };
+export { N as Api, j as ApiCache, je as ApiDataReturn, Me as ApiDefault, Ne as ApiHeaders, Fe as ApiHydration, Be as ApiInstance, M as ApiMethodItem, Ie as ApiPreparation, ze as ApiResponse, ke as ApiStatus, Ve as BroadcastMessage, We as Cache, Ue as CacheItem, Ge as CacheStatic, Ze as Cookie, Je as CookieBlock, qe as CookieBlockInstance, L as CookieStorage, E as DataStorage, $e as Datetime, C as ErrorCenter, de as ErrorCenterHandler, fe as ErrorCenterInstance, we as EventItem, tt as Formatters, U as FormattersType, nt as GEO_FLAG_ICON_NAME, D as Geo, rt as GeoFlag, be as GeoInstance, z as GeoIntl, it as GeoPhone, at as Global, st as Hash, ot as HashInstance, ut as Icons, A as Loading, Ee as LoadingInstance, Ct as Meta, K as MetaManager, xt as MetaOg, vt as MetaOpenGraphAge, gt as MetaOpenGraphAvailability, _t as MetaOpenGraphCondition, yt as MetaOpenGraphGender, J as MetaOpenGraphTag, ht as MetaOpenGraphType, mt as MetaRobots, wt as MetaStatic, q as MetaTag, St as MetaTwitter, bt as MetaTwitterCard, Y as MetaTwitterTag, Tt as ScrollbarWidth, Rt as SearchList, jt as SearchListData, Mt as SearchListItem, It as SearchListMatcher, Lt as SearchListOptions, T as ServerStorage, Bt as StorageCallback, Gt as TRANSLATE_GLOBAL_PREFIX, Kt as TRANSLATE_TIME_OUT, Yt as Translate, qt as TranslateFile, Jt as TranslateInstance, At as addTagHighlightMatch, P as anyToString, Ut as applyTemplate, Xt as arrFill, tn as blobToBase64, nn as capitalize, Z as copyObject, rn as copyObjectLite, W as createElement, an as domQuerySelector, on as domQuerySelectorAll, G as encodeAttribute, se as encodeLiteAttribute, un as ensureMaxSize, X as escapeExp, dn as eventStopPropagation, b as executeFunction, Le as executePromise, r as forEach, fn as frame, pn as getArrayHighlightMatch, mn as getAttributes, hn as getClipboardData, Qe as getColumn, gn as getCurrentDate, _n as getCurrentTime, O as getElement, yn as getElementId, sn as getElementImage, dt as getElementItem, Se as getElementOrWindow, me as getElementSafeScript, Pt as getExactSearchExp, Nt as getExp, he as getHydrationData, H as getItemByPath, xn as getKey, Sn as getLengthOfAllArray, Cn as getMaxLengthAllArray, wn as getMinLengthAllArray, Dn as getMouseClient, Tn as getMouseClientX, En as getMouseClientY, On as getObjectByKeys, kn as getObjectNoUndefined, An as getObjectOrNone, jn as getOnlyText, Nn as getRandomText, o as getRequestString, Ft as getSearchExp, Et as getSeparatingSearchExp, Pn as getStepPercent, Fn as getStepValue, Ln as goScroll, Rn as goScrollSmooth, zn as goScrollTo, Vn as handleShare, Hn as inArray, bn as initGetElementId, Un as initScrollbarOffset, Wn as intersectKey, Wt as isApiSuccess, i as isArray, Gn as isDifferent, ce as isDomData, s as isDomRuntime, Kn as isElementVisible, Jn as isEnter, l as isFilled, Yn as isFloat, y as isFunction, Ce as isInDom, qn as isInput, Xn as isIntegerBetween, c as isNull, h as isNumber, t as isObject, n as isObjectNotArray, u as isOnLine, v as isSelected, Zn as isSelectedByList, Bn as isShare, d as isString, xe as isWindow, f as random, Qn as removeCommonPrefix, $n as replaceComponentName, $ as replaceRecursive, tr as replaceTemplate, ln as resizeImageByMax, nr as secondToTime, ft as setElementItem, rr as setValues, p as sleep, ir as splice, Mn as strFill, F as strSplit, k as toArray, et as toCamelCase, ar as toCamelCaseFirst, R as toDate, or as toKebabCase, _ as toNumber, sr as toNumberByMax, lr as toPercent, ur as toPercentBy100, a as toString, I as transformation, dr as uint8ArrayToBase64, er as uniqueArray, fr as writeClipboardData };

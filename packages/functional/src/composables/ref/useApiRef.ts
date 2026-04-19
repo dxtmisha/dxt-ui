@@ -9,7 +9,7 @@ import {
   watch,
   type WatchHandle
 } from 'vue'
-import { Api, type ApiInstance, type ApiData } from '@dxtmisha/functional-basic'
+import { Api, type ApiInstance, type ApiData, type ApiDataValidation } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { getOptions } from '../../functions/getOptions'
@@ -31,6 +31,20 @@ export interface UseApiRef<R> {
 
   /** Item (Ref) / Элемент (Ref) */
   item: Ref<ApiData<R> | undefined>
+
+  /**
+   * Status of response contract validation.
+   *
+   * Статус валидации контракта ответа.
+   */
+  isResponseContractValid: ComputedRef<boolean>
+
+  /**
+   * Result of response validation.
+   *
+   * Результат валидации ответа.
+   */
+  responseValidationResult: ComputedRef<ApiDataValidation | undefined>
 
   /** Length of the list (Computed) / Длина списка (Computed) */
   length: ComputedRef<number>
@@ -76,23 +90,23 @@ export interface UseApiRef<R> {
   init(): void
 
   /**
-   * Default reset
+   * Default reset.
    *
-   * Сброс по умолчанию
+   * Сброс по умолчанию.
    */
   reset(): Promise<void>
 
   /**
-   * Stop request
+   * Stop request.
    *
-   * Остановка запроса
+   * Остановка запроса.
    */
   stop(): void
 
   /**
-   * Abort request
+   * Abort request.
    *
-   * Отмена запроса
+   * Отмена запроса.
    */
   abort(): void
 }
@@ -104,12 +118,13 @@ let globalConditions: RefType<any>
  * Returns data for working with requests.
  *
  * Возвращает данные для работы с запросами.
- * @param path path to request/ путь к запрос
- * @param options data for the request/ данные для запроса
- * @param reactivity should reactivity be enabled/ включить ли реактивность
- * @param conditions conditions for executing the request/ условия выполнения запроса
- * @param transformation transforms the received request/ преобразовывает полученный запрос
- * @param unmounted delete data from the cache/ удалить ли данные из кеша
+ * @param path path to request / путь к запросу
+ * @param options data for the request / данные для запроса
+ * @param reactivity should reactivity be enabled / включить ли реактивность
+ * @param conditions conditions for executing the request / условия выполнения запроса
+ * @param transformation transforms the received request / преобразовывает полученный запрос
+ * @param validateResponseContract function to validate response data contract / функция для проверки контракта данных ответа
+ * @param unmounted delete data from the cache / удалить ли данные из кеша
  * @param apiInstance Api instance / Экземпляр Api
  */
 export function useApiRef<
@@ -120,7 +135,8 @@ export function useApiRef<
   options?: ApiOptions,
   reactivity: boolean = true,
   conditions?: RefType<boolean>,
-  transformation?: (data: T) => ApiData<R>,
+  transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>,
+  validateResponseContract?: (data: T) => ApiDataValidation,
   unmounted: boolean = true,
   apiInstance: ApiInstance = Api.getItem()
 ): UseApiRef<R> {
@@ -135,6 +151,9 @@ export function useApiRef<
 
   /** Reading state flag / Флаг состояния чтения */
   const reading = ref<boolean>(false)
+
+  /** Result of response validation / Результат валидации ответа */
+  const responseValidationResult = ref<ApiDataValidation>()
 
   /** Abort controller / Контроллер отмены */
   let abortController: AbortController | undefined = undefined
@@ -176,8 +195,13 @@ export function useApiRef<
         })
 
         if (response) {
+          responseValidationResult.value = validateResponseContract?.(response as T)
+
           if (transformation) {
-            item.value = transformation(response as T)
+            item.value = transformation(
+              response as T,
+              responseValidationResult.value
+            )
           } else {
             item.value = response as ApiData<R>
           }
@@ -289,6 +313,9 @@ export function useApiRef<
 
       return item
     },
+
+    isResponseContractValid: computed<boolean>(() => responseValidationResult.value?.status === 'success'),
+    responseValidationResult: computed<ApiDataValidation | undefined>(() => responseValidationResult.value),
 
     /**
      * Returns the count of records in the list (ComputedRef) /

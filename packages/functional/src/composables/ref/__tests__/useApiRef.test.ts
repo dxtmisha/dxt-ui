@@ -47,7 +47,16 @@ describe('useApiRef', () => {
       const customInstance = { request: vi.fn() } as unknown as ApiInstance
       vi.mocked(customInstance.request).mockResolvedValueOnce({ data: 'custom' })
 
-      const { data } = useApiRef('test/path', {}, true, undefined, undefined, true, customInstance)
+      const { data } = useApiRef(
+        'test/path',
+        {},
+        true,
+        undefined,
+        undefined,
+        undefined,
+        true,
+        customInstance
+      )
 
       expect(data.value).toBeUndefined()
       await nextTick()
@@ -146,6 +155,96 @@ describe('useApiRef', () => {
       await nextTick()
 
       expect(mockApiInstance.request).toHaveBeenCalledTimes(1) // Still 1
+    })
+  })
+
+  describe('validation', () => {
+    it('should reflect response validation status', async () => {
+      const mockResult = { status: 'success', data: {} }
+      const validateResponseContract = vi.fn().mockReturnValue(mockResult)
+
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ some: 'data' })
+
+      const { isResponseContractValid, responseValidationResult, data } = useApiRef(
+        'test/path',
+        undefined,
+        true,
+        undefined,
+        undefined,
+        validateResponseContract
+      )
+
+      // trigger init
+      expect(data.value).toBeUndefined()
+      await nextTick()
+
+      expect(validateResponseContract).toHaveBeenCalledWith({ some: 'data' })
+      expect(isResponseContractValid.value).toBe(true)
+      expect(responseValidationResult.value).toEqual(mockResult)
+    })
+
+    it('should reflect invalid response contract', async () => {
+      const mockResult = { status: 'error', errors: { field: 'invalid' } }
+      const validateResponseContract = vi.fn().mockReturnValue(mockResult)
+
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ some: 'invalid-data' })
+
+      const { isResponseContractValid, responseValidationResult, data } = useApiRef(
+        'test/path',
+        undefined,
+        true,
+        undefined,
+        undefined,
+        validateResponseContract
+      )
+
+      // trigger init
+      expect(data.value).toBeUndefined()
+      await nextTick()
+
+      expect(isResponseContractValid.value).toBe(false)
+      expect(responseValidationResult.value).toEqual(mockResult)
+    })
+  })
+
+  describe('utility methods', () => {
+    it('should return correct values for isStarting, isLoading, isReading, getItem', async () => {
+      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise(resolve => {
+        setTimeout(() => resolve({ data: 'ok' }), 50)
+      }))
+
+      const apiRef = useApiRef('test/path')
+
+      expect(apiRef.isStarting()).toBe(true)
+      expect(apiRef.isLoading()).toBe(false)
+      expect(apiRef.isReading()).toBe(false)
+      expect(apiRef.getItem()).toBeUndefined()
+
+      // trigger init
+      apiRef.init()
+
+      expect(apiRef.isLoading()).toBe(true)
+      expect(apiRef.isReading()).toBe(true)
+
+      await new Promise(r => setTimeout(r, 60))
+
+      expect(apiRef.isStarting()).toBe(false)
+      expect(apiRef.isLoading()).toBe(false)
+      expect(apiRef.isReading()).toBe(true)
+      expect(apiRef.getItem()).toEqual({ data: 'ok' })
+    })
+
+    it('should return correct length', async () => {
+      vi.mocked(mockApiInstance.request).mockResolvedValueOnce([{ id: 1 }, { id: 2 }])
+
+      const { length, data } = useApiRef('test/path')
+
+      expect(length.value).toBe(0)
+
+      expect(data.value).toBeUndefined()
+      await nextTick()
+
+      expect(length.value).toBe(2)
     })
   })
 

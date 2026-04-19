@@ -1,4 +1,7 @@
-import type { ApiData, ApiDefaultValue, ApiFetch, ApiMethodItem, SearchColumns, SearchItem, SearchOptions } from '@dxtmisha/functional-basic'
+import type {
+  ApiData,
+  ApiDataValidation, ApiDefaultValue, ApiFetch, ApiMethodItem, SearchColumns, SearchItem, SearchOptions
+} from '@dxtmisha/functional-basic'
 import type { RefOrNormal, RefType } from './refTypes'
 import type { Ref } from 'vue'
 
@@ -30,7 +33,9 @@ export type ApiManagementGet<
   /** Condition to trigger the request / Условие выполнения запроса */
   conditions?: RefType<boolean>
   /** Custom transformation for the fetched data / Пользовательская трансформация полученных данных */
-  transformation?: (data: Type) => ApiData<Return>
+  transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>
+  /** Function to validate response data contract / Функция для проверки контракта данных ответа */
+  validateResponseContract?: (data: Type) => ApiDataValidation
   /** Validation function or class constructor for data / Функция валидации или конструктор класса для данных */
   typeData?: ((data: Return) => boolean) | any
   /** Whether to clear data when the component is unmounted / Удалять ли данные при размонтировании компонента */
