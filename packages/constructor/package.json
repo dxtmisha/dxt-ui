@@ -284,7 +284,9 @@
     "node": ">=20.0.0"
   },
   "peerDependencies": {
+    "@dxtmisha/constructor-basic": "*",
     "@dxtmisha/functional": "*",
+    "@dxtmisha/functional-basic": "*",
     "vue": "*"
   },
   "dependencies": {},

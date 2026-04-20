@@ -51,6 +51,8 @@ export const viteBasicFunction = (
     '@storybook',
     '@storybook/addon-docs',
     '@dxtmisha/configuration',
+    '@dxtmisha/constructor',
+    '@dxtmisha/constructor-basic',
     '@dxtmisha/d1',
     '@dxtmisha/figma',
     '@dxtmisha/functional',

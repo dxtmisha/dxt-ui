@@ -113,8 +113,7 @@ export class SnackbarItem {
     const aria = {
       ...AriaStaticInclude.atomic(true),
       ...AriaStaticInclude.role(this.props.role),
-      ...AriaStaticInclude.live(this.props.ariaLive),
-      tabindex: '0'
+      ...AriaStaticInclude.live(this.props.ariaLive)
     }
 
     if (this.props.success) {
