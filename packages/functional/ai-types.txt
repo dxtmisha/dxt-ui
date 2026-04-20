@@ -17,53 +17,53 @@ The following is the content of "exports" from package.json:
 
 // File: library.d.ts
 
-/** Config for main API GET request. */
+/** Config for main GET request. */
 export declare type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
-    /** API endpoint path. */
+    /** API endpoint path */
     path?: RefOrNormal<string | undefined>;
-    /** Request options. */
+    /** Additional request options */
     options?: ApiOptions;
-    /** Enable reactive updates on path/options change. */
+    /** Enable reactive updates on path/options change */
     reactivity?: boolean;
-    /** Trigger condition. */
+    /** Request condition */
     conditions?: RefType<boolean>;
-    /** Custom data transformation. */
+    /** Custom data transformation */
     transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>;
-    /** Response contract validation. */
+    /** Response contract validation */
     validateResponseContract?: (data: Type) => ApiDataValidation;
-    /** Data type validation or constructor. */
+    /** Data validation function or class */
     typeData?: ((data: Return) => boolean) | any;
-    /** Clear data on unmount. */
+    /** Clear data on unmount */
     unmounted?: boolean;
-    /** Loading skeleton data. */
+    /** Loading skeleton data */
     skeleton?: () => Return;
 };
 
-/** Config for POST, PUT, DELETE requests. */
+/** Config for mutation requests (POST, PUT, DELETE). */
 export declare type ApiManagementRequest<T, Return extends ApiData<T> = ApiData<T>> = {
-    /** API endpoint path. */
+    /** Target API endpoint path */
     path?: RefOrNormal<string | undefined>;
-    /** Success callback. */
+    /** Success callback */
     action?: (data: Return | undefined) => Promise<void> | void;
-    /** Pre-send transformation. */
+    /** Pre-send transformation */
     transformation?: (data: T) => Return;
-    /** Wrap payload in 'data' property. */
+    /** Wrap payload in 'data' property */
     toData?: boolean;
-    /** Request options. */
+    /** Additional options */
     options?: ApiOptions;
 };
 
 /** Config for client-side search. */
 export declare type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
-    /** Searchable columns. */
+    /** Columns to search through */
     columns: K;
-    /** Reactive search query. */
+    /** Reactive search query */
     value?: Ref<string>;
-    /** Search algorithm options. */
+    /** Search algorithm options */
     options?: SearchOptions;
 };
 
-/** API value or array of values. */
+/** Base type for API values. */
 export declare type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
 
 /** API request options. */
@@ -71,65 +71,79 @@ export declare type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 
 declare type BroadcastValueItem<T> = T | string | undefined;
 
-/** Creates computed property for async getters. */
+/**
+ * Creates computed property for async getters.
+ * @param getter Sync/async function or value
+ * @param ignore Values to exclude
+ * @param debugOptions Vue debug options
+ */
 export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
 
-/** Creates computed property that reacts to language changes. */
+/**
+ * Computed property dependent on current language.
+ * @param getter Main language-dependent value
+ * @param getterNone Fallback value
+ * @param conditions Trigger conditions
+ * @param debugOptions Vue debug options
+ */
 export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
 
-/** Creates on-demand cached computed property. Watcher stays active for app life. */
+/**
+ * Cached on-demand computed property. Persists for app lifetime.
+ * @param getter Function returning value or promise
+ */
 export declare function computedEternity<T>(getter: () => Promise<T> | T): Ref<T, T>;
 
-/** Component binding with class/style support. */
+/** Constructor bind type with class/style support. */
 export declare type ConstrBind<T> = T & Record<string, any> & {
     key?: string;
     class?: ConstrClass;
     style?: ConstrStyles;
 };
 
-/** Constructor class type (string, array, or object). */
+/** Constructor class type. */
 export declare type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject;
 
-/** Main class and additional class list. */
+/** Constructor classes with main and additional list. */
 export declare type ConstrClasses = {
     main: ConstrClass;
 } & ConstrClassList;
 
-/** Record mapping class names. */
+/** Class name mapping. */
 export declare type ConstrClassList = Record<string, ConstrClass>;
 
-/** CSS class object (boolean values). */
+/** CSS class object. */
 export declare type ConstrClassObject = Record<string, boolean | undefined>;
 
 /** Constructor component record. */
 export declare type ConstrComponent = Record<string, any>;
 
-/** Component modification with reactive values. */
+/** Component modification type. */
 export declare type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
     [K in keyof P]?: RefOrNormal<P[K]>;
 };
 
-/** Constructor emit signatures. */
+/** Constructor emit type. */
 export declare type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
     [K in keyof T]: (evt: K, ...args: T[K]) => void;
 }>>;
 
-/** Extract emit item type. */
+/** Extract emit item. */
 export declare type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
 
 export declare type ConstrExpose<E extends Element, EXPOSE extends ConstrItem> = EXPOSE & {
     elementHtml?: ComputedRef<E | undefined>;
 };
 
-/** Props for links. */
+/** Link props. */
 export declare type ConstrHrefProps = {
     href?: string;
 };
 
-/** Constructor item record. */
+/** Generic constructor item. */
 export declare type ConstrItem = Record<string, any>;
 
-/** Constructor configuration options. */
+/** Component configuration options. */
 export declare type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
     components?: COMP;
     compMod?: ConstrComponentMod<P>;
@@ -138,10 +152,10 @@ export declare type ConstrOptions<COMP extends ConstrComponent, EMITS extends Co
     styles?: RefType<ConstrStyles>;
 };
 
-/** Constructor prop item (options or PropType). */
+/** Prop item definition. */
 export declare type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
 
-/** Vue prop definition options. */
+/** Vue prop options. */
 export declare type ConstrPropItemOptions<T = any> = {
     type?: PropType<T>;
     required?: boolean;
@@ -154,13 +168,13 @@ export declare type ConstrProps<P = Record<string, any>> = {
     [K in keyof P]: ConstrPropItem<P[K]>;
 };
 
-/** Constructor registration config. */
+/** Registration config. */
 export declare type ConstrRegistration = {
     flag?: boolean;
     translate?: Record<string, string>;
 };
 
-/** Component setup interface. */
+/** Setup interface for component init. */
 export declare type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
     name: string;
     element: Ref<E | undefined>;
@@ -168,7 +182,7 @@ export declare type ConstrSetup<E extends Element, CLASSES extends ConstrClasses
     styles: RefType<ConstrStyles>;
 } & SETUP;
 
-/** Style definitions (object or array). */
+/** Style definitions. */
 export declare type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
 
 /** Individual style property. */
@@ -181,74 +195,74 @@ export declare type ConstrValue<T = any> = {
 
 /** Class for date processing. */
 export declare class DatetimeRef {
+    /**
+     * @param date Date to process
+     * @param type Format type
+     * @param code Locale code
+     */
     constructor(date: RefOrNormal<NumberOrStringOrDate>, type?: RefOrNormal<GeoDate>, code?: RefOrNormal<string>);
-    /** Get base date data. */
     getItem(): Ref<NumberOrStringOrDate>;
-    /** Get Date object. */
     getDate(): Ref<Date>;
-    /** Get base Datetime class instance. */
     getDatetime(): Datetime;
-    /** Get hour format. */
     getHoursType(): ComputedRef<GeoHours>;
-    /** Get first day of week code. */
     getFirstDayCode(): ComputedRef<GeoFirstDay>;
-    /** Get year. */
     getYear(): ComputedRef<number>;
-    /** Get zero-based month. */
     getMonth(): ComputedRef<number>;
-    /** Get day of month. */
     getDay(): ComputedRef<number>;
-    /** Get hour. */
     getHour(): ComputedRef<number>;
-    /** Get minutes. */
     getMinute(): ComputedRef<number>;
-    /** Get seconds. */
     getSecond(): ComputedRef<number>;
-    /** Get last day of week. */
     getMaxDay(): ComputedRef<number>;
-    /** Get language-sensitive formatting. */
+    /**
+     * Language-sensitive formatting.
+     * @param type Output format
+     * @param styleOptions Month representation/options
+     */
     locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): ComputedRef<string>;
-    /** Standard data output. */
+    /**
+     * Standard data output.
+     * @param timeZone Include timezone
+     */
     standard(timeZone?: boolean): ComputedRef<string>;
 }
 
-/** Abstract base for constructor logic. */
+/** Base design class. */
 export declare abstract class DesignAbstract<T extends Record<string, any>, C extends Record<string, any>> {
     constructor(props: T, callback?: ((event: C) => void) | undefined, changed?: string[]);
-    /** Executes callback. */
+    /** Triggers update. */
     make(compelled?: boolean): this;
-    /** Executes callback. */
+    /** Triggers callback. */
     makeCallback(compelled?: boolean): void;
 }
 
-/** Abstract base for async constructor logic. */
+/** Async base design class. */
 export declare abstract class DesignAsyncAbstract<T extends Record<string, any>, C extends Record<string, any>> extends DesignAbstract<T, C> {
     make(compelled?: boolean): this;
     makeCallback(compelled?: boolean): Promise<void>;
 }
 
-/** Checks for edited values. */
+/** Tracks edited values. */
 export declare class DesignChanged<T extends Record<string, any>> {
     constructor(props: T, watch?: string[]);
     /** Check if specific property updated. */
     is(name: string | string[]): boolean;
-    /** Check if any data changed. */
+    /** Check for any changes. */
     isChanged(): boolean;
-    /** Update all cached values. */
+    /** Update tracked values. */
     update(): void;
 }
 
 export declare class DesignComp<COMP extends ConstrComponent, P extends ConstrItem> extends DesignComponents<COMP, P> {
 }
 
-/** Manager for connected components. */
+/** Manages connected components. */
 export declare class DesignComponents<COMP extends ConstrComponent, P extends ConstrItem> {
     constructor(components?: COMP, modification?: ConstrComponentMod<P> | undefined);
     /** Check component presence. */
     is<K extends keyof COMP>(name: K): name is K;
     /** Get component object. */
     get<K extends keyof COMP>(name: K): COMP[K];
-    /** Get modified input data. */
+    /** Get modified props for child component. */
     getModification<K extends keyof P>(index?: K & string | string, props?: P[K] | Record<string, any>): Record<string, any> | undefined;
     /** Render component in array. */
     render<K extends keyof COMP, PK extends keyof P>(name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): VNode[];
@@ -258,30 +272,21 @@ export declare class DesignComponents<COMP extends ConstrComponent, P extends Co
     renderAdd<K extends keyof COMP, PK extends keyof P>(item: any[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): this;
 }
 
-/** Base class for functional component assembly. */
+/** Main constructor for functional components. */
 export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
     protected constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> | undefined);
-    protected init(): this;
-    /** Get class name. */
     getName(): string;
-    /** Get design name. */
     getDesign(): string;
-    /** Get sub-class name. */
     getSubClass(name: string | string[]): string;
-    /** Get status-specific class name. */
     getStatusClass(name: string | string[]): string;
-    /** Get style property name. */
     getStyle(name: string | string[]): string;
-    /** Get extra parameters. */
     getAttrs(): ConstrItem;
-    /** Expose public variables. */
     expose(): ConstrExpose<E, EXPOSE>;
-    /** Vue setup render method. */
     render(): () => VNode | (VNode | any)[] | undefined;
 }
 
 /**
- * Vue plugin for initializing global services.
+ * Vue plugin for global services.
  * @example
  * ```typescript
  * app.use(dxtFunctionalPlugin, { api: { url: '...' }, router })
@@ -291,59 +296,48 @@ export declare const dxtFunctionalPlugin: Plugin_2;
 
 /** Global effect scope utility. */
 export declare class EffectScopeGlobal {
-    /** Run function in global scope. */
     static run<T>(fn: () => T): T | undefined;
 }
 
-/** Reactive event handling class. */
+/** Event handler with reactive element. */
 export declare class EventRef<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> extends EventItem<E, O, D> {
     constructor(elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type?: string | string[], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D);
 }
 
 /**
- * Creates a managed singleton (global, provide, or local).
- * @remarks
- * Use for API services, resource optimization, shared state, or SDK initialization.
+ * Managed singleton for state/API.
+ * @remarks Use for API clients, shared state, or SDKs.
  * @example
  * export const useUserApi = executeUseGlobal(() => useApiGet('/api/user'));
  */
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
 
-/** Creates a global singleton. */
-export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<R & {
-    init(): Readonly<R>;
-    destroyExecute?(): void;
-}>);
+/** Creates global singleton. */
+export declare function executeUseGlobal<R>(callback: () => R): (() => ExecuteUseReturn<R>);
 
-/** Initializes global callbacks. */
+/** Inits global callbacks. */
 export declare function executeUseGlobalInit(): void;
 
-/** Creates a local singleton. */
-export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
-    init(): Readonly<R>;
-    destroyExecute?(): void;
-}>);
+/** Creates local singleton in closure. */
+export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => ExecuteUseReturn<R>);
 
-/** Creates a component-scoped singleton. */
-export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
-    init(): Readonly<R>;
-    destroyExecute?(): void;
-}>);
+/** Creates provide/inject singleton. */
+export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => ExecuteUseReturn<R>);
 
-/** Managed singleton return type. */
+/** Factory return object. */
 export declare type ExecuteUseReturn<R> = Readonly<R & {
     init(): Readonly<R>;
     destroyExecute?(): void;
 }>;
 
-/** Singleton initialization strategies. */
+/** Singleton strategies. */
 export declare enum ExecuteUseType {
     global = "global",
     provide = "provide",
     local = "local"
 }
 
-/** Options for the functional plugin. */
+/** Plugin options interface. */
 export declare interface FunctionalPluginOptions {
     api?: ApiConfig;
     translate?: TranslateConfig;
@@ -353,102 +347,69 @@ export declare interface FunctionalPluginOptions {
     errorCauses?: ErrorCenterCauseList;
 }
 
-/** Reactive Flag management. */
+/** Country/flag utility. */
 export declare class GeoFlagRef {
     constructor(code?: RefOrNormal<string>);
-    /** Get reactive country code. */
     getCode(): Ref<string>;
-    /** Get country/flag info. */
     get(code?: string): ComputedRef<GeoFlagItem | undefined>;
-    /** Get flag link. */
     getFlag(code?: string): ComputedRef<string | undefined>;
-    /** Get list by country codes. */
     getList(codes?: string[]): ComputedRef<GeoFlagItem[]>;
-    /** Get list in national language. */
     getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>;
 }
 
-/** Reactive formatting for numbers and dates. */
+/** Reactive numbers/dates formatting. */
 export declare class GeoIntlRef {
     constructor(code?: RefOrNormal<string>);
-    /** Display names for languages/regions. */
     display(value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): ComputedRef<string>;
-    /** Language display name. */
     languageName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /** Region display name. */
     countryName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /** Number formatting. */
     number(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Decimal point symbol. */
     decimal(): ComputedRef<string>;
-    /** Currency formatting. */
     currency(value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly?: boolean): ComputedRef<string>;
-    /** Currency symbol or code. */
     currencySymbol(currency: RefOrNormal<string>, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): ComputedRef<string>;
-    /** Unit formatting. */
     unit(value: RefOrNormal<NumberOrString>, unitOptions?: string | Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Formatted file size. */
     sizeFile(value: RefOrNormal<NumberOrString>, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Percentage formatting. */
     percent(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Percentage formatting (unit). */
     percentBy100(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Plural rule formatting. */
     plural(value: RefOrNormal<NumberOrString>, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Date/time formatting. */
     date(value: RefOrNormal<NumberOrStringOrDate>, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): ComputedRef<string>;
-    /** Relative time formatting. */
     relative(value: RefOrNormal<NumberOrStringOrDate>, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): ComputedRef<string>;
-    /** Relative time formatting with fallback limit. */
     relativeLimit(value: RefOrNormal<NumberOrStringOrDate>, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): ComputedRef<string>;
-    /** Relative time by specific unit. */
     relativeByValue(value: RefOrNormal<NumberOrString>, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): ComputedRef<string>;
-    /** Month name. */
     month(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month']): ComputedRef<string>;
-    /** List of all months. */
     months(style?: Intl.DateTimeFormatOptions['month']): ComputedRef<ItemValue<number | undefined>[]>;
-    /** Weekday name. */
     weekday(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<string>;
-    /** List of all weekdays. */
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<ItemValue<number | undefined>[]>;
-    /** Time formatting. */
     time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string>;
-    /** Locale-aware array sorting. */
     sort<T>(data: RefOrNormal<T[]>, compareFn?: (a: T, b: T) => [string, string]): ComputedRef<T[]>;
 }
 
-/** Static reactive geographic data access. */
+/** Global geographic data management. */
 export declare class GeoRef {
-    /** Get full geo info. */
     static get(): Ref<GeoItemFull>;
-    /** Get country code. */
     static getCountry(): ComputedRef<string>;
-    /** Get language code. */
     static getLanguage(): ComputedRef<string>;
-    /** Get standard locale string. */
     static getStandard(): ComputedRef<string>;
-    /** Get first day of week. */
     static getFirstDay(): ComputedRef<string>;
-    /** Set locale by code. */
     static set(code: string): void;
 }
 
-/** Generates properties for subcomponents. */
+/** Generate subcomponent properties. */
 export declare function getBind<T, R extends ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;
 
-/** Generates reactive properties for subcomponents. */
+/** Reactive subcomponent properties. */
 export declare function getBindRef<T, R extends ItemList>(value: RefOrNormal<T | R> | undefined, nameExtra?: RefOrNormal<ItemList> | string, name?: string): ComputedRef<R>;
 
 /** Get class name from props. */
 export declare function getClassName<T extends ItemList>(props?: T): string | undefined;
 
-/** Get or generate element index for rendering. */
+/** Get/gen render index. */
 export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
 
-/** Get API request options. */
+/** Get API options. */
 export declare const getOptions: (options?: ApiOptions) => RefOrNormal<ApiFetch>;
 
-/** Unwrap ref or return value. */
+/** Unwrap ref value. */
 export declare function getRef<T>(item: RefOrNormal<T>): T;
 
 export declare type LazyItem = {
@@ -465,7 +426,7 @@ export declare type LazyItemByMargin = {
 
 export declare type LazyList = Record<string, LazyItem>;
 
-/** List item base structure. */
+/** Basic list item structure. */
 export declare type ListDataBasic = {
     label?: NumberOrString;
     value?: any;
@@ -475,7 +436,7 @@ export declare type ListDataBasic = {
 /** List items with state. */
 export declare type ListDataFull<Item extends ListDataBasic = ListDataBasic> = ListDataFullItem<Item>[];
 
-/** List item with focus/selection state. */
+/** List item state properties. */
 export declare type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & {
     focus: boolean;
     highlight?: string;
@@ -483,14 +444,14 @@ export declare type ListDataFullItem<Item extends ListDataBasic = ListDataBasic>
     disabled?: boolean;
 };
 
-/** List item with metadata. */
+/** Identified list item. */
 export declare type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
     parent?: string;
     type: ListType;
     index: string;
 }>;
 
-/** List data manager. */
+/** List data management class. */
 export declare class ListDataRef {
     constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
     readonly data: ComputedRef<ListList>;
@@ -527,10 +488,7 @@ export declare class ListDataRef {
     getIndexByStep(index: string, step: number): ListDataItem | undefined;
     getIndexNext(index: string): ListDataItem | undefined;
     getIndexPrev(index: string): ListDataItem | undefined;
-    getItemByIndex(index?: string): {
-        key: number;
-        item: ListDataItem;
-    } | undefined;
+    getItemByIndex(index?: string): { key: number; item: ListDataItem; } | undefined;
     getItemByKey(key: number): ListDataItem | undefined;
     getFirstItemByParent(parent: string | undefined): ListDataItem | undefined;
     getLastItemByParent(parent: string | undefined): ListDataItem | undefined;
@@ -538,45 +496,26 @@ export declare class ListDataRef {
 }
 
 export declare type ListList<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item>[];
-
 export declare type ListListInput<Item extends ListDataBasic = ListDataBasic> = ListListInputItem<Item>[] | string[] | Record<string, ListListInputItem<Item>> | Record<string, string>;
-
 export declare type ListListInputItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item>;
-
 export declare type ListName = string | number | undefined;
-
 export declare type ListNames = ListName[];
-
 export declare type ListRecord<Item extends ListDataBasic = ListDataBasic> = ListList<Item> | Record<string, any>;
-
 export declare type ListSelectedItem = NumberOrStringOrBoolean;
-
 export declare type ListSelectedList = ListSelectedItem | ListSelectedItem[];
-
 export declare type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
 
-/** Vue raw children union. */
 export declare type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
+export declare type RawSlots = { [name: string]: unknown; $stable?: boolean; };
 
-/** Vue raw slots object. */
-export declare type RawSlots = {
-    [name: string]: unknown;
-    $stable?: boolean;
-};
-
-/** Type supporting Ref or raw value. */
 export declare type RefOrNormal<T> = RefType<T> | T;
-
-/** Ref or ComputedRef union. */
 export declare type RefType<T> = ComputedRef<T> | Ref<T>;
-
-/** Optional Ref union. */
 export declare type RefUndefined<T> = RefType<T | undefined>;
 
-/** Render cached immutable data. */
+/** Render cached/immutable data. */
 export declare function render<T extends ItemList>(name: string | any, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
 
-/** Router navigation and link utility. */
+/** Router utilities. */
 export declare class RouterItemRef {
     static get(): Router;
     static getLink(name: string, params?: any, query?: any): string | undefined;
@@ -587,7 +526,7 @@ export declare class RouterItemRef {
     static rawToHref(to?: string | RouteLocationRaw): ConstrHrefProps;
 }
 
-/** Reactive scrollbar width. */
+/** Scrollbar width detector. */
 export declare class ScrollbarWidthRef {
     readonly item: Ref<boolean | undefined, boolean | undefined>;
     readonly width: Ref<number, number>;
@@ -596,45 +535,41 @@ export declare class ScrollbarWidthRef {
 }
 
 export declare type SearchListInput<T extends SearchItem> = SearchListValueRef<T> | (() => SearchListValueRef<T>);
-
 export declare type SearchListValueRef<T extends SearchItem> = RefOrNormal<SearchListValue<T>>;
 
-/** Set global conditions for API requests. */
+/** Global API conditions. */
 export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
 
-/** Update Ref value. */
+/** Update reactive ref. */
 export declare function setRef<T>(item: Ref<T>, value: T): void;
 
-/** Shorthand for useTranslateRef. Use 'as const' for arrays. */
+/** Shorthand for translation. */
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;
 
-/** Merges objects preserving classes/styles. */
+/** Merge objects with class/style awareness. */
 export declare function toBind<R extends ItemList = ItemList>(extra: ItemList, value: ItemList): ConstrBind<R>;
-
-/** Merges multiple objects preserving classes/styles. */
 export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
 
-/** Ensures value is wrapped in a Ref. */
+/** Ensure value is Ref. */
 export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
 
 export declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
-/** API DELETE request hook. */
+/** API DELETE request. */
 export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-/** API GET request hook. */
+/** API GET request. */
 export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
 /**
- * Orchestrates API loading (GET), formatting, searching, and mutations (POST/PUT/DELETE).
- * @note Use with `executeUse` for central state.
- * @remarks Recommended for formatting values (prices, dates) but not technical IDs.
+ * Advanced API orchestration (GET, List, Search, Mutations).
+ * @note Best used with `executeUse`.
  * @example
  * const products = useApiManagementRef({ path: '/api/v1/products' }, { price: (v) => `${v}$` });
  */
@@ -660,19 +595,19 @@ export declare function useApiManagementRef<Return extends ApiManagementValue, F
     sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
 };
 
-/** API POST request hook. */
+/** API POST request. */
 export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-/** API PUT request hook. */
+/** API PUT request. */
 export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
-/** Return type for useApiRef. */
+/** useApiRef return interface. */
 export declare interface UseApiRef<R> {
     data: ComputedRef<ApiData<R> | undefined>;
     item: Ref<ApiData<R> | undefined>;
@@ -692,31 +627,30 @@ export declare interface UseApiRef<R> {
     abort(): void;
 }
 
-/** Reactive request handling hook. */
+/** Reactive request handling. */
 export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
 
-/** Generic API request hook. */
+/** Basic API request composable. */
 export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, method?: ApiMethodItem, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request): Promise<Return | undefined>;
 };
 
-/** Reactive value sync across tabs. */
+/** Sync data between tabs. */
 export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T | string | (() => (T | string))): Ref<BroadcastValueItem<T>>;
 
-/** Reactive cookie management. */
+/** Manage cookies reactively. */
 export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;
 
-/** Reactive list formatting based on property rules. */
+/** Reactive list formatting. */
 export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): {
     listFormat: ComputedRef<FormattersReturn<List, Options>>;
     length: ComputedRef<number>;
 };
 
-/** Returns GeoIntlRef instance. */
 export declare function useGeoIntlRef(): GeoIntlRef;
 
-/** Reactive URL hash management. */
+/** Reactive hash management. */
 export declare function useHashRef<T>(name: string, defaultValue?: T | (() => T)): ShallowRef<T>;
 
 /** Track element appearance by margin. */
@@ -725,7 +659,7 @@ export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | und
     readonly lazyItem: any;
 };
 
-/** Generic visibility tracking hook. */
+/** Element visibility tracking. */
 export declare const useLazyRef: (options?: IntersectionObserverInit) => {
     intersectionObserver: IntersectionObserver | undefined;
     getItem(element: HTMLElement): LazyItem;
@@ -734,10 +668,9 @@ export declare const useLazyRef: (options?: IntersectionObserverInit) => {
     disconnectLazy: () => void | undefined;
 };
 
-/** Returns loading status Ref. */
 export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
 
-/** Reactive meta tag manager with DOM sync. */
+/** Global meta tag management. */
 export declare const useMeta: () => Readonly<{
     meta: Meta;
     title: Ref<string, string>;
@@ -767,7 +700,7 @@ export declare const useMeta: () => Readonly<{
     destroyExecute?(): void;
 }>;
 
-/** Router link list manager. */
+/** Router-linked list. */
 export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
     item: ComputedRef<T | undefined>;
     selected: Ref<string, string>;
@@ -777,7 +710,7 @@ export declare const useRouterList: <T extends ListDataBasic>(list: RefType<Cons
     toMain(): void;
 };
 
-/** Reactive search logic hook. */
+/** Reactive search logic. */
 export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
     isSearch: ComputedRef<boolean>;
     search: Ref<string, string>;
@@ -786,27 +719,28 @@ export declare function useSearchRef<T extends SearchItem, K extends SearchColum
     length: ComputedRef<number>;
 };
 
-/** Manages search value with debounce/delay. */
+/** Search state with debounce. */
 export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
     search: Ref<string, string>;
     searchDelay: Ref<string, string>;
     loading: Ref<boolean, boolean>;
 };
 
-/** Reactive session storage manager. */
+/** Reactive session storage. */
 export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
 
-/** Reactive local storage manager. */
+/** Reactive local storage. */
 export declare function useStorageRef<T>(name: string, defaultValue?: T | (() => T), cache?: number): Ref<T | undefined>;
 
 /**
- * Returns reactive translation list. Updates on language change.
+ * Reactive translation retrieval.
  * @example
- * const t = useTranslateRef(['home.title'] as const);
+ * const tr = useTranslateRef(['home.title'] as const);
  */
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
 
 export * from "@dxtmisha/functional-basic";
+
 export { }
 
 go!

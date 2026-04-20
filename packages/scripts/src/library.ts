@@ -1,5 +1,9 @@
 // Classes
 export * from './classes/Ai/AiAbstract'
+export * from './classes/Ai/AiClaude'
+export * from './classes/Ai/AiClaudeCli'
+export * from './classes/Ai/AiClaudeCliLite'
+export * from './classes/Ai/AiClaudeLite'
 export * from './classes/Ai/AiDoc'
 export * from './classes/Ai/AiDocItem'
 export * from './classes/Ai/AiDocItemAbstract'
