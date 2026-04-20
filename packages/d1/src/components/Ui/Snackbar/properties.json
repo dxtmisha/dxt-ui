@@ -3,7 +3,6 @@
   "gap": "{sys.spacing.md}",
   "paddingX": "{layout.paddingX}",
   "paddingY": "{layout.paddingY}",
-  "#item": {},
   "media|md": {
     "link|vertical": "{??vertical.bottom}",
     "link|horizontal": "{??horizontal.right}",
