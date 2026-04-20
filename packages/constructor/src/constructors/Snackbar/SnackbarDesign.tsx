@@ -130,7 +130,8 @@ export class SnackbarDesign<
           {
             ...this.getAttrs(),
             ref: this.element,
-            class: this.classes?.value.main
+            class: this.classes?.value.main,
+            ...this.item.ariaBind.value
           },
           [
             ...this.renderData(),

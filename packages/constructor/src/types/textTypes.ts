@@ -13,6 +13,7 @@ export type TextIndex = 'cancel'
   | 'increment'
   | 'loading'
   | 'next'
+  | 'notifications'
   | 'ok'
   | 'previous'
   | 'show'
@@ -86,6 +87,12 @@ export type TextNextPropsInclude = {
   textNext?: TextValue
 }
 
+/** Interface for including notifications text/ Интерфейс для включения текста уведомлений */
+export type TextNotificationsPropsInclude = {
+  /** Notifications text/ Текст уведомлений */
+  textNotifications?: TextValue
+}
+
 /** Interface for including OK text/ Интерфейс для включения текста подтверждения */
 export type TextOkPropsInclude = {
   /** OK text/ Текст подтверждения */
@@ -116,6 +123,7 @@ export type TextAllPropsInclude = TextCancelPropsInclude
   & TextIncrementPropsInclude
   & TextLoadingPropsInclude
   & TextNextPropsInclude
+  & TextNotificationsPropsInclude
   & TextOkPropsInclude
   & TextPreviousPropsInclude
   & TextShowPropsInclude

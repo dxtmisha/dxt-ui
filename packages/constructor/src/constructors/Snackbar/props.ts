@@ -1,3 +1,5 @@
+import type { TextNotificationsPropsInclude } from '../../types/textTypes'
+
 type SnackbarPropsToken = {
   // :type [!] System label / Системная метка
   full?: boolean
@@ -9,10 +11,12 @@ type SnackbarPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type SnackbarPropsBasic = {
-  /** Delay before auto-closing the notification/ Задержка перед автоматическим закрытием уведомления */
-  delay?: number
-}
+export type SnackbarPropsBasic
+  = TextNotificationsPropsInclude
+    & {
+      /** Delay before auto-closing the notification/ Задержка перед автоматическим закрытием уведомления */
+      delay?: number
+    }
 
 /**
  * Type describing incoming properties.

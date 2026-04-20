@@ -29,6 +29,7 @@ export class TextInclude {
     increment: 'Increase',
     loading: 'Loading',
     next: 'Next',
+    notifications: 'Notifications',
     ok: 'OK',
     previous: 'Previous',
     show: 'Show'
@@ -111,6 +112,11 @@ export class TextInclude {
   /** Next text/ Текст следующего */
   get next() {
     return this.get('textNext')
+  }
+
+  /** Notifications text/ Текст уведомлений */
+  get notifications() {
+    return this.get('textNotifications')
   }
 
   /** OK text/ Текст подтверждения */

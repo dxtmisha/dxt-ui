@@ -1,5 +1,8 @@
-import type { Ref, ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import { SnackbarData } from './SnackbarData'
 import { SnackbarEvent } from './SnackbarEvent'
@@ -16,6 +19,9 @@ export class Snackbar {
 
   /** Event manager for snackbar / Менеджер событий для снекбара */
   readonly event: SnackbarEvent
+
+  /** Text manager for snackbar / Менеджер текста для снекбара */
+  readonly text: TextInclude
 
   /**
    * Constructor
@@ -57,7 +63,22 @@ export class Snackbar {
       className,
       this.event
     )
+
+    this.text = new TextInclude(props)
   }
+
+  /**
+   * Properties for ARIA binding.
+   *
+   * Свойства для привязки ARIA.
+   */
+  readonly ariaBind = computed(() => {
+    return {
+      ...AriaStaticInclude.role('region'),
+      ...AriaStaticInclude.label(this.text.notifications.value),
+      tabindex: '0'
+    }
+  })
 
   /**
    * Event for hiding the message.
