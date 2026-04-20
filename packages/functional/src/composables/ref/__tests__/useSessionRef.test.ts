@@ -10,11 +10,15 @@ const storageMocks = {
   set: vi.fn()
 }
 
-vi.mock('@dxtmisha/functional-basic', () => ({
-  DataStorage: vi.fn().mockImplementation(function () {
-    return storageMocks
-  })
-}))
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
+  return {
+    ...actual,
+    DataStorage: vi.fn().mockImplementation(function () {
+      return storageMocks
+    })
+  }
+})
 
 import { useSessionRef } from '../useSessionRef'
 

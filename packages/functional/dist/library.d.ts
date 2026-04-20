@@ -1,5 +1,6 @@
 import { ApiConfig } from '@dxtmisha/functional-basic';
 import { ApiData } from '@dxtmisha/functional-basic';
+import { ApiDataValidation } from '@dxtmisha/functional-basic';
 import { ApiDefaultValue } from '@dxtmisha/functional-basic';
 import { ApiFetch } from '@dxtmisha/functional-basic';
 import { ApiInstance } from '@dxtmisha/functional-basic';
@@ -70,7 +71,9 @@ export declare type ApiManagementGet<Return extends ApiManagementValue, Type ext
     /** Condition to trigger the request / Условие выполнения запроса */
     conditions?: RefType<boolean>;
     /** Custom transformation for the fetched data / Пользовательская трансформация полученных данных */
-    transformation?: (data: Type) => ApiData<Return>;
+    transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>;
+    /** Function to validate response data contract / Функция для проверки контракта данных ответа */
+    validateResponseContract?: (data: Type) => ApiDataValidation;
     /** Validation function or class constructor for data / Функция валидации или конструктор класса для данных */
     typeData?: ((data: Return) => boolean) | any;
     /** Whether to clear data when the component is unmounted / Удалять ли данные при размонтировании компонента */
@@ -819,12 +822,6 @@ export declare const dxtFunctionalPlugin: Plugin_2;
  */
 export declare class EffectScopeGlobal {
     /**
-     * Effect scope instance.
-     *
-     * Экземпляр области действия эффекта.
-     */
-    private static scope;
-    /**
      * Runs a function within the global scope.
      *
      * Запускает функцию в глобальной области.
@@ -1388,7 +1385,6 @@ export declare class GeoIntlRef {
  * Реактивный класс для работы с географическими данными.
  */
 export declare class GeoRef {
-    private static readonly item;
     private static readonly country;
     private static readonly language;
     private static readonly standard;
@@ -2000,13 +1996,12 @@ export declare function render<T extends ItemList>(name: string | any, props?: T
  * Класс управления роутером.
  */
 export declare class RouterItemRef {
-    protected static router?: Router;
     /**
      * Get router instance.
      *
      * Получить экземпляр роутера.
      */
-    static get(): Router | undefined;
+    static get(): Router;
     /**
      * Returns the link by name.
      *
@@ -2203,7 +2198,7 @@ export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFe
  * @param action common callback executed after any successful mutation / общий коллбэк после любой успешной мутации
  * @param apiInstance API instance for requests (defaults to Api.getItem()) / экземпляр API для выполнения запроса
  *
- * @returns {object} reactive API management interface / реактивный интерфейс управления API
+ * @returns reactive API management interface / реактивный интерфейс управления API
  *
  * @note This hook is recommended to be used in tandem with `executeUse` for centralized state management.
  * By wrapping `useApiManagementRef` in `executeUseProvide` or `executeUseGlobal`, you can ensure
@@ -2355,6 +2350,18 @@ export declare interface UseApiRef<R> {
     data: ComputedRef<ApiData<R> | undefined>;
     /** Item (Ref) / Элемент (Ref) */
     item: Ref<ApiData<R> | undefined>;
+    /**
+     * Status of response contract validation.
+     *
+     * Статус валидации контракта ответа.
+     */
+    isResponseContractValid: ComputedRef<boolean>;
+    /**
+     * Result of response validation.
+     *
+     * Результат валидации ответа.
+     */
+    responseValidationResult: ComputedRef<ApiDataValidation | undefined>;
     /** Length of the list (Computed) / Длина списка (Computed) */
     length: ComputedRef<number>;
     /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
@@ -2390,21 +2397,21 @@ export declare interface UseApiRef<R> {
      */
     init(): void;
     /**
-     * Default reset
+     * Default reset.
      *
-     * Сброс по умолчанию
+     * Сброс по умолчанию.
      */
     reset(): Promise<void>;
     /**
-     * Stop request
+     * Stop request.
      *
-     * Остановка запроса
+     * Остановка запроса.
      */
     stop(): void;
     /**
-     * Abort request
+     * Abort request.
      *
-     * Отмена запроса
+     * Отмена запроса.
      */
     abort(): void;
 }
@@ -2413,15 +2420,16 @@ export declare interface UseApiRef<R> {
  * Returns data for working with requests.
  *
  * Возвращает данные для работы с запросами.
- * @param path path to request/ путь к запрос
- * @param options data for the request/ данные для запроса
- * @param reactivity should reactivity be enabled/ включить ли реактивность
- * @param conditions conditions for executing the request/ условия выполнения запроса
- * @param transformation transforms the received request/ преобразовывает полученный запрос
- * @param unmounted delete data from the cache/ удалить ли данные из кеша
+ * @param path path to request / путь к запросу
+ * @param options data for the request / данные для запроса
+ * @param reactivity should reactivity be enabled / включить ли реактивность
+ * @param conditions conditions for executing the request / условия выполнения запроса
+ * @param transformation transforms the received request / преобразовывает полученный запрос
+ * @param validateResponseContract function to validate response data contract / функция для проверки контракта данных ответа
+ * @param unmounted delete data from the cache / удалить ли данные из кеша
  * @param apiInstance Api instance / Экземпляр Api
  */
-export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T) => ApiData<R>, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
+export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
 
 /**
  * Use api request.

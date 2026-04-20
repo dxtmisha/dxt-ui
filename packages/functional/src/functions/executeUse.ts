@@ -1,5 +1,5 @@
 import { inject, provide } from 'vue'
-import { getElementId, random } from '@dxtmisha/functional-basic'
+import { random, ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
 
@@ -35,14 +35,16 @@ export type ExecuteUseReturn<R>
     }
   >
 
-/** The unique identifier of the component/ Уникальный идентификатор компонента */
-const getId = () => `__execute_use${globalCode}::${getElementId()}`
+let globalId: number = 1
 
 /** The unique code/ Уникальный код */
 const globalCode = random(100000, 999999)
 
+/** The unique identifier of the component/ Уникальный идентификатор компонента */
+const getId = () => `__execute_use${globalCode}::${globalId++}`
+
 /** The global callbacks/ Глобальные callback */
-const globalMethods: (() => any)[] = []
+const getGlobalMethods = () => ServerStorage.get<(() => any)[]>('__ui:execute-use-global__', () => [])
 
 /**
  * Creates a managed singleton that encapsulates initialization logic and access mode.
@@ -207,7 +209,7 @@ export function executeUse<
   }
 
   if (type === ExecuteUseType.global) {
-    globalMethods.push(method)
+    getGlobalMethods().push(method)
   }
 
   return method
@@ -271,6 +273,8 @@ export function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R)
  * Инициализирует все глобальные callback.
  */
 export function executeUseGlobalInit() {
+  const globalMethods = getGlobalMethods()
+
   globalMethods.forEach(method => method())
   globalMethods.length = 0
 }

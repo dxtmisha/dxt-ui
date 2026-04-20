@@ -30,7 +30,7 @@ describe('BroadcastMessage', () => {
 
     // Mock DataStorage.prototype.get and set to prevent localStorage errors in JSDOM
     // We mock the constructor to bypass the localStorage item creation that might be happening
-    vi.spyOn(DataStorage.prototype, 'get').mockImplementation(function(this: any, callback: any) {
+    vi.spyOn(DataStorage.prototype, 'get').mockImplementation(function (this: any, callback: any) {
       if (typeof callback === 'function') {
         return callback()
       }

@@ -6,10 +6,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 let elementIdCounter = 0
 
-vi.mock('@dxtmisha/functional-basic', () => ({
-  getElementId: () => `mock-id-${++elementIdCounter}`,
-  random: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
-}))
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
+  return {
+    ...actual,
+    getElementId: () => `mock-id-${++elementIdCounter}`,
+    random: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
+  }
+})
 
 vi.spyOn(console, 'warn').mockImplementation(() => {
 })

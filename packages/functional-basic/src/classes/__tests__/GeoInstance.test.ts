@@ -36,7 +36,7 @@ describe('GeoInstance', () => {
 
     it('should return value from localStorage if available in browser', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
-      localStorage.setItem('ui-storage__geo-code', JSON.stringify({
+      localStorage.setItem('ui-storage____ui:geo-code__', JSON.stringify({
         value: 'ru-RU',
         age: Date.now()
       }))
@@ -138,7 +138,8 @@ describe('GeoInstance', () => {
       const geo = new GeoInstance()
       geo.set('it-IT', true)
 
-      const raw = localStorage.getItem('ui-storage__geo-code')
+      const raw = localStorage.getItem('ui-storage____ui:geo-code__')
+      expect(raw).not.toBeNull()
       expect(raw).toContain('it-IT')
     })
 

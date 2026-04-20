@@ -28,19 +28,23 @@ const metaMocks = {
   html: vi.fn(() => '<meta ...>')
 }
 
-vi.mock('@dxtmisha/functional-basic', () => ({
-  Meta: vi.fn().mockImplementation(function (this: any) {
-    return metaMocks
-  }),
-  MetaRobots: {
-    all: 'all',
-    none: 'none',
-    noIndexFollow: 'noindex, follow'
-  },
-  random: vi.fn((min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min),
-  getElementId: vi.fn(() => 'test-id'),
-  isDomRuntime: vi.fn(() => true)
-}))
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
+  return {
+    ...actual,
+    Meta: vi.fn().mockImplementation(function (this: any) {
+      return metaMocks
+    }),
+    MetaRobots: {
+      all: 'all',
+      none: 'none',
+      noIndexFollow: 'noindex, follow'
+    },
+    random: vi.fn((min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min),
+    getElementId: vi.fn(() => 'test-id'),
+    isDomRuntime: vi.fn(() => true)
+  }
+})
 
 import { useMeta } from '../useMeta'
 

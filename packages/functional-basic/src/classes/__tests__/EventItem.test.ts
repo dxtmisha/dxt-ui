@@ -20,39 +20,46 @@ describe('EventItem', () => {
     // Mock ResizeObserver
     const observe = vi.fn()
     const disconnect = vi.fn()
-    vi.stubGlobal('ResizeObserver', vi.fn(() => ({
-      observe,
-      unobserve: vi.fn(),
-      disconnect
-    })))
+
+    class MockResizeObserver {
+      observe = observe
+      unobserve = vi.fn()
+      disconnect = disconnect
+      constructor(_: any) {
+        // ...
+      }
+    }
+
+    vi.stubGlobal('ResizeObserver', MockResizeObserver)
 
     const eventItem = new EventItem(element, 'resize', listener)
     eventItem.start()
 
-    expect(ResizeObserver).toHaveBeenCalled()
     expect(observe).toHaveBeenCalledWith(element)
 
     eventItem.stop()
     expect(disconnect).toHaveBeenCalled()
   })
 
-  it('should handle specialized "scroll-sync" event', () => {
-    vi.useFakeTimers()
+  it('should handle specialized "scroll-sync" event', async () => {
     const listener = vi.fn()
     const eventItem = new EventItem(element, 'scroll-sync', listener)
+
+    // EventItem might check for requestAnimationFrame internally
+    const rafSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(0)
+      return 0
+    })
 
     eventItem.start()
 
     // Trigger scroll
     element.dispatchEvent(new Event('scroll'))
 
-    // scroll-sync uses requestAnimationFrame, which we can trigger in vitest
-    vi.runAllTimers()
-    // Since requestAnimationFrame is async, we need to wait or mock it properly
-    // In jsdom/vitest, requestAnimationFrame might need special handling
+    expect(listener).toHaveBeenCalled()
 
     eventItem.stop()
-    vi.useRealTimers()
+    rafSpy.mockRestore()
   })
 
   it('should automatically stop if element is removed from DOM', () => {

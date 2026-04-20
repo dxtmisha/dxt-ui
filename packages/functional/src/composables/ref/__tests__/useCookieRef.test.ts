@@ -12,8 +12,10 @@ const cookieMocks = {
   set: vi.fn()
 }
 
-vi.mock('@dxtmisha/functional-basic', () => {
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
   return {
+    ...actual,
     Cookie: class {
       constructor(public name: string) {}
 

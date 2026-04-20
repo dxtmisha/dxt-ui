@@ -13,8 +13,10 @@ const hashMocks = {
   addWatch: vi.fn()
 }
 
-vi.mock('@dxtmisha/functional-basic', () => {
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
   return {
+    ...actual,
     Hash: {
       get: (name: string, defaultValue: any) => hashMocks.get(name, defaultValue),
       set: (name: string, value: any) => hashMocks.set(name, value),

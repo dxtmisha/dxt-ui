@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 import { RouterItemRef } from '../RouterItemRef'
 import type { Router } from 'vue-router'
 
@@ -6,14 +7,13 @@ describe('RouterItemRef', () => {
   let mockRouter: any
 
   beforeEach(() => {
-    // Reset internal state of RouterItemRef if possible,
-    // but since it's static we just overwrite it
+    ServerStorage.setErrorStatus(true)
+    ServerStorage.remove('__ui:router-item-ref__')
+
     mockRouter = {
       resolve: vi.fn(),
       push: vi.fn().mockResolvedValue(undefined)
     }
-    // @ts-ignore - accessing protected for test
-    RouterItemRef.router = undefined
   })
 
   describe('set and get', () => {

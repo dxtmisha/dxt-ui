@@ -25,7 +25,7 @@ describe('encodeLiteAttribute', () => {
   it('should NOT encode single and double quotes', () => {
     expect(encodeLiteAttribute('He said "it\'s fine"')).toBe('He said "it\'s fine"')
     expect(encodeLiteAttribute('"quoted"')).toBe('"quoted"')
-    expect(encodeLiteAttribute("'single'")).toBe("'single'")
+    expect(encodeLiteAttribute('\'single\'')).toBe('\'single\'')
   })
 
   it('should NOT encode other special characters', () => {

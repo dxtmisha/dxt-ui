@@ -36,7 +36,7 @@ describe('Geo', () => {
 
     it('should detect locale from localStorage in browser context', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
-      localStorage.setItem('ui-storage__geo-code', JSON.stringify({
+      localStorage.setItem('ui-storage____ui:geo-code__', JSON.stringify({
         value: 'ru-RU',
         age: Date.now()
       }))
@@ -82,7 +82,8 @@ describe('Geo', () => {
       vi.mocked(isDomRuntime).mockReturnValue(true)
       Geo.set('de-DE', true)
 
-      const stored = localStorage.getItem('ui-storage__geo-code')
+      const stored = localStorage.getItem('ui-storage____ui:geo-code__')
+      expect(stored).not.toBeNull()
       expect(stored).toContain('de-DE')
     })
   })

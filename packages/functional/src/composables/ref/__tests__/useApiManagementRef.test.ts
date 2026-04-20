@@ -129,7 +129,7 @@ describe('useApiManagementRef', () => {
 
   describe('utility properties', () => {
     it('should expose starting, reading and loading from useApiRef', async () => {
-      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise(resolve => {
+      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise((resolve) => {
         setTimeout(() => resolve({ data: 'ok' }), 50)
       }))
 
@@ -195,7 +195,7 @@ describe('useApiManagementRef', () => {
       expect(loadingDelete!.value).toBe(false)
 
       // trigger POST
-      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise(resolve => {
+      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise((resolve) => {
         setTimeout(() => resolve({ success: true }), 50)
       }))
 

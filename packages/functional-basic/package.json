@@ -59,6 +59,7 @@
   },
   "files": [
     "dist",
+    "ai-types.txt",
     "README.md",
     "package.json",
     "LICENSE"

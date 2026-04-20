@@ -3,6 +3,7 @@ import { ScrollbarWidthRef } from '../ScrollbarWidthRef'
 import { ScrollbarWidth } from '@dxtmisha/functional-basic'
 
 vi.mock('@dxtmisha/functional-basic', () => ({
+  isDomRuntime: vi.fn(() => true),
   ScrollbarWidth: {
     is: vi.fn(),
     get: vi.fn()

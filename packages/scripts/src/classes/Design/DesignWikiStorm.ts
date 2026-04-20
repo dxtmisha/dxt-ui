@@ -1,4 +1,4 @@
-import { toCamelCaseFirst } from '@dxtmisha/functional-basic'
+import { ServerStorage, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -27,6 +27,7 @@ export class DesignWikiStorm {
   constructor(
     protected dir: string = 'dist'
   ) {
+    ServerStorage.setErrorStatus(true)
     this.components = new LibraryItems()
   }
 

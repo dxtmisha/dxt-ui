@@ -1,8 +1,13 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref, watch, nextTick } from 'vue'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 import { EffectScopeGlobal } from '../EffectScopeGlobal'
 
 describe('EffectScopeGlobal', () => {
+  beforeEach(() => {
+    ServerStorage.setErrorStatus(true)
+  })
+
   it('should run the provided function and return its value', () => {
     const result = EffectScopeGlobal.run(() => {
       return 'test-value'
@@ -30,14 +35,8 @@ describe('EffectScopeGlobal', () => {
   })
 
   it('should initialize the scope lazily', () => {
-    // Accessing private member for verification of lazy initialization
-    const klass = EffectScopeGlobal as any
-
-    // We can't easily reset the class state between tests since it's a static singleton,
-    // but we can check if it exists after the first test.
-    // If we want a clean state, we might need to reset it manually if it was possible.
-    // Assuming this test runs after others, the scope should already be defined.
-    expect(klass.scope).toBeDefined()
+    // Accessing through ServerStorage to verify initialization
+    expect(ServerStorage.has('__ui:effect-scope-global__')).toBe(true)
   })
 
   it('should return undefined if the scope cannot run (rare case)', () => {

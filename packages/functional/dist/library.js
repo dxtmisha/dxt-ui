@@ -1,38 +1,38 @@
-import { Api as e, ApiMethodItem as t, BroadcastMessage as n, Cookie as r, DataStorage as i, Datetime as a, ErrorCenter as o, EventItem as s, Formatters as c, Geo as l, GeoFlag as u, GeoIntl as d, Hash as f, Icons as p, Loading as m, Meta as h, ScrollbarWidth as g, SearchList as _, Translate as v, executeFunction as y, executePromise as b, forEach as x, getColumn as S, getElementId as C, getExp as w, isApiSuccess as ee, isArray as te, isDomRuntime as ne, isFunction as re, isObject as T, isObjectNotArray as E, isSelected as D, isString as O, random as ie, toArray as k, toCamelCase as ae, toDate as oe } from "@dxtmisha/functional-basic";
-import { computed as A, customRef as se, effectScope as ce, getCurrentInstance as le, h as ue, inject as de, isRef as j, onUnmounted as fe, provide as pe, ref as M, shallowRef as N, toRefs as me, triggerRef as he, useAttrs as ge, useSlots as _e, watch as P, watchEffect as ve } from "vue";
+import { Api as e, ApiMethodItem as t, BroadcastMessage as n, Cookie as r, DataStorage as i, Datetime as a, ErrorCenter as o, EventItem as s, Formatters as c, Geo as l, GeoFlag as u, GeoIntl as d, Hash as f, Icons as p, Loading as m, Meta as h, ScrollbarWidth as g, SearchList as _, ServerStorage as v, Translate as y, executeFunction as b, executePromise as x, forEach as S, getColumn as C, getElementId as w, getExp as T, isApiSuccess as ee, isArray as te, isDomRuntime as E, isFunction as ne, isObject as D, isObjectNotArray as O, isSelected as k, isString as A, random as re, toArray as j, toCamelCase as ie, toDate as ae } from "@dxtmisha/functional-basic";
+import { computed as M, customRef as oe, effectScope as se, getCurrentInstance as ce, h as le, inject as ue, isRef as N, onUnmounted as de, provide as fe, ref as P, shallowRef as F, toRefs as pe, triggerRef as me, useAttrs as he, useSlots as ge, watch as I, watchEffect as L } from "vue";
 export * from "@dxtmisha/functional-basic";
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/typeof.js
-function F(e) {
+function R(e) {
 	"@babel/helpers - typeof";
-	return F = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return R = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, F(e);
+	}, R(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/toPrimitive.js
-function ye(e, t) {
-	if (F(e) != "object" || !e) return e;
+function _e(e, t) {
+	if (R(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (F(r) != "object") return r;
+		if (R(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/toPropertyKey.js
-function be(e) {
-	var t = ye(e, "string");
-	return F(t) == "symbol" ? t : t + "";
+function ve(e) {
+	var t = _e(e, "string");
+	return R(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.124.0/helpers/defineProperty.js
-function I(e, t, n) {
-	return (t = be(t)) in e ? Object.defineProperty(e, t, {
+function z(e, t, n) {
+	return (t = ve(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -41,9 +41,9 @@ function I(e, t, n) {
 }
 //#endregion
 //#region src/classes/design/DesignChanged.ts
-var xe = class {
+var ye = class {
 	constructor(e, t = Object.keys(e)) {
-		I(this, "cache", {}), this.props = e, this.watch = t;
+		z(this, "cache", {}), this.props = e, this.watch = t;
 	}
 	is(e) {
 		return te(e) ? !!e.find((e) => this.isDifferent(e)) : this.isDifferent(e);
@@ -62,9 +62,9 @@ var xe = class {
 		var t, n;
 		return ((t = this.cache) == null ? void 0 : t[e]) !== ((n = this.props) == null ? void 0 : n[e]);
 	}
-}, Se = class {
+}, be = class {
 	constructor(e, t, n) {
-		I(this, "event", {}), I(this, "changed", void 0), this.props = e, this.callback = t, this.changed = new xe(e, n);
+		z(this, "event", {}), z(this, "changed", void 0), this.props = e, this.callback = t, this.changed = new ye(e, n);
 	}
 	make(e) {
 		return this.makeCallback(e), this;
@@ -81,7 +81,7 @@ var xe = class {
 	makeCallbackItem() {
 		this.callback && this.callback(this.event);
 	}
-}, Ce = class extends Se {
+}, xe = class extends be {
 	make(e) {
 		return this.makeCallback(e).then(), this;
 	}
@@ -91,32 +91,32 @@ var xe = class {
 };
 //#endregion
 //#region src/functions/ref/getRef.ts
-function L(e) {
-	return j(e) ? e.value : e;
+function B(e) {
+	return N(e) ? e.value : e;
 }
 //#endregion
 //#region src/functions/render/getClassName.ts
-function we(e) {
+function Se(e) {
 	return e && "class" in e && typeof e.class == "string" ? e.class : void 0;
 }
 //#endregion
 //#region src/functions/render/getIndexForRender.ts
-function Te(e, t, n) {
-	let r = t == null ? void 0 : t.id, i = t == null ? void 0 : t.index, a = we(t), o = "";
-	if (O(e) && (o += e), n && (o += `.${n}`), i && O(i) && (o += `.${i}`), a && (o += `.${a}`), r && (o += `.${r}`), o !== "") return o;
+function V(e, t, n) {
+	let r = t == null ? void 0 : t.id, i = t == null ? void 0 : t.index, a = Se(t), o = "";
+	if (A(e) && (o += e), n && (o += `.${n}`), i && A(i) && (o += `.${i}`), a && (o += `.${a}`), r && (o += `.${r}`), o !== "") return o;
 }
 //#endregion
 //#region src/functions/ref/render.ts
-function Ee(e, t, n, r) {
+function Ce(e, t, n, r) {
 	let i = t, a = t && "key" in t;
 	return (!t || !a) && (i = {
 		...t,
-		key: Te(e, t, r)
-	}), ue(e, i, n);
+		key: V(e, t, r)
+	}), le(e, i, n);
 }
 //#endregion
 //#region src/functions/toBind.ts
-function R(e, t) {
+function H(e, t) {
 	let n = e == null ? void 0 : e.class, r = t == null ? void 0 : t.class, i = e == null ? void 0 : e.style, a = t == null ? void 0 : t.style, o = {
 		...e,
 		...t
@@ -125,17 +125,17 @@ function R(e, t) {
 }
 //#endregion
 //#region src/functions/toBinds.ts
-function De(...e) {
+function we(...e) {
 	let t = {};
 	return e.forEach((e) => {
-		e && (t = R(t, e));
+		e && (t = H(t, e));
 	}), t;
 }
 //#endregion
 //#region src/classes/design/DesignComponents.ts
-var z = class {
+var U = class {
 	constructor(e = {}, t) {
-		I(this, "caching", {}), this.components = e, this.modification = t;
+		z(this, "caching", {}), this.components = e, this.modification = t;
 	}
 	is(e) {
 		return e in this.components;
@@ -146,9 +146,9 @@ var z = class {
 	}
 	getModification(e, t) {
 		if (e) {
-			e in this.caching || (this.caching[e] = A(() => this.computeModification(e)));
+			e in this.caching || (this.caching[e] = M(() => this.computeModification(e)));
 			let n = this.caching[e];
-			if (n) return t ? De(n.value, t) : n.value;
+			if (n) return t ? we(n.value, t) : n.value;
 		}
 		return t;
 	}
@@ -159,7 +159,7 @@ var z = class {
 	renderOne(e, t, n, r) {
 		if (this.is(e)) {
 			let i = r == null ? e : r;
-			return Ee(this.get(e), this.getModification(i, t), n, i);
+			return Ce(this.get(e), this.getModification(i, t), n, i);
 		}
 	}
 	renderAdd(e, t, n, r, i) {
@@ -167,21 +167,21 @@ var z = class {
 	}
 	computeModification(e) {
 		var t;
-		let n = L((t = this.modification) == null ? void 0 : t[e]);
-		if (n && E(n)) {
+		let n = B((t = this.modification) == null ? void 0 : t[e]);
+		if (n && O(n)) {
 			let e = {};
-			return x(n, (t, n) => {
-				e[n] = L(t);
+			return S(n, (t, n) => {
+				e[n] = B(t);
 			}), e;
 		}
 		return {};
 	}
-}, Oe = class extends z {}, ke = class {
+}, Te = class extends U {}, Ee = class {
 	constructor(e, t, n) {
-		I(this, "name", void 0), I(this, "element", M()), I(this, "refs", void 0), I(this, "components", void 0), I(this, "emits", void 0), I(this, "classes", void 0), I(this, "classesSub", void 0), I(this, "styles", void 0), I(this, "stylesSub", void 0), I(this, "attrs", void 0), I(this, "slots", void 0), I(this, "dataExpose", void 0), this.props = t, this.options = n, this.name = this.initName(e), this.refs = this.props ? me(this.props) : {}, this.components = new z(n == null ? void 0 : n.components, n == null ? void 0 : n.compMod), this.emits = n == null ? void 0 : n.emits, this.classes = A(() => this.updateClasses()), this.styles = A(() => this.updateStyles()), this.attrs = ge(), this.slots = _e();
+		z(this, "name", void 0), z(this, "element", P()), z(this, "refs", void 0), z(this, "components", void 0), z(this, "emits", void 0), z(this, "classes", void 0), z(this, "classesSub", void 0), z(this, "styles", void 0), z(this, "stylesSub", void 0), z(this, "attrs", void 0), z(this, "slots", void 0), z(this, "dataExpose", void 0), this.props = t, this.options = n, this.name = this.initName(e), this.refs = this.props ? pe(this.props) : {}, this.components = new U(n == null ? void 0 : n.components, n == null ? void 0 : n.compMod), this.emits = n == null ? void 0 : n.emits, this.classes = M(() => this.updateClasses()), this.styles = M(() => this.updateStyles()), this.attrs = he(), this.slots = ge();
 	}
 	init() {
-		return this.classesSub = A(() => this.initClasses()), this.stylesSub = A(() => this.initStyles()), this.dataExpose = this.initExpose(), this;
+		return this.classesSub = M(() => this.initClasses()), this.stylesSub = M(() => this.initStyles()), this.dataExpose = this.initExpose(), this;
 	}
 	getName() {
 		return this.name.join("-");
@@ -190,13 +190,13 @@ var z = class {
 		return String(this.name[0]);
 	}
 	getSubClass(e) {
-		return `${this.getName()}__${k(e).join("__")}`;
+		return `${this.getName()}__${j(e).join("__")}`;
 	}
 	getStatusClass(e) {
-		return `${this.getName()}--${k(e).join("--")}`;
+		return `${this.getName()}--${j(e).join("--")}`;
 	}
 	getStyle(e) {
-		return `--${this.getName()}-sys-${k(e).join("-")}`;
+		return `--${this.getName()}-sys-${j(e).join("-")}`;
 	}
 	getAttrs() {
 		var e;
@@ -221,19 +221,19 @@ var z = class {
 		}
 	}
 	toClass(e) {
-		return E(e) ? e : Array.isArray(e) ? { [e.filter((e) => typeof e == "string" && e.trim() !== "").join(" ")]: !0 } : typeof e == "string" ? { [e]: !0 } : {};
+		return O(e) ? e : Array.isArray(e) ? { [e.filter((e) => typeof e == "string" && e.trim() !== "").join(" ")]: !0 } : typeof e == "string" ? { [e]: !0 } : {};
 	}
 	toClassName(e) {
-		if (T(e)) {
+		if (D(e)) {
 			let t = {};
-			return x(e, (e, n) => {
+			return S(e, (e, n) => {
 				n.match(/\?\?/) ? t[n.replace(/\?\?/, this.getName())] = e : n.match(/\?/) ? t[n.replace(/\?/, this.getDesign())] = e : t[n] = e;
 			}), t;
 		}
 		return {};
 	}
 	initName(e) {
-		return x(e.split(".", 2), (e) => ae(e));
+		return S(e.split(".", 2), (e) => ie(e));
 	}
 	updateClasses() {
 		var e, t, n;
@@ -263,18 +263,18 @@ var z = class {
 };
 //#endregion
 //#region src/functions/ref/toRefItem.ts
-function B(e) {
-	return j(e) ? e : M(e);
+function W(e) {
+	return N(e) ? e : P(e);
 }
 //#endregion
 //#region src/classes/ref/DatetimeRef.ts
-var Ae = class {
+var De = class {
 	constructor(e, t = "date", n = l.getLocation()) {
-		I(this, "item", void 0), I(this, "type", void 0), I(this, "code", void 0), I(this, "date", void 0), I(this, "datetime", void 0), I(this, "year", M(2e3)), I(this, "month", M(1)), I(this, "day", M(1)), I(this, "hour", M(1)), I(this, "minute", M(1)), I(this, "second", M(1)), this.item = B(e), this.type = B(t), this.code = B(n), this.date = M(oe(this.item.value)), this.datetime = new a(this.date.value, this.type.value, this.code.value), P(this.item, (e) => {
-			this.date.value = oe(e);
-		}), P(this.type, (e) => this.datetime.setType(e)), P(this.code, (e) => this.datetime.setCode(e)), P(this.date, (e) => {
+		z(this, "item", void 0), z(this, "type", void 0), z(this, "code", void 0), z(this, "date", void 0), z(this, "datetime", void 0), z(this, "year", P(2e3)), z(this, "month", P(1)), z(this, "day", P(1)), z(this, "hour", P(1)), z(this, "minute", P(1)), z(this, "second", P(1)), this.item = W(e), this.type = W(t), this.code = W(n), this.date = P(ae(this.item.value)), this.datetime = new a(this.date.value, this.type.value, this.code.value), I(this.item, (e) => {
+			this.date.value = ae(e);
+		}), I(this.type, (e) => this.datetime.setType(e)), I(this.code, (e) => this.datetime.setCode(e)), I(this.date, (e) => {
 			this.datetime.setDate(e), this.updateDate();
-		}), this.datetime.setWatch(() => he(this.date)), this.updateDate();
+		}), this.datetime.setWatch(() => me(this.date)), this.updateDate();
 	}
 	getItem() {
 		return this.item;
@@ -286,82 +286,78 @@ var Ae = class {
 		return this.datetime;
 	}
 	getHoursType() {
-		return A(() => this.date.value && this.datetime.getHoursType());
+		return M(() => this.date.value && this.datetime.getHoursType());
 	}
 	getFirstDayCode() {
-		return A(() => this.date.value && this.datetime.getFirstDayCode());
+		return M(() => this.date.value && this.datetime.getFirstDayCode());
 	}
 	getYear() {
-		return A(() => this.year.value);
+		return M(() => this.year.value);
 	}
 	getMonth() {
-		return A(() => this.month.value);
+		return M(() => this.month.value);
 	}
 	getDay() {
-		return A(() => this.day.value);
+		return M(() => this.day.value);
 	}
 	getHour() {
-		return A(() => this.hour.value);
+		return M(() => this.hour.value);
 	}
 	getMinute() {
-		return A(() => this.minute.value);
+		return M(() => this.minute.value);
 	}
 	getSecond() {
-		return A(() => this.second.value);
+		return M(() => this.second.value);
 	}
 	getMaxDay() {
-		return A(() => this.date.value && this.datetime.getMaxDay());
+		return M(() => this.date.value && this.datetime.getMaxDay());
 	}
 	locale(e = this.type.value, t) {
-		return A(() => this.date.value && this.datetime.locale(e, t));
+		return M(() => this.date.value && this.datetime.locale(e, t));
 	}
 	standard(e = !0) {
-		return A(() => this.date.value && this.datetime.standard(e));
+		return M(() => this.date.value && this.datetime.standard(e));
 	}
 	updateDate() {
 		return this.year.value = this.datetime.getYear(), this.month.value = this.datetime.getMonth(), this.day.value = this.datetime.getDay(), this.hour.value = this.datetime.getHour(), this.minute.value = this.datetime.getMinute(), this.second.value = this.datetime.getSecond(), this;
 	}
-}, V = class {
+}, G = class {
 	static run(e) {
 		return this.getScope().run(e);
 	}
 	static getScope() {
-		return this.scope || (this.scope = ce(!0)), this.scope;
+		return v.get("__ui:effect-scope-global__", () => se(!0));
 	}
-};
-I(V, "scope", void 0);
-//#endregion
-//#region src/classes/ref/EventRef.ts
-var je = class extends s {
+}, Oe = class extends s {
 	constructor(e, t, n = ["click"], r, i, a) {
-		let o = B(e), s = B(t);
-		super(o.value, n, r, i, a), s.value && this.setElementControl(s.value), P(o, (e) => this.setElement(e)), P(s, (e) => this.setElementControl(e));
+		let o = W(e), s = W(t);
+		super(o.value, n, r, i, a), s.value && this.setElementControl(s.value), I(o, (e) => this.setElement(e)), I(s, (e) => this.setElementControl(e));
 	}
-}, Me = class {
+}, ke = class {
 	constructor(e = l.getLocation()) {
-		I(this, "code", void 0), I(this, "flag", void 0), this.code = B(e), this.flag = new u(this.code.value), P(this.code, (e) => this.flag.setCode(e));
+		z(this, "code", void 0), z(this, "flag", void 0), this.code = W(e), this.flag = new u(this.code.value), I(this.code, (e) => this.flag.setCode(e));
 	}
 	getCode() {
 		return this.code;
 	}
 	get(e = this.code.value) {
-		return A(() => this.flag.get(e));
+		return M(() => this.flag.get(e));
 	}
 	getFlag(e = this.code.value) {
-		return A(() => {
+		return M(() => {
 			var t;
 			return (t = this.flag.get(e)) == null ? void 0 : t.icon;
 		});
 	}
 	getList(e) {
-		return A(() => this.flag.getList(e));
+		return M(() => this.flag.getList(e));
 	}
 	getNational(e) {
-		return A(() => this.flag.getNational(e));
+		return M(() => this.flag.getNational(e));
 	}
-}, H, U = class {
+}, K, q = class {
 	static get() {
-		return this.item;
+		return v.get("__ui:geo-ref__", () => F(l.getItem()));
 	}
 	static getCountry() {
 		return this.country;
@@ -376,88 +372,88 @@ var je = class extends s {
 		return this.firstDay;
 	}
 	static set(e) {
-		l.set(e, !0), this.item.value = l.getItem();
+		l.set(e, !0), this.get().value = l.getItem();
 	}
 };
-H = U, I(U, "item", N(l.getItem())), I(U, "country", A(() => H.item.value.country)), I(U, "language", A(() => H.item.value.language)), I(U, "standard", A(() => H.item.value.standard)), I(U, "firstDay", A(() => H.item.value.firstDay));
+K = q, z(q, "country", M(() => K.get().value.country)), z(q, "language", M(() => K.get().value.language)), z(q, "standard", M(() => K.get().value.standard)), z(q, "firstDay", M(() => K.get().value.firstDay));
 //#endregion
 //#region src/classes/ref/GeoIntlRef.ts
-var Ne = class {
+var Ae = class {
 	constructor(e) {
-		I(this, "location", void 0), I(this, "intl", void 0), this.location = B(e), this.intl = A(() => {
+		z(this, "location", void 0), z(this, "intl", void 0), this.location = W(e), this.intl = M(() => {
 			var e;
-			return new d((e = this.location.value) == null ? U.getLanguage().value : e);
+			return new d((e = this.location.value) == null ? q.getLanguage().value : e);
 		});
 	}
 	display(e, t) {
-		return A(() => this.intl.value.display(L(e), t));
+		return M(() => this.intl.value.display(B(e), t));
 	}
 	languageName(e, t) {
-		return A(() => this.intl.value.languageName(L(e), t));
+		return M(() => this.intl.value.languageName(B(e), t));
 	}
 	countryName(e, t) {
-		return A(() => this.intl.value.countryName(L(e), t));
+		return M(() => this.intl.value.countryName(B(e), t));
 	}
 	number(e, t) {
-		return A(() => this.intl.value.number(L(e), t));
+		return M(() => this.intl.value.number(B(e), t));
 	}
 	decimal() {
-		return A(() => this.intl.value.decimal());
+		return M(() => this.intl.value.decimal());
 	}
 	currency(e, t, n = !1) {
-		return A(() => this.intl.value.currency(L(e), L(t), n));
+		return M(() => this.intl.value.currency(B(e), B(t), n));
 	}
 	currencySymbol(e, t = "symbol") {
-		return A(() => this.intl.value.currencySymbol(L(e), t));
+		return M(() => this.intl.value.currencySymbol(B(e), t));
 	}
 	unit(e, t) {
-		return A(() => this.intl.value.unit(L(e), t));
+		return M(() => this.intl.value.unit(B(e), t));
 	}
 	sizeFile(e, t = "byte") {
-		return A(() => this.intl.value.sizeFile(L(e), t));
+		return M(() => this.intl.value.sizeFile(B(e), t));
 	}
 	percent(e, t) {
-		return A(() => this.intl.value.percent(L(e), t));
+		return M(() => this.intl.value.percent(B(e), t));
 	}
 	percentBy100(e, t) {
-		return A(() => this.intl.value.percentBy100(L(e), t));
+		return M(() => this.intl.value.percentBy100(B(e), t));
 	}
 	plural(e, t, n, r) {
-		return A(() => this.intl.value.plural(L(e), t, n, r));
+		return M(() => this.intl.value.plural(B(e), t, n, r));
 	}
 	date(e, t, n, r) {
-		return A(() => this.intl.value.date(L(e), t, n, r));
+		return M(() => this.intl.value.date(B(e), t, n, r));
 	}
 	relative(e, t, n) {
-		return A(() => this.intl.value.relative(L(e), t, n));
+		return M(() => this.intl.value.relative(B(e), t, n));
 	}
 	relativeLimit(e, t, n, r, i, a, o) {
-		return A(() => this.intl.value.relativeLimit(L(e), t, n, r, i, a, o));
+		return M(() => this.intl.value.relativeLimit(B(e), t, n, r, i, a, o));
 	}
 	relativeByValue(e, t, n) {
-		return A(() => this.intl.value.relativeByValue(L(e), t, n));
+		return M(() => this.intl.value.relativeByValue(B(e), t, n));
 	}
 	month(e, t) {
-		return A(() => this.intl.value.month(L(e), t));
+		return M(() => this.intl.value.month(B(e), t));
 	}
 	months(e) {
-		return A(() => this.intl.value.months(e));
+		return M(() => this.intl.value.months(e));
 	}
 	weekday(e, t) {
-		return A(() => this.intl.value.weekday(L(e), t));
+		return M(() => this.intl.value.weekday(B(e), t));
 	}
 	weekdays(e) {
-		return A(() => this.intl.value.weekdays(e));
+		return M(() => this.intl.value.weekdays(e));
 	}
 	time(e) {
-		return A(() => this.intl.value.time(L(e)));
+		return M(() => this.intl.value.time(B(e)));
 	}
 	sort(e, t = (e, t) => [e, t]) {
-		return A(() => this.intl.value.sort([...L(e)], t));
+		return M(() => this.intl.value.sort([...B(e)], t));
 	}
-}, Pe = class e {
+}, je = class e {
 	constructor(e, t, n, r, i, a, o, s, c, l = 0, u = 9999999, d) {
-		I(this, "subList", {}), I(this, "data", A(() => x(L(this.list) || [], (e, t) => this.initItem(t, e)))), I(this, "liteData", A(() => {
+		z(this, "subList", {}), z(this, "data", M(() => S(B(this.list) || [], (e, t) => this.initItem(t, e)))), z(this, "liteData", M(() => {
 			if (this.isLite()) {
 				let e = [];
 				for (let t of this.data.value) {
@@ -474,11 +470,11 @@ var Ne = class {
 				return e;
 			}
 			return this.data.value;
-		})), I(this, "fullData", A(() => {
+		})), z(this, "fullData", M(() => {
 			let e = this.getFocus(), t = this.getHighlight(), n = this.getSelected();
-			return x(this.data.value, (r) => {
+			return S(this.data.value, (r) => {
 				var i, a;
-				let o = D(r.index, n);
+				let o = k(r.index, n);
 				return {
 					...r,
 					focus: e === r.index,
@@ -488,7 +484,7 @@ var Ne = class {
 					disabled: (a = r.disabled) == null ? !o && r.type === "item" && this.isSelectedMax.value : a
 				};
 			});
-		})), I(this, "map", A(() => {
+		})), z(this, "map", M(() => {
 			let e = [];
 			return this.data.value.forEach((t) => {
 				switch (t.type) {
@@ -501,32 +497,32 @@ var Ne = class {
 						break;
 				}
 			}), e;
-		})), I(this, "mapItems", A(() => this.map.value.filter((e) => e.type === "item"))), I(this, "items", A(() => this.map.value.filter((e) => e.type === "item" || e.type === "group" || e.type === "menu"))), I(this, "highlightFirstItem", A(() => {
+		})), z(this, "mapItems", M(() => this.map.value.filter((e) => e.type === "item"))), z(this, "items", M(() => this.map.value.filter((e) => e.type === "item" || e.type === "group" || e.type === "menu"))), z(this, "highlightFirstItem", M(() => {
 			let e = this.getHighlight();
 			if (e && e.length >= this.getHighlightLengthStart()) {
-				let t = w(e, "i");
+				let t = T(e, "i");
 				if (t) return this.map.value.findIndex((e) => {
 					var n, r, i;
 					return ((n = e.label) == null ? void 0 : n.toString().match(t)) || ((r = e.index) == null ? void 0 : r.toString().match(t)) || ((i = e.search) == null ? void 0 : i.toString().match(t));
 				});
 			}
 			return -1;
-		})), I(this, "isSelected", A(() => {
+		})), z(this, "isSelected", M(() => {
 			let e = this.getSelected();
-			return !!e && this.mapItems.value.findIndex((t) => D(t.index, e)) !== -1;
-		})), I(this, "isSelectedMin", A(() => {
-			let e = Number(L(this.min) || 0);
+			return !!e && this.mapItems.value.findIndex((t) => k(t.index, e)) !== -1;
+		})), z(this, "isSelectedMin", M(() => {
+			let e = Number(B(this.min) || 0);
 			return e > 0 ? this.selectedListInGroup.value.length >= e : !1;
-		})), I(this, "isSelectedMax", A(() => {
-			let e = Number(L(this.max) || 9999999);
+		})), z(this, "isSelectedMax", M(() => {
+			let e = Number(B(this.max) || 9999999);
 			return e > 0 ? this.selectedListInGroup.value.length >= e : !1;
-		})), I(this, "selectedList", A(() => {
+		})), z(this, "selectedList", M(() => {
 			let e = this.getSelected();
-			return e && this.isSelected.value ? this.mapItems.value.filter((t) => D(t.index, e)) : [];
-		})), I(this, "selectedListInGroup", A(() => {
+			return e && this.isSelected.value ? this.mapItems.value.filter((t) => k(t.index, e)) : [];
+		})), z(this, "selectedListInGroup", M(() => {
 			let e = this.getSelected();
-			return e && this.isSelected.value ? this.data.value.filter((t) => D(t.index, e)) : [];
-		})), I(this, "selectedNames", A(() => S(this.selectedList.value, "label"))), I(this, "selectedValues", A(() => S(this.selectedList.value, "value"))), this.list = e, this.focus = t, this.highlight = n, this.highlightLengthStart = r, this.filterMode = i, this.selected = a, this.keyValue = o, this.keyLabel = s, this.lite = c, this.min = l, this.max = u, this.parent = d, j(e) && P(e, () => {
+			return e && this.isSelected.value ? this.data.value.filter((t) => k(t.index, e)) : [];
+		})), z(this, "selectedNames", M(() => C(this.selectedList.value, "label"))), z(this, "selectedValues", M(() => C(this.selectedList.value, "value"))), this.list = e, this.focus = t, this.highlight = n, this.highlightLengthStart = r, this.filterMode = i, this.selected = a, this.keyValue = o, this.keyLabel = s, this.lite = c, this.min = l, this.max = u, this.parent = d, N(e) && I(e, () => {
 			this.subList = {};
 		});
 	}
@@ -637,10 +633,10 @@ var Ne = class {
 		return t.parent === e && this.isItem(t);
 	}
 	getIndex(e, t, n, r) {
-		return e && !T(e) ? e : t && !T(t) ? t : n && r;
+		return e && !D(e) ? e : t && !D(t) ? t : n && r;
 	}
 	initItem(e, t) {
-		if (E(t)) {
+		if (O(t)) {
 			var n, r, i, a, o, s;
 			let c = t == null ? void 0 : t[(n = (r = this.keyValue) == null ? void 0 : r.value) == null ? "value" : n], l = (i = t == null ? void 0 : t[(a = (o = this.keyLabel) == null ? void 0 : o.value) == null ? "label" : a]) == null ? c : i, u = this.getIndex(t == null ? void 0 : t.index, c, e, l);
 			return {
@@ -660,13 +656,13 @@ var Ne = class {
 			value: e
 		};
 	}
-}, W = class {
+}, Me = "__ui:router-item-ref__", J = class {
 	static get() {
-		return this.router;
+		return v.get(Me);
 	}
 	static getLink(e, t, n) {
 		var r;
-		return (r = this.router) == null ? void 0 : r.resolve({
+		return (r = this.get()) == null ? void 0 : r.resolve({
 			name: e,
 			params: t,
 			query: n
@@ -680,34 +676,31 @@ var Ne = class {
 		return {};
 	}
 	static push(e) {
-		this.router && this.router.push(e).then();
+		let t = this.get();
+		t && t.push(e).then();
 	}
 	static set(e) {
-		this.router = e;
+		v.set(Me, () => e);
 	}
 	static setOneTime(e) {
-		this.router || this.set(e);
+		this.get() || this.set(e);
 	}
 	static rawToHref(e) {
-		return E(e) && "name" in e && O(e == null ? void 0 : e.name) ? this.getHref(e.name) : {};
+		return O(e) && "name" in e && A(e == null ? void 0 : e.name) ? this.getHref(e.name) : {};
 	}
-};
-I(W, "router", void 0);
-//#endregion
-//#region src/classes/ref/ScrollbarWidthRef.ts
-var Fe = class {
+}, Ne = class {
 	constructor() {
-		I(this, "item", M()), I(this, "width", M(0)), I(this, "is", A(() => this.item.value !== void 0)), g.is().then((e) => {
+		z(this, "item", P()), z(this, "width", P(0)), z(this, "is", M(() => this.item.value !== void 0)), E() && (g.is().then((e) => {
 			this.item.value = e;
 		}), g.get().then((e) => {
 			this.width.value = e;
-		});
+		}));
 	}
-}, G = (e) => typeof e == "string" ? { method: e } : e || {};
+}, Y = (e) => typeof e == "string" ? { method: e } : e || {};
 //#endregion
 //#region src/composables/ref/useApiRequest.ts
-function K(n, r = t.post, i, a, o = !0, s, c = e.getItem()) {
-	let l = M(!1), u = B(G(s));
+function X(n, r = t.post, i, a, o = !0, s, c = e.getItem()) {
+	let l = P(!1), u = W(Y(s));
 	return {
 		loading: l,
 		async send(e) {
@@ -715,7 +708,7 @@ function K(n, r = t.post, i, a, o = !0, s, c = e.getItem()) {
 			let t;
 			try {
 				if (t = await c.request({
-					path: L(n),
+					path: B(n),
 					method: r,
 					request: e,
 					toData: o,
@@ -733,102 +726,107 @@ function K(n, r = t.post, i, a, o = !0, s, c = e.getItem()) {
 }
 //#endregion
 //#region src/composables/ref/useApiDelete.ts
-function Ie(e, n, r, i = !0, a, o) {
-	return K(e, t.delete, n, r, i, a, o);
+function Pe(e, n, r, i = !0, a, o) {
+	return X(e, t.delete, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useApiGet.ts
-function Le(e, n, r, i = !0, a, o) {
-	return K(e, t.get, n, r, i, a, o);
+function Fe(e, n, r, i = !0, a, o) {
+	return X(e, t.get, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useApiRef.ts
-var q;
-function Re(t, n, r = !0, i, a, o = !0, s = e.getItem()) {
-	let c = M(), l = B(G(n)), u = M(!1), d = M(!1), f, p = !0, m, h = async () => {
-		if (p) return;
-		f && f.abort(), f = l.value.controller || new AbortController();
-		let e = L(t);
+var Z;
+function Ie(t, n, r = !0, i, a, o, s = !0, c = e.getItem()) {
+	let l = P(), u = W(Y(n)), d = P(!1), f = P(!1), p = P(), m, h = !0, g, _ = async () => {
+		if (h) return;
+		m && m.abort(), m = u.value.controller || new AbortController();
+		let e = B(t);
 		if ((!i || i.value) && e) {
-			u.value = !0, d.value = !0;
+			d.value = !0, f.value = !0;
 			try {
-				let t = await s.request({
+				let t = await c.request({
 					path: e,
-					controller: f,
-					...l.value
+					controller: m,
+					...u.value
 				});
-				t && (a ? c.value = a(t) : c.value = t);
+				t && (p.value = o == null ? void 0 : o(t), a ? l.value = a(t, p.value) : l.value = t);
 			} catch (e) {
-				c.value = void 0;
+				l.value = void 0;
 			}
-			u.value = !1;
-		} else c.value !== void 0 && (c.value = void 0);
-	}, g = () => {
-		m == null || m(), c.value = void 0, p = !0;
-	}, _ = () => {
-		p && (p = !1, h().then(), o ? (v(), le() && fe(() => g())) : V.run(() => v()));
+			d.value = !1;
+		} else l.value !== void 0 && (l.value = void 0);
 	}, v = () => {
+		g == null || g(), l.value = void 0, h = !0;
+	}, y = () => {
+		h && (h = !1, _().then(), s ? (b(), ce() && de(() => v())) : G.run(() => b()));
+	}, b = () => {
 		let e = [];
-		r && e.push(l), j(t) && e.push(t), i && e.push(i), q && e.push(q), e.length > 0 && (m = P(e, async () => {
-			u.value || await h();
+		r && e.push(u), N(t) && e.push(t), i && e.push(i), Z && e.push(Z), e.length > 0 && (g = I(e, async () => {
+			d.value || await _();
 		}));
-	};
+	}, x = M(() => (y(), l.value)), S = M(() => Array.isArray(l.value) ? l.value.length : +!!l.value), C = M(() => l.value === void 0);
 	return {
-		data: A(() => (_(), c.value)),
+		data: x,
 		get item() {
-			return _(), c;
+			return y(), l;
 		},
-		length: A(() => Array.isArray(c.value) ? c.value.length : +!!c.value),
-		starting: A(() => c.value === void 0),
-		loading: u,
-		reading: d,
+		isResponseContractValid: M(() => {
+			var e;
+			return ((e = p.value) == null ? void 0 : e.status) === "success";
+		}),
+		responseValidationResult: M(() => p.value),
+		length: S,
+		starting: C,
+		loading: d,
+		reading: f,
 		isStarting() {
-			return c.value === void 0;
+			return l.value === void 0;
 		},
 		isLoading() {
-			return u.value;
-		},
-		isReading() {
 			return d.value;
 		},
-		getItem() {
-			return c.value;
+		isReading() {
+			return f.value;
 		},
-		init: _,
-		reset: h,
-		stop: g,
-		abort: () => f == null ? void 0 : f.abort()
+		getItem() {
+			return l.value;
+		},
+		init: y,
+		reset: _,
+		stop: v,
+		abort: () => m == null ? void 0 : m.abort()
 	};
 }
-var ze = (e) => {
-	q || (q = e);
+var Le = (e) => {
+	Z || (Z = e);
 };
 //#endregion
 //#region src/composables/ref/useApiPost.ts
-function Be(e, n, r, i = !0, a, o) {
-	return K(e, t.post, n, r, i, a, o);
+function Re(e, n, r, i = !0, a, o) {
+	return X(e, t.post, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useApiPut.ts
-function Ve(e, n, r, i = !0, a, o) {
-	return K(e, t.put, n, r, i, a, o);
+function ze(e, n, r, i = !0, a, o) {
+	return X(e, t.put, n, r, i, a, o);
 }
 //#endregion
 //#region src/composables/ref/useFormattersRef.ts
-function He(e, t) {
+function Be(e, t) {
 	let n = new c(t);
 	return {
-		listFormat: A(() => n.setList(e.value).to()),
-		length: A(() => n.setList(e.value).length())
+		listFormat: M(() => n.setList(e.value).to()),
+		length: M(() => n.setList(e.value).length())
 	};
 }
 //#endregion
 //#region src/composables/ref/useSearchValueRef.ts
-function Ue(e, t) {
-	let n = t == null ? M("") : t, r = M(n.value), i = M(!1), a;
-	return P(n, (t, o, s) => {
+function Ve(e, t) {
+	let n = t == null ? P("") : t, r = P(n.value), i = P(!1), a;
+	return I(n, (t, o, s) => {
 		let c = e.getOptions().getDelay();
-		c ? (i.value = !0, a = setTimeout(() => {
+		c && E() ? (i.value = !0, a = setTimeout(() => {
 			a = void 0, r.value = n.value, i.value = !1;
 		}, c), s(() => {
 			a && clearTimeout(a);
@@ -841,109 +839,118 @@ function Ue(e, t) {
 }
 //#endregion
 //#region src/composables/ref/useSearchRef.ts
-function We(e, t, n, r) {
-	let i = new _(void 0, t, void 0, r), { search: a, searchDelay: o, loading: s } = Ue(i, n), c = () => L(y(e)) || [], l = A(() => i.setValue(o.value).getItem().isSearch()), u = A(() => i.setList(c()).setValue(o.value).to());
+function He(e, t, n, r) {
+	let i = new _(void 0, t, void 0, r), { search: a, searchDelay: o, loading: s } = Ve(i, n), c = () => B(b(e)) || [], l = M(() => i.setValue(o.value).getItem().isSearch()), u = M(() => i.setList(c()).setValue(o.value).to());
 	return {
 		isSearch: l,
 		search: a,
 		loading: s,
 		listSearch: u,
-		length: A(() => u.value.length)
+		length: M(() => u.value.length)
 	};
 }
 //#endregion
 //#region src/composables/ref/useApiManagementRef.ts
-function Ge(e, t, n, r, i, a, o, s) {
-	let { path: c, options: l, reactivity: u, conditions: d, transformation: f, typeData: p, unmounted: m, skeleton: h } = e, g, _, v, y, x, S = Re(c, l, u, d, f, m, s), C = A(() => p === void 0 ? !0 : S.isStarting() ? !1 : re(p) ? p(S.data.value) : S.data.value instanceof p), w = A(() => S.isStarting() && h ? h() : S.data.value);
-	if (t && (g = He(w, t)), n && (_ = We(A(() => {
+function Ue(e, t, n, r, i, a, o, s) {
+	let { path: c, options: l, reactivity: u, conditions: d, transformation: f, validateResponseContract: p, typeData: m, unmounted: h, skeleton: g } = e, _, v, y, b, S, C = Ie(c, l, u, d, f, p, h, s), w = M(() => m === void 0 ? !0 : C.isStarting() ? !1 : ne(m) ? m(C.data.value) : C.data.value instanceof m), T = M(() => C.isStarting() && g ? g() : C.data.value);
+	if (t && (_ = Be(T, t)), n && (v = He(M(() => {
 		var e;
-		let t = (e = g == null ? void 0 : g.listFormat.value) == null ? S.data.value : e;
+		let t = (e = _ == null ? void 0 : _.listFormat.value) == null ? C.data.value : e;
 		if (Array.isArray(t)) return t;
 	}), n.columns, n.value, n.options)), r || i || a) {
 		let e = (e) => {
-			o == null || o(), ee(e) && S.reset();
+			o == null || o(), ee(e) && C.reset().then();
 		}, t = (t) => async (n) => {
-			re(t) && await b(t(n)), e(n);
+			ne(t) && await x(t(n)), e(n);
 		};
-		r && (v = Be(r.path, t(r.action), r.transformation, r.toData, r.options, s)), i && (y = Ve(i.path, t(i.action), i.transformation, i.toData, i.options, s)), a && (x = Ie(a.path, t(a.action), a.transformation, a.toData, a.options, s));
+		r && (y = Re(r.path, t(r.action), r.transformation, r.toData, r.options, s)), i && (b = ze(i.path, t(i.action), i.transformation, i.toData, i.options, s)), a && (S = Pe(a.path, t(a.action), a.transformation, a.toData, a.options, s));
 	}
 	return {
-		isValid: C,
-		list: A(() => {
-			if (C.value) {
-				if (_ && Array.isArray(S.data.value)) return _.listSearch.value;
-				if (g) return g.listFormat.value;
+		isValid: w,
+		list: M(() => {
+			if (w.value) {
+				if (v && Array.isArray(C.data.value)) return v.listSearch.value;
+				if (_) return _.listFormat.value;
 			}
-			return w.value;
+			return T.value;
 		}),
 		get data() {
-			return S.data;
+			return C.data;
 		},
 		get length() {
-			return _ ? _.length : S.length;
+			return v ? v.length : C.length;
 		},
-		lengthData: S.length,
-		starting: S.starting,
-		reading: S.reading,
-		loading: S.loading,
-		loadingSearch: _ == null ? void 0 : _.loading,
-		loadingPost: v == null ? void 0 : v.loading,
-		loadingPut: y == null ? void 0 : y.loading,
-		loadingDelete: x == null ? void 0 : x.loading,
-		isSearch: _ == null ? void 0 : _.isSearch,
-		search: _ == null ? void 0 : _.search,
-		reset: S.reset,
-		abort: S.abort,
-		sendPost: async (e) => await (v == null ? void 0 : v.send(e)),
-		sendPut: async (e) => await (y == null ? void 0 : y.send(e)),
-		sendDelete: async (e) => await (x == null ? void 0 : x.send(e))
+		lengthData: C.length,
+		starting: C.starting,
+		reading: C.reading,
+		loading: C.loading,
+		loadingSearch: v == null ? void 0 : v.loading,
+		loadingPost: y == null ? void 0 : y.loading,
+		loadingPut: b == null ? void 0 : b.loading,
+		loadingDelete: S == null ? void 0 : S.loading,
+		isSearch: v == null ? void 0 : v.isSearch,
+		search: v == null ? void 0 : v.search,
+		reset: C.reset,
+		abort: C.abort,
+		sendPost: async (e) => await (y == null ? void 0 : y.send(e)),
+		sendPut: async (e) => await (b == null ? void 0 : b.send(e)),
+		sendDelete: async (e) => await (S == null ? void 0 : S.send(e))
 	};
 }
 //#endregion
 //#region src/composables/ref/useBroadcastValueRef.ts
-function Ke(e, t) {
-	let r = `broadcast--${e}`;
-	if (r in J) return J[r];
-	let i = M(y(t)), a = new n(r, (e) => {
-		i.value !== e.data.message && (i.value = e.data.message);
-	});
-	return V.run(() => {
-		P(i, (e) => a.post({ message: e }));
-	}), J[r] = i, i;
+var We = () => v.get("__ui:broadcast-value-ref__", () => ({}));
+function Ge(e, t) {
+	let r = `broadcast--${e}`, i = We();
+	if (r in i) return i[r];
+	let a = P(b(t));
+	if (E()) {
+		let e = new n(r, (e) => {
+			a.value !== e.data.message && (a.value = e.data.message);
+		});
+		G.run(() => {
+			I(a, (t) => e.post({ message: t }));
+		});
+	}
+	return i[r] = a, a;
 }
-var J = {};
 //#endregion
 //#region src/composables/ref/useCookieRef.ts
+var Ke = () => v.get("__ui:cookie-ref__", () => ({}));
 function qe(e, t, n) {
-	if (e in Y) return Y[e];
-	let i = new r(e), a = Ke(`__cookie:${e}`, i.get(t, n));
-	return V.run(() => {
-		P(a, (e) => {
-			i.set(e, n);
+	let i = Ke();
+	if (e in i) return i[e];
+	let a = new r(e), o = Ge(`__cookie:${e}`, a.get(t, n));
+	return G.run(() => {
+		I(o, (e) => {
+			a.set(e, n);
 		});
-	}), Y[e] = a, a;
+	}), i[e] = o, o;
 }
-var Y = {};
 //#endregion
 //#region src/composables/ref/useGeoIntlRef.ts
 function Je() {
-	return new Ne();
+	return new Ae();
 }
 //#endregion
 //#region src/composables/ref/useHashRef.ts
-function Ye(e, t) {
-	if (e in X) return X[e];
-	let n = N(f.get(e, t));
-	return V.run(() => {
-		P(n, (t) => f.set(e, t));
+var Ye = () => v.get("__ui:hash-ref__", () => ({}));
+function Xe(e, t) {
+	let n = Ye();
+	if (e in n) return n[e];
+	let r = F(f.get(e, t));
+	return E() && (G.run(() => {
+		I(r, (t) => f.set(e, t));
 	}), f.addWatch(e, (e) => {
-		n.value = e;
-	}), X[e] = n, n;
+		r.value = e;
+	})), n[e] = r, r;
 }
-var X = {}, Xe = (e = { rootMargin: "128px 0px" }) => {
-	let t = {}, n = ne() && "IntersectionObserver" in window ? new IntersectionObserver((e) => {
+//#endregion
+//#region src/composables/ref/useLazyRef.ts
+var Ze = (e = { rootMargin: "128px 0px" }) => {
+	let t = {}, n = E() && "IntersectionObserver" in window ? new IntersectionObserver((e) => {
 		e.forEach((e) => {
-			let n = C(e.target);
+			let n = w(e.target);
 			if (n in t) {
 				let r = t[n];
 				r.status.value = e.isIntersecting, r.ratio.value = e.intersectionRatio, r.entry.value = e;
@@ -951,7 +958,7 @@ var X = {}, Xe = (e = { rootMargin: "128px 0px" }) => {
 		});
 	}, e) : void 0, r = (e) => {
 		if (e) {
-			let i = C(e);
+			let i = w(e);
 			if (i in t) {
 				var r;
 				n == null || n.unobserve(e), (r = t[i]) == null || r.stopWatch(), delete t[i];
@@ -961,19 +968,19 @@ var X = {}, Xe = (e = { rootMargin: "128px 0px" }) => {
 	return {
 		intersectionObserver: n,
 		getItem(e) {
-			return t[C(e)];
+			return t[w(e)];
 		},
 		addLazyItem(e) {
-			let i = N(!n);
+			let i = F(!n);
 			if (n) {
 				let a;
-				a = P(e, (o, s) => {
+				a = I(e, (o, s) => {
 					if (s && r(s), e.value) {
-						let r = C(e.value);
+						let r = w(e.value);
 						t[r] = {
 							status: i,
-							ratio: N(0),
-							entry: N(void 0),
+							ratio: F(0),
+							entry: F(void 0),
 							stopWatch: () => a == null ? void 0 : a()
 						}, n.observe(e.value);
 					} else r(e.value);
@@ -984,16 +991,16 @@ var X = {}, Xe = (e = { rootMargin: "128px 0px" }) => {
 		removeLazyItem: r,
 		disconnectLazy: () => n == null ? void 0 : n.disconnect()
 	};
-}, Ze = [], Qe = (e) => {
-	let t = Ze.find((t) => t.rootMargin === e);
-	if (t) return t.item;
-	let n = Xe({ rootMargin: e });
-	return Ze.push({
+}, Qe = () => v.get("__ui:lazy-item-by-margin-ref__", () => []), $e = (e) => {
+	let t = Qe(), n = t.find((t) => t.rootMargin === e);
+	if (n) return n.item;
+	let r = Ze({ rootMargin: e });
+	return t.push({
 		rootMargin: e,
-		item: n
-	}), n;
-}, $e = (e, t) => {
-	let n = Qe(t);
+		item: r
+	}), r;
+}, et = (e, t) => {
+	let n = $e(t);
 	return {
 		lazyItemStatus: n.addLazyItem(e),
 		get lazyItem() {
@@ -1003,19 +1010,19 @@ var X = {}, Xe = (e = { rootMargin: "128px 0px" }) => {
 };
 //#endregion
 //#region src/composables/ref/useLoadingRef.ts
-function et() {
-	let e = N(m.is());
-	return m.registrationEvent(({ detail: t }) => {
+function tt() {
+	let e = F(m.is());
+	return E() && m.registrationEvent(({ detail: t }) => {
 		e.value = t.loading;
 	}), e;
 }
 //#endregion
 //#region src/functions/executeUse.ts
-var Z = /* @__PURE__ */ function(e) {
+var Q = /* @__PURE__ */ function(e) {
 	return e.global = "global", e.provide = "provide", e.local = "local", e;
-}({}), tt = () => `__execute_use${nt}::${C()}`, nt = ie(1e5, 999999), Q = [], rt = ce();
-function $(e, t = Z.provide) {
-	let n = tt(), r, i = (t) => {
+}({}), nt = 1, rt = re(1e5, 999999), it = () => `__execute_use${rt}::${nt++}`, at = () => v.get("__ui:execute-use-global__", () => []);
+function $(e, t = Q.provide) {
+	let n = it(), r, i = (t) => {
 		let n = Object.freeze(e(...t));
 		return {
 			...n,
@@ -1025,7 +1032,7 @@ function $(e, t = Z.provide) {
 		};
 	}, a = (e) => {
 		let t = Object.freeze(i(e));
-		return pe(n, t), t;
+		return fe(n, t), t;
 	}, o = (e) => {
 		let t = i(e);
 		return Object.freeze({
@@ -1034,42 +1041,43 @@ function $(e, t = Z.provide) {
 				r = void 0;
 			}
 		});
-	}, s = (...e) => t === Z.provide ? de(n, void 0) || a(e) : (r || (t === Z.local ? rt.run(() => {
+	}, s = (...e) => t === Q.provide ? ue(n, void 0) || a(e) : (r || (t === Q.local ? G.run(() => {
 		r = o(e);
 	}) : r = o(e)), r);
-	return t === Z.global && Q.push(s), s;
-}
-function it(e) {
-	return $(e, Z.global);
-}
-function at(e) {
-	return $(e, Z.provide);
+	return t === Q.global && at().push(s), s;
 }
 function ot(e) {
-	return $(e, Z.local);
+	return $(e, Q.global);
 }
-function st() {
-	Q.forEach((e) => e()), Q.length = 0;
+function st(e) {
+	return $(e, Q.provide);
+}
+function ct(e) {
+	return $(e, Q.local);
+}
+function lt() {
+	let e = at();
+	e.forEach((e) => e()), e.length = 0;
 }
 //#endregion
 //#region src/composables/ref/useMeta.ts
-var ct = it(() => {
-	let e = new h(), t = M(e.getTitle()), n = M(e.getKeywords()), r = M(e.getDescription()), i = M(e.getImage()), a = M(e.getCanonical()), o = M(e.getRobots()), s = M(e.getAuthor()), c = M(e.getSiteName());
-	return P(t, () => {
+var ut = ct(() => {
+	let e = new h(), t = P(e.getTitle()), n = P(e.getKeywords()), r = P(e.getDescription()), i = P(e.getImage()), a = P(e.getCanonical()), o = P(e.getRobots()), s = P(e.getAuthor()), c = P(e.getSiteName());
+	return I(t, () => {
 		e.setTitle(t.value);
-	}), P(n, () => {
+	}), I(n, () => {
 		e.setKeywords(n.value);
-	}), P(r, () => {
+	}), I(r, () => {
 		e.setDescription(r.value);
-	}), P(i, () => {
+	}), I(i, () => {
 		e.setImage(i.value);
-	}), P(a, () => {
+	}), I(a, () => {
 		e.setCanonical(a.value);
-	}), P(o, () => {
+	}), I(o, () => {
 		e.setRobots(o.value);
-	}), P(s, () => {
+	}), I(s, () => {
 		e.setAuthor(s.value);
-	}), P(c, () => {
+	}), I(c, () => {
 		e.setSiteName(c.value);
 	}), {
 		meta: e,
@@ -1084,22 +1092,22 @@ var ct = it(() => {
 		getHtmlMeta: () => e.html(),
 		setSuffix: (t) => e.setSuffix(t)
 	};
-}), lt = () => ct(), ut = (e, t, n = !0) => {
+}), dt = () => ut(), ft = (e, t, n = !0) => {
 	var r;
-	let i = j(t) ? t : M(t || ((r = e.value) == null || (r = r[0]) == null ? void 0 : r.value) || ""), a = () => o(i.value), o = (t) => {
+	let i = N(t) ? t : P(t || ((r = e.value) == null || (r = r[0]) == null ? void 0 : r.value) || ""), a = () => o(i.value), o = (t) => {
 		var n;
 		return (n = e.value) == null ? void 0 : n.find((e) => e.value === t);
 	}, s = (e) => {
-		e && e !== i.value && o(e) && (i.value = e, W.push({ name: e }));
+		e && e !== i.value && o(e) && (i.value = e, J.push({ name: e }));
 	};
 	return {
-		item: A(() => a()),
+		item: M(() => a()),
 		selected: i,
-		label: A(() => {
+		label: M(() => {
 			var e;
 			return ((e = a()) == null ? void 0 : e.label) || "";
 		}),
-		list: A(() => e.value ? x(e.value, (e) => n && !("to" in e) ? {
+		list: M(() => e.value ? S(e.value, (e) => n && !("to" in e) ? {
 			...e,
 			to: { name: e.value }
 		} : e) : []),
@@ -1109,75 +1117,75 @@ var ct = it(() => {
 			s((t = e.value) == null || (t = t[0]) == null ? void 0 : t.value);
 		}
 	};
-};
-//#endregion
-//#region src/composables/ref/useSessionRef.ts
-function dt(e, t) {
-	if (e in ft) return ft[e];
-	let n = new i(e, !0), r = M(n.get(t));
-	return V.run(() => {
-		P(r, (e) => n.set(e));
-	}), ft[e] = r, r;
+}, pt = () => v.get("__ui:session-ref__", () => ({}));
+function mt(e, t) {
+	let n = pt();
+	if (e in n) return n[e];
+	let r = new i(e, !0), a = P(r.get(t));
+	return G.run(() => {
+		I(a, (e) => r.set(e));
+	}), n[e] = a, a;
 }
-var ft = {};
 //#endregion
 //#region src/composables/ref/useStorageRef.ts
-function pt(e, t, n) {
-	if (e in mt) return mt[e];
-	let r = new i(e), a = M(r.get(t, n));
-	return V.run(() => {
-		P(a, (e) => r.set(e));
-	}), ne() && window.addEventListener("storage", () => {
-		r.update(), a.value = r.get();
-	}), mt[e] = a, a;
+var ht = () => v.get("__ui:storage-ref__", () => ({}));
+function gt(e, t, n) {
+	let r = ht();
+	if (e in r) return r[e];
+	let a = new i(e), o = P(a.get(t, n));
+	return G.run(() => {
+		I(o, (e) => a.set(e));
+	}), E() && window.addEventListener("storage", () => {
+		a.update(), o.value = a.get();
+	}), r[e] = o, o;
 }
-var mt = {};
 //#endregion
 //#region src/composables/ref/useTranslateRef.ts
-function ht(e, t = v.getItem()) {
-	let n = N(t.getListSync(e, !0)), r = async () => {
+function _t(e, t = y.getItem()) {
+	let n = F(t.getListSync(e, !0)), r = async () => {
 		n.value = { ...await t.getList(e) };
 	};
-	P(U.getLanguage(), r);
-	for (let e in n.value) if (n.value[e] === e || n.value[e] === " ") {
-		r().then();
-		break;
+	if (E()) {
+		I(q.getLanguage(), r);
+		for (let e in n.value) if (n.value[e] === e || n.value[e] === " ") {
+			r().then();
+			break;
+		}
 	}
 	return n;
 }
-var gt = (e) => ht(e);
+var vt = (e) => _t(e);
 //#endregion
 //#region src/functions/computedAsync.ts
-function _t(e, t, n) {
-	let r = M(), i = !0, a = () => {
-		i && (i = !1, ve(async () => {
-			let n = await b(e);
+function yt(e, t, n) {
+	let r = P(), i = !0, a = () => {
+		i && (i = !1, L(async () => {
+			let n = await x(e);
 			n !== t && (r.value = n);
 		}));
 	};
-	return A(() => (a(), r.value), n);
+	return M(() => (a(), r.value), n);
 }
 //#endregion
 //#region src/functions/computedByLanguage.ts
-function vt(e, t = () => void 0, n, r) {
-	return A(() => {
-		if (U.get().value && (n === void 0 || n())) {
+function bt(e, t = () => void 0, n, r) {
+	return M(() => {
+		if (q.get().value && (n === void 0 || n())) {
 			let t = e();
 			if (t !== void 0) return t;
 		}
-		return y(t);
+		return b(t);
 	}, r);
 }
 //#endregion
 //#region src/functions/computedEternity.ts
-var yt = ce();
-function bt(e) {
-	return se((t, n) => {
-		let r = M(), i = !1, a = async () => {
-			r.value = await b(e), n();
+function xt(e) {
+	return oe((t, n) => {
+		let r = P(), i = !1, a = async () => {
+			r.value = await x(e), n();
 		}, o = () => {
-			i || (i = !0, yt.run(() => {
-				ve(async () => await a());
+			i || (i = !0, G.run(() => {
+				L(async () => await a());
 			}));
 		};
 		return {
@@ -1192,29 +1200,29 @@ function bt(e) {
 }
 //#endregion
 //#region src/functions/dxtFunctionalPlugin.ts
-var xt = { install(t, n = {}) {
-	if (n.api && e.setConfig(n.api), n.translate && v.setConfig(n.translate), n.icons && p.setConfig(n.icons), n.metaSuffix && lt().setSuffix(n.metaSuffix), n.router) W.set(n.router);
+var St = { install(t, n = {}) {
+	if (n.api && e.setConfig(n.api), n.translate && y.setConfig(n.translate), n.icons && p.setConfig(n.icons), n.metaSuffix && dt().setSuffix(n.metaSuffix), n.router) J.set(n.router);
 	else {
 		let e = t.config.globalProperties.$router;
-		e && W.set(e);
+		e && J.set(e);
 	}
-	n.errorCauses && o.addList(n.errorCauses), st();
+	n.errorCauses && o.addList(n.errorCauses), lt();
 } };
 //#endregion
 //#region src/functions/render/getBind.ts
-function St(e, t = {}, n = "value", r = !1) {
+function Ct(e, t = {}, n = "value", r = !1) {
 	let i = typeof t == "string", a = i ? t : n, o = i ? {} : t;
-	return e ? e && E(e) && (a in e || r) ? R(o, e) : R(o, { [a]: e }) : i ? {} : { ...o };
+	return e ? e && O(e) && (a in e || r) ? H(o, e) : H(o, { [a]: e }) : i ? {} : { ...o };
 }
 //#endregion
 //#region src/functions/ref/getBindRef.ts
-function Ct(e, t = {}, n = "value") {
-	return A(() => St(L(e), L(t), n));
+function wt(e, t = {}, n = "value") {
+	return M(() => Ct(B(e), B(t), n));
 }
 //#endregion
 //#region src/functions/ref/setRef.ts
-function wt(e, t) {
+function Tt(e, t) {
 	e.value !== t && (e.value = t);
 }
 //#endregion
-export { Ae as DatetimeRef, Se as DesignAbstract, Ce as DesignAsyncAbstract, xe as DesignChanged, Oe as DesignComp, z as DesignComponents, ke as DesignConstructorAbstract, V as EffectScopeGlobal, je as EventRef, Z as ExecuteUseType, Me as GeoFlagRef, Ne as GeoIntlRef, U as GeoRef, Pe as ListDataRef, W as RouterItemRef, Fe as ScrollbarWidthRef, _t as computedAsync, vt as computedByLanguage, bt as computedEternity, xt as dxtFunctionalPlugin, $ as executeUse, it as executeUseGlobal, st as executeUseGlobalInit, ot as executeUseLocal, at as executeUseProvide, St as getBind, Ct as getBindRef, we as getClassName, Te as getIndexForRender, G as getOptions, L as getRef, Ee as render, ze as setApiRefGlobalConditions, wt as setRef, gt as t, R as toBind, De as toBinds, B as toRefItem, Ie as useApiDelete, Le as useApiGet, Ge as useApiManagementRef, Be as useApiPost, Ve as useApiPut, Re as useApiRef, K as useApiRequest, Ke as useBroadcastValueRef, qe as useCookieRef, He as useFormattersRef, Je as useGeoIntlRef, Ye as useHashRef, $e as useLazyItemByMarginRef, Xe as useLazyRef, et as useLoadingRef, lt as useMeta, ut as useRouterList, We as useSearchRef, Ue as useSearchValueRef, dt as useSessionRef, pt as useStorageRef, ht as useTranslateRef };
+export { De as DatetimeRef, be as DesignAbstract, xe as DesignAsyncAbstract, ye as DesignChanged, Te as DesignComp, U as DesignComponents, Ee as DesignConstructorAbstract, G as EffectScopeGlobal, Oe as EventRef, Q as ExecuteUseType, ke as GeoFlagRef, Ae as GeoIntlRef, q as GeoRef, je as ListDataRef, J as RouterItemRef, Ne as ScrollbarWidthRef, yt as computedAsync, bt as computedByLanguage, xt as computedEternity, St as dxtFunctionalPlugin, $ as executeUse, ot as executeUseGlobal, lt as executeUseGlobalInit, ct as executeUseLocal, st as executeUseProvide, Ct as getBind, wt as getBindRef, Se as getClassName, V as getIndexForRender, Y as getOptions, B as getRef, Ce as render, Le as setApiRefGlobalConditions, Tt as setRef, vt as t, H as toBind, we as toBinds, W as toRefItem, Pe as useApiDelete, Fe as useApiGet, Ue as useApiManagementRef, Re as useApiPost, ze as useApiPut, Ie as useApiRef, X as useApiRequest, Ge as useBroadcastValueRef, qe as useCookieRef, Be as useFormattersRef, Je as useGeoIntlRef, Xe as useHashRef, et as useLazyItemByMarginRef, Ze as useLazyRef, tt as useLoadingRef, dt as useMeta, ft as useRouterList, He as useSearchRef, Ve as useSearchValueRef, mt as useSessionRef, gt as useStorageRef, _t as useTranslateRef };

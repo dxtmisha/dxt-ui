@@ -8,8 +8,10 @@ import { nextTick } from 'vue'
 let broadcastCallbacks: Record<string, (event: any) => void> = {}
 const broadcastSpy = vi.fn()
 
-vi.mock('@dxtmisha/functional-basic', () => {
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
   return {
+    ...actual,
     executeFunction: (value: any) => (typeof value === 'function' ? value() : value),
     BroadcastMessage: class {
       constructor(public name: string, public callback?: (event: any) => void) {

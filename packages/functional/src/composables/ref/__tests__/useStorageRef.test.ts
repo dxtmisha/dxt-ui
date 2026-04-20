@@ -11,12 +11,16 @@ const storageMocks = {
   update: vi.fn()
 }
 
-vi.mock('@dxtmisha/functional-basic', () => ({
-  DataStorage: vi.fn().mockImplementation(function () {
-    return storageMocks
-  }),
-  isDomRuntime: vi.fn(() => true)
-}))
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
+  return {
+    ...actual,
+    DataStorage: vi.fn().mockImplementation(function () {
+      return storageMocks
+    }),
+    isDomRuntime: vi.fn(() => true)
+  }
+})
 
 import { useStorageRef } from '../useStorageRef'
 

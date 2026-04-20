@@ -209,7 +209,7 @@ describe('useApiRef', () => {
 
   describe('utility methods', () => {
     it('should return correct values for isStarting, isLoading, isReading, getItem', async () => {
-      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise(resolve => {
+      vi.mocked(mockApiInstance.request).mockImplementation(() => new Promise((resolve) => {
         setTimeout(() => resolve({ data: 'ok' }), 50)
       }))
 

@@ -6,10 +6,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref, shallowRef } from 'vue'
 
 // Mock functional-basic
-vi.mock('@dxtmisha/functional-basic', () => ({
-  getElementId: vi.fn((el: any) => el.id || el.getAttribute?.('data-id') || 'fake-id'),
-  isDomRuntime: vi.fn(() => true)
-}))
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const actual = await importOriginal() as any
+  return {
+    ...actual,
+    getElementId: vi.fn((el: any) => el.id || el.getAttribute?.('data-id') || 'fake-id'),
+    isDomRuntime: vi.fn(() => true)
+  }
+})
 
 // Mock dependencies
 const mockLazyItem = {
