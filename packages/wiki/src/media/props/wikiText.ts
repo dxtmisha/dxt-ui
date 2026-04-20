@@ -142,6 +142,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textNotifications: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Notification text',
+        ru: 'Текст уведомления'
+      }
+    },
+    hide: true
+  },
   textOk: {
     type: StorybookControl.text,
     options: {

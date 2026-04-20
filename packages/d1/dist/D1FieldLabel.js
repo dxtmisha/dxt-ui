@@ -1,2 +1,2 @@
-import { t as e } from "./FieldLabel-DsbsI0I5.js";
+import { t as e } from "./FieldLabel-DcZQp2so.js";
 export { e as D1FieldLabel };

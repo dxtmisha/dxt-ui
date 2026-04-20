@@ -11,6 +11,8 @@ import {
   type SnackbarSlots
 } from '@dxtmisha/constructor/Snackbar'
 
+import { D1SnackbarItem } from '../SnackbarItem'
+
 import { defaults, type SnackbarProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -45,7 +47,10 @@ const design = new SnackbarDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      snackbarItem: D1SnackbarItem
+    }
   }
 )
 

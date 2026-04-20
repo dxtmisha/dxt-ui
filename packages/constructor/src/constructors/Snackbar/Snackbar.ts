@@ -72,11 +72,13 @@ export class Snackbar {
    *
    * Свойства для привязки ARIA.
    */
-  readonly ariaBind = computed(() => {
+  readonly binds = computed(() => {
     return {
+      onMouseenter: this.data.pause,
+      onMouseleave: this.data.resume,
+      tabindex: '0',
       ...AriaStaticInclude.role('region'),
-      ...AriaStaticInclude.label(this.text.notifications.value),
-      tabindex: '0'
+      ...AriaStaticInclude.label(this.text.notifications.value)
     }
   })
 

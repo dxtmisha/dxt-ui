@@ -12,6 +12,8 @@ export declare class SnackbarData {
     protected readonly event?: SnackbarEvent | undefined;
     /** Message list/ Список сообщений */
     readonly item: ShallowRef<SnackbarList, SnackbarList>;
+    /** Item number/ Номер элемента */
+    protected itemNumber: number;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -60,6 +62,18 @@ export declare class SnackbarData {
      */
     readonly clear: () => void;
     /**
+     * Pauses the auto-close timer for all displayed notifications.
+     *
+     * Приостанавливает таймер автоматического закрытия для всех отображаемых уведомлений.
+     */
+    readonly pause: () => void;
+    /**
+     * Resumes the auto-close timer for all displayed notifications.
+     *
+     * Возобновляет таймер автоматического закрытия для всех отображаемых уведомлений.
+     */
+    readonly resume: () => void;
+    /**
      * Returns a message element by its value.
      *
      * Возвращает элемент сообщения по его идентификатору.
@@ -81,12 +95,20 @@ export declare class SnackbarData {
      */
     protected getItemDelay(item: SnackbarValue): number;
     /**
+     * Adds an item to the list of displayed elements with a timer.
+     *
+     * Добавляет элемент в список отображаемых элементов с таймером.
+     * @param value element identification/ идентификация элемента
+     * @param delay delay for closing the element/ задержка для закрытия элемента
+     */
+    protected addShowItem(value: string, delay: number): this;
+    /**
      * Record deletion.
      *
      * Удаление записи.
      * @param value element identification/ идентификация элемента
      */
-    protected toNone(value: string): void;
+    protected performHide(value: string): void;
     /**
      * Managing the element during display.
      *
@@ -94,7 +116,7 @@ export declare class SnackbarData {
      * @param value element identification/ идентификация элемента
      * @param delay delay for closing the element/ задержка для закрытия элемента
      */
-    protected toShow(value: string, delay: number): void;
+    protected initDisplay(value: string, delay: number): void;
     /**
      * Scroll to the end.
      *

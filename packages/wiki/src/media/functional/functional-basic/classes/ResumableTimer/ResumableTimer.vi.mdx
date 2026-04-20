@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ResumableTimer - Bộ hẹn giờ có thể tạm dừng'/>
+
+# Lớp ResumableTimer
+
+Lớp chuyên dùng để tạo bộ hẹn giờ có thể tạm dừng, tiếp tục, thiết lập lại và xóa bỏ. Nó hữu ích cho các thành phần giao diện người dùng cần theo dõi thời gian đã trôi qua ngay cả khi bị gián đoạn, chẳng hạn như thanh tiến trình, thông báo tự động đóng hoặc các slide.
+
+## Các tính năng chính
+
+- **Tạm dừng & Tiếp tục** — dừng đếm ngược và tiếp tục sau đó từ chính xác mili giây đã dừng lại.
+- **Theo dõi hoàn thành** — theo dõi rõ ràng xem bộ hẹn giờ đã kết thúc thực thi hay chưa.
+- **Logic mạnh mẽ** — xử lý các trường hợp biên như tiếp tục khi thời gian đã trôi qua hết.
+- **Giao diện mượt mà (Fluent Interface)** — các phương thức trả về `this`, cho phép gọi chuỗi phương thức.
+
+## Khởi tạo
+
+Để khởi tạo đối tượng, hãy gọi hàm khởi tạo `ResumableTimer(callback, delay, blockStart)`.
+
+**Tham số:**
+- `callback: FunctionVoid` — hàm sẽ được gọi sau khoảng thời gian trễ.
+- `delay: number = 320` — thời gian trễ tính bằng mili giây.
+- `blockStart: boolean = false` — nếu là true, bộ hẹn giờ sẽ không bắt đầu ngay lập tức.
+
+```typescript
+import { ResumableTimer } from '@dxtmisha/functional-basic'
+
+// 1. Khởi tạo cơ bản (bắt đầu ngay lập tức)
+const timer = new ResumableTimer(() => {
+  console.log('Hết giờ!')
+}, 5000)
+
+// 2. Khởi tạo không bắt đầu ngay
+const delayedTimer = new ResumableTimer(
+  () => console.log('Nhiệm vụ bắt đầu!'),
+  3000,
+  true
+)
+
+delayedTimer.resume() // Bắt đầu thủ công
+```
+
+## Các phương thức
+
+### Quản lý
+
+- `resume(): this` — Bắt đầu hoặc tiếp tục bộ hẹn giờ.
+- `pause(): this` — Tạm dừng bộ hẹn giờ và tính toán thời gian còn lại.
+- `reset(): this` — Xóa hoàn toàn trạng thái hiện tại và khởi động lại với độ trễ ban đầu.
+- `clear(): this` — Dừng hoàn toàn bộ hẹn giờ và thiết lập lại tất cả các trạng thái nội bộ.

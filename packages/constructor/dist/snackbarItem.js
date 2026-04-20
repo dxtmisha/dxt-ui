@@ -1,6 +1,6 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-Bjg6wMoX.js";
-import { t as n } from "./TextInclude-B27ZUWoc.js";
+import { t as n } from "./TextInclude-CHF8IIwI.js";
 import { t as r } from "./EventClickInclude-DB06AUmN.js";
 import { t as i } from "./ActionsInclude-BaEbgPCO.js";
 import { t as a } from "./LabelInclude-B8iRBQY-.js";
@@ -16,7 +16,8 @@ var f = class {
 			let t = {
 				...e.atomic(!0),
 				...e.role(this.props.role),
-				...e.live(this.props.ariaLive)
+				...e.live(this.props.ariaLive),
+				tabindex: "0"
 			};
 			return this.props.success ? {
 				...t,

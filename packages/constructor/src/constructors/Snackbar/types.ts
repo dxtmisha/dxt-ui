@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { SnackbarItemComponentInclude } from '../SnackbarItem/basicTypes'
+import type { SnackbarItemComponentInclude } from '../SnackbarItem'
 
 import type { SnackbarValue } from './basicTypes'
 

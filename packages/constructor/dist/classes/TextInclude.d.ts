@@ -46,6 +46,8 @@ export declare class TextInclude {
     get loading(): ComputedRef<string | undefined>;
     /** Next text/ Текст следующего */
     get next(): ComputedRef<string | undefined>;
+    /** Notifications text/ Текст уведомлений */
+    get notifications(): ComputedRef<string | undefined>;
     /** OK text/ Текст подтверждения */
     get ok(): ComputedRef<string | undefined>;
     /** Previous text/ Текст предыдущего */

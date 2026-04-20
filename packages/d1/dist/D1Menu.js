@@ -1,2 +1,2 @@
-import { t as e } from "./Menu-B8UMV71u.js";
+import { t as e } from "./Menu-Dr_9hkfW.js";
 export { e as D1Menu };

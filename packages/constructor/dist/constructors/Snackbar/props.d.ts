@@ -1,3 +1,4 @@
+import { TextNotificationsPropsInclude } from '../../types/textTypes';
 type SnackbarPropsToken = {
     full?: boolean;
     all?: boolean;
@@ -6,7 +7,7 @@ type SnackbarPropsToken = {
     horizontal?: 'right' | 'left' | 'block';
     origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
 };
-export type SnackbarPropsBasic = {
+export type SnackbarPropsBasic = TextNotificationsPropsInclude & {
     /** Delay before auto-closing the notification/ Задержка перед автоматическим закрытием уведомления */
     delay?: number;
 };

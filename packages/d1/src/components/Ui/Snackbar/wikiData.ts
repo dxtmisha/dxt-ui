@@ -11,6 +11,7 @@ const propsNames: StorybookProps = [
   { name: 'horizontal', type: 'string', option: ['right', 'left', 'block'] },
   { name: 'limit', type: 'string', option: ['1', '2', '4', '6', '8'] },
   { name: 'origin', type: 'string', option: ['topToBottom', 'bottomToTop', 'rightToLeft', 'leftToRight'] },
+  { name: 'textNotifications', type: 'TextValue' },
   { name: 'vertical', type: 'string', option: ['top', 'bottom'] }
   // :propsList [!] System label / Системная метка
 ]

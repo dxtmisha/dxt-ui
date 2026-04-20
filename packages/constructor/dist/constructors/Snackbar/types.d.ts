@@ -1,6 +1,6 @@
 import { ComputedRef } from 'vue';
 import { ConstrClass } from '@dxtmisha/functional';
-import { SnackbarItemComponentInclude } from '../SnackbarItem/basicTypes';
+import { SnackbarItemComponentInclude } from '../SnackbarItem';
 import { SnackbarValue } from './basicTypes';
 /**
  * Interface for describing which components need to be connected for work.

@@ -1,9 +1,11 @@
-import { t as e } from "./defineProperty-Bjg6wMoX.js";
-import { Teleport as t, computed as n, h as r, markRaw as i, shallowRef as a } from "vue";
-import { DesignConstructorAbstract as o } from "@dxtmisha/functional";
-import { isElementVisible as s } from "@dxtmisha/functional-basic";
+import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
+import { t } from "./defineProperty-Bjg6wMoX.js";
+import { t as n } from "./TextInclude-CHF8IIwI.js";
+import { Teleport as r, computed as i, h as a, markRaw as o, shallowRef as s } from "vue";
+import { DesignConstructorAbstract as c } from "@dxtmisha/functional";
+import { ResumableTimer as l, isElementVisible as u } from "@dxtmisha/functional-basic";
 //#region src/constructors/Snackbar/SnackbarEvent.ts
-var c = class {
+var d = class {
 	constructor(e) {
 		this.emits = e;
 	}
@@ -15,23 +17,33 @@ var c = class {
 		var n;
 		(n = this.emits) == null || n.call(this, "hide", e, t);
 	}
-}, l = 0, u = class {
-	constructor(t, r, i, o) {
-		e(this, "item", a([])), e(this, "isItem", n(() => this.item.value.length > 0)), e(this, "isPriority", n(() => this.isItem.value && this.item.value.findIndex((e) => e.highPriority === !0) !== -1)), e(this, "add", (e) => {
+}, f = class {
+	constructor(e, n, r, a) {
+		t(this, "item", s([])), t(this, "itemNumber", 0), t(this, "isItem", i(() => this.item.value.length > 0)), t(this, "isPriority", i(() => this.isItem.value && this.item.value.findIndex((e) => e.highPriority === !0) !== -1)), t(this, "add", (e) => {
 			let t = this.getItemValue(e), n = this.getItemDelay(e);
 			this.item.value = [...this.item.value, {
 				...e,
 				delay: n,
 				value: t
-			}], this.toScroll(), this.toShow(t, n);
-		}), e(this, "remove", (e) => {
+			}], this.toScroll(), this.initDisplay(t, n);
+		}), t(this, "remove", (e) => {
 			if (this.getItemByValue(e)) {
 				let t = this.getElementItem(e);
-				t ? (t.addEventListener("transitionend", () => this.toNone(e)), t.classList.add(`${this.className}--hide`), setTimeout(() => this.toNone(e), 512)) : this.toNone(e);
+				t ? (t.addEventListener("transitionend", () => this.performHide(e)), t.classList.add(`${this.className}--hide`), setTimeout(() => this.performHide(e), 512)) : this.performHide(e);
 			}
-		}), e(this, "clear", () => {
+		}), t(this, "clear", () => {
 			this.item.value.forEach((e) => e.value && this.remove(e.value));
-		}), this.props = t, this.element = r, this.className = i, this.event = o;
+		}), t(this, "pause", () => {
+			this.item.value.forEach((e) => {
+				var t;
+				return (t = e.resumableTimer) == null ? void 0 : t.pause();
+			}), console.log("pause");
+		}), t(this, "resume", () => {
+			this.item.value.forEach((e) => {
+				var t;
+				return (t = e.resumableTimer) == null ? void 0 : t.resume();
+			});
+		}), this.props = e, this.element = n, this.className = r, this.event = a;
 	}
 	getItemByValue(e) {
 		return this.item.value.find((t) => t.value === e);
@@ -43,68 +55,78 @@ var c = class {
 	}
 	getItemValue(e) {
 		var t;
-		return (t = e.value) == null ? `snackbar-item-${++l}` : t;
+		return (t = e.value) == null ? `snackbar-item-${++this.itemNumber}` : t;
 	}
 	getItemDelay(e) {
 		var t, n;
 		return (t = (n = e.delay) == null ? this.props.delay : n) == null ? 1e4 : t;
 	}
-	toNone(e) {
+	addShowItem(e, t) {
+		let n = this.getItemByValue(e);
+		return n && !n.resumableTimer && (n.resumableTimer = new l(() => this.remove(e), t + 256)), this;
+	}
+	performHide(e) {
 		let t = this.getItemByValue(e);
 		if (t) {
-			var n;
-			this.item.value = this.item.value.filter((t) => t.value !== e), (n = this.event) == null || n.hide(e, t);
+			var n, r;
+			(n = t.resumableTimer) == null || n.clear(), this.item.value = this.item.value.filter((t) => t.value !== e), (r = this.event) == null || r.hide(e, t);
 		}
 	}
-	toShow(e, t) {
+	initDisplay(e, t) {
 		t < 0 || requestAnimationFrame(() => {
 			let n = this.getElementItem(e), r = this.getItemByValue(e);
-			if (r) if (n && s(n)) {
+			if (r) if (n && u(n)) {
 				var i;
-				(i = this.event) == null || i.show(e, r), setTimeout(() => this.remove(e), t + 256);
-			} else setTimeout(() => this.toShow(e, t), 128);
+				(i = this.event) == null || i.show(e, r), this.addShowItem(e, t);
+			} else setTimeout(() => this.initDisplay(e, t), 128);
 		});
 	}
 	toScroll() {
 		requestAnimationFrame(() => {
-			this.element.value && (this.element.value.scrollTop = 1e6);
+			this.element.value && (this.element.value.scrollTop = this.element.value.scrollHeight);
 		});
 	}
-}, d = class {
-	constructor(t, n, r, i, a, o, s, l, d) {
-		e(this, "data", void 0), e(this, "event", void 0), e(this, "onClose", (e) => this.data.remove(e)), this.props = t, this.refs = n, this.element = r, this.classDesign = i, this.className = a, this.components = o, this.slots = s, this.emits = l;
-		let { DataConstructor: f = u, EventConstructor: p = c } = d == null ? {} : d;
-		this.event = new p(l), this.data = new f(t, r, a, this.event);
+}, p = class {
+	constructor(r, a, o, s, c, l, u, p, m) {
+		t(this, "data", void 0), t(this, "event", void 0), t(this, "text", void 0), t(this, "binds", i(() => ({
+			onMouseenter: this.data.pause,
+			onMouseleave: this.data.resume,
+			tabindex: "0",
+			...e.role("region"),
+			...e.label(this.text.notifications.value)
+		}))), t(this, "onClose", (e) => this.data.remove(e)), this.props = r, this.refs = a, this.element = o, this.classDesign = s, this.className = c, this.components = l, this.slots = u, this.emits = p;
+		let { DataConstructor: h = f, EventConstructor: g = d } = m == null ? {} : m;
+		this.event = new g(p), this.data = new h(r, o, c, this.event), this.text = new n(r);
 	}
-}, f = { delay: 8e3 }, p = class extends o {
-	constructor(t, n, a, o = d) {
-		super(t, n, a), e(this, "item", void 0), e(this, "renderData", () => {
+}, m = { delay: 8e3 }, h = class extends c {
+	constructor(e, n, r, i = p) {
+		super(e, n, r), t(this, "item", void 0), t(this, "renderData", () => {
 			let e = [];
 			return this.item.data.item.value.forEach((t) => {
-				var n, i, a, o;
-				return e.push(r(t.highPriority ? "aside" : "div", {
+				var n, r, i, o;
+				return e.push(a(t.highPriority ? "aside" : "div", {
 					key: t.value,
 					class: {
-						[(n = (i = this.classes) == null ? void 0 : i.value.item) == null ? "item" : n]: !0,
-						[(a = (o = this.classes) == null ? void 0 : o.value.priority) == null ? "priority" : a]: t.highPriority
+						[(n = (r = this.classes) == null ? void 0 : r.value.item) == null ? "item" : n]: !0,
+						[(i = (o = this.classes) == null ? void 0 : o.value.priority) == null ? "priority" : i]: t.highPriority
 					},
 					"data-snackbar-item": t.value
 				}, this.renderItem(t)));
 			}), e;
-		}), e(this, "renderItem", (e) => {
+		}), t(this, "renderItem", (e) => {
 			let t = {
 				...e.data,
 				value: e.value,
 				onClose: this.item.onClose
 			};
-			return e.component ? r({ ...i(e.component) }, t) : this.components.renderOne("snackbarItem", t, void 0, e.value);
-		}), e(this, "renderSpace", () => {
+			return e.component ? a({ ...o(e.component) }, t) : this.components.renderOne("snackbarItem", t, void 0, e.value);
+		}), t(this, "renderSpace", () => {
 			if (this.item.data.isPriority.value) {
 				var e;
-				return [r("div", { class: (e = this.classes) == null ? void 0 : e.value.space })];
+				return [a("div", { class: (e = this.classes) == null ? void 0 : e.value.space })];
 			}
 			return [];
-		}), this.item = new o(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
+		}), this.item = new i(this.props, this.refs, this.element, this.getDesign(), this.getName(), this.components, this.slots, this.emits), this.init();
 	}
 	initExpose() {
 		return {
@@ -128,16 +150,17 @@ var c = class {
 	initRender() {
 		if (this.item.data.isItem.value) {
 			var e;
-			return r(t, {
+			return a(r, {
 				key: "teleport",
 				to: "body"
-			}, r("div", {
+			}, a("div", {
 				...this.getAttrs(),
 				ref: this.element,
-				class: (e = this.classes) == null ? void 0 : e.value.main
+				class: (e = this.classes) == null ? void 0 : e.value.main,
+				...this.item.binds.value
 			}, [...this.renderData(), ...this.renderSpace()]));
 		}
 	}
 };
 //#endregion
-export { d as Snackbar, u as SnackbarData, p as SnackbarDesign, c as SnackbarEvent, f as defaultsSnackbar };
+export { p as Snackbar, f as SnackbarData, h as SnackbarDesign, d as SnackbarEvent, m as defaultsSnackbar };

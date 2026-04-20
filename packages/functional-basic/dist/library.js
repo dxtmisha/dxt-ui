@@ -3382,6 +3382,44 @@ var K = class {
 		return this.getItem().html();
 	}
 }, Tt = class {
+	constructor(e, t = 320, n = !1) {
+		S(this, "timerId", void 0), S(this, "startTime", void 0), S(this, "remaining", void 0), S(this, "completed", !1), this.callback = e, this.delay = t, n || this.resume();
+	}
+	resume() {
+		if (this.timerId || this.completed) return this;
+		let e = this.getRemaining();
+		return e <= 0 ? this.go() : (this.updateStartTime(), this.timerId = setTimeout(() => this.go(), e)), this;
+	}
+	pause() {
+		return this.timerId && !this.completed && this.stop().updateRemaining(), this;
+	}
+	reset() {
+		return this.clear().resume(), this;
+	}
+	clear() {
+		return this.stop(), this.startTime = void 0, this.remaining = void 0, this.completed = !1, this;
+	}
+	getRemaining() {
+		var e;
+		return (e = this.remaining) == null ? this.delay : e;
+	}
+	getStartTime() {
+		var e;
+		return (e = this.startTime) == null ? Date.now() : e;
+	}
+	go() {
+		return this.callback(), this.timerId = void 0, this.completed = !0, this;
+	}
+	updateRemaining() {
+		return this.completed ? this : (this.remaining === void 0 && (this.remaining = this.delay), this.remaining -= Date.now() - this.getStartTime(), this.remaining < 0 && (this.remaining = 0), this);
+	}
+	updateStartTime() {
+		return this.startTime = Date.now(), this;
+	}
+	stop() {
+		return this.timerId && (clearTimeout(this.timerId), this.timerId = void 0), this;
+	}
+}, Et = class {
 	static async is() {
 		let e = await this.get();
 		return e !== -1 && e <= 8;
@@ -3419,7 +3457,7 @@ var K = class {
 		});
 	}
 };
-S(Tt, "calculate", !1);
+S(Et, "calculate", !1);
 //#endregion
 //#region src/functions/escapeExp.ts
 function X(e) {
@@ -3427,7 +3465,7 @@ function X(e) {
 }
 //#endregion
 //#region src/functions/getSeparatingSearchExp.ts
-function Et(e, t = 128) {
+function Dt(e, t = 128) {
 	if (e instanceof RegExp) return e;
 	if (!e || e.trim().length === 0 || e.length > t) return /^/;
 	let n = String(e).replace(/\s+/g, " ").trim().split(" ").map(X).join("|");
@@ -3435,18 +3473,18 @@ function Et(e, t = 128) {
 }
 //#endregion
 //#region src/functions/addTagHighlightMatch.ts
-var Dt = `___HIGHLIGHT_START_${f(1e5, 999999)}___`, Ot = `___HIGHLIGHT_END_${f(1e5, 999999)}___`, kt = RegExp(`${Dt}|${Ot}`, "g");
-function At(e, t, n = "sys-highlight-match", r = !1) {
+var Ot = `___HIGHLIGHT_START_${f(1e5, 999999)}___`, kt = `___HIGHLIGHT_END_${f(1e5, 999999)}___`, At = RegExp(`${Ot}|${kt}`, "g");
+function jt(e, t, n = "sys-highlight-match", r = !1) {
 	let i = a(e);
 	if (l(i) && l(t)) {
-		let e = i.replace(Et(t), `${Dt}$1${Ot}`);
-		return r && (e = G(e)), e.replace(kt, (e) => e === Dt ? `<span class="${n}">` : "</span>");
+		let e = i.replace(Dt(t), `${Ot}$1${kt}`);
+		return r && (e = G(e)), e.replace(At, (e) => e === Ot ? `<span class="${n}">` : "</span>");
 	}
 	return r ? G(i) : i;
 }
 //#endregion
 //#region src/classes/SearchListData.ts
-var jt = class {
+var Mt = class {
 	constructor(e, t, n, r) {
 		S(this, "listCache", void 0), this.list = e, this.columns = t, this.item = n, this.options = r;
 	}
@@ -3497,7 +3535,7 @@ var jt = class {
 		return e.replace(/\.([a-z0-9])/gi, (e, t) => t.toUpperCase()) + "Search";
 	}
 	addTag(e) {
-		return At(P(e), this.item.get(), this.options.getClassName());
+		return jt(P(e), this.item.get(), this.options.getClassName());
 	}
 	generateCache() {
 		if (!this.isList()) return [];
@@ -3521,7 +3559,7 @@ var jt = class {
 	resetCache() {
 		this.listCache = void 0;
 	}
-}, Mt = class {
+}, Nt = class {
 	constructor(e, t) {
 		this.value = e, this.options = t;
 	}
@@ -3541,18 +3579,18 @@ var jt = class {
 };
 //#endregion
 //#region src/functions/getExp.ts
-function Nt(e, t = "ig", n = ":value") {
+function Pt(e, t = "ig", n = ":value") {
 	let r = X(e);
 	return new RegExp(n.replace(/:value/g, r), t);
 }
 //#endregion
 //#region src/functions/getExactSearchExp.ts
-function Pt(e) {
-	return Nt(e, "i", "(:value)");
+function Ft(e) {
+	return Pt(e, "i", "(:value)");
 }
 //#endregion
 //#region src/functions/getSearchExp.ts
-function Ft(e, t = 128) {
+function It(e, t = 128) {
 	if (!d(e) || e.trim().length === 0 || e.length > t) return /^/;
 	let n = [];
 	return a(e).split(" ").forEach((e) => {
@@ -3562,7 +3600,7 @@ function Ft(e, t = 128) {
 }
 //#endregion
 //#region src/classes/SearchListMatcher.ts
-var It = class {
+var Lt = class {
 	constructor(e, t) {
 		S(this, "matcher", void 0), this.item = e, this.options = t, this.initMatcher();
 	}
@@ -3579,9 +3617,9 @@ var It = class {
 		this.initMatcher();
 	}
 	initMatcher() {
-		this.item.is() ? this.matcher = this.options.getFindExactMatch() ? Pt(this.item.get()) : Ft(this.item.get()) : this.matcher = void 0;
+		this.item.is() ? this.matcher = this.options.getFindExactMatch() ? Ft(this.item.get()) : It(this.item.get()) : this.matcher = void 0;
 	}
-}, Lt = class {
+}, Rt = class {
 	constructor(e) {
 		this.options = e;
 	}
@@ -3611,12 +3649,12 @@ var It = class {
 	setOptions(e) {
 		return this.options = e, this;
 	}
-}, Rt = class {
+}, zt = class {
 	constructor(e, t, n, r) {
 		S(this, "options", void 0), S(this, "item", void 0), S(this, "matcher", void 0), S(this, "data", void 0), S(this, "callbackToSelection", (e, t) => {
 			if (this.matcher.isSelection(t)) return this.data.toFormatItem(e, !0);
 			if (this.options.getReturnEverything()) return this.data.toFormatItem(e, !1);
-		}), S(this, "callbackToNone", (e) => this.data.toFormatItem(e, !1)), this.options = new Lt(r), this.item = new Mt(n, this.options), this.matcher = new It(this.item, this.options), this.data = new jt(e, t, this.item, this.options);
+		}), S(this, "callbackToNone", (e) => this.data.toFormatItem(e, !1)), this.options = new Rt(r), this.item = new Nt(n, this.options), this.matcher = new Lt(this.item, this.options), this.data = new Mt(e, t, this.item, this.options);
 	}
 	getData() {
 		return this.data;
@@ -3653,13 +3691,13 @@ var It = class {
 		let e = this.data.getList();
 		return e ? r(e, this.callbackToNone) : [];
 	}
-}, zt = () => T.get("__ui:storage-callback__", () => ({})), Bt = class e {
+}, Bt = () => T.get("__ui:storage-callback__", () => ({})), Vt = class e {
 	static getInstance(t, n = "main") {
 		return new e(t, n);
 	}
 	constructor(e, t = "main") {
 		S(this, "callbacks", []), S(this, "loading", !1), this.name = e, this.group = t;
-		let n = `${t}:${e}`, r = zt();
+		let n = `${t}:${e}`, r = Bt();
 		if (n in r) return r[n];
 		r[n] = this;
 	}
@@ -3689,7 +3727,7 @@ var It = class {
 		for (let { callback: t, isOnce: n } of this.callbacks) await Le(t, e), n && this.removeCallback(t);
 		return this;
 	}
-}, Vt = [
+}, Ht = [
 	"d",
 	"e",
 	"f",
@@ -3709,10 +3747,10 @@ var It = class {
 	"t",
 	"u",
 	"v"
-], Ht = RegExp(`%(${Vt.join("|")})`, "g"), Ut = (e, t = {}) => {
+], Ut = RegExp(`%(${Ht.join("|")})`, "g"), Wt = (e, t = {}) => {
 	let r = String(e);
-	return Array.isArray(t) && e.match(/%[a-z]/) && (r = r.replace(Ht, (e, n) => {
-		let r = Vt.indexOf(n);
+	return Array.isArray(t) && e.match(/%[a-z]/) && (r = r.replace(Ut, (e, n) => {
+		let r = Ht.indexOf(n);
 		if (r !== -1) {
 			var i;
 			return String((i = t == null ? void 0 : t[r]) == null ? "" : i);
@@ -3731,10 +3769,10 @@ var It = class {
 		}
 		return e;
 	})), r;
-}, Wt = (e) => {
+}, Gt = (e) => {
 	var t;
 	return i(e) ? !0 : !!(e && n(e) && ((e == null ? void 0 : e.status) === "success" || e != null && e.success || !(e == null || (t = e.statusObject) == null) && t.status && /^2/.test(String(e.statusObject.status)) || !("status" in e) && !("success" in e) && !("statusObject" in e) && /^2/.test(String(N.getStatus().getStatus()))));
-}, Gt = "global", Kt = 160, qt = class {
+}, Kt = "global", qt = 160, Jt = class {
 	constructor(e, t = () => D.getLanguage(), n = () => D.getLocation()) {
 		S(this, "files", {}), S(this, "data", {}), this.language = t, this.location = n, e && this.add(e);
 	}
@@ -3764,7 +3802,7 @@ var It = class {
 		if (e in this.files) return e;
 		let t = this.getLanguage();
 		if (t in this.files) return t;
-		if ("global" in this.files) return Gt;
+		if ("global" in this.files) return Kt;
 	}
 	getByData(e) {
 		if (e in this.data) return this.data[e];
@@ -3775,8 +3813,8 @@ var It = class {
 			return t && (this.data[e] = t), t;
 		}
 	}
-}, Jt = class {
-	constructor(e = "/api/translate", t = "list", n = new qt()) {
+}, Yt = class {
+	constructor(e = "/api/translate", t = "list", n = new Jt()) {
 		S(this, "data", {}), S(this, "cache", []), S(this, "resolveList", []), S(this, "timeout", void 0), S(this, "isReadApi", !0), this.url = e, this.propsName = t, this.files = n;
 	}
 	async get(e, t) {
@@ -3865,7 +3903,7 @@ var It = class {
 		return `${this.files.getLanguage()}-${e}`;
 	}
 	getNameByGlobal(e) {
-		return `${Gt}-${e}`;
+		return `${Kt}-${e}`;
 	}
 	getNamesNone(e) {
 		let t = [];
@@ -3882,14 +3920,14 @@ var It = class {
 			timeout: 12e3,
 			global: !0
 		});
-		return Wt(e) || C.on({
+		return Gt(e) || C.on({
 			group: "translate",
 			code: "error",
 			details: e
 		}), e == null ? {} : e;
 	}
 	replacement(e, t) {
-		return t ? Ut(e, t) : e;
+		return t ? Wt(e, t) : e;
 	}
 	async make() {
 		let e;
@@ -3901,12 +3939,12 @@ var It = class {
 			this.data[this.getName(t)] = (n = e == null ? void 0 : e[t]) == null ? "" : n;
 		}), this.cache = [];
 	}
-}, Yt = class {
+}, Xt = class {
 	static async get(e, t) {
 		return this.getItem().get(e, t);
 	}
 	static getItem() {
-		return this.item || (this.item = new Jt()), this.item;
+		return this.item || (this.item = new Yt()), this.item;
 	}
 	static getSync(e, t = !1, n) {
 		return this.getItem().getSync(e, t, n);
@@ -3945,18 +3983,18 @@ var It = class {
 		e.url && this.getItem().setUrl(e.url), e.propsName && this.getItem().setPropsName(e.propsName), typeof e.readApi == "boolean" && this.getItem().setReadApi(e.readApi);
 	}
 };
-S(Yt, "item", void 0);
+S(Xt, "item", void 0);
 //#endregion
 //#region src/functions/arrFill.ts
-function Xt(e, t) {
+function Zt(e, t) {
 	return Array(t).fill(e);
 }
 //#endregion
 //#region src/functions/blobToBase64.ts
-var Zt = () => Qt() !== void 0, Qt = () => {
+var Qt = () => $t() !== void 0, $t = () => {
 	var e;
 	return (e = globalThis) == null ? void 0 : e.Buffer;
-}, $t = async (e) => new Promise((t, n) => {
+}, en = async (e) => new Promise((t, n) => {
 	if (typeof FileReader < "u") {
 		let r = new FileReader();
 		r.onloadend = () => {
@@ -3967,17 +4005,17 @@ var Zt = () => Qt() !== void 0, Qt = () => {
 			t(r.result.replace(/^data:.*?,/, ""));
 		}, r.onerror = n, r.readAsDataURL(e);
 	} else n();
-}), en = (e) => {
+}), tn = (e) => {
 	var t;
 	return ((t = globalThis) == null ? void 0 : t.Buffer).from(e).toString("base64");
 };
-async function tn(e, t = !1) {
-	let n = s() ? await $t(e) : Zt() ? en(await e.arrayBuffer()) : void 0;
+async function nn(e, t = !1) {
+	let n = s() ? await en(e) : Qt() ? tn(await e.arrayBuffer()) : void 0;
 	if (n) return t ? n : `data:${e.type};base64,${n}`;
 }
 //#endregion
 //#region src/functions/capitalize.ts
-function nn(e, t = !1) {
+function rn(e, t = !1) {
 	let n = String(e);
 	return n.length > 0 ? t ? n.charAt(0).toLocaleUpperCase(D.getLocation()) + n.slice(1) : n.charAt(0).toUpperCase() + n.slice(1) : n;
 }
@@ -3988,12 +4026,12 @@ function Z(e) {
 }
 //#endregion
 //#region src/functions/copyObjectLite.ts
-function rn(e, t) {
+function an(e, t) {
 	return Object.assign({}, e, t);
 }
 //#endregion
 //#region src/functions/domQuerySelector.ts
-function an(e) {
+function on(e) {
 	if (s()) {
 		var t;
 		return (t = document.querySelector(e)) == null ? void 0 : t;
@@ -4001,67 +4039,67 @@ function an(e) {
 }
 //#endregion
 //#region src/functions/domQuerySelectorAll.ts
-function on(e) {
+function sn(e) {
 	if (s()) return document.querySelectorAll(e);
 }
 //#endregion
 //#region src/functions/getElementImage.ts
-function sn(e) {
+function cn(e) {
 	return d(e) ? W(void 0, "img", { src: e }) : e;
 }
 //#endregion
 //#region src/functions/resizeImageByMax.ts
-function cn(e, t = "auto") {
+function ln(e, t = "auto") {
 	switch (t) {
 		case "auto": return e.naturalWidth >= e.naturalHeight;
 		case "width": return !0;
 		case "height": return !1;
 	}
 }
-function ln(e, t, n = "auto", r) {
-	let i = sn(e);
+function un(e, t, n = "auto", r) {
+	let i = cn(e);
 	if (s() && i && i.naturalWidth && i.naturalHeight && (i.naturalWidth > t && (n === "auto" || n === "width") || i.naturalHeight > t && (n === "auto" || n === "height"))) {
 		var a;
-		let e = cn(i, n), o = (a = document.createElement("canvas")) == null ? void 0 : a.getContext("2d");
+		let e = ln(i, n), o = (a = document.createElement("canvas")) == null ? void 0 : a.getContext("2d");
 		if (o) return o.canvas.width = e ? t : i.naturalWidth / i.naturalHeight * t, o.canvas.height = e ? i.naturalHeight / i.naturalWidth * t : t, o.drawImage(i, 0, 0, o.canvas.width, o.canvas.height), o.canvas.toDataURL(r);
 	}
 }
 //#endregion
 //#region src/functions/ensureMaxSize.ts
-async function un(e, t = .56, n = "image/jpeg") {
+async function dn(e, t = .56, n = "image/jpeg") {
 	return new Promise((r) => {
 		if (!s()) {
 			r("");
 			return;
 		}
-		let i = new Blob([e], { type: n }), a = URL.createObjectURL(i), o = sn(a);
+		let i = new Blob([e], { type: n }), a = URL.createObjectURL(i), o = cn(a);
 		o ? (o.onload = () => {
-			let e = ln(o, t * o.naturalWidth, "width", n);
+			let e = un(o, t * o.naturalWidth, "width", n);
 			r(e == null ? "" : e), URL.revokeObjectURL(a);
 		}, o.onerror = () => {
 			URL.revokeObjectURL(a), r("");
-		}) : tn(i).then((e) => r(String(e == null ? "" : e)));
+		}) : nn(i).then((e) => r(String(e == null ? "" : e)));
 	});
 }
 //#endregion
 //#region src/functions/eventStopPropagation.ts
-function dn(e) {
+function fn(e) {
 	e.preventDefault(), e.stopPropagation();
 }
 //#endregion
 //#region src/functions/frame.ts
-function fn(e, t, n) {
+function pn(e, t, n) {
 	let r = () => {
-		e(), s() && t != null && t() ? fn(e, t, n) : n == null || n();
+		e(), s() && t != null && t() ? pn(e, t, n) : n == null || n();
 	};
 	s() ? requestAnimationFrame(r) : r();
 }
 //#endregion
 //#region src/functions/getArrayHighlightMatch.ts
-function pn(e, t) {
+function mn(e, t) {
 	let n = a(e);
 	if (l(n) && l(t)) {
-		let e = [], r = Et(t), i = 0, a;
+		let e = [], r = Dt(t), i = 0, a;
 		for (; (a = r.exec(n)) !== null && a.index !== r.lastIndex;) a.index > i && e.push({
 			text: n.substring(i, a.index),
 			isMatch: !1
@@ -4081,7 +4119,7 @@ function pn(e, t) {
 }
 //#endregion
 //#region src/functions/getAttributes.ts
-function mn(e) {
+function hn(e) {
 	let t = {}, n = O(e);
 	if (n) for (let e of n.attributes) {
 		var r;
@@ -4091,7 +4129,7 @@ function mn(e) {
 }
 //#endregion
 //#region src/functions/getClipboardData.ts
-async function hn(e) {
+async function gn(e) {
 	if (s()) try {
 		var t, n;
 		return (t = e == null || (n = e.clipboardData) == null ? void 0 : n.getData("text")) == null ? await navigator.clipboard.readText() || "" : t;
@@ -4106,41 +4144,41 @@ async function hn(e) {
 }
 //#endregion
 //#region src/functions/getCurrentDate.ts
-function gn(e = "datetime") {
+function _n(e = "datetime") {
 	return new $e(void 0, e).standard();
 }
 //#endregion
 //#region src/functions/getCurrentTime.ts
-function _n() {
+function vn() {
 	return Date.now();
 }
 //#endregion
 //#region src/functions/getElementId.ts
-var Q, vn = () => {
+var Q, yn = () => {
 	let e = Q == null ? void 0 : Q();
 	if (e) return `id-server-${e}`;
 	let t = T.get("__ui:getElementId__", () => ({ id: 1e5 }));
 	return `id-${t.id++}`;
 };
-function yn(e, t) {
+function bn(e, t) {
 	if (e) {
 		let n = O(e);
-		if (n) return l(n.id) || n.setAttribute("id", vn()), t ? `#${n.id}${t}`.trim() : n.id;
+		if (n) return l(n.id) || n.setAttribute("id", yn()), t ? `#${n.id}${t}`.trim() : n.id;
 	}
-	return vn();
+	return yn();
 }
-function bn(e) {
+function xn(e) {
 	Q || (Q = e);
 }
 //#endregion
 //#region src/functions/getKey.ts
-function xn(e) {
+function Sn(e) {
 	var t, n, r;
 	return (t = (n = e == null ? void 0 : e.key) == null ? e == null ? void 0 : e.code : n) == null ? e == null || (r = e.keyCode) == null ? void 0 : r.toString() : t;
 }
 //#endregion
 //#region src/functions/getLengthOfAllArray.ts
-function Sn(e) {
+function Cn(e) {
 	return r(e, (e) => {
 		var t;
 		return (t = e == null ? void 0 : e.length) == null ? 0 : t;
@@ -4148,41 +4186,41 @@ function Sn(e) {
 }
 //#endregion
 //#region src/functions/getMaxLengthAllArray.ts
-function Cn(e) {
+function wn(e) {
 	if (!l(e)) return 0;
-	let t = Sn(e);
+	let t = Cn(e);
 	return t.length > 1e4 ? t.reduce((e, t) => Math.max(e, t)) : Math.max(...t);
 }
 //#endregion
 //#region src/functions/getMinLengthAllArray.ts
-function wn(e) {
+function Tn(e) {
 	if (!l(e)) return 0;
-	let t = Sn(e);
+	let t = Cn(e);
 	return t.length > 1e4 ? t.reduce((e, t) => Math.min(e, t)) : Math.min(...t);
 }
 //#endregion
 //#region src/functions/getMouseClientX.ts
-function Tn(e) {
+function En(e) {
 	var t, n;
 	return (e == null ? void 0 : e.clientX) || (e == null || (t = e.targetTouches) == null || (t = t[0]) == null ? void 0 : t.clientX) || (e == null || (n = e.touches) == null || (n = n[0]) == null ? void 0 : n.clientX) || 0;
 }
 //#endregion
 //#region src/functions/getMouseClientY.ts
-function En(e) {
+function Dn(e) {
 	var t, n;
 	return (e == null ? void 0 : e.clientY) || (e == null || (t = e.targetTouches) == null || (t = t[0]) == null ? void 0 : t.clientY) || (e == null || (n = e.touches) == null || (n = n[0]) == null ? void 0 : n.clientY) || 0;
 }
 //#endregion
 //#region src/functions/getMouseClient.ts
-function Dn(e) {
+function On(e) {
 	return {
-		x: Tn(e),
-		y: En(e)
+		x: En(e),
+		y: Dn(e)
 	};
 }
 //#endregion
 //#region src/functions/getObjectByKeys.ts
-function On(e, t) {
+function kn(e, t) {
 	let r = {};
 	return n(e) && t.forEach((t) => {
 		t in e && e[t] !== void 0 && (r[t] = e[t]);
@@ -4190,7 +4228,7 @@ function On(e, t) {
 }
 //#endregion
 //#region src/functions/getObjectNoUndefined.ts
-function kn(e, t = void 0) {
+function An(e, t = void 0) {
 	let n = {};
 	return r(e, (e, r) => {
 		e !== t && (n[r] = e);
@@ -4198,42 +4236,42 @@ function kn(e, t = void 0) {
 }
 //#endregion
 //#region src/functions/getObjectOrNone.ts
-function An(e) {
+function jn(e) {
 	return n(e) ? e : {};
 }
 //#endregion
 //#region src/functions/getOnlyText.ts
-function jn(e) {
+function Mn(e) {
 	return P(e).replace(/[^\p{L}\p{N}\s]+/gu, "").trim();
 }
 //#endregion
 //#region src/functions/strFill.ts
-function Mn(e, t) {
+function Nn(e, t) {
 	return String(e).repeat(t);
 }
 //#endregion
 //#region src/functions/getRandomText.ts
-function Nn(e, t, n = "#", r = 2, i = 12) {
+function Pn(e, t, n = "#", r = 2, i = 12) {
 	let a = f(e, t), o = [];
-	for (let e = 0; e < a; e++) o.push(Mn(n, f(r, i)));
+	for (let e = 0; e < a; e++) o.push(Nn(n, f(r, i)));
 	return o.join(" ");
 }
 //#endregion
 //#region src/functions/getStepPercent.ts
-function Pn(e, t) {
+function Fn(e, t) {
 	let n = e == null ? 0 : e;
 	return t > n ? 100 / (t - n) : 0;
 }
 //#endregion
 //#region src/functions/getStepValue.ts
-function Fn(e, t) {
+function In(e, t) {
 	let n = e == null ? 0 : e;
 	return t > n ? (t - n) / 100 : 0;
 }
 //#endregion
 //#region src/functions/goScroll.ts
-var In = 0;
-function Ln(e, t, n) {
+var Ln = 0;
+function Rn(e, t, n) {
 	if (!s()) return;
 	let r = t == null ? void 0 : t.closest(e);
 	if (t && r && r.scrollHeight !== r.offsetHeight) {
@@ -4241,12 +4279,12 @@ function Ln(e, t, n) {
 		if (n) {
 			let a = n.getBoundingClientRect();
 			r.scrollTop = t.offsetTop - (a.top - e.top) - (a.height / 2 - i.height / 2), r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = t.offsetTop + t.offsetHeight - r.offsetHeight);
-		} else r.scrollTop > t.offsetTop ? r.scrollTop = i.top - e.top - In : r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = i.top - e.top + i.height - e.height + In);
+		} else r.scrollTop > t.offsetTop ? r.scrollTop = i.top - e.top - Ln : r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = i.top - e.top + i.height - e.height + Ln);
 	}
 }
 //#endregion
 //#region src/functions/goScrollSmooth.ts
-function Rn(e, t, n = 0) {
+function zn(e, t, n = 0) {
 	if (!s()) return;
 	let r = (t == null ? void 0 : t.behavior) || "smooth";
 	if ("scrollIntoView" in e && !n) {
@@ -4268,7 +4306,7 @@ function Rn(e, t, n = 0) {
 }
 //#endregion
 //#region src/functions/goScrollTo.ts
-function zn(e, t, n = "smooth") {
+function Bn(e, t, n = "smooth") {
 	if (!s() || !e || !t) return;
 	let r = e.getBoundingClientRect(), i = t.getBoundingClientRect();
 	e.scrollBy({
@@ -4279,13 +4317,13 @@ function zn(e, t, n = "smooth") {
 }
 //#endregion
 //#region src/functions/isShare.ts
-function Bn() {
+function Vn() {
 	return s() && typeof navigator < "u" && !!navigator.share;
 }
 //#endregion
 //#region src/functions/handleShare.ts
-async function Vn(e) {
-	if (Bn() && navigator.canShare && navigator.canShare(e)) try {
+async function Hn(e) {
+	if (Vn() && navigator.canShare && navigator.canShare(e)) try {
 		return await navigator.share(e), !0;
 	} catch (e) {
 		C.on({
@@ -4298,20 +4336,20 @@ async function Vn(e) {
 }
 //#endregion
 //#region src/functions/inArray.ts
-function Hn(e, t) {
+function Un(e, t) {
 	return e.includes(t);
 }
 //#endregion
 //#region src/functions/initScrollbarOffset.ts
-async function Un() {
+async function Wn() {
 	if (s()) {
-		let e = await Tt.get();
+		let e = await Et.get();
 		document.body.style.setProperty("--sys-scrollbar-offset", `${e}px`);
 	}
 }
 //#endregion
 //#region src/functions/intersectKey.ts
-function Wn(e, n) {
+function Gn(e, n) {
 	let i = {};
 	return t(e) && t(n) && r(e, (e, t) => {
 		t in n && (i[t] = e);
@@ -4319,7 +4357,7 @@ function Wn(e, n) {
 }
 //#endregion
 //#region src/functions/isDifferent.ts
-function Gn(e, t) {
+function Kn(e, t) {
 	let n = Object.keys(e).length !== Object.keys(t).length;
 	return n || r(e, (e, r) => {
 		e !== (t == null ? void 0 : t[r]) && (n = !0);
@@ -4327,7 +4365,7 @@ function Gn(e, t) {
 }
 //#endregion
 //#region src/functions/isElementVisible.ts
-function Kn(e) {
+function qn(e) {
 	if (!s()) return !1;
 	let t = O(e);
 	if (!t || "isConnected" in t && t.isConnected === !1) return !1;
@@ -4336,16 +4374,16 @@ function Kn(e) {
 }
 //#endregion
 //#region src/functions/isInput.ts
-var qn = (e) => {
+var Jn = (e) => {
 	if (e instanceof HTMLElement) {
 		let t = e.tagName.toLowerCase();
 		return !!(t === "input" || t === "textarea" || t === "select" || e.isContentEditable || e.getAttribute("contenteditable") === "true");
 	}
 	return !1;
-}, Jn = (e, t) => e.code === "Space" || e.code === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 13 || e.keyCode === 32 ? t === void 0 ? !qn(e.target) : !t : !1;
+}, Yn = (e, t) => e.code === "Space" || e.code === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 13 || e.keyCode === 32 ? t === void 0 ? !Jn(e.target) : !t : !1;
 //#endregion
 //#region src/functions/isFloat.ts
-function Yn(e) {
+function Xn(e) {
 	switch (typeof e) {
 		case "number": return !0;
 		case "string": return /^-?\d+(\.\d+)?$/.test(e);
@@ -4354,18 +4392,18 @@ function Yn(e) {
 }
 //#endregion
 //#region src/functions/isIntegerBetween.ts
-function Xn(e, t) {
+function Zn(e, t) {
 	let n = Math.floor(t);
 	return e >= n && e < n + 1;
 }
 //#endregion
 //#region src/functions/isSelectedByList.ts
-function Zn(e, t) {
+function Qn(e, t) {
 	return Array.isArray(e) ? e.every((e) => v(e, t)) : v(e, t);
 }
 //#endregion
 //#region src/functions/removeCommonPrefix.ts
-function Qn(e, t) {
+function $n(e, t) {
 	if (e.startsWith(t)) return e.slice(t.length).trim();
 	let n = 0;
 	for (; e[n] === t[n] && n < e.length && n < t.length;) n++;
@@ -4373,13 +4411,13 @@ function Qn(e, t) {
 }
 //#endregion
 //#region src/functions/replaceComponentName.ts
-var $n = (e, t, n) => {
+var er = (e, t, n) => {
 	var r;
 	return e == null || (r = e.replace(RegExp(`<${t}`, "ig"), `<${n}`)) == null || (r = r.replace(RegExp(`</${t}`, "ig"), `</${n}`)) == null ? void 0 : r.trim();
 };
 //#endregion
 //#region src/functions/uniqueArray.ts
-function er(e) {
+function tr(e) {
 	return [...new Set(e)];
 }
 //#endregion
@@ -4388,20 +4426,20 @@ function $(e, n, i = !0) {
 	let a = Z(e);
 	return t(e) && t(n) && r(n, (n, r) => {
 		let o = e == null ? void 0 : e[r];
-		t(o) && t(n) ? i && Array.isArray(o) && Array.isArray(n) ? a[r] = Z(er([...o, ...n])) : a[r] = $(Array.isArray(o) ? { ...o } : o, n, i) : a[r] = t(n) ? Z(n) : n;
+		t(o) && t(n) ? i && Array.isArray(o) && Array.isArray(n) ? a[r] = Z(tr([...o, ...n])) : a[r] = $(Array.isArray(o) ? { ...o } : o, n, i) : a[r] = t(n) ? Z(n) : n;
 	}), a;
 }
 //#endregion
 //#region src/functions/replaceTemplate.ts
-function tr(e, t) {
+function nr(e, t) {
 	let n = e;
 	return r(t, (e, t) => {
-		n = n.replace(Nt(`[${t}]`), b(e));
+		n = n.replace(Pt(`[${t}]`), b(e));
 	}), n;
 }
 //#endregion
 //#region src/functions/secondToTime.ts
-function nr(e, t) {
+function rr(e, t) {
 	let n = _(e);
 	if (n > 0) {
 		let e = String(Math.floor(n / 60)).padStart(2, "0"), r = String(n % 60).padStart(2, "0");
@@ -4411,7 +4449,7 @@ function nr(e, t) {
 }
 //#endregion
 //#region src/functions/setValues.ts
-function rr(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: a = !0, notEmpty: o = !1 }) {
+function ir(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: a = !0, notEmpty: o = !1 }) {
 	if (n) {
 		if (i(e)) {
 			let n = e.indexOf(t), i = [...e];
@@ -4423,7 +4461,7 @@ function rr(e, t, { multiple: n = !1, maxlength: r = 0, alwaysChange: a = !0, no
 }
 //#endregion
 //#region src/functions/splice.ts
-function ir(e, n, i) {
+function ar(e, n, i) {
 	if (t(e) && t(n)) {
 		if (i) {
 			let a = {}, o = !1;
@@ -4437,34 +4475,34 @@ function ir(e, n, i) {
 }
 //#endregion
 //#region src/functions/toCamelCaseFirst.ts
-function ar(e) {
+function or(e) {
 	return et(e).replace(/^([a-z])/, (e) => `${e.toUpperCase()}`);
 }
 //#endregion
 //#region src/functions/toKebabCase.ts
-function or(e) {
+function sr(e) {
 	return e.toString().trim().replace(/[^\w-. ]+/g, "").replace(/[ .]+/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (e) => `${e.toLowerCase()}`).replace(/^[A-Z]/, (e) => e.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (e) => `-${e.toLowerCase()}`).replace(/[A-Z]/g, (e) => e.toLowerCase());
 }
 //#endregion
 //#region src/functions/toNumberByMax.ts
-function sr(e, t, n, r) {
+function cr(e, t, n, r) {
 	let i = _(e), a = _(t);
-	return t && a < i ? `${cr(a, n, r)}+` : cr(i, n, r);
+	return t && a < i ? `${lr(a, n, r)}+` : lr(i, n, r);
 }
-var cr = (e, t, n) => t ? new z(n).number(e) : e;
+var lr = (e, t, n) => t ? new z(n).number(e) : e;
 //#endregion
 //#region src/functions/toPercent.ts
-function lr(e, t) {
+function ur(e, t) {
 	return e === 0 ? t : 1 / e * t;
 }
 //#endregion
 //#region src/functions/toPercentBy100.ts
-function ur(e, t) {
-	return lr(e, t) * 100;
+function dr(e, t) {
+	return ur(e, t) * 100;
 }
 //#endregion
 //#region src/functions/uint8ArrayToBase64.ts
-function dr(e) {
+function fr(e) {
 	let t = "";
 	for (let n of e) t += String.fromCharCode(n);
 	if (s()) return window.btoa(t);
@@ -4476,7 +4514,7 @@ function dr(e) {
 }
 //#endregion
 //#region src/functions/writeClipboardData.ts
-async function fr(e) {
+async function pr(e) {
 	if (s()) try {
 		await navigator.clipboard.writeText(e);
 	} catch (n) {
@@ -4485,4 +4523,4 @@ async function fr(e) {
 	}
 }
 //#endregion
-export { N as Api, j as ApiCache, je as ApiDataReturn, Me as ApiDefault, Ne as ApiHeaders, Fe as ApiHydration, Be as ApiInstance, M as ApiMethodItem, Ie as ApiPreparation, ze as ApiResponse, ke as ApiStatus, Ve as BroadcastMessage, We as Cache, Ue as CacheItem, Ge as CacheStatic, Ze as Cookie, Je as CookieBlock, qe as CookieBlockInstance, L as CookieStorage, E as DataStorage, $e as Datetime, C as ErrorCenter, de as ErrorCenterHandler, fe as ErrorCenterInstance, we as EventItem, tt as Formatters, U as FormattersType, nt as GEO_FLAG_ICON_NAME, D as Geo, rt as GeoFlag, be as GeoInstance, z as GeoIntl, it as GeoPhone, at as Global, st as Hash, ot as HashInstance, ut as Icons, A as Loading, Ee as LoadingInstance, Ct as Meta, K as MetaManager, xt as MetaOg, vt as MetaOpenGraphAge, gt as MetaOpenGraphAvailability, _t as MetaOpenGraphCondition, yt as MetaOpenGraphGender, J as MetaOpenGraphTag, ht as MetaOpenGraphType, mt as MetaRobots, wt as MetaStatic, q as MetaTag, St as MetaTwitter, bt as MetaTwitterCard, Y as MetaTwitterTag, Tt as ScrollbarWidth, Rt as SearchList, jt as SearchListData, Mt as SearchListItem, It as SearchListMatcher, Lt as SearchListOptions, T as ServerStorage, Bt as StorageCallback, Gt as TRANSLATE_GLOBAL_PREFIX, Kt as TRANSLATE_TIME_OUT, Yt as Translate, qt as TranslateFile, Jt as TranslateInstance, At as addTagHighlightMatch, P as anyToString, Ut as applyTemplate, Xt as arrFill, tn as blobToBase64, nn as capitalize, Z as copyObject, rn as copyObjectLite, W as createElement, an as domQuerySelector, on as domQuerySelectorAll, G as encodeAttribute, se as encodeLiteAttribute, un as ensureMaxSize, X as escapeExp, dn as eventStopPropagation, b as executeFunction, Le as executePromise, r as forEach, fn as frame, pn as getArrayHighlightMatch, mn as getAttributes, hn as getClipboardData, Qe as getColumn, gn as getCurrentDate, _n as getCurrentTime, O as getElement, yn as getElementId, sn as getElementImage, dt as getElementItem, Se as getElementOrWindow, me as getElementSafeScript, Pt as getExactSearchExp, Nt as getExp, he as getHydrationData, H as getItemByPath, xn as getKey, Sn as getLengthOfAllArray, Cn as getMaxLengthAllArray, wn as getMinLengthAllArray, Dn as getMouseClient, Tn as getMouseClientX, En as getMouseClientY, On as getObjectByKeys, kn as getObjectNoUndefined, An as getObjectOrNone, jn as getOnlyText, Nn as getRandomText, o as getRequestString, Ft as getSearchExp, Et as getSeparatingSearchExp, Pn as getStepPercent, Fn as getStepValue, Ln as goScroll, Rn as goScrollSmooth, zn as goScrollTo, Vn as handleShare, Hn as inArray, bn as initGetElementId, Un as initScrollbarOffset, Wn as intersectKey, Wt as isApiSuccess, i as isArray, Gn as isDifferent, ce as isDomData, s as isDomRuntime, Kn as isElementVisible, Jn as isEnter, l as isFilled, Yn as isFloat, y as isFunction, Ce as isInDom, qn as isInput, Xn as isIntegerBetween, c as isNull, h as isNumber, t as isObject, n as isObjectNotArray, u as isOnLine, v as isSelected, Zn as isSelectedByList, Bn as isShare, d as isString, xe as isWindow, f as random, Qn as removeCommonPrefix, $n as replaceComponentName, $ as replaceRecursive, tr as replaceTemplate, ln as resizeImageByMax, nr as secondToTime, ft as setElementItem, rr as setValues, p as sleep, ir as splice, Mn as strFill, F as strSplit, k as toArray, et as toCamelCase, ar as toCamelCaseFirst, R as toDate, or as toKebabCase, _ as toNumber, sr as toNumberByMax, lr as toPercent, ur as toPercentBy100, a as toString, I as transformation, dr as uint8ArrayToBase64, er as uniqueArray, fr as writeClipboardData };
+export { N as Api, j as ApiCache, je as ApiDataReturn, Me as ApiDefault, Ne as ApiHeaders, Fe as ApiHydration, Be as ApiInstance, M as ApiMethodItem, Ie as ApiPreparation, ze as ApiResponse, ke as ApiStatus, Ve as BroadcastMessage, We as Cache, Ue as CacheItem, Ge as CacheStatic, Ze as Cookie, Je as CookieBlock, qe as CookieBlockInstance, L as CookieStorage, E as DataStorage, $e as Datetime, C as ErrorCenter, de as ErrorCenterHandler, fe as ErrorCenterInstance, we as EventItem, tt as Formatters, U as FormattersType, nt as GEO_FLAG_ICON_NAME, D as Geo, rt as GeoFlag, be as GeoInstance, z as GeoIntl, it as GeoPhone, at as Global, st as Hash, ot as HashInstance, ut as Icons, A as Loading, Ee as LoadingInstance, Ct as Meta, K as MetaManager, xt as MetaOg, vt as MetaOpenGraphAge, gt as MetaOpenGraphAvailability, _t as MetaOpenGraphCondition, yt as MetaOpenGraphGender, J as MetaOpenGraphTag, ht as MetaOpenGraphType, mt as MetaRobots, wt as MetaStatic, q as MetaTag, St as MetaTwitter, bt as MetaTwitterCard, Y as MetaTwitterTag, Tt as ResumableTimer, Et as ScrollbarWidth, zt as SearchList, Mt as SearchListData, Nt as SearchListItem, Lt as SearchListMatcher, Rt as SearchListOptions, T as ServerStorage, Vt as StorageCallback, Kt as TRANSLATE_GLOBAL_PREFIX, qt as TRANSLATE_TIME_OUT, Xt as Translate, Jt as TranslateFile, Yt as TranslateInstance, jt as addTagHighlightMatch, P as anyToString, Wt as applyTemplate, Zt as arrFill, nn as blobToBase64, rn as capitalize, Z as copyObject, an as copyObjectLite, W as createElement, on as domQuerySelector, sn as domQuerySelectorAll, G as encodeAttribute, se as encodeLiteAttribute, dn as ensureMaxSize, X as escapeExp, fn as eventStopPropagation, b as executeFunction, Le as executePromise, r as forEach, pn as frame, mn as getArrayHighlightMatch, hn as getAttributes, gn as getClipboardData, Qe as getColumn, _n as getCurrentDate, vn as getCurrentTime, O as getElement, bn as getElementId, cn as getElementImage, dt as getElementItem, Se as getElementOrWindow, me as getElementSafeScript, Ft as getExactSearchExp, Pt as getExp, he as getHydrationData, H as getItemByPath, Sn as getKey, Cn as getLengthOfAllArray, wn as getMaxLengthAllArray, Tn as getMinLengthAllArray, On as getMouseClient, En as getMouseClientX, Dn as getMouseClientY, kn as getObjectByKeys, An as getObjectNoUndefined, jn as getObjectOrNone, Mn as getOnlyText, Pn as getRandomText, o as getRequestString, It as getSearchExp, Dt as getSeparatingSearchExp, Fn as getStepPercent, In as getStepValue, Rn as goScroll, zn as goScrollSmooth, Bn as goScrollTo, Hn as handleShare, Un as inArray, xn as initGetElementId, Wn as initScrollbarOffset, Gn as intersectKey, Gt as isApiSuccess, i as isArray, Kn as isDifferent, ce as isDomData, s as isDomRuntime, qn as isElementVisible, Yn as isEnter, l as isFilled, Xn as isFloat, y as isFunction, Ce as isInDom, Jn as isInput, Zn as isIntegerBetween, c as isNull, h as isNumber, t as isObject, n as isObjectNotArray, u as isOnLine, v as isSelected, Qn as isSelectedByList, Vn as isShare, d as isString, xe as isWindow, f as random, $n as removeCommonPrefix, er as replaceComponentName, $ as replaceRecursive, nr as replaceTemplate, un as resizeImageByMax, rr as secondToTime, ft as setElementItem, ir as setValues, p as sleep, ar as splice, Nn as strFill, F as strSplit, k as toArray, et as toCamelCase, or as toCamelCaseFirst, R as toDate, sr as toKebabCase, _ as toNumber, cr as toNumberByMax, ur as toPercent, dr as toPercentBy100, a as toString, I as transformation, fr as uint8ArrayToBase64, tr as uniqueArray, pr as writeClipboardData };

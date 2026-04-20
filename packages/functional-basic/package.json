@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional-basic",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Foundational utility library for modern web development — HTTP client, geolocation, i18n, SEO meta tags, caching, storage, DOM utilities, and more. Framework-agnostic, zero dependencies, TypeScript-first.",
   "keywords": [

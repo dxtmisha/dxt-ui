@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ResumableTimer - Pausable Timer'/>
+
+# ResumableTimer Class
+
+A class for creating a timer that can be paused, resumed, reset, and cleared. It is useful for UI elements that need to track elapsed time even when interrupted, such as progress bars, auto-closing notifications, or slides.
+
+## Key Features
+
+- **Pause & Resume** — stop the countdown and continue later from the exact millisecond where it left off.
+- **Completion Tracking** — explicitly tracks if the timer has finished its execution.
+- **Robust Logic** — handles edge cases like resuming when time has already elapsed.
+- **Fluent Interface** — methods return `this`, allowing for method chaining.
+
+## Initialization
+
+To initialize the object, call the constructor `ResumableTimer(callback, delay, blockStart)`.
+
+**Parameters:**
+- `callback: FunctionVoid` — the function to be called after the delay.
+- `delay: number = 320` — delay in milliseconds.
+- `blockStart: boolean = false` — if true, the timer will not start immediately.
+
+```typescript
+import { ResumableTimer } from '@dxtmisha/functional-basic'
+
+// 1. Basic initialization (starts immediately)
+const timer = new ResumableTimer(() => {
+  console.log('Timer finished!')
+}, 5000)
+
+// 2. Initialization without starting
+const delayedTimer = new ResumableTimer(
+  () => console.log('Task started!'),
+  3000,
+  true
+)
+
+delayedTimer.resume() // Start it manually
+```
+
+## Methods
+
+### Management
+
+- `resume(): this` — Starts or resumes the timer.
+- `pause(): this` — Pauses the timer and calculates the remaining time.
+- `reset(): this` — Completely clears the current state and restarts the timer with the original delay.
+- `clear(): this` — Completely stops the timer and resets all internal states.

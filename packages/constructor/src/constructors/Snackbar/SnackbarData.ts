@@ -1,13 +1,10 @@
 import { computed, type Ref, shallowRef } from 'vue'
-import { isElementVisible } from '@dxtmisha/functional-basic'
+import { isElementVisible, ResumableTimer } from '@dxtmisha/functional-basic'
 
 import { SnackbarEvent } from './SnackbarEvent'
 
 import type { SnackbarList, SnackbarValue } from './basicTypes'
 import type { SnackbarProps } from './props'
-
-/** Item number/ Номер элемента */
-let itemNumber = 0
 
 /**
  * SnackbarData
@@ -15,6 +12,9 @@ let itemNumber = 0
 export class SnackbarData {
   /** Message list/ Список сообщений */
   readonly item = shallowRef<SnackbarList>([])
+
+  /** Item number/ Номер элемента */
+  protected itemNumber = 0
 
   /**
    * Constructor
@@ -80,7 +80,7 @@ export class SnackbarData {
     ]
 
     this.toScroll()
-    this.toShow(value, delay)
+    this.initDisplay(value, delay)
   }
 
   /**
@@ -94,11 +94,11 @@ export class SnackbarData {
       const element = this.getElementItem(value)
 
       if (element) {
-        element.addEventListener('transitionend', () => this.toNone(value))
+        element.addEventListener('transitionend', () => this.performHide(value))
         element.classList.add(`${this.className}--hide`)
-        setTimeout(() => this.toNone(value), 512)
+        setTimeout(() => this.performHide(value), 512)
       } else {
-        this.toNone(value)
+        this.performHide(value)
       }
     }
   }
@@ -110,6 +110,25 @@ export class SnackbarData {
    */
   readonly clear = (): void => {
     this.item.value.forEach(item => item.value && this.remove(item.value))
+  }
+
+  /**
+   * Pauses the auto-close timer for all displayed notifications.
+   *
+   * Приостанавливает таймер автоматического закрытия для всех отображаемых уведомлений.
+   */
+  readonly pause = (): void => {
+    this.item.value.forEach(item => item.resumableTimer?.pause())
+    console.log('pause')
+  }
+
+  /**
+   * Resumes the auto-close timer for all displayed notifications.
+   *
+   * Возобновляет таймер автоматического закрытия для всех отображаемых уведомлений.
+   */
+  readonly resume = (): void => {
+    this.item.value.forEach(item => item.resumableTimer?.resume())
   }
 
   /**
@@ -132,7 +151,7 @@ export class SnackbarData {
    * @param item message element/ элемент сообщения
    */
   protected getItemValue(item: SnackbarValue) {
-    return item.value ?? `snackbar-item-${++itemNumber}`
+    return item.value ?? `snackbar-item-${++this.itemNumber}`
   }
 
   /**
@@ -146,15 +165,42 @@ export class SnackbarData {
   }
 
   /**
+   * Adds an item to the list of displayed elements with a timer.
+   *
+   * Добавляет элемент в список отображаемых элементов с таймером.
+   * @param value element identification/ идентификация элемента
+   * @param delay delay for closing the element/ задержка для закрытия элемента
+   */
+  protected addShowItem(
+    value: string,
+    delay: number
+  ): this {
+    const item = this.getItemByValue(value)
+
+    if (
+      item
+      && !item.resumableTimer
+    ) {
+      item.resumableTimer = new ResumableTimer(
+        () => this.remove(value),
+        delay + 256
+      )
+    }
+
+    return this
+  }
+
+  /**
    * Record deletion.
    *
    * Удаление записи.
    * @param value element identification/ идентификация элемента
    */
-  protected toNone(value: string) {
+  protected performHide(value: string) {
     const item = this.getItemByValue(value)
 
     if (item) {
+      item.resumableTimer?.clear()
       this.item.value = this.item.value.filter(item => item.value !== value)
       this.event?.hide(value, item)
     }
@@ -167,7 +213,7 @@ export class SnackbarData {
    * @param value element identification/ идентификация элемента
    * @param delay delay for closing the element/ задержка для закрытия элемента
    */
-  protected toShow(
+  protected initDisplay(
     value: string,
     delay: number
   ) {
@@ -188,9 +234,9 @@ export class SnackbarData {
         && isElementVisible(element)
       ) {
         this.event?.show(value, item)
-        setTimeout(() => this.remove(value), delay + 256)
+        this.addShowItem(value, delay)
       } else {
-        setTimeout(() => this.toShow(value, delay), 128)
+        setTimeout(() => this.initDisplay(value, delay), 128)
       }
     })
   }
@@ -200,10 +246,10 @@ export class SnackbarData {
    *
    * Прокрутить до конца.
    */
-  protected toScroll() {
+  protected toScroll(): void {
     requestAnimationFrame(() => {
       if (this.element.value) {
-        this.element.value.scrollTop = 1_000_000
+        this.element.value.scrollTop = this.element.value.scrollHeight
       }
     })
   }

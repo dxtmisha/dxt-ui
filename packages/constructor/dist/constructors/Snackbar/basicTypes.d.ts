@@ -1,4 +1,5 @@
 import { ConstrBind } from '@dxtmisha/functional';
+import { ResumableTimer } from '@dxtmisha/functional-basic';
 import { SnackbarItemPropsBasic } from '../SnackbarItem';
 /** Type for the snackbar value item/ Тип для элемента значения снекбара */
 export type SnackbarValue = {
@@ -12,6 +13,8 @@ export type SnackbarValue = {
     delay?: number;
     /** Text value of the notification/ Текстовое значение уведомления */
     value?: string;
+    /** Timer instance for managing auto-close state/ Экземпляр таймера для управления состоянием автоматического закрытия */
+    resumableTimer?: ResumableTimer;
 };
 /** Type for the list of snackbar values/ Тип для списка значений снекбара */
 export type SnackbarList = SnackbarValue[];

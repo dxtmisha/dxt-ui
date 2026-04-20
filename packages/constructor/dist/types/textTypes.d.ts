@@ -1,7 +1,7 @@
 /** Type for text value/ Тип для текстового значения */
 export type TextValue = string | (() => string) | undefined;
 /** List of available text indexes/ Список доступных индексов текста */
-export type TextIndex = 'cancel' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'entriesMatch' | 'hide' | 'increment' | 'loading' | 'next' | 'ok' | 'previous' | 'show' | string;
+export type TextIndex = 'cancel' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'entriesMatch' | 'hide' | 'increment' | 'loading' | 'next' | 'notifications' | 'ok' | 'previous' | 'show' | string;
 /** List of text values/ Список текстовых значений */
 export type TextList = Record<TextIndex, TextValue>;
 /** Interface for including cancel text/ Интерфейс для включения текста отмены */
@@ -59,6 +59,11 @@ export type TextNextPropsInclude = {
     /** Next text/ Текст следующего */
     textNext?: TextValue;
 };
+/** Interface for including notifications text/ Интерфейс для включения текста уведомлений */
+export type TextNotificationsPropsInclude = {
+    /** Notifications text/ Текст уведомлений */
+    textNotifications?: TextValue;
+};
 /** Interface for including OK text/ Интерфейс для включения текста подтверждения */
 export type TextOkPropsInclude = {
     /** OK text/ Текст подтверждения */
@@ -75,4 +80,4 @@ export type TextShowPropsInclude = {
     textShow?: TextValue;
 };
 /** Type for including all text properties/ Тип для включения всех текстовых свойств */
-export type TextAllPropsInclude = TextCancelPropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextEntriesMatchPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextLoadingPropsInclude & TextNextPropsInclude & TextOkPropsInclude & TextPreviousPropsInclude & TextShowPropsInclude;
+export type TextAllPropsInclude = TextCancelPropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextEntriesMatchPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextLoadingPropsInclude & TextNextPropsInclude & TextNotificationsPropsInclude & TextOkPropsInclude & TextPreviousPropsInclude & TextShowPropsInclude;
