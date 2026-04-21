@@ -1,10 +1,9 @@
 import { computed } from 'vue'
 import { Icons, isFilled, isString } from '@dxtmisha/functional'
+import { ImagePdf, type ImageTypeItem, ImageTypeValue } from '@dxtmisha/constructor-basic'
 
-import { ImagePdf } from './ImagePdf'
 import { ImageUint8Array } from './ImageUint8Array'
 
-import { type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**

@@ -6,6 +6,7 @@ import {
   type ConstrStyles,
   isString
 } from '@dxtmisha/functional'
+import { ImageTypeValue } from '@dxtmisha/constructor-basic'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
@@ -18,7 +19,6 @@ import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
 import { ImageImg } from './ImageImg'
 
-import { ImageTypeValue } from './basicTypes'
 import type { ImageEmits } from './types'
 import type { ImageProps } from './props'
 

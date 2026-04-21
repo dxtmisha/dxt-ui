@@ -91,7 +91,6 @@ var d = class {
 		t(this, "data", void 0), t(this, "event", void 0), t(this, "text", void 0), t(this, "binds", i(() => ({
 			onMouseenter: this.data.pause,
 			onMouseleave: this.data.resume,
-			tabindex: "0",
 			...e.role("region"),
 			...e.label(this.text.notifications.value)
 		}))), t(this, "onClose", (e) => this.data.remove(e)), this.props = r, this.refs = a, this.element = o, this.classDesign = s, this.className = c, this.components = l, this.slots = u, this.emits = p;

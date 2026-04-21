@@ -4,10 +4,10 @@ import {
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
+import { ImageTypeValue } from '@dxtmisha/constructor-basic'
 
 import { Image } from './Image'
 
-import { ImageTypeValue } from './basicTypes'
 import {
   type ImagePropsBasic
 } from './props'

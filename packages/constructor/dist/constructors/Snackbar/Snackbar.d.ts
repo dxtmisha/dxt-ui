@@ -97,7 +97,7 @@ export declare class Snackbar {
         'aria-valuetext'?: string;
         id?: string;
         role?: RoleType;
-        tabindex: NumberOrString;
+        tabindex?: NumberOrString;
         onMouseenter: () => void;
         onMouseleave: () => void;
     }>;

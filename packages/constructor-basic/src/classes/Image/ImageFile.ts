@@ -1,10 +1,10 @@
-import type { ImageItem } from './basicTypes'
-import { isDomRuntime, resizeImageByMax } from '@dxtmisha/functional'
+import { resizeImageByMax } from '@dxtmisha/functional'
+
+import type { ImageItem } from '../../types/imageTypes'
 
 /**
- * Maximum size allowed without conversion.
- *
- * Максимальный размер, допустимый без преобразования.
+ * Maximum size allowed without conversion/
+ * Максимальный размер, допустимый без преобразования
  */
 export const MAX_SIZE: number = 1280
 
@@ -108,8 +108,7 @@ export class ImageFile {
     maxSize = MAX_SIZE as number
   ): string {
     if (
-      isDomRuntime()
-      && (
+      (
         src instanceof File
         || src === undefined
       )

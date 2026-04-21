@@ -1,4 +1,4 @@
-import { ImageTypeItem } from './basicTypes';
+import { ImageTypeItem } from '@dxtmisha/constructor-basic';
 import { ImageProps } from './props';
 import { ComputedRef } from 'vue';
 /**

@@ -5,10 +5,10 @@ import {
   type DesignComp,
   getBindRef
 } from '@dxtmisha/functional'
+import type { ImageEventData } from '@dxtmisha/constructor-basic'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { type ImageEventData } from '../Image'
 import { SkeletonInclude } from '../Skeleton'
 
 import type { IconComponents, IconEmits, IconSlots } from './types'

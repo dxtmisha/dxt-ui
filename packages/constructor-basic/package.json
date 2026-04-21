@@ -11,7 +11,9 @@
     "test": "vitest",
     "component": "dxt-component",
     "library": "dxt-library",
-    "wiki": "dxt-ai-doc"
+    "wiki": "dxt-ai-doc",
+    "prepublishOnly": "npm run library && npm run build",
+    "publish-to-npm": "npm publish --access public"
   },
   "files": [
     "dist",

@@ -1,7 +1,6 @@
 import type { ComputedRef, Ref } from 'vue'
 import { type ConstrClass } from '@dxtmisha/functional'
-
-import type { ImageEventData, ImageEventItem, ImageTypeItem } from './basicTypes'
+import type { ImageEventData, ImageEventItem, ImageTypeItem } from '@dxtmisha/constructor-basic'
 
 /**
  * Interface for describing which components need to be connected for work.

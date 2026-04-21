@@ -116,7 +116,7 @@ export declare class SnackbarItem {
         'aria-valuetext'?: string;
         id?: string;
         role?: RoleType;
-        tabindex: NumberOrString;
+        tabindex?: NumberOrString;
     }>;
     /**
      * Events on close button click.

@@ -1,7 +1,7 @@
 import { Ref } from 'vue';
 import { Undefined } from '@dxtmisha/functional';
+import { ImageEventItem, ImageItem } from '@dxtmisha/constructor-basic';
 import { ImageType } from './ImageType';
-import { ImageEventItem, ImageItem } from './basicTypes';
 import { ImageProps } from './props';
 /**
  * A class for obtaining image or icon data.

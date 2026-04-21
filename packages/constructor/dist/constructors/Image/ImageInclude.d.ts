@@ -1,6 +1,7 @@
 import { VNode, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComponents, RefOrNormal, ConstrBind } from '@dxtmisha/functional';
-import { ImageEventData, ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes';
+import { ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes';
+import { ImageEventData } from '@dxtmisha/constructor-basic';
 import { ItemList } from '@dxtmisha/functional-basic';
 /**
  * Класс для подключения и работы с компонентом изображения.

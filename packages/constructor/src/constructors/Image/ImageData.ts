@@ -1,13 +1,11 @@
 import { type Ref, ref, watchEffect } from 'vue'
 import { Icons, isString, type Undefined } from '@dxtmisha/functional'
+import { type ImageEventItem, ImageFile, type ImageItem, ImagePdf, ImageTypeValue } from '@dxtmisha/constructor-basic'
 
-import { ImageFile } from './ImageFile'
-import { ImagePdf } from './ImagePdf'
 import { ImageUint8Array } from './ImageUint8Array'
 
 import { ImageType } from './ImageType'
 
-import { type ImageEventItem, type ImageItem, ImageTypeValue } from './basicTypes'
 import { type ImageProps } from './props'
 
 /**

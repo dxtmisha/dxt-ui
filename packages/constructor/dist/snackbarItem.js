@@ -16,8 +16,7 @@ var f = class {
 			let t = {
 				...e.atomic(!0),
 				...e.role(this.props.role),
-				...e.live(this.props.ariaLive),
-				tabindex: "0"
+				...e.live(this.props.ariaLive)
 			};
 			return this.props.success ? {
 				...t,

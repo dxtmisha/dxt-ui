@@ -1,4 +1,4 @@
-import { ImageSize } from './basicTypes';
+import { ImageSize } from '@dxtmisha/constructor-basic';
 /**
  * A class for storing data for adaptive computation of image scaling for a specific group.
  *

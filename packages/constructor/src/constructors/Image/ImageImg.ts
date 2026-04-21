@@ -1,11 +1,12 @@
 import { computed, type Ref, ref, toRefs, type WatchHandle, watch } from 'vue'
 import { type ConstrBind, forEach, isArray, isNumber, useLazyItemByMarginRef } from '@dxtmisha/functional'
+import { ImageTypeValue } from '@dxtmisha/constructor-basic'
 
 import { ImageType } from './ImageType'
 import { ImagePosition } from './ImagePosition'
 import { ImageBackground } from './ImageBackground'
 
-import { type ImageAttrs, type ImagePictureList, ImageTypeValue } from './basicTypes'
+import { type ImageAttrs, type ImagePictureList } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**

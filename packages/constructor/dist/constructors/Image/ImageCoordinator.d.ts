@@ -1,5 +1,6 @@
 import { Undefined } from '@dxtmisha/functional';
-import { ImageCoordinatorItem, ImageSize } from './basicTypes';
+import { ImageSize } from '@dxtmisha/constructor-basic';
+import { ImageCoordinatorItem } from './basicTypes';
 import { ImageProps } from './props';
 import { ComputedRef } from 'vue';
 type ImageCoordinatorItemFull = [number, number, number, number];

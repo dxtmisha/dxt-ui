@@ -1,7 +1,8 @@
 import { computed } from 'vue'
 import { isArray, type Undefined } from '@dxtmisha/functional'
+import type { ImageSize } from '@dxtmisha/constructor-basic'
 
-import type { ImageCoordinatorItem, ImageSize } from './basicTypes'
+import type { ImageCoordinatorItem } from './basicTypes'
 import type { ImageProps } from './props'
 
 type ImageCoordinatorItemFull = [number, number, number, number]

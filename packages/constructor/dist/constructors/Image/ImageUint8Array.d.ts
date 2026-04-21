@@ -1,4 +1,5 @@
-import { ImageItem, ImageUint8ArrayItem, ImageUint8ArrayType } from './basicTypes';
+import { ImageUint8ArrayItem, ImageUint8ArrayType } from './basicTypes';
+import { ImageItem } from '@dxtmisha/constructor-basic';
 /**
  * Class for working with an image in Uint8Array format.
  *

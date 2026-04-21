@@ -1,11 +1,12 @@
 import { computed, type Ref, ref, watchEffect } from 'vue'
 import { getElementId, toNumber } from '@dxtmisha/functional'
+import type { ImageItem, ImageSize } from '@dxtmisha/constructor-basic'
 
 import { ImageData } from './ImageData'
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
 
-import { type ImageElement, type ImageItem, type ImageSize } from './basicTypes'
+import { type ImageElement } from './basicTypes'
 import { type ImageProps } from './props'
 
 enum ImageAdaptiveItemType {

@@ -1,6 +1,7 @@
 import { Ref, ComputedRef } from 'vue';
+import { ImageSize } from '@dxtmisha/constructor-basic';
 import { ImageData } from './ImageData';
-import { ImageElement, ImageSize } from './basicTypes';
+import { ImageElement } from './basicTypes';
 import { ImageProps } from './props';
 declare enum ImageAdaptiveItemType {
     x = "x",
