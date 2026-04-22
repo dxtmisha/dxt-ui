@@ -1,12 +1,11 @@
 import { computed, type Ref, ref, toRefs, type WatchHandle, watch } from 'vue'
 import { type ConstrBind, forEach, isArray, isNumber, useLazyItemByMarginRef } from '@dxtmisha/functional'
-import { ImageTypeValue } from '@dxtmisha/constructor-basic'
 
-import { ImageTypeRef } from './ImageTypeRef'
-import { ImagePositionRef } from './ImagePositionRef'
+import { ImageType } from './ImageType'
+import { ImagePosition } from './ImagePosition'
 import { ImageBackground } from './ImageBackground'
 
-import { type ImageAttrs, type ImagePictureList } from './basicTypes'
+import { type ImageAttrs, type ImagePictureList, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**
@@ -21,8 +20,8 @@ export class ImageImg {
   constructor(
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly type: ImageTypeRef,
-    protected readonly position: ImagePositionRef,
+    protected readonly type: ImageType,
+    protected readonly position: ImagePosition,
     protected readonly background: ImageBackground
   ) {
     const {
@@ -130,9 +129,9 @@ export class ImageImg {
    */
   readonly styles = computed<Record<string, any>>(() => {
     const styles: any = {
-      'object-position': `${this.position.getX()} ${this.position.getY()}`,
-      '--sys-transform-originX': this.position.getX(),
-      '--sys-transform-originY': this.position.getY()
+      'object-position': `${this.position.x.value} ${this.position.y.value}`,
+      '--sys-transform-originX': this.position.x.value,
+      '--sys-transform-originY': this.position.y.value
     }
 
     if (this.isSize()) {
@@ -148,7 +147,7 @@ export class ImageImg {
    * Проверяет, является ли тип файлом или изображением.
    */
   protected isType(): boolean {
-    const type = this.type.getType()
+    const type = this.type.item.value
     return type === ImageTypeValue.file || type === ImageTypeValue.image
   }
 

@@ -1,15 +1,16 @@
 import { Ref, ComputedRef } from 'vue';
 import { ConstrClassObject, ConstrEmit, ConstrStyles } from '@dxtmisha/functional';
-import { ImageTypeRef } from './ImageTypeRef';
-import { ImageDataRef } from './ImageDataRef';
-import { ImageCoordinatorRef } from './ImageCoordinatorRef';
-import { ImagePositionRef } from './ImagePositionRef.ts';
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude';
+import { ImageType } from './ImageType';
+import { ImageData } from './ImageData';
+import { ImageCoordinator } from './ImageCoordinator';
+import { ImagePosition } from './ImagePosition';
 import { ImageAdaptiveItem } from './ImageAdaptiveItem';
 import { ImageBackground } from './ImageBackground';
 import { ImageImg } from './ImageImg';
 import { ImageEmits } from './types';
 import { ImageProps } from './props';
-import { AriaTrueOrFalse, RoleType } from '../../library.ts';
+import { AriaTrueOrFalse, RoleType } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * Base class for working with images and icons.
@@ -21,10 +22,11 @@ export declare class Image {
     protected readonly element: Ref<HTMLElement | undefined>;
     protected readonly className: string;
     protected readonly emits?: ConstrEmit<ImageEmits> | undefined;
-    readonly type: ImageTypeRef;
-    readonly data: ImageDataRef;
-    readonly coordinator: ImageCoordinatorRef;
-    readonly position: ImagePositionRef;
+    readonly clientOnly: ClientOnlyInclude;
+    readonly type: ImageType;
+    readonly data: ImageData;
+    readonly coordinator: ImageCoordinator;
+    readonly position: ImagePosition;
     readonly adaptiveItem: ImageAdaptiveItem;
     readonly background: ImageBackground;
     readonly img: ImageImg;
@@ -46,11 +48,12 @@ export declare class Image {
     constructor(props: ImageProps, element: Ref<HTMLElement | undefined>, className: string, emits?: ConstrEmit<ImageEmits> | undefined, constructors?: {
         ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem;
         ImageBackgroundConstructor?: typeof ImageBackground;
-        ImageCoordinatorConstructor?: typeof ImageCoordinatorRef;
-        ImageDataConstructor?: typeof ImageDataRef;
+        ImageCoordinatorConstructor?: typeof ImageCoordinator;
+        ImageDataConstructor?: typeof ImageData;
         ImageImgConstructor?: typeof ImageImg;
-        ImagePositionConstructor?: typeof ImagePositionRef;
-        ImageTypeConstructor?: typeof ImageTypeRef;
+        ImagePositionConstructor?: typeof ImagePosition;
+        ImageTypeConstructor?: typeof ImageType;
+        ClientOnlyConstructor?: typeof ClientOnlyInclude;
     });
     /**
      * Determines the tag to use/ Определяет используемый тег

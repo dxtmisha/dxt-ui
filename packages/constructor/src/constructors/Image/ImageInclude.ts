@@ -1,8 +1,7 @@
 import { computed, type VNode } from 'vue'
 import { type ConstrEmit, type DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
-import type { ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes'
-import type { ImageEventData } from '@dxtmisha/constructor-basic'
+import type { ImageEventData, ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes'
 
 /**
  * Класс для подключения и работы с компонентом изображения.

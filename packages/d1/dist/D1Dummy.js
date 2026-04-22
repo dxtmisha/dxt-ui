@@ -1,4 +1,4 @@
-import { t as e } from "./D1Dummy-C_FR6F5f.js";
+import { t as e } from "./D1Dummy-ChzO4YaT.js";
 //#region src/components/Ui/Dummy/index.ts
 var t = e;
 //#endregion

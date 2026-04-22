@@ -38,12 +38,6 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
-    "packages/constructor-basic/dist",
-    "packages/constructor-basic/package.json",
-    "packages/nitro-basic/dist",
-    "packages/nitro-basic/package.json",
-    "packages/figma-translate/dist",
-    "packages/figma-translate/package.json",
     "dist",
     "src/style.scss",
     "README.md",
@@ -51,10 +45,6 @@
     "LICENSE"
   ],
   "exports": {
-    "./constructor-basic": {
-      "import": "./dist/constructor-basic.js",
-      "types": "./dist/constructor-basic.d.ts"
-    },
     "./nitro-basic": {
       "import": "./dist/nitro-basic.js",
       "types": "./dist/nitro-basic.d.ts"
@@ -79,7 +69,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "@dxtmisha/constructor-basic": "workspace:*",
     "@dxtmisha/configuration": "workspace:*",
     "@dxtmisha/constructor": "workspace:*",
     "@dxtmisha/figma": "workspace:*",

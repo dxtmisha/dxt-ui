@@ -1,2 +1,2 @@
-import { t as e } from "./Icon-DNvT1EWx.js";
+import { t as e } from "./Icon-CTJvjh80.js";
 export { e as D1Icon };

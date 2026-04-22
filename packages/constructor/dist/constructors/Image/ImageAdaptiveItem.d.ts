@@ -1,7 +1,7 @@
 import { Ref, ComputedRef } from 'vue';
-import { ImageSize } from '@dxtmisha/constructor-basic';
-import { ImageDataRef } from './ImageDataRef';
-import { ImageElement } from './basicTypes';
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude';
+import { ImageData } from './ImageData';
+import { ImageElement, ImageSize } from './basicTypes';
 import { ImageProps } from './props';
 declare enum ImageAdaptiveItemType {
     x = "x",
@@ -22,7 +22,8 @@ export declare const MAX_BEYOND = 512;
  */
 export declare class ImageAdaptiveItem {
     protected readonly props: ImageProps;
-    protected readonly data: ImageDataRef;
+    protected readonly clientOnly: ClientOnlyInclude;
+    protected readonly data: ImageData;
     readonly element: Ref<ImageElement>;
     readonly percent: Ref<{
         width: number;
@@ -37,9 +38,10 @@ export declare class ImageAdaptiveItem {
      * Constructor
      * @param props input data/ входные данные
      * @param element image element for scaling/ элемент изображения для масштабирования
+     * @param clientOnly class for working with ClientOnly / класс для работы с ClientOnly
      * @param data image data/ данные изображения
      */
-    constructor(props: ImageProps, data: ImageDataRef, element: Ref<ImageElement>);
+    constructor(props: ImageProps, clientOnly: ClientOnlyInclude, data: ImageData, element: Ref<ImageElement>);
     /**
      * Is the element active for size alignment.
      *

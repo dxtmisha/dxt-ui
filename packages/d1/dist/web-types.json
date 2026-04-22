@@ -10362,6 +10362,14 @@
                 "kind": "expression",
                 "type": "top | bottom"
               }
+            },
+            {
+              "name": "text-notifications",
+              "description": "Notification text",
+              "value": {
+                "kind": "expression",
+                "type": "string | (() => string)"
+              }
             }
           ],
           "slots": [],

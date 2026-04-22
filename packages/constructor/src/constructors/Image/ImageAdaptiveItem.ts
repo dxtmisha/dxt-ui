@@ -1,12 +1,12 @@
 import { computed, type Ref, ref, watchEffect } from 'vue'
 import { getElementId, toNumber } from '@dxtmisha/functional'
-import type { ImageItem, ImageSize } from '@dxtmisha/constructor-basic'
 
-import { ImageDataRef } from './ImageDataRef'
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
+import { ImageData } from './ImageData'
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
 
-import { type ImageElement } from './basicTypes'
+import { type ImageElement, type ImageItem, type ImageSize } from './basicTypes'
 import { type ImageProps } from './props'
 
 enum ImageAdaptiveItemType {
@@ -43,11 +43,13 @@ export class ImageAdaptiveItem {
    * Constructor
    * @param props input data/ входные данные
    * @param element image element for scaling/ элемент изображения для масштабирования
+   * @param clientOnly class for working with ClientOnly / класс для работы с ClientOnly
    * @param data image data/ данные изображения
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly data: ImageDataRef,
+    protected readonly clientOnly: ClientOnlyInclude,
+    protected readonly data: ImageData,
     public readonly element: Ref<ImageElement>
   ) {
     watchEffect(() => {
@@ -65,7 +67,12 @@ export class ImageAdaptiveItem {
    * Активен ли элемент для выравнивания размера.
    */
   readonly active = computed<boolean>(
-    () => Boolean(this.props.adaptive && (this.width.value || this.height.value)) && this.data.isImage()
+    () => Boolean(
+      this.props.adaptive
+      && this.clientOnly.isRender.value
+      && (this.width.value || this.height.value)
+    )
+    && this.data.isImage()
   )
 
   /**
@@ -122,7 +129,7 @@ export class ImageAdaptiveItem {
       this.element.value
       && this.data.isImage()
     ) {
-      const data = this.data.getImage() as ImageItem
+      const data = this.data.image.value as ImageItem
 
       switch (this.type.value) {
         case ImageAdaptiveItemType.x:

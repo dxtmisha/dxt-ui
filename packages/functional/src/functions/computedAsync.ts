@@ -1,5 +1,5 @@
 import { computed, type ComputedRef, type DebuggerOptions, ref, watchEffect } from 'vue'
-import { executePromise } from '@dxtmisha/functional-basic'
+import { executePromise, isDomRuntime } from '@dxtmisha/functional-basic'
 
 /**
  * Creates a computed property that can handle asynchronous getters.
@@ -19,16 +19,23 @@ export function computedAsync<R>(
   const item = ref<R>()
   let first = true
 
+  const update = async () => {
+    const newValue = await executePromise(getter)
+
+    if (newValue !== ignore) {
+      item.value = newValue as R
+    }
+  }
+
   const init = () => {
     if (first) {
       first = false
-      watchEffect(async () => {
-        const newValue = await executePromise(getter)
 
-        if (newValue !== ignore) {
-          item.value = newValue as R
-        }
-      })
+      if (isDomRuntime()) {
+        watchEffect(update)
+      } else {
+        update().then()
+      }
     }
   }
 

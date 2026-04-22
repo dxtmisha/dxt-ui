@@ -1,4 +1,4 @@
-import { computed, onUnmounted, type Ref, watch } from 'vue'
+import { computed, onUnmounted, type Ref } from 'vue'
 import {
   type ConstrBind,
   type ConstrClassObject,
@@ -6,19 +6,20 @@ import {
   type ConstrStyles,
   isString
 } from '@dxtmisha/functional'
-import { ImageTypeValue } from '@dxtmisha/constructor-basic'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
-import { ImageTypeRef } from './ImageTypeRef'
-import { ImageDataRef } from './ImageDataRef'
+import { ImageType } from './ImageType'
+import { ImageData } from './ImageData'
 
-import { ImageCoordinatorRef } from './ImageCoordinatorRef'
-import { ImagePositionRef } from './ImagePositionRef'
+import { ImageCoordinator } from './ImageCoordinator'
+import { ImagePosition } from './ImagePosition'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
 import { ImageImg } from './ImageImg'
 
+import { ImageTypeValue } from './basicTypes'
 import type { ImageEmits } from './types'
 import type { ImageProps } from './props'
 
@@ -28,11 +29,13 @@ import type { ImageProps } from './props'
  * Базовый класс для работы с изображениями и иконками.
  */
 export class Image {
-  readonly type: ImageTypeRef
-  readonly data: ImageDataRef
+  readonly clientOnly: ClientOnlyInclude
 
-  readonly coordinator: ImageCoordinatorRef
-  readonly position: ImagePositionRef
+  readonly type: ImageType
+  readonly data: ImageData
+
+  readonly coordinator: ImageCoordinator
+  readonly position: ImagePosition
   readonly adaptiveItem: ImageAdaptiveItem
   readonly background: ImageBackground
 
@@ -61,31 +64,36 @@ export class Image {
     constructors?: {
       ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem
       ImageBackgroundConstructor?: typeof ImageBackground
-      ImageCoordinatorConstructor?: typeof ImageCoordinatorRef
-      ImageDataConstructor?: typeof ImageDataRef
+      ImageCoordinatorConstructor?: typeof ImageCoordinator
+      ImageDataConstructor?: typeof ImageData
       ImageImgConstructor?: typeof ImageImg
-      ImagePositionConstructor?: typeof ImagePositionRef
-      ImageTypeConstructor?: typeof ImageTypeRef
+      ImagePositionConstructor?: typeof ImagePosition
+      ImageTypeConstructor?: typeof ImageType
+      ClientOnlyConstructor?: typeof ClientOnlyInclude
     }
   ) {
     const {
       ImageAdaptiveItemConstructor = ImageAdaptiveItem,
       ImageBackgroundConstructor = ImageBackground,
-      ImageCoordinatorConstructor = ImageCoordinatorRef,
-      ImageDataConstructor = ImageDataRef,
+      ImageCoordinatorConstructor = ImageCoordinator,
+      ImageDataConstructor = ImageData,
       ImageImgConstructor = ImageImg,
-      ImagePositionConstructor = ImagePositionRef,
-      ImageTypeConstructor = ImageTypeRef
+      ImagePositionConstructor = ImagePosition,
+      ImageTypeConstructor = ImageType,
+      ClientOnlyConstructor = ClientOnlyInclude
     } = constructors ?? {}
 
-    this.type = new ImageTypeConstructor(props)
-    this.data = new ImageDataConstructor(props, this.type)
+    this.clientOnly = new ClientOnlyConstructor({ clientOnly: true })
+
+    this.type = new ImageTypeConstructor(props, this.clientOnly)
+    this.data = new ImageDataConstructor(props, this.clientOnly, this.type)
 
     this.coordinator = new ImageCoordinatorConstructor(props)
     this.position = new ImagePositionConstructor(props, this.coordinator)
 
     this.adaptiveItem = new ImageAdaptiveItemConstructor(
       props,
+      this.clientOnly,
       this.data,
       element
     )
@@ -105,15 +113,6 @@ export class Image {
       this.background
     )
 
-    if (emits) {
-      watch(this.data.image, (image) => {
-        emits('load', {
-          type: this.type.getType(),
-          image
-        })
-      })
-    }
-
     onUnmounted(() => this.adaptiveItem.remove())
   }
 
@@ -128,10 +127,10 @@ export class Image {
    * Значения для текста. Текст используется для типа иконки, который работает как фон.
    */
   readonly text = computed<string | undefined>(() => {
-    const type = this.type.getType()
+    const type = this.type.item.value
 
     if (type === ImageTypeValue.pdf) {
-      const image = this.data.getImage()
+      const image = this.data.image.value
 
       if (isString(image)) {
         return image
@@ -173,7 +172,7 @@ export class Image {
    * Значения для класса.
    */
   readonly classes = computed<ConstrClassObject>(() => {
-    const type = this.type.getType()
+    const type = this.type.item.value
     const data = {
       [`${this.className}--type--${type}`]: type !== undefined,
       [`${this.className}--background`]: this.background.isImage(),
@@ -210,15 +209,15 @@ export class Image {
     const value = this.props.value
 
     if (value) {
-      switch (this.type.getType()) {
+      switch (this.type.item.value) {
         case ImageTypeValue.file:
         case ImageTypeValue.image:
         case ImageTypeValue.array:
           return {
             'background-image': this.background.image.value,
             'background-size': this.background.size.value,
-            'background-position-x': this.position.getX(),
-            'background-position-y': this.position.getY()
+            'background-position-x': this.position.x.value,
+            'background-position-y': this.position.y.value
           }
         case ImageTypeValue.icon:
           return {
@@ -260,6 +259,6 @@ export class Image {
    */
   readonly valueBinds = computed<ConstrBind<any>>(() => ({
     key: 'value',
-    data: this.data.getImage()
+    data: this.data.image.value
   }))
 }

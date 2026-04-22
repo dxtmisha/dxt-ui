@@ -1,7 +1,7 @@
 import { Ref, WatchHandle, ComputedRef } from 'vue';
 import { ConstrBind } from '@dxtmisha/functional';
-import { ImageTypeRef } from './ImageTypeRef';
-import { ImagePositionRef } from './ImagePositionRef.ts';
+import { ImageType } from './ImageType';
+import { ImagePosition } from './ImagePosition';
 import { ImageBackground } from './ImageBackground';
 import { ImageAttrs, ImagePictureList } from './basicTypes';
 import { ImageProps } from './props';
@@ -13,12 +13,12 @@ import { ImageProps } from './props';
 export declare class ImageImg {
     protected readonly props: ImageProps;
     protected readonly element: Ref<HTMLElement | undefined>;
-    protected readonly type: ImageTypeRef;
-    protected readonly position: ImagePositionRef;
+    protected readonly type: ImageType;
+    protected readonly position: ImagePosition;
     protected readonly background: ImageBackground;
     protected lazyInit: Ref<boolean, boolean>;
     protected lazyStatus?: WatchHandle;
-    constructor(props: ImageProps, element: Ref<HTMLElement | undefined>, type: ImageTypeRef, position: ImagePositionRef, background: ImageBackground);
+    constructor(props: ImageProps, element: Ref<HTMLElement | undefined>, type: ImageType, position: ImagePosition, background: ImageBackground);
     /**
      * Determines whether to use the img tag/ Определяет, использовать ли тег img
      */

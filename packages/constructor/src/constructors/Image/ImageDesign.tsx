@@ -4,10 +4,10 @@ import {
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
-import { ImageTypeValue } from '@dxtmisha/constructor-basic'
 
 import { Image } from './Image'
 
+import { ImageTypeValue } from './basicTypes'
 import {
   type ImagePropsBasic
 } from './props'
@@ -191,7 +191,7 @@ export class ImageDesign<
    * Рендеринг значения для компонента.
    */
   readonly renderValue = (): string | VNode | undefined => {
-    if (this.item.type.getType() === ImageTypeValue.pdf) {
+    if (this.item.type.item.value === ImageTypeValue.pdf) {
       return h(
         'object',
         this.item.valueBinds.value
@@ -199,7 +199,7 @@ export class ImageDesign<
     }
 
     if (
-      this.item.type.getType() === ImageTypeValue.flagCompressed
+      this.item.type.item.value === ImageTypeValue.flagCompressed
     ) {
       return h(
         'span',

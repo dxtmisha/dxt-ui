@@ -1,6 +1,6 @@
 import { ComputedRef } from 'vue';
 import { ConstrClass } from '@dxtmisha/functional';
-import { ImageEventData, ImageEventItem, ImageTypeItem } from '@dxtmisha/constructor-basic';
+import { ImageEventData, ImageEventItem, ImageTypeItem } from './basicTypes';
 /**
  * Interface for describing which components need to be connected for work.
  *

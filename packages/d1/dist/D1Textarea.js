@@ -1,4 +1,4 @@
-import { t as e } from "./D1Textarea-BGggiwo7.js";
+import { t as e } from "./D1Textarea-Dm8p49nQ.js";
 //#region src/components/Ui/Textarea/index.ts
 var t = e;
 //#endregion

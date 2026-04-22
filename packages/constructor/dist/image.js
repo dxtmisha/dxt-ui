@@ -1,69 +1,231 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-Bjg6wMoX.js";
 import { t as n } from "./ImageInclude-D1bdP4zG.js";
-import { computed as r, h as i, onUnmounted as a, ref as o, toRefs as s, watch as c, watchEffect as l } from "vue";
-import { DesignConstructorAbstract as u, EventItem as d, computedAsync as f, forEach as p, getElementId as m, isArray as h, isFilled as g, isNumber as _, isString as v, toNumber as y, useLazyItemByMarginRef as b } from "@dxtmisha/functional";
-import { ImageCoordinator as x, ImageData as S, ImagePosition as C, ImageType as w, ImageTypeValue as T } from "@dxtmisha/constructor-basic";
-//#region src/constructors/Image/ImageTypeRef.ts
-var E = class extends w {
+import { computed as r, h as i, onMounted as a, onUnmounted as o, ref as s, toRefs as c, watch as l, watchEffect as u } from "vue";
+import { DesignConstructorAbstract as d, ErrorCenter as f, EventItem as p, Icons as m, computedAsync as h, forEach as g, getElementId as _, isArray as v, isDomRuntime as y, isFilled as b, isNumber as x, isString as S, resizeImageByMax as C, sleep as w, toNumber as T, useLazyItemByMarginRef as E } from "@dxtmisha/functional";
+//#region src/classes/ClientOnlyInclude.ts
+var D = class {
 	constructor(e) {
-		super(), t(this, "item", r(() => this.initType())), this.props = e;
+		t(this, "isMounted", s(!1)), t(this, "isRender", r(() => !this.props.clientOnly || this.isMounted.value)), this.props = e, a(() => {
+			this.isMounted.value = !0;
+		});
 	}
-	getType() {
-		return this.item.value;
+}, O = 1280, k = class {
+	static isImage(e) {
+		return !!e.type.match(/^image\//);
 	}
-	getValue() {
-		return this.props.value;
+	static createImage(e) {
+		return new Promise((t) => {
+			if (e) {
+				let n = new Image();
+				n.onerror = () => t(void 0), n.onload = () => {
+					t({
+						image: n,
+						src: this.getSRC(n, e),
+						width: n.naturalWidth,
+						height: n.naturalHeight
+					});
+				}, (async () => {
+					n.src = e instanceof File ? await this.getFileResult(e) : e;
+				})();
+			} else t(void 0);
+		});
 	}
-}, D = {
+	static async getPath(e) {
+		var t;
+		let n = await this.createImage(e);
+		return S(n) ? n : (t = n == null ? void 0 : n.src) == null ? "" : t;
+	}
+	static getFileResult(e) {
+		return new Promise((t) => {
+			this.isImage(e) ? this.getFileReader(e).then((e) => t(e)) : t("");
+		});
+	}
+	static getFileReader(e) {
+		return new Promise((t) => {
+			let n = new FileReader();
+			n.onload = () => t(typeof n.result == "string" ? n.result : ""), n.readAsDataURL(e);
+		});
+	}
+	static getSRC(e, t, n = O) {
+		if ((t instanceof File || t === void 0) && (e.naturalHeight > n || e.naturalWidth > n)) {
+			var r;
+			return (r = C(e, n)) == null ? "" : r;
+		} else return e.src;
+	}
+}, A = "#toolbar=0&scrollbar=1", j = class {
+	static isPdf(e) {
+		return S(e) ? !!e.match(/\.pdf$/i) : y() && !!e.type.match(/\/pdf$/i);
+	}
+	static async get(e) {
+		return S(e) ? `${e}${A}` : this.isPdf(e) ? `${await k.getFileReader(e)}${A}` : "";
+	}
+}, M = [], N = class {
+	static is(e) {
+		return e instanceof Uint8Array || e instanceof ArrayBuffer;
+	}
+	static createImage(e, t = "image/jpeg") {
+		let n = this.getCacheItem(e, t), r = new Image();
+		if (n) r.src = n.src;
+		else {
+			let n = new Blob([this.toUint8Array(e)], { type: t }), i = URL.createObjectURL(n);
+			r.src = i, this.addCacheItem(e, t, i);
+		}
+		return {
+			image: r,
+			src: r.src,
+			width: r.naturalWidth,
+			height: r.naturalHeight
+		};
+	}
+	static toUint8Array(e) {
+		return e instanceof ArrayBuffer ? new Uint8Array(e) : e;
+	}
+	static getCacheItem(e, t) {
+		return M.find((n) => n.item === e && n.type === t);
+	}
+	static addCacheItem(e, t, n) {
+		M.push({
+			item: e,
+			type: t,
+			src: n
+		});
+	}
+}, P = /* @__PURE__ */ function(e) {
+	return e.pdf = "pdf", e.file = "file", e.array = "array", e.image = "image", e.flag = "flag", e.flagCompressed = "flag-compressed", e.color = "color", e.public = "public", e.filled = "filled", e.outlined = "outlined", e.round = "round", e.sharp = "sharp", e.twoTone = "two-tone", e.material = "material", e.icon = "icon", e;
+}({}), F = class {
+	constructor(e, n) {
+		t(this, "item", r(() => {
+			let e = this.props.value;
+			if (this.clientOnly.isRender.value) {
+				if (e instanceof File) return P.file;
+				if (N.is(e)) return P.array;
+				if (j.isPdf(e)) return P.pdf;
+			}
+			if (S(e) && b(e)) {
+				if (e.match(/\//)) return P.image;
+				if (e.match(/^#/)) return P.color;
+				if (e.match(/^@/)) return P.public;
+				if (e.match(/^\$/)) return P.material;
+				if (e.match(/^flag-[a-z]{2}$/)) return P.flag;
+				if (e.match(/^f-[a-z]{2}$/)) return P.flagCompressed;
+				let t = e.match(/^(outlined|round|sharp|material)-/);
+				return t ? t[1] : m.is(e) ? P.public : P.outlined;
+			}
+		})), this.props = e, this.clientOnly = n;
+	}
+}, I = {
 	adaptiveGroup: "basic",
 	preloadOffset: "1024px"
-}, O = class extends S {
-	constructor(e, n) {
-		super(n), t(this, "image", f(async () => this.initData())), this.props = e;
+}, L = "constructor", R = class {
+	constructor(e, n, r, i) {
+		t(this, "image", h(async () => {
+			let e = this.props.value;
+			if (e) switch (this.type.item.value) {
+				case P.pdf: return await w(320), await j.get(e);
+				case P.array: return N.createImage(e);
+				case P.image:
+				case P.file:
+					try {
+						return !this.clientOnly.isRender.value || this.props.lazy ? this.props.value : await k.createImage(e);
+					} catch (e) {
+						f.on({
+							group: L,
+							code: "image-data"
+						});
+					}
+					break;
+				case P.public:
+				case P.icon:
+				case P.flag:
+					if (S(e)) return await m.get(e, this.props.url);
+					break;
+			}
+		})), this.props = e, this.clientOnly = n, this.type = r, this.emits = i, i && l(this.image, (e) => {
+			typeof e == "object" && i("load", {
+				type: this.type.item.value,
+				image: e
+			});
+		});
 	}
-	getImage() {
-		return this.image.value;
+	is() {
+		return this.image.value !== void 0;
 	}
-	getValue() {
-		return this.props.value;
+	isLink() {
+		return this.is() && typeof this.image.value == "string";
 	}
-	getLazy() {
-		return this.props.lazy;
+	isImage() {
+		return this.is() && typeof this.image.value != "string";
 	}
-	getUrl() {
-		return this.props.url;
-	}
-}, k = class extends x {
+}, z = class {
 	constructor(e) {
-		super(), t(this, "coordinator", r(() => this.initCoordinator())), t(this, "size", r(() => this.initSize())), this.props = e;
+		t(this, "coordinator", r(() => {
+			if (this.is()) {
+				let f = this.props.coordinator;
+				switch (f.length) {
+					case 1:
+						var e, t, n, r;
+						return [
+							(e = f[0]) == null ? 0 : e,
+							(t = f[0]) == null ? 0 : t,
+							(n = f[0]) == null ? 0 : n,
+							(r = f[0]) == null ? 0 : r
+						];
+					case 2:
+						var i, a, o, s;
+						return [
+							(i = f[0]) == null ? 0 : i,
+							(a = f[1]) == null ? 0 : a,
+							(o = f[0]) == null ? 0 : o,
+							(s = f[1]) == null ? 0 : s
+						];
+					case 3:
+						var c, l, u, d;
+						return [
+							(c = f[0]) == null ? 0 : c,
+							(l = f[1]) == null ? 0 : l,
+							(u = f[2]) == null ? 0 : u,
+							(d = f[1]) == null ? 0 : d
+						];
+					case 4: return f;
+				}
+			}
+			return [
+				0,
+				0,
+				0,
+				0
+			];
+		})), t(this, "size", r(() => {
+			let e = this.coordinator.value;
+			return {
+				width: 100 - e[1] - e[3],
+				height: 100 - e[2] - e[0]
+			};
+		})), this.props = e;
 	}
-	get() {
-		return this.coordinator.value;
+	is() {
+		let e = this.props.coordinator;
+		return v(e) && e.length > 0 && e.length < 5;
 	}
 	getSize() {
-		return this.size.value;
+		let e = this.size.value, t = e.width === 0 ? 100 : e.width, n = e.height === 0 ? 100 : e.height;
+		return {
+			width: `${100 / t * 100}%`,
+			height: `${100 / n * 100}%`
+		};
 	}
-	getCoordinator() {
-		return this.props.coordinator;
-	}
-}, A = class extends C {
+}, B = class {
 	constructor(e, n) {
-		super(n), t(this, "x", r(() => this.initX())), t(this, "y", r(() => this.initY())), this.props = e;
+		t(this, "x", r(() => {
+			var e;
+			return this.coordinator.is() ? `${this.coordinator.coordinator.value[3] + this.coordinator.size.value.width / 2}%` : ((e = this.props.x) == null ? void 0 : e.toString()) || "center";
+		})), t(this, "y", r(() => {
+			var e;
+			return this.coordinator.is() ? `${this.coordinator.coordinator.value[0] + this.coordinator.size.value.height / 2}%` : ((e = this.props.y) == null ? void 0 : e.toString()) || "center";
+		})), this.props = e, this.coordinator = n;
 	}
-	getX() {
-		return this.x.value;
-	}
-	getY() {
-		return this.y.value;
-	}
-	getPropX() {
-		return this.props.x;
-	}
-	getPropY() {
-		return this.props.y;
-	}
-}, j = class {
+}, V = class {
 	constructor(e) {
 		t(this, "factorMax", 1), t(this, "size", {
 			width: 0,
@@ -118,7 +280,7 @@ var E = class extends w {
 			height: 7680
 		}, this;
 	}
-}, M = class {
+}, H = class {
 	static isSize() {
 		return this.items.find((e) => e.isSize()) !== void 0;
 	}
@@ -132,14 +294,14 @@ var E = class extends w {
 		return this.items.find((t) => t.is(e));
 	}
 	static init(e) {
-		let t = new j(e);
+		let t = new V(e);
 		return this.items.push(t), t;
 	}
 };
-t(M, "items", []);
+t(H, "items", []);
 //#endregion
 //#region src/constructors/Image/ImageAdaptiveGroup.ts
-var N = class {
+var U = class {
 	static is(e) {
 		return this.objects.findIndex((t) => t === e) !== -1;
 	}
@@ -154,12 +316,12 @@ var N = class {
 		this.cache = [], this.start();
 	}
 	static make() {
-		this.event && this.objects.length < 1 ? (this.event.stop(), this.event = void 0) : this.objects.length > 0 && (this.event || (this.event = new d(window, ["scroll-sync"], () => this.start()).start()), this.time || (this.time = !0, requestAnimationFrame(() => {
+		this.event && this.objects.length < 1 ? (this.event.stop(), this.event = void 0) : this.objects.length > 0 && (this.event || (this.event = new p(window, ["scroll-sync"], () => this.start()).start()), this.time || (this.time = !0, requestAnimationFrame(() => {
 			this.time = !1, this.start();
 		})));
 	}
 	static getItemIdByVisible() {
-		return p(this.objectsAdaptive, (e) => e.getId());
+		return g(this.objectsAdaptive, (e) => e.getId());
 	}
 	static start() {
 		if (this.isAdaptive()) {
@@ -177,14 +339,14 @@ var N = class {
 		});
 	}
 	static makeSize() {
-		M.reset(), this.objectsAdaptive.forEach((e) => {
+		H.reset(), this.objectsAdaptive.forEach((e) => {
 			let t = e.element.value;
-			t && M.get(e.group.value).makeWidth(e.width.value).makeHeight(e.height.value).makeOffsetWidth(t.offsetWidth).makeOffsetHeight(t.offsetHeight);
+			t && H.get(e.group.value).makeWidth(e.width.value).makeHeight(e.height.value).makeOffsetWidth(t.offsetWidth).makeOffsetHeight(t.offsetHeight);
 		});
 	}
 	static makePercent() {
-		M.isSize() && this.objectsAdaptive.forEach((e) => {
-			let t = e.element.value, n = M.get(e.group.value);
+		H.isSize() && this.objectsAdaptive.forEach((e) => {
+			let t = e.element.value, n = H.get(e.group.value);
 			if (t) {
 				let r = n.getWidth(), i = n.getHeight();
 				e.setPercent(e.width.value * (r ? 1 / r : 0) * (n.getOffsetWidth() / t.offsetWidth), e.height.value * (i ? 1 / i : 0) * (n.getOffsetHeight() / t.offsetHeight));
@@ -192,8 +354,8 @@ var N = class {
 		});
 	}
 	static makeFactorMax() {
-		M.isSize() && this.objectsAdaptive.forEach((e) => {
-			M.get(e.group.value).makeFactorMax(e.factor.value);
+		H.isSize() && this.objectsAdaptive.forEach((e) => {
+			H.get(e.group.value).makeFactorMax(e.factor.value);
 		});
 	}
 	static isAdaptive() {
@@ -203,34 +365,34 @@ var N = class {
 		return this.cache.join("|") !== e.join("|");
 	}
 };
-t(N, "objects", []), t(N, "objectsAdaptive", []), t(N, "cache", []), t(N, "event", void 0), t(N, "time", void 0);
+t(U, "objects", []), t(U, "objectsAdaptive", []), t(U, "cache", []), t(U, "event", void 0), t(U, "time", void 0);
 //#endregion
 //#region src/constructors/Image/ImageAdaptiveItem.ts
-var P = /* @__PURE__ */ function(e) {
+var W = /* @__PURE__ */ function(e) {
 	return e.x = "x", e.y = "y", e;
-}(P || {}), F = "main", I = 512, L = class {
-	constructor(e, n, i) {
-		t(this, "percent", o({
+}(W || {}), G = "main", K = 512, q = class {
+	constructor(e, n, i, a) {
+		t(this, "percent", s({
 			width: 0,
 			height: 0
-		})), t(this, "beyond", !1), t(this, "visible", !1), t(this, "active", r(() => !!(this.props.adaptive && (this.width.value || this.height.value)) && this.data.isImage())), t(this, "group", r(() => {
+		})), t(this, "beyond", !1), t(this, "visible", !1), t(this, "active", r(() => !!(this.props.adaptive && this.clientOnly.isRender.value && (this.width.value || this.height.value)) && this.data.isImage())), t(this, "group", r(() => {
 			var e;
-			return (e = this.props.adaptiveGroup) == null ? F : e;
+			return (e = this.props.adaptiveGroup) == null ? G : e;
 		})), t(this, "width", r(() => {
 			var e;
-			return y((e = this.props.objectWidth) == null ? 0 : e);
+			return T((e = this.props.objectWidth) == null ? 0 : e);
 		})), t(this, "height", r(() => {
 			var e, t;
-			return y((e = (t = this.props) == null ? void 0 : t.objectHeight) == null ? 0 : e);
+			return T((e = (t = this.props) == null ? void 0 : t.objectHeight) == null ? 0 : e);
 		})), t(this, "type", r(() => {
-			if (this.width.value && this.percent.value.width > 0) return P.x;
-			if (this.height.value && this.percent.value.height > 0) return P.y;
+			if (this.width.value && this.percent.value.width > 0) return W.x;
+			if (this.height.value && this.percent.value.height > 0) return W.y;
 		})), t(this, "size", r(() => {
 			if (this.element.value && this.data.isImage()) {
-				let e = this.data.getImage();
+				let e = this.data.image.value;
 				switch (this.type.value) {
-					case P.x: return e.height * (this.element.value.offsetWidth * this.percent.value.width / e.width);
-					case P.y: return e.width * (this.element.value.offsetHeight * this.percent.value.height / e.height);
+					case W.x: return e.height * (this.element.value.offsetWidth * this.percent.value.width / e.width);
+					case W.y: return e.width * (this.element.value.offsetHeight * this.percent.value.height / e.height);
 				}
 			}
 			return 0;
@@ -238,12 +400,12 @@ var P = /* @__PURE__ */ function(e) {
 			let e = this.element.value;
 			if (e) {
 				let t = this.size.value;
-				if (this.type.value === P.x && t > e.offsetHeight) return e.offsetHeight / t;
-				if (this.type.value === P.y && t > e.offsetWidth) return e.offsetWidth / t;
+				if (this.type.value === W.x && t > e.offsetHeight) return e.offsetHeight / t;
+				if (this.type.value === W.y && t > e.offsetWidth) return e.offsetWidth / t;
 			}
 			return 1;
-		})), this.props = e, this.data = n, this.element = i, l(() => {
-			this.is() ? N.add(this) : N.remove(this);
+		})), this.props = e, this.clientOnly = n, this.data = i, this.element = a, u(() => {
+			this.is() ? U.add(this) : U.remove(this);
 		});
 	}
 	is() {
@@ -260,13 +422,13 @@ var P = /* @__PURE__ */ function(e) {
 		return this.visible;
 	}
 	getId() {
-		return m(this.element.value);
+		return _(this.element.value);
 	}
 	getBackgroundSize() {
-		let e = M.get(this.group.value).getFactorMax();
+		let e = H.get(this.group.value).getFactorMax();
 		switch (this.type.value) {
-			case P.x: return `${100 * this.percent.value.width * e}% auto`;
-			case P.y: return `auto ${100 * this.percent.value.height * e}%`;
+			case W.x: return `${100 * this.percent.value.width * e}% auto`;
+			case W.y: return `auto ${100 * this.percent.value.height * e}%`;
 		}
 		return null;
 	}
@@ -277,7 +439,7 @@ var P = /* @__PURE__ */ function(e) {
 		}), this;
 	}
 	remove() {
-		this.active.value && N.remove(this);
+		this.active.value && U.remove(this);
 	}
 	make() {
 		if (this.beyond = !1, this.visible = !1, this.element.value && this.is()) if (this.props.adaptiveAlways) this.beyond = !0, this.visible = !0;
@@ -287,13 +449,13 @@ var P = /* @__PURE__ */ function(e) {
 		}
 		return this;
 	}
-}, R = class {
+}, J = class {
 	constructor(e, n, i, a) {
 		t(this, "image", r(() => {
 			let e = this.imageSrc.value;
 			return e ? `url("${e}")` : null;
 		})), t(this, "imageSrc", r(() => {
-			let e = this.data.getImage();
+			let e = this.data.image.value;
 			switch (typeof e) {
 				case "string": return e;
 				case "object": return e.src;
@@ -312,20 +474,20 @@ var P = /* @__PURE__ */ function(e) {
 		return !!this.image.value;
 	}
 	getSize(e, t) {
-		let n = this.data.getImage();
+		let n = this.data.image.value;
 		return typeof n == "object" ? n.height < n.width ? `auto ${t}` : `${e} auto` : null;
 	}
 	getSizeByCoordinator() {
-		let { width: e, height: t } = this.coordinator.getBackgroundSize();
+		let { width: e, height: t } = this.coordinator.getSize();
 		return this.getSize(e, t);
 	}
 	getSizeForItem() {
 		let e = this.props.size;
-		return g(e) ? e.toString().match(/%$/) ? this.getSize(e, e) : e.toString() : null;
+		return b(e) ? e.toString().match(/%$/) ? this.getSize(e, e) : e.toString() : null;
 	}
-}, z = class {
-	constructor(e, n, i, a, l) {
-		t(this, "lazyInit", o(!1)), t(this, "lazyStatus", void 0), t(this, "is", r(() => !!this.props.tagImg && this.isType())), t(this, "isLazy", r(() => !!this.props.lazy && !this.lazyInit.value)), t(this, "isPicture", r(() => this.is.value && !!this.props.picture)), t(this, "binds", r(() => {
+}, Y = class {
+	constructor(e, n, i, a, o) {
+		t(this, "lazyInit", s(!1)), t(this, "lazyStatus", void 0), t(this, "is", r(() => !!this.props.tagImg && this.isType())), t(this, "isLazy", r(() => !!this.props.lazy && !this.lazyInit.value)), t(this, "isPicture", r(() => this.is.value && !!this.props.picture)), t(this, "binds", r(() => {
 			let e = { key: "img" };
 			if (this.is.value) {
 				var t;
@@ -333,21 +495,21 @@ var P = /* @__PURE__ */ function(e) {
 			}
 			return e;
 		})), t(this, "picture", r(() => {
-			if (this.props.picture) return h(this.props.picture) ? this.props.picture : p(this.props.picture, (e, t) => ({
+			if (this.props.picture) return v(this.props.picture) ? this.props.picture : g(this.props.picture, (e, t) => ({
 				key: t,
 				srcset: e,
 				media: `(width >= ${t})`
 			}));
 		})), t(this, "styles", r(() => {
 			let e = {
-				"object-position": `${this.position.getX()} ${this.position.getY()}`,
-				"--sys-transform-originX": this.position.getX(),
-				"--sys-transform-originY": this.position.getY()
+				"object-position": `${this.position.x.value} ${this.position.y.value}`,
+				"--sys-transform-originX": this.position.x.value,
+				"--sys-transform-originY": this.position.y.value
 			};
 			return this.isSize() && (e["--sys-transform-scale"] = this.getSize()), e;
-		})), this.props = e, this.element = n, this.type = i, this.position = a, this.background = l;
-		let { lazy: u, preloadOffset: d } = s(e);
-		c([
+		})), this.props = e, this.element = n, this.type = i, this.position = a, this.background = o;
+		let { lazy: u, preloadOffset: d } = c(e);
+		l([
 			u,
 			d,
 			n
@@ -360,8 +522,8 @@ var P = /* @__PURE__ */ function(e) {
 		}, { immediate: !0 });
 	}
 	isType() {
-		let e = this.type.getType();
-		return e === T.file || e === T.image;
+		let e = this.type.item.value;
+		return e === P.file || e === P.image;
 	}
 	isSize() {
 		let e = this.background.size.value;
@@ -375,25 +537,25 @@ var P = /* @__PURE__ */ function(e) {
 		if (this.props.srcset) return typeof this.props.srcset == "string" ? this.props.srcset : Object.entries(this.props.srcset).map(([e, t]) => `${t} ${this.toSrcsetKey(e)}`).join(", ");
 	}
 	toSrcsetKey(e) {
-		return _(e) ? `${e}w` : String(e);
+		return x(e) ? `${e}w` : String(e);
 	}
 	makeLazy() {
-		let e = b(this.element, `${this.props.preloadOffset} 0px`).lazyItemStatus;
-		this.lazyStatus = c(e, () => {
+		let e = E(this.element, `${this.props.preloadOffset} 0px`).lazyItemStatus;
+		this.lazyStatus = l(e, () => {
 			this.lazyInit.value = e.value;
 		}, { immediate: !0 });
 	}
-}, B = class {
-	constructor(n, i, o, s, l) {
-		t(this, "type", void 0), t(this, "data", void 0), t(this, "coordinator", void 0), t(this, "position", void 0), t(this, "adaptiveItem", void 0), t(this, "background", void 0), t(this, "img", void 0), t(this, "tag", r(() => this.img.is.value ? "img" : "span")), t(this, "text", r(() => {
-			let e = this.type.getType();
-			if (e === T.pdf) {
-				let e = this.data.getImage();
-				if (v(e)) return e;
+}, X = class {
+	constructor(n, i, a, s, c) {
+		t(this, "clientOnly", void 0), t(this, "type", void 0), t(this, "data", void 0), t(this, "coordinator", void 0), t(this, "position", void 0), t(this, "adaptiveItem", void 0), t(this, "background", void 0), t(this, "img", void 0), t(this, "tag", r(() => this.img.is.value ? "img" : "span")), t(this, "text", r(() => {
+			let e = this.type.item.value;
+			if (e === P.pdf) {
+				let e = this.data.image.value;
+				if (S(e)) return e;
 			}
 			let t = this.props.value;
-			if (e === T.flagCompressed && t) return String(t).replace("f-", "").toUpperCase();
-			if (e && v(t) && [
+			if (e === P.flagCompressed && t) return String(t).replace("f-", "").toUpperCase();
+			if (e && S(t) && [
 				"filled",
 				"outlined",
 				"round",
@@ -402,7 +564,7 @@ var P = /* @__PURE__ */ function(e) {
 				"material"
 			].indexOf(e) !== -1) return t.replace(/^(filled|outlined|round|sharp|two-tone)-/, "");
 		})), t(this, "classes", r(() => {
-			let e = this.type.getType(), t = {
+			let e = this.type.item.value, t = {
 				[`${this.className}--type--${e}`]: e !== void 0,
 				[`${this.className}--background`]: this.background.isImage(),
 				notranslate: !0
@@ -424,22 +586,22 @@ var P = /* @__PURE__ */ function(e) {
 			return t;
 		})), t(this, "styles", r(() => {
 			let e = this.props.value;
-			if (e) switch (this.type.getType()) {
-				case T.file:
-				case T.image:
-				case T.array: return {
+			if (e) switch (this.type.item.value) {
+				case P.file:
+				case P.image:
+				case P.array: return {
 					"background-image": this.background.image.value,
 					"background-size": this.background.size.value,
-					"background-position-x": this.position.getX(),
-					"background-position-y": this.position.getY()
+					"background-position-x": this.position.x.value,
+					"background-position-y": this.position.y.value
 				};
-				case T.icon: return { "background-image": this.background.image.value };
-				case T.flag: return {
+				case P.icon: return { "background-image": this.background.image.value };
+				case P.flag: return {
 					"background-image": this.background.image.value,
 					"background-size": "contain"
 				};
-				case T.public: return { "mask-image": this.background.image.value };
-				case T.color: if (v(e)) return { "background-color": e };
+				case P.public: return { "mask-image": this.background.image.value };
+				case P.color: if (S(e)) return { "background-color": e };
 			}
 			return {};
 		})), t(this, "binds", r(() => ({
@@ -449,18 +611,13 @@ var P = /* @__PURE__ */ function(e) {
 			...e.hidden()
 		}))), t(this, "valueBinds", r(() => ({
 			key: "value",
-			data: this.data.getImage()
-		}))), this.props = n, this.element = i, this.className = o, this.emits = s;
-		let { ImageAdaptiveItemConstructor: u = L, ImageBackgroundConstructor: d = R, ImageCoordinatorConstructor: f = k, ImageDataConstructor: p = O, ImageImgConstructor: m = z, ImagePositionConstructor: h = A, ImageTypeConstructor: g = E } = l == null ? {} : l;
-		this.type = new g(n), this.data = new p(n, this.type), this.coordinator = new f(n), this.position = new h(n, this.coordinator), this.adaptiveItem = new u(n, this.data, i), this.background = new d(n, this.data, this.coordinator, this.adaptiveItem), this.img = new m(this.props, i, this.type, this.position, this.background), s && c(this.data.image, (e) => {
-			s("load", {
-				type: this.type.getType(),
-				image: e
-			});
-		}), a(() => this.adaptiveItem.remove());
+			data: this.data.image.value
+		}))), this.props = n, this.element = i, this.className = a, this.emits = s;
+		let { ImageAdaptiveItemConstructor: l = q, ImageBackgroundConstructor: u = J, ImageCoordinatorConstructor: d = z, ImageDataConstructor: f = R, ImageImgConstructor: p = Y, ImagePositionConstructor: m = B, ImageTypeConstructor: h = F, ClientOnlyConstructor: g = D } = c == null ? {} : c;
+		this.clientOnly = new g({ clientOnly: !0 }), this.type = new h(n, this.clientOnly), this.data = new f(n, this.clientOnly, this.type), this.coordinator = new d(n), this.position = new m(n, this.coordinator), this.adaptiveItem = new l(n, this.clientOnly, this.data, i), this.background = new u(n, this.data, this.coordinator, this.adaptiveItem), this.img = new p(this.props, i, this.type, this.position, this.background), o(() => this.adaptiveItem.remove());
 	}
-}, V = class extends u {
-	constructor(e, n, a, o = B) {
+}, Z = class extends d {
+	constructor(e, n, a, o = X) {
 		super(e, n, a), t(this, "item", void 0), t(this, "propsImage", r(() => {
 			var e;
 			return {
@@ -479,7 +636,7 @@ var P = /* @__PURE__ */ function(e) {
 		})), t(this, "renderPicture", () => {
 			let e = this.item.img.picture.value, t = [];
 			return e && e.forEach((e) => t.push(i("source", e))), t.push(this.renderImgItem()), i("picture", this.propsImage.value, t);
-		}), t(this, "renderImg", () => i("span", this.propsImage.value, this.renderImgItem())), t(this, "renderImgItem", () => i("img", this.item.img.binds.value)), t(this, "renderValue", () => this.item.type.getType() === T.pdf ? i("object", this.item.valueBinds.value) : this.item.type.getType() === T.flagCompressed ? i("span", { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }) : this.item.text.value), this.item = new o(this.props, this.element, this.getName(), this.emits), this.init();
+		}), t(this, "renderImg", () => i("span", this.propsImage.value, this.renderImgItem())), t(this, "renderImgItem", () => i("img", this.item.img.binds.value)), t(this, "renderValue", () => this.item.type.item.value === P.pdf ? i("object", this.item.valueBinds.value) : this.item.type.item.value === P.flagCompressed ? i("span", { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }) : this.item.text.value), this.item = new o(this.props, this.element, this.getName(), this.emits), this.init();
 	}
 	initExpose() {
 		return {
@@ -498,4 +655,4 @@ var P = /* @__PURE__ */ function(e) {
 	}
 };
 //#endregion
-export { B as Image, N as ImageAdaptiveGroup, L as ImageAdaptiveItem, R as ImageBackground, j as ImageCalculation, M as ImageCalculationList, k as ImageCoordinatorRef, O as ImageDataRef, V as ImageDesign, z as ImageImg, n as ImageInclude, A as ImagePositionRef, E as ImageTypeRef, I as MAX_BEYOND, D as defaultsImage };
+export { X as Image, U as ImageAdaptiveGroup, q as ImageAdaptiveItem, J as ImageBackground, V as ImageCalculation, H as ImageCalculationList, z as ImageCoordinator, R as ImageData, Z as ImageDesign, k as ImageFile, Y as ImageImg, n as ImageInclude, j as ImagePdf, B as ImagePosition, F as ImageType, P as ImageTypeValue, N as ImageUint8Array, K as MAX_BEYOND, O as MAX_SIZE, I as defaultsImage };

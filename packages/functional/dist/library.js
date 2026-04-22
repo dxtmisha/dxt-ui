@@ -1158,13 +1158,13 @@ var vt = (e) => _t(e);
 //#endregion
 //#region src/functions/computedAsync.ts
 function yt(e, t, n) {
-	let r = P(), i = !0, a = () => {
-		i && (i = !1, L(async () => {
-			let n = await x(e);
-			n !== t && (r.value = n);
-		}));
+	let r = P(), i = !0, a = async () => {
+		let n = await x(e);
+		n !== t && (r.value = n);
+	}, o = () => {
+		i && (i = !1, E() ? L(a) : a().then());
 	};
-	return M(() => (a(), r.value), n);
+	return M(() => (o(), r.value), n);
 }
 //#endregion
 //#region src/functions/computedByLanguage.ts

@@ -1,8 +1,8 @@
 import { ComputedRef, Ref, ToRefs } from 'vue';
 import { ConstrClassObject, ConstrEmit, DesignComp } from '@dxtmisha/functional';
-import { ImageEventData } from '@dxtmisha/constructor-basic';
 import { EventClickInclude } from '../../classes/EventClickInclude';
 import { SkeletonInclude } from '../Skeleton';
+import { ImageEventData } from '../Image';
 import { IconComponents, IconEmits, IconSlots } from './types';
 import { IconProps } from './props';
 import { IconEventLoad } from './basicTypes';
