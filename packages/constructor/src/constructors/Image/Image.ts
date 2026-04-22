@@ -10,11 +10,11 @@ import { ImageTypeValue } from '@dxtmisha/constructor-basic'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
-import { ImageType } from './ImageType'
-import { ImageData } from './ImageData'
+import { ImageTypeRef } from './ImageTypeRef'
+import { ImageDataRef } from './ImageDataRef'
 
-import { ImageCoordinator } from './ImageCoordinator'
-import { ImagePosition } from './ImagePosition'
+import { ImageCoordinatorRef } from './ImageCoordinatorRef'
+import { ImagePositionRef } from './ImagePositionRef'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
 import { ImageImg } from './ImageImg'
@@ -28,11 +28,11 @@ import type { ImageProps } from './props'
  * Базовый класс для работы с изображениями и иконками.
  */
 export class Image {
-  readonly type: ImageType
-  readonly data: ImageData
+  readonly type: ImageTypeRef
+  readonly data: ImageDataRef
 
-  readonly coordinator: ImageCoordinator
-  readonly position: ImagePosition
+  readonly coordinator: ImageCoordinatorRef
+  readonly position: ImagePositionRef
   readonly adaptiveItem: ImageAdaptiveItem
   readonly background: ImageBackground
 
@@ -61,21 +61,21 @@ export class Image {
     constructors?: {
       ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem
       ImageBackgroundConstructor?: typeof ImageBackground
-      ImageCoordinatorConstructor?: typeof ImageCoordinator
-      ImageDataConstructor?: typeof ImageData
+      ImageCoordinatorConstructor?: typeof ImageCoordinatorRef
+      ImageDataConstructor?: typeof ImageDataRef
       ImageImgConstructor?: typeof ImageImg
-      ImagePositionConstructor?: typeof ImagePosition
-      ImageTypeConstructor?: typeof ImageType
+      ImagePositionConstructor?: typeof ImagePositionRef
+      ImageTypeConstructor?: typeof ImageTypeRef
     }
   ) {
     const {
       ImageAdaptiveItemConstructor = ImageAdaptiveItem,
       ImageBackgroundConstructor = ImageBackground,
-      ImageCoordinatorConstructor = ImageCoordinator,
-      ImageDataConstructor = ImageData,
+      ImageCoordinatorConstructor = ImageCoordinatorRef,
+      ImageDataConstructor = ImageDataRef,
       ImageImgConstructor = ImageImg,
-      ImagePositionConstructor = ImagePosition,
-      ImageTypeConstructor = ImageType
+      ImagePositionConstructor = ImagePositionRef,
+      ImageTypeConstructor = ImageTypeRef
     } = constructors ?? {}
 
     this.type = new ImageTypeConstructor(props)
@@ -108,7 +108,7 @@ export class Image {
     if (emits) {
       watch(this.data.image, (image) => {
         emits('load', {
-          type: this.type.item.value,
+          type: this.type.getType(),
           image
         })
       })
@@ -128,10 +128,10 @@ export class Image {
    * Значения для текста. Текст используется для типа иконки, который работает как фон.
    */
   readonly text = computed<string | undefined>(() => {
-    const type = this.type.item.value
+    const type = this.type.getType()
 
     if (type === ImageTypeValue.pdf) {
-      const image = this.data.image.value
+      const image = this.data.getImage()
 
       if (isString(image)) {
         return image
@@ -173,7 +173,7 @@ export class Image {
    * Значения для класса.
    */
   readonly classes = computed<ConstrClassObject>(() => {
-    const type = this.type.item.value
+    const type = this.type.getType()
     const data = {
       [`${this.className}--type--${type}`]: type !== undefined,
       [`${this.className}--background`]: this.background.isImage(),
@@ -210,15 +210,15 @@ export class Image {
     const value = this.props.value
 
     if (value) {
-      switch (this.type.item.value) {
+      switch (this.type.getType()) {
         case ImageTypeValue.file:
         case ImageTypeValue.image:
         case ImageTypeValue.array:
           return {
             'background-image': this.background.image.value,
             'background-size': this.background.size.value,
-            'background-position-x': this.position.x.value,
-            'background-position-y': this.position.y.value
+            'background-position-x': this.position.getX(),
+            'background-position-y': this.position.getY()
           }
         case ImageTypeValue.icon:
           return {
@@ -260,6 +260,6 @@ export class Image {
    */
   readonly valueBinds = computed<ConstrBind<any>>(() => ({
     key: 'value',
-    data: this.data.image.value
+    data: this.data.getImage()
   }))
 }

@@ -1,4 +1,4 @@
-import { resizeImageByMax } from '@dxtmisha/functional'
+import { resizeImageByMax } from '@dxtmisha/functional-basic'
 
 import type { ImageItem } from '../../types/imageTypes'
 

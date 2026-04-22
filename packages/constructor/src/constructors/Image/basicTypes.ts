@@ -1,4 +1,4 @@
-import type { ConstrBind, Undefined } from '@dxtmisha/functional'
+import type { ConstrBind } from '@dxtmisha/functional'
 import type { ImageEmits } from './types'
 import type { ImagePropsBasic } from './props'
 
@@ -8,14 +8,6 @@ export type ImageElement = HTMLElement | undefined
 /** Image attribute type / Тип атрибутов изображения */
 export type ImageAttrs = Record<keyof HTMLImageElement, any>
 
-/** Image coordinator item type / Тип элемента координат изображения */
-export type ImageCoordinatorItem
-  = [number]
-    | [number, number]
-    | [number, number, number]
-    | [number, number, number, number]
-    | Undefined
-
 /** Image picture item type / Тип элемента изображения picture */
 export type ImagePictureItem = Record<keyof HTMLSourceElement & 'key', any>
 
@@ -24,20 +16,6 @@ export type ImagePictureList = ImagePictureItem[]
 
 /** Image picture type / Тип изображения picture */
 export type ImagePicture = Record<string, string> | ImagePictureList
-
-/** Image Uint8Array type / Тип Image Uint8Array */
-export type ImageUint8ArrayType = Uint8Array<ArrayBuffer> | ArrayBuffer
-/** Image Uint8Array item / Элемент Image Uint8Array */
-export type ImageUint8ArrayItem = {
-  /** Data buffer/ Буфер данных */
-  item: ImageUint8ArrayType
-  /** MIME type/ MIME-тип */
-  type: string
-  /** Source URL/ URL-источник */
-  src: string
-}
-/** Image Uint8Array cache / Кэш Image Uint8Array */
-export type ImageUint8ArrayCache = ImageUint8ArrayItem[]
 
 /** Image value type / Тип значения изображения */
 export type ImageValue<

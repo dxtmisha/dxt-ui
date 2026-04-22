@@ -2,164 +2,66 @@ import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-Bjg6wMoX.js";
 import { t as n } from "./ImageInclude-D1bdP4zG.js";
 import { computed as r, h as i, onUnmounted as a, ref as o, toRefs as s, watch as c, watchEffect as l } from "vue";
-import { DesignConstructorAbstract as u, EventItem as d, Icons as f, forEach as p, getElementId as m, isArray as h, isFilled as g, isNumber as _, isString as v, toNumber as y, useLazyItemByMarginRef as b } from "@dxtmisha/functional";
-import { ImageFile as x, ImagePdf as S, ImageTypeValue as C } from "@dxtmisha/constructor-basic";
-//#region src/constructors/Image/ImageUint8Array.ts
-var w = [], T = class {
-	static is(e) {
-		return e instanceof Uint8Array || e instanceof ArrayBuffer;
-	}
-	static createImage(e, t = "image/jpeg") {
-		let n = this.getCacheItem(e, t), r = new Image();
-		if (n) r.src = n.src;
-		else {
-			let n = new Blob([this.toUint8Array(e)], { type: t }), i = URL.createObjectURL(n);
-			r.src = i, this.addCacheItem(e, t, i);
-		}
-		return {
-			image: r,
-			src: r.src,
-			width: r.naturalWidth,
-			height: r.naturalHeight
-		};
-	}
-	static toUint8Array(e) {
-		return e instanceof ArrayBuffer ? new Uint8Array(e) : e;
-	}
-	static getCacheItem(e, t) {
-		return w.find((n) => n.item === e && n.type === t);
-	}
-	static addCacheItem(e, t, n) {
-		w.push({
-			item: e,
-			type: t,
-			src: n
-		});
-	}
-}, E = class {
+import { DesignConstructorAbstract as u, EventItem as d, computedAsync as f, forEach as p, getElementId as m, isArray as h, isFilled as g, isNumber as _, isString as v, toNumber as y, useLazyItemByMarginRef as b } from "@dxtmisha/functional";
+import { ImageCoordinator as x, ImageData as S, ImagePosition as C, ImageType as w, ImageTypeValue as T } from "@dxtmisha/constructor-basic";
+//#region src/constructors/Image/ImageTypeRef.ts
+var E = class extends w {
 	constructor(e) {
-		t(this, "item", r(() => {
-			let e = this.props.value;
-			if (e instanceof File) return C.file;
-			if (T.is(e)) return C.array;
-			if (v(e) && g(e)) {
-				if (S.isPdf(e)) return C.pdf;
-				if (e.match(/\//)) return C.image;
-				if (e.match(/^#/)) return C.color;
-				if (e.match(/^@/)) return C.public;
-				if (e.match(/^\$/)) return C.material;
-				if (e.match(/^flag-[a-z]{2}$/)) return C.flag;
-				if (e.match(/^f-[a-z]{2}$/)) return C.flagCompressed;
-				let t = e.match(/^(outlined|round|sharp|material)-/);
-				return t ? t[1] : f.is(e) ? C.public : C.outlined;
-			}
-		})), this.props = e;
+		super(), t(this, "item", r(() => this.initType())), this.props = e;
+	}
+	getType() {
+		return this.item.value;
+	}
+	getValue() {
+		return this.props.value;
 	}
 }, D = {
 	adaptiveGroup: "basic",
 	preloadOffset: "1024px"
-}, O = class {
+}, O = class extends S {
 	constructor(e, n) {
-		t(this, "image", o()), this.props = e, this.type = n, l(async () => {
-			this.image.value = await this.init();
-		});
+		super(n), t(this, "image", f(async () => this.initData())), this.props = e;
 	}
-	is() {
-		return this.image.value !== void 0;
+	getImage() {
+		return this.image.value;
 	}
-	isLink() {
-		return this.is() && typeof this.image.value == "string";
+	getValue() {
+		return this.props.value;
 	}
-	isImage() {
-		return this.is() && typeof this.image.value != "string";
+	getLazy() {
+		return this.props.lazy;
 	}
-	async init() {
-		let e = this.props.value;
-		if (e) switch (this.type.item.value) {
-			case C.pdf: return await S.get(e);
-			case C.array: return await T.createImage(e);
-			case C.image:
-			case C.file:
-				try {
-					return this.props.lazy ? this.props.value : await x.createImage(e);
-				} catch (t) {
-					console.error("ImageData.initImage: ", e);
-				}
-				break;
-			case C.public:
-			case C.icon:
-			case C.flag:
-				if (v(e)) return await f.get(e, this.props.url);
-				break;
-		}
+	getUrl() {
+		return this.props.url;
 	}
-}, k = class {
+}, k = class extends x {
 	constructor(e) {
-		t(this, "coordinator", r(() => {
-			if (this.is()) {
-				let f = this.props.coordinator;
-				switch (f.length) {
-					case 1:
-						var e, t, n, r;
-						return [
-							(e = f[0]) == null ? 0 : e,
-							(t = f[0]) == null ? 0 : t,
-							(n = f[0]) == null ? 0 : n,
-							(r = f[0]) == null ? 0 : r
-						];
-					case 2:
-						var i, a, o, s;
-						return [
-							(i = f[0]) == null ? 0 : i,
-							(a = f[1]) == null ? 0 : a,
-							(o = f[0]) == null ? 0 : o,
-							(s = f[1]) == null ? 0 : s
-						];
-					case 3:
-						var c, l, u, d;
-						return [
-							(c = f[0]) == null ? 0 : c,
-							(l = f[1]) == null ? 0 : l,
-							(u = f[2]) == null ? 0 : u,
-							(d = f[1]) == null ? 0 : d
-						];
-					case 4: return f;
-				}
-			}
-			return [
-				0,
-				0,
-				0,
-				0
-			];
-		})), t(this, "size", r(() => {
-			let e = this.coordinator.value;
-			return {
-				width: 100 - e[1] - e[3],
-				height: 100 - e[2] - e[0]
-			};
-		})), this.props = e;
+		super(), t(this, "coordinator", r(() => this.initCoordinator())), t(this, "size", r(() => this.initSize())), this.props = e;
 	}
-	is() {
-		let e = this.props.coordinator;
-		return h(e) && e.length > 0 && e.length < 5;
+	get() {
+		return this.coordinator.value;
 	}
 	getSize() {
-		let e = this.size.value, t = e.width === 0 ? 100 : e.width, n = e.height === 0 ? 100 : e.height;
-		return {
-			width: `${100 / t * 100}%`,
-			height: `${100 / n * 100}%`
-		};
+		return this.size.value;
 	}
-}, A = class {
+	getCoordinator() {
+		return this.props.coordinator;
+	}
+}, A = class extends C {
 	constructor(e, n) {
-		t(this, "x", r(() => {
-			var e;
-			return this.coordinator.is() ? `${this.coordinator.coordinator.value[3] + this.coordinator.size.value.width / 2}%` : ((e = this.props.x) == null ? void 0 : e.toString()) || "center";
-		})), t(this, "y", r(() => {
-			var e;
-			return this.coordinator.is() ? `${this.coordinator.coordinator.value[0] + this.coordinator.size.value.height / 2}%` : ((e = this.props.y) == null ? void 0 : e.toString()) || "center";
-		})), this.props = e, this.coordinator = n;
+		super(n), t(this, "x", r(() => this.initX())), t(this, "y", r(() => this.initY())), this.props = e;
+	}
+	getX() {
+		return this.x.value;
+	}
+	getY() {
+		return this.y.value;
+	}
+	getPropX() {
+		return this.props.x;
+	}
+	getPropY() {
+		return this.props.y;
 	}
 }, j = class {
 	constructor(e) {
@@ -325,7 +227,7 @@ var P = /* @__PURE__ */ function(e) {
 			if (this.height.value && this.percent.value.height > 0) return P.y;
 		})), t(this, "size", r(() => {
 			if (this.element.value && this.data.isImage()) {
-				let e = this.data.image.value;
+				let e = this.data.getImage();
 				switch (this.type.value) {
 					case P.x: return e.height * (this.element.value.offsetWidth * this.percent.value.width / e.width);
 					case P.y: return e.width * (this.element.value.offsetHeight * this.percent.value.height / e.height);
@@ -391,7 +293,7 @@ var P = /* @__PURE__ */ function(e) {
 			let e = this.imageSrc.value;
 			return e ? `url("${e}")` : null;
 		})), t(this, "imageSrc", r(() => {
-			let e = this.data.image.value;
+			let e = this.data.getImage();
 			switch (typeof e) {
 				case "string": return e;
 				case "object": return e.src;
@@ -410,11 +312,11 @@ var P = /* @__PURE__ */ function(e) {
 		return !!this.image.value;
 	}
 	getSize(e, t) {
-		let n = this.data.image.value;
+		let n = this.data.getImage();
 		return typeof n == "object" ? n.height < n.width ? `auto ${t}` : `${e} auto` : null;
 	}
 	getSizeByCoordinator() {
-		let { width: e, height: t } = this.coordinator.getSize();
+		let { width: e, height: t } = this.coordinator.getBackgroundSize();
 		return this.getSize(e, t);
 	}
 	getSizeForItem() {
@@ -438,9 +340,9 @@ var P = /* @__PURE__ */ function(e) {
 			}));
 		})), t(this, "styles", r(() => {
 			let e = {
-				"object-position": `${this.position.x.value} ${this.position.y.value}`,
-				"--sys-transform-originX": this.position.x.value,
-				"--sys-transform-originY": this.position.y.value
+				"object-position": `${this.position.getX()} ${this.position.getY()}`,
+				"--sys-transform-originX": this.position.getX(),
+				"--sys-transform-originY": this.position.getY()
 			};
 			return this.isSize() && (e["--sys-transform-scale"] = this.getSize()), e;
 		})), this.props = e, this.element = n, this.type = i, this.position = a, this.background = l;
@@ -458,8 +360,8 @@ var P = /* @__PURE__ */ function(e) {
 		}, { immediate: !0 });
 	}
 	isType() {
-		let e = this.type.item.value;
-		return e === C.file || e === C.image;
+		let e = this.type.getType();
+		return e === T.file || e === T.image;
 	}
 	isSize() {
 		let e = this.background.size.value;
@@ -484,13 +386,13 @@ var P = /* @__PURE__ */ function(e) {
 }, B = class {
 	constructor(n, i, o, s, l) {
 		t(this, "type", void 0), t(this, "data", void 0), t(this, "coordinator", void 0), t(this, "position", void 0), t(this, "adaptiveItem", void 0), t(this, "background", void 0), t(this, "img", void 0), t(this, "tag", r(() => this.img.is.value ? "img" : "span")), t(this, "text", r(() => {
-			let e = this.type.item.value;
-			if (e === C.pdf) {
-				let e = this.data.image.value;
+			let e = this.type.getType();
+			if (e === T.pdf) {
+				let e = this.data.getImage();
 				if (v(e)) return e;
 			}
 			let t = this.props.value;
-			if (e === C.flagCompressed && t) return String(t).replace("f-", "").toUpperCase();
+			if (e === T.flagCompressed && t) return String(t).replace("f-", "").toUpperCase();
 			if (e && v(t) && [
 				"filled",
 				"outlined",
@@ -500,7 +402,7 @@ var P = /* @__PURE__ */ function(e) {
 				"material"
 			].indexOf(e) !== -1) return t.replace(/^(filled|outlined|round|sharp|two-tone)-/, "");
 		})), t(this, "classes", r(() => {
-			let e = this.type.item.value, t = {
+			let e = this.type.getType(), t = {
 				[`${this.className}--type--${e}`]: e !== void 0,
 				[`${this.className}--background`]: this.background.isImage(),
 				notranslate: !0
@@ -522,22 +424,22 @@ var P = /* @__PURE__ */ function(e) {
 			return t;
 		})), t(this, "styles", r(() => {
 			let e = this.props.value;
-			if (e) switch (this.type.item.value) {
-				case C.file:
-				case C.image:
-				case C.array: return {
+			if (e) switch (this.type.getType()) {
+				case T.file:
+				case T.image:
+				case T.array: return {
 					"background-image": this.background.image.value,
 					"background-size": this.background.size.value,
-					"background-position-x": this.position.x.value,
-					"background-position-y": this.position.y.value
+					"background-position-x": this.position.getX(),
+					"background-position-y": this.position.getY()
 				};
-				case C.icon: return { "background-image": this.background.image.value };
-				case C.flag: return {
+				case T.icon: return { "background-image": this.background.image.value };
+				case T.flag: return {
 					"background-image": this.background.image.value,
 					"background-size": "contain"
 				};
-				case C.public: return { "mask-image": this.background.image.value };
-				case C.color: if (v(e)) return { "background-color": e };
+				case T.public: return { "mask-image": this.background.image.value };
+				case T.color: if (v(e)) return { "background-color": e };
 			}
 			return {};
 		})), t(this, "binds", r(() => ({
@@ -547,12 +449,12 @@ var P = /* @__PURE__ */ function(e) {
 			...e.hidden()
 		}))), t(this, "valueBinds", r(() => ({
 			key: "value",
-			data: this.data.image.value
+			data: this.data.getImage()
 		}))), this.props = n, this.element = i, this.className = o, this.emits = s;
 		let { ImageAdaptiveItemConstructor: u = L, ImageBackgroundConstructor: d = R, ImageCoordinatorConstructor: f = k, ImageDataConstructor: p = O, ImageImgConstructor: m = z, ImagePositionConstructor: h = A, ImageTypeConstructor: g = E } = l == null ? {} : l;
 		this.type = new g(n), this.data = new p(n, this.type), this.coordinator = new f(n), this.position = new h(n, this.coordinator), this.adaptiveItem = new u(n, this.data, i), this.background = new d(n, this.data, this.coordinator, this.adaptiveItem), this.img = new m(this.props, i, this.type, this.position, this.background), s && c(this.data.image, (e) => {
 			s("load", {
-				type: this.type.item.value,
+				type: this.type.getType(),
 				image: e
 			});
 		}), a(() => this.adaptiveItem.remove());
@@ -577,7 +479,7 @@ var P = /* @__PURE__ */ function(e) {
 		})), t(this, "renderPicture", () => {
 			let e = this.item.img.picture.value, t = [];
 			return e && e.forEach((e) => t.push(i("source", e))), t.push(this.renderImgItem()), i("picture", this.propsImage.value, t);
-		}), t(this, "renderImg", () => i("span", this.propsImage.value, this.renderImgItem())), t(this, "renderImgItem", () => i("img", this.item.img.binds.value)), t(this, "renderValue", () => this.item.type.item.value === C.pdf ? i("object", this.item.valueBinds.value) : this.item.type.item.value === C.flagCompressed ? i("span", { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }) : this.item.text.value), this.item = new o(this.props, this.element, this.getName(), this.emits), this.init();
+		}), t(this, "renderImg", () => i("span", this.propsImage.value, this.renderImgItem())), t(this, "renderImgItem", () => i("img", this.item.img.binds.value)), t(this, "renderValue", () => this.item.type.getType() === T.pdf ? i("object", this.item.valueBinds.value) : this.item.type.getType() === T.flagCompressed ? i("span", { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }) : this.item.text.value), this.item = new o(this.props, this.element, this.getName(), this.emits), this.init();
 	}
 	initExpose() {
 		return {
@@ -596,4 +498,4 @@ var P = /* @__PURE__ */ function(e) {
 	}
 };
 //#endregion
-export { B as Image, N as ImageAdaptiveGroup, L as ImageAdaptiveItem, R as ImageBackground, j as ImageCalculation, M as ImageCalculationList, k as ImageCoordinator, O as ImageData, V as ImageDesign, z as ImageImg, n as ImageInclude, A as ImagePosition, E as ImageType, T as ImageUint8Array, I as MAX_BEYOND, D as defaultsImage };
+export { B as Image, N as ImageAdaptiveGroup, L as ImageAdaptiveItem, R as ImageBackground, j as ImageCalculation, M as ImageCalculationList, k as ImageCoordinatorRef, O as ImageDataRef, V as ImageDesign, z as ImageImg, n as ImageInclude, A as ImagePositionRef, E as ImageTypeRef, I as MAX_BEYOND, D as defaultsImage };

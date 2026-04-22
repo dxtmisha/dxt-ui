@@ -1,6 +1,6 @@
 import { NumberOrString } from '@dxtmisha/functional';
-import { ImageData } from './ImageData';
-import { ImageCoordinator } from './ImageCoordinator';
+import { ImageDataRef } from './ImageDataRef';
+import { ImageCoordinatorRef } from './ImageCoordinatorRef';
 import { ImageAdaptiveItem } from './ImageAdaptiveItem';
 import { ImageProps } from './props';
 import { ComputedRef } from 'vue';
@@ -11,8 +11,8 @@ import { ComputedRef } from 'vue';
  */
 export declare class ImageBackground {
     protected readonly props: ImageProps;
-    protected readonly data: ImageData;
-    protected readonly coordinator: ImageCoordinator;
+    protected readonly data: ImageDataRef;
+    protected readonly coordinator: ImageCoordinatorRef;
     protected readonly adaptive: ImageAdaptiveItem;
     /**
      * Constructor
@@ -21,7 +21,7 @@ export declare class ImageBackground {
      * @param coordinator object for working with coordinates/ объект для работы с координатами
      * @param adaptive an object for working with adapted scaling/ объект для работы с адаптированным масштабированием
      */
-    constructor(props: ImageProps, data: ImageData, coordinator: ImageCoordinator, adaptive: ImageAdaptiveItem);
+    constructor(props: ImageProps, data: ImageDataRef, coordinator: ImageCoordinatorRef, adaptive: ImageAdaptiveItem);
     /**
      * Returns values for the background-image property.
      *

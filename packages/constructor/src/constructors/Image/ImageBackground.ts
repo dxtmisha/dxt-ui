@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { isFilled, type NumberOrString } from '@dxtmisha/functional'
 
-import { ImageData } from './ImageData'
-import { ImageCoordinator } from './ImageCoordinator'
+import { ImageDataRef } from './ImageDataRef'
+import { ImageCoordinatorRef } from './ImageCoordinatorRef'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 
 import { type ImageProps } from './props'
@@ -22,8 +22,8 @@ export class ImageBackground {
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly data: ImageData,
-    protected readonly coordinator: ImageCoordinator,
+    protected readonly data: ImageDataRef,
+    protected readonly coordinator: ImageCoordinatorRef,
     protected readonly adaptive: ImageAdaptiveItem
   ) {
   }
@@ -47,7 +47,7 @@ export class ImageBackground {
    * Returns the image source/ Возвращает источник изображения
    */
   readonly imageSrc = computed<string | null>(() => {
-    const image = this.data.image.value
+    const image = this.data.getImage()
 
     switch (typeof image) {
       case 'string':
@@ -100,7 +100,7 @@ export class ImageBackground {
     width: NumberOrString,
     height: NumberOrString
   ): string | null {
-    const image = this.data.image.value
+    const image = this.data.getImage()
 
     if (typeof image === 'object') {
       return image.height < image.width ? `auto ${height}` : `${width} auto`
@@ -118,7 +118,7 @@ export class ImageBackground {
     const {
       width,
       height
-    } = this.coordinator.getSize()
+    } = this.coordinator.getBackgroundSize()
 
     return this.getSize(width, height)
   }

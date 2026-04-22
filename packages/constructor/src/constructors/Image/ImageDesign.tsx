@@ -191,7 +191,7 @@ export class ImageDesign<
    * Рендеринг значения для компонента.
    */
   readonly renderValue = (): string | VNode | undefined => {
-    if (this.item.type.item.value === ImageTypeValue.pdf) {
+    if (this.item.type.getType() === ImageTypeValue.pdf) {
       return h(
         'object',
         this.item.valueBinds.value
@@ -199,7 +199,7 @@ export class ImageDesign<
     }
 
     if (
-      this.item.type.item.value === ImageTypeValue.flagCompressed
+      this.item.type.getType() === ImageTypeValue.flagCompressed
     ) {
       return h(
         'span',

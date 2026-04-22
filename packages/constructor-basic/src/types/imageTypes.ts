@@ -1,4 +1,4 @@
-import type { Undefined } from '@dxtmisha/functional'
+import type { Undefined } from '@dxtmisha/functional-basic'
 
 /** Enumeration of image types / Перечисление типов изображений */
 export enum ImageTypeValue {
@@ -34,6 +34,37 @@ export enum ImageTypeValue {
   icon = 'icon'
 }
 
+/** Image coordinator item type / Тип элемента координат изображения */
+export type ImageCoordinatorItem
+  = [number]
+    | [number, number]
+    | [number, number, number]
+    | [number, number, number, number]
+    | Undefined
+
+export type ImageCoordinatorItemFull = [number, number, number, number]
+
+/** Image size type / Тип размера изображения */
+export type ImageSize<T = number> = {
+  /** Width/ Ширина */
+  width: T
+  /** Height/ Высота */
+  height: T
+}
+
+/** Parameters for the uploaded image or the one available by a direct link / Параметры для загруженного изображения или доступного по прямой ссылке */
+export type ImageItem
+  = ImageSize
+    & {
+      /** Image element/ Элемент изображения */
+      image: HTMLImageElement
+      /** Source URL/ URL-источник */
+      src: string
+    }
+
+/** Image type item / Элемент типа изображения */
+export type ImageTypeItem = ImageTypeValue | Undefined
+
 /** Image event data type / Тип данных события изображения */
 export type ImageEventData
   = ImageEventType
@@ -49,23 +80,16 @@ export type ImageEventType = {
   type: ImageTypeItem
 }
 
-/** Parameters for the uploaded image or the one available by a direct link / Параметры для загруженного изображения или доступного по прямой ссылке */
-export type ImageItem
-  = ImageSize
-    & {
-      /** Image element/ Элемент изображения */
-      image: HTMLImageElement
-      /** Source URL/ URL-источник */
-      src: string
-    }
-
-/** Image size type / Тип размера изображения */
-export type ImageSize<T = number> = {
-  /** Width/ Ширина */
-  width: T
-  /** Height/ Высота */
-  height: T
+/** Image Uint8Array type / Тип Image Uint8Array */
+export type ImageUint8ArrayType = Uint8Array<ArrayBuffer> | ArrayBuffer
+/** Image Uint8Array item / Элемент Image Uint8Array */
+export type ImageUint8ArrayItem = {
+  /** Data buffer/ Буфер данных */
+  item: ImageUint8ArrayType
+  /** MIME type/ MIME-тип */
+  type: string
+  /** Source URL/ URL-источник */
+  src: string
 }
-
-/** Image type item / Элемент типа изображения */
-export type ImageTypeItem = ImageTypeValue | Undefined
+/** Image Uint8Array cache / Кэш Image Uint8Array */
+export type ImageUint8ArrayCache = ImageUint8ArrayItem[]

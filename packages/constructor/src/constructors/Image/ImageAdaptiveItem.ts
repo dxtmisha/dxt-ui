@@ -2,7 +2,7 @@ import { computed, type Ref, ref, watchEffect } from 'vue'
 import { getElementId, toNumber } from '@dxtmisha/functional'
 import type { ImageItem, ImageSize } from '@dxtmisha/constructor-basic'
 
-import { ImageData } from './ImageData'
+import { ImageDataRef } from './ImageDataRef'
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
 
@@ -47,7 +47,7 @@ export class ImageAdaptiveItem {
    */
   constructor(
     protected readonly props: ImageProps,
-    protected readonly data: ImageData,
+    protected readonly data: ImageDataRef,
     public readonly element: Ref<ImageElement>
   ) {
     watchEffect(() => {
@@ -122,7 +122,7 @@ export class ImageAdaptiveItem {
       this.element.value
       && this.data.isImage()
     ) {
-      const data = this.data.image.value as ImageItem
+      const data = this.data.getImage() as ImageItem
 
       switch (this.type.value) {
         case ImageAdaptiveItemType.x:

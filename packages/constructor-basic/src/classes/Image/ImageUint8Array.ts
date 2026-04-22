@@ -1,5 +1,9 @@
-import type { ImageUint8ArrayCache, ImageUint8ArrayItem, ImageUint8ArrayType } from './basicTypes'
-import type { ImageItem } from '@dxtmisha/constructor-basic'
+import type {
+  ImageItem,
+  ImageUint8ArrayCache,
+  ImageUint8ArrayItem,
+  ImageUint8ArrayType
+} from '../../types/imageTypes'
 
 const cache: ImageUint8ArrayCache = []
 
