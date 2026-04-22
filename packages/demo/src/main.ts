@@ -1,6 +1,14 @@
-import { createApp } from 'vue'
+import { createSSRApp } from 'vue'
 import App from './App.vue'
 
+import { createSSRRouter } from './router'
 import './style.scss'
 
-createApp(App).mount('#app')
+export function createApp() {
+  const app = createSSRApp(App)
+  const router = createSSRRouter()
+
+  app.use(router)
+
+  return { app, router }
+}
