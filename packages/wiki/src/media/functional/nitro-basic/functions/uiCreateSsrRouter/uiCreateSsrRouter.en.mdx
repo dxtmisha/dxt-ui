@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/uiCreateSsrRouter - SSR Router Instance'/>
+
+# `uiCreateSsrRouter`
+
+Creates a Vue Router instance with history mode automatically selected based on the environment (Web History for browser, Memory History for SSR).
+
+**Parameters:**
+- `routes: RouteRecordRaw[]` — An array of route records.
+- `options: RouterOptions = {}` — Additional router configuration options.
+
+**Returns:**
+`Router` — A Vue Router instance.
+
+```typescript
+import { uiCreateSsrRouter } from '@dxtmisha/nitro-basic'
+
+const routes = [
+  { path: '/', component: () => import('./Home.vue') },
+  { path: '/about', component: () => import('./About.vue') }
+]
+
+const router = uiCreateSsrRouter(routes, {
+  scrollBehavior: () => ({ top: 0 })
+})
+```
+

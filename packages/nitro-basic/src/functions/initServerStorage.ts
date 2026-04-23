@@ -1,4 +1,3 @@
-import { useEvent } from 'nitropack/runtime'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
 /**
@@ -7,7 +6,7 @@ import { ServerStorage } from '@dxtmisha/functional-basic'
  * Инициализирует ServerStorage для Nitro.
  * Use useEvent().context as storage. / Использует useEvent().context в качестве хранилища.
  */
-export function initServerStorage() {
+export function initServerStorage(useEvent: () => any) {
   ServerStorage.init(() => {
     try {
       return useEvent().context

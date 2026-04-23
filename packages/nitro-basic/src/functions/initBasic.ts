@@ -1,6 +1,5 @@
 import type { NitroApp } from 'nitropack'
 
-import { initServerStorage } from './initServerStorage'
 import { initApiCache } from './initApiCache'
 import { initCookieStorage } from './initCookieStorage'
 
@@ -13,18 +12,16 @@ import type { NitroAppBasicConfig } from '../types/nitroAppTypes'
  * @param nitroApp Nitro application instance / Экземпляр приложения Nitro
  * @param config Configuration / Конфигурация
  */
-export function initBasic(
-  nitroApp: NitroApp,
+export function initBasic<N extends NitroApp & Record<string, any> = NitroApp>(
+  nitroApp: N,
   config: NitroAppBasicConfig = {}
 ) {
-  initServerStorage()
-
-  initApiCache(
-    config.api?.cacheStorageKey,
-    config.api?.cacheStepAgeClearOld
-  )
-
   nitroApp.hooks.hook('request', (event: any) => {
+    initApiCache(
+      config.api?.cacheStorageKey,
+      config.api?.cacheStepAgeClearOld
+    )
+
     initCookieStorage(
       event,
       config.cookie?.age,

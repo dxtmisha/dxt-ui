@@ -24,4 +24,14 @@ export class ClientOnlyInclude {
 
   /** Is the component ready for rendering / Готов ли компонент к рендерингу */
   readonly isRender = computed(() => !this.props.clientOnly || this.isMounted.value)
+
+  /**
+   * Returns the rendering state.
+   *
+   * Возвращает состояние рендеринга.
+   * @returns {boolean}
+   */
+  is(): boolean {
+    return this.isRender.value
+  }
 }

@@ -1,4 +1,4 @@
-import { useStorage } from 'nitropack/runtime'
+import { useStorage } from 'nitro/storage'
 import { ApiCache, type ApiCacheItem, ErrorCenter } from '@dxtmisha/functional-basic'
 
 /**

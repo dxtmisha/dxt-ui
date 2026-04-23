@@ -23,6 +23,9 @@ Icons.addByList({
 if (Icons.is('home')) {
   const path = await Icons.get('home')
 }
+
+// 4. Синхронное получение
+const fastPath = Icons.getAsync('search') // возвращает строку или пустую строку
 ```
 
 ## Ленивая загрузка

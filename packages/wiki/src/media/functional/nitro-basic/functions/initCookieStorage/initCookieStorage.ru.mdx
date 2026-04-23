@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initCookieStorage - Инициализация хранилища Cookie'/>
+
+# `initCookieStorage`
+
+Инициализирует `CookieStorage` для работы с куками запроса и ответа в среде Nitro/h3. Это обеспечивает корректную работу операций с куками (получение/установка) во время серверного рендеринга (SSR).
+
+**Параметры:**
+- `event: H3Event` — Текущее событие H3 (контекст запроса Nitro).
+- `ageDefault: number = 604800` — Срок жизни куки по умолчанию в секундах (по умолчанию 7 дней).
+- `sameSiteDefault: 'strict' | 'lax' = 'strict'` — Значение атрибута SameSite по умолчанию.
+
+**Возвращает:**
+`void`
+
+```typescript
+import { initCookieStorage } from '@dxtmisha/nitro-basic'
+import { defineEventHandler } from 'h3'
+
+export default defineEventHandler((event) => {
+  initCookieStorage(event)
+
+  // Теперь CookieStorage.get и CookieStorage.set будут использовать контекст Nitro
+})
+```
+

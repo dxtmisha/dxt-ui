@@ -1,6 +1,6 @@
 import { ImageSlots, ImageTypeItem, ImageEventItem, ImageEventData } from '@dxtmisha/constructor/Image';
 import { ImageProps } from './props';
-import { DefineComponent, ComputedRef, Ref, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
+import { DefineComponent, ComputedRef, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 declare function __VLS_template(): {
     attrs: Partial<{}>;
     slots: Readonly<ImageSlots> & ImageSlots;
@@ -10,7 +10,7 @@ declare function __VLS_template(): {
 type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
 declare const __VLS_component: DefineComponent<ImageProps, {
     type: ComputedRef<ImageTypeItem>;
-    data: Ref<ImageEventItem>;
+    data: ComputedRef<ImageEventItem>;
     elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     load: (image: ImageEventData) => any;

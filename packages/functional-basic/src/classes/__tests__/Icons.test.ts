@@ -98,4 +98,30 @@ describe('Icons', () => {
     expect(await Icons.get('gear')).toBe('<svg>gear</svg>')
     expect(await Icons.get('wrench')).toBe('<svg>wrench</svg>')
   })
+
+  it('should return icon synchronously via getAsync if it is a string', () => {
+    Icons.add('sync-icon', '<svg>sync</svg>')
+    expect(Icons.getAsync('sync-icon')).toBe('<svg>sync</svg>')
+  })
+
+  it('should return empty string via getAsync if icon is not a string or is loading', () => {
+    Icons.add('async-icon', Promise.resolve('<svg>async</svg>'))
+    Icons.addLoad('loading-icon')
+
+    expect(Icons.getAsync('async-icon')).toBe('')
+    expect(Icons.getAsync('loading-icon')).toBe('')
+  })
+
+  it('should return raw icon data via getRaw', () => {
+    const iconData = '<svg>raw</svg>'
+    Icons.add('raw-icon', iconData)
+    // getRaw is protected, using (Icons as any)
+    const result = (Icons as any).getRaw('raw-icon')
+    expect(result).toBe(iconData)
+  })
+
+  it('should return svg path via getRaw for unknown icons', () => {
+    const result = (Icons as any).getRaw('@unknown-raw', '/custom/')
+    expect(result).toBe('/custom/unknown-raw.svg')
+  })
 })

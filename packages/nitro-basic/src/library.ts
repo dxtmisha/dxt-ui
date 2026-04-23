@@ -1,5 +1,8 @@
-export { initBasic } from './functions/initBasic'
-export { initServerStorage } from './functions/initServerStorage'
-export { initApiCache } from './functions/initApiCache'
-export { initCookieStorage } from './functions/initCookieStorage'
-export { default as basicPlugin } from './functions/basic-plugin'
+// Functions
+export * from './functions/initApiCache'
+export * from './functions/initBasic'
+export * from './functions/initCookieStorage'
+export * from './functions/initServerStorage'
+
+// Types
+export * from './types/nitroAppTypes'

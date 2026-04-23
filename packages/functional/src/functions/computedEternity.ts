@@ -2,9 +2,9 @@ import {
   customRef,
   watchEffect,
   type Ref,
-  ref
+  shallowRef
 } from 'vue'
-import { executePromise } from '@dxtmisha/functional-basic'
+import { executeFunction, executePromise, isDomRuntime } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
 
@@ -19,12 +19,14 @@ import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
  *
  * @param getter A function that returns the value to be computed/
  * Функция, которая возвращает вычисляемое значение
+ * @param initialState initial value of result/ начальное значение результата
  */
 export function computedEternity<T>(
-  getter: () => Promise<T> | T
+  getter: () => Promise<T> | T,
+  initialState?: (() => T) | T
 ) {
   return customRef<T>((track, trigger) => {
-    const item: Ref<T | undefined> = ref()
+    const item: Ref<T | undefined> = shallowRef<T | undefined>(executeFunction(initialState))
     let ready = false
 
     /**
@@ -46,9 +48,13 @@ export function computedEternity<T>(
       if (!ready) {
         ready = true
 
-        EffectScopeGlobal.run(() => {
-          watchEffect(async () => await reading())
-        })
+        if (isDomRuntime()) {
+          EffectScopeGlobal.run(() => {
+            watchEffect(async () => await reading())
+          })
+        } else {
+          reading().then()
+        }
       }
     }
 

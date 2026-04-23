@@ -16,4 +16,11 @@ export declare class ClientOnlyInclude {
     constructor(props: ClientOnlyPropsInclude);
     /** Is the component ready for rendering / Готов ли компонент к рендерингу */
     readonly isRender: ComputedRef<boolean>;
+    /**
+     * Returns the rendering state.
+     *
+     * Возвращает состояние рендеринга.
+     * @returns {boolean}
+     */
+    is(): boolean;
 }

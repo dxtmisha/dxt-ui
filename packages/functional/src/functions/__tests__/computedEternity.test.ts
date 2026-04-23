@@ -95,4 +95,16 @@ describe('computedEternity', () => {
 
     expect(result.value).toBe(2)
   })
+
+  it('should use initialState if provided', async () => {
+    const result = computedEternity(async () => 'resolved', 'loading')
+
+    expect(result.value).toBe('loading')
+
+    await nextTick()
+    await nextTick()
+    await nextTick()
+
+    expect(result.value).toBe('resolved')
+  })
 })

@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initCookieStorage - Initialize Cookie Storage'/>
+
+# `initCookieStorage`
+
+Initializes `CookieStorage` to work with Nitro/h3 request and response cookies. This ensures that cookie operations (get/set) work correctly during Server-Side Rendering (SSR).
+
+**Parameters:**
+- `event: H3Event` — The current H3 event (from Nitro request).
+- `ageDefault: number = 604800` — Default cookie lifetime in seconds (default 7 days).
+- `sameSiteDefault: 'strict' | 'lax' = 'strict'` — Default SameSite attribute values.
+
+**Returns:**
+`void`
+
+```typescript
+import { initCookieStorage } from '@dxtmisha/nitro-basic'
+import { defineEventHandler } from 'h3'
+
+export default defineEventHandler((event) => {
+  initCookieStorage(event)
+
+  // Now CookieStorage.get and CookieStorage.set will use Nitro's context
+})
+```
+

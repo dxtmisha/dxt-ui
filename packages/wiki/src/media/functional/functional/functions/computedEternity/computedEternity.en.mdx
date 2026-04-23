@@ -8,12 +8,20 @@ Creates a computed property that is computed on demand and cached. The value is 
 
 **Parameters:**
 - `getter: () => Promise<T> | T` — A function that returns the value to be computed (can be synchronous or asynchronous).
+- `initialState?: T` — The initial value of the result.
 
 **Returns:**
 `CustomRef<T>` — A reactive custom ref containing the resolved result of the getter.
 
 ```typescript
 import { computedEternity } from '@dxtmisha/functional'
+
+// Initial state
+const status = computedEternity(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return 'online'
+}, 'offline')
+// Status.value is 'offline' until the getter resolves
 
 // Async getter - will only be called when 'data.value' is first accessed
 const data = computedEternity(async () => {

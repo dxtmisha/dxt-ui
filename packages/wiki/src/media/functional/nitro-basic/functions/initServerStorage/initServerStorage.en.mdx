@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initServerStorage - Initialize Server Storage'/>
+
+# `initServerStorage`
+
+Initializes `ServerStorage` to use the H3 event context (`event.context`). This is critical for data isolation during Server-Side Rendering (SSR) to prevent data leaking between requests.
+
+**Parameters:**
+- `event: H3Event` — The current H3 event.
+
+**Returns:**
+`void`
+
+```typescript
+import { initServerStorage } from '@dxtmisha/nitro-basic'
+import { defineEventHandler } from 'h3'
+
+export default defineEventHandler((event) => {
+  initServerStorage(event)
+})
+```
+

@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/initApiCache - Khởi tạo API Cache'/>
+
+# `initApiCache`
+
+Khởi tạo `ApiCache` để sử dụng hệ thống lưu trữ tích hợp của Nitro (`useStorage`). Điều này cho phép lưu trữ cache các phản hồi API bằng cách sử dụng nhiều trình điều khiển lưu trữ Nitro khác nhau (memory, redis, fs, v.v.).
+
+**Tham số:**
+- `storageKey: string = 'Ui_ApiCache'` — Điểm gắn kết hoặc tiền tố lưu trữ của Nitro.
+- `cacheStepAgeClearOld?: number` — Ngưỡng tùy chọn để tự động dọn dẹp các mục cache đã cũ.
+
+**Trả về:**
+`void`
+
+```typescript
+import { initApiCache } from '@dxtmisha/nitro-basic'
+
+// Khởi tạo trong một Nitro plugin hoặc server entry
+initApiCache('cache', 3600)
+```
+

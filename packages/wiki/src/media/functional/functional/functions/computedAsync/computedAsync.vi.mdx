@@ -8,6 +8,7 @@ Tạo một thuộc tính computed có thể xử lý các getter bất đồng 
 
 **Tham số:**
 - `getter: (() => Promise<R>) | (() => R) | R` — Hàm bất đồng bộ, hàm đồng bộ, hoặc giá trị trực tiếp dùng để tính toán kết quả.
+- `initialState?: R` — Giá trị ban đầu của kết quả.
 - `ignore?: R` — Giá trị cần bỏ qua (sẽ không được thiết lập vào kết quả).
 - `debugOptions?: DebuggerOptions` — Tùy chọn dùng để gỡ lỗi các phép tính phản ứng, được hỗ trợ bởi Vue.js.
 
@@ -16,6 +17,13 @@ Tạo một thuộc tính computed có thể xử lý các getter bất đồng 
 
 ```typescript
 import { computedAsync } from '@dxtmisha/functional'
+
+// Trạng thái ban đầu
+const status = computedAsync(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return 'online'
+}, 'offline')
+// status.value là 'offline' ngay lập tức, và 'online' sau 1 giây
 
 // Getter bất đồng bộ
 const data = computedAsync(async () => {

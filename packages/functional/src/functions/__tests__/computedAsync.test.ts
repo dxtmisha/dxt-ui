@@ -91,7 +91,7 @@ describe('computedAsync', () => {
 
   it('should ignore values specified in the ignored parameter', async () => {
     const source = ref(1)
-    const result = computedAsync(async () => source.value, 2)
+    const result = computedAsync(async () => source.value, undefined, 2)
 
     expect(result.value).toBeUndefined()
     await nextTick()
@@ -126,5 +126,16 @@ describe('computedAsync', () => {
     await nextTick()
     expect(result.value).toBe('value')
     expect(called).toBe(1)
+  })
+
+  it('should use initialState if provided', async () => {
+    const result = computedAsync(async () => 'resolved', 'loading')
+
+    expect(result.value).toBe('loading')
+
+    await nextTick()
+    await nextTick()
+
+    expect(result.value).toBe('resolved')
   })
 })

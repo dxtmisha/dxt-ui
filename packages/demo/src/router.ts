@@ -1,19 +1,17 @@
-import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 
-export function createSSRRouter() {
-  return createRouter({
-    history: import.meta.env.SSR
-      ? createMemoryHistory()
-      : createWebHistory(),
-    routes: [
-      {
-        path: '/',
-        component: () => import('./views/Home.vue')
-      },
-      {
-        path: '/about',
-        component: () => import('./views/About.vue')
-      }
-    ]
-  })
-}
+import DemoHome from './pages/DemoHome.vue'
+import DemoImage from './pages/DemoImage.vue'
+
+export const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'home',
+    component: DemoHome
+  },
+  {
+    path: '/image',
+    name: 'image',
+    component: DemoImage
+  }
+]

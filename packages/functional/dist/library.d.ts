@@ -132,11 +132,12 @@ declare type BroadcastValueItem<T> = T | string | undefined;
  * Создаёт вычисляемое свойство, которое может обрабатывать асинхронные геттеры.
  * @param getter Asynchronous function, synchronous function, or direct value to compute the result/
  * Асинхронная функция, синхронная функция или прямое значение для вычисления результата
+ * @param initialState initial value of result/ начальное значение результата
  * @param ignore values to be ignored/ значения для исключения из обработки
  * @param debugOptions Used for debugging reactive computations. Supported by Vue.js library/
  * Используется для отладки реактивных вычислений. Поддерживается библиотекой Vue.js
  */
-export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
+export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, initialState?: (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
 
 /**
  * Метод `computedByLanguage` предоставляет возможность создания реактивного свойства `computed`,
@@ -164,8 +165,9 @@ export declare function computedByLanguage<T, R extends (T | undefined) = T | un
  *
  * @param getter A function that returns the value to be computed/
  * Функция, которая возвращает вычисляемое значение
+ * @param initialState initial value of result/ начальное значение результата
  */
-export declare function computedEternity<T>(getter: () => Promise<T> | T): Ref<T, T>;
+export declare function computedEternity<T>(getter: () => Promise<T> | T, initialState?: (() => T) | T): Ref<T, T>;
 
 /**
  * Constructor bind type for component binding with class and style support/

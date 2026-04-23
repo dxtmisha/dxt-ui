@@ -8,6 +8,7 @@ Creates a computed property that can handle asynchronous getters. Unlike Vue's s
 
 **Parameters:**
 - `getter: (() => Promise<R>) | (() => R) | R` — An async function, synchronous function, or raw value to compute the result from.
+- `initialState?: R` — The initial value of the result.
 - `ignore?: R` — A value to be ignored (will not be set as the result).
 - `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
 
@@ -16,6 +17,13 @@ Creates a computed property that can handle asynchronous getters. Unlike Vue's s
 
 ```typescript
 import { computedAsync } from '@dxtmisha/functional'
+
+// Initial state
+const status = computedAsync(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return 'online'
+}, 'offline')
+// status.value is 'offline' immediately, and 'online' after 1 second
 
 // Async getter
 const data = computedAsync(async () => {

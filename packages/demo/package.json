@@ -1,15 +1,15 @@
 {
   "name": "@dxtmisha/demo",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --ssr src/entry-server.ts --outDir dist/server",
+    "dev": "vite dev",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "nitropack": "^2.13.3"
+  }
 }

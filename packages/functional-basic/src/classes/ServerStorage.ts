@@ -18,6 +18,8 @@ const SERVER_STORAGE_KEY = '__ui:server-storage__'
 /** Server storage script id / Идентификатор скрипта серверного хранилища */
 const SERVER_STORAGE_ID = '__ui:server:storage:id__'
 
+const SERVER_STORAGE_PROP = '__ui_server_storage_prop'
+
 /**
  * Class for managing data storage during server-side rendering (SSR).
  * Handles data isolation between parallel requests by using a request-specific context.
@@ -40,6 +42,11 @@ export class ServerStorage {
   static init(listener: () => Record<string, any>) {
     if (!this.listener) {
       this.listener = listener
+    }
+
+    if (!(SERVER_STORAGE_PROP in globalThis)) {
+      (globalThis as any)[SERVER_STORAGE_PROP] = listener
+      console.log('ServerStorage class loaded')
     }
 
     return this
@@ -154,6 +161,29 @@ export class ServerStorage {
   }
 
   /**
+   * Returns the current context listener.
+   * Checks for a listener in the local class state or globalThis.
+   *
+   * Возвращает текущий слушатель контекста.
+   * Проверяет наличие слушателя в локальном состоянии класса или в globalThis.
+   * @returns listener function or undefined / функция-слушатель или undefined
+   */
+  protected static getListener(): (() => Record<string, any>) | undefined {
+    if (this.listener) {
+      return this.listener
+    }
+
+    if (
+      SERVER_STORAGE_PROP in globalThis
+      && (globalThis as any)?.[SERVER_STORAGE_PROP] instanceof Function
+    ) {
+      return (globalThis as any)?.[SERVER_STORAGE_PROP]
+    }
+
+    return undefined
+  }
+
+  /**
    * Returns storage.
    *
    * Возвращает хранилище.
@@ -164,7 +194,7 @@ export class ServerStorage {
       return this.getStorageDom()
     }
 
-    const context = this.listener?.()
+    const context = this.getListener()?.()
 
     if (!context) {
       if (!this.hideError) {

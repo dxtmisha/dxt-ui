@@ -1,4 +1,4 @@
-import { Ref, ComputedRef } from 'vue';
+import { ComputedRef, Ref } from 'vue';
 import { ConstrEmit, Undefined } from '@dxtmisha/functional';
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude';
 import { ImageType } from './ImageType';
@@ -15,6 +15,8 @@ export declare class ImageData {
     protected readonly clientOnly: ClientOnlyInclude;
     protected readonly type: ImageType;
     protected readonly emits?: ConstrEmit<ImageEmits> | undefined;
+    /** Image data / Данные изображения */
+    readonly image: ComputedRef<ImageEventItem>;
     /**
      * Constructor
      * @param props input data / входные данные
@@ -23,8 +25,6 @@ export declare class ImageData {
      * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
      */
     constructor(props: ImageProps, clientOnly: ClientOnlyInclude, type: ImageType, emits?: ConstrEmit<ImageEmits> | undefined);
-    /** Image data / Данные изображения */
-    readonly image: ComputedRef<ImageEventItem>;
     /**
      * Checks if there are values.
      *
@@ -49,4 +49,16 @@ export declare class ImageData {
     isImage(): this is {
         image: Ref<ImageItem>;
     };
+    /**
+     * Data initialization.
+     *
+     * Инициализация данных.
+     */
+    protected init(): Promise<ImageEventItem>;
+    /**
+     * Data initialization for server-side rendering (SSR).
+     *
+     * Инициализация данных для серверного рендеринга (SSR).
+     */
+    protected initSsr(): ImageEventItem;
 }

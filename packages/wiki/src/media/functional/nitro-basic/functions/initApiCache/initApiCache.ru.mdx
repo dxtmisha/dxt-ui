@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initApiCache - Инициализация API кэша'/>
+
+# `initApiCache`
+
+Инициализирует `ApiCache` для использования встроенной системы хранения Nitro (`useStorage`). Это позволяет кэшировать ответы API с использованием различных драйверов хранения Nitro (memory, redis, fs и др.).
+
+**Параметры:**
+- `storageKey: string = 'Ui_ApiCache'` — Точка монтирования или префикс хранилища Nitro.
+- `cacheStepAgeClearOld?: number` — Дополнительный порог для автоматической очистки устаревших записей кэша.
+
+**Возвращает:**
+`void`
+
+```typescript
+import { initApiCache } from '@dxtmisha/nitro-basic'
+
+// Инициализация в плагине Nitro или в точке входа сервера
+initApiCache('cache', 3600)
+```
+

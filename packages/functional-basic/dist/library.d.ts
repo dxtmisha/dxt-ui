@@ -5235,6 +5235,16 @@ export declare class Icons {
      */
     static get(index: string, url?: string, wait?: number): Promise<string>;
     /**
+     * Returns the icon if it is already loaded or is a string.
+     *
+     * Возвращает иконку, если она уже загружена или является строкой.
+     * @param index icon name/ название иконки
+     * @param url path to the storage location of the icon, if the icon does not exist/
+     * путь к месту хранения иконки, если иконка не существует
+     * @returns icon path or content/ путь к иконке или контент
+     */
+    static getAsync(index: string, url?: string): string;
+    /**
      * Returns a list of names of all registered icons.
      *
      * Возвращает список названий всех зарегистрированных иконок.
@@ -5300,6 +5310,16 @@ export declare class Icons {
      * @returns icon name with prefix/ название иконки с префиксом
      */
     protected static getName(index: string): string;
+    /**
+     * Returns the raw icon data by the name.
+     *
+     * Возвращает исходные данные иконки по названию.
+     * @param index icon name/ название иконки
+     * @param url path to the storage location of the icon, if the icon does not exist/
+     * путь к месту хранения иконки, если иконка не существует
+     * @returns icon path or content/ путь к иконке или контент
+     */
+    protected static getRaw(index: string, url?: string): IconsItem;
     /**
      * Script execution delay.
      *
@@ -7887,6 +7907,15 @@ export declare class ServerStorage {
      * @returns script tag string / строка тега скрипта
      */
     static toString(): string;
+    /**
+     * Returns the current context listener.
+     * Checks for a listener in the local class state or globalThis.
+     *
+     * Возвращает текущий слушатель контекста.
+     * Проверяет наличие слушателя в локальном состоянии класса или в globalThis.
+     * @returns listener function or undefined / функция-слушатель или undefined
+     */
+    protected static getListener(): (() => Record<string, any>) | undefined;
     /**
      * Returns storage.
      *

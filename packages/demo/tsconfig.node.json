@@ -1,7 +1,12 @@
 {
   "extends": "@dxtmisha/configuration/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "moduleResolution": "bundler"
   },
-  "include": ["vite.config.ts"]
+  "include": [
+    "nitro.config.ts",
+    "vite.config.ts",
+    "server/**/*.ts"
+  ]
 }

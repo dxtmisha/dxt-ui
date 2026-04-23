@@ -1,6 +1,6 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
-import { t } from "./defineProperty-Bjg6wMoX.js";
-import { n, r, t as i } from "./SkeletonInclude-Cl99MbTo.js";
+import { t } from "./defineProperty-149Ahniv.js";
+import { n, r, t as i } from "./SkeletonInclude-Cu6l1Y1l.js";
 import { h as a } from "vue";
 import { DesignConstructorAbstract as o } from "@dxtmisha/functional";
 //#region src/constructors/Skeleton/props.ts

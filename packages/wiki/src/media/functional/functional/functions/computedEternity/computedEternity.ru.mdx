@@ -8,12 +8,20 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `getter: () => Promise<T> | T` — Функция, которая возвращает вычисляемое значение (может быть синхронной или асинхронной).
+- `initialState?: T` — Начальное значение результата.
 
 **Возвращает:**
 `CustomRef<T>` — Реактивное вычисляемое свойство с результатом выполнения геттера.
 
 ```typescript
 import { computedEternity } from '@dxtmisha/functional'
+
+// Начальное значение
+const status = computedEternity(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return 'online'
+}, 'offline')
+// Status.value будет 'offline' до завершения выполнения геттера
 
 // Асинхронный геттер - будет вызван только при первом обращении к 'data.value'
 const data = computedEternity(async () => {

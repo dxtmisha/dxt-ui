@@ -1,10 +1,11 @@
-import { type Ref, watch } from 'vue'
+import { type ComputedRef, type Ref, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
   ErrorCenter,
   Icons,
-  isString, sleep,
+  isString,
+  sleep,
   type Undefined
 } from '@dxtmisha/functional'
 
@@ -28,6 +29,9 @@ import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
  * Класс для получения данных изображения или иконки.
  */
 export class ImageData {
+  /** Image data / Данные изображения */
+  readonly image: ComputedRef<ImageEventItem>
+
   /**
    * Constructor
    * @param props input data / входные данные
@@ -41,6 +45,11 @@ export class ImageData {
     protected readonly type: ImageType,
     protected readonly emits?: ConstrEmit<ImageEmits>
   ) {
+    this.image = computedAsync<ImageEventItem>(
+      () => this.init(),
+      () => this.initSsr()
+    )
+
     if (emits) {
       watch(this.image, (image) => {
         if (typeof image === 'object') {
@@ -52,49 +61,6 @@ export class ImageData {
       })
     }
   }
-
-  /** Image data / Данные изображения */
-  readonly image = computedAsync<ImageEventItem>(async () => {
-    const image = this.props.value
-
-    if (image) {
-      switch (this.type.item.value) {
-        case ImageTypeValue.pdf:
-          await sleep(320)
-          return await ImagePdf.get(image)
-        case ImageTypeValue.array:
-          return ImageUint8Array.createImage(image)
-        case ImageTypeValue.image:
-        case ImageTypeValue.file:
-          try {
-            if (
-              !this.clientOnly.isRender.value
-              || this.props.lazy
-            ) {
-              return this.props.value
-            }
-
-            return await ImageFile.createImage(image)
-          } catch {
-            ErrorCenter.on({
-              group: CONSTRUCTOR_ERROR_GROUP,
-              code: 'image-data'
-            })
-          }
-          break
-        case ImageTypeValue.public:
-        case ImageTypeValue.icon:
-        case ImageTypeValue.flag:
-          if (isString(image)) {
-            return await Icons.get(image, this.props.url)
-          }
-
-          break
-      }
-    }
-
-    return undefined
-  })
 
   /**
    * Checks if there are values.
@@ -121,5 +87,79 @@ export class ImageData {
    */
   isImage(): this is { image: Ref<ImageItem> } {
     return this.is() && typeof this.image.value !== 'string'
+  }
+
+  /**
+   * Data initialization.
+   *
+   * Инициализация данных.
+   */
+  protected async init(): Promise<ImageEventItem> {
+    const image = this.props.value
+
+    if (image) {
+      switch (this.type.item.value) {
+        case ImageTypeValue.pdf:
+          await sleep(320)
+          return await ImagePdf.get(image)
+        case ImageTypeValue.array:
+          return ImageUint8Array.createImage(image)
+        case ImageTypeValue.image:
+        case ImageTypeValue.file:
+          try {
+            if (
+              !this.clientOnly.is()
+              || this.props.lazy
+            ) {
+              return image
+            }
+
+            return await ImageFile.createImage(image)
+          } catch {
+            ErrorCenter.on({
+              group: CONSTRUCTOR_ERROR_GROUP,
+              code: 'image-data'
+            })
+          }
+          break
+        case ImageTypeValue.public:
+        case ImageTypeValue.icon:
+        case ImageTypeValue.flag:
+          if (isString(image)) {
+            return await Icons.get(image, this.props.url)
+          }
+
+          break
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Data initialization for server-side rendering (SSR).
+   *
+   * Инициализация данных для серверного рендеринга (SSR).
+   */
+  protected initSsr(): ImageEventItem {
+    const image = this.props.value
+
+    if (image) {
+      switch (this.type.item.value) {
+        case ImageTypeValue.image:
+        case ImageTypeValue.file:
+          return image
+        case ImageTypeValue.public:
+        case ImageTypeValue.icon:
+        case ImageTypeValue.flag:
+          if (isString(image)) {
+            return Icons.getAsync(image, this.props.url)
+          }
+
+          break
+      }
+    }
+
+    return undefined
   }
 }

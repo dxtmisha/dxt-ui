@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/nitro-basic",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "[description]",
   "scripts": {
@@ -11,7 +11,9 @@
     "test": "vitest",
     "component": "dxt-component",
     "library": "dxt-library",
-    "wiki": "dxt-ai-doc"
+    "wiki": "dxt-ai-doc",
+    "prepublishOnly": "npm run library && npm run build",
+    "publish-to-npm": "npm publish --access public"
   },
   "files": [
     "dist",
@@ -25,6 +27,10 @@
     ".": {
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
+    },
+    "./ui": {
+      "import": "./dist/library-ui.js",
+      "types": "./dist/library-ui.d.ts"
     },
     "./style.css": "./dist/style.css",
     "./types/*": "./dist/*",

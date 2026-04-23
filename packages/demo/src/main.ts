@@ -1,14 +1,15 @@
-import { createSSRApp } from 'vue'
-import App from './App.vue'
+import { uiCreateApp } from '@dxtmisha/nitro-basic/ui'
 
-import { createSSRRouter } from './router'
-import './style.scss'
+import App from './App.vue'
+import { routes } from './router'
+
+import '@dxtmisha/d1/style.css'
 
 export function createApp() {
-  const app = createSSRApp(App)
-  const router = createSSRRouter()
-
-  app.use(router)
-
-  return { app, router }
+  console.log('asdd')
+  return uiCreateApp(App, {
+    appRouter: {
+      routes
+    }
+  })
 }

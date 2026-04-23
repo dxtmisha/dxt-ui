@@ -1,5 +1,6 @@
 export * from './classes/AriaStaticInclude';
 export * from './classes/CaptionInclude';
+export * from './classes/ClientOnlyInclude';
 export * from './classes/DescriptionInclude';
 export * from './classes/EnabledInclude';
 export * from './classes/EventClickInclude';
@@ -38,8 +39,10 @@ export * from './classes/TouchEventInclude';
 export * from './functions/getClassTagAStatic';
 export * from './types/ariaTypes';
 export * from './types/captionTypes';
+export * from './types/clientOnlyTypes';
 export * from './types/descriptionTypes';
 export * from './types/enabledTypes';
+export * from './types/errorTypes';
 export * from './types/eventClickTypes';
 export * from './types/fieldTypes';
 export * from './types/labelTypes';

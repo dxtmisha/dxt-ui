@@ -1,5 +1,5 @@
-import { computed, type ComputedRef, type DebuggerOptions, ref, watchEffect } from 'vue'
-import { executePromise, isDomRuntime } from '@dxtmisha/functional-basic'
+import { computed, type ComputedRef, type DebuggerOptions, shallowRef, watchEffect } from 'vue'
+import { executeFunction, executePromise, isDomRuntime } from '@dxtmisha/functional-basic'
 
 /**
  * Creates a computed property that can handle asynchronous getters.
@@ -7,16 +7,18 @@ import { executePromise, isDomRuntime } from '@dxtmisha/functional-basic'
  * Создаёт вычисляемое свойство, которое может обрабатывать асинхронные геттеры.
  * @param getter Asynchronous function, synchronous function, or direct value to compute the result/
  * Асинхронная функция, синхронная функция или прямое значение для вычисления результата
+ * @param initialState initial value of result/ начальное значение результата
  * @param ignore values to be ignored/ значения для исключения из обработки
  * @param debugOptions Used for debugging reactive computations. Supported by Vue.js library/
  * Используется для отладки реактивных вычислений. Поддерживается библиотекой Vue.js
  */
 export function computedAsync<R>(
   getter: (() => Promise<R>) | (() => R) | R,
+  initialState?: (() => R) | R,
   ignore?: R,
   debugOptions?: DebuggerOptions
 ): ComputedRef<R | undefined> {
-  const item = ref<R>()
+  const item = shallowRef<R | undefined>(executeFunction(initialState))
   let first = true
 
   const update = async () => {

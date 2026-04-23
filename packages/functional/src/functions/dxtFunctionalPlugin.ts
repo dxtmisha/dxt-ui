@@ -1,4 +1,4 @@
-import { type App, type Plugin } from 'vue'
+import { type App, type Plugin, useId } from 'vue'
 import {
   Api,
   type ApiConfig,
@@ -6,6 +6,7 @@ import {
   type ErrorCenterCauseList,
   Icons,
   type IconsConfig,
+  initGetElementId,
   Translate,
   type TranslateConfig
 } from '@dxtmisha/functional-basic'
@@ -88,6 +89,9 @@ export const dxtFunctionalPlugin: Plugin = {
    * @param options plugin configuration options/ опции конфигурации плагина
    */
   install(app: App, options: FunctionalPluginOptions = {}) {
+    // 0. Initialize getElementId with Vue's useId
+    initGetElementId(() => useId())
+
     // 1. Configure API
     if (options.api) {
       Api.setConfig(options.api)

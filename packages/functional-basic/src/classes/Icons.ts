@@ -49,9 +49,7 @@ export class Icons {
     url = '',
     wait: number = 1000 * 60 * 3
   ): Promise<string> {
-    const icon = this.icons?.[this.getName(index)]
-      ?? this.icons?.[index]
-      ?? `${index.replace(/^@/, url ?? this.url)}.svg`
+    const icon = this.getRaw(index, url)
 
     if (typeof icon === 'string') {
       if (
@@ -70,6 +68,31 @@ export class Icons {
     }
 
     return await icon
+  }
+
+  /**
+   * Returns the icon if it is already loaded or is a string.
+   *
+   * Возвращает иконку, если она уже загружена или является строкой.
+   * @param index icon name/ название иконки
+   * @param url path to the storage location of the icon, if the icon does not exist/
+   * путь к месту хранения иконки, если иконка не существует
+   * @returns icon path or content/ путь к иконке или контент
+   */
+  static getAsync(
+    index: string,
+    url = ''
+  ): string {
+    const icon = this.getRaw(index, url)
+
+    if (
+      typeof icon === 'string'
+      && icon !== ICONS_LOAD
+    ) {
+      return icon
+    }
+
+    return ''
   }
 
   /**
@@ -171,6 +194,21 @@ export class Icons {
    */
   protected static getName(index: string): string {
     return `@${index}`
+  }
+
+  /**
+   * Returns the raw icon data by the name.
+   *
+   * Возвращает исходные данные иконки по названию.
+   * @param index icon name/ название иконки
+   * @param url path to the storage location of the icon, if the icon does not exist/
+   * путь к месту хранения иконки, если иконка не существует
+   * @returns icon path or content/ путь к иконке или контент
+   */
+  protected static getRaw(index: string, url = ''): IconsItem {
+    return this.icons?.[this.getName(index)]
+      ?? this.icons?.[index]
+      ?? `${index.replace(/^@/, url || this.url)}.svg`
   }
 
   /**

@@ -1,15 +1,26 @@
-import { renderToString } from '@vue/server-renderer'
+import { renderToString } from 'vue/server-renderer'
 import { createApp } from './main'
+import { random, ServerStorage } from '@dxtmisha/functional-basic'
 
-export async function render(url: string) {
-  const { app, router } = createApp()
+export default {
+  async fetch(request: Request) {
+    const { app, router } = createApp()
 
-  // Устанавливаем URL для серверного роутера
-  await router.push(url)
-  await router.isReady()
+    const url = new URL(request.url).pathname
 
-  // Рендерим Vue приложение в строку HTML
-  const html = await renderToString(app)
+    if (router) {
+      await router.push(url)
+      await router.isReady()
+    }
 
-  return html
+    ServerStorage.get('test' + random(100, 1000), () => ({}))
+
+    const appHtml = await renderToString(app)
+
+    return new Response(appHtml, {
+      headers: {
+        'Content-Type': 'text/html;charset=UTF-8'
+      }
+    })
+  }
 }

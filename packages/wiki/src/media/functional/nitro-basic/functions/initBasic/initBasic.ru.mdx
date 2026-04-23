@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initBasic - Инициализация базовых функций Nitro'/>
+
+# `initBasic`
+
+Интегрирует и инициализирует основные системные функции для приложения на базе Nitro. Настраивает серверное хранилище, кэширование API и управление куками в рамках жизненного цикла Nitro.
+
+**Параметры:**
+- `nitroApp: NitroApp` — Экземпляр приложения Nitro.
+- `config: NitroAppBasicConfig = {}` — Базовая конфигурация для кэша API и кук.
+
+**Возвращает:**
+`void`
+
+```typescript
+import { defineNitroPlugin } from 'nitropack/runtime'
+import { initBasic } from '@dxtmisha/nitro-basic'
+
+export default defineNitroPlugin((nitroApp) => {
+  initBasic(nitroApp, {
+    api: {
+      cacheStorageKey: 'Ui_ApiCache'
+    },
+    cookie: {
+      age: 60 * 60 * 24 * 7, // 7 дней
+      sameSite: 'lax'
+    }
+  })
+})
+```
+

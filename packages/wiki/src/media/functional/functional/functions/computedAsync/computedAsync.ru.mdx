@@ -8,6 +8,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 **Параметры:**
 - `getter: (() => Promise<R>) | (() => R) | R` — Асинхронная функция, синхронная функция или прямое значение для вычисления результата.
+- `initialState?: R` — Начальное значение результата.
 - `ignore?: R` — Значение, которое должно быть проигнорировано (не будет установлено в результат).
 - `debugOptions?: DebuggerOptions` — Опции отладки реактивных вычислений Vue.js.
 
@@ -16,6 +17,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 ```typescript
 import { computedAsync } from '@dxtmisha/functional'
+
+// Начальное значение
+const status = computedAsync(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return 'online'
+}, 'offline')
+// status.value будет 'offline' сразу, и 'online' через 1 секунду
 
 // Асинхронный геттер
 const data = computedAsync(async () => {
