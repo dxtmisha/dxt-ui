@@ -13,14 +13,21 @@ export type IconsConfig = {
 
 const ICONS_WAIT = 320
 const ICONS_LOAD = '--LOAD--'
+const ICONS_PROP = '__ui_icon_prop'
 
 /**
- * Class for managing icons.
+ * Class for managing icons, supporting custom icon registration,
+ * global path configuration, and asynchronous icon loading.
  *
- * Класс для управления иконками.
+ * Класс для управления иконками, поддерживающий регистрацию пользовательских иконок,
+ * настройку глобальных путей и асинхронную загрузку иконок.
  */
 export class Icons {
-  protected static icons: Record<string, IconsItem> = {}
+  /**
+   * Default path to the icons storage.
+   *
+   * Путь по умолчанию к хранилищу иконок.
+   */
   protected static url: string = '/icons/'
 
   /**
@@ -30,7 +37,8 @@ export class Icons {
    * @param index icon name/ название иконки
    */
   static is(index: string): boolean {
-    return index in this.icons || this.getName(index) in this.icons
+    const icons = this.getIconsList()
+    return index in icons || this.getName(index) in icons
   }
 
   /**
@@ -102,7 +110,7 @@ export class Icons {
    * @returns list of icon names/ список названий иконок
    */
   static getNameList(): string[] {
-    return forEach(this.icons, (_, name) => {
+    return forEach(this.getIconsList(), (_, name) => {
       return name.replace(/^@/, '')
     })
   }
@@ -125,7 +133,7 @@ export class Icons {
    * @param file path to the file/ путь к файлу
    */
   static add(index: string, file: IconsItem): void {
-    this.icons[this.getName(index)] = file
+    this.getIconsList()[this.getName(index)] = file
   }
 
   /**
@@ -135,7 +143,7 @@ export class Icons {
    * @param index icon name/ название иконки
    */
   static addLoad(index: string): void {
-    this.icons[this.getName(index)] = ICONS_LOAD
+    this.getIconsList()[this.getName(index)] = ICONS_LOAD
   }
 
   /**
@@ -146,7 +154,7 @@ export class Icons {
    * @param file path to the file/ путь к файлу
    */
   static addGlobal(index: string, file: string): void {
-    this.icons[this.getName(index)] = `${this.getUrlGlobal()}${file}`
+    this.getIconsList()[this.getName(index)] = `${this.getUrlGlobal()}${file}`
   }
 
   /**
@@ -206,9 +214,27 @@ export class Icons {
    * @returns icon path or content/ путь к иконке или контент
    */
   protected static getRaw(index: string, url = ''): IconsItem {
-    return this.icons?.[this.getName(index)]
-      ?? this.icons?.[index]
+    const icons = this.getIconsList()
+
+    return icons?.[this.getName(index)]
+      ?? icons?.[index]
       ?? `${index.replace(/^@/, url || this.url)}.svg`
+  }
+
+  /**
+   * Returns the shared icons list.
+   * Ensures the storage object exists in the global scope.
+   *
+   * Возвращает общий список иконок.
+   * Гарантирует, что объект хранилища существует в глобальной области видимости.
+   * @returns record of icons/ объект с иконками
+   */
+  protected static getIconsList(): Record<string, IconsItem> {
+    if (!(ICONS_PROP in globalThis)) {
+      (globalThis as any)[ICONS_PROP] = {}
+    }
+
+    return (globalThis as any)[ICONS_PROP]
   }
 
   /**

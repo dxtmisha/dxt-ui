@@ -1,0 +1,1 @@
+import{a as e,c as t,i as n,n as r,o as i,r as a,s as o,t as s}from"./index-BOzLM_3P.js";var c={};function l(s,c){let l=o(`router-link`);return i(),a(`div`,null,[c[1]||=r(`h1`,null,`О нас`,-1),e(l,{to:`/`},{default:t(()=>[...c[0]||=[n(`На главную`,-1)]]),_:1})])}var u=s(c,[[`render`,l]]);export{u as default};
