@@ -153,7 +153,7 @@ import { CookieStorage } from '@dxtmisha/functional-basic'
 CookieStorage.init(
   (key) => redis.get(key),
   undefined,
-  (key, value, options) => redis.set(key, value, options)
+  (key, value, cookie, options) => redis.set(key, value, cookie, options)
 )
 
 // Установка значения с параметрами

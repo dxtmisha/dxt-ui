@@ -57,7 +57,7 @@ export class CookieStorage {
   protected static setListener?: (
     key: string,
     value: any,
-    cookie?: string,
+    cookie: string,
     options?: CookieOptions
   ) => void
 
@@ -74,7 +74,7 @@ export class CookieStorage {
     setListener?: (
       key: string,
       value: any,
-      cookie?: string,
+      cookie: string,
       options?: CookieOptions
     ) => void
   ): void {

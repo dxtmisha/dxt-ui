@@ -2,7 +2,7 @@
 
 import type { NitroApp } from 'nitropack'
 
-import { initApiCache } from './initApiCache'
+import { initPluginApiCache } from './initPluginApiCache'
 
 import type { NitroAppBasicConfig } from '../types/nitroAppTypes'
 
@@ -13,11 +13,11 @@ import type { NitroAppBasicConfig } from '../types/nitroAppTypes'
  * @param _ Nitro application instance / Экземпляр приложения Nitro
  * @param config Configuration / Конфигурация
  */
-export function initBasic<N extends NitroApp & Record<string, any> = NitroApp>(
+export function initPluginBasic<N extends NitroApp & Record<string, any> = NitroApp>(
   _: N,
   config: NitroAppBasicConfig = {}
 ) {
-  initApiCache(
+  initPluginApiCache(
     config.api?.cacheStorageKey,
     config.api?.cacheStepAgeClearOld
   )

@@ -10,7 +10,7 @@ import { ApiCache, type ApiCacheItem, ErrorCenter } from '@dxtmisha/functional-b
  * @param storageKey Storage key prefix / Префикс ключа хранилища
  * @param cacheStepAgeClearOld Cache cleanup threshold / Порог очистки кэша
  */
-export function initApiCache(
+export function initPluginApiCache(
   storageKey: string = 'Ui_ApiCache',
   cacheStepAgeClearOld?: number
 ): void {

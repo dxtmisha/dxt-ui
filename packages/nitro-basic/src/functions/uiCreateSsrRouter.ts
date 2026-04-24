@@ -1,5 +1,3 @@
-// export:none
-
 import {
   createRouter,
   createMemoryHistory,

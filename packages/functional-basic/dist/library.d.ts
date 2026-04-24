@@ -1736,6 +1736,16 @@ export declare type CookieOptions = {
     age?: number;
     /** SameSite attribute / Атрибут SameSite */
     sameSite?: CookieSameSite_2;
+    /** Path / Путь */
+    path?: string;
+    /** Domain / Домен */
+    domain?: string;
+    /** Secure attribute / Атрибут Secure */
+    secure?: boolean;
+    /** HttpOnly attribute / Атрибут HttpOnly */
+    httpOnly?: boolean;
+    /** Partitioned attribute / Атрибут Partitioned */
+    partitioned?: boolean;
     /** Additional arguments / Дополнительные аргументы */
     arguments?: string[] | Record<string, string | number | boolean>;
 };
@@ -1759,7 +1769,7 @@ export declare class CookieStorage {
     /** Storage mechanism for getting raw data / механизм хранения для получения сырых данных */
     protected static getListenerRaw?: () => string;
     /** Storage mechanism for setting data / механизм хранения для сохранения данных */
-    protected static setListener?: (key: string, value: any, options?: CookieOptions) => void;
+    protected static setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void;
     /**
      * Initializes the storage with listeners.
      *
@@ -1767,7 +1777,7 @@ export declare class CookieStorage {
      * @param getListener Storage mechanism for getting data / механизм хранения для получения данных
      * @param setListener Storage mechanism for setting data / механизм хранения для сохранения данных
      */
-    static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, options?: CookieOptions) => void): void;
+    static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
     /**
      * Resets the storage by clearing all in-memory items and resetting listeners.
      *
@@ -1808,6 +1818,15 @@ export declare class CookieStorage {
      */
     static update(): void;
     /**
+     * Formats the cookie string for storage.
+     *
+     * Форматирует строку cookie для хранения.
+     * @param name cookie name / имя cookie
+     * @param value cookie value / значение cookie
+     * @param options additional parameters / дополнительные параметры
+     */
+    protected static format(name: string, value: string, options?: CookieOptions): string;
+    /**
      * Check if the current environment is a DOM environment.
      *
      * Проверяет, является ли текущее окружение DOM-окружением.
@@ -1843,6 +1862,41 @@ export declare class CookieStorage {
      * @param sameSite SameSite attribute / атрибут SameSite
      */
     protected static toSameSite(sameSite?: CookieOptions['sameSite']): string;
+    /**
+     * Converts the value to a string for the path attribute.
+     *
+     * Преобразует значение в строку для атрибута path.
+     * @param path Path / путь
+     */
+    protected static toPath(path?: CookieOptions['path']): string;
+    /**
+     * Converts the value to a string for the domain attribute.
+     *
+     * Преобразует значение в строку для атрибута domain.
+     * @param domain Domain / домен
+     */
+    protected static toDomain(domain?: CookieOptions['domain']): string | undefined;
+    /**
+     * Converts the value to a string for the secure attribute.
+     *
+     * Преобразует значение в строку для атрибута secure.
+     * @param secure Secure attribute / атрибут secure
+     */
+    protected static toSecure(secure?: CookieOptions['secure']): string | undefined;
+    /**
+     * Converts the value to a string for the HttpOnly attribute.
+     *
+     * Преобразует значение в строку для атрибута HttpOnly.
+     * @param httpOnly HttpOnly attribute / атрибут HttpOnly
+     */
+    protected static toHttpOnly(httpOnly?: CookieOptions['httpOnly']): string | undefined;
+    /**
+     * Converts the value to a string for the partitioned attribute.
+     *
+     * Преобразует значение в строку для атрибута partitioned.
+     * @param partitioned Partitioned attribute / атрибут partitioned
+     */
+    protected static toPartitioned(partitioned?: CookieOptions['partitioned']): string | undefined;
     /**
      * Converts additional arguments to an array of strings.
      *

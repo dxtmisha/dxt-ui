@@ -1,37 +1,89 @@
+import { App } from 'vue';
 import { FunctionalPluginOptions } from '@dxtmisha/functional';
-import { H3Event } from 'h3';
-import { NitroApp } from 'nitropack';
+import { Router } from 'vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import { RouterOptions } from 'vue-router';
+import { SSRContext } from 'vue/server-renderer';
 
 /**
- * Initialize api cache.
+ * Get injected value by name.
  *
- * Инициализация api кэша.
- * @param storageKey Storage key prefix / Префикс ключа хранилища
- * @param cacheStepAgeClearOld Cache cleanup threshold / Порог очистки кэша
+ * Получение внедренного значения по имени.
+ * @param name Key name / Имя ключа
  */
-export declare function initApiCache(storageKey?: string, cacheStepAgeClearOld?: number): void;
+export declare function getInject<T>(name: string): T | undefined;
 
 /**
- * Initialize basic functions for Nitro.
+ * Gets the pathname from the request URL.
  *
- * Инициализация базовых функций для Nitro.
- * @param _ Nitro application instance / Экземпляр приложения Nitro
- * @param config Configuration / Конфигурация
+ * Получает путь из URL запроса.
+ * @param request HTTP request / HTTP запрос
  */
-export declare function initBasic<N extends NitroApp & Record<string, any> = NitroApp>(_: N, config?: NitroAppBasicConfig): void;
+export declare function getRequestUrl(request: Request): string;
 
 /**
- * Initialize cookie storage.
+ * Inits the cookie storage plugin for the application.
  *
- * Инициализация хранилища cookie.
- * @param event H3 event / Событие H3
- * @param ageDefault Default cookie age in seconds / Срок жизни cookie по умолчанию в секундах
- * @param sameSiteDefault Default SameSite attribute / Атрибут SameSite по умолчанию
+ * Внедряет хранилище cookie в приложение.
+ * @param app Vue application instance / Экземпляр приложения Vue
+ * @param request HTTP request / HTTP запрос
  */
-export declare function initCookieStorage(event: H3Event, ageDefault?: number, sameSiteDefault?: 'strict' | 'lax'): void;
+export declare function initCookieStorage<T>(app: App<T>, request: Request): void;
 
+/**
+ * Initializes the router for the application.
+ *
+ * Инициализирует маршрутизатор в приложении.
+ * @param request HTTP request / HTTP запрос
+ * @param router Vue router instance / Экземпляр маршрутизатора Vue
+ */
+export declare function initRouter(request: Request, router: Router | undefined): Promise<void>;
+
+/**
+ * Generate JSON scripts for hydration.
+ *
+ * Генерирует JSON-скрипты для гидратации.
+ */
+export declare function initScriptsJson(): string;
+
+/**
+ * Inits the server storage plugin for the application.
+ *
+ * Внедряет серверное хранилище в приложение.
+ * @param app Vue application instance / Экземпляр приложения Vue
+ */
+export declare function initServerStorage<T>(app: App<T>): void;
+
+/**
+ * Renders the Vue application to a string and extracts context data.
+ *
+ * Рендерит приложение Vue в строку и извлекает данные контекста.
+ * @param app Vue application instance / Экземпляр приложения Vue
+ * @param context SSR context / Контекст SSR
+ */
+export declare function initSsrApp<T>(app: App<T>, context?: SSRContext): Promise<{
+    appHtml: string;
+    teleportsHtml: string;
+    context: SSRContext;
+}>;
+
+/**
+ * Key used to store the server-side headers object in the Vue app context/
+ * Ключ, используемый для хранения объекта заголовков в контексте приложения Vue
+ */
+export declare const NITRO_API_HEADERS = "__ui_server_headers";
+
+/**
+ * Key used to store the server-side cookie object in the Vue app context/
+ * Ключ, используемый для хранения объекта cookie в контексте приложения Vue
+ */
+export declare const NITRO_APP_COOKIE = "__ui_server_cookie";
+
+/**
+ * Key used to store the server-side storage object in the Vue app context/
+ * Ключ, используемый для хранения объекта серверного хранилища в
+ * контексте приложения Vue
+ */
 export declare const NITRO_APP_STORAGE = "__ui_server_storage";
 
 /**
@@ -45,13 +97,6 @@ export declare type NitroAppBasicConfig = {
         cacheStorageKey?: string;
         /** Cache cleanup threshold / Порог очистки кэша */
         cacheStepAgeClearOld?: number;
-    };
-    /** Cookie configuration / Конфигурация cookie */
-    cookie?: {
-        /** Cookie age in seconds / Срок жизни cookie в секундах */
-        age?: number;
-        /** SameSite attribute / Атрибут SameSite */
-        sameSite?: 'strict' | 'lax';
     };
 };
 
@@ -74,5 +119,75 @@ export declare interface NitroAppOptions extends FunctionalPluginOptions {
  * Интерфейс для частичных опций маршрутизатора
  */
 export declare type NitroAppRouterOptions = Partial<RouterOptions>;
+
+/**
+ * Initialize cookie storage.
+ *
+ * Инициализация хранилища cookie.
+ */
+export declare function uiCookieStorage(): void;
+
+/**
+ * Creates a Vue SSR application instance and initializes core plugins.
+ *
+ * Создаёт экземпляр приложения Vue SSR и инициализирует основные плагины.
+ * @param appComponent root component of the application/ корневой компонент приложения
+ * @param options application configuration options/ опции конфигурации приложения
+ */
+export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroAppOptions): {
+    app: App<Element>;
+    router: Router | undefined;
+};
+
+/**
+ * Initializes server and cookie storage.
+ *
+ * Инициализирует серверное и cookie хранилище.
+ * @param app root component of the application/ корневой компонент приложения
+ * @param request application configuration options/ опции конфигурации приложения
+ */
+export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, context?: SSRContext): Promise<{
+    appHtml: string;
+    teleportsHtml: string;
+    context: SSRContext;
+    headers: Headers | undefined;
+    lang: string;
+    scriptsJson: string;
+    meta: string;
+}>;
+
+/**
+ * Creates a router instance for SSR or client-side runtime.
+ *
+ * Создаёт экземпляр маршрутизатора для SSR или клиентской среды.
+ * @param routes list of routes for the router/ список маршрутов для маршрутизатора
+ * @param options router options/ опции маршрутизатора
+ */
+export declare function uiCreateSsrRouter(routes: RouteRecordRaw[], options?: NitroAppRouterOptions): Router;
+
+/**
+ * Initializes the server-side storage for the application.
+ *
+ * This function sets up the global `ServerStorage` by providing a mechanism
+ * to retrieve the storage object from the Vue application context using `inject`.
+ * It looks for the `NITRO_APP_STORAGE` key.
+ *
+ * Инициализирует серверное хранилище для приложения.
+ *
+ * Эта функция настраивает глобальный `ServerStorage`, предоставляя механизм
+ * для получения объекта хранилища из контекста приложения Vue с помощью `inject`.
+ * Она ищет ключ `NITRO_APP_STORAGE`.
+ */
+export declare function uiServerStorage(): void;
+
+/**
+ * Composable for getting request headers.
+ *
+ * Композабл для получения заголовков запроса.
+ * @param name Header name / Имя заголовка
+ */
+export declare function useHeaders(name: string): string | undefined;
+
+export declare function useHeaders(): Headers | undefined;
 
 export { }

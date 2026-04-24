@@ -1,11 +1,9 @@
-// export:none
-
 import { createSSRApp } from 'vue'
 import type { Router } from 'vue-router'
 import { dxtFunctionalPlugin } from '@dxtmisha/functional'
 
 import { uiCreateSsrRouter } from './uiCreateSsrRouter'
-import { NITRO_APP_STORAGE, type NitroAppOptions } from '../types/nitroAppTypes'
+import { type NitroAppOptions } from '../types/nitroAppTypes'
 
 /**
  * Creates a Vue SSR application instance and initializes core plugins.
@@ -29,8 +27,6 @@ export function uiCreateApp<A = any>(
       options.appRouter.routes,
       options.appRouter.options
     )
-
-    app.provide(NITRO_APP_STORAGE, { storage: {} })
     app.use(router)
   }
 

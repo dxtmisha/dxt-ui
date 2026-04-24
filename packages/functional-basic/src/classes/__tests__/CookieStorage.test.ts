@@ -44,6 +44,7 @@ describe('CookieStorage', () => {
       CookieStorage.init(get, undefined, set)
 
       expect((CookieStorage as any).getListener).toBe(get)
+      expect((CookieStorage as any).getListenerRaw).toBeUndefined()
       expect((CookieStorage as any).setListener).toBe(set)
     })
   })
@@ -71,11 +72,13 @@ describe('CookieStorage', () => {
 
       CookieStorage.set('new-key', 'new-value', { age: 3600 })
       expect(set).toHaveBeenCalledWith('new-key', 'new-value', expect.any(String), { age: 3600 })
+      expect(set.mock.calls[0][2]).toContain('Max-Age=3600')
+      expect(set.mock.calls[0][2]).toContain('Path=%2F')
     })
 
-    it('should set default max-age if not provided', () => {
+    it('should set default Max-Age if not provided', () => {
       CookieStorage.set('key', 'val')
-      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('max-age=604800')) // 7 days in seconds
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Max-Age=604800')) // 7 days in seconds
     })
 
     it('should use provided options', () => {
@@ -84,12 +87,27 @@ describe('CookieStorage', () => {
       expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('secure'))
     })
 
+    it('should handle new cookie options (path, domain, secure, httpOnly, partitioned)', () => {
+      CookieStorage.set('key', 'val', {
+        path: '/custom',
+        domain: 'example.com',
+        secure: true,
+        httpOnly: true,
+        partitioned: true
+      })
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Path=%2Fcustom'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Domain=example.com'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Secure'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('HttpOnly'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Partitioned'))
+    })
+
     it('should filter out non-string arguments', () => {
       CookieStorage.set('key', 'val', {
         arguments: ['Secure', 123, 'Path=/', null as any, undefined as any]
       })
       expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Secure'))
-      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Path=/'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Path=%2F'))
       // Non-string arguments should be filtered out
     })
 
@@ -135,7 +153,7 @@ describe('CookieStorage', () => {
       // Memory check
       expect(CookieStorage.get('key')).toBeUndefined()
       // JS DOM check
-      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('max-age=-1'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Max-Age=-1'))
     })
   })
 
@@ -232,15 +250,13 @@ describe('CookieStorage', () => {
     it('should handle object arguments correctly', () => {
       CookieStorage.set('key', 'val', {
         arguments: {
-          Path: '/',
-          Secure: '',
-          Domain: '.example.com'
+          Custom: 'Value',
+          Another: 123
         }
       })
 
-      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Path=/'))
-      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Secure'))
-      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Domain=.example.com'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Custom=Value'))
+      expect(cookieSpy).toHaveBeenCalledWith(expect.stringContaining('Another=123'))
     })
 
     it('should convert object values to strings', () => {

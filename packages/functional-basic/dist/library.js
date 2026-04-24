@@ -1716,18 +1716,26 @@ var Ye = "__ui:cookie-block__", Xe = class {
 		let r = y(t);
 		if (Ze.get()) return r;
 		let i = N(r, !1);
-		return this.setListener ? this.setListener(e, i, n) : (this.initItems()[e] = i === "" ? void 0 : r, this.hasDom() && (document.cookie = [
-			`${encodeURIComponent(e)}=${encodeURIComponent(i)}`,
-			this.toMaxAge(i, n == null ? void 0 : n.age),
-			this.toSameSite(n == null ? void 0 : n.sameSite),
-			...this.toArguments(n == null ? void 0 : n.arguments)
-		].join("; "))), r;
+		return this.setListener ? this.setListener(e, i, this.format(e, i, n), n) : (this.initItems()[e] = i === "" ? void 0 : r, this.hasDom() && (document.cookie = this.format(e, i, n))), r;
 	}
 	static remove(e) {
 		this.set(e, "", { age: -1 });
 	}
 	static update() {
 		s() && (C.remove(Qe), this.initItems());
+	}
+	static format(e, t, n) {
+		return [
+			`${encodeURIComponent(e)}=${encodeURIComponent(t)}`,
+			this.toMaxAge(t, n == null ? void 0 : n.age),
+			this.toSameSite(n == null ? void 0 : n.sameSite),
+			this.toPath(n == null ? void 0 : n.path),
+			this.toDomain(n == null ? void 0 : n.domain),
+			this.toSecure(n == null ? void 0 : n.secure),
+			this.toHttpOnly(n == null ? void 0 : n.httpOnly),
+			this.toPartitioned(n == null ? void 0 : n.partitioned),
+			...this.toArguments(n == null ? void 0 : n.arguments)
+		].filter(Boolean).join("; ");
 	}
 	static hasDom() {
 		return s() && !le();
@@ -1749,10 +1757,25 @@ var Ye = "__ui:cookie-block__", Xe = class {
 		});
 	}
 	static toMaxAge(e, t) {
-		return `max-age=${e === "" ? -1 : t == null ? 10080 * 60 : t}`;
+		return `Max-Age=${encodeURIComponent(e === "" ? -1 : t == null ? 10080 * 60 : t)}`;
 	}
 	static toSameSite(e) {
-		return `SameSite=${e == null ? "strict" : e}`;
+		return `SameSite=${encodeURIComponent(e == null ? "Strict" : e)}`;
+	}
+	static toPath(e) {
+		return `Path=${encodeURIComponent(e == null ? "/" : e)}`;
+	}
+	static toDomain(e) {
+		return e ? `Domain=${encodeURIComponent(e)}` : void 0;
+	}
+	static toSecure(e) {
+		return e ? "Secure" : void 0;
+	}
+	static toHttpOnly(e) {
+		return e ? "HttpOnly" : void 0;
+	}
+	static toPartitioned(e) {
+		return e ? "Partitioned" : void 0;
 	}
 	static toArguments(e) {
 		return e === void 0 ? [] : Array.isArray(e) ? e : Object.entries(e).map(([e, t]) => `${e}=${N(t)}`);

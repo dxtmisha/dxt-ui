@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { Meta, MetaRobots } from '@dxtmisha/functional-basic'
+import { MetaRobots, MetaStatic } from '@dxtmisha/functional-basic'
 
 import { executeUseLocal } from '../../functions/executeUse'
 
@@ -9,7 +9,7 @@ import { executeUseLocal } from '../../functions/executeUse'
  * Singleton экземпляр для управления мета-тегами.
  */
 const item = executeUseLocal(() => {
-  const meta: Meta = new Meta()
+  const meta = MetaStatic
 
   /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
   const title = ref<string>(meta.getTitle())

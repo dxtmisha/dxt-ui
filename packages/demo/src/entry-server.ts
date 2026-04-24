@@ -1,23 +1,18 @@
-import { renderToString } from 'vue/server-renderer'
-import { uiServerStorage } from '@dxtmisha/nitro-basic/ui'
+import { uiCreateServerApp } from '@dxtmisha/nitro-basic'
 import { createApp } from './main'
-
-uiServerStorage()
 
 export default {
   async fetch(request: Request) {
     const { app, router } = createApp()
 
-    const url = new URL(request.url).pathname
-
-    if (router) {
-      await router.push(url)
-      await router.isReady()
-    }
-
-    const ctx: any = {}
-    const appHtml = await renderToString(app, ctx)
-    const teleportsHtml = ctx.teleports ? Object.values(ctx.teleports).join('') : ''
+    const {
+      appHtml,
+      teleportsHtml
+    } = await uiCreateServerApp(
+      app,
+      request,
+      router
+    )
 
     return new Response(`<div id="app">${appHtml}</div>${teleportsHtml}`, {
       headers: {

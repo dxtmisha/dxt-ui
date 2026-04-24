@@ -13,13 +13,6 @@ export type NitroAppBasicConfig = {
     /** Cache cleanup threshold / Порог очистки кэша */
     cacheStepAgeClearOld?: number
   }
-  /** Cookie configuration / Конфигурация cookie */
-  cookie?: {
-    /** Cookie age in seconds / Срок жизни cookie в секундах */
-    age?: number
-    /** SameSite attribute / Атрибут SameSite */
-    sameSite?: 'strict' | 'lax'
-  }
 }
 
 /**
