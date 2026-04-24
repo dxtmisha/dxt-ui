@@ -17,7 +17,7 @@ Lớp `MetaStatic` là **điểm truy cập tĩnh** để quản lý các thẻ 
 
 ### Truy cập
 
-- `getItem(): Meta` — Trả về thực thể `Meta` cơ sở.
+- `getItem(): Meta` — Trả về thực entity `Meta` cơ sở.
 - `getOg(): MetaOg` — Lấy thực thể `MetaOg` cho các thao tác Open Graph nâng cao.
 - `getTwitter(): MetaTwitter` — Lấy thực thể `MetaTwitter` cho các thao tác Twitter Card nâng cao.
 
@@ -51,6 +51,7 @@ Tất cả các phương thức thiết lập đều trả về `typeof MetaStat
 ### Đầu ra
 
 - `html(): string` — Tạo ra một chuỗi đầy đủ các thẻ HTML meta cho tất cả các thuộc tính được quản lý.
+- `htmlTitle(): string` — Tạo ra chuỗi tiêu đề an toàn với HTML.
 
 ## Kiến trúc
 
@@ -74,5 +75,5 @@ MetaStatic
 
 console.log(MetaStatic.getTitle()); // "Bộ sưu tập mùa hè"
 document.title; // "Bộ sưu tập mùa hè - Cửa hàng trực tuyến của tôi"
+console.log(MetaStatic.htmlTitle()); // "Bộ sưu tập mùa hè - Cửa hàng trực tuyến của tôi"
 ```
-

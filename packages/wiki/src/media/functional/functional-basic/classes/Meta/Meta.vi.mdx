@@ -41,9 +41,14 @@ const meta = new Meta()
 - `getOg(): MetaOg` — truy cập trực tiếp instance `MetaOg`.
 - `getTwitter(): MetaTwitter` — truy cập trực tiếp instance `MetaTwitter`.
 
+## Phương thức tạo HTML
+
+- `html(): string` — tạo chuỗi HTML đầy đủ của tất cả thẻ meta: tiêu chuẩn + Open Graph + Twitter Card. Dùng cho SSR.
+- `htmlTitle(): string` — tạo tiêu đề trang.
+
 ## Setter
 
-Tất cả setter trả về `this` để chuỗi phương thức.
+All setter trả về `this` để chuỗi phương thức.
 
 - `setTitle(title: string)` — đặt `document.title` (có hậu tố), `og:title` và `twitter:title` đồng thời.
 - `setKeywords(keywords: string | string[])` — nhận chuỗi hoặc mảng; mảng tự động nối bằng dấu phẩy.
@@ -72,6 +77,17 @@ const html = meta.html()
 // <meta property="og:image" content="https://example.com/img.jpg">
 // <meta name="twitter:title" content="Bài viết">
 // ...
+```
+
+### `htmlTitle(): string`
+
+Tạo tiêu đề hiện tại (bao gồm cả hậu tố).
+
+```javascript
+const meta = new Meta()
+meta.setSuffix('Trang web của tôi').setTitle('Trang chủ')
+
+meta.htmlTitle() // "Trang chủ - Trang web của tôi"
 ```
 
 ## Ví dụ

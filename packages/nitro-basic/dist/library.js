@@ -34,23 +34,29 @@ function b(e, t) {
 	e.provide(g, t.headers.get("Cookie") || "");
 }
 //#endregion
+//#region src/functions/initHeaders.ts
+function x(e) {
+	let t = new Headers();
+	t.set("Content-Type", "text/html;charset=UTF-8"), e.provide(_, t);
+}
+//#endregion
 //#region src/functions/initRouter.ts
-async function x(e, t) {
+async function S(e, t) {
 	t && (await t.push(y(e)), await t.isReady());
 }
 //#endregion
 //#region src/functions/initScriptsJson.ts
-function S() {
-	return [s.toString(), r.toString()].join("");
+function C() {
+	return [s.toString(), r.getHydration().toString()].join("");
 }
 //#endregion
 //#region src/functions/initServerStorage.ts
-function C(e) {
+function w(e) {
 	e.provide(h, { storage: {} });
 }
 //#endregion
 //#region src/functions/initSsrApp.ts
-async function w(e, t = {}) {
+async function T(e, t = {}) {
 	return {
 		appHtml: await l(e, t),
 		teleportsHtml: t.teleports ? Object.values(t.teleports).join("") : "",
@@ -59,7 +65,7 @@ async function w(e, t = {}) {
 }
 //#endregion
 //#region src/functions/uiCookieStorage.ts
-function T() {
+function E() {
 	i.init(void 0, () => {
 		var e;
 		return (e = m("__ui_server_cookie")) == null ? "" : e;
@@ -70,7 +76,7 @@ function T() {
 }
 //#endregion
 //#region src/functions/uiCreateSsrRouter.ts
-function E(e, t = {}) {
+function D(e, t = {}) {
 	return f({
 		...t,
 		history: c() ? p() : d(),
@@ -79,11 +85,11 @@ function E(e, t = {}) {
 }
 //#endregion
 //#region src/functions/uiCreateApp.ts
-function D(t, n = {}) {
+function O(t, n = {}) {
 	let r = e(t), i;
 	if (n.router) i = n.router, r.use(n.router);
 	else if (n.appRouter) {
-		let e = E(n.appRouter.routes, n.appRouter.options);
+		let e = D(n.appRouter.routes, n.appRouter.options);
 		r.use(e);
 	}
 	return r.use(u, n), {
@@ -93,20 +99,22 @@ function D(t, n = {}) {
 }
 //#endregion
 //#region src/functions/uiCreateServerApp.ts
-async function O(e, t, n, r = {}) {
-	b(e, t), C(e), await x(t, n);
-	let i = await w(e, r);
-	return {
-		headers: v(),
-		lang: a.getStandard(),
-		scriptsJson: S(),
-		meta: o.toString(),
-		...i
+async function k(e, t, n, r = {}, i) {
+	x(e), b(e, t), w(e), await S(t, n);
+	let s = await T(e, r), c = v(), l = a.getStandard(), u = o.htmlTitle(), d = o.html(), f = C(), p;
+	return p = i ? i.replace("<!--ssr-lang-->", l).replace("<!--ssr-title-->", u).replace("<!--ssr-meta-->", d).replace("<!--ssr-scriptsJson-->", f).replace("<!--ssr-outlet-->", s.appHtml).replace("<!--ssr-teleports-->", s.teleportsHtml) : s.appHtml, {
+		headers: c,
+		lang: l,
+		title: u,
+		meta: d,
+		scriptsJson: f,
+		body: p,
+		...s
 	};
 }
 //#endregion
 //#region src/functions/uiServerStorage.ts
-function k() {
+function A() {
 	s.init(() => {
 		var e;
 		let t = m(h);
@@ -114,4 +122,4 @@ function k() {
 	});
 }
 //#endregion
-export { _ as NITRO_API_HEADERS, g as NITRO_APP_COOKIE, h as NITRO_APP_STORAGE, m as getInject, y as getRequestUrl, b as initCookieStorage, x as initRouter, S as initScriptsJson, C as initServerStorage, w as initSsrApp, T as uiCookieStorage, D as uiCreateApp, O as uiCreateServerApp, E as uiCreateSsrRouter, k as uiServerStorage, v as useHeaders };
+export { _ as NITRO_API_HEADERS, g as NITRO_APP_COOKIE, h as NITRO_APP_STORAGE, m as getInject, y as getRequestUrl, b as initCookieStorage, x as initHeaders, S as initRouter, C as initScriptsJson, w as initServerStorage, T as initSsrApp, E as uiCookieStorage, O as uiCreateApp, k as uiCreateServerApp, D as uiCreateSsrRouter, A as uiServerStorage, v as useHeaders };

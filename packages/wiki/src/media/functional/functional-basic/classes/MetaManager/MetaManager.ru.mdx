@@ -49,3 +49,12 @@ manager.set('description', 'Моё описание').set('keywords', 'vue, type
 manager.html()
 // '<meta name="description" content="Моё описание"><meta name="keywords" content="vue, typescript">'
 ```
+
+### `htmlTitle(title: string): string`
+
+Преобразует строку заголовка в HTML-тег `<title>`.
+
+```javascript
+manager.htmlTitle('Заголовок страницы')
+// '<title>Заголовок страницы</title>'
+```

@@ -200,7 +200,7 @@ export class MetaManager<
     const value = this.items[name] ?? ''
 
     if (name === 'title') {
-      return `<title>${encodeLiteAttribute(value)}</title>`
+      return ''
     }
 
     const content = encodeAttribute(value)
@@ -210,6 +210,17 @@ export class MetaManager<
     }
 
     return ''
+  }
+
+  /**
+   * Converts the title to an HTML-safe string.
+   *
+   * Преобразует заголовок в HTML-безопасную строку.
+   * @param title page title / заголовок страницы
+   * @returns encoded title string / закодированная строка заголовка
+   */
+  protected toHtmlTitle(title: string): string {
+    return encodeLiteAttribute(title)
   }
 
   /**

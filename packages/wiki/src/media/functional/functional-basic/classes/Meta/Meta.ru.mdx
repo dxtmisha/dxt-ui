@@ -41,6 +41,11 @@ const meta = new Meta()
 - `getOg(): MetaOg` — прямой доступ к экземпляру `MetaOg`.
 - `getTwitter(): MetaTwitter` — прямой доступ к экземпляру `MetaTwitter`.
 
+## Методы для генерации HTML
+
+- `html(): string` — генерирует полную HTML-строку всех мета-тегов: стандартных + Open Graph + Twitter Card. Используется для SSR.
+- `htmlTitle(): string` — генерирует заголовок страницы.
+
 ## Сеттеры
 
 Все сеттеры возвращают `this` для цепочки вызовов.
@@ -72,6 +77,17 @@ const html = meta.html()
 // <meta property="og:image" content="https://example.com/img.jpg">
 // <meta name="twitter:title" content="Статья">
 // ...
+```
+
+### `htmlTitle(): string`
+
+Генерирует текущий заголовок (включая суффикс).
+
+```javascript
+const meta = new Meta()
+meta.setSuffix('Мой Сайт').setTitle('Главная')
+
+meta.htmlTitle() // "Главная - Мой Сайт"
 ```
 
 ## Пример

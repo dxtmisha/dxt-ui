@@ -116,6 +116,11 @@ describe('MetaStatic', () => {
       expect(html).toContain('og:title')
       expect(html).toContain('twitter:title')
     })
+
+    it('should generate HTML title string', () => {
+      MetaStatic.setTitle('Static Title')
+      expect(MetaStatic.htmlTitle()).toBe('Static Title')
+    })
   })
 
   describe('Method chaining', () => {

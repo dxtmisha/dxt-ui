@@ -49,3 +49,12 @@ manager.set('description', 'My description').set('keywords', 'vue, typescript')
 manager.html()
 // '<meta name="description" content="My description"><meta name="keywords" content="vue, typescript">'
 ```
+
+### `htmlTitle(title: string): string`
+
+Converts a title string into an HTML `<title>` tag.
+
+```javascript
+manager.htmlTitle('My Page Title')
+// '<title>My Page Title</title>'
+```

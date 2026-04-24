@@ -288,6 +288,16 @@ export class Meta extends MetaManager<MetaTag[]> {
   }
 
   /**
+   * Generates the title as an HTML-safe string.
+   *
+   * Генерирует заголовок в виде HTML-безопасной строки.
+   * @returns title HTML-safe string / HTML-безопасная строка заголовка
+   */
+  htmlTitle(): string {
+    return this.toHtmlTitle(this.get(MetaTag.title))
+  }
+
+  /**
    * Gets the formatted suffix with separator.
    *
    * Получает отформатированный суффикс с разделителем.

@@ -6041,6 +6041,13 @@ export declare class Meta extends MetaManager<MetaTag[]> {
      */
     html(): string;
     /**
+     * Generates the title as an HTML-safe string.
+     *
+     * Генерирует заголовок в виде HTML-безопасной строки.
+     * @returns title HTML-safe string / HTML-безопасная строка заголовка
+     */
+    htmlTitle(): string;
+    /**
      * Gets the formatted suffix with separator.
      *
      * Получает отформатированный суффикс с разделителем.
@@ -6153,6 +6160,14 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
      * @returns HTML string / HTML-строка
      */
     protected toHtmlString(name: Key): string;
+    /**
+     * Converts the title to an HTML-safe string.
+     *
+     * Преобразует заголовок в HTML-безопасную строку.
+     * @param title page title / заголовок страницы
+     * @returns encoded title string / закодированная строка заголовка
+     */
+    protected toHtmlTitle(title: string): string;
     /**
      * Updates meta tags data from the DOM.
      *
@@ -6858,6 +6873,13 @@ export declare class MetaStatic {
      * @returns complete HTML string / полная HTML-строка
      */
     static html(): string;
+    /**
+     * Generates the title as an HTML-safe string.
+     *
+     * Генерирует заголовок в виде HTML-безопасной строки.
+     * @returns title HTML-safe string / HTML-безопасная строка заголовка
+     */
+    static htmlTitle(): string;
 }
 
 /**

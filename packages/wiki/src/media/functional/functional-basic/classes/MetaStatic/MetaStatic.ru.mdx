@@ -51,6 +51,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### Вывод
 
 - `html(): string` — Генерирует полную строку HTML-тегов для всех управляемых свойств.
+- `htmlTitle(): string` — Генерирует полную HTML-безопасную строку заголовка.
 
 ## Архитектура
 
@@ -74,5 +75,5 @@ MetaStatic
 
 console.log(MetaStatic.getTitle()); // "Летняя коллекция"
 document.title; // "Летняя коллекция - Мой Интернет Магазин"
+console.log(MetaStatic.htmlTitle()); // "Летняя коллекция - Мой Интернет Магазин"
 ```
-

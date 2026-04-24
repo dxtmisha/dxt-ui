@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.4] - 2026-04-25
+
+### Added
+- **Meta**: Added `htmlTitle()` method to `Meta`, `MetaStatic`, and `MetaManager` classes for generating HTML-safe title strings.
+
+### Changed / Improved
+- **MetaManager**: The `toHtml()` method now excludes the `<title>` tag, allowing for more flexible title management via `htmlTitle()`.
+- **Package**: Added `CHANGELOG.md` to the list of files included in the package distribution.
+
 ## [1.1.3] - 2026-04-24
 
 ### Added

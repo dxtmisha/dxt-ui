@@ -18,6 +18,8 @@ const SERVER_STORAGE_KEY = '__ui:server-storage__'
 /** Server storage script id / Идентификатор скрипта серверного хранилища */
 const SERVER_STORAGE_ID = '__ui:server:storage:id__'
 
+console.log('ServerStorage')
+
 /**
  * Class for managing data storage during server-side rendering (SSR).
  * Handles data isolation between parallel requests by using a request-specific context.

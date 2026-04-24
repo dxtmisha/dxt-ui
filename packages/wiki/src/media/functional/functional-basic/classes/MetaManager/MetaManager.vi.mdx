@@ -49,3 +49,12 @@ manager.set('description', 'Mô tả của tôi').set('keywords', 'vue, typescri
 manager.html()
 // '<meta name="description" content="Mô tả của tôi"><meta name="keywords" content="vue, typescript">'
 ```
+
+### `htmlTitle(title: string): string`
+
+Chuyển đổi chuỗi tiêu đề thành thẻ HTML `<title>`.
+
+```javascript
+manager.htmlTitle('Tiêu đề trang')
+// '<title>Tiêu đề trang</title>'
+```

@@ -463,7 +463,9 @@ function ge(e, t, n = !0) {
 }
 //#endregion
 //#region src/classes/ServerStorage.ts
-var _e = "__ui:server-storage__", ve = "__ui:server:storage:id__", C = class {
+var _e = "__ui:server-storage__", ve = "__ui:server:storage:id__";
+console.log("ServerStorage");
+var C = class {
 	static init(e) {
 		return this.listener || (this.listener = e), this;
 	}
@@ -3156,9 +3158,12 @@ var G = class {
 	toHtmlString(e) {
 		var t;
 		let n = (t = this.items[e]) == null ? "" : t;
-		if (e === "title") return `<title>${ce(n)}</title>`;
+		if (e === "title") return "";
 		let r = W(n);
 		return r ? `<meta ${this.getAttributeName()}="${e}" content="${r}">` : "";
+	}
+	toHtmlTitle(e) {
+		return ce(e);
 	}
 	update() {
 		return this.listMeta.forEach((e) => {
@@ -3350,6 +3355,9 @@ var G = class {
 	html() {
 		return `${super.html()}${this.og.html()}${this.twitter.html()}`;
 	}
+	htmlTitle() {
+		return this.toHtmlTitle(this.get(K.title));
+	}
 	getSuffix() {
 		return l(this.suffix) ? ` - ${this.suffix}` : "";
 	}
@@ -3422,6 +3430,9 @@ var G = class {
 	}
 	static html() {
 		return this.getItem().html();
+	}
+	static htmlTitle() {
+		return this.getItem().htmlTitle();
 	}
 }, Et = class {
 	constructor(e, t = 320, n = !1) {

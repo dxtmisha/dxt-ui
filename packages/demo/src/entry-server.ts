@@ -1,23 +1,31 @@
 import { uiCreateServerApp } from '@dxtmisha/nitro-basic'
+import { uiCookieStorage, uiServerStorage } from '@dxtmisha/nitro-basic'
+
 import { createApp } from './main'
+import template from './templates/main.html?raw'
+
+console.log('Server entry point initialized.')
+
+uiCookieStorage()
+uiServerStorage()
 
 export default {
   async fetch(request: Request) {
     const { app, router } = createApp()
 
     const {
-      appHtml,
-      teleportsHtml
+      headers,
+      body
     } = await uiCreateServerApp(
       app,
       request,
-      router
+      router,
+      undefined,
+      template
     )
 
-    return new Response(`<div id="app">${appHtml}</div>${teleportsHtml}`, {
-      headers: {
-        'Content-Type': 'text/html;charset=UTF-8'
-      }
+    return new Response(body, {
+      headers
     })
   }
 }

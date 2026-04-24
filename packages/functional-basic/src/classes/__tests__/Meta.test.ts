@@ -475,6 +475,23 @@ describe('Meta', () => {
     })
   })
 
+  describe('htmlTitle', () => {
+    it('should return encoded full title string (without tags)', () => {
+      meta.setSuffix('My Site')
+      meta.setTitle('Home')
+
+      const title = meta.htmlTitle()
+      expect(title).toBe('Home - My Site')
+    })
+
+    it('should handle special characters (without tags)', () => {
+      meta.setTitle('Title with "quotes" & <tags>')
+
+      const title = meta.htmlTitle()
+      expect(title).toBe('Title with "quotes" &amp; &lt;tags&gt;')
+    })
+  })
+
   describe('method chaining', () => {
     it('should support chaining all setter methods', () => {
       const result = meta

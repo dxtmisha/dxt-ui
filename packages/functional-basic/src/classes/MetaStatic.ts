@@ -249,4 +249,14 @@ export class MetaStatic {
   static html(): string {
     return this.getItem().html()
   }
+
+  /**
+   * Generates the title as an HTML-safe string.
+   *
+   * Генерирует заголовок в виде HTML-безопасной строки.
+   * @returns title HTML-safe string / HTML-безопасная строка заголовка
+   */
+  static htmlTitle(): string {
+    return this.getItem().htmlTitle()
+  }
 }

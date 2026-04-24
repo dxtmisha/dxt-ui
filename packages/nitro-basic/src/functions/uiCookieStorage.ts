@@ -24,8 +24,8 @@ export function uiCookieStorage(): void {
    * Set cookie in response headers.
    *
    * Установить cookie в заголовки ответа.
-   * @param key Cookie key / Ключ cookie
-   * @param value Cookie value / Значение cookie
+   * @param _key Cookie key / Ключ cookie
+   * @param _value Cookie value / Значение cookie
    * @param cookie Full cookie string (key=value; options) / Полная строка cookie (key=value; опции)
    */
   const setListener = (

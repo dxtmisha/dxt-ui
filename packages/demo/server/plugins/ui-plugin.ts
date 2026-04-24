@@ -1,6 +1,6 @@
 import { definePlugin } from 'nitro'
-import { initBasic } from '@dxtmisha/nitro-basic'
+import { initPluginBasic } from '@dxtmisha/nitro-basic/plugin'
 
 export default definePlugin((nitroApp) => {
-  initBasic(nitroApp as any)
+  initPluginBasic(nitroApp as any)
 })

@@ -51,6 +51,7 @@ All setter methods return `typeof MetaStatic` to support method chaining.
 ### Output
 
 - `html(): string` — Generates a complete string of HTML meta tags for all managed properties.
+- `htmlTitle(): string` — Generates a complete HTML-safe title string.
 
 ## Architecture
 
@@ -74,5 +75,5 @@ MetaStatic
 
 console.log(MetaStatic.getTitle()); // "Summer Collection"
 document.title; // "Summer Collection - My Online Store"
+console.log(MetaStatic.htmlTitle()); // "Summer Collection - My Online Store"
 ```
-

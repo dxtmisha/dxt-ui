@@ -31,6 +31,14 @@ export declare function getRequestUrl(request: Request): string;
 export declare function initCookieStorage<T>(app: App<T>, request: Request): void;
 
 /**
+ * Initializes the API headers and provides them to the application.
+ *
+ * Инициализирует заголовки API и предоставляет их приложению.
+ * @param app root component of the application / корневой компонент приложения
+ */
+export declare function initHeaders<T>(app: App<T>): void;
+
+/**
  * Initializes the router for the application.
  *
  * Инициализирует маршрутизатор в приложении.
@@ -140,20 +148,26 @@ export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroApp
 };
 
 /**
- * Initializes server and cookie storage.
+ * Initializes the server-side application, including storage, routing, and SSR rendering.
  *
- * Инициализирует серверное и cookie хранилище.
- * @param app root component of the application/ корневой компонент приложения
- * @param request application configuration options/ опции конфигурации приложения
+ * Инициализирует серверное приложение, включая хранилища, роутинг и SSR-рендеринг.
+ * @param app root component of the application / корневой компонент приложения
+ * @param request incoming server request / входящий запрос сервера
+ * @param router optional router instance / экземпляр роутера (опционально)
+ * @param context SSR context for the renderer / контекст SSR для рендерера
+ * @param body HTML template for substitution / HTML-шаблон для подстановки
+ * @returns rendered application data and metadata / данные отрендеренного приложения и метаданные
  */
-export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, context?: SSRContext): Promise<{
+export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, context?: SSRContext, body?: string): Promise<{
     appHtml: string;
     teleportsHtml: string;
     context: SSRContext;
     headers: Headers | undefined;
     lang: string;
-    scriptsJson: string;
+    title: string;
     meta: string;
+    scriptsJson: string;
+    body: string;
 }>;
 
 /**

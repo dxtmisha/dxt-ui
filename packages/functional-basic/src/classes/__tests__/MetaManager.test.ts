@@ -261,6 +261,16 @@ describe('MetaManager', () => {
       expect(html).toBe('')
     })
 
+    it('should return title as simple string when toHtmlTitle is called', () => {
+      const result = (manager as any).toHtmlTitle('Test Title')
+      expect(result).toBe('Test Title')
+    })
+
+    it('should escape special characters in toHtmlTitle', () => {
+      const result = (manager as any).toHtmlTitle('Title with "quotes" & <tags>')
+      expect(result).toBe('Title with "quotes" &amp; &lt;tags&gt;')
+    })
+
     it('should generate HTML for single meta tag', () => {
       manager.set('description', 'Test description')
 
@@ -468,10 +478,7 @@ describe('MetaManager', () => {
       const html = manager.html()
 
       // HTML should be safe
-      expect(html).not.toContain('"quotes"')
-      expect(html).toContain('&quot;quotes&quot;')
-      expect(html).not.toContain('<html>')
-      expect(html).toContain('&lt;html&gt;')
+      expect(html).toContain('content="Test &quot;quotes&quot; &amp; &lt;html&gt; entities"')
     })
   })
 

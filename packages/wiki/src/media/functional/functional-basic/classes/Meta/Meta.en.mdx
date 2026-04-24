@@ -41,6 +41,11 @@ const meta = new Meta()
 - `getOg(): MetaOg` — direct access to the `MetaOg` instance.
 - `getTwitter(): MetaTwitter` — direct access to the `MetaTwitter` instance.
 
+## Methods for Generating HTML
+
+- `html(): string` — generates the full HTML string of all meta tags: standard + Open Graph + Twitter Card. Used for SSR.
+- `htmlTitle(): string` — generates the page title.
+
 ## Setters
 
 All setters return `this` for method chaining.
@@ -72,6 +77,17 @@ const html = meta.html()
 // <meta property="og:image" content="https://example.com/img.jpg">
 // <meta name="twitter:title" content="Article">
 // ...
+```
+
+### `htmlTitle(): string`
+
+Generates the current title (including suffix).
+
+```javascript
+const meta = new Meta()
+meta.setSuffix('My Site').setTitle('Home')
+
+meta.htmlTitle() // "Home - My Site"
 ```
 
 ## Example
