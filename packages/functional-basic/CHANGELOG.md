@@ -26,7 +26,9 @@ All notable changes to this project will be documented in this file.
 - **Cookie**:
   - Completely redesigned the Cookie handling mechanics, including `CookieBlock` and `CookieStorage`.
   - Added `getListenerRaw` support to `CookieStorage.init()` for initializing from raw cookie strings (essential for SSR).
-  - Extracted cookie parsing logic into a protected `parse()` method for better maintainability and flexibility.
+  - Extracted cookie parsing and formatting logic into protected `parse()` and `format()` methods.
+  - Expanded `CookieOptions` to support modern attributes: `path`, `domain`, `secure`, `httpOnly`, and `partitioned` (CHIPS).
+  - Updated `setListener` signature to include the fully formatted cookie string as a third parameter, facilitating easier SSR header management.
 - **Function Optimization**:
   - `getSearchExp` and `getSeparatingSearchExp` — refined search mechanisms.
   - `getRequestString` — improved query string generation.

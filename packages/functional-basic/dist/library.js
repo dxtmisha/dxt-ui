@@ -1701,15 +1701,16 @@ var Ye = "__ui:cookie-block__", Xe = class {
 		this.getItem().set(e);
 	}
 }, Qe = "__ui:cookie-storage__", P = class {
-	static init(e, t) {
-		this.getListener = e, this.setListener = t;
+	static init(e, t, n) {
+		this.getListener = e, this.getListenerRaw = t, this.setListener = n;
 	}
 	static reset() {
-		this.getListener = void 0, this.setListener = void 0;
+		this.getListener = void 0, this.getListenerRaw = void 0, this.setListener = void 0;
 	}
 	static get(e, t) {
-		let n = this.getListener ? this.getListener(e) : this.initItems()[e];
-		return n === void 0 && t !== void 0 ? this.set(e, t) : Je(n);
+		var n, r;
+		let i = (n = (r = this.getListener) == null ? void 0 : r.call(this, e)) == null ? this.initItems()[e] : n;
+		return i === void 0 && t !== void 0 ? this.set(e, t) : Je(i);
 	}
 	static set(e, t, n) {
 		let r = y(t);
@@ -1731,14 +1732,20 @@ var Ye = "__ui:cookie-block__", Xe = class {
 	static hasDom() {
 		return s() && !le();
 	}
+	static parse(e) {
+		let t = {};
+		for (let n of e.split(";")) {
+			let [e, r] = qe(n.trim(), "=", 2);
+			e && l(r) && (t[e] = r);
+		}
+		return t;
+	}
 	static initItems() {
 		return C.get(Qe, () => {
-			let e = {};
-			if (this.hasDom()) for (let t of document.cookie.split(";")) {
-				let [n, r] = qe(t.trim(), "=", 2);
-				n && l(r) && (e[n] = r);
-			}
-			return e;
+			var e;
+			if (this.hasDom()) return this.parse(document.cookie);
+			let t = (e = this.getListenerRaw) == null ? void 0 : e.call(this);
+			return l(t) ? this.parse(t) : {};
 		});
 	}
 	static toMaxAge(e, t) {
@@ -1751,7 +1758,7 @@ var Ye = "__ui:cookie-block__", Xe = class {
 		return e === void 0 ? [] : Array.isArray(e) ? e : Object.entries(e).map(([e, t]) => `${e}=${N(t)}`);
 	}
 };
-x(P, "getListener", void 0), x(P, "setListener", void 0);
+x(P, "getListener", void 0), x(P, "getListenerRaw", void 0), x(P, "setListener", void 0);
 //#endregion
 //#region src/classes/Cookie.ts
 var $e = () => C.get("__ui:cookie-items__", () => ({})), et = class e {

@@ -70,7 +70,7 @@ describe('CookieStorage', () => {
       expect(result).toBe('from-listener')
 
       CookieStorage.set('new-key', 'new-value', { age: 3600 })
-      expect(set).toHaveBeenCalledWith('new-key', 'new-value', { age: 3600 })
+      expect(set).toHaveBeenCalledWith('new-key', 'new-value', expect.any(String), { age: 3600 })
     })
 
     it('should set default max-age if not provided', () => {
@@ -207,8 +207,8 @@ describe('CookieStorage', () => {
       CookieStorage.set('key2', 'value2', { sameSite: 'lax' })
 
       expect(customSet).toHaveBeenCalledTimes(2)
-      expect(customSet).toHaveBeenCalledWith('key1', 'value1', { age: 100 })
-      expect(customSet).toHaveBeenCalledWith('key2', 'value2', { sameSite: 'lax' })
+      expect(customSet).toHaveBeenCalledWith('key1', 'value1', expect.any(String), { age: 100 })
+      expect(customSet).toHaveBeenCalledWith('key2', 'value2', expect.any(String), { sameSite: 'lax' })
     })
 
     it('should override previous listeners when init is called again', () => {

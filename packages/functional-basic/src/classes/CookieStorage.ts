@@ -22,6 +22,16 @@ export type CookieOptions = {
   age?: number
   /** SameSite attribute / Атрибут SameSite */
   sameSite?: CookieSameSite
+  /** Path / Путь */
+  path?: string
+  /** Domain / Домен */
+  domain?: string
+  /** Secure attribute / Атрибут Secure */
+  secure?: boolean
+  /** HttpOnly attribute / Атрибут HttpOnly */
+  httpOnly?: boolean
+  /** Partitioned attribute / Атрибут Partitioned */
+  partitioned?: boolean
   /** Additional arguments / Дополнительные аргументы */
   arguments?: string[] | Record<string, string | number | boolean>
 }
@@ -47,6 +57,7 @@ export class CookieStorage {
   protected static setListener?: (
     key: string,
     value: any,
+    cookie?: string,
     options?: CookieOptions
   ) => void
 
@@ -60,7 +71,12 @@ export class CookieStorage {
   static init(
     getListener?: (key: string) => any | undefined,
     getListenerRaw?: () => string,
-    setListener?: (key: string, value: any, options?: CookieOptions) => void
+    setListener?: (
+      key: string,
+      value: any,
+      cookie?: string,
+      options?: CookieOptions
+    ) => void
   ): void {
     this.getListener = getListener
     this.getListenerRaw = getListenerRaw
@@ -128,18 +144,14 @@ export class CookieStorage {
       this.setListener(
         name,
         stringValue,
+        this.format(name, stringValue, options),
         options
       )
     } else {
       this.initItems()[name] = stringValue === '' ? undefined : newValue
 
       if (this.hasDom()) {
-        document.cookie = [
-          `${encodeURIComponent(name)}=${encodeURIComponent(stringValue)}`,
-          this.toMaxAge(stringValue, options?.age),
-          this.toSameSite(options?.sameSite),
-          ...this.toArguments(options?.arguments)
-        ].join('; ')
+        document.cookie = this.format(name, stringValue, options)
       }
     }
 
@@ -167,6 +179,34 @@ export class CookieStorage {
       ServerStorage.remove(SERVER_STORAGE_KEY)
       this.initItems()
     }
+  }
+
+  /**
+   * Formats the cookie string for storage.
+   *
+   * Форматирует строку cookie для хранения.
+   * @param name cookie name / имя cookie
+   * @param value cookie value / значение cookie
+   * @param options additional parameters / дополнительные параметры
+   */
+  protected static format(
+    name: string,
+    value: string,
+    options?: CookieOptions
+  ): string {
+    return [
+      `${encodeURIComponent(name)}=${encodeURIComponent(value)}`,
+      this.toMaxAge(value, options?.age),
+      this.toSameSite(options?.sameSite),
+      this.toPath(options?.path),
+      this.toDomain(options?.domain),
+      this.toSecure(options?.secure),
+      this.toHttpOnly(options?.httpOnly),
+      this.toPartitioned(options?.partitioned),
+      ...this.toArguments(options?.arguments)
+    ]
+      .filter(Boolean)
+      .join('; ')
   }
 
   /**
@@ -240,7 +280,7 @@ export class CookieStorage {
       ? -1
       : age ?? (7 * 24 * 60 * 60)
 
-    return `max-age=${ageValue}`
+    return `Max-Age=${encodeURIComponent(ageValue)}`
   }
 
   /**
@@ -252,7 +292,67 @@ export class CookieStorage {
   protected static toSameSite(
     sameSite?: CookieOptions['sameSite']
   ): string {
-    return `SameSite=${sameSite ?? 'strict'}`
+    return `SameSite=${encodeURIComponent(sameSite ?? 'Strict')}`
+  }
+
+  /**
+   * Converts the value to a string for the path attribute.
+   *
+   * Преобразует значение в строку для атрибута path.
+   * @param path Path / путь
+   */
+  protected static toPath(
+    path?: CookieOptions['path']
+  ): string {
+    return `Path=${encodeURIComponent(path ?? '/')}`
+  }
+
+  /**
+   * Converts the value to a string for the domain attribute.
+   *
+   * Преобразует значение в строку для атрибута domain.
+   * @param domain Domain / домен
+   */
+  protected static toDomain(
+    domain?: CookieOptions['domain']
+  ): string | undefined {
+    return domain ? `Domain=${encodeURIComponent(domain)}` : undefined
+  }
+
+  /**
+   * Converts the value to a string for the secure attribute.
+   *
+   * Преобразует значение в строку для атрибута secure.
+   * @param secure Secure attribute / атрибут secure
+   */
+  protected static toSecure(
+    secure?: CookieOptions['secure']
+  ): string | undefined {
+    return secure ? 'Secure' : undefined
+  }
+
+  /**
+   * Converts the value to a string for the HttpOnly attribute.
+   *
+   * Преобразует значение в строку для атрибута HttpOnly.
+   * @param httpOnly HttpOnly attribute / атрибут HttpOnly
+   */
+  protected static toHttpOnly(
+    httpOnly?: CookieOptions['httpOnly']
+  ): string | undefined {
+    return httpOnly ? 'HttpOnly' : undefined
+  }
+
+  /**
+   * Converts the value to a string for the partitioned attribute.
+   *
+   * Преобразует значение в строку для атрибута partitioned.
+   * @param partitioned Partitioned attribute / атрибут partitioned
+   */
+  protected static toPartitioned(
+    partitioned?: CookieOptions['partitioned']
+  ): string | undefined {
+    return partitioned ? 'Partitioned' : undefined
   }
 
   /**

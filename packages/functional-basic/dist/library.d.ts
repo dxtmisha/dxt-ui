@@ -1756,6 +1756,8 @@ export { CookieSameSite_2 as CookieSameSite }
 export declare class CookieStorage {
     /** Storage mechanism for getting data / механизм хранения для получения данных */
     protected static getListener?: (key: string) => any | undefined;
+    /** Storage mechanism for getting raw data / механизм хранения для получения сырых данных */
+    protected static getListenerRaw?: () => string;
     /** Storage mechanism for setting data / механизм хранения для сохранения данных */
     protected static setListener?: (key: string, value: any, options?: CookieOptions) => void;
     /**
@@ -1765,7 +1767,7 @@ export declare class CookieStorage {
      * @param getListener Storage mechanism for getting data / механизм хранения для получения данных
      * @param setListener Storage mechanism for setting data / механизм хранения для сохранения данных
      */
-    static init(getListener: (key: string) => any | undefined, setListener: (key: string, value: any, options?: CookieOptions) => void): void;
+    static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, options?: CookieOptions) => void): void;
     /**
      * Resets the storage by clearing all in-memory items and resetting listeners.
      *
@@ -1812,6 +1814,14 @@ export declare class CookieStorage {
      * @returns True if the current environment is a DOM environment, false otherwise / Возвращает true, если текущее окружение является DOM-окружением, иначе false
      */
     protected static hasDom(): boolean;
+    /**
+     * Parses the cookie string into a key-value pair object.
+     *
+     * Разбирает строку cookie в объект пар ключ-значение.
+     * @param cookie cookie string / строка cookie
+     * @returns Record<string, any> parsed items / разобранные элементы
+     */
+    protected static parse(cookie: string): Record<string, any>;
     /**
      * Initialize storage if not initialized.
      *

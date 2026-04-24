@@ -42,4 +42,21 @@ export interface NitroAppOptions extends FunctionalPluginOptions {
   }
 }
 
+/**
+ * Key used to store the server-side storage object in the Vue app context/
+ * Ключ, используемый для хранения объекта серверного хранилища в
+ * контексте приложения Vue
+ */
 export const NITRO_APP_STORAGE = '__ui_server_storage'
+
+/**
+ * Key used to store the server-side cookie object in the Vue app context/
+ * Ключ, используемый для хранения объекта cookie в контексте приложения Vue
+ */
+export const NITRO_APP_COOKIE = '__ui_server_cookie'
+
+/**
+ * Key used to store the server-side headers object in the Vue app context/
+ * Ключ, используемый для хранения объекта заголовков в контексте приложения Vue
+ */
+export const NITRO_API_HEADERS = '__ui_server_headers'

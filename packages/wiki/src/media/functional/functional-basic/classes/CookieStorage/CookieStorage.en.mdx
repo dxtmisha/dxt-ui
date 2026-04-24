@@ -50,7 +50,7 @@ Removes a cookie by setting an empty value and negative expiration. Equivalent t
 
 ### Configuration
 
-- `init(getListener?, getListenerRaw?, setListener?)` — Initializes the storage with custom listeners for reading and writing data
+- `init(getListener?, getListenerRaw?, setListener?)` — Initializes the storage with custom listeners for reading and writing data. The `setListener` takes 4 arguments: `(key, value, cookie, options)`.
 - `reset()` — Resets the storage by clearing all in-memory items and removing listeners
 
 ### Auxiliary
@@ -63,9 +63,14 @@ Removes a cookie by setting an empty value and negative expiration. Equivalent t
 
 Configuration object for cookie parameters:
 
-- `age?: number` — lifetime in seconds (Max-Age attribute)
+- `age?: number` — lifetime in seconds (max-age attribute)
 - `sameSite?: 'strict' | 'lax'` — SameSite policy
-- `arguments?: string[]` — additional directives for the cookie string
+- `path?: string` — cookie path (defaults to `/`)
+- `domain?: string` — cookie domain
+- `secure?: boolean` — if true, adds the Secure attribute
+- `httpOnly?: boolean` — if true, adds the HttpOnly attribute (only for server-side listeners)
+- `partitioned?: boolean` — if true, adds the Partitioned attribute (CHIPS)
+- `arguments?: string[] | Record<string, any>` — additional directives for the cookie string
 
 ## Built-in Type Conversion
 
@@ -106,7 +111,10 @@ import { CookieStorage } from '@dxtmisha/functional-basic'
 CookieStorage.init(
   (key) => myStorage.get(key),
   undefined,
-  (key, value, options) => myStorage.set(key, value, options)
+  (key, value, cookie, options) => {
+    // cookie is already formatted string like "key=value; max-age=..."
+    myStorage.set(key, value, cookie, options)
+  }
 )
 ```
 
@@ -152,7 +160,10 @@ CookieStorage.init(
 CookieStorage.set('user', 'john', {
   age: 3600,           // 1 hour
   sameSite: 'lax',     // SameSite policy
-  arguments: ['Secure', 'Path=/'] // Additional directives
+  path: '/',           // Path
+  secure: true,        // HTTPS only
+  httpOnly: true,      // XSS protection (for SSR)
+  arguments: ['Priority=High'] // Additional directives
 })
 
 // Get with type conversion

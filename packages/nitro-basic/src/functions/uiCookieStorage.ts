@@ -1,5 +1,8 @@
-import { getCookie, type H3Event, setCookie } from 'h3'
+import { type H3Event, setCookie } from 'h3'
 import { type CookieOptions, CookieStorage, isObjectNotArray } from '@dxtmisha/functional-basic'
+
+import { getInject } from './getInject'
+import { NITRO_API_HEADERS, NITRO_APP_COOKIE } from '../types/nitroAppTypes'
 
 /**
  * Initialize cookie storage.
@@ -15,14 +18,13 @@ export function uiCookieStorage(
   sameSiteDefault: 'strict' | 'lax' = 'strict'
 ): void {
   /**
-   * Get cookie from request headers.
+   * Get cookie from event storage.
    *
-   * Получить cookie из заголовков запроса.
-   * @param key Cookie key / Ключ cookie
-   * @returns Cookie value or undefined / Значение cookie или undefined
+   * Получить cookie из хранилища события.
+   * @returns Cookie value or empty string if undefined / Значение cookie или пустая строка, если undefined
    */
-  const getListener = (key: string): string | undefined => {
-    return getCookie(event, key)
+  const getListenerRaw = (): string => {
+    return getInject<string>(NITRO_APP_COOKIE) ?? ''
   }
 
   /**
@@ -38,6 +40,21 @@ export function uiCookieStorage(
     value: string,
     options?: CookieOptions
   ): void => {
+    const headers = getInject<Headers>(NITRO_API_HEADERS)
+
+    if (headers) {
+      const cookieValue: string = `${key}=${encodeURIComponent(value)}`
+      const cookieHeaderOptions: Record<string, string> = {
+        maxAge: (options?.age ?? ageDefault).toString(),
+        sameSite: (options?.sameSite ?? sameSiteDefault).toString(),
+        Path: (cookieArguments?.path ?? '/').toString()
+      }
+
+      headers.set(
+        'Set-Cookie',
+        `${key}=${value}; ${Object.entries(cookieHeaderOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`)
+    }
+
     const cookieOptions: Record<string, string | number | boolean | undefined> = {
       maxAge: options?.age ?? ageDefault,
       sameSite: options?.sameSite ?? sameSiteDefault
@@ -58,5 +75,5 @@ export function uiCookieStorage(
     )
   }
 
-  CookieStorage.init(getListener, setListener)
+  CookieStorage.init(undefined, getListenerRaw, setListener)
 }

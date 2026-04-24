@@ -50,7 +50,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Конфигурация
 
-- `init(getListener?, getListenerRaw?, setListener?)` — Инициализирует хранилище с пользовательскими слушателями для чтения и записи данных
+- `init(getListener?, getListenerRaw?, setListener?)` — Инициализирует хранилище с пользовательскими слушателями для чтения и записи данных. Слушатель записи `setListener` принимает 4 аргумента: `(key, value, cookie, options)`.
 - `reset()` — Сбрасывает хранилище, очищая все элементы в памяти и удаляя слушатели
 
 ### Вспомогательные
@@ -63,9 +63,14 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Объект конфигурации для параметров cookie:
 
-- `age?: number` — время жизни в секундах (атрибут Max-Age)
+- `age?: number` — время жизни в секундах (атрибут max-age)
 - `sameSite?: 'strict' | 'lax'` — политика SameSite
-- `arguments?: string[]` — дополнительные директивы для строки cookie
+- `path?: string` — путь для cookie (по умолчанию `/`)
+- `domain?: string` — домен для cookie
+- `secure?: boolean` — если true, добавляет атрибут Secure
+- `httpOnly?: boolean` — если true, добавляет атрибут HttpOnly (только для серверных слушателей)
+- `partitioned?: boolean` — если true, добавляет атрибут Partitioned (CHIPS)
+- `arguments?: string[] | Record<string, any>` — дополнительные директивы для строки cookie
 
 ## Встроенное преобразование типов
 
@@ -106,7 +111,10 @@ import { CookieStorage } from '@dxtmisha/functional-basic'
 CookieStorage.init(
   (key) => myStorage.get(key),
   undefined,
-  (key, value, options) => myStorage.set(key, value, options)
+  (key, value, cookie, options) => {
+    // cookie - это уже отформатированная строка типа "key=value; max-age=..."
+    myStorage.set(key, value, cookie, options)
+  }
 )
 ```
 
@@ -152,7 +160,10 @@ CookieStorage.init(
 CookieStorage.set('user', 'john', {
   age: 3600,           // 1 час
   sameSite: 'lax',     // Политика SameSite
-  arguments: ['Secure', 'Path=/'] // Дополнительные директивы
+  path: '/',           // Путь
+  secure: true,        // Только HTTPS
+  httpOnly: true,      // Защита от XSS (для SSR)
+  arguments: ['Priority=High'] // Дополнительные директивы
 })
 
 // Получение значения с преобразованием типа
