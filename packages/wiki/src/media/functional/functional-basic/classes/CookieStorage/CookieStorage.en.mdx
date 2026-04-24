@@ -50,7 +50,7 @@ Removes a cookie by setting an empty value and negative expiration. Equivalent t
 
 ### Configuration
 
-- `init(getListener, setListener)` — Initializes the storage with custom listeners for reading and writing data
+- `init(getListener?, getListenerRaw?, setListener?)` — Initializes the storage with custom listeners for reading and writing data
 - `reset()` — Resets the storage by clearing all in-memory items and removing listeners
 
 ### Auxiliary
@@ -105,7 +105,20 @@ import { CookieStorage } from '@dxtmisha/functional-basic'
 
 CookieStorage.init(
   (key) => myStorage.get(key),
+  undefined,
   (key, value, options) => myStorage.set(key, value, options)
+)
+```
+
+### Initialize for SSR (Raw)
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// For SSR, get all cookies as a raw string
+CookieStorage.init(
+  undefined,
+  () => request.headers.cookie
 )
 ```
 
@@ -131,6 +144,7 @@ import { CookieStorage } from '@dxtmisha/functional-basic'
 // Initialize with custom storage
 CookieStorage.init(
   (key) => redis.get(key),
+  undefined,
   (key, value, options) => redis.set(key, value, options)
 )
 

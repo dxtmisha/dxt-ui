@@ -1044,7 +1044,7 @@ function Z(e, t = X.provide) {
 	}, s = (...e) => t === X.provide ? de(n, void 0) || a(e) : (r || (t === X.local ? U.run(() => {
 		r = o(e);
 	}) : r = o(e)), r);
-	return t === X.global && lt().push(s), s;
+	return E() && t === X.global && lt().push(s), s;
 }
 function ut(e) {
 	return Z(e, X.global);
@@ -1056,6 +1056,7 @@ function ft(e) {
 	return Z(e, X.local);
 }
 function pt() {
+	if (!E()) return;
 	let e = lt();
 	e.forEach((e) => e()), e.length = 0;
 }

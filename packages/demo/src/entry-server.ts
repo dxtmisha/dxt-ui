@@ -1,6 +1,8 @@
 import { renderToString } from 'vue/server-renderer'
+import { uiServerStorage } from '@dxtmisha/nitro-basic/ui'
 import { createApp } from './main'
-import { random, ServerStorage } from '@dxtmisha/functional-basic'
+
+uiServerStorage()
 
 export default {
   async fetch(request: Request) {
@@ -13,11 +15,11 @@ export default {
       await router.isReady()
     }
 
-    ServerStorage.get('test' + random(100, 1000), () => ({}))
+    const ctx: any = {}
+    const appHtml = await renderToString(app, ctx)
+    const teleportsHtml = ctx.teleports ? Object.values(ctx.teleports).join('') : ''
 
-    const appHtml = await renderToString(app)
-
-    return new Response(appHtml, {
+    return new Response(`<div id="app">${appHtml}</div>${teleportsHtml}`, {
       headers: {
         'Content-Type': 'text/html;charset=UTF-8'
       }

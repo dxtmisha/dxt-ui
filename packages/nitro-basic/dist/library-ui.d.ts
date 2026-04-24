@@ -4,6 +4,8 @@ import { Router } from 'vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import { RouterOptions } from 'vue-router';
 
+export declare const NITRO_APP_STORAGE = "__ui_server_storage";
+
 /**
  * Configuration for basic Nitro initializations/
  * Конфигурация для базовых инициализаций Nitro
@@ -65,5 +67,20 @@ export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroApp
  * @param options router options/ опции маршрутизатора
  */
 export declare function uiCreateSsrRouter(routes: RouteRecordRaw[], options?: NitroAppRouterOptions): Router;
+
+/**
+ * Initializes the server-side storage for the application.
+ *
+ * This function sets up the global `ServerStorage` by providing a mechanism
+ * to retrieve the storage object from the Vue application context using `inject`.
+ * It looks for the `NITRO_APP_STORAGE` key.
+ *
+ * Инициализирует серверное хранилище для приложения.
+ *
+ * Эта функция настраивает глобальный `ServerStorage`, предоставляя механизм
+ * для получения объекта хранилища из контекста приложения Vue с помощью `inject`.
+ * Она ищет ключ `NITRO_APP_STORAGE`.
+ */
+export declare function uiServerStorage(): void;
 
 export { }

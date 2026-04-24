@@ -40,6 +40,9 @@ export class CookieStorage {
   /** Storage mechanism for getting data / механизм хранения для получения данных */
   protected static getListener?: (key: string) => any | undefined
 
+  /** Storage mechanism for getting raw data / механизм хранения для получения сырых данных */
+  protected static getListenerRaw?: () => string
+
   /** Storage mechanism for setting data / механизм хранения для сохранения данных */
   protected static setListener?: (
     key: string,
@@ -55,10 +58,12 @@ export class CookieStorage {
    * @param setListener Storage mechanism for setting data / механизм хранения для сохранения данных
    */
   static init(
-    getListener: (key: string) => any | undefined,
-    setListener: (key: string, value: any, options?: CookieOptions) => void
+    getListener?: (key: string) => any | undefined,
+    getListenerRaw?: () => string,
+    setListener?: (key: string, value: any, options?: CookieOptions) => void
   ): void {
     this.getListener = getListener
+    this.getListenerRaw = getListenerRaw
     this.setListener = setListener
   }
 
@@ -69,6 +74,7 @@ export class CookieStorage {
    */
   static reset(): void {
     this.getListener = undefined
+    this.getListenerRaw = undefined
     this.setListener = undefined
   }
 
@@ -84,9 +90,7 @@ export class CookieStorage {
     name: string,
     defaultValue?: T | (() => T)
   ): T | undefined {
-    const value = this.getListener
-      ? this.getListener(name)
-      : this.initItems()[name]
+    const value = this.getListener?.(name) ?? this.initItems()[name]
 
     if (
       value === undefined
@@ -177,28 +181,47 @@ export class CookieStorage {
   }
 
   /**
+   * Parses the cookie string into a key-value pair object.
+   *
+   * Разбирает строку cookie в объект пар ключ-значение.
+   * @param cookie cookie string / строка cookie
+   * @returns Record<string, any> parsed items / разобранные элементы
+   */
+  protected static parse(cookie: string): Record<string, any> {
+    const items: Record<string, any> = {}
+
+    for (const item of cookie.split(';')) {
+      const [key, value] = strSplit(item.trim(), '=', 2)
+
+      if (
+        key
+        && isFilled(value)
+      ) {
+        items[key] = value
+      }
+    }
+
+    return items
+  }
+
+  /**
    * Initialize storage if not initialized.
    *
    * Инициализирует хранилище, если оно не инициализировано.
    */
   protected static initItems(): Record<string, any> {
     return ServerStorage.get(SERVER_STORAGE_KEY, () => {
-      const items: Record<string, any> = {}
-
       if (this.hasDom()) {
-        for (const item of document.cookie.split(';')) {
-          const [key, value] = strSplit(item.trim(), '=', 2)
-
-          if (
-            key
-            && isFilled(value)
-          ) {
-            items[key] = value
-          }
-        }
+        return this.parse(document.cookie)
       }
 
-      return items
+      const raw = this.getListenerRaw?.()
+
+      if (isFilled(raw)) {
+        return this.parse(raw)
+      }
+
+      return {}
     })
   }
 

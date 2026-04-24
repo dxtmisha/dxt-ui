@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/getInject - Получение внедренного значения'/>
+
+# `getInject`
+
+Утилитарная функция, которая безопасно получает внедренное значение по имени из текущего экземпляра Vue-компонента. Если активного экземпляра компонента нет или значение не было предоставлено, функция возвращает `undefined`.
+
+**Параметры:**
+- `name: string` — Имя ключа внедрения.
+
+**Возвращает:**
+`T | undefined` — Внедренное значение, если оно существует, иначе `undefined`.
+
+```typescript
+import { provide } from 'vue'
+import { getInject } from '@dxtmisha/nitro-basic'
+
+provide('theme', 'dark')
+
+// Возвращает 'dark'
+const theme = getInject<string>('theme')
+
+// Возвращает undefined, если ключ отсутствует
+const language = getInject<string>('language')
+```
+

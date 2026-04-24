@@ -9,7 +9,7 @@ import { type CookieOptions, CookieStorage, isObjectNotArray } from '@dxtmisha/f
  * @param ageDefault Default cookie age in seconds / Срок жизни cookie по умолчанию в секундах
  * @param sameSiteDefault Default SameSite attribute / Атрибут SameSite по умолчанию
  */
-export function initCookieStorage(
+export function uiCookieStorage(
   event: H3Event,
   ageDefault: number = 7 * 24 * 60 * 60,
   sameSiteDefault: 'strict' | 'lax' = 'strict'

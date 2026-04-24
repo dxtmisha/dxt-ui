@@ -41,7 +41,7 @@ describe('CookieStorage', () => {
       const get = vi.fn()
       const set = vi.fn()
 
-      CookieStorage.init(get, set)
+      CookieStorage.init(get, undefined, set)
 
       expect((CookieStorage as any).getListener).toBe(get)
       expect((CookieStorage as any).setListener).toBe(set)
@@ -62,7 +62,7 @@ describe('CookieStorage', () => {
       const get = vi.fn().mockReturnValue('from-listener')
       const set = vi.fn()
 
-      CookieStorage.init(get, set)
+      CookieStorage.init(get, undefined, set)
 
       const result = CookieStorage.get('any-key')
 
@@ -167,7 +167,7 @@ describe('CookieStorage', () => {
   describe('reset', () => {
     it('should clear all items and listeners', () => {
       const get = vi.fn()
-      CookieStorage.init(get, vi.fn())
+      CookieStorage.init(get, undefined, vi.fn())
       CookieStorage.set('key', 'val')
 
       CookieStorage.reset()
@@ -185,7 +185,7 @@ describe('CookieStorage', () => {
         .mockReturnValueOnce('second')
       const customSet = vi.fn()
 
-      CookieStorage.init(customGet, customSet)
+      CookieStorage.init(customGet, undefined, customSet)
 
       const result1 = CookieStorage.get('key1')
       const result2 = CookieStorage.get('key2')
@@ -201,7 +201,7 @@ describe('CookieStorage', () => {
       const customGet = vi.fn()
       const customSet = vi.fn()
 
-      CookieStorage.init(customGet, customSet)
+      CookieStorage.init(customGet, undefined, customSet)
 
       CookieStorage.set('key1', 'value1', { age: 100 })
       CookieStorage.set('key2', 'value2', { sameSite: 'lax' })
@@ -217,10 +217,10 @@ describe('CookieStorage', () => {
       const secondGet = vi.fn().mockReturnValue('second')
       const secondSet = vi.fn()
 
-      CookieStorage.init(firstGet, firstSet)
+      CookieStorage.init(firstGet, undefined, firstSet)
       expect(CookieStorage.get('key')).toBe('first')
 
-      CookieStorage.init(secondGet, secondSet)
+      CookieStorage.init(secondGet, undefined, secondSet)
       expect(CookieStorage.get('key')).toBe('second')
 
       expect(firstGet).toHaveBeenCalledTimes(1)
@@ -336,6 +336,32 @@ describe('CookieStorage', () => {
 
       const afterUpdate = CookieStorage.get('ssrKey')
       expect(beforeUpdate).toBe(afterUpdate)
+    })
+  })
+
+  describe('getListenerRaw', () => {
+    it('should use getListenerRaw to initialize items when in non-DOM environment', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(false)
+      const raw = 'rawKey=rawValue; otherKey=otherValue'
+      const getRaw = vi.fn().mockReturnValue(raw)
+
+      CookieStorage.init(undefined, getRaw)
+
+      expect(CookieStorage.get('rawKey')).toBe('rawValue')
+      expect(CookieStorage.get('otherKey')).toBe('otherValue')
+      expect(getRaw).toHaveBeenCalled()
+    })
+
+    it('should ignore getListenerRaw if hasDom is true', () => {
+      vi.mocked(isDomRuntimeModule.isDomRuntime).mockReturnValue(true)
+      vi.mocked(isDomDataModule.isDomData).mockReturnValue(false)
+      document.cookie = 'domKey=domValue'
+      const getRaw = vi.fn().mockReturnValue('rawKey=rawValue')
+
+      CookieStorage.init(undefined, getRaw)
+
+      expect(CookieStorage.get('domKey')).toBe('domValue')
+      expect(CookieStorage.get('rawKey')).toBeUndefined()
     })
   })
 })

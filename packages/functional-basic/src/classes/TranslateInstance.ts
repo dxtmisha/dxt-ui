@@ -9,7 +9,13 @@ import { Api } from './Api'
 import { ErrorCenter } from './ErrorCenter'
 import { TranslateFile } from './TranslateFile'
 
-import { TRANSLATE_GLOBAL_PREFIX, TRANSLATE_TIME_OUT, type TranslateCode, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
+import {
+  TRANSLATE_GLOBAL_PREFIX,
+  TRANSLATE_TIME_OUT,
+  type TranslateCode,
+  type TranslateDataFile,
+  type TranslateList
+} from '../types/translateTypes'
 
 /**
  * Class for getting the translated text.

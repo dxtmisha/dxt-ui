@@ -1,8 +1,7 @@
 // Functions
 export * from './functions/initApiCache'
 export * from './functions/initBasic'
-export * from './functions/initCookieStorage'
-export * from './functions/initServerStorage'
+export * from './functions/uiCookieStorage.ts'
 
 // Types
 export * from './types/nitroAppTypes'

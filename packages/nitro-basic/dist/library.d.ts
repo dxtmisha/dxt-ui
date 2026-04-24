@@ -17,10 +17,10 @@ export declare function initApiCache(storageKey?: string, cacheStepAgeClearOld?:
  * Initialize basic functions for Nitro.
  *
  * Инициализация базовых функций для Nitro.
- * @param nitroApp Nitro application instance / Экземпляр приложения Nitro
+ * @param _ Nitro application instance / Экземпляр приложения Nitro
  * @param config Configuration / Конфигурация
  */
-export declare function initBasic<N extends NitroApp & Record<string, any> = NitroApp>(nitroApp: N, config?: NitroAppBasicConfig): void;
+export declare function initBasic<N extends NitroApp & Record<string, any> = NitroApp>(_: N, config?: NitroAppBasicConfig): void;
 
 /**
  * Initialize cookie storage.
@@ -32,13 +32,7 @@ export declare function initBasic<N extends NitroApp & Record<string, any> = Nit
  */
 export declare function initCookieStorage(event: H3Event, ageDefault?: number, sameSiteDefault?: 'strict' | 'lax'): void;
 
-/**
- * Initializes ServerStorage for Nitro.
- *
- * Инициализирует ServerStorage для Nitro.
- * Use useEvent().context as storage. / Использует useEvent().context в качестве хранилища.
- */
-export declare function initServerStorage(useEvent: () => any): void;
+export declare const NITRO_APP_STORAGE = "__ui_server_storage";
 
 /**
  * Configuration for basic Nitro initializations/

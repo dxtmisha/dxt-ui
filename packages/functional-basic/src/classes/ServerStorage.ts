@@ -18,8 +18,6 @@ const SERVER_STORAGE_KEY = '__ui:server-storage__'
 /** Server storage script id / Идентификатор скрипта серверного хранилища */
 const SERVER_STORAGE_ID = '__ui:server:storage:id__'
 
-const SERVER_STORAGE_PROP = '__ui_server_storage_prop'
-
 /**
  * Class for managing data storage during server-side rendering (SSR).
  * Handles data isolation between parallel requests by using a request-specific context.
@@ -28,31 +26,20 @@ const SERVER_STORAGE_PROP = '__ui_server_storage_prop'
  * Обеспечивает изоляцию данных между параллельными запросами, используя контекст конкретного запроса.
  */
 export class ServerStorage {
-  /**
-   * Internal storage instance for client-side or fallback usage/
-   * Внутренний экземпляр хранилища для использования на
-   * стороне клиента или в качестве запасного варианта
-   */
   protected static storage?: ServerStorageList
-
-  /**
-   * Flag to suppress context-related error messages/
-   * Флаг для подавления сообщений об ошибках, связанных с контекстом
-   */
+  protected static listener?: () => Record<string, any>
   protected static hideError?: boolean
 
   /**
    * Initializes the storage with a context listener.
-   * This is crucial for SSR to prevent data leaking between requests.
    *
    * Инициализирует хранилище слушателем контекста.
-   * Это критически важно для SSR, чтобы предотвратить утечку данных между запросами.
    * @param listener function that returns the current request context / функция, возвращающая контекст текущего запроса
    * @returns this instance / текущий класс
    */
   static init(listener: () => Record<string, any>) {
-    if (!(SERVER_STORAGE_PROP in globalThis)) {
-      (globalThis as any)[SERVER_STORAGE_PROP] = listener
+    if (!this.listener) {
+      this.listener = listener
     }
 
     return this
@@ -65,34 +52,29 @@ export class ServerStorage {
    */
   static reset(): void {
     this.storage = undefined
-
-    if (SERVER_STORAGE_PROP in globalThis) {
-      delete (globalThis as any)[SERVER_STORAGE_PROP]
-    }
+    this.listener = undefined
   }
 
   /**
-   * Checks if a value exists in storage for the current context.
+   * Checks if a value exists in storage.
    *
-   * Проверяет наличие значения в хранилище для текущего контекста.
+   * Проверяет наличие значения в хранилище.
    * @param key unique storage key / уникальный ключ хранилища
    * @returns boolean / логическое значение
    */
   static has(key: string): boolean {
-    const storage = this.getStorage(false)
+    const storage = this.getStorage()
 
     return key in storage
   }
 
   /**
-   * Retrieves a value from storage for the current context.
-   * If it doesn't exist, creates it using the default value factory.
+   * Retrieves a value from storage. If it doesn't exist, creates it using the default value factory.
    *
-   * Извлекает значение из хранилища для текущего контекста.
-   * Если оно не существует, создает его с помощью фабрики значений по умолчанию.
+   * Извлекает значение из хранилища. Если оно не существует, создает его с помощью фабрики значений по умолчанию.
    * @param key unique storage key / уникальный ключ хранилища
    * @param defaultValue function that returns the default value if not found / функция, возвращающая значение по умолчанию, если оно не найдено
-   * @param hydration whether the value should be serialized for the client / должно ли значение быть сериализовано для клиента
+   * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
    * @returns stored value / сохраненное значение
    */
   static get<T = any>(
@@ -114,12 +96,12 @@ export class ServerStorage {
   }
 
   /**
-   * Saves a value to storage for the current context.
+   * Saves a value to storage.
    *
-   * Сохраняет значение в хранилище для текущего контекста.
+   * Сохраняет значение в хранилище.
    * @param key unique storage key / уникальный ключ хранилища
    * @param value function that returns the value to save / функция, возвращающая значение для сохранения
-   * @param hydration whether the value should be serialized for the client / должно ли значение быть сериализовано для клиента
+   * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
    * @returns saved value / сохраненное значение
    */
   static set<T = any>(
@@ -172,33 +154,11 @@ export class ServerStorage {
   }
 
   /**
-   * Returns the current context listener.
-   * Checks for a listener in the local class state or globalThis.
+   * Returns storage.
    *
-   * Возвращает текущий слушатель контекста.
-   * Проверяет наличие слушателя в локальном состоянии класса или в globalThis.
-   * @returns listener function or undefined / функция-слушатель или undefined
-   */
-  protected static getListener(): (() => Record<string, any>) | undefined {
-    if (
-      SERVER_STORAGE_PROP in globalThis
-      && (globalThis as any)?.[SERVER_STORAGE_PROP] instanceof Function
-    ) {
-      return (globalThis as any)?.[SERVER_STORAGE_PROP]
-    }
-
-    return undefined
-  }
-
-  /**
-   * Returns the storage list for the current execution context.
-   * In the browser, it returns the shared storage.
-   * On the server, it attempts to retrieve the storage from the request-specific context.
-   *
-   * Возвращает список хранилища для текущего контекста выполнения.
-   * В браузере возвращает общее хранилище.
-   * На сервере пытается извлечь хранилище из контекста конкретного запроса.
-   * @param isInit whether to initialize the local fallback storage if context is missing / инициализировать ли локальное запасное хранилище, если контекст отсутствует
+   * Возвращает хранилище.
+   * @param isInit whether to initialize the storage if it does not exist /
+   * инициализировать ли хранилище, если оно не существует
    * @returns storage list / список хранилища
    */
   protected static getStorage(isInit: boolean = true): ServerStorageList {
@@ -206,7 +166,7 @@ export class ServerStorage {
       return this.getStorageDom()
     }
 
-    const context = this.getListener()?.()
+    const context = this.listener?.()
 
     if (!context) {
       if (!this.hideError) {

@@ -41,3 +41,5 @@ export interface NitroAppOptions extends FunctionalPluginOptions {
     options?: NitroAppRouterOptions
   }
 }
+
+export const NITRO_APP_STORAGE = '__ui_server_storage'

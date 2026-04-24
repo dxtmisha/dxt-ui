@@ -50,7 +50,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ### Конфигурация
 
-- `init(getListener, setListener)` — Инициализирует хранилище с пользовательскими слушателями для чтения и записи данных
+- `init(getListener?, getListenerRaw?, setListener?)` — Инициализирует хранилище с пользовательскими слушателями для чтения и записи данных
 - `reset()` — Сбрасывает хранилище, очищая все элементы в памяти и удаляя слушатели
 
 ### Вспомогательные
@@ -105,7 +105,20 @@ import { CookieStorage } from '@dxtmisha/functional-basic'
 
 CookieStorage.init(
   (key) => myStorage.get(key),
+  undefined,
   (key, value, options) => myStorage.set(key, value, options)
+)
+```
+
+### Инициализация для SSR (Raw)
+
+```typescript
+import { CookieStorage } from '@dxtmisha/functional-basic'
+
+// Для SSR получаем все куки в виде сырой строки
+CookieStorage.init(
+  undefined,
+  () => request.headers.cookie
 )
 ```
 
@@ -131,6 +144,7 @@ import { CookieStorage } from '@dxtmisha/functional-basic'
 // Инициализация с пользовательским хранилищем
 CookieStorage.init(
   (key) => redis.get(key),
+  undefined,
   (key, value, options) => redis.set(key, value, options)
 )
 

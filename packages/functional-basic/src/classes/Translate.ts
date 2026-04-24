@@ -1,6 +1,11 @@
 import { TranslateInstance } from './TranslateInstance'
 
-import { type TranslateCode, type TranslateConfig, type TranslateDataFile, type TranslateList } from '../types/translateTypes'
+import {
+  type TranslateCode,
+  type TranslateConfig,
+  type TranslateDataFile,
+  type TranslateList
+} from '../types/translateTypes'
 
 /**
  * Class for getting the translated text.

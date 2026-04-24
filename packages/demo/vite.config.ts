@@ -11,13 +11,6 @@ export default defineConfig(() => ({
     nitro({
       plugins: [
         './server/plugins/ui-plugin.ts'
-      ],
-      handlers: [
-        {
-          route: '/**',
-          middleware: true,
-          handler: './server/middleware/storage-bridge.ts'
-        }
       ]
     })
   ],

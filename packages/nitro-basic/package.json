@@ -28,9 +28,9 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
-    "./ui": {
-      "import": "./dist/library-ui.js",
-      "types": "./dist/library-ui.d.ts"
+    "./plugin": {
+      "import": "./dist/library-plugin.js",
+      "types": "./dist/library-plugin.d.ts"
     },
     "./style.css": "./dist/style.css",
     "./types/*": "./dist/*",

@@ -299,7 +299,7 @@ describe('Cookie', () => {
       const customGet = vi.fn().mockReturnValue('custom')
       const customSet = vi.fn()
 
-      CookieStorage.init(customGet, customSet)
+      CookieStorage.init(customGet, undefined, customSet)
 
       const cookie = new Cookie('custom')
       const result = cookie.get('default')

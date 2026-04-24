@@ -7908,21 +7908,14 @@ export declare class ServerStorage {
      */
     static toString(): string;
     /**
-     * Returns the current context listener.
-     * Checks for a listener in the local class state or globalThis.
-     *
-     * Возвращает текущий слушатель контекста.
-     * Проверяет наличие слушателя в локальном состоянии класса или в globalThis.
-     * @returns listener function or undefined / функция-слушатель или undefined
-     */
-    protected static getListener(): (() => Record<string, any>) | undefined;
-    /**
      * Returns storage.
      *
      * Возвращает хранилище.
+     * @param isInit whether to initialize the storage if it does not exist /
+     * инициализировать ли хранилище, если оно не существует
      * @returns storage list / список хранилища
      */
-    protected static getStorage(): ServerStorageList;
+    protected static getStorage(isInit?: boolean): ServerStorageList;
     /**
      * Returns storage from DOM.
      *

@@ -1,28 +1,40 @@
-import { isDomRuntime as e } from "@dxtmisha/functional-basic";
-import { createSSRApp as t } from "vue";
-import { dxtFunctionalPlugin as n } from "@dxtmisha/functional";
-import { createMemoryHistory as r, createRouter as i, createWebHistory as a } from "vue-router";
+import { t as e } from "./nitroAppTypes-BlLQoRNM.js";
+import { ServerStorage as t, isDomRuntime as n } from "@dxtmisha/functional-basic";
+import { createSSRApp as r, getCurrentInstance as i, inject as a } from "vue";
+import { dxtFunctionalPlugin as o } from "@dxtmisha/functional";
+import { createMemoryHistory as s, createRouter as c, createWebHistory as l } from "vue-router";
 //#region src/functions/uiCreateSsrRouter.ts
-function o(t, n = {}) {
-	return i({
-		...n,
-		history: e() ? a() : r(),
-		routes: t
+function u(e, t = {}) {
+	return c({
+		...t,
+		history: n() ? l() : s(),
+		routes: e
 	});
 }
 //#endregion
 //#region src/functions/uiCreateApp.ts
-function s(e, r = {}) {
-	let i = t(e), a;
-	if (r.router) a = r.router, i.use(r.router);
-	else if (r.appRouter) {
-		let e = o(r.appRouter.routes, r.appRouter.options);
-		i.use(e);
+function d(t, n = {}) {
+	let i = r(t), a;
+	if (n.router) a = n.router, i.use(n.router);
+	else if (n.appRouter) {
+		let t = u(n.appRouter.routes, n.appRouter.options);
+		i.provide(e, { storage: {} }), i.use(t);
 	}
-	return i.use(n, r), {
+	return i.use(o, n), {
 		app: i,
 		router: a
 	};
 }
 //#endregion
-export { s as uiCreateApp, o as uiCreateSsrRouter };
+//#region src/functions/uiServerStorage.ts
+function f() {
+	t.init(() => {
+		if (i()) {
+			let t = a(e);
+			if (t && t != null && t.storage) return t.storage;
+		}
+		return {};
+	});
+}
+//#endregion
+export { e as NITRO_APP_STORAGE, d as uiCreateApp, u as uiCreateSsrRouter, f as uiServerStorage };

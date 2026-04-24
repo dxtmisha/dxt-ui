@@ -6,7 +6,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import {
   Api,
   Translate,
-  Icons
+  Icons,
+  ErrorCenter
 } from '@dxtmisha/functional-basic'
 import { dxtFunctionalPlugin } from '../dxtFunctionalPlugin'
 import { useMeta } from '../../composables/ref/useMeta'
@@ -17,7 +18,9 @@ import * as executeUse from '../executeUse'
 vi.mock('@dxtmisha/functional-basic', () => ({
   Api: { setConfig: vi.fn() },
   Translate: { setConfig: vi.fn() },
-  Icons: { setConfig: vi.fn() }
+  Icons: { setConfig: vi.fn() },
+  ErrorCenter: { addList: vi.fn() },
+  initGetElementId: vi.fn()
 }))
 
 vi.mock('../../composables/ref/useMeta', () => ({
@@ -90,6 +93,12 @@ describe('dxtFunctionalPlugin', () => {
 
     dxtFunctionalPlugin?.install?.(appWithRouter, {})
     expect(RouterItemRef.set).toHaveBeenCalledWith(routerMock)
+  })
+
+  it('should call ErrorCenter.addList if errorCauses option is provided', () => {
+    const options = { errorCauses: { test: 'error' } as any }
+    dxtFunctionalPlugin?.install?.(appMock, options)
+    expect(ErrorCenter.addList).toHaveBeenCalledWith(options.errorCauses)
   })
 
   it('should call executeUseGlobalInit at the end', () => {
