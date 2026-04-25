@@ -8,7 +8,7 @@ import { getRequestUrl } from './getRequestUrl'
  * @param request HTTP request / HTTP запрос
  * @param router Vue router instance / Экземпляр маршрутизатора Vue
  */
-export async function initRouter(
+export async function initServerRouter(
   request: Request,
   router: Router | undefined
 ): Promise<void> {

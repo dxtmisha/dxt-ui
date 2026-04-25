@@ -1,4 +1,4 @@
-import { Api as e, ApiMethodItem as t, BroadcastMessage as n, Cookie as r, DataStorage as i, Datetime as a, ErrorCenter as o, EventItem as s, Formatters as c, Geo as l, GeoFlag as u, GeoIntl as d, Hash as f, Icons as p, Loading as m, Meta as h, ScrollbarWidth as g, SearchList as _, ServerStorage as v, Translate as y, executeFunction as b, executePromise as x, forEach as S, getColumn as C, getElementId as w, getExp as T, initGetElementId as ee, isApiSuccess as te, isArray as ne, isDomRuntime as E, isFunction as re, isObject as D, isObjectNotArray as O, isSelected as k, isString as A, random as ie, toArray as j, toCamelCase as ae, toDate as oe } from "@dxtmisha/functional-basic";
+import { Api as e, ApiMethodItem as t, BroadcastMessage as n, Cookie as r, DataStorage as i, Datetime as a, ErrorCenter as o, EventItem as s, Formatters as c, Geo as l, GeoFlag as u, GeoIntl as d, Hash as f, Icons as p, Loading as m, MetaStatic as h, ScrollbarWidth as g, SearchList as _, ServerStorage as v, Translate as y, executeFunction as b, executePromise as x, forEach as S, getColumn as C, getElementId as w, getExp as T, initGetElementId as ee, isApiSuccess as te, isArray as ne, isDomRuntime as E, isFunction as re, isObject as D, isObjectNotArray as O, isSelected as k, isString as A, random as ie, toArray as j, toCamelCase as ae, toDate as oe } from "@dxtmisha/functional-basic";
 import { computed as M, customRef as se, effectScope as ce, getCurrentInstance as le, h as ue, inject as de, isRef as N, onUnmounted as fe, provide as pe, ref as P, shallowRef as F, toRefs as me, triggerRef as he, useAttrs as ge, useId as _e, useSlots as ve, watch as I, watchEffect as ye } from "vue";
 export * from "@dxtmisha/functional-basic";
 //#endregion
@@ -750,7 +750,7 @@ function Be(t, n, r = !0, i, a, o, s = !0, c = e.getItem()) {
 					controller: m,
 					...u.value
 				});
-				t && (p.value = o == null ? void 0 : o(t), a ? l.value = a(t, p.value) : l.value = t);
+				console.log("response", t), t && (p.value = o == null ? void 0 : o(t), a ? l.value = a(t, p.value) : l.value = t);
 			} catch (e) {
 				l.value = void 0;
 			}
@@ -758,18 +758,25 @@ function Be(t, n, r = !0, i, a, o, s = !0, c = e.getItem()) {
 		} else l.value !== void 0 && (l.value = void 0);
 	}, v = () => {
 		g == null || g(), l.value = void 0, h = !0;
-	}, y = () => {
-		h && (h = !1, _().then(), s ? (b(), le() && fe(() => v())) : U.run(() => b()));
+	}, y = async () => {
+		if (h) {
+			if (h = !1, E()) _().then();
+			else {
+				await _(), console.log("item", l.value);
+				return;
+			}
+			s ? (b(), le() && fe(() => v())) : U.run(() => b());
+		}
 	}, b = () => {
 		let e = [];
 		r && e.push(u), N(t) && e.push(t), i && e.push(i), Y && e.push(Y), e.length > 0 && (g = I(e, async () => {
 			d.value || await _();
 		}));
-	}, x = M(() => (y(), l.value)), S = M(() => Array.isArray(l.value) ? l.value.length : +!!l.value), C = M(() => l.value === void 0);
+	}, x = M(() => (y().then(), l.value)), S = M(() => Array.isArray(l.value) ? l.value.length : +!!l.value), C = M(() => l.value === void 0);
 	return {
 		data: x,
 		get item() {
-			return y(), l;
+			return y().then(), l;
 		},
 		isResponseContractValid: M(() => {
 			var e;
@@ -1063,7 +1070,7 @@ function pt() {
 //#endregion
 //#region src/composables/ref/useMeta.ts
 var mt = ft(() => {
-	let e = new h(), t = P(e.getTitle()), n = P(e.getKeywords()), r = P(e.getDescription()), i = P(e.getImage()), a = P(e.getCanonical()), o = P(e.getRobots()), s = P(e.getAuthor()), c = P(e.getSiteName());
+	let e = h, t = P(e.getTitle()), n = P(e.getKeywords()), r = P(e.getDescription()), i = P(e.getImage()), a = P(e.getCanonical()), o = P(e.getRobots()), s = P(e.getAuthor()), c = P(e.getSiteName());
 	return I(t, () => {
 		e.setTitle(t.value);
 	}), I(n, () => {

@@ -1,4 +1,4 @@
-import { getCurrentInstance, inject } from 'vue'
+import { hasInjectionContext, inject } from 'vue'
 
 /**
  * Get injected value by name.
@@ -7,7 +7,7 @@ import { getCurrentInstance, inject } from 'vue'
  * @param name Key name / Имя ключа
  */
 export function getInject<T>(name: string): T | undefined {
-  if (getCurrentInstance()) {
+  if (hasInjectionContext()) {
     const item = inject<T>(name)
 
     if (item) {

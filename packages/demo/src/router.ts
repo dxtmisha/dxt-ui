@@ -1,7 +1,10 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 import DemoHome from './pages/DemoHome.vue'
-import DemoImage from './pages/DemoImage.vue'
+
+import DemoApi from './pages/DemoApi.vue'
+
+import DemoImage from './pages/components/DemoImage.vue'
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -10,8 +13,13 @@ export const routes: RouteRecordRaw[] = [
     component: DemoHome
   },
   {
-    path: '/image',
-    name: 'image',
+    path: '/test-api',
+    name: 'test-api',
+    component: DemoApi
+  },
+  {
+    path: '/component-image',
+    name: 'component-image',
     component: DemoImage
   }
 ]

@@ -57,6 +57,8 @@ export type ApiCacheList = Record<string, ApiCacheItem>
 export type ApiConfig = {
   /** Base URL for API requests/ Базовый URL для API-запросов */
   urlRoot?: string
+  /** Base origin for API requests (protocol and domain)/ Базовый источник для API-запросов (протокол и домен) */
+  origin?: string
   /** Default headers for API requests/ Заголовки по умолчанию для API-запросов */
   headers?: Record<string, string>
   /** Default request data for API requests/ Данные запроса по умолчанию для API-запросов */

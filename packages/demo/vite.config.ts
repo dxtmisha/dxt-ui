@@ -9,9 +9,7 @@ export default defineConfig(() => ({
     uiD1VitePlugin(),
     vue(),
     nitro({
-      plugins: [
-        './server/plugins/ui-plugin.ts'
-      ]
+      serverDir: './server'
     })
   ],
   build: {

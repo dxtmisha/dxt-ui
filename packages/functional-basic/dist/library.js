@@ -80,7 +80,7 @@ function l(e, t) {
 //#endregion
 //#region src/functions/isOnLine.ts
 function u() {
-	return typeof navigator > "u" || navigator.onLine;
+	return !s() || typeof navigator > "u" || navigator.onLine;
 }
 //#endregion
 //#region src/functions/isString.ts
@@ -216,7 +216,7 @@ var fe = class {
 		return n && n.handlers.forEach((t) => t(e)), this.toConsole(e), this;
 	}
 	toConsole(e) {
-		return console.error(`Error Center: ${e.code}`), console.error(e.message), this;
+		return console.error(`Error Center: ${e.code}`), console.error("Error Center/message: ", e.message), console.error("Error Center/details", e.details), this;
 	}
 }, pe = class {
 	constructor(e, t = new fe()) {
@@ -473,15 +473,17 @@ var C = class {
 		this.storage = void 0, this.listener = void 0;
 	}
 	static has(e) {
-		return e in this.getStorage();
+		return console.log("key:has", e), e in this.getStorage(void 0, `has:${e}`);
 	}
 	static get(e, t, n = !1) {
-		let r = this.getStorage();
+		console.log("key", e);
+		let r = this.getStorage(void 0, e);
 		if (e in r) return r[e].value;
 		if (t) return this.set(e, t, n);
 	}
 	static set(e, t, n = !1) {
-		let r = this.getStorage(), i = t();
+		console.log("set:key", e);
+		let r = this.getStorage(void 0, `'set:${e}'`), i = t();
 		return r[e] = {
 			value: i,
 			hydration: n
@@ -497,18 +499,19 @@ var C = class {
 	static toString() {
 		return he(ve, this.getDataForHydration());
 	}
-	static getStorage(e = !0) {
-		var t;
+	static getStorage(e = !0, t) {
+		var n;
 		if (s()) return this.getStorageDom();
-		let n = (t = this.listener) == null ? void 0 : t.call(this);
-		if (!n) {
-			var r;
+		let r = (n = this.listener) == null ? void 0 : n.call(this);
+		if (!r) {
+			var i;
 			return this.hideError || S.on({
 				group: "storage",
-				code: "context"
-			}), e && !this.storage && (this.storage = {}), (r = this.storage) == null ? {} : r;
+				code: "context",
+				details: { key: t }
+			}), e && !this.storage && (this.storage = {}), (i = this.storage) == null ? {} : i;
 		}
-		return _e in n || (n[_e] = {}), n[_e];
+		return _e in r || (r[_e] = {}), r[_e];
 	}
 	static getStorageDom() {
 		if (!this.storage) {
@@ -523,7 +526,8 @@ var C = class {
 		return this.storage;
 	}
 	static getDataForHydration() {
-		let e = this.getStorage(), t = {};
+		console.log("getDataForHydration");
+		let e = this.getStorage(void 0, "getDataForHydration"), t = {};
 		return r(e, (e, n) => {
 			e.hydration && (t[n] = e.value);
 		}), t;
@@ -1279,7 +1283,7 @@ var ze = "d-response-loading", Be = class {
 	}
 }, Ve = class {
 	constructor(e = "/api/", t = {}) {
-		x(this, "headers", void 0), x(this, "requestDefault", void 0), x(this, "status", void 0), x(this, "response", void 0), x(this, "preparation", void 0), x(this, "loading", void 0), x(this, "errorCenter", void 0), x(this, "hydration", void 0), x(this, "timeout", 16e3), this.url = e;
+		x(this, "headers", void 0), x(this, "requestDefault", void 0), x(this, "status", void 0), x(this, "response", void 0), x(this, "preparation", void 0), x(this, "loading", void 0), x(this, "errorCenter", void 0), x(this, "hydration", void 0), x(this, "timeout", 16e3), x(this, "origin", void 0), this.url = e;
 		let { headersClass: n = Pe, requestDefaultClass: r = Ne, statusClass: i = A, responseClass: a = Be, preparationClass: o = Le, loadingClass: s = O.getItem(), errorCenterClass: c = S.getItem(), hydrationClass: l = Ie } = t;
 		this.headers = new n(), this.requestDefault = new r(), this.status = new i(), this.response = new a(this.requestDefault), this.preparation = new o(), this.loading = s, this.errorCenter = c, this.hydration = new l(), this.hydration.initResponse(this.response);
 	}
@@ -1295,8 +1299,11 @@ var ze = "d-response-loading", Be = class {
 	getHydration() {
 		return this.hydration;
 	}
+	getOrigin() {
+		return this.origin && /^\//.test(this.url) ? `${this.origin}${this.url}` : this.url;
+	}
 	getUrl(e, t = !0) {
-		return `${t ? this.url : ""}${e}`.replace("{locale}", T.getLocation()).replace("{country}", T.getCountry()).replace("{language}", T.getLanguage());
+		return `${t ? this.getOrigin() : ""}${e}`.replace("{locale}", T.getLocation()).replace("{country}", T.getCountry()).replace("{language}", T.getLanguage());
 	}
 	getBody(e = {}, t = j.get) {
 		if (e instanceof FormData) return e;
@@ -1329,6 +1336,9 @@ var ze = "d-response-loading", Be = class {
 	}
 	setTimeout(e) {
 		return this.timeout = e, this;
+	}
+	setOrigin(e) {
+		return this.origin = e, this;
 	}
 	async request(e) {
 		return d(e) ? await this.fetch({ path: e }) : await this.fetch(e);
@@ -1500,6 +1510,9 @@ var ze = "d-response-loading", Be = class {
 	static getHydrationScript() {
 		return this.getItem().getHydrationScript();
 	}
+	static getOrigin() {
+		return this.getItem().getOrigin();
+	}
 	static getUrl(e, t = !0) {
 		return this.getItem().getUrl(e, t);
 	}
@@ -1527,8 +1540,11 @@ var ze = "d-response-loading", Be = class {
 	static setTimeout(e) {
 		this.getItem().setTimeout(e);
 	}
+	static setOrigin(e) {
+		this.getItem().setOrigin(e);
+	}
 	static setConfig(e) {
-		e && n(e) && (e.urlRoot && this.setUrl(e.urlRoot), e.headers && this.setHeaders(e.headers), e.requestDefault && this.setRequestDefault(e.requestDefault), e.preparation && this.setPreparation(e.preparation), e.end && this.setEnd(e.end), e.timeout && this.setTimeout(e.timeout));
+		e && n(e) && (e.urlRoot && this.setUrl(e.urlRoot), e.headers && this.setHeaders(e.headers), e.requestDefault && this.setRequestDefault(e.requestDefault), e.preparation && this.setPreparation(e.preparation), e.end && this.setEnd(e.end), e.timeout && this.setTimeout(e.timeout), e.origin && this.setOrigin(e.origin));
 	}
 	static async request(e) {
 		return this.getItem().request(e);

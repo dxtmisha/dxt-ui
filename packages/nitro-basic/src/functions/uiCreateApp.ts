@@ -23,10 +23,11 @@ export function uiCreateApp<A = any>(
     router = options.router
     app.use(options.router)
   } else if (options.appRouter) {
-    const router = uiCreateSsrRouter(
+    router = uiCreateSsrRouter(
       options.appRouter.routes,
       options.appRouter.options
     )
+
     app.use(router)
   }
 

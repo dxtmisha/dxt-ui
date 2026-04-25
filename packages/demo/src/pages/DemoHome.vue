@@ -3,7 +3,8 @@
 <template>
   <section>
     <h1>Test SSR</h1>
-    <router-link to="/image">Image</router-link>
+    <router-link :to="{ name: 'test-api' }">Api</router-link>
+    <router-link :to="{ name: 'component-image' }">Image</router-link>
   </section>
 </template>
 

@@ -31,8 +31,8 @@ import { GeoItemFull } from '@dxtmisha/functional-basic';
 import { IconsConfig } from '@dxtmisha/functional-basic';
 import { ItemList } from '@dxtmisha/functional-basic';
 import { ItemValue } from '@dxtmisha/functional-basic';
-import { Meta } from '@dxtmisha/functional-basic';
 import { MetaRobots } from '@dxtmisha/functional-basic';
+import { MetaStatic } from '@dxtmisha/functional-basic';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 import { NumberOrStringOrBoolean } from '@dxtmisha/functional-basic';
 import { NumberOrStringOrDate } from '@dxtmisha/functional-basic';
@@ -2397,7 +2397,7 @@ export declare interface UseApiRef<R> {
      *
      * Ручная инициализация
      */
-    init(): void;
+    init(): Promise<void>;
     /**
      * Default reset.
      *
@@ -2580,7 +2580,7 @@ export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
  * Использует паттерн singleton - все компоненты используют одно состояние мета-тегов.
  */
 export declare const useMeta: () => Readonly<{
-    meta: Meta;
+    meta: typeof MetaStatic;
     /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
     title: Ref<string, string>;
     /** Reactive keywords meta tag / Реактивный мета-тег keywords */
@@ -2609,10 +2609,10 @@ export declare const useMeta: () => Readonly<{
      * Устанавливает суффикс для заголовка страницы.
      * @param suffix Suffix to set / Суффикс для установки
      */
-    setSuffix: (suffix: string) => void;
+    setSuffix: (suffix: string) => typeof MetaStatic;
 } & {
     init(): Readonly<{
-        meta: Meta;
+        meta: typeof MetaStatic;
         /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */
         title: Ref<string, string>;
         /** Reactive keywords meta tag / Реактивный мета-тег keywords */
@@ -2641,7 +2641,7 @@ export declare const useMeta: () => Readonly<{
          * Устанавливает суффикс для заголовка страницы.
          * @param suffix Suffix to set / Суффикс для установки
          */
-        setSuffix: (suffix: string) => void;
+        setSuffix: (suffix: string) => typeof MetaStatic;
     }>;
     destroyExecute?(): void;
 }>;

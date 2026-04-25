@@ -1,7 +1,11 @@
 // export:none
 
 import { useStorage } from 'nitro/storage'
-import { ApiCache, type ApiCacheItem, ErrorCenter } from '@dxtmisha/functional-basic'
+import {
+  ApiCache,
+  type ApiCacheItem,
+  ErrorCenter
+} from '@dxtmisha/functional-basic'
 
 /**
  * Initialize api cache.

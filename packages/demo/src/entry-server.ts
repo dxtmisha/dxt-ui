@@ -1,13 +1,11 @@
-import { uiCreateServerApp } from '@dxtmisha/nitro-basic'
-import { uiCookieStorage, uiServerStorage } from '@dxtmisha/nitro-basic'
+import { uiCreateServerApp, uiBootstrapServer } from '@dxtmisha/nitro-basic'
 
 import { createApp } from './main'
 import template from './templates/main.html?raw'
 
 console.log('Server entry point initialized.')
 
-uiCookieStorage()
-uiServerStorage()
+uiBootstrapServer()
 
 export default {
   async fetch(request: Request) {
@@ -20,6 +18,7 @@ export default {
       app,
       request,
       router,
+      undefined,
       undefined,
       template
     )

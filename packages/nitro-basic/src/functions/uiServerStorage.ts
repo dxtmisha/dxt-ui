@@ -19,7 +19,6 @@ import { NITRO_APP_STORAGE } from '../types/nitroAppTypes'
 export function uiServerStorage() {
   ServerStorage.init(() => {
     const item = getInject<{ storage: Record<string, any> }>(NITRO_APP_STORAGE)
-
-    return item?.storage ?? {}
+    return item?.storage
   })
 }

@@ -14,12 +14,32 @@ import { SSRContext } from 'vue/server-renderer';
 export declare function getInject<T>(name: string): T | undefined;
 
 /**
+ * Gets the origin (protocol and domain) from the request URL.
+ *
+ * Получает источник (протокол и домен) из URL запроса.
+ * @param request HTTP request / HTTP запрос
+ */
+export declare function getRequestOrigin(request: Request): string;
+
+/**
  * Gets the pathname from the request URL.
  *
  * Получает путь из URL запроса.
  * @param request HTTP request / HTTP запрос
  */
 export declare function getRequestUrl(request: Request): string;
+
+export declare function initApi(request: Request): void;
+
+/**
+ * Waits for the initialization and readiness of the server-side router.
+ * This ensures that all components and initial hooks are resolved before the application is rendered into HTML.
+ *
+ * Ожидает инициализацию и готовность роутера на стороне сервера.
+ * Это гарантирует, что все компоненты и начальные хуки разрешены до того, как приложение будет отрисовано в HTML.
+ * @param router instance of Vue Router / экземпляр Vue Router
+ */
+export declare function initClientRouter(router: Router | undefined): Promise<void>;
 
 /**
  * Inits the cookie storage plugin for the application.
@@ -39,20 +59,20 @@ export declare function initCookieStorage<T>(app: App<T>, request: Request): voi
 export declare function initHeaders<T>(app: App<T>): void;
 
 /**
+ * Generate JSON scripts for hydration.
+ *
+ * Генерирует JSON-скрипты для гидратации.
+ */
+export declare function initScriptsJson(): string;
+
+/**
  * Initializes the router for the application.
  *
  * Инициализирует маршрутизатор в приложении.
  * @param request HTTP request / HTTP запрос
  * @param router Vue router instance / Экземпляр маршрутизатора Vue
  */
-export declare function initRouter(request: Request, router: Router | undefined): Promise<void>;
-
-/**
- * Generate JSON scripts for hydration.
- *
- * Генерирует JSON-скрипты для гидратации.
- */
-export declare function initScriptsJson(): string;
+export declare function initServerRouter(request: Request, router: Router | undefined): Promise<void>;
 
 /**
  * Inits the server storage plugin for the application.
@@ -129,6 +149,17 @@ export declare interface NitroAppOptions extends FunctionalPluginOptions {
 export declare type NitroAppRouterOptions = Partial<RouterOptions>;
 
 /**
+ * Global creation and initialization of components for the server environment.
+ * This method orchestrates various setup procedures to prepare the server for handling requests,
+ * such as configuring storage listeners and isolation handlers.
+ *
+ * Глобальное создание и инициализация компонентов для серверной среды.
+ * Этот метод координирует различные процедуры настройки для подготовки сервера к обработке запросов,
+ * такие как настройка слушателей хранилища и обработчиков изоляции.
+ */
+export declare function uiBootstrapServer(): void;
+
+/**
  * Initialize cookie storage.
  *
  * Инициализация хранилища cookie.
@@ -148,17 +179,34 @@ export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroApp
 };
 
 /**
+ * Finalizes the initialization and mount of the Vue application on the client side.
+ * It waits for the router to be ready to avoid hydration mismatches and then mounts the application
+ * to the specified container.
+ *
+ * Завершает инициализацию и монтирует приложение Vue на стороне клиента.
+ * Ожидает готовности роутера для предотвращения ошибок гидратации, после чего монтирует
+ * приложение в указанный контейнер.
+ *
+ * @param app current Vue application instance / текущий экземпляр приложения Vue
+ * @param rootContainer selector or element for mounting / селектор или элемент для монтирования
+ * @param router instance of Vue Router / экземпляр Vue Router
+ * @param action additional action to perform before mounting / дополнительное действие перед монтированием
+ */
+export declare function uiCreateClientApp<T>(app: App<T>, rootContainer?: string | T, router?: Router | undefined, action?: (app: App<T>) => Promise<void> | void): Promise<void>;
+
+/**
  * Initializes the server-side application, including storage, routing, and SSR rendering.
  *
  * Инициализирует серверное приложение, включая хранилища, роутинг и SSR-рендеринг.
  * @param app root component of the application / корневой компонент приложения
  * @param request incoming server request / входящий запрос сервера
  * @param router optional router instance / экземпляр роутера (опционально)
+ * @param action additional action to perform before rendering / дополнительное действие перед рендерингом
  * @param context SSR context for the renderer / контекст SSR для рендерера
  * @param body HTML template for substitution / HTML-шаблон для подстановки
  * @returns rendered application data and metadata / данные отрендеренного приложения и метаданные
  */
-export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, context?: SSRContext, body?: string): Promise<{
+export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, action?: (app: App<T>) => Promise<void> | void, context?: SSRContext, body?: string): Promise<{
     appHtml: string;
     teleportsHtml: string;
     context: SSRContext;

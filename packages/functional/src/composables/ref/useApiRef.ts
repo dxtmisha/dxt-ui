@@ -9,7 +9,13 @@ import {
   watch,
   type WatchHandle
 } from 'vue'
-import { Api, type ApiInstance, type ApiData, type ApiDataValidation } from '@dxtmisha/functional-basic'
+import {
+  Api,
+  type ApiInstance,
+  type ApiData,
+  type ApiDataValidation,
+  isDomRuntime
+} from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { getOptions } from '../../functions/getOptions'
@@ -87,7 +93,7 @@ export interface UseApiRef<R> {
    *
    * Ручная инициализация
    */
-  init(): void
+  init(): Promise<void>
 
   /**
    * Default reset.
@@ -194,6 +200,8 @@ export function useApiRef<
           ...request.value
         })
 
+        console.log('response', response)
+
         if (response) {
           responseValidationResult.value = validateResponseContract?.(response as T)
 
@@ -232,10 +240,17 @@ export function useApiRef<
    *
    * Ручная инициализация.
    */
-  const init = () => {
+  const init = async () => {
     if (first) {
       first = false
-      reset().then()
+
+      if (isDomRuntime()) {
+        reset().then()
+      } else {
+        await reset()
+        console.log('item', item.value)
+        return
+      }
 
       if (unmounted) {
         initWatch()
@@ -284,7 +299,7 @@ export function useApiRef<
 
   /** Reactive data (Computed) / Реактивные данные (Computed) */
   const data = computed(() => {
-    init()
+    init().then()
 
     return item.value
   })
@@ -309,7 +324,7 @@ export function useApiRef<
     data,
     /** Item (Ref) / Элемент (Ref) */
     get item() {
-      init()
+      init().then()
 
       return item
     },

@@ -32,7 +32,10 @@ export class Api {
    * @returns ApiInstance singleton / синглтон ApiInstance
    */
   static getItem(): ApiInstance {
-    return ServerStorage.get('__ui:api-instance__', () => new ApiInstance())
+    return ServerStorage.get(
+      '__ui:api-instance__',
+      () => new ApiInstance()
+    )
   }
 
   /**
@@ -73,6 +76,16 @@ export class Api {
    */
   static getHydrationScript(): string {
     return this.getItem().getHydrationScript()
+  }
+
+  /**
+   * Gets the base origin URL combined with the API path.
+   *
+   * Получает базовый URL источника, объединенный с путем API.
+   * @returns final base URL string / итоговая строка базового URL
+   */
+  static getOrigin(): string {
+    return this.getItem().getOrigin()
   }
 
   /**
@@ -186,6 +199,17 @@ export class Api {
   }
 
   /**
+   * Changes the origin (protocol and domain) for the base URL.
+   *
+   * Изменяет источник (протокол и домен) для базового URL.
+   * @param origin protocol and domain / протокол и домен
+   * @returns void / ничего не возвращает
+   */
+  static setOrigin(origin: string): void {
+    this.getItem().setOrigin(origin)
+  }
+
+  /**
    * Sets multiple API configuration options at once.
    *
    * Устанавливает несколько опций конфигурации API одновременно.
@@ -219,6 +243,10 @@ export class Api {
 
       if (config.timeout) {
         this.setTimeout(config.timeout)
+      }
+
+      if (config.origin) {
+        this.setOrigin(config.origin)
       }
     }
   }

@@ -1,7 +1,10 @@
+import { uiCreateClientApp } from '@dxtmisha/nitro-basic'
 import { createApp } from './main'
 
 const { app, router } = createApp()
 
-router
-  ?.isReady()
-  ?.then(() => app.mount('#app', true))
+uiCreateClientApp(
+  app,
+  undefined,
+  router
+)

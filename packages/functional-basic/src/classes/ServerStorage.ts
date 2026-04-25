@@ -29,7 +29,7 @@ console.log('ServerStorage')
  */
 export class ServerStorage {
   protected static storage?: ServerStorageList
-  protected static listener?: () => Record<string, any>
+  protected static listener?: () => Record<string, any> | undefined
   protected static hideError?: boolean
 
   /**
@@ -39,7 +39,7 @@ export class ServerStorage {
    * @param listener function that returns the current request context / функция, возвращающая контекст текущего запроса
    * @returns this instance / текущий класс
    */
-  static init(listener: () => Record<string, any>) {
+  static init(listener: () => Record<string, any> | undefined) {
     if (!this.listener) {
       this.listener = listener
     }
@@ -65,7 +65,7 @@ export class ServerStorage {
    * @returns boolean / логическое значение
    */
   static has(key: string): boolean {
-    const storage = this.getStorage()
+    const storage = this.getStorage(false, `has:${key}`)
 
     return key in storage
   }
@@ -84,7 +84,7 @@ export class ServerStorage {
     defaultValue?: () => T,
     hydration: boolean = false
   ): T {
-    const storage = this.getStorage()
+    const storage = this.getStorage(undefined, `get:${key}`)
 
     if (key in storage) {
       return storage[key].value as T
@@ -111,7 +111,7 @@ export class ServerStorage {
     value: () => T,
     hydration: boolean = false
   ): T {
-    const storage = this.getStorage()
+    const storage = this.getStorage(undefined, `set:${key}`)
     const newValue = value()
 
     storage[key] = {
@@ -161,9 +161,13 @@ export class ServerStorage {
    * Возвращает хранилище.
    * @param isInit whether to initialize the storage if it does not exist /
    * инициализировать ли хранилище, если оно не существует
+   * @param status optional status for error reporting / необязательный статус для отчета об ошибках
    * @returns storage list / список хранилища
    */
-  protected static getStorage(isInit: boolean = true): ServerStorageList {
+  protected static getStorage(
+    isInit: boolean = true,
+    status?: string
+  ): ServerStorageList {
     if (isDomRuntime()) {
       return this.getStorageDom()
     }
@@ -174,7 +178,8 @@ export class ServerStorage {
       if (!this.hideError) {
         ErrorCenter.on({
           group: 'storage',
-          code: 'context'
+          code: 'context',
+          details: { status }
         })
       }
 
@@ -225,7 +230,7 @@ export class ServerStorage {
    * @returns record of hydration data / запись данных гидратации
    */
   protected static getDataForHydration(): Record<string, any> {
-    const storage = this.getStorage()
+    const storage = this.getStorage(undefined, 'hydration')
     const dataForHydration: Record<string, any> = {}
 
     forEach(storage, (item, key) => {

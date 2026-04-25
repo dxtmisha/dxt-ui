@@ -117,7 +117,8 @@ export class ErrorCenterHandler {
     cause: ErrorCenterCauseItem
   ): this {
     console.error(`Error Center: ${cause.code}`)
-    console.error(cause.message)
+    console.error('Error Center/message: ', cause.message)
+    console.error('Error Center/details', cause.details)
 
     return this
   }

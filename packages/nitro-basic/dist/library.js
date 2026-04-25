@@ -1,4 +1,4 @@
-import { createSSRApp as e, getCurrentInstance as t, inject as n } from "vue";
+import { createSSRApp as e, hasInjectionContext as t, inject as n } from "vue";
 import { Api as r, CookieStorage as i, Geo as a, MetaStatic as o, ServerStorage as s, isDomRuntime as c } from "@dxtmisha/functional-basic";
 import { renderToString as l } from "vue/server-renderer";
 import { dxtFunctionalPlugin as u } from "@dxtmisha/functional";
@@ -24,39 +24,54 @@ function v(e) {
 	return t;
 }
 //#endregion
-//#region src/functions/getRequestUrl.ts
+//#region src/functions/getRequestOrigin.ts
 function y(e) {
+	return new URL(e.url).origin;
+}
+//#endregion
+//#region src/functions/getRequestUrl.ts
+function b(e) {
 	return new URL(e.url).pathname;
 }
 //#endregion
+//#region src/functions/initApi.ts
+function x(e) {
+	r.setOrigin(y(e)), console.log("getRequestOrigin(request)", y(e), r.getOrigin());
+}
+//#endregion
+//#region src/functions/initClientRouter.ts
+async function S(e) {
+	e && await e.isReady();
+}
+//#endregion
 //#region src/functions/initCookieStorage.ts
-function b(e, t) {
+function C(e, t) {
 	e.provide(g, t.headers.get("Cookie") || "");
 }
 //#endregion
 //#region src/functions/initHeaders.ts
-function x(e) {
+function w(e) {
 	let t = new Headers();
 	t.set("Content-Type", "text/html;charset=UTF-8"), e.provide(_, t);
 }
 //#endregion
-//#region src/functions/initRouter.ts
-async function S(e, t) {
-	t && (await t.push(y(e)), await t.isReady());
-}
-//#endregion
 //#region src/functions/initScriptsJson.ts
-function C() {
+function T() {
 	return [s.toString(), r.getHydration().toString()].join("");
 }
 //#endregion
+//#region src/functions/initServerRouter.ts
+async function E(e, t) {
+	t && (await t.push(b(e)), await t.isReady());
+}
+//#endregion
 //#region src/functions/initServerStorage.ts
-function w(e) {
-	e.provide(h, { storage: {} });
+function D(e) {
+	e.provide(h, { storage: {} }), console.log("initServerStorage");
 }
 //#endregion
 //#region src/functions/initSsrApp.ts
-async function T(e, t = {}) {
+async function O(e, t = {}) {
 	return {
 		appHtml: await l(e, t),
 		teleportsHtml: t.teleports ? Object.values(t.teleports).join("") : "",
@@ -65,7 +80,7 @@ async function T(e, t = {}) {
 }
 //#endregion
 //#region src/functions/uiCookieStorage.ts
-function E() {
+function k() {
 	i.init(void 0, () => {
 		var e;
 		return (e = m("__ui_server_cookie")) == null ? "" : e;
@@ -75,8 +90,21 @@ function E() {
 	});
 }
 //#endregion
+//#region src/functions/uiServerStorage.ts
+function A() {
+	s.init(() => {
+		let e = m(h);
+		return e == null ? void 0 : e.storage;
+	});
+}
+//#endregion
+//#region src/functions/uiBootstrapServer.ts
+function j() {
+	k(), A();
+}
+//#endregion
 //#region src/functions/uiCreateSsrRouter.ts
-function D(e, t = {}) {
+function M(e, t = {}) {
 	return f({
 		...t,
 		history: c() ? p() : d(),
@@ -85,41 +113,35 @@ function D(e, t = {}) {
 }
 //#endregion
 //#region src/functions/uiCreateApp.ts
-function O(t, n = {}) {
+function N(t, n = {}) {
 	let r = e(t), i;
-	if (n.router) i = n.router, r.use(n.router);
-	else if (n.appRouter) {
-		let e = D(n.appRouter.routes, n.appRouter.options);
-		r.use(e);
-	}
-	return r.use(u, n), {
+	return n.router ? (i = n.router, r.use(n.router)) : n.appRouter && (i = M(n.appRouter.routes, n.appRouter.options), r.use(i)), r.use(u, n), {
 		app: r,
 		router: i
 	};
 }
 //#endregion
-//#region src/functions/uiCreateServerApp.ts
-async function k(e, t, n, r = {}, i) {
-	x(e), b(e, t), w(e), await S(t, n);
-	let s = await T(e, r), c = v(), l = a.getStandard(), u = o.htmlTitle(), d = o.html(), f = C(), p;
-	return p = i ? i.replace("<!--ssr-lang-->", l).replace("<!--ssr-title-->", u).replace("<!--ssr-meta-->", d).replace("<!--ssr-scriptsJson-->", f).replace("<!--ssr-outlet-->", s.appHtml).replace("<!--ssr-teleports-->", s.teleportsHtml) : s.appHtml, {
-		headers: c,
-		lang: l,
-		title: u,
-		meta: d,
-		scriptsJson: f,
-		body: p,
-		...s
-	};
+//#region src/functions/uiCreateClientApp.ts
+async function P(e, t = "#app", n, r) {
+	await S(n), r && await r(e), t && e.mount(t, !0);
 }
 //#endregion
-//#region src/functions/uiServerStorage.ts
-function A() {
-	s.init(() => {
-		var e;
-		let t = m(h);
-		return (e = t == null ? void 0 : t.storage) == null ? {} : e;
+//#region src/functions/uiCreateServerApp.ts
+async function F(e, t, n, r, i = {}, s) {
+	w(e), D(e), C(e, t), e.runWithContext(() => x(t)), await E(t, n), r && await r(e);
+	let c = await O(e, i);
+	return e.runWithContext(() => {
+		let e = v(), t = a.getStandard(), n = o.htmlTitle(), r = o.html(), i = T(), l;
+		return l = s ? s.replace("<!--ssr-lang-->", t).replace("<!--ssr-title-->", n).replace("<!--ssr-meta-->", r).replace("<!--ssr-scriptsJson-->", i).replace("<!--ssr-outlet-->", c.appHtml).replace("<!--ssr-teleports-->", c.teleportsHtml) : c.appHtml, {
+			headers: e,
+			lang: t,
+			title: n,
+			meta: r,
+			scriptsJson: i,
+			body: l,
+			...c
+		};
 	});
 }
 //#endregion
-export { _ as NITRO_API_HEADERS, g as NITRO_APP_COOKIE, h as NITRO_APP_STORAGE, m as getInject, y as getRequestUrl, b as initCookieStorage, x as initHeaders, S as initRouter, C as initScriptsJson, w as initServerStorage, T as initSsrApp, E as uiCookieStorage, O as uiCreateApp, k as uiCreateServerApp, D as uiCreateSsrRouter, A as uiServerStorage, v as useHeaders };
+export { _ as NITRO_API_HEADERS, g as NITRO_APP_COOKIE, h as NITRO_APP_STORAGE, m as getInject, y as getRequestOrigin, b as getRequestUrl, x as initApi, S as initClientRouter, C as initCookieStorage, w as initHeaders, T as initScriptsJson, E as initServerRouter, D as initServerStorage, O as initSsrApp, j as uiBootstrapServer, k as uiCookieStorage, N as uiCreateApp, P as uiCreateClientApp, F as uiCreateServerApp, M as uiCreateSsrRouter, A as uiServerStorage, v as useHeaders };

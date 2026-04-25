@@ -80,6 +80,8 @@ export class ApiInstance {
   /** Timeout for the request in milliseconds / Таймаут запроса в миллисекундах */
   protected timeout: number = 16000
 
+  protected origin?: string
+
   /**
    * Constructor
    * @param url base path to the script / базовый путь к скрипту
@@ -155,6 +157,23 @@ export class ApiInstance {
   }
 
   /**
+   * Gets the base origin URL combined with the API path.
+   *
+   * Получает базовый URL источника, объединенный с путем API.
+   * @returns final base URL string / итоговая строка базового URL
+   */
+  getOrigin(): string {
+    if (
+      this.origin
+      && /^\//.test(this.url)
+    ) {
+      return `${this.origin}${this.url}`
+    }
+
+    return this.url
+  }
+
+  /**
    * Gets the full path to the request script.
    *
    * Получает полный путь к скрипту запроса.
@@ -163,7 +182,7 @@ export class ApiInstance {
    * @returns full URL / полный URL
    */
   getUrl(path: string, api: boolean = true): string {
-    return `${api ? this.url : ''}${path}`
+    return `${api ? this.getOrigin() : ''}${path}`
       .replace('{locale}', Geo.getLocation())
       .replace('{country}', Geo.getCountry())
       .replace('{language}', Geo.getLanguage())
@@ -298,6 +317,17 @@ export class ApiInstance {
    */
   setTimeout(timeout: number): this {
     this.timeout = timeout
+    return this
+  }
+
+  /**
+   * Changes the origin (protocol and domain) for the base URL.
+   *
+   * Изменяет источник (протокол и домен) для базового URL.
+   * @param origin protocol and domain / протокол и домен
+   */
+  setOrigin(origin: string): this {
+    this.origin = origin
     return this
   }
 

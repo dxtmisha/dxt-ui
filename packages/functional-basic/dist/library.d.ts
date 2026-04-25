@@ -70,6 +70,13 @@ export declare class Api {
      */
     static getHydrationScript(): string;
     /**
+     * Gets the base origin URL combined with the API path.
+     *
+     * Получает базовый URL источника, объединенный с путем API.
+     * @returns final base URL string / итоговая строка базового URL
+     */
+    static getOrigin(): string;
+    /**
      * Gets the full path to the request script.
      *
      * Получает полный путь к скрипту запроса.
@@ -145,6 +152,14 @@ export declare class Api {
      * @returns void / ничего не возвращает
      */
     static setTimeout(timeout: number): void;
+    /**
+     * Changes the origin (protocol and domain) for the base URL.
+     *
+     * Изменяет источник (протокол и домен) для базового URL.
+     * @param origin protocol and domain / протокол и домен
+     * @returns void / ничего не возвращает
+     */
+    static setOrigin(origin: string): void;
     /**
      * Sets multiple API configuration options at once.
      *
@@ -378,6 +393,8 @@ export declare type ApiCacheList = Record<string, ApiCacheItem>;
 export declare type ApiConfig = {
     /** Base URL for API requests/ Базовый URL для API-запросов */
     urlRoot?: string;
+    /** Base origin for API requests (protocol and domain)/ Базовый источник для API-запросов (протокол и домен) */
+    origin?: string;
     /** Default headers for API requests/ Заголовки по умолчанию для API-запросов */
     headers?: Record<string, string>;
     /** Default request data for API requests/ Данные запроса по умолчанию для API-запросов */
@@ -722,6 +739,7 @@ export declare class ApiInstance {
     protected hydration: ApiHydration;
     /** Timeout for the request in milliseconds / Таймаут запроса в миллисекундах */
     protected timeout: number;
+    protected origin?: string;
     /**
      * Constructor
      * @param url base path to the script / базовый путь к скрипту
@@ -756,6 +774,13 @@ export declare class ApiInstance {
      * @returns ApiHydration instance / экземпляр ApiHydration
      */
     getHydration(): ApiHydration;
+    /**
+     * Gets the base origin URL combined with the API path.
+     *
+     * Получает базовый URL источника, объединенный с путем API.
+     * @returns final base URL string / итоговая строка базового URL
+     */
+    getOrigin(): string;
     /**
      * Gets the full path to the request script.
      *
@@ -833,6 +858,13 @@ export declare class ApiInstance {
      * @param timeout timeout in milliseconds / таймаут в миллисекундах
      */
     setTimeout(timeout: number): this;
+    /**
+     * Changes the origin (protocol and domain) for the base URL.
+     *
+     * Изменяет источник (протокол и домен) для базового URL.
+     * @param origin protocol and domain / протокол и домен
+     */
+    setOrigin(origin: string): this;
     /**
      * Executes a request with the given path or configuration.
      *
@@ -7928,7 +7960,7 @@ export declare function secondToTime(second: number | string | undefined, hasHou
  */
 export declare class ServerStorage {
     protected static storage?: ServerStorageList;
-    protected static listener?: () => Record<string, any>;
+    protected static listener?: () => Record<string, any> | undefined;
     protected static hideError?: boolean;
     /**
      * Initializes the storage with a context listener.
@@ -7937,7 +7969,7 @@ export declare class ServerStorage {
      * @param listener function that returns the current request context / функция, возвращающая контекст текущего запроса
      * @returns this instance / текущий класс
      */
-    static init(listener: () => Record<string, any>): typeof ServerStorage;
+    static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
     /**
      * Resets the storage.
      *
@@ -8001,7 +8033,7 @@ export declare class ServerStorage {
      * инициализировать ли хранилище, если оно не существует
      * @returns storage list / список хранилища
      */
-    protected static getStorage(isInit?: boolean): ServerStorageList;
+    protected static getStorage(isInit?: boolean, key?: string): ServerStorageList;
     /**
      * Returns storage from DOM.
      *
