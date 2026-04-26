@@ -124,33 +124,41 @@ export class ApiResponse {
    * @returns emulated response or undefined / эмулированный ответ или undefined
    */
   async emulator<T>(apiFetch: ApiFetch): Promise<T | undefined> {
-    if (!isDomRuntime()) {
-      return undefined
+    const readData = this.readData(apiFetch)
+
+    if (readData) {
+      const {
+        path = '',
+        devMode = false
+      } = apiFetch
+
+      const read = (await this.fetch<T>(
+        readData.response,
+        readData.request
+      ))
+
+      if (this.isDevMode(devMode)) {
+        console.warn('Response data:', path, readData.request, read)
+      }
+
+      return read
     }
 
-    const {
-      path = '',
-      method = ApiMethodItem.get,
-      global = method === ApiMethodItem.get,
-      devMode = false
-    } = apiFetch
+    return undefined
+  }
 
-    if (
-      global
-      || this.isDevMode(devMode)
-    ) {
-      const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
-      const response = this.get(path, method, request, devMode)
+  /**
+   * Executes the emulator synchronously if available.
+   *
+   * Выполняет эмулятор синхронно, если доступно.
+   * @param apiFetch fetch configuration / конфигурация запроса
+   * @returns emulated response or undefined / эмулированный ответ или undefined
+   */
+  emulatorAsync<T>(apiFetch: ApiFetch): T | undefined {
+    const read = this.readData(apiFetch)
 
-      if (response) {
-        const read = (await this.fetch<T>(response, request))
-
-        if (this.isDevMode(devMode)) {
-          console.warn('Response data:', path, request, read)
-        }
-
-        return read
-      }
+    if (read) {
+      return this.fetchAsync<T>(read.response)
     }
 
     return undefined
@@ -243,6 +251,43 @@ export class ApiResponse {
   }
 
   /**
+   * Reads cached data configuration.
+   *
+   * Считывает конфигурацию кешированных данных.
+   * @param apiFetch fetch configuration / конфигурация запроса
+   * @returns object with response and request data or undefined / объект с данными ответа и запроса или undefined
+   */
+  protected readData(apiFetch: ApiFetch) {
+    if (!isDomRuntime()) {
+      return undefined
+    }
+
+    const {
+      path = '',
+      method = ApiMethodItem.get,
+      global = method === ApiMethodItem.get,
+      devMode = false
+    } = apiFetch
+
+    if (
+      global
+      || this.isDevMode(devMode)
+    ) {
+      const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
+      const response = this.get(path, method, request, devMode)
+
+      if (response) {
+        return {
+          response,
+          request
+        }
+      }
+    }
+
+    return undefined
+  }
+
+  /**
    * Emulates an execution request (internal fetch).
    *
    * Эмулирует запрос выполнения (внутренний fetch).
@@ -277,6 +322,17 @@ export class ApiResponse {
         }
       })
     })
+  }
+
+  /**
+   * Emulates an execution request synchronously (internal fetch).
+   *
+   * Эмулирует запрос выполнения синхронно (внутренний fetch).
+   * @param response response item for emulation / элемент ответа для эмуляции
+   * @returns emulated response data / эмулированные данные ответа
+   */
+  protected fetchAsync<T>(response: ApiResponseItem): T {
+    return response.response
   }
 
   /**

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-
+import { provide } from 'vue'
+provide('test', 'ok')
 </script>
 
 <template>

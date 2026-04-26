@@ -443,6 +443,8 @@ export class ApiInstance {
     retryCount: number = 0
   ): Promise<T> {
     const {
+      api = true,
+      path = '',
       hideError = false,
       hideLoading = false,
       retry = 0,
@@ -451,6 +453,8 @@ export class ApiInstance {
       globalEnd = true,
       endResetLimit = 8
     } = apiFetch
+
+    const pathToApi = this.getUrl(path, api)
 
     const emulator = await this.response.emulator<T>(apiFetch)
 
@@ -475,7 +479,7 @@ export class ApiInstance {
     try {
       await this.preparation.make(globalPreparation, apiFetch)
 
-      const { query, timeoutId } = await this.makeQuery(apiFetch)
+      const { query, timeoutId } = await this.makeQuery(apiFetch, pathToApi)
 
       if (timeoutId) {
         clearTimeout(timeoutId)
@@ -543,13 +547,15 @@ export class ApiInstance {
    *
    * Выполнение HTTP-запроса.
    * @param apiFetch fetch configuration / конфигурация запроса
+   * @param pathToApi base path to API / базовый путь к API
    * @returns object containing response and optional timeout ID / объект, содержащий ответ и опциональный ID таймера
    */
-  protected async makeQuery(apiFetch: ApiFetch): Promise<{ query: Response, timeoutId: any }> {
+  protected async makeQuery(
+    apiFetch: ApiFetch,
+    pathToApi: string
+  ): Promise<{ query: Response, timeoutId: any }> {
     const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
     const {
-      api = true,
-      path = '',
       pathFull = undefined,
       method = ApiMethodItem.get,
       headers = {},
@@ -557,7 +563,7 @@ export class ApiInstance {
       init = {}
     } = apiFetch
 
-    const pathFinal = pathFull ?? this.getUrl(path, api)
+    const pathFinal = pathFull ?? pathToApi
     const url = `${pathFinal}${this.getBodyForGet(request, pathFinal, method)}`
     const fetchHeaders = this.headers.getByRequest(apiFetch.request, headers, type)
     const fetchInit = {

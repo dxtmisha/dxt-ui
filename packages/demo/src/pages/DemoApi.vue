@@ -1,13 +1,12 @@
 <script  setup lang="ts">
-import { useApiRef } from '@dxtmisha/functional'
+import { useApiAsyncRef, Geo } from '@dxtmisha/functional'
 
-const { data, init } = useApiRef('hello')
-
-await init()
+const { data } = useApiAsyncRef('hello')
 </script>
 
 <template>
   <section>
+    {{ Geo.getLocation() }}
     <h1>Test Api</h1>
     {{ data }}
   </section>

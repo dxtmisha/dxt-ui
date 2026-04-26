@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useApiAsyncRef - Khởi tạo bất đồng bộ'/>
+
+# `useApiAsyncRef`
+
+`useApiAsyncRef` là một wrapper bất đồng bộ phía trên [`useApiRef`](./useApiRef.vi.mdx), thực hiện việc khởi tạo yêu cầu ngay lập tức.
+
+Khác với `useApiRef` tiêu chuẩn, vốn được khởi tạo "lười" (chỉ khi truy cập dữ liệu lần đầu), phương thức này gọi `init()` ngay lập tức.
+
+## Các tính năng chính
+- **Khởi tạo ngay lập tức** — kích hoạt yêu cầu ngay khi composable được gọi.
+- **Phục hồi đồng bộ** — nếu dữ liệu đã có trong cache, nó sẽ được phục hồi đồng bộ trước khi bắt đầu bất kỳ hành động không đồng bộ nào.
+- **Hỗ trợ SSR** — sử dụng `onServerPrefetch` để đảm bảo có dữ liệu trước khi render.
+
+## Tham số
+Các tham số hoàn toàn giống với `useApiRef`.
+
+- `path?: RefOrNormal<string | undefined>` — đường dẫn endpoint.
+- `options?: ApiOptions` — tùy chọn yêu cầu.
+- `reactivity?: boolean` — có bật tính phản ứng hay không.
+- `conditions?: RefType<boolean>` — điều kiện thực thi.
+- `transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>` — chuyển đổi dữ liệu.
+- `validateResponseContract?: (data: T) => ApiDataValidation` — xác thực hợp đồng dữ liệu.
+- `unmounted?: boolean` — có xóa khỏi cache khi unmount hay không.
+- `apiInstance?: ApiInstance` — instance của API.
+
+## Giá trị trả về
+Trả về đối tượng `UseApiRef<R>`. Cấu trúc của đối tượng `UseApiRef` hoàn toàn giống với giá trị trả về của [`useApiRef`](./useApiRef.vi.mdx).
+
+## Ví dụ
+
+```typescript
+import { useApiAsyncRef } from '@dxtmisha/functional'
+
+// khởi tạo kích hoạt ngay lập tức
+const { data, loading } = useApiAsyncRef(
+  'users/list',
+  { method: 'GET' }
+)
+```

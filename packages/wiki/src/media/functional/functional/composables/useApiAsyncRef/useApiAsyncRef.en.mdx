@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useApiAsyncRef - Async Initialization'/>
+
+# `useApiAsyncRef`
+
+`useApiAsyncRef` is an asynchronous wrapper over [`useApiRef`](./useApiRef.en.mdx) that performs immediate request initialization.
+
+Unlike the standard `useApiRef`, which is initialized "lazily" (on the first data access), this method calls `init()` immediately.
+
+## Key Features
+- **Immediate Initialization** — triggers the request as soon as the composable is called.
+- **Synchronous Recovery** — if the data is already in the cache, it is recovered synchronously before any asynchronous actions start.
+- **SSR Support** — utilizes `onServerPrefetch` to ensure data availability before rendering.
+
+## Parameters
+The parameters are identical to `useApiRef`.
+
+- `path?: RefOrNormal<string | undefined>` — the endpoint path.
+- `options?: ApiOptions` — request options.
+- `reactivity?: boolean` — whether to enable reactivity.
+- `conditions?: RefType<boolean>` — request conditions.
+- `transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>` — data transformation.
+- `validateResponseContract?: (data: T) => ApiDataValidation` — contract validation.
+- `unmounted?: boolean` — removal from cache on unmount.
+- `apiInstance?: ApiInstance` — API instance.
+
+## Return Value
+Returns the `UseApiRef<R>` object. The structure of the `UseApiRef` object is identical to the return value of [`useApiRef`](./useApiRef.en.mdx).
+
+## Example
+
+```typescript
+import { useApiAsyncRef } from '@dxtmisha/functional'
+
+// initialization triggers immediately
+const { data, loading } = useApiAsyncRef(
+  'users/list',
+  { method: 'GET' }
+)
+```
+
+

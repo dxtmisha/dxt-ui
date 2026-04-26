@@ -147,4 +147,27 @@ describe('ApiResponse', () => {
     const result = await apiResponse.emulator({ path: 'test' })
     expect(result).toBeUndefined()
   })
+
+  it('should emulate fetch synchronously using emulatorAsync', () => {
+    const item: ApiResponseItem = {
+      path: 'sync-test',
+      method: ApiMethodItem.get,
+      response: { sync: true }
+    }
+    apiResponse.add(item)
+
+    const result = apiResponse.emulatorAsync({
+      path: 'sync-test',
+      method: ApiMethodItem.get,
+      global: true
+    })
+
+    expect(result).toEqual({ sync: true })
+  })
+
+  it('should return undefined from emulatorAsync if not DomRuntime', () => {
+    isDomRuntimeSpy.mockReturnValue(false)
+    const result = apiResponse.emulatorAsync({ path: 'test' })
+    expect(result).toBeUndefined()
+  })
 })

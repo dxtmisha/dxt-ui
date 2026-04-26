@@ -41,6 +41,15 @@ const apiResponse = new ApiResponse(myApiDefault)
 
 **Возвращает:** `Promise<T | undefined>` — Данные эмулированного ответа.
 
+#### `emulatorAsync`
+
+Синхронная версия эмулятора. Возвращает мок-ответ немедленно, без задержек и состояния загрузки. Этот метод работает только в среде DOM.
+
+**Параметры:**
+- `apiFetch: ApiFetch` — Свойства запроса для эмуляции.
+
+**Возвращает:** `T | undefined` — Данные эмулированного ответа.
+
 ### Проверка
 
 - `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Синхронно проверяет наличие подходящего мок-запроса в кэше.

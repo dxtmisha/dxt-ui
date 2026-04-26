@@ -9,15 +9,50 @@ import { Api, ApiMethodItem, type ApiInstance } from '@dxtmisha/functional-basic
 
 describe('useApiRef', () => {
   let mockApiInstance: ApiInstance
+  let mockGetResponse: any
 
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetResponse = {
+      emulatorAsync: vi.fn()
+    }
     mockApiInstance = {
-      request: vi.fn()
+      request: vi.fn(),
+      getResponse: vi.fn().mockReturnValue(mockGetResponse)
     } as unknown as ApiInstance
 
     // Mock the default Api.getItem()
     vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
+  })
+
+  describe('recovery', () => {
+    it('should recover data from cache synchronously during init', async () => {
+      const cachedData = { data: 'cached' }
+      mockGetResponse.emulatorAsync.mockReturnValue(cachedData)
+
+      const { item, data } = useApiRef('test/path')
+
+      // recovery() is called inside init, and init is called inside getter of item/data
+      // In this setup, recovery() is also called at the end of useApiRef execution
+      expect(item.value).toEqual(cachedData)
+      expect(data.value).toEqual(cachedData)
+      expect(mockGetResponse.emulatorAsync).toHaveBeenCalled()
+    })
+
+    it('should NOT trigger reset if data was recovered from cache', async () => {
+      const cachedData = { data: 'cached' }
+      mockGetResponse.emulatorAsync.mockReturnValue(cachedData)
+
+      const { data } = useApiRef('test/path')
+
+      // Access data to trigger init
+      const value = data.value
+      expect(value).toEqual(cachedData)
+
+      await nextTick()
+      // Since item.value is now defined, init() should skip reset()
+      expect(mockApiInstance.request).not.toHaveBeenCalled()
+    })
   })
 
   describe('initialization', () => {
@@ -44,7 +79,11 @@ describe('useApiRef', () => {
     })
 
     it('should use custom apiInstance if provided', async () => {
-      const customInstance = { request: vi.fn() } as unknown as ApiInstance
+      const customGetResponse = { emulatorAsync: vi.fn() }
+      const customInstance = {
+        request: vi.fn(),
+        getResponse: vi.fn().mockReturnValue(customGetResponse)
+      } as unknown as ApiInstance
       vi.mocked(customInstance.request).mockResolvedValueOnce({ data: 'custom' })
 
       const { data } = useApiRef(
@@ -72,7 +111,7 @@ describe('useApiRef', () => {
       const pathRef = ref('initial/path')
 
       const apiRef = useApiRef(pathRef)
-      await apiRef.init(true) // Explicitly init with awaitFetch
+      apiRef.init() // Explicitly init with awaitFetch
 
       expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'initial/path' }))
 
@@ -90,7 +129,7 @@ describe('useApiRef', () => {
       const conditions = ref(false)
       const apiRef = useApiRef('test/path', undefined, true, conditions)
 
-      await apiRef.init(true)
+      apiRef.init()
       expect(mockApiInstance.request).not.toHaveBeenCalled()
     })
 
@@ -98,7 +137,7 @@ describe('useApiRef', () => {
       const conditions = ref(false)
       const apiRef = useApiRef('test/path', undefined, true, conditions)
 
-      await apiRef.init(true)
+      apiRef.init()
       expect(mockApiInstance.request).not.toHaveBeenCalled()
 
       conditions.value = true

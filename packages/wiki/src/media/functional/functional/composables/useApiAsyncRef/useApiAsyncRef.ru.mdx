@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useApiAsyncRef - Асинхронная инициализация'/>
+
+# `useApiAsyncRef`
+
+`useApiAsyncRef` — это асинхронная обертка над [`useApiRef`](./useApiRef.ru.mdx), которая выполняет немедленную инициализацию запроса.
+
+В отличие от стандартного `useApiRef`, который инициализируется "лениво" (при первом обращении к данным), этот метод вызывает `init()` сразу.
+
+## Ключевые особенности
+- **Немедленная инициализация** — запускает запрос сразу при вызове хука.
+- **Синхронное восстановление** — если данные уже есть в кэше, они восстанавливаются синхронно до начала любых асинхронных действий.
+- **Поддержка SSR** — использует `onServerPrefetch` для гарантии получения данных при серверном рендеринге.
+
+## Параметры
+Параметры полностью идентичны `useApiRef`.
+
+- `path?: RefOrNormal<string | undefined>` — путь к endpoint.
+- `options?: ApiOptions` — опции запроса.
+- `reactivity?: boolean` — включить ли реактивность.
+- `conditions?: RefType<boolean>` — условия выполнения запроса.
+- `transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>` — преобразование данных.
+- `validateResponseContract?: (data: T) => ApiDataValidation` — валидация контракта.
+- `unmounted?: boolean` — удаление из кэша при размонтировании.
+- `apiInstance?: ApiInstance` — экземпляр API.
+
+## Возвращаемое значение
+Возвращает объект `UseApiRef<R>`. Состав объекта `UseApiRef` полностью идентичен возвращаемому значению [`useApiRef`](./useApiRef.ru.mdx).
+
+## Пример
+
+```typescript
+import { useApiAsyncRef } from '@dxtmisha/functional'
+
+// Инициализация запускается немедленно
+const { data, loading } = useApiAsyncRef(
+  'users/list',
+  { method: 'GET' }
+)
+```
+
+

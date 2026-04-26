@@ -18,6 +18,7 @@ export * from './classes/ref/RouterItemRef'
 export * from './classes/ref/ScrollbarWidthRef'
 
 // Composables
+export * from './composables/ref/useApiAsyncRef'
 export * from './composables/ref/useApiDelete'
 export * from './composables/ref/useApiGet'
 export * from './composables/ref/useApiManagementRef'

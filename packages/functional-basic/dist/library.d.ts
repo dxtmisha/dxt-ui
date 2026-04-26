@@ -935,9 +935,10 @@ export declare class ApiInstance {
      *
      * Выполнение HTTP-запроса.
      * @param apiFetch fetch configuration / конфигурация запроса
+     * @param pathToApi base path to API / базовый путь к API
      * @returns object containing response and optional timeout ID / объект, содержащий ответ и опциональный ID таймера
      */
-    protected makeQuery(apiFetch: ApiFetch): Promise<{
+    protected makeQuery(apiFetch: ApiFetch, pathToApi: string): Promise<{
         query: Response;
         timeoutId: any;
     }>;
@@ -1156,6 +1157,14 @@ export declare class ApiResponse {
      */
     emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
     /**
+     * Executes the emulator synchronously if available.
+     *
+     * Выполняет эмулятор синхронно, если доступно.
+     * @param apiFetch fetch configuration / конфигурация запроса
+     * @returns emulated response or undefined / эмулированный ответ или undefined
+     */
+    emulatorAsync<T>(apiFetch: ApiFetch): T | undefined;
+    /**
      * Checks if the cached item is disabled.
      *
      * Проверяет, отключен ли кешированный элемент.
@@ -1199,6 +1208,17 @@ export declare class ApiResponse {
      */
     protected isResponse(item: ApiResponseItem, request?: ApiFetch['request']): boolean;
     /**
+     * Reads cached data configuration.
+     *
+     * Считывает конфигурацию кешированных данных.
+     * @param apiFetch fetch configuration / конфигурация запроса
+     * @returns object with response and request data or undefined / объект с данными ответа и запроса или undefined
+     */
+    protected readData(apiFetch: ApiFetch): {
+        response: ApiResponseItem;
+        request: string | Record<string, any> | FormData | undefined;
+    } | undefined;
+    /**
      * Emulates an execution request (internal fetch).
      *
      * Эмулирует запрос выполнения (внутренний fetch).
@@ -1207,6 +1227,14 @@ export declare class ApiResponse {
      * @returns Promise with emulated response data / Promise с эмулированными данными ответа
      */
     protected fetch<T>(response: ApiResponseItem, request?: ApiFetch['request']): Promise<T>;
+    /**
+     * Emulates an execution request synchronously (internal fetch).
+     *
+     * Эмулирует запрос выполнения синхронно (внутренний fetch).
+     * @param response response item for emulation / элемент ответа для эмуляции
+     * @returns emulated response data / эмулированные данные ответа
+     */
+    protected fetchAsync<T>(response: ApiResponseItem): T;
     /**
      * Enables loading for request emulation.
      *

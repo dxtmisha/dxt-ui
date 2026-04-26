@@ -41,6 +41,15 @@ Vòng lặp công cụ chính để xác thực các cấu hình yêu cầu và 
 
 **Trả về:** `Promise<T | undefined>` — Dữ liệu phản hồi đã giả lập.
 
+#### `emulatorAsync`
+
+Phiên bản đồng bộ của trình giả lập. Nó trả về phản hồi mock ngay lập tức mà không có bất kỳ độ trễ hoặc trạng thái tải nào. Phương thức này chỉ chạy trong môi trường DOM.
+
+**Tham số:**
+- `apiFetch: ApiFetch` — Các thuộc tính của yêu cầu cần giả lập.
+
+**Trả về:** `T | undefined` — Dữ liệu phản hồi đã giả lập.
+
 ### Kiểm tra
 
 - `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Kiểm tra đồng bộ một yêu cầu mock đã lưu khớp với các tham số.

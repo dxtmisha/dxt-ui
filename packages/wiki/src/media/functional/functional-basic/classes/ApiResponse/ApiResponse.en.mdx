@@ -41,6 +41,15 @@ Core engine loop that validates request configurations and executes matched rout
 
 **Returns:** `Promise<T | undefined>` — The emulated response data.
 
+#### `emulatorAsync`
+
+Synchronous version of the emulator. It returns the mock response immediately without any delay or loading state. This method only runs in DOM environments.
+
+**Parameters:**
+- `apiFetch: ApiFetch` — The properties of the request to emulate.
+
+**Returns:** `T | undefined` — The emulated response data.
+
 ### Check
 
 - `get(path: string, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined` — Synchronously checks for a matching cached mock request.

@@ -2,7 +2,7 @@ import {
   computed,
   type ComputedRef,
   getCurrentInstance,
-  isRef,
+  isRef, onServerPrefetch,
   onUnmounted,
   type Ref,
   ref,
@@ -14,6 +14,7 @@ import {
   type ApiInstance,
   type ApiData,
   type ApiDataValidation,
+  type ApiFetch,
   isDomRuntime
 } from '@dxtmisha/functional-basic'
 
@@ -93,7 +94,14 @@ export interface UseApiRef<R> {
    *
    * Ручная инициализация
    */
-  init(awaitFetch?: boolean): Promise<void>
+  init(): void
+
+  /**
+   * SSR initialization
+   *
+   * Инициализация SSR
+   */
+  initSsr(): void
 
   /**
    * Default reset.
@@ -171,6 +179,50 @@ export function useApiRef<
   let watchEnd: WatchHandle | undefined = undefined
 
   /**
+   * Checks whether all conditions for executing the request are met.
+   *
+   * Проверяет, соблюдены ли все условия для выполнения запроса.
+   * @returns returns true if all conditions are met / возвращает true, если все условия соблюдены
+   */
+  const isConditions = (): boolean => {
+    const pathValue = getRef(path)
+    return Boolean((!conditions || conditions.value) && pathValue)
+  }
+
+  /**
+   * Returns information for the request.
+   *
+   * Возвращает информацию для запроса.
+   * @returns object with request data / объект с данными запроса
+   */
+  const getApiFetch = (): ApiFetch => {
+    const pathValue = getRef(path)
+
+    return {
+      path: pathValue,
+      ...request.value
+    }
+  }
+
+  /**
+   * Recovers data from cache synchronously if available.
+   *
+   * Восстанавливает данные из кеша синхронно, если они доступны.
+   */
+  const recovery = () => {
+    if (
+      isDomRuntime()
+      && isConditions()
+    ) {
+      const data = apiInstance.getResponse().emulatorAsync<ApiData<R>>(getApiFetch())
+
+      if (data) {
+        item.value = data
+      }
+    }
+  }
+
+  /**
    * Data reload.
    *
    * Перезагрузка данных.
@@ -187,17 +239,14 @@ export function useApiRef<
     abortController = request.value.controller
       || new AbortController()
 
-    const pathValue = getRef(path)
-
-    if ((!conditions || conditions.value) && pathValue) {
+    if (isConditions()) {
       loading.value = true
       reading.value = true
 
       try {
         const response = await apiInstance.request<Record<string, any>>({
-          path: pathValue,
           controller: abortController,
-          ...request.value
+          ...getApiFetch()
         })
 
         if (response) {
@@ -238,34 +287,49 @@ export function useApiRef<
    *
    * Ручная инициализация.
    */
-  const init = async (awaitFetch: boolean = false) => {
+  const init = () => {
     if (first) {
       first = false
 
-      if (
-        isDomRuntime()
-        && awaitFetch
-      ) {
-        if (awaitFetch) {
-          await reset()
-        } else {
-          reset().then()
-        }
-      } else {
-        await reset()
+      if (!isDomRuntime()) {
         return
+      }
+
+      recovery()
+
+      if (item.value === undefined) {
+        reset().then()
       }
 
       if (unmounted) {
         initWatch()
-
-        if (getCurrentInstance()) {
-          onUnmounted(() => stop())
-        }
       } else {
         EffectScopeGlobal.run(() => initWatch())
       }
     }
+  }
+
+  if (
+    unmounted
+    && getCurrentInstance()
+  ) {
+    onUnmounted(() => stop())
+  }
+
+  /**
+   * SSR initialization.
+   *
+   * Инициализация SSR.
+   */
+  const initSsr = () => {
+    if (isDomRuntime()) {
+      return
+    }
+
+    onServerPrefetch(async () => {
+      first = false
+      await reset()
+    })
   }
 
   /**
@@ -303,7 +367,7 @@ export function useApiRef<
 
   /** Reactive data (Computed) / Реактивные данные (Computed) */
   const data = computed(() => {
-    init().then()
+    init()
 
     return item.value
   })
@@ -328,7 +392,7 @@ export function useApiRef<
     data,
     /** Item (Ref) / Элемент (Ref) */
     get item() {
-      init().then()
+      init()
 
       return item
     },
@@ -388,6 +452,12 @@ export function useApiRef<
      * Ручная инициализация
      */
     init,
+    /**
+     * SSR initialization
+     *
+     * Инициализация SSR
+     */
+    initSsr,
     /**
      * Default reset
      *

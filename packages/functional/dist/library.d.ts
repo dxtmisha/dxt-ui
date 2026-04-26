@@ -2147,6 +2147,21 @@ export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
 export declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
 /**
+ * Executes a request and immediately initializes it asynchronously.
+ *
+ * Выполняет запрос и сразу инициализирует его асинхронно.
+ * @param path path to request / путь к запросу
+ * @param options data for the request / данные для запроса
+ * @param reactivity should reactivity be enabled / включить ли reactivity
+ * @param conditions conditions for executing the request / условия выполнения запроса
+ * @param transformation transforms the received request / преобразовывает полученный запрос
+ * @param validateResponseContract function to validate response data contract / функция для проверки контракта данных ответа
+ * @param unmounted delete data from the cache / удалить ли данные из кеша
+ * @param apiInstance Api instance / Экземпляр Api
+ */
+export declare function useApiAsyncRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
+
+/**
  * Use API delete request.
  *
  * Использование API delete запроса.
@@ -2405,7 +2420,13 @@ export declare interface UseApiRef<R> {
      *
      * Ручная инициализация
      */
-    init(): Promise<void>;
+    init(): void;
+    /**
+     * SSR initialization
+     *
+     * Инициализация SSR
+     */
+    initSsr(): void;
     /**
      * Default reset.
      *
