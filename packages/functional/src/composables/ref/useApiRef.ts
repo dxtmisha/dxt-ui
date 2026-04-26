@@ -93,7 +93,7 @@ export interface UseApiRef<R> {
    *
    * Ручная инициализация
    */
-  init(): Promise<void>
+  init(awaitFetch?: boolean): Promise<void>
 
   /**
    * Default reset.
@@ -200,8 +200,6 @@ export function useApiRef<
           ...request.value
         })
 
-        console.log('response', response)
-
         if (response) {
           responseValidationResult.value = validateResponseContract?.(response as T)
 
@@ -240,15 +238,21 @@ export function useApiRef<
    *
    * Ручная инициализация.
    */
-  const init = async () => {
+  const init = async (awaitFetch: boolean = false) => {
     if (first) {
       first = false
 
-      if (isDomRuntime()) {
-        reset().then()
+      if (
+        isDomRuntime()
+        && awaitFetch
+      ) {
+        if (awaitFetch) {
+          await reset()
+        } else {
+          reset().then()
+        }
       } else {
         await reset()
-        console.log('item', item.value)
         return
       }
 

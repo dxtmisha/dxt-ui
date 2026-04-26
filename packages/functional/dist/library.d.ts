@@ -1481,6 +1481,14 @@ export declare function getClassName<T extends ItemList>(props?: T): string | un
 export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
 
 /**
+ * Get injected value by name.
+ *
+ * Получение внедренного значения по имени.
+ * @param name Key name / Имя ключа
+ */
+export declare function getInject<T>(name: string): T | undefined;
+
+/**
  * Get request options.
  *
  * Возвращает опции запроса.

@@ -74,10 +74,12 @@ Hỗ trợ phương pháp nối chuỗi (chaining methods) trả về đối tư
 - `setUrl(url: string): this` — Ghi đè định danh URL mặc định nhánh server API.
 - `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Thiết lập vòng lặp hook _ngay trước_ thời khắc thao tác diễn ra.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Thiết lập vòng lặp hook _sau_ khi tín hiệu mạng phản hồi trả về.
+- `setOrigin(origin: string): this` — Thiết lập nguồn (giao thức và tên miền) cho URL base.
 
 ### Phụ trợ
 
 - `getUrl(path: string, api?: boolean): string` — Tạo ra đường dẫn API đầy đủ, tự thay thế thẻ định danh quốc gia `{locale}`, `{country}` v.v...
+- `getOrigin(): string` — Trả về URL base đã kết hợp với đường dẫn API.
 - `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Hoán đổi tài liệu để form nạp JSON hoặc `FormData`.
 - `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Hoàn trả dữ liệu params cấu hình chuẩn cho thanh Search URL `GET`.
 
@@ -104,7 +106,8 @@ Hỗ trợ phương pháp nối chuỗi (chaining methods) trả về đối tư
 - `timeout?: number` — thời gian chờ yêu cầu tính bằng mili giây. Mặc định: `16000`ms.
 - `controller?: AbortController` — bộ điều khiển để hủy yêu cầu.
 - `retry?: number` — số lần thử lại khi thất bại.
-- `retryDelay?: number` — độ trễ cơ bản giữa các lần thử lại tính bằng mili giây. Mặc định: `64`ms.
+- `retryDelay?: number` — độ trễ cơ bản giữa các lần thử lại tính bằng mili giây. Mặc định: `64`ms. Jitter được sử dụng để ngăn chặn vấn đề thundering herd.
+- `endResetLimit?: number` — giới hạn đệ quy thử lại thông qua `setEnd` với `reset: true`. Mặc định: `8`.
 
 ## Cấu trúc dữ liệu phản hồi
 
@@ -191,7 +194,7 @@ Phương thức `setEnd` thiết lập một hàm callback được gọi sau kh
 - `apiFetch: ApiFetch` — đối tượng tham số đã dùng để thực hiện yêu cầu.
 
 **Trả về:** `Promise<ApiPreparationEnd>`. Đối tượng kết quả có thể chứa các trường sau:
-- `reset?: boolean` — nếu được đặt thành `true`, thư viện sẽ hủy chuỗi hiện tại và **thực hiện lại yêu cầu** (đệ quy) sau một khoảng trễ ngẫu nhiên (xem `retryDelay`). Toàn bộ quá trình chuẩn bị và thực thi sẽ được khởi động lại. Việc này được dùng để tự động xử lý quyền truy cập đã được làm mới.
+- `reset?: boolean` — nếu được đặt thành `true`, thư viện sẽ hủy chuỗi hiện tại và **thực hiện lại yêu cầu** (đệ quy) sau một khoảng trễ ngẫu nhiên (xem `retryDelay`). Toàn bộ quá trình chuẩn bị và thực thi sẽ được khởi động lại. Việc này được dùng để tự động xử lý quyền truy cập đã được làm mới. Quá trình đệ quy này được giới hạn bởi `endResetLimit` (mặc định: 8).
 - `data?: any` — cho phép bạn ghi đè dữ liệu mà phương thức API trả về. Nếu trường này được chỉ định, cơ chế đọc phản hồi tiêu chuẩn (JSON/văn bản) sẽ bị bỏ qua.
 
 ```javascript

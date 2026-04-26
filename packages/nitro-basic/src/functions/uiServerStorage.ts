@@ -1,6 +1,6 @@
 import { ServerStorage } from '@dxtmisha/functional-basic'
+import { getInject } from '@dxtmisha/functional'
 
-import { getInject } from './getInject'
 import { NITRO_APP_STORAGE } from '../types/nitroAppTypes'
 
 /**

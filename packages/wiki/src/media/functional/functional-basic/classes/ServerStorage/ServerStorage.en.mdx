@@ -52,6 +52,8 @@ Saves a value to the storage.
 
 - `init(listener: () => Record<string, any>): typeof ServerStorage` — Initializes the storage with a context listener. On the server, this listener should return an object unique to each request.
 - `has(key: string): boolean` — Checks for the existence of a key in the current context.
+- `remove(key: string): void` — Removes a value by key from the storage.
+- `setErrorStatus(hide: boolean): void` — Sets whether to hide context missing errors in the console/error center.
 - `reset(): void` — Resets the storage, clearing all stored data and the listener. Useful for performing cleanup.
 - `toString(): string` — Generates an HTML `<script type="application/json">` tag containing all data marked for hydration.
 
@@ -127,5 +129,3 @@ This method generates a special script tag:
   {"userSettings":{"fontSize":16}}
 </script>
 ```
-
-

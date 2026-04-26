@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useApiAsyncRef - Async Initialization'/>
+
+# `useApiAsyncRef`
+
+`useApiAsyncRef` is an asynchronous wrapper over [`useApiRef`](./useApiRef.en.mdx) that performs immediate request initialization.
+
+Unlike the standard `useApiRef`, which is initialized "lazily" (on the first data access), this method calls `init()` immediately and returns a `Promise` with the request management object.
+
+## When to Use
+- Inside `async setup()` to wait for data (`await`).
+- In Server-Side Rendering (SSR) to guarantee data availability before rendering.
+- When a request needs to be triggered immediately upon calling the method, without waiting for reactive variable access.
+
+## Parameters
+The parameters are almost identical to `useApiRef`, except for the added `awaitFetch`.
+
+- `path?: RefOrNormal<string | undefined>` — the endpoint path.
+- `options?: ApiOptions` — request options.
+- `awaitFetch?: boolean` — if `true` (default is `false` in code, but `true` is recommended when using `await`), the method will wait for the first request to complete before returning.
+- `reactivity?: boolean` — whether to enable reactivity.
+- `conditions?: RefType<boolean>` — execution conditions.
+- `transformation?: ...` — data transformation.
+- `validateResponseContract?: ...` — contract validation.
+- `unmounted?: boolean` — whether to clear from cache on unmount.
+- `apiInstance?: ApiInstance` — API instance.
+
+## Return Value
+Returns `Promise<UseApiRef<R>>`. The structure of the `UseApiRef` object is identical to the return value of [`useApiRef`](./useApiRef.en.mdx).
+
+## Example
+
+```typescript
+import { useApiAsyncRef } from '@dxtmisha/functional'
+
+// Inside async setup
+const { data, loading } = await useApiAsyncRef(
+  'users/list',
+  { method: 'GET' },
+  true // Wait for the request to complete
+)
+
+// At this point, the data is already loaded (if awaitFetch: true)
+console.log(data.value)
+```
+
+

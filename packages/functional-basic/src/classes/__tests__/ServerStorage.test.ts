@@ -54,6 +54,13 @@ describe('ServerStorage', () => {
       expect(ServerStorage.has('not-exists')).toBe(false)
     })
 
+    it('should remove values correctly', () => {
+      ServerStorage.set('to-be-removed', () => 'value')
+      expect(ServerStorage.has('to-be-removed')).toBe(true)
+      ServerStorage.remove('to-be-removed')
+      expect(ServerStorage.has('to-be-removed')).toBe(false)
+    })
+
     it('should use default value factory in get() if key is missing', () => {
       const defaultValue = 'default'
       const factory = vi.fn().mockReturnValue(defaultValue)

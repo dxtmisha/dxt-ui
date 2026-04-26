@@ -1,5 +1,5 @@
 import { inject, provide } from 'vue'
-import { isDomRuntime, random, ServerStorage } from '@dxtmisha/functional-basic'
+import { random, ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
 
@@ -196,22 +196,15 @@ export function executeUse<
         return initProvide(args)
       }
     } else if (!item) {
-      if (type === ExecuteUseType.local) {
-        EffectScopeGlobal.run(() => {
-          item = initItem(args)
-        })
-      } else {
+      EffectScopeGlobal.run(() => {
         item = initItem(args)
-      }
+      })
     }
 
     return item as RI
   }
 
-  if (
-    isDomRuntime()
-    && type === ExecuteUseType.global
-  ) {
+  if (type === ExecuteUseType.global) {
     getGlobalMethods().push(method)
   }
 
@@ -276,12 +269,7 @@ export function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R)
  * Инициализирует все глобальные callback.
  */
 export function executeUseGlobalInit() {
-  if (!isDomRuntime()) {
-    return
-  }
-
   const globalMethods = getGlobalMethods()
 
   globalMethods.forEach(method => method())
-  globalMethods.length = 0
 }

@@ -77,6 +77,94 @@ describe('ApiInstance', () => {
     expect(api.getBody('raw_string', ApiMethodItem.post)).toBe('raw_string')
   })
 
+  it('should handle origin and url correctly', () => {
+    const apiWithOrigin = new ApiInstance('/api/')
+    apiWithOrigin.setOrigin('https://example.com')
+    expect(apiWithOrigin.getOrigin()).toBe('https://example.com/api/')
+
+    // If url is not starting with /, origin is ignored in getOrigin (per current implementation)
+    const apiRelative = new ApiInstance('api/')
+    apiRelative.setOrigin('https://example.com')
+    expect(apiRelative.getOrigin()).toBe('api/')
+
+    expect(apiWithOrigin.getUrl('test')).toBe('https://example.com/api/test')
+    expect(apiWithOrigin.getUrl('test', false)).toBe('test')
+  })
+
+  it('should return hydration script', () => {
+    const script = api.getHydrationScript()
+    expect(script).toContain('<script')
+    expect(script).toContain('type="application/json"')
+  })
+
+  it('should respect retry and perform multiple retries until success', async () => {
+    fetchMock
+      .mockResolvedValueOnce(new Response(null, { status: 500 }))
+      .mockResolvedValueOnce(new Response(null, { status: 500 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ ok: true }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      }))
+
+    const promise = api.get<any>({
+      path: 'multi-retry',
+      retry: 2,
+      retryDelay: 10
+    })
+
+    await vi.runAllTimersAsync()
+    const result = await promise
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+    expect(result.ok).toBe(true)
+  })
+
+  it('should stop retrying after reaching endResetLimit', async () => {
+    // Mock endResetLimit by setting it via setEnd always returning reset: true
+    api.setEnd(async () => ({ reset: true }))
+    fetchMock.mockResolvedValue(new Response(null, { status: 500 }))
+
+    const promise = api.get({
+      path: 'infinite-reset',
+      retryDelay: 1,
+      endResetLimit: 3
+    })
+
+    await vi.runAllTimersAsync()
+    // It should try once + 3 resets = 4 times
+    try {
+      await promise
+    } catch (_) {
+      // ignore
+    }
+    expect(fetchMock).toHaveBeenCalledTimes(4)
+  })
+
+  it('should queue concurrent preparation calls', async () => {
+    let activePreps = 0
+    let maxConcurrentPreps = 0
+
+    // Fresh response for each fetch to avoid "Body has already been read"
+    fetchMock.mockImplementation(() => Promise.resolve(new Response(JSON.stringify({ data: { success: true } }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    })))
+
+    api.setPreparation(async () => {
+      activePreps++
+      maxConcurrentPreps = Math.max(maxConcurrentPreps, activePreps)
+      await new Promise(resolve => setTimeout(resolve, 100))
+      activePreps--
+    })
+
+    const p1 = api.get({ path: 'q1' })
+    const p2 = api.get({ path: 'q2' })
+
+    await vi.advanceTimersByTimeAsync(300)
+    await Promise.all([p1, p2])
+
+    expect(maxConcurrentPreps).toBe(1)
+  })
+
   it('should successfully execute GET request', async () => {
     // Re-create the mock inside the test if needed, but it's set in beforeEach
     const result = await api.get<any>({ path: 'test' })

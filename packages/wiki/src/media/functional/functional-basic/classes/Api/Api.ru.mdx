@@ -38,6 +38,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `setPreparation(callback): void` — Регистрирует хук, запускаемый перед каждым включенным запросом.
 - `setEnd(callback): void` — Регистрирует хук, запускаемый после каждого включенного ответа.
 - `setTimeout(timeout: number): void` — Изменяет глобальный таймаут запроса.
+- `setOrigin(origin: string): void` — Изменяет источник (протокол и домен) для базового URL.
 - `setConfig(config?: ApiConfig): void` — Применяет полный объект конфигурации.
 
 ### Вспомогательные
@@ -46,6 +47,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `getResponse(): ApiResponse` — Доступ к менеджеру ответов/эмуляции.
 - `getHydration(): ApiHydration` — Доступ к менеджеру гидратации.
 - `getHydrationScript(): string` — Возвращает блок скрипта для гидратации SSR-клиент.
+- `getOrigin(): string` — Возвращает базовый URL источника, объединенный с путем API.
 - `getUrl(path: string, api?: boolean): string` — Возвращает полностью разрешенный URL с подстановкой плейсхолдеров `{locale}`, `{country}`, `{language}`.
 - `getBody(request?, method?): string | FormData | undefined` — Подготавливает тело запроса.
 - `getBodyForGet(request, path?, method?): string` — Подготавливает строку запроса.
@@ -56,6 +58,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ### ApiConfig
 
 - `urlRoot: string` — базовый URL для API.
+- `origin: string` — протокол и домен для формирования базового URL.
 - `headers: Record<string, string>` — заголовки запроса по умолчанию.
 - `requestDefault: Record<string, any>` — данные запроса по умолчанию.
 - `preparation: (apiFetch: ApiFetch) => Promise<void>` — входной хук.

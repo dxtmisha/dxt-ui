@@ -463,9 +463,7 @@ function ge(e, t, n = !0) {
 }
 //#endregion
 //#region src/classes/ServerStorage.ts
-var _e = "__ui:server-storage__", ve = "__ui:server:storage:id__";
-console.log("ServerStorage");
-var C = class {
+var _e = "__ui:server-storage__", ve = "__ui:server:storage:id__", C = class {
 	static init(e) {
 		return this.listener || (this.listener = e), this;
 	}
@@ -473,17 +471,15 @@ var C = class {
 		this.storage = void 0, this.listener = void 0;
 	}
 	static has(e) {
-		return console.log("key:has", e), e in this.getStorage(void 0, `has:${e}`);
+		return e in this.getStorage(!1, `has:${e}`);
 	}
 	static get(e, t, n = !1) {
-		console.log("key", e);
-		let r = this.getStorage(void 0, e);
+		let r = this.getStorage(void 0, `get:${e}`);
 		if (e in r) return r[e].value;
 		if (t) return this.set(e, t, n);
 	}
 	static set(e, t, n = !1) {
-		console.log("set:key", e);
-		let r = this.getStorage(void 0, `'set:${e}'`), i = t();
+		let r = this.getStorage(void 0, `set:${e}`), i = t();
 		return r[e] = {
 			value: i,
 			hydration: n
@@ -508,7 +504,7 @@ var C = class {
 			return this.hideError || S.on({
 				group: "storage",
 				code: "context",
-				details: { key: t }
+				details: { status: t }
 			}), e && !this.storage && (this.storage = {}), (i = this.storage) == null ? {} : i;
 		}
 		return _e in r || (r[_e] = {}), r[_e];
@@ -526,8 +522,7 @@ var C = class {
 		return this.storage;
 	}
 	static getDataForHydration() {
-		console.log("getDataForHydration");
-		let e = this.getStorage(void 0, "getDataForHydration"), t = {};
+		let e = this.getStorage(void 0, "hydration"), t = {};
 		return r(e, (e, n) => {
 			e.hydration && (t[n] = e.value);
 		}), t;

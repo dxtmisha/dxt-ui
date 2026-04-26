@@ -23,6 +23,7 @@ import { ApiResponse } from './ApiResponse'
 
 import {
   type ApiFetch,
+  type ApiMethod,
   ApiMethodItem,
   type ApiPreparationEnd
 } from '../types/apiTypes'
@@ -198,7 +199,7 @@ export class ApiInstance {
    */
   getBody(
     request: ApiFetch['request'] = {},
-    method = ApiMethodItem.get
+    method: ApiMethod = ApiMethodItem.get
   ): string | FormData | undefined {
     if (request instanceof FormData) {
       return request
@@ -230,7 +231,7 @@ export class ApiInstance {
   getBodyForGet(
     request: ApiFetch['request'],
     path: string = '',
-    method = ApiMethodItem.get
+    method: ApiMethod = ApiMethodItem.get
   ): string {
     if (method === ApiMethodItem.get) {
       const type = path.match(/\?/) ? '&' : '?'

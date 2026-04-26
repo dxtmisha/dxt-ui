@@ -52,6 +52,8 @@ const theme = ServerStorage.get('theme') // 'dark'
 
 - `init(listener: () => Record<string, any>): typeof ServerStorage` — Инициализирует хранилище слушателем контекста. На сервере этот слушатель должен возвращать объект, уникальный для каждого запроса.
 - `has(key: string): boolean` — Проверяет наличие ключа в текущем контексте.
+- `remove(key: string): void` — Удаляет значение по ключу из хранилища.
+- `setErrorStatus(hide: boolean): void` — Устанавливает, нужно ли скрывать ошибки отсутствия контекста в консоли/центре ошибок.
 - `reset(): void` — Сбрасывает хранилище, очищая все сохраненные данные и слушателя. Полезно для выполнения очистки.
 - `toString(): string` — Генерирует HTML-тег `<script type="application/json">` со всеми данными, помеченными для гидратации.
 
@@ -127,5 +129,3 @@ ServerStorage.set('userSettings', () => ({ fontSize: 16 }), true)
   {"userSettings":{"fontSize":16}}
 </script>
 ```
-
-

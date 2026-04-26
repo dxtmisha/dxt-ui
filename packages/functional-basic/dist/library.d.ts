@@ -798,7 +798,7 @@ export declare class ApiInstance {
      * @param method HTTP method / HTTP метод
      * @returns body data for non-GET requests or FormData / данные тела для не-GET запросов или FormData
      */
-    getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
+    getBody(request?: ApiFetch['request'], method?: ApiMethod): string | FormData | undefined;
     /**
      * Gets query string for GET method requests.
      *
@@ -808,7 +808,7 @@ export declare class ApiInstance {
      * @param method HTTP method / HTTP метод
      * @returns query string with prefix (? or &) / строка запроса с префиксом (? или &)
      */
-    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
+    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethod): string;
     /**
      * Returns a string representation of the hydration data for the client.
      *
@@ -993,7 +993,7 @@ export declare type ApiInstanceOptions = {
  * Supported HTTP methods type/ Тип HTTP-методов
  * (derived from ApiMethodItem enum)/ (получен из перечисления ApiMethodItem)
  */
-export declare type ApiMethod = string & ApiMethodItem;
+export declare type ApiMethod = string | ApiMethodItem;
 
 /**
  * Supported HTTP methods for API requests.
@@ -8031,9 +8031,10 @@ export declare class ServerStorage {
      * Возвращает хранилище.
      * @param isInit whether to initialize the storage if it does not exist /
      * инициализировать ли хранилище, если оно не существует
+     * @param status optional status for error reporting / необязательный статус для отчета об ошибках
      * @returns storage list / список хранилища
      */
-    protected static getStorage(isInit?: boolean, key?: string): ServerStorageList;
+    protected static getStorage(isInit?: boolean, status?: string): ServerStorageList;
     /**
      * Returns storage from DOM.
      *

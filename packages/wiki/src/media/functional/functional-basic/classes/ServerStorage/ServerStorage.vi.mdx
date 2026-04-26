@@ -52,6 +52,8 @@ Lưu một giá trị vào kho lưu trữ.
 
 - `init(listener: () => Record<string, any>): typeof ServerStorage` — Khởi tạo kho lưu trữ với bộ lắng nghe ngữ cảnh. Trên máy chủ, bộ lắng nghe này sẽ trả về một đối tượng duy nhất cho mỗi yêu cầu.
 - `has(key: string): boolean` — Kiếm tra sự tồn tại của một khóa trong ngữ cảnh hiện tại.
+- `remove(key: string): void` — Xóa một giá trị theo khóa khỏi kho lưu trữ.
+- `setErrorStatus(hide: boolean): void` — Thiết lập việc ẩn lỗi thiếu ngữ cảnh trong bảng điều khiển hoặc trung tâm lỗi.
 - `reset(): void` — Đặt lại kho lưu trữ, xóa tất cả dữ liệu đã lưu và bộ lắng nghe. Hữu ích cho việc dọn dẹp.
 - `toString(): string` — Tạo một thẻ HTML `<script type="application/json">` chứa tất cả dữ liệu được đánh dấu để hydration.
 
@@ -127,5 +129,3 @@ Phương thức này tạo ra một thẻ script đặc biệt:
   {"userSettings":{"fontSize":16}}
 </script>
 ```
-
-

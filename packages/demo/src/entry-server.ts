@@ -1,4 +1,4 @@
-import { uiCreateServerApp, uiBootstrapServer } from '@dxtmisha/nitro-basic'
+import { uiBootstrapServer, uiCreateServerApp } from '@dxtmisha/nitro-basic'
 
 import { createApp } from './main'
 import template from './templates/main.html?raw'
@@ -9,7 +9,7 @@ uiBootstrapServer()
 
 export default {
   async fetch(request: Request) {
-    const { app, router } = createApp()
+    const { app, router, options } = createApp()
 
     const {
       headers,
@@ -18,6 +18,7 @@ export default {
       app,
       request,
       router,
+      options,
       undefined,
       undefined,
       template

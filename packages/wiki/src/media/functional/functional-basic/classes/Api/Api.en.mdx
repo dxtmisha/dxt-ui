@@ -38,6 +38,7 @@ Methods for performing physical network requests.
 - `setPreparation(callback): void` — Registers a hook to run before every enabled request.
 - `setEnd(callback): void` — Registers a hook to run after every enabled response.
 - `setTimeout(timeout: number): void` — Changes the global request timeout.
+- `setOrigin(origin: string): void` — Changes the origin (protocol and domain) for the base URL.
 - `setConfig(config?: ApiConfig): void` — Applies a complete configuration object.
 
 ### Auxiliary
@@ -46,6 +47,7 @@ Methods for performing physical network requests.
 - `getResponse(): ApiResponse` — Accesses the response/emulation manager.
 - `getHydration(): ApiHydration` — Accesses the hydration manager.
 - `getHydrationScript(): string` — Returns the script block for SSR-to-client hydration.
+- `getOrigin(): string` — Returns the base origin URL combined with the API path.
 - `getUrl(path: string, api?: boolean): string` — Returns the fully resolved URL with `{locale}`, `{country}`, `{language}` placeholder substitution.
 - `getBody(request, method?): string | FormData | undefined` — Prepares the request body.
 - `getBodyForGet(request, path?, method?): string` — Prepares the query string.
@@ -56,6 +58,7 @@ Methods for performing physical network requests.
 ### ApiConfig
 
 - `urlRoot: string` — the base URL for the API.
+- `origin: string` — protocol and domain for the base URL.
 - `headers: Record<string, string>` — default request headers.
 - `requestDefault: Record<string, any>` — default request data.
 - `preparation: (apiFetch: ApiFetch) => Promise<void>` — entry hook.

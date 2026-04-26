@@ -212,7 +212,7 @@ export type ApiHydrationList = ApiHydrationItem[]
  * Supported HTTP methods type/ Тип HTTP-методов
  * (derived from ApiMethodItem enum)/ (получен из перечисления ApiMethodItem)
  */
-export type ApiMethod = string & ApiMethodItem
+export type ApiMethod = string | ApiMethodItem
 
 /**
  * Result of global preparation/end hooks/ Результат глобальных хуков

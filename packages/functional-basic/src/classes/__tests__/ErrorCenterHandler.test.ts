@@ -44,7 +44,7 @@ describe('ErrorCenterHandler', () => {
 
     expect(callback).toHaveBeenCalledWith(cause)
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: ERR001')
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Test error')
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center/message: ', 'Test error')
   })
 
   it('should still log to the console if no handlers exist', () => {

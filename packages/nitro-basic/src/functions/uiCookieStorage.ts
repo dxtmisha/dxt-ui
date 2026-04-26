@@ -1,6 +1,6 @@
 import { CookieStorage } from '@dxtmisha/functional-basic'
+import { getInject } from '@dxtmisha/functional'
 
-import { getInject } from './getInject'
 import { useHeaders } from '../composables/useHeaders'
 import { NITRO_APP_COOKIE } from '../types/nitroAppTypes'
 

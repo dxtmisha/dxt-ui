@@ -1,6 +1,5 @@
 import { createSSRApp } from 'vue'
 import type { Router } from 'vue-router'
-import { dxtFunctionalPlugin } from '@dxtmisha/functional'
 
 import { uiCreateSsrRouter } from './uiCreateSsrRouter'
 import { type NitroAppOptions } from '../types/nitroAppTypes'
@@ -31,7 +30,9 @@ export function uiCreateApp<A = any>(
     app.use(router)
   }
 
-  app.use(dxtFunctionalPlugin, options)
-
-  return { app, router }
+  return {
+    app,
+    router,
+    options
+  }
 }

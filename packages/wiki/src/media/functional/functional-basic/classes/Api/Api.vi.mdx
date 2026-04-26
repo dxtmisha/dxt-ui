@@ -38,6 +38,7 @@ Các phương thức để thực hiện các yêu cầu mạng vật lý.
 - `setPreparation(callback): void` — Đăng ký một hook để chạy trước mỗi yêu cầu được bật.
 - `setEnd(callback): void` — Đăng ký một hook để chạy sau mỗi phản hồi được bật.
 - `setTimeout(timeout: number): void` — Thay đổi timeout yêu cầu toàn cục.
+- `setOrigin(origin: string): void` — Thay đổi nguồn (giao thức và tên miền) cho URL base.
 - `setConfig(config?: ApiConfig): void` — Áp dụng một đối tượng cấu hình đầy đủ.
 
 ### Phụ trợ
@@ -46,6 +47,7 @@ Các phương thức để thực hiện các yêu cầu mạng vật lý.
 - `getResponse(): ApiResponse` — Truy cập trình quản lý phản hồi/mô phỏng.
 - `getHydration(): ApiHydration` — Truy cập trình quản lý hydration.
 - `getHydrationScript(): string` — Trả về khối script để hydration từ SSR sang client.
+- `getOrigin(): string` — Trả về URL base đã kết hợp với đường dẫn API.
 - `getUrl(path: string, api?: boolean): string` — Trả về URL đã được phân giải đầy đủ với các token bản địa hóa.
 - `getBody(request?, method?): string | FormData | undefined` — Chuẩn bị body yêu cầu.
 - `getBodyForGet(request, path?, method?): string` — Chuẩn bị chuỗi truy vấn (query string).
@@ -56,6 +58,7 @@ Các phương thức để thực hiện các yêu cầu mạng vật lý.
 ### ApiConfig
 
 - `urlRoot: string` — URL base cho API.
+- `origin: string` — giao thức và tên miền cho URL base.
 - `headers: Record<string, string>` — các header yêu cầu mặc định.
 - `requestDefault: Record<string, any>` — dữ liệu yêu cầu mặc định.
 - `preparation: (apiFetch: ApiFetch) => Promise<void>` — hook đầu vào (entry hook).

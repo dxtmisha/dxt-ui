@@ -71,15 +71,15 @@ describe('useApiRef', () => {
       vi.mocked(mockApiInstance.request).mockResolvedValue({ data: 'response' })
       const pathRef = ref('initial/path')
 
-      const { data } = useApiRef(pathRef)
-      expect(data.value).toBeUndefined() // trigger init
+      const apiRef = useApiRef(pathRef)
+      await apiRef.init(true) // Explicitly init with awaitFetch
 
-      await nextTick()
       expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'initial/path' }))
 
       // Change path
       pathRef.value = 'new/path'
       await nextTick()
+      await new Promise(resolve => setTimeout(resolve, 0))
 
       expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'new/path' }))
     })
@@ -88,24 +88,22 @@ describe('useApiRef', () => {
   describe('conditions', () => {
     it('should not fetch if conditions are false after init', async () => {
       const conditions = ref(false)
-      const { data, reset } = useApiRef('test/path', undefined, true, conditions)
+      const apiRef = useApiRef('test/path', undefined, true, conditions)
 
-      expect(data.value).toBeUndefined() // Trigger init
-      await reset()
-
+      await apiRef.init(true)
       expect(mockApiInstance.request).not.toHaveBeenCalled()
     })
 
     it('should fetch when conditions become true after init', async () => {
       const conditions = ref(false)
-      const { data } = useApiRef('test/path', undefined, true, conditions)
+      const apiRef = useApiRef('test/path', undefined, true, conditions)
 
-      expect(data.value).toBeUndefined() // init
-      await nextTick()
+      await apiRef.init(true)
       expect(mockApiInstance.request).not.toHaveBeenCalled()
 
       conditions.value = true
       await nextTick()
+      await new Promise(resolve => setTimeout(resolve, 0))
 
       expect(mockApiInstance.request).toHaveBeenCalled()
     })

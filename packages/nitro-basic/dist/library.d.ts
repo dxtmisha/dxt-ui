@@ -6,14 +6,6 @@ import { RouterOptions } from 'vue-router';
 import { SSRContext } from 'vue/server-renderer';
 
 /**
- * Get injected value by name.
- *
- * Получение внедренного значения по имени.
- * @param name Key name / Имя ключа
- */
-export declare function getInject<T>(name: string): T | undefined;
-
-/**
  * Gets the origin (protocol and domain) from the request URL.
  *
  * Получает источник (протокол и домен) из URL запроса.
@@ -29,6 +21,14 @@ export declare function getRequestOrigin(request: Request): string;
  */
 export declare function getRequestUrl(request: Request): string;
 
+/**
+ * Initializes the API client for the current request.
+ * Sets the base origin to ensure correct absolute URLs for server-side requests.
+ *
+ * Инициализирует API-клиент для текущего запроса.
+ * Устанавливает базовый источник (origin) для обеспечения корректных абсолютных URL-адресов при запросах на стороне сервера.
+ * @param request incoming server request / входящий запрос сервера
+ */
 export declare function initApi(request: Request): void;
 
 /**
@@ -149,6 +149,15 @@ export declare interface NitroAppOptions extends FunctionalPluginOptions {
 export declare type NitroAppRouterOptions = Partial<RouterOptions>;
 
 /**
+ * Initializes the global unique identifier generator for elements.
+ * Uses Vue's `useId` to provide unique IDs during bootstrap.
+ *
+ * Инициализирует глобальный генератор уникальных идентификаторов для элементов.
+ * Использует Vue `useId` для предоставления уникальных идентификаторов во время начальной загрузки.
+ */
+export declare function uiBootstrapClient(): void;
+
+/**
  * Global creation and initialization of components for the server environment.
  * This method orchestrates various setup procedures to prepare the server for handling requests,
  * such as configuring storage listeners and isolation handlers.
@@ -176,6 +185,7 @@ export declare function uiCookieStorage(): void;
 export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroAppOptions): {
     app: App<Element>;
     router: Router | undefined;
+    options: NitroAppOptions;
 };
 
 /**
@@ -190,9 +200,10 @@ export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroApp
  * @param app current Vue application instance / текущий экземпляр приложения Vue
  * @param rootContainer selector or element for mounting / селектор или элемент для монтирования
  * @param router instance of Vue Router / экземпляр Vue Router
+ * @param options configuration options for the application / параметры конфигурации приложения
  * @param action additional action to perform before mounting / дополнительное действие перед монтированием
  */
-export declare function uiCreateClientApp<T>(app: App<T>, rootContainer?: string | T, router?: Router | undefined, action?: (app: App<T>) => Promise<void> | void): Promise<void>;
+export declare function uiCreateClientApp<T>(app: App<T>, rootContainer?: string | T, router?: Router | undefined, options?: NitroAppOptions, action?: (app: App<T>) => Promise<void> | void): Promise<void>;
 
 /**
  * Initializes the server-side application, including storage, routing, and SSR rendering.
@@ -201,12 +212,13 @@ export declare function uiCreateClientApp<T>(app: App<T>, rootContainer?: string
  * @param app root component of the application / корневой компонент приложения
  * @param request incoming server request / входящий запрос сервера
  * @param router optional router instance / экземпляр роутера (опционально)
+ * @param options configuration options for the application / параметры конфигурации приложения
  * @param action additional action to perform before rendering / дополнительное действие перед рендерингом
  * @param context SSR context for the renderer / контекст SSR для рендерера
  * @param body HTML template for substitution / HTML-шаблон для подстановки
  * @returns rendered application data and metadata / данные отрендеренного приложения и метаданные
  */
-export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, action?: (app: App<T>) => Promise<void> | void, context?: SSRContext, body?: string): Promise<{
+export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, options?: NitroAppOptions, action?: (app: App<T>) => Promise<void> | void, context?: SSRContext, body?: string): Promise<{
     appHtml: string;
     teleportsHtml: string;
     context: SSRContext;

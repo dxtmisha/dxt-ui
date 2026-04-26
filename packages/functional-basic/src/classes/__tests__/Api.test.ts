@@ -22,19 +22,25 @@ describe('Api', () => {
 
   it('should proxy config methods to instance', () => {
     const item = Api.getItem()
-    const setConfigSpy = vi.spyOn(item, 'setTimeout')
+    const setTimeoutSpy = vi.spyOn(item, 'setTimeout')
     const setUrlSpy = vi.spyOn(item, 'setUrl')
     const setHeadersSpy = vi.spyOn(item, 'setHeaders')
+    const setOriginSpy = vi.spyOn(item, 'setOrigin')
+    const setRequestDefaultSpy = vi.spyOn(item, 'setRequestDefault')
 
-    Api.setConfig(Api.getItem() as any) // No-op test
-    // We can directly test methods
-    item.setTimeout(100)
-    item.setUrl('/api/v2/')
-    item.setHeaders({ Authorization: 'Bearer test' })
+    Api.setConfig({
+      timeout: 100,
+      urlRoot: '/api/v2/',
+      headers: { Authorization: 'Bearer test' },
+      origin: 'https://example.com',
+      requestDefault: { def: 1 }
+    })
 
-    expect(setConfigSpy).toHaveBeenCalledWith(100)
+    expect(setTimeoutSpy).toHaveBeenCalledWith(100)
     expect(setUrlSpy).toHaveBeenCalledWith('/api/v2/')
     expect(setHeadersSpy).toHaveBeenCalledWith({ Authorization: 'Bearer test' })
+    expect(setOriginSpy).toHaveBeenCalledWith('https://example.com')
+    expect(setRequestDefaultSpy).toHaveBeenCalledWith({ def: 1 })
   })
 
   it('should have proxy HTTP methods', async () => {

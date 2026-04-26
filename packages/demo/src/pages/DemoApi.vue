@@ -1,14 +1,9 @@
-<script async setup lang="ts">
+<script  setup lang="ts">
 import { useApiRef } from '@dxtmisha/functional'
-import { watchEffect } from 'vue'
 
 const { data, init } = useApiRef('hello')
 
 await init()
-
-watchEffect(() => {
-  console.log('data', data.value)
-})
 </script>
 
 <template>

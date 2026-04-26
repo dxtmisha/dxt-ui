@@ -75,10 +75,12 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `setUrl(url: string): this` — Overwrites generic target URL configurations prefix points.
 - `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Connects a custom hook function actively running just _before_ execution trigger occurs.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Sets the hook triggered exactly _after_ network response returns.
+- `setOrigin(origin: string): this` — Sets the origin (protocol and domain) for the base URL.
 
 ### Auxiliary
 
 - `getUrl(path: string, api?: boolean): string` — Generates the full target URL referencing the script, handling `{locale}`, `{country}`, `{language}` placeholder substitution.
+- `getOrigin(): string` — Returns the base origin URL combined with the API path.
 - `getBody(request?: ApiFetch['request'], method?: string): string | FormData | undefined` — Creates data to be passed into the request physical body.
 - `getBodyForGet(request: ApiFetch['request'], path?: string, method?: string): string` — Forms query parameters specifically for HTTP arguments assigned into the URL directly used when sending `GET` queries.
 - `getHydration(): ApiHydration` — Returns the hydration manager.
@@ -107,7 +109,8 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `timeout?: number` — request timeout in milliseconds. Default: `16000`ms (only used if `controller` is not provided).
 - `controller?: AbortController` — controller for canceling the request. If provided, timeout is ignored.
 - `retry?: number` — number of retries on failure.
-- `retryDelay?: number` — base delay between retries in milliseconds. Default: `64`ms.
+- `retryDelay?: number` — base delay between retries in milliseconds. Default: `64`ms. Jitter is used to prevent thundering herd problems.
+- `endResetLimit?: number` — limit for recursive retries via `setEnd` with `reset: true`. Default: `8`.
 
 ## Response Data Structure
 
@@ -194,7 +197,7 @@ The `setEnd` method sets a callback function that is called after receiving a re
 - `apiFetch: ApiFetch` — the parameters object with which the request was performed.
 
 **Returns:** `Promise<ApiPreparationEnd>`. The result object can contain the following fields:
-- `reset?: boolean` — if set to `true`, the library will abort the current chain and **execute the request again** (recursively) after a jittered delay (see `retryDelay`). The entire process of preparation and execution will be restarted. This is used for automatic handling of refreshed access rights.
+- `reset?: boolean` — if set to `true`, the library will abort the current chain and **execute the request again** (recursively) after a jittered delay (see `retryDelay`). The entire process of preparation and execution will be restarted. This is used for automatic handling of refreshed access rights. This recursion is limited by `endResetLimit` (default: 8).
 - `data?: any` — allows you to override the data returned by the API method. If this field is specified, the standard response reading mechanism (JSON/text) will be ignored.
 
 ```javascript

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.5] - 2026-04-26
+
+### Added
+- **Api**: Added `setOrigin()` and `getOrigin()` methods for managing the protocol and domain of the base URL.
+- **Api**: Added `setConfig()` method for bulk configuration of API settings.
+- **Api**: Added support for `endResetLimit` in `ApiFetch` to control recursive retries via `setEnd`.
+- **Api**: Added support for jittered retry delays to prevent request thundering herds.
+- **ServerStorage**: Added `remove()` method for deleting items from storage.
+- **ServerStorage**: Added `setErrorStatus()` method to toggle visibility of context-missing errors.
+
 ## [1.1.4] - 2026-04-25
 
 ### Added

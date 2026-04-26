@@ -1,4 +1,4 @@
-import { getInject } from '../functions/getInject'
+import { getInject } from '@dxtmisha/functional'
 import { NITRO_API_HEADERS } from '../types/nitroAppTypes'
 
 /**

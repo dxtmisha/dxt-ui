@@ -1,10 +1,12 @@
-import { uiCreateClientApp } from '@dxtmisha/nitro-basic'
+import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic'
 import { createApp } from './main'
 
-const { app, router } = createApp()
+const { app, router, options } = createApp()
 
+uiBootstrapClient()
 uiCreateClientApp(
   app,
   undefined,
-  router
+  router,
+  options
 )
