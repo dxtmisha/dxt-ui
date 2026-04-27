@@ -1,5 +1,5 @@
 import { t as e } from "./defineProperty-149Ahniv.js";
-import { t } from "./wikiDescriptions-JCtBmL8d.js";
+import { t } from "./wikiDescriptions-BZUZKBrK.js";
 import { Geo as n, executeFunction as ee, isObjectNotArray as te } from "@dxtmisha/functional";
 import "react";
 import { Canvas as r, Controls as ne, Source as i, Subtitle as re, Title as ie } from "@storybook/addon-docs/blocks";
@@ -1918,7 +1918,7 @@ function Qe(e = {}) {
 }
 //#endregion
 //#region src/media/mdx/slot/control.ru.mdx
-function $(e) {
+function $e(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -1931,16 +1931,16 @@ function $(e) {
 		"\n"
 	] });
 }
-function $e(e = {}) {
+function et(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o($, { ...e })
-	}) : $(e);
+		children: o($e, { ...e })
+	}) : $e(e);
 }
 //#endregion
 //#region src/media/mdx/slot/default.en.mdx
-function et(e) {
+function tt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -1953,16 +1953,16 @@ function et(e) {
 		"\n"
 	] });
 }
-function tt(e = {}) {
+function nt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(et, { ...e })
-	}) : et(e);
+		children: o(tt, { ...e })
+	}) : tt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/default.ru.mdx
-function nt(e) {
+function rt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -1975,16 +1975,16 @@ function nt(e) {
 		"\n"
 	] });
 }
-function rt(e = {}) {
+function it(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nt, { ...e })
-	}) : nt(e);
+		children: o(rt, { ...e })
+	}) : rt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/description.en.mdx
-function it(e) {
+function at(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -1997,16 +1997,16 @@ function it(e) {
 		"\n"
 	] });
 }
-function at(e = {}) {
+function ot(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(it, { ...e })
-	}) : it(e);
+		children: o(at, { ...e })
+	}) : at(e);
 }
 //#endregion
 //#region src/media/mdx/slot/description.ru.mdx
-function ot(e) {
+function st(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2019,16 +2019,16 @@ function ot(e) {
 		"\n"
 	] });
 }
-function st(e = {}) {
+function ct(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ot, { ...e })
-	}) : ot(e);
+		children: o(st, { ...e })
+	}) : st(e);
 }
 //#endregion
 //#region src/media/mdx/slot/footer.en.mdx
-function ct(e) {
+function lt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2041,16 +2041,16 @@ function ct(e) {
 		"\n"
 	] });
 }
-function lt(e = {}) {
+function ut(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ct, { ...e })
-	}) : ct(e);
+		children: o(lt, { ...e })
+	}) : lt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/footer.ru.mdx
-function ut(e) {
+function dt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2063,16 +2063,16 @@ function ut(e) {
 		"\n"
 	] });
 }
-function dt(e = {}) {
+function ft(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ut, { ...e })
-	}) : ut(e);
+		children: o(dt, { ...e })
+	}) : dt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/headline.en.mdx
-function ft(e) {
+function pt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2085,16 +2085,16 @@ function ft(e) {
 		"\n"
 	] });
 }
-function pt(e = {}) {
+function mt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ft, { ...e })
-	}) : ft(e);
+		children: o(pt, { ...e })
+	}) : pt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/headline.ru.mdx
-function mt(e) {
+function ht(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2107,16 +2107,16 @@ function mt(e) {
 		"\n"
 	] });
 }
-function ht(e = {}) {
+function gt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(mt, { ...e })
-	}) : mt(e);
+		children: o(ht, { ...e })
+	}) : ht(e);
 }
 //#endregion
 //#region src/media/mdx/slot/label.en.mdx
-function gt(e) {
+function _t(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2129,16 +2129,16 @@ function gt(e) {
 		"\n"
 	] });
 }
-function _t(e = {}) {
+function vt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(gt, { ...e })
-	}) : gt(e);
+		children: o(_t, { ...e })
+	}) : _t(e);
 }
 //#endregion
 //#region src/media/mdx/slot/label.ru.mdx
-function vt(e) {
+function yt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2151,16 +2151,16 @@ function vt(e) {
 		"\n"
 	] });
 }
-function yt(e = {}) {
+function bt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vt, { ...e })
-	}) : vt(e);
+		children: o(yt, { ...e })
+	}) : yt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/leading.en.mdx
-function bt(e) {
+function xt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2173,16 +2173,16 @@ function bt(e) {
 		"\n"
 	] });
 }
-function xt(e = {}) {
+function St(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(bt, { ...e })
-	}) : bt(e);
+		children: o(xt, { ...e })
+	}) : xt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/leading.ru.mdx
-function St(e) {
+function Ct(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2195,16 +2195,16 @@ function St(e) {
 		"\n"
 	] });
 }
-function Ct(e = {}) {
+function wt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(St, { ...e })
-	}) : St(e);
+		children: o(Ct, { ...e })
+	}) : Ct(e);
 }
 //#endregion
 //#region src/media/mdx/slot/prefix.en.mdx
-function wt(e) {
+function Tt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2217,16 +2217,16 @@ function wt(e) {
 		"\n"
 	] });
 }
-function Tt(e = {}) {
+function Et(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(wt, { ...e })
-	}) : wt(e);
+		children: o(Tt, { ...e })
+	}) : Tt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/prefix.ru.mdx
-function Et(e) {
+function Dt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2239,16 +2239,16 @@ function Et(e) {
 		"\n"
 	] });
 }
-function Dt(e = {}) {
+function Ot(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Et, { ...e })
-	}) : Et(e);
+		children: o(Dt, { ...e })
+	}) : Dt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/secondary.en.mdx
-function Ot(e) {
+function kt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2261,16 +2261,16 @@ function Ot(e) {
 		"\n"
 	] });
 }
-function kt(e = {}) {
+function At(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ot, { ...e })
-	}) : Ot(e);
+		children: o(kt, { ...e })
+	}) : kt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/secondary.ru.mdx
-function At(e) {
+function jt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2283,16 +2283,16 @@ function At(e) {
 		"\n"
 	] });
 }
-function jt(e = {}) {
+function Mt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(At, { ...e })
-	}) : At(e);
+		children: o(jt, { ...e })
+	}) : jt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/suffix.en.mdx
-function Mt(e) {
+function Nt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2305,16 +2305,16 @@ function Mt(e) {
 		"\n"
 	] });
 }
-function Nt(e = {}) {
+function Pt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Mt, { ...e })
-	}) : Mt(e);
+		children: o(Nt, { ...e })
+	}) : Nt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/suffix.ru.mdx
-function Pt(e) {
+function Ft(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2327,16 +2327,16 @@ function Pt(e) {
 		"\n"
 	] });
 }
-function Ft(e = {}) {
+function It(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Pt, { ...e })
-	}) : Pt(e);
+		children: o(Ft, { ...e })
+	}) : Ft(e);
 }
 //#endregion
 //#region src/media/mdx/slot/trailing.en.mdx
-function It(e) {
+function Lt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2349,16 +2349,16 @@ function It(e) {
 		"\n"
 	] });
 }
-function Lt(e = {}) {
+function Rt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(It, { ...e })
-	}) : It(e);
+		children: o(Lt, { ...e })
+	}) : Lt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/trailing.ru.mdx
-function Rt(e) {
+function zt(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -2371,16 +2371,16 @@ function Rt(e) {
 		"\n"
 	] });
 }
-function zt(e = {}) {
+function Bt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Rt, { ...e })
-	}) : Rt(e);
+		children: o(zt, { ...e })
+	}) : zt(e);
 }
 //#endregion
 //#region src/media/mdx/slot/wikiMdxSlot.ts
-var Bt = {
+var Vt = {
 	name: "Slot",
 	descriptions: {
 		body: {
@@ -2393,53 +2393,53 @@ var Bt = {
 		},
 		control: {
 			en: Qe,
-			ru: $e
+			ru: et
 		},
 		default: {
-			en: tt,
-			ru: rt
+			en: nt,
+			ru: it
 		},
 		description: {
-			en: at,
-			ru: st
+			en: ot,
+			ru: ct
 		},
 		footer: {
-			en: lt,
-			ru: dt
+			en: ut,
+			ru: ft
 		},
 		headline: {
-			en: pt,
-			ru: ht
+			en: mt,
+			ru: gt
 		},
 		label: {
-			en: _t,
-			ru: yt
+			en: vt,
+			ru: bt
 		},
 		leading: {
-			en: xt,
-			ru: Ct
+			en: St,
+			ru: wt
 		},
 		prefix: {
-			en: Tt,
-			ru: Dt
+			en: Et,
+			ru: Ot
 		},
 		secondary: {
-			en: kt,
-			ru: jt
+			en: At,
+			ru: Mt
 		},
 		suffix: {
-			en: Nt,
-			ru: Ft
+			en: Pt,
+			ru: It
 		},
 		trailing: {
-			en: Lt,
-			ru: zt
+			en: Rt,
+			ru: Bt
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/style/adaptive.en.mdx
-function Vt(e) {
+function Ht(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2483,16 +2483,16 @@ function Vt(e) {
 		] })
 	] });
 }
-function Ht(e = {}) {
+function Ut(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Vt, { ...e })
-	}) : Vt(e);
+		children: o(Ht, { ...e })
+	}) : Ht(e);
 }
 //#endregion
 //#region src/media/mdx/style/adaptive.ru.mdx
-function Ut(e) {
+function Wt(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2536,16 +2536,16 @@ function Ut(e) {
 		] })
 	] });
 }
-function Wt(e = {}) {
+function Gt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ut, { ...e })
-	}) : Ut(e);
+		children: o(Wt, { ...e })
+	}) : Wt(e);
 }
 //#endregion
 //#region src/media/mdx/style/asPalette.en.mdx
-function Gt(e) {
+function Kt(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2584,16 +2584,16 @@ function Gt(e) {
 		})
 	] });
 }
-function Kt(e = {}) {
+function qt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Gt, { ...e })
-	}) : Gt(e);
+		children: o(Kt, { ...e })
+	}) : Kt(e);
 }
 //#endregion
 //#region src/media/mdx/style/asPalette.ru.mdx
-function qt(e) {
+function Jt(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2632,16 +2632,16 @@ function qt(e) {
 		})
 	] });
 }
-function Jt(e = {}) {
+function Yt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qt, { ...e })
-	}) : qt(e);
+		children: o(Jt, { ...e })
+	}) : Jt(e);
 }
 //#endregion
 //#region src/media/mdx/style/dir.en.mdx
-function Yt(e) {
+function Xt(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2680,16 +2680,16 @@ function Yt(e) {
 		})
 	] });
 }
-function Xt(e = {}) {
+function Zt(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Yt, { ...e })
-	}) : Yt(e);
+		children: o(Xt, { ...e })
+	}) : Xt(e);
 }
 //#endregion
 //#region src/media/mdx/style/dir.ru.mdx
-function Zt(e) {
+function Qt(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2728,16 +2728,16 @@ function Zt(e) {
 		})
 	] });
 }
-function Qt(e = {}) {
+function $t(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Zt, { ...e })
-	}) : Zt(e);
+		children: o(Qt, { ...e })
+	}) : Qt(e);
 }
 //#endregion
 //#region src/media/mdx/style/isSkeleton.en.mdx
-function $t(e) {
+function en(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2786,16 +2786,16 @@ function $t(e) {
 		})
 	] });
 }
-function en(e = {}) {
+function tn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o($t, { ...e })
-	}) : $t(e);
+		children: o(en, { ...e })
+	}) : en(e);
 }
 //#endregion
 //#region src/media/mdx/style/isSkeleton.ru.mdx
-function tn(e) {
+function nn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2844,39 +2844,39 @@ function tn(e) {
 		})
 	] });
 }
-function nn(e = {}) {
+function rn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(tn, { ...e })
-	}) : tn(e);
+		children: o(nn, { ...e })
+	}) : nn(e);
 }
 //#endregion
 //#region src/media/mdx/style/wikiMdxStyle.ts
-var rn = {
+var an = {
 	name: "Style",
 	descriptions: {
 		adaptive: {
-			en: Ht,
-			ru: Wt
+			en: Ut,
+			ru: Gt
 		},
 		asPalette: {
-			en: Kt,
-			ru: Jt
+			en: qt,
+			ru: Yt
 		},
 		dir: {
-			en: Xt,
-			ru: Qt
+			en: Zt,
+			ru: $t
 		},
 		isSkeleton: {
-			en,
-			ru: nn
+			en: tn,
+			ru: rn
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/value/highlight.en.mdx
-function an(e) {
+function on(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2927,16 +2927,16 @@ function an(e) {
 		})
 	] });
 }
-function on(e = {}) {
+function sn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(an, { ...e })
-	}) : an(e);
+		children: o(on, { ...e })
+	}) : on(e);
 }
 //#endregion
 //#region src/media/mdx/value/highlight.ru.mdx
-function sn(e) {
+function cn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -2987,16 +2987,16 @@ function sn(e) {
 		})
 	] });
 }
-function cn(e = {}) {
+function ln(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(sn, { ...e })
-	}) : sn(e);
+		children: o(cn, { ...e })
+	}) : cn(e);
 }
 //#endregion
 //#region src/media/mdx/value/labelNumber.en.mdx
-function ln(e) {
+function un(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3047,16 +3047,16 @@ function ln(e) {
 		})
 	] });
 }
-function un(e = {}) {
+function dn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ln, { ...e })
-	}) : ln(e);
+		children: o(un, { ...e })
+	}) : un(e);
 }
 //#endregion
 //#region src/media/mdx/value/labelNumber.ru.mdx
-function dn(e) {
+function fn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3107,16 +3107,16 @@ function dn(e) {
 		})
 	] });
 }
-function fn(e = {}) {
+function pn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(dn, { ...e })
-	}) : dn(e);
+		children: o(fn, { ...e })
+	}) : fn(e);
 }
 //#endregion
 //#region src/media/mdx/value/value.en.mdx
-function pn(e) {
+function mn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3158,16 +3158,16 @@ function pn(e) {
 		] })
 	] });
 }
-function mn(e = {}) {
+function hn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(pn, { ...e })
-	}) : pn(e);
+		children: o(mn, { ...e })
+	}) : mn(e);
 }
 //#endregion
 //#region src/media/mdx/value/value.ru.mdx
-function hn(e) {
+function gn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3209,16 +3209,16 @@ function hn(e) {
 		] })
 	] });
 }
-function gn(e = {}) {
+function _n(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(hn, { ...e })
-	}) : hn(e);
+		children: o(gn, { ...e })
+	}) : gn(e);
 }
 //#endregion
 //#region src/media/mdx/value/v-model.en.mdx
-function _n(e) {
+function vn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3253,16 +3253,16 @@ function _n(e) {
 		})
 	] });
 }
-function vn(e = {}) {
+function yn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_n, { ...e })
-	}) : _n(e);
+		children: o(vn, { ...e })
+	}) : vn(e);
 }
 //#endregion
 //#region src/media/mdx/value/v-model.ru.mdx
-function yn(e) {
+function bn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3297,16 +3297,16 @@ function yn(e) {
 		})
 	] });
 }
-function bn(e = {}) {
+function xn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(yn, { ...e })
-	}) : yn(e);
+		children: o(bn, { ...e })
+	}) : bn(e);
 }
 //#endregion
 //#region src/media/mdx/value/v-model-selected.en.mdx
-function xn(e) {
+function Sn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3341,16 +3341,16 @@ function xn(e) {
 		})
 	] });
 }
-function Sn(e = {}) {
+function Cn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xn, { ...e })
-	}) : xn(e);
+		children: o(Sn, { ...e })
+	}) : Sn(e);
 }
 //#endregion
 //#region src/media/mdx/value/v-model-selected.ru.mdx
-function Cn(e) {
+function wn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3385,43 +3385,43 @@ function Cn(e) {
 		})
 	] });
 }
-function wn(e = {}) {
+function Tn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Cn, { ...e })
-	}) : Cn(e);
+		children: o(wn, { ...e })
+	}) : wn(e);
 }
 //#endregion
 //#region src/media/mdx/value/wikiMdxValue.ts
-var Tn = {
+var En = {
 	name: "Value",
 	descriptions: {
 		highlight: {
-			en: on,
-			ru: cn
+			en: sn,
+			ru: ln
 		},
 		labelNumber: {
-			en: un,
-			ru: fn
+			en: dn,
+			ru: pn
 		},
 		"v-model": {
-			en: vn,
-			ru: bn
+			en: yn,
+			ru: xn
 		},
 		"v-model:selected": {
-			en: Sn,
-			ru: wn
+			en: Cn,
+			ru: Tn
 		},
 		value: {
-			en: mn,
-			ru: gn
+			en: hn,
+			ru: _n
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Accordion/accordion.en.mdx
-function En(e) {
+function Dn(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -3486,16 +3486,16 @@ function En(e) {
 		] })
 	] });
 }
-function Dn(e = {}) {
+function On(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(En, { ...e })
-	}) : En(e);
+		children: o(Dn, { ...e })
+	}) : Dn(e);
 }
 //#endregion
 //#region src/media/mdx/Accordion/accordion.ru.mdx
-function On(e) {
+function kn(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -3560,16 +3560,16 @@ function On(e) {
 		] })
 	] });
 }
-function kn(e = {}) {
+function An(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(On, { ...e })
-	}) : On(e);
+		children: o(kn, { ...e })
+	}) : kn(e);
 }
 //#endregion
 //#region src/media/mdx/Accordion/slots.en.mdx
-function An(e) {
+function jn(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -3609,16 +3609,16 @@ function An(e) {
 		] })
 	] });
 }
-function jn(e = {}) {
+function Mn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(An, { ...e })
-	}) : An(e);
+		children: o(jn, { ...e })
+	}) : jn(e);
 }
 //#endregion
 //#region src/media/mdx/Accordion/slots.ru.mdx
-function Mn(e) {
+function Nn(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -3658,31 +3658,232 @@ function Mn(e) {
 		] })
 	] });
 }
-function Nn(e = {}) {
+function Pn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Mn, { ...e })
-	}) : Mn(e);
+		children: o(Nn, { ...e })
+	}) : Nn(e);
 }
 //#endregion
 //#region src/media/mdx/Accordion/wikiMdxAccordion.ts
-var Pn = {
+var Fn = {
 	name: "Accordion",
 	descriptions: {
 		accordion: {
-			en: Dn,
-			ru: kn
+			en: On,
+			ru: An
 		},
 		slots: {
-			en: jn,
-			ru: Nn
+			en: Mn,
+			ru: Pn
+		}
+	}
+};
+//#endregion
+//#region src/media/mdx/Area/area.en.mdx
+function In(e) {
+	let t = {
+		blockquote: "blockquote",
+		code: "code",
+		h2: "h2",
+		li: "li",
+		p: "p",
+		strong: "strong",
+		ul: "ul",
+		...e.components
+	};
+	return s(a, { children: [
+		o(t.h2, { children: "Description" }),
+		"\n",
+		o(t.p, { children: "A component for dynamic content switching based on the area context." }),
+		"\n",
+		o(t.p, { children: "Area acts as a smart slot switcher. It retrieves the current area value from the injection context or uses a default value. The component then renders the slot whose name matches the current area value. If no matching slot is found, the default slot is displayed." }),
+		"\n",
+		o(t.p, { children: o(t.strong, { children: "Key Features:" }) }),
+		"\n",
+		s(t.ul, { children: [
+			"\n",
+			o(t.li, { children: "Automatic slot selection based on the injected area value" }),
+			"\n",
+			s(t.li, { children: [
+				"Ability to specify a default area via the ",
+				o(t.code, { children: "areaDefault" }),
+				" property"
+			] }),
+			"\n",
+			o(t.li, { children: "Support for nested areas and context inheritance" }),
+			"\n",
+			o(t.li, { children: "Seamless integration into complex layouts (e.g., Window)" }),
+			"\n"
+		] }),
+		"\n",
+		o(t.p, { children: o(t.strong, { children: "Typical Usage Scenarios:" }) }),
+		"\n",
+		s(t.ul, { children: [
+			"\n",
+			o(t.li, { children: "Creating dynamic headers and footers" }),
+			"\n",
+			o(t.li, { children: "Adapting content based on the component's placement" }),
+			"\n",
+			o(t.li, { children: "Organizing complex layouts with dynamic content zones" }),
+			"\n",
+			o(t.li, { children: "Implementing extension slots in base components" }),
+			"\n"
+		] }),
+		"\n",
+		o(i, {
+			code: "\n<template>\n<Area area-default=\"header\">\n  <template #header>\n    Header Content\n  </template>\n  <template #footer>\n    Footer Content\n  </template>\n  <template #default>\n    Default Content\n  </template>\n</Area>\n</template>\n",
+			language: "html"
+		}),
+		"\n",
+		s(t.blockquote, { children: [
+			"\n",
+			o(t.p, { children: "Area is an essential tool for creating flexible and extensible interfaces, allowing components to react to their environment." }),
+			"\n"
+		] })
+	] });
+}
+function Ln(e = {}) {
+	let { wrapper: t } = e.components || {};
+	return t ? o(t, {
+		...e,
+		children: o(In, { ...e })
+	}) : In(e);
+}
+//#endregion
+//#region src/media/mdx/Area/area.ru.mdx
+function Rn(e) {
+	let t = {
+		blockquote: "blockquote",
+		code: "code",
+		h2: "h2",
+		li: "li",
+		p: "p",
+		strong: "strong",
+		ul: "ul",
+		...e.components
+	};
+	return s(a, { children: [
+		o(t.h2, { children: "Описание" }),
+		"\n",
+		o(t.p, { children: "Компонент для динамического переключения контента на основе контекста области (area)." }),
+		"\n",
+		o(t.p, { children: "Area выступает в роли умного переключателя слотов. Он получает текущее значение области из контекста внедрения или использует значение по умолчанию. Затем компонент отображает тот слот, имя которого совпадает с текущим значением области. Если подходящий слот не найден, отображается слот по умолчанию." }),
+		"\n",
+		o(t.p, { children: o(t.strong, { children: "Основные возможности:" }) }),
+		"\n",
+		s(t.ul, { children: [
+			"\n",
+			o(t.li, { children: "Автоматический выбор слота на основе внедренного значения области" }),
+			"\n",
+			s(t.li, { children: ["Возможность указания области по умолчанию через свойство ", o(t.code, { children: "areaDefault" })] }),
+			"\n",
+			o(t.li, { children: "Поддержка вложенных областей и наследования контекста" }),
+			"\n",
+			o(t.li, { children: "Плавная интеграция в сложные макеты (например, Window)" }),
+			"\n"
+		] }),
+		"\n",
+		o(t.p, { children: o(t.strong, { children: "Типичные сценарии использования:" }) }),
+		"\n",
+		s(t.ul, { children: [
+			"\n",
+			o(t.li, { children: "Создание динамических шапок и подвалов" }),
+			"\n",
+			o(t.li, { children: "Адаптация контента в зависимости от места размещения компонента" }),
+			"\n",
+			o(t.li, { children: "Организация сложных макетов с динамическими зонами контента" }),
+			"\n",
+			o(t.li, { children: "Реализация слотов расширения в базовых компонентах" }),
+			"\n"
+		] }),
+		"\n",
+		o(i, {
+			code: "\n<template>\n<Area area-default=\"header\">\n  <template #header>\n    Контент для шапки\n  </template>\n  <template #footer>\n    Контент для подвала\n  </template>\n  <template #default>\n    Контент по умолчанию\n  </template>\n</Area>\n</template>\n",
+			language: "html"
+		}),
+		"\n",
+		s(t.blockquote, { children: [
+			"\n",
+			o(t.p, { children: "Area является важным инструментом для создания гибких и расширяемых интерфейсов, позволяя компонентам реагировать на их окружение." }),
+			"\n"
+		] })
+	] });
+}
+function zn(e = {}) {
+	let { wrapper: t } = e.components || {};
+	return t ? o(t, {
+		...e,
+		children: o(Rn, { ...e })
+	}) : Rn(e);
+}
+//#endregion
+//#region src/media/mdx/Area/slot.en.mdx
+function Bn(e) {
+	let t = {
+		code: "code",
+		li: "li",
+		ul: "ul",
+		...e.components
+	};
+	return s(t.ul, { children: [
+		"\n",
+		s(t.li, { children: [o(t.code, { children: "[area]: any" }), " — Dynamic slot for rendering content. The current area value is used as the slot name to select the appropriate content."] }),
+		"\n",
+		s(t.li, { children: [o(t.code, { children: "default: any" }), " — Default slot, which is displayed if no specific slot is provided for the current area value or if the area value is undefined."] }),
+		"\n"
+	] });
+}
+function Vn(e = {}) {
+	let { wrapper: t } = e.components || {};
+	return t ? o(t, {
+		...e,
+		children: o(Bn, { ...e })
+	}) : Bn(e);
+}
+//#endregion
+//#region src/media/mdx/Area/slot.ru.mdx
+function Hn(e) {
+	let t = {
+		code: "code",
+		li: "li",
+		ul: "ul",
+		...e.components
+	};
+	return s(t.ul, { children: [
+		"\n",
+		s(t.li, { children: [o(t.code, { children: "[area]: any" }), " — Динамический слот для рендеринга контента. Текущее значение области (area) используется как имя слота для выбора соответствующего контента."] }),
+		"\n",
+		s(t.li, { children: [o(t.code, { children: "default: any" }), " — Слот по умолчанию, который отображается, если для текущего значения области не предоставлен специфический слот или если значение области не определено."] }),
+		"\n"
+	] });
+}
+function Un(e = {}) {
+	let { wrapper: t } = e.components || {};
+	return t ? o(t, {
+		...e,
+		children: o(Hn, { ...e })
+	}) : Hn(e);
+}
+//#endregion
+//#region src/media/mdx/Area/wikiMdxArea.ts
+var Wn = {
+	name: "Area",
+	descriptions: {
+		area: {
+			en: Ln,
+			ru: zn
+		},
+		slot: {
+			en: Vn,
+			ru: Un
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Actions/actions.en.mdx
-function Fn(e) {
+function Gn(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -3744,16 +3945,16 @@ function Fn(e) {
 		] })
 	] });
 }
-function In(e = {}) {
+function Kn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fn, { ...e })
-	}) : Fn(e);
+		children: o(Gn, { ...e })
+	}) : Gn(e);
 }
 //#endregion
 //#region src/media/mdx/Actions/actions.ru.mdx
-function Ln(e) {
+function qn(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -3815,16 +4016,16 @@ function Ln(e) {
 		] })
 	] });
 }
-function Rn(e = {}) {
+function Jn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ln, { ...e })
-	}) : Ln(e);
+		children: o(qn, { ...e })
+	}) : qn(e);
 }
 //#endregion
 //#region src/media/mdx/Actions/flexible.en.mdx
-function zn(e) {
+function Yn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3869,16 +4070,16 @@ function zn(e) {
 		})
 	] });
 }
-function Bn(e = {}) {
+function Xn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(zn, { ...e })
-	}) : zn(e);
+		children: o(Yn, { ...e })
+	}) : Yn(e);
 }
 //#endregion
 //#region src/media/mdx/Actions/flexible.ru.mdx
-function Vn(e) {
+function Zn(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3923,16 +4124,16 @@ function Vn(e) {
 		})
 	] });
 }
-function Hn(e = {}) {
+function Qn(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Vn, { ...e })
-	}) : Vn(e);
+		children: o(Zn, { ...e })
+	}) : Zn(e);
 }
 //#endregion
 //#region src/media/mdx/Actions/list.en.mdx
-function Un(e) {
+function $n(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -3985,16 +4186,16 @@ function Un(e) {
 		})
 	] });
 }
-function Wn(e = {}) {
+function er(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Un, { ...e })
-	}) : Un(e);
+		children: o($n, { ...e })
+	}) : $n(e);
 }
 //#endregion
 //#region src/media/mdx/Actions/list.ru.mdx
-function Gn(e) {
+function tr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -4047,35 +4248,35 @@ function Gn(e) {
 		})
 	] });
 }
-function Kn(e = {}) {
+function nr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Gn, { ...e })
-	}) : Gn(e);
+		children: o(tr, { ...e })
+	}) : tr(e);
 }
 //#endregion
 //#region src/media/mdx/Actions/wikiMdxActions.ts
-var qn = {
+var rr = {
 	name: "Actions",
 	descriptions: {
 		actions: {
-			en: In,
-			ru: Rn
+			en: Kn,
+			ru: Jn
 		},
 		flexible: {
-			en: Bn,
-			ru: Hn
+			en: Xn,
+			ru: Qn
 		},
 		list: {
-			en: Wn,
-			ru: Kn
+			en: er,
+			ru: nr
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/ActionSheet/actionSheet.en.mdx
-function Jn(e) {
+function ir(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -4137,16 +4338,16 @@ function Jn(e) {
 		})
 	] });
 }
-function Yn(e = {}) {
+function ar(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Jn, { ...e })
-	}) : Jn(e);
+		children: o(ir, { ...e })
+	}) : ir(e);
 }
 //#endregion
 //#region src/media/mdx/ActionSheet/actionSheet.ru.mdx
-function Xn(e) {
+function or(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -4208,16 +4409,16 @@ function Xn(e) {
 		})
 	] });
 }
-function Zn(e = {}) {
+function sr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xn, { ...e })
-	}) : Xn(e);
+		children: o(or, { ...e })
+	}) : or(e);
 }
 //#endregion
 //#region src/media/mdx/ActionSheet/touchClose.en.mdx
-function Qn(e) {
+function cr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -4256,16 +4457,16 @@ function Qn(e) {
 		o(t.p, { children: "The closing gesture is triggered by swiping down in the header area. The component automatically manages touch events and closing animation, ensuring smooth follow-through with the user's finger movement." })
 	] });
 }
-function $n(e = {}) {
+function lr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qn, { ...e })
-	}) : Qn(e);
+		children: o(cr, { ...e })
+	}) : cr(e);
 }
 //#endregion
 //#region src/media/mdx/ActionSheet/touchClose.ru.mdx
-function er(e) {
+function ur(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -4304,31 +4505,31 @@ function er(e) {
 		o(t.p, { children: "Жест закрытия срабатывает при свайпе вниз в области заголовка. Компонент автоматически управляет touch-событиями и анимацией закрытия, обеспечивая плавное следование за пальцем пользователя." })
 	] });
 }
-function tr(e = {}) {
+function dr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(er, { ...e })
-	}) : er(e);
+		children: o(ur, { ...e })
+	}) : ur(e);
 }
 //#endregion
 //#region src/media/mdx/ActionSheet/wikiMdxActionSheet.ts
-var nr = {
+var fr = {
 	name: "ActionSheet",
 	descriptions: {
 		actionSheet: {
-			en: Yn,
-			ru: Zn
+			en: ar,
+			ru: sr
 		},
 		touchClose: {
-			en: $n,
-			ru: tr
+			en: lr,
+			ru: dr
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Anchor/anchor.en.mdx
-function rr(e) {
+function pr(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -4383,16 +4584,16 @@ function rr(e) {
 		})
 	] });
 }
-function ir(e = {}) {
+function mr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(rr, { ...e })
-	}) : rr(e);
+		children: o(pr, { ...e })
+	}) : pr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/anchor.ru.mdx
-function ar(e) {
+function hr(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -4447,16 +4648,16 @@ function ar(e) {
 		})
 	] });
 }
-function or(e = {}) {
+function gr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ar, { ...e })
-	}) : ar(e);
+		children: o(hr, { ...e })
+	}) : hr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/expose.go.en.mdx
-function sr(e) {
+function _r(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -4480,16 +4681,16 @@ function sr(e) {
 		"\n"
 	] });
 }
-function cr(e = {}) {
+function vr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(sr, { ...e })
-	}) : sr(e);
+		children: o(_r, { ...e })
+	}) : _r(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/expose.go.ru.mdx
-function lr(e) {
+function yr(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -4513,16 +4714,16 @@ function lr(e) {
 		"\n"
 	] });
 }
-function ur(e = {}) {
+function br(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(lr, { ...e })
-	}) : lr(e);
+		children: o(yr, { ...e })
+	}) : yr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/hide.en.mdx
-function dr(e) {
+function xr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -4570,16 +4771,16 @@ function dr(e) {
 		})
 	] });
 }
-function fr(e = {}) {
+function Sr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(dr, { ...e })
-	}) : dr(e);
+		children: o(xr, { ...e })
+	}) : xr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/hide.ru.mdx
-function pr(e) {
+function Cr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -4627,16 +4828,16 @@ function pr(e) {
 		})
 	] });
 }
-function mr(e = {}) {
+function wr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(pr, { ...e })
-	}) : pr(e);
+		children: o(Cr, { ...e })
+	}) : Cr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/isCopy.en.mdx
-function hr(e) {
+function Tr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -4697,16 +4898,16 @@ function hr(e) {
 		})
 	] });
 }
-function gr(e = {}) {
+function Er(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(hr, { ...e })
-	}) : hr(e);
+		children: o(Tr, { ...e })
+	}) : Tr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/isCopy.ru.mdx
-function _r(e) {
+function Dr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -4767,16 +4968,16 @@ function _r(e) {
 		})
 	] });
 }
-function vr(e = {}) {
+function Or(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_r, { ...e })
-	}) : _r(e);
+		children: o(Dr, { ...e })
+	}) : Dr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/scroll.en.mdx
-function yr(e) {
+function kr(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -4874,16 +5075,16 @@ function yr(e) {
 		})
 	] });
 }
-function br(e = {}) {
+function Ar(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(yr, { ...e })
-	}) : yr(e);
+		children: o(kr, { ...e })
+	}) : kr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/scroll.ru.mdx
-function xr(e) {
+function jr(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -4981,43 +5182,43 @@ function xr(e) {
 		})
 	] });
 }
-function Sr(e = {}) {
+function Mr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xr, { ...e })
-	}) : xr(e);
+		children: o(jr, { ...e })
+	}) : jr(e);
 }
 //#endregion
 //#region src/media/mdx/Anchor/wikiMdxAnchor.ts
-var Cr = {
+var Nr = {
 	name: "Anchor",
 	descriptions: {
 		anchor: {
-			en: ir,
-			ru: or
+			en: mr,
+			ru: gr
 		},
 		"expose.go": {
-			en: cr,
-			ru: ur
+			en: vr,
+			ru: br
 		},
 		hide: {
-			en: fr,
-			ru: mr
+			en: Sr,
+			ru: wr
 		},
 		isCopy: {
-			en: gr,
-			ru: vr
+			en: Er,
+			ru: Or
 		},
 		scroll: {
-			en: br,
-			ru: Sr
+			en: Ar,
+			ru: Mr
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Arrow/arrow.en.mdx
-function wr(e) {
+function Pr(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -5068,16 +5269,16 @@ function wr(e) {
 		})
 	] });
 }
-function Tr(e = {}) {
+function Fr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(wr, { ...e })
-	}) : wr(e);
+		children: o(Pr, { ...e })
+	}) : Pr(e);
 }
 //#endregion
 //#region src/media/mdx/Arrow/arrow.ru.mdx
-function Er(e) {
+function Ir(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -5128,25 +5329,25 @@ function Er(e) {
 		})
 	] });
 }
-function Dr(e = {}) {
+function Lr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Er, { ...e })
-	}) : Er(e);
+		children: o(Ir, { ...e })
+	}) : Ir(e);
 }
 //#endregion
 //#region src/media/mdx/Arrow/wikiMdxArrow.ts
-var Or = {
+var Rr = {
 	name: "Arrow",
 	descriptions: { arrow: {
-		en: Tr,
-		ru: Dr
+		en: Fr,
+		ru: Lr
 	} }
 };
 //#endregion
 //#region src/media/mdx/Badge/badge.en.mdx
-function kr(e) {
+function zr(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -5219,16 +5420,16 @@ function kr(e) {
 		] })
 	] });
 }
-function Ar(e = {}) {
+function Br(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(kr, { ...e })
-	}) : kr(e);
+		children: o(zr, { ...e })
+	}) : zr(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/badge.ru.mdx
-function jr(e) {
+function Vr(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -5301,16 +5502,16 @@ function jr(e) {
 		] })
 	] });
 }
-function Mr(e = {}) {
+function Hr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(jr, { ...e })
-	}) : jr(e);
+		children: o(Vr, { ...e })
+	}) : Vr(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/dot.en.mdx
-function Nr(e) {
+function Ur(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5351,16 +5552,16 @@ function Nr(e) {
 		})
 	] });
 }
-function Pr(e = {}) {
+function Wr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Nr, { ...e })
-	}) : Nr(e);
+		children: o(Ur, { ...e })
+	}) : Ur(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/dot.ru.mdx
-function Fr(e) {
+function Gr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5401,16 +5602,16 @@ function Fr(e) {
 		})
 	] });
 }
-function Ir(e = {}) {
+function Kr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fr, { ...e })
-	}) : Fr(e);
+		children: o(Gr, { ...e })
+	}) : Gr(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/outline.en.mdx
-function Lr(e) {
+function qr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5449,16 +5650,16 @@ function Lr(e) {
 		})
 	] });
 }
-function Rr(e = {}) {
+function Jr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Lr, { ...e })
-	}) : Lr(e);
+		children: o(qr, { ...e })
+	}) : qr(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/outline.ru.mdx
-function zr(e) {
+function Yr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5497,16 +5698,16 @@ function zr(e) {
 		})
 	] });
 }
-function Br(e = {}) {
+function Xr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(zr, { ...e })
-	}) : zr(e);
+		children: o(Yr, { ...e })
+	}) : Yr(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/primary.en.mdx
-function Vr(e) {
+function Zr(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5545,16 +5746,16 @@ function Vr(e) {
 		})
 	] });
 }
-function Hr(e = {}) {
+function Qr(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Vr, { ...e })
-	}) : Vr(e);
+		children: o(Zr, { ...e })
+	}) : Zr(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/primary.ru.mdx
-function Ur(e) {
+function $r(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5593,16 +5794,16 @@ function Ur(e) {
 		})
 	] });
 }
-function Wr(e = {}) {
+function ei(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ur, { ...e })
-	}) : Ur(e);
+		children: o($r, { ...e })
+	}) : $r(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/secondary.en.mdx
-function Gr(e) {
+function ti(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5641,16 +5842,16 @@ function Gr(e) {
 		})
 	] });
 }
-function Kr(e = {}) {
+function ni(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Gr, { ...e })
-	}) : Gr(e);
+		children: o(ti, { ...e })
+	}) : ti(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/secondary.ru.mdx
-function qr(e) {
+function ri(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5689,43 +5890,43 @@ function qr(e) {
 		})
 	] });
 }
-function Jr(e = {}) {
+function ii(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qr, { ...e })
-	}) : qr(e);
+		children: o(ri, { ...e })
+	}) : ri(e);
 }
 //#endregion
 //#region src/media/mdx/Badge/wikiMdxBadge.ts
-var Yr = {
+var ai = {
 	name: "Badge",
 	descriptions: {
 		badge: {
-			en: Ar,
-			ru: Mr
+			en: Br,
+			ru: Hr
 		},
 		dot: {
-			en: Pr,
-			ru: Ir
+			en: Wr,
+			ru: Kr
 		},
 		outline: {
-			en: Rr,
-			ru: Br
+			en: Jr,
+			ru: Xr
 		},
 		primary: {
-			en: Hr,
-			ru: Wr
+			en: Qr,
+			ru: ei
 		},
 		secondary: {
-			en: Kr,
-			ru: Jr
+			en: ni,
+			ru: ii
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Bars/bars.en.mdx
-function Xr(e) {
+function oi(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -5798,16 +5999,16 @@ function Xr(e) {
 		] })
 	] });
 }
-function Zr(e = {}) {
+function si(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xr, { ...e })
-	}) : Xr(e);
+		children: o(oi, { ...e })
+	}) : oi(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/bars.ru.mdx
-function Qr(e) {
+function ci(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -5880,16 +6081,16 @@ function Qr(e) {
 		] })
 	] });
 }
-function $r(e = {}) {
+function li(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qr, { ...e })
-	}) : Qr(e);
+		children: o(ci, { ...e })
+	}) : ci(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/action.en.mdx
-function ei(e) {
+function ui(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -5944,16 +6145,16 @@ function ei(e) {
 		})
 	] });
 }
-function ti(e = {}) {
+function di(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ei, { ...e })
-	}) : ei(e);
+		children: o(ui, { ...e })
+	}) : ui(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/action.ru.mdx
-function ni(e) {
+function fi(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6008,16 +6209,16 @@ function ni(e) {
 		})
 	] });
 }
-function ri(e = {}) {
+function pi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ni, { ...e })
-	}) : ni(e);
+		children: o(fi, { ...e })
+	}) : fi(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/slots.en.mdx
-function ii(e) {
+function mi(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -6032,16 +6233,16 @@ function ii(e) {
 		"\n"
 	] });
 }
-function ai(e = {}) {
+function hi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ii, { ...e })
-	}) : ii(e);
+		children: o(mi, { ...e })
+	}) : mi(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/slots.ru.mdx
-function oi(e) {
+function gi(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -6056,16 +6257,16 @@ function oi(e) {
 		"\n"
 	] });
 }
-function si(e = {}) {
+function _i(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(oi, { ...e })
-	}) : oi(e);
+		children: o(gi, { ...e })
+	}) : gi(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/v-model.en.mdx
-function ci(e) {
+function vi(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6098,16 +6299,16 @@ function ci(e) {
 		})
 	] });
 }
-function li(e = {}) {
+function yi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ci, { ...e })
-	}) : ci(e);
+		children: o(vi, { ...e })
+	}) : vi(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/v-model.ru.mdx
-function ui(e) {
+function bi(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6140,39 +6341,39 @@ function ui(e) {
 		})
 	] });
 }
-function di(e = {}) {
+function xi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ui, { ...e })
-	}) : ui(e);
+		children: o(bi, { ...e })
+	}) : bi(e);
 }
 //#endregion
 //#region src/media/mdx/Bars/wikiMdxBars.ts
-var fi = {
+var Si = {
 	name: "Bars",
 	descriptions: {
 		bars: {
-			en: Zr,
-			ru: $r
+			en: si,
+			ru: li
 		},
 		action: {
-			en: ti,
-			ru: ri
+			en: di,
+			ru: pi
 		},
 		slots: {
-			en: ai,
-			ru: si
+			en: hi,
+			ru: _i
 		},
 		"v-model": {
-			en: li,
-			ru: di
+			en: yi,
+			ru: xi
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Block/block.en.mdx
-function pi(e) {
+function Ci(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -6233,16 +6434,16 @@ function pi(e) {
 		] })
 	] });
 }
-function mi(e = {}) {
+function wi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(pi, { ...e })
-	}) : pi(e);
+		children: o(Ci, { ...e })
+	}) : Ci(e);
 }
 //#endregion
 //#region src/media/mdx/Block/block.ru.mdx
-function hi(e) {
+function Ti(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -6303,16 +6504,16 @@ function hi(e) {
 		] })
 	] });
 }
-function gi(e = {}) {
+function Ei(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(hi, { ...e })
-	}) : hi(e);
+		children: o(Ti, { ...e })
+	}) : Ti(e);
 }
 //#endregion
 //#region src/media/mdx/Block/differences.en.mdx
-function _i(e) {
+function Di(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6378,16 +6579,16 @@ function _i(e) {
 		})
 	] });
 }
-function vi(e = {}) {
+function Oi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_i, { ...e })
-	}) : _i(e);
+		children: o(Di, { ...e })
+	}) : Di(e);
 }
 //#endregion
 //#region src/media/mdx/Block/differences.ru.mdx
-function yi(e) {
+function ki(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6453,31 +6654,31 @@ function yi(e) {
 		})
 	] });
 }
-function bi(e = {}) {
+function Ai(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(yi, { ...e })
-	}) : yi(e);
+		children: o(ki, { ...e })
+	}) : ki(e);
 }
 //#endregion
 //#region src/media/mdx/Block/wikiMdxBlock.ts
-var xi = {
+var ji = {
 	name: "Block",
 	descriptions: {
 		block: {
-			en: mi,
-			ru: gi
+			en: wi,
+			ru: Ei
 		},
 		differences: {
-			en: vi,
-			ru: bi
+			en: Oi,
+			ru: Ai
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Button/button.en.mdx
-function Si(e) {
+function Mi(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -6545,16 +6746,16 @@ function Si(e) {
 		] })
 	] });
 }
-function Ci(e = {}) {
+function Ni(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Si, { ...e })
-	}) : Si(e);
+		children: o(Mi, { ...e })
+	}) : Mi(e);
 }
 //#endregion
 //#region src/media/mdx/Button/button.ru.mdx
-function wi(e) {
+function Pi(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -6622,16 +6823,16 @@ function wi(e) {
 		] })
 	] });
 }
-function Ti(e = {}) {
+function Fi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(wi, { ...e })
-	}) : wi(e);
+		children: o(Pi, { ...e })
+	}) : Pi(e);
 }
 //#endregion
 //#region src/media/mdx/Button/primary.en.mdx
-function Ei(e) {
+function Ii(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6670,16 +6871,16 @@ function Ei(e) {
 		})
 	] });
 }
-function Di(e = {}) {
+function Li(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ei, { ...e })
-	}) : Ei(e);
+		children: o(Ii, { ...e })
+	}) : Ii(e);
 }
 //#endregion
 //#region src/media/mdx/Button/primary.ru.mdx
-function Oi(e) {
+function Ri(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6718,16 +6919,16 @@ function Oi(e) {
 		})
 	] });
 }
-function ki(e = {}) {
+function zi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Oi, { ...e })
-	}) : Oi(e);
+		children: o(Ri, { ...e })
+	}) : Ri(e);
 }
 //#endregion
 //#region src/media/mdx/Button/secondary.en.mdx
-function Ai(e) {
+function Bi(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6766,16 +6967,16 @@ function Ai(e) {
 		})
 	] });
 }
-function ji(e = {}) {
+function Vi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ai, { ...e })
-	}) : Ai(e);
+		children: o(Bi, { ...e })
+	}) : Bi(e);
 }
 //#endregion
 //#region src/media/mdx/Button/secondary.ru.mdx
-function Mi(e) {
+function Hi(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6814,16 +7015,16 @@ function Mi(e) {
 		})
 	] });
 }
-function Ni(e = {}) {
+function Ui(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Mi, { ...e })
-	}) : Mi(e);
+		children: o(Hi, { ...e })
+	}) : Hi(e);
 }
 //#endregion
 //#region src/media/mdx/Button/outline.en.mdx
-function Pi(e) {
+function Wi(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6862,16 +7063,16 @@ function Pi(e) {
 		})
 	] });
 }
-function Fi(e = {}) {
+function Gi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Pi, { ...e })
-	}) : Pi(e);
+		children: o(Wi, { ...e })
+	}) : Wi(e);
 }
 //#endregion
 //#region src/media/mdx/Button/outline.ru.mdx
-function Ii(e) {
+function Ki(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6910,16 +7111,16 @@ function Ii(e) {
 		})
 	] });
 }
-function Li(e = {}) {
+function qi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ii, { ...e })
-	}) : Ii(e);
+		children: o(Ki, { ...e })
+	}) : Ki(e);
 }
 //#endregion
 //#region src/media/mdx/Button/text.en.mdx
-function Ri(e) {
+function Ji(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -6958,16 +7159,16 @@ function Ri(e) {
 		})
 	] });
 }
-function zi(e = {}) {
+function Yi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ri, { ...e })
-	}) : Ri(e);
+		children: o(Ji, { ...e })
+	}) : Ji(e);
 }
 //#endregion
 //#region src/media/mdx/Button/text.ru.mdx
-function Bi(e) {
+function Xi(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -7006,43 +7207,43 @@ function Bi(e) {
 		})
 	] });
 }
-function Vi(e = {}) {
+function Zi(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Bi, { ...e })
-	}) : Bi(e);
+		children: o(Xi, { ...e })
+	}) : Xi(e);
 }
 //#endregion
 //#region src/media/mdx/Button/wikiMdxButton.ts
-var Hi = {
+var Qi = {
 	name: "Button",
 	descriptions: {
 		button: {
-			en: Ci,
-			ru: Ti
+			en: Ni,
+			ru: Fi
 		},
 		primary: {
-			en: Di,
-			ru: ki
+			en: Li,
+			ru: zi
 		},
 		secondary: {
-			en: ji,
-			ru: Ni
+			en: Vi,
+			ru: Ui
 		},
 		outline: {
-			en: Fi,
-			ru: Li
+			en: Gi,
+			ru: qi
 		},
 		text: {
-			en: zi,
-			ru: Vi
+			en: Yi,
+			ru: Zi
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Cell/cell.en.mdx
-function Ui(e) {
+function $i(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -7111,16 +7312,16 @@ function Ui(e) {
 		] })
 	] });
 }
-function Wi(e = {}) {
+function ea(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ui, { ...e })
-	}) : Ui(e);
+		children: o($i, { ...e })
+	}) : $i(e);
 }
 //#endregion
 //#region src/media/mdx/Cell/cell.ru.mdx
-function Gi(e) {
+function ta(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -7189,16 +7390,16 @@ function Gi(e) {
 		] })
 	] });
 }
-function Ki(e = {}) {
+function na(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Gi, { ...e })
-	}) : Gi(e);
+		children: o(ta, { ...e })
+	}) : ta(e);
 }
 //#endregion
 //#region src/media/mdx/Cell/slots.en.mdx
-function qi(e) {
+function ra(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -7256,16 +7457,16 @@ function qi(e) {
 		] })
 	] });
 }
-function Ji(e = {}) {
+function ia(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qi, { ...e })
-	}) : qi(e);
+		children: o(ra, { ...e })
+	}) : ra(e);
 }
 //#endregion
 //#region src/media/mdx/Cell/slots.ru.mdx
-function Yi(e) {
+function aa(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -7323,31 +7524,31 @@ function Yi(e) {
 		] })
 	] });
 }
-function Xi(e = {}) {
+function oa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Yi, { ...e })
-	}) : Yi(e);
+		children: o(aa, { ...e })
+	}) : aa(e);
 }
 //#endregion
 //#region src/media/mdx/Cell/wikiMdxCell.ts
-var Zi = {
+var sa = {
 	name: "Cell",
 	descriptions: {
 		cell: {
-			en: Wi,
-			ru: Ki
+			en: ea,
+			ru: na
 		},
 		slots: {
-			en: Ji,
-			ru: Xi
+			en: ia,
+			ru: oa
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Checkbox/checkbox.en.mdx
-function Qi(e) {
+function ca(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -7399,16 +7600,16 @@ function Qi(e) {
 		] })
 	] });
 }
-function $i(e = {}) {
+function la(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qi, { ...e })
-	}) : Qi(e);
+		children: o(ca, { ...e })
+	}) : ca(e);
 }
 //#endregion
 //#region src/media/mdx/Checkbox/checkbox.ru.mdx
-function ea(e) {
+function ua(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -7460,16 +7661,16 @@ function ea(e) {
 		] })
 	] });
 }
-function ta(e = {}) {
+function da(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ea, { ...e })
-	}) : ea(e);
+		children: o(ua, { ...e })
+	}) : ua(e);
 }
 //#endregion
 //#region src/media/mdx/Checkbox/indeterminate.en.mdx
-function na(e) {
+function fa(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -7513,16 +7714,16 @@ function na(e) {
 		})
 	] });
 }
-function ra(e = {}) {
+function pa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(na, { ...e })
-	}) : na(e);
+		children: o(fa, { ...e })
+	}) : fa(e);
 }
 //#endregion
 //#region src/media/mdx/Checkbox/indeterminate.ru.mdx
-function ia(e) {
+function ma(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -7566,16 +7767,16 @@ function ia(e) {
 		})
 	] });
 }
-function aa(e = {}) {
+function ha(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ia, { ...e })
-	}) : ia(e);
+		children: o(ma, { ...e })
+	}) : ma(e);
 }
 //#endregion
 //#region src/media/mdx/Checkbox/value.en.mdx
-function oa(e) {
+function ga(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -7628,16 +7829,16 @@ function oa(e) {
 		})
 	] });
 }
-function sa(e = {}) {
+function _a(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(oa, { ...e })
-	}) : oa(e);
+		children: o(ga, { ...e })
+	}) : ga(e);
 }
 //#endregion
 //#region src/media/mdx/Checkbox/value.ru.mdx
-function ca(e) {
+function va(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -7690,35 +7891,35 @@ function ca(e) {
 		})
 	] });
 }
-function la(e = {}) {
+function ya(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ca, { ...e })
-	}) : ca(e);
+		children: o(va, { ...e })
+	}) : va(e);
 }
 //#endregion
 //#region src/media/mdx/Checkbox/wikiMdxCheckbox.ts
-var ua = {
+var ba = {
 	name: "Checkbox",
 	descriptions: {
 		checkbox: {
-			en: $i,
-			ru: ta
+			en: la,
+			ru: da
 		},
 		indeterminate: {
-			en: ra,
-			ru: aa
+			en: pa,
+			ru: ha
 		},
 		value: {
-			en: sa,
-			ru: la
+			en: _a,
+			ru: ya
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Chip/chip.en.mdx
-function da(e) {
+function xa(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -7787,16 +7988,16 @@ function da(e) {
 		] })
 	] });
 }
-function fa(e = {}) {
+function Sa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(da, { ...e })
-	}) : da(e);
+		children: o(xa, { ...e })
+	}) : xa(e);
 }
 //#endregion
 //#region src/media/mdx/Chip/chip.ru.mdx
-function pa(e) {
+function Ca(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -7865,16 +8066,16 @@ function pa(e) {
 		] })
 	] });
 }
-function ma(e = {}) {
+function wa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(pa, { ...e })
-	}) : pa(e);
+		children: o(Ca, { ...e })
+	}) : Ca(e);
 }
 //#endregion
 //#region src/media/mdx/Chip/assistive.en.mdx
-function ha(e) {
+function Ta(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -7913,16 +8114,16 @@ function ha(e) {
 		})
 	] });
 }
-function ga(e = {}) {
+function Ea(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ha, { ...e })
-	}) : ha(e);
+		children: o(Ta, { ...e })
+	}) : Ta(e);
 }
 //#endregion
 //#region src/media/mdx/Chip/assistive.ru.mdx
-function _a(e) {
+function Da(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -7961,16 +8162,16 @@ function _a(e) {
 		})
 	] });
 }
-function va(e = {}) {
+function Oa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_a, { ...e })
-	}) : _a(e);
+		children: o(Da, { ...e })
+	}) : Da(e);
 }
 //#endregion
 //#region src/media/mdx/Chip/input.en.mdx
-function ya(e) {
+function ka(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8009,16 +8210,16 @@ function ya(e) {
 		})
 	] });
 }
-function ba(e = {}) {
+function Aa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ya, { ...e })
-	}) : ya(e);
+		children: o(ka, { ...e })
+	}) : ka(e);
 }
 //#endregion
 //#region src/media/mdx/Chip/input.ru.mdx
-function xa(e) {
+function ja(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8057,35 +8258,35 @@ function xa(e) {
 		})
 	] });
 }
-function Sa(e = {}) {
+function Ma(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xa, { ...e })
-	}) : xa(e);
+		children: o(ja, { ...e })
+	}) : ja(e);
 }
 //#endregion
 //#region src/media/mdx/Chip/wikiMdxChip.ts
-var Ca = {
+var Na = {
 	name: "Chip",
 	descriptions: {
 		chip: {
-			en: fa,
-			ru: ma
+			en: Sa,
+			ru: wa
 		},
 		assistive: {
-			en: ga,
-			ru: va
+			en: Ea,
+			ru: Oa
 		},
 		input: {
-			en: ba,
-			ru: Sa
+			en: Aa,
+			ru: Ma
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/ChipGroup/chipGroup.en.mdx
-function wa(e) {
+function Pa(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -8142,16 +8343,16 @@ function wa(e) {
 		})
 	] });
 }
-function Ta(e = {}) {
+function Fa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(wa, { ...e })
-	}) : wa(e);
+		children: o(Pa, { ...e })
+	}) : Pa(e);
 }
 //#endregion
 //#region src/media/mdx/ChipGroup/chipGroup.ru.mdx
-function Ea(e) {
+function Ia(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -8208,16 +8409,16 @@ function Ea(e) {
 		})
 	] });
 }
-function Da(e = {}) {
+function La(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ea, { ...e })
-	}) : Ea(e);
+		children: o(Ia, { ...e })
+	}) : Ia(e);
 }
 //#endregion
 //#region src/media/mdx/ChipGroup/selected.en.mdx
-function Oa(e) {
+function Ra(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8265,16 +8466,16 @@ function Oa(e) {
 		})
 	] });
 }
-function ka(e = {}) {
+function za(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Oa, { ...e })
-	}) : Oa(e);
+		children: o(Ra, { ...e })
+	}) : Ra(e);
 }
 //#endregion
 //#region src/media/mdx/ChipGroup/selected.ru.mdx
-function Aa(e) {
+function Ba(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8322,31 +8523,31 @@ function Aa(e) {
 		})
 	] });
 }
-function ja(e = {}) {
+function Va(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Aa, { ...e })
-	}) : Aa(e);
+		children: o(Ba, { ...e })
+	}) : Ba(e);
 }
 //#endregion
 //#region src/media/mdx/ChipGroup/wikiMdxChipGroup.ts
-var Ma = {
+var Ha = {
 	name: "ChipGroup",
 	descriptions: {
 		chipGroup: {
-			en: Ta,
-			ru: Da
+			en: Fa,
+			ru: La
 		},
 		selected: {
-			en: ka,
-			ru: ja
+			en: za,
+			ru: Va
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Dialog/dialog.en.mdx
-function Na(e) {
+function Ua(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -8407,16 +8608,16 @@ function Na(e) {
 		})
 	] });
 }
-function Pa(e = {}) {
+function Wa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Na, { ...e })
-	}) : Na(e);
+		children: o(Ua, { ...e })
+	}) : Ua(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/dialog.ru.mdx
-function Fa(e) {
+function Ga(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -8477,16 +8678,16 @@ function Fa(e) {
 		})
 	] });
 }
-function Ia(e = {}) {
+function Ka(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fa, { ...e })
-	}) : Fa(e);
+		children: o(Ga, { ...e })
+	}) : Ga(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/states.en.mdx
-function La(e) {
+function qa(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8553,16 +8754,16 @@ function La(e) {
 		})
 	] });
 }
-function Ra(e = {}) {
+function Ja(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(La, { ...e })
-	}) : La(e);
+		children: o(qa, { ...e })
+	}) : qa(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/states.ru.mdx
-function za(e) {
+function Ya(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8629,16 +8830,16 @@ function za(e) {
 		})
 	] });
 }
-function Ba(e = {}) {
+function Xa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(za, { ...e })
-	}) : za(e);
+		children: o(Ya, { ...e })
+	}) : Ya(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/buttons.en.mdx
-function Va(e) {
+function Za(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8687,16 +8888,16 @@ function Va(e) {
 		})
 	] });
 }
-function Ha(e = {}) {
+function Qa(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Va, { ...e })
-	}) : Va(e);
+		children: o(Za, { ...e })
+	}) : Za(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/buttons.ru.mdx
-function Ua(e) {
+function $a(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -8745,16 +8946,16 @@ function Ua(e) {
 		})
 	] });
 }
-function Wa(e = {}) {
+function eo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ua, { ...e })
-	}) : Ua(e);
+		children: o($a, { ...e })
+	}) : $a(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/events.en.mdx
-function Ga(e) {
+function to(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -8801,16 +9002,16 @@ function Ga(e) {
 		] })
 	] });
 }
-function Ka(e = {}) {
+function no(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ga, { ...e })
-	}) : Ga(e);
+		children: o(to, { ...e })
+	}) : to(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/events.ru.mdx
-function qa(e) {
+function ro(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -8857,39 +9058,39 @@ function qa(e) {
 		] })
 	] });
 }
-function Ja(e = {}) {
+function io(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qa, { ...e })
-	}) : qa(e);
+		children: o(ro, { ...e })
+	}) : ro(e);
 }
 //#endregion
 //#region src/media/mdx/Dialog/wikiMdxDialog.ts
-var Ya = {
+var ao = {
 	name: "Dialog",
 	descriptions: {
 		dialog: {
-			en: Pa,
-			ru: Ia
+			en: Wa,
+			ru: Ka
 		},
 		states: {
-			en: Ra,
-			ru: Ba
+			en: Ja,
+			ru: Xa
 		},
 		buttons: {
-			en: Ha,
-			ru: Wa
+			en: Qa,
+			ru: eo
 		},
 		events: {
-			en: Ka,
-			ru: Ja
+			en: no,
+			ru: io
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Dummy/dummy.en.mdx
-function Xa(e) {
+function oo(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -8939,16 +9140,16 @@ function Xa(e) {
 		] })
 	] });
 }
-function Za(e = {}) {
+function so(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xa, { ...e })
-	}) : Xa(e);
+		children: o(oo, { ...e })
+	}) : oo(e);
 }
 //#endregion
 //#region src/media/mdx/Dummy/dummy.ru.mdx
-function Qa(e) {
+function co(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -8998,25 +9199,25 @@ function Qa(e) {
 		] })
 	] });
 }
-function $a(e = {}) {
+function lo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qa, { ...e })
-	}) : Qa(e);
+		children: o(co, { ...e })
+	}) : co(e);
 }
 //#endregion
 //#region src/media/mdx/Dummy/wikiMdxDummy.ts
-var eo = {
+var uo = {
 	name: "Dummy",
 	descriptions: { dummy: {
-		en: Za,
-		ru: $a
+		en: so,
+		ru: lo
 	} }
 };
 //#endregion
 //#region src/media/mdx/Field/field.en.mdx
-function to(e) {
+function fo(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -9078,16 +9279,16 @@ function to(e) {
 		] })
 	] });
 }
-function no(e = {}) {
+function po(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(to, { ...e })
-	}) : to(e);
+		children: o(fo, { ...e })
+	}) : fo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/field.ru.mdx
-function ro(e) {
+function mo(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -9149,16 +9350,16 @@ function ro(e) {
 		] })
 	] });
 }
-function io(e = {}) {
+function ho(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ro, { ...e })
-	}) : ro(e);
+		children: o(mo, { ...e })
+	}) : mo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/cancel.en.mdx
-function ao(e) {
+function go(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9233,16 +9434,16 @@ function ao(e) {
 		})
 	] });
 }
-function oo(e = {}) {
+function _o(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ao, { ...e })
-	}) : ao(e);
+		children: o(go, { ...e })
+	}) : go(e);
 }
 //#endregion
 //#region src/media/mdx/Field/cancel.ru.mdx
-function so(e) {
+function vo(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9316,16 +9517,16 @@ function so(e) {
 		})
 	] });
 }
-function co(e = {}) {
+function yo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(so, { ...e })
-	}) : so(e);
+		children: o(vo, { ...e })
+	}) : vo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/arrows.en.mdx
-function lo(e) {
+function bo(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9397,16 +9598,16 @@ function lo(e) {
 		})
 	] });
 }
-function uo(e = {}) {
+function xo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(lo, { ...e })
-	}) : lo(e);
+		children: o(bo, { ...e })
+	}) : bo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/arrows.ru.mdx
-function fo(e) {
+function So(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9478,16 +9679,16 @@ function fo(e) {
 		})
 	] });
 }
-function po(e = {}) {
+function Co(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(fo, { ...e })
-	}) : fo(e);
+		children: o(So, { ...e })
+	}) : So(e);
 }
 //#endregion
 //#region src/media/mdx/Field/value.en.mdx
-function mo(e) {
+function wo(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9538,16 +9739,16 @@ function mo(e) {
 		})
 	] });
 }
-function ho(e = {}) {
+function To(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(mo, { ...e })
-	}) : mo(e);
+		children: o(wo, { ...e })
+	}) : wo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/value.ru.mdx
-function go(e) {
+function Eo(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9598,16 +9799,16 @@ function go(e) {
 		})
 	] });
 }
-function _o(e = {}) {
+function Do(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(go, { ...e })
-	}) : go(e);
+		children: o(Eo, { ...e })
+	}) : Eo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/width.en.mdx
-function vo(e) {
+function Oo(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9674,16 +9875,16 @@ function vo(e) {
 		})
 	] });
 }
-function yo(e = {}) {
+function ko(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vo, { ...e })
-	}) : vo(e);
+		children: o(Oo, { ...e })
+	}) : Oo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/width.ru.mdx
-function bo(e) {
+function Ao(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -9750,16 +9951,16 @@ function bo(e) {
 		})
 	] });
 }
-function xo(e = {}) {
+function jo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(bo, { ...e })
-	}) : bo(e);
+		children: o(Ao, { ...e })
+	}) : Ao(e);
 }
 //#endregion
 //#region src/media/mdx/Field/slots.en.mdx
-function So(e) {
+function Mo(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -9801,16 +10002,16 @@ function So(e) {
 		] })
 	] });
 }
-function Co(e = {}) {
+function No(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(So, { ...e })
-	}) : So(e);
+		children: o(Mo, { ...e })
+	}) : Mo(e);
 }
 //#endregion
 //#region src/media/mdx/Field/slots.ru.mdx
-function wo(e) {
+function Po(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -9852,47 +10053,47 @@ function wo(e) {
 		] })
 	] });
 }
-function To(e = {}) {
+function Fo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(wo, { ...e })
-	}) : wo(e);
+		children: o(Po, { ...e })
+	}) : Po(e);
 }
 //#endregion
 //#region src/media/mdx/Field/wikiMdxField.ts
-var Eo = {
+var Io = {
 	name: "Field",
 	descriptions: {
 		arrows: {
-			en: uo,
-			ru: po
+			en: xo,
+			ru: Co
 		},
 		cancel: {
-			en: oo,
-			ru: co
+			en: _o,
+			ru: yo
 		},
 		field: {
-			en: no,
-			ru: io
+			en: po,
+			ru: ho
 		},
 		slots: {
-			en: Co,
-			ru: To
+			en: No,
+			ru: Fo
 		},
 		value: {
-			en: ho,
-			ru: _o
+			en: To,
+			ru: Do
 		},
 		width: {
-			en: yo,
-			ru: xo
+			en: ko,
+			ru: jo
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/FieldCounter/fieldCounter.en.mdx
-function Do(e) {
+function Lo(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -9947,16 +10148,16 @@ function Do(e) {
 		})
 	] });
 }
-function Oo(e = {}) {
+function Ro(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Do, { ...e })
-	}) : Do(e);
+		children: o(Lo, { ...e })
+	}) : Lo(e);
 }
 //#endregion
 //#region src/media/mdx/FieldCounter/fieldCounter.ru.mdx
-function ko(e) {
+function zo(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -10011,16 +10212,16 @@ function ko(e) {
 		})
 	] });
 }
-function Ao(e = {}) {
+function Bo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ko, { ...e })
-	}) : ko(e);
+		children: o(zo, { ...e })
+	}) : zo(e);
 }
 //#endregion
 //#region src/media/mdx/FieldCounter/templates.en.mdx
-function jo(e) {
+function Vo(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -10061,16 +10262,16 @@ function jo(e) {
 		})
 	] });
 }
-function Mo(e = {}) {
+function Ho(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(jo, { ...e })
-	}) : jo(e);
+		children: o(Vo, { ...e })
+	}) : Vo(e);
 }
 //#endregion
 //#region src/media/mdx/FieldCounter/templates.ru.mdx
-function No(e) {
+function Uo(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -10111,31 +10312,31 @@ function No(e) {
 		})
 	] });
 }
-function Po(e = {}) {
+function Wo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(No, { ...e })
-	}) : No(e);
+		children: o(Uo, { ...e })
+	}) : Uo(e);
 }
 //#endregion
 //#region src/media/mdx/FieldCounter/wikiMdxFieldCounter.ts
-var Fo = {
+var Go = {
 	name: "FieldCounter",
 	descriptions: {
 		fieldCounter: {
-			en: Oo,
-			ru: Ao
+			en: Ro,
+			ru: Bo
 		},
 		templates: {
-			en: Mo,
-			ru: Po
+			en: Ho,
+			ru: Wo
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/FieldLabel/fieldLabel.en.mdx
-function Io(e) {
+function Ko(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -10190,16 +10391,16 @@ function Io(e) {
 		})
 	] });
 }
-function Lo(e = {}) {
+function qo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Io, { ...e })
-	}) : Io(e);
+		children: o(Ko, { ...e })
+	}) : Ko(e);
 }
 //#endregion
 //#region src/media/mdx/FieldLabel/fieldLabel.ru.mdx
-function Ro(e) {
+function Jo(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -10254,25 +10455,25 @@ function Ro(e) {
 		})
 	] });
 }
-function zo(e = {}) {
+function Yo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ro, { ...e })
-	}) : Ro(e);
+		children: o(Jo, { ...e })
+	}) : Jo(e);
 }
 //#endregion
 //#region src/media/mdx/FieldLabel/wikiMdxFieldLabel.ts
-var Bo = {
+var Xo = {
 	name: "FieldLabel",
 	descriptions: { fieldLabel: {
-		en: Lo,
-		ru: zo
+		en: qo,
+		ru: Yo
 	} }
 };
 //#endregion
 //#region src/media/mdx/FieldMessage/fieldMessage.en.mdx
-function Vo(e) {
+function Zo(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -10332,16 +10533,16 @@ function Vo(e) {
 		] })
 	] });
 }
-function Ho(e = {}) {
+function Qo(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Vo, { ...e })
-	}) : Vo(e);
+		children: o(Zo, { ...e })
+	}) : Zo(e);
 }
 //#endregion
 //#region src/media/mdx/FieldMessage/fieldMessage.ru.mdx
-function Uo(e) {
+function $o(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -10401,16 +10602,16 @@ function Uo(e) {
 		] })
 	] });
 }
-function Wo(e = {}) {
+function es(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Uo, { ...e })
-	}) : Uo(e);
+		children: o($o, { ...e })
+	}) : $o(e);
 }
 //#endregion
 //#region src/media/mdx/FieldMessage/slots.en.mdx
-function Go(e) {
+function ts(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -10446,16 +10647,16 @@ function Go(e) {
 		] })
 	] });
 }
-function Ko(e = {}) {
+function ns(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Go, { ...e })
-	}) : Go(e);
+		children: o(ts, { ...e })
+	}) : ts(e);
 }
 //#endregion
 //#region src/media/mdx/FieldMessage/slots.ru.mdx
-function qo(e) {
+function rs(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -10491,31 +10692,31 @@ function qo(e) {
 		] })
 	] });
 }
-function Jo(e = {}) {
+function is(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qo, { ...e })
-	}) : qo(e);
+		children: o(rs, { ...e })
+	}) : rs(e);
 }
 //#endregion
 //#region src/media/mdx/FieldMessage/wikiMdxFieldMessage.ts
-var Yo = {
+var as = {
 	name: "FieldMessage",
 	descriptions: {
 		fieldMessage: {
-			en: Ho,
-			ru: Wo
+			en: Qo,
+			ru: es
 		},
 		slots: {
-			en: Ko,
-			ru: Jo
+			en: ns,
+			ru: is
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Grid/grid.en.mdx
-function Xo(e) {
+function os(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -10551,16 +10752,16 @@ function Xo(e) {
 		] })
 	] });
 }
-function Zo(e = {}) {
+function ss(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xo, { ...e })
-	}) : Xo(e);
+		children: o(os, { ...e })
+	}) : os(e);
 }
 //#endregion
 //#region src/media/mdx/Grid/grid.ru.mdx
-function Qo(e) {
+function cs(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -10599,25 +10800,25 @@ function Qo(e) {
 		] })
 	] });
 }
-function $o(e = {}) {
+function ls(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qo, { ...e })
-	}) : Qo(e);
+		children: o(cs, { ...e })
+	}) : cs(e);
 }
 //#endregion
 //#region src/media/mdx/Grid/wikiMdxGrid.ts
-var es = {
+var us = {
 	name: "Grid",
 	descriptions: { grid: {
-		en: Zo,
-		ru: $o
+		en: ss,
+		ru: ls
 	} }
 };
 //#endregion
 //#region src/media/mdx/GridItem/gridItem.en.mdx
-function ts(e) {
+function ds(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -10653,16 +10854,16 @@ function ts(e) {
 		] })
 	] });
 }
-function ns(e = {}) {
+function fs(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ts, { ...e })
-	}) : ts(e);
+		children: o(ds, { ...e })
+	}) : ds(e);
 }
 //#endregion
 //#region src/media/mdx/GridItem/gridItem.ru.mdx
-function rs(e) {
+function ps(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -10701,25 +10902,25 @@ function rs(e) {
 		] })
 	] });
 }
-function is(e = {}) {
+function ms(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(rs, { ...e })
-	}) : rs(e);
+		children: o(ps, { ...e })
+	}) : ps(e);
 }
 //#endregion
 //#region src/media/mdx/GridItem/wikiMdxGridItem.ts
-var as = {
+var hs = {
 	name: "GridItem",
 	descriptions: { gridItem: {
-		en: ns,
-		ru: is
+		en: fs,
+		ru: ms
 	} }
 };
 //#endregion
 //#region src/media/mdx/Group/group.en.mdx
-function os(e) {
+function gs(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -10787,16 +10988,16 @@ function os(e) {
 		] })
 	] });
 }
-function ss(e = {}) {
+function _s(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(os, { ...e })
-	}) : os(e);
+		children: o(gs, { ...e })
+	}) : gs(e);
 }
 //#endregion
 //#region src/media/mdx/Group/group.ru.mdx
-function cs(e) {
+function vs(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -10860,25 +11061,25 @@ function cs(e) {
 		] })
 	] });
 }
-function ls(e = {}) {
+function ys(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(cs, { ...e })
-	}) : cs(e);
+		children: o(vs, { ...e })
+	}) : vs(e);
 }
 //#endregion
 //#region src/media/mdx/Group/wikiMdxGroup.ts
-var us = {
+var bs = {
 	name: "Group",
 	descriptions: { group: {
-		en: ss,
-		ru: ls
+		en: _s,
+		ru: ys
 	} }
 };
 //#endregion
 //#region src/media/mdx/HorizontalScroll/expose.toSelected.en.mdx
-function ds(e) {
+function xs(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -10891,16 +11092,16 @@ function ds(e) {
 		"\n"
 	] });
 }
-function fs(e = {}) {
+function Ss(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ds, { ...e })
-	}) : ds(e);
+		children: o(xs, { ...e })
+	}) : xs(e);
 }
 //#endregion
 //#region src/media/mdx/HorizontalScroll/expose.toSelected.ru.mdx
-function ps(e) {
+function Cs(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -10913,16 +11114,16 @@ function ps(e) {
 		"\n"
 	] });
 }
-function ms(e = {}) {
+function ws(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ps, { ...e })
-	}) : ps(e);
+		children: o(Cs, { ...e })
+	}) : Cs(e);
 }
 //#endregion
 //#region src/media/mdx/HorizontalScroll/horizontalScroll.en.mdx
-function hs(e) {
+function Ts(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -10975,16 +11176,16 @@ function hs(e) {
 		})
 	] });
 }
-function gs(e = {}) {
+function Es(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(hs, { ...e })
-	}) : hs(e);
+		children: o(Ts, { ...e })
+	}) : Ts(e);
 }
 //#endregion
 //#region src/media/mdx/HorizontalScroll/horizontalScroll.ru.mdx
-function _s(e) {
+function Ds(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -11037,16 +11238,16 @@ function _s(e) {
 		})
 	] });
 }
-function vs(e = {}) {
+function Os(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_s, { ...e })
-	}) : _s(e);
+		children: o(Ds, { ...e })
+	}) : Ds(e);
 }
 //#endregion
 //#region src/media/mdx/HorizontalScroll/selected.en.mdx
-function ys(e) {
+function ks(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -11089,16 +11290,16 @@ function ys(e) {
 		})
 	] });
 }
-function bs(e = {}) {
+function As(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ys, { ...e })
-	}) : ys(e);
+		children: o(ks, { ...e })
+	}) : ks(e);
 }
 //#endregion
 //#region src/media/mdx/HorizontalScroll/selected.ru.mdx
-function xs(e) {
+function js(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -11141,35 +11342,35 @@ function xs(e) {
 		})
 	] });
 }
-function Ss(e = {}) {
+function Ms(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xs, { ...e })
-	}) : xs(e);
+		children: o(js, { ...e })
+	}) : js(e);
 }
 //#endregion
 //#region src/media/mdx/HorizontalScroll/wikiMdxHorizontalScroll.ts
-var Cs = {
+var Ns = {
 	name: "HorizontalScroll",
 	descriptions: {
 		"expose.toSelected": {
-			en: fs,
-			ru: ms
+			en: Ss,
+			ru: ws
 		},
 		horizontalScroll: {
-			en: gs,
-			ru: vs
+			en: Es,
+			ru: Os
 		},
 		selected: {
-			en: bs,
-			ru: Ss
+			en: As,
+			ru: Ms
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Header/header.en.mdx
-function ws(e) {
+function Ps(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -11228,16 +11429,16 @@ function ws(e) {
 		] })
 	] });
 }
-function Ts(e = {}) {
+function Fs(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ws, { ...e })
-	}) : ws(e);
+		children: o(Ps, { ...e })
+	}) : Ps(e);
 }
 //#endregion
 //#region src/media/mdx/Header/header.ru.mdx
-function Es(e) {
+function Is(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -11296,25 +11497,25 @@ function Es(e) {
 		] })
 	] });
 }
-function Ds(e = {}) {
+function Ls(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Es, { ...e })
-	}) : Es(e);
+		children: o(Is, { ...e })
+	}) : Is(e);
 }
 //#endregion
 //#region src/media/mdx/Header/wikiMdxHeader.ts
-var Os = {
+var Rs = {
 	name: "Header",
 	descriptions: { header: {
-		en: Ts,
-		ru: Ds
+		en: Fs,
+		ru: Ls
 	} }
 };
 //#endregion
 //#region src/media/mdx/Icon/icon.en.mdx
-function ks(e) {
+function zs(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -11462,16 +11663,16 @@ function ks(e) {
 		] })
 	] });
 }
-function As(e = {}) {
+function Bs(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ks, { ...e })
-	}) : ks(e);
+		children: o(zs, { ...e })
+	}) : zs(e);
 }
 //#endregion
 //#region src/media/mdx/Icon/icon.ru.mdx
-function js(e) {
+function Vs(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -11541,16 +11742,16 @@ function js(e) {
 		] })
 	] });
 }
-function Ms(e = {}) {
+function Hs(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(js, { ...e })
-	}) : js(e);
+		children: o(Vs, { ...e })
+	}) : Vs(e);
 }
 //#endregion
 //#region src/media/mdx/Icon/expose.isActive.en.mdx
-function Ns(e) {
+function $(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -11570,16 +11771,16 @@ function Ns(e) {
 		"\n"
 	] });
 }
-function Ps(e = {}) {
+function Us(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ns, { ...e })
-	}) : Ns(e);
+		children: o($, { ...e })
+	}) : $(e);
 }
 //#endregion
 //#region src/media/mdx/Icon/expose.isActive.ru.mdx
-function Fs(e) {
+function Ws(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -11599,31 +11800,31 @@ function Fs(e) {
 		"\n"
 	] });
 }
-function Is(e = {}) {
+function Gs(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fs, { ...e })
-	}) : Fs(e);
+		children: o(Ws, { ...e })
+	}) : Ws(e);
 }
 //#endregion
 //#region src/media/mdx/Icon/wikiMdxIcon.ts
-var Ls = {
+var Ks = {
 	name: "Icon",
 	descriptions: {
 		icon: {
-			en: As,
-			ru: Ms
+			en: Bs,
+			ru: Hs
 		},
 		"expose.isActive": {
-			en: Ps,
-			ru: Is
+			en: Us,
+			ru: Gs
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Image/image.en.mdx
-function Rs(e) {
+function qs(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -11696,16 +11897,16 @@ function Rs(e) {
 		] })
 	] });
 }
-function zs(e = {}) {
+function Js(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Rs, { ...e })
-	}) : Rs(e);
+		children: o(qs, { ...e })
+	}) : qs(e);
 }
 //#endregion
 //#region src/media/mdx/Image/image.ru.mdx
-function Bs(e) {
+function Ys(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -11778,16 +11979,16 @@ function Bs(e) {
 		] })
 	] });
 }
-function Vs(e = {}) {
+function Xs(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Bs, { ...e })
-	}) : Bs(e);
+		children: o(Ys, { ...e })
+	}) : Ys(e);
 }
 //#endregion
 //#region src/media/mdx/Image/value.en.mdx
-function Hs(e) {
+function Zs(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -11832,16 +12033,16 @@ function Hs(e) {
 		})
 	] });
 }
-function Us(e = {}) {
+function Qs(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hs, { ...e })
-	}) : Hs(e);
+		children: o(Zs, { ...e })
+	}) : Zs(e);
 }
 //#endregion
 //#region src/media/mdx/Image/value.ru.mdx
-function Ws(e) {
+function $s(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -11886,16 +12087,16 @@ function Ws(e) {
 		})
 	] });
 }
-function Gs(e = {}) {
+function ec(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ws, { ...e })
-	}) : Ws(e);
+		children: o($s, { ...e })
+	}) : $s(e);
 }
 //#endregion
 //#region src/media/mdx/Image/size.en.mdx
-function Ks(e) {
+function tc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -11972,16 +12173,16 @@ function Ks(e) {
 		})
 	] });
 }
-function qs(e = {}) {
+function nc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ks, { ...e })
-	}) : Ks(e);
+		children: o(tc, { ...e })
+	}) : tc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/size.ru.mdx
-function Js(e) {
+function rc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -12058,16 +12259,16 @@ function Js(e) {
 		})
 	] });
 }
-function Ys(e = {}) {
+function ic(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Js, { ...e })
-	}) : Js(e);
+		children: o(rc, { ...e })
+	}) : rc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/adaptive.en.mdx
-function Xs(e) {
+function ac(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -12155,16 +12356,16 @@ function Xs(e) {
 		})
 	] });
 }
-function Zs(e = {}) {
+function oc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xs, { ...e })
-	}) : Xs(e);
+		children: o(ac, { ...e })
+	}) : ac(e);
 }
 //#endregion
 //#region src/media/mdx/Image/adaptive.ru.mdx
-function Qs(e) {
+function sc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -12252,16 +12453,16 @@ function Qs(e) {
 		})
 	] });
 }
-function $s(e = {}) {
+function cc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qs, { ...e })
-	}) : Qs(e);
+		children: o(sc, { ...e })
+	}) : sc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/img-tag.en.mdx
-function ec(e) {
+function lc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -12418,16 +12619,16 @@ function ec(e) {
 		})
 	] });
 }
-function tc(e = {}) {
+function uc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ec, { ...e })
-	}) : ec(e);
+		children: o(lc, { ...e })
+	}) : lc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/img-tag.ru.mdx
-function nc(e) {
+function dc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -12583,16 +12784,16 @@ function nc(e) {
 		})
 	] });
 }
-function rc(e = {}) {
+function fc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nc, { ...e })
-	}) : nc(e);
+		children: o(dc, { ...e })
+	}) : dc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/flag.en.mdx
-function ic(e) {
+function pc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -12649,16 +12850,16 @@ function ic(e) {
 		})
 	] });
 }
-function ac(e = {}) {
+function mc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ic, { ...e })
-	}) : ic(e);
+		children: o(pc, { ...e })
+	}) : pc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/flag.ru.mdx
-function oc(e) {
+function hc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -12715,16 +12916,16 @@ function oc(e) {
 		})
 	] });
 }
-function sc(e = {}) {
+function gc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(oc, { ...e })
-	}) : oc(e);
+		children: o(hc, { ...e })
+	}) : hc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/event.load.en.mdx
-function cc(e) {
+function _c(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -12799,16 +13000,16 @@ function cc(e) {
 		})
 	] });
 }
-function lc(e = {}) {
+function vc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(cc, { ...e })
-	}) : cc(e);
+		children: o(_c, { ...e })
+	}) : _c(e);
 }
 //#endregion
 //#region src/media/mdx/Image/event.load.ru.mdx
-function uc(e) {
+function yc(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -12883,16 +13084,16 @@ function uc(e) {
 		})
 	] });
 }
-function dc(e = {}) {
+function bc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(uc, { ...e })
-	}) : uc(e);
+		children: o(yc, { ...e })
+	}) : yc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/expose.en.mdx
-function fc(e) {
+function xc(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -12973,16 +13174,16 @@ function fc(e) {
 		] })
 	] });
 }
-function pc(e = {}) {
+function Sc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(fc, { ...e })
-	}) : fc(e);
+		children: o(xc, { ...e })
+	}) : xc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/expose.ru.mdx
-function mc(e) {
+function Cc(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -13063,55 +13264,55 @@ function mc(e) {
 		] })
 	] });
 }
-function hc(e = {}) {
+function wc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(mc, { ...e })
-	}) : mc(e);
+		children: o(Cc, { ...e })
+	}) : Cc(e);
 }
 //#endregion
 //#region src/media/mdx/Image/wikiMdxImage.ts
-var gc = {
+var Tc = {
 	name: "Image",
 	descriptions: {
 		image: {
-			en: zs,
-			ru: Vs
+			en: Js,
+			ru: Xs
 		},
 		value: {
-			en: Us,
-			ru: Gs
+			en: Qs,
+			ru: ec
 		},
 		size: {
-			en: qs,
-			ru: Ys
+			en: nc,
+			ru: ic
 		},
 		adaptive: {
-			en: Zs,
-			ru: $s
+			en: oc,
+			ru: cc
 		},
 		"img-tag": {
-			en: tc,
-			ru: rc
+			en: uc,
+			ru: fc
 		},
 		flag: {
-			en: ac,
-			ru: sc
+			en: mc,
+			ru: gc
 		},
 		"event.load": {
-			en: lc,
-			ru: dc
+			en: vc,
+			ru: bc
 		},
 		expose: {
-			en: pc,
-			ru: hc
+			en: Sc,
+			ru: wc
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Input/currency.en.mdx
-function _c(e) {
+function Ec(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -13206,16 +13407,16 @@ function _c(e) {
 		})
 	] });
 }
-function vc(e = {}) {
+function Dc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_c, { ...e })
-	}) : _c(e);
+		children: o(Ec, { ...e })
+	}) : Ec(e);
 }
 //#endregion
 //#region src/media/mdx/Input/currency.ru.mdx
-function yc(e) {
+function Oc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -13310,16 +13511,16 @@ function yc(e) {
 		})
 	] });
 }
-function bc(e = {}) {
+function kc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(yc, { ...e })
-	}) : yc(e);
+		children: o(Oc, { ...e })
+	}) : Oc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/date.en.mdx
-function xc(e) {
+function Ac(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -13406,16 +13607,16 @@ function xc(e) {
 		})
 	] });
 }
-function Sc(e = {}) {
+function jc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xc, { ...e })
-	}) : xc(e);
+		children: o(Ac, { ...e })
+	}) : Ac(e);
 }
 //#endregion
 //#region src/media/mdx/Input/date.ru.mdx
-function Cc(e) {
+function Mc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -13502,16 +13703,16 @@ function Cc(e) {
 		})
 	] });
 }
-function wc(e = {}) {
+function Nc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Cc, { ...e })
-	}) : Cc(e);
+		children: o(Mc, { ...e })
+	}) : Mc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/input.en.mdx
-function Tc(e) {
+function Pc(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -13631,16 +13832,16 @@ function Tc(e) {
 		})
 	] });
 }
-function Ec(e = {}) {
+function Fc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Tc, { ...e })
-	}) : Tc(e);
+		children: o(Pc, { ...e })
+	}) : Pc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/input.ru.mdx
-function Dc(e) {
+function Ic(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -13705,16 +13906,16 @@ function Dc(e) {
 		})
 	] });
 }
-function Oc(e = {}) {
+function Lc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Dc, { ...e })
-	}) : Dc(e);
+		children: o(Ic, { ...e })
+	}) : Ic(e);
 }
 //#endregion
 //#region src/media/mdx/Input/mask.en.mdx
-function kc(e) {
+function Rc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -13799,16 +14000,16 @@ function kc(e) {
 		})
 	] });
 }
-function Ac(e = {}) {
+function zc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(kc, { ...e })
-	}) : kc(e);
+		children: o(Rc, { ...e })
+	}) : Rc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/mask.ru.mdx
-function jc(e) {
+function Bc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -13893,16 +14094,16 @@ function jc(e) {
 		})
 	] });
 }
-function Mc(e = {}) {
+function Vc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(jc, { ...e })
-	}) : jc(e);
+		children: o(Bc, { ...e })
+	}) : Bc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/number.en.mdx
-function Nc(e) {
+function Hc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -14034,16 +14235,16 @@ function Nc(e) {
 		})
 	] });
 }
-function Pc(e = {}) {
+function Uc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Nc, { ...e })
-	}) : Nc(e);
+		children: o(Hc, { ...e })
+	}) : Hc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/number.ru.mdx
-function Fc(e) {
+function Wc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -14175,16 +14376,16 @@ function Fc(e) {
 		})
 	] });
 }
-function Ic(e = {}) {
+function Gc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fc, { ...e })
-	}) : Fc(e);
+		children: o(Wc, { ...e })
+	}) : Wc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/type.en.mdx
-function Lc(e) {
+function Kc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -14272,16 +14473,16 @@ function Lc(e) {
 		] })
 	] });
 }
-function Rc(e = {}) {
+function qc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Lc, { ...e })
-	}) : Lc(e);
+		children: o(Kc, { ...e })
+	}) : Kc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/type.ru.mdx
-function zc(e) {
+function Jc(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -14369,47 +14570,47 @@ function zc(e) {
 		] })
 	] });
 }
-function Bc(e = {}) {
+function Yc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(zc, { ...e })
-	}) : zc(e);
+		children: o(Jc, { ...e })
+	}) : Jc(e);
 }
 //#endregion
 //#region src/media/mdx/Input/wikiMdxInput.ts
-var Vc = {
+var Xc = {
 	name: "Input",
 	descriptions: {
 		currency: {
-			en: vc,
-			ru: bc
+			en: Dc,
+			ru: kc
 		},
 		date: {
-			en: Sc,
-			ru: wc
+			en: jc,
+			ru: Nc
 		},
 		input: {
-			en: Ec,
-			ru: Oc
+			en: Fc,
+			ru: Lc
 		},
 		mask: {
-			en: Ac,
-			ru: Mc
+			en: zc,
+			ru: Vc
 		},
 		number: {
-			en: Pc,
-			ru: Ic
+			en: Uc,
+			ru: Gc
 		},
 		type: {
-			en: Rc,
-			ru: Bc
+			en: qc,
+			ru: Yc
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/List/list.en.mdx
-function Hc(e) {
+function Zc(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -14472,16 +14673,16 @@ function Hc(e) {
 		})
 	] });
 }
-function Uc(e = {}) {
+function Qc(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hc, { ...e })
-	}) : Hc(e);
+		children: o(Zc, { ...e })
+	}) : Zc(e);
 }
 //#endregion
 //#region src/media/mdx/List/list.ru.mdx
-function Wc(e) {
+function $c(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -14544,16 +14745,16 @@ function Wc(e) {
 		})
 	] });
 }
-function Gc(e = {}) {
+function el(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Wc, { ...e })
-	}) : Wc(e);
+		children: o($c, { ...e })
+	}) : $c(e);
 }
 //#endregion
 //#region src/media/mdx/List/lite.en.mdx
-function Kc(e) {
+function tl(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -14602,16 +14803,16 @@ function Kc(e) {
 		})
 	] });
 }
-function qc(e = {}) {
+function nl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Kc, { ...e })
-	}) : Kc(e);
+		children: o(tl, { ...e })
+	}) : tl(e);
 }
 //#endregion
 //#region src/media/mdx/List/lite.ru.mdx
-function Jc(e) {
+function rl(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -14660,16 +14861,16 @@ function Jc(e) {
 		})
 	] });
 }
-function Yc(e = {}) {
+function il(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Jc, { ...e })
-	}) : Jc(e);
+		children: o(rl, { ...e })
+	}) : rl(e);
 }
 //#endregion
 //#region src/media/mdx/List/event.close.en.mdx
-function Xc(e) {
+function al(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -14705,16 +14906,16 @@ function Xc(e) {
 		] })
 	] });
 }
-function Zc(e = {}) {
+function ol(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xc, { ...e })
-	}) : Xc(e);
+		children: o(al, { ...e })
+	}) : al(e);
 }
 //#endregion
 //#region src/media/mdx/List/event.close.ru.mdx
-function Qc(e) {
+function sl(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -14750,16 +14951,16 @@ function Qc(e) {
 		] })
 	] });
 }
-function $c(e = {}) {
+function cl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qc, { ...e })
-	}) : Qc(e);
+		children: o(sl, { ...e })
+	}) : sl(e);
 }
 //#endregion
 //#region src/media/mdx/List/slot.html.en.mdx
-function el(e) {
+function ll(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -14781,16 +14982,16 @@ function el(e) {
 		"\n"
 	] });
 }
-function tl(e = {}) {
+function ul(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(el, { ...e })
-	}) : el(e);
+		children: o(ll, { ...e })
+	}) : ll(e);
 }
 //#endregion
 //#region src/media/mdx/List/slot.html.ru.mdx
-function nl(e) {
+function dl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -14812,39 +15013,39 @@ function nl(e) {
 		"\n"
 	] });
 }
-function rl(e = {}) {
+function fl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nl, { ...e })
-	}) : nl(e);
+		children: o(dl, { ...e })
+	}) : dl(e);
 }
 //#endregion
 //#region src/media/mdx/List/wikiMdxList.ts
-var il = {
+var pl = {
 	name: "List",
 	descriptions: {
 		list: {
-			en: Uc,
-			ru: Gc
+			en: Qc,
+			ru: el
 		},
 		lite: {
-			en: qc,
-			ru: Yc
+			en: nl,
+			ru: il
 		},
 		"event.close": {
-			en: Zc,
-			ru: $c
+			en: ol,
+			ru: cl
 		},
 		"slot.html": {
-			en: tl,
-			ru: rl
+			en: ul,
+			ru: fl
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/ListGroup/listGroup.en.mdx
-function al(e) {
+function ml(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -14899,16 +15100,16 @@ function al(e) {
 		})
 	] });
 }
-function ol(e = {}) {
+function hl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(al, { ...e })
-	}) : al(e);
+		children: o(ml, { ...e })
+	}) : ml(e);
 }
 //#endregion
 //#region src/media/mdx/ListGroup/listGroup.ru.mdx
-function sl(e) {
+function gl(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -14963,16 +15164,16 @@ function sl(e) {
 		})
 	] });
 }
-function cl(e = {}) {
+function _l(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(sl, { ...e })
-	}) : sl(e);
+		children: o(gl, { ...e })
+	}) : gl(e);
 }
 //#endregion
 //#region src/media/mdx/ListGroup/slots.en.mdx
-function ll(e) {
+function vl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -14987,16 +15188,16 @@ function ll(e) {
 		"\n"
 	] });
 }
-function ul(e = {}) {
+function yl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ll, { ...e })
-	}) : ll(e);
+		children: o(vl, { ...e })
+	}) : vl(e);
 }
 //#endregion
 //#region src/media/mdx/ListGroup/slots.ru.mdx
-function dl(e) {
+function bl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -15011,31 +15212,31 @@ function dl(e) {
 		"\n"
 	] });
 }
-function fl(e = {}) {
+function xl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(dl, { ...e })
-	}) : dl(e);
+		children: o(bl, { ...e })
+	}) : bl(e);
 }
 //#endregion
 //#region src/media/mdx/ListGroup/wikiMdxListGroup.ts
-var pl = {
+var Sl = {
 	name: "ListGroup",
 	descriptions: {
 		listGroup: {
-			en: ol,
-			ru: cl
+			en: hl,
+			ru: _l
 		},
 		slots: {
-			en: ul,
-			ru: fl
+			en: yl,
+			ru: xl
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/ListItem/basic.en.mdx
-function ml(e) {
+function Cl(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -15092,16 +15293,16 @@ function ml(e) {
 		})
 	] });
 }
-function hl(e = {}) {
+function wl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ml, { ...e })
-	}) : ml(e);
+		children: o(Cl, { ...e })
+	}) : Cl(e);
 }
 //#endregion
 //#region src/media/mdx/ListItem/basic.ru.mdx
-function gl(e) {
+function Tl(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -15158,16 +15359,16 @@ function gl(e) {
 		})
 	] });
 }
-function _l(e = {}) {
+function El(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(gl, { ...e })
-	}) : gl(e);
+		children: o(Tl, { ...e })
+	}) : Tl(e);
 }
 //#endregion
 //#region src/media/mdx/ListItem/fill.en.mdx
-function vl(e) {
+function Dl(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -15241,16 +15442,16 @@ function vl(e) {
 		})
 	] });
 }
-function yl(e = {}) {
+function Ol(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vl, { ...e })
-	}) : vl(e);
+		children: o(Dl, { ...e })
+	}) : Dl(e);
 }
 //#endregion
 //#region src/media/mdx/ListItem/fill.ru.mdx
-function bl(e) {
+function kl(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -15324,16 +15525,16 @@ function bl(e) {
 		})
 	] });
 }
-function xl(e = {}) {
+function Al(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(bl, { ...e })
-	}) : bl(e);
+		children: o(kl, { ...e })
+	}) : kl(e);
 }
 //#endregion
 //#region src/media/mdx/ListItem/slots.en.mdx
-function Sl(e) {
+function jl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -15348,16 +15549,16 @@ function Sl(e) {
 		"\n"
 	] });
 }
-function Cl(e = {}) {
+function Ml(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Sl, { ...e })
-	}) : Sl(e);
+		children: o(jl, { ...e })
+	}) : jl(e);
 }
 //#endregion
 //#region src/media/mdx/ListItem/slots.ru.mdx
-function wl(e) {
+function Nl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -15372,35 +15573,35 @@ function wl(e) {
 		"\n"
 	] });
 }
-function Tl(e = {}) {
+function Pl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(wl, { ...e })
-	}) : wl(e);
+		children: o(Nl, { ...e })
+	}) : Nl(e);
 }
 //#endregion
 //#region src/media/mdx/ListItem/wikiMdxListItem.ts
-var El = {
+var Fl = {
 	name: "ListItem",
 	descriptions: {
 		basic: {
-			en: hl,
-			ru: _l
+			en: wl,
+			ru: El
 		},
 		fill: {
-			en: yl,
-			ru: xl
+			en: Ol,
+			ru: Al
 		},
 		slots: {
-			en: Cl,
-			ru: Tl
+			en: Ml,
+			ru: Pl
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/ListMenu/listMenu.en.mdx
-function Dl(e) {
+function Il(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -15455,16 +15656,16 @@ function Dl(e) {
 		})
 	] });
 }
-function Ol(e = {}) {
+function Ll(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Dl, { ...e })
-	}) : Dl(e);
+		children: o(Il, { ...e })
+	}) : Il(e);
 }
 //#endregion
 //#region src/media/mdx/ListMenu/listMenu.ru.mdx
-function kl(e) {
+function Rl(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -15519,25 +15720,25 @@ function kl(e) {
 		})
 	] });
 }
-function Al(e = {}) {
+function zl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(kl, { ...e })
-	}) : kl(e);
+		children: o(Rl, { ...e })
+	}) : Rl(e);
 }
 //#endregion
 //#region src/media/mdx/ListMenu/wikiMdxListMenu.ts
-var jl = {
+var Bl = {
 	name: "ListMenu",
 	descriptions: { listMenu: {
-		en: Ol,
-		ru: Al
+		en: Ll,
+		ru: zl
 	} }
 };
 //#endregion
 //#region src/media/mdx/Mask/basic.en.mdx
-function Ml(e) {
+function Vl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -15614,16 +15815,16 @@ function Ml(e) {
 		})
 	] });
 }
-function Nl(e = {}) {
+function Hl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ml, { ...e })
-	}) : Ml(e);
+		children: o(Vl, { ...e })
+	}) : Vl(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/basic.ru.mdx
-function Pl(e) {
+function Ul(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -15696,16 +15897,16 @@ function Pl(e) {
 		})
 	] });
 }
-function Fl(e = {}) {
+function Wl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Pl, { ...e })
-	}) : Pl(e);
+		children: o(Ul, { ...e })
+	}) : Ul(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/dateTypes.en.mdx
-function Il(e) {
+function Gl(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -15798,16 +15999,16 @@ function Il(e) {
 		})
 	] });
 }
-function Ll(e = {}) {
+function Kl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Il, { ...e })
-	}) : Il(e);
+		children: o(Gl, { ...e })
+	}) : Gl(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/dateTypes.ru.mdx
-function Rl(e) {
+function ql(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -15900,16 +16101,16 @@ function Rl(e) {
 		})
 	] });
 }
-function zl(e = {}) {
+function Jl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Rl, { ...e })
-	}) : Rl(e);
+		children: o(ql, { ...e })
+	}) : ql(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/expose.en.mdx
-function Bl(e) {
+function Yl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -15931,16 +16132,16 @@ function Bl(e) {
 		"\n"
 	] });
 }
-function Vl(e = {}) {
+function Xl(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Bl, { ...e })
-	}) : Bl(e);
+		children: o(Yl, { ...e })
+	}) : Yl(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/expose.ru.mdx
-function Hl(e) {
+function Zl(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -15962,16 +16163,16 @@ function Hl(e) {
 		"\n"
 	] });
 }
-function Ul(e = {}) {
+function Ql(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hl, { ...e })
-	}) : Hl(e);
+		children: o(Zl, { ...e })
+	}) : Zl(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/groupSave.en.mdx
-function Wl(e) {
+function $l(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16014,16 +16215,16 @@ function Wl(e) {
 		})
 	] });
 }
-function Gl(e = {}) {
+function eu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Wl, { ...e })
-	}) : Wl(e);
+		children: o($l, { ...e })
+	}) : $l(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/groupSave.ru.mdx
-function Kl(e) {
+function tu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16066,16 +16267,16 @@ function Kl(e) {
 		})
 	] });
 }
-function ql(e = {}) {
+function nu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Kl, { ...e })
-	}) : Kl(e);
+		children: o(tu, { ...e })
+	}) : tu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/mask.en.mdx
-function Jl(e) {
+function ru(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16126,16 +16327,16 @@ function Jl(e) {
 		})
 	] });
 }
-function Yl(e = {}) {
+function iu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Jl, { ...e })
-	}) : Jl(e);
+		children: o(ru, { ...e })
+	}) : ru(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/mask.ru.mdx
-function Xl(e) {
+function au(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16186,16 +16387,16 @@ function Xl(e) {
 		})
 	] });
 }
-function Zl(e = {}) {
+function ou(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xl, { ...e })
-	}) : Xl(e);
+		children: o(au, { ...e })
+	}) : au(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/match.en.mdx
-function Ql(e) {
+function su(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16249,16 +16450,16 @@ function Ql(e) {
 		})
 	] });
 }
-function $l(e = {}) {
+function cu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ql, { ...e })
-	}) : Ql(e);
+		children: o(su, { ...e })
+	}) : su(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/match.ru.mdx
-function eu(e) {
+function lu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16312,16 +16513,16 @@ function eu(e) {
 		})
 	] });
 }
-function tu(e = {}) {
+function uu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(eu, { ...e })
-	}) : eu(e);
+		children: o(lu, { ...e })
+	}) : lu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/numberTypes.en.mdx
-function nu(e) {
+function du(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16425,16 +16626,16 @@ function nu(e) {
 		})
 	] });
 }
-function ru(e = {}) {
+function fu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nu, { ...e })
-	}) : nu(e);
+		children: o(du, { ...e })
+	}) : du(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/numberTypes.ru.mdx
-function iu(e) {
+function pu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16538,16 +16739,16 @@ function iu(e) {
 		})
 	] });
 }
-function au(e = {}) {
+function mu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(iu, { ...e })
-	}) : iu(e);
+		children: o(pu, { ...e })
+	}) : pu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/pattern.en.mdx
-function ou(e) {
+function hu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16592,16 +16793,16 @@ function ou(e) {
 		})
 	] });
 }
-function su(e = {}) {
+function gu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ou, { ...e })
-	}) : ou(e);
+		children: o(hu, { ...e })
+	}) : hu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/pattern.ru.mdx
-function cu(e) {
+function _u(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -16646,16 +16847,16 @@ function cu(e) {
 		})
 	] });
 }
-function lu(e = {}) {
+function vu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(cu, { ...e })
-	}) : cu(e);
+		children: o(_u, { ...e })
+	}) : _u(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/special.en.mdx
-function uu(e) {
+function yu(e) {
 	let t = {
 		a: "a",
 		code: "code",
@@ -16889,16 +17090,16 @@ function uu(e) {
 		})
 	] });
 }
-function du(e = {}) {
+function bu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(uu, { ...e })
-	}) : uu(e);
+		children: o(yu, { ...e })
+	}) : yu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/special.ru.mdx
-function fu(e) {
+function xu(e) {
 	let t = {
 		a: "a",
 		code: "code",
@@ -17132,16 +17333,16 @@ function fu(e) {
 		})
 	] });
 }
-function pu(e = {}) {
+function Su(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(fu, { ...e })
-	}) : fu(e);
+		children: o(xu, { ...e })
+	}) : xu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/type.en.mdx
-function mu(e) {
+function Cu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -17218,16 +17419,16 @@ function mu(e) {
 		})
 	] });
 }
-function hu(e = {}) {
+function wu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(mu, { ...e })
-	}) : mu(e);
+		children: o(Cu, { ...e })
+	}) : Cu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/type.ru.mdx
-function gu(e) {
+function Tu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -17304,16 +17505,16 @@ function gu(e) {
 		})
 	] });
 }
-function _u(e = {}) {
+function Eu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(gu, { ...e })
-	}) : gu(e);
+		children: o(Tu, { ...e })
+	}) : Tu(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/visible.en.mdx
-function vu(e) {
+function Du(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -17364,16 +17565,16 @@ function vu(e) {
 		})
 	] });
 }
-function yu(e = {}) {
+function Ou(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vu, { ...e })
-	}) : vu(e);
+		children: o(Du, { ...e })
+	}) : Du(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/visible.ru.mdx
-function bu(e) {
+function ku(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -17424,67 +17625,67 @@ function bu(e) {
 		})
 	] });
 }
-function xu(e = {}) {
+function Au(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(bu, { ...e })
-	}) : bu(e);
+		children: o(ku, { ...e })
+	}) : ku(e);
 }
 //#endregion
 //#region src/media/mdx/Mask/wikiMdxMask.ts
-var Su = {
+var ju = {
 	name: "Mask",
 	descriptions: {
 		basic: {
-			en: Nl,
-			ru: Fl
+			en: Hl,
+			ru: Wl
 		},
 		dateTypes: {
-			en: Ll,
-			ru: zl
+			en: Kl,
+			ru: Jl
 		},
 		expose: {
-			en: Vl,
-			ru: Ul
+			en: Xl,
+			ru: Ql
 		},
 		groupSave: {
-			en: Gl,
-			ru: ql
+			en: eu,
+			ru: nu
 		},
 		mask: {
-			en: Yl,
-			ru: Zl
+			en: iu,
+			ru: ou
 		},
 		match: {
-			en: $l,
-			ru: tu
+			en: cu,
+			ru: uu
 		},
 		numberTypes: {
-			en: ru,
-			ru: au
+			en: fu,
+			ru: mu
 		},
 		pattern: {
-			en: su,
-			ru: lu
+			en: gu,
+			ru: vu
 		},
 		special: {
-			en: du,
-			ru: pu
+			en: bu,
+			ru: Su
 		},
 		type: {
-			en: hu,
-			ru: _u
+			en: wu,
+			ru: Eu
 		},
 		visible: {
-			en: yu,
-			ru: xu
+			en: Ou,
+			ru: Au
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Menu/ajax.en.mdx
-function Cu(e) {
+function Mu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -17548,16 +17749,16 @@ function Cu(e) {
 		})
 	] });
 }
-function wu(e = {}) {
+function Nu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Cu, { ...e })
-	}) : Cu(e);
+		children: o(Mu, { ...e })
+	}) : Mu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/ajax.ru.mdx
-function Tu(e) {
+function Pu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -17621,16 +17822,16 @@ function Tu(e) {
 		})
 	] });
 }
-function Eu(e = {}) {
+function Fu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Tu, { ...e })
-	}) : Tu(e);
+		children: o(Pu, { ...e })
+	}) : Pu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/event.updateValue.en.mdx
-function Du(e) {
+function Iu(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -17659,16 +17860,16 @@ function Du(e) {
 		})
 	] });
 }
-function Ou(e = {}) {
+function Lu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Du, { ...e })
-	}) : Du(e);
+		children: o(Iu, { ...e })
+	}) : Iu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/event.updateValue.ru.mdx
-function ku(e) {
+function Ru(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -17697,16 +17898,16 @@ function ku(e) {
 		})
 	] });
 }
-function Au(e = {}) {
+function zu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ku, { ...e })
-	}) : ku(e);
+		children: o(Ru, { ...e })
+	}) : Ru(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/expose.navigation.en.mdx
-function ju(e) {
+function Bu(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -17731,16 +17932,16 @@ function ju(e) {
 		"\n"
 	] });
 }
-function Mu(e = {}) {
+function Vu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ju, { ...e })
-	}) : ju(e);
+		children: o(Bu, { ...e })
+	}) : Bu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/expose.navigation.ru.mdx
-function Nu(e) {
+function Hu(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -17765,16 +17966,16 @@ function Nu(e) {
 		"\n"
 	] });
 }
-function Pu(e = {}) {
+function Uu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Nu, { ...e })
-	}) : Nu(e);
+		children: o(Hu, { ...e })
+	}) : Hu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/menu.en.mdx
-function Fu(e) {
+function Wu(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -17833,16 +18034,16 @@ function Fu(e) {
 		})
 	] });
 }
-function Iu(e = {}) {
+function Gu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fu, { ...e })
-	}) : Fu(e);
+		children: o(Wu, { ...e })
+	}) : Wu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/menu.ru.mdx
-function Lu(e) {
+function Ku(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -17901,16 +18102,16 @@ function Lu(e) {
 		})
 	] });
 }
-function Ru(e = {}) {
+function qu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Lu, { ...e })
-	}) : Lu(e);
+		children: o(Ku, { ...e })
+	}) : Ku(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/navigation.en.mdx
-function zu(e) {
+function Ju(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -17971,16 +18172,16 @@ function zu(e) {
 		})
 	] });
 }
-function Bu(e = {}) {
+function Yu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(zu, { ...e })
-	}) : zu(e);
+		children: o(Ju, { ...e })
+	}) : Ju(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/navigation.ru.mdx
-function Vu(e) {
+function Xu(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -18041,16 +18242,16 @@ function Vu(e) {
 		})
 	] });
 }
-function Hu(e = {}) {
+function Zu(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Vu, { ...e })
-	}) : Vu(e);
+		children: o(Xu, { ...e })
+	}) : Xu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/slots.en.mdx
-function Uu(e) {
+function Qu(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -18100,16 +18301,16 @@ function Uu(e) {
 		] })
 	] });
 }
-function Wu(e = {}) {
+function $u(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Uu, { ...e })
-	}) : Uu(e);
+		children: o(Qu, { ...e })
+	}) : Qu(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/slots.ru.mdx
-function Gu(e) {
+function ed(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -18159,16 +18360,16 @@ function Gu(e) {
 		] })
 	] });
 }
-function Ku(e = {}) {
+function td(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Gu, { ...e })
-	}) : Gu(e);
+		children: o(ed, { ...e })
+	}) : ed(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/slots.control.en.mdx
-function qu(e) {
+function nd(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -18181,16 +18382,16 @@ function qu(e) {
 		"\n"
 	] });
 }
-function Ju(e = {}) {
+function rd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qu, { ...e })
-	}) : qu(e);
+		children: o(nd, { ...e })
+	}) : nd(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/slots.control.ru.mdx
-function Yu(e) {
+function id(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -18203,51 +18404,51 @@ function Yu(e) {
 		"\n"
 	] });
 }
-function Xu(e = {}) {
+function ad(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Yu, { ...e })
-	}) : Yu(e);
+		children: o(id, { ...e })
+	}) : id(e);
 }
 //#endregion
 //#region src/media/mdx/Menu/wikiMdxMenu.ts
-var Zu = {
+var od = {
 	name: "Menu",
 	descriptions: {
 		ajax: {
-			en: wu,
-			ru: Eu
+			en: Nu,
+			ru: Fu
 		},
 		"event.updateValue": {
-			en: Ou,
-			ru: Au
+			en: Lu,
+			ru: zu
 		},
 		"expose.navigation": {
-			en: Mu,
-			ru: Pu
+			en: Vu,
+			ru: Uu
 		},
 		menu: {
-			en: Iu,
-			ru: Ru
+			en: Gu,
+			ru: qu
 		},
 		navigation: {
-			en: Bu,
-			ru: Hu
+			en: Yu,
+			ru: Zu
 		},
 		slots: {
-			en: Wu,
-			ru: Ku
+			en: $u,
+			ru: td
 		},
 		slotsControl: {
-			en: Ju,
-			ru: Xu
+			en: rd,
+			ru: ad
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Modal/differences.en.mdx
-function Qu(e) {
+function sd(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -18556,16 +18757,16 @@ function Qu(e) {
 		] })
 	] });
 }
-function $u(e = {}) {
+function cd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qu, { ...e })
-	}) : Qu(e);
+		children: o(sd, { ...e })
+	}) : sd(e);
 }
 //#endregion
 //#region src/media/mdx/Modal/differences.ru.mdx
-function ed(e) {
+function ld(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -18727,16 +18928,16 @@ function ed(e) {
 		] })
 	] });
 }
-function td(e = {}) {
+function ud(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ed, { ...e })
-	}) : ed(e);
+		children: o(ld, { ...e })
+	}) : ld(e);
 }
 //#endregion
 //#region src/media/mdx/Modal/modal.en.mdx
-function nd(e) {
+function dd(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -18806,16 +19007,16 @@ function nd(e) {
 		})
 	] });
 }
-function rd(e = {}) {
+function fd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nd, { ...e })
-	}) : nd(e);
+		children: o(dd, { ...e })
+	}) : dd(e);
 }
 //#endregion
 //#region src/media/mdx/Modal/modal.ru.mdx
-function id(e) {
+function pd(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -18885,31 +19086,31 @@ function id(e) {
 		})
 	] });
 }
-function ad(e = {}) {
+function md(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(id, { ...e })
-	}) : id(e);
+		children: o(pd, { ...e })
+	}) : pd(e);
 }
 //#endregion
 //#region src/media/mdx/Modal/wikiMdxModal.ts
-var od = {
+var hd = {
 	name: "Modal",
 	descriptions: {
 		differences: {
-			en: $u,
-			ru: td
+			en: cd,
+			ru: ud
 		},
 		modal: {
-			en: rd,
-			ru: ad
+			en: fd,
+			ru: md
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/MotionAxis/classes.en.mdx
-function sd(e) {
+function gd(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -18962,16 +19163,16 @@ function sd(e) {
 		] })
 	] });
 }
-function cd(e = {}) {
+function _d(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(sd, { ...e })
-	}) : sd(e);
+		children: o(gd, { ...e })
+	}) : gd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/classes.ru.mdx
-function ld(e) {
+function vd(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -19024,16 +19225,16 @@ function ld(e) {
 		] })
 	] });
 }
-function ud(e = {}) {
+function yd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ld, { ...e })
-	}) : ld(e);
+		children: o(vd, { ...e })
+	}) : vd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/event.en.mdx
-function dd(e) {
+function bd(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -19102,16 +19303,16 @@ function dd(e) {
 		})
 	] });
 }
-function fd(e = {}) {
+function xd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(dd, { ...e })
-	}) : dd(e);
+		children: o(bd, { ...e })
+	}) : bd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/event.ru.mdx
-function pd(e) {
+function Sd(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -19180,16 +19381,16 @@ function pd(e) {
 		})
 	] });
 }
-function md(e = {}) {
+function Cd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(pd, { ...e })
-	}) : pd(e);
+		children: o(Sd, { ...e })
+	}) : Sd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/expose.en.mdx
-function hd(e) {
+function wd(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -19218,16 +19419,16 @@ function hd(e) {
 		"\n"
 	] });
 }
-function gd(e = {}) {
+function Td(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(hd, { ...e })
-	}) : hd(e);
+		children: o(wd, { ...e })
+	}) : wd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/expose.ru.mdx
-function _d(e) {
+function Ed(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -19256,16 +19457,16 @@ function _d(e) {
 		"\n"
 	] });
 }
-function vd(e = {}) {
+function Dd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_d, { ...e })
-	}) : _d(e);
+		children: o(Ed, { ...e })
+	}) : Ed(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/motionAxis.en.mdx
-function yd(e) {
+function Od(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -19316,16 +19517,16 @@ function yd(e) {
 		})
 	] });
 }
-function bd(e = {}) {
+function kd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(yd, { ...e })
-	}) : yd(e);
+		children: o(Od, { ...e })
+	}) : Od(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/motionAxis.ru.mdx
-function xd(e) {
+function Ad(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -19376,16 +19577,16 @@ function xd(e) {
 		})
 	] });
 }
-function Sd(e = {}) {
+function jd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xd, { ...e })
-	}) : xd(e);
+		children: o(Ad, { ...e })
+	}) : Ad(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/slots.en.mdx
-function Cd(e) {
+function Md(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -19403,16 +19604,16 @@ function Cd(e) {
 		"\n"
 	] });
 }
-function wd(e = {}) {
+function Nd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Cd, { ...e })
-	}) : Cd(e);
+		children: o(Md, { ...e })
+	}) : Md(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/slots.ru.mdx
-function Td(e) {
+function Pd(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -19430,16 +19631,16 @@ function Td(e) {
 		"\n"
 	] });
 }
-function Ed(e = {}) {
+function Fd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Td, { ...e })
-	}) : Td(e);
+		children: o(Pd, { ...e })
+	}) : Pd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/v-model.en.mdx
-function Dd(e) {
+function Id(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -19472,16 +19673,16 @@ function Dd(e) {
 		})
 	] });
 }
-function Od(e = {}) {
+function Ld(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Dd, { ...e })
-	}) : Dd(e);
+		children: o(Id, { ...e })
+	}) : Id(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/v-model.ru.mdx
-function kd(e) {
+function Rd(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -19514,47 +19715,47 @@ function kd(e) {
 		})
 	] });
 }
-function Ad(e = {}) {
+function zd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(kd, { ...e })
-	}) : kd(e);
+		children: o(Rd, { ...e })
+	}) : Rd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionAxis/wikiMdxMotionAxis.ts
-var jd = {
+var Bd = {
 	name: "MotionAxis",
 	descriptions: {
 		classes: {
-			en: cd,
-			ru: ud
+			en: _d,
+			ru: yd
 		},
 		events: {
-			en: fd,
-			ru: md
+			en: xd,
+			ru: Cd
 		},
 		expose: {
-			en: gd,
-			ru: vd
+			en: Td,
+			ru: Dd
 		},
 		motionAxis: {
-			en: bd,
-			ru: Sd
+			en: kd,
+			ru: jd
 		},
 		slots: {
-			en: wd,
-			ru: Ed
+			en: Nd,
+			ru: Fd
 		},
 		"v-model": {
-			en: Od,
-			ru: Ad
+			en: Ld,
+			ru: zd
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/MotionTransform/animationHeadPosition.en.mdx
-function Md(e) {
+function Vd(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -19599,16 +19800,16 @@ function Md(e) {
 		})
 	] });
 }
-function Nd(e = {}) {
+function Hd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Md, { ...e })
-	}) : Md(e);
+		children: o(Vd, { ...e })
+	}) : Vd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/animationHeadPosition.ru.mdx
-function Pd(e) {
+function Ud(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -19653,16 +19854,16 @@ function Pd(e) {
 		})
 	] });
 }
-function Fd(e = {}) {
+function Wd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Pd, { ...e })
-	}) : Pd(e);
+		children: o(Ud, { ...e })
+	}) : Ud(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/classes.en.mdx
-function Id(e) {
+function Gd(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -19730,16 +19931,16 @@ function Id(e) {
 		] })
 	] });
 }
-function Ld(e = {}) {
+function Kd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Id, { ...e })
-	}) : Id(e);
+		children: o(Gd, { ...e })
+	}) : Gd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/classes.ru.mdx
-function Rd(e) {
+function qd(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -19807,16 +20008,16 @@ function Rd(e) {
 		] })
 	] });
 }
-function zd(e = {}) {
+function Jd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Rd, { ...e })
-	}) : Rd(e);
+		children: o(qd, { ...e })
+	}) : qd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/events.en.mdx
-function Bd(e) {
+function Yd(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -19876,16 +20077,16 @@ function Bd(e) {
 		] })
 	] });
 }
-function Vd(e = {}) {
+function Xd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Bd, { ...e })
-	}) : Bd(e);
+		children: o(Yd, { ...e })
+	}) : Yd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/events.ru.mdx
-function Hd(e) {
+function Zd(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -19945,16 +20146,16 @@ function Hd(e) {
 		] })
 	] });
 }
-function Ud(e = {}) {
+function Qd(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hd, { ...e })
-	}) : Hd(e);
+		children: o(Zd, { ...e })
+	}) : Zd(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/expose.en.mdx
-function Wd(e) {
+function $d(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -19977,16 +20178,16 @@ function Wd(e) {
 		"\n"
 	] });
 }
-function Gd(e = {}) {
+function ef(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Wd, { ...e })
-	}) : Wd(e);
+		children: o($d, { ...e })
+	}) : $d(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/expose.ru.mdx
-function Kd(e) {
+function tf(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -20009,16 +20210,16 @@ function Kd(e) {
 		"\n"
 	] });
 }
-function qd(e = {}) {
+function nf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Kd, { ...e })
-	}) : Kd(e);
+		children: o(tf, { ...e })
+	}) : tf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/expose.motionTransformElement.en.mdx
-function Jd(e) {
+function rf(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -20058,16 +20259,16 @@ function Jd(e) {
 		] })
 	] });
 }
-function Yd(e = {}) {
+function af(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Jd, { ...e })
-	}) : Jd(e);
+		children: o(rf, { ...e })
+	}) : rf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/expose.motionTransformElement.ru.mdx
-function Xd(e) {
+function of(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -20107,16 +20308,16 @@ function Xd(e) {
 		] })
 	] });
 }
-function Zd(e = {}) {
+function sf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xd, { ...e })
-	}) : Xd(e);
+		children: o(of, { ...e })
+	}) : of(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/ignore.en.mdx
-function Qd(e) {
+function cf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20155,16 +20356,16 @@ function Qd(e) {
 		})
 	] });
 }
-function $d(e = {}) {
+function lf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qd, { ...e })
-	}) : Qd(e);
+		children: o(cf, { ...e })
+	}) : cf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/ignore.ru.mdx
-function ef(e) {
+function uf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20203,16 +20404,16 @@ function ef(e) {
 		})
 	] });
 }
-function tf(e = {}) {
+function df(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ef, { ...e })
-	}) : ef(e);
+		children: o(uf, { ...e })
+	}) : uf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/motionTransform.en.mdx
-function nf(e) {
+function ff(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -20272,16 +20473,16 @@ function nf(e) {
 		] })
 	] });
 }
-function rf(e = {}) {
+function pf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nf, { ...e })
-	}) : nf(e);
+		children: o(ff, { ...e })
+	}) : ff(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/motionTransform.ru.mdx
-function af(e) {
+function mf(e) {
 	let t = {
 		blockquote: "blockquote",
 		li: "li",
@@ -20341,16 +20542,16 @@ function af(e) {
 		] })
 	] });
 }
-function of(e = {}) {
+function hf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(af, { ...e })
-	}) : af(e);
+		children: o(mf, { ...e })
+	}) : mf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/slots.en.mdx
-function sf(e) {
+function gf(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -20382,16 +20583,16 @@ function sf(e) {
 		] })
 	] });
 }
-function cf(e = {}) {
+function _f(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(sf, { ...e })
-	}) : sf(e);
+		children: o(gf, { ...e })
+	}) : gf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/slots.ru.mdx
-function lf(e) {
+function vf(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -20423,16 +20624,16 @@ function lf(e) {
 		] })
 	] });
 }
-function uf(e = {}) {
+function yf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(lf, { ...e })
-	}) : lf(e);
+		children: o(vf, { ...e })
+	}) : vf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/v-model.en.mdx
-function df(e) {
+function bf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20465,16 +20666,16 @@ function df(e) {
 		})
 	] });
 }
-function ff(e = {}) {
+function xf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(df, { ...e })
-	}) : df(e);
+		children: o(bf, { ...e })
+	}) : bf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/v-model.ru.mdx
-function pf(e) {
+function Sf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20507,59 +20708,59 @@ function pf(e) {
 		})
 	] });
 }
-function mf(e = {}) {
+function Cf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(pf, { ...e })
-	}) : pf(e);
+		children: o(Sf, { ...e })
+	}) : Sf(e);
 }
 //#endregion
 //#region src/media/mdx/MotionTransform/wikiMdxMotionTransform.ts
-var hf = {
+var wf = {
 	name: "MotionTransform",
 	descriptions: {
 		animationHeadPosition: {
-			en: Nd,
-			ru: Fd
+			en: Hd,
+			ru: Wd
 		},
 		classes: {
-			en: Ld,
-			ru: zd
+			en: Kd,
+			ru: Jd
 		},
 		events: {
-			en: Vd,
-			ru: Ud
+			en: Xd,
+			ru: Qd
 		},
 		expose: {
-			en: Gd,
-			ru: qd
+			en: ef,
+			ru: nf
 		},
 		"expose.motionTransformElement": {
-			en: Yd,
-			ru: Zd
+			en: af,
+			ru: sf
 		},
 		ignore: {
-			en: $d,
-			ru: tf
+			en: lf,
+			ru: df
 		},
 		motionTransform: {
-			en: rf,
-			ru: of
+			en: pf,
+			ru: hf
 		},
 		slots: {
-			en: cf,
-			ru: uf
+			en: _f,
+			ru: yf
 		},
 		"v-model": {
-			en: ff,
-			ru: mf
+			en: xf,
+			ru: Cf
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Page/page.en.mdx
-function gf(e) {
+function Tf(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -20635,16 +20836,16 @@ function gf(e) {
 		] })
 	] });
 }
-function _f(e = {}) {
+function Ef(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(gf, { ...e })
-	}) : gf(e);
+		children: o(Tf, { ...e })
+	}) : Tf(e);
 }
 //#endregion
 //#region src/media/mdx/Page/page.ru.mdx
-function vf(e) {
+function Df(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -20720,25 +20921,25 @@ function vf(e) {
 		] })
 	] });
 }
-function yf(e = {}) {
+function Of(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vf, { ...e })
-	}) : vf(e);
+		children: o(Df, { ...e })
+	}) : Df(e);
 }
 //#endregion
 //#region src/media/mdx/Page/wikiMdxPage.ts
-var bf = {
+var kf = {
 	name: "Page",
 	descriptions: { block: {
-		en: _f,
-		ru: yf
+		en: Ef,
+		ru: Of
 	} }
 };
 //#endregion
 //#region src/media/mdx/Progress/circular.en.mdx
-function xf(e) {
+function Af(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20781,16 +20982,16 @@ function xf(e) {
 		})
 	] });
 }
-function Sf(e = {}) {
+function jf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xf, { ...e })
-	}) : xf(e);
+		children: o(Af, { ...e })
+	}) : Af(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/circular.ru.mdx
-function Cf(e) {
+function Mf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20833,16 +21034,16 @@ function Cf(e) {
 		})
 	] });
 }
-function wf(e = {}) {
+function Nf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Cf, { ...e })
-	}) : Cf(e);
+		children: o(Mf, { ...e })
+	}) : Mf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/delays.en.mdx
-function Tf(e) {
+function Pf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20895,16 +21096,16 @@ function Tf(e) {
 		})
 	] });
 }
-function Ef(e = {}) {
+function Ff(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Tf, { ...e })
-	}) : Tf(e);
+		children: o(Pf, { ...e })
+	}) : Pf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/delays.ru.mdx
-function Df(e) {
+function If(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -20957,16 +21158,16 @@ function Df(e) {
 		})
 	] });
 }
-function Of(e = {}) {
+function Lf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Df, { ...e })
-	}) : Df(e);
+		children: o(If, { ...e })
+	}) : If(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/linear.en.mdx
-function kf(e) {
+function Rf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -21029,16 +21230,16 @@ function kf(e) {
 		})
 	] });
 }
-function Af(e = {}) {
+function zf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(kf, { ...e })
-	}) : kf(e);
+		children: o(Rf, { ...e })
+	}) : Rf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/linear.ru.mdx
-function jf(e) {
+function Bf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -21101,16 +21302,16 @@ function jf(e) {
 		})
 	] });
 }
-function Mf(e = {}) {
+function Vf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(jf, { ...e })
-	}) : jf(e);
+		children: o(Bf, { ...e })
+	}) : Bf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/progress.en.mdx
-function Nf(e) {
+function Hf(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -21169,16 +21370,16 @@ function Nf(e) {
 		})
 	] });
 }
-function Pf(e = {}) {
+function Uf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Nf, { ...e })
-	}) : Nf(e);
+		children: o(Hf, { ...e })
+	}) : Hf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/progress.ru.mdx
-function Ff(e) {
+function Wf(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -21237,16 +21438,16 @@ function Ff(e) {
 		})
 	] });
 }
-function If(e = {}) {
+function Gf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ff, { ...e })
-	}) : Ff(e);
+		children: o(Wf, { ...e })
+	}) : Wf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/values.en.mdx
-function Lf(e) {
+function Kf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -21301,16 +21502,16 @@ function Lf(e) {
 		})
 	] });
 }
-function Rf(e = {}) {
+function qf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Lf, { ...e })
-	}) : Lf(e);
+		children: o(Kf, { ...e })
+	}) : Kf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/values.ru.mdx
-function zf(e) {
+function Jf(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -21365,43 +21566,43 @@ function zf(e) {
 		})
 	] });
 }
-function Bf(e = {}) {
+function Yf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(zf, { ...e })
-	}) : zf(e);
+		children: o(Jf, { ...e })
+	}) : Jf(e);
 }
 //#endregion
 //#region src/media/mdx/Progress/wikiMdxProgress.ts
-var Vf = {
+var Xf = {
 	name: "Progress",
 	descriptions: {
 		circular: {
-			en: Sf,
-			ru: wf
+			en: jf,
+			ru: Nf
 		},
 		delays: {
-			en: Ef,
-			ru: Of
+			en: Ff,
+			ru: Lf
 		},
 		linear: {
-			en: Af,
-			ru: Mf
+			en: zf,
+			ru: Vf
 		},
 		progress: {
-			en: Pf,
-			ru: If
+			en: Uf,
+			ru: Gf
 		},
 		values: {
-			en: Rf,
-			ru: Bf
+			en: qf,
+			ru: Yf
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Ripple/ripple.en.mdx
-function Hf(e) {
+function Zf(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -21457,16 +21658,16 @@ function Hf(e) {
 		})
 	] });
 }
-function Uf(e = {}) {
+function Qf(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hf, { ...e })
-	}) : Hf(e);
+		children: o(Zf, { ...e })
+	}) : Zf(e);
 }
 //#endregion
 //#region src/media/mdx/Ripple/ripple.ru.mdx
-function Wf(e) {
+function $f(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -21518,25 +21719,25 @@ function Wf(e) {
 		})
 	] });
 }
-function Gf(e = {}) {
+function ep(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Wf, { ...e })
-	}) : Wf(e);
+		children: o($f, { ...e })
+	}) : $f(e);
 }
 //#endregion
 //#region src/media/mdx/Ripple/wikiMdxRipple.ts
-var Kf = {
+var tp = {
 	name: "Ripple",
 	descriptions: { ripple: {
-		en: Uf,
-		ru: Gf
+		en: Qf,
+		ru: ep
 	} }
 };
 //#endregion
 //#region src/media/mdx/Scrollbar/emits.en.mdx
-function qf(e) {
+function np(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -21624,16 +21825,16 @@ function qf(e) {
 		] })
 	] });
 }
-function Jf(e = {}) {
+function rp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qf, { ...e })
-	}) : qf(e);
+		children: o(np, { ...e })
+	}) : np(e);
 }
 //#endregion
 //#region src/media/mdx/Scrollbar/emits.ru.mdx
-function Yf(e) {
+function ip(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -21721,16 +21922,16 @@ function Yf(e) {
 		] })
 	] });
 }
-function Xf(e = {}) {
+function ap(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Yf, { ...e })
-	}) : Yf(e);
+		children: o(ip, { ...e })
+	}) : ip(e);
 }
 //#endregion
 //#region src/media/mdx/Scrollbar/emits-include.en.mdx
-function Zf(e) {
+function op(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -21818,16 +22019,16 @@ function Zf(e) {
 		] })
 	] });
 }
-function Qf(e = {}) {
+function sp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Zf, { ...e })
-	}) : Zf(e);
+		children: o(op, { ...e })
+	}) : op(e);
 }
 //#endregion
 //#region src/media/mdx/Scrollbar/emits-include.ru.mdx
-function $f(e) {
+function cp(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -21915,16 +22116,16 @@ function $f(e) {
 		] })
 	] });
 }
-function ep(e = {}) {
+function lp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o($f, { ...e })
-	}) : $f(e);
+		children: o(cp, { ...e })
+	}) : cp(e);
 }
 //#endregion
 //#region src/media/mdx/Scrollbar/scrollbar.en.mdx
-function tp(e) {
+function up(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -21980,16 +22181,16 @@ function tp(e) {
 		})
 	] });
 }
-function np(e = {}) {
+function dp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(tp, { ...e })
-	}) : tp(e);
+		children: o(up, { ...e })
+	}) : up(e);
 }
 //#endregion
 //#region src/media/mdx/Scrollbar/scrollbar.ru.mdx
-function rp(e) {
+function fp(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -22041,35 +22242,35 @@ function rp(e) {
 		})
 	] });
 }
-function ip(e = {}) {
+function pp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(rp, { ...e })
-	}) : rp(e);
+		children: o(fp, { ...e })
+	}) : fp(e);
 }
 //#endregion
 //#region src/media/mdx/Scrollbar/wikiMdxScrollbar.ts
-var ap = {
+var mp = {
 	name: "Scrollbar",
 	descriptions: {
 		emits: {
-			en: Jf,
-			ru: Xf
+			en: rp,
+			ru: ap
 		},
 		"emits-include": {
-			en: Qf,
-			ru: ep
+			en: sp,
+			ru: lp
 		},
 		scrollbar: {
-			en: np,
-			ru: ip
+			en: dp,
+			ru: pp
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Section/section.en.mdx
-function op(e) {
+function hp(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -22145,16 +22346,16 @@ function op(e) {
 		] })
 	] });
 }
-function sp(e = {}) {
+function gp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(op, { ...e })
-	}) : op(e);
+		children: o(hp, { ...e })
+	}) : hp(e);
 }
 //#endregion
 //#region src/media/mdx/Section/section.ru.mdx
-function cp(e) {
+function _p(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -22230,25 +22431,25 @@ function cp(e) {
 		] })
 	] });
 }
-function lp(e = {}) {
+function vp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(cp, { ...e })
-	}) : cp(e);
+		children: o(_p, { ...e })
+	}) : _p(e);
 }
 //#endregion
 //#region src/media/mdx/Section/wikiMdxSection.ts
-var up = {
+var yp = {
 	name: "Section",
 	descriptions: { section: {
-		en: sp,
-		ru: lp
+		en: gp,
+		ru: vp
 	} }
 };
 //#endregion
 //#region src/media/mdx/Select/select.en.mdx
-function dp(e) {
+function bp(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -22317,16 +22518,16 @@ function dp(e) {
 		})
 	] });
 }
-function fp(e = {}) {
+function xp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(dp, { ...e })
-	}) : dp(e);
+		children: o(bp, { ...e })
+	}) : bp(e);
 }
 //#endregion
 //#region src/media/mdx/Select/select.ru.mdx
-function pp(e) {
+function Sp(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -22395,25 +22596,25 @@ function pp(e) {
 		})
 	] });
 }
-function mp(e = {}) {
+function Cp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(pp, { ...e })
-	}) : pp(e);
+		children: o(Sp, { ...e })
+	}) : Sp(e);
 }
 //#endregion
 //#region src/media/mdx/Select/wikiMdxSelect.ts
-var hp = {
+var wp = {
 	name: "Select",
 	descriptions: { select: {
-		en: fp,
-		ru: mp
+		en: xp,
+		ru: Cp
 	} }
 };
 //#endregion
 //#region src/media/mdx/SelectValue/selectValue.en.mdx
-function gp(e) {
+function Tp(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -22468,16 +22669,16 @@ function gp(e) {
 		})
 	] });
 }
-function _p(e = {}) {
+function Ep(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(gp, { ...e })
-	}) : gp(e);
+		children: o(Tp, { ...e })
+	}) : Tp(e);
 }
 //#endregion
 //#region src/media/mdx/SelectValue/selectValue.ru.mdx
-function vp(e) {
+function Dp(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -22532,25 +22733,25 @@ function vp(e) {
 		})
 	] });
 }
-function yp(e = {}) {
+function Op(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vp, { ...e })
-	}) : vp(e);
+		children: o(Dp, { ...e })
+	}) : Dp(e);
 }
 //#endregion
 //#region src/media/mdx/SelectValue/wikiMdxSelectValue.ts
-var bp = {
+var kp = {
 	name: "SelectValue",
 	descriptions: { selectValue: {
-		en: _p,
-		ru: yp
+		en: Ep,
+		ru: Op
 	} }
 };
 //#endregion
 //#region src/media/mdx/Skeleton/skeleton.en.mdx
-function xp(e) {
+function Ap(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -22610,16 +22811,16 @@ function xp(e) {
 		})
 	] });
 }
-function Sp(e = {}) {
+function jp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xp, { ...e })
-	}) : xp(e);
+		children: o(Ap, { ...e })
+	}) : Ap(e);
 }
 //#endregion
 //#region src/media/mdx/Skeleton/skeleton.ru.mdx
-function Cp(e) {
+function Mp(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -22675,16 +22876,16 @@ function Cp(e) {
 		})
 	] });
 }
-function wp(e = {}) {
+function Np(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Cp, { ...e })
-	}) : Cp(e);
+		children: o(Mp, { ...e })
+	}) : Mp(e);
 }
 //#endregion
 //#region src/media/mdx/Skeleton/expose.isActive.en.mdx
-function Tp(e) {
+function Pp(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -22697,16 +22898,16 @@ function Tp(e) {
 		"\n"
 	] });
 }
-function Ep(e = {}) {
+function Fp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Tp, { ...e })
-	}) : Tp(e);
+		children: o(Pp, { ...e })
+	}) : Pp(e);
 }
 //#endregion
 //#region src/media/mdx/Skeleton/expose.isActive.ru.mdx
-function Dp(e) {
+function Ip(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -22719,16 +22920,16 @@ function Dp(e) {
 		"\n"
 	] });
 }
-function Op(e = {}) {
+function Lp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Dp, { ...e })
-	}) : Dp(e);
+		children: o(Ip, { ...e })
+	}) : Ip(e);
 }
 //#endregion
 //#region src/media/mdx/Skeleton/classes.en.mdx
-function kp(e) {
+function Rp(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -22783,16 +22984,16 @@ function kp(e) {
 		] })
 	] });
 }
-function Ap(e = {}) {
+function zp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(kp, { ...e })
-	}) : kp(e);
+		children: o(Rp, { ...e })
+	}) : Rp(e);
 }
 //#endregion
 //#region src/media/mdx/Skeleton/classes.ru.mdx
-function jp(e) {
+function Bp(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -22845,35 +23046,35 @@ function jp(e) {
 		] })
 	] });
 }
-function Mp(e = {}) {
+function Vp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(jp, { ...e })
-	}) : jp(e);
+		children: o(Bp, { ...e })
+	}) : Bp(e);
 }
 //#endregion
 //#region src/media/mdx/Skeleton/wikiMdxSkeleton.ts
-var Np = {
+var Hp = {
 	name: "Skeleton",
 	descriptions: {
 		active: {
-			en: Sp,
-			ru: wp
+			en: jp,
+			ru: Np
 		},
 		"expose.isActive": {
-			en: Ep,
-			ru: Op
+			en: Fp,
+			ru: Lp
 		},
 		classes: {
-			en: Ap,
-			ru: Mp
+			en: zp,
+			ru: Vp
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Snackbar/adaptation.en.mdx
-function Pp(e) {
+function Up(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -22920,16 +23121,16 @@ function Pp(e) {
 		] })
 	] });
 }
-function Fp(e = {}) {
+function Wp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Pp, { ...e })
-	}) : Pp(e);
+		children: o(Up, { ...e })
+	}) : Up(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/adaptation.ru.mdx
-function Ip(e) {
+function Gp(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -22976,16 +23177,16 @@ function Ip(e) {
 		] })
 	] });
 }
-function Lp(e = {}) {
+function Kp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ip, { ...e })
-	}) : Ip(e);
+		children: o(Gp, { ...e })
+	}) : Gp(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/add.en.mdx
-function Rp(e) {
+function qp(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -23111,16 +23312,16 @@ function Rp(e) {
 		] })
 	] });
 }
-function zp(e = {}) {
+function Jp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Rp, { ...e })
-	}) : Rp(e);
+		children: o(qp, { ...e })
+	}) : qp(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/add.ru.mdx
-function Bp(e) {
+function Yp(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -23244,16 +23445,16 @@ function Bp(e) {
 		] })
 	] });
 }
-function Vp(e = {}) {
+function Xp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Bp, { ...e })
-	}) : Bp(e);
+		children: o(Yp, { ...e })
+	}) : Yp(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/position.en.mdx
-function Hp(e) {
+function Zp(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -23327,16 +23528,16 @@ function Hp(e) {
 		] })
 	] });
 }
-function Up(e = {}) {
+function Qp(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hp, { ...e })
-	}) : Hp(e);
+		children: o(Zp, { ...e })
+	}) : Zp(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/position.ru.mdx
-function Wp(e) {
+function $p(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -23410,16 +23611,16 @@ function Wp(e) {
 		] })
 	] });
 }
-function Gp(e = {}) {
+function em(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Wp, { ...e })
-	}) : Wp(e);
+		children: o($p, { ...e })
+	}) : $p(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/snackbar.en.mdx
-function Kp(e) {
+function tm(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -23474,16 +23675,16 @@ function Kp(e) {
 		] })
 	] });
 }
-function qp(e = {}) {
+function nm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Kp, { ...e })
-	}) : Kp(e);
+		children: o(tm, { ...e })
+	}) : tm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/snackbar.ru.mdx
-function Jp(e) {
+function rm(e) {
 	let t = {
 		blockquote: "blockquote",
 		h2: "h2",
@@ -23538,16 +23739,16 @@ function Jp(e) {
 		] })
 	] });
 }
-function Yp(e = {}) {
+function im(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Jp, { ...e })
-	}) : Jp(e);
+		children: o(rm, { ...e })
+	}) : rm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/event.show.en.mdx
-function Xp(e) {
+function am(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -23593,16 +23794,16 @@ function Xp(e) {
 		] })
 	] });
 }
-function Zp(e = {}) {
+function om(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xp, { ...e })
-	}) : Xp(e);
+		children: o(am, { ...e })
+	}) : am(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/event.show.ru.mdx
-function Qp(e) {
+function sm(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -23648,16 +23849,16 @@ function Qp(e) {
 		] })
 	] });
 }
-function $p(e = {}) {
+function cm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qp, { ...e })
-	}) : Qp(e);
+		children: o(sm, { ...e })
+	}) : sm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/event.hide.en.mdx
-function em(e) {
+function lm(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -23705,16 +23906,16 @@ function em(e) {
 		] })
 	] });
 }
-function tm(e = {}) {
+function um(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(em, { ...e })
-	}) : em(e);
+		children: o(lm, { ...e })
+	}) : lm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/event.hide.ru.mdx
-function nm(e) {
+function dm(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -23762,16 +23963,16 @@ function nm(e) {
 		] })
 	] });
 }
-function rm(e = {}) {
+function fm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nm, { ...e })
-	}) : nm(e);
+		children: o(dm, { ...e })
+	}) : dm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.isItem.en.mdx
-function im(e) {
+function pm(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23784,16 +23985,16 @@ function im(e) {
 		"\n"
 	] });
 }
-function am(e = {}) {
+function mm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(im, { ...e })
-	}) : im(e);
+		children: o(pm, { ...e })
+	}) : pm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.isItem.ru.mdx
-function om(e) {
+function hm(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23806,16 +24007,16 @@ function om(e) {
 		"\n"
 	] });
 }
-function sm(e = {}) {
+function gm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(om, { ...e })
-	}) : om(e);
+		children: o(hm, { ...e })
+	}) : hm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.add.en.mdx
-function cm(e) {
+function _m(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23828,16 +24029,16 @@ function cm(e) {
 		"\n"
 	] });
 }
-function lm(e = {}) {
+function vm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(cm, { ...e })
-	}) : cm(e);
+		children: o(_m, { ...e })
+	}) : _m(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.add.ru.mdx
-function um(e) {
+function ym(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23850,16 +24051,16 @@ function um(e) {
 		"\n"
 	] });
 }
-function dm(e = {}) {
+function bm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(um, { ...e })
-	}) : um(e);
+		children: o(ym, { ...e })
+	}) : ym(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.remove.en.mdx
-function fm(e) {
+function xm(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23872,16 +24073,16 @@ function fm(e) {
 		"\n"
 	] });
 }
-function pm(e = {}) {
+function Sm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(fm, { ...e })
-	}) : fm(e);
+		children: o(xm, { ...e })
+	}) : xm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.remove.ru.mdx
-function mm(e) {
+function Cm(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23894,16 +24095,16 @@ function mm(e) {
 		"\n"
 	] });
 }
-function hm(e = {}) {
+function wm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(mm, { ...e })
-	}) : mm(e);
+		children: o(Cm, { ...e })
+	}) : Cm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.clear.en.mdx
-function gm(e) {
+function Tm(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23916,16 +24117,16 @@ function gm(e) {
 		"\n"
 	] });
 }
-function _m(e = {}) {
+function Em(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(gm, { ...e })
-	}) : gm(e);
+		children: o(Tm, { ...e })
+	}) : Tm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/expose.clear.ru.mdx
-function vm(e) {
+function Dm(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -23938,63 +24139,63 @@ function vm(e) {
 		"\n"
 	] });
 }
-function ym(e = {}) {
+function Om(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vm, { ...e })
-	}) : vm(e);
+		children: o(Dm, { ...e })
+	}) : Dm(e);
 }
 //#endregion
 //#region src/media/mdx/Snackbar/wikiMdxSnackbar.ts
-var bm = {
+var km = {
 	name: "Snackbar",
 	descriptions: {
 		snackbar: {
-			en: qp,
-			ru: Yp
+			en: nm,
+			ru: im
 		},
 		adaptation: {
-			en: Fp,
-			ru: Lp
+			en: Wp,
+			ru: Kp
 		},
 		add: {
-			en: zp,
-			ru: Vp
+			en: Jp,
+			ru: Xp
 		},
 		position: {
-			en: Up,
-			ru: Gp
+			en: Qp,
+			ru: em
 		},
 		"event.show": {
-			en: Zp,
-			ru: $p
+			en: om,
+			ru: cm
 		},
 		"event.hide": {
-			en: tm,
-			ru: rm
+			en: um,
+			ru: fm
 		},
 		"expose.isItem": {
-			en: am,
-			ru: sm
+			en: mm,
+			ru: gm
 		},
 		"expose.add": {
-			en: lm,
-			ru: dm
+			en: vm,
+			ru: bm
 		},
 		"expose.remove": {
-			en: pm,
-			ru: hm
+			en: Sm,
+			ru: wm
 		},
 		"expose.clear": {
-			en: _m,
-			ru: ym
+			en: Em,
+			ru: Om
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/SnackbarItem/snackbarItem.en.mdx
-function xm(e) {
+function Am(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -24058,16 +24259,16 @@ function xm(e) {
 		] })
 	] });
 }
-function Sm(e = {}) {
+function jm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(xm, { ...e })
-	}) : xm(e);
+		children: o(Am, { ...e })
+	}) : Am(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/snackbarItem.ru.mdx
-function Cm(e) {
+function Mm(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -24131,16 +24332,16 @@ function Cm(e) {
 		] })
 	] });
 }
-function wm(e = {}) {
+function Nm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Cm, { ...e })
-	}) : Cm(e);
+		children: o(Mm, { ...e })
+	}) : Mm(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/component.en.mdx
-function Tm(e) {
+function Pm(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -24174,16 +24375,16 @@ function Tm(e) {
 		o(t.p, { children: "The component is rendered inside a special container with the main content area class, ensuring proper padding and styling." })
 	] });
 }
-function Em(e = {}) {
+function Fm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Tm, { ...e })
-	}) : Tm(e);
+		children: o(Pm, { ...e })
+	}) : Pm(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/component.ru.mdx
-function Dm(e) {
+function Im(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -24217,16 +24418,16 @@ function Dm(e) {
 		o(t.p, { children: "Компонент рендерится внутри специального контейнера с классом основной области контента, что обеспечивает правильные отступы и стилизацию." })
 	] });
 }
-function Om(e = {}) {
+function Lm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Dm, { ...e })
-	}) : Dm(e);
+		children: o(Im, { ...e })
+	}) : Im(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/html.en.mdx
-function km(e) {
+function Rm(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -24256,16 +24457,16 @@ function km(e) {
 		] })
 	] });
 }
-function Am(e = {}) {
+function zm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(km, { ...e })
-	}) : km(e);
+		children: o(Rm, { ...e })
+	}) : Rm(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/html.ru.mdx
-function jm(e) {
+function Bm(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -24295,16 +24496,16 @@ function jm(e) {
 		] })
 	] });
 }
-function Mm(e = {}) {
+function Vm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(jm, { ...e })
-	}) : jm(e);
+		children: o(Bm, { ...e })
+	}) : Bm(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/event.close.en.mdx
-function Nm(e) {
+function Hm(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -24338,16 +24539,16 @@ function Nm(e) {
 		})
 	] });
 }
-function Pm(e = {}) {
+function Um(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Nm, { ...e })
-	}) : Nm(e);
+		children: o(Hm, { ...e })
+	}) : Hm(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/event.close.ru.mdx
-function Fm(e) {
+function Wm(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -24381,16 +24582,16 @@ function Fm(e) {
 		})
 	] });
 }
-function Im(e = {}) {
+function Gm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fm, { ...e })
-	}) : Fm(e);
+		children: o(Wm, { ...e })
+	}) : Wm(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/role.en.mdx
-function Lm(e) {
+function Km(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -24429,16 +24630,16 @@ function Lm(e) {
 		})
 	] });
 }
-function Rm(e = {}) {
+function qm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Lm, { ...e })
-	}) : Lm(e);
+		children: o(Km, { ...e })
+	}) : Km(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/role.ru.mdx
-function zm(e) {
+function Jm(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -24477,43 +24678,43 @@ function zm(e) {
 		})
 	] });
 }
-function Bm(e = {}) {
+function Ym(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(zm, { ...e })
-	}) : zm(e);
+		children: o(Jm, { ...e })
+	}) : Jm(e);
 }
 //#endregion
 //#region src/media/mdx/SnackbarItem/wikiMdxSnackbarItem.ts
-var Vm = {
+var Xm = {
 	name: "SnackbarItem",
 	descriptions: {
 		snackbarItem: {
-			en: Sm,
-			ru: wm
+			en: jm,
+			ru: Nm
 		},
 		component: {
-			en: Em,
-			ru: Om
+			en: Fm,
+			ru: Lm
 		},
 		html: {
-			en: Am,
-			ru: Mm
+			en: zm,
+			ru: Vm
 		},
 		eventClose: {
-			en: Pm,
-			ru: Im
+			en: Um,
+			ru: Gm
 		},
 		role: {
-			en: Rm,
-			ru: Bm
+			en: qm,
+			ru: Ym
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/TabItem/tabItem.en.mdx
-function Hm(e) {
+function Zm(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -24568,16 +24769,16 @@ function Hm(e) {
 		})
 	] });
 }
-function Um(e = {}) {
+function Qm(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hm, { ...e })
-	}) : Hm(e);
+		children: o(Zm, { ...e })
+	}) : Zm(e);
 }
 //#endregion
 //#region src/media/mdx/TabItem/tabItem.ru.mdx
-function Wm(e) {
+function $m(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -24632,25 +24833,25 @@ function Wm(e) {
 		})
 	] });
 }
-function Gm(e = {}) {
+function eh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Wm, { ...e })
-	}) : Wm(e);
+		children: o($m, { ...e })
+	}) : $m(e);
 }
 //#endregion
 //#region src/media/mdx/TabItem/wikiMdxTabItem.ts
-var Km = {
+var th = {
 	name: "TabItem",
 	descriptions: { tabItem: {
-		en: Um,
-		ru: Gm
+		en: Qm,
+		ru: eh
 	} }
 };
 //#endregion
 //#region src/media/mdx/Tabs/tabs.en.mdx
-function qm(e) {
+function nh(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -24699,16 +24900,16 @@ function qm(e) {
 		})
 	] });
 }
-function Jm(e = {}) {
+function rh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(qm, { ...e })
-	}) : qm(e);
+		children: o(nh, { ...e })
+	}) : nh(e);
 }
 //#endregion
 //#region src/media/mdx/Tabs/tabs.ru.mdx
-function Ym(e) {
+function ih(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -24757,16 +24958,16 @@ function Ym(e) {
 		})
 	] });
 }
-function Xm(e = {}) {
+function ah(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Ym, { ...e })
-	}) : Ym(e);
+		children: o(ih, { ...e })
+	}) : ih(e);
 }
 //#endregion
 //#region src/media/mdx/Tabs/v-model.en.mdx
-function Zm(e) {
+function oh(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -24799,16 +25000,16 @@ function Zm(e) {
 		})
 	] });
 }
-function Qm(e = {}) {
+function sh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Zm, { ...e })
-	}) : Zm(e);
+		children: o(oh, { ...e })
+	}) : oh(e);
 }
 //#endregion
 //#region src/media/mdx/Tabs/v-model.ru.mdx
-function $m(e) {
+function ch(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -24841,31 +25042,31 @@ function $m(e) {
 		})
 	] });
 }
-function eh(e = {}) {
+function lh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o($m, { ...e })
-	}) : $m(e);
+		children: o(ch, { ...e })
+	}) : ch(e);
 }
 //#endregion
 //#region src/media/mdx/Tabs/wikiMdxTabs.ts
-var th = {
+var uh = {
 	name: "Tabs",
 	descriptions: {
 		tabs: {
-			en: Jm,
-			ru: Xm
+			en: rh,
+			ru: ah
 		},
 		"v-model": {
-			en: Qm,
-			ru: eh
+			en: sh,
+			ru: lh
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/TabsNavigation/tabsNavigation.en.mdx
-function nh(e) {
+function dh(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -24917,16 +25118,16 @@ function nh(e) {
 		})
 	] });
 }
-function rh(e = {}) {
+function fh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(nh, { ...e })
-	}) : nh(e);
+		children: o(dh, { ...e })
+	}) : dh(e);
 }
 //#endregion
 //#region src/media/mdx/TabsNavigation/tabsNavigation.ru.mdx
-function ih(e) {
+function ph(e) {
 	let t = {
 		code: "code",
 		li: "li",
@@ -24978,16 +25179,16 @@ function ih(e) {
 		})
 	] });
 }
-function ah(e = {}) {
+function mh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ih, { ...e })
-	}) : ih(e);
+		children: o(ph, { ...e })
+	}) : ph(e);
 }
 //#endregion
 //#region src/media/mdx/TabsNavigation/v-model.en.mdx
-function oh(e) {
+function hh(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -25020,16 +25221,16 @@ function oh(e) {
 		})
 	] });
 }
-function sh(e = {}) {
+function gh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(oh, { ...e })
-	}) : oh(e);
+		children: o(hh, { ...e })
+	}) : hh(e);
 }
 //#endregion
 //#region src/media/mdx/TabsNavigation/v-model.ru.mdx
-function ch(e) {
+function _h(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -25062,31 +25263,31 @@ function ch(e) {
 		})
 	] });
 }
-function lh(e = {}) {
+function vh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ch, { ...e })
-	}) : ch(e);
+		children: o(_h, { ...e })
+	}) : _h(e);
 }
 //#endregion
 //#region src/media/mdx/TabsNavigation/wikiMdxTabsNavigation.ts
-var uh = {
+var yh = {
 	name: "TabsNavigation",
 	descriptions: {
 		tabsNavigation: {
-			en: rh,
-			ru: ah
+			en: fh,
+			ru: mh
 		},
 		"v-model": {
-			en: sh,
-			ru: lh
+			en: gh,
+			ru: vh
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Textarea/autosize.en.mdx
-function dh(e) {
+function bh(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -25134,16 +25335,16 @@ function dh(e) {
 		})
 	] });
 }
-function fh(e = {}) {
+function xh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(dh, { ...e })
-	}) : dh(e);
+		children: o(bh, { ...e })
+	}) : bh(e);
 }
 //#endregion
 //#region src/media/mdx/Textarea/autosize.ru.mdx
-function ph(e) {
+function Sh(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -25191,16 +25392,16 @@ function ph(e) {
 		})
 	] });
 }
-function mh(e = {}) {
+function Ch(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ph, { ...e })
-	}) : ph(e);
+		children: o(Sh, { ...e })
+	}) : Sh(e);
 }
 //#endregion
 //#region src/media/mdx/Textarea/textarea.en.mdx
-function hh(e) {
+function wh(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -25253,16 +25454,16 @@ function hh(e) {
 		})
 	] });
 }
-function gh(e = {}) {
+function Th(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(hh, { ...e })
-	}) : hh(e);
+		children: o(wh, { ...e })
+	}) : wh(e);
 }
 //#endregion
 //#region src/media/mdx/Textarea/textarea.ru.mdx
-function _h(e) {
+function Eh(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -25315,31 +25516,31 @@ function _h(e) {
 		})
 	] });
 }
-function vh(e = {}) {
+function Dh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(_h, { ...e })
-	}) : _h(e);
+		children: o(Eh, { ...e })
+	}) : Eh(e);
 }
 //#endregion
 //#region src/media/mdx/Textarea/wikiMdxTextarea.ts
-var yh = {
+var Oh = {
 	name: "Textarea",
 	descriptions: {
 		autosize: {
-			en: fh,
-			ru: mh
+			en: xh,
+			ru: Ch
 		},
 		textarea: {
-			en: gh,
-			ru: vh
+			en: Th,
+			ru: Dh
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/TextareaAutosize/textarea-autosize.en.mdx
-function bh(e) {
+function kh(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -25396,16 +25597,16 @@ function bh(e) {
 		})
 	] });
 }
-function xh(e = {}) {
+function Ah(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(bh, { ...e })
-	}) : bh(e);
+		children: o(kh, { ...e })
+	}) : kh(e);
 }
 //#endregion
 //#region src/media/mdx/TextareaAutosize/textarea-autosize.ru.mdx
-function Sh(e) {
+function jh(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -25462,25 +25663,25 @@ function Sh(e) {
 		})
 	] });
 }
-function Ch(e = {}) {
+function Mh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Sh, { ...e })
-	}) : Sh(e);
+		children: o(jh, { ...e })
+	}) : jh(e);
 }
 //#endregion
 //#region src/media/mdx/TextareaAutosize/wikiMdxTextareaAutosize.ts
-var wh = {
+var Nh = {
 	name: "TextareaAutosize",
 	descriptions: { "textarea-autosize": {
-		en: xh,
-		ru: Ch
+		en: Ah,
+		ru: Mh
 	} }
 };
 //#endregion
 //#region src/media/mdx/Tooltip/tooltip.en.mdx
-function Th(e) {
+function Ph(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -25531,16 +25732,16 @@ function Th(e) {
 		})
 	] });
 }
-function Eh(e = {}) {
+function Fh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Th, { ...e })
-	}) : Th(e);
+		children: o(Ph, { ...e })
+	}) : Ph(e);
 }
 //#endregion
 //#region src/media/mdx/Tooltip/tooltip.ru.mdx
-function Dh(e) {
+function Ih(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -25591,16 +25792,16 @@ function Dh(e) {
 		})
 	] });
 }
-function Oh(e = {}) {
+function Lh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Dh, { ...e })
-	}) : Dh(e);
+		children: o(Ih, { ...e })
+	}) : Ih(e);
 }
 //#endregion
 //#region src/media/mdx/Tooltip/event.tooltip.en.mdx
-function kh(e) {
+function Rh(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -25631,16 +25832,16 @@ function kh(e) {
 		] })
 	] });
 }
-function Ah(e = {}) {
+function zh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(kh, { ...e })
-	}) : kh(e);
+		children: o(Rh, { ...e })
+	}) : Rh(e);
 }
 //#endregion
 //#region src/media/mdx/Tooltip/event.tooltip.ru.mdx
-function jh(e) {
+function Bh(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -25671,16 +25872,16 @@ function jh(e) {
 		] })
 	] });
 }
-function Mh(e = {}) {
+function Vh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(jh, { ...e })
-	}) : jh(e);
+		children: o(Bh, { ...e })
+	}) : Bh(e);
 }
 //#endregion
 //#region src/media/mdx/Tooltip/slot.control.en.mdx
-function Nh(e) {
+function Hh(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -25712,16 +25913,16 @@ function Nh(e) {
 		] })
 	] });
 }
-function Ph(e = {}) {
+function Uh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Nh, { ...e })
-	}) : Nh(e);
+		children: o(Hh, { ...e })
+	}) : Hh(e);
 }
 //#endregion
 //#region src/media/mdx/Tooltip/slot.control.ru.mdx
-function Fh(e) {
+function Wh(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -25753,35 +25954,35 @@ function Fh(e) {
 		] })
 	] });
 }
-function Ih(e = {}) {
+function Gh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Fh, { ...e })
-	}) : Fh(e);
+		children: o(Wh, { ...e })
+	}) : Wh(e);
 }
 //#endregion
 //#region src/media/mdx/Tooltip/wikiMdxTooltip.ts
-var Lh = {
+var Kh = {
 	name: "Tooltip",
 	descriptions: {
 		tooltip: {
-			en: Eh,
-			ru: Oh
+			en: Fh,
+			ru: Lh
 		},
 		"event.tooltip": {
-			en: Ah,
-			ru: Mh
+			en: zh,
+			ru: Vh
 		},
 		"slot.control": {
-			en: Ph,
-			ru: Ih
+			en: Uh,
+			ru: Gh
 		}
 	}
 };
 //#endregion
 //#region src/media/mdx/Window/axis.en.mdx
-function Rh(e) {
+function qh(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -25849,16 +26050,16 @@ function Rh(e) {
 		] })
 	] });
 }
-function zh(e = {}) {
+function Jh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Rh, { ...e })
-	}) : Rh(e);
+		children: o(qh, { ...e })
+	}) : qh(e);
 }
 //#endregion
 //#region src/media/mdx/Window/axis.ru.mdx
-function Bh(e) {
+function Yh(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -25926,16 +26127,16 @@ function Bh(e) {
 		] })
 	] });
 }
-function Vh(e = {}) {
+function Xh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Bh, { ...e })
-	}) : Bh(e);
+		children: o(Yh, { ...e })
+	}) : Yh(e);
 }
 //#endregion
 //#region src/media/mdx/Window/classes.en.mdx
-function Hh(e) {
+function Zh(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -25976,16 +26177,16 @@ function Hh(e) {
 		] })
 	] });
 }
-function Uh(e = {}) {
+function Qh(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Hh, { ...e })
-	}) : Hh(e);
+		children: o(Zh, { ...e })
+	}) : Zh(e);
 }
 //#endregion
 //#region src/media/mdx/Window/classes.ru.mdx
-function Wh(e) {
+function $h(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -26026,16 +26227,16 @@ function Wh(e) {
 		] })
 	] });
 }
-function Gh(e = {}) {
+function eg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Wh, { ...e })
-	}) : Wh(e);
+		children: o($h, { ...e })
+	}) : $h(e);
 }
 //#endregion
 //#region src/media/mdx/Window/event.window.en.mdx
-function Kh(e) {
+function tg(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -26085,16 +26286,16 @@ function Kh(e) {
 		})
 	] });
 }
-function qh(e = {}) {
+function ng(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Kh, { ...e })
-	}) : Kh(e);
+		children: o(tg, { ...e })
+	}) : tg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/event.window.ru.mdx
-function Jh(e) {
+function rg(e) {
 	let t = {
 		code: "code",
 		h3: "h3",
@@ -26144,16 +26345,16 @@ function Jh(e) {
 		})
 	] });
 }
-function Yh(e = {}) {
+function ig(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Jh, { ...e })
-	}) : Jh(e);
+		children: o(rg, { ...e })
+	}) : rg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/expose.en.mdx
-function Xh(e) {
+function ag(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -26211,16 +26412,16 @@ function Xh(e) {
 		] })
 	] });
 }
-function Zh(e = {}) {
+function og(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Xh, { ...e })
-	}) : Xh(e);
+		children: o(ag, { ...e })
+	}) : ag(e);
 }
 //#endregion
 //#region src/media/mdx/Window/expose.ru.mdx
-function Qh(e) {
+function sg(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -26278,16 +26479,16 @@ function Qh(e) {
 		] })
 	] });
 }
-function $h(e = {}) {
+function cg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(Qh, { ...e })
-	}) : Qh(e);
+		children: o(sg, { ...e })
+	}) : sg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/hooks.en.mdx
-function eg(e) {
+function lg(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -26358,16 +26559,16 @@ function eg(e) {
 		] })
 	] });
 }
-function tg(e = {}) {
+function ug(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(eg, { ...e })
-	}) : eg(e);
+		children: o(lg, { ...e })
+	}) : lg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/hooks.ru.mdx
-function ng(e) {
+function dg(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -26438,16 +26639,16 @@ function ng(e) {
 		] })
 	] });
 }
-function rg(e = {}) {
+function fg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ng, { ...e })
-	}) : ng(e);
+		children: o(dg, { ...e })
+	}) : dg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/slots.en.mdx
-function ig(e) {
+function pg(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -26539,16 +26740,16 @@ function ig(e) {
 		] })
 	] });
 }
-function ag(e = {}) {
+function mg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ig, { ...e })
-	}) : ig(e);
+		children: o(pg, { ...e })
+	}) : pg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/slots.ru.mdx
-function og(e) {
+function hg(e) {
 	let t = {
 		blockquote: "blockquote",
 		code: "code",
@@ -26640,16 +26841,16 @@ function og(e) {
 		] })
 	] });
 }
-function sg(e = {}) {
+function gg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(og, { ...e })
-	}) : og(e);
+		children: o(hg, { ...e })
+	}) : hg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/staticMode.en.mdx
-function cg(e) {
+function _g(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -26690,16 +26891,16 @@ function cg(e) {
 		o(t.p, { children: "Static mode is especially useful for embedding window content directly into the interface without modal behavior." })
 	] });
 }
-function lg(e = {}) {
+function vg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(cg, { ...e })
-	}) : cg(e);
+		children: o(_g, { ...e })
+	}) : _g(e);
 }
 //#endregion
 //#region src/media/mdx/Window/staticMode.ru.mdx
-function ug(e) {
+function yg(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -26740,16 +26941,16 @@ function ug(e) {
 		o(t.p, { children: "Статический режим особенно полезен для встраивания содержимого окна непосредственно в интерфейс без модального поведения." })
 	] });
 }
-function dg(e = {}) {
+function bg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(ug, { ...e })
-	}) : ug(e);
+		children: o(yg, { ...e })
+	}) : yg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/v-model.en.mdx
-function fg(e) {
+function xg(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -26782,16 +26983,16 @@ function fg(e) {
 		})
 	] });
 }
-function pg(e = {}) {
+function Sg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(fg, { ...e })
-	}) : fg(e);
+		children: o(xg, { ...e })
+	}) : xg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/v-model.ru.mdx
-function mg(e) {
+function Cg(e) {
 	let t = {
 		code: "code",
 		h2: "h2",
@@ -26824,16 +27025,16 @@ function mg(e) {
 		})
 	] });
 }
-function hg(e = {}) {
+function wg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(mg, { ...e })
-	}) : mg(e);
+		children: o(Cg, { ...e })
+	}) : Cg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/window.en.mdx
-function gg(e) {
+function Tg(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -26888,16 +27089,16 @@ function gg(e) {
 		})
 	] });
 }
-function _g(e = {}) {
+function Eg(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(gg, { ...e })
-	}) : gg(e);
+		children: o(Tg, { ...e })
+	}) : Tg(e);
 }
 //#endregion
 //#region src/media/mdx/Window/window.ru.mdx
-function vg(e) {
+function Dg(e) {
 	let t = {
 		li: "li",
 		p: "p",
@@ -26952,117 +27153,118 @@ function vg(e) {
 		})
 	] });
 }
-function yg(e = {}) {
+function Og(e = {}) {
 	let { wrapper: t } = e.components || {};
 	return t ? o(t, {
 		...e,
-		children: o(vg, { ...e })
-	}) : vg(e);
+		children: o(Dg, { ...e })
+	}) : Dg(e);
 }
 //#endregion
 //#region src/media/mdx/wikiMdx.ts
-var bg = [
+var kg = [
 	Ee,
 	qe,
-	Bt,
-	rn,
-	Tn,
-	Pn,
-	qn,
-	nr,
-	Cr,
-	Or,
-	Yr,
-	fi,
-	xi,
-	Hi,
-	Zi,
-	ua,
-	Ca,
-	Ma,
-	Ya,
-	eo,
-	Eo,
-	Fo,
-	Bo,
-	Yo,
-	es,
+	Vt,
+	an,
+	En,
+	Fn,
+	Wn,
+	rr,
+	fr,
+	Nr,
+	Rr,
+	ai,
+	Si,
+	ji,
+	Qi,
+	sa,
+	ba,
+	Na,
+	Ha,
+	ao,
+	uo,
+	Io,
+	Go,
+	Xo,
 	as,
 	us,
-	Cs,
-	Os,
-	Ls,
-	gc,
-	Vc,
-	il,
+	hs,
+	bs,
+	Ns,
+	Rs,
+	Ks,
+	Tc,
+	Xc,
 	pl,
-	El,
-	jl,
-	Su,
-	Zu,
+	Sl,
+	Fl,
+	Bl,
+	ju,
 	od,
-	jd,
-	hf,
-	bf,
-	Vf,
-	Kf,
-	ap,
-	up,
-	hp,
-	bp,
-	Np,
-	bm,
-	Vm,
-	Km,
+	hd,
+	Bd,
+	wf,
+	kf,
+	Xf,
+	tp,
+	mp,
+	yp,
+	wp,
+	kp,
+	Hp,
+	km,
+	Xm,
 	th,
 	uh,
 	yh,
-	wh,
-	Lh,
+	Oh,
+	Nh,
+	Kh,
 	{
 		name: "Window",
 		descriptions: {
 			axis: {
-				en: zh,
-				ru: Vh
+				en: Jh,
+				ru: Xh
 			},
 			classes: {
-				en: Uh,
-				ru: Gh
+				en: Qh,
+				ru: eg
 			},
 			"event.window": {
-				en: qh,
-				ru: Yh
+				en: ng,
+				ru: ig
 			},
 			expose: {
-				en: Zh,
-				ru: $h
+				en: og,
+				ru: cg
 			},
 			hooks: {
-				en: tg,
-				ru: rg
+				en: ug,
+				ru: fg
 			},
 			slots: {
-				en: ag,
-				ru: sg
+				en: mg,
+				ru: gg
 			},
 			staticMode: {
-				en: lg,
-				ru: dg
+				en: vg,
+				ru: bg
 			},
 			"v-model": {
-				en: pg,
-				ru: hg
+				en: Sg,
+				ru: wg
 			},
 			window: {
-				en: _g,
-				ru: yg
+				en: Eg,
+				ru: Og
 			}
 		}
 	}
-], xg = class {
+], Ag = class {
 	constructor(n) {
-		e(this, "item", void 0), e(this, "mdx", void 0), this.item = t.find((e) => e.name === n), this.mdx = bg.find((e) => e.name === n);
+		e(this, "item", void 0), e(this, "mdx", void 0), this.item = t.find((e) => e.name === n), this.mdx = kg.find((e) => e.name === n);
 	}
 	getItem() {
 		return this.item;
@@ -27072,6 +27274,6 @@ var bg = [
 		let r = (t = this.mdx) == null || (t = t.descriptions) == null ? void 0 : t[e];
 		return ee(r ? te(r) ? r[n.getLanguage()] : r : "");
 	}
-}, Sg = ({ componentName: e, type: t }) => new xg(e).getDescriptionByType(t);
+}, jg = ({ componentName: e, type: t }) => new Ag(e).getDescriptionByType(t);
 //#endregion
-export { Sg as StorybookDescriptions, ae as StorybookMain };
+export { jg as StorybookDescriptions, ae as StorybookMain };

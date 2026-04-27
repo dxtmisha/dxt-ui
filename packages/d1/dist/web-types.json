@@ -820,12 +820,21 @@
         },
         {
           "name": "D1Area",
-          "description": "",
+          "description": "Component for rendering content based on the current area context",
           "source": {
             "module": "@dxtmisha/d1/D1Area",
             "symbol": "D1Area"
           },
-          "attributes": [],
+          "attributes": [
+            {
+              "name": "area-default",
+              "description": "Default area identifier",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ],
           "slots": [],
           "events": []
         },
@@ -5036,7 +5045,7 @@
         },
         {
           "name": "D1Header",
-          "description": "",
+          "description": "Component for displaying headers with icons and additional information",
           "source": {
             "module": "@dxtmisha/d1/D1Header",
             "symbol": "D1Header"
@@ -5121,6 +5130,15 @@
               "value": {
                 "kind": "expression",
                 "type": "ConstrBind<IconPropsBasic> | undefined"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "header",
+              "value": {
+                "kind": "expression",
+                "type": "string"
               }
             },
             {

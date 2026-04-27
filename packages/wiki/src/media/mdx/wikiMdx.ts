@@ -7,6 +7,7 @@ import { wikiMdxStyle } from './style/wikiMdxStyle'
 import { wikiMdxValue } from './value/wikiMdxValue'
 
 import { wikiMdxAccordion } from './Accordion/wikiMdxAccordion'
+import { wikiMdxArea } from './Area/wikiMdxArea'
 import { wikiMdxActions } from './Actions/wikiMdxActions'
 import { wikiMdxActionSheet } from './ActionSheet/wikiMdxActionSheet'
 import { wikiMdxAnchor } from './Anchor/wikiMdxAnchor'
@@ -68,6 +69,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxValue,
 
   wikiMdxAccordion,
+  wikiMdxArea,
   wikiMdxActions,
   wikiMdxActionSheet,
   wikiMdxAnchor,

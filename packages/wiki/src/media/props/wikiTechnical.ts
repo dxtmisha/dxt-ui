@@ -30,7 +30,8 @@ export const wikiTechnical: StorybookArgsToList = {
       description: {
         en: 'Default area identifier',
         ru: 'Идентификатор области по умолчанию'
-      }
+      },
+      value: 'default'
     },
     hide: true
   },

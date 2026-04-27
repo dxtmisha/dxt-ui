@@ -1,0 +1,42 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+A component for dynamic content switching based on the area context.
+
+Area acts as a smart slot switcher. It retrieves the current area value from the injection context or uses a default value. The component then renders the slot whose name matches the current area value. If no matching slot is found, the default slot is displayed.
+
+**Key Features:**
+
+- Automatic slot selection based on the injected area value
+- Ability to specify a default area via the `areaDefault` property
+- Support for nested areas and context inheritance
+- Seamless integration into complex layouts (e.g., Window)
+
+**Typical Usage Scenarios:**
+
+- Creating dynamic headers and footers
+- Adapting content based on the component's placement
+- Organizing complex layouts with dynamic content zones
+- Implementing extension slots in base components
+
+<Source
+    code={`
+<template>
+  <Area area-default="header">
+    <template #header>
+      Header Content
+    </template>
+    <template #footer>
+      Footer Content
+    </template>
+    <template #default>
+      Default Content
+    </template>
+  </Area>
+</template>
+  `}
+    language="html"
+/>
+
+> Area is an essential tool for creating flexible and extensible interfaces, allowing components to react to their environment.
