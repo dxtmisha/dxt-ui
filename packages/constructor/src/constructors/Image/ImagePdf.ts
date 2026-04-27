@@ -16,12 +16,18 @@ export class ImagePdf {
    * Проверяет, является ли файл PDF.
    * @param file verified file/ проверяемый файл
    */
-  static isPdf(file: string | File): boolean {
-    if (isString(file)) {
-      return Boolean(file.match(/\.pdf$/i))
+  static isPdf(file?: string | File): boolean {
+    if (!file) {
+      return false
     }
 
-    return isDomRuntime() && Boolean(file.type.match(/\/pdf$/i))
+    if (isString(file)) {
+      return Boolean(/\.pdf$/i.test(file))
+    }
+
+    return isDomRuntime()
+      && file instanceof File
+      && Boolean(/\/pdf$/i.test(file?.type ?? ''))
   }
 
   /**

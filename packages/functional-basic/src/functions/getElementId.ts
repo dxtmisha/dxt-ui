@@ -20,11 +20,11 @@ let listener: () => string | number
  * Возвращает следующий ID.
  * @returns next ID / следующий ID
  */
-const getNextId = () => {
+const getNextId = (): string => {
   const contextId = listener?.()
 
   if (contextId) {
-    return `id-server-${contextId}`
+    return String(contextId)
   }
 
   const id = ServerStorage.get<{ id: number }>('__ui:getElementId__', () => ({ id: 100000 }))

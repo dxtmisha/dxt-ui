@@ -1,4 +1,4 @@
-import { t as e } from "./D1ChipGroup-XOLALmQL.js";
+import { t as e } from "./D1ChipGroup-742mru3B.js";
 //#region src/components/Ui/ChipGroup/index.ts
 var t = e;
 //#endregion

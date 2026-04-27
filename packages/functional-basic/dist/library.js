@@ -4234,7 +4234,7 @@ function vn() {
 //#region src/functions/getElementId.ts
 var Q, yn = () => {
 	let e = Q == null ? void 0 : Q();
-	if (e) return `id-server-${e}`;
+	if (e) return String(e);
 	let t = T.get("__ui:getElementId__", () => ({ id: 1e5 }));
 	return `id-${t.id++}`;
 };

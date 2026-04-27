@@ -6495,6 +6495,12 @@
         name: 'd1-system',
         type: 'component',
         value: (
+          'layoutWidth':(
+            index: 'layoutWidth',
+            name: '--d1-layout-width',
+            type: 'var',
+            value: 'auto',
+          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -6620,6 +6626,25 @@
                 index: 'layoutMarginX',
                 name: '--d1-layout-marginX',
                 type: 'var',
+                value: 'var(--d1-ref-spacing-12)',
+              ),
+            ),
+          ),
+          'mediaXl':(
+            index: 'mediaXl',
+            name: '(min-width: 1280px)',
+            type: 'media',
+            value: (
+              'layoutWidth':(
+                index: 'layoutWidth',
+                name: '--d1-layout-width',
+                type: 'var',
+                value: 'var(--d1-ref-screen-xl)',
+              ),
+              'layoutMarginX':(
+                index: 'layoutMarginX',
+                name: '--d1-layout-marginX',
+                type: 'var',
                 value: 0px,
               ),
             ),
@@ -6631,6 +6656,12 @@
         name: 'd1-main',
         type: 'component',
         value: (
+          'layoutWidth':(
+            index: 'layoutWidth',
+            name: '--d1-layout-width',
+            type: 'var',
+            value: 'auto',
+          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -6758,6 +6789,25 @@
             name: '(min-width: 1024px)',
             type: 'media',
             value: (
+              'layoutMarginX':(
+                index: 'layoutMarginX',
+                name: '--d1-layout-marginX',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-12)',
+              ),
+            ),
+          ),
+          'mediaXl':(
+            index: 'mediaXl',
+            name: '(min-width: 1280px)',
+            type: 'media',
+            value: (
+              'layoutWidth':(
+                index: 'layoutWidth',
+                name: '--d1-layout-width',
+                type: 'var',
+                value: 'var(--d1-ref-screen-xl)',
+              ),
               'layoutMarginX':(
                 index: 'layoutMarginX',
                 name: '--d1-layout-marginX',
@@ -9154,6 +9204,12 @@
         name: 'd1-layout',
         type: 'component',
         value: (
+          'layoutWidth':(
+            index: 'layoutWidth',
+            name: '--d1-layout-width',
+            type: 'var',
+            value: 'auto',
+          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -9233,6 +9289,25 @@
             name: '(min-width: 1024px)',
             type: 'media',
             value: (
+              'layoutMarginX':(
+                index: 'layoutMarginX',
+                name: '--d1-layout-marginX',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-12)',
+              ),
+            ),
+          ),
+          'mediaXl':(
+            index: 'mediaXl',
+            name: '(min-width: 1280px)',
+            type: 'media',
+            value: (
+              'layoutWidth':(
+                index: 'layoutWidth',
+                name: '--d1-layout-width',
+                type: 'var',
+                value: 'var(--d1-ref-screen-xl)',
+              ),
               'layoutMarginX':(
                 index: 'layoutMarginX',
                 name: '--d1-layout-marginX',
@@ -12062,6 +12137,11 @@
         name: 'd1-anchor',
         type: 'component',
       ),
+      'area':(
+        index: 'area',
+        name: 'd1-area',
+        type: 'component',
+      ),
       'arrow':(
         index: 'arrow',
         name: 'd1-arrow',
@@ -12150,6 +12230,11 @@
       'group':(
         index: 'group',
         name: 'd1-group',
+        type: 'component',
+      ),
+      'header':(
+        index: 'header',
+        name: 'd1-header',
         type: 'component',
       ),
       'horizontalScroll':(
@@ -12585,6 +12670,11 @@
         name: 'd-anchor',
         type: 'component',
       ),
+      'area':(
+        index: 'area',
+        name: 'd-area',
+        type: 'component',
+      ),
       'arrow':(
         index: 'arrow',
         name: 'd-arrow',
@@ -12673,6 +12763,11 @@
       'group':(
         index: 'group',
         name: 'd-group',
+        type: 'component',
+      ),
+      'header':(
+        index: 'header',
+        name: 'd-header',
         type: 'component',
       ),
       'horizontalScroll':(

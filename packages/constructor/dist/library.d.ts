@@ -1,3 +1,4 @@
+export * from './classes/AreaInclude';
 export * from './classes/AriaStaticInclude';
 export * from './classes/CaptionInclude';
 export * from './classes/ClientOnlyInclude';
@@ -36,7 +37,10 @@ export * from './classes/SuffixInclude';
 export * from './classes/TabIndexInclude';
 export * from './classes/TextInclude';
 export * from './classes/TouchEventInclude';
+export * from './functions/getAreaValue';
 export * from './functions/getClassTagAStatic';
+export * from './functions/setAreaValue';
+export * from './types/areaTypes';
 export * from './types/ariaTypes';
 export * from './types/captionTypes';
 export * from './types/clientOnlyTypes';

@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui",
+    "dxt-ui": "dxt-ui Header",
     "dxt-wiki-storm": "dxt-wiki-storm",
     "dxt-types": "dxt-types",
     "prepublishOnly": "npm run dxt-ui && npm run build && npm run dxt-wiki-storm",
@@ -267,6 +267,14 @@
     "./D1Snackbar": {
       "types": "./dist/library/D1Snackbar.d.ts",
       "default": "./dist/D1Snackbar.js"
+    },
+    "./D1Area": {
+      "types": "./dist/library/D1Area.d.ts",
+      "default": "./dist/D1Area.js"
+    },
+    "./D1Header": {
+      "types": "./dist/library/D1Header.d.ts",
+      "default": "./dist/D1Header.js"
     }
   },
   "buildOptions": {

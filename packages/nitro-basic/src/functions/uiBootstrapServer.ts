@@ -1,3 +1,6 @@
+import { useId } from 'vue'
+import { initGetElementId } from '@dxtmisha/functional-basic'
+
 import { uiCookieStorage } from './uiCookieStorage'
 import { uiServerStorage } from './uiServerStorage'
 
@@ -13,4 +16,6 @@ import { uiServerStorage } from './uiServerStorage'
 export function uiBootstrapServer(): void {
   uiCookieStorage()
   uiServerStorage()
+
+  initGetElementId(() => useId())
 }

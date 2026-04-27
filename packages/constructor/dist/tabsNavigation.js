@@ -2,8 +2,8 @@ import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
 import { t as n } from "./EventClickInclude-DWAJ7AtL.js";
 import { t as r } from "./ModelInclude-BLoWPZyI.js";
-import { t as i } from "./HorizontalScrollInclude-86ysL2lz.js";
-import { t as a } from "./TabsNavigationInclude-DWUYYJJd.js";
+import { t as i } from "./HorizontalScrollInclude-4TWF8H_T.js";
+import { t as a } from "./TabsNavigationInclude-CyN50URm.js";
 import { computed as o, nextTick as s, onMounted as c, ref as l, toRef as u, watch as d } from "vue";
 import { DesignConstructorAbstract as f, EventItem as p, ListDataRef as m, getElementId as h, isDomRuntime as g, isSelected as _, toArray as v, toBinds as y } from "@dxtmisha/functional";
 //#region src/constructors/TabsNavigation/TabsNavigationSelected.ts

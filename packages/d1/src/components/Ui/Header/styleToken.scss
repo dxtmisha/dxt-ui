@@ -1,0 +1,80 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Header;
+
+@include ui.initDesignBasic('d1.header') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Header.mixinHeader;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &--tag {
+      &--h1 {
+        & .d1-header__label {
+          font-family: var(--d1-sys-font-family-basic), sans-serif;
+          @include ui.fontSize(#{var(--d1-sys-font-size-headlineLarge)});
+          font-weight: var(--d1-sys-font-weight-regular);
+          @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineLarge)});
+          letter-spacing: var(--d1-sys-letterSpacing-none);
+        }
+      }
+      
+      &--h2 {
+        & .d1-header__label {
+          font-family: var(--d1-sys-font-family-basic), sans-serif;
+          @include ui.fontSize(#{var(--d1-sys-font-size-headlineMedium)});
+          font-weight: var(--d1-sys-font-weight-regular);
+          @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineMedium)});
+          letter-spacing: var(--d1-sys-letterSpacing-none);
+        }
+      }
+      
+      &--h3 {
+        & .d1-header__label {
+          font-family: var(--d1-sys-font-family-basic), sans-serif;
+          @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+          font-weight: var(--d1-sys-font-weight-regular);
+          @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
+          letter-spacing: var(--d1-sys-letterSpacing-none);
+        }
+      }
+      
+      &--h4 {
+        & .d1-header__label {
+          font-family: var(--d1-sys-font-family-basic), sans-serif;
+          @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+          font-weight: var(--d1-sys-font-weight-medium);
+          @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+          letter-spacing: var(--d1-sys-letterSpacing-sm);
+        }
+      }
+      
+      &--h5 {
+        & .d1-header__label {
+          font-family: var(--d1-sys-font-family-basic), sans-serif;
+          @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+          font-weight: var(--d1-sys-font-weight-medium);
+          @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+          letter-spacing: var(--d1-sys-letterSpacing-xs);
+        }
+      }
+      
+      &--h6 {
+        & .d1-header__label {
+          font-family: var(--d1-sys-font-family-basic), sans-serif;
+          @include ui.fontSize(#{var(--d1-sys-font-size-x)});
+          font-weight: var(--d1-sys-font-weight-medium);
+          @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+          letter-spacing: var(--d1-sys-letterSpacing-xl);
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

@@ -29,6 +29,7 @@ import { wikiMdxGrid } from './Grid/wikiMdxGrid'
 import { wikiMdxGridItem } from './GridItem/wikiMdxGridItem'
 import { wikiMdxGroup } from './Group/wikiMdxGroup'
 import { wikiMdxHorizontalScroll } from './HorizontalScroll/wikiMdxHorizontalScroll'
+import { wikiMdxHeader } from './Header/wikiMdxHeader'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
 import { wikiMdxInput } from './Input/wikiMdxInput'
@@ -89,6 +90,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxGridItem,
   wikiMdxGroup,
   wikiMdxHorizontalScroll,
+  wikiMdxHeader,
   wikiMdxIcon,
   wikiMdxImage,
   wikiMdxInput,

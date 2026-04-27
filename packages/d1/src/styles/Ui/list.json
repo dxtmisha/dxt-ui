@@ -5343,6 +5343,11 @@
         "name": "d1-system",
         "type": "component",
         "value": {
+          "layoutWidth": {
+            "name": "--d1-layout-width",
+            "type": "var",
+            "value": "auto"
+          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5409,6 +5414,22 @@
             "name": "(min-width: 1024px)",
             "type": "media",
             "value": {
+              "layoutMarginX": {
+                "name": "--d1-layout-marginX",
+                "type": "var",
+                "value": "{ref.spacing.12}"
+              }
+            }
+          },
+          "mediaXl": {
+            "name": "(min-width: 1280px)",
+            "type": "media",
+            "value": {
+              "layoutWidth": {
+                "name": "--d1-layout-width",
+                "type": "var",
+                "value": "{ref.screen.xl}"
+              },
               "layoutMarginX": {
                 "name": "--d1-layout-marginX",
                 "type": "var",
@@ -5422,6 +5443,11 @@
         "name": "d1-main",
         "type": "component",
         "value": {
+          "layoutWidth": {
+            "name": "--d1-layout-width",
+            "type": "var",
+            "value": "auto"
+          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5491,6 +5517,22 @@
               "layoutMarginX": {
                 "name": "--d1-layout-marginX",
                 "type": "var",
+                "value": "{ref.spacing.12}"
+              }
+            }
+          },
+          "mediaXl": {
+            "name": "(min-width: 1280px)",
+            "type": "media",
+            "value": {
+              "layoutWidth": {
+                "name": "--d1-layout-width",
+                "type": "var",
+                "value": "{ref.screen.xl}"
+              },
+              "layoutMarginX": {
+                "name": "--d1-layout-marginX",
+                "type": "var",
                 "value": "0px"
               }
             }
@@ -5501,6 +5543,11 @@
         "name": "d1-layout",
         "type": "component",
         "value": {
+          "layoutWidth": {
+            "name": "--d1-layout-width",
+            "type": "var",
+            "value": "auto"
+          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5567,6 +5614,22 @@
             "name": "(min-width: 1024px)",
             "type": "media",
             "value": {
+              "layoutMarginX": {
+                "name": "--d1-layout-marginX",
+                "type": "var",
+                "value": "{ref.spacing.12}"
+              }
+            }
+          },
+          "mediaXl": {
+            "name": "(min-width: 1280px)",
+            "type": "media",
+            "value": {
+              "layoutWidth": {
+                "name": "--d1-layout-width",
+                "type": "var",
+                "value": "{ref.screen.xl}"
+              },
               "layoutMarginX": {
                 "name": "--d1-layout-marginX",
                 "type": "var",
@@ -7239,6 +7302,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "area": {
+        "name": "d1-area",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-area-main",
+            "type": "var",
+            "value": "{d.area}"
           }
         }
       },

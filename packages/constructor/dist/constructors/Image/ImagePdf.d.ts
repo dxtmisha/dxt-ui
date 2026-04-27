@@ -10,7 +10,7 @@ export declare class ImagePdf {
      * Проверяет, является ли файл PDF.
      * @param file verified file/ проверяемый файл
      */
-    static isPdf(file: string | File): boolean;
+    static isPdf(file?: string | File): boolean;
     /**
      * Applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer.
      *

@@ -2,6 +2,7 @@ import { default as _D1Accordion } from '../components/Ui/Accordion/D1Accordion.
 import { default as _D1ActionSheet } from '../components/Ui/ActionSheet/D1ActionSheet.vue';
 import { default as _D1Actions } from '../components/Ui/Actions/D1Actions.vue';
 import { default as _D1Anchor } from '../components/Ui/Anchor/D1Anchor.vue';
+import { default as _D1Area } from '../components/Ui/Area/D1Area.vue';
 import { default as _D1Arrow } from '../components/Ui/Arrow/D1Arrow.vue';
 import { default as _D1Badge } from '../components/Ui/Badge/D1Badge.vue';
 import { default as _D1Bars } from '../components/Ui/Bars/D1Bars.vue';
@@ -20,6 +21,7 @@ import { default as _D1FieldMessage } from '../components/Ui/FieldMessage/D1Fiel
 import { default as _D1Grid } from '../components/Ui/Grid/D1Grid.vue';
 import { default as _D1GridItem } from '../components/Ui/GridItem/D1GridItem.vue';
 import { default as _D1Group } from '../components/Ui/Group/D1Group.vue';
+import { default as _D1Header } from '../components/Ui/Header/D1Header.vue';
 import { default as _D1HorizontalScroll } from '../components/Ui/HorizontalScroll/D1HorizontalScroll.vue';
 import { default as _D1Icon } from '../components/Ui/Icon/D1Icon.vue';
 import { default as _D1Image } from '../components/Ui/Image/D1Image.vue';
@@ -56,6 +58,7 @@ declare module '@vue/runtime-core' {
         D1ActionSheet: typeof _D1ActionSheet;
         D1Actions: typeof _D1Actions;
         D1Anchor: typeof _D1Anchor;
+        D1Area: typeof _D1Area;
         D1Arrow: typeof _D1Arrow;
         D1Badge: typeof _D1Badge;
         D1Bars: typeof _D1Bars;
@@ -74,6 +77,7 @@ declare module '@vue/runtime-core' {
         D1Grid: typeof _D1Grid;
         D1GridItem: typeof _D1GridItem;
         D1Group: typeof _D1Group;
+        D1Header: typeof _D1Header;
         D1HorizontalScroll: typeof _D1HorizontalScroll;
         D1Icon: typeof _D1Icon;
         D1Image: typeof _D1Image;

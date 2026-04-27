@@ -1,0 +1,35 @@
+{
+  "main": "{d.header}",
+  "~tag": {
+    "~h1": {
+      "#label": {
+        "link|font": "{font.headlineLarge}"
+      }
+    },
+    "~h2": {
+      "#label": {
+        "link|font": "{font.headlineMedium}"
+      }
+    },
+    "~h3": {
+      "#label": {
+        "link|font": "{font.headlineSmall}"
+      }
+    },
+    "~h4": {
+      "#label": {
+        "link|font": "{font.titleMedium}"
+      }
+    },
+    "~h5": {
+      "#label": {
+        "link|font": "{font.titleSmall}"
+      }
+    },
+    "~h6": {
+      "#label": {
+        "link|font": "{font.labelSmall}"
+      }
+    }
+  }
+}

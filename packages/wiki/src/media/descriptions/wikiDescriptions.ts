@@ -22,6 +22,7 @@ import { wikiDescriptionsFieldMessage } from './wikiDescriptionsFieldMessage'
 import { wikiDescriptionsGrid } from './wikiDescriptionsGrid'
 import { wikiDescriptionsGridItem } from './wikiDescriptionsGridItem'
 import { wikiDescriptionsGroup } from './wikiDescriptionsGroup'
+import { wikiDescriptionsHeader } from './wikiDescriptionsHeader'
 import { wikiDescriptionsHorizontalScroll } from './wikiDescriptionsHorizontalScroll'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
@@ -76,6 +77,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsGrid,
   wikiDescriptionsGridItem,
   wikiDescriptionsGroup,
+  wikiDescriptionsHeader,
   wikiDescriptionsHorizontalScroll,
   wikiDescriptionsIcon,
   wikiDescriptionsInput,

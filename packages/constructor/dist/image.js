@@ -1,7 +1,7 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
 import { t as n } from "./ImageInclude-C4KnnA3v.js";
-import { n as r, t as i } from "./errorTypes-Bp15Cp8z.js";
+import { n as r, t as i } from "./errorTypes-wUx9umhU.js";
 import { computed as a, h as o, onUnmounted as s, ref as c, toRefs as l, watch as u, watchEffect as d } from "vue";
 import { DesignConstructorAbstract as f, ErrorCenter as p, EventItem as m, Icons as h, computedAsync as g, forEach as _, getElementId as v, isArray as y, isDomRuntime as b, isFilled as x, isNumber as S, isString as C, resizeImageByMax as w, sleep as T, toNumber as E, useLazyItemByMarginRef as D } from "@dxtmisha/functional";
 //#region src/constructors/Image/ImageFile.ts
@@ -50,7 +50,8 @@ var O = 1280, k = class {
 	}
 }, A = "#toolbar=0&scrollbar=1", j = class {
 	static isPdf(e) {
-		return C(e) ? !!e.match(/\.pdf$/i) : b() && !!e.type.match(/\/pdf$/i);
+		var t;
+		return e ? C(e) ? !!/\.pdf$/i.test(e) : b() && e instanceof File && !!/\/pdf$/i.test((t = e == null ? void 0 : e.type) == null ? "" : t) : !1;
 	}
 	static async get(e) {
 		return C(e) ? `${e}${A}` : this.isPdf(e) ? `${await k.getFileReader(e)}${A}` : "";

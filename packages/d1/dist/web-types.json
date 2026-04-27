@@ -819,6 +819,17 @@
           "events": []
         },
         {
+          "name": "D1Area",
+          "description": "",
+          "source": {
+            "module": "@dxtmisha/d1/D1Area",
+            "symbol": "D1Area"
+          },
+          "attributes": [],
+          "slots": [],
+          "events": []
+        },
+        {
           "name": "D1Arrow",
           "description": "Component for displaying an arrow or directional indicator",
           "source": {
@@ -5003,6 +5014,146 @@
             {
               "name": "label",
               "description": "Label slot content/ Содержимое слота метки",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "trailing",
+              "description": "Slot for trailing content/ Слот для правого контента",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            }
+          ],
+          "events": []
+        },
+        {
+          "name": "D1Header",
+          "description": "",
+          "source": {
+            "module": "@dxtmisha/d1/D1Header",
+            "symbol": "D1Header"
+          },
+          "attributes": [
+            {
+              "name": "selected",
+              "description": "Selected state of the element",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "caption",
+              "description": "Caption text for additional information",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "label",
+              "description": "Text label for the component",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "icon",
+              "description": "Value of the main icon",
+              "value": {
+                "kind": "expression",
+                "type": "string | File"
+              }
+            },
+            {
+              "name": "icon-dir",
+              "description": "Mirrors the icon depending on a site direction (RTL/LTR)",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "icon-hide",
+              "description": "Hides the icon",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "icon-palette",
+              "description": "Sets icon color based on palette class",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "icon-turn",
+              "description": "Turns the icon",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "tag",
+              "description": "Sets HTML tag for the component element",
+              "default": "h3",
+              "value": {
+                "kind": "expression",
+                "type": "h1 | h2 | h3 | h4 | h5 | h6"
+              }
+            },
+            {
+              "name": "icon-attrs",
+              "description": "Sets additional attributes for the icon element",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<IconPropsBasic> | undefined"
+              }
+            },
+            {
+              "name": "caption-decorative",
+              "description": "Specifies whether the caption is purely decorative",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "label-id",
+              "description": "Unique identifier for the label element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "caption",
+              "description": "Caption slot/ Слот заголовка",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "default",
+              "description": "Default slot content/ Содержимое слота по умолчанию",
               "vue-properties": [
                 {
                   "name": "props",

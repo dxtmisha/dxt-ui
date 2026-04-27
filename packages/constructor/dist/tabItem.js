@@ -4,9 +4,9 @@ import { t as n } from "./EnabledInclude-C3Rd0qtt.js";
 import { t as r } from "./EventClickInclude-DWAJ7AtL.js";
 import { t as i } from "./SkeletonInclude-Cu6l1Y1l.js";
 import { t as a } from "./LabelInclude-zPXncFnh.js";
-import { t as o } from "./IconTrailingInclude-Ah9_79p9.js";
-import { t as s } from "./BadgeInclude-DUcQBt9R.js";
-import { t as c } from "./RippleInclude-Cqe49Sem.js";
+import { t as o } from "./IconTrailingInclude-CFh6dVx_.js";
+import { t as s } from "./BadgeInclude-BGM6hPaZ.js";
+import { t as c } from "./RippleInclude-DTLcoRsm.js";
 import { computed as l, h as u } from "vue";
 import { DesignConstructorAbstract as d } from "@dxtmisha/functional";
 //#region src/constructors/TabItem/TabItem.ts

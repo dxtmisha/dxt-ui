@@ -3,7 +3,7 @@ import { t } from "./EventClickInclude-DWAJ7AtL.js";
 import { t as n } from "./ModelInclude-BLoWPZyI.js";
 import { t as r } from "./WindowInclude-CdsbM6AZ.js";
 import { t as i } from "./BarsInclude-B8j-NBPr.js";
-import { t as a } from "./MenuInclude-t3wC2S0t.js";
+import { t as a } from "./MenuInclude-DnroQi0E.js";
 import { computed as o, h as s, ref as c, watch as l } from "vue";
 import { Api as u, DesignConstructorAbstract as d, ListDataRef as f, executePromise as p, isFilled as m, isFunction as h, isObject as g, toBinds as _ } from "@dxtmisha/functional";
 //#region src/constructors/Menu/MenuRequest.ts

@@ -1,4 +1,4 @@
-import { t as e } from "./D1Block-doQ_JS1x.js";
+import { t as e } from "./D1Block-CHw27Qb-.js";
 //#region src/components/Ui/Block/index.ts
 var t = e;
 //#endregion

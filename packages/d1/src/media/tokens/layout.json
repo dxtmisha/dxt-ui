@@ -1,4 +1,8 @@
 {
+  "=?layout-width": {
+    "value": "auto",
+    "_type": "var"
+  },
   "=?layout-marginX": {
     "value": "{layout.paddingX}",
     "_type": "var"
@@ -44,6 +48,16 @@
     }
   },
   "media|lg": {
+    "=?layout-marginX": {
+      "value": "{ref.spacing.12}",
+      "_type": "var"
+    }
+  },
+  "media|xl": {
+    "=?layout-width": {
+      "value": "{ref.screen.xl}",
+      "_type": "var"
+    },
     "=?layout-marginX": {
       "value": "0px",
       "_type": "var"

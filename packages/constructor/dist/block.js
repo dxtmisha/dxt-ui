@@ -1,2 +1,2 @@
-import { n as e, r as t, t as n } from "./BlockDesign-DCGd3znn.js";
+import { n as e, r as t, t as n } from "./BlockDesign-B477Y7lo.js";
 export { t as Block, n as BlockDesign, e as defaultsBlock };

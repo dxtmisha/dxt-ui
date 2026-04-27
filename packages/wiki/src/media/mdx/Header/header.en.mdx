@@ -1,0 +1,42 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+A component for displaying headers with integrated support for icons and captions.
+
+Header provides flexible control over the HTML tag (h1-h6, div), which is essential for maintaining document hierarchy. The component supports automatic area management (area) and provides a slot for customizing content on the right side.
+
+**Key Features:**
+
+- Display of title (label), caption, and icon
+- HTML tag configuration (h1, h2, h3, h4, h5, h6, div, etc.)
+- Automatic area value management via AreaInclude
+- Support for trailing slot for additional content
+- Standardized typography and spacing
+
+**Typical Usage Scenarios:**
+
+- Section and page headings
+- Grouping content with explanatory captions
+- Navigational headers with icons
+- Card and block headers
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+</script>
+
+<template>
+  <Header
+    label="Page Title"
+    caption="Additional information or section description"
+    icon="description"
+    tag="h1"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> Header is a key component for organizing text hierarchy and visually highlighting interface sections.

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.52.5",
+  "version": "0.53.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -75,6 +75,10 @@
       "types": "./dist/constructors/Anchor/index.d.ts",
       "default": "./dist/anchor.js"
     },
+    "./Area": {
+      "types": "./dist/constructors/Area/index.d.ts",
+      "default": "./dist/area.js"
+    },
     "./Arrow": {
       "types": "./dist/constructors/Arrow/index.d.ts",
       "default": "./dist/arrow.js"
@@ -146,6 +150,10 @@
     "./Group": {
       "types": "./dist/constructors/Group/index.d.ts",
       "default": "./dist/group.js"
+    },
+    "./Header": {
+      "types": "./dist/constructors/Header/index.d.ts",
+      "default": "./dist/header.js"
     },
     "./HorizontalScroll": {
       "types": "./dist/constructors/HorizontalScroll/index.d.ts",

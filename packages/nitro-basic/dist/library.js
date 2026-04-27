@@ -97,7 +97,7 @@ function j() {
 //#endregion
 //#region src/functions/uiBootstrapServer.ts
 function M() {
-	A(), j();
+	A(), j(), s(() => d());
 }
 //#endregion
 //#region src/functions/uiCreateSsrRouter.ts

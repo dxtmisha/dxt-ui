@@ -1,6 +1,6 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
-import { t as n } from "./ListGroupOpen-CqyU-zU1.js";
+import { t as n } from "./ListGroupOpen-qE7hounv.js";
 import { h as r } from "vue";
 import { DesignConstructorAbstract as i } from "@dxtmisha/functional";
 //#region src/constructors/ListGroup/ListGroup.ts

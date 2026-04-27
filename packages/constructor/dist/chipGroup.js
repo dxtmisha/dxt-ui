@@ -1,6 +1,6 @@
 import { t as e } from "./defineProperty-149Ahniv.js";
 import { t } from "./EventClickInclude-DWAJ7AtL.js";
-import { t as n } from "./ModelValueInclude-DJBtRq72.js";
+import { t as n } from "./ModelValueInclude-CyVGdV3m.js";
 import { h as r } from "vue";
 import { DesignConstructorAbstract as i, ListDataRef as a, forEach as o, toBinds as s } from "@dxtmisha/functional";
 //#region src/constructors/ChipGroup/ChipGroup.ts

@@ -5,6 +5,7 @@ import D1Accordion from '../../src/components/Ui/Accordion/D1AccordionAiWiki.vue
 import D1ActionSheet from '../../src/components/Ui/ActionSheet/D1ActionSheetAiWiki.vue'
 import D1Actions from '../../src/components/Ui/Actions/D1ActionsAiWiki.vue'
 import D1Anchor from '../../src/components/Ui/Anchor/D1AnchorAiWiki.vue'
+import D1Area from '../../src/components/Ui/Area/D1AreaAiWiki.vue'
 import D1Arrow from '../../src/components/Ui/Arrow/D1ArrowAiWiki.vue'
 import D1Badge from '../../src/components/Ui/Badge/D1BadgeAiWiki.vue'
 import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
@@ -23,6 +24,7 @@ import D1FieldMessage from '../../src/components/Ui/FieldMessage/D1FieldMessageA
 import D1Grid from '../../src/components/Ui/Grid/D1GridAiWiki.vue'
 import D1GridItem from '../../src/components/Ui/GridItem/D1GridItemAiWiki.vue'
 import D1Group from '../../src/components/Ui/Group/D1GroupAiWiki.vue'
+import D1Header from '../../src/components/Ui/Header/D1HeaderAiWiki.vue'
 import D1HorizontalScroll from '../../src/components/Ui/HorizontalScroll/D1HorizontalScrollAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
@@ -59,6 +61,7 @@ export const aiList: any[] = [
   D1ActionSheet,
   D1Actions,
   D1Anchor,
+  D1Area,
   D1Arrow,
   D1Badge,
   D1Bars,
@@ -77,6 +80,7 @@ export const aiList: any[] = [
   D1Grid,
   D1GridItem,
   D1Group,
+  D1Header,
   D1HorizontalScroll,
   D1Icon,
   D1Image,

@@ -1,2 +1,2 @@
-import { t as e } from "./MotionAxis-D-MKrPV5.js";
+import { t as e } from "./MotionAxis-ComzeWbq.js";
 export { e as D1MotionAxis };

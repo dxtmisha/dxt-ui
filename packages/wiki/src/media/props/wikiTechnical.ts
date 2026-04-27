@@ -10,6 +10,30 @@ import {
  * Объект wikiTechnical содержит общие технические свойства для всех компонентов
  */
 export const wikiTechnical: StorybookArgsToList = {
+  area: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Area identifier for the component',
+        ru: 'Идентификатор области для компонента'
+      }
+    },
+    hide: true
+  },
+  areaDefault: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Default area identifier',
+        ru: 'Идентификатор области по умолчанию'
+      }
+    },
+    hide: true
+  },
   captionDecorative: {
     type: StorybookControl.boolean,
     options: {

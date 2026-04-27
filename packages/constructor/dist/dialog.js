@@ -4,7 +4,7 @@ import { t as n } from "./LabelInclude-zPXncFnh.js";
 import { t as r } from "./DescriptionInclude-DyTZveLd.js";
 import { t as i } from "./WindowClassesInclude-DCsJI8Jx.js";
 import { r as a, t as o } from "./ModalDesignAbstract-DjDA86UL.js";
-import { t as s } from "./IconInclude-BXTkdYgR.js";
+import { t as s } from "./IconInclude-DJ0EMHci.js";
 import { computed as c, h as l, readonly as u } from "vue";
 import { getBind as d, toBinds as f } from "@dxtmisha/functional";
 //#region src/constructors/Dialog/Dialog.ts
