@@ -10,6 +10,8 @@ import {
   type PageSlots
 } from '@dxtmisha/constructor/Page'
 
+import { D1Header } from '../Header'
+
 import { defaults, type PageProps } from './props'
 import './styleToken.scss'
 
@@ -38,7 +40,10 @@ const design = new PageDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      header: D1Header
+    }
   }
 )
 

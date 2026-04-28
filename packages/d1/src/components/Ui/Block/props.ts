@@ -1,4 +1,6 @@
 import { type BlockPropsBasic, defaultsBlock } from '@dxtmisha/constructor/Block'
+
+import type { HeaderProps } from '../Header'
 import type { IconProps } from '../Icon'
 
 export const propsValues = {
@@ -14,7 +16,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type BlockProps = BlockPropsBasic<IconProps> & PropsToken
+export type BlockProps = BlockPropsBasic<IconProps, HeaderProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

@@ -92,11 +92,7 @@ export class BlockDesign<
         // :classes [!] System label / Системная метка
         headline: this.getSubClass('headline'),
         header: this.getSubClass('header'),
-        label: this.getSubClass('label'),
         description: this.getSubClass('description'),
-        caption: this.getSubClass('caption'),
-        icon: this.getSubClass('icon'),
-        space: this.getSubClass('space'),
         body: this.getSubClass('body')
         // :classes [!] System label / Системная метка
       }
@@ -159,43 +155,11 @@ export class BlockDesign<
    * Рендеринг заголовка.
    */
   protected readonly renderHeader = (): VNode[] => {
-    if (this.item.isHeader.value) {
-      const children: any[] = [
-        ...this.item.icon.renderIcon(),
-        ...this.item.label.render(),
-        ...this.item.caption.render(),
-        ...this.renderTrailing()
-      ]
-
-      return [
-        h('div', {
-          key: 'header',
-          class: this.classes?.value.header
-        }, children)
-      ]
+    if (this.item.header.is.value) {
+      return this.item.header.render()
     }
 
     return []
-  }
-
-  /**
-   * Trailing rendering.
-   *
-   * Рендеринг правого контента.
-   */
-  protected readonly renderTrailing = (): VNode[] => {
-    const children: any[] = []
-
-    if (this.slots?.trailing) {
-      children.push(h('div', {
-        key: 'spacer',
-        class: this.classes?.value.space
-      }))
-
-      this.initSlot('trailing', children)
-    }
-
-    return children
   }
 
   /**
@@ -233,10 +197,10 @@ export class BlockDesign<
       class: this.classes?.value.main
     }
 
-    if (this.item.label.is.value) {
+    if (this.props.label) {
       Object.assign(
         props,
-        AriaStaticInclude.labelledby(this.item.label.id.value)
+        AriaStaticInclude.labelledby(this.item.labelId)
       )
     }
 

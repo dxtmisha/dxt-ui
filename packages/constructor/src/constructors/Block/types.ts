@@ -2,7 +2,6 @@ import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { DescriptionSlots } from '../../types/descriptionTypes'
 
-import type { IconComponentInclude } from '../Icon'
 import type { HeaderComponentInclude, HeaderSlotsInclude } from '../Header'
 
 /**
@@ -10,8 +9,7 @@ import type { HeaderComponentInclude, HeaderSlotsInclude } from '../Header'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type BlockComponents = IconComponentInclude
-  & HeaderComponentInclude
+export type BlockComponents = HeaderComponentInclude
 
 /**
  * Type describing available events.
@@ -51,11 +49,7 @@ export type BlockClasses = {
   // :classes [!] System label / Системная метка
   headline: string
   header: string
-  label: string
   description: string
-  caption: string
-  icon: string
-  space: string
   body: string
   // :classes [!] System label / Системная метка
 }

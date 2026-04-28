@@ -1,6 +1,6 @@
 {
-  "wikiLanguage": "en",
-  "packagePrefix": "@ui",
+  "wikiLanguage": "ru",
+  "packagePrefix": "@dxtmisha",
   "aiType": "gemini",
   "aiModel": "gemini-3-flash-preview",
   "aiKey": "key"

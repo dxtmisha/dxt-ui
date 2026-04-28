@@ -1,11 +1,8 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
 
-import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
-import { CaptionInclude } from '../../classes/CaptionInclude'
 
-import { IconInclude } from '../Icon'
 import { HeaderInclude } from '../Header'
 
 import type { BlockComponents, BlockEmits, BlockSlots } from './types'
@@ -16,32 +13,22 @@ import type { BlockProps } from './props'
  */
 export class Block {
   /**
-   * Object for working with label/
-   * Объект для работы с меткой
-   */
-  readonly label: LabelInclude
-  /**
    * Object for working with description/
    * Объект для работы с описанием
    */
   readonly description: DescriptionInclude
-  /**
-   * Object for working with caption/
-   * Объект для работы с подписью
-   */
-  readonly caption: CaptionInclude
-
-  /**
-   * Object for working with icon/
-   * Объект для работы с иконкой
-   */
-  readonly icon: IconInclude
 
   /**
    * Object for working with header/
    * Объект для работы с шапкой
    */
   readonly header: HeaderInclude
+
+  /**
+   * Identifier for the label/
+   * Идентификатор для метки
+   */
+  readonly labelId: string = getElementId()
 
   /**
    * Constructor
@@ -54,10 +41,7 @@ export class Block {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
-   * @param constructors.CaptionIncludeConstructor class for working with the caption/ класс для работы с подписью
    * @param constructors.DescriptionIncludeConstructor class for working with the description/ класс для работы с описанием
-   * @param constructors.IconIncludeConstructor class for working with the icon/ класс для работы с иконкой
-   * @param constructors.LabelIncludeConstructor class for working with the label/ класс для работы с меткой
    */
   constructor(
     protected readonly props: BlockProps,
@@ -70,43 +54,24 @@ export class Block {
     protected readonly emits?: ConstrEmit<BlockEmits>,
     constructors?: {
       HeaderIncludeConstructor?: typeof HeaderInclude
-      CaptionIncludeConstructor?: typeof CaptionInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
-      IconIncludeConstructor?: typeof IconInclude
-      LabelIncludeConstructor?: typeof LabelInclude
     }
   ) {
     const {
       HeaderIncludeConstructor = HeaderInclude,
-      CaptionIncludeConstructor = CaptionInclude,
-      DescriptionIncludeConstructor = DescriptionInclude,
-      IconIncludeConstructor = IconInclude,
-      LabelIncludeConstructor = LabelInclude
+      DescriptionIncludeConstructor = DescriptionInclude
     } = constructors ?? {}
-
-    this.label = new LabelIncludeConstructor(
-      props,
-      className,
-      undefined,
-      slots,
-      undefined,
-      undefined,
-      true,
-      undefined,
-      computed(() => this.props.tagHeader || 'h3')
-    )
-    this.caption = new CaptionIncludeConstructor(props, className, slots)
-    this.description = new DescriptionIncludeConstructor(props, className, slots)
-
-    this.icon = new IconIncludeConstructor(props, className, components)
 
     this.header = new HeaderIncludeConstructor(
       props,
       className,
       components,
+      this.slots,
       undefined,
-      this.label.id.value
+      this.labelId
     )
+
+    this.description = new DescriptionIncludeConstructor(props, className, slots)
   }
 
   /**
@@ -118,15 +83,6 @@ export class Block {
       this.props.headline
       || (this.slots && 'headline' in this.slots)
     )
-  })
-
-  /**
-   * Checks if the header exists/
-   * Проверяет, существует ли шапка
-   */
-  readonly isHeader = computed<boolean>(() => {
-    return this.header.is.value
-      || this.description.is.value
   })
 
   /**

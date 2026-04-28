@@ -10,7 +10,7 @@ import {
   type GroupSlots
 } from '@dxtmisha/constructor/Group'
 
-import { D1Icon } from '../Icon'
+import { D1Header } from '../Header'
 
 import { defaults, type GroupProps } from './props'
 import './styleToken.scss'
@@ -42,7 +42,7 @@ const design = new GroupDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
-      icon: D1Icon
+      header: D1Header
     }
   }
 )

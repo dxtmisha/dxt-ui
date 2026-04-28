@@ -10,7 +10,7 @@ import {
   type BlockSlots
 } from '@dxtmisha/constructor/Block'
 
-import { D1Icon } from '../Icon'
+import { D1Header } from '../Header'
 
 import { defaults, type BlockProps } from './props'
 import './styleToken.scss'
@@ -42,7 +42,7 @@ const design = new BlockDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
-      icon: D1Icon
+      header: D1Header
     }
   }
 )

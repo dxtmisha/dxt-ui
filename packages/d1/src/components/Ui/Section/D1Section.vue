@@ -10,6 +10,8 @@ import {
   type SectionSlots
 } from '@dxtmisha/constructor/Section'
 
+import { D1Header } from '../Header'
+
 import { defaults, type SectionProps } from './props'
 import './styleToken.scss'
 
@@ -38,7 +40,10 @@ const design = new SectionDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      header: D1Header
+    }
   }
 )
 

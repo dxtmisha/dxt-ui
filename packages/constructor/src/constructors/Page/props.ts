@@ -1,5 +1,6 @@
 import type { IconPropsBasic } from '../Icon'
 import type { BlockPropsBasic } from '../Block'
+import type { HeaderPropsBasic } from '../Header'
 
 export type PagePropsToken = {
   // :type [!] System label / Системная метка
@@ -7,8 +8,9 @@ export type PagePropsToken = {
 }
 
 export type PagePropsBasic<
-  Icon extends IconPropsBasic = IconPropsBasic
-> = BlockPropsBasic<Icon>
+  Icon extends IconPropsBasic = IconPropsBasic,
+  Header extends HeaderPropsBasic = HeaderPropsBasic
+> = BlockPropsBasic<Icon, Header>
 
 /**
  * Type describing incoming properties.

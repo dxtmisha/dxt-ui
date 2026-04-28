@@ -42,11 +42,7 @@ export type SectionClasses = {
   // :classes [!] System label / Системная метка
   headline: string
   header: string
-  label: string
   description: string
-  caption: string
-  icon: string
-  space: string
   body: string
   // :classes [!] System label / Системная метка
 }
