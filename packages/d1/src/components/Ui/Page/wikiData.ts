@@ -9,6 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'captionDecorative', type: 'boolean | undefined' },
   { name: 'description', type: 'string | number | undefined' },
   { name: 'descriptionId', type: 'string | undefined' },
+  { name: 'headerAttrs', type: 'ConstrBind<HeaderProps> | undefined' },
   { name: 'headline', type: 'string | undefined' },
   { name: 'icon', type: 'IconValue<IconProps> | undefined' },
   { name: 'iconAttrs', type: 'ConstrBind<IconProps> | undefined' },

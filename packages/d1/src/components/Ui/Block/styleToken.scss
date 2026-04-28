@@ -24,18 +24,18 @@
       gap: var(--d1-sys-spacing-x);
     }
     
+    &__description {
+      padding-top: var(--d1-sys-spacing-x);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
     &__label {
       font-family: var(--d1-sys-font-family-basic), sans-serif;
       @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
       font-weight: var(--d1-sys-font-weight-regular);
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
       letter-spacing: var(--d1-sys-letterSpacing-none);
-    }
-    
-    &__description {
-      padding-top: var(--d1-sys-spacing-x);
-      
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     &__caption {

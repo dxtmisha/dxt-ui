@@ -24,14 +24,6 @@
       gap: var(--d1-sys-spacing-x);
     }
     
-    &__label {
-      font-family: var(--d1-sys-font-family-basic), sans-serif;
-      @include ui.fontSize(#{var(--d1-sys-font-size-md)});
-      font-weight: var(--d1-sys-font-weight-medium);
-      @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
-      letter-spacing: var(--d1-sys-letterSpacing-sm);
-    }
-    
     &__description {
       padding-top: var(--d1-sys-spacing-x);
       
@@ -42,6 +34,14 @@
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+      letter-spacing: var(--d1-sys-letterSpacing-sm);
     }
     
     &__caption {

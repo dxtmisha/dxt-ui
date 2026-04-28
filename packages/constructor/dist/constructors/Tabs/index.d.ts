@@ -1,0 +1,6 @@
+export * from './Tabs';
+export * from './TabsDesign';
+export * from './TabsSelected';
+export * from './props';
+export * from './types';
+export * from './basicTypes';
