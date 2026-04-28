@@ -1,10 +1,9 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { LabelAlternativeSlots } from '../../types/labelTypes'
 import type { DescriptionSlots } from '../../types/descriptionTypes'
-import type { CaptionSlots } from '../../types/captionTypes'
 
 import type { IconComponentInclude } from '../Icon'
+import type { HeaderComponentInclude, HeaderSlotsInclude } from '../Header'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -12,6 +11,7 @@ import type { IconComponentInclude } from '../Icon'
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type BlockComponents = IconComponentInclude
+  & HeaderComponentInclude
 
 /**
  * Type describing available events.
@@ -33,10 +33,7 @@ export interface BlockExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface BlockSlots extends LabelAlternativeSlots, DescriptionSlots, CaptionSlots {
-  /** Slot for trailing content/ Слот для правого контента */
-  trailing?(props: any): any
-
+export interface BlockSlots extends HeaderSlotsInclude, DescriptionSlots {
   /** Slot for headline/ Слот для заголовка */
   headline?(props: any): any
 

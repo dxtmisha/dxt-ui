@@ -6,6 +6,7 @@ import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
 
 import { IconInclude } from '../Icon'
+import { HeaderInclude } from '../Header'
 
 import type { BlockComponents, BlockEmits, BlockSlots } from './types'
 import type { BlockProps } from './props'
@@ -37,6 +38,12 @@ export class Block {
   readonly icon: IconInclude
 
   /**
+   * Object for working with header/
+   * Объект для работы с шапкой
+   */
+  readonly header: HeaderInclude
+
+  /**
    * Constructor
    * @param props input data/ входные данные
    * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
@@ -62,6 +69,7 @@ export class Block {
     protected readonly slots?: BlockSlots,
     protected readonly emits?: ConstrEmit<BlockEmits>,
     constructors?: {
+      HeaderIncludeConstructor?: typeof HeaderInclude
       CaptionIncludeConstructor?: typeof CaptionInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
       IconIncludeConstructor?: typeof IconInclude
@@ -69,6 +77,7 @@ export class Block {
     }
   ) {
     const {
+      HeaderIncludeConstructor = HeaderInclude,
       CaptionIncludeConstructor = CaptionInclude,
       DescriptionIncludeConstructor = DescriptionInclude,
       IconIncludeConstructor = IconInclude,
@@ -90,6 +99,14 @@ export class Block {
     this.description = new DescriptionIncludeConstructor(props, className, slots)
 
     this.icon = new IconIncludeConstructor(props, className, components)
+
+    this.header = new HeaderIncludeConstructor(
+      props,
+      className,
+      components,
+      undefined,
+      this.label.id.value
+    )
   }
 
   /**
@@ -108,8 +125,7 @@ export class Block {
    * Проверяет, существует ли шапка
    */
   readonly isHeader = computed<boolean>(() => {
-    return this.label.is.value
-      || this.caption.is.value
+    return this.header.is.value
       || this.description.is.value
   })
 

@@ -1,8 +1,7 @@
-import type { IconPropsBasic, IconPropsInclude } from '../Icon'
+import type { IconPropsBasic } from '../Icon'
 
-import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
-import type { CaptionProps } from '../../types/captionTypes'
+import { type HeaderPropsBasic, type HeaderPropsInclude } from '../Header'
 
 export type BlockPropsToken = {
   // :type [!] System label / Системная метка
@@ -10,18 +9,15 @@ export type BlockPropsToken = {
 }
 
 export type BlockPropsBasic<
-  Icon extends IconPropsBasic = IconPropsBasic
-> = LabelProps
-  & DescriptionProps
-  & CaptionProps
-  & IconPropsInclude<Icon> & {
+  Icon extends IconPropsBasic = IconPropsBasic,
+  Header extends HeaderPropsBasic = HeaderPropsBasic
+> = HeaderPropsInclude<Icon, Header>
+  & DescriptionProps & {
     /** Secondary header or headline text/ Вторичный заголовок или текст хедлайна */
     headline?: string
 
     /** HTML tag for the container/ HTML-тег для контейнера */
     tag?: string
-    /** HTML tag for the header section/ HTML-тег для секции шапки */
-    tagHeader?: string
   }
 
 /**

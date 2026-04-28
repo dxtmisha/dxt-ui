@@ -6,8 +6,4 @@
   &__header {
     @include ui.flexX;
   }
-
-  &__space {
-    @include ui.flexDynamic
-  }
 }
