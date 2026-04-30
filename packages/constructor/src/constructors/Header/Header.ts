@@ -82,7 +82,7 @@ export class Header {
       slots,
       undefined,
       undefined,
-      true,
+      undefined,
       undefined,
       computed(() => String(this.props.tag))
     )

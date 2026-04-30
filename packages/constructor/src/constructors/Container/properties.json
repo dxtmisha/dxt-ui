@@ -1,0 +1,20 @@
+{
+  "paddingX": {
+    "_type": "var"
+  },
+  "width": {
+    "_type": "var"
+  },
+  "~align": {
+    "left": {
+      "margin-right": "auto"
+    },
+    "center": {
+      "marginX": "auto"
+    },
+    "right": {
+      "margin-left": "auto"
+    },
+    "_default": "center"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "main": "{d.container}",
+  "paddingX": "{?layout.marginX}",
+  "width": "{?layout.width}"
+}

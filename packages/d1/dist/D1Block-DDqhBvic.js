@@ -22,6 +22,7 @@ var l = { ...c }, u = /* @__PURE__ */ r({
 		headerAttrs: {},
 		description: {},
 		descriptionId: {},
+		area: {},
 		headline: {},
 		tag: {}
 	}, l),

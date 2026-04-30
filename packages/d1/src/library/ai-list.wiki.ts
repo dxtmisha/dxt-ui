@@ -15,6 +15,7 @@ import D1Cell from '../../src/components/Ui/Cell/D1CellAiWiki.vue'
 import D1Checkbox from '../../src/components/Ui/Checkbox/D1CheckboxAiWiki.vue'
 import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
 import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue'
+import D1Container from '../../src/components/Ui/Container/D1ContainerAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1Dummy from '../../src/components/Ui/Dummy/D1DummyAiWiki.vue'
 import D1Field from '../../src/components/Ui/Field/D1FieldAiWiki.vue'
@@ -71,6 +72,7 @@ export const aiList: any[] = [
   D1Checkbox,
   D1Chip,
   D1ChipGroup,
+  D1Container,
   D1Dialog,
   D1Dummy,
   D1Field,

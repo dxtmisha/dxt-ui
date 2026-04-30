@@ -1,0 +1,35 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Container;
+
+@include ui.initDesignBasic('d1.container') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Container.mixinContainer;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-container-paddingX: var(--d1-layout-marginX);
+    --d1-container-width: var(--d1-layout-width);
+    
+    &--align {
+      &--left {
+        @include ui.marginRight(#{auto});
+      }
+      
+      &--center {
+        @include ui.marginX(#{auto});
+      }
+      
+      &--right {
+        @include ui.marginLeft(#{auto});
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

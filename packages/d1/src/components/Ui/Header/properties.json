@@ -1,5 +1,8 @@
 {
   "main": "{d.header}",
+  "#caption": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
   "~tag": {
     "~h1": {
       "#label": {

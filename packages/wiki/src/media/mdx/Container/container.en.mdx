@@ -1,0 +1,41 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+Container is a base layout component used to constrain content width and control horizontal spacing.
+By default, it helps keep a readable content width and ensures consistent layout rhythm across screens.
+
+The component supports alignment via `align` (`left`, `center`, `right`) and works with `width` and `marginX` design tokens.
+You can also use the `area` prop to integrate with area context.
+
+**Key Features:**
+
+- Constrain content width with the `width` token
+- Manage horizontal spacing via `marginX`
+- Container alignment options: `left`, `center`, `right`
+- `default` slot support for arbitrary content
+- `area` prop support for context-based placement
+
+**Typical Use Cases:**
+
+- Outer wrapper for page sections
+- Limiting text and form width
+- Aligning content inside grid and block structures
+- Base container for reusable layout blocks
+
+<Source
+    code={`
+<template>
+  <Container
+    align="center"
+    area="container"
+  >
+    <p>Content inside a width-constrained container.</p>
+  </Container>
+</template>
+  `}
+    language="html"
+/>
+
+> Use Container as a foundational layout layer, while semantic sectioning is handled by outer components (`Section`, `Group`, `Page`).
+

@@ -35,18 +35,6 @@
       
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
-    
-    &__label {
-      font-family: var(--d1-sys-font-family-basic), sans-serif;
-      @include ui.fontSize(#{var(--d1-sys-font-size-headlineMedium)});
-      font-weight: var(--d1-sys-font-weight-regular);
-      @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineMedium)});
-      letter-spacing: var(--d1-sys-letterSpacing-none);
-    }
-    
-    &__caption {
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
-    }
   }
   // :style [!] System label / Системная метка
 

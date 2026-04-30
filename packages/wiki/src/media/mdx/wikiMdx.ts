@@ -20,6 +20,7 @@ import { wikiMdxCell } from './Cell/wikiMdxCell'
 import { wikiMdxCheckbox } from './Checkbox/wikiMdxCheckbox'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
 import { wikiMdxChipGroup } from './ChipGroup/wikiMdxChipGroup'
+import { wikiMdxContainer } from './Container/wikiMdxContainer'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
 import { wikiMdxDummy } from './Dummy/wikiMdxDummy'
 import { wikiMdxField } from './Field/wikiMdxField'
@@ -82,6 +83,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxCheckbox,
   wikiMdxChip,
   wikiMdxChipGroup,
+  wikiMdxContainer,
   wikiMdxDialog,
   wikiMdxDummy,
   wikiMdxField,

@@ -14,6 +14,7 @@ import { wikiDescriptionsCell } from './wikiDescriptionsCell'
 import { wikiDescriptionsCheckbox } from './wikiDescriptionsCheckbox'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsChipGroup } from './wikiDescriptionsChipGroup'
+import { wikiDescriptionsContainer } from './wikiDescriptionsContainer'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
 import { wikiDescriptionsDummy } from './wikiDescriptionsDummy'
 import { wikiDescriptionsField } from './wikiDescriptionsField'
@@ -70,6 +71,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsCheckbox,
   wikiDescriptionsChip,
   wikiDescriptionsChipGroup,
+  wikiDescriptionsContainer,
   wikiDescriptionsDialog,
   wikiDescriptionsDummy,
   wikiDescriptionsField,

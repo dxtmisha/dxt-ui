@@ -6495,12 +6495,6 @@
         name: 'd1-system',
         type: 'component',
         value: (
-          'layoutWidth':(
-            index: 'layoutWidth',
-            name: '--d1-layout-width',
-            type: 'var',
-            value: 'auto',
-          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -6512,6 +6506,12 @@
             name: '--d1-layout-marginY',
             type: 'var',
             value: 'var(--d1-layout-paddingY)',
+          ),
+          'layoutWidth':(
+            index: 'layoutWidth',
+            name: '--d1-layout-width',
+            type: 'var',
+            value: 'auto',
           ),
           'fontFamily':(
             index: 'fontFamily',
@@ -6635,17 +6635,17 @@
             name: '(min-width: 1280px)',
             type: 'media',
             value: (
-              'layoutWidth':(
-                index: 'layoutWidth',
-                name: '--d1-layout-width',
-                type: 'var',
-                value: 'var(--d1-ref-screen-xl)',
-              ),
               'layoutMarginX':(
                 index: 'layoutMarginX',
                 name: '--d1-layout-marginX',
                 type: 'var',
                 value: 0px,
+              ),
+              'layoutWidth':(
+                index: 'layoutWidth',
+                name: '--d1-layout-width',
+                type: 'var',
+                value: 'var(--d1-ref-screen-xl)',
               ),
             ),
           ),
@@ -6656,12 +6656,6 @@
         name: 'd1-main',
         type: 'component',
         value: (
-          'layoutWidth':(
-            index: 'layoutWidth',
-            name: '--d1-layout-width',
-            type: 'var',
-            value: 'auto',
-          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -6673,6 +6667,12 @@
             name: '--d1-layout-marginY',
             type: 'var',
             value: 'var(--d1-layout-paddingY)',
+          ),
+          'layoutWidth':(
+            index: 'layoutWidth',
+            name: '--d1-layout-width',
+            type: 'var',
+            value: 'auto',
           ),
           'fontFamily':(
             index: 'fontFamily',
@@ -6802,17 +6802,17 @@
             name: '(min-width: 1280px)',
             type: 'media',
             value: (
-              'layoutWidth':(
-                index: 'layoutWidth',
-                name: '--d1-layout-width',
-                type: 'var',
-                value: 'var(--d1-ref-screen-xl)',
-              ),
               'layoutMarginX':(
                 index: 'layoutMarginX',
                 name: '--d1-layout-marginX',
                 type: 'var',
                 value: 0px,
+              ),
+              'layoutWidth':(
+                index: 'layoutWidth',
+                name: '--d1-layout-width',
+                type: 'var',
+                value: 'var(--d1-ref-screen-xl)',
               ),
             ),
           ),
@@ -9204,12 +9204,6 @@
         name: 'd1-layout',
         type: 'component',
         value: (
-          'layoutWidth':(
-            index: 'layoutWidth',
-            name: '--d1-layout-width',
-            type: 'var',
-            value: 'auto',
-          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -9221,6 +9215,12 @@
             name: '--d1-layout-marginY',
             type: 'var',
             value: 'var(--d1-layout-paddingY)',
+          ),
+          'layoutWidth':(
+            index: 'layoutWidth',
+            name: '--d1-layout-width',
+            type: 'var',
+            value: 'auto',
           ),
           'mediaMaxMd':(
             index: 'mediaMaxMd',
@@ -9302,17 +9302,17 @@
             name: '(min-width: 1280px)',
             type: 'media',
             value: (
-              'layoutWidth':(
-                index: 'layoutWidth',
-                name: '--d1-layout-width',
-                type: 'var',
-                value: 'var(--d1-ref-screen-xl)',
-              ),
               'layoutMarginX':(
                 index: 'layoutMarginX',
                 name: '--d1-layout-marginX',
                 type: 'var',
                 value: 0px,
+              ),
+              'layoutWidth':(
+                index: 'layoutWidth',
+                name: '--d1-layout-width',
+                type: 'var',
+                value: 'var(--d1-ref-screen-xl)',
               ),
             ),
           ),
@@ -12187,6 +12187,11 @@
         name: 'd1-chipGroup',
         type: 'component',
       ),
+      'container':(
+        index: 'container',
+        name: 'd1-container',
+        type: 'component',
+      ),
       'dialog':(
         index: 'dialog',
         name: 'd1-dialog',
@@ -12718,6 +12723,11 @@
       'chipGroup':(
         index: 'chipGroup',
         name: 'd-chipGroup',
+        type: 'component',
+      ),
+      'container':(
+        index: 'container',
+        name: 'd-container',
         type: 'component',
       ),
       'dialog':(

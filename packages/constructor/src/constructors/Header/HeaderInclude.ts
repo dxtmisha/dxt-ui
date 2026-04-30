@@ -51,6 +51,14 @@ export class HeaderInclude<
       || this.props.caption
       || this.props.icon
       || this.props.headerAttrs
+      || (
+        this.slots
+        && (
+          this.slots.label
+          || this.slots.caption
+          || this.slots.trailing
+        )
+      )
     ))
   })
 
@@ -60,8 +68,22 @@ export class HeaderInclude<
       getRef(this.extra),
       this.props.headerAttrs,
       {
-        class: `${this.className}__header`,
-        labelId: this.labelId
+        tag: this.props.tagHeader,
+
+        label: this.props.label,
+        labelId: this.labelId,
+
+        caption: this.props.caption,
+        captionDecorative: this.props.captionDecorative,
+
+        icon: this.props.icon,
+        iconTurn: this.props.iconTurn,
+        iconHide: this.props.iconHide,
+        iconDir: this.props.iconDir,
+        iconPalette: this.props.iconPalette,
+        iconAttrs: this.props.iconAttrs,
+
+        class: `${this.className}__header`
       }
     )
   })
@@ -72,7 +94,7 @@ export class HeaderInclude<
    */
   readonly render = (): VNode[] => {
     if (this.components) {
-      const children: Record<string, any> = []
+      const children: Record<string, any> = {}
 
       if (this.slots) {
         if ('label' in this.slots) {

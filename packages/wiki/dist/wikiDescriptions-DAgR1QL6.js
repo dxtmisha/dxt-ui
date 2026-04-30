@@ -778,6 +778,38 @@ var e = [
 		ai: { description: "\nWrapper component for managing collections of Chip elements based on an array of data. Streamlines the creation of filter sets, choice groups, and tag lists by automating iteration and selection logic.\nFeatures support for single and multiple selection modes, shared chip attributes (via chipAttrs), and icon visibility control. Includes built-in data binding for selected values and @click event propagation.\nControlled via the list prop for data and v-model:selected for state. Use for dynamic filtering interfaces, selecting multiple categories, or building interactive tag lists from API data.\n    " }
 	},
 	{
+		name: "Container",
+		description: {
+			en: "A lightweight layout container for centering and constraining content width with configurable horizontal alignment.",
+			ru: "Легковесный компонент-контейнер для центрирования и ограничения ширины контента с настраиваемым горизонтальным выравниванием."
+		},
+		possibilities: {
+			en: [
+				"horizontal alignment with align: left | center | right",
+				"configurable width and horizontal margins via design tokens",
+				"default slot for wrapping arbitrary content",
+				"area context support through the area prop"
+			],
+			ru: [
+				"горизонтальное выравнивание через align: left | center | right",
+				"настройка ширины и горизонтальных отступов через дизайн-токены",
+				"слот default для оборачивания произвольного контента",
+				"поддержка контекста области через свойство area"
+			]
+		},
+		import: [],
+		render: "\n    <DesignComponent v-bind=\"args\">\n      <p>\n        Container helps keep content readable by limiting line length and controlling side spacing.\n      </p>\n      <p>\n        Use it as a base layout wrapper for page sections, forms, and content blocks.\n      </p>\n    </DesignComponent>\n  ",
+		stories: [],
+		documentation: {
+			body: "\n<StorybookDescriptions componentName={'Container'} type={'container'}/>\n    ",
+			slots: "\n<StorybookDescriptions componentName={'Slot'} type={'default'}/>\n    "
+		},
+		ai: {
+			render: "\n<div :class=\"classDemo.item\">\n  <Container v-bind=\"args\">\n    Main content goes here.\n  </Container>\n</div>\n    ",
+			description: "\nLayout wrapper used to constrain content width and manage horizontal spacing in a predictable way.\nSupports alignment options (left, center, right), width tokens, and side margins so page content keeps consistent rhythm across breakpoints.\nUse as a foundational container around sections, forms, and text-heavy blocks to improve readability and layout consistency.\n    "
+		}
+	},
+	{
 		name: "Dialog",
 		description: {
 			en: "Modal dialog component for displaying alerts, confirmations, and informational messages with icon and action buttons",

@@ -87,6 +87,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  headerAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the Header component',
+        ru: 'Дополнительные атрибуты для компонента Header'
+      }
+    },
+    hide: true
+  },
   horizontalScrollAttrs: {
     type: StorybookControl.object,
     options: {

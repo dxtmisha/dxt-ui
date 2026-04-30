@@ -25,6 +25,7 @@ export type PageProps = PagePropsBasic & PagePropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsPage = {
+  area: 'page',
   tag: 'main',
   tagHeader: 'h1',
   ...{

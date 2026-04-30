@@ -5343,11 +5343,6 @@
         "name": "d1-system",
         "type": "component",
         "value": {
-          "layoutWidth": {
-            "name": "--d1-layout-width",
-            "type": "var",
-            "value": "auto"
-          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5357,6 +5352,11 @@
             "name": "--d1-layout-marginY",
             "type": "var",
             "value": "{layout.paddingY}"
+          },
+          "layoutWidth": {
+            "name": "--d1-layout-width",
+            "type": "var",
+            "value": "auto"
           },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
@@ -5425,15 +5425,15 @@
             "name": "(min-width: 1280px)",
             "type": "media",
             "value": {
-              "layoutWidth": {
-                "name": "--d1-layout-width",
-                "type": "var",
-                "value": "{ref.screen.xl}"
-              },
               "layoutMarginX": {
                 "name": "--d1-layout-marginX",
                 "type": "var",
                 "value": "0px"
+              },
+              "layoutWidth": {
+                "name": "--d1-layout-width",
+                "type": "var",
+                "value": "{ref.screen.xl}"
               }
             }
           }
@@ -5443,11 +5443,6 @@
         "name": "d1-main",
         "type": "component",
         "value": {
-          "layoutWidth": {
-            "name": "--d1-layout-width",
-            "type": "var",
-            "value": "auto"
-          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5457,6 +5452,11 @@
             "name": "--d1-layout-marginY",
             "type": "var",
             "value": "{layout.paddingY}"
+          },
+          "layoutWidth": {
+            "name": "--d1-layout-width",
+            "type": "var",
+            "value": "auto"
           },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
@@ -5525,15 +5525,15 @@
             "name": "(min-width: 1280px)",
             "type": "media",
             "value": {
-              "layoutWidth": {
-                "name": "--d1-layout-width",
-                "type": "var",
-                "value": "{ref.screen.xl}"
-              },
               "layoutMarginX": {
                 "name": "--d1-layout-marginX",
                 "type": "var",
                 "value": "0px"
+              },
+              "layoutWidth": {
+                "name": "--d1-layout-width",
+                "type": "var",
+                "value": "{ref.screen.xl}"
               }
             }
           }
@@ -5543,11 +5543,6 @@
         "name": "d1-layout",
         "type": "component",
         "value": {
-          "layoutWidth": {
-            "name": "--d1-layout-width",
-            "type": "var",
-            "value": "auto"
-          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5557,6 +5552,11 @@
             "name": "--d1-layout-marginY",
             "type": "var",
             "value": "{layout.paddingY}"
+          },
+          "layoutWidth": {
+            "name": "--d1-layout-width",
+            "type": "var",
+            "value": "auto"
           },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
@@ -5625,15 +5625,15 @@
             "name": "(min-width: 1280px)",
             "type": "media",
             "value": {
-              "layoutWidth": {
-                "name": "--d1-layout-width",
-                "type": "var",
-                "value": "{ref.screen.xl}"
-              },
               "layoutMarginX": {
                 "name": "--d1-layout-marginX",
                 "type": "var",
                 "value": "0px"
+              },
+              "layoutWidth": {
+                "name": "--d1-layout-width",
+                "type": "var",
+                "value": "{ref.screen.xl}"
               }
             }
           }
@@ -8646,6 +8646,22 @@
                 }
               }
             }
+          }
+        }
+      },
+      "container": {
+        "name": "d1-container",
+        "type": "component",
+        "value": {
+          "paddingX": {
+            "name": "--d1-container-paddingX",
+            "type": "var",
+            "value": "{?layout.marginX}"
+          },
+          "width": {
+            "name": "--d1-container-width",
+            "type": "var",
+            "value": "{?layout.width}"
           }
         }
       },

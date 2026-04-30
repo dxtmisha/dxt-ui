@@ -1,4 +1,4 @@
-import { t as e } from "./D1Section-mdImcpAN.js";
+import { t as e } from "./D1Section-CDMltX_J.js";
 //#region src/components/Ui/Section/index.ts
 var t = e;
 //#endregion

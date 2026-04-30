@@ -11,6 +11,10 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    &__caption {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
     &--tag {
       &--h1 {
         & .d1-header__label {

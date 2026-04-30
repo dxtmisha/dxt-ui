@@ -1,5 +1,6 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
+import { AreaInclude } from '../../classes/AreaInclude';
 import { DescriptionInclude } from '../../classes/DescriptionInclude';
 import { HeaderInclude } from '../Header';
 import { BlockComponents, BlockEmits, BlockSlots } from './types';
@@ -27,6 +28,11 @@ export declare class Block {
      */
     readonly header: HeaderInclude;
     /**
+     * Object for working with area value/
+     * Объект для работы со значением области
+     */
+    readonly area: AreaInclude;
+    /**
      * Identifier for the label/
      * Идентификатор для метки
      */
@@ -42,9 +48,11 @@ export declare class Block {
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      * @param constructors object with classes/ объект с классами
+     * @param constructors.AreaIncludeConstructor class for working with area value/ класс для работы со значением области
      * @param constructors.DescriptionIncludeConstructor class for working with the description/ класс для работы с описанием
      */
     constructor(props: BlockProps, refs: ToRefs<BlockProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BlockComponents, BlockProps> | undefined, slots?: BlockSlots | undefined, emits?: ConstrEmit<BlockEmits> | undefined, constructors?: {
+        AreaIncludeConstructor?: typeof AreaInclude;
         HeaderIncludeConstructor?: typeof HeaderInclude;
         DescriptionIncludeConstructor?: typeof DescriptionInclude;
     });

@@ -1,11 +1,11 @@
 import { t as e } from "./Header-DYJbS1cJ.js";
 import { computed as t, createBlock as n, defineComponent as r, mergeDefaults as i, openBlock as a, unref as o } from "vue";
 import "@dxtmisha/functional";
-import { SectionDesign as s, defaultsSection as c } from "@dxtmisha/constructor/Section";
-//#region src/components/Ui/Section/props.ts
+import { PageDesign as s, defaultsPage as c } from "@dxtmisha/constructor/Page";
+//#region src/components/Ui/Page/props.ts
 var l = { ...c }, u = /* @__PURE__ */ r({
-	name: "D1Section",
-	__name: "D1Section",
+	name: "D1Page",
+	__name: "D1Page",
 	props: /* @__PURE__ */ i({
 		label: {},
 		labelId: {},
@@ -22,13 +22,14 @@ var l = { ...c }, u = /* @__PURE__ */ r({
 		headerAttrs: {},
 		description: {},
 		descriptionId: {},
+		area: {},
 		headline: {},
 		tag: {}
 	}, l),
 	setup(r, { expose: i, emit: c }) {
-		let l = new s("d1.section", r, {
+		let l = new s("d1.page", r, {
 			emits: c,
-			classes: t(() => ({ main: { "d1-section": !0 } })),
+			classes: t(() => ({ main: { "d1-page": !0 } })),
 			styles: t(() => ({})),
 			components: { header: e }
 		}), u = l.render();

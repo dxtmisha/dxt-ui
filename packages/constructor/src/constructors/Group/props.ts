@@ -25,6 +25,7 @@ export type GroupProps = GroupPropsBasic & GroupPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsGroup = {
+  area: 'group',
   tag: 'div',
   tagHeader: 'h4',
   ...{

@@ -1,6 +1,7 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
 
+import { AreaInclude } from '../../classes/AreaInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 
 import { HeaderInclude } from '../Header'
@@ -25,6 +26,12 @@ export class Block {
   readonly header: HeaderInclude
 
   /**
+   * Object for working with area value/
+   * Объект для работы со значением области
+   */
+  readonly area: AreaInclude
+
+  /**
    * Identifier for the label/
    * Идентификатор для метки
    */
@@ -41,6 +48,7 @@ export class Block {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
+   * @param constructors.AreaIncludeConstructor class for working with area value/ класс для работы со значением области
    * @param constructors.DescriptionIncludeConstructor class for working with the description/ класс для работы с описанием
    */
   constructor(
@@ -53,11 +61,13 @@ export class Block {
     protected readonly slots?: BlockSlots,
     protected readonly emits?: ConstrEmit<BlockEmits>,
     constructors?: {
+      AreaIncludeConstructor?: typeof AreaInclude
       HeaderIncludeConstructor?: typeof HeaderInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
     }
   ) {
     const {
+      AreaIncludeConstructor = AreaInclude,
       HeaderIncludeConstructor = HeaderInclude,
       DescriptionIncludeConstructor = DescriptionInclude
     } = constructors ?? {}
@@ -72,6 +82,7 @@ export class Block {
     )
 
     this.description = new DescriptionIncludeConstructor(props, className, slots)
+    this.area = new AreaIncludeConstructor(props)
   }
 
   /**

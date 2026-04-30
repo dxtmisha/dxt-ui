@@ -9,12 +9,6 @@
   "#header": {
     "gap": "{sys.spacing.x}"
   },
-  "#label": {
-    "link|font": "{font.titleMedium}"
-  },
-  "#caption": {
-    "color-opacity": "{sys.opacity.surface.medium}"
-  },
   "#description": {
     "padding-top": "{sys.spacing.x}",
     "link|font": "{font.bodyMedium}",

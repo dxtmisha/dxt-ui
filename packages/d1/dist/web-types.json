@@ -1472,11 +1472,28 @@
               }
             },
             {
+              "name": "header-attrs",
+              "description": "Additional attributes for the Header component",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<HeaderProps> | undefined"
+              }
+            },
+            {
               "name": "icon-attrs",
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
                 "type": "ConstrBind<IconProps> | undefined"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "block",
+              "value": {
+                "kind": "expression",
+                "type": "string"
               }
             },
             {
@@ -4947,11 +4964,28 @@
               }
             },
             {
+              "name": "header-attrs",
+              "description": "Additional attributes for the Header component",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<HeaderProps> | undefined"
+              }
+            },
+            {
               "name": "icon-attrs",
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
                 "type": "ConstrBind<IconProps> | undefined"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "group",
+              "value": {
+                "kind": "expression",
+                "type": "string"
               }
             },
             {
@@ -8937,11 +8971,28 @@
               }
             },
             {
+              "name": "header-attrs",
+              "description": "Additional attributes for the Header component",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<HeaderProps> | undefined"
+              }
+            },
+            {
               "name": "icon-attrs",
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
                 "type": "ConstrBind<IconProps> | undefined"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "page",
+              "value": {
+                "kind": "expression",
+                "type": "string"
               }
             },
             {
@@ -9454,11 +9505,28 @@
               }
             },
             {
+              "name": "header-attrs",
+              "description": "Additional attributes for the Header component",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<HeaderProps> | undefined"
+              }
+            },
+            {
               "name": "icon-attrs",
               "description": "Sets additional attributes for the icon element",
               "value": {
                 "kind": "expression",
                 "type": "ConstrBind<IconProps> | undefined"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "section",
+              "value": {
+                "kind": "expression",
+                "type": "string"
               }
             },
             {

@@ -275,6 +275,10 @@
     "./D1Header": {
       "types": "./dist/library/D1Header.d.ts",
       "default": "./dist/D1Header.js"
+    },
+    "./D1Container": {
+      "types": "./dist/library/D1Container.d.ts",
+      "default": "./dist/D1Container.js"
     }
   },
   "buildOptions": {

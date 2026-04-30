@@ -1,26 +1,28 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
 import { t as n } from "./DescriptionInclude-DyTZveLd.js";
-import { t as r } from "./HeaderInclude-RVTPdRyM.js";
-import { computed as i, h as a } from "vue";
-import { DesignConstructorAbstract as o, getElementId as s } from "@dxtmisha/functional";
+import { t as r } from "./AreaInclude-CERIFYUf.js";
+import { t as i } from "./HeaderInclude-BzaYJWyo.js";
+import { computed as a, h as o } from "vue";
+import { DesignConstructorAbstract as s, getElementId as c } from "@dxtmisha/functional";
 //#region src/constructors/Block/Block.ts
-var c = class {
-	constructor(e, a, o, c, l, u, d, f, p) {
-		t(this, "description", void 0), t(this, "header", void 0), t(this, "labelId", s()), t(this, "isHeadline", i(() => !!(this.props.headline || this.slots && "headline" in this.slots))), t(this, "tag", i(() => this.props.tag || "div")), this.props = e, this.refs = a, this.element = o, this.classDesign = c, this.className = l, this.components = u, this.slots = d, this.emits = f;
-		let { HeaderIncludeConstructor: m = r, DescriptionIncludeConstructor: h = n } = p == null ? {} : p;
-		this.header = new m(e, l, u, this.slots, void 0, this.labelId), this.description = new h(e, l, d);
+var l = class {
+	constructor(e, o, s, l, u, d, f, p, m) {
+		t(this, "description", void 0), t(this, "header", void 0), t(this, "area", void 0), t(this, "labelId", c()), t(this, "isHeadline", a(() => !!(this.props.headline || this.slots && "headline" in this.slots))), t(this, "tag", a(() => this.props.tag || "div")), this.props = e, this.refs = o, this.element = s, this.classDesign = l, this.className = u, this.components = d, this.slots = f, this.emits = p;
+		let { AreaIncludeConstructor: h = r, HeaderIncludeConstructor: g = i, DescriptionIncludeConstructor: _ = n } = m == null ? {} : m;
+		this.header = new g(e, u, d, this.slots, void 0, this.labelId), this.description = new _(e, u, f), this.area = new h(e);
 	}
-}, l = {
+}, u = {
+	area: "block",
 	tag: "div",
 	tagHeader: "h3"
-}, u = class extends o {
-	constructor(e, n, r, i = c) {
+}, d = class extends s {
+	constructor(e, n, r, i = l) {
 		super(e, n, r), t(this, "item", void 0), t(this, "renderHeadline", () => {
 			if (this.item.isHeadline.value) {
 				var e;
 				let t = [];
-				return this.props.headline && t.push(this.props.headline), this.initSlot("headline", t), [a("div", {
+				return this.props.headline && t.push(this.props.headline), this.initSlot("headline", t), [o("div", {
 					key: "headline",
 					class: (e = this.classes) == null ? void 0 : e.value.headline
 				}, t)];
@@ -34,7 +36,7 @@ var c = class {
 			];
 			if (e.length > 0) {
 				var t;
-				return [a("div", {
+				return [o("div", {
 					key: "body",
 					class: (t = this.classes) == null ? void 0 : t.value.body
 				}, e)];
@@ -59,7 +61,7 @@ var c = class {
 	}
 	initRender() {
 		let e = [...this.renderBody()];
-		return this.initSlot("default", e), a(this.item.tag.value, this.getProps(), e);
+		return this.initSlot("default", e), o(this.item.tag.value, this.getProps(), e);
 	}
 	getProps() {
 		var t;
@@ -71,4 +73,4 @@ var c = class {
 	}
 };
 //#endregion
-export { l as n, c as r, u as t };
+export { u as n, l as r, d as t };

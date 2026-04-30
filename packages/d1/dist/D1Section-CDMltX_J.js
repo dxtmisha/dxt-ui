@@ -1,11 +1,11 @@
 import { t as e } from "./Header-DYJbS1cJ.js";
 import { computed as t, createBlock as n, defineComponent as r, mergeDefaults as i, openBlock as a, unref as o } from "vue";
 import "@dxtmisha/functional";
-import { GroupDesign as s, defaultsGroup as c } from "@dxtmisha/constructor/Group";
-//#region src/components/Ui/Group/props.ts
+import { SectionDesign as s, defaultsSection as c } from "@dxtmisha/constructor/Section";
+//#region src/components/Ui/Section/props.ts
 var l = { ...c }, u = /* @__PURE__ */ r({
-	name: "D1Group",
-	__name: "D1Group",
+	name: "D1Section",
+	__name: "D1Section",
 	props: /* @__PURE__ */ i({
 		label: {},
 		labelId: {},
@@ -22,13 +22,14 @@ var l = { ...c }, u = /* @__PURE__ */ r({
 		headerAttrs: {},
 		description: {},
 		descriptionId: {},
+		area: {},
 		headline: {},
 		tag: {}
 	}, l),
 	setup(r, { expose: i, emit: c }) {
-		let l = new s("d1.group", r, {
+		let l = new s("d1.section", r, {
 			emits: c,
-			classes: t(() => ({ main: { "d1-group": !0 } })),
+			classes: t(() => ({ main: { "d1-section": !0 } })),
 			styles: t(() => ({})),
 			components: { header: e }
 		}), u = l.render();

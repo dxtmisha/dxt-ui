@@ -15,6 +15,7 @@ export type PageProps = PagePropsBasic & PagePropsToken;
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsPage: {
+    area: string;
     tag: string;
     tagHeader: string;
 };

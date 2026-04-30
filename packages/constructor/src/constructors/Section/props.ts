@@ -25,6 +25,7 @@ export type SectionProps = SectionPropsBasic & SectionPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsSection = {
+  area: 'section',
   tag: 'section',
   tagHeader: 'h2',
   ...{

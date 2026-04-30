@@ -1,14 +1,14 @@
 {
-  "=?layout-width": {
-    "value": "auto",
-    "_type": "var"
-  },
   "=?layout-marginX": {
     "value": "{layout.paddingX}",
     "_type": "var"
   },
   "=?layout-marginY": {
     "value": "{layout.paddingY}",
+    "_type": "var"
+  },
+  "=?layout-width": {
+    "value": "auto",
     "_type": "var"
   },
   "media-max|md": {
@@ -54,12 +54,12 @@
     }
   },
   "media|xl": {
-    "=?layout-width": {
-      "value": "{ref.screen.xl}",
-      "_type": "var"
-    },
     "=?layout-marginX": {
       "value": "0px",
+      "_type": "var"
+    },
+    "=?layout-width": {
+      "value": "{ref.screen.xl}",
       "_type": "var"
     }
   }

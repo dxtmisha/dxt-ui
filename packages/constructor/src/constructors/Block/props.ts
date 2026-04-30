@@ -1,5 +1,6 @@
 import type { IconPropsBasic } from '../Icon'
 
+import type { AreaProps } from '../../types/areaTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import { type HeaderPropsBasic, type HeaderPropsInclude } from '../Header'
 
@@ -12,7 +13,8 @@ export type BlockPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Header extends HeaderPropsBasic = HeaderPropsBasic
 > = HeaderPropsInclude<Icon, Header>
-  & DescriptionProps & {
+  & DescriptionProps
+  & AreaProps & {
     /** Secondary header or headline text/ Вторичный заголовок или текст хедлайна */
     headline?: string
 
@@ -33,6 +35,7 @@ export type BlockProps = BlockPropsBasic & BlockPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsBlock = {
+  area: 'block',
   tag: 'div',
   tagHeader: 'h3',
   ...{
