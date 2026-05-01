@@ -1,9 +1,1 @@
 @use '@dxtmisha/d1/ui-properties' as ui;
-
-body {
-    @include ui.marginX(ui.v('d1.layout.marginX'));
-}
-
-#app {
-    max-width: ;
-}

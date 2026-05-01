@@ -1,4 +1,4 @@
-import { t as e } from "./D1Section-CDMltX_J.js";
+import { t as e } from "./D1Section-C5qKxaS9.js";
 //#region src/components/Ui/Section/index.ts
 var t = e;
 //#endregion

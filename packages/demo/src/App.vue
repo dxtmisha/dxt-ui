@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { provide } from 'vue'
-provide('test', 'ok')
 </script>
 
 <template>
-  <div class="app-demo">
+  <D1Container class="demo-app">
     <RouterView/>
-  </div>
+  </D1Container>
 </template>
 
 <style lang="scss"></style>

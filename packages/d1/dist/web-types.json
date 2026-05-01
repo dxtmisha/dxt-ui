@@ -3308,6 +3308,46 @@
           ]
         },
         {
+          "name": "D1Container",
+          "description": "A lightweight layout container for centering and constraining content width with configurable horizontal alignment.",
+          "source": {
+            "module": "@dxtmisha/d1/D1Container",
+            "symbol": "D1Container"
+          },
+          "attributes": [
+            {
+              "name": "align",
+              "description": "General alignment depending on component semantics",
+              "default": "center",
+              "value": {
+                "kind": "expression",
+                "type": "left | center | right"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "container",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            }
+          ],
+          "events": []
+        },
+        {
           "name": "D1Dialog",
           "description": "Modal dialog component for displaying alerts, confirmations, and informational messages with icon and action buttons",
           "source": {

@@ -12,6 +12,7 @@ import { default as _D1Cell } from '../components/Ui/Cell/D1Cell.vue';
 import { default as _D1Checkbox } from '../components/Ui/Checkbox/D1Checkbox.vue';
 import { default as _D1Chip } from '../components/Ui/Chip/D1Chip.vue';
 import { default as _D1ChipGroup } from '../components/Ui/ChipGroup/D1ChipGroup.vue';
+import { default as _D1Container } from '../components/Ui/Container/D1Container.vue';
 import { default as _D1Dialog } from '../components/Ui/Dialog/D1Dialog.vue';
 import { default as _D1Dummy } from '../components/Ui/Dummy/D1Dummy.vue';
 import { default as _D1Field } from '../components/Ui/Field/D1Field.vue';
@@ -68,6 +69,7 @@ declare module '@vue/runtime-core' {
         D1Checkbox: typeof _D1Checkbox;
         D1Chip: typeof _D1Chip;
         D1ChipGroup: typeof _D1ChipGroup;
+        D1Container: typeof _D1Container;
         D1Dialog: typeof _D1Dialog;
         D1Dummy: typeof _D1Dummy;
         D1Field: typeof _D1Field;
