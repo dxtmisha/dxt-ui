@@ -13,12 +13,12 @@ export type WindowPropsToken = {
   width?: string | 'auto' | 'max' | 'custom'
   height?: string | 'auto' | 'max' | 'custom'
   hide?: boolean
-  axis?: 'x' | 'y' | 'on'
-  imagePosition?: 'top' | 'left'
+  axis?: string | 'x' | 'y' | 'on'
+  imagePosition?: string | 'top' | 'left'
   dense?: boolean
-  alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull'
-  origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight'
-  adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static'
+  alignment?: string | 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull'
+  origin?: string | 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight'
+  adaptive?: string | 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static'
   fullscreen?: boolean
   overscroll?: boolean
   closeButton?: boolean

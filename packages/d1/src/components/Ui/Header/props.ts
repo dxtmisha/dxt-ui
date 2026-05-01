@@ -9,7 +9,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  tag?: string | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   // :type [!] System label / Системная метка
 }
 

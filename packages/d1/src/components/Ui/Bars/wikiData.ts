@@ -24,7 +24,7 @@ const propsNames: StorybookProps = [
   { name: 'modelAction', type: 'boolean | undefined' },
   { name: 'onUpdate:action', type: '((value: boolean) => void) | undefined' },
   { name: 'onUpdate:modelAction', type: '((value: boolean) => void) | undefined' },
-  { name: 'padding', type: 'string', option: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none'] },
+  { name: 'padding', type: 'string | undefined', option: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none'] },
   { name: 'paddingByIndent', type: 'boolean | undefined' },
   { name: 'textClose', type: 'TextValue' }
   // :propsList [!] System label / Системная метка

@@ -7,7 +7,7 @@ import { ModelPropsSelected } from '../../types/modelTypes';
 import { RoleType } from '../../types/roleTypes';
 export type MenuPropsToken = {
     hideList?: boolean;
-    barsAdaptive?: 'showAlways';
+    barsAdaptive?: string | 'showAlways';
 };
 export type MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Window extends WindowPropsBasic = WindowPropsBasic> = BarsPropsInclude<Bars> & WindowPropsInclude<Window> & ModelPropsSelected & {
     /** Status/ Статус */

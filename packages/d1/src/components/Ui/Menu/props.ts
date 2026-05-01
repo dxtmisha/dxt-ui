@@ -14,7 +14,7 @@ export const propsValues = {
 type PropsToken = {
   // :type [!] System label / Системная метка
   hideList?: boolean
-  barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl'
+  barsAdaptive?: string | 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl'
   // :type [!] System label / Системная метка
 }
 

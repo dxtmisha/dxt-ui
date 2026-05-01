@@ -6,8 +6,8 @@ export declare const propsValues: {
 type PropsToken = {
     visible?: boolean;
     visiblePartly?: boolean;
-    align?: 'center' | 'left' | 'right';
-    dir?: 'ltr' | 'rtl';
+    align?: string | 'center' | 'left' | 'right';
+    dir?: string | 'ltr' | 'rtl';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

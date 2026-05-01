@@ -7,7 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'ajax', type: 'string | (() => NormalOrPromise<ListRecord<ListItemProps>>) | undefined' },
   { name: 'autoClose', type: 'boolean | undefined' },
-  { name: 'barsAdaptive', type: 'string', option: ['showAlways', 'showSm', 'showMd', 'showLg', 'showXl', 'show2xl'] },
+  { name: 'barsAdaptive', type: 'string | undefined', option: ['showAlways', 'showSm', 'showMd', 'showLg', 'showXl', 'show2xl'] },
   { name: 'barsAttrs', type: 'ConstrBind<BarsProps> | undefined' },
   { name: 'barsBackHide', type: 'boolean | undefined' },
   { name: 'barsDescription', type: 'string | undefined' },

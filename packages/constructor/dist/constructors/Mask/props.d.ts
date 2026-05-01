@@ -3,8 +3,8 @@ import { MaskFractionItem, MaskList, MaskMatchItem, MaskSpecialProp, MaskTypeIte
 export type MaskPropsToken = {
     visible?: boolean;
     visiblePartly?: boolean;
-    align?: 'center' | 'left' | 'right';
-    dir?: 'ltr' | 'rtl';
+    align?: string | 'center' | 'left' | 'right';
+    dir?: string | 'ltr' | 'rtl';
 };
 export type MaskPropsBasic = {
     /** Value/ Значения */

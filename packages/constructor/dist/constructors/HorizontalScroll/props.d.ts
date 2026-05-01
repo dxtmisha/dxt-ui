@@ -1,6 +1,6 @@
 type HorizontalScrollPropsToken = {
     flush?: boolean;
-    align?: 'block' | 'center' | 'left' | 'right';
+    align?: string | 'block' | 'center' | 'left' | 'right';
 };
 export type HorizontalScrollPropsBasic = {
     /** Styles/ Стили */

@@ -29,14 +29,14 @@ const propsNames: StorybookProps = [
   { name: 'iconError', type: 'IconValue<IconProps> | undefined' },
   { name: 'iconSuccess', type: 'IconValue<IconProps> | undefined' },
   { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
-  { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
+  { name: 'imagePosition', type: 'string | undefined', option: ['top', 'left'] },
   { name: 'label', type: 'NumberOrString | undefined' },
   { name: 'labelId', type: 'string | undefined' },
   { name: 'open', type: 'boolean | undefined' },
   { name: 'success', type: 'boolean | undefined' },
   { name: 'textClose', type: 'TextValue' },
   { name: 'textOk', type: 'TextValue' },
-  { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
+  { name: 'width', type: 'string | undefined', option: ['sm', 'md', 'lg', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
   // :propsList [!] System label / Системная метка
 ]

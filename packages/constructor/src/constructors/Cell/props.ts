@@ -19,7 +19,7 @@ export type CellPropsToken = {
   dynamic?: boolean
   dynamicHover?: boolean
   divider?: boolean
-  dividerLabel?: 'always' | 'none'
+  dividerLabel?: string | 'always' | 'none'
   iconTop?: boolean
   // :type [!] System label / Системная метка
 }

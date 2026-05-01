@@ -31,7 +31,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTurn', type: 'boolean | undefined' },
   { name: 'label', type: 'NumberOrString | undefined' },
   { name: 'labelId', type: 'string | undefined' },
-  { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
+  { name: 'palette', type: 'string | undefined', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'role', type: 'string | undefined' },
   { name: 'selected', type: 'boolean | undefined' },
   { name: 'success', type: 'boolean | undefined' },

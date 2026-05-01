@@ -5,7 +5,7 @@ import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 
 export type ModalPropsToken = {
   // :type [!] System label / Системная метка
-  imagePosition?: 'top' | 'left'
+  imagePosition?: string | 'top' | 'left'
   // :type [!] System label / Системная метка
 }
 

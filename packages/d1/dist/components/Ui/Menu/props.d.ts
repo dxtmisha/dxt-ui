@@ -8,7 +8,7 @@ export declare const propsValues: {
 };
 type PropsToken = {
     hideList?: boolean;
-    barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl';
+    barsAdaptive?: string | 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

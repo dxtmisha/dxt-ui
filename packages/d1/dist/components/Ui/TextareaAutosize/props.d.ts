@@ -4,7 +4,7 @@ export declare const propsValues: {
 };
 type PropsToken = {
     autosize?: boolean;
-    height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    height?: string | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

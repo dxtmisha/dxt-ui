@@ -7,7 +7,7 @@ type PropsToken = {
     disabled?: boolean;
     hide?: boolean;
     adaptive?: boolean;
-    size?: 'auto' | 'contain' | 'cover';
+    size?: string | 'auto' | 'contain' | 'cover';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

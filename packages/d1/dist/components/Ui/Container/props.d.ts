@@ -3,7 +3,7 @@ export declare const propsValues: {
     align: string[];
 };
 type PropsToken = {
-    align?: 'left' | 'center' | 'right';
+    align?: string | 'left' | 'center' | 'right';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

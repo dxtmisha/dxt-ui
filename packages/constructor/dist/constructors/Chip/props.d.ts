@@ -6,11 +6,11 @@ export type ChipPropsToken = {
     disabled?: boolean;
     selected?: boolean;
     readonly?: boolean;
-    adaptive?: 'iconAlways' | 'block' | 'auto';
+    adaptive?: string | 'iconAlways' | 'block' | 'auto';
     container?: boolean;
     inverse?: boolean;
     grid?: boolean;
-    textAlign?: 'left' | 'center' | 'right';
+    textAlign?: string | 'left' | 'center' | 'right';
 };
 export type ChipPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = ButtonPropsBasic<Icon, Progress>;
 /**

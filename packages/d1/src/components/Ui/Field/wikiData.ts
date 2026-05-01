@@ -5,14 +5,14 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'align', type: 'string', option: ['center', 'right', 'left'] },
-  { name: 'arrowAlign', type: 'string', option: ['center', 'right', 'left'] },
+  { name: 'align', type: 'string | undefined', option: ['center', 'right', 'left'] },
+  { name: 'arrowAlign', type: 'string | undefined', option: ['center', 'right', 'left'] },
   { name: 'arrowCarousel', type: 'boolean | undefined' },
   { name: 'arrowStepper', type: 'boolean | undefined' },
   { name: 'basic', type: 'boolean | undefined' },
   { name: 'block', type: 'boolean | undefined' },
   { name: 'boxed', type: 'boolean | undefined' },
-  { name: 'cancel', type: 'string', option: ['auto', 'always', 'none'] },
+  { name: 'cancel', type: 'string | undefined', option: ['auto', 'always', 'none'] },
   { name: 'cancelShow', type: 'boolean | undefined' },
   { name: 'caption', type: 'string | number | undefined' },
   { name: 'captionDecorative', type: 'boolean | undefined' },
@@ -63,7 +63,7 @@ const propsNames: StorybookProps = [
   { name: 'readonly', type: 'boolean | undefined' },
   { name: 'required', type: 'boolean | undefined' },
   { name: 'selected', type: 'boolean | undefined' },
-  { name: 'size', type: 'string', option: ['sm', 'md', 'lg', 'display'] },
+  { name: 'size', type: 'string | undefined', option: ['sm', 'md', 'lg', 'display'] },
   { name: 'suffix', type: 'string | number | undefined' },
   { name: 'suffixId', type: 'string | undefined' },
   { name: 'textCancel', type: 'TextValue' },

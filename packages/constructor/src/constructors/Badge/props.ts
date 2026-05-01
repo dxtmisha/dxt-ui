@@ -7,9 +7,9 @@ export type BadgePropsToken = {
   selected?: boolean
   hide?: boolean
   dot?: boolean
-  overlap?: 'rectangular' | 'circular' | 'static'
-  vertical?: 'top' | 'center' | 'bottom'
-  horizontal?: 'right' | 'center' | 'left'
+  overlap?: string | 'rectangular' | 'circular' | 'static'
+  vertical?: string | 'top' | 'center' | 'bottom'
+  horizontal?: string | 'right' | 'center' | 'left'
   // :type [!] System label / Системная метка
 }
 

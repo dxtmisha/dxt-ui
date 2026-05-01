@@ -12,7 +12,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  width?: 'sm' | 'md' | 'lg' | 'auto'
+  width?: string | 'sm' | 'md' | 'lg' | 'auto'
   // :type [!] System label / Системная метка
 }
 

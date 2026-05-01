@@ -11,11 +11,11 @@ export type ButtonPropsToken = {
     disabled?: boolean;
     selected?: boolean;
     readonly?: boolean;
-    adaptive?: 'iconAlways' | 'block' | 'auto';
+    adaptive?: string | 'iconAlways' | 'block' | 'auto';
     container?: boolean;
     inverse?: boolean;
     grid?: boolean;
-    textAlign?: 'left' | 'center' | 'right';
+    textAlign?: string | 'left' | 'center' | 'right';
 };
 export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & ConstrHrefProps & AriaLabelPropsInclude & {
     /** HTML tag for the button container/ HTML-тег для контейнера кнопки */

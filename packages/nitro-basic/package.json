@@ -1,9 +1,31 @@
 {
   "name": "@dxtmisha/nitro-basic",
-  "private": true,
-  "version": "0.0.1",
+  "private": false,
+  "version": "0.1.0",
   "type": "module",
-  "description": "[description]",
+  "description": "A foundational utility library for building robust Server-Side Rendering (SSR) applications with Vue 3 and Nitro.",
+  "keywords": [
+    "nitro",
+    "vue",
+    "vue3",
+    "ssr",
+    "server-side-rendering",
+    "h3",
+    "nuxt",
+    "framework",
+    "dxtmisha"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/nitro-basic"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
@@ -17,8 +39,11 @@
   },
   "files": [
     "dist",
+    "ai-types.txt",
+    "CHANGELOG.md",
     "README.md",
-    "package.json"
+    "package.json",
+    "LICENSE"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -32,14 +57,25 @@
       "import": "./dist/library-plugin.js",
       "types": "./dist/library-plugin.d.ts"
     },
+    "./ai-types": "./ai-types.txt",
     "./style.css": "./dist/style.css",
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
-  "dependencies": {
-    "@dxtmisha/functional-basic": "*",
-    "h3": "^2.0.1-rc.20",
-    "nitropack": "^2.13.3"
+  "engines": {
+    "node": ">=20.0.0"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/functional-basic": "*",
+    "h3": "*",
+    "nitro": "*",
+    "nitropack": "*",
+    "vue": "*",
+    "vue-router": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0"
+  },
+  "sideEffects": false
 }

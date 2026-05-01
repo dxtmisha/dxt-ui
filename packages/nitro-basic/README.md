@@ -1,110 +1,86 @@
 # @dxtmisha/nitro-basic
 
-Базовый пакет для интеграции `@dxtmisha/functional-basic` с Nitro.
+[![npm version](https://badge.fury.io/js/@dxtmisha%2Fnitro-basic.svg)](https://www.npmjs.com/package/@dxtmisha/nitro-basic)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
 
-## Установка
+`@dxtmisha/nitro-basic` is a foundational utility library for building robust Server-Side Rendering (SSR) applications using [Nitro](https://nitro.unjs.io) and Vue 3. It bridges the gap between raw server tools and frontend frameworks by providing a unified, predictable way to bootstrap and handle applications on both the client and the server.
+
+## Why this library?
+
+Building a custom SSR setup with Vue 3 and Nitro often involves repetitive boilerplate: configuring the router for server and client seamlessly, managing hydration, parsing initial payloads, syncing cookies, and setting up API request headers.
+
+`nitro-basic` extracts this complexity into simple abstractions and utility functions. By standardizing the initialization flow, it ensures your SSR app is reliable, scalable, and fully typed out of the box, letting you focus entirely on your business logic and application components.
+
+## What does it do?
+
+For **Bootstrapping** — providing `uiCreateApp`, `uiBootstrapClient`, and `uiBootstrapServer`. A unified entry point system ensures that both your client bundle and your server handler initialize Vue, vue-router, and required plugins safely and correctly without state leakage.
+
+For **Routing** — built-in `uiCreateSsrRouter` that automatically toggles between `createMemoryHistory` (on the server) and `createWebHistory` (on the client).
+
+For **Storage & Cookies** — `uiCookieStorage` and `uiServerStorage` encapsulate H3 events and document cookies. They synchronize the state cleanly so that preferences or authentication tokens can be easily transported between the Nitro context and the client context.
+
+For **API Integration** — lifecycle hooks and connection helpers (`initApi`, `initHeaders`, `getRequestUrl`) that automatically inject correct hostnames and pass essential headers to the API client during SSR requests, preventing common pitfalls with missing origin headers when rendering server-side.
+
+## Installation
 
 ```bash
 npm install @dxtmisha/nitro-basic
 ```
 
-## Функции
+## Quick Start
 
-### `initBasic(nitroApp: NitroApp, config?: NitroAppBasicConfig)`
-
-Инициализирует базовые настройки для работы с `functional-basic` в Nitro окружении.
-
-**Параметры:**
-- `nitroApp` — экземпляр NitroApp
-- `config` — конфигурация
-
-### `initServerStorage()`
-
-Инициализирует `ServerStorage` для Nitro, используя контекст запроса для изоляции данных между запросами.
-
-### `initApiCache(storageKey?: string, cacheStepAgeClearOld?: number)`
-
-Инициализирует `ApiCache` для Nitro с поддержкой встроенного хранилища Nitro (Redis, файловая система и др.).
-
-**Параметры:**
-- `storageKey` — префикс ключа для хранилища кэша (по умолчанию: `'Ui_ApiCache'`)
-- `cacheStepAgeClearOld` — порог срабатывания фоновой очистки старого кэша
-
-### `initCookieStorage(config?: NitroAppBasicConfig['cookie'])`
-
-Инициализирует `CookieStorage` для Nitro с поддержкой чтения/записи cookie через заголовки запроса/ответа.
-
-**Параметры:**
-- `config` — конфигурация cookie
-  - `age` — время жизни cookie в секундах (по умолчанию: 7 дней)
-  - `sameSite` — политика SameSite (по умолчанию: `'strict'`)
-
-### `basicPlugin`
-
-Готовый Nitro плагин для базовой инициализации.
+Create a single app initialization module:
 
 ```typescript
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['@dxtmisha/nitro-basic']
-})
-```
+import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import App from './App.vue'
 
-Или вручную:
-
-```typescript
-// server/plugins/basic.ts
-import { basicPlugin } from '@dxtmisha/nitro-basic'
-
-export default basicPlugin
-```
-
-## Использование
-
-После инициализации все функции `@dxtmisha/functional-basic` будут работать корректно в Nitro окружении с поддержкой:
-- Изоляции данных между запросами (SSR)
-- Кэширования API ответов
-- Управления cookie через заголовки
-- Гидратации данных на клиенте
-
-## Конфигурация
-
-### NitroAppBasicConfig
-
-```typescript
-interface NitroAppBasicConfig {
-  api?: {
-    cacheStorageKey?: string
-    cacheStepAgeClearOld?: number
-  }
-  cookie?: {
-    age?: number
-    sameSite?: 'strict' | 'lax'
-  }
+export function createApp() {
+  return uiCreateApp(App, {
+    appRouter: { routes: [/* your routes */] }
+  })
 }
 ```
 
-### Пример конфигурации
+**Client Entry:**
 
 ```typescript
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['@dxtmisha/nitro-basic']
+import { uiBootstrapClient } from '@dxtmisha/nitro-basic'
+import { createApp } from './app'
+
+uiBootstrapClient(createApp).then(({ app, router }) => {
+  app.mount('#app')
 })
+```
 
-// server/plugins/config.ts
-import { initBasic } from '@dxtmisha/nitro-basic'
+**Server/Nitro Entry (EventHandler):**
 
-export default defineNitroPlugin((nitroApp) => {
-  initBasic(nitroApp, {
-    api: {
-      cacheStorageKey: 'my-app-cache',
-      cacheStepAgeClearOld: 10000
-    },
-    cookie: {
-      age: 30 * 24 * 60 * 60, // 30 дней
-      sameSite: 'lax'
-    }
+```typescript
+import { uiBootstrapServer } from '@dxtmisha/nitro-basic'
+import { createApp } from './app'
+
+export default defineEventHandler(async (event) => {
+  return uiBootstrapServer(event, createApp, async ({ app }) => {
+    // Render your SSR shell
   })
 })
 ```
+
+## Principles
+
+- **Zero-leaks Architecture** — Designed strictly to avoid cross-request state pollution during SSR. Everything is scoped safely within per-request bootstrapping.
+- **Framework-Agnostic Core with Vue 3 Focus** — While highly optimized for Vue SSR and Vue Router, the logic of request handling, cache headers, and storage initialization uses native primitives that are predictable.
+- **Typescript-First** — Strict typings support and predictable payload passing.
+- **Clean API** — A small API surface that prevents over-engineering SSR apps, focusing on the core integration between H3/Nitro and Vue.
+
+## Documentation
+
+Full API reference, examples, and guides:
+
+**[📖 https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-nitro-basic-about-the-library--docs](https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-nitro-basic-about-the-library--docs)**
+
+## License
+
+[MIT](LICENSE)
+

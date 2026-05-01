@@ -25,9 +25,9 @@ export type FieldPropsToken = {
     classic?: boolean;
     arrowCarousel?: boolean;
     arrowStepper?: boolean;
-    arrowAlign?: 'center' | 'right' | 'left';
-    cancel?: 'auto' | 'always' | 'none';
-    align?: 'center' | 'right' | 'left';
+    arrowAlign?: string | 'center' | 'right' | 'left';
+    cancel?: string | 'auto' | 'always' | 'none';
+    align?: string | 'center' | 'right' | 'left';
     width?: string | 'custom';
 };
 export type FieldPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = IconTrailingPropsInclude<Icon> & PrefixProps & SuffixProps & CaptionProps & FieldLabelPropsInclude<FieldLabel, FieldCounter> & FieldMessagePropsInclude<FieldMessage, FieldCounter> & ProgressPropsInclude<Progress> & EnabledProps & EventClickProps & SkeletonPropsInclude & TextCancelPropsInclude & {

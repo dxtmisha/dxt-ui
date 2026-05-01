@@ -9,8 +9,8 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  axis?: 'x' | 'y' | 'z'
-  direction?: 'next' | 'back' | 'auto'
+  axis?: string | 'x' | 'y' | 'z'
+  direction?: string | 'next' | 'back' | 'auto'
   // :type [!] System label / Системная метка
 }
 

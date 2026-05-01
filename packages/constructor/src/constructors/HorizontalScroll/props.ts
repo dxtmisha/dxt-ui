@@ -1,7 +1,7 @@
 type HorizontalScrollPropsToken = {
   // :type [!] System label / Системная метка
   flush?: boolean
-  align?: 'block' | 'center' | 'left' | 'right'
+  align?: string | 'block' | 'center' | 'left' | 'right'
   // :type [!] System label / Системная метка
 }
 

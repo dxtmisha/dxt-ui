@@ -17,7 +17,7 @@ import type { RoleType } from '../../types/roleTypes'
 export type MenuPropsToken = {
   // :type [!] System label / Системная метка
   hideList?: boolean
-  barsAdaptive?: 'showAlways'
+  barsAdaptive?: string | 'showAlways'
   // :type [!] System label / Системная метка
 }
 

@@ -1,5 +1,4 @@
-import { useId } from 'vue'
-import { initGetElementId } from '@dxtmisha/functional-basic'
+import { uiId } from './uiId'
 
 /**
  * Initializes the global unique identifier generator for elements.
@@ -9,5 +8,5 @@ import { initGetElementId } from '@dxtmisha/functional-basic'
  * Использует Vue `useId` для предоставления уникальных идентификаторов во время начальной загрузки.
  */
 export function uiBootstrapClient(): void {
-  initGetElementId(() => useId())
+  uiId()
 }

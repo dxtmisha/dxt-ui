@@ -1,6 +1,6 @@
 import { AreaProps } from '../../types/areaTypes';
 type ContainerPropsToken = {
-    align?: 'left' | 'center' | 'right';
+    align?: string | 'left' | 'center' | 'right';
 };
 export type ContainerPropsBasic = AreaProps & {};
 /**

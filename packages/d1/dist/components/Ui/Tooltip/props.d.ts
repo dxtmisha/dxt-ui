@@ -6,7 +6,7 @@ export declare const propsValues: {
 type PropsToken = {
     interactive?: boolean;
     embedded?: boolean;
-    maxWidth?: 'sm' | 'md' | 'lg';
+    maxWidth?: string | 'sm' | 'md' | 'lg';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

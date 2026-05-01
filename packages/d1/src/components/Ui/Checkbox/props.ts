@@ -15,8 +15,8 @@ export const propsValues = {
 type PropsToken = {
   // :type [!] System label / Системная метка
   block?: boolean
-  adaptive?: 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
-  container?: 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
+  adaptive?: string | 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
+  container?: string | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
   required?: boolean
   itemCenter?: boolean
   focus?: boolean

@@ -5,7 +5,7 @@ export declare const propsValues: {
     padding: string[];
 };
 type PropsToken = {
-    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
+    padding?: string | 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
     paddingByIndent?: boolean;
 };
 /**

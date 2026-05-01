@@ -21,14 +21,14 @@ type PropsToken = {
   start?: boolean
   end?: boolean
   high?: boolean
-  animationType?: 'type1' | 'type2'
+  animationType?: string | 'type1' | 'type2'
   animationShow?: boolean
   square?: boolean
   circle?: boolean
   rect?: boolean
-  size?: 'auto' | 'x' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl'
+  size?: string | 'auto' | 'x' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl'
   inverse?: boolean
-  rounded?: 'auto' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  rounded?: string | 'auto' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   // :type [!] System label / Системная метка
 }
 

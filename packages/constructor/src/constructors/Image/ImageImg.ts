@@ -1,4 +1,4 @@
-import { computed, type Ref, ref, toRefs, type WatchHandle, watch } from 'vue'
+import { computed, type Ref, ref, toRefs, type WatchHandle, watch, onMounted } from 'vue'
 import { type ConstrBind, forEach, isArray, isNumber, useLazyItemByMarginRef } from '@dxtmisha/functional'
 
 import { ImageType } from './ImageType'
@@ -29,22 +29,24 @@ export class ImageImg {
       preloadOffset
     } = toRefs(props)
 
-    watch(
-      [lazy, preloadOffset, element],
-      () => {
-        if (
-          this.props.lazy
-          && this.element.value
-        ) {
-          this.makeLazy()
-        } else {
-          this.lazyInit.value = false
-          this.lazyStatus?.stop()
-          this.lazyStatus = undefined
-        }
-      },
-      { immediate: true }
-    )
+    onMounted(() => {
+      watch(
+        [lazy, preloadOffset, element],
+        () => {
+          if (
+            this.props.lazy
+            && this.element.value
+          ) {
+            this.makeLazy()
+          } else {
+            this.lazyInit.value = false
+            this.lazyStatus?.stop()
+            this.lazyStatus = undefined
+          }
+        },
+        { immediate: true }
+      )
+    })
   }
 
   /**

@@ -11,7 +11,7 @@ import { ProgressPropsBasic, ProgressPropsInclude } from '../Progress';
 import { SkeletonPropsInclude } from '../Skeleton';
 type CheckboxPropsToken = {
     block?: boolean;
-    adaptive?: 'rightAlways';
+    adaptive?: string | 'rightAlways';
     container?: boolean;
     required?: boolean;
     itemCenter?: boolean;

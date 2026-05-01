@@ -11,7 +11,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
+  padding?: string | 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
   paddingByIndent?: boolean
   // :type [!] System label / Системная метка
 }

@@ -4,9 +4,9 @@ export declare const propsValues: {
     size: string[];
 };
 type PropsToken = {
-    position?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
+    position?: string | 'auto' | 'top' | 'bottom' | 'left' | 'right';
     inverse?: boolean;
-    size?: 'sm' | 'md' | 'lg';
+    size?: string | 'sm' | 'md' | 'lg';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

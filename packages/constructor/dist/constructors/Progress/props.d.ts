@@ -4,8 +4,8 @@ export type ProgressPropsToken = {
     point?: boolean;
     linear?: boolean;
     circular?: boolean;
-    indeterminate?: 'type1' | 'type2' | 'type3';
-    position?: 'top' | 'bottom' | 'static';
+    indeterminate?: string | 'type1' | 'type2' | 'type3';
+    position?: string | 'top' | 'bottom' | 'static';
     dense?: boolean;
     inverse?: boolean;
 };

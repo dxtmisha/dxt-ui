@@ -16,7 +16,7 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 type CheckboxPropsToken = {
   // :type [!] System label / Системная метка
   block?: boolean
-  adaptive?: 'rightAlways'
+  adaptive?: string | 'rightAlways'
   container?: boolean
   required?: boolean
   itemCenter?: boolean

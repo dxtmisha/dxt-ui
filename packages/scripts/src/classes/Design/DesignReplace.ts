@@ -215,7 +215,7 @@ export class DesignReplace {
         && !this.isNoMark(mark, name)
       ) {
         const typesString = !constructor && !types.match(/string|boolean/) && types.match(/'/)
-          ? `${types}` // string |
+          ? `string | ${types}`
           : types
 
         templates.push(`${name}?: ${typesString}`)

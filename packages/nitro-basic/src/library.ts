@@ -19,6 +19,7 @@ export * from './functions/uiCreateApp'
 export * from './functions/uiCreateClientApp'
 export * from './functions/uiCreateServerApp'
 export * from './functions/uiCreateSsrRouter'
+export * from './functions/uiId'
 export * from './functions/uiServerStorage'
 
 // Types

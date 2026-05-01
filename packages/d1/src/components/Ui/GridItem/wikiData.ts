@@ -5,12 +5,12 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'base', type: 'string', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
-  { name: 'lg', type: 'string', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
-  { name: 'md', type: 'string', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
-  { name: 'sm', type: 'string', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
-  { name: 'xl', type: 'string', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
-  { name: 'xl2', type: 'string', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] }
+  { name: 'base', type: 'string | undefined', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
+  { name: 'lg', type: 'string | undefined', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
+  { name: 'md', type: 'string | undefined', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
+  { name: 'sm', type: 'string | undefined', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
+  { name: 'xl', type: 'string | undefined', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
+  { name: 'xl2', type: 'string | undefined', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] }
   // :propsList [!] System label / Системная метка
 ]
 

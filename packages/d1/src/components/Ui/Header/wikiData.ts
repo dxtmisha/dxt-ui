@@ -17,7 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'label', type: 'NumberOrString | undefined' },
   { name: 'labelId', type: 'string | undefined' },
   { name: 'selected', type: 'boolean | undefined' },
-  { name: 'tag', type: 'string', option: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }
+  { name: 'tag', type: 'string | undefined', option: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }
   // :propsList [!] System label / Системная метка
 ]
 

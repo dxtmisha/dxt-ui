@@ -6,7 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'autosize', type: 'boolean | undefined' },
-  { name: 'height', type: 'string', option: ['xs', 'sm', 'md', 'lg', 'xl'] },
+  { name: 'height', type: 'string | undefined', option: ['xs', 'sm', 'md', 'lg', 'xl'] },
   { name: 'inputAttrs', type: 'Record<string, any> | undefined' },
   { name: 'value', type: 'string | undefined' }
   // :propsList [!] System label / Системная метка

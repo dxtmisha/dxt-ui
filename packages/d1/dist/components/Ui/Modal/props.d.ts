@@ -8,8 +8,8 @@ export declare const propsValues: {
     width: string[];
 };
 type PropsToken = {
-    imagePosition?: 'top' | 'left';
-    width?: 'sm' | 'md' | 'lg' | 'xl' | 'auto';
+    imagePosition?: string | 'top' | 'left';
+    width?: string | 'sm' | 'md' | 'lg' | 'xl' | 'auto';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

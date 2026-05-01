@@ -1,8 +1,8 @@
 import { ModelPropsSelected } from '../../types/modelTypes';
 import { MotionAxisSelectedValue } from './basicTypes';
 type MotionAxisPropsToken = {
-    axis?: 'x' | 'y' | 'z';
-    direction?: 'next' | 'back' | 'auto';
+    axis?: string | 'x' | 'y' | 'z';
+    direction?: string | 'next' | 'back' | 'auto';
 };
 export type MotionAxisPropsBasic = ModelPropsSelected<MotionAxisSelectedValue> & {
     /** Status/ Статус */

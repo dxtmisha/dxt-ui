@@ -5,9 +5,9 @@ export type BadgePropsToken = {
     selected?: boolean;
     hide?: boolean;
     dot?: boolean;
-    overlap?: 'rectangular' | 'circular' | 'static';
-    vertical?: 'top' | 'center' | 'bottom';
-    horizontal?: 'right' | 'center' | 'left';
+    overlap?: string | 'rectangular' | 'circular' | 'static';
+    vertical?: string | 'top' | 'center' | 'bottom';
+    horizontal?: string | 'right' | 'center' | 'left';
 };
 export type BadgePropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & LabelNumberProps & AriaLabelPropsInclude & {
     /** Whether to show as a dot/ Отображать как точку */

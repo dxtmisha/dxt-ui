@@ -13,9 +13,9 @@ type PropsToken = {
     dynamic?: boolean;
     dynamicHover?: boolean;
     divider?: boolean;
-    dividerLabel?: 'always' | 'none' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
+    dividerLabel?: string | 'always' | 'none' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
     iconTop?: boolean;
-    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
+    padding?: string | 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
     paddingByIndent?: boolean;
 };
 /**

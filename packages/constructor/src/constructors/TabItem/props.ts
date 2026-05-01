@@ -13,7 +13,7 @@ type TabItemPropsToken = {
   open?: boolean
   selected?: boolean
   disabled?: boolean
-  adaptive?: 'iconAlways' | 'auto'
+  adaptive?: string | 'iconAlways' | 'auto'
   container?: boolean
   // :type [!] System label / Системная метка
 }

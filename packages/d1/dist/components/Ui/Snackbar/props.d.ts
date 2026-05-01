@@ -8,10 +8,10 @@ export declare const propsValues: {
 type PropsToken = {
     full?: boolean;
     all?: boolean;
-    limit?: '1' | '2' | '4' | '6' | '8';
-    vertical?: 'top' | 'bottom';
-    horizontal?: 'right' | 'left' | 'block';
-    origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
+    limit?: string | '1' | '2' | '4' | '6' | '8';
+    vertical?: string | 'top' | 'bottom';
+    horizontal?: string | 'right' | 'left' | 'block';
+    origin?: string | 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

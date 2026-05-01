@@ -3,7 +3,7 @@ import { CaptionProps } from '../../types/captionTypes';
 import { LabelProps } from '../../types/labelTypes';
 import { IconPropsBasic, IconPropsInclude } from '../Icon';
 type HeaderPropsToken = {
-    tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+    tag?: string | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 };
 export type HeaderPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = LabelProps & CaptionProps & IconPropsInclude<Icon> & AreaProps;
 /**

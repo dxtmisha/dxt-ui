@@ -14,8 +14,8 @@ export declare class MotionAxisGo {
     protected readonly element: Ref<HTMLDivElement | undefined>;
     protected readonly slides: MotionAxisSlides;
     protected readonly status: MotionAxisStatus;
-    readonly axis: Ref<"x" | "y" | "z" | undefined, "x" | "y" | "z" | undefined>;
-    readonly direction: Ref<"next" | "auto" | "back" | undefined, "next" | "auto" | "back" | undefined>;
+    readonly axis: Ref<string | undefined, string | undefined>;
+    readonly direction: Ref<string | undefined, string | undefined>;
     /**
      * Constructor
      * @param props input data / входные данные

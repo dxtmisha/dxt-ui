@@ -583,7 +583,7 @@
               "description": "Sets internal spacing around the content. If `paddingByIndent` is enabled, the `padding` value is ignored.",
               "value": {
                 "kind": "expression",
-                "type": "none | sm | md | lg | ySm | yMd | yLg"
+                "type": "sm | md | lg | ySm | yMd | yLg | none"
               }
             },
             {
@@ -1020,7 +1020,7 @@
               "default": "right",
               "value": {
                 "kind": "expression",
-                "type": "center | right | left"
+                "type": "right | center | left"
               }
             },
             {
@@ -2147,7 +2147,7 @@
               "default": "none",
               "value": {
                 "kind": "expression",
-                "type": "none | sm | md | lg | ySm | yMd | yLg"
+                "type": "sm | md | lg | ySm | yMd | yLg | none"
               }
             },
             {
@@ -12674,7 +12674,7 @@
               "description": "Places a window in viewport: center, edges or corners",
               "value": {
                 "kind": "expression",
-                "type": "top | left | center | topRight | topLeft | topFull | right | rightFull | bottom | bottomRight | bottomLeft | bottomFull | leftFull"
+                "type": "center | top | topRight | topLeft | topFull | right | rightFull | bottom | bottomRight | bottomLeft | bottomFull | left | leftFull"
               }
             },
             {
@@ -12773,7 +12773,7 @@
               "description": "Sets transform origin for opening animation",
               "value": {
                 "kind": "expression",
-                "type": "top | left | center | right | bottom | topToBottom | rightToLeft | bottomToTop | leftToRight"
+                "type": "center | top | right | bottom | left | topToBottom | rightToLeft | bottomToTop | leftToRight"
               }
             },
             {

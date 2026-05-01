@@ -6,7 +6,7 @@ export declare const propsValues: {
     width: string[];
 };
 type PropsToken = {
-    width?: 'sm' | 'md' | 'lg' | 'auto';
+    width?: string | 'sm' | 'md' | 'lg' | 'auto';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

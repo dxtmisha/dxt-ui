@@ -5,8 +5,8 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'adaptive', type: 'string', option: ['planeAlways', 'planeSm', 'planeMd', 'planeLg', 'planeXl', 'plane2xl'] },
-  { name: 'animationHeadPosition', type: 'string', option: ['top', 'toBottom'] },
+  { name: 'adaptive', type: 'string | undefined', option: ['planeAlways', 'planeSm', 'planeMd', 'planeLg', 'planeXl', 'plane2xl'] },
+  { name: 'animationHeadPosition', type: 'string | undefined', option: ['top', 'toBottom'] },
   { name: 'animationShow', type: 'boolean | undefined' },
   { name: 'ariaDescribedby', type: 'string | undefined' },
   { name: 'ariaLabelledby', type: 'string | undefined' },

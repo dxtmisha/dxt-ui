@@ -6,7 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'arrowAttrs', type: 'ConstrBind<ArrowProps> | undefined' },
-  { name: 'arrowPosition', type: 'string', option: ['auto', 'top', 'bottom', 'left', 'right'] },
+  { name: 'arrowPosition', type: 'string | undefined' },
   { name: 'arrowShow', type: 'boolean | undefined' },
   { name: 'delay', type: 'number | undefined' },
   { name: 'delayHide', type: 'number | undefined' },
@@ -19,7 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'interactive', type: 'boolean | undefined' },
   { name: 'label', type: 'NumberOrString | undefined' },
   { name: 'labelId', type: 'string | undefined' },
-  { name: 'maxWidth', type: 'string', option: ['sm', 'md', 'lg'] },
+  { name: 'maxWidth', type: 'string | undefined', option: ['sm', 'md', 'lg'] },
   { name: 'open', type: 'boolean | undefined' },
   { name: 'top', type: 'boolean | undefined' }
   // :propsList [!] System label / Системная метка

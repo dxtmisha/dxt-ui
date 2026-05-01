@@ -11,7 +11,7 @@ import { TextClosePropsInclude, TextOkPropsInclude } from '../../types/textTypes
 export type DialogPropsToken = {
     success?: boolean;
     error?: boolean;
-    imagePosition?: 'top' | 'left';
+    imagePosition?: string | 'top' | 'left';
 };
 export type DialogPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = WindowPropsInclude<Window> & BarsPropsInclude<Bars> & ActionsPropsInclude<Actions> & ImagePropsInclude<Image> & LabelProps & DescriptionProps & TextClosePropsInclude & TextOkPropsInclude & {
     /** Status/ Статус */

@@ -2,10 +2,10 @@ import { TextNotificationsPropsInclude } from '../../types/textTypes';
 type SnackbarPropsToken = {
     full?: boolean;
     all?: boolean;
-    limit?: '1' | '2' | '4' | '6' | '8';
-    vertical?: 'top' | 'bottom';
-    horizontal?: 'right' | 'left' | 'block';
-    origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
+    limit?: string | '1' | '2' | '4' | '6' | '8';
+    vertical?: string | 'top' | 'bottom';
+    horizontal?: string | 'right' | 'left' | 'block';
+    origin?: string | 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
 };
 export type SnackbarPropsBasic = TextNotificationsPropsInclude & {
     /** Delay before auto-closing the notification/ Задержка перед автоматическим закрытием уведомления */

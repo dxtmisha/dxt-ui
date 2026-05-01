@@ -5,8 +5,8 @@ export declare const propsValues: {
 };
 type PropsToken = {
     section?: boolean;
-    animationHeadPosition?: 'top' | 'toBottom';
-    adaptive?: 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl';
+    animationHeadPosition?: string | 'top' | 'toBottom';
+    adaptive?: string | 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

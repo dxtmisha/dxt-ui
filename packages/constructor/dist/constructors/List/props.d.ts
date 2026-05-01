@@ -4,7 +4,7 @@ import { AriaMultiselectablePropsInclude, AriaRolePropsInclude } from '../../typ
 import { IconPropsBasic, IconValue } from '../Icon';
 import { ListItemPropsBasic } from '../ListItem';
 export type ListPropsToken = {
-    axis?: 'x' | 'y';
+    axis?: string | 'x' | 'y';
     divider?: boolean;
 };
 export type ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic> = AriaRolePropsInclude & AriaMultiselectablePropsInclude & {

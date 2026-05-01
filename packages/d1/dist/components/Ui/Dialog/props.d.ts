@@ -12,8 +12,8 @@ export declare const propsValues: {
 type PropsToken = {
     success?: boolean;
     error?: boolean;
-    imagePosition?: 'top' | 'left';
-    width?: 'sm' | 'md' | 'lg' | 'auto';
+    imagePosition?: string | 'top' | 'left';
+    width?: string | 'sm' | 'md' | 'lg' | 'auto';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

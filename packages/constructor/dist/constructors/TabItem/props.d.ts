@@ -10,7 +10,7 @@ type TabItemPropsToken = {
     open?: boolean;
     selected?: boolean;
     disabled?: boolean;
-    adaptive?: 'iconAlways' | 'auto';
+    adaptive?: string | 'iconAlways' | 'auto';
     container?: boolean;
 };
 export type TabItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic> = LabelProps & IconPropsInclude<Icon> & BadgePropsInclude<Badge> & SkeletonPropsInclude & EnabledProps & EventClickProps & AriaRolePropsInclude & {

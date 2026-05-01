@@ -19,7 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean | undefined' },
   { name: 'open', type: 'boolean | undefined' },
   { name: 'touchClose', type: 'boolean | undefined' },
-  { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
+  { name: 'width', type: 'string | undefined', option: ['sm', 'md', 'lg', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
   // :propsList [!] System label / Системная метка
 ]

@@ -14,7 +14,7 @@ export type DialogPropsToken = {
   // :type [!] System label / Системная метка
   success?: boolean
   error?: boolean
-  imagePosition?: 'top' | 'left'
+  imagePosition?: string | 'top' | 'left'
   // :type [!] System label / Системная метка
 }
 

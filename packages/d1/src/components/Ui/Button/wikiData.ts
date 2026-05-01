@@ -5,9 +5,9 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'adaptive', type: 'string', option: ['iconAlways', 'block', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
+  { name: 'adaptive', type: 'string | undefined', option: ['iconAlways', 'block', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'ariaLabel', type: 'string | undefined' },
-  { name: 'container', type: 'string', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
+  { name: 'container', type: 'string | undefined', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'detail', type: 'Record<string, any> | undefined' },
   { name: 'disabled', type: 'boolean | undefined' },
   { name: 'focus', type: 'boolean | undefined' },
@@ -30,16 +30,16 @@ const propsNames: StorybookProps = [
   { name: 'labelId', type: 'string | undefined' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps> | undefined' },
   { name: 'outline', type: 'boolean | undefined' },
-  { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
+  { name: 'palette', type: 'string | undefined', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'primary', type: 'boolean | undefined' },
   { name: 'readonly', type: 'boolean | undefined' },
   { name: 'roundedFull', type: 'boolean | undefined' },
   { name: 'secondary', type: 'boolean | undefined' },
   { name: 'selected', type: 'boolean | undefined' },
-  { name: 'size', type: 'string', option: ['xs', 'sm', 'md', 'lg', 'xl'] },
+  { name: 'size', type: 'string | undefined', option: ['xs', 'sm', 'md', 'lg', 'xl'] },
   { name: 'tag', type: 'string | undefined', option: ['button', 'a', 'span'] },
   { name: 'text', type: 'boolean | undefined' },
-  { name: 'textAlign', type: 'string', option: ['left', 'center', 'right'] },
+  { name: 'textAlign', type: 'string | undefined', option: ['left', 'center', 'right'] },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric | undefined' },
   { name: 'type', type: 'string | undefined', option: ['button', 'submit', 'reset'] },
   { name: 'value', type: 'EventClickValue[\'value\']' }

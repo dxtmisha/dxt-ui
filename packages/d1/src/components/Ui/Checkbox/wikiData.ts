@@ -5,13 +5,13 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'adaptive', type: 'string', option: ['rightAlways', 'rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'] },
+  { name: 'adaptive', type: 'string | undefined', option: ['rightAlways', 'rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'] },
   { name: 'autocapitalize', type: 'string | undefined', option: ['off', 'none', 'sentences', 'words', 'characters'] },
   { name: 'autocomplete', type: 'string | undefined' },
   { name: 'autocorrect', type: 'string | undefined', option: ['on', 'off'] },
   { name: 'autofocus', type: 'boolean | undefined' },
   { name: 'block', type: 'boolean | undefined' },
-  { name: 'container', type: 'string', option: ['rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'] },
+  { name: 'container', type: 'string | undefined', option: ['rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'] },
   { name: 'counter', type: 'string | number | undefined' },
   { name: 'counterId', type: 'string | undefined' },
   { name: 'counterShow', type: 'boolean | undefined' },

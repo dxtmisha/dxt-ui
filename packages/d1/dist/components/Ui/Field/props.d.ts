@@ -26,11 +26,11 @@ type PropsToken = {
     classic?: boolean;
     arrowCarousel?: boolean;
     arrowStepper?: boolean;
-    arrowAlign?: 'center' | 'right' | 'left';
-    cancel?: 'auto' | 'always' | 'none';
-    align?: 'center' | 'right' | 'left';
+    arrowAlign?: string | 'center' | 'right' | 'left';
+    cancel?: string | 'auto' | 'always' | 'none';
+    align?: string | 'center' | 'right' | 'left';
     width?: string | 'custom';
-    size?: 'sm' | 'md' | 'lg' | 'display';
+    size?: string | 'sm' | 'md' | 'lg' | 'display';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

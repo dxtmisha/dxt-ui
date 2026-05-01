@@ -1,7 +1,7 @@
 import { ConstrBind } from '@dxtmisha/functional';
 import { ButtonPropsBasic } from '../Button';
 export type ActionsPropsToken = {
-    align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
+    align?: string | 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
     flexible?: boolean;
     wrap?: boolean;
 };

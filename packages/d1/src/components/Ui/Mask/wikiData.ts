@@ -5,11 +5,11 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'align', type: 'string', option: ['center', 'left', 'right'] },
+  { name: 'align', type: 'string | undefined', option: ['center', 'left', 'right'] },
   { name: 'check', type: 'FieldPatternItemOrFunction | undefined' },
   { name: 'currency', type: 'string | undefined' },
   { name: 'currencyHide', type: 'boolean | undefined' },
-  { name: 'dir', type: 'string', option: ['ltr', 'rtl'] },
+  { name: 'dir', type: 'string | undefined', option: ['ltr', 'rtl'] },
   { name: 'fraction', type: 'MaskFractionItem | undefined' },
   { name: 'fullOnly', type: 'boolean | undefined' },
   { name: 'groupSave', type: 'boolean | undefined' },

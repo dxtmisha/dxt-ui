@@ -10,8 +10,8 @@ export const propsValues = {
 type PropsToken = {
   // :type [!] System label / Системная метка
   section?: boolean
-  animationHeadPosition?: 'top' | 'toBottom'
-  adaptive?: 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl'
+  animationHeadPosition?: string | 'top' | 'toBottom'
+  adaptive?: string | 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl'
   // :type [!] System label / Системная метка
 }
 

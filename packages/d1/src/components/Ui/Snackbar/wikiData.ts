@@ -8,11 +8,11 @@ const propsNames: StorybookProps = [
   { name: 'all', type: 'boolean | undefined' },
   { name: 'delay', type: 'number | undefined' },
   { name: 'full', type: 'boolean | undefined' },
-  { name: 'horizontal', type: 'string', option: ['right', 'left', 'block'] },
-  { name: 'limit', type: 'string', option: ['1', '2', '4', '6', '8'] },
-  { name: 'origin', type: 'string', option: ['topToBottom', 'bottomToTop', 'rightToLeft', 'leftToRight'] },
+  { name: 'horizontal', type: 'string | undefined', option: ['right', 'left', 'block'] },
+  { name: 'limit', type: 'string | undefined', option: ['1', '2', '4', '6', '8'] },
+  { name: 'origin', type: 'string | undefined', option: ['topToBottom', 'bottomToTop', 'rightToLeft', 'leftToRight'] },
   { name: 'textNotifications', type: 'TextValue' },
-  { name: 'vertical', type: 'string', option: ['top', 'bottom'] }
+  { name: 'vertical', type: 'string | undefined', option: ['top', 'bottom'] }
   // :propsList [!] System label / Системная метка
 ]
 

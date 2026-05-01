@@ -15,7 +15,7 @@ export type CellPropsToken = {
     dynamic?: boolean;
     dynamicHover?: boolean;
     divider?: boolean;
-    dividerLabel?: 'always' | 'none';
+    dividerLabel?: string | 'always' | 'none';
     iconTop?: boolean;
 };
 export type CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & CaptionProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & AriaRolePropsInclude & {

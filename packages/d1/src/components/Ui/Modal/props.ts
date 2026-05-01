@@ -13,8 +13,8 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  imagePosition?: 'top' | 'left'
-  width?: 'sm' | 'md' | 'lg' | 'xl' | 'auto'
+  imagePosition?: string | 'top' | 'left'
+  width?: string | 'sm' | 'md' | 'lg' | 'xl' | 'auto'
   // :type [!] System label / Системная метка
 }
 

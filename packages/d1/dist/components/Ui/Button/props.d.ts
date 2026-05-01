@@ -13,19 +13,19 @@ type PropsToken = {
     disabled?: boolean;
     selected?: boolean;
     readonly?: boolean;
-    adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    adaptive?: string | 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    container?: string | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
     inverse?: boolean;
     grid?: boolean;
-    textAlign?: 'left' | 'center' | 'right';
+    textAlign?: string | 'left' | 'center' | 'right';
     primary?: boolean;
     secondary?: boolean;
     outline?: boolean;
     text?: boolean;
-    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    size?: string | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     roundedFull?: boolean;
     hasLabelMinWidth?: boolean;
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+    palette?: string | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

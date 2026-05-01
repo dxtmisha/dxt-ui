@@ -18,9 +18,9 @@ const propsNames: StorybookProps = [
   { name: 'barsList', type: 'ConstrBind<ButtonProps>[] | undefined' },
   { name: 'disabled', type: 'boolean | undefined' },
   { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
-  { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
+  { name: 'imagePosition', type: 'string | undefined', option: ['top', 'left'] },
   { name: 'open', type: 'boolean | undefined' },
-  { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'xl', 'auto'] },
+  { name: 'width', type: 'string | undefined', option: ['sm', 'md', 'lg', 'xl', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
   // :propsList [!] System label / Системная метка
 ]

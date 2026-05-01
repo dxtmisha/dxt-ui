@@ -13,7 +13,7 @@ import type { ListItemPropsBasic } from '../ListItem'
 
 export type ListPropsToken = {
   // :type [!] System label / Системная метка
-  axis?: 'x' | 'y'
+  axis?: string | 'x' | 'y'
   divider?: boolean
   // :type [!] System label / Системная метка
 }

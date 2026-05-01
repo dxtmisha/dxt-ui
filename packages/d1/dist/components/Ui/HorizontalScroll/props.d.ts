@@ -4,7 +4,7 @@ export declare const propsValues: {
 };
 type PropsToken = {
     flush?: boolean;
-    align?: 'block' | 'center' | 'left' | 'right';
+    align?: string | 'block' | 'center' | 'left' | 'right';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

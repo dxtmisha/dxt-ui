@@ -17,14 +17,14 @@ type PropsToken = {
   selected?: boolean
   hide?: boolean
   dot?: boolean
-  overlap?: 'rectangular' | 'circular' | 'static'
-  vertical?: 'top' | 'center' | 'bottom'
-  horizontal?: 'right' | 'center' | 'left'
+  overlap?: string | 'rectangular' | 'circular' | 'static'
+  vertical?: string | 'top' | 'center' | 'bottom'
+  horizontal?: string | 'right' | 'center' | 'left'
   primary?: boolean
   secondary?: boolean
   outline?: boolean
-  size?: 'sm' | 'md' | 'lg' | 'none'
-  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
+  size?: string | 'sm' | 'md' | 'lg' | 'none'
+  palette?: string | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

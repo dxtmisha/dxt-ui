@@ -2,8 +2,8 @@ import { AriaByPropsInclude } from '../../types/ariaTypes';
 import { ModelPropsOpen } from '../../types/modelTypes';
 export type MotionTransformPropsToken = {
     section?: boolean;
-    animationHeadPosition?: 'top' | 'toBottom';
-    adaptive?: 'planeAlways';
+    animationHeadPosition?: string | 'top' | 'toBottom';
+    adaptive?: string | 'planeAlways';
 };
 export type MotionTransformPropsBasic = AriaByPropsInclude & ModelPropsOpen & {
     /** Current transformation state (v-model:open)/ Текущее состояние трансформации (v-model:open) */

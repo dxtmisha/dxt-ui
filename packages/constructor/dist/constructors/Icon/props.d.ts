@@ -14,7 +14,7 @@ export type IconPropsToken = {
     start?: boolean;
     end?: boolean;
     high?: boolean;
-    animationType?: 'type1' | 'type2';
+    animationType?: string | 'type1' | 'type2';
     animationShow?: boolean;
 };
 export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & EventClickProps & {

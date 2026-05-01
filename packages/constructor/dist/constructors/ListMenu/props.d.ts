@@ -1,7 +1,7 @@
 import { WindowPropsBasic, WindowPropsInclude } from '../Window';
 export type ListMenuPropsToken = {
     open?: boolean;
-    axis?: 'x' | 'y';
+    axis?: string | 'x' | 'y';
     divider?: boolean;
 };
 export type ListMenuPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic> = WindowPropsInclude<Window>;

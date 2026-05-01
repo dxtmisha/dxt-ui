@@ -4,8 +4,8 @@ export declare const propsValues: {
     direction: string[];
 };
 type PropsToken = {
-    axis?: 'x' | 'y' | 'z';
-    direction?: 'next' | 'back' | 'auto';
+    axis?: string | 'x' | 'y' | 'z';
+    direction?: string | 'next' | 'back' | 'auto';
 };
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

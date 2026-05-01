@@ -11,7 +11,7 @@ type PropsToken = {
   // :type [!] System label / Системная метка
   interactive?: boolean
   embedded?: boolean
-  maxWidth?: 'sm' | 'md' | 'lg'
+  maxWidth?: string | 'sm' | 'md' | 'lg'
   // :type [!] System label / Системная метка
 }
 

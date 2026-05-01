@@ -18,7 +18,7 @@ const propsNames: StorybookProps = [
   { name: 'objectWidth', type: 'string | number | undefined' },
   { name: 'picture', type: 'ImagePicture | undefined' },
   { name: 'preloadOffset', type: 'string | undefined' },
-  { name: 'size', type: 'string', option: ['auto', 'contain', 'cover'] },
+  { name: 'size', type: 'string | undefined', option: ['auto', 'contain', 'cover'] },
   { name: 'srcset', type: 'string | Record<string, string> | undefined' },
   { name: 'tagImg', type: 'boolean | undefined' },
   { name: 'turn', type: 'boolean | undefined' },
