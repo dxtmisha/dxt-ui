@@ -112,17 +112,24 @@ export class ProgressDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    const children: any[] = [
-      ...this.renderCircle(),
-      ...this.renderPoint()
-    ]
+  protected initRender(): VNode | undefined {
+    if (
+      this.item.clientOnly.isRender.value
+      || this.item.isProgressbar.value
+    ) {
+      const children: any[] = [
+        ...this.renderCircle(),
+        ...this.renderPoint()
+      ]
 
-    return h(
-      this.item.tag.value,
-      this.propsMain.value,
-      children
-    )
+      return h(
+        this.item.tag.value,
+        this.propsMain.value,
+        children
+      )
+    }
+
+    return undefined
   }
 
   /**

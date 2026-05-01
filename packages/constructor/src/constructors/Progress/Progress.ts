@@ -1,4 +1,12 @@
-import { computed, onUnmounted, ref, type Ref, type ToRefs, watch } from 'vue'
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  ref,
+  type Ref,
+  type ToRefs,
+  watch
+} from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -7,6 +15,7 @@ import {
   toNumber
 } from '@dxtmisha/functional'
 
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import type { ProgressComponents, ProgressEmits, ProgressSlots } from './types'
@@ -22,6 +31,8 @@ export class Progress {
 
   readonly hide = ref<boolean>(false)
   readonly visible = ref<boolean>(false)
+
+  readonly clientOnly: ClientOnlyInclude
   readonly text: TextInclude
 
   /**
@@ -36,6 +47,7 @@ export class Progress {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
    * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param constructors.ClientOnlyIncludeConstructor class for client-only rendering/ класс для рендеринга только на клиенте
    */
   constructor(
     protected readonly props: ProgressProps,
@@ -48,19 +60,24 @@ export class Progress {
     protected readonly emits?: ConstrEmit<ProgressEmits>,
     constructors?: {
       TextIncludeConstructor?: typeof TextInclude
+      ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
     }
   ) {
     const {
-      TextIncludeConstructor = TextInclude
+      TextIncludeConstructor = TextInclude,
+      ClientOnlyIncludeConstructor = ClientOnlyInclude
     } = constructors ?? {}
 
+    this.clientOnly = new ClientOnlyIncludeConstructor(this.props)
     this.text = new TextIncludeConstructor(this.props)
 
-    watch(
-      [refs.visible],
-      this.switch,
-      { immediate: true }
-    )
+    onMounted(() => {
+      watch(
+        [refs.visible],
+        this.switch,
+        { immediate: true }
+      )
+    })
 
     onUnmounted(() => {
       clearTimeout(this.timeout)
@@ -150,7 +167,8 @@ export class Progress {
     return {
       [`${this.className}--hide`]: this.hide.value,
       [`${this.className}--visible`]: this.visible.value,
-      [`${this.className}--value`]: this.isValue()
+      [`${this.className}--value`]: this.isValue(),
+      [`${this.className}--clientOnly`]: !this.clientOnly.is()
     }
   })
 
@@ -197,11 +215,15 @@ export class Progress {
   }
 
   /**
-   * The mode is triggered when the visible property changes to change the output status of the element.
+   * Method triggers when the visible property changes to change the status of the output of the element.
    *
    * Метод срабатывает при изменении свойства visible для изменения статуса вывода элемента.
    */
   protected readonly switch = (): void => {
+    if (!this.clientOnly.is()) {
+      return
+    }
+
     const visible = this.props.visible
 
     clearTimeout(this.timeout)

@@ -1,5 +1,5 @@
 import { t as e } from "./defineProperty-149Ahniv.js";
-import { t } from "./getAreaValue-DjCZKy2t.js";
+import { t } from "./getAreaValue-CD586Y7i.js";
 import { computed as n } from "vue";
 import { DesignConstructorAbstract as r } from "@dxtmisha/functional";
 //#region src/constructors/Area/Area.ts

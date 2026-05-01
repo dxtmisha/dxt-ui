@@ -1,5 +1,5 @@
 import { t as e } from "./defineProperty-149Ahniv.js";
-import { t } from "./ButtonDesign-CprQeB7g.js";
+import { t } from "./ButtonDesign-BEF0nBVQ.js";
 import { computed as n } from "vue";
 import { getBind as r, getRef as i, toBinds as a } from "@dxtmisha/functional";
 //#region src/constructors/Chip/Chip.ts

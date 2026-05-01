@@ -39,7 +39,7 @@ export declare class ProgressDesign<COMP extends ProgressComponents, EXPOSE exte
      *
      * Метод для рендеринга.
      */
-    protected initRender(): VNode;
+    protected initRender(): VNode | undefined;
     /**
      * Render elements for the circular loader.
      *

@@ -1,4 +1,4 @@
-import { r as e, t } from "./BlockDesign-CXfWIetO.js";
+import { r as e, t } from "./BlockDesign-CyIx-r66.js";
 import "@dxtmisha/functional";
 //#region src/constructors/Group/Group.ts
 var n = class extends e {}, r = {

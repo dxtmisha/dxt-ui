@@ -1,7 +1,8 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
-import { t as n } from "./ImageInclude-C4KnnA3v.js";
-import { n as r, t as i } from "./errorTypes-DBWSiSTN.js";
+import { t as n } from "./ClientOnlyInclude-LJEiv40X.js";
+import { t as r } from "./ImageInclude-CXSZutYv.js";
+import { t as i } from "./errorTypes-S6_aa8c6.js";
 import { computed as a, h as o, onMounted as s, onUnmounted as c, ref as l, toRefs as u, watch as d, watchEffect as f } from "vue";
 import { DesignConstructorAbstract as p, ErrorCenter as m, EventItem as h, Icons as g, computedAsync as _, forEach as v, getElementId as y, isArray as b, isDomRuntime as x, isFilled as S, isNumber as C, isString as w, resizeImageByMax as T, sleep as E, toNumber as D, useLazyItemByMarginRef as O } from "@dxtmisha/functional";
 //#region src/constructors/Image/ImageFile.ts
@@ -557,7 +558,7 @@ var W = /* @__PURE__ */ function(e) {
 		}, { immediate: !0 });
 	}
 }, X = class {
-	constructor(n, i, o, s, l) {
+	constructor(r, i, o, s, l) {
 		t(this, "clientOnly", void 0), t(this, "type", void 0), t(this, "data", void 0), t(this, "coordinator", void 0), t(this, "position", void 0), t(this, "adaptiveItem", void 0), t(this, "background", void 0), t(this, "img", void 0), t(this, "tag", a(() => this.img.is.value ? "img" : "span")), t(this, "text", a(() => {
 			let e = this.type.item.value;
 			if (e === F.pdf) {
@@ -623,9 +624,9 @@ var W = /* @__PURE__ */ function(e) {
 		}))), t(this, "valueBinds", a(() => ({
 			key: "value",
 			data: this.data.image.value
-		}))), this.props = n, this.element = i, this.className = o, this.emits = s;
-		let { ImageAdaptiveItemConstructor: u = q, ImageBackgroundConstructor: d = J, ImageCoordinatorConstructor: f = z, ImageDataConstructor: p = R, ImageImgConstructor: m = Y, ImagePositionConstructor: h = B, ImageTypeConstructor: g = I, ClientOnlyConstructor: _ = r } = l == null ? {} : l;
-		this.clientOnly = new _({ clientOnly: !0 }), this.type = new g(n, this.clientOnly), this.data = new p(n, this.clientOnly, this.type), this.coordinator = new f(n), this.position = new h(n, this.coordinator), this.adaptiveItem = new u(n, this.clientOnly, this.data, i), this.background = new d(n, this.data, this.coordinator, this.adaptiveItem), this.img = new m(this.props, i, this.type, this.position, this.background), c(() => this.adaptiveItem.remove());
+		}))), this.props = r, this.element = i, this.className = o, this.emits = s;
+		let { ImageAdaptiveItemConstructor: u = q, ImageBackgroundConstructor: d = J, ImageCoordinatorConstructor: f = z, ImageDataConstructor: p = R, ImageImgConstructor: m = Y, ImagePositionConstructor: h = B, ImageTypeConstructor: g = I, ClientOnlyConstructor: _ = n } = l == null ? {} : l;
+		this.clientOnly = new _({ clientOnly: !0 }), this.type = new g(r, this.clientOnly), this.data = new p(r, this.clientOnly, this.type), this.coordinator = new f(r), this.position = new h(r, this.coordinator), this.adaptiveItem = new u(r, this.clientOnly, this.data, i), this.background = new d(r, this.data, this.coordinator, this.adaptiveItem), this.img = new m(this.props, i, this.type, this.position, this.background), c(() => this.adaptiveItem.remove());
 	}
 }, Z = class extends p {
 	constructor(e, n, r, i = X) {
@@ -666,4 +667,4 @@ var W = /* @__PURE__ */ function(e) {
 	}
 };
 //#endregion
-export { X as Image, U as ImageAdaptiveGroup, q as ImageAdaptiveItem, J as ImageBackground, V as ImageCalculation, H as ImageCalculationList, z as ImageCoordinator, R as ImageData, Z as ImageDesign, A as ImageFile, Y as ImageImg, n as ImageInclude, M as ImagePdf, B as ImagePosition, I as ImageType, F as ImageTypeValue, P as ImageUint8Array, K as MAX_BEYOND, k as MAX_SIZE, L as defaultsImage };
+export { X as Image, U as ImageAdaptiveGroup, q as ImageAdaptiveItem, J as ImageBackground, V as ImageCalculation, H as ImageCalculationList, z as ImageCoordinator, R as ImageData, Z as ImageDesign, A as ImageFile, Y as ImageImg, r as ImageInclude, M as ImagePdf, B as ImagePosition, I as ImageType, F as ImageTypeValue, P as ImageUint8Array, K as MAX_BEYOND, k as MAX_SIZE, L as defaultsImage };

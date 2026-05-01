@@ -1,2 +1,2 @@
-import { t as e } from "./TabItem-BY0bInSD.js";
+import { t as e } from "./TabItem-llyy7LnK.js";
 export { e as D1TabItem };

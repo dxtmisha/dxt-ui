@@ -1,5 +1,6 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrClassObject, ConstrEmit, ConstrStyles, DesignComp } from '@dxtmisha/functional';
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude';
 import { TextInclude } from '../../classes/TextInclude';
 import { ProgressComponents, ProgressEmits, ProgressSlots } from './types';
 import { ProgressProps } from './props';
@@ -20,6 +21,7 @@ export declare class Progress {
     protected timeout?: any;
     readonly hide: Ref<boolean, boolean>;
     readonly visible: Ref<boolean, boolean>;
+    readonly clientOnly: ClientOnlyInclude;
     readonly text: TextInclude;
     /**
      * Constructor
@@ -33,9 +35,11 @@ export declare class Progress {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      * @param constructors object with classes/ объект с классами
      * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+     * @param constructors.ClientOnlyIncludeConstructor class for client-only rendering/ класс для рендеринга только на клиенте
      */
     constructor(props: ProgressProps, refs: ToRefs<ProgressProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ProgressComponents, ProgressProps> | undefined, slots?: ProgressSlots | undefined, emits?: ConstrEmit<ProgressEmits> | undefined, constructors?: {
         TextIncludeConstructor?: typeof TextInclude;
+        ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude;
     });
     /**
      * Checks if the component is in progress bar mode.
@@ -110,7 +114,7 @@ export declare class Progress {
      */
     getMax(): number;
     /**
-     * The mode is triggered when the visible property changes to change the output status of the element.
+     * Method triggers when the visible property changes to change the status of the output of the element.
      *
      * Метод срабатывает при изменении свойства visible для изменения статуса вывода элемента.
      */

@@ -7,6 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'ariaLabel', type: 'string | undefined' },
   { name: 'circular', type: 'boolean | undefined' },
+  { name: 'clientOnly', type: 'boolean | undefined' },
   { name: 'delay', type: 'string | number | undefined' },
   { name: 'delayHide', type: 'string | number | undefined' },
   { name: 'dense', type: 'boolean | undefined' },
