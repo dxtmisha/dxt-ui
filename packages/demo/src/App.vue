@@ -7,4 +7,10 @@
   </D1Container>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+@use '@dxtmisha/d1/ui-properties' as ui;
+
+.demo-app {
+  @include ui.paddingY(ui.v('?layout.marginY'));
+}
+</style>

@@ -7,8 +7,5 @@
   @include ui.paddingX(ui.v('??paddingX'));
 
   width: ui.v('??width');
-  max-width: min(
-          #{calc(100dvw - (#{ui.v('??paddingX')} * 2))},
-          100%
-  );
+  max-width: min(100dvw, 100%);
 }

@@ -4,7 +4,7 @@
     "_type": "var"
   },
   "=?layout-marginY": {
-    "value": "{layout.paddingY}",
+    "value": "{ref.spacing.4}",
     "_type": "var"
   },
   "=?layout-width": {
@@ -50,6 +50,10 @@
   "media|lg": {
     "=?layout-marginX": {
       "value": "{ref.spacing.12}",
+      "_type": "var"
+    },
+    "=?layout-marginY": {
+      "value": "{ref.spacing.8}",
       "_type": "var"
     }
   },

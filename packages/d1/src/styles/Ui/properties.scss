@@ -6505,7 +6505,7 @@
             index: 'layoutMarginY',
             name: '--d1-layout-marginY',
             type: 'var',
-            value: 'var(--d1-layout-paddingY)',
+            value: 'var(--d1-ref-spacing-4)',
           ),
           'layoutWidth':(
             index: 'layoutWidth',
@@ -6628,6 +6628,12 @@
                 type: 'var',
                 value: 'var(--d1-ref-spacing-12)',
               ),
+              'layoutMarginY':(
+                index: 'layoutMarginY',
+                name: '--d1-layout-marginY',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
             ),
           ),
           'mediaXl':(
@@ -6666,7 +6672,7 @@
             index: 'layoutMarginY',
             name: '--d1-layout-marginY',
             type: 'var',
-            value: 'var(--d1-layout-paddingY)',
+            value: 'var(--d1-ref-spacing-4)',
           ),
           'layoutWidth':(
             index: 'layoutWidth',
@@ -6794,6 +6800,12 @@
                 name: '--d1-layout-marginX',
                 type: 'var',
                 value: 'var(--d1-ref-spacing-12)',
+              ),
+              'layoutMarginY':(
+                index: 'layoutMarginY',
+                name: '--d1-layout-marginY',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-8)',
               ),
             ),
           ),
@@ -9214,7 +9226,7 @@
             index: 'layoutMarginY',
             name: '--d1-layout-marginY',
             type: 'var',
-            value: 'var(--d1-layout-paddingY)',
+            value: 'var(--d1-ref-spacing-4)',
           ),
           'layoutWidth':(
             index: 'layoutWidth',
@@ -9294,6 +9306,12 @@
                 name: '--d1-layout-marginX',
                 type: 'var',
                 value: 'var(--d1-ref-spacing-12)',
+              ),
+              'layoutMarginY':(
+                index: 'layoutMarginY',
+                name: '--d1-layout-marginY',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-8)',
               ),
             ),
           ),
