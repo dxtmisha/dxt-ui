@@ -1,0 +1,45 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+A specialized container component designed to organize and structure the main content area of a page. It provides a cohesive layout foundation for various UI blocks and sections.
+
+PageArea acts as an orchestrator for the page's primary information, ensuring consistent spacing, alignment, and semantic grouping of nested components. It automatically determines the appropriate component to render (Page, Section, Block, or Group) based on the current nesting level or area context.
+
+**Key Features:**
+
+- Automatic component switching (Page -> Section -> Block -> Group) based on context
+- Semantic page structure organization
+- Integration with layout areas and context
+- Consistent margins and internal spacing
+- Support for nested UI blocks and groups
+- Flexible slot-based content management
+
+**Typical Use Cases:**
+
+- Main content wrapper for application pages
+- Dashboard layout orchestration
+- Detailed data view containers
+- Section grouping within large pages
+- Foundational structural unit for custom page layouts
+
+<Source
+    code={`
+<script setup>
+// PageArea example
+</script>
+
+<template>
+  <PageArea>
+    <!-- Your page content here -->
+    <Block headline="Welcome">
+      This content is organized within a PageArea.
+    </Block>
+  </PageArea>
+</template>
+  `}
+    language="html"
+/>
+
+> PageArea is essential for maintaining a structured and consistent layout across different application views.
+

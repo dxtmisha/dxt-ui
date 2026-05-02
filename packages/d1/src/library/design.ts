@@ -3,10 +3,10 @@
 
 import type { PluginComponentImports } from '@dxtmisha/constructor/plugin'
 
-// count: 55
+// count: 57
 export const designName: string = 'd1'
 export const packageName: string = '@dxtmisha/d1'
-export const componentsReg: RegExp = /((d1|dd)-?(accordion|action-?sheet|actions|anchor|area|arrow|badge|bars|block|button|cell|checkbox|chip|chip-?group|container|dialog|dummy|field|field-?counter|field-?label|field-?message|grid|grid-?item|group|header|horizontal-?scroll|icon|image|input|list|list-?group|list-?item|list-?menu|mask|menu|modal|motion-?axis|motion-?transform|page|progress|ripple|scrollbar|section|select|select-?value|skeleton|snackbar|snackbar-?item|tab-?item|tabs|tabs-?navigation|textarea|textarea-?autosize|tooltip|window))(?![\w-])/ig
+export const componentsReg: RegExp = /((d1|dd)-?(accordion|action-?sheet|actions|anchor|area|arrow|badge|bars|block|button|cell|checkbox|chip|chip-?group|client-?only|container|dialog|dummy|field|field-?counter|field-?label|field-?message|grid|grid-?item|group|header|horizontal-?scroll|icon|image|input|list|list-?group|list-?item|list-?menu|mask|menu|modal|motion-?axis|motion-?transform|page|page-?area|progress|ripple|scrollbar|section|select|select-?value|skeleton|snackbar|snackbar-?item|tab-?item|tabs|tabs-?navigation|textarea|textarea-?autosize|tooltip|window))(?![\w-])/ig
 export const styleVarsReg: RegExp = /(?<=var\(--)(ref-blur|ref-font-family|ref-font-size|ref-font-weight|ref-index|ref-letterSpacing|ref-lineHeight|ref-opacity|ref-palette-red|ref-palette-orange|ref-palette-amber|ref-palette-yellow|ref-palette-lime|ref-palette-green|ref-palette-emerald|ref-palette-teal|ref-palette-cyan|ref-palette-sky|ref-palette-blue|ref-palette-indigo|ref-palette-violet|ref-palette-purple|ref-palette-fuchsia|ref-palette-pink|ref-palette-rose|ref-palette-slate|ref-palette-gray|ref-palette-zinc|ref-palette-neutral|ref-palette-stone|ref-palette-black|ref-palette-white|ref-screen|ref-shade|ref-shadow|ref-shadow-dark|ref-spacing|sys-background|sys-blur|sys-font-family|sys-font-size|sys-font-weight|sys-index|sys-letterSpacing|sys-lineHeight|sys-opacity|sys-opacity-primary|sys-opacity-surface|sys-palette|sys-rounded|sys-rounded-adaptive|sys-shade|sys-shade-dark|sys-shadow|sys-spacing|sys-spacing-grid-paddingX|sys-spacing-grid|sys-spacing-grid-gapX|sys-spacing-grid-gapY|sys-spacing-block|sys-spacing-size|sys-spacing-adaptive)/ig
 
 export const componentsList: PluginComponentImports = [
@@ -65,6 +65,10 @@ export const componentsList: PluginComponentImports = [
   {
     name: 'D1ChipGroup',
     reg: /^((d1|dd)-?(chip-?group))$/ig
+  },
+  {
+    name: 'D1ClientOnly',
+    reg: /^((d1|dd)-?(client-?only))$/ig
   },
   {
     name: 'D1Container',
@@ -165,6 +169,10 @@ export const componentsList: PluginComponentImports = [
   {
     name: 'D1Page',
     reg: /^((d1|dd)-?(page))$/ig
+  },
+  {
+    name: 'D1PageArea',
+    reg: /^((d1|dd)-?(page-?area))$/ig
   },
   {
     name: 'D1Progress',

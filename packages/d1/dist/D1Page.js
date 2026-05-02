@@ -1,5 +1,2 @@
-import { t as e } from "./D1Page-N2jwDIZL.js";
-//#region src/components/Ui/Page/index.ts
-var t = e;
-//#endregion
-export { t as D1Page };
+import { t as e } from "./Page-8FggFup8.js";
+export { e as D1Page };

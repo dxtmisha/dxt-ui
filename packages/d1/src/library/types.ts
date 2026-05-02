@@ -15,6 +15,7 @@ import _D1Cell from '../components/Ui/Cell/D1Cell.vue'
 import _D1Checkbox from '../components/Ui/Checkbox/D1Checkbox.vue'
 import _D1Chip from '../components/Ui/Chip/D1Chip.vue'
 import _D1ChipGroup from '../components/Ui/ChipGroup/D1ChipGroup.vue'
+import _D1ClientOnly from '../components/Ui/ClientOnly/D1ClientOnly.vue'
 import _D1Container from '../components/Ui/Container/D1Container.vue'
 import _D1Dialog from '../components/Ui/Dialog/D1Dialog.vue'
 import _D1Dummy from '../components/Ui/Dummy/D1Dummy.vue'
@@ -40,6 +41,7 @@ import _D1Modal from '../components/Ui/Modal/D1Modal.vue'
 import _D1MotionAxis from '../components/Ui/MotionAxis/D1MotionAxis.vue'
 import _D1MotionTransform from '../components/Ui/MotionTransform/D1MotionTransform.vue'
 import _D1Page from '../components/Ui/Page/D1Page.vue'
+import _D1PageArea from '../components/Ui/PageArea/D1PageArea.vue'
 import _D1Progress from '../components/Ui/Progress/D1Progress.vue'
 import _D1Ripple from '../components/Ui/Ripple/D1Ripple.vue'
 import _D1Scrollbar from '../components/Ui/Scrollbar/D1Scrollbar.vue'
@@ -73,6 +75,7 @@ declare module '@vue/runtime-core' {
     D1Checkbox: typeof _D1Checkbox
     D1Chip: typeof _D1Chip
     D1ChipGroup: typeof _D1ChipGroup
+    D1ClientOnly: typeof _D1ClientOnly
     D1Container: typeof _D1Container
     D1Dialog: typeof _D1Dialog
     D1Dummy: typeof _D1Dummy
@@ -98,6 +101,7 @@ declare module '@vue/runtime-core' {
     D1MotionAxis: typeof _D1MotionAxis
     D1MotionTransform: typeof _D1MotionTransform
     D1Page: typeof _D1Page
+    D1PageArea: typeof _D1PageArea
     D1Progress: typeof _D1Progress
     D1Ripple: typeof _D1Ripple
     D1Scrollbar: typeof _D1Scrollbar

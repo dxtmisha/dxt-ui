@@ -6,8 +6,10 @@ import DemoApiPage from './pages/DemoApiPage.vue'
 
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
+import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
+import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 
@@ -33,6 +35,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoButtonPage
   },
   {
+    path: '/component-client-only',
+    name: 'component-client-only',
+    component: DemoClientOnlyPage
+  },
+  {
     path: '/component-icon',
     name: 'component-icon',
     component: DemoIconPage
@@ -41,6 +48,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-image',
     name: 'component-image',
     component: DemoImagePage
+  },
+  {
+    path: '/component-page-area',
+    name: 'component-page-area',
+    component: DemoPageAreaPage
   },
   {
     path: '/component-progress',

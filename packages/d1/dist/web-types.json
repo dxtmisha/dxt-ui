@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/web-types",
   "framework": "vue",
   "name": "D1",
-  "version": "0.52.3",
+  "version": "0.56.0",
   "contributions": {
     "html": {
       "types-syntax": "typescript",
@@ -3315,6 +3315,37 @@
               ]
             }
           ]
+        },
+        {
+          "name": "D1ClientOnly",
+          "description": "Component for managing rendering exclusively on the client side, essential for SSR compatibility",
+          "source": {
+            "module": "@dxtmisha/d1/D1ClientOnly",
+            "symbol": "D1ClientOnly"
+          },
+          "attributes": [
+            {
+              "name": "client-only",
+              "description": "Specifies whether the component should only be rendered on the client side",
+              "default": "true",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            }
+          ],
+          "events": []
         },
         {
           "name": "D1Container",
@@ -9134,6 +9165,223 @@
           "events": []
         },
         {
+          "name": "D1PageArea",
+          "description": "A structural component that automatically selects and renders appropriate UI blocks (Page, Section, Block, or Group) based on the current nesting level or area context.",
+          "source": {
+            "module": "@dxtmisha/d1/D1PageArea",
+            "symbol": "D1PageArea"
+          },
+          "attributes": [
+            {
+              "name": "selected",
+              "description": "Selected state of the element",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "caption",
+              "description": "Caption text for additional information",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "description",
+              "description": "Description text providing additional context",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "headline",
+              "description": "Headline text",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "label",
+              "description": "Text label for the component",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "icon",
+              "description": "Value of the main icon",
+              "value": {
+                "kind": "expression",
+                "type": "string | File"
+              }
+            },
+            {
+              "name": "icon-dir",
+              "description": "Mirrors the icon depending on a site direction (RTL/LTR)",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "icon-hide",
+              "description": "Hides the icon",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "icon-palette",
+              "description": "Sets icon color based on palette class",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "icon-turn",
+              "description": "Turns the icon",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "tag",
+              "description": "Sets HTML tag for the component element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "tag-header",
+              "description": "Sets HTML tag for the header container element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "header-attrs",
+              "description": "Additional attributes for the Header component",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<HeaderPropsBasic> | undefined"
+              }
+            },
+            {
+              "name": "icon-attrs",
+              "description": "Sets additional attributes for the icon element",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<IconPropsBasic> | undefined"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "caption-decorative",
+              "description": "Specifies whether the caption is purely decorative",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "description-id",
+              "description": "Unique identifier for the description element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "label-id",
+              "description": "Unique identifier for the label element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "caption",
+              "description": "Caption slot/ Слот заголовка",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "default",
+              "description": "Default slot/ Слот по умолчанию",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "description",
+              "description": "Description slot/ Слот описания",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "headline",
+              "description": "Slot for headline/ Слот для заголовка",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "label",
+              "description": "Label slot content/ Содержимое слота метки",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "trailing",
+              "description": "Slot for trailing content/ Слот для правого контента",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            }
+          ],
+          "events": []
+        },
+        {
           "name": "D1Progress",
           "description": "Component for displaying progress of operations or loading states",
           "source": {
@@ -9274,6 +9522,15 @@
               "value": {
                 "kind": "expression",
                 "type": "string"
+              }
+            },
+            {
+              "name": "client-only",
+              "description": "Specifies whether the component should only be rendered on the client side",
+              "default": "true",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
               }
             }
           ],

@@ -1,0 +1,40 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+A component for managing content rendering exclusively on the client side.
+
+ClientOnly is an essential tool for ensuring compatibility with Server-Side Rendering (SSR) and Static Site Generation (SSG). It prevents code that depends on browser APIs (such as window or document) from executing on the server side, thereby avoiding hydration mismatch errors.
+
+**Key Features:**
+
+- Deferred rendering until the component is mounted in the browser
+- Prevention of hydration mismatch errors
+- Ability to force enable/disable via the clientOnly property
+- Easy integration of any third-party libraries that do not support SSR
+
+**Typical Usage Scenarios:**
+
+- Interactive maps and charts
+- Components using localStorage or other Web APIs
+- Third-party widgets requiring the window object
+- Performance optimization in SSR environments
+
+<Source
+    code={`
+<script setup>
+import { ClientOnly } from 'your-library'
+</script>
+
+<template>
+  <ClientOnly>
+    <!-- This content will only appear in the browser -->
+    <MyBrowserSpecificComponent />
+  </ClientOnly>
+</template>
+  `}
+    language="html"
+/>
+
+> ClientOnly is an indispensable helper when developing modern isomorphic applications.
+

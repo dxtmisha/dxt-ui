@@ -8664,6 +8664,17 @@
           }
         }
       },
+      "clientOnly": {
+        "name": "d1-clientOnly",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-clientOnly-main",
+            "type": "var",
+            "value": "{d.clientOnly}"
+          }
+        }
+      },
       "container": {
         "name": "d1-container",
         "type": "component",
@@ -9621,6 +9632,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "pageArea": {
+        "name": "d1-pageArea",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-pageArea-main",
+            "type": "var",
+            "value": "{d.pageArea}"
           }
         }
       },

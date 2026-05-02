@@ -15,6 +15,7 @@ import D1Cell from '../../src/components/Ui/Cell/D1CellAiWiki.vue'
 import D1Checkbox from '../../src/components/Ui/Checkbox/D1CheckboxAiWiki.vue'
 import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
 import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue'
+import D1ClientOnly from '../../src/components/Ui/ClientOnly/D1ClientOnlyAiWiki.vue'
 import D1Container from '../../src/components/Ui/Container/D1ContainerAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1Dummy from '../../src/components/Ui/Dummy/D1DummyAiWiki.vue'
@@ -40,6 +41,7 @@ import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionAxis from '../../src/components/Ui/MotionAxis/D1MotionAxisAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
+import D1PageArea from '../../src/components/Ui/PageArea/D1PageAreaAiWiki.vue'
 import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
 import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
 import D1Scrollbar from '../../src/components/Ui/Scrollbar/D1ScrollbarAiWiki.vue'
@@ -72,6 +74,7 @@ export const aiList: any[] = [
   D1Checkbox,
   D1Chip,
   D1ChipGroup,
+  D1ClientOnly,
   D1Container,
   D1Dialog,
   D1Dummy,
@@ -97,6 +100,7 @@ export const aiList: any[] = [
   D1MotionAxis,
   D1MotionTransform,
   D1Page,
+  D1PageArea,
   D1Progress,
   D1Ripple,
   D1Scrollbar,

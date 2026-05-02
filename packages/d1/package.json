@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.52.3",
+  "version": "0.56.0",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -279,6 +279,14 @@
     "./D1Container": {
       "types": "./dist/library/D1Container.d.ts",
       "default": "./dist/D1Container.js"
+    },
+    "./D1ClientOnly": {
+      "types": "./dist/library/D1ClientOnly.d.ts",
+      "default": "./dist/D1ClientOnly.js"
+    },
+    "./D1PageArea": {
+      "types": "./dist/library/D1PageArea.d.ts",
+      "default": "./dist/D1PageArea.js"
     }
   },
   "buildOptions": {

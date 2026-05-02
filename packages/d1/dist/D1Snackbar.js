@@ -1,4 +1,4 @@
-import { t as e } from "./D1Snackbar-Duo2whx6.js";
+import { t as e } from "./D1Snackbar-mox57bVL.js";
 //#region src/components/Ui/Snackbar/index.ts
 var t = e;
 //#endregion

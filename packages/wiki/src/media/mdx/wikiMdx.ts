@@ -20,6 +20,7 @@ import { wikiMdxCell } from './Cell/wikiMdxCell'
 import { wikiMdxCheckbox } from './Checkbox/wikiMdxCheckbox'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
 import { wikiMdxChipGroup } from './ChipGroup/wikiMdxChipGroup'
+import { wikiMdxClientOnly } from './ClientOnly/wikiMdxClientOnly'
 import { wikiMdxContainer } from './Container/wikiMdxContainer'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
 import { wikiMdxDummy } from './Dummy/wikiMdxDummy'
@@ -45,6 +46,7 @@ import { wikiMdxModal } from './Modal/wikiMdxModal'
 import { wikiMdxMotionAxis } from './MotionAxis/wikiMdxMotionAxis'
 import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform'
 import { wikiMdxPage } from './Page/wikiMdxPage'
+import { wikiMdxPageArea } from './PageArea/wikiMdxPageArea'
 import { wikiMdxProgress } from './Progress/wikiMdxProgress'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
@@ -83,6 +85,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxCheckbox,
   wikiMdxChip,
   wikiMdxChipGroup,
+  wikiMdxClientOnly,
   wikiMdxContainer,
   wikiMdxDialog,
   wikiMdxDummy,
@@ -108,6 +111,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxMotionAxis,
   wikiMdxMotionTransform,
   wikiMdxPage,
+  wikiMdxPageArea,
   wikiMdxProgress,
   wikiMdxRipple,
   wikiMdxScrollbar,

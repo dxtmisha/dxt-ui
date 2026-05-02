@@ -14,6 +14,7 @@ import { wikiDescriptionsCell } from './wikiDescriptionsCell'
 import { wikiDescriptionsCheckbox } from './wikiDescriptionsCheckbox'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsChipGroup } from './wikiDescriptionsChipGroup'
+import { wikiDescriptionsClientOnly } from './wikiDescriptionsClientOnly'
 import { wikiDescriptionsContainer } from './wikiDescriptionsContainer'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
 import { wikiDescriptionsDummy } from './wikiDescriptionsDummy'
@@ -39,6 +40,7 @@ import { wikiDescriptionsModal } from './wikiDescriptionsModal'
 import { wikiDescriptionsMotionAxis } from './wikiDescriptionsMotionAxis'
 import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransform'
 import { wikiDescriptionsPage } from './wikiDescriptionsPage'
+import { wikiDescriptionsPageArea } from './wikiDescriptionsPageArea'
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
@@ -71,6 +73,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsCheckbox,
   wikiDescriptionsChip,
   wikiDescriptionsChipGroup,
+  wikiDescriptionsClientOnly,
   wikiDescriptionsContainer,
   wikiDescriptionsDialog,
   wikiDescriptionsDummy,
@@ -96,6 +99,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsMotionAxis,
   wikiDescriptionsMotionTransform,
   wikiDescriptionsPage,
+  wikiDescriptionsPageArea,
   wikiDescriptionsProgress,
   wikiDescriptionsRipple,
   wikiDescriptionsScrollbar,

@@ -12205,6 +12205,11 @@
         name: 'd1-chipGroup',
         type: 'component',
       ),
+      'clientOnly':(
+        index: 'clientOnly',
+        name: 'd1-clientOnly',
+        type: 'component',
+      ),
       'container':(
         index: 'container',
         name: 'd1-container',
@@ -12328,6 +12333,11 @@
       'page':(
         index: 'page',
         name: 'd1-page',
+        type: 'component',
+      ),
+      'pageArea':(
+        index: 'pageArea',
+        name: 'd1-pageArea',
         type: 'component',
       ),
       'progress':(
@@ -12743,6 +12753,11 @@
         name: 'd-chipGroup',
         type: 'component',
       ),
+      'clientOnly':(
+        index: 'clientOnly',
+        name: 'd-clientOnly',
+        type: 'component',
+      ),
       'container':(
         index: 'container',
         name: 'd-container',
@@ -12866,6 +12881,11 @@
       'page':(
         index: 'page',
         name: 'd-page',
+        type: 'component',
+      ),
+      'pageArea':(
+        index: 'pageArea',
+        name: 'd-pageArea',
         type: 'component',
       ),
       'progress':(
