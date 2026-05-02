@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initClientRouter - Ожидание готовности роутера'/>
+
+# `initClientRouter`
+
+Асинхронная функция, которая ожидает инициализацию и полную готовность маршрутизатора Vue. Это гарантирует, что все асинхронные компоненты и начальные хуки навигации разрешены перед тем, как приложение продолжит выполнение (например, перед гидратацией на клиенте или рендерингом на сервере).
+
+**Параметры:**
+- `router: Router | undefined` — Экземпляр Vue Router.
+
+**Возвращает:**
+`Promise<void>`
+
+```typescript
+import { initClientRouter } from '@dxtmisha/nitro-basic'
+import { createRouter } from './router'
+
+const router = createRouter()
+await initClientRouter(router)
+```

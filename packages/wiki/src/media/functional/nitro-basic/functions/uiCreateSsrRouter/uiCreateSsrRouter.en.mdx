@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/uiCreateSsrRouter - Create SSR Router'/>
+
+# `uiCreateSsrRouter`
+
+Creates a Vue router instance with a history type suitable for the current runtime environment. On the server, it uses `createMemoryHistory`, and in the browser, it uses `createWebHistory`.
+
+**Parameters:**
+- `routes: RouteRecordRaw[]` — A list of routes.
+- `options: NitroAppRouterOptions` — Additional router options.
+
+```typescript
+import { uiCreateSsrRouter } from '@dxtmisha/nitro-basic'
+
+const router = uiCreateSsrRouter(routes)
+```

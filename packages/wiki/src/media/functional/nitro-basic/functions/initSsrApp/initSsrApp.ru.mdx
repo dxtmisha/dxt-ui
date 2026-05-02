@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initSsrApp - Рендеринг SSR приложения'/>
+
+# `initSsrApp`
+
+Асинхронная функция, которая рендерит приложение Vue в HTML-строку и извлекает дополнительные данные контекста (например, телепорты). Это основной шаг при формировании ответа на сервере.
+
+**Параметры:**
+- `app: App<T>` — Экземпляр приложения Vue.
+- `context: SSRContext` (по умолчанию `{}`) — Контекст рендеринга на сервере.
+
+**Возвращает:**
+`Promise<{ appHtml, teleportsHtml, context }>` — Объект, содержащий HTML приложения, HTML телепортов и обновленный контекст.
+
+```typescript
+import { initSsrApp } from '@dxtmisha/nitro-basic'
+
+const { appHtml, teleportsHtml } = await initSsrApp(app)
+```

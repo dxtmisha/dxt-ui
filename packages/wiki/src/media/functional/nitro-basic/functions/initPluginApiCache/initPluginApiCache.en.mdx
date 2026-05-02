@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initPluginApiCache - API Cache Initialization'/>
+
+# `initPluginApiCache`
+
+A function to configure and initialize the API caching system. It uses Nitro's built-in storage (`useStorage`) to save, retrieve, and remove cache items. It also includes error handling via `ErrorCenter`.
+
+**Parameters:**
+- `storageKey: string` (default `'Ui_ApiCache'`) — The key prefix for Nitro storage.
+- `cacheStepAgeClearOld?: number` — The cache age threshold for automatically clearing outdated data.
+
+```typescript
+import { initPluginApiCache } from '@dxtmisha/nitro-basic'
+
+initPluginApiCache('my-custom-cache', 3600)
+```

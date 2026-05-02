@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Composables/useHeaders - Get Headers'/>
+
+# `useHeaders`
+
+A composable function that provides access to the API headers of the current request. It can return either the entire `Headers` object or the value of a specific header by its name.
+
+**Parameters:**
+- `name?: string` — Optional header name.
+
+**Returns:**
+- `Headers | undefined` — If no name is provided, returns the entire headers object.
+- `string | undefined` — If a name is provided, returns the value of that header.
+
+**Usage Example:**
+
+```typescript
+import { useHeaders } from '@dxtmisha/nitro-basic'
+
+// Get a specific header
+const contentType = useHeaders('Content-Type')
+
+// Get all headers
+const headers = useHeaders()
+if (headers) {
+  console.log(headers.get('Authorization'))
+}
+```

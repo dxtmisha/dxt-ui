@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initScriptsJson - Hydration Scripts Generation'/>
+
+# `initScriptsJson`
+
+A function to generate the JSON scripts required for data hydration on the client side. It collects the current state from `ServerStorage` and `Api` hydration data, combining them into a single string of HTML scripts.
+
+**Returns:**
+`string` — A string containing JSON scripts (e.g., `<script type="application/json">...</script>`).
+
+```typescript
+import { initScriptsJson } from '@dxtmisha/nitro-basic'
+
+const hydrationScripts = initScriptsJson()
+// Insert hydrationScripts into your HTML template before the closing </body> tag
+```

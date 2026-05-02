@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiServerStorage - Инициализация ServerStorage'/>
+
+# `uiServerStorage`
+
+Настраивает глобальный объект `ServerStorage`, предоставляя механизм для извлечения данных из контекста приложения Vue (внедренного через ключ `NITRO_APP_STORAGE`). Это позволяет компонентам сохранять и получать состояние во время серверного рендеринга.
+
+```typescript
+import { uiServerStorage } from '@dxtmisha/nitro-basic'
+
+uiServerStorage()
+```

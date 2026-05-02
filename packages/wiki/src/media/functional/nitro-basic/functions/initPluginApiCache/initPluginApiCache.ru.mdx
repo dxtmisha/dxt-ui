@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initPluginApiCache - Инициализация кэша API'/>
+
+# `initPluginApiCache`
+
+Функция для настройки и инициализации системы кэширования API. Она использует встроенное хранилище Nitro (`useStorage`) для сохранения, получения и удаления элементов кэша. Также включает обработку ошибок через `ErrorCenter`.
+
+**Параметры:**
+- `storageKey: string` (по умолчанию `'Ui_ApiCache'`) — Префикс ключа для хранилища Nitro.
+- `cacheStepAgeClearOld?: number` — Порог возраста кэша для автоматической очистки устаревших данных.
+
+```typescript
+import { initPluginApiCache } from '@dxtmisha/nitro-basic'
+
+initPluginApiCache('my-custom-cache', 3600)
+```

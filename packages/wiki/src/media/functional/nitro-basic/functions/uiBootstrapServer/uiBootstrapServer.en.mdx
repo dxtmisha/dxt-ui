@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/uiBootstrapServer - Server Component Initialization'/>
+
+# `uiBootstrapServer`
+
+Orchestrates the global initialization of core components in a server environment. It prepares the server for handling requests by configuring cookie storage, server storage, and the unique identifier generator.
+
+This function sequentially calls:
+1. `uiCookieStorage()`
+2. `uiServerStorage()`
+3. `uiId()`
+
+```typescript
+import { uiBootstrapServer } from '@dxtmisha/nitro-basic'
+
+// Called during server bootstrap
+uiBootstrapServer()
+```

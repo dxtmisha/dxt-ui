@@ -1,0 +1,7 @@
+import{n as e}from"./chunk-DnJy8xQt.js";import{r as t}from"./react-Ornc7p8c.js";import{t as n}from"./jsx-runtime-DNNexOQt.js";import{f as r,s as i}from"./blocks-DeABI6Wb.js";import{t as a}from"./mdx-react-shim-n552quEh.js";function o(e){let n={code:`code`,h1:`h1`,p:`p`,pre:`pre`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/en/nitro-basic/Functions/uiServerStorage - ServerStorage Initialization`}),`
+`,(0,c.jsx)(n.h1,{id:`uiserverstorage`,children:(0,c.jsx)(n.code,{children:`uiServerStorage`})}),`
+`,(0,c.jsxs)(n.p,{children:[`Configures the global `,(0,c.jsx)(n.code,{children:`ServerStorage`}),` object by providing a mechanism to retrieve data from the Vue application context (injected via the `,(0,c.jsx)(n.code,{children:`NITRO_APP_STORAGE`}),` key). This allows components to save and retrieve state during server-side rendering.`]}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { uiServerStorage } from '@dxtmisha/nitro-basic'
+
+uiServerStorage()
+`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

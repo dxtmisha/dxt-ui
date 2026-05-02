@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiCreateServerApp - Полная инициализация сервера'/>
+
+# `uiCreateServerApp`
+
+Комплексная асинхронная функция для инициализации приложения на стороне сервера. Она настраивает всё необходимое для SSR: заголовки, хранилища, API, маршрутизацию и выполняет рендеринг в HTML.
+
+**Основные этапы:**
+1. Инициализация заголовков, хранилищ и cookie.
+2. Настройка API-клиента и функциональных плагинов.
+3. Синхронизация роутера с текущим URL.
+4. Рендеринг приложения в строку.
+5. Подстановка данных (язык, мета, скрипты, контент) в HTML-шаблон.
+
+**Возвращает:**
+Объект с отрендеренным телом страницы, метаданными и заголовками.
+
+## Типы
+
+### NitroAppOptions
+
+- `api?: ApiConfig` — конфигурация для API-клиента.
+- `translate?: TranslateConfig` — конфигурация для сервиса переводов.
+- `metaSuffix?: string` — суффикс, который будет добавляться ко всем заголовкам страниц.
+- `icons?: IconsConfig` — конфигурация для сервиса управления иконками.
+- `router?: Router` — экземпляр Vue Router.
+- `errorCauses?: ErrorCenterCauseList` — список причин ошибок для центра ошибок.
+
+```typescript
+import { uiCreateServerApp } from '@dxtmisha/nitro-basic'
+
+const data = await uiCreateServerApp(app, request, router, options, action, context, htmlTemplate)
+```

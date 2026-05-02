@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initClientRouter - Wait for Router Ready'/>
+
+# `initClientRouter`
+
+An asynchronous function that waits for the initialization and full readiness of the Vue router. This ensures that all asynchronous components and initial navigation hooks are resolved before the application continues execution (e.g., before hydration on the client or rendering on the server).
+
+**Parameters:**
+- `router: Router | undefined` — The Vue Router instance.
+
+**Returns:**
+`Promise<void>`
+
+```typescript
+import { initClientRouter } from '@dxtmisha/nitro-basic'
+import { createRouter } from './router'
+
+const router = createRouter()
+await initClientRouter(router)
+```

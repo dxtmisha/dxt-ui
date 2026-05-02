@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/uiCreateClientApp - Client App Bootstrap'/>
+
+# `uiCreateClientApp`
+
+Finalizes the initialization and mounts the Vue application into the DOM on the client side. It connects functional plugins, waits for the router to be ready to prevent hydration mismatches, and performs additional actions before mounting.
+
+**Parameters:**
+- `app: App<T>` — The Vue application instance.
+- `rootContainer: string | T` (default `'#app'`) — Selector or element for mounting.
+- `router: Router` — The Vue Router instance.
+- `options: NitroAppOptions` — Configuration options.
+- `action?: (app: App<T>) => Promise<void> | void` — Additional action before mounting.
+
+## Types
+
+### NitroAppOptions
+
+- `api?: ApiConfig` — configuration for the API client.
+- `translate?: TranslateConfig` — configuration for the translation service.
+- `metaSuffix?: string` — suffix to be appended to all page titles.
+- `icons?: IconsConfig` — configuration for the icon management service.
+- `router?: Router` — Vue Router instance.
+- `errorCauses?: ErrorCenterCauseList` — error causes list for the error center.
+
+```typescript
+import { uiCreateClientApp } from '@dxtmisha/nitro-basic'
+
+await uiCreateClientApp(app, '#app', router, options)
+```

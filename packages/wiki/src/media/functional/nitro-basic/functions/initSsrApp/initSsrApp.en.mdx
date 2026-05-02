@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initSsrApp - SSR App Rendering'/>
+
+# `initSsrApp`
+
+An asynchronous function that renders a Vue application to an HTML string and extracts additional context data (e.g., teleports). This is a core step in generating a server response.
+
+**Parameters:**
+- `app: App<T>` — The Vue application instance.
+- `context: SSRContext` (default `{}`) — The server rendering context.
+
+**Returns:**
+`Promise<{ appHtml, teleportsHtml, context }>` — An object containing the application HTML, teleports HTML, and the updated context.
+
+```typescript
+import { initSsrApp } from '@dxtmisha/nitro-basic'
+
+const { appHtml, teleportsHtml } = await initSsrApp(app)
+```

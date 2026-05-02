@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initHeaders - Инициализация заголовков API'/>
+
+# `initHeaders`
+
+Инициализирует стандартные заголовки API и предоставляет их приложению Vue через механизм `provide` с ключом `NITRO_API_HEADERS`. По умолчанию устанавливает заголовок `Content-Type` в значение `text/html;charset=UTF-8`.
+
+**Параметры:**
+- `app: App<T>` — Экземпляр приложения Vue.
+
+```typescript
+import { initHeaders } from '@dxtmisha/nitro-basic'
+
+initHeaders(app)
+```

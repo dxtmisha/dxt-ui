@@ -1,0 +1,29 @@
+import{n as e}from"./chunk-DnJy8xQt.js";import{r as t}from"./react-Ornc7p8c.js";import{t as n}from"./jsx-runtime-DNNexOQt.js";import{f as r,s as i}from"./blocks-DeABI6Wb.js";import{t as a}from"./mdx-react-shim-n552quEh.js";function o(e){let n={a:`a`,code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/vi/nitro-basic/! Giới thiệu về thư viện`}),`
+`,(0,c.jsx)(n.h1,{id:`dxtmishanitro-basic`,children:(0,c.jsx)(n.a,{href:`https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic`,rel:`nofollow`,children:`@dxtmisha/nitro-basic`})}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.code,{children:`@dxtmisha/nitro-basic`}),` là một thư viện tiện ích cơ bản được thiết kế để xây dựng các ứng dụng Server-Side Rendering (SSR) mạnh mẽ bằng Vue 3 và Nitro. Nó cung cấp một bộ công cụ để đồng bộ hóa trạng thái giữa server và client, quản lý định tuyến và đơn giản hóa quy trình phát triển ứng dụng SSR.`]}),`
+`,(0,c.jsx)(n.h2,{id:`cài-đặt`,children:`Cài đặt`}),`
+`,(0,c.jsx)(n.p,{children:`Để bắt đầu sử dụng thư viện, hãy cài đặt nó qua npm:`}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-bash`,children:`npm i @dxtmisha/nitro-basic
+`})}),`
+`,(0,c.jsx)(n.h2,{id:`thư-viện-này-dùng-để-làm-gì`,children:`Thư viện này dùng để làm gì?`}),`
+`,(0,c.jsx)(n.p,{children:`Phát triển các ứng dụng với SSR (Server-Side Rendering) đòi hỏi sự chú ý đặc biệt đến từng chi tiết: từ việc cô lập trạng thái cho những người dùng khác nhau trên server đến việc ngăn chặn lỗi không khớp khi hydrat hóa (hydration mismatch) trên client.`}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.code,{children:`@dxtmisha/nitro-basic`}),` xử lý các tác vụ thông thường để cấu hình môi trường Nitro và Vue, cung cấp một cơ chế thống nhất để khởi tạo bộ lưu trữ, API client và định tuyến. Nó đóng vai trò như một cầu nối giữa các khả năng mạnh mẽ của Nitro và tính phản ứng của Vue 3.`]}),`
+`,(0,c.jsx)(n.h2,{id:`có-gì-bên-trong`,children:`Có gì bên trong?`}),`
+`,(0,c.jsx)(n.p,{children:`Thư viện bao gồm các công cụ để giải quyết các tác vụ SSR chính:`}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Khởi tạo môi trường`}),` — các hàm `,(0,c.jsx)(n.code,{children:`uiCreateServerApp`}),` và `,(0,c.jsx)(n.code,{children:`uiCreateClientApp`}),` cung cấp một cách tiêu chuẩn hóa để khởi chạy ứng dụng trong các môi trường khác nhau, tự động cấu hình các plugin và dịch vụ cần thiết.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Quản lý trạng thái và bộ lưu trữ`}),` — các công cụ để làm việc với bộ lưu trữ server (`,(0,c.jsx)(n.code,{children:`initServerStorage`}),`) và cookie (`,(0,c.jsx)(n.code,{children:`initCookieStorage`}),`). Chúng đảm bảo rằng dữ liệu nhận được trên server có thể truy cập được bởi các thành phần Vue thông qua cơ chế `,(0,c.jsx)(n.code,{children:`provide/inject`}),`.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Đồng bộ hóa định tuyến`}),` — các tiện ích để tạo và khởi tạo router (`,(0,c.jsx)(n.code,{children:`uiCreateSsrRouter`}),`, `,(0,c.jsx)(n.code,{children:`initServerRouter`}),`), đảm bảo điều hướng URL chính xác ở phía server và chuyển giao mượt mà cho client.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Hydrat hóa dữ liệu`}),` — tự động tạo các kịch bản JSON (`,(0,c.jsx)(n.code,{children:`initScriptsJson`}),`) để chuyển trạng thái `,(0,c.jsx)(n.code,{children:`ServerStorage`}),` và dữ liệu `,(0,c.jsx)(n.code,{children:`Api`}),` từ server sang client, loại bỏ các yêu cầu API dư thừa trong quá trình tải trang.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Tích hợp API`}),` — phương tiện để cấu hình các header và origin của yêu cầu, cho phép sử dụng URL tuyệt đối trong các cuộc gọi phía server và duy trì ủy quyền thông qua chuyển tiếp cookie.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Nitro Plugins`}),` — các hàm có sẵn để mở rộng khả năng của Nitro, chẳng hạn như lưu trữ đệm phản hồi API phía server.`]}),`
+`,(0,c.jsx)(n.h2,{id:`nó-dành-cho-ai`,children:`Nó dành cho ai?`}),`
+`,(0,c.jsx)(n.p,{children:`Thư viện được thiết kế cho các nhà phát triển đang xây dựng giải pháp của họ trên stack Vue 3 + Nitro (hoặc các kiến trúc giống Nuxt) và cần các công cụ cấp thấp nhưng linh hoạt để quản lý vòng đời của một ứng dụng SSR.`}),`
+`,(0,c.jsx)(n.h2,{id:`nguyên-tắc`,children:`Nguyên tắc`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`An toàn SSR`}),` — tất cả các công cụ được thiết kế để loại bỏ rò rỉ dữ liệu giữa các yêu cầu từ những người dùng khác nhau.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Hydrat hóa mượt mà`}),` — giảm thiểu sự khác biệt giữa trạng thái server và client.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Tính mô-đun`}),` — khả năng sử dụng cả các hàm tạo ứng dụng toàn diện và các tiện ích khởi tạo nguyên tử riêng lẻ.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Tích hợp`}),` — khả năng tương thích sâu với hệ sinh thái `,(0,c.jsx)(n.code,{children:`@dxtmisha/functional`}),`.`]}),`
+`]}),`
+`,(0,c.jsx)(n.h2,{id:`git`,children:`Git`}),`
+`,(0,c.jsx)(n.p,{children:(0,c.jsx)(n.a,{href:`https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic`,rel:`nofollow`,children:`https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

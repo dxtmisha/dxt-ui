@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiId - Глобальный генератор ID'/>
+
+# `uiId`
+
+Инициализирует глобальную функцию генерации уникальных идентификаторов для элементов. Она использует встроенный механизм Vue `useId`, если вызов происходит внутри компонента, в противном случае генерирует инкрементальный идентификатор с префиксом `ui-`.
+
+```typescript
+import { uiId } from '@dxtmisha/nitro-basic'
+
+uiId()
+```

@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/uiCreateClientApp - Khởi động ứng dụng Client'/>
+
+# `uiCreateClientApp`
+
+Hoàn tất việc khởi tạo và mount ứng dụng Vue vào DOM ở phía client. Nó kết nối các plugin chức năng, đợi router sẵn sàng để ngăn chặn sự không khớp khi hydrat hóa, và thực hiện các hành động bổ sung trước khi mount.
+
+**Tham số:**
+- `app: App<T>` — Thực thể ứng dụng Vue.
+- `rootContainer: string | T` (mặc định `'#app'`) — Selector hoặc thành phần để mount.
+- `router: Router` — Thực thể Vue Router.
+- `options: NitroAppOptions` — Các tùy chọn cấu hình.
+- `action?: (app: App<T>) => Promise<void> | void` — Hành động bổ sung trước khi mount.
+
+## Các kiểu
+
+### NitroAppOptions
+
+- `api?: ApiConfig` — cấu hình cho API client.
+- `translate?: TranslateConfig` — cấu hình cho dịch vụ dịch thuật.
+- `metaSuffix?: string` — hậu tố sẽ được thêm vào tất cả các tiêu đề trang.
+- `icons?: IconsConfig` — cấu hình cho dịch vụ quản lý icon.
+- `router?: Router` — thực thể Vue Router.
+- `errorCauses?: ErrorCenterCauseList` — danh sách nguyên nhân lỗi cho trung tâm lỗi.
+
+```typescript
+import { uiCreateClientApp } from '@dxtmisha/nitro-basic'
+
+await uiCreateClientApp(app, '#app', router, options)
+```

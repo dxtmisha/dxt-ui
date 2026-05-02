@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/initPluginApiCache - Khởi tạo bộ nhớ đệm API'/>
+
+# `initPluginApiCache`
+
+Một hàm để cấu hình và khởi tạo hệ thống lưu trữ đệm API. Nó sử dụng bộ lưu trữ tích hợp của Nitro (`useStorage`) để lưu, lấy và xóa các mục trong bộ nhớ đệm. Nó cũng bao gồm việc xử lý lỗi thông qua `ErrorCenter`.
+
+**Tham số:**
+- `storageKey: string` (mặc định `'Ui_ApiCache'`) — Tiền tố khóa cho bộ lưu trữ Nitro.
+- `cacheStepAgeClearOld?: number` — Ngưỡng tuổi của bộ nhớ đệm để tự động xóa dữ liệu cũ.
+
+```typescript
+import { initPluginApiCache } from '@dxtmisha/nitro-basic'
+
+initPluginApiCache('my-custom-cache', 3600)
+```

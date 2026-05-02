@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/initServerRouter - Khởi tạo Router trên Server'/>
+
+# `initServerRouter`
+
+Một hàm bất đối xứng để khởi tạo Vue router trong quá trình render phía server. Nó đẩy router đến URL yêu cầu hiện tại và đợi cho đến khi nó sẵn sàng.
+
+**Tham số:**
+- `request: Request` — Đối tượng yêu cầu HTTP.
+- `router: Router | undefined` — Thực thể Vue Router.
+
+**Trả về:**
+`Promise<void>`
+
+```typescript
+import { initServerRouter } from '@dxtmisha/nitro-basic'
+
+await initServerRouter(request, router)
+```

@@ -1,0 +1,29 @@
+import{n as e}from"./chunk-DnJy8xQt.js";import{r as t}from"./react-Ornc7p8c.js";import{t as n}from"./jsx-runtime-DNNexOQt.js";import{f as r,s as i}from"./blocks-DeABI6Wb.js";import{t as a}from"./mdx-react-shim-n552quEh.js";function o(e){let n={a:`a`,code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/ru/nitro-basic/! О библиотеке`}),`
+`,(0,c.jsx)(n.h1,{id:`dxtmishanitro-basic`,children:(0,c.jsx)(n.a,{href:`https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic`,rel:`nofollow`,children:`@dxtmisha/nitro-basic`})}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.code,{children:`@dxtmisha/nitro-basic`}),` — это базовая библиотека утилит, предназначенная для создания надежных приложений с серверным рендерингом (SSR) на базе Vue 3 и Nitro. Она предоставляет набор инструментов для синхронизации состояния между сервером и клиентом, управления маршрутизацией и упрощения процесса разработки SSR-приложений.`]}),`
+`,(0,c.jsx)(n.h2,{id:`установка`,children:`Установка`}),`
+`,(0,c.jsx)(n.p,{children:`Чтобы начать использовать библиотеку, установите ее через npm:`}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-bash`,children:`npm i @dxtmisha/nitro-basic
+`})}),`
+`,(0,c.jsx)(n.h2,{id:`для-чего-эта-библиотека`,children:`Для чего эта библиотека?`}),`
+`,(0,c.jsx)(n.p,{children:`Разработка приложений с SSR (Server-Side Rendering) требует особого внимания к деталям: от изоляции состояний разных пользователей на сервере до предотвращения ошибок гидратации (hydration mismatch) на клиенте.`}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.code,{children:`@dxtmisha/nitro-basic`}),` берет на себя рутинные задачи по настройке окружения Nitro и Vue, обеспечивая единый механизм инициализации хранилищ, API-клиентов и маршрутизации. Она служит связующим звеном между мощными возможностями Nitro и реактивностью Vue 3.`]}),`
+`,(0,c.jsx)(n.h2,{id:`что-в-ней-есть`,children:`Что в ней есть?`}),`
+`,(0,c.jsx)(n.p,{children:`Библиотека включает в себя инструменты для решения ключевых задач SSR:`}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Инициализация окружения`}),` — функции `,(0,c.jsx)(n.code,{children:`uiCreateServerApp`}),` и `,(0,c.jsx)(n.code,{children:`uiCreateClientApp`}),` предоставляют стандартизированный способ запуска приложения в разных средах, автоматически настраивая необходимые плагины и сервисы.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Управление состоянием и хранилищами`}),` — инструменты для работы с серверным хранилищем (`,(0,c.jsx)(n.code,{children:`initServerStorage`}),`) и cookie (`,(0,c.jsx)(n.code,{children:`initCookieStorage`}),`). Они гарантируют, что данные, полученные на сервере, будут доступны компонентам Vue через механизм `,(0,c.jsx)(n.code,{children:`provide/inject`}),`.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Синхронизация маршрутизации`}),` — утилиты для создания и инициализации роутера (`,(0,c.jsx)(n.code,{children:`uiCreateSsrRouter`}),`, `,(0,c.jsx)(n.code,{children:`initServerRouter`}),`), которые обеспечивают правильный переход по URL на стороне сервера и плавную передачу управления клиенту.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Гидратация данных`}),` — автоматическая генерация JSON-скриптов (`,(0,c.jsx)(n.code,{children:`initScriptsJson`}),`) для передачи состояния `,(0,c.jsx)(n.code,{children:`ServerStorage`}),` и данных `,(0,c.jsx)(n.code,{children:`Api`}),` с сервера на клиент, что исключает повторные запросы к API при загрузке страницы.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Интеграция с API`}),` — средства для настройки заголовков и источника (origin) запросов, позволяющие использовать абсолютные URL при серверных вызовах и сохранять авторизацию через проброс cookie.`]}),`
+`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Nitro Плагины`}),` — готовые функции для расширения возможностей Nitro, такие как кэширование API ответов на уровне сервера.`]}),`
+`,(0,c.jsx)(n.h2,{id:`для-кого-это`,children:`Для кого это?`}),`
+`,(0,c.jsx)(n.p,{children:`Библиотека создана для разработчиков, которые строят свои решения на стеке Vue 3 + Nitro (или Nuxt-подобные архитектуры) и нуждаются в низкоуровневых, но гибких инструментах для управления жизненным циклом SSR-приложения.`}),`
+`,(0,c.jsx)(n.h2,{id:`принципы`,children:`Принципы`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Безопасность SSR`}),` — все инструменты спроектированы так, чтобы исключить утечки данных между запросами разных пользователей.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Бесшовная гидратация`}),` — минимизация различий между серверным и клиентским состоянием.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Модульность`}),` — возможность использовать как комплексные функции создания приложения, так и отдельные атомарные утилиты инициализации.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Интеграция`}),` — глубокая совместимость с экосистемой `,(0,c.jsx)(n.code,{children:`@dxtmisha/functional`}),`.`]}),`
+`]}),`
+`,(0,c.jsx)(n.h2,{id:`git`,children:`Git`}),`
+`,(0,c.jsx)(n.p,{children:(0,c.jsx)(n.a,{href:`https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic`,rel:`nofollow`,children:`https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

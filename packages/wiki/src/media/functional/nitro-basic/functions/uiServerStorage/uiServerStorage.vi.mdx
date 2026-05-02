@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/uiServerStorage - Khởi tạo ServerStorage'/>
+
+# `uiServerStorage`
+
+Cấu hình đối tượng `ServerStorage` toàn cục bằng cách cung cấp một cơ chế để lấy dữ liệu từ ngữ cảnh ứng dụng Vue (được cung cấp thông qua khóa `NITRO_APP_STORAGE`). Điều này cho phép các thành phần lưu và lấy trạng thái trong quá trình render phía server.
+
+```typescript
+import { uiServerStorage } from '@dxtmisha/nitro-basic'
+
+uiServerStorage()
+```

@@ -1,0 +1,7 @@
+import{n as e}from"./chunk-DnJy8xQt.js";import{r as t}from"./react-Ornc7p8c.js";import{t as n}from"./jsx-runtime-DNNexOQt.js";import{f as r,s as i}from"./blocks-DeABI6Wb.js";import{t as a}from"./mdx-react-shim-n552quEh.js";function o(e){let n={code:`code`,h1:`h1`,p:`p`,pre:`pre`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/vi/nitro-basic/Functions/uiCookieStorage - Khởi tạo CookieStorage`}),`
+`,(0,c.jsx)(n.h1,{id:`uicookiestorage`,children:(0,c.jsx)(n.code,{children:`uiCookieStorage`})}),`
+`,(0,c.jsxs)(n.p,{children:[`Cấu hình đối tượng `,(0,c.jsx)(n.code,{children:`CookieStorage`}),` toàn cục bằng cách liên kết nó với ngữ cảnh ứng dụng Nitro. Nó thiết lập các listener để lấy cookie từ yêu cầu hiện tại và ghi chúng vào các header phản hồi (`,(0,c.jsx)(n.code,{children:`Set-Cookie`}),`) bằng cách sử dụng composable `,(0,c.jsx)(n.code,{children:`useHeaders`}),`.`]}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { uiCookieStorage } from '@dxtmisha/nitro-basic'
+
+uiCookieStorage()
+`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

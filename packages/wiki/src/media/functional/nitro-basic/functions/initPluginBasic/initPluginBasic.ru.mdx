@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initPluginBasic - Инициализация базового плагина Nitro'/>
+
+# `initPluginBasic`
+
+Функция инициализации базовых возможностей для Nitro-приложения. В настоящее время она в основном отвечает за настройку кэша API, используя переданную конфигурацию.
+
+**Параметры:**
+- `_ : NitroApp` — Экземпляр приложения Nitro.
+- `config: NitroAppBasicConfig` — Объект конфигурации.
+
+## Типы
+
+### NitroAppBasicConfig
+
+- `api?: object` — Настройки API.
+  - `cacheStorageKey: string` — префикс ключа, который будет использоваться в хранилище Nitro для кэша (по умолчанию `Ui_ApiCache`).
+  - `cacheStepAgeClearOld: number` — порог возраста кэша, после которого старые записи будут удалены.
+
+**Пример использования:**
+
+```typescript
+import { initPluginBasic } from '@dxtmisha/nitro-basic'
+
+export default defineNitroPlugin((nitroApp) => {
+  initPluginBasic(nitroApp, {
+    api: {
+      cacheStorageKey: 'my_app_cache',
+      cacheStepAgeClearOld: 3600000 // 1 час
+    }
+  })
+})
+```

@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Composables/useHeaders - Получение заголовков'/>
+
+# `useHeaders`
+
+Композитная функция (composable), которая позволяет получить доступ к заголовкам API текущего запроса. Она может возвращать как весь объект `Headers`, так и значение конкретного заголовка по его имени.
+
+**Параметры:**
+- `name?: string` — Опциональное имя заголовка.
+
+**Возвращает:**
+- `Headers | undefined` — Если имя не передано, возвращает весь объект заголовков.
+- `string | undefined` — Если передано имя, возвращает значение этого заголовка.
+
+**Пример использования:**
+
+```typescript
+import { useHeaders } from '@dxtmisha/nitro-basic'
+
+// Получение конкретного заголовка
+const contentType = useHeaders('Content-Type')
+
+// Получение всех заголовков
+const headers = useHeaders()
+if (headers) {
+  console.log(headers.get('Authorization'))
+}
+```

@@ -1,0 +1,14 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiBootstrapClient - Клиентская инициализация ID'/>
+
+# `uiBootstrapClient`
+
+Инициализирует глобальный генератор уникальных идентификаторов для элементов на стороне клиента. Эта функция вызывает `uiId()`, чтобы гарантировать, что генерация идентификаторов будет согласована с механизмом Vue `useId`.
+
+```typescript
+import { uiBootstrapClient } from '@dxtmisha/nitro-basic'
+
+// Вызывается при запуске клиента
+uiBootstrapClient()
+```

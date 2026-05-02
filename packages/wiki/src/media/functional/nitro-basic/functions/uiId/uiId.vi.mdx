@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/uiId - Trình tạo ID toàn cục'/>
+
+# `uiId`
+
+Khởi tạo hàm tạo định danh duy nhất toàn cục cho các thành phần. Nó sử dụng cơ chế `useId` tích hợp của Vue nếu được gọi trong một component, ngược lại nó sẽ tạo một ID tăng dần với tiền tố `ui-`.
+
+```typescript
+import { uiId } from '@dxtmisha/nitro-basic'
+
+uiId()
+```

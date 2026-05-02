@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/uiCreateApp - Create Vue App'/>
+
+# `uiCreateApp`
+
+Creates a Vue SSR application instance from a root component and initializes core plugins, including the router. If a ready-made router is not passed in the options, the function can create one automatically based on the provided routes.
+
+**Parameters:**
+- `appComponent: A` — The root component of the application.
+- `options: NitroAppOptions` — Application configuration options.
+
+**Returns:**
+An object containing the `app` instance, `router`, and `options`.
+
+## Types
+
+### NitroAppOptions
+
+- `appRouter?: object` — Router configuration:
+  - `routes: RouteRecordRaw[]` — list of route records.
+  - `options?: RouterOptions` — router creation options.
+- `api?: ApiConfig` — configuration for the API client.
+- `translate?: TranslateConfig` — configuration for the translation service.
+- `metaSuffix?: string` — suffix to be appended to all page titles.
+- `icons?: IconsConfig` — configuration for the icon management service.
+- `router?: Router` — Vue Router instance (if already created).
+- `errorCauses?: ErrorCenterCauseList` — error causes list for the error center.
+
+**Usage Example:**
+
+```typescript
+import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import App from './App.vue'
+
+const { app, router } = uiCreateApp(App, {
+  appRouter: {
+    routes: [
+      { path: '/', component: () => import('./Home.vue') }
+    ]
+  }
+})
+```

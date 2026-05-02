@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/uiCookieStorage - CookieStorage Initialization'/>
+
+# `uiCookieStorage`
+
+Configures the global `CookieStorage` object by linking it to the Nitro application context. It sets up listeners to retrieve cookies from the current request and write them to the response headers (`Set-Cookie`) using the `useHeaders` composable.
+
+```typescript
+import { uiCookieStorage } from '@dxtmisha/nitro-basic'
+
+uiCookieStorage()
+```

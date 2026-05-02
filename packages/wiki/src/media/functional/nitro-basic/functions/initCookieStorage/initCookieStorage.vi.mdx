@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/initCookieStorage - Khởi tạo bộ lưu trữ Cookie'/>
+
+# `initCookieStorage`
+
+Hàm để khởi tạo bộ lưu trữ cookie trong ứng dụng Vue. Nó trích xuất chuỗi `Cookie` từ yêu cầu HTTP và cung cấp nó thông qua cơ chế `provide` bằng khóa `NITRO_APP_COOKIE`. Điều này cho phép các thành phần và composables truy cập cookie trong quá trình render phía server.
+
+**Tham số:**
+- `app: App<T>` — Thực thể ứng dụng Vue.
+- `request: Request` — Đối tượng yêu cầu HTTP.
+
+```typescript
+import { initCookieStorage } from '@dxtmisha/nitro-basic'
+
+// Trong một handler server
+initCookieStorage(app, request)
+```

@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Composables/useHeaders - Lấy Header'/>
+
+# `useHeaders`
+
+Một hàm composable cung cấp quyền truy cập vào các header API của yêu cầu hiện tại. Nó có thể trả về toàn bộ đối tượng `Headers` hoặc giá trị của một header cụ thể theo tên của nó.
+
+**Tham số:**
+- `name?: string` — Tên header (tùy chọn).
+
+**Trả về:**
+- `Headers | undefined` — Nếu không cung cấp tên, trả về toàn bộ đối tượng headers.
+- `string | undefined` — Nếu cung cấp tên, trả về giá trị của header đó.
+
+**Ví dụ sử dụng:**
+
+```typescript
+import { useHeaders } from '@dxtmisha/nitro-basic'
+
+// Lấy một header cụ thể
+const contentType = useHeaders('Content-Type')
+
+// Lấy tất cả các header
+const headers = useHeaders()
+if (headers) {
+  console.log(headers.get('Authorization'))
+}
+```

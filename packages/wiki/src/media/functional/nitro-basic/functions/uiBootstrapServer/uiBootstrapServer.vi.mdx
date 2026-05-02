@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/uiBootstrapServer - Khởi tạo thành phần phía Server'/>
+
+# `uiBootstrapServer`
+
+Điều phối việc khởi tạo toàn cục các thành phần cốt lõi trong môi trường server. Nó chuẩn bị cho server xử lý các yêu cầu bằng cách cấu hình bộ lưu trữ cookie, bộ lưu trữ server và trình tạo định danh duy nhất.
+
+Hàm này gọi tuần tự:
+1. `uiCookieStorage()`
+2. `uiServerStorage()`
+3. `uiId()`
+
+```typescript
+import { uiBootstrapServer } from '@dxtmisha/nitro-basic'
+
+// Được gọi trong quá trình khởi động server
+uiBootstrapServer()
+```

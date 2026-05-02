@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/getRequestUrl - Получение пути запроса'/>
+
+# `getRequestUrl`
+
+Утилитарная функция, которая извлекает путь (pathname) из объекта [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request). Это позволяет получить только путь к ресурсу, исключая протокол, домен и параметры запроса.
+
+**Параметры:**
+- `request: Request` — Объект стандартного Web API запроса.
+
+**Возвращает:**
+`string` — Строка пути (например, `/api/users`).
+
+```typescript
+import { getRequestUrl } from '@dxtmisha/nitro-basic'
+
+// Пример с объектом Request
+const request = new Request('https://dxtmisha.com/docs/api?query=1')
+const urlPath = getRequestUrl(request)
+
+// Результат: "/docs/api"
+console.log(urlPath)
+```

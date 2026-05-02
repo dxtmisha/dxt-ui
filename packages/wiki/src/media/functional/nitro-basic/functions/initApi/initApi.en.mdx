@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initApi - API Client Initialization'/>
+
+# `initApi`
+
+A utility function that initializes the API client for the current request on the server. It sets the base origin extracted from the request object to ensure that absolute URLs are correctly formed when making API requests during server-side rendering (SSR).
+
+**Parameters:**
+- `request: Request` — The incoming server HTTP request object.
+
+**Usage Example:**
+
+```typescript
+import { initApi } from '@dxtmisha/nitro-basic'
+
+export default defineEventHandler((event) => {
+  const request = toWebRequest(event)
+  initApi(request)
+  
+  // Now the Api client is configured with the correct origin
+})
+```

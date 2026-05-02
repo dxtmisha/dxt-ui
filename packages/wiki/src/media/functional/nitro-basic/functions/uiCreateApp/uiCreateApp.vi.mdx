@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/uiCreateApp - Tạo ứng dụng Vue'/>
+
+# `uiCreateApp`
+
+Tạo một thực thể ứng dụng Vue SSR từ một thành phần gốc và khởi tạo các plugin cốt lõi, bao gồm cả router. Nếu một router có sẵn không được truyền vào trong các tùy chọn, hàm có thể tự động tạo một router dựa trên các tuyến đường được cung cấp.
+
+**Tham số:**
+- `appComponent: A` — Thành phần gốc của ứng dụng.
+- `options: NitroAppOptions` — Các tùy chọn cấu hình ứng dụng.
+
+**Trả về:**
+Một đối tượng chứa thực thể `app`, `router`, và `options`.
+
+## Các kiểu
+
+### NitroAppOptions
+
+- `appRouter?: object` — Cấu hình router:
+  - `routes: RouteRecordRaw[]` — danh sách các bản ghi tuyến đường.
+  - `options?: RouterOptions` — các tùy chọn tạo router.
+- `api?: ApiConfig` — cấu hình cho API client.
+- `translate?: TranslateConfig` — cấu hình cho dịch vụ dịch thuật.
+- `metaSuffix?: string` — hậu tố sẽ được thêm vào tất cả các tiêu đề trang.
+- `icons?: IconsConfig` — cấu hình cho dịch vụ quản lý icon.
+- `router?: Router` — thực thể Vue Router (nếu đã được tạo).
+- `errorCauses?: ErrorCenterCauseList` — danh sách nguyên nhân lỗi cho trung tâm lỗi.
+
+**Ví dụ sử dụng:**
+
+```typescript
+import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import App from './App.vue'
+
+const { app, router } = uiCreateApp(App, {
+  appRouter: {
+    routes: [
+      { path: '/', component: () => import('./Home.vue') }
+    ]
+  }
+})
+```

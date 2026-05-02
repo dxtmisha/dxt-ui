@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/getRequestUrl - Get Request Pathname'/>
+
+# `getRequestUrl`
+
+A utility function that extracts the pathname from a [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) object. This allows you to get only the resource path, excluding the protocol, domain, and query parameters.
+
+**Parameters:**
+- `request: Request` — A standard Web API Request object.
+
+**Returns:**
+`string` — The pathname string (e.g., `/api/users`).
+
+```typescript
+import { getRequestUrl } from '@dxtmisha/nitro-basic'
+
+// Example with a Request object
+const request = new Request('https://dxtmisha.com/docs/api?query=1')
+const urlPath = getRequestUrl(request)
+
+// Result: "/docs/api"
+console.log(urlPath)
+```

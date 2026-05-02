@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/getRequestUrl - Lấy đường dẫn yêu cầu'/>
+
+# `getRequestUrl`
+
+Một hàm tiện ích giúp trích xuất đường dẫn (pathname) từ đối tượng [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request). Điều này cho phép bạn chỉ lấy đường dẫn tài nguyên, loại trừ giao thức, tên miền và các tham số truy vấn.
+
+**Tham số:**
+- `request: Request` — Đối tượng Request chuẩn Web API.
+
+**Trả về:**
+`string` — Chuỗi đường dẫn (ví dụ: `/api/users`).
+
+```typescript
+import { getRequestUrl } from '@dxtmisha/nitro-basic'
+
+// Ví dụ với đối tượng Request
+const request = new Request('https://dxtmisha.com/docs/api?query=1')
+const urlPath = getRequestUrl(request)
+
+// Kết quả: "/docs/api"
+console.log(urlPath)
+```

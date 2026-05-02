@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initApi - Инициализация API клиента'/>
+
+# `initApi`
+
+Утилитарная функция, которая инициализирует API-клиент для текущего запроса на сервере. Она устанавливает базовый источник (origin), извлеченный из объекта запроса, чтобы гарантировать правильное формирование абсолютных URL-адресов при выполнении API-запросов во время серверного рендеринга (SSR).
+
+**Параметры:**
+- `request: Request` — Объект входящего HTTP-запроса сервера.
+
+**Пример использования:**
+
+```typescript
+import { initApi } from '@dxtmisha/nitro-basic'
+
+export default defineEventHandler((event) => {
+  const request = toWebRequest(event)
+  initApi(request)
+  
+  // Теперь Api клиент настроен на правильный origin
+})
+```

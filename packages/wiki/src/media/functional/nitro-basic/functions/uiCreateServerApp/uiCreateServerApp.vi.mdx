@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/uiCreateServerApp - Khởi tạo Server đầy đủ'/>
+
+# `uiCreateServerApp`
+
+Một hàm bất đối xứng toàn diện để khởi tạo ứng dụng ở phía server. Nó cấu hình mọi thứ cần thiết cho SSR: header, bộ lưu trữ, API, định tuyến và thực hiện render HTML.
+
+**Các giai đoạn chính:**
+1. Khởi tạo header, bộ lưu trữ và cookie.
+2. Cấu hình API client và các plugin chức năng.
+3. Đồng bộ hóa router với URL hiện tại.
+4. Render ứng dụng thành một chuỗi.
+5. Thay thế dữ liệu (ngôn ngữ, meta, kịch bản, nội dung) vào template HTML.
+
+**Trả về:**
+Một đối tượng với nội dung trang đã được render, metadata và các header.
+
+## Các kiểu
+
+### NitroAppOptions
+
+- `api?: ApiConfig` — cấu hình cho API client.
+- `translate?: TranslateConfig` — cấu hình cho dịch vụ dịch thuật.
+- `metaSuffix?: string` — hậu tố sẽ được thêm vào tất cả các tiêu đề trang.
+- `icons?: IconsConfig` — cấu hình cho dịch vụ quản lý icon.
+- `router?: Router` — thực thể Vue Router.
+- `errorCauses?: ErrorCenterCauseList` — danh sách nguyên nhân lỗi cho trung tâm lỗi.
+
+```typescript
+import { uiCreateServerApp } from '@dxtmisha/nitro-basic'
+
+const data = await uiCreateServerApp(app, request, router, options, action, context, htmlTemplate)
+```

@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiCreateClientApp - Запуск приложения на клиенте'/>
+
+# `uiCreateClientApp`
+
+Завершает инициализацию и монтирует Vue-приложение в DOM на стороне клиента. Она подключает функциональные плагины, ожидает готовности маршрутизатора для предотвращения ошибок гидратации и выполняет дополнительные действия перед монтированием.
+
+**Параметры:**
+- `app: App<T>` — Экземпляр приложения Vue.
+- `rootContainer: string | T` (по умолчанию `'#app'`) — Селектор или элемент для монтирования.
+- `router: Router` — Экземпляр Vue Router.
+- `options: NitroAppOptions` — Параметры конфигурации.
+- `action?: (app: App<T>) => Promise<void> | void` — Дополнительное действие перед монтированием.
+
+## Типы
+
+### NitroAppOptions
+
+- `api?: ApiConfig` — конфигурация для API-клиента.
+- `translate?: TranslateConfig` — конфигурация для сервиса переводов.
+- `metaSuffix?: string` — суффикс, который будет добавляться ко всем заголовкам страниц.
+- `icons?: IconsConfig` — конфигурация для сервиса управления иконками.
+- `router?: Router` — экземпляр Vue Router.
+- `errorCauses?: ErrorCenterCauseList` — список причин ошибок для центра ошибок.
+
+```typescript
+import { uiCreateClientApp } from '@dxtmisha/nitro-basic'
+
+await uiCreateClientApp(app, '#app', router, options)
+```

@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initHeaders - API Headers Initialization'/>
+
+# `initHeaders`
+
+Initializes standard API headers and provides them to the Vue application via the `provide` mechanism with the `NITRO_API_HEADERS` key. By default, it sets the `Content-Type` header to `text/html;charset=UTF-8`.
+
+**Parameters:**
+- `app: App<T>` — The Vue application instance.
+
+```typescript
+import { initHeaders } from '@dxtmisha/nitro-basic'
+
+initHeaders(app)
+```

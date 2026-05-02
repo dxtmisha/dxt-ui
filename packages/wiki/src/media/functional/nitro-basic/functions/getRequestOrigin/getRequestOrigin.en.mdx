@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/getRequestOrigin - Get Request Origin'/>
+
+# `getRequestOrigin`
+
+A utility function that extracts the origin (protocol and domain) from a [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) object. This is useful for getting the base URL of the current request without paths or query parameters.
+
+**Parameters:**
+- `request: Request` — A standard Web API Request object.
+
+**Returns:**
+`string` — The origin string (e.g., `https://example.com`).
+
+```typescript
+import { getRequestOrigin } from '@dxtmisha/nitro-basic'
+
+// Example with a Request object
+const request = new Request('https://dxtmisha.com/docs/api?query=1')
+const origin = getRequestOrigin(request)
+
+// Result: "https://dxtmisha.com"
+console.log(origin)
+```

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initServerRouter - Инициализация роутера на сервере'/>
+
+# `initServerRouter`
+
+Асинхронная функция для инициализации маршрутизатора Vue во время серверного рендеринга. Она переключает роутер на текущий URL запроса и ожидает его готовности.
+
+**Параметры:**
+- `request: Request` — Объект HTTP-запроса.
+- `router: Router | undefined` — Экземпляр Vue Router.
+
+**Возвращает:**
+`Promise<void>`
+
+```typescript
+import { initServerRouter } from '@dxtmisha/nitro-basic'
+
+await initServerRouter(request, router)
+```

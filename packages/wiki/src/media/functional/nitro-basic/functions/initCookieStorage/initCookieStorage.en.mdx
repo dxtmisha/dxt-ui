@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/initCookieStorage - Cookie Storage Initialization'/>
+
+# `initCookieStorage`
+
+A function to initialize cookie storage in a Vue application. It extracts the `Cookie` string from the HTTP request and provides it via the `provide` mechanism using the `NITRO_APP_COOKIE` key. This allows components and composables to access cookies during server-side rendering.
+
+**Parameters:**
+- `app: App<T>` — The Vue application instance.
+- `request: Request` — The HTTP request object.
+
+```typescript
+import { initCookieStorage } from '@dxtmisha/nitro-basic'
+
+// In a server handler
+initCookieStorage(app, request)
+```

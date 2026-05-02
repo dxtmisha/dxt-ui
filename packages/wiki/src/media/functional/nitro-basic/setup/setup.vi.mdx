@@ -1,0 +1,133 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/# Chuẩn bị dự án'/>
+
+# Chuẩn bị dự án
+
+Thư viện `@dxtmisha/nitro-basic` được thiết kế để hoạt động kết hợp với Nitro và Vue 3. Nó đảm bảo sự chuyển đổi mượt mà giữa quá trình render phía server và phía client. Dưới đây là hướng dẫn từng bước để tích hợp thư viện vào dự án của bạn.
+
+## 1. Cài đặt các phần phụ thuộc
+
+Cài đặt các gói cần thiết. Ngoài bản thân thư viện, bạn sẽ cần Vue 3 và Vue Router:
+
+```bash
+npm install @dxtmisha/nitro-basic vue vue-router
+```
+
+## 2. Khởi tạo Plugin Nitro
+
+Để thiết lập môi trường server cơ bản (ví dụ: lưu đệm API), bạn cần đăng ký một plugin Nitro.
+
+Tạo tệp `server/plugins/ui.ts`:
+
+```typescript
+import { definePlugin } from 'nitro'
+import { initPluginBasic } from '@dxtmisha/nitro-basic/plugin'
+
+export default definePlugin((nitroApp) => {
+  initPluginBasic(nitroApp)
+})
+```
+
+## 3. Tạo Factory ứng dụng (main.ts)
+
+Tạo một tệp dùng chung để khởi tạo ứng dụng Vue sẽ được sử dụng trên cả server và client.
+
+```typescript
+// src/main.ts
+import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import App from './App.vue'
+import { routes } from './router'
+
+export function createApp() {
+  return uiCreateApp(App, {
+    appRouter: {
+      routes
+    }
+  })
+}
+```
+
+## 4. Cấu hình điểm đầu vào Client
+
+Trên client, bạn cần chuẩn bị trình tạo định danh và mount ứng dụng.
+
+```typescript
+// src/entry-client.ts
+import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic'
+import { createApp } from './main'
+
+const { app, router, options } = createApp()
+
+// Khởi tạo ID để hydrat hóa
+uiBootstrapClient()
+
+// Mount ứng dụng
+uiCreateClientApp(app, '#app', router, options)
+```
+
+## 5. Cấu hình điểm đầu vào Server
+
+Điểm đầu vào server chịu trách nhiệm khởi tạo bộ lưu trữ, header và render HTML.
+
+```typescript
+// src/entry-server.ts
+import { uiBootstrapServer, uiCreateServerApp } from '@dxtmisha/nitro-basic'
+import { createApp } from './main'
+import template from './templates/main.html?raw' // HTML template
+
+// Khởi tạo server toàn cục
+uiBootstrapServer()
+
+export default {
+  async fetch(request: Request) {
+    const { app, router, options } = createApp()
+
+    const { headers, body } = await uiCreateServerApp(
+      app,
+      request,
+      router,
+      options,
+      undefined,
+      undefined,
+      template
+    )
+
+    return new Response(body, { headers })
+  }
+}
+```
+
+## 6. Template HTML
+
+Để SSR hoạt động chính xác, thư viện sử dụng một hệ thống nhãn (placeholder) trong template HTML. Hàm `uiCreateServerApp` sẽ tự động thay thế chúng bằng dữ liệu thực tế.
+
+**Các nhãn khả dụng:**
+- `<!--ssr-lang-->` — mã ngôn ngữ của người dùng (ví dụ: `vi`). Được sử dụng trong `<html lang="...">`.
+- `<!--ssr-title-->` — tiêu đề trang từ `MetaStatic`. Được chèn vào `<title>`.
+- `<!--ssr-meta-->` — khối các thẻ meta (OG, Twitter, v.v.) từ `MetaStatic`.
+- `<!--ssr-outlet-->` — chuỗi HTML đã được render của ứng dụng. Thường nằm bên trong `<div id="app">`.
+- `<!--ssr-teleports-->` — nội dung từ Vue Teleports.
+- `<!--ssr-scriptsJson-->` — **Nhãn cực kỳ quan trọng**. Chứa JSON với dữ liệu hydrat hóa (`ServerStorage`, bộ nhớ đệm API). Phải được đặt trước thẻ đóng `</body>`.
+
+Ví dụ `main.html`:
+```html
+<!DOCTYPE html>
+<html lang="<!--ssr-lang-->">
+<head>
+    <meta charset="UTF-8">
+    <!--ssr-meta-->
+    <title><!--ssr-title--></title>
+</head>
+<body>
+    <div id="app"><!--ssr-outlet--></div>
+    
+    <!--ssr-teleports-->
+    <!--ssr-scriptsJson-->
+
+    <script type="module" src="/src/entry-client.ts"></script>
+</body>
+</html>
+```
+
+> Nếu không có nhãn `<!--ssr-scriptsJson-->`, dữ liệu nhận được trên server sẽ không được chuyển sang client, dẫn đến lỗi hydrat hóa và các yêu cầu API bị lặp lại.

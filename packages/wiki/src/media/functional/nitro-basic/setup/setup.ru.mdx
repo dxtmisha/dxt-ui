@@ -1,0 +1,133 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/# Подготовка проекта'/>
+
+# Подготовка проекта
+
+Библиотека `@dxtmisha/nitro-basic` спроектирована для работы в связке с Nitro и Vue 3. Она обеспечивает плавный переход между серверным и клиентским рендерингом. Ниже приведено пошаговое руководство по интеграции библиотеки в ваш проект.
+
+## 1. Установка зависимостей
+
+Установите необходимые пакеты. Помимо самой библиотеки, вам потребуются Vue 3 и Vue Router:
+
+```bash
+npm install @dxtmisha/nitro-basic vue vue-router
+```
+
+## 2. Инициализация плагина Nitro
+
+Для базовой настройки серверной среды (например, кэширования API) необходимо зарегистрировать плагин Nitro.
+
+Создайте файл `server/plugins/ui.ts`:
+
+```typescript
+import { definePlugin } from 'nitro'
+import { initPluginBasic } from '@dxtmisha/nitro-basic/plugin'
+
+export default definePlugin((nitroApp) => {
+  initPluginBasic(nitroApp)
+})
+```
+
+## 3. Создание фабрики приложения (main.ts)
+
+Создайте общий файл для инициализации Vue-приложения, который будет использоваться и на сервере, и на клиенте.
+
+```typescript
+// src/main.ts
+import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import App from './App.vue'
+import { routes } from './router'
+
+export function createApp() {
+  return uiCreateApp(App, {
+    appRouter: {
+      routes
+    }
+  })
+}
+```
+
+## 4. Настройка клиентской точки входа
+
+На клиенте необходимо подготовить генератор идентификаторов и примонтировать приложение.
+
+```typescript
+// src/entry-client.ts
+import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic'
+import { createApp } from './main'
+
+const { app, router, options } = createApp()
+
+// Инициализация ID для гидратации
+uiBootstrapClient()
+
+// Монтирование приложения
+uiCreateClientApp(app, '#app', router, options)
+```
+
+## 5. Настройка серверной точки входа
+
+Серверная точка входа отвечает за инициализацию хранилищ, заголовков и рендеринг HTML.
+
+```typescript
+// src/entry-server.ts
+import { uiBootstrapServer, uiCreateServerApp } from '@dxtmisha/nitro-basic'
+import { createApp } from './main'
+import template from './templates/main.html?raw' // HTML шаблон
+
+// Глобальная инициализация сервера
+uiBootstrapServer()
+
+export default {
+  async fetch(request: Request) {
+    const { app, router, options } = createApp()
+
+    const { headers, body } = await uiCreateServerApp(
+      app,
+      request,
+      router,
+      options,
+      undefined,
+      undefined,
+      template
+    )
+
+    return new Response(body, { headers })
+  }
+}
+```
+
+## 6. HTML Шаблон
+
+Для корректной работы SSR библиотека использует систему плейсхолдеров в HTML-шаблоне. Функция `uiCreateServerApp` автоматически заменяет их актуальными данными.
+
+**Доступные метки:**
+- `<!--ssr-lang-->` — языковой код пользователя (например, `ru`). Используется в `<html lang="...">`.
+- `<!--ssr-title-->` — заголовок страницы из `MetaStatic`. Подставляется в `<title>`.
+- `<!--ssr-meta-->` — блок мета-тегов (OG, Twitter и др.) из `MetaStatic`.
+- `<!--ssr-outlet-->` — отрендеренный HTML вашего приложения. Обычно внутри `<div id="app">`.
+- `<!--ssr-teleports-->` — содержимое Vue Teleports.
+- `<!--ssr-scriptsJson-->` — **Критически важная метка**. Содержит JSON с данными для гидратации (`ServerStorage`, кэш API). Должна быть размещена перед закрывающим `</body>`.
+
+Пример `main.html`:
+```html
+<!DOCTYPE html>
+<html lang="<!--ssr-lang-->">
+<head>
+    <meta charset="UTF-8">
+    <!--ssr-meta-->
+    <title><!--ssr-title--></title>
+</head>
+<body>
+    <div id="app"><!--ssr-outlet--></div>
+    
+    <!--ssr-teleports-->
+    <!--ssr-scriptsJson-->
+
+    <script type="module" src="/src/entry-client.ts"></script>
+</body>
+</html>
+```
+
+> Без метки `<!--ssr-scriptsJson-->` данные, полученные на сервере, не будут переданы на клиент, что приведет к ошибкам гидратации и повторным запросам к API.

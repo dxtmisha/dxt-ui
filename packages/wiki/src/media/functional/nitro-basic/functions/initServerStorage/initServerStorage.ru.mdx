@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/initServerStorage - Инициализация серверного хранилища'/>
+
+# `initServerStorage`
+
+Функция для инициализации и внедрения серверного хранилища в приложение Vue. Она предоставляет пустой объект состояния через ключ `NITRO_APP_STORAGE`, который затем может использоваться для хранения данных на протяжении всего цикла SSR.
+
+**Параметры:**
+- `app: App<T>` — Экземпляр приложения Vue.
+
+```typescript
+import { initServerStorage } from '@dxtmisha/nitro-basic'
+
+initServerStorage(app)
+```

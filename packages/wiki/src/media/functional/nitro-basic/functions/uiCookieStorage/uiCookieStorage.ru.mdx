@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiCookieStorage - Инициализация CookieStorage'/>
+
+# `uiCookieStorage`
+
+Настраивает глобальный объект `CookieStorage`, связывая его с контекстом приложения Nitro. Она устанавливает слушатели для получения cookie из текущего запроса и записи их в заголовки ответа (`Set-Cookie`) с помощью композитной функции `useHeaders`.
+
+```typescript
+import { uiCookieStorage } from '@dxtmisha/nitro-basic'
+
+uiCookieStorage()
+```

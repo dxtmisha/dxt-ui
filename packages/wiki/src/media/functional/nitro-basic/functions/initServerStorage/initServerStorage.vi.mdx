@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/initServerStorage - Khởi tạo bộ lưu trữ Server'/>
+
+# `initServerStorage`
+
+Một hàm để khởi tạo và cung cấp bộ lưu trữ server vào ứng dụng Vue. Nó cung cấp một đối tượng trạng thái trống thông qua khóa `NITRO_APP_STORAGE`, đối tượng này sau đó có thể được sử dụng để lưu trữ dữ liệu trong suốt chu kỳ SSR.
+
+**Tham số:**
+- `app: App<T>` — Thực thể ứng dụng Vue.
+
+```typescript
+import { initServerStorage } from '@dxtmisha/nitro-basic'
+
+initServerStorage(app)
+```

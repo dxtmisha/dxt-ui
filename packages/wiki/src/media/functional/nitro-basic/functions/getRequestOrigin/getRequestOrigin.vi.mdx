@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/getRequestOrigin - Lấy nguồn gốc của yêu cầu'/>
+
+# `getRequestOrigin`
+
+Một hàm tiện ích giúp trích xuất nguồn (giao thức và tên miền) từ đối tượng [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request). Điều này rất hữu ích để lấy URL cơ sở của yêu cầu hiện tại mà không có đường dẫn hoặc tham số truy vấn.
+
+**Tham số:**
+- `request: Request` — Đối tượng Request chuẩn Web API.
+
+**Trả về:**
+`string` — Chuỗi nguồn (ví dụ: `https://example.com`).
+
+```typescript
+import { getRequestOrigin } from '@dxtmisha/nitro-basic'
+
+// Ví dụ với đối tượng Request
+const request = new Request('https://dxtmisha.com/docs/api?query=1')
+const origin = getRequestOrigin(request)
+
+// Kết quả: "https://dxtmisha.com"
+console.log(origin)
+```

@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/! About Library'/>
+
+# [@dxtmisha/nitro-basic](https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic)
+
+`@dxtmisha/nitro-basic` is a foundational utility library designed for building robust Server-Side Rendering (SSR) applications using Vue 3 and Nitro. It provides a set of tools for state synchronization between server and client, routing management, and simplifying the SSR application development process.
+
+## Installation
+
+To start using the library, install it via npm:
+
+```bash
+npm i @dxtmisha/nitro-basic
+```
+
+## What is this library for?
+
+Developing applications with SSR (Server-Side Rendering) requires special attention to detail: from isolating states for different users on the server to preventing hydration mismatches on the client.
+
+`@dxtmisha/nitro-basic` handles routine tasks for configuring the Nitro and Vue environment, providing a unified mechanism for initializing storages, API clients, and routing. It serves as a bridge between the powerful capabilities of Nitro and the reactivity of Vue 3.
+
+## What's inside?
+
+The library includes tools to solve key SSR tasks:
+
+**Environment Initialization** — the `uiCreateServerApp` and `uiCreateClientApp` functions provide a standardized way to launch the application in different environments, automatically configuring the necessary plugins and services.
+
+**State and Storage Management** — tools for working with server storage (`initServerStorage`) and cookies (`initCookieStorage`). They ensure that data received on the server is accessible to Vue components via the `provide/inject` mechanism.
+
+**Routing Synchronization** — utilities for creating and initializing the router (`uiCreateSsrRouter`, `initServerRouter`), which ensure correct URL navigation on the server side and smooth handover to the client.
+
+**Data Hydration** — automatic generation of JSON scripts (`initScriptsJson`) to transfer `ServerStorage` state and `Api` data from the server to the client, eliminating redundant API requests during page load.
+
+**API Integration** — means for configuring request headers and origin, allowing the use of absolute URLs during server-side calls and maintaining authorization via cookie forwarding.
+
+**Nitro Plugins** — ready-made functions to extend Nitro's capabilities, such as server-side API response caching.
+
+## Who is it for?
+
+The library is designed for developers building their solutions on the Vue 3 + Nitro stack (or Nuxt-like architectures) who need low-level but flexible tools to manage the lifecycle of an SSR application.
+
+## Principles
+
+- **SSR Safety** — all tools are designed to eliminate data leaks between requests from different users.
+- **Seamless Hydration** — minimizing differences between server and client states.
+- **Modularity** — the ability to use both comprehensive application creation functions and individual atomic initialization utilities.
+- **Integration** — deep compatibility with the `@dxtmisha/functional` ecosystem.
+
+## Git
+
+[https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic](https://github.com/dxtmisha/dxt-ui/tree/main/packages/nitro-basic)

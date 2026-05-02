@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiCreateApp - Создание Vue приложения'/>
+
+# `uiCreateApp`
+
+Создаёт экземпляр Vue SSR приложения из корневого компонента и инициализирует основные плагины, включая маршрутизатор. Если в опциях не передан готовый роутер, функция может создать его автоматически на основе предоставленных маршрутов.
+
+**Параметры:**
+- `appComponent: A` — Корневой компонент приложения.
+- `options: NitroAppOptions` — Параметры конфигурации приложения.
+
+**Возвращает:**
+Объект, содержащий экземпляр `app`, `router` и `options`.
+
+## Типы
+
+### NitroAppOptions
+
+- `appRouter?: object` — Конфигурация маршрутизатора:
+  - `routes: RouteRecordRaw[]` — список записей маршрутов.
+  - `options?: RouterOptions` — опции создания маршрутизатора.
+- `api?: ApiConfig` — конфигурация для API-клиента.
+- `translate?: TranslateConfig` — конфигурация для сервиса переводов.
+- `metaSuffix?: string` — суффикс, который будет добавляться ко всем заголовкам страниц.
+- `icons?: IconsConfig` — конфигурация для сервиса управления иконками.
+- `router?: Router` — экземпляр Vue Router (если уже создан).
+- `errorCauses?: ErrorCenterCauseList` — список причин ошибок для центра ошибок.
+
+**Пример использования:**
+
+```typescript
+import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import App from './App.vue'
+
+const { app, router } = uiCreateApp(App, {
+  appRouter: {
+    routes: [
+      { path: '/', component: () => import('./Home.vue') }
+    ]
+  }
+})
+```
