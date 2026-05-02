@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.56.0",
+  "version": "0.57.0",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -35,10 +35,12 @@
   "files": [
     "dist/",
     "src/styles",
-    "ui-properties.scss",
-    "README.md",
+    "ai-types.txt",
+    "CHANGELOG.md",
+    "LICENSE",
     "package.json",
-    "LICENSE"
+    "README.md",
+    "ui-properties.scss"
   ],
   "exports": {
     ".": {
@@ -307,7 +309,8 @@
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
     "@dxtmisha/media": "*",
-    "@dxtmisha/styles": "*"
+    "@dxtmisha/styles": "*",
+    "vue": "*"
   },
   "sideEffects": false,
   "web-types": "./dist/web-types.json"

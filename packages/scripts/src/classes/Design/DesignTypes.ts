@@ -1,4 +1,4 @@
-import { forEach } from '@dxtmisha/functional-basic'
+import { forEach, ServerStorage } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
 import { useAi } from '../../composables/useAi'
 
@@ -32,6 +32,7 @@ export class DesignTypes {
   constructor(
     protected readonly dir: string = 'dist'
   ) {
+    ServerStorage.setErrorStatus(true)
     this.dirArray = this.dir.split('/')
   }
 
