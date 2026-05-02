@@ -4,10 +4,10 @@ import { t as n } from "./TextInclude-6E-DvjvX.js";
 import { t as r } from "./ModelInclude-B9usSTAS.js";
 import { t as i } from "./TabIndexInclude-CaSIda92.js";
 import { t as a } from "./WindowEsc-vM-2VFUi.js";
-import { t as o } from "./ScrollbarInclude-CYu2by5J.js";
-import { t as s } from "./ImageInclude-CXSZutYv.js";
-import { a as c, i as l, n as u, r as d, t as f } from "./WindowClassesInclude-CI2hy74v.js";
-import { t as p } from "./WindowInclude-CnQVYIvG.js";
+import { t as o } from "./ScrollbarInclude-zvQJJQf1.js";
+import { t as s } from "./ImageInclude-Bb-VMzyI.js";
+import { a as c, i as l, n as u, r as d, t as f } from "./WindowClassesInclude-CnbSXnCx.js";
+import { t as p } from "./WindowInclude-BScL_dRR.js";
 import { Teleport as m, computed as h, h as g, onMounted as _, onUnmounted as v, ref as y, watch as b } from "vue";
 import { DesignConstructorAbstract as x, EventItem as S, executePromise as C, frame as w, getElement as T, getMouseClientX as E, getMouseClientY as D, isDomRuntime as O, isEnter as k, setRef as A } from "@dxtmisha/functional";
 //#region src/constructors/Window/WindowClient.ts

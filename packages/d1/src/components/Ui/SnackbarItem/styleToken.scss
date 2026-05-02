@@ -39,6 +39,14 @@
       letter-spacing: var(--d1-sys-letterSpacing-md);
     }
     
+    &--success {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-success)});
+    }
+    
+    &--error {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-error)});
+    }
+    
     @media screen and (min-width: 640px) {
       @include ui.width(#{var(--d1-ref-spacing-80)});
     }

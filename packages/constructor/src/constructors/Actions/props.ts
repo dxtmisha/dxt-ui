@@ -1,4 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
+import type { AreaProps } from '../../types/areaTypes'
 import type { ButtonPropsBasic } from '../Button'
 
 export type ActionsPropsToken = {
@@ -11,19 +12,20 @@ export type ActionsPropsToken = {
 
 export type ActionsPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic
-> = {
-  // Value
-  /** Primary list of action configurations/ Основной список конфигураций действий */
-  list?: ConstrBind<Button>[]
-  /** Secondary list of action configurations/ Вторичный список конфигураций действий */
-  listSecondary?: ConstrBind<Button>[]
+> = AreaProps
+  & {
+    // Value
+    /** Primary list of action configurations/ Основной список конфигураций действий */
+    list?: ConstrBind<Button>[]
+    /** Secondary list of action configurations/ Вторичный список конфигураций действий */
+    listSecondary?: ConstrBind<Button>[]
 
-  // Style
-  /** Shared attributes for buttons in the primary list/ Общие атрибуты для кнопок в основном списке */
-  buttonAttrs?: ConstrBind<Button>
-  /** Shared attributes for buttons in the secondary list/ Общие атрибуты для кнопок во вторичном списке */
-  buttonSecondaryAttrs?: ConstrBind<Button>
-}
+    // Style
+    /** Shared attributes for buttons in the primary list/ Общие атрибуты для кнопок в основном списке */
+    buttonAttrs?: ConstrBind<Button>
+    /** Shared attributes for buttons in the secondary list/ Общие атрибуты для кнопок во вторичном списке */
+    buttonSecondaryAttrs?: ConstrBind<Button>
+  }
 
 /**
  * Type describing incoming properties.
@@ -38,6 +40,7 @@ export type ActionsProps = ActionsPropsBasic & ActionsPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsActions = {
+  area: 'actions',
   ...{
     // :default [!] System label / Системная метка
     align: 'right'

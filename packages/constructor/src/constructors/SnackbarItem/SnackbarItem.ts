@@ -2,6 +2,7 @@ import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { AreaInclude } from '../../classes/AreaInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -32,6 +33,8 @@ export class SnackbarItem {
   /** Actions manager for snackbar item/ Менеджер действий для элемента снекбара */
   readonly actions: ActionsInclude
 
+  /** Area manager for snackbar item/ Менеджер областей для элемента снекбара */
+  readonly area: AreaInclude
   /** Text manager for window content/ Менеджер текста для содержимого окна */
   readonly text: TextInclude
 
@@ -47,6 +50,7 @@ export class SnackbarItem {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors constructors item class/ класс элемента конструкторов
    * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
+   * @param constructors.AreaConstructor class for creating an area/ класс для создания области
    * @param constructors.ButtonConstructor class for creating a button/ класс для создания кнопки
    * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
    * @param constructors.EventClickConstructor class for creating an event click/ класс для создания события клика
@@ -65,6 +69,7 @@ export class SnackbarItem {
     protected readonly emits?: ConstrEmit<SnackbarItemEmits>,
     constructors?: {
       ActionsConstructor?: typeof ActionsInclude
+      AreaConstructor?: typeof AreaInclude
       ButtonConstructor?: typeof ButtonInclude
       DescriptionConstructor?: typeof DescriptionInclude
       EventConstructor?: typeof EventClickInclude
@@ -75,6 +80,7 @@ export class SnackbarItem {
   ) {
     const {
       ActionsConstructor = ActionsInclude,
+      AreaConstructor = AreaInclude,
       ButtonConstructor = ButtonInclude,
       DescriptionConstructor = DescriptionInclude,
       EventConstructor = EventClickInclude,
@@ -105,6 +111,7 @@ export class SnackbarItem {
       }
     )
 
+    this.area = new AreaConstructor(props)
     this.text = new TextConstructor(props)
   }
 

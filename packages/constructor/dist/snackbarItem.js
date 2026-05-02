@@ -2,17 +2,18 @@ import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
 import { t as n } from "./TextInclude-6E-DvjvX.js";
 import { t as r } from "./EventClickInclude-DmRb7XRg.js";
-import { t as i } from "./ActionsInclude-DFomjVj4.js";
-import { t as a } from "./LabelInclude-BxCuPFcU.js";
-import { t as o } from "./DescriptionInclude-HmPfbbum.js";
-import { t as s } from "./IconTrailingInclude-ZxjRDJgB.js";
-import { t as c } from "./ButtonInclude-CKl-u2YZ.js";
-import { computed as l, h as u } from "vue";
-import { DesignConstructorAbstract as d } from "@dxtmisha/functional";
+import { t as i } from "./AreaInclude-BPJ14Wwe.js";
+import { t as a } from "./ActionsInclude-DppZSkT3.js";
+import { t as o } from "./LabelInclude-BeVk9z8H.js";
+import { t as s } from "./DescriptionInclude-CBzY5AM-.js";
+import { t as c } from "./IconTrailingInclude-Cv0LoeEy.js";
+import { t as l } from "./ButtonInclude-CKl-u2YZ.js";
+import { computed as u, h as d } from "vue";
+import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
 //#region src/constructors/SnackbarItem/SnackbarItem.ts
-var f = class {
-	constructor(u, d, f, p, m, h, g, _, v) {
-		t(this, "label", void 0), t(this, "description", void 0), t(this, "event", void 0), t(this, "icon", void 0), t(this, "button", void 0), t(this, "actions", void 0), t(this, "text", void 0), t(this, "ariaBind", l(() => {
+var p = class {
+	constructor(d, f, p, m, h, g, _, v, y) {
+		t(this, "label", void 0), t(this, "description", void 0), t(this, "event", void 0), t(this, "icon", void 0), t(this, "button", void 0), t(this, "actions", void 0), t(this, "area", void 0), t(this, "text", void 0), t(this, "ariaBind", u(() => {
 			let t = {
 				...e.atomic(!0),
 				...e.role(this.props.role),
@@ -30,15 +31,18 @@ var f = class {
 		})), t(this, "onClose", () => {
 			var e;
 			return (e = this.emits) == null ? void 0 : e.call(this, "close", this.props.value);
-		}), this.props = u, this.refs = d, this.element = f, this.classDesign = p, this.className = m, this.components = h, this.slots = g, this.emits = _;
-		let { ActionsConstructor: y = i, ButtonConstructor: b = c, DescriptionConstructor: x = o, EventConstructor: S = r, IconConstructor: C = s, LabelConstructor: w = a, TextConstructor: T = n } = v == null ? {} : v;
-		this.label = new w(u, m, void 0, g), this.description = new x(u, m, g), this.event = new S(void 0, void 0, _), this.icon = new C(u, m, h), this.button = new b(l(() => this.props.button), m, h, void 0, { onClick: this.event.onClick }), this.actions = new y(u, m, h, _, { align: "left" }), this.text = new T(u);
+		}), this.props = d, this.refs = f, this.element = p, this.classDesign = m, this.className = h, this.components = g, this.slots = _, this.emits = v;
+		let { ActionsConstructor: b = a, AreaConstructor: x = i, ButtonConstructor: S = l, DescriptionConstructor: C = s, EventConstructor: w = r, IconConstructor: T = c, LabelConstructor: E = o, TextConstructor: D = n } = y == null ? {} : y;
+		this.label = new E(d, h, void 0, _), this.description = new C(d, h, _), this.event = new w(void 0, void 0, v), this.icon = new T(d, h, g), this.button = new S(u(() => this.props.button), h, g, void 0, { onClick: this.event.onClick }), this.actions = new b(d, h, g, v, { align: "left" }), this.area = new x(d), this.text = new D(d);
 	}
-}, p = { closeButton: !0 }, m = class extends d {
-	constructor(n, r, i, a = f) {
+}, m = {
+	area: "snackbar",
+	closeButton: !0
+}, h = class extends f {
+	constructor(n, r, i, a = p) {
 		super(n, r, i), t(this, "item", void 0), t(this, "renderMain", () => {
 			var e, t;
-			return [u("div", {
+			return [d("div", {
 				key: "tool",
 				class: (e = this.classes) == null ? void 0 : e.value.tool
 			}, [
@@ -49,7 +53,7 @@ var f = class {
 			])];
 		}), t(this, "renderContext", () => {
 			var e;
-			return [u("div", {
+			return [d("div", {
 				key: "context",
 				class: (e = this.classes) == null ? void 0 : e.value.context
 			}, [
@@ -61,7 +65,7 @@ var f = class {
 			let e = [];
 			if (this.props.html) {
 				var t;
-				e.push(u("div", {
+				e.push(d("div", {
 					key: "body",
 					class: (t = this.classes) == null ? void 0 : t.value.body,
 					innerHTML: this.props.html
@@ -69,17 +73,17 @@ var f = class {
 			}
 			if (this.slots && "body" in this.slots) {
 				var n;
-				e.push(u("div", {
+				e.push(d("div", {
 					key: "body-slot",
 					class: (n = this.classes) == null ? void 0 : n.value.body
 				}, this.initSlot("body")));
 			}
 			if (this.props.component) {
 				var r;
-				e.push(u("div", {
+				e.push(d("div", {
 					key: "body-component",
 					class: (r = this.classes) == null ? void 0 : r.value.body
-				}, u(this.props.component, this.props.componentProps)));
+				}, d(this.props.component, this.props.componentProps)));
 			}
 			return e;
 		}), t(this, "renderClose", () => {
@@ -119,7 +123,7 @@ var f = class {
 	}
 	initRender() {
 		var e;
-		return u("div", {
+		return d("div", {
 			...this.getAttrs(),
 			class: (e = this.classes) == null ? void 0 : e.value.main,
 			...this.item.ariaBind.value
@@ -127,4 +131,4 @@ var f = class {
 	}
 };
 //#endregion
-export { f as SnackbarItem, m as SnackbarItemDesign, p as defaultsSnackbarItem };
+export { p as SnackbarItem, h as SnackbarItemDesign, m as defaultsSnackbarItem };

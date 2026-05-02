@@ -1,4 +1,4 @@
-import { t as e } from "./LabelInclude-BxCuPFcU.js";
+import { t as e } from "./LabelInclude-BeVk9z8H.js";
 import { computed as t } from "vue";
 import { GeoRef as n, isNumber as r, toNumberByMax as i } from "@dxtmisha/functional";
 //#region src/classes/LabelNumberInclude.ts

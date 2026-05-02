@@ -45,6 +45,7 @@ var u = {
 	name: "D1Actions",
 	__name: "D1Actions",
 	props: /* @__PURE__ */ i({
+		area: {},
 		list: {},
 		listSecondary: {},
 		buttonAttrs: {},

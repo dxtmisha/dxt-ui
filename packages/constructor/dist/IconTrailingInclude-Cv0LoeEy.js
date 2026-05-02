@@ -1,5 +1,5 @@
 import { t as e } from "./defineProperty-149Ahniv.js";
-import { t } from "./IconInclude-kEjeFnsh.js";
+import { t } from "./IconInclude-CMgylQlS.js";
 import { computed as n } from "vue";
 import { getBind as r, isFilled as i, toBinds as a } from "@dxtmisha/functional";
 //#region src/constructors/Icon/IconTrailingInclude.ts

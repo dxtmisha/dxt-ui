@@ -1,5 +1,6 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
+import { AreaInclude } from '../../classes/AreaInclude';
 import { DescriptionInclude } from '../../classes/DescriptionInclude';
 import { EventClickInclude } from '../../classes/EventClickInclude';
 import { LabelInclude } from '../../classes/LabelInclude';
@@ -35,6 +36,8 @@ export declare class SnackbarItem {
     readonly button: ButtonInclude;
     /** Actions manager for snackbar item/ Менеджер действий для элемента снекбара */
     readonly actions: ActionsInclude;
+    /** Area manager for snackbar item/ Менеджер областей для элемента снекбара */
+    readonly area: AreaInclude;
     /** Text manager for window content/ Менеджер текста для содержимого окна */
     readonly text: TextInclude;
     /**
@@ -49,6 +52,7 @@ export declare class SnackbarItem {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      * @param constructors constructors item class/ класс элемента конструкторов
      * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
+     * @param constructors.AreaConstructor class for creating an area/ класс для создания области
      * @param constructors.ButtonConstructor class for creating a button/ класс для создания кнопки
      * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
      * @param constructors.EventClickConstructor class for creating an event click/ класс для создания события клика
@@ -58,6 +62,7 @@ export declare class SnackbarItem {
      */
     constructor(props: SnackbarItemProps, refs: ToRefs<SnackbarItemProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<SnackbarItemComponents, SnackbarItemProps> | undefined, slots?: SnackbarItemSlots | undefined, emits?: ConstrEmit<SnackbarItemEmits> | undefined, constructors?: {
         ActionsConstructor?: typeof ActionsInclude;
+        AreaConstructor?: typeof AreaInclude;
         ButtonConstructor?: typeof ButtonInclude;
         DescriptionConstructor?: typeof DescriptionInclude;
         EventConstructor?: typeof EventClickInclude;

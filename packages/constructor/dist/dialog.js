@@ -1,10 +1,10 @@
 import { t as e } from "./defineProperty-149Ahniv.js";
 import { t } from "./TextInclude-6E-DvjvX.js";
-import { t as n } from "./LabelInclude-BxCuPFcU.js";
-import { t as r } from "./DescriptionInclude-HmPfbbum.js";
-import { t as i } from "./WindowClassesInclude-CI2hy74v.js";
-import { r as a, t as o } from "./ModalDesignAbstract-UBBS7nvU.js";
-import { t as s } from "./IconInclude-kEjeFnsh.js";
+import { t as n } from "./LabelInclude-BeVk9z8H.js";
+import { t as r } from "./DescriptionInclude-CBzY5AM-.js";
+import { t as i } from "./WindowClassesInclude-CnbSXnCx.js";
+import { r as a, t as o } from "./ModalDesignAbstract-C8BVdaPa.js";
+import { t as s } from "./IconInclude-CMgylQlS.js";
 import { computed as c, h as l, readonly as u } from "vue";
 import { getBind as d, toBinds as f } from "@dxtmisha/functional";
 //#region src/constructors/Dialog/Dialog.ts

@@ -1,8 +1,8 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
 import { t as n } from "./ProgressInclude-CoWXemyD.js";
-import { t as r } from "./SkeletonInclude-BUudngzW.js";
-import { t as i } from "./LabelInclude-BxCuPFcU.js";
+import { t as r } from "./SkeletonInclude-DtRzx2oh.js";
+import { t as i } from "./LabelInclude-BeVk9z8H.js";
 import { t as a } from "./FieldCounterInclude-BfJ359pp.js";
 import { t as o } from "./FieldLabelInclude-DZLVGX2U.js";
 import { computed as s, h as c } from "vue";

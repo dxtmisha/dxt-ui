@@ -35,6 +35,17 @@ export const wikiTechnical: StorybookArgsToList = {
     },
     hide: true
   },
+  clientOnly: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Specifies whether the component should only be rendered on the client side',
+        ru: 'Указывает, должен ли компонент отображаться только на стороне клиента'
+      }
+    },
+    hide: true
+  },
   captionDecorative: {
     type: StorybookControl.boolean,
     options: {

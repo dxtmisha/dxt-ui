@@ -1,6 +1,7 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { AriaLivePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
+import type { AreaProps } from '../../types/areaTypes'
 import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { TextClosePropsInclude } from '../../types/textTypes'
@@ -27,6 +28,7 @@ export type SnackbarItemPropsBasic<
   & AriaRolePropsInclude
   & AriaLivePropsInclude
   & TextClosePropsInclude
+  & AreaProps
   & {
     /** Value/ Значения */
     /** Button configuration or text/ Конфигурация или текст кнопки */
@@ -61,6 +63,7 @@ export type SnackbarItemProps = SnackbarItemPropsBasic & SnackbarItemPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsSnackbarItem = {
+  area: 'snackbar',
   closeButton: true,
   ...{
     // :default [!] System label / Системная метка

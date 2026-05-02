@@ -1,5 +1,6 @@
 import { ConstrBind } from '@dxtmisha/functional';
 import { AriaLivePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes';
+import { AreaProps } from '../../types/areaTypes';
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { TextClosePropsInclude } from '../../types/textTypes';
@@ -10,7 +11,7 @@ type SnackbarItemPropsToken = {
     success?: boolean;
     error?: boolean;
 };
-export type SnackbarItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = LabelProps & DescriptionProps & IconTrailingPropsInclude<Icon> & ActionsPropsInclude<Actions> & AriaRolePropsInclude & AriaLivePropsInclude & TextClosePropsInclude & {
+export type SnackbarItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = LabelProps & DescriptionProps & IconTrailingPropsInclude<Icon> & ActionsPropsInclude<Actions> & AriaRolePropsInclude & AriaLivePropsInclude & TextClosePropsInclude & AreaProps & {
     /** Value/ Значения */
     /** Button configuration or text/ Конфигурация или текст кнопки */
     button?: string | number | ConstrBind<Button>;
@@ -40,6 +41,7 @@ export type SnackbarItemProps = SnackbarItemPropsBasic & SnackbarItemPropsToken;
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsSnackbarItem: {
+    area: string;
     closeButton: boolean;
 };
 export {};

@@ -1,5 +1,5 @@
 import { t as e } from "./Button-SR887un4.js";
-import { t } from "./Actions-kURPsjNe.js";
+import { t } from "./Actions-Dx8BFMDl.js";
 import { t as n } from "./Icon-CTJvjh80.js";
 import { computed as r, createBlock as i, defineComponent as a, mergeDefaults as o, openBlock as s, unref as c } from "vue";
 import { inArray as l } from "@dxtmisha/functional";
@@ -59,6 +59,7 @@ var f = { palette: [
 		role: {},
 		ariaLive: {},
 		textClose: { type: [String, Function] },
+		area: {},
 		button: {},
 		html: {},
 		component: {},

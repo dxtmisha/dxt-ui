@@ -1,6 +1,7 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { AreaInclude } from '../../classes/AreaInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import type { ActionsComponents, ActionsEmits, ActionsSlots } from './types'
@@ -10,6 +11,7 @@ import type { ActionsProps } from './props'
  * Actions
  */
 export class Actions {
+  readonly area: AreaInclude
   readonly event: EventClickInclude
 
   /**
@@ -24,6 +26,7 @@ export class Actions {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
    * @param constructors.EventConstructor class for creating an event/ класс для создания события
+   * @param constructors.AreaIncludeConstructor class for working with area value/ класс для работы со значением области
    */
   constructor(
     protected readonly props: ActionsProps,
@@ -35,13 +38,16 @@ export class Actions {
     protected readonly slots?: ActionsSlots,
     protected readonly emits?: ConstrEmit<ActionsEmits>,
     constructors?: {
+      AreaIncludeConstructor?: typeof AreaInclude
       EventConstructor?: typeof EventClickInclude
     }
   ) {
     const {
+      AreaIncludeConstructor = AreaInclude,
       EventConstructor = EventClickInclude
     } = constructors ?? {}
 
+    this.area = new AreaIncludeConstructor(props)
     this.event = new EventConstructor(
       undefined,
       undefined,

@@ -25,5 +25,11 @@
   "#description": {
     "link|font": "{font.bodyMedium}"
   },
+  "~success": {
+    "background-color": "{sys.palette.success}"
+  },
+  "~error": {
+    "background-color": "{sys.palette.error}"
+  },
   "@@palette": "{palette}"
 }

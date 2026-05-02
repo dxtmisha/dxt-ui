@@ -9,6 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'actionsHide', type: 'boolean | undefined' },
   { name: 'actionsList', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
   { name: 'actionsSecondary', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
+  { name: 'area', type: 'string | undefined' },
   { name: 'ariaLive', type: 'string', option: ['off', 'polite', 'assertive'] },
   { name: 'button', type: 'string | number | ConstrBind<ButtonProps> | undefined' },
   { name: 'closeButton', type: 'boolean | undefined' },

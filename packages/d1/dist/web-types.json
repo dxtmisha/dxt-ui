@@ -619,6 +619,15 @@
                 "kind": "expression",
                 "type": "ConstrBind<ButtonProps> | undefined"
               }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "actions",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
             }
           ],
           "slots": [
@@ -10926,6 +10935,15 @@
             {
               "name": "role",
               "description": "Defines the role of the element for accessibility",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "snackbar",
               "value": {
                 "kind": "expression",
                 "type": "string"

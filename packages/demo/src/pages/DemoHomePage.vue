@@ -9,9 +9,12 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Api" name="test-api"/>
       </D1Group>
       <D1Group label="Components">
+        <DemoLink label="Actions" name="component-actions"/>
         <DemoLink label="Icon" name="component-icon"/>
+        <DemoLink label="Button" name="component-button"/>
         <DemoLink label="Image" name="component-image"/>
         <DemoLink label="Progress" name="component-progress"/>
+        <DemoLink label="Snackbar" name="component-snackbar"/>
       </D1Group>
     </D1Section>
   </D1Page>

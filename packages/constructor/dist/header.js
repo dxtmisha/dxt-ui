@@ -1,7 +1,7 @@
 import { t as e } from "./defineProperty-149Ahniv.js";
-import { t } from "./LabelInclude-BxCuPFcU.js";
-import { t as n } from "./IconInclude-kEjeFnsh.js";
-import { t as r } from "./AreaInclude-DkoPzXhj.js";
+import { t } from "./AreaInclude-BPJ14Wwe.js";
+import { t as n } from "./LabelInclude-BeVk9z8H.js";
+import { t as r } from "./IconInclude-CMgylQlS.js";
 import { t as i } from "./CaptionInclude-DCRFVa3A.js";
 import { t as a } from "./HeaderInclude-D1OMEi8H.js";
 import { computed as o, h as s } from "vue";
@@ -10,7 +10,7 @@ import { DesignConstructorAbstract as c } from "@dxtmisha/functional";
 var l = class {
 	constructor(a, s, c, l, u, d, f, p, m) {
 		e(this, "label", void 0), e(this, "caption", void 0), e(this, "icon", void 0), e(this, "area", void 0), e(this, "classList", o(() => [String(this.props.tag)])), this.props = a, this.refs = s, this.element = c, this.classDesign = l, this.className = u, this.components = d, this.slots = f, this.emits = p;
-		let { AreaIncludeConstructor: h = r, CaptionIncludeConstructor: g = i, IconIncludeConstructor: _ = n, LabelIncludeConstructor: v = t } = m == null ? {} : m;
+		let { AreaIncludeConstructor: h = t, CaptionIncludeConstructor: g = i, IconIncludeConstructor: _ = r, LabelIncludeConstructor: v = n } = m == null ? {} : m;
 		this.label = new v(a, u, void 0, f, void 0, void 0, void 0, void 0, o(() => String(this.props.tag))), this.caption = new g(a, u, f), this.icon = new _(a, u, d), this.area = new h(a);
 	}
 }, u = {

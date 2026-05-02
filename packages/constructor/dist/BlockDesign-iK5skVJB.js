@@ -1,7 +1,7 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
-import { t as n } from "./DescriptionInclude-HmPfbbum.js";
-import { t as r } from "./AreaInclude-DkoPzXhj.js";
+import { t as n } from "./AreaInclude-BPJ14Wwe.js";
+import { t as r } from "./DescriptionInclude-CBzY5AM-.js";
 import { t as i } from "./HeaderInclude-D1OMEi8H.js";
 import { computed as a, h as o } from "vue";
 import { DesignConstructorAbstract as s, getElementId as c } from "@dxtmisha/functional";
@@ -9,7 +9,7 @@ import { DesignConstructorAbstract as s, getElementId as c } from "@dxtmisha/fun
 var l = class {
 	constructor(e, o, s, l, u, d, f, p, m) {
 		t(this, "description", void 0), t(this, "header", void 0), t(this, "area", void 0), t(this, "labelId", c()), t(this, "isHeadline", a(() => !!(this.props.headline || this.slots && "headline" in this.slots))), t(this, "tag", a(() => this.props.tag || "div")), this.props = e, this.refs = o, this.element = s, this.classDesign = l, this.className = u, this.components = d, this.slots = f, this.emits = p;
-		let { AreaIncludeConstructor: h = r, HeaderIncludeConstructor: g = i, DescriptionIncludeConstructor: _ = n } = m == null ? {} : m;
+		let { AreaIncludeConstructor: h = n, HeaderIncludeConstructor: g = i, DescriptionIncludeConstructor: _ = r } = m == null ? {} : m;
 		this.header = new g(e, u, d, this.slots, void 0, this.labelId), this.description = new _(e, u, f), this.area = new h(e);
 	}
 }, u = {

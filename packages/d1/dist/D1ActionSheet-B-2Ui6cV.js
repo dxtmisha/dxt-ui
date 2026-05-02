@@ -1,26 +1,21 @@
 import { t as e } from "./Window-ojCXyZuk.js";
 import { t } from "./Bars-DWi68csG.js";
-import { t as n } from "./Actions-kURPsjNe.js";
+import { t as n } from "./Actions-Dx8BFMDl.js";
 import { computed as r, createBlock as i, defineComponent as a, mergeDefaults as o, openBlock as s, unref as c } from "vue";
 import { inArray as l } from "@dxtmisha/functional";
-import { ModalDesign as u, defaultsModal as d } from "@dxtmisha/constructor/Modal";
-//#region src/components/Ui/Modal/props.ts
-var f = {
-	imagePosition: ["top", "left"],
-	width: [
-		"sm",
-		"md",
-		"lg",
-		"xl",
-		"auto"
-	]
-}, p = {
+import { ActionSheetDesign as u, defaultsActionSheet as d } from "@dxtmisha/constructor/ActionSheet";
+//#region src/components/Ui/ActionSheet/props.ts
+var f = { width: [
+	"sm",
+	"md",
+	"lg",
+	"auto"
+] }, p = {
 	...d,
-	imagePosition: "top",
 	width: "md"
 }, m = /* @__PURE__ */ a({
-	name: "D1Modal",
-	__name: "D1Modal",
+	name: "D1ActionSheet",
+	__name: "D1ActionSheet",
 	props: /* @__PURE__ */ o({
 		disabled: { type: Boolean },
 		autoClose: { type: Boolean },
@@ -35,9 +30,8 @@ var f = {
 		actionsList: {},
 		actionsSecondary: {},
 		actionsAttrs: {},
-		image: {},
 		open: { type: Boolean },
-		imagePosition: {},
+		touchClose: { type: Boolean },
 		width: {}
 	}, p),
 	emits: [
@@ -49,19 +43,19 @@ var f = {
 		"actionsLite"
 	],
 	setup(a, { expose: o, emit: d }) {
-		let p = d, m = a, h = new u("d1.modal", m, {
+		let p = d, m = a, h = new u("d1.actionSheet", m, {
 			emits: p,
 			classes: r(() => ({ main: {
-				"d1-modal": !0,
-				[`d1-modal--imagePosition--${m.imagePosition}`]: l(f.imagePosition, m.imagePosition),
-				[`d1-modal--width--${m.width}`]: l(f.width, m.width)
+				"d1-actionSheet": !0,
+				[`d1-actionSheet--width--${m.width}`]: l(f.width, m.width)
 			} })),
 			styles: r(() => ({})),
 			components: {
 				window: e,
 				bars: t,
 				actions: n
-			}
+			},
+			compMod: { window: { divider: !0 } }
 		}), g = h.render();
 		return o(h.expose()), (e, t) => (s(), i(c(g)));
 	}

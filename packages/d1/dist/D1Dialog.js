@@ -1,4 +1,4 @@
-import { t as e } from "./D1Dialog-BhZZKHf7.js";
+import { t as e } from "./D1Dialog-DyO5z-qu.js";
 //#region src/components/Ui/Dialog/index.ts
 var t = e;
 //#endregion

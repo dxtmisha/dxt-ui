@@ -1,4 +1,4 @@
-import { r as e, t } from "./BlockDesign-CyIx-r66.js";
+import { r as e, t } from "./BlockDesign-iK5skVJB.js";
 import "@dxtmisha/functional";
 //#region src/constructors/Section/Section.ts
 var n = class extends e {}, r = {

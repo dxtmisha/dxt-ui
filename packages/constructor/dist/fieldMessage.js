@@ -1,6 +1,6 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
-import { t as n } from "./SkeletonInclude-BUudngzW.js";
+import { t as n } from "./SkeletonInclude-DtRzx2oh.js";
 import { t as r } from "./FieldCounterInclude-BfJ359pp.js";
 import { t as i } from "./FieldMessageInclude-CGFnPnp7.js";
 import { computed as a, h as o } from "vue";

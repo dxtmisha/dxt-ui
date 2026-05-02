@@ -1,9 +1,9 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
 import { t } from "./defineProperty-149Ahniv.js";
 import { t as n } from "./TextInclude-6E-DvjvX.js";
-import { t as r } from "./LabelInclude-BxCuPFcU.js";
-import { t as i } from "./TooltipInclude-DQoYrnY0.js";
-import { t as a } from "./getClassTagAStatic-Ds1muIfL.js";
+import { t as r } from "./LabelInclude-BeVk9z8H.js";
+import { t as i } from "./TooltipInclude-D_HTl_nm.js";
+import { t as a } from "./getClassTagAStatic-Rruum_Od.js";
 import { computed as o, h as s, onMounted as c, ref as l } from "vue";
 import { DesignConstructorAbstract as u, goScrollSmooth as d, toNumber as f, writeClipboardData as p } from "@dxtmisha/functional";
 //#region src/constructors/Anchor/AnchorHref.ts
