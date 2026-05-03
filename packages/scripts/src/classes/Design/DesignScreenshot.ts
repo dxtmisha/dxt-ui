@@ -1,62 +1,73 @@
 import { spawn } from 'node:child_process'
 import { ServerStorage } from '@dxtmisha/functional-basic'
-import { takeScreenshot } from '../../functions/takeScreenshot'
+import { BrowserItem } from '../BrowserItem'
+import { PropertiesFile } from '../Properties/PropertiesFile.ts'
 
+/**
+ * Class for automatic capturing of screenshots by running dev server.
+ *
+ * Класс для автоматического захвата скриншотов путем запуска сервера разработки.
+ */
 export class DesignScreenshot {
+  /** indicates if screenshot process is running / указывает, запущен ли процесс создания скриншота */
+  protected isReading: boolean = false
+
+  /** server url / URL сервера */
   protected url?: string
 
+  /**
+   * Constructor
+   * @param file output path / путь к файлу
+   */
   constructor(
-    protected readonly file: string = './ai-screenshot.webp'
+    protected readonly file: string = './ai-screenshot/screenshot'
   ) {
     ServerStorage.setErrorStatus(true)
   }
 
+  /**
+   * starts the screenshot process.
+   *
+   * Запускает процесс создания скриншота.
+   */
   async make() {
-    const port = 5173
-    const url = `http://localhost:${port}`
-    let isReading: boolean = false
+    console.info('Screenshot')
 
-    console.info('Screenshot...')
-
-    this.makeServer(async () => {
-      if (
-        this.url
-        && !isReading
-      ) {
-        isReading = true
-        await takeScreenshot(this.url, this.file)
-      }
-    })
-
-    try {
-      // await this.waitUntilReady(url)
-      // console.info('Server is ready, taking screenshot...')
-      // console.info(`Screenshot saved to ${this.file}`)
-    } catch (error) {
-      // console.error('Error during screenshot process:', error)
-    } finally {
-      // console.info('Stopping dev server...')
-      // server.kill()
-    }
+    PropertiesFile.createDir(PropertiesFile.getPathDir(this.file + '.file'))
+    this.makeServer()
   }
 
-  private async waitUntilReady(url: string, timeout = 30000): Promise<void> {
-    const start = Date.now()
-    while (Date.now() - start < timeout) {
-      try {
-        const response = await fetch(url)
-        if (response.ok) return
-      } catch (_e) {
-        // Wait for next attempt
-      }
-      await new Promise(resolve => setTimeout(resolve, 1000))
+  /**
+   * screenshot trigger listener.
+   *
+   * Слушатель триггера для создания скриншота.
+   * @returns capture success status / статус успешного захвата
+   */
+  protected readonly listener = async (): Promise<boolean> => {
+    if (
+      this.url
+      && !this.isReading
+    ) {
+      this.isReading = true
+
+      console.info('URL', this.url)
+
+      const browser = new BrowserItem(this.url, { height: 1024 * 12 })
+      await browser.screenshot(this.file)
+
+      return true
     }
-    throw new Error(`Timeout waiting for server at ${url}`)
+
+    return false
   }
 
-  protected makeServer(
-    listener: (data: any) => Promise<void>
-  ) {
+  /**
+   * spawns development server.
+   *
+   * Запускает сервер разработки.
+   * @returns this instance / этот экземпляр
+   */
+  protected makeServer(): this {
     const server = spawn(
       'npm',
       ['run', 'dev'],
@@ -70,26 +81,43 @@ export class DesignScreenshot {
       console.log('Server', 'start')
 
       const dataString = data.toString()
-      console.log(data.toString())
-
       this.makeUrl(dataString)
 
       if (this.url) {
-        listener(data)
-          .then(() => server.kill())
+        console.info('Server', 'init')
+
+        this.listener()
+          .then((success: boolean) => {
+            if (success) {
+              server.kill()
+
+              console.info('Server', 'kill')
+            }
+          })
       }
     })
 
     server.stderr?.on('data', (data) => {
       console.error(`Server Error: ${data.toString()}`)
     })
+
+    return this
   }
 
-  makeUrl(data: string): void {
+  /**
+   * extracts server url from console output.
+   *
+   * Извлекает URL сервера из консольного вывода.
+   * @param data command output / вывод команды
+   * @returns this instance / этот экземпляр
+   */
+  makeUrl(data: string): this {
     const match = data.match(/(https?:\/\/localhost\S+)/)
 
     if (match) {
       this.url = match[1]
     }
+
+    return this
   }
 }

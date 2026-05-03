@@ -65,7 +65,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.89.0",
+    "@anthropic-ai/sdk": "^0.92.0",
     "@dxtmisha/configuration": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
