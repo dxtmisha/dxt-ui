@@ -84,9 +84,5 @@ ${props.join('')}
     position: relative;
     border: 1px solid oklch(86.9% 0.022 252.894);
   }
-
-  &__item {
-    background-color: oklch(92.9% 0.013 255.508);
-  }
 }
 </style>

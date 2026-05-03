@@ -33,17 +33,18 @@
     "test": "vitest",
     "component": "dxt-component",
     "library": "dxt-library",
-    "wiki": "dxt-ai-doc",
+    "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run build",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
     "dist",
+    "ai-description.txt",
     "ai-types.txt",
     "CHANGELOG.md",
-    "README.md",
+    "LICENSE",
     "package.json",
-    "LICENSE"
+    "README.md"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",

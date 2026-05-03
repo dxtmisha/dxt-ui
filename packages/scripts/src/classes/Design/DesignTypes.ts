@@ -6,7 +6,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { DesignTypesList } from '../../types/designTypes'
 
-import { UI_DIR_CONSTRUCTOR, UI_FILE_AI_TYPES } from '../../config'
+import { UI_DIR_CONSTRUCTOR, UI_FILE_AI_DESCRIPTION, UI_FILE_AI_TYPES } from '../../config'
 
 /**
  * Engine for generating compressed and AI-optimized TypeScript type definitions.
@@ -41,19 +41,19 @@ export class DesignTypes {
    *
    * Основной метод для выполнения процесса генерации типов.
    */
-  make() {
+  async make() {
     console.log('DesignTypes: making AI types...')
 
     const files = this.getListByFilter()
     const fullContent = this.toOneFile(files)
 
-    this.toAiEdit(fullContent).then(
-      (aiContent) => {
-        this.save(aiContent)
+    const aiContent = await this.toAiEdit(fullContent)
+    this.save(aiContent)
 
-        console.log('DesignTypes: AI types saved.')
-      }
-    )
+    const aiDescription = await this.toAiDescription(fullContent)
+    this.saveDescription(aiDescription)
+
+    console.log('DesignTypes: AI types saved.')
   }
 
   /**
@@ -169,6 +169,19 @@ export class DesignTypes {
   }
 
   /**
+   * Saves the AI-generated project description to a file.
+   *
+   * Сохраняет сгенерированное ИИ описание проекта в файл.
+   * @param content content to save / контент для сохранения
+   */
+  protected saveDescription(content: string) {
+    PropertiesFile.writeByPath(
+      UI_FILE_AI_DESCRIPTION,
+      content
+    )
+  }
+
+  /**
    * Combines a list of files into a single string.
    *
    * Объединяет список файлов в одну строку.
@@ -183,31 +196,17 @@ export class DesignTypes {
   }
 
   /**
-   * Sends content to AI for optimization.
+   * Sends content and a prompt to the AI for processing.
    *
-   * Отправляет контент ИИ для оптимизации.
-   * @param content content to optimize / контент для оптимизации
+   * Отправляет контент и промпт ИИ для обработки.
+   * @param content content for processing / контент для обработки
+   * @param prompt instructions for the AI / инструкции для ИИ
    */
-  protected async toAiEdit(content: string): Promise<string> {
+  protected async toAi(content: string, prompt: string): Promise<string | undefined> {
     const ai = useAi()
 
     if (ai) {
-      ai.addPrompt(
-        'Remove all Russian comments from this code. '
-        + 'Simplify and shorten all English comments for AI readability while maintaining a clear balance between brevity and context. Do not delete them even if the code seems obvious. '
-        + 'Always keep All JSDoc "@example", "@remarks", "@note", and any other notes or warnings. '
-        + 'Remove all imports. '
-        + 'Remove all non-public content: delete all private and protected class methods and properties, and any non-exported elements. The final output must contain only the members and entities that are accessible from outside. '
-        + 'Remove any code segments or data that do not provide useful information for an AI assistant. '
-        + 'You may remove abstract classes or other structures that provide no practical value for code generation, but do so with extreme caution. Maintain a strict balance: if there is even a 5% chance the item might be relevant for understanding the API or generating code, keep it. Think carefully before every deletion. '
-        + 'Remove any large Enums that add excessive length without providing critical context. '
-        + 'Your goal is to create a compact, context-rich file that enables any AI coding assistant to generate high-quality code for a developer. '
-        + 'Ensure that no public API surface, essential data types, or required logic is lost. '
-        + 'Do not delete any "type" definitions; they are strictly required. '
-        + 'Do not delete file paths (labels starting with "// File:"). '
-        + 'All instructions are mandatory and must be executed perfectly. '
-        + 'Return ONLY the resulting code. No markdown code blocks, no tags, no explanations, and no additional comments from the AI. NOTHING but the pure code.'
-      )
+      ai.addPrompt(prompt)
       ai.addPrompt(`File Content: ${content}`)
 
       const generate = await ai.generate('go!')
@@ -217,6 +216,57 @@ export class DesignTypes {
       }
     }
 
-    return content
+    return undefined
+  }
+
+  /**
+   * Sends content to AI for optimization.
+   *
+   * Отправляет контент ИИ для оптимизации.
+   * @param content content to optimize / контент для оптимизации
+   */
+  protected async toAiEdit(content: string): Promise<string> {
+    const generate = await this.toAi(
+      content,
+      'Remove all Russian comments from this code. '
+      + 'Simplify and shorten all English comments for AI readability while maintaining a clear balance between brevity and context. Do not delete them even if the code seems obvious. '
+      + 'Always keep All JSDoc "@example", "@remarks", "@note", and any other notes or warnings. '
+      + 'Remove all imports. '
+      + 'Remove all non-public content: delete all private and protected class methods and properties, and any non-exported elements. The final output must contain only the members and entities that are accessible from outside. '
+      + 'Remove any code segments or data that do not provide useful information for an AI assistant. '
+      + 'You may remove abstract classes or other structures that provide no practical value for code generation, but do so with extreme caution. Maintain a strict balance: if there is even a 5% chance the item might be relevant for understanding the API or generating code, keep it. Think carefully before every deletion. '
+      + 'Remove any large Enums that add excessive length without providing critical context. '
+      + 'Your goal is to create a compact, context-rich file that enables any AI coding assistant to generate high-quality code for a developer. '
+      + 'Ensure that no public API surface, essential data types, or required logic is lost. '
+      + 'Do not delete any "type" definitions; they are strictly required. '
+      + 'Do not delete file paths (labels starting with "// File:"). '
+      + 'All instructions are mandatory and must be executed perfectly. '
+      + 'Return ONLY the resulting code. No markdown code blocks, no tags, no explanations, and no additional comments from the AI. NOTHING but the pure code.'
+    )
+
+    return generate ?? content
+  }
+
+  /**
+   * Generates a project description and usage guidelines using AI.
+   *
+   * Генерирует описание проекта и рекомендации по использованию с помощью ИИ.
+   * @param content cleaned type definitions / очищенные определения типов
+   */
+  protected async toAiDescription(content: string): Promise<string> {
+    const generate = await this.toAi(
+      content,
+      'Analyze the provided code and generate a highly technical, concise project overview for another AI coding assistant. '
+      + 'Your goal is to help the AI decide whether it needs to study this library to fulfill a user request. '
+      + 'The description must be objective, factual, and free of marketing fluff. '
+      + 'Include: '
+      + '1. Core Purpose: What is the primary function of this library? (e.g., UI component library, state management, utility for X). '
+      + '2. Usage Scenarios: In what specific cases and scenarios is this library indispensable? When should an AI study its API? '
+      + '3. Integration Context: How does it relate to other technologies in the stack (if evident)? '
+      + 'Ensure the structure is clean and enables immediate context retrieval. '
+      + 'Return ONLY the resulting description text. No markdown, no labels like "Description:", no explanations. NOTHING but the pure content.'
+    )
+
+    return generate ?? ''
   }
 }

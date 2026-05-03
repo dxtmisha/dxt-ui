@@ -49,6 +49,7 @@
     "dxt-flags": "bin/design-flags.ts",
     "dxt-library": "bin/design-library.ts",
     "dxt-package": "bin/design-package.ts",
+    "dxt-screenshot": "bin/design-screenshot.ts",
     "dxt-types": "bin/design-types.ts",
     "dxt-ui": "bin/design-ui.ts",
     "dxt-wiki-storm": "bin/design-wiki-storm.ts"

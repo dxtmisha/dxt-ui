@@ -40,16 +40,18 @@
     "preview": "vite preview",
     "test": "vitest",
     "library": "dxt-library",
-    "dxt-types": "dxt-types",
+    "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run build",
     "public": "npm publish --access public"
   },
   "files": [
     "dist",
+    "ai-description.txt",
     "ai-types.txt",
-    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
     "package.json",
-    "LICENSE"
+    "README.md"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",

@@ -10,6 +10,8 @@ export interface ScreenshotOptions {
   quality?: number
   /** Whether to take a full page screenshot/ Делать ли скриншот всей страницы */
   fullPage?: boolean
+
+  args?: string[]
 }
 
 /** Default screenshot widths/ Стандартные ширины скриншотов */

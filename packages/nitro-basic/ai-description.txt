@@ -1,0 +1,5 @@
+Core Purpose: This library facilitates Vue 3 Server-Side Rendering (SSR) and state synchronization within the Nitropack ecosystem, specifically handling request-scoped metadata, cookie storage, and server-side API caching.
+
+Usage Scenarios: This library is indispensable for building isomorphic Vue applications on Nitro that require unified routing synchronization, hydration mismatch prevention, and isolated server-side storage access. An AI should study this API when implementing SSR entry points, configuring Nitro-level API caching, or managing request-bound state (headers/cookies) within the Vue component tree.
+
+Integration Context: It acts as a middleware layer between Vue 3, Vue Router, and Nitropack. It leverages Vue’s provide/inject mechanism and SSRContext to bridge Nitro’s server-side HTTP layer with the application's reactive state during the rendering and hydration cycles.
