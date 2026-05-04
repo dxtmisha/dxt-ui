@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "component": "dxt-component"
   },
   "dependencies": {},
   "devDependencies": {

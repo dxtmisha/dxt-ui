@@ -122,6 +122,15 @@ export class PropertiesConfig {
   }
 
   /**
+   * Returns the Figma access token.
+   *
+   * Возвращает токен доступа к Figma.
+   */
+  static getFigmaToken(): string {
+    return this.config.figmaToken ?? ''
+  }
+
+  /**
    * Returns the AI configuration object.
    *
    * Возвращает объект конфигурации ИИ.

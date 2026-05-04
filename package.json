@@ -38,6 +38,10 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
+    "packages/demo-test/dist",
+    "packages/demo-test/package.json",
+    "packages/demo-test/dist",
+    "packages/demo-test/package.json",
     "dist",
     "src/style.scss",
     "README.md",
@@ -45,6 +49,10 @@
     "LICENSE"
   ],
   "exports": {
+    "./demo-test": {
+      "import": "./dist/demo-test.js",
+      "types": "./dist/demo-test.d.ts"
+    },
     "./nitro-basic": {
       "import": "./dist/nitro-basic.js",
       "types": "./dist/nitro-basic.d.ts"
@@ -69,6 +77,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@dxtmisha/demo-test": "workspace:*",
     "@anthropic-ai/sdk": "0.92.0",
     "@dxtmisha/configuration": "workspace:*",
     "@dxtmisha/constructor": "workspace:*",

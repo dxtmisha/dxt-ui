@@ -56,4 +56,7 @@ export type DesignUiConfig = {
 
   /** AI configuration object / Объект конфигурации ИИ */
   aiConfig?: Record<string, any>
+
+  /** Figma access token for API authentication / Токен доступа Figma для аутентификации API */
+  figmaToken?: string
 }
