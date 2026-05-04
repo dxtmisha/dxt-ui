@@ -75,34 +75,40 @@ var k = ["id"], A = {
 	setup(e) {
 		return (t, n) => (h(), i("code", te, [s(b(e.code) + " ", 1), v(t.$slots, "default")]));
 	}
-}), z = {
-	key: 0,
-	class: "dxt-test-wiki-demo"
-}, B = ["innerHTML"], V = { class: "dxt-test-wiki-demo__content" }, H = /* @__PURE__ */ l({
+}), z = ["innerHTML"], B = { class: "dxt-test-wiki-demo__content" }, V = /* @__PURE__ */ l({
 	name: "DxtTestWikiDemo",
 	__name: "DxtTestWikiDemo",
-	props: { args: {} },
+	props: {
+		args: {},
+		compact: { type: Boolean }
+	},
 	setup(e) {
-		let o = e, s = d("name"), l = d("component"), f = d("values"), g = { item: "dxt-test-wiki-demo__item" }, _ = t(() => ({
+		let o = e, s = d("name"), l = d("component"), f = d("values"), g = { item: "dxt-test-wiki-demo__item" }, _ = t(() => o.compact ? { ...o.args } : {
 			...f == null ? void 0 : f.value,
 			...o.args
-		})), b = t(() => {
-			let e = w(_.value, (e, t) => e === !0 ? `&nbsp;&nbsp;${t}<br/>` : e === !1 ? `&nbsp;&nbsp;${t}="false"<br/>` : `&nbsp;&nbsp;${t}="${C(typeof e == "object" ? JSON.stringify(e) : String(e))}"<br/>`);
+		}), b = t(() => ({
+			...f == null ? void 0 : f.value,
+			...o.args
+		})), T = t(() => {
+			let e = o.compact ? "" : "<br/>", t = o.compact ? " " : "&nbsp;&nbsp;", n = w(_.value, (n, r) => n === !0 ? `${t}${r}${e}` : n === !1 ? `${t}${r}="false"${e}` : `${t}${r}="${C(typeof n == "object" ? JSON.stringify(n) : String(n))}"${e}`);
 			return `
-&lt;${s.value}<br/>
-${e.join("")}
+&lt;${s.value}${e}
+${n.join("")}
 /&gt;
   `.trim();
 		});
-		return (e, t) => x(l) ? (h(), i("div", z, [c(R, null, {
-			default: S(() => [a("div", { innerHTML: b.value }, null, 8, B)]),
+		return (t, o) => x(l) ? (h(), i("div", {
+			key: 0,
+			class: p([{ "dxt-test-wiki-demo--compact": e.compact }, "dxt-test-wiki-demo"])
+		}, [c(R, null, {
+			default: S(() => [a("div", { innerHTML: T.value }, null, 8, z)]),
 			_: 1
-		}), a("div", V, [v(e.$slots, "render", {
-			args: _.value,
+		}), a("div", B, [v(t.$slots, "render", {
+			args: b.value,
 			classDemo: g
-		}, () => [a("div", { class: p(g.item) }, [(h(), n(y(x(l)), m(u(_.value)), null, 16))], 2)])])])) : r("", !0);
+		}, () => [a("div", { class: p(g.item) }, [(h(), n(y(x(l)), m(u(b.value)), null, 16))], 2)])])], 2)) : r("", !0);
 	}
-}), U = { class: "dxt-test-wiki-title" }, W = /* @__PURE__ */ l({
+}), H = { class: "dxt-test-wiki-title" }, U = /* @__PURE__ */ l({
 	name: "DxtTestWikiTitle",
 	__name: "DxtTestWikiTitle",
 	props: {
@@ -110,12 +116,12 @@ ${e.join("")}
 		type: {}
 	},
 	setup(e) {
-		return (t, a) => (h(), i("h4", U, [s(b(e.label) + " ", 1), e.type ? (h(), n(R, {
+		return (t, a) => (h(), i("h4", H, [s(b(e.label) + " ", 1), e.type ? (h(), n(R, {
 			key: 0,
 			code: e.type
 		}, null, 8, ["code"])) : r("", !0)]));
 	}
-}), G = E(() => {
+}), W = E(() => {
 	let e = O("--dxt-text-wiki-page-hide", !0);
 	return {
 		hide: e,
@@ -126,38 +132,40 @@ ${e.join("")}
 			e.value = !e.value;
 		}
 	};
-}), K = () => G(), q = { class: "dxt-test-wiki-prop-item__tilte" }, J = { class: "dxt-test-wiki-prop-item__name" }, Y = { class: "dxt-test-wiki-prop-item__description" }, X = {
+}), G = () => W(), K = { class: "dxt-test-wiki-prop-item__tilte" }, q = { class: "dxt-test-wiki-prop-item__name" }, J = { class: "dxt-test-wiki-prop-item__description" }, Y = {
 	key: 0,
 	class: "dxt-test-wiki-prop-item__description"
-}, Z = { class: "dxt-test-wiki-prop-item__demo" }, Q = /* @__PURE__ */ l({
+}, X = { class: "dxt-test-wiki-prop-item__demo" }, Z = /* @__PURE__ */ l({
 	name: "DxtTestWikiPropItem",
 	__name: "DxtTestWikiPropItem",
 	props: { item: {} },
 	setup(s) {
-		let l = s, { hide: d } = K(), g = t(() => !d.value || !l.item.isHide()), y = t(() => l.item.isHide()), x = t(() => l.item.getName()), C = t(() => l.item.getDefaultValue()), w = t(() => l.item.getDescription()), T = t(() => l.item.getType()), E = t(() => l.item.getOptions()), D = t(() => l.item.isDemo()), O = t(() => l.item.getDemo()), k = t(() => l.item.getDemoOptions());
+		let l = s, { hide: d } = G(), g = t(() => !d.value || !l.item.isHide()), y = t(() => l.item.isHide()), x = t(() => l.item.getName()), C = t(() => l.item.getDefaultValue()), w = t(() => l.item.getDescription()), T = t(() => l.item.getType()), E = t(() => l.item.getOptions()), D = t(() => l.item.isDemo()), O = t(() => l.item.getDemo()), k = t(() => l.item.getDemoOptions());
 		return (t, s) => g.value ? (h(), i("div", {
 			key: 0,
 			class: p(["dxt-test-wiki-prop-item", { "dxt-test-wiki-prop-item--hide": y.value }])
 		}, [
-			a("div", q, [a("span", J, b(x.value) + ":", 1), c(R, { code: T.value }, null, 8, ["code"])]),
-			a("div", Y, b(w.value), 1),
-			C.value === void 0 ? r("", !0) : (h(), i("div", X, " default value: " + b(C.value), 1)),
-			a("div", Z, [D.value ? (h(), i(e, { key: 0 }, [E.value ? (h(!0), i(e, { key: 0 }, _(E.value, (e) => (h(), n(H, {
+			a("div", K, [a("span", q, b(x.value) + ":", 1), c(R, { code: T.value }, null, 8, ["code"])]),
+			a("div", J, b(w.value), 1),
+			C.value === void 0 ? r("", !0) : (h(), i("div", Y, " default value: " + b(C.value), 1)),
+			a("div", X, [D.value ? (h(), i(e, { key: 0 }, [E.value ? (h(!0), i(e, { key: 0 }, _(E.value, (e) => (h(), n(V, {
 				key: e,
 				args: {
 					[x.value]: e,
 					...k.value
-				}
+				},
+				compact: ""
 			}, o({ _: 2 }, ["render" in t.$slots ? {
 				name: "render",
 				fn: S((e) => [v(t.$slots, "render", f({ ref_for: !0 }, e))]),
 				key: "0"
-			} : void 0]), 1032, ["args"]))), 128)) : O.value ? (h(), n(H, {
+			} : void 0]), 1032, ["args"]))), 128)) : O.value ? (h(), n(V, {
 				key: 1,
 				args: {
 					[x.value]: O.value,
 					...k.value
-				}
+				},
+				compact: ""
 			}, o({ _: 2 }, ["render" in t.$slots ? {
 				name: "render",
 				fn: S((e) => [v(t.$slots, "render", m(u(e)))]),
@@ -165,7 +173,7 @@ ${e.join("")}
 			} : void 0]), 1032, ["args"])) : r("", !0)], 64)) : r("", !0)])
 		], 2)) : r("", !0);
 	}
-}), ne = { class: "dxt-test-wiki__pre" }, re = { class: "dxt-test-wiki__pre" }, ie = { class: "dxt-test-wiki__props" }, ae = /* @__PURE__ */ l({
+}), Q = { class: "dxt-test-wiki__pre" }, ne = { class: "dxt-test-wiki__pre" }, re = { class: "dxt-test-wiki__props" }, ie = /* @__PURE__ */ l({
 	name: "DxtTestWiki",
 	__name: "DxtTestWiki",
 	props: {
@@ -182,31 +190,31 @@ ${e.join("")}
 			class: "dxt-test-wiki"
 		}, {
 			default: S(() => [
-				O.value ? (h(), i(e, { key: 0 }, [c(W, { label: "Demo" }), a("pre", ne, b(O.value), 1)], 64)) : r("", !0),
-				k.value ? (h(), i(e, { key: 1 }, [c(W, { label: "Description" }), a("div", re, b(k.value), 1)], 64)) : r("", !0),
-				a("div", null, [c(H, null, o({ _: 2 }, ["render" in t.$slots ? {
+				O.value ? (h(), i(e, { key: 0 }, [c(U, { label: "Demo" }), a("pre", Q, b(O.value), 1)], 64)) : r("", !0),
+				k.value ? (h(), i(e, { key: 1 }, [c(U, { label: "Description" }), a("div", ne, b(k.value), 1)], 64)) : r("", !0),
+				a("div", null, [c(V, null, o({ _: 2 }, ["render" in t.$slots ? {
 					name: "render",
 					fn: S((e) => [v(t.$slots, "render", m(u(e)))]),
 					key: "0"
 				} : void 0]), 1024)]),
-				c(W, {
+				c(U, {
 					type: x.value,
 					label: "Emits"
 				}, null, 8, ["type"]),
-				c(W, {
+				c(U, {
 					type: C.value,
 					label: "Expose"
 				}, null, 8, ["type"]),
-				c(W, {
+				c(U, {
 					type: w.value,
 					label: "Slots"
 				}, null, 8, ["type"]),
-				c(W, {
+				c(U, {
 					type: y.value,
 					label: "Props"
 				}, null, 8, ["type"]),
 				s[0] || (s[0] = a("div", { class: "dxt-test-wiki__description" }, " Enumeration of some properties ", -1)),
-				a("div", ie, [(h(!0), i(e, null, _(E.value, (e, r) => (h(), n(Q, {
+				a("div", re, [(h(!0), i(e, null, _(E.value, (e, r) => (h(), n(Z, {
 					key: r,
 					item: e,
 					class: "dxt-test-wiki__props__item"
@@ -223,13 +231,13 @@ ${e.join("")}
 			_: 3
 		}, 8, ["title", "anchor"])) : r("", !0);
 	}
-}), oe = { class: "dxt-test-wiki-anchor" }, se = ["onClick", "href"], ce = /* @__PURE__ */ l({
+}), ae = { class: "dxt-test-wiki-anchor" }, oe = ["onClick", "href"], se = /* @__PURE__ */ l({
 	name: "DxtTestWikiAnchor",
 	__name: "DxtTestWikiAnchor",
 	props: { list: {} },
 	setup(n) {
 		let r = n, { setFocus: o } = L(), s = t(() => D(r.list, (e) => e.name.replace(/AiWiki$/, "")).sort());
-		return (t, n) => (h(), i("div", oe, [a("a", {
+		return (t, n) => (h(), i("div", ae, [a("a", {
 			onClick: n[0] || (n[0] = (e) => x(o)("all")),
 			href: "#"
 		}, "All"), (h(!0), i(e, null, _(s.value, (e) => (h(), i("div", {
@@ -238,26 +246,26 @@ ${e.join("")}
 		}, [a("a", {
 			onClick: (t) => x(o)(e),
 			href: `#${e}`
-		}, b(e), 9, se)]))), 128))]));
+		}, b(e), 9, oe)]))), 128))]));
 	}
-}), le = /* @__PURE__ */ l({
+}), ce = /* @__PURE__ */ l({
 	name: "DxtTestWikiHide",
 	__name: "DxtTestWikiHide",
 	setup(e) {
-		let { hide: t, toggleHide: r } = K();
+		let { hide: t, toggleHide: r } = G();
 		return (e, i) => (h(), n(M, {
 			label: "Hide all obvious properties",
 			selected: x(t),
 			onClick: x(r)
 		}, null, 8, ["selected", "onClick"]));
 	}
-}), ue = { class: "dxt-test-wiki-possibilities" }, de = /* @__PURE__ */ l({
+}), le = { class: "dxt-test-wiki-possibilities" }, ue = /* @__PURE__ */ l({
 	name: "DxtTestWikiPossibilities",
 	__name: "DxtTestWikiPossibilities",
 	props: { possibilities: {} },
 	setup(t) {
-		return (n, r) => (h(), i("ul", ue, [(h(!0), i(e, null, _(t.possibilities, (e) => (h(), i("li", { key: e }, b(e), 1))), 128))]));
+		return (n, r) => (h(), i("ul", le, [(h(!0), i(e, null, _(t.possibilities, (e) => (h(), i("li", { key: e }, b(e), 1))), 128))]));
 	}
-}), fe = j, pe = M, $ = F, me = ae, he = ce, ge = R, _e = H, ve = le, ye = de, be = Q, xe = W;
+}), de = j, fe = M, pe = F, $ = ie, me = se, he = R, ge = V, _e = ce, ve = ue, ye = Z, be = U;
 //#endregion
-export { fe as DxtTestBlock, pe as DxtTestButton, $ as DxtTestPage, me as DxtTestWiki, he as DxtTestWikiAnchor, ge as DxtTestWikiCode, _e as DxtTestWikiDemo, ve as DxtTestWikiHide, ye as DxtTestWikiPossibilities, be as DxtTestWikiPropItem, xe as DxtTestWikiTitle, L as useWikiItemFocus, K as useWikiPropsHide };
+export { de as DxtTestBlock, fe as DxtTestButton, pe as DxtTestPage, $ as DxtTestWiki, me as DxtTestWikiAnchor, he as DxtTestWikiCode, ge as DxtTestWikiDemo, _e as DxtTestWikiHide, ve as DxtTestWikiPossibilities, ye as DxtTestWikiPropItem, be as DxtTestWikiTitle, L as useWikiItemFocus, G as useWikiPropsHide };

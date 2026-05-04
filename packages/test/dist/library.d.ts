@@ -148,6 +148,7 @@ export declare const DxtTestWikiCode: {
 export declare const DxtTestWikiDemo: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         args?: Record<string, any>;
+        compact?: boolean;
     }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
@@ -157,12 +158,14 @@ export declare const DxtTestWikiDemo: {
         Defaults: {};
     }, Readonly<{
         args?: Record<string, any>;
+        compact?: boolean;
     }> & Readonly<{}>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
 } & ComponentOptionsBase<Readonly<{
     args?: Record<string, any>;
+    compact?: boolean;
 }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< TestWikiSlotRender> & TestWikiSlotRender;
 });

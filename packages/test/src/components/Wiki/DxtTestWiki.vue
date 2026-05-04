@@ -149,8 +149,8 @@ provide('values', values)
     border: 1px solid oklch(92.8% 0.006 264.531);
 
     &__item {
-      flex: 1;
-      flex-basis: 72%;
+      flex-grow: 1;
+      width: fit-content;
     }
   }
 }

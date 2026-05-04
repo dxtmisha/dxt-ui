@@ -2,6 +2,7 @@ import { TestWikiSlotRender } from '../../types/wikiTypes';
 import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 type __VLS_Props = {
     args?: Record<string, any>;
+    compact?: boolean;
 };
 declare function __VLS_template(): {
     attrs: Partial<{}>;

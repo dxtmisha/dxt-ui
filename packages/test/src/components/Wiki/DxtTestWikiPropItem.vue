@@ -57,6 +57,7 @@ const demoOptions = computed(() => props.item.getDemoOptions())
             v-for="option in options"
             :key="option"
             :args="{[name]: option, ...demoOptions}"
+            compact
           >
             <template v-if="('render' in $slots)" #render="binds">
               <slot name="render" v-bind="binds"/>
@@ -66,6 +67,7 @@ const demoOptions = computed(() => props.item.getDemoOptions())
         <DxtTestWikiDemo
           v-else-if="demo"
           :args="{[name]: demo, ...demoOptions}"
+          compact
         >
           <template v-if="('render' in $slots)" #render="binds">
             <slot name="render" v-bind="binds"/>

@@ -12,6 +12,7 @@ defineOptions({
 
 const props = defineProps<{
   args?: Record<string, any>
+  compact?: boolean
 }>()
 
 defineSlots<TestWikiSlotRender>()
@@ -23,37 +24,53 @@ const valuesInject = inject<ComputedRef<Record<string, any>>>('values')
 const classDemo = {
   item: 'dxt-test-wiki-demo__item'
 }
+const argsStatus = computed(() => {
+  if (props.compact) {
+    return { ...props.args }
+  }
+
+  return {
+    ...valuesInject?.value,
+    ...props.args
+  }
+})
 const argsFull = computed(() => ({
   ...valuesInject?.value,
   ...props.args
 }))
 const code = computed(() => {
-  const props: string[] = forEach(argsFull.value, (value, prop) => {
+  const br: string = props.compact ? '' : '<br/>'
+  const nbsp: string = props.compact ? ' ' : '&nbsp;&nbsp;'
+  const propsCode: string[] = forEach(argsStatus.value, (value, prop) => {
     if (value === true) {
-      return `&nbsp;&nbsp;${prop}<br/>`
+      return `${nbsp}${prop}${br}`
     }
 
     if (value === false) {
-      return `&nbsp;&nbsp;${prop}="false"<br/>`
+      return `${nbsp}${prop}="false"${br}`
     }
 
     const valueString = typeof value === 'object'
       ? JSON.stringify(value)
       : String(value)
 
-    return `&nbsp;&nbsp;${prop}="${encodeAttribute(valueString)}"<br/>`
+    return `${nbsp}${prop}="${encodeAttribute(valueString)}"${br}`
   })
 
   return `
-&lt;${nameInject.value}<br/>
-${props.join('')}
+&lt;${nameInject.value}${br}
+${propsCode.join('')}
 /&gt;
   `.trim()
 })
 </script>
 
 <template>
-  <div v-if="componentInject" class="dxt-test-wiki-demo">
+  <div
+    v-if="componentInject"
+    :class="{ 'dxt-test-wiki-demo--compact': compact }"
+    class="dxt-test-wiki-demo"
+  >
     <DxtTestWikiCode>
       <div v-html="code"/>
     </DxtTestWikiCode>
@@ -71,18 +88,18 @@ ${props.join('')}
 @use "@dxtmisha/styles" as dxt;
 
 .dxt-test-wiki-demo {
-  @include dxt.flexInlineX;
-  justify-content: flex-start;
-  gap: 4px;
-  padding: 2px;
-  border: 2px solid oklch(96.7% 0.003 264.542);
+  width: 100%;
+  border: 1px solid oklch(86.9% 0.022 252.894);
+  background-color: oklch(96.9% 0.016 293.756);
 
   &__content {
-    @include dxt.flexX;
-    justify-content: flex-start;
-    gap: 4px;
+    flex: 1;
     position: relative;
-    border: 1px solid oklch(86.9% 0.022 252.894);
+  }
+
+  &--compact {
+    flex-grow: 1;
+    width: min-content;
   }
 }
 </style>
