@@ -1,0 +1,37 @@
+{
+  "name": "@dxtmisha/figma-style",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "[description]",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build --mode ui && vite build --mode code",
+    "build:ui:watch": "vue-tsc -b && vite build --mode ui --watch",
+    "build:code:watch": "vue-tsc -b && vite build --mode code --watch",
+    "preview": "vite preview",
+    "test": "vitest",
+    "component": "dxt-component",
+    "library": "dxt-library",
+    "wiki": "dxt-ai-doc src/storybook"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/library.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
+    },
+    "./style.css": "./dist/style.css",
+    "./types/*": "./dist/*",
+    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
