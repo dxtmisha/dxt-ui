@@ -4,17 +4,11 @@ import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOp
 type __VLS_Props = {
     item: WikiStorybookProp;
 };
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly<TestWikiSlotRender> & TestWikiSlotRender;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+type __VLS_Slots = TestWikiSlotRender;
 declare const __VLS_component: DefineComponent<__VLS_Props, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<__VLS_Props> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };
