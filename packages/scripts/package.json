@@ -34,9 +34,10 @@
   "files": [
     "bin/",
     "src/",
+    "CHANGELOG.md",
+    "LICENSE",
     "README.md",
-    "package.json",
-    "LICENSE"
+    "package.json"
   ],
   "main": "./src/library.ts",
   "module": "./src/library.ts",
@@ -66,15 +67,16 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.92.0",
+    "@anthropic-ai/sdk": "*",
     "@dxtmisha/configuration": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
     "@dxtmisha/media": "*",
+    "@dxtmisha/styles": "*",
     "@dxtmisha/wiki": "*",
-    "@google/genai": "^1.50.1",
-    "puppeteer": "^24.41.0",
-    "typescript": "^6.0.2",
-    "vue": "^3.5.32"
+    "@google/genai": "*",
+    "puppeteer": "*",
+    "typescript": "*",
+    "vue": "*"
   }
 }
