@@ -1,5 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
+import type { IconComponentInclude } from '../Icon'
+
 import type { CaptionSlots } from '../../types/captionTypes'
 import type { LabelSlots } from '../../types/labelTypes'
 
@@ -8,7 +10,7 @@ import type { LabelSlots } from '../../types/labelTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type HeaderComponents = {}
+export type HeaderComponents = IconComponentInclude
 
 /**
  * Type describing available events.

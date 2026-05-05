@@ -4,13 +4,7 @@ import { DefineComponent, ComputedRef, Ref, ComponentOptionsMixin, PublicProps, 
 import { WindowControlItem, WindowExpose, WindowEmitOptions } from '@dxtmisha/constructor/Window';
 import { ConstrBind } from '@dxtmisha/functional';
 import { EventClickValue } from '@dxtmisha/constructor';
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly<ModalSlots> & ModalSlots;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+type __VLS_Slots = ModalSlots;
 declare const __VLS_component: DefineComponent<ModalProps, {
     id: ComputedRef<string | undefined>;
     open: ComputedRef<boolean>;
@@ -36,9 +30,9 @@ declare const __VLS_component: DefineComponent<ModalProps, {
     onActions?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onActionsLite?: ((value: EventClickValue) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };

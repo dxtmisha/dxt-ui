@@ -1,2 +1,2 @@
-import { t as e } from "./Plugin-RWudGVRX.js";
+import { t as e } from "./Plugin-DWUx0lod.js";
 export { e as Plugin };

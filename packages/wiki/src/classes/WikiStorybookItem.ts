@@ -121,6 +121,10 @@ export class WikiStorybookItem {
    * Преобразует элемент Wiki в элемент аргументов Storybook
    */
   to(): StorybookArgsItem {
+    if (this.item.options.options) {
+      return this.toSelect()
+    }
+
     switch (this.item.type) {
       case StorybookControl.text:
       case StorybookControl.string:

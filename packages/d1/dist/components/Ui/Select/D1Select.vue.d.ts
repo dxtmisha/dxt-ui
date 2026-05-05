@@ -4,13 +4,7 @@ import { DefineComponent, ShallowRef, ComputedRef, Ref, ComponentOptionsMixin, P
 import { MenuExpose } from '@dxtmisha/constructor/Menu';
 import { ConstrBind } from '@dxtmisha/functional';
 import { FieldValidationItem } from '@dxtmisha/constructor';
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly<SelectSlots> & SelectSlots;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+type __VLS_Slots = SelectSlots;
 declare const __VLS_component: DefineComponent<SelectProps, {
     value: ShallowRef<string | undefined>;
     checkValidity: () => boolean;
@@ -37,9 +31,9 @@ declare const __VLS_component: DefineComponent<SelectProps, {
     onChange?: ((event: Event | InputEvent, value: FieldValidationItem<any>) => any) | undefined;
     onChangeLite?: ((value: FieldValidationItem<any>) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };

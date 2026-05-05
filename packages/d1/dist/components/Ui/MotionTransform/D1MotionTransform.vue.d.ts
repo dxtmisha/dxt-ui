@@ -1,13 +1,7 @@
 import { MotionTransformSlots, MotionTransformEmitOptions } from '@dxtmisha/constructor/MotionTransform';
 import { MotionTransformProps } from './props';
 import { DefineComponent, Ref, ComputedRef, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly<MotionTransformSlots> & MotionTransformSlots;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+type __VLS_Slots = MotionTransformSlots;
 declare const __VLS_component: DefineComponent<MotionTransformProps, {
     open: Ref<boolean>;
     isShow: ComputedRef<boolean>;
@@ -27,9 +21,9 @@ declare const __VLS_component: DefineComponent<MotionTransformProps, {
     onTransform?: ((event: Event | undefined, options: MotionTransformEmitOptions) => any) | undefined;
     onTransformLite?: ((options: MotionTransformEmitOptions) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };

@@ -11,6 +11,8 @@ import {
   type HeaderSlots
 } from '@dxtmisha/constructor/Header'
 
+import { D1Icon } from '../Icon'
+
 import { defaults, type HeaderProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -40,7 +42,10 @@ const design = new HeaderDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      icon: D1Icon
+    }
   }
 )
 

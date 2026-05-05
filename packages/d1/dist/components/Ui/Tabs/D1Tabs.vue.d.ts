@@ -1,15 +1,10 @@
+import { TabsSlots } from '@dxtmisha/constructor/Tabs';
 import { TabsProps } from './props';
-import { MotionAxisSlots, MotionAxisEmitOptions } from '@dxtmisha/constructor/MotionAxis';
 import { DefineComponent, Ref, ComputedRef, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 import { EventClickValue } from '@dxtmisha/constructor';
 import { ListSelectedList } from '@dxtmisha/functional';
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly< MotionAxisSlots> & MotionAxisSlots;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+import { MotionAxisEmitOptions } from '@dxtmisha/constructor/MotionAxis';
+type __VLS_Slots = TabsSlots;
 declare const __VLS_component: DefineComponent<TabsProps, {
     value?: Ref< EventClickValue["value"]>;
     detail?: Ref< EventClickValue["detail"]>;
@@ -27,9 +22,9 @@ declare const __VLS_component: DefineComponent<TabsProps, {
     "onUpdate:modelSelected"?: ((value: ListSelectedList) => any) | undefined;
     onMotionAxis?: ((options: MotionAxisEmitOptions) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };

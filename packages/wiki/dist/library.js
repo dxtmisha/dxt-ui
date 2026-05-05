@@ -42,6 +42,7 @@ var u = class {
 		}
 	}
 	to() {
+		if (this.item.options.options) return this.toSelect();
 		switch (this.item.type) {
 			case e.text:
 			case e.string: return this.toString();

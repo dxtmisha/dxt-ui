@@ -1,6 +1,6 @@
-import { t as e } from "./defineProperty-149Ahniv.js";
-import { t } from "./ModelInclude-B9usSTAS.js";
-import { t as n } from "./MotionAxisInclude-N6UG1ZbN.js";
+import { t as e } from "./defineProperty-3CuEayIP.js";
+import { t } from "./ModelInclude-COXpwWf_.js";
+import { t as n } from "./MotionAxisInclude-DvWUK3aP.js";
 import { computed as r, h as i, onMounted as a, ref as o, watch as s } from "vue";
 import { DesignConstructorAbstract as c, forEach as l } from "@dxtmisha/functional";
 //#region src/constructors/MotionAxis/MotionAxisElement.ts

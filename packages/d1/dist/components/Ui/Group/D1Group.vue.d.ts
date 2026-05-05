@@ -1,19 +1,13 @@
 import { GroupSlots } from '@dxtmisha/constructor/Group';
 import { GroupProps } from './props';
 import { DefineComponent, ComputedRef, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly<GroupSlots> & GroupSlots;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+type __VLS_Slots = GroupSlots;
 declare const __VLS_component: DefineComponent<GroupProps, {
     elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<GroupProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };

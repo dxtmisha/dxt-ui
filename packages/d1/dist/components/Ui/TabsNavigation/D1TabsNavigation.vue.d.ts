@@ -3,13 +3,7 @@ import { TabsNavigationProps } from './props';
 import { DefineComponent, ComputedRef, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 import { EventClickValue } from '@dxtmisha/constructor';
 import { ListSelectedList } from '@dxtmisha/functional';
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly<TabsNavigationSlots> & TabsNavigationSlots;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+type __VLS_Slots = TabsNavigationSlots;
 declare const __VLS_component: DefineComponent<TabsNavigationProps, {
     ids: ComputedRef<TabsNavigationIdsList>;
     elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
@@ -24,9 +18,9 @@ declare const __VLS_component: DefineComponent<TabsNavigationProps, {
     "onUpdate:selected"?: ((value: ListSelectedList) => any) | undefined;
     "onUpdate:modelSelected"?: ((value: ListSelectedList) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };

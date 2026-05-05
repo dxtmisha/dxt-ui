@@ -3,13 +3,7 @@ import { ListMenuProps } from './props';
 import { DefineComponent, ComputedRef, Ref, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 import { WindowControlItem, WindowExpose, WindowEmitOptions } from '@dxtmisha/constructor/Window';
 import { ConstrBind } from '@dxtmisha/functional';
-declare function __VLS_template(): {
-    attrs: Partial<{}>;
-    slots: Readonly<ListMenuSlots> & ListMenuSlots;
-    refs: {};
-    rootEl: any;
-};
-type __VLS_TemplateResult = ReturnType<typeof __VLS_template>;
+type __VLS_Slots = ListMenuSlots;
 declare const __VLS_component: DefineComponent<ListMenuProps, {
     id: ComputedRef<string | undefined>;
     open: ComputedRef<boolean>;
@@ -25,9 +19,9 @@ declare const __VLS_component: DefineComponent<ListMenuProps, {
 }, string, PublicProps, Readonly<ListMenuProps> & Readonly<{
     onWindow?: ((options: WindowEmitOptions) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
+type __VLS_WithSlots<T, S> = T & {
     new (): {
         $slots: S;
     };

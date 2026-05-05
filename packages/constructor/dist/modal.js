@@ -1,4 +1,4 @@
-import { n as e, r as t, t as n } from "./ModalDesignAbstract-C8BVdaPa.js";
+import { n as e, r as t, t as n } from "./ModalDesignAbstract-_2b_6oIU.js";
 import { computed as r } from "vue";
 import "@dxtmisha/functional";
 //#region src/constructors/Modal/Modal.ts
