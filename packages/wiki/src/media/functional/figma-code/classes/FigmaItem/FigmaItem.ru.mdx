@@ -1,73 +1,63 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/figma-code/Classes/FigmaItem - Обертка узла'/>
+<Meta title='@dxtmisha/ru/figma-code/Classes/FigmaItem - Обертка для узлов Figma'/>
 
-# Класс FigmaItem
+# Класс `FigmaItem`
 
-Класс-обертка для узлов Figma (`UiFigmaNode`), который предоставляет упрощенный типизированный интерфейс для общих операций, таких как проверка типа, навигация по дереву и асинхронный экспорт.
+Универсальный класс-обертка для работы с любыми типами узлов Figma. Предоставляет типизированные методы для проверки типов, навигации по дереву элементов и выполнения частых операций, таких как экспорт и управление вьюпортом.
 
 ## Ключевые особенности
 
-- **Типизированный доступ** — Предоставляет методы-тайпгарды для узлов `DOCUMENT`, `FRAME`, `SECTION` и `TEXT`.
-- **Упрощенная навигация** — Легкий доступ к родительским или дочерним узлам, обернутым в экземпляры `FigmaItem`.
-- **Экспорт** — Высокоуровневые методы для экспорта узлов в форматы JPG или JSON.
-- **Анализ контента** — Специализированная логика для извлечения и валидации текстового содержимого.
+- **Типобезопасность** — Использует Type Guards (`isFrame`, `isText` и т. д.) для безопасного доступа к свойствам конкретных типов узлов.
+- **Удобная навигация** — Методы для получения родительских элементов или дочерних узлов, уже обернутых в экземпляры `FigmaItem`.
+- **Встроенные действия** — Поддержка экспорта узлов в JPG/JSON и управления вьюпортом Figma (выделение и масштабирование).
 
 ## Инициализация
 
-Для инициализации объекта вызовите конструктор `FigmaItem(item)`.
-
-### Ограничения универсальных типов (Generics)
-
-Класс поддерживает параметр универсального типа для строгой типизации:
-- `T extends UiFigmaNode` — Конкретный тип обернутого узла Figma.
-
-**Параметры:**
-- `item: T` — Нативный узел Figma (например, `SceneNode`, `FrameNode`, `TextNode`), который необходимо обернуть.
+Оберните любой узел Figma в экземпляр `FigmaItem`, чтобы получить доступ к его вспомогательным методам.
 
 ```typescript
 import { FigmaItem } from '@dxtmisha/figma-code'
 
-// 1. Обертывание текущего выделенного узла
+// Обертывание узла (например, из выделения)
 const item = new FigmaItem(figma.currentPage.selection[0])
 
-// 2. Использование дженериков для конкретных типов узлов
-const frameItem = new FigmaItem<FrameNode>(someFrameNode)
+if (item.isFrame()) {
+  console.log('Узел является фреймом:', item.getName())
+}
 ```
 
-## Идентификация узла
+## Методы
 
-- `isDocument(): boolean` — Проверяет, является ли узел документом. Пример: `item.isDocument()`
-- `isFrame(): boolean` — Проверяет, является ли узел фреймом. Пример: `item.isFrame()`
-- `isSection(): boolean` — Проверяет, является ли узел секцией. Пример: `item.isSection()`
-- `isText(): boolean` — Проверяет, является ли узел текстовым. Пример: `item.isText()`
-- `isTextNoValue(): boolean` — Фильтрует текстовые узлы со значимым контентом. Пример: `item.isTextNoValue()`
-- `getType(): string | undefined` — Возвращает строковую константу типа узла. Пример: `const type = item.getType()`
-- `getId(): string` — Возвращает уникальный ID узла. Пример: `const id = item.getId()`
-- `getName(): string` — Возвращает отображаемое имя узла. Пример: `const name = item.getName()`
+### Проверка типов
 
-## Навигация
+Методы для идентификации типа узла и его состояния.
 
-- `getParent(): UiFigmaNode | undefined` — Возвращает нативный родительский узел. Пример: `const parent = item.getParent()`
-- `getParentItem(): FigmaItem | undefined` — Возвращает родителя, обернутого в `FigmaItem`. Пример: `const parentItem = item.getParentItem()`
-- `getChildren(): UiFigmaNode[]` — Возвращает массив нативных дочерних узлов. Пример: `const children = item.getChildren()`
-- `getChildrenItems(): FigmaItem[]` — Возвращает массив обернутых дочерних узлов. Пример: `const items = item.getChildrenItems()`
+- `isDocument(): boolean` — Возвращает `true`, если узел является Документом.
+- `isFrame(): boolean` — Возвращает `true`, если узел является Фреймом.
+- `isSection(): boolean` — Возвращает `true`, если узел является Секцией.
+- `isText(): boolean` — Возвращает `true`, если узел является Текстовым узлом.
+- `isTextNoValue(): boolean` — Возвращает `true`, если узел является текстовым узлом с осмысленным содержанием.
+- `inCurrentPage(): boolean` — Проверяет, принадлежит ли узел текущей активной странице.
 
-## Данные и экспорт
+### Доступ к данным
 
-- `get(): T` — Возвращает исходный нативный узел Figma. Пример: `const raw = item.get()`
-- `exportJpg(): Promise<Uint8Array | string>` — Асинхронно экспортирует узел в JPG. Пример: `const bytes = await item.exportJpg()`
-- `exportJson(): Promise<Uint8Array | string>` — Асинхронно экспортирует узел в JSON. Пример: `const json = await item.exportJson()`
-- `getText(): string` — Извлекает очищенное текстовое содержимое. Пример: `const content = item.getText()`
+Методы для получения данных и связанных узлов.
 
-## Типы (Types)
+- `get(): T` — Возвращает исходный узел Figma.
+- `getId(): string` — Возвращает уникальный идентификатор узла.
+- `getName(): string` — Возвращает имя узла.
+- `getType(): string` — Возвращает строку с типом узла.
+- `getText(): string` — Возвращает текстовое содержимое (для текстовых узлов).
+- `getParentItem(): FigmaItem | undefined` — Возвращает родительский узел, обернутый в `FigmaItem`.
+- `getParentPageItem(): FigmaItem | undefined` — Возвращает родительскую страницу, обернутую в `FigmaItem`.
+- `getChildrenItems(): FigmaItem[]` — Возвращает все дочерние узлы, обернутые в `FigmaItem`.
 
-### `UiFigmaNode`
+### Действия
 
-Тип-объединение (union), представляющий любой релевантный узел Figma, который может быть обернут в `FigmaItem`.
-- Включает: `DocumentNode`, `PageNode`, `FrameNode`, `SectionNode`, `TextNode` и другие варианты `SceneNode`.
+Методы для выполнения операций над узлом.
 
-### `UiFigmaExportFormat`
-
-Поддерживаемые форматы для операций экспорта узлов.
-- Значения: `'PNG'`, `'JPG'`, `'SVG'`, `'PDF'`, `'JSON_REST_V1'`.
+- `exportJpg(): Promise<Uint8Array | string>` — Экспортирует узел как изображение JPG.
+- `exportJson(): Promise<Uint8Array | string>` — Экспортирует данные узла в формате JSON.
+- `toSelection(): void` — Выделяет узел и фокусирует на нем вьюпорт.
+- `toPageAndSelection(): Promise<void>` — Переключается на страницу узла и выделяет его.

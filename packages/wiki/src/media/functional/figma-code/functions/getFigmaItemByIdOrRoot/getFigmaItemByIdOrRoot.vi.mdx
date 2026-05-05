@@ -1,0 +1,30 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/getFigmaItemByIdOrRoot - Lấy node Figma hoặc gốc tài liệu'/>
+
+# `getFigmaItemByIdOrRoot`
+
+Một tiện ích bất đồng bộ lấy một node Figma bằng ID của nó. Nếu ID không được cung cấp hoặc không tìm thấy node, nó sẽ trả về gốc của tài liệu (`figma.root`). Điều này hữu ích cho các hoạt động có thể nhắm vào một phần tử cụ thể hoặc toàn bộ tài liệu.
+
+**Tham số:**
+- `id?: string` — (Tùy chọn) Định danh (ID) của node Figma.
+
+**Trả về:**
+`Promise<T>` — Node Figma được truy xuất hoặc `figma.root`.
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { getFigmaItemByIdOrRoot } from '@dxtmisha/figma-code'
+
+async function getStorageNode(id?: string) {
+  // Nếu id được cung cấp, cố gắng lấy node đó.
+  // Ngược lại, trả về figma.root.
+  const node = await getFigmaItemByIdOrRoot(id)
+  
+  console.log('Tên node đích:', node.name)
+}
+  `}
+/>

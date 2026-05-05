@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/makeFigmaTexts - Theo dõi các phần tử văn bản'/>
+
+# `makeFigmaTexts`
+
+Một tiện ích để tự động hóa quá trình theo dõi các thay đổi lựa chọn trong Figma. Nó thiết lập một trình lắng nghe sự kiện `selectionchange` toàn cục, mỗi khi được kích hoạt sẽ thu thập dữ liệu về các phần tử văn bản và ảnh chụp màn hình của trang hiện tại, sau đó gửi thông tin này đến giao diện người dùng (UI) của plugin.
+
+**Tham số:**
+Không có.
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { makeFigmaTexts } from '@dxtmisha/figma-code'
+
+// Khởi tạo trong phần chính của plugin (thường là code.ts)
+makeFigmaTexts()
+
+// Giờ đây, mỗi khi người dùng thay đổi lựa chọn, 
+// UI sẽ nhận được dữ liệu văn bản và ảnh chụp màn hình cập nhật.
+  `}
+/>

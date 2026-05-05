@@ -1,21 +1,43 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/figma/Functions/fetchTopLevelFrames - Получение фреймов верхнего уровня'/>
 
 # `fetchTopLevelFrames`
 
-Утилита, которая запрашивает фреймы верхнего уровня из плагина Figma. Она поддерживает кэширование и предотвращает дублирование одновременных запросов.
+Утилита для получения списка всех фреймов верхнего уровня, присутствующих в документе Figma. Обеспечивает связь между интерфейсом (UI) и основной частью плагина для доступа к структуре документа.
 
 **Параметры:**
-- `callback: (frames: UiFigmaFramesList) => void` — Функция, вызываемая после получения фреймов.
+- `callback: (frames: UiFigmaFramesList) => void` — Функция, которая будет вызвана после получения списка фреймов верхнего уровня.
 
 **Возвращает:**
 `void`
 
-```javascript
+## Типы
+
+### UiFigmaFramesList
+
+Массив элементов `UiFigmaFramesItem`.
+
+### UiFigmaFramesItem
+
+- `name: string` — Название фрейма.
+- `id: string` — Уникальный идентификатор элемента.
+- `image?: Uint8Array | string` — (Опционально) Изображение фрейма в виде байтового массива или строки Base64.
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
 import { fetchTopLevelFrames } from '@dxtmisha/figma'
 
+// Получить все фреймы верхнего уровня и вывести информацию о них
 fetchTopLevelFrames((frames) => {
-  console.log('Фреймы верхнего уровня:', frames)
+  console.log('Найдено фреймов верхнего уровня:', frames.length)
+  
+  frames.forEach(frame => {
+    console.log(\`Фрейм: \${frame.name} (ID: \${frame.id})\`)
+  })
 })
-```
+  `}
+/>

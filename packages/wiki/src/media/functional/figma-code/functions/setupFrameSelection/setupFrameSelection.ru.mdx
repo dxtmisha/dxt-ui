@@ -1,0 +1,27 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/setupFrameSelectionByMessage - Настройка обработчиков выделения фреймов'/>
+
+# `setupFrameSelectionByMessage`
+
+Утилита для настройки обработчика сообщений, позволяющего интерфейсу (UI) запрашивать выделение конкретного фрейма в Figma. Она служит связующим звеном между функцией `sendFrameSelection` в UI и функцией `toFrameSelection` в плагине.
+
+**Параметры:**
+Отсутствуют.
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { setupFrameSelectionByMessage } from '@dxtmisha/figma-code'
+
+// Инициализация в основной части плагина (обычно в code.ts)
+setupFrameSelectionByMessage()
+
+// Теперь UI может отправлять сообщения для изменения выделения в документе.
+  `}
+/>

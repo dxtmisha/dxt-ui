@@ -1,0 +1,77 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI Figma/# Messenger System'/>
+
+# Working with Messages (Messenger)
+
+The messaging mechanism is the central link in the architecture of Figma plugins. Since the "Code Side" (sandbox) and the "Interface Side" (UI) run in isolated environments, any interaction between them requires the use of the `postMessage` system.
+
+The library simplifies this process by providing standardized messengers and automatic routing.
+
+### Why is this needed?
+Direct use of `figma.ui.postMessage` and `window.addEventListener` has several disadvantages:
+- Lack of typing for transmitted data.
+- Difficulty in tracking the sender and receiver when there are many message types.
+- The need to manually filter messages intended for specific logic.
+
+The messenger system solves these problems by encapsulating low-level event handling.
+
+### How it works
+
+The architecture is built on the use of two mirror classes:
+1. **`FigmaPluginMessenger`** — used on the code side (backend).
+2. **`FigmaUiMessenger`** — used on the interface side (frontend).
+
+Both classes inherit from `FigmaPostAbstract` and provide a unified API for sending and receiving data.
+
+#### 1. Defining Message Types
+To ensure consistency, it is recommended to define all message types in a shared file accessible by both the code and UI sides of your plugin (e.g., in a `shared/types.ts` file).
+
+```typescript
+// plugin/shared/types.ts
+export const UI_FIGMA_MY_ACTION = 'my-action-type'
+```
+
+This allows you to use the same constant in both environments, preventing typos and mismatches.
+
+#### 2. Handling Messages on the Plugin Side (Code)
+On the code side, we subscribe to events and send results back.
+
+```typescript
+import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
+import { UI_FIGMA_MY_ACTION } from '@dxtmisha/figma'
+
+const messenger = FigmaPluginMessenger.getInstance()
+
+// Subscribing to a request from the UI
+messenger.add(UI_FIGMA_MY_ACTION, (data) => {
+  console.log('Data received:', data)
+  
+  // Sending a response back to the UI
+  messenger.post(UI_FIGMA_MY_ACTION, { status: 'success' })
+})
+```
+
+#### 3. Handling Messages on the UI Side (Vue)
+In the interface, we use the same approach via `FigmaUiMessenger`.
+
+```typescript
+import { FigmaUiMessenger } from '@dxtmisha/figma'
+import { UI_FIGMA_MY_ACTION } from '@dxtmisha/figma'
+
+const messenger = FigmaUiMessenger.getInstance()
+
+// Sending a request to the plugin
+messenger.post(UI_FIGMA_MY_ACTION, { payload: 'hello' })
+
+// Subscribing to the response
+messenger.add(UI_FIGMA_MY_ACTION, (result) => {
+  console.log('Result:', result)
+})
+```
+
+### Summary
+Using the messenger system allows you to:
+- **Centralize communication**: All communication passes through unified entry points.
+- **Ensure delivery**: Each message contains a `code` identifier, which is checked by the system to prevent conflicts with other plugins.
+- **Simplify debugging**: A unified format for logging and error handling.

@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI Figma/# Data Storage'/>
+
+# Working with Storage
+
+Figma provides two main mechanisms for saving data: local user storage and shared document storage. The library offers typed wrappers for both methods, providing convenient access and synchronization.
+
+### Storage Types
+
+**Document Storage (Shared)** — Data bound to the document or a node. It is saved inside the `.fig` file and is accessible to all users of the file.
+
+**Client Storage (Private)** — Local data of a specific user. It is saved on the user's machine and is only accessible to the current user.
+
+### Connection Setup (Setup)
+
+For storages to work correctly in tandem (Code `<->` UI), message handlers must be initialized on the plugin side:
+
+```typescript
+// plugin/code.ts
+import { setupStorage, setupClientStorage } from '@dxtmisha/figma-code'
+
+// Activate listeners for both storage types
+setupStorage()
+setupClientStorage()
+```
+
+### Shared Document Storage (FigmaStorage)
+
+Used for data that should be visible to all project participants (e.g., plugin settings for a specific layout).
+
+**On the Code side (Backend):**
+```typescript
+import { FigmaStorage } from '@dxtmisha/figma-code'
+
+// Global document settings
+const storage = FigmaStorage.getInstance<string>('project-theme')
+const theme = storage.get('light') // Retrieval with default value
+storage.set('dark') // Saving
+```
+
+**On the UI side (Vue):**
+```typescript
+import { useFigmaStorage } from '@dxtmisha/figma-ref'
+
+const { item: theme, loading } = useFigmaStorage('project-theme', 'light')
+
+// Changes are automatically synchronized with the document
+theme.value = 'dark'
+```
+
+### Personal User Storage (FigmaClientStorage)
+
+Ideal for personal settings, authorization tokens, or action history.
+
+**On the Code side (Backend):**
+```typescript
+import { FigmaClientStorage } from '@dxtmisha/figma-code'
+
+const client = FigmaClientStorage.getInstance<boolean>('show-onboarding')
+const isSeen = await client.get() // Asynchronous retrieval
+await client.set(true) // Asynchronous saving
+```
+
+**On the UI side (Vue):**
+```typescript
+import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+
+const { item: isSeen, loading } = useFigmaClientStorage('show-onboarding', false)
+
+// Synchronization happens automatically when .value changes
+isSeen.value = true
+```

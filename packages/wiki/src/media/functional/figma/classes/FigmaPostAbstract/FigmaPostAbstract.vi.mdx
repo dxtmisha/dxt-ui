@@ -70,3 +70,49 @@ Cấu trúc của đối tượng dữ liệu được truyền qua đường tr
 - `code: string` — Mã xác minh từ `FigmaPostCode`.
 - `type: string` — Mã định danh của tin nhắn.
 - `message: Message` — Dữ liệu payload thực tế.
+
+## Mở rộng lớp
+
+`FigmaPostAbstract` là một lớp trừu tượng và đóng vai trò là nền tảng để tạo các messenger tùy chỉnh. Để sử dụng nó, bạn phải tạo một lớp con và thực hiện hai phương thức bắt buộc:
+
+### `post`
+
+Một phương thức trừu tượng để thực hiện logic gửi tin nhắn đến phía bên kia. Trong lớp dẫn xuất, phương thức này sẽ đóng gói lệnh gọi gửi theo hệ thống cụ thể (ví dụ: `postMessage`).
+
+**Tham số:**
+- `type: string` — Mã định danh duy nhất cho loại tin nhắn.
+- `message: Message` — Dữ liệu tin nhắn sẽ được gửi.
+
+```typescript
+post<Message>(type: string, message?: Message): void {
+  // Thực hiện gửi theo hệ thống
+}
+```
+
+### `prepare`
+
+Một phương thức được bảo vệ trừu tượng để thiết lập trình lắng nghe sự kiện đến của hệ thống. Phương thức này được gọi tự động một lần khi `make()` được thực thi. Trong quá trình thực hiện, `this.onMessage(data)` phải được gọi bất cứ khi nào nhận được dữ liệu.
+
+```typescript
+protected prepare(): void {
+  // Thiết lập đăng ký các sự kiện hệ thống
+}
+```
+
+## Cách sử dụng
+
+Sau khi đã triển khai lớp tùy chỉnh của mình, hãy làm việc với nó như sau:
+
+1. **Khởi tạo**: Gọi phương thức `make()` để bắt đầu trình lắng nghe (kích hoạt triển khai `prepare` của bạn).
+2. **Đăng ký**: Sử dụng phương thức `add(type, callback)` để xử lý dữ liệu đến.
+3. **Gửi**: Sử dụng phương thức `post(type, data)`.
+
+```typescript
+const messenger = new MyMessenger().make();
+
+messenger.add('my-event', (data) => {
+  console.log('Nhận được tin nhắn:', data);
+});
+
+messenger.post('my-event', { hello: 'world' });
+```

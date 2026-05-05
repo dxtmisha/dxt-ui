@@ -1,0 +1,29 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/sendClientStorage - Сохранение данных в клиентское хранилище'/>
+
+# `sendClientStorage`
+
+Утилита для сохранения данных в клиентское хранилище Figma (`clientStorage`). Отправляет сообщение из интерфейса (UI) в основную часть плагина для записи значения по указанному имени.
+
+**Параметры:**
+- `name: string` — Ключ (имя) в хранилище.
+- `value: T` — Данные для сохранения.
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { sendClientStorage } from '@dxtmisha/figma'
+
+// 1. Сохранение простой строки
+sendClientStorage('user-theme', 'dark')
+
+// 2. Сохранение объекта
+sendClientStorage('settings', { notifications: true, zoom: 100 })
+  `}
+/>

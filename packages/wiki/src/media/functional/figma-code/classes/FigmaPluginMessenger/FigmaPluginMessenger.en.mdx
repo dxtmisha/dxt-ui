@@ -1,63 +1,33 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma-code/Classes/FigmaPluginMessenger - Backend Messenger'/>
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaPluginMessenger - Plugin messenger (Backend)'/>
 
-# FigmaPluginMessenger Class
+# Class `FigmaPluginMessenger`
 
-Messenger for the Figma plugin side (backend). It handles sending messages to the Figma UI and listening for messages from the UI using the internal Figma `figma.ui` API.
+A specialized messenger for the Figma plugin backend. It extends `FigmaPostAbstract` to provide a robust communication layer between the plugin's main logic (code side) and its user interface (UI).
+
+## Key Features
+
+- **Singleton Architecture** — Use `getInstance()` to ensure all parts of the plugin use the same communication hub.
+- **Simplified API** — Wraps standard `figma.ui.postMessage` and `figma.ui.onmessage` into a more manageable interface.
+- **Type Safety** — Supports generic types for messages to ensure data consistency.
 
 ## Initialization
 
-Extends `FigmaPostAbstract`.
+Access the singleton instance using the static `getInstance()` method.
 
 ```typescript
 import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
 
-const messenger = new FigmaPluginMessenger()
-  .make()
-  .add('hello-ui', (msg) => console.log('UI:', msg))
+const messenger = FigmaPluginMessenger.getInstance()
 ```
 
-## Public Methods
+## Methods
 
-### `make`
+### Communication
 
-Initializes the message listener using the `figma.ui.onmessage` API. Should be called once to start receiving messages from the UI.
+Methods for sending and receiving messages.
 
-**Returns:** `this`
-
-```javascript
-messenger.make()
-```
-
-### `add`
-
-Registers a listener for a specific message type coming from the UI.
-
-**Parameters:**
-- `type: string` — Unique identifier for the message type to listen for.
-- `callback: (message: Message) => void` — function to execute when a matching message arrives.
-
-**Returns:** `this`
-
-```javascript
-messenger.add('resize-ui', (data) => {
-  figma.ui.resize(data.width, data.height)
-})
-```
-
-### `post`
-
-Sends a message to the Figma UI side.
-
-**Parameters:**
-- `type: string` — The identifier of the message (type).
-- `message: Message` — (Optional) Data payload to send to the UI.
-
-**Returns:** `void`
-
-```javascript
-messenger.post('selection-data', { 
-  ids: figma.currentPage.selection.map(node => node.id) 
-})
-```
+- `post<Message>(type: string, message?: Message): void` — Sends a message of a specific type to the Figma UI.
+- `add(type: string, callback: (data: any) => void): this` — (Inherited) Registers a listener for messages from the UI.
+- `remove(type: string): this` — (Inherited) Removes a listener.

@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/setupClientStorage - Настройка обработчиков клиентского хранилища'/>
+
+# `setupClientStorage`
+
+Утилита для настройки обработчиков запросов к клиентскому хранилищу Figma (`clientStorage`). Она связывает запросы из интерфейса (UI) на чтение и запись данных с фактическими операциями в основной части плагина.
+
+**Параметры:**
+Отсутствуют.
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { setupClientStorage } from '@dxtmisha/figma-code'
+
+// Инициализация в основной части плагина (обычно в code.ts)
+setupClientStorage()
+
+// Теперь UI может использовать fetchClientStorage и sendClientStorage 
+// для взаимодействия с хранилищем Figma.
+  `}
+/>

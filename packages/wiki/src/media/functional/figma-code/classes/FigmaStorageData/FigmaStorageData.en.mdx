@@ -1,0 +1,57 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaStorageData - Storage data container'/>
+
+# Class `FigmaStorageData`
+
+A low-level container for managing individual data entries within Figma's storage systems (Client Storage or Plugin Data). It tracks values along with their update time (age) and handles cache expiration logic.
+
+## Key Features
+
+- **Cache Tracking** — Automatically determines if data is still valid based on a configurable Time-To-Live (TTL).
+- **Update Monitoring** — Stores the timestamp of the last update to facilitate data freshness checks.
+- **Serialization Ready** — Provides methods to convert data to and from a standard storage format (`FigmaStorageDataValue`).
+
+## Initialization
+
+Initialize with a key name and an optional cache time in seconds.
+
+```typescript
+import { FigmaStorageData } from '@dxtmisha/figma-code'
+
+// Cache for 1 hour (3600 seconds)
+const dataContainer = new FigmaStorageData<string>('user-name', 3600)
+```
+
+## Methods
+
+### State Checks
+
+- `isNull(): boolean` — Checks if the current value is null or undefined.
+- `isCache(): boolean` — Checks if the data is within its allowed cache lifetime.
+- `isValue(): boolean` — Returns true if the value is defined and the cache is valid.
+
+### Accessors
+
+- `get(): T | undefined` — Returns the current value.
+- `getAge(): number | undefined` — Returns the timestamp of the last update.
+- `getName(): string` — Returns the unique storage key name (prefixed).
+- `getCache(): number | undefined` — Returns the configured cache time.
+
+### Modifiers
+
+- `set(value?: T, age?: number): this` — Manually sets both value and age.
+- `setByObject(value?: FigmaStorageDataValue<T>): this` — Sets data from a storage object.
+- `update(value?: T): this` — Updates the value and sets the age to the current timestamp.
+- `remove(): this` — Clears the value and age.
+
+### Conversion
+
+- `toValue(): FigmaStorageDataValue<T>` — Converts the current state to a storage-compatible object.
+
+## Data Types
+
+#### `FigmaStorageDataValue<T>`
+The structure used for persistent storage.
+- `value: T` — The actual data.
+- `age: number` — The timestamp (ms) of when the data was saved.

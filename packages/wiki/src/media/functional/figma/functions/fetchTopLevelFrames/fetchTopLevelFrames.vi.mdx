@@ -1,21 +1,43 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/figma/Functions/fetchTopLevelFrames - Lấy danh sách frame cấp cao nhất'/>
+<Meta title='@dxtmisha/vi/figma/Functions/fetchTopLevelFrames - Lấy các frame cấp cao nhất'/>
 
 # `fetchTopLevelFrames`
 
-Một tiện ích giúp lấy danh sách các frame cấp cao nhất từ plugin Figma. Nó hỗ trợ lưu bộ nhớ đệm (caching) và ngăn chặn các yêu cầu trùng lặp đồng thời.
+Một tiện ích để lấy danh sách tất cả các frame cấp cao nhất hiện có trong tài liệu Figma. Nó tạo điều kiện giao tiếp giữa giao diện người dùng (UI) và phần plugin để truy cập vào cấu trúc tài liệu.
 
 **Tham số:**
-- `callback: (frames: UiFigmaFramesList) => void` — Hàm sẽ được gọi sau khi nhận được danh sách frame.
+- `callback: (frames: UiFigmaFramesList) => void` — Hàm được thực thi sau khi nhận được danh sách các frame cấp cao nhất.
 
 **Trả về:**
 `void`
 
-```javascript
+## Các kiểu dữ liệu
+
+### UiFigmaFramesList
+
+Một mảng gồm các phần tử `UiFigmaFramesItem`.
+
+### UiFigmaFramesItem
+
+- `name: string` — Tên của frame.
+- `id: string` — Định danh duy nhất của phần tử.
+- `image?: Uint8Array | string` — (Tùy chọn) Hình ảnh xem trước của frame dưới dạng mảng byte hoặc chuỗi Base64.
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
 import { fetchTopLevelFrames } from '@dxtmisha/figma'
 
+// Lấy tất cả các frame cấp cao nhất và log thông tin chi tiết
 fetchTopLevelFrames((frames) => {
-  console.log('Các frame cấp cao nhất:', frames)
+  console.log('Tìm thấy các frame cấp cao nhất:', frames.length)
+  
+  frames.forEach(frame => {
+    console.log(\`Frame: \${frame.name} (ID: \${frame.id})\`)
+  })
 })
-```
+  `}
+/>

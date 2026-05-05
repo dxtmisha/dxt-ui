@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/makeFigmaTexts - Track text elements'/>
+
+# `makeFigmaTexts`
+
+A utility for automating the tracking of selection changes in Figma. It sets up a global `selectionchange` event listener that collects text element data and screenshots of the current page, sending this information to the plugin's UI.
+
+**Parameters:**
+None.
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { makeFigmaTexts } from '@dxtmisha/figma-code'
+
+// Initialization in the main part of the plugin (typically code.ts)
+makeFigmaTexts()
+
+// Now, every time the user changes the selection, 
+// the UI will receive updated text data and screenshots.
+  `}
+/>

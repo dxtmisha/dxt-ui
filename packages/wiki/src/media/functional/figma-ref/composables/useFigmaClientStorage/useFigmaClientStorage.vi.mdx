@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-ref/Composables/useFigmaClientStorage - Quản lý bộ nhớ client'/>
+
+# `useFigmaClientStorage`
+
+Một lớp bọc phản hồi cho bộ nhớ client của Figma. Nó đồng bộ hóa một Vue `shallowRef` với `clientStorage` của plugin, cho phép lưu trữ dữ liệu bền vững trên máy tính của người dùng với các cập nhật tự động.
+
+**Tham số:**
+- `name: string` — Tên khóa trong bộ nhớ client.
+- `defaultValue?: T` — Giá trị mặc định nếu không tìm thấy dữ liệu trong bộ nhớ.
+
+**Trả về:**
+- `item: Ref<T | undefined>` — Một tham chiếu phản hồi đến giá trị được lưu trữ.
+- `loading: Ref<boolean>` — Một giá trị logic phản hồi cho biết liệu quá trình lấy dữ liệu ban đầu có đang diễn ra hay không.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+
+const { item: theme, loading } = useFigmaClientStorage('app-theme', 'light')
+
+// Các cập nhật cho theme.value sẽ tự động được lưu vào clientStorage của Figma
+theme.value = 'dark'
+```

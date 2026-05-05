@@ -1,0 +1,64 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaClientStorage - Làm việc với bộ nhớ client'/>
+
+# Lớp `FigmaClientStorage`
+
+Một lớp bọc cấp cao cho API `clientStorage` của Figma. Nó cung cấp một giao diện thuận tiện để lưu trữ dữ liệu bền vững trên máy tính của người dùng, hỗ trợ lưu trữ tạm thời (caching), các giá trị mặc định và quản lý dữ liệu tự động.
+
+## Các tính năng chính
+
+- **Truy cập Singleton** — Sử dụng `getInstance()` để đảm bảo quyền truy cập nhất quán vào cùng một khóa bộ nhớ từ các phần khác nhau của plugin.
+- **Giá trị mặc định** — Phương thức `get()` có thể nhận một giá trị mặc định hoặc một hàm bất đồng bộ để khởi tạo bộ nhớ nếu nó đang trống.
+- **Hỗ trợ Cache** — Tích hợp với `FigmaStorageData` để quản lý độ tươi mới của dữ liệu và giảm thiểu các lệnh gọi API dư thừa.
+
+## Khởi tạo
+
+Truy cập một thực thể bằng cách sử dụng phương thức tĩnh `getInstance()`.
+
+```typescript
+import { FigmaClientStorage } from '@dxtmisha/figma-code'
+
+// Lấy thực thể cho 'user-settings'
+const storage = FigmaClientStorage.getInstance<object>('user-settings')
+```
+
+## Các phương thức
+
+### Truy cập dữ liệu
+
+#### `get`
+
+Truy xuất dữ liệu từ bộ nhớ. Nếu bộ nhớ trống và một giá trị mặc định được cung cấp, nó sẽ thiết lập và trả về giá trị đó.
+
+**Tham số:**
+- `defaultValue?: T | (() => T | Promise<T>)` — (Tùy chọn) Một giá trị hoặc hàm để khởi tạo bộ nhớ nếu không tìm thấy dữ liệu.
+
+**Trả về:** `Promise<T | undefined>` — Giá trị được lưu trữ.
+
+```typescript
+const theme = await storage.get('light')
+```
+
+#### `set`
+
+Cập nhật dữ liệu trong bộ nhớ.
+
+**Tham số:**
+- `value?: T | (() => T | Promise<T>)` — Giá trị mới hoặc một hàm trả về giá trị đó.
+
+**Trả về:** `Promise<T | undefined>` — Giá trị mới vừa được thiết lập.
+
+```typescript
+await storage.set('dark')
+```
+
+#### `remove`
+
+Xóa dữ liệu liên kết với khóa bộ nhớ.
+
+**Trả về:** `Promise<this>` — Thực thể hiện tại.
+
+```typescript
+await storage.remove()
+```

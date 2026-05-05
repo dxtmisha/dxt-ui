@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-ref/Composables/useFigmaClientStorage - Управление клиентским хранилищем'/>
+
+# `useFigmaClientStorage`
+
+Реактивная обертка для клиентского хранилища Figma. Она синхронизирует Vue `shallowRef` с `clientStorage` плагина, обеспечивая постоянное хранение данных на машине пользователя с автоматическим обновлением.
+
+**Параметры:**
+- `name: string` — название ключа в клиентском хранилище.
+- `defaultValue?: T` — значение по умолчанию, если в хранилище ничего не найдено.
+
+**Возвращает:**
+- `item: Ref<T | undefined>` — реактивная ссылка на сохраненное значение.
+- `loading: Ref<boolean>` — реактивный флаг, указывающий на процесс первичного получения данных.
+
+## Пример использования
+
+```typescript
+import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+
+const { item: theme, loading } = useFigmaClientStorage('app-theme', 'light')
+
+// Изменения theme.value автоматически сохраняются в clientStorage Figma
+theme.value = 'dark'
+```

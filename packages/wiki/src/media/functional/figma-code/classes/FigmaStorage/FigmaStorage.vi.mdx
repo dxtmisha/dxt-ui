@@ -1,90 +1,45 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaStorage - Quản lý Lưu trữ'/>
+<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaStorage - Làm việc với bộ nhớ tài liệu'/>
 
-# Lớp FigmaStorage
+# Lớp `FigmaStorage`
 
-Một lớp để quản lý `PluginData` trong Figma một cách mạnh mẽ. Nó cung cấp một API cấp cao để lưu trữ, truy xuất và kiểm soát thời hạn của dữ liệu trên các node Figma (mặc định là node gốc của tài liệu), hỗ trợ bộ nhớ đệm (caching) và các giá trị mặc định.
+Một lớp bọc cấp cao cho các API `setPluginData` và `getPluginData` của Figma. Nó cho phép lưu trữ dữ liệu có cấu trúc trực tiếp trong tài liệu Figma, theo cách toàn cục (`figma.root`) hoặc đính kèm với các node cụ thể. Dữ liệu này được chia sẻ giữa tất cả người dùng cộng tác trên tệp.
 
 ## Các tính năng chính
 
-- **Tính kiên trì (Persistence)** — Bao bọc `getPluginData` và `setPluginData` để lưu trữ dữ liệu liền mạch.
-- **Bộ nhớ đệm (In-Memory Caching)** — Lưu trữ các giá trị trong thực thể để truy cập nhanh trong ngữ cảnh thực thi hiện tại.
-- **Logic hết hạn** — Hỗ trợ lưu trữ dựa trên thời gian để vô hiệu hóa dữ liệu lỗi thời.
-- **Giá trị chức năng** — Hỗ trợ truyền các hàm dưới dạng giá trị hoặc giá trị mặc định để tạo dữ liệu động.
+- **Lưu trữ theo node cụ thể** — Dữ liệu có thể được liên kết với bất kỳ node Figma nào (Frame, Group, v.v.) hoặc gốc của tài liệu.
+- **Truy cập chung** — Không giống như bộ nhớ client, dữ liệu plugin được lưu bên trong tệp `.fig` và được đồng bộ hóa giữa tất cả người dùng.
+- **Quản lý thực thể** — Lớp sử dụng cơ chế lưu tạm nội bộ để đảm bảo rằng các lệnh gọi lặp lại cho cùng một khóa trên cùng một node sẽ trả về cùng một thực thể.
+- **Tự động tuần tự hóa** — Xử lý việc chuyển đổi JSON cho các cấu trúc dữ liệu phức tạp một cách minh bạch.
 
 ## Khởi tạo
 
-Khởi tạo đối tượng bằng cách gọi hàm dựng `FigmaStorage(name, item, cache)`.
-
-### Tham số Generics
-
-Lớp hỗ trợ một tham số generic để quản lý dữ liệu có định kiểu:
-- `T` — Kiểu dữ liệu của giá trị được lưu trữ và truy xuất.
-
-**Tham số:**
-- `name: string` — Tên khóa duy nhất cho mục lưu trữ.
-- `item: PluginDataMixin = figma.root` — Node Figma nơi dữ liệu sẽ được lưu trữ. Mặc định là `figma.root`.
-- `cache: number` — (Tùy chọn) Thời gian sống (TTL) tính bằng giây cho dữ liệu được lưu trữ.
+Truy cập một thực thể bằng cách sử dụng các phương thức tĩnh. Bạn có thể cung cấp một node gốc hoặc một ID node.
 
 ```typescript
 import { FigmaStorage } from '@dxtmisha/figma-code'
 
-// 1. Khởi tạo với kiểu dữ liệu ngầm định
-const settings = new FigmaStorage('plugin-settings')
+// Lấy thực thể cho toàn bộ tài liệu
+const globalStorage = FigmaStorage.getInstance<object>('app-settings')
 
-// 2. Sử dụng generics để định kiểu nghiêm ngặt
-interface MyData { theme: string; version: number }
-const typedSettings = new FigmaStorage<MyData>('app-data')
-
-// 3. Khởi tạo với bộ nhớ đệm 1 giờ
-const cacheSettings = new FigmaStorage('cache', figma.root, 3600)
+// Lấy thực thể cho một node cụ thể bằng ID
+const nodeStorage = await FigmaStorage.getInstanceById<string>('element-name', '1:123')
 ```
 
 ## Các phương thức
 
-### `get`
+### Truy cập dữ liệu
 
-Truy xuất dữ liệu từ bộ lưu trữ với hỗ trợ các giá trị mặc định và xác thực bộ nhớ đệm.
+Các phương thức để quản lý dữ liệu được lưu trữ trong tài liệu.
 
-**Tham số:**
-- `defaultValue: T | (() => T)` — (Tùy chọn) Giá trị được trả về (và bộ lưu trữ) nếu bộ lưu trữ trống hoặc hết hạn.
+- `get(defaultValue?: T | (() => T)): T | undefined` — Truy xuất dữ liệu. Thiết lập giá trị mặc định nếu bộ nhớ đang trống.
+- `set(value?: T | (() => T)): T | undefined` — Cập nhật dữ liệu và trả về giá trị mới.
+- `remove(): this` — Xóa dữ liệu plugin cho khóa đã chỉ định trên node.
 
-**Trả về:** `T | undefined`
+### Quản lý thực thể (Tĩnh)
 
-```javascript
-const val = settings.get('default_val')
-```
+Các phương thức để truy xuất các thực thể của lớp.
 
-### `set`
-
-Cập nhật dữ liệu trong cả bộ nhớ đệm trong bộ nhớ và `PluginData` của node Figma.
-
-**Tham số:**
-- `value: T | (() => T)` — (Tùy chọn) Giá trị mới hoặc một hàm trả về giá trị mới.
-
-**Trả về:** `T | undefined`
-
-```javascript
-settings.set({ theme: 'dark' })
-```
-
-### `remove`
-
-Xóa dữ liệu khỏi cả bộ nhớ đệm trong bộ nhớ và `PluginData` của node Figma.
-
-**Trả về:** `this`
-
-```javascript
-settings.remove()
-```
-
-### `getName`
-
-Trả về tên khóa được sử dụng cho thực thể lưu trữ này.
-
-**Trả về:** `string`
-
-```javascript
-console.log(settings.getName())
-```
+- `static getInstance<T>(name: string, item: UiFigmaNode): FigmaStorage<T>` — Trả về một thực thể cho một node cụ thể.
+- `static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>` — Lấy một thực thể một cách bất đồng bộ bằng ID node.

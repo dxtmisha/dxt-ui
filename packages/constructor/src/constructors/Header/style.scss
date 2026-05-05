@@ -14,4 +14,8 @@
     font: inherit;
     line-height: inherit;
   }
+
+  &__space {
+    @include ui.flexDynamic
+  }
 }

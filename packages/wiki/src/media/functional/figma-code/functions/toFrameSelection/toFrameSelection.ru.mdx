@@ -1,0 +1,27 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/toFrameSelection - Выделение и фокус на фрейме'/>
+
+# `toFrameSelection`
+
+Асинхронная утилита, которая находит узел Figma по его ID, перемещает к нему вьюпорт и выделяет его. Если узел находится на другой странице, функция автоматически переключит текущую страницу.
+
+**Параметры:**
+- `id?: string` — (Опционально) Идентификатор (ID) узла для выделения.
+
+**Возвращает:**
+`Promise<void>`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { toFrameSelection } from '@dxtmisha/figma-code'
+
+async function jumpToElement(nodeId: string) {
+  await toFrameSelection(nodeId)
+  console.log('Вид перемещен и узел выделен')
+}
+  `}
+/>

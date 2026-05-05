@@ -1,0 +1,30 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/getFigmaItemByIdOrRoot - Получение узла Figma или корня документа'/>
+
+# `getFigmaItemByIdOrRoot`
+
+Асинхронная утилита, которая получает узел Figma по его ID. Если ID не указан или узел не найден, функция возвращает корень документа (`figma.root`). Это удобно для операций, которые могут быть направлены как на конкретный элемент, так и на весь документ в целом.
+
+**Параметры:**
+- `id?: string` — (Опционально) Идентификатор (ID) узла Figma.
+
+**Возвращает:**
+`Promise<T>` — Полученный узел Figma или `figma.root`.
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { getFigmaItemByIdOrRoot } from '@dxtmisha/figma-code'
+
+async function getStorageNode(id?: string) {
+  // Если id указан, пытается получить этот узел.
+  // В противном случае возвращает figma.root.
+  const node = await getFigmaItemByIdOrRoot(id)
+  
+  console.log('Имя целевого узла:', node.name)
+}
+  `}
+/>

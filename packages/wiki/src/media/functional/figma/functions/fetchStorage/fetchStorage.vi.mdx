@@ -1,0 +1,42 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/fetchStorage - Lấy dữ liệu từ bộ nhớ chung'/>
+
+# `fetchStorage`
+
+Một tiện ích để lấy dữ liệu từ bộ nhớ chung của Figma. Khác với bộ nhớ client, dữ liệu này có thể được chia sẻ và liên kết với các định danh cụ thể (ví dụ: ID của node).
+
+**Tham số:**
+- `name: string` — Tên của bộ nhớ.
+- `callback: (value: T) => void` — Hàm được thực thi sau khi dữ liệu được truy xuất.
+- `id?: string` — (Tùy chọn) Định danh để phân biệt dữ liệu trong cùng một tên bộ nhớ.
+- `defaultValue?: T` — (Tùy chọn) Giá trị mặc định được trả về nếu khóa bộ nhớ không tồn tại.
+- `isOnce: boolean = true` — Nếu `true`, hàm callback sẽ chỉ được thực thi một lần.
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { fetchStorage } from '@dxtmisha/figma'
+
+// 1. Cách sử dụng cơ bản
+fetchStorage<string>('project-status', (status) => {
+  console.log('Trạng thái:', status)
+}, undefined, 'active')
+
+// 2. Lấy dữ liệu cho một node cụ thể
+const nodeId = '12:34'
+fetchStorage<object>('node-metadata', (data) => {
+  console.log('Metadata của node:', data)
+}, nodeId)
+
+// 3. Đăng ký nhận cập nhật liên tục
+fetchStorage<number>('global-counter', (count) => {
+  console.log('Cập nhật bộ đếm:', count)
+}, undefined, 0, false)
+  `}
+/>

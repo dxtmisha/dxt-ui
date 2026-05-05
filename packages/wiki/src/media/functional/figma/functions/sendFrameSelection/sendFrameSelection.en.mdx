@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/sendFrameSelection - Request frame selection'/>
+
+# `sendFrameSelection`
+
+A utility for requesting the Figma plugin to select a specific frame in the document.
+
+**Parameters:**
+- `id?: string` — The ID of the frame to be selected. If not provided or empty, the selection might be cleared.
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { sendFrameSelection } from '@dxtmisha/figma'
+
+// Select a frame by its ID
+sendFrameSelection('12:34')
+
+// Clear or reset selection (depending on plugin implementation)
+sendFrameSelection()
+  `}
+/>

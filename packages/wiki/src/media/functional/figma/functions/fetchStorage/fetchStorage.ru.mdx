@@ -1,0 +1,42 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/fetchStorage - Получение данных из общего хранилища'/>
+
+# `fetchStorage`
+
+Утилита для получения данных из общего хранилища Figma. В отличие от клиентского хранилища, эти данные могут быть связаны с конкретными идентификаторами (например, ID узлов) и доступны другим пользователям.
+
+**Параметры:**
+- `name: string` — Имя хранилища.
+- `callback: (value: T) => void` — Функция, которая будет вызвана после получения данных.
+- `id?: string` — (Опционально) Идентификатор для разделения данных (например, ID ноды).
+- `defaultValue?: T` — (Опционально) Значение по умолчанию, если данные отсутствуют.
+- `isOnce: boolean = true` — Если `true`, колбэк будет вызван только один раз.
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { fetchStorage } from '@dxtmisha/figma'
+
+// 1. Базовое использование
+fetchStorage<string>('project-status', (status) => {
+  console.log('Статус:', status)
+}, undefined, 'active')
+
+// 2. Получение данных для конкретного узла (node)
+const nodeId = '12:34'
+fetchStorage<object>('node-metadata', (data) => {
+  console.log('Метаданные узла:', data)
+}, nodeId)
+
+// 3. Постоянная подписка
+fetchStorage<number>('global-counter', (count) => {
+  console.log('Обновление счетчика:', count)
+}, undefined, 0, false)
+  `}
+/>

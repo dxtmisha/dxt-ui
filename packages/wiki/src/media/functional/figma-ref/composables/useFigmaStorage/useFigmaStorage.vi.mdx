@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-ref/Composables/useFigmaStorage - Quản lý bộ nhớ tài liệu'/>
+
+# `useFigmaStorage`
+
+Một lớp bọc phản hồi cho bộ nhớ chung của Figma (PluginData). Nó đồng bộ hóa một Vue `shallowRef` với dữ liệu được lưu trữ bên trong tài liệu Figma (toàn cục hoặc trên một node cụ thể), cho phép chia sẻ dữ liệu bền vững giữa tất cả người dùng của tệp.
+
+**Tham số:**
+- `name: string` — Tên khóa trong bộ nhớ plugin.
+- `defaultValue?: T` — Giá trị mặc định nếu không tìm thấy dữ liệu trong bộ nhớ.
+- `id?: string` — (Tùy chọn) Định danh (ID) của node để đính kèm bộ nhớ. Nếu không được cung cấp, gốc tài liệu sẽ được sử dụng.
+
+**Trả về:**
+- `item: Ref<T | undefined>` — Một tham chiếu phản hồi đến giá trị được lưu trữ.
+- `loading: Ref<boolean>` — Một giá trị logic phản hồi cho biết liệu quá trình lấy dữ liệu ban đầu có đang diễn ra hay không.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useFigmaStorage } from '@dxtmisha/figma-ref'
+
+// Truy cập bộ nhớ cấp tài liệu
+const { item: projectConfig, loading } = useFigmaStorage('project-config', { version: '1.0' })
+
+// Các cập nhật sẽ tự động được lưu vào PluginData của Figma
+projectConfig.value.version = '1.1'
+```

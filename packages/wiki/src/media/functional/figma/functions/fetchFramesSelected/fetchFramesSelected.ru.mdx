@@ -1,21 +1,32 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
 <Meta title='@dxtmisha/ru/figma/Functions/fetchFramesSelected - Получение выбранных фреймов'/>
 
 # `fetchFramesSelected`
 
-Утилита, которая запрашивает текущие выбранные фреймы из плагина Figma. Она поддерживает кэширование и предотвращает дублирование одновременных запросов.
+Утилита для получения идентификаторов (ID) выбранных в данный момент фреймов в Figma. Обеспечивает связь между интерфейсом (UI) и основной частью плагина для доступа к текущему выбору пользователя.
 
 **Параметры:**
-- `callback: (selected: string[]) => void` — Функция, вызываемая после получения идентификаторов выбранных фреймов.
+- `callback: (selected: string[]) => void` — Функция, которая будет вызвана после получения списка ID выбранных фреймов.
+
 
 **Возвращает:**
 `void`
 
-```javascript
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
 import { fetchFramesSelected } from '@dxtmisha/figma'
 
-fetchFramesSelected((selected) => {
-  console.log('Выбранные фреймы:', selected)
+// Получить выбранные фреймы и вывести их ID в консоль
+fetchFramesSelected((selectedIds) => {
+  if (selectedIds.length === 0) {
+    console.log('Фреймы не выбраны')
+  } else {
+    console.log('ID выбранных фреймов:', selectedIds)
+  }
 })
-```
+  `}
+/>

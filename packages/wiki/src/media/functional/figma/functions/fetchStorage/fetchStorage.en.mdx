@@ -1,0 +1,42 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/fetchStorage - Fetch shared storage data'/>
+
+# `fetchStorage`
+
+A utility for fetching data from Figma's shared storage. Unlike client storage, this data can be shared and associated with specific identifiers (e.g., node IDs).
+
+**Parameters:**
+- `name: string` — The name of the storage.
+- `callback: (value: T) => void` — The function executed once the data is retrieved.
+- `id?: string` — (Optional) An identifier to distinguish data within the same storage name.
+- `defaultValue?: T` — (Optional) A default value returned if the storage key does not exist.
+- `isOnce: boolean = true` — If `true`, the callback will be executed only once.
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { fetchStorage } from '@dxtmisha/figma'
+
+// 1. Basic usage
+fetchStorage<string>('project-status', (status) => {
+  console.log('Status:', status)
+}, undefined, 'active')
+
+// 2. Fetching data for a specific node
+const nodeId = '12:34'
+fetchStorage<object>('node-metadata', (data) => {
+  console.log('Node metadata:', data)
+}, nodeId)
+
+// 3. Persistent subscription
+fetchStorage<number>('global-counter', (count) => {
+  console.log('Counter update:', count)
+}, undefined, 0, false)
+  `}
+/>

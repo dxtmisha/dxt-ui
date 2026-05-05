@@ -1,0 +1,30 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/sendStorage - Сохранение данных в общее хранилище'/>
+
+# `sendStorage`
+
+Утилита для сохранения данных в общее хранилище Figma. В отличие от клиентского хранилища, эти данные могут быть связаны с конкретными идентификаторами (например, ID узлов) и доступны другим пользователям.
+
+**Параметры:**
+- `name: string` — Имя хранилища.
+- `value: T` — Данные для сохранения.
+- `id?: string` — (Опционально) Идентификатор для привязки данных к конкретному объекту (например, ID ноды).
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { sendStorage } from '@dxtmisha/figma'
+
+// 1. Сохранение глобальных данных
+sendStorage('app-config', { version: '1.0.0' })
+
+// 2. Сохранение данных для конкретного узла (node)
+sendStorage('node-custom-data', { label: 'Header' }, '12:34')
+  `}
+/>

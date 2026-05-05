@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/setupStorage - Setup shared storage handlers'/>
+
+# `setupStorage`
+
+A utility for setting up request handlers for Figma's shared storage. It connects UI requests (GET/SET) with the actual read and write operations in the plugin, supporting optional object identifiers (e.g., node IDs).
+
+**Parameters:**
+None.
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { setupStorage } from '@dxtmisha/figma-code'
+
+// Initialization in the main part of the plugin (typically code.ts)
+setupStorage()
+
+// Now the UI can use fetchStorage and sendStorage 
+// to interact with Figma's shared storage.
+  `}
+/>

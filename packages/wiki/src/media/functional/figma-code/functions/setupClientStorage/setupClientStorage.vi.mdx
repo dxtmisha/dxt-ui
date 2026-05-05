@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/setupClientStorage - Thiết lập các trình xử lý bộ nhớ client'/>
+
+# `setupClientStorage`
+
+Một tiện ích để thiết lập các trình xử lý yêu cầu cho bộ nhớ client (`clientStorage`) của Figma. Nó kết nối các yêu cầu từ giao diện người dùng (GET/SET) với các hoạt động đọc và ghi thực tế ở phía plugin.
+
+**Tham số:**
+Không có.
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { setupClientStorage } from '@dxtmisha/figma-code'
+
+// Khởi tạo trong phần chính của plugin (thường là code.ts)
+setupClientStorage()
+
+// Bây giờ UI có thể sử dụng fetchClientStorage và sendClientStorage 
+// để tương tác với clientStorage của Figma.
+  `}
+/>

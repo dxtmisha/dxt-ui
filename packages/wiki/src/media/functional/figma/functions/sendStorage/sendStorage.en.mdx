@@ -1,0 +1,30 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/sendStorage - Save data to shared storage'/>
+
+# `sendStorage`
+
+A utility for saving data to Figma's shared storage. Unlike client storage, this data can be shared and associated with specific identifiers (e.g., node IDs).
+
+**Parameters:**
+- `name: string` — The name of the storage.
+- `value: T` — The data value to be stored.
+- `id?: string` — (Optional) An identifier to associate the data with a specific object (e.g., node ID).
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { sendStorage } from '@dxtmisha/figma'
+
+// 1. Storing global data
+sendStorage('app-config', { version: '1.0.0' })
+
+// 2. Storing data for a specific node
+sendStorage('node-custom-data', { label: 'Header' }, '12:34')
+  `}
+/>

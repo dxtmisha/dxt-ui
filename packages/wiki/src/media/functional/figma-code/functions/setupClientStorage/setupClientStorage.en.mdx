@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/setupClientStorage - Setup client storage handlers'/>
+
+# `setupClientStorage`
+
+A utility for setting up request handlers for Figma's client storage. it connects UI requests (GET/SET) with the actual read and write operations on the plugin side.
+
+**Parameters:**
+None.
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { setupClientStorage } from '@dxtmisha/figma-code'
+
+// Initialization in the main part of the plugin (typically code.ts)
+setupClientStorage()
+
+// Now the UI can use fetchClientStorage and sendClientStorage 
+// to interact with Figma's clientStorage.
+  `}
+/>

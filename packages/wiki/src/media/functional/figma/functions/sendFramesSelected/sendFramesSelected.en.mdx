@@ -1,0 +1,29 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/sendFramesSelected - Update frame selection state'/>
+
+# `sendFramesSelected`
+
+A utility for notifying the Figma plugin to update the selection state of a specific frame. This is typically used to add or remove frames from a multi-selection list managed by the plugin.
+
+**Parameters:**
+- `id: string` — The ID of the frame.
+- `selected: boolean` — The desired selection state (true to select, false to deselect).
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { sendFramesSelected } from '@dxtmisha/figma'
+
+// Add a frame to the selection
+sendFramesSelected('12:34', true)
+
+// Remove a frame from the selection
+sendFramesSelected('12:34', false)
+  `}
+/>

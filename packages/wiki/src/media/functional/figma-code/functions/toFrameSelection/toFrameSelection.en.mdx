@@ -1,0 +1,27 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/toFrameSelection - Select and focus frame'/>
+
+# `toFrameSelection`
+
+An asynchronous utility that finds a Figma node by its ID, moves the viewport to it, and selects it. If the node is on a different page, it automatically switches to that page.
+
+**Parameters:**
+- `id?: string` — (Optional) The identifier (ID) of the node to select.
+
+**Returns:**
+`Promise<void>`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { toFrameSelection } from '@dxtmisha/figma-code'
+
+async function jumpToElement(nodeId: string) {
+  await toFrameSelection(nodeId)
+  console.log('Viewport moved and node selected')
+}
+  `}
+/>

@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI Figma/# Làm việc với bộ nhớ'/>
+
+# Làm việc với bộ nhớ (Storage)
+
+Figma cung cấp hai cơ chế chính để lưu dữ liệu: bộ nhớ người dùng cục bộ và bộ nhớ tài liệu chung. Thư viện cung cấp các lớp bọc định kiểu cho cả hai phương pháp, mang lại khả năng truy cập và đồng bộ hóa thuận tiện.
+
+### Các loại bộ nhớ
+
+**Document Storage (Shared)** — Dữ liệu gắn với tài liệu hoặc một node. Nó được lưu bên trong tệp `.fig` và tất cả người dùng của tệp đều có thể truy cập được.
+
+**Client Storage (Private)** — Dữ liệu cục bộ của một người dùng cụ thể. Nó được lưu trên máy tính của người dùng và chỉ người dùng hiện tại mới có thể truy cập được.
+
+### Thiết lập kết nối (Setup)
+
+Để các bộ nhớ hoạt động chính xác khi kết hợp (Code `<->` UI), các trình xử lý tin nhắn phải được khởi tạo ở phía plugin:
+
+```typescript
+// plugin/code.ts
+import { setupStorage, setupClientStorage } from '@dxtmisha/figma-code'
+
+// Kích hoạt các trình lắng nghe cho cả hai loại bộ nhớ
+setupStorage()
+setupClientStorage()
+```
+
+### Bộ nhớ tài liệu chung (FigmaStorage)
+
+Được sử dụng cho các dữ liệu mà tất cả những người tham gia dự án nên nhìn thấy (ví dụ: cài đặt plugin cho một bố cục cụ thể).
+
+**Ở phía Mã (Backend):**
+```typescript
+import { FigmaStorage } from '@dxtmisha/figma-code'
+
+// Cài đặt toàn cục của tài liệu
+const storage = FigmaStorage.getInstance<string>('project-theme')
+const theme = storage.get('light') // Truy xuất với giá trị mặc định
+storage.set('dark') // Lưu trữ
+```
+
+**Ở phía UI (Vue):**
+```typescript
+import { useFigmaStorage } from '@dxtmisha/figma-ref'
+
+const { item: theme, loading } = useFigmaStorage('project-theme', 'light')
+
+// Các thay đổi sẽ tự động được đồng bộ hóa với tài liệu
+theme.value = 'dark'
+```
+
+### Bộ nhớ người dùng cá nhân (FigmaClientStorage)
+
+Lý tưởng cho các cài đặt cá nhân, mã thông báo xác thực hoặc lịch sử hành động.
+
+**Ở phía Mã (Backend):**
+```typescript
+import { FigmaClientStorage } from '@dxtmisha/figma-code'
+
+const client = FigmaClientStorage.getInstance<boolean>('show-onboarding')
+const isSeen = await client.get() // Truy xuất bất đồng bộ
+await client.set(true) // Lưu trữ bất đồng bộ
+```
+
+**Ở phía UI (Vue):**
+```typescript
+import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+
+const { item: isSeen, loading } = useFigmaClientStorage('show-onboarding', false)
+
+// Đồng bộ hóa diễn ra tự động khi .value thay đổi
+isSeen.value = true
+```

@@ -1,0 +1,64 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI Figma/# Working with Frames'/>
+
+# Working with Frames
+
+The library provides tools for managing the list of frames on the current Figma page and tracking user-selected elements. This allows you to build complex navigation interfaces and bulk selection systems within your plugin.
+
+### Connection Setup (Setup)
+
+For automatic frame data synchronization, the corresponding handlers must be initialized on the plugin side:
+
+```typescript
+// plugin/code.ts
+import { FigmaTopLevelFrames, FigmaFramesSelected } from '@dxtmisha/figma-code'
+
+// Activate listeners for frame list and selection management
+FigmaTopLevelFrames.send()
+FigmaFramesSelected.send()
+```
+
+### 1. Top-Level Frames
+
+Allows you to retrieve a list of all frames and sections located at the root of the current page, including their names, IDs, and screenshots for visual previews.
+
+**In the Vue Interface:**
+```typescript
+import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
+
+const { frames, loading } = useFigmaUiFrames()
+
+/* frames.value contains a list of objects:
+  {
+    id: string,
+    name: string,
+    image: Uint8Array | string // JPG screenshot
+  }
+*/
+```
+
+### 2. Selected Frames
+
+A mechanism for tracking and modifying the list of "selected" elements within the plugin's interface. This state is preserved globally at the plugin session level.
+
+**In the Vue Interface:**
+```typescript
+import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
+
+const { 
+  selected,       // List of selected frame IDs
+  isSelected,     // Check function: isSelected(id)
+  toggleSelected, // Toggle function: toggleSelected(id, boolean)
+  loading 
+} = useFigmaUiSelected()
+
+// Example usage:
+const active = isSelected('1:123')
+const toggle = () => toggleSelected('1:123', !active.value)
+```
+
+### Summary
+- **Automation**: All data is automatically transferred between the Sandbox and the UI via the Messenger system.
+- **Visualization**: The frame list comes with ready-to-use screenshots, allowing for the creation of intuitive visual selectors.
+- **Synchronization**: The selection state is synchronized across all components using `useFigmaUiSelected`.

@@ -1,0 +1,57 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaStorageData - Container dữ liệu bộ nhớ'/>
+
+# Lớp `FigmaStorageData`
+
+Một container cấp thấp để quản lý các mục dữ liệu riêng lẻ bên trong các hệ thống lưu trữ của Figma (Bộ nhớ Client hoặc Dữ liệu Plugin). Nó theo dõi các giá trị cùng với thời gian cập nhật của chúng và xử lý logic hết hạn của bộ nhớ đệm (cache).
+
+## Các tính năng chính
+
+- **Theo dõi Cache** — Tự động xác định xem dữ liệu còn hiệu lực hay không dựa trên Thời gian tồn tại (TTL) có thể cấu hình.
+- **Giám sát cập nhật** — Lưu trữ mốc thời gian của lần cập nhật cuối cùng để tạo điều kiện kiểm tra độ tươi mới của dữ liệu.
+- **Sẵn sàng tuần tự hóa** — Cung cấp các phương thức để chuyển đổi dữ liệu sang và từ định dạng lưu trữ tiêu chuẩn (`FigmaStorageDataValue`).
+
+## Khởi tạo
+
+Khởi tạo bằng tên khóa và thời gian cache tùy chọn tính bằng giây.
+
+```typescript
+import { FigmaStorageData } from '@dxtmisha/figma-code'
+
+// Cache trong 1 giờ (3600 giây)
+const dataContainer = new FigmaStorageData<string>('user-name', 3600)
+```
+
+## Các phương thức
+
+### Kiểm tra trạng thái
+
+- `isNull(): boolean` — Kiểm tra xem giá trị hiện tại có phải là null hoặc undefined không.
+- `isCache(): boolean` — Kiểm tra xem dữ liệu có nằm trong thời gian tồn tại cho phép của cache không.
+- `isValue(): boolean` — Trả về true nếu giá trị được xác định và cache còn hiệu lực.
+
+### Truy cập dữ liệu (Accessors)
+
+- `get(): T | undefined` — Trả về giá trị hiện tại.
+- `getAge(): number | undefined` — Trả về mốc thời gian của lần cập nhật cuối cùng.
+- `getName(): string` — Trả về tên khóa lưu trữ duy nhất (có tiền tố).
+- `getCache(): number | undefined` — Trả về thời gian cache đã cấu hình.
+
+### Các phương thức sửa đổi (Modifiers)
+
+- `set(value?: T, age?: number): this` — Thiết lập thủ công cả giá trị và thời gian.
+- `setByObject(value?: FigmaStorageDataValue<T>): this` — Thiết lập dữ liệu từ một đối tượng lưu trữ.
+- `update(value?: T): this` — Cập nhật giá trị và đặt thời gian thành mốc thời gian hiện tại.
+- `remove(): this` — Xóa giá trị và thời gian.
+
+### Chuyển đổi (Conversion)
+
+- `toValue(): FigmaStorageDataValue<T>` — Chuyển đổi trạng thái hiện tại thành một đối tượng tương thích với bộ nhớ.
+
+## Các kiểu dữ liệu
+
+#### `FigmaStorageDataValue<T>`
+Cấu trúc được sử dụng để lưu trữ bền vững.
+- `value: T` — Dữ liệu thực tế.
+- `age: number` — Mốc thời gian (ms) khi dữ liệu được lưu.

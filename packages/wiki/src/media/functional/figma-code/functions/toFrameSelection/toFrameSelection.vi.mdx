@@ -1,0 +1,27 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/toFrameSelection - Chọn và tập trung vào frame'/>
+
+# `toFrameSelection`
+
+Một tiện ích bất đồng bộ giúp tìm một node Figma bằng ID của nó, di chuyển khung nhìn (viewport) đến đó và chọn nó. Nếu node nằm ở một trang khác, nó sẽ tự động chuyển sang trang đó.
+
+**Tham số:**
+- `id?: string` — (Tùy chọn) Định danh (ID) của node cần chọn.
+
+**Trả về:**
+`Promise<void>`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { toFrameSelection } from '@dxtmisha/figma-code'
+
+async function jumpToElement(nodeId: string) {
+  await toFrameSelection(nodeId)
+  console.log('Đã di chuyển khung nhìn và chọn node')
+}
+  `}
+/>

@@ -70,3 +70,49 @@ The structure of the data object passed through the messaging pipeline:
 - `code: string` — The verification code from `FigmaPostCode`.
 - `type: string` — The identifier of the message.
 - `message: Message` — The actual payload data.
+
+## Extending the Class
+
+`FigmaPostAbstract` is an abstract class that serves as a foundation for creating custom messengers. To use it, you must create a subclass and implement two required methods:
+
+### `post`
+
+An abstract method for implementing the logic to send messages to the other side. In a derived class, this method should encapsulate the system-specific send call (e.g., `postMessage`).
+
+**Parameters:**
+- `type: string` — The unique identifier for the message type.
+- `message: Message` — The message data to be sent.
+
+```typescript
+post<Message>(type: string, message?: Message): void {
+  // Implementation of system sending
+}
+```
+
+### `prepare`
+
+An abstract protected method for setting up the system's incoming event listener. This method is called automatically once when `make()` is executed. Within the implementation, `this.onMessage(data)` must be called whenever data is received.
+
+```typescript
+protected prepare(): void {
+  // Setup subscription to system events
+}
+```
+
+## Usage
+
+Once you have implemented your custom class, work with it as follows:
+
+1. **Initialization**: Call the `make()` method to start the listener (triggers your `prepare` implementation).
+2. **Subscribing**: Use the `add(type, callback)` method to handle incoming data.
+3. **Sending**: Use the `post(type, data)` method.
+
+```typescript
+const messenger = new MyMessenger().make();
+
+messenger.add('my-event', (data) => {
+  console.log('Message received:', data);
+});
+
+messenger.post('my-event', { hello: 'world' });
+```

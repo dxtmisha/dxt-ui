@@ -1,21 +1,43 @@
-import { Meta } from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma/Functions/fetchTopLevelFrames - Fetching top-level frames'/>
+<Meta title='@dxtmisha/en/figma/Functions/fetchTopLevelFrames - Fetch top-level frames'/>
 
 # `fetchTopLevelFrames`
 
-A utility that fetches the top-level frames from the Figma plugin. It handles caching and prevents concurrent duplicate requests.
+A utility for retrieving the list of all top-level frames currently present in the Figma document. It facilitates communication between the Figma UI and the plugin side to access the document structure.
 
 **Parameters:**
-- `callback: (frames: UiFigmaFramesList) => void` — The function to call once the frames are received.
+- `callback: (frames: UiFigmaFramesList) => void` — The function executed once the list of top-level frames is received.
 
 **Returns:**
 `void`
 
-```javascript
+## Types
+
+### UiFigmaFramesList
+
+An array of `UiFigmaFramesItem`.
+
+### UiFigmaFramesItem
+
+- `name: string` — Name of the frame.
+- `id: string` — Unique identifier of the element.
+- `image?: Uint8Array | string` — (Optional) The frame's preview image as a byte array or Base64 string.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
 import { fetchTopLevelFrames } from '@dxtmisha/figma'
 
+// Fetch all top-level frames and log their details
 fetchTopLevelFrames((frames) => {
-  console.log('Top level frames:', frames)
+  console.log('Top-level frames found:', frames.length)
+  
+  frames.forEach(frame => {
+    console.log(\`Frame: \${frame.name} (ID: \${frame.id})\`)
+  })
 })
-```
+  `}
+/>

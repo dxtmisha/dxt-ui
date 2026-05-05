@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/sendFrameSelection - Yêu cầu chọn frame'/>
+
+# `sendFrameSelection`
+
+Một tiện ích để yêu cầu plugin Figma chọn một frame cụ thể trong tài liệu.
+
+**Tham số:**
+- `id?: string` — ID của frame cần chọn. Nếu không được cung cấp, lựa chọn có thể bị xóa bỏ.
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { sendFrameSelection } from '@dxtmisha/figma'
+
+// Chọn một frame bằng ID của nó
+sendFrameSelection('12:34')
+
+// Xóa hoặc đặt lại lựa chọn
+sendFrameSelection()
+  `}
+/>

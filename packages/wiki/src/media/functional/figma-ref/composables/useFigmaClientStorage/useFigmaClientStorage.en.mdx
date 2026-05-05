@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaClientStorage - Client storage management'/>
+
+# `useFigmaClientStorage`
+
+A reactive wrapper for Figma's client storage. It synchronizes a Vue `shallowRef` with the plugin's `clientStorage`, allowing for persistent data storage on the user's machine with automatic updates.
+
+**Parameters:**
+- `name: string` — The key name in the client storage.
+- `defaultValue?: T` — The default value if no data is found in storage.
+
+**Returns:**
+- `item: Ref<T | undefined>` — A reactive reference to the stored value.
+- `loading: Ref<boolean>` — A reactive boolean indicating if the initial fetch is in progress.
+
+## Usage Example
+
+```typescript
+import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+
+const { item: theme, loading } = useFigmaClientStorage('app-theme', 'light')
+
+// Updates to theme.value are automatically saved to Figma's clientStorage
+theme.value = 'dark'
+```

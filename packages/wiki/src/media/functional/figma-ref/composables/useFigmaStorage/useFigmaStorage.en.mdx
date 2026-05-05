@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaStorage - Document storage management'/>
+
+# `useFigmaStorage`
+
+A reactive wrapper for Figma's shared storage (PluginData). It synchronizes a Vue `shallowRef` with data stored within the Figma document (either globally or on a specific node), enabling shared persistent data across all users of the file.
+
+**Parameters:**
+- `name: string` — The key name in the plugin storage.
+- `defaultValue?: T` — The default value if no data is found in storage.
+- `id?: string` — (Optional) The identifier (ID) of the node to attach the storage to. If not provided, the document root is used.
+
+**Returns:**
+- `item: Ref<T | undefined>` — A reactive reference to the stored value.
+- `loading: Ref<boolean>` — A reactive boolean indicating if the initial fetch is in progress.
+
+## Usage Example
+
+```typescript
+import { useFigmaStorage } from '@dxtmisha/figma-ref'
+
+// Access document-level storage
+const { item: projectConfig, loading } = useFigmaStorage('project-config', { version: '1.0' })
+
+// Updates are automatically saved to Figma's PluginData
+projectConfig.value.version = '1.1'
+```

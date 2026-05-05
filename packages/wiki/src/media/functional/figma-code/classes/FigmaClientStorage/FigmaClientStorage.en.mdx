@@ -1,0 +1,64 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaClientStorage - Working with client storage'/>
+
+# Class `FigmaClientStorage`
+
+A high-level wrapper for Figma's `clientStorage` API. It provides a convenient interface for persistent data storage on the user's machine, supporting caching, default values, and automatic data management.
+
+## Key Features
+
+- **Singleton Access** — Use `getInstance()` to ensure consistent access to the same storage key across different parts of the plugin.
+- **Default Values** — The `get()` method can accept a default value or an asynchronous function to initialize the storage if it's empty.
+- **Cache Support** — Integrates with `FigmaStorageData` to manage data freshness and minimize redundant API calls.
+
+## Initialization
+
+Access an instance using the static `getInstance()` method.
+
+```typescript
+import { FigmaClientStorage } from '@dxtmisha/figma-code'
+
+// Get instance for 'user-settings'
+const storage = FigmaClientStorage.getInstance<object>('user-settings')
+```
+
+## Methods
+
+### Data Access
+
+#### `get`
+
+Retrieves data from the storage. If the storage is empty and a default value is provided, it sets and returns that value.
+
+**Parameters:**
+- `defaultValue?: T | (() => T | Promise<T>)` — (Optional) A value or function to initialize storage if no data is found.
+
+**Returns:** `Promise<T | undefined>` — The stored value.
+
+```typescript
+const theme = await storage.get('light')
+```
+
+#### `set`
+
+Updates the data in the storage.
+
+**Parameters:**
+- `value?: T | (() => T | Promise<T>)` — The new value or a function that returns it.
+
+**Returns:** `Promise<T | undefined>` — The newly set value.
+
+```typescript
+await storage.set('dark')
+```
+
+#### `remove`
+
+Deletes the data associated with the storage key.
+
+**Returns:** `Promise<this>` — The current instance.
+
+```typescript
+await storage.remove()
+```

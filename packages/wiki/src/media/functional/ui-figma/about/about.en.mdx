@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI Figma/! About the library'/>
+
+# UI Figma Ecosystem
+
+The `UI Figma` system is a comprehensive infrastructure for developing Figma plugins. It is designed to bridge the gap between the "Code Side" (plugin backend) and the "UI Side" (frontend), providing seamless interaction, reactive data management, and full type safety.
+
+The ecosystem is built on a three-tier architecture, where each layer handles a specific part of the plugin lifecycle.
+
+## Three Layers of Interaction
+
+### 1. Communication Core (@dxtmisha/figma)
+The fundamental package that defines interaction protocols. It contains:
+- Message type constants.
+- Shared data types and interfaces.
+- Abstract messenger classes to standardize data exchange.
+- Utilities for routing messages between the UI and the Figma sandbox.
+
+### 2. Plugin Logic (@dxtmisha/figma-code)
+A package running in the Figma execution environment (Sandbox). This is the "brain" of the plugin, with direct access to the Figma API:
+- **Element Analysis**: `FigmaItem` and `FigmaFrame` classes for deep document structure exploration.
+- **Data Persistence**: `FigmaStorage` for working with PluginData (storing data directly in the `.fig` file).
+- **Exporting**: Tools for automated screenshot creation and asset export.
+- **Synchronization**: `FigmaTopLevelFrames` and `FigmaFramesSelected` classes for passing the current document state to the UI.
+
+### 3. Reactive Interface (@dxtmisha/figma-ref)
+A package for developing the user interface using Vue 3. It transforms asynchronous plugin responses into convenient reactive references (composables):
+- **Reactive Stores**: `useFigmaStorage` and `useFigmaClientStorage` for instant data binding between UI and Figma storage.
+- **Observers**: `useFigmaUiFrames` for automatic updates of the available frame list.
+- **Selection Management**: `useFigmaUiSelected` for linking UI-selected elements with Figma's active selection.
+
+## System Features
+
+**Seamless Interaction**
+Developers no longer need to manually manage `postMessage` calls and event listeners. The system handles routing and type validation automatically.
+
+**Out-of-the-box Reactivity**
+Using the Vue Composition API allows you to build plugin interfaces as easily as standard web applications, with data automatically persisting in the Figma document.
+
+**Type Safety**
+All messages and data structures are strictly typed, eliminating errors when passing data between isolated environments (UI and Sandbox).
+
+## Why Use This Ecosystem?
+
+- **Development Speed**: Ready-made foundation for typical tasks (selection, settings, screenshots).
+- **Clean Architecture**: Clear separation of concerns between business logic and the user interface.
+- **Scalability**: Easy to add new features thanks to the modular structure and the Messenger pattern.
+
+## Git
+
+[https://github.com/dxtmisha/dxt-ui/tree/main/packages/figma](https://github.com/dxtmisha/dxt-ui/tree/main/packages/figma)

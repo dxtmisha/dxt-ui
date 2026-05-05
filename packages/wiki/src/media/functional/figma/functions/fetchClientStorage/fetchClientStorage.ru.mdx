@@ -1,0 +1,46 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/fetchClientStorage - Получение данных из клиентского хранилища'/>
+
+# `fetchClientStorage`
+
+Утилита для получения данных из клиентского хранилища Figma (`clientStorage`). Обеспечивает связь между интерфейсом (UI) и основной частью плагина для извлечения сохраненных значений.
+
+**Параметры:**
+- `name: string` — Ключ (имя) в хранилище.
+- `callback: (value: T) => void` — Функция, которая будет вызвана после получения данных.
+- `defaultValue?: T` — (Опционально) Значение по умолчанию, если ключ в хранилище отсутствует.
+- `isOnce: boolean = true` — Если `true`, колбэк будет вызван только один раз.
+
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { fetchClientStorage } from '@dxtmisha/figma'
+
+// 1. Базовое использование со строковым значением
+fetchClientStorage<string>('user-theme', (theme) => {
+  console.log('Текущая тема:', theme)
+}, 'light')
+
+// 2. Получение объекта
+interface UserSettings {
+  notifications: boolean
+  zoom: number
+}
+
+fetchClientStorage<UserSettings>('settings', (settings) => {
+  console.log('Настройки пользователя:', settings)
+}, { notifications: true, zoom: 100 })
+
+// 3. Постоянная подписка (isOnce = false)
+fetchClientStorage<number>('counter', (count) => {
+  console.log('Счетчик обновлен:', count)
+}, 0, false)
+  `}
+/>

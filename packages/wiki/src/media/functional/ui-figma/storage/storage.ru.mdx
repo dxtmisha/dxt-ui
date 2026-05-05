@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI Figma/# Работа с хранилищем'/>
+
+# Работа с хранилищем
+
+Figma предоставляет два основных механизма для сохранения данных: локальное хранилище пользователя и общее хранилище документа. Библиотека предлагает типизированные обертки для обоих методов, обеспечивая удобный доступ и синхронизацию.
+
+### Типы хранилищ
+
+**Document Storage (Shared)** — Данные, привязанные к документу или узлу. Сохраняются внутри `.fig` файла и доступны всем пользователям файла.
+
+**Client Storage (Private)** — Локальные данные конкретного пользователя. Сохраняются на машине пользователя и доступны только текущему пользователю.
+
+### Настройка связи (Setup)
+
+Чтобы хранилища корректно работали в паре (Code `<->` UI), на стороне плагина необходимо инициализировать обработчики сообщений:
+
+```typescript
+// plugin/code.ts
+import { setupStorage, setupClientStorage } from '@dxtmisha/figma-code'
+
+// Активируем слушатели для обоих типов хранилищ
+setupStorage()
+setupClientStorage()
+```
+
+### Общее хранилище документа (FigmaStorage)
+
+Используется для данных, которые должны видеть все участники проекта (например, настройки плагина для конкретного макета).
+
+**На стороне кода (Backend):**
+```typescript
+import { FigmaStorage } from '@dxtmisha/figma-code'
+
+// Глобальные настройки документа
+const storage = FigmaStorage.getInstance<string>('project-theme')
+const theme = storage.get('light') // Получение с дефолтным значением
+storage.set('dark') // Сохранение
+```
+
+**На стороне UI (Vue):**
+```typescript
+import { useFigmaStorage } from '@dxtmisha/figma-ref'
+
+const { item: theme, loading } = useFigmaStorage('project-theme', 'light')
+
+// Изменение автоматически синхронизируется с документом
+theme.value = 'dark'
+```
+
+### Персональное хранилище пользователя (FigmaClientStorage)
+
+Идеально подходит для персональных настроек, токенов авторизации или истории действий.
+
+**На стороне кода (Backend):**
+```typescript
+import { FigmaClientStorage } from '@dxtmisha/figma-code'
+
+const client = FigmaClientStorage.getInstance<boolean>('show-onboarding')
+const isSeen = await client.get() // Асинхронное получение
+await client.set(true) // Асинхронное сохранение
+```
+
+**На стороне UI (Vue):**
+```typescript
+import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+
+const { item: isSeen, loading } = useFigmaClientStorage('show-onboarding', false)
+
+// Синхронизация происходит автоматически при изменении .value
+isSeen.value = true
+```

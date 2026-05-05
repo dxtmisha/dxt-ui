@@ -1,0 +1,46 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/fetchClientStorage - Lấy dữ liệu từ bộ nhớ client'/>
+
+# `fetchClientStorage`
+
+Một tiện ích để lấy dữ liệu từ bộ nhớ client (`clientStorage`) của Figma. Nó tạo điều kiện giao tiếp giữa giao diện người dùng (UI) và phần plugin để truy xuất các giá trị đã lưu trữ.
+
+**Tham số:**
+- `name: string` — Tên khóa trong bộ nhớ client.
+- `callback: (value: T) => void` — Hàm được thực thi sau khi dữ liệu được truy xuất.
+- `defaultValue?: T` — (Tùy chọn) Giá trị mặc định được trả về nếu khóa bộ nhớ không tồn tại.
+- `isOnce: boolean = true` — Nếu `true`, hàm callback sẽ chỉ được thực thi một lần.
+
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { fetchClientStorage } from '@dxtmisha/figma'
+
+// 1. Cách sử dụng cơ bản với giá trị chuỗi
+fetchClientStorage<string>('user-theme', (theme) => {
+  console.log('Giao diện hiện tại:', theme)
+}, 'light')
+
+// 2. Lấy một đối tượng (object)
+interface UserSettings {
+  notifications: boolean
+  zoom: number
+}
+
+fetchClientStorage<UserSettings>('settings', (settings) => {
+  console.log('Cài đặt người dùng:', settings)
+}, { notifications: true, zoom: 100 })
+
+// 3. Đăng ký nhận cập nhật liên tục (isOnce = false)
+fetchClientStorage<number>('counter', (count) => {
+  console.log('Bộ đếm đã cập nhật:', count)
+}, 0, false)
+  `}
+/>

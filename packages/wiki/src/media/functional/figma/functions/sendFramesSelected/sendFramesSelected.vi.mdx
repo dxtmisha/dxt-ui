@@ -1,0 +1,29 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/sendFramesSelected - Cập nhật trạng thái chọn frame'/>
+
+# `sendFramesSelected`
+
+Một tiện ích để thông báo cho plugin Figma cập nhật trạng thái lựa chọn của một frame cụ thể. Điều này thường được sử dụng để thêm hoặc xóa các frame khỏi danh sách đa lựa chọn do plugin quản lý.
+
+**Tham số:**
+- `id: string` — ID của frame.
+- `selected: boolean` — Trạng thái lựa chọn mong muốn (true để chọn, false để bỏ chọn).
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { sendFramesSelected } from '@dxtmisha/figma'
+
+// Thêm một frame vào lựa chọn
+sendFramesSelected('12:34', true)
+
+// Loại bỏ một frame khỏi lựa chọn
+sendFramesSelected('12:34', false)
+  `}
+/>

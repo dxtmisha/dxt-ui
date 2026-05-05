@@ -1,32 +1,27 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaUiSelected - Selected frames'/>
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaUiSelected - Managing selected frames in UI'/>
 
 # `useFigmaUiSelected`
 
-Composable for managing and observing the list of selected frames in the Figma UI.
+A composable for managing and observing the list of frame identifiers selected by the user within the plugin's interface. It provides tools for checking selection state and toggling selections.
 
 **Returns:**
-An object with the following properties:
-- `selected: ComputedRef<string[]>` — A reactive list of selected frame IDs. Automatically updates when selection changes in Figma.
-- `loading: ComputedRef<boolean>` — A reactive flag indicating whether the selection data is currently being fetched from the Figma plugin.
-- `isSelected(id: string): ComputedRef<boolean>` — A function that returns a reactive boolean indicating if a specific frame ID is currently selected.
-- `toggleSelected(id: string, selected: boolean): void` — A function to update the selection state of a frame in Figma.
+- `selected: ComputedRef<string[]>` — A computed reference to the list of selected frame IDs.
+- `loading: ComputedRef<boolean>` — A reactive flag indicating if the selection list is being fetched.
+- `isSelected(id: string): ComputedRef<boolean>` — A helper function that returns a computed boolean indicating if a specific frame is selected.
+- `toggleSelected(id: string, selected: boolean): void` — A function to add or remove a frame from the selection list.
+
+## Usage Example
 
 ```typescript
 import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
 
-const { selected, loading, isSelected, toggleSelected } = useFigmaUiSelected()
+const { selected, isSelected, toggleSelected } = useFigmaUiSelected()
 
-// Check if a specific frame is selected
-const frameId = '123:456'
-const isFrameSelected = isSelected(frameId)
+// Check if a frame is selected
+const active = isSelected('1:123')
 
 // Toggle selection
-const handleToggle = () => {
-  toggleSelected(frameId, !isFrameSelected.value)
-}
-
-// Watch for selection changes
-console.log('Currently selected IDs:', selected.value)
+toggleSelected('1:123', !active.value)
 ```

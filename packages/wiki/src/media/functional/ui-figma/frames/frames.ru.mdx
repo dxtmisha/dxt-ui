@@ -1,0 +1,64 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI Figma/# Работа с фреймами'/>
+
+# Работа с фреймами
+
+Библиотека предоставляет инструменты для управления списком фреймов на текущей странице Figma и отслеживания выбранных пользователем элементов. Это позволяет строить сложные интерфейсы навигации и массового выбора внутри плагина.
+
+### Настройка связи (Setup)
+
+Для автоматической синхронизации данных о фреймах необходимо инициализировать соответствующие обработчики на стороне плагина:
+
+```typescript
+// plugin/code.ts
+import { FigmaTopLevelFrames, FigmaFramesSelected } from '@dxtmisha/figma-code'
+
+// Активируем слушатели для списка фреймов и управления выбором
+FigmaTopLevelFrames.send()
+FigmaFramesSelected.send()
+```
+
+### 1. Фреймы верхнего уровня (Top-Level Frames)
+
+Позволяет получить список всех фреймов и секций, находящихся в корне текущей страницы, включая их названия, ID и скриншоты для предпросмотра.
+
+**Во Vue-интерфейсе:**
+```typescript
+import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
+
+const { frames, loading } = useFigmaUiFrames()
+
+/* frames.value содержит список объектов:
+  {
+    id: string,
+    name: string,
+    image: Uint8Array | string // JPG скриншот
+  }
+*/
+```
+
+### 2. Выбранные фреймы (Selected Frames)
+
+Механизм для отслеживания и изменения списка «выбранных» элементов в интерфейсе плагина. Это состояние сохраняется глобально на уровне сессии плагина.
+
+**Во Vue-интерфейсе:**
+```typescript
+import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
+
+const { 
+  selected,       // Список ID выбранных фреймов
+  isSelected,     // Функция проверки: isSelected(id)
+  toggleSelected, // Функция переключения: toggleSelected(id, boolean)
+  loading 
+} = useFigmaUiSelected()
+
+// Пример использования:
+const active = isSelected('1:123')
+const toggle = () => toggleSelected('1:123', !active.value)
+```
+
+### Резюме
+- **Автоматизация**: Все данные передаются между Sandbox и UI через систему Messenger автоматически.
+- **Визуализация**: Список фреймов поставляется с готовыми скриншотами, что позволяет создавать удобные визуальные селекторы.
+- **Синхронизация**: Состояние выбора синхронизируется между всеми компонентами, использующими `useFigmaUiSelected`.

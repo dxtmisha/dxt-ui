@@ -1,88 +1,42 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaFramesSelected - Quản lý các frame đang chọn'/>
+<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaFramesSelected - Quản lý các frame được chọn'/>
 
-# Lớp FigmaFramesSelected
+# Lớp `FigmaFramesSelected`
 
-Một lớp tiện ích tĩnh dùng để quản lý, lưu trữ bộ nhớ đệm (cache) và đồng bộ hóa danh sách các frame đang được chọn trong môi trường plugin Figma. Nó chịu trách nhiệm lưu trữ lâu dài và giao tiếp hai chiều giữa plugin và giao diện người dùng (UI) về trạng thái lựa chọn.
+Một lớp tiện ích tĩnh để quản lý danh sách các định danh frame được người dùng chọn trong ngữ cảnh của plugin. Nó xử lý việc lưu trữ dữ liệu bền vững bằng cách sử dụng bộ nhớ của Figma và đảm bảo đồng bộ hóa giữa logic của plugin và giao diện người dùng.
 
 ## Các tính năng chính
 
-- **Lưu trữ lâu dài** — Sử dụng `FigmaStorage` để giữ danh sách các ID frame đang chọn ngay cả khi tải lại plugin.
-- **Tự động lưu bộ nhớ đệm** — Quản lý hiệu quả bộ nhớ đệm của các ID đang chọn để truy cập nhanh chóng.
-- **Tích hợp Messenger** — Đơn giản hóa việc giao tiếp hai chiều để cập nhật và lấy trạng thái lựa chọn.
+- **Lưu trữ dữ liệu bền vững** — Danh sách các ID được chọn được lưu qua `FigmaStorage`, cho phép lựa chọn tồn tại qua các phiên làm việc của plugin.
+- **Đồng bộ hóa hai chiều** — Phương thức `send()` khởi tạo các trình lắng nghe tin nhắn từ UI, cho phép cập nhật danh sách lựa chọn một cách liền mạch.
+- **Caching hiệu quả** — Sử dụng bộ nhớ đệm nội bộ để cung cấp quyền truy cập tức thì vào danh sách lựa chọn mà không cần đọc bộ nhớ thường xuyên.
 
-## Các phương thức tĩnh (Static Methods)
+## Khởi tạo
 
-### `has`
-
-Kiểm tra xem một frame với ID cụ thể có đang được chọn hay không.
-
-**Tham số:**
-- `id: string` — Mã định danh (ID) duy nhất của node Figma.
-
-**Trả về:** `boolean` — `true` nếu frame đang được chọn, `false` nếu ngược lại.
+Vì đây là một lớp tĩnh, không cần khởi tạo thực thể. Thông thường, bạn chỉ cần gọi thiết lập giao tiếp trong tệp plugin chính của mình.
 
 ```typescript
-const has = FigmaFramesSelected.has('123:456')
-```
+import { FigmaFramesSelected } from '@dxtmisha/figma-code'
 
-### `get`
-
-Lấy danh sách các ID frame đang được chọn hiện tại, sử dụng bộ nhớ đệm nếu có sẵn.
-
-**Trả về:** `string[]` — Một mảng chứa danh sách các ID các frame đang chọn.
-
-```typescript
-const selectedIds = FigmaFramesSelected.get()
-```
-
-### `toggle`
-
-Thay đổi trạng thái lựa chọn của một frame.
-
-**Tham số:**
-- `id: string` — Mã định danh (ID) duy nhất của node Figma.
-- `selected: boolean` — Chọn (`true`) hoặc bỏ chọn (`false`) frame.
-
-**Trả về:** `void`
-
-```typescript
-FigmaFramesSelected.toggle('123:456', true)
-```
-
-### `add`
-
-Thêm một ID frame vào danh sách lựa chọn và cập nhật bộ nhớ lưu trữ.
-
-**Tham số:**
-- `id: string` — Mã định danh (ID) duy nhất của frame Figma cần thêm.
-
-**Trả về:** `void`
-
-```typescript
-FigmaFramesSelected.add('123:456')
-```
-
-### `remove`
-
-Xóa một ID frame khỏi danh sách lựa chọn và cập nhật bộ nhớ lưu trữ.
-
-**Tham số:**
-- `id: string` — Mã định danh (ID) duy nhất của frame Figma cần xóa.
-
-**Trả về:** `void`
-
-```typescript
-FigmaFramesSelected.remove('123:456')
-```
-
-### `send`
-
-Thiết lập các listener qua messenger của plugin để xử lý các yêu cầu về danh sách lựa chọn và các cập nhật từ giao diện người dùng (UI).
-
-**Trả về:** `void`
-
-```typescript
+// Thiết lập các trình lắng nghe tin nhắn từ UI
 FigmaFramesSelected.send()
 ```
+
+## Các phương thức
+
+### Quản lý lựa chọn (Selection Management)
+
+Các phương thức để tương tác với danh sách ID frame được chọn hiện tại.
+
+- `has(id: string): boolean` — Kiểm tra xem một ID frame cụ thể có nằm trong danh sách lựa chọn hay không.
+- `get(): string[]` — Truy xuất danh sách ID frame được chọn hiện tại (sử dụng cache).
+- `add(id: string): void` — Thêm một ID frame vào danh sách và lưu thay đổi.
+- `remove(id: string): void` — Xóa một ID frame khỏi danh sách và lưu thay đổi.
+- `toggle(id: string, selected: boolean): void` — Thêm hoặc xóa một ID dựa trên cờ `selected`.
+
+### Giao tiếp (Communication)
+
+Các phương thức để đồng bộ hóa trạng thái với UI.
+
+- `send(): void` — Thiết lập các trình lắng nghe `FigmaPluginMessenger` để xử lý các bản cập nhật lựa chọn từ UI.

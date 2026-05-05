@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/sendFrameSelection - Запрос выделения фрейма'/>
+
+# `sendFrameSelection`
+
+Утилита для отправки запроса в плагин Figma на выделение конкретного фрейма в документе.
+
+**Параметры:**
+- `id?: string` — Идентификатор (ID) фрейма, который необходимо выделить. Если не указан, выделение может быть сброшено.
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { sendFrameSelection } from '@dxtmisha/figma'
+
+// Выделить фрейм по его ID
+sendFrameSelection('12:34')
+
+// Сбросить выделение
+sendFrameSelection()
+  `}
+/>

@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/setupStorage - Настройка обработчиков общего хранилища'/>
+
+# `setupStorage`
+
+Утилита для настройки обработчиков запросов к общему хранилищу Figma. Она связывает запросы из интерфейса (UI) на чтение и запись данных с фактическими операциями в плагине, поддерживая привязку к конкретным идентификаторам объектов (например, ID нод).
+
+**Параметры:**
+Отсутствуют.
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { setupStorage } from '@dxtmisha/figma-code'
+
+// Инициализация в основной части плагина (обычно в code.ts)
+setupStorage()
+
+// Теперь UI может использовать fetchStorage и sendStorage 
+// для взаимодействия с общим хранилищем Figma.
+  `}
+/>

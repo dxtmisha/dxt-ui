@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI Figma/! Giới thiệu về thư viện'/>
+
+# Hệ sinh thái UI Figma
+
+Hệ thống `UI Figma` là một cơ sở hạ tầng toàn diện để phát triển các plugin Figma. Nó được thiết kế để xóa bỏ rào cản giữa "phía Mã" (backend của plugin) và "phía UI" (frontend), cung cấp khả năng tương tác liền mạch, quản lý dữ liệu phản hồi và định kiểu dữ liệu đầy đủ.
+
+Hệ sinh thái được xây dựng trên kiến trúc ba tầng, trong đó mỗi lớp xử lý một phần cụ thể trong vòng đời của plugin.
+
+## Ba tầng tương tác
+
+### 1. Cốt lõi giao tiếp (@dxtmisha/figma)
+Gói cơ bản xác định các giao thức tương tác. Nó bao gồm:
+- Các hằng số loại tin nhắn.
+- Các kiểu dữ liệu và giao diện dùng chung.
+- Các lớp trình nhắn tin trừu tượng để tiêu chuẩn hóa việc trao đổi dữ liệu.
+- Các tiện ích để định tuyến tin nhắn giữa UI và sandbox của Figma.
+
+### 2. Logic Plugin (@dxtmisha/figma-code)
+Một gói chạy trong môi trường thực thi của Figma (Sandbox). Đây là "bộ não" của plugin, có quyền truy cập trực tiếp vào Figma API:
+- **Phân tích phần tử**: Các lớp `FigmaItem` và `FigmaFrame` để khám phá sâu cấu trúc tài liệu.
+- **Lưu trữ dữ liệu**: `FigmaStorage` để làm việc với PluginData (lưu trữ dữ liệu trực tiếp trong tệp `.fig`).
+- **Xuất dữ liệu**: Các công cụ để tự động tạo ảnh chụp màn hình và xuất tài sản.
+- **Đồng bộ hóa**: Các lớp `FigmaTopLevelFrames` và `FigmaFramesSelected` để chuyển trạng thái tài liệu hiện tại sang UI.
+
+### 3. Giao diện phản hồi (@dxtmisha/figma-ref)
+Một gói để phát triển giao diện người dùng bằng Vue 3. Nó chuyển đổi các phản hồi bất đồng bộ từ plugin thành các tham chiếu phản hồi (composables) thuận tiện:
+- **Kho lưu trữ phản hồi**: `useFigmaStorage` và `useFigmaClientStorage` để liên kết dữ liệu tức thì giữa UI và bộ nhớ Figma.
+- **Trình quan sát**: `useFigmaUiFrames` để tự động cập nhật danh sách các frame có sẵn.
+- **Quản lý lựa chọn**: `useFigmaUiSelected` để liên kết các phần tử được chọn trong UI với vùng lựa chọn hoạt động trong Figma.
+
+## Các tính năng của hệ thống
+
+**Tương tác liền mạch**
+Các nhà phát triển không còn cần phải quản lý thủ công các lệnh gọi `postMessage` và trình lắng nghe sự kiện. Hệ thống tự động xử lý việc định tuyến và xác thực kiểu dữ liệu.
+
+**Tính phản hồi có sẵn**
+Sử dụng Vue Composition API cho phép bạn xây dựng giao diện plugin dễ dàng như các ứng dụng web tiêu chuẩn, với dữ liệu tự động được lưu trữ bền vững trong tài liệu Figma.
+
+**An toàn kiểu dữ liệu**
+Tất cả các tin nhắn và cấu trúc dữ liệu đều được định kiểu nghiêm ngặt, loại bỏ lỗi khi chuyển dữ liệu giữa các môi trường biệt lập (UI và Sandbox).
+
+## Tại sao nên sử dụng hệ sinh thái này?
+
+- **Tốc độ phát triển**: Nền tảng có sẵn cho các tác vụ điển hình (lựa chọn, cài đặt, ảnh chụp màn hình).
+- **Kiến trúc sạch**: Phân tách rõ ràng các mối quan tâm giữa logic nghiệp vụ và giao diện người dùng.
+- **Khả năng mở rộng**: Dễ dàng thêm các tính năng mới nhờ cấu trúc mô-đun và mô hình Messenger.
+
+## Git
+
+[https://github.com/dxtmisha/dxt-ui/tree/main/packages/figma](https://github.com/dxtmisha/dxt-ui/tree/main/packages/figma)

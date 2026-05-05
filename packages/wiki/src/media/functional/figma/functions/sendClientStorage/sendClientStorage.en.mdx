@@ -1,0 +1,29 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/sendClientStorage - Save data to client storage'/>
+
+# `sendClientStorage`
+
+A utility for saving data to Figma's client storage. It sends a message from the UI to the plugin side to store the provided value under a specific name.
+
+**Parameters:**
+- `name: string` — The key name in the client storage.
+- `value: T` — The data value to be stored.
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { sendClientStorage } from '@dxtmisha/figma'
+
+// 1. Storing a simple string
+sendClientStorage('user-theme', 'dark')
+
+// 2. Storing an object
+sendClientStorage('settings', { notifications: true, zoom: 100 })
+  `}
+/>

@@ -14,29 +14,9 @@ Lớp tiện ích để quản lý mã xác minh duy nhất được sử dụng
 
 ## Các phương thức tĩnh
 
-### `is`
-
-Kiểm tra xem mã được cung cấp có khớp với mã tin nhắn hiện tại hay không.
-
-**Tham số:**
-- `code: string` — Chuỗi mã xác minh để kiểm tra với mã phiên nội bộ.
-
-**Trả về:** `boolean` — `true` nếu mã khớp.
-
-### `get`
-
-Trả về mã tin nhắn hiện tại được sử dụng để xác minh trong phiên hiện tại.
-
-**Trả về:** `string`
-
-### `set`
-
-Đặt một mã tin nhắn mới. Phương thức này chỉ có thể thành công một lần; sau khi mã đã được đặt (hoặc sau lần truy cập đầu tiên vào `get`), phiên sẽ được khóa và mã không còn có thể thay đổi.
-
-**Tham số:**
-- `code: string` — Mã mới sẽ được sử dụng cho phần còn lại của phiên.
-
-**Trả về:** `void`
+- `is(code: string): boolean` — Kiểm tra xem mã được cung cấp có khớp với mã tin nhắn hiện tại hay không.
+- `get(): string` — Trả về mã tin nhắn hiện tại.
+- `set(code: string): void` — Đặt một mã tin nhắn mới. Chỉ có thể thành công một lần.
 
 ## Khuyến nghị
 

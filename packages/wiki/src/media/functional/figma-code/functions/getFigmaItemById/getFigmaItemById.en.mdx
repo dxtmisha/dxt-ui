@@ -1,0 +1,43 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/getFigmaItemById - Get Figma item by ID'/>
+
+# `getFigmaItemById`
+
+An asynchronous utility for retrieving a Figma node by its ID and wrapping it in a `FigmaItem` class instance. This simplifies further interactions with the node, such as type checking, selection, or exporting.
+
+**Parameters:**
+- `id: string` — The identifier (ID) of the Figma node.
+
+**Returns:**
+`Promise<FigmaItem | undefined>` — A `FigmaItem` instance wrapping the node, or `undefined` if the node was not found.
+
+## Types
+
+### FigmaItem
+
+A wrapper class for Figma nodes that provides high-level methods for:
+- Checking node types (`isFrame()`, `isText()`, etc.).
+- Accessing parents and children.
+- Exporting to various formats.
+- Managing selection and viewport focus.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { getFigmaItemById } from '@dxtmisha/figma-code'
+
+async function highlightFrame(frameId: string) {
+  const item = await getFigmaItemById(frameId)
+
+  if (item && item.isFrame()) {
+    item.toSelection()
+    console.log('Selected frame:', item.getName())
+  } else {
+    console.log('Frame not found or is not a frame node')
+  }
+}
+  `}
+/>

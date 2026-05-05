@@ -1,45 +1,42 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma-code/Classes/FigmaTopLevelFrames - Top-Level Frame Management'/>
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaTopLevelFrames - Managing top-level frames'/>
 
-# FigmaTopLevelFrames Class
+# Class `FigmaTopLevelFrames`
 
-A static utility class for managing, caching, and communicating the list of top-level frames within the Figma plugin environment. It bridges the gap between the Figma document structure and the plugin UI via a dedicated messenger.
+A static utility class for managing and synchronizing the list of top-level frames and sections on the current Figma page. It formats the nodes into a simplified list for display in the plugin's UI.
 
 ## Key Features
 
-- **Automated Caching** — Efficiently manages a singleton-like cache of formatted frame data.
-- **Messenger Integration** — Simplifies bidirectional communication between the plugin and the UI regarding frame lists.
-- **Node Processing** — Leverages `FigmaFrame` to extract and format core node properties (ID, name, JPG export) for UI display.
+- **Automated List Generation** — Automatically identifies frames and sections at the root of the current page.
+- **Visual Data** — Exports JPG screenshots for each frame to provide a visual preview in the UI.
+- **Message Integration** — The `send()` method sets up listeners to automatically respond to UI requests for the frame list.
 
-## Static Methods
+## Initialization
 
-### `getListData`
-
-Retrieves and caches the formatted list of top-level frames. It processes each main frame from the current page, extracting its ID, name, and exporting it to a JPG format.
-
-**Returns:** `Promise<UiFigmaFramesList>` — A promise that resolves to the array of formatted frame data.
+Since this is a static class, no instantiation is required. Typically, you only need to call the communication setup in your main plugin file.
 
 ```typescript
-const frames = await FigmaTopLevelFrames.getListData()
-```
+import { FigmaTopLevelFrames } from '@dxtmisha/figma-code'
 
-### `send`
-
-Sets up a listener for frame requests using the plugin messenger. When the `UI_FIGMA_FRAMES_POST_NAME` message is received from the UI, it automatically fetches the latest data and posts it back.
-
-**Returns:** `void`
-
-```typescript
+// Setup listener for UI requests
 FigmaTopLevelFrames.send()
 ```
 
-## Types
+## Methods
 
-### `UiFigmaFramesList`
+### Data Retrieval
 
-An array of objects representing the processed frame data for the UI.
-- `id: string` — Unique Figma node ID.
-- `name: string` — Display name of the frame.
-- `image: Uint8Array | string` — Exported JPG data.
-- `item: FigmaItem` — The wrapped `FigmaItem` instance for further operations.
+- `static get(): Promise<UiFigmaFramesList>` — Retrieves, formats, and caches the list of top-level frames.
+
+### Communication
+
+- `static send(): void` — Initializes `FigmaPluginMessenger` listeners to handle frame list requests from the UI.
+
+## Data Types
+
+#### `UiFigmaFramesList`
+An array of objects representing top-level frames.
+- `name: string` — The frame's name.
+- `id: string` — The frame's unique ID.
+- `image: Uint8Array | string` — The exported JPG screenshot of the frame.

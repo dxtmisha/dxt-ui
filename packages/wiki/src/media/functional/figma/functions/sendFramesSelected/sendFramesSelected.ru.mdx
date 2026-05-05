@@ -1,0 +1,29 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/sendFramesSelected - Обновление состояния выбора фрейма'/>
+
+# `sendFramesSelected`
+
+Утилита для уведомления плагина Figma об изменении состояния выбора конкретного фрейма. Обычно используется для добавления или удаления фреймов из списка множественного выбора, управляемого плагином.
+
+**Параметры:**
+- `id: string` — Идентификатор (ID) фрейма.
+- `selected: boolean` — Желаемое состояние выбора (true — выбрать, false — отменить выбор).
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { sendFramesSelected } from '@dxtmisha/figma'
+
+// Добавить фрейм в список выбранных
+sendFramesSelected('12:34', true)
+
+// Удалить фрейм из списка выбранных
+sendFramesSelected('12:34', false)
+  `}
+/>

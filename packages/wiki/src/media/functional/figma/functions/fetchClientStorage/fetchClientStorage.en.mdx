@@ -1,0 +1,46 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/fetchClientStorage - Fetch client storage data'/>
+
+# `fetchClientStorage`
+
+A utility for fetching data from Figma's client storage. It facilitates communication between the Figma UI and the plugin side to retrieve stored values.
+
+**Parameters:**
+- `name: string` — The key name in the client storage.
+- `callback: (value: T) => void` — The function executed once the data is retrieved.
+- `defaultValue?: T` — (Optional) A default value returned if the storage key does not exist.
+- `isOnce: boolean = true` — If `true`, the callback will be executed only once.
+
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { fetchClientStorage } from '@dxtmisha/figma'
+
+// 1. Basic usage with a string value
+fetchClientStorage<string>('user-theme', (theme) => {
+  console.log('Current theme:', theme)
+}, 'light')
+
+// 2. Fetching an object
+interface UserSettings {
+  notifications: boolean
+  zoom: number
+}
+
+fetchClientStorage<UserSettings>('settings', (settings) => {
+  console.log('User settings:', settings)
+}, { notifications: true, zoom: 100 })
+
+// 3. Persistent subscription (isOnce = false)
+fetchClientStorage<number>('counter', (count) => {
+  console.log('Counter updated:', count)
+}, 0, false)
+  `}
+/>

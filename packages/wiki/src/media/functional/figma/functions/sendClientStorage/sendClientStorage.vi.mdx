@@ -1,0 +1,29 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/sendClientStorage - Lưu dữ liệu vào bộ nhớ client'/>
+
+# `sendClientStorage`
+
+Một tiện ích để lưu dữ liệu vào bộ nhớ client (`clientStorage`) của Figma. Nó gửi một tin nhắn từ giao diện người dùng (UI) đến phía plugin để lưu trữ giá trị được cung cấp dưới một tên cụ thể.
+
+**Tham số:**
+- `name: string` — Tên khóa trong bộ nhớ client.
+- `value: T` — Giá trị dữ liệu cần lưu trữ.
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { sendClientStorage } from '@dxtmisha/figma'
+
+// 1. Lưu một chuỗi đơn giản
+sendClientStorage('user-theme', 'dark')
+
+// 2. Lưu một đối tượng (object)
+sendClientStorage('settings', { notifications: true, zoom: 100 })
+  `}
+/>

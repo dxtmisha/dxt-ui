@@ -1,0 +1,27 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/setupFrameSelectionByMessage - Setup frame selection handlers'/>
+
+# `setupFrameSelectionByMessage`
+
+A utility for setting up a message handler that allows the UI to request the selection of a specific frame in Figma. It acts as a bridge between the UI's `sendFrameSelection` and the plugin's `toFrameSelection`.
+
+**Parameters:**
+None.
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { setupFrameSelectionByMessage } from '@dxtmisha/figma-code'
+
+// Initialization in the main part of the plugin (typically code.ts)
+setupFrameSelectionByMessage()
+
+// Now the UI can send messages to change the document selection.
+  `}
+/>

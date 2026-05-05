@@ -1,0 +1,30 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/getFigmaItemByIdOrRoot - Get Figma node or document root'/>
+
+# `getFigmaItemByIdOrRoot`
+
+An asynchronous utility that retrieves a Figma node by its ID. If the ID is not provided or the node is not found, it falls back to the document root (`figma.root`). This is useful for operations that can target either a specific element or the entire document.
+
+**Parameters:**
+- `id?: string` — (Optional) The identifier (ID) of the Figma node.
+
+**Returns:**
+`Promise<T>` — The retrieved Figma node or `figma.root`.
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { getFigmaItemByIdOrRoot } from '@dxtmisha/figma-code'
+
+async function getStorageNode(id?: string) {
+  // If id is provided, tries to get that node.
+  // Otherwise, returns figma.root.
+  const node = await getFigmaItemByIdOrRoot(id)
+  
+  console.log('Target node name:', node.name)
+}
+  `}
+/>

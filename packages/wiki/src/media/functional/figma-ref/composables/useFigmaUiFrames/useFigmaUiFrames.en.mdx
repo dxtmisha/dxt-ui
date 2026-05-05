@@ -1,26 +1,21 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaUiFrames - List of top-level frames'/>
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaUiFrames - Observing top-level frames'/>
 
 # `useFigmaUiFrames`
 
-Composable for managing and observing the list of top-level frames in the Figma UI.
+A composable for retrieving and observing the list of top-level frames and sections from the current Figma page. It uses global caching to ensure data consistency across multiple component instances.
 
 **Returns:**
-An object with the following properties:
-- `frames: ComputedRef<UiFigmaFramesList>` — A reactive list of top-level frames. Automatically updates when data is received.
-- `loading: ComputedRef<boolean>` — A reactive flag indicating whether the frames are currently being fetched from the Figma plugin.
+- `frames: ComputedRef<UiFigmaFramesList>` — A computed reference to the list of top-level frames (names, IDs, and screenshots).
+- `loading: ComputedRef<boolean>` — A reactive flag indicating if the frame list is being fetched.
+
+## Usage Example
 
 ```typescript
 import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
 
 const { frames, loading } = useFigmaUiFrames()
 
-// Use loading to show a progress indicator
-if (loading.value) {
-  console.log('Fetching frames...')
-}
-
-// Use frames to render the list
-console.log('Frames:', frames.value)
+// 'frames' contains a list of frame objects with visual previews
 ```

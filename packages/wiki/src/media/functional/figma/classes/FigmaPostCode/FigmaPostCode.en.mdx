@@ -14,29 +14,9 @@ A utility class for managing a unique verification code used for message integri
 
 ## Static Methods
 
-### `is`
-
-Checks if the provided code matches the current post code.
-
-**Parameters:**
-- `code: string` — The verification code string to check.
-
-**Returns:** `boolean` — `true` if the code matches the internal session code.
-
-### `get`
-
-Returns the current post code used for message verification in the current session.
-
-**Returns:** `string`
-
-### `set`
-
-Sets a new post code. This method can only be successful once; once a code is set (or after the first access to `get`), the session is locked and the code can no longer be changed.
-
-**Parameters:**
-- `code: string` — The new code to be used for the remainder of the session.
-
-**Returns:** `void`
+- `is(code: string): boolean` — Checks if the provided code matches the current post code.
+- `get(): string` — Returns the current post code.
+- `set(code: string): void` — Sets a new post code. Can only be successfully called once.
 
 ## Recommendation
 

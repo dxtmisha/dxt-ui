@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-ref/Composables/useFigmaStorage - Управление хранилищем документа'/>
+
+# `useFigmaStorage`
+
+Реактивная обертка для общего хранилища Figma (PluginData). Она синхронизирует Vue `shallowRef` с данными, хранящимися внутри документа Figma (глобально или на конкретном узле), обеспечивая общий доступ к данным для всех пользователей файла.
+
+**Параметры:**
+- `name: string` — название ключа в хранилище плагина.
+- `defaultValue?: T` — значение по умолчанию, если в хранилище ничего не найдено.
+- `id?: string` — (Опционально) идентификатор (ID) узла, к которому привязано хранилище. Если не указан, используется корень документа.
+
+**Возвращает:**
+- `item: Ref<T | undefined>` — реактивная ссылка на сохраненное значение.
+- `loading: Ref<boolean>` — реактивный флаг, указывающий на процесс первичного получения данных.
+
+## Пример использования
+
+```typescript
+import { useFigmaStorage } from '@dxtmisha/figma-ref'
+
+// Доступ к хранилищу на уровне документа
+const { item: projectConfig, loading } = useFigmaStorage('project-config', { version: '1.0' })
+
+// Изменения автоматически сохраняются в PluginData Figma
+projectConfig.value.version = '1.1'
+```

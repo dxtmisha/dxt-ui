@@ -1,0 +1,77 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI Figma/# Làm việc với tin nhắn'/>
+
+# Làm việc với tin nhắn (Messenger)
+
+Cơ chế trao đổi tin nhắn là mắt xích trung tâm trong kiến trúc của các plugin Figma. Vì "phía Mã" (sandbox) và "phía Giao diện" (UI) chạy trong các môi trường biệt lập, nên bất kỳ tương tác nào giữa chúng đều yêu cầu sử dụng hệ thống `postMessage`.
+
+Thư viện đơn giản hóa quá trình này bằng cách cung cấp các trình nhắn tin được tiêu chuẩn hóa và định tuyến tự động.
+
+### Tại sao điều này là cần thiết?
+Việc sử dụng trực tiếp `figma.ui.postMessage` và `window.addEventListener` có một số nhược điểm:
+- Thiếu định kiểu cho dữ liệu truyền đi.
+- Khó khăn trong việc theo dõi người gửi và người nhận khi có nhiều loại tin nhắn.
+- Cần phải lọc tin nhắn dành cho logic cụ thể một cách thủ công.
+
+Hệ thống trình nhắn tin giải quyết các vấn đề này bằng cách đóng gói việc xử lý sự kiện cấp thấp.
+
+### Cách thức hoạt động
+
+Kiến trúc được xây dựng dựa trên việc sử dụng hai lớp phản chiếu:
+1. **`FigmaPluginMessenger`** — được sử dụng ở phía mã (backend).
+2. **`FigmaUiMessenger`** — được sử dụng ở phía giao diện (frontend).
+
+Cả hai lớp đều kế thừa từ `FigmaPostAbstract` và cung cấp một API thống nhất để gửi và nhận dữ liệu.
+
+#### 1. Định nghĩa các loại tin nhắn
+Để đảm bảo tính nhất quán, bạn nên định nghĩa tất cả các loại tin nhắn trong một tệp dùng chung mà cả phía mã và phía UI của plugin đều có thể truy cập được (ví dụ: trong tệp `shared/types.ts`).
+
+```typescript
+// plugin/shared/types.ts
+export const UI_FIGMA_MY_ACTION = 'my-action-type'
+```
+
+Điều này cho phép bạn sử dụng cùng một hằng số trong cả hai môi trường, tránh sai sót và không khớp dữ liệu.
+
+#### 2. Gửi và nhận ở phía Plugin (Code)
+Ở phía mã, chúng ta đăng ký các sự kiện và gửi kết quả trở lại.
+
+```typescript
+import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
+import { UI_FIGMA_MY_ACTION } from '@dxtmisha/figma'
+
+const messenger = FigmaPluginMessenger.getInstance()
+
+// Đăng ký nhận yêu cầu từ UI
+messenger.add(UI_FIGMA_MY_ACTION, (data) => {
+  console.log('Dữ liệu nhận được:', data)
+  
+  // Gửi phản hồi trở lại UI
+  messenger.post(UI_FIGMA_MY_ACTION, { status: 'success' })
+})
+```
+
+#### 3. Gửi và nhận ở phía UI (Vue)
+Trong giao diện, chúng ta sử dụng cùng một cách tiếp cận thông qua `FigmaUiMessenger`.
+
+```typescript
+import { FigmaUiMessenger } from '@dxtmisha/figma'
+import { UI_FIGMA_MY_ACTION } from '@dxtmisha/figma'
+
+const messenger = FigmaUiMessenger.getInstance()
+
+// Gửi yêu cầu đến plugin
+messenger.post(UI_FIGMA_MY_ACTION, { payload: 'hello' })
+
+// Đăng ký nhận phản hồi
+messenger.add(UI_FIGMA_MY_ACTION, (result) => {
+  console.log('Kết quả thực hiện:', result)
+})
+```
+
+### Tóm tắt
+Việc sử dụng hệ thống trình nhắn tin cho phép:
+- **Tập trung giao tiếp**: Tất cả giao tiếp đều đi qua các điểm truy cập thống nhất.
+- **Đảm bảo phân phối**: Mỗi tin nhắn chứa một định danh `code`, được hệ thống kiểm tra để tránh xung đột với các plugin khác.
+- **Đơn giản hóa việc gỡ lỗi**: Một định dạng thống nhất để ghi nhật ký và xử lý lỗi.

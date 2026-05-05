@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/setupStorage - Thiết lập các trình xử lý bộ nhớ chung'/>
+
+# `setupStorage`
+
+Một tiện ích để thiết lập các trình xử lý yêu cầu cho bộ nhớ chung của Figma. Nó kết nối các yêu cầu từ giao diện người dùng (GET/SET) với các hoạt động đọc và ghi thực tế trong plugin, hỗ trợ các định danh đối tượng tùy chọn (ví dụ: ID của node).
+
+**Tham số:**
+Không có.
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { setupStorage } from '@dxtmisha/figma-code'
+
+// Khởi tạo trong phần chính của plugin (thường là code.ts)
+setupStorage()
+
+// Bây giờ UI có thể sử dụng fetchStorage và sendStorage 
+// để tương tác với bộ nhớ chung của Figma.
+  `}
+/>

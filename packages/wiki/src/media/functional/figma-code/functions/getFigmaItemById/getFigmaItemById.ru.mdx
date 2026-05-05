@@ -1,0 +1,43 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/getFigmaItemById - Получение элемента Figma по ID'/>
+
+# `getFigmaItemById`
+
+Асинхронная утилита для получения узла Figma по его идентификатору и оборачивания его в экземпляр класса `FigmaItem`. Это упрощает дальнейшую работу с узлом, такую как проверка типов, управление выделением или экспорт.
+
+**Параметры:**
+- `id: string` — Идентификатор (ID) узла Figma.
+
+**Возвращает:**
+`Promise<FigmaItem | undefined>` — Экземпляр `FigmaItem`, оборачивающий узел, или `undefined`, если узел не найден.
+
+## Типы
+
+### FigmaItem
+
+Класс-обертка для узлов Figma, предоставляющий высокоуровневые методы для:
+- Проверки типов узлов (`isFrame()`, `isText()` и т.д.).
+- Доступа к родительским и дочерним элементам.
+- Экспорта в различные форматы.
+- Управления выделением и фокусом вьюпорта.
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { getFigmaItemById } from '@dxtmisha/figma-code'
+
+async function highlightFrame(frameId: string) {
+  const item = await getFigmaItemById(frameId)
+
+  if (item && item.isFrame()) {
+    item.toSelection()
+    console.log('Выбран фрейм:', item.getName())
+  } else {
+    console.log('Фрейм не найден или не является узлом типа FRAME')
+  }
+}
+  `}
+/>

@@ -1,26 +1,21 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/figma-ref/Composables/useFigmaUiFrames - Danh sách các frame cấp cao nhất'/>
+<Meta title='@dxtmisha/vi/figma-ref/Composables/useFigmaUiFrames - Quan sát các frame cấp cao nhất'/>
 
 # `useFigmaUiFrames`
 
-Composable để quản lý và theo dõi danh sách các frame cấp cao nhất trong Figma UI.
+Một composable để truy xuất và quan sát danh sách các frame và section cấp cao nhất từ trang Figma hiện tại. Nó sử dụng cơ chế cache toàn cục để đảm bảo tính nhất quán của dữ liệu giữa nhiều thực thể component khác nhau.
 
-**Giá trị trả về:**
-Một đối tượng với các thuộc tính sau:
-- `frames: ComputedRef<UiFigmaFramesList>` — Một danh sách reactivity chứa các frame cấp cao nhất. Tự động cập nhật khi nhận được dữ liệu.
-- `loading: ComputedRef<boolean>` — Một biến reactivity cho biết các frame có đang được lấy từ plugin Figma hay không.
+**Trả về:**
+- `frames: ComputedRef<UiFigmaFramesList>` — Một tham chiếu được tính toán đến danh sách các frame cấp cao nhất (tên, ID và ảnh chụp màn hình).
+- `loading: ComputedRef<boolean>` — Một cờ phản hồi cho biết liệu danh sách frame có đang được lấy hay không.
+
+## Ví dụ sử dụng
 
 ```typescript
 import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
 
 const { frames, loading } = useFigmaUiFrames()
 
-// Sử dụng loading để hiển thị chỉ báo tiến trình
-if (loading.value) {
-  console.log('Đang lấy danh sách frame...')
-}
-
-// Sử dụng frames để hiển thị danh sách
-console.log('Danh sách frame:', frames.value)
+// 'frames' chứa một danh sách các đối tượng frame với bản xem trước hình ảnh
 ```

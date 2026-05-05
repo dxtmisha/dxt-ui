@@ -1,88 +1,42 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma-code/Classes/FigmaFramesSelected - Selected Frames Management'/>
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaFramesSelected - Managing selected frames'/>
 
-# FigmaFramesSelected Class
+# Class `FigmaFramesSelected`
 
-A static utility class for managing, caching, and synchronizing the list of selected frames within the Figma plugin environment. It handles persistent storage and bidirectional communication between the plugin and the UI regarding the selection state.
+A static utility class for managing a list of frame identifiers selected by the user within the plugin context. It handles data persistence using Figma's storage and ensures synchronization between the plugin logic and the user interface.
 
 ## Key Features
 
-- **Persistent Storage** — Uses `FigmaStorage` to keep the list of selected frame IDs across plugin reloads.
-- **Automated Caching** — Efficiently manages a singleton-like cache of selected IDs for fast access.
-- **Messenger Integration** — Simplifies bidirectional communication for updating and retrieving the selection state.
+- **Data Persistence** — The list of selected IDs is saved via `FigmaStorage`, allowing the selection to persist across plugin sessions.
+- **Bi-directional Sync** — The `send()` method initializes listeners for UI messages, enabling seamless updates to the selection list.
+- **Efficient Caching** — Uses an internal cache to provide instant access to the selection list without frequent storage reads.
 
-## Static Methods
+## Initialization
 
-### `has`
-
-Checks if a frame with the given ID is currently selected.
-
-**Parameters:**
-- `id: string` — The unique Figma node ID of the frame.
-
-**Returns:** `boolean` — `true` if the frame is selected, `false` otherwise.
+Since this is a static class, no instantiation is required. Typically, you only need to call the communication setup in your main plugin file.
 
 ```typescript
-const has = FigmaFramesSelected.has('123:456')
-```
+import { FigmaFramesSelected } from '@dxtmisha/figma-code'
 
-### `get`
-
-Retrieves the current list of selected frame IDs, using the cache if available.
-
-**Returns:** `string[]` — An array of selected frame IDs.
-
-```typescript
-const selectedIds = FigmaFramesSelected.get()
-```
-
-### `toggle`
-
-Toggles the selection state of a frame.
-
-**Parameters:**
-- `id: string` — The unique Figma node ID of the frame.
-- `selected: boolean` — Whether to select (`true`) or deselect (`false`) the frame.
-
-**Returns:** `void`
-
-```typescript
-FigmaFramesSelected.toggle('123:456', true)
-```
-
-### `add`
-
-Adds a frame ID to the selection list and updates the storage.
-
-**Parameters:**
-- `id: string` — The unique Figma node ID of the frame to add.
-
-**Returns:** `void`
-
-```typescript
-FigmaFramesSelected.add('123:456')
-```
-
-### `remove`
-
-Removes a frame ID from the selection list and updates the storage.
-
-**Parameters:**
-- `id: string` — The unique Figma node ID of the frame to remove.
-
-**Returns:** `void`
-
-```typescript
-FigmaFramesSelected.remove('123:456')
-```
-
-### `send`
-
-Sets up listeners via the plugin messenger to handle requests for the selection list and updates from the UI.
-
-**Returns:** `void`
-
-```typescript
+// Setup listeners for UI messages
 FigmaFramesSelected.send()
 ```
+
+## Methods
+
+### Selection Management
+
+Methods for interacting with the current list of selected frame IDs.
+
+- `has(id: string): boolean` — Checks if a specific frame ID is in the selection list.
+- `get(): string[]` — Retrieves the current list of selected frame IDs (uses cache).
+- `add(id: string): void` — Adds a frame ID to the list and persists the change.
+- `remove(id: string): void` — Removes a frame ID from the list and persists the change.
+- `toggle(id: string, selected: boolean): void` — Adds or removes an ID based on the `selected` flag.
+
+### Communication
+
+Methods for synchronizing state with the UI.
+
+- `send(): void` — Sets up `FigmaPluginMessenger` listeners to handle selection updates from the UI.

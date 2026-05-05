@@ -1,90 +1,45 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma-code/Classes/FigmaStorage - Storage Manager'/>
+<Meta title='@dxtmisha/en/figma-code/Classes/FigmaStorage - Working with document storage'/>
 
-# FigmaStorage Class
+# Class `FigmaStorage`
 
-A class for robust management of Figma's `PluginData`. It provides a high-level API for storing, retrieving, and expiring data on Figma nodes (defaulting to the root node), with support for in-memory caching and default values.
+A high-level wrapper for Figma's `setPluginData` and `getPluginData` APIs. It allows for storing structured data directly within the Figma document, either globally (`figma.root`) or attached to specific nodes. These data are shared among all users collaborating on the file.
 
 ## Key Features
 
-- **Persistence** — Wraps `getPluginData` and `setPluginData` for seamless data storage.
-- **In-Memory Caching** — Stores values in the instance for fast access during the current execution context.
-- **Expiration Logic** — Supports age-based caching to invalidate stale data.
-- **Functional Values** — Supports passing functions as values or default values for dynamic data generation.
+- **Node-Specific Storage** — Data can be bound to any Figma node (Frame, Group, etc.) or the document root.
+- **Shared Access** — Unlike client storage, plugin data is saved inside the `.fig` file and is synchronized across all users.
+- **Instance Management** — The class uses internal caching to ensure that multiple calls for the same key on the same node return the same instance.
+- **Automatic Serialization** — Handles JSON conversion for complex data structures transparently.
 
 ## Initialization
 
-To initialize the object, call the `FigmaStorage(name, item, cache)` constructor.
-
-### Generic Parameters
-
-The class supports a generic parameter for typed data management:
-- `T` — The type of the value being stored and retrieved.
-
-**Parameters:**
-- `name: string` — The unique key name for the storage item.
-- `item: PluginDataMixin = figma.root` — The Figma node where the data will be stored. Defaults to `figma.root`.
-- `cache: number` — (Optional) TTL in seconds for the stored data.
+Access an instance using static methods. You can provide a raw node or a node ID.
 
 ```typescript
 import { FigmaStorage } from '@dxtmisha/figma-code'
 
-// 1. Initialize with implicit typing
-const settings = new FigmaStorage('plugin-settings')
+// Get instance for the entire document
+const globalStorage = FigmaStorage.getInstance<object>('app-settings')
 
-// 2. Initialize with explicit generic for strict typing
-interface MyData { theme: string; version: number }
-const typedSettings = new FigmaStorage<MyData>('app-data')
-
-// 3. Initialize with a 1-hour cache
-const cacheSettings = new FigmaStorage('cache', figma.root, 3600)
+// Get instance for a specific node by ID
+const nodeStorage = await FigmaStorage.getInstanceById<string>('element-name', '1:123')
 ```
 
 ## Methods
 
-### `get`
+### Data Access
 
-Retrieves data from storage with support for default values and cache validation.
+Methods for managing data stored in the document.
 
-**Parameters:**
-- `defaultValue: T | (() => T)` — (Optional) Value returned (and saved) if storage is empty or expired.
+- `get(defaultValue?: T | (() => T)): T | undefined` — Retrieves data from the node. Sets a default value if the storage is empty.
+- `set(value?: T | (() => T)): T | undefined` — Updates the data for the node and returns the new value.
+- `remove(): this` — Clears the plugin data for the specified key on the node.
 
-**Returns:** `T | undefined`
+### Instance Management (Static)
 
-```javascript
-const val = settings.get('default_val')
-```
+Methods for retrieving class instances.
 
-### `set`
-
-Updates the data in both the in-memory cache and the Figma node's `PluginData`.
-
-**Parameters:**
-- `value: T | (() => T)` — (Optional) New value or a function that returns the new value.
-
-**Returns:** `T | undefined`
-
-```javascript
-settings.set({ theme: 'dark' })
-```
-
-### `remove`
-
-Clears the data from both the in-memory cache and the Figma node's `PluginData`.
-
-**Returns:** `this`
-
-```javascript
-settings.remove()
-```
-
-### `getName`
-
-Returns the key name used for this storage instance.
-
-**Returns:** `string`
-
-```javascript
-console.log(settings.getName())
-```
+- `static getInstance<T>(name: string, item: UiFigmaNode): FigmaStorage<T>` — Returns an instance for a specific node.
+- `static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>` — Asynchronously retrieves an instance using a node ID.

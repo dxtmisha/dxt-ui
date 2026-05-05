@@ -1,63 +1,33 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaPluginMessenger - Trình nhắn tin Backend'/>
+<Meta title='@dxtmisha/vi/figma-code/Classes/FigmaPluginMessenger - Trình nhắn tin plugin (Backend)'/>
 
-# Lớp FigmaPluginMessenger
+# Lớp `FigmaPluginMessenger`
 
-Trình nhắn tin cho phía plugin Figma (backend). Nó xử lý việc gửi tin nhắn đến UI Figma và lắng nghe tin nhắn từ UI bằng API nội bộ của Figma `figma.ui`.
+Một trình nhắn tin chuyên dụng cho phía backend của plugin Figma. Nó mở rộng `FigmaPostAbstract` để cung cấp một lớp giao tiếp mạnh mẽ giữa logic chính của plugin (phía mã) và giao diện người dùng (UI).
+
+## Các tính năng chính
+
+- **Kiến trúc Singleton** — Sử dụng `getInstance()` để đảm bảo tất cả các phần của plugin đều sử dụng cùng một trung tâm giao tiếp.
+- **API đơn giản hóa** — Bọc các tiêu chuẩn `figma.ui.postMessage` và `figma.ui.onmessage` vào một giao diện dễ quản lý hơn.
+- **An toàn kiểu dữ liệu** — Hỗ trợ các kiểu generic cho tin nhắn để đảm bảo tính nhất quán của dữ liệu.
 
 ## Khởi tạo
 
-Kế thừa từ `FigmaPostAbstract`.
+Truy cập thực thể singleton bằng phương thức tĩnh `getInstance()`.
 
 ```typescript
 import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
 
-const messenger = new FigmaPluginMessenger()
-  .make()
-  .add('hello-ui', (msg) => console.log('UI:', msg))
+const messenger = FigmaPluginMessenger.getInstance()
 ```
 
-## Các phương thức công khai
+## Các phương thức
 
-### `make`
+### Giao tiếp (Communication)
 
-Khởi tạo trình lắng nghe tin nhắn bằng API `figma.ui.onmessage`. Nên được gọi một lần để bắt đầu nhận tin nhắn từ UI.
+Các phương thức để gửi và nhận tin nhắn.
 
-**Trả về:** `this`
-
-```javascript
-messenger.make()
-```
-
-### `add`
-
-Đăng ký một trình lắng nghe cho một loại tin nhắn cụ thể đến từ UI.
-
-**Tham số:**
-- `type: string` — Mã định danh duy nhất cho loại tin nhắn cần lắng nghe.
-- `callback: (message: Message) => void` — hàm sẽ thực thi khi có một tin nhắn phù hợp đến.
-
-**Trả về:** `this`
-
-```javascript
-messenger.add('resize-ui', (data) => {
-  figma.ui.resize(data.width, data.height)
-})
-```
-
-### `post`
-
-Gửi một tin nhắn đến phía UI Figma.
-
-**Tham số:**
-- `type: string` — Mã định danh của tin nhắn (loại).
-- `message: Message` — (Tùy chọn) Dữ liệu payload để gửi đến UI.
-
-**Trả về:** `void`
-
-```javascript
-messenger.post('selection-data', { 
-  ids: figma.currentPage.selection.map(node => node.id) 
-})
-```
+- `post<Message>(type: string, message?: Message): void` — Gửi tin nhắn thuộc một loại cụ thể đến UI của Figma.
+- `add(type: string, callback: (data: any) => void): this` — (Kế thừa) Đăng ký một trình lắng nghe cho các tin nhắn từ UI.
+- `remove(type: string): this` — (Kế thừa) Xóa một trình lắng nghe.

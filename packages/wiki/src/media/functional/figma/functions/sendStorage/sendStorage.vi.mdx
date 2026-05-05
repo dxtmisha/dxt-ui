@@ -1,0 +1,30 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/sendStorage - Lưu dữ liệu vào bộ nhớ chung'/>
+
+# `sendStorage`
+
+Một tiện ích để lưu dữ liệu vào bộ nhớ chung của Figma. Khác với bộ nhớ client, dữ liệu này có thể được chia sẻ và liên kết với các định danh cụ thể (ví dụ: ID của node).
+
+**Tham số:**
+- `name: string` — Tên của bộ nhớ.
+- `value: T` — Giá trị dữ liệu cần lưu trữ.
+- `id?: string` — (Tùy chọn) Định danh để liên kết dữ liệu với một đối tượng cụ thể (ví dụ: ID của node).
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { sendStorage } from '@dxtmisha/figma'
+
+// 1. Lưu dữ liệu toàn cục
+sendStorage('app-config', { version: '1.0.0' })
+
+// 2. Lưu dữ liệu cho một node cụ thể
+sendStorage('node-custom-data', { label: 'Header' }, '12:34')
+  `}
+/>

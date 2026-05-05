@@ -1,0 +1,43 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/getFigmaItemById - Lấy phần tử Figma bằng ID'/>
+
+# `getFigmaItemById`
+
+Một tiện ích bất đồng bộ để lấy một node Figma bằng ID của nó và bọc nó trong một thực thể lớp `FigmaItem`. Điều này giúp đơn giản hóa các tương tác tiếp theo với node, chẳng hạn như kiểm tra kiểu, quản lý lựa chọn hoặc xuất dữ liệu.
+
+**Tham số:**
+- `id: string` — Định danh (ID) của node Figma.
+
+**Trả về:**
+`Promise<FigmaItem | undefined>` — Một thực thể `FigmaItem` bọc node, hoặc `undefined` nếu không tìm thấy node.
+
+## Các kiểu dữ liệu
+
+### FigmaItem
+
+Một lớp bọc cho các node Figma cung cấp các phương thức cấp cao để:
+- Kiểm tra kiểu node (`isFrame()`, `isText()`, v.v.).
+- Truy cập các node cha và con.
+- Xuất dữ liệu sang nhiều định dạng khác nhau.
+- Quản lý lựa chọn và tiêu điểm khung nhìn (viewport).
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { getFigmaItemById } from '@dxtmisha/figma-code'
+
+async function highlightFrame(frameId: string) {
+  const item = await getFigmaItemById(frameId)
+
+  if (item && item.isFrame()) {
+    item.toSelection()
+    console.log('Đã chọn frame:', item.getName())
+  } else {
+    console.log('Không tìm thấy frame hoặc node không phải là frame')
+  }
+}
+  `}
+/>
