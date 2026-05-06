@@ -8,20 +8,37 @@ Cơ chế gửi tin nhắn là mắt xích trung tâm trong kiến trúc của c
 
 Thư viện đơn giản hóa quy trình này bằng cách cung cấp các messenger tiêu chuẩn hóa và định tuyến tự động.
 
+## Khởi tạo và Bảo mật
+
+Các plugin Figma hoạt động trong môi trường có thể có nhiều plugin cùng hoạt động. Để ngăn chặn xung đột tin nhắn và đảm bảo UI của bạn chỉ xử lý dữ liệu từ plugin cụ thể của mình, thư viện sử dụng hệ thống `FigmaPostCode`.
+
+Cả **Backend** và **Giao diện** phải được khởi tạo với cùng một mã định danh duy nhất (thường là `id` từ `manifest.json` của bạn) trước khi sử dụng messenger.
+
+```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
+
+// Phải được gọi ở cả hai phía (Code và UI)
+FigmaPostCode.set(manifest.id)
+```
+
 ## Backend (Backend / plugin/code.ts)
 
 Về phía mã, lớp `FigmaPluginMessenger` được sử dụng để đăng ký các sự kiện và gửi dữ liệu đến UI.
 
 ```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
 import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
+import manifest from '../manifest.json'
 
+// 1. Khởi tạo định danh
+FigmaPostCode.set(manifest.id)
+
+// 2. Làm việc với messenger
 const messenger = FigmaPluginMessenger.getInstance()
 
-// Đăng ký một yêu cầu từ UI
 messenger.add('my-action', (data) => {
   console.log('Dữ liệu đã nhận:', data)
-  
-  // Gửi phản hồi lại cho UI
   messenger.post('my-action', { status: 'success' })
 })
 ```
@@ -31,15 +48,20 @@ messenger.add('my-action', (data) => {
 Trong giao diện, lớp gương `FigmaUiMessenger` được sử dụng để tương tác với backend.
 
 ```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
 import { FigmaUiMessenger } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
 
+// 1. Khởi tạo định danh (cùng ID với backend)
+FigmaPostCode.set(manifest.id)
+
+// 2. Làm việc với messenger
 const messenger = FigmaUiMessenger.getInstance()
 
-// Gửi yêu cầu đến plugin
 messenger.post('my-action', { payload: 'hello' })
 
-// Đăng ký nhận phản hồi
 messenger.add('my-action', (result) => {
   console.log('Kết quả:', result)
 })
 ```
+

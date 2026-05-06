@@ -8,20 +8,37 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Библиотека упрощает этот процесс, предоставляя стандартизированные мессенджеры и автоматическую маршрутизацию.
 
+## Инициализация и безопасность
+
+Плагины Figma работают в среде, где одновременно могут быть активны несколько плагинов. Чтобы предотвратить конфликты сообщений и гарантировать, что ваш UI обрабатывает данные только от вашего конкретного плагина, библиотека использует систему `FigmaPostCode`.
+
+Обе стороны (**Бэкенд** и **Интерфейс**) должны быть инициализированы одним и тем же уникальным идентификатором (обычно это `id` из вашего `manifest.json`) перед использованием мессенджеров.
+
+```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
+
+// Необходимо вызвать на обеих сторонах (Code и UI)
+FigmaPostCode.set(manifest.id)
+```
+
 ## Бэкенд (Backend / plugin/code.ts)
 
 На стороне кода используется класс `FigmaPluginMessenger` для подписки на события и отправки данных в UI.
 
 ```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
 import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
+import manifest from '../manifest.json'
 
+// 1. Инициализация идентификации
+FigmaPostCode.set(manifest.id)
+
+// 2. Работа с мессенджером
 const messenger = FigmaPluginMessenger.getInstance()
 
-// Подписка на запрос из UI
 messenger.add('my-action', (data) => {
   console.log('Данные получены:', data)
-  
-  // Отправка ответа обратно в UI
   messenger.post('my-action', { status: 'success' })
 })
 ```
@@ -31,15 +48,20 @@ messenger.add('my-action', (data) => {
 В интерфейсе используется зеркальный класс `FigmaUiMessenger` для взаимодействия с бэкендом.
 
 ```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
 import { FigmaUiMessenger } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
 
+// 1. Инициализация идентификации (тот же ID, что и в бэкенде)
+FigmaPostCode.set(manifest.id)
+
+// 2. Работа с мессенджером
 const messenger = FigmaUiMessenger.getInstance()
 
-// Отправка запроса в плагин
 messenger.post('my-action', { payload: 'hello' })
 
-// Подписка на ответ
 messenger.add('my-action', (result) => {
   console.log('Результат:', result)
 })
 ```
+

@@ -110,13 +110,13 @@ var x = (e) => `figma:client-storage:${e}`, S = (t) => e.getInstance(x(t)), C = 
 	}));
 }, w = !1;
 function T(e) {
-	console.log("fetchFrameSelection"), O();
+	O();
 	let t = D();
 	t.addCallback(e), t.isLoading() || (t.preparation(), c.getInstance().post(p));
 }
 var E = () => "figma:frame-selection:get", D = () => e.getInstance(E()), O = () => {
-	w || (console.log("initSelection"), w = !0, c.getInstance().add(p, (e) => {
-		console.log("data", e), D().run(e);
+	w || (w = !0, c.getInstance().add(p, (e) => {
+		D().run(e);
 	}));
 }, k, A = !1;
 function j(e) {

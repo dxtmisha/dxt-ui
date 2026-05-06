@@ -12,11 +12,12 @@ export class PluginStyle {
    * Constructor
    * @param code file content / содержимое файла
    * @param data plugin data / данные плагина
+   * @param namespace namespace for styles in the SCSS `@use` rule / пространство имен для стилей в правиле SCSS `@use`
    */
-
   constructor(
     protected readonly code: PluginCode,
-    protected readonly data: PluginData
+    protected readonly data: PluginData,
+    protected readonly namespace: string = 'ui'
   ) {
   }
 
@@ -86,7 +87,7 @@ export class PluginStyle {
    */
   protected importDesign(): this {
     const importPath = `${this.data.getPackageName()}/ui-properties`
-    const code: string = `@use '${importPath}' as *;`
+    const code: string = `@use '${importPath}' as ${this.namespace};`
 
     this.code.addStartIfNone(code, importPath)
 
@@ -134,6 +135,7 @@ export class PluginStyle {
   protected makeProperties(): this {
     const properties: Record<string, string> = this.data.getStyleModification()
     const reg = this.getModificationRef()
+    const namespace = this.namespace === '*' ? '' : `${this.namespace}.`
 
     if (this.code.has(reg, 'im')) {
       this.code.replace(
@@ -145,7 +147,7 @@ export class PluginStyle {
           end: string
         ) => {
           const data = value.trim()
-          return `@include ${properties?.[name.trim()]}(${data.match(/[()]/) ? `#{${data}}` : data})${end}`
+          return `@include ${namespace}${properties?.[name.trim()]}(${data.match(/[()]/) ? `#{${data}}` : data})${end}`
         }
       )
     }

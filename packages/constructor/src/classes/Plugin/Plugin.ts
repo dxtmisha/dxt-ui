@@ -153,7 +153,11 @@ export class Plugin {
     code: PluginCode
   ): this {
     if (this.isStyles()) {
-      new PluginStyle(code, this.data).make()
+      new PluginStyle(
+        code,
+        this.data,
+        this.options.styleNamespace
+      ).make()
     }
 
     return this

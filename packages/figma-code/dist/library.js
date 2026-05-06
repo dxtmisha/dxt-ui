@@ -455,7 +455,8 @@ async function I(e) {
 //#endregion
 //#region src/functions/setupFrameSelection.ts
 function L() {
-	w.getInstance().add(f, ({ id: e }) => {
+	let e = w.getInstance();
+	M(), e.add(f, ({ id: e }) => {
 		I(e).then();
 	});
 }
@@ -476,4 +477,4 @@ function R() {
 	});
 }
 //#endregion
-export { b as FigmaClientStorage, C as FigmaFrame, A as FigmaFramesSelected, S as FigmaItem, w as FigmaPluginMessenger, O as FigmaStorage, y as FigmaStorageData, j as FigmaTopLevelFrames, E as getFigmaItemById, D as getFigmaItemByIdOrRoot, M as makeFigmaFrameSelection, P as makeFigmaTexts, F as setupClientStorage, L as setupFrameSelectionByMessage, R as setupStorage, I as toFrameSelection };
+export { b as FigmaClientStorage, C as FigmaFrame, A as FigmaFramesSelected, S as FigmaItem, w as FigmaPluginMessenger, O as FigmaStorage, y as FigmaStorageData, j as FigmaTopLevelFrames, E as getFigmaItemById, D as getFigmaItemByIdOrRoot, M as makeFigmaFrameSelection, P as makeFigmaTexts, F as setupClientStorage, L as setupFrameSelection, R as setupStorage, I as toFrameSelection };

@@ -1,6 +1,12 @@
 /**
- * Sets up the selection by message.
+ * Sets up bidirectional frame selection management.
  *
- * Устанавливает выборку по сообщению.
+ * 1. Activates automatic selection tracking (Backend -> UI).
+ * 2. Sets up a listener for programmatic selection requests (UI -> Backend).
+ *
+ * Настраивает двустороннее управление выделением фреймов.
+ *
+ * 1. Активирует автоматическое отслеживание выделения (Backend -> UI).
+ * 2. Устанавливает слушатель для запросов программного выделения (UI -> Backend).
  */
-export declare function setupFrameSelectionByMessage(): void;
+export declare function setupFrameSelection(): void;

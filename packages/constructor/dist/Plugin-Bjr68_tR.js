@@ -125,8 +125,8 @@ var i = class {
 		return `import { ${e.name} } from'${this.getPath(e)}';`;
 	}
 }, u = class {
-	constructor(e, t) {
-		this.code = e, this.data = t;
+	constructor(e, t, n = "ui") {
+		this.code = e, this.data = t, this.namespace = n;
 	}
 	make() {
 		return this.is() && this.importDesign().makeColors().makeVars().makeProperties(), this;
@@ -145,7 +145,7 @@ var i = class {
 		return RegExp(`(?<=^\\s*)(${Object.keys(e).join("|")}):([^;\r\n]+)(;*)${this.getPropertiesNone()}`, "igm");
 	}
 	importDesign() {
-		let e = `${this.data.getPackageName()}/ui-properties`, t = `@use '${e}' as *;`;
+		let e = `${this.data.getPackageName()}/ui-properties`, t = `@use '${e}' as ${this.namespace};`;
 		return this.code.addStartIfNone(t, e), this;
 	}
 	makeColors() {
@@ -157,10 +157,10 @@ var i = class {
 		return this.code.has(e) && this.code.replace(e, `${this.data.getDesign()}-$1`), this;
 	}
 	makeProperties() {
-		let e = this.data.getStyleModification(), t = this.getModificationRef();
-		return this.code.has(t, "im") && this.code.replace(t, (t, n, r, i) => {
-			let a = r.trim();
-			return `@include ${e == null ? void 0 : e[n.trim()]}(${a.match(/[()]/) ? `#{${a}}` : a})${i}`;
+		let e = this.data.getStyleModification(), t = this.getModificationRef(), n = this.namespace === "*" ? "" : `${this.namespace}.`;
+		return this.code.has(t, "im") && this.code.replace(t, (t, r, i, a) => {
+			let o = i.trim();
+			return `@include ${n}${e == null ? void 0 : e[r.trim()]}(${o.match(/[()]/) ? `#{${o}}` : o})${a}`;
 		}), this;
 	}
 }, d = class {
@@ -198,7 +198,7 @@ var i = class {
 		return this.isComponents() && new l(e, this.data).make(), this;
 	}
 	initStyles(e) {
-		return this.isStyles() && new u(e, this.data).make(), this;
+		return this.isStyles() && new u(e, this.data, this.options.styleNamespace).make(), this;
 	}
 };
 //#endregion

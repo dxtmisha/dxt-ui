@@ -1,3 +1,5 @@
+// export:none
+
 import { AiAbstract } from '@dxtmisha/scripts/ai'
 import type { UiFigmaMessageTexts } from '../types/figmaTypes'
 import { FIGMA_IMAGE_TYPE } from '../config'

@@ -8,20 +8,37 @@ The messaging mechanism is the central link in the architecture of Figma plugins
 
 The library simplifies this process by providing standardized messengers and automatic routing.
 
+## Initialization and Security
+
+Figma plugins operate in an environment where multiple plugins can be active simultaneously. To prevent message conflicts and ensure that your UI only processes data from your specific plugin, the library uses the `FigmaPostCode` system.
+
+Both the **Backend** and the **Interface** must be initialized with the same unique identifier (typically the `id` from your `manifest.json`) before using the messengers.
+
+```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
+
+// Must be called on both sides (Code and UI)
+FigmaPostCode.set(manifest.id)
+```
+
 ## Backend (Backend / plugin/code.ts)
 
 On the code side, the `FigmaPluginMessenger` class is used to subscribe to events and send data to the UI.
 
 ```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
 import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
+import manifest from '../manifest.json'
 
+// 1. Initialize identification
+FigmaPostCode.set(manifest.id)
+
+// 2. Work with the messenger
 const messenger = FigmaPluginMessenger.getInstance()
 
-// Subscribing to a request from the UI
 messenger.add('my-action', (data) => {
   console.log('Data received:', data)
-  
-  // Sending a response back to the UI
   messenger.post('my-action', { status: 'success' })
 })
 ```
@@ -31,15 +48,20 @@ messenger.add('my-action', (data) => {
 In the interface, the mirror class `FigmaUiMessenger` is used for interaction with the backend.
 
 ```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
 import { FigmaUiMessenger } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
 
+// 1. Initialize identification (same ID as backend)
+FigmaPostCode.set(manifest.id)
+
+// 2. Work with the messenger
 const messenger = FigmaUiMessenger.getInstance()
 
-// Sending a request to the plugin
 messenger.post('my-action', { payload: 'hello' })
 
-// Subscribing to the response
 messenger.add('my-action', (result) => {
   console.log('Result:', result)
 })
 ```
+

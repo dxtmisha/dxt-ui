@@ -1,5 +1,4 @@
 // Classes
-// export * from './classes/FigmaAiText'
 export * from './classes/FigmaClientStorage'
 export * from './classes/FigmaFrame'
 export * from './classes/FigmaFramesSelected'

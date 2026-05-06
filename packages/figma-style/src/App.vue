@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
-import { watchEffect } from 'vue'
-
-const { selection } = useFigmaFrameSelection()
-
-watchEffect(() => {
-  console.log(selection.value)
-})
+import UiFigmaStyleSelectionList from './components/Selection/UiFigmaStyleSelectionList.vue'
 </script>
 
 <template>
-  <div>@dxtmisha/figma-style</div>
-  <D1Section>
-    <D1Block label="Preview">
-    </D1Block>
-  </D1Section>
+  <D1Container>
+    <div class="ui-figma-style">
+      <UiFigmaStyleSelectionList/>
+    </div>
+  </D1Container>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+@use '@dxtmisha/d1/ui-properties' as ui;
+
+.ui-figma-style {
+  @include ui.paddingX(ui.v('?sys.spacing.x'));
+}
+</style>

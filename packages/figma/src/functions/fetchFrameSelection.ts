@@ -15,7 +15,6 @@ let isInit: boolean = false
 export function fetchFrameSelection(
   callback: (value: UiFigmaFramesList) => void
 ) {
-  console.log('fetchFrameSelection')
   initSelection()
 
   /** Storage callback / Колбэк хранилища */
@@ -58,7 +57,6 @@ const initSelection = () => {
   if (isInit) {
     return
   }
-  console.log('initSelection')
   isInit = true
 
   /** The messenger instance for bidirectional communication / Экземпляр мессенджера для двусторонней связи */
@@ -66,7 +64,6 @@ const initSelection = () => {
 
   messenger
     .add(UI_FIGMA_FRAME_GET_SELECTION, (data: UiFigmaFramesList) => {
-      console.log('data', data)
       getStorageCallback()
         .run(data)
     })

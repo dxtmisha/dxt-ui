@@ -8,12 +8,14 @@ import { PluginCode } from './PluginCode';
 export declare class PluginStyle {
     protected readonly code: PluginCode;
     protected readonly data: PluginData;
+    protected readonly namespace: string;
     /**
      * Constructor
      * @param code file content / содержимое файла
      * @param data plugin data / данные плагина
+     * @param namespace namespace for styles in the SCSS `@use` rule / пространство имен для стилей в правиле SCSS `@use`
      */
-    constructor(code: PluginCode, data: PluginData);
+    constructor(code: PluginCode, data: PluginData, namespace?: string);
     /**
      * Initialization of the transformation of all style properties.
      *

@@ -12,9 +12,11 @@ export type PluginComponentList = Record<string, PluginComponentItem>;
 export type PluginComponentImports = PluginComponentItem[];
 /** Configuration options for the plugin/ Опции конфигурации для плагина */
 export type PluginOptions = {
-    /** Whether to include styles/ Включать ли стили */
+    /** Whether to include styles / Включать ли стили */
     style?: boolean;
-    /** Whether to include components/ Включать ли компоненты */
+    /** Namespace for styles in the SCSS `@use` rule / Пространство имен для стилей в правиле SCSS `@use` */
+    styleNamespace?: string;
+    /** Whether to include components / Включать ли компоненты */
     component?: boolean;
     /** Additional Vite plugin options/ Дополнительные опции плагина Vite */
     viteOptions?: VitePlugin;
