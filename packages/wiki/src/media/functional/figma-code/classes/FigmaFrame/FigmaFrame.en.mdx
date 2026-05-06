@@ -42,6 +42,8 @@ Methods for retrieving specific types of elements from the frame.
 Methods for structural analysis and data extraction.
 
 - `getMainFrames()` — Returns top-level frames or sections from the root.
+- `getItemsInfo(): Promise<UiFigmaFramesList>` — Returns detailed info (name, ID, image) for all items in the frame.
+- `getMainItemsInfo(): Promise<UiFigmaFramesList>` — Returns detailed info (name, ID, image) for all main items.
 - `getTexts(): UiFigmaItemText[]` — Returns an array of unique text items found within the frame.
 
 ### Actions
@@ -59,6 +61,15 @@ A union type of Figma node objects (SceneNode, FrameNode, TextNode, etc.) that s
 Structure for representing aggregated text data.
 - `id: string[]` — List of node identifiers with identical text content.
 - `text: string` — The actual text string.
+
+#### `UiFigmaFramesItem`
+Represents a simplified frame element for the UI.
+- `name: string` — The name of the frame.
+- `id: string` — The unique identifier of the element.
+- `image: Uint8Array | string` — The image of the frame (optional).
+
+#### `UiFigmaFramesList`
+A list of `UiFigmaFramesItem` objects.
 
 #### `UiFigmaMessageTexts`
 The object structure used when sending text tracking data to the UI.

@@ -1,0 +1,34 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/fetchFrameSelection - Lấy vùng chọn hiện tại'/>
+
+# `fetchFrameSelection`
+
+Một tiện ích để truy xuất và quan sát danh sách các phần tử hiện đang được người dùng chọn trong Figma. Nó cung cấp thông tin chi tiết về vùng chọn hiện tại, bao gồm tên, ID và ảnh chụp màn hình.
+
+**Tham số:**
+- `callback: (value: UiFigmaFramesList) => void` — Một hàm được gọi bất cứ khi nào vùng chọn được cập nhật.
+
+**Trả về:**
+`void`
+
+## Ví dụ sử dụng
+
+```typescript
+import { fetchFrameSelection } from '@dxtmisha/figma'
+
+fetchFrameSelection((frames) => {
+  console.log('Vùng chọn hiện tại đã được cập nhật:', frames)
+})
+```
+
+## Các kiểu dữ liệu
+
+#### `UiFigmaFramesItem`
+Đại diện cho một phần tử frame được đơn giản hóa cho UI.
+- `name: string` — Tên của frame.
+- `id: string` — Định danh duy nhất của phần tử.
+- `image: Uint8Array | string` — Hình ảnh của frame (tùy chọn).
+
+#### `UiFigmaFramesList`
+Một danh sách các đối tượng `UiFigmaFramesItem`.

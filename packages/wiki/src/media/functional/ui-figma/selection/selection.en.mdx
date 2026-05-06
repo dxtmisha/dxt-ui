@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI Figma/# Frame Selection'/>
+
+# Working with Selection
+
+The selection system provides a connection between the Figma canvas and the plugin interface. It allows the application to react to user actions in the editor and manage focus programmatically.
+
+## Backend (Backend / plugin/code.ts)
+
+On the plugin's code side, it is necessary to initialize synchronization mechanisms and, if needed, use functions for programmatic focus.
+
+#### Initialization
+Call one of the functions depending on the required level of control:
+
+- **`setupFrameSelection()`** — Recommended. Sets up bidirectional communication (tracking + programmatic selection from the UI).
+- **`makeFigmaFrameSelection()`** — Sets up only tracking of changes on the Figma canvas (Backend -> UI).
+
+```typescript
+import { setupFrameSelection } from '@dxtmisha/figma-code'
+
+// Called once during plugin startup
+setupFrameSelection()
+```
+
+#### Programmatic Management
+If you need to select an object and focus the camera on it directly from the backend code:
+
+```typescript
+import { toFrameSelection } from '@dxtmisha/figma-code'
+
+await toFrameSelection('12:34')
+```
+
+## Interface (UI / Iframe)
+
+Tools for retrieving current selection data and commanding changes from the plugin interface.
+
+#### Reactive Usage (Vue)
+The most convenient way is through the `useFigmaFrameSelection` composable.
+
+```typescript
+import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
+
+const { 
+  selection,    // List of selected frames (ComputedRef)
+  setSelection, // Method to change selection: setSelection(id)
+  loading       // Loading state
+} = useFigmaFrameSelection()
+```
+
+#### Direct Control (JavaScript)
+If you are not using Vue, you can send a command or manually subscribe to changes:
+
+```typescript
+import { sendFrameSelection, fetchFrameSelection } from '@dxtmisha/figma'
+
+// Change selection
+sendFrameSelection('12:34')
+
+// Subscribe to changes manually
+fetchFrameSelection((selection) => {
+  console.log('Current selection:', selection)
+})
+```

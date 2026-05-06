@@ -1,5 +1,5 @@
 import { StorageCallback as e, random as t } from "@dxtmisha/functional-basic";
-//#region \0@oxc-project+runtime@0.123.0/helpers/typeof.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/typeof.js
 function n(e) {
 	"@babel/helpers - typeof";
 	return n = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
@@ -9,7 +9,7 @@ function n(e) {
 	}, n(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.123.0/helpers/toPrimitive.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/toPrimitive.js
 function r(e, t) {
 	if (n(e) != "object" || !e) return e;
 	var r = e[Symbol.toPrimitive];
@@ -21,13 +21,13 @@ function r(e, t) {
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.123.0/helpers/toPropertyKey.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/toPropertyKey.js
 function i(e) {
 	var t = r(e, "string");
 	return n(t) == "symbol" ? t : t + "";
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.123.0/helpers/defineProperty.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/defineProperty.js
 function a(e, t, n) {
 	return (t = i(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
@@ -95,81 +95,91 @@ var s = class {
 			return this.onMessage((t = e.data) == null ? void 0 : t.pluginMessage);
 		});
 	}
-}, l, u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add", p = "ui-figma-frame-set-selection", m = "ui-figma-client-storage-get", h = "ui-figma-client-storage-set", g = "ui-figma-storage-get", _ = "ui-figma-storage-set", v = !1;
-function y(e, t, n, r = !0) {
-	S();
-	let i = x(e);
-	i.addCallback(t, r), i.isLoading() || (i.preparation(), c.getInstance().post(m, {
+}, l, u = "ui-figma-frames-list", d = "ui-figma-frames-selected", f = "ui-figma-frames-selected-add", p = "ui-figma-frame-get-selection", m = "ui-figma-frame-set-selection", h = "ui-figma-client-storage-get", g = "ui-figma-client-storage-set", _ = "ui-figma-storage-get", v = "ui-figma-storage-set", y = !1;
+function b(e, t, n, r = !0) {
+	C();
+	let i = S(e);
+	i.addCallback(t, r), i.isLoading() || (i.preparation(), c.getInstance().post(h, {
 		name: e,
 		defaultValue: n
 	}));
 }
-var b = (e) => `figma:client-storage:${e}`, x = (t) => e.getInstance(b(t)), S = () => {
-	v || (v = !0, c.getInstance().add(m, (e) => {
-		x(e.name).run(e.value);
+var x = (e) => `figma:client-storage:${e}`, S = (t) => e.getInstance(x(t)), C = () => {
+	y || (y = !0, c.getInstance().add(h, (e) => {
+		S(e.name).run(e.value);
 	}));
-}, C, w = !1;
+}, w = !1;
 function T(e) {
-	if (C) {
-		e(C);
+	console.log("fetchFrameSelection"), O();
+	let t = D();
+	t.addCallback(e), t.isLoading() || (t.preparation(), c.getInstance().post(p));
+}
+var E = () => "figma:frame-selection:get", D = () => e.getInstance(E()), O = () => {
+	w || (console.log("initSelection"), w = !0, c.getInstance().add(p, (e) => {
+		console.log("data", e), D().run(e);
+	}));
+}, k, A = !1;
+function j(e) {
+	if (k) {
+		e(k);
 		return;
 	}
-	if (w) {
-		setTimeout(() => T(e), 160);
+	if (A) {
+		setTimeout(() => j(e), 160);
 		return;
 	}
-	w = !0, c.getInstance().add(d, (t) => {
-		C = t, w = !1, e(C);
+	A = !0, c.getInstance().add(d, (t) => {
+		k = t, A = !1, e(k);
 	}).post(d);
 }
 //#endregion
 //#region src/functions/fetchStorage.ts
-var E = !1;
-function D(e, t, n, r, i = !0) {
-	A();
-	let a = k(e, n);
-	a.addCallback(t, i), a.isLoading() || (a.preparation(), c.getInstance().post(g, {
+var M = !1;
+function N(e, t, n, r, i = !0) {
+	I();
+	let a = F(e, n);
+	a.addCallback(t, i), a.isLoading() || (a.preparation(), c.getInstance().post(_, {
 		name: e,
 		id: n,
 		defaultValue: r
 	}));
 }
-var O = (e, t) => `figma:storage:${t ? `${e}:${t}` : e}`, k = (t, n) => e.getInstance(O(t, n)), A = () => {
-	E || (E = !0, c.getInstance().add(g, (e) => {
-		k(e.name, e.id).run(e.value);
+var P = (e, t) => `figma:storage:${t ? `${e}:${t}` : e}`, F = (t, n) => e.getInstance(P(t, n)), I = () => {
+	M || (M = !0, c.getInstance().add(_, (e) => {
+		F(e.name, e.id).run(e.value);
 	}));
-}, j, M = !1;
-function N(e) {
-	if (j) {
-		e(j);
+}, L, R = !1;
+function z(e) {
+	if (L) {
+		e(L);
 		return;
 	}
-	if (M) {
-		setTimeout(() => N(e), 160);
+	if (R) {
+		setTimeout(() => z(e), 160);
 		return;
 	}
-	M = !0;
+	R = !0;
 	let t = c.getInstance(), n = (r) => {
-		j = r, j.length > 0 && (e(j), t.remove(u, n), M = !1);
+		L = r, L.length > 0 && (e(L), t.remove(u, n), R = !1);
 	};
 	t.add(u, n).post(u);
 }
 //#endregion
 //#region src/functions/sendClientStorage.ts
-function P(e, t) {
-	c.getInstance().post(h, {
+function B(e, t) {
+	c.getInstance().post(g, {
 		name: e,
 		value: t
 	});
 }
 //#endregion
 //#region src/functions/sendFrameSelection.ts
-function F(e) {
-	c.getInstance().post(p, { id: e });
+function V(e) {
+	c.getInstance().post(m, { id: e });
 }
 //#endregion
 //#region src/functions/sendFramesSelected.ts
-function I(e, t) {
+function H(e, t) {
 	c.getInstance().post(f, {
 		id: e,
 		selected: t
@@ -177,12 +187,12 @@ function I(e, t) {
 }
 //#endregion
 //#region src/functions/sendStorage.ts
-function L(e, t, n) {
-	c.getInstance().post(_, {
+function U(e, t, n) {
+	c.getInstance().post(v, {
 		name: e,
 		value: t,
 		id: n
 	});
 }
 //#endregion
-export { s as FigmaPostAbstract, o as FigmaPostCode, c as FigmaUiMessenger, m as UI_FIGMA_CLIENT_STORAGE_GET, h as UI_FIGMA_CLIENT_STORAGE_SET, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as UI_FIGMA_FRAME_SET_SELECTION, g as UI_FIGMA_STORAGE_GET, _ as UI_FIGMA_STORAGE_SET, y as fetchClientStorage, T as fetchFramesSelected, D as fetchStorage, N as fetchTopLevelFrames, P as sendClientStorage, F as sendFrameSelection, I as sendFramesSelected, L as sendStorage };
+export { s as FigmaPostAbstract, o as FigmaPostCode, c as FigmaUiMessenger, h as UI_FIGMA_CLIENT_STORAGE_GET, g as UI_FIGMA_CLIENT_STORAGE_SET, u as UI_FIGMA_FRAMES_POST_NAME, f as UI_FIGMA_FRAMES_SELECTED_ADD_NAME, d as UI_FIGMA_FRAMES_SELECTED_POST_NAME, p as UI_FIGMA_FRAME_GET_SELECTION, m as UI_FIGMA_FRAME_SET_SELECTION, _ as UI_FIGMA_STORAGE_GET, v as UI_FIGMA_STORAGE_SET, b as fetchClientStorage, T as fetchFrameSelection, j as fetchFramesSelected, N as fetchStorage, z as fetchTopLevelFrames, B as sendClientStorage, V as sendFrameSelection, H as sendFramesSelected, U as sendStorage };

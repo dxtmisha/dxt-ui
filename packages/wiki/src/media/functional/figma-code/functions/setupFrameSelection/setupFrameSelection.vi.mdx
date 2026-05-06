@@ -1,27 +1,22 @@
 import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/figma-code/Functions/setupFrameSelectionByMessage - Thiết lập các trình xử lý chọn frame'/>
+<Meta title='@dxtmisha/vi/figma-code/Functions/setupFrameSelection - Thiết lập vùng chọn hai chiều'/>
 
-# `setupFrameSelectionByMessage`
+# `setupFrameSelection`
 
-Một tiện ích để thiết lập trình xử lý tin nhắn cho phép giao diện người dùng (UI) yêu cầu chọn một frame cụ thể trong Figma. Nó đóng vai trò là cầu nối giữa `sendFrameSelection` của UI và `toFrameSelection` của plugin.
+Thiết lập quản lý vùng chọn frame hai chiều giữa backend Figma và UI của plugin. Hàm duy nhất này xử lý cả việc tự động theo dõi những gì người dùng hiện đang xem và chọn các phần tử theo chương trình từ giao diện.
 
-**Tham số:**
-Không có.
+1.  **Theo dõi vùng chọn** — Tự động gọi `makeFigmaFrameSelection()`, bắt đầu quan sát các thay đổi vùng chọn của người dùng trong Figma và gửi dữ liệu chi tiết (tên, ID, ảnh chụp màn hình) đến UI.
+2.  **Điều khiển từ xa** — Đăng ký trình lắng nghe cho tin nhắn `UI_FIGMA_FRAME_SET_SELECTION`. Khi UI gửi tin nhắn này kèm theo ID, backend sẽ tìm đối tượng, chọn nó và thu phóng viewport để tập trung vào nó.
 
 **Trả về:**
 `void`
 
 ## Ví dụ
 
-<Source
-  language='typescript'
-  code={`
-import { setupFrameSelectionByMessage } from '@dxtmisha/figma-code'
+```typescript
+import { setupFrameSelection } from '@dxtmisha/figma-code'
 
-// Khởi tạo trong phần chính của plugin (thường là code.ts)
-setupFrameSelectionByMessage()
-
-// Bây giờ UI có thể gửi tin nhắn để thay đổi lựa chọn trong tài liệu.
-  `}
-/>
+// Gọi hàm này trong quá trình khởi tạo backend của plugin
+setupFrameSelection()
+```

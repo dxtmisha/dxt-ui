@@ -5,6 +5,7 @@ export * from './classes/FigmaUiMessenger'
 
 // Functions
 export * from './functions/fetchClientStorage'
+export * from './functions/fetchFrameSelection'
 export * from './functions/fetchFramesSelected'
 export * from './functions/fetchStorage'
 export * from './functions/fetchTopLevelFrames'

@@ -36,6 +36,12 @@ export const UI_FIGMA_FRAMES_SELECTED_POST_NAME = 'ui-figma-frames-selected'
 export const UI_FIGMA_FRAMES_SELECTED_ADD_NAME = 'ui-figma-frames-selected-add'
 
 /**
+ * Message name for getting the selection of frames/
+ * Имя сообщения для получения выборки фреймов
+ */
+export const UI_FIGMA_FRAME_GET_SELECTION = 'ui-figma-frame-get-selection'
+
+/**
  * Message name for setting the selection of frames/
  * Имя сообщения для установки выборки фреймов
  */

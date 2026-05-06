@@ -42,6 +42,8 @@ const selectionAnalyzer = new FigmaFrame(figma.currentPage, true)
 Методы для структурного анализа и извлечения данных.
 
 - `getMainFrames()` — Возвращает фреймы или секции верхнего уровня из корня.
+- `getItemsInfo(): Promise<UiFigmaFramesList>` — Возвращает подробную информацию (имя, ID, изображение) для всех элементов во фрейме.
+- `getMainItemsInfo(): Promise<UiFigmaFramesList>` — Возвращает подробную информацию (имя, ID, изображение) для всех основных элементов.
 - `getTexts(): UiFigmaItemText[]` — Возвращает массив уникальных текстовых элементов, найденных внутри фрейма.
 
 ### Действия
@@ -59,6 +61,15 @@ const selectionAnalyzer = new FigmaFrame(figma.currentPage, true)
 Структура для представления сгруппированных текстовых данных.
 - `id: string[]` — Список идентификаторов узлов с одинаковым текстом.
 - `text: string` — Содержимое текстового поля.
+
+#### `UiFigmaFramesItem`
+Представляет упрощенный элемент фрейма для пользовательского интерфейса.
+- `name: string` — Название фрейма.
+- `id: string` — Уникальный идентификатор элемента.
+- `image: Uint8Array | string` — Изображение фрейма (опционально).
+
+#### `UiFigmaFramesList`
+Список объектов типа `UiFigmaFramesItem`.
 
 #### `UiFigmaMessageTexts`
 Объект, передаваемый при отправке данных о текстах в UI.

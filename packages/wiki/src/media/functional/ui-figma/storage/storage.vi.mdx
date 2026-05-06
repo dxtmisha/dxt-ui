@@ -1,73 +1,53 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI Figma/# Làm việc với bộ nhớ'/>
+<Meta title='@dxtmisha/vi/# UI Figma/# Lưu trữ dữ liệu'/>
 
 # Làm việc với bộ nhớ (Storage)
 
-Figma cung cấp hai cơ chế chính để lưu dữ liệu: bộ nhớ người dùng cục bộ và bộ nhớ tài liệu chung. Thư viện cung cấp các lớp bọc định kiểu cho cả hai phương pháp, mang lại khả năng truy cập và đồng bộ hóa thuận tiện.
+Figma cung cấp hai cơ chế chính để lưu dữ liệu: bộ nhớ người dùng cục bộ và bộ nhớ tài liệu dùng chung. Thư viện cung cấp các trình bao bọc (wrapper) được định kiểu cho cả hai phương pháp, giúp truy cập và đồng bộ hóa thuận tiện.
 
-### Các loại bộ nhớ
+## Backend (Backend / plugin/code.ts)
 
-**Document Storage (Shared)** — Dữ liệu gắn với tài liệu hoặc một node. Nó được lưu bên trong tệp `.fig` và tất cả người dùng của tệp đều có thể truy cập được.
+Về phía mã của plugin, cần phải khởi tạo các trình lắng nghe tin nhắn để đồng bộ hóa dữ liệu với giao diện.
 
-**Client Storage (Private)** — Dữ liệu cục bộ của một người dùng cụ thể. Nó được lưu trên máy tính của người dùng và chỉ người dùng hiện tại mới có thể truy cập được.
-
-### Thiết lập kết nối (Setup)
-
-Để các bộ nhớ hoạt động chính xác khi kết hợp (Code `<->` UI), các trình xử lý tin nhắn phải được khởi tạo ở phía plugin:
-
+### Khởi tạo
 ```typescript
-// plugin/code.ts
 import { setupStorage, setupClientStorage } from '@dxtmisha/figma-code'
 
-// Kích hoạt các trình lắng nghe cho cả hai loại bộ nhớ
+// Kích hoạt trình lắng nghe cho cả hai loại bộ nhớ
 setupStorage()
 setupClientStorage()
 ```
 
-### Bộ nhớ tài liệu chung (FigmaStorage)
+### Sử dụng trực tiếp
+Bạn có thể làm việc với dữ liệu bộ nhớ trực tiếp trong mã backend:
 
-Được sử dụng cho các dữ liệu mà tất cả những người tham gia dự án nên nhìn thấy (ví dụ: cài đặt plugin cho một bố cục cụ thể).
-
-**Ở phía Mã (Backend):**
 ```typescript
-import { FigmaStorage } from '@dxtmisha/figma-code'
+import { FigmaStorage, FigmaClientStorage } from '@dxtmisha/figma-code'
 
-// Cài đặt toàn cục của tài liệu
+// Bộ nhớ tài liệu dùng chung
 const storage = FigmaStorage.getInstance<string>('project-theme')
-const theme = storage.get('light') // Truy xuất với giá trị mặc định
-storage.set('dark') // Lưu trữ
-```
+storage.set('dark')
 
-**Ở phía UI (Vue):**
-```typescript
-import { useFigmaStorage } from '@dxtmisha/figma-ref'
-
-const { item: theme, loading } = useFigmaStorage('project-theme', 'light')
-
-// Các thay đổi sẽ tự động được đồng bộ hóa với tài liệu
-theme.value = 'dark'
-```
-
-### Bộ nhớ người dùng cá nhân (FigmaClientStorage)
-
-Lý tưởng cho các cài đặt cá nhân, mã thông báo xác thực hoặc lịch sử hành động.
-
-**Ở phía Mã (Backend):**
-```typescript
-import { FigmaClientStorage } from '@dxtmisha/figma-code'
-
+// Bộ nhớ người dùng cá nhân
 const client = FigmaClientStorage.getInstance<boolean>('show-onboarding')
-const isSeen = await client.get() // Truy xuất bất đồng bộ
-await client.set(true) // Lưu trữ bất đồng bộ
+await client.set(true)
 ```
 
-**Ở phía UI (Vue):**
+## Giao diện (UI / Iframe)
+
+Trong giao diện plugin, dữ liệu có thể truy cập được thông qua các hook phản hồi tự động đồng bộ hóa với backend.
+
+### Sử dụng phản hồi (Vue)
 ```typescript
-import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+import { useFigmaStorage, useFigmaClientStorage } from '@dxtmisha/figma-ref'
 
-const { item: isSeen, loading } = useFigmaClientStorage('show-onboarding', false)
+// Đồng bộ hóa với tài liệu
+const { item: theme } = useFigmaStorage('project-theme', 'light')
 
-// Đồng bộ hóa diễn ra tự động khi .value thay đổi
-isSeen.value = true
+// Đồng bộ hóa với cài đặt cá nhân của người dùng
+const { item: isSeen } = useFigmaClientStorage('show-onboarding', false)
+
+// Khi .value thay đổi, dữ liệu sẽ tự động được gửi đến Figma
+theme.value = 'dark'
 ```

@@ -12,6 +12,7 @@ export * from './classes/FigmaTopLevelFrames'
 // Functions
 export * from './functions/getFigmaItemById'
 export * from './functions/getFigmaItemByIdOrRoot'
+export * from './functions/makeFigmaFrameSelection'
 export * from './functions/makeFigmaTexts'
 export * from './functions/setupClientStorage'
 export * from './functions/setupFrameSelection'

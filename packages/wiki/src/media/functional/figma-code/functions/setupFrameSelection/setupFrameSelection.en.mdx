@@ -1,27 +1,22 @@
 import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/figma-code/Functions/setupFrameSelectionByMessage - Setup frame selection handlers'/>
+<Meta title='@dxtmisha/en/figma-code/Functions/setupFrameSelection - Setup bidirectional selection'/>
 
-# `setupFrameSelectionByMessage`
+# `setupFrameSelection`
 
-A utility for setting up a message handler that allows the UI to request the selection of a specific frame in Figma. It acts as a bridge between the UI's `sendFrameSelection` and the plugin's `toFrameSelection`.
+Sets up bidirectional frame selection management between the Figma backend and the plugin UI. This single function handles both automatic tracking of what the user is currently looking at and programmatic selection from the interface.
 
-**Parameters:**
-None.
+1.  **Selection Tracking** — Automatically calls `makeFigmaFrameSelection()`, which starts observing user selection changes in Figma and sends detailed data (names, IDs, screenshots) to the UI.
+2.  **Remote Control** — Registers a listener for the `UI_FIGMA_FRAME_SET_SELECTION` message. When the UI sends this message with an ID, the backend finds the object, selects it, and zooms the viewport to focus on it.
 
 **Returns:**
 `void`
 
 ## Examples
 
-<Source
-  language='typescript'
-  code={`
-import { setupFrameSelectionByMessage } from '@dxtmisha/figma-code'
+```typescript
+import { setupFrameSelection } from '@dxtmisha/figma-code'
 
-// Initialization in the main part of the plugin (typically code.ts)
-setupFrameSelectionByMessage()
-
-// Now the UI can send messages to change the document selection.
-  `}
-/>
+// Call this during plugin backend initialization
+setupFrameSelection()
+```

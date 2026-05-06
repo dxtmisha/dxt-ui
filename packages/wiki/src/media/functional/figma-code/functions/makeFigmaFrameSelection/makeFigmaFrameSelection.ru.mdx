@@ -1,0 +1,21 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/makeFigmaFrameSelection - Отслеживание выделения'/>
+
+# `makeFigmaFrameSelection`
+
+Активирует глобальный слушатель события `selectionchange` в Figma. Используется для синхронизации состояния выбранных элементов между песочницей Figma (Backend) и интерфейсом плагина (Frontend).
+
+Функция предназначена для использования на стороне кода (Backend) плагина Figma. Она автоматически подписывается на изменения выделения пользователя. При каждом изменении данные о выбранных элементах (включая имена, идентификаторы и скриншоты в формате JPG) собираются и отправляются в пользовательский интерфейс (UI) через `FigmaPluginMessenger`. Это избавляет от необходимости вручную настраивать слушатели событий и обрабатывать экспорт изображений для каждого выбранного объекта.
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+```typescript
+import { makeFigmaFrameSelection } from '@dxtmisha/figma-code'
+
+// Инициализация в коде плагина (Backend)
+makeFigmaFrameSelection()
+```

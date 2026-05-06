@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-ref/Composables/useFigmaFrameSelection - Наблюдение за выделением фреймов (полная инфо)'/>
+
+# `useFigmaFrameSelection`
+
+Composable для получения и наблюдения за подробным списком фреймов, выделенных в данный момент в Figma. В отличие от `useFigmaUiSelected` (который управляет только ID в интерфейсе), этот composable предоставляет полную информацию о выделении, включая имена и скриншоты, подписываясь на события `selectionchange` в Figma.
+
+**Возвращает:**
+- `selection: ComputedRef<UiFigmaFramesList>` — вычисляемая ссылка на список выделенных фреймов (имена, ID и скриншоты).
+- `setSelection(id: string): void` — метод для программной смены выделения в Figma на конкретный элемент.
+- `loading: ComputedRef<boolean>` — реактивный флаг, указывающий на процесс получения данных о выделении.
+
+## Пример использования
+
+```typescript
+import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
+
+const { selection, setSelection, loading } = useFigmaFrameSelection()
+
+// 'selection' обновляется каждый раз, когда пользователь меняет выделение в Figma
+// 'setSelection' можно использовать для программного изменения выделения:
+setSelection('12:34')
+```
+
+## Типы данных
+
+#### `UiFigmaFramesItem`
+Представляет упрощенный элемент фрейма для пользовательского интерфейса.
+- `name: string` — Название фрейма.
+- `id: string` — Уникальный идентификатор элемента.
+- `image: Uint8Array | string` — Изображение фрейма (опционально).
+
+#### `UiFigmaFramesList`
+Список объектов типа `UiFigmaFramesItem`.

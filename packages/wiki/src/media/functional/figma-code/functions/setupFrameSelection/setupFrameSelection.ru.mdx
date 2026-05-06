@@ -1,27 +1,22 @@
 import { Meta, Source } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/figma-code/Functions/setupFrameSelectionByMessage - Настройка обработчиков выделения фреймов'/>
+<Meta title='@dxtmisha/ru/figma-code/Functions/setupFrameSelection - Настройка двустороннего выделения'/>
 
-# `setupFrameSelectionByMessage`
+# `setupFrameSelection`
 
-Утилита для настройки обработчика сообщений, позволяющего интерфейсу (UI) запрашивать выделение конкретного фрейма в Figma. Она служит связующим звеном между функцией `sendFrameSelection` в UI и функцией `toFrameSelection` в плагине.
+Настраивает двустороннее управление выделением фреймов между бэкендом Figma и интерфейсом плагина. Эта одна функция отвечает как за автоматическое отслеживание текущего выделения пользователя, так и за программное выделение объектов из интерфейса.
 
-**Параметры:**
-Отсутствуют.
+1.  **Отслеживание выделения** — Автоматически вызывает `makeFigmaFrameSelection()`, которая начинает наблюдать за изменениями выделения в Figma и отправляет подробные данные (имена, ID, скриншоты) в UI.
+2.  **Дистанционное управление** — Регистрирует слушатель сообщения `UI_FIGMA_FRAME_SET_SELECTION`. Когда UI отправляет это сообщение с ID объекта, бэкенд находит его, выделяет и фокусирует камеру на нем.
 
 **Возвращает:**
 `void`
 
 ## Примеры
 
-<Source
-  language='typescript'
-  code={`
-import { setupFrameSelectionByMessage } from '@dxtmisha/figma-code'
+```typescript
+import { setupFrameSelection } from '@dxtmisha/figma-code'
 
-// Инициализация в основной части плагина (обычно в code.ts)
-setupFrameSelectionByMessage()
-
-// Теперь UI может отправлять сообщения для изменения выделения в документе.
-  `}
-/>
+// Вызовите это при инициализации бэкенда плагина
+setupFrameSelection()
+```

@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI Figma/# Quản lý vùng chọn'/>
+
+# Quản lý vùng chọn
+
+Hệ thống vùng chọn cung cấp sự kết nối giữa canvas Figma và giao diện plugin. Nó cho phép ứng dụng phản ứng với các hành động của người dùng trong trình chỉnh sửa và quản lý tiêu điểm theo chương trình.
+
+## Backend (Backend / plugin/code.ts)
+
+Về phía mã của plugin, cần phải khởi tạo các cơ chế đồng bộ hóa và, nếu cần, sử dụng các hàm để lấy nét theo chương trình.
+
+#### Khởi tạo
+Gọi một trong các hàm tùy thuộc vào mức độ kiểm soát yêu cầu:
+
+- **`setupFrameSelection()`** — Được khuyến nghị. Thiết lập giao tiếp hai chiều (theo dõi + chọn theo chương trình từ UI).
+- **`makeFigmaFrameSelection()`** — Chỉ thiết lập theo dõi các thay đổi trên canvas Figma (Backend -> UI).
+
+```typescript
+import { setupFrameSelection } from '@dxtmisha/figma-code'
+
+// Được gọi một lần khi khởi động plugin
+setupFrameSelection()
+```
+
+#### Quản lý theo chương trình
+Nếu bạn cần chọn một đối tượng và lấy nét camera vào đối tượng đó trực tiếp từ mã backend:
+
+```typescript
+import { toFrameSelection } from '@dxtmisha/figma-code'
+
+await toFrameSelection('12:34')
+```
+
+## Giao diện (UI / Iframe)
+
+Các công cụ để lấy dữ liệu vùng chọn hiện tại và ra lệnh thay đổi từ giao diện plugin.
+
+#### Sử dụng phản hồi (Vue)
+Cách thuận tiện nhất là thông qua `useFigmaFrameSelection` composable.
+
+```typescript
+import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
+
+const { 
+  selection,    // Danh sách các frame được chọn (ComputedRef)
+  setSelection, // Phương thức thay đổi vùng chọn: setSelection(id)
+  loading       // Trạng thái tải
+} = useFigmaFrameSelection()
+```
+
+#### Điều khiển trực tiếp (JavaScript)
+Nếu bạn không sử dụng Vue, bạn có thể gửi lệnh hoặc đăng ký thay đổi thủ công:
+
+```typescript
+import { sendFrameSelection, fetchFrameSelection } from '@dxtmisha/figma'
+
+// Thay đổi vùng chọn
+sendFrameSelection('12:34')
+
+// Đăng ký thay đổi thủ công
+fetchFrameSelection((selection) => {
+  console.log('Vùng chọn hiện tại:', selection)
+})
+```

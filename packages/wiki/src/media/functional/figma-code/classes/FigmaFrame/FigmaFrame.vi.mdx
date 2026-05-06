@@ -42,6 +42,8 @@ Các phương thức để truy xuất các loại phần tử cụ thể từ f
 Các phương thức để phân tích cấu trúc và trích xuất dữ liệu.
 
 - `getMainFrames()` — Trả về các frame hoặc section cấp cao nhất từ gốc.
+- `getItemsInfo(): Promise<UiFigmaFramesList>` — Trả về thông tin chi tiết (tên, ID, hình ảnh) cho tất cả các mục trong frame.
+- `getMainItemsInfo(): Promise<UiFigmaFramesList>` — Trả về thông tin chi tiết (tên, ID, hình ảnh) cho tất cả các mục chính.
 - `getTexts(): UiFigmaItemText[]` — Trả về một mảng các mục văn bản duy nhất được tìm thấy bên trong frame.
 
 ### Hành động (Actions)
@@ -60,8 +62,17 @@ Cấu trúc để biểu diễn dữ liệu văn bản được tổng hợp.
 - `id: string[]` — Danh sách các định danh node có nội dung văn bản giống hệt nhau.
 - `text: string` — Chuỗi văn bản thực tế.
 
+#### `UiFigmaFramesItem`
+Đại diện cho một phần tử frame được đơn giản hóa cho UI.
+- `name: string` — Tên của frame.
+- `id: string` — Định danh duy nhất của phần tử.
+- `image: Uint8Array | string` — Hình ảnh của frame (tùy chọn).
+
+#### `UiFigmaFramesList`
+Một danh sách các đối tượng `UiFigmaFramesItem`.
+
 #### `UiFigmaMessageTexts`
 Cấu trúc đối tượng được sử dụng khi gửi dữ liệu theo dõi văn bản đến UI.
 - `frame: FigmaFrame` — Thực thể của trình phân tích frame.
 - `texts: UiFigmaItemText[]` — Danh sách các mục văn bản được trích xuất.
-- `screenshot: Uint8Array[]` — Mảng các ảnh chụp màn hình dưới dạng mảng byte.
+- `screenshot: Uint8Array[]` — mảng các ảnh chụp màn hình dưới dạng mảng byte.

@@ -1,35 +1,37 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI Figma/# Làm việc với frame'/>
+<Meta title='@dxtmisha/vi/# UI Figma/# Làm việc với Frame'/>
 
-# Làm việc với frame
+# Làm việc với Frame
 
-Thư viện cung cấp các công cụ để quản lý danh sách các frame trên trang Figma hiện tại và theo dõi các phần tử được người dùng chọn. Điều này cho phép bạn xây dựng các giao diện điều hướng phức tạp và các hệ thống lựa chọn hàng loạt bên trong plugin của mình.
+Thư viện cung cấp các công cụ để quản lý danh sách các frame trên trang Figma hiện tại và theo dõi các phần tử được chọn. Điều này cho phép bạn xây dựng các giao diện điều hướng phức tạp và hệ thống chọn hàng loạt bên trong plugin của mình.
 
-### Thiết lập kết nối (Setup)
+## Backend (Backend / plugin/code.ts)
 
-Để đồng bộ hóa dữ liệu frame tự động, các trình xử lý tương ứng phải được khởi tạo ở phía plugin:
+Để đồng bộ hóa dữ liệu frame tự động, các trình xử lý tương ứng phải được khởi tạo ở phía plugin.
 
+### Khởi tạo
 ```typescript
-// plugin/code.ts
 import { FigmaTopLevelFrames, FigmaFramesSelected } from '@dxtmisha/figma-code'
 
-// Kích hoạt các trình lắng nghe cho danh sách frame và quản lý lựa chọn
+// Kích hoạt trình lắng nghe cho danh sách frame và quản lý vùng chọn
 FigmaTopLevelFrames.send()
 FigmaFramesSelected.send()
 ```
 
-### 1. Frame cấp cao nhất (Top-Level Frames)
+## Giao diện (UI / Iframe)
 
-Cho phép bạn truy xuất danh sách tất cả các frame và section nằm ở gốc của trang hiện tại, bao gồm tên, ID và ảnh chụp màn hình để xem trước trực quan.
+Dữ liệu về tất cả các frame trên trang và các công cụ để quản lý danh sách vùng chọn nội bộ của plugin có sẵn trong giao diện.
 
-**Trong giao diện Vue:**
+### Danh sách Frame của trang (Vue)
+Cho phép bạn lấy danh sách tất cả các frame và section tại thư mục gốc của trang hiện tại kèm theo ảnh chụp màn hình.
+
 ```typescript
 import { useFigmaUiFrames } from '@dxtmisha/figma-ref'
 
 const { frames, loading } = useFigmaUiFrames()
 
-/* frames.value chứa một danh sách các đối tượng:
+/* frames.value chứa danh sách các đối tượng:
   {
     id: string,
     name: string,
@@ -38,27 +40,19 @@ const { frames, loading } = useFigmaUiFrames()
 */
 ```
 
-### 2. Các frame được chọn (Selected Frames)
+### Các phần tử được chọn trong Plugin (Vue)
+Một cơ chế để theo dõi và sửa đổi danh sách các phần tử "được chọn" trong giao diện của plugin. Trạng thái này được duy trì trên toàn cầu ở cấp độ phiên plugin.
 
-Một cơ chế để theo dõi và sửa đổi danh sách các phần tử "được chọn" trong giao diện của plugin. Trạng thái này được lưu giữ toàn cục ở cấp độ phiên làm việc của plugin.
-
-**Trong giao diện Vue:**
 ```typescript
-import { useFigmaUiSelected } from '@dxtmisha/vi/figma-ref'
+import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
 
 const { 
-  selected,       // Danh sách các ID frame được chọn
+  selected,       // Danh sách ID các frame được chọn
   isSelected,     // Hàm kiểm tra: isSelected(id)
   toggleSelected, // Hàm chuyển đổi: toggleSelected(id, boolean)
-  loading 
 } = useFigmaUiSelected()
 
 // Ví dụ sử dụng:
 const active = isSelected('1:123')
 const toggle = () => toggleSelected('1:123', !active.value)
 ```
-
-### Tóm tắt
-- **Tự động hóa**: Tất cả dữ liệu được tự động chuyển giữa Sandbox và UI thông qua hệ thống Messenger.
-- **Trực quan hóa**: Danh sách frame đi kèm với các ảnh chụp màn hình có sẵn, cho phép tạo ra các bộ chọn trực quan trực quan.
-- **Đồng bộ hóa**: Trạng thái lựa chọn được đồng bộ hóa trên tất cả các component sử dụng `useFigmaUiSelected`.

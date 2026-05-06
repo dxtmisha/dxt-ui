@@ -1,0 +1,21 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/makeFigmaFrameSelection - Theo dõi vùng chọn'/>
+
+# `makeFigmaFrameSelection`
+
+Kích hoạt một trình lắng nghe toàn cục cho sự kiện `selectionchange` trong Figma. Được sử dụng để đồng bộ hóa trạng thái của các phần tử được chọn giữa sandbox Figma (Backend) và giao diện của plugin (Frontend).
+
+Hàm này được thiết kế để sử dụng trong mã code (Backend) của plugin Figma. Nó tự động đăng ký các thay đổi về vùng chọn của người dùng. Mỗi khi vùng chọn thay đổi, dữ liệu về các phần tử được chọn (bao gồm tên, ID và ảnh chụp màn hình JPG) sẽ được thu thập và gửi đến Giao diện Người dùng (UI) thông qua `FigmaPluginMessenger`. Điều này giúp loại bỏ việc phải thiết lập các trình lắng nghe sự kiện thủ công và xử lý xuất hình ảnh cho từng đối tượng được chọn.
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+```typescript
+import { makeFigmaFrameSelection } from '@dxtmisha/figma-code'
+
+// Khởi tạo trong mã plugin (Backend)
+makeFigmaFrameSelection()
+```

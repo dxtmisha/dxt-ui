@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-ref/Composables/useFigmaFrameSelection - Quan sát lựa chọn frame (thông tin đầy đủ)'/>
+
+# `useFigmaFrameSelection`
+
+Một composable để truy xuất và quan sát danh sách chi tiết các frame hiện đang được chọn trong Figma. Không giống như `useFigmaUiSelected` (chỉ quản lý ID trong giao diện), composable này cung cấp thông tin đầy đủ về vùng chọn, bao gồm tên và ảnh chụp màn hình, bằng cách lắng nghe các sự kiện `selectionchange` trong Figma.
+
+**Trả về:**
+- `selection: ComputedRef<UiFigmaFramesList>` — Một tham chiếu được tính toán đến danh sách các frame được chọn (tên, ID và ảnh chụp màn hình).
+- `setSelection(id: string): void` — Một phương thức để thay đổi vùng chọn trong Figma sang một phần tử cụ thể.
+- `loading: ComputedRef<boolean>` — Một cờ phản hồi cho biết liệu dữ liệu vùng chọn có đang được lấy hay không.
+
+## Ví dụ sử dụng
+
+```typescript
+import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
+
+const { selection, setSelection, loading } = useFigmaFrameSelection()
+
+// 'selection' cập nhật bất cứ khi nào người dùng thay đổi vùng chọn của họ trong Figma
+// 'setSelection' có thể được sử dụng để thay đổi vùng chọn theo chương trình:
+setSelection('12:34')
+```
+
+## Các kiểu dữ liệu
+
+#### `UiFigmaFramesItem`
+Đại diện cho một phần tử frame được đơn giản hóa cho UI.
+- `name: string` — Tên của frame.
+- `id: string` — Định danh duy nhất của phần tử.
+- `image: Uint8Array | string` — Hình ảnh của frame (tùy chọn).
+
+#### `UiFigmaFramesList`
+Một danh sách các đối tượng `UiFigmaFramesItem`.

@@ -1,0 +1,21 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/makeFigmaFrameSelection - Tracking selection'/>
+
+# `makeFigmaFrameSelection`
+
+Activates a global listener for the `selectionchange` event in Figma. It is used to synchronize the state of selected elements between the Figma sandbox (Backend) and the plugin's UI (Frontend).
+
+This function is designed to be used in the Figma plugin's code (Backend). It automatically subscribes to user selection changes. Each time the selection changes, data about the selected elements (including names, IDs, and JPG screenshots) are collected and sent to the User Interface (UI) via the `FigmaPluginMessenger`. This eliminates the need to manually set up event listeners and handle image exports for each selected object.
+
+**Returns:**
+`void`
+
+## Examples
+
+```typescript
+import { makeFigmaFrameSelection } from '@dxtmisha/figma-code'
+
+// Initialization in the plugin code (Backend)
+makeFigmaFrameSelection()
+```

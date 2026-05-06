@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaFrameSelection - Observing frame selection (full info)'/>
+
+# `useFigmaFrameSelection`
+
+A composable for retrieving and observing the detailed list of frames currently selected in Figma. Unlike `useFigmaUiSelected` (which only manages IDs in the UI), this composable provides full information about the selection, including names and screenshots, by listening to Figma's `selectionchange` events.
+
+**Returns:**
+- `selection: ComputedRef<UiFigmaFramesList>` — A computed reference to the list of selected frames (names, IDs, and screenshots).
+- `setSelection(id: string): void` — A method to programmatically change the selection in Figma to a specific element.
+- `loading: ComputedRef<boolean>` — A reactive flag indicating if the selection data is being fetched.
+
+## Usage Example
+
+```typescript
+import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
+
+const { selection, setSelection, loading } = useFigmaFrameSelection()
+
+// 'selection' updates whenever the user changes their selection in Figma
+// 'setSelection' can be used to programmatically change the selection:
+setSelection('12:34')
+```
+
+## Data Types
+
+#### `UiFigmaFramesItem`
+Represents a simplified frame element for the UI.
+- `name: string` — The name of the frame.
+- `id: string` — The unique identifier of the element.
+- `image: Uint8Array | string` — The image of the frame (optional).
+
+#### `UiFigmaFramesList`
+A list of `UiFigmaFramesItem` objects.

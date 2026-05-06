@@ -1,0 +1,34 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/fetchFrameSelection - Получение текущего выделения'/>
+
+# `fetchFrameSelection`
+
+Утилита для получения и отслеживания списка элементов, выделенных пользователем в Figma. Обеспечивает получение детальной информации о текущем выделении (имена, ID и скриншоты).
+
+**Параметры:**
+- `callback: (value: UiFigmaFramesList) => void` — функция, которая будет вызываться при каждом обновлении выделения.
+
+**Возвращает:**
+`void`
+
+## Пример использования
+
+```typescript
+import { fetchFrameSelection } from '@dxtmisha/figma'
+
+fetchFrameSelection((frames) => {
+  console.log('Текущее выделение обновлено:', frames)
+})
+```
+
+## Типы данных
+
+#### `UiFigmaFramesItem`
+Представляет упрощенный элемент фрейма для пользовательского интерфейса.
+- `name: string` — Название фрейма.
+- `id: string` — Уникальный идентификатор элемента.
+- `image: Uint8Array | string` — Изображение фрейма (опционально).
+
+#### `UiFigmaFramesList`
+Список объектов типа `UiFigmaFramesItem`.

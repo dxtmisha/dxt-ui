@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI Figma/# Работа с выделением'/>
+
+# Работа с выделением
+
+Система выделения обеспечивает связь между холстом Figma и интерфейсом плагина. Она позволяет приложению реагировать на действия пользователя в редакторе и управлять фокусом программно.
+
+## Бэкенд (Backend / plugin/code.ts)
+
+На стороне кода плагина необходимо инициализировать механизмы синхронизации и, при необходимости, использовать функции для программного фокуса.
+
+#### Инициализация
+Вызовите одну из функций в зависимости от требуемого уровня контроля:
+
+- **`setupFrameSelection()`** — Рекомендуется. Настраивает двустороннюю связь (отслеживание + программное выделение из UI).
+- **`makeFigmaFrameSelection()`** — Настраивает только отслеживание изменений на холсте Figma (Backend -> UI).
+
+```typescript
+import { setupFrameSelection } from '@dxtmisha/figma-code'
+
+// Вызывается один раз при старте плагина
+setupFrameSelection()
+```
+
+#### Программное управление
+Если нужно выделить объект и сфокусировать на нем камеру прямо из кода бэкенда:
+
+```typescript
+import { toFrameSelection } from '@dxtmisha/figma-code'
+
+await toFrameSelection('12:34')
+```
+
+## Интерфейс (UI / Iframe)
+
+Инструменты для получения данных о текущем выделении и подачи команд на его изменение из интерфейса плагина.
+
+#### Реактивное использование (Vue)
+Самый удобный способ работы через композитор `useFigmaFrameSelection`.
+
+```typescript
+import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
+
+const { 
+  selection,    // Список выделенных фреймов (ComputedRef)
+  setSelection, // Метод для смены выделения: setSelection(id)
+  loading       // Состояние загрузки
+} = useFigmaFrameSelection()
+```
+
+#### Прямое управление (JavaScript)
+Если вы не используете Vue, можно отправить команду или вручную подписаться на изменения:
+
+```typescript
+import { sendFrameSelection, fetchFrameSelection } from '@dxtmisha/figma'
+
+// Сменить выделение
+sendFrameSelection('12:34')
+
+// Подписаться на изменения вручную
+fetchFrameSelection((selection) => {
+  console.log('Текущее выделение:', selection)
+})
+```

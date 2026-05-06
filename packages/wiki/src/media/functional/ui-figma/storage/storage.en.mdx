@@ -6,18 +6,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Figma provides two main mechanisms for saving data: local user storage and shared document storage. The library offers typed wrappers for both methods, providing convenient access and synchronization.
 
-### Storage Types
+## Backend (Backend / plugin/code.ts)
 
-**Document Storage (Shared)** — Data bound to the document or a node. It is saved inside the `.fig` file and is accessible to all users of the file.
+On the plugin code side, it is necessary to initialize message listeners to synchronize data with the interface.
 
-**Client Storage (Private)** — Local data of a specific user. It is saved on the user's machine and is only accessible to the current user.
-
-### Connection Setup (Setup)
-
-For storages to work correctly in tandem (Code `<->` UI), message handlers must be initialized on the plugin side:
-
+### Initialization
 ```typescript
-// plugin/code.ts
 import { setupStorage, setupClientStorage } from '@dxtmisha/figma-code'
 
 // Activate listeners for both storage types
@@ -25,49 +19,35 @@ setupStorage()
 setupClientStorage()
 ```
 
-### Shared Document Storage (FigmaStorage)
+### Direct Usage
+You can work with storage data directly in the backend code:
 
-Used for data that should be visible to all project participants (e.g., plugin settings for a specific layout).
-
-**On the Code side (Backend):**
 ```typescript
-import { FigmaStorage } from '@dxtmisha/figma-code'
+import { FigmaStorage, FigmaClientStorage } from '@dxtmisha/figma-code'
 
-// Global document settings
+// Shared document storage
 const storage = FigmaStorage.getInstance<string>('project-theme')
-const theme = storage.get('light') // Retrieval with default value
-storage.set('dark') // Saving
-```
+storage.set('dark')
 
-**On the UI side (Vue):**
-```typescript
-import { useFigmaStorage } from '@dxtmisha/figma-ref'
-
-const { item: theme, loading } = useFigmaStorage('project-theme', 'light')
-
-// Changes are automatically synchronized with the document
-theme.value = 'dark'
-```
-
-### Personal User Storage (FigmaClientStorage)
-
-Ideal for personal settings, authorization tokens, or action history.
-
-**On the Code side (Backend):**
-```typescript
-import { FigmaClientStorage } from '@dxtmisha/figma-code'
-
+// Personal user storage
 const client = FigmaClientStorage.getInstance<boolean>('show-onboarding')
-const isSeen = await client.get() // Asynchronous retrieval
-await client.set(true) // Asynchronous saving
+await client.set(true)
 ```
 
-**On the UI side (Vue):**
+## Interface (UI / Iframe)
+
+In the plugin interface, data is accessible through reactive hooks that automatically synchronize with the backend.
+
+### Reactive Usage (Vue)
 ```typescript
-import { useFigmaClientStorage } from '@dxtmisha/figma-ref'
+import { useFigmaStorage, useFigmaClientStorage } from '@dxtmisha/figma-ref'
 
-const { item: isSeen, loading } = useFigmaClientStorage('show-onboarding', false)
+// Synchronization with the document
+const { item: theme } = useFigmaStorage('project-theme', 'light')
 
-// Synchronization happens automatically when .value changes
-isSeen.value = true
+// Synchronization with personal user settings
+const { item: isSeen } = useFigmaClientStorage('show-onboarding', false)
+
+// When .value changes, data is automatically sent to Figma
+theme.value = 'dark'
 ```

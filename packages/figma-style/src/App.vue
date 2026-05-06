@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { useFigmaFrameSelection } from '@dxtmisha/figma-ref'
+import { watchEffect } from 'vue'
 
+const { selection } = useFigmaFrameSelection()
+
+watchEffect(() => {
+  console.log(selection.value)
+})
 </script>
 
 <template>
