@@ -10,11 +10,19 @@ import { UI_FIGMA_FRAME_GET_SELECTION } from '@dxtmisha/figma'
  * Настраивает слушатель изменений выделения в Figma и отправляет данные о выделении в UI.
  */
 export const makeFigmaFrameSelection = () => {
-  figma.on('selectionchange', async () => {
-    const frame = new FigmaFrame(figma.currentPage, true)
+  figma.on('selectionchange', async () => await sendMessenger())
+  sendMessenger().then()
+}
 
-    FigmaPluginMessenger
-      .getInstance()
-      .post(UI_FIGMA_FRAME_GET_SELECTION, await frame.getMainItemsInfo())
-  })
+/**
+ * Sends information about the current selection to the UI.
+ *
+ * Отправляет информацию о текущем выделении в UI.
+ */
+const sendMessenger = async () => {
+  const frame = new FigmaFrame(figma.currentPage, true)
+
+  FigmaPluginMessenger
+    .getInstance()
+    .post(UI_FIGMA_FRAME_GET_SELECTION, await frame.getMainItemsInfo())
 }

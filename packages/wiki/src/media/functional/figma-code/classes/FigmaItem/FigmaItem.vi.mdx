@@ -29,35 +29,68 @@ if (item.isFrame()) {
 
 ## Các phương thức
 
-### Kiểm tra kiểu (Type Checks)
+### Kiểm tra kiểu (Type Guards)
 
-Các phương thức để xác định kiểu node và trạng thái của nó.
+- `isDocument(): boolean` — Kiểm tra xem node là Document.
+- `isFrame(): boolean` — Kiểm tra xem node là Frame.
+- `isSection(): boolean` — Kiểm tra xem node là Section.
+- `isText(): boolean` — Kiểm tra xem node là Text node.
+- `isTextNoValue(): boolean` — Kiểm tra xem node có nội dung ý nghĩa hay không.
+- `inCurrentPage(): boolean` — Kiểm tra xem node có thuộc trang đang hoạt động hay không.
 
-- `isDocument(): boolean` — Trả về true nếu node là một Tài liệu (Document).
-- `isFrame(): boolean` — Trả về true nếu node là một Frame.
-- `isSection(): boolean` — Trả về true nếu node là một Section.
-- `isText(): boolean` — Trả về true nếu node là một node Văn bản (Text).
-- `isTextNoValue(): boolean` — Trả về true nếu node là một node văn bản có nội dung ý nghĩa.
-- `inCurrentPage(): boolean` — Kiểm tra xem node có thuộc trang hiện đang hoạt động hay không.
-
-### Truy cập dữ liệu (Accessors)
-
-Các phương thức để truy xuất dữ liệu và các node liên quan.
+### Hệ thống cấp bậc và Điều hướng
 
 - `get(): T` — Trả về node Figma gốc.
-- `getId(): string` — Trả về định danh duy nhất của node.
-- `getName(): string` — Trả về tên của node.
-- `getType(): string` — Trả về chuỗi kiểu của node.
-- `getText(): string` — Trả về nội dung văn bản (đối với node văn bản).
+- `getParent(): UiFigmaNode | undefined` — Trả về node cha gốc.
 - `getParentItem(): FigmaItem | undefined` — Trả về node cha được bọc trong `FigmaItem`.
+- `getParentPage(): PageNode | undefined` — Trả về trang cha của node.
 - `getParentPageItem(): FigmaItem | undefined` — Trả về trang cha được bọc trong `FigmaItem`.
+- `getChildren(): UiFigmaNode[]` — Trả về danh sách các node con ở định dạng gốc.
 - `getChildrenItems(): FigmaItem[]` — Trả về tất cả các node con được bọc trong `FigmaItem`.
 
-### Hành động (Actions)
+### Nội dung và Thông tin
 
-Các phương thức để thực hiện các hoạt động trên node.
+- `getId(): string` — Trả về mã định danh duy nhất của node.
+- `getName(): string` — Trả về tên của node.
+- `getType(): string` — Trả về chuỗi kiểu node.
+- `getText(): string` — Trả về nội dung văn bản (chỉ dành cho text node).
+- `getInfo(): Promise<UiFigmaFramesItem>` — Thu thập thông tin cơ bản về node (tên, ID, ảnh chụp màn hình) một cách không đồng bộ.
+- `getCss(): Promise<Record<string, string>>` — Trích xuất các style CSS của node một cách không đồng bộ.
+- `getStyles(): Promise<UiFigmaFrameStylesItem>` — Trích xuất thông tin style mở rộng (CSS, văn bản, JSON) một cách không đồng bộ.
 
-- `exportJpg(): Promise<Uint8Array | string>` — Xuất node dưới dạng hình ảnh JPG.
-- `exportJson(): Promise<Uint8Array | string>` — Xuất dữ liệu của node dưới định dạng JSON.
-- `toSelection(): void` — Chọn node và thu phóng khung nhìn vào nó.
-- `toPageAndSelection(): Promise<void>` — Chuyển sang trang của node và chọn nó.
+### Xuất và Hành động
+
+- `exportJpg(): Promise<Uint8Array>` — Xuất node dưới dạng hình ảnh JPG.
+- `exportJson(): Promise<any>` — Xuất dữ liệu node đầy đủ ở định dạng JSON.
+- `exportJsonCompact(): Promise<UiFigmaFrameStylesData | undefined>` — Xuất dữ liệu node ở định dạng JSON thu gọn.
+- `toSelection(): void` — Chọn node và tập trung khung nhìn vào nó.
+- `toPageAndSelection(): Promise<void>` — Chuyển đến trang của node và chọn nó.
+
+## Các kiểu dữ liệu
+
+#### `UiFigmaFramesItem`
+Thông tin đơn giản hóa về một phần tử để hiển thị trong giao diện.
+- `name: string` — Tên của phần tử trong Figma.
+- `id: string` — Định danh duy nhất của node.
+- `image?: Uint8Array | string` — Ảnh chụp màn hình của phần tử (dữ liệu nhị phân hoặc base64).
+
+#### `UiFigmaFrameStylesItem`
+Thông tin mở rộng về một phần tử, bao gồm style của nó. Kế thừa tất cả các trường từ `UiFigmaFramesItem`.
+- `json?: UiFigmaFrameStylesData` — Cấu trúc dữ liệu node và style dưới định dạng JSON.
+- `text?: string` — Nội dung văn bản (nếu node là một node văn bản).
+- `styles?: Record<string, string>` — Một đối tượng chứa các thuộc tính CSS của chính phần tử đó.
+- `childrenStyles?: Record<string, Record<string, string>>` — Bản đồ các style CSS cho tất cả các phần tử con, được lập chỉ mục theo ID của chúng.
+
+#### `UiFigmaFrameStylesData`
+- `document: UiFigmaFrameStylesJson` — Cây node dưới định dạng nén.
+- `styles: Record<string, any>` — Một từ điển các định nghĩa style của tài liệu.
+
+#### `UiFigmaFrameStylesJson`
+Biểu diễn thu gọn của một node Figma để xuất JSON.
+- `id: string` — Định danh duy nhất của node.
+- `name: string` — Tên node.
+- `type: string` — Kiểu node.
+- `characters?: string` — Văn bản (cho text node).
+- `children?: UiFigmaFrameStylesJson[]` — Danh sách các phần tử con đệ quy.
+- `style?: Record<string, any>` — Các tham số ngoại hình.
+- `styles?: Record<string, any>` — Các style liên quan.

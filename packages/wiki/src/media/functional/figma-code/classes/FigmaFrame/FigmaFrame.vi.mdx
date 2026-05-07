@@ -29,50 +29,166 @@ const selectionAnalyzer = new FigmaFrame(figma.currentPage, true)
 
 ## Các phương thức
 
-### Lọc dữ liệu (Filtering)
+### Trạng thái và Điều hướng
 
-Các phương thức để truy xuất các loại phần tử cụ thể từ frame.
+- `isSelection(): boolean` — Kiểm tra xem trình phân tích có được khởi tạo để làm việc với vùng chọn hiện tại của người dùng hay không.
+- `getMainFrames(): FigmaItem[]` — Trích xuất các frame hoặc section chính từ gốc của ngữ cảnh hiện tại.
 
-- `getItemsFrame()` — Trả về tất cả các node frame lồng nhau.
-- `getItemsSection()` — Trả về tất cả các node section lồng nhau.
-- `getItemsText()` — Trả về tất cả các node văn bản lồng nhau.
+### Lọc và Lựa chọn
 
-### Phân tích (Analysis)
+- `getItemsFrame(): FigmaItem<FrameNode>[]` — Trả về danh sách tất cả các node lồng nhau là frame.
+- `getItemsSection(): FigmaItem<SectionNode>[]` — Trả về danh sách tất cả các node lồng nhau là section.
+- `getItemsText(): FigmaItem<TextNode>[]` — Trả về danh sách tất cả các node văn bản lồng nhau.
 
-Các phương thức để phân tích cấu trúc và trích xuất dữ liệu.
+### Nội dung và Thông tin
 
-- `getMainFrames()` — Trả về các frame hoặc section cấp cao nhất từ gốc.
-- `getItemsInfo(): Promise<UiFigmaFramesList>` — Trả về thông tin chi tiết (tên, ID, hình ảnh) cho tất cả các mục trong frame.
-- `getMainItemsInfo(): Promise<UiFigmaFramesList>` — Trả về thông tin chi tiết (tên, ID, hình ảnh) cho tất cả các mục chính.
-- `getTexts(): UiFigmaItemText[]` — Trả về một mảng các mục văn bản duy nhất được tìm thấy bên trong frame.
+#### `getItemsInfo`
 
-### Hành động (Actions)
+Thu thập thông tin chi tiết (tên, ID, ảnh chụp màn hình) một cách không đồng bộ cho tất cả các mục trong frame.
 
-Các phương thức để thực hiện các hoạt động trên các phần tử của frame.
+**Trả về:** `Promise<UiFigmaFramesList>` — Một promise chứa danh sách thông tin các mục.
 
-- `screenshot(): Promise<Uint8Array[]>` — Xuất tất cả các mục chính dưới dạng hình ảnh JPG.
+```typescript
+const infoList: UiFigmaFramesList = await frame.getItemsInfo()
+/*
+[
+  { id: '1:10', name: 'Button', image: Uint8Array[...] },
+  { id: '1:25', name: 'Card', image: 'data:image/png;base64...' }
+]
+*/
+```
+
+#### `getMainItemsInfo`
+
+Thu thập thông tin chi tiết một cách không đồng bộ chỉ cho các mục chính (cấp cao nhất).
+
+**Trả về:** `Promise<UiFigmaFramesList>` — Một promise chứa danh sách thông tin các mục chính.
+
+```typescript
+const mainInfoList: UiFigmaFramesList = await frame.getMainItemsInfo()
+/*
+[
+  { id: '1:10', name: 'Login Screen', image: Uint8Array[...] }
+]
+*/
+```
+
+#### `getTexts`
+
+Nhóm các node văn bản theo nội dung của chúng, trả về các chuỗi duy nhất và danh sách các ID node tương ứng.
+
+**Trả về:** `UiFigmaItemText[]` — Một mảng các mục văn bản đã được nhóm.
+
+```typescript
+const groupedTexts: UiFigmaItemText[] = frame.getTexts()
+/*
+[
+  { id: ['1:10', '1:15'], text: 'Submit' },
+  { id: ['1:20'], text: 'Cancel' }
+]
+*/
+```
+
+### Phân tích Style
+
+#### `getItemsCss`
+
+Tạo một bản đồ các style CSS cho tất cả các mục trong frame.
+
+**Trả về:** `Promise<UiFigmaFrameStylesCssList>` — Một promise chứa bản đồ style được lập chỉ mục theo ID node.
+
+```typescript
+const cssStyles: UiFigmaFrameStylesCssList = await frame.getItemsCss()
+/*
+{
+  '1:10': { 'color': '#ff0000', 'font-size': '14px' },
+  '1:12': { 'background': '#ffffff', 'padding': '10px' }
+}
+*/
+```
+
+#### `getItemsStyles`
+
+Trích xuất dữ liệu style đầy đủ (cấu trúc JSON của tài liệu, văn bản, CSS) cho tất cả các mục.
+
+**Trả về:** `Promise<UiFigmaFrameStylesList>` — Một promise chứa danh sách dữ liệu style mở rộng.
+
+```typescript
+const stylesList: UiFigmaFrameStylesList = await frame.getItemsStyles()
+/*
+[
+  { 
+    id: '1:10', 
+    name: 'Label', 
+    text: 'Username', 
+    styles: { 'color': '#333' },
+    json: { document: {...}, styles: {...} }
+  }
+]
+*/
+```
+
+#### `getMainItemsStyles`
+
+Trích xuất dữ liệu style đầy đủ chỉ cho các mục chính, bao gồm cả style của các phần tử con của chúng.
+
+**Trả về:** `Promise<UiFigmaFrameStylesList>` — Một promise chứa danh sách dữ liệu style mở rộng cho các mục chính.
+
+```typescript
+const mainStylesList: UiFigmaFrameStylesList = await frame.getMainItemsStyles()
+/*
+[
+  { 
+    id: '1:10', 
+    name: 'Login Form', 
+    childrenStyles: {
+       '1:11': { 'color': '#000' },
+       '1:12': { 'margin-top': '20px' }
+    }
+  }
+]
+*/
+```
+
+### Hành động và Xuất dữ liệu
+
+- `screenshot(): Promise<Uint8Array[]>` — Tạo ảnh chụp màn hình dưới định dạng JPG cho tất cả các mục chính.
 
 ## Các kiểu dữ liệu
 
 #### `UiFigmaNode`
-Một kiểu kết hợp của các đối tượng node Figma (SceneNode, FrameNode, TextNode, v.v.) hỗ trợ các thuộc tính cơ bản và node con.
+Kiểu cơ sở cho các node Figma. Nó đại diện cho một sự kết hợp của các node (`SceneNode | DocumentNode | PageNode | FrameNode`, v.v.) hỗ trợ lồng nhau và các thuộc tính tiêu chuẩn của Figma API.
 
 #### `UiFigmaItemText`
-Cấu trúc để biểu diễn dữ liệu văn bản được tổng hợp.
-- `id: string[]` — Danh sách các định danh node có nội dung văn bản giống hệt nhau.
+Kết quả của việc nhóm các lớp văn bản theo nội dung của chúng.
+- `id: string[]` — Một mảng các định danh node duy nhất có cùng văn bản.
 - `text: string` — Chuỗi văn bản thực tế.
 
-#### `UiFigmaFramesItem`
-Đại diện cho một phần tử frame được đơn giản hóa cho UI.
-- `name: string` — Tên của frame.
-- `id: string` — Định danh duy nhất của phần tử.
-- `image: Uint8Array | string` — Hình ảnh của frame (tùy chọn).
-
-#### `UiFigmaFramesList`
-Một danh sách các đối tượng `UiFigmaFramesItem`.
-
 #### `UiFigmaMessageTexts`
-Cấu trúc đối tượng được sử dụng khi gửi dữ liệu theo dõi văn bản đến UI.
-- `frame: FigmaFrame` — Thực thể của trình phân tích frame.
-- `texts: UiFigmaItemText[]` — Danh sách các mục văn bản được trích xuất.
-- `screenshot: Uint8Array[]` — mảng các ảnh chụp màn hình dưới dạng mảng byte.
+Cấu trúc dữ liệu để truyền kết quả phân tích văn bản.
+- `frame: FigmaFrame` — Một thực thể của lớp trình phân tích.
+- `texts: UiFigmaItemText[]` — Danh sách các mục văn bản được tìm thấy và nhóm lại.
+- `screenshot: Uint8Array[]` — Một mảng các ảnh chụp màn hình cho các phần tử chính.
+
+#### `UiFigmaFramesItem`
+Thông tin đơn giản hóa về một phần tử để hiển thị trong giao diện.
+- `name: string` — Tên của phần tử trong Figma.
+- `id: string` — Định danh duy nhất của node.
+- `image?: Uint8Array | string` — Ảnh chụp màn hình của phần tử (dữ liệu nhị phân hoặc base64).
+
+#### `UiFigmaFrameStylesItem`
+Thông tin mở rộng về một phần tử, bao gồm style của nó. Kế thừa tất cả các trường từ `UiFigmaFramesItem`.
+- `json?: UiFigmaFrameStylesData` — Cấu trúc dữ liệu node và style dưới định dạng JSON.
+- `text?: string` — Nội dung văn bản (nếu node là một node văn bản).
+- `styles?: Record<string, string>` — Một đối tượng chứa các thuộc tính CSS của chính phần tử đó.
+- `childrenStyles?: Record<string, Record<string, string>>` — Bản đồ các style CSS cho tất cả các phần tử con, được lập chỉ mục theo ID của chúng.
+
+#### `UiFigmaFrameStylesData`
+- `document: UiFigmaFrameStylesJson` — Cây node dưới định dạng nén.
+- `styles: Record<string, any>` — Một từ điển các định nghĩa style của tài liệu.
+
+#### `UiFigmaFrameStylesList`
+Một mảng các đối tượng `UiFigmaFrameStylesItem`.
+
+#### `UiFigmaFrameStylesCssList`
+Một đối tượng (`Record<string, Record<string, string>>`) trong đó khóa là ID node và giá trị là tập hợp các style CSS của nó.

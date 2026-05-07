@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/fetchFrameStyles - Fetch frame styles'/>
+
+# `fetchFrameStyles`
+
+A utility for retrieving style information for specified frames from the Figma plugin. It allows access to CSS styles, JSON data, and text content for nodes and their children.
+
+**Parameters:**
+- `callback: (value: UiFigmaFrameStylesMessengerResponse) => void` — The function executed once the style data for the requested frames is received.
+
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { fetchFrameStyles } from '@dxtmisha/figma'
+
+// Fetch styles for frames and log the result
+fetchFrameStyles((response) => {
+  response.forEach(item => {
+    console.log('Frame ID:', item.id)
+    console.log('Style data:', item.data)
+  })
+})
+  `}
+/>
+
+## Types
+
+### UiFigmaFrameStylesMessengerResponse
+An array of `UiFigmaFrameStylesMessengerResponseItem` objects.
+
+### UiFigmaFrameStylesMessengerResponseItem
+- `id: string` — Unique frame identifier.
+- `data: UiFigmaFrameStylesList` — List of style data for the frame.
+
+### UiFigmaFrameStylesItem
+Extends `UiFigmaFramesItem`.
+- `name: string` — Frame name.
+- `id: string` — Unique element identifier.
+- `json?: UiFigmaFrameStylesData` — (Optional) Compact node data in JSON format.
+- `text?: string` — (Optional) Text content (for text nodes).
+- `styles?: UiFigmaFrameStylesCssItem` — (Optional) Map of CSS styles for the element.
+- `childrenStyles?: UiFigmaFrameStylesCssList` — (Optional) Map of CSS styles for children elements.

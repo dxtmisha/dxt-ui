@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import UiFigmaStyleSelectionList from './components/Selection/UiFigmaStyleSelectionList.vue'
+import UiFigmaStyleTools from './components/Tools/UiFigmaStyleTools.vue'
 </script>
 
 <template>
   <D1Container>
-    <div class="ui-figma-style">
+    <D1Page class="ui-figma-style">
       <UiFigmaStyleSelectionList/>
-    </div>
+      <UiFigmaStyleTools/>
+    </D1Page>
   </D1Container>
 </template>
 

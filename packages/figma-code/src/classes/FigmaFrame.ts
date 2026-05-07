@@ -1,7 +1,13 @@
 import { forEach } from '@dxtmisha/functional-basic'
+import type {
+  UiFigmaFramesList,
+  UiFigmaFrameStylesCssList,
+  UiFigmaFrameStylesList
+} from '@dxtmisha/figma'
+
 import { FigmaItem } from './FigmaItem'
+
 import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes'
-import type { UiFigmaFramesList } from '@dxtmisha/figma'
 
 /**
  * Class for working with Figma frames and their elements.
@@ -35,6 +41,7 @@ export class FigmaFrame {
    * Checks if the current context is a selection.
    *
    * Проверяет, является ли текущий контекст выделением.
+   * @returns true if the context is a selection / true, если контекст является выделением
    */
   isSelection(): this is { page: PageNode } {
     return this.selection && 'selection' in this.page
@@ -77,17 +84,33 @@ export class FigmaFrame {
    * @returns promise with frame information list / промис со списком информации о фреймах
    */
   async getItemsInfo(): Promise<UiFigmaFramesList> {
-    const items: UiFigmaFramesList = []
+    return await this.getInfoByItems(this.items)
+  }
+
+  /**
+   * Returns CSS styles for all items.
+   *
+   * Возвращает CSS-стили для всех элементов.
+   * @returns promise with CSS styles list / промис со списком CSS-стилей
+   */
+  async getItemsCss(): Promise<UiFigmaFrameStylesCssList> {
+    const data: UiFigmaFrameStylesCssList = {}
 
     for (const item of this.items) {
-      items.push({
-        name: item.getName(),
-        id: item.getId(),
-        image: await item.exportJpg()
-      })
+      data[item.getId()] = await item.getCss()
     }
 
-    return items
+    return data
+  }
+
+  /**
+   * Returns a list of frames with their styles.
+   *
+   * Возвращает список фреймов с их стилями.
+   * @returns promise with frame styles list / промис со списком стилей фреймов
+   */
+  async getItemsStyles(): Promise<UiFigmaFrameStylesList> {
+    return await this.getStylesByItems(this.items)
   }
 
   /**
@@ -115,17 +138,17 @@ export class FigmaFrame {
    * @returns promise with frame information list / промис со списком информации о фреймах
    */
   async getMainItemsInfo(): Promise<UiFigmaFramesList> {
-    const items: UiFigmaFramesList = []
+    return await this.getInfoByItems(this.mainItem)
+  }
 
-    for (const item of this.mainItem) {
-      items.push({
-        name: item.getName(),
-        id: item.getId(),
-        image: await item.exportJpg()
-      })
-    }
-
-    return items
+  /**
+   * Returns a list of main frames with their styles.
+   *
+   * Возвращает список основных фреймов с их стилями.
+   * @returns promise with frame styles list / промис со списком стилей фреймов
+   */
+  async getMainItemsStyles(): Promise<UiFigmaFrameStylesList> {
+    return await this.getStylesByItems(this.mainItem, true)
   }
 
   /**
@@ -171,6 +194,50 @@ export class FigmaFrame {
     }
 
     return images
+  }
+
+  /**
+   * Returns information about the specified items.
+   *
+   * Возвращает информацию об указанных элементах.
+   * @param items list of items / список элементов
+   * @returns promise with information list / промис со списком информации
+   */
+  protected async getInfoByItems(items: FigmaItem[]): Promise<UiFigmaFramesList> {
+    const data: UiFigmaFramesList = []
+
+    for (const item of items) {
+      data.push(await item.getInfo())
+    }
+
+    return data
+  }
+
+  /**
+   * Returns styles for the specified items.
+   *
+   * Возвращает стили для указанных элементов.
+   * @param items list of items / список элементов
+   * @param subStyle whether to include child styles / нужно ли включать стили дочерних элементов
+   * @returns promise with styles list / промис со списком стилей
+   */
+  protected async getStylesByItems(
+    items: FigmaItem[],
+    subStyle: boolean = false
+  ): Promise<UiFigmaFrameStylesList> {
+    const data: UiFigmaFrameStylesList = []
+
+    for (const item of items) {
+      const styleItem = await item.getStyles()
+
+      if (subStyle) {
+        styleItem.childrenStyles = await (new FigmaFrame(item.get())).getItemsCss()
+      }
+
+      data.push(styleItem)
+    }
+
+    return data
   }
 
   /**
@@ -239,6 +306,7 @@ export class FigmaFrame {
    *
    * Фильтрует элементы по указанному условию.
    * @param callback filter function/ функция фильтрации
+   * @returns filtered list of items / отфильтрованный список элементов
    */
   protected filter<R extends UiFigmaNode>(callback: (
     item: FigmaItem) => boolean

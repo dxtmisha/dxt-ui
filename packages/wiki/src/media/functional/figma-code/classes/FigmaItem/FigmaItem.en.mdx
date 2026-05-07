@@ -29,35 +29,68 @@ if (item.isFrame()) {
 
 ## Methods
 
-### Type Checks
+### Type Guards
 
-Methods for identifying the node type and state.
+- `isDocument(): boolean` — Checks if the node is a Document.
+- `isFrame(): boolean` — Checks if the node is a Frame.
+- `isSection(): boolean` — Checks if the node is a Section.
+- `isText(): boolean` — Checks if the node is a Text node.
+- `isTextNoValue(): boolean` — Checks if the node is a text node with meaningful content.
+- `inCurrentPage(): boolean` — Checks if the node belongs to the current active page.
 
-- `isDocument(): boolean` — Returns true if the node is a Document.
-- `isFrame(): boolean` — Returns true if the node is a Frame.
-- `isSection(): boolean` — Returns true if the node is a Section.
-- `isText(): boolean` — Returns true if the node is a Text node.
-- `isTextNoValue(): boolean` — Returns true if the node is a text node with meaningful content.
-- `inCurrentPage(): boolean` — Checks if the node belongs to the currently active page.
+### Hierarchy and Navigation
 
-### Accessors
-
-Methods for retrieving data and related nodes.
-
-- `get(): T` — Returns the raw Figma node.
-- `getId(): string` — Returns the node's unique identifier.
-- `getName(): string` — Returns the node's name.
-- `getType(): string` — Returns the node's type string.
-- `getText(): string` — Returns the text content (for text nodes).
+- `get(): T` — Returns the original Figma node.
+- `getParent(): UiFigmaNode | undefined` — Returns the original parent node.
 - `getParentItem(): FigmaItem | undefined` — Returns the parent node wrapped in `FigmaItem`.
+- `getParentPage(): PageNode | undefined` — Returns the parent page of the node.
 - `getParentPageItem(): FigmaItem | undefined` — Returns the parent page wrapped in `FigmaItem`.
+- `getChildren(): UiFigmaNode[]` — Returns the list of child nodes in original format.
 - `getChildrenItems(): FigmaItem[]` — Returns all child nodes wrapped in `FigmaItem`.
 
-### Actions
+### Content and Information
 
-Methods for performing operations on the node.
+- `getId(): string` — Returns the unique identifier of the node.
+- `getName(): string` — Returns the name of the node.
+- `getType(): string` — Returns the node type string.
+- `getText(): string` — Returns the text content (for text nodes only).
+- `getInfo(): Promise<UiFigmaFramesItem>` — Asynchronously collects basic node information (name, ID, screenshot).
+- `getCss(): Promise<Record<string, string>>` — Asynchronously extracts CSS styles of the node.
+- `getStyles(): Promise<UiFigmaFrameStylesItem>` — Asynchronously extracts extended style information (CSS, text, JSON).
 
-- `exportJpg(): Promise<Uint8Array | string>` — Exports the node as a JPG image.
-- `exportJson(): Promise<Uint8Array | string>` — Exports the node's data in JSON format.
-- `toSelection(): void` — Selects the node and zooms the viewport into it.
+### Export and Actions
+
+- `exportJpg(): Promise<Uint8Array>` — Exports the node as a JPG image.
+- `exportJson(): Promise<any>` — Exports full node data in JSON format.
+- `exportJsonCompact(): Promise<UiFigmaFrameStylesData | undefined>` — Exports node data in a compact JSON format.
+- `toSelection(): void` — Selects the node and focuses the viewport on it.
 - `toPageAndSelection(): Promise<void>` — Switches to the node's page and selects it.
+
+## Data Types
+
+#### `UiFigmaFramesItem`
+Simplified information about an element for display in the interface.
+- `name: string` — The name of the element in Figma.
+- `id: string` — The unique identifier of the node.
+- `image?: Uint8Array | string` — A screenshot of the element (binary data or base64).
+
+#### `UiFigmaFrameStylesItem`
+Extended information about an element, including its styles. Inherits all fields from `UiFigmaFramesItem`.
+- `json?: UiFigmaFrameStylesData` — Node data and styles structure in JSON format.
+- `text?: string` — Text content (if the node is a text node).
+- `styles?: Record<string, string>` — An object with CSS properties of the element itself.
+- `childrenStyles?: Record<string, Record<string, string>>` — A map of CSS styles for all child elements, indexed by their ID.
+
+#### `UiFigmaFrameStylesData`
+- `document: UiFigmaFrameStylesJson` — Node tree in a compact format.
+- `styles: Record<string, any>` — A dictionary of document style definitions.
+
+#### `UiFigmaFrameStylesJson`
+Compact representation of a Figma node for JSON export.
+- `id: string` — Unique identifier of the node.
+- `name: string` — Name of the node.
+- `type: string` — Type of the node.
+- `characters?: string` — Text (for text nodes).
+- `children?: UiFigmaFrameStylesJson[]` — Recursive list of child elements.
+- `style?: Record<string, any>` — Appearance parameters.
+- `styles?: Record<string, any>` — Associated styles.

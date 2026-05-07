@@ -1,0 +1,40 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/sendFrameStyles - Gửi yêu cầu lấy style của frame'/>
+
+# `sendFrameStyles`
+
+Một tiện ích để gửi yêu cầu đến Figma plugin để lấy thông tin style của các frame được chỉ định.
+
+**Tham số:**
+- `attributes: UiFigmaFrameStylesMessengerAttributes` — Các thuộc tính cho yêu cầu, bao gồm ID của frame và các tùy chọn.
+
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { sendFrameStyles } from '@dxtmisha/figma'
+
+// Yêu cầu style cho một frame cụ thể
+sendFrameStyles({
+  ids: '12:34'
+})
+
+// Yêu cầu style cho nhiều frame bao gồm cả các phần tử con
+sendFrameStyles({
+  ids: ['12:34', '56:78'],
+  children: true
+})
+  `}
+/>
+
+## Các kiểu dữ liệu
+
+### UiFigmaFrameStylesMessengerAttributes
+- `ids: string | string[]` — ID duy nhất của frame hoặc mảng các ID.
+- `children?: boolean` — (Tùy chọn) Có bao gồm style của các phần tử con hay không.

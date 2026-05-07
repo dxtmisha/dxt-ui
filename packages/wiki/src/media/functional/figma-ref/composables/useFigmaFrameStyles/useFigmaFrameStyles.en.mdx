@@ -1,0 +1,33 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-ref/Composables/useFigmaFrameStyles - Managing frame styles'/>
+
+# `useFigmaFrameStyles`
+
+A composable for managing and observing frame styles from Figma.
+
+**Returns:**
+- `styles: ComputedRef<UiFigmaFrameStylesMessengerResponse>` — A reactive list of frame styles.
+- `send(attributes: UiFigmaFrameStylesMessengerAttributes): void` — A method for sending a request to retrieve or update styles for specific nodes.
+
+## Examples
+
+```vue
+<script setup lang="ts">
+import { useFigmaFrameStyles } from '@dxtmisha/figma-ref'
+
+const { styles, send } = useFigmaFrameStyles()
+
+// Requesting styles for specific nodes
+const updateStyles = () => {
+  send({ ids: ['1:10', '1:20'], children: true })
+}
+</script>
+
+<template>
+  <div>
+    <button @click="updateStyles">Update Styles</button>
+    <pre>{{ styles }}</pre>
+  </div>
+</template>
+```

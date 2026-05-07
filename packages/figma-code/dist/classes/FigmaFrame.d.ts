@@ -1,6 +1,6 @@
+import { UiFigmaFramesList, UiFigmaFrameStylesCssList, UiFigmaFrameStylesList } from '@dxtmisha/figma';
 import { FigmaItem } from './FigmaItem';
 import { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes';
-import { UiFigmaFramesList } from '@dxtmisha/figma';
 /**
  * Class for working with Figma frames and their elements.
  *
@@ -27,6 +27,7 @@ export declare class FigmaFrame {
      * Checks if the current context is a selection.
      *
      * Проверяет, является ли текущий контекст выделением.
+     * @returns true if the context is a selection / true, если контекст является выделением
      */
     isSelection(): this is {
         page: PageNode;
@@ -60,6 +61,20 @@ export declare class FigmaFrame {
      */
     getItemsInfo(): Promise<UiFigmaFramesList>;
     /**
+     * Returns CSS styles for all items.
+     *
+     * Возвращает CSS-стили для всех элементов.
+     * @returns promise with CSS styles list / промис со списком CSS-стилей
+     */
+    getItemsCss(): Promise<UiFigmaFrameStylesCssList>;
+    /**
+     * Returns a list of frames with their styles.
+     *
+     * Возвращает список фреймов с их стилями.
+     * @returns promise with frame styles list / промис со списком стилей фреймов
+     */
+    getItemsStyles(): Promise<UiFigmaFrameStylesList>;
+    /**
      * Returns main frames from the root node.
      *
      * Возвращает основные фреймы из корневого узла.
@@ -74,6 +89,13 @@ export declare class FigmaFrame {
      */
     getMainItemsInfo(): Promise<UiFigmaFramesList>;
     /**
+     * Returns a list of main frames with their styles.
+     *
+     * Возвращает список основных фреймов с их стилями.
+     * @returns promise with frame styles list / промис со списком стилей фреймов
+     */
+    getMainItemsStyles(): Promise<UiFigmaFrameStylesList>;
+    /**
      * Returns all text nodes with their IDs grouped by text content.
      *
      * Возвращает все текстовые узлы с их идентификаторами, сгруппированные по текстовому содержимому.
@@ -87,6 +109,23 @@ export declare class FigmaFrame {
      * @returns promise with list of screenshots as Uint8Array / промис со списком скриншотов в формате Uint8Array
      */
     screenshot(): Promise<Uint8Array<ArrayBufferLike>[]>;
+    /**
+     * Returns information about the specified items.
+     *
+     * Возвращает информацию об указанных элементах.
+     * @param items list of items / список элементов
+     * @returns promise with information list / промис со списком информации
+     */
+    protected getInfoByItems(items: FigmaItem[]): Promise<UiFigmaFramesList>;
+    /**
+     * Returns styles for the specified items.
+     *
+     * Возвращает стили для указанных элементов.
+     * @param items list of items / список элементов
+     * @param subStyle whether to include child styles / нужно ли включать стили дочерних элементов
+     * @returns promise with styles list / промис со списком стилей
+     */
+    protected getStylesByItems(items: FigmaItem[], subStyle?: boolean): Promise<UiFigmaFrameStylesList>;
     /**
      * Initializes main items based on selection or entire page.
      *
@@ -114,6 +153,7 @@ export declare class FigmaFrame {
      *
      * Фильтрует элементы по указанному условию.
      * @param callback filter function/ функция фильтрации
+     * @returns filtered list of items / отфильтрованный список элементов
      */
     protected filter<R extends UiFigmaNode>(callback: (item: FigmaItem) => boolean): FigmaItem<R>[];
     /**

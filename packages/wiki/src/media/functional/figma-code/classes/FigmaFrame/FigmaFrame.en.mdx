@@ -29,50 +29,166 @@ const selectionAnalyzer = new FigmaFrame(figma.currentPage, true)
 
 ## Methods
 
-### Filtering
+### State and Navigation
 
-Methods for retrieving specific types of elements from the frame.
+- `isSelection(): boolean` — Checks if the analyzer was initialized to work with the user's current selection.
+- `getMainFrames(): FigmaItem[]` — Extracts the main frames or sections from the root of the current context.
 
-- `getItemsFrame()` — Returns all nested frame nodes.
-- `getItemsSection()` — Returns all nested section nodes.
-- `getItemsText()` — Returns all nested text nodes.
+### Filtering and Selection
 
-### Analysis
+- `getItemsFrame(): FigmaItem<FrameNode>[]` — Returns a list of all nested nodes that are frames.
+- `getItemsSection(): FigmaItem<SectionNode>[]` — Returns a list of all nested nodes that are sections.
+- `getItemsText(): FigmaItem<TextNode>[]` — Returns a list of all nested text nodes.
 
-Methods for structural analysis and data extraction.
+### Content and Information
 
-- `getMainFrames()` — Returns top-level frames or sections from the root.
-- `getItemsInfo(): Promise<UiFigmaFramesList>` — Returns detailed info (name, ID, image) for all items in the frame.
-- `getMainItemsInfo(): Promise<UiFigmaFramesList>` — Returns detailed info (name, ID, image) for all main items.
-- `getTexts(): UiFigmaItemText[]` — Returns an array of unique text items found within the frame.
+#### `getItemsInfo`
 
-### Actions
+Asynchronously collects detailed information (name, ID, screenshot) for all items in the frame.
 
-Methods for performing operations on frame elements.
+**Returns:** `Promise<UiFigmaFramesList>` — A promise with a list of item information.
 
-- `screenshot(): Promise<Uint8Array[]>` — Exports all main items as JPG images.
+```typescript
+const infoList: UiFigmaFramesList = await frame.getItemsInfo()
+/*
+[
+  { id: '1:10', name: 'Button', image: Uint8Array[...] },
+  { id: '1:25', name: 'Card', image: 'data:image/png;base64...' }
+]
+*/
+```
+
+#### `getMainItemsInfo`
+
+Asynchronously collects detailed information only for the main (top-level) elements.
+
+**Returns:** `Promise<UiFigmaFramesList>` — A promise with a list of main item information.
+
+```typescript
+const mainInfoList: UiFigmaFramesList = await frame.getMainItemsInfo()
+/*
+[
+  { id: '1:10', name: 'Login Screen', image: Uint8Array[...] }
+]
+*/
+```
+
+#### `getTexts`
+
+Groups text nodes by their content, returning unique strings and a list of corresponding node IDs.
+
+**Returns:** `UiFigmaItemText[]` — An array of grouped text items.
+
+```typescript
+const groupedTexts: UiFigmaItemText[] = frame.getTexts()
+/*
+[
+  { id: ['1:10', '1:15'], text: 'Submit' },
+  { id: ['1:20'], text: 'Cancel' }
+]
+*/
+```
+
+### Styles Analysis
+
+#### `getItemsCss`
+
+Generates a map of CSS styles for all items in the frame.
+
+**Returns:** `Promise<UiFigmaFrameStylesCssList>` — A promise with a style map indexed by node ID.
+
+```typescript
+const cssStyles: UiFigmaFrameStylesCssList = await frame.getItemsCss()
+/*
+{
+  '1:10': { 'color': '#ff0000', 'font-size': '14px' },
+  '1:12': { 'background': '#ffffff', 'padding': '10px' }
+}
+*/
+```
+
+#### `getItemsStyles`
+
+Extracts full style data (document JSON structure, text, CSS) for all items.
+
+**Returns:** `Promise<UiFigmaFrameStylesList>` — A promise with a list of extended style data.
+
+```typescript
+const stylesList: UiFigmaFrameStylesList = await frame.getItemsStyles()
+/*
+[
+  { 
+    id: '1:10', 
+    name: 'Label', 
+    text: 'Username', 
+    styles: { 'color': '#333' },
+    json: { document: {...}, styles: {...} }
+  }
+]
+*/
+```
+
+#### `getMainItemsStyles`
+
+Extracts full style data only for the main elements, including styles of their children.
+
+**Returns:** `Promise<UiFigmaFrameStylesList>` — A promise with a list of extended style data for main elements.
+
+```typescript
+const mainStylesList: UiFigmaFrameStylesList = await frame.getMainItemsStyles()
+/*
+[
+  { 
+    id: '1:10', 
+    name: 'Login Form', 
+    childrenStyles: {
+       '1:11': { 'color': '#000' },
+       '1:12': { 'margin-top': '20px' }
+    }
+  }
+]
+*/
+```
+
+### Actions and Export
+
+- `screenshot(): Promise<Uint8Array[]>` — Creates screenshots in JPG format for all main elements.
 
 ## Data Types
 
 #### `UiFigmaNode`
-A union type of Figma node objects (SceneNode, FrameNode, TextNode, etc.) that support basic properties and children.
+The base type for Figma nodes. It represents a union of nodes (`SceneNode | DocumentNode | PageNode | FrameNode`, etc.) that support nesting and standard Figma API properties.
 
 #### `UiFigmaItemText`
-Structure for representing aggregated text data.
-- `id: string[]` — List of node identifiers with identical text content.
+The result of grouping text layers by their content.
+- `id: string[]` — An array of unique node identifiers that have the same text.
 - `text: string` — The actual text string.
 
-#### `UiFigmaFramesItem`
-Represents a simplified frame element for the UI.
-- `name: string` — The name of the frame.
-- `id: string` — The unique identifier of the element.
-- `image: Uint8Array | string` — The image of the frame (optional).
-
-#### `UiFigmaFramesList`
-A list of `UiFigmaFramesItem` objects.
-
 #### `UiFigmaMessageTexts`
-The object structure used when sending text tracking data to the UI.
-- `frame: FigmaFrame` — The frame analyzer instance.
-- `texts: UiFigmaItemText[]` — List of extracted text items.
-- `screenshot: Uint8Array[]` — Array of screenshots as byte arrays.
+A data structure for transmitting text analysis results.
+- `frame: FigmaFrame` — An instance of the analyzer class.
+- `texts: UiFigmaItemText[]` — A list of found and grouped text items.
+- `screenshot: Uint8Array[]` — An array of screenshots for the main elements.
+
+#### `UiFigmaFramesItem`
+Simplified information about an element for display in the interface.
+- `name: string` — The name of the element in Figma.
+- `id: string` — The unique identifier of the node.
+- `image?: Uint8Array | string` — A screenshot of the element (binary data or base64).
+
+#### `UiFigmaFrameStylesItem`
+Extended information about an element, including its styles. Inherits all fields from `UiFigmaFramesItem`.
+- `json?: UiFigmaFrameStylesData` — Node data and styles structure in JSON format.
+- `text?: string` — Text content (if the node is a text node).
+- `styles?: Record<string, string>` — An object with CSS properties of the element itself.
+- `childrenStyles?: Record<string, Record<string, string>>` — A map of CSS styles for all child elements, indexed by their ID.
+
+#### `UiFigmaFrameStylesData`
+- `document: UiFigmaFrameStylesJson` — Node tree in a compact format.
+- `styles: Record<string, any>` — A dictionary of document style definitions.
+
+#### `UiFigmaFrameStylesList`
+An array of `UiFigmaFrameStylesItem` objects.
+
+#### `UiFigmaFrameStylesCssList`
+An object (`Record<string, Record<string, string>>`) where the key is the node ID and the value is its set of CSS styles.

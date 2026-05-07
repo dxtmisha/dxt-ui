@@ -1,0 +1,57 @@
+{
+  "name": "@dxtmisha/zip",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Library for creating and managing ZIP archives in the browser and Node.js environments.",
+  "keywords": [
+    "zip",
+    "fflate",
+    "archive",
+    "browser",
+    "frontend-utils"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/zip",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/zip"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "component": "dxt-component",
+    "library": "dxt-library",
+    "wiki": "dxt-ai-doc",
+    "prepublishOnly": "npm run library && npm run build",
+    "publish-to-npm": "npm publish --access public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/library.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
+    },
+    "./style.css": "./dist/style.css",
+    "./types/*": "./dist/*",
+    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+  },
+  "dependencies": {
+    "fflate": "*"
+  },
+  "devDependencies": {}
+}

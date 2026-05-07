@@ -21,13 +21,16 @@ defineProps<UiFigmaFramesItem>()
 
 .ui-figma-style-selection-item {
   border-style: solid;
-  border-color: var(--sys-shade-outline);
-  @include ui.borderOpacity(v('?sys.opacity.outline'));
+  border-width: 1px;
+  border-color: var(--sys-palette-outline);
+  @include ui.borderOpacity(ui.v('?sys.opacity.outline'));
   border-radius: var(--sys-rounded-md);
 
   &__image {
     position: relative;
-    height: 280px;
+    margin-top: ui.v('?layout.paddingY');
+    @include ui.marginX(ui.v('?layout.paddingX'));
+    height: 256px;
   }
 }
 </style>

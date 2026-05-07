@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma/Functions/fetchFrameStyles - Lấy styles của frame'/>
+
+# `fetchFrameStyles`
+
+Một tiện ích để lấy thông tin style của các frame được chỉ định từ Figma plugin. Nó cho phép truy cập vào CSS styles, dữ liệu JSON và nội dung văn bản cho các node và các node con của chúng.
+
+**Tham số:**
+- `callback: (value: UiFigmaFrameStylesMessengerResponse) => void` — Hàm được thực thi sau khi nhận được dữ liệu style cho các frame được yêu cầu.
+
+
+**Trả về:**
+`void`
+
+## Ví dụ
+
+<Source
+  language='typescript'
+  code={`
+import { fetchFrameStyles } from '@dxtmisha/figma'
+
+// Lấy styles cho các frame và log kết quả
+fetchFrameStyles((response) => {
+  response.forEach(item => {
+    console.log('Frame ID:', item.id)
+    console.log('Dữ liệu style:', item.data)
+  })
+})
+  `}
+/>
+
+## Các kiểu dữ liệu
+
+### UiFigmaFrameStylesMessengerResponse
+Một mảng các đối tượng `UiFigmaFrameStylesMessengerResponseItem`.
+
+### UiFigmaFrameStylesMessengerResponseItem
+- `id: string` — Định danh duy nhất của frame.
+- `data: UiFigmaFrameStylesList` — Danh sách dữ liệu style cho frame.
+
+### UiFigmaFrameStylesItem
+Mở rộng từ `UiFigmaFramesItem`.
+- `name: string` — Tên của frame.
+- `id: string` — Định danh duy nhất của phần tử.
+- `json?: UiFigmaFrameStylesData` — (Tùy chọn) Dữ liệu node thu gọn dưới định dạng JSON.
+- `text?: string` — (Tùy chọn) Nội dung văn bản (đối với các node văn bản).
+- `styles?: UiFigmaFrameStylesCssItem` — (Tùy chọn) Bản đồ các style CSS cho phần tử.
+- `childrenStyles?: UiFigmaFrameStylesCssList` — (Tùy chọn) Bản đồ các style CSS của các phần tử con.

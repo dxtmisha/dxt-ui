@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma-code/Functions/getFigmaFrameById - Get FigmaFrame by ID'/>
+
+# `getFigmaFrameById`
+
+Returns a `FigmaFrame` object by its identifier.
+
+**Parameters:**
+- `id: string` — The identifier (ID) of the Figma node.
+
+**Returns:**
+`Promise<FigmaFrame | undefined>` — A `FigmaFrame` object or `undefined` if the node was not found.
+
+## Examples
+
+```typescript
+import { getFigmaFrameById } from '@dxtmisha/figma-code'
+
+async function analyzeFrame(frameId: string) {
+  const frame = await getFigmaFrameById(frameId)
+
+  if (frame) {
+    const info = await frame.getMainItemsInfo()
+    console.log('Main items in frame:', info)
+  }
+}
+```

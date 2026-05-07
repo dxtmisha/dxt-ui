@@ -1,0 +1,40 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/sendFrameStyles - Send frame styles request'/>
+
+# `sendFrameStyles`
+
+A utility for sending a request to the Figma plugin to retrieve style information for specified frames.
+
+**Parameters:**
+- `attributes: UiFigmaFrameStylesMessengerAttributes` — The attributes for the request, including frame IDs and options.
+
+
+**Returns:**
+`void`
+
+## Examples
+
+<Source
+  language='typescript'
+  code={`
+import { sendFrameStyles } from '@dxtmisha/figma'
+
+// Request styles for a specific frame
+sendFrameStyles({
+  ids: '12:34'
+})
+
+// Request styles for multiple frames including children
+sendFrameStyles({
+  ids: ['12:34', '56:78'],
+  children: true
+})
+  `}
+/>
+
+## Types
+
+### UiFigmaFrameStylesMessengerAttributes
+- `ids: string | string[]` — Unique frame ID or array of IDs.
+- `children?: boolean` — (Optional) Whether to include styles of child elements.

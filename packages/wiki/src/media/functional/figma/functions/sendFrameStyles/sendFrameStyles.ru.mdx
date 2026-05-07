@@ -1,0 +1,40 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/sendFrameStyles - Запрос стилей фреймов'/>
+
+# `sendFrameStyles`
+
+Утилита для отправки запроса в плагин Figma на получение информации о стилях указанных фреймов.
+
+**Параметры:**
+- `attributes: UiFigmaFrameStylesMessengerAttributes` — Атрибуты запроса, включая ID фреймов и дополнительные параметры.
+
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { sendFrameStyles } from '@dxtmisha/figma'
+
+// Запросить стили для конкретного фрейма
+sendFrameStyles({
+  ids: '12:34'
+})
+
+// Запросить стили для нескольких фреймов, включая дочерние элементы
+sendFrameStyles({
+  ids: ['12:34', '56:78'],
+  children: true
+})
+  `}
+/>
+
+## Типы
+
+### UiFigmaFrameStylesMessengerAttributes
+- `ids: string | string[]` — Уникальный ID фрейма или массив ID.
+- `children?: boolean` — (Опционально) Включать ли стили дочерних элементов.

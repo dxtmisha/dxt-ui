@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-code/Functions/getFigmaFrameById - Получение FigmaFrame по ID'/>
+
+# `getFigmaFrameById`
+
+Возвращает объект `FigmaFrame` по его идентификатору.
+
+**Параметры:**
+- `id: string` — Идентификатор (ID) узла Figma.
+
+**Возвращает:**
+`Promise<FigmaFrame | undefined>` — Объект `FigmaFrame` или `undefined`, если узел не найден.
+
+## Примеры
+
+```typescript
+import { getFigmaFrameById } from '@dxtmisha/figma-code'
+
+async function analyzeFrame(frameId: string) {
+  const frame = await getFigmaFrameById(frameId)
+
+  if (frame) {
+    const info = await frame.getMainItemsInfo()
+    console.log('Основные элементы во фрейме:', info)
+  }
+}
+```

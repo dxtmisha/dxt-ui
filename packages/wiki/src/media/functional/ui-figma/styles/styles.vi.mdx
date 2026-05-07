@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/# UI Figma/# Làm việc với Style'/>
+
+# Làm việc với Style
+
+Hệ thống truy xuất dữ liệu style mở rộng cho phép chuyển các thông tin chi tiết (CSS, cấu trúc JSON, nội dung văn bản) từ canvas Figma đến giao diện của plugin theo yêu cầu.
+
+## Backend (Backend / plugin/code.ts)
+
+Ở phía mã plugin, bạn cần khởi tạo một trình xử lý để phản hồi các yêu cầu dữ liệu từ UI.
+
+#### Khởi tạo
+Gọi hàm `setupFrameStyles()` một lần khi plugin bắt đầu:
+
+```typescript
+import { setupFrameStyles } from '@dxtmisha/figma-code'
+
+// Khởi tạo trình xử lý yêu cầu style
+setupFrameStyles()
+```
+
+## Giao diện (UI / Iframe)
+
+Các công cụ để gửi yêu cầu lấy style và quan sát kết quả một cách phản ứng (reactive).
+
+#### Sử dụng Phản ứng (Vue)
+Cách được khuyến nghị là thông qua composable `useFigmaFrameStyles`.
+
+```typescript
+import { useFigmaFrameStyles } from '@dxtmisha/figma-ref'
+
+const { 
+  styles, // Danh sách các style đã lấy (ComputedRef)
+  send    // Phương thức gửi yêu cầu: send({ ids, children })
+} = useFigmaFrameStyles()
+
+// Ví dụ yêu cầu style cho các node cụ thể
+const fetchDetails = () => {
+  send({ ids: ['1:10', '1:25'], children: true })
+}
+```
+
+#### Quản lý Trực tiếp (JavaScript)
+Nếu bạn không sử dụng Vue, bạn có thể sử dụng các hàm cơ bản để gửi yêu cầu và đăng ký nhận phản hồi:
+
+```typescript
+import { sendFrameStyles, fetchFrameStyles } from '@dxtmisha/figma'
+
+// Yêu cầu style
+sendFrameStyles({ ids: '1:10', children: true })
+
+// Đăng ký nhận dữ liệu
+fetchFrameStyles((data) => {
+  console.log('Đã nhận dữ liệu style:', data)
+})
+```

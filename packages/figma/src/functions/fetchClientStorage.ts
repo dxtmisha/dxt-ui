@@ -81,5 +81,6 @@ const initMessenger = () => {
     .add(UI_FIGMA_CLIENT_STORAGE_GET, (data: ClientStorageMessengerData) => {
       getStorageCallback(data.name)
         .run(data.value)
+        .then()
     })
 }

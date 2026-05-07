@@ -1,0 +1,33 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma-ref/Composables/useFigmaFrameStyles - Управление стилями фреймов'/>
+
+# `useFigmaFrameStyles`
+
+Композабл для управления и наблюдения за стилями фреймов из Figma.
+
+**Возвращает:**
+- `styles: ComputedRef<UiFigmaFrameStylesMessengerResponse>` — Реактивный список стилей фреймов.
+- `send(attributes: UiFigmaFrameStylesMessengerAttributes): void` — Метод для отправки запроса на получение или обновление стилей конкретных узлов.
+
+## Примеры
+
+```vue
+<script setup lang="ts">
+import { useFigmaFrameStyles } from '@dxtmisha/figma-ref'
+
+const { styles, send } = useFigmaFrameStyles()
+
+// Запрос стилей для конкретных нод
+const updateStyles = () => {
+  send({ ids: ['1:10', '1:20'], children: true })
+}
+</script>
+
+<template>
+  <div>
+    <button @click="updateStyles">Обновить стили</button>
+    <pre>{{ styles }}</pre>
+  </div>
+</template>
+```

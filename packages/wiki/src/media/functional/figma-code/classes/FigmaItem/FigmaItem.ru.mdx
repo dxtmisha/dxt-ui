@@ -31,33 +31,66 @@ if (item.isFrame()) {
 
 ### Проверка типов
 
-Методы для идентификации типа узла и его состояния.
-
-- `isDocument(): boolean` — Возвращает `true`, если узел является Документом.
-- `isFrame(): boolean` — Возвращает `true`, если узел является Фреймом.
-- `isSection(): boolean` — Возвращает `true`, если узел является Секцией.
-- `isText(): boolean` — Возвращает `true`, если узел является Текстовым узлом.
-- `isTextNoValue(): boolean` — Возвращает `true`, если узел является текстовым узлом с осмысленным содержанием.
+- `isDocument(): boolean` — Проверяет, является ли узел документом.
+- `isFrame(): boolean` — Проверяет, является ли узел фреймом.
+- `isSection(): boolean` — Проверяет, является ли узел секцией.
+- `isText(): boolean` — Проверяет, является ли узел текстовым узлом.
+- `isTextNoValue(): boolean` — Проверяет, является ли узел текстовым узлом с осмысленным содержанием.
 - `inCurrentPage(): boolean` — Проверяет, принадлежит ли узел текущей активной странице.
 
-### Доступ к данным
-
-Методы для получения данных и связанных узлов.
+### Иерархия и навигация
 
 - `get(): T` — Возвращает исходный узел Figma.
+- `getParent(): UiFigmaNode | undefined` — Возвращает исходный родительский узел.
+- `getParentItem(): FigmaItem | undefined` — Возвращает родительский узел, обернутый в `FigmaItem`.
+- `getParentPage(): PageNode | undefined` — Возвращает родительскую страницу узла.
+- `getParentPageItem(): FigmaItem | undefined` — Возвращает родительскую страницу, обернутую в `FigmaItem`.
+- `getChildren(): UiFigmaNode[]` — Возвращает список дочерних узлов в исходном формате.
+- `getChildrenItems(): FigmaItem[]` — Возвращает все дочерние узлы, обернутые в `FigmaItem`.
+
+### Контент и информация
+
 - `getId(): string` — Возвращает уникальный идентификатор узла.
 - `getName(): string` — Возвращает имя узла.
 - `getType(): string` — Возвращает строку с типом узла.
-- `getText(): string` — Возвращает текстовое содержимое (для текстовых узлов).
-- `getParentItem(): FigmaItem | undefined` — Возвращает родительский узел, обернутый в `FigmaItem`.
-- `getParentPageItem(): FigmaItem | undefined` — Возвращает родительскую страницу, обернутую в `FigmaItem`.
-- `getChildrenItems(): FigmaItem[]` — Возвращает все дочерние узлы, обернутые в `FigmaItem`.
+- `getText(): string` — Возвращает текстовое содержимое (только для текстовых узлов).
+- `getInfo(): Promise<UiFigmaFramesItem>` — Асинхронно собирает базовую информацию об узле (имя, ID, скриншот).
+- `getCss(): Promise<Record<string, string>>` — Асинхронно извлекает CSS-стили текущего узла.
+- `getStyles(): Promise<UiFigmaFrameStylesItem>` — Асинхронно извлекает расширенную информацию о стилях (CSS, текст, JSON).
 
-### Действия
+### Экспорт и действия
 
-Методы для выполнения операций над узлом.
-
-- `exportJpg(): Promise<Uint8Array | string>` — Экспортирует узел как изображение JPG.
-- `exportJson(): Promise<Uint8Array | string>` — Экспортирует данные узла в формате JSON.
+- `exportJpg(): Promise<Uint8Array>` — Экспортирует узел как изображение JPG.
+- `exportJson(): Promise<any>` — Экспортирует полные данные узла в формате JSON.
+- `exportJsonCompact(): Promise<UiFigmaFrameStylesData | undefined>` — Экспортирует данные узла в компактном формате JSON.
 - `toSelection(): void` — Выделяет узел и фокусирует на нем вьюпорт.
 - `toPageAndSelection(): Promise<void>` — Переключается на страницу узла и выделяет его.
+
+## Типы данных
+
+#### `UiFigmaFramesItem`
+Базовая информация об элементе для отображения в интерфейсе.
+- `name: string` — Название элемента в Figma.
+- `id: string` — Уникальный идентификатор узла.
+- `image?: Uint8Array | string` — Скриншот элемента (бинарные данные или base64).
+
+#### `UiFigmaFrameStylesItem`
+Расширенная информация об элементе, включая его стили. Наследует все поля `UiFigmaFramesItem`.
+- `json?: UiFigmaFrameStylesData` — Структура данных узла и стилей в формате JSON.
+- `text?: string` — Текстовое содержимое (если узел является текстовым).
+- `styles?: Record<string, string>` — Объект с CSS-свойствами самого элемента.
+- `childrenStyles?: Record<string, Record<string, string>>` — Карта CSS-стилей для всех дочерних элементов, индексированная по их ID.
+
+#### `UiFigmaFrameStylesData`
+- `document: UiFigmaFrameStylesJson` — Дерево узлов в компактном формате.
+- `styles: Record<string, any>` — Словарь определений стилей документа.
+
+#### `UiFigmaFrameStylesJson`
+Компактное представление узла Figma для JSON-экспорта.
+- `id: string` — Уникальный идентификатор узла.
+- `name: string` — Имя узла.
+- `type: string` — Тип узла.
+- `characters?: string` — Текст (для текстовых узлов).
+- `children?: UiFigmaFrameStylesJson[]` — Рекурсивный список дочерних элементов.
+- `style?: Record<string, any>` — Параметры оформления.
+- `styles?: Record<string, any>` — Связанные стили.

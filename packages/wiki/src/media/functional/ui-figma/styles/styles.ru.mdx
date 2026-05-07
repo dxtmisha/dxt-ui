@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/# UI Figma/# Работа со стилями'/>
+
+# Работа со стилями
+
+Система получения расширенных данных о стилях обеспечивает передачу детальной информации (CSS, JSON-структуры, текстовое содержимое) от холста Figma в интерфейс плагина по запросу.
+
+## Бэкенд (Backend / plugin/code.ts)
+
+На стороне кода плагина необходимо инициализировать обработчик, который будет отвечать на запросы данных из UI.
+
+#### Инициализация
+Вызовите функцию `setupFrameStyles()` один раз при старте плагина:
+
+```typescript
+import { setupFrameStyles } from '@dxtmisha/figma-code'
+
+// Инициализация обработчика запросов стилей
+setupFrameStyles()
+```
+
+## Интерфейс (UI / Iframe)
+
+Инструменты для отправки запросов на получение стилей и реактивного наблюдения за результатом.
+
+#### Реактивное использование (Vue)
+Рекомендуемый способ работы через композитор `useFigmaFrameStyles`.
+
+```typescript
+import { useFigmaFrameStyles } from '@dxtmisha/figma-ref'
+
+const { 
+  styles, // Вычисляемый список полученных стилей (ComputedRef)
+  send    // Метод для отправки запроса: send({ ids, children })
+} = useFigmaFrameStyles()
+
+// Пример запроса стилей для конкретных нод
+const fetchDetails = () => {
+  send({ ids: ['1:10', '1:25'], children: true })
+}
+```
+
+#### Прямое управление (JavaScript)
+Если вы не используете Vue, можно использовать базовые функции для отправки запроса и подписки на ответ:
+
+```typescript
+import { sendFrameStyles, fetchFrameStyles } from '@dxtmisha/figma'
+
+// Запросить стили
+sendFrameStyles({ ids: '1:10', children: true })
+
+// Подписаться на получение данных
+fetchFrameStyles((data) => {
+  console.log('Получены данные о стилях:', data)
+})
+```

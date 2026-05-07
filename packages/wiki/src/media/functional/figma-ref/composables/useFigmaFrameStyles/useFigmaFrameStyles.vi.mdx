@@ -1,0 +1,33 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-ref/Composables/useFigmaFrameStyles - Quản lý style của frame'/>
+
+# `useFigmaFrameStyles`
+
+Một composable để quản lý và quan sát các style của frame từ Figma.
+
+**Trả về:**
+- `styles: ComputedRef<UiFigmaFrameStylesMessengerResponse>` — Danh sách phản hồi các style của frame.
+- `send(attributes: UiFigmaFrameStylesMessengerAttributes): void` — Phương thức để gửi yêu cầu lấy hoặc cập nhật style cho các node cụ thể.
+
+## Ví dụ
+
+```vue
+<script setup lang="ts">
+import { useFigmaFrameStyles } from '@dxtmisha/figma-ref'
+
+const { styles, send } = useFigmaFrameStyles()
+
+// Yêu cầu style cho các node cụ thể
+const updateStyles = () => {
+  send({ ids: ['1:10', '1:20'], children: true })
+}
+</script>
+
+<template>
+  <div>
+    <button @click="updateStyles">Cập nhật Styles</button>
+    <pre>{{ styles }}</pre>
+  </div>
+</template>
+```

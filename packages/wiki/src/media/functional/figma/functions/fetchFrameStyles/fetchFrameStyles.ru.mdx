@@ -1,0 +1,49 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/figma/Functions/fetchFrameStyles - Получение стилей фреймов'/>
+
+# `fetchFrameStyles`
+
+Утилита для получения информации о стилях указанных фреймов из плагина Figma. Позволяет получить доступ к CSS-стилям, JSON-данным и текстовому содержимому для узлов и их дочерних элементов.
+
+**Параметры:**
+- `callback: (value: UiFigmaFrameStylesMessengerResponse) => void` — Функция, которая будет вызвана после получения данных о стилях для запрошенных фреймов.
+
+
+**Возвращает:**
+`void`
+
+## Примеры
+
+<Source
+  language='typescript'
+  code={`
+import { fetchFrameStyles } from '@dxtmisha/figma'
+
+// Получить стили для фреймов и вывести результат в консоль
+fetchFrameStyles((response) => {
+  response.forEach(item => {
+    console.log('ID фрейма:', item.id)
+    console.log('Данные стилей:', item.data)
+  })
+})
+  `}
+/>
+
+## Типы
+
+### UiFigmaFrameStylesMessengerResponse
+Массив элементов `UiFigmaFrameStylesMessengerResponseItem`.
+
+### UiFigmaFrameStylesMessengerResponseItem
+- `id: string` — Уникальный идентификатор фрейма.
+- `data: UiFigmaFrameStylesList` — Список данных стилей для фрейма.
+
+### UiFigmaFrameStylesItem
+Расширяет `UiFigmaFramesItem`.
+- `name: string` — Название фрейма.
+- `id: string` — Уникальный идентификатор элемента.
+- `json?: UiFigmaFrameStylesData` — (Опционально) Компактные данные узла в формате JSON.
+- `text?: string` — (Опционально) Текстовое содержимое (для текстовых узлов).
+- `styles?: UiFigmaFrameStylesCssItem` — (Опционально) Карта CSS-стилей элемента.
+- `childrenStyles?: UiFigmaFrameStylesCssList` — (Опционально) Карта CSS-стилей дочерних элементов.

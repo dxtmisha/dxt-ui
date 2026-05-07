@@ -29,50 +29,166 @@ const selectionAnalyzer = new FigmaFrame(figma.currentPage, true)
 
 ## Методы
 
-### Фильтрация
+### Состояние и навигация
 
-Методы для получения конкретных типов элементов из фрейма.
+- `isSelection(): boolean` — Проверяет, является ли текущий контекст выделением.
+- `getMainFrames(): FigmaItem[]` — Извлекает основные фреймы или секции из корня текущего контекста (страницы или выделения).
 
-- `getItemsFrame()` — Возвращает все вложенные узлы-фреймы.
-- `getItemsSection()` — Возвращает все вложенные узлы-секции.
-- `getItemsText()` — Возвращает все вложенные текстовые узлы.
+### Фильтрация и выборка
 
-### Анализ
+- `getItemsFrame(): FigmaItem<FrameNode>[]` — Возвращает список всех вложенных узлов, являющихся фреймами.
+- `getItemsSection(): FigmaItem<SectionNode>[]` — Возвращает список всех вложенных узлов, являющихся секциями.
+- `getItemsText(): FigmaItem<TextNode>[]` — Возвращает список всех вложенных текстовых узлов.
 
-Методы для структурного анализа и извлечения данных.
+### Контент и информация
 
-- `getMainFrames()` — Возвращает фреймы или секции верхнего уровня из корня.
-- `getItemsInfo(): Promise<UiFigmaFramesList>` — Возвращает подробную информацию (имя, ID, изображение) для всех элементов во фрейме.
-- `getMainItemsInfo(): Promise<UiFigmaFramesList>` — Возвращает подробную информацию (имя, ID, изображение) для всех основных элементов.
-- `getTexts(): UiFigmaItemText[]` — Возвращает массив уникальных текстовых элементов, найденных внутри фрейма.
+#### `getItemsInfo`
 
-### Действия
+Асинхронно собирает подробную информацию (имя, ID, скриншот) для всех элементов во фрейме.
 
-Методы для выполнения операций над элементами фрейма.
+**Возвращает:** `Promise<UiFigmaFramesList>` — Промис со списком информации об элементах.
 
-- `screenshot(): Promise<Uint8Array[]>` — Экспортирует все основные элементы в формате JPG.
+```typescript
+const infoList: UiFigmaFramesList = await frame.getItemsInfo()
+/*
+[
+  { id: '1:10', name: 'Button', image: Uint8Array[...] },
+  { id: '1:25', name: 'Card', image: 'data:image/png;base64...' }
+]
+*/
+```
+
+#### `getMainItemsInfo`
+
+Асинхронно собирает подробную информацию только для основных (верхнеуровневых) элементов.
+
+**Возвращает:** `Promise<UiFigmaFramesList>` — Промис со списком информации об основных элементах.
+
+```typescript
+const mainInfoList: UiFigmaFramesList = await frame.getMainItemsInfo()
+/*
+[
+  { id: '1:10', name: 'Login Screen', image: Uint8Array[...] }
+]
+*/
+```
+
+#### `getTexts`
+
+Группирует текстовые узлы по их содержимому, возвращая уникальные строки и список ID соответствующих нод.
+
+**Возвращает:** `UiFigmaItemText[]` — Массив сгруппированных текстовых элементов.
+
+```typescript
+const groupedTexts: UiFigmaItemText[] = frame.getTexts()
+/*
+[
+  { id: ['1:10', '1:15'], text: 'Submit' },
+  { id: ['1:20'], text: 'Cancel' }
+]
+*/
+```
+
+### Анализ стилей
+
+#### `getItemsCss`
+
+Генерирует карту CSS-стилей для всех элементов фрейма.
+
+**Возвращает:** `Promise<UiFigmaFrameStylesCssList>` — Промис с картой стилей, индексированной по ID узла.
+
+```typescript
+const cssStyles: UiFigmaFrameStylesCssList = await frame.getItemsCss()
+/*
+{
+  '1:10': { 'color': '#ff0000', 'font-size': '14px' },
+  '1:12': { 'background': '#ffffff', 'padding': '10px' }
+}
+*/
+```
+
+#### `getItemsStyles`
+
+Извлекает полные данные о стилях (JSON-структуру документа, текст, CSS) для всех элементов.
+
+**Возвращает:** `Promise<UiFigmaFrameStylesList>` — Промис со списком расширенных данных о стилях.
+
+```typescript
+const stylesList: UiFigmaFrameStylesList = await frame.getItemsStyles()
+/*
+[
+  { 
+    id: '1:10', 
+    name: 'Label', 
+    text: 'Username', 
+    styles: { 'color': '#333' },
+    json: { document: {...}, styles: {...} }
+  }
+]
+*/
+```
+
+#### `getMainItemsStyles`
+
+Извлекает полные данные о стилях только для основных элементов, включая стили их дочерних элементов.
+
+**Возвращает:** `Promise<UiFigmaFrameStylesList>` — Промис со списком расширенных данных о стилях основных элементов.
+
+```typescript
+const mainStylesList: UiFigmaFrameStylesList = await frame.getMainItemsStyles()
+/*
+[
+  { 
+    id: '1:10', 
+    name: 'Login Form', 
+    childrenStyles: {
+       '1:11': { 'color': '#000' },
+       '1:12': { 'margin-top': '20px' }
+    }
+  }
+]
+*/
+```
+
+### Экспорт и действия
+
+- `screenshot(): Promise<Uint8Array[]>` — Создает скриншоты в формате JPG для всех основных элементов.
 
 ## Типы данных
 
 #### `UiFigmaNode`
-Объединение типов узлов Figma (SceneNode, FrameNode, TextNode и др.), поддерживающих базовые свойства и вложенность.
+Базовый тип для узлов Figma. Представляет собой объединение (`SceneNode | DocumentNode | PageNode | FrameNode` и др.), поддерживающих вложенность и стандартные свойства Figma API.
 
 #### `UiFigmaItemText`
-Структура для представления сгруппированных текстовых данных.
-- `id: string[]` — Список идентификаторов узлов с одинаковым текстом.
-- `text: string` — Содержимое текстового поля.
-
-#### `UiFigmaFramesItem`
-Представляет упрощенный элемент фрейма для пользовательского интерфейса.
-- `name: string` — Название фрейма.
-- `id: string` — Уникальный идентификатор элемента.
-- `image: Uint8Array | string` — Изображение фрейма (опционально).
-
-#### `UiFigmaFramesList`
-Список объектов типа `UiFigmaFramesItem`.
+Результат группировки текстовых слоев по их содержимому.
+- `id: string[]` — Массив уникальных идентификаторов узлов, имеющих одинаковый текст.
+- `text: string` — Само текстовое значение.
 
 #### `UiFigmaMessageTexts`
-Объект, передаваемый при отправке данных о текстах в UI.
-- `frame: FigmaFrame` — Экземпляр анализатора фрейма.
-- `texts: UiFigmaItemText[]` — Список найденных текстов.
-- `screenshot: Uint8Array[]` — Массив скриншотов в бинарном формате.
+Структура данных для передачи результатов анализа текстов.
+- `frame: FigmaFrame` — Экземпляр класса анализатора.
+- `texts: UiFigmaItemText[]` — Список найденных и сгруппированных текстов.
+- `screenshot: Uint8Array[]` — Массив скриншотов основных элементов.
+
+#### `UiFigmaFramesItem`
+Упрощенная информация об элементе для отображения в интерфейсе.
+- `name: string` — Название элемента в Figma.
+- `id: string` — Уникальный идентификатор узла.
+- `image?: Uint8Array | string` — Скриншот элемента (бинарные данные или base64).
+
+#### `UiFigmaFrameStylesItem`
+Расширенная информация об элементе, включая его стили. Наследует все поля `UiFigmaFramesItem`.
+- `json?: UiFigmaFrameStylesData` — Структура данных узла и стилей в формате JSON.
+- `text?: string` — Текстовое содержимое (если узел является текстовым).
+- `styles?: Record<string, string>` — Объект с CSS-свойствами самого элемента.
+- `childrenStyles?: Record<string, Record<string, string>>` — Карта CSS-стилей для всех дочерних элементов, индексированная по их ID.
+
+#### `UiFigmaFrameStylesData`
+- `document: UiFigmaFrameStylesJson` — Дерево узлов в компактном формате.
+- `styles: Record<string, any>` — Словарь определений стилей документа.
+
+#### `UiFigmaFrameStylesList`
+Массив объектов типа `UiFigmaFrameStylesItem`.
+
+#### `UiFigmaFrameStylesCssList`
+Объект (`Record<string, Record<string, string>>`), где ключом является ID узла, а значением — его набор CSS-стилей.

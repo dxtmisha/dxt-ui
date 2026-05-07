@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI Figma/# Working with Styles'/>
+
+# Working with Styles
+
+The system for retrieving extended style data enables the transfer of detailed information (CSS, JSON structures, text content) from the Figma canvas to the plugin's interface upon request.
+
+## Backend (Backend / plugin/code.ts)
+
+On the plugin code side, you need to initialize a handler that will respond to data requests from the UI.
+
+#### Initialization
+Call the `setupFrameStyles()` function once when the plugin starts:
+
+```typescript
+import { setupFrameStyles } from '@dxtmisha/figma-code'
+
+// Initialize the style request handler
+setupFrameStyles()
+```
+
+## Interface (UI / Iframe)
+
+Tools for sending style requests and reactively observing the results.
+
+#### Reactive Usage (Vue)
+The recommended way is through the `useFigmaFrameStyles` composable.
+
+```typescript
+import { useFigmaFrameStyles } from '@dxtmisha/figma-ref'
+
+const { 
+  styles, // Computed list of retrieved styles (ComputedRef)
+  send    // Method to send a request: send({ ids, children })
+} = useFigmaFrameStyles()
+
+// Example of requesting styles for specific nodes
+const fetchDetails = () => {
+  send({ ids: ['1:10', '1:25'], children: true })
+}
+```
+
+#### Direct Management (JavaScript)
+If you are not using Vue, you can use the base functions to send a request and subscribe to the response:
+
+```typescript
+import { sendFrameStyles, fetchFrameStyles } from '@dxtmisha/figma'
+
+// Request styles
+sendFrameStyles({ ids: '1:10', children: true })
+
+// Subscribe to receiving data
+fetchFrameStyles((data) => {
+  console.log('Received style data:', data)
+})
+```

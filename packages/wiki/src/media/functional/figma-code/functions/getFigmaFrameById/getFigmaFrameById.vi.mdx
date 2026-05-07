@@ -1,0 +1,28 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/figma-code/Functions/getFigmaFrameById - Lấy FigmaFrame bằng ID'/>
+
+# `getFigmaFrameById`
+
+Trả về một đối tượng `FigmaFrame` theo mã định danh của nó.
+
+**Tham số:**
+- `id: string` — Mã định danh (ID) của node Figma.
+
+**Trả về:**
+`Promise<FigmaFrame | undefined>` — Một đối tượng `FigmaFrame` hoặc `undefined` nếu không tìm thấy node.
+
+## Ví dụ
+
+```typescript
+import { getFigmaFrameById } from '@dxtmisha/figma-code'
+
+async function analyzeFrame(frameId: string) {
+  const frame = await getFigmaFrameById(frameId)
+
+  if (frame) {
+    const info = await frame.getMainItemsInfo()
+    console.log('Các mục chính trong frame:', info)
+  }
+}
+```

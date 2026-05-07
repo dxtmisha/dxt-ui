@@ -1,36 +1,36 @@
-import { executeFunction as e, forEach as t, getCurrentTime as n, isNull as r } from "@dxtmisha/functional-basic";
-import { FigmaPostAbstract as i, FigmaPostCode as a, UI_FIGMA_CLIENT_STORAGE_GET as o, UI_FIGMA_CLIENT_STORAGE_SET as s, UI_FIGMA_FRAMES_POST_NAME as c, UI_FIGMA_FRAMES_SELECTED_ADD_NAME as l, UI_FIGMA_FRAMES_SELECTED_POST_NAME as u, UI_FIGMA_FRAME_GET_SELECTION as d, UI_FIGMA_FRAME_SET_SELECTION as f, UI_FIGMA_STORAGE_GET as p, UI_FIGMA_STORAGE_SET as m } from "@dxtmisha/figma";
+import { executeFunction as e, forEach as t, getCurrentTime as n, isNull as r, toArray as i } from "@dxtmisha/functional-basic";
+import { FIGMA_FRAME_STYLES_MESSENGER_NAME as a, FigmaPostAbstract as o, FigmaPostCode as s, UI_FIGMA_CLIENT_STORAGE_GET as c, UI_FIGMA_CLIENT_STORAGE_SET as l, UI_FIGMA_FRAMES_POST_NAME as u, UI_FIGMA_FRAMES_SELECTED_ADD_NAME as d, UI_FIGMA_FRAMES_SELECTED_POST_NAME as f, UI_FIGMA_FRAME_GET_SELECTION as p, UI_FIGMA_FRAME_SET_SELECTION as m, UI_FIGMA_STORAGE_GET as h, UI_FIGMA_STORAGE_SET as g } from "@dxtmisha/figma";
 //#region \0@oxc-project+runtime@0.127.0/helpers/typeof.js
-function h(e) {
+function _(e) {
 	"@babel/helpers - typeof";
-	return h = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return _ = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, h(e);
+	}, _(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.127.0/helpers/toPrimitive.js
-function g(e, t) {
-	if (h(e) != "object" || !e) return e;
+function v(e, t) {
+	if (_(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (h(r) != "object") return r;
+		if (_(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.127.0/helpers/toPropertyKey.js
-function _(e) {
-	var t = g(e, "string");
-	return h(t) == "symbol" ? t : t + "";
+function y(e) {
+	var t = v(e, "string");
+	return _(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.127.0/helpers/defineProperty.js
-function v(e, t, n) {
-	return (t = _(t)) in e ? Object.defineProperty(e, t, {
+function b(e, t, n) {
+	return (t = y(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -39,9 +39,9 @@ function v(e, t, n) {
 }
 //#endregion
 //#region src/classes/FigmaStorageData.ts
-var y = class {
+var x = class {
 	constructor(e, t) {
-		v(this, "value", void 0), v(this, "age", void 0), this.name = e, this.cache = t;
+		b(this, "value", void 0), b(this, "age", void 0), this.name = e, this.cache = t;
 	}
 	isNull() {
 		return r(this.value);
@@ -59,7 +59,7 @@ var y = class {
 		return this.age;
 	}
 	getName() {
-		return `${a.get()}-${this.name}`;
+		return `${s.get()}-${this.name}`;
 	}
 	getCache() {
 		return this.cache;
@@ -88,14 +88,14 @@ var y = class {
 			age: this.age
 		};
 	}
-}, b = class t {
+}, S = class t {
 	static getInstance(e) {
-		if (e in x) return x[e];
+		if (e in C) return C[e];
 		let n = new t(e);
-		return x[e] = n, n;
+		return C[e] = n, n;
 	}
 	constructor(e, t) {
-		v(this, "data", void 0), this.name = e, this.cache = t, this.data = new y(e, t);
+		b(this, "data", void 0), this.name = e, this.cache = t, this.data = new x(e, t);
 	}
 	async get(e) {
 		if (await this.make(), this.data.isValue()) return this.data.get();
@@ -113,7 +113,7 @@ var y = class {
 	async make() {
 		return this.data.isNull() && this.data.setByObject(await this.getValue()), this;
 	}
-}, x = {}, S = class e {
+}, C = {}, w = class e {
 	constructor(e) {
 		this.item = e;
 	}
@@ -180,14 +180,39 @@ var y = class {
 	getName() {
 		return "name" in this.item ? this.item.name : this.getId();
 	}
+	getText() {
+		return this.isText() ? this.item.characters.trim() : "";
+	}
+	async getCss() {
+		return "getCSSAsync" in this.item ? await this.item.getCSSAsync() : {};
+	}
+	async getInfo() {
+		return {
+			name: this.getName(),
+			id: this.getId(),
+			image: await this.exportJpg()
+		};
+	}
+	async getStyles() {
+		return {
+			...await this.getInfo(),
+			json: await this.exportJsonCompact(),
+			text: this.getText(),
+			styles: await this.getCss()
+		};
+	}
 	async exportJpg() {
 		return await this.exportItem("JPG");
 	}
 	async exportJson() {
 		return await this.exportItem("JSON_REST_V1");
 	}
-	getText() {
-		return this.isText() ? this.item.characters.trim() : "";
+	async exportJsonCompact() {
+		let e = await this.exportJson();
+		if (e) return {
+			document: this.toJsonCompact(e.document),
+			styles: e.styles
+		};
 	}
 	toSelection() {
 		figma.currentPage.selection = [this.item], figma.viewport.scrollAndZoomIntoView([this.item]);
@@ -210,9 +235,16 @@ var y = class {
 	async exportItem(e) {
 		return "exportAsync" in this.item ? await this.item.exportAsync(this.getExportSettings(e)) : "";
 	}
-}, C = class {
+	toJsonCompact(e) {
+		let n = {
+			id: String(e.id),
+			name: String(e.name)
+		};
+		return "type" in e && (n.type = e.type), "characters" in e && (n.characters = e.characters), "style" in e && (n.style = e.style), "styles" in e && (n.styles = e.styles), "children" in e && e.children && e.children.length > 0 && (n.children = t(e.children, (e) => this.toJsonCompact(e))), n;
+	}
+}, T = class e {
 	constructor(e, t = !1) {
-		v(this, "mainItem", []), v(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
+		b(this, "mainItem", []), b(this, "items", []), this.page = e, this.selection = t, this.mainItem = this.initMain(), this.items = this.initBySelection();
 	}
 	isSelection() {
 		return this.selection && "selection" in this.page;
@@ -227,26 +259,25 @@ var y = class {
 		return this.filter((e) => e.isText());
 	}
 	async getItemsInfo() {
-		let e = [];
-		for (let t of this.items) e.push({
-			name: t.getName(),
-			id: t.getId(),
-			image: await t.exportJpg()
-		});
+		return await this.getInfoByItems(this.items);
+	}
+	async getItemsCss() {
+		let e = {};
+		for (let t of this.items) e[t.getId()] = await t.getCss();
 		return e;
+	}
+	async getItemsStyles() {
+		return await this.getStylesByItems(this.items);
 	}
 	getMainFrames() {
 		let e = this.toMain();
 		return e ? e.getChildrenItems().filter((e) => e.isFrame() || e.isSection()) : [];
 	}
 	async getMainItemsInfo() {
-		let e = [];
-		for (let t of this.mainItem) e.push({
-			name: t.getName(),
-			id: t.getId(),
-			image: await t.exportJpg()
-		});
-		return e;
+		return await this.getInfoByItems(this.mainItem);
+	}
+	async getMainItemsStyles() {
+		return await this.getStylesByItems(this.mainItem, !0);
 	}
 	getTexts() {
 		let e = [];
@@ -263,12 +294,25 @@ var y = class {
 		for (let t of this.mainItem) e.push(await t.exportJpg());
 		return e;
 	}
+	async getInfoByItems(e) {
+		let t = [];
+		for (let n of e) t.push(await n.getInfo());
+		return t;
+	}
+	async getStylesByItems(t, n = !1) {
+		let r = [];
+		for (let i of t) {
+			let t = await i.getStyles();
+			n && (t.childrenStyles = await new e(i.get()).getItemsCss()), r.push(t);
+		}
+		return r;
+	}
 	initMain() {
-		return this.isSelection() ? t([...this.page.selection], (e) => new S(e)) : [new S(this.page)];
+		return this.isSelection() ? t([...this.page.selection], (e) => new w(e)) : [new w(this.page)];
 	}
 	initItems(e) {
 		let t = [];
-		if ("children" in e) for (let n of e.children) t.push(new S(n), ...this.initItems(n));
+		if ("children" in e) for (let n of e.children) t.push(new w(n), ...this.initItems(n));
 		return t;
 	}
 	initBySelection() {
@@ -282,17 +326,17 @@ var y = class {
 	filter(e) {
 		return this.items.filter(e);
 	}
-	toMain(e = new S(this.page)) {
+	toMain(e = new w(this.page)) {
 		let t = e.getParentItem();
 		return t && !t.isDocument() ? this.toMain(t) : e;
 	}
-}, w = class e extends i {
+}, E = class e extends o {
 	static getInstance() {
-		return T || (T = new e(), T.make(), T);
+		return D || (D = new e(), D.make(), D);
 	}
 	post(e, t) {
 		figma.ui.postMessage({
-			code: a.get(),
+			code: s.get(),
 			type: e,
 			message: t
 		});
@@ -300,34 +344,34 @@ var y = class {
 	prepare() {
 		figma.ui.onmessage = (e) => this.onMessage(e);
 	}
-}, T;
+}, D;
 //#endregion
 //#region src/functions/getFigmaItemById.ts
-async function E(e) {
+async function O(e) {
 	let t = await figma.getNodeByIdAsync(e);
-	if (t) return new S(t);
+	if (t) return new w(t);
 }
 //#endregion
 //#region src/functions/getFigmaItemByIdOrRoot.ts
-async function D(e) {
-	let t = e ? await E(e) : void 0;
+async function k(e) {
+	let t = e ? await O(e) : void 0;
 	return t ? t.get() : figma.root;
 }
 //#endregion
 //#region src/classes/FigmaStorage.ts
-var O = class t {
+var A = class t {
 	static getInstance(e, n = figma.root) {
 		let r = `${"id" in n ? n.id : "root"}:${e}`;
-		if (r in k) return k[r];
+		if (r in j) return j[r];
 		let i = new t(e, n);
-		return k[r] = i, i;
+		return j[r] = i, i;
 	}
 	static async getInstanceById(e, n) {
-		let r = await D(n);
+		let r = await k(n);
 		return t.getInstance(e, r);
 	}
 	constructor(e, t = figma.root, n) {
-		v(this, "data", void 0), this.name = e, this.item = t, this.cache = n, this.data = new y(e, n);
+		b(this, "data", void 0), this.name = e, this.item = t, this.cache = n, this.data = new x(e, n);
 	}
 	get(e) {
 		if (this.make(), this.data.isValue()) return this.data.get();
@@ -350,7 +394,7 @@ var O = class t {
 	make() {
 		return this.data.isNull() && this.data.setByObject(this.getValue()), this;
 	}
-}, k = {}, A = class {
+}, j = {}, M = class {
 	static has(e) {
 		return this.get().includes(e);
 	}
@@ -372,8 +416,8 @@ var O = class t {
 		t ? this.add(e) : this.remove(e);
 	}
 	static send() {
-		let e = w.getInstance();
-		e.add(u, () => this.post()), e.add(l, ({ id: e, selected: t }) => this.toggle(e, t));
+		let e = E.getInstance();
+		e.add(f, () => this.post()), e.add(d, ({ id: e, selected: t }) => this.toggle(e, t));
 	}
 	static getList() {
 		var e;
@@ -383,13 +427,13 @@ var O = class t {
 		this.selected = e, this.storage.set(e);
 	}
 	static post() {
-		w.getInstance().post(u, this.get());
+		E.getInstance().post(f, this.get());
 	}
 };
-v(A, "storage", new O(u)), v(A, "selected", void 0);
+b(M, "storage", new A(f)), b(M, "selected", void 0);
 //#endregion
 //#region src/classes/FigmaTopLevelFrames.ts
-var j = class {
+var N = class {
 	static async get() {
 		if (!this.frames) {
 			this.frames = [];
@@ -402,29 +446,35 @@ var j = class {
 		return this.frames;
 	}
 	static send() {
-		let e = w.getInstance();
-		e.add(c, () => {
+		let e = E.getInstance();
+		e.add(u, () => {
 			this.get().then((t) => {
-				e.post(c, t);
+				e.post(u, t);
 			});
 		});
 	}
 	static getList() {
-		return new C(figma.currentPage).getMainFrames();
+		return new T(figma.currentPage).getMainFrames();
 	}
 };
-v(j, "frames", void 0);
+b(N, "frames", void 0);
+//#endregion
+//#region src/functions/getFigmaFrameById.ts
+async function P(e) {
+	let t = await figma.getNodeByIdAsync(e);
+	if (t) return new T(t);
+}
 //#endregion
 //#region src/functions/makeFigmaFrameSelection.ts
-var M = () => {
+var F = () => {
+	figma.on("selectionchange", async () => await I()), I().then();
+}, I = async () => {
+	let e = new T(figma.currentPage, !0);
+	E.getInstance().post(p, await e.getMainItemsInfo());
+}, L = "texts", R = () => {
 	figma.on("selectionchange", async () => {
-		let e = new C(figma.currentPage, !0);
-		w.getInstance().post(d, await e.getMainItemsInfo());
-	});
-}, N = "texts", P = () => {
-	figma.on("selectionchange", async () => {
-		let e = new C(figma.currentPage, !0);
-		w.getInstance().post(N, {
+		let e = new T(figma.currentPage, !0);
+		E.getInstance().post(L, {
 			frame: e,
 			texts: e.getTexts(),
 			screenshot: await e.screenshot()
@@ -433,48 +483,64 @@ var M = () => {
 };
 //#endregion
 //#region src/functions/setupClientStorage.ts
-function F() {
-	let e = w.getInstance(), t = (t, n) => e.post(o, {
+function z() {
+	let e = E.getInstance(), t = (t, n) => e.post(c, {
 		name: t,
 		value: n
 	});
-	e.add(o, async ({ name: e, value: n }) => {
-		t(e, await b.getInstance(e).get(n));
-	}), e.add(s, async ({ name: e, value: n }) => {
-		t(e, await b.getInstance(e).set(n));
+	e.add(c, async ({ name: e, value: n }) => {
+		t(e, await S.getInstance(e).get(n));
+	}), e.add(l, async ({ name: e, value: n }) => {
+		t(e, await S.getInstance(e).set(n));
 	});
 }
 //#endregion
 //#region src/functions/toFrameSelection.ts
-async function I(e) {
+async function B(e) {
 	if (e) {
-		let t = await E(e);
+		let t = await O(e);
 		t && t.toPageAndSelection();
 	}
 }
 //#endregion
 //#region src/functions/setupFrameSelection.ts
-function L() {
-	let e = w.getInstance();
-	M(), e.add(f, ({ id: e }) => {
-		I(e).then();
+function V() {
+	let e = E.getInstance();
+	F(), e.add(m, ({ id: e }) => {
+		B(e).then();
+	});
+}
+//#endregion
+//#region src/functions/setupFrameStyles.ts
+function H() {
+	let e = E.getInstance(), t = async (e, t) => {
+		let n = await P(e);
+		return n ? t ? await n.getItemsStyles() : await n.getMainItemsStyles() : [];
+	};
+	e.add(a, async ({ ids: n, children: r }) => {
+		let o = i(n), s = [];
+		for (let e of o) s.push({
+			id: e,
+			data: await t(e, r == null ? !0 : r)
+		});
+		e.post(a, s);
 	});
 }
 //#endregion
 //#region src/functions/setupStorage.ts
-function R() {
-	let e = w.getInstance(), t = (t, n, r) => e.post(p, {
+function U() {
+	let e = E.getInstance(), t = (t, n, r) => e.post(h, {
 		name: t,
 		value: n,
 		id: r
 	});
-	e.add(p, async (e) => {
+	e.add(h, async (e) => {
 		let { name: n, value: r, id: i } = e == null ? {} : e;
-		t(n, (await O.getInstanceById(n, i)).get(r), i);
-	}), e.add(m, async (e) => {
+		t(n, (await A.getInstanceById(n, i)).get(r), i);
+	}), e.add(g, async (e) => {
 		let { name: n, value: r, id: i } = e == null ? {} : e;
-		t(n, (await O.getInstanceById(n, i)).set(r), i);
+		t(n, (await A.getInstanceById(n, i)).set(r), i);
 	});
 }
 //#endregion
-export { b as FigmaClientStorage, C as FigmaFrame, A as FigmaFramesSelected, S as FigmaItem, w as FigmaPluginMessenger, O as FigmaStorage, y as FigmaStorageData, j as FigmaTopLevelFrames, E as getFigmaItemById, D as getFigmaItemByIdOrRoot, M as makeFigmaFrameSelection, P as makeFigmaTexts, F as setupClientStorage, L as setupFrameSelection, R as setupStorage, I as toFrameSelection };
+export { S as FigmaClientStorage, T as FigmaFrame, M as FigmaFramesSelected, w as FigmaItem, E as FigmaPluginMessenger, A as FigmaStorage, x as FigmaStorageData, N as FigmaTopLevelFrames, P as getFigmaFrameById, O as getFigmaItemById, k as getFigmaItemByIdOrRoot, F as makeFigmaFrameSelection, R as makeFigmaTexts, z as setupClientStorage, V as setupFrameSelection, H as setupFrameStyles, U as setupStorage, B as toFrameSelection };
