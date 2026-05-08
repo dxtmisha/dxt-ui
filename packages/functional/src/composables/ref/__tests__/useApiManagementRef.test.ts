@@ -12,7 +12,10 @@ describe('useApiManagementRef', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockApiInstance = {
-      request: vi.fn()
+      request: vi.fn(),
+      getResponse: vi.fn().mockReturnValue({
+        emulatorAsync: vi.fn().mockResolvedValue(undefined)
+      })
     } as unknown as ApiInstance
 
     vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
@@ -47,7 +50,12 @@ describe('useApiManagementRef', () => {
     })
 
     it('should use custom apiInstance for GET requests', async () => {
-      const customInstance = { request: vi.fn() } as unknown as ApiInstance
+      const customInstance = {
+        request: vi.fn(),
+        getResponse: vi.fn().mockReturnValue({
+          emulatorAsync: vi.fn().mockResolvedValue(undefined)
+        })
+      } as unknown as ApiInstance
       vi.mocked(customInstance.request).mockResolvedValueOnce({ data: 'custom' })
 
       const { data } = useApiManagementRef({ path: 'test/get' }, undefined, undefined, undefined, undefined, undefined, undefined, customInstance)
@@ -62,7 +70,12 @@ describe('useApiManagementRef', () => {
 
   describe('Mutations (POST, PUT, DELETE) propagation', () => {
     it('should propagate custom apiInstance to mutation hooks', async () => {
-      const customInstance = { request: vi.fn() } as unknown as ApiInstance
+      const customInstance = {
+        request: vi.fn(),
+        getResponse: vi.fn().mockReturnValue({
+          emulatorAsync: vi.fn().mockResolvedValue(undefined)
+        })
+      } as unknown as ApiInstance
       // Mock GET response to let it finish starting
       vi.mocked(customInstance.request).mockResolvedValue([{ id: 1 }])
 

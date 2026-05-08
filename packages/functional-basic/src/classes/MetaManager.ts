@@ -87,9 +87,11 @@ export class MetaManager<
    * @param content meta tag content / содержимое мета-тега
    */
   set(name: Key, content: string): this {
-    this
-      .setItem(name, content)
-      .setMeta(name)
+    if (this.get(name) !== content) {
+      this
+        .setItem(name, content)
+        .setMeta(name)
+    }
 
     return this
   }

@@ -1,0 +1,25 @@
+{
+  "name": "@packages/library",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "component": "dxt-component"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@dxtmisha/configuration": "*",
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/functional-basic": "*",
+    "@dxtmisha/media": "*",
+    "@dxtmisha/nitro-basic": "*",
+    "@dxtmisha/styles": "*",
+    "nitro": "*",
+    "nitropack": "*",
+    "vue": "*",
+    "vue-router": "*"
+  }
+}

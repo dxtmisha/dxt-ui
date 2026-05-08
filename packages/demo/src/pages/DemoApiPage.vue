@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { useApiAsyncRef } from '@dxtmisha/functional'
+import { useApiAsyncRef, useMeta } from '@dxtmisha/functional'
 
 import DemoLinkBlack from '../components/DemoLinkBlack.vue'
 
+const { title } = useMeta()
 const { data } = useApiAsyncRef<any>('hello')
+
+title.value = 'Api'
 </script>
 
 <template>

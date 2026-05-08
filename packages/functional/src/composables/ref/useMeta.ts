@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { MetaRobots, MetaStatic } from '@dxtmisha/functional-basic'
+import { isDomRuntime, MetaRobots, MetaStatic } from '@dxtmisha/functional-basic'
 
 import { executeUseLocal } from '../../functions/executeUse'
 
@@ -38,30 +38,141 @@ const item = executeUseLocal(() => {
   /** Generates HTML string for all meta tags (for SSR) / Генерирует HTML-строку для всех мета-тегов (для SSR) */
   const getHtmlMeta = () => meta.html()
 
-  watch(title, () => {
+  /**
+   * Sets the page title.
+   *
+   * Устанавливает заголовок страницы.
+   * @param value Title to set / Заголовок для установки
+   */
+  const setTitle = (value: string) => {
+    title.value = value
+    updateSsr()
+  }
+
+  /**
+   * Sets the keywords meta tag.
+   *
+   * Устанавливает мета-тег keywords.
+   * @param value Keywords to set / Ключевые слова для установки
+   */
+  const setKeywords = (value: string) => {
+    keyword.value = value
+    updateSsr()
+  }
+
+  /**
+   * Sets the description meta tag.
+   *
+   * Устанавливает мета-тег description.
+   * @param value Description to set / Описание для установки
+   */
+  const setDescription = (value: string) => {
+    description.value = value
+    updateSsr()
+  }
+
+  /**
+   * Sets the Open Graph / Twitter Card image URL.
+   *
+   * Устанавливает URL изображения для Open Graph / Twitter Card.
+   * @param value Image URL to set / URL изображения для установки
+   */
+  const setImage = (value: string) => {
+    image.value = value
+    updateSsr()
+  }
+
+  /**
+   * Sets the canonical URL.
+   *
+   * Устанавливает канонический URL.
+   * @param value Canonical URL to set / Канонический URL для установки
+   */
+  const setCanonical = (value: string) => {
+    canonical.value = value
+    updateSsr()
+  }
+
+  /**
+   * Sets the robots meta tag directive.
+   *
+   * Устанавливает директиву мета-тега robots.
+   * @param value Robots directive to set / Директива robots для установки
+   */
+  const setRobots = (value: MetaRobots) => {
+    robots.value = value
+    updateSsr()
+  }
+
+  /**
+   * Sets the author meta tag.
+   *
+   * Устанавливает мета-тег author.
+   * @param value Author to set / Автор для установки
+   */
+  const setAuthor = (value: string) => {
+    author.value = value
+    updateSsr()
+  }
+
+  /**
+   * Sets the site name for Open Graph and Twitter Card.
+   *
+   * Устанавливает название сайта для Open Graph и Twitter Card.
+   * @param value Site name to set / Название сайта для установки
+   */
+  const setSiteName = (value: string) => {
+    siteName.value = value
+    updateSsr()
+  }
+
+  /**
+   * Synchronizes all reactive values with the current state of MetaStatic.
+   *
+   * Синхронизирует все реактивные значения с текущим состоянием MetaStatic.
+   */
+  const sync = () => {
+    title.value = meta.getTitle()
+    keyword.value = meta.getKeywords()
+    description.value = meta.getDescription()
+    image.value = meta.getImage()
+    canonical.value = meta.getCanonical()
+    robots.value = meta.getRobots()
+    author.value = meta.getAuthor()
+    siteName.value = meta.getSiteName()
+  }
+
+  /**
+   * Updates the state of MetaStatic using current reactive values.
+   *
+   * Обновляет состояние MetaStatic, используя текущие реактивные значения.
+   */
+  const update = () => {
     meta.setTitle(title.value)
-  })
-  watch(keyword, () => {
     meta.setKeywords(keyword.value)
-  })
-  watch(description, () => {
     meta.setDescription(description.value)
-  })
-  watch(image, () => {
     meta.setImage(image.value)
-  })
-  watch(canonical, () => {
     meta.setCanonical(canonical.value)
-  })
-  watch(robots, () => {
     meta.setRobots(robots.value)
-  })
-  watch(author, () => {
     meta.setAuthor(author.value)
-  })
-  watch(siteName, () => {
     meta.setSiteName(siteName.value)
-  })
+  }
+
+  /**
+   * Updates MetaStatic values if the current environment is SSR (not a DOM runtime).
+   *
+   * Обновляет значения MetaStatic, если текущая среда — SSR (не DOM-среда).
+   */
+  const updateSsr = () => {
+    if (!isDomRuntime()) {
+      update()
+    }
+  }
+
+  watch(
+    [title, keyword, description, image, canonical, robots, author, siteName],
+    () => update()
+  )
 
   return {
     meta,
@@ -89,6 +200,91 @@ const item = executeUseLocal(() => {
      * Генерирует HTML-строку для всех мета-тегов (для SSR).
      */
     getHtmlMeta,
+
+    /**
+     * Synchronizes all reactive values with the current state of MetaStatic.
+     *
+     * Синхронизирует все реактивные значения с текущим состоянием MetaStatic.
+     */
+    sync,
+
+    /**
+     * Updates MetaStatic values with current reactive state.
+     *
+     * Обновляет значения MetaStatic текущим реактивным состоянием.
+     */
+    update,
+
+    /**
+     * Updates MetaStatic values if the current environment is SSR (not a DOM runtime).
+     *
+     * Обновляет значения MetaStatic, если текущая среда — SSR (не DOM-среда).
+     */
+    updateSsr,
+
+    /**
+     * Sets the page title.
+     *
+     * Устанавливает заголовок страницы.
+     * @param value Title to set / Заголовок для установки
+     */
+    setTitle,
+
+    /**
+     * Sets the keywords meta tag.
+     *
+     * Устанавливает мета-тег keywords.
+     * @param value Keywords to set / Ключевые слова для установки
+     */
+    setKeywords,
+
+    /**
+     * Sets the description meta tag.
+     *
+     * Устанавливает мета-тег description.
+     * @param value Description to set / Описание для установки
+     */
+    setDescription,
+
+    /**
+     * Sets the author meta tag.
+     *
+     * Устанавливает мета-тег author.
+     * @param value Author to set / Автор для установки
+     */
+    setAuthor,
+
+    /**
+     * Sets the Open Graph / Twitter Card image URL.
+     *
+     * Устанавливает URL изображения для Open Graph / Twitter Card.
+     * @param value Image URL to set / URL изображения для установки
+     */
+    setImage,
+
+    /**
+     * Sets the canonical URL.
+     *
+     * Устанавливает канонический URL.
+     * @param value Canonical URL to set / Канонический URL для установки
+     */
+    setCanonical,
+
+    /**
+     * Sets the robots meta tag directive.
+     *
+     * Устанавливает директиву мета-тега robots.
+     * @param value Robots directive to set / Директива robots для установки
+     */
+    setRobots,
+
+    /**
+     * Sets the site name for Open Graph and Twitter Card.
+     *
+     * Устанавливает название сайта для Open Graph и Twitter Card.
+     * @param value Site name to set / Название сайта для установки
+     */
+    setSiteName,
 
     /**
      * Sets the suffix for the page title.
