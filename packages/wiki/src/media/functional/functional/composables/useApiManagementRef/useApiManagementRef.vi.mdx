@@ -61,6 +61,12 @@ Một composable mạnh mẽ để điều phối toàn diện các request API.
     - Việc này kích hoạt tải lại dữ liệu và cập nhật toàn bộ danh sách. Do đó, sau khi xóa một dòng hoặc thêm mới, danh sách của bạn luôn được cập nhật mà không cần viết thêm mã xử lý thủ công.
 6.  **Tính phản xạ của tham số**: Nếu `path` hoặc `options` (trong `propsGet`) là các biến reactive (Vue Ref) và bạn thiết lập `reactivity: true`, hook sẽ theo dõi sự thay đổi của chúng và tự động tải lại dữ liệu khi URL hoặc tham số lọc thay đổi.
 
+## SSR và Khởi tạo
+
+Để đảm bảo hoạt động chính xác của **Server Side Rendering (SSR)**, bạn nên sử dụng phiên bản bất đồng bộ [**`useApiManagementAsyncRef`**](./useApiManagementAsyncRef.vi.mdx). Nó tự động khởi tạo GET request để tải trước trên máy chủ.
+
+Nếu bạn đang sử dụng `useApiManagementRef` tiêu chuẩn, bạn có thể đưa nó vào chu trình SSR một cách thủ công bằng cách gọi `initSsr()` trong `setup()` của component. Điều này đảm bảo rằng dữ liệu sẽ được tải ở phía máy chủ.
+
 ## Kiến trúc phần lõi
 
 `useApiManagementRef` là một hook điều hướng được thiết kế chuyên biệt để quản lý các mẫu màn hình CRUD tiêu chuẩn (ví dụ như data tables). Thông qua cấu hình tham số, bạn sẽ nhận được một đối tượng "tất cả trong một" để quản lý loading spinners, bộ tìm kiếm, chuẩn hóa dữ liệu cho UI, điều khiển thao tác CRUD và tự động tải lại danh sách.

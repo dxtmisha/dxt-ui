@@ -49,20 +49,22 @@ Yêu cầu và cơ chế theo dõi thay đổi **không được bắt đầu** 
 
 `setApiRefGlobalConditions(conditions)` — thiết lập điều kiện toàn cục cho tất cả các instance `useApiRef`. Chỉ có hiệu lực một lần.
 
-## SSR và Khởi tạo
+## SSR (Server-Side Rendering)
 
-Phương thức `init` được thiết kế để quản lý quá trình tải dữ liệu ban đầu, điều này cực kỳ quan trọng đối với hoạt động chính xác của **Server Side Rendering (SSR)** và đảm bảo giao diện được hiển thị nhanh chóng trên client.
+Để đảm bảo hoạt động chính xác ở phía máy chủ (SSR), phương thức **`initSsr()`** phải được sử dụng.
 
-### Cơ chế hoạt động (Hydration)
+### Phương thức `initSsr()`
+Khi được gọi trong `setup()` của một component, nó đảm bảo dữ liệu được tải trên máy chủ trước khi render trang và được áp dụng ngay lập tức ở phía máy khách.
 
-1.  **Phía Máy chủ (SSR):**
-    Khi trang được mở lần đầu tiên, hãy gọi `await init()` trong `async setup()`. Điều này buộc máy chủ phải đợi phản hồi từ API và render component với dữ liệu đã sẵn sàng. Dữ liệu nhận được sẽ tự động được đưa vào bộ nhớ đệm trạng thái (cache), sau đó được chuyển đến client.
+```typescript
+const { data, initSsr } = useApiRef('path/to/api')
 
-2.  **Phía Máy khách (Hydration):**
-    Khi trình duyệt "kích hoạt" (hydrate) trang, `useApiRef` trước tiên sẽ kiểm tra dữ liệu trong bộ nhớ đệm. Nếu dữ liệu có ở đó (được nhận từ máy chủ), chúng sẽ được áp dụng ngay lập tức vào `data`, tránh việc lặp lại yêu cầu API.
+// Gọi phương thức này để hỗ trợ SSR
+initSsr()
+```
 
-3.  **Điều hướng Động (Client-side Nav):**
-    Nếu người dùng điều hướng đến trang một cách linh hoạt (không tải lại trang), component sẽ render ngay lập tức mà không cần đợi `init()` hoàn thành. Điều này cho phép hiển thị ngay lập tức **skeleton** hoặc chỉ báo đang tải (`loading`) trong khi dữ liệu đang được tải ở chế độ nền.
+### Tự động hóa qua `AsyncRef`
+Để tránh việc gọi `initSsr()` thủ công, bạn có thể sử dụng phiên bản bất đồng bộ — [**`useApiAsyncRef`**](./useApiAsyncRef.vi.mdx). Nó tự động gọi `initSsr()` khi được tạo.
 ## Đối tượng ApiOptions
 
 `ApiOptions` — có thể nhận một chuỗi tên `method` (ví dụ: `'GET'`) hoặc một đối tượng kiểu `ApiFetch`. Các trường của đối tượng `ApiFetch`:

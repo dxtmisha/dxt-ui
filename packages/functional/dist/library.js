@@ -2,7 +2,7 @@ import { Api as e, ApiMethodItem as t, BroadcastMessage as n, Cookie as r, DataS
 import { computed as M, customRef as oe, effectScope as se, getCurrentInstance as ce, h as le, hasInjectionContext as ue, inject as de, isRef as N, onServerPrefetch as fe, onUnmounted as pe, provide as me, ref as P, shallowRef as F, toRefs as he, triggerRef as ge, useAttrs as _e, useSlots as ve, watch as I, watchEffect as ye } from "vue";
 export * from "@dxtmisha/functional-basic";
 //#endregion
-//#region \0@oxc-project+runtime@0.126.0/helpers/typeof.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/typeof.js
 function L(e) {
 	"@babel/helpers - typeof";
 	return L = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
@@ -12,7 +12,7 @@ function L(e) {
 	}, L(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.126.0/helpers/toPrimitive.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/toPrimitive.js
 function be(e, t) {
 	if (L(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
@@ -24,13 +24,13 @@ function be(e, t) {
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.126.0/helpers/toPropertyKey.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/toPropertyKey.js
 function xe(e) {
 	var t = be(e, "string");
 	return L(t) == "symbol" ? t : t + "";
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.126.0/helpers/defineProperty.js
+//#region \0@oxc-project+runtime@0.127.0/helpers/defineProperty.js
 function R(e, t, n) {
 	return (t = xe(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
@@ -910,6 +910,8 @@ function Ke(e, t, n, r, i, a, o, s) {
 		loadingDelete: S == null ? void 0 : S.loading,
 		isSearch: v == null ? void 0 : v.isSearch,
 		search: v == null ? void 0 : v.search,
+		init: C.init,
+		initSsr: C.initSsr,
 		reset: C.reset,
 		abort: C.abort,
 		sendPost: async (e) => await (y == null ? void 0 : y.send(e)),
@@ -918,10 +920,16 @@ function Ke(e, t, n, r, i, a, o, s) {
 	};
 }
 //#endregion
+//#region src/composables/ref/useApiManagementAsyncRef.ts
+function qe(e, t, n, r, i, a, o, s) {
+	let c = Ke(e, t, n, r, i, a, o, s);
+	return c.initSsr(), c;
+}
+//#endregion
 //#region src/composables/ref/useBroadcastValueRef.ts
-var qe = () => v.get("__ui:broadcast-value-ref__", () => ({}));
-function Je(e, t) {
-	let r = `broadcast--${e}`, i = qe();
+var Je = () => v.get("__ui:broadcast-value-ref__", () => ({}));
+function Ye(e, t) {
+	let r = `broadcast--${e}`, i = Je();
 	if (r in i) return i[r];
 	let a = P(b(t));
 	if (E()) {
@@ -936,11 +944,11 @@ function Je(e, t) {
 }
 //#endregion
 //#region src/composables/ref/useCookieRef.ts
-var Ye = () => v.get("__ui:cookie-ref__", () => ({}));
-function Xe(e, t, n) {
-	let i = Ye();
+var Xe = () => v.get("__ui:cookie-ref__", () => ({}));
+function Ze(e, t, n) {
+	let i = Xe();
 	if (e in i) return i[e];
-	let a = new r(e), o = Je(`__cookie:${e}`, a.get(t, n));
+	let a = new r(e), o = Ye(`__cookie:${e}`, a.get(t, n));
 	return U.run(() => {
 		I(o, (e) => {
 			a.set(e, n);
@@ -949,14 +957,14 @@ function Xe(e, t, n) {
 }
 //#endregion
 //#region src/composables/ref/useGeoIntlRef.ts
-function Ze() {
+function Qe() {
 	return new Pe();
 }
 //#endregion
 //#region src/composables/ref/useHashRef.ts
-var Qe = () => v.get("__ui:hash-ref__", () => ({}));
-function $e(e, t) {
-	let n = Qe();
+var $e = () => v.get("__ui:hash-ref__", () => ({}));
+function et(e, t) {
+	let n = $e();
 	if (e in n) return n[e];
 	let r = F(f.get(e, t));
 	return E() && (U.run(() => {
@@ -967,7 +975,7 @@ function $e(e, t) {
 }
 //#endregion
 //#region src/composables/ref/useLazyRef.ts
-var et = (e = { rootMargin: "128px 0px" }) => {
+var tt = (e = { rootMargin: "128px 0px" }) => {
 	let t = {}, n = E() && "IntersectionObserver" in window ? new IntersectionObserver((e) => {
 		e.forEach((e) => {
 			let n = w(e.target);
@@ -1011,16 +1019,16 @@ var et = (e = { rootMargin: "128px 0px" }) => {
 		removeLazyItem: r,
 		disconnectLazy: () => n == null ? void 0 : n.disconnect()
 	};
-}, tt = () => v.get("__ui:lazy-item-by-margin-ref__", () => []), nt = (e) => {
-	let t = tt(), n = t.find((t) => t.rootMargin === e);
+}, nt = () => v.get("__ui:lazy-item-by-margin-ref__", () => []), rt = (e) => {
+	let t = nt(), n = t.find((t) => t.rootMargin === e);
 	if (n) return n.item;
-	let r = et({ rootMargin: e });
+	let r = tt({ rootMargin: e });
 	return t.push({
 		rootMargin: e,
 		item: r
 	}), r;
-}, rt = (e, t) => {
-	let n = nt(t);
+}, it = (e, t) => {
+	let n = rt(t);
 	return {
 		lazyItemStatus: n.addLazyItem(e),
 		get lazyItem() {
@@ -1030,7 +1038,7 @@ var et = (e = { rootMargin: "128px 0px" }) => {
 };
 //#endregion
 //#region src/composables/ref/useLoadingRef.ts
-function it() {
+function at() {
 	let e = F(m.is());
 	return E() && m.registrationEvent(({ detail: t }) => {
 		e.value = t.loading;
@@ -1040,9 +1048,9 @@ function it() {
 //#region src/functions/executeUse.ts
 var Q = /* @__PURE__ */ function(e) {
 	return e.global = "global", e.provide = "provide", e.local = "local", e;
-}({}), at = 1, ot = re(1e5, 999999), st = () => `__execute_use${ot}::${at++}`, ct = () => v.get("__ui:execute-use-global__", () => []);
+}({}), ot = 1, st = re(1e5, 999999), ct = () => `__execute_use${st}::${ot++}`, lt = () => v.get("__ui:execute-use-global__", () => []);
 function $(e, t = Q.provide) {
-	let n = st(), r, i = (t) => {
+	let n = ct(), r, i = (t) => {
 		let n = Object.freeze(e(...t));
 		return {
 			...n,
@@ -1064,41 +1072,56 @@ function $(e, t = Q.provide) {
 	}, s = (...e) => t === Q.provide ? de(n, void 0) || a(e) : (r || U.run(() => {
 		r = o(e);
 	}), r);
-	return t === Q.global && ct().push(s), s;
-}
-function lt(e) {
-	return $(e, Q.global);
+	return t === Q.global && lt().push(s), s;
 }
 function ut(e) {
-	return $(e, Q.provide);
+	return $(e, Q.global);
 }
 function dt(e) {
+	return $(e, Q.provide);
+}
+function ft(e) {
 	return $(e, Q.local);
 }
-function ft() {
-	ct().forEach((e) => e());
+function pt() {
+	lt().forEach((e) => e());
 }
 //#endregion
 //#region src/composables/ref/useMeta.ts
-var pt = dt(() => {
-	let e = h, t = P(e.getTitle()), n = P(e.getKeywords()), r = P(e.getDescription()), i = P(e.getImage()), a = P(e.getCanonical()), o = P(e.getRobots()), s = P(e.getAuthor()), c = P(e.getSiteName());
-	return I(t, () => {
-		e.setTitle(t.value);
-	}), I(n, () => {
-		e.setKeywords(n.value);
-	}), I(r, () => {
-		e.setDescription(r.value);
-	}), I(i, () => {
-		e.setImage(i.value);
-	}), I(a, () => {
-		e.setCanonical(a.value);
-	}), I(o, () => {
-		e.setRobots(o.value);
-	}), I(s, () => {
-		e.setAuthor(s.value);
-	}), I(c, () => {
-		e.setSiteName(c.value);
-	}), {
+var mt = ft(() => {
+	let e = h, t = P(e.getTitle()), n = P(e.getKeywords()), r = P(e.getDescription()), i = P(e.getImage()), a = P(e.getCanonical()), o = P(e.getRobots()), s = P(e.getAuthor()), c = P(e.getSiteName()), l = () => e.html(), u = (e) => {
+		t.value = e, x();
+	}, d = (e) => {
+		n.value = e, x();
+	}, f = (e) => {
+		r.value = e, x();
+	}, p = (e) => {
+		i.value = e, x();
+	}, m = (e) => {
+		a.value = e, x();
+	}, g = (e) => {
+		o.value = e, x();
+	}, _ = (e) => {
+		s.value = e, x();
+	}, v = (e) => {
+		c.value = e, x();
+	}, y = () => {
+		t.value = e.getTitle(), n.value = e.getKeywords(), r.value = e.getDescription(), i.value = e.getImage(), a.value = e.getCanonical(), o.value = e.getRobots(), s.value = e.getAuthor(), c.value = e.getSiteName();
+	}, b = () => {
+		e.setTitle(t.value), e.setKeywords(n.value), e.setDescription(r.value), e.setImage(i.value), e.setCanonical(a.value), e.setRobots(o.value), e.setAuthor(s.value), e.setSiteName(c.value);
+	}, x = () => {
+		E() || b();
+	};
+	return I([
+		t,
+		n,
+		r,
+		i,
+		a,
+		o,
+		s,
+		c
+	], () => b()), {
 		meta: e,
 		title: t,
 		keyword: n,
@@ -1108,10 +1131,21 @@ var pt = dt(() => {
 		canonical: a,
 		robots: o,
 		siteName: c,
-		getHtmlMeta: () => e.html(),
+		getHtmlMeta: l,
+		sync: y,
+		update: b,
+		updateSsr: x,
+		setTitle: u,
+		setKeywords: d,
+		setDescription: f,
+		setAuthor: _,
+		setImage: p,
+		setCanonical: m,
+		setRobots: g,
+		setSiteName: v,
 		setSuffix: (t) => e.setSuffix(t)
 	};
-}), mt = () => pt(), ht = (e, t, n = !0) => {
+}), ht = () => mt(), gt = (e, t, n = !0) => {
 	var r;
 	let i = N(t) ? t : P(t || ((r = e.value) == null || (r = r[0]) == null ? void 0 : r.value) || ""), a = () => o(i.value), o = (t) => {
 		var n;
@@ -1136,9 +1170,9 @@ var pt = dt(() => {
 			s((t = e.value) == null || (t = t[0]) == null ? void 0 : t.value);
 		}
 	};
-}, gt = () => v.get("__ui:session-ref__", () => ({}));
-function _t(e, t) {
-	let n = gt();
+}, _t = () => v.get("__ui:session-ref__", () => ({}));
+function vt(e, t) {
+	let n = _t();
 	if (e in n) return n[e];
 	let r = new i(e, !0), a = P(r.get(t));
 	return U.run(() => {
@@ -1147,9 +1181,9 @@ function _t(e, t) {
 }
 //#endregion
 //#region src/composables/ref/useStorageRef.ts
-var vt = () => v.get("__ui:storage-ref__", () => ({}));
-function yt(e, t, n) {
-	let r = vt();
+var yt = () => v.get("__ui:storage-ref__", () => ({}));
+function bt(e, t, n) {
+	let r = yt();
 	if (e in r) return r[e];
 	let a = new i(e), o = P(a.get(t, n));
 	return U.run(() => {
@@ -1160,7 +1194,7 @@ function yt(e, t, n) {
 }
 //#endregion
 //#region src/composables/ref/useTranslateRef.ts
-function bt(e, t = y.getItem()) {
+function xt(e, t = y.getItem()) {
 	let n = F(t.getListSync(e, !0)), r = async () => {
 		n.value = { ...await t.getList(e) };
 	};
@@ -1173,10 +1207,10 @@ function bt(e, t = y.getItem()) {
 	}
 	return n;
 }
-var xt = (e) => bt(e);
+var St = (e) => xt(e);
 //#endregion
 //#region src/functions/computedAsync.ts
-function St(e, t, n, r) {
+function Ct(e, t, n, r) {
 	let i = F(b(t)), a = !0, o = async () => {
 		let t = await x(e);
 		t !== n && (i.value = t);
@@ -1187,7 +1221,7 @@ function St(e, t, n, r) {
 }
 //#endregion
 //#region src/functions/computedByLanguage.ts
-function Ct(e, t = () => void 0, n, r) {
+function wt(e, t = () => void 0, n, r) {
 	return M(() => {
 		if (G.get().value && (n === void 0 || n())) {
 			let t = e();
@@ -1198,7 +1232,7 @@ function Ct(e, t = () => void 0, n, r) {
 }
 //#endregion
 //#region src/functions/computedEternity.ts
-function wt(e, t) {
+function Tt(e, t) {
 	return oe((n, r) => {
 		let i = F(b(t)), a = !1, o = async () => {
 			i.value = await x(e), r();
@@ -1219,17 +1253,17 @@ function wt(e, t) {
 }
 //#endregion
 //#region src/functions/dxtFunctionalPlugin.ts
-var Tt = { install(t, n = {}) {
-	if (n.api && e.setConfig(n.api), n.translate && y.setConfig(n.translate), n.icons && p.setConfig(n.icons), n.metaSuffix && mt().setSuffix(n.metaSuffix), n.router) q.set(n.router);
+var Et = { install(t, n = {}) {
+	if (n.api && e.setConfig(n.api), n.translate && y.setConfig(n.translate), n.icons && p.setConfig(n.icons), n.metaSuffix && ht().setSuffix(n.metaSuffix), n.router) q.set(n.router);
 	else {
 		let e = t.config.globalProperties.$router;
 		e && q.set(e);
 	}
-	n.errorCauses && o.addList(n.errorCauses), ft();
+	n.errorCauses && o.addList(n.errorCauses), pt();
 } };
 //#endregion
 //#region src/functions/getInject.ts
-function Et(e) {
+function Dt(e) {
 	if (ue()) {
 		let t = de(e);
 		if (t) return t;
@@ -1237,19 +1271,19 @@ function Et(e) {
 }
 //#endregion
 //#region src/functions/render/getBind.ts
-function Dt(e, t = {}, n = "value", r = !1) {
+function Ot(e, t = {}, n = "value", r = !1) {
 	let i = typeof t == "string", a = i ? t : n, o = i ? {} : t;
 	return e ? e && O(e) && (a in e || r) ? B(o, e) : B(o, { [a]: e }) : i ? {} : { ...o };
 }
 //#endregion
 //#region src/functions/ref/getBindRef.ts
-function Ot(e, t = {}, n = "value") {
-	return M(() => Dt(z(e), z(t), n));
+function kt(e, t = {}, n = "value") {
+	return M(() => Ot(z(e), z(t), n));
 }
 //#endregion
 //#region src/functions/ref/setRef.ts
-function kt(e, t) {
+function At(e, t) {
 	e.value !== t && (e.value = t);
 }
 //#endregion
-export { je as DatetimeRef, Ce as DesignAbstract, we as DesignAsyncAbstract, Se as DesignChanged, ke as DesignComp, V as DesignComponents, Ae as DesignConstructorAbstract, U as EffectScopeGlobal, Me as EventRef, Q as ExecuteUseType, Ne as GeoFlagRef, Pe as GeoIntlRef, G as GeoRef, Fe as ListDataRef, q as RouterItemRef, Ie as ScrollbarWidthRef, St as computedAsync, Ct as computedByLanguage, wt as computedEternity, Tt as dxtFunctionalPlugin, $ as executeUse, lt as executeUseGlobal, ft as executeUseGlobalInit, dt as executeUseLocal, ut as executeUseProvide, Dt as getBind, Ot as getBindRef, Te as getClassName, Ee as getIndexForRender, Et as getInject, J as getOptions, z as getRef, De as render, Le as setApiRefGlobalConditions, kt as setRef, xt as t, B as toBind, Oe as toBinds, H as toRefItem, Re as useApiAsyncRef, ze as useApiDelete, Be as useApiGet, Ke as useApiManagementRef, Ve as useApiPost, He as useApiPut, X as useApiRef, Z as useApiRequest, Je as useBroadcastValueRef, Xe as useCookieRef, Ue as useFormattersRef, Ze as useGeoIntlRef, $e as useHashRef, rt as useLazyItemByMarginRef, et as useLazyRef, it as useLoadingRef, mt as useMeta, ht as useRouterList, Ge as useSearchRef, We as useSearchValueRef, _t as useSessionRef, yt as useStorageRef, bt as useTranslateRef };
+export { je as DatetimeRef, Ce as DesignAbstract, we as DesignAsyncAbstract, Se as DesignChanged, ke as DesignComp, V as DesignComponents, Ae as DesignConstructorAbstract, U as EffectScopeGlobal, Me as EventRef, Q as ExecuteUseType, Ne as GeoFlagRef, Pe as GeoIntlRef, G as GeoRef, Fe as ListDataRef, q as RouterItemRef, Ie as ScrollbarWidthRef, Ct as computedAsync, wt as computedByLanguage, Tt as computedEternity, Et as dxtFunctionalPlugin, $ as executeUse, ut as executeUseGlobal, pt as executeUseGlobalInit, ft as executeUseLocal, dt as executeUseProvide, Ot as getBind, kt as getBindRef, Te as getClassName, Ee as getIndexForRender, Dt as getInject, J as getOptions, z as getRef, De as render, Le as setApiRefGlobalConditions, At as setRef, St as t, B as toBind, Oe as toBinds, H as toRefItem, Re as useApiAsyncRef, ze as useApiDelete, Be as useApiGet, qe as useApiManagementAsyncRef, Ke as useApiManagementRef, Ve as useApiPost, He as useApiPut, X as useApiRef, Z as useApiRequest, Ye as useBroadcastValueRef, Ze as useCookieRef, Ue as useFormattersRef, Qe as useGeoIntlRef, et as useHashRef, it as useLazyItemByMarginRef, tt as useLazyRef, at as useLoadingRef, ht as useMeta, gt as useRouterList, Ge as useSearchRef, We as useSearchValueRef, vt as useSessionRef, bt as useStorageRef, xt as useTranslateRef };

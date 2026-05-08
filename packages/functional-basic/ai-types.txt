@@ -14,269 +14,118 @@ The following is the content of "exports" from package.json:
   "./types/**/*.d.ts": "./dist/**/*.d.ts"
 }
 
-// File: library.d.ts
-/** Adds a highlight tag to matches in a string.
- * @param value input string
- * @param search search string or RegExp
- * @param className CSS class for highlight
- * @param shouldEscape escape string flag
- */
-export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
-
-/** Converts a value to a string.
- * @param value value to convert
- * @param isArrayString convert arrays to strings
- * @param trim trim result
- */
-export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?: boolean): string;
-
-/** HTTP request utility class. */
+// File: classes/Api.d.ts
+/** HTTP request handler. */
 export declare class Api {
     /** Check if localhost. */
     static isLocalhost(): boolean;
     /** Get ApiInstance singleton. */
     static getItem(): ApiInstance;
-    /** Get last request status. */
+    /** Get status of last request. */
     static getStatus(): ApiStatus;
     /** Get response handler. */
     static getResponse(): ApiResponse;
     /** Get hydration handler. */
     static getHydration(): ApiHydration;
-    /** Get client hydration script string. */
+    /** Get HTML script for hydration data. */
     static getHydrationScript(): string;
-    /** Get base origin URL. */
+    /** Get base origin URL with API path. */
     static getOrigin(): string;
-    /** Get full script URL. */
+    /** Get full script path. */
     static getUrl(path: string, api?: boolean): string;
     /** Get request body data. */
     static getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
-    /** Get GET request query string. */
+    /** Get query string for GET requests. */
     static getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
     /** Set default headers. */
     static setHeaders(headers: Record<string, string>): void;
     /** Set default request data. */
     static setRequestDefault(request: Record<string, any>): void;
-    /** Set base script URL. */
+    /** Set base path. */
     static setUrl(url: string): void;
     /** Set pre-request callback. */
     static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void;
     /** Set post-request callback. */
     static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void;
-    /** Set request timeout. */
+    /** Set request timeout (ms). */
     static setTimeout(timeout: number): void;
     /** Set base origin. */
     static setOrigin(origin: string): void;
-    /** Set full API config. */
+    /** Set bulk API config. */
     static setConfig(config?: ApiConfig): void;
     /** Execute request. */
     static request<T>(pathRequest: string | ApiFetch): Promise<T>;
-    /** Send GET request. */
     static get<T>(request: ApiFetch): Promise<T>;
-    /** Send POST request. */
     static post<T>(request: ApiFetch): Promise<T>;
-    /** Send PUT request. */
     static put<T>(request: ApiFetch): Promise<T>;
-    /** Send PATCH request. */
     static patch<T>(request: ApiFetch): Promise<T>;
-    /** Send DELETE request. */
     static delete<T>(request: ApiFetch): Promise<T>;
 }
-
-/** API response caching. */
+// File: classes/ApiCache.d.ts
+/** API response caching handler. */
 export declare class ApiCache {
-    /** Initialize cache storage with listeners. */
+    /** Init storage with listeners. */
     static init(getListener: (key: string) => Promise<ApiCacheItem | undefined>, setListener: (key: string, value: ApiCacheItem) => Promise<boolean>, removeListener: (key: string) => Promise<boolean>, cacheStepAgeClearOld?: number): void;
-    /** Clear all cache. */
+    /** Clear all cache and reset listeners. */
     static reset(): void;
-    /** Get from cache by key. */
+    /** Get cached data by key. */
     static get<T>(key: string): Promise<T | undefined>;
-    /** Get from cache using fetch options. */
+    /** Get cached data by fetch options. */
     static getByFetch<T>(fetch: ApiFetch): Promise<T | undefined>;
-    /** Save to cache. */
+    /** Save data to cache. */
     static set<T>(key: string, value: T, age?: number): Promise<void>;
-    /** Save to cache using fetch options. */
+    /** Save data to cache using fetch options. */
     static setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>;
-    /** Remove from cache. */
+    /** Remove key from cache. */
     static remove(key: string): Promise<void>;
 }
-
-/** Cached API item. */
-export declare type ApiCacheItem<T = any> = {
-    value: T;
-    age?: number;
-    cacheAge: number;
-};
-
-/** Cache list record. */
-export declare type ApiCacheList = Record<string, ApiCacheItem>;
-
-/** API Configuration. */
-export declare type ApiConfig = {
-    urlRoot?: string;
-    origin?: string;
-    headers?: Record<string, string>;
-    requestDefault?: Record<string, any>;
-    preparation?: (apiFetch: ApiFetch) => Promise<void>;
-    end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
-    timeout?: number;
-};
-
-/** API data wrapper. */
-export declare type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
-
-/** API data item. */
-export declare type ApiDataItem<T = any> = T & ApiDataValidation & {
-    data?: T;
-    success?: boolean;
-    statusObject?: ApiStatusItem;
-};
-
-/** Processes data from API request. */
+// File: classes/ApiDataReturn.d.ts
+/** Processes and formats API response data. */
 export declare class ApiDataReturn<T = any> {
     constructor(apiFetch: ApiFetch, query: Response, end: ApiPreparationEnd);
-    /** Read data from response. */
+    /** Read and parse response data. */
     init(): Promise<this>;
     /** Get processed data. */
     get(): ApiData<T>;
-    /** Get processed data with status. */
+    /** Get data with status object. */
     getAndStatus(status: ApiStatus): ApiData<T>;
     /** Get raw API data. */
     getData(): ApiData<T> | undefined;
 }
-
-/** API validation metadata. */
-export declare type ApiDataValidation = {
-    status?: ApiStatusType;
-    code?: string | number;
-    message?: string;
-};
-
-/** Manages default request data. */
+// File: classes/ApiDefault.d.ts
+/** Manages default API request data. */
 export declare class ApiDefault {
     /** Check if default data exists. */
     is(): boolean;
     /** Get default data. */
     get(): ApiDefaultValue | undefined;
-    /** Merge defaults into request. */
+    /** Merge defaults into request data. */
     request(request: ApiFetch['request']): ApiFetch['request'];
-    /** Set defaults. */
+    /** Set default data. */
     set(request: ApiDefaultValue): this;
 }
-
-/** Default API request data. */
-export declare type ApiDefaultValue = Record<string, any>;
-
-/** API fetch options. */
-export declare type ApiFetch = {
-    api?: boolean;
-    path?: string;
-    pathFull?: string;
-    method?: ApiMethod;
-    request?: FormData | Record<string, any> | string;
-    auth?: boolean;
-    headers?: Record<string, string> | null;
-    type?: string;
-    toData?: boolean;
-    global?: boolean;
-    devMode?: boolean;
-    hideError?: boolean;
-    hideLoading?: boolean;
-    retry?: number;
-    retryDelay?: number;
-    queryReturn?: (query: Response) => Promise<any | ApiDataValidation>;
-    globalPreparation?: boolean;
-    globalEnd?: boolean;
-    init?: RequestInit;
-    timeout?: number;
-    controller?: AbortController;
-    cache?: number;
-    enableClientCache?: boolean;
-    cacheId?: number | string;
-    endResetLimit?: number;
-};
-
-/** Manages HTTP headers. */
+// File: classes/ApiHeaders.d.ts
+/** HTTP header manager. */
 export declare class ApiHeaders {
-    /** Get merged headers. */
+    /** Get request headers. */
     get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
-    /** Get headers based on request data. */
+    /** Get headers by request context. */
     getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
     /** Set default headers. */
     set(headers: Record<string, string>): this;
 }
-
-/** Collects API data for SSR hydration. */
+// File: classes/ApiHydration.d.ts
+/** Collects SSR data for client hydration. */
 export declare class ApiHydration {
-    /** Init response with hydration data. */
+    /** Add hydration data to response. */
     initResponse(response: ApiResponse): void;
-    /** Save response for client. */
+    /** Save response for client side. */
     toClient<T>(apiFetch: ApiFetch, response: T): void;
-    /** Get hydration script string. */
+    /** Get script string for client. */
     toString(): string;
 }
-
-/** Hydration item. */
-export declare type ApiHydrationItem = {
-    path: string;
-    method: ApiMethod;
-    request?: ApiFetch['request'];
-    response: any;
-};
-
-/** List of hydration items. */
-export declare type ApiHydrationList = ApiHydrationItem[];
-
-/** Core fetch manager. */
-export declare class ApiInstance {
-    constructor(url?: string, options?: ApiInstanceOptions);
-    /** Check if localhost. */
-    isLocalhost(): boolean;
-    /** Get last status. */
-    getStatus(): ApiStatus;
-    /** Get response handler. */
-    getResponse(): ApiResponse;
-    /** Get hydration handler. */
-    getHydration(): ApiHydration;
-    /** Get base origin. */
-    getOrigin(): string;
-    /** Get full script URL. */
-    getUrl(path: string, api?: boolean): string;
-    /** Get request body. */
-    getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
-    /** Get query string for GET. */
-    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
-    /** Get hydration script. */
-    getHydrationScript(): string;
-    /** Set default headers. */
-    setHeaders(headers: Record<string, string>): this;
-    /** Set default request data. */
-    setRequestDefault(request: Record<string, any>): this;
-    /** Set base URL. */
-    setUrl(url: string): this;
-    /** Set pre-request hook. */
-    setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
-    /** Set post-request hook. */
-    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
-    /** Set timeout. */
-    setTimeout(timeout: number): this;
-    /** Set origin. */
-    setOrigin(origin: string): this;
-    /** Execute request. */
-    request<T>(pathRequest: string | ApiFetch): Promise<T>;
-    /** GET request. */
-    get<T>(request: ApiFetch): Promise<T>;
-    /** POST request. */
-    post<T>(request: ApiFetch): Promise<T>;
-    /** PUT request. */
-    put<T>(request: ApiFetch): Promise<T>;
-    /** PATCH request. */
-    patch<T>(request: ApiFetch): Promise<T>;
-    /** DELETE request. */
-    delete<T>(request: ApiFetch): Promise<T>;
-}
-
-/** API instance configuration. */
-export declare type ApiInstanceOptions = {
+// File: classes/ApiInstance.d.ts
+export type ApiInstanceOptions = {
     headersClass?: typeof ApiHeaders;
     requestDefaultClass?: typeof ApiDefault;
     statusClass?: typeof ApiStatus;
@@ -286,195 +135,199 @@ export declare type ApiInstanceOptions = {
     errorCenterClass?: ErrorCenterInstance;
     hydrationClass?: typeof ApiHydration;
 };
-
-/** HTTP Method type. */
-export declare type ApiMethod = string & ApiMethodItem;
-
-/** Supported HTTP methods. */
-export declare enum ApiMethodItem {
-    delete = "DELETE",
-    get = "GET",
-    post = "POST",
-    put = "PUT",
-    patch = "PATCH"
+/** Core Fetch API request manager. */
+export declare class ApiInstance {
+    constructor(url?: string, options?: ApiInstanceOptions);
+    /** Check if localhost. */
+    isLocalhost(): boolean;
+    /** Get last request status. */
+    getStatus(): ApiStatus;
+    /** Get response handler. */
+    getResponse(): ApiResponse;
+    /** Get hydration handler. */
+    getHydration(): ApiHydration;
+    /** Get base origin with API path. */
+    getOrigin(): string;
+    /** Get full URL. */
+    getUrl(path: string, api?: boolean): string;
+    /** Get body for non-GET requests. */
+    getBody(request?: ApiFetch['request'], method?: ApiMethod): string | FormData | undefined;
+    /** Get GET query string. */
+    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethod): string;
+    /** Get client hydration script. */
+    getHydrationScript(): string;
+    /** Set default headers. */
+    setHeaders(headers: Record<string, string>): this;
+    /** Set default params. */
+    setRequestDefault(request: Record<string, any>): this;
+    /** Set base path. */
+    setUrl(url: string): this;
+    /** Set pre-request callback. */
+    setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
+    /** Set post-request callback. */
+    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
+    /** Set timeout (ms). */
+    setTimeout(timeout: number): this;
+    /** Set origin. */
+    setOrigin(origin: string): this;
+    /** Execute request. */
+    request<T>(pathRequest: string | ApiFetch): Promise<T>;
+    static get<T>(request: ApiFetch): Promise<T>;
+    static post<T>(request: ApiFetch): Promise<T>;
+    static put<T>(request: ApiFetch): Promise<T>;
+    static patch<T>(request: ApiFetch): Promise<T>;
+    static delete<T>(request: ApiFetch): Promise<T>;
 }
-
-/** Request preparation hooks. */
+// File: classes/ApiPreparation.d.ts
+/** Request preparation handler. */
 export declare class ApiPreparation {
-    /** Run pre-request preparation. */
+    /** Run pre-request logic. */
     make(active: boolean, apiFetch: ApiFetch): Promise<void>;
-    /** Run post-request analysis. */
+    /** Run post-request logic. */
     makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
     /** Set pre-request callback. */
     set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
     /** Set post-request callback. */
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
 }
-
-/** Hook result. */
-export declare type ApiPreparationEnd = {
-    reset?: boolean;
-    data?: any;
-};
-
-/** Manages API response mocks and cache. */
+// File: classes/ApiResponse.d.ts
+/** API response cache and emulation manager. */
 export declare class ApiResponse {
     constructor(requestDefault: ApiDefault);
-    /** Get cached or global response. */
+    /** Get cached response. */
     get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
-    /** Get list of cached responses. */
+    /** Get list of non-global cached responses. */
     getList(): (ApiResponseItem & Record<string, any>)[];
-    /** Add response to cache. */
+    /** Add items to cache. */
     add(response: ApiResponseItem | ApiResponseItem[]): this;
     /** Set dev mode. */
     setDevMode(devMode: boolean): this;
-    /** Run emulator if available. */
+    /** Emulate request. */
     emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
+    /** Emulate request sync. */
+    emulatorAsync<T>(apiFetch: ApiFetch): T | undefined;
 }
-
-/** Mock descriptor. */
-export declare type ApiResponseItem = {
-    path: string | RegExp;
-    method: ApiMethod;
-    request?: ApiFetch['request'] | '*any';
-    response: any | ((request?: ApiFetch['request']) => any);
-    disable?: any;
-    isForGlobal?: boolean;
-    lag?: any;
-};
-
-/** API status manager. */
+// File: classes/ApiStatus.d.ts
+/** API request status manager. */
 export declare class ApiStatus {
     /** Get status data. */
     get(): ApiStatusItem | undefined;
     /** Get HTTP status code. */
     getStatus(): number | undefined;
-    /** Get status text. */
+    /** Get HTTP status text. */
     getStatusText(): string | undefined;
     /** Get status type. */
     getStatusType(): ApiStatusType | undefined;
-    /** Get result code. */
+    /** Get response status code. */
     getCode(): string | undefined;
     /** Get error message. */
     getError(): string | undefined;
-    /** Get last response data. */
+    /** Get response data. */
     getResponse<T>(): T | undefined;
-    /** Get status message. */
+    /** Get message. */
     getMessage(): string;
     /** Set status data. */
     set(data: ApiStatusItem): this;
     /** Set HTTP status. */
     setStatus(status?: number, statusText?: string): this;
-    /** Set error message. */
+    /** Set error. */
     setError(error?: string): this;
-    /** Set last response data. */
+    /** Set last response and parse metadata. */
     setLastResponse(response?: any): this;
     /** Set status type. */
     setLastStatus(status?: ApiStatusType): this;
-    /** Set execution code. */
+    /** Set status code. */
     setLastCode(code?: string): this;
     /** Set message. */
     setLastMessage(message?: string): this;
 }
-
-/** Status record. */
-export declare type ApiStatusItem = {
-    status?: number;
-    statusText?: string;
-    error?: string;
-    lastResponse?: any;
-    lastStatus?: ApiStatusType;
-    lastCode?: string;
-    lastMessage?: string;
-};
-
-export declare type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
-
-/** Template applier. */
-export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
-
-export declare type ArrayToItem<T> = T extends any[] ? T[number] : T;
-
-/** Create filled array. */
-export declare function arrFill<T>(value: T, count: number): T[];
-
-/** Blob to Base64. */
-export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
-
-/** BroadcastChannel manager. */
+// File: classes/BroadcastMessage.d.ts
+/** BroadcastChannel message handler. */
 export declare class BroadcastMessage<Message = any> {
     constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
     /** Get BroadcastChannel instance. */
     getChannel(): BroadcastChannel | undefined;
     /** Send message. */
     post(message: Message): this;
-    /** Set message callback. */
+    /** Set success callback. */
     setCallback(callback: (event: MessageEvent<Message>) => void): this;
     /** Set error callback. */
     setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
     /** Close channel. */
     destroy(): this;
 }
-
-/** Memory cache. @deprecated */
-declare class Cache_2 {
+// File: classes/Cache.d.ts
+/**
+ * In-memory key-value cache.
+ * @deprecated
+ */
+export declare class Cache {
     /** Get or compute cached value. */
     get<T>(name: string, callback: () => T, comparison?: any[]): T;
-    /** Get or compute cached value async. */
+    /** Async get or compute cached value. */
     getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-export { Cache_2 as Cache }
-
-/** Cache item with dependencies. @deprecated */
+// File: classes/CacheItem.d.ts
+/**
+ * Single cached value with dependencies.
+ * @deprecated
+ */
 export declare class CacheItem<T> {
     constructor(callback: () => T);
-    /** Get cached value. */
+    /** Get value. Recomputes if dependencies change. */
     getCache(comparison: any[]): T;
-    /** Get previous cached value. */
+    /** Get value before last recomputation. */
     getCacheOld(): T | undefined;
-    /** Get cached value async. */
+    /** Async get value. */
     getCacheAsync(comparison: any[]): Promise<T>;
 }
-
-/** Persistent static cache. @deprecated */
+// File: classes/CacheStatic.d.ts
+/**
+ * Global persistent cache using ServerStorage.
+ * @deprecated
+ */
 export declare class CacheStatic {
-    /** Get cached value. */
+    /** Get or compute cached value. */
     static get<T>(name: string, callback: () => T, comparison?: any[]): T;
-    /** Get cached value async. */
+    /** Async get or compute cached value. */
     static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-
-/** Capitalize first letter. */
-export declare function capitalize(value: string, isLocale?: boolean): string;
-
-/** Cookie manager. */
+// File: classes/Cookie.d.ts
+/** Cookie management. */
 export declare class Cookie<T> {
-    constructor(name: string);
     /** Get instance by name. */
     static getInstance<T>(name: string): Cookie<unknown>;
-    /** Get value or default. */
+    constructor(name: string);
+    /** Get value or update if missing. */
     get(defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): string | T | undefined;
-    /** Set value. */
+    /** Update value. */
     set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
-    /** Remove cookie. */
+    /** Delete cookie. */
     remove(): void;
 }
-
-/** Cookie blocking status. */
+// File: classes/CookieBlock.d.ts
+/** Static interface for cookie access blocking. */
 export declare class CookieBlock {
+    /** Get request-isolated instance. */
     static getItem(): CookieBlockInstance;
+    /** Get blocking status. */
     static get(): boolean;
+    /** Set blocking status. */
     static set(value: boolean): void;
 }
-
+// File: classes/CookieBlockInstance.d.ts
+/** Cookie access state handler. */
 export declare class CookieBlockInstance {
+    /** Get current block state. */
     get(): boolean;
+    /** Set block state. */
     set(value: boolean): void;
 }
-
-export declare type CookieOptions = {
+// File: classes/CookieStorage.d.ts
+export type CookieSameSite = 'strict' | 'lax';
+export type CookieOptions = {
     age?: number;
-    sameSite?: CookieSameSite_2;
+    sameSite?: CookieSameSite;
     path?: string;
     domain?: string;
     secure?: boolean;
@@ -482,15 +335,11 @@ export declare type CookieOptions = {
     partitioned?: boolean;
     arguments?: string[] | Record<string, string | number | boolean>;
 };
-
-declare type CookieSameSite_2 = 'strict' | 'lax';
-export { CookieSameSite_2 as CookieSameSite }
-
-/** Cross-environment cookie storage. */
+/** Global cookie storage with SSR support. */
 export declare class CookieStorage {
-    /** Set custom listeners. */
+    /** Set get/set listeners. */
     static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
-    /** Clear storage. */
+    /** Reset storage. */
     static reset(): void;
     /** Get cookie value. */
     static get<T>(name: string, defaultValue?: T | (() => T)): T | undefined;
@@ -498,55 +347,57 @@ export declare class CookieStorage {
     static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
     /** Remove cookie. */
     static remove(name: string): void;
-    /** Refresh from source. */
+    /** Refresh data from cookies. */
     static update(): void;
 }
-
-/** Deep copy object. */
-export declare function copyObject<T>(value: T): T;
-
-/** Shallow copy with source merge. */
-export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
-
-/** Create DOM element.
- * @remarks Client-only. Returns undefined in SSR.
- */
-export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
-
-/** Local/Session storage wrapper. */
+// File: classes/DataStorage.d.ts
+/** LocalStorage/SessionStorage wrapper with TTL and SSR isolation. */
 export declare class DataStorage<T> {
-    constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
+    /** Set global key prefix. */
     static setPrefix(newPrefix: string): void;
-    /** Get data. */
+    constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
+    /** Get data with TTL check. */
     get(defaultValue?: T | (() => T), cache?: number): T | undefined;
-    /** Set data. */
+    /** Save data. */
     set(value?: T | (() => T)): T | undefined;
-    /** Remove data. */
+    /** Clear data. */
     remove(): this;
-    /** Sync data. */
+    /** Sync from storage. */
     update(): this;
 }
-
-/** Date manipulation utility.
- * @remarks SSR unstable if initialized without specific date.
+// File: classes/Datetime.d.ts
+/**
+ * Date manipulation and formatting.
+ * @remarks Creating instance without date in SSR may cause hydration mismatch.
  */
 export declare class Datetime {
     constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
+    /** Get GeoIntl formatter. */
     getIntl(): GeoIntl;
+    /** Get Date object. */
     getDate(): Date;
+    /** Get output format type. */
     getType(): GeoDate;
+    /** Get hours type (12/24). */
     getHoursType(): GeoHours;
+    /** Check if 24-hour format. */
     getHour24(): boolean;
+    /** Get timezone offset (minutes). */
     getTimeZoneOffset(): number;
+    /** Get timezone string. */
     getTimeZone(style?: GeoTimeZoneStyle): string;
+    /** Get first day of week. */
     getFirstDayCode(): GeoFirstDay;
     getYear(): number;
+    /** Month (1-12). */
     getMonth(): number;
     getDay(): number;
     getHour(): number;
     getMinute(): number;
     getSecond(): number;
+    /** Days in current month. */
     getMaxDay(): number;
+    /** Format locale string. */
     locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): string;
     localeYear(style?: Intl.DateTimeFormatOptions['year']): string;
     localeMonth(style?: Intl.DateTimeFormatOptions['month']): string;
@@ -554,11 +405,17 @@ export declare class Datetime {
     localeHour(style?: Intl.DateTimeFormatOptions['hour']): string;
     localeMinute(style?: Intl.DateTimeFormatOptions['minute']): string;
     localeSecond(style?: Intl.DateTimeFormatOptions['second']): string;
+    /** ISO-like standard string. */
     standard(timeZone?: boolean): string;
+    /** Set new date. */
     setDate(value: NumberOrStringOrDate): this;
+    /** Set format type. */
     setType(value: GeoDate): this;
+    /** Set 24h mode. */
     setHour24(value: boolean): this;
+    /** Set locale code. */
     setCode(code: string): this;
+    /** Set update listener. */
     setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this;
     setYear(value: number): this;
     setMonth(value: number): this;
@@ -586,7 +443,9 @@ export declare class Datetime {
     moveDayLast(): this;
     moveDayNext(): this;
     moveDayPrevious(): this;
+    /** Copy Date object. */
     clone(): Date;
+    /** Copy Datetime instance. */
     cloneClass(): Datetime;
     cloneMonthFirst(): Datetime;
     cloneMonthLast(): Datetime;
@@ -603,73 +462,43 @@ export declare class Datetime {
     cloneDayNext(): Datetime;
     cloneDayPrevious(): Datetime;
 }
-
-/** DOM query first element. */
-export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;
-
-/** DOM query all elements. */
-export declare function domQuerySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E> | undefined;
-
-export declare type ElementOrString<E extends ElementOrWindow> = E | string;
-
-export declare type ElementOrWindow = HTMLElement | Window;
-
-export declare type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
-
-/** Encode string for HTML attributes. */
-export declare function encodeAttribute(text: string): string;
-
-/** Simple HTML attribute encoding. */
-export declare function encodeLiteAttribute(text: string): string;
-
-/** Resize image if exceeds max size. */
-export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
-
-/** Global error management. */
+// File: classes/ErrorCenter.d.ts
+/** Centralized error management. */
 export declare class ErrorCenter {
+    /** Get request-isolated instance. */
     static getItem(): ErrorCenterInstance;
+    /** Check if error code exists. */
     static has(code: string, group?: string): boolean;
+    /** Get error item. */
     static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
+    /** Add single cause. */
     static add(cause: ErrorCenterCauseItem): void;
+    /** Add multiple causes. */
     static addList(causes: ErrorCenterCauseList): void;
+    /** Register handler. */
     static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
+    /** Register handlers list. */
     static addHandlerList(handlers: ErrorCenterHandlerList): void;
+    /** Trigger error handling. */
     static on(cause: ErrorCenterCauseItem): void;
 }
-
-export declare type ErrorCenterCauseItem = {
-    group?: ErrorCenterGroup;
-    code: string;
-    priority?: number;
-    label?: string;
-    message?: string;
-    details?: any;
-};
-
-export declare type ErrorCenterCauseList = ErrorCenterCauseItem[];
-
-export declare type ErrorCenterGroup = string | undefined;
-
-/** Registry for error handlers. */
+// File: classes/ErrorCenterHandler.d.ts
+/** Manages and executes error handlers. */
 export declare class ErrorCenterHandler {
     constructor(handlers?: ErrorCenterHandlerList);
+    /** Check for group handlers. */
     has(group: ErrorCenterGroup): boolean;
+    /** Get group handler. */
     get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
+    /** Add handler. */
     add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
+    /** Add multiple handlers. */
     addList(handlers: ErrorCenterHandlerList): this;
+    /** Trigger group handlers. */
     on(cause: ErrorCenterCauseItem): this;
 }
-
-export declare type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void;
-
-export declare type ErrorCenterHandlerItem = {
-    group?: ErrorCenterGroup;
-    handlers: ErrorCenterHandlerCallback[];
-};
-
-export declare type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
-
-/** Error context instance. */
+// File: classes/ErrorCenterInstance.d.ts
+/** Instance-level error registry and dispatcher. */
 export declare class ErrorCenterInstance {
     constructor(causes?: ErrorCenterCauseList, handler?: ErrorCenterHandler);
     has(code: string, group?: string): boolean;
@@ -680,161 +509,122 @@ export declare class ErrorCenterInstance {
     addHandlerList(handlers: ErrorCenterHandlerList): this;
     on(cause: ErrorCenterCauseItem): this;
 }
-
-/** Escape string for RegExp. */
-export declare function escapeExp(value: string): string;
-
-export declare type EventActivityItem<E extends ElementOrWindow> = {
-    element: E | undefined;
-    type: string;
-    listener?: (event: any | Event) => void;
-    observer?: ResizeObserver;
-};
-
-/** Lifecycle-controlled event listener wrapper. */
+// File: classes/EventItem.d.ts
+/**
+ * Event listener wrapper for DOM/Window.
+ * Supports specialized optimizations for 'resize' and 'scroll-sync'.
+ * @example
+ * const clickEvent = new EventItem('.btn', 'click', () => console.log('Clicked!'));
+ * clickEvent.start();
+ */
 export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
     constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
+    /** Check if active. */
     isActive(): boolean;
+    /** Get target element. */
     getElement(): E | undefined;
+    /** Change target element. */
     setElement(elementSelector?: ElementOrString<E>): this;
+    /** Change safety control element. */
     setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
+    /** Change event type. */
     setType(type: string | string[]): this;
+    /** Change listener. */
     setListener(listener: EventListenerDetail<O, D>): this;
+    /** Change options. */
     setOptions(options?: EventOptions): this;
+    /** Change detail data. */
     setDetail(detail?: D): this;
+    /** Manually trigger event. */
     dispatch(detail?: D | undefined): this;
+    /** Start listening. */
     start(): this;
+    /** Stop listening. */
     stop(): this;
+    /** Set activity state. */
     toggle(activity: boolean): this;
+    /** Restart listener. */
     reset(): this;
 }
-
-export declare type EventListenerDetail<O extends Event, D extends Record<string, any>> = (event: O, detail?: D) => void;
-
-export declare type EventOptions = AddEventListenerOptions | boolean | undefined;
-
-/** Stop event propagation. */
-export declare function eventStopPropagation(event: Event): void;
-
-/** Execute value as function if applicable. */
-export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
-
-/** Execute async or sync function. */
-export declare function executePromise<T>(callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T, ...args: any[]): Promise<T>;
-
-/** Iterate object/array and map results. */
-export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> | Set<T> = T[] | Record<string, T> | Map<string, T> | Set<T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T> | Set<T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];
-
-/** Data list formatter. */
+// File: classes/Formatters.d.ts
+/** Data formatting engine. */
 export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
     constructor(options: Options, list?: List | undefined);
+    /** Check if list set. */
     is(): boolean;
-    isArray(): this is this & { list: FormattersList<Item>; };
+    /** Check if list is array. */
+    isArray(): this is this & {
+        list: FormattersList<Item>;
+    };
+    /** Get list length. */
     length(): number;
+    /** Get original list. */
     getList(): FormattersList<Item>;
+    /** Get options. */
     getOptions(): Options;
+    /** Update list. */
     setList(list?: List): this;
-    /** Formats data and appends 'Format' properties. */
+    /** Format and return data. */
     to(): FormattersReturn<List, Options>;
 }
-
-export declare type FormattersCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<FormattersCapitalize<Rest>>}` : K;
-export declare type FormattersColumns<T extends FormattersOptionsList> = (keyof T & string)[];
-export declare type FormattersDataItem<T extends FormattersListItem, KT extends string[]> = { [K in keyof T | FormattersKey<KT[number]>]: K extends keyof T ? T[K] : string; };
-export declare type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>;
-export declare type FormattersKey<K, A extends string = 'Format'> = K extends string ? `${FormattersCapitalize<K>}${A}` : never;
-export declare type FormattersList<Item extends FormattersListItem> = Item[];
-export declare type FormattersListColumnItem<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersDataItem<T, FormattersColumns<O>>;
-export declare type FormattersListColumns<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersListFormat<T, FormattersColumns<O>>;
-export declare type FormattersListFormat<T extends FormattersListItem, K extends string[]> = FormattersDataItem<T, K>[];
-export declare type FormattersListItem = Record<string, any>;
-export declare type FormattersListProp = FormattersList<FormattersListItem> | FormattersListItem;
-
-export declare type FormattersOptionsCurrency = { currencyPropName?: string; options?: string | Intl.NumberFormatOptions; numberOnly?: boolean; };
-export declare type FormattersOptionsDate = { type?: GeoDate; options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions; hour24?: boolean; };
-export declare type FormattersOptionsInformation<Type extends FormattersType> = Type extends FormattersType.currency ? FormattersOptionsCurrency : Type extends FormattersType.date ? FormattersOptionsDate : Type extends FormattersType.name ? FormattersOptionsName : Type extends FormattersType.number ? FormattersOptionsNumber : Type extends FormattersType.plural ? FormattersOptionsPlural : Type extends FormattersType.unit ? FormattersOptionsUnit : Record<string, any>;
-export declare type FormattersOptionsItem<Type extends FormattersType = FormattersType, R = string> = { type?: Type; transformation?: (valueOriginal: any, item: any, options?: FormattersOptionsInformation<Type>) => R; options?: FormattersOptionsInformation<Type>; };
-export declare type FormattersOptionsList = Record<string, FormattersOptionsItem>;
-export declare type FormattersOptionsName = { lastPropName?: string; firstPropName?: string; surname?: string; short?: boolean; };
-export declare type FormattersOptionsNumber = { options?: Intl.NumberFormatOptions; };
-export declare type FormattersOptionsPlural = { words: string; options?: Intl.PluralRulesOptions; optionsNumber?: Intl.NumberFormatOptions; };
-export declare type FormattersOptionsUnit = { unit: string | Intl.NumberFormatOptions; };
-export declare type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = List extends any[] ? FormattersListColumns<Item, Options> : (FormattersListColumnItem<Item, Options> | undefined);
-
-export declare enum FormattersType {
-    currency = "currency",
-    date = "date",
-    name = "name",
-    number = "number",
-    plural = "plural",
-    unit = "unit"
-}
-
-/** Cyclic requestAnimationFrame. */
-export declare function frame(callback: () => void, next?: () => boolean, end?: () => void): void;
-
-export declare type FunctionAnyType<T = any, R = any> = (...args: T[]) => R;
-export declare type FunctionArgs<T, R> = (...args: T[]) => R;
-export declare type FunctionReturn<R = any> = () => R;
-export declare type FunctionVoid = () => void;
-
-/** Geographical data manager. */
+// File: classes/Geo.d.ts
+/** Geographic data static interface. */
 export declare class Geo {
+    /** Get request-isolated instance. */
     static getObject(): GeoInstance;
+    /** Get current geo full item. */
     static get(): GeoItemFull;
+    /** Get 2-letter country code. */
     static getCountry(): string;
+    /** Get 2-letter language code. */
     static getLanguage(): string;
+    /** Get 'en-US' style locale. */
     static getStandard(): string;
+    /** Get week start code. */
     static getFirstDay(): string;
+    /** Get current location string. */
     static getLocation(): string;
+    /** Get updated full item. */
     static getItem(): GeoItemFull;
+    /** Get all available geo data. */
     static getList(): GeoItem[];
+    /** Get data by country/language code. */
     static getByCode(code?: string): GeoItemFull;
+    /** Match exact full locale string. */
     static getByCodeFull(code: string): GeoItem | undefined;
     static getByCountry(country: string): GeoItem | undefined;
     static getByLanguage(language: string): GeoItem | undefined;
+    /** Get timezone offset. */
     static getTimezone(): number;
+    /** Get '+HH:MM' timezone string. */
     static getTimezoneFormat(): string;
+    /** Alias for getByCode. */
     static find(code: string): GeoItemFull;
+    /** Convert item to 'lang-COUNTRY' string. */
     static toStandard(item: GeoItem): string;
+    /** Set location. */
     static set(code: string, save?: boolean): void;
+    /** Set timezone offset. */
     static setTimezone(timezone: number): void;
 }
-
+// File: classes/GeoFlag.d.ts
 export declare const GEO_FLAG_ICON_NAME = "f";
-
-export declare type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second';
-export declare type GeoFirstDay = 1 | 6 | 0;
-
-/** Flag and country info. */
+/** Country flag and name provider. */
 export declare class GeoFlag {
-    static flags: Record<string, string>;
     constructor(code?: string);
+    /** Get country info by code. */
     get(code?: string): GeoFlagItem | undefined;
+    /** Get icon ID. */
     getFlag(code?: string): string | undefined;
+    /** Get list of country items. */
     getList(codes?: string[]): GeoFlagItem[];
+    /** Get country items in native languages. */
     getNational(codes?: string[]): GeoFlagNational[];
+    /** Set locale. */
     setCode(code: string): this;
 }
-
-export declare interface GeoFlagItem {
-    language: string;
-    country: string;
-    standard: string;
-    icon?: string;
-    label: string;
-    value: string;
-}
-
-export declare interface GeoFlagNational extends GeoFlagItem {
-    description: string;
-    nationalLanguage: string;
-    nationalCountry: string;
-}
-
-export declare type GeoHours = '12' | '24';
-
-/** Geo context instance. */
+// File: classes/GeoInstance.d.ts
+/** Geographic state handler. */
 export declare class GeoInstance {
     constructor();
     get(): GeoItemFull;
@@ -856,8 +646,8 @@ export declare class GeoInstance {
     set(code: string, save?: boolean): void;
     setTimezone(timezone: number): void;
 }
-
-/** Internationalization API wrapper. */
+// File: classes/GeoIntl.d.ts
+/** Wrapper for Intl API formatting. */
 export declare class GeoIntl {
     static isItem(code?: string): boolean;
     static getLocation(code?: string): string;
@@ -865,11 +655,14 @@ export declare class GeoIntl {
     constructor(code?: string, errorCenter?: ErrorCenterInstance);
     getLocation(): string;
     getFirstDay(): string;
+    /** Format display names. */
     display(value?: string, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): string;
     languageName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
     countryName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
+    /** Format localized full name. */
     fullName(last: string, first: string, surname?: string, short?: boolean): string;
     number(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    /** Get decimal separator. */
     decimal(): string;
     currency(value: NumberOrString, currencyOptions?: string | Intl.NumberFormatOptions, numberOnly?: boolean): string;
     currencySymbol(currency: string, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): string;
@@ -877,9 +670,11 @@ export declare class GeoIntl {
     sizeFile(value: NumberOrString, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): string;
     percent(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
     percentBy100(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    /** Localized plural formatting. */
     plural(value: NumberOrString, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): string;
     date(value: NumberOrStringOrDate, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): string;
     relative(value: NumberOrStringOrDate, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): string;
+    /** Relative time with fallback to standard date. */
     relativeLimit(value: NumberOrStringOrDate, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): string;
     relativeByValue(value: NumberOrString, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): string;
     month(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['month']): string;
@@ -887,181 +682,46 @@ export declare class GeoIntl {
     weekday(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['weekday']): string;
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ItemValue<number | undefined>[];
     time(value: NumberOrStringOrDate): string;
+    /** Locale-aware string sorting. */
     sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
 }
-
-export declare interface GeoItem {
-    country: string;
-    countryAlternative?: string[];
-    language: string;
-    languageAlternative?: string[];
-    firstDay?: string | null;
-    zone?: string | null;
-    phoneCode?: string;
-    phoneWithin?: string;
-    phoneMask?: string | string[];
-    nameFormat?: 'fl' | 'fsl' | 'lf' | 'lsf' | string;
-}
-
-export declare interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
-    standard: string;
-    firstDay: string;
-}
-
-/** Phone mask and country code info. */
+// File: classes/GeoPhone.d.ts
+/** Phone mask processing. */
 export declare class GeoPhone {
+    /** Get phone info by locale code. */
     static get(code: string): GeoPhoneValue | undefined;
+    /** Match info by raw phone number. */
     static getByPhone(phone: string): GeoPhoneMapInfo;
+    /** Get mask data by locale. */
     static getByCode(code: string): GeoPhoneMap | undefined;
     static getList(): GeoPhoneValue[];
     static getMap(): Record<string, GeoPhoneMap>;
+    /** Apply phone mask. */
     static toMask(phone: string, masks?: string[]): string | undefined;
+    /** Remove domestic zero/prefix. */
     static removeZero(phone: string): string;
 }
-
-export declare interface GeoPhoneMap {
-    items: GeoPhoneValue[];
-    info: GeoPhoneValue | undefined;
-    value: string | undefined;
-    mask: string[];
-    maskFull: string[];
-    next: Record<string, GeoPhoneMap>;
-}
-
-export declare interface GeoPhoneMapInfo {
-    item?: GeoPhoneMap;
-    phone?: string;
-}
-
-export declare interface GeoPhoneValue {
-    phone: number;
-    within: number;
-    mask: string[];
-    value: string;
-}
-
-export declare type GeoTimeZoneStyle = 'minute' | 'hour' | 'ISO8601' | 'RFC';
-
-/** Split string for highlight rendering. */
-export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];
-
-/** Get element attributes. */
-export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
-
-/** Get clipboard text. */
-export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
-
-/** Get values of a specific column. */
-export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
-
-/** Get current formatted date.
- * @remarks Client-only for SSR stability.
- */
-export declare function getCurrentDate(format?: GeoDate): string;
-
-/** Get timestamp. @remarks SSR warning: hydration mismatch likely. */
-export declare function getCurrentTime(): number;
-
-/** Get element by selector. */
-export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
-
-/** Get or generate element ID. */
-export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
-
-/** Get HTMLImageElement from source. */
-export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
-
-/** Get element property value. */
-export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
-
-export declare function getElementOrWindow<E extends ElementOrWindow>(element?: ElementOrString<E>): E | undefined;
-
-/** Generate hydration script tag. */
-export declare function getElementSafeScript(id: string, data: any): string;
-
-/** Exact phrase RegExp. */
-export declare function getExactSearchExp(search: string): RegExp;
-
-/** Pattern-based RegExp creator. */
-export declare function getExp(value: string, flags?: string, pattern?: string): RegExp;
-
-/** Parse hydration JSON from script tag. */
-export declare function getHydrationData<T>(id: string, defaultValue: T, remove?: boolean): T;
-
-/** Get value from object by path. */
-export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
-
-/** Get KeyboardEvent key. */
-export declare function getKey(event: KeyboardEvent): string;
-
-export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];
-
-export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;
-
-export declare function getMinLengthAllArray(data: ObjectOrArray<string>): number;
-
-/** Get mouse/touch coordinates. */
-export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;
-export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
-export declare function getMouseClientY(event: MouseEvent & TouchEvent): number;
-
-/** Pick object keys. */
-export declare function getObjectByKeys<T extends Record<string, any>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;
-
-/** Remove properties by value. */
-export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
-
-/** Ensure value is object. */
-export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
-
-/** Strip non-alphanumeric. */
-export declare function getOnlyText(text: any): string;
-
-/** Random text generator. */
-export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
-
-/** Convert object to key-value string. */
-export declare function getRequestString(request: Record<string, any> | any[], sign?: string, separator?: string, subKey?: string): string;
-
-/** Multi-word search RegExp. */
-export declare function getSearchExp(search: string, limit?: number): RegExp;
-
-/** Word-separating search RegExp. */
-export declare function getSeparatingSearchExp(search: string | RegExp, limit?: number): RegExp;
-
-export declare function getStepPercent(min: number | undefined, max: number): number;
-
-export declare function getStepValue(min: number | undefined, max: number): number;
-
-/** Application-wide global storage. */
+// File: classes/Global.d.ts
+/** Application-wide data storage. */
 export declare class Global {
     static getItem(): Record<string, any>;
     static get<R = any>(name: string): R;
+    /** Add data (runs once). */
     static add(data: Record<string, any>): void;
 }
-
-/** Scroll container to element. */
-export declare function goScroll(selector: string, elementTo: HTMLElement | undefined, elementCenter?: HTMLElement): void;
-
-/** Smooth scroll to element. */
-export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
-
-export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
-
-/** Web Share API wrapper. */
-export declare function handleShare(data: ShareData): Promise<boolean>;
-
-/** URL Hash storage. */
+// File: classes/Hash.d.ts
+/** URL hash state management interface. */
 export declare class Hash {
     static getItem(): HashInstance;
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
     static set<T>(name: string, callback: T | (() => T)): void;
     static addWatch<T>(name: string, callback: (value: T) => void): void;
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
+    /** Sync variables from URL. */
     static reload(): void;
 }
-
-/** Hash state instance. */
+// File: classes/HashInstance.d.ts
+/** URL hash data controller. */
 export declare class HashInstance {
     get<T>(name: string, defaultValue?: T | (() => T)): T;
     set<T>(name: string, callback: T | (() => T)): this;
@@ -1069,16 +729,18 @@ export declare class HashInstance {
     removeWatch<T>(name: string, callback: (value: T) => void): this;
     reload(): this;
 }
-
-export declare type HighlightMatchItem = {
-    text: string;
-    isMatch: boolean;
+// File: classes/Icons.d.ts
+export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
+export type IconsConfig = {
+    url?: string;
+    list?: Record<string, IconsItem>;
 };
-
-/** Icon registry and loader. */
+/** Global icon registry. */
 export declare class Icons {
     static is(index: string): boolean;
+    /** Get icon by name (async). */
     static get(index: string, url?: string, wait?: number): Promise<string>;
+    /** Get icon by name (sync). */
     static getAsync(index: string, url?: string): string;
     static getNameList(): string[];
     static getUrlGlobal(): string;
@@ -1089,88 +751,8 @@ export declare class Icons {
     static setUrl(url: string): void;
     static setConfig(config: IconsConfig): void;
 }
-
-export declare type IconsConfig = {
-    url?: string;
-    list?: Record<string, IconsItem>;
-};
-
-export declare type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
-
-export declare type ImageCoordinator = {
-    x: number;
-    y: number;
-};
-
-export declare function inArray<T>(array: T[], value: T): boolean;
-
-/** Init element ID listener for SSR context. */
-export declare function initGetElementId(newListener: () => string | number): void;
-
-export declare function initScrollbarOffset(): Promise<void>;
-
-/** Compute key intersection. */
-export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
-
-/** Check API success flag. */
-export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
-
-export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
-
-export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
-
-export declare function isDomData(): boolean;
-
-/** Check for window object. */
-export declare function isDomRuntime(): boolean;
-
-/** Check element visibility (not display: none). */
-export declare function isElementVisible<E extends ElementOrWindow>(elementSelectors?: ElementOrString<E>): boolean;
-
-/** Check Enter/Space key. */
-export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
-
-/** Check if value is not empty. */
-export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;
-
-export declare function isFloat(value: any): boolean;
-
-export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
-
-/** Check if element is in DOM. */
-export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
-
-/** Check if input/editable element. */
-export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
-
-export declare function isIntegerBetween(value: number, between: number): boolean;
-
-export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
-
-export declare function isNumber(value: any): boolean;
-
-export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;
-
-export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
-
-export declare function isOnLine(): boolean;
-
-export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;
-
-export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
-
-export declare function isShare(): boolean;
-
-export declare function isString<T>(value: T): value is Extract<T, string>;
-
-export declare function isWindow<E>(element: E): element is Extract<E, Window>;
-
-export declare type Item<V> = { index: string; value: V; };
-export declare type ItemList<T = any> = Record<string, T>;
-export declare type ItemName<V> = { name: string | number; value: V; };
-export declare type ItemValue<V> = { label: string; value: V; };
-
-/** Global loading indicator. */
+// File: classes/Loading.d.ts
+/** Global loader controller. */
 export declare class Loading {
     static is(): boolean;
     static get(): number;
@@ -1180,10 +762,16 @@ export declare class Loading {
     static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
-
-export declare type LoadingDetail = { loading: boolean; };
-
-/** Loader context instance. */
+// File: classes/LoadingInstance.d.ts
+export type LoadingDetail = {
+    loading: boolean;
+};
+export type LoadingRegistrationItem = {
+    item: EventItem<Window, CustomEvent, LoadingDetail>;
+    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
+    element?: ElementOrString<HTMLElement>;
+};
+/** Loading state instance. */
 export declare class LoadingInstance {
     constructor(eventName?: string);
     is(): boolean;
@@ -1193,14 +781,8 @@ export declare class LoadingInstance {
     registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
-
-export declare type LoadingRegistrationItem = {
-    item: EventItem<Window, CustomEvent, LoadingDetail>;
-    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
-    element?: ElementOrString<HTMLElement>;
-};
-
-/** Unified SEO Meta tag manager. */
+// File: classes/Meta.d.ts
+/** Integrated SEO and social meta-tag manager. */
 export declare class Meta extends MetaManager<MetaTag[]> {
     constructor();
     getOg(): MetaOg;
@@ -1214,6 +796,7 @@ export declare class Meta extends MetaManager<MetaTag[]> {
     getAuthor(): string;
     getSiteName(): string;
     getLocale(): string;
+    /** Set title and sync social tags. */
     setTitle(title: string): this;
     setKeywords(keywords: string | string[]): this;
     setDescription(description: string): this;
@@ -1223,14 +806,14 @@ export declare class Meta extends MetaManager<MetaTag[]> {
     setAuthor(author: string): this;
     setSiteName(siteName: string): this;
     setLocale(locale: string): this;
+    /** Set global title suffix. */
     setSuffix(suffix?: string): void;
+    /** Get all meta HTML. */
     html(): string;
+    /** Get title HTML. */
     htmlTitle(): string;
 }
-
-export declare type MetaList<T extends readonly string[]> = { [K in T[number]]?: string; };
-
-/** Meta tag base manager. */
+// File: classes/MetaManager.d.ts
 export declare class MetaManager<T extends readonly string[], Key extends keyof MetaList<T> = keyof MetaList<T>> {
     constructor(listMeta: T, isProperty?: boolean);
     getListMeta(): T;
@@ -1240,8 +823,8 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
     set(name: Key, content: string): this;
     setByList(metaList: MetaList<T>): this;
 }
-
-/** Open Graph manager. */
+// File: classes/MetaOg.d.ts
+/** Open Graph metadata manager. */
 export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     constructor();
     getTitle(): string;
@@ -1259,60 +842,8 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     setLocale(locale: string): this;
     setSiteName(siteName: string): this;
 }
-
-export declare enum MetaOpenGraphAge { newborn = "newborn", infant = "infant", toddler = "toddler", kids = "kids", adult = "adult" }
-export declare enum MetaOpenGraphAvailability { inStock = "in stock", outOfStock = "out of stock", preorder = "preorder", backorder = "backorder", discontinued = "discontinued", pending = "pending" }
-export declare enum MetaOpenGraphCondition { new = "new", used = "used", refurbished = "refurbished" }
-export declare enum MetaOpenGraphGender { female = "female", male = "male", unisex = "unisex" }
-
-/** Common OG tags. */
-export declare enum MetaOpenGraphTag {
-    title = "og:title",
-    type = "og:type",
-    url = "og:url",
-    image = "og:image",
-    description = "og:description",
-    locale = "og:locale",
-    siteName = "og:site_name",
-    imageUrl = "og:image:url",
-    imageSecureUrl = "og:image:secure_url",
-    imageType = "og:image:type",
-    imageWidth = "og:image:width",
-    imageHeight = "og:image:height",
-    articlePublishedTime = "article:published_time",
-    articleModifiedTime = "article:modified_time",
-    productPriceAmount = "product:price:amount",
-    productPriceCurrency = "product:price:currency"
-}
-
-export declare enum MetaOpenGraphType {
-    website = "website",
-    article = "article",
-    video = "video.other",
-    videoTvShow = "video.tv_show",
-    videoEpisode = "video.episode",
-    videoMovie = "video.movie",
-    musicAlbum = "music.album",
-    musicPlaylist = "music.playlist",
-    musicSong = "music.song",
-    product = "product",
-    profile = "profile",
-    book = "book"
-}
-
-export declare enum MetaRobots {
-    indexFollow = "index, follow",
-    noIndexFollow = "noindex, follow",
-    indexNoFollow = "index, nofollow",
-    noIndexNoFollow = "noindex, nofollow",
-    noArchive = "noarchive",
-    noSnippet = "nosnippet",
-    noImageIndex = "noimageindex",
-    noTranslate = "notranslate",
-    none = "none"
-}
-
-/** Static SEO manager singleton. */
+// File: classes/MetaStatic.d.ts
+/** SEO static interface. */
 export declare class MetaStatic {
     static getItem(): Meta;
     static getOg(): MetaOg;
@@ -1339,18 +870,10 @@ export declare class MetaStatic {
     static html(): string;
     static htmlTitle(): string;
 }
-
-export declare enum MetaTag {
-    title = "title",
-    description = "description",
-    keywords = "keywords",
-    canonical = "canonical",
-    robots = "robots",
-    author = "author"
-}
-
-/** Twitter Card manager. */
-export declare class MetaTwitter {
+// File: classes/MetaTwitter.d.ts
+/** Twitter Card metadata manager. */
+export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
+    constructor();
     getCard(): MetaTwitterCard;
     getSite(): string;
     getCreator(): string;
@@ -1366,56 +889,8 @@ export declare class MetaTwitter {
     setDescription(description: string): this;
     setImage(image: string): this;
 }
-
-export declare enum MetaTwitterCard {
-    summary = "summary",
-    summaryLargeImage = "summary_large_image",
-    app = "app",
-    player = "player"
-}
-
-/** Twitter Card tags. */
-export declare enum MetaTwitterTag {
-    card = "twitter:card",
-    site = "twitter:site",
-    creator = "twitter:creator",
-    url = "twitter:url",
-    title = "twitter:title",
-    description = "twitter:description",
-    image = "twitter:image",
-    player = "twitter:player",
-    playerWidth = "twitter:player:width",
-    playerHeight = "twitter:player:height"
-}
-
-export declare type NormalOrArray<T = NumberOrString> = T | T[];
-export declare type NormalOrPromise<T> = T | Promise<T>;
-export declare type NumberOrString = number | string;
-export declare type NumberOrStringOrBoolean = number | string | boolean;
-export declare type NumberOrStringOrDate = NumberOrString | Date;
-export declare type ObjectItem<T = any> = Record<string, T>;
-export declare type ObjectOrArray<T = any> = T[] | ObjectItem<T>;
-
-/** Random integer. */
-export declare function random(min: number, max: number): number;
-
-/** Remove prefix from string. */
-export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
-
-export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
-
-/** Recursive object merge. */
-export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
-
-/** Template replacement. */
-export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
-
-/** Resize image by constraints. */
-export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string): string | undefined;
-
-declare type ResizeImageByMaxType = 'auto' | 'width' | 'height';
-
-/** Pausable/resumable timer. */
+// File: classes/ResumableTimer.d.ts
+/** Timer with pause/resume support. */
 export declare class ResumableTimer {
     constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
     resume(): this;
@@ -1423,27 +898,16 @@ export declare class ResumableTimer {
     reset(): this;
     clear(): this;
 }
-
-/** Scrollbar width measurement. */
+// File: classes/ScrollbarWidth.d.ts
+/** Utility to detect scrollbar width. */
 export declare class ScrollbarWidth {
     static is(): Promise<boolean>;
     static get(): Promise<number>;
     static getStorage(): DataStorage<number>;
     static getCalculate(): boolean;
 }
-
-export declare type SearchCache<T extends SearchItem> = SearchCacheItem<T>[];
-export declare type SearchCacheItem<T extends SearchItem> = { item: T; value: string; };
-export declare type SearchColumn<T extends SearchItem> = { [K in keyof T]-?: NonNullable<T[K]> extends object ? K | SearchColumnPath<K, keyof NonNullable<T[K]>> : K; }[keyof T];
-export declare type SearchColumnPath<K, P> = K extends string ? P extends string ? `${K}.${P}` : never : never;
-export declare type SearchColumns<T extends SearchItem> = (SearchColumn<T> & string)[];
-export declare type SearchFormatCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<SearchFormatCapitalize<Rest>>}` : K;
-export declare type SearchFormatItem<T extends SearchItem, KT extends string[]> = { [K in keyof T | SearchFormatKey<KT[number]>]: K extends keyof T ? T[K] : string; } & { searchActive?: boolean; };
-export declare type SearchFormatKey<K> = K extends string ? `${SearchFormatCapitalize<K>}Search` : never;
-export declare type SearchFormatList<T extends SearchItem, K extends string[]> = SearchFormatItem<T, K>[];
-export declare type SearchItem = Record<string, any>;
-
-/** Searchable list manager. */
+// File: classes/SearchList.d.ts
+/** Searchable list coordinator. */
 export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
     constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
     getData(): SearchListData<T, K>;
@@ -1456,10 +920,11 @@ export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>
     setColumns(columns?: K): this;
     setValue(value?: string): this;
     setOptions(options: SearchOptions): this;
+    /** Process and return formatted matches. */
     to(): SearchFormatList<T, K>;
 }
-
-/** Internal search data processor. */
+// File: classes/SearchListData.d.ts
+/** Search list data and cache store. */
 export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
     constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
     is(): this is this & { list: T[]; columns: string[]; };
@@ -1472,8 +937,8 @@ export declare class SearchListData<T extends SearchItem, K extends SearchColumn
     forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
     toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
 }
-
-/** Individual search item state. */
+// File: classes/SearchListItem.d.ts
+/** Individual search term state. */
 export declare class SearchListItem {
     constructor(value: string | undefined, options: SearchListOptions);
     is(): this is this & { value: string; };
@@ -1481,8 +946,8 @@ export declare class SearchListItem {
     get(): string;
     set(value?: string): this;
 }
-
-/** Logic for matching strings in search. */
+// File: classes/SearchListMatcher.d.ts
+/** Regex-based search matcher. */
 export declare class SearchListMatcher {
     constructor(item: SearchListItem, options: SearchListOptions);
     is(): boolean;
@@ -1490,8 +955,8 @@ export declare class SearchListMatcher {
     get(): RegExp | undefined;
     update(): void;
 }
-
-/** Search options manager. */
+// File: classes/SearchListOptions.d.ts
+/** Search configuration state. */
 export declare class SearchListOptions {
     constructor(options?: SearchOptions | undefined);
     getOptions(): SearchOptions;
@@ -1502,21 +967,10 @@ export declare class SearchListOptions {
     getClassName(): string;
     setOptions(options: SearchOptions): this;
 }
-
-export declare type SearchListValue<T extends SearchItem> = T[] | undefined;
-export declare type SearchOptions = {
-    limit?: number;
-    returnEverything?: boolean;
-    delay?: number;
-    findExactMatch?: boolean;
-    classSearchName?: string;
-};
-
-/** Seconds to HH:MM:SS string. */
-export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
-
-/** Context-isolated server storage for SSR. */
+// File: classes/ServerStorage.d.ts
+/** SSR data isolation and hydration store. */
 export declare class ServerStorage {
+    /** Init with request context listener. */
     static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
     static reset(): void;
     static has(key: string): boolean;
@@ -1524,30 +978,14 @@ export declare class ServerStorage {
     static set<T = any>(key: string, value: () => T, hydration?: boolean): T;
     static setErrorStatus(hide: boolean): void;
     static remove(key: string): void;
+    /** Get hydration script string. */
     static toString(): string;
 }
-
-/** Set element property by index. */
-export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
-
-/** Dynamic value state modifier for multiple/maxlength support. */
-export declare function setValues<T>(selected: T | T[] | undefined, value: any, { multiple, maxlength, alwaysChange, notEmpty }: {
-    multiple?: boolean | undefined;
-    maxlength?: number | undefined;
-    alwaysChange?: boolean | undefined;
-    notEmpty?: boolean | undefined;
-}): T | T[] | undefined;
-
-/** Delay execution. */
-export declare function sleep(ms: number): Promise<void>;
-
-/** Copy object properties into another by start index. */
-export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
-
-/** Callback registry for storage changes. */
+// File: classes/StorageCallback.d.ts
+/** Callback registry for storage events. */
 export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
-    constructor(name: string, group?: string);
     static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
+    constructor(name: string, group?: string);
     isLoading(): boolean;
     getName(): string;
     getLoading(): boolean;
@@ -1556,45 +994,8 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
     preparation(): this;
     run(value: T): Promise<this>;
 }
-
-/** Repeat string count times. */
-export declare function strFill(value: string, count: number): string;
-
-/** Split string with limit (last element contains remainder). */
-export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
-
-/** Force value to array. */
-export declare function toArray<T>(value: T): T extends any[] ? T : [T];
-
-/** String to camelCase. */
-export declare function toCamelCase(value: string): string;
-
-/** String to CamelCase. */
-export declare function toCamelCaseFirst(value: string): string;
-
-/** Convert to Date object. */
-export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
-
-/** String to kebab-case. */
-export declare function toKebabCase(value: string): string;
-
-/** Parse string/number to float. SSR safe. */
-export declare function toNumber(value?: NumberOrString): number;
-
-/** Parse number with max constraint. */
-export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
-
-export declare function toPercent(maxValue: number, value: number): number;
-export declare function toPercentBy100(maxValue: number, value: number): number;
-
-/** Value to string. */
-declare function toString_2<T>(value: T): string;
-export { toString_2 as toString }
-
-/** Type transformation (detects boolean, number, null, object, function). */
-export declare function transformation(value: any, isFunction?: boolean): any;
-
-/** Translation manager. */
+// File: classes/Translate.d.ts
+/** Localization interface. */
 export declare class Translate {
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
     static getItem(): TranslateInstance;
@@ -1611,17 +1012,8 @@ export declare class Translate {
     static setReadApi(value: boolean): void;
     static setConfig(config: TranslateConfig): void;
 }
-
-export declare const TRANSLATE_GLOBAL_PREFIX = "global";
-export declare const TRANSLATE_TIME_OUT = 160;
-
-export declare type TranslateCode = string | string[];
-export declare type TranslateConfig = { url?: string; propsName?: string; readApi?: boolean; };
-export declare type TranslateDataFile = Record<string, TranslateDataFileItem>;
-export declare type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
-export declare type TranslateDataFileList = Record<string, string>;
-
-/** Localized translation file manager. */
+// File: classes/TranslateFile.d.ts
+/** File-based translation loader. */
 export declare class TranslateFile {
     constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
     isFile(): boolean;
@@ -1630,8 +1022,8 @@ export declare class TranslateFile {
     getList(): Promise<TranslateDataFileList | undefined>;
     add(data: TranslateDataFile): void;
 }
-
-/** Translation context instance. */
+// File: classes/TranslateInstance.d.ts
+/** Localized text resolver. */
 export declare class TranslateInstance {
     constructor(url?: string, propsName?: string, files?: TranslateFile);
     get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
@@ -1647,17 +1039,729 @@ export declare class TranslateInstance {
     setPropsName(name: string): this;
     setReadApi(value: boolean): this;
 }
-
-export declare type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string;
-export declare type TranslateList<T extends TranslateCode[]> = { [K in T[number] as K extends readonly string[] ? K[0] : K]: string; };
-
-/** Binary data to base64. */
+// File: functions/addTagHighlightMatch.d.ts
+export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
+// File: functions/anyToString.d.ts
+export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?: boolean): string;
+// File: functions/applyTemplate.d.ts
+export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
+// File: functions/arrFill.d.ts
+export declare function arrFill<T>(value: T, count: number): T[];
+// File: functions/blobToBase64.d.ts
+export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
+// File: functions/capitalize.d.ts
+export declare function capitalize(value: string, isLocale?: boolean): string;
+// File: functions/copyObject.d.ts
+export declare function copyObject<T>(value: T): T;
+// File: functions/copyObjectLite.d.ts
+export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
+// File: functions/createElement.d.ts
+/** @remarks Returns undefined in SSR. Use in client-only hooks. */
+export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
+// File: functions/domQuerySelector.d.ts
+export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;
+// File: functions/domQuerySelectorAll.d.ts
+export declare function domQuerySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E> | undefined;
+// File: functions/encodeAttribute.d.ts
+export declare function encodeAttribute(text: string): string;
+// File: functions/encodeLiteAttribute.d.ts
+export declare function encodeLiteAttribute(text: string): string;
+// File: functions/ensureMaxSize.d.ts
+export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
+// File: functions/escapeExp.d.ts
+export declare function escapeExp(value: string): string;
+// File: functions/eventStopPropagation.d.ts
+export declare function eventStopPropagation(event: Event): void;
+// File: functions/executeFunction.d.ts
+export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
+// File: functions/executePromise.d.ts
+export declare function executePromise<T>(callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T, ...args: any[]): Promise<T>;
+// File: functions/forEach.d.ts
+export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> | Set<T> = T[] | Record<string, T> | Map<string, T> | Set<T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T> | Set<T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];
+// File: functions/frame.d.ts
+export declare function frame(callback: () => void, next?: () => boolean, end?: () => void): void;
+// File: functions/getArrayHighlightMatch.d.ts
+export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];
+// File: functions/getAttributes.d.ts
+export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
+// File: functions/getClipboardData.d.ts
+export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
+// File: functions/getColumn.d.ts
+export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
+// File: functions/getCurrentDate.d.ts
+/** @remarks SSR usage can cause hydration mismatch. */
+export declare function getCurrentDate(format?: GeoDate): string;
+// File: functions/getCurrentTime.d.ts
+/** @remarks SSR usage can cause hydration mismatch. */
+export declare function getCurrentTime(): number;
+// File: functions/getElement.d.ts
+export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
+// File: functions/getElementId.d.ts
+export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
+/** @note Call this to enable useId-based IDs in SSR frameworks. */
+export declare function initGetElementId(newListener: () => string | number): void;
+// File: functions/getElementImage.d.ts
+export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
+// File: functions/getElementItem.d.ts
+export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
+// File: functions/getElementOrWindow.d.ts
+export declare function getElementOrWindow<E extends ElementOrWindow>(element?: ElementOrString<E>): E | undefined;
+// File: functions/getElementSafeScript.d.ts
+export declare function getElementSafeScript(id: string, data: any): string;
+// File: functions/getExactSearchExp.d.ts
+export declare function getExactSearchExp(search: string): RegExp;
+// File: functions/getExp.d.ts
+export declare function getExp(value: string, flags?: string, pattern?: string): RegExp;
+// File: functions/getHydrationData.d.ts
+export declare function getHydrationData<T>(id: string, defaultValue: T, remove?: boolean): T;
+// File: functions/getItemByPath.d.ts
+export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
+// File: functions/getKey.d.ts
+export declare function getKey(event: KeyboardEvent): string;
+// File: functions/getLengthOfAllArray.d.ts
+export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];
+// File: functions/getMaxLengthAllArray.d.ts
+export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;
+// File: functions/getMinLengthAllArray.d.ts
+export declare function getMinLengthAllArray(data: ObjectOrArray<string>): number;
+// File: functions/getMouseClient.d.ts
+export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;
+// File: functions/getMouseClientX.d.ts
+export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
+// File: functions/getMouseClientY.d.ts
+export declare function getMouseClientY(event: MouseEvent & TouchEvent): number;
+// File: functions/getObjectByKeys.d.ts
+export declare function getObjectByKeys<T extends Record<string, any>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;
+// File: functions/getObjectNoUndefined.d.ts
+export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
+// File: functions/getObjectOrNone.d.ts
+export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
+// File: functions/getOnlyText.d.ts
+export declare function getOnlyText(text: any): string;
+// File: functions/getRandomText.d.ts
+export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
+// File: functions/getRequestString.d.ts
+export declare function getRequestString(request: Record<string, any> | any[], sign?: string, separator?: string, subKey?: string): string;
+// File: functions/getSearchExp.d.ts
+export declare function getSearchExp(search: string, limit?: number): RegExp;
+// File: functions/getSeparatingSearchExp.d.ts
+export declare function getSeparatingSearchExp(search: string | RegExp, limit?: number): RegExp;
+// File: functions/getStepPercent.d.ts
+export declare function getStepPercent(min: number | undefined, max: number): number;
+// File: functions/getStepValue.d.ts
+export declare function getStepValue(min: number | undefined, max: number): number;
+// File: functions/goScroll.d.ts
+export declare function goScroll(selector: string, elementTo: HTMLElement | undefined, elementCenter?: HTMLElement): void;
+// File: functions/goScrollSmooth.d.ts
+export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
+// File: functions/goScrollTo.d.ts
+export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
+// File: functions/handleShare.d.ts
+export declare function handleShare(data: ShareData): Promise<boolean>;
+// File: functions/inArray.d.ts
+export declare function inArray<T>(array: T[], value: T): boolean;
+// File: functions/initScrollbarOffset.d.ts
+export declare function initScrollbarOffset(): Promise<void>;
+// File: functions/intersectKey.d.ts
+export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
+// File: functions/isApiSuccess.d.ts
+export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
+// File: functions/isArray.d.ts
+export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
+// File: functions/isDifferent.d.ts
+export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
+// File: functions/isDomData.d.ts
+export declare function isDomData(): boolean;
+// File: functions/isDomRuntime.d.ts
+export declare function isDomRuntime(): boolean;
+// File: functions/isElementVisible.d.ts
+export declare function isElementVisible<E extends ElementOrWindow>(elementSelectors?: ElementOrString<E>): boolean;
+// File: functions/isEnter.d.ts
+export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
+// File: functions/isFilled.d.ts
+export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;
+// File: functions/isFloat.d.ts
+export declare function isFloat(value: any): boolean;
+// File: functions/isFunction.d.ts
+export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
+// File: functions/isInDom.d.ts
+export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
+// File: functions/isInput.d.ts
+export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
+// File: functions/isIntegerBetween.d.ts
+export declare function isIntegerBetween(value: number, between: number): boolean;
+// File: functions/isNull.d.ts
+export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
+// File: functions/isNumber.d.ts
+export declare function isNumber(value: any): boolean;
+// File: functions/isObject.d.ts
+export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;
+// File: functions/isObjectNotArray.d.ts
+export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
+// File: functions/isOnLine.d.ts
+export declare function isOnLine(): boolean;
+// File: functions/isSelected.d.ts
+export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;
+// File: functions/isSelectedByList.d.ts
+export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
+// File: functions/isShare.d.ts
+export declare function isShare(): boolean;
+// File: functions/isString.d.ts
+export declare function isString<T>(value: T): value is Extract<T, string>;
+// File: functions/isWindow.d.ts
+export declare function isWindow<E>(element: E): element is Extract<E, Window>;
+// File: functions/random.d.ts
+export declare function random(min: number, max: number): number;
+// File: functions/removeCommonPrefix.d.ts
+export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
+// File: functions/replaceComponentName.d.ts
+export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
+// File: functions/replaceRecursive.d.ts
+export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
+// File: functions/replaceTemplate.d.ts
+export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
+// File: functions/resizeImageByMax.d.ts
+export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: 'auto' | 'width' | 'height', typeData?: string): string | undefined;
+// File: functions/secondToTime.d.ts
+export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
+// File: functions/setElementItem.d.ts
+export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
+// File: functions/setValues.d.ts
+export declare function setValues<T>(selected: T | T[] | undefined, value: any, { multiple, maxlength, alwaysChange, notEmpty }: {
+    multiple?: boolean | undefined;
+    maxlength?: number | undefined;
+    alwaysChange?: boolean | undefined;
+    notEmpty?: boolean | undefined;
+}): T | T[] | undefined;
+// File: functions/sleep.d.ts
+export declare function sleep(ms: number): Promise<void>;
+// File: functions/splice.d.ts
+export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
+// File: functions/strFill.d.ts
+export declare function strFill(value: string, count: number): string;
+// File: functions/strSplit.d.ts
+export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
+// File: functions/toArray.d.ts
+export declare function toArray<T>(value: T): T extends any[] ? T : [T];
+// File: functions/toCamelCase.d.ts
+export declare function toCamelCase(value: string): string;
+// File: functions/toCamelCaseFirst.d.ts
+export declare function toCamelCaseFirst(value: string): string;
+// File: functions/toDate.d.ts
+export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
+// File: functions/toKebabCase.d.ts
+export declare function toKebabCase(value: string): string;
+// File: functions/toNumber.d.ts
+/** @remarks Parses strings with various separators to float. Safe for SSR. */
+export declare function toNumber(value?: NumberOrString): number;
+// File: functions/toNumberByMax.d.ts
+export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
+// File: functions/toPercent.d.ts
+export declare function toPercent(maxValue: number, value: number): number;
+// File: functions/toPercentBy100.d.ts
+export declare function toPercentBy100(maxValue: number, value: number): number;
+// File: functions/toString.d.ts
+export declare function toString<T>(value: T): string;
+// File: functions/transformation.d.ts
+export declare function transformation(value: any, isFunction?: boolean): any;
+// File: functions/uint8ArrayToBase64.d.ts
 export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
-
-export declare type Undefined = undefined | null;
-
-/** Remove array duplicates. */
+// File: functions/uniqueArray.d.ts
 export declare function uniqueArray<T>(value: T[]): T[];
-
-/** Write text to clipboard. */
+// File: functions/writeClipboardData.d.ts
 export declare function writeClipboardData(text: string): Promise<void>;
+// File: types/apiTypes.d.ts
+export declare enum ApiMethodItem {
+    delete = "DELETE",
+    get = "GET",
+    post = "POST",
+    put = "PUT",
+    patch = "PATCH"
+}
+export type ApiCacheItem<T = any> = {
+    value: T;
+    age?: number;
+    cacheAge: number;
+};
+export type ApiCacheList = Record<string, ApiCacheItem>;
+export type ApiConfig = {
+    urlRoot?: string;
+    origin?: string;
+    headers?: Record<string, string>;
+    requestDefault?: Record<string, any>;
+    preparation?: (apiFetch: ApiFetch) => Promise<void>;
+    end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
+    timeout?: number;
+};
+export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
+export type ApiDataValidation = {
+    status?: ApiStatusType;
+    code?: string | number;
+    message?: string;
+};
+export type ApiDataItem<T = any> = T & ApiDataValidation & {
+    data?: T;
+    success?: boolean;
+    statusObject?: ApiStatusItem;
+};
+export type ApiDefaultValue = Record<string, any>;
+export type ApiFetch = {
+    api?: boolean;
+    path?: string;
+    pathFull?: string;
+    method?: ApiMethod;
+    request?: FormData | Record<string, any> | string;
+    auth?: boolean;
+    headers?: Record<string, string> | null;
+    type?: string;
+    toData?: boolean;
+    global?: boolean;
+    devMode?: boolean;
+    hideError?: boolean;
+    hideLoading?: boolean;
+    retry?: number;
+    retryDelay?: number;
+    queryReturn?: (query: Response) => Promise<any | ApiDataValidation>;
+    globalPreparation?: boolean;
+    globalEnd?: boolean;
+    init?: RequestInit;
+    timeout?: number;
+    controller?: AbortController;
+    cache?: number;
+    enableClientCache?: boolean;
+    cacheId?: number | string;
+    endResetLimit?: number;
+};
+export type ApiHydrationItem = {
+    path: string;
+    method: ApiMethod;
+    request?: ApiFetch['request'];
+    response: any;
+};
+export type ApiHydrationList = ApiHydrationItem[];
+export type ApiMethod = string | ApiMethodItem;
+export type ApiPreparationEnd = {
+    reset?: boolean;
+    data?: any;
+};
+export type ApiResponseItem = {
+    path: string | RegExp;
+    method: ApiMethod;
+    request?: ApiFetch['request'] | '*any';
+    response: any | ((request?: ApiFetch['request']) => any);
+    disable?: any;
+    isForGlobal?: boolean;
+    lag?: any;
+};
+export type ApiStatusItem = {
+    status?: number;
+    statusText?: string;
+    error?: string;
+    lastResponse?: any;
+    lastStatus?: ApiStatusType;
+    lastCode?: string;
+    lastMessage?: string;
+};
+export type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
+// File: types/basicTypes.d.ts
+export type Undefined = undefined | null;
+export type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
+export type NumberOrString = number | string;
+export type NumberOrStringOrBoolean = number | string | boolean;
+export type NumberOrStringOrDate = NumberOrString | Date;
+export type NormalOrArray<T = NumberOrString> = T | T[];
+export type NormalOrPromise<T> = T | Promise<T>;
+export type ObjectItem<T = any> = Record<string, T>;
+export type ObjectOrArray<T = any> = T[] | ObjectItem<T>;
+export type ArrayToItem<T> = T extends any[] ? T[number] : T;
+export type FunctionReturn<R = any> = () => R;
+export type FunctionVoid = () => void;
+export type FunctionArgs<T, R> = (...args: T[]) => R;
+export type FunctionAnyType<T = any, R = any> = (...args: T[]) => R;
+export type ItemList<T = any> = Record<string, T>;
+export type Item<V> = {
+    index: string;
+    value: V;
+};
+export type ItemValue<V> = {
+    label: string;
+    value: V;
+};
+export type ItemName<V> = {
+    name: string | number;
+    value: V;
+};
+export type ElementOrWindow = HTMLElement | Window;
+export type ElementOrString<E extends ElementOrWindow> = E | string;
+export type EventOptions = AddEventListenerOptions | boolean | undefined;
+export type EventListenerDetail<O extends Event, D extends Record<string, any>> = (event: O, detail?: D) => void;
+export type EventActivityItem<E extends ElementOrWindow> = {
+    element: E | undefined;
+    type: string;
+    listener?: (event: any | Event) => void;
+    observer?: ResizeObserver;
+};
+export type ImageCoordinator = {
+    x: number;
+    y: number;
+};
+// File: types/errorCenter.d.ts
+export type ErrorCenterGroup = string | undefined;
+export type ErrorCenterCauseItem = {
+    group?: ErrorCenterGroup;
+    code: string;
+    priority?: number;
+    label?: string;
+    message?: string;
+    details?: any;
+};
+export type ErrorCenterCauseList = ErrorCenterCauseItem[];
+export type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void;
+export type ErrorCenterHandlerItem = {
+    group?: ErrorCenterGroup;
+    handlers: ErrorCenterHandlerCallback[];
+};
+export type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
+// File: types/formattersTypes.d.ts
+export declare enum FormattersType {
+    currency = "currency",
+    date = "date",
+    name = "name",
+    number = "number",
+    plural = "plural",
+    unit = "unit"
+}
+export type FormattersOptionsCurrency = {
+    currencyPropName?: string;
+    options?: string | Intl.NumberFormatOptions;
+    numberOnly?: boolean;
+};
+export type FormattersOptionsDate = {
+    type?: GeoDate;
+    options?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions;
+    hour24?: boolean;
+};
+export type FormattersOptionsName = {
+    lastPropName?: string;
+    firstPropName?: string;
+    surname?: string;
+    short?: boolean;
+};
+export type FormattersOptionsNumber = {
+    options?: Intl.NumberFormatOptions;
+};
+export type FormattersOptionsPlural = {
+    words: string;
+    options?: Intl.PluralRulesOptions;
+    optionsNumber?: Intl.NumberFormatOptions;
+};
+export type FormattersOptionsUnit = {
+    unit: string | Intl.NumberFormatOptions;
+};
+export type FormattersOptionsInformation<Type extends FormattersType> = Type extends FormattersType.currency ? FormattersOptionsCurrency : Type extends FormattersType.date ? FormattersOptionsDate : Type extends FormattersType.name ? FormattersOptionsName : Type extends FormattersType.number ? FormattersOptionsNumber : Type extends FormattersType.plural ? FormattersOptionsPlural : Type extends FormattersType.unit ? FormattersOptionsUnit : Record<string, any>;
+export type FormattersOptionsItem<Type extends FormattersType = FormattersType, R = string> = {
+    type?: Type;
+    transformation?: (valueOriginal: any, item: any, options?: FormattersOptionsInformation<Type>) => R;
+    options?: FormattersOptionsInformation<Type>;
+};
+export type FormattersOptionsList = Record<string, FormattersOptionsItem>;
+export type FormattersListItem = Record<string, any>;
+export type FormattersList<Item extends FormattersListItem> = Item[];
+export type FormattersCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<FormattersCapitalize<Rest>>}` : K;
+export type FormattersColumns<T extends FormattersOptionsList> = (keyof T & string)[];
+export type FormattersKey<K, A extends string = 'Format'> = K extends string ? `${FormattersCapitalize<K>}${A}` : never;
+export type FormattersDataItem<T extends FormattersListItem, KT extends string[]> = {
+    [K in keyof T | FormattersKey<KT[number]>]: K extends keyof T ? T[K] : string;
+};
+export type FormattersListFormat<T extends FormattersListItem, K extends string[]> = FormattersDataItem<T, K>[];
+export type FormattersListColumnItem<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersDataItem<T, FormattersColumns<O>>;
+export type FormattersListColumns<T extends FormattersListItem, O extends FormattersOptionsList> = FormattersListFormat<T, FormattersColumns<O>>;
+export type FormattersListProp = FormattersList<FormattersListItem> | FormattersListItem;
+export type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>;
+export type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = List extends any[] ? FormattersListColumns<Item, Options> : (FormattersListColumnItem<Item, Options> | undefined);
+// File: types/geoTypes.d.ts
+export type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second';
+export type GeoFirstDay = 1 | 6 | 0;
+export type GeoHours = '12' | '24';
+export type GeoTimeZoneStyle = 'minute' | 'hour' | 'ISO8601' | 'RFC';
+export interface GeoItem {
+    country: string;
+    countryAlternative?: string[];
+    language: string;
+    languageAlternative?: string[];
+    firstDay?: string | null;
+    zone?: string | null;
+    phoneCode?: string;
+    phoneWithin?: string;
+    phoneMask?: string | string[];
+    nameFormat?: 'fl' | 'fsl' | 'lf' | 'lsf' | string;
+}
+export interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
+    standard: string;
+    firstDay: string;
+}
+export interface GeoFlagItem {
+    language: string;
+    country: string;
+    standard: string;
+    icon?: string;
+    label: string;
+    value: string;
+}
+export interface GeoFlagNational extends GeoFlagItem {
+    description: string;
+    nationalLanguage: string;
+    nationalCountry: string;
+}
+export interface GeoPhoneValue {
+    phone: number;
+    within: number;
+    mask: string[];
+    value: string;
+}
+export interface GeoPhoneMap {
+    items: GeoPhoneValue[];
+    info: GeoPhoneValue | undefined;
+    value: string | undefined;
+    mask: string[];
+    maskFull: string[];
+    next: Record<string, GeoPhoneMap>;
+}
+export interface GeoPhoneMapInfo {
+    item?: GeoPhoneMap;
+    phone?: string;
+}
+// File: types/metaTypes.d.ts
+export declare enum MetaTag {
+    title = "title",
+    description = "description",
+    keywords = "keywords",
+    canonical = "canonical",
+    robots = "robots",
+    author = "author"
+}
+export declare enum MetaRobots {
+    indexFollow = "index, follow",
+    noIndexFollow = "noindex, follow",
+    indexNoFollow = "index, nofollow",
+    noIndexNoFollow = "noindex, nofollow",
+    noArchive = "noarchive",
+    noSnippet = "nosnippet",
+    noImageIndex = "noimageindex",
+    images = "images",
+    noTranslate = "notranslate",
+    noPreview = "nopreview",
+    textOnly = "textonly",
+    noIndexSubpages = "noindex, noarchive",
+    none = "none"
+}
+export declare enum MetaOpenGraphTag {
+    title = "og:title",
+    type = "og:type",
+    url = "og:url",
+    image = "og:image",
+    description = "og:description",
+    locale = "og:locale",
+    siteName = "og:site_name",
+    localeAlternate = "og:locale:alternate",
+    imageUrl = "og:image:url",
+    imageSecureUrl = "og:image:secure_url",
+    imageType = "og:image:type",
+    imageWidth = "og:image:width",
+    imageHeight = "og:image:height",
+    imageAlt = "og:image:alt",
+    video = "og:video",
+    videoUrl = "og:video:url",
+    videoSecureUrl = "og:video:secure_url",
+    videoType = "og:video:type",
+    videoWidth = "og:video:width",
+    videoHeight = "og:video:height",
+    audio = "og:audio",
+    audioSecureUrl = "og:audio:secure_url",
+    audioType = "og:audio:type",
+    articlePublishedTime = "article:published_time",
+    articleModifiedTime = "article:modified_time",
+    articleExpirationTime = "article:expiration_time",
+    articleAuthor = "article:author",
+    articleSection = "article:section",
+    articleTag = "article:tag",
+    bookAuthor = "book:author",
+    bookIsbn = "book:isbn",
+    bookReleaseDate = "book:release_date",
+    bookTag = "book:tag",
+    musicDuration = "music:duration",
+    musicAlbum = "music:album",
+    musicAlbumDisc = "music:album:disc",
+    musicAlbumTrack = "music:album:track",
+    musicMusician = "music:musician",
+    musicSong = "music.song",
+    musicSongDisc = "music:song:disc",
+    musicSongTrack = "music:song:track",
+    musicReleaseDate = "music:release_date",
+    musicCreator = "music:creator",
+    videoActor = "video:actor",
+    videoActorRole = "video:actor:role",
+    videoDirector = "video:director",
+    videoWriter = "video:writer",
+    videoDuration = "video:duration",
+    videoReleaseDate = "video:release_date",
+    videoTag = "video:tag",
+    videoSeries = "video:series",
+    profileFirstName = "profile:first_name",
+    profileLastName = "profile:last_name",
+    profileUsername = "profile:username",
+    profileGender = "profile:gender",
+    productBrand = "product:brand",
+    productAvailability = "product:availability",
+    productCondition = "product:condition",
+    productPriceAmount = "product:price:amount",
+    productPriceCurrency = "product:price:currency",
+    productRetailerItemId = "product:retailer_item_id",
+    productCategory = "product:category",
+    productEan = "product:ean",
+    productIsbn = "product:isbn",
+    productMfrPartNo = "product:mfr_part_no",
+    productUpc = "product:upc",
+    productWeightValue = "product:weight:value",
+    productWeightUnits = "product:weight:units",
+    productColor = "product:color",
+    productMaterial = "product:material",
+    productPattern = "product:pattern",
+    productAgeGroup = "product:age_group",
+    productGender = "product:gender"
+}
+export declare enum MetaOpenGraphType {
+    website = "website",
+    article = "article",
+    video = "video.other",
+    videoTvShow = "video.tv_show",
+    videoEpisode = "video.episode",
+    videoMovie = "video.movie",
+    musicAlbum = "music.album",
+    musicPlaylist = "music.playlist",
+    musicSong = "music.song",
+    musicRadioStation = "music.radio_station",
+    app = "app",
+    product = "product",
+    business = "business.business",
+    place = "place",
+    event = "event",
+    profile = "profile",
+    book = "book"
+}
+export declare enum MetaOpenGraphAvailability {
+    inStock = "in stock",
+    outOfStock = "out of stock",
+    preorder = "preorder",
+    backorder = "backorder",
+    discontinued = "discontinued",
+    pending = "pending"
+}
+export declare enum MetaOpenGraphCondition {
+    new = "new",
+    used = "used",
+    refurbished = "refurbished"
+}
+export declare enum MetaOpenGraphAge {
+    newborn = "newborn",
+    infant = "infant",
+    toddler = "toddler",
+    kids = "kids",
+    adult = "adult"
+}
+export declare enum MetaOpenGraphGender {
+    female = "female",
+    male = "male",
+    unisex = "unisex"
+}
+export declare enum MetaTwitterTag {
+    card = "twitter:card",
+    site = "twitter:site",
+    creator = "twitter:creator",
+    url = "twitter:url",
+    title = "twitter:title",
+    description = "twitter:description",
+    image = "twitter:image",
+    imageAlt = "twitter:image:alt",
+    imageSrc = "twitter:image:src",
+    imageWidth = "twitter:image:width",
+    imageHeight = "twitter:image:height",
+    label1 = "twitter:label1",
+    data1 = "twitter:data1",
+    label2 = "twitter:label2",
+    data2 = "twitter:data2",
+    appNameIphone = "twitter:app:name:iphone",
+    appIdIphone = "twitter:app:id:iphone",
+    appUrlIphone = "twitter:app:url:iphone",
+    appNameIpad = "twitter:app:name:ipad",
+    appIdIpad = "twitter:app:id:ipad",
+    appUrlIpad = "twitter:app:url:ipad",
+    appNameGooglePlay = "twitter:app:name:googleplay",
+    appIdGooglePlay = "twitter:app:id:googleplay",
+    appUrlGooglePlay = "twitter:app:url:googleplay",
+    player = "twitter:player",
+    playerWidth = "twitter:player:width",
+    playerHeight = "twitter:player:height",
+    playerStream = "twitter:player:stream",
+    playerStreamContentType = "twitter:player:stream:content_type"
+}
+export declare enum MetaTwitterCard {
+    summary = "summary",
+    summaryLargeImage = "summary_large_image",
+    app = "app",
+    player = "player",
+    product = "product",
+    gallery = "gallery",
+    photo = "photo",
+    leadGeneration = "lead_generation",
+    audio = "audio",
+    poll = "poll"
+}
+// File: types/searchTypes.d.ts
+export type SearchItem = Record<string, any>;
+export type SearchColumnPath<K, P> = K extends string ? P extends string ? `${K}.${P}` : never : never;
+export type SearchColumn<T extends SearchItem> = {
+    [K in keyof T]-?: NonNullable<T[K]> extends object ? K | SearchColumnPath<K, keyof NonNullable<T[K]>> : K;
+}[keyof T];
+export type SearchColumns<T extends SearchItem> = (SearchColumn<T> & string)[];
+export type SearchFormatCapitalize<K extends string> = K extends `${infer First}.${infer Rest}` ? `${First}${Capitalize<SearchFormatCapitalize<Rest>>}` : K;
+export type SearchFormatKey<K> = K extends string ? `${SearchFormatCapitalize<K>}Search` : never;
+export type SearchFormatItem<T extends SearchItem, KT extends string[]> = {
+    [K in keyof T | SearchFormatKey<KT[number]>]: K extends keyof T ? T[K] : string;
+} & {
+    searchActive?: boolean;
+};
+export type SearchFormatList<T extends SearchItem, K extends string[]> = SearchFormatItem<T, K>[];
+export type SearchListValue<T extends SearchItem> = T[] | undefined;
+export type SearchOptions = {
+    limit?: number;
+    returnEverything?: boolean;
+    delay?: number;
+    findExactMatch?: boolean;
+    classSearchName?: string;
+};
+export type SearchCacheItem<T extends SearchItem> = {
+    item: T;
+    value: string;
+};
+export type SearchCache<T extends SearchItem> = SearchCacheItem<T>[];
+export type HighlightMatchItem = {
+    text: string;
+    isMatch: boolean;
+};
+// File: types/translateTypes.d.ts
+export type TranslateConfig = {
+    url?: string;
+    propsName?: string;
+    readApi?: boolean;
+};
+export type TranslateCode = string | string[];
+export type TranslateList<T extends TranslateCode[]> = {
+    [K in T[number] as K extends readonly string[] ? K[0] : K]: string;
+};
+export type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string;
+export type TranslateDataFileList = Record<string, string>;
+export type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
+export type TranslateDataFile = Record<string, TranslateDataFileItem>;
+export declare const TRANSLATE_GLOBAL_PREFIX = "global";
+export declare const TRANSLATE_TIME_OUT = 160;

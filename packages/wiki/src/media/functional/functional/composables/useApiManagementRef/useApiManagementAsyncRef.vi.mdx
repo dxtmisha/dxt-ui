@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useApiManagementAsyncRef - Khởi tạo quản lý API bất đồng bộ'/>
+
+# `useApiManagementAsyncRef`
+
+`useApiManagementAsyncRef` là một wrapper bất đồng bộ cho [`useApiManagementRef`](./useApiManagementRef.vi.mdx), thực hiện khởi tạo yêu cầu ngay lập tức.
+
+Khác với `useApiManagementRef` tiêu chuẩn, vốn khởi tạo "lười" (khi truy cập danh sách hoặc dữ liệu lần đầu), phương thức này gọi `initSsr()` ngay lập tức khi được tạo. Điều này làm cho nó trở thành lựa chọn lý tưởng để sử dụng trong môi trường SSR.
+
+## Các tính năng chính
+- **Khởi tạo ngay lập tức** — bắt đầu quá trình khởi tạo GET request ngay khi hook được gọi.
+- **Hỗ trợ SSR** — đảm bảo dữ liệu được tải trên máy chủ trước khi trang được gửi đến máy khách.
+- **Đầy đủ chức năng quản lý** — giữ lại tất cả các tính năng của `useApiManagementRef`, bao gồm formatter, tìm kiếm và mutation.
+
+## Tham số
+Các tham số giống hệt với [`useApiManagementRef`](./useApiManagementRef.vi.mdx):
+
+- `propsGet: ApiManagementGet<Return, Type>` — cài đặt GET request chính.
+- `formattersOptions?: FormattersOptions` — quy tắc định dạng.
+- `searchOptions?: ApiManagementSearch<Item, Columns>` — cài đặt tìm kiếm.
+- `postRequest / putRequest / deleteRequest` — cài đặt mutation.
+- `action?: function` — callback sau mutation.
+- `apiInstance?: ApiInstance` — instance của API.
+
+## Giá trị trả về
+Trả về một đối tượng quản lý API. Cấu trúc đối tượng trả về giống hệt với [`useApiManagementRef`](./useApiManagementRef.vi.mdx).
+
+## Ví dụ
+
+```typescript
+import { useApiManagementAsyncRef } from '@dxtmisha/functional'
+
+// Khởi tạo (và chuẩn bị dữ liệu SSR) bắt đầu ngay lập tức
+const { list, loading } = useApiManagementAsyncRef(
+  { 
+    path: 'api/products',
+    skeleton: () => Array(3).fill({ id: 0, title: 'Đang tải...' })
+  }
+)
+```

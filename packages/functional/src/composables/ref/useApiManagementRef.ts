@@ -351,6 +351,23 @@ export function useApiManagementRef<
     search: search?.search,
 
     /**
+     * Manual initialization
+     *
+     * Ручная инициализация
+     */
+    init: request.init,
+    /**
+     * SSR initialization
+     *
+     * Инициализация SSR
+     */
+    initSsr: request.initSsr,
+    /**
+     * Default reset
+     *
+     * Сброс по умолчанию
+     */
+    /**
      * Force reset the GET request and clear state.
      *
      * Принудительный перезапуск GET-запроса и очистка состояния.

@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useApiManagementAsyncRef - Асинхронная инициализация управления API'/>
+
+# `useApiManagementAsyncRef`
+
+`useApiManagementAsyncRef` — это асинхронная обертка над [`useApiManagementRef`](./useApiManagementRef.ru.mdx), которая выполняет немедленную инициализацию запроса.
+
+В отличие от стандартного `useApiManagementRef`, который инициализируется "лениво" (при первом обращении к списку или данным), этот метод вызывает `initSsr()` сразу при создании. Это делает его идеальным выбором для использования в SSR-окружении.
+
+## Ключевые особенности
+- **Немедленная инициализация** — запускает процесс инициализации GET-запроса сразу при вызове хука.
+- **Поддержка SSR** — гарантирует, что данные будут загружены на сервере до рендеринга страницы.
+- **Полная функциональность Management** — сохраняет все возможности `useApiManagementRef`, включая форматировщики, поиск и мутации.
+
+## Параметры
+Параметры полностью идентичны [`useApiManagementRef`](./useApiManagementRef.ru.mdx):
+
+- `propsGet: ApiManagementGet<Return, Type>` — настройки главного GET-запроса.
+- `formattersOptions?: FormattersOptions` — правила форматирования.
+- `searchOptions?: ApiManagementSearch<Item, Columns>` — настройки поиска.
+- `postRequest / putRequest / deleteRequest` — настройки мутаций.
+- `action?: function` — коллбэк после мутации.
+- `apiInstance?: ApiInstance` — экземпляр API.
+
+## Возвращаемое значение
+Возвращает объект управления API. Состав возвращаемого значения полностью идентичен [`useApiManagementRef`](./useApiManagementRef.ru.mdx).
+
+## Пример
+
+```typescript
+import { useApiManagementAsyncRef } from '@dxtmisha/functional'
+
+// Инициализация (и SSR-предзагрузка) запускается немедленно
+const { list, loading } = useApiManagementAsyncRef(
+  { 
+    path: 'api/products',
+    skeleton: () => Array(3).fill({ id: 0, title: 'Loading...' })
+  }
+)
+```

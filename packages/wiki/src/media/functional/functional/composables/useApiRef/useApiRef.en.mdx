@@ -35,6 +35,7 @@ Methods:
 - `isReading(): boolean` — A synchronous method that returns the current value of the `reading` flag.
 - `getItem(): ApiData<R> | undefined` — Method to get the current value of `data` without creating a reactive dependency.
 - `init(awaitFetch?: boolean): Promise<void>` — Method for explicit request and watcher initialization. Triggered automatically on first access to `data`. If `awaitFetch` is `true`, it waits for the first request to complete.
+- `initSsr(): void` — Method for server-side initialization. Uses `onServerPrefetch` to fetch data during SSR.
 - `reset(): Promise<void>` — An asynchronous method to force re-run the request. Cancels the current active request (if any) and initiates a new one.
 - `stop(): void` — Stops watching reactive dependencies and resets `data` to `undefined`.
 - `abort(): void` — Cancels the current HTTP request via the internal `AbortController`, while keeping already loaded data in `data`.
@@ -47,20 +48,22 @@ Requests and watching mechanisms **are not started** immediately when `useApiRef
 
 `setApiRefGlobalConditions(conditions)` — sets a global condition for all `useApiRef` instances. Only works on the first call.
 
-## SSR and Initialization
+## SSR (Server-Side Rendering)
 
-The `init` method is designed to manage the primary data loading process, which is critical for the correct operation of **Server Side Rendering (SSR)** and ensuring fast interface rendering on the client.
+To ensure correct operation on the server side (SSR), the **`initSsr()`** method must be used.
 
-### Mechanism of Operation (Hydration)
+### The `initSsr()` Method
+When called in a component's `setup()`, it ensures that data is loaded on the server before page rendering and applied instantly on the client.
 
-1.  **Server Side (SSR):**
-    When the page is first opened, `await init()` should be called in `async setup()`. This forces the server to wait for the API response and render the component with ready-made data. The received data is automatically placed in the state cache, which is then passed to the client.
+```typescript
+const { data, initSsr } = useApiRef('path/to/api')
 
-2.  **Client Side (Hydration):**
-    When the browser "hydrates" the page, `useApiRef` first checks for data in the cache. If data is there (received from the server), it is immediately applied to `data`, avoiding a duplicate API request.
+// Call this for SSR support
+initSsr()
+```
 
-3.  **Dynamic Navigation (Client-side Nav):**
-    If the user navigates to the page dynamically (without a page reload), the component renders immediately without waiting for `init()` to complete. This allows for instantly showing a **skeleton** or loading indicator (`loading`) while data is being fetched in the background.
+### Automation via `AsyncRef`
+To avoid calling `initSsr()` manually, you can use the asynchronous version — [**`useApiAsyncRef`**](./useApiAsyncRef.en.mdx). It automatically calls `initSsr()` upon creation.
 ## ApiOptions Object
 
 `ApiOptions` — can accept a string with the `method` name (e.g., `'GET'`) or an object of type `ApiFetch`. Fields of the `ApiFetch` object:

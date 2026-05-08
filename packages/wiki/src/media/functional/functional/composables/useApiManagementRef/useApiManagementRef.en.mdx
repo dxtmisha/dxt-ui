@@ -30,8 +30,14 @@ A powerful composable for comprehensive API request orchestration. It manages da
 - `isSearch: ComputedRef<boolean>` — whether a search query is currently active.
 - `search: Ref<string>` — reactive search string (Proxy to the provided `searchOptions.value`).
 - `sendPost / sendPut / sendDelete: (request?: ApiFetch['request']) => Promise<any>` — methods to execute mutations.
+- `init: () => void` — method for explicit manual initialization of request and observation.
+- `initSsr: () => void` — method for server-side initialization (SSR).
 - `reset: () => Promise<void>` — forces a manual restart/refresh of the main GET request.
 - `abort: () => void` — aborts the ongoing network request.
+
+## Async Version
+
+For cases where immediate (non-lazy) initialization is required (e.g., for SSR), use [**`useApiManagementAsyncRef`**](./useApiManagementAsyncRef.en.mdx). It automatically calls `initSsr()` upon creation.
 
 ## Generic Constraints
 
@@ -60,6 +66,12 @@ A powerful composable for comprehensive API request orchestration. It manages da
     - If the server returns success (verified via `isApiSuccess`), the hook **automatically** calls `reset()` for the main GET request. 
     - This triggers a data reload and updates the entire list. Thus, after deleting a row or adding a new one, your list always remains up to date without writing extra code.
 6.  **Parameter Reactivity**: If the `path` or `options` (in `propsGet`) are reactive (Vue Ref) and you set `reactivity: true`, the hook will watch for changes and automatically reload data when the URL or filtering parameters change.
+
+## SSR and Initialization
+
+To ensure correct operation of **Server Side Rendering (SSR)**, it is recommended to use the asynchronous version [**`useApiManagementAsyncRef`**](./useApiManagementAsyncRef.en.mdx). It automatically initializes the GET request for pre-fetching on the server.
+
+If you are using the standard `useApiManagementRef`, you can manually include it in the SSR cycle by calling `initSsr()` in the component's `setup()`. This ensures that the data will be loaded on the server side.
 
 ## Core Architecture
 

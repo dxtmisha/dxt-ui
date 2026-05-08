@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useApiManagementAsyncRef - Async API Management Initialization'/>
+
+# `useApiManagementAsyncRef`
+
+`useApiManagementAsyncRef` is an asynchronous wrapper for [`useApiManagementRef`](./useApiManagementRef.en.mdx) that performs immediate request initialization.
+
+Unlike the standard `useApiManagementRef`, which initializes "lazily" (upon the first access to the list or data), this method calls `initSsr()` immediately upon creation. This makes it the ideal choice for use in SSR environments.
+
+## Key Features
+- **Immediate Initialization** — starts the GET request initialization process as soon as the hook is called.
+- **SSR Support** — ensures data is loaded on the server before the page is sent to the client.
+- **Full Management Functionality** — retains all features of `useApiManagementRef`, including formatters, search, and mutations.
+
+## Parameters
+Parameters are identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx):
+
+- `propsGet: ApiManagementGet<Return, Type>` — main GET request settings.
+- `formattersOptions?: FormattersOptions` — formatting rules.
+- `searchOptions?: ApiManagementSearch<Item, Columns>` — search settings.
+- `postRequest / putRequest / deleteRequest` — mutation settings.
+- `action?: function` — callback after mutation.
+- `apiInstance?: ApiInstance` — API instance.
+
+## Returns
+Returns an API management object. The return object structure is identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx).
+
+## Example
+
+```typescript
+import { useApiManagementAsyncRef } from '@dxtmisha/functional'
+
+// Initialization (and SSR pre-fetching) starts immediately
+const { list, loading } = useApiManagementAsyncRef(
+  { 
+    path: 'api/products',
+    skeleton: () => Array(3).fill({ id: 0, title: 'Loading...' })
+  }
+)
+```

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.6] - 2026-05-08
+
+### Added
+- **ApiResponse**: Added `emulatorAsync()` method for synchronous response emulation.
+- **Meta**: Added `setSuffix()` and `getSuffix()` for managing page title suffixes.
+- **Meta**: Added `htmlTitle()` for generating HTML-safe title strings.
+
+### Changed / Improved
+- **Api**: Refactored `ApiInstance` and `makeQuery` for more explicit base path handling (`pathToApi`).
+- **Api**: Improved SSR hydration stability and internal emulation logic.
+- **MetaManager**: Optimized `set()` method to avoid redundant updates when content is identical.
+- **getElementId**: Simplified ID generation logic by removing the `id-server-` prefix from server-side IDs.
+- **Documentation**: Completed a massive bilingual (EN/RU) JSDoc overhaul for all functions and classes.
+- **Tests**: Added unit tests for `ApiResponse.emulatorAsync` and improved general test coverage.
+
 ## [1.1.5] - 2026-04-26
 
 ### Added

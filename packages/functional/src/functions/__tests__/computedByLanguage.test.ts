@@ -2,15 +2,39 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 
 import { computedByLanguage } from '../computedByLanguage'
 import { GeoRef } from '../../classes/ref/GeoRef'
 
+vi.mock('../../classes/ref/GeoRef', () => {
+  const geoData = ref({
+    country: 'US',
+    language: 'en',
+    standard: 'en-US',
+    firstDay: '1'
+  })
+  return {
+    GeoRef: {
+      get: vi.fn(() => geoData),
+      set: vi.fn((code: string) => {
+        // Simple mock of set
+        const [lang, country] = code.split('-')
+        geoData.value = {
+          country: country || 'US',
+          language: lang || 'en',
+          standard: code,
+          firstDay: '1'
+        }
+      })
+    }
+  }
+})
+
 describe('computedByLanguage', () => {
   beforeEach(() => {
-    // Ensure language is set so GeoRef.get().value is truthy
+    vi.clearAllMocks()
     GeoRef.set('en-US')
   })
 
@@ -99,6 +123,28 @@ describe('computedByLanguage', () => {
       await nextTick()
 
       expect(result.value).toBe('active')
+    })
+
+    it('should use getterNone when GeoRef.get().value is falsy', async () => {
+      const { GeoRef } = await import('../../classes/ref/GeoRef')
+      const geoData = GeoRef.get() as any
+
+      const result = computedByLanguage(
+        () => 'active',
+        () => 'inactive' as any
+      )
+
+      expect(result.value).toBe('active')
+
+      // Set geo value to undefined (simulating not set)
+      const originalValue = geoData.value
+      geoData.value = undefined
+      await nextTick()
+
+      expect(result.value).toBe('inactive')
+
+      // Restore
+      geoData.value = originalValue
     })
   })
 })

@@ -6,12 +6,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 `useApiAsyncRef` is an asynchronous wrapper over [`useApiRef`](./useApiRef.en.mdx) that performs immediate request initialization.
 
-Unlike the standard `useApiRef`, which is initialized "lazily" (on the first data access), this method calls `init()` immediately.
+Unlike the standard `useApiRef`, which is initialized "lazily" (on the first data access), this method calls `initSsr()` immediately.
 
 ## Key Features
 - **Immediate Initialization** — triggers the request as soon as the composable is called.
-- **Synchronous Recovery** — if the data is already in the cache, it is recovered synchronously before any asynchronous actions start.
-- **SSR Support** — utilizes `onServerPrefetch` to ensure data availability before rendering.
+- **SSR Support** — ensures data availability before rendering on the server.
 
 ## Parameters
 The parameters are identical to `useApiRef`.

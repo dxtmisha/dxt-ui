@@ -6,12 +6,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 `useApiAsyncRef` là một wrapper bất đồng bộ phía trên [`useApiRef`](./useApiRef.vi.mdx), thực hiện việc khởi tạo yêu cầu ngay lập tức.
 
-Khác với `useApiRef` tiêu chuẩn, vốn được khởi tạo "lười" (chỉ khi truy cập dữ liệu lần đầu), phương thức này gọi `init()` ngay lập tức.
+Khác với `useApiRef` tiêu chuẩn, vốn được khởi tạo "lười" (chỉ khi truy cập dữ liệu lần đầu), phương thức này gọi `initSsr()` ngay lập tức.
 
 ## Các tính năng chính
 - **Khởi tạo ngay lập tức** — kích hoạt yêu cầu ngay khi composable được gọi.
-- **Phục hồi đồng bộ** — nếu dữ liệu đã có trong cache, nó sẽ được phục hồi đồng bộ trước khi bắt đầu bất kỳ hành động không đồng bộ nào.
-- **Hỗ trợ SSR** — sử dụng `onServerPrefetch` để đảm bảo có dữ liệu trước khi render.
+- **Hỗ trợ SSR** — đảm bảo có dữ liệu trước khi render trang trên máy chủ.
 
 ## Tham số
 Các tham số hoàn toàn giống với `useApiRef`.

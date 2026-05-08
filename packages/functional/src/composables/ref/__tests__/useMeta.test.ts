@@ -7,7 +7,7 @@ import { nextTick } from 'vue'
 import { MetaRobots } from '@dxtmisha/functional-basic'
 
 // Mock Meta from functional-basic
-const metaMocks = {
+const mockMeta = vi.hoisted(() => ({
   getTitle: vi.fn(() => 'initial title'),
   getKeywords: vi.fn(() => 'initial keywords'),
   getDescription: vi.fn(() => 'initial description'),
@@ -26,15 +26,16 @@ const metaMocks = {
   setSiteName: vi.fn(),
   setSuffix: vi.fn(),
   html: vi.fn(() => '<meta ...>')
-}
+}))
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
   const actual = await importOriginal() as any
   return {
     ...actual,
     Meta: vi.fn().mockImplementation(function (this: any) {
-      return metaMocks
+      return mockMeta
     }),
+    MetaStatic: mockMeta,
     MetaRobots: {
       all: 'all',
       none: 'none',
@@ -58,7 +59,7 @@ describe('useMeta', () => {
 
     expect(title.value).toBe('initial title')
     expect(description.value).toBe('initial description')
-    expect(metaMocks.getTitle).toHaveBeenCalled()
+    expect(mockMeta.getTitle).toHaveBeenCalled()
   })
 
   it('should update Meta instance when refs change', async () => {
@@ -66,23 +67,23 @@ describe('useMeta', () => {
 
     title.value = 'updated title'
     await nextTick()
-    expect(metaMocks.setTitle).toHaveBeenCalledWith('updated title')
+    expect(mockMeta.setTitle).toHaveBeenCalledWith('updated title')
 
     description.value = 'updated description'
     await nextTick()
-    expect(metaMocks.setDescription).toHaveBeenCalledWith('updated description')
+    expect(mockMeta.setDescription).toHaveBeenCalledWith('updated description')
   })
 
   it('should return html meta via getHtmlMeta', () => {
     const { getHtmlMeta } = useMeta()
     expect(getHtmlMeta()).toBe('<meta ...>')
-    expect(metaMocks.html).toHaveBeenCalled()
+    expect(mockMeta.html).toHaveBeenCalled()
   })
 
   it('should call setSuffix via setSuffix', () => {
     const { setSuffix } = useMeta()
     setSuffix(' - Suf')
-    expect(metaMocks.setSuffix).toHaveBeenCalledWith(' - Suf')
+    expect(mockMeta.setSuffix).toHaveBeenCalledWith(' - Suf')
   })
 
   it('should update Meta instance for all reactive properties', async () => {
@@ -90,26 +91,58 @@ describe('useMeta', () => {
 
     keyword.value = 'more updated keywords'
     await nextTick()
-    expect(metaMocks.setKeywords).toHaveBeenCalledWith('more updated keywords')
+    expect(mockMeta.setKeywords).toHaveBeenCalledWith('more updated keywords')
 
     image.value = 'more updated image'
     await nextTick()
-    expect(metaMocks.setImage).toHaveBeenCalledWith('more updated image')
+    expect(mockMeta.setImage).toHaveBeenCalledWith('more updated image')
 
     canonical.value = 'more updated canonical'
     await nextTick()
-    expect(metaMocks.setCanonical).toHaveBeenCalledWith('more updated canonical')
+    expect(mockMeta.setCanonical).toHaveBeenCalledWith('more updated canonical')
 
     robots.value = MetaRobots.none as any
     await nextTick()
-    expect(metaMocks.setRobots).toHaveBeenCalledWith('none')
+    expect(mockMeta.setRobots).toHaveBeenCalledWith('none')
 
     author.value = 'more updated author'
     await nextTick()
-    expect(metaMocks.setAuthor).toHaveBeenCalledWith('more updated author')
+    expect(mockMeta.setAuthor).toHaveBeenCalledWith('more updated author')
 
     siteName.value = 'more updated site'
     await nextTick()
-    expect(metaMocks.setSiteName).toHaveBeenCalledWith('more updated site')
+    expect(siteName.value).toBe('more updated site')
+    expect(mockMeta.setSiteName).toHaveBeenCalledWith('more updated site')
+  })
+
+  it('should update values via setter methods', async () => {
+    const { setTitle, setKeywords, setDescription } = useMeta()
+
+    setTitle('title from setter')
+    await nextTick()
+    expect(mockMeta.setTitle).toHaveBeenCalledWith('title from setter')
+
+    setKeywords('keywords from setter')
+    await nextTick()
+    expect(mockMeta.setKeywords).toHaveBeenCalledWith('keywords from setter')
+
+    setDescription('description from setter')
+    await nextTick()
+    expect(mockMeta.setDescription).toHaveBeenCalledWith('description from setter')
+  })
+
+  it('should synchronize reactive values with Meta instance via sync()', async () => {
+    const { title, sync } = useMeta()
+
+    mockMeta.getTitle.mockReturnValue('new title from meta')
+    sync()
+
+    expect(title.value).toBe('new title from meta')
+  })
+
+  it('should call update() on Meta instance when update is called', () => {
+    const { update } = useMeta()
+    update()
+    expect(mockMeta.setTitle).toHaveBeenCalled()
   })
 })

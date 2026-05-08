@@ -3,10 +3,10 @@ import { useApiAsyncRef, useMeta } from '@dxtmisha/functional'
 
 import DemoLinkBlack from '../components/DemoLinkBlack.vue'
 
-const { title } = useMeta()
+const { setTitle } = useMeta()
 const { data } = useApiAsyncRef<any>('hello')
 
-title.value = 'Api'
+setTitle('Api')
 </script>
 
 <template>

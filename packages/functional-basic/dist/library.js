@@ -3154,7 +3154,7 @@ var K = class {
 		return r(this.listMeta, (e) => this.toHtmlString(e)).join("");
 	}
 	set(e, t) {
-		return this.setItem(e, t).setMeta(e), this;
+		return this.get(e) !== t && this.setItem(e, t).setMeta(e), this;
 	}
 	setByList(e) {
 		return r(e, (e, t) => this.set(t, String(e))), this;
@@ -3381,7 +3381,7 @@ var K = class {
 		return `${super.html()}${this.og.html()}${this.twitter.html()}`;
 	}
 	htmlTitle() {
-		return console.log("this.get(MetaTag.title)", this.get(q.title)), this.toHtmlTitle(this.get(q.title));
+		return this.toHtmlTitle(this.get(q.title));
 	}
 	getSuffix() {
 		return l(this.suffix) ? ` - ${this.suffix}` : "";

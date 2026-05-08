@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { ref, nextTick } from 'vue'
 import { useApiManagementRef } from '../useApiManagementRef'
 import { Api, ApiMethodItem, type ApiInstance } from '@dxtmisha/functional-basic'
 
@@ -14,7 +15,7 @@ describe('useApiManagementRef', () => {
     mockApiInstance = {
       request: vi.fn(),
       getResponse: vi.fn().mockReturnValue({
-        emulatorAsync: vi.fn().mockResolvedValue(undefined)
+        emulatorAsync: vi.fn().mockReturnValue(undefined)
       })
     } as unknown as ApiInstance
 
@@ -42,6 +43,7 @@ describe('useApiManagementRef', () => {
       expect(data.value).toBeUndefined()
       expect(list.value).toBeUndefined()
 
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       expect(starting.value).toBe(false)
@@ -53,7 +55,7 @@ describe('useApiManagementRef', () => {
       const customInstance = {
         request: vi.fn(),
         getResponse: vi.fn().mockReturnValue({
-          emulatorAsync: vi.fn().mockResolvedValue(undefined)
+          emulatorAsync: vi.fn().mockReturnValue(undefined)
         })
       } as unknown as ApiInstance
       vi.mocked(customInstance.request).mockResolvedValueOnce({ data: 'custom' })
@@ -61,6 +63,7 @@ describe('useApiManagementRef', () => {
       const { data } = useApiManagementRef({ path: 'test/get' }, undefined, undefined, undefined, undefined, undefined, undefined, customInstance)
 
       expect(data.value).toBeUndefined()
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       expect(customInstance.request).toHaveBeenCalled()
@@ -73,7 +76,7 @@ describe('useApiManagementRef', () => {
       const customInstance = {
         request: vi.fn(),
         getResponse: vi.fn().mockReturnValue({
-          emulatorAsync: vi.fn().mockResolvedValue(undefined)
+          emulatorAsync: vi.fn().mockReturnValue(undefined)
         })
       } as unknown as ApiInstance
       // Mock GET response to let it finish starting
@@ -92,6 +95,7 @@ describe('useApiManagementRef', () => {
 
       // Trigger init
       expect(list.value).toBeUndefined()
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       vi.mocked(customInstance.request).mockClear()
@@ -133,6 +137,7 @@ describe('useApiManagementRef', () => {
 
       // trigger fetch
       expect(list.value).toBeUndefined()
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       expect(isValid.value).toBe(false)
@@ -154,7 +159,7 @@ describe('useApiManagementRef', () => {
 
       // trigger fetch
       expect(list.value).toBeUndefined()
-      await new Promise(r => setTimeout(r, 0))
+      await nextTick()
 
       expect(loading.value).toBe(true)
       expect(reading.value).toBe(true)
@@ -175,12 +180,14 @@ describe('useApiManagementRef', () => {
         {
           columns: ['id'] as any,
           value: ref('1'),
-          options: { limit: 1 } // Set limit to 1 so '1' triggers search
+          options: { limit: 1 }
         }
       )
 
       // trigger fetch
       expect(list.value).toBeUndefined()
+      await nextTick()
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       expect(lengthData.value).toBe(2)
@@ -201,6 +208,7 @@ describe('useApiManagementRef', () => {
 
       // trigger GET
       expect(list.value).toBeUndefined()
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       expect(loadingPost!.value).toBe(false)
@@ -237,6 +245,7 @@ describe('useApiManagementRef', () => {
 
       // trigger
       expect(list.value).toBeUndefined()
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       vi.mocked(mockApiInstance.request).mockClear()
@@ -265,6 +274,7 @@ describe('useApiManagementRef', () => {
 
       // init
       expect(list.value).toBeUndefined()
+      await nextTick()
       await new Promise(r => setTimeout(r, 0))
 
       await sendPost()
@@ -274,4 +284,3 @@ describe('useApiManagementRef', () => {
     })
   })
 })
-import { ref } from 'vue'
