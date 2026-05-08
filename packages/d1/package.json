@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.57.1",
+  "version": "0.57.2",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -34,8 +34,12 @@
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
+    "ai-screenshot/",
     "dist/",
     "src/styles",
+    "ai-description.txt",
+    "ai-doc.ru.txt",
+    "ai-doc.txt",
     "ai-types.txt",
     "CHANGELOG.md",
     "LICENSE",
@@ -63,6 +67,10 @@
     "./D1Anchor": {
       "types": "./dist/library/D1Anchor.d.ts",
       "default": "./dist/D1Anchor.js"
+    },
+    "./D1Area": {
+      "types": "./dist/library/D1Area.d.ts",
+      "default": "./dist/D1Area.js"
     },
     "./D1Arrow": {
       "types": "./dist/library/D1Arrow.d.ts",
@@ -100,6 +108,14 @@
       "types": "./dist/library/D1ChipGroup.d.ts",
       "default": "./dist/D1ChipGroup.js"
     },
+    "./D1ClientOnly": {
+      "types": "./dist/library/D1ClientOnly.d.ts",
+      "default": "./dist/D1ClientOnly.js"
+    },
+    "./D1Container": {
+      "types": "./dist/library/D1Container.d.ts",
+      "default": "./dist/D1Container.js"
+    },
     "./D1Dialog": {
       "types": "./dist/library/D1Dialog.d.ts",
       "default": "./dist/D1Dialog.js"
@@ -131,6 +147,14 @@
     "./D1GridItem": {
       "types": "./dist/library/D1GridItem.d.ts",
       "default": "./dist/D1GridItem.js"
+    },
+    "./D1Group": {
+      "types": "./dist/library/D1Group.d.ts",
+      "default": "./dist/D1Group.js"
+    },
+    "./D1Header": {
+      "types": "./dist/library/D1Header.d.ts",
+      "default": "./dist/D1Header.js"
     },
     "./D1HorizontalScroll": {
       "types": "./dist/library/D1HorizontalScroll.d.ts",
@@ -188,6 +212,10 @@
       "types": "./dist/library/D1Page.d.ts",
       "default": "./dist/D1Page.js"
     },
+    "./D1PageArea": {
+      "types": "./dist/library/D1PageArea.d.ts",
+      "default": "./dist/D1PageArea.js"
+    },
     "./D1Progress": {
       "types": "./dist/library/D1Progress.d.ts",
       "default": "./dist/D1Progress.js"
@@ -215,6 +243,14 @@
     "./D1Skeleton": {
       "types": "./dist/library/D1Skeleton.d.ts",
       "default": "./dist/D1Skeleton.js"
+    },
+    "./D1Snackbar": {
+      "types": "./dist/library/D1Snackbar.d.ts",
+      "default": "./dist/D1Snackbar.js"
+    },
+    "./D1SnackbarItem": {
+      "types": "./dist/library/D1SnackbarItem.d.ts",
+      "default": "./dist/D1SnackbarItem.js"
     },
     "./D1TabItem": {
       "types": "./dist/library/D1TabItem.d.ts",
@@ -255,41 +291,9 @@
     "./style.css": "./dist/style.css",
     "./style/ui.scss": "./src/styles/Ui/main.scss",
     "./types.d.ts": "./dist/library/types.d.ts",
-    "./D1Group": {
-      "types": "./dist/library/D1Group.d.ts",
-      "default": "./dist/D1Group.js"
-    },
     "./ui-properties": {
       "sass": "./ui-properties.scss",
       "default": "./ui-properties.scss"
-    },
-    "./D1SnackbarItem": {
-      "types": "./dist/library/D1SnackbarItem.d.ts",
-      "default": "./dist/D1SnackbarItem.js"
-    },
-    "./D1Snackbar": {
-      "types": "./dist/library/D1Snackbar.d.ts",
-      "default": "./dist/D1Snackbar.js"
-    },
-    "./D1Area": {
-      "types": "./dist/library/D1Area.d.ts",
-      "default": "./dist/D1Area.js"
-    },
-    "./D1Header": {
-      "types": "./dist/library/D1Header.d.ts",
-      "default": "./dist/D1Header.js"
-    },
-    "./D1Container": {
-      "types": "./dist/library/D1Container.d.ts",
-      "default": "./dist/D1Container.js"
-    },
-    "./D1ClientOnly": {
-      "types": "./dist/library/D1ClientOnly.d.ts",
-      "default": "./dist/D1ClientOnly.js"
-    },
-    "./D1PageArea": {
-      "types": "./dist/library/D1PageArea.d.ts",
-      "default": "./dist/D1PageArea.js"
     }
   },
   "buildOptions": {

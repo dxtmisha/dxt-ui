@@ -46,10 +46,14 @@
     "src/library/style.scss",
     "src/constructors/**/*.scss",
     "src/constructors/**/*.json",
+    "ai-description.txt",
+    "ai-doc.ru.txt",
+    "ai-doc.txt",
     "ai-types.txt",
-    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
     "package.json",
-    "LICENSE"
+    "README.md"
   ],
   "main": "./dist/library.js",
   "module": "./dist/library.js",
@@ -114,6 +118,14 @@
     "./ChipGroup": {
       "types": "./dist/constructors/ChipGroup/index.d.ts",
       "default": "./dist/chipGroup.js"
+    },
+    "./ClientOnly": {
+      "types": "./dist/constructors/ClientOnly/index.d.ts",
+      "default": "./dist/clientOnly.js"
+    },
+    "./Container": {
+      "types": "./dist/constructors/Container/index.d.ts",
+      "default": "./dist/container.js"
     },
     "./Dialog": {
       "types": "./dist/constructors/Dialog/index.d.ts",
@@ -211,6 +223,10 @@
       "types": "./dist/constructors/Page/index.d.ts",
       "default": "./dist/page.js"
     },
+    "./PageArea": {
+      "types": "./dist/constructors/PageArea/index.d.ts",
+      "default": "./dist/pageArea.js"
+    },
     "./Progress": {
       "types": "./dist/constructors/Progress/index.d.ts",
       "default": "./dist/progress.js"
@@ -280,19 +296,7 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss",
-    "./Container": {
-      "types": "./dist/constructors/Container/index.d.ts",
-      "default": "./dist/container.js"
-    },
-    "./ClientOnly": {
-      "types": "./dist/constructors/ClientOnly/index.d.ts",
-      "default": "./dist/clientOnly.js"
-    },
-    "./PageArea": {
-      "types": "./dist/constructors/PageArea/index.d.ts",
-      "default": "./dist/pageArea.js"
-    }
+    "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

@@ -1,0 +1,34 @@
+Это главная функциональная библиотека для среды Vue (@dxtmisha/functional). Здесь собраны утилиты, composables и реактивные классы, заточенные под Vue.
+
+ПРАВИЛА ИСПОЛЬЗОВАНИЯ:
+1. При разработке на Vue всегда отдавайте приоритет этой библиотеке для работы с логикой и composables, а не `@dxtmisha/functional-basic`.
+2. Библиотека оборачивает базовую нереактивную логику в систему реактивности Vue. Если нужная функция или класс есть здесь, они имеют абсолютный приоритет.
+3. Импортируйте утилиты из `@dxtmisha/functional` для реактивного поведения UI, composables и управления состоянием.
+
+РАБОТА С API И СОСТОЯНИЕМ (useApi / executeUse):
+Для работы с сетевыми запросами в библиотеке предусмотрен набор хуков: `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`, `useApiRequest`, `useApiRef`, `useApiAsyncRef`, `useApiManagementRef`, `useApiManagementAsyncRef`.
+Строго соблюдайте следующие правила их применения:
+
+1. НЕ ВЫЗЫВАЙТЕ эти хуки напрямую в компонентах (SFC).
+2. Выносите всю настройку и вызовы `useApi*` в ОТДЕЛЬНЫЕ ФАЙЛЫ (сервисы / хранилища).
+3. Оборачивайте настройку API в фабрику `executeUse` (а именно: `executeUseGlobal`, `executeUseProvide` или `executeUseLocal` из `src/functions/executeUse.ts`). Это гарантирует создание синглтонов (одна точка доступа) и предотвращает создание дубликатов запросов и хранилищ состояния.
+4. Выполняйте любую дополнительную обработку запросов (например: маппинг данных, подготовка структуры для отображения скелетона перед загрузкой формы) в этом же файле, внутри коллбэка `executeUse`, а наружу возвращайте уже полностью готовый набор данных и методов.
+   *Пример правильного использования:*
+   ```ts
+   import { executeUseGlobal } from '@dxtmisha/functional';
+   import { useApiManagementRef } from '@dxtmisha/functional';
+
+   export const useUserManagement = executeUseGlobal(() => {
+     return useApiManagementRef(
+       { path: '/api/users' },                 // GET setup
+       { date: (v) => new Date(v).toLocaleString() }, // Formatters
+       { columns: ['name', 'email'] },         // Search
+       { path: '/api/users' },                 // POST
+       { path: (o) => `/api/users/${o.id}` },  // PUT
+       { path: (o) => `/api/users/${o.id}` }   // DELETE
+     );
+     // Здесь же можно добавить логику подготовки скелетонов, форматирования и т.д.
+     // и затем вернуть расширенный объект
+   });
+   ```
+5. В самом Vue-компоненте просто импортируйте и вызывайте созданный синглтон-хук: `const { list, loading, sendPost } = useUserManagement();`
