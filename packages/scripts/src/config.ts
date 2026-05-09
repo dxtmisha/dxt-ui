@@ -21,20 +21,30 @@ export const UI_FLAG_NOT_EXPORT = /\/\/ *export:none/
 
 /** Folder where all the code is stored/ Папка, где хранится весь код */
 export const UI_DIR_IN = 'src'
+/** AI folder name / Название папки AI */
 export const UI_DIR_AI = 'ai'
+/** Screenshot folder name for AI / Название папки со снимками экрана для AI */
+export const UI_DIR_AI_PROMPT_SCREENSHOT = 'ai-screenshot'
 /** Components directory name/ Название директории компонентов */
 export const UI_DIR_COMPONENTS = 'components'
 /** Constructors directory name/ Название директории конструкторов */
 export const UI_DIR_CONSTRUCTOR = 'constructors'
 /** Structure directory name/ Название директории структуры */
 export const UI_DIR_STRUCTURE = 'structure'
+/** Wiki directory name / Название директории wiki */
 export const UI_DIR_WIKI = 'wiki'
+/** Temporary directory name / Название временной директории */
 export const UI_DIR_TEMPORARY = 'temporary'
+/** Distribution directory name / Название директории сборки */
 export const UI_DIR_DIST = 'dist'
+/** Temporary distribution directory name / Название временной директории сборки */
 export const UI_DIR_DIST_TEMPORARY = 'dist-temporary'
+/** Prompt directory name / Название директории промптов */
 export const UI_DIR_PROMPT = 'prompt'
+/** Packages directory name / Название директории пакетов */
 export const UI_DIR_PACKAGES = 'packages'
 
+/** List of directories for AI wiki / Список директорий для AI wiki */
 export const UI_DIRS_AI_WIKI = [UI_DIR_IN, UI_DIR_WIKI, UI_DIR_AI]
 /** Name of the path to tokens/ Название пути к токенам */
 export const UI_DIRS_TOKENS = [UI_DIR_IN, 'media']
@@ -70,6 +80,17 @@ export const UI_FILE_PACKAGE = 'package.json'
 /** Name of the main file with tokens/ Название главного файла с токенами */
 export const UI_FILE_PROPERTY = 'properties.json'
 
+/** AI prompt description file name / Название файла с описанием промпта AI */
+export const UI_FILE_AI_PROMPT_DESCRIPTION = 'ai-description.txt'
+/** AI prompt info file name / Название файла с информацией промпта AI */
+export const UI_FILE_AI_PROMPT_INFO = 'ai-doc.txt'
+/** AI prompt instruction file name / Название файла с инструкцией промпта AI */
+export const UI_FILE_AI_PROMPT_INSTRUCTION = 'ai-instruction.txt'
+/** AI prompt result file name / Название файла с результатом промпта AI */
+export const UI_FILE_AI_PROMPT_PROMPT = 'ai-prompt.txt'
+/** AI prompt types file name / Название файла с типами промпта AI */
+export const UI_FILE_AI_PROMPT_TYPES = 'ai-types.txt'
+
 /** File name for storing the list of flags/ Название файла для хранения списка флагов */
 export const UI_FILE_NAME_FLAGS = 'flags'
 
@@ -84,15 +105,22 @@ export const UI_FILE_NAME_STYLE = 'style'
 /** File name for the list of component descriptions for the wiki/ Название файла для список описаний компонентов для wiki */
 export const UI_FILE_NAME_WIKI = 'wiki'
 
+/** Vite configuration file name / Название файла конфигурации Vite */
 export const UI_FILE_NAME_VITE = 'vite.config.ts'
 
+/** Vite workers configuration file name / Название файла конфигурации Vite workers */
 export const UI_FILE_NAME_VITE_WORKERS = 'vite-workers.config.ts'
 
+/** Index file name / Название файла index */
 export const UI_FILE_INDEX = 'index.ts'
 
+/** AI types file name / Название файла с типами AI */
 export const UI_FILE_AI_TYPES = 'ai-types.txt'
+/** AI description file name / Название файла с описанием AI */
 export const UI_FILE_AI_DESCRIPTION = 'ai-description.txt'
+/** Style SCSS file name / Название файла стилей SCSS */
 export const UI_FILE_STYLE_SCSS = 'style.scss'
+/** UI properties SCSS file name / Название файла свойств UI в SCSS */
 export const UI_FILE_STYLE_PROPERTIES = 'ui-properties.scss'
 
 /** SCSS file extension/ Расширение файлов SCSS */

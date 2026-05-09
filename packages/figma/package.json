@@ -32,5 +32,6 @@
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "sideEffects": false
 }

@@ -35,6 +35,7 @@
     "package-project": "dxt-package project",
     "package-figma": "dxt-package figma",
     "build-functional": "dxt-build-functional",
+    "prompt": "dxt-prompt",
     "prepublishOnly": "npm run build"
   },
   "files": [

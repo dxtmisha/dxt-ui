@@ -6,7 +6,7 @@ import {
   toBinds
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../library'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Checkbox } from './Checkbox'
 
 import {
