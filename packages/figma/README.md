@@ -58,7 +58,7 @@ async function loadFrames() {
 
 Full API reference and guides:
 
-**[📖 https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-figma-about-library--docs](https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-figma-about-library--docs)**
+**[📖 https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-ui-figma-about-the-library--docs](https://dxtmisha.github.io/dxt-ui/?path=/docs/dxtmisha-en-ui-figma-about-the-library--docs)**
 
 ## License
 

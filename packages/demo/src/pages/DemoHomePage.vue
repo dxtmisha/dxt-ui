@@ -10,10 +10,11 @@ import DemoLink from '../components/DemoLink.vue'
       </D1Group>
       <D1Group label="Components">
         <DemoLink label="Actions" name="component-actions"/>
-        <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Button" name="component-button"/>
         <DemoLink label="ClientOnly" name="component-client-only"/>
+        <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>
+        <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Progress" name="component-progress"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>

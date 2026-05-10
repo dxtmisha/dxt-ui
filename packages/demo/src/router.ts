@@ -9,6 +9,7 @@ import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
+import DemoMaskPage from './pages/components/DemoMaskPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
@@ -48,6 +49,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-image',
     name: 'component-image',
     component: DemoImagePage
+  },
+  {
+    path: '/component-mask',
+    name: 'component-mask',
+    component: DemoMaskPage
   },
   {
     path: '/component-page-area',
