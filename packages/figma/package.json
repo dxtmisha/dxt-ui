@@ -1,9 +1,29 @@
 {
   "name": "@dxtmisha/figma",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
-  "description": "[description]",
+  "description": "Core communication middleware for Figma plugins, providing a structured bidirectional messaging bridge between the plugin logic and UI layer.",
+  "keywords": [
+    "figma",
+    "figma-plugin",
+    "typescript",
+    "messenger",
+    "postmessage",
+    "bridge",
+    "ui"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/figma",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/figma"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",

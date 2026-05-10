@@ -3,7 +3,26 @@
   "private": false,
   "version": "0.1.0",
   "type": "module",
-  "description": "[description]",
+  "description": "Structured TypeScript abstraction layer for Figma Plugin development, focused on node manipulation, state management, and messaging.",
+  "keywords": [
+    "figma",
+    "figma-plugin",
+    "typescript",
+    "abstraction",
+    "storage",
+    "messenger"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/figma-code",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/figma-code"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",

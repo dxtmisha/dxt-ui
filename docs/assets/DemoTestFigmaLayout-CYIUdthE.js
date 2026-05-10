@@ -1,0 +1,3 @@
+import{n as e}from"./chunk-DnJy8xQt.js";import{r as t}from"./react-CFkguG7U.js";import{t as n}from"./jsx-runtime-CDg9WaeQ.js";import{f as r,s as i}from"./blocks-PB3deeuo.js";import{t as a}from"./mdx-react-shim-7_6RcfEr.js";import{n as o,r as s}from"./storybook-BgDPlvJk.js";import{Component as c,n as l,t as u}from"./DemoTestFigmaLayout.stories-5XCUvTWm.js";function d(e){let n={p:`p`,...t(),...e.components};return(0,p.jsxs)(p.Fragment,{children:[(0,p.jsx)(i,{of:u}),`
+`,(0,p.jsx)(o,{name:`DemoTestFigmaLayout`,description:`[description]`,story:c}),`
+`,(0,p.jsx)(n.p,{children:`[doc]`})]})}function f(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,p.jsx)(n,{...e,children:(0,p.jsx)(d,{...e})}):d(e)}var p;e((()=>{p=n(),a(),r(),s(),l()}))();export{f as default};

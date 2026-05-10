@@ -1,9 +1,9 @@
-import { t as e } from "./defineProperty-3CuEayIP.js";
-import { t } from "./AreaInclude-DiJGgvQg.js";
-import { t as n } from "./LabelInclude-Cj8gJJ29.js";
-import { t as r } from "./IconInclude-BvvUD3is.js";
-import { t as i } from "./CaptionInclude-D4FFnCLk.js";
-import { t as a } from "./HeaderInclude-CBRwM7_b.js";
+import { t as e } from "./defineProperty-Dcl1xgfx.js";
+import { t } from "./AreaInclude-DQbKVl3q.js";
+import { t as n } from "./LabelInclude-ldz8tYWt.js";
+import { t as r } from "./IconInclude-DGBNduc3.js";
+import { t as i } from "./CaptionInclude-BKNb7Yn6.js";
+import { t as a } from "./HeaderInclude-BPzNBMeK.js";
 import { computed as o, h as s } from "vue";
 import { DesignConstructorAbstract as c } from "@dxtmisha/functional";
 //#region src/constructors/Header/Header.ts

@@ -1,0 +1,21 @@
+import{n as e}from"./chunk-DnJy8xQt.js";import{r as t}from"./react-CFkguG7U.js";import{t as n}from"./jsx-runtime-CDg9WaeQ.js";import{f as r,s as i}from"./blocks-PB3deeuo.js";import{t as a}from"./mdx-react-shim-7_6RcfEr.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/ru/figma-ref/Composables/useFigmaUiSelected - Управление выбранными фреймами в UI`}),`
+`,(0,c.jsx)(n.h1,{id:`usefigmauiselected`,children:(0,c.jsx)(n.code,{children:`useFigmaUiSelected`})}),`
+`,(0,c.jsx)(n.p,{children:`Composable для управления и наблюдения за списком идентификаторов фреймов, выбранных пользователем в интерфейсе плагина. Предоставляет инструменты для проверки состояния выбора и переключения выделения.`}),`
+`,(0,c.jsx)(n.p,{children:(0,c.jsx)(n.strong,{children:`Возвращает:`})}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`selected: ComputedRef<string[]>`}),` — вычисляемая ссылка на список ID выбранных фреймов.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`loading: ComputedRef<boolean>`}),` — реактивный флаг, указывающий на процесс получения списка выбранных фреймов.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`isSelected(id: string): ComputedRef<boolean>`}),` — вспомогательная функция, возвращающая вычисляемое логическое значение (выбран ли фрейм).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`toggleSelected(id: string, selected: boolean): void`}),` — функция для добавления или удаления фрейма из списка выбора.`]}),`
+`]}),`
+`,(0,c.jsx)(n.h2,{id:`пример-использования`,children:`Пример использования`}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { useFigmaUiSelected } from '@dxtmisha/figma-ref'
+
+const { selected, isSelected, toggleSelected } = useFigmaUiSelected()
+
+// Проверка, выбран ли фрейм
+const active = isSelected('1:123')
+
+// Переключение состояния выбора
+toggleSelected('1:123', !active.value)
+`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

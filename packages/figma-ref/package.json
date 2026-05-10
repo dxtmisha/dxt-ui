@@ -3,7 +3,27 @@
   "private": false,
   "version": "0.1.0",
   "type": "module",
-  "description": "[description]",
+  "description": "Vue 3 composables for Figma plugin development, providing reactive wrappers for Figma storage, selection, and node manipulation.",
+  "keywords": [
+    "figma",
+    "figma-plugin",
+    "vue",
+    "composables",
+    "reactivity",
+    "storage",
+    "selection"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/figma-ref",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/figma-ref"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
