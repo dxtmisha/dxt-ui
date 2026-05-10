@@ -53,12 +53,16 @@ export class MaskEmit {
         validation as MaskEventData
       )
 
-      if (
-        this.type === 'inputLite'
-        || this.type === 'changeLite'
-      ) {
+      if (this.type === 'input') {
         this.emits?.(
-          this.type as never,
+          'inputLite',
+          validation as never
+        )
+      }
+
+      if (this.type === 'change') {
+        this.emits?.(
+          'changeLite',
           validation as never
         )
       }
