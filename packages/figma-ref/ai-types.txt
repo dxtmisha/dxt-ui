@@ -26,31 +26,31 @@ export declare function useFigmaClientStorage<T = any>(name: string, defaultValu
 };
 // File: composables/useFigmaFrameSelection.d.ts
 /**
- * Manages and observes selected Figma frames.
+ * Manage and observe selected frames in Figma.
  * @returns Selected frames and loading state
  */
 export declare function useFigmaFrameSelection(): {
-    /** Selected frames list */
+    /** Selected frames */
     selection: ComputedRef<UiFigmaFramesList>;
     /**
-     * Set Figma selection
+     * Set current selection in Figma.
      * @param id Frame ID
      */
     setSelection(id: string): void;
-    /** Loading state */
+    /** Indicates if fetch is in progress */
     loading: ComputedRef<boolean>;
 };
 // File: composables/useFigmaFrameStyles.d.ts
 /**
- * Manages and observes Figma frame styles.
+ * Manage and observe frame styles from Figma.
  * @returns Frame styles and update methods
  */
 export declare function useFigmaFrameStyles(): {
     /** Frame styles */
     styles: ComputedRef<UiFigmaFrameStylesMessengerResponse>;
     /**
-     * Request style update
-     * @param attributes Update attributes
+     * Send style update request.
+     * @param attributes Attributes
      */
     send(attributes: UiFigmaFrameStylesMessengerAttributes): void;
 };
@@ -68,33 +68,33 @@ export declare function useFigmaStorage<T = any>(name: string, defaultValue?: T,
 };
 // File: composables/useFigmaUiFrames.d.ts
 /**
- * Manages and observes top-level frames.
+ * Manage and observe top-level frames.
  * @returns Top-level frames and loading state
  */
 export declare function useFigmaUiFrames(): {
-    /** Top-level frames list */
+    /** Top-level frames */
     frames: ComputedRef<UiFigmaFramesList>;
-    /** Loading state */
+    /** Indicates if fetch is in progress */
     loading: ComputedRef<boolean>;
 };
 // File: composables/useFigmaUiSelected.d.ts
 /**
- * Manages selected frames in Figma UI.
- * @returns Selected IDs, loading state, and utilities
+ * Manage and observe selected frames in Figma UI.
+ * @returns Selected frame IDs, loading state, and utilities
  */
 export declare function useFigmaUiSelected(): {
     /** Selected frame IDs */
     selected: ComputedRef<string[]>;
-    /** Loading state */
+    /** Indicates if fetch is in progress */
     loading: ComputedRef<boolean>;
     /**
-     * Check if frame is selected
+     * Check if frame with ID is selected.
      * @param id Frame ID
-     * @returns Boolean ref
+     * @returns Computed boolean
      */
     isSelected(id: string): ComputedRef<boolean | undefined>;
     /**
-     * Toggle frame selection
+     * Toggle frame selection state.
      * @param id Frame ID
      * @param selected Selection state
      */

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/figma-ref",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "[description]",
   "scripts": {
@@ -10,14 +10,20 @@
     "preview": "vite preview",
     "test": "vitest",
     "library": "dxt-library",
-    "dxt-types": "dxt-types",
+    "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run build",
     "public": "npm publish --access public"
   },
   "files": [
     "dist",
-    "README.md",
-    "package.json"
+    "ai-description.txt",
+    "ai-doc.ru.txt",
+    "ai-doc.txt",
+    "ai-types.txt",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",

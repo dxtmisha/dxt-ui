@@ -188,6 +188,39 @@ export class BrowserItem {
   }
 
   /**
+   * Retrieves the HTML content of the body.
+   *
+   * Извлекает HTML-содержимое тела (body) страницы.
+   * @returns body html content string / HTML-содержимое body
+   */
+  async getBody(): Promise<string> {
+    return await this.evaluate(() => document.body.innerHTML) ?? ''
+  }
+
+  /**
+   * Retrieves all CSS styles from the page.
+   *
+   * Извлекает все CSS-стили со страницы.
+   * @returns CSS content string / CSS-содержимое
+   */
+  async getStyles(): Promise<string> {
+    return await this.evaluate(() => {
+      return Array.from(document.styleSheets)
+        .map((sheet) => {
+          try {
+            return Array.from(sheet.cssRules)
+              .map(rule => rule.cssText)
+              .join('\n')
+          } catch (e) {
+            console.error('Error getting CSS rules:', e)
+            return ''
+          }
+        })
+        .join('\n')
+    }) ?? ''
+  }
+
+  /**
    * Extracts scrollable dimensions of the page.
    *
    * Извлекает прокручиваемые размеры страницы.

@@ -1,5 +1,4 @@
 import {
-  UI_DIR_PACKAGES,
   UI_FILE_AI_PROMPT_INSTRUCTION,
   UI_FILE_AI_PROMPT_PROMPT,
   UI_MODULES
@@ -8,9 +7,10 @@ import {
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryAiPromptItem } from './LibraryAiPromptItem'
 
+import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.txt?raw'
+
 const LIBRARY_AI_PROMPT_LIST_DIRS = [
-  UI_MODULES,
-  UI_DIR_PACKAGES
+  UI_MODULES
 ]
 
 /**
@@ -50,6 +50,8 @@ export class LibraryAiPrompt {
    * Основной метод для генерации файла промпта ИИ.
    */
   make(): void {
+    console.log('Generating AI prompt...')
+
     const list = this.getList()
     const prompts = [
       `
@@ -58,7 +60,12 @@ This file contains the consolidated documentation and essential prompts for the 
 
 ## Mandatory instructions
 It is critically important to strictly follow all the prompts and instructions listed below. You must adhere to these guidelines without exception to ensure accurate analysis and project development.
-      `.trim()
+- Do not hallucinate or invent any information.
+- Study the provided materials in detail.
+- If you do not know something or lack information, state it explicitly rather than making assumptions.
+- Be sure to study package.json to know which packages are available and rely exclusively on them when writing code.
+      `.trim(),
+      this.getVuePrompt()
     ]
 
     if (list.length > 0) {
@@ -78,6 +85,8 @@ It is critically important to strictly follow all the prompts and instructions l
     }
 
     this.write(prompts)
+
+    console.log('end')
   }
 
   /**
@@ -107,6 +116,21 @@ The rules and instructions provided below have the highest priority. These direc
 ${PropertiesFile.readFileOnly(UI_FILE_AI_PROMPT_INSTRUCTION)}
       `.trim()
     }
+  }
+
+  /**
+   * Retrieves the Vue component implementation prompt.
+   *
+   * Получает промпт по реализации Vue-компонентов.
+   * @returns formatted Vue prompt or undefined / отформатированный промпт Vue или undefined
+   * @protected
+   */
+  protected getVuePrompt(): string {
+    return `
+## Vue component implementation rules
+The rules for the implementation of Vue components are listed below. These instructions are mandatory for creating high-quality, standard-compliant components within this project.
+${vuePromptText}
+    `.trim()
   }
 
   /**
@@ -174,7 +198,7 @@ ${PropertiesFile.readFileOnly(UI_FILE_AI_PROMPT_INSTRUCTION)}
 
 ---
 
-    `)
+`)
     )
 
     return this

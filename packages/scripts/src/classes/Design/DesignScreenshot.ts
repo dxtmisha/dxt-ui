@@ -1,7 +1,8 @@
 import { spawn } from 'node:child_process'
 import { ServerStorage } from '@dxtmisha/functional-basic'
+
+import { PropertiesFile } from '../Properties/PropertiesFile'
 import { BrowserItem } from '../BrowserItem'
-import { PropertiesFile } from '../Properties/PropertiesFile.ts'
 
 /**
  * Class for automatic capturing of screenshots by running dev server.
@@ -54,6 +55,15 @@ export class DesignScreenshot {
 
       const browser = new BrowserItem(this.url, { height: 1024 * 12 })
       await browser.screenshot(this.file)
+
+      PropertiesFile.writeByPath(
+        `${this.file}-code.html`,
+        await browser.getBody()
+      )
+      PropertiesFile.writeByPath(
+        `${this.file}-styles.css`,
+        await browser.getStyles()
+      )
 
       return true
     }

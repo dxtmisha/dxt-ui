@@ -1,13 +1,11 @@
-import { getObjectNoUndefined } from '@dxtmisha/functional-basic'
 import { PropertiesFile } from '../Properties/PropertiesFile'
-
-import { getPackageJson } from '../../functions/getPackageJson'
 
 import {
   UI_DIR_AI_PROMPT_SCREENSHOT,
   UI_FILE_AI_PROMPT_DESCRIPTION,
   UI_FILE_AI_PROMPT_INFO,
-  UI_FILE_AI_PROMPT_TYPES
+  UI_FILE_AI_PROMPT_TYPES,
+  UI_FILE_PACKAGE
 } from '../../config'
 
 /**
@@ -94,7 +92,7 @@ export class LibraryAiPromptItem {
    * @returns true if screenshot directory exists / true, если директория скриншотов существует
    */
   isScreenshot(): boolean {
-    return PropertiesFile.isDir(this.getPath(UI_DIR_AI_PROMPT_SCREENSHOT))
+    return PropertiesFile.is(this.getPath(UI_DIR_AI_PROMPT_SCREENSHOT))
   }
 
   /**
@@ -104,16 +102,21 @@ export class LibraryAiPromptItem {
    * @returns formatted prompt content or undefined / отформатированный контент промпта или undefined
    */
   make(): string | undefined {
-    const data = getObjectNoUndefined([
+    console.log(this.getProjectName())
+
+    const data = [
       this.getDescription(),
       this.getInfo(),
       this.getTypes(),
       this.getScreenshot()
-    ])
+    ].filter(item => item !== undefined) as string[]
 
     if (data.length > 0) {
       return `
 # ${this.getProjectName()}
+## Project location: Root directory
+The project is located at: '${this.getPathString()}'.
+
 ${data.join('\n\n')}
     `.trim()
     }
@@ -134,6 +137,17 @@ ${data.join('\n\n')}
   }
 
   /**
+   * Returns the directory path as a string joined by a slash.
+   *
+   * Возвращает путь к директории в виде строки, объединенной слешем.
+   * @returns path string / строка пути
+   * @protected
+   */
+  protected getPathString(): string {
+    return this.dir.join('/')
+  }
+
+  /**
    * Retrieves and caches package.json content.
    *
    * Получает и кэширует содержимое файла package.json.
@@ -142,7 +156,8 @@ ${data.join('\n\n')}
    */
   protected getPackageJson(): Record<string, any> {
     if (!this.packageJson) {
-      this.packageJson = getPackageJson() ?? {}
+      const path = this.getPath(UI_FILE_PACKAGE)
+      this.packageJson = PropertiesFile.readFile(path) ?? {}
     }
 
     return this.packageJson
@@ -157,7 +172,13 @@ ${data.join('\n\n')}
    * @protected
    */
   protected readFile(dirFile: string): string {
-    return PropertiesFile.readFileOnly(this.getPath(dirFile)) ?? ''
+    const file = PropertiesFile.readFileOnly(this.getPath(dirFile))
+
+    if (file) {
+      return file.replace(/([ '"`]|^)\.\//g, `$1${this.getPathString()}/`)
+    }
+
+    return ''
   }
 
   /**
@@ -169,6 +190,8 @@ ${data.join('\n\n')}
    */
   protected getDescription(): string | undefined {
     if (this.isDescription()) {
+      console.log('-- Description')
+
       return `
 ## Project context: Investigation required
 ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
@@ -187,6 +210,8 @@ ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
    */
   protected getInfo(): string | undefined {
     if (this.isInfo()) {
+      console.log('-- Info')
+
       return `
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -206,10 +231,12 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
    */
   protected getTypes(): string | undefined {
     if (this.isTypes()) {
+      console.log('-- Types')
+
       return `
 ## Project types: Essential for analysis
 This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'./${UI_FILE_AI_PROMPT_TYPES}'
+'${this.getPathString()}/${UI_FILE_AI_PROMPT_TYPES}'
       `.trim()
     }
 
@@ -227,7 +254,9 @@ This file contains the complete type definitions for the project. It is mandator
     const list = this.getScreenshotList()
 
     if (list) {
-      const screenshot: string = list.map(item => `- './${UI_DIR_AI_PROMPT_SCREENSHOT}${item}'`).join('\n')
+      console.log('-- Screenshot')
+
+      const screenshot: string = list.map(item => `- '${this.getPathString()}/${UI_DIR_AI_PROMPT_SCREENSHOT}/${item}'`).join('\n')
 
       return `## Project screenshots: Visual reference
 The project includes the following screenshots that provide a visual reference for the project's design and functionality:

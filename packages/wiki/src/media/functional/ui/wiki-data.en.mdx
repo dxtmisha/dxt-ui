@@ -1,0 +1,114 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/# UI/# Wiki Data Configuration'/>
+
+# Wiki Data Configuration
+
+To manage demo data and Storybook arguments within a specific project (e.g., `d1`), the `src/wiki/wiki.ts` file is used. This file allows you to supplement or override global Wiki settings defined in the main `@dxtmisha/wiki` package.
+
+### Why is this needed?
+The `wiki.ts` file serves as the central configuration point for:
+- Overriding global default values for Storybook arguments (e.g., button text or icons).
+- Configuring selection lists (options) for project-specific resources.
+- Adding unique demo data not included in the base library.
+
+### How to work with the file
+In each component package (e.g., `@dxtmisha/d1`), the `src/wiki/wiki.ts` file exports an object of type `StorybookArgsToList`. This object imports the base `wiki` data items and modifies them as needed.
+
+```typescript
+import { StorybookControl, StorybookCategory, type StorybookArgsToList } from '@dxtmisha/wiki'
+import { wiki } from '@dxtmisha/wiki/media'
+
+export const wikiD1: StorybookArgsToList = {
+  // 1. Inheritance: Overriding existing argument 'image.value'
+  'image.value': {
+    ...wiki['image.value'],
+    options: {
+      ...wiki['image.value']?.options,
+      value: 'mail-01'
+    }
+  },
+
+  // 2. New Parameter: Creating a completely new property
+  'my.new.parameter': {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.technical,
+      description: 'Description of a completely new parameter not in the base',
+      value: 'Default Value'
+    }
+  }
+}
+```
+
+
+
+## Naming Conventions
+
+The choice of key name in the `wiki` object determines the scope of the settings:
+
+#### Global Properties
+If the key consists only of the property name (e.g., `value`, `size`, `text`), the settings are considered **global**. They are automatically applied to all components in the system that have that property. This is useful for defining uniform descriptions or control types for the entire library.
+
+#### Specific Properties
+If the key contains a dot, it is interpreted as `[ComponentName].[PropertyName]` (e.g., `button.size`, `input.value`).
+- Settings are applied **only to the specified component**.
+- These values take precedence over global settings.
+- Allows defining unique behavior or default values for a specific element without affecting others.
+
+## Data Type Structure
+
+To correctly configure the `wiki.ts` file, it is important to understand the structure of the types used. Below is a detailed description of the main `StorybookArgsToList` type and its components.
+
+### `StorybookArgsToList`
+
+This is a record type (`Record`) used for argument configuration.
+
+- **Key**: Argument name (string).
+- **Value**: An object of type `StorybookArgsToItem`.
+
+---
+
+### `StorybookArgsToItem`
+
+Describes the configuration of a specific Storybook control.
+
+- `type: StorybookControl` — defines the interface type for value control (text field, checkbox, etc.).
+- `options: StorybookArgsToOptionsByType` — an object for advanced behavior and display settings.
+- `isDemo?: boolean` — indicates that the parameter is for demonstration purposes only.
+- `demo?: any` — demonstration data that will be substituted in examples.
+- `hide?: boolean` — allows hiding the parameter from the argument table if it is purely technical.
+
+---
+
+### `StorybookArgsToOptionsByType`
+
+An object for configuring argument metadata and constraints.
+
+- `category?: StorybookCategory` — the category name for grouping in the table (use values from the `StorybookCategory` enum).
+- `value?: any` — the current value of the argument.
+- `defaultValue?: string | number | boolean` — the value that will be displayed as "default" in the documentation.
+- `description?: string | Record<string, string>` — description of the property. Can be a string or an object for different languages.
+- `options?: string[] | Record<string, string>` — a list of available options for selection (relevant for `select` or `radio` types).
+- `min?: number` / `max?: number` — minimum and maximum values for numeric controls.
+- `order?: number` — numeric index for sorting arguments in the list.
+
+---
+
+### Enums
+
+#### `StorybookControl`
+Defines the visual type of the control:
+- `text` — text field.
+- `boolean` — checkbox (true/false).
+- `number` — numeric input.
+- `select` — dropdown list (requires `options` to be filled).
+- `object` — editor for JSON objects.
+
+#### `StorybookCategory`
+Used for grouping properties into logical blocks:
+- `Values` — primary values.
+- `Styles` — appearance parameters.
+- `Technical` — technical and internal settings.
+- `Adaptive` — responsiveness parameters.
+- `Status` — component states.

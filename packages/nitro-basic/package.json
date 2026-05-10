@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/nitro-basic",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "A foundational utility library for building robust Server-Side Rendering (SSR) applications with Vue 3 and Nitro.",
   "keywords": [
@@ -40,6 +40,8 @@
   "files": [
     "dist",
     "ai-description.txt",
+    "ai-doc.ru.txt",
+    "ai-doc.txt",
     "ai-types.txt",
     "CHANGELOG.md",
     "LICENSE",

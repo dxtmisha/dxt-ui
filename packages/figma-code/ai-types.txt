@@ -20,18 +20,14 @@ export declare class FigmaAiText {
 }
 
 // File: classes/FigmaClientStorage.d.ts
-/** Figma client storage handler. */
+/** Figma client storage wrapper. */
 export declare class FigmaClientStorage<T> {
     /**
      * Get class instance.
      * @param name value name
-     * @returns instance
+     * @returns current instance
      */
     static getInstance<T>(name: string): FigmaClientStorage<T>;
-    /**
-     * @param name value name
-     * @param cache cache time
-     */
     constructor(name: string, cache?: number | undefined);
     /**
      * Get data from storage.
@@ -44,24 +40,19 @@ export declare class FigmaClientStorage<T> {
      * @returns current value
      */
     set(value?: T | (() => T | Promise<T>)): Promise<T | undefined>;
-    /**
-     * Remove data from storage.
-     * @returns instance
-     */
+    /** Remove data from storage. */
     remove(): Promise<this>;
 }
 
 // File: classes/FigmaFrame.d.ts
-/** Figma frames and elements handler. */
+/** Figma frames and elements manager. */
 export declare class FigmaFrame {
     /**
      * @param page Figma page or node
-     * @param selection use current selection or entire page
+     * @param selection use selection or entire page
      */
     constructor(page: UiFigmaNode, selection?: boolean);
-    /**
-     * Check if context is a selection.
-     */
+    /** Check if context is a selection. */
     isSelection(): this is {
         page: PageNode;
     };
@@ -71,9 +62,9 @@ export declare class FigmaFrame {
     getItemsSection(): FigmaItem<SectionNode>[];
     /** Get all text items. */
     getItemsText(): FigmaItem<TextNode>[];
-    /** Get frames with names, IDs, and screenshots. */
+    /** Get frames info (names, IDs, screenshots). */
     getItemsInfo(): Promise<UiFigmaFramesList>;
-    /** Get CSS styles for items. */
+    /** Get CSS styles for all items. */
     getItemsCss(): Promise<UiFigmaFrameStylesCssList>;
     /** Get frames with styles. */
     getItemsStyles(): Promise<UiFigmaFrameStylesList>;
@@ -81,33 +72,27 @@ export declare class FigmaFrame {
     getMainFrames(): FigmaItem[];
     /** Get main items info. */
     getMainItemsInfo(): Promise<UiFigmaFramesList>;
-    /** Get main items styles. */
+    /** Get main frames with styles. */
     getMainItemsStyles(): Promise<UiFigmaFrameStylesList>;
     /** Get text nodes grouped by content. */
     getTexts(): UiFigmaItemText[];
-    /** Take screenshots of main items. */
+    /** Screenshot main items. */
     screenshot(): Promise<Uint8Array<ArrayBufferLike>[]>;
 }
 
 // File: classes/FigmaFramesSelected.d.ts
-/** Manage selected frames in plugin. */
+/** Manages selected frames in plugin. */
 export declare class FigmaFramesSelected {
     /**
      * Check if frame ID is selected.
      * @param id Frame ID
      */
     static has(id: string): boolean;
-    /** Get selected frame IDs. */
+    /** Get current selected frame IDs. */
     static get(): string[];
-    /**
-     * Add frame ID to selection.
-     * @param id Frame ID
-     */
+    /** Add frame ID to selection. */
     static add(id: string): void;
-    /**
-     * Remove frame ID from selection.
-     * @param id Frame ID
-     */
+    /** Remove frame ID from selection. */
     static remove(id: string): void;
     /**
      * Toggle frame selection state.
@@ -115,16 +100,13 @@ export declare class FigmaFramesSelected {
      * @param selected selection state
      */
     static toggle(id: string, selected: boolean): void;
-    /** Setup messenger communication for selection. */
+    /** Sync selection state via messenger. */
     static send(): void;
 }
 
 // File: classes/FigmaItem.d.ts
-/** Figma node wrapper.
- * @template T Figma node type
- */
+/** Figma node wrapper. */
 export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
-    /** @param item Figma node */
     constructor(item: T);
     isDocument(): this is {
         item: DocumentNode;
@@ -154,57 +136,40 @@ export declare class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     getId(): string;
     getName(): string;
     getText(): string;
-    /** Get CSS styles. */
     getCss(): Promise<Record<string, string>>;
-    /** Get node info. */
     getInfo(): Promise<UiFigmaFramesItem>;
-    /** Get node styles. */
     getStyles(): Promise<UiFigmaFrameStylesItem>;
-    /** Export as JPG. */
     exportJpg(): Promise<Uint8Array<ArrayBufferLike> | "">;
-    /** Export as JSON. */
     exportJson(): Promise<Uint8Array<ArrayBufferLike> | "">;
-    /** Export as compact JSON. */
     exportJsonCompact(): Promise<UiFigmaFrameStylesData | undefined>;
-    /** Select the node. */
+    /** Select node. */
     toSelection(): void;
-    /** Navigate to page and select node. */
+    /** Move to page and select node. */
     toPageAndSelection(): Promise<void>;
 }
 
 // File: classes/FigmaPluginMessenger.d.ts
-/** Backend messenger for Figma plugin. */
+/** Figma plugin backend messenger. */
 export declare class FigmaPluginMessenger extends FigmaPostAbstract {
-    /** Get class instance. */
     static getInstance(): FigmaPluginMessenger;
-    /**
-     * Send message to UI.
-     * @param type Message type
-     * @param message Data
-     */
+    /** Send message to UI. */
     post<Message>(type: string, message?: Message): void;
 }
 
 // File: classes/FigmaStorage.d.ts
-/** Figma PluginData storage handler. */
+/** Figma PluginData storage wrapper. */
 export declare class FigmaStorage<T> {
     /**
-     * Get class instance.
+     * Get instance.
      * @param name value name
-     * @param item storage object
+     * @param item data container
      */
     static getInstance<T>(name: string, item?: UiFigmaNode): FigmaStorage<T>;
     /**
-     * Get instance by object ID.
-     * @param name value name
+     * Get instance by ID.
      * @param id object id
      */
     static getInstanceById<T>(name: string, id?: string): Promise<FigmaStorage<T>>;
-    /**
-     * @param name value name
-     * @param item storage object
-     * @param cache cache time
-     */
     constructor(name: string, item?: PluginDataMixin, cache?: number | undefined);
     get(defaultValue?: T | (() => T)): T | undefined;
     set(value?: T | (() => T)): T | undefined;
@@ -212,7 +177,6 @@ export declare class FigmaStorage<T> {
 }
 
 // File: classes/FigmaStorageData.d.ts
-/** Figma Storage data structure. */
 export type FigmaStorageDataValue<T> = {
     value: T;
     age: number;
@@ -237,9 +201,9 @@ export declare class FigmaStorageData<T> {
 }
 
 // File: classes/FigmaTopLevelFrames.d.ts
-/** Manage top-level frames in plugin. */
+/** Manages top-level frames list. */
 export declare class FigmaTopLevelFrames {
-    /** Get top-level frames list. */
+    /** Get cached list of top-level frames. */
     static get(): Promise<UiFigmaFramesList>;
     /** Listen for frame requests and send data. */
     static send(): void;
@@ -254,39 +218,39 @@ export declare const FIGMA_MESSAGE_TEXTS = "texts";
 export declare function getFigmaFrameById(id: string): Promise<FigmaFrame | undefined>;
 
 // File: functions/getFigmaItemById.d.ts
-/** Get FigmaItem by ID. */
+/** Get Figma item wrapper by ID. */
 export declare function getFigmaItemById<T extends UiFigmaNode = UiFigmaNode>(id: string): Promise<FigmaItem<T> | undefined>;
 
 // File: functions/getFigmaItemByIdOrRoot.d.ts
-/** Get Figma node by ID or return root. */
+/** Get Figma node by ID or figma.root. */
 export declare function getFigmaItemByIdOrRoot<T extends UiFigmaNode = UiFigmaNode>(id?: string): Promise<T>;
 
 // File: functions/makeFigmaFrameSelection.d.ts
-/** Listen for selection changes and send to UI. */
+/** Sync Figma selection changes to UI. */
 export declare const makeFigmaFrameSelection: () => void;
 
 // File: functions/makeFigmaTexts.d.ts
-/** Listen for selection changes and send text nodes to UI. */
+/** Sync Figma text selection to UI. */
 export declare const makeFigmaTexts: () => void;
 
 // File: functions/setupClientStorage.d.ts
-/** Setup client storage listeners. */
+/** Init client storage listeners. */
 export declare function setupClientStorage(): void;
 
 // File: functions/setupFrameSelection.d.ts
-/** Setup bidirectional frame selection. */
+/** Init bidirectional frame selection management. */
 export declare function setupFrameSelection(): void;
 
 // File: functions/setupFrameStyles.d.ts
-/** Listen for style updates. */
+/** Listen for style update messages. */
 export declare function setupFrameStyles(): void;
 
 // File: functions/setupStorage.d.ts
-/** Setup storage listeners. */
+/** Init storage listeners. */
 export declare function setupStorage(): void;
 
 // File: functions/toFrameSelection.d.ts
-/** Focus and select item. */
+/** Focus and select item by ID. */
 export declare function toFrameSelection(id?: string): Promise<void>;
 
 // File: library.d.ts
@@ -311,16 +275,12 @@ export * from './functions/toFrameSelection';
 export * from './types/figmaTypes';
 
 // File: types/figmaTypes.d.ts
-/** Union of Figma node types. */
 export type UiFigmaNode = ChildrenMixin | SceneNode | DefaultShapeMixin | DocumentNode | PageNode | FrameNode | SectionNode | TextNode | BaseNode;
-/** Text node data. */
 export type UiFigmaItemText = {
     id: string[];
     text: string;
 };
-/** Export formats. */
 export type UiFigmaExportFormat = 'PNG' | 'JPG' | 'SVG' | 'PDF' | 'JSON_REST_V1';
-/** Message data for texts and screenshots. */
 export type UiFigmaMessageTexts = {
     frame: FigmaFrame;
     texts: UiFigmaItemText[];

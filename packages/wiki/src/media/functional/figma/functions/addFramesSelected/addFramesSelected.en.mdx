@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/figma/Functions/addFramesSelected - Adding selected frames'/>
+
+# `addFramesSelected`
+
+A utility that sends the selection state of a specific frame to the Figma plugin.
+
+**Parameters:**
+- `id: string` — The ID of the frame to update.
+- `selected: boolean` — The selection state to apply to the frame.
+
+**Returns:**
+`void`
+
+```javascript
+import { addFramesSelected } from '@dxtmisha/figma'
+
+addFramesSelected('123:456', true)
+```

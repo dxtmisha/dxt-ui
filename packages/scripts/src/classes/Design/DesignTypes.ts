@@ -229,7 +229,7 @@ export class DesignTypes {
     const generate = await this.toAi(
       content,
       'Remove all Russian comments from this code. '
-      + 'Simplify and shorten all English comments for AI readability while maintaining a clear balance between brevity and context. Do not delete them even if the code seems obvious. '
+      + 'Shorten English comments for AI; keep context but be brief. Do not delete obvious comments. '
       + 'Always keep All JSDoc "@example", "@remarks", "@note", and any other notes or warnings. '
       + 'Remove all imports. '
       + 'Remove all non-public content: delete all private and protected class methods and properties, and any non-exported elements. The final output must contain only the members and entities that are accessible from outside. '

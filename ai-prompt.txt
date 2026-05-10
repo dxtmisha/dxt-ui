@@ -1,0 +1,389 @@
+# System role: AI assistant for project analysis
+This file contains the consolidated documentation and essential prompts for the current project.
+
+## Mandatory instructions
+It is critically important to strictly follow all the prompts and instructions listed below. You must adhere to these guidelines without exception to ensure accurate analysis and project development.
+- Do not hallucinate or invent any information.
+- Study the provided materials in detail.
+- If you do not know something or lack information, state it explicitly rather than making assumptions.
+- Be sure to study package.json to know which packages are available and rely exclusively on them when writing code.
+
+---
+
+## Vue component implementation rules
+The rules for the implementation of Vue components are listed below. These instructions are mandatory for creating high-quality, standard-compliant components within this project.
+### Vue Component Implementation Rules (Vue.js Style Guide)
+
+- **Script Setup**: Use strictly `<script setup lang="ts">`.
+- **Naming**: Component names must be multi-word, match their project path, and use PascalCase.
+- **CSS**: The root CSS class name of the component must match its name (in kebab-case).
+- **Typing**: Mandatory interfaces for Props (`defineProps<{...}>()`) and Emits (`defineEmits<{...}>()`).
+- **Lists (v-for)**: Always use a unique `:key`. Avoid using the array index as a key.
+- **Directives**: Never use `v-if` on the same element as `v-for`.
+- **Reactivity**: Use `ref` for data. Calculate complex logic via `computed`.
+- **Logic**: ALL logic must be moved to Composables. The component should only contain the composable call and the template.
+- **Templates**: Cleanest possible HTML. No function calls, calculations, or inline styles. If complex logic is needed, split into sub-components.
+- **Props**: One-way data flow. Never mutate incoming props.
+- **Events**: Event names must be strictly in kebab-case.
+- **A11y**: Use semantic HTML and ARIA attributes.
+- **Atomicity**: Components should be minimal and perform only one function. Avoid universal "Swiss army knife" components.
+- **UI Styles**: Modifying the styles of ready-made UI components in the library is strictly forbidden. This is a taboo.
+- **Purity**: Write declaratively, avoid "fluff," and save tokens.
+
+---
+
+# @dxtmisha/constructor
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/constructor'.
+
+## Project context: Investigation required
+This library is a modular UI component constructor and state management framework for Vue 3, designed to build accessible, highly configurable design systems. Its primary function is to provide low-level logic classes and constructor definitions for complex UI primitives, including input fields with native and pattern-based validation, masking (date, currency, numeric), modal windowing systems, and multi-axis layout transitions. It encapsulates complex behaviors like ARIA attribute mapping, focus trapping, touch gesture detection, and two-way model synchronization into reusable logic blocks.
+
+An AI should study this library's API when implementing: 1. Advanced form components requiring sophisticated input masks, real-time validation tracking (validity states, error codes), or dynamic autosizing (TextareaAutosize). 2. Windowing and navigation systems involving modals, tooltips, snakbars, and accordions that require precise control over opening/closing lifecycles and scroll management. 3. Accessible UI elements that must strictly adhere to WAI-ARIA standards through automated attribute generation (AriaStaticInclude). 4. Layout architectures utilizing semantic regions (Page, Section, Block) and complex list management (Lite mode, grouping, nested menus). 5. Interaction logic involving horizontal scrolling, tab-index redirection, or custom touch/mouse gesture callbacks.
+
+The library is deeply integrated with the Vue 3 reactivity system (Ref, ComputedRef, ShallowRef) and is intended for use in environments using Vite or Rollup, as it includes a dedicated plugin for build-time style modifications and component auto-importing. It depends on external utility packages (@dxtmisha/functional) for underlying logic operations. The architecture strictly separates data handling (Include classes) from component definitions (Constructor types), facilitating a decoupled approach to UI development where logic can be shared across different visual implementations.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+This is an auxiliary library (@dxtmisha/constructor). It serves exclusively as an informational base and for typings.
+
+All components of the final design system inherit from this library. You can use its files to fully understand what properties (props), slots, and events (emits) are available for a specific component.
+
+WARNING: Do NOT import or use anything from this library directly in your code! Use only the ready-made global components of your design system (e.g., D1).
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/constructor/ai-types.txt'
+
+---
+
+# @dxtmisha/d1
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/d1'.
+
+## Project context: Investigation required
+This library is a comprehensive Vue 3 design system and UI component suite built on the @dxtmisha/constructor framework. It provides a standardized set of D1-prefixed components for building complex web interfaces with unified behavior and styling. Its primary function is to deliver atomic and complex interface elements ranging from basic controls like D1Button and D1Input to complex layout and motion managers like D1Grid, D1MotionTransform, and D1Window.
+
+Study this library when implementing Vue applications that require a standardized design language, specifically when configuring adaptive layouts using the library's specific breakpoint tokens, managing complex form validation states via D1FieldMessage/Counter, or orchestrating animations using D1MotionAxis. Reference these definitions to navigate specific prop structures (PropsToken) that extend the base constructor types, including extensive palette options, adaptive breakpoint strings (e.g., 'adaptiveSm', 'containerMd'), and component-specific alignment tokens.
+
+The library integrates into the frontend stack as a Vite plugin via uiD1VitePlugin. It leverages Vue's DefineSetupFnComponent for type-safe setup functions and heavily utilizes TypeScript for strict property definition. It is architected for modularity, where high-level components such as D1ActionSheet and D1Dialog are composed of internal primitives like D1Window, D1Bars, and D1Actions, maintaining consistency through inherited prop types and standardized slot definitions.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+You are an expert in Vue 3 layout with the @dxtmisha/d1 library. Write clean code using ready-made components.
+
+NO IMPORTS: All D1... components are available globally. Do not import components and icons.
+
+CLASS NAMING AND STRUCTURE:
+1. The name of the main (root) CSS class must always strictly match the name of the component itself.
+2. Use a BEM-like approach (if applicable) based on the component name.
+
+STYLES AND CSS VARIABLES (TOKENS):
+The project uses SCSS for styling.
+The full list of variables is located in `node_modules/@dxtmisha/d1/src/styles/Ui/vars.scss`. Strictly follow the rules:
+
+1. Naming: Remove the `d1` prefix from variable names when using them (except for variables with the `d-` prefix - leave them as is).
+2. Token usage: Apply the variables specified in the design mockup. All variables of type `sys-` are final variables meant for direct work; you should rely on them.
+3. No CSS hardcoding: If there is a static value in the mockup, using it directly is prohibited. Find the closest matching value from our list of variables and apply it.
+4. Prefix priority: Always use semantic tokens `sys-` (system). Base tokens `ref-` (reference) are allowed only as a last resort if a suitable `sys-` token does not exist.
+5. Independent color selection: If you need to choose a color yourself (without a mockup), use variables containing `sys-palette` in their name.
+6. Separate color specification: Never group colors in shorthand CSS properties. The color must be separated into a distinct property. Prohibited: `background: var(...)` → Allowed: `background-color: var(...)`. Prohibited: `border: 1px solid var(...)` → Allowed: `border: 1px solid; border-color: var(...)`.
+7. Dynamic colors (Palettes): If the color of a component in the mockup can be dynamic (the color scheme changes, or the same component can have different background/text/border colors), you MUST use SCSS palette mixins to specify the color, not regular variables or properties.
+   - Import styles: `@use '@dxtmisha/d1/ui-properties' as ui;`
+   - Use mixins: `@include ui.paletteColor('--sys-palette-*')`, `@include ui.paletteBackgroundColor('--sys-palette-*')`, `@include ui.paletteBorderColor('--sys-palette-*')`, `@include ui.paletteOutlineColor('--sys-palette-*')`, `@include ui.paletteFill('--sys-palette-*')`, `@include ui.paletteStroke('--sys-palette-*')`.
+   - Classes for changing palettes: After colors are set via a mixin, use ready-made global palette classes (located in `node_modules/@dxtmisha/d1/src/styles/Ui/classes/d1-palette.scss`) for dynamic color changes directly in HTML.
+   *Example: Replace `background-color: var(--sys-palette-primary)` with `@include ui.paletteBackgroundColor('--sys-palette-primary');`*
+
+MEDIA QUERIES AND RESPONSIVENESS:
+For responsive layout, writing direct `@media screen { ... }` queries is strictly PROHIBITED.
+Always use ready-made SCSS mixins from the library.
+
+1. Responsiveness mixins: Use `@include ui.mediaMinWidth('size')`, `@include ui.mediaMaxWidth('size')` or `@include ui.mediaMinMaxWidth('min', 'max')`.
+2. Available values (breakpoints): `'sm'` (640px), `'md'` (768px), `'lg'` (1024px), `'xl'` (1280px), `'2xl'` (1536px).
+   *Example usage:*
+   ```scss
+   @include ui.mediaMinWidth('md') {
+     // Styles for screens 768px and larger
+   }
+   ```
+
+TYPOGRAPHY (TEXT) CLASSES:
+All classes for working with text sizes are located in `node_modules/@dxtmisha/d1/src/styles/Ui/classes/d1-font.scss`. Usage rules:
+
+1. Always apply these classes for text styling during layout. Do not write custom styles for `font-size`.
+2. Matching by name: Text style names in the mockup are usually identical or very similar to our class names. Rely on them primarily.
+3. Matching by properties: If there are no name matches, carefully study the CSS font properties in the mockup and find the most similar class in `d1-font.scss`.
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/d1/ai-types.txt'
+
+## Project screenshots: Visual reference
+The project includes the following screenshots that provide a visual reference for the project's design and functionality:
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_1.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_2.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_3.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_4.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_5.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-code.html'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-styles.css'
+
+---
+
+# @dxtmisha/figma
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/figma'.
+
+## Project context: Investigation required
+A messaging bridge and utility library for Figma Plugin development, facilitating bidirectional communication between the plugin main thread and the iframe UI. Its core function is to abstract window.postMessage and figma.ui.postMessage APIs into a type-safe, listener-based architecture. It is indispensable for scenarios involving automated frame selection tracking, node-to-CSS style extraction, and asynchronous synchronization of client or document-level storage. An AI should study this library's API to implement structured messaging protocols, handle complex Figma-specific style data trees, or manage persistent plugin state without manual event handling. Integration context is strictly the Figma Plugin environment, utilizing a signature-based verification system via FigmaPostCode to validate data integrity between threads. The library provides high-level abstractions for common plugin tasks, including fetching top-level frames, retrieving hierarchical CSS styles, and interacting with Figma's storage APIs through standardized event types.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+FIGMA UI COMMUNICATION PACKAGE:
+This library is designed to simplify the interaction between the UI part of a Figma plugin (Frontend) and its background process (Backend). It provides abstractions for messaging and retrieving data from Figma.
+
+1. PURPOSE: The library is used exclusively in the Figma plugin's UI code. It implements `FigmaUiMessenger` for sending (`post`) and receiving messages from the plugin, along with functions for requesting frames, styles, and storage data.
+2. SECURITY: All messaging is tied to a secure code (`FigmaPostCode`), which must match on both sides (UI and Code).
+3. KEY TOOLS:
+   - `FigmaUiMessenger`: A singleton for managing messages on the UI side.
+   - `fetch...` functions: Wrappers over messages for asynchronously retrieving data from Figma (e.g., `fetchFramesSelected`).
+
+Use this package when developing the visual part of a plugin to communicate with the Figma API via the `figma-code` layer.
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/figma/ai-types.txt'
+
+---
+
+# @dxtmisha/figma-code
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/figma-code'.
+
+## Project context: Investigation required
+This library provides a high-level TypeScript abstraction for the Figma Plugin API, specifically optimized for node manipulation, data persistence, and AI-driven content analysis. Its core purpose is to facilitate the extraction of structured data—including CSS styles, node hierarchies, and text content—from Figma frames while providing managed wrappers for both node-specific (PluginData) and global (clientStorage) persistence with TTL-based caching. An AI assistant should study this library when implementing workflows that require automated text localization, selection state synchronization between plugin backend and UI, or programmatic asset export in JPG and JSON formats. The library integrates directly with Figma’s runtime environment and depends on external AI abstracts to process design context (via screenshots and text lists) into structured key-value maps. Key components include FigmaPluginMessenger for bidirectional UI communication and FigmaFrame for recursive node filtering and coordinate-based navigation.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+FIGMA PLUGIN LOGIC PACKAGE (BACKEND):
+This library is intended for use on the main process side of a Figma plugin (Code side). It provides direct access to the Figma API and implements the logic for handling requests from the UI.
+
+1. PURPOSE: Implementing the background logic of the plugin. It is responsible for manipulating Figma objects (frames, text, styles), managing storage (`FigmaStorage`), and sending data back to the UI via `FigmaPluginMessenger`.
+2. INTERACTION: Works in conjunction with the `@dxtmisha/figma` package. It receives messages from the UI, performs operations via the Figma API, and sends results back.
+3. KEY CLASSES:
+   - `FigmaPluginMessenger`: A singleton for managing messages on the Backend side.
+   - `FigmaFrame`, `FigmaItem`: Wrappers for convenient handling of Figma nodes.
+   - `setup...` functions: Listeners that automatically process standard UI requests (e.g., `setupFrameSelection`).
+
+Use this package only in code that executes in the main process of the Figma plugin (main thread).
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/figma-code/ai-types.txt'
+
+---
+
+# @dxtmisha/figma-ref
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/figma-ref'.
+
+## Project context: Investigation required
+This Vue 3 composable library provides reactive abstractions for the Figma Plugin API. Its core purpose is to bridge the Figma plugin backend and the UI layer by providing reactive state management for Figma's storage systems, selection state, and node styles. It is indispensable for developers building Figma plugin interfaces with Vue who need to synchronize the UI with canvas selections, persist data via clientStorage or document-level storage, and manage top-level frame metadata. An AI should study this API to implement reactive data persistence (useFigmaStorage, useFigmaClientStorage), observe or manipulate canvas frame selections (useFigmaFrameSelection, useFigmaUiSelected), and handle style-related messaging (useFigmaFrameStyles). The library integrates Vue's reactivity system (ShallowRef, ComputedRef) with Figma-specific data types and requires the @dxtmisha/figma package for type definitions. It abstracts the asynchronous nature of Figma's postMessage and storage APIs into synchronous-like reactive references and loading states.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+REACTIVE WRAPPERS FOR FIGMA (VUE 3):
+This package provides Vue composables for convenient and reactive handling of Figma data within the plugin interface.
+
+1. PURPOSE: Transforming asynchronous Figma requests into reactive Vue variables. This allows the interface to update instantly upon selection changes or data updates in Figma.
+2. DEPENDENCIES: The library is built upon `@dxtmisha/figma` for data exchange and utilizes Vue 3 reactivity.
+3. KEY COMPOSABLES:
+   - `useFigmaFrameSelection`: Reactive tracking of selected objects.
+   - `useFigmaStorage`, `useFigmaClientStorage`: Working with persistent plugin storage.
+   - `useFigmaUiFrames`: A list of available frames to display in the UI.
+
+Use this package when developing Vue interfaces for Figma plugins to ensure seamless state synchronization between Figma and the UI.
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/figma-ref/ai-types.txt'
+
+---
+
+# @dxtmisha/functional
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/functional'.
+
+## Project context: Investigation required
+A Vue 3-centric orchestration framework and utility library designed for reactive data management, API synchronization, and localized UI logic. Its primary function is providing high-level abstractions for network request life cycles, including integrated GET/mutation handling with skeleton support, and complex list state management covering focus, selection, and client-side filtering. It offers specialized reactive primitives such as asynchronous computed properties, demand-cached refs, and multi-strategy singleton management using Global, Local, and Provide/Inject patterns.
+
+An AI should study this API when implementing robust API-to-UI orchestration involving data transformation and contract validation, or when developing UI components that require standardized class/style resolution through the library’s abstract design classes. It is indispensable for scenarios requiring multi-tab state synchronization via broadcast channels, cookie-backed reactive variables, and SSR-compatible SEO meta-tag management. The library's i18n and localization modules are critical for handling country-specific formatting for currencies, units, relative time, and geographical metadata.
+
+The library is built upon the Vue 3 Composition API and @dxtmisha/functional-basic, integrating directly with Vue Router for navigation-aware data structures. It functions as a middleware layer between raw data sources and the presentation layer, requiring the dxtFunctionalPlugin for global service initialization including API clients, translation instances, and icon configurations.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+This is the main functional library for the Vue environment (@dxtmisha/functional). It contains Vue-specific utilities, composables, and reactive classes.
+
+USAGE RULES:
+1. When developing in Vue, always use this library for functionality, logic, and composables instead of `@dxtmisha/functional-basic` whenever possible.
+2. It wraps basic non-reactive logic into Vue's reactivity system. If the required function or composable exists here, it has absolute priority.
+3. Import utilities from `@dxtmisha/functional` for reactive UI behavior, composables, and state management.
+
+WORKING WITH API AND STATE (useApi / executeUse):
+A set of composables is provided for network requests: `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`, `useApiRequest`, `useApiRef`, `useApiAsyncRef`, `useApiManagementRef`, `useApiManagementAsyncRef`.
+Strictly follow these rules for their application:
+
+1. DO NOT call these composables directly in the Vue components (SFC).
+2. Move all API configurations and `useApi*` calls into SEPARATE FILES (services/stores).
+3. Wrap the API configurations inside the `executeUse` factory (specifically: `executeUseGlobal`, `executeUseProvide`, or `executeUseLocal` from `src/functions/executeUse.ts`). This guarantees the creation of managed singletons (single access point) and prevents duplicated requests and reactive states.
+4. Perform any additional request processing (e.g., data mapping, preparing structures for skeletons before loading a form) in the same file, inside the `executeUse` callback, and return a fully prepared set of data and methods.
+   *Example of correct usage:*
+   ```ts
+   import { executeUseGlobal } from '@dxtmisha/functional';
+   import { useApiManagementRef } from '@dxtmisha/functional';
+
+   export const useUserManagement = executeUseGlobal(() => {
+     return useApiManagementRef(
+       { path: '/api/users' },                 // GET setup
+       { date: (v) => new Date(v).toLocaleString() }, // Formatters
+       { columns: ['name', 'email'] },         // Search
+       { path: '/api/users' },                 // POST
+       { path: (o) => `/api/users/${o.id}` },  // PUT
+       { path: (o) => `/api/users/${o.id}` }   // DELETE
+     );
+     // Logic for skeletons, additional formatting, etc., should be added here,
+     // and then return the extended object.
+   });
+   ```
+5. Within the Vue component itself, simply import and call your custom singleton composable: `const { list, loading, sendPost } = useUserManagement();`
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/functional/ai-types.txt'
+
+---
+
+# @dxtmisha/functional-basic
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/functional-basic'.
+
+## Project context: Investigation required
+This library is a high-level infrastructure and utility toolkit designed for isomorphic TypeScript applications. Its primary function is to provide structured abstractions for networking, state persistence, internationalization, and localized data formatting. The networking layer features an advanced Fetch API wrapper (Api, ApiInstance) with built-in support for singleton or isolated instances, automated retries with jitter, request/response interceptors, global status management, and SSR-to-client hydration (ApiHydration). Storage utilities encompass request-isolated ServerStorage for SSR, prefix-supported Local/Session storage (DataStorage), reactive URL Hash management (Hash), and standardized Cookie handling. The internationalization suite includes wrappers for the Intl API (GeoIntl) to handle complex formatting for currencies, dates, and plurals, alongside country-specific logic for phone masks (GeoPhone) and flag identification (GeoFlag). It also contains a specialized translation engine (Translate) supporting batch asynchronous loading and fallback mechanisms. Additionally, it provides advanced UI logic utilities like SearchList for regex-based filtering with text highlighting and EventItem for managed DOM event lifecycles. An AI should study this library when implementing robust API clients, managing cross-platform storage, handling multi-locale UI components, or developing isomorphic applications requiring data consistency between server and client. It integrates directly with standard web APIs (Fetch, Intl, BroadcastChannel, ResizeObserver) and provides a centralized error reporting system (ErrorCenter) and global loading state (Loading).
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+This is the basic functional library (@dxtmisha/functional-basic). It contains framework-agnostic algorithms, utilities, and classes.
+
+ATTENTION FOR VUE ENVIROMENT:
+If you are developing in Vue, ALWAYS look for the required functionality (composables, reactive wrappers) inside the `@dxtmisha/functional` library FIRST.
+And ONLY if there is no reactive or Vue-specific analog there, you may use the functionality directly from this library (@dxtmisha/functional-basic).
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/functional-basic/ai-types.txt'
+
+---
+
+# @dxtmisha/nitro-basic
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/nitro-basic'.
+
+## Project context: Investigation required
+Core Purpose: This library facilitates Vue 3 Server-Side Rendering (SSR) and state synchronization within the Nitropack ecosystem, specifically handling request-scoped metadata, cookie storage, and server-side API caching.
+
+Usage Scenarios: This library is indispensable for building isomorphic Vue applications on Nitro that require unified routing synchronization, hydration mismatch prevention, and isolated server-side storage access. An AI should study this API when implementing SSR entry points, configuring Nitro-level API caching, or managing request-bound state (headers/cookies) within the Vue component tree.
+
+Integration Context: It acts as a middleware layer between Vue 3, Vue Router, and Nitropack. It leverages Vue’s provide/inject mechanism and SSRContext to bridge Nitro’s server-side HTTP layer with the application's reactive state during the rendering and hydration cycles.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+INFRASTRUCTURE LIBRARY (SSR/NITRO):
+This package serves as the foundation for building Server-Side Rendering (SSR) applications using Nitro and Vue 3. It handles low-level operations for headers, storage, cookies, and server-side routing.
+
+1. PURPOSE: The library is used exclusively for initializing and configuring the application's server infrastructure. it includes server bootstrap mechanisms (`uiBootstrapServer`), SSR application creation (`uiCreateSsrApp`), and Nitro plugins.
+2. USAGE RESTRICTION: Functions and mixins from this package ARE NOT intended for use within regular Vue components or application business logic. All tools required for daily development should be imported from the corresponding high-level packages (e.g., `@dxtmisha/functional` or `@dxtmisha/d1`).
+3. DO NOT CONNECT: Avoid direct inclusion of this package in the user interface. It is responsible for the server's "skeleton" and its configuration, which should remain hidden from the application developer.
+
+Study this package only if you need to modify the server lifecycle logic, server request handling, or state synchronization mechanisms between the server and the client (hydration).
+
+## Project types: Essential for analysis
+This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+'node_modules/@dxtmisha/nitro-basic/ai-types.txt'
+
+---
+
+# @dxtmisha/styles
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/styles'.
+
+## Project context: Investigation required
+A foundational SCSS framework and dynamic style generation engine designed for building scalable, multi-theme design systems. Its primary function is to provide a comprehensive set of low-level SCSS mixins, functions, and a sophisticated configuration-driven property generation system. The core architecture centers around dynamic CSS variable management, specifically for color spaces where RGB channels and opacity are decoupled (using --sys-* and --sys-palette-* prefixes) to allow for real-time reactive theme modifications and complex transparency effects.
+
+An AI should study this library when: 1. Investigating the generation of global CSS variable tokens for colors, dimensions, and typography. 2. Developing or modifying UI components that require RTL (Right-to-Left) support through the library's directional abstractions (dir.scss). 3. Implementing complex layout patterns using semantic mixins for Flexbox orchestration, adaptive spacing, and relative positioning. 4. Understanding the 'Properties' engine (src/styles/properties) which programmatically transforms SCSS maps into a suite of atomic utility classes and root-level variable definitions. 5. Managing design system palettes and shade scales where automated accessibility and consistency are required.
+
+The library is architected as a modular SCSS-first system, utilizing @use and @forward for clean namespace management. It functions as the visual source of truth for all @dxtmisha packages, integrating directly with framework-specific plugins to inject baseline styles and configuration-dependent utility layers. It features specialized modules for scrollbar customization, transform matrices, and complex pseudo-selector management, ensuring a consistent visual implementation across different execution environments.
+
+## Project information: Core overview
+This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+You are an expert in system styling using the `@dxtmisha/styles` library. Write clean, reusable SCSS code following these rules:
+
+Only mixins from the following files are available for use:
+- `node_modules/@dxtmisha/styles/src/styles/variables.scss`
+- `node_modules/@dxtmisha/styles/src/styles/color.scss`
+- `node_modules/@dxtmisha/styles/src/styles/content.scss`
+- `node_modules/@dxtmisha/styles/src/styles/dimension.scss`
+- `node_modules/@dxtmisha/styles/src/styles/flex.scss`
+- `node_modules/@dxtmisha/styles/src/styles/font.scss`
+- `node_modules/@dxtmisha/styles/src/styles/margin.scss`
+- `node_modules/@dxtmisha/styles/src/styles/media.scss`
+- `node_modules/@dxtmisha/styles/src/styles/padding.scss`
+- `node_modules/@dxtmisha/styles/src/styles/position.scss`
+- `node_modules/@dxtmisha/styles/src/styles/scrollbar.scss`
+- `node_modules/@dxtmisha/styles/src/styles/transform.scss`
+
+GENERAL USAGE RULES:
+1. Use ready-made mixins: If a ready-made mixin is already available in the library for a task, use it.
+2. Code simplicity: If a CSS property consists of a single specific value (e.g., `display: block` or `position: absolute`), use the standard CSS property. Do not use mixins where they do not provide a systemic advantage.
+3. Grouping properties: To maintain clean and readable code, always group CSS properties and mixins by meaning (e.g., positioning, box model, text styles, colors, etc.).
+
+CLASS NAMING AND STRUCTURE:
+1. The name of the main (root) CSS class must always strictly match the name of the component itself.
+2. Use a BEM-like approach based on the component name for naming internal elements and modifiers.
+
+WORKING WITH COLORS AND PALETTES:
+All mixins for working with colors, opacity, and palettes are defined in `node_modules/@dxtmisha/styles/src/styles/color.scss`.
+
+1. Opacity Management: In a number of system components, an approach is used where RGB channels and opacity are stored in different tokens. In such cases, you must use mixins for correct opacity changes:
+   - `@include backgroundOpacity(0.5)` — changes only the background opacity.
+   - `@include colorOpacity(0.8)` — changes only the text opacity.
+   This allows modifying the alpha channel of a system color without overriding its base.
+
+2. Regular Mixins vs Palette:
+   - Regular mixins (`backgroundColor`, `color`): Accept a specific color (HEX, RGB) or the result of the `getColor` function. They set the color "as is"—it remains static even when changing global palette classes on parent elements.
+   - Palette Mixins (`paletteBackgroundColor`, `paletteColor`, etc.): Designed for working with semantic system variables (e.g., `'--d1-sys-palette-primary'`).
+     Using these mixins guarantees automatic support for CSS variable "routing":
+     * Dynamic Binding: A cascading link with `basic` level variables (e.g., `basic600`) is created.
+     * Automatic Repainting: When adding a palette class to a parent (e.g., `.d1-palette--yellow`), the component instantly changes color while maintaining the mathematically calculated contrast between background and text without manual style overrides.
+
+MEDIA QUERIES AND ADAPTIVITY:
+For implementing adaptive layout, it is strictly FORBIDDEN to write direct `@media` queries using hardcoded values (e.g., `768px`).
+
+1. Use Mixins: Always use mixins from `node_modules/@dxtmisha/styles/src/styles/media.scss`. They automatically retrieve breakpoint values from the system configuration.
+2. Main Mixins:
+   - `@include mediaMinWidth($width)` — for a mobile-first approach. Applies styles from the specified width and up.
+   - `@include mediaMaxWidth($width)` — applies styles up to the specified width (breakpoint width minus 1px).
+   - `@include mediaMinMaxWidth($min, $max)` — applies styles within a strictly defined width range.
+3. Available Breakpoints: The set of available keys (e.g., `sm`, `md`, `lg`) depends on the configuration of the specific design system and may vary across different projects.
+4. Container Queries: The library also supports `@container` queries through `containerMinWidth`, `containerMaxWidth`, and `containerMinMaxWidth` mixins, following the same breakpoint logic.
+
+Example:
+```scss
+.my-element {
+  width: 100%;
+
+  @include mediaMinWidth('md') {
+    width: 50%; // Change width for screens from md and up
+  }
+}
+```

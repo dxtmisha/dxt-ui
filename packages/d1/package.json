@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.57.2",
+  "version": "0.57.3",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -27,8 +27,8 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "ui": "dxt-ui",
-    "types": "dxt-types",
     "wiki-storm": "dxt-wiki-storm",
+    "types": "dxt-types",
     "screenshot": "dxt-screenshot",
     "prepublishOnly": "npm run ui && npm run build && npm run wiki-storm",
     "publish-to-npm": "npm publish --access public"

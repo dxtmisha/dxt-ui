@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.0] - 2026-05-10
+
+### Added
+- **AI Prompt System**: Introduced `LibraryAiPrompt` and `LibraryAiPromptItem` classes for automated, recursive AI prompt generation across the monorepo.
+- **Nitro Scaffolding**: Added a full Nitro + Vue 3 SSR boilerplate template for rapid project initialization.
+- **Design Prompt CLI**: Added `design-prompt` CLI tool for aggregating documentation, types, and screenshots into AI-ready context files.
+- **Config Standardization**: Standardized project constants in `config.ts` to support automated discovery and design workflows.
+
+### Changed / Improved
+- **Build System**: Updated script library exports and synchronized workspace dependencies.
+- **Library Exports**: Synchronized package-lock and updated internal script exports for better consistency.
+
 ## [0.7.11] - 2026-05-05
 
 ### Added
