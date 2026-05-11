@@ -45,14 +45,14 @@ export class MaskItem {
    */
   readonly item = computed<string[]>(() => {
     if (this.type.isCurrencyOrNumber()) {
-      return this.format.mask.value
+      return this.format.mask
     }
 
     if (this.type.isDate()) {
-      return this.date.mask.value
+      return this.date.mask
     }
 
-    return this.basic.value
+    return this.basic
   })
 
   /**
@@ -175,7 +175,7 @@ export class MaskItem {
    *
    * Возвращает активную маску.
    */
-  protected readonly maskActive = computed<string>(() => {
+  protected get maskActive(): string {
     const mask = this.getMask()
 
     if (isArray(mask)) {
@@ -183,16 +183,16 @@ export class MaskItem {
     }
 
     return mask
-  })
+  }
 
   /**
    * Returns the number of special characters in the current mask.
    *
    * Возвращает количество специальных символов в текущей маске.
    */
-  protected readonly basic = computed<string[]>(() => {
-    return this.rubberItem.expandMask(this.maskActive.value).split('')
-  })
+  protected get basic(): string[] {
+    return this.rubberItem.expandMask(this.maskActive).split('')
+  }
 
   /**
    * Returns a list of masks.

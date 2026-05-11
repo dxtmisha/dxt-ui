@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import type { GeoDate } from '@dxtmisha/functional'
 
 import type { MaskTypeItem } from './basicTypes'
@@ -20,7 +19,9 @@ export class MaskType {
   }
 
   /** Current mask type (default: text)/ Текущий тип маски (по умолчанию: text) */
-  readonly item = computed<MaskTypeItem>(() => this.props.type ?? 'text')
+  get item(): MaskTypeItem {
+    return this.props.type ?? 'text'
+  }
 
   /**
    * Is the mask simple number type.
@@ -28,7 +29,7 @@ export class MaskType {
    * Является ли маска простым числовым типом (number).
    */
   isNumber(): boolean {
-    return this.item.value === 'number'
+    return this.item === 'number'
   }
 
   /**
@@ -37,7 +38,7 @@ export class MaskType {
    * Является ли маска типом форматированного числа (number-format).
    */
   isNumberFormat(): boolean {
-    return this.item.value === 'number-format'
+    return this.item === 'number-format'
   }
 
   /**
@@ -46,7 +47,7 @@ export class MaskType {
    * Является ли маска валютным типом (currency).
    */
   isCurrency(): boolean {
-    return this.item.value === 'currency'
+    return this.item === 'currency'
   }
 
   /**
@@ -72,7 +73,7 @@ export class MaskType {
       'hour',
       'minute',
       'second'
-    ].indexOf(this.item.value) !== -1
+    ].indexOf(this.item) !== -1
   }
 
   /**
@@ -89,7 +90,7 @@ export class MaskType {
         'month',
         'day',
         'day-month'
-      ].indexOf(this.item.value) !== -1
+      ].indexOf(this.item) !== -1
   }
 
   /**
@@ -98,6 +99,6 @@ export class MaskType {
    * Возвращает тип маски совместимый с GeoDate (если нет — date).
    */
   getByDate(): GeoDate {
-    return this.isDate() ? (this.item.value as GeoDate) : 'date'
+    return this.isDate() ? (this.item as GeoDate) : 'date'
   }
 }

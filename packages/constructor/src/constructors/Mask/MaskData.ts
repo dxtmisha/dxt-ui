@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import { type Ref } from 'vue'
 import { isFilled, toArray } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'

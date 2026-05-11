@@ -1,98 +1,99 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 
-const value1 = ref('123456')
-const value2 = ref('')
-const value3 = ref('12052024')
-const value4 = ref('1234.56')
+import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
+import DemoValue from '../../components/DemoValue.vue'
+
+const valuePhone = ref('+7 (900) 123-45-67')
+const valueDate = ref('2005-02-12')
+const valueNumber = ref('123456')
+const valueCurrency = ref('123456.7')
+const eventName = ref('')
+
+const onEvent = (event: string) => {
+  eventName.value = event
+  console.log(`Event: ${event}`)
+}
 </script>
 
 <template>
   <DemoLinkBlack/>
   <D1Page label="Mask">
     <D1Section>
-      <D1Group label="Standard Mask (Phone-like)">
-        <div class="demo-mask-page">
-          <D1Mask
-            :value="value1"
-            mask="+7 (***) ***-**-**"
-            label="Phone Mask"
-            @input-lite="(data) => console.log(data)"
-          />
-          <div class="demo-mask-value">Value: {{ value1 }}</div>
-        </div>
+      <D1Group label="Standard Mask">
+        <D1Mask
+          mask="+7 (***) ***-**-**"
+        />
+        <D1Mask
+          :value="valuePhone"
+          mask="+7 (***) ***-**-**"
+          @input-lite="valuePhone = $event.value"
+        />
+        <DemoValue :value="valuePhone"/>
       </D1Group>
 
       <D1Group label="Date Mask">
-        <div class="demo-mask-page">
-          <D1Mask
-            :value="value3"
-            mask="**-**-****"
-            label="Date (dd-mm-yyyy)"
-            @input-lite="(data) => value3 = data.value"
-          />
-          <div class="demo-mask-value">Value: {{ value3 }}</div>
-        </div>
+        <D1Mask type="full"/>
+        <D1Mask type="datetime"/>
+        <D1Mask type="date"/>
+        <D1Mask type="year-month"/>
+        <D1Mask type="year"/>
+        <D1Mask type="month"/>
+        <D1Mask type="day"/>
+        <D1Mask type="day-month"/>
+        <D1Mask type="time"/>
+        <D1Mask type="hour-minute"/>
+        <D1Mask type="hour"/>
+        <D1Mask type="minute"/>
+        <D1Mask type="second"/>
+        <D1Mask
+          :value="valueDate"
+          type="date"
+          @input-lite="valueDate = $event.value"
+        />
+        <DemoValue :value="valueDate"/>
       </D1Group>
 
-      <D1Group label="Number (Currency) Mask">
-        <div class="demo-mask-page">
-          <D1Mask
-            :value="value4"
-            type="number"
-            currency="USD"
-            label="Currency"
-            @input-lite="(data) => value4 = data.value"
-          />
-          <div class="demo-mask-value">Value: {{ value4 }}</div>
-        </div>
+      <D1Group label="Number & Currency Mask">
+        <D1Mask type="number"/>
+        <D1Mask type="number-format"/>
+        <D1Mask type="currency" currency="USD"/>
+
+        <D1Mask
+          :value="valueNumber"
+          type="number-format"
+          @input-lite="valueNumber = $event.value"
+        />
+        <DemoValue :value="valueNumber"/>
+
+        <D1Mask
+          :value="valueCurrency"
+          type="currency"
+          currency="EUR"
+          @input-lite="valueCurrency = $event.value"
+        />
+        <DemoValue :value="valueCurrency"/>
       </D1Group>
 
-      <D1Group label="Types & Align">
-        <div class="demo-mask-page">
-          <D1Mask
-            label="Center Aligned"
-            align="center"
-            mask="***-***"
-          />
-          <D1Mask
-            label="Right Aligned"
-            align="right"
-            mask="***-***"
-          />
-        </div>
-      </D1Group>
-
-      <D1Group label="Visibility">
-        <div class="demo-mask-page">
-          <D1Mask
-            label="Visible Mask"
-            mask="AAAA-AAAA-AAAA"
-            :visible="true"
-          />
-          <D1Mask
-            label="Hidden/Partly Visible"
-            mask="AAAA-AAAA-AAAA"
-            :visible="false"
-          />
-        </div>
+      <D1Group label="Events">
+        <D1Mask
+          mask="****-****"
+          @focus="onEvent('focus', $event)"
+          @blur="onEvent('blur', $event)"
+          @keydown="onEvent('keydown', $event)"
+          @keyup="onEvent('keyup', $event)"
+          @beforeinput="onEvent('beforeinput', $event)"
+          @input="onEvent('input', $event)"
+          @input-lite="onEvent('inputLite', $event)"
+          @change="onEvent('change', $event)"
+          @change-lite="onEvent('changeLite', $event)"
+          @paste="onEvent('paste', $event)"
+          @reset="onEvent('reset', $event)"
+        />
+        <DemoValue :value="eventName"/>
       </D1Group>
     </D1Section>
   </D1Page>
 </template>
 
-<style lang="scss">
-.demo-mask-page {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  max-width: 400px;
-}
-.demo-mask-value {
-  font-family: monospace;
-  font-size: 0.9em;
-  color: #666;
-}
-</style>
+<style lang="scss"></style>

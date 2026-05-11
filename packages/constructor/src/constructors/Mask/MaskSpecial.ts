@@ -71,7 +71,7 @@ export class MaskSpecial {
    *
    * Возвращает карту только резиновых групп.
    */
-  readonly rubberList = computed<MaskSpecialList>(() => {
+  get rubberList(): MaskSpecialList {
     const data: MaskSpecialList = {}
 
     if (isObjectNotArray(this.special.value)) {
@@ -83,7 +83,7 @@ export class MaskSpecial {
     }
 
     return data
-  })
+  }
 
   /**
    * Checks if symbol is special.

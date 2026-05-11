@@ -1,25 +1,26 @@
 import { t as e } from "./AriaStaticInclude-CS1hPGyK.js";
-import { t } from "./defineProperty-Dcl1xgfx.js";
-import { t as n } from "./FieldInputCheckInclude-CtZ4rF2b.js";
-import { t as r } from "./MaskInclude-Cn-8heQN.js";
+import { t } from "./defineProperty-3CuEayIP.js";
+import { t as n } from "./FieldInputCheckInclude-DqiMXeTF.js";
+import { t as r } from "./MaskInclude-CTiou-HC.js";
 import { computed as i, h as a, ref as o, watch as s } from "vue";
 import { Datetime as c, DesignConstructorAbstract as l, GeoIntl as u, GeoRef as d, anyToString as f, eventStopPropagation as p, forEach as m, getClipboardData as h, getColumn as g, getExp as _, getMaxLengthAllArray as v, isArray as y, isFilled as ee, isFloat as b, isObject as x, isObjectNotArray as S, isSelected as C, isString as w, replaceRecursive as T, strFill as E, toArray as D, toBinds as O, writeClipboardData as k } from "@dxtmisha/functional";
 //#region src/constructors/Mask/MaskType.ts
 var A = class {
 	constructor(e) {
-		t(this, "item", i(() => {
-			var e;
-			return (e = this.props.type) == null ? "text" : e;
-		})), this.props = e;
+		this.props = e;
+	}
+	get item() {
+		var e;
+		return (e = this.props.type) == null ? "text" : e;
 	}
 	isNumber() {
-		return this.item.value === "number";
+		return this.item === "number";
 	}
 	isNumberFormat() {
-		return this.item.value === "number-format";
+		return this.item === "number-format";
 	}
 	isCurrency() {
-		return this.item.value === "currency";
+		return this.item === "currency";
 	}
 	isCurrencyOrNumber() {
 		return this.isNumber() || this.isNumberFormat() || this.isCurrency();
@@ -33,7 +34,7 @@ var A = class {
 			"hour",
 			"minute",
 			"second"
-		].indexOf(this.item.value) !== -1;
+		].indexOf(this.item) !== -1;
 	}
 	isDate() {
 		return this.isTime() || [
@@ -43,10 +44,10 @@ var A = class {
 			"month",
 			"day",
 			"day-month"
-		].indexOf(this.item.value) !== -1;
+		].indexOf(this.item) !== -1;
 	}
 	getByDate() {
-		return this.isDate() ? this.item.value : "date";
+		return this.isDate() ? this.item : "date";
 	}
 }, j = class {
 	constructor() {
@@ -186,8 +187,11 @@ var A = class {
 	m: "m",
 	s: "s"
 }, R = class {
-	constructor(e, n) {
-		t(this, "mask", i(() => this.getDatetime().setHour24(!0).locale(void 0, "2-digit").replace("1987", "YYYY").replace("12", "MM").replace("18", "DD").replace("10", "hh").replace("20", "mm").replace("30", "ss").split(""))), this.props = e, this.type = n;
+	constructor(e, t) {
+		this.props = e, this.type = t;
+	}
+	get mask() {
+		return this.getDatetime().setHour24(!0).locale(void 0, "2-digit").replace("1987", "YYYY").replace("12", "MM").replace("18", "DD").replace("10", "hh").replace("20", "mm").replace("30", "ss").split("");
 	}
 	getDatetime(e) {
 		return new c(e == null ? "1987-12-18T10:20:30" : e, this.type.getByDate(), this.props.language);
@@ -230,7 +234,10 @@ var A = class {
 		t(this, "special", {
 			n: {},
 			f: { defaultValue: "0" }
-		}), t(this, "rubber", i(() => ({
+		}), this.props = e, this.type = n, this.rubberItem = r;
+	}
+	get rubber() {
+		return {
 			n: {
 				rubber: !0,
 				transitionChar: this.getDecimal(),
@@ -240,11 +247,18 @@ var A = class {
 				rubber: this.isFractionRubber(),
 				maxLength: 4
 			}
-		}))), t(this, "view", i(() => this.type.isNumber() ? "⁠" : "0")), t(this, "fraction", i(() => {
-			if (this.type.isCurrency()) return 2;
-			let e = this.props.fraction;
-			return typeof e == "number" ? e : typeof e == "string" && e.match(/[0-9]+/) ? Number(e) : this.rubberItem.is("f") ? this.rubberItem.getByIndex("f") + 1 : +(e === !0);
-		})), t(this, "mask", i(() => this.type.isCurrency() ? this.toSpecial(this.getCurrency()) : this.type.isNumberFormat() ? this.toSpecial(this.getNumberFormat()) : this.toSpecial(this.getNumber()))), this.props = e, this.type = n, this.rubberItem = r;
+		};
+	}
+	get view() {
+		return this.type.isNumber() ? "⁠" : "0";
+	}
+	get fraction() {
+		if (this.type.isCurrency()) return 2;
+		let e = this.props.fraction;
+		return typeof e == "number" ? e : typeof e == "string" && e.match(/[0-9]+/) ? Number(e) : this.rubberItem.is("f") ? this.rubberItem.getByIndex("f") + 1 : +(e === !0);
+	}
+	get mask() {
+		return this.type.isCurrency() ? this.toSpecial(this.getCurrency()) : this.type.isNumberFormat() ? this.toSpecial(this.getNumberFormat()) : this.toSpecial(this.getNumber());
 	}
 	isFractionRubber() {
 		return this.props.fraction === !0;
@@ -277,7 +291,7 @@ var A = class {
 		return new u(this.props.language);
 	}
 	getNumberForString() {
-		let e = this.fraction.value;
+		let e = this.fraction;
 		return `${E("9", this.rubberItem.getByIndex("n") + 1)}${e ? `.${E("3", e)}` : ""}${this.type.isCurrency() && this.props.currency ? ` ${this.props.currency}` : ""}`;
 	}
 	toSpecial(e) {
@@ -291,15 +305,16 @@ var A = class {
 			if (this.type.isDate()) return this.date.getSpecialDate();
 			let e = this.special.value;
 			return y(e) ? e : x(e) ? Object.keys(e) : [e];
-		})), t(this, "rubberList", i(() => {
-			let e = {};
-			return S(this.special.value) && m(this.special.value, (t, n) => {
-				t != null && t.rubber && (e[n] = t);
-			}), e;
 		})), t(this, "special", i(() => {
 			var e;
 			return this.type.isCurrencyOrNumber() ? this.format.special : (e = this.props.special) == null ? "*" : e;
 		})), this.props = e, this.type = n, this.date = r, this.format = a;
+	}
+	get rubberList() {
+		let e = {};
+		return S(this.special.value) && m(this.special.value, (t, n) => {
+			t != null && t.rubber && (e[n] = t);
+		}), e;
 	}
 	isSpecial(e) {
 		return this.item.value.indexOf(e) !== -1;
@@ -397,8 +412,8 @@ var A = class {
 }, K = class {
 	constructor(e, n, r, a, o, s, c) {
 		t(this, "list", i(() => {
-			let e = this.special.rubberList.value;
-			return this.type.isCurrencyOrNumber() ? T(this.format.rubber.value, e) : e;
+			let e = this.special.rubberList;
+			return this.type.isCurrencyOrNumber() ? T(this.format.rubber, e) : e;
 		})), t(this, "transition", i(() => g(Object.values(this.list.value).filter((e) => "transitionChar" in e && (w(e.transitionChar) || y(e.transitionChar))), "transitionChar").flat())), this.props = e, this.type = n, this.rubberItem = r, this.rubberTransition = a, this.special = o, this.match = s, this.format = c;
 	}
 	isTransition(e) {
@@ -420,7 +435,7 @@ var A = class {
 	}
 }, q = class {
 	constructor(e, n, r, a, o, s, c) {
-		t(this, "item", i(() => this.type.isCurrencyOrNumber() ? this.format.mask.value : this.type.isDate() ? this.date.mask.value : this.basic.value)), t(this, "info", i(() => {
+		t(this, "item", i(() => this.type.isCurrencyOrNumber() ? this.format.mask : this.type.isDate() ? this.date.mask : this.basic)), t(this, "info", i(() => {
 			let e = [], t = 0;
 			return this.item.value.forEach((n, r) => {
 				this.special.isSpecial(n) && (e.push({
@@ -432,10 +447,7 @@ var A = class {
 		})), t(this, "maxLength", i(() => {
 			let e = this.getMask();
 			return y(e) ? v(e) : this.item.value.length;
-		})), t(this, "maskActive", i(() => {
-			let e = this.getMask();
-			return y(e) ? e.find((e) => this.getSpecialLength(e) >= this.characterLength.get()) || (e == null ? void 0 : e[e.length - 1]) || "" : e;
-		})), t(this, "basic", i(() => this.rubberItem.expandMask(this.maskActive.value).split(""))), this.props = e, this.type = n, this.rubberItem = r, this.characterLength = a, this.date = o, this.format = s, this.special = c;
+		})), this.props = e, this.type = n, this.rubberItem = r, this.characterLength = a, this.date = o, this.format = s, this.special = c;
 	}
 	get(e) {
 		var t, n;
@@ -458,6 +470,13 @@ var A = class {
 		let n = 0;
 		for (let r = e; r < t; r++) this.special.isSpecial(this.get(r)) && n++;
 		return n;
+	}
+	get maskActive() {
+		let e = this.getMask();
+		return y(e) ? e.find((e) => this.getSpecialLength(e) >= this.characterLength.get()) || (e == null ? void 0 : e[e.length - 1]) || "" : e;
+	}
+	get basic() {
+		return this.rubberItem.expandMask(this.maskActive).split("");
 	}
 	getMask() {
 		var e;
@@ -740,7 +759,7 @@ var A = class {
 	}
 	getViewChar(e) {
 		if (this.type.isDate()) return this.date.getView(e);
-		if (this.type.isCurrencyOrNumber()) return this.format.view.value;
+		if (this.type.isCurrencyOrNumber()) return this.format.view;
 	}
 }, re = class {
 	constructor(e, n) {
@@ -752,10 +771,14 @@ var A = class {
 	go() {
 		if (this.type && this.event) {
 			var e;
-			let n = this.isValue() ? this.validation.item.value : void 0;
-			if ((e = this.emits) == null || e.call(this, this.type, this.event, n), this.type === "inputLite" || this.type === "changeLite") {
+			let r = this.isValue() ? this.validation.item.value : void 0;
+			if ((e = this.emits) == null || e.call(this, this.type, this.event, r), this.type === "input") {
 				var t;
-				(t = this.emits) == null || t.call(this, this.type, n);
+				(t = this.emits) == null || t.call(this, "inputLite", r);
+			}
+			if (this.type === "change") {
+				var n;
+				(n = this.emits) == null || n.call(this, "changeLite", r);
 			}
 		}
 		return this;

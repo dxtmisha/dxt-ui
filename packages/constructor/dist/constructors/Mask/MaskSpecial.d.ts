@@ -34,7 +34,7 @@ export declare class MaskSpecial {
      *
      * Возвращает карту только резиновых групп.
      */
-    readonly rubberList: ComputedRef<MaskSpecialList>;
+    get rubberList(): MaskSpecialList;
     /**
      * Checks if symbol is special.
      *

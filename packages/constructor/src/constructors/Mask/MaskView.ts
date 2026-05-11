@@ -161,7 +161,7 @@ export class MaskView {
     }
 
     if (this.type.isCurrencyOrNumber()) {
-      return this.format.view.value
+      return this.format.view
     }
 
     return undefined

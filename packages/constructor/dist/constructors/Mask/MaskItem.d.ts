@@ -89,13 +89,13 @@ export declare class MaskItem {
      *
      * Возвращает активную маску.
      */
-    protected readonly maskActive: ComputedRef<string>;
+    protected get maskActive(): string;
     /**
      * Returns the number of special characters in the current mask.
      *
      * Возвращает количество специальных символов в текущей маске.
      */
-    protected readonly basic: ComputedRef<string[]>;
+    protected get basic(): string[];
     /**
      * Returns a list of masks.
      *

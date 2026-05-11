@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.57.5] - 2026-05-11
+
+### Added
+- **Header**: Expanded `HeaderComponents` types to include `IconComponentInclude`, enabling native icon support within header components.
+- **Checkbox**: Implemented a hidden input strategy to support custom values for the unchecked state.
+- **Testing**: Added interactive demo pages for `Mask` and other core components to facilitate better manual and automated testing.
+
+### Changed / Improved
+- **Mask**: Refactored `MaskEmit` logic to explicitly map native `input` and `change` events to `inputLite` and `changeLite` emitters, ensuring more reliable event propagation.
+- **Checkbox**: Major redesign of `CheckboxDesign.tsx` using granular rendering methods and improved accessibility standards via `AriaStaticInclude`.
+- **AI Integration**: Updated documentation and internal types to support the new automated recursive AI prompt generation system.
+- **Figma Synchronization**: Synchronized package configurations and documentation with Figma-related packages (v0.1.0 release).
+- **Core Refactoring**: Performed a general overhaul of core components for better design token integration and SSR stability.
+- **Maintenance**: Standardized `prepublishOnly` scripts and simplified script naming conventions across the package.
+
 ## [0.57.0] - 2026-05-02
 
 ### Added

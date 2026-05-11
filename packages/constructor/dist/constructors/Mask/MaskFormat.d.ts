@@ -4,7 +4,6 @@ import { MaskRubberItem } from './MaskRubberItem';
 import { FieldMasks } from '../../types/fieldTypes';
 import { MaskSpecialList, MaskSpecialProp } from './basicTypes';
 import { MaskProps } from './props';
-import { ComputedRef } from 'vue';
 /**
  * Class for working with formatted number / currency masks.
  *
@@ -24,13 +23,13 @@ export declare class MaskFormat {
     /** Special symbols configuration (groups) for numeric input / Конфигурация специальных символов (группы) для числового ввода */
     readonly special: MaskSpecialProp;
     /** Rubber mask instructions (dynamic length per group) / Инструкции резиновой маски (динамическая длина по группам) */
-    readonly rubber: ComputedRef<MaskSpecialList>;
+    get rubber(): MaskSpecialList;
     /** Base view symbol per group / Базовый отображаемый символ для группы */
-    readonly view: ComputedRef<string>;
+    get view(): string;
     /** Fraction digits count / Количество знаков после запятой */
-    readonly fraction: ComputedRef<number>;
+    get fraction(): number;
     /** Returns mask characters for current numeric type / Возвращает символы маски для текущего числового типа */
-    readonly mask: ComputedRef<string[]>;
+    get mask(): string[];
     /**
      * Is fraction part rubber (dynamic)?
      *

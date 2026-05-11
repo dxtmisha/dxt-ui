@@ -129,11 +129,11 @@ export class MaskRubber {
 
   /** List of rubber groups/ Список резиновых групп */
   protected readonly list = computed<MaskSpecialList>(() => {
-    const special = this.special.rubberList.value
+    const special = this.special.rubberList
 
     if (this.type.isCurrencyOrNumber()) {
       return replaceRecursive(
-        this.format.rubber.value,
+        this.format.rubber,
         special
       )
     }

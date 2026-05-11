@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { Datetime } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
@@ -65,7 +64,7 @@ export class MaskDate {
   }
 
   /** Mask template for current date type / Шаблон маски для текущего типа даты */
-  readonly mask = computed<string[]>(() => {
+  get mask(): string[] {
     return this.getDatetime()
       .setHour24(true)
       .locale(undefined, '2-digit')
@@ -76,7 +75,7 @@ export class MaskDate {
       .replace('20', 'mm')
       .replace('30', 'ss')
       .split('')
-  })
+  }
 
   /**
    * Returns base Datetime helper for given value (or default stub).

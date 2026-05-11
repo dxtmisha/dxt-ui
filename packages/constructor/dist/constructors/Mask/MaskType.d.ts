@@ -1,7 +1,6 @@
 import { GeoDate } from '@dxtmisha/functional';
 import { MaskTypeItem } from './basicTypes';
 import { MaskProps } from './props';
-import { ComputedRef } from 'vue';
 /**
  * Class for defining the mask type.
  *
@@ -15,7 +14,7 @@ export declare class MaskType {
      */
     constructor(props: MaskProps);
     /** Current mask type (default: text)/ Текущий тип маски (по умолчанию: text) */
-    readonly item: ComputedRef<MaskTypeItem>;
+    get item(): MaskTypeItem;
     /**
      * Is the mask simple number type.
      *

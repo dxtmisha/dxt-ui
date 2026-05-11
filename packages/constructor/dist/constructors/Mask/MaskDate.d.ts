@@ -2,7 +2,6 @@ import { Datetime } from '@dxtmisha/functional';
 import { MaskType } from './MaskType';
 import { FieldMasks, FieldPatternList } from '../../types/fieldTypes';
 import { MaskProps } from './props';
-import { ComputedRef } from 'vue';
 /**
  * Class for working with date/time masks (date, datetime, time etc.).
  *
@@ -18,7 +17,7 @@ export declare class MaskDate {
      */
     constructor(props: MaskProps, type: MaskType);
     /** Mask template for current date type / Шаблон маски для текущего типа даты */
-    readonly mask: ComputedRef<string[]>;
+    get mask(): string[];
     /**
      * Returns base Datetime helper for given value (or default stub).
      *

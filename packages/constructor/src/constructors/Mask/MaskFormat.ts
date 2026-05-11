@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { GeoIntl, strFill } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
@@ -36,7 +35,7 @@ export class MaskFormat {
   }
 
   /** Rubber mask instructions (dynamic length per group) / Инструкции резиновой маски (динамическая длина по группам) */
-  readonly rubber = computed<MaskSpecialList>(() => {
+  get rubber(): MaskSpecialList {
     return {
       n: {
         rubber: true,
@@ -48,19 +47,19 @@ export class MaskFormat {
         maxLength: 4
       }
     }
-  })
+  }
 
   /** Base view symbol per group / Базовый отображаемый символ для группы */
-  readonly view = computed<string>(() => {
+  get view(): string {
     if (this.type.isNumber()) {
       return String.fromCharCode(8288)
     }
 
     return '0'
-  })
+  }
 
   /** Fraction digits count / Количество знаков после запятой */
-  readonly fraction = computed<number>(() => {
+  get fraction(): number {
     if (this.type.isCurrency()) {
       return 2
     }
@@ -87,10 +86,10 @@ export class MaskFormat {
     }
 
     return 0
-  })
+  }
 
   /** Returns mask characters for current numeric type / Возвращает символы маски для текущего числового типа */
-  readonly mask = computed<string[]>(() => {
+  get mask(): string[] {
     if (this.type.isCurrency()) {
       return this.toSpecial(this.getCurrency())
     }
@@ -100,7 +99,7 @@ export class MaskFormat {
     }
 
     return this.toSpecial(this.getNumber())
-  })
+  }
 
   /**
    * Is fraction part rubber (dynamic)?
@@ -194,7 +193,7 @@ export class MaskFormat {
    * Формирует базовую строку числового паттерна (с необязательной дробью и валютой).
    */
   protected getNumberForString(): string {
-    const fraction = this.fraction.value
+    const fraction = this.fraction
 
     const number = strFill('9', this.rubberItem.getByIndex('n') + 1)
     const numberFraction = fraction ? `.${strFill('3', fraction)}` : ''
