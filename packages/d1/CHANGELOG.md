@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.57.4] - 2026-05-11
+
+### Changed / Improved
+- **D1Field**: Updated the `outlined` variant to include a `focusWithin` state, ensuring consistent visual behavior by resetting the outline width.
+- **Core Integration**: Synchronized with `@dxtmisha/constructor` v0.57.6, adopting the new performance-optimized getter architecture for all field-related components.
+- **SSR Stability**: Improved hydration consistency by leveraging the updated `ClientOnlyInclude` patterns from the core constructor.
+- **Maintenance**: Updated internal properties and design tokens for the `Field` component to support more granular state management.
+
 ## [0.57.0] - 2026-05-02
 
 ### Added

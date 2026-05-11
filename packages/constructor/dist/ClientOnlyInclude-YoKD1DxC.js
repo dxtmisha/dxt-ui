@@ -3,7 +3,7 @@ import { computed as t, onMounted as n, ref as r } from "vue";
 //#region src/classes/ClientOnlyInclude.ts
 var i = class {
 	constructor(i) {
-		e(this, "isMounted", r(!1)), e(this, "isRender", t(() => !this.props.clientOnly || this.isMounted.value)), this.props = i, n(() => {
+		e(this, "isMounted", r(!1)), e(this, "isRender", t(() => this.props && !this.props.clientOnly || this.isMounted.value)), this.props = i, n(() => {
 			this.isMounted.value = !0;
 		});
 	}

@@ -1,59 +1,63 @@
 import { t as e } from "./defineProperty-3CuEayIP.js";
-import { t } from "./ModelInclude-COXpwWf_.js";
-import { t as n } from "./FieldInputCheckInclude-DqiMXeTF.js";
-import { computed as r, ref as i } from "vue";
-import { toBinds as a } from "@dxtmisha/functional";
+import { t } from "./ClientOnlyInclude-YoKD1DxC.js";
+import { t as n } from "./ModelInclude-COXpwWf_.js";
+import { t as r } from "./FieldInputCheckInclude-D9B4Dhf8.js";
+import { computed as i, ref as a } from "vue";
+import { toBinds as o } from "@dxtmisha/functional";
 //#region src/classes/Field/FieldPatternInclude.ts
-var o = {
+var s = {
 	email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
 	password: "[0-9a-zA-Z\\-!@#$%^&*]+"
-}, s = class {
-	constructor(t, n) {
-		e(this, "item", r(() => {
-			if (this.props.pattern) return this.props.pattern;
-			if (this.type) return o == null ? void 0 : o[this.type.item.value];
-		})), this.props = t, this.type = n;
-	}
 }, c = class {
-	constructor(t, n) {
-		e(this, "item", r(() => {
-			if (this.props.inputMode) return this.props.inputMode;
-			switch (this.type.item.value) {
-				case "number":
-				case "datetime":
-				case "date":
-				case "year-month":
-				case "time":
-				case "hour-minute": return "numeric";
-				case "number-format":
-				case "currency": return "decimal";
-				case "tel": return "tel";
-				case "email": return "email";
-				default: return;
-			}
-		})), e(this, "autocomplete", r(() => {
-			if (this.props.autocomplete) return this.props.autocomplete;
-			switch (this.type.item.value) {
-				case "search": return "off";
-				case "email": return "email";
-				case "password": return "new-password";
-				case "tel": return "tel";
-				case "url": return "url";
-			}
-		})), this.props = t, this.type = n;
+	constructor(e, t) {
+		this.props = e, this.type = t;
+	}
+	get item() {
+		if (this.props.pattern) return this.props.pattern;
+		if (this.type) return s == null ? void 0 : s[this.type.item];
 	}
 }, l = class {
-	constructor(t, n, i, a) {
-		e(this, "list", r(() => this.getData(this.getAttributes()))), e(this, "listForCheck", r(() => {
+	constructor(e, t) {
+		this.props = e, this.type = t;
+	}
+	get item() {
+		if (this.props.inputMode) return this.props.inputMode;
+		switch (this.type.item) {
+			case "number":
+			case "datetime":
+			case "date":
+			case "year-month":
+			case "time":
+			case "hour-minute": return "numeric";
+			case "number-format":
+			case "currency": return "decimal";
+			case "tel": return "tel";
+			case "email": return "email";
+			default: return;
+		}
+	}
+	get autocomplete() {
+		if (this.props.autocomplete) return this.props.autocomplete;
+		switch (this.type.item) {
+			case "search": return "off";
+			case "email": return "email";
+			case "password": return "new-password";
+			case "tel": return "tel";
+			case "url": return "url";
+		}
+	}
+}, u = class {
+	constructor(t, n, r, a) {
+		e(this, "list", i(() => this.getData(this.getAttributes()))), e(this, "listForCheck", i(() => {
 			let e = this.list.value;
 			return this.props.min || this.props.max || this.props.step ? {
 				...e,
 				type: "number"
 			} : e;
-		})), e(this, "listForInput", r(() => this.getData(this.getInputAttributes()))), e(this, "listForCheckbox", r(() => ({
+		})), e(this, "listForInput", i(() => this.getData(this.getInputAttributes()))), e(this, "listForCheckbox", i(() => ({
 			...this.getData(this.getInputAttributes()),
 			value: this.props.valueVariant
-		}))), this.props = t, this.type = n, this.pattern = i, this.inputMode = a;
+		}))), this.props = t, this.type = n, this.pattern = r, this.inputMode = a;
 	}
 	getAttributes() {
 		return [
@@ -94,25 +98,25 @@ var o = {
 			let n;
 			if (e in this.props) switch (e) {
 				case "type":
-					n = this.type ? this.type.item.value : this.props.type;
+					n = this.type ? this.type.item : this.props.type;
 					break;
 				case "pattern":
-					this.pattern && (n = this.pattern.item.value);
+					this.pattern && (n = this.pattern.item);
 					break;
 				case "inputMode":
-					this.inputMode && (n = this.inputMode.item.value);
+					this.inputMode && (n = this.inputMode.item);
 					break;
 				case "autocomplete":
-					this.inputMode && (n = this.inputMode.autocomplete.value);
+					this.inputMode && (n = this.inputMode.autocomplete);
 					break;
 				default: n = this.props[e];
 			}
 			n !== void 0 && (t[e] = n);
-		}), a(t, this.props.inputAttrs);
+		}), o(t, this.props.inputAttrs);
 	}
-}, u = class {
+}, d = class {
 	constructor(t) {
-		e(this, "item", i(!1)), (t.value || t.modelValue) && (this.item.value = !0);
+		e(this, "item", a(!1)), (t.value || t.modelValue) && (this.item.value = !0);
 	}
 	is() {
 		return !!this.item.value;
@@ -123,7 +127,7 @@ var o = {
 	to() {
 		this.item.value || this.set(!0);
 	}
-}, d = class {
+}, f = class {
 	constructor(e) {
 		this.props = e;
 	}
@@ -141,12 +145,14 @@ var o = {
 		let t = Object.entries(e);
 		for (let [e, n] of t) if (e !== "valid" && n) return e;
 	}
-}, f = class {
-	constructor(t, a, o, s, c, l) {
-		e(this, "validation", i()), e(this, "input", r(() => new n(this.attributes.listForCheck.value, void 0, this.code))), e(this, "item", r(() => {
+}, p = class {
+	constructor(n, o, s, c, l, u) {
+		e(this, "validation", a()), e(this, "clientOnly", new t()), e(this, "input", i(() => {
+			if (this.clientOnly.is()) return new r(this.attributes.listForCheck.value, void 0, this.code);
+		})), e(this, "item", i(() => {
 			var e, t;
 			return this.checkGlobal() || ((e = this.checkItem()) == null ? (t = this.match) == null ? void 0 : t.check() : e) || this.getValidationItemNone();
-		})), e(this, "message", r(() => {
+		})), e(this, "message", i(() => {
 			if (this.props.validationMessage) return this.props.validationMessage;
 			if (!this.change || this.change.is()) {
 				var e, t;
@@ -154,18 +160,23 @@ var o = {
 				return (e = (t = n.validityMessage) == null ? n.validationMessage : t) == null ? "" : e;
 			}
 			return "";
-		})), e(this, "checkValidity", () => !this.isError()), this.props = t, this.attributes = a, this.value = o, this.change = s, this.code = c, this.match = l;
+		})), e(this, "checkValidity", () => !this.isError()), this.props = n, this.attributes = o, this.value = s, this.change = c, this.code = l, this.match = u;
 	}
 	isError() {
 		var e;
 		return !((e = this.item.value) != null && e.status);
 	}
 	set(e) {
-		return "status" in e && "validationMessage" in e && "value" in e ? this.validation.value = e : "target" in e && (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) && Number(e.target.minLength) > -1 ? this.validation.value = this.input.value.checkByInput(e.target) : this.validation.value = void 0, this;
+		if ("status" in e && "validationMessage" in e && "value" in e) this.validation.value = e;
+		else if ("target" in e && (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) && Number(e.target.minLength) > -1) {
+			var t;
+			this.validation.value = (t = this.input.value) == null ? void 0 : t.checkByInput(e.target);
+		} else this.validation.value = void 0;
+		return this;
 	}
 	getValidationItemNone() {
 		return {
-			group: n.getGroupDefault(),
+			group: r.getGroupDefault(),
 			status: !0,
 			value: void 0
 		};
@@ -173,7 +184,7 @@ var o = {
 	checkGlobal() {
 		var e;
 		return this.props.validationMessage ? {
-			group: n.getGroupDefault(),
+			group: r.getGroupDefault(),
 			status: !1,
 			validationMessage: this.props.validationMessage,
 			value: this.value.item.value
@@ -183,14 +194,15 @@ var o = {
 		let e = this.value.getToArray();
 		for (let t of e) {
 			let e = this.checkByInput(t);
-			if (!e.status) return e;
+			if (e && !e.status) return e;
 		}
 	}
 	checkByInput(e) {
-		return this.input.value.check(e);
+		var t;
+		return (t = this.input.value) == null ? void 0 : t.check(e);
 	}
-}, p = class {
-	constructor(n, r, i, a, o) {
+}, m = class {
+	constructor(t, r, i, a, o) {
 		e(this, "model", void 0), e(this, "onBlur", () => {
 			this.change.to();
 		}), e(this, "onInput", (e, t) => {
@@ -228,7 +240,7 @@ var o = {
 				...this.getData()
 			};
 			return (n = this.emits) == null || n.call(this, t, e, i), (r = this.emits) == null || r.call(this, `${t}Lite`, i), this;
-		}), this.props = n, this.change = r, this.value = i, this.validation = a, this.emits = o, this.model = new t("value", this.emits, this.value.itemByFull);
+		}), this.props = t, this.change = r, this.value = i, this.validation = a, this.emits = o, this.model = new n("value", this.emits, this.value.itemByFull);
 	}
 	isEnabled() {
 		return this.props.disabled !== !0 && this.props.readonly !== !0;
@@ -254,4 +266,4 @@ var o = {
 	}
 };
 //#endregion
-export { l as a, u as i, f as n, c as o, d as r, s, p as t };
+export { u as a, d as i, p as n, l as o, f as r, c as s, m as t };

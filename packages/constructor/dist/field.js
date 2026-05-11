@@ -10,7 +10,7 @@ import { t as c } from "./CaptionInclude-D4FFnCLk.js";
 import { t as l } from "./FieldMessageInclude-CFAq415k.js";
 import { n as u, t as d } from "./SuffixInclude-OtLZmCXm.js";
 import { t as f } from "./FieldLabelInclude-BfCYQv7H.js";
-import { t as p } from "./FieldInclude-bU3iYD-O.js";
+import { t as p } from "./FieldInclude-C7tPvp00.js";
 import { computed as m, h, onMounted as g, onUnmounted as _, onUpdated as v, watch as y } from "vue";
 import { DesignConstructorAbstract as b, EventItem as x, getElementId as S, isDomRuntime as C, isString as w } from "@dxtmisha/functional";
 //#region src/constructors/Field/FieldIcons.ts

@@ -1,5 +1,3 @@
-import { computed } from 'vue'
-
 import { FieldTypeInclude } from './FieldTypeInclude'
 
 import type { FieldAllProps } from '../../types/fieldTypes'
@@ -28,15 +26,15 @@ export class FieldPatternInclude {
   }
 
   /** Returns regular expressions/ Возвращает регулярные выражения */
-  readonly item = computed<string | undefined>(() => {
+  get item(): string | undefined {
     if (this.props.pattern) {
       return this.props.pattern
     }
 
     if (this.type) {
-      return PATTERNS?.[this.type.item.value]
+      return PATTERNS?.[this.type.item]
     }
 
     return undefined
-  })
+  }
 }

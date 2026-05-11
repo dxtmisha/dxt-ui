@@ -126,6 +126,10 @@
     }
   },
   "~outlined": {
+    "focusWithin": {
+      "outline-width": "0",
+      "_type": "var"
+    },
     "#body": {
       "#input": {
         "hover": {

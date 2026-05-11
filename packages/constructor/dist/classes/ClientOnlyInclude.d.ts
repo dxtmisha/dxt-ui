@@ -6,14 +6,14 @@ import { Ref, ComputedRef } from 'vue';
  * Класс для управления рендерингом компонента только на стороне клиента.
  */
 export declare class ClientOnlyInclude {
-    protected readonly props: ClientOnlyPropsInclude;
+    protected readonly props?: ClientOnlyPropsInclude | undefined;
     /** Check if the component is mounted / Проверка, смонтирован ли компонент */
     isMounted: Ref<boolean, boolean>;
     /**
      * Constructor
      * @param props input data / входные данные
      */
-    constructor(props: ClientOnlyPropsInclude);
+    constructor(props?: ClientOnlyPropsInclude | undefined);
     /** Is the component ready for rendering / Готов ли компонент к рендерингу */
     readonly isRender: ComputedRef<boolean>;
     /**

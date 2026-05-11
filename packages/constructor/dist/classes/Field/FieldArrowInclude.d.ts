@@ -1,7 +1,6 @@
 import { FieldValueInclude } from './FieldValueInclude';
 import { FieldTypeInclude } from './FieldTypeInclude';
 import { FieldAllProps, FieldArrowProps } from '../../types/fieldTypes';
-import { ComputedRef } from 'vue';
 /**
  * Class for working with input arrows.
  *
@@ -23,17 +22,11 @@ export declare class FieldArrowInclude {
      *
      * @return true if arrows are enabled/ true, если стрелки включены
      */
-    readonly is: ComputedRef<boolean>;
+    get is(): boolean;
     /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
-    readonly disabledPrevious: ComputedRef<boolean>;
+    get disabledPrevious(): boolean;
     /** Indicates if the next button is disabled/ Указывает, отключена ли кнопка следующего */
-    readonly disabledNext: ComputedRef<boolean>;
-    /** Returns the change step/ Возвращает шаг изменения */
-    protected readonly step: ComputedRef<number>;
-    /** Returns the minimum value/ Возвращает минимальное значение */
-    protected readonly min: ComputedRef<number | undefined>;
-    /** Returns the maximum value/ Возвращает максимальное значение */
-    protected readonly max: ComputedRef<number | undefined>;
+    get disabledNext(): boolean;
     /**
      * Checks if the arrow type is carousel.
      *
@@ -96,4 +89,10 @@ export declare class FieldArrowInclude {
      * Увеличивает до максимального значения.
      */
     toMax(): this;
+    /** Returns the change step/ Возвращает шаг изменения */
+    protected get step(): number;
+    /** Returns the minimum value/ Возвращает минимальное значение */
+    protected get min(): number | undefined;
+    /** Returns the maximum value/ Возвращает максимальное значение */
+    protected get max(): number | undefined;
 }

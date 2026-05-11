@@ -1,5 +1,5 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
-import { ConstrClassObject, ConstrEmit, DesignComp } from '@dxtmisha/functional';
+import { ConstrClassObject, ConstrEmit, DesignComp, ConstrBind } from '@dxtmisha/functional';
 import { MaskType } from './MaskType';
 import { MaskBuffer } from './MaskBuffer';
 import { MaskFocus } from './MaskFocus';
@@ -26,6 +26,7 @@ import { MaskEvent } from './MaskEvent';
 import { MaskElementInput } from './basicTypes';
 import { MaskComponents, MaskEmits, MaskSlots } from './types';
 import { MaskProps } from './props';
+import { ItemList } from '@dxtmisha/functional-basic';
 /**
  * Class for working with input masking.
  *
@@ -148,6 +149,8 @@ export declare class Mask {
     });
     /** Receiving basic standard values/ Получение базовых стандартных значений */
     readonly basic: ComputedRef<string>;
+    /** Returns the properties for the input element/ Возвращает свойства для элемента ввода */
+    readonly binds: ComputedRef<ConstrBind<ItemList>>;
     /** Values for CSS class/ Значения для CSS-класса */
     readonly classes: ComputedRef<ConstrClassObject>;
     /**

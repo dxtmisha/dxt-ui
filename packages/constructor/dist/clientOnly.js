@@ -1,5 +1,5 @@
 import { t as e } from "./defineProperty-3CuEayIP.js";
-import { t } from "./ClientOnlyInclude-DtLrDeX2.js";
+import { t } from "./ClientOnlyInclude-YoKD1DxC.js";
 import "vue";
 import { DesignConstructorAbstract as n } from "@dxtmisha/functional";
 //#region src/constructors/ClientOnly/ClientOnly.ts

@@ -10,15 +10,16 @@ var h = class {
 		return this.item.value = !this.item.value, this;
 	}
 }, g = class {
-	constructor(n, r) {
-		e(this, "item", t(() => {
-			var e;
-			let t = this.props.type;
-			return t === "password" && (e = this.visibility) != null && e.item.value || t == null ? "text" : t;
-		})), this.props = n, this.visibility = r;
+	constructor(e, t) {
+		this.props = e, this.visibility = t;
+	}
+	get item() {
+		var e;
+		let t = this.props.type;
+		return t === "password" && (e = this.visibility) != null && e.item.value || t == null ? "text" : t;
 	}
 	get() {
-		return this.item.value;
+		return this.item;
 	}
 }, _ = class {
 	constructor(e, t) {

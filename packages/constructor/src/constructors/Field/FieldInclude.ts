@@ -129,8 +129,8 @@ export class FieldInclude<
 
     counter: this.value.length.value,
 
-    disabledPrevious: this.arrow?.disabledPrevious.value,
-    disabledNext: this.arrow?.disabledNext.value
+    disabledPrevious: this.arrow?.disabledPrevious,
+    disabledNext: this.arrow?.disabledNext
   }))
 
   /**

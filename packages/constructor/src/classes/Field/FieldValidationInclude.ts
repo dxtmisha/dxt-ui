@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue'
 
+import { ClientOnlyInclude } from '../ClientOnlyInclude'
 import { FieldInputCheckInclude } from './FieldInputCheckInclude'
 
 import type { FieldAttributesInclude } from './FieldAttributesInclude'
@@ -18,6 +19,9 @@ import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
 export class FieldValidationInclude {
   /** Internal validation state/ Внутреннее состояние валидации */
   protected readonly validation = ref<FieldValidationItem>()
+
+  /** Client only / Клиентская часть */
+  protected readonly clientOnly = new ClientOnlyInclude()
 
   /**
    * Constructor
@@ -39,12 +43,18 @@ export class FieldValidationInclude {
   }
 
   /** Hidden input element for native validation/ Скрытый input для нативной валидации */
-  protected readonly input = computed<FieldInputCheckInclude>(
-    () => new FieldInputCheckInclude(
-      this.attributes.listForCheck.value,
-      undefined,
-      this.code
-    )
+  protected readonly input = computed<FieldInputCheckInclude | undefined>(
+    () => {
+      if (this.clientOnly.is()) {
+        return new FieldInputCheckInclude(
+          this.attributes.listForCheck.value,
+          undefined,
+          this.code
+        )
+      }
+
+      return undefined
+    }
   )
 
   /** Returns error data/ Возвращает данные об ошибке */
@@ -123,7 +133,7 @@ export class FieldValidationInclude {
       )
       && Number(validation.target.minLength) > -1
     ) {
-      this.validation.value = this.input.value.checkByInput(validation.target)
+      this.validation.value = this.input.value?.checkByInput(validation.target)
     } else {
       this.validation.value = undefined
     }
@@ -173,7 +183,10 @@ export class FieldValidationInclude {
     for (const value of values) {
       const check = this.checkByInput(value)
 
-      if (!check.status) {
+      if (
+        check
+        && !check.status
+      ) {
         return check
       }
     }
@@ -187,7 +200,7 @@ export class FieldValidationInclude {
    *
    * Проверяет значение с помощью скрытого input
    */
-  protected checkByInput(value: any): FieldValidationItem {
-    return this.input.value.check(value)
+  protected checkByInput(value: any): FieldValidationItem | undefined {
+    return this.input.value?.check(value)
   }
 }

@@ -29,14 +29,14 @@ export class InputDesign<
   CLASSES extends InputClasses,
   P extends InputPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    InputEmits,
-    EXPOSE,
-    InputSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  InputEmits,
+  EXPOSE,
+  InputSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Input
 
   /**

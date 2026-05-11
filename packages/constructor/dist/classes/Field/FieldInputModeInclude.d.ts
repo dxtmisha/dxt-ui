@@ -1,6 +1,5 @@
 import { FieldTypeInclude } from './FieldTypeInclude';
 import { FieldAllProps } from '../../types/fieldTypes';
-import { ComputedRef } from 'vue';
 /**
  * Class for getting the type of displayed keyboard.
  *
@@ -16,6 +15,6 @@ export declare class FieldInputModeInclude {
      */
     constructor(props: FieldAllProps, type: FieldTypeInclude);
     /** Returns the keyboard name/ Возвращает название клавиатуры */
-    readonly item: ComputedRef<string | undefined>;
-    readonly autocomplete: ComputedRef<string | undefined>;
+    get item(): string | undefined;
+    get autocomplete(): string | undefined;
 }

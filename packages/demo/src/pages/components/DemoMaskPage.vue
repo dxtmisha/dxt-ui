@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
+
+const { eventName, onEvent } = useDemoEvent()
 
 const valuePhone = ref('+7 (900) 123-45-67')
 const valueDate = ref('2005-02-12')
 const valueNumber = ref('123456')
 const valueCurrency = ref('123456.7')
-const eventName = ref('')
 
-const onEvent = (event: string) => {
-  eventName.value = event
-  console.log(`Event: ${event}`)
-}
 </script>
 
 <template>
@@ -78,17 +76,17 @@ const onEvent = (event: string) => {
       <D1Group label="Events">
         <D1Mask
           mask="****-****"
-          @focus="onEvent('focus', $event)"
-          @blur="onEvent('blur', $event)"
-          @keydown="onEvent('keydown', $event)"
-          @keyup="onEvent('keyup', $event)"
-          @beforeinput="onEvent('beforeinput', $event)"
-          @input="onEvent('input', $event)"
-          @input-lite="onEvent('inputLite', $event)"
-          @change="onEvent('change', $event)"
-          @change-lite="onEvent('changeLite', $event)"
-          @paste="onEvent('paste', $event)"
-          @reset="onEvent('reset', $event)"
+          @focus="onEvent('focus')"
+          @blur="onEvent('blur')"
+          @keydown="onEvent('keydown')"
+          @keyup="onEvent('keyup')"
+          @beforeinput="onEvent('beforeinput')"
+          @input="onEvent('input')"
+          @input-lite="onEvent('inputLite')"
+          @change="onEvent('change')"
+          @change-lite="onEvent('changeLite')"
+          @paste="onEvent('paste')"
+          @reset="onEvent('reset')"
         />
         <DemoValue :value="eventName"/>
       </D1Group>

@@ -1,6 +1,5 @@
 import { FieldVisibilityInclude } from './FieldVisibilityInclude';
 import { FieldAllProps, FieldType } from '../../types/fieldTypes';
-import { ComputedRef } from 'vue';
 /**
  * Class for working with the input type.
  *
@@ -16,7 +15,7 @@ export declare class FieldTypeInclude {
      */
     constructor(props: FieldAllProps, visibility?: FieldVisibilityInclude | undefined);
     /** Returns the input type/ Возвращает тип ввода */
-    readonly item: ComputedRef<FieldType>;
+    get item(): FieldType;
     /**
      * Returns the input type.
      *

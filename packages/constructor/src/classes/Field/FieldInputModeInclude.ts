@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { FieldTypeInclude } from './FieldTypeInclude'
 
 import type { FieldAllProps } from '../../types/fieldTypes'
@@ -21,12 +20,12 @@ export class FieldInputModeInclude {
   }
 
   /** Returns the keyboard name/ Возвращает название клавиатуры */
-  readonly item = computed<string | undefined>(() => {
+  get item(): string | undefined {
     if (this.props.inputMode) {
       return this.props.inputMode
     }
 
-    switch (this.type.item.value) {
+    switch (this.type.item) {
       case 'number':
       case 'datetime':
       case 'date':
@@ -44,14 +43,14 @@ export class FieldInputModeInclude {
       default:
         return undefined
     }
-  })
+  }
 
-  readonly autocomplete = computed<string | undefined>(() => {
+  get autocomplete(): string | undefined {
     if (this.props.autocomplete) {
       return this.props.autocomplete
     }
 
-    switch (this.type.item.value) {
+    switch (this.type.item) {
       case 'search':
         return 'off'
       case 'email':
@@ -65,5 +64,5 @@ export class FieldInputModeInclude {
     }
 
     return undefined
-  })
+  }
 }

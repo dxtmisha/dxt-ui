@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.57.6] - 2026-05-11
+
+### Changed / Improved
+- **Core Architecture**: Refactored internal `Field` classes (`FieldArrowInclude`, `FieldInputModeInclude`, `FieldPatternInclude`, `FieldTypeInclude`, `FieldValidationInclude`) from Vue `computed` properties to standard TypeScript getters to improve performance and simplify property access.
+- **Mask**: Introduced a centralized `binds` computed property in the `Mask` class to manage input attributes and event listeners, streamlining the rendering logic in `MaskDesign.tsx`.
+- **SSR Optimization**: Integrated `ClientOnlyInclude` into `FieldValidationInclude` to ensure native validation checks only run on the client side, enhancing hydration stability.
+- **Input/Field**: Updated `FieldInclude` and `FieldAttributesInclude` to support the new getter-based property access, ensuring consistent behavior across the library.
+
 ## [0.57.5] - 2026-05-11
 
 ### Added

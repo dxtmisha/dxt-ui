@@ -15,7 +15,7 @@ export class ClientOnlyInclude {
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: ClientOnlyPropsInclude
+    protected readonly props?: ClientOnlyPropsInclude
   ) {
     onMounted(() => {
       this.isMounted.value = true
@@ -23,7 +23,7 @@ export class ClientOnlyInclude {
   }
 
   /** Is the component ready for rendering / Готов ли компонент к рендерингу */
-  readonly isRender = computed(() => !this.props.clientOnly || this.isMounted.value)
+  readonly isRender = computed(() => (this.props && !this.props.clientOnly) || this.isMounted.value)
 
   /**
    * Returns the rendering state.

@@ -1,3 +1,4 @@
+import { ClientOnlyInclude } from '../ClientOnlyInclude';
 import { FieldInputCheckInclude } from './FieldInputCheckInclude';
 import { FieldAttributesInclude } from './FieldAttributesInclude';
 import { FieldChangeInclude } from './FieldChangeInclude';
@@ -20,6 +21,8 @@ export declare class FieldValidationInclude {
     protected readonly match?: FieldMatchInclude | undefined;
     /** Internal validation state/ Внутреннее состояние валидации */
     protected readonly validation: Ref<FieldValidationItem | undefined, FieldValidationItem | undefined>;
+    /** Client only / Клиентская часть */
+    protected readonly clientOnly: ClientOnlyInclude;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -31,7 +34,7 @@ export declare class FieldValidationInclude {
      */
     constructor(props: FieldAllProps, attributes: FieldAttributesInclude, value: FieldValueInclude, change?: FieldChangeInclude | undefined, code?: FieldCodeInclude | undefined, match?: FieldMatchInclude | undefined);
     /** Hidden input element for native validation/ Скрытый input для нативной валидации */
-    protected readonly input: ComputedRef<FieldInputCheckInclude<any>>;
+    protected readonly input: ComputedRef<FieldInputCheckInclude<any> | undefined>;
     /** Returns error data/ Возвращает данные об ошибке */
     readonly item: ComputedRef<FieldValidationItem>;
     /** Returns error string/ Возвращает строку об ошибке */
@@ -79,5 +82,5 @@ export declare class FieldValidationInclude {
      *
      * Проверяет значение с помощью скрытого input
      */
-    protected checkByInput(value: any): FieldValidationItem;
+    protected checkByInput(value: any): FieldValidationItem | undefined;
 }

@@ -51,8 +51,8 @@ var s = class {
 				value: this.value.item.value,
 				cancelShow: this.value.boolean.value,
 				counter: this.value.length.value,
-				disabledPrevious: (e = this.arrow) == null ? void 0 : e.disabledPrevious.value,
-				disabledNext: (t = this.arrow) == null ? void 0 : t.disabledNext.value
+				disabledPrevious: (e = this.arrow) == null ? void 0 : e.disabledPrevious,
+				disabledNext: (t = this.arrow) == null ? void 0 : t.disabledNext
 			};
 		})), e(this, "render", (e, t) => this.components ? this.components.render("field", a(this.valueBinds.value, t == null ? {} : t), e, this.index) : []), e(this, "on", (e, { type: t }) => {
 			var r, i;

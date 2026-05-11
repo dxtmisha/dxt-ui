@@ -1,6 +1,5 @@
 import { FieldTypeInclude } from './FieldTypeInclude';
 import { FieldAllProps } from '../../types/fieldTypes';
-import { ComputedRef } from 'vue';
 /**
  * Class for working with checks by regular expressions.
  *
@@ -16,5 +15,5 @@ export declare class FieldPatternInclude {
      */
     constructor(props: FieldAllProps, type?: FieldTypeInclude | undefined);
     /** Returns regular expressions/ Возвращает регулярные выражения */
-    readonly item: ComputedRef<string | undefined>;
+    get item(): string | undefined;
 }

@@ -1,5 +1,3 @@
-import { computed } from 'vue'
-
 import { FieldVisibilityInclude } from './FieldVisibilityInclude'
 
 import type { FieldAllProps, FieldType } from '../../types/fieldTypes'
@@ -23,7 +21,7 @@ export class FieldTypeInclude {
   }
 
   /** Returns the input type/ Возвращает тип ввода */
-  readonly item = computed<FieldType>(() => {
+  get item(): FieldType {
     const type = this.props.type
 
     if (
@@ -34,7 +32,7 @@ export class FieldTypeInclude {
     }
 
     return type ?? 'text'
-  })
+  }
 
   /**
    * Returns the input type.
@@ -42,6 +40,6 @@ export class FieldTypeInclude {
    * Возвращает тип ввода.
    */
   get(): FieldType {
-    return this.item.value
+    return this.item
   }
 }

@@ -5,7 +5,8 @@ import {
   type ConstrEmit,
   type DesignComp,
   GeoRef,
-  isFloat
+  isFloat,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
@@ -341,6 +342,27 @@ export class Mask {
     }
 
     return this.view.input.value
+  })
+
+  /** Returns the properties for the input element/ Возвращает свойства для элемента ввода */
+  readonly binds = computed(() => {
+    return toBinds(
+      this.props.inputAttrs,
+      {
+        type: 'text',
+        placeholder: '',
+
+        onFocus: this.event.onFocus,
+        onBlur: this.event.onBlur,
+        onKeydown: this.event.onKeydown,
+        onKeyup: this.event.onKeyup,
+        onBeforeinput: this.event.onBeforeinput,
+        onInput: this.event.onInput,
+        onChange: this.event.onChange,
+        onPaste: this.event.onPaste,
+        onClick: this.event.onClick
+      }
+    )
   })
 
   /** Values for CSS class/ Значения для CSS-класса */

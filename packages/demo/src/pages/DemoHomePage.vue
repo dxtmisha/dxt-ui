@@ -14,6 +14,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ClientOnly" name="component-client-only"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>
+        <DemoLink label="Input" name="component-input"/>
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Progress" name="component-progress"/>

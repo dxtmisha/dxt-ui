@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { toNumber } from '@dxtmisha/functional'
 
 import { FieldValueInclude } from './FieldValueInclude'
@@ -30,24 +29,19 @@ export class FieldArrowInclude {
    *
    * @return true if arrows are enabled/ true, если стрелки включены
    */
-  readonly is = computed<boolean>(() => {
+  get is(): boolean {
     return Boolean(this.props.arrow && this.props.arrow !== 'none')
-  })
+  }
 
   /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
-  readonly disabledPrevious = computed<boolean>(() => !this.isPrevious(this.value.number.value))
+  get disabledPrevious(): boolean {
+    return !this.isPrevious(this.value.number.value)
+  }
 
   /** Indicates if the next button is disabled/ Указывает, отключена ли кнопка следующего */
-  readonly disabledNext = computed<boolean>(() => !this.isNext(this.value.number.value))
-
-  /** Returns the change step/ Возвращает шаг изменения */
-  protected readonly step = computed<number>(() => toNumber(this.props.arrowStep ?? this.props.step ?? 1))
-
-  /** Returns the minimum value/ Возвращает минимальное значение */
-  protected readonly min = computed<number | undefined>(() => toNumber(this.props.min) ?? undefined)
-
-  /** Returns the maximum value/ Возвращает максимальное значение */
-  protected readonly max = computed<number | undefined>(() => toNumber(this.props.max) || undefined)
+  get disabledNext(): boolean {
+    return !this.isNext(this.value.number.value)
+  }
 
   /**
    * Checks if the arrow type is carousel.
@@ -74,7 +68,7 @@ export class FieldArrowInclude {
    * @param value values for checking/ значения для проверки
    */
   isPrevious(value: number): boolean {
-    const min = this.min.value
+    const min = this.min
     return min === undefined || value > min
   }
 
@@ -85,7 +79,7 @@ export class FieldArrowInclude {
    * @param value values for checking/ значения для проверки
    */
   isNext(value: number): boolean {
-    const max = this.max.value
+    const max = this.max
     return max === undefined || value < max
   }
 
@@ -125,7 +119,7 @@ export class FieldArrowInclude {
    * Уменьшает значение.
    */
   previous(): this {
-    const value = this.value.number.value - this.step.value
+    const value = this.value.number.value - this.step
 
     if (this.isPrevious(value)) {
       this.value.set(value.toString())
@@ -142,7 +136,7 @@ export class FieldArrowInclude {
    * Увеличивает значение.
    */
   next(): this {
-    const value = this.value.number.value + this.step.value
+    const value = this.value.number.value + this.step
 
     if (this.isNext(value)) {
       this.value.set(value.toString())
@@ -159,8 +153,8 @@ export class FieldArrowInclude {
    * Уменьшает до минимального значения.
    */
   toMin(): this {
-    if (!this.disabledPrevious.value) {
-      const min = this.min.value
+    if (!this.disabledPrevious) {
+      const min = this.min
 
       if (min !== undefined) {
         this.value.set(min.toString())
@@ -176,8 +170,8 @@ export class FieldArrowInclude {
    * Увеличивает до максимального значения.
    */
   toMax(): this {
-    if (!this.disabledNext.value) {
-      const max = this.max.value
+    if (!this.disabledNext) {
+      const max = this.max
 
       if (max !== undefined) {
         this.value.set(max.toString())
@@ -185,5 +179,20 @@ export class FieldArrowInclude {
     }
 
     return this
+  }
+
+  /** Returns the change step/ Возвращает шаг изменения */
+  protected get step(): number {
+    return toNumber(this.props.arrowStep ?? this.props.step ?? 1)
+  }
+
+  /** Returns the minimum value/ Возвращает минимальное значение */
+  protected get min(): number | undefined {
+    return toNumber(this.props.min) ?? undefined
+  }
+
+  /** Returns the maximum value/ Возвращает максимальное значение */
+  protected get max(): number | undefined {
+    return toNumber(this.props.max) || undefined
   }
 }

@@ -182,6 +182,8 @@
     }
     
     &--outlined {
+      --d1-field-focusWithin-outlineWidth: 0;
+      
       & .d1-field__body {
         &__input {
           @include ui.hover('.d1-field') {
