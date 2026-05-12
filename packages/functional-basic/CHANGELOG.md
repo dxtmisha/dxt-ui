@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.8] - 2026-05-12
+
+### Added
+- **Api**: Added `isLocalhost()` static method to check if the environment is localhost.
+- **Api**: Added static wrappers for `getOrigin()`, `setOrigin()`, and `getHydrationScript()`.
+- **Api**: Added automatic URL replacement for localization markers: `{locale}`, `{country}`, and `{language}`.
+
+### Changed / Improved
+- **Api**: Updated `setConfig()` to include `origin` and `devMode` support.
+- **Api**: Modernized request timeout logic to use `AbortSignal.timeout` when available.
+- **Documentation**: Comprehensive update of the `Api` documentation across all supported languages (RU/EN/VI).
+- **Tests**: Expanded unit tests for the `Api` class to ensure full coverage of static methods.
+
 ## [1.1.6] - 2026-05-08
 
 ### Added

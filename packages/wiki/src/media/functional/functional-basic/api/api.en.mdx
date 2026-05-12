@@ -10,11 +10,12 @@ The `Api` class is a central utility for making HTTP requests. It provides a sim
 
 The class provides a comprehensive set of tools for managing network communication:
 - **CRUD Methods** — execution of `GET`, `POST`, `PUT`, `PATCH`, `DELETE` requests.
-- **Global Configuration** — setting up base URLs, headers, and parameters.
+- **Global Configuration** — setting up base URLs, origins, headers, and parameters.
 - **Lifecycle Hooks** — handling events before and after the request (e.g., for Refresh Token).
 - **Hydration (SSR)** — transferring data from server to client to prevent duplicate requests.
 - **Caching** — saving responses in memory or external storage (LocalStorage).
 - **Response Emulation** — creating mock data for development and testing.
+- **Automatic Localization** — replacement of `{locale}`, `{country}`, and `{language}` markers in request paths.
 - **Loading and Error Management** — integration with global indicator components and error centers.
 
 ## Basic Usage
@@ -40,7 +41,11 @@ You can configure the API behavior globally, for example, during application ini
 
 ```javascript
 // Set the base URL for all relative paths
-Api.setUrl('https://api.example.com/v1/')
+Api.setUrl('/api/')
+
+// Set the origin (protocol and domain) for the base URL
+// If urlRoot starts with '/', the origin will be prepended to it
+Api.setOrigin('https://api.example.com')
 
 // Add common headers (e.g., an authorization token)
 Api.setHeaders({
@@ -51,6 +56,38 @@ Api.setHeaders({
 Api.setRequestDefault({
   app_version: '1.0.0'
 })
+
+// Check if the server is running on localhost
+if (Api.isLocalhost()) {
+  console.log('Running locally')
+}
+```
+
+### setConfig Method
+
+Allows you to set all main settings with a single object.
+
+```javascript
+Api.setConfig({
+  urlRoot: '/api/',
+  origin: 'https://api.example.com',
+  headers: { 'Authorization': 'Bearer ...' },
+  timeout: 5000,
+  devMode: true
+})
+```
+
+## URL Handling
+
+When forming the final URL, the class automatically replaces special markers with current values from the localization settings (`Geo`):
+- `{locale}` — current locale (e.g., `en-US`).
+- `{country}` — current country (e.g., `us`).
+- `{language}` — current language (e.g., `en`).
+
+```javascript
+// If the current locale is 'en-US', the final path will be '/api/en-US/users'
+const data = await Api.get({ path: '{locale}/users' })
+```
 ```
 
 ## Lifecycle Hooks

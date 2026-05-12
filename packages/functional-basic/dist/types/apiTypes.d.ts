@@ -62,6 +62,8 @@ export type ApiConfig = {
     end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
     /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
     timeout?: number;
+    /** Enable development logging/ Включить логирование разработки */
+    devMode?: boolean;
 };
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API
