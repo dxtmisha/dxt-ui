@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.9] - 2026-05-12
+
+### Added
+- **useApiManagementRef**: Exposed `isResponseContractValid` and `responseValidationResult` to the return interface, providing better transparency for data schema validation.
+- **useApiRef**: Added reactive properties `isResponseContractValid` and `responseValidationResult` to track the status and details of the response contract validation.
+
+### Changed / Improved
+- **JSDoc**: Comprehensive update of JSDoc comments for API management composables to improve developer experience and IDE support.
+
 ## [1.11.6] - 2026-05-01
 
 ### Added

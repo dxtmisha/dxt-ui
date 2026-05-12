@@ -310,6 +310,10 @@ export function useApiManagementRef<
   return {
     /** Whether data passed the `typeData` check / `true`, если данные прошли проверку `typeData` */
     isValid,
+    /** Status of response contract validation / Статус валидации контракта ответа */
+    isResponseContractValid: request.isResponseContractValid,
+    /** Result of response validation / Результат валидации ответа */
+    responseValidationResult: request.responseValidationResult,
 
     /** Processed data array (supports Skeleton, formatters, and search) / Обработанный массив данных (поддерживает Skeleton, форматтеры и поиск) */
     list,

@@ -1,4 +1,4 @@
-import { ApiInstance, ArrayToItem, FormattersListColumns, FormattersOptionsList, SearchColumns, SearchFormatList, ApiData, ApiFetch } from '@dxtmisha/functional-basic';
+import { ApiInstance, ArrayToItem, FormattersListColumns, FormattersOptionsList, SearchColumns, ApiDataValidation, SearchFormatList, ApiData, ApiFetch } from '@dxtmisha/functional-basic';
 import { ApiManagementGet, ApiManagementRequest, ApiManagementSearch, ApiManagementValue } from '../../types/apiTypes';
 import { ComputedRef, Ref } from 'vue';
 /**
@@ -26,6 +26,8 @@ import { ComputedRef, Ref } from 'vue';
  */
 export declare function useApiManagementAsyncRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     isValid: ComputedRef<boolean>;
+    isResponseContractValid: ComputedRef<boolean>;
+    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
     readonly data: ComputedRef< ApiData<Return> | undefined>;
     readonly length: ComputedRef<number>;

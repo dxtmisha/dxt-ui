@@ -1,4 +1,4 @@
-import { FormattersOptionsList, ApiData, ApiInstance, ArrayToItem, SearchColumns, SearchFormatList, FormattersListColumns, ApiFetch } from '@dxtmisha/functional-basic';
+import { FormattersOptionsList, ApiData, ApiInstance, ArrayToItem, SearchColumns, SearchFormatList, FormattersListColumns, ApiFetch, ApiDataValidation } from '@dxtmisha/functional-basic';
 import { ApiManagementGet, ApiManagementRequest, ApiManagementSearch, ApiManagementValue } from '../../types/apiTypes';
 import { ComputedRef, Ref } from 'vue';
 /**
@@ -76,6 +76,10 @@ import { ComputedRef, Ref } from 'vue';
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     /** Whether data passed the `typeData` check / `true`, если данные прошли проверку `typeData` */
     isValid: ComputedRef<boolean>;
+    /** Status of response contract validation / Статус валидации контракта ответа */
+    isResponseContractValid: ComputedRef<boolean>;
+    /** Result of response validation / Результат валидации ответа */
+    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
     /** Processed data array (supports Skeleton, formatters, and search) / Обработанный массив данных (поддерживает Skeleton, форматтеры и поиск) */
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
     /** Raw reactive data from `useApiRef` / «Сырые» реактивные данные из `useApiRef` */
