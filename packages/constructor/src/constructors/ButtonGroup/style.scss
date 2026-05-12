@@ -1,0 +1,13 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinButtonGroup {
+  &--orientation {
+    &--horizontal {
+      @include ui.flexStretchX;
+    }
+
+    &--vertical {
+      @include ui.flexStretchY;
+    }
+  }
+}

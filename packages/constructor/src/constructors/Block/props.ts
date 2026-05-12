@@ -1,6 +1,6 @@
 import type { IconPropsBasic } from '../Icon'
 
-import type { AreaProps } from '../../types/areaTypes'
+import type { AreaPropsInclude } from '../../types/areaTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import { type HeaderPropsBasic, type HeaderPropsInclude } from '../Header'
 
@@ -14,7 +14,7 @@ export type BlockPropsBasic<
   Header extends HeaderPropsBasic = HeaderPropsBasic
 > = HeaderPropsInclude<Icon, Header>
   & DescriptionProps
-  & AreaProps & {
+  & AreaPropsInclude & {
     /** Secondary header or headline text/ Вторичный заголовок или текст хедлайна */
     headline?: string
 

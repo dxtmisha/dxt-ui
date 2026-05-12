@@ -1,4 +1,4 @@
-import type { AreaProps } from '../../types/areaTypes'
+import type { AreaPropsInclude } from '../../types/areaTypes'
 import type { CaptionProps } from '../../types/captionTypes'
 import type { LabelProps } from '../../types/labelTypes'
 import type { IconPropsBasic, IconPropsInclude } from '../Icon'
@@ -14,7 +14,7 @@ export type HeaderPropsBasic<
 > = LabelProps
   & CaptionProps
   & IconPropsInclude<Icon>
-  & AreaProps
+  & AreaPropsInclude
 
 /**
  * Type describing incoming properties.

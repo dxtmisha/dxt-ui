@@ -79,4 +79,3 @@ import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
   align-items: center;
 }
 </style>
-

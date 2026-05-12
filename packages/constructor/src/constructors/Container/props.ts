@@ -1,4 +1,4 @@
-import type { AreaProps } from '../../types/areaTypes'
+import type { AreaPropsInclude } from '../../types/areaTypes'
 
 type ContainerPropsToken = {
   // :type [!] System label / Системная метка
@@ -6,7 +6,7 @@ type ContainerPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type ContainerPropsBasic = AreaProps & {}
+export type ContainerPropsBasic = AreaPropsInclude & {}
 
 /**
  * Type describing incoming properties.

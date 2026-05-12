@@ -1,0 +1,47 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for grouping multiple buttons into a single block.
+
+ButtonGroup allows organizing buttons into logical groups with shared styling and alignment. It supports horizontal and vertical orientation, automatic wrapping of elements, and passing shared attributes to all nested buttons.
+
+**Key Features:**
+
+- Horizontal and vertical orientation
+- Automatic wrapping of buttons (wrap) when space is limited
+- Passing shared attributes (size, style, color) to all buttons via `buttonAttrs`
+- Flexible management of the button list via the `list` array or the `default` slot
+- Consistent spacing between buttons in the group
+
+**Typical Usage Scenarios:**
+
+- Toolbars
+- Groups of switches or actions in forms
+- Navigation blocks
+- Control blocks in cards or lists
+- Option selection (filters, sorting)
+
+<Source
+    code={`
+<template>
+  <!-- Basic usage via list -->
+  <ButtonGroup 
+    :list="[
+      { label: 'Back', icon: 'arrow_back' },
+      { label: 'Home', icon: 'home' },
+      { label: 'Forward', iconTrailing: 'arrow_forward' }
+    ]" 
+  />
+
+  <!-- With shared attributes and vertical orientation -->
+  <ButtonGroup 
+    orientation="vertical"
+    :buttonAttrs="{ primary: true, outline: true }"
+    :list="[
+      { label: 'Save', icon: 'save' },
+      { label: 'Delete', icon: 'delete' }
+    ]"
+  />
+</template>
+  `}
+    language="html"
+/>

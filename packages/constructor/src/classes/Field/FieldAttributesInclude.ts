@@ -20,18 +20,23 @@ export class FieldAttributesInclude {
    * @param pattern object for working with checks by regular expressions/
    * объект для работы с проверкой по регулярным выражениям
    * @param inputMode object for working with the keyboard/ объект для работы с клавиатурой
+   * @param typeDefault default value for type/ значение по умолчанию для типа
    */
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly type?: FieldTypeInclude,
     protected readonly pattern?: FieldPatternInclude,
-    protected readonly inputMode?: FieldInputModeInclude
+    protected readonly inputMode?: FieldInputModeInclude,
+    protected readonly typeDefault: string = 'text'
   ) {
   }
 
   /** Returns data for verification/ Возвращает данные для проверки */
   readonly list = computed<Record<string, any>>(() => {
-    return this.getData(this.getAttributes())
+    return {
+      type: this.typeDefault,
+      ...this.getData(this.getAttributes())
+    }
   })
 
   /** Returns data for verification/ Возвращает данные для проверки */

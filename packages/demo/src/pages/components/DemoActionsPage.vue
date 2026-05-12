@@ -22,16 +22,22 @@ const manyItems = [
   <DemoLinkBlack/>
   <D1Page label="Actions">
     <D1Section>
-      <D1Group label="Basic List (list prop)">
+      <D1Group label="Basic List (list & secondary)">
         <D1Actions :list="list" />
-      </D1Group>
-
-      <D1Group label="Primary & Secondary Lists">
         <D1Actions :list="list" :listSecondary="listSecondary" />
       </D1Group>
 
       <D1Group label="Slots (default & secondary)">
         <D1Actions>
+          <template #default>
+            <D1Button label="Default Slot 1" primary />
+            <D1Button label="Default Slot 2" />
+          </template>
+          <template #secondary>
+            <D1Button label="Secondary Slot" text />
+          </template>
+        </D1Actions>
+        <D1Actions align="left">
           <template #default>
             <D1Button label="Default Slot 1" primary />
             <D1Button label="Default Slot 2" />

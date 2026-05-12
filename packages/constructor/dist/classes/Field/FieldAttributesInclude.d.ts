@@ -13,6 +13,7 @@ export declare class FieldAttributesInclude {
     protected readonly type?: FieldTypeInclude | undefined;
     protected readonly pattern?: FieldPatternInclude | undefined;
     protected readonly inputMode?: FieldInputModeInclude | undefined;
+    protected readonly typeDefault: string;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -20,8 +21,9 @@ export declare class FieldAttributesInclude {
      * @param pattern object for working with checks by regular expressions/
      * объект для работы с проверкой по регулярным выражениям
      * @param inputMode object for working with the keyboard/ объект для работы с клавиатурой
+     * @param typeDefault default value for type/ значение по умолчанию для типа
      */
-    constructor(props: FieldAllProps, type?: FieldTypeInclude | undefined, pattern?: FieldPatternInclude | undefined, inputMode?: FieldInputModeInclude | undefined);
+    constructor(props: FieldAllProps, type?: FieldTypeInclude | undefined, pattern?: FieldPatternInclude | undefined, inputMode?: FieldInputModeInclude | undefined, typeDefault?: string);
     /** Returns data for verification/ Возвращает данные для проверки */
     readonly list: ComputedRef<Record<string, any>>;
     /** Returns data for verification/ Возвращает данные для проверки */

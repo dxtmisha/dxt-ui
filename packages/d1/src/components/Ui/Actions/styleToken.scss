@@ -27,22 +27,26 @@
       }
       
       &--left {
-        & .d1-actions__secondary {
-          order: 8;
-        }
-        
         & .d1-actions__spacer {
           order: 4;
+          
+          & ~ * {
+            order: 8;
+          }
         }
       }
       
       &--right {
-        & .d1-actions__list {
-          order: 8;
-        }
-        
         & .d1-actions__spacer {
           order: 4;
+          
+          & ~ * {
+            order: 2;
+          }
+        }
+        
+        & > * {
+          order: 8;
         }
       }
       

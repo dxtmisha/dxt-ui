@@ -1,8 +1,8 @@
-import { AreaProps } from '../../types/areaTypes';
+import { AreaPropsInclude } from '../../types/areaTypes';
 type ContainerPropsToken = {
     align?: string | 'left' | 'center' | 'right';
 };
-export type ContainerPropsBasic = AreaProps & {};
+export type ContainerPropsBasic = AreaPropsInclude & {};
 /**
  * Type describing incoming properties.
  *

@@ -11,6 +11,7 @@ import DemoLink from '../components/DemoLink.vue'
       <D1Group label="Components">
         <DemoLink label="Actions" name="component-actions"/>
         <DemoLink label="Button" name="component-button"/>
+        <DemoLink label="Checkbox" name="component-checkbox"/>
         <DemoLink label="ClientOnly" name="component-client-only"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>

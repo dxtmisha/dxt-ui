@@ -1,5 +1,5 @@
 /** Area default property/ Свойство по умолчанию для области */
-export type AreaProps = {
+export type AreaPropsInclude = {
   /** Default area value/ Значение области по умолчанию */
   area?: string
 }

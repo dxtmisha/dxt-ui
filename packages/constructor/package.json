@@ -296,7 +296,11 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss"
+    "./style.scss": "./src/library/style.scss",
+    "./ButtonGroup": {
+      "types": "./dist/constructors/ButtonGroup/index.d.ts",
+      "default": "./dist/buttonGroup.js"
+    }
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

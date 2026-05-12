@@ -1,7 +1,7 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { AriaLivePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
-import type { AreaProps } from '../../types/areaTypes'
+import type { AreaPropsInclude } from '../../types/areaTypes'
 import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { TextClosePropsInclude } from '../../types/textTypes'
@@ -28,7 +28,7 @@ export type SnackbarItemPropsBasic<
   & AriaRolePropsInclude
   & AriaLivePropsInclude
   & TextClosePropsInclude
-  & AreaProps
+  & AreaPropsInclude
   & {
     /** Value/ Значения */
     /** Button configuration or text/ Конфигурация или текст кнопки */

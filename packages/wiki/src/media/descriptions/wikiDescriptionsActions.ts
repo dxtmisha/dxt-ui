@@ -57,6 +57,9 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Actions'} type={'list'}/>
 <StorybookDescriptions componentName={'Actions'} type={'flexible'}/>
     `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+    `,
     slots: `
 <Canvas of={Component.ActionsSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>

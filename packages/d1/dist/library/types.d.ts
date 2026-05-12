@@ -8,6 +8,7 @@ import { default as _D1Badge } from '../components/Ui/Badge/D1Badge.vue';
 import { default as _D1Bars } from '../components/Ui/Bars/D1Bars.vue';
 import { default as _D1Block } from '../components/Ui/Block/D1Block.vue';
 import { default as _D1Button } from '../components/Ui/Button/D1Button.vue';
+import { default as _D1ButtonGroup } from '../components/Ui/ButtonGroup/D1ButtonGroup.vue';
 import { default as _D1Cell } from '../components/Ui/Cell/D1Cell.vue';
 import { default as _D1Checkbox } from '../components/Ui/Checkbox/D1Checkbox.vue';
 import { default as _D1Chip } from '../components/Ui/Chip/D1Chip.vue';
@@ -67,6 +68,7 @@ declare module '@vue/runtime-core' {
         D1Bars: typeof _D1Bars;
         D1Block: typeof _D1Block;
         D1Button: typeof _D1Button;
+        D1ButtonGroup: typeof _D1ButtonGroup;
         D1Cell: typeof _D1Cell;
         D1Checkbox: typeof _D1Checkbox;
         D1Chip: typeof _D1Chip;

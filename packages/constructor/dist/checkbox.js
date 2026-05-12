@@ -7,7 +7,7 @@ import { t as a } from "./LabelInclude-Cj8gJJ29.js";
 import { t as o } from "./DescriptionInclude-C011DAIP.js";
 import { t as s } from "./RippleInclude-s_aOBns0.js";
 import { n as c, r as l } from "./FieldInputCheckInclude-D9B4Dhf8.js";
-import { a as u, i as d, n as f, r as p, t as m } from "./FieldEventInclude-CQOMuuAz.js";
+import { a as u, i as d, n as f, r as p, t as m } from "./FieldEventInclude-C2_CKLpO.js";
 import { t as h } from "./FieldMessageInclude-CFAq415k.js";
 import { computed as g, h as _ } from "vue";
 import { DesignConstructorAbstract as v, getBind as y, toBinds as b } from "@dxtmisha/functional";
@@ -26,7 +26,7 @@ var x = class {
 		this.skeleton = new z(this.props, this.classDesign, ["classText"]), this.progress = new L(this.props, this.className, this.components, {
 			circular: !0,
 			inverse: !0
-		}), this.change = new k(this.props), this.elementItem = new j(this.props, this.element), this.attributes = new O(this.props), this.value = new F(this.props, this.refs, this.elementItem), this.code = new A(this.props), this.validation = new P(this.props, this.attributes, this.value, this.change, this.code), this.event = new M(this.props, this.change, this.value, this.validation, this.emits), this.message = new N(this.props, this.className, this.components, this.validation.message), this.icon = new T(this.props, this.value), this.label = new I(e, y, void 0, S, void 0, void 0, void 0, this.skeleton), this.description = new E(e, y, S, this.skeleton), this.enabled = new D(e, this.progress), this.ripple = new R(y, b, this.enabled);
+		}), this.change = new k(this.props), this.elementItem = new j(this.props, this.element), this.attributes = new O(this.props, void 0, void 0, void 0, this.type), this.value = new F(this.props, this.refs, this.elementItem), this.code = new A(this.props), this.validation = new P(this.props, this.attributes, this.value, this.change, this.code), this.event = new M(this.props, this.change, this.value, this.validation, this.emits), this.message = new N(this.props, this.className, this.components, this.validation.message), this.icon = new T(this.props, this.value), this.label = new I(e, y, void 0, S, void 0, void 0, void 0, this.skeleton), this.description = new E(e, y, S, this.skeleton), this.enabled = new D(e, this.progress), this.ripple = new R(y, b, this.enabled);
 	}
 }, C = {
 	valueVariantHide: "0",

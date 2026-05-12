@@ -1,0 +1,42 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as ButtonGroup from './D1ButtonGroup.stories'
+import {ButtonGroupWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={ButtonGroup}/>
+<StorybookMain
+    name={ButtonGroupWikiStorybook.getName()}
+    description={ButtonGroupWikiStorybook.getDescription()}
+    story={ButtonGroup.ButtonGroup}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'ButtonGroup'} type={'buttonGroup'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={ButtonGroup.ButtonGroupSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

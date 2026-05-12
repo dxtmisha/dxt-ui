@@ -1,0 +1,11 @@
+{
+  "#item": {},
+  "~orientation": {
+    "~horizontal": {},
+    "~vertical": {},
+    "_default": "horizontal"
+  },
+  "~wrap": {
+    "flex-wrap": "wrap"
+  }
+}

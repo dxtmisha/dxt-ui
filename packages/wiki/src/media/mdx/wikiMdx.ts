@@ -16,6 +16,7 @@ import { wikiMdxBadge } from './Badge/wikiMdxBadge'
 import { wikiMdxBars } from './Bars/wikiMdxBars'
 import { wikiMdxBlock } from './Block/wikiMdxBlock'
 import { wikiMdxButton } from './Button/wikiMdxButton'
+import { wikiMdxButtonGroup } from './ButtonGroup/wikiMdxButtonGroup'
 import { wikiMdxCell } from './Cell/wikiMdxCell'
 import { wikiMdxCheckbox } from './Checkbox/wikiMdxCheckbox'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
@@ -81,6 +82,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxBars,
   wikiMdxBlock,
   wikiMdxButton,
+  wikiMdxButtonGroup,
   wikiMdxCell,
   wikiMdxCheckbox,
   wikiMdxChip,

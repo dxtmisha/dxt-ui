@@ -1,2 +1,2 @@
-import { t as e } from "./Ripple-Cp7o_0xl.js";
+import { t as e } from "./Ripple-CDgmAtWr.js";
 export { e as D1Ripple };

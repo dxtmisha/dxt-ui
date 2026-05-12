@@ -1,6 +1,6 @@
 import { toRefs, watch } from 'vue'
 import { setAreaValue } from '../functions/setAreaValue'
-import type { AreaProps } from '../types/areaTypes'
+import type { AreaPropsInclude } from '../types/areaTypes'
 
 /**
  * Class for managing the area value.
@@ -13,7 +13,7 @@ export class AreaInclude {
    * @param props input data / входные данные
    */
   constructor(
-    protected readonly props: AreaProps
+    protected readonly props: AreaPropsInclude
   ) {
     const { area } = toRefs(props)
 

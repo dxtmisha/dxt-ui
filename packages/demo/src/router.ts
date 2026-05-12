@@ -7,6 +7,7 @@ import DemoApiPage from './pages/DemoApiPage.vue'
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
+import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
@@ -40,6 +41,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-client-only',
     name: 'component-client-only',
     component: DemoClientOnlyPage
+  },
+  {
+    path: '/component-checkbox',
+    name: 'component-checkbox',
+    component: DemoCheckboxPage
   },
   {
     path: '/component-icon',

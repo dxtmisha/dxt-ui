@@ -308,6 +308,18 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  orientation: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      options: ['horizontal', 'vertical'],
+      description: {
+        en: 'Orientation of the component',
+        ru: 'Ориентация компонента'
+      }
+    },
+    isDemo: true
+  },
   overlap: {
     type: StorybookControl.select,
     options: {

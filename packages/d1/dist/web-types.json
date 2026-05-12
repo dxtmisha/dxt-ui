@@ -1950,6 +1950,96 @@
           ]
         },
         {
+          "name": "D1ButtonGroup",
+          "description": "A container component for grouping multiple buttons together.",
+          "source": {
+            "module": "@dxtmisha/d1/D1ButtonGroup",
+            "symbol": "D1ButtonGroup"
+          },
+          "attributes": [
+            {
+              "name": "list",
+              "description": "Array of button configurations",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<ButtonPropsBasic>[] | undefined"
+              }
+            },
+            {
+              "name": "wrap",
+              "description": "Controls text wrapping behavior",
+              "default": "false",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "orientation",
+              "description": "Orientation of the component",
+              "default": "horizontal",
+              "value": {
+                "kind": "expression",
+                "type": "horizontal | vertical"
+              }
+            },
+            {
+              "name": "button-attrs",
+              "description": "Additional attributes for button elements",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<ButtonPropsBasic> | undefined"
+              }
+            },
+            {
+              "name": "area",
+              "description": "Area identifier for the component",
+              "default": "button-group",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "click",
+              "description": "Full click event with MouseEvent/ Полное событие клика с MouseEvent",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "MouseEvent"
+                },
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            },
+            {
+              "name": "clickLite",
+              "description": "Lightweight click event/ Упрощённое событие клика",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "EventClickValue"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "D1Cell",
           "description": "Versatile container component for displaying structured content with labels, descriptions, and actions",
           "source": {

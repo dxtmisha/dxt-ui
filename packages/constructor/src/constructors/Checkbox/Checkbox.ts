@@ -128,7 +128,13 @@ export class Checkbox {
     this.change = new FieldChangeIncludeConstructor(this.props)
 
     this.elementItem = new FieldElementIncludeConstructor(this.props, this.element)
-    this.attributes = new FieldAttributesIncludeConstructor(this.props)
+    this.attributes = new FieldAttributesIncludeConstructor(
+      this.props,
+      undefined,
+      undefined,
+      undefined,
+      this.type
+    )
 
     this.value = new FieldValueIncludeConstructor(
       this.props,

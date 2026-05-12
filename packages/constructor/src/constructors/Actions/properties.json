@@ -15,19 +15,22 @@
       }
     },
     "~left": {
-      "#secondary": {
-        "order": "8"
-      },
       "#spacer": {
-        "order": "4"
+        "order": "4",
+        "& ~ *": {
+          "order": "8"
+        }
       }
     },
     "~right": {
-      "#list": {
+      "& > *": {
         "order": "8"
       },
       "#spacer": {
-        "order": "4"
+        "order": "4",
+        "& ~ *": {
+          "order": "2"
+        }
       }
     },
     "~block": {

@@ -1,5 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
-import type { AreaProps } from '../../types/areaTypes'
+import type { AreaPropsInclude } from '../../types/areaTypes'
 import type { ButtonPropsBasic } from '../Button'
 
 export type ActionsPropsToken = {
@@ -12,7 +12,7 @@ export type ActionsPropsToken = {
 
 export type ActionsPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic
-> = AreaProps
+> = AreaPropsInclude
   & {
     // Value
     /** Primary list of action configurations/ Основной список конфигураций действий */
