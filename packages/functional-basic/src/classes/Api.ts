@@ -245,6 +245,10 @@ export class Api {
         this.setTimeout(config.timeout)
       }
 
+      if (config.devMode) {
+        this.getResponse().setDevMode(config.devMode)
+      }
+
       if (config.origin) {
         this.setOrigin(config.origin)
       }

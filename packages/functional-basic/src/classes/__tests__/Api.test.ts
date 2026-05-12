@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { Api } from '../Api'
 import { ApiInstance } from '../ApiInstance'
+import { ApiMethodItem } from '../../types/apiTypes'
 
 describe('Api', () => {
   beforeEach(() => {
@@ -20,6 +21,54 @@ describe('Api', () => {
     expect(instance1).toBeInstanceOf(ApiInstance)
   })
 
+  it('should return correct instances for status, response, and hydration', () => {
+    const item = Api.getItem()
+    expect(Api.getStatus()).toBe(item.getStatus())
+    expect(Api.getResponse()).toBe(item.getResponse())
+    expect(Api.getHydration()).toBe(item.getHydration())
+  })
+
+  it('should proxy localhost check', () => {
+    const item = Api.getItem()
+    const spy = vi.spyOn(item, 'isLocalhost').mockReturnValue(true)
+    expect(Api.isLocalhost()).toBe(true)
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('should proxy hydration script', () => {
+    const item = Api.getItem()
+    const spy = vi.spyOn(item, 'getHydrationScript').mockReturnValue('<script></script>')
+    expect(Api.getHydrationScript()).toBe('<script></script>')
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('should proxy origin methods', () => {
+    const item = Api.getItem()
+    const getSpy = vi.spyOn(item, 'getOrigin').mockReturnValue('https://api.test')
+    const setSpy = vi.spyOn(item, 'setOrigin')
+
+    expect(Api.getOrigin()).toBe('https://api.test')
+    Api.setOrigin('https://api.new')
+
+    expect(getSpy).toHaveBeenCalled()
+    expect(setSpy).toHaveBeenCalledWith('https://api.new')
+  })
+
+  it('should proxy helper methods', () => {
+    const item = Api.getItem()
+    const getUrlSpy = vi.spyOn(item, 'getUrl').mockReturnValue('/full/path')
+    const getBodySpy = vi.spyOn(item, 'getBody').mockReturnValue('body')
+    const getBodyForGetSpy = vi.spyOn(item, 'getBodyForGet').mockReturnValue('?query')
+
+    expect(Api.getUrl('path', false)).toBe('/full/path')
+    expect(Api.getBody({ a: 1 })).toBe('body')
+    expect(Api.getBodyForGet({ b: 2 })).toBe('?query')
+
+    expect(getUrlSpy).toHaveBeenCalledWith('path', false)
+    expect(getBodySpy).toHaveBeenCalledWith({ a: 1 }, ApiMethodItem.get)
+    expect(getBodyForGetSpy).toHaveBeenCalledWith({ b: 2 }, '', ApiMethodItem.get)
+  })
+
   it('should proxy config methods to instance', () => {
     const item = Api.getItem()
     const setTimeoutSpy = vi.spyOn(item, 'setTimeout')
@@ -27,13 +76,15 @@ describe('Api', () => {
     const setHeadersSpy = vi.spyOn(item, 'setHeaders')
     const setOriginSpy = vi.spyOn(item, 'setOrigin')
     const setRequestDefaultSpy = vi.spyOn(item, 'setRequestDefault')
+    const setDevModeSpy = vi.spyOn(Api.getResponse(), 'setDevMode')
 
     Api.setConfig({
       timeout: 100,
       urlRoot: '/api/v2/',
       headers: { Authorization: 'Bearer test' },
       origin: 'https://example.com',
-      requestDefault: { def: 1 }
+      requestDefault: { def: 1 },
+      devMode: true
     })
 
     expect(setTimeoutSpy).toHaveBeenCalledWith(100)
@@ -41,6 +92,7 @@ describe('Api', () => {
     expect(setHeadersSpy).toHaveBeenCalledWith({ Authorization: 'Bearer test' })
     expect(setOriginSpy).toHaveBeenCalledWith('https://example.com')
     expect(setRequestDefaultSpy).toHaveBeenCalledWith({ def: 1 })
+    expect(setDevModeSpy).toHaveBeenCalledWith(true)
   })
 
   it('should have proxy HTTP methods', async () => {

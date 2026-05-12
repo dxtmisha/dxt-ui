@@ -71,6 +71,9 @@ export type ApiConfig = {
 
   /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
   timeout?: number
+
+  /** Enable development logging/ Включить логирование разработки */
+  devMode?: boolean
 }
 
 /**
@@ -95,15 +98,15 @@ export type ApiDataValidation = {
  */
 export type ApiDataItem<T = any>
   = T
-    & ApiDataValidation
-    & {
-      /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-      data?: T
-      /** Success flag/ Флаг успешности */
-      success?: boolean
-      /** Status object/ Объект статуса */
-      statusObject?: ApiStatusItem
-    }
+  & ApiDataValidation
+  & {
+    /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
+    data?: T
+    /** Success flag/ Флаг успешности */
+    success?: boolean
+    /** Status object/ Объект статуса */
+    statusObject?: ApiStatusItem
+  }
 
 /**
  * Default API request data type/ Тип данных запроса API по умолчанию

@@ -1553,7 +1553,7 @@ var Le = "d-response-loading", Re = class {
 		this.getItem().setOrigin(e);
 	}
 	static setConfig(e) {
-		e && n(e) && (e.urlRoot && this.setUrl(e.urlRoot), e.headers && this.setHeaders(e.headers), e.requestDefault && this.setRequestDefault(e.requestDefault), e.preparation && this.setPreparation(e.preparation), e.end && this.setEnd(e.end), e.timeout && this.setTimeout(e.timeout), e.origin && this.setOrigin(e.origin));
+		e && n(e) && (e.urlRoot && this.setUrl(e.urlRoot), e.headers && this.setHeaders(e.headers), e.requestDefault && this.setRequestDefault(e.requestDefault), e.preparation && this.setPreparation(e.preparation), e.end && this.setEnd(e.end), e.timeout && this.setTimeout(e.timeout), e.devMode && this.getResponse().setDevMode(e.devMode), e.origin && this.setOrigin(e.origin));
 	}
 	static async request(e) {
 		return this.getItem().request(e);
