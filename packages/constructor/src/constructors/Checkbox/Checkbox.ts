@@ -19,6 +19,7 @@ import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
 
 import { CheckboxIcon } from './CheckboxIcon'
+import { CheckboxSelected } from './CheckboxSelected'
 
 import type { CheckboxComponents, CheckboxEmits, CheckboxSlots } from './types'
 import type { CheckboxProps } from './props'
@@ -182,6 +183,13 @@ export class Checkbox {
       className,
       slots,
       this.skeleton
+    )
+
+    new CheckboxSelected(
+      this.props,
+      this.refs,
+      this.value,
+      this.emits
     )
 
     this.enabled = new EnabledConstructor(props, this.progress)

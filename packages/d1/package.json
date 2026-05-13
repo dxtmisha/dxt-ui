@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "ui": "dxt-ui Actions",
+    "ui": "dxt-ui Radio",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -298,6 +298,10 @@
     "./D1ButtonGroup": {
       "types": "./dist/library/D1ButtonGroup.d.ts",
       "default": "./dist/D1ButtonGroup.js"
+    },
+    "./D1Radio": {
+      "types": "./dist/library/D1Radio.d.ts",
+      "default": "./dist/D1Radio.js"
     }
   },
   "buildOptions": {

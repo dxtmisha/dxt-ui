@@ -5,7 +5,7 @@ import type { DescriptionProps } from '../../types/descriptionTypes'
 
 import type { FieldInputCheckProps } from '../../types/fieldTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
-import type { ModelProps } from '../../types/modelTypes'
+import type { ModelProps, ModelPropsSelected } from '../../types/modelTypes'
 
 import type { ImagePropsBasic } from '../Image'
 import type { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage'
@@ -37,9 +37,13 @@ export type CheckboxPropsBasic<
   & ProgressPropsInclude<Progress>
   & EnabledProps
   & ModelProps<boolean>
+  & ModelPropsSelected
   & SkeletonPropsInclude
   & {
-    /** Icon/ Иконка */
+    // Status
+    selected?: string
+
+    // Style
     /** Icon for the checked state/ Иконка для отмеченного состояния */
     iconCheckbox?: string | ConstrBind<Image> | null
     /** Icon for the indeterminate state/ Иконка для неопределенного состояния */

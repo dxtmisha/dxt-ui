@@ -1,0 +1,57 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Radio from './D1Radio.stories'
+import {RadioWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Radio}/>
+<StorybookMain
+    name={RadioWikiStorybook.getName()}
+    description={RadioWikiStorybook.getDescription()}
+    story={Radio.Radio}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Radio'} type={'radio'}/>
+
+<StorybookDescriptions componentName={'Radio'} type={'value'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Radio.RadioVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Radio.RadioSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'validationMessage'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Radio.RadioSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

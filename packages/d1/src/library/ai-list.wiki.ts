@@ -44,6 +44,7 @@ import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionT
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
 import D1PageArea from '../../src/components/Ui/PageArea/D1PageAreaAiWiki.vue'
 import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
+import D1Radio from '../../src/components/Ui/Radio/D1RadioAiWiki.vue'
 import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
 import D1Scrollbar from '../../src/components/Ui/Scrollbar/D1ScrollbarAiWiki.vue'
 import D1Section from '../../src/components/Ui/Section/D1SectionAiWiki.vue'
@@ -104,6 +105,7 @@ export const aiList: any[] = [
   D1Page,
   D1PageArea,
   D1Progress,
+  D1Radio,
   D1Ripple,
   D1Scrollbar,
   D1Section,

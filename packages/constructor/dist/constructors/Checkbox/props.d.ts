@@ -3,7 +3,7 @@ import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { FieldInputCheckProps } from '../../types/fieldTypes';
 import { EnabledProps } from '../../types/enabledTypes';
-import { ModelProps } from '../../types/modelTypes';
+import { ModelProps, ModelPropsSelected } from '../../types/modelTypes';
 import { ImagePropsBasic } from '../Image';
 import { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage';
 import { FieldCounterPropsBasic } from '../FieldCounter';
@@ -18,8 +18,8 @@ type CheckboxPropsToken = {
     focus?: boolean;
     disabled?: boolean;
 };
-export type CheckboxPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & FieldMessagePropsInclude<FieldMessage, FieldCounter> & FieldInputCheckProps & ProgressPropsInclude<Progress> & EnabledProps & ModelProps<boolean> & SkeletonPropsInclude & {
-    /** Icon/ Иконка */
+export type CheckboxPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & FieldMessagePropsInclude<FieldMessage, FieldCounter> & FieldInputCheckProps & ProgressPropsInclude<Progress> & EnabledProps & ModelProps<boolean> & ModelPropsSelected & SkeletonPropsInclude & {
+    selected?: string;
     /** Icon for the checked state/ Иконка для отмеченного состояния */
     iconCheckbox?: string | ConstrBind<Image> | null;
     /** Icon for the indeterminate state/ Иконка для неопределенного состояния */

@@ -1,11 +1,13 @@
 import type { Preview } from '@storybook/vue3-vite'
 import { Geo } from '@dxtmisha/functional'
+import { d1MakeIcons } from '@dxtmisha/d1/media'
 
 import '@dxtmisha/wiki/storybook/styles'
 import '../../d1/src/styles/Ui/icon.css'
 import '../../d1/src/style.scss'
 
 Geo.set('ru-RU')
+d1MakeIcons()
 
 const preview: Preview = {
   parameters: {

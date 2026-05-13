@@ -2452,6 +2452,14 @@
               }
             },
             {
+              "name": "selected",
+              "description": "The value that determines whether the checkbox is selected (for groups)",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
               "name": "detail",
               "description": "Additional data is passed by the component when events are triggered",
               "value": {
@@ -2687,11 +2695,27 @@
               }
             },
             {
+              "name": "on-updatemodel-selected",
+              "description": "Event handler called on update:modelSelected with the new selected value",
+              "value": {
+                "kind": "expression",
+                "type": "((value: string) => void) | undefined"
+              }
+            },
+            {
               "name": "on-updatemodel-value",
               "description": "Event handler called on update:modelValue with the new value",
               "value": {
                 "kind": "expression",
                 "type": "((value: boolean) => void) | undefined"
+              }
+            },
+            {
+              "name": "on-updateselected",
+              "description": "Event handler called on update:selected with the new selected value",
+              "value": {
+                "kind": "expression",
+                "type": "((value: string) => void) | undefined"
               }
             },
             {
@@ -2817,6 +2841,14 @@
               }
             },
             {
+              "name": "model-selected",
+              "description": "Two-way binding for the selected state (v-model:selected)",
+              "value": {
+                "kind": "expression",
+                "type": "string | undefined"
+              }
+            },
+            {
               "name": "model-value",
               "description": "Two-way binding for component value (v-model)",
               "value": {
@@ -2905,12 +2937,32 @@
               ]
             },
             {
+              "name": "update:modelSelected",
+              "description": "Update model value event/ Событие обновления значения модели",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "string"
+                }
+              ]
+            },
+            {
               "name": "update:modelValue",
               "description": "Update model value event/ Событие обновления значения модели",
               "arguments": [
                 {
                   "name": "value",
                   "type": "boolean"
+                }
+              ]
+            },
+            {
+              "name": "update:selected",
+              "description": "Update value event/ Событие обновления значения",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "string"
                 }
               ]
             },
@@ -9626,6 +9678,573 @@
           ],
           "slots": [],
           "events": []
+        },
+        {
+          "name": "D1Radio",
+          "description": "Interactive radio button component for single choice selection from a group",
+          "source": {
+            "module": "@dxtmisha/d1/D1Radio",
+            "symbol": "D1Radio"
+          },
+          "attributes": [
+            {
+              "name": "disabled",
+              "description": "Sets the element to an inactive state",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "focus",
+              "description": "Visual focus state",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "loading",
+              "description": "Sets the element to a loading state",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | ConstrBind<ProgressProps> | undefined"
+              }
+            },
+            {
+              "name": "readonly",
+              "description": "Read-only state of the element",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "selected",
+              "description": "The value that determines whether the radio is selected (for groups)",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "detail",
+              "description": "Additional data is passed by the component when events are triggered",
+              "value": {
+                "kind": "expression",
+                "type": "Record<string, any>"
+              }
+            },
+            {
+              "name": "indeterminate",
+              "description": "Sets the indeterminate state",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "value",
+              "description": "Indicates whether the radio is selected",
+              "value": {
+                "kind": "expression",
+                "type": "any"
+              }
+            },
+            {
+              "name": "value-variant",
+              "description": "Variant of the value",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "value-variant-hide",
+              "description": "Hides the value variant",
+              "default": "0",
+              "value": {
+                "kind": "expression",
+                "type": "NumberOrStringOrBoolean | undefined"
+              }
+            },
+            {
+              "name": "description",
+              "description": "Description text providing additional context",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "force-show-message",
+              "description": "Forces display of a helper / validation message ignoring usual visibility rules",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "helper-message",
+              "description": "Helper text providing guidance or additional information",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "label",
+              "description": "Text label for the component",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "placeholder",
+              "description": "Placeholder text shown when the input is empty",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "validation-message",
+              "description": "Error or validation message text",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "counter",
+              "description": "Current character count",
+              "value": {
+                "kind": "expression",
+                "type": "number | string"
+              }
+            },
+            {
+              "name": "counter-show",
+              "description": "Shows the counter-element",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "counter-template",
+              "description": "Custom display template for the counter-component",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "icon-checkbox",
+              "description": "Sets icon for checkbox",
+              "default": "circle-fill",
+              "value": {
+                "kind": "expression",
+                "type": "string | ConstrBind<ImageProps> | null | undefined"
+              }
+            },
+            {
+              "name": "icon-indeterminate",
+              "description": "Sets icon for indeterminate state",
+              "default": "remove",
+              "value": {
+                "kind": "expression",
+                "type": "string | ConstrBind<ImageProps> | null | undefined"
+              }
+            },
+            {
+              "name": "autocapitalize",
+              "description": "Auto capitalization mode for text input (off, none, sentences, words, characters)",
+              "value": {
+                "kind": "expression",
+                "type": "off | none | sentences | words | characters"
+              }
+            },
+            {
+              "name": "autocomplete",
+              "description": "Autocomplete hint for browser autofill feature (e.g., email, name, tel)",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "autocorrect",
+              "description": "Autocorrect mode for iOS/Safari (on or off)",
+              "value": {
+                "kind": "expression",
+                "type": "on | off"
+              }
+            },
+            {
+              "name": "autofocus",
+              "description": "Automatically focuses the element when the page loads",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "enter-key-hint",
+              "description": "Hint for the enter key label on virtual keyboards",
+              "value": {
+                "kind": "expression",
+                "type": "enter | done | go | next | previous | search | send"
+              }
+            },
+            {
+              "name": "form",
+              "description": "ID of the form element this input belongs to",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "input-mode",
+              "description": "Hint for the type of virtual keyboard to display",
+              "value": {
+                "kind": "expression",
+                "type": "none | text | decimal | numeric | tel | search | email | url"
+              }
+            },
+            {
+              "name": "match",
+              "description": "Reference to another field for value matching validation (e.g., password confirmation)",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "maxlength",
+              "description": "Maximum allowed characters",
+              "value": {
+                "kind": "expression",
+                "type": "number | string"
+              }
+            },
+            {
+              "name": "name",
+              "description": "Name attribute for the input field",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "required",
+              "description": "Marks the field as required and shows the required indicator",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "spellcheck",
+              "description": "Enables or disables spell checking for the input",
+              "value": {
+                "kind": "expression",
+                "type": "true | false"
+              }
+            },
+            {
+              "name": "validation-code",
+              "description": "Custom validation error messages or validity state map",
+              "value": {
+                "kind": "expression",
+                "type": "string | object"
+              }
+            },
+            {
+              "name": "on-updatemodel-selected",
+              "description": "Event handler called on update:modelSelected with the new selected value",
+              "value": {
+                "kind": "expression",
+                "type": "((value: string) => void) | undefined"
+              }
+            },
+            {
+              "name": "on-updatemodel-value",
+              "description": "Event handler called on update:modelValue with the new value",
+              "value": {
+                "kind": "expression",
+                "type": "((value: boolean) => void) | undefined"
+              }
+            },
+            {
+              "name": "on-updateselected",
+              "description": "Event handler called on update:selected with the new selected value",
+              "value": {
+                "kind": "expression",
+                "type": "((value: string) => void) | undefined"
+              }
+            },
+            {
+              "name": "on-updatevalue",
+              "description": "Event handler called on update:value with the new value",
+              "value": {
+                "kind": "expression",
+                "type": "((value: boolean) => void) | undefined"
+              }
+            },
+            {
+              "name": "adaptive",
+              "description": "Controls adaptive display behavior for different screen sizes and media queries",
+              "value": {
+                "kind": "expression",
+                "type": "rightAlways | rightSm | rightMd | rightLg | rightXl | right2xl"
+              }
+            },
+            {
+              "name": "block",
+              "description": "Enables block mode (component expands to full width)",
+              "default": "true",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "container",
+              "description": "Controls container‑based layout behavior with adaptive width constraints",
+              "value": {
+                "kind": "expression",
+                "type": "rightSm | rightMd | rightLg | rightXl | right2xl"
+              }
+            },
+            {
+              "name": "is-skeleton",
+              "description": "Displays the component in skeleton mode",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "item-center",
+              "description": "Centers items inside the component",
+              "default": "true",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "field-counter-attrs",
+              "description": "Additional attributes for the field counter component",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<FieldCounterProps> | undefined"
+              }
+            },
+            {
+              "name": "field-message-attrs",
+              "description": "Additional attributes for the FieldMessage element",
+              "value": {
+                "kind": "expression",
+                "type": "ConstrBind<FieldMessageProps> | undefined"
+              }
+            },
+            {
+              "name": "input-attrs",
+              "description": "Additional attributes for the native input element",
+              "value": {
+                "kind": "expression",
+                "type": "Record<string, any> | undefined"
+              }
+            },
+            {
+              "name": "tabindex",
+              "description": "Tab order position for keyboard navigation",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              }
+            },
+            {
+              "name": "counter-id",
+              "description": "Unique identifier for the counter element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "description-id",
+              "description": "Unique identifier for the description element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "helper-id",
+              "description": "Unique identifier for the helper message element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "id",
+              "description": "Unique identifier attribute for the element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "label-id",
+              "description": "Unique identifier for the label element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "model-selected",
+              "description": "Two-way binding for the selected state (v-model:selected)",
+              "value": {
+                "kind": "expression",
+                "type": "string | undefined"
+              }
+            },
+            {
+              "name": "model-value",
+              "description": "Two-way binding for component value (v-model)",
+              "value": {
+                "kind": "expression",
+                "type": "boolean | undefined"
+              }
+            },
+            {
+              "name": "validation-id",
+              "description": "Unique identifier for the validation message element",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Default slot content/ Содержимое слота по умолчанию",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            },
+            {
+              "name": "description",
+              "description": "Description slot/ Слот описания",
+              "vue-properties": [
+                {
+                  "name": "props",
+                  "type": "(any) | undefined"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "description": "Emitted when value is committed (blur/confirm)/\nЭмит при подтверждении значения (blur/confirm): [event, value]",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "InputEvent | Event"
+                },
+                {
+                  "name": "value",
+                  "type": "FieldValidationItem<boolean>"
+                }
+              ]
+            },
+            {
+              "name": "changeLite",
+              "description": "Lightweight change emit without DOM event/\nЛёгкий эмит подтверждения без события: [value]",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "FieldValidationItem<boolean>"
+                }
+              ]
+            },
+            {
+              "name": "input",
+              "description": "Emitted on input events (every change while typing)/\nЭмит при вводе (каждое изменение): [event, value]",
+              "arguments": [
+                {
+                  "name": "event",
+                  "type": "InputEvent | Event"
+                },
+                {
+                  "name": "value",
+                  "type": "FieldValidationItem<boolean>"
+                }
+              ]
+            },
+            {
+              "name": "inputLite",
+              "description": "Lightweight input emit without DOM event/\nЛёгкий эмит ввода без DOM-события: [value]",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "FieldValidationItem<boolean>"
+                }
+              ]
+            },
+            {
+              "name": "update:modelSelected",
+              "description": "Update model value event/ Событие обновления значения модели",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "name": "update:modelValue",
+              "description": "Update model value event/ Событие обновления значения модели",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "boolean"
+                }
+              ]
+            },
+            {
+              "name": "update:selected",
+              "description": "Update value event/ Событие обновления значения",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "name": "update:value",
+              "description": "Update value event/ Событие обновления значения",
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "boolean"
+                }
+              ]
+            }
+          ]
         },
         {
           "name": "D1Ripple",

@@ -27,14 +27,14 @@ export class HeaderDesign<
   CLASSES extends HeaderClasses,
   P extends HeaderPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  HeaderEmits,
-  EXPOSE,
-  HeaderSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    HeaderEmits,
+    EXPOSE,
+    HeaderSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Header
 
   /**

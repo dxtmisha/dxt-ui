@@ -9722,6 +9722,171 @@
           }
         }
       },
+      "radio": {
+        "name": "d1-radio",
+        "type": "component",
+        "value": {
+          "comp": {
+            "name": "comp",
+            "type": "var",
+            "value": {
+              "color": {
+                "name": "--d1-radio-comp-color",
+                "type": "var",
+                "value": "{sys.palette.primary}"
+              },
+              "colorOpacity": {
+                "name": "--d1-radio-comp-colorOpacity",
+                "type": "var",
+                "value": "{sys.opacity.surface.high}"
+              },
+              "backgroundColor": {
+                "name": "--d1-radio-comp-backgroundColor",
+                "type": "var",
+                "value": "{sys.palette.primary}"
+              },
+              "borderColor": {
+                "name": "--d1-radio-comp-borderColor",
+                "type": "var",
+                "value": "{??comp.backgroundColor}"
+              },
+              "borderOpacity": {
+                "name": "--d1-radio-comp-borderOpacity",
+                "type": "var",
+                "value": "{sys.opacity.primary.high}"
+              },
+              "checked": {
+                "name": "checked",
+                "type": "var",
+                "value": {
+                  "color": {
+                    "name": "--d1-radio-comp-checked-color",
+                    "type": "var",
+                    "value": "{sys.palette.onPrimary}"
+                  },
+                  "colorOpacity": {
+                    "name": "--d1-radio-comp-checked-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.high}"
+                  },
+                  "backgroundOpacity": {
+                    "name": "--d1-radio-comp-checked-backgroundOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.high}"
+                  }
+                }
+              }
+            }
+          },
+          "&__input:focus ~ *": {
+            "name": "&__input:focus ~ *",
+            "type": "scss",
+            "value": {
+              "linkfocus": {
+                "name": "--d1-radio-linkfocus",
+                "type": "var",
+                "value": "{??focus}"
+              }
+            }
+          },
+          "&__input:disabled ~ *": {
+            "name": "&__input:disabled ~ *",
+            "type": "scss",
+            "value": {
+              "comp": {
+                "name": "comp",
+                "type": "var",
+                "value": {
+                  "colorOpacity": {
+                    "name": "--d1-radio-comp-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.surface.disabled}"
+                  },
+                  "backgroundColor": {
+                    "name": "--d1-radio-comp-backgroundColor",
+                    "type": "var",
+                    "value": "{sys.palette.onSurface}"
+                  },
+                  "borderColor": {
+                    "name": "--d1-radio-comp-borderColor",
+                    "type": "var",
+                    "value": "{??comp.backgroundColor}"
+                  },
+                  "borderOpacity": {
+                    "name": "--d1-radio-comp-borderOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.disabled}"
+                  },
+                  "checked": {
+                    "name": "checked",
+                    "type": "var",
+                    "value": {
+                      "colorOpacity": {
+                        "name": "--d1-radio-comp-checked-colorOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      },
+                      "backgroundOpacity": {
+                        "name": "--d1-radio-comp-checked-backgroundOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "disabled": {
+            "name": "disabled",
+            "type": "none",
+            "value": {
+              "comp": {
+                "name": "comp",
+                "type": "var",
+                "value": {
+                  "colorOpacity": {
+                    "name": "--d1-radio-comp-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.surface.disabled}"
+                  },
+                  "backgroundColor": {
+                    "name": "--d1-radio-comp-backgroundColor",
+                    "type": "var",
+                    "value": "{sys.palette.onSurface}"
+                  },
+                  "borderColor": {
+                    "name": "--d1-radio-comp-borderColor",
+                    "type": "var",
+                    "value": "{??comp.backgroundColor}"
+                  },
+                  "borderOpacity": {
+                    "name": "--d1-radio-comp-borderOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.disabled}"
+                  },
+                  "checked": {
+                    "name": "checked",
+                    "type": "var",
+                    "value": {
+                      "colorOpacity": {
+                        "name": "--d1-radio-comp-checked-colorOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      },
+                      "backgroundOpacity": {
+                        "name": "--d1-radio-comp-checked-backgroundOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "ripple": {
         "name": "d1-ripple",
         "type": "component",
@@ -11141,6 +11306,45 @@
                     "value": "unset"
                   }
                 }
+              }
+            }
+          }
+        }
+      },
+      "radio": {
+        "name": "d-radio",
+        "type": "component",
+        "value": {
+          "&__input:focus ~ *": {
+            "name": "&__input:focus ~ *",
+            "type": "scss",
+            "value": {
+              "linkfocus": {
+                "name": "--d-radio-linkfocus",
+                "type": "var",
+                "value": "{??focus}"
+              }
+            }
+          },
+          "&__input:checked ~ *": {
+            "name": "&__input:checked ~ *",
+            "type": "scss",
+            "value": {
+              "linkchecked": {
+                "name": "--d-radio-linkchecked",
+                "type": "var",
+                "value": "{??checked}"
+              }
+            }
+          },
+          "&__input:disabled ~ *": {
+            "name": "&__input:disabled ~ *",
+            "type": "scss",
+            "value": {
+              "linkdisabled": {
+                "name": "--d-radio-linkdisabled",
+                "type": "var",
+                "value": "{??disabled}"
               }
             }
           }

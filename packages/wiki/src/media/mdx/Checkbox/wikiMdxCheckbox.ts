@@ -4,6 +4,8 @@ import checkboxEn from './checkbox.en.mdx'
 import checkboxRu from './checkbox.ru.mdx'
 import indeterminateEn from './indeterminate.en.mdx'
 import indeterminateRu from './indeterminate.ru.mdx'
+import selectedEn from './selected.en.mdx'
+import selectedRu from './selected.ru.mdx'
 import valueEn from './value.en.mdx'
 import valueRu from './value.ru.mdx'
 
@@ -22,6 +24,10 @@ export const wikiMdxCheckbox: StorybookComponentsMdxItem = {
     indeterminate: {
       en: indeterminateEn,
       ru: indeterminateRu
+    },
+    selected: {
+      en: selectedEn,
+      ru: selectedRu
     },
     value: {
       en: valueEn,

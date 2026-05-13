@@ -15,6 +15,8 @@ declare const __VLS_component: DefineComponent<CheckboxProps, {
     inputLite: (value: FieldValidationItem<boolean>) => any;
     change: (event: Event | InputEvent, value: FieldValidationItem<boolean>) => any;
     changeLite: (value: FieldValidationItem<boolean>) => any;
+    "update:selected": (value: string) => any;
+    "update:modelSelected": (value: string) => any;
 }, string, PublicProps, Readonly<CheckboxProps> & Readonly<{
     onInput?: ((event: Event | InputEvent, value: FieldValidationItem<boolean>) => any) | undefined;
     "onUpdate:value"?: ((value: boolean) => any) | undefined;
@@ -22,6 +24,8 @@ declare const __VLS_component: DefineComponent<CheckboxProps, {
     onInputLite?: ((value: FieldValidationItem<boolean>) => any) | undefined;
     onChange?: ((event: Event | InputEvent, value: FieldValidationItem<boolean>) => any) | undefined;
     onChangeLite?: ((value: FieldValidationItem<boolean>) => any) | undefined;
+    "onUpdate:selected"?: ((value: string) => any) | undefined;
+    "onUpdate:modelSelected"?: ((value: string) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 declare const _default: __VLS_WithSlots<typeof __VLS_component, __VLS_Slots>;
 export default _default;

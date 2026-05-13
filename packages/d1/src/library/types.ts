@@ -44,6 +44,7 @@ import _D1MotionTransform from '../components/Ui/MotionTransform/D1MotionTransfo
 import _D1Page from '../components/Ui/Page/D1Page.vue'
 import _D1PageArea from '../components/Ui/PageArea/D1PageArea.vue'
 import _D1Progress from '../components/Ui/Progress/D1Progress.vue'
+import _D1Radio from '../components/Ui/Radio/D1Radio.vue'
 import _D1Ripple from '../components/Ui/Ripple/D1Ripple.vue'
 import _D1Scrollbar from '../components/Ui/Scrollbar/D1Scrollbar.vue'
 import _D1Section from '../components/Ui/Section/D1Section.vue'
@@ -105,6 +106,7 @@ declare module '@vue/runtime-core' {
     D1Page: typeof _D1Page
     D1PageArea: typeof _D1PageArea
     D1Progress: typeof _D1Progress
+    D1Radio: typeof _D1Radio
     D1Ripple: typeof _D1Ripple
     D1Scrollbar: typeof _D1Scrollbar
     D1Section: typeof _D1Section

@@ -41,13 +41,17 @@ const propsNames: StorybookProps = [
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps> | undefined' },
   { name: 'match', type: 'FieldMatch | undefined' },
   { name: 'maxlength', type: 'string | number | undefined' },
+  { name: 'modelSelected', type: 'string | undefined' },
   { name: 'modelValue', type: 'boolean | undefined' },
   { name: 'name', type: 'string | undefined' },
+  { name: 'onUpdate:modelSelected', type: '((value: string) => void) | undefined' },
   { name: 'onUpdate:modelValue', type: '((value: boolean) => void) | undefined' },
+  { name: 'onUpdate:selected', type: '((value: string) => void) | undefined' },
   { name: 'onUpdate:value', type: '((value: boolean) => void) | undefined' },
   { name: 'placeholder', type: 'string | undefined' },
   { name: 'readonly', type: 'boolean | undefined' },
   { name: 'required', type: 'boolean | undefined' },
+  { name: 'selected', type: 'string | undefined' },
   { name: 'spellcheck', type: 'string', option: ['true', 'false'] },
   { name: 'tabindex', type: 'number | undefined' },
   { name: 'validationCode', type: 'FieldValidityCode | undefined' },
@@ -76,7 +80,9 @@ const eventsNames: StorybookSlots = [
 Эмит при вводе (каждое изменение): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<boolean>' }] },
   { name: 'inputLite', description: `Lightweight input emit without DOM event/
 Лёгкий эмит ввода без DOM-события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<boolean>' }] },
+  { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'string' }] },
   { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'boolean' }] },
+  { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'string' }] },
   { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'boolean' }] }
   // :eventsList [!] System label / Системная метка
 ]

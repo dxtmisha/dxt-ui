@@ -8,17 +8,17 @@ import type { RippleComponentInclude } from '../Ripple'
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 import type { LabelSlots } from '../../types/labelTypes'
 import type { DescriptionSlots } from '../../types/descriptionTypes'
+import type { ModelEmitsSelected } from '../../types/modelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type CheckboxComponents
-  = ImageComponentInclude
-    & FieldMessageComponentInclude
-    & ProgressComponentInclude
-    & RippleComponentInclude
+export type CheckboxComponents = ImageComponentInclude
+  & FieldMessageComponentInclude
+  & ProgressComponentInclude
+  & RippleComponentInclude
 
 /**
  * Type describing available events.
@@ -26,6 +26,7 @@ export type CheckboxComponents
  * Тип, описывающий доступные события.
  */
 export type CheckboxEmits = FieldBasicEmits<boolean>
+  & ModelEmitsSelected
 
 /**
  * Type describing available properties.

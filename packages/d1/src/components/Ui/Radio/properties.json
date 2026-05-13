@@ -1,0 +1,10 @@
+{
+  "main": "{d.radio}",
+  "link|checkbox": "{?checkbox}",
+  "#icon": {
+    "border-radius": "{sys.rounded.full}"
+  },
+  "& .?image": {
+    "transform": "scale(.75)"
+  }
+}

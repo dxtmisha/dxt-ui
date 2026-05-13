@@ -102,6 +102,7 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Checkbox'} type={'checkbox'}/>
 
 <StorybookDescriptions componentName={'Checkbox'} type={'value'}/>
+<StorybookDescriptions componentName={'Checkbox'} type={'selected'}/>
 <StorybookDescriptions componentName={'Checkbox'} type={'indeterminate'}/>
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={Component.CheckboxVModel}/>

@@ -14,8 +14,8 @@ import type { CheckboxProps } from './props'
 export class CheckboxIcon {
   /**
    * Constructor
-   * @param props input data /<br>входные данные
-   * @param value object for working with values /<br>объект для работы со значениями
+   * @param props input data / входные данные
+   * @param value object for working with values / объект для работы со значениями
    */
   constructor(
     protected readonly props: CheckboxProps,

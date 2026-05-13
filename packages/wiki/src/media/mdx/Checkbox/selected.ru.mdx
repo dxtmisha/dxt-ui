@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Групповой выбор (selected)
+
+Свойство `selected` позволяет связать группу компонентов (например, чекбоксов или радиокнопок) с одной переменной. Это полезно, когда нужно выбрать одно значение из нескольких доступных.
+
+Для работы этой функции необходимо:
+1. Использовать `v-model:selected` для всех элементов группы.
+2. Указать уникальное значение в `valueVariant` для каждого элемента.
+
+Когда элемент отмечается, значение его `valueVariant` записывается в переменную `selected`. Если элемент снимается, значение `selected` становится `undefined`.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const activeOption = ref('opt2')
+</script>
+
+<template>
+  <div class="group">
+    <Checkbox
+      v-model:selected="activeOption"
+      valueVariant="opt1"
+      label="Вариант 1"
+    />
+    <Checkbox
+      v-model:selected="activeOption"
+      valueVariant="opt2"
+      label="Вариант 2"
+    />
+    <Checkbox
+      v-model:selected="activeOption"
+      valueVariant="opt3"
+      label="Вариант 3"
+    />
+  </div>
+  
+  <p>Выбрано: {{ activeOption }}</p>
+</template>
+  `}
+    language="html"
+/>

@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Group Selection (selected)
+
+The `selected` property allows you to bind a group of components (e.g., checkboxes or radio buttons) to a single variable. This is useful when you need to select one value from several available options.
+
+To use this feature:
+1. Use `v-model:selected` for all elements in the group.
+2. Specify a unique value in `valueVariant` for each element.
+
+When an element is checked, its `valueVariant` is stored in the `selected` variable. When an element is unchecked, `selected` becomes `undefined`.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const activeOption = ref('opt2')
+</script>
+
+<template>
+  <div class="group">
+    <Checkbox
+      v-model:selected="activeOption"
+      valueVariant="opt1"
+      label="Option 1"
+    />
+    <Checkbox
+      v-model:selected="activeOption"
+      valueVariant="opt2"
+      label="Option 2"
+    />
+    <Checkbox
+      v-model:selected="activeOption"
+      valueVariant="opt3"
+      label="Option 3"
+    />
+  </div>
+  
+  <p>Selected: {{ activeOption }}</p>
+</template>
+  `}
+    language="html"
+/>

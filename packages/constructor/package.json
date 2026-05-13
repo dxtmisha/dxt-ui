@@ -300,6 +300,10 @@
     "./ButtonGroup": {
       "types": "./dist/constructors/ButtonGroup/index.d.ts",
       "default": "./dist/buttonGroup.js"
+    },
+    "./Radio": {
+      "types": "./dist/constructors/Radio/index.d.ts",
+      "default": "./dist/radio.js"
     }
   },
   "buildOptions": {

@@ -42,6 +42,7 @@ import { wikiMenu } from './wikiMenu'
 import { wikiMotionAxis } from './wikiMotionAxis'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiProgress } from './wikiProgress'
+import { wikiRadio } from './wikiRadio'
 import { wikiPropsTextarea } from './wikiPropsTextarea'
 import { wikiScrollbar } from './wikiScrollbar'
 import { wikiSelect } from './wikiSelect'
@@ -96,6 +97,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMotionAxis,
   ...wikiMotionTransform,
   ...wikiProgress,
+  ...wikiRadio,
   ...wikiPropsTextarea,
   ...wikiScrollbar,
   ...wikiSelect,

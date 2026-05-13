@@ -4,9 +4,11 @@
 import { Icons } from '@dxtmisha/functional'
 
 const check = async () => (await import('../../src/media/icons/check.svg'))?.default
+const circleFill = async () => (await import('../../src/media/icons/circle-fill.svg'))?.default
 const remove = async () => (await import('../../src/media/icons/remove.svg'))?.default
 
 export const d1MakeIcons = (): void => {
   Icons.add('check', check)
+  Icons.add('circle-fill', circleFill)
   Icons.add('remove', remove)
 }

@@ -66,6 +66,10 @@
   '--d1-listGroup-borderColor': ('--d1-palette-basic800'),
   '--d1-listItem-borderColor': ('--d1-palette-basic800'),
   '--d1-progress-backgroundColor': ('--d1-palette-basic600'),
+  '--d1-radio-comp-color': ('--d1-palette-basic600'),
+  '--d1-radio-comp-backgroundColor': ('--d1-palette-basic600', '--d1-palette-basic950', '--d1-palette-basic950'),
+  '--d1-radio-comp-borderColor': ('--d1-palette-basic600', '--d1-palette-basic600', '--d1-palette-basic600'),
+  '--d1-radio-comp-checked-color': ('--d1-palette-basic50'),
   '--d1-ripple-backgroundColor': ('--d1-palette-basic950'),
   '--d1-scrollbar-thumb-background': ('--d1-palette-basic950'),
   '--d1-scrollbar-outline-color': ('--d1-palette-basic800'),
@@ -12350,6 +12354,11 @@
         name: 'd1-progress',
         type: 'component',
       ),
+      'radio':(
+        index: 'radio',
+        name: 'd1-radio',
+        type: 'component',
+      ),
       'ripple':(
         index: 'ripple',
         name: 'd1-ripple',
@@ -12901,6 +12910,11 @@
       'progress':(
         index: 'progress',
         name: 'd-progress',
+        type: 'component',
+      ),
+      'radio':(
+        index: 'radio',
+        name: 'd-radio',
         type: 'component',
       ),
       'ripple':(

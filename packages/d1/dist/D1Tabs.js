@@ -1,4 +1,4 @@
-import { t as e } from "./D1Tabs-BBS0yjgo.js";
+import { t as e } from "./D1Tabs-_uB9Ic_E.js";
 //#region src/components/Ui/Tabs/index.ts
 var t = e;
 //#endregion

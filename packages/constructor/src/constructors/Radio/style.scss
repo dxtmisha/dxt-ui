@@ -1,0 +1,9 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../Checkbox/style" as checkbox;
+
+@mixin mixinRadio {
+  @include checkbox.mixinCheckbox;
+
+  @include ui.initByCustom('iconClip', #{inset(0 0 0 0)});
+  @include ui.initByCustom('iconScale', .8);
+}
