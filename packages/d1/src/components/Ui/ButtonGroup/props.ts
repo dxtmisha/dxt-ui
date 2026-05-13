@@ -1,4 +1,5 @@
 import { type ButtonGroupPropsBasic, defaultsButtonGroup } from '@dxtmisha/constructor/ButtonGroup'
+import { type ButtonProps } from '../Button'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -16,7 +17,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ButtonGroupProps = ButtonGroupPropsBasic & PropsToken
+export type ButtonGroupProps = ButtonGroupPropsBasic<ButtonProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
