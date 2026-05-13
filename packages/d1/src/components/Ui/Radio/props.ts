@@ -39,7 +39,7 @@ export type RadioProps = RadioPropsBasic<
  */
 export const defaults: object = {
   ...defaultsRadio,
-  iconCheckbox: 'circle-fill',
+  iconCheckbox: 'radio_button_unchecked',
   iconIndeterminate: 'remove',
   ...{
     // :default [!] System label / Системная метка

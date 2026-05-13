@@ -19,6 +19,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Progress" name="component-progress"/>
+        <DemoLink label="Radio" name="component-radio"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
       </D1Group>
     </D1Section>

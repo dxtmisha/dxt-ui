@@ -14,6 +14,7 @@ import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
+import DemoRadioPage from './pages/components/DemoRadioPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 
 export const routes: RouteRecordRaw[] = [
@@ -76,6 +77,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-progress',
     name: 'component-progress',
     component: DemoProgressPage
+  },
+  {
+    path: '/component-radio',
+    name: 'component-radio',
+    component: DemoRadioPage
   },
   {
     path: '/component-snackbar',

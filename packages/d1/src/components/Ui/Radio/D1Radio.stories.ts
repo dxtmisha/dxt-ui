@@ -39,28 +39,30 @@ export const RadioVModel: Story = {
     components: { D1Radio },
     setup() {
       return {
-        radioValue: ref('option1')
+        radioValue: ref('space')
       }
     },
     template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
-            <span>Selected: {{ radioValue }}</span>
+            <span>Selected path: <strong>{{ radioValue }}</strong></span>
           </div>
           <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="radioValue = 'option1'">Set option1</button>
-            <button class="wiki-storybook-button" @click="radioValue = 'option2'">Set option2</button>
-            <button class="wiki-storybook-button" @click="radioValue = ''">Set empty</button>
+            <button class="wiki-storybook-button" @click="radioValue = 'space'">To the Stars</button>
+            <button class="wiki-storybook-button" @click="radioValue = 'ocean'">Into the Deep</button>
+            <button class="wiki-storybook-button" @click="radioValue = ''">Reset choice</button>
           </div>
           <D1Radio
-            v-model="radioValue"
-            value-variant="option1"
-            label="Option 1"
+            v-model:selected="radioValue"
+            value-variant="space"
+            label="Space Exploration"
+            description="Journey to the edge of the galaxy"
           />
           <D1Radio
-            v-model="radioValue"
-            value-variant="option2"
-            label="Option 2"
+            v-model:selected="radioValue"
+            value-variant="ocean"
+            label="Ocean Exploration"
+            description="Discover the secrets of the abyss"
           />
         </div>
     `

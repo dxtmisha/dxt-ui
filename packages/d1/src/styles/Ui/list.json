@@ -9778,6 +9778,11 @@
               }
             }
           },
+          "iconScaleChecked": {
+            "name": "--d1-radio-iconScaleChecked",
+            "type": "var",
+            "value": ".92"
+          },
           "&__input:focus ~ *": {
             "name": "&__input:focus ~ *",
             "type": "scss",

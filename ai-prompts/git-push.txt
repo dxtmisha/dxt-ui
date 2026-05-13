@@ -1,0 +1,6 @@
+Analyze all the changes made in the code and suggest a suitable title and description for a git commit.
+Use the Conventional Commits standard (feat, fix, docs, refactor, style, etc.).
+The title should be concise and meaningful, while the description should detail the essence of the changes and their impact on the project.
+Output the result in the following format:
+Title: <type>(<scope>): <short description>
+Description: <detailed list of changes>

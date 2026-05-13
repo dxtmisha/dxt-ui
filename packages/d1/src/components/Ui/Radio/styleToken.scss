@@ -21,6 +21,7 @@
     --d1-radio-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-high);
     --d1-radio-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-high);
     --d1-radio-comp-checked-borderOpacity: 0;
+    --d1-radio-iconScaleChecked: .92;
     
     &__body {
       gap: var(--d1-sys-spacing-md);
@@ -298,10 +299,6 @@
       --d1-radio-comp-borderOpacity: var(--d1-sys-opacity-primary-disabled);
       --d1-radio-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-disabled);
       --d1-radio-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-disabled);
-    }
-    
-    & .d1-image {
-      transform: scale(.75);
     }
   }
   // :style [!] System label / Системная метка

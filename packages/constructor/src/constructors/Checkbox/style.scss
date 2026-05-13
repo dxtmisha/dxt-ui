@@ -4,6 +4,7 @@
   @include ui.initByCustom('iconOpacity', 0);
   @include ui.initByCustom('iconClip', #{inset(0 100% 0 0)});
   @include ui.initByCustom('iconScale', 1);
+  @include ui.initByCustom('iconScaleChecked', 1);
 
   display: inline-flex;
   position: relative;
@@ -68,8 +69,8 @@
   input:checked~* {
     @include ui.initByCustom('iconOpacity', 1);
     @include ui.initByCustom('iconClip', #{inset(0 0 0 0)});
-    @include ui.initByCustom('iconScale', 1);
-    transition-property: background-color, border-color, clip-path;
+    @include ui.initByCustom('iconScale', ui.v('??iconScaleChecked'));
+    transition-property: background-color, border-color, clip-path, scale, transform;
   }
 
   &:has(input[readonly]) {

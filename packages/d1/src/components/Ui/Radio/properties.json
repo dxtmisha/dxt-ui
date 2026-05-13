@@ -1,10 +1,11 @@
 {
   "main": "{d.radio}",
+  "iconScaleChecked": {
+    "value": ".92",
+    "_type": "var"
+  },
   "link|checkbox": "{?checkbox}",
   "#icon": {
     "border-radius": "{sys.rounded.full}"
-  },
-  "& .?image": {
-    "transform": "scale(.75)"
   }
 }

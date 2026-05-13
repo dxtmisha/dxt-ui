@@ -35,7 +35,7 @@ export class CheckboxSelected {
   ) {
     watch(
       [refs.selected],
-      () => this.update(),
+      this.update,
       { immediate: true }
     )
 
@@ -45,14 +45,23 @@ export class CheckboxSelected {
       this.selected
     )
 
-    watch(
-      this.value.item,
-      (value) => {
-        this.selected.value = value
-          ? anyToString(this.props.valueVariant)
-          : undefined
-      }
-    )
+    watch(this.value.item, this.updateByValue)
+  }
+
+  /**
+   * Updates the selected state based on the field value.
+   *
+   * Обновляет состояние выбора на основе значения поля.
+   */
+  protected readonly updateByValue = () => {
+    const valueVariant = anyToString(this.props.valueVariant)
+
+    if (
+      this.value.item.value
+      && this.selected.value !== valueVariant
+    ) {
+      this.selected.value = valueVariant
+    }
   }
 
   /**

@@ -49,6 +49,7 @@ import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform
 import { wikiMdxPage } from './Page/wikiMdxPage'
 import { wikiMdxPageArea } from './PageArea/wikiMdxPageArea'
 import { wikiMdxProgress } from './Progress/wikiMdxProgress'
+import { wikiMdxRadio } from './Radio/wikiMdxRadio'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
 import { wikiMdxSection } from './Section/wikiMdxSection'
@@ -115,6 +116,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxPage,
   wikiMdxPageArea,
   wikiMdxProgress,
+  wikiMdxRadio,
   wikiMdxRipple,
   wikiMdxScrollbar,
   wikiMdxSection,
