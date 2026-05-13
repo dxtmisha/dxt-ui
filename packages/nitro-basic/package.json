@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/nitro-basic",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "A foundational utility library for building robust Server-Side Rendering (SSR) applications with Vue 3 and Nitro.",
   "keywords": [
@@ -50,25 +50,24 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/library.d.ts",
+  "types": "dist/src/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/library.d.ts"
+      "types": "./dist/src/library.d.ts"
     },
     "./plugin": {
       "import": "./dist/library-plugin.js",
-      "types": "./dist/library-plugin.d.ts"
+      "types": "./dist/src/library-plugin.d.ts"
     },
     "./ai-types": "./ai-types.txt",
     "./style.css": "./dist/style.css",
-    "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "./types/*": "./dist/src/*.d.ts"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
     "h3": "*",
@@ -76,9 +75,6 @@
     "nitropack": "*",
     "vue": "*",
     "vue-router": "*"
-  },
-  "devDependencies": {
-    "@types/node": "^25.6.0"
   },
   "sideEffects": false
 }

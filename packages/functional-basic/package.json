@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional-basic",
   "private": false,
-  "version": "1.1.8",
+  "version": "1.1.9",
   "type": "module",
   "description": "Foundational utility library for modern web development — HTTP client, geolocation, i18n, SEO meta tags, caching, storage, DOM utilities, and more. Framework-agnostic, zero dependencies, TypeScript-first.",
   "keywords": [
@@ -49,7 +49,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
     "library": "dxt-library",
@@ -70,23 +70,19 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/library.d.ts",
+  "types": "dist/src/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/library.d.ts"
+      "types": "./dist/src/library.d.ts"
     },
-    "./ai-types": "./ai-types.txt",
-    "./style": "./dist/style.css",
-    "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "./types/*": "./dist/src/*"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "peerDependenciesMeta": {},
-  "devDependencies": {
-    "@types/node": "^25.6.0"
+  "peerDependencies": {
+    "@dxtmisha/media": "*"
   },
   "sideEffects": false
 }

@@ -174,7 +174,7 @@ export function executeUse<
 
     return Object.freeze({
       ...newItem,
-      destroyExecute() {
+      destroyExecute(): void {
         item = undefined
       }
     })

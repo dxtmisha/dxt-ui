@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.57.5",
+  "version": "0.57.6",
   "type": "module",
   "description": "Wiki documentation and storybook utilities for DXT UI design system",
   "keywords": [
@@ -40,19 +40,19 @@
     "package.json",
     "LICENSE"
   ],
-  "main": "src/library.ts",
-  "module": "src/library.ts",
-  "types": "src/library.ts",
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/src/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/library.d.ts"
+      "types": "./dist/src/library.d.ts"
     },
+    "./functional/*": "./src/media/functional/*.mdx",
     "./media": {
       "import": "./dist/media.js",
       "types": "./dist/media.d.ts"
     },
-    "./functional/*": "./src/media/functional/*.mdx",
     "./storybook": {
       "import": "./dist/storybook.js",
       "types": "./dist/storybook.d.ts"
@@ -62,14 +62,14 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "dependencies": {},
   "peerDependencies": {
     "@dxtmisha/functional": "*",
     "@dxtmisha/media": "*",
     "@dxtmisha/styles": "*",
-    "@storybook/addon-docs": "*",
     "@mdx-js/react": "*",
+    "@storybook/addon-docs": "*",
     "react": "*",
     "vue": "*"
-  },
-  "dependencies": {}
+  }
 }
