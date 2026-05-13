@@ -4,7 +4,7 @@ import type { ButtonPropsBasic } from '../Button'
 
 export type ActionsPropsToken = {
   // :type [!] System label / Системная метка
-  align?: string | 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
+  align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
   flexible?: boolean
   wrap?: boolean
   // :type [!] System label / Системная метка

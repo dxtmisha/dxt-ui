@@ -32,11 +32,11 @@ type PropsToken = {
   classic?: boolean
   arrowCarousel?: boolean
   arrowStepper?: boolean
-  arrowAlign?: string | 'center' | 'right' | 'left'
-  cancel?: string | 'auto' | 'always' | 'none'
-  align?: string | 'center' | 'right' | 'left'
+  arrowAlign?: 'center' | 'right' | 'left'
+  cancel?: 'auto' | 'always' | 'none'
+  align?: 'center' | 'right' | 'left'
   width?: string | 'custom'
-  size?: string | 'sm' | 'md' | 'lg' | 'display'
+  size?: 'sm' | 'md' | 'lg' | 'display'
   // :type [!] System label / Системная метка
 }
 

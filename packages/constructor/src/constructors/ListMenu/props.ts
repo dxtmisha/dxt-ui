@@ -3,7 +3,7 @@ import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 export type ListMenuPropsToken = {
   // :type [!] System label / Системная метка
   open?: boolean
-  axis?: string | 'x' | 'y'
+  axis?: 'x' | 'y'
   divider?: boolean
   // :type [!] System label / Системная метка
 }

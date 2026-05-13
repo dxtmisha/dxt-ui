@@ -9,7 +9,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  orientation?: string | 'horizontal' | 'vertical'
+  orientation?: 'horizontal' | 'vertical'
   wrap?: boolean
   // :type [!] System label / Системная метка
 }

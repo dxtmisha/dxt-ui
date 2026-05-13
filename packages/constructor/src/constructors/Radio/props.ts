@@ -8,7 +8,7 @@ import type { CheckboxPropsBasic } from '../Checkbox'
 type RadioPropsToken = {
   // :type [!] System label / Системная метка
   block?: boolean
-  adaptive?: string | 'rightAlways'
+  adaptive?: 'rightAlways'
   container?: boolean
   required?: boolean
   itemCenter?: boolean

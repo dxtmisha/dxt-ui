@@ -21,7 +21,7 @@ export type ListItemPropsToken = {
   readonly?: boolean
   disabled?: boolean
   iconTop?: boolean
-  iconAlign?: string | 'center' | 'edge'
+  iconAlign?: 'center' | 'edge'
   fill?: string | 'custom'
   divider?: boolean
   // :type [!] System label / Системная метка

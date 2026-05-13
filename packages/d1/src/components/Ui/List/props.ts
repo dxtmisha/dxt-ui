@@ -11,7 +11,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  axis?: string | 'x' | 'y'
+  axis?: 'x' | 'y'
   divider?: boolean
   // :type [!] System label / Системная метка
 }

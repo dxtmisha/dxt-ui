@@ -5,7 +5,7 @@ import type { AreaPropsInclude } from '../../types/areaTypes'
 
 type ButtonGroupPropsToken = {
   // :type [!] System label / Системная метка
-  orientation?: string | 'horizontal' | 'vertical'
+  orientation?: 'horizontal' | 'vertical'
   wrap?: boolean
   // :type [!] System label / Системная метка
 }

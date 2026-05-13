@@ -8,7 +8,7 @@ const propsNames: StorybookProps = [
   { name: 'area', type: 'string | undefined' },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps> | undefined' },
   { name: 'list', type: 'ConstrBind<ButtonProps>[] | undefined' },
-  { name: 'orientation', type: 'string | undefined', option: ['horizontal', 'vertical'] },
+  { name: 'orientation', type: 'string', option: ['horizontal', 'vertical'] },
   { name: 'wrap', type: 'boolean | undefined' }
   // :propsList [!] System label / Системная метка
 ]

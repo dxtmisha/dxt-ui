@@ -16,7 +16,7 @@ export type IconPropsToken = {
   start?: boolean
   end?: boolean
   high?: boolean
-  animationType?: string | 'type1' | 'type2'
+  animationType?: 'type1' | 'type2'
   animationShow?: boolean
   // :type [!] System label / Системная метка
 }

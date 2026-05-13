@@ -22,12 +22,12 @@ type PropsToken = {
   readonly?: boolean
   disabled?: boolean
   iconTop?: boolean
-  iconAlign?: string | 'center' | 'edge'
+  iconAlign?: 'center' | 'edge'
   fill?: string | 'custom'
   divider?: boolean
-  size?: string | 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
   dense?: boolean
-  palette?: string | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

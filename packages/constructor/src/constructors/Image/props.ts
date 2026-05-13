@@ -6,7 +6,7 @@ export type ImagePropsToken = {
   disabled?: boolean
   hide?: boolean
   adaptive?: boolean
-  size?: string | 'auto' | 'contain' | 'cover'
+  size?: 'auto' | 'contain' | 'cover'
   // :type [!] System label / Системная метка
 }
 

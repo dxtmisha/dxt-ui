@@ -7,8 +7,8 @@ export type ProgressPropsToken = {
   point?: boolean
   linear?: boolean
   circular?: boolean
-  indeterminate?: string | 'type1' | 'type2' | 'type3'
-  position?: string | 'top' | 'bottom' | 'static'
+  indeterminate?: 'type1' | 'type2' | 'type3'
+  position?: 'top' | 'bottom' | 'static'
   dense?: boolean
   inverse?: boolean
   // :type [!] System label / Системная метка

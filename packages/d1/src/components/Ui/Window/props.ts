@@ -21,18 +21,18 @@ type PropsToken = {
   width?: string | 'auto' | 'max' | 'sm' | 'md' | 'lg' | 'custom'
   height?: string | 'auto' | 'max' | 'sm' | 'md' | 'lg' | 'custom'
   hide?: boolean
-  axis?: string | 'x' | 'y' | 'on'
-  imagePosition?: string | 'top' | 'left'
+  axis?: 'x' | 'y' | 'on'
+  imagePosition?: 'top' | 'left'
   dense?: boolean
-  alignment?: string | 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull'
-  origin?: string | 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight'
-  adaptive?: string | 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static' | 'actionSheet' | 'actionSheetToModal' | 'autoStaticSm' | 'autoStaticMd' | 'autoStaticLg' | 'autoStaticXl' | 'autoStatic2xl'
+  alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull'
+  origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight'
+  adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static' | 'actionSheet' | 'actionSheetToModal' | 'autoStaticSm' | 'autoStaticMd' | 'autoStaticLg' | 'autoStaticXl' | 'autoStatic2xl'
   fullscreen?: boolean
   overscroll?: boolean
   closeButton?: boolean
   closeMobileHide?: boolean
   widthMatch?: boolean
-  imageSize?: string | 'sm' | 'md' | 'lg' | 'quarter' | 'half'
+  imageSize?: 'sm' | 'md' | 'lg' | 'quarter' | 'half'
   // :type [!] System label / Системная метка
 }
 

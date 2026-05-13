@@ -11,8 +11,8 @@ type PropsToken = {
   // :type [!] System label / Системная метка
   visible?: boolean
   visiblePartly?: boolean
-  align?: string | 'center' | 'left' | 'right'
-  dir?: string | 'ltr' | 'rtl'
+  align?: 'center' | 'left' | 'right'
+  dir?: 'ltr' | 'rtl'
   // :type [!] System label / Системная метка
 }
 

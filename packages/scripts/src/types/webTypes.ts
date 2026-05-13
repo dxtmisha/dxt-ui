@@ -25,7 +25,7 @@ export type WebTypesProperties = WebTypesProperty[]
  *
  * Вид значения атрибута.
  */
-export type WebTypesAttributeKind = 'expression' | 'string'
+export type WebTypesAttributeKind = 'expression' | 'plainText' | 'string'
 
 /**
  * Attribute definition for a tag.

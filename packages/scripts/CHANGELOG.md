@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.2] - 2026-05-13
+
+### Changed
+- **Type Generation**: Modified `DesignReplace.ts` to implement stricter typing for generated component properties. Removed the automatic addition of the generic `string` type to union prop definitions, ensuring generated components use precise literal types.
+- **Wiki Integration**: Updated `DesignWikiStormItem.ts` to improve technical data generation for the wiki system.
+
 ## [0.8.0] - 2026-05-10
 
 ### Added

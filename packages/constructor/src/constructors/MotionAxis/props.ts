@@ -3,8 +3,8 @@ import type { MotionAxisSelectedValue } from './basicTypes'
 
 type MotionAxisPropsToken = {
   // :type [!] System label / Системная метка
-  axis?: string | 'x' | 'y' | 'z'
-  direction?: string | 'next' | 'back' | 'auto'
+  axis?: 'x' | 'y' | 'z'
+  direction?: 'next' | 'back' | 'auto'
   // :type [!] System label / Системная метка
 }
 

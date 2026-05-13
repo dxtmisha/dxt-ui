@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.59.1] - 2026-05-13
+
+### Changed
+- **Properties**: Updated all component `props.ts` files to use stricter union types (removing generic `string`). This provides better type safety and autocompletion for D1 components.
+- **Wiki**: Updated `wikiData.ts` files across the package to align with the new property type definitions in the core constructor.
+
+## [0.59.0] - 2026-05-13
+
+### Added
+- **D1Radio**: Introduced the `D1Radio` component, implemented using the core `Radio` constructor.
+- **Documentation**: Added bilingual documentation for the `Radio` component.
+- **Demos**: Integrated `Radio` examples into the demo application suite.
+
+### Changed
+- **D1Checkbox**: Refactored to use the updated core selection logic.
+
 ## [0.57.4] - 2026-05-11
 
 ### Changed / Improved

@@ -8,11 +8,11 @@ export type ChipPropsToken = {
   disabled?: boolean
   selected?: boolean
   readonly?: boolean
-  adaptive?: string | 'iconAlways' | 'block' | 'auto'
+  adaptive?: 'iconAlways' | 'block' | 'auto'
   container?: boolean
   inverse?: boolean
   grid?: boolean
-  textAlign?: string | 'left' | 'center' | 'right'
+  textAlign?: 'left' | 'center' | 'right'
   // :type [!] System label / Системная метка
 }
 

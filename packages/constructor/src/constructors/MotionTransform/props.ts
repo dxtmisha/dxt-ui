@@ -4,8 +4,8 @@ import type { ModelPropsOpen } from '../../types/modelTypes'
 export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
   section?: boolean
-  animationHeadPosition?: string | 'top' | 'toBottom'
-  adaptive?: string | 'planeAlways'
+  animationHeadPosition?: 'top' | 'toBottom'
+  adaptive?: 'planeAlways'
   // :type [!] System label / Системная метка
 }
 

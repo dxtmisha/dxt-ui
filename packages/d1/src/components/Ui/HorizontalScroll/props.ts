@@ -9,7 +9,7 @@ export const propsValues = {
 type PropsToken = {
   // :type [!] System label / Системная метка
   flush?: boolean
-  align?: string | 'block' | 'center' | 'left' | 'right'
+  align?: 'block' | 'center' | 'left' | 'right'
   // :type [!] System label / Системная метка
 }
 

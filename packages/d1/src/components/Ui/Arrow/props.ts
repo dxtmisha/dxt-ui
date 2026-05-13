@@ -9,9 +9,9 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  position?: string | 'auto' | 'top' | 'bottom' | 'left' | 'right'
+  position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'
   inverse?: boolean
-  size?: string | 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
   // :type [!] System label / Системная метка
 }
 

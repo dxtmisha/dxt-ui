@@ -9,7 +9,7 @@ export const propsValues = {
 type PropsToken = {
   // :type [!] System label / Системная метка
   autosize?: boolean
-  height?: string | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   // :type [!] System label / Системная метка
 }
 

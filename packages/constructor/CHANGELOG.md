@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.59.1] - 2026-05-13
+
+### Changed
+- **Properties**: Implemented stricter typing for component properties by removing generic `string` from union types in all `props.ts` files across the package. This ensures better IDE support and type safety for property literal values (e.g., `palette`, `size`, `textAlign`).
+- **Scripts**: Updated internal code generation scripts to support the new strict typing standard for property definitions.
+
+## [0.59.0] - 2026-05-13
+
+### Added
+- **Radio**: Introduced the `Radio` constructor component, providing standardized logic for single-choice selection.
+- **Checkbox**: Added `CheckboxSelected` class to centralize and share selection management logic between `Checkbox` and `Radio` components.
+- **Documentation**: Added comprehensive bilingual (EN/RU) MDX documentation for the `Radio` component.
+- **Demos**: Implemented interactive demo pages for the `Radio` component in the demo application.
+
+### Changed
+- **Checkbox**: Refactored internal selection management to utilize the new `CheckboxSelected` helper class for improved maintainability.
+- **Header / Input**: Updated design implementations to align with internal property and selection logic changes.
+
 ## [0.57.6] - 2026-05-11
 
 ### Changed / Improved

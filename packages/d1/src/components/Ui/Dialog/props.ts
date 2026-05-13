@@ -18,8 +18,8 @@ type PropsToken = {
   // :type [!] System label / Системная метка
   success?: boolean
   error?: boolean
-  imagePosition?: string | 'top' | 'left'
-  width?: string | 'sm' | 'md' | 'lg' | 'auto'
+  imagePosition?: 'top' | 'left'
+  width?: 'sm' | 'md' | 'lg' | 'auto'
   // :type [!] System label / Системная метка
 }
 

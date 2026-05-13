@@ -7,6 +7,13 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryData } from '../../types/libraryTypes'
 import type { WebTypesAttributeItem, WebTypesAttributes, WebTypesEvents, WebTypesSlots, WebTypesTagItem } from '../../types/webTypes'
+import { forEach } from '@dxtmisha/functional-basic'
+
+/**
+ * List of basic types that do not need to be wrapped in quotes for web-types/
+ * Список базовых типов, которые не нужно оборачивать в кавычки для web-types
+ */
+const BASE_TYPES = /^(boolean|number|string|null|any|void|object|unknown|never)$/
 
 /**
  * Resolver for extracting and formatting IDE metadata for a specific component.
@@ -78,13 +85,14 @@ export class DesignWikiStormItem {
    * @param item prop item / элемент свойства
    */
   getAttribute(item: WikiStorybookProp): WebTypesAttributeItem {
+    const type = this.prepareType(item.getType())
     return {
       name: item.getName(),
       description: item.getDescription(),
-      default: item.getDefaultValue(),
+      // default: item.getDefaultValue(),
       value: {
         kind: 'expression',
-        type: item.getType()
+        type
       }
     }
   }
@@ -120,8 +128,8 @@ export class DesignWikiStormItem {
 
       data.slots.forEach(
         props => slots.push({
-          name: props.name,
-          description: props.description,
+          'name': props.name,
+          'description': props.description,
           'vue-properties': props.properties ?? []
         })
       )
@@ -222,6 +230,36 @@ export class DesignWikiStormItem {
       ...this.getDirs(),
       ...paths
     ]
+  }
+
+  /**
+   * Formats a type string for web-types.
+   *
+   * Форматирует строку типа для web-types.
+   * @param type original type string / исходная строка типа
+   */
+  protected prepareType(type?: string): string | undefined {
+    if (type) {
+      return forEach(
+        type.split('|'),
+        (item) => {
+          const trimmed = item.trim()
+
+          if (trimmed === 'undefined') {
+            return undefined
+          }
+
+          if (BASE_TYPES.test(trimmed)) {
+            return trimmed
+          }
+
+          return `'${trimmed}'`
+        }
+      )
+        .join(' | ')
+    }
+
+    return type
   }
 
   /**

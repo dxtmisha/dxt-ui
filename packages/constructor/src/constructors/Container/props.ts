@@ -2,7 +2,7 @@ import type { AreaPropsInclude } from '../../types/areaTypes'
 
 type ContainerPropsToken = {
   // :type [!] System label / Системная метка
-  align?: string | 'left' | 'center' | 'right'
+  align?: 'left' | 'center' | 'right'
   // :type [!] System label / Системная метка
 }
 
