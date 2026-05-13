@@ -1,5 +1,0 @@
-export * from './Section';
-export * from './SectionDesign';
-export * from './props';
-export * from './types';
-export * from './basicTypes';

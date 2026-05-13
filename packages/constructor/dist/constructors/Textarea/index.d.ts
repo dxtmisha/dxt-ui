@@ -1,5 +1,0 @@
-export * from './Textarea';
-export * from './TextareaDesign';
-export * from './props';
-export * from './types';
-export * from './basicTypes';
