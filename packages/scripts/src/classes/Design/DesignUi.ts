@@ -106,15 +106,15 @@ export class DesignUi {
 
     if (packageJson?.exports) {
       packageJson.exports['.'] = {
-        types: './dist/library/types.d.ts',
+        types: './dist/src/library/types.d.ts',
         default: './dist/types.js'
       }
       packageJson.exports['./plugin'] = {
-        types: './dist/library/plugin.d.ts',
+        types: './dist/src/library/plugin.d.ts',
         default: './dist/plugin.js'
       }
       packageJson.exports['./media'] = {
-        types: './dist/library/media.d.ts',
+        types: './dist/src/library/media.d.ts',
         default: './dist/media.js'
       }
       packageJson.exports['./style.css'] = './dist/style.css'
@@ -123,7 +123,7 @@ export class DesignUi {
         sass: './ui-properties.scss',
         default: './ui-properties.scss'
       }
-      packageJson.exports['./types.d.ts'] = './dist/library/types.d.ts'
+      packageJson.exports['./types.d.ts'] = './dist/src/library/types.d.ts'
       packageJson['web-types'] = './dist/web-types.json'
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)

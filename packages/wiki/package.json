@@ -51,11 +51,11 @@
     "./functional/*": "./src/media/functional/*.mdx",
     "./media": {
       "import": "./dist/media.js",
-      "types": "./dist/media.d.ts"
+      "types": "./dist/src/media.d.ts"
     },
     "./storybook": {
       "import": "./dist/storybook.js",
-      "types": "./dist/storybook.d.ts"
+      "types": "./dist/src/storybook.d.ts"
     },
     "./storybook/styles": "./src/styles/storybookStyle.scss"
   },

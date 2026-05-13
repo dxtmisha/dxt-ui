@@ -57,254 +57,253 @@
   ],
   "main": "./dist/library.js",
   "module": "./dist/library.js",
-  "types": "./dist/library.d.ts",
+  "types": "./dist/src/library.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/library.d.ts",
+      "types": "./dist/src/library.d.ts",
       "default": "./dist/library.js"
     },
     "./Accordion": {
-      "types": "./dist/constructors/Accordion/index.d.ts",
+      "types": "./dist/src/constructors/Accordion/index.d.ts",
       "default": "./dist/accordion.js"
     },
     "./ActionSheet": {
-      "types": "./dist/constructors/ActionSheet/index.d.ts",
+      "types": "./dist/src/constructors/ActionSheet/index.d.ts",
       "default": "./dist/actionSheet.js"
     },
     "./Actions": {
-      "types": "./dist/constructors/Actions/index.d.ts",
+      "types": "./dist/src/constructors/Actions/index.d.ts",
       "default": "./dist/actions.js"
     },
     "./Anchor": {
-      "types": "./dist/constructors/Anchor/index.d.ts",
+      "types": "./dist/src/constructors/Anchor/index.d.ts",
       "default": "./dist/anchor.js"
     },
     "./Area": {
-      "types": "./dist/constructors/Area/index.d.ts",
+      "types": "./dist/src/constructors/Area/index.d.ts",
       "default": "./dist/area.js"
     },
     "./Arrow": {
-      "types": "./dist/constructors/Arrow/index.d.ts",
+      "types": "./dist/src/constructors/Arrow/index.d.ts",
       "default": "./dist/arrow.js"
     },
     "./Badge": {
-      "types": "./dist/constructors/Badge/index.d.ts",
+      "types": "./dist/src/constructors/Badge/index.d.ts",
       "default": "./dist/badge.js"
     },
     "./Bars": {
-      "types": "./dist/constructors/Bars/index.d.ts",
+      "types": "./dist/src/constructors/Bars/index.d.ts",
       "default": "./dist/bars.js"
     },
     "./Block": {
-      "types": "./dist/constructors/Block/index.d.ts",
+      "types": "./dist/src/constructors/Block/index.d.ts",
       "default": "./dist/block.js"
     },
     "./Button": {
-      "types": "./dist/constructors/Button/index.d.ts",
+      "types": "./dist/src/constructors/Button/index.d.ts",
       "default": "./dist/button.js"
     },
+    "./ButtonGroup": {
+      "types": "./dist/src/constructors/ButtonGroup/index.d.ts",
+      "default": "./dist/buttonGroup.js"
+    },
     "./Cell": {
-      "types": "./dist/constructors/Cell/index.d.ts",
+      "types": "./dist/src/constructors/Cell/index.d.ts",
       "default": "./dist/cell.js"
     },
     "./Checkbox": {
-      "types": "./dist/constructors/Checkbox/index.d.ts",
+      "types": "./dist/src/constructors/Checkbox/index.d.ts",
       "default": "./dist/checkbox.js"
     },
     "./Chip": {
-      "types": "./dist/constructors/Chip/index.d.ts",
+      "types": "./dist/src/constructors/Chip/index.d.ts",
       "default": "./dist/chip.js"
     },
     "./ChipGroup": {
-      "types": "./dist/constructors/ChipGroup/index.d.ts",
+      "types": "./dist/src/constructors/ChipGroup/index.d.ts",
       "default": "./dist/chipGroup.js"
     },
     "./ClientOnly": {
-      "types": "./dist/constructors/ClientOnly/index.d.ts",
+      "types": "./dist/src/constructors/ClientOnly/index.d.ts",
       "default": "./dist/clientOnly.js"
     },
     "./Container": {
-      "types": "./dist/constructors/Container/index.d.ts",
+      "types": "./dist/src/constructors/Container/index.d.ts",
       "default": "./dist/container.js"
     },
     "./Dialog": {
-      "types": "./dist/constructors/Dialog/index.d.ts",
+      "types": "./dist/src/constructors/Dialog/index.d.ts",
       "default": "./dist/dialog.js"
     },
     "./Dummy": {
-      "types": "./dist/constructors/Dummy/index.d.ts",
+      "types": "./dist/src/constructors/Dummy/index.d.ts",
       "default": "./dist/dummy.js"
     },
     "./Field": {
-      "types": "./dist/constructors/Field/index.d.ts",
+      "types": "./dist/src/constructors/Field/index.d.ts",
       "default": "./dist/field.js"
     },
     "./FieldCounter": {
-      "types": "./dist/constructors/FieldCounter/index.d.ts",
+      "types": "./dist/src/constructors/FieldCounter/index.d.ts",
       "default": "./dist/fieldCounter.js"
     },
     "./FieldLabel": {
-      "types": "./dist/constructors/FieldLabel/index.d.ts",
+      "types": "./dist/src/constructors/FieldLabel/index.d.ts",
       "default": "./dist/fieldLabel.js"
     },
     "./FieldMessage": {
-      "types": "./dist/constructors/FieldMessage/index.d.ts",
+      "types": "./dist/src/constructors/FieldMessage/index.d.ts",
       "default": "./dist/fieldMessage.js"
     },
     "./Grid": {
-      "types": "./dist/constructors/Grid/index.d.ts",
+      "types": "./dist/src/constructors/Grid/index.d.ts",
       "default": "./dist/grid.js"
     },
     "./GridItem": {
-      "types": "./dist/constructors/GridItem/index.d.ts",
+      "types": "./dist/src/constructors/GridItem/index.d.ts",
       "default": "./dist/gridItem.js"
     },
     "./Group": {
-      "types": "./dist/constructors/Group/index.d.ts",
+      "types": "./dist/src/constructors/Group/index.d.ts",
       "default": "./dist/group.js"
     },
     "./Header": {
-      "types": "./dist/constructors/Header/index.d.ts",
+      "types": "./dist/src/constructors/Header/index.d.ts",
       "default": "./dist/header.js"
     },
     "./HorizontalScroll": {
-      "types": "./dist/constructors/HorizontalScroll/index.d.ts",
+      "types": "./dist/src/constructors/HorizontalScroll/index.d.ts",
       "default": "./dist/horizontalScroll.js"
     },
     "./Icon": {
-      "types": "./dist/constructors/Icon/index.d.ts",
+      "types": "./dist/src/constructors/Icon/index.d.ts",
       "default": "./dist/icon.js"
     },
     "./Image": {
-      "types": "./dist/constructors/Image/index.d.ts",
+      "types": "./dist/src/constructors/Image/index.d.ts",
       "default": "./dist/image.js"
     },
     "./Input": {
-      "types": "./dist/constructors/Input/index.d.ts",
+      "types": "./dist/src/constructors/Input/index.d.ts",
       "default": "./dist/input.js"
     },
     "./List": {
-      "types": "./dist/constructors/List/index.d.ts",
+      "types": "./dist/src/constructors/List/index.d.ts",
       "default": "./dist/list.js"
     },
     "./ListGroup": {
-      "types": "./dist/constructors/ListGroup/index.d.ts",
+      "types": "./dist/src/constructors/ListGroup/index.d.ts",
       "default": "./dist/listGroup.js"
     },
     "./ListItem": {
-      "types": "./dist/constructors/ListItem/index.d.ts",
+      "types": "./dist/src/constructors/ListItem/index.d.ts",
       "default": "./dist/listItem.js"
     },
     "./ListMenu": {
-      "types": "./dist/constructors/ListMenu/index.d.ts",
+      "types": "./dist/src/constructors/ListMenu/index.d.ts",
       "default": "./dist/listMenu.js"
     },
     "./Mask": {
-      "types": "./dist/constructors/Mask/index.d.ts",
+      "types": "./dist/src/constructors/Mask/index.d.ts",
       "default": "./dist/mask.js"
     },
     "./Menu": {
-      "types": "./dist/constructors/Menu/index.d.ts",
+      "types": "./dist/src/constructors/Menu/index.d.ts",
       "default": "./dist/menu.js"
     },
     "./Modal": {
-      "types": "./dist/constructors/Modal/index.d.ts",
+      "types": "./dist/src/constructors/Modal/index.d.ts",
       "default": "./dist/modal.js"
     },
     "./MotionAxis": {
-      "types": "./dist/constructors/MotionAxis/index.d.ts",
+      "types": "./dist/src/constructors/MotionAxis/index.d.ts",
       "default": "./dist/motionAxis.js"
     },
     "./MotionTransform": {
-      "types": "./dist/constructors/MotionTransform/index.d.ts",
+      "types": "./dist/src/constructors/MotionTransform/index.d.ts",
       "default": "./dist/motionTransform.js"
     },
     "./Page": {
-      "types": "./dist/constructors/Page/index.d.ts",
+      "types": "./dist/src/constructors/Page/index.d.ts",
       "default": "./dist/page.js"
     },
     "./PageArea": {
-      "types": "./dist/constructors/PageArea/index.d.ts",
+      "types": "./dist/src/constructors/PageArea/index.d.ts",
       "default": "./dist/pageArea.js"
     },
     "./Progress": {
-      "types": "./dist/constructors/Progress/index.d.ts",
+      "types": "./dist/src/constructors/Progress/index.d.ts",
       "default": "./dist/progress.js"
     },
+    "./Radio": {
+      "types": "./dist/src/constructors/Radio/index.d.ts",
+      "default": "./dist/radio.js"
+    },
     "./Ripple": {
-      "types": "./dist/constructors/Ripple/index.d.ts",
+      "types": "./dist/src/constructors/Ripple/index.d.ts",
       "default": "./dist/ripple.js"
     },
     "./Scrollbar": {
-      "types": "./dist/constructors/Scrollbar/index.d.ts",
+      "types": "./dist/src/constructors/Scrollbar/index.d.ts",
       "default": "./dist/scrollbar.js"
     },
     "./Section": {
-      "types": "./dist/constructors/Section/index.d.ts",
+      "types": "./dist/src/constructors/Section/index.d.ts",
       "default": "./dist/section.js"
     },
     "./Select": {
-      "types": "./dist/constructors/Select/index.d.ts",
+      "types": "./dist/src/constructors/Select/index.d.ts",
       "default": "./dist/select.js"
     },
     "./SelectValue": {
-      "types": "./dist/constructors/SelectValue/index.d.ts",
+      "types": "./dist/src/constructors/SelectValue/index.d.ts",
       "default": "./dist/selectValue.js"
     },
     "./Skeleton": {
-      "types": "./dist/constructors/Skeleton/index.d.ts",
+      "types": "./dist/src/constructors/Skeleton/index.d.ts",
       "default": "./dist/skeleton.js"
     },
     "./Snackbar": {
-      "types": "./dist/constructors/Snackbar/index.d.ts",
+      "types": "./dist/src/constructors/Snackbar/index.d.ts",
       "default": "./dist/snackbar.js"
     },
     "./SnackbarItem": {
-      "types": "./dist/constructors/SnackbarItem/index.d.ts",
+      "types": "./dist/src/constructors/SnackbarItem/index.d.ts",
       "default": "./dist/snackbarItem.js"
     },
     "./TabItem": {
-      "types": "./dist/constructors/TabItem/index.d.ts",
+      "types": "./dist/src/constructors/TabItem/index.d.ts",
       "default": "./dist/tabItem.js"
     },
     "./Tabs": {
-      "types": "./dist/constructors/Tabs/index.d.ts",
+      "types": "./dist/src/constructors/Tabs/index.d.ts",
       "default": "./dist/tabs.js"
     },
     "./TabsNavigation": {
-      "types": "./dist/constructors/TabsNavigation/index.d.ts",
+      "types": "./dist/src/constructors/TabsNavigation/index.d.ts",
       "default": "./dist/tabsNavigation.js"
     },
     "./Textarea": {
-      "types": "./dist/constructors/Textarea/index.d.ts",
+      "types": "./dist/src/constructors/Textarea/index.d.ts",
       "default": "./dist/textarea.js"
     },
     "./TextareaAutosize": {
-      "types": "./dist/constructors/TextareaAutosize/index.d.ts",
+      "types": "./dist/src/constructors/TextareaAutosize/index.d.ts",
       "default": "./dist/textareaAutosize.js"
     },
     "./Tooltip": {
-      "types": "./dist/constructors/Tooltip/index.d.ts",
+      "types": "./dist/src/constructors/Tooltip/index.d.ts",
       "default": "./dist/tooltip.js"
     },
     "./Window": {
-      "types": "./dist/constructors/Window/index.d.ts",
+      "types": "./dist/src/constructors/Window/index.d.ts",
       "default": "./dist/window.js"
     },
-    "./ai-types": "./ai-types.txt",
     "./plugin": {
-      "types": "./dist/library/plugin.d.ts",
+      "types": "./dist/src/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss",
-    "./ButtonGroup": {
-      "types": "./dist/constructors/ButtonGroup/index.d.ts",
-      "default": "./dist/buttonGroup.js"
-    },
-    "./Radio": {
-      "types": "./dist/constructors/Radio/index.d.ts",
-      "default": "./dist/radio.js"
-    }
+    "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/figma-ref",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Vue 3 composables for Figma plugin development, providing reactive wrappers for Figma storage, selection, and node manipulation.",
   "keywords": [
@@ -47,15 +47,18 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/library.d.ts",
+  "types": "dist/src/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/library.d.ts"
+      "types": "./dist/src/library.d.ts"
     },
-    "./style.css": "./dist/style.css",
-    "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "./style.css": "./dist/style.css"
+  },
+  "peerDependencies": {
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/functional-basic": "*",
+    "@figma/plugin-typings": "*"
   },
   "dependencies": {},
   "devDependencies": {},
