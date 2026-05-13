@@ -66,8 +66,7 @@
     "./flags": {
       "import": "./dist/flags.js",
       "types": "./dist/src/flags.d.ts"
-    },
-    "./types/*": "./dist/src/*"
+    }
   },
   "engines": {
     "node": ">=20.0.0"

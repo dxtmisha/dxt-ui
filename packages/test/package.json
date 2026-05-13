@@ -37,8 +37,7 @@
       "types": "./dist/src/library.d.ts",
       "import": "./dist/library.js"
     },
-    "./style.css": "./dist/style.css",
-    "./types/*": "./dist/src/*.d.ts"
+    "./style.css": "./dist/style.css"
   },
   "engines": {
     "node": ">=20.0.0"

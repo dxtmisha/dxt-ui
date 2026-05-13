@@ -186,10 +186,12 @@ export class DesignWikiStormItem {
       const filePath = this.getPaths(['wikiData.ts'])
 
       if (PropertiesFile.is(filePath)) {
-        const wiki: Record<string, any> = await import(filePath.join('/'))
-        const data: WikiDataItem | undefined = Object.values(wiki).find(item => 'component' in item)
-
-        this.dataComponent = data
+        try {
+          const wiki: Record<string, any> = await import(filePath.join('/'))
+          this.dataComponent = Object.values(wiki).find(item => 'component' in item)
+        } catch (error) {
+          console.error(filePath, error)
+        }
       }
     }
 

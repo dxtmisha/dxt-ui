@@ -59,10 +59,7 @@
     "./plugin": {
       "import": "./dist/library-plugin.js",
       "types": "./dist/src/library-plugin.d.ts"
-    },
-    "./ai-types": "./ai-types.txt",
-    "./style.css": "./dist/style.css",
-    "./types/*": "./dist/src/*.d.ts"
+    }
   },
   "engines": {
     "node": ">=20.0.0"

@@ -51,8 +51,7 @@
     ".": {
       "import": "./dist/library.js",
       "types": "./dist/src/library.d.ts"
-    },
-    "./style.css": "./dist/style.css"
+    }
   },
   "peerDependencies": {
     "@dxtmisha/functional-basic": "*",
