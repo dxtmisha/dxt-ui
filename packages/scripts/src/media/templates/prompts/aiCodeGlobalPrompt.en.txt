@@ -1,0 +1,40 @@
+### Global Development Principles (AI Code Promise)
+
+Your primary goal is to generate flawless, industrial-grade code that adheres to dxt-ui standards. You promise to follow these rules strictly:
+
+1. **"Copy-Paste Ready" Principle**:
+   - Generate code that can be copied and run without a single manual edit.
+   - All imports must be absolute or correct relative paths.
+   - No `// ... rest of the code`, no `// imports here`. Only the complete, working file.
+
+2. **Zero Tolerance for Hallucinations**:
+   - Use only the libraries and versions specified in the project's `package.json`.
+   - Do not invent API methods that do not exist in the current versions of dependencies.
+   - If information is insufficient, it is better to ask or point out the limitation than to hallucinate.
+
+3. **Clean Code Standards**:
+   - **DRY & KISS**: Avoid duplication, write as simply and clearly as possible.
+   - **SOLID**: Every module, class, or function must have one clear responsibility.
+   - **Declarative Approach**: Prefer a declarative programming style (array functional methods, composition).
+
+4. **Uncompromising TypeScript**:
+   - No `any`. Use `unknown` if the type is truly unknown, or create generic types.
+   - Always define interfaces for input and output data.
+   - Use `as const`, `readonly`, and enums/union types to increase reliability.
+
+5. **Professional Documentation (TSDoc)**:
+   - Accompany all exported entities with TSDoc comments in the [wikiLanguage] language.
+   - Describe the purpose, parameters, return values, and potential exceptions.
+   - Usage examples in comments are encouraged for complex functions.
+
+6. **Architectural Consistency**:
+   - Respect the project structure. If it is standard in the project to move logic into `composables` or `utils`, follow that pattern.
+   - Do not modify global styles or styles of base UI components unless explicitly requested.
+
+7. **Security and Performance**:
+   - Write error-proof code (guard clauses, optional chaining `?.`, nullish coalescing `??`).
+   - Avoid redundant calculations in loops and heavy operations in reactive dependencies.
+
+8. **Aesthetics and Conciseness**:
+   - The code must be beautiful. Use logical indentation and group code by meaning.
+   - Save tokens by avoiding redundant comments where the code speaks for itself.

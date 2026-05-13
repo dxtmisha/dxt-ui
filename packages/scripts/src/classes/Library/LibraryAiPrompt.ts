@@ -8,6 +8,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryAiPromptItem } from './LibraryAiPromptItem'
 
 import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.txt?raw'
+import globalPromptText from '../../media/templates/prompts/aiCodeGlobalPrompt.en.txt?raw'
 
 const LIBRARY_AI_PROMPT_LIST_DIRS = [
   UI_MODULES
@@ -65,6 +66,7 @@ It is critically important to strictly follow all the prompts and instructions l
 - If you do not know something or lack information, state it explicitly rather than making assumptions.
 - Be sure to study package.json to know which packages are available and rely exclusively on them when writing code.
       `.trim(),
+      this.getGlobalPrompt(),
       this.getVuePrompt()
     ]
 
@@ -130,6 +132,21 @@ ${PropertiesFile.readFileOnly(UI_FILE_AI_PROMPT_INSTRUCTION)}
 ## Vue component implementation rules
 The rules for the implementation of Vue components are listed below. These instructions are mandatory for creating high-quality, standard-compliant components within this project.
 ${vuePromptText}
+    `.trim()
+  }
+
+  /**
+   * Retrieves the global code implementation prompt.
+   *
+   * Получает глобальный промпт по реализации кода.
+   * @returns formatted global prompt or undefined / отформатированный глобальный промпт или undefined
+   * @protected
+   */
+  protected getGlobalPrompt(): string {
+    return `
+## Global code implementation rules
+The global rules for code implementation are listed below. These instructions are mandatory for ensuring high-quality, professional-grade development across the entire project.
+${globalPromptText}
     `.trim()
   }
 
