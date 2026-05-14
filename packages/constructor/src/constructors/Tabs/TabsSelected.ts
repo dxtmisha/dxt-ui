@@ -1,5 +1,5 @@
 import { ref, type ToRefs, watch } from 'vue'
-import { isSelected, type ListSelectedList } from '@dxtmisha/functional'
+import { getFirst, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsProps } from './props'
 
@@ -20,7 +20,7 @@ export class TabsSelected {
     protected readonly props: TabsProps,
     protected readonly refs: ToRefs<TabsProps>
   ) {
-    this.item.value = props.selected
+    this.item.value = props.selected || getFirst(props.tabs)?.value
 
     watch([this.refs.selected], this.update)
   }

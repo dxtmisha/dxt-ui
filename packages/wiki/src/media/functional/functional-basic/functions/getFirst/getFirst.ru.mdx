@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getFirst - Получение первого элемента'/>
+
+# `getFirst`
+
+Возвращает первый элемент массива или объекта. Если значение является примитивом, возвращает само значение.
+
+**Параметры:**
+- `value: T | T[] | Record<string, T>` — входное значение.
+
+**Возвращает:**
+`T | undefined` — первый элемент массива или объекта, или само значение.
+
+```typescript
+import { getFirst } from '@dxtmisha/functional-basic'
+
+console.log(getFirst([1, 2, 3])) // 1
+console.log(getFirst({ a: 1, b: 2 })) // 1
+console.log(getFirst('string')) // 'string'
+```

@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getFirst - Lấy phần tử đầu tiên'/>
+
+# `getFirst`
+
+Trả về phần tử đầu tiên của một mảng hoặc một đối tượng. Nếu giá trị là kiểu nguyên thủy, trả về chính giá trị đó.
+
+**Tham số:**
+- `value: T | T[] | Record<string, T>` — giá trị đầu vào.
+
+**Trả về:**
+`T | undefined` — phần tử đầu tiên của mảng hoặc đối tượng, hoặc chính giá trị đó.
+
+```typescript
+import { getFirst } from '@dxtmisha/functional-basic'
+
+console.log(getFirst([1, 2, 3])) // 1
+console.log(getFirst({ a: 1, b: 2 })) // 1
+console.log(getFirst('string')) // 'string'
+```

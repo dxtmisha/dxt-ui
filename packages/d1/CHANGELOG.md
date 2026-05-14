@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.59.3] - 2026-05-14
+
+### Added
+- **D1TabItem**: Implemented explicit styling for the `disabled` state, including design token support for opacity and color resets.
+
+### Changed / Improved
+- **D1TabsNavigation**: Refactored the `divider` variant implementation to use direct border styling instead of pseudo-elements, ensuring more reliable rendering and better design token integration.
+- **Tokens**: Updated `TabItem` and `TabsNavigation` property definitions to support new visual states and structural refinements.
+- **Core Sync**: Synchronized with `@dxtmisha/constructor` v0.59.3, adopting the latest accessibility and SSR optimizations for tabs and motion components.
+
 ## [0.59.1] - 2026-05-13
 
 ### Changed

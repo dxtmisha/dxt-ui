@@ -1,5 +1,5 @@
 import { ref, watch, type ToRefs } from 'vue'
-import { isArray, isObject, isSelected, type ListSelectedList } from '@dxtmisha/functional'
+import { getFirst, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsNavigationProps } from './props'
 
@@ -21,17 +21,7 @@ export class TabsNavigationSelected {
     protected readonly props: TabsNavigationProps,
     protected readonly refs: ToRefs<TabsNavigationProps>
   ) {
-    let selected = props.selected
-
-    if (props.selected) {
-      selected = props.selected
-    } else if (props.list) {
-      if (isArray(props.list)) {
-        selected = props.list[0]?.value
-      } else if (isObject(props.list)) {
-        selected = Object.values(props.list)[0]?.value
-      }
-    }
+    const selected = props.selected || getFirst(props.list)?.value
 
     this.item.value = selected
     this.actualItem.value = selected

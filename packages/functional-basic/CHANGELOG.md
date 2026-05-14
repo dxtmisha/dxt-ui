@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-05-14
+
+### Added
+- **Functions**: Added `getFirst` utility function to safely retrieve the first element from arrays or objects, providing consistent behavior for various data structures with full TypeScript support.
+
+### Changed / Improved
+- **Dependencies**: Integrated `@dxtmisha/media` into `peerDependencies` to ensure better compatibility with media-related utilities.
+- **Build System**: Optimized the build configuration by simplifying export maps and standardizing type definition paths within the distribution.
+- **Maintenance**: Standardized internal scripts and performed general cleanup of obsolete type definitions and exported files.
+
 ## [1.1.8] - 2026-05-12
 
 ### Added

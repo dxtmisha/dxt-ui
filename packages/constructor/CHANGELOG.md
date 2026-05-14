@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.59.3] - 2026-05-14
+
+### Added
+- **Tabs**: Enhanced `Tabs` and `TabsNavigation` components with intelligent initial selection logic, utilizing the new `getFirst` utility to resolve the active tab from lists or objects when no explicit selection is provided.
+- **Demos**: Introduced new interactive demo pages for `Badge`, `Actions`, `MotionTransform`, and `Tabs` components to the demo application.
+
+### Changed / Improved
+- **Tabs Navigation**: Standardized element identifier generation in `TabsNavigationIds` using a stable, unique prefix for more reliable DOM interactions.
+- **Tab Item**: Improved accessibility by dynamically linking tab elements to their labels via the `aria-labelledby` attribute.
+- **Motion Components**: Refactored `MotionTransform` and `MotionAxis` constructors to defer DOM-specific event registrations until the component is mounted, significantly improving SSR compatibility.
+- **Tabs Rendering**: Refactored `TabsDesign` to ensure consistent rendering of navigation and animation layers, regardless of the initial ID state.
+- **Keyboard Navigation**: Fixed an issue in `TabsNavigation` keyboard handling where focus selection was incorrectly mapped; it now correctly uses the item index for selection updates.
+- **Core Classes**: Optimized `DescriptionInclude`, `LabelInclude`, `PrefixInclude`, and `SuffixInclude` by implementing stable internal identifier management.
+- **Maintenance**: Performed cleanup of debug logs and refined internal property resolution logic across several core classes.
+
 ## [0.59.1] - 2026-05-13
 
 ### Changed

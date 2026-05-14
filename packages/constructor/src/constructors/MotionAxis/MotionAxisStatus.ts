@@ -40,7 +40,6 @@ export class MotionAxisStatus {
     protected readonly emits?: ConstrEmit<MotionAxisEmits>
   ) {
     this.active.value = props.selected
-    console.log('this.active.value', this.active.value)
   }
 
   /**

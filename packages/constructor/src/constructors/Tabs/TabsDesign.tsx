@@ -28,14 +28,14 @@ export class TabsDesign<
   CLASSES extends TabsClasses,
   P extends TabsPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    TabsEmits,
-    EXPOSE,
-    TabsSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  TabsEmits,
+  EXPOSE,
+  TabsSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Tabs
 
   /**
@@ -111,14 +111,10 @@ export class TabsDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
-    if (this.item.tabsNavigation.ids.value) {
-      return [
-        ...this.item.tabsNavigation.render(),
-        ...this.item.motionAxis.render(this.slidesRender())
-      ]
-    }
-
-    return this.item.tabsNavigation.render()
+    return [
+      ...this.item.tabsNavigation.render(),
+      ...this.item.motionAxis.render(this.slidesRender())
+    ]
   }
 
   /**

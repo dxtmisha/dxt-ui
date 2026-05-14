@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.11] - 2026-05-14
+
+### Added
+- **ListDataRef**: Introduced `getFocusItem()` method to retrieve the full data object of the currently focused list item, facilitating advanced keyboard navigation and interaction handling.
+- **Types**: Added `disabled` property to the `ListDataItem` interface to support standardized state management for list items.
+
+### Changed / Improved
+- **Build System**: Refactored the distribution structure to standardize type definition paths and optimize the export map for better compatibility with modern bundlers.
+- **Peer Dependencies**: Refined the `peerDependencies` configuration to ensure more robust integration with Vue and the core functional-basic package.
+- **Maintenance**: Performed internal cleanup of the package configuration and updated build scripts to align with monorepo standards.
+
 ## [1.11.9] - 2026-05-12
 
 ### Added
