@@ -1,4 +1,4 @@
-import { computed, toRef, type Ref, type ToRefs, onMounted, watch } from 'vue'
+import { computed, toRef, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -92,7 +92,7 @@ export class TabsNavigation {
       this.components
     )
 
-    this.selected = new TabsNavigationSelectedConstructor(this.props)
+    this.selected = new TabsNavigationSelectedConstructor(this.props, this.refs)
     this.focus = new TabsNavigationFocusConstructor(
       this.element,
       this.selected
@@ -138,16 +138,6 @@ export class TabsNavigation {
       this.emits,
       this.selected.item
     )
-
-    this.initSelected()
-
-    onMounted(() => {
-      watch(
-        [refs.selected],
-        () => this.selected.set(props.selected),
-        { immediate: true }
-      )
-    })
   }
 
   /**
@@ -176,18 +166,5 @@ export class TabsNavigation {
   ) => {
     this.selected.set(options?.value)
     this.event.onClick(event, options)
-  }
-
-  /**
-   * Initializes the selected element.
-   *
-   * Инициализирует выбранный элемент.
-   */
-  protected initSelected() {
-    if (this.props.selected) {
-      return undefined
-    }
-
-    this.selected.set(this.control.getFirstItem())
   }
 }

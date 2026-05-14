@@ -125,6 +125,7 @@ export class TabItem {
       'tabindex': -1,
       ...this.event.binds,
       ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.labelledby(this.label.is.value ? this.label.id.value : undefined),
       ...AriaStaticInclude.selected(Boolean(this.props.selected)),
       ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
     }

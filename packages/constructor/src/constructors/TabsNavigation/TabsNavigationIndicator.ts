@@ -1,4 +1,4 @@
-import { nextTick, type Ref, type ToRefs, watch } from 'vue'
+import { nextTick, onMounted, type Ref, type ToRefs, watch } from 'vue'
 import type { ListSelectedList } from '@dxtmisha/functional'
 
 import { TabsNavigationSelected } from './TabsNavigationSelected'
@@ -33,15 +33,15 @@ export class TabsNavigationIndicator {
       (newValue, oldValue) => this.go(newValue, oldValue)
     )
 
-    nextTick().then(
-      () => requestAnimationFrame(
+    onMounted(() => {
+      requestAnimationFrame(
         () => {
           if (element.value) {
             element.value.scrollLeft = this.getItem(this.selected.item.value)?.offsetLeft ?? 0
           }
         }
       )
-    )
+    })
   }
 
   /**

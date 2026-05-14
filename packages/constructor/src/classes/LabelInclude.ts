@@ -11,6 +11,8 @@ import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/lab
  * Использование для добавления текста
  */
 export class LabelInclude {
+  protected readonly elementIdDefault = getElementId()
+
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -58,7 +60,7 @@ export class LabelInclude {
 
   /** Identifier for the element/ Идентификатор для элемента */
   readonly id = computed<string>(
-    () => this.props.labelId || getElementId()
+    () => this.props.labelId || this.elementIdDefault
   )
 
   /**

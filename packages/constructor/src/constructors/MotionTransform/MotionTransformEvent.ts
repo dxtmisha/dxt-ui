@@ -1,5 +1,5 @@
-import { watch } from 'vue'
-import { type ConstrEmit, EventItem, isEnter } from '@dxtmisha/functional'
+import { onMounted, watch } from 'vue'
+import { type ConstrEmit, EventItem, isDomRuntime, isEnter } from '@dxtmisha/functional'
 
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformState } from './MotionTransformState'
@@ -8,15 +8,13 @@ import type { MotionTransformEmitOptions } from './basicTypes'
 import type { MotionTransformEmits } from './types'
 import type { MotionTransformProps } from './props'
 
-let allOpenForAutoClose: number = 0
-
 /**
  * Class for event management.
  *
  * Класс для управления событиями.
  */
 export class MotionTransformEvent {
-  protected readonly item: EventItem<HTMLElement, PointerEvent>
+  protected item?: EventItem<HTMLElement, PointerEvent>
 
   /**
    * Constructor.
@@ -33,24 +31,16 @@ export class MotionTransformEvent {
     protected readonly state: MotionTransformState,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
-    this.item = new EventItem(document.body, 'click', this.listener)
-
-    watch(
-      this.state.open,
-      () => {
-        if (
-          this.props.autoClose
-        ) {
-          if (this.state.open.value) {
-            allOpenForAutoClose++
-          } else {
-            allOpenForAutoClose--
-          }
-        }
-
-        this.item.toggle(this.state.open.value)
+    onMounted(() => {
+      if (isDomRuntime()) {
+        this.item = new EventItem(document.body, 'click', this.listener)
       }
-    )
+
+      watch(
+        this.state.open,
+        () => this.item?.toggle(this.state.open.value)
+      )
+    })
   }
 
   /**
@@ -59,7 +49,7 @@ export class MotionTransformEvent {
    * Остановка прослушивания события.
    */
   stop(): this {
-    this.item.stop()
+    this.item?.stop()
     return this
   }
 

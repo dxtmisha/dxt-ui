@@ -11,6 +11,8 @@ import type { SuffixProps, SuffixSlots } from '../types/suffixTypes'
  * Класс для работы с suffix.
  */
 export class SuffixInclude {
+  protected readonly elementIdDefault = getElementId()
+
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -35,7 +37,7 @@ export class SuffixInclude {
 
   /** Unique identifier/ Уникальный идентификатор */
   readonly id = computed<string>(
-    () => this.props.suffixId || getElementId()
+    () => this.props.suffixId || this.elementIdDefault
   )
 
   /**

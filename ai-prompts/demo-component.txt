@@ -1,0 +1,39 @@
+To create a demo page for a specific component (e.g., Badge, Button, Checkbox) in the `demo` package, perform the following steps:
+
+### 0. General Rules
+- **CRITICALLY IMPORTANT**: Always strictly follow the global rules and instructions described in the `ai-prompt.txt` file. This includes naming standards, Vue component implementation rules, and the use of SCSS mixins and tokens.
+
+### 1. Component Analysis
+- Study `props.ts` and the main constructor file in `packages/constructor/src/constructors/[Component]`.
+- Study the implementation in `packages/d1/src/components/Ui/[Component]`.
+- Identify all key properties (types, sizes, palettes, states, features).
+- **Maximum Coverage**: Aim to cover the maximum possible number of component use cases, especially those affecting **SSR** (e.g., `in-dom`, `client-only` properties, etc.).
+
+### 2. Creating the Demo Page
+- Create the file `packages/demo/src/pages/components/Demo[Component]Page.vue`.
+- **Auxiliary Components**: Explore the contents of `packages/demo/src/components`. It contains helper components for demo page layout:
+    - `DemoLinkBlack`: Back link (use at the top of the page).
+    - `DemoFlex`: Helper wrapper for flexible layout with system spacing (use when grouping is needed).
+    - `DemoValue`: To display current values of variables/models.
+    - `DemoLink`: For regular links.
+- **Imports**: Import the necessary components from `../../components/[Name].vue`.
+- **Template Structure**:
+    - Use `<DemoLinkBlack/>` at the beginning.
+    - Wrap everything in `<D1Page label="[Component]">`.
+    - Use `<D1Section>` and several `<D1Group>` within it for different property categories.
+    - **Minimalism**: Wrap components in additional elements (div, etc.) as little as possible. Avoiding wrappers entirely is a major plus.
+- **Styles**:
+    - The name of the main (root) CSS class must **strictly match** the component name itself (in kebab-case). For example, for `DemoBadgePage.vue`, the root class is `.demo-badge-page`.
+    - **Minimalism**: Add styles only if absolutely necessary for the component's functionality or display. Do not add styles for "aesthetics" or decoration if there is no technical need.
+    - Use `__` for naming internal elements (e.g., `&__wrapper`) and `--` for modifiers (e.g., `&--large`).
+    - Within the root class block, use SCSS nesting (`&`) to form element names (e.g., `&__wrapper { ... }` inside `.demo-badge-page` becomes `.demo-badge-page__wrapper`).
+
+### 3. Router Registration
+- Update `packages/demo/src/router.ts`:
+    - Import the new page (**maintain alphabetical order of imports**).
+    - Add the route to the `routes` array with the path `/component-[component-name-kebab]` (**maintain alphabetical order in the routes list**).
+
+### 4. Updating the Home Page
+- Update `packages/demo/src/pages/DemoHomePage.vue`:
+    - Add `<DemoLink label="[Component]" name="component-[component-name-kebab]"/>` to the "Components" group.
+    - **Maintain alphabetical order** among existing links.

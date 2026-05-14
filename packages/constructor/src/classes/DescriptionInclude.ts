@@ -11,6 +11,8 @@ import type { DescriptionProps, DescriptionSlots } from '../types/descriptionTyp
  * Использование для добавления описания текста
  */
 export class DescriptionInclude {
+  protected readonly elementIdDefault = getElementId()
+
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -31,7 +33,7 @@ export class DescriptionInclude {
 
   /** Unique identifier/ Уникальный идентификатор */
   readonly id = computed<string>(
-    () => this.props?.descriptionId || getElementId()
+    () => this.props?.descriptionId || this.elementIdDefault
   )
 
   /**

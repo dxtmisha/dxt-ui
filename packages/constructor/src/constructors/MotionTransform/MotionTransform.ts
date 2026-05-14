@@ -11,7 +11,7 @@ import { MotionTransformState } from './MotionTransformState'
 import { MotionTransformEvent } from './MotionTransformEvent'
 import { MotionTransformGo } from './MotionTransformGo'
 
-import { WindowEsc } from '../Window/WindowEsc'
+import { WindowEsc } from '../Window'
 
 import type {
   MotionTransformComponents,

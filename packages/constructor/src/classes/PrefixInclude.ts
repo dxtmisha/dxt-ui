@@ -11,6 +11,8 @@ import type { PrefixProps, PrefixSlots } from '../types/prefixTypes'
  * Класс для работы с prefix.
  */
 export class PrefixInclude {
+  protected readonly elementIdDefault = getElementId()
+
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -35,7 +37,7 @@ export class PrefixInclude {
 
   /** Unique identifier/ Уникальный идентификатор */
   readonly id = computed<string>(
-    () => this.props.prefixId || getElementId()
+    () => this.props.prefixId || this.elementIdDefault
   )
 
   /**

@@ -5,17 +5,20 @@ import DemoHomePage from './pages/DemoHomePage.vue'
 import DemoApiPage from './pages/DemoApiPage.vue'
 
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
+import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
-import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
+import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
+import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
+import DemoTabsPage from './pages/components/DemoTabsPage.vue'
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -34,19 +37,24 @@ export const routes: RouteRecordRaw[] = [
     component: DemoActionsPage
   },
   {
+    path: '/component-badge',
+    name: 'component-badge',
+    component: DemoBadgePage
+  },
+  {
     path: '/component-button',
     name: 'component-button',
     component: DemoButtonPage
   },
   {
-    path: '/component-client-only',
-    name: 'component-client-only',
-    component: DemoClientOnlyPage
-  },
-  {
     path: '/component-checkbox',
     name: 'component-checkbox',
     component: DemoCheckboxPage
+  },
+  {
+    path: '/component-client-only',
+    name: 'component-client-only',
+    component: DemoClientOnlyPage
   },
   {
     path: '/component-icon',
@@ -69,6 +77,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoMaskPage
   },
   {
+    path: '/component-motion-transform',
+    name: 'component-motion-transform',
+    component: DemoMotionTransformPage
+  },
+  {
     path: '/component-page-area',
     name: 'component-page-area',
     component: DemoPageAreaPage
@@ -87,5 +100,10 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-snackbar',
     name: 'component-snackbar',
     component: DemoSnackbarPage
+  },
+  {
+    path: '/component-tabs',
+    name: 'component-tabs',
+    component: DemoTabsPage
   }
 ]

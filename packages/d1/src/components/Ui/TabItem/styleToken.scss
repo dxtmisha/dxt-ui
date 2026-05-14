@@ -61,6 +61,10 @@
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
     }
     
+    &--disabled {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-disabled)}); @include ui.color('init');
+    }
+    
     &--adaptive {
       &--iconAlways {
         & > *:not(.d1-tabItem__icon) {

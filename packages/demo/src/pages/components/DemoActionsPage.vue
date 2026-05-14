@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
+import type { ButtonProps } from '@dxtmisha/d1/D1Button'
 
 const list = [
   { label: 'Cancel', text: true },
   { label: 'Apply', primary: true }
 ]
 
-const listSecondary = [
+const listSecondary: ButtonProps[] = [
   { label: 'Delete', palette: 'red', text: true }
 ]
 

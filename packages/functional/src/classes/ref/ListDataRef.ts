@@ -406,6 +406,16 @@ export class ListDataRef {
   }
 
   /**
+   * Returns the item in focus.
+   *
+   * Возвращает элемент в фокусе.
+   * @returns item in focus/ элемент в фокусе
+   */
+  getFocusItem(): ListDataItem | undefined {
+    return this.data.value.find(item => item.index === this.getFocus())
+  }
+
+  /**
    * Returns the highlight text.
    *
    * Возвращает текст для выделения.

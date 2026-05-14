@@ -10,6 +10,8 @@ import type { TabsNavigationProps } from './props'
  * Класс для генерации и управления идентификаторами элементов вкладок.
  */
 export class TabsNavigationIds {
+  readonly idDefault = getElementId()
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -28,9 +30,10 @@ export class TabsNavigationIds {
    */
   readonly ids = computed<TabsNavigationIdsList>(() => {
     const ids: TabsNavigationIdsList = {}
+    let key = 1
 
     this.data.fullData.value.forEach((item) => {
-      ids[item.value] = getElementId()
+      ids[item.value] = `${this.idDefault}-${key++}-${item.value ?? 'none'}`
     })
 
     return ids

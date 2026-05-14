@@ -58,6 +58,9 @@ export class Field {
   /** Field size/ Размер поля */
   readonly size: FieldSize
 
+  /** Default element id/ Идентификатор элемента по умолчанию */
+  protected readonly elementIdDefault = getElementId()
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -198,7 +201,7 @@ export class Field {
   ))
 
   /** Field identifier/ Идентификатор поля */
-  readonly id = computed<string>(() => String(this.props.id || getElementId()))
+  readonly id = computed<string>(() => String(this.props.id || this.elementIdDefault))
 
   /** Values for the class/ Значения для класса */
   readonly classes = computed(() => ({

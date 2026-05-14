@@ -24,17 +24,17 @@
     }
     
     &--divider {
+      @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+      border-bottom-width: var(--d1-sys-spacing-outline);
+      border-bottom-style: solid;
+      
       &::after {
         content: ' ';
         position: absolute;
         @include ui.right(#{0});
         bottom: 0;
         @include ui.left(#{0});
-        
-        @include ui.borderColor(#{var(--d1-sys-palette-outline)});
-        @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
-        border-bottom-width: var(--d1-sys-spacing-outline);
-        border-bottom-style: solid;
       }
     }
   }

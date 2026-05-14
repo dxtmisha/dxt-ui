@@ -147,6 +147,7 @@ export class TabsNavigationControl {
    */
   protected readonly on = (event: KeyboardEvent) => {
     if (this.data.getLength()) {
+      const item = this.data.getFocusItem()
       const key = event.code || event.key || (event as any).keyCode
 
       switch (key) {
@@ -169,7 +170,13 @@ export class TabsNavigationControl {
         case ' ':
         case 32:
           event.preventDefault()
-          this.selected.set(this.focus.item.value)
+
+          if (
+            item
+            && !item.disabled
+          ) {
+            this.selected.set(item.index)
+          }
           break
       }
     }

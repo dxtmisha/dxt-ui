@@ -33,6 +33,9 @@ export type ListDataItem<
     type: ListType
     /** Unique item identifier/ Уникальный идентификатор элемента */
     index: string
+
+    /** Whether the item is disabled/ Отключен ли элемент */
+    disabled?: boolean
   }
 >
 

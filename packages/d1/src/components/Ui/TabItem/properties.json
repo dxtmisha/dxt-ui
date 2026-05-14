@@ -27,6 +27,9 @@
   "active": {
     "gradient-opacity": "{sys.opacity.pressed}"
   },
+  "disabled": {
+    "color-opacity": "{sys.opacity.disabled}"
+  },
   "open": {
     "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.pressed}"

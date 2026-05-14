@@ -1,5 +1,5 @@
-import { ref } from 'vue'
-import { isSelected, type ListSelectedList } from '@dxtmisha/functional'
+import { ref, watch, type ToRefs } from 'vue'
+import { isArray, isObject, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsNavigationProps } from './props'
 
@@ -15,12 +15,31 @@ export class TabsNavigationSelected {
   /**
    * Constructor
    * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    */
   constructor(
-    protected readonly props: TabsNavigationProps
+    protected readonly props: TabsNavigationProps,
+    protected readonly refs: ToRefs<TabsNavigationProps>
   ) {
-    this.item.value = props.selected
-    this.actualItem.value = props.selected
+    let selected = props.selected
+
+    if (props.selected) {
+      selected = props.selected
+    } else if (props.list) {
+      if (isArray(props.list)) {
+        selected = props.list[0]?.value
+      } else if (isObject(props.list)) {
+        selected = Object.values(props.list)[0]?.value
+      }
+    }
+
+    this.item.value = selected
+    this.actualItem.value = selected
+
+    watch(
+      [refs.selected],
+      () => this.set(props.selected)
+    )
   }
 
   /**
