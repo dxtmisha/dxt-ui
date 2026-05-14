@@ -9,6 +9,7 @@ import _D1Area from '../components/Ui/Area/D1Area.vue'
 import _D1Arrow from '../components/Ui/Arrow/D1Arrow.vue'
 import _D1Badge from '../components/Ui/Badge/D1Badge.vue'
 import _D1Bars from '../components/Ui/Bars/D1Bars.vue'
+import _D1Bleed from '../components/Ui/Bleed/D1Bleed.vue'
 import _D1Block from '../components/Ui/Block/D1Block.vue'
 import _D1Button from '../components/Ui/Button/D1Button.vue'
 import _D1ButtonGroup from '../components/Ui/ButtonGroup/D1ButtonGroup.vue'
@@ -19,6 +20,7 @@ import _D1ChipGroup from '../components/Ui/ChipGroup/D1ChipGroup.vue'
 import _D1ClientOnly from '../components/Ui/ClientOnly/D1ClientOnly.vue'
 import _D1Container from '../components/Ui/Container/D1Container.vue'
 import _D1Dialog from '../components/Ui/Dialog/D1Dialog.vue'
+import _D1Divider from '../components/Ui/Divider/D1Divider.vue'
 import _D1Dummy from '../components/Ui/Dummy/D1Dummy.vue'
 import _D1Field from '../components/Ui/Field/D1Field.vue'
 import _D1FieldCounter from '../components/Ui/FieldCounter/D1FieldCounter.vue'
@@ -71,6 +73,7 @@ declare module '@vue/runtime-core' {
     D1Arrow: typeof _D1Arrow
     D1Badge: typeof _D1Badge
     D1Bars: typeof _D1Bars
+    D1Bleed: typeof _D1Bleed
     D1Block: typeof _D1Block
     D1Button: typeof _D1Button
     D1ButtonGroup: typeof _D1ButtonGroup
@@ -81,6 +84,7 @@ declare module '@vue/runtime-core' {
     D1ClientOnly: typeof _D1ClientOnly
     D1Container: typeof _D1Container
     D1Dialog: typeof _D1Dialog
+    D1Divider: typeof _D1Divider
     D1Dummy: typeof _D1Dummy
     D1Field: typeof _D1Field
     D1FieldCounter: typeof _D1FieldCounter

@@ -37,7 +37,7 @@ export type HorizontalScrollPropsInclude<
   HorizontalScroll extends HorizontalScrollPropsBasic = HorizontalScrollPropsBasic
 > = {
   /** Whether the scroll area is flush with the edges/ Прилегает ли область прокрутки к краям */
-  horizontalScrollFlush?: boolean
+  horizontalScrollBleed?: boolean
   /** Alignment of the horizontal scroll/ Выравнивание горизонтальной прокрутки */
   horizontalScrollAlign?: 'block' | 'left'
   /** Additional attributes for the horizontal scroll/ Дополнительные атрибуты для горизонтальной прокрутки */

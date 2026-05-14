@@ -190,6 +190,15 @@ export class CheckboxDesign<
    * Рендеринг элемента checkbox.
    */
   readonly renderChecked = (): VNode[] => {
+    return this.renderCheckedItem()
+  }
+
+  /**
+   * Rendering of the internal checkbox element.
+   *
+   * Рендеринг внутреннего элемента checkbox.
+   */
+  renderCheckedItem(): VNode[] {
     return [
       h(
         'span',

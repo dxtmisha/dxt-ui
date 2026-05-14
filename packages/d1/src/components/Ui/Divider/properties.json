@@ -1,0 +1,30 @@
+{
+  "main": "{d.divider}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
+  "~size": {
+    "~sm": {
+      "borderWidth": "{sys.spacing.outline}"
+    },
+    "~md": {
+      "borderWidth": "{sys.spacing.outline} * 2"
+    },
+    "~lg": {
+      "borderWidth": "{sys.spacing.outline} * 4"
+    },
+    "_default": "sm"
+  },
+  "~margin": {
+    "~sm": {
+      "marginY": "{sys.spacing.sm}"
+    },
+    "~md": {
+      "marginY": "{sys.spacing.md}"
+    },
+    "~lg": {
+      "marginY": "{sys.spacing.lg}"
+    },
+    "~none": {},
+    "_default": "none"
+  }
+}

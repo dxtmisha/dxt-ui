@@ -28,14 +28,14 @@ export class TabsDesign<
   CLASSES extends TabsClasses,
   P extends TabsPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  TabsEmits,
-  EXPOSE,
-  TabsSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    TabsEmits,
+    EXPOSE,
+    TabsSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Tabs
 
   /**

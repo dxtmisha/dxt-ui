@@ -8,7 +8,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  flush?: boolean
+  bleed?: boolean
   align?: 'block' | 'center' | 'left' | 'right'
   // :type [!] System label / Системная метка
 }
@@ -25,7 +25,7 @@ export const defaults: object = {
   ...defaultsHorizontalScroll,
   ...{
     // :default [!] System label / Системная метка
-    flush: true,
+    bleed: true,
     align: 'stretch'
     // :default [!] System label / Системная метка
   }

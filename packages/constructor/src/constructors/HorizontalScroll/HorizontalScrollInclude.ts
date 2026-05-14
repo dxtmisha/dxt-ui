@@ -57,7 +57,7 @@ export class HorizontalScrollInclude<
       getRef(this.extra),
       {
         ref: this.element,
-        flush: this.props.horizontalScrollFlush,
+        bleed: this.props.horizontalScrollBleed,
         align: this.props.horizontalScrollAlign
       },
       this.props.horizontalScrollAttrs

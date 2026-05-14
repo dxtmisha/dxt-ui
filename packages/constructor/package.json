@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.59.3",
+  "version": "0.62.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -303,7 +303,19 @@
       "types": "./dist/src/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss"
+    "./style.scss": "./src/library/style.scss",
+    "./Bleed": {
+      "types": "./dist/src/constructors/Bleed/index.d.ts",
+      "default": "./dist/bleed.js"
+    },
+    "./Divider": {
+      "types": "./dist/src/constructors/Divider/index.d.ts",
+      "default": "./dist/divider.js"
+    },
+    "./Switch": {
+      "types": "./dist/src/constructors/Switch/index.d.ts",
+      "default": "./dist/switch.js"
+    }
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

@@ -17,11 +17,11 @@
     scroll-snap-align: start;
   }
 
-  &--flush {
-    @include ui.initByCustom('sys.flush', ui.v('??marginFlushX', ui.v('?grid.marginX')));
+  &--bleed {
+    @include ui.initByCustom('sys.bleed', ui.v('??marginBleedX', 0));
 
-    scroll-padding-inline-start: calc(#{ui.v('??marginLeft')} + #{ui.v('??sys.flush')});
-    @include ui.marginX(calc(#{ui.v('??sys.flush')} * -1));
-    @include ui.paddingX(ui.v('??sys.flush'));
+    scroll-padding-inline-start: calc(#{ui.v('??marginLeft')} + #{ui.v('??sys.bleed')});
+    @include ui.marginX(calc(#{ui.v('??sys.bleed')} * -1));
+    @include ui.paddingX(ui.v('??sys.bleed'));
   }
 }

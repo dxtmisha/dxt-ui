@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Bleed;
+
+@include ui.initDesignBasic('d1.bleed') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Bleed.mixinBleed;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-bleed-marginX: var(--d1-layout-marginX);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

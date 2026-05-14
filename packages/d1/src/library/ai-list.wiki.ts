@@ -9,6 +9,7 @@ import D1Area from '../../src/components/Ui/Area/D1AreaAiWiki.vue'
 import D1Arrow from '../../src/components/Ui/Arrow/D1ArrowAiWiki.vue'
 import D1Badge from '../../src/components/Ui/Badge/D1BadgeAiWiki.vue'
 import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
+import D1Bleed from '../../src/components/Ui/Bleed/D1BleedAiWiki.vue'
 import D1Block from '../../src/components/Ui/Block/D1BlockAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
 import D1ButtonGroup from '../../src/components/Ui/ButtonGroup/D1ButtonGroupAiWiki.vue'
@@ -19,6 +20,7 @@ import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue
 import D1ClientOnly from '../../src/components/Ui/ClientOnly/D1ClientOnlyAiWiki.vue'
 import D1Container from '../../src/components/Ui/Container/D1ContainerAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
+import D1Divider from '../../src/components/Ui/Divider/D1DividerAiWiki.vue'
 import D1Dummy from '../../src/components/Ui/Dummy/D1DummyAiWiki.vue'
 import D1Field from '../../src/components/Ui/Field/D1FieldAiWiki.vue'
 import D1FieldCounter from '../../src/components/Ui/FieldCounter/D1FieldCounterAiWiki.vue'
@@ -70,6 +72,7 @@ export const aiList: any[] = [
   D1Arrow,
   D1Badge,
   D1Bars,
+  D1Bleed,
   D1Block,
   D1Button,
   D1ButtonGroup,
@@ -80,6 +83,7 @@ export const aiList: any[] = [
   D1ClientOnly,
   D1Container,
   D1Dialog,
+  D1Divider,
   D1Dummy,
   D1Field,
   D1FieldCounter,

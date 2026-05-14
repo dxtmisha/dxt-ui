@@ -1,0 +1,36 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../Checkbox/style" as checkbox;
+
+@mixin mixinSwitch {
+  @include ui.initByCustom('_centerY', calc(ui.v('??comp.height') / 2));
+  @include ui.initByCustom('_centerDirY', calc(var(--d-dir) * ui.v('??_centerY')));
+  @include ui.initByCustom('_itemCenterY', calc(ui.v('??comp.item.height') / 2));
+  @include ui.initByCustom('_itemCenterDirX', calc(var(--d-dir) * ui.v('??comp.item.width') / 2));
+  @include ui.initByCustom('_itemX', calc(ui.v('??_centerDirY') - ui.v('??_itemCenterDirX')));
+  @include ui.initByCustom('_itemY', calc(#{ui.v('??_centerY') - ui.v('??_itemCenterY')}));
+
+  @include checkbox.mixinCheckboxBasic;
+
+  &__track {
+    width: ui.v('??comp.width');
+    min-width: ui.v('??comp.width');
+    height: ui.v('??comp.height');
+
+    transition: inherit;
+  }
+
+  &__item {
+    width: ui.v('??comp.item.width');
+    height: ui.v('??comp.item.height');
+
+    border-radius: 100%;
+
+    transform: translate(#{ui.v('??_itemX')}, #{ui.v('??_itemY')});
+  }
+
+  input:checked ~ * {
+    @include ui.subclass('item') {
+      transform: translate(calc((var(--d-dir) * ui.v('??comp.width')) - ui.v('??_itemX')), #{ui.v('??_itemY')});
+    }
+  }
+}

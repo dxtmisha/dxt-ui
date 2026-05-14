@@ -2,10 +2,10 @@
   "marginLeft": {
     "_type": "var"
   },
-  "marginFlushX": {
+  "marginBleedX": {
     "_type": "var"
   },
-  "~flush": {
+  "~bleed": {
     "_default": true
   },
   "~align": {

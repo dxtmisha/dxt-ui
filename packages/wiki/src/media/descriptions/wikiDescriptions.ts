@@ -7,6 +7,7 @@ import { wikiDescriptionsActionSheet } from './wikiDescriptionsActionSheet'
 import { wikiDescriptionsAnchor } from './wikiDescriptionsAnchor'
 import { wikiDescriptionsArrow } from './wikiDescriptionsArrow'
 import { wikiDescriptionsBadge } from './wikiDescriptionsBadge'
+import { wikiDescriptionsBleed } from './wikiDescriptionsBleed'
 import { wikiDescriptionsBars } from './wikiDescriptionsBars'
 import { wikiDescriptionsBlock } from './wikiDescriptionsBlock'
 import { wikiDescriptionsButton } from './wikiDescriptionsButton'
@@ -18,6 +19,7 @@ import { wikiDescriptionsChipGroup } from './wikiDescriptionsChipGroup'
 import { wikiDescriptionsClientOnly } from './wikiDescriptionsClientOnly'
 import { wikiDescriptionsContainer } from './wikiDescriptionsContainer'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
+import { wikiDescriptionsDivider } from './wikiDescriptionsDivider'
 import { wikiDescriptionsDummy } from './wikiDescriptionsDummy'
 import { wikiDescriptionsField } from './wikiDescriptionsField'
 import { wikiDescriptionsFieldCounter } from './wikiDescriptionsFieldCounter'
@@ -68,6 +70,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsAnchor,
   wikiDescriptionsArrow,
   wikiDescriptionsBadge,
+  wikiDescriptionsBleed,
   wikiDescriptionsBars,
   wikiDescriptionsBlock,
   wikiDescriptionsButton,
@@ -79,6 +82,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsClientOnly,
   wikiDescriptionsContainer,
   wikiDescriptionsDialog,
+  wikiDescriptionsDivider,
   wikiDescriptionsDummy,
   wikiDescriptionsField,
   wikiDescriptionsFieldCounter,

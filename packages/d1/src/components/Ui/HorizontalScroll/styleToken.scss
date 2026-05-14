@@ -12,6 +12,7 @@
   // :style [!] System label / Системная метка
   & {
     --d1-horizontalScroll-marginLeft: var(--d1-ref-spacing-8);
+    --d1-horizontalScroll-marginBleedX: var(--d1-layout-marginX);
     
     &--align {
       &--block {

@@ -7446,6 +7446,17 @@
           }
         }
       },
+      "bleed": {
+        "name": "d1-bleed",
+        "type": "component",
+        "value": {
+          "marginX": {
+            "name": "--d1-bleed-marginX",
+            "type": "var",
+            "value": "{?layout.marginX}"
+          }
+        }
+      },
       "button": {
         "name": "d1-button",
         "type": "component",
@@ -8746,6 +8757,51 @@
           }
         }
       },
+      "divider": {
+        "name": "d1-divider",
+        "type": "component",
+        "value": {
+          "size": {
+            "name": "&--size",
+            "type": "state",
+            "value": {
+              "sm": {
+                "name": "&--sm",
+                "type": "state",
+                "value": {
+                  "borderWidth": {
+                    "name": "--d1-divider-borderWidth",
+                    "type": "var",
+                    "value": "{sys.spacing.outline}"
+                  }
+                }
+              },
+              "md": {
+                "name": "&--md",
+                "type": "state",
+                "value": {
+                  "borderWidth": {
+                    "name": "--d1-divider-borderWidth",
+                    "type": "var",
+                    "value": "{sys.spacing.outline} * 2"
+                  }
+                }
+              },
+              "lg": {
+                "name": "&--lg",
+                "type": "state",
+                "value": {
+                  "borderWidth": {
+                    "name": "--d1-divider-borderWidth",
+                    "type": "var",
+                    "value": "{sys.spacing.outline} * 4"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "dummy": {
         "name": "d1-dummy",
         "type": "component",
@@ -8979,6 +9035,11 @@
             "name": "--d1-horizontalScroll-marginLeft",
             "type": "var",
             "value": "{ref.spacing.8}"
+          },
+          "marginBleedX": {
+            "name": "--d1-horizontalScroll-marginBleedX",
+            "type": "var",
+            "value": "{?layout.marginX}"
           }
         }
       },

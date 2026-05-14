@@ -302,6 +302,14 @@
     "./ui-properties": {
       "sass": "./ui-properties.scss",
       "default": "./ui-properties.scss"
+    },
+    "./D1Bleed": {
+      "types": "./dist/src/library/D1Bleed.d.ts",
+      "default": "./dist/D1Bleed.js"
+    },
+    "./D1Divider": {
+      "types": "./dist/src/library/D1Divider.d.ts",
+      "default": "./dist/D1Divider.js"
     }
   },
   "buildOptions": {

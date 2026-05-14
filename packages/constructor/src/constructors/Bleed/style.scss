@@ -1,0 +1,6 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinBleed {
+  @include ui.initByCustom('marginX', 0);
+  @include ui.marginX(calc(#{ui.v('??marginX')} * -1));
+}

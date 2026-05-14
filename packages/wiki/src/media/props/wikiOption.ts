@@ -129,7 +129,7 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
-  flush: {
+  bleed: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.option,
@@ -174,7 +174,7 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
-  horizontalScrollFlush: {
+  horizontalScrollBleed: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.option,

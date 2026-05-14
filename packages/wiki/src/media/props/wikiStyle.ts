@@ -229,6 +229,19 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  margin: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets the outer spacing around the component',
+        ru: 'Задает внешние отступы вокруг компонента'
+      }
+    },
+    isDemo: true
+  },
   maxWidth: {
     type: StorybookControl.select,
     options: {

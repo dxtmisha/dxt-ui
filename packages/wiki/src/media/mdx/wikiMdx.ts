@@ -13,6 +13,7 @@ import { wikiMdxActionSheet } from './ActionSheet/wikiMdxActionSheet'
 import { wikiMdxAnchor } from './Anchor/wikiMdxAnchor'
 import { wikiMdxArrow } from './Arrow/wikiMdxArrow'
 import { wikiMdxBadge } from './Badge/wikiMdxBadge'
+import { wikiMdxBleed } from './Bleed/wikiMdxBleed'
 import { wikiMdxBars } from './Bars/wikiMdxBars'
 import { wikiMdxBlock } from './Block/wikiMdxBlock'
 import { wikiMdxButton } from './Button/wikiMdxButton'
@@ -24,6 +25,7 @@ import { wikiMdxChipGroup } from './ChipGroup/wikiMdxChipGroup'
 import { wikiMdxClientOnly } from './ClientOnly/wikiMdxClientOnly'
 import { wikiMdxContainer } from './Container/wikiMdxContainer'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
+import { wikiMdxDivider } from './Divider/wikiMdxDivider'
 import { wikiMdxDummy } from './Dummy/wikiMdxDummy'
 import { wikiMdxField } from './Field/wikiMdxField'
 import { wikiMdxFieldCounter } from './FieldCounter/wikiMdxFieldCounter'
@@ -80,6 +82,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxAnchor,
   wikiMdxArrow,
   wikiMdxBadge,
+  wikiMdxBleed,
   wikiMdxBars,
   wikiMdxBlock,
   wikiMdxButton,
@@ -91,6 +94,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxClientOnly,
   wikiMdxContainer,
   wikiMdxDialog,
+  wikiMdxDivider,
   wikiMdxDummy,
   wikiMdxField,
   wikiMdxFieldCounter,

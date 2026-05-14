@@ -1,4 +1,5 @@
 {
   "main": "{d.horizontalScroll}",
-  "marginLeft": "{ref.spacing.8}"
+  "marginLeft": "{ref.spacing.8}",
+  "marginBleedX": "{?layout.marginX}"
 }

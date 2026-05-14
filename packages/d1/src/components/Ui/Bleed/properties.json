@@ -1,0 +1,4 @@
+{
+  "main": "{d.bleed}",
+  "marginX": "{?layout.marginX}"
+}

@@ -28,14 +28,6 @@
       @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
       border-bottom-width: var(--d1-sys-spacing-outline);
       border-bottom-style: solid;
-      
-      &::after {
-        content: ' ';
-        position: absolute;
-        @include ui.right(#{0});
-        bottom: 0;
-        @include ui.left(#{0});
-      }
     }
   }
   // :style [!] System label / Системная метка

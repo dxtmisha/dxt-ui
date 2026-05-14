@@ -98,15 +98,15 @@ export type ApiDataValidation = {
  */
 export type ApiDataItem<T = any>
   = T
-  & ApiDataValidation
-  & {
+    & ApiDataValidation
+    & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-    data?: T
-    /** Success flag/ Флаг успешности */
-    success?: boolean
-    /** Status object/ Объект статуса */
-    statusObject?: ApiStatusItem
-  }
+      data?: T
+      /** Success flag/ Флаг успешности */
+      success?: boolean
+      /** Status object/ Объект статуса */
+      statusObject?: ApiStatusItem
+    }
 
 /**
  * Default API request data type/ Тип данных запроса API по умолчанию

@@ -8,7 +8,7 @@ const propsNames: StorybookProps = [
   { name: 'divider', type: 'boolean | undefined' },
   { name: 'horizontalScrollAlign', type: 'string', option: ['block', 'left'] },
   { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic> | undefined' },
-  { name: 'horizontalScrollFlush', type: 'boolean | undefined' },
+  { name: 'horizontalScrollBleed', type: 'boolean | undefined' },
   { name: 'itemAttrs', type: 'ConstrBind<TabItemProps> | undefined' },
   { name: 'keyLabel', type: 'string | undefined' },
   { name: 'keyValue', type: 'string | undefined' },

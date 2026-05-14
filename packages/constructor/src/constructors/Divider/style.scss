@@ -1,0 +1,6 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinDivider {
+  border-bottom-style: solid;
+  border-bottom-width: ui.v('??borderWidth');
+}

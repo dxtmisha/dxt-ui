@@ -44,7 +44,7 @@ describe('useApiManagementAsyncRef', () => {
 
   it('should trigger initialization on data access', async () => {
     const management = useApiManagementAsyncRef({ path: 'test/path' })
-    
+
     // Accessing list should trigger initialization of useApiRef inside
     expect(management.list.value).toBeUndefined()
     await nextTick()
@@ -61,11 +61,11 @@ describe('useApiManagementAsyncRef', () => {
     )
 
     expect(management.sendPost).toBeDefined()
-    
+
     vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ status: true })
     await management.sendPost({ name: 'test' })
-    
-    expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ 
+
+    expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({
       path: 'post/path',
       method: 'POST'
     }))

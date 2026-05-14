@@ -1,6 +1,6 @@
 type HorizontalScrollPropsToken = {
   // :type [!] System label / Системная метка
-  flush?: boolean
+  bleed?: boolean
   align?: 'block' | 'center' | 'left' | 'right'
   // :type [!] System label / Системная метка
 }
@@ -8,7 +8,7 @@ type HorizontalScrollPropsToken = {
 export type HorizontalScrollPropsBasic = {
   /** Styles/ Стили */
   /** Whether the scroll area is flush with the edges/ Прилегает ли область прокрутки к краям */
-  flush?: boolean
+  bleed?: boolean
 
   /** Options/ Опции */
   /** HTML tag for the scroll element/ HTML-тег для элемента прокрутки */
@@ -31,7 +31,7 @@ export const defaultsHorizontalScroll = {
   tag: 'div',
   ...{
     // :default [!] System label / Системная метка
-    flush: true,
+    bleed: true,
     align: 'stretch'
     // :default [!] System label / Системная метка
   }

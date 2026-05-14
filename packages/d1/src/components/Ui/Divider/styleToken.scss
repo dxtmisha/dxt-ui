@@ -1,0 +1,49 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Divider;
+
+@include ui.initDesignBasic('d1.divider') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Divider.mixinDivider;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    &--size {
+      &--sm {
+        --d1-divider-borderWidth: var(--d1-sys-spacing-outline);
+      }
+      
+      &--md {
+        --d1-divider-borderWidth: calc(var(--d1-sys-spacing-outline) * 2);
+      }
+      
+      &--lg {
+        --d1-divider-borderWidth: calc(var(--d1-sys-spacing-outline) * 4);
+      }
+    }
+    
+    &--margin {
+      &--sm {
+        @include ui.marginY(#{var(--d1-sys-spacing-sm)});
+      }
+      
+      &--md {
+        @include ui.marginY(#{var(--d1-sys-spacing-md)});
+      }
+      
+      &--lg {
+        @include ui.marginY(#{var(--d1-sys-spacing-lg)});
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

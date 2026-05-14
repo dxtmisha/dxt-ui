@@ -1,11 +1,6 @@
 @use "@dxtmisha/styles/properties" as ui;
 
-@mixin mixinCheckbox {
-  @include ui.initByCustom('iconOpacity', 0);
-  @include ui.initByCustom('iconClip', #{inset(0 100% 0 0)});
-  @include ui.initByCustom('iconScale', 1);
-  @include ui.initByCustom('iconScaleChecked', 1);
-
+@mixin mixinCheckboxBasic {
   display: inline-flex;
   position: relative;
 
@@ -25,7 +20,7 @@
 
     transition-timing-function: linear;
     transition-duration: ui.v('d.sys.transitionDuration.sm');
-    transition-property: background-color, border-color, opacity;
+    transition-property: background-color, border-color, opacity, transform;
   }
 
   &__item {
@@ -41,13 +36,6 @@
     position: relative;
 
     transition: inherit;
-
-    >* {
-      opacity: ui.v('??iconOpacity');
-      clip-path: ui.v('??iconClip');
-      @include ui.scale(ui.v('??iconScale'));
-      transition: inherit;
-    }
   }
 
   &__info {
@@ -56,26 +44,6 @@
 
   &__label {
     display: block;
-  }
-
-  &__loading#{'.'}#{ui.n('?progress--visible')}~&__item &__icon>* {
-    opacity: ui.v('??colorOpacity', 0);
-  }
-
-  @include ui.active() {
-    transition-duration: ui.v('d.sys.transitionDuration.sm');
-  }
-
-  input:checked~* {
-    @include ui.initByCustom('iconOpacity', 1);
-    @include ui.initByCustom('iconClip', #{inset(0 0 0 0)});
-    @include ui.initByCustom('iconScale', ui.v('??iconScaleChecked'));
-    transition-property: background-color, border-color, clip-path, scale, transform;
-  }
-
-  &:has(input[readonly]) {
-    cursor: default;
-    pointer-events: none;
   }
 
   &--required {
@@ -96,5 +64,43 @@
         padding-bottom: 0 !important;
       }
     }
+  }
+}
+
+@mixin mixinCheckbox {
+  @include ui.initByCustom('iconOpacity', 0);
+  @include ui.initByCustom('iconClip', #{inset(0 100% 0 0)});
+  @include ui.initByCustom('iconScale', 1);
+  @include ui.initByCustom('iconScaleChecked', 1);
+
+  @include mixinCheckboxBasic;
+
+  &__icon {
+    >* {
+      opacity: ui.v('??iconOpacity');
+      clip-path: ui.v('??iconClip');
+      @include ui.scale(ui.v('??iconScale'));
+      transition: inherit;
+    }
+  }
+
+  &__loading#{'.'}#{ui.n('?progress--visible')}~&__item &__icon>* {
+    opacity: ui.v('??colorOpacity', 0);
+  }
+
+  @include ui.active() {
+    transition-duration: ui.v('d.sys.transitionDuration.sm');
+  }
+
+  input:checked~* {
+    @include ui.initByCustom('iconOpacity', 1);
+    @include ui.initByCustom('iconClip', #{inset(0 0 0 0)});
+    @include ui.initByCustom('iconScale', ui.v('??iconScaleChecked'));
+    transition-property: background-color, border-color, clip-path, scale, transform;
+  }
+
+  &:has(input[readonly]) {
+    cursor: default;
+    pointer-events: none;
   }
 }
