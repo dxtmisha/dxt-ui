@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { BuildFunctional } from '../buildFunctional'
+import { BuildFunctional } from '../xBuildFunctional'
 import { PropertiesFile } from '../../Properties/PropertiesFile'
 import { UI_DIRS_LIBRARY } from '../../../config'
 
