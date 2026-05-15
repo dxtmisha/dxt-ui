@@ -32,3 +32,14 @@ Strictly follow these rules for their application:
    });
    ```
 5. Within the Vue component itself, simply import and call your custom singleton composable: `const { list, loading, sendPost } = useUserManagement();`
+
+CHOOSING THE executeUse STRATEGY:
+1. `executeUseLocal` (PREFERRED):
+   - When to use: For most API requests and services.
+   - Key Features: Works "lazily" (lazy initialization) — initializes only when first called. The instance persists until the end of the session. This prevents overloading the application start with unnecessary requests.
+2. `executeUseGlobal`:
+   - When to use: When data or a service must be loaded/initialized IMMEDIATELY at application start (e.g., critical settings, SDKs).
+   - Key Features: Creates a single instance for the entire application. All global singletons are forcibly initialized via `executeUseGlobalInit()`.
+3. `executeUseProvide`:
+   - When to use: For state shared between a parent and a group of child components (e.g., tabs, complex forms with sub-components).
+   - Key Features: Uses provide/inject. The first component in the tree that calls the hook becomes the "provider", others become consumers.

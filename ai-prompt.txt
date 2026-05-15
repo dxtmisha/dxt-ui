@@ -10,6 +10,51 @@ It is critically important to strictly follow all the prompts and instructions l
 
 ---
 
+## Global code implementation rules
+The global rules for code implementation are listed below. These instructions are mandatory for ensuring high-quality, professional-grade development across the entire project.
+### Global Development Principles (AI Code Promise)
+
+Your primary goal is to generate flawless, industrial-grade code that adheres to dxt-ui standards. You promise to follow these rules strictly:
+
+1. **"Copy-Paste Ready" Principle**:
+   - Generate code that can be copied and run without a single manual edit.
+   - All imports must be absolute or correct relative paths.
+   - No `// ... rest of the code`, no `// imports here`. Only the complete, working file.
+
+2. **Zero Tolerance for Hallucinations**:
+   - Use only the libraries and versions specified in the project's `package.json`.
+   - Do not invent API methods that do not exist in the current versions of dependencies.
+   - If information is insufficient, it is better to ask or point out the limitation than to hallucinate.
+
+3. **Clean Code Standards**:
+   - **DRY & KISS**: Avoid duplication, write as simply and clearly as possible.
+   - **SOLID**: Every module, class, or function must have one clear responsibility.
+   - **Declarative Approach**: Prefer a declarative programming style (array functional methods, composition).
+
+4. **Uncompromising TypeScript**:
+   - No `any`. Use `unknown` if the type is truly unknown, or create generic types.
+   - Always define interfaces for input and output data.
+   - Use `as const`, `readonly`, and enums/union types to increase reliability.
+
+5. **Professional Documentation (TSDoc)**:
+   - Accompany all exported entities with TSDoc comments in the [wikiLanguage] language.
+   - Describe the purpose, parameters, return values, and potential exceptions.
+   - Usage examples in comments are encouraged for complex functions.
+
+6. **Architectural Consistency**:
+   - Respect the project structure. If it is standard in the project to move logic into `composables` or `utils`, follow that pattern.
+   - Do not modify global styles or styles of base UI components unless explicitly requested.
+
+7. **Security and Performance**:
+   - Write error-proof code (guard clauses, optional chaining `?.`, nullish coalescing `??`).
+   - Avoid redundant calculations in loops and heavy operations in reactive dependencies.
+
+8. **Aesthetics and Conciseness**:
+   - The code must be beautiful. Use logical indentation and group code by meaning.
+   - Save tokens by avoiding redundant comments where the code speaks for itself.
+
+---
+
 ## Vue component implementation rules
 The rules for the implementation of Vue components are listed below. These instructions are mandatory for creating high-quality, standard-compliant components within this project.
 ### Vue Component Implementation Rules (Vue.js Style Guide)
@@ -37,11 +82,11 @@ The rules for the implementation of Vue components are listed below. These instr
 The project is located at: 'node_modules/@dxtmisha/constructor'.
 
 ## Project context: Investigation required
-This library is a modular UI component constructor and state management framework for Vue 3, designed to build accessible, highly configurable design systems. Its primary function is to provide low-level logic classes and constructor definitions for complex UI primitives, including input fields with native and pattern-based validation, masking (date, currency, numeric), modal windowing systems, and multi-axis layout transitions. It encapsulates complex behaviors like ARIA attribute mapping, focus trapping, touch gesture detection, and two-way model synchronization into reusable logic blocks.
+This library is a class-based architectural framework for developing accessible Vue 3 UI components and modular design systems. Its primary function is to abstract complex component logic—specifically ARIA accessibility management, reactive state synchronization, and DOM interaction patterns—into reusable "Include" classes and component constructors. It provides a robust engine for input validation, pattern-based masking (text, number, currency, date), and sophisticated layout transitions via motion-transform and axis-based animation systems.
 
-An AI should study this library's API when implementing: 1. Advanced form components requiring sophisticated input masks, real-time validation tracking (validity states, error codes), or dynamic autosizing (TextareaAutosize). 2. Windowing and navigation systems involving modals, tooltips, snakbars, and accordions that require precise control over opening/closing lifecycles and scroll management. 3. Accessible UI elements that must strictly adhere to WAI-ARIA standards through automated attribute generation (AriaStaticInclude). 4. Layout architectures utilizing semantic regions (Page, Section, Block) and complex list management (Lite mode, grouping, nested menus). 5. Interaction logic involving horizontal scrolling, tab-index redirection, or custom touch/mouse gesture callbacks.
+An AI should study this library’s API when implementing or extending high-level UI components that require strict ARIA compliance, complex focus trapping (TabIndexInclude), or advanced input handling like autosizing textareas and formatted masks. It is indispensable for managing multi-state UI elements such as modals, snackbars, and nested menus where consistency in state synchronization (ModelInclude) and event-driven data flows is required. The library is also relevant for developers creating Vite/Rollup plugins to automate component imports or transform SCSS into mixin-based style modifications.
 
-The library is deeply integrated with the Vue 3 reactivity system (Ref, ComputedRef, ShallowRef) and is intended for use in environments using Vite or Rollup, as it includes a dedicated plugin for build-time style modifications and component auto-importing. It depends on external utility packages (@dxtmisha/functional) for underlying logic operations. The architecture strictly separates data handling (Include classes) from component definitions (Constructor types), facilitating a decoupled approach to UI development where logic can be shared across different visual implementations.
+The framework is tightly integrated with the Vue 3 ecosystem, utilizing ShallowRef, ComputedRef, and VNode for performance-optimized rendering logic. It relies on a functional utility layer for low-level data processing and includes a dedicated Vite plugin to handle design-system-specific SCSS transformations and component resolution. The architecture follows a strict separation of concerns, where component configuration is defined via "constructors" while core logic is encapsulated in "Include" classes, enabling highly consistent behavior across diverse UI elements.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -62,11 +107,7 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/d1'.
 
 ## Project context: Investigation required
-This library is a comprehensive Vue 3 design system and UI component suite built on the @dxtmisha/constructor framework. It provides a standardized set of D1-prefixed components for building complex web interfaces with unified behavior and styling. Its primary function is to deliver atomic and complex interface elements ranging from basic controls like D1Button and D1Input to complex layout and motion managers like D1Grid, D1MotionTransform, and D1Window.
-
-Study this library when implementing Vue applications that require a standardized design language, specifically when configuring adaptive layouts using the library's specific breakpoint tokens, managing complex form validation states via D1FieldMessage/Counter, or orchestrating animations using D1MotionAxis. Reference these definitions to navigate specific prop structures (PropsToken) that extend the base constructor types, including extensive palette options, adaptive breakpoint strings (e.g., 'adaptiveSm', 'containerMd'), and component-specific alignment tokens.
-
-The library integrates into the frontend stack as a Vite plugin via uiD1VitePlugin. It leverages Vue's DefineSetupFnComponent for type-safe setup functions and heavily utilizes TypeScript for strict property definition. It is architected for modularity, where high-level components such as D1ActionSheet and D1Dialog are composed of internal primitives like D1Window, D1Bars, and D1Actions, maintaining consistency through inherited prop types and standardized slot definitions.
+This Vue 3 UI component library, prefixed with D1, serves as a high-level implementation of the @dxtmisha/constructor framework. Its primary function is providing a modular, type-safe suite of interface components including layout systems (Grid, Area), interactive elements (Button, Chip, Select), and complex overlay management (Modal, ActionSheet, Window). The library is indispensable for projects requiring deep customization through a standardized prop-token system, specifically for implementing responsive designs with adaptive and container sizing logic or complex state-driven animations using MotionAxis and MotionTransform. An AI should study this API when managing Vue-specific component slots, handling specialized field types (Mask, Autosize Textarea), or configuring global design system parameters via its Vite plugin. It operates as a consumer-facing layer over @dxtmisha/constructor, extending base properties with specific design tokens such as color palettes, indents, and rounded corner configurations.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -135,7 +176,11 @@ The project includes the following screenshots that provide a visual reference f
 The project is located at: 'node_modules/@dxtmisha/figma'.
 
 ## Project context: Investigation required
-A messaging bridge and utility library for Figma Plugin development, facilitating bidirectional communication between the plugin main thread and the iframe UI. Its core function is to abstract window.postMessage and figma.ui.postMessage APIs into a type-safe, listener-based architecture. It is indispensable for scenarios involving automated frame selection tracking, node-to-CSS style extraction, and asynchronous synchronization of client or document-level storage. An AI should study this library's API to implement structured messaging protocols, handle complex Figma-specific style data trees, or manage persistent plugin state without manual event handling. Integration context is strictly the Figma Plugin environment, utilizing a signature-based verification system via FigmaPostCode to validate data integrity between threads. The library provides high-level abstractions for common plugin tasks, including fetching top-level frames, retrieving hierarchical CSS styles, and interacting with Figma's storage APIs through standardized event types.
+This library provides a structured bidirectional messaging bridge between a Figma plugin's logic sandbox and its UI layer. It implements a subscription-based event bus via FigmaPostAbstract and FigmaUiMessenger, utilizing a verification code system through FigmaPostCode to validate and filter messages sent over the window.postMessage boundary.
+
+An AI should study this library when implementing Figma plugin features that require fetching document structure, frame hierarchies, selection states, or node styles. It is essential for managing Figma-specific storage persistence (ClientStorage and global storage) and for serializing Figma node data into JSON or CSS maps for UI rendering.
+
+The library functions as the communication middleware within a Figma plugin architecture, connecting the PluginAPI logic with frontend technologies. It provides a suite of utility functions—such as fetchTopLevelFrames, sendFrameStyles, and fetchClientStorage—that abstract raw messaging into a typed, asynchronous API based on pre-defined event signatures and response interfaces.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -161,7 +206,7 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/figma-code'.
 
 ## Project context: Investigation required
-This library provides a high-level TypeScript abstraction for the Figma Plugin API, specifically optimized for node manipulation, data persistence, and AI-driven content analysis. Its core purpose is to facilitate the extraction of structured data—including CSS styles, node hierarchies, and text content—from Figma frames while providing managed wrappers for both node-specific (PluginData) and global (clientStorage) persistence with TTL-based caching. An AI assistant should study this library when implementing workflows that require automated text localization, selection state synchronization between plugin backend and UI, or programmatic asset export in JPG and JSON formats. The library integrates directly with Figma’s runtime environment and depends on external AI abstracts to process design context (via screenshots and text lists) into structured key-value maps. Key components include FigmaPluginMessenger for bidirectional UI communication and FigmaFrame for recursive node filtering and coordinate-based navigation.
+This library is a structured TypeScript abstraction layer for Figma Plugin backend development, specifically designed to automate node manipulation, data persistence, and bidirectional messaging. Its core purpose is to provide high-level wrappers around the native Figma API for node traversal (FigmaItem), frame-specific metadata extraction (FigmaFrame), and persistent state management using both figma.clientStorage and node-level PluginData with built-in caching and aging logic. AI coding assistants should study this library when implementing features for automated CSS/style extraction, programmatic selection management, screenshot generation, or text content processing for translation and key-value mapping. The integration context bridges the Figma backend to the UI via FigmaPluginMessenger and includes specialized modules for AI-driven text analysis, relying on a shared type system for Figma nodes and message payloads.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -188,7 +233,7 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/figma-ref'.
 
 ## Project context: Investigation required
-This Vue 3 composable library provides reactive abstractions for the Figma Plugin API. Its core purpose is to bridge the Figma plugin backend and the UI layer by providing reactive state management for Figma's storage systems, selection state, and node styles. It is indispensable for developers building Figma plugin interfaces with Vue who need to synchronize the UI with canvas selections, persist data via clientStorage or document-level storage, and manage top-level frame metadata. An AI should study this API to implement reactive data persistence (useFigmaStorage, useFigmaClientStorage), observe or manipulate canvas frame selections (useFigmaFrameSelection, useFigmaUiSelected), and handle style-related messaging (useFigmaFrameStyles). The library integrates Vue's reactivity system (ShallowRef, ComputedRef) with Figma-specific data types and requires the @dxtmisha/figma package for type definitions. It abstracts the asynchronous nature of Figma's postMessage and storage APIs into synchronous-like reactive references and loading states.
+This library provides a collection of Vue.js composables for Figma plugin development, abstracting the Figma Plugin API into reactive primitives. Its core purpose is to synchronize the Figma engine's state—including document storage, client-side persistence, node selection, and frame hierarchy—with a Vue-based UI layer. Usage is indispensable when building Figma plugins that require reactive tracking of canvas selection, persistent configuration via Figma's internal storage APIs, or bidirectional communication regarding frame styles and attributes. It integrates directly with the Vue 3 Composition API and relies on @dxtmisha/figma for specialized data structures. The library handles asynchronous operations through internal loading states and exposes ComputedRef and ShallowRef types for seamless integration into Vue components. Key modules facilitate the management of top-level frames, specific selection sets, and message-based style updates between the plugin UI and the Figma main thread.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -215,11 +260,11 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Project context: Investigation required
-A Vue 3-centric orchestration framework and utility library designed for reactive data management, API synchronization, and localized UI logic. Its primary function is providing high-level abstractions for network request life cycles, including integrated GET/mutation handling with skeleton support, and complex list state management covering focus, selection, and client-side filtering. It offers specialized reactive primitives such as asynchronous computed properties, demand-cached refs, and multi-strategy singleton management using Global, Local, and Provide/Inject patterns.
+This library provides a reactive framework for Vue 3 application development, focusing on structured UI component construction, complex data management, and orchestrated API interactions. Its core purpose is to standardize component architecture through abstract base classes like DesignConstructorAbstract and to provide reactive, high-level wrappers for localized formatting (GeoIntlRef), date manipulation (DatetimeRef), and state persistence (useStorageRef, useCookieRef, useBroadcastValueRef).
 
-An AI should study this API when implementing robust API-to-UI orchestration involving data transformation and contract validation, or when developing UI components that require standardized class/style resolution through the library’s abstract design classes. It is indispensable for scenarios requiring multi-tab state synchronization via broadcast channels, cookie-backed reactive variables, and SSR-compatible SEO meta-tag management. The library's i18n and localization modules are critical for handling country-specific formatting for currencies, units, relative time, and geographical metadata.
+An AI should study this library when implementing a design system requiring standardized class-based component logic or when building data-intensive interfaces that need integrated searching, filtering, and CRUD operations via useApiManagementRef. It is indispensable for scenarios involving multi-tab state synchronization, SEO management (useMeta), and reactive internationalization (useTranslateRef) where DOM synchronization must be automated.
 
-The library is built upon the Vue 3 Composition API and @dxtmisha/functional-basic, integrating directly with Vue Router for navigation-aware data structures. It functions as a middleware layer between raw data sources and the presentation layer, requiring the dxtFunctionalPlugin for global service initialization including API clients, translation instances, and icon configurations.
+The library integrates directly with Vue 3 and vue-router, acting as a reactive middleware layer over @dxtmisha/functional-basic. It utilizes a singleton management pattern (executeUse) for global service orchestration and relies heavily on Ref and ComputedRef to maintain its internal state machine and lifecycle hooks.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -258,6 +303,17 @@ Strictly follow these rules for their application:
    ```
 5. Within the Vue component itself, simply import and call your custom singleton composable: `const { list, loading, sendPost } = useUserManagement();`
 
+CHOOSING THE executeUse STRATEGY:
+1. `executeUseLocal` (PREFERRED):
+   - When to use: For most API requests and services.
+   - Key Features: Works "lazily" (lazy initialization) — initializes only when first called. The instance persists until the end of the session. This prevents overloading the application start with unnecessary requests.
+2. `executeUseGlobal`:
+   - When to use: When data or a service must be loaded/initialized IMMEDIATELY at application start (e.g., critical settings, SDKs).
+   - Key Features: Creates a single instance for the entire application. All global singletons are forcibly initialized via `executeUseGlobalInit()`.
+3. `executeUseProvide`:
+   - When to use: For state shared between a parent and a group of child components (e.g., tabs, complex forms with sub-components).
+   - Key Features: Uses provide/inject. The first component in the tree that calls the hook becomes the "provider", others become consumers.
+
 ## Project types: Essential for analysis
 This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
 'node_modules/@dxtmisha/functional/ai-types.txt'
@@ -269,7 +325,11 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
-This library is a high-level infrastructure and utility toolkit designed for isomorphic TypeScript applications. Its primary function is to provide structured abstractions for networking, state persistence, internationalization, and localized data formatting. The networking layer features an advanced Fetch API wrapper (Api, ApiInstance) with built-in support for singleton or isolated instances, automated retries with jitter, request/response interceptors, global status management, and SSR-to-client hydration (ApiHydration). Storage utilities encompass request-isolated ServerStorage for SSR, prefix-supported Local/Session storage (DataStorage), reactive URL Hash management (Hash), and standardized Cookie handling. The internationalization suite includes wrappers for the Intl API (GeoIntl) to handle complex formatting for currencies, dates, and plurals, alongside country-specific logic for phone masks (GeoPhone) and flag identification (GeoFlag). It also contains a specialized translation engine (Translate) supporting batch asynchronous loading and fallback mechanisms. Additionally, it provides advanced UI logic utilities like SearchList for regex-based filtering with text highlighting and EventItem for managed DOM event lifecycles. An AI should study this library when implementing robust API clients, managing cross-platform storage, handling multi-locale UI components, or developing isomorphic applications requiring data consistency between server and client. It integrates directly with standard web APIs (Fetch, Intl, BroadcastChannel, ResizeObserver) and provides a centralized error reporting system (ErrorCenter) and global loading state (Loading).
+This library is a high-level utility and abstraction framework designed for isomorphic (SSR/CSR) web application development. Its core purpose is to provide centralized, context-aware management for HTTP communication, localization (i18n), and browser environment abstractions. It encapsulates complex logic for API request lifecycle management including caching, retry jitter, and SSR hydration, comprehensive geographic data handling using Intl-based formatting, phone masking, and flag metadata, and reactive DOM state management for meta tags, global loaders, and scroll synchronization.
+
+An AI should study this API when implementing data-heavy interfaces that require complex localization (dates, currencies, plurals), when building SSR-compatible applications that need to isolate data per request through ServerStorage and CookieStorage, or when managing advanced DOM interactions like high-performance scroll/resize tracking and custom event dispatching. It is indispensable for projects requiring structured search/filtering logic with match highlighting or unified error handling across varied application modules.
+
+The library integrates into the mid-to-lower tiers of a modern frontend stack, acting as a bridge between raw platform APIs (Fetch, Intl, BroadcastChannel, DOM) and application-level components. It relies on a singleton-pattern architecture for global states while allowing instance-based isolation for request-specific contexts, particularly during server-side rendering phases where data hydration between server and client is required.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -290,11 +350,11 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/nitro-basic'.
 
 ## Project context: Investigation required
-Core Purpose: This library facilitates Vue 3 Server-Side Rendering (SSR) and state synchronization within the Nitropack ecosystem, specifically handling request-scoped metadata, cookie storage, and server-side API caching.
+Core purpose: Low-level SSR orchestration library for Vue.js applications targeting the Nitro (Nitropack) runtime. It provides specialized utilities for request context management, application bootstrapping, and state synchronization between server and client environments.
 
-Usage Scenarios: This library is indispensable for building isomorphic Vue applications on Nitro that require unified routing synchronization, hydration mismatch prevention, and isolated server-side storage access. An AI should study this API when implementing SSR entry points, configuring Nitro-level API caching, or managing request-bound state (headers/cookies) within the Vue component tree.
+Usage scenarios: This library is indispensable when implementing custom SSR entry points, managing server-side cookies or storage injection into a Vue context, or configuring API clients that require request-specific headers and absolute URL resolution during server-side execution. An AI should study this API to handle hydration readiness, generate unique IDs across environments (uiId), and extract metadata (HTML, teleports, scripts) for the final SSR response.
 
-Integration Context: It acts as a middleware layer between Vue 3, Vue Router, and Nitropack. It leverages Vue’s provide/inject mechanism and SSRContext to bridge Nitro’s server-side HTTP layer with the application's reactive state during the rendering and hydration cycles.
+Integration context: The library acts as a bridge between Vue 3, Vue Router, and the Nitro server engine. It relies on standard Web Request/Headers APIs and utilizes Vue's injection system (via NITRO_APP_STORAGE, NITRO_APP_COOKIE keys) to provide server-originated data to the component tree. It is tightly coupled with the Nitro plugin system for API caching and basic environment initialization.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -387,3 +447,30 @@ Example:
   }
 }
 ```
+
+---
+
+## High-priority instructions
+The rules and instructions provided below have the highest priority. These directives supersede any previous instructions or general rules in case of conflict or contradiction.
+### Обзор проекта dxt-ui для ИИ
+
+**Суть проекта:** Модульная UI-библиотека и конструктор дизайн-систем на Vue 3. Проект ориентирован на автоматизацию (Figma, AI-генерация документации) и высокую типизацию.
+
+#### Архитектура и Технологии:
+- **Monorepo**: Управляется через npm workspaces. Основные части находятся в `packages/*`.
+- **Стек**: Vue 3 (`<script setup lang="ts">`), TypeScript, Vite, SCSS.
+- **Ключевые пакеты**:
+    - `ui`, `d1`: Библиотеки компонентов.
+    - `functional`, `functional-basic`: Ядро логики и API.
+    - `figma*`: Пакеты для синхронизации с Figma (стили, код, переводы).
+    - `scripts`: Скрипты автоматизации и генерации промптов для ИИ.
+    - `wiki`: Документация в формате MDX.
+
+#### Правила разработки для ИИ:
+1.  **Чистота и Атомарность**: Компоненты должны быть минимальными. Вся бизнес-логика выносится в **Composables**.
+2.  **Типизация**: Строгий TypeScript, никаких `any`. Обязательное использование интерфейсов для Props и Emits.
+3.  **Документация**: Используй TSDoc на языке `[wikiLanguage]`. Комментарии должны объяснять "зачем", а не "что".
+4.  **Стили**: Используй SCSS. Изменение базовых стилей библиотеки запрещено, если не указано иное.
+5.  **Зависимости**: Используй только те пакеты, которые есть в `package.json`. Никаких галлюцинаций.
+
+Генерируй код так, чтобы его можно было вставить и запустить сразу (**Copy-Paste Ready**).
