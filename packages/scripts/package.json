@@ -44,6 +44,7 @@
   "bin": {
     "dxt-ai-doc": "bin/ai-doc.ts",
     "dxt-build-functional": "bin/build-functional.ts",
+    "dxt-build-packages": "bin/build-packages.ts",
     "dxt-component": "bin/design-component.ts",
     "dxt-component-wiki": "bin/design-component-wiki.ts",
     "dxt-constructor": "bin/design-constructor.ts",

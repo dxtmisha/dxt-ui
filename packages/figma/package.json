@@ -27,6 +27,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "build-recovery": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "library": "dxt-library",

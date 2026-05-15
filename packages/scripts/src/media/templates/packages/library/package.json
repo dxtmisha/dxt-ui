@@ -15,20 +15,24 @@
   },
   "files": [
     "dist",
-    "README.md",
-    "package.json"
+    "ai-description.txt",
+    "ai-doc.ru.txt",
+    "ai-doc.txt",
+    "ai-types.txt",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/library.d.ts",
+  "types": "dist/src/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/library.d.ts"
+      "types": "./dist/src/library.d.ts"
     },
-    "./style.css": "./dist/style.css",
-    "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "./style.css": "./dist/style.css"
   },
   "dependencies": {},
   "devDependencies": {},

@@ -27,8 +27,8 @@ export class Cookie<T> {
    * Возвращает экземпляр класса по указанному имени cookie.
    * @param name cookie name/ название cookie
    */
-  static getInstance<T>(name: string) {
-    return getItems()?.[name] ?? new Cookie<T>(name)
+  static getInstance<T>(name: string): Cookie<T> {
+    return (getItems()?.[name] ?? new Cookie<T>(name)) as Cookie<T>
   }
 
   /** Cookie value / Значение cookie */
