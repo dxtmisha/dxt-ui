@@ -32,7 +32,9 @@ export class BuildPackages {
    */
   async make(): Promise<void> {
     const list = PropertiesFile.readDir(this.path)
-    let isChanged = false
+    let changed = 0
+
+    console.info(`Build packages(${list.length})...`)
 
     for (const folder of list) {
       const packageFile = new PackageFile([this.path, folder])
@@ -44,12 +46,15 @@ export class BuildPackages {
         && await this.build(packageFile)
       ) {
         this.updateLog(packageFile)
-        isChanged = true
+        changed++
       }
     }
 
-    if (isChanged) {
+    if (changed > 0) {
       this.saveLog()
+      console.info(`Build packages changed: ${changed}`)
+    } else {
+      console.info('Build packages - no changes')
     }
   }
 

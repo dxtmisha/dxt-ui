@@ -13,11 +13,13 @@ const execAsync = promisify(exec)
  * @param packageFile package file object / объект файла пакета
  * @param command command to execute / команда для выполнения
  * @param showStdout whether to show stdout in the console / нужно ли выводить stdout в консоль
+ * @param showStderr whether to show stderr in the console / нужно ли выводить stderr в консоль
  */
 export async function run(
   packageFile: PackageFile,
   command: string,
-  showStdout: boolean = false
+  showStdout: boolean = false,
+  showStderr: boolean = false
 ): Promise<boolean> {
   const name = packageFile.getName()
 
@@ -26,17 +28,14 @@ export async function run(
       cwd: PropertiesFile.joinPath(packageFile.getDir())
     })
 
-    if (showStdout) {
-      console.log(`Command ${command} for ${name}`)
+    console.log(`Command ${command} for ${name}`)
 
-      if (stdout) {
-        console.log(stdout)
-      }
+    if (stdout && showStdout) {
+      console.log(stdout)
     }
 
-    if (stderr) {
-      console.error(`Error command ${command} for ${name}:`, stderr)
-      return false
+    if (stderr && showStderr) {
+      console.error(stderr)
     }
 
     return true
