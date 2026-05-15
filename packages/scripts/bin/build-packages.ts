@@ -2,4 +2,6 @@
 
 import { BuildPackages } from '../src/classes/Build/BuildPackages'
 
-new BuildPackages().make()
+new BuildPackages()
+  .make()
+  .then()

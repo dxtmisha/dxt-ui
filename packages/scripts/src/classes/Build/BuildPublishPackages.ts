@@ -30,7 +30,9 @@ export class BuildPublishPackages {
    */
   async make(): Promise<void> {
     const list = PropertiesFile.readDir(this.path)
-    let isChanged = false
+    let changed = 0
+
+    console.info(`Publish packages(${list.length})...`)
 
     for (const folder of list) {
       const packageFile = new PackageFile([this.path, folder])
@@ -43,17 +45,20 @@ export class BuildPublishPackages {
           this.log[packageFile.getName()] === undefined
           || (
             this.isUpdate(packageFile)
-            && await run(packageFile, packageFile.getCodePublish())
+            && await run(packageFile, packageFile.getCodePublish(), true, true)
           )
         ) {
           this.updateLog(packageFile)
-          isChanged = true
+          changed++
         }
       }
     }
 
-    if (isChanged) {
+    if (changed > 0) {
       this.saveLog()
+      console.info(`Publish packages changed: ${changed}`)
+    } else {
+      console.info('Publish packages - no changes')
     }
   }
 

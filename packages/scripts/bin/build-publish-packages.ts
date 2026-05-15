@@ -2,4 +2,6 @@
 
 import { BuildPublishPackages } from '../src/classes/Build/BuildPublishPackages'
 
-new BuildPublishPackages().make()
+new BuildPublishPackages()
+  .make()
+  .then()
