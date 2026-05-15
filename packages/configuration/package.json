@@ -87,5 +87,6 @@
     "vite": "*",
     "typescript": "*"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "ui-test": true
 }

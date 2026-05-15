@@ -1,6 +1,6 @@
+import { toArray } from '@dxtmisha/functional-basic'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { UI_FILE_PACKAGE } from '../../config'
-import { toArray } from '@dxtmisha/functional-basic'
 
 /**
  * Class for working with the package.json file.

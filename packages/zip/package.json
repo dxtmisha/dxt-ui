@@ -1,6 +1,6 @@
 {
   "name": "@dxtmisha/zip",
-  "private": true,
+  "private": false,
   "version": "0.1.0",
   "type": "module",
   "description": "Library for creating and managing ZIP archives in the browser and Node.js environments.",
@@ -40,15 +40,13 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/library.d.ts",
+  "types": "dist/src/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/library.d.ts"
+      "types": "./dist/src/library.d.ts"
     },
-    "./style.css": "./dist/style.css",
-    "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "./style.css": "./dist/style.css"
   },
   "dependencies": {
     "fflate": "*"

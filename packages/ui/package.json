@@ -58,5 +58,6 @@
     "@dxtmisha/configuration": ">=0.3.11",
     "@dxtmisha/scripts": ">=0.4.1"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "ui-test": true
 }

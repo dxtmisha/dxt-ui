@@ -55,5 +55,6 @@
     "sass": {
       "optional": false
     }
-  }
+  },
+  "ui-test": true
 }

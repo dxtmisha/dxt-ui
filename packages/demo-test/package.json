@@ -31,5 +31,6 @@
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "ui-test": true
 }

@@ -25,6 +25,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
     "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
