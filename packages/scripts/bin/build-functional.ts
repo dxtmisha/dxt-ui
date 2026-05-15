@@ -1,5 +1,5 @@
 #!/usr/bin/env vite-node
 
-import { BuildFunctional } from '../src/classes/Build/xBuildFunctional'
+import { BuildFunctional } from '../src/classes/Build/BuildFunctional'
 
 new BuildFunctional().make()

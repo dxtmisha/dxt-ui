@@ -1,11 +1,9 @@
-import { promisify } from 'node:util'
-import { exec } from 'node:child_process'
-import { PropertiesFile } from './Properties/PropertiesFile'
-import { PackageFile } from './Package/PackageFile'
-import { UI_DIR_PACKAGES } from '../config'
+import { run } from '../../functions/run'
 
-/** Async exec wrapper / Обёртка для асинхронного exec */
-const execAsync = promisify(exec)
+import { PropertiesFile } from '../Properties/PropertiesFile'
+import { PackageFile } from '../Package/PackageFile'
+
+import { UI_DIR_PACKAGES } from '../../config'
 
 const UI_BUILD_LOG_FILE = ['.', 'logs', 'ui-build.log.json']
 
@@ -43,9 +41,8 @@ export class BuildPackages {
         packageFile.is()
         && !packageFile.isTest()
         && this.isUpdate(packageFile)
+        && await this.build(packageFile)
       ) {
-        await this.build(packageFile)
-
         this.updateLog(packageFile)
         isChanged = true
       }
@@ -56,33 +53,14 @@ export class BuildPackages {
     }
   }
 
-  /**
-   * Executes the build command for a specific package.
-   *
-   * Выполняет команду сборки для конкретного пакета.
-   * @param packageFile package file object / объект файла пакета
-   */
-  protected async build(packageFile: PackageFile): Promise<void> {
-    const name = packageFile.getName()
+  protected async build(packageFile: PackageFile): Promise<boolean> {
     const code = packageFile.getCodeBuildOrRecovery()
 
     if (code) {
-      try {
-        const { stdout, stderr } = await execAsync(`npm run ${code}`, {
-          cwd: PropertiesFile.joinPath(packageFile.getDir())
-        })
-
-        if (stdout) {
-          console.log(`Build package: ${name}`, stdout)
-        }
-
-        if (stderr) {
-          console.error(`Error building package: ${name}`, stderr)
-        }
-      } catch (error) {
-        console.error(`Error building package: ${name}`, error)
-      }
+      return await run(packageFile, `npm run ${code}`)
     }
+
+    return false
   }
 
   /**

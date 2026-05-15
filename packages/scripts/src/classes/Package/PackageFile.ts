@@ -51,6 +51,16 @@ export class PackageFile {
   }
 
   /**
+   * Checks if the package should not be published.
+   *
+   * Проверяет, не должен ли пакет публиковаться.
+   */
+  isNoPublish(): boolean {
+    const data = this.get()
+    return data?.['ui-no-publish'] === true || data?.private === true
+  }
+
+  /**
    * Returns the package data.
    *
    * Возвращает данные пакета.
@@ -121,5 +131,20 @@ export class PackageFile {
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the command name for publish or publish-to-npm.
+   *
+   * Возвращает название команды для publish или publish-to-npm.
+   */
+  getCodePublish(): string {
+    const scripts = this.getScripts()
+
+    if ('publish-to-npm' in scripts) {
+      return 'npm run publish-to-npm'
+    }
+
+    return 'npm publish --access public'
   }
 }

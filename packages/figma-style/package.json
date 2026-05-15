@@ -34,5 +34,6 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "ui-test": true
+  "ui-test": true,
+  "ui-no-publish": true
 }
