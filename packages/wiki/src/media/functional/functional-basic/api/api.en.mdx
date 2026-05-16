@@ -88,6 +88,45 @@ When forming the final URL, the class automatically replaces special markers wit
 // If the current locale is 'en-US', the final path will be '/api/en-US/users'
 const data = await Api.get({ path: '{locale}/users' })
 ```
+
+## Status and Meta-information
+
+The `Api` class automatically extracts metadata from the server response (e.g., `success`, `status`, `message`, `code`) and merges it with your data object. This allows you to receive both the payload and the execution result in a single object.
+
+You can access the full status of the last request via the `getStatus()` method, which returns an instance of `ApiStatus`.
+
+```javascript
+const data = await Api.get({ path: 'users' })
+const status = Api.getStatus()
+
+console.log(status.getStatus())     // 200 (HTTP Status)
+console.log(status.getStatusType()) // 'success' | 'error' | 'warning' | 'info'
+console.log(status.getMessage())    // Server-provided message or status text
+console.log(status.getResponse())   // Raw parsed response body
+```
+
+## Error Identification
+
+The library provides a sophisticated error management system via `ApiError`. You can pre-register known API error patterns, and the system will automatically identify them based on status, codes, or custom validation functions.
+
+```javascript
+import { ApiError, ApiMethodItem } from '@dxtmisha/functional-basic'
+
+// Registering a specific error pattern
+ApiError.add({
+  url: 'users/login',
+  method: ApiMethodItem.post,
+  code: 'INVALID_CREDENTIALS',
+  message: 'Please check your username and password.'
+})
+
+// Processing the request
+const status = Api.getStatus()
+const errorItem = status.get()?.errorObject // ApiErrorItem instance
+
+if (errorItem && errorItem.getCode() === 'INVALID_CREDENTIALS') {
+  // Handle specific error case
+}
 ```
 
 ## Lifecycle Hooks
@@ -215,3 +254,19 @@ Api.getResponse().setDevMode(true)
 ```
 
 The emulator triggers **before** the real `fetch` is executed. If no matching mock is found, `Api` will perform a regular network request.
+
+## Advanced: ApiInstance
+
+The `Api` class is a **static proxy** for a global instance of `ApiInstance`. This instance is stored in `ServerStorage`, ensuring isolation between requests during SSR and singleton behavior on the client.
+
+For advanced scenarios—such as connecting to multiple independent APIs simultaneously or creating temporary isolated environments—you can instantiate `ApiInstance` directly.
+
+```javascript
+import { ApiInstance } from '@dxtmisha/functional-basic'
+
+const secondaryApi = new ApiInstance()
+secondaryApi.setUrl('https://another-api.com/')
+secondaryApi.setHeaders({ 'X-Client-Id': '...' })
+
+const data = await secondaryApi.get({ path: 'resource' })
+```

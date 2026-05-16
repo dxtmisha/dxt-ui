@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiError - Error Utility (Static)'/>
+
+# ApiError Class
+
+The `ApiError` class is a **Primary Utility (Static)** for managing API error storage and identifying failures. It provides a centralized, singleton-based interface for registering error patterns and transforming raw network responses into structured `ApiErrorItem` objects.
+
+## Key Features
+
+- **Static Interface** — manage error criteria and analyze responses without manual instantiation.
+- **SSR-Safe Singleton** — utilizes `ServerStorage` to maintain isolated error storage across different requests during server-side rendering.
+- **Pattern Registration** — simple API for adding individual error patterns or bulk lists for global error identification.
+
+## Methods
+
+### Storage Management
+
+- `getStorage(): ApiErrorStorage` — Retrieves the internal singleton instance of the error storage.
+- `add(item: ApiErrorStorageItem | ApiErrorStorageList): void` — Adds one or more error patterns to the global storage.
+
+### Analysis
+
+#### `getItem`
+
+Analyzes a raw Fetch response and creates a structured `ApiErrorItem` instance. This is the primary method for processing API failures.
+
+**Parameters:**
+- `method: ApiMethodItem` — The HTTP method of the request.
+- `response: Response` — The raw Fetch response object.
+
+**Returns:** `Promise<ApiErrorItem>` — A structured error object containing analyzed details.
+
+```javascript
+try {
+  const response = await fetch('/api/user');
+  if (!response.ok) {
+    const errorItem = await ApiError.getItem(ApiMethodItem.get, response);
+    console.error(errorItem.getMessage());
+  }
+} catch (e) {
+  // Handle network error
+}
+```

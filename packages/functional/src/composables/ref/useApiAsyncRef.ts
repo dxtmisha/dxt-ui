@@ -1,4 +1,4 @@
-import { Api, type ApiInstance, type ApiData, type ApiDataValidation } from '@dxtmisha/functional-basic'
+import { Api, type ApiInstance, type ApiData, type ApiDataValidation, type ApiErrorStorageList } from '@dxtmisha/functional-basic'
 
 import { useApiRef, type UseApiRef } from './useApiRef'
 
@@ -15,6 +15,7 @@ import type { ApiOptions } from '../../types/apiTypes'
  * @param conditions conditions for executing the request / условия выполнения запроса
  * @param transformation transforms the received request / преобразовывает полученный запрос
  * @param validateResponseContract function to validate response data contract / функция для проверки контракта данных ответа
+ * @param errorContract storage of response error contracts / хранилище контрактов ошибок ответа
  * @param unmounted delete data from the cache / удалить ли данные из кеша
  * @param apiInstance Api instance / Экземпляр Api
  */
@@ -25,6 +26,7 @@ export function useApiAsyncRef<R, T = R>(
   conditions?: RefType<boolean>,
   transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>,
   validateResponseContract?: (data: T) => ApiDataValidation,
+  errorContract?: ApiErrorStorageList,
   unmounted: boolean = true,
   apiInstance: ApiInstance = Api.getItem()
 ): UseApiRef<R> {
@@ -35,6 +37,7 @@ export function useApiAsyncRef<R, T = R>(
     conditions,
     transformation,
     validateResponseContract,
+    errorContract,
     unmounted,
     apiInstance
   )

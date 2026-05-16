@@ -1,6 +1,6 @@
 import type {
   ApiData,
-  ApiDataValidation, ApiDefaultValue, ApiFetch, ApiMethodItem, SearchColumns, SearchItem, SearchOptions
+  ApiDataValidation, ApiDefaultValue, ApiErrorStorageList, ApiFetch, ApiMethodItem, SearchColumns, SearchItem, SearchOptions
 } from '@dxtmisha/functional-basic'
 import type { RefOrNormal, RefType } from './refTypes'
 import type { Ref } from 'vue'
@@ -36,6 +36,8 @@ export type ApiManagementGet<
   transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>
   /** Function to validate response data contract / Функция для проверки контракта данных ответа */
   validateResponseContract?: (data: Type) => ApiDataValidation
+  /** Storage of response error contracts / Хранилище контрактов ошибок ответа */
+  errorContract?: ApiErrorStorageList
   /** Validation function or class constructor for data / Функция валидации или конструктор класса для данных */
   typeData?: ((data: Return) => boolean) | any
   /** Whether to clear data when the component is unmounted / Удалять ли данные при размонтировании компонента */
@@ -76,6 +78,8 @@ export type ApiManagementRequest<
   action?: (data: Return | undefined) => Promise<void> | void
   /** Transformation before sending data / Трансформация перед отправкой данных */
   transformation?: (data: T) => Return
+  /** Storage of response error contracts / Хранилище контрактов ошибок ответа */
+  errorContract?: ApiErrorStorageList
   /** Whether to wrap the payload in a 'data' property / Обертывать ли полезную нагрузку в свойство 'data' */
   toData?: boolean
   /** Additional mutation request options / Дополнительные опции запроса мутации */

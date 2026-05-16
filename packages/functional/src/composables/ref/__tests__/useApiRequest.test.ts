@@ -64,7 +64,7 @@ describe('useApiRequest', () => {
       const customInstance = { request: vi.fn() } as unknown as ApiInstance
       vi.mocked(customInstance.request).mockResolvedValueOnce({ id: 123 })
 
-      const { send } = useApiRequest('test/path', ApiMethodItem.post, undefined, undefined, true, {}, customInstance)
+      const { send } = useApiRequest('test/path', ApiMethodItem.post, undefined, undefined, undefined, true, {}, customInstance)
 
       const result = await send()
 

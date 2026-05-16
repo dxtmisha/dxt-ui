@@ -20,11 +20,24 @@ Các tham số giống hệt với [`useApiManagementRef`](./useApiManagementRef
 - `formattersOptions?: FormattersOptions` — quy tắc định dạng.
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — cài đặt tìm kiếm.
 - `postRequest / putRequest / deleteRequest` — cài đặt mutation.
-- `action?: function` — callback sau mutation.
+- `action?: (data: any) => Promise<void> | void` — callback chung để thực thi sau bất kỳ mutation nào thành công.
 - `apiInstance?: ApiInstance` — instance của API.
 
 ## Giá trị trả về
-Trả về một đối tượng quản lý API. Cấu trúc đối tượng trả về giống hệt với [`useApiManagementRef`](./useApiManagementRef.vi.mdx).
+Trả về một đối tượng quản lý API. Cấu trúc đối tượng trả về giống hệt với [`useApiManagementRef`](./useApiManagementRef.vi.mdx):
+
+- `isValid: ComputedRef<boolean>` — `true` nếu dữ liệu khớp với kiểm tra `typeData`.
+- `isResponseContractValid: ComputedRef<boolean>` — `true` nếu dữ liệu phản hồi khớp với hợp đồng đã xác định.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — kết quả chi tiết của việc xác thực hợp đồng.
+- `list: ComputedRef` — mảng dữ liệu đã qua xử lý với sự hỗ trợ của Skeleton, formatter và tìm kiếm.
+- `data: ComputedRef<ApiData<Return> | undefined>` — dữ liệu reactive thô từ `useApiRef`.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — đối tượng lỗi hiện tại nếu yêu cầu thất bại.
+- `length: ComputedRef<number>` — độ dài hiện tại của `list`.
+- `starting / loading / reading` — các cờ trạng thái yêu cầu.
+- `loadingSearch / loadingPost / loadingPut / loadingDelete` — trạng thái loading cho tìm kiếm và mutation.
+- `isSearch / search` — trạng thái tìm kiếm và chuỗi tìm kiếm reactive.
+- `sendPost / sendPut / sendDelete` — các phương thức để thực thi mutation.
+- `reset / abort` — các phương thức điều khiển.
 
 ## Ví dụ
 

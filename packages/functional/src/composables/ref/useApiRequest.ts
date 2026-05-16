@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { Api, type ApiInstance, ApiMethodItem, type ApiData, type ApiFetch } from '@dxtmisha/functional-basic'
+import { Api, type ApiInstance, ApiMethodItem, type ApiData, type ApiFetch, type ApiErrorStorageList, ApiError } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { getOptions } from '../../functions/getOptions'
@@ -16,6 +16,7 @@ import type { RefOrNormal } from '../../types/refTypes'
  * @param method HTTP method / HTTP метод
  * @param action Action to perform after the request / Действие, выполняемое после запроса
  * @param transformation Transformation function / Функция трансформации
+ * @param errorContract storage of response error contracts / хранилище контрактов ошибок ответа
  * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
  * @param options Additional request options / Дополнительные опции запроса
  * @param apiInstance Api instance / Экземпляр Api
@@ -30,6 +31,7 @@ export function useApiRequest<
   method: ApiMethodItem = ApiMethodItem.post,
   action?: (data: Return | undefined) => Promise<void> | void,
   transformation?: (data: T) => Return,
+  errorContract?: ApiErrorStorageList,
   toData: boolean = true,
   options?: ApiOptions,
   apiInstance: ApiInstance = Api.getItem()
@@ -40,7 +42,16 @@ export function useApiRequest<
   /** Ref item options / Опции ссылочного элемента */
   const requestOptions = toRefItem(getOptions(options))
 
+  if (errorContract) {
+    ApiError.add(
+      errorContract,
+      getRef(path),
+      method
+    )
+  }
+
   return {
+    /** Loading state / Состояние загрузки */
     loading,
 
     /**

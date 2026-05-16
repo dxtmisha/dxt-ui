@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiErrorItem - Error Instance'/>
+
+# ApiErrorItem Class
+
+The `ApiErrorItem` class is a **data wrapper for API error responses**. It encapsulates the request context (method, response) and the identified error criteria from the storage, providing a unified interface for extracting error details.
+
+## Key Features
+
+- **Data Encapsulation** — stores the complete context of an API failure, including the raw Fetch `Response`.
+- **Unified Extraction** — provides consistent access to error codes and messages regardless of whether they came from the response body or pre-defined storage criteria.
+- **Dynamic Messaging** — resolves error messages using static strings or dynamic factory functions based on the response.
+
+## Methods
+
+### Accessors
+
+- `getMethod(): ApiMethodItem` — Returns the HTTP method used for the request.
+- `getResponse(): Response` — Returns the raw Fetch response object.
+- `getError(): ApiErrorStorageItem` — Returns the identified error criteria from storage.
+- `getStatus(): number` — Returns the HTTP status code.
+
+### Data Extraction
+
+- `getCode(): string | undefined` — Retrieves the error code from the storage criteria.
+- `getMessage(): string | undefined` — Resolves the error message (checks storage criteria or falls back to response defaults).
+
+## Architecture
+
+`ApiErrorItem` is typically created by the `ApiError.getItem()` factory. It serves as the final product of the error analysis phase, ready to be consumed by UI components or logging services.

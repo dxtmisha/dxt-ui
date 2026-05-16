@@ -11,11 +11,12 @@ Trả về một đối tượng với trạng thái tải và phương thức `
 - `method: ApiMethodItem = ApiMethodItem.post` — Phương thức HTTP cho yêu cầu.
 - `action?: (data: Return | undefined) => Promise<void> | void` — Hành động (callback) thực hiện sau khi yêu cầu hoàn tất thành công.
 - `transformation?: (data: T) => Return` — Hàm chuyển đổi dữ liệu phản hồi từ máy chủ trước khi trả về hoặc truyền vào `action`.
+- `errorContract?: ApiErrorStorageList` — nơi lưu trữ hợp đồng lỗi phản hồi.
 - `toData: boolean = true` — Việc trích xuất trường `data` từ phản hồi hay không.
 - `options?: ApiOptions` — Các tùy chọn bổ sung cho yêu cầu (đối tượng tham số `ApiFetch`).
 - `apiInstance?: ApiInstance` — Phiên bản API sử dụng cho yêu cầu. Mặc định là `Api.getItem()`.
 
-**Giá trị t**Trả về:**
+**Trả về:**
 Một đối tượng với các thuộc tính sau:
 - `loading: Ref<boolean>` — Trạng thái tải phản ứng. Sẽ là `true` trong khi yêu cầu đang thực hiện và `false` sau khi hoàn thành hoặc có lỗi.
 - `send(request?: Request): Promise<Return | undefined>` — Phương thức bất đồng bộ để gửi yêu cầu. Nó tự động quản lý trạng thái `loading`, áp dụng hàm biến đổi cho phản hồi, thực hiện callback `action` khi thành công và xử lý lỗi một cách an toàn bằng cách ghi log ra console.
@@ -49,8 +50,9 @@ const { loading, send } = useApiRequest(
   ApiMethodItem.post,
   (data) => console.log('Hành động hoàn tất:', data),
   (raw) => ({ ...raw, processed: true }),
-  true,
-  { cache: false }
+  undefined, // errorContract
+  true, // toData
+  { cache: false } // options
 )
 
 const handleSubmit = async () => {

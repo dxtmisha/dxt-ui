@@ -10,6 +10,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 - `path?: RefOrNormal<string | undefined>` — Путь к endpoint API (может быть реактивным).
 - `action?: (data: Return | undefined) => Promise<void> | void` — Действие (коллбэк), выполняемое после успешного завершения запроса.
 - `transformation?: (data: T) => Return` — Функция трансформации ответа от сервера перед возвращением или передачей в `action`.
+- `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
 - `toData: boolean = true` — Извлекать ли поле `data` из ответа.
 - `options?: ApiOptions` — Дополнительные опции запроса (объект параметров `ApiFetch`).
 - `apiInstance?: ApiInstance` — Экземпляр API, используемый для выполнения запроса. По умолчанию `Api.getItem()`.
@@ -26,8 +27,9 @@ const { loading, send } = useApiDelete(
   '/api/delete',
   (data) => console.log('Действие завершено:', data),
   (raw) => ({ ...raw, processed: true }),
-  true,
-  { cache: false }
+  undefined, // errorContract
+  true, // toData
+  { cache: false } // options
 )
 
 const handleDelete = async () => {

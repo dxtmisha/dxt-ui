@@ -15,6 +15,7 @@ A composable for working with API requests in Vue components. Returns reactive d
 - `conditions?: RefType<boolean>` — reactive execution condition. If `false` — the request is not made and data is cleared.
 - `transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>` — response transformation function applied before saving to `data`. Receives the contract validation result as the second argument.
 - `validateResponseContract?: (data: T) => ApiDataValidation` — function to validate the response data contract.
+- `errorContract?: ApiErrorStorageList` — storage of response error contracts.
 - `unmounted?: boolean` — if `true` (default), data is cleared and the watcher is stopped when the component unmounts. When `false`, `EffectScopeGlobal` is used for background persistence.
 - `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
 
@@ -25,6 +26,7 @@ Reactive states:
 - `item: Ref<ApiData<R> | undefined>` — Direct reference to data (Ref). Also initiates lazy initialization upon access.
 - `isResponseContractValid: ComputedRef<boolean>` — `true` if the response contract is valid (`success` status).
 - `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — the full contract validation result object.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — current error object if the request failed.
 - `starting: ComputedRef<boolean>` — Returns `true` if data has never been requested yet or is in the process of fetching the first portion of data (`data` is still `undefined`).
 - `loading: Ref<boolean>` — Returns `true` if any network request (initial or subsequent `reset`) is currently in progress.
 - `reading: Ref<boolean>` — A flag for an active data reading/processing process.

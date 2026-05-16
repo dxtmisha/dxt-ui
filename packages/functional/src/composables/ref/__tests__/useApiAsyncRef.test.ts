@@ -103,6 +103,7 @@ describe('useApiAsyncRef', () => {
       undefined,
       undefined,
       undefined,
+      undefined,
       true,
       customInstance
     )

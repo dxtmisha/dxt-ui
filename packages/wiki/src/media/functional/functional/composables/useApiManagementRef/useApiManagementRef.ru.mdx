@@ -18,8 +18,11 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## Возвращает
 - `isValid: ComputedRef<boolean>` — `true`, если данные прошли проверку `typeData`.
+- `isResponseContractValid: ComputedRef<boolean>` — `true`, если данные ответа соответствуют определенному контракту.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — подробный результат валидации контракта.
 - `list: ComputedRef` — обработанный массив данных. **Поддерживает Skeleton**: если данные ещё не загружены и передан `skeleton()`, вернет заглушки. Учитывает фильтры поиска и форматтеры.
 - `data: ComputedRef<ApiData<Return> | undefined>` — «сырые» реактивные данные из `useApiRef`.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — текущий объект ошибки, если запрос не удался.
 - `length: ComputedRef<number>` — текущее количество элементов в `list` (динамически меняется при поиске).
 - `lengthData: ComputedRef<number>` — общее количество элементов в исходном `data`.
 - `starting: ComputedRef<boolean>` — флаг первичной загрузки (когда данных еще нет).
@@ -83,10 +86,12 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `path?: string | Ref<string>` — путь к API.
 - `options?: ApiOptions` — параметры запроса (метод, заголовки и т.д.).
 - `reactivity?: boolean` — включить ли автоматическое обновление при изменении `path` или `options`.
-- `conditions?: Ref<boolean>` — условие, при котором выполняется запрос.
-- `transformation?: (data: Type) => ApiData<Return>` — функция для трансформации данных после получения.
+- `conditions?: Ref<boolean>` — условие выполнения запроса.
+- `transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>` — функция трансформации данных после получения.
+- `validateResponseContract?: (data: Type) => ApiDataValidation` — функция для проверки контракта данных ответа.
+- `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
 - `typeData?: ((data: Return) => boolean) | any` — функция проверки данных или конструктор (например, `Array`).
-- `unmounted?: boolean` — удалять ли данные после размонтирования компонента.
+- `unmounted?: boolean` — очищать ли данные после размонтирования компонента.
 - `skeleton?: () => Return` — функция, возвращающая данные-заглушки во время загрузки.
 
 ### `ApiManagementSearch<T, K>`
@@ -98,7 +103,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `path?: string | Ref<string>` — путь для запроса мутации.
 - `action?: (data: Return | undefined) => Promise<void> | void` — коллбэк, вызываемый после выполнения запроса.
 - `transformation?: (data: T) => Return` — трансформация данных перед отправкой.
-- `toData?: boolean` — отправлять ли данные в теле запроса (в свойстве `data`).
+- `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
+- `toData?: boolean` — оборачивать ли полезную нагрузку в свойство 'data'.
 - `options?: ApiOptions` — дополнительные параметры запроса.
 
 ## Пример использования

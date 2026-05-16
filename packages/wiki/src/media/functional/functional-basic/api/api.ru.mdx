@@ -88,6 +88,45 @@ Api.setConfig({
 // Если текущая локаль 'ru-RU', итоговый путь будет '/api/ru-RU/users'
 const data = await Api.get({ path: '{locale}/users' })
 ```
+
+## Статус и мета-информация
+
+Класс `Api` автоматически извлекает метаданные из ответа сервера (например, `success`, `status`, `message`, `code`) и объединяет их с вашим объектом данных. Это позволяет получать и полезную нагрузку, и результат выполнения в одном объекте.
+
+Вы можете получить полный статус последнего запроса через метод `getStatus()`, который возвращает экземпляр `ApiStatus`.
+
+```javascript
+const data = await Api.get({ path: 'users' })
+const status = Api.getStatus()
+
+console.log(status.getStatus())     // 200 (HTTP статус)
+console.log(status.getStatusType()) // 'success' | 'error' | 'warning' | 'info'
+console.log(status.getMessage())    // Сообщение от сервера или текст статуса
+console.log(status.getResponse())   // Исходное тело ответа после парсинга
+```
+
+## Идентификация ошибок
+
+Библиотека предоставляет продвинутую систему управления ошибками через `ApiError`. Вы можете заранее зарегистрировать известные паттерны ошибок API, и система автоматически идентифицирует их на основе статуса, кодов или кастомных функций валидации.
+
+```javascript
+import { ApiError, ApiMethodItem } from '@dxtmisha/functional-basic'
+
+// Регистрация конкретного паттерна ошибки
+ApiError.add({
+  url: 'users/login',
+  method: ApiMethodItem.post,
+  code: 'INVALID_CREDENTIALS',
+  message: 'Пожалуйста, проверьте логин и пароль.'
+})
+
+// При выполнении запроса
+const status = Api.getStatus()
+const errorItem = status.get()?.errorObject // Экземпляр ApiErrorItem
+
+if (errorItem && errorItem.getCode() === 'INVALID_CREDENTIALS') {
+  // Обработка конкретного случая ошибки
+}
 ```
 
 ## Хуки жизненного цикла
@@ -215,3 +254,19 @@ Api.getResponse().setDevMode(true)
 ```
 
 Эмулятор срабатывает **до** выполнения реального `fetch`. Если подходящий мок не найден, `Api` выполнит обычный сетевой запрос.
+
+## Продвинутое использование: ApiInstance
+
+Класс `Api` является **статическим прокси** для глобального экземпляра `ApiInstance`. Этот экземпляр хранится в `ServerStorage`, что обеспечивает изоляцию между запросами при SSR и поведение синглтона на клиенте.
+
+Для продвинутых сценариев — например, при необходимости работы с несколькими независимыми API одновременно или создания временных изолированных окружений — вы можете создавать экземпляры `ApiInstance` напрямую.
+
+```javascript
+import { ApiInstance } from '@dxtmisha/functional-basic'
+
+const secondaryApi = new ApiInstance()
+secondaryApi.setUrl('https://another-api.com/')
+secondaryApi.setHeaders({ 'X-Client-Id': '...' })
+
+const data = await secondaryApi.get({ path: 'resource' })
+```

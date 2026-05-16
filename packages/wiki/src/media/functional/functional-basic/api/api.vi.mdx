@@ -88,6 +88,45 @@ Khi tạo URL cuối cùng, lớp sẽ tự động thay thế các nhãn đặc
 // Nếu locale hiện tại là 'vi-VN', đường dẫn cuối cùng sẽ là '/api/vi-VN/users'
 const data = await Api.get({ path: '{locale}/users' })
 ```
+
+## Trạng thái và Thông tin meta
+
+Lớp `Api` tự động trích xuất các siêu dữ liệu (metadata) từ phản hồi của máy chủ (ví dụ: `success`, `status`, `message`, `code`) và hợp nhất chúng với đối tượng dữ liệu của bạn. Điều này cho phép bạn nhận được cả nội dung dữ liệu và kết quả thực thi trong một đối tượng duy nhất.
+
+Bạn có thể truy cập trạng thái đầy đủ của yêu cầu cuối cùng thông qua phương thức `getStatus()`, phương thức này trả về một instance của `ApiStatus`.
+
+```javascript
+const data = await Api.get({ path: 'users' })
+const status = Api.getStatus()
+
+console.log(status.getStatus())     // 200 (Trạng thái HTTP)
+console.log(status.getStatusType()) // 'success' | 'error' | 'warning' | 'info'
+console.log(status.getMessage())    // Thông báo từ máy chủ hoặc văn bản trạng thái
+console.log(status.getResponse())   // Nội dung phản hồi thô đã được phân tích
+```
+
+## Nhận dạng lỗi
+
+Thư viện cung cấp một hệ thống quản lý lỗi tinh vi thông qua `ApiError`. Bạn có thể đăng ký trước các mẫu lỗi API đã biết, và hệ thống sẽ tự động xác định chúng dựa trên trạng thái, mã lỗi hoặc các hàm xác thực tùy chỉnh.
+
+```javascript
+import { ApiError, ApiMethodItem } from '@dxtmisha/functional-basic'
+
+// Đăng ký một mẫu lỗi cụ thể
+ApiError.add({
+  url: 'users/login',
+  method: ApiMethodItem.post,
+  code: 'INVALID_CREDENTIALS',
+  message: 'Vui lòng kiểm tra lại tên đăng nhập và mật khẩu.'
+})
+
+// Xử lý yêu cầu
+const status = Api.getStatus()
+const errorItem = status.get()?.errorObject // Instance ApiErrorItem
+
+if (errorItem && errorItem.getCode() === 'INVALID_CREDENTIALS') {
+  // Xử lý trường hợp lỗi cụ thể
+}
 ```
 
 ## Hook vòng đời
@@ -215,3 +254,19 @@ Api.getResponse().setDevMode(true)
 ```
 
 Trình giả lập sẽ kích hoạt **trước khi** lệnh `fetch` thực sự được thực hiện. Nếu không tìm thấy mock phù hợp, `Api` sẽ thực hiện một yêu cầu mạng thông thường.
+
+## Nâng cao: ApiInstance
+
+Lớp `Api` là một **static proxy** cho một instance toàn cục của `ApiInstance`. Instance này được lưu trữ trong `ServerStorage`, đảm bảo sự cô lập giữa các yêu cầu trong quá trình SSR và hành vi singleton trên máy khách.
+
+Đối với các kịch bản nâng cao—chẳng hạn như kết nối với nhiều API độc lập khác nhau cùng một lúc hoặc tạo các môi trường cô lập tạm thời—bạn có thể khởi tạo `ApiInstance` trực tiếp.
+
+```javascript
+import { ApiInstance } from '@dxtmisha/functional-basic'
+
+const secondaryApi = new ApiInstance()
+secondaryApi.setUrl('https://another-api.com/')
+secondaryApi.setHeaders({ 'X-Client-Id': '...' })
+
+const data = await secondaryApi.get({ path: 'resource' })
+```

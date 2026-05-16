@@ -21,11 +21,32 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `conditions?: RefType<boolean>` — условия выполнения запроса.
 - `transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>` — преобразование данных.
 - `validateResponseContract?: (data: T) => ApiDataValidation` — валидация контракта.
+- `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
 - `unmounted?: boolean` — удаление из кэша при размонтировании.
 - `apiInstance?: ApiInstance` — экземпляр API.
 
 ## Возвращаемое значение
-Возвращает объект `UseApiRef<R>`. Состав объекта `UseApiRef` полностью идентичен возвращаемому значению [`useApiRef`](./useApiRef.ru.mdx).
+Возвращает объект `UseApiRef<R>`:
+
+**Реактивные состояния:**
+- `data: ComputedRef<ApiData<R> | undefined>` — реактивные данные.
+- `item: Ref<ApiData<R> | undefined>` — реактивный элемент.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — текущий объект ошибки, если запрос не удался.
+- `isResponseContractValid: ComputedRef<boolean>` — `true`, если контракт ответа валиден.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — подробный результат валидации контракта.
+- `length: ComputedRef<number>` — количество элементов в списке.
+- `starting: ComputedRef<boolean>` — флаг начальной фазы загрузки.
+- `loading: Ref<boolean>` — текущий статус загрузки.
+- `reading: Ref<boolean>` — флаг активной обработки данных.
+
+**Методы:**
+- `isStarting(): boolean`, `isLoading(): boolean`, `isReading(): boolean` — методы проверки статуса.
+- `getItem(): ApiData<R> | undefined` — получить текущее значение данных без реактивности.
+- `init(awaitFetch?: boolean): Promise<void>` — ручная инициализация.
+- `initSsr(): void` — инициализация для SSR.
+- `reset(): Promise<void>` — принудительный перезапуск запроса.
+- `stop(): void` — остановка наблюдения и очистка данных.
+- `abort(): void` — отмена текущего HTTP-запроса.
 
 ## Пример
 

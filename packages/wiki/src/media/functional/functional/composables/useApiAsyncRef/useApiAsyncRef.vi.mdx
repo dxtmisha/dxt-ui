@@ -21,11 +21,32 @@ Các tham số hoàn toàn giống với `useApiRef`.
 - `conditions?: RefType<boolean>` — điều kiện thực thi.
 - `transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>` — chuyển đổi dữ liệu.
 - `validateResponseContract?: (data: T) => ApiDataValidation` — xác thực hợp đồng dữ liệu.
+- `errorContract?: ApiErrorStorageList` — nơi lưu trữ hợp đồng lỗi phản hồi.
 - `unmounted?: boolean` — có xóa khỏi cache khi unmount hay không.
 - `apiInstance?: ApiInstance` — instance của API.
 
 ## Giá trị trả về
-Trả về đối tượng `UseApiRef<R>`. Cấu trúc của đối tượng `UseApiRef` hoàn toàn giống với giá trị trả về của [`useApiRef`](./useApiRef.vi.mdx).
+Trả về đối tượng `UseApiRef<R>`:
+
+**Trạng thái phản ứng:**
+- `data: ComputedRef<ApiData<R> | undefined>` — dữ liệu reactive.
+- `item: Ref<ApiData<R> | undefined>` — phần tử reactive.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — đối tượng lỗi hiện tại nếu yêu cầu thất bại.
+- `isResponseContractValid: ComputedRef<boolean>` — `true` nếu hợp đồng phản hồi hợp lệ.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — kết quả chi tiết xác thực hợp đồng.
+- `length: ComputedRef<number>` — số lượng phần tử trong danh sách.
+- `starting: ComputedRef<boolean>` — cờ cho giai đoạn tải ban đầu.
+- `loading: Ref<boolean>` — trạng thái tải hiện tại.
+- `reading: Ref<boolean>` — cờ xử lý dữ liệu đang hoạt động.
+
+**Phương thức:**
+- `isStarting(): boolean`, `isLoading(): boolean`, `isReading(): boolean` — các phương thức kiểm tra trạng thái.
+- `getItem(): ApiData<R> | undefined` — lấy giá trị dữ liệu hiện tại không cần phản ứng.
+- `init(awaitFetch?: boolean): Promise<void>` — khởi tạo thủ công.
+- `initSsr(): void` — khởi tạo cho SSR.
+- `reset(): Promise<void>` — buộc chạy lại yêu cầu.
+- `stop(): void` — dừng theo dõi và xóa dữ liệu.
+- `abort(): void` — hủy yêu cầu HTTP hiện tại.
 
 ## Ví dụ
 

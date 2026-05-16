@@ -15,6 +15,13 @@ describe('ApiDefault', () => {
     expect(apiDefault.get()).toEqual({ token: '123' })
   })
 
+  it('should support function as default value', () => {
+    const apiDefault = new ApiDefault()
+    apiDefault.set(() => ({ token: 'dynamic' }))
+    expect(apiDefault.is()).toBe(true)
+    expect(apiDefault.get()).toEqual({ token: 'dynamic' })
+  })
+
   it('should merge default object into request object', () => {
     const apiDefault = new ApiDefault()
     apiDefault.set({ globalParam: 'yes' })

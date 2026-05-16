@@ -15,14 +15,18 @@ import type { ErrorCenterInstance } from './ErrorCenterInstance'
 import { ApiCache } from './ApiCache'
 import { ApiDataReturn } from './ApiDataReturn'
 import { ApiDefault } from './ApiDefault'
+import { ApiError } from './ApiError'
+import { type ApiErrorItem } from './ApiErrorItem'
 import { ApiHeaders } from './ApiHeaders'
 import { ApiHydration } from './ApiHydration'
 import { ApiPreparation } from './ApiPreparation'
-import { ApiStatus } from './ApiStatus'
 import { ApiResponse } from './ApiResponse'
+import { ApiStatus } from './ApiStatus'
 
 import {
+  type ApiDefaultValue,
   type ApiFetch,
+  type ApiHeadersValue,
   type ApiMethod,
   ApiMethodItem,
   type ApiPreparationEnd
@@ -261,7 +265,7 @@ export class ApiInstance {
    * Изменяет данные заголовка по умолчанию.
    * @param headers default headers / заголовки по умолчанию
    */
-  setHeaders(headers: Record<string, string>): this {
+  setHeaders(headers: ApiHeadersValue): this {
     this.headers.set(headers)
     return this
   }
@@ -272,7 +276,7 @@ export class ApiInstance {
    * Изменяет данные запроса по умолчанию.
    * @param request default request data / данные запроса по умолчанию
    */
-  setRequestDefault(request: Record<string, any>): this {
+  setRequestDefault(request: ApiDefaultValue): this {
     this.requestDefault.set(request)
     return this
   }
@@ -443,6 +447,7 @@ export class ApiInstance {
     retryCount: number = 0
   ): Promise<T> {
     const {
+      method = ApiMethodItem.get,
       api = true,
       path = '',
       hideError = false,
@@ -451,6 +456,7 @@ export class ApiInstance {
       retryDelay = 64,
       globalPreparation = true,
       globalEnd = true,
+      initError = true,
       endResetLimit = 8
     } = apiFetch
 
@@ -471,6 +477,7 @@ export class ApiInstance {
 
     const status = new ApiStatus()
     let dataReturn: ApiDataReturn<T>
+    let dataError: ApiErrorItem | undefined
 
     if (!hideLoading) {
       this.loading.show()
@@ -494,7 +501,11 @@ export class ApiInstance {
         !hideError
         && query.status >= 400
       ) {
-        this.makeErrorQuery(query)
+        if (initError) {
+          dataError = await ApiError.getItem(method as ApiMethodItem, query)
+        }
+
+        this.makeErrorQuery(dataError ?? query)
       }
 
       if (
@@ -510,7 +521,7 @@ export class ApiInstance {
         return await this.fetch(apiFetch, retryCount + 1)
       }
 
-      dataReturn = new ApiDataReturn(apiFetch, query, end)
+      dataReturn = new ApiDataReturn(apiFetch, query, end, dataError)
       await dataReturn.init()
     } catch (e) {
       if (!hideError) {
@@ -617,27 +628,35 @@ export class ApiInstance {
    * Processes an error response.
    *
    * Обрабатывает ошибку ответа.
-   * @param query error response / ответ с ошибкой
+   * @param error error details / данные ошибки
    */
-  protected makeErrorQuery(query: Response): void {
-    switch (query.status) {
+  protected makeErrorQuery(error: ApiErrorItem | Response): void {
+    const status = error instanceof Response
+      ? error.status
+      : error.getStatus()
+
+    const code = (error instanceof Response
+      ? error.status
+      : error.getCode()) || status
+
+    switch (status) {
       case 401:
-        this.errorCenter.on({ group: 'api', code: 'unauthorized', details: query })
+        this.errorCenter.on({ group: 'api', code: 'unauthorized', details: error })
         break
       case 403:
-        this.errorCenter.on({ group: 'api', code: 'forbidden', details: query })
+        this.errorCenter.on({ group: 'api', code: 'forbidden', details: error })
         break
       case 404:
-        this.errorCenter.on({ group: 'api', code: 'notFound', details: query })
+        this.errorCenter.on({ group: 'api', code: 'notFound', details: error })
         break
       case 500:
-        this.errorCenter.on({ group: 'api', code: 'server', details: query })
+        this.errorCenter.on({ group: 'api', code: 'server', details: error })
         break
       default:
         this.errorCenter.on({
           group: 'api-server',
-          code: String(query.status),
-          details: query
+          code: String(code),
+          details: error
         })
     }
   }

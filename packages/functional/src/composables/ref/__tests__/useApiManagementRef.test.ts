@@ -227,6 +227,52 @@ describe('useApiManagementRef', () => {
       await new Promise(r => setTimeout(r, 50))
       expect(loadingPost!.value).toBe(false)
     })
+
+    it('should apply formatters to the list', async () => {
+      vi.mocked(mockApiInstance.request).mockResolvedValue([{ id: 1, price: 100 }])
+
+      const { list } = useApiManagementRef(
+        { path: 'test/path' },
+        { price: { transformation: (v: number) => `${v} USD` } }
+      )
+
+      // trigger fetch
+      expect(list.value).toBeUndefined()
+      await nextTick()
+      await new Promise(r => setTimeout(r, 0))
+
+      expect(list.value).toEqual([{ id: 1, price: 100, priceFormat: '100 USD' }])
+    })
+
+    it('should search through formatted list', async () => {
+      vi.mocked(mockApiInstance.request).mockResolvedValue([
+        { id: 1, name: 'Apple' },
+        { id: 2, name: 'Banana' }
+      ])
+
+      const searchRef = ref('')
+      const { list } = useApiManagementRef(
+        { path: 'test/path' },
+        { name: { transformation: (v: string) => `Fruit: ${v}` } },
+        {
+          columns: ['nameFormat'] as any,
+          value: searchRef
+        }
+      )
+
+      // trigger fetch
+      expect(list.value).toBeUndefined()
+      await nextTick()
+      await new Promise(r => setTimeout(r, 0))
+
+      expect(list.value).toHaveLength(2)
+
+      searchRef.value = 'Apple'
+      await nextTick()
+      expect(list.value).toHaveLength(1)
+      expect(list.value![0].name).toBe('Apple')
+      expect(list.value![0].nameFormat).toBe('Fruit: Apple')
+    })
   })
 
   describe('Success-based reset', () => {

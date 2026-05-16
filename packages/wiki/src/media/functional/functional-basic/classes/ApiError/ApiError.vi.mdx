@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiError - Tiện ích lỗi (Tĩnh)'/>
+
+# Lớp ApiError
+
+Lớp `ApiError` là một **Tiện ích chính (Tĩnh)** để quản lý bộ lưu trữ lỗi API và xác định các thất bại. Nó cung cấp một giao diện singleton tập trung để đăng ký các mẫu lỗi và chuyển đổi các phản hồi mạng thô thành các đối tượng `ApiErrorItem` có cấu trúc.
+
+## Các tính năng chính
+
+- **Giao diện tĩnh** — quản lý tiêu chí lỗi và phân tích phản hồi mà không cần khởi tạo thủ công.
+- **Singleton an toàn cho SSR** — sử dụng `ServerStorage` để duy trì bộ lưu trữ lỗi riêng biệt giữa các yêu cầu khác nhau trong quá trình render phía máy chủ.
+- **Đăng ký mẫu** — API đơn giản để thêm các mẫu lỗi riêng lẻ hoặc danh sách hàng loạt để nhận dạng lỗi toàn cầu.
+
+## Các phương thức
+
+### Quản lý bộ lưu trữ
+
+- `getStorage(): ApiErrorStorage` — Lấy instance singleton nội bộ của bộ lưu trữ lỗi.
+- `add(item: ApiErrorStorageItem | ApiErrorStorageList): void` — Thêm một hoặc nhiều mẫu lỗi vào bộ lưu trữ toàn cầu.
+
+### Phân tích
+
+#### `getItem`
+
+Phân tích một phản hồi Fetch thô và tạo một instance `ApiErrorItem` có cấu trúc. Đây là phương thức chính để xử lý các thất bại API.
+
+**Tham số:**
+- `method: ApiMethodItem` — Phương thức HTTP của yêu cầu.
+- `response: Response` — Đối tượng phản hồi Fetch thô.
+
+**Trả về:** `Promise<ApiErrorItem>` — Một đối tượng lỗi có cấu trúc chứa các chi tiết đã được phân tích.
+
+```javascript
+try {
+  const response = await fetch('/api/user');
+  if (!response.ok) {
+    const errorItem = await ApiError.getItem(ApiMethodItem.get, response);
+    console.error(errorItem.getMessage());
+  }
+} catch (e) {
+  // Xử lý lỗi mạng
+}
+```

@@ -93,6 +93,7 @@ describe('useApiRef', () => {
         undefined,
         undefined,
         undefined,
+        undefined,
         true,
         customInstance
       )

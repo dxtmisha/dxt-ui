@@ -6,6 +6,7 @@ import { Loading } from '../Loading'
 import { ErrorCenter } from '../ErrorCenter'
 import { ApiCache } from '../ApiCache'
 import { ApiDefault } from '../ApiDefault'
+import { ApiErrorItem } from '../ApiErrorItem'
 import { ApiResponse } from '../ApiResponse'
 import * as isOnLineModule from '../../functions/isOnLine'
 
@@ -308,31 +309,60 @@ describe('ApiInstance', () => {
     try {
       await api.get('err-404' as any)
     } catch (_e) { /* ignore */ }
-    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({ code: 'notFound' }))
+    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
+      code: 'notFound',
+      details: expect.any(ApiErrorItem)
+    }))
 
     fetchMock.mockResolvedValue(new Response(null, { status: 401 }))
     try {
       await api.get('err-401' as any)
     } catch (_e) { /* ignore */ }
-    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({ code: 'unauthorized' }))
+    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
+      code: 'unauthorized',
+      details: expect.any(ApiErrorItem)
+    }))
 
     fetchMock.mockResolvedValue(new Response(null, { status: 403 }))
     try {
       await api.get('err-403' as any)
     } catch (_e) { /* ignore */ }
-    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({ code: 'forbidden' }))
+    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
+      code: 'forbidden',
+      details: expect.any(ApiErrorItem)
+    }))
 
     fetchMock.mockResolvedValue(new Response(null, { status: 500 }))
     try {
       await api.get('err-500' as any)
     } catch (_e) { /* ignore */ }
-    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({ code: 'server' }))
+    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
+      code: 'server',
+      details: expect.any(ApiErrorItem)
+    }))
 
     fetchMock.mockResolvedValue(new Response(null, { status: 503 }))
     try {
       await api.get('err-503' as any)
     } catch (_e) { /* ignore */ }
-    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({ code: '503' }))
+    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
+      code: '503',
+      details: expect.any(ApiErrorItem)
+    }))
+  })
+
+  it('should use Response instead of ApiErrorItem if initError is false', async () => {
+    const errorSpy = vi.spyOn(ErrorCenter.getItem(), 'on')
+    fetchMock.mockResolvedValue(new Response(null, { status: 503 }))
+
+    try {
+      await api.get({ path: 'err-503', initError: false })
+    } catch (_e) { /* ignore */ }
+
+    expect(errorSpy).toHaveBeenCalledWith(expect.objectContaining({
+      code: '503',
+      details: expect.any(Response)
+    }))
   })
 
   it('should format offline/unknown errors to ErrorCenter', async () => {

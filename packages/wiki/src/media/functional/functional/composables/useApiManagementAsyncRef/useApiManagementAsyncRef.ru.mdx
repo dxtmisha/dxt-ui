@@ -20,11 +20,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `formattersOptions?: FormattersOptions` — правила форматирования.
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — настройки поиска.
 - `postRequest / putRequest / deleteRequest` — настройки мутаций.
-- `action?: function` — коллбэк после мутации.
+- `action?: (data: any) => Promise<void> | void` — общий коллбэк, выполняемый после любой успешной мутации.
 - `apiInstance?: ApiInstance` — экземпляр API.
 
 ## Возвращаемое значение
-Возвращает объект управления API. Состав возвращаемого значения полностью идентичен [`useApiManagementRef`](./useApiManagementRef.ru.mdx).
+Возвращает объект управления API. Состав возвращаемого значения полностью идентичен [`useApiManagementRef`](./useApiManagementRef.ru.mdx):
+
+- `isValid: ComputedRef<boolean>` — `true`, если данные прошли проверку `typeData`.
+- `isResponseContractValid: ComputedRef<boolean>` — `true`, если данные ответа соответствуют определенному контракту.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — подробный результат валидации контракта.
+- `list: ComputedRef` — обработанный массив данных с поддержкой Skeleton, форматтеров и поиска.
+- `data: ComputedRef<ApiData<Return> | undefined>` — «сырые» реактивные данные из `useApiRef`.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — текущий объект ошибки, если запрос не удался.
+- `length: ComputedRef<number>` — текущее количество элементов в `list`.
+- `starting / loading / reading` — флаги состояния запроса.
+- `loadingSearch / loadingPost / loadingPut / loadingDelete` — состояния загрузки для поиска и мутаций.
+- `isSearch / search` — статус поиска и реактивная строка поиска.
+- `sendPost / sendPut / sendDelete` — методы для выполнения мутаций.
+- `reset / abort` — методы управления.
 
 ## Пример
 

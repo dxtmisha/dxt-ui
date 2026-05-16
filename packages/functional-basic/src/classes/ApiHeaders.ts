@@ -1,7 +1,8 @@
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
-import type { ApiFetch } from '../types/apiTypes'
+import type { ApiFetch, ApiHeadersValue } from '../types/apiTypes'
+import { executeFunction } from '../functions/executeFunction'
 
 /**
  * Class for managing HTTP request headers.
@@ -10,7 +11,7 @@ import type { ApiFetch } from '../types/apiTypes'
  */
 export class ApiHeaders {
   /** Default headers / Заголовки по умолчанию */
-  protected headers: Record<string, string> = {}
+  protected headers: ApiHeadersValue = {}
 
   /**
    * Gets the headers for the request.
@@ -28,7 +29,7 @@ export class ApiHeaders {
       return undefined
     }
 
-    const headers = { ...this.headers }
+    const headers = { ...executeFunction(this.headers) }
 
     if (isObjectNotArray(value)) {
       Object.assign(headers, value)
@@ -69,11 +70,8 @@ export class ApiHeaders {
    * @param headers list of default headers/ список заголовков по умолчанию
    * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
    */
-  set(headers: Record<string, string>): this {
-    if (isObjectNotArray(headers)) {
-      this.headers = headers
-    }
-
+  set(headers: ApiHeadersValue): this {
+    this.headers = headers
     return this
   }
 }

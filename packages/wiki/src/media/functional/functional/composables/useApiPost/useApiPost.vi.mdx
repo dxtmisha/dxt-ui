@@ -10,6 +10,7 @@ Trả về một đối tượng với trạng thái tải và phương thức `
 - `path?: RefOrNormal<string | undefined>` — Đường dẫn đến endpoint API (có thể phản ứng).
 - `action?: (data: Return | undefined) => Promise<void> | void` — Hành động (callback) thực hiện sau khi yêu cầu hoàn tất thành công.
 - `transformation?: (data: T) => Return` — Hàm chuyển đổi dữ liệu phản hồi từ máy chủ trước khi trả về hoặc truyền vào `action`.
+- `errorContract?: ApiErrorStorageList` — nơi lưu trữ hợp đồng lỗi phản hồi.
 - `toData: boolean = true` — Việc trích xuất trường `data` từ phản hồi hay không.
 - `options?: ApiOptions` — Các tùy chọn bổ sung cho yêu cầu (đối tượng tham số `ApiFetch`).
 - `apiInstance?: ApiInstance` — Phiên bản API sử dụng cho yêu cầu. Mặc định là `Api.getItem()`.
@@ -26,8 +27,9 @@ const { loading, send } = useApiPost(
   '/api/submit',
   (data) => console.log('Hành động hoàn tất:', data),
   (raw) => ({ ...raw, processed: true }),
-  true,
-  { cache: false }
+  undefined, // errorContract
+  true, // toData
+  { cache: false } // options
 )
 
 const handleSubmit = async () => {

@@ -1,3 +1,5 @@
+import type { ApiErrorItem } from '../classes/ApiErrorItem'
+
 /**
  * Supported HTTP methods for API requests.
  * Поддерживаемые HTTP-методы для API-запросов.
@@ -60,9 +62,9 @@ export type ApiConfig = {
   /** Base origin for API requests (protocol and domain)/ Базовый источник для API-запросов (протокол и домен) */
   origin?: string
   /** Default headers for API requests/ Заголовки по умолчанию для API-запросов */
-  headers?: Record<string, string>
+  headers?: ApiHeadersValue
   /** Default request data for API requests/ Данные запроса по умолчанию для API-запросов */
-  requestDefault?: Record<string, any>
+  requestDefault?: ApiDefaultValue
 
   /** Function to call before request/ Функция для вызова перед запросом */
   preparation?: (apiFetch: ApiFetch) => Promise<void>
@@ -91,6 +93,13 @@ export type ApiDataValidation = {
   code?: string | number
   /** Message/ Сообщение */
   message?: string
+  /** Error/ Ошибка */
+  error?: {
+    /** Code / Код */
+    code?: string | number
+    /** Message/ Сообщение */
+    message?: string
+  }
 }
 
 /**
@@ -106,12 +115,19 @@ export type ApiDataItem<T = any>
       success?: boolean
       /** Status object/ Объект статуса */
       statusObject?: ApiStatusItem
+      /** Error object/ Объект ошибки */
+      errorObject?: ApiErrorItem
     }
+
+/**
+ * Type for API request headers / Тип для заголовков запроса API
+ */
+export type ApiHeadersValue = Record<string, string> | (() => Record<string, string>)
 
 /**
  * Default API request data type/ Тип данных запроса API по умолчанию
  */
-export type ApiDefaultValue = Record<string, any>
+export type ApiDefaultValue = Record<string, any> | (() => Record<string, any>)
 
 /**
  * Options for making API requests/ Опции для выполнения API-запросов
@@ -174,6 +190,8 @@ export type ApiFetch = {
   /** Additional fetch() options/ Дополнительные опции fetch() */
   init?: RequestInit
 
+  initError?: boolean
+
   /** Timeout for the request in milliseconds/ Таймаут запроса в миллисекундах */
   timeout?: number
 
@@ -210,6 +228,29 @@ export type ApiHydrationItem = {
  * List of API hydration items/ Список элементов гидратации API
  */
 export type ApiHydrationList = ApiHydrationItem[]
+
+/**
+ * Item for API error storage/ Элемент для хранилища ошибок API
+ */
+export type ApiErrorStorageItem = {
+  /** URL string or RegExp to match request URL/ Строка URL или RegExp для сопоставления URL */
+  url: string | RegExp
+  /** HTTP method/ HTTP метод */
+  method: ApiMethodItem
+  /** Error code/ Код ошибки */
+  code?: string
+  /** HTTP status code/ Код статуса HTTP */
+  status?: number
+  /** Validation function/ Функция валидации */
+  validation?: (response: Response) => boolean
+  /** Error message or function that returns message/ Сообщение об ошибке или функция, возвращающая сообщение */
+  message?: string | ((response?: Response) => string)
+}
+
+/**
+ * List of API error storage items/ Список элементов хранилища ошибок API
+ */
+export type ApiErrorStorageList = ApiErrorStorageItem[]
 
 /**
  * Supported HTTP methods type/ Тип HTTP-методов

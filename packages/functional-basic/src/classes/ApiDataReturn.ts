@@ -2,6 +2,7 @@ import { isArray } from '../functions/isArray'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
 import { ApiStatus } from './ApiStatus'
+import type { ApiErrorItem } from './ApiErrorItem'
 
 import type { ApiData, ApiFetch, ApiPreparationEnd } from '../types/apiTypes'
 
@@ -13,7 +14,8 @@ const API_DATA_RETURN_KEY_ADD: string[] = [
   'success',
   'status',
   'code',
-  'message'
+  'message',
+  'error'
 ]
 
 /**
@@ -41,11 +43,13 @@ export class ApiDataReturn<T = any> {
    * @param apiFetch API fetch configuration / конфигурация запроса API
    * @param query response object / объект ответа
    * @param end preparation end data / данные завершения подготовки
+   * @param error error object / объект ошибки
    */
   constructor(
     protected readonly apiFetch: ApiFetch,
     protected readonly query: Response,
-    protected readonly end: ApiPreparationEnd
+    protected readonly end: ApiPreparationEnd,
+    protected readonly error?: ApiErrorItem
   ) {
   }
 
@@ -89,7 +93,8 @@ export class ApiDataReturn<T = any> {
     ) {
       return {
         ...data,
-        statusObject: status.get()
+        statusObject: status.get(),
+        errorObject: this.error
       }
     }
 
@@ -188,6 +193,14 @@ export class ApiDataReturn<T = any> {
         && !(key in item)
       ) {
         item[key] = data[key]
+
+        if (
+          key === 'error'
+          && isObjectNotArray(data[key])
+        ) {
+          item.code = data[key]?.code ?? data.code
+          item.message = data[key]?.message ?? data.message
+        }
       }
     })
 

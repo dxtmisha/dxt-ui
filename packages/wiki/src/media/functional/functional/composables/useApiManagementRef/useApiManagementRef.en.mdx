@@ -18,8 +18,11 @@ A powerful composable for comprehensive API request orchestration. It manages da
 
 ## Returns
 - `isValid: ComputedRef<boolean>` — `true` if data matches `typeData` check.
+- `isResponseContractValid: ComputedRef<boolean>` — `true` if the response data matches the defined contract.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — detailed result of the contract validation.
 - `list: ComputedRef` — the processed data array. **Supports Skeleton**: if data is not yet loaded and a `skeleton()` is provided, it returns placeholders. Accounts for search filters and formatters.
 - `data: ComputedRef<ApiData<Return> | undefined>` — the raw reactive data from `useApiRef`.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — current error object if the request failed.
 - `length: ComputedRef<number>` — current length of the `list` (dynamically updates when searching).
 - `lengthData: ComputedRef<number>` — original length of the data in `data.value`.
 - `starting: ComputedRef<boolean>` — `true` if the request is still in its initial loading phase.
@@ -84,7 +87,9 @@ If you are using the standard `useApiManagementRef`, you can manually include it
 - `options?: ApiOptions` — request options (method, headers, etc.).
 - `reactivity?: boolean` — whether to automatically refetch when `path` or `options` change.
 - `conditions?: Ref<boolean>` — condition under which the request is executed.
-- `transformation?: (data: Type) => ApiData<Return>` — function to transform data after fetching.
+- `transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>` — function to transform data after fetching.
+- `validateResponseContract?: (data: Type) => ApiDataValidation` — function to validate the response data contract.
+- `errorContract?: ApiErrorStorageList` — storage of response error contracts.
 - `typeData?: ((data: Return) => boolean) | any` — data validation function or constructor (e.g., `Array`).
 - `unmounted?: boolean` — whether to clear data after component unmount.
 - `skeleton?: () => Return` — function returning placeholder data during loading.
@@ -98,7 +103,8 @@ If you are using the standard `useApiManagementRef`, you can manually include it
 - `path?: string | Ref<string>` — path for the mutation request.
 - `action?: (data: Return | undefined) => Promise<void> | void` — callback after request execution.
 - `transformation?: (data: T) => Return` — data transformation before sending.
-- `toData?: boolean` — whether to send data in the request body (under `data`).
+- `errorContract?: ApiErrorStorageList` — storage of response error contracts.
+- `toData?: boolean` — whether to wrap the payload in a 'data' property.
 - `options?: ApiOptions` — additional request options.
 
 ## Usage Example

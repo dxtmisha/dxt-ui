@@ -21,11 +21,32 @@ The parameters are identical to `useApiRef`.
 - `conditions?: RefType<boolean>` — request conditions.
 - `transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>` — data transformation.
 - `validateResponseContract?: (data: T) => ApiDataValidation` — contract validation.
+- `errorContract?: ApiErrorStorageList` — storage of response error contracts.
 - `unmounted?: boolean` — removal from cache on unmount.
 - `apiInstance?: ApiInstance` — API instance.
 
 ## Return Value
-Returns the `UseApiRef<R>` object. The structure of the `UseApiRef` object is identical to the return value of [`useApiRef`](./useApiRef.en.mdx).
+Returns the `UseApiRef<R>` object:
+
+**Reactive states:**
+- `data: ComputedRef<ApiData<R> | undefined>` — reactive data.
+- `item: Ref<ApiData<R> | undefined>` — reactive item.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — current error object if the request failed.
+- `isResponseContractValid: ComputedRef<boolean>` — `true` if the response contract is valid.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — detailed contract validation result.
+- `length: ComputedRef<number>` — count of elements in the list.
+- `starting: ComputedRef<boolean>` — flag for initial loading phase.
+- `loading: Ref<boolean>` — current loading status.
+- `reading: Ref<boolean>` — flag for active data processing.
+
+**Methods:**
+- `isStarting(): boolean`, `isLoading(): boolean`, `isReading(): boolean` — status check methods.
+- `getItem(): ApiData<R> | undefined` — get current data value without reactivity.
+- `init(awaitFetch?: boolean): Promise<void>` — manual initialization.
+- `initSsr(): void` — SSR initialization.
+- `reset(): Promise<void>` — force re-run the request.
+- `stop(): void` — stop observation and clear data.
+- `abort(): void` — cancel the current HTTP request.
 
 ## Example
 

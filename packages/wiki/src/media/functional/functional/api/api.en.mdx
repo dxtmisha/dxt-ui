@@ -13,9 +13,11 @@ The main task of these tools is to automate routine operations: tracking loading
 ## Available Tools
 
 - `useApiRef` — Reactive data retrieval (GET) with automatic execution and storage in a `ref`.
+- `useApiAsyncRef` — Asynchronous version of `useApiRef` for immediate initialization (SSR).
 - `useApiRequest` — Base hook for manual execution of any HTTP requests (returns the `send` method).
 - `useApiPost / Put / Delete` — Specialized wrappers for mutations (create, update, delete).
 - `useApiManagementRef` — A comprehensive orchestrator combining GET requests, search, formatting, and mutations into a single cycle.
+- `useApiManagementAsyncRef` — Asynchronous orchestrator for immediate initialization (SSR).
 
 ## How to Work with Them
 
@@ -70,5 +72,30 @@ const {
 
 // After calling sendDelete(), the main 'list' will update AUTOMATICALLY!
 ```
+
+## Error Handling
+
+The API hooks use a contract-based error management system. Instead of manually handling every response status in your components, you define a "base" of expected errors and let the system resolve them automatically.
+
+### Workflow:
+1.  **Define a Contract (`errorContract`)**: You pass a list of potential error patterns (a contract) to the hook. This serves as a database of errors you want to handle specifically.
+2.  **Automatic Matching**: When a request fails (status ≥ 400), the system compares the response against your contract. It matches based on:
+    *   **HTTP Status**: e.g., `404` or `500`.
+    *   **Error Code**: A specific string code extracted from the JSON response body (e.g., `'USER_NOT_FOUND'`).
+    *   **URL Pattern**: Specific endpoints or patterns (RegExp).
+    *   **Custom Validation**: A function that returns `true` if the response matches the error.
+3.  **Data Resolution**: If a match is found, the system populates the reactive `errorItem` property with structured data, including the localized message and the resolved error code.
+4.  **UI Implementation**: In your component, you simply use the `errorItem` to display messages or toggle UI states, confident that the matching logic is handled centrally.
+
+This system ensures that your components remain clean and focused on display logic, while error identification remains declarative and reusable.
+
+## Server-Side Rendering (SSR)
+
+All API hooks are designed with **Server-Side Rendering (SSR)** support in mind. To ensure data is pre-fetched on the server before the page is sent to the client, you have two options:
+
+1.  **Async Versions**: Use `useApiAsyncRef` or `useApiManagementAsyncRef`. These hooks automatically call `initSsr()` upon creation, ensuring the request is executed during server-side rendering.
+2.  **Manual `initSsr()`**: For standard hooks (like `useApiRef`), you must explicitly call the `.initSsr()` method inside the component's `setup()` block.
+
+This prevents "content flickering" (where users see empty states or skeletons followed by data loading on the client) and improves SEO by providing fully populated HTML from the server.
 
 This architecture allows you to describe data logic declaratively, focusing on request configuration rather than manual management of loading states and list updates.

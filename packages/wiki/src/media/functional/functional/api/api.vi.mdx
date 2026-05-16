@@ -13,9 +13,11 @@ Nhiệm vụ chính của các công cụ này là tự động hóa các tác v
 ## Các công cụ hiện có
 
 - `useApiRef` — Truy xuất dữ liệu phản hồi (GET) với tính năng tự động chạy và lưu trữ trong `ref`.
+- `useApiAsyncRef` — Phiên bản bất đồng bộ của `useApiRef` để khởi tạo ngay lập tức (SSR).
 - `useApiRequest` — Hook cơ bản để thực hiện thủ công bất kỳ yêu cầu HTTP nào (trả về phương thức `send`).
 - `useApiPost / Put / Delete` — Các lớp vỏ chuyên dụng cho các thay đổi (tạo, cập nhật, xóa).
 - `useApiManagementRef` — Bộ điều phối toàn diện, kết hợp các yêu cầu GET, tìm kiếm, định dạng và thay đổi thành một chu kỳ duy nhất.
+- `useApiManagementAsyncRef` — Bộ điều phối bất đồng bộ để khởi tạo ngay lập tức (SSR).
 
 ## Cách làm việc với chúng
 
@@ -70,5 +72,30 @@ const {
 
 // Sau khi gọi sendDelete(), danh sách chính 'list' sẽ TỰ ĐỘNG cập nhật!
 ```
+
+## Xử lý lỗi
+
+Các hook API sử dụng hệ thống quản lý lỗi dựa trên hợp đồng. Thay vì xử lý thủ công từng trạng thái phản hồi trong các component, bạn xác định một "cơ sở" các lỗi dự kiến và để hệ thống tự động giải quyết chúng.
+
+### Quy trình làm việc:
+1.  **Xác định Hợp đồng (`errorContract`)**: Bạn truyền một danh sách các mẫu lỗi tiềm năng (một hợp đồng) cho hook. Điều này đóng vai trò như một cơ sở dữ liệu về các lỗi bạn muốn xử lý cụ thể.
+2.  **So khớp tự động**: Khi một yêu cầu thất bại (trạng thái ≥ 400), hệ thống sẽ so sánh phản hồi với hợp đồng của bạn. Nó khớp dựa trên:
+    *   **Trạng thái HTTP**: ví dụ: `404` hoặc `500`.
+    *   **Mã lỗi**: Một mã chuỗi cụ thể được trích xuất từ thân phản hồi JSON (ví dụ: `'USER_NOT_FOUND'`).
+    *   **Mẫu URL**: Các endpoint cụ thể hoặc các mẫu (RegExp).
+    *   **Xác thực tùy chỉnh**: Một hàm trả về `true` nếu phản hồi khớp với lỗi.
+3.  **Giải quyết dữ liệu**: Nếu tìm thấy sự phù hợp, hệ thống sẽ điền vào thuộc tính reactive `errorItem` các dữ liệu có cấu trúc, bao gồm thông báo đã được bản địa hóa và mã lỗi đã được giải quyết.
+4.  **Triển khai UI**: Trong component của mình, bạn chỉ cần sử dụng `errorItem` để hiển thị thông báo hoặc chuyển đổi trạng thái UI, tin tưởng rằng logic so khớp lỗi đã được xử lý tập trung.
+
+Hệ thống này đảm bảo rằng các component của bạn luôn sạch sẽ và tập trung vào logic hiển thị, trong khi việc nhận diện lỗi vẫn mang tính khai báo và có thể tái sử dụng.
+
+## Server-Side Rendering (SSR)
+
+Tất cả các hook API được thiết kế với sự hỗ trợ cho **Server-Side Rendering (SSR)**. Để đảm bảo dữ liệu được lấy trước trên máy chủ trước khi trang được gửi đến máy khách, bạn có hai lựa chọn:
+
+1.  **Phiên bản bất đồng bộ**: Sử dụng `useApiAsyncRef` hoặc `useApiManagementAsyncRef`. Các hook này tự động gọi `initSsr()` khi được tạo, đảm bảo yêu cầu được thực thi trong quá trình render phía máy chủ.
+2.  **Gọi `initSsr()` thủ công**: Đối với các hook tiêu chuẩn (như `useApiRef`), bạn phải gọi phương thức `.initSsr()` một cách rõ ràng bên trong khối `setup()` của component.
+
+Điều này giúp ngăn chặn hiện tượng "nhấp nháy nội dung" (khi người dùng thấy trạng thái trống hoặc skeleton trước khi dữ liệu được tải ở máy khách) và cải thiện SEO bằng cách cung cấp HTML đã có đầy đủ dữ liệu từ máy chủ.
 
 Kiến trúc này cho phép bạn mô tả logic làm việc với dữ liệu một cách khai báo, tập trung vào cấu hình yêu cầu thay vì quản lý thủ công các trạng thái tải và cập nhật danh sách.

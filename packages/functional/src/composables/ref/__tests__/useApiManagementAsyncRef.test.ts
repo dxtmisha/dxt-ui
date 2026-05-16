@@ -70,4 +70,32 @@ describe('useApiManagementAsyncRef', () => {
       method: 'POST'
     }))
   })
+
+  it('should apply formatters and search', async () => {
+    vi.mocked(mockApiInstance.request).mockResolvedValue([
+      { id: 1, name: 'Apple' },
+      { id: 2, name: 'Banana' }
+    ])
+
+    const management = useApiManagementAsyncRef(
+      { path: 'test/path' },
+      { name: { transformation: (v: string) => `Fruit: ${v}` } },
+      { columns: ['nameFormat'] as any }
+    )
+
+    // Trigger initialization by accessing list (lazy in DOM)
+    expect(management.list.value).toBeUndefined()
+    expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({ path: 'test/path' }))
+
+    await nextTick()
+    await new Promise(r => setTimeout(r, 0))
+
+    expect(management.list.value).toHaveLength(2)
+    expect(management.list.value![0].nameFormat).toBe('Fruit: Apple')
+
+    management.search.value = 'Banana'
+    await nextTick()
+    expect(management.list.value).toHaveLength(1)
+    expect(management.list.value![0].name).toBe('Banana')
+  })
 })

@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiErrorStorage - Quản lý lỗi'/>
+
+# Lớp ApiErrorStorage
+
+Lớp `ApiErrorStorage` là một **Trình quản lý xử lý và nhận dạng các trạng thái lỗi API**. Nó cung cấp một kho lưu trữ tập trung cho các tiêu chí lỗi API, cho phép hệ thống xác định các lỗi cụ thể bằng cách khớp mã trạng thái phản hồi, mã lỗi từ thân JSON, phương thức yêu cầu và URL.
+
+## Các tính năng chính
+
+- **Lưu trữ tập trung** — tập hợp tất cả các mẫu lỗi API đã biết vào một nơi để xử lý nhất quán.
+- **Khớp mẫu** — xác định lỗi bằng trạng thái HTTP, mã lỗi tùy chỉnh, phương thức yêu cầu hoặc mẫu URL (bao gồm cả RegExp).
+- **Chuyển đổi cấu trúc** — chuyển đổi các lỗi mạng thô thành các mục lỗi cấp ứng dụng có cấu trúc.
+- **Xác thực tùy chỉnh** — hỗ trợ các hàm xác thực tùy chỉnh cho các kịch bản nhận dạng lỗi phức tạp.
+
+## Các phương thức
+
+### Quản lý
+
+- `add(item: ApiErrorStorageItem | ApiErrorStorageList): this` — Thêm một hoặc nhiều mục lỗi hoặc danh sách lỗi vào bộ lưu trữ nội bộ.
+
+### Nhận dạng
+
+#### `find`
+
+Tìm một mục lỗi khớp trong bộ lưu trữ bằng cách phân tích phản hồi. Nó tự động cố gắng trích xuất mã lỗi và thông báo từ thân phản hồi.
+
+**Tham số:**
+- `method: ApiMethodItem` — Phương thức HTTP được sử dụng cho yêu cầu.
+- `response: Response` — Đối tượng phản hồi Fetch API.
+
+**Trả về:** `Promise<ApiErrorStorageItem>` — Mục lỗi khớp hoặc một mục lỗi được tạo nếu không tìm thấy kết quả khớp.
+
+```javascript
+const errorItem = await errorStorage.find(ApiMethodItem.get, response);
+
+if (errorItem.code === 'USER_NOT_FOUND') {
+  // Xử lý lỗi cụ thể
+}
+```
+
+## Các loại dữ liệu (Types)
+
+### ApiErrorStorageItem
+
+- `url: string | RegExp` — Chuỗi URL hoặc biểu thức chính quy để khớp với URL yêu cầu.
+- `method: ApiMethodItem` — Phương thức HTTP bắt buộc để khớp.
+- `code?: string` — Mã lỗi tùy chọn để khớp với thân JSON.
+- `status?: number` — Mã trạng thái HTTP tùy chọn để khớp.
+- `validation?: (response: Response) => boolean` — Hàm xác thực tùy chỉnh tùy chọn.
+- `message?: string | ((response?: Response) => string)` — Thông báo lỗi tùy chọn hoặc hàm tạo thông báo.

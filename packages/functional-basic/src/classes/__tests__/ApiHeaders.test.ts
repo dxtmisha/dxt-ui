@@ -13,6 +13,17 @@ describe('ApiHeaders', () => {
     })
   })
 
+  it('should support function as default headers', () => {
+    const apiHeaders = new ApiHeaders()
+    apiHeaders.set(() => ({ Authorization: 'DynamicToken' }))
+
+    const headers = apiHeaders.get()
+    expect(headers).toEqual({
+      'Authorization': 'DynamicToken',
+      'Content-Type': 'application/json;charset=UTF-8'
+    })
+  })
+
   it('should merge default headers and value headers', () => {
     const apiHeaders = new ApiHeaders()
     apiHeaders.set({ 'X-Global': 'true', 'Shared': 'yes' })

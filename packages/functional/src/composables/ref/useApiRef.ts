@@ -15,10 +15,15 @@ import {
   type ApiData,
   type ApiDataValidation,
   type ApiFetch,
-  isDomRuntime
+  isDomRuntime,
+  type ApiErrorStorageList,
+  ApiError,
+  ApiErrorItem,
+  ApiMethodItem
 } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
+import { getApiErrorRef } from '../../functions/ref/getApiErrorRef'
 import { getOptions } from '../../functions/getOptions'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
@@ -38,6 +43,9 @@ export interface UseApiRef<R> {
 
   /** Item (Ref) / Элемент (Ref) */
   item: Ref<ApiData<R> | undefined>
+
+  /** Error item (Computed) / Элемент ошибки (Computed) */
+  errorItem: ComputedRef<ApiErrorItem | undefined>
 
   /**
    * Status of response contract validation.
@@ -138,6 +146,7 @@ let globalConditions: RefType<any>
  * @param conditions conditions for executing the request / условия выполнения запроса
  * @param transformation transforms the received request / преобразовывает полученный запрос
  * @param validateResponseContract function to validate response data contract / функция для проверки контракта данных ответа
+ * @param errorContract storage of response error contracts / хранилище контрактов ошибок ответа
  * @param unmounted delete data from the cache / удалить ли данные из кеша
  * @param apiInstance Api instance / Экземпляр Api
  */
@@ -151,6 +160,7 @@ export function useApiRef<
   conditions?: RefType<boolean>,
   transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>,
   validateResponseContract?: (data: T) => ApiDataValidation,
+  errorContract?: ApiErrorStorageList,
   unmounted: boolean = true,
   apiInstance: ApiInstance = Api.getItem()
 ): UseApiRef<R> {
@@ -291,6 +301,16 @@ export function useApiRef<
     if (first) {
       first = false
 
+      if (errorContract) {
+        const apiFetch = getApiFetch()
+
+        ApiError.add(
+          errorContract,
+          apiFetch.path,
+          apiFetch.method as ApiMethodItem
+        )
+      }
+
       if (!isDomRuntime()) {
         return
       }
@@ -372,6 +392,9 @@ export function useApiRef<
     return item.value
   })
 
+  /** Error item (Computed) / Элемент ошибки (Computed) */
+  const errorItem = getApiErrorRef<R>(item)
+
   /**
    * Returns the count of records in the list (ComputedRef) /
    * Возвращает количество записей в списке (ComputedRef)
@@ -396,6 +419,8 @@ export function useApiRef<
 
       return item
     },
+    /** Error item (Computed) / Элемент ошибки (Computed) */
+    errorItem,
 
     isResponseContractValid: computed<boolean>(() => responseValidationResult.value?.status === 'success'),
     responseValidationResult: computed<ApiDataValidation | undefined>(() => responseValidationResult.value),

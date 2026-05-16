@@ -1,5 +1,6 @@
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
+import { executeFunction } from '../functions/executeFunction'
 
 import { type ApiDefaultValue, type ApiFetch } from '../types/apiTypes'
 
@@ -28,8 +29,8 @@ export class ApiDefault {
    * Получает данные запроса по умолчанию.
    * @returns default request data or undefined / данные запроса по умолчанию или undefined
    */
-  get(): ApiDefaultValue | undefined {
-    return this.value
+  get(): Record<string, any> | undefined {
+    return executeFunction(this.value)
   }
 
   /**

@@ -127,6 +127,7 @@ export function useApiManagementRef<
     conditions,
     transformation,
     validateResponseContract,
+    errorContract,
     typeData,
     unmounted,
     skeleton
@@ -152,6 +153,7 @@ export function useApiManagementRef<
     conditions,
     transformation,
     validateResponseContract,
+    errorContract,
     unmounted,
     apiInstance
   )
@@ -256,6 +258,7 @@ export function useApiManagementRef<
         postRequest.path,
         getCallbackActionRequest(postRequest.action),
         postRequest.transformation,
+        postRequest.errorContract,
         postRequest.toData,
         postRequest.options,
         apiInstance
@@ -267,6 +270,7 @@ export function useApiManagementRef<
         putRequest.path,
         getCallbackActionRequest(putRequest.action),
         putRequest.transformation,
+        putRequest.errorContract,
         putRequest.toData,
         putRequest.options,
         apiInstance
@@ -278,6 +282,7 @@ export function useApiManagementRef<
         deleteRequest.path,
         getCallbackActionRequest(deleteRequest.action),
         deleteRequest.transformation,
+        deleteRequest.errorContract,
         deleteRequest.toData,
         deleteRequest.options,
         apiInstance
@@ -321,6 +326,9 @@ export function useApiManagementRef<
     get data() {
       return request.data
     },
+
+    /** Current error from request / Текущая ошибка ответа */
+    errorItem: request.errorItem,
 
     /** Current number of items in `list` (changes with search) / Текущее количество элементов в `list` (меняется при поиске) */
     get length() {

@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/ApiErrorItem - Đối tượng lỗi'/>
+
+# Lớp ApiErrorItem
+
+Lớp `ApiErrorItem` là một **vỏ bọc dữ liệu cho các phản hồi lỗi API**. Nó đóng gói ngữ cảnh yêu cầu (phương thức, phản hồi) và các tiêu chí lỗi đã xác định từ bộ lưu trữ, cung cấp một giao diện thống nhất để trích xuất chi tiết lỗi.
+
+## Các tính năng chính
+
+- **Đóng gói dữ liệu** — lưu trữ ngữ cảnh đầy đủ của một lỗi API, bao gồm cả đối tượng `Response` thô từ Fetch.
+- **Trích xuất thống nhất** — cung cấp khả năng truy cập nhất quán vào mã lỗi và thông báo bất kể chúng đến từ thân phản hồi hay các tiêu chí lưu trữ được xác định trước.
+- **Thông báo động** — giải quyết các thông báo lỗi bằng cách sử dụng chuỗi tĩnh hoặc các hàm tạo thông báo động dựa trên phản hồi.
+
+## Các phương thức
+
+### Các phương thức truy cập (Accessors)
+
+- `getMethod(): ApiMethodItem` — Trả về phương thức HTTP được sử dụng cho yêu cầu.
+- `getResponse(): Response` — Trả về đối tượng phản hồi Fetch thô.
+- `getError(): ApiErrorStorageItem` — Trả về tiêu chí lỗi đã xác định từ bộ lưu trữ.
+- `getStatus(): number` — Trả về mã trạng thái HTTP.
+
+### Trích xuất dữ liệu
+
+- `getCode(): string | undefined` — Lấy mã lỗi từ tiêu chí lưu trữ.
+- `getMessage(): string | undefined` — Giải quyết thông báo lỗi (kiểm tra tiêu chí lưu trữ hoặc quay lại mặc định của phản hồi).
+
+## Kiến trúc
+
+`ApiErrorItem` thường được tạo bởi factory `ApiError.getItem()`. Nó phục vụ như là sản phẩm cuối cùng của giai đoạn phân tích lỗi, sẵn sàng để được sử dụng bởi các thành phần UI hoặc dịch vụ ghi log.

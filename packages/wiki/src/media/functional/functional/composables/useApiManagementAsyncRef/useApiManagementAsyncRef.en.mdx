@@ -20,11 +20,24 @@ Parameters are identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx
 - `formattersOptions?: FormattersOptions` — formatting rules.
 - `searchOptions?: ApiManagementSearch<Item, Columns>` — search settings.
 - `postRequest / putRequest / deleteRequest` — mutation settings.
-- `action?: function` — callback after mutation.
+- `action?: (data: any) => Promise<void> | void` — a common callback to perform after any successful mutation.
 - `apiInstance?: ApiInstance` — API instance.
 
 ## Returns
-Returns an API management object. The return object structure is identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx).
+Returns an API management object. The return object structure is identical to [`useApiManagementRef`](./useApiManagementRef.en.mdx):
+
+- `isValid: ComputedRef<boolean>` — `true` if data matches `typeData` check.
+- `isResponseContractValid: ComputedRef<boolean>` — `true` if the response data matches the defined contract.
+- `responseValidationResult: ComputedRef<ApiDataValidation | undefined>` — detailed result of the contract validation.
+- `list: ComputedRef` — processed data array with support for Skeleton, formatters, and search.
+- `data: ComputedRef<ApiData<Return> | undefined>` — raw reactive data from `useApiRef`.
+- `errorItem: ComputedRef<ApiErrorItem | undefined>` — current error object if the request failed.
+- `length: ComputedRef<number>` — current length of the `list`.
+- `starting / loading / reading` — request status flags.
+- `loadingSearch / loadingPost / loadingPut / loadingDelete` — loading states for search and mutations.
+- `isSearch / search` — search status and reactive search string.
+- `sendPost / sendPut / sendDelete` — mutation execution methods.
+- `reset / abort` — control methods.
 
 ## Example
 

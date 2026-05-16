@@ -1,4 +1,4 @@
-import { type ApiInstance, ApiMethodItem, type ApiData, type ApiFetch } from '@dxtmisha/functional-basic'
+import { type ApiInstance, ApiMethodItem, type ApiData, type ApiFetch, type ApiErrorStorageList } from '@dxtmisha/functional-basic'
 import { useApiRequest } from './useApiRequest'
 
 import type { ApiOptions } from '../../types/apiTypes'
@@ -11,6 +11,7 @@ import type { RefOrNormal } from '../../types/refTypes'
  * @param path Path to the API endpoint / Путь к endpoint API
  * @param action Action to perform after the request / Действие, выполняемое после запроса
  * @param transformation Transformation function / Функция трансформации
+ * @param errorContract storage of response error contracts / хранилище контрактов ошибок ответа
  * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
  * @param options Additional request options / Дополнительные опции запроса
  * @param apiInstance Api instance / Экземпляр Api
@@ -24,6 +25,7 @@ export function useApiDelete<
   path?: RefOrNormal<string | undefined>,
   action?: (data: Return | undefined) => Promise<void> | void,
   transformation?: (data: T) => Return,
+  errorContract?: ApiErrorStorageList,
   toData: boolean = true,
   options?: ApiOptions,
   apiInstance?: ApiInstance
@@ -33,6 +35,7 @@ export function useApiDelete<
     ApiMethodItem.delete,
     action,
     transformation,
+    errorContract,
     toData,
     options,
     apiInstance

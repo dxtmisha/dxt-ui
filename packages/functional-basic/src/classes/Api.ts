@@ -4,7 +4,9 @@ import { ServerStorage } from './ServerStorage'
 
 import {
   type ApiConfig,
+  type ApiDefaultValue,
   type ApiFetch,
+  type ApiHeadersValue,
   ApiMethodItem,
   type ApiPreparationEnd
 } from '../types/apiTypes'
@@ -139,7 +141,7 @@ export class Api {
    * @param headers default headers / заголовки по умолчанию
    * @returns void / ничего не возвращает
    */
-  static setHeaders(headers: Record<string, string>): void {
+  static setHeaders(headers: ApiHeadersValue): void {
     this.getItem().setHeaders(headers)
   }
 
@@ -150,7 +152,7 @@ export class Api {
    * @param request default request data / данные запроса по умолчанию
    * @returns void / ничего не возвращает
    */
-  static setRequestDefault(request: Record<string, any>): void {
+  static setRequestDefault(request: ApiDefaultValue): void {
     this.getItem().setRequestDefault(request)
   }
 

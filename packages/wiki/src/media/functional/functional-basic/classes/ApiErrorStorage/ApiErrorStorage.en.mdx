@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/ApiErrorStorage - Error Management'/>
+
+# ApiErrorStorage Class
+
+The `ApiErrorStorage` class is a **Manager for handling and identifying API error states**. It provides a centralized storage for API error criteria, allowing the system to identify specific errors by matching the response status, error code from the JSON body, request method, and URL.
+
+## Key Features
+
+- **Centralized Storage** — aggregate all known API error patterns in one place for consistent processing.
+- **Pattern Matching** — identify errors by HTTP status, custom error codes, request methods, or URL patterns (including RegExp).
+- **Structured Transformation** — transform raw network errors into structured application-level error items.
+- **Custom Validation** — support for custom validation functions for complex error identification scenarios.
+
+## Methods
+
+### Management
+
+- `add(item: ApiErrorStorageItem | ApiErrorStorageList): this` — Adds one or more error items or lists to the internal storage.
+
+### Identification
+
+#### `find`
+
+Finds a matching error item in the storage by analyzing the response. It automatically attempts to extract the error code and message from the response body.
+
+**Parameters:**
+- `method: ApiMethodItem` — The HTTP method used for the request.
+- `response: Response` — The Fetch API response object.
+
+**Returns:** `Promise<ApiErrorStorageItem>` — The matched error item or a generated error item if no match is found.
+
+```javascript
+const errorItem = await errorStorage.find(ApiMethodItem.get, response);
+
+if (errorItem.code === 'USER_NOT_FOUND') {
+  // Handle specific error
+}
+```
+
+## Types
+
+### ApiErrorStorageItem
+
+- `url: string | RegExp` — URL string or regular expression to match the request URL.
+- `method: ApiMethodItem` — HTTP method required for the match.
+- `code?: string` — Optional error code to match against the JSON body.
+- `status?: number` — Optional HTTP status code to match.
+- `validation?: (response: Response) => boolean` — Optional custom validation function.
+- `message?: string | ((response?: Response) => string)` — Optional error message or message factory.

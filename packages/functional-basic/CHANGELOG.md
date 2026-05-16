@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.4] - 2026-05-16
+
+### Added
+- **ApiError**: Introduced a comprehensive system for centralized API error identification and management, including `ApiError` (static utility), `ApiErrorStorage` (manager), and `ApiErrorItem` (data wrapper).
+- **ApiError**: Added a static `add()` helper to simplify the registration of new error patterns directly through the primary utility class.
+
+### Changed / Improved
+- **ApiInstance**: Integrated the new error handling system into the core request lifecycle. It now automatically identifies errors during failed requests and passes structured error data to downstream handlers.
+- **ApiDataReturn**: Enhanced response processing to support the new error system. It now automatically extracts error metadata (code, message) from nested error objects and attaches the identified `ApiErrorItem` to the final result.
+- **Api**: Updated the main API overview documentation to include detailed sections on Status tracking and Error identification.
+- **Documentation**: Completed a full multilingual documentation cycle (EN, RU, VI) for the `ApiError` system and updated the core `Api` documentation to reflect new capabilities.
+- **Types**: Standardized `setHeaders` and `setRequestDefault` in `ApiInstance` to use the new named types for better consistency.
+
+## [1.2.3] - 2026-05-16
+
+### Added
+- **Api**: Enhanced `setHeaders` method to support dynamic header resolution via a callback function. These headers are now re-evaluated on every request, allowing for reactive updates like fresh authentication tokens.
+- **Api**: Added support for dynamic evaluation of default request data (`setRequestDefault`) via callback functions, enabling reactive query parameters.
+- **Types**: Introduced `ApiHeadersValue` type and standardized the use of `ApiDefaultValue` across `ApiConfig`, `ApiFetch`, and core API classes for better consistency and maintainability.
+
+## [1.2.2] - 2026-05-16
+
+### Changed / Improved
+- **Cookie**: Refined `getInstance` static method with explicit return type and type casting for better TypeScript compatibility.
+- **Api**: Improved formatting of `ApiDataItem` type definition for better readability.
+- **Maintenance**: Updated package versioning and synchronized with the new monorepo build and publish orchestration system.
+
 ## [1.2.0] - 2026-05-14
 
 ### Added

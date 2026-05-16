@@ -22,7 +22,7 @@ describe('ApiDataReturn', () => {
   it('should initialize and return JSON data', async () => {
     const mockData = { id: 1, name: 'Test' }
     const response = createResponse(mockData)
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, undefined as any)
 
     await apiDataReturn.init()
     expect(apiDataReturn.get()).toEqual(mockData)
@@ -31,7 +31,7 @@ describe('ApiDataReturn', () => {
   it('should return text data if content-type is not JSON', async () => {
     const mockData = 'plain text'
     const response = createResponse(mockData, 'text/plain')
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, undefined as any)
 
     await apiDataReturn.init()
     expect(apiDataReturn.get()).toBe(mockData)
@@ -43,7 +43,7 @@ describe('ApiDataReturn', () => {
     const queryReturn = vi.fn().mockResolvedValue({ custom: 'data' })
     const apiFetch = { ...apiFetchDefault, queryReturn }
 
-    const apiDataReturn = new ApiDataReturn(apiFetch, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetch, response, endEmpty, undefined as any)
     await apiDataReturn.init()
 
     expect(queryReturn).toHaveBeenCalledWith(response)
@@ -53,7 +53,7 @@ describe('ApiDataReturn', () => {
   it('should use data from preparation end if available', async () => {
     const response = createResponse({})
     const end = { data: { fromEnd: true } }
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, end as any)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, end as any, undefined as any)
 
     await apiDataReturn.init()
     expect(apiDataReturn.get()).toEqual({ fromEnd: true })
@@ -67,7 +67,7 @@ describe('ApiDataReturn', () => {
       status: 200
     }
     const response = createResponse(mockResponse)
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, undefined as any)
 
     await apiDataReturn.init()
     const result = apiDataReturn.get()
@@ -84,7 +84,7 @@ describe('ApiDataReturn', () => {
   it('should NOT unwrap "data" if toData is false', async () => {
     const mockResponse = { data: { id: 1 } }
     const response = createResponse(mockResponse)
-    const apiDataReturn = new ApiDataReturn({ toData: false }, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn({ toData: false }, response, endEmpty, undefined as any)
 
     await apiDataReturn.init()
     expect(apiDataReturn.get()).toEqual(mockResponse)
@@ -93,7 +93,7 @@ describe('ApiDataReturn', () => {
   it('should return raw property data if data.data is not an object/array', async () => {
     const mockResponse = { data: 'simple string', success: true }
     const response = createResponse(mockResponse)
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, undefined as any)
 
     await apiDataReturn.init()
     expect(apiDataReturn.get()).toBe('simple string')
@@ -102,34 +102,55 @@ describe('ApiDataReturn', () => {
   it('should return array if data.data is an array', async () => {
     const mockResponse = { data: [1, 2, 3], success: true }
     const response = createResponse(mockResponse)
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, undefined as any)
 
     await apiDataReturn.init()
     expect(apiDataReturn.get()).toEqual([1, 2, 3])
   })
 
-  it('should merge statusObject in getAndStatus', async () => {
+  it('should merge statusObject and errorObject in getAndStatus', async () => {
     const mockData = { id: 1 }
     const response = createResponse(mockData)
     const status = new ApiStatus()
+    const mockError = { getCode: () => 'ERR' } as any
     vi.spyOn(status, 'get').mockReturnValue({ status: 200, lastMessage: 'Success' } as any)
 
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, mockError)
     await apiDataReturn.init()
 
     const result = apiDataReturn.getAndStatus(status)
     expect(result).toEqual({
       id: 1,
-      statusObject: { status: 200, lastMessage: 'Success' }
+      statusObject: { status: 200, lastMessage: 'Success' },
+      errorObject: mockError
     })
   })
 
   it('should return raw data via getData()', async () => {
     const mockData = { id: 1 }
     const response = createResponse(mockData)
-    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, undefined as any)
 
     await apiDataReturn.init()
     expect(apiDataReturn.getData()).toEqual(mockData)
+  })
+
+  it('should extract code and message from error object if present', async () => {
+    const mockResponse = {
+      data: { id: 1 },
+      error: { code: 'INNER_CODE', message: 'Inner error message' }
+    }
+    const response = createResponse(mockResponse)
+    const apiDataReturn = new ApiDataReturn(apiFetchDefault, response, endEmpty, undefined as any)
+
+    await apiDataReturn.init()
+    const result = apiDataReturn.get()
+
+    expect(result).toEqual({
+      id: 1,
+      error: { code: 'INNER_CODE', message: 'Inner error message' },
+      code: 'INNER_CODE',
+      message: 'Inner error message'
+    })
   })
 })
