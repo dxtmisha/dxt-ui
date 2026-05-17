@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, type Ref } from 'vue'
 import {
   type FormattersOptionsList,
   type FormattersReturn,
@@ -360,7 +360,7 @@ export function useApiManagementRef<
     /** Whether search is currently active / Активен ли поиск (есть ли поисковый запрос) */
     isSearch: search?.isSearch,
     /** Reactive search string (Proxy to `searchOptions.value`) / Реактивная строка поиска (Proxy к переданному `searchOptions.value`) */
-    search: search?.search,
+    search: search?.search as Ref<string>,
 
     /**
      * Manual initialization

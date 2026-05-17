@@ -6,309 +6,162 @@ The following is the content of "exports" from package.json:
 {
   ".": {
     "import": "./dist/library.js",
-    "types": "./dist/library.d.ts"
-  },
-  "./ai-types": "./ai-types.txt",
-  "./style": "./dist/style.css",
-  "./types/*": "./dist/*",
-  "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "types": "./dist/src/library.d.ts"
+  }
 }
 
-// File: classes/Api.d.ts
-/**
- * Class for working with HTTP requests.
- */
+// File: src/classes/Api.d.ts
+/** HTTP request handler. */
 export declare class Api {
-    /**
-     * Checks if server is running on localhost.
-     * @returns true if local
-     */
+    /** Check if running on localhost. */
     static isLocalhost(): boolean;
-    /**
-     * Returns ApiInstance singleton.
-     * @returns ApiInstance singleton
-     */
+    /** Get ApiInstance singleton. */
     static getItem(): ApiInstance;
-    /**
-     * Returns status of the last request.
-     * @returns ApiStatus instance
-     */
+    /** Get status of last request. */
     static getStatus(): ApiStatus;
-    /**
-     * Gets response handler.
-     * @returns ApiResponse instance
-     */
+    /** Get response handler. */
     static getResponse(): ApiResponse;
-    /**
-     * Gets hydration handler.
-     * @returns ApiHydration instance
-     */
+    /** Get hydration handler. */
     static getHydration(): ApiHydration;
-    /**
-     * Returns hydration data script for client.
-     * @returns HTML script string
-     */
+    /** Get hydration data script string. */
     static getHydrationScript(): string;
-    /**
-     * Gets base origin URL with API path.
-     * @returns final base URL
-     */
+    /** Get base URL with API path. */
     static getOrigin(): string;
-    /**
-     * Gets full path to request script.
-     * @param path script path
-     * @param api prepend base API URL
-     * @returns full URL
-     */
+    /** Get full script path. */
     static getUrl(path: string, api?: boolean): string;
-    /**
-     * Gets data for request body.
-     * @param request request data
-     * @param method HTTP method
-     * @returns body data or FormData
-     */
+    /** Get request body data. */
     static getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
-    /**
-     * Gets query string for GET requests.
-     * @param request request data
-     * @param path request path
-     * @param method HTTP method
-     * @returns query string
-     */
+    /** Get GET request query string. */
     static getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
-    /**
-     * Modifies default header data.
-     * @param headers default headers
-     */
-    static setHeaders(headers: Record<string, string>): void;
-    /**
-     * Modifies default request data.
-     * @param request default data
-     */
-    static setRequestDefault(request: Record<string, any>): void;
-    /**
-     * Changes base path to script.
-     * @param url script path
-     */
+    /** Set default headers. */
+    static setHeaders(headers: ApiHeadersValue): void;
+    /** Set default request data. */
+    static setRequestDefault(request: ApiDefaultValue): void;
+    /** Set base script path. */
     static setUrl(url: string): void;
-    /**
-     * Modifies function called before request.
-     * @param callback pre-request function
-     */
+    /** Set pre-request callback. */
     static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void;
-    /**
-     * Modifies function called after request.
-     * @param callback post-request function
-     */
+    /** Set post-request callback. */
     static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void;
-    /**
-     * Changes request timeout.
-     * @param timeout ms
-     */
+    /** Set request timeout (ms). */
     static setTimeout(timeout: number): void;
-    /**
-     * Changes origin for base URL.
-     * @param origin protocol and domain
-     */
+    /** Set base URL origin. */
     static setOrigin(origin: string): void;
-    /**
-     * Sets multiple API configuration options.
-     * @param config config object
-     */
+    /** Set API config. */
     static setConfig(config?: ApiConfig): void;
-    /**
-     * Executes request with path or configuration.
-     * @param pathRequest path or config
-     * @returns Promise with response
-     */
+    /** Execute request. */
     static request<T>(pathRequest: string | ApiFetch): Promise<T>;
-    /**
-     * Sends GET request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** GET request. */
     static get<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends POST request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** POST request. */
     static post<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends PUT request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** PUT request. */
     static put<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends PATCH request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** PATCH request. */
     static patch<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends DELETE request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** DELETE request. */
     static delete<T>(request: ApiFetch): Promise<T>;
 }
-// File: classes/ApiCache.d.ts
-/**
- * Class for caching API responses.
- */
+// File: src/classes/ApiCache.d.ts
+/** API response caching. */
 export declare class ApiCache {
-    /**
-     * Initializes storage with listeners.
-     * @param getListener retrieval mechanism
-     * @param setListener saving mechanism
-     * @param removeListener deletion mechanism
-     * @param cacheStepAgeClearOld requests before cleanup
-     */
+    /** Initialize storage. */
     static init(getListener: (key: string) => Promise<ApiCacheItem | undefined>, setListener: (key: string, value: ApiCacheItem) => Promise<boolean>, removeListener: (key: string) => Promise<boolean>, cacheStepAgeClearOld?: number): void;
-    /**
-     * Resets cache and listeners.
-     */
+    /** Clear cache and listeners. */
     static reset(): void;
-    /**
-     * Gets data from cache.
-     * @param key cache key
-     * @returns data or undefined
-     */
+    /** Get cached data. */
     static get<T>(key: string): Promise<T | undefined>;
-    /**
-     * Gets data from cache using fetch options.
-     * @param fetch fetch options
-     * @returns data or undefined
-     */
+    /** Get cached data by fetch options. */
     static getByFetch<T>(fetch: ApiFetch): Promise<T | undefined>;
-    /**
-     * Saves data to cache.
-     * @param key cache key
-     * @param value data
-     * @param age age in seconds
-     */
+    /** Save data to cache. */
     static set<T>(key: string, value: T, age?: number): Promise<void>;
-    /**
-     * Saves data to cache using fetch options.
-     * @param fetch fetch options
-     * @param value data
-     */
+    /** Save data by fetch options. */
     static setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>;
-    /**
-     * Removes data from cache.
-     * @param key cache key
-     */
+    /** Remove cached data. */
     static remove(key: string): Promise<void>;
 }
-// File: classes/ApiDataReturn.d.ts
-/**
- * Class for handling data returned from an API request.
- */
+// File: src/classes/ApiDataReturn.d.ts
+/** API response data processor. */
 export declare class ApiDataReturn<T = any> {
-    /**
-     * Constructor for ApiDataReturn.
-     * @param apiFetch API config
-     * @param query response object
-     * @param end preparation end data
-     */
-    constructor(apiFetch: ApiFetch, query: Response, end: ApiPreparationEnd);
-    /**
-     * Initializes class by reading response.
-     */
+    constructor(apiFetch: ApiFetch, query: Response, end: ApiPreparationEnd, error?: ApiErrorItem | undefined);
+    /** Read data from response. */
     init(): Promise<this>;
-    /**
-     * Returns processed data.
-     */
+    /** Get processed data. */
     get(): ApiData<T>;
-    /**
-     * Returns processed data with status object.
-     * @param status API status instance
-     */
+    /** Get processed data and status. */
     getAndStatus(status: ApiStatus): ApiData<T>;
-    /**
-     * Returns raw data received from API.
-     */
+    /** Get raw API data. */
     getData(): ApiData<T> | undefined;
 }
-// File: classes/ApiDefault.d.ts
-/**
- * Class for working with default API request data.
- */
+// File: src/classes/ApiDefault.d.ts
+/** Default API request data handler. */
 export declare class ApiDefault {
-    /**
-     * Checks if default data exists.
-     * @returns true if exists
-     */
+    /** Check if default data exists. */
     is(): boolean;
-    /**
-     * Gets default request data.
-     * @returns data or undefined
-     */
-    get(): ApiDefaultValue | undefined;
-    /**
-     * Adds default data to request.
-     * @param request request data
-     * @returns merged data
-     */
+    /** Get default request data. */
+    get(): Record<string, any> | undefined;
+    /** Merge default data into request. */
     request(request: ApiFetch['request']): ApiFetch['request'];
-    /**
-     * Sets default request data.
-     * @param request default data
-     * @returns this
-     */
+    /** Set default request data. */
     set(request: ApiDefaultValue): this;
 }
-// File: classes/ApiHeaders.d.ts
-/**
- * Class for managing HTTP request headers.
- */
-export declare class ApiHeaders {
-    /**
-     * Gets headers for request.
-     * @param value header list
-     * @param type Content-Type value
-     * @returns merged headers
-     */
-    get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
-    /**
-     * Gets headers based on request type.
-     * @param request request data
-     * @param value header list
-     * @param type Content-Type value
-     * @returns merged headers
-     */
-    getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
-    /**
-     * Sets default headers.
-     * @param headers default headers
-     * @returns this
-     */
-    set(headers: Record<string, string>): this;
+// File: src/classes/ApiError.d.ts
+/** API error storage and creation utility. */
+export declare class ApiError {
+    /** Get error storage instance. */
+    static getStorage(): ApiErrorStorage;
+    /** Add errors to storage. */
+    static add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void;
+    /** Match response to error criteria. */
+    static getItem(method: ApiMethodItem, response: Response): Promise<ApiErrorItem>;
 }
-// File: classes/ApiHydration.d.ts
-/**
- * Class for collecting API data for SSR hydration.
- */
+// File: src/classes/ApiErrorItem.d.ts
+/** API error response data extractor. */
+export declare class ApiErrorItem {
+    constructor(method: ApiMethodItem, response: Response, error: ApiErrorStorageItem);
+    /** Get request HTTP method. */
+    getMethod(): ApiMethodItem;
+    /** Get raw response. */
+    getResponse(): Response;
+    /** Get error storage item. */
+    getError(): ApiErrorStorageItem;
+    /** Get error code. */
+    getCode(): string | undefined;
+    /** Get error message. */
+    getMessage(): string | undefined;
+    /** Get HTTP status code. */
+    getStatus(): number;
+}
+// File: src/classes/ApiErrorStorage.d.ts
+/** Manager for API error states. */
+export declare class ApiErrorStorage {
+    /** Find matching error in storage. */
+    find(method: ApiMethodItem, response: Response): Promise<ApiErrorStorageItem>;
+    /** Add error criteria. */
+    add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this;
+}
+// File: src/classes/ApiHeaders.d.ts
+/** HTTP request headers manager. */
+export declare class ApiHeaders {
+    /** Get request headers. */
+    get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
+    /** Get headers by request type. */
+    getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
+    /** Set default headers. */
+    set(headers: ApiHeadersValue): this;
+}
+// File: src/classes/ApiHydration.d.ts
+/** SSR hydration data collector. */
 export declare class ApiHydration {
-    /**
-     * Initializes response with hydration data.
-     * @param response API response
-     */
+    /** Initialize response with hydration. */
     initResponse(response: ApiResponse): void;
-    /**
-     * Saves response for client-side hydration.
-     * @param apiFetch API config
-     * @param response API response data
-     */
+    /** Save response for client. */
     toClient<T>(apiFetch: ApiFetch, response: T): void;
-    /**
-     * Returns hydration data string.
-     */
+    /** Get HTML script representation. */
     toString(): string;
 }
-// File: classes/ApiInstance.d.ts
-/** Options for the API instance */
+// File: src/classes/ApiInstance.d.ts
+/** core API instance for options. */
 export type ApiInstanceOptions = {
     headersClass?: typeof ApiHeaders;
     requestDefaultClass?: typeof ApiDefault;
@@ -319,499 +172,194 @@ export type ApiInstanceOptions = {
     errorCenterClass?: ErrorCenterInstance;
     hydrationClass?: typeof ApiHydration;
 };
-/**
- * Core class for managing HTTP requests using Fetch.
- */
+/** Core HTTP request manager using Fetch API. */
 export declare class ApiInstance {
-    /**
-     * Constructor
-     * @param url base script path
-     * @param options instance options
-     */
     constructor(url?: string, options?: ApiInstanceOptions);
-    /**
-     * Checks if server is localhost.
-     * @returns true if local
-     */
+    /** Check if on localhost. */
     isLocalhost(): boolean;
-    /**
-     * Returns last request status.
-     * @returns ApiStatus instance
-     */
+    /** Get request status. */
     getStatus(): ApiStatus;
-    /**
-     * Gets response handler.
-     * @returns ApiResponse instance
-     */
+    /** Get response handler. */
     getResponse(): ApiResponse;
-    /**
-     * Gets hydration handler.
-     * @returns ApiHydration instance
-     */
+    /** Get hydration handler. */
     getHydration(): ApiHydration;
-    /**
-     * Gets base URL with API path.
-     * @returns final base URL
-     */
+    /** Get origin with API path. */
     getOrigin(): string;
-    /**
-     * Gets full script path.
-     * @param path script path
-     * @param api prepend base URL
-     * @returns full URL
-     */
+    /** Get full script path. */
     getUrl(path: string, api?: boolean): string;
-    /**
-     * Gets request body data.
-     * @param request request data
-     * @param method HTTP method
-     * @returns body data or FormData
-     */
+    /** Get request body. */
     getBody(request?: ApiFetch['request'], method?: ApiMethod): string | FormData | undefined;
-    /**
-     * Gets query string for GET requests.
-     * @param request request data
-     * @param path request path
-     * @param method HTTP method
-     * @returns query string with prefix
-     */
+    /** Get GET query string. */
     getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethod): string;
-    /**
-     * Returns hydration data script string.
-     * @returns HTML script string
-     */
+    /** Get script element for client hydration. */
     getHydrationScript(): string;
-    /**
-     * Modifies default headers.
-     * @param headers default headers
-     */
-    setHeaders(headers: Record<string, string>): this;
-    /**
-     * Modifies default request data.
-     * @param request default data
-     */
-    setRequestDefault(request: Record<string, any>): this;
-    /**
-     * Changes base path to script.
-     * @param url script path
-     */
+    /** Set default headers. */
+    setHeaders(headers: ApiHeadersValue): this;
+    /** Set default request data. */
+    setRequestDefault(request: ApiDefaultValue): this;
+    /** Set base path. */
     setUrl(url: string): this;
-    /**
-     * Sets pre-request function.
-     * @param callback pre-request function
-     */
+    /** Set pre-request callback. */
     setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
-    /**
-     * Sets post-request function.
-     * @param callback post-request function
-     */
+    /** Set post-request callback. */
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
-    /**
-     * Changes request timeout.
-     * @param timeout ms
-     */
+    /** Set request timeout (ms). */
     setTimeout(timeout: number): this;
-    /**
-     * Changes origin for base URL.
-     * @param origin protocol and domain
-     */
+    /** Set URL origin. */
     setOrigin(origin: string): this;
-    /**
-     * Executes request.
-     * @param pathRequest path or config
-     * @returns Promise with response
-     */
+    /** Execute request. */
     request<T>(pathRequest: string | ApiFetch): Promise<T>;
-    /**
-     * Sends GET request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** GET method. */
     get<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends POST request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** POST method. */
     post<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends PUT request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** PUT method. */
     put<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends PATCH request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** PATCH method. */
     patch<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends DELETE request.
-     * @param request fetch config
-     * @returns Promise with response
-     */
+    /** DELETE method. */
     delete<T>(request: ApiFetch): Promise<T>;
 }
-// File: classes/ApiPreparation.d.ts
-/**
- * Class for preparing requests.
- */
+// File: src/classes/ApiPreparation.d.ts
+/** Request preparation handler. */
 export declare class ApiPreparation {
-    /**
-     * Pre-request preparation.
-     * @param active is active
-     * @param apiFetch request options
-     */
+    /** Execute pre-request preparation. */
     make(active: boolean, apiFetch: ApiFetch): Promise<void>;
-    /**
-     * Post-request analysis.
-     * @param active is active
-     * @param query response data
-     * @param apiFetch request options
-     * @returns end data
-     */
+    /** Execute post-request analysis. */
     makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
-    /**
-     * Sets pre-request callback.
-     * @param callback pre-request function
-     * @returns this
-     */
+    /** Set pre-request callback. */
     set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
-    /**
-     * Sets post-request callback.
-     * @param callback post-request function
-     * @returns this
-     */
+    /** Set post-request callback. */
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
 }
-// File: classes/ApiResponse.d.ts
-/**
- * Class for working with API responses.
- */
+// File: src/classes/ApiResponse.d.ts
+/** API response manager and emulator. */
 export declare class ApiResponse {
-    /**
-     * Constructor
-     * @param requestDefault default request class
-     */
     constructor(requestDefault: ApiDefault);
-    /**
-     * Gets global cached request if exists.
-     * @param path request link
-     * @param method request method
-     * @param request request data
-     * @param devMode dev mode flag
-     * @returns cached item or undefined
-     */
+    /** Get cached request. */
     get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
-    /**
-     * Returns list of cached responses.
-     */
+    /** Get cached responses list. */
     getList(): (ApiResponseItem & Record<string, any>)[];
-    /**
-     * Adds cached requests.
-     * @param response caching data
-     */
+    /** Add cached requests. */
     add(response: ApiResponseItem | ApiResponseItem[]): this;
-    /**
-     * Sets developer mode.
-     * @param devMode is dev mode
-     * @returns this
-     */
+    /** Set dev mode. */
     setDevMode(devMode: boolean): this;
-    /**
-     * Executes emulator if available.
-     * @param apiFetch fetch config
-     * @returns response or undefined
-     */
+    /** Run emulator. */
     emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
-    /**
-     * Executes emulator synchronously.
-     * @param apiFetch fetch config
-     * @returns response or undefined
-     */
+    /** Run emulator synchronously. */
     emulatorAsync<T>(apiFetch: ApiFetch): T | undefined;
 }
-// File: classes/ApiStatus.d.ts
-/**
- * Class for managing API request status.
- */
+// File: src/classes/ApiStatus.d.ts
+/** API request status manager. */
 export declare class ApiStatus {
-    /**
-     * Returns last status item.
-     * @returns status item or undefined
-     */
+    /** Get last status item. */
     get(): ApiStatusItem | undefined;
-    /**
-     * Returns status code.
-     * @returns HTTP status code
-     */
+    /** Get HTTP status code. */
     getStatus(): number | undefined;
-    /**
-     * Returns status text.
-     * @returns status text
-     */
+    /** Get status text. */
     getStatusText(): string | undefined;
-    /**
-     * Returns last status type.
-     * @returns status type
-     */
+    /** Get status type. */
     getStatusType(): ApiStatusType | undefined;
-    /**
-     * Returns execution status code.
-     * @returns code
-     */
+    /** Get response code. */
     getCode(): string | undefined;
-    /**
-     * Returns execution error.
-     * @returns error message
-     */
+    /** Get execution error message. */
     getError(): string | undefined;
-    /**
-     * Returns last request data.
-     * @returns response data
-     */
+    /** Get last request data. */
     getResponse<T>(): T | undefined;
-    /**
-     * Returns last request message.
-     * @returns message string
-     */
+    /** Get last request message. */
     getMessage(): string;
-    /**
-     * Sets status item.
-     * @param data status data
-     * @returns this
-     */
+    /** Set status data. */
     set(data: ApiStatusItem): this;
-    /**
-     * Sets status code and text.
-     * @param status code
-     * @param statusText text
-     * @returns this
-     */
+    /** Set HTTP status and text. */
     setStatus(status?: number, statusText?: string): this;
-    /**
-     * Sets error message.
-     * @param error error message
-     * @returns this
-     */
+    /** Set error message. */
     setError(error?: string): this;
-    /**
-     * Sets last response and extracts status/message.
-     * @param response response data
-     * @returns this
-     */
+    /** Set last response data. */
     setLastResponse(response?: any): this;
-    /**
-     * Sets last status.
-     * @param status status
-     * @returns this
-     */
+    /** Set last status type. */
     setLastStatus(status?: ApiStatusType): this;
-    /**
-     * Sets last execution code.
-     * @param code code
-     * @returns this
-     */
+    /** Set last response code. */
     setLastCode(code?: string): this;
-    /**
-     * Sets last request message.
-     * @param message text
-     * @returns this
-     */
+    /** Set last message. */
     setLastMessage(message?: string): this;
 }
-// File: classes/BroadcastMessage.d.ts
-/**
- * Class for BroadcastChannel messages.
- */
+// File: src/classes/BroadcastMessage.d.ts
+/** BroadcastChannel message handler. */
 export declare class BroadcastMessage<Message = any> {
-    /**
-     * Constructor initializing channel with handlers.
-     * @param name channel ID
-     * @param callback message callback
-     * @param callbackError error callback
-     * @param errorCenter ErrorCenter instance
-     */
     constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
-    /**
-     * Gets BroadcastChannel instance.
-     * @returns channel or undefined
-     */
+    /** Get BroadcastChannel instance. */
     getChannel(): BroadcastChannel | undefined;
-    /**
-     * Sends message.
-     * @param message data
-     * @returns this
-     */
+    /** Send message. */
     post(message: Message): this;
-    /**
-     * Sets message callback.
-     * @param callback callback function
-     * @returns this
-     */
+    /** Set message callback. */
     setCallback(callback: (event: MessageEvent<Message>) => void): this;
-    /**
-     * Sets error callback.
-     * @param callbackError error function
-     * @returns this
-     */
+    /** Set error callback. */
     setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
-    /**
-     * Closes channel.
-     * @returns this
-     */
+    /** Close channel. */
     destroy(): this;
 }
-// File: classes/Cache.d.ts
-/**
- * Simple in-memory cache for computed values.
- * @deprecated obsolete
- */
+// File: src/classes/Cache.d.ts
+/** @deprecated In-memory cache by key. */
 export declare class Cache {
-    /**
-     * Returns cached value. Recomputes if missing.
-     * @param name cache key
-     * @param callback computation function
-     * @param comparison invalidation array
-     * @returns value
-     */
+    /** Get cached value or execute callback. */
     get<T>(name: string, callback: () => T, comparison?: any[]): T;
-    /**
-     * Async returns cached value.
-     * @param name cache key
-     * @param callback async computation
-     * @param comparison invalidation array
-     * @returns Promise with value
-     */
+    /** Async get cached value. */
     getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-// File: classes/CacheItem.d.ts
-/**
- * Manages single cached value with dependency tracking.
- * @deprecated obsolete
- */
+// File: src/classes/CacheItem.d.ts
+/** @deprecated Single cached value with dependency tracking. */
 export declare class CacheItem<T> {
-    /**
-     * Creates CacheItem instance.
-     * @param callback computation function
-     */
     constructor(callback: () => T);
-    /**
-     * Returns cached value. Recomputes on dependency change.
-     * @param comparison dependency array
-     * @returns value
-     */
+    /** Get cached value, recompute if deps change. */
     getCache(comparison: any[]): T;
-    /**
-     * Returns previous cached value.
-     * @returns old value or undefined
-     */
+    /** Get previous cached value. */
     getCacheOld(): T | undefined;
-    /**
-     * Async returns cached value.
-     * @param comparison dependency array
-     * @returns Promise with value
-     */
+    /** Async get cached value. */
     getCacheAsync(comparison: any[]): Promise<T>;
 }
-// File: classes/CacheStatic.d.ts
-/**
- * Static cache using ServerStorage.
- * @deprecated obsolete
- */
+// File: src/classes/CacheStatic.d.ts
+/** @deprecated Static persistent cache using ServerStorage. */
 export declare class CacheStatic {
-    /**
-     * Returns cached value.
-     * @param name cache key
-     * @param callback computation function
-     * @param comparison invalidation array
-     * @returns value
-     */
+    /** Get cached value. */
     static get<T>(name: string, callback: () => T, comparison?: any[]): T;
-    /**
-     * Async returns cached value.
-     * @param name cache key
-     * @param callback async computation
-     * @param comparison invalidation array
-     * @returns Promise with value
-     */
+    /** Async get cached value. */
     static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-// File: classes/Cookie.d.ts
-/**
- * Class for managing cookies.
- */
+// File: src/classes/Cookie.d.ts
+/** Cookie management class. */
 export declare class Cookie<T> {
-    /**
-     * Returns instance by cookie name.
-     * @param name cookie name
-     */
-    static getInstance<T>(name: string): Cookie<unknown>;
-    /**
-     * Constructor
-     * @param name cookie name
-     */
+    /** Get instance by cookie name. */
+    static getInstance<T>(name: string): Cookie<T>;
     constructor(name: string);
-    /**
-     * Get or update cookie data.
-     * @param defaultValue initial value or factory
-     * @param options cookie parameters
-     * @returns value
-     */
+    /** Get data or update if missing. */
     get(defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): string | T | undefined;
-    /**
-     * Updates cookie.
-     * @param value new value or factory
-     * @param options cookie parameters
-     */
+    /** Update cookie. */
     set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
-    /**
-     * Deletes cookie.
-     */
+    /** Delete cookie. */
     remove(): void;
 }
-// File: classes/CookieBlock.d.ts
-/**
- * Class for cookie access status.
- */
+// File: src/classes/CookieBlock.d.ts
+/** Global cookie access status manager. */
 export declare class CookieBlock {
-    /**
-     * Returns isolated CookieBlockInstance.
-     * @returns instance
-     */
+    /** Get isolated CookieBlockInstance. */
     static getItem(): CookieBlockInstance;
-    /**
-     * Gets status.
-     * @returns current block status
-     */
+    /** Get block status. */
     static get(): boolean;
-    /**
-     * Sets status.
-     * @param value block status
-     */
+    /** Set block status. */
     static set(value: boolean): void;
 }
-// File: classes/CookieBlockInstance.d.ts
-/**
- * Class for cookie access status.
- */
+// File: src/classes/CookieBlockInstance.d.ts
+/** isolated cookie access status. */
 export declare class CookieBlockInstance {
-    /**
-     * Gets status.
-     * @returns current block status
-     */
+    /** Get block status. */
     get(): boolean;
-    /**
-     * Sets status.
-     * @param value block status
-     */
+    /** Set block status. */
     set(value: boolean): void;
 }
-// File: classes/CookieStorage.d.ts
-/** Cookie sameSite attribute */
+// File: src/classes/CookieStorage.d.ts
+/** Cookie sameSite values. */
 export type CookieSameSite = 'strict' | 'lax';
-/** Cookie options */
+/** Cookie settings. */
 export type CookieOptions = {
     age?: number;
     sameSite?: CookieSameSite;
@@ -822,829 +370,564 @@ export type CookieOptions = {
     partitioned?: boolean;
     arguments?: string[] | Record<string, string | number | boolean>;
 };
-/**
- * Consistent cookie storage across environments.
- */
+/** Cookie storage manager with SSR/DOM support. */
 export declare class CookieStorage {
-    /**
-     * Initializes storage with listeners.
-     */
+    /** Initialize storage listeners. */
     static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
-    /**
-     * Resets storage.
-     */
+    /** Reset storage and listeners. */
     static reset(): void;
-    /**
-     * Gets data from storage.
-     * @param name cookie name
-     * @param defaultValue default value
-     * @returns value or default
-     */
+    /** Get cookie data. */
     static get<T>(name: string, defaultValue?: T | (() => T)): T | undefined;
-    /**
-     * Saves data to storage.
-     * @param name cookie name
-     * @param value data or factory
-     * @param options parameters
-     * @returns saved value
-     */
+    /** Save cookie data. */
     static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
-    /**
-     * Removes data from storage.
-     * @param name cookie name
-     */
+    /** Delete cookie. */
     static remove(name: string): void;
-    /**
-     * Updates storage from cookies.
-     */
+    /** Sync storage data. */
     static update(): void;
 }
-// File: classes/DataStorage.d.ts
-/**
- * Local/session storage wrapper with SSR isolation.
- */
+// File: src/classes/DataStorage.d.ts
+/** Local/session storage with SSR isolation and TTL. */
 export declare class DataStorage<T> {
-    /**
-     * Changes key prefix.
-     * @param newPrefix prefix
-     */
+    /** Set storage key prefix globally. */
     static setPrefix(newPrefix: string): void;
-    /**
-     * Constructor.
-     * @param name value name
-     * @param isSession use session storage
-     * @param errorCenter error center instance
-     */
     constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
-    /**
-     * Gets storage data.
-     * @param defaultValue default value
-     * @param cache cache seconds
-     * @returns value or default
-     */
+    /** Get data with cache TTL support. */
     get(defaultValue?: T | (() => T), cache?: number): T | undefined;
-    /**
-     * Changes storage data.
-     * @param value new values
-     * @returns set value
-     */
+    /** Save data. */
     set(value?: T | (() => T)): T | undefined;
-    /**
-     * Removes storage data.
-     * @returns this
-     */
+    /** Delete data. */
     remove(): this;
-    /**
-     * Syncs from storage.
-     * @returns this
-     */
+    /** Sync from storage. */
     update(): this;
 }
-// File: classes/Datetime.d.ts
-/**
- * Class for working with dates.
- * @remarks Creating instance without specific date in SSR can cause hydration mismatch.
- */
+// File: src/classes/Datetime.d.ts
+/** @remarks rendering in SSR without specific date may cause hydration mismatch. */
 export declare class Datetime {
-    /**
-     * Constructor
-     * @param date date value
-     * @param type output format type
-     * @param code locale code
-     */
     constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
-    /**
-     * Returns GeoIntl object.
-     * @returns GeoIntl
-     */
+    /** Get GeoIntl object. */
     getIntl(): GeoIntl;
-    /**
-     * Returns Date object.
-     * @returns Date
-     */
+    /** Get Date object. */
     getDate(): Date;
-    /**
-     * Returns output type.
-     * @returns GeoDate
-     */
+    /** Get output type. */
     getType(): GeoDate;
-    /**
-     * Returns hour format.
-     * @returns GeoHours
-     */
+    /** Get hour format (12/24). */
     getHoursType(): GeoHours;
-    /**
-     * Checks for 24-hour format.
-     * @returns boolean
-     */
+    /** Check if 24-hour format. */
     getHour24(): boolean;
-    /**
-     * Returns local time zone offset.
-     * @returns offset in minutes
-     */
+    /** Get timezone offset (min). */
     getTimeZoneOffset(): number;
-    /**
-     * Returns time zone string.
-     * @param style display style
-     * @returns time zone
-     */
+    /** Get timezone string. */
     getTimeZone(style?: GeoTimeZoneStyle): string;
-    /**
-     * Returns first day of week code.
-     * @returns GeoFirstDay
-     */
+    /** Get first day of week code. */
     getFirstDayCode(): GeoFirstDay;
-    /**
-     * Returns year.
-     */
+    /** Get year. */
     getYear(): number;
-    /**
-     * Returns month (1-12).
-     */
+    /** Get month (1-12). */
     getMonth(): number;
-    /**
-     * Returns day of month (1-31).
-     */
+    /** Get day (1-31). */
     getDay(): number;
-    /**
-     * Returns hours (0-23).
-     */
+    /** Get hour (0-23). */
     getHour(): number;
-    /**
-     * Returns minutes (0-59).
-     */
+    /** Get minute (0-59). */
     getMinute(): number;
-    /**
-     * Returns seconds (0-59).
-     */
+    /** Get second (0-59). */
     getSecond(): number;
-    /**
-     * Returns last day of month.
-     */
+    /** Get max days in month. */
     getMaxDay(): number;
-    /**
-     * Returns formatted locale date string.
-     */
+    /** Format locale date string. */
     locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): string;
-    /** Returns formatted year. */
+    /** Format year. */
     localeYear(style?: Intl.DateTimeFormatOptions['year']): string;
-    /** Returns formatted month. */
+    /** Format month. */
     localeMonth(style?: Intl.DateTimeFormatOptions['month']): string;
-    /** Returns formatted day. */
+    /** Format day. */
     localeDay(style?: Intl.DateTimeFormatOptions['day']): string;
-    /** Returns formatted hour. */
+    /** Format hour. */
     localeHour(style?: Intl.DateTimeFormatOptions['hour']): string;
-    /** Returns formatted minute. */
+    /** Format minute. */
     localeMinute(style?: Intl.DateTimeFormatOptions['minute']): string;
-    /** Returns formatted second. */
+    /** Format second. */
     localeSecond(style?: Intl.DateTimeFormatOptions['second']): string;
-    /** Standard data output string. */
+    /** ISO-like standard format. */
     standard(timeZone?: boolean): string;
-    /** Sets date value. */
+    /** Set date value. */
     setDate(value: NumberOrStringOrDate): this;
-    /** Sets output type. */
+    /** Set output type. */
     setType(value: GeoDate): this;
-    /** Sets 24-hour format. */
+    /** Set 12/24 hour format. */
     setHour24(value: boolean): this;
-    /** Sets location code. */
+    /** Set location code. */
     setCode(code: string): this;
-    /** Sets update listener. */
+    /** Set update callback. */
     setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this;
-    /** Sets year. */
     setYear(value: number): this;
-    /** Sets month (1-12). */
     setMonth(value: number): this;
-    /** Sets day of month. */
     setDay(value: number): this;
-    /** Sets hours. */
     setHour(value: number): this;
-    /** Sets minutes. */
     setMinute(value: number): this;
-    /** Sets seconds. */
     setSecond(value: number): this;
-    /** Shifts date by years. */
     moveByYear(value: number): this;
-    /** Shifts date by months. */
     moveByMonth(value: number): this;
-    /** Shifts date by days. */
     moveByDay(value: number): this;
-    /** Shifts date by hours. */
     moveByHour(value: number): this;
-    /** Shifts date by minutes. */
     moveByMinute(value: number): this;
-    /** Shifts date by seconds. */
     moveBySecond(value: number): this;
-    /** Sets date to January. */
     moveMonthFirst(): this;
-    /** Sets date to December. */
     moveMonthLast(): this;
-    /** Moves to next month first day. */
     moveMonthNext(): this;
-    /** Moves to previous month first day. */
     moveMonthPrevious(): this;
-    /** Moves to first day of week. */
     moveWeekdayFirst(): this;
-    /** Moves to last day of week. */
     moveWeekdayLast(): this;
-    /** Moves to first day of first week of month. */
     moveWeekdayFirstByMonth(): this;
-    /** Moves to first day of first full week of following month. */
     moveWeekdayLastByMonth(): this;
-    /** Moves to next week. */
     moveWeekdayNext(): this;
-    /** Moves to previous week. */
     moveWeekdayPrevious(): this;
-    /** Moves to first day of month. */
     moveDayFirst(): this;
-    /** Moves to last day of month. */
     moveDayLast(): this;
-    /** Moves to next day. */
     moveDayNext(): this;
-    /** Moves to previous day. */
     moveDayPrevious(): this;
-    /** Clones Date object. */
+    /** Clone Date object. */
     clone(): Date;
-    /** Clones Datetime instance. */
+    /** Clone Datetime class. */
     cloneClass(): Datetime;
-    /** Clones and sets month to Jan. */
     cloneMonthFirst(): Datetime;
-    /** Clones and sets month to Dec. */
     cloneMonthLast(): Datetime;
-    /** Clones and moves 1 month ahead. */
     cloneMonthNext(): Datetime;
-    /** Clones and moves 1 month back. */
     cloneMonthPrevious(): Datetime;
-    /** Clones and sets to first day of week. */
     cloneWeekdayFirst(): Datetime;
-    /** Clones and sets to last day of week. */
     cloneWeekdayLast(): Datetime;
-    /** Clones and sets to first day of week in current month. */
     cloneWeekdayFirstByMonth(): Datetime;
-    /** Clones and sets to last day of week in current month. */
     cloneWeekdayLastByMonth(): Datetime;
-    /** Clones and sets to next week. */
     cloneWeekdayNext(): Datetime;
-    /** Clones and sets to previous week. */
     cloneWeekdayPrevious(): Datetime;
-    /** Clones and moves to beginning of month. */
     cloneDayFirst(): Datetime;
-    /** Clones and moves to end of month. */
     cloneDayLast(): Datetime;
-    /** Clones and moves 1 day ahead. */
     cloneDayNext(): Datetime;
-    /** Clones and moves 1 day back. */
     cloneDayPrevious(): Datetime;
 }
-// File: classes/ErrorCenter.d.ts
-/**
- * Class for managing error storage and handling.
- */
+// File: src/classes/ErrorCenter.d.ts
+/** Global error management. */
 export declare class ErrorCenter {
-    /** Returns request-isolated ErrorCenterInstance. */
+    /** Get isolated ErrorCenterInstance. */
     static getItem(): ErrorCenterInstance;
-    /** Checks if cause with code exists. */
+    /** Check if error code exists. */
     static has(code: string, group?: string): boolean;
-    /** Gets error cause by code and group. */
+    /** Get error cause. */
     static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
-    /** Adds error cause. */
+    /** Add error cause. */
     static add(cause: ErrorCenterCauseItem): void;
-    /** Adds list of error causes. */
+    /** Add list of error causes. */
     static addList(causes: ErrorCenterCauseList): void;
-    /** Registers new handler. */
+    /** Register error handler. */
     static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
-    /** Registers list of handlers. */
+    /** Register handlers list. */
     static addHandlerList(handlers: ErrorCenterHandlerList): void;
-    /** Triggers error handling. */
+    /** Trigger error handling. */
     static on(cause: ErrorCenterCauseItem): void;
 }
-// File: classes/ErrorCenterHandler.d.ts
-/**
- * Class for managing and triggering error handlers.
- */
+// File: src/classes/ErrorCenterHandler.d.ts
+/** Error handler manager. */
 export declare class ErrorCenterHandler {
-    /** Constructor */
     constructor(handlers?: ErrorCenterHandlerList);
-    /** Checks for handlers in group. */
+    /** Check handlers for group. */
     has(group: ErrorCenterGroup): boolean;
-    /** Gets handlers for group. */
+    /** Get handler item. */
     get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
-    /** Adds handler for group. */
+    /** Add handler. */
     add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
-    /** Adds list of handlers. */
+    /** Add handlers list. */
     addList(handlers: ErrorCenterHandlerList): this;
-    /** Triggers handlers and logs error. */
+    /** Trigger handlers. */
     on(cause: ErrorCenterCauseItem): this;
 }
-// File: classes/ErrorCenterInstance.d.ts
-/**
- * Instance-based error storage and handling.
- */
+// File: src/classes/ErrorCenterInstance.d.ts
+/** Error storage and handling instance. */
 export declare class ErrorCenterInstance {
-    /** Constructor */
     constructor(causes?: ErrorCenterCauseList, handler?: ErrorCenterHandler);
-    /** Checks for cause by code. */
     has(code: string, group?: string): boolean;
-    /** Gets cause by code. */
     get(code: string, group?: string): ErrorCenterCauseItem | undefined;
-    /** Adds error cause. */
     add(cause: ErrorCenterCauseItem): this;
-    /** Adds causes list. */
     addList(causes: ErrorCenterCauseList): this;
-    /** Registers handler. */
     addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
-    /** Registers handlers list. */
     addHandlerList(handlers: ErrorCenterHandlerList): this;
-    /** Triggers error handling. */
     on(cause: ErrorCenterCauseItem): this;
 }
-// File: classes/EventItem.d.ts
-/**
- * Advanced wrapper for managing event listeners.
- * 
- * ### Key Features:
- * - **Lifecycle Control**: `start`, `stop`, `toggle`, `reset`.
- * - **DOM Safety**: Automatically halts if element removed.
- * - **Optimizations**: `resize` via `ResizeObserver`, `scroll-sync` via `requestAnimationFrame`.
- * 
- * ### Usage Examples:
- * @example
- * const clickEvent = new EventItem('.btn', 'click', () => console.log('OK'));
- * clickEvent.start();
- * @example
- * interface UserData { id: number }
- * const emitter = new EventItem<Window, CustomEvent, UserData>(window, 'update');
- * emitter.setListener((e, detail) => console.log(detail?.id));
- * emitter.start();
- * emitter.dispatch({ id: 123 });
- */
+// File: src/classes/EventItem.d.ts
+/** Advanced DOM event lifecycle manager. */
 export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
-    /**
-     * Constructor
-     * @param elementSelector target element or selector
-     * @param type event type or types array
-     * @param listener handler function
-     * @param options standard options or capture flag
-     * @param detail custom data for listener
-     */
     constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
-    /** Checks if listening is active. */
+    /** Check if active. */
     isActive(): boolean;
-    /** Returns target element. */
+    /** Get target element. */
     getElement(): E | undefined;
-    /** Changes target element. */
+    /** Change element. */
     setElement(elementSelector?: ElementOrString<E>): this;
-    /** Modifies safety check element. */
+    /** Set DOM safety control element. */
     setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
-    /** Changes event type. */
+    /** Change event type(s). */
     setType(type: string | string[]): this;
-    /** Modifies listener. */
+    /** Change listener function. */
     setListener(listener: EventListenerDetail<O, D>): this;
-    /** Modifies options. */
+    /** Set listener options. */
     setOptions(options?: EventOptions): this;
-    /** Modifies detail data. */
+    /** Set custom data. */
     setDetail(detail?: D): this;
-    /** Manually triggers custom event dispatch. */
+    /** Manually trigger events. */
     dispatch(detail?: D | undefined): this;
-    /** Starts listening. */
+    /** Enable listener. */
     start(): this;
-    /** Stops listening. */
+    /** Disable listener. */
     stop(): this;
-    /** Toggles state. */
+    /** Set activation state. */
     toggle(activity: boolean): this;
-    /** Resets (stop and start if active). */
+    /** Restart listener. */
     reset(): this;
 }
-// File: classes/Formatters.d.ts
-/**
- * Formats data list based on options.
- */
+// File: src/classes/Formatters.d.ts
+/** List data formatter. */
 export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
-    /**
-     * Constructor
-     * @param options formatting configuration
-     * @param list data list
-     */
     constructor(options: Options, list?: List | undefined);
-    /** Checks if list set. */
+    /** Check if list is set. */
     is(): boolean;
-    /** Checks if list is array. */
-    isArray(): this is this & { list: FormattersList<Item>; };
-    /** Returns record count. */
+    /** Check if array list. */
+    isArray(): this is this & {
+        list: FormattersList<Item>;
+    };
+    /** Get list length. */
     length(): number;
-    /** Returns array list. */
+    /** Get internal list. */
     getList(): FormattersList<Item>;
-    /** Returns options. */
+    /** Get formatting options. */
     getOptions(): Options;
-    /** Sets data list. */
+    /** Set data list. */
     setList(list?: List): this;
-    /** Formats data. Adds values with 'Format' suffix. */
+    /** Execute formatting. */
     to(): FormattersReturn<List, Options>;
 }
-// File: classes/Geo.d.ts
-/**
- * Static geographic data management.
- */
+// File: src/classes/Geo.d.ts
+/** static Geographic manager. */
 export declare class Geo {
-    /** Returns request-isolated GeoInstance. */
+    /** Get isolated GeoInstance. */
     static getObject(): GeoInstance;
-    /** Returns current country and language. */
+    /** Get current geo data. */
     static get(): GeoItemFull;
-    /** Returns 2-letter country code. */
+    /** Get country code. */
     static getCountry(): string;
-    /** Returns 2-letter language code. */
+    /** Get language code. */
     static getLanguage(): string;
-    /** Returns 'en-US' style locale. */
+    /** Get standard locale (en-US). */
     static getStandard(): string;
-    /** Returns first day code. */
+    /** Get first day of week. */
     static getFirstDay(): string;
-    /** Returns location string. */
+    /** Get location string. */
     static getLocation(): string;
-    /** Returns processed geo data. */
+    /** Get full geo item. */
     static getItem(): GeoItemFull;
-    /** Returns countries list. */
+    /** Get all available geo items. */
     static getList(): GeoItem[];
-    /** Gets data by code. */
+    /** Find geo data by code. */
     static getByCode(code?: string): GeoItemFull;
-    /** Search by full locale match. */
+    /** Find exact geo item by locale. */
     static getByCodeFull(code: string): GeoItem | undefined;
-    /** Search by country code. */
+    /** Find geo item by country. */
     static getByCountry(country: string): GeoItem | undefined;
-    /** Search by language code. */
+    /** Find geo item by language. */
     static getByLanguage(language: string): GeoItem | undefined;
-    /** Returns timezone offset. */
+    /** Get timezone offset (min). */
     static getTimezone(): number;
-    /** Returns formatted timezone ('+00:00'). */
+    /** Get formatted timezone (+00:00). */
     static getTimezoneFormat(): string;
-    /** Determine geo data for code. */
+    /** Find geo data by code. */
     static find(code: string): GeoItemFull;
-    /** Returns 'en-US' string from item. */
+    /** Convert item to standard locale string. */
     static toStandard(item: GeoItem): string;
-    /** Sets location. */
+    /** Set current location. */
     static set(code: string, save?: boolean): void;
-    /** Sets timezone offset. */
+    /** Set custom timezone offset. */
     static setTimezone(timezone: number): void;
 }
-// File: classes/GeoFlag.d.ts
+// File: src/classes/GeoFlag.d.ts
 export declare const GEO_FLAG_ICON_NAME = "f";
-/**
- * Manage flags and geographic info.
- */
+/** Flag and geographic info handler. */
 export declare class GeoFlag {
     static flags: Record<string, string>;
-    /** Constructor */
     constructor(code?: string);
-    /** Gets country info and flag. */
+    /** Get country and flag info. */
     get(code?: string): GeoFlagItem | undefined;
-    /** Gets flag icon ID. */
+    /** Get flag icon ID. */
     getFlag(code?: string): string | undefined;
-    /** Returns countries list. */
+    /** Get countries list by codes. */
     getList(codes?: string[]): GeoFlagItem[];
-    /** Returns list with national names. */
+    /** Get list in national languages. */
     getNational(codes?: string[]): GeoFlagNational[];
-    /** Changes locale. */
+    /** Set locale. */
     setCode(code: string): this;
 }
-// File: classes/GeoInstance.d.ts
-/**
- * Base class for geographic data.
- */
+// File: src/classes/GeoInstance.d.ts
+/** Geographic data logic. */
 export declare class GeoInstance {
     constructor();
-    /** Gets current country info. */
+    /** Get current country info. */
     get(): GeoItemFull;
-    /** Gets country code. */
+    /** Get country code. */
     getCountry(): string;
-    /** Gets language code. */
+    /** Get language code. */
     getLanguage(): string;
-    /** Gets language-country format. */
+    /** Get standard format (lang-country). */
     getStandard(): string;
-    /** Gets first day of week. */
+    /** Get first day of week. */
     getFirstDay(): string;
-    /** Gets location string. */
+    /** Get location string. */
     getLocation(): string;
-    /** Gets processed data. */
+    /** Get processed geo data. */
     getItem(): GeoItemFull;
-    /** Returns countries list. */
+    /** Get all countries. */
     getList(): GeoItem[];
-    /** Gets data by code. */
+    /** Get geo data by code. */
     getByCode(code?: string): GeoItemFull;
-    /** Gets data by language-country. */
+    /** Find exact match (lang-country). */
     getByCodeFull(code: string): GeoItem | undefined;
-    /** Gets data by country code. */
+    /** Find by country code. */
     getByCountry(country: string): GeoItem | undefined;
-    /** Gets data by language code. */
+    /** Find by language code. */
     getByLanguage(language: string): GeoItem | undefined;
-    /** Gets offset minutes. */
+    /** Get timezone offset (min). */
     getTimezone(): number;
-    /** Gets formatted offset string. */
+    /** Get formatted timezone string. */
     getTimezoneFormat(): string;
-    /** Finds country data by code/name. */
+    /** Find country by code/name. */
     find(code: string): GeoItemFull;
-    /** Converts to standard code. */
+    /** Convert item to standard string. */
     toStandard(item: GeoItem): string;
-    /** Updates location. */
+    /** Update location. */
     set(code: string, save?: boolean): void;
-    /** Updates timezone offset. */
+    /** Update timezone offset. */
     setTimezone(timezone: number): void;
 }
-// File: classes/GeoIntl.d.ts
-/**
- * Intl wrapper for language-sensitive formatting.
- */
+// File: src/classes/GeoIntl.d.ts
+/** Internationalization API wrapper. */
 export declare class GeoIntl {
-    /** Checks for code instance. */
+    /** Check instance existence by code. */
     static isItem(code?: string): boolean;
-    /** Returns location code. */
+    /** Get standard location code. */
     static getLocation(code?: string): string;
-    /** Returns instance for code. */
+    /** Get instance by code. */
     static getInstance(code?: string): GeoIntl;
-    /** Constructor */
     constructor(code?: string, errorCenter?: ErrorCenterInstance);
-    /** Returns location code. */
+    /** Get location string. */
     getLocation(): string;
-    /** Returns first day. */
+    /** Get first day of week. */
     getFirstDay(): string;
-    /** Translated names for language/region. */
+    /** Localized names for language/region. */
     display(value?: string, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): string;
-    /** Display language name. */
     languageName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
-    /** Display region name. */
     countryName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
-    /** Formatted full name. */
+    /** Format full name. */
     fullName(last: string, first: string, surname?: string, short?: boolean): string;
     /** Number formatting. */
     number(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Decimal point symbol. */
+    /** Get decimal symbol. */
     decimal(): string;
     /** Currency formatting. */
     currency(value: NumberOrString, currencyOptions?: string | Intl.NumberFormatOptions, numberOnly?: boolean): string;
-    /** Returns currency symbol or code. */
+    /** Get currency symbol. */
     currencySymbol(currency: string, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): string;
     /** Unit formatting. */
     unit(value: NumberOrString, unitOptions?: string | Intl.NumberFormatOptions): string;
-    /** File size formatting. */
+    /** Format file size. */
     sizeFile(value: NumberOrString, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): string;
-    /** Percent formatting. */
+    /** Percentage formatting. */
     percent(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Percent formatting (base 100). */
     percentBy100(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    /** Plural rule formatting. */
+    /** Pluralization. */
     plural(value: NumberOrString, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): string;
-    /** Date formatting. */
+    /** Date/time formatting. */
     date(value: NumberOrStringOrDate, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): string;
     /** Relative time formatting. */
     relative(value: NumberOrStringOrDate, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): string;
-    /** Relative time with fallback limit. */
+    /** Relative time with limit fallback. */
     relativeLimit(value: NumberOrStringOrDate, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): string;
-    /** Relative time by specific value and unit. */
     relativeByValue(value: NumberOrString, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): string;
-    /** Month name. */
+    /** Month name(s). */
     month(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['month']): string;
-    /** Months list. */
     months(style?: Intl.DateTimeFormatOptions['month']): ItemValue<number | undefined>[];
-    /** Weekday name. */
+    /** Weekday name(s). */
     weekday(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['weekday']): string;
-    /** Weekdays list. */
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ItemValue<number | undefined>[];
-    /** Time string. */
+    /** Time formatting. */
     time(value: NumberOrStringOrDate): string;
-    /** Locale-sensitive sort. */
+    /** Localized sort. */
     sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
 }
-// File: classes/GeoPhone.d.ts
-/**
- * Phone number mask storage and processing.
- */
+// File: src/classes/GeoPhone.d.ts
+/** Phone mask processing. */
 export declare class GeoPhone {
-    /** Gets code and country info. */
+    /** Get phone info by country code. */
     static get(code: string): GeoPhoneValue | undefined;
-    /** Gets info by phone. */
+    /** Get info by phone number. */
     static getByPhone(phone: string): GeoPhoneMapInfo;
-    /** Gets mask data by country code. */
+    /** Get mask data by country code. */
     static getByCode(code: string): GeoPhoneMap | undefined;
-    /** Returns codes list. */
+    /** Get all phone codes. */
     static getList(): GeoPhoneValue[];
-    /** Returns map tree. */
+    /** Get search map. */
     static getMap(): Record<string, GeoPhoneMap>;
-    /** Converts to phone mask. */
+    /** Apply phone mask. */
     static toMask(phone: string, masks?: string[]): string | undefined;
-    /** Removes country code. */
+    /** Remove country code from number. */
     static removeZero(phone: string): string;
 }
-// File: classes/Global.d.ts
-/**
- * Global application data storage.
- */
+// File: src/classes/Global.d.ts
+/** Global application data storage. */
 export declare class Global {
-    /** Returns storage instance. */
+    /** Get storage instance. */
     static getItem(): Record<string, any>;
-    /** Gets value by name. */
+    /** Get value by name. */
     static get<R = any>(name: string): R;
-    /** Adds data once. */
+    /** Add global data (one-time). */
     static add(data: Record<string, any>): void;
 }
-// File: classes/Hash.d.ts
-/**
- * URL hash data management.
- */
+// File: src/classes/Hash.d.ts
+/** URL hash data manager. */
 export declare class Hash {
-    /** Returns HashInstance. */
+    /** Get isolated HashInstance. */
     static getItem(): HashInstance;
-    /** Gets data from hash. */
+    /** Get value from hash. */
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
-    /** Sets data in hash. */
+    /** Set value in hash. */
     static set<T>(name: string, callback: T | (() => T)): void;
-    /** Adds change watcher. */
+    /** Watch hash changes. */
     static addWatch<T>(name: string, callback: (value: T) => void): void;
-    /** Removes watcher. */
+    /** Stop watching hash. */
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
-    /** Reloads from URL string. */
+    /** Reload from URL. */
     static reload(): void;
 }
-// File: classes/HashInstance.d.ts
-/**
- * URL hash data management.
- */
+// File: src/classes/HashInstance.d.ts
+/** isolated URL hash logic. */
 export declare class HashInstance {
-    /** Gets data from hash. */
     get<T>(name: string, defaultValue?: T | (() => T)): T;
-    /** Sets data in hash. */
     set<T>(name: string, callback: T | (() => T)): this;
-    /** Adds change listener. */
     addWatch<T>(name: string, callback: (value: T) => void): this;
-    /** Removes listener. */
     removeWatch<T>(name: string, callback: (value: T) => void): this;
-    /** Updates from URL. */
     reload(): this;
 }
-// File: classes/Icons.d.ts
+// File: src/classes/Icons.d.ts
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
 export type IconsConfig = {
     url?: string;
     list?: Record<string, IconsItem>;
 };
-/**
- * Icons management.
- */
+/** Icon management and loading. */
 export declare class Icons {
-    /** Checks if icon registered. */
+    /** Check if icon exists. */
     static is(index: string): boolean;
-    /** Returns icon content/path. */
+    /** Get icon async. */
     static get(index: string, url?: string, wait?: number): Promise<string>;
-    /** Sync returns icon. */
+    /** Get loaded icon. */
     static getAsync(index: string, url?: string): string;
-    /** Returns icon names list. */
+    /** Get all icon names. */
     static getNameList(): string[];
-    /** Returns global URL. */
+    /** Get global icons URL. */
     static getUrlGlobal(): string;
-    /** Adds custom icon. */
+    /** Add custom icon. */
     static add(index: string, file: IconsItem): void;
-    /** Adds loading placeholder. */
+    /** Mark icon for loading. */
     static addLoad(index: string): void;
-    /** Adds global icon. */
+    /** Add global icon. */
     static addGlobal(index: string, file: string): void;
-    /** Adds icons list. */
+    /** Add icons list. */
     static addByList(list: Record<string, IconsItem>): void;
-    /** Changes path. */
+    /** Set icons path. */
     static setUrl(url: string): void;
-    /** Changes config. */
+    /** Set icons config. */
     static setConfig(config: IconsConfig): void;
 }
-// File: classes/Loading.d.ts
-/**
- * Global loading state.
- */
+// File: src/classes/Loading.d.ts
+/** Global loading state manager. */
 export declare class Loading {
-    /** Checks if active. */
+    /** Check if active. */
     static is(): boolean;
-    /** Gets current value. */
+    /** Get loading count. */
     static get(): number;
-    /** Returns LoadingInstance. */
+    /** Get isolated LoadingInstance. */
     static getItem(): LoadingInstance;
-    /** Shows loader. */
+    /** Show loader. */
     static show(): void;
-    /** Hides loader. */
+    /** Hide loader. */
     static hide(): void;
-    /** Registers event listener. */
+    /** Register change listener. */
     static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    /** Unregisters event listener. */
+    /** Unregister change listener. */
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
-// File: classes/LoadingInstance.d.ts
-/** Loading event data */
+// File: src/classes/LoadingInstance.d.ts
+/** Loading event detail. */
 export type LoadingDetail = {
     loading: boolean;
 };
-/** Loading registration item */
+/** Loading registration record. */
 export type LoadingRegistrationItem = {
     item: EventItem<Window, CustomEvent, LoadingDetail>;
     listener: EventListenerDetail<CustomEvent, LoadingDetail>;
     element?: ElementOrString<HTMLElement>;
 };
-/**
- * Global loading instance.
- */
+/** isolated loading state. */
 export declare class LoadingInstance {
-    /** Constructor */
     constructor(eventName?: string);
-    /** Checks if loader active. */
     is(): boolean;
-    /** Gets loading value. */
     get(): number;
-    /** Shows loader. */
     show(): void;
-    /** Hides loader. */
     hide(): void;
-    /** Registers event. */
     registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    /** Unregisters event. */
     unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
-// File: classes/Meta.d.ts
-/**
- * Unified meta tag manager (Standard, OG, Twitter).
- */
+// File: src/classes/Meta.d.ts
+/** HTML/OG/Twitter meta tags manager. */
 export declare class Meta extends MetaManager<MetaTag[]> {
-    /** Constructor */
     constructor();
-    /** Gets MetaOg instance. */
     getOg(): MetaOg;
-    /** Gets MetaTwitter instance. */
     getTwitter(): MetaTwitter;
-    /** Gets title. */
     getTitle(): string;
-    /** Gets keywords. */
     getKeywords(): string;
-    /** Gets description. */
     getDescription(): string;
-    /** Gets OG image. */
     getImage(): string;
-    /** Gets canonical URL. */
     getCanonical(): string;
-    /** Gets robots directive. */
     getRobots(): MetaRobots;
-    /** Gets author. */
     getAuthor(): string;
-    /** Gets OG site name. */
     getSiteName(): string;
-    /** Gets OG locale. */
     getLocale(): string;
-    /** Sets title and syncs cards. */
     setTitle(title: string): this;
-    /** Sets keywords. */
     setKeywords(keywords: string | string[]): this;
-    /** Sets description. */
     setDescription(description: string): this;
-    /** Sets OG/Twitter image. */
     setImage(image: string): this;
-    /** Sets canonical and syncs cards. */
     setCanonical(canonical: string): this;
-    /** Sets robots. */
     setRobots(robots: MetaRobots): this;
-    /** Sets author. */
     setAuthor(author: string): this;
-    /** Sets OG/Twitter site name. */
     setSiteName(siteName: string): this;
-    /** Sets OG locale. */
     setLocale(locale: string): this;
-    /** Sets title suffix. */
     setSuffix(suffix?: string): void;
-    /** Generates full HTML. */
+    /** Generate full HTML meta block. */
     html(): string;
-    /** Generates HTML-safe title. */
+    /** Get HTML-safe title. */
     htmlTitle(): string;
 }
-// File: classes/MetaManager.d.ts
+// File: src/classes/MetaManager.d.ts
 type MetaList<T extends readonly string[]> = {
     [K in T[number]]?: string;
 };
-/**
- * Base meta tag management.
- */
+/** Meta tag logic base. */
 export declare class MetaManager<T extends readonly string[], Key extends keyof MetaList<T> = keyof MetaList<T>> {
-    /**
-     * Constructor
-     * @param listMeta names list
-     * @param isProperty use property attribute
-     */
     constructor(listMeta: T, isProperty?: boolean);
-    /** Returns tag names list. */
     getListMeta(): T;
-    /** Gets content by name. */
     get(name: Key): string;
-    /** Returns all tags object. */
     getItems(): MetaList<T>;
-    /** Returns all tags HTML. */
     html(): string;
-    /** Sets tag content. */
     set(name: Key, content: string): this;
-    /** Sets multiple tags. */
     setByList(metaList: MetaList<T>): this;
 }
-// File: classes/MetaOg.d.ts
-/**
- * Open Graph meta manager.
- */
+// File: src/classes/MetaOg.d.ts
+/** Open Graph tags manager. */
 export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     constructor();
     getTitle(): string;
@@ -1662,10 +945,8 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     setLocale(locale: string): this;
     setSiteName(siteName: string): this;
 }
-// File: classes/MetaStatic.d.ts
-/**
- * Static meta tag management.
- */
+// File: src/classes/MetaStatic.d.ts
+/** static meta tags manager. */
 export declare class MetaStatic {
     static getItem(): Meta;
     static getOg(): MetaOg;
@@ -1692,10 +973,8 @@ export declare class MetaStatic {
     static html(): string;
     static htmlTitle(): string;
 }
-// File: classes/MetaTwitter.d.ts
-/**
- * Twitter Card meta manager.
- */
+// File: src/classes/MetaTwitter.d.ts
+/** Twitter Card tags manager. */
 export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
     constructor();
     getCard(): MetaTwitterCard;
@@ -1713,141 +992,90 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
     setDescription(description: string): this;
     setImage(image: string): this;
 }
-// File: classes/ResumableTimer.d.ts
-/**
- * Timer that can be paused/resumed.
- */
+// File: src/classes/ResumableTimer.d.ts
+/** Pauseable timeout timer. */
 export declare class ResumableTimer {
-    /**
-     * Constructor
-     * @param callback function to call
-     * @param delay ms
-     * @param blockStart no immediate start
-     */
     constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
-    /** Resumes/starts timer. */
+    /** Start or resume. */
     resume(): this;
-    /** Pauses timer. */
+    /** Pause and track remaining time. */
     pause(): this;
-    /** Resets with original delay. */
+    /** Restart from zero. */
     reset(): this;
-    /** Clears timer state. */
+    /** Stop and clear. */
     clear(): this;
 }
-// File: classes/ScrollbarWidth.d.ts
-/**
- * Gets scrollbar width.
- */
+// File: src/classes/ScrollbarWidth.d.ts
+/** Scrollbar width detector. */
 export declare class ScrollbarWidth {
-    /** Checks if scroll hiding enabled. */
+    /** Check if scroll hiding enabled. */
     static is(): Promise<boolean>;
-    /** Returns width in pixels. */
+    /** Get scroll width (px). */
     static get(): Promise<number>;
-    /** Returns storage instance. */
+    /** Get internal storage. */
     static getStorage(): DataStorage<number>;
-    /** Checks if calculation active. */
+    /** Check calculation status. */
     static getCalculate(): boolean;
 }
-// File: classes/SearchList.d.ts
-/**
- * Manages searchable list.
- */
+// File: src/classes/SearchList.d.ts
+/** Searchable list coordinator. */
 export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
-    /**
-     * Constructor
-     * @param list data list
-     * @param columns search columns
-     * @param value initial value
-     * @param options search options
-     */
     constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
-    /** Returns data manager. */
     getData(): SearchListData<T, K>;
-    /** Returns items list. */
     getList(): SearchListValue<T>;
-    /** Returns search columns. */
     getColumns(): K | undefined;
-    /** Returns search item instance. */
     getItem(): SearchListItem;
-    /** Returns current search value. */
     getValue(): string | undefined;
-    /** Returns options manager. */
     getOptions(): SearchListOptions;
-    /** Sets items and resets cache. */
     setList(list: SearchListValue<T>): this;
-    /** Sets columns and resets cache. */
     setColumns(columns?: K): this;
-    /** Sets value and updates matcher. */
     setValue(value?: string): this;
-    /** Sets options and updates matcher. */
     setOptions(options: SearchOptions): this;
-    /** Processes and returns formatted list. */
+    /** Get formatted searchable list. */
     to(): SearchFormatList<T, K>;
 }
-// File: classes/SearchListData.d.ts
-/**
- * Search data and cache manager.
- */
+// File: src/classes/SearchListData.d.ts
+/** Search data and cache manager. */
 export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
-    /** Constructor */
     constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
-    /** Checks if ready for search. */
-    is(): this is this & { list: T[]; columns: string[]; };
-    /** Checks for list. */
-    isList(): this is this & { list: T[]; };
-    /** Returns original list. */
+    is(): this is this & {
+        list: T[];
+        columns: string[];
+    };
+    isList(): this is this & {
+        list: T[];
+    };
     getList(): SearchListValue<T>;
-    /** Returns columns. */
     getColumns(): K | undefined;
-    /** Sets list and regenerates cache. */
     setList(list: SearchListValue<T>): this;
-    /** Sets columns and regenerates cache. */
     setColumns(columns?: SearchColumns<T>): this;
-    /** Finds cached item. */
     findCacheItem(item: T): SearchCacheItem<T> | undefined;
-    /** Executes callback for each cached item. */
     forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
-    /** Formats single item with highlights. */
     toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
 }
-// File: classes/SearchListItem.d.ts
-/**
- * Single search item state.
- */
+// File: src/classes/SearchListItem.d.ts
+/** Single search query state. */
 export declare class SearchListItem {
-    /** Constructor */
     constructor(value: string | undefined, options: SearchListOptions);
-    /** Checks for value. */
-    is(): this is this & { value: string; };
-    /** Checks if search should trigger. */
+    is(): this is this & {
+        value: string;
+    };
     isSearch(): boolean;
-    /** Returns value. */
     get(): string;
-    /** Sets value. */
     set(value?: string): this;
 }
-// File: classes/SearchListMatcher.d.ts
-/**
- * Search regex matcher.
- */
+// File: src/classes/SearchListMatcher.d.ts
+/** Regex-based search matcher. */
 export declare class SearchListMatcher {
-    /** Constructor */
     constructor(item: SearchListItem, options: SearchListOptions);
-    /** Checks if initialized. */
     is(): boolean;
-    /** Checks for match. */
     isSelection(value: SearchCacheItem<any>['value']): boolean;
-    /** Returns current RegExp. */
     get(): RegExp | undefined;
-    /** Updates matcher from value/options. */
     update(): void;
 }
-// File: classes/SearchListOptions.d.ts
-/**
- * Search options manager.
- */
+// File: src/classes/SearchListOptions.d.ts
+/** Search list settings. */
 export declare class SearchListOptions {
-    /** Constructor */
     constructor(options?: SearchOptions | undefined);
     getOptions(): SearchOptions;
     getLimit(): number;
@@ -1857,496 +1085,514 @@ export declare class SearchListOptions {
     getClassName(): string;
     setOptions(options: SearchOptions): this;
 }
-// File: classes/ServerStorage.d.ts
-type ServerStorageItem = {
-    value: any;
-    hydration: boolean;
-};
-type ServerStorageList = Record<string, ServerStorageItem>;
-/**
- * SSR data isolation manager.
- */
+// File: src/classes/ServerStorage.d.ts
+/** context storage for SSR isolation. */
 export declare class ServerStorage {
-    /**
-     * Initializes storage with context listener.
-     * @param listener context factory
-     * @returns this class
-     */
+    /** Init context listener. */
     static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
     static reset(): void;
-    /** Checks key existence. */
     static has(key: string): boolean;
-    /** Gets value or creates with factory. */
+    /** Get value with SSR/Hydration support. */
     static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
-    /** Saves value. */
+    /** Save value. */
     static set<T = any>(key: string, value: () => T, hydration?: boolean): T;
     static setErrorStatus(hide: boolean): void;
     static remove(key: string): void;
-    /** Returns hydration script string. */
+    /** Get script for hydration. */
     static toString(): string;
 }
-// File: classes/StorageCallback.d.ts
-/**
- * Callback lists for storage.
- */
+// File: src/classes/StorageCallback.d.ts
+/** Callback list manager for storage. */
 export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
-    /** Returns instance by name. */
     static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
-    /** Constructor */
     constructor(name: string, group?: string);
-    /** Gets loading state. */
     isLoading(): boolean;
-    /** Gets name. */
     getName(): string;
     getLoading(): boolean;
-    /** Adds callback. */
     addCallback(callback: Callback, isOnce?: boolean): this;
-    /** Removes callback. */
     removeCallback(callback: Callback): this;
-    /** Prepares launch. */
     preparation(): this;
-    /** Executes all callbacks. */
     run(value: T): Promise<this>;
 }
-// File: classes/Translate.d.ts
-/**
- * Translation text retrieval.
- */
+// File: src/classes/Translate.d.ts
+/** Translation text manager. */
 export declare class Translate {
-    /** Gets text by code. */
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
-    /** Returns TranslateInstance. */
     static getItem(): TranslateInstance;
-    /** Sync gets text by code. */
     static getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
-    /** Gets list of translations. */
     static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
-    /** Sync gets translations list. */
     static getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
-    /** Adds translated texts. */
     static add(names: string | string[]): Promise<void>;
-    /** Sync adds texts. */
     static addSync(data: Record<string, string>): void;
-    /** Adds based on environment. */
     static addNormalOrSync(data: Record<string, string>): Promise<void>;
-    /** Adds sync by location. */
     static addSyncByLocation(data: Record<string, Record<string, string>>): void;
-    /** Adds sync from file. */
     static addSyncByFile(data: TranslateDataFile): void;
-    /** Sets script URL. */
     static setUrl(url: string): void;
-    /** Sets property name. */
     static setPropsName(name: string): void;
-    /** Changes read mode. */
     static setReadApi(value: boolean): void;
-    /** Sets configuration. */
     static setConfig(config: TranslateConfig): void;
 }
-// File: classes/TranslateFile.d.ts
-/**
- * Translation files manager.
- */
+// File: src/classes/TranslateFile.d.ts
+/** Translation files handler. */
 export declare class TranslateFile {
-    /** Constructor */
     constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
-    /** Checks for files. */
     isFile(): boolean;
-    /** Gets location. */
     getLocation(): string;
-    /** Gets language. */
     getLanguage(): string;
-    /** Returns translations list. */
     getList(): Promise<TranslateDataFileList | undefined>;
-    /** Adds files list. */
     add(data: TranslateDataFile): void;
 }
-// File: classes/TranslateInstance.d.ts
-/**
- * Translation text retrieval instance.
- */
+// File: src/classes/TranslateInstance.d.ts
+/** isolated translation logic. */
 export declare class TranslateInstance {
-    /** Constructor */
     constructor(url?: string, propsName?: string, files?: TranslateFile);
-    /** Gets text by code. */
     get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
-    /** Sync gets text. */
     getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
-    /** Gets translations list. */
     getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
-    /** Sync gets list. */
     getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
-    /** Adds texts. */
     add(names: string | string[]): Promise<void>;
-    /** Sync adds texts. */
     addSync(data: Record<string, string>): void;
-    /** Environment-based add. */
     addNormalOrSync(data: Record<string, string>): Promise<void>;
-    /** Sync add by location. */
     addSyncByLocation(data: Record<string, Record<string, string>>): void;
-    /** Sync add from file. */
     addSyncByFile(data: TranslateDataFile): void;
-    /** Sets script URL. */
     setUrl(url: string): this;
-    /** Sets property name. */
     setPropsName(name: string): this;
-    /** Sets read mode. */
     setReadApi(value: boolean): this;
 }
-// File: functions/addTagHighlightMatch.d.ts
-/** Highlights match in string with tags. */
+// File: src/functions/addTagHighlightMatch.d.ts
+/** Highlight match with HTML tag. */
 export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
-// File: functions/anyToString.d.ts
-/** Converts any value to string. */
+// File: src/functions/anyToString.d.ts
+/** Convert value to string. */
 export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?: boolean): string;
-// File: functions/applyTemplate.d.ts
-/** Replaces template keys [key] or {key} with values. */
+// File: src/functions/applyTemplate.d.ts
+/** Replace template keys with values. */
 export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
-// File: functions/arrFill.d.ts
-/** Creates array of length count filled with value. */
+// File: src/functions/arrFill.d.ts
+/** Create array filled with value. */
 export declare function arrFill<T>(value: T, count: number): T[];
-// File: functions/blobToBase64.d.ts
-/** Converts Blob to Base64. */
+// File: src/functions/blobToBase64.d.ts
+/** Blob to Base64 string. */
 export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
-// File: functions/capitalize.d.ts
-/** Capitalizes first letter. */
+// File: src/functions/capitalize.d.ts
+/** Capitalize first letter. */
 export declare function capitalize(value: string, isLocale?: boolean): string;
-// File: functions/copyObject.d.ts
-/** Deep copy of object. */
+// File: src/functions/copyObject.d.ts
+/** Deep copy object. */
 export declare function copyObject<T>(value: T): T;
-// File: functions/copyObjectLite.d.ts
-/** Shallow copy of simple object. */
+// File: src/functions/copyObjectLite.d.ts
+/** Shallow copy object. */
 export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
-// File: functions/createElement.d.ts
-/**
- * Creates HTML element.
- * @remarks Client-side only. Returns undefined in SSR.
- */
+// File: src/functions/createElement.d.ts
+/** @remarks call only in client-side hooks. */
 export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
-// File: functions/domQuerySelector.d.ts
-/** Returns first matched element. */
+// File: src/functions/domQuerySelector.d.ts
 export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;
-// File: functions/domQuerySelectorAll.d.ts
-/** Returns all matched elements. */
+// File: src/functions/domQuerySelectorAll.d.ts
 export declare function domQuerySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E> | undefined;
-// File: functions/encodeAttribute.d.ts
-/** Encodes for HTML attributes. */
+// File: src/functions/encodeAttribute.d.ts
 export declare function encodeAttribute(text: string): string;
-// File: functions/encodeLiteAttribute.d.ts
-/** Lightly encodes for HTML attributes. */
+// File: src/functions/encodeLiteAttribute.d.ts
 export declare function encodeLiteAttribute(text: string): string;
-// File: functions/ensureMaxSize.d.ts
-/** Resizes image if it exceeds max size. */
+// File: src/functions/ensureMaxSize.d.ts
+/** Resize image if too large. */
 export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
-// File: functions/escapeExp.d.ts
-/** Escapes special regex characters. */
+// File: src/functions/escapeExp.d.ts
+/** Escape regex special chars. */
 export declare function escapeExp(value: string): string;
-// File: functions/eventStopPropagation.d.ts
-/** Stops event propagation. */
+// File: src/functions/eventStopPropagation.d.ts
 export declare function eventStopPropagation(event: Event): void;
-// File: functions/executeFunction.d.ts
-/** Executes argument if function, else returns value. */
+// File: src/functions/executeFunction.d.ts
+/** Execute if function, else return. */
 export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
-// File: functions/executePromise.d.ts
-/** Safely executes function/Promise and awaits result. */
+// File: src/functions/executePromise.d.ts
+/** Execute and await result. */
 export declare function executePromise<T>(callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T, ...args: any[]): Promise<T>;
-// File: functions/forEach.d.ts
-/** Iterates and returns array of results. */
+// File: src/functions/forEach.d.ts
+/** Object/Array/Map/Set iteration with results. */
 export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> | Set<T> = T[] | Record<string, T> | Map<string, T> | Set<T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T> | Set<T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];
-// File: functions/frame.d.ts
-/** Loops requestAnimationFrame until next returns false. */
+// File: src/functions/frame.d.ts
+/** Cyclic requestAnimationFrame. */
 export declare function frame(callback: () => void, next?: () => boolean, end?: () => void): void;
-// File: functions/getArrayHighlightMatch.d.ts
-/** Splits string into segment array with match flags. */
+// File: src/functions/getArrayHighlightMatch.d.ts
+/** Split string into segments for highlighting. */
 export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];
-// File: functions/getAttributes.d.ts
-/** Gets attributes record of element. */
+// File: src/functions/getAttributes.d.ts
 export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
-// File: functions/getClipboardData.d.ts
-/** Retrieves clipboard string. */
+// File: src/functions/getClipboardData.d.ts
 export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
-// File: functions/getColumn.d.ts
-/** Returns array of specific column values. */
+// File: src/functions/getColumn.d.ts
+/** Get values from specific key across array. */
 export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
-// File: functions/getCurrentDate.d.ts
-/**
- * Returns current date string.
- * @remarks Client-side only recommended for SSR safety.
- */
+// File: src/functions/getCurrentDate.d.ts
+/** @remarks SSR usage causes hydration mismatch. */
 export declare function getCurrentDate(format?: GeoDate): string;
-// File: functions/getCurrentTime.d.ts
-/**
- * Returns current timestamp ms.
- * @note Warning: Causes SSR hydration mismatch if used in rendering.
- */
+// File: src/functions/getCurrentTime.d.ts
+/** @remarks SSR usage causes hydration mismatch. */
 export declare function getCurrentTime(): number;
-// File: functions/getElement.d.ts
-/** Returns first matched Element. */
+// File: src/functions/getElement.d.ts
 export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
-// File: functions/getElementId.d.ts
-/** Gets or creates element ID. */
+// File: src/functions/getElementId.d.ts
+/** @warning SSR initialization required. */
 export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
-/**
- * Initializes getElementId.
- * @warning Mandatory for SSR.
- */
 export declare function initGetElementId(newListener: () => string | number): void;
-// File: functions/getElementImage.d.ts
-/** Gets Image element from source. */
+// File: src/functions/getElementImage.d.ts
 export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
-// File: functions/getElementItem.d.ts
-/** Returns element property value. */
+// File: src/functions/getElementItem.d.ts
 export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
-// File: functions/getElementOrWindow.d.ts
-/** Returns Window or Element. */
+// File: src/functions/getElementOrWindow.d.ts
 export declare function getElementOrWindow<E extends ElementOrWindow>(element?: ElementOrString<E>): E | undefined;
-// File: functions/getElementSafeScript.d.ts
-/** Generates script tag for hydration. */
+// File: src/functions/getElementSafeScript.d.ts
+/** Safe script for hydration. */
 export declare function getElementSafeScript(id: string, data: any): string;
-// File: functions/getExactSearchExp.d.ts
-/** Regex for exact case-insensitive phrase match. */
+// File: src/functions/getExactSearchExp.d.ts
 export declare function getExactSearchExp(search: string): RegExp;
-// File: functions/getExp.d.ts
-/** Creates RegExp from template. */
+// File: src/functions/getExp.d.ts
 export declare function getExp(value: string, flags?: string, pattern?: string): RegExp;
-// File: functions/getHydrationData.d.ts
-/** Parses JSON from script tag. */
+// File: src/functions/getFirst.d.ts
+export declare function getFirst<T>(value: T | T[] | Record<string, T>): T | undefined;
+// File: src/functions/getHydrationData.d.ts
 export declare function getHydrationData<T>(id: string, defaultValue: T, remove?: boolean): T;
-// File: functions/getItemByPath.d.ts
-/** Returns data by path string. */
+// File: src/functions/getItemByPath.d.ts
 export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
-// File: functions/getKey.d.ts
-/** Returns pressed key. */
+// File: src/functions/getKey.d.ts
 export declare function getKey(event: KeyboardEvent): string;
-// File: functions/getLengthOfAllArray.d.ts
-/** Returns lengths of all elements. */
+// File: src/functions/getLengthOfAllArray.d.ts
 export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];
-// File: functions/getMaxLengthAllArray.d.ts
-/** Returns length of longest string. */
-export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];
+// File: src/functions/getMaxLengthAllArray.d.ts
 export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;
-// File: functions/getMinLengthAllArray.d.ts
-/** Returns length of shortest string. */
+// File: src/functions/getMinLengthAllArray.d.ts
 export declare function getMinLengthAllArray(data: ObjectOrArray<string>): number;
-// File: functions/getMouseClient.d.ts
-/** Returns mouse/click coordinates. */
+// File: src/functions/getMouseClient.d.ts
 export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;
-// File: functions/getMouseClientX.d.ts
-/** Returns X coordinate. */
+// File: src/functions/getMouseClientX.d.ts
 export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
-// File: functions/getMouseClientY.d.ts
-/** Returns Y coordinate. */
+// File: src/functions/getMouseClientY.d.ts
 export declare function getMouseClientY(event: MouseEvent & TouchEvent): number;
-// File: functions/getObjectByKeys.d.ts
-/** New object with specified keys. */
+// File: src/functions/getObjectByKeys.d.ts
 export declare function getObjectByKeys<T extends Record<string, any>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;
-// File: functions/getObjectNoUndefined.d.ts
-/** Removes properties matching exception type. */
+// File: src/functions/getObjectNoUndefined.d.ts
 export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
-// File: functions/getObjectOrNone.d.ts
-/** Returns object or empty object. */
+// File: src/functions/getObjectOrNone.d.ts
 export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
-// File: functions/getOnlyText.d.ts
-/** Keeps letters, numbers, spaces. */
+// File: src/functions/getOnlyText.d.ts
 export declare function getOnlyText(text: any): string;
-// File: functions/getRandomText.d.ts
-/** Generates random text. */
+// File: src/functions/getRandomText.d.ts
 export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
-// File: functions/getRequestString.d.ts
-/** Formats request as key-value string. */
+// File: src/functions/getRequestString.d.ts
+/** Formatted key-value string for requests. */
 export declare function getRequestString(request: Record<string, any> | any[], sign?: string, separator?: string, subKey?: string): string;
-// File: functions/getSearchExp.d.ts
-/** RegExp for "contains all words" search. */
+// File: src/functions/getSearchExp.d.ts
+/** Case-insensitive global multi-word match RegExp. */
 export declare function getSearchExp(search: string, limit?: number): RegExp;
-// File: functions/getSeparatingSearchExp.d.ts
-/** RegExp for search by space-separated words. */
+// File: src/functions/getSeparatingSearchExp.d.ts
 export declare function getSeparatingSearchExp(search: string | RegExp, limit?: number): RegExp;
-// File: functions/getStepPercent.d.ts
-/** Step unit in percent. */
+// File: src/functions/getStepPercent.d.ts
 export declare function getStepPercent(min: number | undefined, max: number): number;
-// File: functions/getStepValue.d.ts
-/** Step unit value. */
+// File: src/functions/getStepValue.d.ts
 export declare function getStepValue(min: number | undefined, max: number): number;
-// File: functions/goScroll.d.ts
-/** Quick scroll to element. */
+// File: src/functions/goScroll.d.ts
 export declare function goScroll(selector: string, elementTo: HTMLElement | undefined, elementCenter?: HTMLElement): void;
-// File: functions/goScrollSmooth.d.ts
-/** Smooth scroll to element. */
+// File: src/functions/goScrollSmooth.d.ts
 export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
-// File: functions/goScrollTo.d.ts
-/** Scrolls container to target. */
+// File: src/functions/goScrollTo.d.ts
 export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
-// File: functions/handleShare.d.ts
+// File: src/functions/handleShare.d.ts
 /** Web Share API wrapper. */
 export declare function handleShare(data: ShareData): Promise<boolean>;
-// File: functions/inArray.d.ts
-/** Checks value in array. */
+// File: src/functions/inArray.d.ts
 export declare function inArray<T>(array: T[], value: T): boolean;
-// File: functions/initScrollbarOffset.d.ts
-/** Init scroll control data. */
+// File: src/functions/initScrollbarOffset.d.ts
 export declare function initScrollbarOffset(): Promise<void>;
-// File: functions/intersectKey.d.ts
-/** Intersection of arrays using keys. */
+// File: src/functions/intersectKey.d.ts
 export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
-// File: functions/isApiSuccess.d.ts
-/** Checks API success flag. */
+// File: src/functions/isApiSuccess.d.ts
 export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
-// File: functions/isArray.d.ts
-/** Checks if array. */
+// File: src/functions/isArray.d.ts
 export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
-// File: functions/isDifferent.d.ts
-/** Checks object value difference. */
+// File: src/functions/isDifferent.d.ts
 export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
-// File: functions/isDomData.d.ts
-/** Checks for data URL environment. */
+// File: src/functions/isDomData.d.ts
 export declare function isDomData(): boolean;
-// File: functions/isDomRuntime.d.ts
-/** Checks if window available. */
+// File: src/functions/isDomRuntime.d.ts
 export declare function isDomRuntime(): boolean;
-// File: functions/isElementVisible.d.ts
-/** Checks CSS visibility and DOM presence. */
+// File: src/functions/isElementVisible.d.ts
 export declare function isElementVisible<E extends ElementOrWindow>(elementSelectors?: ElementOrString<E>): boolean;
-// File: functions/isEnter.d.ts
-/** Checks Enter/Space key. */
+// File: src/functions/isEnter.d.ts
 export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
-// File: functions/isFilled.d.ts
-/** Checks if field filled. */
+// File: src/functions/isFilled.d.ts
 export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;
-// File: functions/isFloat.d.ts
-/** Checks if numeric/float. */
+// File: src/functions/isFloat.d.ts
 export declare function isFloat(value: any): boolean;
-// File: functions/isFunction.d.ts
-/** Checks if function. */
+// File: src/functions/isFunction.d.ts
 export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
-// File: functions/isInDom.d.ts
-/** Checks DOM presence. */
+// File: src/functions/isInDom.d.ts
 export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
-// File: functions/isInput.d.ts
-/** Checks if input/editable. */
+// File: src/functions/isInput.d.ts
 export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
-// File: functions/isIntegerBetween.d.ts
-/** Checks if between integers. */
+// File: src/functions/isIntegerBetween.d.ts
 export declare function isIntegerBetween(value: number, between: number): boolean;
-// File: functions/isNull.d.ts
-/** Checks null/undefined. */
+// File: src/functions/isNull.d.ts
 export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
-// File: functions/isNumber.d.ts
-/** Checks if number. */
+// File: src/functions/isNumber.d.ts
 export declare function isNumber(value: any): boolean;
-// File: functions/isObject.d.ts
-/** Checks if object. */
+// File: src/functions/isObject.d.ts
 export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;
-// File: functions/isObjectNotArray.d.ts
-/** Checks if object and not array. */
+// File: src/functions/isObjectNotArray.d.ts
 export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
-// File: functions/isOnLine.d.ts
-/** Checks online status. */
+// File: src/functions/isOnLine.d.ts
 export declare function isOnLine(): boolean;
-// File: functions/isSelected.d.ts
-/** Checks value in selected array/string. */
+// File: src/functions/isSelected.d.ts
 export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;
-// File: functions/isSelectedByList.d.ts
-/** Checks selection for entire list. */
+// File: src/functions/isSelectedByList.d.ts
 export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
-// File: functions/isShare.d.ts
-/** Checks Web Share API support. */
+// File: src/functions/isShare.d.ts
 export declare function isShare(): boolean;
-// File: functions/isString.d.ts
-/** Checks if string. */
+// File: src/functions/isString.d.ts
 export declare function isString<T>(value: T): value is Extract<T, string>;
-// File: functions/isWindow.d.ts
-/** Checks if Window. */
+// File: src/functions/isWindow.d.ts
 export declare function isWindow<E>(element: E): element is Extract<E, Window>;
-// File: functions/random.d.ts
-/** Random integer generator. */
+// File: src/functions/random.d.ts
 export declare function random(min: number, max: number): number;
-// File: functions/removeCommonPrefix.d.ts
-/** Removes prefix from string. */
+// File: src/functions/removeCommonPrefix.d.ts
 export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
-// File: functions/replaceComponentName.d.ts
-/** Replaces component name in text. */
+// File: src/functions/replaceComponentName.d.ts
 export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
-// File: functions/replaceRecursive.d.ts
-/** Recursive merge of arrays/objects. */
+// File: src/functions/replaceRecursive.d.ts
 export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
-// File: functions/replaceTemplate.d.ts
-/** Data-based template replacement. */
+// File: src/functions/replaceTemplate.d.ts
 export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
-// File: functions/resizeImageByMax.d.ts
+// File: src/functions/resizeImageByMax.d.ts
 type ResizeImageByMaxType = 'auto' | 'width' | 'height';
-/** Resizes image within max constraint. */
 export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string): string | undefined;
-// File: functions/secondToTime.d.ts
-/** Seconds to time string. */
+// File: src/functions/secondToTime.d.ts
 export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
-// File: functions/setElementItem.d.ts
-/** Modifies element property. */
+// File: src/functions/setElementItem.d.ts
 export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
-// File: functions/setValues.d.ts
-/** Modifies data by type and settings (multiple, maxlength). */
+// File: src/functions/setValues.d.ts
 export declare function setValues<T>(selected: T | T[] | undefined, value: any, { multiple, maxlength, alwaysChange, notEmpty }: {
     multiple?: boolean | undefined;
     maxlength?: number | undefined;
     alwaysChange?: boolean | undefined;
     notEmpty?: boolean | undefined;
 }): T | T[] | undefined;
-// File: functions/sleep.d.ts
-/** ms delay promise. */
+// File: src/functions/sleep.d.ts
 export declare function sleep(ms: number): Promise<void>;
-// File: functions/splice.d.ts
-/** enumerable property copy into target object. */
+// File: src/functions/splice.d.ts
 export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
-// File: functions/strFill.d.ts
-/** String of length count filled with value. */
+// File: src/functions/strFill.d.ts
 export declare function strFill(value: string, count: number): string;
-// File: functions/strSplit.d.ts
-/** Splitting with limit. Last element contains remainder. */
+// File: src/functions/strSplit.d.ts
 export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
-// File: functions/toArray.d.ts
-/** Wraps in array if not array. */
+// File: src/functions/toArray.d.ts
 export declare function toArray<T>(value: T): T extends any[] ? T : [T];
-// File: functions/toCamelCase.d.ts
-/** Camel case (upper). */
+// File: src/functions/toCamelCase.d.ts
 export declare function toCamelCase(value: string): string;
-// File: functions/toCamelCaseFirst.d.ts
-/** Camel case with first letter upper. */
+// File: src/functions/toCamelCaseFirst.d.ts
 export declare function toCamelCaseFirst(value: string): string;
-// File: functions/toDate.d.ts
-/** Date object conversion. */
+// File: src/functions/toDate.d.ts
 export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
-// File: functions/toKebabCase.d.ts
-/** Kebab-case conversion. */
+// File: src/functions/toKebabCase.d.ts
 export declare function toKebabCase(value: string): string;
-// File: functions/toNumber.d.ts
-/**
- * String/number to float. Handles separators.
- * @example toNumber("1 234,56") // 1234.56
- */
+// File: src/functions/toNumber.d.ts
+/** @example toNumber("1 234,56") // 1234.56 */
 export declare function toNumber(value?: NumberOrString): number;
-// File: functions/toNumberByMax.d.ts
-/** Number conversion with max limit and formatting. */
+// File: src/functions/toNumberByMax.d.ts
 export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
-// File: functions/toPercent.d.ts
-/** Percentage conversion. */
+// File: src/functions/toPercent.d.ts
 export declare function toPercent(maxValue: number, value: number): number;
-// File: functions/toPercentBy100.d.ts
-/** Percentage * 100 conversion. */
+// File: src/functions/toPercentBy100.d.ts
 export declare function toPercentBy100(maxValue: number, value: number): number;
-// File: functions/toString.d.ts
-/** String conversion. Empty if null/undefined. */
+// File: src/functions/toString.d.ts
 export declare function toString<T>(value: T): string;
-// File: functions/transformation.d.ts
-/** Transforms string to inferred type (null, boolean, object, function). */
+// File: src/functions/transformation.d.ts
 export declare function transformation(value: any, isFunction?: boolean): any;
-// File: functions/uint8ArrayToBase64.d.ts
-/** Uint8Array to base64 string. */
+// File: src/functions/uint8ArrayToBase64.d.ts
 export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
-// File: functions/uniqueArray.d.ts
-/** Removes duplicates. */
+// File: src/functions/uniqueArray.d.ts
 export declare function uniqueArray<T>(value: T[]): T[];
-// File: functions/writeClipboardData.d.ts
-/** Writes string to buffer. */
+// File: src/functions/writeClipboardData.d.ts
 export declare function writeClipboardData(text: string): Promise<void>;
-// File: types/apiTypes.d.ts
+// File: src/library.d.ts
+export * from './classes/Api';
+export * from './classes/ApiCache';
+export * from './classes/ApiDataReturn';
+export * from './classes/ApiDefault';
+export * from './classes/ApiError';
+export * from './classes/ApiErrorItem';
+export * from './classes/ApiErrorStorage';
+export * from './classes/ApiHeaders';
+export * from './classes/ApiHydration';
+export * from './classes/ApiInstance';
+export * from './classes/ApiPreparation';
+export * from './classes/ApiResponse';
+export * from './classes/ApiStatus';
+export * from './classes/BroadcastMessage';
+export * from './classes/Cache';
+export * from './classes/CacheItem';
+export * from './classes/CacheStatic';
+export * from './classes/Cookie';
+export * from './classes/CookieBlock';
+export * from './classes/CookieBlockInstance';
+export * from './classes/CookieStorage';
+export * from './classes/DataStorage';
+export * from './classes/Datetime';
+export * from './classes/ErrorCenter';
+export * from './classes/ErrorCenterHandler';
+export * from './classes/ErrorCenterInstance';
+export * from './classes/EventItem';
+export * from './classes/Formatters';
+export * from './classes/Geo';
+export * from './classes/GeoFlag';
+export * from './classes/GeoInstance';
+export * from './classes/GeoIntl';
+export * from './classes/GeoPhone';
+export * from './classes/Global';
+export * from './classes/Hash';
+export * from './classes/HashInstance';
+export * from './classes/Icons';
+export * from './classes/Loading';
+export * from './classes/LoadingInstance';
+export * from './classes/Meta';
+export * from './classes/MetaManager';
+export * from './classes/MetaOg';
+export * from './classes/MetaStatic';
+export * from './classes/MetaTwitter';
+export * from './classes/ResumableTimer';
+export * from './classes/ScrollbarWidth';
+export * from './classes/SearchList';
+export * from './classes/SearchListData';
+export * from './classes/SearchListItem';
+export * from './classes/SearchListMatcher';
+export * from './classes/SearchListOptions';
+export * from './classes/ServerStorage';
+export * from './classes/StorageCallback';
+export * from './classes/Translate';
+export * from './classes/TranslateFile';
+export * from './classes/TranslateInstance';
+export * from './functions/addTagHighlightMatch';
+export * from './functions/anyToString';
+export * from './functions/applyTemplate';
+export * from './functions/arrFill';
+export * from './functions/blobToBase64';
+export * from './functions/capitalize';
+export * from './functions/copyObject';
+export * from './functions/copyObjectLite';
+export * from './functions/createElement';
+export * from './functions/domQuerySelector';
+export * from './functions/domQuerySelectorAll';
+export * from './functions/encodeAttribute';
+export * from './functions/encodeLiteAttribute';
+export * from './functions/ensureMaxSize';
+export * from './functions/escapeExp';
+export * from './functions/eventStopPropagation';
+export * from './functions/executeFunction';
+export * from './functions/executePromise';
+export * from './functions/forEach';
+export * from './functions/frame';
+export * from './functions/getArrayHighlightMatch';
+export * from './functions/getAttributes';
+export * from './functions/getClipboardData';
+export * from './functions/getColumn';
+export * from './functions/getCurrentDate';
+export * from './functions/getCurrentTime';
+export * from './functions/getElement';
+export * from './functions/getElementId';
+export * from './functions/getElementImage';
+export * from './functions/getElementItem';
+export * from './functions/getElementOrWindow';
+export * from './functions/getElementSafeScript';
+export * from './functions/getExactSearchExp';
+export * from './functions/getExp';
+export * from './functions/getFirst';
+export * from './functions/getHydrationData';
+export * from './functions/getItemByPath';
+export * from './functions/getKey';
+export * from './functions/getLengthOfAllArray';
+export * from './functions/getMaxLengthAllArray';
+export * from './functions/getMinLengthAllArray';
+export * from './functions/getMouseClient';
+export * from './functions/getMouseClientX';
+export * from './functions/getMouseClientY';
+export * from './functions/getObjectByKeys';
+export * from './functions/getObjectNoUndefined';
+export * from './functions/getObjectOrNone';
+export * from './functions/getOnlyText';
+export * from './functions/getRandomText';
+export * from './functions/getRequestString';
+export * from './functions/getSearchExp';
+export * from './functions/getSeparatingSearchExp';
+export * from './functions/getStepPercent';
+export * from './functions/getStepValue';
+export * from './functions/goScroll';
+export * from './functions/goScrollSmooth';
+export * from './functions/goScrollTo';
+export * from './functions/handleShare';
+export * from './functions/inArray';
+export * from './functions/initScrollbarOffset';
+export * from './functions/intersectKey';
+export * from './functions/isApiSuccess';
+export * from './functions/isArray';
+export * from './functions/isDifferent';
+export * from './functions/isDomData';
+export * from './functions/isDomRuntime';
+export * from './functions/isElementVisible';
+export * from './functions/isEnter';
+export * from './functions/isFilled';
+export * from './functions/isFloat';
+export * from './functions/isFunction';
+export * from './functions/isInDom';
+export * from './functions/isInput';
+export * from './functions/isIntegerBetween';
+export * from './functions/isNull';
+export * from './functions/isNumber';
+export * from './functions/isObject';
+export * from './functions/isObjectNotArray';
+export * from './functions/isOnLine';
+export * from './functions/isSelected';
+export * from './functions/isSelectedByList';
+export * from './functions/isShare';
+export * from './functions/isString';
+export * from './functions/isWindow';
+export * from './functions/random';
+export * from './functions/removeCommonPrefix';
+export * from './functions/replaceComponentName';
+export * from './functions/replaceRecursive';
+export * from './functions/replaceTemplate';
+export * from './functions/resizeImageByMax';
+export * from './functions/secondToTime';
+export * from './functions/setElementItem';
+export * from './functions/setValues';
+export * from './functions/sleep';
+export * from './functions/splice';
+export * from './functions/strFill';
+export * from './functions/strSplit';
+export * from './functions/toArray';
+export * from './functions/toCamelCase';
+export * from './functions/toCamelCaseFirst';
+export * from './functions/toDate';
+export * from './functions/toKebabCase';
+export * from './functions/toNumber';
+export * from './functions/toNumberByMax';
+export * from './functions/toPercent';
+export * from './functions/toPercentBy100';
+export * from './functions/toString';
+export * from './functions/transformation';
+export * from './functions/uint8ArrayToBase64';
+export * from './functions/uniqueArray';
+export * from './functions/writeClipboardData';
+export * from './types/apiTypes';
+export * from './types/basicTypes';
+export * from './types/errorCenter';
+export * from './types/formattersTypes';
+export * from './types/geoTypes';
+export * from './types/metaTypes';
+export * from './types/searchTypes';
+export * from './types/translateTypes';
+// File: src/media/errorCauseList.d.ts
+export declare const errorCauseList: ErrorCenterCauseList;
+// File: src/types/apiTypes.d.ts
+/** HTTP methods for API requests. */
 export declare enum ApiMethodItem {
     delete = "DELETE",
     get = "GET",
@@ -2363,24 +1609,31 @@ export type ApiCacheList = Record<string, ApiCacheItem>;
 export type ApiConfig = {
     urlRoot?: string;
     origin?: string;
-    headers?: Record<string, string>;
-    requestDefault?: Record<string, any>;
+    headers?: ApiHeadersValue;
+    requestDefault?: ApiDefaultValue;
     preparation?: (apiFetch: ApiFetch) => Promise<void>;
     end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
     timeout?: number;
+    devMode?: boolean;
 };
 export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
 export type ApiDataValidation = {
     status?: ApiStatusType;
     code?: string | number;
     message?: string;
+    error?: {
+        code?: string | number;
+        message?: string;
+    };
 };
 export type ApiDataItem<T = any> = T & ApiDataValidation & {
     data?: T;
     success?: boolean;
     statusObject?: ApiStatusItem;
+    errorObject?: ApiErrorItem;
 };
-export type ApiDefaultValue = Record<string, any>;
+export type ApiHeadersValue = Record<string, string> | (() => Record<string, string>);
+export type ApiDefaultValue = Record<string, any> | (() => Record<string, any>);
 export type ApiFetch = {
     api?: boolean;
     path?: string;
@@ -2401,6 +1654,7 @@ export type ApiFetch = {
     globalPreparation?: boolean;
     globalEnd?: boolean;
     init?: RequestInit;
+    initError?: boolean;
     timeout?: number;
     controller?: AbortController;
     cache?: number;
@@ -2415,6 +1669,15 @@ export type ApiHydrationItem = {
     response: any;
 };
 export type ApiHydrationList = ApiHydrationItem[];
+export type ApiErrorStorageItem = {
+    url: string | RegExp;
+    method: ApiMethodItem;
+    code?: string;
+    status?: number;
+    validation?: (response: Response) => boolean;
+    message?: string | ((response?: Response) => string);
+};
+export type ApiErrorStorageList = ApiErrorStorageItem[];
 export type ApiMethod = string | ApiMethodItem;
 export type ApiPreparationEnd = {
     reset?: boolean;
@@ -2439,7 +1702,7 @@ export type ApiStatusItem = {
     lastMessage?: string;
 };
 export type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
-// File: types/basicTypes.d.ts
+// File: src/types/basicTypes.d.ts
 export type Undefined = undefined | null;
 export type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
 export type NumberOrString = number | string;
@@ -2481,7 +1744,7 @@ export type ImageCoordinator = {
     x: number;
     y: number;
 };
-// File: types/errorCenter.d.ts
+// File: src/types/errorCenter.d.ts
 export type ErrorCenterGroup = string | undefined;
 export type ErrorCenterCauseItem = {
     group?: ErrorCenterGroup;
@@ -2498,7 +1761,7 @@ export type ErrorCenterHandlerItem = {
     handlers: ErrorCenterHandlerCallback[];
 };
 export type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
-// File: types/formattersTypes.d.ts
+// File: src/types/formattersTypes.d.ts
 export declare enum FormattersType {
     currency = "currency",
     date = "date",
@@ -2555,7 +1818,7 @@ export type FormattersListColumns<T extends FormattersListItem, O extends Format
 export type FormattersListProp = FormattersList<FormattersListItem> | FormattersListItem;
 export type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>;
 export type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = List extends any[] ? FormattersListColumns<Item, Options> : (FormattersListColumnItem<Item, Options> | undefined);
-// File: types/geoTypes.d.ts
+// File: src/types/geoTypes.d.ts
 export type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second';
 export type GeoFirstDay = 1 | 6 | 0;
 export type GeoHours = '12' | '24';
@@ -2607,7 +1870,8 @@ export interface GeoPhoneMapInfo {
     item?: GeoPhoneMap;
     phone?: string;
 }
-// File: types/metaTypes.d.ts
+// File: src/types/metaTypes.d.ts
+/** Standard HTML meta tags. */
 export declare enum MetaTag {
     title = "title",
     description = "description",
@@ -2622,15 +1886,16 @@ export declare enum MetaRobots {
     indexNoFollow = "index, nofollow",
     noIndexNoFollow = "noindex, nofollow",
     noArchive = "noarchive",
-    noSnippet = "nosnippet",
-    noImageIndex = "noimageindex",
+    nosnippet = "nosnippet",
+    noimageindex = "noimageindex",
     images = "images",
-    noTranslate = "notranslate",
-    noPreview = "nopreview",
+    notranslate = "notranslate",
+    nopreview = "nopreview",
     textOnly = "textonly",
     noIndexSubpages = "noindex, noarchive",
     none = "none"
 }
+/** Open Graph tags. */
 export declare enum MetaOpenGraphTag {
     title = "og:title",
     type = "og:type",
@@ -2706,6 +1971,7 @@ export declare enum MetaOpenGraphTag {
     productAgeGroup = "product:age_group",
     productGender = "product:gender"
 }
+/** Open Graph content types. */
 export declare enum MetaOpenGraphType {
     website = "website",
     article = "article",
@@ -2750,6 +2016,7 @@ export declare enum MetaOpenGraphGender {
     male = "male",
     unisex = "unisex"
 }
+/** Twitter Card tags. */
 export declare enum MetaTwitterTag {
     card = "twitter:card",
     site = "twitter:site",
@@ -2781,6 +2048,7 @@ export declare enum MetaTwitterTag {
     playerStream = "twitter:player:stream",
     playerStreamContentType = "twitter:player:stream:content_type"
 }
+/** Twitter Card types. */
 export declare enum MetaTwitterCard {
     summary = "summary",
     summaryLargeImage = "summary_large_image",
@@ -2793,7 +2061,7 @@ export declare enum MetaTwitterCard {
     audio = "audio",
     poll = "poll"
 }
-// File: types/searchTypes.d.ts
+// File: src/types/searchTypes.d.ts
 export type SearchItem = Record<string, any>;
 export type SearchColumnPath<K, P> = K extends string ? P extends string ? `${K}.${P}` : never : never;
 export type SearchColumn<T extends SearchItem> = {
@@ -2825,7 +2093,7 @@ export type HighlightMatchItem = {
     text: string;
     isMatch: boolean;
 };
-// File: types/translateTypes.d.ts
+// File: src/types/translateTypes.d.ts
 export type TranslateConfig = {
     url?: string;
     propsName?: string;
@@ -2841,5 +2109,3 @@ export type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
 export type TranslateDataFile = Record<string, TranslateDataFileItem>;
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 export declare const TRANSLATE_TIME_OUT = 160;
-// File: media/errorCauseList.d.ts
-export declare const errorCauseList: ErrorCenterCauseList;

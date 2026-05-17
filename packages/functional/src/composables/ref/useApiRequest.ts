@@ -16,7 +16,12 @@ import type { RefOrNormal } from '../../types/refTypes'
  * @param method HTTP method / HTTP метод
  * @param action Action to perform after the request / Действие, выполняемое после запроса
  * @param transformation Transformation function / Функция трансформации
- * @param errorContract storage of response error contracts / хранилище контрактов ошибок ответа
+ * @param errorContract array of expected error contracts for the request (`ApiErrorStorageList`).
+ * Highly recommended to add if there is information about possible request errors. Allows you to predefine
+ * possible errors (by code, status, or custom validation) which will be centrally processed by the application. /
+ * Массив контрактов ожидаемых ошибок для запроса (`ApiErrorStorageList`). Желательно добавлять, если есть
+ * информация о возможных ошибках запроса. Позволяет заранее описать возможные ошибки (по коду, статусу или
+ * кастомной валидации) для централизованной обработки в приложении.
  * @param toData Extract 'data' field from response / Извлечь поле 'data' из ответа
  * @param options Additional request options / Дополнительные опции запроса
  * @param apiInstance Api instance / Экземпляр Api

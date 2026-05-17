@@ -6,372 +6,370 @@ The following is the content of "exports" from package.json:
 {
   ".": {
     "import": "./dist/library.js",
-    "types": "./dist/library.d.ts"
+    "types": "./dist/src/library.d.ts"
   },
   "./flags": {
     "import": "./dist/flags.js",
-    "types": "./dist/flags.d.ts"
-  },
-  "./types/*": "./dist/*"
+    "types": "./dist/src/flags.d.ts"
+  }
 }
 
-// File: classes/design/DesignAbstract.d.ts
-/** Base class for constructor. */
+// File: src/classes/design/DesignAbstract.d.ts
+/** Base class for working with the constructor. */
 export declare abstract class DesignAbstract<T extends Record<string, any>, C extends Record<string, any>> {
     /**
      * @param props base data
-     * @param callback callback on change
-     * @param changed data for tracking
+     * @param callback callback function when value changes
+     * @param changed base data for tracking
      */
     constructor(props: T, callback?: ((event: C) => void) | undefined, changed?: string[]);
-    /** Calls the callback function. */
+    /** Calls the callback function. @param compelled forces data to update */
     make(compelled?: boolean): this;
-    /** Calls the callback function. */
+    /** Calls the callback function. @param compelled forces data to update */
     makeCallback(compelled?: boolean): void;
 }
-// File: classes/design/DesignAsyncAbstract.d.ts
-/** Base class for constructor. */
+// File: src/classes/design/DesignAsyncAbstract.d.ts
+/** Base class for working with the constructor. */
 export declare abstract class DesignAsyncAbstract<T extends Record<string, any>, C extends Record<string, any>> extends DesignAbstract<T, C> {
-    /** Calls the callback function. */
+    /** @param compelled forces data to update */
     make(compelled?: boolean): this;
-    /** Calls the callback function. */
+    /** @param compelled forces data to update */
     makeCallback(compelled?: boolean): Promise<void>;
 }
-// File: classes/design/DesignChanged.d.ts
-/** Checks edited values. */
+// File: src/classes/design/DesignChanged.d.ts
+/** Class checks edited values. */
 export declare class DesignChanged<T extends Record<string, any>> {
     /**
      * @param props base data
-     * @param watch tracking data
+     * @param watch data for tracking
      */
     constructor(props: T, watch?: string[]);
-    /** Check if value updated. */
+    /** Checks if value was updated. @param name property name */
     is(name: string | string[]): boolean;
-    /** Check for data changes. */
+    /** Checks if there are changes in data. */
     isChanged(): boolean;
     /** Updates all values. */
     update(): void;
 }
-// File: classes/design/DesignComp.d.ts
+// File: src/classes/design/DesignComp.d.ts
 export declare class DesignComp<COMP extends ConstrComponent, P extends ConstrItem> extends DesignComponents<COMP, P> {
 }
-// File: classes/design/DesignComponents.d.ts
-/** Class for connected components. */
+// File: src/classes/design/DesignComponents.d.ts
+/** Class for working with connected components. */
 export declare class DesignComponents<COMP extends ConstrComponent, P extends ConstrItem> {
     /**
-     * @param components connected components
-     * @param modification modification data
+     * @param components list of connected components
+     * @param modification data for modification
      */
     constructor(components?: COMP, modification?: ConstrComponentMod<P> | undefined);
-    /** Check component presence. */
+    /** Check presence of component. @param name component name */
     is<K extends keyof COMP>(name: K): name is K;
-    /** Get component object. */
+    /** Get component object. @param name component name */
     get<K extends keyof COMP>(name: K): COMP[K];
-    /** Returns modified input data. */
+    /** Returns modified input data. @param index item name @param props basic data */
     getModification<K extends keyof P>(index?: K & string | string, props?: P[K] | Record<string, any>): Record<string, any> | undefined;
-    /** Render component by name as array. */
+    /** Render component by name as array. @param name component name @param props component props @param children sub-elements @param index key name */
     render<K extends keyof COMP, PK extends keyof P>(name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): VNode[];
-    /** Render single component by name. */
+    /** Render component by name. @param name component name @param props component props @param children sub-elements @param index key name */
     renderOne<K extends keyof COMP, PK extends keyof P>(name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): VNode | undefined;
-    /** Render component and add to array. */
+    /** Render component by name and add to array. @param item array to add to @param name component name @param props component props @param children sub-elements @param index key name */
     renderAdd<K extends keyof COMP, PK extends keyof P>(item: any[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): this;
 }
-// File: classes/design/DesignConstructorAbstract.d.ts
+// File: src/classes/design/DesignConstructorAbstract.d.ts
 /** Class for collecting functional components. */
 export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
     /** Get class name. */
     getName(): string;
     /** Get design name. */
     getDesign(): string;
-    /** Get sub-class name. */
+    /** Get sub-class name. @param name class level names */
     getSubClass(name: string | string[]): string;
-    /** Get status class name. */
+    /** Get status class name. @param name class level names */
     getStatusClass(name: string | string[]): string;
-    /** Get style property name. */
+    /** Get style property name. @param name class level names */
     getStyle(name: string | string[]): string;
     /** Get additional parameters. */
     getAttrs(): ConstrItem;
-    /** List external variables. */
+    /** List of external variables. */
     expose(): ConstrExpose<E, EXPOSE>;
-    /** Render method for setup. */
+    /** Rendering method for setup. */
     render(): () => VNode | (VNode | any)[] | undefined;
 }
-// File: classes/ref/DatetimeRef.d.ts
-/** Class for date operations. */
+// File: src/classes/ref/DatetimeRef.d.ts
+/** Class for working with dates. */
 export declare class DatetimeRef {
     /**
-     * @param date processing date
+     * @param date date for processing
      * @param type output format type
      * @param code country/language code
      */
     constructor(date: RefOrNormal<NumberOrStringOrDate>, type?: RefOrNormal<GeoDate>, code?: RefOrNormal<string>);
-    /** Get base date data. */
+    /** Returns basic date data. */
     getItem(): Ref<NumberOrStringOrDate>;
-    /** Get Date object. */
+    /** Returns Date object. */
     getDate(): Ref<Date>;
-    /** Get Datetime instance. */
+    /** Get base Datetime class object. */
     getDatetime(): Datetime;
-    /** Get hours format. */
+    /** Returns hours format. */
     getHoursType(): ComputedRef<GeoHours>;
-    /** Get first day of week code. */
+    /** Returns first day of week code. */
     getFirstDayCode(): ComputedRef<GeoFirstDay>;
-    /** Get year from date. */
+    /** Get year local time. */
     getYear(): ComputedRef<number>;
-    /** Get month (0-indexed). */
+    /** Get month local time (zero-based). */
     getMonth(): ComputedRef<number>;
-    /** Get day of month. */
+    /** Get day of month local time. */
     getDay(): ComputedRef<number>;
-    /** Get hour. */
+    /** Get hour local time. */
     getHour(): ComputedRef<number>;
-    /** Get minutes. */
+    /** Get minutes local time. */
     getMinute(): ComputedRef<number>;
-    /** Get seconds. */
+    /** Get seconds local time. */
     getSecond(): ComputedRef<number>;
     /** Get last day of week. */
     getMaxDay(): ComputedRef<number>;
-    /** Locale-sensitive formatting. */
+    /** Locale formatting. @param type format type @param styleOptions month representation */
     locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): ComputedRef<string>;
-    /** Standard data output. */
+    /** Standard data output. @param timeZone add time zone */
     standard(timeZone?: boolean): ComputedRef<string>;
 }
-// File: classes/ref/EffectScopeGlobal.d.ts
-/** Global effect scope. */
+// File: src/classes/ref/EffectScopeGlobal.d.ts
+/** Global effect scope class. */
 export declare class EffectScopeGlobal {
-    /** Run function in global scope. */
+    /** Runs function in global scope. @returns return value of function */
     static run<T>(fn: () => T): T | undefined;
 }
-// File: classes/ref/EventRef.d.ts
-/** Reactive event handler. */
+// File: src/classes/ref/EventRef.d.ts
+/** Class for working with events (Ref). */
 export declare class EventRef<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> extends EventItem<E, O, D> {
+    /**
+     * @param elementSelector element
+     * @param elementSelectorControl control element
+     * @param type type
+     * @param listener event listener
+     * @param options characteristics
+     * @param detail event-dependent value
+     */
     constructor(elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type?: string | string[], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D);
 }
-// File: classes/ref/GeoFlagRef.d.ts
-/** Flag management. */
+// File: src/classes/ref/GeoFlagRef.d.ts
+/** Class for working with Flags. */
 export declare class GeoFlagRef {
-    /** @param code country code */
+    /** @param code country and language code */
     constructor(code?: RefOrNormal<string>);
-    /** Get reactive country code. */
+    /** Get reactive object with country code. */
     getCode(): Ref<string>;
-    /** Get country/flag info. */
+    /** Get country and flag info. @param code country code */
     get(code?: string): ComputedRef<GeoFlagItem | undefined>;
-    /** Get flag URL. */
+    /** Get flag link. @param code country code */
     getFlag(code?: string): ComputedRef<string | undefined>;
-    /** Get list of countries by codes. */
+    /** Get countries list by codes. @param codes country codes */
     getList(codes?: string[]): ComputedRef<GeoFlagItem[]>;
-    /** Get list in national language. */
+    /** Get countries list by codes in national language. @param codes country codes */
     getNational(codes?: string[]): ComputedRef<GeoFlagNational[]>;
 }
-// File: classes/ref/GeoIntlRef.d.ts
-/** Reactive number and date formatting. */
+// File: src/classes/ref/GeoIntlRef.d.ts
+/** Reactive class for formatting numbers and dates. */
 export declare class GeoIntlRef {
-    /** @param code language/country code */
+    /** @param code country code/language */
     constructor(code?: RefOrNormal<string>);
     /** Translation of display names. */
     display(value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): ComputedRef<string>;
-    /** Get language names. */
+    /** Get language display name. */
     languageName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /** Get region names. */
+    /** Get region display name. */
     countryName(value?: RefOrNormal<string>, style?: Intl.RelativeTimeFormatStyle): ComputedRef<string>;
-    /** Format number. */
+    /** Number formatting. */
     number(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Decimal point. */
+    /** Decimal point symbol. */
     decimal(): ComputedRef<string>;
-    /** Format currency. */
+    /** Currency formatting. */
     currency(value: RefOrNormal<NumberOrString>, currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>, numberOnly?: boolean): ComputedRef<string>;
-    /** Get currency symbol. */
+    /** Get currency symbol or code. */
     currencySymbol(currency: RefOrNormal<string>, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): ComputedRef<string>;
-    /** Format units. */
+    /** Unit formatting. */
     unit(value: RefOrNormal<NumberOrString>, unitOptions?: string | Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Format file size. */
+    /** Formatted file size. */
     sizeFile(value: RefOrNormal<NumberOrString>, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Format percentage. */
+    /** Number as percentage. */
     percent(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Format percentage (unit). */
+    /** Number as percentage (unit). */
     percentBy100(value: RefOrNormal<NumberOrString>, options?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Pluralization rules. */
+    /** Plural formatting. */
     plural(value: RefOrNormal<NumberOrString>, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): ComputedRef<string>;
-    /** Format date/time. */
+    /** Date and time formatting. */
     date(value: RefOrNormal<NumberOrStringOrDate>, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): ComputedRef<string>;
-    /** Format relative time. */
+    /** Relative time formatting. */
     relative(value: RefOrNormal<NumberOrStringOrDate>, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): ComputedRef<string>;
-    /** Format relative time with limit. */
+    /** Relative time formatting with limit. */
     relativeLimit(value: RefOrNormal<NumberOrStringOrDate>, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): ComputedRef<string>;
-    /** Format elapsed time. */
+    /** Formatted relative value. */
     relativeByValue(value: RefOrNormal<NumberOrString>, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): ComputedRef<string>;
-    /** Month name. */
+    /** Month names. */
     month(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['month']): ComputedRef<string>;
     /** List of months. */
     months(style?: Intl.DateTimeFormatOptions['month']): ComputedRef<ItemValue<number | undefined>[]>;
-    /** Day of week name. */
+    /** Weekday names. */
     weekday(value?: RefOrNormal<NumberOrStringOrDate>, style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<string>;
     /** List of weekdays. */
     weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ComputedRef<ItemValue<number | undefined>[]>;
-    /** Time string. */
+    /** Time formatting. */
     time(value: RefOrNormal<NumberOrStringOrDate>): ComputedRef<string>;
-    /** Sort strings by locale. */
+    /** Sort strings. */
     sort<T>(data: RefOrNormal<T[]>, compareFn?: (a: T, b: T) => [string, string]): ComputedRef<T[]>;
 }
-// File: classes/ref/GeoRef.d.ts
-/** Reactive geography management. */
+// File: src/classes/ref/GeoRef.d.ts
+/** Reactive class for geographic data. */
 export declare class GeoRef {
-    /** Get full geographic info. */
+    /** Full geographic info. */
     static get(): Ref<GeoItemFull>;
-    /** Get current country. */
+    /** Current country code. */
     static getCountry(): ComputedRef<string>;
-    /** Get current language. */
+    /** Current language code. */
     static getLanguage(): ComputedRef<string>;
-    /** Get locale format. */
+    /** Full standard locale format. */
     static getStandard(): ComputedRef<string>;
-    /** Get first day of week. */
+    /** First day of the week. */
     static getFirstDay(): ComputedRef<string>;
-    /** Set data by code. */
+    /** Set data by full code. @param code country/language code */
     static set(code: string): void;
 }
-// File: classes/ref/ListDataRef.d.ts
-/** List data management. */
+// File: src/classes/ref/ListDataRef.d.ts
+/** Class for managing data list. */
 export declare class ListDataRef {
-    /**
-     * @param list data
-     * @param focus focused item
-     * @param highlight search text
-     * @param highlightLengthStart min length for highlight
-     * @param filterMode filtering mode
-     * @param selected selected items
-     * @param keyValue value key
-     * @param keyLabel label key
-     * @param lite lite mode threshold
-     * @param min min selection
-     * @param max max selection
-     * @param parent parent ID
-     */
     constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
-    /** List for rendering. */
+    /** List for forming a list. */
     readonly data: ComputedRef<ListList>;
-    /** Lite list for loading. */
+    /** Simplified list for quick loading. */
     readonly liteData: ComputedRef<ListList>;
-    /** Full data with state. */
+    /** List with all additional state data. */
     readonly fullData: ComputedRef<ListDataFull>;
-    /** Flat map of entries. */
+    /** Flat map of all entries. */
     readonly map: ComputedRef<ListList>;
-    /** Map of items only. */
+    /** List consisting only of items. */
     readonly mapItems: ComputedRef<ListList>;
-    /** Selection values list. */
+    /** List of values for selection. */
     readonly items: ComputedRef<ListList>;
-    /** Index of first match. */
+    /** First found search index. */
     readonly highlightFirstItem: ComputedRef<number>;
-    /** If selection exists. */
+    /** Is any item selected. */
     readonly isSelected: ComputedRef<boolean>;
-    /** Min selection reached. */
+    /** Is minimum selection reached. */
     readonly isSelectedMin: ComputedRef<boolean>;
-    /** Max selection reached. */
+    /** Is maximum selection reached. */
     readonly isSelectedMax: ComputedRef<boolean>;
-    /** Selected items map. */
+    /** Selected items on map. */
     readonly selectedList: ComputedRef<ListList>;
-    /** Selected in group. */
+    /** Selected items in current group. */
     readonly selectedListInGroup: ComputedRef<ListList>;
-    /** Selected labels. */
+    /** Selected labels on map. */
     readonly selectedNames: ComputedRef<ListNames>;
-    /** Selected values. */
+    /** Selected values on map. */
     readonly selectedValues: ComputedRef<any[]>;
     /** Is lite mode active. */
     isLite(): boolean;
-    /** Is focus present. */
+    /** Is element in focus. */
     isFocus(): boolean;
-    /** Is result highlighted. */
+    /** Is there a search result highlight. */
     isHighlight(): boolean;
     /** Is highlighting active. */
     isHighlightActive(): boolean;
-    /** Get count. */
+    /** Count of records in current list. */
     getLength(): number;
-    /** Get total map count. */
+    /** Total available records in map. */
     getLengthByMap(): number;
-    /** Get items count. */
+    /** Total available records (items). */
     getLengthByItems(): number;
-    /** Get focused ID. */
+    /** Get focus identifier. */
     getFocus(): ListSelectedItem | undefined;
+    /** Get item in focus. */
+    getFocusItem(): ListDataItem | undefined;
     /** Get highlight text. */
     getHighlight(): string | undefined;
-    /** Get min highlight length. */
+    /** Get minimum highlight length. */
     getHighlightLengthStart(): number;
-    /** Get selected list. */
+    /** Get selected identifiers. */
     getSelected(): ListSelectedList | undefined;
-    /** Get item by relative step. */
+    /** Get item by relative step from selected. */
     getSelectedByStep(step: number): ListSelectedItem | undefined;
-    /** Get next item. */
+    /** Get next item from selected. */
     getSelectedNext(): ListSelectedItem | undefined;
-    /** Get previous item. */
+    /** Get previous item from selected. */
     getSelectedPrev(): ListSelectedItem | undefined;
-    /** Get item by step from ref. */
+    /** Get item by step from item. */
     getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined;
-    /** Get next item from ref. */
+    /** Get next item. */
     getItemNext(item: ListDataItem): ListDataItem | undefined;
-    /** Get previous item from ref. */
+    /** Get previous item. */
     getItemPrev(item: ListDataItem): ListDataItem | undefined;
-    /** Get item by index step. */
+    /** Get item by step from index. */
     getIndexByStep(index: string, step: number): ListDataItem | undefined;
     /** Get next item from index. */
     getIndexNext(index: string): ListDataItem | undefined;
     /** Get previous item from index. */
     getIndexPrev(index: string): ListDataItem | undefined;
-    /** Get item details by index. */
+    /** Get item by index. */
     getItemByIndex(index?: string): {
         key: number;
         item: ListDataItem;
     } | undefined;
     /** Get item by key. */
     getItemByKey(key: number): ListDataItem | undefined;
-    /** Get first child of parent. */
+    /** Get first item by parent ID. */
     getFirstItemByParent(parent: string | undefined): ListDataItem | undefined;
-    /** Get last child of parent. */
+    /** Get last item by parent ID. */
     getLastItemByParent(parent: string | undefined): ListDataItem | undefined;
-    /** Get sublist instance. */
+    /** Get sublist object. */
     getSubList(item: ListDataItem): ListDataRef;
 }
-// File: classes/ref/RouterItemRef.d.ts
-/** Router management. */
+// File: src/classes/ref/RouterItemRef.d.ts
+/** Router management class. */
 export declare class RouterItemRef {
-    /** Get router. */
+    /** Get router instance. */
     static get(): Router;
-    /** Get link by name. */
+    /** Get link string by name. */
     static getLink(name: string, params?: any, query?: any): string | undefined;
     /** Get href props by name. */
     static getHref(name?: string, params?: any, query?: any): ConstrHrefProps;
-    /** Change route. */
+    /** Change site path. */
     static push(to: string | RouteLocationRaw): void;
-    /** Set router. */
+    /** Set router instance. */
     static set(router: Router): void;
-    /** Set router once. */
+    /** Set router instance once. */
     static setOneTime(router: Router): void;
-    /** Raw to href conversion. */
+    /** Convert raw location to href. */
     static rawToHref(to?: string | RouteLocationRaw): ConstrHrefProps;
 }
-// File: classes/ref/ScrollbarWidthRef.d.ts
-/** Reactive scroll width. */
+// File: src/classes/ref/ScrollbarWidthRef.d.ts
+/** Class for getting scroll width reactively. */
 export declare class ScrollbarWidthRef {
     readonly item: Ref<boolean | undefined, boolean | undefined>;
     readonly width: Ref<number, number>;
     constructor();
+    /** Is scroll width defined. */
     readonly is: ComputedRef<boolean>;
 }
-// File: composables/ref/useApiAsyncRef.d.ts
-/** Async API request initialization. */
+// File: src/composables/ref/useApiAsyncRef.d.ts
+/** Executes request and initializes asynchronously. */
 export declare function useApiAsyncRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
-// File: composables/ref/useApiDelete.d.ts
-/** API delete request hook. */
+// File: src/composables/ref/useApiDelete.d.ts
+/** Use API delete request. */
 export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
-// File: composables/ref/useApiGet.d.ts
-/** API get request hook. */
+// File: src/composables/ref/useApiGet.d.ts
+/** Use API get request. */
 export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
-// File: composables/ref/useApiManagementAsyncRef.d.ts
-/** Async API management hook. */
+// File: src/composables/ref/useApiManagementAsyncRef.d.ts
+/** Executes API management request and initializes asynchronously. */
 export declare function useApiManagementAsyncRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     isValid: ComputedRef<boolean>;
+    isResponseContractValid: ComputedRef<boolean>;
+    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
     readonly data: ComputedRef< ApiData<Return> | undefined>;
     readonly length: ComputedRef<number>;
@@ -393,21 +391,18 @@ export declare function useApiManagementAsyncRef<Return extends ApiManagementVal
     sendPut: (request?: ApiFetch["request"]) => Promise< ApiData<Put> | undefined>;
     sendDelete: (request?: ApiFetch["request"]) => Promise< ApiData<Delete> | undefined>;
 };
-// File: composables/ref/useApiManagementRef.d.ts
+// File: src/composables/ref/useApiManagementRef.d.ts
 /**
- * Composable for comprehensive API request orchestration (GET, Search, Mutations).
- * @note Use with `executeUse` for central state.
- * @remarks Recommended for values; avoid for logic-critical IDs.
+ * Composable for API request orchestration. Manages GET, formatting, search, and mutations.
+ * @note Use with `executeUse` for centralized state.
+ * @remarks Recommended for values, dates, statuses. Not for technical IDs.
  * @example
- * const products = useApiManagementRef(
- *   { path: '/api/v1/products', skeleton: () => [] },
- *   { price: (v) => `${v} USD` },
- *   { columns: ['name'] },
- *   { path: '/api/v1/products' }
- * );
+ * const products = useApiManagementRef({ path: '/api/v1/products' }, { price: (v) => `${v} USD` });
  */
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     isValid: ComputedRef<boolean>;
+    isResponseContractValid: ComputedRef<boolean>;
+    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
     readonly data: ComputedRef<ApiData<Return> | undefined>;
     readonly length: ComputedRef<number>;
@@ -429,19 +424,19 @@ export declare function useApiManagementRef<Return extends ApiManagementValue, F
     sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
     sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
 };
-// File: composables/ref/useApiPost.d.ts
-/** API post request hook. */
+// File: src/composables/ref/useApiPost.d.ts
+/** Use API post request. */
 export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
-// File: composables/ref/useApiPut.d.ts
-/** API put request hook. */
+// File: src/composables/ref/useApiPut.d.ts
+/** Use API put request. */
 export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
-// File: composables/ref/useApiRef.d.ts
+// File: src/composables/ref/useApiRef.d.ts
 export interface UseApiRef<R> {
     data: ComputedRef<ApiData<R> | undefined>;
     item: Ref<ApiData<R> | undefined>;
@@ -461,46 +456,46 @@ export interface UseApiRef<R> {
     stop(): void;
     abort(): void;
 }
-/** Reactive API requester. */
+/** Returns data for working with requests. */
 export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
-/** Global API request conditions. */
+/** Global conditions for API request. */
 export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
-// File: composables/ref/useApiRequest.d.ts
-/** General API request hook. */
+// File: src/composables/ref/useApiRequest.d.ts
+/** Use api request. */
 export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(path?: RefOrNormal<string | undefined>, method?: ApiMethodItem, action?: (data: Return | undefined) => Promise<void> | void, transformation?: (data: T) => Return, toData?: boolean, options?: ApiOptions, apiInstance?: ApiInstance): {
     loading: Ref<boolean, boolean>;
     send(request?: Request): Promise<Return | undefined>;
 };
-// File: composables/ref/useBroadcastValueRef.d.ts
+// File: src/composables/ref/useBroadcastValueRef.d.ts
 type BroadcastValueItem<T> = T | string | undefined;
-/** Cross-tab data sync. */
+/** Manage data between browser tabs. */
 export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T | string | (() => (T | string))): Ref<BroadcastValueItem<T>>;
-// File: composables/ref/useCookieRef.d.ts
-/** Reactive cookie management. */
+// File: src/composables/ref/useCookieRef.d.ts
+/** Reactive variable for cookies. */
 export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;
-// File: composables/ref/useFormattersRef.d.ts
-/** Reactive list formatting. */
+// File: src/composables/ref/useFormattersRef.d.ts
+/** Reactive formatting of data lists. */
 export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): {
     listFormat: ComputedRef<FormattersReturn<List, Options>>;
     length: ComputedRef<number>;
 };
-// File: composables/ref/useGeoIntlRef.d.ts
-/** Formatting class getter. */
+// File: src/composables/ref/useGeoIntlRef.d.ts
+/** Working with data formatting. */
 export declare function useGeoIntlRef(): GeoIntlRef;
-// File: composables/ref/useHashRef.d.ts
-/** Reactive URL hash management. */
+// File: src/composables/ref/useHashRef.d.ts
+/** Manage URL hash. */
 export declare function useHashRef<T>(name: string, defaultValue?: T | (() => T)): ShallowRef<T>;
-// File: composables/ref/useLazyItemByMarginRef.d.ts
+// File: src/composables/ref/useLazyItemByMarginRef.d.ts
 export type LazyItemByMargin = {
     rootMargin: string;
     item: any;
 };
-/** Intersection tracking by margin. */
+/** Track element appearance by margin. */
 export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | undefined>, rootMargin: string) => {
     lazyItemStatus: any;
     readonly lazyItem: any;
 };
-// File: composables/ref/useLazyRef.d.ts
+// File: src/composables/ref/useLazyRef.d.ts
 export type LazyItem = {
     status: ShallowRef<boolean>;
     ratio: ShallowRef<number>;
@@ -508,7 +503,7 @@ export type LazyItem = {
     stopWatch: () => void;
 };
 export type LazyList = Record<string, LazyItem>;
-/** Viewport appearance tracking. */
+/** Track element appearance on screen. */
 export declare const useLazyRef: (options?: IntersectionObserverInit) => {
     intersectionObserver: IntersectionObserver | undefined;
     getItem(element: HTMLElement): LazyItem;
@@ -516,11 +511,11 @@ export declare const useLazyRef: (options?: IntersectionObserverInit) => {
     removeLazyItem: (element?: HTMLElement) => void;
     disconnectLazy: () => void | undefined;
 };
-// File: composables/ref/useLoadingRef.d.ts
-/** Loading status ref. */
+// File: src/composables/ref/useLoadingRef.d.ts
+/** Returns loading status. */
 export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
-// File: composables/ref/useMeta.d.ts
-/** Meta tag management singleton. */
+// File: src/composables/ref/useMeta.d.ts
+/** Reactive meta tags management with automatic DOM sync. */
 export declare const useMeta: () => Readonly<{
     meta: typeof MetaStatic;
     title: Ref<string, string>;
@@ -571,8 +566,8 @@ export declare const useMeta: () => Readonly<{
     }>;
     destroyExecute?(): void;
 }>;
-// File: composables/ref/useRouterList.d.ts
-/** Router link list management. */
+// File: src/composables/ref/useRouterList.d.ts
+/** Managing link list for router. */
 export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
     item: ComputedRef<T | undefined>;
     selected: Ref<string, string>;
@@ -581,8 +576,8 @@ export declare const useRouterList: <T extends ListDataBasic>(list: RefType<Cons
     to: (name?: string) => void;
     toMain(): void;
 };
-// File: composables/ref/useSearchRef.d.ts
-/** Reactive search logic. */
+// File: src/composables/ref/useSearchRef.d.ts
+/** Handling search logic with reactive data. */
 export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
     isSearch: ComputedRef<boolean>;
     search: Ref<string, string>;
@@ -590,41 +585,42 @@ export declare function useSearchRef<T extends SearchItem, K extends SearchColum
     listSearch: ComputedRef<SearchFormatList<T, K>>;
     length: ComputedRef<number>;
 };
-// File: composables/ref/useSearchValueRef.d.ts
-/** Search state and debounce. */
+// File: src/composables/ref/useSearchValueRef.d.ts
+/** Managing search value state and delays. */
 export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
     search: Ref<string, string>;
     searchDelay: Ref<string, string>;
     loading: Ref<boolean, boolean>;
 };
-// File: composables/ref/useSessionRef.d.ts
-/** Reactive session storage. */
+// File: src/composables/ref/useSessionRef.d.ts
+/** Manage session storage. */
 export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
-// File: composables/ref/useStorageRef.d.ts
-/** Reactive local storage. */
+// File: src/composables/ref/useStorageRef.d.ts
+/** Manage local storage. */
 export declare function useStorageRef<T>(name: string, defaultValue?: T | (() => T), cache?: number): Ref<T | undefined>;
-// File: composables/ref/useTranslateRef.d.ts
-/** Translation getter ref.
+// File: src/composables/ref/useTranslateRef.d.ts
+/**
+ * Translation of text by keys. ShallowRef updates on global language change.
  * @example
- * const labels = t(['button.save'] as const);
+ * const translations = useTranslateRef(['home.title'] as const);
  */
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
 /** Shorthand for useTranslateRef. */
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;
-// File: flags.d.ts
+// File: src/flags.d.ts
 export declare const uiMakeFlags: () => void;
-// File: functions/basic.d.ts
+// File: src/functions/basic.d.ts
 export * from '@dxtmisha/functional-basic';
-// File: functions/computedAsync.d.ts
-/** Async computed property. */
+// File: src/functions/computedAsync.d.ts
+/** Computed property for async getters. */
 export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, initialState?: (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
-// File: functions/computedByLanguage.d.ts
-/** Language-dependent computed property. */
+// File: src/functions/computedByLanguage.d.ts
+/** Computed property reacting to current language. */
 export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
-// File: functions/computedEternity.d.ts
-/** On-demand cached computed with application-lifetime watcher. */
+// File: src/functions/computedEternity.d.ts
+/** Computed property cached on demand; remains active application-wide. */
 export declare function computedEternity<T>(getter: () => Promise<T> | T, initialState?: (() => T) | T): Ref<T, T>;
-// File: functions/dxtFunctionalPlugin.d.ts
+// File: src/functions/dxtFunctionalPlugin.d.ts
 export interface FunctionalPluginOptions {
     api?: ApiConfig;
     translate?: TranslateConfig;
@@ -633,10 +629,9 @@ export interface FunctionalPluginOptions {
     router?: Router;
     errorCauses?: ErrorCenterCauseList;
 }
-/** Global services init plugin. */
+/** Vue plugin initializing functional services. */
 export declare const dxtFunctionalPlugin: Plugin;
-// File: functions/executeUse.d.ts
-/** Initialization strategies. */
+// File: src/functions/executeUse.d.ts
 export declare enum ExecuteUseType {
     global = "global",
     provide = "provide",
@@ -647,10 +642,10 @@ export type ExecuteUseReturn<R> = Readonly<R & {
     destroyExecute?(): void;
 }>;
 /**
- * Managed singleton factory.
- * @template R return type
- * @param callback init function
- * @param type strategy
+ * Managed singleton accessor.
+ * @remarks Use for API Services, Shared State, External SDKs.
+ * @example
+ * export const useUserApi = executeUseGlobal(() => useApiGet('/api/user'));
  */
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
 /** Global singleton creator. */
@@ -669,7 +664,7 @@ export declare function executeUseProvide<R, O extends any[]>(callback: (...args
     init(): Readonly<R>;
     destroyExecute?(): void;
 }>);
-/** Local closure singleton creator. */
+/** Local singleton creator. */
 export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
     init(): Readonly<R>;
     destroyExecute?(): void;
@@ -677,45 +672,45 @@ export declare function executeUseLocal<R, O extends any[]>(callback: (...args: 
     init(): Readonly<R>;
     destroyExecute?(): void;
 }>);
-/** Global callbacks initializer. */
+/** Initializes all global callbacks. */
 export declare function executeUseGlobalInit(): void;
-// File: functions/getInject.d.ts
+// File: src/functions/getInject.d.ts
 /** Get injected value. */
 export declare function getInject<T>(name: string): T | undefined;
-// File: functions/getOptions.d.ts
-/** Request options helper. */
+// File: src/functions/getOptions.d.ts
+/** Returns request options. */
 export declare const getOptions: (options?: ApiOptions) => RefOrNormal<ApiFetch>;
-// File: functions/ref/getBindRef.d.ts
-/** Subcomponent properties generator. */
+// File: src/functions/ref/getBindRef.d.ts
+/** Generate properties for subcomponent. */
 export declare function getBindRef<T, R extends ItemList>(value: RefOrNormal<T | R> | undefined, nameExtra?: RefOrNormal<ItemList> | string, name?: string): ComputedRef<R>;
-// File: functions/ref/getRef.d.ts
-/** Unwraps ref or returns value. */
+// File: src/functions/ref/getRef.d.ts
+/** Return value of ref or item itself. */
 export declare function getRef<T>(item: RefOrNormal<T>): T;
-// File: functions/ref/render.d.ts
-/** Data renderer helper. */
+// File: src/functions/ref/render.d.ts
+/** Rendering cached, immutable data. */
 export declare function render<T extends ItemList>(name: string | any, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
-// File: functions/ref/setRef.d.ts
-/** Reactive value setter. */
+// File: src/functions/ref/setRef.d.ts
+/** Change value for reactive method. */
 export declare function setRef<T>(item: Ref<T>, value: T): void;
-// File: functions/ref/toRefItem.d.ts
-/** Wraps value in Ref. */
+// File: src/functions/ref/toRefItem.d.ts
+/** Wraps variable in ref if not reactive. */
 export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
-// File: functions/render/getBind.d.ts
-/** Subcomponent props generator. */
+// File: src/functions/render/getBind.d.ts
+/** Generate properties for subcomponent. */
 export declare function getBind<T, R extends ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;
-// File: functions/render/getClassName.d.ts
-/** Class name from props. */
+// File: src/functions/render/getClassName.d.ts
+/** Returns class name from property. */
 export declare function getClassName<T extends ItemList>(props?: T): string | undefined;
-// File: functions/render/getIndexForRender.d.ts
-/** Render index generator. */
+// File: src/functions/render/getIndexForRender.d.ts
+/** Generates new element. */
 export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
-// File: functions/toBind.d.ts
-/** Merges objects with class/style handling. */
+// File: src/functions/toBind.d.ts
+/** Merges two objects considering classes and styles. */
 export declare function toBind<R extends ItemList = ItemList>(extra: ItemList, value: ItemList): ConstrBind<R>;
-// File: functions/toBinds.d.ts
-/** Merges multiple objects with class/style handling. */
+// File: src/functions/toBinds.d.ts
+/** Merges multiple objects considering classes and styles. */
 export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
-// File: library.d.ts
+// File: src/library.d.ts
 export * from './classes/design/DesignAbstract';
 export * from './classes/design/DesignAsyncAbstract';
 export * from './classes/design/DesignChanged';
@@ -778,11 +773,12 @@ export * from './types/constructorTypes';
 export * from './types/listTypes';
 export * from './types/refTypes';
 export * from './types/searchTypes';
-// File: types/apiTypes.d.ts
+// File: src/types/apiTypes.d.ts
+/** Options for api requests */
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
-/** Base API management value. */
+/** Base type for API management values. */
 export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
-/** GET config for API management. */
+/** Configuration for GET request in API management. */
 export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
     path?: RefOrNormal<string | undefined>;
     options?: ApiOptions;
@@ -794,13 +790,13 @@ export type ApiManagementGet<Return extends ApiManagementValue, Type extends Api
     unmounted?: boolean;
     skeleton?: () => Return;
 };
-/** Client-side search config. */
+/** Configuration for client-side search across API data. */
 export type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
     columns: K;
     value?: Ref<string>;
     options?: SearchOptions;
 };
-/** Mutation config (POST, PUT, DELETE). */
+/** Configuration for mutation requests. */
 export type ApiManagementRequest<T, Return extends ApiData<T> = ApiData<T>> = {
     path?: RefOrNormal<string | undefined>;
     action?: (data: Return | undefined) => Promise<void> | void;
@@ -808,14 +804,12 @@ export type ApiManagementRequest<T, Return extends ApiData<T> = ApiData<T>> = {
     toData?: boolean;
     options?: ApiOptions;
 };
-// File: types/constructorTypes.d.ts
+// File: src/types/constructorTypes.d.ts
 export type ConstrItem = Record<string, any>;
-/** Value wrapper. */
 export type ConstrValue<T = any> = {
     value?: T;
 };
 export type ConstrComponent = Record<string, any>;
-/** Reactive or normal component mod. */
 export type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
     [K in keyof P]?: RefOrNormal<P[K]>;
 };
@@ -835,7 +829,6 @@ export type ConstrClasses = {
 } & ConstrClassList;
 export type ConstrStylesItem = string | null;
 export type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
-/** Component configuration options. */
 export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
     components?: COMP;
     compMod?: ConstrComponentMod<P>;
@@ -843,7 +836,6 @@ export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem
     classes?: RefType<ConstrClasses>;
     styles?: RefType<ConstrStyles>;
 };
-/** Component initialization interface. */
 export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
     name: string;
     element: Ref<E | undefined>;
@@ -854,13 +846,11 @@ export type ConstrRegistration = {
     flag?: boolean;
     translate?: Record<string, string>;
 };
-/** Component binding with style/class support. */
 export type ConstrBind<T> = T & Record<string, any> & {
     key?: string;
     class?: ConstrClass;
     style?: ConstrStyles;
 };
-/** Vue prop options. */
 export type ConstrPropItemOptions<T = any> = {
     type?: PropType<T>;
     required?: boolean;
@@ -871,27 +861,24 @@ export type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
 export type ConstrProps<P = Record<string, any>> = {
     [K in keyof P]: ConstrPropItem<P[K]>;
 };
-/** Link properties. */
 export type ConstrHrefProps = {
     href?: string;
 };
-// File: types/listTypes.d.ts
+// File: src/types/listTypes.d.ts
 export type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
-/** Base list item. */
 export type ListDataBasic = {
     label?: NumberOrString;
     value?: any;
     search?: string;
 };
-/** Typed list item. */
 export type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
     parent?: string;
     type: ListType;
     index: string;
+    disabled?: boolean;
 }>;
 export type ListList<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item>[];
 export type ListRecord<Item extends ListDataBasic = ListDataBasic> = ListList<Item> | Record<string, any>;
-/** List item with state. */
 export type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & {
     focus: boolean;
     highlight?: string;
@@ -905,19 +892,15 @@ export type ListSelectedItem = NumberOrStringOrBoolean;
 export type ListSelectedList = ListSelectedItem | ListSelectedItem[];
 export type ListName = string | number | undefined;
 export type ListNames = ListName[];
-// File: types/refTypes.d.ts
-/** Vue reactive union. */
+// File: src/types/refTypes.d.ts
 export type RefType<T> = ComputedRef<T> | Ref<T>;
 export type RefUndefined<T> = RefType<T | undefined>;
-/** Reactive or normal union. */
 export type RefOrNormal<T> = RefType<T> | T;
-/** Vue raw children content. */
 export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
-/** Vue raw slots. */
 export type RawSlots = {
     [name: string]: unknown;
     $stable?: boolean;
 };
-// File: types/searchTypes.d.ts
+// File: src/types/searchTypes.d.ts
 export type SearchListValueRef<T extends SearchItem> = RefOrNormal<SearchListValue<T>>;
 export type SearchListInput<T extends SearchItem> = SearchListValueRef<T> | (() => SearchListValueRef<T>);

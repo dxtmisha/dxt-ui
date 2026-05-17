@@ -16,9 +16,15 @@ import type {
 } from '../../types/apiTypes'
 
 /**
- * Executes an API management request and immediately initializes it asynchronously.
+ * Asynchronous reactive composable for API management requests with built-in SSR support.
+ * Wraps `useApiManagementRef` and immediately calls `initSsr()` to ensure data is pre-fetched on the server side.
+ * Use this composable ONLY if you need the request to be executed on the server side during SSR.
+ * For all other cases, use `useApiManagementRef`.
  *
- * Выполняет запрос управления API и сразу инициализирует его асинхронно.
+ * Асинхронный реактивный composable для запросов управления API со встроенной поддержкой SSR.
+ * Оборачивает `useApiManagementRef` и сразу вызывает `initSsr()`, чтобы гарантировать предзагрузку данных на сервере.
+ * Используйте этот composable ТОЛЬКО если вам необходимо, чтобы запрос был выполнен на стороне сервера
+ * во время SSR. Во всех остальных случаях используйте обычный `useApiManagementRef`.
  * @template Return type of data returned by the API / тип данных, возвращаемых API
  * @template FormattersOptions optional formatting rules / опциональные правила форматирования
  * @template Post data type for POST creation request / тип данных для POST-запроса создания

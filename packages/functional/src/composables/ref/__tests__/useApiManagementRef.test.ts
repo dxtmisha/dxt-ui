@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ref, nextTick } from 'vue'
 import { useApiManagementRef } from '../useApiManagementRef'
 import { Api, ApiMethodItem, type ApiInstance } from '@dxtmisha/functional-basic'
+import type { ApiManagementGet } from '../../../types/apiTypes'
 
 describe('useApiManagementRef', () => {
   let mockApiInstance: ApiInstance
@@ -252,7 +253,7 @@ describe('useApiManagementRef', () => {
 
       const searchRef = ref('')
       const { list } = useApiManagementRef(
-        { path: 'test/path' },
+        { path: 'test/path' } as ApiManagementGet<{ id: number, name: string }>,
         { name: { transformation: (v: string) => `Fruit: ${v}` } },
         {
           columns: ['nameFormat'] as any,

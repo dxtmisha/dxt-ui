@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.12] - 2026-05-17
+
+### Added
+- **getApiErrorRef**: Added a new helper function for reactive extraction of error objects (`ApiErrorItem`) from API response data, simplifying error handling in components.
+
+### Changed / Improved
+- **API Composables Refactoring**: Refactored `useApiRequest`, `useApiRef`, and all HTTP method-specific composables (`useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`) to support the new `ErrorCenter` and `ApiErrorStorage` contracts.
+- **Documentation**: Substantially expanded bilingual (EN/RU) JSDoc documentation for all API composables. Added detailed examples for validating response contracts using `@effect/schema` (`validateResponseContract`) and managing potential request errors via `errorContract` (`ApiErrorStorageList`).
+- **Tests**: Significantly expanded test coverage with new comprehensive unit tests for `useApiGet`, `useApiPost`, `useApiPut`, and `useApiDelete`.
+
 ## [1.11.11] - 2026-05-14
 
 ### Added

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.5] - 2026-05-17
+
+### Changed / Improved
+- **AI Integration**: Updated the library's descriptive context (`ai-description.txt`) to better emphasize its isomorphic SSR architecture, centralized error management capabilities (`ErrorCenter`), and context-isolated storage abstractions.
+- **AI Types**: Regenerated and expanded `ai-types.txt` to correctly map the recently introduced type architectures, including `ApiErrorStorageItem`, `ApiHeadersValue`, `ApiDefaultValue`, and updated Open Graph / Twitter Card meta tag enums. This ensures AI assistants have an accurate and up-to-date understanding of the core functional library.
+
 ## [1.2.4] - 2026-05-16
 
 ### Added

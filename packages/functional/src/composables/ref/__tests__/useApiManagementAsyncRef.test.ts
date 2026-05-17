@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useApiManagementAsyncRef } from '../useApiManagementAsyncRef'
 import { Api, type ApiInstance, isDomRuntime } from '@dxtmisha/functional-basic'
+import type { ApiManagementGet } from '../../../types/apiTypes'
 
 vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
   const actual = await importOriginal<any>()
@@ -78,7 +79,7 @@ describe('useApiManagementAsyncRef', () => {
     ])
 
     const management = useApiManagementAsyncRef(
-      { path: 'test/path' },
+      { path: 'test/path' } as ApiManagementGet<{ id: number, name: string }>,
       { name: { transformation: (v: string) => `Fruit: ${v}` } },
       { columns: ['nameFormat'] as any }
     )
