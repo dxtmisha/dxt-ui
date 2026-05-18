@@ -6,7 +6,7 @@ export type ErrorCenterGroup = string | undefined
 /**
  * Interface for an error item / Интерфейс для элемента ошибки
  */
-export type ErrorCenterCauseItem = {
+export type ErrorCenterCauseItem<D = any> = {
   /** Error group / Группа ошибки */
   group?: ErrorCenterGroup
   /** Error code / Код ошибки */
@@ -18,7 +18,7 @@ export type ErrorCenterCauseItem = {
   /** Error message / Сообщение ошибки */
   message?: string
   /** Additional details / Дополнительные детали */
-  details?: any
+  details?: D
 }
 /**
  * List of error items / Список элементов ошибок
