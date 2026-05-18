@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.13] - 2026-05-18
+
+### Added
+- **Error Handlers Integration**: Added `errorHandlers` option (of type `ErrorCenterHandlerList`) to `FunctionalPluginOptions` for registering custom global error handlers via `ErrorCenter.addHandlerList` during plugin installation.
+- **Unit Tests**: Added comprehensive test cases verifying correct registration of error handlers during plugin installation.
+
+### Changed / Improved
+- **Documentation**: Extensively updated the plugin documentation in three languages (English, Russian, Vietnamese) to cover the new `errorCauses` and `errorHandlers` parameters and describe their integration with the `ErrorCenter`.
+
 ## [1.11.12] - 2026-05-17
 
 ### Added

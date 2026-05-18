@@ -232,7 +232,7 @@ export type ApiHydrationList = ApiHydrationItem[]
 /**
  * Item for API error storage/ Элемент для хранилища ошибок API
  */
-export type ApiErrorStorageItem = {
+export type ApiErrorStorageItem = Record<string, any> & {
   /** URL string or RegExp to match request URL/ Строка URL или RegExp для сопоставления URL */
   url: string | RegExp
   /** HTTP method/ HTTP метод */

@@ -105,7 +105,7 @@ export class ApiErrorStorage {
   ): ApiErrorStorageItem | undefined {
     for (const item of this.storage) {
       if (
-        item.method !== method
+        !item.method.includes(method)
         || !this.isUrl(response.url, item.url)
       ) {
         continue
@@ -150,7 +150,7 @@ export class ApiErrorStorage {
       return pattern.test(url)
     }
 
-    return url === pattern
+    return url.includes(pattern)
   }
 
   /**

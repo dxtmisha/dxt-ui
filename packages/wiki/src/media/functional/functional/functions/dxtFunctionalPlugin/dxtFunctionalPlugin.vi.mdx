@@ -43,7 +43,8 @@ Khi plugin được cài đặt, nó thực hiện các bước sau theo thứ t
 3.  **Icons**: Gọi `Icons.setConfig()` với `IconsConfig` được cung cấp.
 4.  **Meta**: Cấu hình hậu tố cho tiêu đề thông qua `useMeta().setSuffix()`.
 5.  **Router**: Đăng ký router vào `RouterItemRef`, giúp có thể truy cập toàn cục.
-6.  **executeUseGlobalInit**: Kích hoạt quá trình khởi tạo hàng loạt cho tất cả các đối tượng đơn lẻ được định nghĩa thông qua `executeUseGlobal`.
+6.  **ErrorCenter**: Cấu hình danh sách nguyên nhân lỗi định trước thông qua `ErrorCenter.addList()` và đăng ký các trình xử lý lỗi thông qua `ErrorCenter.addHandlerList()`.
+7.  **executeUseGlobalInit**: Kích hoạt quá trình khởi tạo hàng loạt cho tất cả các đối tượng đơn lẻ được định nghĩa thông qua `executeUseGlobal`.
 
 ## Các kiểu dữ liệu
 
@@ -56,6 +57,8 @@ Plugin sử dụng các giao diện (interface) sau để cấu hình:
 - `icons?: IconsConfig` — Cấu hình cho cơ sở dữ liệu biểu tượng `Icons` toàn cục.
 - `metaSuffix?: string` — Chuỗi hậu tố sẽ được thêm vào tất cả tiêu đề trang được thiết lập thông qua `useMeta()`.
 - `router?: Router` — Thực thể Vue Router. Nếu bỏ qua, plugin sẽ cố gắng lấy nó từ `app.config.globalProperties.$router`.
+- `errorCauses?: ErrorCenterCauseList` — Danh sách các nguyên nhân lỗi định trước cho `ErrorCenter`.
+- `errorHandlers?: ErrorCenterHandlerList` — Danh sách các trình xử lý lỗi cho `ErrorCenter`.
 
 ### `ApiConfig`
 

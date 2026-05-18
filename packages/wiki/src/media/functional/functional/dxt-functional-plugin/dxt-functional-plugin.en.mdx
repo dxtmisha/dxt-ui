@@ -28,7 +28,20 @@ const functionalOptions: FunctionalPluginOptions = {
   // Suffix to be appended to all page <title>
   metaSuffix: ' | My App',
   // Pass the router so services can access navigation
-  router
+  router,
+  // Error causes for error center
+  errorCauses: [
+    { code: 'access_denied', message: 'Access denied' }
+  ],
+  // Error handlers
+  errorHandlers: [
+    {
+      group: 'auth',
+      handlers: [
+        (cause) => console.error('Auth error:', cause.message)
+      ]
+    }
+  ]
 }
 
 // Use functional plugin
@@ -46,7 +59,8 @@ When you call `app.use(dxtFunctionalPlugin)`, the following steps occur automati
 3. **`Icons` Initialization**: Configures the global SVG icon registry.
 4. **`Meta` Initialization**: Automatically sets the browser tab suffix (via `useMeta().setSuffix()`) if provided.
 5. **Vue Router Integration**: Globally registers the router object in the library's memory (`RouterItemRef`), allowing other functional services to use navigation even outside Vue components.
-6. **`executeUseGlobalInit()` Execution**: Automatically triggers the initialization of absolutely all global singletons created via `executeUseGlobal`. You no longer need to call it manually!
+6. **`ErrorCenter` Setup**: Configures predefined error causes (`ErrorCenter.addList`) and registers global error handlers (`ErrorCenter.addHandlerList`) in the central error registry.
+7. **`executeUseGlobalInit()` Execution**: Automatically triggers the initialization of absolutely all global singletons created via `executeUseGlobal`. You no longer need to call it manually!
 
 ## Service Configuration
 

@@ -19,7 +19,7 @@ vi.mock('@dxtmisha/functional-basic', () => ({
   Api: { setConfig: vi.fn() },
   Translate: { setConfig: vi.fn() },
   Icons: { setConfig: vi.fn() },
-  ErrorCenter: { addList: vi.fn() },
+  ErrorCenter: { addList: vi.fn(), addHandlerList: vi.fn() },
   initGetElementId: vi.fn()
 }))
 
@@ -99,6 +99,12 @@ describe('dxtFunctionalPlugin', () => {
     const options = { errorCauses: { test: 'error' } as any }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(ErrorCenter.addList).toHaveBeenCalledWith(options.errorCauses)
+  })
+
+  it('should call ErrorCenter.addHandlerList if errorHandlers option is provided', () => {
+    const options = { errorHandlers: [{ group: 'test', handlers: [] }] as any }
+    dxtFunctionalPlugin?.install?.(appMock, options)
+    expect(ErrorCenter.addHandlerList).toHaveBeenCalledWith(options.errorHandlers)
   })
 
   it('should call executeUseGlobalInit at the end', () => {

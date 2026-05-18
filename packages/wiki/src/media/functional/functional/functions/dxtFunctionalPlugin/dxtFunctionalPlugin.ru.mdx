@@ -43,7 +43,8 @@ app.mount('#app')
 3.  **Icons**: Вызывает `Icons.setConfig()` с предоставленным `IconsConfig`.
 4.  **Meta**: Настраивает суффикс заголовка по умолчанию через `useMeta().setSuffix()`.
 5.  **Router**: Регистрирует экземпляр роутера в `RouterItemRef`, делая его доступным глобально.
-6.  **executeUseGlobalInit**: Запускает пакетную инициализацию всех глобальных синглтонов, определенных с помощью `executeUseGlobal`.
+6.  **ErrorCenter**: Настраивает предопределенный список причин ошибок через `ErrorCenter.addList()` и регистрирует обработчики через `ErrorCenter.addHandlerList()`.
+7.  **executeUseGlobalInit**: Запускает пакетную инициализацию всех глобальных синглтонов, определенных с помощью `executeUseGlobal`.
 
 ## Типы данных
 
@@ -56,6 +57,8 @@ app.mount('#app')
 - `icons?: IconsConfig` — Конфигурация для глобального реестра иконок `Icons`.
 - `metaSuffix?: string` — Строка, которая будет добавлена ко всем заголовкам страниц, установленным через `useMeta()`.
 - `router?: Router` — Экземпляр Vue Router. Если не указан, плагин попытается извлечь его из `app.config.globalProperties.$router`.
+- `errorCauses?: ErrorCenterCauseList` — Список предопределенных причин ошибок для `ErrorCenter`.
+- `errorHandlers?: ErrorCenterHandlerList` — Список обработчиков ошибок для `ErrorCenter`.
 
 ### `ApiConfig`
 

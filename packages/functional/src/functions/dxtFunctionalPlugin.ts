@@ -4,6 +4,7 @@ import {
   type ApiConfig,
   ErrorCenter,
   type ErrorCenterCauseList,
+  type ErrorCenterHandlerList,
   Icons,
   type IconsConfig,
   Translate,
@@ -56,6 +57,12 @@ export interface FunctionalPluginOptions {
    * Список причин ошибок для центра ошибок
    */
   errorCauses?: ErrorCenterCauseList
+
+  /**
+   * Error handlers list for error center /
+   * Список обработчиков ошибок для центра ошибок
+   */
+  errorHandlers?: ErrorCenterHandlerList
 }
 
 /**
@@ -121,6 +128,10 @@ export const dxtFunctionalPlugin: Plugin = {
 
     if (options.errorCauses) {
       ErrorCenter.addList(options.errorCauses)
+    }
+
+    if (options.errorHandlers) {
+      ErrorCenter.addHandlerList(options.errorHandlers)
     }
 
     // 6. Initialize global singletons (ExecuteUseType.global)
