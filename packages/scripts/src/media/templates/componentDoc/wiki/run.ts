@@ -2,11 +2,12 @@
 /// <reference types="node" />
 
 import { spawn } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 
 ;(async () => {
   try {
     // You can add prompt generation logic here
-    const prompt = ''
+    const prompt = readFileSync(new URL('./prompt.txt', import.meta.url), 'utf-8')
 
     const child = spawn(
       'npx',

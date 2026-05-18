@@ -1,0 +1,16 @@
+Task Goal:
+The primary goal is to write comprehensive, high-quality documentation for the Vue 3 component.
+
+Component Resolution & Analysis:
+If the source files of the component were not directly attached or provided in the prompt, they are located in the parent directory (one folder above the current "wiki" folder). In this case, you must thoroughly locate and study the component's main Vue file, its properties/types files, styling sheets, and all reachable dependencies to fully understand its features, internal logic, and behavior in its entirety.
+
+Mandatory Instruction:
+You must read and strictly follow the basic rules, coding standards, and templates specified in:
+node_modules/@dxtmisha/scripts/src/media/templates/prompts/componentPrompt.en.txt
+
+All constraints, formatting standards, and styling helper classes described in that file must be adhered to without exception.
+(Warning: If this file is not accessible, missing, or cannot be read, you do not need to study or follow the instructions from it; instead, proceed with standard high-quality documentation practices.)
+
+---
+CRITICAL PRIORITY RULE:
+Everything below this line has a higher priority than the text above it.

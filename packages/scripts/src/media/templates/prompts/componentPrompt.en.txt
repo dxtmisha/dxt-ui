@@ -52,27 +52,79 @@ Use the following template and style.
 7.  **Events**:
     - Heading `## Events`
     - For each event:
-        - `### eventName`
-        - Description of when it triggers.
+        - Header `### `eventName`` (the name must be wrapped in backticks).
+        - A brief paragraph describing when the event triggers.
         - **Parameters:**
-            - List: `- `name: type` — description`.
-        - Code example (if the event is complex).
+            - Header: `**Parameters:**`
+            - List: `- `paramName: paramType` — parameter description.`
+        - **Structure of Custom Types (if applicable):**
+            - Header: `**TypeName structure:**` (or `**TypeName structure:** same as for `otherEventName` event` if identical).
+            - List: `- `fieldName: fieldType` — field description.`
+        - **Code Example (if the event is complex):**
+            - Code examples MUST be wrapped using the Storybook `<Source />` component instead of standard markdown backticks. Remember to add `import { Source } from '@storybook/addon-docs/blocks';` at the top of the MDX file if not already present:
+              ```md
+              <Source
+                  code={`
+              <script setup>
+              // code example here
+              </script>
+                `}
+                  language="html"
+              />
+              ```
 
-8.  **Expose (Component Methods)**:
+8.  **Expose (Component Methods & Properties)**:
     - Heading `## Expose`
-    - For each public method (accessible via ref):
-        - `### methodName()`
-        - Description of the action.
-        - **Returns:** `Type` (or `void`).
+    - Under the heading, present the list of public methods, reactive references (Refs), and computed variables exposed by the component, in the clean, signature-based bullet format:
+        - For methods: `- `methodName(paramName: paramType): returnType` — Description.`
+        - For reactive states (Refs/Computed): `- `propertyName: PropertyType` — Description.`
+        - Standard types include `boolean`, `void`, `Ref<any>`, `ComputedRef<any>`, etc.
 
 9.  **Slots**:
     - Heading `## Slots`
-    - For each slot:
-        - `### slotName`
-        - Description of purpose.
-        - **Parameters (Scoped Props):**
-            - List: `- `name: type` — description`.
-        - Code example using the slot.
+    - Under the heading, present the list of slots in the clean, signature-based bullet format:
+        - For slots without parameters: `- `slotName: Type` — Description.`
+        - For slots with parameters: `- `slotName(paramName: paramType): Type` — Description.`
+        - Standard return type is usually `VNode` or `any`.
+
+### Storybook Layout Helpers (storybookStyle.scss):
+When writing Storybook stories (`*.stories.ts`) and examples in the MDX documentation, you MUST use the predefined showcase helper classes. These styles are imported globally and start with the `.wiki-storybook-` prefix. Do not write custom inline styles or new CSS classes for showcase layout, positioning, placeholders, or containers; use the following helper classes:
+
+- **Containers & Layouts**:
+  - `.wiki-storybook-container` — enables container queries (`container-type: inline-size`).
+  - `.wiki-storybook-group` — a 12-column CSS Grid layout (`grid-template-columns: repeat(12, 1fr)`) with an `8px` gap, perfect for presenting multiple items or variations.
+  - `.wiki-storybook-flex` — basic flexbox wrapper (`display: flex; flex-wrap: wrap`) with an `8px` gap.
+  - `.wiki-storybook-flex-align-center` — same as flex wrapper, but aligns items vertically (`align-items: center`).
+  - `.wiki-storybook-flex-center` — centers items horizontally and vertically with an `8px` gap.
+  - `.wiki-storybook-flex-column` — vertical flexbox layout (`display: flex; flex-direction: column`) with a `16px` gap.
+  - `.wiki-storybook-decreased` — constrains maximum width of the showcase block to `72%`.
+  - `.wiki-storybook-decreasedX2` — constrains showcase block width responsively (`64%` at `md` screens, `48%` at `lg` screens).
+
+- **Showcase Items (`.wiki-storybook-item`)**:
+  Used to display components inside a unified visual frame (aspect-ratio `1/1` by default, border, rounded corners, hidden overflow):
+  - `.wiki-storybook-item__label` — a small floaty label at the top-left corner (`font-size: 12px`, semi-transparent blurred background) for labeling specific variations. Use `.wiki-storybook-item__label--static` to make it flow statically inside the block without absolute positioning.
+  - `&--padding` — adds standard `16px` padding inside the item box.
+  - `&--rectangle` — sets a `16:9` aspect ratio and spans all 12 columns in a grid.
+  - `&--widescreen` — sets a `32:9` aspect ratio and spans all 12 columns in a grid.
+  - `&--compact` — sets a `64:9` aspect ratio and spans all 12 columns in a grid.
+  - `&--auto` — sets aspect ratio to `auto` and spans all 12 columns in a grid.
+  - `&--squared--xs`, `&--squared--sm`, `&--squared--md`, `&--squared--lg`, `&--squared--max` — responsive grid item spans. For instance, `--squared--sm` spans 6 columns on mobile, 4 columns on tablet (640px+), and 2 columns on desktop (1024px+).
+  - `&--center` — flex-centers internal elements.
+  - `&--widthAuto` — sets width to `auto`.
+  - `&--overflowVisible` — overrides `overflow: hidden` to `overflow: visible` (useful for dropdowns or modals).
+  - `&--rtl` — sets Right-to-Left (RTL) text and flex layout direction.
+
+- **Mock Components & Placeholders**:
+  - `.wiki-storybook-card` — a mock card (`320px` width, rounded borders) to simulate real-world layout placement:
+    - `.wiki-storybook-card__image` — 128px high cover image.
+    - `.wiki-storybook-card__content` — vertical flex layout with `16px` padding and `16px` gap.
+    - `.wiki-storybook-card__label` — title with `20px` font size.
+    - `.wiki-storybook-card__information` — muted descriptions (`14px` size, gray).
+    - `.wiki-storybook-card__actions` — horizontal actions flex wrapper (`8px` gap).
+  - `.wiki-storybook-button` — standard story action trigger button. Modifiers for status colors: `&--success` (green), `&--error` (red), `&--warning` (yellow), `&--info` (blue).
+  - `.wiki-storybook-dummy` — visual placeholder box (`32px` high, dark translucent grey).
+    - Colors: `&--color--blue`, `&--color--red`, `&--color--green`.
+    - Sizes: `&--size--sm` (height `64px`), `&--size--md` (height `128px`), `&--size--lg` (height `256px`).
 
 ### Instructions:
 1. Study the provided component code (including props, emits, slots, expose).
@@ -82,6 +134,9 @@ Use the following template and style.
 3.2. Try to keep original descriptions unchanged.
 4. Use the correct terminology (Props, Events, Slots, Expose).
 4.1. All headings must be in [wikiLanguage].
+4.2. In Storybook stories and MDX code examples, you MUST use the predefined layout helper classes from `storybookStyle.scss` (described above) instead of inline styles or custom CSS blocks.
+4.3. Do not modify the original component code under any circumstances unless explicitly requested.
+4.4. Strictly follow all rules in this prompt. There is zero tolerance for hallucinations: do not invent, assume, or add any non-existent properties, methods, events, slots, or external package dependencies.
 5. Do not add unnecessary introductions or conclusions, only MDX.
 6. Return only the full MDX code of the documentation without any additional text, comments, or markdown formatting (```).
 7. The result must be exclusively text (response), do not attach any files.
