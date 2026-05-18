@@ -2,19 +2,23 @@
 @use "../Checkbox/style" as checkbox;
 
 @mixin mixinSwitch {
-  @include ui.initByCustom('_centerY', calc(ui.v('??comp.height') / 2));
-  @include ui.initByCustom('_centerDirY', calc(var(--d-dir) * ui.v('??_centerY')));
-  @include ui.initByCustom('_itemCenterY', calc(ui.v('??comp.item.height') / 2));
-  @include ui.initByCustom('_itemCenterDirX', calc(var(--d-dir) * ui.v('??comp.item.width') / 2));
-  @include ui.initByCustom('_itemX', calc(ui.v('??_centerDirY') - ui.v('??_itemCenterDirX')));
-  @include ui.initByCustom('_itemY', calc(#{ui.v('??_centerY') - ui.v('??_itemCenterY')}));
+  @include ui.initByCustom('_centerX', calc(ui.v('??comp.track.width') / 2));
+  @include ui.initByCustom('_centerY', calc(ui.v('??comp.track.height') / 2));
+  @include ui.initByCustom('_centerDirX', calc(var(--d-dir) * ui.v('??_centerX')));
+
+  @include ui.initByCustom('_itemCenterX', calc(#{ui.v('??comp.item.width')} / 2));
+  @include ui.initByCustom('_itemCenterY', calc(#{ui.v('??comp.item.height')} / 2));
+  @include ui.initByCustom('_itemCenterDirX', calc(var(--d-dir) * ui.v('??_itemCenterX')));
+
+  @include ui.initByCustom('_itemX', calc(ui.v('??_centerY') - ui.v('??_itemCenterDirX')));
+  @include ui.initByCustom('_itemY', calc(ui.v('??_centerY') - ui.v('??_itemCenterY')));
 
   @include checkbox.mixinCheckboxBasic;
 
   &__track {
-    width: ui.v('??comp.width');
-    min-width: ui.v('??comp.width');
-    height: ui.v('??comp.height');
+    width: ui.v('??comp.track.width');
+    min-width: ui.v('??comp.track.width');
+    height: ui.v('??comp.track.height');
 
     transition: inherit;
   }
@@ -30,7 +34,10 @@
 
   input:checked ~ * {
     @include ui.subclass('item') {
-      transform: translate(calc((var(--d-dir) * ui.v('??comp.width')) - ui.v('??_itemX')), #{ui.v('??_itemY')});
+      transform: translate(
+              calc((var(--d-dir) * (ui.v('??comp.track.width') - ui.v('??comp.item.width'))) - ui.v('??_itemX')),
+              #{ui.v('??_itemY')}
+      );
     }
   }
 }

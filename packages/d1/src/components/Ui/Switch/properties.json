@@ -1,9 +1,9 @@
 {
-  "main": "{d.checkbox}",
+  "main": "{d.switch}",
   "comp": {
     "color": "{sys.palette.primary}",
     "colorOpacity": "{sys.opacity.surface.high}",
-    "backgroundColor": "{sys.palette.primary}",
+    "backgroundColor": "{sys.palette.scrim}",
     "backgroundOpacity": "0",
     "borderColor": "{??comp.backgroundColor}",
     "borderOpacity": "{sys.opacity.primary.high}",
@@ -12,6 +12,14 @@
       "colorOpacity": "{sys.opacity.primary.high}",
       "backgroundOpacity": "{sys.opacity.primary.high}",
       "border-opacity": "0"
+    },
+    "track": {
+      "width": "{ref.spacing.10}",
+      "height": "{ref.spacing.5}"
+    },
+    "item": {
+      "width": "{ref.spacing.10}",
+      "height": "{ref.spacing.10}"
     },
     "_type": "var"
   },
@@ -22,38 +30,28 @@
   "#body": {
     "gap": "{sys.spacing.md}"
   },
-  "#item": {
-    "circle": "{ref.spacing.10}",
-    "color": "{??comp.color}",
-    "color-opacity": "{??comp.colorOpacity}",
+  "#track": {
     "background-color": "{??comp.backgroundColor}",
-    "background-opacity": "0",
-    "gradient": "var(--sys-color)",
-    "gradient-opacity": "0",
+    "background-opacity": "{sys.opacity.scrim}",
+    "border-radius": "{sys.rounded.full}",
     "hover": {
-      "gradient-opacity": "{sys.opacity.hover}"
-    },
-    "active": {
-      "gradient-opacity": "{sys.opacity.pressed}"
     }
   },
-  "#icon": {
-    "squared": "{ref.spacing.6}",
+  "#item": {
     "background-color": "{??comp.backgroundColor}",
-    "background-opacity": "{??comp.backgroundOpacity}",
-    "border-style": "solid",
-    "border-width": "{ref.spacing.2px}",
-    "border-color": "{??comp.borderColor}",
-    "border-opacity": "{??comp.borderOpacity}",
-    "border-radius": "var(--sys-width) * {sys.rounded.adaptive.md}"
+    "background-opacity": "0"
+  },
+  "#icon": {
+    "width": "{ref.spacing.6}",
+    "height": "{ref.spacing.6}",
+    "background-color": "{sys.palette.onPrimary}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "border-radius": "{sys.rounded.full}",
+    "box-shadow": "{sys.shadow.sm}",
+    "backdrop-filter": "{sys.blur.md}"
   },
   "#loading": {
-    "padding": "{ref.spacing.2}"
-  },
-  "#info": {
-    "padding-top": "{ref.spacing.2}"
-  },
-  "#label": {
+    "padding": "{sys.spacing.xs}"
   },
   "#description": {
     "link|font": "{font.bodyMedium}",
@@ -65,13 +63,11 @@
     }
   },
   "checked": {
-    "#item": {
-      "color": "{??comp.checked.color}",
-      "color-opacity": "{??comp.checked.colorOpacity}"
+    "comp": {
+      "backgroundColor": "{sys.opacity.primary.high}"
     },
     "#icon": {
-      "background-opacity": "{??comp.checked.backgroundOpacity}",
-      "border-opacity": "{??comp.checked.borderOpacity}"
+      "background-color": "{??comp.backgroundColor}"
     }
   },
   "disabled": {

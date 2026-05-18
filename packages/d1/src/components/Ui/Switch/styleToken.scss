@@ -1,0 +1,293 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Switch;
+
+@include ui.initDesignBasic('d1.switch') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Switch.mixinSwitch;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-switch-comp-color: var(--d1-sys-palette-primary);
+    --d1-switch-comp-colorOpacity: var(--d1-sys-opacity-surface-high);
+    --d1-switch-comp-backgroundColor: var(--d1-sys-palette-scrim);
+    --d1-switch-comp-backgroundOpacity: 0;
+    --d1-switch-comp-borderColor: var(--d1-switch-comp-backgroundColor);
+    --d1-switch-comp-borderOpacity: var(--d1-sys-opacity-primary-high);
+    --d1-switch-comp-checked-color: var(--d1-sys-palette-onPrimary);
+    --d1-switch-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-high);
+    --d1-switch-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-high);
+    --d1-switch-comp-checked-borderOpacity: 0;
+    --d1-switch-comp-track-width: var(--d1-ref-spacing-10);
+    --d1-switch-comp-track-height: var(--d1-ref-spacing-5);
+    --d1-switch-comp-item-width: var(--d1-ref-spacing-10);
+    --d1-switch-comp-item-height: var(--d1-ref-spacing-10);
+    
+    &__body {
+      gap: var(--d1-sys-spacing-md);
+    }
+    
+    &__item {
+      @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
+      @include ui.backgroundOpacity(#{0});
+    }
+    
+    &__icon {
+      @include ui.width(#{var(--d1-ref-spacing-6)});
+      @include ui.height(#{var(--d1-ref-spacing-6)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-onPrimary)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+      
+      box-shadow: var(--d1-sys-shadow-sm);
+      backdrop-filter: var(--d1-sys-blur-md);
+    }
+    
+    &__loading {
+      padding: var(--d1-sys-spacing-xs);
+    }
+    
+    &__track {
+      @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+    }
+    
+    &__description {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
+    &:focus-within {
+      & .d1-switch__item {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.backgroundColor('init');
+      }
+    }
+    
+    &--required {
+      --d1-switch-color: var(--d1-sys-palette-error);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+    }
+    
+    &--block {
+      display: flex;
+      
+      & .d1-switch__body {
+        flex-grow: 1;
+      }
+    }
+    
+    &--adaptive {
+      &--rightAlways {
+        & .d1-switch__track {
+          order: 4;
+        }
+        
+        & .d1-switch__item {
+          order: 4;
+        }
+        
+        & .d1-switch__info {
+          order: 2;
+        }
+      }
+      
+      &--rightSm {
+        @media screen and (max-width: calc(640px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightMd {
+        @media screen and (max-width: calc(768px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightLg {
+        @media screen and (max-width: calc(1024px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightXl {
+        @media screen and (max-width: calc(1280px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--right2xl {
+        @media screen and (max-width: calc(1536px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+    }
+    
+    &--container {
+      &--rightSm {
+        @container (max-width: calc(640px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightMd {
+        @container (max-width: calc(768px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightLg {
+        @container (max-width: calc(1024px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightXl {
+        @container (max-width: calc(1280px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--right2xl {
+        @container (max-width: calc(1536px - 1px)) {
+          & .d1-switch__track {
+            order: 4;
+          }
+          
+          & .d1-switch__item {
+            order: 4;
+          }
+          
+          & .d1-switch__info {
+            order: 2;
+          }
+        }
+      }
+    }
+    
+    &__input:focus ~ * {
+      --d1-switch-linkfocus: var(--d1-switch-focus);
+    }
+    
+    &__input:checked ~ * {
+      & .d1-switch__icon {
+        @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
+      }
+    }
+    
+    &__input:disabled ~ * {
+      --d1-switch-comp-colorOpacity: var(--d1-sys-opacity-surface-disabled);
+      --d1-switch-comp-backgroundColor: var(--d1-sys-palette-onSurface);
+      --d1-switch-comp-borderColor: var(--d1-switch-comp-backgroundColor);
+      --d1-switch-comp-borderOpacity: var(--d1-sys-opacity-primary-disabled);
+      --d1-switch-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-disabled);
+      --d1-switch-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-disabled);
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}
