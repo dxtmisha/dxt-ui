@@ -1,17 +1,9 @@
 {
   "main": "{d.switch}",
   "comp": {
-    "color": "{sys.palette.primary}",
-    "colorOpacity": "{sys.opacity.surface.high}",
     "backgroundColor": "{sys.palette.scrim}",
-    "backgroundOpacity": "0",
-    "borderColor": "{??comp.backgroundColor}",
-    "borderOpacity": "{sys.opacity.primary.high}",
     "checked": {
-      "color": "{sys.palette.onPrimary}",
-      "colorOpacity": "{sys.opacity.primary.high}",
-      "backgroundOpacity": "{sys.opacity.primary.high}",
-      "border-opacity": "0"
+      "backgroundColor": "{sys.palette.primary}"
     },
     "track": {
       "width": "{ref.spacing.10}",
@@ -25,7 +17,8 @@
   },
   "required": {
     "color": "{sys.palette.error}",
-    "colorOpacity": "{sys.opacity.surface.high}"
+    "colorOpacity": "{sys.opacity.surface.high}",
+    "_type": "var"
   },
   "#body": {
     "gap": "{sys.spacing.md}"
@@ -38,6 +31,7 @@
     }
   },
   "#item": {
+    "color": "{??comp.backgroundColor}",
     "background-color": "{??comp.backgroundColor}",
     "background-opacity": "0"
   },
@@ -64,7 +58,8 @@
   },
   "checked": {
     "comp": {
-      "backgroundColor": "{sys.opacity.primary.high}"
+      "backgroundColor": "{??comp.checked.backgroundColor}",
+      "_type": "var"
     },
     "#icon": {
       "background-color": "{??comp.backgroundColor}"
@@ -72,15 +67,18 @@
   },
   "disabled": {
     "comp": {
-      "colorOpacity": "{sys.opacity.surface.disabled}",
-      "backgroundColor": "{sys.palette.onSurface}",
-      "borderColor": "{??comp.backgroundColor}",
-      "borderOpacity": "{sys.opacity.primary.disabled}",
+      "backgroundColor": "{sys.palette.scrim}",
       "checked": {
-        "colorOpacity": "{sys.opacity.primary.disabled}",
-        "backgroundOpacity": "{sys.opacity.primary.disabled}"
+        "backgroundColor": "{sys.palette.scrim}"
       },
       "_type": "var"
+    },
+    "#track": {
+      "background-opacity": "{sys.opacity.disabled}"
+    },
+    "#icon": {
+      "background-color": "{sys.palette.onSurface}",
+      "background-opacity": "{sys.opacity.primary.disabled}"
     }
   }
 }

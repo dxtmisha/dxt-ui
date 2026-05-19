@@ -10229,53 +10229,39 @@
         "name": "d1-switch",
         "type": "component",
         "value": {
+          "required": {
+            "name": "required",
+            "type": "var",
+            "value": {
+              "color": {
+                "name": "--d1-switch-required-color",
+                "type": "var",
+                "value": "{sys.palette.error}"
+              },
+              "colorOpacity": {
+                "name": "--d1-switch-required-colorOpacity",
+                "type": "var",
+                "value": "{sys.opacity.surface.high}"
+              }
+            }
+          },
           "comp": {
             "name": "comp",
             "type": "var",
             "value": {
-              "color": {
-                "name": "--d1-switch-comp-color",
-                "type": "var",
-                "value": "{sys.palette.primary}"
-              },
-              "colorOpacity": {
-                "name": "--d1-switch-comp-colorOpacity",
-                "type": "var",
-                "value": "{sys.opacity.surface.high}"
-              },
               "backgroundColor": {
                 "name": "--d1-switch-comp-backgroundColor",
                 "type": "var",
                 "value": "{sys.palette.scrim}"
               },
-              "borderColor": {
-                "name": "--d1-switch-comp-borderColor",
-                "type": "var",
-                "value": "{??comp.backgroundColor}"
-              },
-              "borderOpacity": {
-                "name": "--d1-switch-comp-borderOpacity",
-                "type": "var",
-                "value": "{sys.opacity.primary.high}"
-              },
               "checked": {
                 "name": "checked",
                 "type": "var",
                 "value": {
-                  "color": {
-                    "name": "--d1-switch-comp-checked-color",
+                  "backgroundColor": {
+                    "name": "--d1-switch-comp-checked-backgroundColor",
                     "type": "var",
-                    "value": "{sys.palette.onPrimary}"
-                  },
-                  "colorOpacity": {
-                    "name": "--d1-switch-comp-checked-colorOpacity",
-                    "type": "var",
-                    "value": "{sys.opacity.primary.high}"
-                  },
-                  "backgroundOpacity": {
-                    "name": "--d1-switch-comp-checked-backgroundOpacity",
-                    "type": "var",
-                    "value": "{sys.opacity.primary.high}"
+                    "value": "{sys.palette.primary}"
                   }
                 }
               },
@@ -10313,17 +10299,6 @@
               }
             }
           },
-          "required": {
-            "name": "&--required",
-            "type": "state",
-            "value": {
-              "color": {
-                "name": "--d1-switch-color",
-                "type": "var",
-                "value": "{sys.palette.error}"
-              }
-            }
-          },
           "&__input:focus ~ *": {
             "name": "&__input:focus ~ *",
             "type": "scss",
@@ -10335,6 +10310,23 @@
               }
             }
           },
+          "&__input:checked ~ *": {
+            "name": "&__input:checked ~ *",
+            "type": "scss",
+            "value": {
+              "comp": {
+                "name": "comp",
+                "type": "var",
+                "value": {
+                  "backgroundColor": {
+                    "name": "--d1-switch-comp-backgroundColor",
+                    "type": "var",
+                    "value": "{??comp.checked.backgroundColor}"
+                  }
+                }
+              }
+            }
+          },
           "&__input:disabled ~ *": {
             "name": "&__input:disabled ~ *",
             "type": "scss",
@@ -10343,41 +10335,38 @@
                 "name": "comp",
                 "type": "var",
                 "value": {
-                  "colorOpacity": {
-                    "name": "--d1-switch-comp-colorOpacity",
-                    "type": "var",
-                    "value": "{sys.opacity.surface.disabled}"
-                  },
                   "backgroundColor": {
                     "name": "--d1-switch-comp-backgroundColor",
                     "type": "var",
-                    "value": "{sys.palette.onSurface}"
-                  },
-                  "borderColor": {
-                    "name": "--d1-switch-comp-borderColor",
-                    "type": "var",
-                    "value": "{??comp.backgroundColor}"
-                  },
-                  "borderOpacity": {
-                    "name": "--d1-switch-comp-borderOpacity",
-                    "type": "var",
-                    "value": "{sys.opacity.primary.disabled}"
+                    "value": "{sys.palette.scrim}"
                   },
                   "checked": {
                     "name": "checked",
                     "type": "var",
                     "value": {
-                      "colorOpacity": {
-                        "name": "--d1-switch-comp-checked-colorOpacity",
+                      "backgroundColor": {
+                        "name": "--d1-switch-comp-checked-backgroundColor",
                         "type": "var",
-                        "value": "{sys.opacity.primary.disabled}"
-                      },
-                      "backgroundOpacity": {
-                        "name": "--d1-switch-comp-checked-backgroundOpacity",
-                        "type": "var",
-                        "value": "{sys.opacity.primary.disabled}"
+                        "value": "{sys.palette.scrim}"
                       }
                     }
+                  }
+                }
+              }
+            }
+          },
+          "checked": {
+            "name": "checked",
+            "type": "none",
+            "value": {
+              "comp": {
+                "name": "comp",
+                "type": "var",
+                "value": {
+                  "backgroundColor": {
+                    "name": "--d1-switch-comp-backgroundColor",
+                    "type": "var",
+                    "value": "{??comp.checked.backgroundColor}"
                   }
                 }
               }
@@ -10391,39 +10380,19 @@
                 "name": "comp",
                 "type": "var",
                 "value": {
-                  "colorOpacity": {
-                    "name": "--d1-switch-comp-colorOpacity",
-                    "type": "var",
-                    "value": "{sys.opacity.surface.disabled}"
-                  },
                   "backgroundColor": {
                     "name": "--d1-switch-comp-backgroundColor",
                     "type": "var",
-                    "value": "{sys.palette.onSurface}"
-                  },
-                  "borderColor": {
-                    "name": "--d1-switch-comp-borderColor",
-                    "type": "var",
-                    "value": "{??comp.backgroundColor}"
-                  },
-                  "borderOpacity": {
-                    "name": "--d1-switch-comp-borderOpacity",
-                    "type": "var",
-                    "value": "{sys.opacity.primary.disabled}"
+                    "value": "{sys.palette.scrim}"
                   },
                   "checked": {
                     "name": "checked",
                     "type": "var",
                     "value": {
-                      "colorOpacity": {
-                        "name": "--d1-switch-comp-checked-colorOpacity",
+                      "backgroundColor": {
+                        "name": "--d1-switch-comp-checked-backgroundColor",
                         "type": "var",
-                        "value": "{sys.opacity.primary.disabled}"
-                      },
-                      "backgroundOpacity": {
-                        "name": "--d1-switch-comp-checked-backgroundOpacity",
-                        "type": "var",
-                        "value": "{sys.opacity.primary.disabled}"
+                        "value": "{sys.palette.scrim}"
                       }
                     }
                   }

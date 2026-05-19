@@ -11,16 +11,10 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-switch-comp-color: var(--d1-sys-palette-primary);
-    --d1-switch-comp-colorOpacity: var(--d1-sys-opacity-surface-high);
+    --d1-switch-required-color: var(--d1-sys-palette-error);
+    --d1-switch-required-colorOpacity: var(--d1-sys-opacity-surface-high);
     --d1-switch-comp-backgroundColor: var(--d1-sys-palette-scrim);
-    --d1-switch-comp-backgroundOpacity: 0;
-    --d1-switch-comp-borderColor: var(--d1-switch-comp-backgroundColor);
-    --d1-switch-comp-borderOpacity: var(--d1-sys-opacity-primary-high);
-    --d1-switch-comp-checked-color: var(--d1-sys-palette-onPrimary);
-    --d1-switch-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-high);
-    --d1-switch-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-high);
-    --d1-switch-comp-checked-borderOpacity: 0;
+    --d1-switch-comp-checked-backgroundColor: var(--d1-sys-palette-primary);
     --d1-switch-comp-track-width: var(--d1-ref-spacing-10);
     --d1-switch-comp-track-height: var(--d1-ref-spacing-5);
     --d1-switch-comp-item-width: var(--d1-ref-spacing-10);
@@ -31,6 +25,8 @@
     }
     
     &__item {
+      @include ui.color(#{var(--d1-switch-comp-backgroundColor)});
+      
       @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
       @include ui.backgroundOpacity(#{0});
     }
@@ -73,12 +69,6 @@
       & .d1-switch__item {
         @include ui.backgroundOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.backgroundColor('init');
       }
-    }
-    
-    &--required {
-      --d1-switch-color: var(--d1-sys-palette-error);
-      
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
     }
     
     &--block {
@@ -272,18 +262,25 @@
     }
     
     &__input:checked ~ * {
+      --d1-switch-comp-backgroundColor: var(--d1-switch-comp-checked-backgroundColor);
+      
       & .d1-switch__icon {
         @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
       }
     }
     
     &__input:disabled ~ * {
-      --d1-switch-comp-colorOpacity: var(--d1-sys-opacity-surface-disabled);
-      --d1-switch-comp-backgroundColor: var(--d1-sys-palette-onSurface);
-      --d1-switch-comp-borderColor: var(--d1-switch-comp-backgroundColor);
-      --d1-switch-comp-borderOpacity: var(--d1-sys-opacity-primary-disabled);
-      --d1-switch-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-disabled);
-      --d1-switch-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-disabled);
+      --d1-switch-comp-backgroundColor: var(--d1-sys-palette-scrim);
+      --d1-switch-comp-checked-backgroundColor: var(--d1-sys-palette-scrim);
+      
+      & .d1-switch__track {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-disabled)}); @include ui.backgroundColor('init');
+      }
+      
+      & .d1-switch__icon {
+        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-disabled)});
+      }
     }
   }
   // :style [!] System label / Системная метка

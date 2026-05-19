@@ -78,11 +78,9 @@
   '--d1-skeleton-color': ('--d1-palette-basic950'),
   '--d1-skeleton-backgroundColor': ('--d1-palette-basic800'),
   '--d1-skeleton-borderColor': ('--d1-palette-basic800'),
-  '--d1-switch-comp-color': ('--d1-palette-basic600'),
-  '--d1-switch-comp-backgroundColor': ('--d1-palette-basic950', '--d1-palette-basic950', '--d1-palette-basic950'),
-  '--d1-switch-comp-borderColor': ('--d1-palette-basic950', '--d1-palette-basic950', '--d1-palette-basic950'),
-  '--d1-switch-comp-checked-color': ('--d1-palette-basic50'),
-  '--d1-switch-color': ('--d1-palette-basic600'),
+  '--d1-switch-required-color': ('--d1-palette-basic600'),
+  '--d1-switch-comp-backgroundColor': ('--d1-palette-basic950', '--d1-palette-basic600', '--d1-palette-basic950', '--d1-palette-basic600', '--d1-palette-basic950'),
+  '--d1-switch-comp-checked-backgroundColor': ('--d1-palette-basic600', '--d1-palette-basic950', '--d1-palette-basic950'),
   '--d1-window-backgroundColor': ('--d1-palette-basic950'),));
 @include variables.setDesignShade((
   'd1': (50,100,200,300,400,500,600,700,800,900,950),));

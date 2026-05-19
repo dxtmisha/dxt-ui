@@ -31,7 +31,6 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-switch': true,
-    'd1-switch--required': props.required,
     'd1-switch--block': props.block,
     [`d1-switch--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
     [`d1-switch--container--${props.container}`]: inArray(propsValues.container, props.container),
