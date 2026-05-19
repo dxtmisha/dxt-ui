@@ -18,13 +18,41 @@ import {SwitchWikiStorybook} from './wiki'
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Switch'} type={'switch'}/>
+
+<StorybookDescriptions componentName={'Checkbox'} type={'value'}/>
+<StorybookDescriptions componentName={'Checkbox'} type={'selected'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Switch.SwitchVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Switch.SwitchSkeleton}/>
+    
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'validationMessage'}/>
+    
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Switch.SwitchSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+    
 [//]: # (:documentation-slots [!] System label / Системная метка)

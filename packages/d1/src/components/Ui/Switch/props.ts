@@ -12,6 +12,7 @@ type PropsToken = {
   block?: boolean
   adaptive?: 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
   container?: 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
+  required?: boolean
   itemCenter?: boolean
   focus?: boolean
   disabled?: boolean

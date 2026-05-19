@@ -8058,17 +8058,22 @@
                     "value": "{sys.opacity.primary.high}"
                   }
                 }
-              }
-            }
-          },
-          "required": {
-            "name": "&--required",
-            "type": "state",
-            "value": {
-              "color": {
-                "name": "--d1-checkbox-color",
+              },
+              "required": {
+                "name": "required",
                 "type": "var",
-                "value": "{sys.palette.error}"
+                "value": {
+                  "color": {
+                    "name": "--d1-checkbox-comp-required-color",
+                    "type": "var",
+                    "value": "{sys.palette.error}"
+                  },
+                  "colorOpacity": {
+                    "name": "--d1-checkbox-comp-required-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.surface.high}"
+                  }
+                }
               }
             }
           },
@@ -9847,6 +9852,22 @@
                     "value": "{sys.opacity.primary.high}"
                   }
                 }
+              },
+              "required": {
+                "name": "required",
+                "type": "var",
+                "value": {
+                  "color": {
+                    "name": "--d1-radio-comp-required-color",
+                    "type": "var",
+                    "value": "{sys.palette.error}"
+                  },
+                  "colorOpacity": {
+                    "name": "--d1-radio-comp-required-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.surface.high}"
+                  }
+                }
               }
             }
           },
@@ -9854,17 +9875,6 @@
             "name": "--d1-radio-iconScaleChecked",
             "type": "var",
             "value": ".92"
-          },
-          "required": {
-            "name": "&--required",
-            "type": "state",
-            "value": {
-              "color": {
-                "name": "--d1-radio-color",
-                "type": "var",
-                "value": "{sys.palette.error}"
-              }
-            }
           },
           "&__input:focus ~ *": {
             "name": "&__input:focus ~ *",
@@ -10229,22 +10239,6 @@
         "name": "d1-switch",
         "type": "component",
         "value": {
-          "required": {
-            "name": "required",
-            "type": "var",
-            "value": {
-              "color": {
-                "name": "--d1-switch-required-color",
-                "type": "var",
-                "value": "{sys.palette.error}"
-              },
-              "colorOpacity": {
-                "name": "--d1-switch-required-colorOpacity",
-                "type": "var",
-                "value": "{sys.opacity.surface.high}"
-              }
-            }
-          },
           "comp": {
             "name": "comp",
             "type": "var",
@@ -10294,6 +10288,22 @@
                     "name": "--d1-switch-comp-item-height",
                     "type": "var",
                     "value": "{ref.spacing.10}"
+                  }
+                }
+              },
+              "required": {
+                "name": "required",
+                "type": "var",
+                "value": {
+                  "color": {
+                    "name": "--d1-switch-comp-required-color",
+                    "type": "var",
+                    "value": "{sys.palette.error}"
+                  },
+                  "colorOpacity": {
+                    "name": "--d1-switch-comp-required-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.surface.high}"
                   }
                 }
               }

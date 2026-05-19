@@ -127,7 +127,9 @@ export class CheckboxDesign<
       {
         ...this.getAttrs(),
         ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        ...AriaStaticInclude.labelledby(this.item.label.id.value),
+        ...AriaStaticInclude.describedby(this.item.description.id.value)
       },
       [
         this.renderInputHidden(),

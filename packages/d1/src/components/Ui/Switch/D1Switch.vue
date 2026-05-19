@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import {
   inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -34,6 +33,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-switch--block': props.block,
     [`d1-switch--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
     [`d1-switch--container--${props.container}`]: inArray(propsValues.container, props.container),
+    'd1-switch--required': props.required,
     'd1-switch--itemCenter': props.itemCenter,
     'd1-switch--focus': props.focus,
     'd1-switch--disabled': props.disabled

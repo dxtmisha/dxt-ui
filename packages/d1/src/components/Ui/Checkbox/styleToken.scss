@@ -21,6 +21,8 @@
     --d1-checkbox-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-high);
     --d1-checkbox-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-high);
     --d1-checkbox-comp-checked-borderOpacity: 0;
+    --d1-checkbox-comp-required-color: var(--d1-sys-palette-error);
+    --d1-checkbox-comp-required-colorOpacity: var(--d1-sys-opacity-surface-high);
     
     &__body {
       gap: var(--d1-sys-spacing-md);
@@ -80,11 +82,6 @@
     &:focus-within {
       & .d1-checkbox__item {
         @include ui.backgroundOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.backgroundColor('init');
-        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
-        
-        outline-width: var(--d1-ref-spacing-1);
-        outline-style: solid;
-        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
       }
     }
     

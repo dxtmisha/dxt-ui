@@ -18,6 +18,7 @@ import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
+import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
 import DemoTabsPage from './pages/components/DemoTabsPage.vue'
 
 export const routes: RouteRecordRaw[] = [
@@ -100,6 +101,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-snackbar',
     name: 'component-snackbar',
     component: DemoSnackbarPage
+  },
+  {
+    path: '/component-switch',
+    name: 'component-switch',
+    component: DemoSwitchPage
   },
   {
     path: '/component-tabs',

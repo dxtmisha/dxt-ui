@@ -21,6 +21,8 @@
     --d1-radio-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-high);
     --d1-radio-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-high);
     --d1-radio-comp-checked-borderOpacity: 0;
+    --d1-radio-comp-required-color: var(--d1-sys-palette-error);
+    --d1-radio-comp-required-colorOpacity: var(--d1-sys-opacity-surface-high);
     --d1-radio-iconScaleChecked: .92;
     
     &__body {
@@ -81,11 +83,6 @@
     &:focus-within {
       & .d1-radio__item {
         @include ui.backgroundOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.backgroundColor('init');
-        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
-        
-        outline-width: var(--d1-ref-spacing-1);
-        outline-style: solid;
-        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
       }
     }
     

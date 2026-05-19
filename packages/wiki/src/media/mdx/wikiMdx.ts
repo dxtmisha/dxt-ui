@@ -60,6 +60,7 @@ import { wikiMdxSelectValue } from './SelectValue/wikiMdxSelectValue'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 import { wikiMdxSnackbar } from './Snackbar/wikiMdxSnackbar'
 import { wikiMdxSnackbarItem } from './SnackbarItem/wikiMdxSnackbarItem'
+import { wikiMdxSwitch } from './Switch/wikiMdxSwitch'
 import { wikiMdxTabItem } from './TabItem/wikiMdxTabItem'
 import { wikiMdxTabs } from './Tabs/wikiMdxTabs'
 import { wikiMdxTabsNavigation } from './TabsNavigation/wikiMdxTabsNavigation'
@@ -129,6 +130,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxSkeleton,
   wikiMdxSnackbar,
   wikiMdxSnackbarItem,
+  wikiMdxSwitch,
   wikiMdxTabItem,
   wikiMdxTabs,
   wikiMdxTabsNavigation,

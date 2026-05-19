@@ -11,7 +11,6 @@ type SwitchPropsToken = {
   container?: boolean
   required?: boolean
   itemCenter?: boolean
-  comp?: boolean | 'item' | true
   focus?: boolean
   disabled?: boolean
   // :type [!] System label / Системная метка

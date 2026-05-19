@@ -13,11 +13,10 @@
       "width": "{ref.spacing.10}",
       "height": "{ref.spacing.10}"
     },
-    "_type": "var"
-  },
-  "required": {
-    "color": "{sys.palette.error}",
-    "colorOpacity": "{sys.opacity.surface.high}",
+    "required": {
+      "color": "{sys.palette.error}",
+      "colorOpacity": "{sys.opacity.surface.high}"
+    },
     "_type": "var"
   },
   "#body": {
@@ -45,6 +44,8 @@
     "backdrop-filter": "{sys.blur.md}"
   },
   "#loading": {
+    "color": "{sys.palette.inverseOnPrimary}",
+    "color-opacity": "{sys.opacity.primary.high}",
     "padding": "{sys.spacing.xs}"
   },
   "#description": {
@@ -63,6 +64,9 @@
     },
     "#icon": {
       "background-color": "{??comp.backgroundColor}"
+    },
+    "#loading": {
+      "color": "{sys.palette.onPrimary}"
     }
   },
   "disabled": {

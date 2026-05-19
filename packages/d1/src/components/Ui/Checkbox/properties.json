@@ -13,11 +13,11 @@
       "backgroundOpacity": "{sys.opacity.primary.high}",
       "border-opacity": "0"
     },
+    "required": {
+      "color": "{sys.palette.error}",
+      "colorOpacity": "{sys.opacity.surface.high}"
+    },
     "_type": "var"
-  },
-  "required": {
-    "color": "{sys.palette.error}",
-    "colorOpacity": "{sys.opacity.surface.high}"
   },
   "#body": {
     "gap": "{sys.spacing.md}"

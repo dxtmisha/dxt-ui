@@ -11,14 +11,14 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-switch-required-color: var(--d1-sys-palette-error);
-    --d1-switch-required-colorOpacity: var(--d1-sys-opacity-surface-high);
     --d1-switch-comp-backgroundColor: var(--d1-sys-palette-scrim);
     --d1-switch-comp-checked-backgroundColor: var(--d1-sys-palette-primary);
     --d1-switch-comp-track-width: var(--d1-ref-spacing-10);
     --d1-switch-comp-track-height: var(--d1-ref-spacing-5);
     --d1-switch-comp-item-width: var(--d1-ref-spacing-10);
     --d1-switch-comp-item-height: var(--d1-ref-spacing-10);
+    --d1-switch-comp-required-color: var(--d1-sys-palette-error);
+    --d1-switch-comp-required-colorOpacity: var(--d1-sys-opacity-surface-high);
     
     &__body {
       gap: var(--d1-sys-spacing-md);
@@ -46,6 +46,9 @@
     
     &__loading {
       padding: var(--d1-sys-spacing-xs);
+      
+      @include ui.color(#{var(--d1-sys-palette-inverseOnPrimary)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
     }
     
     &__track {
@@ -266,6 +269,10 @@
       
       & .d1-switch__icon {
         @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
+      }
+      
+      & .d1-switch__loading {
+        @include ui.color(#{var(--d1-sys-palette-onPrimary)});
       }
     }
     

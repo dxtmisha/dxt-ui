@@ -23,6 +23,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Progress" name="component-progress"/>
         <DemoLink label="Radio" name="component-radio"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
+        <DemoLink label="Switch" name="component-switch"/>
         <DemoLink label="Tabs" name="component-tabs"/>
       </D1Group>
     </D1Section>
