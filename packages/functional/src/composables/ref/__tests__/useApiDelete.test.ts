@@ -12,7 +12,10 @@ describe('useApiDelete', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockApiInstance = {
-      request: vi.fn()
+      request: vi.fn(),
+      getStatus: vi.fn().mockReturnValue({
+        getStatus: () => 200
+      })
     } as unknown as ApiInstance
 
     vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
@@ -21,7 +24,7 @@ describe('useApiDelete', () => {
   it('should send a DELETE request', async () => {
     vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ success: true })
 
-    const { send } = useApiDelete('test/path')
+    const { send } = useApiDelete({ path: 'test/path' })
     await send()
 
     expect(mockApiInstance.request).toHaveBeenCalledWith(expect.objectContaining({

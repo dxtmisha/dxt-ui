@@ -70,6 +70,7 @@ export type ApiManagementSearch<
  */
 export type ApiManagementRequest<
   T,
+  Request extends ApiFetch['request'] = ApiFetch['request'],
   Return extends ApiData<T> = ApiData<T>
 > = {
   /** Target API endpoint path / Целевой путь к API */
@@ -78,6 +79,10 @@ export type ApiManagementRequest<
   action?: (data: Return | undefined) => Promise<void> | void
   /** Transformation before sending data / Трансформация перед отправкой данных */
   transformation?: (data: T) => Return
+  /** Request contract validation function / Функция валидации контракта запроса */
+  validateRequestContract?: (data: Request) => ApiDataValidation & Return
+  /** Response contract validation function / Функция валидации контракта ответа */
+  validateResponseContract?: (data: T) => ApiDataValidation & Return
   /** Storage of response error contracts / Хранилище контрактов ошибок ответа */
   errorContract?: ApiErrorStorageList
   /** Whether to wrap the payload in a 'data' property / Обертывать ли полезную нагрузку в свойство 'data' */

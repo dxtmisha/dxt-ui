@@ -103,6 +103,8 @@ If you are using the standard `useApiManagementRef`, you can manually include it
 - `path?: string | Ref<string>` — path for the mutation request.
 - `action?: (data: Return | undefined) => Promise<void> | void` — callback after request execution.
 - `transformation?: (data: T) => Return` — data transformation before sending.
+- `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — request contract validation function.
+- `validateResponseContract?: (data: T) => ApiDataValidation & Return` — response contract validation function.
 - `errorContract?: ApiErrorStorageList` — storage of response error contracts.
 - `toData?: boolean` — whether to wrap the payload in a 'data' property.
 - `options?: ApiOptions` — additional request options.

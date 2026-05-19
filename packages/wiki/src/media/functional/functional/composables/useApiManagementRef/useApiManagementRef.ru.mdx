@@ -103,6 +103,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `path?: string | Ref<string>` — путь для запроса мутации.
 - `action?: (data: Return | undefined) => Promise<void> | void` — коллбэк, вызываемый после выполнения запроса.
 - `transformation?: (data: T) => Return` — трансформация данных перед отправкой.
+- `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — функция валидации контракта запроса.
+- `validateResponseContract?: (data: T) => ApiDataValidation & Return` — функция валидации контракта ответа.
 - `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
 - `toData?: boolean` — оборачивать ли полезную нагрузку в свойство 'data'.
 - `options?: ApiOptions` — дополнительные параметры запроса.

@@ -12,7 +12,10 @@ describe('useApiRequest', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockApiInstance = {
-      request: vi.fn()
+      request: vi.fn(),
+      getStatus: vi.fn().mockReturnValue({
+        getStatus: () => 200
+      })
     } as unknown as ApiInstance
 
     vi.spyOn(Api, 'getItem').mockReturnValue(mockApiInstance)
@@ -20,7 +23,7 @@ describe('useApiRequest', () => {
 
   describe('initialization', () => {
     it('should initialize with default states', () => {
-      const { loading, send } = useApiRequest('test/path')
+      const { loading, send } = useApiRequest({ path: 'test/path' })
 
       expect(loading.value).toBe(false)
       expect(typeof send).toBe('function')
@@ -34,7 +37,7 @@ describe('useApiRequest', () => {
         resolveRequest = resolve
       }))
 
-      const { loading, send } = useApiRequest('test/path')
+      const { loading, send } = useApiRequest({ path: 'test/path' })
 
       expect(loading.value).toBe(false)
 
@@ -52,7 +55,7 @@ describe('useApiRequest', () => {
     it('should return data from `apiInstance.request`', async () => {
       vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ id: 1, name: 'Test' })
 
-      const { send } = useApiRequest('test/path', ApiMethodItem.get)
+      const { send } = useApiRequest({ path: 'test/path', method: ApiMethodItem.get })
 
       const result = await send()
 
@@ -64,7 +67,13 @@ describe('useApiRequest', () => {
       const customInstance = { request: vi.fn() } as unknown as ApiInstance
       vi.mocked(customInstance.request).mockResolvedValueOnce({ id: 123 })
 
-      const { send } = useApiRequest('test/path', ApiMethodItem.post, undefined, undefined, undefined, true, {}, customInstance)
+      const { send } = useApiRequest({
+        path: 'test/path',
+        method: ApiMethodItem.post,
+        toData: true,
+        options: {},
+        apiInstance: customInstance
+      })
 
       const result = await send()
 
@@ -79,7 +88,7 @@ describe('useApiRequest', () => {
       vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ id: 1 })
       const actionSpy = vi.fn()
 
-      const { send } = useApiRequest('test/path', ApiMethodItem.get, actionSpy)
+      const { send } = useApiRequest({ path: 'test/path', method: ApiMethodItem.get, action: actionSpy })
 
       await send()
 
@@ -90,7 +99,7 @@ describe('useApiRequest', () => {
       vi.mocked(mockApiInstance.request).mockResolvedValueOnce({ rawInfo: '  text  ' })
       const transformation = (data: any) => ({ cleanInfo: data.rawInfo.trim() })
 
-      const { send } = useApiRequest('test/path', ApiMethodItem.get, undefined, transformation)
+      const { send } = useApiRequest({ path: 'test/path', method: ApiMethodItem.get, transformation })
 
       const result = await send()
 
@@ -103,7 +112,7 @@ describe('useApiRequest', () => {
       const error = new Error('Network error')
       vi.mocked(mockApiInstance.request).mockRejectedValueOnce(error)
 
-      const { loading, send } = useApiRequest('test/path')
+      const { loading, send } = useApiRequest({ path: 'test/path' })
 
       const result = await send()
 

@@ -4,33 +4,35 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `useApiDelete`
 
-Возвращает объект с состоянием загрузки и методом `send` для выполнения `DELETE`-запросов к API.
+Возвращает объект с состоянием загрузки и методом `send` для выполнения `DELETE`-запросов к API. Является удобной оберткой над `useApiRequest` с предустановленным методом `DELETE`. Принимает настройки в виде единого объекта `UseApiDeleteSetup`.
 
 **Параметры:**
-- `path?: RefOrNormal<string | undefined>` — Путь к endpoint API (может быть реактивным).
-- `action?: (data: Return | undefined) => Promise<void> | void` — Действие (коллбэк), выполняемое после успешного завершения запроса.
-- `transformation?: (data: T) => Return` — Функция трансформации ответа от сервера перед возвращением или передачей в `action`.
-- `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
-- `toData: boolean = true` — Извлекать ли поле `data` из ответа.
-- `options?: ApiOptions` — Дополнительные опции запроса (объект параметров `ApiFetch`).
-- `apiInstance?: ApiInstance` — Экземпляр API, используемый для выполнения запроса. По умолчанию `Api.getItem()`.
+- `setup: UseApiDeleteSetup` — Объект настроек запроса:
+  - `path?: RefOrNormal<string | undefined>` — Путь к endpoint API (может быть реактивным).
+  - `action?: (data: Return | undefined) => Promise<void> | void` — Действие (коллбэк), выполняемое после успешного завершения запроса.
+  - `transformation?: (data: T) => Return` — Функция трансформации ответа от сервера перед возвращением или передачей в `action`.
+  - `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — Функция валидации контракта отправляемого запроса.
+  - `validateResponseContract?: (data: T) => ApiDataValidation & Return` — Функция валидации контракта полученного ответа.
+  - `errorContract?: ApiErrorStorageList` — хранилище контрактов ошибок ответа.
+  - `toData?: boolean` — Извлекать ли поле `data` из ответа. По умолчанию `true`.
+  - `options?: ApiOptions` — Дополнительные опции запроса (объект параметров `ApiFetch`).
+  - `apiInstance?: ApiInstance` — Экземпляр API, используемый для выполнения запроса. По умолчанию `Api.getItem()`.
 
 **Возвращает:**
 Объект со следующими свойствами:
 - `loading: Ref<boolean>` — Реактивное состояние загрузки. Принимает значение `true` во время выполнения запроса и `false` после его завершения или ошибки.
-- `send(request?: Request): Promise<Return | undefined>` — Асинхронный метод для отправки `DELETE`-запроса. Он автоматически управляет состоянием `loading`, применяет функцию трансформации к ответу, вызывает коллбэк `action` при успехе и безопасно обрабатывает ошибки.
+- `send(request?: Request): Promise<Return | undefined>` — Асинхронный метод для отправки `DELETE`-запроса. Он автоматически управляет состоянием `loading`, проверяет контракты валидации запроса и ответа, применяет функцию трансформации к ответам, вызывает коллбэк `action` при успехе и безопасно обрабатывает ошибки.
 
 ```typescript
 import { useApiDelete } from '@dxtmisha/functional'
 
-const { loading, send } = useApiDelete(
-  '/api/delete',
-  (data) => console.log('Действие завершено:', data),
-  (raw) => ({ ...raw, processed: true }),
-  undefined, // errorContract
-  true, // toData
-  { cache: false } // options
-)
+const { loading, send } = useApiDelete({
+  path: '/api/delete',
+  action: (data) => console.log('Действие завершено:', data),
+  transformation: (raw) => ({ ...raw, processed: true }),
+  toData: true,
+  options: { cache: false }
+})
 
 const handleDelete = async () => {
   const result = await send({ id: 1 })

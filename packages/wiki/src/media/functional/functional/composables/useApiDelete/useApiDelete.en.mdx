@@ -4,33 +4,35 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `useApiDelete`
 
-Returns an object with a loading state and a `send` method for executing API `DELETE` requests.
+Returns an object with a loading state and a `send` method for executing API `DELETE` requests. It is a convenient wrapper over `useApiRequest` that pre-fills the `DELETE` method. Accepts settings as a single `UseApiDeleteSetup` object.
 
 **Parameters:**
-- `path?: RefOrNormal<string | undefined>` — Path to the API endpoint (can be reactive).
-- `action?: (data: Return | undefined) => Promise<void> | void` — Callback action to perform after the request completes successfully.
-- `transformation?: (data: T) => Return` — Function to transform the response data before it is returned or passed to the `action`.
-- `errorContract?: ApiErrorStorageList` — storage of response error contracts.
-- `toData: boolean = true` — Whether to extract the `data` field from the response.
-- `options?: ApiOptions` — Additional request options (`ApiFetch` object parameter).
-- `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
+- `setup: UseApiDeleteSetup` — Configuration setup object:
+  - `path?: RefOrNormal<string | undefined>` — Path to the API endpoint (can be reactive).
+  - `action?: (data: Return | undefined) => Promise<void> | void` — Callback action to perform after the request completes successfully.
+  - `transformation?: (data: T) => Return` — Function to transform the response data before it is returned or passed to the `action`.
+  - `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — Request contract validation function.
+  - `validateResponseContract?: (data: T) => ApiDataValidation & Return` — Response contract validation function.
+  - `errorContract?: ApiErrorStorageList` — storage of response error contracts.
+  - `toData?: boolean` — Whether to extract the `data` field from the response. Defaults to `true`.
+  - `options?: ApiOptions` — Additional request options (`ApiFetch` object parameter).
+  - `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
 
 **Returns:**
 An object with the following properties:
 - `loading: Ref<boolean>` — Reactive loading state. It becomes `true` while the request is in progress and `false` after it completes or fails.
-- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the `DELETE` request. It automatically manages the `loading` state, applies the transformation function to the response, executes the `action` callback on success, and safely handles errors by logging them to the console.
+- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the `DELETE` request. It automatically manages the `loading` state, validates the request and response contracts, applies the transformation function to the response, executes the `action` callback on success, and safely handles errors by logging them to the console.
 
 ```typescript
 import { useApiDelete } from '@dxtmisha/functional'
 
-const { loading, send } = useApiDelete(
-  '/api/delete',
-  (data) => console.log('Action complete:', data),
-  (raw) => ({ ...raw, processed: true }),
-  undefined, // errorContract
-  true, // toData
-  { cache: false } // options
-)
+const { loading, send } = useApiDelete({
+  path: '/api/delete',
+  action: (data) => console.log('Action complete:', data),
+  transformation: (raw) => ({ ...raw, processed: true }),
+  toData: true,
+  options: { cache: false }
+})
 
 const handleDelete = async () => {
   const result = await send({ id: 1 })

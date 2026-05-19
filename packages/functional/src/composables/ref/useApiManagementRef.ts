@@ -254,39 +254,27 @@ export function useApiManagementRef<
     }
 
     if (postRequest) {
-      postItem = useApiPost<Post>(
-        postRequest.path,
-        getCallbackActionRequest(postRequest.action),
-        postRequest.transformation,
-        postRequest.errorContract,
-        postRequest.toData,
-        postRequest.options,
+      postItem = useApiPost<Post>({
+        ...postRequest,
+        action: getCallbackActionRequest(postRequest.action),
         apiInstance
-      )
+      })
     }
 
     if (putRequest) {
-      putItem = useApiPut<Put>(
-        putRequest.path,
-        getCallbackActionRequest(putRequest.action),
-        putRequest.transformation,
-        putRequest.errorContract,
-        putRequest.toData,
-        putRequest.options,
+      putItem = useApiPut<Put>({
+        ...putRequest,
+        action: getCallbackActionRequest(putRequest.action),
         apiInstance
-      )
+      })
     }
 
     if (deleteRequest) {
-      deleteItem = useApiDelete<Delete>(
-        deleteRequest.path,
-        getCallbackActionRequest(deleteRequest.action),
-        deleteRequest.transformation,
-        deleteRequest.errorContract,
-        deleteRequest.toData,
-        deleteRequest.options,
+      deleteItem = useApiDelete<Delete>({
+        ...deleteRequest,
+        action: getCallbackActionRequest(deleteRequest.action),
         apiInstance
-      )
+      })
     }
   }
 

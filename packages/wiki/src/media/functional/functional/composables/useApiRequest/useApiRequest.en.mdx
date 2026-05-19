@@ -4,22 +4,25 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `useApiRequest`
 
-Returns an object with a loading state and a `send` method for executing API requests.
+Returns an object with a loading state and a `send` method for executing API requests. Accepts settings as a single `UseApiRequestSetup` object.
 
 **Parameters:**
-- `path?: RefOrNormal<string | undefined>` — Path to the API endpoint (can be reactive).
-- `method: ApiMethodItem = ApiMethodItem.post` — HTTP method to use for the request.
-- `action?: (data: Return | undefined) => Promise<void> | void` — Callback action to perform after the request completes successfully.
-- `transformation?: (data: T) => Return` — Function to transform the response data before it is returned or passed to the `action`.
-- `errorContract?: ApiErrorStorageList` — storage of response error contracts.
-- `toData: boolean = true` — Whether to extract the `data` field from the response.
-- `options?: ApiOptions` — Additional request options (`ApiFetch` object parameter).
-- `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
+- `setup: UseApiRequestSetup` — Configuration setup object:
+  - `path?: RefOrNormal<string | undefined>` — Path to the API endpoint (can be reactive).
+  - `method?: ApiMethodItem` — HTTP method to use for the request. Defaults to `ApiMethodItem.post`.
+  - `action?: (data: Return | undefined) => Promise<void> | void` — Callback action to perform after the request completes successfully.
+  - `transformation?: (data: T) => Return` — Function to transform the response data before it is returned or passed to the `action`.
+  - `validateRequestContract?: (data: Request) => ApiDataValidation & Return` — Request contract validation function.
+  - `validateResponseContract?: (data: T) => ApiDataValidation & Return` — Response contract validation function.
+  - `errorContract?: ApiErrorStorageList` — storage of response error contracts.
+  - `toData?: boolean` — Whether to extract the `data` field from the response. Defaults to `true`.
+  - `options?: ApiOptions` — Additional request options (`ApiFetch` object parameter).
+  - `apiInstance?: ApiInstance` — API instance to use for the request. Defaults to `Api.getItem()`.
 
 **Returns:**
 An object with the following properties:
 - `loading: Ref<boolean>` — Reactive loading state. It becomes `true` while the request is in progress and `false` after it completes or fails.
-- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the request. It automatically manages the `loading` state, applies the transformation function to the response, executes the `action` callback on success, and handles errors safely by logging them to the console.
+- `send(request?: Request): Promise<Return | undefined>` — An asynchronous method for sending the request. It automatically manages the `loading` state, validates the request and response contracts, applies the transformation function to the response, executes the `action` callback on success, and handles errors safely by logging them to the console.
 
 ## ApiOptions Object
 
@@ -45,15 +48,16 @@ An object with the following properties:
 import { useApiRequest } from '@dxtmisha/functional'
 import { ApiMethodItem } from '@dxtmisha/functional-basic'
 
-const { loading, send } = useApiRequest(
-  '/api/submit',
-  ApiMethodItem.post,
-  (data) => console.log('Action complete:', data),
-  (raw) => ({ ...raw, processed: true }),
-  undefined, // errorContract
-  true, // toData
-  { cache: false } // options
-)
+const { loading, send } = useApiRequest({
+  path: '/api/submit',
+  method: ApiMethodItem.post,
+  action: (data) => console.log('Action complete:', data),
+  transformation: (raw) => ({ ...raw, processed: true }),
+  validateRequestContract: (req) => ({ success: true, ...req }),
+  validateResponseContract: (res) => ({ success: true, ...res }),
+  toData: true,
+  options: { cache: false }
+})
 
 const handleSubmit = async () => {
   const result = await send({ name: 'User' })
