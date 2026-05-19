@@ -1,0 +1,44 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as TextLabel;
+
+@include ui.initDesignBasic('d1.textLabel') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include TextLabel.mixinTextLabel;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &--size {
+      &--sm {
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-x)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+        letter-spacing: var(--d1-sys-letterSpacing-xl);
+      }
+      
+      &--md {
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+        letter-spacing: var(--d1-sys-letterSpacing-xl);
+      }
+      
+      &--lg {
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+        letter-spacing: var(--d1-sys-letterSpacing-xs);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

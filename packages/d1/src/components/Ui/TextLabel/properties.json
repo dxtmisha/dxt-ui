@@ -1,0 +1,15 @@
+{
+  "main": "{d.textLabel}",
+  "size": {
+    "sm": {
+      "link|font": "{font.labelSmall}"
+    },
+    "md": {
+      "link|font": "{font.labelMedium}"
+    },
+    "lg": {
+      "link|font": "{font.labelLarge}"
+    },
+    "_default": "md"
+  }
+}

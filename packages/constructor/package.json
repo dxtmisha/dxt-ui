@@ -315,6 +315,10 @@
     "./Switch": {
       "types": "./dist/src/constructors/Switch/index.d.ts",
       "default": "./dist/switch.js"
+    },
+    "./TextLabel": {
+      "types": "./dist/src/constructors/TextLabel/index.d.ts",
+      "default": "./dist/textLabel.js"
     }
   },
   "buildOptions": {

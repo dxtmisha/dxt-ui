@@ -59,6 +59,7 @@ import _D1Switch from '../components/Ui/Switch/D1Switch.vue'
 import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
 import _D1Tabs from '../components/Ui/Tabs/D1Tabs.vue'
 import _D1TabsNavigation from '../components/Ui/TabsNavigation/D1TabsNavigation.vue'
+import _D1TextLabel from '../components/Ui/TextLabel/D1TextLabel.vue'
 import _D1Textarea from '../components/Ui/Textarea/D1Textarea.vue'
 import _D1TextareaAutosize from '../components/Ui/TextareaAutosize/D1TextareaAutosize.vue'
 import _D1Tooltip from '../components/Ui/Tooltip/D1Tooltip.vue'
@@ -124,6 +125,7 @@ declare module '@vue/runtime-core' {
     D1TabItem: typeof _D1TabItem
     D1Tabs: typeof _D1Tabs
     D1TabsNavigation: typeof _D1TabsNavigation
+    D1TextLabel: typeof _D1TextLabel
     D1Textarea: typeof _D1Textarea
     D1TextareaAutosize: typeof _D1TextareaAutosize
     D1Tooltip: typeof _D1Tooltip

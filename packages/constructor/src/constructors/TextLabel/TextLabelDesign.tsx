@@ -1,41 +1,41 @@
-import { h, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { Bleed } from './Bleed'
+import { TextLabel } from './TextLabel'
 
 import {
-  type BleedPropsBasic
+  type TextLabelPropsBasic
 } from './props'
 import {
-  type BleedClasses,
-  type BleedComponents,
-  type BleedEmits,
-  type BleedExpose,
-  type BleedSlots
+  type TextLabelClasses,
+  type TextLabelComponents,
+  type TextLabelEmits,
+  type TextLabelExpose,
+  type TextLabelSlots
 } from './types'
 
 /**
- * BleedDesign
+ * TextLabelDesign
  */
-export class BleedDesign<
-  COMP extends BleedComponents,
-  EXPOSE extends BleedExpose,
-  CLASSES extends BleedClasses,
-  P extends BleedPropsBasic
+export class TextLabelDesign<
+  COMP extends TextLabelComponents,
+  EXPOSE extends TextLabelExpose,
+  CLASSES extends TextLabelClasses,
+  P extends TextLabelPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    BleedEmits,
+    TextLabelEmits,
     EXPOSE,
-    BleedSlots,
+    TextLabelSlots,
     CLASSES,
     P
   > {
-  protected readonly item: Bleed
+  protected readonly item: TextLabel
 
   /**
    * Constructor
@@ -47,8 +47,8 @@ export class BleedDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, BleedEmits, P>,
-    ItemConstructor: typeof Bleed = Bleed
+    options?: ConstrOptions<COMP, TextLabelEmits, P>,
+    ItemConstructor: typeof TextLabel = TextLabel
   ) {
     super(
       name,
@@ -89,6 +89,7 @@ export class BleedDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        label: this.getSubClass('label')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -108,15 +109,13 @@ export class BleedDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    return h(
-      this.item.tag,
+  protected initRender(): VNode[] {
+    return this.item.label.render(
+      undefined,
       {
         ...this.getAttrs(),
-        ref: this.element,
         class: this.classes?.value.main
-      },
-      this.initSlot('default')
+      }
     )
   }
 }

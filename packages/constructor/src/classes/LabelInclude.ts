@@ -1,5 +1,5 @@
 import { computed, type Ref, type VNode } from 'vue'
-import { type ConstrClass, getElementId, getRef, isFilled, type RefOrNormal, render } from '@dxtmisha/functional'
+import { type ConstrClass, getElementId, getRef, isFilled, type RefOrNormal, render, toBinds } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
@@ -95,11 +95,13 @@ export class LabelInclude {
         elements.push(
           render(
             getRef(this.tag),
-            {
-              id: this.id.value,
-              class: this.getClassName(),
-              ...props
-            },
+            toBinds(
+              {
+                id: this.id.value,
+                class: this.getClassName()
+              },
+              props
+            ),
             children,
             'label'
           )
