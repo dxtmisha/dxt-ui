@@ -12,7 +12,7 @@
   // :style [!] System label / Системная метка
   & {
     &--size {
-      &--sm {
+      &--xs {
         font-family: var(--d1-sys-font-family-basic), sans-serif;
         @include ui.fontSize(#{var(--d1-sys-font-size-x)});
         font-weight: var(--d1-sys-font-weight-medium);
@@ -20,7 +20,7 @@
         letter-spacing: var(--d1-sys-letterSpacing-xl);
       }
       
-      &--md {
+      &--sm {
         font-family: var(--d1-sys-font-family-basic), sans-serif;
         @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
         font-weight: var(--d1-sys-font-weight-medium);
@@ -28,12 +28,20 @@
         letter-spacing: var(--d1-sys-letterSpacing-xl);
       }
       
-      &--lg {
+      &--md {
         font-family: var(--d1-sys-font-family-basic), sans-serif;
         @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
         font-weight: var(--d1-sys-font-weight-medium);
         @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
         letter-spacing: var(--d1-sys-letterSpacing-xs);
+      }
+      
+      &--lg {
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+        letter-spacing: var(--d1-sys-letterSpacing-none);
       }
     }
   }

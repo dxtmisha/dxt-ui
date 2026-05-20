@@ -1,5 +1,12 @@
 /** AI type for content generation / Тип ИИ для генерации контента */
-export type AiType = 'gemini' | 'gemini-cli'
+export type AiType =
+  | 'claude'
+  | 'claude-cli'
+  | 'claude-agent'
+  | 'gemini'
+  | 'gemini-cli'
+  | 'openai'
+  | 'zai'
 
 /** Configuration structure for the design system UI project / Структура конфигурации для проекта дизайн-системы UI */
 export type DesignUiConfig = {
@@ -40,7 +47,7 @@ export type DesignUiConfig = {
   packagePrefix?: string
 
   /** AI type for generating content / Тип ИИ для генерации контента */
-  aiType?: 'gemini'
+  aiType?: AiType
 
   /** AI model for generating content / Модель ИИ для генерации контента */
   aiModel?: string

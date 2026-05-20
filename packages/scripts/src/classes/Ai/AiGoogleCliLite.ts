@@ -1,10 +1,8 @@
 import { forEach } from '@dxtmisha/functional-basic'
 import { exec } from 'node:child_process'
 
-import { PropertiesFile } from '../Properties/PropertiesFile'
 import { AiAbstract } from './AiAbstract'
-
-const TEMPORARY_DIR = './ai-tmp'
+import { ApiTmp } from './ApiTmp'
 
 /**
  * Google AI (Gemini) implementation via CLI.
@@ -23,20 +21,7 @@ const TEMPORARY_DIR = './ai-tmp'
  * - API key is passed via environment variable or config / API ключ передается через переменную окружения или конфиг
  */
 export class AiGoogleCliLite extends AiAbstract<{}> {
-  /**
-   * Counter for generating unique temporary file names/
-   * Счетчик для генерации уникальных имен временных файлов
-   */
-  protected idFile = 1
-
-  /**
-   * Generates a unique file path for the temporary prompt.
-   *
-   * Генерирует уникальный путь к файлу для временного промпта.
-   */
-  protected getFileName(): string {
-    return `${TEMPORARY_DIR}/Prompt-${this.idFile++}.txt`
-  }
+  protected readonly tmp = new ApiTmp()
 
   /**
    * Initializes the "client".
@@ -70,7 +55,7 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
   protected toContents(): any {
     return forEach(
       this.contents,
-      content => this.createFile(content)
+      content => this.tmp.createFile(content)
     )
   }
 
@@ -88,58 +73,36 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
     return new Promise((resolve) => {
       const fullPrompt = [
         ...this.toContents(),
-        this.createFile(contents)
+        this.tmp.createFile(contents)
       ].join('\n\n##################\n\n')
 
       const escapedPrompt = fullPrompt.replace(/"/g, '\\"')
       const modelFlag = model ? ` --model "${model}"` : ''
-      const command = `gemini "${escapedPrompt}" Output strictly the code/answer. No preamble, no chatter, no reasoning ${modelFlag} --yolo`
+      const command = `gemini "${escapedPrompt} -- Output strictly the code/answer. No preamble, no chatter, no reasoning" ${modelFlag} --yolo`
 
-      exec(
-        command,
-        {
-          encoding: 'utf8',
-          env: {
-            ...process.env,
-            GEMINI_API_KEY: this.key
-          }
-        },
-        (error, stdout, stderr) => {
-          if (error) {
-            console.error('Error executing Gemini CLI:', stderr || error.message)
-            resolve('')
-          } else {
-            resolve(stdout.trim())
-          }
-        }
-      )
+      try {
+        exec(
+          command,
+          {
+            encoding: 'utf8',
+            env: {
+              ...process.env
+            }
+          },
+          (error, stdout, stderr) => {
+            if (error) {
+              console.error('Error executing Gemini CLI:', stderr || error.message)
+              resolve('')
+            } else {
+              resolve(stdout.trim())
+            }
 
-      this.removeFile()
+            this.tmp.removeFile()
+          }
+        )
+      } catch (_) {
+        this.tmp.removeFile()
+      }
     })
-  }
-
-  /**
-   * Creates a temporary file with the prompt content and returns the path formatted for the CLI.
-   *
-   * Создает временный файл с содержимым промпта и возвращает путь, отформатированный для CLI.
-   * @param content Prompt content / Содержимое промпта
-   * @returns Formatted file path (e.g., @./ai-tmp/Prompt-1.txt) / Отформатированный путь к файлу
-   */
-  protected createFile(content: string): string {
-    const name = this.getFileName()
-
-    PropertiesFile.writeByPath(name, content)
-
-    return `Please read the following file as it contains the prompt instructions: @${name}`
-  }
-
-  /**
-   * Cleans up temporary files and directories.
-   *
-   * Очищает временные файлы и директории.
-   * @protected
-   */
-  protected removeFile(): void {
-    PropertiesFile.removeDir(TEMPORARY_DIR)
   }
 }

@@ -128,6 +128,10 @@
       & .d1-field__caption {
         @include ui.color(#{inherit});
       }
+      
+      & .d1-field__trailing {
+        @include ui.color(#{inherit});
+      }
     }
     
     &--selected {

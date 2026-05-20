@@ -2,13 +2,13 @@ import { type TextLabelPropsBasic, defaultsTextLabel } from '@dxtmisha/construct
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  size: ['sm', 'md', 'lg']
+  size: ['xs', 'sm', 'md', 'lg']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   // :type [!] System label / Системная метка
 }
 

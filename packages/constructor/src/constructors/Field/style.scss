@@ -31,8 +31,6 @@
       border-left-width: ui.v('??sys.border.width', 0);
       @include ui.borderColor(ui.v('??sys.border.color'));
       @include ui.borderOpacity(ui.v('??sys.border.opacity', 1));
-
-      pointer-events: none;
     }
   }
 
@@ -116,7 +114,7 @@
       position: relative;
       box-sizing: border-box;
       order: 4;
-      z-index: 12;
+      z-index: 2;
 
       @include ui.paddingTop(calc(ui.v('??sys.half') - ui.v('??sys.title.half') + ui.v('??sys.shift')));
       @include ui.paddingRight(calc((ui.v('??sys.right') * ui.isDirLeft()) + (ui.v('??sys.left') * ui.isDirRight())));
@@ -163,6 +161,7 @@
       @include ui.absoluteTop;
       order: 8;
       z-index: 4;
+      pointer-events: none;
 
       height: ui.v('??sys.half');
 
@@ -269,9 +268,10 @@
 
     &__border {
       @include ui.absolute;
-      top: var(--d1-field-sys-half);
+      top: ui.v('??sys.half');
       order: 16;
       z-index: 8;
+      pointer-events: none;
 
       border-bottom-right-radius: inherit;
       border-bottom-left-radius: inherit;

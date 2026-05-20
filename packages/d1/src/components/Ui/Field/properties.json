@@ -33,14 +33,14 @@
     "#input": {
       "gradient": "{sys.palette.primary}",
       "gradient-opacity": "0",
+      "::placeholder": {
+        "color-opacity": "{sys.opacity.surface.medium}"
+      },
       "hover": {
         "gradient-opacity": "{sys.opacity.hover}"
       },
       "active": {
         "gradient-opacity": "{sys.opacity.pressed}"
-      },
-      "::placeholder": {
-        "color-opacity": "{sys.opacity.surface.medium}"
       }
     },
     "focus": {
@@ -62,6 +62,11 @@
   "#trailing": {
     "color-opacity": "{sys.opacity.surface.medium}"
   },
+  "selected": {
+    "#body": {
+      "gradient-opacity": "{sys.opacity.selected}"
+    }
+  },
   "disabled": {
     "color-opacity": "{sys.opacity.surface.disabled}",
     "border-opacity": "{sys.opacity.outline} * {sys.opacity.surface.disabled}",
@@ -82,11 +87,9 @@
     },
     "#caption": {
       "color": "inherit"
-    }
-  },
-  "selected": {
-    "#body": {
-      "gradient-opacity": "{sys.opacity.selected}"
+    },
+    "#trailing": {
+      "color": "inherit"
     }
   },
   "~basic": {

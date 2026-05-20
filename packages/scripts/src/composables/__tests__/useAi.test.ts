@@ -2,7 +2,9 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { useAi } from '../useAi'
 import { PropertiesConfig } from '../../classes/Properties/PropertiesConfig'
 import { AiGoogle } from '../../classes/Ai/AiGoogle'
-import { AiGoogleCli } from '../../classes/Ai/AiGoogleCli'
+import { AiClaude } from '../../classes/Ai/AiClaude'
+import { AiOpenAi } from '../../classes/Ai/AiOpenAi'
+import { AiZAi } from '../../classes/Ai/AiZAi'
 
 vi.mock('../../classes/Properties/PropertiesConfig', () => ({
   PropertiesConfig: {
@@ -18,10 +20,26 @@ vi.mock('../../classes/Ai/AiGoogle', () => {
   }
 })
 
-vi.mock('../../classes/Ai/AiGoogleCli', () => {
+vi.mock('../../classes/Ai/AiClaude', () => {
   return {
-    AiGoogleCli: vi.fn().mockImplementation(function () {
-      return { name: 'AiGoogleCliInstance' }
+    AiClaude: vi.fn().mockImplementation(function () {
+      return { name: 'AiClaudeInstance' }
+    })
+  }
+})
+
+vi.mock('../../classes/Ai/AiOpenAi', () => {
+  return {
+    AiOpenAi: vi.fn().mockImplementation(function () {
+      return { name: 'AiOpenAiInstance' }
+    })
+  }
+})
+
+vi.mock('../../classes/Ai/AiZAi', () => {
+  return {
+    AiZAi: vi.fn().mockImplementation(function () {
+      return { name: 'AiZAiInstance' }
     })
   }
 })
@@ -44,17 +62,43 @@ describe('useAi', () => {
     expect(AiGoogle).toHaveBeenCalled()
   })
 
-  it('should return an instance of AiGoogleCli when the type is gemini-cli', () => {
-    vi.mocked(PropertiesConfig.getAiType).mockReturnValue('gemini-cli')
-    const mockInstance = { name: 'AiGoogleCliInstance' }
-    vi.mocked(AiGoogleCli).mockImplementation(function () {
+  it('should return an instance of AiClaude when the type is claude', () => {
+    vi.mocked(PropertiesConfig.getAiType).mockReturnValue('claude')
+    const mockInstance = { name: 'AiClaudeInstance' }
+    vi.mocked(AiClaude).mockImplementation(function () {
       return mockInstance as any
     })
 
     const result = useAi()
 
     expect(result).toEqual(mockInstance)
-    expect(AiGoogleCli).toHaveBeenCalled()
+    expect(AiClaude).toHaveBeenCalled()
+  })
+
+  it('should return an instance of AiOpenAi when the type is openai', () => {
+    vi.mocked(PropertiesConfig.getAiType).mockReturnValue('openai')
+    const mockInstance = { name: 'AiOpenAiInstance' }
+    vi.mocked(AiOpenAi).mockImplementation(function () {
+      return mockInstance as any
+    })
+
+    const result = useAi()
+
+    expect(result).toEqual(mockInstance)
+    expect(AiOpenAi).toHaveBeenCalled()
+  })
+
+  it('should return an instance of AiZAi when the type is zai', () => {
+    vi.mocked(PropertiesConfig.getAiType).mockReturnValue('zai')
+    const mockInstance = { name: 'AiZAiInstance' }
+    vi.mocked(AiZAi).mockImplementation(function () {
+      return mockInstance as any
+    })
+
+    const result = useAi()
+
+    expect(result).toEqual(mockInstance)
+    expect(AiZAi).toHaveBeenCalled()
   })
 
   it('should return undefined for an unknown type', () => {

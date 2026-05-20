@@ -1,60 +1,58 @@
-import { Anthropic } from '@anthropic-ai/sdk'
+import { OpenAI } from 'openai'
 import { forEach } from '@dxtmisha/functional-basic'
 
 import { AiAbstract } from './AiAbstract'
 
 /**
- * Claude AI implementation of AiAbstract.
- * Initializes Anthropic client and performs text generation requests.
+ * OpenAI implementation of AiAbstract.
+ * Initializes OpenAI client and performs text generation requests.
  *
- * Реализация Claude AI поверх AiAbstract.
- * Инициализирует клиент Anthropic и выполняет запросы генерации текста.
+ * Реализация OpenAI поверх AiAbstract.
+ * Инициализирует клиент OpenAI и выполняет запросы генерации текста.
  *
  * Responsibilities / Ответственности:
  * - Provide API key / Предоставить API ключ
- * - Initialize Anthropic client / Инициализировать клиент Anthropic
- * - Call messages.create and extract text content / Вызвать messages.create и извлечь текст
+ * - Initialize OpenAI client / Инициализировать клиент OpenAI
+ * - Call chat.completions.create and extract text content / Вызвать chat.completions.create и извлечь текст
  *
  * Notes / Примечания:
  * - Model must be set via setModel() before generate() / Модель нужно задать через setModel()
  * - Returns empty string if response is missing / Возвращает пустую строку при отсутствии результата
  */
-export class AiClaudeLite extends AiAbstract<Anthropic> {
+export class AiOpenAiLite extends AiAbstract<OpenAI> {
   /**
-   * Initializes Anthropic client instance.
+   * Initializes OpenAI client instance.
    *
-   * Инициализирует экземпляр клиента Anthropic.
+   * Инициализирует экземпляр клиента OpenAI.
    */
   protected init(): void {
-    this.ai = new Anthropic({
+    this.ai = new OpenAI({
       apiKey: this.key
     })
   }
 
   /**
    * Implementation hook: convert accumulated images to model-specific format.
-   * Claude expects images as content blocks with type 'image'.
+   * OpenAI expects images as content blocks with type 'image_url'.
    *
    * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
-   * Claude ожидает изображения как блоки контента с типом 'image'.
+   * OpenAI ожидает изображения как блоки контента с типом 'image_url'.
    */
   protected toImages(): any {
     return forEach(this.images, image => ({
-      type: 'image',
-      source: {
-        type: 'base64',
-        media_type: image.mime,
-        data: image.base64
+      type: 'image_url',
+      image_url: {
+        url: `data:${image.mime};base64,${image.base64}`
       }
     }))
   }
 
   /**
    * Implementation hook: convert accumulated contents to model-specific format.
-   * Claude expects text as content blocks with type 'text'.
+   * OpenAI expects text as content blocks with type 'text'.
    *
    * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
-   * Claude ожидает текст как блоки контента с типом 'text'.
+   * OpenAI ожидает текст как блоки контента с типом 'text'.
    */
   protected toContents(): any {
     return forEach(this.contents, content => ({
@@ -67,16 +65,30 @@ export class AiClaudeLite extends AiAbstract<Anthropic> {
    * Performs content generation request and returns textual result.
    *
    * Выполняет запрос генерации контента и возвращает текстовый результат.
-   * @param model Model identifier (e.g., 'claude-3-5-sonnet-20241022') / Идентификатор модели
+   * @param model Model identifier (e.g., 'gpt-4o') / Идентификатор модели
    * @param contents Composed contents for generation / Собранный контент для генерации
    */
   protected async response(
     model: string,
     contents: string
   ): Promise<string> {
-    const message = await this.ai?.messages.create({
+    console.log('asd', this.ai?.baseURL, JSON.stringify({
       model,
-      max_tokens: this.config.maxTokens ?? 4096,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            ...this.toImages(),
+            ...this.toContents(),
+            { type: 'text', text: contents }
+          ]
+        }
+      ],
+      ...this.config
+    }))
+
+    const response = await this.ai?.chat.completions.create({
+      model,
       messages: [
         {
           role: 'user',
@@ -90,23 +102,6 @@ export class AiClaudeLite extends AiAbstract<Anthropic> {
       ...this.config
     })
 
-    if (message?.content) {
-      return forEach(
-        message.content,
-        (block) => {
-          if (
-            block.type === 'text'
-            && 'text' in block
-          ) {
-            return block.text
-          }
-
-          return undefined
-        }
-      )
-        .join('\n')
-    }
-
-    return ''
+    return response?.choices?.[0]?.message?.content ?? ''
   }
 }

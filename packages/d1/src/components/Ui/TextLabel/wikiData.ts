@@ -7,7 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'label', type: 'NumberOrString | undefined' },
   { name: 'labelId', type: 'string | undefined' },
-  { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] },
+  { name: 'size', type: 'string', option: ['xs', 'sm', 'md', 'lg'] },
   { name: 'tag', type: 'string | undefined' }
   // :propsList [!] System label / Системная метка
 ]

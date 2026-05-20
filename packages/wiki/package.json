@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.59.1",
+  "version": "0.64.0",
   "type": "module",
   "description": "Wiki documentation and storybook utilities for DXT UI design system",
   "keywords": [
