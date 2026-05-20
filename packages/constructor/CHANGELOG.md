@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.64.0] - 2026-05-20
+
+### Added
+- **TextLabel**: Introduced the `TextLabel` constructor component, standardizing inline textual label presentation with dynamic tag forwarding (`tag` prop, defaulting to `'span'`) and full `LabelInclude` integration.
+- **TextDescription**: Introduced the `TextDescription` constructor component, standardizing auxiliary description blocks with dynamic tag forwarding (`tag` prop, defaulting to `'span'`) and full `DescriptionInclude` integration.
+
+### Changed / Improved
+- **DescriptionInclude**: Refactored the core class to support dynamic HTML wrapper tags (via constructor tag delegation) and extra attributes binding.
+
 ## [0.59.3] - 2026-05-14
 
 ### Added

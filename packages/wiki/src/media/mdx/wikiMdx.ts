@@ -66,6 +66,7 @@ import { wikiMdxTabs } from './Tabs/wikiMdxTabs'
 import { wikiMdxTabsNavigation } from './TabsNavigation/wikiMdxTabsNavigation'
 import { wikiMdxTextarea } from './Textarea/wikiMdxTextarea'
 import { wikiMdxTextareaAutosize } from './TextareaAutosize/wikiMdxTextareaAutosize'
+import { wikiMdxTextDescription } from './TextDescription/wikiMdxTextDescription'
 import { wikiMdxTextLabel } from './TextLabel/wikiMdxTextLabel'
 import { wikiMdxTooltip } from './Tooltip/wikiMdxTooltip'
 import { wikiMdxWindow } from './Window/wikiMdxWindow'
@@ -137,6 +138,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxTabsNavigation,
   wikiMdxTextarea,
   wikiMdxTextareaAutosize,
+  wikiMdxTextDescription,
   wikiMdxTextLabel,
   wikiMdxTooltip,
   wikiMdxWindow

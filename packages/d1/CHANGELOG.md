@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.64.0] - 2026-05-20
+
+### Added
+- **D1TextLabel**: Implemented the `D1TextLabel` UI component using the core `TextLabel` constructor, providing standardized styling and dynamic wrapper tags.
+- **D1TextDescription**: Implemented the `D1TextDescription` UI component using the core `TextDescription` constructor, offering lightweight and semantic layout description support.
+
+### Changed / Improved
+- **Core Sync**: Synchronized with `@dxtmisha/constructor` v0.64.0, integrating `LabelInclude` and `DescriptionInclude` changes.
+- **Tokens and Styling**: Updated BEM subclasses and registered `D1TextLabel` and `D1TextDescription` design settings and properties.
+
 ## [0.59.3] - 2026-05-14
 
 ### Added

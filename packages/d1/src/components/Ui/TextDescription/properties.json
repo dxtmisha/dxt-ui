@@ -1,0 +1,16 @@
+{
+  "main": "{d.textDescription}",
+  "color-opacity": "{sys.opacity.surface.medium}",
+  "size": {
+    "xs": {
+      "link|font": "{font.bodySmall}"
+    },
+    "sm": {
+      "link|font": "{font.bodyMedium}"
+    },
+    "md": {
+      "link|font": "{font.bodyLarge}"
+    },
+    "_default": "md"
+  }
+}

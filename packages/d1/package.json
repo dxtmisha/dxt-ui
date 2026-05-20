@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.59.3",
+  "version": "0.64.0",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui textLabel",
+    "ui": "dxt-ui TextDescription",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -319,6 +319,10 @@
     "./D1TextLabel": {
       "types": "./dist/src/library/D1TextLabel.d.ts",
       "default": "./dist/D1TextLabel.js"
+    },
+    "./D1TextDescription": {
+      "types": "./dist/src/library/D1TextDescription.d.ts",
+      "default": "./dist/D1TextDescription.js"
     }
   },
   "buildOptions": {

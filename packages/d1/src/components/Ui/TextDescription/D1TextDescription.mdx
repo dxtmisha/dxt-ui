@@ -1,0 +1,37 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as TextDescription from './D1TextDescription.stories'
+import {TextDescriptionWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={TextDescription}/>
+<StorybookMain
+    name={TextDescriptionWikiStorybook.getName()}
+    description={TextDescriptionWikiStorybook.getDescription()}
+    story={TextDescription.TextDescription}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'TextDescription'} type={'textDescription'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

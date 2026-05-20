@@ -60,6 +60,7 @@ import { wikiDescriptionsTabs } from './wikiDescriptionsTabs'
 import { wikiDescriptionsTabsNavigation } from './wikiDescriptionsTabsNavigation'
 import { wikiDescriptionsTextarea } from './wikiDescriptionsTextarea'
 import { wikiDescriptionsTextareaAutosize } from './wikiDescriptionsTextareaAutosize'
+import { wikiDescriptionsTextDescription } from './wikiDescriptionsTextDescription'
 import { wikiDescriptionsTextLabel } from './wikiDescriptionsTextLabel'
 import { wikiDescriptionsTooltip } from './wikiDescriptionsTooltip'
 import { wikiDescriptionsWindow } from './wikiDescriptionsWindow'
@@ -125,6 +126,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsTabsNavigation,
   wikiDescriptionsTextarea,
   wikiDescriptionsTextareaAutosize,
+  wikiDescriptionsTextDescription,
   wikiDescriptionsTextLabel,
   wikiDescriptionsTooltip,
   wikiDescriptionsWindow

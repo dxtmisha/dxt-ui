@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.62.0",
+  "version": "0.64.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -319,6 +319,10 @@
     "./TextLabel": {
       "types": "./dist/src/constructors/TextLabel/index.d.ts",
       "default": "./dist/textLabel.js"
+    },
+    "./TextDescription": {
+      "types": "./dist/src/constructors/TextDescription/index.d.ts",
+      "default": "./dist/textDescription.js"
     }
   },
   "buildOptions": {

@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { getElementId, isFilled, render } from '@dxtmisha/functional'
+import { getElementId, getRef, isFilled, type RefOrNormal, render, toBinds } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
@@ -19,12 +19,14 @@ export class DescriptionInclude {
    * @param className class name/ название класса
    * @param slots object for working with slots/ объект для работы со слотами
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
+   * @param tag tag name/ имя тега
    */
   constructor(
     protected readonly props: Readonly<DescriptionProps>,
     protected readonly className: string,
     protected readonly slots?: DescriptionSlots,
-    protected readonly skeleton?: SkeletonInclude
+    protected readonly skeleton?: SkeletonInclude,
+    protected readonly tag: RefOrNormal<string> = 'div'
   ) {
   }
 
@@ -40,8 +42,13 @@ export class DescriptionInclude {
    * Render the description
    *
    * Рендер описания
+   * @param childrenExtra additional children/ дополнительные дочерние элементы
+   * @param props additional properties/ дополнительные свойства
    */
-  render(): VNode[] {
+  render(
+    childrenExtra?: any[],
+    props: Record<string, any> = {}
+  ): VNode[] {
     const children: any[] = []
 
     if (isFilled(this.props.description)) {
@@ -52,17 +59,24 @@ export class DescriptionInclude {
       children.push(this.slots.description?.({}))
     }
 
+    if (childrenExtra) {
+      children.push(...childrenExtra)
+    }
+
     if (children.length > 0) {
       return [
         render(
-          'div',
-          {
-            id: this.id.value,
-            class: {
-              [`${this.className}__description`]: true,
-              ...this.skeleton?.classes.value
-            }
-          },
+          getRef(this.tag),
+          toBinds(
+            {
+              id: this.id.value,
+              class: {
+                [`${this.className}__description`]: true,
+                ...this.skeleton?.classes.value
+              }
+            },
+            props
+          ),
           children,
           'description'
         )

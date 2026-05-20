@@ -6,26 +6,26 @@ import {
   type ConstrStyles
 } from '@dxtmisha/functional'
 import {
-  TextLabelDesign,
-  type TextLabelEmits,
-  type TextLabelSlots
-} from '@dxtmisha/constructor/TextLabel'
+  TextDescriptionDesign,
+  type TextDescriptionEmits,
+  type TextDescriptionSlots
+} from '@dxtmisha/constructor/TextDescription'
 
-import { defaults, type TextLabelProps, propsValues } from './props'
+import { defaults, type TextDescriptionProps, propsValues } from './props'
 import './styleToken.scss'
 
 defineOptions({
-  name: 'D1TextLabel'
+  name: 'D1TextDescription'
 })
 
-const emits = defineEmits<TextLabelEmits>()
-const props = withDefaults(defineProps<TextLabelProps>(), defaults)
+const emits = defineEmits<TextDescriptionEmits>()
+const props = withDefaults(defineProps<TextDescriptionProps>(), defaults)
 
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-textLabel': true,
-    [`d1-textLabel--size--${props.size}`]: inArray(propsValues.size, props.size)
+    'd1-textDescription': true,
+    [`d1-textDescription--size--${props.size}`]: inArray(propsValues.size, props.size)
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -34,8 +34,8 @@ const stylesToken = computed<ConstrStyles>(() => ({
   // :styles-values [!] System label / Системная метка
 }))
 
-const design = new TextLabelDesign(
-  'd1.textLabel',
+const design = new TextDescriptionDesign(
+  'd1.textDescription',
   props,
   {
     emits,
@@ -46,7 +46,7 @@ const design = new TextLabelDesign(
 
 const render = design.render()
 
-defineSlots<TextLabelSlots>()
+defineSlots<TextDescriptionSlots>()
 defineExpose(design.expose())
 </script>
 

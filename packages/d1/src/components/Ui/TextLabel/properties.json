@@ -1,14 +1,17 @@
 {
   "main": "{d.textLabel}",
   "size": {
-    "sm": {
+    "xs": {
       "link|font": "{font.labelSmall}"
     },
-    "md": {
+    "sm": {
       "link|font": "{font.labelMedium}"
     },
-    "lg": {
+    "md": {
       "link|font": "{font.labelLarge}"
+    },
+    "lg": {
+      "link|font": "{font.titleLarge}"
     },
     "_default": "md"
   }
