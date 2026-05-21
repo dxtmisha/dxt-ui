@@ -260,11 +260,11 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Project context: Investigation required
-This library provides a reactive framework for Vue 3 application development, focusing on structured UI component construction, complex data management, and orchestrated API interactions. Its core purpose is to standardize component architecture through abstract base classes like DesignConstructorAbstract and to provide reactive, high-level wrappers for localized formatting (GeoIntlRef), date manipulation (DatetimeRef), and state persistence (useStorageRef, useCookieRef, useBroadcastValueRef).
+This library is a technical SDK for Vue 3 that facilitates the construction of design systems and complex application states through reactive abstractions. Its primary function is to provide a standardized architecture for API orchestration, design component construction, and reactive utility management. It extends low-level logic from @dxtmisha/functional-basic into the Vue reactivity ecosystem.
 
-An AI should study this library when implementing a design system requiring standardized class-based component logic or when building data-intensive interfaces that need integrated searching, filtering, and CRUD operations via useApiManagementRef. It is indispensable for scenarios involving multi-tab state synchronization, SEO management (useMeta), and reactive internationalization (useTranslateRef) where DOM synchronization must be automated.
+Study this library when implementing robust API integration layers that require built-in SSR support, response contract validation, and automated mutation handling (POST/PUT/DELETE). It is indispensable for developing design systems that need base classes for tracking property changes and rendering dynamic component trees. Use its API for reactive localization (i18n), geographic data handling, SEO meta tag synchronization, and implementing singleton service patterns via provide/inject or global scopes.
 
-The library integrates directly with Vue 3 and vue-router, acting as a reactive middleware layer over @dxtmisha/functional-basic. It utilizes a singleton management pattern (executeUse) for global service orchestration and relies heavily on Ref and ComputedRef to maintain its internal state machine and lifecycle hooks.
+The library integrates deeply with the Vue 3 composition API and vue-router. It operates as a Vue plugin, managing global services for icons, translations, and error handling. It bridges the gap between pure functional utilities and reactive UI requirements, specifically targeting environments where SSR consistency and strict data validation are priorities.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -325,11 +325,11 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
-This library is a high-level utility and abstraction framework designed for isomorphic (SSR/CSR) web application development. Its core purpose is to provide centralized, context-aware management for HTTP communication, localization (i18n), and browser environment abstractions. It encapsulates complex logic for API request lifecycle management including caching, retry jitter, and SSR hydration, comprehensive geographic data handling using Intl-based formatting, phone masking, and flag metadata, and reactive DOM state management for meta tags, global loaders, and scroll synchronization.
+This library is a high-level isomorphic utility suite for frontend application development, specifically optimized for Server-Side Rendering (SSR) environments. Its core purpose is to provide a standardized, context-isolated architecture for HTTP transport, internationalization (i18n), error management, metadata control, and DOM state synchronization.
 
-An AI should study this API when implementing data-heavy interfaces that require complex localization (dates, currencies, plurals), when building SSR-compatible applications that need to isolate data per request through ServerStorage and CookieStorage, or when managing advanced DOM interactions like high-performance scroll/resize tracking and custom event dispatching. It is indispensable for projects requiring structured search/filtering logic with match highlighting or unified error handling across varied application modules.
+Study this library's API when implementing standardized Fetch-based request logic featuring built-in caching, jittered retries, and automated SSR hydration; managing dynamic SEO metadata (Open Graph and Twitter Cards) with DOM-synchronization; or implementing complex locale-aware data formatting including currencies, relative times, and country-specific phone masks. It is indispensable for handling SSR data isolation via specialized storage abstractions (ServerStorage, DataStorage) and for executing high-performance client-side search with regex-based match highlighting. The library also provides advanced lifecycle management for DOM events, including specialized observers for element resizing and scroll-sync optimizations.
 
-The library integrates into the mid-to-lower tiers of a modern frontend stack, acting as a bridge between raw platform APIs (Fetch, Intl, BroadcastChannel, DOM) and application-level components. It relies on a singleton-pattern architecture for global states while allowing instance-based isolation for request-specific contexts, particularly during server-side rendering phases where data hydration between server and client is required.
+Technically, it acts as an abstracted transport and utility layer between native Web APIs (Fetch, Intl, BroadcastChannel, ResizeObserver) and application-level logic. It facilitates data consistency between server and client through script-based hydration and provides a centralized ErrorCenter for standardized fault handling across disparate application modules.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -452,25 +452,27 @@ Example:
 
 ## High-priority instructions
 The rules and instructions provided below have the highest priority. These directives supersede any previous instructions or general rules in case of conflict or contradiction.
-### Обзор проекта dxt-ui для ИИ
+### dxt-ui Project Overview for AI
 
-**Суть проекта:** Модульная UI-библиотека и конструктор дизайн-систем на Vue 3. Проект ориентирован на автоматизацию (Figma, AI-генерация документации) и высокую типизацию.
+**Core of the Project:** A modular UI library and design system constructor on Vue 3. The project is focused on automation (Figma, AI-generated documentation) and high typing coverage.
 
-#### Архитектура и Технологии:
-- **Monorepo**: Управляется через npm workspaces. Основные части находятся в `packages/*`.
-- **Стек**: Vue 3 (`<script setup lang="ts">`), TypeScript, Vite, SCSS.
-- **Ключевые пакеты**:
-    - `ui`, `d1`: Библиотеки компонентов.
-    - `functional`, `functional-basic`: Ядро логики и API.
-    - `figma*`: Пакеты для синхронизации с Figma (стили, код, переводы).
-    - `scripts`: Скрипты автоматизации и генерации промптов для ИИ.
-    - `wiki`: Документация в формате MDX.
+#### Architecture & Technologies:
+- **Monorepo**: Managed via npm workspaces. The main parts are located in `packages/*`.
+- **Stack**: Vue 3 (`<script setup lang="ts">`), TypeScript, Vite, SCSS.
+- **Key Packages**:
+    - `ui`, `d1`: Component libraries.
+    - `functional`, `functional-basic`: Core logic and API.
+    - `figma*`: Packages for Figma synchronization (styles, code, translations).
+    - `scripts`: Automation and prompt-generation scripts for AI.
+    - `wiki`: MDX-format documentation.
 
-#### Правила разработки для ИИ:
-1.  **Чистота и Атомарность**: Компоненты должны быть минимальными. Вся бизнес-логика выносится в **Composables**.
-2.  **Типизация**: Строгий TypeScript, никаких `any`. Обязательное использование интерфейсов для Props и Emits.
-3.  **Документация**: Используй TSDoc на языке `[wikiLanguage]`. Комментарии должны объяснять "зачем", а не "что".
-4.  **Стили**: Используй SCSS. Изменение базовых стилей библиотеки запрещено, если не указано иное.
-5.  **Зависимости**: Используй только те пакеты, которые есть в `package.json`. Никаких галлюцинаций.
+#### Development Rules for AI:
+1.  **Purity & Atomicity**: Components must be minimal. All business logic must be extracted to **Composables**.
+2.  **Typing**: Strict TypeScript, no `any`. Mandatory usage of interfaces for Props and Emits.
+3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.txt](file:///Volumes/T7/Code/dxt-ui/ai-prompts/jdoc.txt). All comments must follow a mandatory bilingual standard (English and Russian):
+    - **Classes/Functions/Methods**: Detailed multiline descriptions (English on top, Russian on bottom). Use `@param` and `@returns` with bilingual descriptions separated by ` / `.
+    - **Interfaces, Types, Enums, and Properties**: Compact single line (or double line if long) with a forward slash separator: `/** English / Russian */`.
+4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.
+5.  **Dependencies**: Use only the packages specified in `package.json`. Zero tolerance for hallucinations.
 
-Генерируй код так, чтобы его можно было вставить и запустить сразу (**Copy-Paste Ready**).
+Generate code in a way that allows it to be copied and run immediately (**Copy-Paste Ready**).

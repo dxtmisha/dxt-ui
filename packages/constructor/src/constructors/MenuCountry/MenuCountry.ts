@@ -1,29 +1,52 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp, GeoFlagRef } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type DesignComp,
+  GeoFlagRef,
+  type ListSelectedList,
+  type NumberOrStringOrBoolean
+} from '@dxtmisha/functional'
 
+import { ModelInclude } from '../../classes/ModelInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
 import { MenuInclude } from '../Menu'
 
 import type { MenuCountryComponents, MenuCountryEmits, MenuCountrySlots } from './types'
 import type { MenuCountryProps } from './props'
 
 /**
- * MenuCountry
+ * Class for managing the country selection menu.
+ * It integrates menu functionality, event handling, and model state for selecting countries,
+ * including automatic flag list generation based on country codes.
+ *
+ * Класс для управления меню выбора страны.
+ * Интегрирует функциональность меню, обработку событий и состояние модели для выбора стран,
+ * включая автоматическую генерацию списка флагов на основе кодов стран.
  */
 export class MenuCountry {
+  /** Menu manager / Менеджер меню */
   readonly menu: MenuInclude
+
+  /** Event manager / Менеджер событий */
+  readonly event: EventClickInclude
+
+  /** Model manager / Менеджер модели */
+  readonly model: ModelInclude<ListSelectedList | undefined>
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.MenuIncludeConstructor class for working with menu/ класс для работы с меню
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits function called when an event is triggered / функция, вызываемая при возникновении события
+   * @param constructors object with classes / объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with click events / класс для работы с событиями клика
+   * @param constructors.MenuIncludeConstructor class for working with menu / класс для работы с меню
+   * @param constructors.ModelIncludeConstructor class for working with models / класс для работы с моделями
    */
   constructor(
     protected readonly props: MenuCountryProps,
@@ -35,21 +58,33 @@ export class MenuCountry {
     protected readonly slots?: MenuCountrySlots,
     protected readonly emits?: ConstrEmit<MenuCountryEmits>,
     constructors?: {
+      EventClickIncludeConstructor?: typeof EventClickInclude
       MenuIncludeConstructor?: typeof MenuInclude
+      ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>
     }
   ) {
     const {
-      MenuIncludeConstructor = MenuInclude
+      EventClickIncludeConstructor = EventClickInclude,
+      MenuIncludeConstructor = MenuInclude,
+      ModelIncludeConstructor = ModelInclude
     } = constructors ?? {}
 
-    const flag = new GeoFlagRef()
+    const flagList = new GeoFlagRef().getNational(this.refs.countryList)
+
+    this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
+    this.model = new ModelIncludeConstructor('selected', this.emits)
 
     this.menu = new MenuIncludeConstructor(
       this.props,
       this.className,
       this.components,
       computed(() => ({
-        list: flag.getList(this.props.countryList).value
+        'list': flagList.value,
+        'selected': this.props.selected,
+        'isSelectedByValue': this.props.isSelectedByValue,
+        'onClick': this.event.onClick,
+        'onUpdate:selected': (value: ListSelectedList) => this.model.emit(value),
+        'onUpdateValue': (value: NumberOrStringOrBoolean) => this.emits?.('updateValue', value)
       }))
     )
   }

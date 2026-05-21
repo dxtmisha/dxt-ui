@@ -13,6 +13,7 @@ import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
+import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
@@ -20,6 +21,7 @@ import DemoRadioPage from './pages/components/DemoRadioPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
 import DemoTabsPage from './pages/components/DemoTabsPage.vue'
+import DemoWindowPage from './pages/components/DemoWindowPage.vue'
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -78,6 +80,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoMaskPage
   },
   {
+    path: '/component-menu-country',
+    name: 'component-menu-country',
+    component: DemoMenuCountryPage
+  },
+  {
     path: '/component-motion-transform',
     name: 'component-motion-transform',
     component: DemoMotionTransformPage
@@ -111,5 +118,10 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-tabs',
     name: 'component-tabs',
     component: DemoTabsPage
+  },
+  {
+    path: '/component-window',
+    name: 'component-window',
+    component: DemoWindowPage
   }
 ]

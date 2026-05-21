@@ -1,4 +1,4 @@
-import { h, markRaw, Teleport, type VNode } from 'vue'
+import { h, markRaw, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -117,14 +117,9 @@ export class SnackbarDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode | undefined {
+  protected initRender(): VNode[] {
     if (this.item.data.isItem.value) {
-      return h(
-        Teleport,
-        {
-          key: 'teleport',
-          to: 'body'
-        },
+      return this.item.teleport.render(
         h(
           'div',
           {
@@ -141,7 +136,7 @@ export class SnackbarDesign<
       )
     }
 
-    return undefined
+    return []
   }
 
   /**

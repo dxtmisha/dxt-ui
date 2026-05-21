@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { EventItem, getMouseClientX, getMouseClientY, isEnter } from '@dxtmisha/functional'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
@@ -8,6 +8,7 @@ import { WindowFlash } from './WindowFlash'
 import { WindowOpen } from './WindowOpen'
 import { WindowVerification } from './WindowVerification'
 
+import type { WindowEventClickType } from './basicTypes'
 import type { WindowProps } from './props'
 
 /**
@@ -16,7 +17,7 @@ import type { WindowProps } from './props'
  * Класс для работы с событиями.
  */
 export class WindowEvent {
-  protected readonly event: EventItem<HTMLBodyElement, MouseEvent>
+  protected event?: EventItem<HTMLBodyElement, MouseEvent>
 
   /**
    * Constructor
@@ -37,19 +38,22 @@ export class WindowEvent {
     protected readonly open: WindowOpen,
     protected readonly verification: WindowVerification
   ) {
-    this.event = new EventItem<HTMLBodyElement, MouseEvent>(
-      'body',
-      ['click', 'contextmenu'],
-      this.onGlobal
-    )
+    onMounted(() => {
+      this.event = new EventItem<HTMLBodyElement, MouseEvent>(
+        'body',
+        ['click', 'contextmenu'],
+        this.onGlobal
+      )
 
-    watch(
-      [
-        this.open.item,
-        this.status.item
-      ],
-      () => this.toggle()
-    )
+      watch(
+        [
+          this.open.item,
+          this.status.item
+        ],
+        () => this.toggle(),
+        { immediate: true }
+      )
+    })
   }
 
   /**
@@ -58,9 +62,9 @@ export class WindowEvent {
    * События нажатия на элемент управления.
    * @param event event object/ объект события
    */
-  readonly onClick = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
+  readonly onClick = async (event: WindowEventClickType): Promise<void> => {
     if (!this.props.contextmenu) {
-      await this.on(event as MouseEvent & TouchEvent)
+      await this.on(event)
     }
   }
 
@@ -70,13 +74,13 @@ export class WindowEvent {
    * События нажатия на клавишу.
    * @param event event object/ объект события
    */
-  readonly onKeydown = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
+  readonly onKeydown = async (event: WindowEventClickType): Promise<void> => {
     if (
       isEnter(event as KeyboardEvent, false)
       || this.isArrowDown(event as KeyboardEvent)
     ) {
       event.preventDefault()
-      await this.onClick(event as unknown as MouseEvent & TouchEvent)
+      await this.onClick(event)
     }
   }
 
@@ -86,10 +90,10 @@ export class WindowEvent {
    * События нажатия на правую кнопку мыши на элемент управления.
    * @param event event object/ объект события
    */
-  readonly onContextmenu = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
+  readonly onContextmenu = async (event: WindowEventClickType): Promise<void> => {
     if (this.props.contextmenu) {
       event.preventDefault()
-      await this.on(event as MouseEvent & TouchEvent)
+      await this.on(event)
     }
   }
 
@@ -106,7 +110,7 @@ export class WindowEvent {
    * Стартует прослушивание глобальных событий.
    */
   start(): this {
-    if (!this.props.embedded) {
+    if (!this.props.embedded && this.event) {
       this.event.start()
     }
 
@@ -119,7 +123,10 @@ export class WindowEvent {
    * Остановить глобальное событие.
    */
   stop(): this {
-    this.event.stop()
+    if (this.event) {
+      this.event.stop()
+    }
+
     return this
   }
 
@@ -129,13 +136,15 @@ export class WindowEvent {
    * Изменяет статус прослушивания события в зависимости от статуса открытия окна.
    */
   toggle(): this {
-    if (
-      this.open.item.value
-      && this.status.isOpen()
-    ) {
-      this.start()
-    } else {
-      this.stop()
+    if (this.event) {
+      if (
+        this.open.item.value
+        && this.status.isOpen()
+      ) {
+        this.start()
+      } else {
+        this.stop()
+      }
     }
 
     return this
@@ -165,14 +174,16 @@ export class WindowEvent {
    * Активация события.
    * @param event event object/ объект события
    */
-  protected async on(event: MouseEvent & TouchEvent): Promise<void> {
+  protected async on(event: WindowEventClickType): Promise<void> {
     this.tabIndex.updateOldElement()
     this.client.set(
-      getMouseClientX(event),
-      getMouseClientY(event)
+      getMouseClientX(event as MouseEvent & TouchEvent),
+      getMouseClientY(event as MouseEvent & TouchEvent)
     )
 
-    await this.verification.update(event.target as HTMLElement)
+    if ('target' in event) {
+      await this.verification.update(event.target as HTMLElement)
+    }
   }
 
   /**
@@ -190,7 +201,7 @@ export class WindowEvent {
       if (this.open.item.value) {
         this.flash.setControl(event?.target as HTMLElement)
         await this.verification.update(event?.target as HTMLElement)
-      } else {
+      } else if (this.event) {
         this.event.stop()
       }
     }

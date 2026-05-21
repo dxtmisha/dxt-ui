@@ -1,0 +1,42 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Specialized menu for selecting countries with automatic flag and name loading.
+
+MenuCountry is an extension of the Menu component, designed specifically for country selection. It leverages the GeoFlagRef utility to automatically populate the menu with a list of countries, including their flags and localized names. It supports all the standard Menu functionalities like Window-based popups, custom controls, and sophisticated focus management.
+
+**Key Features:**
+
+- Automatic generation of country list via GeoFlagRef utility
+- Filtering of available countries via the countryList property
+- Support for internationalized country names
+- All standard features of the base Menu component (positioning, keyboard navigation, submenus, etc.)
+
+**Typical Use Cases:**
+
+- Country selection dropdowns
+- Language/region selectors in user profiles
+- Delivery or registration country forms
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedValue = ref('US')
+</script>
+
+<template>
+  <MenuCountry
+    v-model:selected="selectedValue"
+    is-selected-by-value
+  >
+    <template #control="{ binds }">
+      <button class="wiki-storybook-button" v-bind="binds">
+        Select Country
+      </button>
+    </template>
+  </MenuCountry>
+</template>
+  `}
+    language="html"
+/>

@@ -6,6 +6,7 @@ import {
   ScrollbarWidthRef
 } from '@dxtmisha/functional'
 
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { ScrollbarBorder } from './ScrollbarBorder'
 
 import type { ScrollbarComponents, ScrollbarEmits, ScrollbarSlots } from './types'
@@ -19,6 +20,7 @@ import type { ScrollbarPropsBasic } from './props'
  * Он обрабатывает вычисления ширины скролла и отображение границ на основе позиции скролла.
  */
 export class Scrollbar {
+  readonly clientOnly: ClientOnlyInclude
   readonly width: ScrollbarWidthRef
   readonly border: ScrollbarBorder
 
@@ -37,6 +39,7 @@ export class Scrollbar {
    * @param constructors object with classes/ объект с классами
    * @param constructors.ScrollbarBorderConstructor class for working with scrollbar border/ класс для работы с границей скролла
    * @param constructors.ScrollbarWidthRefConstructor class for working with scrollbar width/ класс для работы с шириной скролла
+   * @param constructors.ClientOnlyIncludeConstructor class for client-only rendering/ класс для рендеринга только на клиенте
    */
   constructor(
     protected readonly props: ScrollbarPropsBasic,
@@ -50,13 +53,16 @@ export class Scrollbar {
     constructors?: {
       ScrollbarBorderConstructor?: typeof ScrollbarBorder
       ScrollbarWidthRefConstructor?: typeof ScrollbarWidthRef
+      ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
     }
   ) {
     const {
       ScrollbarBorderConstructor = ScrollbarBorder,
-      ScrollbarWidthRefConstructor = ScrollbarWidthRef
+      ScrollbarWidthRefConstructor = ScrollbarWidthRef,
+      ClientOnlyIncludeConstructor = ClientOnlyInclude
     } = constructors ?? {}
 
+    this.clientOnly = new ClientOnlyIncludeConstructor(this.props)
     this.width = new ScrollbarWidthRefConstructor()
     this.border = new ScrollbarBorderConstructor(
       props,
@@ -73,6 +79,6 @@ export class Scrollbar {
    * Возвращает значения для класса.
    */
   readonly classes = computed<ConstrClassObject>(() => ({
-    [`${this.className}--disabled`]: Boolean(this.width.item.value)
+    [`${this.className}--disabled`]: this.clientOnly.is() && Boolean(this.width.item.value)
   }))
 }

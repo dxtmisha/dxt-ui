@@ -4,6 +4,7 @@ import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
+import { TeleportInclude } from '../../classes/TeleportInclude'
 
 import { ArrowInclude } from '../Arrow'
 
@@ -43,6 +44,9 @@ export class Tooltip {
   /** Description manager/ Менеджер описания */
   readonly description: DescriptionInclude
 
+  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
+  readonly teleport: TeleportInclude
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -57,6 +61,7 @@ export class Tooltip {
    * @param constructors.ArrowIncludeConstructor class for working with arrow/ класс для работы со стрелкой
    * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
    * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param constructors.TeleportIncludeConstructor class for working with teleport/ класс для работы с телепортом
    * @param constructors.TooltipClassesConstructor class for working with classes/ класс для работы с классами
    * @param constructors.TooltipEventConstructor class for working with events/ класс для работы с событиями
    * @param constructors.TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
@@ -77,6 +82,7 @@ export class Tooltip {
       ArrowIncludeConstructor?: typeof ArrowInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
       LabelIncludeConstructor?: typeof LabelInclude
+      TeleportIncludeConstructor?: typeof TeleportInclude
       TooltipClassesConstructor?: typeof TooltipClassesData
       TooltipEventConstructor?: typeof TooltipEvent
       TooltipOpenConstructor?: typeof TooltipOpen
@@ -89,6 +95,7 @@ export class Tooltip {
       ArrowIncludeConstructor = ArrowInclude,
       DescriptionIncludeConstructor = DescriptionInclude,
       LabelIncludeConstructor = LabelInclude,
+      TeleportIncludeConstructor = TeleportInclude,
       TooltipClassesConstructor = TooltipClassesData,
       TooltipEventConstructor = TooltipEvent,
       TooltipOpenConstructor = TooltipOpen,
@@ -139,6 +146,8 @@ export class Tooltip {
       this.className,
       this.slots
     )
+
+    this.teleport = new TeleportIncludeConstructor()
 
     onUnmounted(() => {
       this.open.eventStop()

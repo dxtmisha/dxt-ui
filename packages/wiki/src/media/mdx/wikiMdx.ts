@@ -45,6 +45,7 @@ import { wikiMdxListItem } from './ListItem/wikiMdxListItem'
 import { wikiMdxListMenu } from './ListMenu/wikiMdxListMenu'
 import { wikiMdxMask } from './Mask/wikiMdxMask'
 import { wikiMdxMenu } from './Menu/wikiMdxMenu'
+import { wikiMdxMenuCountry } from './MenuCountry/wikiMdxMenuCountry'
 import { wikiMdxModal } from './Modal/wikiMdxModal'
 import { wikiMdxMotionAxis } from './MotionAxis/wikiMdxMotionAxis'
 import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform'
@@ -117,6 +118,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxListMenu,
   wikiMdxMask,
   wikiMdxMenu,
+  wikiMdxMenuCountry,
   wikiMdxModal,
   wikiMdxMotionAxis,
   wikiMdxMotionTransform,

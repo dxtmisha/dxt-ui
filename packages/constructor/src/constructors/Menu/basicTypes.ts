@@ -31,7 +31,7 @@ export type MenuComponentInclude = {
 }
 
 /** Type for menu expose functionality/ Тип для функциональности экспорта меню */
-export interface MenuExposeInclude {
+export interface MenuExposeInclude extends ListExpose {
   /** Whether the menu is currently open/ Открыто ли меню в данный момент */
   open: ComputedRef<boolean>
 

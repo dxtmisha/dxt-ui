@@ -33,6 +33,8 @@ export interface NitroAppOptions extends FunctionalPluginOptions {
     /** Router creation options / Опции создания маршрутизатора */
     options?: NitroAppRouterOptions
   }
+  /** Body selector for teleporting / Селектор тела для телепортации */
+  teleportBody?: string
 }
 
 /**

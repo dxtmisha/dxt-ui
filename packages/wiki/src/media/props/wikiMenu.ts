@@ -35,21 +35,10 @@ export const wikiMenu: StorybookArgsToList = {
     },
     hide: true
   },
-  'menu.isSelectedByValue': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.technical,
-      description: {
-        en: 'Enables v-model support for selected value with two-way data binding.',
-        ru: 'Включает поддержку v-model для выбранного значения с двусторонней привязкой данных.'
-      }
-    },
-    hide: true
-  },
   'menu.itemAttrs': {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Additional attributes applied to each menu item.',
         ru: 'Дополнительные атрибуты, применяемые к каждому пункту меню.'
@@ -61,7 +50,7 @@ export const wikiMenu: StorybookArgsToList = {
   'menu.listAttrs': {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Additional attributes applied to the menu list container.',
         ru: 'Дополнительные атрибуты, применяемые к контейнеру списка меню.'

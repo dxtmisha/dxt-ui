@@ -1,22 +1,26 @@
-### Обзор проекта dxt-ui для ИИ
+### dxt-ui Project Overview for AI
 
-**Суть проекта:** Модульная UI-библиотека и конструктор дизайн-систем на Vue 3. Проект ориентирован на автоматизацию (Figma, AI-генерация документации) и высокую типизацию.
+**Core of the Project:** A modular UI library and design system constructor on Vue 3. The project is focused on automation (Figma, AI-generated documentation) and high typing coverage.
 
-#### Архитектура и Технологии:
-- **Monorepo**: Управляется через npm workspaces. Основные части находятся в `packages/*`.
-- **Стек**: Vue 3 (`<script setup lang="ts">`), TypeScript, Vite, SCSS.
-- **Ключевые пакеты**:
-    - `ui`, `d1`: Библиотеки компонентов.
-    - `functional`, `functional-basic`: Ядро логики и API.
-    - `figma*`: Пакеты для синхронизации с Figma (стили, код, переводы).
-    - `scripts`: Скрипты автоматизации и генерации промптов для ИИ.
-    - `wiki`: Документация в формате MDX.
+#### Architecture & Technologies:
+- **Monorepo**: Managed via npm workspaces. The main parts are located in `packages/*`.
+- **Stack**: Vue 3 (`<script setup lang="ts">`), TypeScript, Vite, SCSS.
+- **Key Packages**:
+    - `ui`, `d1`: Component libraries.
+    - `functional`, `functional-basic`: Core logic and API.
+    - `figma*`: Packages for Figma synchronization (styles, code, translations).
+    - `scripts`: Automation and prompt-generation scripts for AI.
+    - `wiki`: MDX-format documentation.
 
-#### Правила разработки для ИИ:
-1.  **Чистота и Атомарность**: Компоненты должны быть минимальными. Вся бизнес-логика выносится в **Composables**.
-2.  **Типизация**: Строгий TypeScript, никаких `any`. Обязательное использование интерфейсов для Props и Emits.
-3.  **Документация**: Используй TSDoc на языке `[wikiLanguage]`. Комментарии должны объяснять "зачем", а не "что".
-4.  **Стили**: Используй SCSS. Изменение базовых стилей библиотеки запрещено, если не указано иное.
-5.  **Зависимости**: Используй только те пакеты, которые есть в `package.json`. Никаких галлюцинаций.
+#### Development Rules for AI:
+1.  **Purity & Atomicity**: Components must be minimal. All business logic must be extracted to **Composables**.
+2.  **Typing**: Strict TypeScript, no `any`. Mandatory usage of interfaces for Props and Emits.
+3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.txt](file:///Volumes/T7/Code/dxt-ui/ai-prompts/jdoc.txt). All comments must follow a mandatory bilingual standard (English and Russian):
+    - **Classes/Functions/Methods**: Detailed multiline descriptions (English on top, Russian on bottom). Use `@param` and `@returns` with bilingual descriptions separated by ` / `.
+    - **Interfaces, Types, Enums, and Properties**: Compact single line (or double line if long) with a forward slash separator: `/** English / Russian */`.
+4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.
+5.  **Dependencies**: Use only the packages specified in `package.json`. Zero tolerance for hallucinations.
+6.  **Strict Adherence**: Do strictly and only what is requested in the user's prompt. Never make unsolicited changes, refactorings, cleanups, or modifications to other files unless explicitly instructed by the user.
 
-Генерируй код так, чтобы его можно было вставить и запустить сразу (**Copy-Paste Ready**).
+Generate code in a way that allows it to be copied and run immediately (**Copy-Paste Ready**).
+

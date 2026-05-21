@@ -1,4 +1,4 @@
-import { computed, h, Teleport, type VNode } from 'vue'
+import { computed, h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -131,18 +131,16 @@ export class WindowDesign<
 
     if (this.item.open.inDom.value) {
       if (
-        this.item.staticMode.item.value
+        (
+          this.item.staticMode.item.value
+          && this.item.clientOnly.is()
+        )
         || this.props.embedded
       ) {
         main.push(this.renderMain())
       } else {
         main.push(
-          h(
-            Teleport,
-            {
-              key: 'teleport',
-              to: 'body'
-            },
+          ...this.item.teleport.render(
             h(
               'div',
               {

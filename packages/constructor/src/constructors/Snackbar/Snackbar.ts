@@ -3,6 +3,7 @@ import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TextInclude } from '../../classes/TextInclude'
+import { TeleportInclude } from '../../classes/TeleportInclude'
 
 import { SnackbarData } from './SnackbarData'
 import { SnackbarEvent } from './SnackbarEvent'
@@ -23,6 +24,9 @@ export class Snackbar {
   /** Text manager for snackbar / Менеджер текста для снекбара */
   readonly text: TextInclude
 
+  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
+  readonly teleport: TeleportInclude
+
   /**
    * Constructor
    * @param props input data / входные данные
@@ -35,6 +39,8 @@ export class Snackbar {
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes / объект с классами
    * @param constructors.DataConstructor class for creating data / класс для создания данных
+   * @param constructors.EventConstructor class for working with events / класс для работы с событиями
+   * @param constructors.TeleportIncludeConstructor class for working with teleport / класс для работы с телепортом
    */
   constructor(
     protected readonly props: SnackbarProps,
@@ -48,11 +54,13 @@ export class Snackbar {
     constructors?: {
       DataConstructor?: typeof SnackbarData
       EventConstructor?: typeof SnackbarEvent
+      TeleportIncludeConstructor?: typeof TeleportInclude
     }
   ) {
     const {
       DataConstructor = SnackbarData,
-      EventConstructor = SnackbarEvent
+      EventConstructor = SnackbarEvent,
+      TeleportIncludeConstructor = TeleportInclude
     } = constructors ?? {}
 
     this.event = new EventConstructor(emits)
@@ -65,6 +73,7 @@ export class Snackbar {
     )
 
     this.text = new TextInclude(props)
+    this.teleport = new TeleportIncludeConstructor()
   }
 
   /**

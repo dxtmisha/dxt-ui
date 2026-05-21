@@ -51,6 +51,16 @@ export const wikiValue: StorybookArgsToList = {
       type: 'currency'
     }
   },
+  countryList: {
+    type: StorybookControl.array,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Filter countries by code (ISO 3166-1 alpha-2).',
+        ru: 'Фильтр стран по кодам (ISO 3166-1 alpha-2).'
+      }
+    }
+  },
   detail: {
     type: StorybookControl.object,
     options: {

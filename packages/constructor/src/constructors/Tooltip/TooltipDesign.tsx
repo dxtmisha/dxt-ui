@@ -1,4 +1,4 @@
-import { h, Teleport, type VNode } from 'vue'
+import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -164,16 +164,7 @@ export class TooltipDesign<
         return [element]
       }
 
-      return [
-        h(
-          Teleport,
-          {
-            key: 'teleport',
-            to: 'body'
-          },
-          element
-        )
-      ]
+      return this.item.teleport.render(element)
     }
 
     return []

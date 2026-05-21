@@ -7,7 +7,12 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'countryList', type: 'string[] | undefined' },
   { name: 'disabled', type: 'boolean | undefined' },
-  { name: 'menuAttrs', type: 'ConstrBind<MenuProps> | undefined' }
+  { name: 'isSelectedByValue', type: 'boolean | undefined' },
+  { name: 'menuAttrs', type: 'ConstrBind<MenuProps> | undefined' },
+  { name: 'modelSelected', type: 'string | undefined' },
+  { name: 'onUpdate:modelSelected', type: '((value: string) => void) | undefined' },
+  { name: 'onUpdate:selected', type: '((value: string) => void) | undefined' },
+  { name: 'selected', type: 'ListSelectedList | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 

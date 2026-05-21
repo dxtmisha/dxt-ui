@@ -37,33 +37,6 @@ export const wikiDescriptionsMenuCountry: StorybookComponentsDescriptionItem = {
   `,
   stories: [
     {
-      id: 'MenuCountryBasic',
-      name: {
-        en: 'Basic usage',
-        ru: 'Базовое использование'
-      },
-      setup: `
-      return {
-        selectedValue: ref('RU')
-      }
-      `,
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            v-model:selected="selectedValue"
-            is-selected-by-value
-          >
-            <template #control="{binds, selectedNames}">
-              <button class="wiki-storybook-button" v-bind="binds">
-                Selected: {{ selectedNames.value[0] || 'None' }}
-              </button>
-            </template>
-          </DesignComponent>
-          <div class="wiki-storybook-item">Value: {{ selectedValue }}</div>
-        </div>
-      `
-    },
-    {
       id: 'MenuCountryFilter',
       name: {
         en: 'Filtering countries',
@@ -76,35 +49,28 @@ export const wikiDescriptionsMenuCountry: StorybookComponentsDescriptionItem = {
       }
       `,
       template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            v-model:selected="selectedValue"
-            :country-list="list"
-            is-selected-by-value
-          >
-            <template #control="{binds, selectedNames}">
-              <button class="wiki-storybook-button" v-bind="binds">
-                Selected: {{ selectedNames.value[0] || 'None' }}
-              </button>
-            </template>
-          </DesignComponent>
-        </div>
+        <DesignComponent
+          v-model:selected="selectedValue"
+          :country-list="list"
+          is-selected-by-value
+        >
+          <template #control="{binds, selectedNames}">
+            <button class="wiki-storybook-button" v-bind="binds">
+              Selected: {{ selectedNames.value[0] || 'None' }}
+            </button>
+          </template>
+        </DesignComponent>
       `
     }
   ],
   documentation: {
     body: `
-<StorybookDescriptions componentName={'MenuCountry'} type={'menu'}/>
-
-<StorybookDescriptions componentName={'MenuCountry'} type={'basic'}/>
-<Canvas of={Component.MenuCountryBasic}/>
-
-<StorybookDescriptions componentName={'MenuCountry'} type={'filter'}/>
+<StorybookDescriptions componentName={'MenuCountry'} type={'menuCountry'}/>
 <Canvas of={Component.MenuCountryFilter}/>
     `,
     events: `
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'Menu'} type={'event.updateValue'}/>
-<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>

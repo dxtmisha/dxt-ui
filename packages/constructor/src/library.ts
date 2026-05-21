@@ -36,6 +36,7 @@ export * from './classes/PrefixInclude'
 export * from './classes/ScrollToXInclude'
 export * from './classes/SuffixInclude'
 export * from './classes/TabIndexInclude'
+export * from './classes/TeleportInclude'
 export * from './classes/TextInclude'
 export * from './classes/TouchEventInclude'
 

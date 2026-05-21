@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { onMounted, watch } from 'vue'
 
 import { WindowElement } from './WindowElement'
 import { WindowCoordinates } from './WindowCoordinates'
@@ -26,7 +26,9 @@ export class WindowStyles {
     protected readonly origin: WindowOrigin,
     protected readonly className: string
   ) {
-    watch(this.element.element, () => this.update())
+    onMounted(() => {
+      watch(this.element.element, () => this.update())
+    })
   }
 
   /**

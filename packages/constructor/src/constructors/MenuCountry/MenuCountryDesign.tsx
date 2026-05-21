@@ -113,6 +113,7 @@ export class MenuCountryDesign<
   protected initRender(): VNode[] {
     return this.item.menu.render(
       {
+        control: props => this.initSlot('control', undefined, props),
         title: props => this.initSlot('title', undefined, props),
         footer: props => this.initSlot('footer', undefined, props),
         contextTop: props => this.initSlot('contextTop', undefined, props),

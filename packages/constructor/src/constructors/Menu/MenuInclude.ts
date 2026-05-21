@@ -3,6 +3,7 @@ import {
   type ConstrBind,
   type DesignComponents,
   getRef,
+  type ListNames,
   type RawSlots,
   type RefOrNormal,
   toBind,
@@ -78,7 +79,12 @@ export class MenuInclude<
     toClose: async () => this.element.value?.toClose(),
     toggle: async () => this.element.value?.toggle(),
 
-    menuElement: this.element
+    menuElement: this.element,
+
+    isSelected: computed(() => this.element.value?.isSelected.value ?? false),
+    selectedList: computed(() => this.element.value?.selectedList.value ?? []),
+    selectedNames: computed(() => this.element.value?.selectedNames.value ?? {} as ListNames),
+    selectedValues: computed(() => this.element.value?.selectedValues.value ?? [])
   }
 
   /**

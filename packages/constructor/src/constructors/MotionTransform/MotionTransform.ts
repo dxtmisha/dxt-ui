@@ -4,6 +4,7 @@ import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
+import { TeleportInclude } from '../../classes/TeleportInclude'
 
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformSize } from './MotionTransformSize'
@@ -13,13 +14,13 @@ import { MotionTransformGo } from './MotionTransformGo'
 
 import { WindowEsc } from '../Window'
 
+import type { MotionTransformControlItem } from './basicTypes'
 import type {
   MotionTransformComponents,
   MotionTransformEmits,
   MotionTransformSlots
 } from './types'
 import type { MotionTransformProps } from './props'
-import type { MotionTransformControlItem } from './basicTypes'
 
 /**
  * MotionTransform
@@ -41,6 +42,8 @@ export class MotionTransform {
 
   /** Window esc manager/ Менеджер esc окна */
   readonly esc: WindowEsc
+  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
+  readonly teleport: TeleportInclude
 
   /**
    * Constructor
@@ -61,6 +64,7 @@ export class MotionTransform {
    * @param constructors.MotionTransformSizeConstructor class for working with size/ класс для работы с размером
    * @param constructors.MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
    * @param constructors.TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param constructors.TeleportIncludeConstructor class for working with teleport/ класс для работы с телепортом
    * @param constructors.WindowEscConstructor class for working with esc/ класс для работы с esc
    */
   constructor(
@@ -81,6 +85,7 @@ export class MotionTransform {
       MotionTransformSizeConstructor?: typeof MotionTransformSize
       MotionTransformStateConstructor?: typeof MotionTransformState
       TabIndexIncludeConstructor?: typeof TabIndexInclude
+      TeleportIncludeConstructor?: typeof TeleportInclude
       WindowEscConstructor?: typeof WindowEsc
     }
   ) {
@@ -92,6 +97,7 @@ export class MotionTransform {
       MotionTransformSizeConstructor = MotionTransformSize,
       MotionTransformStateConstructor = MotionTransformState,
       TabIndexIncludeConstructor = TabIndexInclude,
+      TeleportIncludeConstructor = TeleportInclude,
       WindowEscConstructor = WindowEsc
     } = constructors ?? {}
 
@@ -122,6 +128,7 @@ export class MotionTransform {
       () => this.go.close(),
       () => Boolean(this.props.clickOpen)
     )
+    this.teleport = new TeleportIncludeConstructor()
 
     new ModelIncludeConstructor('open', this.emits, this.state.open)
 

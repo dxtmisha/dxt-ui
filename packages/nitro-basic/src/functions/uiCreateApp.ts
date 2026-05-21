@@ -30,6 +30,10 @@ export function uiCreateApp<A = any>(
     app.use(router)
   }
 
+  app.runWithContext(() => {
+    app.provide('__ui-teleport-ssr-body__', options.teleportBody ?? '#teleports')
+  })
+
   return {
     app,
     router,

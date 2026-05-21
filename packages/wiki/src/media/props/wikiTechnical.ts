@@ -127,6 +127,17 @@ export const wikiTechnical: StorybookArgsToList = {
     },
     hide: true
   },
+  isSelectedByValue: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Enables v-model support for selected value with two-way data binding.',
+        ru: 'Включает поддержку v-model для выбранного значения с двусторонней привязкой данных.'
+      }
+    },
+    hide: true
+  },
   labelId: {
     type: StorybookControl.string,
     options: {

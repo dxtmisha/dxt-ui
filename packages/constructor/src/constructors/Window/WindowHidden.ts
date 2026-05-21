@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { isDomRuntime } from '@dxtmisha/functional'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
@@ -7,6 +7,7 @@ import { WindowStatic } from './WindowStatic'
 
 import type { WindowOpen } from './WindowOpen'
 import type { WindowProps } from './props'
+import { TeleportInclude } from '../../classes/TeleportInclude.ts'
 
 let windowOpenCounter: number = 0
 
@@ -24,34 +25,38 @@ export class WindowHidden {
    * @param classes an object for working with class names / объект для работы с названиями классов
    * @param staticMode class object for working with static status / объект класса для работы со статическим статусом
    * @param open an object for working with the open state of the window / объект для работы с состоянием открытия окна
+   * @param teleport an object for working with the teleport status of the window / объект для работы с состоянием телепорта окна
    */
   constructor(
     protected readonly props: WindowProps,
     protected readonly classes: WindowClassesData,
     protected readonly staticMode: WindowStatic,
-    protected readonly open: WindowOpen
+    protected readonly open: WindowOpen,
+    protected readonly teleport: TeleportInclude
   ) {
-    watch(
-      this.open.item,
-      (newValue: boolean) => {
-        if (
-          !this.props.inert
-          || this.props.embedded
-          || this.staticMode.item.value
-        ) {
-          return
-        }
+    onMounted(() => {
+      watch(
+        this.open.item,
+        (newValue: boolean) => {
+          if (
+            !this.props.inert
+            || this.props.embedded
+            || this.staticMode.item.value
+          ) {
+            return
+          }
 
-        if (newValue) {
-          this.toHidden()
-        } else {
-          this.toShow()
+          if (newValue) {
+            this.toHidden()
+          } else {
+            this.toShow()
+          }
+        },
+        {
+          immediate: true
         }
-      },
-      {
-        immediate: true
-      }
-    )
+      )
+    })
   }
 
   /**
@@ -104,6 +109,7 @@ export class WindowHidden {
         if (
           element.hasAttribute(aria.key)
           || element.hasAttribute('inert')
+          || this.teleport.isTeleportElement(element)
         ) {
           return
         }

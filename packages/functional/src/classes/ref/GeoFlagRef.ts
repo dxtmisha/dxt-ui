@@ -5,6 +5,8 @@ import {
   watch
 } from 'vue'
 import { Geo, GeoFlag, type GeoFlagItem, type GeoFlagNational } from '@dxtmisha/functional-basic'
+
+import { getRef } from '../../functions/ref/getRef'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
 import type { RefOrNormal } from '../../types/refTypes'
@@ -46,8 +48,8 @@ export class GeoFlagRef {
    * Возвращает информацию о стране и её флаге.
    * @param code country code/ код страны
    */
-  get(code = this.code.value): ComputedRef<GeoFlagItem | undefined> {
-    return computed(() => this.flag.get(code))
+  get(code: RefOrNormal<string> = this.code.value): ComputedRef<GeoFlagItem | undefined> {
+    return computed(() => this.flag.get(getRef(code)))
   }
 
   /**
@@ -56,8 +58,8 @@ export class GeoFlagRef {
    * Получение ссылки на флаг.
    * @param code country code/ код страны
    */
-  getFlag(code = this.code.value): ComputedRef<string | undefined> {
-    return computed(() => this.flag.get(code)?.icon)
+  getFlag(code: RefOrNormal<string> = this.code.value): ComputedRef<string | undefined> {
+    return computed(() => this.flag.get(getRef(code))?.icon)
   }
 
   /**
@@ -66,8 +68,8 @@ export class GeoFlagRef {
    * Получение списка стран по массиву с кодами.
    * @param codes country code/ код страны
    */
-  getList(codes?: string[]): ComputedRef<GeoFlagItem[]> {
-    return computed(() => this.flag.getList(codes))
+  getList(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagItem[]> {
+    return computed(() => this.flag.getList(getRef(codes)))
   }
 
   /**
@@ -76,7 +78,7 @@ export class GeoFlagRef {
    * Получение списка стран по массиву с кодами на национальный язык.
    * @param codes country code/ код страны.
    */
-  getNational(codes?: string[]): ComputedRef<GeoFlagNational[]> {
-    return computed(() => this.flag.getNational(codes))
+  getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]> {
+    return computed(() => this.flag.getNational(getRef(codes)))
   }
 }

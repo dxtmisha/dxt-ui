@@ -43,32 +43,6 @@ export const MenuCountry: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const MenuCountryBasic: Story = {
-  name: 'Базовое использование',
-  render: () => ({
-    components: { D1MenuCountry },
-    setup() {
-      return {
-        selectedValue: ref('RU')
-      }
-    },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1MenuCountry
-            v-model:selected="selectedValue"
-            is-selected-by-value
-          >
-            <template #control="{binds, selectedNames}">
-              <button class="wiki-storybook-button" v-bind="binds">
-                Selected: {{ selectedNames.value[0] || 'None' }}
-              </button>
-            </template>
-          </D1MenuCountry>
-          <div class="wiki-storybook-item">Value: {{ selectedValue }}</div>
-        </div>
-    `
-  })
-}
 export const MenuCountryFilter: Story = {
   name: 'Фильтрация стран',
   render: () => ({
@@ -80,19 +54,17 @@ export const MenuCountryFilter: Story = {
       }
     },
     template: `
-        <div class="wiki-storybook-flex-column">
-          <D1MenuCountry
-            v-model:selected="selectedValue"
-            :country-list="list"
-            is-selected-by-value
-          >
-            <template #control="{binds, selectedNames}">
-              <button class="wiki-storybook-button" v-bind="binds">
-                Selected: {{ selectedNames.value[0] || 'None' }}
-              </button>
-            </template>
-          </D1MenuCountry>
-        </div>
+        <D1MenuCountry
+          v-model:selected="selectedValue"
+          :country-list="list"
+          is-selected-by-value
+        >
+          <template #control="{binds, selectedNames}">
+            <button class="wiki-storybook-button" v-bind="binds">
+              Selected: {{ selectedNames.value[0] || 'None' }}
+            </button>
+          </template>
+        </D1MenuCountry>
     `
   })
 }

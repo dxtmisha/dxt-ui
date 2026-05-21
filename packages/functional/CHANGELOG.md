@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.1] - 2026-05-21
+
+### Fixed
+- **`GeoFlagRef`**: Methods `get()`, `getFlag()`, `getList()`, and `getNational()` now accept `RefOrNormal<...>` reactive arguments instead of plain values. Parameters are unwrapped internally via `getRef()`, enabling reactive bindings to be passed directly without manual `.value` access.
+
+## [1.12.0] - 2026-05-19
+
+### Added
+- **`UseApiRequestSetup` interface**: Introduced a new exported interface that centralises all configuration for `useApiRequest` into a single typed options object (`path`, `method`, `action`, `transformation`, `validateRequestContract`, `validateResponseContract`, `errorContract`).
+- **`validateRequestContract`**: Added to both `UseApiRequestSetup` and `ApiManagementRequest` — a validation function that verifies the outgoing request payload matches the expected structure before the request is sent.
+- **`validateResponseContract`**: Added to both `UseApiRequestSetup` and `ApiManagementRequest` — a validation function (recommended for use with `@effect/schema`) that verifies the API response matches the expected structure and returns an `ApiDataValidation` result.
+- **`isApiSuccess` import**: Integrated `isApiSuccess` from `@dxtmisha/functional-basic` into `useApiRequest` for internal contract-validation branching.
+
+### Changed / Improved
+- **`useApiRequest` (Breaking)**: Refactored to accept a single `UseApiRequestSetup<T>` options object instead of multiple positional parameters. All call sites must be updated.
+- **`useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`**: Updated to accept their own dedicated setup objects aligned with the new `UseApiRequestSetup` signature, forwarding `validateRequestContract` and `validateResponseContract` down the chain.
+- **`useApiManagementRef`**: Refactored to forward the new `validateRequestContract` and `validateResponseContract` properties when constructing request setup objects.
+- **`ApiManagementRequest` type**: Extended with a `Request` generic parameter and the two new contract-validation fields.
+- **Tests**: Updated all unit test suites (`useApiRequest`, `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`) to follow the new single-object signature and correctly mock `getStatus`.
+- **Documentation**: Updated multilingual MDX docs (EN / RU / VI) for `useApiRequest`, `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`, and `useApiManagementRef` to reflect the refactored API.
+
 ## [1.11.13] - 2026-05-18
 
 ### Added

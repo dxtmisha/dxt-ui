@@ -2,11 +2,14 @@ import { computed, onMounted, onUnmounted, type Ref, type ToRefs, watch } from '
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'
-import { ImageInclude } from '../Image/ImageInclude'
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
+import { TeleportInclude } from '../../classes/TeleportInclude'
 import { TextInclude } from '../../classes/TextInclude'
+
+import { ScrollbarInclude } from '../Scrollbar'
+import { ImageInclude } from '../Image'
 
 import { WindowClient } from './WindowClient'
 import { WindowHook } from './WindowHook'
@@ -44,6 +47,8 @@ import type { WindowPropsBasic } from './props'
  * для операций с окнами в дизайн-системе.
  */
 export class Window {
+  /** ClientOnly instance / Экземпляр ClientOnly */
+  readonly clientOnly: ClientOnlyInclude
   /** Client instance for window management/ Экземпляр клиента для управления окном */
   readonly client: WindowClient
   /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -89,6 +94,8 @@ export class Window {
 
   /** Escape key manager for window closing/ Менеджер клавиши Escape для закрытия окна */
   readonly esc: WindowEsc
+  /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
+  readonly teleport: TeleportInclude
 
   /** Text manager for window content/ Менеджер текста для содержимого окна */
   readonly text: TextInclude
@@ -111,6 +118,7 @@ export class Window {
    * @param constructors.ModelConstructor class for working with model/ класс для работы с моделью
    * @param constructors.ScrollbarConstructor class for working with scrollbar/ класс для работы со скроллбаром
    * @param constructors.TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param constructors.TeleportIncludeConstructor class for working with teleport/ класс для работы с телепортом
    * @param constructors.TextConstructor class for working with text/ класс для работы с текстом
    * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
    * @param constructors.WindowClientConstructor class for working with window client/ класс для работы с клиентом окна
@@ -145,6 +153,7 @@ export class Window {
       ModelConstructor?: typeof ModelInclude
       ScrollbarConstructor?: typeof ScrollbarInclude
       TabIndexConstructor?: typeof TabIndexInclude
+      TeleportIncludeConstructor?: typeof TeleportInclude
       TextConstructor?: typeof TextInclude
       WindowClassesConstructor?: typeof WindowClassesData
       WindowClientConstructor?: typeof WindowClient
@@ -164,6 +173,7 @@ export class Window {
       WindowStatusConstructor?: typeof WindowStatus
       WindowStylesConstructor?: typeof WindowStyles
       WindowVerificationConstructor?: typeof WindowVerification
+      ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
     }
   ) {
     const {
@@ -171,6 +181,7 @@ export class Window {
       ModelConstructor = ModelInclude,
       ScrollbarConstructor = ScrollbarInclude,
       TabIndexConstructor = TabIndexInclude,
+      TeleportIncludeConstructor = TeleportInclude,
       TextConstructor = TextInclude,
       WindowClassesConstructor = WindowClassesData,
       WindowClientConstructor = WindowClient,
@@ -189,10 +200,12 @@ export class Window {
       WindowStaticConstructor = WindowStatic,
       WindowStatusConstructor = WindowStatus,
       WindowStylesConstructor = WindowStyles,
-      WindowVerificationConstructor = WindowVerification
+      WindowVerificationConstructor = WindowVerification,
+      ClientOnlyIncludeConstructor = ClientOnlyInclude
     } = constructors ?? {}
 
     this.hook = new WindowHookConstructor(props)
+    this.clientOnly = new ClientOnlyIncludeConstructor()
 
     this.classes = new WindowClassesConstructor(className)
     this.element = new WindowElementConstructor(this.classes, element)
@@ -268,12 +281,14 @@ export class Window {
       () => this.open.close(),
       () => !this.props.persistent && (this.props.closeOnEsc ?? true)
     )
+    this.teleport = new TeleportIncludeConstructor()
     this.text = new TextConstructor(this.props)
     this.hidden = new WindowHiddenConstructor(
       this.props,
       this.classes,
       this.staticMode,
-      this.open
+      this.open,
+      this.teleport
     )
 
     new ModelConstructor<boolean>('open', this.emits, this.open.item)
@@ -296,14 +311,14 @@ export class Window {
     classesWindow: this.classes.list,
     class: this.classes.list.controlId,
     open: this.open.item,
-    onclick: this.event.onClick,
+    onClick: this.event.onClick,
     onKeydown: this.event.onKeydown,
-    oncontextmenu: this.event.onContextmenu,
+    onContextmenu: this.event.onContextmenu,
     binds: {
       class: this.classes.list.controlId,
-      onclick: this.event.onClick,
+      onClick: this.event.onClick,
       onKeydown: this.event.onKeydown,
-      oncontextmenu: this.event.onContextmenu,
+      onContextmenu: this.event.onContextmenu,
       ...AriaStaticInclude.control(
         this.classes.getControlId(),
         this.open.inDom.value ? this.classes.getId() : undefined,

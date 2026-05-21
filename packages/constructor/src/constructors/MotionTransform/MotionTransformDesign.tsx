@@ -1,4 +1,4 @@
-import { computed, h, ref, Teleport, type VNode } from 'vue'
+import { computed, h, ref, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -137,14 +137,9 @@ export class MotionTransformDesign<
         ref: this.elementContext,
         class: this.classes?.value.context
       },
-      h(
-        Teleport,
-        {
-          key: 'teleport',
-          disabled: !this.item.state.teleport.value,
-          to: 'body'
-        },
-        children
+      this.item.teleport.render(
+        children,
+        { disabled: !this.item.state.teleport.value }
       )
     )
   }

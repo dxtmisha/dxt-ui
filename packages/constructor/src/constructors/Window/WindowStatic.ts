@@ -1,4 +1,4 @@
-import { ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, type ToRefs, watch } from 'vue'
 import { EventItem, setRef } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
@@ -27,7 +27,13 @@ export class WindowStatic {
     refs: ToRefs<WindowProps>,
     protected readonly element: WindowElement
   ) {
-    watch([refs.staticMode], this.make, { immediate: true })
+    onMounted(() => {
+      watch([refs.staticMode], this.make)
+
+      if (this.isStaticMod()) {
+        requestAnimationFrame(this.listener)
+      }
+    })
   }
 
   /**
@@ -58,7 +64,7 @@ export class WindowStatic {
    * Восстанавливает данные в прежнее состояние.
    */
   stop(): void {
-    if (this.event) {
+    if (this.event?.isActive()) {
       this.event.stop()
       this.event = undefined
     }
@@ -97,7 +103,6 @@ export class WindowStatic {
   protected readonly make = (): void => {
     if (this.isStaticMod()) {
       this.start()
-      requestAnimationFrame(this.listener)
     } else {
       this.stop()
     }

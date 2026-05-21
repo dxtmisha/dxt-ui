@@ -1,3 +1,5 @@
+import type { ClientOnlyPropsInclude } from '../../types/clientOnlyTypes'
+
 export type ScrollbarPropsToken = {
   // :type [!] System label / Системная метка
   visible?: boolean
@@ -10,11 +12,12 @@ export type ScrollbarPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type ScrollbarPropsBasic = {
-  /** Style/ Стили */
-  /** HTML tag for the scrollbar element/ HTML-тег для элемента скроллбара */
-  tag?: string
-}
+export type ScrollbarPropsBasic = ClientOnlyPropsInclude
+  & {
+    // Style
+    /** HTML tag for the scrollbar element/ HTML-тег для элемента скроллбара */
+    tag?: string
+  }
 
 /**
  * Type describing incoming properties.
@@ -29,6 +32,7 @@ export type ScrollbarProps = ScrollbarPropsBasic & ScrollbarPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsScrollbar = {
+  clientOnly: true,
   tag: 'div',
   ...{
     // :default [!] System label / Системная метка

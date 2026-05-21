@@ -108,21 +108,17 @@ export class ScrollbarDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode | undefined {
+  protected initRender(): VNode {
     const children: any[] = [this.initSlot('default')]
 
-    if (this.item.width.is.value) {
-      return h(
-        this.props.tag ?? 'div',
-        {
-          ...this.getAttrs(),
-          ref: this.element,
-          class: this.classes?.value.main
-        },
-        children
-      )
-    }
-
-    return undefined
+    return h(
+      this.props.tag ?? 'div',
+      {
+        ...this.getAttrs(),
+        ref: this.element,
+        class: this.classes?.value.main
+      },
+      children
+    )
   }
 }

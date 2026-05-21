@@ -18,6 +18,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Image" name="component-image"/>
         <DemoLink label="Input" name="component-input"/>
         <DemoLink label="Mask" name="component-mask"/>
+        <DemoLink label="MenuCountry" name="component-menu-country"/>
         <DemoLink label="Motion Transform" name="component-motion-transform"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Progress" name="component-progress"/>
@@ -25,6 +26,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Snackbar" name="component-snackbar"/>
         <DemoLink label="Switch" name="component-switch"/>
         <DemoLink label="Tabs" name="component-tabs"/>
+        <DemoLink label="Window" name="component-window"/>
       </D1Group>
     </D1Section>
   </D1Page>

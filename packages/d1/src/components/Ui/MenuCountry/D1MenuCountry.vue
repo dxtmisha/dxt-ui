@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -14,7 +12,7 @@ import {
 
 import { D1Menu } from '../Menu'
 
-import { defaults, type MenuCountryProps, propsValues } from './props'
+import { defaults, type MenuCountryProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -45,6 +43,16 @@ const design = new MenuCountryDesign(
     styles: stylesToken,
     components: {
       menu: D1Menu
+    },
+    compMod: {
+      menu: {
+        itemAttrs: {
+          iconAttrs: {
+            rect: true,
+            size: 'xl'
+          }
+        }
+      }
     }
   }
 )
