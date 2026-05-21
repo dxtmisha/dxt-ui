@@ -1,7 +1,9 @@
 To create a demo page for a specific component (e.g., Badge, Button, Checkbox) in the `demo` package, perform the following steps:
 
 ### 0. General Rules
-- **CRITICALLY IMPORTANT**: Always strictly follow the global rules and instructions described in the `ai-prompt.txt` file. This includes naming standards, Vue component implementation rules, and the use of SCSS mixins and tokens.
+- **CRITICALLY IMPORTANT**: Always strictly follow the global rules and instructions described in the `ai-prompt.txt` file. This includes naming standards, Vue component implementation rules, and the use of SCSS mixins and tokens. **All rules and patterns listed in this document are strictly mandatory and must be followed without exception.**
+- **Control Elements**: For page/state control and interactions, try to use only buttons.
+- **Demo Isolation**: Each group (`D1Group`) represents an individual, self-contained demo. Do not create any global/general settings, controllers, or property toggle interfaces.
 
 ### 1. Component Analysis
 - Study `props.ts` and the main constructor file in `packages/constructor/src/constructors/[Component]`.
@@ -24,9 +26,51 @@ To create a demo page for a specific component (e.g., Badge, Button, Checkbox) i
     - **Minimalism**: Wrap components in additional elements (div, etc.) as little as possible. Avoiding wrappers entirely is a major plus.
 - **Styles**:
     - The name of the main (root) CSS class must **strictly match** the component name itself (in kebab-case). For example, for `DemoBadgePage.vue`, the root class is `.demo-badge-page`.
-    - **Minimalism**: Add styles only if absolutely necessary for the component's functionality or display. Do not add styles for "aesthetics" or decoration if there is no technical need.
+    - **Minimalism**: Add styles only if absolutely necessary for the component's functionality or display. Do not add styles for "aesthetics" or decoration if there is no technical need. If no custom layout/flex styling is needed, keep the `<style lang="scss">` block completely empty (like in `DemoCheckboxPage.vue` or `DemoSwitchPage.vue`).
     - Use `__` for naming internal elements (e.g., `&__wrapper`) and `--` for modifiers (e.g., `&--large`).
     - Within the root class block, use SCSS nesting (`&`) to form element names (e.g., `&__wrapper { ... }` inside `.demo-badge-page` becomes `.demo-badge-page__wrapper`).
+
+- **Minimalist Group Patterns (STRICTLY MANDATORY)**:
+    **CRITICAL**: You must strictly adhere to these minimalist patterns for every component group. Absolutely no clutter, nested wrappers, or unnecessary custom styling is allowed. Follow the styling patterns from neighboring files (e.g., `DemoButtonPage.vue`, `DemoBadgePage.vue`, `DemoCheckboxPage.vue`):
+    
+    * **No Wrapper Layout (Vertical Stack)**: For form elements and block components (like `D1Checkbox`, `D1Switch`), place them directly inside `<D1Group>` without any wrappers or container divs. Let the default flow handle spacing:
+      ```vue
+      <D1Group label="Basic">
+        <D1Checkbox label="Default" v-model="value" />
+        <DemoValue :value="value" />
+      </D1Group>
+      ```
+      
+    * **Inline Flex Layout (Horizontal Row)**: For small inline components (like `D1Button`, `D1Badge`), wrap them in a single `div` named after the component (e.g., `<div class="demo-button-page">`) to align them via flexbox:
+      ```vue
+      <D1Group label="Types">
+        <div class="demo-button-page">
+          <D1Button label="Primary" primary />
+          <D1Button label="Secondary" secondary />
+        </div>
+      </D1Group>
+      ```
+      The styles for such layout must be extremely basic:
+      ```scss
+      .demo-button-page {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+      }
+      ```
+      
+    * **Group Separation (DemoFlex)**: Use `<DemoFlex>` helper only when you need custom spacing/separators between inline items or sub-sections in a group (e.g., as in `DemoBadgePage.vue` with overlapping badges).
+    
+    * **Events Group**: Keep event tracking minimal and standard using `useDemoEvent`:
+      ```vue
+      <D1Group label="Events">
+        <D1Checkbox label="Event Tracker" @change="onEvent('change')" />
+        <DemoValue :value="eventName" />
+      </D1Group>
+      ```
+      
+    * **Keep it Clean**: Never write inline styles or add extra wrapper `div` tags unless absolutely required for absolute positioning or layout structure. Let the library components dictate their own visual boundaries.
 
 ### 3. Router Registration
 - Update `packages/demo/src/router.ts`:

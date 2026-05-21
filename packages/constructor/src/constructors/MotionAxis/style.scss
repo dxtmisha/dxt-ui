@@ -29,9 +29,9 @@
       width: ui.v('??sys.width');
       height: ui.v('??sys.height');
       transition: opacity 90ms ui.v('d.ref.transitionFunction.e40i0'),
-      transform ui.v('??transition-duration') ui.v('??transition-function'),
-      translate ui.v('??transition-duration') ui.v('??transition-function'),
-      scale ui.v('??transition-duration') ui.v('??transition-function');
+        transform ui.v('??transition-duration') ui.v('??transition-function'),
+        translate ui.v('??transition-duration') ui.v('??transition-function'),
+        scale ui.v('??transition-duration') ui.v('??transition-function');
     }
 
     &--preparation {
@@ -47,15 +47,15 @@
       opacity: 1;
 
       transition: opacity 210ms ui.v('d.ref.transitionFunction.e0i80') 90ms,
-      transform ui.v('??transition-duration') ui.v('??transition-function'),
-      translate ui.v('??transition-duration') ui.v('??transition-function'),
-      scale ui.v('??transition-duration') ui.v('??transition-function');
+        transform ui.v('??transition-duration') ui.v('??transition-function'),
+        translate ui.v('??transition-duration') ui.v('??transition-function'),
+        scale ui.v('??transition-duration') ui.v('??transition-function');
     }
   }
 
   &__scroll {
     &--hidden {
-      overflow: hidden;
+      overflow-x: hidden;
     }
   }
 

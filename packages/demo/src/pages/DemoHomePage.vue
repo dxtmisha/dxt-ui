@@ -19,6 +19,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Input" name="component-input"/>
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="MenuCountry" name="component-menu-country"/>
+        <DemoLink label="Motion Axis" name="component-motion-axis"/>
         <DemoLink label="Motion Transform" name="component-motion-transform"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Progress" name="component-progress"/>

@@ -45,7 +45,7 @@ export class TeleportInclude {
 
   /**
    * Checks if the element is a teleport item.
-   * 
+   *
    * Проверяет, является ли элемент элементом телепорта.
    * @param element element to check / элемент для проверки
    * @returns true if the element is a teleport item, false otherwise / true, если элемент является элементом телепорта, иначе false

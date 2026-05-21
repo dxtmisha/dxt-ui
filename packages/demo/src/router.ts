@@ -14,6 +14,7 @@ import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
 import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
+import DemoMotionAxisPage from './pages/components/DemoMotionAxisPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
@@ -83,6 +84,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-menu-country',
     name: 'component-menu-country',
     component: DemoMenuCountryPage
+  },
+  {
+    path: '/component-motion-axis',
+    name: 'component-motion-axis',
+    component: DemoMotionAxisPage
   },
   {
     path: '/component-motion-transform',
