@@ -9523,6 +9523,17 @@
           }
         }
       },
+      "menuCountry": {
+        "name": "d1-menuCountry",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-menuCountry-main",
+            "type": "var",
+            "value": "{d.menuCountry}"
+          }
+        }
+      },
       "modal": {
         "name": "d1-modal",
         "type": "component",

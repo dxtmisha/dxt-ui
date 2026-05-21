@@ -35,7 +35,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor MenuCountry",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -323,6 +323,10 @@
     "./TextDescription": {
       "types": "./dist/src/constructors/TextDescription/index.d.ts",
       "default": "./dist/textDescription.js"
+    },
+    "./MenuCountry": {
+      "types": "./dist/src/constructors/MenuCountry/index.d.ts",
+      "default": "./dist/menuCountry.js"
     }
   },
   "buildOptions": {

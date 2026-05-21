@@ -1,0 +1,54 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as MenuCountry from './D1MenuCountry.stories'
+import {MenuCountryWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={MenuCountry}/>
+<StorybookMain
+    name={MenuCountryWikiStorybook.getName()}
+    description={MenuCountryWikiStorybook.getDescription()}
+    story={MenuCountry.MenuCountry}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'MenuCountry'} type={'menu'}/>
+
+<StorybookDescriptions componentName={'MenuCountry'} type={'basic'}/>
+<Canvas of={MenuCountry.MenuCountryBasic}/>
+
+<StorybookDescriptions componentName={'MenuCountry'} type={'filter'}/>
+<Canvas of={MenuCountry.MenuCountryFilter}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Menu'} type={'event.updateValue'}/>
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+<StorybookDescriptions componentName={'Menu'} type={'expose.navigation'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Menu'} type={'slotsControl'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)
